@@ -26,8 +26,8 @@ cargo run --example basic
 
 ## Making A Change
 
-1. Branch from `main` — never commit directly to it. If you use the `worktree`
-   helper, work inside `worktrees/<slug>`.
+1. Work in the current checkout on `main`; do not create feature branches or
+   worktrees for this repository.
 2. Put each feature area in its own module directory: `mod.rs` for the module
    root and public surface, `types.rs` for substantial types, `test.rs` for
    module-local unit tests. Integration tests belong in `tests/`.

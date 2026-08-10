@@ -15,6 +15,8 @@ use tinyagents::harness::observability::{
 };
 use tinyagents::harness::providers::openai::OpenAiModel;
 
+const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
+
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
 pub use tinyagents::harness::providers::MockModel;
@@ -46,8 +48,8 @@ impl ObservedAgent {
     /// Loads `.env`, configures the `OpenRouter` model, and creates the direct
     /// Langfuse ingestion client.
     ///
-    /// `OPENROUTER_MODEL` optionally overrides `TinyAgents`' default `OpenRouter`
-    /// model.
+    /// `OPENROUTER_MODEL` optionally overrides the default DeepSeek V4 Flash
+    /// model. Requests are routed through StreamLake.
     ///
     /// # Errors
     ///
@@ -109,7 +111,11 @@ pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
     let _ = dotenvy::dotenv();
     let api_key = std::env::var("OPENROUTER_API_KEY")
         .map_err(|_| TinyAgentsError::Validation("OPENROUTER_API_KEY is required".to_string()))?;
-    let mut model = OpenAiModel::openrouter(api_key);
+    let mut model = OpenAiModel::openrouter(api_key)
+        .with_model(DEFAULT_OPENROUTER_MODEL)
+        .with_default_provider_options(serde_json::json!({
+            "provider": { "only": ["streamlake"] }
+        }));
     if let Ok(model_name) = std::env::var("OPENROUTER_MODEL")
         && !model_name.trim().is_empty()
     {
