@@ -1,0 +1,38 @@
+services:
+  agent:
+    build:
+      context: .
+    image: riemann-agent:local
+    env_file:
+      - .env
+    environment:
+      AGENT_WORKSPACE: /workspace
+      QDRANT_URL: http://qdrant:6333
+      RIEMANN_CONTAINER: "1"
+    user: "${RIEMANN_LOCAL_UID:-1000}:${RIEMANN_LOCAL_GID:-1000}"
+    working_dir: /workspace
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=64m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: 2g
+    volumes:
+      - type: bind
+        source: ${RIEMANN_WORKSPACE_PATH:-./workspace}
+        target: /workspace
+    depends_on:
+      qdrant:
+        condition: service_started
+
+  qdrant:
+    image: qdrant/qdrant:v1.18.2
+    restart: unless-stopped
+    volumes:
+      - qdrant-data:/qdrant/storage
+
+volumes:
+  qdrant-data:

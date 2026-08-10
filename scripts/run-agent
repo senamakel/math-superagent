@@ -5,10 +5,27 @@ repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$repository_root"
 
 usage() {
-    echo "usage: ./agent [run] [task...]" >&2
-    echo "       ./agent build" >&2
-    echo "       ./agent shell" >&2
+    echo "usage: ./agent [--workspace relative/path] [run] [task...]" >&2
+    echo "       ./agent [--workspace relative/path] build" >&2
+    echo "       ./agent [--workspace relative/path] shell" >&2
 }
+
+workspace_subdir=${RIEMANN_WORKSPACE:-.}
+if [ "${1-}" = --workspace ]; then
+    if [ "$#" -lt 2 ]; then
+        usage
+        exit 2
+    fi
+    workspace_subdir=$2
+    shift 2
+fi
+
+case "/$workspace_subdir/" in
+    /*/../*|/*/./*|//*|/*\\*|/./)
+        echo "workspace must be a relative subdirectory without traversal" >&2
+        exit 2
+        ;;
+esac
 
 action=run
 if [ "$#" -gt 0 ]; then
@@ -24,9 +41,18 @@ if [ "$#" -gt 0 ]; then
     esac
 fi
 
-mkdir -p workspace
+workspace_path=$repository_root/workspace
+if [ "$workspace_subdir" != . ]; then
+    workspace_path=$workspace_path/$workspace_subdir
+fi
+mkdir -p "$workspace_path"
+
+export RIEMANN_WORKSPACE_PATH=$workspace_path
+export RIEMANN_LOCAL_UID=$(id -u)
+export RIEMANN_LOCAL_GID=$(id -g)
+
 if [ "$action" = build ]; then
-    exec docker build --tag riemann-agent:local .
+    exec docker compose build agent
 fi
 
 if [ ! -f .env ]; then
@@ -34,53 +60,9 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
-# Docker's --env-file preserves surrounding quotes, while dotenv parsers strip
-# them. Source this trusted local file and forward names without placing secret
-# values in the docker command line.
-set -a
-. "$repository_root/.env"
-set +a
-: "${OPENROUTER_API_KEY:?OPENROUTER_API_KEY is required in .env}"
-: "${EXA_API_KEY:?EXA_API_KEY is required in .env}"
-: "${LANGFUSE_BASE_URL:?LANGFUSE_BASE_URL is required in .env}"
-: "${LANGFUSE_PUBLIC_KEY:?LANGFUSE_PUBLIC_KEY is required in .env}"
-: "${LANGFUSE_SECRET_KEY:?LANGFUSE_SECRET_KEY is required in .env}"
-
-docker build --quiet --tag riemann-agent:local . >/dev/null
-
 if [ "$action" = shell ]; then
-    exec docker run --rm --interactive --tty \
-        --entrypoint /bin/sh \
-        --env OPENROUTER_API_KEY \
-        --env OPENROUTER_MODEL \
-        --env EXA_API_KEY \
-        --env LANGFUSE_BASE_URL \
-        --env LANGFUSE_PUBLIC_KEY \
-        --env LANGFUSE_SECRET_KEY \
-        --user "$(id -u):$(id -g)" \
-        --cap-drop ALL \
-        --security-opt no-new-privileges \
-        --read-only \
-        --tmpfs /tmp:rw,nosuid,nodev,noexec,size=64m \
-        --pids-limit 256 \
-        --memory 2g \
-        --mount "type=bind,src=$repository_root/workspace,dst=/workspace" \
-        riemann-agent:local
+    exec docker compose run --rm --entrypoint /bin/sh agent
 fi
 
-exec docker run --rm \
-    --env OPENROUTER_API_KEY \
-    --env OPENROUTER_MODEL \
-    --env EXA_API_KEY \
-    --env LANGFUSE_BASE_URL \
-    --env LANGFUSE_PUBLIC_KEY \
-    --env LANGFUSE_SECRET_KEY \
-    --user "$(id -u):$(id -g)" \
-    --cap-drop ALL \
-    --security-opt no-new-privileges \
-    --read-only \
-    --tmpfs /tmp:rw,nosuid,nodev,noexec,size=64m \
-    --pids-limit 256 \
-    --memory 2g \
-    --mount "type=bind,src=$repository_root/workspace,dst=/workspace" \
-    riemann-agent:local "$@"
+docker compose build --quiet agent
+exec docker compose run --rm agent "$@"

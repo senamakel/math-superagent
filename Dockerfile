@@ -22,5 +22,6 @@ USER agent
 WORKDIR /workspace
 ENV RIEMANN_CONTAINER=1
 ENV AGENT_WORKSPACE=/workspace
+ENV QDRANT_URL=http://qdrant:6333
 
 ENTRYPOINT ["/usr/local/bin/riemann-agent"]
