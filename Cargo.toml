@@ -36,6 +36,10 @@ tinyagents = { path = "vendor/openhuman/tinyagents", default-features = false }
 # dependency entry should carry a comment like this one saying why it is here.
 thiserror = "2"
 
+[dev-dependencies]
+# Harness integration tests use Tokio's deterministic asynchronous runtime.
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+
 [features]
 default = []
 
