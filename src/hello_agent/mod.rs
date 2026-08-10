@@ -13,8 +13,9 @@ use crate::agent::{
 
 const SYSTEM_PROMPT: &str = "You are a friendly hello-world agent. Use tools when they help. \
     Use add_numbers for arithmetic instead of calculating mentally. Delegate a focused piece of \
-    work to spawn_subagent when the user asks for research, checking, or a second opinion. Keep \
-    the final answer concise and mention useful tool results naturally.";
+    work to spawn_subagent when the user asks for checking or a second opinion. Use exa_search \
+    for current facts or web research. Keep the final answer concise, cite returned URLs when \
+    search was used, and mention useful tool results naturally.";
 
 const SUBAGENT_PROMPT: &str = "You are a concise helper sub-agent. Complete only the delegated \
     task, report the useful result clearly, and do not invent tool output.";
@@ -53,6 +54,7 @@ impl HelloAgent {
             .set_default_model("openrouter")
             .register_tool(Arc::new(EchoTool))
             .register_tool(Arc::new(AddTool))
+            .register_tool(Arc::new(ExaSearchTool::from_env()?))
             .register_tool(Arc::new(SubAgentTool::new(Arc::new(child))));
 
         Ok(Self {
@@ -163,6 +165,127 @@ fn number_argument(call: &ToolCall, name: &str) -> Result<f64> {
         .ok_or_else(|| {
             tinyagents::TinyAgentsError::Validation(format!("{name} must be a number"))
         })
+}
+
+#[derive(Debug)]
+struct ExaSearchTool {
+    client: reqwest::Client,
+    api_key: String,
+}
+
+impl ExaSearchTool {
+    fn from_env() -> Result<Self> {
+        let api_key = std::env::var("EXA_API_KEY").map_err(|_| {
+            tinyagents::TinyAgentsError::Validation("EXA_API_KEY is required".into())
+        })?;
+        Ok(Self {
+            client: reqwest::Client::new(),
+            api_key,
+        })
+    }
+}
+
+#[async_trait]
+impl Tool<()> for ExaSearchTool {
+    fn name(&self) -> &str {
+        "exa_search"
+    }
+
+    fn description(&self) -> &str {
+        "Searches the live web with Exa and returns concise highlights with source URLs."
+    }
+
+    fn schema(&self) -> ToolSchema {
+        ToolSchema::new(
+            self.name(),
+            self.description(),
+            json!({
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "A specific natural-language web search query."
+                    }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+            }),
+        )
+    }
+
+    async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
+        let query = call
+            .arguments
+            .get("query")
+            .and_then(serde_json::Value::as_str)
+            .ok_or_else(|| {
+                tinyagents::TinyAgentsError::Validation("query is required".into())
+            })?;
+        let response = self
+            .client
+            .post("https://api.exa.ai/search")
+            .header("x-api-key", &self.api_key)
+            .json(&json!({
+                "query": query,
+                "type": "auto",
+                "numResults": 5,
+                "contents": { "highlights": true }
+            }))
+            .send()
+            .await
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("Exa search request failed: {error}"))
+            })?;
+        let status = response.status();
+        let body: serde_json::Value = response.json().await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("Exa response was invalid: {error}"))
+        })?;
+        if !status.is_success() {
+            let message = body
+                .get("error")
+                .and_then(serde_json::Value::as_str)
+                .unwrap_or("unknown Exa API error");
+            return Err(tinyagents::TinyAgentsError::Tool(format!(
+                "Exa search returned {status}: {message}"
+            )));
+        }
+
+        let results = body
+            .get("results")
+            .and_then(serde_json::Value::as_array)
+            .ok_or_else(|| {
+                tinyagents::TinyAgentsError::Tool("Exa response contained no results".into())
+            })?;
+        let rendered = results
+            .iter()
+            .enumerate()
+            .map(|(index, result)| {
+                let title = result
+                    .get("title")
+                    .and_then(serde_json::Value::as_str)
+                    .unwrap_or("Untitled");
+                let url = result
+                    .get("url")
+                    .and_then(serde_json::Value::as_str)
+                    .unwrap_or("No URL");
+                let highlights = result
+                    .get("highlights")
+                    .and_then(serde_json::Value::as_array)
+                    .map(|items| {
+                        items
+                            .iter()
+                            .filter_map(serde_json::Value::as_str)
+                            .collect::<Vec<_>>()
+                            .join(" ")
+                    })
+                    .unwrap_or_default();
+                format!("{}. {title}\n{url}\n{highlights}", index + 1)
+            })
+            .collect::<Vec<_>>()
+            .join("\n\n");
+
+        Ok(ToolResult::text(call.id, self.name(), rendered))
+    }
 }
 
 #[cfg(test)]
