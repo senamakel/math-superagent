@@ -21,8 +21,7 @@ Do this once, in a single commit, before writing feature code:
 - [ ] Confirm `license` and `LICENSE` match the project's intended license.
 - [ ] Update the security contact in `SECURITY.md`.
 - [ ] Replace `ROADMAP.md` with the real plan, or delete it.
-- [ ] Rename the TinyBus interface, object path, and declared methods in
-      `src/tinybus_module/` while keeping `vendor/tinybus` pinned.
+- [ ] Define the slim agent surface and update its public examples.
 - [ ] Rewrite the "Project Structure" section below to describe this crate.
 
 ## Project Structure
@@ -33,14 +32,14 @@ This is a Rust 2024 library crate rooted at `Cargo.toml`.
 src/
 ├── lib.rs              # crate docs + the entire public re-export surface
 ├── error/mod.rs        # crate-wide `Error` and `Result<T>`
-├── tinybus_module/     # TinyBus interface, ABI exports, and integration tests
+├── agent/              # Slim OpenHuman agent facade and integration tests
 └── <feature>/          # one directory per feature area
     ├── mod.rs          # module docs, wiring, smallest useful public API
     ├── types.rs        # substantial type definitions
     └── test.rs         # module-local unit tests
 tests/                  # integration tests against the public API only
 examples/               # runnable, compiled-in-CI usage examples
-vendor/tinybus/         # pinned TinyBus host types and module SDK
+vendor/openhuman/tinyagents/ # pinned OpenHuman agent engine
 docs/
 ├── specs/              # behavior and architecture specifications
 ├── plans/              # test-first implementation plans
