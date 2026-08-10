@@ -40,11 +40,10 @@ fn registry_resolves_agents_in_insertion_order() -> agent::Result<()> {
 #[test]
 fn registry_rejects_duplicate_ids() -> agent::Result<()> {
     let mut registry = AgentRegistry::new();
-    registry
-        .register(
-            AgentDefinition::new("research", "Research", "finds evidence"),
-            subagent("research"),
-        )?;
+    registry.register(
+        AgentDefinition::new("research", "Research", "finds evidence"),
+        subagent("research"),
+    )?;
 
     let duplicate = registry.register(
         AgentDefinition::new("research", "Other", "duplicate"),

@@ -520,11 +520,7 @@ fn truncate_output(bytes: &[u8]) -> String {
     let kept = &bytes[..bytes.len().min(MAX_COMMAND_OUTPUT_BYTES)];
     let mut rendered = String::from_utf8_lossy(kept).into_owned();
     if bytes.len() > kept.len() {
-        let _ = write!(
-            rendered,
-            "\n[{} bytes truncated]",
-            bytes.len() - kept.len()
-        );
+        let _ = write!(rendered, "\n[{} bytes truncated]", bytes.len() - kept.len());
     }
     rendered
 }
