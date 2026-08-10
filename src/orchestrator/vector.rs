@@ -38,7 +38,7 @@ impl VectorStore {
             .get(&url)
             .send()
             .await
-            .map_err(qdrant_transport_error)?
+            .map_err(|error| qdrant_transport_error(&error))?
             .status();
         if status.is_success() {
             return Ok(());
@@ -60,7 +60,7 @@ impl VectorStore {
             }))
             .send()
             .await
-            .map_err(qdrant_transport_error)?;
+            .map_err(|error| qdrant_transport_error(&error))?;
         if response.status().is_success() {
             return Ok(());
         }
@@ -135,7 +135,7 @@ impl Tool<()> for RememberResearchTool {
             }))
             .send()
             .await
-            .map_err(qdrant_transport_error)?;
+            .map_err(|error| qdrant_transport_error(&error))?;
         if !response.status().is_success() {
             return Err(qdrant_response_error("point upsert", response).await);
         }
@@ -212,7 +212,7 @@ impl Tool<()> for RecallResearchTool {
             }))
             .send()
             .await
-            .map_err(qdrant_transport_error)?;
+            .map_err(|error| qdrant_transport_error(&error))?;
         if !response.status().is_success() {
             return Err(qdrant_response_error("vector query", response).await);
         }
@@ -273,7 +273,7 @@ fn embed(text: &str) -> Vec<f32> {
         .filter(|token| !token.is_empty())
     {
         let hash = fnv1a(token.to_ascii_lowercase().as_bytes());
-        let index = (hash as usize) % VECTOR_SIZE;
+        let index = usize::from(hash.to_le_bytes()[0]);
         let sign = if hash & (1 << 63) == 0 { 1.0 } else { -1.0 };
         vector[index] += sign;
     }
@@ -296,7 +296,7 @@ fn fnv1a(bytes: &[u8]) -> u64 {
     })
 }
 
-fn qdrant_transport_error(error: reqwest::Error) -> tinyagents::TinyAgentsError {
+fn qdrant_transport_error(error: &reqwest::Error) -> tinyagents::TinyAgentsError {
     tinyagents::TinyAgentsError::Tool(format!("Qdrant request failed: {error}"))
 }
 
