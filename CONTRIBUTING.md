@@ -23,9 +23,12 @@ The bundled offline and live examples can be run with:
 ```sh
 cargo run --example basic
 cargo run --example hello_agent -- "your task"
+scripts/run-agent "your orchestrated task"
 ```
 
-The live example requires the variables documented in `.env.example`.
+The live examples require the variables documented in `.env.example`. Use the
+Docker wrapper for the orchestrator; its tool execution is intentionally
+unavailable outside the jailed `/workspace` runtime.
 
 ## Making A Change
 

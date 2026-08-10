@@ -34,6 +34,7 @@ src/
 ├── error/mod.rs        # crate-wide `Error` and `Result<T>`
 ├── agent/              # TinyAgents facade and integration tests
 ├── hello_agent/        # OpenRouter example, tools, and sub-agent wiring
+├── orchestrator/       # registry, specialists, compression, jailed tools
 └── <feature>/          # one directory per feature area
     ├── mod.rs          # module docs, wiring, smallest useful public API
     ├── types.rs        # substantial type definitions

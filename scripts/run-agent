@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$repository_root"
+
+if [ ! -f .env ]; then
+    echo "missing .env; copy .env.example and provide credentials" >&2
+    exit 1
+fi
+
+mkdir -p workspace
+docker build --tag riemann-agent:local .
+docker run --rm \
+    --env-file .env \
+    --cap-drop ALL \
+    --security-opt no-new-privileges \
+    --pids-limit 256 \
+    --memory 2g \
+    --mount "type=bind,src=$repository_root/workspace,dst=/workspace" \
+    riemann-agent:local "$@"

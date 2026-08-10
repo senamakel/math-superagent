@@ -1,0 +1,9 @@
+.git
+.env
+target
+workspace
+worktrees
+coverage
+docs
+*.profraw
+*.profdata

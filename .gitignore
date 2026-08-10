@@ -14,6 +14,10 @@ lcov.info
 .env
 .env.local
 
+# Host directory mounted as the jailed agent runtime's /workspace.
+/workspace/*
+!/workspace/.gitkeep
+
 # Linked worktrees created by the local `worktree` helper
 worktrees/*
 !worktrees/.gitkeep
