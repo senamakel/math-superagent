@@ -162,13 +162,13 @@ fn number_argument(call: &ToolCall, name: &str) -> Result<f64> {
 }
 
 #[derive(Debug)]
-struct ExaSearchTool {
+pub(crate) struct ExaSearchTool {
     client: reqwest::Client,
     api_key: String,
 }
 
 impl ExaSearchTool {
-    fn from_env() -> Result<Self> {
+    pub(crate) fn from_env() -> Result<Self> {
         let api_key = std::env::var("EXA_API_KEY").map_err(|_| {
             tinyagents::TinyAgentsError::Validation("EXA_API_KEY is required".into())
         })?;

@@ -5,6 +5,8 @@
 //! [`HelloAgent`] supplies a minimal OpenRouter-backed loop with arithmetic,
 //! echo, Exa search, and sub-agent delegation tools. Loop events are exported
 //! to Langfuse on a best-effort basis.
+//! [`OrchestratorAgent`] supplies a named specialist registry and delegates
+//! research and tool-building work to isolated child agents.
 //!
 //! # Layout
 //!
@@ -17,6 +19,7 @@
 //!   single predictable surface.
 //! - `agent` exposes the `TinyAgents` harness facade.
 //! - [`HelloAgent`] exposes the runnable hello-world agent.
+//! - [`OrchestratorAgent`] exposes the registry-backed multi-agent runtime.
 //!
 //! # Example
 //!
@@ -32,7 +35,9 @@ pub mod agent;
 mod error;
 mod greeting;
 mod hello_agent;
+mod orchestrator;
 
 pub use error::{Error, Result};
 pub use greeting::greet;
 pub use hello_agent::HelloAgent;
+pub use orchestrator::{AgentDefinition, AgentRegistry, OrchestratorAgent};

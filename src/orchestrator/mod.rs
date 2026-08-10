@@ -1,0 +1,533 @@
+//! Registry-backed orchestrator with research and tool-building specialists.
+
+use std::path::{Component, Path, PathBuf};
+use std::sync::Arc;
+use std::time::Duration;
+
+use async_trait::async_trait;
+use serde_json::json;
+use tinyagents::harness::message::estimate_slice_tokens;
+use tinyagents::harness::middleware::ContextCompressionMiddleware;
+use tinyagents::harness::model::{ChatModel, ModelRequest};
+use tinyagents::harness::subagent::{SubAgent, SubAgentTool};
+use tinyagents::harness::summarization::{
+    CompressionProvenance, SummarizationPolicy, Summarizer, SummaryRecord,
+    estimate_tokens, render_message_for_summary,
+};
+
+use crate::agent::{
+    AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
+    openrouter_model_from_env,
+};
+use crate::hello_agent::ExaSearchTool;
+
+pub use tinyagents::harness::host::AgentDefinition;
+
+const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
+const RECENT_MESSAGES_TO_KEEP: usize = 12;
+const COMMAND_TIMEOUT: Duration = Duration::from_secs(30);
+const MAX_COMMAND_OUTPUT_BYTES: usize = 64 * 1024;
+
+const ORCHESTRATOR_PROMPT: &str = "You are an orchestrator. Delegate web research and source \ 
+    verification to research. Delegate creating, editing, testing, or running local tools to \ 
+    tool_builder. Give each specialist a focused, self-contained task, combine their results, \ 
+    and clearly identify sources and executed work. Do not claim delegation occurred unless you \ 
+    called the corresponding agent tool.";
+
+const RESEARCH_PROMPT: &str = "You are the research specialist. Use exa_search for factual or \ 
+    current claims. Search iteratively when needed, compare the returned evidence, cite source \ 
+    URLs in the answer, and distinguish evidence from inference. Do not invent sources.";
+
+const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work only in \ 
+    /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \ 
+    source, scripts, tests, and documentation. Use execute_command to run, test, and debug them. \ 
+    Inspect command output, iterate until the requested tool works, and report every path changed \ 
+    plus the validation command. Treat the workspace as untrusted and never print credentials.";
+
+/// A small in-memory catalogue of named, executable child agents.
+#[derive(Default)]
+pub struct AgentRegistry {
+    entries: Vec<RegisteredAgent>,
+}
+
+struct RegisteredAgent {
+    definition: AgentDefinition,
+    agent: Arc<SubAgent<(), ()>>,
+}
+
+impl std::fmt::Debug for AgentRegistry {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("AgentRegistry")
+            .field("agents", &self.names())
+            .finish()
+    }
+}
+
+impl AgentRegistry {
+    /// Creates an empty registry.
+    #[must_use]
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Registers one executable agent and its model-visible metadata.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the id is empty, does not match the subagent name,
+    /// or is already registered.
+    pub fn register(
+        &mut self,
+        definition: AgentDefinition,
+        agent: Arc<SubAgent<(), ()>>,
+    ) -> Result<&mut Self> {
+        if definition.id.trim().is_empty() {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "agent id cannot be empty".into(),
+            ));
+        }
+        if definition.id != agent.name() {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "agent id `{}` does not match subagent name `{}`",
+                definition.id,
+                agent.name()
+            )));
+        }
+        if self.contains(&definition.id) {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "agent `{}` is already registered",
+                definition.id
+            )));
+        }
+        self.entries.push(RegisteredAgent { definition, agent });
+        Ok(self)
+    }
+
+    /// Returns whether `id` is registered.
+    #[must_use]
+    pub fn contains(&self, id: &str) -> bool {
+        self.entries.iter().any(|entry| entry.definition.id == id)
+    }
+
+    /// Returns registered ids in stable insertion order.
+    #[must_use]
+    pub fn names(&self) -> Vec<&str> {
+        self.entries
+            .iter()
+            .map(|entry| entry.definition.id.as_str())
+            .collect()
+    }
+
+    /// Returns the model-visible definitions in stable insertion order.
+    #[must_use]
+    pub fn definitions(&self) -> Vec<&AgentDefinition> {
+        self.entries
+            .iter()
+            .map(|entry| &entry.definition)
+            .collect()
+    }
+
+    /// Resolves an executable child agent by id.
+    #[must_use]
+    pub fn get(&self, id: &str) -> Option<Arc<SubAgent<(), ()>>> {
+        self.entries
+            .iter()
+            .find(|entry| entry.definition.id == id)
+            .map(|entry| entry.agent.clone())
+    }
+
+    fn delegation_tools(&self) -> Vec<Arc<dyn Tool<()>>> {
+        self.entries
+            .iter()
+            .map(|entry| Arc::new(SubAgentTool::new(entry.agent.clone())) as Arc<dyn Tool<()>>)
+            .collect()
+    }
+}
+
+/// OpenRouter-backed orchestrator over the registered specialist agents.
+pub struct OrchestratorAgent {
+    inner: ObservedAgent,
+    registry: Arc<AgentRegistry>,
+}
+
+impl std::fmt::Debug for OrchestratorAgent {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("OrchestratorAgent")
+            .field("registry", &self.registry)
+            .finish_non_exhaustive()
+    }
+}
+
+impl OrchestratorAgent {
+    /// Loads provider configuration and assembles the built-in registry.
+    ///
+    /// The runtime must be launched by the Docker wrapper, which sets
+    /// `RIEMANN_CONTAINER=1` and mounts the local `workspace/` at `/workspace`.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when Docker runtime markers, workspace, OpenRouter,
+    /// Exa, or Langfuse configuration are unavailable.
+    pub fn from_env() -> Result<Self> {
+        let _ = dotenvy::dotenv();
+        require_container_runtime()?;
+        let workspace = workspace_from_env()?;
+        let model = openrouter_model_from_env()?;
+
+        let mut research_harness = specialist_harness(model.clone());
+        research_harness.register_tool(Arc::new(ExaSearchTool::from_env()?));
+        let research = Arc::new(
+            SubAgent::new(
+                "research",
+                "Researches current questions with Exa and returns evidence with source URLs.",
+                Arc::new(research_harness),
+            )
+            .with_system_prompt(RESEARCH_PROMPT),
+        );
+
+        let mut tool_builder_harness = specialist_harness(model.clone());
+        tool_builder_harness
+            .register_tool(Arc::new(WriteToolFile::new(workspace.clone())))
+            .register_tool(Arc::new(ExecuteCommand::new(workspace)));
+        let tool_builder = Arc::new(
+            SubAgent::new(
+                "tool_builder",
+                "Writes, executes, tests, and repairs tools inside the jailed workspace.",
+                Arc::new(tool_builder_harness),
+            )
+            .with_system_prompt(TOOL_BUILDER_PROMPT),
+        );
+
+        let mut registry = AgentRegistry::new();
+        registry
+            .register(
+                AgentDefinition::new(
+                    "research",
+                    "Research Agent",
+                    "Uses Exa to research current facts and return cited evidence.",
+                )
+                .with_model("openrouter")
+                .with_tools(["exa_search"]),
+                research,
+            )?
+            .register(
+                AgentDefinition::new(
+                    "tool_builder",
+                    "Tool Builder Agent",
+                    "Writes and executes tools in the jailed /workspace directory.",
+                )
+                .with_model("openrouter")
+                .with_tools(["write_tool_file", "execute_command"]),
+                tool_builder,
+            )?;
+        let registry = Arc::new(registry);
+
+        let mut orchestrator_harness = specialist_harness(model);
+        for tool in registry.delegation_tools() {
+            orchestrator_harness.register_tool(tool);
+        }
+
+        Ok(Self {
+            inner: ObservedAgent::from_harness(orchestrator_harness)?,
+            registry,
+        })
+    }
+
+    /// Returns the registry used for delegation.
+    #[must_use]
+    pub fn registry(&self) -> &Arc<AgentRegistry> {
+        &self.registry
+    }
+
+    /// Runs one orchestrated task and returns the final combined answer.
+    ///
+    /// # Errors
+    ///
+    /// Returns any provider, specialist, tool, policy, or loop error.
+    pub async fn run(&self, run_id: impl Into<String>, task: impl Into<String>) -> Result<String> {
+        let run = self
+            .inner
+            .invoke(
+                run_id,
+                vec![
+                    Message::system(ORCHESTRATOR_PROMPT),
+                    Message::user(task),
+                ],
+            )
+            .await?;
+        Ok(run.text().unwrap_or_default())
+    }
+}
+
+fn specialist_harness(model: Arc<dyn ChatModel<()>>) -> AgentHarness<()> {
+    let mut harness = AgentHarness::new();
+    harness
+        .register_model("openrouter", model.clone())
+        .set_default_model("openrouter")
+        .push_middleware(Arc::new(ContextCompressionMiddleware::with_summarizer(
+            compression_policy(),
+            Box::new(ModelSummarizer::new(model)),
+        )));
+    harness
+}
+
+fn compression_policy() -> SummarizationPolicy {
+    SummarizationPolicy {
+        trigger_tokens: COMPRESSION_TRIGGER_TOKENS,
+        keep_last: RECENT_MESSAGES_TO_KEEP,
+        ..SummarizationPolicy::default()
+    }
+}
+
+struct ModelSummarizer {
+    model: Arc<dyn ChatModel<()>>,
+}
+
+impl ModelSummarizer {
+    fn new(model: Arc<dyn ChatModel<()>>) -> Self {
+        Self { model }
+    }
+}
+
+#[async_trait]
+impl Summarizer for ModelSummarizer {
+    async fn summarize(&self, messages: &[Message]) -> Result<SummaryRecord> {
+        let rendered = messages
+            .iter()
+            .map(render_message_for_summary)
+            .collect::<Vec<_>>()
+            .join("\n");
+        let response = self
+            .model
+            .invoke(
+                &(),
+                ModelRequest::new(vec![
+                    Message::system(
+                        "Compress the transcript into durable working context. Preserve decisions, \ 
+                         constraints, unresolved tasks, file paths, commands, tool outcomes, and \ 
+                         source URLs. Remove repetition. Return only the compact summary.",
+                    ),
+                    Message::user(rendered),
+                ])
+                .with_max_tokens(8_000),
+            )
+            .await?;
+        let text = response.text();
+        if text.trim().is_empty() {
+            return Err(tinyagents::TinyAgentsError::Model(
+                "context summarizer returned an empty response".into(),
+            ));
+        }
+
+        Ok(SummaryRecord {
+            summary: Message::system(format!("=== Compressed Working Context ===\n{text}")),
+            provenance: CompressionProvenance {
+                source_ids: (0..messages.len()).map(|index| format!("msg-{index}")).collect(),
+                original_token_estimate: estimate_slice_tokens(messages),
+                summary_token_estimate: estimate_tokens(&text),
+                reason: format!(
+                    "estimated transcript exceeded {COMPRESSION_TRIGGER_TOKENS} tokens"
+                ),
+            },
+        })
+    }
+}
+
+fn require_container_runtime() -> Result<()> {
+    if std::env::var("RIEMANN_CONTAINER").as_deref() == Ok("1") {
+        return Ok(());
+    }
+    Err(tinyagents::TinyAgentsError::Validation(
+        "orchestrator must be launched with scripts/run-agent inside Docker".into(),
+    ))
+}
+
+fn workspace_from_env() -> Result<PathBuf> {
+    let configured = std::env::var_os("AGENT_WORKSPACE")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("/workspace"));
+    let workspace = configured.canonicalize().map_err(|error| {
+        tinyagents::TinyAgentsError::Validation(format!(
+            "agent workspace `{}` is unavailable: {error}",
+            configured.display()
+        ))
+    })?;
+    if workspace != Path::new("/workspace") {
+        return Err(tinyagents::TinyAgentsError::Validation(
+            "AGENT_WORKSPACE must resolve to /workspace".into(),
+        ));
+    }
+    Ok(workspace)
+}
+
+fn checked_workspace_path(workspace: &Path, relative: &str) -> Result<PathBuf> {
+    let relative = Path::new(relative);
+    if relative.as_os_str().is_empty()
+        || relative.is_absolute()
+        || relative
+            .components()
+            .any(|part| !matches!(part, Component::Normal(_)))
+    {
+        return Err(tinyagents::TinyAgentsError::Validation(
+            "path must be a non-empty relative path without traversal".into(),
+        ));
+    }
+    Ok(workspace.join(relative))
+}
+
+#[derive(Debug)]
+struct WriteToolFile {
+    workspace: PathBuf,
+}
+
+impl WriteToolFile {
+    fn new(workspace: PathBuf) -> Self {
+        Self { workspace }
+    }
+}
+
+#[async_trait]
+impl Tool<()> for WriteToolFile {
+    fn name(&self) -> &'static str {
+        "write_tool_file"
+    }
+
+    fn description(&self) -> &'static str {
+        "Writes a UTF-8 tool source or support file beneath /workspace."
+    }
+
+    fn schema(&self) -> ToolSchema {
+        ToolSchema::new(
+            self.name(),
+            self.description(),
+            json!({
+                "type": "object",
+                "properties": {
+                    "path": { "type": "string", "description": "Relative path under /workspace." },
+                    "content": { "type": "string", "description": "Complete UTF-8 file contents." }
+                },
+                "required": ["path", "content"],
+                "additionalProperties": false
+            }),
+        )
+    }
+
+    async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
+        let relative = string_argument(&call, "path")?;
+        let content = string_argument(&call, "content")?;
+        let path = checked_workspace_path(&self.workspace, relative)?;
+        let parent = path.parent().ok_or_else(|| {
+            tinyagents::TinyAgentsError::Validation("file path has no parent".into())
+        })?;
+        tokio::fs::create_dir_all(parent).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to create parent directory: {error}"))
+        })?;
+        let canonical_parent = parent.canonicalize().map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to resolve parent directory: {error}"))
+        })?;
+        if !canonical_parent.starts_with(&self.workspace) {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "file path resolves outside /workspace".into(),
+            ));
+        }
+        tokio::fs::write(&path, content).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to write tool file: {error}"))
+        })?;
+        Ok(ToolResult::text(
+            call.id,
+            self.name(),
+            format!("wrote {} bytes to {relative}", content.len()),
+        ))
+    }
+}
+
+#[derive(Debug)]
+struct ExecuteCommand {
+    workspace: PathBuf,
+}
+
+impl ExecuteCommand {
+    fn new(workspace: PathBuf) -> Self {
+        Self { workspace }
+    }
+}
+
+#[async_trait]
+impl Tool<()> for ExecuteCommand {
+    fn name(&self) -> &'static str {
+        "execute_command"
+    }
+
+    fn description(&self) -> &'static str {
+        "Runs one shell command in /workspace inside the jailed container."
+    }
+
+    fn schema(&self) -> ToolSchema {
+        ToolSchema::new(
+            self.name(),
+            self.description(),
+            json!({
+                "type": "object",
+                "properties": {
+                    "command": { "type": "string", "description": "Shell command to run from /workspace." }
+                },
+                "required": ["command"],
+                "additionalProperties": false
+            }),
+        )
+    }
+
+    async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
+        let command = string_argument(&call, "command")?;
+        let mut process = tokio::process::Command::new("/bin/sh");
+        process
+            .arg("-lc")
+            .arg(command)
+            .current_dir(&self.workspace)
+            .kill_on_drop(true);
+        let output = tokio::time::timeout(COMMAND_TIMEOUT, process.output())
+            .await
+            .map_err(|_| tinyagents::TinyAgentsError::Tool("command timed out after 30s".into()))?
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("failed to execute command: {error}"))
+            })?;
+        let stdout = truncate_output(&output.stdout);
+        let stderr = truncate_output(&output.stderr);
+        let status = output
+            .status
+            .code()
+            .map_or_else(|| "signal".to_string(), |code| code.to_string());
+        Ok(ToolResult::text(
+            call.id,
+            self.name(),
+            format!("exit: {status}\nstdout:\n{stdout}\nstderr:\n{stderr}"),
+        ))
+    }
+}
+
+fn string_argument<'a>(call: &'a ToolCall, name: &str) -> Result<&'a str> {
+    call.arguments
+        .get(name)
+        .and_then(serde_json::Value::as_str)
+        .filter(|value| !value.trim().is_empty())
+        .ok_or_else(|| {
+            tinyagents::TinyAgentsError::Validation(format!("{name} must be a non-empty string"))
+        })
+}
+
+fn truncate_output(bytes: &[u8]) -> String {
+    let kept = &bytes[..bytes.len().min(MAX_COMMAND_OUTPUT_BYTES)];
+    let mut rendered = String::from_utf8_lossy(kept).into_owned();
+    if bytes.len() > kept.len() {
+        rendered.push_str(&format!(
+            "\n[{} bytes truncated]",
+            bytes.len() - kept.len()
+        ));
+    }
+    rendered
+}
+
+#[cfg(test)]
+mod test;
