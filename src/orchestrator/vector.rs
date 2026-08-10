@@ -276,11 +276,7 @@ fn embed(text: &str) -> Vec<f32> {
         let sign = if hash & (1 << 63) == 0 { 1.0 } else { -1.0 };
         vector[index] += sign;
     }
-    let magnitude = vector
-        .iter()
-        .map(|value| value * value)
-        .sum::<f32>()
-        .sqrt();
+    let magnitude = vector.iter().map(|value| value * value).sum::<f32>().sqrt();
     if magnitude > 0.0 {
         for value in &mut vector {
             *value /= magnitude;
@@ -335,11 +331,7 @@ mod test {
     #[test]
     fn local_embedding_has_fixed_size_and_unit_length() {
         let vector = embed("prime number theorem asymptotic primes");
-        let magnitude = vector
-            .iter()
-            .map(|value| value * value)
-            .sum::<f32>()
-            .sqrt();
+        let magnitude = vector.iter().map(|value| value * value).sum::<f32>().sqrt();
         assert_eq!(vector.len(), VECTOR_SIZE);
         assert!((magnitude - 1.0).abs() < 0.000_01);
     }
