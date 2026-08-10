@@ -1,14 +1,15 @@
-//! Unit tests for the embedded `OpenHuman` runtime configuration.
+//! Unit tests for the slim `OpenHuman` agent runtime.
 
-use super::domains;
+use super::{Message, mock};
 
-#[test]
-fn excludes_memory_channels_and_web3() {
-    let domains = domains();
+#[tokio::test]
+async fn mock_harness_runs_without_application_domains() -> super::Result<()> {
+    let harness = mock("Hello from the slim agent.");
+    let run = harness
+        .invoke_default(&(), vec![Message::user("Say hello.")])
+        .await?;
 
-    assert!(domains.agent);
-    assert!(domains.inference);
-    assert!(!domains.memory);
-    assert!(!domains.channels);
-    assert!(!domains.web3);
+    assert_eq!(run.text().as_deref(), Some("Hello from the slim agent."));
+    assert_eq!(run.model_calls, 1);
+    Ok(())
 }

@@ -4,7 +4,7 @@ version = "0.1.5"
 edition = "2024"
 rust-version = "1.88"
 license = "GPL-3.0-only"
-description = "An embeddable, vendored OpenHuman runtime for Rust."
+description = "A slim, vendored OpenHuman agent harness for Rust."
 repository = "https://github.com/tinyhumansai/rust-template"
 documentation = "https://docs.rs/rust-template"
 readme = "README.md"
@@ -28,29 +28,16 @@ exclude = [
 crate-type = ["rlib", "cdylib"]
 
 [dependencies]
-# The complete OpenHuman Rust core. Product integrations are compiled with
-# OpenHuman's default feature set disabled and selected at runtime through a
-# domain set that excludes memory, channels, and Web3. `memory-git` is enabled
-# only to select OpenHuman's complete memory-diff module instead of its broken
-# no-feature stub; the Memory domain remains disabled by `agent::domains()`.
-openhuman-core = { package = "openhuman", path = "vendor/openhuman", default-features = false, features = ["memory-git"] }
+# OpenHuman's provider-neutral agent loop and tool runtime. The vendored
+# checkout is intentionally used without SQLite, REPL, or RLM features so this
+# crate contains only the slim agent harness: no memory, channels, or Web3.
+tinyagents = { path = "vendor/openhuman/tinyagents", default-features = false }
 # Derive macros for the crate-wide error type in `src/error/mod.rs`. Every
 # dependency entry should carry a comment like this one saying why it is here.
 thiserror = "2"
 
 [features]
 default = []
-
-[patch.crates-io]
-# Keep OpenHuman's first-party crate family pinned to the revisions vendored
-# inside the OpenHuman checkout.
-motosan-ai-oauth = { path = "vendor/openhuman/vendor/motosan-ai-oauth" }
-tinyagents = { path = "vendor/openhuman/vendor/tinyagents" }
-tinyflows = { path = "vendor/openhuman/vendor/tinyflows" }
-tinycortex = { path = "vendor/openhuman/vendor/tinycortex" }
-tinyjuice = { path = "vendor/openhuman/vendor/tinyjuice" }
-tinychannels = { path = "vendor/openhuman/vendor/tinychannels" }
-tinyplace = { path = "vendor/openhuman/vendor/tinyplace/sdk/rust" }
 
 # Lints apply to the whole crate and to every target. CI runs clippy with
 # `-D warnings`, so anything set to "warn" here fails the build in CI.
