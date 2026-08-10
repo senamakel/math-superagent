@@ -32,7 +32,7 @@ impl HelloAgent {
     ///
     /// # Errors
     ///
-    /// Returns an error when the required OpenRouter or Langfuse environment
+    /// Returns an error when the required `OpenRouter` or Langfuse environment
     /// variables are missing or invalid.
     pub fn from_env() -> Result<Self> {
         let model = openrouter_model_from_env()?;
@@ -87,11 +87,11 @@ struct EchoTool;
 
 #[async_trait]
 impl Tool<()> for EchoTool {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "echo_text"
     }
 
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "Echoes a short text value exactly, useful for checking tool calls."
     }
 
@@ -123,11 +123,11 @@ struct AddTool;
 
 #[async_trait]
 impl Tool<()> for AddTool {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "add_numbers"
     }
 
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "Adds two numbers and returns their sum."
     }
 
@@ -181,11 +181,11 @@ impl ExaSearchTool {
 
 #[async_trait]
 impl Tool<()> for ExaSearchTool {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "exa_search"
     }
 
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "Searches the live web with Exa and returns concise highlights with source URLs."
     }
 
