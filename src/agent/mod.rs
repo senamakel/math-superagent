@@ -48,8 +48,8 @@ impl ObservedAgent {
     /// Loads `.env`, configures the `OpenRouter` model, and creates the direct
     /// Langfuse ingestion client.
     ///
-    /// `OPENROUTER_MODEL` optionally overrides the default DeepSeek V4 Flash
-    /// model. Requests are routed through StreamLake.
+    /// `OPENROUTER_MODEL` optionally overrides the default `DeepSeek` V4 Flash
+    /// model. Requests are routed through `StreamLake`.
     ///
     /// # Errors
     ///
