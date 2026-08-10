@@ -140,18 +140,19 @@ reproducible.
 
 ### Vendored dependencies
 
-TinyBus is registered as the `vendor/tinybus` git submodule and pinned by its
-gitlink. It supplies the host types and module-side SDK required to build this
-crate's `cdylib`. Initialize it after cloning with:
+OpenHuman's slim agent engine is registered as the
+`vendor/openhuman/tinyagents` git submodule and pinned by its gitlink. It
+supplies the provider-neutral model, tool, and agent-loop runtime used by this
+crate. Initialize it after cloning with:
 
 ```sh
 git submodule update --init --recursive
 ```
 
-Do not edit vendored code from the parent repository. Make TinyBus changes in
-its own repository, push them there, then update this repository's gitlink in a
-separate commit. Keep the exact path dependencies and minimal features unless a
-new module capability requires more.
+Do not edit vendored code from the parent repository. Make harness changes in
+the TinyAgents repository, push them there, then update this repository's
+gitlink in a separate commit. Keep the dependency feature set minimal: this
+crate intentionally does not enable SQLite-backed memory, channels, or Web3.
 
 ## Testing
 

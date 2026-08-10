@@ -1,9 +1,9 @@
-//! A production-ready starting point for an installable `TinyBus` module.
+//! A slim, vendored `OpenHuman` agent harness.
 //!
 //! This crate is a template. It ships the layout, lint configuration, error
 //! handling, testing, and documentation conventions described in `AGENTS.md`.
-//! The compiled `cdylib` exports `TinyBus` module ABI v1 and serves the example
-//! [`greet`] behavior over the bus.
+//! The vendored `OpenHuman` agent loop provides model and tool orchestration
+//! without the full application's memory, channels, or Web3 domains.
 //!
 //! # Layout
 //!
@@ -14,8 +14,7 @@
 //!   tests.
 //! - Every public item is re-exported from here, so downstream users have a
 //!   single predictable surface.
-//! - `tinybus_module` adapts the public behavior to `TinyBus` and exports the
-//!   module descriptor, embedded manifest, and initialization entrypoint.
+//! - `agent` exposes the slim `OpenHuman` harness facade.
 //!
 //! # Example
 //!
@@ -30,9 +29,9 @@
 //! Replace the `greeting` module with the first real feature area, keep the
 //! conventions, and update this documentation to describe the new crate.
 
+pub mod agent;
 mod error;
 mod greeting;
-mod tinybus_module;
 
 pub use error::{Error, Result};
 pub use greeting::greet;

@@ -4,7 +4,7 @@ version = "0.1.5"
 edition = "2024"
 rust-version = "1.88"
 license = "GPL-3.0-only"
-description = "A production-ready template for installable TinyBus modules."
+description = "A slim, vendored OpenHuman agent harness for Rust."
 repository = "https://github.com/tinyhumansai/rust-template"
 documentation = "https://docs.rs/rust-template"
 readme = "README.md"
@@ -24,25 +24,21 @@ exclude = [
 
 [lib]
 # Keep the ordinary Rust library for tests and downstream reuse while also
-# producing the native module artifact that TinyBus loads at runtime.
+# Keep the ordinary Rust library and a native artifact for embedders.
 crate-type = ["rlib", "cdylib"]
 
 [dependencies]
-# TinyBus defines the message types, interface macro, and frozen module ABI used
-# by the generated integration. Socket and CLI features are unnecessary here.
-tinybus = { path = "vendor/tinybus/crates/tinybus", version = "0.1.0", default-features = false, features = ["macros", "modules"] }
-# The module-side SDK owns the isolated runtime and exports the ABI entrypoints
-# required by TinyBus's dynamic loader.
-tinybus-module = { path = "vendor/tinybus/crates/tinybus-module", version = "0.1.0" }
+# OpenHuman's provider-neutral agent loop and tool runtime. The vendored
+# checkout is intentionally used without SQLite, REPL, or RLM features so this
+# crate contains only the slim agent harness: no memory, channels, or Web3.
+tinyagents = { path = "vendor/openhuman/tinyagents", default-features = false }
 # Derive macros for the crate-wide error type in `src/error/mod.rs`. Every
 # dependency entry should carry a comment like this one saying why it is here.
 thiserror = "2"
 
 [dev-dependencies]
-# Module integration tests exercise the real asynchronous in-memory TinyBus.
+# Harness integration tests use Tokio's deterministic asynchronous runtime.
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
-# The GitHub release verifier passes an explicit empty module configuration.
-serde_json = "1"
 
 [features]
 default = []
