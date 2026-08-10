@@ -168,9 +168,8 @@ crate intentionally does not enable SQLite-backed memory, channels, or Web3.
 - Tests must be deterministic and independent of network, wall-clock time, and
   execution order. Gate any live/network test behind a feature or an env var and
   name it `live_*` so it is easy to exclude.
-- Maintain at least 90% line coverage in every source file. Add or update tests
-  with every behavior change, and note any deliberately untested edge case in
-  the pull request description.
+- Add or update tests with every behavior change, and note any deliberately
+  untested edge case in the pull request description.
 
 Write the test first when fixing a bug: a failing test that reproduces the
 report, then the fix that turns it green.

@@ -1,28 +1,53 @@
-//! Slim `OpenHuman` agent runtime.
+//! Embedded `OpenHuman` runtime configuration.
 //!
-//! This facade vendors `OpenHuman`'s provider-neutral `tinyagents` engine while
-//! deliberately leaving out the application domains that are not needed here:
-//! persistent memory, external channels, and Web3 integrations.
+//! This facade embeds the complete `OpenHuman` Rust core while selecting only
+//! the domain families needed to run agents. Persistent memory, external
+//! channels, and Web3 are disabled in the returned [`DomainSet`].
 
-pub use tinyagents::harness::message::Message;
-pub use tinyagents::harness::model::ModelResponse;
-pub use tinyagents::harness::providers::MockModel;
-pub use tinyagents::harness::runtime::AgentHarness;
-pub use tinyagents::harness::tool::{Tool, ToolCall, ToolResult, ToolSchema};
-pub use tinyagents::{Result, TinyAgentsError};
+pub use openhuman_core::{
+    CoreBuilder, CoreRuntime, DomainSet, HostKind, ServiceSet, TokenSource,
+};
 
-/// The default slim harness state, which has no application-owned memory or
-/// channel context.
-pub type SlimAgent = AgentHarness<()>;
-
-/// Creates an offline harness suitable for deterministic development and tests.
+/// Returns the `OpenHuman` domains used by this embedded agent runtime.
+///
+/// Agent execution, inference, configuration, security, threads, and native
+/// runtimes are available. Memory, channels, Web3, and unrelated product
+/// surfaces remain disabled.
 #[must_use]
-pub fn mock(text: impl Into<String>) -> SlimAgent {
-    let mut harness = SlimAgent::new();
-    harness
-        .register_model("mock", std::sync::Arc::new(MockModel::constant(text)))
-        .set_default_model("mock");
-    harness
+pub fn domains() -> DomainSet {
+    DomainSet {
+        agent: true,
+        memory: false,
+        threads: true,
+        config: true,
+        security: true,
+        flows: false,
+        skills: false,
+        mcp: false,
+        meet: false,
+        channels: false,
+        web3: false,
+        voice: false,
+        media: false,
+        medulla: false,
+        inference: true,
+        integrations: false,
+        automation: false,
+        runtimes: true,
+        desktop: false,
+        hosted: false,
+        relay: false,
+        platform: false,
+    }
+}
+
+/// Creates an embedded `OpenHuman` core builder with no network transport or
+/// background services.
+#[must_use]
+pub fn builder(host_kind: HostKind) -> CoreBuilder {
+    CoreBuilder::new(host_kind)
+        .services(ServiceSet::none())
+        .domains(domains())
 }
 
 #[cfg(test)]

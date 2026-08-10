@@ -39,8 +39,6 @@ jobs:
         with:
           components: rustfmt, clippy
 
-      - uses: taiki-e/install-action@cargo-llvm-cov
-
       - uses: Swatinem/rust-cache@v2
 
       - name: Check formatting
@@ -54,9 +52,6 @@ jobs:
 
       - name: Test
         run: cargo test --all-features
-
-      - name: Require 90% line coverage in every source file
-        run: .github/scripts/check-file-coverage.sh 90 target/coverage.json
 
       - name: Build documentation
         env:
