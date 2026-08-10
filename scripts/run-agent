@@ -4,15 +4,54 @@ set -eu
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$repository_root"
 
+usage() {
+    echo "usage: ./agent [run] [task...]" >&2
+    echo "       ./agent build" >&2
+    echo "       ./agent shell" >&2
+}
+
+action=run
+if [ "$#" -gt 0 ]; then
+    case "$1" in
+        run|build|shell)
+            action=$1
+            shift
+            ;;
+        -h|--help|help)
+            usage
+            exit 0
+            ;;
+    esac
+fi
+
+mkdir -p workspace
+if [ "$action" = build ]; then
+    exec docker build --tag riemann-agent:local .
+fi
+
 if [ ! -f .env ]; then
     echo "missing .env; copy .env.example and provide credentials" >&2
     exit 1
 fi
 
-mkdir -p workspace
-docker build --tag riemann-agent:local .
-docker run --rm \
+docker build --quiet --tag riemann-agent:local . >/dev/null
+
+if [ "$action" = shell ]; then
+    exec docker run --rm --interactive --tty \
+        --entrypoint /bin/sh \
+        --env-file .env \
+        --user "$(id -u):$(id -g)" \
+        --cap-drop ALL \
+        --security-opt no-new-privileges \
+        --pids-limit 256 \
+        --memory 2g \
+        --mount "type=bind,src=$repository_root/workspace,dst=/workspace" \
+        riemann-agent:local
+fi
+
+exec docker run --rm \
     --env-file .env \
+    --user "$(id -u):$(id -g)" \
     --cap-drop ALL \
     --security-opt no-new-privileges \
     --pids-limit 256 \

@@ -35,8 +35,13 @@ The registry-backed orchestrator exposes two named child agents:
 Run the orchestrator through its Docker wrapper:
 
 ```sh
-scripts/run-agent "Research a useful API, then build and test a small client for it"
+./agent "Research a useful API, then build and test a small client for it"
 ```
+
+`./agent build` builds the image without starting a task, and `./agent shell`
+opens a debugging shell under the same jail. `./agent run "task"` is equivalent
+to passing the task directly. Shell and Python tools plus `curl` and `jq` are
+available to the tool-builder inside the image.
 
 The wrapper builds the runtime image, drops Linux capabilities, enables
 `no-new-privileges`, runs as an unprivileged user, and mounts only the local
