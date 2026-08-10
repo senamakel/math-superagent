@@ -5,7 +5,7 @@ use serde_json::{Value, json};
 
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
-const COLLECTION: &str = "riemann_research";
+const COLLECTION: &str = "math_agent_research";
 const VECTOR_SIZE: usize = 256;
 
 #[derive(Clone, Debug)]

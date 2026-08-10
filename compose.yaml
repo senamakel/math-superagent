@@ -2,14 +2,14 @@ services:
   agent:
     build:
       context: .
-    image: riemann-agent:local
+    image: math-agent:local
     env_file:
       - .env
     environment:
       AGENT_WORKSPACE: /workspace
       QDRANT_URL: http://qdrant:6333
-      RIEMANN_CONTAINER: "1"
-    user: "${RIEMANN_LOCAL_UID:-1000}:${RIEMANN_LOCAL_GID:-1000}"
+      MATH_AGENT_CONTAINER: "1"
+    user: "${MATH_AGENT_LOCAL_UID:-1000}:${MATH_AGENT_LOCAL_GID:-1000}"
     working_dir: /workspace
     read_only: true
     tmpfs:
@@ -22,7 +22,7 @@ services:
     mem_limit: 2g
     volumes:
       - type: bind
-        source: ${RIEMANN_WORKSPACE_PATH:-./workspace}
+        source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
         target: /workspace
     depends_on:
       qdrant:

@@ -1,4 +1,4 @@
-# Riemann problem workspace
+# Math problem workspace
 
 This directory belongs to one mathematical problem or research task. Keep the
 work reproducible: save the statement, derivation, source URLs, programs, and

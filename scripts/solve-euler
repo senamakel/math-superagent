@@ -23,9 +23,9 @@ workspace_path=$repository_root/workspace/$workspace_subdir
 mkdir -p "$workspace_path"
 workspace_path=$(CDPATH= cd -- "$workspace_path" && pwd -P)
 
-export RIEMANN_WORKSPACE_PATH=$workspace_path
-export RIEMANN_LOCAL_UID=$(id -u)
-export RIEMANN_LOCAL_GID=$(id -g)
+export MATH_AGENT_WORKSPACE_PATH=$workspace_path
+export MATH_AGENT_LOCAL_UID=$(id -u)
+export MATH_AGENT_LOCAL_GID=$(id -g)
 
 ./agent --workspace "$workspace_subdir" build >/dev/null
 docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
@@ -33,7 +33,7 @@ docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
     url="https://projecteuler.net/minimal=$1"
     curl --fail --silent --show-error --location \
         --retry 3 --retry-delay 1 --max-time 30 \
-        --user-agent "riemann-project-euler-wrapper/1.0" \
+        --user-agent "math-agent-project-euler-wrapper/1.0" \
         "$url" > /workspace/problem.html.tmp
     test -s /workspace/problem.html.tmp
     mv /workspace/problem.html.tmp /workspace/problem.html

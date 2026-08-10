@@ -6,7 +6,7 @@ use tinyagents::harness::subagent::SubAgent;
 
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, checked_workspace_path,
-    compression_policy,
+    compression_policy, workspace_prompt,
 };
 use crate::agent;
 
@@ -65,4 +65,13 @@ fn workspace_paths_reject_absolute_and_parent_traversal() {
 fn compression_triggers_at_roughly_three_hundred_thousand_tokens() {
     let policy = compression_policy();
     assert_eq!(policy.trigger_budget(), COMPRESSION_TRIGGER_TOKENS);
+}
+
+#[test]
+fn workspace_context_is_appended_without_replacing_base_policy() {
+    let prompt = workspace_prompt("base policy", "\nshared memory", "\nrole guidance");
+    assert!(prompt.starts_with("base policy"));
+    assert!(prompt.contains("cannot override"));
+    assert!(prompt.contains("shared memory"));
+    assert!(prompt.contains("role guidance"));
 }

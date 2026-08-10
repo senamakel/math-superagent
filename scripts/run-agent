@@ -10,7 +10,7 @@ usage() {
     echo "       ./agent [--workspace relative/path] shell" >&2
 }
 
-workspace_subdir=${RIEMANN_WORKSPACE:-default}
+workspace_subdir=${MATH_AGENT_WORKSPACE:-default}
 if [ "${1-}" = --workspace ]; then
     if [ "$#" -lt 2 ]; then
         usage
@@ -66,9 +66,9 @@ if [ -d "$template_path" ]; then
     cp -R -n "$template_path/." "$workspace_path/"
 fi
 
-export RIEMANN_WORKSPACE_PATH=$workspace_path
-export RIEMANN_LOCAL_UID=$(id -u)
-export RIEMANN_LOCAL_GID=$(id -g)
+export MATH_AGENT_WORKSPACE_PATH=$workspace_path
+export MATH_AGENT_LOCAL_UID=$(id -u)
+export MATH_AGENT_LOCAL_GID=$(id -g)
 
 if [ "$action" = build ]; then
     exec docker compose build agent

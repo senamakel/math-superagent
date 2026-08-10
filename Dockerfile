@@ -10,18 +10,20 @@ RUN cargo build --locked --release --example orchestrator
 FROM debian:bookworm-slim
 
 RUN apt-get update \
-    && apt-get install --yes --no-install-recommends ca-certificates curl jq python3-minimal \
+    && apt-get install --yes --no-install-recommends ca-certificates curl jq python3 python3-pip \
+    && ln -s /usr/bin/python3 /usr/local/bin/python \
+    && ln -s /usr/bin/pip3 /usr/local/bin/pip \
     && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home --uid 10001 --shell /usr/sbin/nologin agent \
     && mkdir /workspace \
     && chown agent:agent /workspace
 
-COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/riemann-agent
+COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
 
 USER agent
 WORKDIR /workspace
-ENV RIEMANN_CONTAINER=1
+ENV MATH_AGENT_CONTAINER=1
 ENV AGENT_WORKSPACE=/workspace
 ENV QDRANT_URL=http://qdrant:6333
 
-ENTRYPOINT ["/usr/local/bin/riemann-agent"]
+ENTRYPOINT ["/usr/local/bin/math-agent"]
