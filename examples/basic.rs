@@ -7,7 +7,7 @@
 //! cargo run --example basic
 //! ```
 
-use riemann::{Result, greet};
+use math_agent::{Result, greet};
 
 fn main() -> Result<()> {
     println!("{}", greet("Rust")?);

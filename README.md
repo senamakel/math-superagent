@@ -1,6 +1,6 @@
-# Riemann
+# Math Research Agent
 
-Riemann is a Dockerized agent for solving mathematical problems through careful
+This is a Dockerized agent for solving mathematical problems through careful
 derivation, computation, and source-backed research. It is meant for problems
 where a good answer may require several kinds of work: understanding the
 mathematics, checking a theorem or definition, writing a small program, and
@@ -80,8 +80,12 @@ workspace/project-euler/1/
 └── solution.py
 ```
 
-Generated programs, calculations, and other artifacts appear in the local
-[`workspace/`](workspace/) directory.
+Generated programs, calculations, and other artifacts appear in
+`workspace/default` unless another workspace is selected. A new workspace is
+seeded from [`workspace/template/`](workspace/template/) without overwriting
+files already present. The seed includes local agent instructions, role
+prompts, configuration, and `memory.md`. The runtime reads those files at the
+start of every run.
 
 Use `--workspace` to give a run its own subdirectory:
 
@@ -90,7 +94,7 @@ Use `--workspace` to give a run its own subdirectory:
 ```
 
 That command mounts only `workspace/prime-number-theorem` at `/workspace`.
-`RIEMANN_WORKSPACE=prime-number-theorem ./agent "..."` provides the same
+`MATH_AGENT_WORKSPACE=prime-number-theorem ./agent "..."` provides the same
 selection through an environment variable. Absolute paths, parent traversal,
 and symlinks that leave the repository's `workspace/` root are rejected.
 
@@ -149,6 +153,7 @@ compose.yaml                agent and Qdrant services
 scripts/run-agent           helper implementation
 scripts/solve-euler         fetch and solve workflow
 workspace/                  selectable agent workspaces, ignored by Git
+└── template/               seed instructions, prompts, config, and memory
 src/
 ├── agent/                  TinyAgents facade and Langfuse observations
 ├── orchestrator/           registry, specialists, compression, workspace tools

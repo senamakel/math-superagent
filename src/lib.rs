@@ -24,11 +24,11 @@
 //! # Example
 //!
 //! ```
-//! use riemann::{greet, Error};
+//! use math_agent::{greet, Error};
 //!
 //! assert_eq!(greet("Ferris")?, "Hello, Ferris!");
 //! assert_eq!(greet("   ").unwrap_err(), Error::EmptyName);
-//! # Ok::<(), riemann::Error>(())
+//! # Ok::<(), math_agent::Error>(())
 //! ```
 //!
 pub mod agent;

@@ -16,9 +16,9 @@ use crate::{Error, Result};
 /// # Examples
 ///
 /// ```
-/// # use riemann::greet;
+/// # use math_agent::greet;
 /// assert_eq!(greet("  Ferris  ")?, "Hello, Ferris!");
-/// # Ok::<(), riemann::Error>(())
+/// # Ok::<(), math_agent::Error>(())
 /// ```
 ///
 /// # Errors

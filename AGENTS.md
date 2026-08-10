@@ -5,7 +5,7 @@ repository. `CLAUDE.md` points here so every agent follows the same rules.
 
 ## What this repository is
 
-Riemann is a Dockerized mathematical problem-solving agent. Its specialty is
+This repository contains a Dockerized mathematical problem-solving agent. Its specialty is
 deep research: it combines mathematical reasoning with source discovery,
 small programs, numerical experiments, and explicit verification.
 
@@ -39,7 +39,7 @@ When changing prompts or agent behavior, keep these rules intact:
 7. Say when the evidence is incomplete. Never invent a theorem, citation, or
    computation result.
 
-Riemann is not a formal proof assistant. Do not describe sampled evidence or a
+The runtime is not a formal proof assistant. Do not describe sampled evidence or a
 floating-point experiment as proof.
 
 ## Runtime architecture
@@ -65,6 +65,7 @@ compose.yaml            # agent and Qdrant services
 scripts/run-agent       # Docker Compose implementation
 scripts/solve-euler     # official statement fetch and solve workflow
 workspace/              # selectable writable agent workspaces
+└── template/           # seed instructions, prompts, config, and memory
 ```
 
 The executable registry currently contains `research` and `tool_builder`.
@@ -103,14 +104,19 @@ The Docker boundary is part of the security model:
 - Keep network access because provider, search, and telemetry calls need it.
 
 Every agent working directory is `/workspace`. The helper accepts
-`--workspace <relative-subfolder>` or `RIEMANN_WORKSPACE` and must reject
+`--workspace <relative-subfolder>` or `MATH_AGENT_WORKSPACE` and must reject
 absolute paths, traversal, and symlinks that resolve outside the repository's
 `workspace/` root. File tools must accept relative paths, reject traversal and
 absolute paths, and verify canonical parents before writing. Command tools run
 with `/workspace` as their current directory. A prompt instruction is not a
 security control; enforce boundaries in code and Docker configuration.
 
-Generated workspace files are ignored by Git except for `workspace/.gitkeep`.
+Generated workspace files are ignored by Git except for `workspace/.gitkeep`
+and `workspace/template/`. When a workspace is first used, the helper copies
+the template into it without replacing existing files. The runtime appends
+`AGENTS.md`, `config.toml`, `memory.md`, and the relevant role prompt to each
+agent's built-in system policy. Workspace context must never replace built-in
+tool or container restrictions.
 Do not move generated artifacts into source directories unless the user asks
 to promote a specific artifact into the product.
 
