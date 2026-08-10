@@ -1,9 +1,10 @@
 //! An embeddable, vendored `TinyAgents` harness.
 //!
-//! This crate is a template. It ships the layout, lint configuration, error
-//! handling, testing, and documentation conventions described in `AGENTS.md`.
 //! The vendored `TinyAgents` runtime provides model and tool orchestration
 //! without the full application's memory, channels, or Web3 domains.
+//! [`HelloAgent`] supplies a minimal OpenRouter-backed loop with arithmetic,
+//! echo, Exa search, and sub-agent delegation tools. Loop events are exported
+//! to Langfuse on a best-effort basis.
 //!
 //! # Layout
 //!
@@ -15,6 +16,7 @@
 //! - Every public item is re-exported from here, so downstream users have a
 //!   single predictable surface.
 //! - `agent` exposes the `TinyAgents` harness facade.
+//! - [`HelloAgent`] exposes the runnable hello-world agent.
 //!
 //! # Example
 //!
@@ -26,9 +28,6 @@
 //! # Ok::<(), rust_template::Error>(())
 //! ```
 //!
-//! Replace the `greeting` module with the first real feature area, keep the
-//! conventions, and update this documentation to describe the new crate.
-
 pub mod agent;
 mod error;
 mod greeting;

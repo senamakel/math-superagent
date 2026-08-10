@@ -33,6 +33,7 @@ src/
 ├── lib.rs              # crate docs + the entire public re-export surface
 ├── error/mod.rs        # crate-wide `Error` and `Result<T>`
 ├── agent/              # TinyAgents facade and integration tests
+├── hello_agent/        # OpenRouter example, tools, and sub-agent wiring
 └── <feature>/          # one directory per feature area
     ├── mod.rs          # module docs, wiring, smallest useful public API
     ├── types.rs        # substantial type definitions

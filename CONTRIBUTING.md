@@ -18,11 +18,14 @@ cargo build --all-targets --all-features
 cargo test --all-features
 ```
 
-The bundled example should also run:
+The bundled offline and live examples can be run with:
 
 ```sh
 cargo run --example basic
+cargo run --example hello_agent -- "your task"
 ```
+
+The live example requires the variables documented in `.env.example`.
 
 ## Making A Change
 
