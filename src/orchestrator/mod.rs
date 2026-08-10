@@ -413,7 +413,7 @@ impl Tool<()> for WriteToolFile {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let relative = string_argument(&call, "path")?;
         let content = string_argument(&call, "content")?;
-        let path = checked_workspace_path(&self.workspace, relative)?;
+        let path = checked_workspace_path(&self.workspace, &relative)?;
         let parent = path.parent().ok_or_else(|| {
             tinyagents::TinyAgentsError::Validation("file path has no parent".into())
         })?;
@@ -430,7 +430,7 @@ impl Tool<()> for WriteToolFile {
                 "file path resolves outside /workspace".into(),
             ));
         }
-        tokio::fs::write(&path, content).await.map_err(|error| {
+        tokio::fs::write(&path, &content).await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!("failed to write tool file: {error}"))
         })?;
         Ok(ToolResult::text(
@@ -482,7 +482,7 @@ impl Tool<()> for ExecuteCommand {
         let mut process = tokio::process::Command::new("/bin/sh");
         process
             .arg("-lc")
-            .arg(command)
+            .arg(&command)
             .current_dir(&self.workspace)
             .kill_on_drop(true);
         let output = tokio::time::timeout(COMMAND_TIMEOUT, process.output())
@@ -505,11 +505,12 @@ impl Tool<()> for ExecuteCommand {
     }
 }
 
-fn string_argument<'a>(call: &'a ToolCall, name: &str) -> Result<&'a str> {
+fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
     call.arguments
         .get(name)
         .and_then(serde_json::Value::as_str)
         .filter(|value| !value.trim().is_empty())
+        .map(ToOwned::to_owned)
         .ok_or_else(|| {
             tinyagents::TinyAgentsError::Validation(format!("{name} must be a non-empty string"))
         })
