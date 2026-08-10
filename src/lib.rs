@@ -32,6 +32,8 @@
 pub mod agent;
 mod error;
 mod greeting;
+mod hello_agent;
 
 pub use error::{Error, Result};
 pub use greeting::greet;
+pub use hello_agent::HelloAgent;

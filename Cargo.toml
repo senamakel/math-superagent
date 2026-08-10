@@ -31,6 +31,11 @@ crate-type = ["rlib", "cdylib"]
 # TinyAgents provides the provider-neutral agent loop and tool runtime. The
 # vendored checkout is intentionally used without SQLite, REPL, or RLM features.
 tinyagents = { path = "vendor/tinyagents", default-features = false }
+# Implements the asynchronous TinyAgents `Tool` trait for the bundled basic
+# tools without hand-written future boxing.
+async-trait = "0.1"
+# Builds and reads the JSON argument objects passed to agent tools.
+serde_json = "1"
 # Loads the git-ignored local `.env` before resolving provider and telemetry
 # credentials, while preserving already-exported process variables.
 dotenvy = "0.15"
