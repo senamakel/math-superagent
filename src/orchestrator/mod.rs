@@ -11,8 +11,8 @@ use tinyagents::harness::middleware::ContextCompressionMiddleware;
 use tinyagents::harness::model::{ChatModel, ModelRequest};
 use tinyagents::harness::subagent::{SubAgent, SubAgentTool};
 use tinyagents::harness::summarization::{
-    CompressionProvenance, SummarizationPolicy, Summarizer, SummaryRecord,
-    estimate_tokens, render_message_for_summary,
+    CompressionProvenance, SummarizationPolicy, Summarizer, SummaryRecord, estimate_tokens,
+    render_message_for_summary,
 };
 
 use crate::agent::{
@@ -122,10 +122,7 @@ impl AgentRegistry {
     /// Returns the model-visible definitions in stable insertion order.
     #[must_use]
     pub fn definitions(&self) -> Vec<&AgentDefinition> {
-        self.entries
-            .iter()
-            .map(|entry| &entry.definition)
-            .collect()
+        self.entries.iter().map(|entry| &entry.definition).collect()
     }
 
     /// Resolves an executable child agent by id.
@@ -251,10 +248,7 @@ impl OrchestratorAgent {
             .inner
             .invoke(
                 run_id,
-                vec![
-                    Message::system(ORCHESTRATOR_PROMPT),
-                    Message::user(task),
-                ],
+                vec![Message::system(ORCHESTRATOR_PROMPT), Message::user(task)],
             )
             .await?;
         Ok(run.text().unwrap_or_default())
@@ -324,7 +318,9 @@ impl Summarizer for ModelSummarizer {
         Ok(SummaryRecord {
             summary: Message::system(format!("=== Compressed Working Context ===\n{text}")),
             provenance: CompressionProvenance {
-                source_ids: (0..messages.len()).map(|index| format!("msg-{index}")).collect(),
+                source_ids: (0..messages.len())
+                    .map(|index| format!("msg-{index}"))
+                    .collect(),
                 original_token_estimate: estimate_slice_tokens(messages),
                 summary_token_estimate: estimate_tokens(&text),
                 reason: format!(
@@ -425,7 +421,9 @@ impl Tool<()> for WriteToolFile {
             tinyagents::TinyAgentsError::Tool(format!("failed to create parent directory: {error}"))
         })?;
         let canonical_parent = parent.canonicalize().map_err(|error| {
-            tinyagents::TinyAgentsError::Tool(format!("failed to resolve parent directory: {error}"))
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to resolve parent directory: {error}"
+            ))
         })?;
         if !canonical_parent.starts_with(&self.workspace) {
             return Err(tinyagents::TinyAgentsError::Validation(
@@ -521,10 +519,7 @@ fn truncate_output(bytes: &[u8]) -> String {
     let kept = &bytes[..bytes.len().min(MAX_COMMAND_OUTPUT_BYTES)];
     let mut rendered = String::from_utf8_lossy(kept).into_owned();
     if bytes.len() > kept.len() {
-        rendered.push_str(&format!(
-            "\n[{} bytes truncated]",
-            bytes.len() - kept.len()
-        ));
+        rendered.push_str(&format!("\n[{} bytes truncated]", bytes.len() - kept.len()));
     }
     rendered
 }
