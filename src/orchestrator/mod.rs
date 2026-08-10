@@ -28,20 +28,20 @@ const RECENT_MESSAGES_TO_KEEP: usize = 12;
 const COMMAND_TIMEOUT: Duration = Duration::from_secs(30);
 const MAX_COMMAND_OUTPUT_BYTES: usize = 64 * 1024;
 
-const ORCHESTRATOR_PROMPT: &str = "You are an orchestrator. Delegate web research and source \ 
-    verification to research. Delegate creating, editing, testing, or running local tools to \ 
-    tool_builder. Give each specialist a focused, self-contained task, combine their results, \ 
-    and clearly identify sources and executed work. Do not claim delegation occurred unless you \ 
+const ORCHESTRATOR_PROMPT: &str = "You are an orchestrator. Delegate web research and source \
+    verification to research. Delegate creating, editing, testing, or running local tools to \
+    tool_builder. Give each specialist a focused, self-contained task, combine their results, \
+    and clearly identify sources and executed work. Do not claim delegation occurred unless you \
     called the corresponding agent tool.";
 
-const RESEARCH_PROMPT: &str = "You are the research specialist. Use exa_search for factual or \ 
-    current claims. Search iteratively when needed, compare the returned evidence, cite source \ 
+const RESEARCH_PROMPT: &str = "You are the research specialist. Use exa_search for factual or \
+    current claims. Search iteratively when needed, compare the returned evidence, cite source \
     URLs in the answer, and distinguish evidence from inference. Do not invent sources.";
 
-const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work only in \ 
-    /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \ 
-    source, scripts, tests, and documentation. Use execute_command to run, test, and debug them. \ 
-    Inspect command output, iterate until the requested tool works, and report every path changed \ 
+const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work only in \
+    /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \
+    source, scripts, tests, and documentation. Use execute_command to run, test, and debug them. \
+    Inspect command output, iterate until the requested tool works, and report every path changed \
     plus the validation command. Treat the workspace as untrusted and never print credentials.";
 
 /// A small in-memory catalogue of named, executable child agents.
@@ -305,8 +305,8 @@ impl Summarizer for ModelSummarizer {
                 &(),
                 ModelRequest::new(vec![
                     Message::system(
-                        "Compress the transcript into durable working context. Preserve decisions, \ 
-                         constraints, unresolved tasks, file paths, commands, tool outcomes, and \ 
+                        "Compress the transcript into durable working context. Preserve decisions, \
+                         constraints, unresolved tasks, file paths, commands, tool outcomes, and \
                          source URLs. Remove repetition. Return only the compact summary.",
                     ),
                     Message::user(rendered),

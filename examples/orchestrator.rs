@@ -6,7 +6,7 @@ use rust_template::OrchestratorAgent;
 async fn main() -> rust_template::agent::Result<()> {
     let task = std::env::args().skip(1).collect::<Vec<_>>().join(" ");
     let task = if task.is_empty() {
-        "Ask research for one current source about Rust agents, then ask tool_builder to create \ 
+        "Ask research for one current source about Rust agents, then ask tool_builder to create \
          and run a tiny shell tool that prints hello from /workspace."
             .to_string()
     } else {
