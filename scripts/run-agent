@@ -34,12 +34,29 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
+# Docker's --env-file preserves surrounding quotes, while dotenv parsers strip
+# them. Source this trusted local file and forward names without placing secret
+# values in the docker command line.
+set -a
+. "$repository_root/.env"
+set +a
+: "${OPENROUTER_API_KEY:?OPENROUTER_API_KEY is required in .env}"
+: "${EXA_API_KEY:?EXA_API_KEY is required in .env}"
+: "${LANGFUSE_BASE_URL:?LANGFUSE_BASE_URL is required in .env}"
+: "${LANGFUSE_PUBLIC_KEY:?LANGFUSE_PUBLIC_KEY is required in .env}"
+: "${LANGFUSE_SECRET_KEY:?LANGFUSE_SECRET_KEY is required in .env}"
+
 docker build --quiet --tag riemann-agent:local . >/dev/null
 
 if [ "$action" = shell ]; then
     exec docker run --rm --interactive --tty \
         --entrypoint /bin/sh \
-        --env-file .env \
+        --env OPENROUTER_API_KEY \
+        --env OPENROUTER_MODEL \
+        --env EXA_API_KEY \
+        --env LANGFUSE_BASE_URL \
+        --env LANGFUSE_PUBLIC_KEY \
+        --env LANGFUSE_SECRET_KEY \
         --user "$(id -u):$(id -g)" \
         --cap-drop ALL \
         --security-opt no-new-privileges \
@@ -50,7 +67,12 @@ if [ "$action" = shell ]; then
 fi
 
 exec docker run --rm \
-    --env-file .env \
+    --env OPENROUTER_API_KEY \
+    --env OPENROUTER_MODEL \
+    --env EXA_API_KEY \
+    --env LANGFUSE_BASE_URL \
+    --env LANGFUSE_PUBLIC_KEY \
+    --env LANGFUSE_SECRET_KEY \
     --user "$(id -u):$(id -g)" \
     --cap-drop ALL \
     --security-opt no-new-privileges \
