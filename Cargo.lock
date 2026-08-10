@@ -801,7 +801,10 @@ dependencies = [
 name = "rust-template"
 version = "0.1.5"
 dependencies = [
+ "async-trait",
  "dotenvy",
+ "reqwest",
+ "serde_json",
  "thiserror",
  "tinyagents",
  "tokio",

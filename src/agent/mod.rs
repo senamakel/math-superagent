@@ -107,9 +107,8 @@ impl ObservedAgent {
 
 pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
     let _ = dotenvy::dotenv();
-    let api_key = std::env::var("OPENROUTER_API_KEY").map_err(|_| {
-        TinyAgentsError::Validation("OPENROUTER_API_KEY is required".to_string())
-    })?;
+    let api_key = std::env::var("OPENROUTER_API_KEY")
+        .map_err(|_| TinyAgentsError::Validation("OPENROUTER_API_KEY is required".to_string()))?;
     let mut model = OpenAiModel::openrouter(api_key);
     if let Ok(model_name) = std::env::var("OPENROUTER_MODEL")
         && !model_name.trim().is_empty()

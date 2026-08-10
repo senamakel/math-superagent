@@ -150,11 +150,7 @@ impl Tool<()> for AddTool {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let a = number_argument(&call, "a")?;
         let b = number_argument(&call, "b")?;
-        Ok(ToolResult::text(
-            call.id,
-            self.name(),
-            (a + b).to_string(),
-        ))
+        Ok(ToolResult::text(call.id, self.name(), (a + b).to_string()))
     }
 }
 
@@ -162,9 +158,7 @@ fn number_argument(call: &ToolCall, name: &str) -> Result<f64> {
     call.arguments
         .get(name)
         .and_then(serde_json::Value::as_f64)
-        .ok_or_else(|| {
-            tinyagents::TinyAgentsError::Validation(format!("{name} must be a number"))
-        })
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{name} must be a number")))
 }
 
 #[derive(Debug)]
@@ -218,9 +212,7 @@ impl Tool<()> for ExaSearchTool {
             .arguments
             .get("query")
             .and_then(serde_json::Value::as_str)
-            .ok_or_else(|| {
-                tinyagents::TinyAgentsError::Validation("query is required".into())
-            })?;
+            .ok_or_else(|| tinyagents::TinyAgentsError::Validation("query is required".into()))?;
         let response = self
             .client
             .post("https://api.exa.ai/search")
