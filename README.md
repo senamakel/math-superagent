@@ -13,6 +13,10 @@ The runtime uses a small registry of specialist agents:
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
 
+Research notes can be saved to a local Qdrant vector database and recalled in
+later runs. The database uses deterministic local feature vectors, so it does
+not need another embedding API.
+
 All model calls use DeepSeek V4 Flash through OpenRouter and StreamLake by
 default. TinyAgents provides the model loop, tools, delegation, and middleware.
 Langfuse receives best-effort observations from each run.
@@ -52,12 +56,25 @@ Two helper commands are also available:
 Generated programs, calculations, and other artifacts appear in the local
 [`workspace/`](workspace/) directory.
 
+Use `--workspace` to give a run its own subdirectory:
+
+```sh
+./agent --workspace prime-number-theorem "Research and test useful bounds for pi(x)"
+```
+
+That command mounts only `workspace/prime-number-theorem` at `/workspace`.
+`RIEMANN_WORKSPACE=prime-number-theorem ./agent "..."` provides the same
+selection through an environment variable. Absolute paths, parent traversal,
+and symlinks that leave the repository's `workspace/` root are rejected.
+
 ## How a run works
 
 The orchestrator decides which specialist should handle each part of the
-problem. Research questions go to the Exa-backed research agent. Computations
-and executable checks go to the tool-builder. The orchestrator then writes one
-answer that separates cited facts from its own mathematical reasoning.
+problem. Research questions go to the Exa-backed research agent. That agent can
+recall related notes from Qdrant and save useful sourced findings for later.
+Computations and executable checks go to the tool-builder. The orchestrator
+then writes one answer that separates cited facts from its own mathematical
+reasoning.
 
 Context compression starts at an estimated 300,000 tokens. A model-backed
 summary keeps the decisions, assumptions, formulas, source URLs, command
@@ -67,6 +84,17 @@ call fails, TinyAgents trims old context instead of losing the whole run.
 This is a research and computation assistant, not a formal proof checker.
 Important results should still be checked against primary sources or a proof
 assistant when the stakes justify it.
+
+## Docker Compose stack
+
+`./agent` uses [`compose.yaml`](compose.yaml) to run two services:
+
+- `agent` is the Rust orchestrator and its specialist tools.
+- `qdrant` is the local vector database. Its `qdrant-data` volume persists
+  research notes across agent containers and workspace selections.
+
+Stop the background database with `docker compose down`. Add `--volumes` only
+when you deliberately want to erase the saved research index.
 
 ## Docker boundary
 
@@ -87,13 +115,15 @@ host repository through the container.
 ## Repository map
 
 ```text
-agent                       simple Docker helper
+agent                       simple Docker Compose helper
 Dockerfile                  build and runtime jail
+compose.yaml                agent and Qdrant services
 scripts/run-agent           helper implementation
-workspace/                  agent-created files, ignored by Git
+workspace/                  selectable agent workspaces, ignored by Git
 src/
 ├── agent/                  TinyAgents facade and Langfuse observations
 ├── orchestrator/           registry, specialists, compression, workspace tools
+│   └── vector.rs           Qdrant research store and local feature vectors
 ├── hello_agent/            small single-agent example
 ├── error/                  crate-wide errors
 └── lib.rs                  public Rust API

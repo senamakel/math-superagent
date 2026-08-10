@@ -20,8 +20,8 @@ The runtime has three roles:
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
 - The research agent uses Exa to find definitions, papers, official references,
-  or current facts. It returns source URLs and separates evidence from
-  inference.
+  or current facts. It returns source URLs, separates evidence from inference,
+  and can save reusable notes to Qdrant.
 - The tool-builder writes and executes shell or Python tools in `/workspace`.
   It handles numerical checks, counterexample searches, data extraction, and
   other reproducible calculations.
@@ -51,6 +51,7 @@ src/
 ├── lib.rs              # public exports
 ├── agent/              # TinyAgents facade, OpenRouter, Langfuse
 ├── orchestrator/       # registry, specialists, compression, workspace tools
+│   └── vector.rs       # Qdrant tools and deterministic local feature vectors
 ├── hello_agent/        # minimal single-agent example
 ├── error/              # crate-wide Error and Result<T>
 └── greeting/           # legacy template example
@@ -59,12 +60,17 @@ examples/
 └── hello_agent.rs      # direct provider example
 vendor/tinyagents/      # pinned upstream TinyAgents checkout
 agent                   # user-facing helper
-scripts/run-agent       # Docker build and run implementation
-workspace/              # only writable agent workspace
+compose.yaml            # agent and Qdrant services
+scripts/run-agent       # Docker Compose implementation
+workspace/              # selectable writable agent workspaces
 ```
 
 The executable registry currently contains `research` and `tool_builder`.
 Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
+The research agent has Exa plus `recall_research` and `remember_research` tools.
+Qdrant persists the notes in a named Compose volume. The vector tools use a
+small deterministic feature-hashing encoder, not an external embedding model.
+
 The parent and both children use context-compression middleware with an
 estimated 300,000-token trigger. The summary should retain mathematical
 assumptions, intermediate results, source URLs, tool output, and unfinished
@@ -79,8 +85,8 @@ features unless the user explicitly expands the product scope.
 
 ## Docker and workspace rules
 
-The orchestrator must run through `./agent`. Do not add a host-side fallback
-for tool execution.
+The orchestrator must run through `./agent`, which starts the runtime and Qdrant
+through Docker Compose. Do not add a host-side fallback for tool execution.
 
 The Docker boundary is part of the security model:
 
@@ -89,15 +95,18 @@ The Docker boundary is part of the security model:
 - Keep the root filesystem read-only.
 - Do not mount the repository, home directory, Docker socket, or broad host
   paths into the runtime.
-- Mount only `workspace/` at `/workspace` for agent-written files.
+- Mount only the selected directory below `workspace/` at `/workspace` for
+  agent-written files.
 - Keep process, memory, command-time, and command-output limits.
 - Keep network access because provider, search, and telemetry calls need it.
 
-Every agent working directory is `/workspace`. File tools must accept relative
-paths, reject traversal and absolute paths, and verify canonical parents before
-writing. Command tools run with `/workspace` as their current directory. A
-prompt instruction is not a security control; enforce boundaries in code and
-Docker configuration.
+Every agent working directory is `/workspace`. The helper accepts
+`--workspace <relative-subfolder>` or `RIEMANN_WORKSPACE` and must reject
+absolute paths, traversal, and symlinks that resolve outside the repository's
+`workspace/` root. File tools must accept relative paths, reject traversal and
+absolute paths, and verify canonical parents before writing. Command tools run
+with `/workspace` as their current directory. A prompt instruction is not a
+security control; enforce boundaries in code and Docker configuration.
 
 Generated workspace files are ignored by Git except for `workspace/.gitkeep`.
 Do not move generated artifacts into source directories unless the user asks
@@ -116,9 +125,10 @@ The runtime currently expects:
 - `LANGFUSE_BASE_URL`
 - `LANGFUSE_PUBLIC_KEY`
 - `LANGFUSE_SECRET_KEY`
+- `QDRANT_URL`, normally supplied by Compose
 
-The helper sources the trusted local `.env` and forwards environment variable
-names to Docker. Do not put secret values directly in Docker command arguments.
+Compose loads the trusted local `.env` and passes configuration to the agent.
+Do not put secret values directly in Docker command arguments.
 
 ## Build and test contract
 
@@ -137,6 +147,7 @@ Also run the checks that match the changed surface:
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
 sh -n agent scripts/run-agent
 ./agent build
+docker compose config --quiet
 ```
 
 Use a live `./agent` smoke test when changing provider setup, delegation,
@@ -176,9 +187,9 @@ and omit trailing punctuation.
 ## Tools and research changes
 
 Tools are authority boundaries. Give each specialist only the tools it needs.
-The research agent gets Exa. The tool-builder gets workspace file and command
-tools. The orchestrator gets specialist delegation tools, not direct shell
-access.
+The research agent gets Exa and the Qdrant note tools. The tool-builder gets
+workspace file and command tools. The orchestrator gets specialist delegation
+tools, not direct shell access.
 
 For a new tool:
 

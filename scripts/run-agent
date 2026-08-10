@@ -41,11 +41,21 @@ if [ "$#" -gt 0 ]; then
     esac
 fi
 
-workspace_path=$repository_root/workspace
+workspace_root=$repository_root/workspace
+workspace_path=$workspace_root
 if [ "$workspace_subdir" != . ]; then
     workspace_path=$workspace_path/$workspace_subdir
 fi
 mkdir -p "$workspace_path"
+workspace_root=$(CDPATH= cd -- "$workspace_root" && pwd -P)
+workspace_path=$(CDPATH= cd -- "$workspace_path" && pwd -P)
+case "$workspace_path" in
+    "$workspace_root"|"$workspace_root"/*) ;;
+    *)
+        echo "workspace resolves outside $workspace_root" >&2
+        exit 2
+        ;;
+esac
 
 export RIEMANN_WORKSPACE_PATH=$workspace_path
 export RIEMANN_LOCAL_UID=$(id -u)
