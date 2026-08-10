@@ -53,6 +53,33 @@ Two helper commands are also available:
 ./agent shell   # open a shell under the same Docker restrictions
 ```
 
+## Solve a Project Euler problem
+
+Pass a positive problem number to the Project Euler wrapper:
+
+```sh
+./euler 1
+./euler 10 "also compare the optimized method with a brute-force check"
+```
+
+The wrapper downloads the official statement from Project Euler's minimal
+problem endpoint, then runs the custom orchestrator in
+`workspace/project-euler/<number>`. It asks the tool-builder to save a written
+derivation as `solution.md`, write a reproducible `solution.py`, execute it, and
+check the exact answer. The research agent may look up definitions or primary
+mathematical references, but the prompt forbids searching for published Project
+Euler answers.
+
+The downloaded statement and source URL remain beside the solution:
+
+```text
+workspace/project-euler/1/
+├── problem.html
+├── problem.url
+├── solution.md
+└── solution.py
+```
+
 Generated programs, calculations, and other artifacts appear in the local
 [`workspace/`](workspace/) directory.
 
@@ -116,9 +143,11 @@ host repository through the container.
 
 ```text
 agent                       simple Docker Compose helper
+euler                       Project Euler problem wrapper
 Dockerfile                  build and runtime jail
 compose.yaml                agent and Qdrant services
 scripts/run-agent           helper implementation
+scripts/solve-euler         fetch and solve workflow
 workspace/                  selectable agent workspaces, ignored by Git
 src/
 ├── agent/                  TinyAgents facade and Langfuse observations

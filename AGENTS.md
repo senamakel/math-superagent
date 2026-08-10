@@ -60,8 +60,10 @@ examples/
 └── hello_agent.rs      # direct provider example
 vendor/tinyagents/      # pinned upstream TinyAgents checkout
 agent                   # user-facing helper
+euler                   # Project Euler problem-number wrapper
 compose.yaml            # agent and Qdrant services
 scripts/run-agent       # Docker Compose implementation
+scripts/solve-euler     # official statement fetch and solve workflow
 workspace/              # selectable writable agent workspaces
 ```
 
@@ -145,7 +147,7 @@ Also run the checks that match the changed surface:
 
 ```sh
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
-sh -n agent scripts/run-agent
+sh -n agent euler scripts/run-agent scripts/solve-euler
 ./agent build
 docker compose config --quiet
 ```
@@ -154,6 +156,11 @@ Use a live `./agent` smoke test when changing provider setup, delegation,
 research, tool execution, environment forwarding, or Docker behavior. Live
 tests spend provider credits, so keep the prompt focused. Never put live network
 tests in the deterministic unit-test suite.
+
+Use `./euler <number>` for Project Euler smoke tests. Keep fetched statements
+and generated solutions under `workspace/project-euler/<number>`. The wrapper
+must fetch the official statement, reject invalid problem numbers, and avoid
+prompts that ask agents to find published answers.
 
 Do not ignore or delete a failing test to make CI pass. Fix the cause or report
 the blocker with the failing output.
