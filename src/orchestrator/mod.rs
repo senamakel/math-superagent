@@ -1,5 +1,7 @@
 //! Registry-backed orchestrator with research and tool-building specialists.
 
+mod vector;
+
 use std::fmt::Write as _;
 use std::path::{Component, Path, PathBuf};
 use std::sync::Arc;
@@ -21,6 +23,7 @@ use crate::agent::{
     openrouter_model_from_env,
 };
 use crate::hello_agent::ExaSearchTool;
+use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 
 pub use tinyagents::harness::host::AgentDefinition;
 
@@ -35,9 +38,11 @@ const ORCHESTRATOR_PROMPT: &str = "You are an orchestrator. Delegate web researc
     and clearly identify sources and executed work. Do not claim delegation occurred unless you \
     called the corresponding agent tool.";
 
-const RESEARCH_PROMPT: &str = "You are the research specialist. Use exa_search for factual or \
-    current claims. Search iteratively when needed, compare the returned evidence, cite source \
-    URLs in the answer, and distinguish evidence from inference. Do not invent sources.";
+const RESEARCH_PROMPT: &str = "You are the research specialist. Check recall_research for useful \
+    prior findings, then use exa_search for factual or current claims. Search iteratively when \
+    needed, compare the returned evidence, cite source URLs, and distinguish evidence from \
+    inference. Save concise, reusable, source-backed findings with remember_research. Do not \
+    invent sources.";
 
 const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work only in \
     /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \
@@ -175,7 +180,11 @@ impl OrchestratorAgent {
         let model = openrouter_model_from_env()?;
 
         let mut research_harness = specialist_harness(model.clone());
-        research_harness.register_tool(Arc::new(ExaSearchTool::from_env()?));
+        let vector_store = VectorStore::from_env()?;
+        research_harness
+            .register_tool(Arc::new(ExaSearchTool::from_env()?))
+            .register_tool(Arc::new(RecallResearchTool::new(vector_store.clone())))
+            .register_tool(Arc::new(RememberResearchTool::new(vector_store)));
         let research = Arc::new(
             SubAgent::new(
                 "research",
@@ -207,7 +216,7 @@ impl OrchestratorAgent {
                     "Uses Exa to research current facts and return cited evidence.",
                 )
                 .with_model("openrouter")
-                .with_tools(["exa_search"]),
+                .with_tools(["exa_search", "recall_research", "remember_research"]),
                 research,
             )?
             .register(
