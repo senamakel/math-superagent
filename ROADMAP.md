@@ -13,7 +13,7 @@ out of scope. A roadmap that lists everything is a roadmap nobody trusts.
 - CI: format, clippy, build, test, per-file coverage, rustdoc, MSRV, and
   supply-chain checks
 - a manual release workflow that versions, tags, publishes to crates.io, and
-  creates a GitHub release with crate and TinyBus runtime/module assets
+  creates a GitHub release with the slim agent library assets
 
 ## Next
 

@@ -235,8 +235,8 @@ Releases run from `.github/workflows/release.yml` via a manual
 `workflow_dispatch` with a `patch` / `minor` / `major` bump; `current` resumes
 an interrupted release after its version commit and tag exist. The workflow
 re-runs the full validation suite, computes the next version, updates
-`Cargo.toml` and `Cargo.lock`, commits and tags `vX.Y.Z`, builds the TinyBus
-module for every supported platform, pushes, and creates an immutable GitHub
+`Cargo.toml` and `Cargo.lock`, commits and tags `vX.Y.Z`, builds the slim agent
+library for every supported platform, pushes, and creates an immutable GitHub
 release with installable native packages.
 
 Consequently:
