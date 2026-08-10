@@ -1,0 +1,50 @@
+#!/bin/sh
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$repository_root"
+
+if [ "$#" -lt 1 ]; then
+    echo "usage: ./euler <positive-problem-number> [extra instructions...]" >&2
+    exit 2
+fi
+
+problem_number=$1
+shift
+case "$problem_number" in
+    ""|0|*[!0-9]*)
+        echo "problem number must be a positive integer" >&2
+        exit 2
+        ;;
+esac
+
+workspace_subdir=project-euler/$problem_number
+workspace_path=$repository_root/workspace/$workspace_subdir
+mkdir -p "$workspace_path"
+workspace_path=$(CDPATH= cd -- "$workspace_path" && pwd -P)
+
+export RIEMANN_WORKSPACE_PATH=$workspace_path
+export RIEMANN_LOCAL_UID=$(id -u)
+export RIEMANN_LOCAL_GID=$(id -g)
+
+./agent --workspace "$workspace_subdir" build >/dev/null
+docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
+    set -eu
+    url="https://projecteuler.net/minimal=$1"
+    curl --fail --silent --show-error --location \
+        --retry 3 --retry-delay 1 --max-time 30 \
+        --user-agent "riemann-project-euler-wrapper/1.0" \
+        "$url" > /workspace/problem.html.tmp
+    test -s /workspace/problem.html.tmp
+    mv /workspace/problem.html.tmp /workspace/problem.html
+    printf "%s\n" "$url" > /workspace/problem.url
+' sh "$problem_number"
+
+extra_instructions=$*
+task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.html. Ask tool_builder to read and extract the statement, then derive and implement an efficient solution. Save a clear derivation to /workspace/solution.md and a reproducible Python program to /workspace/solution.py. Run the program and independently check its exact final answer. Use research only for mathematical definitions or primary references, never to look up a published answer or solution. In the final response, state the answer, explain the method, report the verification command, and list the saved files."
+
+if [ -n "$extra_instructions" ]; then
+    task="$task Additional instructions: $extra_instructions"
+fi
+
+exec ./agent --workspace "$workspace_subdir" "$task"
