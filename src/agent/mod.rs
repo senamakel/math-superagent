@@ -3,6 +3,18 @@
 //! This facade exposes the vendored, provider-neutral `tinyagents` engine with
 //! its optional `SQLite`, REPL, and RLM features disabled.
 
+use std::sync::Arc;
+
+use tinyagents::harness::context::{RunConfig, RunContext};
+use tinyagents::harness::events::EventSink;
+use tinyagents::harness::ids::RunId;
+use tinyagents::harness::middleware::AgentRun;
+use tinyagents::harness::observability::{
+    HarnessEventJournal, InMemoryEventJournal, JournalSink, LangfuseClient,
+    LangfuseTraceConfig,
+};
+use tinyagents::harness::providers::openai::OpenAiModel;
+
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
 pub use tinyagents::harness::providers::MockModel;
@@ -13,6 +25,95 @@ pub use tinyagents::{Result, TinyAgentsError};
 /// The default slim harness state, which has no application-owned memory or
 /// channel context.
 pub type SlimAgent = AgentHarness<()>;
+
+/// A TinyAgents loop backed by OpenRouter and observed through Langfuse.
+pub struct ObservedAgent {
+    harness: SlimAgent,
+    langfuse: LangfuseClient,
+}
+
+impl std::fmt::Debug for ObservedAgent {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("ObservedAgent")
+            .field("model", &"openrouter")
+            .field("langfuse_endpoint", &self.langfuse.endpoint())
+            .finish_non_exhaustive()
+    }
+}
+
+impl ObservedAgent {
+    /// Loads `.env`, configures the OpenRouter model, and creates the direct
+    /// Langfuse ingestion client.
+    ///
+    /// `OPENROUTER_MODEL` optionally overrides TinyAgents' default OpenRouter
+    /// model.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when `OPENROUTER_API_KEY` or any required
+    /// `LANGFUSE_*` variable is missing, or when the Langfuse URL is invalid.
+    pub fn from_env() -> Result<Self> {
+        let _ = dotenvy::dotenv();
+        let api_key = std::env::var("OPENROUTER_API_KEY").map_err(|_| {
+            TinyAgentsError::Validation("OPENROUTER_API_KEY is required".to_string())
+        })?;
+        let mut model = OpenAiModel::openrouter(api_key);
+        if let Ok(model_name) = std::env::var("OPENROUTER_MODEL")
+            && !model_name.trim().is_empty()
+        {
+            model = model.with_model(model_name);
+        }
+
+        let mut harness = SlimAgent::new();
+        harness
+            .register_model("openrouter", Arc::new(model))
+            .set_default_model("openrouter");
+
+        Ok(Self {
+            harness,
+            langfuse: LangfuseClient::from_env()?,
+        })
+    }
+
+    /// Runs one TinyAgents turn and exports its model, tool, usage, and
+    /// lifecycle observations to Langfuse.
+    ///
+    /// Langfuse delivery is best-effort: an unavailable telemetry endpoint
+    /// does not turn a successful agent response into a failure.
+    ///
+    /// # Errors
+    ///
+    /// Returns any model, tool, policy, or loop error produced by TinyAgents.
+    pub async fn invoke(
+        &self,
+        run_id: impl Into<String>,
+        input: Vec<Message>,
+    ) -> Result<AgentRun> {
+        let run_id = run_id.into();
+        let journal = Arc::new(InMemoryEventJournal::new());
+        let durable_journal: Arc<dyn HarnessEventJournal> = journal.clone();
+        let journal_sink = Arc::new(JournalSink::new(
+            durable_journal,
+            RunId::new(run_id.clone()),
+        ));
+        let events = EventSink::with_stream_id(&run_id);
+        events.subscribe(journal_sink.clone());
+        let context = RunContext::new(RunConfig::new(&run_id), ()).with_events(events);
+
+        let result = self.harness.invoke_in_context(&(), context, input).await;
+        journal_sink.flush();
+        if let Ok(observations) = journal.read_from(&run_id, 0).await
+            && !observations.is_empty()
+        {
+            let _ = self
+                .langfuse
+                .send_observations(LangfuseTraceConfig::default(), &observations)
+                .await;
+        }
+        result
+    }
+}
 
 /// Creates an offline harness suitable for deterministic development and tests.
 #[must_use]

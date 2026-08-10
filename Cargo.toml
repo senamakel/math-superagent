@@ -31,6 +31,9 @@ crate-type = ["rlib", "cdylib"]
 # TinyAgents provides the provider-neutral agent loop and tool runtime. The
 # vendored checkout is intentionally used without SQLite, REPL, or RLM features.
 tinyagents = { path = "vendor/tinyagents", default-features = false }
+# Loads the git-ignored local `.env` before resolving provider and telemetry
+# credentials, while preserving already-exported process variables.
+dotenvy = "0.15"
 # Derive macros for the crate-wide error type in `src/error/mod.rs`. Every
 # dependency entry should carry a comment like this one saying why it is here.
 thiserror = "2"
