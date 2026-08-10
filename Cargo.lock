@@ -794,6 +794,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "riemann"
+version = "0.1.5"
+dependencies = [
+ "async-trait",
+ "dotenvy",
+ "reqwest",
+ "serde_json",
+ "thiserror",
+ "tinyagents",
+ "tokio",
+]
+
+[[package]]
 name = "ring"
 version = "0.17.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -805,19 +818,6 @@ dependencies = [
  "libc",
  "untrusted",
  "windows-sys 0.52.0",
-]
-
-[[package]]
-name = "rust-template"
-version = "0.1.5"
-dependencies = [
- "async-trait",
- "dotenvy",
- "reqwest",
- "serde_json",
- "thiserror",
- "tinyagents",
- "tokio",
 ]
 
 [[package]]
