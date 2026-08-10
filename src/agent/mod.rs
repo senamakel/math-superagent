@@ -25,7 +25,7 @@ pub use tinyagents::{Result, TinyAgentsError};
 /// channel context.
 pub type SlimAgent = AgentHarness<()>;
 
-/// A TinyAgents loop backed by OpenRouter and observed through Langfuse.
+/// A `TinyAgents` loop backed by `OpenRouter` and observed through Langfuse.
 pub struct ObservedAgent {
     harness: SlimAgent,
     langfuse: LangfuseClient,
@@ -42,10 +42,10 @@ impl std::fmt::Debug for ObservedAgent {
 }
 
 impl ObservedAgent {
-    /// Loads `.env`, configures the OpenRouter model, and creates the direct
+    /// Loads `.env`, configures the `OpenRouter` model, and creates the direct
     /// Langfuse ingestion client.
     ///
-    /// `OPENROUTER_MODEL` optionally overrides TinyAgents' default OpenRouter
+    /// `OPENROUTER_MODEL` optionally overrides `TinyAgents`' default `OpenRouter`
     /// model.
     ///
     /// # Errors
@@ -75,7 +75,7 @@ impl ObservedAgent {
         })
     }
 
-    /// Runs one TinyAgents turn and exports its model, tool, usage, and
+    /// Runs one `TinyAgents` turn and exports its model, tool, usage, and
     /// lifecycle observations to Langfuse.
     ///
     /// Langfuse delivery is best-effort: an unavailable telemetry endpoint
@@ -83,7 +83,7 @@ impl ObservedAgent {
     ///
     /// # Errors
     ///
-    /// Returns any model, tool, policy, or loop error produced by TinyAgents.
+    /// Returns any model, tool, policy, or loop error produced by `TinyAgents`.
     pub async fn invoke(&self, run_id: impl Into<String>, input: Vec<Message>) -> Result<AgentRun> {
         let run_id = run_id.into();
         let journal = Arc::new(InMemoryEventJournal::new());
