@@ -1,8 +1,8 @@
-//! A slim, vendored `OpenHuman` agent harness.
+//! An embeddable, vendored `TinyAgents` harness.
 //!
 //! This crate is a template. It ships the layout, lint configuration, error
 //! handling, testing, and documentation conventions described in `AGENTS.md`.
-//! The vendored `OpenHuman` agent loop provides model and tool orchestration
+//! The vendored `TinyAgents` runtime provides model and tool orchestration
 //! without the full application's memory, channels, or Web3 domains.
 //!
 //! # Layout
@@ -14,7 +14,7 @@
 //!   tests.
 //! - Every public item is re-exported from here, so downstream users have a
 //!   single predictable surface.
-//! - `agent` exposes the slim `OpenHuman` harness facade.
+//! - `agent` exposes the `TinyAgents` harness facade.
 //!
 //! # Example
 //!

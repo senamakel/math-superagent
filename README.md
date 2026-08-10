@@ -1,9 +1,7 @@
-# Slim OpenHuman Agent Harness
+# TinyAgents Harness
 
-This Rust 2024 library vendors the provider-neutral agent engine used by
-OpenHuman and exposes a small, embeddable facade. The build intentionally
-omits OpenHuman application domains for persistent memory, external channels,
-and Web3.
+This Rust 2024 library vendors TinyAgents and exposes a small, embeddable
+facade for its provider-neutral model, tool, and agent-loop runtime.
 
 ## Public API
 
@@ -19,11 +17,11 @@ runtime is integrated by downstream code.
 ```text
 src/
 ├── lib.rs                 # crate docs and public re-exports
-├── agent/                 # slim OpenHuman facade and tests
+├── agent/                 # TinyAgents facade and tests
 ├── error/                # crate-wide error type
 └── greeting/             # small public API example
-vendor/openhuman/
-└── tinyagents/           # pinned OpenHuman agent engine submodule
+vendor/
+└── tinyagents/           # pinned TinyAgents submodule
 tests/                    # public API integration tests
 ```
 

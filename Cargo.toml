@@ -4,11 +4,11 @@ version = "0.1.5"
 edition = "2024"
 rust-version = "1.88"
 license = "GPL-3.0-only"
-description = "A slim, vendored OpenHuman agent harness for Rust."
+description = "An embeddable, vendored TinyAgents harness for Rust."
 repository = "https://github.com/tinyhumansai/rust-template"
 documentation = "https://docs.rs/rust-template"
 readme = "README.md"
-keywords = ["openhuman", "agent", "harness", "llm"]
+keywords = ["tinyagents", "agent", "harness", "llm"]
 categories = ["development-tools"]
 publish = false
 # Keep the published package to what a consumer actually needs.
@@ -28,10 +28,9 @@ exclude = [
 crate-type = ["rlib", "cdylib"]
 
 [dependencies]
-# OpenHuman's provider-neutral agent loop and tool runtime. The vendored
-# checkout is intentionally used without SQLite, REPL, or RLM features so this
-# crate contains only the slim agent harness: no memory, channels, or Web3.
-tinyagents = { path = "vendor/openhuman/tinyagents", default-features = false }
+# TinyAgents provides the provider-neutral agent loop and tool runtime. The
+# vendored checkout is intentionally used without SQLite, REPL, or RLM features.
+tinyagents = { path = "vendor/tinyagents", default-features = false }
 # Derive macros for the crate-wide error type in `src/error/mod.rs`. Every
 # dependency entry should carry a comment like this one saying why it is here.
 thiserror = "2"

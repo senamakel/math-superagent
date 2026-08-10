@@ -1,4 +1,4 @@
-//! Unit tests for the slim `OpenHuman` agent runtime.
+//! Unit tests for the embedded `TinyAgents` runtime.
 
 use super::{Message, mock};
 

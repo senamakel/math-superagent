@@ -32,14 +32,14 @@ This is a Rust 2024 library crate rooted at `Cargo.toml`.
 src/
 ├── lib.rs              # crate docs + the entire public re-export surface
 ├── error/mod.rs        # crate-wide `Error` and `Result<T>`
-├── agent/              # Slim OpenHuman agent facade and integration tests
+├── agent/              # TinyAgents facade and integration tests
 └── <feature>/          # one directory per feature area
     ├── mod.rs          # module docs, wiring, smallest useful public API
     ├── types.rs        # substantial type definitions
     └── test.rs         # module-local unit tests
 tests/                  # integration tests against the public API only
 examples/               # runnable, compiled-in-CI usage examples
-vendor/openhuman/tinyagents/ # pinned OpenHuman agent engine
+vendor/tinyagents/      # pinned TinyAgents engine
 docs/
 ├── specs/              # behavior and architecture specifications
 ├── plans/              # test-first implementation plans
@@ -139,10 +139,9 @@ reproducible.
 
 ### Vendored dependencies
 
-OpenHuman's slim agent engine is registered as the
-`vendor/openhuman/tinyagents` git submodule and pinned by its gitlink. It
-supplies the provider-neutral model, tool, and agent-loop runtime used by this
-crate. Initialize it after cloning with:
+TinyAgents is registered as the `vendor/tinyagents` git submodule and pinned by
+its gitlink. It supplies the provider-neutral model, tool, and agent-loop
+runtime used by this crate. Initialize it after cloning with:
 
 ```sh
 git submodule update --init --recursive

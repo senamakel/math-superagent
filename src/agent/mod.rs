@@ -1,8 +1,7 @@
-//! Slim `OpenHuman` agent runtime.
+//! Embedded `TinyAgents` runtime.
 //!
-//! This facade vendors `OpenHuman`'s provider-neutral `tinyagents` engine while
-//! deliberately leaving out the application domains that are not needed here:
-//! persistent memory, external channels, and Web3 integrations.
+//! This facade exposes the vendored, provider-neutral `tinyagents` engine with
+//! its optional `SQLite`, REPL, and RLM features disabled.
 
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
