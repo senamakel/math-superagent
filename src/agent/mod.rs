@@ -10,8 +10,7 @@ use tinyagents::harness::events::EventSink;
 use tinyagents::harness::ids::RunId;
 use tinyagents::harness::middleware::AgentRun;
 use tinyagents::harness::observability::{
-    HarnessEventJournal, InMemoryEventJournal, JournalSink, LangfuseClient,
-    LangfuseTraceConfig,
+    HarnessEventJournal, InMemoryEventJournal, JournalSink, LangfuseClient, LangfuseTraceConfig,
 };
 use tinyagents::harness::providers::openai::OpenAiModel;
 
@@ -85,11 +84,7 @@ impl ObservedAgent {
     /// # Errors
     ///
     /// Returns any model, tool, policy, or loop error produced by TinyAgents.
-    pub async fn invoke(
-        &self,
-        run_id: impl Into<String>,
-        input: Vec<Message>,
-    ) -> Result<AgentRun> {
+    pub async fn invoke(&self, run_id: impl Into<String>, input: Vec<Message>) -> Result<AgentRun> {
         let run_id = run_id.into();
         let journal = Arc::new(InMemoryEventJournal::new());
         let durable_journal: Arc<dyn HarnessEventJournal> = journal.clone();
