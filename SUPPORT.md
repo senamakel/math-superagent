@@ -5,9 +5,9 @@
 | Need | Where |
 | --- | --- |
 | Usage question or design discussion | GitHub Discussions |
-| Reproducible bug | GitHub Issues — use the Bug Report template |
-| Feature or API proposal | GitHub Issues — use the Feature Request template |
-| Suspected vulnerability | [SECURITY.md](SECURITY.md) — never a public issue |
+| Reproducible bug | GitHub Issues |
+| Feature or API proposal | GitHub Issues |
+| Suspected vulnerability | [SECURITY.md](SECURITY.md), never a public issue |
 | How to contribute a change | [CONTRIBUTING.md](CONTRIBUTING.md) |
 
 ## Before Opening An Issue

@@ -7,7 +7,7 @@
 //! cargo run --example basic
 //! ```
 
-use rust_template::{Result, greet};
+use riemann::{Result, greet};
 
 fn main() -> Result<()> {
     println!("{}", greet("Rust")?);

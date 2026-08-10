@@ -1,15 +1,14 @@
 [package]
-name = "rust-template"
+name = "riemann"
 version = "0.1.5"
 edition = "2024"
 rust-version = "1.96"
 license = "GPL-3.0-only"
-description = "An embeddable, vendored TinyAgents harness for Rust."
-repository = "https://github.com/tinyhumansai/rust-template"
-documentation = "https://docs.rs/rust-template"
+description = "A Dockerized mathematical research and problem-solving agent."
+repository = "https://github.com/senamakel/riemann"
 readme = "README.md"
-keywords = ["tinyagents", "agent", "harness", "llm"]
-categories = ["development-tools"]
+keywords = ["agent", "mathematics", "research", "tinyagents", "llm"]
+categories = ["science", "development-tools"]
 publish = false
 # Keep the published package to what a consumer actually needs.
 exclude = [

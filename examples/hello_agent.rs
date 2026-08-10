@@ -4,10 +4,10 @@
 //! cargo run --example hello_agent -- "your task"
 //! ```
 
-use rust_template::HelloAgent;
+use riemann::HelloAgent;
 
 #[tokio::main]
-async fn main() -> rust_template::agent::Result<()> {
+async fn main() -> riemann::agent::Result<()> {
     let task = std::env::args().skip(1).collect::<Vec<_>>().join(" ");
     let task = if task.is_empty() {
         "Say hello, use add_numbers to calculate 20 + 22, ask a sub-agent why 42 is culturally \

@@ -24,11 +24,11 @@
 //! # Example
 //!
 //! ```
-//! use rust_template::{greet, Error};
+//! use riemann::{greet, Error};
 //!
 //! assert_eq!(greet("Ferris")?, "Hello, Ferris!");
 //! assert_eq!(greet("   ").unwrap_err(), Error::EmptyName);
-//! # Ok::<(), rust_template::Error>(())
+//! # Ok::<(), riemann::Error>(())
 //! ```
 //!
 pub mod agent;
