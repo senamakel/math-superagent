@@ -1,78 +1,115 @@
-# TinyAgents Harness
+# Riemann
 
-This Rust 2024 library vendors TinyAgents and exposes a small, embeddable
-facade for its provider-neutral model, tool, and agent-loop runtime.
+Riemann is a Dockerized agent for solving mathematical problems through careful
+derivation, computation, and source-backed research. It is meant for problems
+where a good answer may require several kinds of work: understanding the
+mathematics, checking a theorem or definition, writing a small program, and
+verifying the result before presenting it.
 
-## Public API
+The runtime uses a small registry of specialist agents:
 
-The [`agent`](src/agent/mod.rs) module re-exports the model, message, tool, and
-agent-loop types needed by a host application. `agent::mock` creates a
-deterministic offline harness for tests and local development.
+- `orchestrator` breaks a problem into focused tasks and combines the results.
+- `research` searches with Exa and returns evidence with source URLs.
+- `tool_builder` writes and runs shell or Python tools for numerical checks,
+  experiments, data processing, and reproducible calculations.
 
-[`HelloAgent`](src/hello_agent/mod.rs) is a runnable OpenRouter example. It uses
-DeepSeek V4 Flash through StreamLake, exports loop observations to Langfuse,
-and provides tools for echoing text, arithmetic, Exa search, and delegating a
-focused task to a child agent.
+All model calls use DeepSeek V4 Flash through OpenRouter and StreamLake by
+default. TinyAgents provides the model loop, tools, delegation, and middleware.
+Langfuse receives best-effort observations from each run.
 
-Copy `.env.example` to `.env`, provide the OpenRouter, Exa, and Langfuse
-credentials, then run it:
+## Run a problem
 
-```sh
-cargo run --example hello_agent -- "Find a current Rust release and ask a sub-agent to check it"
-```
+Requirements:
 
-Set `OPENROUTER_MODEL` to override the built-in
-`deepseek/deepseek-v4-flash-0731` model. Provider routing remains restricted to
-StreamLake.
+- Docker
+- OpenRouter, Exa, and Langfuse credentials
 
-## Orchestrator
-
-The registry-backed orchestrator exposes two named child agents:
-
-- `research` uses Exa for current, cited research.
-- `tool_builder` writes and executes tools in `/workspace`.
-
-Run the orchestrator through its Docker wrapper:
+Copy the environment template and fill in the local values:
 
 ```sh
-./agent "Research a useful API, then build and test a small client for it"
+cp .env.example .env
 ```
 
-`./agent build` builds the image without starting a task, and `./agent shell`
-opens a debugging shell under the same jail. `./agent run "task"` is equivalent
-to passing the task directly. Shell and Python tools plus `curl` and `jq` are
-available to the tool-builder inside the image.
+Then give the agent a problem:
 
-The wrapper builds the runtime image, drops Linux capabilities, enables
-`no-new-privileges`, makes the container root filesystem read-only, runs as an
-unprivileged user, and mounts only the local `workspace/` directory at
-`/workspace`. The Docker socket and repository source are not mounted. Network
-access remains available for OpenRouter, Exa, and Langfuse. Agent transcripts
-are compressed with a model-backed summary at an approximate 300,000-token
-threshold; recent turns remain verbatim, with deterministic trimming as a
-fallback.
+```sh
+./agent "Research the prime number theorem, explain the main idea, and numerically compare pi(x) with x/log(x) for x up to one million"
+```
 
-The original greeting function remains as a small API example while the agent
-runtime is integrated by downstream code.
+The shorter form above is equivalent to:
 
-## Layout
+```sh
+./agent run "your problem"
+```
+
+Two helper commands are also available:
+
+```sh
+./agent build   # build the runtime image
+./agent shell   # open a shell under the same Docker restrictions
+```
+
+Generated programs, calculations, and other artifacts appear in the local
+[`workspace/`](workspace/) directory.
+
+## How a run works
+
+The orchestrator decides which specialist should handle each part of the
+problem. Research questions go to the Exa-backed research agent. Computations
+and executable checks go to the tool-builder. The orchestrator then writes one
+answer that separates cited facts from its own mathematical reasoning.
+
+Context compression starts at an estimated 300,000 tokens. A model-backed
+summary keeps the decisions, assumptions, formulas, source URLs, command
+results, and unresolved work. Recent messages remain verbatim. If the summary
+call fails, TinyAgents trims old context instead of losing the whole run.
+
+This is a research and computation assistant, not a formal proof checker.
+Important results should still be checked against primary sources or a proof
+assistant when the stakes justify it.
+
+## Docker boundary
+
+The agent runs as an unprivileged user in Docker. The helper applies these
+restrictions:
+
+- all Linux capabilities are dropped;
+- `no-new-privileges` is enabled;
+- the container root filesystem is read-only;
+- process count and memory are capped;
+- only the local `workspace/` directory is mounted read-write at `/workspace`;
+- the repository and Docker socket are not mounted.
+
+Network access stays enabled because OpenRouter, Exa, and Langfuse require it.
+The tool-builder can change files under `/workspace`, but it cannot change the
+host repository through the container.
+
+## Repository map
 
 ```text
+agent                       simple Docker helper
+Dockerfile                  build and runtime jail
+scripts/run-agent           helper implementation
+workspace/                  agent-created files, ignored by Git
 src/
-├── lib.rs                 # crate docs and public re-exports
-├── agent/                 # TinyAgents facade and tests
-├── hello_agent/           # OpenRouter agent, basic tools, and sub-agent
-├── orchestrator/          # registry, specialists, compression, workspace tools
-├── error/                # crate-wide error type
-└── greeting/             # small public API example
-vendor/
-└── tinyagents/           # pinned TinyAgents submodule
-tests/                    # public API integration tests
+├── agent/                  TinyAgents facade and Langfuse observations
+├── orchestrator/           registry, specialists, compression, workspace tools
+├── hello_agent/            small single-agent example
+├── error/                  crate-wide errors
+└── lib.rs                  public Rust API
+examples/
+├── orchestrator.rs         Docker runtime entry point
+└── hello_agent.rs          direct single-agent example
+vendor/tinyagents/          pinned TinyAgents submodule
 ```
+
+The crate deliberately leaves out TinyAgents memory domains, channels, Web3,
+SQLite persistence, REPL, and RLM features. The goal is a small mathematical
+research runtime, not a general agent platform.
 
 ## Development
 
-Initialize the vendored engine and run the contract checks:
+Initialize the vendored dependency and run the same checks as CI:
 
 ```sh
 git submodule update --init --recursive
@@ -82,10 +119,9 @@ cargo build --all-targets --all-features
 cargo test --all-features
 ```
 
-The vendored `tinyagents` dependency is used with its default feature set
-disabled. SQLite-backed persistence, the REPL/RLM surfaces, memory domains,
-channels, and Web3 are deliberately outside this crate’s scope.
+The minimum Rust version is 1.96. See [`AGENTS.md`](AGENTS.md) for repository
+rules and implementation conventions.
 
 ## License
 
-GPL-3.0-only. See [LICENSE](LICENSE).
+GPL-3.0-only. See [`LICENSE`](LICENSE).

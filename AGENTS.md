@@ -1,77 +1,128 @@
 # Repository Guidelines
 
-This file is the single source of truth for how humans and coding agents work
-in this repository. `CLAUDE.md` is a symlink to this file, so every agent reads
-the same instructions.
+This file is the working agreement for humans and coding agents in this
+repository. `CLAUDE.md` points here so every agent follows the same rules.
 
-When you generate a new project from this template, keep this file and adapt
-the project-specific parts (crate name, module map, feature flags, commands).
-Delete guidance that no longer applies rather than leaving it to rot.
+## What this repository is
 
-## Template Checklist
+Riemann is a Dockerized mathematical problem-solving agent. Its specialty is
+deep research: it combines mathematical reasoning with source discovery,
+small programs, numerical experiments, and explicit verification.
 
-Do this once, in a single commit, before writing feature code:
+The product should help a reader understand why an answer is true, not merely
+produce a plausible final expression. Preserve that standard in prompts,
+tools, examples, tests, and documentation.
 
-- [ ] Set `name`, `description`, `repository`, `keywords`, and `categories` in
-      `Cargo.toml`.
-- [ ] Rename the crate references in `README.md`, `src/lib.rs`, `examples/`,
-      and `tests/` (search for `rust_template` and `rust-template`).
-- [ ] Replace the placeholder `greeting` module with the first real feature
-      area, keeping the `mod.rs` / `types.rs` / `test.rs` layout.
-- [ ] Confirm `license` and `LICENSE` match the project's intended license.
-- [ ] Update the security contact in `SECURITY.md`.
-- [ ] Replace `ROADMAP.md` with the real plan, or delete it.
-- [ ] Define the slim agent surface and update its public examples.
-- [ ] Rewrite the "Project Structure" section below to describe this crate.
+## Expected problem-solving behavior
 
-## Project Structure
+The runtime has three roles:
 
-This is a Rust 2024 library crate rooted at `Cargo.toml`.
+- The orchestrator decomposes a problem, delegates focused tasks, and combines
+  the results.
+- The research agent uses Exa to find definitions, papers, official references,
+  or current facts. It returns source URLs and separates evidence from
+  inference.
+- The tool-builder writes and executes shell or Python tools in `/workspace`.
+  It handles numerical checks, counterexample searches, data extraction, and
+  other reproducible calculations.
+
+When changing prompts or agent behavior, keep these rules intact:
+
+1. State assumptions and define ambiguous notation.
+2. Show the main derivation or argument. Do not jump straight to the answer.
+3. Delegate external fact-finding to `research` and cite the returned sources.
+4. Delegate meaningful computation to `tool_builder`. Report the program or
+   command and the relevant output.
+5. Check edge cases, dimensions, signs, domains, and limiting behavior when
+   they apply.
+6. Distinguish a proof, a numerical check, a heuristic, and a sourced claim.
+7. Say when the evidence is incomplete. Never invent a theorem, citation, or
+   computation result.
+
+Riemann is not a formal proof assistant. Do not describe sampled evidence or a
+floating-point experiment as proof.
+
+## Runtime architecture
+
+The Rust crate vendors TinyAgents and keeps the integration deliberately small.
 
 ```text
 src/
-├── lib.rs              # crate docs + the entire public re-export surface
-├── error/mod.rs        # crate-wide `Error` and `Result<T>`
-├── agent/              # TinyAgents facade and integration tests
-├── hello_agent/        # OpenRouter example, tools, and sub-agent wiring
-├── orchestrator/       # registry, specialists, compression, jailed tools
-└── <feature>/          # one directory per feature area
-    ├── mod.rs          # module docs, wiring, smallest useful public API
-    ├── types.rs        # substantial type definitions
-    └── test.rs         # module-local unit tests
-tests/                  # integration tests against the public API only
-examples/               # runnable, compiled-in-CI usage examples
-vendor/tinyagents/      # pinned TinyAgents engine
-docs/
-├── specs/              # behavior and architecture specifications
-├── plans/              # test-first implementation plans
-└── adr/                # immutable architecture decision records
+├── lib.rs              # public exports
+├── agent/              # TinyAgents facade, OpenRouter, Langfuse
+├── orchestrator/       # registry, specialists, compression, workspace tools
+├── hello_agent/        # minimal single-agent example
+├── error/              # crate-wide Error and Result<T>
+└── greeting/           # legacy template example
+examples/
+├── orchestrator.rs     # Docker runtime entry point
+└── hello_agent.rs      # direct provider example
+vendor/tinyagents/      # pinned upstream TinyAgents checkout
+agent                   # user-facing helper
+scripts/run-agent       # Docker build and run implementation
+workspace/              # only writable agent workspace
 ```
 
-Each feature area belongs in a focused module directory under `src/`. A module
-root explains the module, wires its pieces together, and exposes the smallest
-useful API. Move substantial type definitions into `types.rs` and put
-module-local unit tests in a dedicated `test.rs`, wired from the bottom of the
-module root with:
+The executable registry currently contains `research` and `tool_builder`.
+Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
+The parent and both children use context-compression middleware with an
+estimated 300,000-token trigger. The summary should retain mathematical
+assumptions, intermediate results, source URLs, tool output, and unfinished
+work.
 
-```rust
-#[cfg(test)]
-mod test;
-```
+OpenRouter uses `deepseek/deepseek-v4-flash-0731` through StreamLake unless
+`OPENROUTER_MODEL` overrides the model. Exa handles search. Langfuse ingestion
+is best effort and must not turn a successful answer into a failed run.
 
-Do not accumulate inline `mod tests` blocks in implementation files, and do not
-let a general-purpose `utils.rs` or `helpers.rs` grow — those are a symptom of a
-missing module. Prefer many small modules that each do one thing well over few
-broad ones.
+Do not add memory domains, channels, Web3, SQLite persistence, REPL, or RLM
+features unless the user explicitly expands the product scope.
 
-Keep public exports centralized in `src/lib.rs` so downstream users have one
-predictable surface. Put shared error variants in `src/error/mod.rs` and return
-the crate-wide `Result<T>` from fallible public APIs.
+## Docker and workspace rules
 
-## Build And Test
+The orchestrator must run through `./agent`. Do not add a host-side fallback
+for tool execution.
 
-Run every command from the repository root. These four are the contract; CI
-runs exactly them, so a green local run should mean a green CI run.
+The Docker boundary is part of the security model:
+
+- Run as an unprivileged user.
+- Drop all Linux capabilities and keep `no-new-privileges` enabled.
+- Keep the root filesystem read-only.
+- Do not mount the repository, home directory, Docker socket, or broad host
+  paths into the runtime.
+- Mount only `workspace/` at `/workspace` for agent-written files.
+- Keep process, memory, command-time, and command-output limits.
+- Keep network access because provider, search, and telemetry calls need it.
+
+Every agent working directory is `/workspace`. File tools must accept relative
+paths, reject traversal and absolute paths, and verify canonical parents before
+writing. Command tools run with `/workspace` as their current directory. A
+prompt instruction is not a security control; enforce boundaries in code and
+Docker configuration.
+
+Generated workspace files are ignored by Git except for `workspace/.gitkeep`.
+Do not move generated artifacts into source directories unless the user asks
+to promote a specific artifact into the product.
+
+## Secrets
+
+`.env` is local and ignored by Git. Never read, print, log, commit, or paste its
+contents. Document variable names and placeholders in `.env.example`.
+
+The runtime currently expects:
+
+- `OPENROUTER_API_KEY`
+- optional `OPENROUTER_MODEL`
+- `EXA_API_KEY`
+- `LANGFUSE_BASE_URL`
+- `LANGFUSE_PUBLIC_KEY`
+- `LANGFUSE_SECRET_KEY`
+
+The helper sources the trusted local `.env` and forwards environment variable
+names to Docker. Do not put secret values directly in Docker command arguments.
+
+## Build and test contract
+
+Run these commands from the repository root before reporting code complete:
 
 ```sh
 cargo fmt --all -- --check
@@ -80,194 +131,124 @@ cargo build --all-targets --all-features
 cargo test --all-features
 ```
 
-Supporting commands:
+Also run the checks that match the changed surface:
 
-- `cargo fmt --all` — format before committing.
-- `cargo test <filter>` — run a focused subset while iterating.
-- `cargo run --example basic` — run the bundled example.
-- `cargo doc --no-deps --all-features` — build the rustdoc CI also builds with
-  `RUSTDOCFLAGS="-D warnings"`.
-- `cargo test --doc` — run doctests alone when editing documentation examples.
+```sh
+RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
+sh -n agent scripts/run-agent
+./agent build
+```
 
-Never skip, ignore, or delete a failing test to make a command pass. Fix the
-root cause, or stop and report the blocker.
+Use a live `./agent` smoke test when changing provider setup, delegation,
+research, tool execution, environment forwarding, or Docker behavior. Live
+tests spend provider credits, so keep the prompt focused. Never put live network
+tests in the deterministic unit-test suite.
 
-## Coding Style
+Do not ignore or delete a failing test to make CI pass. Fix the cause or report
+the blocker with the failing output.
 
-Use standard `rustfmt` output and Rust 2024 idioms. Do not hand-format around
-`rustfmt`, and do not add `#[rustfmt::skip]` without a comment explaining why.
+## Rust conventions
 
-- `snake_case` for modules, files, functions, methods, fields, and locals.
-- `PascalCase` for types, traits, and enum variants; `SCREAMING_SNAKE_CASE` for
-  constants and statics.
-- Name things for what they are, not for their layer: `RetryPolicy`, not
-  `RetryHelper`.
-- Prefer small, typed APIs over stringly-typed ones. Accept `&str` and generic
-  `impl Into<String>` at boundaries; return owned, concrete types.
-- Keep the public surface minimal: default to private, and export deliberately
-  from `src/lib.rs`.
-- `unsafe` is forbidden crate-wide by the lint configuration in `Cargo.toml`.
-  If a project genuinely needs it, relax the lint in its own commit and document
-  every invariant with a `// SAFETY:` comment.
+Use Rust 2024 and standard `rustfmt` output. The minimum supported Rust version
+is 1.96.
 
-### Errors
+- Use `snake_case` for modules, functions, fields, and locals.
+- Use `PascalCase` for types and traits.
+- Use `SCREAMING_SNAKE_CASE` for constants.
+- Keep public exports in `src/lib.rs`.
+- Default to private APIs and expose only what callers need.
+- Put substantial types in `types.rs` when a module grows large.
+- Put module tests in `src/<module>/test.rs`, wired with `mod test`.
+- Do not create general `utils.rs` or `helpers.rs` dumping grounds.
+- Do not use `unsafe`; the crate forbids it.
 
-- One crate-wide `Error` enum in `src/error/mod.rs`, built with `thiserror`.
-- Fallible public functions return `Result<T>`, the crate alias.
-- Add a specific variant instead of stuffing context into a string; error
-  messages are lowercase, without trailing punctuation.
-- Do not `unwrap()`, `expect()`, or `panic!` in library code paths. They are
-  fine in tests, examples, and genuinely unreachable states — where `expect`
-  must carry a message explaining the invariant.
-- Document a `# Errors` section on every public fallible function and a
-  `# Panics` section on anything that can panic.
+Public items need rustdoc. Public fallible functions need an `# Errors` section,
+and public functions that can panic need `# Panics`.
 
-### Dependencies
+Library code must not use `unwrap()`, `expect()`, `panic!()`, `todo!()`, or
+`unimplemented!()`. Tests and examples may use `expect()` only when the message
+states the invariant.
 
-Adding a dependency is a design decision. Before adding one, check whether the
-standard library or an existing dependency already covers the need. When you do
-add one:
+Use the crate-wide error type for application errors. Add a specific variant
+when callers need to distinguish the failure. Keep error messages lowercase
+and omit trailing punctuation.
 
-- pin a caret range (`serde = "1"`), not an exact version;
-- enable only the features you need, with `default-features = false` when that
-  meaningfully trims the tree;
-- gate anything optional behind a Cargo feature, documented in `Cargo.toml`;
-- leave a comment above the entry explaining *why* the crate is needed and what
-  uses it — see the existing entries for the expected tone;
-- prefer well-maintained crates with a compatible license.
+## Tools and research changes
 
-Keep `Cargo.lock` committed; this crate ships a lockfile so CI and releases are
-reproducible.
+Tools are authority boundaries. Give each specialist only the tools it needs.
+The research agent gets Exa. The tool-builder gets workspace file and command
+tools. The orchestrator gets specialist delegation tools, not direct shell
+access.
 
-### Vendored dependencies
+For a new tool:
 
-TinyAgents is registered as the `vendor/tinyagents` git submodule and pinned by
-its gitlink. It supplies the provider-neutral model, tool, and agent-loop
-runtime used by this crate. Initialize it after cloning with:
+- define a narrow JSON schema with required fields and no extra properties;
+- validate every argument before side effects;
+- bound network responses, command duration, and output size;
+- return enough context for the model to verify what happened;
+- test successful behavior and rejection paths;
+- update the specialist prompt and registry metadata.
+
+Prefer primary sources for mathematical definitions and results: original
+papers, official documentation, standards, and maintained institutional
+references. Search output is evidence to inspect, not text to copy blindly.
+Keep URLs in the research result so the orchestrator can cite them.
+
+## Dependencies and vendored code
+
+Check the standard library and existing dependencies before adding a crate. For
+new dependencies:
+
+- use a caret-compatible version, not an exact pin;
+- disable default features when that meaningfully reduces the graph;
+- enable only required features;
+- add a comment in `Cargo.toml` explaining the dependency;
+- keep `Cargo.lock` committed.
+
+TinyAgents lives at `vendor/tinyagents` as a Git submodule. Initialize it with:
 
 ```sh
 git submodule update --init --recursive
 ```
 
-Do not edit vendored code from the parent repository. Make harness changes in
-the TinyAgents repository, push them there, then update this repository's
-gitlink in a separate commit. Keep the dependency feature set minimal: this
-crate intentionally does not enable SQLite-backed memory, channels, or Web3.
+Do not edit vendored code through the parent repository. Make TinyAgents
+changes upstream, push them there, then update this repository's gitlink in a
+separate commit.
 
-## Testing
+Never export `CARGO_TARGET_DIR` or send build output to a temporary directory.
+Use the checkout's normal target configuration.
 
-- Module-local unit tests live in `src/<feature>/test.rs` and may touch private
-  items.
-- Integration tests live in `tests/` and exercise only the public API — they are
-  the regression suite for the crate's contract.
-- Use descriptive, behavioral test names: `rejects_an_empty_name`, not
-  `test_greet_2`.
-- Cover the failure paths, not just the happy path. Every new error variant
-  needs a test that produces it.
-- For async behavior, standardize on one runtime (`tokio` as a dev-dependency
-  for tests) rather than mixing runtimes.
-- Tests must be deterministic and independent of network, wall-clock time, and
-  execution order. Gate any live/network test behind a feature or an env var and
-  name it `live_*` so it is easy to exclude.
-- Add or update tests with every behavior change, and note any deliberately
-  untested edge case in the pull request description.
+## Git workflow
 
-Write the test first when fixing a bug: a failing test that reproduces the
-report, then the fix that turns it green.
+- Work in the current checkout. Do not create or use Git worktrees.
+- Do not create feature branches.
+- Commit directly to `main` and push `main` to its configured remote.
+- Never force-push, rewrite published history, or bypass hooks.
+- Keep commits focused, with concise imperative subjects.
+- Preserve unrelated user changes in a dirty working tree.
 
-## Documentation
+An auto-commit hook may checkpoint edits while work is in progress. Those
+commits are expected. Do not reset or rewrite them. Commit manually only when a
+specific boundary matters.
 
-Write documentation for the reader who has never seen the code.
+## Documentation rules
 
-- Every public item gets a rustdoc comment. `missing_docs` is a warning that CI
-  treats as an error.
-- Start every `mod.rs` and `test.rs` with a concise module-level `//!`
-  description.
-- `src/lib.rs` carries the crate-level overview: what the crate does, the
-  primary entry points, and a short runnable example.
-- Prefer concrete examples over vague description. Doc examples are compiled and
-  run by `cargo test`, so they cannot drift.
-- Complex modules must include a module-level `README.md` covering their design,
-  public surface, and important operational constraints.
-- Keep `README.md`, `docs/`, and module docs aligned with code changes in the
-  same commit that changes behavior.
-- Write accepted behavior and constraints in `docs/specs/` before creating a
-  linked, implementation-ordered plan in `docs/plans/`. Specs define what and
-  why; plans define how and in what sequence.
-- Keep every Markdown file, including this one, at 500 lines or fewer. When a
-  topic outgrows that, split it into focused files and link them from the
-  nearest `README.md`.
+Keep `README.md`, this file, rustdoc, examples, and runtime behavior consistent.
+Write for a reader who has not seen the code. Prefer a concrete command or
+example over broad claims.
 
-## Git Workflow
+Keep every Markdown file at 500 lines or fewer. Split long design material into
+`docs/specs/`, `docs/plans/`, or `docs/adr/` and link it from the nearest
+README.
 
-- Use the current checkout for all work. Do not create or use git worktrees.
-- Do not create feature branches: commit changes directly to `main` and push
-  `main` directly to its configured remote.
-- Commit subjects are concise and imperative: `Add retry policy to the client`.
-  Keep the subject specific to the change and under ~72 characters.
-- Make small, focused commits. Each commit should cover one logical change,
-  build independently, and avoid mixing formatting, refactors, and behavior
-  changes unless they are inseparable.
-- Never commit secrets. `.env` is git-ignored; document new variables in
-  `.env.example` with placeholder values.
-- Never force-push a shared branch, rewrite published history, or bypass hooks
-  with `--no-verify`.
+## Working agreement for coding agents
 
-## Pull Requests
-
-Open pull requests ready for review, not as drafts, unless the work genuinely
-must not merge yet. A pull request should:
-
-- summarize what changed and why, in a few sentences;
-- call out public API or behavior changes explicitly, or state "None";
-- list the validation commands actually run, with their outcome;
-- link the related issue;
-- include updated tests, docs, and examples in the same change.
-
-The template in `.github/PULL_REQUEST_TEMPLATE.md` encodes this checklist.
-Address review feedback by fixing it, and reply on each thread describing what
-changed. Do not resolve a thread whose feedback you have not addressed or
-explicitly declined with a reason.
-
-## Releases
-
-Releases run from `.github/workflows/release.yml` via a manual
-`workflow_dispatch` with a `patch` / `minor` / `major` bump; `current` resumes
-an interrupted release after its version commit and tag exist. The workflow
-re-runs the full validation suite, computes the next version, updates
-`Cargo.toml` and `Cargo.lock`, commits and tags `vX.Y.Z`, builds the slim agent
-library for every supported platform, pushes, and creates an immutable GitHub
-release with installable native packages.
-
-Consequently:
-
-- Do not hand-edit the `version` field in `Cargo.toml`; the release workflow
-  owns it.
-- Follow semantic versioning. Any change to the public surface that is not
-  purely additive is a breaking change and needs a major bump (pre-1.0: a minor
-  bump).
-- The module must be packageable for every release target — `main` should
-  always be green.
-
-## Agent Working Agreement
-
-For automated contributors specifically:
-
-1. **Read before writing.** Inspect the surrounding module and match its
-   conventions, comment density, and idiom rather than importing a house style.
-2. **Verify, do not assume.** Run the four contract commands and read their
-   output before reporting a task complete. Report failures with the output;
-   never claim a check passed that you did not run.
-3. **Stay in scope.** Implement what was asked. Do not opportunistically
-   refactor, reformat, upgrade dependencies, or "fix" unrelated code — raise it
-   instead.
-4. **No placeholders in delivered code.** No `todo!()`, no stubbed functions, no
-   commented-out alternatives left behind. If something cannot be finished, say
-   so explicitly.
-5. **Do not weaken the guardrails.** Never add blanket `#[allow(...)]`, relax a
-   lint, mark a test `#[ignore]`, or loosen CI to get a green run. Fix the
-   cause.
-6. **Secrets stay out.** Never read, echo, or commit `.env` contents, tokens, or
-   credentials, and never paste them into a pull request or issue.
-7. **Ask only when blocked.** Make routine judgment calls yourself; escalate
-   only irreversible decisions or genuine forks with no clear default.
+1. Inspect the surrounding code before editing and match its conventions.
+2. Execute a clear task directly. Do not stop for a plan when the next step is
+   obvious.
+3. Stay within scope. Raise unrelated problems instead of folding them into the
+   change.
+4. Deliver finished code without placeholders or commented-out alternatives.
+5. Preserve security checks, tests, lints, and Docker restrictions.
+6. Report commands actually run and their real outcomes.
+7. Ask only when an irreversible choice or genuine product fork blocks work.
