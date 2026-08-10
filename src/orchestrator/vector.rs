@@ -126,7 +126,7 @@ impl Tool<()> for RememberResearchTool {
             .json(&json!({
                 "points": [{
                     "id": id,
-                    "vector": embed(text),
+                    "vector": embed(&text),
                     "payload": {
                         "text": text,
                         "source": source
@@ -206,7 +206,7 @@ impl Tool<()> for RecallResearchTool {
                 self.store.base_url
             ))
             .json(&json!({
-                "query": embed(query),
+                "query": embed(&query),
                 "limit": limit,
                 "with_payload": true
             }))
@@ -255,11 +255,12 @@ impl Tool<()> for RecallResearchTool {
     }
 }
 
-fn string_argument<'a>(call: &'a ToolCall, name: &str) -> Result<&'a str> {
+fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
     call.arguments
         .get(name)
         .and_then(Value::as_str)
         .filter(|value| !value.trim().is_empty())
+        .map(ToOwned::to_owned)
         .ok_or_else(|| {
             tinyagents::TinyAgentsError::Validation(format!("{name} must be a non-empty string"))
         })
