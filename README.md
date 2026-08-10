@@ -44,12 +44,13 @@ to passing the task directly. Shell and Python tools plus `curl` and `jq` are
 available to the tool-builder inside the image.
 
 The wrapper builds the runtime image, drops Linux capabilities, enables
-`no-new-privileges`, runs as an unprivileged user, and mounts only the local
-`workspace/` directory at `/workspace`. The Docker socket and repository source
-are not mounted. Network access remains available for OpenRouter, Exa, and
-Langfuse. Agent transcripts are compressed with a model-backed summary at an
-approximate 300,000-token threshold; recent turns remain verbatim, with
-deterministic trimming as a fallback.
+`no-new-privileges`, makes the container root filesystem read-only, runs as an
+unprivileged user, and mounts only the local `workspace/` directory at
+`/workspace`. The Docker socket and repository source are not mounted. Network
+access remains available for OpenRouter, Exa, and Langfuse. Agent transcripts
+are compressed with a model-backed summary at an approximate 300,000-token
+threshold; recent turns remain verbatim, with deterministic trimming as a
+fallback.
 
 The original greeting function remains as a small API example while the agent
 runtime is integrated by downstream code.

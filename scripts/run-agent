@@ -60,6 +60,8 @@ if [ "$action" = shell ]; then
         --user "$(id -u):$(id -g)" \
         --cap-drop ALL \
         --security-opt no-new-privileges \
+        --read-only \
+        --tmpfs /tmp:rw,nosuid,nodev,noexec,size=64m \
         --pids-limit 256 \
         --memory 2g \
         --mount "type=bind,src=$repository_root/workspace,dst=/workspace" \
@@ -76,6 +78,8 @@ exec docker run --rm \
     --user "$(id -u):$(id -g)" \
     --cap-drop ALL \
     --security-opt no-new-privileges \
+    --read-only \
+    --tmpfs /tmp:rw,nosuid,nodev,noexec,size=64m \
     --pids-limit 256 \
     --memory 2g \
     --mount "type=bind,src=$repository_root/workspace,dst=/workspace" \
