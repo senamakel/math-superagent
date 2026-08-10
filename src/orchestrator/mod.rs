@@ -1,5 +1,6 @@
 //! Registry-backed orchestrator with research and tool-building specialists.
 
+use std::fmt::Write as _;
 use std::path::{Component, Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
@@ -165,7 +166,7 @@ impl OrchestratorAgent {
     ///
     /// # Errors
     ///
-    /// Returns an error when Docker runtime markers, workspace, OpenRouter,
+    /// Returns an error when `Docker` runtime markers, workspace, `OpenRouter`,
     /// Exa, or Langfuse configuration are unavailable.
     pub fn from_env() -> Result<Self> {
         let _ = dotenvy::dotenv();
@@ -342,8 +343,7 @@ fn require_container_runtime() -> Result<()> {
 
 fn workspace_from_env() -> Result<PathBuf> {
     let configured = std::env::var_os("AGENT_WORKSPACE")
-        .map(PathBuf::from)
-        .unwrap_or_else(|| PathBuf::from("/workspace"));
+        .map_or_else(|| PathBuf::from("/workspace"), PathBuf::from);
     let workspace = configured.canonicalize().map_err(|error| {
         tinyagents::TinyAgentsError::Validation(format!(
             "agent workspace `{}` is unavailable: {error}",
@@ -520,7 +520,11 @@ fn truncate_output(bytes: &[u8]) -> String {
     let kept = &bytes[..bytes.len().min(MAX_COMMAND_OUTPUT_BYTES)];
     let mut rendered = String::from_utf8_lossy(kept).into_owned();
     if bytes.len() > kept.len() {
-        rendered.push_str(&format!("\n[{} bytes truncated]", bytes.len() - kept.len()));
+        let _ = write!(
+            rendered,
+            "\n[{} bytes truncated]",
+            bytes.len() - kept.len()
+        );
     }
     rendered
 }

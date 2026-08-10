@@ -38,20 +38,20 @@ fn registry_resolves_agents_in_insertion_order() -> agent::Result<()> {
 }
 
 #[test]
-fn registry_rejects_duplicate_ids() {
+fn registry_rejects_duplicate_ids() -> agent::Result<()> {
     let mut registry = AgentRegistry::new();
     registry
         .register(
             AgentDefinition::new("research", "Research", "finds evidence"),
             subagent("research"),
-        )
-        .expect("first registration should succeed");
+        )?;
 
     let duplicate = registry.register(
         AgentDefinition::new("research", "Other", "duplicate"),
         subagent("research"),
     );
     assert!(duplicate.is_err());
+    Ok(())
 }
 
 #[test]
