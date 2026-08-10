@@ -12,8 +12,8 @@
 
 ## Before Opening An Issue
 
-Search existing issues first, then check the API documentation
-(`cargo doc --open`) and the notes in [`docs/`](docs/README.md).
+Search existing issues first, then check [`README.md`](README.md) and the API
+documentation (`cargo doc --open`).
 
 A good report includes the crate version or commit, the output of
 `rustc --version`, a minimal reproduction, the expected and actual behavior, and

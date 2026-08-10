@@ -248,9 +248,9 @@ Keep `README.md`, this file, rustdoc, examples, and runtime behavior consistent.
 Write for a reader who has not seen the code. Prefer a concrete command or
 example over broad claims.
 
-Keep every Markdown file at 500 lines or fewer. Split long design material into
-`docs/specs/`, `docs/plans/`, or `docs/adr/` and link it from the nearest
-README.
+Keep every Markdown file at 500 lines or fewer. Put durable operational guidance
+in this file and user-facing instructions in `README.md` instead of creating a
+separate documentation tree.
 
 ## Working agreement for coding agents
 

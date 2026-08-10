@@ -41,8 +41,8 @@ unavailable outside the jailed `/workspace` runtime.
    failure context into a message string.
 4. Add or update tests with every behavior change, covering the failure paths.
 5. Document public items, including `# Errors` and `# Panics` sections.
-6. Update `README.md` and `docs/` in the same commit when behavior, the public
-   API, or usage changes.
+6. Update `README.md` in the same commit when behavior, the public API, or
+   usage changes.
 
 Do not add blanket `#[allow(...)]` attributes, mark tests `#[ignore]`, or relax
 lints to get a green run. Fix the cause, or raise the blocker in the pull

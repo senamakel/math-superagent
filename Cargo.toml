@@ -15,7 +15,6 @@ publish = false
 exclude = [
     ".github/",
     ".gitmodules",
-    "docs/",
     "vendor/",
     "worktrees/",
     ".env.example",
