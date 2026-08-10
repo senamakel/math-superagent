@@ -17,6 +17,8 @@ lcov.info
 # Host directory mounted as the jailed agent runtime's /workspace.
 /workspace/*
 !/workspace/.gitkeep
+!/workspace/template/
+!/workspace/template/**
 
 # Linked worktrees created by the local `worktree` helper
 worktrees/*
