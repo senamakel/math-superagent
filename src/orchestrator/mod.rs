@@ -337,7 +337,7 @@ fn require_container_runtime() -> Result<()> {
         return Ok(());
     }
     Err(tinyagents::TinyAgentsError::Validation(
-        "orchestrator must be launched with scripts/run-agent inside Docker".into(),
+        "orchestrator must be launched with ./agent inside Docker".into(),
     ))
 }
 

@@ -2,7 +2,7 @@
 name = "rust-template"
 version = "0.1.5"
 edition = "2024"
-rust-version = "1.88"
+rust-version = "1.96"
 license = "GPL-3.0-only"
 description = "An embeddable, vendored TinyAgents harness for Rust."
 repository = "https://github.com/tinyhumansai/rust-template"
