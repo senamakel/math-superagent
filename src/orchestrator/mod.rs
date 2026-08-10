@@ -180,24 +180,22 @@ impl OrchestratorAgent {
         require_container_runtime()?;
         let workspace = workspace_from_env()?;
         let model = openrouter_model_from_env()?;
-        let shared_guidance = load_workspace_files(
-            &workspace,
-            &["AGENTS.md", "config.toml", "memory.md"],
-        )?;
+        let shared_guidance =
+            load_workspace_files(&workspace, &["AGENTS.md", "config.toml", "memory.md"])?;
         let orchestrator_prompt = workspace_prompt(
             ORCHESTRATOR_PROMPT,
             &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/orchestrator.md"])?
+            &load_workspace_files(&workspace, &["prompts/orchestrator.md"])?,
         );
         let research_prompt = workspace_prompt(
             RESEARCH_PROMPT,
             &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/research.md"])?
+            &load_workspace_files(&workspace, &["prompts/research.md"])?,
         );
         let tool_builder_prompt = workspace_prompt(
             TOOL_BUILDER_PROMPT,
             &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/tool_builder.md"])?
+            &load_workspace_files(&workspace, &["prompts/tool_builder.md"])?,
         );
 
         let mut research_harness = specialist_harness(model.clone());
