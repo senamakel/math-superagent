@@ -79,3 +79,9 @@ def main(max_n, budget):
             print(f"Stopping: frontier {len(level)} > 5M cap")
             break
     return results
+
+
+if __name__ == "__main__":
+    max_n = int(sys.argv[1]) if len(sys.argv) > 1 else 14
+    budget = float(sys.argv[2]) if len(sys.argv) > 2 else 900.0
+    main(max_n, budget)
