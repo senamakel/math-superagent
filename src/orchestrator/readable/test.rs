@@ -1,4 +1,5 @@
 //! Unit tests for document conversion and URL compression.
+#![allow(clippy::expect_used)]
 
 use super::{Format, LinkTable, clean_url, decode_entities, detect, html_to_markdown, to_markdown};
 

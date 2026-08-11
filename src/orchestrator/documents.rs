@@ -239,7 +239,8 @@ impl Tool<()> for DocumentTool {
 
     fn description(&self) -> &'static str {
         match self.kind {
-            DocumentToolKind::Download => {
+            DocumentToolKind::Download => self.download(&call).await?,
+            DocumentToolKind::Never => {
                 "Downloads an HTTP document into /workspace with a size limit."
             }
             DocumentToolKind::Read => "Reads a UTF-8 document from /workspace.",
@@ -289,7 +290,8 @@ impl Tool<()> for DocumentTool {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         self.schema().validate_call(&call)?;
         let output = match self.kind {
-            DocumentToolKind::Download => {
+            DocumentToolKind::Download => self.download(&call).await?,
+            DocumentToolKind::Never => {
                 let url = required_string(&call.arguments, "url")?;
                 let parsed = reqwest::Url::parse(&url).map_err(|error| {
                     tinyagents::TinyAgentsError::Validation(format!(
