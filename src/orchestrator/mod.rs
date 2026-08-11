@@ -802,8 +802,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // catalogue lets it reuse a verified helper rather than reimplement the
         // arithmetic it is about to check.
         "pattern_finder" => &["goal.md", "memory.md", "scratchpad.md", "toolkits/INDEX.md"],
-        // Gathers sources: needs the objective and the existing library index.
-        "librarian" => &["goal.md", "memory.md", "research/INDEX.md"],
+
         // Digests sources into knowledge. The one role that legitimately needs
         // nearly everything: it judges each source against what the run is
         // trying to do, already believes, and is currently attempting, and a
@@ -829,12 +828,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "toolkits/INDEX.md",
             "research/INDEX.md",
         ],
-        // Answer or propose against the record: the inventor needs `memory.md`
-        // for its failed-approaches section above all, since re-proposing what
-        // already failed is the one thing it exists not to do; research needs
-        // the same file so it does not re-establish a known fact. Both get the
-        // research index so neither re-establishes what is already on disk.
-        "inventor" | "research" => &["goal.md", "memory.md", "research/INDEX.md"],
+        // Work against the record and the shelf. The inventor needs
+        // `memory.md` for its failed-approaches section above all, since
+        // re-proposing what already failed is the one thing it exists not to
+        // do; research needs the same file so it does not re-establish a known
+        // fact; the librarian needs it so it does not chase a question already
+        // answered. All three get the research index so none re-fetches what
+        // is already on disk.
+        "librarian" | "inventor" | "research" => &["goal.md", "memory.md", "research/INDEX.md"],
         _ => &[],
     }
 }
