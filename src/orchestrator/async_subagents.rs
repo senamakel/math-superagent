@@ -443,25 +443,35 @@ impl Tool<()> for AsyncSubagentTool {
     }
 }
 
-fn run_id_schema(with_wait: bool) -> Value {
-    if with_wait {
-        json!({
+fn run_id_schema(max_wait_seconds: Option<u64>) -> Value {
+    match max_wait_seconds {
+        Some(maximum) => json!({
             "type": "object",
             "properties": {
                 "run_id": { "type": "string" },
-                "wait_seconds": { "type": "integer", "minimum": 0, "maximum": MAX_AWAIT_SECONDS }
+                "wait_seconds": { "type": "integer", "minimum": 0, "maximum": maximum }
             },
             "required": ["run_id"],
             "additionalProperties": false
-        })
-    } else {
-        json!({
+        }),
+        None => json!({
             "type": "object",
             "properties": { "run_id": { "type": "string" } },
             "required": ["run_id"],
             "additionalProperties": false
-        })
+        }),
     }
+}
+
+/// Shortens a spawn prompt for the operator-facing console line.
+fn preview_input(input: &str) -> String {
+    const PREVIEW_CHARS: usize = 160;
+    let collapsed = input.split_whitespace().collect::<Vec<_>>().join(" ");
+    if collapsed.chars().count() <= PREVIEW_CHARS {
+        return collapsed;
+    }
+    let kept = collapsed.chars().take(PREVIEW_CHARS).collect::<String>();
+    format!("{kept}...")
 }
 
 fn required_string(arguments: &Value, name: &str) -> Result<String> {
