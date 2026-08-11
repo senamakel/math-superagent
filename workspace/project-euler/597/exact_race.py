@@ -16,7 +16,7 @@ def simulate_order_exact(n, L, speeds):
     L = F(L)
     state = [0]*n
     pos = [F(40)*j for j in range(n)]
-    bumped_by = [-1]*n
+    edges = [[] for _ in range(n)]
     while True:
         rowing = [j for j in range(n) if state[j] == 0]
         if not rowing:
@@ -43,17 +43,18 @@ def simulate_order_exact(n, L, speeds):
         else:
             state[j] = 2
             pos[j] = pos[k]
-            bumped_by[k] = j
-    out_of = [-1]*n
-    for k in range(n):
-        if bumped_by[k] != -1:
-            out_of[bumped_by[k]] = k
+            edges[j].append(k)
     above = [set() for _ in range(n)]
     for i in range(n):
-        cur = out_of[i]
-        while cur != -1:
-            above[i].add(cur)
-            cur = out_of[cur]
+        seen = {i}
+        stack = [i]
+        while stack:
+            u = stack.pop()
+            for w in edges[u]:
+                if w not in seen:
+                    seen.add(w)
+                    stack.append(w)
+        above[i] = seen - {i}
     return above
 
 def outcome_parity_exact(n, L, speeds):

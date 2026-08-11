@@ -36,6 +36,20 @@ pub(super) const INDEX_FILE: &str = "INDEX.md";
 /// Placeholder for a file nobody has described yet.
 const UNDESCRIBED: &str = "_(undescribed)_";
 
+/// Opens the synthesis an index may carry above its table.
+///
+/// `research/INDEX.md` is the root of the summary tree
+/// ([`super::context_tree`]), so it has to say what the library *establishes*
+/// and not only what each file is. That synthesis is written by an agent and
+/// the table below it is derived from the directory, which puts two authors on
+/// one file; the markers are what let each rewrite its own half. Without them
+/// the first `refresh_index` after a fold would silently replace the root of
+/// the tree with a file listing.
+const BRIEF_OPEN: &str = "<!-- brief -->";
+
+/// Closes the synthesis an index may carry above its table.
+const BRIEF_CLOSE: &str = "<!-- /brief -->";
+
 /// Normalises a folder a model named, to the form the rest of this module uses.
 ///
 /// The mount point is stripped here rather than left to the path checker
