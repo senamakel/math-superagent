@@ -7,38 +7,47 @@
 //! important, nothing records what was dropped, and by the tenth pass the file
 //! is confident about things no longer traceable to a source.
 //!
-//! So compression is a tree rather than a rewrite, laid out on disk:
+//! So compression is a tree, and the tree is laid out on disk as sealed
+//! batches:
 //!
 //! ```text
-//! research/            reflections/
-//! ├── INDEX.md         ├── INDEX.md      the root — what it all now means
-//! ├── L0/              ├── L0/           originals, never edited
-//! ├── L1/              ├── L1/           one note per original
-//! └── L2/              └── L2/           one note per ten notes below
+//! research/
+//! ├── ROOT.md          what the whole library now establishes
+//! ├── INDEX.md         what each file is — maintained by the index tools
+//! ├── L0.0/            the first ten originals, sealed
+//! ├── L0.1/            the next ten, still filling
+//! ├── L1.0/            one note per sealed L0 batch: L0.0.md, L0.1.md, …
+//! └── L2.0/            one note per sealed L1 batch, once L1.0 fills
 //! ```
 //!
-//! `L0` is the untouched original: the complete converted document, or the
-//! reflection the loop wrote. Every level above it holds one note per
-//! [`FANOUT`] notes below, each capped at [`NODE_TOKENS`], and a new level
-//! appears only when the level under it outgrows one node. `INDEX.md` is the
-//! root, and the only file a reader is expected to open first.
+//! A *batch* is the unit of compression. Leaves accumulate in the open batch
+//! at level 0; when it reaches [`FANOUT`] it seals, and sealing means one note
+//! summarising it appears one level up, named for the batch it covers. That
+//! note then accumulates in the open batch at level 1, and the same rule
+//! applies again. The tree grows a level only when a level has genuinely
+//! outgrown a single node, and every node above `L0` is capped at
+//! [`NODE_TOKENS`].
 //!
-//! Every node links to the notes beneath it with Obsidian wikilinks, so the
-//! workspace opens as a vault and a fold is safe to write: what it leaves out
-//! is one link down, not gone. That is the whole point of the shape — a claim
-//! nobody can trace to a source is worth less than no claim.
+//! Batching rather than one flat folder per level is what makes a fold
+//! *stable*. A flat level is re-summarised every time anything is added to it,
+//! so the same sources are re-read and re-compressed indefinitely and the
+//! summary drifts. A sealed batch is summarised once and never revisited, so
+//! the work is done once and the note stays true to what it covers.
 //!
-//! This module holds no state and writes nothing. It reads the workspace,
-//! works out which node is over budget, unfolded, or behind its children, and
-//! says so — the fold itself is a judgement about meaning, so an agent writes
-//! it. What is not left to judgement is whether a node is within budget and
-//! whether it reflects what is under it; those are measured on disk, because
-//! an instruction asking for a few hundred words produced a 6.8 KB file inside
-//! an hour.
+//! `ROOT.md` is the top, and it is deliberately not `INDEX.md`. The index says
+//! what each file *is* and is derived from the directory by the index tools;
+//! the root says what the library *means* and is written by an agent. Holding
+//! both in one file put a tool and an agent in contention over it, and cost
+//! this workspace three separate rounds of lost descriptions — a refresh
+//! overwriting a synthesis, then a synthesis overwriting rows, then rows
+//! rewritten in a spelling the refresh could not match.
 //!
-//! Structure is recovered from the links themselves rather than from a sidecar
-//! manifest. A fold that has stopped linking a note has stopped covering it,
-//! which is exactly the fact a manifest would hide.
+//! Every node links what it covers with Obsidian wikilinks, so the workspace
+//! opens as a vault and a fold is safe to write: what it leaves out is one
+//! link down, not gone. This module writes nothing. It reads the workspace,
+//! works out which batch needs sealing and which node is over budget or behind
+//! what it covers, and says so — the fold itself is a judgement about meaning,
+//! so an agent writes it.
 
 use std::fmt::Write as _;
 use std::fs;
@@ -47,10 +56,10 @@ use std::time::SystemTime;
 
 use super::folder_index::INDEX_FILE;
 
-/// Notes one fold node may cover.
+/// Notes one batch may hold before it seals.
 pub(super) const FANOUT: usize = 10;
 
-/// Tokens any node above `L0` may occupy.
+/// Tokens any node above level 0 may occupy.
 ///
 /// A thousand tokens is what a role can afford to be handed on every one of
 /// its model calls. It caps each *node*, not the tree: the tree grows by
@@ -61,24 +70,19 @@ pub(super) const NODE_TOKENS: u64 = 1_000;
 /// Characters charged to one token, matching the harness estimator.
 const CHARS_PER_TOKEN: u64 = 4;
 
-/// Notes that must have changed before a parent is refolded.
-///
-/// A refold costs a model call, and one new note rarely changes what a fold
-/// says. Refolding on every write would also starve acquisition outright: the
-/// research team would spend every cycle restating a library it never got
-/// round to extending.
+/// Notes that must have changed before a parent is rewritten.
 const STALE_CHILDREN: usize = 3;
 
-/// Folders carrying a tree, each with its own `INDEX.md` root.
+/// Folders carrying a tree, each with its own root.
 const ROOTS: [&str; 2] = ["research", "reflections"];
+
+/// The top of a tree.
+pub(super) const ROOT_FILE: &str = "ROOT.md";
 
 /// The run-wide standing brief, a root in its own right.
 const CONTEXT_FILE: &str = "CONTEXT.md";
 
 /// Deepest level the planner will look for.
-///
-/// Ten levels at a fan-out of ten is more notes than a run can produce, so the
-/// bound exists only to keep the scan finite.
 const MAX_LEVEL: usize = 10;
 
 /// One node of the tree as it currently stands on disk.
@@ -92,14 +96,17 @@ pub(super) struct Node {
     pub(super) children: Vec<String>,
 }
 
-/// What is wrong with a node, in the order the tree wants it fixed.
+/// What is wrong with the tree, in the order it wants it fixed.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(super) enum Fault {
     /// The node costs more than a node may spend.
     OverBudget,
-    /// More notes sit at this level than one node may cover.
-    Unfolded(String),
-    /// Notes have changed since the node was last written.
+    /// A batch is full and has no note summarising it one level up.
+    Unsealed {
+        /// Where the summarising note belongs.
+        summary: String,
+    },
+    /// What the node covers has changed since it was written.
     Stale(Vec<String>),
 }
 
@@ -112,9 +119,22 @@ pub(super) struct Task {
     pub(super) fault: Fault,
 }
 
-/// The folder holding one level of a tree.
-fn level_dir(root: &str, level: usize) -> String {
-    format!("{root}/L{level}")
+/// Reads a batch folder name as its level and batch number.
+///
+/// A bare `L1` counts as `L1.0`. Every workspace was laid out that way before
+/// batches existed, and a planner that saw only the dotted form would report a
+/// library of twenty sources as empty.
+pub(super) fn batch_of(name: &str) -> Option<(usize, usize)> {
+    let rest = name.strip_prefix('L')?;
+    match rest.split_once('.') {
+        Some((level, batch)) => Some((level.parse().ok()?, batch.parse().ok()?)),
+        None => Some((rest.parse().ok()?, 0)),
+    }
+}
+
+/// The folder holding one batch.
+pub(super) fn batch_dir(level: usize, batch: usize) -> String {
+    format!("L{level}.{batch}")
 }
 
 /// Estimated tokens held by a file, or zero when it cannot be read.
@@ -128,9 +148,6 @@ fn modified(workspace: &Path, relative: &str) -> Option<SystemTime> {
 }
 
 /// Markdown notes directly inside a workspace-relative folder, sorted.
-///
-/// The index is not one of them: it is the root of the tree, never a note in
-/// a level of it.
 fn notes(workspace: &Path, folder: &str) -> Vec<String> {
     let Ok(entries) = fs::read_dir(workspace.join(folder)) else {
         return Vec::new();
@@ -144,6 +161,7 @@ fn notes(workspace: &Path, folder: &str) -> Vec<String> {
                 .extension()
                 .is_some_and(|extension| extension.eq_ignore_ascii_case("md"))
                 && name != INDEX_FILE
+                && name != ROOT_FILE
         })
         .map(|name| format!("{folder}/{name}"))
         .collect();
@@ -151,12 +169,48 @@ fn notes(workspace: &Path, folder: &str) -> Vec<String> {
     found
 }
 
-/// Link targets a note points at, as written.
+/// Every batch folder of one tree, as `(level, batch, folder)`, sorted.
+fn batches(workspace: &Path, root: &str) -> Vec<(usize, usize, String)> {
+    let Ok(entries) = fs::read_dir(workspace.join(root)) else {
+        return Vec::new();
+    };
+    let mut found: Vec<(usize, usize, String)> = entries
+        .flatten()
+        .filter(|entry| entry.file_type().is_ok_and(|kind| kind.is_dir()))
+        .filter_map(|entry| {
+            let name = entry.file_name().to_string_lossy().into_owned();
+            let (level, batch) = batch_of(&name)?;
+            (level <= MAX_LEVEL).then(|| (level, batch, format!("{root}/{name}")))
+        })
+        .collect();
+    found.sort();
+    found
+}
+
+/// The batch new notes should join at `level`.
 ///
-/// Both spellings count. Obsidian wikilinks are what the vault is built from,
-/// and a plain markdown link is what a model reaches for when it forgets; a
-/// planner that recognised only one of them would report a fold as covering
-/// nothing on the strength of its punctuation.
+/// The open batch is the highest-numbered one still under [`FANOUT`]; when the
+/// highest is full, the next one opens. This is what a writer needs in order
+/// to file something without knowing the tree's history.
+pub(super) fn open_batch(workspace: &Path, root: &str, level: usize) -> usize {
+    let mut highest: Option<(usize, bool)> = None;
+    for (batch_level, batch, folder) in batches(workspace, root) {
+        if batch_level != level {
+            continue;
+        }
+        let full = notes(workspace, &folder).len() >= FANOUT;
+        if highest.is_none_or(|(seen, _)| batch > seen) {
+            highest = Some((batch, full));
+        }
+    }
+    match highest {
+        Some((batch, true)) => batch + 1,
+        Some((batch, false)) => batch,
+        None => 0,
+    }
+}
+
+/// Link targets a note points at, as written.
 fn links(text: &str) -> Vec<String> {
     let mut found = Vec::new();
     let mut push = |target: &str| {
@@ -168,9 +222,7 @@ fn links(text: &str) -> Vec<String> {
     };
     for tail in text.split("[[").skip(1) {
         if let Some((target, _)) = tail.split_once("]]") {
-            // `[[note|shown as this]]` and `[[note#heading]]` both name `note`.
-            let target = target.split(['|', '#']).next().unwrap_or_default();
-            push(target);
+            push(target.split(['|', '#']).next().unwrap_or_default());
         }
     }
     for tail in text.split("](").skip(1) {
@@ -181,68 +233,11 @@ fn links(text: &str) -> Vec<String> {
     found
 }
 
-/// Resolves a link target against the folder holding the file that wrote it.
-///
-/// `..` is popped here rather than left to the filesystem, because a fold in
-/// `research/L2/` naturally links a note as `../L1/paper.md`, and a path still
-/// carrying that segment matches nothing against the relative paths the rest
-/// of this module works in.
-fn resolve(folder: &str, target: &str) -> String {
-    let mut parts: Vec<&str> = folder.split('/').filter(|part| !part.is_empty()).collect();
-    for part in target.split('/') {
-        match part {
-            "" | "." => {}
-            ".." => {
-                parts.pop();
-            }
-            part => parts.push(part),
-        }
-    }
-    parts.join("/")
-}
-
-/// The notes a node links, resolved against the folder holding it.
-///
-/// A wikilink carries a bare note name and Obsidian resolves it anywhere in
-/// the vault, so a target that does not exist beside the node is searched for
-/// among `candidates` before being discarded.
-fn linked_children(workspace: &Path, node: &str, candidates: &[String]) -> Vec<String> {
-    let folder = node.rsplit_once('/').map_or("", |(folder, _)| folder);
-    let Ok(text) = fs::read_to_string(workspace.join(node)) else {
-        return Vec::new();
-    };
-    let mut found = Vec::new();
-    for target in links(&text) {
-        let beside = resolve(folder, &target);
-        let resolved = if workspace.join(&beside).is_file() {
-            Some(beside)
-        } else {
-            let name = target.rsplit('/').next().unwrap_or(&target);
-            let name = match Path::new(name).extension() {
-                Some(extension) if extension.eq_ignore_ascii_case("md") => name.to_string(),
-                // A wikilink drops the extension by convention, so a bare
-                // note name is the common case rather than the odd one.
-                _ => format!("{name}.md"),
-            };
-            candidates
-                .iter()
-                .find(|candidate| candidate.ends_with(&format!("/{name}")))
-                .cloned()
-        };
-        if let Some(resolved) = resolved
-            && !found.contains(&resolved)
-        {
-            found.push(resolved);
-        }
-    }
-    found
-}
-
 /// Notes written since the parent was.
 fn changed_since(workspace: &Path, parent: &str, children: &[String]) -> Vec<String> {
     let Some(sealed) = modified(workspace, parent) else {
-        // A parent that does not exist yet is behind every note it should
-        // cover, which is the strongest form of the same fault.
+        // A parent that does not exist yet is behind everything it covers,
+        // which is the strongest form of the same fault.
         return children.to_vec();
     };
     children
@@ -252,88 +247,79 @@ fn changed_since(workspace: &Path, parent: &str, children: &[String]) -> Vec<Str
         .collect()
 }
 
-/// The levels of one tree, shallowest first, with the notes at each.
-///
-/// A flat folder counts as `L1`. Every workspace started flat and several are
-/// running now; a planner that saw only `L1/` would report a library of
-/// thirteen sources as empty and quietly stop maintaining it.
-fn levels(workspace: &Path, root: &str) -> Vec<(usize, Vec<String>)> {
-    let mut found = Vec::new();
-    let flat = notes(workspace, root);
-    if !flat.is_empty() {
-        found.push((1, flat));
-    }
-    for level in 0..=MAX_LEVEL {
-        let at = notes(workspace, &level_dir(root, level));
-        if at.is_empty() {
-            continue;
-        }
-        match found.iter_mut().find(|(existing, _)| *existing == level) {
-            Some((_, notes)) => notes.extend(at),
-            None => found.push((level, at)),
-        }
-    }
-    found.sort_by_key(|(level, _)| *level);
-    found
-}
-
 /// Works out what the trees need, highest priority first.
 ///
-/// Budget comes before structure and structure before freshness: a node over
-/// budget charges every model call in every role that reads it, an outgrown
-/// level cannot be brought under budget without first being split, and a node
-/// merely behind its children is still true as far as it goes.
+/// Budget first, then sealing, then freshness: a node over budget charges
+/// every model call in every role that reads it; an unsealed batch is work the
+/// tree is waiting on before it can compress at all; and a node merely behind
+/// what it covers is still true as far as it goes.
 pub(super) fn plan(workspace: &Path) -> Vec<Task> {
     let mut over_budget = Vec::new();
-    let mut unfolded = Vec::new();
+    let mut unsealed = Vec::new();
     let mut stale = Vec::new();
 
-    let context = Node {
+    let mut nodes = vec![Node {
         path: CONTEXT_FILE.to_string(),
         tokens: tokens(workspace, CONTEXT_FILE),
         children: ROOTS
             .iter()
-            .map(|root| format!("{root}/{INDEX_FILE}"))
-            .filter(|index| workspace.join(index).is_file())
+            .map(|root| format!("{root}/{ROOT_FILE}"))
+            .filter(|root| workspace.join(root).is_file())
             .collect(),
-    };
-    let mut nodes = vec![context];
+    }];
 
     for root in ROOTS {
-        let levels = levels(workspace, root);
-        let Some((top, top_notes)) = levels.last() else {
+        let batches = batches(workspace, root);
+        if batches.is_empty() {
             continue;
-        };
-        // The index folds the highest level present; everything below is
+        }
+        let top = batches
+            .iter()
+            .map(|(level, _, _)| *level)
+            .max()
+            .unwrap_or_default();
+        let top_notes: Vec<String> = batches
+            .iter()
+            .filter(|(level, _, _)| *level == top)
+            .flat_map(|(_, _, folder)| notes(workspace, folder))
+            .collect();
+
+        // The root folds the highest level present; everything below it is
         // reached through it.
         nodes.push(Node {
-            path: format!("{root}/{INDEX_FILE}"),
-            tokens: tokens(workspace, &format!("{root}/{INDEX_FILE}")),
-            children: top_notes.clone(),
+            path: format!("{root}/{ROOT_FILE}"),
+            tokens: tokens(workspace, &format!("{root}/{ROOT_FILE}")),
+            children: top_notes,
         });
-        if top_notes.len() > FANOUT {
-            unfolded.push(Task {
-                node: Node {
-                    path: level_dir(root, *top),
-                    tokens: 0,
-                    children: top_notes.clone(),
-                },
-                fault: Fault::Unfolded(level_dir(root, top + 1)),
-            });
-        }
-        // `L0` holds originals: never rewritten, never folded, exempt from the
-        // cap that every level above it is held to.
-        for (level, at) in levels.iter().filter(|(level, _)| *level > 0) {
-            let below = levels
-                .iter()
-                .rfind(|(under, _)| under < level)
-                .map(|(_, notes)| notes.clone())
-                .unwrap_or_default();
-            for note in at {
-                nodes.push(Node {
+
+        for (level, batch, folder) in &batches {
+            let held = notes(workspace, folder);
+            // Level 0 holds originals: never rewritten, never folded, exempt
+            // from the cap every level above it is held to.
+            if *level > 0 {
+                nodes.extend(held.iter().map(|note| Node {
                     path: note.clone(),
                     tokens: tokens(workspace, note),
-                    children: linked_children(workspace, note, &below),
+                    children: linked(workspace, note),
+                }));
+            }
+            if held.len() < FANOUT {
+                continue;
+            }
+            // A full batch is sealed by one note, one level up, named for it.
+            let summary = format!(
+                "{root}/{}/{}.md",
+                batch_dir(level + 1, open_batch(workspace, root, level + 1)),
+                batch_dir(*level, *batch)
+            );
+            if !workspace.join(&summary).is_file() {
+                unsealed.push(Task {
+                    node: Node {
+                        path: folder.clone(),
+                        tokens: 0,
+                        children: held,
+                    },
+                    fault: Fault::Unsealed { summary },
                 });
             }
         }
@@ -360,9 +346,43 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
         }
     }
 
-    over_budget.extend(unfolded);
+    over_budget.extend(unsealed);
     over_budget.extend(stale);
     over_budget
+}
+
+/// The notes a fold links, resolved against the tree holding it.
+///
+/// A wikilink carries a bare note name and Obsidian resolves it anywhere in
+/// the vault, so the whole tree is searched rather than only the folder beside
+/// the fold.
+fn linked(workspace: &Path, node: &str) -> Vec<String> {
+    let Some((root, _)) = node.split_once('/') else {
+        return Vec::new();
+    };
+    let Ok(text) = fs::read_to_string(workspace.join(node)) else {
+        return Vec::new();
+    };
+    let candidates: Vec<String> = batches(workspace, root)
+        .iter()
+        .flat_map(|(_, _, folder)| notes(workspace, folder))
+        .collect();
+    let mut found = Vec::new();
+    for target in links(&text) {
+        let name = target.rsplit('/').next().unwrap_or(&target);
+        let name = match Path::new(name).extension() {
+            Some(extension) if extension.eq_ignore_ascii_case("md") => name.to_string(),
+            _ => format!("{name}.md"),
+        };
+        if let Some(hit) = candidates
+            .iter()
+            .find(|candidate| candidate.ends_with(&format!("/{name}")))
+            && !found.contains(hit)
+        {
+            found.push(hit.clone());
+        }
+    }
+    found
 }
 
 /// Renders the highest-priority task as an instruction, if there is one.
@@ -373,16 +393,17 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
 pub(super) fn briefing(workspace: &Path) -> Option<String> {
     let task = plan(workspace).into_iter().next()?;
     let node = &task.node;
-    let mut out = String::from(
-        "Before anything else, this cycle's job is the summary tree. `L0/` holds \
-         originals and is never edited; each level above it holds one note per ten \
-         notes below, capped at ",
-    );
+    let mut out = String::new();
     let _ = write!(
         out,
-        "{NODE_TOKENS} tokens, and `INDEX.md` is the root. Link what a note covers \
-         with Obsidian wikilinks — `[[note-name]]` — so what a fold leaves out stays \
-         one step away instead of being lost.\n\n"
+        "Before anything else, this cycle's job is the summary tree. Originals sit in \
+         `L0.<n>/` and are never edited. A batch holds at most {FANOUT} notes; when it \
+         fills, one note a level up seals it — named for the batch it covers — and that \
+         note is never revisited. Every node above level 0 is capped at {NODE_TOKENS} \
+         tokens and wikilinks what it covers, `[[note-name]]`, so what a fold leaves out \
+         stays one step away. `ROOT.md` is the top of the tree; `INDEX.md` beside it is \
+         the file table, maintained by describe_file and refresh_index, and is not yours \
+         to write.\n\n"
     );
     match &task.fault {
         Fault::OverBudget => {
@@ -390,25 +411,23 @@ pub(super) fn briefing(workspace: &Path) -> Option<String> {
                 out,
                 "`{}` is about {} tokens, over the {NODE_TOKENS}-token cap, and is \
                  re-sent on every model call in every role that reads it. Rewrite it \
-                 under the cap this cycle: merge notes that say the same thing, drop \
-                 what later work has settled, and keep the statements and their \
-                 consequences rather than the narrative. Whatever you cut, leave a \
-                 wikilink to the note that still holds it — that is what makes the cut \
-                 safe. Gather nothing new until it fits.",
+                 under the cap this cycle: merge what says the same thing, drop what \
+                 later work has settled, and keep the statements and their consequences \
+                 rather than the narrative. Whatever you cut, leave a wikilink to the \
+                 note that still holds it. Gather nothing new until it fits.",
                 node.path, node.tokens,
             );
         }
-        Fault::Unfolded(next) => {
-            let needed = node.children.len().div_ceil(FANOUT);
+        Fault::Unsealed { summary } => {
             let _ = write!(
                 out,
-                "`{}` now holds {} notes, more than the {FANOUT} one node may cover. \
-                 Group them by subject into {needed} fold notes under `{next}/`, named \
-                 for the subject each covers. Every fold says what its notes together \
-                 establish, stays under {NODE_TOKENS} tokens, and wikilinks each note \
-                 it covers. Then rewrite the index above them as a fold of those, \
-                 linking each. The notes are:\n{}",
+                "`{}` is full at {} notes and is waiting to be sealed. Write `{summary}`: \
+                 one note saying what those {} together establish, under {NODE_TOKENS} \
+                 tokens, wikilinking each. Seal it once and do not revisit it — a batch \
+                 summarised repeatedly drifts from what it covers. Then bring `ROOT.md` \
+                 up to date with what the tree now says. The batch holds:\n{}",
                 node.path,
+                node.children.len(),
                 node.children.len(),
                 list(&node.children),
             );
@@ -417,7 +436,7 @@ pub(super) fn briefing(workspace: &Path) -> Option<String> {
             let _ = write!(
                 out,
                 "`{}` has not been rewritten since {} of the notes below it changed. \
-                 Refold it so it says what they now establish, under {NODE_TOKENS} \
+                 Rewrite it so it says what they now establish, under {NODE_TOKENS} \
                  tokens, wikilinking each note it covers. Changed:\n{}",
                 node.path,
                 changed.len(),

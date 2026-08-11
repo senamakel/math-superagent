@@ -9,6 +9,22 @@ it finishes within ~5 min.  Second independent method (brute2.py):
 Q(n) = sum_pi (n!/ord(pi)) * sum_{tau in <pi>} rank(tau), ord = lcm of cycle lengths,
 <pi> = distinct powers.  Verify agreement n=2..6 (will compare 2..7).  Report both.
 
+## DONE — task12.py (chain oracle + A/B/tables, 18 Sep 2025)
+Chain verified: Q(n)=(n!)^2+A(n!-1)+(B/2)T with A=f(0), B=f(1)-f(0) from
+out/extend_f.json via solution.q_from_ab:
+  n=10: Q mod p = 468421536 == statement oracle  [OK]
+  n=6:  133103808 == brute value               [OK]
+  n=8:  798047424 == brute value               [OK]
+So the whole reduction + extend_f.json n=10 row reproduces the statement's
+Q(10) mod p.  Full A_n/B_n/c_n table and prime factorizations printed
+(the c_n=(|B|/(n-1)!) integer only for n>=6: 30,290,2464,23130,235080,2728368).
+
+## DONE — task3.py (n=12/13 wall, method2 reuse), 18 Sep 2025
+f_n_method2 (verify_f_method2.py) enumerates all n! perms → wall ~ n! * const.
+Measured n=10 at 24.6s → extrapolate n=11 ~4.5min, n=12 ~54min, n=13 ~12h.
+No faster cycle-type method is written, so n=12/13 SKIPPED (would exceed the
+few-minute budget).  Report wall instead.
+
 ## Current sub-task (extend_f.py)
 Compute f_n(k) = #{(pi,i): 0<=i<n!, (pi^i)(k) < (pi^i)(0)} for n=2..11,
 0-based, period formula, row j=0 only, exact ints, no mod.  Save to

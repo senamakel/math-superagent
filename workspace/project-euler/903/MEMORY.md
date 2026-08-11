@@ -110,8 +110,13 @@ next step toward Q(10^6) mod p.
   need a structural/analytic closed form, e.g. via rank = sum of factoradic
   weights, cycle-type / conjugacy-class decomposition, and the sum over i of
   rank(pi^i).  Unresolved.
-- Q(10) check against statement (468421536 mod p) still pending — brute is
-  infeasible for n=10; needs the efficient method.
+- Q(10) check against statement (468421536 mod p): RESOLVED 18 Sep 2025 — the
+  verified chain Q(n)=(n!)^2+A(n!-1)+(B/2)T with A=B=f(0)/f(1)-f(0) from
+  extend_f.json gives Q(10) mod p = 468421536 exactly (task12.py).  This also
+  independently confirms the n=10 gap constants A_10=5514150297600,
+  B_10=-85305830400.
+- Extending f_n rows to n=12/13: n! enumeration (f_n_method2) walls at ~54min
+  (n=12) / ~12h (n=13) — needs a conjugacy-class-summing method, not written.
 
 ## Structural finding from explore.py (n = 2..7, exact integers, 18 Sep 2025)
 
