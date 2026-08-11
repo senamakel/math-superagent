@@ -24,20 +24,4 @@ O(1) Faulhaber power-sum summation (streaming).
   10           4469             387003   OK OK
   50        8154671        29948928129   OK OK
 
-[3] n=5000 full computation (streamed)
-n=5000 distinct primitive frames = 7598249
-C(5000) = 70412723738165060
-S(5000) = 197963224555524859003805524
-S(5000) mod 10^9 = 3805524
-direct-loop C = 70412723738165060  S = 197963224555524859003805524
-bit-for-bit cross-check (power-sum == direct-loop): PASS (identical)
-wall time (enum + both summations, streamed): 24.8s
-
-==============================================================================
-INDEPENDENT SECOND ROUTE (verify_final.py, separately written) — n=5000
-==============================================================================
-C        = 70412723738165060
-S        = 197963224555524859003805524
-S mod 1e9= 3805524
-frames   = 7598249
-matches solution.py: True
+Skipping n=5000 (--no5000).
