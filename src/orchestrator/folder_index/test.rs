@@ -110,16 +110,23 @@ async fn the_workspace_root_can_be_refreshed_by_every_spelling_of_itself() -> Re
     // `.` to the empty string, and the folder listing turned it straight back
     // into `.`, which the path checker refuses as traversal. Every spelling an
     // agent standing in /workspace would reach for has to mean the same folder.
-    let root = workspace("root-refresh")?;
+    let root = std::env::temp_dir().join(format!("math-agent-root-refresh-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("temporary workspace is creatable");
+    let root = root.canonicalize().expect("workspace resolves");
     std::fs::write(root.join("solution.py"), "print(1)").expect("a file is writable");
-    let documents = WorkspaceDocuments::new(root.clone())?;
+    let documents = super::super::documents::WorkspaceDocuments::new(root.clone())?;
+    let tools = super::FolderIndexTool::all(&documents);
+    let tool = tools
+        .iter()
+        .find(|tool| tool.name() == "refresh_index")
+        .expect("refresh_index is registered");
 
     for spelling in [".", "", "/workspace", "workspace", "./"] {
-        let tool = FolderIndexTool::new(IndexToolKind::Refresh, &documents);
         let result = tool
             .call(
                 &(),
-                ToolCall {
+                crate::agent::ToolCall {
                     id: "call-1".into(),
                     name: "refresh_index".into(),
                     invalid: None,
