@@ -364,9 +364,29 @@ where
                 // A message waiting skips the wait entirely. The point is to
                 // stop idle churn, not to delay a request that has already
                 // arrived.
-                Cycle::Worked | Cycle::Idle => {
+                // Both outcomes can wait, but not for the same reason, and
+                // conflating them is a regression: a team that worked has more
+                // to do, so only the rate floor applies to it. A team that
+                // found nothing has nothing to come back to yet, so it waits
+                // at least the idle interval.
+                //
+                // Pacing the worked branch alone was measured and was not
+                // enough. A custodial team reporting "nothing to tidy" takes
+                // the *idle* branch, so the one case most in need of a floor
+                // was the one escaping it: two live teams ran a cycle every 66
+                // and 108 seconds against a three-minute floor, while a third
+                // — which happened to be reporting work — was paced correctly.
+                //
+                // A message waiting skips the wait entirely either way. The
+                // point is to stop idle churn, not to delay a request that has
+                // already arrived.
+                outcome => {
                     if idle {
-                        let floor = IDLE_BACKOFF.max(budget.min_interval);
+                        let floor = if outcome == Cycle::Idle {
+                            IDLE_BACKOFF.max(budget.min_interval)
+                        } else {
+                            budget.min_interval
+                        };
                         if let Some(remaining) = floor.checked_sub(cycle_started.elapsed()) {
                             tokio::time::sleep(remaining).await;
                         }
