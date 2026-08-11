@@ -429,6 +429,11 @@ def main() -> int:
         action="store_true",
         help="open the tabs on the existing log without starting or continuing a run",
     )
+    parser.add_argument(
+        "--attach",
+        action="store_true",
+        help="only attach to a run already going; fail rather than start one",
+    )
     parser.add_argument("extra", nargs="*", help="extra instructions for the run")
     arguments = parser.parse_args()
 
