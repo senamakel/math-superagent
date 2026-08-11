@@ -29,6 +29,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://oeis.org/A007578 | A007578 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A007579 | A007579 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A007678 | A007678 | cross-referenced from A001006 |
+| 1 | https://oeis.org/A007901 | A007901 | cross-referenced from A007902 |
 | 1 | https://oeis.org/A007971 | A007971 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A010892 | A010892 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A014137 | A014137 | cross-referenced from A086246 |
@@ -45,6 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://oeis.org/A049401 | A049401 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A054726 | A054726 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A064189 | A064189 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A064191 | A064191 | cross-referenced from A001006 |
 
-_29 further candidates not shown; they are cited once each._
+_30 further candidates not shown; they are cited once each._
