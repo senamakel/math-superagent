@@ -1877,8 +1877,16 @@ impl Tool<()> for WriteToolFile {
     }
 
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
-        let relative = string_argument(&call, "path")?;
+        let requested = string_argument(&call, "path")?;
         let content = string_argument(&call, "content")?;
+        // Placement is decided here, as it is for `write_document` and an
+        // `apply_patch` addition. This tool was the hole in that: it wrote
+        // wherever it was asked, so `write_tool_file` with `path: "brute.py"`
+        // put a program at the workspace root while the layout was enforced on
+        // every other write path. A live run did exactly that within four
+        // minutes of starting, and left two different `brute.py` files — one
+        // filed, one loose — with nothing to say which was current.
+        let relative = layout::placed(&requested);
         let path = checked_workspace_path(&self.workspace, &relative)?;
         let parent = path.parent().ok_or_else(|| {
             tinyagents::TinyAgentsError::Validation("file path has no parent".into())
