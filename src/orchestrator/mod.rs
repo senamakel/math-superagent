@@ -398,11 +398,12 @@ impl OrchestratorAgent {
     /// and says so while the others carry on.
     fn spawn_support_teams(&self, problem: &str) -> Vec<teams::TeamHandle> {
         let mut handles = Vec::new();
-        for (name, agent, completion, brief) in [
+        for (name, agent, completion, budget, brief) in [
             (
                 "research",
                 "librarian",
                 teams::Completion::Attainable,
+                teams::TeamBudget::acquiring(),
                 "Enrich this run's reference library. Find one source the workspace does not \
                  already have that bears on the problem, file it under research/, and describe \
                  it. Consult research/INDEX.md first and do not fetch what is already there. \
@@ -414,6 +415,7 @@ impl OrchestratorAgent {
                 "background",
                 "organizer",
                 teams::Completion::Standing,
+                teams::TeamBudget::custodial(),
                 "Keep the workspace navigable. Refresh the folder indexes so they match what is \
                  on disk, describe any file that has no description, and leave reflections/ \
                  alone — the loop writes that itself. Change nothing a result or derivation \
@@ -428,7 +430,7 @@ impl OrchestratorAgent {
             let prompt = format!("{brief}\n\nProblem this run is solving:\n{problem}");
             handles.push(teams::spawn(
                 name,
-                teams::TeamBudget::support(),
+                budget,
                 Some(self.tracer.clone()),
                 Some(self.workspace.clone()),
                 move |inbox: Vec<teams::TeamMessage>| {

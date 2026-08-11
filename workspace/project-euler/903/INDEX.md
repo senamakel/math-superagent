@@ -10,6 +10,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `aj2.py` | Exploratory: computes A_j(n) = sum over i, pi of c_j(pi^i) for n=2..8 (Lehmer route, orbit-walk optimized) and reconstructs Q = n!^2 + sum_j (n-j)!*A_j; faster successor to aj.py for the A_j table |
 | `aj3.py` | Computes M_j (Lehmer-coefficient power sums) for n=9,10 to extend the f_n(k)=A_n-B_n(k-1) data for closed-form fitting. |
 | `ana.py` | Exploratory exact-rational analysis of the gap constants A_n, B_n (n=2..11) hunting a closed form for f_n(k)=A_n+(k-1)B_n; complements seqfit.py and fit*.py. |
+| `ana2.py` | Exploratory exact-rational analysis (successor to ana.py) of ratios A_{n+1}/ |
 | `brute.py` | Method-1 oracle: literal double sum Q(n) = sum over pi of sum_{i} rank(pi^i) by walking every power. O((n!)^2), exact; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(6)=133103808. Writes results.json |
 | `brute2.py` | Method-2 oracle (independent): Q(n) = sum over pi of (n!/ord(pi)) * sum over tau in <pi> of rank(tau), using periodicity d = ord(pi) = lcm of cycle lengths. Cross-validates brute.py for n=2..7. Writes results2.json |
 | `config.toml` | Run configuration: workspace kind, solver flags (exact arithmetic, verify with code, cite sources, forbid exponential), artifact file paths |

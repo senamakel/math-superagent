@@ -80,14 +80,39 @@ pub(super) struct TeamBudget {
     pub(super) max_cycles: u64,
     /// Wall clock the team may occupy, from its first cycle.
     pub(super) wall_clock: Duration,
+    /// Shortest time between the starts of two cycles.
+    ///
+    /// The floor exists because the workspace fingerprint below cannot carry
+    /// the whole job. It detects a cycle that changed nothing, but only when
+    /// nothing else changed either — and teams run concurrently with the
+    /// solver, so somebody has usually written a file while a cycle was
+    /// running. A custodial team measured at 1.35 cycles a minute produced 20
+    /// reads, 12 listings, four index refreshes and no descriptions, and the
+    /// fingerprint believed every one of them because the solver was busy
+    /// underneath.
+    ///
+    /// Rate is the honest bound for work that is never finished: filing does
+    /// not need doing every forty-five seconds, and a floor costs nothing when
+    /// there is genuinely something to file.
+    pub(super) min_interval: Duration,
 }
 
 impl TeamBudget {
-    /// A support team's default allowance.
-    pub(super) const fn support() -> Self {
+    /// An acquisitive team's allowance: it terminates, so it may go flat out.
+    pub(super) const fn acquiring() -> Self {
         Self {
             max_cycles: 40,
             wall_clock: Duration::from_mins(90),
+            min_interval: Duration::ZERO,
+        }
+    }
+
+    /// A custodial team's allowance, paced because its work never ends.
+    pub(super) const fn custodial() -> Self {
+        Self {
+            max_cycles: 40,
+            wall_clock: Duration::from_mins(90),
+            min_interval: Duration::from_mins(3),
         }
     }
 }
@@ -301,6 +326,7 @@ where
                 inbox.push(message);
             }
             let idle = inbox.is_empty();
+            let cycle_started = Instant::now();
             // Counted before the cycle runs, not after. Counting after means a
             // team that finishes or is cancelled during its first cycle
             // reports having run none, which reads as a team that never
@@ -324,7 +350,15 @@ where
             }
             match outcome {
                 Cycle::Finished => break TeamExit::Done,
-                Cycle::Worked => {}
+                Cycle::Worked => {
+                    // Pace a team whose work never finishes. A message waiting
+                    // skips the wait: the point is to stop idle churn, not to
+                    // delay a request that has already arrived.
+                    let elapsed = cycle_started.elapsed();
+                    if idle && elapsed < budget.min_interval {
+                        tokio::time::sleep(budget.min_interval - elapsed).await;
+                    }
+                }
                 Cycle::Idle => {
                     // Only sleep when there was genuinely nothing waiting.
                     // Backing off with a full inbox would delay the message

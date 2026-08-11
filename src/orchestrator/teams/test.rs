@@ -11,6 +11,7 @@ fn budget(max_cycles: u64, wall_clock: Duration) -> TeamBudget {
     TeamBudget {
         max_cycles,
         wall_clock,
+        min_interval: Duration::ZERO,
     }
 }
 
