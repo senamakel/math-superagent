@@ -37,6 +37,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2/mechanism_pair_inversions.md` | _(undescribed)_ |
 | `L2/order_random_permutation.md` | _(undescribed)_ |
 | `L2/rank_lehmer.md` | _(undescribed)_ |
+| `L2/report_A_n_B_n_closed_forms_sources.md` | Synthesis of all located sources giving the per-gap affine pair-inversion probabilities (Campion-Loth Lemma 4.7, Pinsky-Schickentanz Thm 1a/Prop 10a, Pinsky EJC P2.36), the fixed-point/cycle-type summation machinery (Ford), and the Eulerian-polynomial per-gap k-step inversion distribution (Sack-Ulfarsson Thm 4.4) — the concrete routes to closed forms for A_n and B_n in f_n(k)=A_n+(k-1)B_n. Records the clean-negative finding that no source gives the cyclic-subgroup rank-sum. |
 | `L2/reports_negatives.md` | _(undescribed)_ |
 | `verify_cambie_yan.py` | Verification script: checks Cambie-Yan (2408.01211) Thms 1.1/1.2 expected-descents/inversions formulas vs direct enumeration n=3..7; checks the f_n(k) gap-affinity from extend_f.json; and re-measures per-gap pair-inversion probabilities under the random-power law n=5..7 |
 | `verify_facts.py` | Verification oracle: literal rank(pi^i) double-sum Q(n) for reachable n, plus the rank-statistics check sum of all 1-based ranks = n!(n!+1)/2; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88 |
