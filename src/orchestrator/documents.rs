@@ -1,6 +1,7 @@
 //! Bounded tools for workspace documents and a local searchable index.
 
 use std::cmp::Reverse;
+use std::fmt::Write as _;
 use std::path::PathBuf;
 use std::sync::Arc;
 
@@ -129,6 +130,44 @@ impl WorkspaceDocuments {
         })
     }
 
+    /// Renders a bounded directory tree under `relative`.
+    ///
+    /// Agents were previously told file names in their prompts and had to
+    /// guess anything else, so work already on disk went unread. Sizes are
+    /// included because they are what distinguishes a finished derivation from
+    /// an empty placeholder.
+    async fn list(&self, relative: &str, depth: usize) -> Result<String> {
+        let root = if relative == "." || relative.is_empty() {
+            self.workspace.clone()
+        } else {
+            self.path(relative)?
+        };
+        if !root.is_dir() {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "`{relative}` is not a directory in the workspace"
+            )));
+        }
+        let mut lines = Vec::new();
+        let mut truncated = false;
+        walk(&root, &root, depth, &mut lines, &mut truncated).await?;
+        lines.sort();
+        let mut out = format!("{} (depth {depth})\n", display_root(relative));
+        if lines.is_empty() {
+            out.push_str("  (empty)\n");
+        }
+        for line in &lines {
+            out.push_str(line);
+            out.push('\n');
+        }
+        if truncated {
+            let _ = write!(
+                out,
+                "  [listing truncated at {MAX_LISTING_ENTRIES} entries; narrow the path or depth]"
+            );
+        }
+        Ok(out)
+    }
+
     async fn indexed_paths(&self) -> Result<Vec<String>> {
         let path = self.workspace.join(INDEX_PATH);
         let bytes = match tokio::fs::read(path).await {
@@ -217,6 +256,61 @@ fn needs_conversion(relative: &str, bytes: &[u8]) -> bool {
     [".html", ".htm", ".xhtml", ".pdf"]
         .iter()
         .any(|extension| lowered.ends_with(extension))
+}
+
+/// Recursively lists `directory`, appending one formatted line per entry.
+fn walk<'a>(
+    root: &'a std::path::Path,
+    directory: &'a std::path::Path,
+    depth: usize,
+    lines: &'a mut Vec<String>,
+    truncated: &'a mut bool,
+) -> std::pin::Pin<Box<dyn Future<Output = Result<()>> + Send + 'a>> {
+    Box::pin(async move {
+        if depth == 0 || *truncated {
+            return Ok(());
+        }
+        let mut entries = match tokio::fs::read_dir(directory).await {
+            Ok(entries) => entries,
+            // An unreadable directory is reported as absent rather than
+            // failing the whole listing.
+            Err(_) => return Ok(()),
+        };
+        while let Ok(Some(entry)) = entries.next_entry().await {
+            if lines.len() >= MAX_LISTING_ENTRIES {
+                *truncated = true;
+                return Ok(());
+            }
+            let name = entry.file_name().to_string_lossy().into_owned();
+            if HIDDEN_ENTRIES.contains(&name.as_str()) {
+                continue;
+            }
+            let path = entry.path();
+            let Ok(relative) = path.strip_prefix(root) else {
+                continue;
+            };
+            let shown = relative.to_string_lossy();
+            let Ok(metadata) = entry.metadata().await else {
+                continue;
+            };
+            if metadata.is_dir() {
+                lines.push(format!("  {shown}/"));
+                walk(root, &path, depth - 1, lines, truncated).await?;
+            } else {
+                lines.push(format!("  {shown} ({} bytes)", metadata.len()));
+            }
+        }
+        Ok(())
+    })
+}
+
+/// Renders the heading for a listing root.
+fn display_root(relative: &str) -> String {
+    if relative == "." || relative.is_empty() {
+        "/workspace".to_string()
+    } else {
+        format!("/workspace/{}", relative.trim_start_matches('/'))
+    }
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -393,6 +487,22 @@ impl Tool<()> for DocumentTool {
             DocumentToolKind::Search => json!({
                 "type": "object", "properties": { "query": { "type": "string" } },
                 "required": ["query"], "additionalProperties": false
+            }),
+            DocumentToolKind::List => json!({
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Relative directory below /workspace. Defaults to the root."
+                    },
+                    "depth": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 6,
+                        "description": "How many directory levels to descend. Defaults to 3."
+                    }
+                },
+                "additionalProperties": false
             }),
         };
         ToolSchema::new(self.name(), self.description(), schema)
