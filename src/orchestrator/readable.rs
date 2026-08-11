@@ -236,34 +236,34 @@ fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
             ("br", _) => out.push('\n'),
             ("hr", _) => out.push_str("\n\n---\n\n"),
             ("p" | "div" | "section" | "article" | "tr" | "blockquote", _) => {
-                ensure_blank_line(&mut out);
+                ensure_blank_line(out);
             }
             ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", false) => {
-                ensure_blank_line(&mut out);
+                ensure_blank_line(out);
                 let level = name[1..].parse::<usize>().unwrap_or(1);
                 let _ = write!(out, "{} ", "#".repeat(level.clamp(1, 6)));
             }
 
             ("ul", false) => {
-                ensure_blank_line(&mut out);
-                list_stack.push(None);
+                ensure_blank_line(out);
+                ctx.list_stack.push(None);
             }
             ("ol", false) => {
-                ensure_blank_line(&mut out);
-                list_stack.push(Some(1));
+                ensure_blank_line(out);
+                ctx.list_stack.push(Some(1));
             }
             ("ul" | "ol", true) => {
-                list_stack.pop();
-                ensure_blank_line(&mut out);
+                ctx.list_stack.pop();
+                ensure_blank_line(out);
             }
             ("li", false) => {
-                trim_trailing_spaces(&mut out);
+                trim_trailing_spaces(out);
                 if !out.ends_with('\n') {
                     out.push('\n');
                 }
-                let depth = list_stack.len().saturating_sub(1);
+                let depth = ctx.list_stack.len().saturating_sub(1);
                 out.push_str(&"  ".repeat(depth));
-                match list_stack.last_mut() {
+                match ctx.list_stack.last_mut() {
                     Some(Some(counter)) => {
                         let _ = write!(out, "{counter}. ");
                         *counter += 1;
@@ -272,23 +272,23 @@ fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
                 }
             }
             ("pre", false) => {
-                ensure_blank_line(&mut out);
+                ensure_blank_line(out);
                 out.push_str("```\n");
-                in_pre = true;
+                *ctx.in_pre = true;
             }
             ("pre", true) => {
-                in_pre = false;
+                *ctx.in_pre = false;
                 if !out.ends_with('\n') {
                     out.push('\n');
                 }
                 out.push_str("```\n\n");
             }
-            ("code", _) if !in_pre => out.push('`'),
+            ("code", _) if !*ctx.in_pre => out.push('`'),
             ("strong" | "b", _) => out.push_str("**"),
             ("em" | "i", _) => out.push('*'),
             ("td" | "th", true) => out.push_str(" | "),
             ("table", _) | ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", true) => {
-                ensure_blank_line(&mut out);
+                ensure_blank_line(out);
             }
             ("img", false) => {
                 if let Some(alt) = attribute(raw, "alt")
@@ -302,15 +302,15 @@ fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
                     && !href.starts_with('#')
                     && !href.starts_with("javascript:")
                 {
-                    link_target = Some(href);
-                    link_text.clear();
+                    *ctx.link_target = Some(href);
+                    ctx.link_text.clear();
                 }
             }
             ("a", true) => {
-                if let Some(href) = link_target.take() {
-                    let label = link_text.trim().to_string();
-                    let reference = table.reference(&href);
-                    if needs_space(&out, "[") {
+                if let Some(href) = ctx.link_target.take() {
+                    let label = ctx.link_text.trim().to_string();
+                    let reference = ctx.table.reference(&href);
+                    if needs_space(out, "[") {
                         out.push(' ');
                     }
                     if label.is_empty() {
@@ -318,20 +318,11 @@ fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
                     } else {
                         let _ = write!(out, "[{label}][{reference}]");
                     }
-                    link_text.clear();
+                    ctx.link_text.clear();
                 }
             }
             _ => {}
-        }
     }
-    if link_target.is_some() {
-        // An anchor that never closed: keep its text rather than losing it.
-        flush_text(&mut link_text, &mut pending_text, in_pre);
-        out.push_str(link_text.trim());
-    } else {
-        flush_text(&mut out, &mut pending_text, in_pre);
-    }
-    out
 }
 
 /// Query parameters that carry no meaning and cost tokens.
