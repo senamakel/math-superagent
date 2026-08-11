@@ -1128,7 +1128,7 @@ fn build_tool_builder_harness(
     // Diff-shaped editing, for the role that actually writes code. A patch
     // changes a few lines instead of re-emitting the file, and carries a
     // change across several files in one atomic call — which is what keeps a
-    // helper under `code/toolkits/` and its row in `code/lib/INDEX.md` from
+    // helper under `code/lib/` and its row in `code/lib/INDEX.md` from
     // drifting apart.
     register_resilient(&mut harness, patch::tool(documents.clone()));
     harness

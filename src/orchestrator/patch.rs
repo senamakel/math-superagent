@@ -5,8 +5,8 @@
 //! change one line: a 3.5 KB script costs roughly a thousand output tokens per
 //! revision, generation time is linear in output length, and a turn that runs
 //! past the output cap is truncated and retried at double the budget. And a
-//! change that spans files — a helper in `toolkits/rle.py` plus its row in
-//! `toolkits/INDEX.md` — takes several calls, any of which can be the last one before
+//! change that spans files — a helper in `lib/rle.py` plus its row in
+//! `lib/INDEX.md` — takes several calls, any of which can be the last one before
 //! the model changes course, leaving the catalogue describing a function that
 //! does something else.
 //!
@@ -24,7 +24,7 @@
 //!  bits = []
 //! -    while a != b:
 //! +    while a != b and steps < limit:
-//! *** Add File: toolkits/rle.py
+//! *** Add File: lib/rle.py
 //! +def sbe(n): ...
 //! *** Delete File: scratch.py
 //! *** End Patch

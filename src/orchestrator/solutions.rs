@@ -633,7 +633,7 @@ async fn log_reflection(
 
 /// Records the new reflection in `reflections/INDEX.md`.
 ///
-/// The folder carries an index for the same reason `research/` and `toolkits/`
+/// The folder carries an index for the same reason `research/` and `code/lib/`
 /// do: a directory of `1786436304918_01_learnings.md` says when each attempt
 /// was judged and nothing about what any of them found, so anyone looking for
 /// the attempt that established something has to open all of them. The
