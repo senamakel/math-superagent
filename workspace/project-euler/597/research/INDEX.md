@@ -4,6 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `L0/exponential_order_statistics_memoryless_kth.full.md` | downloaded source — from https://www.math.kth.se/matstat/gru/sf2955/exponorderstats.pdf; not yet read, excerpt pending a scholar summary |
 | `L1/competing_exponential_clocks_uchicago.md` | UChicago STAT253/317 Lecture 9 (Yibi Huang): min-of-exponentials pooled rate, P(fires first)=λ_j/Σλ, memoryless property, and product-of-rate-ratios form for any specific firing order. Candidate machinery for exact chronology sums. |
 | `L1/exponential_order_statistics_memoryless_kth.md` | KTH course notes (Timo Koski): spacings of i.i.d. Exp(1) order statistics are independent exponentials with rates n,n-1,...,1 — the memoryless-order-statistics structure governing exact integration over the iid Exp(1) boat speeds in PE 597. |
 | `L1/inverse_exponential_finish_times_wikipedia.md` | Wikipedia "Inverse distribution": finish time (L−p_j)/v_j with v_j~Exp(1) is inverse-exponential (density (c/t²)e^{−c/t}, non-constant hazard) — finish events are NOT competing exponential clocks. |
