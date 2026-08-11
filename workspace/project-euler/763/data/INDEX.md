@@ -6,7 +6,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `level_10.txt` | 44499 |
 | `level_11.txt` | 151263 |
-| `level_12.txt` | 514419 |
+| `level_12.txt` | Per-config structural features for all 514419 reachable PE763 configs at N=12, written by code/amoeba_extend.py. D(12)=514419. |
 | `level_2.txt` | 3 |
 | `level_3.txt` | 9 |
 | `level_4.txt` | 30 |

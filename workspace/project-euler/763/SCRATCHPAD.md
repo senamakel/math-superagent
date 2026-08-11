@@ -20,3 +20,17 @@ cap.
 
 Earlier D(N) values: D(0..12) reproduced by both frozenset and bitmask; D(13)
 by both frozenset (~200s, MEMORY) and bitmask (6.4s).
+
+## This tool-builder task's runs
+
+- Dumped actual configs for N=3 (9 states) and N=4 (30 states), sorted, to
+  code/out/configs_n3_n4.txt and stdout (code/amoeba/configs_n3_n4.py); counts
+  asserted against D(3)=9, D(4)=30.
+- Compact per-level bit encoding (code/amoeba/bfs_more.py, W=level+1) reproduced
+  D(0..14) and independently confirmed D(14)=5949063, writing fresh complete
+  code/out/d_values_more.txt.
+- D(15) is unreachable here: cgroup memory cap is 2 GiB
+  (/sys/fs/cgroup/memory.max = 2147483648); the ~5.9M frontier at N=14 nearly
+  saturates it, and D(15) ~20M states would need ~12 GiB. The host has 30 GB
+  free but the cgroup caps the container, not the host.
+- Also removed the stray root brute.py (superseded; replica at code/brute_capped.py).
