@@ -389,9 +389,10 @@ async fn index_reflection(
         .await
         .unwrap_or_default();
     let mut entries = folder_index::parse(&existing);
-    let Some(name) = relative.rsplit('/').next() else {
-        return;
-    };
+    // Rows name the level the reflection sits in, not just the file, because
+    // the index is the root of the reflections tree rather than a listing of
+    // the folder it happens to share a name with.
+    let name = relative.strip_prefix("reflections/").unwrap_or(relative);
     let verdict = if reflection.to_uppercase().contains("VERDICT: SOLVED") {
         "solved"
     } else {
