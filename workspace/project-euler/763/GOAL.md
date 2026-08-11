@@ -1,3 +1,32 @@
 # Goal
 
-Write the current objective and observable completion criteria here.
+## Problem (Project Euler 763)
+
+Three-dimensional grid of cubes. An amoeba in cube (x,y,z) can divide into
+three amoebas occupying (x+1,y,z), (x,y+1,z), (x,y,z+1), provided those three
+cubes are all empty. The dividing amoeba disappears.
+
+- Start: one amoeba at (0,0,0).
+- Each division: the dividing amoeba is removed and three new ones appear
+  (+2 amoebas net). After N divisions there are 2N+1 amoebas.
+- D(N) = number of **distinct** arrangements (sets of occupied cubes) reachable
+  after exactly N divisions. The same arrangement reached many ways counts
+  once.
+
+## Worked examples (test oracle)
+
+- D(2) = 3
+- D(10) = 44499
+- D(20) = 9204559704
+- last nine digits of D(100) = 780166455
+
+## Target
+
+- Find D(10000), last nine digits.
+
+## Completion criteria
+
+- brute.py reproduces D(2)=3 and D(10)=44499 (done: both matched).
+- solution.py agrees with brute.py on every case brute.py can reach and
+  reproduces D(20) and the D(100) last-nine-digits example.
+- Final D(10000) verified by a second independent route.
