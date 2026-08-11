@@ -24,6 +24,21 @@
 //! its own. That is the right grain: agents differ in their prefix, so they
 //! have nothing to gain from sharing a provider, and pinning them together
 //! would make one agent's fallback evict every other agent's cache.
+//!
+//! A pin that survived a failed request would undo all of that. A provider
+//! that accepts a connection and then never answers is not "unavailable", so
+//! `allow_fallbacks` does not route around it: the retry reads the pin, asks
+//! for the same provider first, and hangs again. Three runs did exactly this
+//! at once — each sat out the full seven-minute request timeout, retried, and
+//! went straight back to the provider that had just failed to answer. So a
+//! failure hands the pin to `blocked`, and the *next* request asks
+//! `OpenRouter` to route anywhere but there.
+//!
+//! That diversion lasts exactly one request. A block held until the next
+//! success would be a slow way to strand a run: if the failure was not the
+//! provider's fault, or the model is served by that provider alone, an
+//! indefinite exclusion turns a recoverable stall into a run that cannot
+//! reach the model at all.
 
 use std::sync::Arc;
 use std::sync::RwLock;
