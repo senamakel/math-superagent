@@ -82,15 +82,24 @@ separate logging mechanism beside them.
 When changing prompts or agent behavior, keep these rules intact:
 
 1. State assumptions and define ambiguous notation.
-2. Show the main derivation or argument. Do not jump straight to the answer.
-3. Delegate external fact-finding to `research` and cite the returned sources.
-4. Delegate meaningful computation to `tool_builder`. Report the program or
+2. Understand before computing, and gather context before implementing.
+   Identify the mathematical objects involved and the theory that governs them
+   before writing full-size code.
+3. Show the main derivation or argument. Do not jump straight to the answer.
+4. Do not search the answer space. Enumerating candidates, or every object up
+   to the bound in the statement, until one matches is prohibited even when it
+   would terminate. A method whose cost grows with that bound rather than with
+   the size of the problem's description is the wrong method. Brute force is
+   for validating the real method on small instances.
+5. Delegate external fact-finding to `research` and cite the returned sources.
+6. Delegate meaningful computation to `tool_builder`. Report the program or
    command and the relevant output.
-5. Check edge cases, dimensions, signs, domains, and limiting behavior when
+7. Check edge cases, dimensions, signs, domains, and limiting behavior when
    they apply.
-6. Distinguish a proof, a numerical check, a heuristic, and a sourced claim.
-7. Say when the evidence is incomplete. Never invent a theorem, citation, or
-   computation result.
+8. Verify by a second, independent route, or say the result is unverified.
+9. Distinguish a proof, a numerical check, a heuristic, and a sourced claim.
+10. Say when the evidence is incomplete. Never invent a theorem, citation, or
+    computation result.
 
 The runtime is not a formal proof assistant. Do not describe sampled evidence or a
 floating-point experiment as proof.
