@@ -20,6 +20,7 @@ FROM debian:bookworm-slim
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends ca-certificates curl git jq python3 python3-pip \
        python3-sympy python3-numpy python3-scipy python3-gmpy2 python3-networkx \
+       python3-mpmath python3-pandas python3-matplotlib \
     && ln -s /usr/bin/python3 /usr/local/bin/python \
     && ln -s /usr/bin/pip3 /usr/local/bin/pip \
     && rm -rf /var/lib/apt/lists/* \
