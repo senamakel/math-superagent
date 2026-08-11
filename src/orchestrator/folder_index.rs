@@ -36,9 +36,22 @@ pub(super) const INDEX_FILE: &str = "INDEX.md";
 /// Placeholder for a file nobody has described yet.
 const UNDESCRIBED: &str = "_(undescribed)_";
 
+/// Normalises a folder a model named, to the form the rest of this module uses.
+///
+/// The mount point is stripped here rather than left to the path checker
+/// downstream, because a folder is allowed to be the empty string — the
+/// workspace root — and the checker rejects that as naming no file. So
+/// `workspace` has to become `""` before it gets there, not after.
+fn folder_name(requested: &str) -> String {
+    super::strip_workspace_prefix(requested)
+        .trim_start_matches("./")
+        .trim_matches('/')
+        .to_string()
+}
+
 /// Splits a path into its folder and file name.
 fn split(relative: &str) -> (String, String) {
-    let trimmed = relative.trim().trim_start_matches("./").trim_matches('/');
+    let trimmed = folder_name(relative);
     match trimmed.rsplit_once('/') {
         Some((folder, name)) => (folder.to_string(), name.to_string()),
         None => (String::new(), trimmed.to_string()),
