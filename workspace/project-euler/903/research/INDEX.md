@@ -8,7 +8,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L0.1/legendre_number_system_cyclic_shift.md` | _(undescribed)_ |
 | `L0.1/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
 | `L0.2/courtois_bard_ault_ppowers.md` | Excerpt of Courtois–Bard–Ault, "Statistics of Random Permutations and the Cryptanalysis of Periodic Block Ciphers" (arXiv:0905.3682). Downloaded but not yet curated: still an excerpt stub awaiting a scholar summary. Context: cycle-structure statistics of random permutations via generating functions; relevant only as cycle-type background, not the cyclic-subgroup rank sum. |
-| `L0.2/courtois_bard_ault_ppowers_body.md` | Statistics of Random Permutations and the Cryptanalysis Of Periodic Block Ciphers DOI: [xxx][1] — from https://ar5iv.labs.arxiv.org/html/0905.3682; not yet read, excerpt pending a scholar summary |
+| `L0.2/courtois_bard_ault_ppowers_body.md` | Summary of Courtois-Bard-Ault: cycle structure of permutation POWERS pi^k via EGFs — fixed points of pi^k = points in divisor-length cycles (count tau(k)), cycle splitting, and fixed-point-distribution EGF of pi^k; mechanism for the run's random-power pair-inversion counts behind A_n,B_n. |
 | `L0.2/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
 | `L0.2/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `L1.0/archer_geary_descents_powers.md` | _(undescribed)_ |
