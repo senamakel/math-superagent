@@ -13,6 +13,11 @@ fixpoint.
 - [[loopy]] — the skip is a self-loop in the state graph making the DP a
   fixpoint; the game is a stopper (moves strictly decrease A or B), so no
   forced tie and a finite S(n) exists.
+- [[siegel_zugzwang]] — Siegel 2009, Games of No Chance 3, *Coping with cycles*:
+  the primary, theorem-level loopy-game theory. Stoppers have canonical forms;
+  a pass is a 1-cycle (`f0|passg=over`, `fpass|=on`); **Li's zugzwang games**
+  (moving is disadvantageous) are exactly `x & y` for dyadic `x≤y` — the
+  rigorous model of our skip/pass + One's forced-1-bit zugzwang.
 
 What this yields: justification that a finite minimal skip budget S(n) exists
 and that the DP is a well-defined least fixpoint.
