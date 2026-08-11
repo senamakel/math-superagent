@@ -4,7 +4,11 @@ PE 903 reduces exactly (verify_red.py) to Q(n)=(n!)²+A_n(n!−1)+(B_n/2)T(n),
 T(n)=Σ_{m=1}^{n-1}m(m−1)m!, from proved gap-affine pair-inversion counts
 f_n(k)=A_n+(k−1)B_n. All sources are routes to A_n,B_n; NONE computes the
 rank-sum over the cyclic subgroup {π^i} (the novel core), and OEIS confirms
-A_n,B_n,Q(n) are uncatalogued. Library = [[rank_lehmer]] + [[mechanism_pair_inversions]]
+A_n,B_n,Q(n) are uncatalogued. L0.0 is sealed: [[L1.2/L0.0]] carries all ten
+originals (Cambie–Yan Thm 1.1/1.2 n≥2k+1, Archer–Geary, Campion-Loth Lemma 4.7
+gap-affine pair-inversion per conjugacy class, factoradic rank, Ford's
+factorial-moment cycle-type toolkit, homomesy framework, Gaetz–Ryba dead
+download). Library = [[rank_lehmer]] + [[mechanism_pair_inversions]]
 (core mechanism, two proofs) + [[order_random_permutation]] (weights) +
 [[cycle_type_toolkit]] (summation engine) + small-exponent
 [[cambie_yan_descents_inversions_powers]] + [[sack_ulfarsson_refined_inversion_statistics]]
