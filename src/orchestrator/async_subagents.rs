@@ -271,6 +271,36 @@ impl AsyncSubagentManager {
         Ok(task_id)
     }
 
+    /// Spawns `agent` and waits for its final text.
+    ///
+    /// The graph-backed solution loop needs a plain call-and-wait, unlike the
+    /// model-visible tools where spawning and awaiting are deliberately
+    /// separate so a model can run work in parallel.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the agent is unknown or the run failed or timed
+    /// out without producing a response.
+    pub(crate) async fn run_to_completion(&self, agent: &str, input: String) -> Result<String> {
+        let task_id = self.spawn(agent, input)?;
+        let record = self
+            .await_record(task_id.as_str(), self.max_await_seconds())
+            .await?;
+        if let Some(error) = record.error {
+            return Err(tinyagents::TinyAgentsError::Tool(format!(
+                "agent `{agent}` failed: {error}"
+            )));
+        }
+        record
+            .result
+            .and_then(|result| result.text)
+            .ok_or_else(|| {
+                tinyagents::TinyAgentsError::Tool(format!(
+                    "agent `{agent}` produced no response before its deadline"
+                ))
+            })
+    }
+
     fn record(&self, task_id: &str) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
         let task_id = TaskId::new(task_id);
         self.store.get(&task_id).ok_or_else(|| {
