@@ -155,7 +155,6 @@ impl AgentRegistry {
             .find(|entry| entry.definition.id == id)
             .map(|entry| entry.agent.clone())
     }
-
 }
 
 /// OpenRouter-backed orchestrator over the registered specialist agents.
@@ -210,7 +209,7 @@ impl OrchestratorAgent {
         let goals_prompt = workspace_prompt(
             GOALS_PROMPT,
             &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/goals.md"] )?,
+            &load_workspace_files(&workspace, &["prompts/goals.md"])?,
         );
 
         let mut research_harness = specialist_harness(model.clone());
@@ -241,11 +240,7 @@ impl OrchestratorAgent {
             .with_system_prompt(tool_builder_prompt.clone()),
         );
 
-        async_subagents.register(
-            "research",
-            research.harness().clone(),
-            research_prompt,
-        )?;
+        async_subagents.register("research", research.harness().clone(), research_prompt)?;
         async_subagents.register(
             "tool_builder",
             tool_builder.harness().clone(),

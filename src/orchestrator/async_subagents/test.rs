@@ -2,9 +2,9 @@
 
 use std::sync::Arc;
 
-use tokio::sync::Notify;
 use tinyagents::graph::OrchestrationTaskStatus;
 use tinyagents::harness::steering::SteeringCommand;
+use tokio::sync::Notify;
 
 use super::{AgentExecutor, AsyncSubagentManager};
 use crate::agent::Result;
@@ -24,10 +24,13 @@ impl AgentExecutor for SteerableExecutor {
     ) -> Result<String> {
         self.started.notify_one();
         self.release.notified().await;
-        let redirect = steering.drain().into_iter().find_map(|command| match command {
-            SteeringCommand::Redirect { instruction } => Some(instruction),
-            _ => None,
-        });
+        let redirect = steering
+            .drain()
+            .into_iter()
+            .find_map(|command| match command {
+                SteeringCommand::Redirect { instruction } => Some(instruction),
+                _ => None,
+            });
         Ok(format!("{input}:{}", redirect.unwrap_or_default()))
     }
 }
@@ -78,8 +81,14 @@ async fn independent_runs_can_execute_in_parallel() -> Result<()> {
     let second = manager.spawn("worker", "second".into())?;
     started.notified().await;
     started.notified().await;
-    assert_eq!(manager.record(first.as_str())?.status, OrchestrationTaskStatus::Running);
-    assert_eq!(manager.record(second.as_str())?.status, OrchestrationTaskStatus::Running);
+    assert_eq!(
+        manager.record(first.as_str())?.status,
+        OrchestrationTaskStatus::Running
+    );
+    assert_eq!(
+        manager.record(second.as_str())?.status,
+        OrchestrationTaskStatus::Running
+    );
 
     release.notify_waiters();
     assert_eq!(

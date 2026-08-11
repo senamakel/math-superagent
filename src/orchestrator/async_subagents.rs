@@ -106,7 +106,11 @@ impl AsyncSubagentManager {
         )
     }
 
-    fn register_executor(&self, name: impl Into<String>, executor: Arc<dyn AgentExecutor>) -> Result<()> {
+    fn register_executor(
+        &self,
+        name: impl Into<String>,
+        executor: Arc<dyn AgentExecutor>,
+    ) -> Result<()> {
         let name = name.into();
         let mut agents = self.agents.write().map_err(|_| {
             tinyagents::TinyAgentsError::Tool("async subagent registry lock is poisoned".into())
@@ -154,17 +158,20 @@ impl AsyncSubagentManager {
         tokio::spawn(async move {
             let _ = store.mark_running(&spawned_task_id);
             let graph = GraphBuilder::<RunState, RunState>::overwrite()
-                .add_node("subagent", move |mut state: RunState, _context: NodeContext| {
-                    let executor = executor.clone();
-                    let steering = steering.clone();
-                    async move {
-                        let response = executor
-                            .execute(&state.run_id, state.input.clone(), steering)
-                            .await?;
-                        state.response = Some(response);
-                        Ok(NodeResult::Update(state))
-                    }
-                })
+                .add_node(
+                    "subagent",
+                    move |mut state: RunState, _context: NodeContext| {
+                        let executor = executor.clone();
+                        let steering = steering.clone();
+                        async move {
+                            let response = executor
+                                .execute(&state.run_id, state.input.clone(), steering)
+                                .await?;
+                            state.response = Some(response);
+                            Ok(NodeResult::Update(state))
+                        }
+                    },
+                )
                 .set_entry("subagent")
                 .set_finish("subagent")
                 .compile()
@@ -187,10 +194,8 @@ impl AsyncSubagentManager {
             match outcome {
                 Ok(execution) => {
                     let response = execution.state.response.unwrap_or_default();
-                    let _ = store.complete(
-                        &spawned_task_id,
-                        OrchestrationTaskResult::text(response),
-                    );
+                    let _ =
+                        store.complete(&spawned_task_id, OrchestrationTaskResult::text(response));
                 }
                 Err(error) => {
                     let _ = store.fail(&spawned_task_id, error.to_string());
@@ -232,8 +237,8 @@ impl AsyncSubagentManager {
         task_id: &str,
         wait_seconds: u64,
     ) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
-        let deadline = tokio::time::Instant::now()
-            + Duration::from_secs(wait_seconds.min(MAX_AWAIT_SECONDS));
+        let deadline =
+            tokio::time::Instant::now() + Duration::from_secs(wait_seconds.min(MAX_AWAIT_SECONDS));
         loop {
             let record = self.record(task_id)?;
             if record.status.is_terminal() || tokio::time::Instant::now() >= deadline {
@@ -327,8 +332,12 @@ impl Tool<()> for AsyncSubagentTool {
 
     fn description(&self) -> &'static str {
         match self.kind {
-            AsyncToolKind::Spawn => "Starts a subagent asynchronously and immediately returns its run id.",
-            AsyncToolKind::Peek => "Returns the current status and any completed response for a subagent run.",
+            AsyncToolKind::Spawn => {
+                "Starts a subagent asynchronously and immediately returns its run id."
+            }
+            AsyncToolKind::Peek => {
+                "Returns the current status and any completed response for a subagent run."
+            }
             AsyncToolKind::Steer => "Redirects a live subagent with an additional instruction.",
             AsyncToolKind::Await => "Waits for a subagent run and returns its status and response.",
         }
@@ -374,15 +383,14 @@ impl Tool<()> for AsyncSubagentTool {
                 let run_id = self.manager.spawn(&agent, input)?;
                 json!({ "run_id": run_id, "status": "pending" })
             }
-            AsyncToolKind::Peek => {
-                serde_json::to_value(self.manager.record(&required_string(&call.arguments, "run_id")?)?)?
-            }
+            AsyncToolKind::Peek => serde_json::to_value(
+                self.manager
+                    .record(&required_string(&call.arguments, "run_id")?)?,
+            )?,
             AsyncToolKind::Steer => {
                 let run_id = required_string(&call.arguments, "run_id")?;
-                self.manager.steer(
-                    &run_id,
-                    required_string(&call.arguments, "instruction")?,
-                )?;
+                self.manager
+                    .steer(&run_id, required_string(&call.arguments, "instruction")?)?;
                 json!({ "run_id": run_id, "accepted": true })
             }
             AsyncToolKind::Await => {
