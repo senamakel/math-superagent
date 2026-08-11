@@ -1021,12 +1021,24 @@ impl DocumentTool {
             // The complete converted text sits beside the summary, reachable
             // when the summary is not enough.
             let full = full_text_path(self.documents.root(), &path);
-            let excerpt = research_excerpt(&content, &full);
+            let excerpt = super::digest::digest(&content, &full);
             let split = excerpt.len() < content.len();
             if split {
                 self.documents.write(&full, &content).await?;
             }
             self.documents.write(&path, &excerpt).await?;
+            // What this source cites becomes the run's next set of leads, and
+            // this is the only moment the citations are in hand. Best effort:
+            // the download has already succeeded, and a lost lead must not
+            // turn a stored document into a failed tool call.
+            super::frontier::record(
+                &self.documents,
+                &url,
+                &path,
+                &converted.links,
+                &self.documents.goal().await,
+            )
+            .await;
             // Say what this is while the answer is still known. The scholar
             // replaces this with what the source establishes; until it does,
             // the row names the origin and the title rather than nothing.
