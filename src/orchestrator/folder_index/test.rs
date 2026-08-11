@@ -57,6 +57,31 @@ fn a_reformatted_index_does_not_lose_its_descriptions() {
 }
 
 #[test]
+fn a_synthesis_survives_the_refresh_that_rewrites_the_table_beneath_it() {
+    // `research/INDEX.md` is the root of the summary tree, so a refresh that
+    // re-derives the file list must not take the fold down with it.
+    let folded = "Establishes the bound. See [the source](paper.md).";
+    let first = render("research", &entries(&[("paper.md", "a source")]), folded);
+    assert_eq!(brief(&first), folded);
+
+    let refreshed = render(
+        "research",
+        &entries(&[("paper.md", "a source"), ("later.md", "another")]),
+        &brief(&first),
+    );
+    assert_eq!(brief(&refreshed), folded);
+    assert!(refreshed.contains("`later.md`"), "{refreshed}");
+}
+
+#[test]
+fn an_index_that_never_carried_a_synthesis_reads_as_carrying_none() {
+    assert_eq!(brief("# Index — notes\n\n| File | Purpose |\n"), "");
+    // An opening marker with no close is a half-written file, not a synthesis
+    // running to the end of the table.
+    assert_eq!(brief("# Index\n\n<!-- brief -->\nlost"), "");
+}
+
+#[test]
 fn an_undescribed_file_is_marked_rather_than_left_blank() {
     let rendered = render("research", &entries(&[("paper.md", "")]), "");
     assert!(rendered.contains("_(undescribed)_"), "{rendered}");
