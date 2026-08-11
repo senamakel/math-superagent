@@ -1,6 +1,7 @@
 //! Registry-backed orchestrator with research and tool-building specialists.
 
 pub(crate) mod async_subagents;
+mod documents;
 mod vector;
 
 use std::fmt::Write as _;
@@ -24,6 +25,7 @@ use crate::agent::{
 };
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
+use documents::WorkspaceDocuments;
 use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 
 pub use tinyagents::harness::host::AgentDefinition;
@@ -46,12 +48,15 @@ const RESEARCH_PROMPT: &str = "You are the research specialist. Check recall_res
     prior findings, then use exa_search for factual or current claims. Search iteratively when \
     needed, compare the returned evidence, cite source URLs, and distinguish evidence from \
     inference. Save concise, reusable, source-backed findings with remember_research. Do not \
-    invent sources. Never recommend an algorithm with exponential time or space complexity.";
+    invent sources. Use the workspace document tools to download, read, index, and search working \
+    references. Never recommend an algorithm with exponential time or space complexity.";
 
 const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work only in \
     /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \
     source, scripts, tests, and documentation. Use execute_command to run, test, and debug them. \
     Python and pip are available as python and pip; pip installs into the current workspace. \
+    Use the document tools for working references and maintain goal.md, tasks.md, scratchpad.md, \
+    and memory.md as the work develops. \
     State the time and space complexity before substantial execution. Refuse algorithms with \
     exponential time or space complexity and use a polynomial or better approach instead. \
     Inspect command output, iterate until the requested tool works, and report every path changed \
@@ -62,7 +67,9 @@ const GOALS_PROMPT: &str = "You are the goals agent. Turn the assigned goal into
     established. Spawn research for external evidence and tool_builder for implementation, \
     computation, and verification. Run independent work in parallel, keep every run id, peek or \
     steer live work when useful, and await required responses. Give each child a focused, \
-    self-contained task. Track what is complete, what remains, and the evidence for completion. \
+    self-contained task. Maintain goal.md and tasks.md, use scratchpad.md for provisional work, \
+    and promote durable results to memory.md. Track what is complete, what remains, and the \
+    evidence for completion. \
     Never use or request an algorithm with exponential time or space complexity.";
 
 /// A small in-memory catalogue of named, executable child agents.
@@ -175,6 +182,7 @@ impl OrchestratorAgent {
         let workspace = workspace_from_env()?;
         let model = openrouter_model_from_env()?;
         let async_subagents = AsyncSubagentManager::new();
+        let documents = WorkspaceDocuments::new(workspace.clone())?;
         let shared_guidance =
             load_workspace_files(&workspace, &["AGENTS.md", "config.toml", "memory.md"])?;
         let orchestrator_prompt = workspace_prompt(
@@ -204,12 +212,18 @@ impl OrchestratorAgent {
             .register_tool(Arc::new(ExaSearchTool::from_env()?))
             .register_tool(Arc::new(RecallResearchTool::new(vector_store.clone())))
             .register_tool(Arc::new(RememberResearchTool::new(vector_store)));
+        for tool in documents.tools() {
+            research_harness.register_tool(tool);
+        }
         let research_harness = Arc::new(research_harness);
 
         let mut tool_builder_harness = specialist_harness(model.clone());
         tool_builder_harness
             .register_tool(Arc::new(WriteToolFile::new(workspace.clone())))
             .register_tool(Arc::new(ExecuteCommand::new(workspace)));
+        for tool in documents.tools() {
+            tool_builder_harness.register_tool(tool);
+        }
         let tool_builder_harness = Arc::new(tool_builder_harness);
 
         async_subagents.register("research", research_harness, research_prompt)?;
@@ -217,6 +231,9 @@ impl OrchestratorAgent {
 
         let mut goals_harness = specialist_harness(model.clone());
         for tool in async_subagents.tools(["research", "tool_builder"]) {
+            goals_harness.register_tool(tool);
+        }
+        for tool in documents.tools() {
             goals_harness.register_tool(tool);
         }
         async_subagents.register("goals", Arc::new(goals_harness), goals_prompt)?;
@@ -230,7 +247,15 @@ impl OrchestratorAgent {
                     "Uses Exa to research current facts and return cited evidence.",
                 )
                 .with_model("openrouter")
-                .with_tools(["exa_search", "recall_research", "remember_research"]),
+                .with_tools([
+                    "exa_search",
+                    "recall_research",
+                    "remember_research",
+                    "download_document",
+                    "read_document",
+                    "index_document",
+                    "search_documents",
+                ]),
             )?
             .register(
                 AgentDefinition::new(
@@ -239,7 +264,16 @@ impl OrchestratorAgent {
                     "Writes and executes tools in the jailed /workspace directory.",
                 )
                 .with_model("openrouter")
-                .with_tools(["write_tool_file", "execute_command"]),
+                .with_tools([
+                    "write_tool_file",
+                    "execute_command",
+                    "download_document",
+                    "read_document",
+                    "write_document",
+                    "edit_document",
+                    "index_document",
+                    "search_documents",
+                ]),
             )?
             .register(
                 AgentDefinition::new(
@@ -248,12 +282,23 @@ impl OrchestratorAgent {
                     "Pursues a goal and delegates research, implementation, and verification.",
                 )
                 .with_model("openrouter")
-                .with_tools(["research", "tool_builder"]),
+                .with_tools([
+                    "spawn_agent",
+                    "peek_agent",
+                    "steer_agent",
+                    "await_agent",
+                    "read_document",
+                    "write_document",
+                    "edit_document",
+                ]),
             )?;
         let registry = Arc::new(registry);
 
         let mut orchestrator_harness = specialist_harness(model);
         for tool in async_subagents.tools(["research", "tool_builder", "goals"]) {
+            orchestrator_harness.register_tool(tool);
+        }
+        for tool in documents.tools() {
             orchestrator_harness.register_tool(tool);
         }
 
