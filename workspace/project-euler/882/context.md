@@ -24,6 +24,11 @@ n), which the n=10⁵ scale demands:
   zugzwang/tempo tool. It turns the earlier Wikipedia-level skip picture ([[zugzwang]],
   [[loopy]]) into a citable primary source; it is a structural analogue, not a recipe —
   our skip costs budget, so S(n) still comes from the (A,B) minimax DP.
+- **Enrichment this cycle — [[a083652]] (OEIS A083652)** (summatory binary
+  length, `Σₖ₌₀ⁿ bitlen(k)`), exact O(1) closed form `(n+1)·bitlen(n+1) − 2^{bitlen(n+1)} + 2`. This is the third leg of `total_bits = ones + zeros`
+  (the identity [[zerocount]] uses to get B from A083652 − A000788). It makes
+  the unweighted total-bit count available in closed form, tightening the
+  A(n),B(n) counting-arithmetic toolchain for n=10^5.
 
 **Caveat (open):** the counting model is a *surrogate* — its (A,B) transitions
 (One →(A−1,B), Zero →(A,B−1)) ignore that deleting a leading 1 can also drop 0-bits
