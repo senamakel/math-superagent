@@ -185,3 +185,29 @@ fn a_middleware_that_actually_works_is_recorded_where_it_happened() {
     assert!(written.contains("duration_us"));
     let _ = std::fs::remove_dir_all(&directory);
 }
+
+#[test]
+fn a_run_that_dies_says_so_on_the_console() {
+    // A live `organizer` retried the same call six times over two and a half
+    // minutes and then died on `openai response contained no choices`. The
+    // retry ladder was visible and its outcome was not, so the run simply
+    // stopped appearing. The error was in `trace.jsonl` the whole time, which
+    // is the wrong place to need it.
+    let directory =
+        std::env::temp_dir().join(format!("math-agent-run-failed-{}", std::process::id()));
+    std::fs::create_dir_all(&directory).expect("temporary trace directory is creatable");
+    let path = RunTracer::journal_path(&directory);
+    let _ = std::fs::remove_file(&path);
+
+    let tracer = RunTracer::new("organizer", Some(path.as_path()));
+    tracer.on_event(&record(AgentEvent::RunFailed {
+        run_id: RunId::new("agent-run-13"),
+        error: "model error: openai response contained no choices".into(),
+    }));
+    drop(Arc::try_unwrap(tracer).map(drop));
+
+    let written = std::fs::read_to_string(&path).expect("trace journal is readable");
+    assert!(written.contains("no choices"), "{written}");
+    assert!(written.contains("agent-run-13"), "{written}");
+    let _ = std::fs::remove_dir_all(&directory);
+}
