@@ -62,9 +62,9 @@ The runtime uses a small registry of specialist agents:
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
 - `coder` has the same authority and writes the implementation the run stands
-  behind. Splitting the two lets each prompt be strict about one thing instead of
-  hedging between them: the tool-builder about producing a running program
-  quickly, the coder about the program being correct.
+  behind. Splitting the two lets each prompt be strict about one thing: the
+  tool-builder about producing a running program quickly, the coder about the
+  program being correct.
 - `reflection` judges one attempt and extracts the lesson. It has no research
   or execution tools, so it cannot drift into solving what it is judging.
 - `pattern_finder` runs exact sequence analysis over results already computed:
@@ -368,11 +368,11 @@ individual documents are capped at 5 MiB, paths cannot leave `/workspace`, and
 one workspace cannot search another workspace's files.
 
 The tool-builder additionally gets `apply_patch`, which applies a Codex-format
-envelope across several files at once. Two deviations from that format are
-deliberate: context matching is exact and an ambiguous hunk is refused rather
-than fuzzily resolved, because a patch landing in the wrong place yields a
-program that runs and computes something else; and application is atomic, so a
-bad hunk in the third file cannot leave the first two rewritten.
+envelope across several files at once. Two deviations are deliberate: context
+matching is exact and an ambiguous hunk is refused rather than fuzzily
+resolved, because a patch landing in the wrong place yields a program that runs
+and computes something else; and application is atomic, so a bad hunk in the
+third file cannot leave the first two rewritten.
 
 Use `--workspace` to give a run its own subdirectory:
 
