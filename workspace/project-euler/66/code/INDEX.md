@@ -4,5 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-
-_This folder is empty._
+| `out/results_cf.tsv` | _(undescribed)_ |
+| `out/trace.jsonl` | _(undescribed)_ |
+| `solution.py` | _(undescribed)_ |
+| `verify_chakravala.py` | _(undescribed)_ |

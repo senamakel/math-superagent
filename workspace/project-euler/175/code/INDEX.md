@@ -4,5 +4,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-
-_This folder is empty._
+| `brute.py` | _(undescribed)_ |
+| `out/trace.jsonl` | _(undescribed)_ |
+| `scratchpad_verify.py` | _(undescribed)_ |
+| `scratchpad_verify2.py` | _(undescribed)_ |
+| `solution.py` | _(undescribed)_ |
+| `verify_matrix.py` | _(undescribed)_ |
