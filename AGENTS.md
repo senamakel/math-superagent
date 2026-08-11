@@ -112,6 +112,8 @@ The Rust crate vendors TinyAgents and keeps the integration deliberately small.
 src/
 ├── lib.rs              # public exports
 ├── agent/              # TinyAgents facade, OpenRouter, Langfuse
+│   ├── budget.rs       # per-run call, wall-clock, and capture policy
+│   └── trace.rs        # live console and trace.jsonl event listener
 ├── orchestrator/       # registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs # graph-backed asynchronous child-run controls
 │   ├── documents.rs    # bounded workspace documents and local search index
