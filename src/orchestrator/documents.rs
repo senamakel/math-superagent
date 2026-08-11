@@ -616,7 +616,7 @@ pub(super) fn research_path(requested: &str) -> String {
         .trim_start_matches("./")
         .trim_start_matches('/');
     if trimmed.is_empty() {
-        return format!("{RESEARCH_DIR}/document.md");
+        return format!("{RESEARCH_DIR}/{DIGEST_DIR}/document.md");
     }
     let inside = trimmed
         .strip_prefix(&format!("{RESEARCH_DIR}/"))
