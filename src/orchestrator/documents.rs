@@ -363,7 +363,8 @@ impl WorkspaceDocuments {
         };
         if !root.is_dir() {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
-                "`{relative}` is not a directory in the workspace"
+                "`{relative}` is not a directory in the workspace{}",
+                self.nearby(relative)
             )));
         }
         let mut lines = Vec::new();
