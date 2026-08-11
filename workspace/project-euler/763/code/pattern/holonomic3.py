@@ -39,6 +39,8 @@ def extend_holonomic(m, d, sol):
         Ncur = len(seq) - m   # equivalent
         num = sum(sum(sol[j*(d+1)+t]*(Ncur**t) for t in range(d+1)) * Rational(seq[Ncur+j]) for j in range(m))
         den = sum(sol[m*(d+1)+t]*(Ncur**t) for t in range(d+1))
+        if den == 0:
+            return None   # pole: leading coeff vanishes at this N -> can't extend
         val = -num/den
         if val.denominator != 1:
             return None   # non-integer -> refuted
