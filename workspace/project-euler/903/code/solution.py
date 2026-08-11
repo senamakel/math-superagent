@@ -76,7 +76,7 @@ def q_from_ab(n, A, B, p=_MODP):
 def _selftest():
     """Check q_from_ab against brute-verified exact Q values (n = 2..8)."""
     here = os.path.dirname(os.path.abspath(__file__))
-    with open(os.path.join(here, "extend_f.json")) as fh:
+    with open(os.path.join(here, "out", "extend_f.json")) as fh:
         data = json.load(fh)
     exact = {2: 5, 3: 88, 4: 4808, 5: 597876, 6: 133103808,
              7: 47124948960, 8: 24768798220800}
