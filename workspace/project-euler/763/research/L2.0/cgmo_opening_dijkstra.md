@@ -1,35 +1,81 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/L0.0/cgmo_opening_dijkstra.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Pebbling a chessboard — Chung, Graham, Morrison, Odlyzko (opening, via Dijkstra EWD 1200)
 
-<!-- source: https://www.cs.utexas.edu/~EWD/transcriptions/EWD12xx/EWD1200.html | converted from HTML -->
+<!-- source: https://www.cs.utexas.edu/~EWD/transcriptions/EWD12xx/EWD1200.html -->
+<!-- original: Amer. Math. Monthly 102 (1995) 113-123.  The UCSD hosted PDF
+     (fanchung.ucsd.edu/mypaps/fanpap/150chess.pdf) is a scan with no text
+     layer, so the definitive transcription is Dijkstra's EWD 1200, which
+     reproduces pp. 113-115 (Introduction + §2 opening) verbatim. -->
 
-## What it claims
+## The problem (verbatim from the paper)
 
-For educational purposes we analyse the opening pages of an 11-page article that appeared in *The American Mathematical Monthly*, Volume 102 Number 2 / February 1995. We added line numbers in the right margin.
+Infinite "chessboard" B covering the first quadrant; cells labelled (i,j),
+i,j ≥ 0. Initially a single pebble at (0,0). A **move** removes some pebble,
+say in cell (i,j), and places two pebbles at (i+1,j) and (i,j+1), *provided
+each of those positions is not already occupied*. After k steps the board has
+k+1 pebbles. Such configurations of pebbles are **reachable configurations**.
+R(k) = set of reachable configurations with k pebbles.
 
-line 4: Since in this article, squares don&rsquo;t get alternating colours, it could be argued that the term &ldquo;chessboard&rdquo; is misplaced.
+## Definitions
 
-line 4: The introduction of the name &ldquo; B &rdquo; seems unnecessary: it is used —in the combination &ldquo;the board B &rdquo;— in the text for Figure 1 and in line 71; in both cases just &ldquo;the board&rdquo; would have done fine. In line 77 occurs the last use of B, viz. in &ldquo; X ⊂ B &rdquo;, which is dubious since B was a board and not a set; in line 77, I would have preferred &ldquo;Given a set X of cells&rdquo;.
+- **Level** L(k) = {(i,j): i+j = k}. The union L(1)∪L(2)∪L(3) (all cells with
+  i+j ≤ 3; Dijkstra notes L(0) should be included) is *unavoidable*: any
+  reachable configuration must have some pebble in it.
+- An *unavoidable set* is one which intersects every reachable configuration.
+- A *minimal unavoidable set* S is unavoidable with no proper subset also
+  unavoidable; M(k) = family of minimal unavoidable sets with k cells.
 
-line 7/8: The first move, being a move like any other, does not deserve a separate description. The term &ldquo;step&rdquo; is redundant.
+## Key results (the paper's §2)
 
-line 8: Why not &ldquo;a move consists of&rdquo;?
+**Lemma 1** (Kontsevich). L(1)∪L(2)∪L(3) is unavoidable.
+Proof (weight invariant): assign weight 2^{-(i+j)} to cell (i,j).
+(i) total weight covered by pebbles in any reachable configuration is 1 (a
+move preserves it: 2^{-(i+j)} = 2^{-(i+1+j)} + 2^{-(i+j+1)});
+(ii) total weight of all cells = Σ_{i,j≥0} 2^{-(i+j)} = 4;
+(iii) weight of L(1)∪L(2)∪L(3) is 13/4, so the complement has weight only 3/4
+< 1 and cannot contain all pebbles of a reachable configuration. ∎
 
-line 10/11: At this stage the italics are puzzling, since a move is possible if, for some i,&thinsp; j, cell (…
+**Lemma 2** (Khodulev). L(1)∪L(2) is unavoidable. (Any reachable configuration
+C has exactly one pebble on each of the two boundaries {(i,0)} and {(0,j)},
+so the weight it can cover outside L(1)∪L(2) is too small; to avoid it would
+have to cover all those cells, impossible since C is finite.) Neither set is
+minimal.
 
-line…
+**Uniqueness of the move set.** For any reachable configuration C, the *set* of
+moves needed to reach C is unique; only the *order* of those moves can vary.
 
-## Statements it makes
+**Lemma 3** (stacking). If a configuration (≤1 pebble per cell) can be reached
+by moves that *allow* accumulation of multiple pebbles in cells, then it can
+also be reached by the standard non-accumulating moves. (Model: pebbles first
+move onto an infinite binary tree rooted at (0,0); the 2^k vertices of level k
+are identified with the k+1 cells of level L(k). Easy induction.)
 
-**Lemma 1.**[**9**] *The set L*(1) ∪*L*(2) ∪*L*(3) *of all *(*i*,*&thinsp;j*) *with i + j ≤ 3 is unavoidable.*
-*Proof:*To each cell ( i, &thinsp;j) assign the *weight*2 −( i + j). Observe that:  | 35 |
+**Theorem 1** (polynomial-time recognition). Given X ⊂ B, define the set of
+moves M(X) recursively: starting at level 0 and going up one level at a time,
+perform the moves required either to remove *all* pebbles from a cell in X, or
+to remove *all but at most one* of the pebbles from a cell not in X, through
+the last level L(h(X)) containing a cell of X. Then:
+**X ⊂ B is unavoidable iff after executing M(X), some cell contains at least
+3 pebbles.** (This is the paper's level-trimming criterion; it is the 2D case
+of Eriksson's Propositions 4/13.)
 
-**Lemma 2.**L (1) ∪ L (2) *is unavoidable*.
+Also noted: r(k) = |R(k)| and m(k)=|M(k)| asymptotically as k→∞ are new; the
+analysis leads to asymptotic enumeration. Furthr generalisations to arbitrary
+posets by Eriksson.
 
-**Lemma 3.***If a configuration of pebbles (with at most one pebble per cell) can be
-reached by moves which ***allow***accumulations of pebbles in cells, then in fact it can* | 70 |
+## Bearing on this run
 
-**Theorem 1.**X ⊂ B*is unavoidable if and only if after executing the moves in*M ( X),
-*some cell contains at least 3 pebbles.*
- | 80 |
+This gives the exact 2D definitions, the weight-invariant, the unavoidable-set
+/ level-trimming machinery, and Lemma 3 (stacking ⇔ non-stacking) — the facts
+the 3D generalisation (Eriksson's folded polyominoids) builds on. The 3D PE763
+process is exactly Vaderlind/Eriksson's n=3 pebbling game (a pebble at
+(x,y,z) → three pebbles at the three positive-unit neighbours if all three are
+empty), so Eriksson's n≥3 theory, not this 2D paper's crossings, governs the
+3D D(N).
 
-*[digest of a 16047 character source; every section, statement, and proof in full at `research/L0.0/cgmo_opening_dijkstra.full.md`]*
+## Sources
+- Chung, Graham, Morrison, Odlyzko, "Pebbling a chessboard", Amer. Math.
+  Monthly 102 (1995) 113-123. DOI 10.2307/2975345.
+- Transcription of the opening: Dijkstra EWD 1200,
+  https://www.cs.utexas.edu/~EWD/transcriptions/EWD12xx/EWD1200.html
+- Sci-scan of the full paper (no text layer):
+  https://fanchung.ucsd.edu/mypaps/fanpap/150chess.pdf

@@ -16,21 +16,10 @@
    row-2 identities on the tabulated numbers.
 """
 from functools import lru_cache
+from lib.amoeba2d import G, a
 
-# ---- 1) A007902 exact G(k,m) recurrence ----
-@lru_cache(maxsize=None)
-def G(k, m):
-    if k < 1:
-        return 0
-    if m == 0:
-        return 2 * G(k - 1, 0) + G(k, 1) + (1 if k == 2 else 0)
-    if m == 1:
-        return G(k - 3, 0) + 2 * G(k - 2, 1) + G(k - 1, 2) + G(k - 4, 1)
-    return G(k - m - 2, m - 1) + 2 * G(k - m - 1, m) + G(k - m, m + 1)
-
-def a(n):  # A007902 offset 1
-    return 1 if n == 1 else G(n, 0)
-
+# ---- 1) A007902 exact G(k,m) recurrence (canonical definition imported from
+# lib/amoeba2d, the single shared copy) ----
 D2D = [1, 1, 2, 4, 9, 20, 46, 105, 243, 561, 1301, 3014, 6995, 16227, 37668]
 print("2D recurrence a(n+1) matches BFS oracle D2D:",
       all(a(n + 1) == D2D[n] for n in range(len(D2D))))

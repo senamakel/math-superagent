@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
-"""Reverse-merge verification: is every reachable config (forward BFS)
-reverse-merge-reducible to {origin}?  Runs standalone (no package imports).
+"""Reverse-merge verification of the structural characterization.
+
+Claim (backed by CGMO Lemma 3 / Eriksson Prop 20): a set S is reachable in the
+amoeba (forward) process iff it can be merged DOWN to the singleton {origin}
+by repeatedly replacing the d forward-children of a common missing parent with
+that parent.  Verify on all configs the forward BFS reaches, in d=2 and d=3.
+Runs standalone.
 """
 from itertools import product
 
