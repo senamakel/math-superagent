@@ -12,5 +12,9 @@
       byte-identical to simulate_order_nobug.
 - [x] Large MC p(13,1800): 100k=0.500470, 200k=0.499400, 300k=0.499027,
       1.2M=0.500880, combined 1.5M=0.500316. Ballpark target ~0.500.
+- [x] High-precision parallel MC (high_precision_mc.py): p(13,1800) at 10M
+      =0.500380 SE=0.000158 and 60M=0.500203 SE=0.000065; convergence series
+      n=5..8 L=1800: 0.531964,0.486980,0.491648,0.505779 (all SE~0.0007, all
+      within ~2-3 SE of 0.5). Conclusion: p(13,1800) indistinguishable from 0.5.
 - [ ] Solve p(13,1800) exactly. Hypothesis of w-order-only reduction is refuted;
       need the true continuous dynamics (bump/finish chronology over Exp speeds).
