@@ -35,16 +35,54 @@ static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 /// for attention and reliably loses, so the index drifts out of step with the
 /// directory exactly when it is most needed.
 ///
+/// The research agent is the other role that leaves the workspace changed, and
+/// it leaves it changed in the way that decays fastest. A download is raw
+/// material: until someone reads it, it has cost the run context and taught it
+/// nothing, and the moment it lands is the only moment anybody knows why it was
+/// fetched. So research hands off to the scholar to say what each new source
+/// actually establishes, and only then to the organizer, which files what the
+/// scholar has just written. That order is the point — an organizer running
+/// first would index excerpts nobody had read yet.
+///
 /// The follow-up is fire-and-forget. The caller's `await_agent` returns as soon
-/// as the tool-builder itself is done, because housekeeping must not sit on the
-/// critical path of an investigation waiting for its result.
-const FOLLOW_UPS: [(&str, &str); 1] = [("tool_builder", "organizer")];
+/// as the triggering run itself is done, because housekeeping must not sit on
+/// the critical path of an investigation waiting for its result.
+const FOLLOW_UPS: [(&str, &[FollowUpStep]); 2] = [
+    ("tool_builder", &[ORGANIZE_AFTER_TOOLS]),
+    ("research", &[DIGEST_AFTER_RESEARCH, ORGANIZE_AFTER_RESEARCH]),
+];
 
-/// The instruction a follow-up run receives.
-const FOLLOW_UP_BRIEF: &str = "The tool-builder just finished. Bring the workspace back into \
-    order: refresh each folder's INDEX.md so it matches what is on disk, describe every file \
-    that is now undescribed, and correct any row whose description no longer matches its file. \
-    Keep toolkits/INDEX.md in step with the files beside it. Do not change what any file says.";
+/// One queued run in a trigger's follow-up sequence.
+#[derive(Clone, Copy, Debug)]
+struct FollowUpStep {
+    agent: &'static str,
+    brief: &'static str,
+}
+
+const ORGANIZE_AFTER_TOOLS: FollowUpStep = FollowUpStep {
+    agent: "organizer",
+    brief: "The tool-builder just finished. Bring the workspace back into order: refresh each \
+            folder's INDEX.md so it matches what is on disk, describe every file that is now \
+            undescribed, and correct any row whose description no longer matches its file. Keep \
+            toolkits/INDEX.md in step with the files beside it. Do not change what any file says.",
+};
+
+const DIGEST_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
+    agent: "scholar",
+    brief: "The research agent just finished and the reference library has new material in it. \
+            Read what is now in research/ against this investigation's goal, tasks, and current \
+            beliefs. For each new source, replace its placeholder excerpt with what it actually \
+            establishes and what that implies here, under a thousand tokens. Say which sources do \
+            not help and why, and flag anything that contradicts what memory.md asserts.",
+};
+
+const ORGANIZE_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
+    agent: "organizer",
+    brief: "Research and reading have just finished. File what arrived: give each new source a \
+            name that says what it is about, refresh research/INDEX.md so it is the way in and \
+            reflects what the scholar wrote, and describe every file still undescribed. Do not \
+            change what any file says.",
+};
 
 /// Spawned runs allowed to execute at the same time.
 ///
