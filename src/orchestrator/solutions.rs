@@ -245,6 +245,10 @@ fn continuation_briefing(attempt: usize, resumed: bool) -> String {
             .to_string();
     }
     if attempt <= 1 {
+        "This is the first attempt. Start by reading the statement, then immediately write and \
+         run a program that reproduces the worked examples it gives."
+            .to_string()
+    } else {
         format!(
             "This is attempt {attempt}. Earlier attempts already wrote the workspace files; read \
              goal.md and memory.md and CONTINUE from there. Do not re-extract or re-document the \
