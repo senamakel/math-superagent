@@ -216,9 +216,48 @@ async fn attempt_step(
         state.problem,
         state.lesson_briefing()
     );
+    if state.attempts == 1 {
+        open_with_execution(subagents, tracer, &state.problem);
+    }
     state.last_attempt = delegate(subagents, "goals", prompt).await;
     state.fresh_context.clear();
     state
+}
+
+/// Starts the first execution itself, beside the attempt rather than inside it.
+///
+/// The method policy's first step is to write a naive oracle and run it against
+/// the statement's worked examples, and the goals agent is asked to delegate
+/// that immediately. Two live runs did not: their goals agents spent ten
+/// minutes each on `read_document` and `list_workspace`, and both burned a
+/// whole 12,000-token turn on hidden reasoning without emitting a single tool
+/// call. Two prompt revisions failed to move it, so the loop stopped asking.
+///
+/// Fire-and-forget, and only on the first attempt. It never blocks the
+/// attempt, it duplicates nothing a later attempt would do, and if the goals
+/// agent does delegate promptly then the two runs simply agree — a second
+/// oracle run costs one child, where no oracle at all costs the whole attempt.
+fn open_with_execution(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    problem: &str,
+) {
+    let subagents = subagents.clone();
+    let prompt = format!(
+        "Write the naive oracle for this problem and run it now.\n\nProblem:\n{problem}\n\n\
+         Write it to code/brute.py — obviously correct rather than fast, exact integer or \
+         rational arithmetic — and execute it against every worked example the statement \
+         gives. Do not optimise, do not derive the efficient method, and do not write a plan: \
+         another agent is doing that in parallel. If the workspace already holds such a \
+         program, run that instead of writing a second one. Report the command you ran and \
+         its exact output, and say for each worked example whether it matched."
+    );
+    if let Some(tracer) = tracer {
+        tracer.note("solution loop: opening the attempt with an oracle run");
+    }
+    tokio::spawn(async move {
+        let _ = subagents.run_to_completion("tool_builder", prompt).await;
+    });
 }
 
 /// Tells an attempt whether it is starting fresh or continuing existing work.
