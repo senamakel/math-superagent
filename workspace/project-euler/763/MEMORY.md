@@ -81,6 +81,34 @@ Verified by two independent routes:
 (`config_features`, `feature_record`). Both `amoeba_bits.py` and data dumps
 import from it (no duplicated definition).
 
+## 2D seed: the exact structural DP for A007902 (to be lifted to 3D)
+
+The 2D amoeba (a cell at (x,y) splits into (x+1,y),(x,y+1) if both empty) is
+exactly OEIS A007902 (pebble spreading, Chung-Graham-Morrison-Odlyzko).
+Offset mapping: run's D_2D(N) = a(N+1); the 15 BFS terms D_2D(0..14) =
+1,1,2,4,9,20,...,37668 all match a(1..15).
+
+Exact recurrence (Alois P. Heinz, OEIS) via auxiliary G(k,m):
+  k<1        -> 0
+  m=0        -> 2*G(k-1,0) + G(k,1) + (k==2 ? 1 : 0)
+  m=1        -> G(k-3,0) + 2*G(k-2,1) + G(k-1,2) + G(k-4,1)
+  m>=2       -> G(k-m-2,m-1) + 2*G(k-m-1,m) + G(k-m,m+1)
+  a(1)=1;  a(n)=G(n,0)  (n>=2)
+
+Indexing care that makes it work: the k<1 -> 0 guard handles all the negative
+indices; the m>=2 branch dies to 0 for m > k (off the lower-triangular
+region); the only explicit base constant is the [k==2] term in the m=0 line.
+Program: code/amoeba2d/a007902_dp.py (prints the G(k,m) table).
+
+Verified (see code/out): reproduces OEIS A007902 EXACTLY to a(33)=144558421877
+and gives a(22)=13686805; a(1..14) re-checked against the independent 2D BFS
+oracle code/amoeba2d/d2d.py (all match). This exact DP is the seed to
+generalise to 3D for PE763's D(10000).
+
+G(k,m) structure: nonzero only in a lower-triangular "band"; first nonzero k
+for m=1..6 is 5,9,14,20,27,35 = (m+2)(m+3)/2 - 1. Growth d = 2.32164...,
+c = 0.12268... (Knessl).
+
 ## C1 conjecture — DISPROVEN (2D and 3D)
 
 Conjecture C1: "a set S of cells containing the origin is reachable iff S is
