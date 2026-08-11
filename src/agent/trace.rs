@@ -314,6 +314,22 @@ impl RunTracer {
 
 impl EventListener for RunTracer {
     fn on_event(&self, record: &EventRecord) {
+        // Middleware events are timed rather than written straight through, so
+        // that a hook which short-circuited leaves no line at all.
+        match &record.event {
+            AgentEvent::MiddlewareStarted { name } => {
+                self.begin_middleware(name);
+                return;
+            }
+            AgentEvent::MiddlewareCompleted { name } => {
+                self.finish_middleware(name);
+                return;
+            }
+            AgentEvent::RunCompleted { .. } | AgentEvent::RunFailed { .. } => {
+                self.write_middleware_summary();
+            }
+            _ => {}
+        }
         self.write_journal(record);
         match &record.event {
             AgentEvent::RunStarted { run_id, .. } => {
