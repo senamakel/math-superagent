@@ -364,7 +364,7 @@ fn two_managers_never_share_a_trace_id() {
 
 #[test]
 fn a_trace_is_named_for_the_role_that_produced_it() {
-    let config = super::trace_config("s-session", "scholar", "agent-run-1");
+    let config = super::trace_config("s-session", "scholar", "agent-run-1", None);
     assert_eq!(config.name.as_deref(), Some("scholar · agent-run-1"));
     assert_eq!(config.trace_id.as_deref(), Some("s-session-agent-run-1"));
     assert!(config.tags.contains(&"agent:scholar".to_string()));
@@ -379,12 +379,9 @@ fn every_agent_on_one_problem_shares_a_session_and_a_user() {
     // dimension. Grouping every role into one session is what makes a run
     // readable as one investigation rather than as unrelated traces.
     //
-    // SAFETY-adjacent: the variable is process-wide, so this test must not run
-    // beside another that reads it. It is the only one that does.
-    unsafe { std::env::set_var("MATH_AGENT_WORKSPACE_LABEL", "project-euler/591") };
-    let scholar = super::trace_config("s-1", "scholar", "agent-run-4");
-    let organizer = super::trace_config("s-1", "organizer", "agent-run-5");
-    unsafe { std::env::remove_var("MATH_AGENT_WORKSPACE_LABEL") };
+    let problem = Some("project-euler/591");
+    let scholar = super::trace_config("s-1", "scholar", "agent-run-4", problem);
+    let organizer = super::trace_config("s-1", "organizer", "agent-run-5", problem);
 
     assert_eq!(scholar.user_id.as_deref(), Some("project-euler/591"));
     assert_eq!(organizer.user_id, scholar.user_id);

@@ -272,7 +272,12 @@ impl HarnessExecutor {
             if !observations.is_empty() {
                 let _ = langfuse
                     .send_observations(
-                        trace_config(&self.session, &self.role, run_id),
+                        trace_config(
+                            &self.session,
+                            &self.role,
+                            run_id,
+                            workspace_label().as_deref(),
+                        ),
                         &observations,
                     )
                     .await;
