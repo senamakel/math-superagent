@@ -278,12 +278,11 @@ workspace/project-euler/66/
 ├── INDEX.md            # what each file beside it is for
 ├── code/               # every program, with its own AGENTS.md and INDEX.md
 │   ├── out/            # what those programs produced
-│   └── toolkits/       # reusable verified helpers, one function per file
+│   └── toolkits/       # reusable verified helpers, one per file
 ├── research/           # L0 sources, L1 digests, L2 folds, INDEX.md at the root
 │   ├── CLAIMS.md, THREADS.md, FRONTIER.md, REQUESTS.md  # all derived
-├── reflections/L0/     # one note per judged attempt
-├── raw/                # untouched download bytes, including problem.html
-└── config/             # config.toml, problem.url, the document index, trace.jsonl
+├── reflections/L0/     # one note per judged attempt; raw/ holds download bytes
+└── config/             # config.toml, problem.url, the ledgers, trace.jsonl
 ```
 
 Generated programs, calculations, and other artifacts appear in
