@@ -383,7 +383,7 @@ impl Tool<()> for AsyncSubagentTool {
                 "required": ["agent", "input"],
                 "additionalProperties": false
             }),
-            AsyncToolKind::Peek => run_id_schema(false),
+            AsyncToolKind::Peek => run_id_schema(None),
             AsyncToolKind::Steer => json!({
                 "type": "object",
                 "properties": {
