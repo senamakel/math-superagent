@@ -264,14 +264,14 @@ async fn a_corrupt_index_rebuilds_instead_of_failing_forever() -> Result<()> {
 async fn a_missing_document_names_what_the_folder_actually_holds() -> Result<()> {
     // A model that guessed `research/DIGEST.md` otherwise learns only that it
     // guessed wrong, and guesses again — a full model turn per attempt.
-    let workspace = tempfile::tempdir().expect("temporary workspace");
-    let research = workspace.path().join("research");
+    let root = workspace("missing-document")?;
+    let research = root.join("research");
     std::fs::create_dir_all(&research).expect("research folder is creatable");
     std::fs::write(research.join("INDEX.md"), "index").expect("index is writable");
     std::fs::write(research.join("kiss_kutas.md"), "source").expect("source is writable");
     std::fs::create_dir_all(research.join("raw")).expect("raw folder is creatable");
 
-    let documents = WorkspaceDocuments::new(workspace.path().to_path_buf())?;
+    let documents = WorkspaceDocuments::new(root.clone())?;
     let error = documents
         .read("research/DIGEST.md")
         .await
@@ -288,8 +288,8 @@ async fn a_missing_document_names_what_the_folder_actually_holds() -> Result<()>
 
 #[tokio::test]
 async fn listing_a_folder_that_is_not_there_names_the_ones_that_are() -> Result<()> {
-    let workspace = tempfile::tempdir().expect("temporary workspace");
-    let research = workspace.path().join("research");
+    let root = workspace("missing-document")?;
+    let research = root.join("research");
     std::fs::create_dir_all(&research).expect("research folder is creatable");
     std::fs::write(research.join("INDEX.md"), "index").expect("index is writable");
 
