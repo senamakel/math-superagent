@@ -482,12 +482,11 @@ impl OrchestratorAgent {
                     let mut prompt = prompt.clone();
                     // The pattern agent reads results, so a cycle over results
                     // it has already seen can only repeat itself or invent
-                    // something. Skipped without spending anything.
-                    if name == "patterns"
-                        && let Some(skip) = results_unchanged(&workspace, &analysed)
-                    {
-                        return skip;
-                    }
+                    // something. Decided before the agent runs, so an idle
+                    // cycle costs a directory walk rather than a model call.
+                    let skip = (name == "patterns")
+                        .then(|| results_unchanged(&workspace, &analysed))
+                        .flatten();
                     // Maintaining the tree outranks extending it. A library
                     // whose root nobody can afford to read is not a library
                     // the run has, and every cycle spent gathering while the
@@ -501,6 +500,9 @@ impl OrchestratorAgent {
                         let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);
                     }
                     async move {
+                        if let Some(skip) = skip {
+                            return skip;
+                        }
                         match subagents.run_to_completion(agent, prompt).await {
                             // A team whose goal is open-ended needs a way to
                             // say it has run out of useful work, or it spends
