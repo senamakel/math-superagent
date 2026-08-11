@@ -1037,10 +1037,18 @@ impl Tool<()> for DocumentTool {
                     .await?
             }
             DocumentToolKind::Write => {
-                let path = required_string(&call.arguments, "path")?;
+                let requested = required_string(&call.arguments, "path")?;
                 let content = string_value(&call.arguments, "content")?;
+                // Placement is decided here rather than asked for in a prompt.
+                // A run that writes its thirty-first program to the root has
+                // buried the two files carrying its derivation.
+                let path = super::layout::placed(&requested);
                 self.documents.write(&path, &content).await?;
-                format!("wrote {} bytes to {path}", content.len())
+                format!(
+                    "wrote {} bytes to {path}{}",
+                    content.len(),
+                    super::layout::note(&requested, &path)
+                )
             }
             DocumentToolKind::Edit => {
                 let path = required_string(&call.arguments, "path")?;
