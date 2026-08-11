@@ -446,6 +446,7 @@ impl OrchestratorAgent {
                 pattern: prompts.pattern,
                 inventor: prompts.inventor,
                 librarian: prompts.librarian,
+                scholar: prompts.scholar,
             },
         )?;
 
@@ -669,6 +670,7 @@ struct RolePrompts {
     pattern: String,
     inventor: String,
     librarian: String,
+    scholar: String,
 }
 
 /// The workspace context every role receives.
@@ -777,6 +779,7 @@ impl RolePrompts {
             pattern: role("pattern_finder", PATTERN_PROMPT)?,
             inventor: role("inventor", INVENTOR_PROMPT)?,
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
+            scholar: role("scholar", SCHOLAR_PROMPT)?,
         })
     }
 }
@@ -797,6 +800,7 @@ struct SupportPrompts {
     pattern: String,
     inventor: String,
     librarian: String,
+    scholar: String,
 }
 
 /// Registers the reflection, pattern, inventor, and librarian agents.
@@ -860,7 +864,25 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut librarian, tool);
     }
-    subagents.register("librarian", Arc::new(librarian), prompts.librarian)
+    subagents.register("librarian", Arc::new(librarian), prompts.librarian)?;
+
+    // The scholar reads; it does not fetch. Withholding `exa_search` is what
+    // keeps it digesting the library the run already has instead of drifting
+    // into another search, which is the librarian's job and already done.
+    let mut scholar =
+        specialist_harness(parts.model.clone(), parts.budget, "scholar", parts.tracer);
+    register_resilient(
+        &mut scholar,
+        Arc::new(RecallResearchTool::new(parts.vector_store.clone())),
+    );
+    register_resilient(
+        &mut scholar,
+        Arc::new(RememberResearchTool::new(parts.vector_store.clone())),
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut scholar, tool);
+    }
+    subagents.register("scholar", Arc::new(scholar), prompts.scholar)
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
