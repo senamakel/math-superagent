@@ -398,10 +398,11 @@ impl OrchestratorAgent {
     /// and says so while the others carry on.
     fn spawn_support_teams(&self, problem: &str) -> Vec<teams::TeamHandle> {
         let mut handles = Vec::new();
-        for (name, agent, brief) in [
+        for (name, agent, completion, brief) in [
             (
                 "research",
                 "librarian",
+                teams::Completion::Attainable,
                 "Enrich this run's reference library. Find one source the workspace does not \
                  already have that bears on the problem, file it under research/, and describe \
                  it. Consult research/INDEX.md first and do not fetch what is already there. \
@@ -412,10 +413,12 @@ impl OrchestratorAgent {
             (
                 "background",
                 "organizer",
+                teams::Completion::Standing,
                 "Keep the workspace navigable. Refresh the folder indexes so they match what is \
                  on disk, describe any file that has no description, and leave reflections/ \
                  alone — the loop writes that itself. Change nothing a result or derivation \
-                 depends on. Reply with NOTHING FURTHER when the workspace is already tidy.",
+                 depends on. Reply with NOTHING FURTHER when there is nothing to tidy right \
+                 now; you will be asked again once the run has produced more.",
             ),
         ] {
             if !self.subagents.knows(agent) {
@@ -439,7 +442,7 @@ impl OrchestratorAgent {
                             // say it has run out of useful work, or it spends
                             // its whole allowance re-tidying a tidy workspace.
                             Ok(reply) if reply.to_uppercase().contains("NOTHING FURTHER") => {
-                                teams::Cycle::Finished
+                                completion.nothing_further()
                             }
                             Ok(_) => teams::Cycle::Worked,
                             // A failed cycle is not a reason to end the team:

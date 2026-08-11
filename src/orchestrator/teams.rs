@@ -80,6 +80,36 @@ impl TeamBudget {
     }
 }
 
+/// Whether a team's goal can ever be complete.
+///
+/// The distinction is not pedantic; collapsing it cost a live run its whole
+/// background team. On a fresh workspace at t=0 there is nothing to tidy, the
+/// organiser truthfully said so, and the team treated that as its goal being
+/// met and stopped — for the remaining two hours, while files accumulated and
+/// nobody indexed them.
+///
+/// A team whose work is *acquisitive* genuinely finishes: once further sources
+/// stop changing the shared brief, fetching more is waste. A team whose work is
+/// *custodial* never does, because the thing it maintains keeps changing
+/// underneath it. For that team an empty cycle means come back later, not stop.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum Completion {
+    /// The goal can be reached; "nothing further" ends the team.
+    Attainable,
+    /// The goal is standing; "nothing further" only means idle for now.
+    Standing,
+}
+
+impl Completion {
+    /// Maps a cycle that reported nothing further to do.
+    pub(super) const fn nothing_further(self) -> Cycle {
+        match self {
+            Self::Attainable => Cycle::Finished,
+            Self::Standing => Cycle::Idle,
+        }
+    }
+}
+
 /// The handle a team's owner keeps: somewhere to post, and a way to stop it.
 #[derive(Clone, Debug)]
 pub(super) struct TeamHandle {

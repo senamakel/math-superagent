@@ -1,6 +1,41 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/exponential_order_statistics_memoryless_kth.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Summary — Exponential order statistics and the memoryless property
 
-<!-- source: https://www.math.kth.se/matstat/gru/sf2955/exponorderstats.pdf | converted from PDF -->
+Source: Timo Koski, "Order statistics for independent exponential variables",
+KTH Royal Institute of Technology, course SF2955 (Computer intensive methods).
+URL: https://www.math.kth.se/matstat/gru/sf2955/exponorderstats.pdf
+Full text: `research/exponential_order_statistics_memoryless_kth.full.md`
+
+## What it establishes
+
+For X_1..X_n i.i.d. with density f, the joint density of the order statistics
+X_(1)<...<X_(n) is n!·∏ f(y_k) on the ordered region (Theorem 1.1).
+
+Specializing to Exp(1) (Theorem 2.1), the spacings
+
+    Y_1 = X_(1),   Y_i = X_(i) − X_(i−1)  (i=2..n)
+
+are **independent** and exponentially distributed with
+
+    Y_i ∈ Exp( 1/(n+1−i) )   i.e. rate (n+1−i).
+
+This is proved by a Jacobian (change of variables Y = A·X, det A = 1) factor
+into a product of independent exponential densities. Equivalently: the waiting
+time to the k-th arrival of n i.i.d. exponential clocks is exponential with
+rate n+1−k, independent of the earlier waiting times — the memoryless
+"clocks" view.
+
+## Why it bears on the Torpids problem
+
+The boats' speeds v_j are i.i.d. Exp(1). The memoryless/order-statistic
+structure is exactly what memory.md predicted governs an exact (non-Monte
+Carlo, non-enumerative) integration over the speeds: after seeing the smallest
+of a set of independent exponentials, the remaining ones are still independent
+exponentials with their original rates, so event-by-event (bump vs finish)
+conditioning decomposes into products over independent exponential rates
+rather than high-dimensional integrals. This is the theoretical route to an
+answer whose cost grows with the number of boats' *structure* (n small, 13),
+not with any enumerable bound.
+
 
 Avd. Matematisk statistik
 
