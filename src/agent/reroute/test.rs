@@ -99,7 +99,6 @@ fn a_malformed_request_is_not_rerouted() {
             retryable: true,
             retry_after_ms: None,
             raw: None,
-        raw: None,
         }
     ))));
     // A failure with no structure at all cannot be classified this way.
