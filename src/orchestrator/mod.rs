@@ -208,6 +208,11 @@ impl OrchestratorAgent {
             &shared_guidance,
             &load_workspace_files(&workspace, &["prompts/tool_builder.md"])?,
         );
+        let goals_prompt = workspace_prompt(
+            GOALS_PROMPT,
+            &shared_guidance,
+            &load_workspace_files(&workspace, &["prompts/goals.md"] )?,
+        );
 
         let mut research_harness = specialist_harness(model.clone());
         let vector_store = VectorStore::from_env()?;
