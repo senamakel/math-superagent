@@ -76,3 +76,7 @@
 - Build reusable helpers in `toolkits/<name>.py`, one function per file, and
   describe each with `describe_file` so `toolkits/INDEX.md` stays accurate.
   Import them with `from toolkits.<name> import <name>`.
+- `sympy`, `numpy`, `scipy`, `gmpy2`, and `networkx` are already installed. Use
+  them instead of pip-installing or hand-rolling: `sympy` for exact symbolic
+  algebra and number theory, `gmpy2` for large-integer arithmetic, `numpy` for
+  arrays. Reach for pip only for something genuinely absent.
