@@ -258,6 +258,39 @@ fn judged_route(state: &SolutionState) -> Judged {
     }
 }
 
+/// Whether an attempt's report is nothing but the model provider refusing.
+///
+/// `delegate` turns a child's failure into text so the loop survives it, which
+/// is right — but it makes a provider outage indistinguishable from a poor
+/// attempt unless something reads the text. The markers are the ones a failed
+/// delegation actually carries: the `[<agent> failed:` wrapper `delegate`
+/// writes, and a model-layer error inside it.
+///
+/// Deliberately narrow. It must not fire on an attempt that did real work and
+/// merely *mentions* a rate limit in its report, so the failure wrapper has to
+/// be present and the report has to be substantially nothing else. A false
+/// positive stops a run that was working, which is worse than the eight wasted
+/// attempts this exists to prevent.
+fn provider_blocked(report: &str) -> bool {
+    let trimmed = report.trim();
+    if !trimmed.starts_with('[') || !trimmed.contains("failed:") {
+        return false;
+    }
+    let lowered = trimmed.to_ascii_lowercase();
+    let refused = [
+        "model error",
+        "http 403",
+        "http 429",
+        "key limit",
+        "rate limit",
+    ]
+    .iter()
+    .any(|marker| lowered.contains(marker));
+    // A report that carried a real attempt alongside the failure is not a
+    // blocked attempt; the wrapper is short by construction.
+    refused && trimmed.len() < 2_000
+}
+
 /// Runs one child agent and returns its text, or a description of the failure.
 ///
 /// A child that fails must not end the loop: the failure is itself information
@@ -1113,6 +1146,10 @@ pub(super) async fn run(
                 (Route::Solved, "done"),
                 (Route::Retry, "attempt"),
                 (Route::Diversify, "diversify"),
+                // Same terminal node as a finished run. The loop stops rather
+                // than diversifying, because diversification is three more
+                // child runs into the same refusal.
+                (Route::Blocked, "done"),
             ],
         )
         .add_edge("diversify", "attempt")
