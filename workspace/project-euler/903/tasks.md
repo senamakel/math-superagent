@@ -21,3 +21,8 @@
       Q(3)=88, Q(6)=133103808); methods agree exactly on all n=2..7.
 - [x] Wrote and ran explore.py (n=2..7): M_j and N(j,m) tables.  Pattern found:
       N(j,m)=f(m-j) translation-invariant; M_j = suffix sum of f.
+- [x] extend_f.py: computed f_n(k) for n=2..11 by the period formula (0-based,
+      row j=0), exact ints, saved to extend_f.json.  Every row is exactly
+      arithmetic in k (2nd diff all zero).  New rows n=10, n=11 recorded.
+- [x] verify_f_method2.py: independent cycle-type-decomposition recomputation of
+      the n=10,11 rows; matches extend_f.json exactly (n=10 24.5s, n=11 319s).
