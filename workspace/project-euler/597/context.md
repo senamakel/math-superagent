@@ -1,79 +1,45 @@
 # Shared context
 
-What the run's reference library establishes, in the words of the run rather
-than of the sources. The research team writes this; everyone reads it.
+Standing brief: what the `research/` library establishes for PE 597 (Torpids),
+so any role can act without opening sources. Detail lives in the fold notes
+behind wikilinks; `research/INDEX.md` lists every source with its URL.
 
-It exists because `research/INDEX.md` answers a different question. The index
-says what each file *is* — one row per source, so reading it means holding
-thirteen descriptions in your head and doing the synthesis yourself, every
-time, in every role. This file says what the library *means for this problem*:
-the definitions and results now available, what they let the run compute or
-rule out, and where two sources disagree.
+## Model
 
-Keep it short enough to read on every turn — a few hundred words. It is not a
-summary of the sources; it is the standing brief that a new attempt, a new
-approach, or a fresh judgement can act on without opening anything.
+Speeds v_j are iid Exp(1) (v_j = −ln X_j, X_j~U(0,1)). Boat j rows at constant
+v_j until it finishes (at L) or bumps the nearest rowing boat ahead (then OUT,
+passed freely; bumped boat continues). Parity of the new order = the inversion
+count (# pairs i<j with a bump chain i→…→j) mod 2. Goal: p(13,1800).
 
-## Established
+## Established (sources)
 
-- The spacings of the order statistics of n i.i.d. Exp(1) variables are
-  **independent** exponentials: X_(1) ~ Exp(n) and X_(i)−X_(i−1) ~ Exp(n+1−i).
-  Equivalently, after the smallest of a set of independent exponentials fires,
-  the survivors stay independent exponentials with their original rates
-  (memoryless "clocks" view). Source:
-  `research/exponential_order_statistics_memoryless_kth.md` (KTH course notes,
-  Timo Koski, SF2955; theorem with full Jacobian proof). This is exactly the
-  structure memory.md flagged as the likely key to an exact (non-MC,
-  non-enumerative) integration over the iid Exp(1) boat speeds in PE 597: it
-  lets the bump/finish chronology decompose into products over independent
-  exponential rates rather than high-dimensional integrals over the speeds.
+- **Exponential spacings.** The order-statistic spacings of n iid Exp(1) are
+  independent exponentials with rates n, n−1, …, 1; survivors of an exponential
+  remain exponential at original rates (memoryless). This is the structure that
+  decomposes an Exp-speed integration into products over independent rates
+  rather than high-dimensional integrals. [[exponential_order_statistics_memoryless_kth]]
+- **Competing heterogeneous clocks.** For independent Exps with rates λ_i:
+  min is Exp(Σλ_i), P(j fires first) = λ_j/Σλ_i, and a specific firing order
+  has probability = product of rate ratios (one factor per event, survivor
+  rates). [[competing_exponential_clocks_uchicago]]
 
-- **Heterogeneous competing exponential clocks** (new addition). For
-  *independent* Exps with possibly different rates λ_i: min is Exp(Σλ_i), the
-  probability that clock j fires first is λ_j/Σλ_i, and by repeating
-  (memorylessness) the probability of a *specific firing order* i_1,…,i_D is
-  the product
-  (λ_{i1}/Σλ)·(λ_{i2}/(Σλ−λ_{i1}))·(λ_{i3}/(Σλ−λ_{i1}−λ_{i2}))·… .
-  Source: `research/competing_exponential_clocks_uchicago.md` (UChicago
-  STAT253/317 Lecture 9, Yibi Huang).
-  This adds what the i.i.d. spacings theorem alone did not: an exact,
-  combinatorial, enumeration-free way to sum over any *specific order of
-  events* when each boat/configuration has its own rate. Where the racing
-  dyamics reduce to "next event among a set of clocks wins with probability
-  proportional to its rate", this product form gives the exact probability of
-  a full bump/finish chronology without a high-dimensional integral over the
-  speeds or a sample-space enumeration.
+Together: an event chronology whose event times are exponential has an exact
+probability as a product of rate ratios — no sample enumeration. The only open
+piece is what the "clocks" are (a bump's rate depends on relative speed, not
+raw v).
 
-Together the two facts say: any event chronology of this race has a
-probability expressible as a product of rate ratios (one factor per event,
-each a rate of the winner over the sum of surviving rates). The remaining
-work — pinning down what the "clocks" are given the catch-up kinematics
-(a bump's rate is a function of relative speed, not raw v) — is the run's own
-derivation, and is now the only open piece.
+## Caveat
 
-## Contradictions
+- **Finish times are NOT exponential clocks.** T_j = (L−p_j)/v_j with
+  v_j~Exp(1) is inverse-exponential (density (c/t²)e^{−c/t}, CDF e^{−c/t},
+  non-constant hazard). Product-of-rate-ratios applies only where event times
+  are genuinely exponential; finish events contribute an inverse-exponential
+  competing hazard. [[inverse_exponential_finish_times_wikipedia]]
 
-None. The source agrees with the run's working model (speeds iid Exp(1),
-memoryless property).
+## Contradictions / gaps
 
-## Gaps
-
-The library holds the exponential order-statistics theory, but no source yet
-derives the specific event-chronology decomposition (bump-chain parity
-integral) for this race; that is the run's own derivation task, not a
-literature lookup.
-
-## What the library now establishes that it did not before
-
-- **Finish times are NOT exponential clocks (correction to the brief above).**
-  The reciprocal-transform result (`research/inverse_exponential_finish_times_wikipedia.md`,
-  Wikipedia "Inverse distribution"): for v ~ Exp(1) and scale c = L−p_j, the
-  finish time T = c/v is **inverse-exponential** — density (c/t²)e^(−c/t), CDF
-  e^(−c/t), hazard h(t) = (c/t²)/(1−e^(−c/t)) which is *not constant* in t, and
-  no finite moments of order ≥ 1. So "next finish event wins with probability
-  λ_j/Σλ" does **not** hold for finish events; the product-of-rate-ratios
-  machinery applies only where event times are genuinely exponential. This
-  pins the open derivation to: express the *bump* event rate (a function of
-  relative speed, not raw v) and handle finish events as the non-exponential
-  inverse-exponential competing hazard mixed in — the run's own derivation
-  task, now precisely scoped rather than the vague "figure out the clocks".
+None between sources and the model. No source yet derives this race's specific
+event-chronology decomposition (bump-rate + finish-hazard); that is the run's
+own derivation. memory.md: parity depends on speed magnitudes, not just the
+rank of w_j = v_j/(L−p_j) (w-order hypothesis refuted) — exact integration over
+the Exp speeds is required.
