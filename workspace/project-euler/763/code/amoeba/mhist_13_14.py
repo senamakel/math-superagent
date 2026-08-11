@@ -17,6 +17,7 @@ D(13)=1749267 and D(14)=5949063.
 """
 
 import sys
+import gc
 import time
 
 from lib.amoeba import next_level_bits
@@ -64,6 +65,10 @@ def main(max_n=14, hist_lo=13, hist_hi=14):
         else:
             print(f"D({n}) = {len(level):>12d}   (level in {dt:.2f}s)",
                   flush=True)
+        # ensure the old level set (and any transient garbage from the
+        # transition) is collected before allocating the next level, to keep
+        # peak memory under the container's ~2 GiB cgroup cap.
+        gc.collect()
     total_elapsed = time.time() - total_start
 
     # Verify totals against independently established D(13), D(14).
