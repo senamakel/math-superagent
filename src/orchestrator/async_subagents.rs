@@ -133,6 +133,7 @@ impl AsyncSubagentManager {
             steering: SteeringRegistry::new(),
             budget,
             tracer,
+            langfuse: LangfuseClient::from_env().ok().map(Arc::new),
         }
     }
 
