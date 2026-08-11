@@ -188,9 +188,12 @@ def main():
     print("  distribution and/or cross, NOT in the parity parity algebra.")
     bad = 0
     rng = random.Random(54321)
+    # only valid geometries: every boat must start strictly upstream of the
+    # finish is FALSE -- every boat starts strictly BELOW the finish, so the
+    # highest boat 40*(n-1) must be < L (positive distance to finish).
+    valid = [(n, L) for n in range(3, 7) for L in L_list if 40 * (n - 1) < L]
     for _ in range(100000):
-        n = rng.randint(3, 6)
-        L = rng.choice(L_list)
+        n, L = valid[rng.randrange(len(valid))]
         speeds = [rng.expovariate(1.0) for _ in range(n)]
         # full oracle
         above = simulate_order(n, L, speeds)
