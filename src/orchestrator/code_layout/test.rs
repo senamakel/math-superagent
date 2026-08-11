@@ -35,11 +35,11 @@ fn workspace(name: &str) -> PathBuf {
 
 #[test]
 fn a_tidy_folder_asks_for_nothing() {
-    let root = workspace();
-    write(root.path(), "code/INDEX.md", "# Index");
-    write(root.path(), "code/brute.py", "def count(n):\n    return n\n");
-    assert!(plan(root.path()).is_empty());
-    assert!(briefing(root.path()).is_none());
+    let root = workspace("tidy");
+    write(&root, "code/INDEX.md", "# Index");
+    write(&root, "code/brute.py", "def count(n):\n    return n\n");
+    assert!(plan(&root).is_empty());
+    assert!(briefing(&root).is_none());
 }
 
 #[test]
@@ -59,16 +59,16 @@ fn only_top_level_definitions_count_as_a_routine() {
 
 #[test]
 fn a_routine_written_out_three_times_is_the_first_thing_reported() {
-    let root = workspace();
-    write(root.path(), "code/INDEX.md", "# Index");
+    let root = workspace("duplicated");
+    write(&root, "code/INDEX.md", "# Index");
     for name in ["aj", "aj2", "fit"] {
         write(
-            root.path(),
+            &root,
             &format!("code/{name}.py"),
             "def lex_ranks(n):\n    return {}\n\ndef main():\n    pass\n",
         );
     }
-    let tasks = plan(root.path());
+    let tasks = plan(&root);
     assert_eq!(
         tasks.first().map(|task| task.fault.clone()),
         Some(Fault::Duplicated {
@@ -81,7 +81,7 @@ fn a_routine_written_out_three_times_is_the_first_thing_reported() {
             shelved: false,
         })
     );
-    let brief = briefing(root.path()).expect("a duplicated routine is reported");
+    let brief = briefing(&root).expect("a duplicated routine is reported");
     assert!(brief.contains("lex_ranks"), "{brief}");
     assert!(brief.contains(LIB_DIR), "{brief}");
 }
@@ -91,89 +91,89 @@ fn two_copies_are_a_program_and_its_oracle() {
     // `code/AGENTS.md` asks for the naive program to be kept as the oracle the
     // fast one is checked against, so the second definition is the arrangement
     // working rather than the fault.
-    let root = workspace();
-    write(root.path(), "code/INDEX.md", "# Index");
+    let root = workspace("oracle");
+    write(&root, "code/INDEX.md", "# Index");
     for name in ["brute", "solution"] {
         write(
-            root.path(),
+            &root,
             &format!("code/{name}.py"),
             "def count(n):\n    return n\n",
         );
     }
-    assert!(plan(root.path()).is_empty());
+    assert!(plan(&root).is_empty());
 }
 
 #[test]
 fn a_copy_of_something_already_shelved_is_reported_as_such() {
-    let root = workspace();
-    write(root.path(), "code/INDEX.md", "# Index");
-    write(root.path(), "code/lib/INDEX.md", "# Index");
+    let root = workspace("shelved");
+    write(&root, "code/INDEX.md", "# Index");
+    write(&root, "code/lib/INDEX.md", "# Index");
     write(
-        root.path(),
+        &root,
         "code/lib/perms.py",
         "def lex_ranks(n):\n    return {}\n",
     );
     for name in ["aj", "fit"] {
         write(
-            root.path(),
+            &root,
             &format!("code/{name}.py"),
             "def lex_ranks(n):\n    return {}\n",
         );
     }
-    let brief = briefing(root.path()).expect("the ignored shelf is reported");
+    let brief = briefing(&root).expect("the ignored shelf is reported");
     assert!(brief.contains("already has it"), "{brief}");
 }
 
 #[test]
 fn a_folder_past_the_fan_out_is_asked_to_group() {
-    let root = workspace();
-    write(root.path(), "code/INDEX.md", "# Index");
+    let root = workspace("loose");
+    write(&root, "code/INDEX.md", "# Index");
     for index in 0..=LOOSE {
         write(
-            root.path(),
+            &root,
             &format!("code/probe{index}.py"),
             &format!("def probe{index}(n):\n    return n\n"),
         );
     }
-    let brief = briefing(root.path()).expect("an ungrouped folder is reported");
+    let brief = briefing(&root).expect("an ungrouped folder is reported");
     assert!(brief.contains("Group them"), "{brief}");
     // Exactly the fan-out is still a listing a reader takes in at a glance.
-    fs::remove_file(root.path().join(format!("code/probe{LOOSE}.py")))
+    fs::remove_file(root.join(format!("code/probe{LOOSE}.py")))
         .expect("the test workspace is writable");
-    assert!(plan(root.path()).is_empty());
+    assert!(plan(&root).is_empty());
 }
 
 #[test]
 fn what_a_program_produced_is_not_a_program() {
     // `code/out/` holds captures, and a `.py` file emitted by a run is not
     // source the next agent is meant to group or import.
-    let root = workspace();
-    write(root.path(), "code/INDEX.md", "# Index");
+    let root = workspace("outputs");
+    write(&root, "code/INDEX.md", "# Index");
     for index in 0..=LOOSE {
         write(
-            root.path(),
+            &root,
             &format!("code/out/generated{index}.py"),
             "def probe(n):\n    return n\n",
         );
     }
     write(
-        root.path(),
+        &root,
         "code/__pycache__/cached.py",
         "def probe(n):\n    return n\n",
     );
-    assert!(plan(root.path()).is_empty());
+    assert!(plan(&root).is_empty());
 }
 
 #[test]
 fn a_folder_of_programs_with_no_index_is_reported_last() {
-    let root = workspace();
-    write(root.path(), "code/INDEX.md", "# Index");
+    let root = workspace("unindexed");
+    write(&root, "code/INDEX.md", "# Index");
     write(
-        root.path(),
+        &root,
         "code/chains/probe.py",
         "def probe(n):\n    return n\n",
     );
-    let tasks = plan(root.path());
+    let tasks = plan(&root);
     assert_eq!(
         tasks.first().map(|task| task.fault.clone()),
         Some(Fault::Unindexed {
@@ -185,12 +185,12 @@ fn a_folder_of_programs_with_no_index_is_reported_last() {
     // legibility, where two copies of a routine can disagree.
     for name in ["a", "b", "c"] {
         write(
-            root.path(),
+            &root,
             &format!("code/chains/{name}.py"),
             "def walk(n):\n    return n\n",
         );
     }
-    let tasks = plan(root.path());
+    let tasks = plan(&root);
     assert!(
         matches!(
             tasks.first().map(|task| &task.fault),
@@ -202,7 +202,7 @@ fn a_folder_of_programs_with_no_index_is_reported_last() {
 
 #[test]
 fn a_workspace_without_a_code_folder_is_not_a_fault() {
-    let root = TempDir::new().expect("a temporary directory is available");
-    assert!(plan(root.path()).is_empty());
-    assert!(briefing(root.path()).is_none());
+    let root = empty("no-code");
+    assert!(plan(&root).is_empty());
+    assert!(briefing(&root).is_none());
 }
