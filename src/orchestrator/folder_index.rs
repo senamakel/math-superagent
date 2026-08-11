@@ -129,7 +129,7 @@ pub(super) fn parse(existing: &str) -> BTreeMap<String, String> {
         if name.is_empty() || name.eq_ignore_ascii_case("file") || name.starts_with("---") {
             continue;
         }
-        entries.insert(name.to_string(), description.to_string());
+        entries.insert(file_name(name), description.to_string());
     }
     entries
 }
