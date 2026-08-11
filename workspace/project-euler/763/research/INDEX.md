@@ -14,7 +14,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/oeis_direct.md` | Direct OEIS search of the full 15-term 3D amoeba sequence D(0..14)=1,1,3,9,30,...,5949063: returns "No results". Authoritative negative — the 3D D(N) is not catalogued. Claim dN-not-in-oeis. |
 | `L1.0/oeis_partial.md` | Direct OEIS search of offset-1 partial 11 terms 1,3,9,30,...,44499: "No results", confirming the 3D D(N) is absent from OEIS regardless of offset. Claim dN-offset-also-not-in-oeis. |
 | `L2.0/cgmo_opening_dijkstra.md` | Links — from https://www.cs.utexas.edu/~EWD/transcriptions/EWD12xx/EWD1200.html; not yet read, excerpt pending a scholar summary |
-| `L2.0/pebbling_amz.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/1009.5731; not yet read, excerpt pending a scholar summary |
+| `L2.0/pebbling_amz.md` | Abstract-page digest anchoring the Zhen-Knessl arXiv:1009.5731 paper (2D chessboard-pebbling exact solution); points to the PDF digest research/L2.0/pebbling_knessl_pdf.md for content. |
 | `L2.0/pebbling_ejc_survey.md` | Digest placeholder for a chessboard-pebbling source from The Electronic Journal of Combinatorics (combinatorics.org v2i1r7 PDF). Digest is currently only a header — the excerpt has not been extracted yet; full text in research/L0.0/pebbling_ejc_survey.full.md. Background pebbling survey for the 2D-amoeba=A007902 identification. |
 | `L2.0/pebbling_eriksson_eljc.md` | Pebblings — from https://doi.org/10.37236/1201; not yet read, excerpt pending a scholar summary |
 | `L2.0/pebbling_knessl_pdf.md` | downloaded source — from https://arxiv.org/pdf/1009.5731; not yet read, excerpt pending a scholar summary |

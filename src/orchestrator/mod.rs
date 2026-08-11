@@ -729,61 +729,46 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                     ]),
             ),
         )?
-        .register(
-            AgentDefinition::new(
-                "tool_builder",
-                "Tool Builder Agent",
-                "Writes and executes tools in the jailed /workspace directory.",
-            )
-            .with_model("openrouter")
-            .with_tools(
-                ["write_tool_file", "execute_command"]
-                    .into_iter()
-                    .chain(document_tools),
-            ),
-        )?
-        .register(
-            AgentDefinition::new(
-                "coder",
-                "Coding Agent",
-                "Implements the solution program from an established result, and verifies it \
-                 against the oracle.",
-            )
-            .with_model("openrouter")
-            .with_tools(
-                ["write_tool_file", "execute_command"]
-                    .into_iter()
-                    .chain(document_tools),
-            ),
-        )?
-        .register(
-            AgentDefinition::new(
-                "sat_solver",
-                "Constraint Solving Agent",
-                "Encodes a finite decision or optimisation problem for CP-SAT, SAT, SMT, or \
-                 MILP, and validates the model it gets back.",
-            )
-            .with_model("openrouter")
-            .with_tools(
-                ["write_tool_file", "execute_command"]
-                    .into_iter()
-                    .chain(document_tools),
-            ),
-        )?
-        .register(
-            AgentDefinition::new(
-                "lean_prover",
-                "Lean Formalisation Agent",
-                "Writes Lean 4 statements and proofs against Mathlib, and reports what the \
-                 kernel actually checked.",
-            )
-            .with_model("openrouter")
-            .with_tools(
-                ["write_tool_file", "execute_command"]
-                    .into_iter()
-                    .chain(document_tools),
-            ),
         )?;
+    // The four roles carrying shell and file-write authority. They differ in
+    // mandate rather than in tools, so listing them together is what makes the
+    // fact that they share an authority boundary visible rather than buried in
+    // four near-identical blocks.
+    for (name, title, description) in [
+        (
+            "tool_builder",
+            "Tool Builder Agent",
+            "Writes and executes tools in the jailed /workspace directory.",
+        ),
+        (
+            "coder",
+            "Coding Agent",
+            "Implements the solution program from an established result, and verifies it \
+             against the oracle.",
+        ),
+        (
+            "sat_solver",
+            "Constraint Solving Agent",
+            "Encodes a finite decision or optimisation problem for CP-SAT, SAT, SMT, or MILP, \
+             and validates the model it gets back.",
+        ),
+        (
+            "lean_prover",
+            "Lean Formalisation Agent",
+            "Writes Lean 4 statements and proofs against Mathlib, and reports what the kernel \
+             actually checked.",
+        ),
+    ] {
+        registry.register(
+            AgentDefinition::new(name, title, description)
+                .with_model("openrouter")
+                .with_tools(
+                    ["write_tool_file", "execute_command"]
+                        .into_iter()
+                        .chain(document_tools),
+                ),
+        )?;
+    }
     for definition in support_agents(research_enabled, document_tools) {
         registry.register(definition)?;
     }
