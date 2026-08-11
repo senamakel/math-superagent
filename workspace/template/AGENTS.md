@@ -73,9 +73,13 @@
   a verbatim replay of what you have already seen, so reading it would spend a
   large part of your context to learn nothing. Operators read it outside the
   run.
-- Build reusable helpers in `toolkits/<name>.py`, one function per file, and
-  describe each with `describe_file` so `toolkits/INDEX.md` stays accurate.
-  Import them with `from toolkits.<name> import <name>`.
+- `code/` is a Python package tree and `/workspace/code` is on `PYTHONPATH`, so
+  every folder in it is importable by name from anywhere. Build reusable
+  helpers in `code/lib/<subject>.py`, one subject per module, import them with
+  `from lib.<subject> import <name>`, and describe each with `describe_file` so
+  `code/lib/INDEX.md` stays accurate. Group everything else by the question it
+  attacks, one folder per question, each with its own `INDEX.md`. Never write
+  `sys.path.insert`: an import that fails means the file is in the wrong place.
 - `sympy`, `numpy`, `scipy`, `gmpy2`, and `networkx` are already installed. Use
   them instead of pip-installing or hand-rolling: `sympy` for exact symbolic
   algebra and number theory, `gmpy2` for large-integer arithmetic, `numpy` for
