@@ -7,6 +7,7 @@ cd "$repository_root"
 usage() {
     echo "usage: ./agent [--workspace relative/path] [--no-research] [run] [task...]" >&2
     echo "       ./agent [--workspace relative/path] build" >&2
+    echo "       ./agent [--workspace relative/path] prompts" >&2
     echo "       ./agent [--workspace relative/path] shell" >&2
     echo "" >&2
     echo "  --no-research  withhold web search from the research agent" >&2
@@ -53,7 +54,7 @@ fi
 action=run
 if [ "$#" -gt 0 ]; then
     case "$1" in
-        run|build|shell)
+        run|build|shell|prompts)
             action=$1
             shift
             ;;
@@ -91,6 +92,13 @@ export MATH_AGENT_LOCAL_GID=$(id -g)
 
 if [ "$action" = build ]; then
     exec docker compose build agent
+fi
+
+# Prompt inspection runs on the host. It reads workspace files and renders the
+# same assembly the runtime performs, so it needs neither the container nor a
+# provider key, and must not cost anything to look at.
+if [ "$action" = prompts ]; then
+    exec cargo run --quiet --example dump_prompts -- "$workspace_path"
 fi
 
 if [ ! -f .env ]; then
