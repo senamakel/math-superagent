@@ -195,19 +195,19 @@ between two index refreshes. `./euler-tui <number>` watches the same box
 behind a tab per team:
 
 ```sh
-./euler-tui 763                 # attach, or start the run if none is going
-./euler-tui 763 --attach        # attach only; fail rather than start one
-./euler-tui 763 --replay        # open the tabs on a finished run's log
+./euler 763                     # start or continue the run
+./euler-tui 763                 # watch it, a tab per team
+./euler-tui 763 --replay        # read the last run's log; touch nothing
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
 ```
 
-The run is a detached container and this is a client of it. `euler-tui` asks
-Docker which container has the workspace mounted and follows that one, starting
-a run only when none is going, so opening a second view attaches rather than
-starting a second run — which put two runs on one workspace, writing the same
-files and making checkpoint commits over each other, before it worked this way.
-`docker logs` replays a container from its start, so a client attaching an hour
-in still gets every tab populated before its first frame.
+`euler-tui` **only watches**. It finds the container that has the workspace
+mounted and follows it, and cannot start, stop, or restart a run. That is the
+design rather than a gap: when starting was part of the same command, opening a
+second view started a second run on the same workspace — both writing the same
+files and both making checkpoint commits over each other. `docker logs` replays
+a container from its start, so attaching an hour in still populates every tab
+before the first frame.
 
 It is a `ratatui` binary, built behind the optional `tui` feature so the
 runtime image — which has no terminal — does not carry a terminal library. The
