@@ -548,34 +548,31 @@ enum Mode {
 struct Options {
     problem: u32,
     mode: Mode,
-    research: bool,
     plain: bool,
-    extra: Vec<String>,
 }
 
 fn usage() -> String {
-    "usage: ./euler-tui [--attach] [--replay] [--plain] [--no-research] <problem> [instructions…]\n\
+    "usage: ./euler-tui [--replay] [--plain] <problem>\n\
      \n\
-       --attach       only attach to a run already going; do not start one\n\
-       --replay       open the tabs on the existing log, starting nothing\n\
-       --plain        no tabs; stream to stdout, as when scripting\n\
-       --no-research  withhold web search, so the run tests reasoning"
+     Watches a run; it never starts one. Start a run with `./euler <problem>`.\n\
+     \n\
+       --replay  open the tabs on the existing log instead of a live container\n\
+       --plain   no tabs; stream to stdout, as when scripting"
         .to_string()
 }
 
 fn options() -> Result<Options, String> {
     let mut problem = None;
-    let mut research = true;
-    let mut mode = Mode::Follow;
+    let mut mode = Mode::default();
     let mut plain = false;
-    let mut extra = Vec::new();
     for argument in std::env::args().skip(1) {
         match argument.as_str() {
+            // Accepted and ignored: it was the only mode long enough that a
+            // hand still types it, and refusing a flag that asks for what
+            // already happens would be pedantry.
             "--attach" => mode = Mode::Attach,
             "--plain" => plain = true,
             "--replay" => mode = Mode::Replay,
-            "--no-research" => research = false,
-            "--research" => research = true,
             "-h" | "--help" => return Err(usage()),
             _ if problem.is_none() => {
                 problem = Some(
@@ -584,7 +581,12 @@ fn options() -> Result<Options, String> {
                         .map_err(|_| "problem number must be a positive integer".to_string())?,
                 );
             }
-            _ => extra.push(argument),
+            _ => {
+                return Err(format!(
+                    "unexpected argument `{argument}`. This watches a run; start one with \
+                     `./euler <problem>`"
+                ));
+            }
         }
     }
     let problem = problem.ok_or_else(usage)?;
@@ -594,9 +596,7 @@ fn options() -> Result<Options, String> {
     Ok(Options {
         problem,
         mode,
-        research,
         plain,
-        extra,
     })
 }
 
