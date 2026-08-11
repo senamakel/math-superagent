@@ -291,7 +291,7 @@ filling the context.
 A download lands as two files side by side: `<name>.md` holding a bounded excerpt
 and `<name>.full.md` holding the complete text. One real reference page converted
 to about 23,000 tokens, and three of those fill a specialist's context before it
-has done any work — so reading the short one is the default and reading the long
+has done any work, so reading the short one is the default and reading the long
 one is a decision. The excerpt is a placeholder the scholar is expected to replace
 with what the source establishes, under a thousand tokens.
 
