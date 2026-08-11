@@ -331,11 +331,15 @@ fn count_learnings(reflection: &str) -> usize {
 /// It lands in `L0/` because a reflection is an original: the judgement of one
 /// attempt, written once, never rewritten. Folds of it are what the levels
 /// above hold.
-fn reflection_filename(millis: u128, learnings: usize) -> String {
+fn reflection_filename(workspace: Option<&Path>, millis: u128, learnings: usize) -> String {
+    let batch = workspace.map_or(0, |workspace| {
+        super::context_tree::open_batch(workspace, "reflections", 0)
+    });
+    let folder = format!("reflections/{}", super::context_tree::batch_dir(0, batch));
     if learnings == 0 {
-        format!("reflections/L0/{millis}_nothing.md")
+        format!("{folder}/{millis}_nothing.md")
     } else {
-        format!("reflections/L0/{millis}_{learnings:02}_learnings.md")
+        format!("{folder}/{millis}_{learnings:02}_learnings.md")
     }
 }
 
