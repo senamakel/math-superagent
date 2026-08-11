@@ -73,6 +73,7 @@ impl WorkspaceDocuments {
     }
 
     fn readable_path(&self, relative: &str) -> Result<PathBuf> {
+        ensure_visible(relative)?;
         let path = self.path(relative)?;
         let canonical = path.canonicalize().map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!(
