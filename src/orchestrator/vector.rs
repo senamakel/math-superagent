@@ -61,7 +61,12 @@ impl VectorStore {
             .send()
             .await
             .map_err(|error| qdrant_transport_error(&error))?;
-        if response.status().is_success() {
+        // A 409 means another caller created the collection between our check
+        // and our PUT. The postcondition of this function is "the collection
+        // exists", and it does, so this is success rather than a conflict. The
+        // check-then-create pair is inherently racy and specialists now run in
+        // parallel, so losing that race is routine, not exceptional.
+        if response.status().is_success() || response.status() == reqwest::StatusCode::CONFLICT {
             return Ok(());
         }
         Err(qdrant_response_error("collection creation", response).await)
