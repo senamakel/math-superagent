@@ -73,19 +73,26 @@ const MAX_WORKSPACE_CONTEXT_BYTES: usize = 256 * 1024;
 /// than about asymptotics, because the naive method for a problem whose input
 /// is a single bound is usually "linear in that bound" and still hopeless.
 const SHARED_METHOD_POLICY: &str = "\n\nMethod policy, which applies to every step:\n\
-    1. Understand before computing. Restate the problem exactly, define every symbol, fix the \
-    ranges and edge cases, and work small instances by hand until the pattern is concrete.\n\
-    2. Gather context before implementing. Identify the mathematical objects involved and the \
-    named theory, algorithm, or identity that governs them. Do this deliberately and \
-    exhaustively; an hour of understanding beats a day of computation.\n\
+    1. Understand by computing, not by writing prose about the problem. Restate it, define every \
+    symbol, then immediately write and run a small program that reproduces the worked examples \
+    the statement gives. Reproducing those examples is what proves you understood the \
+    definition; a restatement that has never been executed is an untested guess, and time spent \
+    documenting instead of running code is the most common way one of these investigations \
+    fails.\n\
+    2. Gather context in parallel with that, not before it. Identify the mathematical objects \
+    involved and the named theory, algorithm, or identity that governs them. Do not let research \
+    or note-taking become the work: if an attempt ends with no program executed, it has \
+    accomplished nothing regardless of how much was written down.\n\
     3. Find the structure, then compute. State the mathematical result the method rests on, why \
     it applies here, and what it reduces the work to, before writing the program that uses it.\n\
     4. Do not search the answer space. Enumerating candidate answers, or every object up to the \
     stated bound, until one matches is prohibited even when it would technically terminate. The \
     stated bound is the adversary, not the budget: if the method's cost grows with the problem's \
     bound rather than with the size of its description, it is the wrong method.\n\
-    5. Use brute force only on small instances, and only to test a conjecture or validate the \
-    real method against known values. Say explicitly when output is such a check.\n\
+    5. Brute force on small instances is required, not merely allowed. Write the naive program \
+    first, use it to reproduce every example in the statement, and keep it as the oracle that \
+    checks the real method. Say explicitly when output is such a check. What is prohibited is \
+    brute force at full size, not brute force as verification.\n\
     6. Never use an algorithm with exponential time or space complexity.\n\
     7. Verify independently. A result needs a second, different route to the same value, or an \
     explicit statement that it is unverified.\n\
