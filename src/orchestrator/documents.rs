@@ -437,7 +437,7 @@ impl DocumentTool {
             // a markup-heavy page is unreadable otherwise, and the old
             // UTF-8 check turned a PDF into an error that ended the run.
             let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
-            let path = required_string(&call.arguments, "path")?;
+            let path = research_path(&required_string(&call.arguments, "path")?);
             self.documents.write(&path, &content).await?;
             format!(
                 "downloaded {} bytes from {url}, converted to {} bytes of Markdown at {path}",
