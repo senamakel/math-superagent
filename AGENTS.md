@@ -362,8 +362,14 @@ src/
 │   └── trace.rs        # live console and trace.jsonl event listener
 ├── orchestrator/       # registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs # graph-backed asynchronous child-run controls
+│   ├── claims.rs       # claim blocks, the derived ledger, and search_claims
+│   ├── digest.rs       # structural digest of a downloaded source
 │   ├── documents.rs    # bounded workspace documents and local search index
+│   ├── frontier.rs     # citation graph of the library, ranked and deduped
+│   ├── oeis.rs         # sequence lookup adapter, filed and cross-referenced
 │   ├── patterns.rs     # exact sequence analysis and recurrence search
+│   ├── requests.rs     # stated gaps, deduped against the ledger and closed
+│   ├── threads.rs      # the library's topic axis beside its arrival axis
 │   ├── solutions.rs    # graph-backed attempt/reflect/diversify loop
 │   └── vector.rs       # Qdrant tools and deterministic local feature vectors
 ├── hello_agent/        # minimal single-agent example
