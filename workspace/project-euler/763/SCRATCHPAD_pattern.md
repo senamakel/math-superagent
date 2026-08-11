@@ -52,3 +52,24 @@ recurrence. Consistent with #2/#3 (no simple recurrence).
   configs by "farthest chain length"). The full-evaluation question for large N
   (need all Q_k up to k~N) remains OPEN — pass to inventor/orchestrator.
 - All conjectures labeled; #3 sourced, #4 exact over 2..14 incl. OOS.
+
+## 6. RE-VERIFICATION (this run, fresh from raw data, sympy-exact)
+Independently re-derived the max-level decomposition straight from
+data/level_2..12.txt + code/out/mhist_13_14.txt (N=13,14 fresh, never fit on).
+- Diagonal M=N: count == 3^(N-1) EXACTLY for every N=2..14 (13/13 pass).
+- Columns Q_0..Q_3 closed forms match R(N,N-k) on ALL points incl fresh N=13,14.
+- Q_4 (degree 4) fit on N=9..13, predicted N=14=979 === measured 979 (OOS pass).
+  Claimed closed form reproduces the fit (the earlier "fit==claimed:False"
+  was a sympy-expansion stub comparison; fit on points 9..13 and the claimed
+  polynomial give identical values at every measured N).
+- Reconstructing D(N)=sum_M N(N,M) from modeled k=0..4 columns is EXACT for
+  N=2..10; for N>=11 some M-rows have k>4 (k=5: M=6 etc.) so 4 columns no
+  longer suffice -> consistent with the frontier growing in wavelength.
+- Growth ratio ~3.3; no constant-coeff recurrence order<=6; D not in OEIS
+  (reconfirmed via oeis_lookup tool on the run's own 14 terms).
+Conjectures (all survive every computed point incl OOS N=13,14; first
+falsifier for each is N=15, not BFS-reachable here):
+  N(N,N-k) = Q_k(N)*3^(N-2k-1), Q_k degree-k polynomial.
+  diagonal count(M=N) = 3^(N-1).
+No NEW structure found this run beyond the already-recorded max-level
+decomposition; re-verified it error-free.

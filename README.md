@@ -535,6 +535,7 @@ Dockerfile                  build and runtime jail
 compose.yaml                agent and Qdrant services
 scripts/run-agent           helper implementation
 scripts/solve-euler         fetch and solve workflow
+scripts/solve-conjecture    open-conjecture run workflow
 workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, config, and memory
 src/bin/euler_tui.rs        the tabbed console, behind the `tui` feature
