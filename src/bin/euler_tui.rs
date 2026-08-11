@@ -21,7 +21,7 @@
 
 use std::collections::BTreeMap;
 use std::io::{BufRead, BufReader, Write};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::{Command, Stdio};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
@@ -479,11 +479,7 @@ fn watch(runs: &Arc<Mutex<Runs>>, started: Instant) -> std::io::Result<()> {
             if key.kind != KeyEventKind::Press {
                 break;
             }
-            let tabs = runs
-                .lock()
-                .map(|state| state.order.len())
-                .unwrap_or(1)
-                .max(1);
+            let tabs = runs.lock().map_or(1, |state| state.order.len()).max(1);
             match key.code {
                 KeyCode::Char('q') | KeyCode::Esc => {
                     leave = true;
@@ -532,14 +528,28 @@ fn watch(runs: &Arc<Mutex<Runs>>, started: Instant) -> std::io::Result<()> {
     outcome
 }
 
+/// What the client should do: attach to a run, start one, or read a log.
+///
+/// A mode rather than three booleans, because they were never independent —
+/// `--replay --attach` has no meaning, and a struct of flags invites the
+/// caller to ask about a combination that cannot happen.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Mode {
+    /// Attach to a running container, or start one if none is going.
+    Follow,
+    /// Attach only, and fail rather than start a run.
+    Attach,
+    /// Read the existing log and start nothing.
+    Replay,
+}
+
 /// The parsed command line.
 #[derive(Debug)]
 struct Options {
     problem: u32,
+    mode: Mode,
     research: bool,
-    attach: bool,
     plain: bool,
-    replay: bool,
     extra: Vec<String>,
 }
 
@@ -556,13 +566,14 @@ fn usage() -> String {
 fn options() -> Result<Options, String> {
     let mut problem = None;
     let mut research = true;
-    let (mut attach, mut plain, mut replay) = (false, false, false);
+    let mut mode = Mode::Follow;
+    let mut plain = false;
     let mut extra = Vec::new();
     for argument in std::env::args().skip(1) {
         match argument.as_str() {
-            "--attach" => attach = true,
+            "--attach" => mode = Mode::Attach,
             "--plain" => plain = true,
-            "--replay" => replay = true,
+            "--replay" => mode = Mode::Replay,
             "--no-research" => research = false,
             "--research" => research = true,
             "-h" | "--help" => return Err(usage()),
@@ -582,10 +593,9 @@ fn options() -> Result<Options, String> {
     }
     Ok(Options {
         problem,
+        mode,
         research,
-        attach,
         plain,
-        replay,
         extra,
     })
 }
@@ -616,7 +626,7 @@ fn main() -> std::process::ExitCode {
     let tabs = !options.plain && std::io::IsTerminal::is_terminal(&std::io::stdout());
     let started = Instant::now();
 
-    if options.replay {
+    if options.mode == Mode::Replay {
         let Ok(text) = std::fs::read_to_string(&log) else {
             eprintln!("no log at {}", log.display());
             return std::process::ExitCode::FAILURE;
@@ -638,7 +648,7 @@ fn main() -> std::process::ExitCode {
     }
 
     let container = running_for(&workspace);
-    match (&container, options.attach) {
+    match (&container, options.mode == Mode::Attach) {
         (Some(name), _) => {
             if let Ok(mut state) = runs.lock() {
                 state.add(&format!(
