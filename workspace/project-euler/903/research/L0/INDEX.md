@@ -4,4 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `pinsky_inversion_derangements.arxiv.md` | Download marker (link only) for the same arXiv page |
+| `pinsky_inversion_derangements.arxiv.md` | Download marker (link only) for the Pinsky arXiv page |
