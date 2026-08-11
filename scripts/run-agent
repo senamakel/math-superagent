@@ -10,12 +10,10 @@ usage() {
     echo "       ./agent [--workspace relative/path] shell" >&2
     echo "" >&2
     echo "  --no-research  withhold web search from the research agent" >&2
-    echo "  --loop         drive the run with the attempt/reflect/diversify loop" >&2
 }
 
 workspace_subdir=${MATH_AGENT_WORKSPACE:-default}
 research=${MATH_AGENT_RESEARCH:-on}
-solve_loop=${MATH_AGENT_SOLVE_LOOP:-off}
 while [ "$#" -gt 0 ]; do
     case "${1-}" in
         --workspace)
@@ -25,14 +23,6 @@ while [ "$#" -gt 0 ]; do
             fi
             workspace_subdir=$2
             shift 2
-            ;;
-        --loop)
-            solve_loop=on
-            shift
-            ;;
-        --no-loop)
-            solve_loop=off
-            shift
             ;;
         --no-research)
             research=off
@@ -48,7 +38,6 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 export MATH_AGENT_RESEARCH=$research
-export MATH_AGENT_SOLVE_LOOP=$solve_loop
 
 case "/$workspace_subdir/" in
     /*/../*|/*/./*|//*|/*\\*|/./)

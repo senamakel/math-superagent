@@ -25,13 +25,9 @@ The runtime uses a small registry of specialist agents:
 
 ## The solution loop
 
-By default the orchestrator gets one turn. Pass `--loop` to drive the run with
-an explicit attempt, reflect, diversify cycle instead:
-
-```sh
-./euler 175 --loop
-./agent --loop "prove or disprove ..."
-```
+Every run is driven by an explicit attempt, reflect, diversify cycle. There is
+no single-turn mode: a hard problem's first approach is usually wrong, and the
+single-turn path differed only in throwing that information away.
 
 ```text
   attempt ──> reflect ──┬─ solved ────────────────> done

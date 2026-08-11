@@ -12,7 +12,6 @@ services:
       # Run controls forwarded from the host wrapper. Empty means "use the
       # built-in default", so an unset variable never widens or narrows a run.
       MATH_AGENT_RESEARCH: ${MATH_AGENT_RESEARCH:-on}
-      MATH_AGENT_SOLVE_LOOP: ${MATH_AGENT_SOLVE_LOOP:-off}
       MATH_AGENT_REQUEST_SECONDS: ${MATH_AGENT_REQUEST_SECONDS:-}
       MATH_AGENT_MAX_MODEL_CALLS: ${MATH_AGENT_MAX_MODEL_CALLS:-}
       MATH_AGENT_MAX_TOOL_CALLS: ${MATH_AGENT_MAX_TOOL_CALLS:-}

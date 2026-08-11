@@ -64,8 +64,9 @@ Two rules in it are load-bearing: an unparsable verdict must not count as
 solved, and the attempt ceiling must outrank the stuck rule or the loop can
 diversify forever.
 
-Enable the loop with `--loop` on `./agent` or `./euler`, or
-`MATH_AGENT_SOLVE_LOOP=on`. The default remains a single orchestrator turn.
+The loop is the only execution path. Do not add a single-turn mode back: it
+differed only in discarding the reflection, and a switch between them is one
+more thing to get wrong.
 
 ## Failure handling
 
