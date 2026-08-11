@@ -306,10 +306,21 @@ impl FolderIndexTool {
                 "`path` must name a file, not a folder".into(),
             ));
         }
-        if name == INDEX_FILE {
+        if name.rsplit('/').next() == Some(INDEX_FILE) {
             return Err(tinyagents::TinyAgentsError::Validation(
                 "the index does not describe itself".into(),
             ));
+        }
+        // A full text is never a row, so describing one is a call whose result
+        // the next refresh throws away. One live organizer spent seventeen of
+        // them in a single run. Naming the digest turns the wasted call into
+        // the useful one.
+        if name.ends_with(super::documents::FULL_TEXT_SUFFIX) {
+            let digest = name.replace(super::documents::FULL_TEXT_SUFFIX, ".md");
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "`{name}` is a source's full text, which the index does not list; describe the \
+                 digest that reads it instead — `{digest}` one level up"
+            )));
         }
         let mut entries = self.entries(&folder).await;
         entries.insert(name.clone(), purpose.trim().replace('\n', " "));
