@@ -121,12 +121,15 @@ fn index_for(folder: &str) -> String {
 /// tree uses. Reading it is cheaper and more robust than forbidding it, since
 /// a prompt rule against reformatting had already failed once.
 fn file_name(named: &str) -> String {
-    let bare = named
+    // Brackets are removed wherever they fall rather than trimmed from the
+    // ends, because the link sits inside the path: `L2/[[rank_lehmer]]`.
+    let bare: String = named
         .trim()
-        .trim_end_matches('*')
-        .trim_end_matches(']')
-        .trim_start_matches('[');
-    let bare = bare.trim_matches(|character| character == '[' || character == ']');
+        .trim_end_matches(['*', ' '])
+        .chars()
+        .filter(|character| *character != '[' && *character != ']')
+        .collect();
+    let bare = bare.trim();
     // A wikilink carries no extension by convention; a plain row already has
     // one, and adding a second would invent a file.
     match std::path::Path::new(bare).extension() {
