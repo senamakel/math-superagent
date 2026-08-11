@@ -65,6 +65,45 @@ Conjecture (structure): f_n(k) = A_n + (k-1) B_n is arithmetic in the gap k for
 all n; B_n<=0 for n>=5.  Sequence A_n: 1,10,184,5052,191232,9851040,...
 (no obvious closed form derived yet).
 
+## extend_f.py — f_n(k) extended to n=11 (18 Sep 2025)
+
+extend_f.py (period formula, 0-based, row j=0, exact ints, no mod) computes
+f_n(k) = #{(pi,i): 0<=i<n!, (pi^i)(k) < (pi^i)(0)} for k=1..n-1 by enumerating
+S_n with itertools.permutations(range(n)), per pi using d=ord=lcm of cycle
+lengths and weight n!/d over the d distinct powers (<pi> via repeated
+composition).  Literal oracle (i=0..n!-1) passed for n=2..6.  Results saved
+incrementally to /workspace/extend_f.json as {n: [f(1),...,f(n-1)]}.
+
+New rows (n=2..9 matched the gaps.py table exactly):
+  n=10: [5514150297600, 5428844467200, 5343538636800, 5258232806400,
+         5172926976000, 5087621145600, 5002315315200, 4917009484800,
+         4831703654400]            A_10 = 5514150297600,  B_10 = -85305830400
+  n=11: [680309947699200, 670409245900800, 660508544102400, 650607842304000,
+         640707140505600, 630806438707200, 620905736908800, 611005035110400,
+         601104333312000, 591203631513600]   A_11 = 680309947699200,
+                                             B_11 = -9900701798400
+
+2nd differences are all zero for every n=2..11 → f_n(k) is EXACTLY arithmetic
+in k for all n tested.  Timings: n=8 0.16s, n=9 1.8s, n=10 21.6s, n=11 334.8s
+(script's 280s gate then stopped the loop as designed).  Sequence A_n:
+1, 10, 184, 5052, 191232, 9851040, 650626560, 54052427520, 5514150297600,
+680309947699200.  B_n (n>=3): 1, 0, -108, -3600, -208800, -12418560,
+-932601600, -85305830400, -9900701798400.
+
+INDEPENDENT VERIFICATION: verify_f_method2.py recomputes f_n(k) by a
+completely different algorithm — cycle-type decomposition (per permutation,
+read the d-th power analytically off cycles, count tau(k)<tau(0) over the
+distinct powers by closed-form cycle counts instead of power iteration).
+Sanity-checked against the literal method for n=3..7, then run for n=10 and
+n=11: rows match extend_f.json EXACTLY (mod-free integers).  n=11 again took
+~319s.  So the n=10, n=11 rows are independently confirmed.
+
+Open lead for the closed form: |B_n|/(n-1)! is an exact integer for n=6..11:
+30, 290, 2464, 23130, 235080, 2728368 (and n=5 gives 4.5, not integer).
+A_n/A_{n-1}: 10, 18.4, 27.4565, 37.85, 51.51, 66.05, 83.08, 102.01, 123.38 —
+appears to grow ~ (n-1)(n-2)ish.  Neither has a closed form yet; that is the
+next step toward Q(10^6) mod p.
+
 ## Open questions
 
 - Efficient method for n = 10^6 (n! is astronomically beyond enumeration):

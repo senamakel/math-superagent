@@ -12,7 +12,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `exact_race.py` | Exact-rational race dynamics mirroring `brute` on Fractions (`simulate_order_exact`, `outcome_parity_exact`); Latent tuple-vs-Fraction comparison bug fixed so it runs. |
 | `goal.md` | Restated PE 597 goal with the full setup (every symbol defined), the n=3,L=160 worked probability table, the given p(4,400), the target p(13,1800), and the completion criteria. |
 | `memory.md` | Working memory: established results (brute now reproduces the table; comparator bug fixed), failed approaches (the w-order-only hypothesis, refuted), and the open question of the exact method. |
-| `monte_carlo.py` | Monte Carlo importance-sampling integration oracle over Exp(1) speeds; calls `brute.outcome_parity`. (A separate, simpler route than a hand integration.) |
+| `monte_carlo.py` | Plain Monte Carlo oracle: draws iid Exp(1) speeds and counts even-parity outcomes via `brute.outcome_parity` (`outcome_parity`), printing an estimate of p(n,L). The docstring sketches an importance-sampling idea but the code falls back to plain N-event MC. |
 | `problem.html` | The downloaded PE 597 statement (Torpids) — the source document this run is solving. |
 | `problem.url` | URL of the PE 597 statement (projecteuler.net/minimal=597). |
 | `race_spec.md` | Exact chronological race-dynamics specification for implementation: event simulation, bump/OUT/FINISH treatment, and the bump-chain parity definition. Reference contract for any race solver. |

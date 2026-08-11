@@ -27,7 +27,6 @@ is an independent check of the n=10,11 rows in extend_f.json.
 import itertools
 import math
 import time
-from collections import Counter
 
 
 def cycle_decomp(perm):
@@ -45,50 +44,6 @@ def cycle_decomp(perm):
                 c = perm[c]
             cycles.append(cyc)
     return cycles
-
-
-def power_positions(cyc, start, t):
-    """Element reached from start after t applications of pi along cycle.
-    t is taken modulo len(cyc)."""
-    L = len(cyc)
-    idx = cyc.index(start)
-    return cyc[(idx + t) % L]
-
-
-def count_for_cycles(cyc0, cyck, d):
-    """# {t in 0..d-1 : image of cyck-point(t) < image of cyc0-point(t)}.
-    The two points 0 and k are on given cycles (lengths L0, Lk).
-    The pairing is (pos0 + t mod L0 on cyc0) vs (posk + t mod Lk on cyck),
-    with t = 0..d-1.  We normalize so cyc0's point starts at index 0 of a
-    fresh labeling via adding offset; the count only depends on the two
-    lengths and their relative offset.
-    """
-    L0, Lk = len(cyc0), len(cyck)
-    # walk t=0..d-1; d is a multiple of lcm(L0,Lk) if same cycle else product
-    # Actually only the pattern modulo lcm(L0,Lk) matters; t real range 0..d-1
-    # covers each residue class of lcm exactly d/lcm times.
-    L = L0 * Lk // math.gcd(L0, Lk)
-    reps = d // L
-    # count within one period
-    cnt = 0
-    for t in range(L):
-        # pick representative positions: 0 at index 0 of cyc0, k at its own index
-        # but relative order is what matters; by rotation invariance we can fix
-        # cyc0 to be [0,1,...,L0-1] and cyck a shifted list of 0..Lk-1.
-        # We rotate so that cyc0 = [0..L0-1] in order, keep track of cyck's
-        # starting value relative to 0 (offset o): element at index r of cyck
-        # has value o + r mod Lk where o in 0..Lk-1 (the 'value' of cyck[0]).
-        pass
-    # Better: enumerate actual positions in the real cycles.
-    # cyc0 and cyck are real lists; use their actual element values for
-    # comparisons, and t runs over the period L.
-    cnt = 0
-    for t in range(L):
-        a = cyc0[t % L0]           # image of 0 at time t (cyc0[0] is 0's slot)
-        b = cyck[t % Lk]
-        if b < a:
-            cnt += 1
-    return cnt * reps
 
 
 def f_n_method2(n):
