@@ -12,8 +12,9 @@ We enumerate:
     any edge-vector coordinate has |u_c| <= n because the two vertices
     P0 and P0+u both lie in [0,n]^3),
   * every pair (u,v) with equal norm and u dot v = 0, where the third edge
-    w = (u x v) / m is an integer vector (i.e. m divides u x v componentwise;
-    this holds automatically for any genuine lattice cube).
+    w = (u x v) / k with k^2 = m is an integer vector.  For any genuine
+    lattice cube m = |u|^2 is a perfect square m = k^2 and u x v = +-k*w, so
+    we only consider square m and require k to divide u x v componentwise.
 
 For every corner P0 in [0,n]^3 and every frame (u,v,w) we build the 8 vertice
 and keep the frozenset of those vertices as the cube identity.  Frozenset
@@ -21,12 +22,7 @@ deduplication collapses the same geometric cube found via different corners,
 edge orderings and sign choices.  Counting distinct frozensets = C(n).
 
 For S(n): for each distinct cube, count lattice points q contained in the
-closed cube.  With P0 a corner and u,v,w the three edge vectors from it to its
-neighbours, q is in the cube iff its affine coordinates satisfy
-0 <= a,b,c <= 1.  Since u,v,w are orthogonal with |u|^2=m, we have
-a = ((q-P0).u)/m exactly (integer arithmetic), and the exact integer test is
-    0 <= (q-P0).u <= m   and  0 <= (q-P0).v <= m   and  0 <= (q-P0).w <= m.
-This needs no floats.
+closed cube (exact integer test from toolkit.count_points, no floats).
 
 Usage:  python brute.py [n1 n2 ...]
 Writes output to /workspace/brute_output.txt and prints it.
@@ -35,7 +31,7 @@ Writes output to /workspace/brute_output.txt and prints it.
 import sys
 from collections import defaultdict
 
-from toolkit import count_points, norm2
+from toolkit import count_points, dot, norm2
 
 ORACLE_C = {1: 1, 2: 9, 4: 100, 5: 229, 10: 4469, 50: 8154671}
 ORACLE_S = {1: 8, 2: 91, 4: 1878, 5: 5832, 10: 387003, 50: 29948928129}
@@ -45,14 +41,6 @@ def cross(u, v):
     return (u[1] * v[2] - u[2] * v[1],
             u[2] * v[0] - u[0] * v[2],
             u[0] * v[1] - u[1] * v[0])
-
-
-def dot(u, v):
-    return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]
-
-
-def norm2(v):
-    return dot(v, v)
 
 
 def isqrt(n):
@@ -111,55 +99,6 @@ def offset_vertices(u, v, w):
     return offs
 
 
-def corner_and_edges(vertex_set):
-    """Given a frozenset of 8 vertices, return (P0, [u,v,w]) where P0 is the
-    lexicographically smallest vertex (a corner) and u,v,w are the three edge
-    vectors from P0 to its three nearest neighbours."""
-    verts = list(vertex_set)
-    P0 = min(verts)
-    dsq = []
-    for q in verts:
-        if q == P0:
-            continue
-        d = sum((a - b) ** 2 for a, b in zip(q, P0))
-        dsq.append((d, q))
-    dsq.sort()
-    m = dsq[0][0]  # edge length squared
-    edges = [tuple(q[i] - P0[i] for i in range(3))
-             for (d, q) in dsq if d == m]
-    assert len(edges) == 3, (vertex_set, edges)
-    return P0, edges
-
-
-def count_points_in_cube(vertex_set):
-    """Exact number of lattice points in the closed cube, plus boundary count.
-    Boundary = point lying on a face (edge/vertex included); interior =
-    strictly inside.  Returns (total, boundary)."""
-    P0, (u, v, w) = corner_and_edges(vertex_set)
-    m = norm2(u)
-    assert norm2(v) == m and norm2(w) == m
-    assert dot(u, v) == 0 and dot(u, w) == 0 and dot(v, w) == 0
-
-    xs = [p[0] for p in vertex_set]
-    ys = [p[1] for p in vertex_set]
-    zs = [p[2] for p in vertex_set]
-
-    total = 0
-    boundary = 0
-    for x in range(min(xs), max(xs) + 1):
-        for y in range(min(ys), max(ys) + 1):
-            for z in range(min(zs), max(zs) + 1):
-                q = (x - P0[0], y - P0[1], z - P0[2])
-                a = dot(q, u)
-                b = dot(q, v)
-                c = dot(q, w)
-                if 0 <= a <= m and 0 <= b <= m and 0 <= c <= m:
-                    total += 1
-                    if a == 0 or a == m or b == 0 or b == m or c == 0 or c == m:
-                        boundary += 1
-    return total, boundary
-
-
 def compute(n):
     """Return (C(n), S(n))."""
     frames = build_frames(n)
@@ -183,10 +122,7 @@ def compute(n):
                 cubes.add(frozenset(pts))
 
     C = len(cubes)
-    S = 0
-    for cube in cubes:
-        t, _ = count_points_in_cube(cube)
-        S += t
+    S = sum(count_points(cube)[0] for cube in cubes)
     return C, S
 
 

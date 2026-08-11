@@ -148,7 +148,17 @@ available, so the agent can still record and recall its own findings.
 Every run in the tree carries a `RunTracer` (`src/agent/trace.rs`). It prints an
 elapsed-time console line per model call, tool call, and tool result, labelled
 with the agent that produced it, and appends every event as JSON to
-`trace.jsonl` in the selected workspace. The document tools refuse to read it
+`trace.jsonl` in the selected workspace. Alongside the event records it writes
+a `model_accounting` line per model call carrying the agent, the provider and
+model that served it, prompt/cached/output/reasoning tokens, and the USD cost
+the provider reported. The event stream cannot supply these: `ModelCompleted`
+names neither the route nor the price, and with `allow_fallbacks` on the route
+genuinely varies per call. They are read from the response body by
+`AccountingModel` (`src/agent/accounting.rs`), which is why it is a model
+wrapper rather than an event listener. Cost is recorded as the provider
+reports it; deriving it from a local price table would mean reporting fiction
+the moment a price changed. The console profile carries the running total.
+The document tools refuse to read it
 back: a reflection run pulled its own 1.1 MB event log into a single
 339,652-token call, blowing past the compression trigger and dropping the
 cache hit rate to 26% to re-read a verbatim replay of what it had already
@@ -171,14 +181,25 @@ When changing prompts or agent behavior, keep these rules intact:
    would terminate. A method whose cost grows with that bound rather than with
    the size of the problem's description is the wrong method. Brute force is
    for validating the real method on small instances.
-5. Delegate external fact-finding to `research` and cite the returned sources.
-6. Delegate meaningful computation to `tool_builder`. Report the program or
+5. Solve by theory. The bound in the statement is chosen to defeat
+   enumeration, so the intended solution is a structural fact — a recurrence,
+   a bijection, a closed form, a symmetry, a classification — that makes most
+   of the search space unnecessary to visit. Name it before implementing it.
+6. Attack the method before trusting it. State what would make it wrong and go
+   looking for that case; hunt a counterexample as seriously as a proof, and
+   report what was searched and how far when none is found. Survive an attempt
+   to break a conjecture rather than only confirming it.
+7. Say how problems of this shape have been attacked before and why this
+   approach beats the alternatives. Record failed approaches with the reason —
+   a known dead end is a result.
+8. Delegate external fact-finding to `research` and cite the returned sources.
+9. Delegate meaningful computation to `tool_builder`. Report the program or
    command and the relevant output.
-7. Check edge cases, dimensions, signs, domains, and limiting behavior when
+10. Check edge cases, dimensions, signs, domains, and limiting behavior when
    they apply.
-8. Verify by a second, independent route, or say the result is unverified.
-9. Distinguish a proof, a numerical check, a heuristic, and a sourced claim.
-10. Say when the evidence is incomplete. Never invent a theorem, citation, or
+11. Verify by a second, independent route, or say the result is unverified.
+12. Distinguish a proof, a numerical check, a heuristic, and a sourced claim.
+13. Say when the evidence is incomplete. Never invent a theorem, citation, or
     computation result.
 
 The runtime is not a formal proof assistant. Do not describe sampled evidence or a
