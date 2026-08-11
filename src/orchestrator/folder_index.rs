@@ -115,18 +115,36 @@ pub(super) fn parse(existing: &str) -> BTreeMap<String, String> {
     entries
 }
 
-/// Renders an index for `folder` from its entries.
-pub(super) fn render(folder: &str, entries: &BTreeMap<String, String>) -> String {
+/// Reads the synthesis an index carries above its table, if it has one.
+///
+/// Returns the marked text without its markers, so a caller that has nothing
+/// to preserve and a caller preserving an empty synthesis are the same caller.
+pub(super) fn brief(existing: &str) -> String {
+    let Some((_, rest)) = existing.split_once(BRIEF_OPEN) else {
+        return String::new();
+    };
+    let Some((marked, _)) = rest.split_once(BRIEF_CLOSE) else {
+        return String::new();
+    };
+    marked.trim().to_string()
+}
+
+/// Renders an index for `folder` from its entries, keeping its synthesis.
+pub(super) fn render(folder: &str, entries: &BTreeMap<String, String>, brief: &str) -> String {
     let title = if folder.is_empty() {
         "workspace"
     } else {
         folder
     };
-    let mut out = format!(
-        "# Index — {title}\n\n\
-         What each file in this folder is for. Keep it current: describe a file when you create \
+    let mut out = format!("# Index — {title}\n\n");
+    let brief = brief.trim();
+    if !brief.is_empty() {
+        let _ = writeln!(out, "{BRIEF_OPEN}\n{brief}\n{BRIEF_CLOSE}\n");
+    }
+    out.push_str(
+        "What each file in this folder is for. Keep it current: describe a file when you create \
          it, and refresh this index after adding, renaming, or deleting files.\n\n\
-         | File | Purpose |\n| --- | --- |\n"
+         | File | Purpose |\n| --- | --- |\n",
     );
     for (name, description) in entries {
         let description = if description.trim().is_empty() {
