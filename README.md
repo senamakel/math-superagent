@@ -327,9 +327,9 @@ problem. Open-ended objectives can go to the goals agent, which can spawn both
 other specialists and track evidence against explicit completion criteria.
 Research questions go to the Exa-backed research agent. That agent can
 recall related notes from Qdrant and save useful sourced findings for later.
-Computations and executable checks go to the tool-builder. The orchestrator
-then writes one answer that separates cited facts from its own mathematical
-reasoning.
+Computations and executable checks go to the tool-builder, and the implementation
+the answer rests on goes to the coder. The orchestrator then writes one answer
+that separates cited facts from its own mathematical reasoning.
 
 Subagent work runs asynchronously through TinyAgents graphs. `spawn_agent`
 returns a run ID immediately, so independent research and computation can run
