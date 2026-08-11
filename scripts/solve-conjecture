@@ -1,0 +1,79 @@
+#!/bin/sh
+# Start or continue a run against a named open conjecture.
+#
+# The Euler wrapper fetches a statement and hands over a task that fits on a
+# page, because a Project Euler problem has one number as its answer and a
+# ceiling on how long it can reasonably take. An open conjecture has neither.
+# The task here is phased instead: build the library, then work the loop, and
+# never claim the conjecture.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$repository_root"
+
+usage() {
+    echo "usage: ./conjecture [--no-research] <slug> [extra instructions...]" >&2
+    echo "" >&2
+    echo "  <slug>  a folder under workspace/conjectures/ holding problem.md and GOAL.md" >&2
+    echo "  --no-research  withhold web search; almost never right for an open problem" >&2
+}
+
+research=on
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --no-research) research=off; shift ;;
+        --research) research=on; shift ;;
+        -h|--help) usage; exit 0 ;;
+        *) break ;;
+    esac
+done
+
+if [ "$#" -lt 1 ]; then
+    usage
+    exit 2
+fi
+
+slug=$1
+shift
+case "$slug" in
+    ""|*/*|.*)
+        echo "slug must be a plain folder name under workspace/conjectures/" >&2
+        exit 2
+        ;;
+esac
+
+workspace_subdir=conjectures/$slug
+workspace_path=$repository_root/workspace/$workspace_subdir
+if [ ! -f "$workspace_path/problem.md" ]; then
+    echo "no statement at workspace/$workspace_subdir/problem.md" >&2
+    exit 2
+fi
+
+extra_instructions=$*
+task="Attack the open conjecture stated in /workspace/problem.md. Your objective and the criteria that end this run are in /workspace/GOAL.md. Read both before doing anything else.
+
+This is an open problem. It has resisted specialists for decades, so the working assumption is that you will not prove it, and the deliverable is a genuine partial result stated exactly rather than a claim of the whole. Claiming the conjecture on an argument that has not survived attack is the one outright failure available here.
+
+Solve by structural graph theory. Reason about what a minimal counterexample must look like — connectivity, girth, degree distribution, forbidden subgraphs, separators, ear decompositions, DFS trees and their back edges, expansion — and use every other capability in service of that argument rather than instead of it.
+
+Work in these phases. Phase 1 is not optional and not brief.
+
+1. BUILD THE LIBRARY FIRST. Spawn librarian and research immediately and keep them working until research/ROOT.md can state, for every known partial result, its exact hypotheses and its exact conclusion; for every known failed approach, the reason it failed; and the current computational verification bound with the method that produced it. Have scholar digest each source into claim blocks as it lands — an acquired paper nobody has read has cost you context and taught you nothing. Follow research/FRONTIER.md: the citation graph of what you already hold is a better reading list than any query you can phrase. Do not start attacking the problem while the library is thin; a run that skips this re-derives a known dead end and calls it progress.
+
+2. EXTRACT THE INSIGHTS. From the library, write down in MEMORY.md what is actually known about the structure of a minimal counterexample, each row marked proved / verified-numerically / conjectured, each with what would falsify it. Record every closed direction under failed approaches with its reason. State plainly which obstruction defeated each previous attempt, because your approach has to beat that same obstruction and you should be able to say how.
+
+3. BUILD THE ORACLE. Have tool_builder write an exact, obviously-correct checker: given a graph, its minimum degree and the set of its cycle lengths. Verify it against small cases by hand. Then use it to reproduce the literature's verification bound before trusting anything you compute past it. A computational claim built on an unchecked checker is worth nothing.
+
+4. THEN LOOP. Each attempt states one precise structural claim about a minimal counterexample, attacks it before trusting it — hunt the counterexample as seriously as the proof — and either establishes it, refutes it, or leaves it open with the gap named exactly. Use sat_solver for the finite questions the argument throws off: whether a graph with a given order, degree bound, girth and forbidden cycle lengths exists at all is a satisfiability question, and UNSAT on it is a theorem. Use lean_prover to formalise the statement early and each lemma as it stabilises; report #print axioms output and every remaining sorry. Use coder for anything the run's conclusions rest on.
+
+Delegate: tool_builder and coder run programs, sat_solver encodes finite questions for CP-SAT/SAT/SMT, lean_prover writes Lean 4 against a pre-built Mathlib, research and librarian and scholar own the library, pattern_finder reads the numbers you compute, inventor proposes a different line when one stalls. Spawn asynchronously, keep every run ID, await every result you rely on.
+
+Never state a theorem, citation, bound, or computation result you did not obtain. Distinguish a proof from a numerical check from a heuristic from a sourced claim, every time, in every file you write."
+
+if [ -n "$extra_instructions" ]; then
+    task="$task
+
+Additional instructions: $extra_instructions"
+fi
+
+exec env MATH_AGENT_RESEARCH="$research" ./agent --workspace "$workspace_subdir" "$task"
