@@ -17,7 +17,7 @@ fn reads_provider_model_tokens_and_cost_from_a_response_body() {
             "prompt_tokens": 7296,
             "completion_tokens": 2343,
             "total_tokens": 9639,
-            "cost": 0.00042315,
+            "cost": 0.000_423_15,
             "prompt_tokens_details": { "cached_tokens": 5632 },
             "completion_tokens_details": { "reasoning_tokens": 1900 }
         }

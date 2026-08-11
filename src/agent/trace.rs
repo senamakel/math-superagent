@@ -56,7 +56,15 @@ impl ModelAccounting {
         if !self.usd.is_finite() || self.usd <= 0.0 {
             return 0;
         }
-        (self.usd * 1_000_000.0).round() as u64
+        // Guarded above: finite and positive, so the cast cannot lose a sign,
+        // and a run would have to cost eighteen trillion dollars to saturate.
+        #[expect(
+            clippy::cast_possible_truncation,
+            clippy::cast_sign_loss,
+            reason = "value is checked finite and positive immediately above"
+        )]
+        let micros = (self.usd * 1_000_000.0).round() as u64;
+        micros
     }
 }
 
