@@ -300,19 +300,16 @@ derivations. The tool-builder accumulates reusable helpers under
 `code/toolkits/`, one function per file, so reading the helper you need costs a
 few hundred bytes rather than the whole library.
 
-Every folder carries an `INDEX.md` saying what each file is for. `list_workspace`
-can answer what exists but not what anything is *for*, and after a long run
-nothing on disk distinguishes the oracle from the answer.
+Every folder carries an `INDEX.md` saying what each file is for, because
+`list_workspace` answers what exists but not what anything is *for*, and after a
+long run nothing on disk distinguishes the oracle from the answer.
 `describe_file` records a purpose and `refresh_index` re-derives the file list
 from disk, keeping existing descriptions, marking new files undescribed, and
-dropping rows for files that are gone. Descriptions are left to explicit tool
-calls because only the agent that wrote a file knows why, so a forgotten one
-shows as a visible gap rather than as an index quietly disagreeing with its
-folder.
-
-Agents can traverse the workspace with `list_workspace` to find files rather
-than guess their names, and every reflection is archived under `reflections/`
-with a filename recording whether it produced learnings.
+dropping rows for files that are gone. Descriptions are left to explicit calls
+because only the agent that wrote a file knows why, so a forgotten one shows as
+a visible gap rather than as an index quietly disagreeing with its folder. Every
+reflection is archived under `reflections/` with a filename recording whether it
+produced learnings.
 
 Each agent receives only the working files its role actually needs: reflection
 sees the goal and the record but never the scratchpad, because provisional
