@@ -1,7 +1,40 @@
 # Index — research
 
-<!-- brief -->
-Reference library for PE 903: Q(n)=Σ_π Σ_{i=1}^{n!} rank(π^i) mod(1e9+7). memory.md/verify_red.py reduce it to closed forms for A_n, B_n in the gap-affine pair-inversion count f_n(k)=A_n+(k−1)B_n. **Proved core:** the per-gap pair-inversion probability is translation-invariant and affine in the gap, depending only on n, #fixed, #2-cycles — two independent proofs (Campion-Loth Lemma 4.7/Thm 4.8; Pinsky-Schickentanz Thm 1a/Prop 10a), an exact fixed-point-conditioned route (Pinsky P2.36), and a small-exponent confirmation (Cambie-Yan). See [[mechanism_pair_inversions]]. **Rank model:** rank(π)=1+Σ a_j(n−1−j)! via Lehmer digits, independent & uniform — [[rank_lehmer]]. **Machinery:** cycle-type summation (factorial moments, fixed-points↔cycles via Möbius, m-roots, character method) — [[cycle_type_toolkit]]; order law for the n!/ord weights (avg order ~ exp(C√(n/log n)), C≈2.99047) — [[order_random_permutation]]. **Status:** the rank-sum over the cyclic subgroup {π^i} is unstudied (novel core); A_n, Q(n), B_n/(n−1)! not in OEIS — [[reports_negatives]]. Two run-owned verification programs: verify_cambie_yan.py, verify_facts.py.
-<!-- end brief -->
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
-Structure: `L0/` full texts (never edited) · `L1/` one summary per source · `L2/` folds (one per ≥10 notes, each `INDEX.md` lists its files). Read L0/INDEX.md and L1/INDEX.md for per-file detail; this root table is derived.
+| File | Purpose |
+| --- | --- |
+| `L0/INDEX.md` | _(undescribed)_ |
+| `L0/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
+| `L1/INDEX.md` | _(undescribed)_ |
+| `L1/archer_geary_descents_powers.md` | _(undescribed)_ |
+| `L1/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
+| `L1/cambie_yan_html.md` | _(undescribed)_ |
+| `L1/conjugacy_class_statistics.md` | _(undescribed)_ |
+| `L1/conjugacy_class_statistics_body.md` | _(undescribed)_ |
+| `L1/factorial_number_system_wiki.md` | _(undescribed)_ |
+| `L1/ford_cycle_type_toolkit.md` | _(undescribed)_ |
+| `L1/hultman_products_random_permutations.md` | _(undescribed)_ |
+| `L1/leanos_mth_roots_of_permutations.md` | _(undescribed)_ |
+| `L1/lehmer_factorial_norm.md` | _(undescribed)_ |
+| `L1/nathanson_fixed_points_powers.md` | _(undescribed)_ |
+| `L1/oeis_Aseq.md` | _(undescribed)_ |
+| `L1/oeis_Bdiv.md` | _(undescribed)_ |
+| `L1/oeis_Qseq.md` | _(undescribed)_ |
+| `L1/oeis_invpowers.md` | _(undescribed)_ |
+| `L1/oeis_invpowers2.md` | _(undescribed)_ |
+| `L1/pinsky_inversion_fixed_points.md` | _(undescribed)_ |
+| `L1/pinsky_schickentanz_ewens_html.md` | _(undescribed)_ |
+| `L1/pinsky_schickentanz_ewens_inversions.md` | _(undescribed)_ |
+| `L1/report_cited_facts.md` | _(undescribed)_ |
+| `L1/report_literature_ranks_powers.md` | _(undescribed)_ |
+| `L1/report_rank_powers.md` | _(undescribed)_ |
+| `L1/stong_average_order_permutation.md` | _(undescribed)_ |
+| `L2/INDEX.md` | _(undescribed)_ |
+| `L2/cycle_type_toolkit.md` | _(undescribed)_ |
+| `L2/mechanism_pair_inversions.md` | _(undescribed)_ |
+| `L2/order_random_permutation.md` | _(undescribed)_ |
+| `L2/rank_lehmer.md` | _(undescribed)_ |
+| `L2/reports_negatives.md` | _(undescribed)_ |
+| `verify_cambie_yan.py` | _(undescribed)_ |
+| `verify_facts.py` | _(undescribed)_ |
