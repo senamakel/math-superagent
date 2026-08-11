@@ -55,6 +55,7 @@ RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
        python3-z3 python3-pulp python3-pycosat python3-igraph \
        z3 cvc5 minisat cryptominisat glpk-utils coinor-cbc \
+       nauty \
     && pip3 install --break-system-packages --no-cache-dir ortools python-sat \
     && rm -rf /var/lib/apt/lists/*
 
