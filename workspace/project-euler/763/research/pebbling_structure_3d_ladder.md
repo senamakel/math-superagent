@@ -190,3 +190,41 @@ exploit for D(10000).
 - **Not otherwise verified / heuristic:** the *closed* walk from folded-
   polyominoid count to the specific numeric D(N) of PE763 is not made here; the
   run's own BFS data (D(N) up to N=14) remains the numeric source of truth.
+
+---
+
+```claim
+id: d2-positions-are-polyominoid-voidance
+statement: In the 2D chessboard-pebbling game, reachable positions correspond
+bijectively to polyominoid sets (sites on/between two lattice paths with
+common endpoints) via their voidance sets (the left+lower boundary points);
+there is a one-to-one-to-one correspondence between reachable positions, shot
+counts and voidance sets (Eriksson Props 8, 20, 10; the crossing/double-play
+subtlety is what the 2D position GF g, growth 4.112, encodes).
+hypotheses: 2D pebbling game, at most one pebble per cell.
+holds-here: yes — this is exactly the 2D amoeba (PE763 in d=2).
+status: sourced (Eriksson EJC 2(1995)#R7; CGMO AMM 102(1995)).
+bearing: establishes the correct 2D counting object; but A007902 (growth
+2.3216, counts configs with k pebbles) is NOT Eriksson's g (growth 4.112,
+counts positions by highest-pebble level) — do not conflate.
+anchor: research/pebbling_structure_3d_ladder.md
+```
+
+```claim
+id: n3-folded-polyominoid-voidance
+statement: For pebbling in Z^n with n>=3, reachable positions, voidance sets of
+cardinality k+1, folded polyominoids with boundary-path length k, and labelled
+vector-pair (u,v) positions all correspond bijectively (Eriksson Theorem 9),
+and no node is ever fired twice so positions = voidance sets = folded
+polyominoids (Prop 24). PE763 at n=3 is exactly this folded-polyominoid
+regime.
+hypotheses: n-th orthant pebbling game with n>=3 children per split, at most
+one pebble per cell.
+holds-here: yes — the 3D PE763 amoeba is Eriksson/Vaderlind's n=3 game, so no
+cell is ever played twice and the crossing-marking complication vanishes.
+status: sourced (Eriksson EJC 2(1995)#R7 Thm 9, Prop 24, Prop 1).
+bearing: names the correct counting object for the 3D D(N): folded (3-
+labelled) polyominoids; the numeric D(N) itself still comes from the run's own
+DP/BFS (not from a closed form).
+anchor: research/pebbling_structure_3d_ladder.md
+```

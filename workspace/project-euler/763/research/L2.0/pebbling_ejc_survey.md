@@ -65,26 +65,22 @@ to **folded polyominoids** with boundary-path length k, with *any subset of the
 CROSSINGS* marked as voidance points. (A *crossing* is a point played twice: it
 must receive 2 pebbles, i.e. have both left and lower neighbours in the
 polyominoid, and be emptied — a singleton on its level; the second play
-replaces two old voidance points by one new one.) Generating function for these
-reachable positions:
-```
-g(x) = (1 − 6x + 4x² + 4x³ + √(1−4x²))/(2(1 − 6x + 8x² − 4x⁴))
-     = 1 + 2x + 5x² + 14x³ + 43x⁴ + 140x⁵ + …
-```
-with asymptotic g_k ~ C·G^k, G ≈ 4.112… (this is the **2D reachable-position
-sequence** relevant to the 2D amoeba; the *position* counts, contrasted with
-voidance counts below).
+replaces two old voidance points by one new one.)
+- The g.f. g(x) for these *positions* has series 1+2x+5x²+14x³+43x⁴+140x⁵+⋯
+  and asymptotic g_k ~ C·G^k, G ≈ 4.112.
+- The g.f. h(x) for *voidance sets* of cardinality k+1 has series
+  1+2x+5x²+15x³+51x⁴+187x⁵+⋯, growth H ≈ 4.147 — identical to CGMO's
+  minimal-unavoidable growth constant (Prop 21: a minimal unavoidable set = a
+  voidance set plus one extra point that makes level trimming infinite).
 
-Voidance sets of cardinality k+1 correspond bijectively to folded polyominoids
-with boundary length k+t and t marked crossings, t ≥ 0; generating function:
-```
-h(x) = (2 − 11x + 12x² + x√(1−4x²))/(2(1 − 7x + 14x² − 9x³))
-     = 1 + 2x + 5x² + 15x³ + 51x⁴ + 187x⁵ + …
-```
-asymptotic h_k ~ C·H^k, H ≈ 4.147… — **identical to CGMO's minimal-unavoidable
-growth constant** (Prop 21: a minimal unavoidable set = a voidance set plus one
-extra point that makes level trimming infinite). The 2D reachable-position GF g
-is what the user's 2D chessboard-pebbling sequence (OEIS A007902) counts.
+NOTE (important): Eriksson's g,k are stratified by the *highest-pebble level*
+and count *positions* (including stopped ones with empty cells); they are NOT
+the OEIS A007902 sequence (which this run calls D2D), though both are 2D
+reachable-configuration counts. A007902/growth 2.3216 counts *configurations
+with exactly k pebbles*; Eriksson's g has growth 4.112. The polynomial closed
+forms for g,h are OCR-mangled in the full-text conversion (constant terms do
+not check out), so only the series heads and growth constants are trusted
+here; the run's own 2D oracle values are concrete and verified.
 
 ## The 3D (and higher) characterisation: folded polyominoids (Theorem 9)
 
