@@ -325,7 +325,7 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
         for (level, at) in levels.iter().filter(|(level, _)| *level > 0) {
             let below = levels
                 .iter()
-                .take_while(|(under, _)| under < level)
+                .filter(|(under, _)| under < level)
                 .next_back()
                 .map(|(_, notes)| notes.clone())
                 .unwrap_or_default();
