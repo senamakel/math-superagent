@@ -316,11 +316,15 @@ fn count_learnings(reflection: &str) -> usize {
 /// The name carries the outcome so a directory listing alone shows which
 /// attempts taught the run something: `<ms>_nothing.md` when a reflection
 /// yielded no actionable lesson, `<ms>_<n>_learnings.md` otherwise.
+///
+/// It lands in `L0/` because a reflection is an original: the judgement of one
+/// attempt, written once, never rewritten. Folds of it are what the levels
+/// above hold.
 fn reflection_filename(millis: u128, learnings: usize) -> String {
     if learnings == 0 {
-        format!("reflections/{millis}_nothing.md")
+        format!("reflections/L0/{millis}_nothing.md")
     } else {
-        format!("reflections/{millis}_{learnings:02}_learnings.md")
+        format!("reflections/L0/{millis}_{learnings:02}_learnings.md")
     }
 }
 
