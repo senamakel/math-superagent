@@ -96,25 +96,36 @@ Pass a positive problem number to the Project Euler wrapper:
 
 ```sh
 ./euler 1
+./euler 66 --no-research
 ./euler 10 "also compare the optimized method with a brute-force check"
 ```
 
 The wrapper downloads the official statement from Project Euler's minimal
-problem endpoint, then runs the custom orchestrator in
-`workspace/project-euler/<number>`. It asks the tool-builder to save a written
-derivation as `solution.md`, write a reproducible `solution.py`, execute it, and
-check the exact answer. The research agent may look up definitions or primary
-mathematical references, but the prompt forbids searching for published Project
-Euler answers.
+problem endpoint, then runs the orchestrator in
+`workspace/project-euler/<number>` against a five-phase task: understand the
+statement, establish the governing theory, derive the method, implement it, and
+verify the result independently. Full-size code is not written until the
+derivation is. The small cases and worked example in the statement are the test
+oracle, and `solution.py` must reproduce them before running at scale.
 
-The downloaded statement and source URL remain beside the solution:
+The research agent may look up definitions, named theorems, and standard
+algorithms, but the prompt forbids searching for published Project Euler
+answers. Pass `--no-research` before the problem number to withhold web search
+altogether, which is the honest setting for a problem whose statement is
+self-contained.
+
+The downloaded statement, the working files, and the run's event log remain
+beside the solution:
 
 ```text
-workspace/project-euler/1/
+workspace/project-euler/66/
 ├── problem.html
 ├── problem.url
+├── goal.md
+├── memory.md
 ├── solution.md
-└── solution.py
+├── solution.py
+└── trace.jsonl
 ```
 
 Generated programs, calculations, and other artifacts appear in
