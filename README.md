@@ -136,6 +136,10 @@ files already present. The seed includes local agent instructions, role
 prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, and `memory.md`.
 The runtime reads those files at the start of every run.
 
+These files are committed rather than ignored, so a solved problem keeps its
+derivation, program, notes, and event log in history. Only pip installs under
+`.python-packages/` and bytecode caches are excluded.
+
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
 index, and search that index for ranked snippets. The index lives at
