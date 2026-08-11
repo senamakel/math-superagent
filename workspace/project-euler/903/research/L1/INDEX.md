@@ -14,6 +14,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `gaetz_ryba_stable_chars_permutation_patterns.md` | _(undescribed)_ |
 | `homomesies_permutations.md` | Summary of Elder et al (2206.13409): homomesy (statistic average constant on each map orbit); Lehmer-code rotation orbits all size lcm(1..n), inversion stats homomesic (Thm 4.7/4.8). Framework for averaging a statistic over {π^i}; rank not covered |
 | `hultman_products_random_permutations.md` | Summary of Hultman (1301.0430): irreducible-character method for expected stats on products of class-distributed perms; template, not solution (independent products, not {π^i}) |
+| `legendre_number_system_cyclic_shift.md` | Legendre (arXiv:1007.2870): number system to rank/unrank permutations within a cyclic-shift orbit (size n); shares PE 903's "rank inside a map-orbit" shape but for word-rotation, not the power subgroup {π^i} — related framework only |
 | `leanos_mth_roots_of_permutations.md` | Summary of Leaños (1005.1531): exact m-th-root counts by cycle type; NOT directly usable for the intra-subgroup rank sum |
 | `lehmer_factorial_norm.md` | Summary of Zawiślak (2111.03951) on Lehmer/factoradic digits and ranks; neither addresses powers or the cyclic subgroup {π^i} |
 | `nathanson_fixed_points_powers.md` | Summary of Nathanson (2206.04021): F(σ^ℓ)=Σ_{k |
@@ -28,5 +29,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `report_cited_facts.md` | Superseded literature report; replaced by `report_literature_ranks_powers.md` |
 | `report_literature_ranks_powers.md` | Current literature report: closest match is Cambie-Yan; NO source gives a closed form for the rank-sum over a cyclic subgroup (the novel core) |
 | `report_rank_powers.md` | Superseded literature report; replaced by `report_literature_ranks_powers.md` |
-| `sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
+| `sack_ulfarsson_refined_inversion_statistics.md` | Curated L1 summary of Sack & Úlfarsson (arXiv:1106.1995): k-step inversion distribution H_{n,k} via Eulerian polynomials (Thm 4.4), ninvsum & zone-crossing machinery — direct analytic handle on the gap function f_n(k); covers single permutations only, not the {π^i} subgroup PE 903 sums over |
 | `stong_average_order_permutation.md` | Summary of Stong (EJC 5 R41, 1998): average order log μ_n = C√(n/log n)+O(√n loglog n/log n); the n!/ord(π) weight regime in brute2. Full text in L0 |
