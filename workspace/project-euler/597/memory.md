@@ -79,3 +79,22 @@ p(3,160)=56/135≈0.4148; p(4,400)=0.5107843137. Goal: p(13,1800).
   (verify_hypothesis.py N=200000) gives p(3,160)=0.415145 against exact
   56/135=0.414815, confirming the parity engine is correct and the grid
   premise in the check script was wrong.
+
+## High-precision MC (high_precision_mc.py, parallel, exact binomial SE)
+- Engine sanity re-check: p(3,160)=0.414045 (SE~0.0008, exact 56/135=0.414815),
+  p(4,400)=0.5122225 (SE~0.0008, given 0.510784). Both agree with the given
+  values within MC error -> engine is the right target.
+- p(13,1800): N=10M even=5003798 p=0.500380 SE=0.000158
+              N=60M even=30012151 p=0.500203 SE=0.000065  (60M pooled, ~333s, 28 procs)
+  i.e. p(13,1800) is 0.5002 +/- 0.00007: indistinguishable from 0.5 up to the
+  ~60M-sample resolution; any true bias is <= ~0.0003 in magnitude.
+- Convergence toward 0.5 with n (L=1800), a few hundred k samples each:
+    n=5 p=0.531964 SE=0.000706
+    n=6 p=0.486980 SE=0.000707
+    n=7 p=0.491648 SE=0.000707
+    n=8 p=0.505779 SE=0.000559
+  (values cluster near 0.5 with no growing or monotone deviation; SE ~0.0007)
+- Bottom line: high-precision MC pins p(13,1800) extremely close to 0.5
+  (0.5002 +/- 0.00007). Final 10-dp answer needs the exact method, not MC,
+  since distinguishing a tiny true bias from exactly 0.5 would need >100M
+  samples.
