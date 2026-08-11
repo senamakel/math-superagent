@@ -778,85 +778,8 @@ impl Tool<()> for AsyncSubagentTool {
                 let run_id = self.manager.spawn(&agent, input)?;
                 json!({ "run_id": run_id, "status": "pending" })
             }
-            AsyncToolKind::SpawnMany => {
-                let runs = call
-                    .arguments
-                    .get("runs")
-                    .and_then(Value::as_array)
-                    .ok_or_else(|| {
-                        tinyagents::TinyAgentsError::Validation(
-                            "`runs` is required and must be a non-empty array".into(),
-                        )
-                    })?;
-                if runs.len() > MAX_BATCH_SPAWNS {
-                    return Err(tinyagents::TinyAgentsError::Validation(format!(
-                        "at most {MAX_BATCH_SPAWNS} runs may be launched in one call"
-                    )));
-                }
-                // Every brief is checked before any run starts. A batch that
-                // half-launches is worse than one that is refused: the caller
-                // is told the call failed while agents it did not account for
-                // are already consuming budget.
-                let mut planned = Vec::with_capacity(runs.len());
-                for entry in runs {
-                    let agent = required_string(entry, "agent")?;
-                    if !self.allowed_agents.contains(&agent) {
-                        return Err(tinyagents::TinyAgentsError::Validation(format!(
-                            "subagent `{agent}` is not allowed from this caller"
-                        )));
-                    }
-                    planned.push((agent, required_string(entry, "input")?));
-                }
-                let mut started = Vec::with_capacity(planned.len());
-                for (agent, input) in planned {
-                    let run_id = self.manager.spawn(&agent, input)?;
-                    started.push(json!({ "agent": agent, "run_id": run_id }));
-                }
-                json!({ "runs": started, "status": "pending" })
-            }
-            AsyncToolKind::AwaitMany => {
-                let wait_seconds = call
-                    .arguments
-                    .get("wait_seconds")
-                    .and_then(Value::as_u64)
-                    .unwrap_or_else(|| self.manager.max_await_seconds());
-                let requested: Vec<String> = match call.arguments.get("run_ids") {
-                    Some(Value::Array(ids)) => ids
-                        .iter()
-                        .filter_map(Value::as_str)
-                        .map(str::to_string)
-                        .collect(),
-                    _ => self.manager.outstanding_runs(),
-                };
-                if requested.is_empty() {
-                    return Err(tinyagents::TinyAgentsError::Validation(
-                        "no runs to wait for: pass `run_ids`, or start runs first".into(),
-                    ));
-                }
-                // Waited concurrently, so the batch costs the slowest run
-                // rather than the sum. Awaiting them in sequence would undo
-                // the parallelism the spawn just bought.
-                let mut waits = tokio::task::JoinSet::new();
-                for run_id in requested {
-                    let manager = self.manager.clone();
-                    waits.spawn(async move {
-                        match manager.await_record(&run_id, wait_seconds).await {
-                            Ok(record) => serde_json::to_value(record).unwrap_or_else(
-                                |error| json!({ "run_id": run_id, "error": error.to_string() }),
-                            ),
-                            Err(error) => json!({ "run_id": run_id, "error": error.to_string() }),
-                        }
-                    });
-                }
-                let mut finished = Vec::new();
-                while let Some(joined) = waits.join_next().await {
-                    match joined {
-                        Ok(value) => finished.push(value),
-                        Err(error) => finished.push(json!({ "error": error.to_string() })),
-                    }
-                }
-                json!({ "runs": finished })
-            }
+            AsyncToolKind::SpawnMany => self.spawn_many(&call)?,
+            AsyncToolKind::AwaitMany => self.await_many(&call).await?,
             AsyncToolKind::Peek => serde_json::to_value(
                 self.manager
                     .record(&required_string(&call.arguments, "run_id")?)?,
