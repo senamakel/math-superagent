@@ -921,7 +921,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "GOAL.md",
             "TASKS.md",
             "MEMORY.md",
-            "code/toolkits/INDEX.md",
+            "code/lib/INDEX.md",
             "research/ROOT.md",
             "research/INDEX.md",
             // What the library *means* for this problem, as against
@@ -957,7 +957,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "SCRATCHPAD.md",
             "code/AGENTS.md",
             "code/INDEX.md",
-            "code/toolkits/INDEX.md",
+            "code/lib/INDEX.md",
             "research/ROOT.md",
             "research/INDEX.md",
             "CONTEXT.md",
@@ -993,7 +993,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "GOAL.md",
             "MEMORY.md",
             "SCRATCHPAD.md",
-            "code/toolkits/INDEX.md",
+            "code/lib/INDEX.md",
             // A regularity the literature already explains is not a conjecture
             // worth chasing, and knowing that is the difference between
             // deriving a result and rediscovering one.
@@ -1028,7 +1028,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "TASKS.md",
             "INDEX.md",
             "code/INDEX.md",
-            "code/toolkits/INDEX.md",
+            "code/lib/INDEX.md",
             "research/ROOT.md",
             "research/INDEX.md",
         ],
@@ -1128,7 +1128,7 @@ fn build_tool_builder_harness(
     // Diff-shaped editing, for the role that actually writes code. A patch
     // changes a few lines instead of re-emitting the file, and carries a
     // change across several files in one atomic call — which is what keeps a
-    // helper under `code/toolkits/` and its row in `code/toolkits/INDEX.md` from
+    // helper under `code/toolkits/` and its row in `code/lib/INDEX.md` from
     // drifting apart.
     register_resilient(&mut harness, patch::tool(documents.clone()));
     harness

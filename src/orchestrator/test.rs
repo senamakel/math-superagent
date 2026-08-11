@@ -455,7 +455,7 @@ fn both_code_writing_roles_see_the_same_working_context() {
     // attempted, what is already built, and the provisional numbers.
     assert_eq!(role_context("coder"), role_context("tool_builder"));
     assert!(role_context("coder").contains(&"SCRATCHPAD.md"));
-    assert!(role_context("coder").contains(&"code/toolkits/INDEX.md"));
+    assert!(role_context("coder").contains(&"code/lib/INDEX.md"));
 }
 
 #[test]
