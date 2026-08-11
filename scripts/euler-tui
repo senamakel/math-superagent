@@ -160,9 +160,17 @@ def draw(screen, runs: Runs, tab: int, offset: int) -> int:
         screen.addnstr(1 + index, 0, line, width - 1, attribute)
 
     faults = " ".join(f"{name}={value}" for name, value in counts.items() if value)
-    state = "ended" if runs.ended else "running"
+    if runs.ended:
+        state = "ended"
+    elif elapsed:
+        state = "running"
+    else:
+        # The container has not spoken yet. Say so, and count in wall clock,
+        # or a silent build reads as a hung program.
+        state = "starting"
     live = "LIVE" if offset == 0 else f"-{offset}"
-    status = f" {elapsed} {state} {live} {cost} {faults}  [n/p tab, arrows scroll, q quit] "
+    clock = elapsed or runs.waiting()
+    status = f" {clock} {state} {live} {cost} {faults}  [n/p tab, arrows scroll, q quit] "
     screen.addnstr(height - 1, 0, status.ljust(width - 1), width - 1, curses.A_REVERSE)
     screen.refresh()
     return tab
