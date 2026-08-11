@@ -544,8 +544,20 @@ impl Tool<()> for DocumentTool {
                 format!("indexed {path} ({words} words)")
             }
             DocumentToolKind::List => {
-                "Lists the files and directories under a workspace path, with sizes, so relevant \
-                 files can be found without guessing their names."
+                let path = call
+                    .arguments
+                    .get("path")
+                    .and_then(Value::as_str)
+                    .unwrap_or(".")
+                    .to_string();
+                let depth = call
+                    .arguments
+                    .get("depth")
+                    .and_then(Value::as_u64)
+                    .and_then(|value| usize::try_from(value).ok())
+                    .unwrap_or(3)
+                    .clamp(1, 6);
+                self.documents.list(&path, depth).await?
             }
             DocumentToolKind::Search => {
                 let results = self
