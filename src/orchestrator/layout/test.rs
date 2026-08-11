@@ -53,7 +53,8 @@ fn a_path_naming_a_folder_is_left_where_the_caller_put_it() {
     // An agent that said where something goes knows something this module
     // does not.
     assert_eq!(placed("research/L1/paper.md"), "research/L1/paper.md");
-    assert_eq!(placed("toolkits/pell.py"), "toolkits/pell.py");
+    assert_eq!(placed("code/lib/pell.py"), "code/lib/pell.py");
+    assert_eq!(placed("code/chains/probe.py"), "code/chains/probe.py");
     assert_eq!(placed("code/out/run.log"), "code/out/run.log");
     assert_eq!(
         placed("experiments/first/try.py"),
