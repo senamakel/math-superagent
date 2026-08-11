@@ -191,17 +191,18 @@ fn solve(matrix: &mut [Vec<Frac>], unknowns: usize) -> Option<Vec<Frac>> {
         let pivot = (pivot_row..rows).find(|row| !matrix[*row][column].is_zero())?;
         matrix.swap(pivot_row, pivot);
         let divisor = matrix[pivot_row][column];
-        for index in column..=unknowns {
-            matrix[pivot_row][index] = matrix[pivot_row][index].div(divisor)?;
+        for value in matrix[pivot_row][column..=unknowns].iter_mut() {
+            *value = value.div(divisor)?;
         }
         for row in 0..rows {
             if row == pivot_row || matrix[row][column].is_zero() {
                 continue;
             }
             let factor = matrix[row][column];
-            for index in column..=unknowns {
-                let scaled = matrix[pivot_row][index].mul(factor)?;
-                matrix[row][index] = matrix[row][index].sub(scaled)?;
+            let pivot_values: Vec<Frac> = matrix[pivot_row][column..=unknowns].to_vec();
+            for (value, pivot_value) in matrix[row][column..=unknowns].iter_mut().zip(pivot_values)
+            {
+                *value = value.sub(pivot_value.mul(factor)?)?;
             }
         }
         pivot_of_column[column] = Some(pivot_row);
@@ -411,28 +412,28 @@ fn analyze(terms: &[i128]) -> String {
     });
     match polynomial_degree {
         Some(index) => {
-            let _ = write!(
+            let _ = writeln!(
                 report,
                 "Polynomial: the differences become constant at level {}, so the terms fit a \
-                 degree-{} polynomial in the index (constant difference {}).\n",
+                 degree-{} polynomial in the index (constant difference {}).",
                 index + 1,
                 index + 1,
                 table[index][0]
             );
         }
         None => {
-            let _ = write!(
+            let _ = writeln!(
                 report,
                 "Polynomial: differences do not become constant within {} levels, so this is not \
-                 a low-degree polynomial.\n",
+                 a low-degree polynomial.",
                 table.len()
             );
         }
     }
     for (level, row) in table.iter().take(3).enumerate() {
-        let _ = write!(
+        let _ = writeln!(
             report,
-            "  level {} differences: {:?}\n",
+            "  level {} differences: {:?}",
             level + 1,
             preview_terms(row)
         );
@@ -442,16 +443,16 @@ fn analyze(terms: &[i128]) -> String {
         .iter()
         .fold(0, |accumulator, term| gcd(accumulator, *term));
     if divisor > 1 {
-        let _ = write!(
+        let _ = writeln!(
             report,
-            "Common divisor: every term is divisible by {divisor}.\n"
+            "Common divisor: every term is divisible by {divisor}."
         );
     }
 
     if let Some((modulus, period)) = detect_periodicity(terms) {
-        let _ = write!(
+        let _ = writeln!(
             report,
-            "Periodicity: residues modulo {modulus} repeat with period {period}.\n"
+            "Periodicity: residues modulo {modulus} repeat with period {period}."
         );
     }
 
@@ -468,7 +469,7 @@ fn analyze(terms: &[i128]) -> String {
             }
         })
         .collect();
-    let _ = write!(report, "Leading ratios: {}\n", ratios.join(", "));
+    let _ = writeln!(report, "Leading ratios: {}", ratios.join(", "));
 
     report.push_str(
         "\nEvery statement above is exact over the terms supplied. None of it is a proof that the \

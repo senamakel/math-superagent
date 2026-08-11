@@ -77,7 +77,7 @@ impl ReflectionMiddleware {
 
 #[async_trait]
 impl<State: Send + Sync + 'static> Middleware<State> for ReflectionMiddleware {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "reflection"
     }
 
