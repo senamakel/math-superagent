@@ -1,0 +1,1045 @@
+# Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/
+
+Search: hyperbinary
+Showing 1-10 of 11
+
+%I A274515 #13 Jul 06 2016 00:32:35
+%S A274515 1,1,2,2,1,3,3,2,3,3,2,3,3,1,4,4,3,5,4,3,5,5,2,5,5,3,4,4,3,5,5,2,5,5,
+%T A274515 3,4,5,3,4,4,1,5,5,4,7,5,4,7,7,3,8,8,5,7,5,4,7,7,3,8,8,5,7,8,5,7,7,2,
+%U A274515 7,7,5,8,7,5,8,8,3,7,7,4,5,5,4,7,7,3,8
+%N A274515 a(n) is the number of times that the value of ternary n when read as hyperbinary occurs in the set of hyperbinary representations.
+%C A274515 Stern's diatomic sequence A002487 counts the ways (n+1) can be represented if one allows 2's to be included in (n)'s binary representation (its "hyperbinary representations" in the terminology of A002487). A065361 maps ternary ordering onto these hyperbinary representations.
+%H A274515 Max Barrentine, <a href="/A274515/b274515.txt">Table of n, a(n) for n = 0..9841</a>
+%F A274515 a(n) = A002487(A065361(n) + 1).
+%e A274515 5 in ternary is 12, which when read in hyperbinary is equal to 4. 6 in ternary is 20, which when read in hyperbinary is equal to 4. 9 in ternary is 100, which when read in hyperbinary is equal to 4. Since these are the only ways to represent 4 in hyperbinary, a(5) = a(6) = a(9) = 3.
+%Y A274515 Cf. A002487, A065361.
+%K A274515 nonn,base
+%O A274515 0,3
+%A A274515 _Max Barrentine_, Jun 25 2016
+
+%I A125186 #18 May 30 2026 16:40:31
+%S A125186 0,1,1,2,2,3,3,3,4,5,5,5,6,6,6,4,7,8,9,8,10,10,10,7,11,11,12,9,12,10,
+%T A125186 10,5,11,12,15,12,17,16,17,11,18,18,20,15,20,17,17,9,18,18,22,16,23,
+%U A125186 20,21,12,21,19,22,14,20,15,15,6,16,17,23,17,27,24,27,16,29,28,33,23,33,27,28
+%N A125186 Number of digits 1 in all hyperbinary representations of n. A hyperbinary representation of a nonnegative integer n is a representation of n as a sum of powers of 2, each power being used at most twice.
+%C A125186 a(n) = dB(n+1,t)/dt|_{t=1}, where B(n,t) are the Stern polynomials, defined by B(0,t)=0, B(1,t)=1, B(2n,t)=tB(n,t), B(2n+1,t)=B(n+1,t)+B(n,t) for n>=1 (see S. Klavzar et al. and A125184).
+%H A125186 N. Calkin and H. S. Wilf, <a href="https://www.jstor.org/stable/2589182">Recounting the rationals</a>, Amer. Math. Monthly, 107 (No. 4, 2000), pp. 360-363.
+%H A125186 S. Klavzar, U. Milutinovic, and C. Petr, <a href="https://doi.org/10.1016/j.aam.2006.01.003">Stern polynomials</a>, Adv. Appl. Math. 39 (2007) 86-95.
+%F A125186 a(0)=0, a(1)=0, a(2)=1, a(2n+1)=a(n)+a(n+1), a(4n)=2a(2n)-a(n), a(4n+2)=a(2n+2)+a(2n) for n>=1.
+%e A125186 a(8)=4 because the hyperbinary representations of 8 are 200 (=2*2^2+0*2^1+0*2^0), 120 (=1*2^2+2*2^1+0*2^0), 1000 (=1*2^3+0*2^2+0*2^1+0*2^0) and 112 (=1*2^2+1*2^1+2*1^0), having a total of 0+1+1+2=4 digits 1 (see S. Klavzar et al. Table 1).
+%p A125186 a[0]:=0: a[1]:=0: a[2]:=1: for n from 1 to 50 do a[2*n+1]:=a[n]+a[n+1]: a[4*n]:=2*a[2*n]-a[n]: a[4*n+2]:=a[2*n+2]+a[2*n] od: seq(a[n+1],n=0..100);
+%p A125186 B:=proc(n) if n=0 then 0 elif n=1 then 1 elif n mod 2 = 0 then t*B(n/2) else B((n+1)/2)+B((n-1)/2) fi end: seq(subs(t=1,diff(B(n+1),t)),n=0..100);
+%t A125186 B[0, _] = 0; B[1, _] = 1; B[n_, t_] := B[n, t] = If[EvenQ[n], t*B[n/2, t], B[1 + (n-1)/2, t] + B[(n-1)/2, t]]; a[n_] := D[B[n+1, t], t] /. t -> 1; Table[a[n], {n, 0, 78}] (* _Jean-François Alcover_, Sep 07 2024, after 2nd Maple program *)
+%Y A125186 Cf. A125184.
+%K A125186 nonn,base
+%O A125186 0,4
+%A A125186 _Emeric Deutsch_, Dec 05 2006
+
+%I A000120 M0105 N0041 #516 Jul 27 2026 14:54:00
+%S A000120 0,1,1,2,1,2,2,3,1,2,2,3,2,3,3,4,1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,1,2,
+%T A000120 2,3,2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,1,2,2,3,
+%U A000120 2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,2,3,3,4,3,4,4,5,3
+%N A000120 Ones-counting sequence: number of 1's in binary expansion of n (or the binary weight of n).
+%C A000120 The binary weight of n is also called Hamming weight of n. [The term "Hamming weight" was named after the American mathematician Richard Wesley Hamming (1915-1998). - _Amiram Eldar_, Jun 16 2021]
+%C A000120 a(n) is also the largest integer such that 2^a(n) divides binomial(2n, n) = A000984(n). - _Benoit Cloitre_, Mar 27 2002
+%C A000120 To construct the sequence, start with 0 and use the rule: If k >= 0 and a(0), a(1), ..., a(2^k-1) are the first 2^k terms, then the next 2^k terms are a(0) + 1, a(1) + 1, ..., a(2^k-1) + 1. - _Benoit Cloitre_, Jan 30 2003
+%C A000120 An example of a fractal sequence. That is, if you omit every other number in the sequence, you get the original sequence. And of course this can be repeated. So if you form the sequence a(0 * 2^n), a(1 * 2^n), a(2 * 2^n), a(3 * 2^n), ... (for any integer n > 0), you get the original sequence. - Christopher.Hills(AT)sepura.co.uk, May 14 2003
+%C A000120 The n-th row of Pascal's triangle has 2^k distinct odd binomial coefficients where k = a(n) - 1. - _Lekraj Beedassy_, May 15 2003
+%C A000120 Fixed point of the morphism 0 -> 01, 1 -> 12, 2 -> 23, 3 -> 34, 4 -> 45, etc., starting from a(0) = 0. - _Robert G. Wilson v_, Jan 24 2006
+%C A000120 a(n) is the number of times n appears among the mystery calculator sequences: A005408, A042964, A047566, A115419, A115420, A115421. - _Jeremy Gardiner_, Jan 25 2006
+%C A000120 a(n) is the number of solutions of the Diophantine equation 2^m*k + 2^(m-1) + i = n, where m >= 1, k >= 0, 0 <= i < 2^(m-1); a(5) = 2 because only (m, k, i) = (1, 2, 0) [2^1*2 + 2^0 + 0 = 5] and (m, k, i) = (3, 0, 1) [2^3*0 + 2^2 + 1 = 5] are solutions. - _Hieronymus Fischer_, Jan 31 2006
+%C A000120 The first appearance of k, k >= 0, is at a(2^k-1). - _Robert G. Wilson v_, Jul 27 2006
+%C A000120 Sequence is given by T^(infinity)(0) where T is the operator transforming any word w = w(1)w(2)...w(m) into T(w) = w(1)(w(1)+1)w(2)(w(2)+1)...w(m)(w(m)+1). I.e., T(0) = 01, T(01) = 0112, T(0112) = 01121223. - _Benoit Cloitre_, Mar 04 2009
+%C A000120 For n >= 2, the minimal k for which a(k(2^n-1)) is not multiple of n is 2^n + 3. - _Vladimir Shevelev_, Jun 05 2009
+%C A000120 Triangle inequality: a(k+m) <= a(k) + a(m). Equality holds if and only if C(k+m, m) is odd. - _Vladimir Shevelev_, Jul 19 2009
+%C A000120 a(k*m) <= a(k) * a(m). - _Robert Israel_, Sep 03 2023
+%C A000120 The number of occurrences of value k in the first 2^n terms of the sequence is equal to binomial(n, k), and also equal to the sum of the first n - k + 1 terms of column k in the array A071919. Example with k = 2, n = 7: there are 21 = binomial(7,2) = 1 + 2 + 3 + 4 + 5 + 6 2's in a(0) to a(2^7-1). - Brent Spillner (spillner(AT)acm.org), Sep 01 2010, simplified by _R. J. Mathar_, Jan 13 2017
+%C A000120 Let m be the number of parts in the listing of the compositions of n as lists of parts in lexicographic order, a(k) = n - length(composition(k)) for all k < 2^n and all n (see example); A007895 gives the equivalent for compositions into odd parts. - _Joerg Arndt_, Nov 09 2012
+%C A000120 From _Daniel Forgues_, Mar 13 2015: (Start)
+%C A000120 Just tally up row k (binary weight equal k) from 0 to 2^n - 1 to get the binomial coefficient C(n,k). (See A007318.)
+%C A000120      0   1       3               7                              15
+%C A000120   0: O | . | .   . | .   .   .   . | .   .   .   .   .   .   .   . |
+%C A000120   1:   | O | O   . | O   .   .   . | O   .   .   .   .   .   .   . |
+%C A000120   2:   |   |     O |     O   O   . |     O   O   .   O   .   .   . |
+%C A000120   3:   |   |       |             O |             O       O   O   . |
+%C A000120   4:   |   |       |               |                             O |
+%C A000120 Due to its fractal nature, the sequence is quite interesting to listen to.
+%C A000120 (End)
+%C A000120 The binary weight of n is a particular case of the digit sum (base b) of n. - _Daniel Forgues_, Mar 13 2015
+%C A000120 The mean of the first n terms is 1 less than the mean of [a(n+1),...,a(2n)], which is also the mean of [a(n+2),...,a(2n+1)]. - _Christian Perfect_, Apr 02 2015
+%C A000120 a(n) is also the largest part of the integer partition having viabin number n. The viabin number of an integer partition is defined in the following way. Consider the southeast border of the Ferrers board of the integer partition and consider the binary number obtained by replacing each east step with 1 and each north step, except the last one, with 0. The corresponding decimal form is, by definition, the viabin number of the given integer partition. "Viabin" is coined from "via binary". For example, consider the integer partition [2, 2, 2, 1]. The southeast border of its Ferrers board yields 10100, leading to the viabin number 20. - _Emeric Deutsch_, Jul 20 2017
+%C A000120 a(n) is also known as the population count of the binary representation of n. - _Chai Wah Wu_, May 19 2020
+%C A000120 If on an odd term one goes forward one step and on an even term one turns right by 60 degrees, this sequence will draw a Koch fractal made of triangles. Turning by 180 degrees or going forward and turning by 60 degrees draws the classical Koch curve without triangles. Using opposite parities gives the same result, just rotated. - _M. F. Hasler_, Apr 30 2026
+%D A000120 Jean-Paul Allouche and Jeffrey Shallit, Automatic Sequences, Cambridge Univ. Press, 2003, p. 119.
+%D A000120 Miklos Bona, Introduction to Enumerative and Analytic Combinatorics, CRC Press, 2025, p. 10.
+%D A000120 Donald E. Knuth, The Art of Computer Programming, vol. 4A, Combinatorial Algorithms, Section 7.1.3, Problem 41, p. 589. - _N. J. A. Sloane_, Aug 03 2012
+%D A000120 Manfred R. Schroeder, Fractals, Chaos, Power Laws. W.H. Freeman, 1991, p. 383.
+%D A000120 N. J. A. Sloane, A Handbook of Integer Sequences, Academic Press, 1973 (includes this sequence).
+%D A000120 N. J. A. Sloane and Simon Plouffe, The Encyclopedia of Integer Sequences, Academic Press, 1995 (includes this sequence).
+%H A000120 N. J. A. Sloane, <a href="/A000120/b000120.txt">Table of n, a(n) for n = 0..10000</a>
+%H A000120 Franklin T. Adams-Watters, and Frank Ruskey, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL12/Ruskey2/ruskey14.html">Generating Functions for the Digital Sum and Other Digit Counting Sequences</a>, JIS, Vol. 12 (2009), Article 09.5.6.
+%H A000120 J.-P. Allouche, <a href="http://math.colgate.edu/~integers/graham2/graham2.Abstract.html">On an Inequality in a 1970 Paper of R. L. Graham</a>, INTEGERS 21A (2021), #A2.
+%H A000120 Jean-Paul Allouche and Jeffrey Shallit, <a href="https://doi.org/10.1016/0304-3975(92)90001-V">The ring of k-regular sequences</a>, Theoretical Computer Sci., Vol. 98 (1992), pp. 163-197. (<a href="http://www.cs.uwaterloo.ca/~shallit/Papers/as0.ps">PS file on author's web page.</a>)
+%H A000120 Jean-Paul Allouche, Jeffrey Shallit and Jonathan Sondow, <a href="https://arxiv.org/abs/math/0512399">Summation of Series Defined by Counting Blocks of Digits</a>, arXiv:math/0512399 [math.NT], 2005-2006.
+%H A000120 Jean-Paul Allouche, Jeffrey Shallit and Jonathan Sondow, <a href="https://doi.org/10.1016/j.jnt.2006.06.001">Summation of series defined by counting blocks of digits</a>, J. Number Theory, Vol. 123 (2007), pp. 133-143.
+%H A000120 Richard Bellman and Harold N. Shapiro, <a href="https://www.jstor.org/stable/1969281">On a problem in additive number theory</a>, Annals Math., Vol. 49, No. 2 (1948), pp. 333-340. - _N. J. A. Sloane_, Mar 12 2009
+%H A000120 C. Cobeli and A. Zaharescu, <a href="https://doi.org/10.1080/10236198.2014.940337">A game with divisors and absolute differences of exponents</a>, Journal of Difference Equations and Applications, Vol. 20, #11 (2014) pp. 1489-1501, DOI: 10.1080/10236198.2014.940337. Also available as <a href="https://arxiv.org/abs/1411.1334">arXiv:1411.1334 [math.NT]</a>, 2014. See delta_n.
+%H A000120 Jean Coquet, <a href="https://doi.org/10.1016/0022-314X(86)90067-3">Power sums of digital sums</a>, J. Number Theory, Vol. 22, No. 2 (1986), pp. 161-176.
+%H A000120 F. M. Dekking, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL26/Dekking/dek25.html">The Thue-Morse Sequence in Base 3/2</a>, J. Int. Seq., Vol. 26 (2023), Article 23.2.3.
+%H A000120 Karl Dilcher and Larry Ericksen, <a href="https://doi.org/10.37236/4822">Hyperbinary expansions and Stern polynomials</a>, Elec. J. Combin, Vol. 22 (2015), #P2.24.
+%H A000120 Josef Eschgfäller and Andrea Scarpante, <a href="https://arxiv.org/abs/1603.08500">Dichotomic random number generators</a>, arXiv:1603.08500 [math.CO], 2016.
+%H A000120 Emmanuel Ferrand, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL10/Ferrand/ferrand8.html">Deformations of the Taylor Formula</a>, Journal of Integer Sequences, Vol. 10 (2007), Article 07.1.7.
+%H A000120 Steven R. Finch, Pascal Sebah and Zai-Qiao Bai, <a href="http://arXiv.org/abs/0802.2654">Odd Entries in Pascal's Trinomial Triangle</a>, arXiv:0802.2654 [math.NT], 2008.
+%H A000120 Philippe Flajolet, Peter Grabner, Peter Kirschenhofer, Helmut Prodinger and Robert F. Tichy, <a href="http://algo.inria.fr/flajolet/Publications/FlGrKiPrTi94.pdf">Mellin Transforms And Asymptotics: Digital Sums</a>, Theoret. Computer Sci., Vol. 123, No. 2 (1994), pp. 291-314.
+%H A000120 Michael Gilleland, <a href="/selfsimilar.html">Some Self-Similar Integer Sequences</a>.
+%H A000120 P. J. Grabner, P. Kirschenhofer, H. Prodinger and R. F. Tichy, <a href="https://doi.org/10.1007/978-94-011-2058-6_25">On the moments of the sum-of-digits function</a>, Applications of Fibonacci numbers, Vol. 5 (St. Andrews, 1992), Kluwer Acad. Publ., Dordrecht, 1993, 263-271.
+%H A000120 Ronald L. Graham, <a href="https://doi.org/10.1111/j.1749-6632.1970.tb56468.x">On primitive graphs and optimal vertex assignments</a>, Internat. Conf. Combin. Math. (New York, 1970), Annals of the NY Academy of Sciences, Vol. 175, 1970, pp. 170-186.
+%H A000120 Khodabakhsh Hessami Pilehrood and Tatiana Hessami Pilehrood, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL13/Pilehrood/pilehrood2.html">Vacca-Type Series for Values of the Generalized Euler Constant Function and its Derivative</a>, J. Integer Sequences, Vol. 13 (2010), Article 10.7.3.
+%H A000120 Nick Hobson, <a href="/A000120/a000120.py.txt">Python program for this sequence</a>.
+%H A000120 Kathy Q. Ji and Herbert S. Wilf, <a href="https://arxiv.org/abs/math/0611465">Extreme Palindromes</a>, arXiv:math/0611465 [math.CO], 2006.
+%H A000120 Guy Louchard and Helmut Prodinger, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL16/Prodinger/prodinger29.html">The Largest Missing Value in a Composition of an Integer and Some Allouche-Shallit-Type Identities</a>, J. Int. Seq., Vol. 16 (2013), Article 13.2.2.
+%H A000120 J.-L. Mauclaire and Leo Murata, <a href="https://doi.org/10.3792/pjaa.59.274">On q-additive functions, I</a>, Proc. Japan Acad. Ser. A Math. Sci., Vol. 59, No. 6 (1983), pp. 274-276.
+%H A000120 J.-L. Mauclaire and Leo Murata, <a href="https://doi.org/10.3792/pjaa.59.441">On q-additive functions, II</a>, Proc. Japan Acad. Ser. A Math. Sci., Vol. 59, No. 9 (1983), pp. 441-444.
+%H A000120 M. D. McIlroy, <a href="https://doi.org/10.1137/0203020">The number of 1's in binary integers: bounds and extremal properties</a>, SIAM J. Comput., Vol. 3 (1974), pp. 255-261.
+%H A000120 Kerry Mitchell, <a href="https://archive.bridgesmathart.org/2013/bridges2013-403.pdf">Spirolateral-Type Images from Integer Sequences</a>, Bridges 2013.
+%H A000120 Sam Northshield, <a href="https://www.jstor.org/stable/10.4169/000298910X496714">Stern's Diatomic Sequence 0,1,1,2,1,3,2,3,1,4,...</a>, Amer. Math. Month., Vol. 117, No. 7 (2010), pp. 581-598.
+%H A000120 Theophanes E. Raptis, <a href="https://arxiv.org/abs/1805.06301">Finite Information Numbers through the Inductive Combinatorial Hierarchy</a>, arXiv:1805.06301 [physics.gen-ph], 2018.
+%H A000120 Carlo Sanna, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL15/Sanna/sanna3.html">On Arithmetic Progressions of Integers with a Distinct Sum of Digits</a>, Journal of Integer Sequences, Vol. 15 (2012), Article 12.8.1. - _N. J. A. Sloane_, Dec 29 2012
+%H A000120 Nanci Smith, <a href="https://www.fq.math.ca/Scanned/4-4/elementary4-4.pdf">Problem B-82</a>, Fib. Quart., Vol. 4, No. 4 (1966), pp. 374-375.
+%H A000120 Jonathan Sondow, <a href="https://doi.org/10.1007/978-0-387-68361-4_23">New Vacca-type rational series for Euler's constant and its "alternating" analog ln 4/Pi</a>, arXiv:<a href="https://arxiv.org/abs/math/0508042">math/0508042</a> [math.NT] 2005; Additive Number Theory, D. and G. Chudnovsky, eds., Springer, 2010, pp. 331-340.
+%H A000120 Ralf Stephan, <a href="/somedcgf.html">Some divide-and-conquer sequences with (relatively) simple ordinary generating functions</a>, 2004.
+%H A000120 Ralf Stephan, <a href="/A079944/a079944.ps">Table of generating functions</a>.
+%H A000120 Ralf Stephan, <a href="https://arxiv.org/abs/math/0307027">Divide-and-conquer generating functions. I. Elementary sequences</a>, arXiv:math/0307027 [math.CO], 2003.
+%H A000120 Kenneth B. Stolarsky, <a href="https://doi.org/10.1137/0132060">Power and exponential sums of digital sums related to binomial coefficient parity</a>, SIAM J. Appl. Math., Vol. 32 (1977), pp. 717-730. See B(n). - _N. J. A. Sloane_, Apr 05 2014
+%H A000120 J. R. Trollope, <a href="https://www.jstor.org/stable/2687954">An explicit expression for binary digital sums</a>, Math. Mag., Vol. 41, No. 1 (1968), pp. 21-25.
+%H A000120 Robert Walker, <a href="http://robertinventor.com/ftswiki/Self_Similar_Sloth_Canon_Number_Sequences">Self Similar Sloth Canon Number Sequences</a>.
+%H A000120 Eric Weisstein's World of Mathematics, <a href="https://mathworld.wolfram.com/Binary.html">Binary</a>, <a href="https://mathworld.wolfram.com/DigitCount.html">Digit Count</a>, <a href="https://mathworld.wolfram.com/Stolarsky-HarborthConstant.html">Stolarsky-Harborth Constant</a>, <a href="https://mathworld.wolfram.com/DigitSum.html">Digit Sum</a>.
+%H A000120 Wikipedia, <a href="https://en.wikipedia.org/wiki/Hamming_weight">Hamming weight</a>.
+%H A000120 Wolfram Research, <a href="http://functions.wolfram.com/NumberTheoryFunctions/DigitCount/31/01/ShowAll.html">Numbers in Pascal's triangle</a>.
+%H A000120 <a href="/index/Cor#core">Index entries for "core" sequences</a>
+%H A000120 <a href="/index/Bi#binary">Index entries for sequences related to binary expansion of n</a>
+%H A000120 <a href="/index/Coi#Colombian">Index entries for Colombian or self numbers and related sequences</a>
+%H A000120 <a href="/index/Fi#FIXEDPOINTS">Index entries for sequences that are fixed points of mappings</a>
+%F A000120 a(0) = 0, a(2*n) = a(n), a(2*n+1) = a(n) + 1.
+%F A000120 a(0) = 0, a(2^i) = 1; otherwise if n = 2^i + j with 0 < j < 2^i, a(n) = a(j) + 1.
+%F A000120 G.f.: Product_{k >= 0} (1 + y*x^(2^k)) = Sum_{n >= 0} y^a(n)*x^n. - _N. J. A. Sloane_, Jun 04 2009
+%F A000120 a(n) = a(n-1) + 1 - A007814(n) = log_2(A001316(n)) = 2n - A005187(n) = A070939(n) - A023416(n). - _Henry Bottomley_, Apr 04 2001; corrected by _Ralf Stephan_, Apr 15 2002
+%F A000120 a(n) = log_2(A000984(n)/A001790(n)). - _Benoit Cloitre_, Oct 02 2002
+%F A000120 For n > 0, a(n) = n - Sum_{k=1..n} A007814(k). - _Benoit Cloitre_, Oct 19 2002
+%F A000120 a(n) = n - Sum_{k>=1} floor(n/2^k) = n - A011371(n). - _Benoit Cloitre_, Dec 19 2002
+%F A000120 G.f.: (1/(1-x)) * Sum_{k>=0} x^(2^k)/(1+x^(2^k)). - _Ralf Stephan_, Apr 19 2003
+%F A000120 a(0) = 0, a(n) = a(n - 2^floor(log_2(n))) + 1. Examples: a(6) = a(6 - 2^2) + 1 = a(2) + 1 = a(2 - 2^1) + 1 + 1 = a(0) + 2 = 2; a(101) = a(101 - 2^6) + 1 = a(37) + 1 = a(37 - 2^5) + 2 = a(5 - 2^2) + 3 = a(1 - 2^0) + 4 = a(0) + 4 = 4; a(6275) = a(6275 - 2^12) + 1 = a(2179 - 2^11) + 2 = a(131 - 2^7) + 3 = a(3 - 2^1) + 4 = a(1 - 2^0) + 5 = 5; a(4129) = a(4129 - 2^12) + 1 = a(33 - 2^5) + 2 = a(1 - 2^0) + 3 = 3. - _Hieronymus Fischer_, Jan 22 2006
+%F A000120 A fixed point of the mapping 0 -> 01, 1 -> 12, 2 -> 23, 3 -> 34, 4 -> 45, ... With f(i) = floor(n/2^i), a(n) is the number of odd numbers in the sequence f(0), f(1), f(2), f(3), f(4), f(5), ... - _Philippe Deléham_, Jan 04 2004
+%F A000120 Let floor_pow4(n) denote n rounded down to the next power of four, floor_pow4(n) = 4 ^ floor(log4 n). Then a(0) = 0, a(1) = 1, a(2) = 1, a(3) = 2, a(n) = a(floor(n / floor_pow4(n))) + a(n % floor_pow4(n)). - Stephen K. Touset (stephen(AT)touset.org), Apr 04 2007
+%F A000120 a(n) = n - Sum_{k=2..n} Sum_{j|n, j >= 2} (floor(log_2(j)) - floor(log_2(j-1))). - _Hieronymus Fischer_, Jun 18 2007
+%F A000120 a(n) = A138530(n, 2) for n > 1. - _Reinhard Zumkeller_, Mar 26 2008
+%F A000120 a(A077436(n)) = A159918(A077436(n)); a(A000290(n)) = A159918(n). - _Reinhard Zumkeller_, Apr 25 2009
+%F A000120 a(n) = A063787(n) - A007814(n). - _Gary W. Adamson_, Jun 04 2009
+%F A000120 a(n) = A007814(C(2n, n)); for n >= 1, a(n) = 1 + A007814(C(2n-1, n)). - _Vladimir Shevelev_, Jul 20 2009
+%F A000120 For odd m >= 1, a((4^m-1)/3) = a((2^m+1)/3) + (m-1)/2 (mod 2). - _Vladimir Shevelev_, Sep 03 2010
+%F A000120 a(n) - a(n-1) = { 1 - a(n-1) if and only if A007814(n) = a(n-1), 1 if and only if A007814(n) = 0, -1 for all other A007814(n) }. - Brent Spillner (spillner(AT)acm.org), Sep 01 2010
+%F A000120 a(A001317(n)) = 2^a(n). - _Vladimir Shevelev_, Oct 25 2010
+%F A000120 a(n) = A139351(n) + A139352(n) = Sum_k {A030308(n, k)}. - _Philippe Deléham_, Oct 14 2011
+%F A000120 From _Hieronymus Fischer_, Jun 10 2012: (Start)
+%F A000120 a(n) = Sum_{j = 1..m+1} (floor(n/2^j + 1/2) - floor(n/2^j)), where m = floor(log_2(n)).
+%F A000120 General formulas for the number of digits >= d in the base p representation of n, where 1 <= d < p: a(n) = Sum_{j = 1..m+1} (floor(n/p^j + (p-d)/p) - floor(n/p^j)), where m=floor(log_p(n)); g.f.: g(x) = (1/(1-x))*Sum_{j>=0} (x^(d*p^j) - x^(p*p^j))/(1-x^(p*p^j)). (End)
+%F A000120 a(n) = A213629(n, 1) for n > 0. - _Reinhard Zumkeller_, Jul 04 2012
+%F A000120 a(n) = A240857(n,n). - _Reinhard Zumkeller_, Apr 14 2014
+%F A000120 a(n) = log_2(C(2*n,n) - (C(2*n,n) AND C(2*n,n)-1)). - _Gary Detlefs_, Jul 10 2014
+%F A000120 Sum_{n >= 1} a(n)/2n(2n+1) = (gamma + log(4/Pi))/2 = A344716, where gamma is Euler's constant A001620; see Sondow 2005, 2010 and Allouche, Shallit, Sondow 2007. - _Jonathan Sondow_, Mar 21 2015
+%F A000120 For any integer base b >= 2, the sum of digits s_b(n) of expansion base b of n is the solution of this recurrence relation: s_b(n) = 0 if n = 0 and s_b(n) = s_b(floor(n/b)) + (n mod b). Thus, a(n) satisfies: a(n) = 0 if n = 0 and a(n) = a(floor(n/2)) + (n mod 2). This easily yields a(n) = Sum_{i = 0..floor(log_2(n))} (floor(n/2^i) mod 2). From that one can compute a(n) = n - Sum_{i = 1..floor(log_2(n))} floor(n/2^i). - _Marek A. Suchenek_, Mar 31 2016
+%F A000120 Sum_{k>=1} a(k)/2^k = 2 * Sum_{k >= 0} 1/(2^(2^k)+1) = 2 * A051158. - _Amiram Eldar_, May 15 2020
+%F A000120 Sum_{k>=1} a(k)/(k*(k+1)) = A016627 = log(4). - _Bernard Schott_, Sep 16 2020
+%F A000120 a(m*(2^n-1)) >= n. Equality holds when 2^n-1 >= A000265(m), but also in some other cases, e.g., a(11*(2^2-1)) = 2 and a(19*(2^3-1)) = 3. - _Pontus von Brömssen_, Dec 13 2020
+%F A000120 G.f.: A(x) satisfies A(x) = (1+x)*A(x^2) + x/(1-x^2). - _Akshat Kumar_, Nov 04 2023
+%e A000120 Using the formula a(n) = a(floor(n / floor_pow4(n))) + a(n mod floor_pow4(n)):
+%e A000120   a(4) = a(1) + a(0) = 1,
+%e A000120   a(8) = a(2) + a(0) = 1,
+%e A000120   a(13) = a(3) + a(1) = 2 + 1 = 3,
+%e A000120   a(23) = a(1) + a(7) = 1 + a(1) + a(3) = 1 + 1 + 2 = 4.
+%e A000120 _Gary W. Adamson_ points out (Jun 03 2009) that this can be written as a triangle:
+%e A000120   0,
+%e A000120   1,
+%e A000120   1,2,
+%e A000120   1,2,2,3,
+%e A000120   1,2,2,3,2,3,3,4,
+%e A000120   1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,
+%e A000120   1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
+%e A000120   1,2,2,3,2,3,...
+%e A000120 where the rows converge to A063787.
+%e A000120 From _Joerg Arndt_, Nov 09 2012: (Start)
+%e A000120 Connection to the compositions of n as lists of parts (see comment):
+%e A000120   [ #]:   a(n)  composition
+%e A000120   [ 0]:   [0]   1 1 1 1 1
+%e A000120   [ 1]:   [1]   1 1 1 2
+%e A000120   [ 2]:   [1]   1 1 2 1
+%e A000120   [ 3]:   [2]   1 1 3
+%e A000120   [ 4]:   [1]   1 2 1 1
+%e A000120   [ 5]:   [2]   1 2 2
+%e A000120   [ 6]:   [2]   1 3 1
+%e A000120   [ 7]:   [3]   1 4
+%e A000120   [ 8]:   [1]   2 1 1 1
+%e A000120   [ 9]:   [2]   2 1 2
+%e A000120   [10]:   [2]   2 2 1
+%e A000120   [11]:   [3]   2 3
+%e A000120   [12]:   [2]   3 1 1
+%e A000120   [13]:   [3]   3 2
+%e A000120   [14]:   [3]   4 1
+%e A000120   [15]:   [4]   5
+%e A000120 (End)
+%p A000120 A000120 := proc(n) local w,m,i; w := 0; m := n; while m > 0 do i := m mod 2; w := w+i; m := (m-i)/2; od; w; end: wt := A000120;
+%p A000120 # Alternative:
+%p A000120 A000120 := n -> add(i, i=convert(n,base,2)): # _Peter Luschny_, Feb 03 2011
+%p A000120 # Alternative:
+%p A000120 with(Bits): p:=n->ilog2(n-And(n,n-1)): seq(p(binomial(2*n,n)),n=0..200); # _Gary Detlefs_, Jan 27 2019
+%t A000120 Table[DigitCount[n, 2, 1], {n, 0, 105}]
+%t A000120 (* Alternative: *)
+%t A000120 Nest[Flatten[# /. # -> {#, # + 1}] &, {0}, 7] (* _Robert G. Wilson v_, Sep 27 2011 *)
+%t A000120 (* Alternative: *)
+%t A000120 Table[Plus @@ IntegerDigits[n, 2], {n, 0, 104}]
+%t A000120 (* Alternative: *)
+%t A000120 Nest[Join[#, # + 1] &, {0}, 7] (* _IWABUCHI Yu(u)ki_, Jul 19 2012 *)
+%t A000120 (* Alternative: *)
+%t A000120 Log[2, Nest[Join[#, 2#] &, {1}, 14]] (* gives 2^14 term, _Carlos Alves_, Mar 30 2014 *)
+%o A000120 (PARI) {a(n) = if( n<0, 0, 2*n - valuation((2*n)!, 2))};
+%o A000120 (PARI) {a(n) = if( n<0, 0, subst(Pol(binary(n)), x ,1))};
+%o A000120 (PARI) {a(n) = if( n<1, 0, a(n\2) + n%2)}; /* _Michael Somos_, Mar 06 2004 */
+%o A000120 (PARI) a(n)=my(v=binary(n));sum(i=1,#v,v[i]) \\ _Charles R Greathouse IV_, Jun 24 2011
+%o A000120 (PARI) a(n)=norml2(binary(n)) \\ better use {A000120=hammingweight}. - _M. F. Hasler_, Oct 09 2012, edited Feb 27 2020
+%o A000120 (PARI) a(n)=hammingweight(n) \\ _Michel Marcus_, Oct 19 2013
+%o A000120 (Common Lisp) (defun floor-to-power (n pow) (declare (fixnum pow)) (expt pow (floor (log n pow)))) (defun enabled-bits (n) (if (< n 4) (n-th n (list 0 1 1 2)) (+ (enabled-bits (floor (/ n (floor-to-power n 4)))) (enabled-bits (mod n (floor-to-power n 4)))))) ; Stephen K. Touset (stephen(AT)touset.org), Apr 04 2007
+%o A000120 (Fortran) c See link in A139351
+%o A000120 (Haskell)
+%o A000120 import Data.Bits (Bits, popCount)
+%o A000120 a000120 :: (Integral t, Bits t) => t -> Int
+%o A000120 a000120 = popCount
+%o A000120 a000120_list = 0 : c [1] where c (x:xs) = x : c (xs ++ [x,x+1])
+%o A000120 -- _Reinhard Zumkeller_, Aug 26 2013, Feb 19 2012, Jun 16 2011, Mar 07 2011
+%o A000120 (Haskell)
+%o A000120 a000120 = concat r
+%o A000120     where r = [0] : (map.map) (+1) (scanl1 (++) r)
+%o A000120 -- _Luke Palmer_, Feb 16 2014
+%o A000120 (SageMath)
+%o A000120 def A000120(n):
+%o A000120     if n <= 1: return Integer(n)
+%o A000120     return A000120(n//2) + n%2
+%o A000120 [A000120(n) for n in range(105)]  # _Peter Luschny_, Nov 19 2012
+%o A000120 (SageMath) def A000120(n) : return sum(n.digits(2)) # _Eric M. Schmidt_, Apr 26 2013
+%o A000120 (Python) def A000120(n): return bin(n).count('1') # _Chai Wah Wu_, Sep 03 2014
+%o A000120 (Python)
+%o A000120 import numpy as np
+%o A000120 A000120 = np.array([0], dtype="uint8")
+%o A000120 for bitrange in range(25): A000120 = np.append(A000120, np.add(A000120, 1))
+%o A000120 print([A000120[n] for n in range(0, 105)]) # _Karl-Heinz Hofmann_, Nov 07 2022
+%o A000120 (Python) def A000120(n): return n.bit_count() # Requires Python 3.10 or higher. - _Pontus von Brömssen_, Nov 08 2022
+%o A000120 (Python) # Also see links.
+%o A000120 (Scala) (0 to 127).map(Integer.bitCount(_)) // _Alonso del Arte_, Mar 05 2019
+%o A000120 (Magma) [Multiplicity(Intseq(n, 2), 1): n in [0..104]]; // _Marius A. Burtea_, Jan 22 2020
+%o A000120 (Magma) [&+Intseq(n, 2):n in [0..104]]; // _Marius A. Burtea_, Jan 22 2020
+%Y A000120 The basic sequences concerning the binary expansion of n are this one, A000788, A000069, A001969, A023416, A059015, A007088.
+%Y A000120 Partial sums see A000788. For run lengths see A131534. See also A001792, A010062.
+%Y A000120 Number of 0's in n: A023416 and A080791.
+%Y A000120 a(n) mod 2 gives the Morse-Thue sequence A010060.
+%Y A000120 a(n) = n - A011371(n).
+%Y A000120 Sum of digits of n written in bases 2-16: this sequence, A053735, A053737, A053824, A053827, A053828, A053829, A053830, A007953, A053831, A053832, A053833, A053834, A053835, A053836.
+%Y A000120 Cf. A001620, A344716, A007814, A063787.
+%Y A000120 This is Guy Steele's sequence GS(3, 4) (see A135416).
+%Y A000120 Cf. A055640, A055641, A102669-A102685, A117804, A122840, A122841, A160093, A160094, A196563, A196564 (for base 10).
+%Y A000120 Cf. A230952 (boustrophedon transform).
+%Y A000120 Cf. A070939 (length of binary representation of n).
+%K A000120 nonn,easy,core,nice,hear,look,base
+%O A000120 0,4
+%A A000120 _N. J. A. Sloane_
+
+%I A000695 M3259 N1315 #336 Jul 17 2026 09:10:01
+%S A000695 0,1,4,5,16,17,20,21,64,65,68,69,80,81,84,85,256,257,260,261,272,273,
+%T A000695 276,277,320,321,324,325,336,337,340,341,1024,1025,1028,1029,1040,
+%U A000695 1041,1044,1045,1088,1089,1092,1093,1104,1105,1108,1109,1280,1281,1284,1285
+%N A000695 Moser-de Bruijn sequence: sums of distinct powers of 4.
+%C A000695 Although this is a list, it has offset 0 for both historical and mathematical reasons.
+%C A000695 Numbers whose set of base-4 digits is a subset of {0,1}. - _Ray Chandler_, Aug 03 2004, corrected by _M. F. Hasler_, Oct 16 2018
+%C A000695 Numbers k such that the sum of the base-2 digits of k = sum of the base-4 digits of k. - _Clark Kimberling_
+%C A000695 Numbers having the same representation in both binary and negabinary (A039724). - _Eric W. Weisstein_
+%C A000695 This sequence has many other interesting and useful properties. Every term k corresponds to a unique pair i,j with k = a(i) + 2*a(j) (i=A059905(n), j=A059906(n)) -- see A126684. Every list of numbers L = [L1,L2,L3,...] can be encoded uniquely by "recursive binary interleaving", where f(L) = a(L1) + 2*a(f([L2,L3,...])) with f([])=0. - _Marc LeBrun_, Feb 07 2001
+%C A000695 This may be described concisely using the "rebase" notation b[n]q, which means "replace b with q in the expansion of n", thus "rebasing" n from base b into base q. The present sequence is 2[n]4. Many interesting operations (e.g., 10[n](1/10) = digit reverse, shifted) are nicely expressible this way. Note that q[n]b is (roughly) inverse to b[n]q. It's also natural to generalize the idea of "basis" so as to cover the likes of F[n]2, the so-called "fibbinary" numbers (A003714) and provide standard ready-made images of entities obeying other arithmetics, say like GF2[n]2 (e.g., primes = A014580, squares = the present sequence, etc.). - _Marc LeBrun_, Mar 24 2005
+%C A000695 a(n) is also equal to the product n X n formed using carryless binary multiplication (A059729, A063010). - _Henry Bottomley_, Jul 03 2001
+%C A000695 Numbers k such that A004117(k) is odd. - _Pontus von Brömssen_, Nov 25 2008
+%C A000695 Fixed point of the morphism: 0 -> 01; 1 -> 45; 2 -> 89; ...; n -> (4n)(4n+1), starting from a(0)=0. - _Philippe Deléham_, Oct 22 2011
+%C A000695 If n is even and present, so is n+1. - _Robert G. Wilson v_, Oct 24 2014
+%C A000695 Also: interleave binary digits of n with 0's. (Equivalent to the "rebase" interpretation above.) - _M. F. Hasler_, Oct 16 2018
+%C A000695 Named after the Austrian-Canadian mathematician Leo Moser (1921-1970) and the Dutch mathematician Nicolaas Govert de Bruijn (1918-2012). - _Amiram Eldar_, Jun 19 2021
+%C A000695 Conjecture: The sums of distinct powers of k > 2 can be constructed as the following (k-1)-ary rooted tree. For each n the tree grows and a(n) is then the total number of nodes. For n = 1, the root of the tree is added. For n > 1, if n is odd one leaf of depth n-2 grows one child. If n is even all leaves of depth >= (n - 1 - A000225(A001511(n/2))) grow the maximum number of children. An illustration is provided in the links. - _John Tyler Rascoe_, Oct 09 2022
+%D A000695 N. J. A. Sloane, A Handbook of Integer Sequences, Academic Press, 1973 (includes this sequence).
+%D A000695 N. J. A. Sloane and Simon Plouffe, The Encyclopedia of Integer Sequences, Academic Press, 1995 (includes this sequence).
+%H A000695 T. D. Noe, <a href="/A000695/b000695.txt">Table of n, a(n) for n = 0..1023</a>
+%H A000695 Jean-Paul Allouche and Jeffrey Shallit, <a href="https://doi.org/10.1016/0304-3975(92)90001-V">The ring of k-regular sequences</a>, Theoretical Computer Sci., Vol. 98 (1992), pp. 163-197.
+%H A000695 Jean-Paul Allouche and Jeffrey Shallit, <a href="http://www.cs.uwaterloo.ca/~shallit/Papers/as0.ps">The ring of k-regular sequences</a>, Theoretical Computer Sci., Vol. 98 (1992), pp. 163-197.
+%H A000695 David Applegate, Marc LeBrun and N. J. A. Sloane, <a href="http://neilsloane.com/doc/carry1.pdf">Carryless Arithmetic (I): The Mod 10 Version</a>.
+%H A000695 David Applegate, Omar E. Pol and N. J. A. Sloane, <a href="/A000695/a000695_2.pdf">The Toothpick Sequence and Other Sequences from Cellular Automata</a>, Congressus Numerantium, Vol. 206 (2010), pp. 157-191.
+%H A000695 David Applegate, Marc LeBrun and N. J. A. Sloane, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL14/Sloane/carry2.html">Dismal Arithmetic</a>, J. Int. Seq., Vol. 14 (2011), Article 11.9.8.
+%H A000695 Joerg Arndt, <a href="http://www.jjj.de/fxt/#fxtbook">Matters Computational (The Fxtbook)</a>, pp. 59-60, pp. 750-751.
+%H A000695 Robert Baillie and Thomas Schmelzer, <a href="https://library.wolfram.com/infocenter/MathSource/7166/">Summing Kempner's Curious (Slowly-Convergent) Series</a>, Mathematica Notebook kempnerSums.nb, Wolfram Library Archive, 2008.
+%H A000695 N. G. de Bruijn, <a href="https://doi.org/10.1090/S0025-5718-1964-0167447-9">Some direct decompositions of the set of integers</a>, Math. Comp., Vol. 18, No. 88 (1964), pp. 537-546.
+%H A000695 Karl Dilcher and Larry Ericksen, <a href="https://doi.org/10.37236/4822">Hyperbinary expansions and Stern polynomials</a>, Elec. J. Combin, Vol. 22, No. 2 (2015), #P2.24.
+%H A000695 Roger B. Eggleton, <a href="https://doi.org/10.1155/2015/216475">Maximal Midpoint-Free Subsets of Integers</a>, International Journal of Combinatorics Volume 2015, Article ID 216475, 14 pages.
+%H A000695 S. J. Eigen, Y. Ito, and V. S. Prasad, <a href="https://doi.org/10.1016/j.jnt.2004.04.001">Universally bad integers and the 2-adics</a>, J. Number Theory, Vol. 107, No. 2 (2004), pp. 322-334.
+%H A000695 Hsien-Kuei Hwang, Svante Janson, and Tsung-Hsi Tsai, <a href="https://arxiv.org/abs/2210.10968">Identities and periodic oscillations of divide-and-conquer recurrences splitting at half</a>, arXiv:2210.10968 [cs.DS], 2022, p. 44.
+%H A000695 Bin Lan and James A. Sellers, <a href="http://www.integers-ejcnt.org/p23/p23.Abstract.html">Properties of a Restricted Binary Partition Function a la Andrews and Lewis</a>, Electronic Journal of Combinatorial Number Theory, Volume 15 #A23.
+%H A000695 Lukasz Merta, <a href="https://arxiv.org/abs/1803.00292">Composition inverses of the variations of the Baum-Sweet sequence</a>, arXiv:1803.00292 [math.NT], 2018. See m(n) p. 11.
+%H A000695 Leo Moser, <a href="https://www.jstor.org/stable/2689100">An application of generating series</a>, Math. Mag., Vol. 35, No. 1 (1962), pp. 37-38.
+%H A000695 Leo Moser, <a href="/A000695/a000695.pdf">An application of generating series</a>, Math. Mag., Vol. 35, No. 1 (1962), pp. 37-38. [Annotated scanned copy]
+%H A000695 John Tyler Rascoe, <a href="/A000695/a000695.jpg">Illustration of terms</a>.
+%H A000695 Vladimir Shevelev, <a href="https://arxiv.org/abs/1603.04434">Two analogs of Thue-Morse sequence</a>, arXiv:1603.04434 [math.NT], 2016-2017.
+%H A000695 N. J. A. Sloane, <a href="/wiki/Catalog_of_Toothpick_and_CA_Sequences_in_OEIS">Catalog of Toothpick and Cellular Automata Sequences in the OEIS</a>
+%H A000695 Ralf Stephan, <a href="/somedcgf.html">Some divide-and-conquer sequences with (relatively) simple ordinary generating functions</a>, 2004.
+%H A000695 Ralf Stephan, <a href="/A079944/a079944.ps">Table of generating functions</a>.
+%H A000695 Ralf Stephan, <a href="https://arxiv.org/abs/math/0307027">Divide-and-conquer generating functions. I. Elementary sequences</a>, arXiv:math/0307027 [math.CO], 2003.
+%H A000695 Stephen Nicholas Swatman, Ana-Lucia Varbanescu, Andy D. Pimentel, Andreas Salzburger, and Attila Krasznahorkay, <a href="https://arxiv.org/abs/2309.07002">Finding Morton-Like Layouts for Multi-Dimensional Arrays Using Evolutionary Algorithms</a>, arXiv:2309.07002 [cs.NE], 2023.
+%H A000695 Eric Weisstein's World of Mathematics, <a href="https://mathworld.wolfram.com/Moser-deBruijnSequence.html">Moser-de Bruijn Sequence</a>.
+%H A000695 Eric Weisstein's World of Mathematics, <a href="https://mathworld.wolfram.com/Negabinary.html">Negabinary</a>.
+%H A000695 Wikipedia, <a href="https://en.wikipedia.org/wiki/Morton_code">Morton code</a>.  (also known as Z-order curve. Cf. Marc LeBrun's comments about binary interleaving.)
+%H A000695 <a href="/index/Ar#2-automatic">Index entries for 2-automatic sequences</a>.
+%F A000695 G.f.: 1/(1-x) * Sum_{k>=0} 4^k*x^2^k/(1+x^2^k). - _Ralf Stephan_, Apr 27 2003
+%F A000695 Numbers k such that the coefficient of x^k is > 0 in Product_{n>=0} 1+x^(4^n). - _Benoit Cloitre_, Jul 29 2003
+%F A000695 For n >= 1, a(n) = a(n-1) + (4^t+2)/6, where t is such that 2^t||2n,or t=A007814(2n). a(n) = (A145812(n+1) - 1)/2. - _Vladimir Shevelev_, Nov 07 2008
+%F A000695 To get a(n), write n as Sum b_j*2^j, then a(n) = Sum b_j*2^(2j). The Diophantine equation a(k)+2a(l)=n has the unique solution: k=Sum b_(2j)*2^j, l=Sum b_(2j+1)*2^j. - _Vladimir Shevelev_, Nov 10 2008
+%F A000695 If a(k)*a(l)=a(m), then k*l=m (the inverse, generally speaking, is not true). - _Vladimir Shevelev_, Nov 21 2008
+%F A000695 Let F(x) be the generating function, then F(x)*F(x^2) = 1/(1-x). - _Joerg Arndt_, May 12 2010
+%F A000695 a(n+1) = (a(n) + 1/3) & -1/3, where & is bitwise AND, -1/3 is represented as the infinite dyadic ...010101 (just as -1 is ...111111 in two's complement) and +1/3 is ...101011. - _Marc LeBrun_, Sep 30 2010
+%F A000695 a(n) = Sum_{k>=0} {A030308(n,k)*b(k)} with b(k) = 4^k = A000302(k). - _Philippe Deléham_, Oct 18 2011
+%F A000695 A182560(6*a(n)) = 0. - _Reinhard Zumkeller_, May 05 2012
+%F A000695 G.f.: x/(1-x^2) + 4*x^2/((1-x)*(W(0) - 4*x - 4*x^2)), where W(k) = 1 + 4*x^(2^k) + 5*x^(2^(k+1)) - 4*x^(2^(k+1))*(1 + x^(2^(k+1)))^2/W(k+1); (continued fraction). - _Sergei N. Gladkovskii_, Jan 04 2014
+%F A000695 liminf a(n)/n^2 = 1/3 and limsup a(n)/n^2 = 1. - _Gheorghe Coserea_, Sep 15 2015
+%F A000695 Let f(x) = (Sum_{k=-oo..oo} floor(x*2^k)/4^k)/2. Then f(x) is a real-valued extension of a(n), which a(n) approximates in the sense that f(x) = lim_{k->oo} a(floor(x*2^k))/a(2^k). - _Velin Yanev_, Nov 28 2016
+%F A000695 G.f. A(x) satisfies x/(1 - x^2) = A(x) - 4 * (1+x) * A(x^2). - _Michael Somos_, Nov 30 2016
+%F A000695 a(2^k) = 4^k = A000302(k). a(n + 2^k) = a(n) + a(2^k) for 2^k > n >= 1. - _David A. Corneth_, Oct 16 2018
+%F A000695 Sum_{n>=1} 1/a(n) = 1.886176434476107244547259512076353532930680508099044818673061351780360211128... (calculated using Baillie and Schmelzer's kempnerSums.nb, see Links). - _Amiram Eldar_, Feb 12 2022
+%e A000695 G.f.: x + 4*x^2 + 5*x^3 + 16*x^4 + 17*x^5 + 20*x^6 + 21*x^7 + 64*x^8 + ...
+%e A000695 If n=27, then b_0=1, b_1=1, b_2=0, b_3=1, b_4=1. Therefore a(27) = 4^4 + 4^3 + 4 + 1 = 325; k = b_0 + b_2*2 + b_4*2^2 = 5, l = b_1 + b_3*2 = 3, such that a(5)=17, a(3)=5 and 27 = 17 + 2*5. - _Vladimir Shevelev_, Nov 10 2008
+%p A000695 a:= proc(n) local m, r, b; m, r, b:= n, 0, 1;
+%p A000695       while m>0 do r:= r+b*irem(m, 2, 'm'); b:= b*4 od; r
+%p A000695     end:
+%p A000695 seq(a(n), n=0..100);  # _Alois P. Heinz_, Mar 16 2013
+%t A000695 Table[FromDigits[Riffle[IntegerDigits[n, 2], 0], 2], {n, 0, 51}] (* _Jacob A. Siehler_, Jun 30 2010 *)
+%t A000695 (* Alternative: *)
+%t A000695 Table[FromDigits[IntegerDigits[n, 2], 4], {n, 0, 51}] (* _IWABUCHI Yu(u)ki_, Apr 06 2013 *)
+%t A000695 (* Alternative: *)
+%t A000695 Union@ Flatten@ NestList[ Join[ 4#, 4# + 1] &, {0}, 6] (* _Robert G. Wilson v_, Aug 30 2014 *)
+%t A000695 (* Alternative: *)
+%t A000695 Select[ Range[0, 1320], Total@ IntegerDigits[#, 2] == Total@ IntegerDigits[#, 4] &] (* _Robert G. Wilson v_, Oct 24 2014 *)
+%t A000695 (* Alternative: *)
+%t A000695 Union[FromDigits[#,4]&/@Flatten[Table[Tuples[{0,1},n],{n,6}],1]] (* _Harvey P. Dale_, Oct 03 2015 *)
+%t A000695 (* Alternative: *)
+%t A000695 a[ n_] := Which[n < 1, 0, EvenQ[n], a[n/2] 4, True, a[n - 1] + 1]; (* _Michael Somos_, Nov 30 2016 *)
+%o A000695 (PARI) a(n)=n=binary(n);sum(i=1,#n,n[i]*4^(#n-i)) \\ _Charles R Greathouse IV_, Mar 04 2013
+%o A000695 (PARI) {a(n) = if( n<1, 0, n%2, a(n-1) + 1, a(n/2) * 4)}; /* _Michael Somos_, Nov 30 2016 */
+%o A000695 (PARI) A000695(n)=fromdigits(binary(n),4) \\ _M. F. Hasler_, Oct 16 2018
+%o A000695 (Haskell)
+%o A000695 a000695 n = if n == 0 then 0 else 4 * a000695 n' + b
+%o A000695             where (n',b) = divMod n 2
+%o A000695 -- _Reinhard Zumkeller_, Feb 21 2014, Dec 03 2011
+%o A000695 (Python)
+%o A000695 def a(n):
+%o A000695     n = bin(n)[2:]
+%o A000695     x = len(n)
+%o A000695     return sum(int(n[i]) * 4**(x - 1 - i) for i in range(x))
+%o A000695 [a(n) for n in range(101)] # _Indranil Ghosh_, Jun 25 2017
+%o A000695 (Python)
+%o A000695 def a():
+%o A000695     x = 0
+%o A000695     while True:
+%o A000695         yield x
+%o A000695         y = ~(x << 1)
+%o A000695         x = (x - y) & y # _Falk Hüffner_, Dec 21 2021
+%o A000695 (Python)
+%o A000695 from itertools import count, islice
+%o A000695 def A000695_gen(): # generator of terms
+%o A000695     yield (a:=0)
+%o A000695     for n in count(1):
+%o A000695         yield (a := a+((1<<((~n & n-1).bit_length()<<1)+1)+1)//3)
+%o A000695 A000695_list = list(islice(A000695_gen(),30)) # _Chai Wah Wu_, Feb 22 2023
+%o A000695 (Python)
+%o A000695 def A000695(n): return int(bin(n)[2:],4) # _Chai Wah Wu_, Aug 21 2023
+%o A000695 (Magma) m:=60; R<x>:=PowerSeriesRing(Integers(), m); [0] cat Coefficients(R!( (&+[4^k*x^(2^k)/(1+x^(2^k)): k in [0..20]])/(1-x) )); // _G. C. Greubel_, Dec 06 2018
+%o A000695 (SageMath) s=(sum(4^k*x^(2^k)/(1+x^(2^k)) for k in range(10))/(1-x)).series(x, 60); s.coefficients(x, sparse=False) # _G. C. Greubel_, Dec 06 2018
+%o A000695 (Julia)
+%o A000695 function a(n)
+%o A000695     m, r, b = n, 0, 1
+%o A000695     while m > 0
+%o A000695         m, q = divrem(m, 2)
+%o A000695         r += b * q
+%o A000695         b *= 4
+%o A000695     end
+%o A000695 r end; [a(n) for n in 0:51] |> println # _Peter Luschny_, Jan 03 2021
+%o A000695 (C)
+%o A000695 #include <stdint.h>
+%o A000695 uint32_t a_next(uint32_t a_n) { return (a_n + 0xaaaaaaab) & 0x55555555; } /* _Falk Hüffner_, Jan 24 2022 */
+%Y A000695 For generating functions Product_{k>=0} (1 + a*x^(b^k)) for the following values of (a,b) see: (1,2) A000012 and A000027, (1,3) A039966 and A005836, (1,4) A151666 and A000695, (1,5) A151667 and A033042, (2,2) A001316, (2,3) A151668, (2,4) A151669, (2,5) A151670, (3,2) A048883, (3,3) A117940, (3,4) A151665, (3,5) A151671, (4,2) A102376, (4,3) A151672, (4,4) A151673, (4,5) A151674.
+%Y A000695 Main diagonal of A048720, second column of A048723.
+%Y A000695 Cf. A000225, A000302, A001511, A007583, A059884, A059901, A059904, A059905, A059906, A007088, A033042-A033052, A126684, A145812.
+%Y A000695 A062880(n) = 2*a(n); A001196(n) = 3*a(n).
+%Y A000695 Row 4 of array A104257.
+%K A000695 nonn,nice,easy
+%O A000695 0,3
+%A A000695 _N. J. A. Sloane_
+
+%I A002487 M0141 N0056 #688 May 22 2026 11:16:23
+%S A002487 0,1,1,2,1,3,2,3,1,4,3,5,2,5,3,4,1,5,4,7,3,8,5,7,2,7,5,8,3,7,4,5,1,6,
+%T A002487 5,9,4,11,7,10,3,11,8,13,5,12,7,9,2,9,7,12,5,13,8,11,3,10,7,11,4,9,5,
+%U A002487 6,1,7,6,11,5,14,9,13,4,15,11,18,7,17,10,13,3,14,11,19,8,21,13,18,5,17,12,19
+%N A002487 Stern's diatomic series (or Stern-Brocot sequence): a(0) = 0, a(1) = 1; for n > 0: a(2*n) = a(n), a(2*n+1) = a(n) + a(n+1).
+%C A002487 Also called fusc(n) [Dijkstra].
+%C A002487 a(n)/a(n+1) runs through all the reduced nonnegative rationals exactly once [Stern; Calkin and Wilf].
+%C A002487 If the terms are written as an array:
+%C A002487   column 0 1 2 3 4 5 6 7 8 9 ...
+%C A002487   row 0: 0
+%C A002487   row 1: 1
+%C A002487   row 2: 1,2
+%C A002487   row 3: 1,3,2,3
+%C A002487   row 4: 1,4,3,5,2,5,3,4
+%C A002487   row 5: 1,5,4,7,3,8,5,7,2,7,5,8,3,7,4,5
+%C A002487   row 6: 1,6,5,9,4,11,7,10,3,11,8,13,5,12,7,9,2,9,7,12,5,13,8,11,3,10,...
+%C A002487   ...
+%C A002487 then (ignoring row 0) the sum of the k-th row is 3^(k-1), each column is an arithmetic progression and the steps are nothing but the original sequence. - Takashi Tokita (butaneko(AT)fa2.so-net.ne.jp), Mar 08 2003
+%C A002487 From _N. J. A. Sloane_, Oct 15 2017: (Start)
+%C A002487 The above observation can be made more precise. Let A(n,k), n >= 0, 0 <= k <= 2^(n-1)-1 for k > 0, denote the entry in row n and column k of the left-justified array above.
+%C A002487 The equations for columns 0,1,2,3,4,... are successively (ignoring row 0):
+%C A002487      1 (n >= 1),
+%C A002487      n (n >= 2),
+%C A002487    n-1 (n >= 3),
+%C A002487   2n-3 (n >= 3),
+%C A002487    n-2 (n >= 4),
+%C A002487   3n-7 (n >= 4),
+%C A002487   ...
+%C A002487 and in general column k > 0 is given by
+%C A002487 A(n,k) = a(k)*n - A156140(k) for n >= ceiling(log_2(k+1))+1, and 0 otherwise.
+%C A002487 (End)
+%C A002487 a(n) is the number of odd Stirling numbers S_2(n+1, 2r+1) [Carlitz].
+%C A002487 Moshe Newman proved that the fraction a(n+1)/a(n+2) can be generated from the previous fraction a(n)/a(n+1) = x by 1/(2*floor(x) + 1 - x). The successor function f(x) = 1/(floor(x) + 1 - frac(x)) can also be used.
+%C A002487 a(n+1) = number of alternating bit sets in n [Finch].
+%C A002487 If f(x) = 1/(1 + floor(x) - frac(x)) then f(a(n-1)/a(n)) = a(n)/a(n+1) for n >= 1. If T(x) = -1/x and f(x) = y, then f(T(y)) = T(x) for x > 0. - _Michael Somos_, Sep 03 2006
+%C A002487 a(n+1) is the number of ways of writing n as a sum of powers of 2, each power being used at most twice (the number of hyperbinary representations of n) [Carlitz; Lind].
+%C A002487 a(n+1) is the number of partitions of the n-th integer expressible as the sum of distinct even-subscripted Fibonacci numbers (= A054204(n)), into sums of distinct Fibonacci numbers [Bicknell-Johnson, theorem 2.1].
+%C A002487 a(n+1) is the number of odd binomial(n-k, k), 0 <= 2*k <= n. [Carlitz], corrected by _Alessandro De Luca_, Jun 11 2014
+%C A002487 a(2^k) = 1. a(3*2^k) = a(2^(k+1) + 2^k) = 2. Sequences of terms between a(2^k) = 1 and a(2^(k+1)) = 1 are palindromes of length 2^k-1 with a(2^k + 2^(k-1)) = 2 in the middle. a(2^(k-1) + 1) = a(2^k - 1) = k+1 for k > 1. - _Alexander Adamchuk_, Oct 10 2006
+%C A002487 The coefficients of the inverse of the g.f. of this sequence form A073469 and are related to binary partitions A000123. - _Philippe Flajolet_, Sep 06 2008
+%C A002487 It appears that the terms of this sequence are the number of odd entries in the diagonals of Pascal's triangle at 45 degrees slope. - Javier Torres (adaycalledzero(AT)hotmail.com), Aug 06 2009
+%C A002487 Let M be an infinite lower triangular matrix with (1, 1, 1, 0, 0, 0, ...) in every column shifted down twice:
+%C A002487    1;
+%C A002487    1, 0;
+%C A002487    1, 1, 0;
+%C A002487    0, 1, 0, 0;
+%C A002487    0, 1, 1, 0, 0;
+%C A002487    0, 0, 1, 0, 0, 0;
+%C A002487    0, 0, 1, 1, 0, 0, 0;
+%C A002487    ...
+%C A002487    Then this sequence A002487 (without initial 0) is the first column of lim_{n->oo} M^n. (Cf. A026741.) - _Gary W. Adamson_, Dec 11 2009 [Edited by _M. F. Hasler_, Feb 12 2017]
+%C A002487 Member of the infinite family of sequences of the form a(n) = a(2*n); a(2*n+1) = r*a(n) + a(n+1), r = 1 for A002487 = row 1 in the array of A178239. - _Gary W. Adamson_, May 23 2010
+%C A002487 Equals row 1 in an infinite array shown in A178568, sequences of the form
+%C A002487 a(2*n) = r*a(n), a(2*n+1) = a(n) + a(n+1); r = 1. - _Gary W. Adamson_, May 29 2010
+%C A002487 Row sums of A125184, the Stern polynomials. Equivalently, B(n,1), the n-th Stern polynomial evaluated at x = 1. - _T. D. Noe_, Feb 28 2011
+%C A002487 The Kn1y and Kn2y triangle sums, see A180662 for their definitions, of A047999 lead to the sequence given above, e.g., Kn11(n) = A002487(n+1) - A000004(n), Kn12(n) = A002487(n+3) - A000012(n), Kn13(n) = A002487(n+5) - A000034(n+1) and Kn14(n) = A002487(n+7) - A157810(n+1). For the general case of the knight triangle sums see the Stern-Sierpiński triangle A191372. This triangle not only leads to Stern's diatomic series but also to snippets of this sequence and, quite surprisingly, their reverse. - _Johannes W. Meijer_, Jun 05 2011
+%C A002487 Maximum of terms between a(2^k) = 1 and a(2^(k+1)) = 1 is the Fibonacci number F(k+2). - _Leonid Bedratyuk_, Jul 04 2012
+%C A002487 Probably the number of different entries per antidiagonal of A223541. That would mean there are exactly a(n+1) numbers that can be expressed as a nim-product 2^x*2^y with x + y = n. - _Tilman Piesk_, Mar 27 2013
+%C A002487 Let f(m,n) be the frequency of the integer n in the interval [a(2^(m-1)), a(2^m-1)]. Let phi(n) be Euler's totient function (A000010). Conjecture: for all integers m,n n<=m f(m,n) = phi(n). - _Yosu Yurramendi_, Sep 08 2014
+%C A002487 Back in May 1995, it was proved that A000360 is the modulo 3 mapping, (+1,-1,+0)/2, of this sequence A002487 (without initial 0). - _M. Jeremie Lafitte (Levitas)_, Apr 24 2017
+%C A002487 Define a sequence chf(n) of Christoffel words over an alphabet {-,+}: chf(1) = '-'; chf(2*n+0) = negate(chf(n)); chf(2*n+1) = negate(concatenate(chf(n),chf(n+1))). Then the length of the chf(n) word is fusc(n) = a(n); the number of '-'-signs in the chf(n) word is c-fusc(n) = A287729(n); the number of '+'-signs in the chf(n) word is s-fusc(n) = A287730(n). See examples below. - _I. V. Serov_, Jun 01 2017
+%C A002487 The sequence can be extended so that a(n) = a(-n), a(2*n) = a(n), a(2*n+1) = a(n) + a(n+1) for all n in Z. - _Michael Somos_, Jun 25 2019
+%C A002487 Named after the German mathematician Moritz Abraham Stern (1807-1894), and sometimes also after the French clockmaker and amateur mathematician Achille Brocot (1817-1878). - _Amiram Eldar_, Jun 06 2021
+%C A002487 It appears that a(n) is equal to the multiplicative inverse of A007305(n+1) mod A007306(n+1).  For example, a(12) is 2, the multiplicative inverse of A007305(13) mod A007306(13), where A007305(13) is 4 and A007306(13) is 7. - _Gary W. Adamson_, Dec 18 2023
+%D A002487 M. Aigner and G. M. Ziegler, Proofs from THE BOOK, 3rd ed., Berlin, Heidelberg, New York: Springer-Verlag, 2004, p. 97.
+%D A002487 Elwyn R. Berlekamp, John H. Conway and Richard K. Guy, Winning Ways, Academic Press, NY, 2 vols., 1982, see p. 114.
+%D A002487 Krishna Dasaratha, Laure Flapan, Chansoo Lee, Cornelia Mihaila, Nicholas Neumann-Chun, Sarah Peluse and Matthew Stroegeny, A family of multi-dimensional continued fraction Stern sequences, Abtracts Amer. Math. Soc., Vol. 33 (#1, 2012), #1077-05-2543.
+%D A002487 Edsger W. Dijkstra, Selected Writings on Computing, Springer, 1982, p. 232 (sequence is called fusc).
+%D A002487 F. G. M. Eisenstein, Eine neue Gattung zahlentheoretischer Funktionen, welche von zwei Elementen abhaengen und durch gewisse lineare Funktional-Gleichungen definirt werden, Verhandlungen der Koenigl. Preuss. Akademie der Wiss. Berlin (1850), pp. 36-42, Feb 18, 1850. Werke, II, pp. 705-711.
+%D A002487 Graham Everest, Alf van der Poorten, Igor Shparlinski and Thomas Ward, Recurrence Sequences, Amer. Math. Soc., 2003; see esp. p. 255.
+%D A002487 Steven R. Finch, Mathematical Constants, Cambridge, 2003, Section 2.16.3; pp. 148-149.
+%D A002487 Ronald L. Graham, Donald E. Knuth and Oren Patashnik, Concrete Mathematics. Addison-Wesley, Reading, MA, 1990, p. 117.
+%D A002487 Thomas Koshy, Fibonacci and Lucas numbers with applications, Wiley, 2001, p. 98.
+%D A002487 N. J. A. Sloane, A Handbook of Integer Sequences, Academic Press, 1973 (includes this sequence).
+%D A002487 N. J. A. Sloane and Simon Plouffe, The Encyclopedia of Integer Sequences, Academic Press, 1995 (includes this sequence).
+%H A002487 T. D. Noe, <a href="/A002487/b002487.txt">Table of n, a(n) for n = 0..10000</a>
+%H A002487 Boris Adamczewski, <a href="https://doi.org/10.4064/aa142-1-6">Non-converging continued fractions related to the Stern diatomic sequence</a>, Acta Arithm. 142 (1) (2010) 67-78.
+%H A002487 Jean-Paul Allouche and Michel Mendès France, <a href="https://arxiv.org/abs/1202.0211">Lacunary formal power series and the Stern-Brocot sequence</a>, arXiv preprint arXiv:1202.0211 [math.NT], 2012-2013. - _N. J. A. Sloane_, May 10 2012
+%H A002487 Jean-Paul Allouche, <a href="https://arxiv.org/abs/1202.4171">On the Stern sequence and its twisted version</a>, arXiv preprint arXiv:1202.4171 [math.NT], 2012.
+%H A002487 Jean-Paul Allouche, Michel Mendès France, Anna Lubiw, Alfred J. van der Poorten and Jeffrey Shallit, <a href="https://webusers.imj-prg.fr/~jean-paul.allouche/bibliorecente.html">Convergents of folded continued fractions</a>.
+%H A002487 Jean-Paul Allouche and Jeffrey Shallit, <a href="https://doi.org/10.1016/0304-3975(92)90001-V">The ring of k-regular sequences</a>, Theoretical Computer Sci., 98 (1992), 163-197. [<a href="http://www.cs.uwaterloo.ca/~shallit/Papers/as0.ps">Preprint</a>.]
+%H A002487 Jean-Paul Allouche and Jeffrey Shallit, <a href="https://doi.org/10.1016/S0304-3975(03)00090-2">The ring of k-regular sequences, II</a>, Theoret. Computer Sci., 307 (2003), 3-29. [<a href="https://webusers.imj-prg.fr/~jean-paul.allouche/kreg2.ps">Preprint</a>.]
+%H A002487 Michael Baake and Michael Coons, <a href="https://arxiv.org/abs/1706.00187">A natural probability measure derived from Stern's diatomic sequence</a>, arXiv:1706.00187 [math.NT], 2017.
+%H A002487 Roland Bacher, <a href="https://arxiv.org/abs/1005.5627">Twisting the Stern sequence</a>, arXiv:1005.5627 [math.CO], 2010.
+%H A002487 Bruce Bates, Martin Bunder and Keith Tognetti, <a href="https://doi.org/10.1016/j.ejc.2010.04.002">Linking the Calkin-Wilf and Stern-Brocot trees</a>, Eur. J. Comb., Vol. 31, No. 7 (2010), pp. 1637-1661.
+%H A002487 Bruce Bates and Toufik Mansour, <a href="https://doi.org/10.1016/j.jcta.2010.09.002">The q-Calkin-Wilf tree</a>, Journal of Combinatorial Theory Series A, Vol. 118, No. 3 (2011), pp. 1143-1151.
+%H A002487 Marjorie Bicknell-Johnson, <a href="https://www.fq.math.ca/Scanned/41-2/bicknell.pdf">Stern's Diatomic Array Applied to Fibonacci Representations</a>, Fibonacci Quarterly, Vol. 41 (2003), pp. 169-180.
+%H A002487 Arie Bos, <a href="/A002487/a002487_3.pdf">Graph connecting p/q and r/s where |q*r-p*s|=1 and p=a(n), q= a(n+1), r=a(m), s=a(m+1) and 0<=p/q,r/s<=1</a>.
+%H A002487 Richard P. Brent, Michael Coons and Wadim Zudilin, <a href="http://maths-people.anu.edu.au/~brent/pd/Brent_AustMS14.pdf">Asymptotics of a Mahler Function</a>, Slides of talk presented at AustMS/NZMS 2014, Melbourne, 8 December 2014.
+%H A002487 Neil Calkin and Herbert S. Wilf, <a href="http://www.math.upenn.edu/~wilf/website/recounting.pdf">Recounting the rationals</a>, Amer. Math. Monthly, Vol. 107, No. 4 (2000), pp. 360-363.
+%H A002487 L. Carlitz, <a href="http://projecteuclid.org/euclid.bams/1183525946">A problem in partitions related to the Stirling numbers</a>, Bull. Amer. Math. Soc., Vol. 70, No. 2 (1964), pp. 275-278. [<a href="/A002487/a002487abs1.html">Abstract</a>.]
+%H A002487 L. Carlitz, <a href="http://rivista.math.unipr.it/fulltext/1964-5/1964-5-061.pdf">A problem in partitions related to the Stirling numbers</a>, Riv. Mat. Univ. Parma, (2) 5 (1964), 61-75.
+%H A002487 Michael Coons, <a href="https://doi.org/10.1142/S1793042110002958">The transcendence of series related to Stern's diatomic sequence</a>, International Journal of Number Theory 6.01 (2010): 211-217.
+%H A002487 Michael Coons, <a href="http://www.integers-ejcnt.org/l35/l35.Abstract.html">On some conjectures concerning Stern's sequence and its twist</a>, Integers 11.6 (2011): 775-789.
+%H A002487 Michael Coons, <a href="http://www.integers-ejcnt.org/m3/m3.Abstract.html">A Correlation Identity for Stern's Sequence</a>, Integers 12.3 (2012): 459-464.
+%H A002487 Michael Coons and Jeffrey Shallit, <a href="https://doi.org/10.1016/j.disc.2011.07.029">A pattern sequence approach to Stern's sequence</a>, Discrete Math., Vol. 311 (2011), pp. 2630-2633.
+%H A002487 Michael Coons and Jason Tyler, <a href="https://arxiv.org/abs/1307.1521">The maximal order of Stern's diatomic sequence</a>, arXiv:1307.1521 [math.NT], 2013-2014.
+%H A002487 Kevin M. Courtright and James A. Sellers, <a href="http://www.integers-ejcnt.org/e6/e6.Abstract.html">Arithmetic Properties for Hyper m-ary Partitions</a>, INTEGERS, Vol. 4 (2004), Article A6.
+%H A002487 Valerio De Angelis, <a href="https://www.jstor.org/stable/10.4169/amer.math.monthly.124.5.451">The Stern diatomic sequence via generalized Chebyshev polynomials</a>, American Mathematical Monthly 124.5 (2017): 451-455. See <a href="https://arxiv.org/abs/1511.02422">also</a>, arXiv:1511.02422 [math.NT], 2015.
+%H A002487 Philip de Castro et al., <a href="https://doi.org/10.1080/00029890.2018.1449523">Counting binomial coefficients divisible by a prime power</a>, Amer. Math. Monthly, Vol. 125, No. 6 (2018), pp. 531-540. See Table p. 534.
+%H A002487 Colin Defant, <a href="https://doi.org/10.37236/5342">Upper Bounds for Stern's Diatomic Sequence and Related Sequences</a>, Electronic Journal of Combinatorics, Vol. 23, No. 4 (2016), #P4.8.
+%H A002487 Marc Deléglise, Paul Erdős and Jean-Louis Nicolas, <a href="https://doi.org/10.1016/S0012-365X(98)00330-6">Sur les ensembles représentés par les partitions d'un entier n</a> [Sets represented by partitions of an integer n] Paul Erdős memorial collection. Discrete Math., Vol. 200, No. 1-3 (1999), pp. 27-48. MR1692277 (2000e:05012). See Table 1. _N. J. A. Sloane_, Mar 18 2012
+%H A002487 Georges De Rham, <a href="https://doi.org/10.5169/seals-12823">Un peu de mathématiques à propos d'une courbe plane</a>, Elemente der Math., Vol. 2 (1947), pp. 73-76 and 89-97.
+%H A002487 Edsger W. Dijkstra, <a href="http://www.cs.utexas.edu/users/EWD/ewd05xx/EWD570.PDF">An exercise for Dr. R. M. Burstall</a>.
+%H A002487 Edsger W. Dijkstra, <a href="http://www.cs.utexas.edu/users/EWD/ewd05xx/EWD578.PDF">More about the function "fusc"</a>.
+%H A002487 Karl Dilcher and Larry Ericksen, <a href="https://doi.org/10.37236/4822">Hyperbinary expansions and Stern polynomials</a>, Elec. J. Combin, Vol. 22 (2015), #P2.24.
+%H A002487 Karl Dilcher and Larry Ericksen, <a href="http://www.integers-ejcnt.org/p50/p50.Abstract.html">Factors and irreducibility of generalized Stern polynomials</a>, Integers, Vol. 15 (2015), #A50.
+%H A002487 Karl Dilcher and Larry Ericksen, <a href="https://doi.org/10.1007%2Fs11139-016-9864-3">Continued fractions and Stern polynomials</a>, Ramanujan Journal, Vol. 45 (2017), pp. 659-681.
+%H A002487 Karl Dilcher and Larry Ericksen, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL21/Dilcher/dilcher7.html">Polynomials Characterizing Hyper b-ary Representations</a>, J. Int. Seq., Vol. 21 (2018), Article 18.4.3.
+%H A002487 Karl Dilcher and Larry Ericksen, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL22/Dilcher/dilcher44.html">Polynomial Analogues of Restricted b-ary Partition Functions</a>, J. Int. Seq., Vol. 22 (2019), Article 19.3.2.
+%H A002487 Daniel Duverney and Iekata Shiokawa, <a href="https://arxiv.org/abs/2603.25174">Stern polynomials and algebraic independence</a>, arXiv:2603.25174 [math.NT], 2026.
+%H A002487 Tom Edgar, <a href="http://math.colgate.edu/~integers/s47/s47.Abstract.html">On the number of hyper m-ary partitions</a>, Integers, Vol. 18 (2018), Article #A47.
+%H A002487 De-Jun Feng, Pierre Liardet and Alain Thomas, <a href="http://www.math.cuhk.edu.hk/~djfeng/fengpapers/Feng-Liardet-Thomsa/FengLiardetThomasPartition3R.pdf">Partition functions in numeration systems with bounded multiplicity, Uniform Distribution Theory</a>, Vol. 9, No. 1 (2014).
+%H A002487 Steven R. Finch, P. Sebah and Z.-Q. Bai, <a href="http://arXiv.org/abs/0802.2654">Odd Entries in Pascal's Trinomial Triangle</a>, arXiv:0802.2654 [math.NT], 2008.
+%H A002487 Aviezri S. Fraenkel, <a href="http://www.wisdom.weizmann.ac.il/~fraenkel/Papers/RationalGames3.pdf">Ratwyt</a>, Dec 28 2011.
+%H A002487 Thomas Garrity, <a href="https://arxiv.org/abs/1206.6685">A multi-dimensional continued fraction generalization of Stern's diatomic sequence</a>, arXiv:1206.6685 [math.CO], 2012-2013.
+%H A002487 Thomas Garrity, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL16/Garrity/garrity4.html">A multi-dimensional continued fraction generalization of Stern's diatomic sequence</a>, Journal of Integer Sequences, Vol. 16 (2013), #13.7.7.
+%H A002487 Michael Gilleland, <a href="/selfsimilar.html">Some Self-Similar Integer Sequences</a>.
+%H A002487 Jose Grimm, <a href="https://jfr.unibo.it/article/view/4771">Implementation of Bourbaki's Elements of Mathematics in Coq: Part Two, From Natural Numbers to Real Numbers</a>, Journal of Formalized Reasoning, Vol. 9, No. 2 (2016), pp. 1-52; see p. 38.
+%H A002487 Brian Hayes, <a href="https://www.jstor.org/stable/27858048">On the Teeth of Wheels</a>, American Scientist, Vol. 88, No. 4 (July-August 2000), pp. 296-300 (5 pages).
+%H A002487 Andreas M. Hinz, Sandi Klavžar, Uroš Milutinović and Ciril Petr,, <a href="https://doi.org/10.1007/978-3-0348-0237-6">The Tower of Hanoi - Myths and Maths</a>, Birkhäuser 2013. See page 115. <a href="http://tohbook.info">Book's website</a>
+%H A002487 Andreas M. Hinz, Sandi Klavžar, Uroš Milutinović, Daniele Parisse and Ciril Petr, <a href="https://doi.org/10.1016/j.ejc.2004.04.009">Metric properties of the Tower of Hanoi graphs and Stern's diatomic sequence</a>, European J. Combin., Vol. 26, No. 5 (2005), pp. 693-708.
+%H A002487 Johannes Kepler, <a href="https://archive.org/stream/ioanniskepplerih00kepl#page/27/mode/1up">Harmonices Mundi, Vol. III (1619) p.27</a>.
+%H A002487 Donald E. Knuth, C. P. Rupert, Alex Smith and Richard Stong, <a href="https://www.jstor.org/stable/3647762">Recounting the Rationals, Continued: 10906</a>, solution by Moshe Newman, American Mathematical Monthly, Vol. 110, No. 7 (2003), pp. 642-643.
+%H A002487 Jennifer Lansing, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL16/Lansing/lansing3.html">Distribution of Values of the Binomial Coefficients and the Stern Sequence</a>, Journal of Integer Sequences, Vol. 16 (2013), Article 13.3.7.
+%H A002487 Jennifer Lansing, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL17/Lansing/lansing2.html">Largest Values for the Stern Sequence</a>, Journal of Integer Sequences, Vol. 17 (2014), Article 14.7.5.
+%H A002487 D. H. Lehmer, <a href="https://www.jstor.org/stable/2299356">On Stern's Diatomic Series</a>, Amer. Math. Monthly, Vol. 36, No. 1 (1929), pp. 59-67. [<a href="/A002487/a002487_1.pdf">Annotated and corrected scanned copy</a>.]
+%H A002487 Julien Leroy, Michel Rigo and Manon Stipulanti, <a href="https://doi.org/10.1016/j.disc.2017.01.003">Counting the number of non-zero coefficients in rows of generalized Pascal triangles</a>, Discrete Mathematics, Vol. 340 (2017), pp. 862-881. Also available at <a href="http://hdl.handle.net/2268/205077">Université de Liège</a>.
+%H A002487 Peter Luschny, <a href="https://www.oeis.org/wiki/User:Peter_Luschny/SternsDiatomic">Rational Trees and Binary Partitions</a>.
+%H A002487 Alan J. Macfarlane, <a href="https://doi.org/10.1088/0305-4470/37/45/006">Linear reversible second-order cellular automata and their first-order matrix equivalents</a>, Journal of Physics A: Mathematical and General 37.45 (2004): 10791. See Fig. 2.
+%H A002487 David Mailland and Iwona Grobelna, <a href="/A002487/a002487_4.pdf">From Mathematics to Art: Petri Net Modelling of Tribonacci and k-Bonacci Petri Net Fractal Patterns</a>, 2026, p18.
+%H A002487 Aimeric Malter, Dierk Schleicher, and Don Zagier, <a href="https://doi.org/10.4169/amer.math.monthly.120.03.243">New Looks at Old Number Theory</a>, The American Mathematical Monthly, Vol. 120, No. 3 (March 2013), pp. 243-264.
+%H A002487 Laura Monroe, <a href="https://arxiv.org/abs/2103.05810">Binary Signed-Digit Integers, the Stern Diatomic Sequence and Stern Polynomials</a>, arXiv:2103.05810 [math.NT], 2021.
+%H A002487 Sam Northshield, <a href="https://doi.org/10.4169/000298910X496714">Stern's diatomic sequence 0, 1, 1, 2, 1, 3, 2, 3, 1, 4, ...</a>, Amer. Math. Monthly, Vol. 117, No. 7 (2010), pp. 581-598.
+%H A002487 Sam Northshield, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL18/Northshield/north4.html">An Analogue of Stern's Sequence for Z[sqrt(2)]</a>, Journal of Integer Sequences, Vol. 18 (2015), Article 15.11.6.
+%H A002487 Sam Northshield, <a href="https://arxiv.org/abs/1905.10369">Re^3counting the Rationals</a>, arXiv:1905.10369 [math.NT], 2019.
+%H A002487 Project Euler, <a href="https://projecteuler.net/problem=169">Problem 169 - Exploring the number of different ways a number can be expressed as a sum of powers of 2</a>.
+%H A002487 Bruce Reznick, <a href="https://doi.org/10.1007/978-1-4612-3464-7_29">Some binary partition functions</a>, in "Analytic number theory" (Conf. in honor P. T. Bateman, Allerton Park, IL, 1989), Progr. Math., 85, Birkhäuser Boston, Boston, MA, 1990, pp. 451-477.
+%H A002487 Bruce Reznick, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL11/Reznick/reznick4.html">Regularity properties of the Stern enumeration of the Rationals</a>, Journal of Integer Sequences, Vol. 11 (2008) Article 08.4.1.
+%H A002487 Jürgen W. Sander, Jörn Steuding and Rasa Steuding, <a href="https://doi.org/10.4171/EM/170">Diophantine aspects of the Calkin-Wilf iteration</a>, El. Math., Vol. 66, No. 2 (2011) pp. 45-55. doi:10.4171/EM/170.
+%H A002487 Anton Shakov, <a href="https://arxiv.org/abs/2405.03552">Polynomials in Z[x] whose divisors are enumerated by SL_2(N_0)</a>, arXiv:2405.03552 [math.NT], 2024. See p. 27.
+%H A002487 Rémy Sigrist, <a href="https://arxiv.org/abs/2301.06039">Nonperiodic tilings related to Stern's diatomic series and based on tiles decorated with elements of F_p</a>, arXiv:2301.06039 [math.CO], 2023.
+%H A002487 N. J. A. Sloane, <a href="/stern_brocot.html">Stern-Brocot or Farey Tree</a>.
+%H A002487 N. J. A. Sloane and Brady Haran, <a href="https://www.youtube.com/watch?v=j0o-pMIR8uk">Amazing Graphs III</a>, Numberphile video (2019).
+%H A002487 Richard P. Stanley and Herbert S. Wilf, <a href="http://www-math.mit.edu/~rstan/papers/stern.pdf">Refining the Stern Diatomic Sequence</a>, unpublished.
+%H A002487 Richard P. Stanley and Herbert S. Wilf, <a href="/A002487/a002487.pdf">Refining the Stern Diatomic Sequence</a> [Cached copy, with permission]
+%H A002487 Ralf Stephan, <a href="https://arxiv.org/abs/math/0307027">Divide-and-conquer generating functions. I. Elementary sequences</a>, arXiv:math/0307027 [math.CO], 2003.
+%H A002487 M. A. Stern, <a href="https://doi.org/10.1515/crll.1858.55.193">Über eine zahlentheoretische Funktion</a>, J. Reine Angew. Math., Vol. 55 (1858), pp. 193-220.
+%H A002487 Jörn Steuding, Stefanie Hofmann and Gertraud Schuster, <a href="https://ems.press/content/serial-article-files/1809">Euclid, Calkin & Wilf - playing with rationals</a>, Elemente der Mathematik, Vol. 63, No. 3 (2008), pp. 109-117.
+%H A002487 Maciej Ulas, <a href="https://arxiv.org/abs/1102.5111">Arithmetic properties of the sequence of degrees of Stern polynomials and related results</a>, arXiv:1102.5111 [math.CO], 2011.
+%H A002487 Maciej Ulas and Oliwia Ulas, <a href="https://arxiv.org/abs/1102.5109">On certain arithmetic properties of Stern polynomials</a>, arXiv:1102.5109 [math.CO], 2011.
+%H A002487 Igor Urbiha, <a href="http://hrcak.srce.hr/file/1591">Some properties of a function studied by De Rham, Carlitz and Dijkstra and its relation to the (Eisenstein -) Stern's diatomic sequence</a>, Math. Commun., Vol. 6 (2002), pp. 181-198.
+%H A002487 Eric Weisstein's World of Mathematics, <a href="https://mathworld.wolfram.com/Calkin-WilfTree.html">Calkin-Wilf Tree</a> and <a href="https://mathworld.wolfram.com/SternsDiatomicSeries.html">Stern's Diatomic Series</a>.
+%H A002487 Yasuhisa Yamada, <a href="https://arxiv.org/abs/2004.00278">A function from Stern's diatomic sequence, and its properties</a>, arXiv:2004.00278 [math.NT], 2020.
+%H A002487 <a href="/index/Cor#core">Index entries for "core" sequences</a>
+%H A002487 <a href="/index/Fo#fraction_trees">Index entries for fraction trees</a>
+%H A002487 <a href="/index/Ra#rational">Index entries for sequences related to enumerating the rationals</a>
+%H A002487 <a href="/index/St#Stern">Index entries for sequences related to Stern's sequences</a>
+%H A002487 <a href="/index/Tra#trees">Index entries for sequences related to trees</a>
+%F A002487 a(n+1) = (2*k+1)*a(n) - a(n-1) where k = floor(a(n-1)/a(n)). - _David S. Newman_, Mar 04 2001
+%F A002487 Let e(n) = A007814(n) = exponent of highest power of 2 dividing n. Then a(n+1) = (2k+1)*a(n)-a(n-1), n > 0, where k = e(n). Moreover, floor(a(n-1)/a(n)) = e(n), in agreement with D. Newman's formula. - Dragutin Svrtan (dsvrtan(AT)math.hr) and Igor Urbiha (urbiha(AT)math.hr), Jan 10 2002
+%F A002487 Calkin and Wilf showed 0.9588 <= limsup a(n)/n^(log(phi)/log(2)) <= 1.1709 where phi is the golden mean. Does this supremum limit = 1? - _Benoit Cloitre_, Jan 18 2004.  Coons and Tyler show the limit is A246765 = 0.9588... - _Kevin Ryde_, Jan 09 2021
+%F A002487 a(n) = Sum_{k=0..floor((n-1)/2)} (binomial(n-k-1, k) mod 2). - _Paul Barry_, Sep 13 2004
+%F A002487 a(n) = Sum_{k=0..n-1} (binomial(k, n-k-1) mod 2). - _Paul Barry_, Mar 26 2005
+%F A002487 G.f. A(x) satisfies 0 = f(A(x), A(x^2), A(x^4)) where f(u, v, w) = v^3 + 2*u*v*w - u^2*w. - _Michael Somos_, May 02 2005
+%F A002487 G.f. A(x) satisfies 0 = f(A(x), A(x^2), A(x^3), A(x^6)) where f(u1, u2, u3, u6) = u1^3*u6 - 3*u1^2*u2*u6 + 3*u2^3*u6 - u2^3*u3. - _Michael Somos_, May 02 2005
+%F A002487 G.f.: x * Product_{k>=0} (1 + x^(2^k) + x^(2^(k+1))) [Carlitz].
+%F A002487 a(n) = a(n-2) + a(n-1) - 2*(a(n-2) mod a(n-1)). - _Mike Stay_, Nov 06 2006
+%F A002487 A079978(n) = (1 + e^(i*Pi*A002487(n)))/2, i=sqrt(-1). - _Paul Barry_, Jan 14 2005
+%F A002487 a(n) = Sum_{k=1..n} K(k, n-k)*a(n - k), where K(n,k) = 1 if 0 <= k AND k <= n AND n-k <= 2 and K(n,k) = 0 else. (When using such a K-coefficient, several different arguments to K or several different definitions of K may lead to the same integer sequence. For example, if we drop the condition k <= n in the above definition, then we arrive at A002083 = Narayana-Zidek-Capell numbers.) - _Thomas Wieder_, Jan 13 2008
+%F A002487 a(k+1)*a(2^n - k) - a(k)*a(2^n - (k+1)) = 1; a(2^n - k) + a(k) = a(2^(n+1) + k). Both formulas hold for 0 <= k <= 2^n - 1. G.f.: G(z) = a(1) + a(2)*z + a(3)*z^2 + ... + a(k+1)*z^k + ... Define f(z) = (1 + z + z^2), then G(z) = lim f(z)*f(z^2)*f(z^4)* ... *f(z^(2^n))*... = (1 + z + z^2)*G(z^2). - Arie Werksma (werksma(AT)tiscali.nl), Apr 11 2008
+%F A002487 a(k+1)*a(2^n - k) - a(k)*a(2^n - (k+1)) = 1 (0 <= k <= 2^n - 1). - Arie Werksma (werksma(AT)tiscali.nl), Apr 18 2008
+%F A002487 a(2^n + k) = a(2^n - k) + a(k) (0 <= k <= 2^n). - Arie Werksma (werksma(AT)tiscali.nl), Apr 18 2008
+%F A002487 Let g(z) = a(1) + a(2)*z + a(3)*z^2 + ... + a(k+1)*z^k + ..., f(z) = 1 + z + z^2. Then g(z) = lim_{n->infinity} f(z)*f(z^2)*f(z^4)*...*f(z^(2^n)), g(z) = f(z)*g(z^2). - Arie Werksma (werksma(AT)tiscali.nl), Apr 18 2008
+%F A002487 For 0 <= k <= 2^n - 1, write k = b(0) + 2*b(1) + 4*b(2) + ... + 2^(n-1)*b(n-1) where b(0), b(1), etc. are 0 or 1. Define a 2 X 2 matrix X(m) with entries x(1,1) = x(2,2) = 1, x(1,2) = 1 - b(m), x(2,1) = b(m). Let P(n)= X(0)*X(1)* ... *X(n-1). The entries of the matrix P are members of the sequence: p(1,1) = a(k+1), p(1,2) = a(2^n - (k+1)), p(2,1) = a(k), p(2,2) = a(2^n - k). - Arie Werksma (werksma(AT)tiscali.nl), Apr 20 2008
+%F A002487 Let f(x) = A030101(x); if 2^n + 1 <= x <= 2^(n + 1) and y = 2^(n + 1) - f(x - 1) then a(x) = a(y). - Arie Werksma (Werksma(AT)Tiscali.nl), Jul 11 2008
+%F A002487 a(n) = A126606(n + 1) / 2. - _Reikku Kulon_, Oct 05 2008
+%F A002487 Equals infinite convolution product of [1,1,1,0,0,0,0,0,0] aerated A000079 - 1 times, i.e., [1,1,1,0,0,0,0,0,0] * [1,0,1,0,1,0,0,0,0] * [1,0,0,0,1,0,0,0,1]. - _Mats Granvik_ and _Gary W. Adamson_, Oct 02 2009; corrected by _Mats Granvik_, Oct 10 2009
+%F A002487 a(2^(p+2)*n+2^(p+1)-1) - a(2^(p+1)*n+2^p-1) = A007306(n+1), p >= 0 and n >= 0. - _Johannes W. Meijer_, Feb 07 2013
+%F A002487 a(2*n-1) = A007306(n), n > 0. - _Yosu Yurramendi_, Jun 23 2014
+%F A002487 a(n*2^m) = a(n), m>0, n > 0. - _Yosu Yurramendi_, Jul 03 2014
+%F A002487 a(k+1)*a(2^m+k) - a(k)*a(2^m+(k+1)) = 1 for m >= 0, 0 <= k < 2^m. - _Yosu Yurramendi_, Nov 07 2014
+%F A002487 a(2^(m+1)+(k+1))*a(2^m+k) - a(2^(m+1)+k)*a(2^m+(k+1)) = 1 for m >= 0, 0 <= k < 2^m. - _Yosu Yurramendi_, Nov 07 2014
+%F A002487 a(5*2^k) = 3. a(7*2^k) = 3. a(9*2^k) = 4. a(11*2^k) = 5. a(13*2^k) = 5. a(15*2^k) = 4. In general: a((2j-1)*2^k) = A007306(j), j > 0, k >= 0 (see Adamchuk's comment). - _Yosu Yurramendi_, Mar 05 2016
+%F A002487 a(2^m+2^m'+k') = a(2^m'+k')*(m-m'+1) - a(k'), m >= 0, m' <= m-1, 0 <= k' < 2^m'. - _Yosu Yurramendi_, Jul 13 2016
+%F A002487 From _Yosu Yurramendi_, Jul 13 2016: (Start)
+%F A002487 Let n be a natural number and [b_m b_(m-1) ... b_1 b_0] its binary expansion with b_m=1.
+%F A002487 Let L = Sum_{i=0..m} b_i be the number of binary digits equal to 1 (L >= 1).
+%F A002487 Let {m_j: j=1..L} be the set of subindices such that b_m_j = 1, j=1..L, and 0 <= m_1 <= m_2 <= ... <= m_L = m.
+%F A002487 If L = 1 then c_1 = 1, otherwise let {c_j: j=1..(L-1)} be the set of coefficients such that c_(j) = m_(j+1) - m_j + 1, 1 <= j <= L-1.
+%F A002487 Let f be a function defined on {1..L+1} such that f(1) = 0, f(2) = 1, f(j) = c_(j-2)*f(j-1) - f(j-2), 3 <= j <= L+1.
+%F A002487 Then a(n) = f(L+1) (see example). (End)
+%F A002487 a(n) = A001222(A260443(n)) = A000120(A277020(n)). Also a(n) = A000120(A101624(n-1)) for n >= 1. - _Antti Karttunen_, Nov 05 2016
+%F A002487 (a(n-1) + a(n+1))/a(n) = A037227(n) for n >= 1. - _Peter Bala_, Feb 07 2017
+%F A002487 a(0) = 0; a(3n) = 2*A000360(3n-1); a(3n+1) = 2*A000360(3n) - 1; a(3n+2) = 2*A000360(3n+1) + 1. - _M. Jeremie Lafitte (Levitas)_, Apr 24 2017
+%F A002487 From _I. V. Serov_, Jun 14 2017: (Start)
+%F A002487 a(n) = A287896(n-1) - 1*A288002(n-1) for n > 1;
+%F A002487 a(n) = A007306(n-1) - 2*A288002(n-1) for n > 1. (End)
+%F A002487 From _Yosu Yurramendi_, Feb 14 2018: (Start)
+%F A002487 a(2^(m+2) + 2^(m+1) + k) - a(2^(m+1) + 2^m + k) = 2*a(k), m >= 0, 0 <= k < 2^m.
+%F A002487 a(2^(m+2) + 2^(m+1) + k) - a(2^(m+1)       + k) = a(2^m + k), m >= 0, 0 <= k < 2^m.
+%F A002487 a(2^m + k) = a(k)*(m - floor(log_2(k)) - 1) + a(2^(floor(log_2(k))+1) + k), m >= 0, 0 < k < 2^m,  a(2^m) = 1, a(0) = 0. (End)
+%F A002487 From _Yosu Yurramendi_, May 08 2018: (Start)
+%F A002487 a(2^m) = 1, m >= 0.
+%F A002487 a(2^r*(2*k+1)) = a(2^r*(2*k)) + a(2^r*(2*k+2)), r < - m - floor(log_2(k)) - 1, m > 0, 1 <= k < 2^m. (End)
+%F A002487 Trow(n) = [card({k XOR (j-k): k=0..j}) for j = 2^(n-1)-1..2^n-2] when regarded as an irregular table (n >= 1). - _Peter Luschny_, Sep 29 2024
+%F A002487 a(n) = A000120(A168081(n)). - _Karl-Heinz Hofmann_, Jun 16 2025
+%e A002487 Stern's diatomic array begins:
+%e A002487   1,1,
+%e A002487   1,2,1,
+%e A002487   1,3,2,3,1,
+%e A002487   1,4,3,5,2,5,3,4,1,
+%e A002487   1,5,4,7,3,8,5,7,2,7,5,8,3,7,4,5,1,
+%e A002487   1,6,5,9,4,11,7,10,3,11,8,13,5,12,7,9,2,9,7,12,5,13,8,11,3,10,7,11,4,9,...
+%e A002487   ...
+%e A002487 a(91) = 19, because 91_10 = 1011011_2; b_6=b_4=b_3=b_1=b_0=1, b_5=b_2=0;  L=5; m_1=0, m_2=1, m_3=3, m_4=4, m_5=6; c_1=2, c_2=3, c_3=2, c_4=3; f(1)=1, f(2)=2, f(3)=5, f(4)=8, f(5)=19. - _Yosu Yurramendi_, Jul 13 2016
+%e A002487 From _I. V. Serov_, Jun 01 2017: (Start)
+%e A002487 a(n) is the length of the Christoffel word chf(n):
+%e A002487 n  chf(n) A070939(n)   a(n)
+%e A002487 1   '-'       1          1
+%e A002487 2   '+'       2          1
+%e A002487 3   '+-'      2          2
+%e A002487 4   '-'       3          1
+%e A002487 5   '--+'     3          3
+%e A002487 6   '-+'      3          2
+%e A002487 ... (End)
+%e A002487 G.f. = x + x^2 + 2*x^3 + x^4 + 3*x^5 + 2*x^6 + 3*x^7 + x^8 + ... - _Michael Somos_, Jun 25 2019
+%p A002487 A002487 := proc(n) option remember; if n <= 1 then n elif n mod 2 = 0 then procname(n/2); else procname((n-1)/2)+procname((n+1)/2); fi; end: seq(A002487(n),n=0..91);
+%p A002487 # Alternative:
+%p A002487 A002487 := proc(m) local a,b,n; a := 1; b := 0; n := m; while n>0 do if type(n,odd) then b := a+b else a := a+b end if; n := floor(n/2); end do; b; end proc: seq(A002487(n),n=0..91); # Program adapted from E. Dijkstra, Selected Writings on Computing, Springer, 1982, p. 232. - Igor Urbiha (urbiha(AT)math.hr), Oct 28 2002. Since A007306(n) = a(2*n+1), this program can be adapted for A007306 by replacing b := 0 by b := 1.
+%p A002487 # Alternative:
+%p A002487 A002487 := proc(n::integer) local k; option remember; if n = 0 then 0 elif n=1 then 1 else add(K(k,n-1-k)*procname(n - k), k = 1 .. n) end if end proc:
+%p A002487 K := proc(n::integer, k::integer) local KC; if 0 <= k and k <= n and n-k <= 2 then KC:=1; else KC:= 0; end if; end proc: seq(A002487(n),n=0..91); # _Thomas Wieder_, Jan 13 2008
+%p A002487 # Alternative:
+%p A002487 a:= proc(n) option remember; `if`(n<2, n,
+%p A002487       (q-> a(q)+(n-2*q)*a(n-q))(iquo(n, 2)))
+%p A002487     end:
+%p A002487 seq(a(n), n=0..100);  # _Alois P. Heinz_, Feb 11 2021
+%p A002487 # Alternative:
+%p A002487 fusc := proc(n) local a, b, c; a := 1; b := 0;
+%p A002487     for c in convert(n, base, 2) do
+%p A002487         if c = 0 then a := a + b else b := a + b fi od;
+%p A002487     b end:
+%p A002487 seq(fusc(n), n = 0..91); # _Peter Luschny_, Nov 09 2022
+%p A002487 # Alternative:
+%p A002487 Stern := proc(n, u) local k, j, b;
+%p A002487     b := j -> nops({seq(Bits:-Xor(k, j-k), k = 0..j)}):
+%p A002487     ifelse(n=0, 1-u, seq(b(j), j = 2^(n-1)-1..2^n-1-u)) end:
+%p A002487 seq(print([n], Stern(n, 1)), n = 0..5); # As shown in the comments.
+%p A002487 seq(print([n], Stern(n, 0)), n = 0..5); # As shown in the examples. # _Peter Luschny_, Sep 29 2024
+%t A002487 a[0] = 0; a[1] = 1; a[n_] := If[ EvenQ[n], a[n/2], a[(n-1)/2] + a[(n+1)/2]]; Table[ a[n], {n, 0, 100}]
+%t A002487 (* Alternative: *)
+%t A002487 Onemore[l_] := Transpose[{l, l + RotateLeft[l]}] // Flatten;
+%t A002487 NestList[Onemore, {1}, 5] // Flatten  (*gives [a(1), ...]*) (* Takashi Tokita, Mar 09 2003 *)
+%t A002487 (* Alternative: *)
+%t A002487 ToBi[l_] := Table[2^(n - 1), {n, Length[l]}].Reverse[l]; Map[Length,
+%t A002487 Split[Sort[Map[ToBi, Table[IntegerDigits[n - 1, 3], {n, 500}]]]]]  (*give [a(1), ...]*) (* Takashi Tokita, Mar 10 2003 *)
+%t A002487 (* Alternative: *)
+%t A002487 A002487[m_] := Module[{a = 1, b = 0, n = m}, While[n > 0, If[OddQ[n], b = a+b, a = a+b]; n = Floor[n/2]]; b]; Table[A002487[n], {n, 0, 100}] (* _Jean-François Alcover_, Sep 06 2013, translated from 2nd Maple program *)
+%t A002487 (* Alternative: *)
+%t A002487 a[0] = 0; a[1] = 1;
+%t A002487 Flatten[Table[{a[2*n] = a[n], a[2*n + 1] = a[n] + a[n + 1]}, {n, 0, 50}]] (* _Horst H. Manninger_, Jun 09 2021 *)
+%t A002487 (* Alternative: *)
+%t A002487 nmax = 100; CoefficientList[Series[x*Product[(1 + x^(2^k) + x^(2^(k+1))), {k, 0, Floor[Log[2, nmax]] + 1}], {x, 0, nmax}], x] (* _Vaclav Kotesovec_, Oct 08 2022 *)
+%o A002487 (PARI) {a(n) = n=abs(n); if( n<2, n>0, a(n\2) + if( n%2, a(n\2 + 1)))};
+%o A002487 (PARI) fusc(n)=local(a=1,b=0);while(n>0,if(bitand(n,1),b+=a,a+=b);n>>=1);b \\ _Charles R Greathouse IV_, Oct 05 2008
+%o A002487 (PARI) A002487(n,a=1,b=0)=n&&for(i=0,logint(n,2),if(bittest(n,i),b+=a,a+=b));b \\ _M. F. Hasler_, Feb 12 2017, updated Feb 14 2019, n=0 fixed Apr 27 2026
+%o A002487 (PARI) a(n)= my(t=[0, 1]); foreach(binary(n), b, t[2-b]+=t[2-!b]); t[1]; \\ _Ruud H.G. van Tol_, Apr 27 2026
+%o A002487 (Haskell)
+%o A002487 a002487 n = a002487_list !! n
+%o A002487 a002487_list = 0 : 1 : stern [1] where
+%o A002487    stern fuscs = fuscs' ++ stern fuscs' where
+%o A002487      fuscs' = interleave fuscs $ zipWith (+) fuscs $ (tail fuscs) ++ [1]
+%o A002487    interleave []     ys = ys
+%o A002487    interleave (x:xs) ys = x : interleave ys xs
+%o A002487 -- _Reinhard Zumkeller_, Aug 23 2011
+%o A002487 (R)
+%o A002487 N <- 50 # arbitrary
+%o A002487 a <- 1
+%o A002487 for (n in 1:N)
+%o A002487 {
+%o A002487   a[2*n    ] = a[n]
+%o A002487   a[2*n + 1] = a[n] + a[n+1]
+%o A002487   a
+%o A002487 }
+%o A002487 a
+%o A002487 # _Yosu Yurramendi_, Oct 04 2014
+%o A002487 (Scheme)
+%o A002487 ;; An implementation of memoization-macro definec can be found for example in: https://oeis.org/wiki/Memoization
+%o A002487 (definec (A002487 n) (cond ((<= n 1) n) ((even? n) (A002487 (/ n 2))) (else (+ (A002487 (/ (- n 1) 2)) (A002487 (/ (+ n 1) 2))))))
+%o A002487 ;; _Antti Karttunen_, Nov 05 2016
+%o A002487 (Python)
+%o A002487 from functools import lru_cache
+%o A002487 @lru_cache(maxsize=None)
+%o A002487 def a(n): return n if n<2 else a(n//2) if n%2==0 else a((n - 1)//2) + a((n + 1)//2) # _Indranil Ghosh_, Jun 08 2017; corrected by _Reza K Ghazi_, Dec 27 2021
+%o A002487 (Python)
+%o A002487 def a(n):
+%o A002487     a, b = 1, 0
+%o A002487     while n > 0:
+%o A002487         if n & 1:
+%o A002487             b += a
+%o A002487         else:
+%o A002487             a += b
+%o A002487         n >>= 1
+%o A002487     return b
+%o A002487 # _Reza K Ghazi_, Dec 29 2021
+%o A002487 (SageMath)
+%o A002487 def A002487(n):
+%o A002487     M = [1, 0]
+%o A002487     for b in n.bits():
+%o A002487         M[b] = M[0] + M[1]
+%o A002487     return M[1]
+%o A002487 print([A002487(n) for n in (0..91)])
+%o A002487 # For a dual see A174980. _Peter Luschny_, Nov 28 2017
+%o A002487 (Julia)
+%o A002487 using Nemo
+%o A002487 function A002487List(len)
+%o A002487     a, A = QQ(0), [0,1]
+%o A002487     for n in 1:len
+%o A002487         a = next_calkin_wilf(a)
+%o A002487         push!(A, denominator(a))
+%o A002487     end
+%o A002487 A end
+%o A002487 A002487List(91) |> println # _Peter Luschny_, Mar 13 2018
+%o A002487 (R) # Given n, compute a(n) by taking into account the binary representation of n
+%o A002487 a <- function(n){
+%o A002487   b <- as.numeric(intToBits(n))
+%o A002487   l <- sum(b)
+%o A002487   m <- which(b == 1)-1
+%o A002487   d <- 1
+%o A002487   if(l > 1) for(j in 1:(l-1)) d[j] <- m[j+1]-m[j]+1
+%o A002487   f <- c(0,1)
+%o A002487   if(l > 1) for(j in 3:(l+1)) f[j] <- d[j-2]*f[j-1]-f[j-2]
+%o A002487   return(f[l+1])
+%o A002487 } # _Yosu Yurramendi_, Dec 13 2016
+%o A002487 (R) # computes the sequence as a vector A, rather than function a() as above.
+%o A002487 A <- c(1,1)
+%o A002487 maxlevel <- 5 # by choice
+%o A002487 for(m in 1:maxlevel) {
+%o A002487   A[2^(m+1)] <- 1
+%o A002487   for(k in 1:(2^m-1)) {
+%o A002487     r <- m - floor(log2(k)) - 1
+%o A002487     A[2^r*(2*k+1)] <- A[2^r*(2*k)] + A[2^r*(2*k+2)]
+%o A002487 }}
+%o A002487 A # _Yosu Yurramendi_, May 08 2018
+%o A002487 (Magma) [&+[(Binomial(k, n-k-1) mod 2): k in [0..n]]: n in [0..100]]; // _Vincenzo Librandi_, Jun 18 2019
+%o A002487 (Python)
+%o A002487 def A002487(n): return sum(int(not (n-k-1) & ~k) for k in range(n)) # _Chai Wah Wu_, Jun 19 2022
+%o A002487 (Python) # (fast way for big vectors)
+%o A002487 from math import log, ceil
+%o A002487 import numpy
+%o A002487 how_many_terms = 2**20  # (Powers of 2 recommended but other integers are also possible.)
+%o A002487 A002487, A002487[1]  = numpy.zeros(2**(ce:=ceil(log(how_many_terms,2))), dtype=object), 1
+%o A002487 for exponent in range(1,ce):
+%o A002487     L, L2 = 2**exponent, 2**(exponent+1)
+%o A002487     A002487[L2 - 1] = exponent + 1
+%o A002487     A002487[L:L2][::2] = A002487[L >> 1: L]
+%o A002487     A002487[L + 1:L2 - 2][::2] = A002487[L:L2 - 3][::2]  +  A002487[L + 2:L2 - 1][::2]
+%o A002487 print(list(A002487[0:100])) # _Karl-Heinz Hofmann_, Jul 22 2025
+%Y A002487 Cf. A000120, A000123, A000360, A001045, A002083, A011655, A020950, A026741, A037227, A046815, A070871, A070872, A071883, A073459, A084091, A101624, A126606, A168081, A174980, A174981, A178239, A178568, A212288, A213369, A260443, A277020, A277325, A287729, A287730, A293160.
+%Y A002487 Record values are in A212289.
+%Y A002487 If the 1's are replaced by pairs of 1's we obtain A049456.
+%Y A002487 Inverse: A020946.
+%Y A002487 Cf. a(A001045(n)) = A000045(n). a(A062092(n)) = A000032(n+1).
+%Y A002487 Cf. A064881-A064886 (Stern-Brocot subtrees).
+%Y A002487 A column of A072170.
+%Y A002487 Cf. A049455 for the 0,1 version of Stern's diatomic array.
+%Y A002487 Cf. A000119, A262097 for analogous sequences in other bases and A277189, A277315, A277328 for related sequences with similar graphs.
+%Y A002487 Cf. A086592 and references therein to other sequences related to Kepler's tree of fractions.
+%K A002487 nonn,easy,nice,core,look
+%O A002487 0,4
+%A A002487 _N. J. A. Sloane_
+%E A002487 Additional references and comments from _Len Smiley_, _Joshua Zucker_, _Rick L. Shepherd_ and Herbert S. Wilf
+%E A002487 Typo in definition corrected by _Reinhard Zumkeller_, Aug 23 2011
+%E A002487 Incorrect formula deleted and text edited by _Johannes W. Meijer_, Feb 07 2013
+
+%I A005836 M2353 #322 Mar 14 2026 14:41:37
+%S A005836 0,1,3,4,9,10,12,13,27,28,30,31,36,37,39,40,81,82,84,85,90,91,93,94,
+%T A005836 108,109,111,112,117,118,120,121,243,244,246,247,252,253,255,256,270,
+%U A005836 271,273,274,279,280,282,283,324,325,327,328,333,334,336,337,351,352
+%N A005836 Numbers whose base-3 representation contains no 2.
+%C A005836 3 does not divide binomial(2s, s) if and only if s is a member of this sequence, where binomial(2s, s) = A000984(s) are the central binomial coefficients.
+%C A005836 This is the lexicographically earliest increasing sequence of nonnegative numbers that contains no arithmetic progression of length 3. - Robert Craigen (craigenr(AT)cc.umanitoba.ca), Jan 29 2001
+%C A005836 In the notation of A185256 this is the Stanley Sequence S(0,1). - _N. J. A. Sloane_, Mar 19 2010
+%C A005836 Complement of A074940. - _Reinhard Zumkeller_, Mar 23 2003
+%C A005836 Sums of distinct powers of 3. - _Ralf Stephan_, Apr 27 2003
+%C A005836 Numbers n such that central trinomial coefficient A002426(n) == 1 (mod 3). - _Emeric Deutsch_ and _Bruce E. Sagan_, Dec 04 2003
+%C A005836 A039966(a(n)+1) = 1; A104406(n) = number of terms <= n.
+%C A005836 Subsequence of A125292; A125291(a(n)) = 1 for n>1. - _Reinhard Zumkeller_, Nov 26 2006
+%C A005836 Also final value of n - 1 written in base 2 and then read in base 3 and with finally the result translated in base 10. - Philippe LALLOUET (philip.lallouet(AT)wanadoo.fr), Jun 23 2007
+%C A005836 a(n) modulo 2 is the Thue-Morse sequence A010060. - _Dennis Tseng_, Jul 16 2009
+%C A005836 Also numbers such that the balanced ternary representation is the same as the base 3 representation. - _Alonso del Arte_, Feb 25 2011
+%C A005836 Fixed point of the morphism: 0 -> 01; 1 -> 34; 2 -> 67; ...; n -> (3n)(3n+1), starting from a(1) = 0. - _Philippe Deléham_, Oct 22 2011
+%C A005836 It appears that this sequence lists the values of n which satisfy the condition sum(binomial(n, k)^(2*j), k = 0..n) mod 3 <> 0, for any j, with offset 0. See Maple code. - _Gary Detlefs_, Nov 28 2011
+%C A005836 Also, it follows from the above comment by Philippe Lallouet that the sequence must be generated by the rules: a(1) = 0, and if m is in the sequence then so are 3*m and 3*m + 1. - _L. Edson Jeffery_, Nov 20 2015
+%C A005836 Add 1 to each term and we get A003278. - _N. J. A. Sloane_, Dec 01 2019
+%D A005836 Richard K. Guy, Unsolved Problems in Number Theory, 3rd Edition, Springer, 2004, Section E10, pp. 317-323.
+%D A005836 N. J. A. Sloane and Simon Plouffe, The Encyclopedia of Integer Sequences, Academic Press, 1995 (includes this sequence).
+%H A005836 David W. Wilson, <a href="/A005836/b005836.txt">Table of n, a(n) for n = 1..10000</a> (first 1024 terms from T. D. Noe)
+%H A005836 J.-P. Allouche, G.-N. Han, and Jeffrey Shallit, <a href="https://arxiv.org/abs/2006.08909">On some conjectures of P. Barry</a>, arXiv:2006.08909 [math.NT], 2020.
+%H A005836 J.-P. Allouche and Jeffrey Shallit, <a href="http://www.cs.uwaterloo.ca/~shallit/Papers/as0.ps">The ring of k-regular sequences</a>, Theoretical Computer Sci., 98 (1992), 163-197.
+%H A005836 J.-P. Allouche and Jeffrey Shallit, <a href="https://doi.org/10.1007/3-540-52282-4_28">The ring of k-regular sequences</a>, Theoretical Computer Sci., 98 (1992), 163-197.
+%H A005836 J.-P. Allouche, Jeffrey Shallit and G. Skordev, <a href="https://doi.org/10.1016/j.disc.2004.12.004">Self-generating sets, integers with missing blocks and substitutions</a>, Discrete Math. 292 (2005) 1-15.
+%H A005836 Rodrigo Angelo, <a href="https://arxiv.org/abs/2206.00750">A hidden signal in Hofstadter's H sequence</a>, arXiv:2206.00750 [math.NT], 2022. See p. 14, Proposition 5.2.
+%H A005836 David Applegate, Omar E. Pol and N. J. A. Sloane, <a href="/A000695/a000695_2.pdf">The Toothpick Sequence and Other Sequences from Cellular Automata</a>, Congressus Numerantium, Vol. 206 (2010), 157-191
+%H A005836 Megumi Asada, Bruce Fang, Eva Fourakis, Sarah Manski, Nathan McNew, Steven J. Miller, Gwyneth Moreland, Ajmain Yamin, and Sindy Xin Zhang, <a href="https://web.williams.edu/Mathematics/sjmiller/public_html/math/papers/ramseynoncommutative10.pdf">Avoiding 3-Term Geometric Progressions in Hurwitz Quaternions</a>, Williams College (2023).
+%H A005836 Robert Baillie and Thomas Schmelzer, <a href="https://library.wolfram.com/infocenter/MathSource/7166/">Summing Kempner's Curious (Slowly-Convergent) Series</a>, Mathematica Notebook kempnerSums.nb, Wolfram Library Archive, 2008.
+%H A005836 Noam Benson-Tilsen, Samuel Brock, Brandon Faunce, Monish Kumar, Noah Dokko Stein, and Joshua Zelinsky, <a href="https://arxiv.org/abs/2107.11706">Total Difference Labeling of Regular Infinite Graphs</a>, arXiv:2107.11706 [math.CO], 2021.
+%H A005836 Raghavendra Bhat, Cristian Cobeli, and Alexandru Zaharescu, <a href="https://arxiv.org/abs/2309.03922">Filtered rays over iterated absolute differences on layers of integers</a>, arXiv:2309.03922 [math.NT], 2023. See page 16.
+%H A005836 Matvey Borodin, Hannah Han, Kaylee Ji, Tanya Khovanova, Alexander Peng, David Sun, Isabel Tu, Jason Yang, William Yang, Kevin Zhang, and Kevin Zhao, <a href="https://arxiv.org/abs/1901.09818">Variants of Base 3 over 2</a>, arXiv:1901.09818 [math.NT], 2019.
+%H A005836 Ben Chen, Richard Chen, Joshua Guo, Tanya Khovanova, Shane Lee, Neil Malur, Nastia Polina, Poonam Sahoo, Anuj Sakarda, Nathan Sheffield, and Armaan Tipirneni, <a href="https://arxiv.org/abs/1808.04304">On Base 3/2 and its Sequences</a>, arXiv:1808.04304 [math.NT], 2018.
+%H A005836 Karl Dilcher and Larry Ericksen, <a href="https://doi.org/10.37236/4822">Hyperbinary expansions and Stern polynomials</a>, Elec. J. Combin, Vol. 22 (2015), Article P2.24.
+%H A005836 P. Erdős, V. Lev, G. Rauzy, C. Sandor, and A. Sarkozy, <a href="https://doi.org/10.1016/S0012-365X(98)00385-9">Greedy algorithm, arithmetic progressions, subset sums and divisibility</a>, Discrete Math., Vol. 200, No. 1-3 (1999), pp. 119-135 (see Table 1). <a href="http://www.math.haifa.ac.il/~seva/Papers/greeda.dvi">alternate link</a>.
+%H A005836 Joseph L. Gerver and L. Thomas Ramsey, <a href="https://doi.org/10.1090/S0025-5718-1979-0537982-0">Sets of integers with no long arithmetic progressions generated by the greedy algorithm</a>, Math. Comp., Vol. 33, No. 148 (1979), pp. 1353-1359.
+%H A005836 Hsien-Kuei Hwang, Svante Janson, and Tsung-Hsi Tsai, <a href="https://arxiv.org/abs/2210.10968">Identities and periodic oscillations of divide-and-conquer recurrences splitting at half</a>, arXiv:2210.10968 [cs.DS], 2022, p. 45.
+%H A005836 Ryota Inagaki, Tanya Khovanova, and Austin Luo, <a href="https://arxiv.org/abs/2503.09577">Permutation-based Strategies for Labeled Chip-Firing on k-ary Trees</a>, arXiv:2503.09577 [math.CO], 2025. See p. 18.
+%H A005836 Clark Kimberling, <a href="https://doi.org/10.1016/S0012-365X(03)00085-2">Affinely recursive sets and orderings of languages</a>, Discrete Math., Vol. 274, Vol. 1-3 (2004), pp. 147-160.
+%H A005836 Kathrin Kostorz, Robert W. Hölzel and Katharina Krischer, <a href="https://doi.org/10.1088/1367-2630/15/8/083010">Distributed coupling complexity in a weakly coupled oscillatory network with associative properties</a>, New J. Phys., Vol. 15 (2013), #083010; doi:10.1088/1367-2630/15/8/083010.
+%H A005836 John W. Layman, <a href="https://cs.uwaterloo.ca/journals/JIS/LAYMAN/layman.html">Some Properties of a Certain Nonaveraging Sequence</a>, J. Integer Sequences, Vol. 2 (1999), Article 99.1.3.
+%H A005836 Manfred Madritsch and Stephan Wagner, <a href="https://doi.org/10.1007/s00605-009-0126-y">A central limit theorem for integer partitions</a>, Monatsh. Math., Vol. 161, No. 1 (2010), pp. 85-114.
+%H A005836 Richard A. Moy and David Rolnick, <a href="https://doi.org/10.1016/j.disc.2015.10.017">Novel structures in Stanley sequences</a>, Discrete Math., Vol. 339, No. 2 (2016), pp. 689-698; <a href="https://arxiv.org/abs/1502.06013">arXiv preprint</a>, arXiv:1502.06013 [math.CO], 2015.
+%H A005836 A. M. Odlyzko and R. P. Stanley, Some curious sequences constructed with the greedy algorithm, 1978, remark 1 (<a href="http://www.dtc.umn.edu/~odlyzko/unpublished/greedy.sequence.pdf">PDF</a>, <a href="http://www.dtc.umn.edu/~odlyzko/unpublished/greedy.sequence.ps">PS</a>, <a href="http://www.dtc.umn.edu/~odlyzko/unpublished/greedy.sequence.tex">TeX</a>).
+%H A005836 Paul Pollack, <a href="http://www.math.dartmouth.edu/~ppollack/notes.pdf">Analytic and Combinatorial Number Theory</a> Course Notes, p. 228. [?Broken link]
+%H A005836 Paul Pollack, <a href="http://alpha01.dm.unito.it/personalpages/cerruti/ac/notes.pdf">Analytic and Combinatorial Number Theory</a> Course Notes, p. 228.
+%H A005836 David Rolnick and Praveen S. Venkataramana, <a href="https://doi.org/10.1016/j.disc.2015.04.006">On the growth of Stanley sequences</a>, Discrete Math., Vol. 338, No. 11 (2015), pp. 1928-1937, see p. 1930; <a href="https://arxiv.org/abs/1408.4710">arXiv preprint</a>, arXiv:1408.4710 [math.CO], 2014.
+%H A005836 N. J. A. Sloane, <a href="/wiki/Catalog_of_Toothpick_and_CA_Sequences_in_OEIS">Catalog of Toothpick and Cellular Automata Sequences in the OEIS</a>.
+%H A005836 Ralf Stephan, <a href="https://arxiv.org/abs/math/0307027">Divide-and-conquer generating functions. I. Elementary sequences</a>, arXiv:math/0307027 [math.CO], 2003.
+%H A005836 Ralf Stephan, <a href="/somedcgf.html">Some divide-and-conquer sequences with (relatively) simple ordinary generating functions</a>, 2004.
+%H A005836 Ralf Stephan, <a href="/A079944/a079944.ps">Table of generating functions</a>.
+%H A005836 Zoran Sunic, <a href="https://arxiv.org/abs/math/0612080">Tree morphisms, transducers and integer sequences</a>, arXiv:math/0612080 [math.CO], 2006.
+%H A005836 B. Vasic, K. Pedagani and M. Ivkovic, <a href="https://doi.org/10.1109/TCOMM.2004.833037">High-rate girth-eight low-density parity-check codes on rectangular integer lattices</a>, IEEE Transactions on Communications, Vol. 52, Issue 8 (2004), pp. 1248-1252.
+%H A005836 Eric Weisstein's World of Mathematics, <a href="https://mathworld.wolfram.com/CentralBinomialCoefficient.html">Central Binomial Coefficient</a>.
+%H A005836 <a href="/index/Ar#3-automatic">Index entries for 3-automatic sequences</a>.
+%F A005836 a(n) = A005823(n)/2 = A003278(n)-1 = A033159(n)-2 = A033162(n)-3.
+%F A005836 Numbers n such that the coefficient of x^n is > 0 in prod (k >= 0, 1 + x^(3^k)). - _Benoit Cloitre_, Jul 29 2003
+%F A005836 a(n+1) = Sum_{k=0..m} b(k)* 3^k and n = Sum( b(k)* 2^k ).
+%F A005836 a(2n+1) = 3a(n+1), a(2n+2) = a(2n+1) + 1, a(0) = 0.
+%F A005836 a(n+1) = 3*a(floor(n/2)) + n - 2*floor(n/2). - _Ralf Stephan_, Apr 27 2003
+%F A005836 G.f.: (x/(1-x)) * Sum_{k>=0} 3^k*x^2^k/(1+x^2^k). - _Ralf Stephan_, Apr 27 2003
+%F A005836 a(n) = Sum_{k = 1..n-1} (1 + 3^A007814(k)) / 2. - _Philippe Deléham_, Jul 09 2005
+%F A005836 From _Reinhard Zumkeller_, Mar 02 2008: (Start)
+%F A005836 A081603(a(n)) = 0.
+%F A005836 If the offset were changed to zero, then: a(0) = 0, a(n+1) = f(a(n)+1, a(n)+1) where f(x, y) = if x < 3 and x <> 2 then y else if x mod 3 = 2 then f(y+1, y+1) else f(floor(x/3), y). (End)
+%F A005836 With offset a(0) = 0: a(n) = Sum_{k>=0} A030308(n,k)*3^k. - _Philippe Deléham_, Oct 15 2011
+%F A005836 a(2^n) = A003462(n). - _Philippe Deléham_, Jun 06 2015
+%F A005836 We have liminf_{n->infinity} a(n)/n^(log(3)/log(2)) = 1/2 and limsup_{n->infinity} a(n)/n^(log(3)/log(2)) = 1. - _Gheorghe Coserea_, Sep 13 2015
+%F A005836 a(2^k+m) = a(m) + 3^k with 1 <= m <= 2^k and 1 <= k, a(1)=0, a(2)=1. - _Paul Weisenhorn_, Mar 22 2020
+%F A005836 Sum_{n>=2} 1/a(n) = 2.682853110966175430853916904584699374821677091415714815171756609672281184705... (calculated using Baillie and Schmelzer's kempnerSums.nb, see Links). - _Amiram Eldar_, Feb 12 2022
+%F A005836 A065361(a(n)) = n-1. - _Rémy Sigrist_, Feb 06 2023
+%F A005836 a(n) ≍ n^k, where k = log 3/log 2 = 1.5849625007. (I believe the constant varies from 1/2 to 1.) - _Charles R Greathouse IV_, Mar 29 2024
+%e A005836 12 is a term because 12 = 110_3.
+%e A005836 This sequence regarded as a triangle with rows of lengths 1, 1, 2, 4, 8, 16, ...:
+%e A005836    0
+%e A005836    1
+%e A005836    3,  4
+%e A005836    9, 10, 12, 13
+%e A005836   27, 28, 30, 31, 36, 37, 39, 40
+%e A005836   81, 82, 84, 85, 90, 91, 93, 94, 108, 109, 111, 112, 117, 118, 120, 121
+%e A005836 ... - _Philippe Deléham_, Jun 06 2015
+%p A005836 t := (j, n) -> add(binomial(n,k)^j, k=0..n):
+%p A005836 for i from 1 to 400 do
+%p A005836     if(t(4,i) mod 3 <>0) then print(i) fi
+%p A005836 od; # _Gary Detlefs_, Nov 28 2011
+%p A005836 # Alternative:
+%p A005836 a:= proc(n) option remember: local k, m:
+%p A005836 if n=1 then 0 elif n=2 then 1 elif n>2 then k:=floor(log[2](n-1)): m:=n-2^k: procname(m)+3^k: fi: end proc:
+%p A005836 seq(a(n), n=1.. 20); # _Paul Weisenhorn_, Mar 22 2020
+%p A005836 # Alternative:
+%p A005836 a:= n-> `if`(n=1, 0, irem(n-1, 2, 'q')+3*a(q+1)):
+%p A005836 seq(a(n), n=1..100);  # _Alois P. Heinz_, Jan 26 2022
+%t A005836 Table[FromDigits[IntegerDigits[k, 2], 3], {k, 60}]
+%t A005836 Select[Range[0, 400], DigitCount[#, 3, 2] == 0 &] (* _Harvey P. Dale_, Jan 04 2012 *)
+%t A005836 Join[{0}, Accumulate[Table[(3^IntegerExponent[n, 2] + 1)/2, {n, 57}]]] (* _IWABUCHI Yu(u)ki_, Aug 01 2012 *)
+%t A005836 FromDigits[#,3]&/@Tuples[{0,1},7] (* _Harvey P. Dale_, May 10 2019 *)
+%o A005836 (PARI) A=vector(100);for(n=2,#A,A[n]=if(n%2,3*A[n\2+1],A[n-1]+1));A \\ _Charles R Greathouse IV_, Jul 24 2012
+%o A005836 (PARI) is(n)=while(n,if(n%3>1,return(0));n\=3);1 \\ _Charles R Greathouse IV_, Mar 07 2013
+%o A005836 (PARI) a(n) = fromdigits(binary(n-1),3);  \\ _Gheorghe Coserea_, Jun 15 2018
+%o A005836 (Haskell)
+%o A005836 a005836 n = a005836_list !! (n-1)
+%o A005836 a005836_list = filter ((== 1) . a039966) [0..]
+%o A005836 -- _Reinhard Zumkeller_, Jun 09 2012, Sep 29 2011
+%o A005836 (Python)
+%o A005836 def A005836(n):
+%o A005836     return int(format(n-1,'b'),3) # _Chai Wah Wu_, Jan 04 2015
+%o A005836 (Julia)
+%o A005836 function a(n)
+%o A005836     m, r, b = n, 0, 1
+%o A005836     while m > 0
+%o A005836         m, q = divrem(m, 2)
+%o A005836         r += b * q
+%o A005836         b *= 3
+%o A005836     end
+%o A005836 r end; [a(n) for n in 0:57] |> println # _Peter Luschny_, Jan 03 2021
+%Y A005836 Cf. A039966 (characteristic function).
+%Y A005836 Cf. A002426, A004793, A005823, A007088, A007089, A032924, A033042-A033052, A054591, A055246, A062548, A065361, A074940, A081601, A081603, A081611, A083096, A089118, A121153, A170943, A185256.
+%Y A005836 For generating functions Product_{k>=0} (1+a*x^(b^k)) for the following values of (a,b) see: (1,2) A000012 and A000027, (1,3) A039966 and A005836, (1,4) A151666 and A000695, (1,5) A151667 and A033042, (2,2) A001316, (2,3) A151668, (2,4) A151669, (2,5) A151670, (3,2) A048883, (3,3) A117940, (3,4) A151665, (3,5) A151671, (4,2) A102376, (4,3) A151672, (4,4) A151673, (4,5) A151674.
+%Y A005836 Row 3 of array A104257.
+%Y A005836 Summary of increasing sequences avoiding arithmetic progressions of specified lengths (the second of each pair is obtained by adding 1 to the first):
+%Y A005836    3-term AP: A005836 (>=0), A003278 (>0);
+%Y A005836    4-term AP: A005839 (>=0), A005837 (>0);
+%Y A005836    5-term AP: A020654 (>=0), A020655 (>0);
+%Y A005836    6-term AP: A020656 (>=0), A005838 (>0);
+%Y A005836    7-term AP: A020657 (>=0), A020658 (>0);
+%Y A005836    8-term AP: A020659 (>=0), A020660 (>0);
+%Y A005836    9-term AP: A020661 (>=0), A020662 (>0);
+%Y A005836   10-term AP: A020663 (>=0), A020664 (>0).
+%Y A005836 See also A000452.
+%K A005836 nonn,nice,easy,base,tabf
+%O A005836 1,3
+%A A005836 _N. J. A. Sloane_, _Jeffrey Shallit_
+%E A005836 Offset corrected by _N. J. A. Sloane_, Mar 02 2008
+%E A005836 Edited by the Associate Editors of the OEIS, Apr 07 2009
+
+%I A125184 #49 May 30 2026 16:40:31
+%S A125184 0,1,0,1,1,1,0,0,1,1,2,0,1,1,1,1,1,0,0,0,1,1,2,1,0,1,2,1,3,1,0,0,1,1,
+%T A125184 1,2,2,0,1,1,1,1,1,1,1,0,0,0,0,1,1,2,1,1,0,1,2,1,1,3,3,0,0,1,2,1,4,3,
+%U A125184 0,1,3,1,1,3,2,1,0,0,0,1,1,1,2,3,1,0,1,2,2,1,3,3,1,0,0,1,1,1,1,2,2,2,0,1,1,1
+%N A125184 Triangle read by rows: T(n,k) is the coefficient of t^k in the Stern polynomial B(n,t) (n>=0, k>=0).
+%C A125184 The Stern polynomials B(n,t) are defined by B(0,t)=0, B(1,t)=1, B(2n,t)=tB(n,t), B(2n+1,t)=B(n+1,t)+B(n,t) for n>=1 (see S. Klavzar et al.).
+%C A125184 Also number of hyperbinary representations of n-1 containing exactly k digits 1. A hyperbinary representation of a nonnegative integer n is a representation of n as a sum of powers of 2, each power being used at most twice. Example: row 9 of the triangle is 1,2,1; indeed the hyperbinary representations of 8 are 200 (2*2^2+0*2^1+0*2^0), 120 (1*2^2+2*2^1+0*2^0), 1000 (1*2^3+0*2^2+0*2^1+0*2^0) and 112 (1*2^2+1*2^1+2*1^0), having 0,1,1 and 2 digits 1, respectively (see S. Klavzar et al. Corollary 3).
+%C A125184 Number of terms in row n is A277329(n) (= 1+A057526(n) for n >= 1).
+%C A125184 Row sums yield A002487 (Stern's diatomic series).
+%C A125184 T(2n+1,1) = A005811(n) = number of 1's in the standard Gray code of n (S. Klavzar et al. Theorem 8). T(4n+1,1)=1, T(4n+3,1)=0 (S. Klavzar et al., Lemma 5).
+%C A125184 From _Antti Karttunen_, Oct 27 2016: (Start)
+%C A125184 Number of nonzero terms on row n is A277314(n).
+%C A125184 Number of odd terms on row n is A277700(n).
+%C A125184 Maximal term on row n is A277315(n).
+%C A125184 Product of nonzero terms on row n is A277325(n).
+%C A125184 Number of times where row n and n+1 both contain nonzero term in the same position is A277327(n).
+%C A125184 (End)
+%H A125184 T. D. Noe, <a href="/A125184/b125184.txt">Rows n = 0..1000, Flattened</a>
+%H A125184 B. Adamczewski, <a href="https://doi.org/10.4064/aa142-1-6">Non-converging continued fractions related to the Stern diatomic sequence</a>, Acta Arithm. 142 (1) (2010) 67-78.
+%H A125184 N. Calkin and H. S. Wilf, <a href="http://www.math.upenn.edu/~wilf/website/recounting.pdf">Recounting the rationals</a>, Amer. Math. Monthly, 107 (No. 4, 2000), pp. 360-363.
+%H A125184 K. Dilcher, L. Ericksen, <a href="http://dml.cz/handle/10338.dmlcz/143908">Reducibility and irreducibility of Stern (0, 1)-polynomials</a>, Communications in Mathematics, Volume 22/2014 , pp. 77-102.
+%H A125184 K. Dilcher and K. B. Stolarsky, <a href="https://doi.org/10.1016/j.aam.2006.01.003">A polynomial analogue to the Stern sequence</a>, Int. J. Number Theory 3 (1) (2007) 85-103.
+%H A125184 S. Klavzar, U. Milutinovic and C. Petr, <a href="https://doi.org/10.1016/j.aam.2006.01.003">Stern polynomials</a>, Adv. Appl. Math. 39 (2007) 86-95.
+%H A125184 D. H. Lehmer, <a href="https://www.jstor.org/stable/2299356">On Stern's Diatomic Series</a>, Amer. Math. Monthly 36(1) 1929, pp. 59-67.
+%H A125184 D. H. Lehmer, <a href="/A002487/a002487_1.pdf">On Stern's Diatomic Series</a>, Amer. Math. Monthly 36(1) 1929, pp. 59-67. [Annotated and corrected scanned copy]
+%H A125184 Maciej Ulas, <a href="https://arxiv.org/abs/1909.10844">Strong arithmetic property of certain Stern polynomials</a>, arXiv:1909.10844 [math.NT], 2019.
+%H A125184 Maciej Ulas and Oliwia Ulas, <a href="https://arxiv.org/abs/1102.5109">On certain arithmetic properties of Stern polynomials</a>, arXiv:1102.5109 [math.CO], 2011.
+%e A125184 Triangle starts:
+%e A125184 0;
+%e A125184 1;
+%e A125184 0, 1;
+%e A125184 1, 1;
+%e A125184 0, 0, 1;
+%e A125184 1, 2;
+%e A125184 0, 1, 1;
+%e A125184 1, 1, 1;
+%e A125184 0, 0, 0, 1;
+%e A125184 1, 2, 1;
+%e A125184 0, 1, 2;
+%e A125184 1, 3, 1;
+%p A125184 B:=proc(n) if n=0 then 0 elif n=1 then 1 elif n mod 2 = 0 then t*B(n/2) else B((n+1)/2)+B((n-1)/2) fi end: for n from 0 to 36 do B(n):=sort(expand(B(n))) od: dg:=n->degree(B(n)): 0; for n from 0 to 40 do seq(coeff(B(n),t,k),k=0..dg(n)) od; # yields sequence in triangular form
+%t A125184 B[0, _] = 0; B[1, _] = 1; B[n_, t_] := B[n, t] = If[EvenQ[n], t*B[n/2, t], B[1 + (n-1)/2, t] + B[(n-1)/2, t]]; row[n_] := CoefficientList[B[n, t], t]; row[0] = {0}; Array[row, 40, 0] // Flatten (* _Jean-François Alcover_, Jul 30 2015 *)
+%Y A125184 Cf. A057526, A002487, A005811.
+%Y A125184 Cf. A186890 (n such that the Stern polynomial B(n,x) is self-reciprocal).
+%Y A125184 Cf. A186891 (n such that the Stern polynomial B(n,x) is irreducible).
+%Y A125184 Cf. A260443 (Stern polynomials encoded in the prime factorization of n).
+%Y A125184 Cf. also A277314, A277315, A277325, A277327, A277329, A277700.
+%K A125184 nonn,tabf
+%O A125184 0,11
+%A A125184 _Emeric Deutsch_, Dec 04 2006
+%E A125184 0 prepended by _T. D. Noe_, Feb 28 2011
+%E A125184 Original comment slightly edited by _Antti Karttunen_, Oct 27 2016
+
+%I A033042 #92 Nov 24 2025 12:58:04
+%S A033042 0,1,5,6,25,26,30,31,125,126,130,131,150,151,155,156,625,626,630,631,
+%T A033042 650,651,655,656,750,751,755,756,775,776,780,781,3125,3126,3130,3131,
+%U A033042 3150,3151,3155,3156,3250,3251,3255,3256,3275,3276,3280,3281,3750,3751
+%N A033042 Sums of distinct powers of 5.
+%C A033042 Numbers without any base-5 digits larger than 1.
+%C A033042 a(n) modulo 2 is the Prouhet-Thue-Morse sequence A010060. - _Philippe Deléham_, Oct 17 2011
+%C A033042 Values of k where A008977(k) does not end with 0. - _Henry Bottomley_, Nov 09 2022
+%H A033042 T. D. Noe, <a href="/A033042/b033042.txt">Table of n, a(n) for n = 0..1023</a>
+%H A033042 David Applegate, Omar E. Pol and N. J. A. Sloane, <a href="/A000695/a000695_2.pdf">The Toothpick Sequence and Other Sequences from Cellular Automata</a>, Congressus Numerantium, Vol. 206 (2010), 157-191
+%H A033042 Karl Dilcher and Larry Ericksen, <a href="https://doi.org/10.37236/4822">Hyperbinary expansions and Stern polynomials</a>, Elec. J. Combin, Vol. 22 (2015), Article P2.24.
+%H A033042 Hsien-Kuei Hwang, Svante Janson, and Tsung-Hsi Tsai, <a href="https://arxiv.org/abs/2210.10968">Identities and periodic oscillations of divide-and-conquer recurrences splitting at half</a>, arXiv:2210.10968 [cs.DS], 2022, p. 45.
+%H A033042 N. J. A. Sloane, <a href="/wiki/Catalog_of_Toothpick_and_CA_Sequences_in_OEIS">Catalog of Toothpick and Cellular Automata Sequences in the OEIS</a>
+%F A033042 a(n) = Sum_{i=0..m} d(i)*5^i, where Sum_{i=0..m} d(i)*2^i is the base-2 representation of n.
+%F A033042 Numbers j such that the coefficient of x^j is > 0 in Product_{k>=0} (1 + x^(5^k)). - _Benoit Cloitre_, Jul 29 2003
+%F A033042 a(n) = A097251(n)/4.
+%F A033042 a(2n) = 5*a(n), a(2n+1) = a(2n)+1.
+%F A033042 a(n) = Sum_{k>=0} A030308(n,k)*5^k. - _Philippe Deléham_, Oct 17 2011
+%F A033042 liminf a(n)/n^(log(5)/log(2)) = 1/4 and limsup a(n)/n^(log(5)/log(2)) = 1. - _Gheorghe Coserea_, Sep 15 2015
+%F A033042 G.f.: (1/(1 - x))*Sum_{k>=0} 5^k*x^(2^k)/(1 + x^(2^k)). - _Ilya Gutkovskiy_, Jun 04 2017
+%p A033042 a:= proc(n) local m, r, b; m, r, b:= n, 0, 1;
+%p A033042       while m>0 do r:= r+b*irem(m, 2, 'm'); b:= b*5 od; r
+%p A033042     end:
+%p A033042 seq(a(n), n=0..100);  # _Alois P. Heinz_, Mar 16 2013
+%t A033042 t = Table[FromDigits[RealDigits[n, 2], 5], {n, 1, 100}]
+%t A033042 (* _Clark Kimberling_, Aug 02 2012 *)
+%t A033042 FromDigits[#,5]&/@Tuples[{0,1},7] (* _Harvey P. Dale_, May 22 2018 *)
+%o A033042 (PARI) a(n) = subst(Pol(binary(n)), 'x, 5);
+%o A033042 vector(50, i, a(i-1))  \\ _Gheorghe Coserea_, Sep 15 2015
+%o A033042 (PARI) a(n)=fromdigits(binary(n),5) \\ _Charles R Greathouse IV_, Jan 11 2017
+%o A033042 (Julia)
+%o A033042 function a(n)
+%o A033042     m, r, b = n, 0, 1
+%o A033042     while m > 0
+%o A033042         m, q = divrem(m, 2)
+%o A033042         r += b * q
+%o A033042         b *= 5
+%o A033042     end
+%o A033042 r end; [a(n) for n in 0:49] |> println # _Peter Luschny_, Jan 03 2021
+%o A033042 (Python)
+%o A033042 def A033042(n): return int(bin(n)[2:],5) # _Chai Wah Wu_, Oct 30 2024
+%Y A033042 For generating functions Product_{k>=0} (1 + a*x^(b^k)) for the following values of (a,b) see: (1,2) A000012 and A000027, (1,3) A039966 and A005836, (1,4) A151666 and A000695, (1,5) A151667 and A033042, (2,2) A001316, (2,3) A151668, (2,4) A151669, (2,5) A151670, (3,2) A048883, (3,3) A117940, (3,4) A151665, (3,5) A151671, (4,2) A102376, (4,3) A151672, (4,4) A151673, (4,5) A151674.
+%Y A033042 Cf. A000695, A005836, A008977, A010060, A033043-A033052.
+%Y A033042 Row 5 of array A104257.
+%K A033042 nonn,base,easy
+%O A033042 0,3
+%A A033042 _Clark Kimberling_
+%E A033042 Extended by _Ray Chandler_, Aug 03 2004
+
+%I A262097 #62 Nov 22 2018 20:20:24
+%S A262097 0,0,1,0,0,2,1,1,1,0,0,1,0,0,3,2,2,3,1,1,2,1,1,2,1,1,1,0,0,1,0,0,2,1,
+%T A262097 1,1,0,0,1,0,0,4,3,3,5,2,2,4,2,2,5,3,3,4,1,1,2,1,1,3,2,2,3,1,1,2,1,1,
+%U A262097 3,2,2,3,1,1,2,1,1,2,1,1,1,0,0
+%N A262097 a(n) is the number of arithmetic triples k<m<n (three numbers in arithmetic progression) such that k and m contain no 2's in their ternary representation.
+%C A262097 This is a recursive sequence that gives the number of times n is rejected from A005836, if n is the largest member of an arithmetic triple whose initial two terms are contained in A005836.
+%C A262097 This is similar to both A002487, which has a similar recurrence relation and counts hyperbinary representations of n, and A000119, which counts representations of n as a sum of distinct Fibonacci numbers.
+%C A262097 a(n) is the number of times n occurs in A262096.
+%C A262097 Indices of maxima between a(n)=0 and a(k)=0 (choose the smallest k) appear to converge to (1/12)*(k-n) and (1/4)*(k-n). - _Max Barrentine_, May 24 2016
+%H A262097 Max Barrentine, <a href="/A262097/b262097.txt">Table of n, a(n) for n = 0..19683</a>
+%F A262097 a(0)=0, a(n) = a(3n) = a(3n+1); if a(n)=0, a(3n+2) = a(n+1) + 1, otherwise a(3n+2) = a(n+1) + a(n). - _Max Barrentine_, May 24 2016
+%Y A262097 Cf. A000119, A002487, A005836, A262096, A262256, A273513, A273514.
+%K A262097 nonn,look,easy,base
+%O A262097 0,6
+%A A262097 _Max Barrentine_, Sep 11 2015
+%E A262097 Name improved by _Max Barrentine_, Jun 23 2016
+
+%I A273513 #42 Nov 22 2018 20:20:57
+%S A273513 0,0,1,0,0,1,1,1,2,0,0,1,0,0,1,1,1,2,1,1,2,1,1,3,2,2,3,0,0,1,0,0,1,1,
+%T A273513 1,2,0,0,1,0,0,1,1,1,2,1,1,2,1,1,3,2,2,3,1,1,2,1,1,3,2,2,3,1,1,2,1,1,
+%U A273513 4,3,3,5,2,2,4,2,2,5,3,3,4,0,0,1,0,0,1
+%N A273513 a(n) is the number of arithmetic triples n<p<q (three numbers in arithmetic progression) such that p and q contain no 2's in their ternary representation.
+%C A273513 This is a recursive sequence that gives the number of times n is rejected from A005836, if n is the smallest member of an arithmetic triple whose final two terms are contained in A005836.
+%C A273513 This is similar to both A002487, which has a similar recurrence relation and counts hyperbinary representations of n, and A000119, which counts representations of n as a sum of distinct Fibonacci numbers.
+%C A273513 For n<k (choose the smallest k), a(n)=0, a(k)=0, a(n)=A262097(k), a(n+1)=A262097(k-1), a(n+2)=A262097(k-2)... a(k)=A262097(n).
+%C A273513 Indices of maxima between a(n) and a(k) appear to converge to (3/4)(k-n) and (11/12)(k-n).
+%H A273513 Max Barrentine, <a href="/A273513/b273513.txt">Table of n, a(n) for n = 0..19683</a> (terms 1 through 10000 from Robert Israel)
+%H A273513 Robert Israel, <a href="/A273513/a273513.png">Plot of first 10^5 terms</a>
+%F A273513 a(0)=0, a(n)=a(3n)=a(3n+1);
+%F A273513 if a(n+1)=0, a(3n+2)=1+a(n), otherwise a(3n+2)=a(n)+a(n+1).
+%p A273513 f:= proc(n) option remember; local m;
+%p A273513 m:= floor(n/3);
+%p A273513 if n mod 3 <> 2 then procname(m)
+%p A273513 elif procname(m+1)=0 then 1 + procname(m)
+%p A273513 else procname(m) + procname(m+1)
+%p A273513 fi
+%p A273513 end proc:
+%p A273513 f(0):= 0:
+%p A273513 map(f, [$0..100]); # _Robert Israel_, Jun 16 2016
+%Y A273513 Cf. A000119, A002487, A005836, A262097, A273514.
+%K A273513 nonn,base,look
+%O A273513 0,9
+%A A273513 _Max Barrentine_, May 23 2016
+
+# Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE

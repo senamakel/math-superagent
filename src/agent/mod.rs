@@ -4,6 +4,7 @@
 //! its optional `SQLite`, REPL, and RLM features disabled.
 
 pub mod budget;
+pub mod resilient;
 pub mod trace;
 
 use std::sync::Arc;
