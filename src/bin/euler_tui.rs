@@ -544,17 +544,27 @@ enum Mode {
 }
 
 /// The parsed command line.
+///
+/// The workspace is the identity, not the problem number. A Euler problem is
+/// named by its number and lives at `project-euler/<n>`, but a run against an
+/// open conjecture lives anywhere under `workspace/`, and a viewer that can
+/// only spell one of those cannot watch the other.
 #[derive(Debug)]
 struct Options {
-    problem: u32,
+    /// Path relative to `workspace/`.
+    workspace: String,
+    /// What to call it on screen and in an error.
+    label: String,
     mode: Mode,
     plain: bool,
 }
 
 fn usage() -> String {
     "usage: ./euler-tui [--replay] [--plain] <problem>\n\
+     \x20      ./euler-tui [--replay] [--plain] --workspace <relative/path>\n\
      \n\
-     Watches a run; it never starts one. Start a run with `./euler <problem>`.\n\
+     Watches a run; it never starts one. Start a run with `./euler <problem>`\n\
+     or `./conjecture <slug>`.\n\
      \n\
        --replay  open the tabs on the existing log instead of a live container\n\
        --plain   no tabs; stream to stdout, as when scripting"
@@ -562,10 +572,21 @@ fn usage() -> String {
 }
 
 fn options() -> Result<Options, String> {
-    let mut problem = None;
+    let mut workspace: Option<String> = None;
+    let mut label = String::new();
     let mut mode = Mode::default();
     let mut plain = false;
+    let mut expecting_workspace = false;
     for argument in std::env::args().skip(1) {
+        if expecting_workspace {
+            expecting_workspace = false;
+            if argument.contains("..") || argument.starts_with('/') {
+                return Err("workspace must be a relative path without traversal".to_string());
+            }
+            label = argument.clone();
+            workspace = Some(argument);
+            continue;
+        }
         match argument.as_str() {
             // Accepted and ignored: it was the only mode long enough that a
             // hand still types it, and refusing a flag that asks for what
@@ -573,13 +594,17 @@ fn options() -> Result<Options, String> {
             "--attach" => mode = Mode::Attach,
             "--plain" => plain = true,
             "--replay" => mode = Mode::Replay,
+            "--workspace" => expecting_workspace = true,
             "-h" | "--help" => return Err(usage()),
-            _ if problem.is_none() => {
-                problem = Some(
-                    argument
-                        .parse::<u32>()
-                        .map_err(|_| "problem number must be a positive integer".to_string())?,
-                );
+            _ if workspace.is_none() => {
+                let problem = argument
+                    .parse::<u32>()
+                    .map_err(|_| "problem number must be a positive integer".to_string())?;
+                if problem == 0 {
+                    return Err("problem number must be a positive integer".to_string());
+                }
+                label = format!("problem {problem}");
+                workspace = Some(format!("project-euler/{problem}"));
             }
             _ => {
                 return Err(format!(
@@ -589,12 +614,13 @@ fn options() -> Result<Options, String> {
             }
         }
     }
-    let problem = problem.ok_or_else(usage)?;
-    if problem == 0 {
-        return Err("problem number must be a positive integer".to_string());
+    if expecting_workspace {
+        return Err("--workspace needs a path".to_string());
     }
+    let workspace = workspace.ok_or_else(usage)?;
     Ok(Options {
-        problem,
+        workspace,
+        label,
         mode,
         plain,
     })
