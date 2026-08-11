@@ -1,4 +1,5 @@
 //! Unit tests for registry and workspace boundaries.
+#![allow(clippy::expect_used)]
 
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, checked_workspace_path,
