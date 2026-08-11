@@ -609,17 +609,24 @@ async fn reflect_step(
         ));
     }
     let lesson = extract_lesson(&reflection);
-    // Tell the teams what this attempt learned. They run beside the loop and
-    // would otherwise keep enriching the workspace against the run's opening
-    // understanding of the problem, which is the understanding the attempts
-    // have been busy correcting. Posting never waits: a full inbox drops the
-    // note rather than stalling the solve to deliver it.
-    // The verdict travels with the lesson, in a form a team can act on without
-    // interpreting prose. The research team gathers only when the run is
-    // actually short of something, and "did this attempt get anywhere" is the
-    // signal that says so — a run making progress every time needs no rescue,
-    // and a team that fetches regardless fills the workspace with sources
-    // nobody asked for.
+    tell_teams(teams, &state, progressed, &lesson);
+    state.lessons.push(lesson);
+    state
+}
+
+/// Tells the support teams how the attempt went.
+///
+/// They run beside the loop and would otherwise keep enriching the workspace
+/// against the run's opening understanding of the problem — the understanding
+/// the attempts have been busy correcting. Posting never waits: a full inbox
+/// drops the note rather than stalling the solve to deliver it.
+///
+/// The verdict travels with the lesson in a form a team can act on without
+/// interpreting prose. The research team gathers only when the run is actually
+/// short of something, and "did this attempt get anywhere" is the signal that
+/// says so: a run making progress every time needs no rescue, and a team that
+/// fetches regardless fills the workspace with sources nobody asked for.
+fn tell_teams(teams: &[TeamHandle], state: &SolutionState, progressed: bool, lesson: &str) {
     let verdict = if progressed { "PROGRESSING" } else { "STUCK" };
     for team in teams {
         team.post(
@@ -630,8 +637,6 @@ async fn reflect_step(
             ),
         );
     }
-    state.lessons.push(lesson);
-    state
 }
 
 /// Gathers three independent angles concurrently to break a stalled loop.
