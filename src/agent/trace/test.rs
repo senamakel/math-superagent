@@ -6,7 +6,7 @@ use std::sync::Arc;
 use tinyagents::harness::events::{AgentEvent, EventListener, EventRecord};
 use tinyagents::harness::ids::{CallId, EventId, RunId};
 
-use super::{CONSOLE_PREVIEW_CHARS, RunTracer, preview};
+use super::{CONSOLE_PREVIEW_CHARS, RunTracer, attribution, preview};
 
 fn record(event: AgentEvent) -> EventRecord {
     EventRecord {
@@ -68,9 +68,6 @@ fn the_profile_attributes_wall_clock_and_cache() {
     use std::sync::atomic::Ordering;
 
     let tracer = RunTracer::new("orchestrator", None);
-    // 200ms of provider time and 50ms of tool time against a live wall clock.
-    tracer.state.model_ms.store(200, Ordering::Relaxed);
-    tracer.state.tool_ms.store(50, Ordering::Relaxed);
     tracer.state.input_tokens.store(1000, Ordering::Relaxed);
     tracer.state.cached_tokens.store(250, Ordering::Relaxed);
 
@@ -86,21 +83,23 @@ fn the_profile_attributes_wall_clock_and_cache() {
 }
 
 #[test]
+fn one_agent_partitions_the_wall_clock_and_idle_is_visible() {
+    // 200ms in the provider and 50ms in tools out of a 1s run: the remaining
+    // 75% is backoff, scheduling, or waiting, which is the diagnostic.
+    let rendered = attribution(1_000, 200, 50);
+    assert_eq!(rendered, "model 20% tool 5% idle 75%");
+}
+
+#[test]
 fn concurrent_agent_time_is_reported_as_overlap_not_as_over_100_percent() {
-    use std::sync::atomic::Ordering;
-
-    let tracer = RunTracer::new("orchestrator", None);
-    // Two agents each spending a full minute inside the provider while barely
-    // any wall clock has passed: their summed time legitimately exceeds it.
-    tracer.state.model_ms.store(120_000, Ordering::Relaxed);
-    tracer.state.tool_ms.store(0, Ordering::Relaxed);
-
-    let profile = tracer.profile();
-    assert!(profile.contains("of agent time"), "{profile}");
-    assert!(profile.contains("concurrency x"), "{profile}");
-    // The share of a partition never exceeds the whole.
-    assert!(profile.contains("model 100%"), "{profile}");
-    assert!(!profile.contains("idle"), "{profile}");
+    // Three agents each spending a second inside the provider during one
+    // second of wall clock. Their summed time legitimately exceeds it, and
+    // rendering that as `model 300%` reads as a bug rather than as overlap.
+    let rendered = attribution(1_000, 3_000, 0);
+    assert!(rendered.contains("of agent time"), "{rendered}");
+    assert!(rendered.contains("concurrency x3.0"), "{rendered}");
+    assert!(rendered.contains("model 100%"), "{rendered}");
+    assert!(!rendered.contains("idle"), "{rendered}");
 }
 
 #[test]
