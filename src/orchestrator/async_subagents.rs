@@ -61,6 +61,15 @@ const FOLLOW_UPS: [(&str, &[FollowUpStep]); 2] = [
 struct FollowUpStep {
     agent: &'static str,
     brief: &'static str,
+    /// Whether this step rewrites an `INDEX.md` other follow-ups also rewrite.
+    ///
+    /// Two organizers refreshing one index at once would each write the list it
+    /// read, and the later write would silently drop the other's descriptions,
+    /// so those steps take a lock. A step that only reads and edits the sources
+    /// it was pointed at — the scholar — collides with nothing and must not
+    /// wait, because it is the slowest step in any sequence and everything
+    /// queued behind it is work that could already have finished.
+    rewrites_shared_index: bool,
 }
 
 const ORGANIZE_AFTER_TOOLS: FollowUpStep = FollowUpStep {
