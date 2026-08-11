@@ -65,9 +65,9 @@ fn the_common_spellings_of_the_root_do_not_survive_into_a_folder_name() {
 fn a_moved_file_is_reported_and_an_unmoved_one_is_not() {
     // A model not told where its file went writes the next one to the same
     // place and then cannot read either back.
-    let note = note("brute.py", &placed("brute.py"));
-    assert!(note.contains("code/brute.py"), "{note}");
-    assert!(note.contains("code/out"), "{note}");
+    let moved = note("brute.py", &placed("brute.py"));
+    assert!(moved.contains("code/brute.py"), "{moved}");
+    assert!(moved.contains("code/out"), "{moved}");
     assert_eq!(note("goal.md", &placed("goal.md")), "");
 }
 
