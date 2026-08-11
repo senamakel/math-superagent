@@ -85,3 +85,37 @@ fn the_first_attempt_starts_fresh_and_later_ones_continue() {
     assert!(third.contains("Do not re-extract"));
     assert!(!third.contains("first attempt"));
 }
+
+#[test]
+fn reflection_filenames_encode_the_outcome() {
+    use super::reflection_filename;
+    // A directory listing alone should show which attempts taught anything.
+    assert_eq!(reflection_filename(1700, 0), "reflections/1700_nothing.md");
+    assert_eq!(
+        reflection_filename(1700, 1),
+        "reflections/1700_01_learnings.md"
+    );
+    assert_eq!(
+        reflection_filename(1700, 12),
+        "reflections/1700_12_learnings.md"
+    );
+}
+
+#[test]
+fn learnings_are_counted_from_the_lesson_block() {
+    use super::count_learnings;
+
+    assert_eq!(
+        count_learnings("VERDICT: UNSOLVED\nPROGRESS: NO\nLESSON: use Pell theory."),
+        1
+    );
+    // Bullets under LESSON are separate actionable points.
+    let multi = "VERDICT: UNSOLVED\nLESSON:\n- stop enumerating x\n- use the convergents\n";
+    assert_eq!(count_learnings(multi), 2);
+    // An empty lesson teaches nothing.
+    assert_eq!(
+        count_learnings("VERDICT: SOLVED\nPROGRESS: YES\nLESSON:"),
+        0
+    );
+    assert_eq!(count_learnings("no structure at all"), 0);
+}

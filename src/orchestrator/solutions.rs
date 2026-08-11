@@ -285,7 +285,10 @@ async fn log_reflection(
     if let Some(parent) = path.parent() {
         let _ = tokio::fs::create_dir_all(parent).await;
     }
-    let body = format!("# Reflection after attempt {attempt}\n\n{}\n", reflection.trim());
+    let body = format!(
+        "# Reflection after attempt {attempt}\n\n{}\n",
+        reflection.trim()
+    );
     if tokio::fs::write(&path, body).await.is_ok()
         && let Some(tracer) = tracer
     {
