@@ -26,7 +26,8 @@
 //! note then accumulates in the open batch at level 1, and the same rule
 //! applies again. The tree grows a level only when a level has genuinely
 //! outgrown a single node, and every node above `L0` is capped at
-//! [`NODE_TOKENS`].
+//! [`SEAL_TOKENS`], while the roots a system prompt carries are held to the
+//! tighter [`ROOT_TOKENS`].
 //!
 //! Batching rather than one flat folder per level is what makes a fold
 //! *stable*. A flat level is re-summarised every time anything is added to it,
@@ -479,33 +480,44 @@ pub(super) fn briefing(workspace: &Path) -> Option<String> {
         "Before anything else, this cycle's job is the summary tree. Originals sit in \
          `L0.<n>/` and are never edited. A batch holds at most {FANOUT} notes; when it \
          fills, one note a level up seals it — named for the batch it covers — and that \
-         note is never revisited. Every node above level 0 is capped at {NODE_TOKENS} \
-         tokens and wikilinks what it covers, `[[note-name]]`, so what a fold leaves out \
-         stays one step away. `ROOT.md` is the top of the tree; `INDEX.md` beside it is \
-         the file table, maintained by describe_file and refresh_index, and is not yours \
-         to write.\n\n"
+         note is never revisited. A seal may run to {SEAL_TOKENS} tokens — it is read \
+         on demand, not carried in anyone's prompt — while `ROOT.md` and `CONTEXT.md` \
+         are held to {ROOT_TOKENS} because every model call in every role pays for \
+         them. Every node wikilinks what it covers, `[[note-name]]`, so what a fold \
+         leaves out stays one step away. `ROOT.md` is the top of the tree; `INDEX.md` \
+         beside it is the file table, maintained by describe_file and refresh_index, \
+         and is not yours to write.\n\n"
     );
     match &task.fault {
         Fault::OverBudget => {
             let _ = write!(
                 out,
-                "`{}` is about {} tokens, over the {NODE_TOKENS}-token cap, and is \
-                 re-sent on every model call in every role that reads it. Rewrite it \
-                 under the cap this cycle: merge what says the same thing, drop what \
-                 later work has settled, and keep the statements and their consequences \
-                 rather than the narrative. Whatever you cut, leave a wikilink to the \
-                 note that still holds it. Gather nothing new until it fits.",
-                node.path, node.tokens,
+                "`{}` is about {} tokens, over its {}-token cap. Rewrite it under the \
+                 cap this cycle: merge what says the same thing, drop what later work \
+                 has settled, and keep the statements and their consequences rather \
+                 than the narrative. Whatever you cut, leave a wikilink to the note \
+                 that still holds it. Gather nothing new until it fits.",
+                node.path,
+                node.tokens,
+                budget_for(&node.path),
             );
         }
         Fault::Unsealed { summary } => {
             let _ = write!(
                 out,
                 "`{}` is full at {} notes and is waiting to be sealed. Write `{summary}`: \
-                 one note saying what those {} together establish, under {NODE_TOKENS} \
-                 tokens, wikilinking each. Seal it once and do not revisit it — a batch \
-                 summarised repeatedly drifts from what it covers. Then bring `ROOT.md` \
-                 up to date with what the tree now says. The batch holds:\n{}",
+                 one note saying what those {} together establish. This is the only \
+                 record of them anyone will read by default, so it must be detailed — \
+                 up to {SEAL_TOKENS} tokens, and use them. Carry every distinct \
+                 definition, theorem, algorithm, bound and numeric result, each with \
+                 its hypotheses and whether they hold here, and say what each lets this \
+                 run compute, bound, or rule out. Record disagreements between the \
+                 sources rather than picking one. A line per source naming its title \
+                 and a verdict is a catalogue, and `INDEX.md` already is one; this is \
+                 the thing a reader opens instead of the ten notes below it. Wikilink \
+                 each. Seal it once and do not revisit it — a batch summarised \
+                 repeatedly drifts from what it covers. Then bring `ROOT.md` up to date. \
+                 The batch holds:\n{}",
                 node.path,
                 node.children.len(),
                 node.children.len(),
@@ -531,8 +543,8 @@ pub(super) fn briefing(workspace: &Path) -> Option<String> {
             let _ = write!(
                 out,
                 "`{}` has not been rewritten since {} of the notes below it changed. \
-                 Rewrite it so it says what they now establish, under {NODE_TOKENS} \
-                 tokens, wikilinking each note it covers. Changed:\n{}",
+                 Rewrite it so it says what they now establish, within its budget, \
+                 wikilinking each note it covers. Changed:\n{}",
                 node.path,
                 changed.len(),
                 list(changed),
