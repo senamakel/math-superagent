@@ -15,8 +15,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1/normalplay.md` | _(undescribed)_ |
 | `L1/partisan.md` | _(undescribed)_ |
 | `L1/pass_waiting.md` | _(undescribed)_ |
-| `L1/raw_mfl_pass.md` | Raw capture from arXiv:1204.3222 (Morrison–Friedman–Landsberg), awaiting a scholar summary; see L1/mfl_pass.md once summarised. |
-| `L1/raw_pass_waiting_check.md` | Raw capture from arXiv:1505.01907 (Larsson–Nowakowski–Santos), awaiting verification; see L1/pass_waiting.md. |
+| `L1/raw_mfl_pass.md` | Raw arXiv abstract of arXiv:1204.3222 (Morrison–Friedman–Landsberg); proper analysis in L1/mfl_pass.md. |
+| `L1/raw_pass_waiting_check.md` | Raw arXiv abstract of arXiv:1505.01907 (Larsson–Nowakowski–Santos); proper analysis in L1/pass_waiting.md. |
 | `L1/strategy.md` | _(undescribed)_ |
 | `L1/surreal.md` | _(undescribed)_ |
 | `L1/trollopedelange.md` | _(undescribed)_ |
