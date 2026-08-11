@@ -32,7 +32,7 @@
     "Q": 597876,
     "Qmod": 597876,
     "t_ranks_s": 0.0,
-    "t_compute_s": 0.004,
+    "t_compute_s": 0.003,
     "steps": 14400
   },
   {
@@ -41,7 +41,7 @@
     "Q": 133103808,
     "Qmod": 133103808,
     "t_ranks_s": 0.0,
-    "t_compute_s": 0.151,
+    "t_compute_s": 0.137,
     "steps": 518400
   },
   {
@@ -50,7 +50,12 @@
     "Q": 47124948960,
     "Qmod": 124948631,
     "t_ranks_s": 0.001,
-    "t_compute_s": 7.998,
+    "t_compute_s": 7.03,
     "steps": 25401600
+  },
+  {
+    "n": 8,
+    "method": "literal",
+    "skipped": "estimated time exceeds budget"
   }
 ]

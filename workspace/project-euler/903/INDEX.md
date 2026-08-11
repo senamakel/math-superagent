@@ -33,7 +33,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `problem.url` | Source URL for the problem statement: https://projecteuler.net/minimal=903 |
 | `psid.py` | Exploratory: verifies Q(n)=sum over d dividing n! of psi(d)*phi(n!/d) for n=5 with psi(d)=F-value for i with gcd(i,n!)=d, and prints psi(d) over all divisors to look for structure |
 | `qtable.py` | Exploratory: computes Q(n) via the period/orbit formula for n=2..10 and prints normalization ratios Q/n! and Q/(n!)^2 to look for a closed form; quantifies the runtime wall at n=10 |
+| `rerun_output.txt` | Verbatim console output of the fresh re-run of brute.py then brute2.py (18 Sep 2025): rank check, Q(n) tables, oracle checks, cross-check lines; both exit 0 |
 | `results.json` | Output of brute.py (method 1, literal): exact Q(n) and Q mod p for n=2..7; n=8 skipped (budget estimate exceeds cap) |
-| `results2.json` | Output of brute2.py (method 2, period formula): exact Q(n) and Q mod p for n=2..7 (the n=8 value 24768798220800 lives in memory.md but was never written to this file) |
+| `results2.json` | Output of brute2.py (method 2, period formula): exact Q(n) and Q mod p for n=2..8 (n=8 reached by method 2 only, 24768798220800), rewritten by the rerun |
 | `scratchpad.md` | Provisional work: the task, method-1 cost model, method-2 justification, power-semantics check, verified results table |
 | `tasks.md` | Task list with checkboxes: recording objective, reading the statement, writing brute.py/brute2.py, verifying n=2..6/7/8, and the (pending) efficient method |
