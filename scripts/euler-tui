@@ -285,6 +285,18 @@ def main() -> int:
         if tabs:
             curses.wrapper(watch, runs)
         return 0
+    # Seed the view so its first frame says what is happening. An empty body
+    # under a one-entry tab bar is indistinguishable from a program that never
+    # started, which is exactly how the first version of this was read: the
+    # build and the statement fetch are silent, so nothing appeared for half a
+    # minute warm and would appear for minutes cold.
+    runs.add(
+        f"{'continuing' if existing else 'starting'} problem {arguments.problem}:"
+        " building the image, fetching the statement, starting the container."
+        " This part is silent and slow on a cold build; the first [00:00] line"
+        " below is the run itself."
+    )
+
     with open(log_path, "a", encoding="utf-8") as log, subprocess.Popen(
         command,
         cwd=root,
