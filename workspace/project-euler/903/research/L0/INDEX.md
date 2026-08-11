@@ -5,3 +5,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `pinsky_inversion_derangements.arxiv.md` | Download marker (link only) for the Pinsky arXiv page |
+| `sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
+| `sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |

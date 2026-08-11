@@ -16,7 +16,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pass_waiting.md` | Larsson–Nowakowski–Santos 2015 (arXiv:1505.01907), primary pass/waiting-move theory. |
 | `raw_mfl_pass.md` | Raw arXiv abstract of 1204.3222; proper analysis in mfl_pass.md. |
 | `raw_pass_waiting_check.md` | Raw arXiv abstract of 1505.01907; proper analysis in pass_waiting.md. |
-| `siegel_zugzwang.md` | _(undescribed)_ |
+| `siegel_zugzwang.md` | A. Siegel, "Coping with cycles" (2009): partizan loopy games, stoppers, Li zugzwang games; warrant for the (A,B) stopper/loopy model, not a formula for S(n). |
 | `strategy.md` | Dead end: generic strategy article, nothing relevant. |
 | `surreal.md` | Why a−b is exact (simplest surreal between options); skips outside short games ⇒ A−B ≠ S(n). |
 | `trollopedelange.md` | Girgensohn 2011 INTEGERS #A54: explicit Trollope–Delange closed forms (1-periodic fluctuation). |
