@@ -1325,6 +1325,12 @@ fn specialist_harness(
     // attempt's. See `agent::untruncated`.
     let model: Arc<dyn ChatModel<()>> =
         Arc::new(UntruncatedModel::new(model).with_tracer(tracer.clone(), agent));
+    // Route around a provider that failed, outermost of all, so the retry is
+    // steered by the affinity wrapper's one-request block and reaches a
+    // different provider rather than the one that just failed. See
+    // `agent::reroute`.
+    let model: Arc<dyn ChatModel<()>> =
+        Arc::new(ReroutingModel::new(model).with_tracer(tracer.clone(), agent));
     let mut harness = AgentHarness::new();
     configure_run_budget(&mut harness, budget);
     harness
