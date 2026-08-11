@@ -265,11 +265,24 @@ impl OrchestratorAgent {
         } else {
             None
         };
+        // Gated with the rest of the literature, and for the same reason: a
+        // self-contained problem should test the runtime's reasoning rather
+        // than its ability to look an answer up, and the encyclopedia is the
+        // one lookup most likely to hand a run its closed form outright.
+        // Withheld by not registering it, never by asking the model to abstain.
+        let oeis: Vec<Arc<dyn Tool<()>>> = if research_enabled {
+            oeis::OeisTool::all(&documents)
+        } else {
+            Vec::new()
+        };
 
         // research: search the web, and remember what it found.
         let mut research_harness = specialist_harness(model.clone(), budget, "research", &tracer);
         if let Some(exa) = exa.clone() {
             register_resilient(&mut research_harness, exa);
+        }
+        for tool in oeis.iter().cloned() {
+            register_resilient(&mut research_harness, tool);
         }
         register_resilient(
             &mut research_harness,
@@ -316,6 +329,7 @@ impl OrchestratorAgent {
                 documents: &documents,
                 vector_store: vector_store.clone(),
                 exa: exa.clone(),
+                oeis: oeis.clone(),
                 workspace: workspace.clone(),
                 delegation: async_subagents.tools(PATTERN_DELEGATES),
             },
@@ -1190,6 +1204,12 @@ struct SupportAgents<'a> {
     documents: &'a WorkspaceDocuments,
     vector_store: VectorStore,
     exa: Option<Arc<dyn Tool<()>>>,
+    /// The OEIS adapter, empty when research is disabled.
+    ///
+    /// Held as a list rather than an option because a source adapter is one of
+    /// a family: the shape a second one slots into is a list, and the shape it
+    /// would have to rewrite is an option.
+    oeis: Vec<Arc<dyn Tool<()>>>,
     /// The jail root, for the one support agent allowed to execute.
     workspace: PathBuf,
     /// Delegation tools, so the pattern agent can commission a computation.
@@ -1271,6 +1291,15 @@ fn register_support_agents(
     for tool in parts.delegation.iter().cloned() {
         register_resilient(&mut pattern, tool);
     }
+    // The one search this role may have. It has no web search on purpose — a
+    // bounded structural question must not turn into a second investigation —
+    // and an encyclopedia lookup keyed on terms it has already computed cannot
+    // become one: the terms either match a catalogued sequence or they do not.
+    // It is also the role holding the terms, so making it ask another agent to
+    // run the lookup would spend a child run to pass a list of integers along.
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut pattern, tool);
+    }
     register_recall(&mut pattern, &parts.workspace);
     subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
 
@@ -1278,6 +1307,9 @@ fn register_support_agents(
         specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut inventor, exa);
+    }
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut inventor, tool);
     }
     register_resilient(
         &mut inventor,
