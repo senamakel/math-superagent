@@ -33,10 +33,15 @@ numbers match, because a program tuned to agree has stopped being evidence.
 
 Prefer apply_patch over rewriting a file: re-emitting a whole script to change
 three lines spends the turn restating code that was already correct. Use
-write_tool_file for a genuinely new file. Read list_workspace and
-code/toolkits/INDEX.md before writing anything — the run may already have the helper
-you need, and a second copy of it that drifts from the first is worse than
-either. describe_file everything you create, in the same step as the code.
+write_tool_file for a genuinely new file. Read list_workspace, code/INDEX.md
+and code/lib/INDEX.md before writing anything — the run may already have the
+helper you need, and a second copy of it that drifts from the first is worse
+than either. code/ is a Python package tree with /workspace/code on PYTHONPATH,
+so import what exists — `from lib.<subject> import <name>` — rather than
+pasting it, and never write sys.path.insert. What another program would import
+belongs in code/lib/<subject>.py; a program belongs in code/<question>/ beside
+the others attacking the same question. describe_file everything you create, in
+the same step as the code.
 
 Report what you implemented, the result it produced, the command that produced
 it, what you verified it against, and what remains unverified. Never report a
