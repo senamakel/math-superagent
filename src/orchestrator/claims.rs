@@ -554,5 +554,9 @@ fn truncate(text: &str, limit: usize) -> String {
     format!("{}…", head.trim_end())
 }
 
+mod tool;
+
+pub(super) use tool::ClaimsTool;
+
 #[cfg(test)]
 mod test;

@@ -109,6 +109,9 @@ impl WorkspaceDocuments {
             // granted to a role that then becomes the only one able to keep
             // the index honest.
             .chain(super::folder_index::FolderIndexTool::all(self))
+            // What the library establishes is a question every reader of it
+            // has, not only the role that writes the notes.
+            .chain(super::claims::ClaimsTool::all(self))
             .collect()
     }
 
