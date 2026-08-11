@@ -5,5 +5,5 @@
 - [x] Empirically derive recurrences f(2n)=f(n)+f(n-1), f(2n+1)=f(n),
       f(2n-1)=f(n-1) and record them.
 - [ ] Identify/confirm governing theory (PE175 recursion) with a source.
-- [ ] Write solution.py for ratio 123456789/987654321 (poly in log bound).
-- [ ] Verify final SBE by a second independent route.
+- [x] Write solution.py for ratio 123456789/987654321 (poly in log bound).
+- [x] Verify final SBE by a second independent route. (verify_matrix.py's matrix/run model; answer SBE [1,13717420,8], ratio 123456789/987654321)

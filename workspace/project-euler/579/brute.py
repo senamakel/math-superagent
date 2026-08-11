@@ -35,6 +35,8 @@ Writes output to /workspace/brute_output.txt and prints it.
 import sys
 from collections import defaultdict
 
+from toolkit import count_points, norm2
+
 ORACLE_C = {1: 1, 2: 9, 4: 100, 5: 229, 10: 4469, 50: 8154671}
 ORACLE_S = {1: 8, 2: 91, 4: 1878, 5: 5832, 10: 387003, 50: 29948928129}
 

@@ -8,7 +8,44 @@ Every lattice cube with integer vertices: determined by integer corner P0 in Z^3
 
 ## Established results
 
-(To be filled as verified.)
+All oracle examples reproduced by the brute-force oracle (exact integer
+arithmetic, no floats):
+
+| n | C(n) | S(n) | matches |
+|---|------|------|---------|
+| 1 | 1    | 8         | both OK |
+| 2 | 9    | 91        | both OK |
+| 4 | 100  | 1878      | both OK |
+| 5 | 229  | 5832      | both OK |
+| 10| 4469 | 387003    | both OK |
+
+Extra ran beyond the required n<=5: n=3 C=36 S=496; n=6 C=473 S=15925.
+
+- The lattice-point-count routine is validated on the statement's two worked
+  cubes: cube A (side 3, axis-aligned) total 64 = 56 surface + 8 interior;
+  cube B (side 3, oblique) total 40 = 20 surface + 20 interior.  Both OK via
+  the independently-written /workspace/pointcount.py.
+
+- Method: a cube is P0 + s1 u + s2 v + s3 w, s_i in {0,1}, with u,v,w pairwise
+  orthogonal equal-norm integer vectors, |u|^2 = m a perfect square (m = k^2).
+  The third edge from a frame is exactly w = (u x v) / k (integer division).
+  A lattice point q is inside the closed cube iff 0 <= (q-P0).u <= m and same
+  for v, w; it is on the surface iff any of those equals 0 or m.
+
+## Failed approaches
+
+- Initially derived w = (u x v) / m (dividing by the squared norm).  This is
+  wrong: w must equal (u x v) / k where k^2 = m.  The assertion caught it.
+
+## Open questions
+
+- Efficient parametrization / enumeration of orthogonal equal-norm integer
+  vector triples (the factorization structure of the frame count).
+- Closed form for lattice point count in a lattice cube as function of u,v,w
+  (needs a Pick-type / Ehrhart-style analysis).
+- The brute force runs in time polynomial in n but with a large constant; it
+  reaches n=10 comfortably but will not scale to n=5000.  Need the efficient
+  method (criterion 4-6).
 
 ## Failed approaches
 

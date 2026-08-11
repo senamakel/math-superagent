@@ -37,6 +37,22 @@ These match Project Euler 175's classical recursion (to be proven/cited).
   Fixed by single-pass bounded transition ndp[j]=dp[j]+dp[j-c]+dp[j-2c]
   computed from the OLD dp. Verified f(10)=5 after fix.
 
+## Matrix (run) model — verified by verify_matrix.py (exact ints/Fraction)
+
+State vector v = [f(m), f(m-1)]^T, root m=1 -> v=[1,1] (f(1)=1,f(0)=1).
+Appending bit '0' = M0 = [[1,1],[0,1]]; appending bit '1' = M1 = [[1,0],[1,1]].
+Both unipotent, so closed forms (O(1) per run, no bit-by-bit loop):
+  M0^k: v -> [a + k*b, b]
+  M1^k: v -> [a, k*a + b]
+Worked example reproduced: binary of 241 = '11110001', root '1' then runs
+(3 ones,3 zeros,1 one) -> v == [13,17], ratio 13/17. ✓
+Final: SBE [1,13717420,8] -> binary '1'+'0'*13717420+'1'*8; runs (13717420 zeros,
+8 ones) -> v == [13717421, 109739369], ratio == 123456789/987654321 (both reduce
+by 9: 13717421*9=123456789, 109739369*9=987654321). ✓
+n reconstructed arithmetically: n = 2^13717428 + 255 = (1<<13717428)+255, bit
+length 13717429; RLE of bin(n) == [1,13717420,8]. ✓
+Independent of solution.py's Euclidean-peel loop; cross-checks the same answer.
+
 ## Open questions
 
 - Use the recurrences to derive the SBE for ratio 123456789/987654321

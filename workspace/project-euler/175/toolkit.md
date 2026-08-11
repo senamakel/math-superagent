@@ -24,7 +24,10 @@ whose answer is already known, then add a row below.
 
 | Function | Signature | Returns | Verified against |
 | --- | --- | --- | --- |
-| _(none yet)_ | | | |
+| `apply_run` | `apply_run(v, bit, k)` | Applies a run of `k` identical SBE bits to state `v=[f(m),f(m-1)]` via unipotent closed form: `'0' -> v0+=k*v1`, `'1' -> v1+=k*v0`. Returns `[a',b']`. | exact ints; verified in verify_matrix.py against n=241 example (3 ones,3 zeros,1 one -> [13,17]/13:17) AND final SBE [1,13717420,8] -> [13717421,109739369] (ratio 123456789/987654321) |
+| `rle` | `rle(bits)` | Compact run-length encoding of a binary string, MSB first. | verified on bin(241)='11110001' -> [4,3,1] and on the 13.7M-bit `n` reconstruction -> [1,13717420,8] |
+
+All helpers use exact integer arithmetic.
 
 ## Notes
 

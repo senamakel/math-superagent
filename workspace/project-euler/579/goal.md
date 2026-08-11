@@ -23,8 +23,8 @@ Cube B, vertices (0,2,2),(1,4,4),(2,0,3),(2,3,0),(3,2,5),(3,5,2),(4,1,1),(5,3,3)
 
 ## Completion criteria
 
-1. /workspace/brute.py runs and reproduces every oracle example it can reach (at minimum n<=5, ideally n=10). Output saved to /workspace/brute_output.txt.
-2. Point-in-cube logic validated on cubes A and B via /workspace/pointcount.py.
+1. [DONE] /workspace/brute.py reproduces every oracle example it can reach — it reaches n=10, matching C={1,9,100,229,4469} and S={8,91,1878,5832,387003} exactly. Output saved to /workspace/brute_output.txt.
+2. [DONE] Point-in-cube logic validated on cubes A and B via /workspace/pointcount.py (A: 64=56+8, B: 40=20+20, both OK).
 3. Governing theory identified and recorded in /workspace/memory.md with source URLs.
 4. Efficient method derived in /workspace/solution.md (complexity not growing with the answer / true for large n).
 5. /workspace/solution.py implemented with exact arithmetic, agreeing with brute on all reachable cases.

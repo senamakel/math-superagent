@@ -24,7 +24,10 @@ whose answer is already known, then add a row below.
 
 | Function | Signature | Returns | Verified against |
 | --- | --- | --- | --- |
-| _(none yet)_ | | | |
+| `dot(u, v)` | `(tuple,tuple)->int` | Euclidean dot product in Z^3 | trivial |
+| `norm2(v)` | `tuple -> int` | squared length `v.v` | trivial |
+| `corner_and_edges(vertex_set)` | `frozenset<int3> -> (P0, [u,v,w])` | lexicographically smallest vertex and its 3 edge-neighbour vectors | used by both brute.py and pointcount.py |
+| `count_points(vertex_set)` | `frozenset<int3> -> (total, surface)` | exact lattice points in the closed cube (interior+boundary), and boundary count | cubes A (64=56+8) and B (40=20+20) from the statement |
 
 ## Notes
 
