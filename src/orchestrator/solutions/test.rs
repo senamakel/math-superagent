@@ -2,7 +2,8 @@
 #![allow(clippy::expect_used)]
 
 use super::{
-    MAX_ATTEMPTS, PatternMailbox, Route, STUCK_THRESHOLD, SolutionState, extract_lesson, route,
+    BLOCKED_THRESHOLD, MAX_ATTEMPTS, PatternMailbox, Route, STUCK_THRESHOLD, SolutionState,
+    extract_lesson, provider_blocked, route,
 };
 
 fn state() -> SolutionState {
@@ -314,4 +315,60 @@ fn a_restarted_run_is_told_it_is_continuing_even_on_its_first_attempt() {
     // has to be written before anything can be continued from.
     let fresh = continuation_briefing(1, false);
     assert!(fresh.contains("first attempt"), "{fresh}");
+}
+
+#[test]
+fn a_provider_wall_stops_the_loop_instead_of_spending_the_attempt_ceiling() {
+    // What a live pair of runs actually did: OpenRouter refused every call with
+    // `HTTP 403: Key limit exceeded`, and the loop burned all eight attempts in
+    // seconds, recording the same quota error as the lesson each time. An
+    // attempt that never reached the mathematics is not evidence about the
+    // mathematics, so it must not be paid for out of the ceiling.
+    let mut current = state();
+    current.blocked = BLOCKED_THRESHOLD;
+    assert_eq!(route(&current), Route::Blocked);
+
+    // It outranks the ceiling, so the outcome says "blocked" rather than
+    // "not solved within 8 attempts".
+    current.attempts = MAX_ATTEMPTS;
+    assert_eq!(route(&current), Route::Blocked);
+    let outcome = current.outcome();
+    assert!(outcome.contains("infrastructure failure"), "{outcome}");
+    assert!(!outcome.starts_with("Not solved"), "{outcome}");
+}
+
+#[test]
+fn one_provider_failure_is_absorbed_rather_than_ending_the_run() {
+    // A single upstream blip is what the retry ladder and the rerouting model
+    // exist to absorb. Ending a run on one would throw away work they would
+    // have recovered.
+    let mut current = state();
+    current.blocked = 1;
+    assert!(BLOCKED_THRESHOLD > 1);
+    assert_eq!(route(&current), Route::Retry);
+}
+
+#[test]
+fn a_blocked_attempt_is_recognised_only_from_a_failed_delegation() {
+    // The shape `delegate` writes when a child dies on its first turn.
+    assert!(provider_blocked(
+        "[goals failed: tool error: agent `goals` failed: model error: openrouter returned \
+         HTTP 403: Key limit exceeded (daily limit)]"
+    ));
+    assert!(provider_blocked(
+        "[goals failed: model error: openrouter returned HTTP 429: rate limit]"
+    ));
+
+    // An attempt that did real work and merely mentions a limit is not blocked.
+    // A false positive here stops a run that was working, which is worse than
+    // the wasted attempts this exists to prevent.
+    assert!(!provider_blocked(
+        "I computed D(14) = 5949063 and verified it three ways. The provider rate limit \
+         slowed the run but every call eventually succeeded."
+    ));
+    // A genuine attempt that failed for a mathematical reason.
+    assert!(!provider_blocked(
+        "[goals failed: the derivation did not close; the recurrence is unproven]"
+    ));
+    assert!(!provider_blocked(""));
 }
