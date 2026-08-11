@@ -13,7 +13,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
 | `L1.0/cambie_yan_html.md` | _(undescribed)_ |
 | `L1.0/conjugacy_class_statistics.md` | _(undescribed)_ |
-| `L1.0/conjugacy_class_statistics_body.md` | _(undescribed)_ |
+| `L1.0/conjugacy_class_statistics_body.md` | Curated summary of Campion Loth et al (arXiv:2301.00898): on a single conjugacy class C_λ, inversion-indicator probability (Lemma 4.7) Prλ[I_{i,j}=1]=1/2+a_2/(n(n-1))−a_1(a_1−1)/(2n(n-1))+(j−i−1)[n−n·a_1−a_1+a_1²−2a_2]/[n(n−1)(n−2)] — affine in the gap, dependent only on n,a_1=#fixed,a_2=#2-cycles (PROVED analogue of f_n(k)=A_n+(k−1)B_n). Thm 4.8: weighted-inversion means two-parameter form. Per-single-permutation only, NOT the cyclic-subgroup sum. Full text: research/L0.0/conjugacy_class_statistics_body.full.md |
 | `L1.0/factorial_number_system_wiki.md` | _(undescribed)_ |
 | `L1.0/ford_cycle_type_toolkit.md` | _(undescribed)_ |
 | `L1.0/gaetz_ryba_stable_chars_permutation_patterns.md` | ERRONEOUS DOWNLOAD marker: the file name promises the Gaetz–Ryba stable-characters/permutation-patterns paper but the L0.0 companion actually contains arXiv:2107.10110 (a NeurIPS machine-learning paper on zeroth-order optimization), unrelated to permutations. Negative/dead download — filename untrustworthy, do not re-read; no support for any belief here. |
