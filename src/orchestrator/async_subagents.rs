@@ -78,6 +78,7 @@ const ORGANIZE_AFTER_TOOLS: FollowUpStep = FollowUpStep {
             folder's INDEX.md so it matches what is on disk, describe every file that is now \
             undescribed, and correct any row whose description no longer matches its file. Keep \
             toolkits/INDEX.md in step with the files beside it. Do not change what any file says.",
+    rewrites_shared_index: true,
 };
 
 const DIGEST_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
@@ -87,6 +88,7 @@ const DIGEST_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
             beliefs. For each new source, replace its placeholder excerpt with what it actually \
             establishes and what that implies here, under a thousand tokens. Say which sources do \
             not help and why, and flag anything that contradicts what memory.md asserts.",
+    rewrites_shared_index: false,
 };
 
 const ORGANIZE_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
@@ -95,6 +97,7 @@ const ORGANIZE_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
             name that says what it is about, refresh research/INDEX.md so it is the way in and \
             reflects what the scholar wrote, and describe every file still undescribed. Do not \
             change what any file says.",
+    rewrites_shared_index: true,
 };
 
 /// Runs one `spawn_agents` call may launch.
