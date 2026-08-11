@@ -518,7 +518,7 @@ impl AsyncSubagentManager {
                         | tinyagents::graph::OrchestrationTaskStatus::Running
                 )
             })
-            .map(|record| record.task_id.to_string())
+            .map(|record| record.task_id().to_string())
             .collect()
     }
 
