@@ -87,6 +87,8 @@ pub(super) struct SolutionState {
     restarts: usize,
     /// The judge's score for each attempt so far, oldest first.
     scores: Vec<u8>,
+    /// What the judge made of the attempt just finished.
+    judged: Verdict,
 }
 
 impl SolutionState {
@@ -102,6 +104,7 @@ impl SolutionState {
             steer: String::new(),
             restarts: 0,
             scores: Vec::new(),
+            judged: Verdict::Proceed,
         }
     }
 
@@ -283,6 +286,130 @@ fn oracle_prompt(problem: &str) -> String {
          program, run that instead of writing a second one. Report the command you ran and \
          its exact output, and say for each worked example whether it matched."
     )
+}
+
+/// What the judge decided about how an attempt was conducted.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum Verdict {
+    /// Conducted acceptably, whatever it found.
+    Proceed,
+    /// Worth continuing, pointed slightly wrong.
+    Steer,
+    /// Wrong in a way continuing will not repair.
+    Restart,
+}
+
+/// Reads the judge's reply.
+///
+/// Unparsable is [`Verdict::Proceed`], deliberately and in the same spirit as
+/// an unparsable reflection not counting as solved: the expensive outcome
+/// needs the explicit word. A judge whose reply the loop cannot read must not
+/// be able to throw an attempt away by accident.
+pub(super) fn judge_verdict(reply: &str) -> Verdict {
+    let upper = reply.to_uppercase();
+    if upper.contains("VERDICT: RESTART") || upper.contains("VERDICT:RESTART") {
+        Verdict::Restart
+    } else if upper.contains("VERDICT: STEER") || upper.contains("VERDICT:STEER") {
+        Verdict::Steer
+    } else {
+        Verdict::Proceed
+    }
+}
+
+/// Reads the judge's score, if it gave a readable one.
+pub(super) fn judge_score(reply: &str) -> Option<u8> {
+    let upper = reply.to_uppercase();
+    let rest = upper.split("SCORE:").nth(1)?;
+    let digits: String = rest
+        .trim_start()
+        .chars()
+        .take_while(char::is_ascii_digit)
+        .collect();
+    digits.parse().ok().filter(|score| (1..=5).contains(score))
+}
+
+/// Pulls the judge's one-sentence guidance out of its reply.
+pub(super) fn judge_guidance(reply: &str) -> String {
+    for line in reply.lines() {
+        let trimmed = line.trim();
+        if let Some(rest) = trimmed
+            .strip_prefix("NEXT:")
+            .or_else(|| trimmed.strip_prefix("next:"))
+            && !rest.trim().is_empty()
+        {
+            return rest.trim().to_string();
+        }
+    }
+    String::new()
+}
+
+/// Scores how the attempt was conducted and decides whether to start over.
+///
+/// This is not the reflection: reflection asks whether the answer is right and
+/// what the run learned, and it is the only thing that can end the loop. The
+/// judge asks a narrower question — was this attempt *conducted* in a way the
+/// next one should inherit — and its expensive answer is bounded by
+/// [`MAX_RESTARTS`], because a judge that dislikes the run's whole direction
+/// could otherwise reset it until the attempt ceiling stopped the loop.
+///
+/// It runs before the reflection rather than after, so a restart costs the run
+/// a judge call rather than a judge call plus a reflection it is about to
+/// discard.
+async fn judge_step(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    mut state: SolutionState,
+) -> SolutionState {
+    let prompt = format!(
+        "Judge how this attempt was conducted.\n\nProblem:\n{}\n\n\
+         This is attempt {} of at most {MAX_ATTEMPTS}. {}\n\n\
+         The attempt reported:\n{}",
+        state.problem,
+        state.attempts,
+        if state.restarts >= MAX_RESTARTS {
+            "The run has already been restarted as often as it may be, so RESTART is no \
+             longer available to you: score, and PROCEED or STEER."
+        } else {
+            "RESTART is available but expensive; it discards this direction and spends a \
+             fresh attempt."
+        },
+        state.last_attempt
+    );
+    let reply = delegate(subagents, "judge", prompt).await;
+    let score = judge_score(&reply);
+    if let Some(score) = score {
+        state.scores.push(score);
+    }
+    let mut verdict = judge_verdict(&reply);
+    if verdict == Verdict::Restart && state.restarts >= MAX_RESTARTS {
+        // The ceiling outranks the verdict, exactly as the attempt ceiling
+        // outranks the stuck rule: a bound that a model can talk its way past
+        // is not a bound.
+        verdict = Verdict::Steer;
+    }
+    state.steer = match verdict {
+        Verdict::Proceed => String::new(),
+        Verdict::Steer | Verdict::Restart => judge_guidance(&reply),
+    };
+    if verdict == Verdict::Restart {
+        state.restarts += 1;
+        // A restart is not progress, and saying so is what keeps the loop from
+        // treating a discarded direction as an advance.
+        state.unproductive += 1;
+    }
+    if let Some(tracer) = tracer {
+        tracer.note(&format!(
+            "solution loop: judge scored {} and returned {}",
+            score.map_or_else(|| "unreadably".to_string(), |score| format!("{score}/5")),
+            match verdict {
+                Verdict::Proceed => "proceed",
+                Verdict::Steer => "steer",
+                Verdict::Restart => "restart",
+            }
+        ));
+    }
+    state.judged = verdict;
+    state
 }
 
 /// Tells an attempt whether it is starting fresh or continuing existing work.
