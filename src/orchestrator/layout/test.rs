@@ -105,12 +105,12 @@ async fn a_program_written_through_the_shell_is_filed_after_the_command() {
         root.join(".keep").is_file(),
         "machinery is not the run's work"
     );
-    assert_eq!(moved.len(), 2, "{moved:?}");
+    assert_eq!(moved.moved.len(), 2, "{:?}", moved.moved);
 
     let note = swept_note(&moved);
     assert!(note.contains("code/dyadic.py"), "{note}");
     assert!(
-        swept_note(&[]).is_empty(),
+        swept_note(&Swept::default()).is_empty(),
         "a command that moved nothing says nothing"
     );
     let _ = std::fs::remove_dir_all(&root);
@@ -130,7 +130,12 @@ async fn a_sweep_never_overwrites_a_file_already_filed() {
 
     let moved = sweep(&root).await;
 
-    assert!(moved.is_empty(), "{moved:?}");
+    assert!(moved.moved.is_empty(), "{:?}", moved.moved);
+    // Silence would leave the stray at the root for the rest of the run with
+    // nothing to say which of the two files is current.
+    let note = swept_note(&moved);
+    assert!(note.contains("the filed name is taken"), "{note}");
+    assert!(note.contains("solve.py"), "{note}");
     assert_eq!(
         std::fs::read_to_string(root.join("code/solve.py")).expect("the filed program is readable"),
         "the real one"
