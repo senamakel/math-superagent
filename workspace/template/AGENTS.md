@@ -38,5 +38,9 @@
 - Keep provisional work in `scratchpad.md` and promote durable results to
   `memory.md`, including failed approaches and open questions.
 - Never write credentials or environment values to workspace files.
-- `trace.jsonl` is the runtime's own event log. Read it to review a run; do not
-  edit it.
+- `trace.jsonl` is the runtime's own event log, and the tools refuse it. It is
+  a verbatim replay of what you have already seen, so reading it would spend a
+  large part of your context to learn nothing. Operators read it outside the
+  run.
+- Build reusable helpers in `toolkit.py` instead of rewriting the same routine
+  in each script, and describe every one of them in `toolkit.md`.
