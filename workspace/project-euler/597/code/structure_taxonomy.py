@@ -66,8 +66,11 @@ def part_a():
     probs = [Fraction(4, 15), Fraction(8, 45), Fraction(1, 3),
              Fraction(4, 27), Fraction(2, 27)]
     total = sum(probs, Fraction(0))
-    print(f"  sum of row probabilities = {total}  (target 56/135)  "
-          f"{'OK' if total == Fraction(56,135) else 'FAIL'}")
+    even_total = Fraction(4, 15) + Fraction(4, 27)   # even rows
+    print(f"  sum of ALL five row probabilities = {total}  (partition check: "
+          f"{'OK = 1' if total == 1 else 'FAIL'})")
+    print(f"  sum of EVEN rows = {even_total} = {float(even_total):.10f}  "
+          f"(target 56/135)  {'OK' if even_total == Fraction(56,135) else 'FAIL'}")
     return allok
 
 
