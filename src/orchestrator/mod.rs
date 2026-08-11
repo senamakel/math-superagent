@@ -1263,6 +1263,63 @@ struct SupportPrompts {
 /// Each gets only the tools its role needs: reflection has no research or
 /// execution tools at all, so it cannot drift into solving the problem it is
 /// supposed to be judging.
+/// Registers the pattern agent, which is the tool-richest of the support roles.
+///
+/// Split out of [`register_support_agents`] because of that: it computes as
+/// well as observes, so it carries shell authority, file-write authority,
+/// delegation, and the one lookup it is allowed, and inlining all of it buried
+/// the four other registrations beside it.
+fn register_pattern_agent(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let mut pattern = specialist_harness(
+        parts.model.clone(),
+        parts.budget,
+        "pattern_finder",
+        parts.tracer,
+    );
+    for tool in PatternTool::all() {
+        register_resilient(&mut pattern, tool);
+    }
+    for tool in parts.documents.tools() {
+        register_resilient(&mut pattern, tool);
+    }
+    // The pattern agent computes as well as observes. Its own tools answer
+    // only what holds across terms it is handed, so without a way to generate
+    // more terms it can neither test a conjecture past the data that suggested
+    // it nor find the first term that breaks one — which is the finding worth
+    // having. It gets shell and file-write authority for that, and delegation
+    // besides, so a check too large to run inline becomes a commissioned
+    // program rather than an abandoned question.
+    register_resilient(
+        &mut pattern,
+        Arc::new(WriteToolFile::new(parts.workspace.clone())),
+    );
+    register_resilient(
+        &mut pattern,
+        Arc::new(ExecuteCommand::new(
+            parts.workspace.clone(),
+            parts.budget.tool_timeout,
+        )),
+    );
+    for tool in parts.delegation.iter().cloned() {
+        register_resilient(&mut pattern, tool);
+    }
+    // The one search this role may have. It has no web search on purpose — a
+    // bounded structural question must not turn into a second investigation —
+    // and an encyclopedia lookup keyed on terms it has already computed cannot
+    // become one: the terms either match a catalogued sequence or they do not.
+    // It is also the role holding the terms, so making it ask another agent to
+    // run the lookup would spend a child run to pass a list of integers along.
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut pattern, tool);
+    }
+    register_recall(&mut pattern, &parts.workspace);
+    subagents.register("pattern_finder", Arc::new(pattern), prompt)
+}
+
 fn register_support_agents(
     subagents: &AsyncSubagentManager,
     parts: &SupportAgents<'_>,
