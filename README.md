@@ -88,7 +88,10 @@ rather than the run's accumulated work.
 A single tool call may run for ten minutes and a whole agent run for two hours.
 Within that, an agent gets 250 model calls and 4000 tool calls; a run that
 reaches the model-call cap stops and returns what it has rather than
-discarding the work.
+discarding the work. Each model turn is capped at 12000 output tokens, which is
+a safety ceiling against an unbounded wall clock rather than a way to make the
+model concise — set low enough to bind an ordinary turn it truncates the model
+mid-generation and buys a retry.
 Every limit is overridable through the `MATH_AGENT_*` variables documented in
 `.env.example`.
 
