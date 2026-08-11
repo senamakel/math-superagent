@@ -1,4 +1,5 @@
 //! Unit tests for the solution loop's routing policy and lesson extraction.
+#![allow(clippy::expect_used)]
 
 use super::{MAX_ATTEMPTS, Route, STUCK_THRESHOLD, SolutionState, extract_lesson, route};
 
@@ -118,4 +119,27 @@ fn learnings_are_counted_from_the_lesson_block() {
         0
     );
     assert_eq!(count_learnings("no structure at all"), 0);
+}
+
+#[test]
+fn a_claimed_solution_with_no_program_is_not_accepted() {
+    use super::has_executable_artifact;
+
+    let dir = std::env::temp_dir().join(format!("math-agent-ev-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).expect("temp workspace");
+
+    // Notes alone are the confabulation signature: a confident write-up with
+    // nothing that ever ran.
+    std::fs::write(dir.join("solution.md"), "The answer is 1,2,3").expect("write");
+    assert!(!has_executable_artifact(&dir));
+
+    // An empty program is no better than none.
+    std::fs::write(dir.join("solution.py"), "").expect("write");
+    assert!(!has_executable_artifact(&dir));
+
+    std::fs::write(dir.join("solution.py"), "print(6)").expect("write");
+    assert!(has_executable_artifact(&dir));
+
+    let _ = std::fs::remove_dir_all(&dir);
 }
