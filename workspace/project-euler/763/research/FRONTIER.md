@@ -8,6 +8,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | --- | --- | --- | --- |
 | 2 | http://oeis.org/ | — | # Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/ Search: seq:1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267,5949063 No results. # Content is available… |
 | 2 | http://oeis.org/LICENSE | — | No results. # Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE |
+| 2 | https://arxiv.org/abs/1009.5731v1 | arXiv:1009.5731v1 | \| Subjects: \| Combinatorics (math.CO); Classical Analysis and ODEs (math.CA) \| Cite as: \| [arXiv:1009.5731][6] [math.CO] \| \| (or [arXiv:1009.5731v1][7] [math.CO] for this version) \| \|… |
 | 2 | https://oeis.org/A000108 | A000108 | cross-referenced from A001006 |
 | 2 | https://oeis.org/A007901 | A007901 | cross-referenced from A007902 |
 | 1 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | titled An Explicit Solution to the Chessboard Pebbling Problem, by Qiang Zhen and Charles Knessl - [View PDF][5] - [TeX Source][10] [view license][11] ### Current browse context: math.CO [< prev][12]… |
@@ -25,7 +26,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://gotit.pub/faq | What is GotitPub? | Code Finder for Papers*( [What is CatalyzeX?][29])* DagsHub Toggle DagsHub*( [What is DagsHub?][30])* GotitPub Toggle Gotit.pub*( [What is GotitPub?][31])* Huggingface Toggle Hugging Face*( [What is… |
 | 1 | https://alphaxiv.org/ | What is alphaXiv? | [What are Smart Citations?][27])* Code, Data, Media # Code, Data and Media Associated with this Article alphaXiv Toggle alphaXiv*( [What is alphaXiv?][28])* Links to Code Toggle CatalyzeX Code Finder… |
 | 1 | https://api.semanticscholar.org/arXiv:1009.5731 | Semantic Scholar | \| [2010-09][16] Change to browse by: [math][17] [math.CA][18] ### References & Citations - [NASA ADS][19] - [Google Scholar][20] - [Semantic Scholar][21] export BibTeX citation Loading... ## BibTeX… |
-| 1 | https://arxiv.org/abs/1009.5731v1 | arXiv:1009.5731v1 | \| Subjects: \| Combinatorics (math.CO); Classical Analysis and ODEs (math.CA) \| Cite as: \| [arXiv:1009.5731][6] [math.CO] \| \| (or [arXiv:1009.5731v1][7] [math.CO] for this version) \| \|… |
 | 1 | https://core.ac.uk/services/recommender | What is CORE? | Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][37])* Core recommender toggle CORE Recommender*( [What is CORE?][38])* - Author - Venue - Institution - Topic About… |
 | 1 | https://dagshub.com/ | What is DagsHub? | [What is alphaXiv?][28])* Links to Code Toggle CatalyzeX Code Finder for Papers*( [What is CatalyzeX?][29])* DagsHub Toggle DagsHub*( [What is DagsHub?][30])* GotitPub Toggle Gotit.pub*( [What is… |
 | 1 | https://doi.org/10.48550/arXiv.1009.5731 | https://doi.org/10.48550/arXiv.1009.5731 | and ODEs (math.CA) \| Cite as: \| [arXiv:1009.5731][6] [math.CO] \| \| (or [arXiv:1009.5731v1][7] [math.CO] for this version) \| \| [https://doi.org/10.48550/arXiv.1009.5731][8] Focus to learn more… |
