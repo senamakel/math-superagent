@@ -297,11 +297,9 @@ impl OrchestratorAgent {
         let documents = WorkspaceDocuments::new(workspace.clone())?;
         // Commits the workspace after every successful write, so a rewritten
         // solution or an edited belief is recoverable rather than lost.
-        let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> =
-            Arc::new(checkpoint::WorkspaceCheckpoint::new(
-                workspace.clone(),
-                Some(tracer.clone()),
-            ));
+        let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> = Arc::new(
+            checkpoint::WorkspaceCheckpoint::new(workspace.clone(), Some(tracer.clone())),
+        );
         let prompts = RolePrompts::load(&workspace)?;
 
         let vector_store = VectorStore::from_env()?;

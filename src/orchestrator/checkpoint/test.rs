@@ -15,7 +15,10 @@ fn only_writing_tools_trigger_a_checkpoint() {
 
 #[test]
 fn commit_subjects_are_one_condensed_line() {
-    assert_eq!(summarise("wrote 40 bytes to solution.py"), "wrote 40 bytes to solution.py");
+    assert_eq!(
+        summarise("wrote 40 bytes to solution.py"),
+        "wrote 40 bytes to solution.py"
+    );
     assert_eq!(summarise("first line\nsecond line"), "first line");
     assert_eq!(summarise("  padded\t words  "), "padded words");
     assert_eq!(summarise(""), "workspace updated");
@@ -45,7 +48,10 @@ async fn checkpoints_commit_only_when_content_changed() {
         let _ = std::fs::remove_dir_all(&directory);
         return;
     }
-    assert!(history_directory(&directory).is_dir(), "history is created lazily");
+    assert!(
+        history_directory(&directory).is_dir(),
+        "history is created lazily"
+    );
 
     std::fs::write(directory.join("solution.py"), "print(1)").expect("write is possible");
     let first = checkpoint.commit("first").await.expect("commit succeeds");

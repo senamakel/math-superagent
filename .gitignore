@@ -27,6 +27,10 @@ lcov.info
 __pycache__/
 *.py[cod]
 
+# The agent's own per-workspace git history, kept out of the product
+# repository's history. A nested `.git` would make this an embedded repo.
+/workspace/**/.workspace-history/
+
 # Runtime event logs. Several megabytes per run, and the derivation and notes
 # already carry the reasoning worth keeping. Read them locally or in Langfuse.
 /workspace/**/trace.jsonl

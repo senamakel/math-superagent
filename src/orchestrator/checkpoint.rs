@@ -129,7 +129,8 @@ impl WorkspaceCheckpoint {
         if staged.trim().is_empty() {
             return Ok(None);
         }
-        self.git(&["commit", "--quiet", "--message", message]).await?;
+        self.git(&["commit", "--quiet", "--message", message])
+            .await?;
         let id = self.git(&["rev-parse", "--short", "HEAD"]).await?;
         Ok(Some(id.trim().to_string()))
     }
