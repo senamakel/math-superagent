@@ -128,3 +128,11 @@ fn empty_documents_are_reported_rather_than_returned_blank() {
         .expect_err("an empty page is not usable");
     assert!(error.to_string().contains("no extractable text"));
 }
+
+#[test]
+fn debug_link_output() {
+    let mut table = LinkTable::default();
+    let markdown = html_to_markdown("<p><a href=\"https://a.test/x\">first</a></p>", &mut table);
+    println!("MARKDOWN: {markdown:?}");
+    println!("TABLE: {:?}", table.render());
+}
