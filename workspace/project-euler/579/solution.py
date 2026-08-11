@@ -51,7 +51,7 @@ from math import gcd
 
 # Reuse the exact O(1) power-sum summation (bit-for-bit as validated).
 from solution_power import compute_power, P
-from frame_method import canonical_key, gcd3, enumerate_primitive_frames
+from frame_method import canonical_key, gcd3, enumerate_primitive_frames, enumerate_primitive_frames_lean
 
 
 def euler(a, b, c, d):
@@ -77,25 +77,23 @@ def enumerate_primitive_frames_quat(n):
     dict canon_key -> (ell, A, B, C, D).  Does NOT skip on A,B,C>n (that
     matches frame_method, which keeps such frames for exact key-set identity).
     """
-    R = math.isqrt(n)          # N = a^2+b^2+c^2+d^2 <= n  =>  |each coord| <= sqrt(n)
-    R2 = R * R
+    R = math.isqrt(n)          # each |coord|^2 <= n  =>  |coord| <= isqrt(n)
     frames = {}
-    # scan a,b,c in [-R,R], d ranges over the remaining 4-ball slice
+    # scan a,b,c in [-R,R], d ranges over the remaining 4-ball slice N<=n
     for a in range(-R, R + 1):
         a2 = a * a
         for b in range(-R, R + 1):
             ab = a2 + b * b
-            if ab > R2:
+            if ab > n:
                 continue
             for c in range(-R, R + 1):
                 abc = ab + c * c
-                if abc > R2:
+                if abc > n:
                     continue
-                rem = R2 - abc
-                dr = math.isqrt(rem)          # d ranges [-dr, dr]
+                dr = math.isqrt(n - abc)      # N = abc + d^2 <= n
                 for d in range(-dr, dr + 1):
                     Nv = abc + d * d
-                    if Nv > n or Nv == 0:
+                    if Nv == 0:
                         continue
                     if (Nv & 1) == 0:
                         continue             # primitive frames have odd ell=N
