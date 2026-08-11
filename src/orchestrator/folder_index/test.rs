@@ -92,6 +92,10 @@ fn naming_the_mount_point_from_inside_it_resolves_to_the_folder_meant() {
     assert_eq!(folder_name("workspace/research"), "research");
     assert_eq!(folder_name("/workspace/research"), "research");
     assert_eq!(folder_name("research"), "research");
+    // `.` is how a model asks for the folder it is already in.
+    assert_eq!(folder_name("."), "");
+    assert_eq!(folder_name("./"), "");
+    assert_eq!(folder_name("/workspace"), "");
     // The root index is what `workspace` should have named all along.
     assert_eq!(index_for(&folder_name("workspace")), INDEX_FILE);
     assert_eq!(
