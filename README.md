@@ -359,10 +359,9 @@ text, read and store files, make exact edits, index documents and search that
 index, plus `search_claims` for what the library establishes and
 `request_research` for what it does not. The index lives at
 `.document-index.json` in the selected workspace; downloads are capped at 5
-MiB, paths cannot leave `/workspace`, and one workspace cannot search another's
-files.
+MiB, paths cannot leave `/workspace`, and one workspace cannot search another's.
 
-The tool-builder additionally gets `apply_patch`, which applies a Codex-format
+The tool-builder additionally gets `apply_patch`, applying a Codex-format
 envelope across several files at once. Two deviations are deliberate: context
 matching is exact and an ambiguous hunk is refused rather than fuzzily
 resolved, because a patch landing in the wrong place yields a program that runs
