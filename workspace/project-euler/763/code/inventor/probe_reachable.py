@@ -15,21 +15,10 @@ NOTE: the full set-of-all-merge-orderings voidance computation is exponential
 in config size; it is bounded here to N<=5 (configs of 11 cells).
 """
 from itertools import product
-from lib.amoeba import children
+from lib.amoeba import children, forward_level
 
 DIM = 3
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
-
-
-def forward_level(level):
-    nxt = set()
-    for S in level:
-        Sset = set(S)
-        for p in Sset:
-            ch = children(p, DIM)
-            if all(c not in Sset for c in ch):
-                nxt.add(frozenset((Sset - {p}) | set(ch)))
-    return nxt
 
 
 def mergeable(key, cand, memo):

@@ -70,6 +70,36 @@ def next_level_fs(level):
     return nxt
 
 
+def forward_level(level, d):
+    """One forward-BFS step over frozenset-of-tuples configs in d dimensions.
+
+    `level` is an iterable of frozensets of d-tuples (occupied cubes/cells).
+    Returns the set of all distinct configurations reachable by exactly one
+    division: a cell p may divide iff all d of its positive-unit forward
+    neighbours p+e_i (i=0..d-1) are empty, and the result replaces p with
+    those d.  For d=3 this is exactly the naive oracle step next_level_fs,
+    and for d=2 it is the 2D step.
+
+    This is the CANONICAL shared definition of the one-step frozenset BFS,
+    consolidated from four copies that formerly lived in
+    amoeba2d/verify_reverse_merge.py (parametrized by d) and
+    inventor/check_recurrence.py, inventor/probe_reachable.py,
+    inventor/probe_topcap.py (each hardcoded d=3); for their common 3D case
+    the four agreed exactly, and the parametrized one reduces to the 3D
+    copies at d=3, so no definition had to be chosen over another.
+    Correctness established by those programs reproducing D(2)=3 and
+    D(10)=44499.
+    """
+    nxt = set()
+    for S in level:
+        Sset = set(S)
+        for p in Sset:
+            ch = children(p, d)
+            if all(c not in Sset for c in ch):
+                nxt.add(frozenset((Sset - {p}) | set(ch)))
+    return nxt
+
+
 # --- decoding -------------------------------------------------------------
 
 

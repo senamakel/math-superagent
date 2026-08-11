@@ -8,18 +8,7 @@ that parent.  Verify on all configs the forward BFS reaches, in d=2 and d=3.
 Runs standalone.
 """
 from itertools import product
-from lib.amoeba import children
-
-
-def forward_level(level, d):
-    nxt = set()
-    for S in level:
-        Sset = set(S)
-        for p in Sset:
-            ch = children(p, d)
-            if all(c not in Sset for c in ch):
-                nxt.add(frozenset((Sset - {p}) | set(ch)))
-    return nxt
+from lib.amoeba import children, forward_level
 
 
 def merge(key, d, memo, cand):

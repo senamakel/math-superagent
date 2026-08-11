@@ -23,6 +23,7 @@ histogram dumps (N=2..12).  If either fails, the reverse structure is NOT as
 claimed and the collapse-tree bijection is wrong.
 """
 from itertools import product
+from lib.amoeba import forward_level
 
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
 
@@ -33,17 +34,6 @@ def children(p):
 
 def level(p):
     return sum(p)
-
-
-def forward_level(level):
-    nxt = set()
-    for S in level:
-        Sset = set(S)
-        for p in Sset:
-            ch = children(p)
-            if all(c not in Sset for c in ch):
-                nxt.add(frozenset((Sset - {p}) | set(ch)))
-    return nxt
 
 
 def top_caps(S):
@@ -110,8 +100,8 @@ def main():
             # CLAIM B: sum of f over this level's configs == D(N+1)
             s = sum(f_of(S) for S in level)
             print(f"    claimB: sum f(C) over conf(N)={s}  (D(N+1)="
-                  f"{len(forward_level(level))})  match={s==len(forward_level(level))}")
-        level = forward_level(level)
+                  f"{len(forward_level(level, 3))})  match={s==len(forward_level(level, 3))}")
+        level = forward_level(level, 3)
     print("\nD(N):", D)
 
 

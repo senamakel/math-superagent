@@ -12,26 +12,14 @@ in d=2 and d=3 by exact BFS.
 """
 
 
-from lib.amoeba import children
-
-
-def one_step(level, d):
-    nxt = set()
-    for S in level:
-        Sset = set(S)
-        for p in Sset:
-            ch = children(p, d)
-            if all(c not in Sset for c in ch):
-                ns = (Sset - {p}) | set(ch)
-                nxt.add(frozenset(ns))
-    return nxt
+from lib.amoeba import children, forward_level
 
 
 def D_bfs(N, d):
     level = {frozenset([(0,) * d])}
     out = [1]
     for n in range(1, N + 1):
-        level = one_step(level, d)
+        level = forward_level(level, d)
         out.append(len(level))
     return out
 
@@ -88,7 +76,7 @@ if __name__ == "__main__":
         # actually verify on the frontier sets at depth N
         level = {frozenset([(0,) * 2])}
         for _ in range(N):
-            level = one_step(level, 2)
+            level = forward_level(level, 2)
         memo = {}
         bad = [S for S in level if not reverse_merge_reducible(S, 2, memo)]
         print(f"N={N}: frontier={len(level)}, reverse-merge failures={len(bad)}")
