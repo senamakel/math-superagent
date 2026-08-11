@@ -246,9 +246,9 @@ derivations and programs. The tool-builder accumulates reusable helpers under
 `toolkits/`, one function per file, so reading the helper you need costs a few
 hundred bytes rather than the whole library.
 
-Every folder carries an `INDEX.md` saying what each file is for, because
-`list_workspace` can answer what exists but not what anything is *for* — and
-after a long run nothing on disk distinguishes the oracle from the answer.
+Every folder carries an `INDEX.md` saying what each file is for. `list_workspace`
+can answer what exists but not what anything is *for*, and after a long run
+nothing on disk distinguishes the oracle from the answer.
 `describe_file` records a purpose and `refresh_index` re-derives the file list
 from disk, keeping existing descriptions, marking new files undescribed, and
 dropping rows for files that are gone. Descriptions are left to explicit tool
