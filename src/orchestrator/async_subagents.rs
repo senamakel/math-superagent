@@ -115,6 +115,8 @@ pub(crate) struct AsyncSubagentManager {
     budget: RunBudget,
     tracer: Option<Arc<RunTracer>>,
     langfuse: Option<Arc<LangfuseClient>>,
+    /// Bounds how many spawned runs execute at once. See [`max_concurrent_agents`].
+    slots: Arc<Semaphore>,
 }
 
 impl std::fmt::Debug for AsyncSubagentManager {
