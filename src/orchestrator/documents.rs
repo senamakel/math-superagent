@@ -21,8 +21,16 @@ pub(super) struct WorkspaceDocuments {
 
 impl WorkspaceDocuments {
     pub(super) fn new(workspace: PathBuf) -> Result<Self> {
+        // Several reference sites, Wikipedia among them, answer an unidentified
+        // client with `403 Forbidden`. Sending a real User-Agent is what their
+        // policies ask for and turns a hard failure into a usable source.
         let client = reqwest::Client::builder()
             .timeout(std::time::Duration::from_mins(10))
+            .user_agent(concat!(
+                "math-agent/",
+                env!("CARGO_PKG_VERSION"),
+                " (+https://github.com/senamakel/riemann)"
+            ))
             .build()
             .map_err(|error| {
                 tinyagents::TinyAgentsError::Tool(format!(
