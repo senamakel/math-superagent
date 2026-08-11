@@ -349,17 +349,16 @@ has done any work, so reading the short one is the default and reading the long
 one is a decision. The digest is *structural*, not the leading characters: the
 heading outline, the abstract, and every paragraph opening with `Theorem`,
 `Lemma`, `Definition`, and the rest. For a paper the leading characters are the
-title and half the introduction, the part a reader is least likely to need,
-while the labelled statements are the payload and are mechanically locatable. A
-source with neither falls back to its leading characters. The digest is a
-placeholder the scholar replaces with what the source establishes.
+title and half the introduction; the labelled statements are the payload, and
+they are mechanically locatable. A source with neither falls back to its
+leading characters. The scholar replaces the digest with what the source
+establishes.
 
-Each download's citations are kept rather than discarded, accumulating in
-`research/FRONTIER.md` ranked by how many of the library's own sources cite each
-target — a URL three of your papers cite is the standard reference, which no
-rephrasing of a query will surface. Each row carries the sentence the citation
-appeared in, so a lead says why it mattered, and a second download of a URL
-already in the library is refused, naming the file that holds it.
+Each download's citations accumulate in `research/FRONTIER.md`, ranked by how
+many of the library's own sources cite each target — a URL three of your papers
+cite is the standard reference, which no rephrasing of a query will surface.
+Each row carries the sentence the citation appeared in, and a second download
+of a URL already in the library is refused, naming the file that holds it.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
@@ -479,12 +478,10 @@ src/
 │   ├── documents.rs        bounded workspace document storage and search
 │   ├── folder_index.rs     per-folder INDEX.md description tracking
 │   ├── frontier.rs         the library's citation graph, ranked and deduped
-│   ├── oeis.rs             sequence lookup, filed and cross-referenced
-│   ├── requests.rs         stated gaps, deduped and closed by a claim
-│   ├── threads.rs          the topic axis beside the arrival tree
-│   ├── readable.rs         HTML and PDF to Markdown conversion
+│   ├── oeis.rs, requests.rs, threads.rs   sequence lookup, stated gaps, topics
 │   ├── patch.rs            atomic, exact-match Codex-format patches
 │   ├── patterns.rs         exact sequence analysis and recurrence search
+│   ├── readable.rs         HTML and PDF to Markdown conversion
 │   ├── solutions.rs        graph-backed attempt/reflect/diversify loop
 │   └── vector.rs           Qdrant research store and local feature vectors
 ├── hello_agent/            small single-agent example
