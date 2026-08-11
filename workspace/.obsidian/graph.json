@@ -1,0 +1,44 @@
+{
+  "collapse-filter": false,
+  "search": "path:project-euler/903  ",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:research  ",
+      "color": {
+        "a": 1,
+        "rgb": 14701138
+      }
+    },
+    {
+      "query": "path:L1",
+      "color": {
+        "a": 1,
+        "rgb": 14725458
+      }
+    },
+    {
+      "query": "path:L2",
+      "color": {
+        "a": 1,
+        "rgb": 11657298
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": true,
+  "textFadeMultiplier": -0.4,
+  "nodeSizeMultiplier": 1.31968315972222,
+  "lineSizeMultiplier": 1.8360546875,
+  "collapse-forces": false,
+  "centerStrength": 0.501822916666667,
+  "repelStrength": 12.6918402777778,
+  "linkStrength": 1,
+  "linkDistance": 250,
+  "scale": 0.8248151928965481,
+  "close": false
+}
