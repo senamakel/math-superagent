@@ -59,13 +59,28 @@ use super::folder_index::INDEX_FILE;
 /// Notes one batch may hold before it seals.
 pub(super) const FANOUT: usize = 10;
 
-/// Tokens any node above level 0 may occupy.
+/// Tokens a *root* may occupy: `CONTEXT.md` and each tree's `ROOT.md`.
 ///
 /// A thousand tokens is what a role can afford to be handed on every one of
-/// its model calls. It caps each *node*, not the tree: the tree grows by
-/// adding levels, and a reader pays for one path down it rather than all of
-/// it.
-pub(super) const NODE_TOKENS: u64 = 1_000;
+/// its model calls, and these are the files routed into system prompts. The
+/// cap is theirs because the cost is theirs.
+pub(super) const ROOT_TOKENS: u64 = 1_000;
+
+/// Tokens a seal note may occupy.
+///
+/// Four times a root's budget, because a seal is not in anybody's system
+/// prompt — it is read on demand, by whoever follows a link down to it. The
+/// uniform thousand-token cap was the wrong reading of why the cap exists, and
+/// it showed: a live seal covering four sources came to 1,417 bytes against
+/// 7,800 bytes of notes, and what survived was one line per source — a
+/// citation, a formula, a verdict. That is a catalogue, and the run already
+/// has one in `INDEX.md`.
+///
+/// An `L1` digest is about a thousand tokens by the scholar's own bound, so
+/// ten of them are ten thousand; four thousand is a fold of two and a half to
+/// one, which is enough to carry every distinct result with its hypotheses
+/// rather than its title.
+pub(super) const SEAL_TOKENS: u64 = 4_000;
 
 /// Characters charged to one token, matching the harness estimator.
 const CHARS_PER_TOKEN: u64 = 4;
@@ -81,6 +96,16 @@ pub(super) const ROOT_FILE: &str = "ROOT.md";
 
 /// The run-wide standing brief, a root in its own right.
 const CONTEXT_FILE: &str = "CONTEXT.md";
+
+/// The budget a node is held to, by what reads it.
+fn budget_for(path: &str) -> u64 {
+    let name = path.rsplit('/').next().unwrap_or(path);
+    if name == CONTEXT_FILE || name == ROOT_FILE {
+        ROOT_TOKENS
+    } else {
+        SEAL_TOKENS
+    }
+}
 
 /// Deepest level the planner will look for.
 const MAX_LEVEL: usize = 10;
@@ -380,7 +405,7 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
     }
 
     for node in &nodes {
-        if node.tokens > NODE_TOKENS {
+        if node.tokens > budget_for(&node.path) {
             over_budget.push(Task {
                 node: node.clone(),
                 fault: Fault::OverBudget,
