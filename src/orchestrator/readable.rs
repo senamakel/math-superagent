@@ -474,6 +474,99 @@ impl LinkTable {
     }
 }
 
+/// Characters of prose kept either side of a citation.
+const CONTEXT_BEFORE: usize = 140;
+
+/// Characters of prose kept after a citation.
+const CONTEXT_AFTER: usize = 160;
+
+/// Reads a one-line window of prose around byte offset `at`.
+///
+/// Collapsed to a single line because the window is destined for a table row.
+/// An empty result is normal and means the citation carried no prose — a
+/// navigation link, or a bare URL on a line of its own.
+fn window(text: &str, at: usize) -> String {
+    if at == 0 || at > text.len() {
+        return String::new();
+    }
+    let start = floor_boundary(text, at.saturating_sub(CONTEXT_BEFORE));
+    let end = ceil_boundary(text, (at + CONTEXT_AFTER).min(text.len()));
+    let mut out = collapse_spaces(&text[start..end].replace('\n', " "));
+    // Both ends are cut mid-word by construction, so drop the partial words
+    // rather than presenting them as text the source wrote.
+    if start > 0 && let Some((_, rest)) = out.split_once(' ') {
+        out = rest.to_string();
+    }
+    if end < text.len() && let Some((body, _)) = out.rsplit_once(' ') {
+        out = body.to_string();
+    }
+    out.trim().to_string()
+}
+
+/// Markers introducing a citation in text that has no anchors.
+///
+/// A converted PDF is the case that matters: a mathematical paper's reference
+/// list is where the primary literature on its subject is named, and it names
+/// it as arXiv identifiers and DOIs far more often than as URLs. Reading them
+/// is the difference between a library that grows by search and one that grows
+/// by following what its own sources cite.
+const BARE_MARKERS: [&str; 4] = ["http://", "https://", "arxiv:", "doi:"];
+
+/// Extracts citations from text with no markup to read them from.
+fn bare_links(text: &str) -> Vec<LinkRecord> {
+    let lowered = text.to_ascii_lowercase();
+    let mut records: Vec<LinkRecord> = Vec::new();
+    let mut cursor = 0;
+    while cursor < lowered.len() {
+        let Some((at, marker)) = BARE_MARKERS
+            .iter()
+            .filter_map(|marker| lowered[cursor..].find(marker).map(|at| (cursor + at, *marker)))
+            .min_by_key(|(at, _)| *at)
+        else {
+            break;
+        };
+        let rest = &text[at + marker.len()..];
+        let body: String = rest
+            .chars()
+            .take_while(|c| !c.is_whitespace() && !matches!(c, '<' | '>' | '"' | '\\' | '|'))
+            .collect();
+        let body = body.trim_end_matches(['.', ',', ';', ':', ')', ']', '}', '\'']);
+        cursor = at + marker.len() + body.len().max(1);
+        if body.is_empty() {
+            continue;
+        }
+        let url = match marker {
+            "arxiv:" => format!("https://arxiv.org/abs/{body}"),
+            "doi:" => format!("https://doi.org/{body}"),
+            _ => format!("{marker}{body}"),
+        };
+        let url = clean_url(&url);
+        if records.iter().any(|record| record.url == url) {
+            continue;
+        }
+        records.push(LinkRecord {
+            label: String::new(),
+            context: window(text, at),
+            url,
+        });
+    }
+    records
+}
+
+fn floor_boundary(text: &str, mut index: usize) -> usize {
+    while index > 0 && !text.is_char_boundary(index) {
+        index -= 1;
+    }
+    index
+}
+
+fn ceil_boundary(text: &str, mut index: usize) -> usize {
+    while index < text.len() && !text.is_char_boundary(index) {
+        index += 1;
+    }
+    index
+}
+
 /// Removes tracking parameters and a redundant trailing slash from a URL.
 pub(super) fn clean_url(url: &str) -> String {
     let (base, query) = match url.split_once('?') {
