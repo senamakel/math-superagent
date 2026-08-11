@@ -182,6 +182,30 @@ fn route(state: &SolutionState) -> Route {
     }
 }
 
+/// Where the loop goes after the judge has spoken.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Judged {
+    /// Carry on to the reflection, which decides whether the run is done.
+    Reflect,
+    /// Discard this direction and attempt again.
+    Restart,
+}
+
+/// Routes out of the judge node.
+///
+/// A plain function of the state for the same reason [`route`] is: it is a
+/// policy, it is easy to get wrong, and a live run is an expensive place to
+/// find that out. The attempt ceiling outranks a restart — a run at its last
+/// attempt must reflect on what it has rather than throw it away and stop with
+/// nothing.
+fn judged_route(state: &SolutionState) -> Judged {
+    if state.judged == Verdict::Restart && state.attempts < MAX_ATTEMPTS {
+        Judged::Restart
+    } else {
+        Judged::Reflect
+    }
+}
+
 /// Runs one child agent and returns its text, or a description of the failure.
 ///
 /// A child that fails must not end the loop: the failure is itself information
@@ -222,8 +246,16 @@ async fn attempt_step(
         state.attempts,
         workspace.is_some_and(has_executable_artifact),
     );
+    let steer = if state.steer.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "The judge reviewed the last attempt and says: {}\n\n",
+            state.steer
+        )
+    };
     let prompt = format!(
-        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{}\n\
+        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{steer}{}\n\
          {fresh}\n\n\
          Requirements for this attempt, all of them:\n\
          - You must end this attempt with at least one program written to the workspace and \
@@ -244,6 +276,7 @@ async fn attempt_step(
     }
     state.last_attempt = delegate(subagents, "goals", prompt).await;
     state.fresh_context.clear();
+    state.steer.clear();
     state
 }
 
@@ -948,6 +981,8 @@ pub(super) async fn run(
 ) -> Result<SolutionState> {
     let attempt_agents = subagents.clone();
     let attempt_tracer = tracer.clone();
+    let judge_agents = subagents.clone();
+    let judge_tracer = tracer.clone();
     let reflect_agents = subagents.clone();
     let reflect_tracer = tracer.clone();
     let attempt_workspace = workspace.clone();
@@ -965,6 +1000,15 @@ pub(super) async fn run(
             async move {
                 Ok(NodeResult::Update(
                     attempt_step(&subagents, tracer.as_ref(), workspace.as_deref(), state).await,
+                ))
+            }
+        })
+        .add_node("judge", move |state: SolutionState, _ctx: NodeContext| {
+            let subagents = judge_agents.clone();
+            let tracer = judge_tracer.clone();
+            async move {
+                Ok(NodeResult::Update(
+                    judge_step(&subagents, tracer.as_ref(), state).await,
                 ))
             }
         })
@@ -1005,7 +1049,12 @@ pub(super) async fn run(
             |state: SolutionState, _ctx: NodeContext| async move { Ok(NodeResult::Update(state)) },
         )
         .set_entry("attempt")
-        .add_edge("attempt", "reflect")
+        .add_edge("attempt", "judge")
+        .add_conditional_edges(
+            "judge",
+            judged_route,
+            [(Judged::Reflect, "reflect"), (Judged::Restart, "attempt")],
+        )
         .add_conditional_edges(
             "reflect",
             route,
