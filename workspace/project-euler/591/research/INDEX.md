@@ -4,13 +4,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `berthe_imbert_ostrowski.full.md` | _(undescribed)_ |
-| `berthe_imbert_ostrowski.md` | _(undescribed)_ |
-| `cabanillas_labbe_nearest.full.md` | _(undescribed)_ |
-| `cabanillas_labbe_nearest.md` | arXiv landing page for Cabanillas' paper; metadata only, no mathematical content. Redundant with the PDF — kept for provenance, no need to read again. |
-| `cabanillas_variant_pdf.full.md` | _(undescribed)_ |
-| `cabanillas_variant_pdf.md` | Primary source (arXiv:1904.01874): the α-numeration algorithm and Props 9/10 giving the exact O(log L) candidate set for min |
-| `ostrowski_wikipedia.full.md` | _(undescribed)_ |
-| `ostrowski_wikipedia.md` | _(undescribed)_ |
-| `three_gap_wikipedia.full.md` | _(undescribed)_ |
-| `three_gap_wikipedia.md` | _(undescribed)_ |
+| `berthe_imbert_ostrowski.md` | Summary of Berthé–Imbert, *Diophantine Approximation, Ostrowski Numeration and the Double-Base Number System* (DMTCS 11:1, 2009, pp.153-172): their one-sided inhomogeneous best-left approximation algorithm built on the three-gap theorem. **Excerpt only — not yet replaced with a real summary by the scholar.** |
+| `cabanillas_labbe_nearest.md` | arXiv landing page (metadata only) for Cabanillas' paper; kept for provenance, no mathematical content. Redundant with `cabanillas_variant_pdf.*`. |
+| `cabanillas_variant_pdf.md` | **Primary source** (arXiv:1904.01874), read in full: the α-numeration algorithm (Algorithm 3(ii)) and Propositions 9/10 giving the exact O(log L) candidate set for the argmin of \ |
+| `ostrowski_wikipedia.md` | Summary of the Wikipedia "Ostrowski numeration" article: integer and real Ostrowski numeration bases derived from CF convergents. **Excerpt only — not yet replaced with a real summary by the scholar.** |
+| `three_gap_wikipedia.md` | Summary of the Wikipedia "Three-gap theorem" article: statement and history of the Steinhaus conjecture — {nα} orbit points divide the circle into at most three distinct arc lengths. **Excerpt only — not yet replaced with a real summary by the scholar.** |
