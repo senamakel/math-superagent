@@ -72,7 +72,100 @@ def main(max_n, budget, out_path):
     return results
 
 
+def next_level_compact(level, W):
+    """One BFS step. `level` is a set of ints, each encoded with grid width W
+    (coords in [0, W-1]). Returns children encoded with grid width W+1, so
+    the encoding grows level by level — coords reach n only after n steps,
+    keeping every int as short as it can be.
+
+    A parent cell p may divide only if its three positive-unit neighbours are
+    empty. Neighbours with any coordinate == W are automatically not occupied
+    (a parent at level W-1 has all coords <= W-1... here W == n+1 for a state
+    at level n, so no parent cell reaches coordinate W). A neighbour with all
+    coords < W must be checked against the parent's own bits.
+    """
+    Wp = W + 1          # child grid width
+    Wp2 = Wp * Wp
+    W2 = W * W
+    nxt = set()
+    for S in level:
+        # collect parent cells as (x,y,z)
+        cells = []
+        m = S
+        while m:
+            low = m & -m
+            i = low.bit_length() - 1
+            m ^= low
+            x, r = divmod(i, W2)
+            y, z = divmod(r, W)
+            cells.append((x, y, z))
+        # occupancy quick-lookup in parent's W encoding
+        def occ(x, y, z):
+            return (S >> (x * W2 + y * W + z)) & 1
+        for (x, y, z) in cells:
+            a = (x + 1, y, z)
+            b = (x, y + 1, z)
+            c = (x, y, z + 1)
+            free = True
+            for (nx, ny, nz) in (a, b, c):
+                if nx < W and ny < W and nz < W and occ(nx, ny, nz):
+                    free = False
+                    break
+            if not free:
+                continue
+            # rebuild child in Wp encoding: keep all parent cells except p,
+            # add the three neighbours
+            child = 0
+            for (cx, cy, cz) in cells:
+                if (cx, cy, cz) == (x, y, z):
+                    continue
+                child |= 1 << (cx * Wp2 + cy * Wp + cz)
+            for (nx, ny, nz) in (a, b, c):
+                child |= 1 << (nx * Wp2 + ny * Wp + nz)
+            nxt.add(child)
+    return nxt
+
+
+def main_compact(max_n, budget, out_path, max_states):
+    """Drives level-by-level using the compact per-level encoding."""
+    level = {1}                 # cube (0,0,0), W = 1
+    W = 1                       # grid width for level 0
+    results = [1]
+    print("D(0) = 1", flush=True)
+    stop_reason = "max_n reached"
+    for n in range(1, max_n + 1):
+        if len(level) > max_states:
+            stop_reason = f"frontier {len(level)} at level {n-1} > {max_states}"
+            break
+        t0 = time.time()
+        level = next_level_compact(level, W)  # level n has grid width W = n
+        W += 1
+        dt = time.time() - t0
+        if not level:
+            stop_reason = f"level {n} empty after {dt:.2f}s"
+            break
+        results.append(len(level))
+        print(f"D({n}) = {len(level)}   (level {n-1}->{n} in {dt:.2f}s, "
+              f"{len(level)} states)", flush=True)
+        if dt > budget:
+            stop_reason = f"level {n} took {dt:.2f}s > budget {budget}s"
+            break
+        with open(out_path, "w") as f:
+            for k, d in enumerate(results):
+                f.write(f"D({k})={d}\n")
+    Nmax = len(results) - 1
+    with open(out_path, "w") as f:
+        for k, d in enumerate(results):
+            f.write(f"D({k})={d}\n")
+    print(f"\nStopped: {stop_reason}")
+    print(f"Max N reached: {Nmax}")
+    print("Full sequence D(0)..D(Nmax):", results)
+    print(f"Wrote {out_path}", flush=True)
+    return results
+
+
 if __name__ == "__main__":
     max_n = int(sys.argv[1]) if len(sys.argv) > 1 else 24
     budget = float(sys.argv[2]) if len(sys.argv) > 2 else TIME_BUDGET
-    main(max_n, budget, "out/d_values_more.txt")
+    max_states = int(sys.argv[3]) if len(sys.argv) > 3 else MAX_STATES
+    main_compact(max_n, budget, "out/d_values_more.txt", max_states)
