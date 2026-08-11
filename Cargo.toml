@@ -48,9 +48,25 @@ thiserror = "2"
 # Extracts the text layer from downloaded PDFs so a paper becomes readable
 # Markdown instead of a UTF-8 failure that ends the run.
 pdf-extract = { version = "0.12", default-features = false }
+# Terminal UI for `euler-tui`, which watches one run with a tab per team.
+# Optional so the runtime image — built with default features — does not carry
+# a terminal library it can never use; the Docker container has no terminal.
+ratatui = { version = "0.29", optional = true }
+# Raw mode, the alternate screen, and key events for the same binary. Pulled in
+# by ratatui already; named here because this code uses it directly.
+crossterm = { version = "0.28", optional = true }
 
 [features]
 default = []
+# Builds the `euler-tui` binary. Enabled by the `./euler-tui` wrapper and by
+# `--all-features`, so the code is linted and compiled in CI like everything
+# else.
+tui = ["dep:ratatui", "dep:crossterm"]
+
+[[bin]]
+name = "euler-tui"
+path = "src/bin/euler_tui.rs"
+required-features = ["tui"]
 
 # Lints apply to the whole crate and to every target. CI runs clippy with
 # `-D warnings`, so anything set to "warn" here fails the build in CI.
