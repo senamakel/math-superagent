@@ -1,4 +1,4 @@
-# 2D amoeba = pebble spreading = OEIS A007902
+# 2D amoeba = pebble spreading = OEIS A007902 — and its structural model
 
 ## Question
 
@@ -22,15 +22,16 @@ pebbles; G(k) = number of reachable configurations with k pebbles.
 
 **Offset mapping.** A007902 has offset 1 with a(1)=1; the run's D(N)=a(N+1):
 D(0)=a(1)=1, D(1)=a(2)=1, D(2)=a(3)=2, ..., D(14)=a(15)=37668. All 15 terms
-match.
+match, and the direct OEIS lookup (this run) confirmed A007902 is the only
+match for the 15-term head.
 
 URL: https://oeis.org/A007902
 
-## Exact recurrence (Alois P. Heinz, from the OEIS entry)
+## Exact recurrence (Alois P. Heinz, from the OEIS entry = CGMO eqs 2.1-2.3)
 
-The OEIS gives an exact three-term-triggered recurrence via an auxiliary
-G(k,m) (the number of reachable configurations with k pebbles whose top/special
-structure sits in level m):
+The OEIS gives an exact structural recurrence via an auxiliary G(k,m) (the
+number of reachable configurations with k pebbles whose top structure sits in
+level m):
 
 ```
 G(k, m):
@@ -41,39 +42,39 @@ G(k, m):
 a(n) = 1 if n=1 else G(n,0)
 ```
 
-This is an exact, structural recurrence (not enumeration) and is the standard
-way the 2D counts are generated. Limit: a(n) ~ c*d^n with
-d = 2.3216421994942297... , c = 0.12268707342148599... (Knessl 2006/2008,
-Kotesovec 2014).
+This is an exact, structural recurrence (not enumeration). Verified by this
+run: a(n+1) reproduces the independent 2D BFS oracle D2D(0..14).
+Limit: a(n) ~ c*d^n with d = 2.3216421994942297..., c = 0.12268707342148599...
+(Knessl 2006/2008, Kotesovec 2014). Exact contour formula in Zhen-Knessl,
+arXiv:1009.5731 (Thm 2.1).
 
-## Structure: configurations are polyominoids determined by voidance sets
+## Structure (this is the point of the research fetch)
 
-From Chung–Graham–Morrison–Odlyzko / the EJC "Pebblings" survey
-(https://www.combinatorics.org/ojs/index.php/eljc/article/download/v2i1r7/pdf/):
+Reachable 2D configurations are **polyominoids** (all points on or between two
+lattice paths with common endpoints), bijectively represented by their
+**voidance sets** (the left/lower boundary points of those paths; Prop 20:
+positions ⇄ shot counts ⇄ voidance sets). The 2D subtlety is the **crossing**
+(a cell played twice), which forces the marked-crossing GF g(x) of Eriksson
+Theorem 10 with growth 4.112.
 
-- The cells played in a 2D pebbling game form a **polyominoid**: all points on
-  or between two lattice paths with common start and end points.
-- A reachable configuration is completely characterised by its **voidance set**
-  (the left/lower boundary points of those paths). Reachability of a
-  configuration is equivalent to the emptiness conditions of the process.
-- If a configuration is reachable with stacking allowed it is also reachable
-  without stacking (so the "empty-cell" constraint is exactly the reachability
-  condition).
-
-Purpose for this run: the 3D Project-Euler-763 amoeba is the **3-dimensional
-generalisation** of this same pebbling process (a cell splits into its three
-forward neighbours). The 2D sequence is catalogued (A007902) and has an exact
-recurrence + bijective structure; the 3D sequence is not catalogued (see
-research/amoeba_seq_oeis.md). The 2D toolkit (polyominoid/voidance bijections,
-the G(k,m) recurrence) is the natural structural model to try to lift to 3D.
+For the 3D PE763 process the generalisation is decisive: in n ≥ 3 **no cell is
+ever played twice** (Eriksson Prop 24), so reachable positions, voidance sets
+and **folded polyominoids** all coincide (Eriksson Theorem 9, n≥3). The PE763
+amoeba is exactly Eriksson/Vaderlind's n=3 pebbling game (3 forward-neighbour
+children). Full sourced account: research/pebbling_structure_3d_ladder.md
+and research/L2.0/pebbling_ejc_survey.md (Eriksson "Pebblings", EJC 2 (1995)
+#R7, https://doi.org/10.37236/1201).
 
 ## Sources
 
 - OEIS A007902: https://oeis.org/A007902
 - Chung, Graham, Morrison, Odlyzko, "Pebbling a chessboard", Amer. Math.
-  Monthly 102 (1995) 113–123.
+  Monthly 102 (1995) 113–123. DOI 10.2307/2975345. Opening transcribed in
+  Dijkstra EWD 1200 (https://www.cs.utexas.edu/~EWD/transcriptions/EWD12xx/EWD1200.html).
 - Zhen & Knessl, exact asymptotics, arXiv:1009.5731 (pdf).
-- EJC "Pebblings" survey: https://www.combinatorics.org/ojs/index.php/eljc/article/download/v2i1r7/pdf/
+- Eriksson, "Pebblings", EJC 2 (1995) #R7 — the higher-dimension/
+  folded-polyominoid generalisation.
+  https://www.combinatorics.org/ojs/index.php/eljc/article/view/v2i1r7/pdf
 
 Deliberately NOT consulted: any Project Euler 763 solver/forum thread
 (per run instruction).

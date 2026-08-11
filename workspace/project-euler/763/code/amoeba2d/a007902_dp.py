@@ -16,27 +16,12 @@ Recurrence (from CGMO eqs 2.1-2.3, verified against the run's 2D BFS oracle):
 Run: python code/amoeba2d/a007902_dp.py [max_n]
 """
 import sys
-from functools import lru_cache
+from lib.amoeba2d import G, a
 
 A007902_FIRST_22 = [
     1, 1, 2, 4, 9, 20, 46, 105, 243, 561, 1301, 3014, 6995, 16227, 37668,
     87426, 202961, 471150, 1093819, 2539348, 5895408, 13686805,
 ]
-
-
-@lru_cache(maxsize=None)
-def G(k, m):
-    if k < 1:
-        return 0
-    if m == 0:
-        return 2 * G(k - 1, 0) + G(k, 1) + (1 if k == 2 else 0)
-    if m == 1:
-        return G(k - 3, 0) + 2 * G(k - 2, 1) + G(k - 1, 2) + G(k - 4, 1)
-    return G(k - m - 2, m - 1) + 2 * G(k - m - 1, m) + G(k - m, m + 1)
-
-
-def a(n):
-    return 1 if n == 1 else G(n, 0)
 
 
 def main():

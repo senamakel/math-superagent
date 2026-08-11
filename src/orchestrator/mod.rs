@@ -301,39 +301,28 @@ impl OrchestratorAgent {
             prompts.tool_builder,
         )?;
 
-        // coder: the same authority as the tool-builder, a different mandate.
-        // The tool-builder writes experiments and toolkit helpers; the coder
-        // writes the implementation the run stands behind. Splitting them is
-        // what lets each prompt be strict about one thing — the tool-builder
-        // about producing a running program quickly, the coder about the
-        // program being correct — instead of one prompt hedging between them.
-        let mut coder_harness =
-            build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
-        coder_harness.push_middleware(checkpoint.clone());
-        register_recall(&mut coder_harness, &workspace);
-        async_subagents.register("coder", Arc::new(coder_harness), prompts.coder)?;
-
-        // sat_solver: the same authority again, and a third mandate. It answers a
-        // question that has been reduced to a finite decision or optimisation
-        // problem by encoding it for CP-SAT, a SAT solver, or an SMT solver
-        // rather than by writing the search itself. A hand-written backtracking
-        // search over the same space is the answer-space search the method
-        // policy prohibits, written in the language most likely to hide its own
-        // bugs; a declarative encoding states what a solution is and hands the
-        // search to an engine that does propagation and clause learning
-        // properly. It is a separate role rather than a paragraph in the
-        // coder's prompt because the failure modes are entirely different —
-        // reporting UNKNOWN as solved, weakening a constraint to obtain a
-        // model, an unsound symmetry break — and each needs its own rule.
-        let mut sat_solver_harness =
-            build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
-        sat_solver_harness.push_middleware(checkpoint.clone());
-        register_recall(&mut sat_solver_harness, &workspace);
-        async_subagents.register(
-            "sat_solver",
-            Arc::new(sat_solver_harness),
-            prompts.sat_solver,
-        )?;
+        // Three more roles with exactly the tool-builder's authority and three
+        // different mandates. The tool-builder writes experiments and toolkit
+        // helpers; the coder writes the implementation the run stands behind;
+        // the SAT solver encodes a finite question rather than writing a search
+        // for it; the Lean prover produces the one artifact here that is not
+        // evidence but proof. Splitting them is what lets each prompt be strict
+        // about one thing instead of one prompt hedging between four, and their
+        // failure modes have nothing in common — a program that ran but is
+        // wrong, an `UNKNOWN` reported as solved, a `sorry` left undeclared.
+        // They share a harness because the authority a role needs and the
+        // judgement it exercises are different questions.
+        for (name, prompt) in [
+            ("coder", prompts.coder),
+            ("sat_solver", prompts.sat_solver),
+            ("lean_prover", prompts.lean_prover),
+        ] {
+            let mut harness =
+                build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
+            harness.push_middleware(checkpoint.clone());
+            register_recall(&mut harness, &workspace);
+            async_subagents.register(name, Arc::new(harness), prompt)?;
+        }
 
         register_support_agents(
             &async_subagents,
