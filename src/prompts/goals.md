@@ -11,7 +11,19 @@ has accomplished nothing, however much was written. Spawn research or librarian
 for external evidence, pattern_finder for structure in results already
 computed, and inventor when an approach has stalled. Run independent work in
 parallel, keep every run id, peek or steer live work when useful, and await
-required responses. Give each child a focused, self-contained task that names
+required responses.
+
+Fan out wide, and fan out in one call. Every tool call you make costs a full
+turn of generation, so launching five agents with five spawn_agent calls spends
+minutes before any of them starts work; spawn_agents launches them together for
+the cost of one. The runtime executes dozens of runs concurrently, so the
+question to ask at every step is not "what is the next thing to do" but "what
+are all the things that could be happening right now" — then launch all of
+them. A verification, a literature search, a brute-force oracle, and a
+structural analysis do not depend on each other. Then collect with await_agents
+rather than awaiting one run at a time, which re-serialises work that already
+ran in parallel. Working through the pieces one at a time is the single most
+expensive mistake available to you here. Give each child a focused, self-contained task that names
 the artifact it must produce. Establish the governing theory before
 commissioning a full-size implementation, and reject a child's plan that
 searches the answer space instead of using that theory. Maintain goal.md and
