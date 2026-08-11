@@ -6,7 +6,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `AGENTS.md` | Method and evidence rules for the whole run: restate the problem, test small cases, prefer theory over enumeration, keep sourced facts separate from deductions, keep files described. |
 | `README.md` | Folder-layout note pointing newcomers to AGENTS.md, `prompts/`, and the goal/tasks/scratchpad/memory working files. |
-| `brute.py` | Naive exact oracle for PE 597: chronological race simulation + parity of the new order derived from bump chains. Exposes `simulate_order`, `parity_of_new_order`, `outcome_parity`. Reproduces all five rows of the n=3,L=160 table. NOTE: `simulate_order` still has the multi-bump overwrite bug; the corrected engine is `simulate_order_nobug.py`. |
+| `brute.py` | PE 597 brute-force race engine: simulate_order builds above by full bump-edge reachability (after edge-loss fix) and parity_of_new_order returns new-order parity; reference oracle for exact methods and MC. |
 | `check_counterexample.py` | Sanity/oracle check: validates the counterexample pair ce1/ce2 (n=3) give opposite parities with float and exact agreement, and prints uniform-grid even-count ratios for M in (8,16,32). Grid converges to 0.5, not 56/135 — a sampling-measure artifact (uniform grid ≠ Exp(1)), not a parity bug. |
 | `config.toml` | Solver configuration: prefer exact arithmetic, verify with code, forbid exponential time/space, and names of the goal/memory/scratchpad/solution artifact files. |
 | `context.md` | Standing brief synthesizing what the `research/` library establishes for this problem (definitions, available results, contradictions, gaps). Written by the research team; a few-hundred-word brief to act on without opening sources. |
@@ -18,7 +18,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `problem.html` | The downloaded PE 597 statement (Torpids) — the source document this run is solving. |
 | `problem.url` | URL of the PE 597 statement (projecteuler.net/minimal=597). |
 | `race_spec.md` | Exact chronological race-dynamics specification for implementation: event simulation, bump/OUT/FINISH treatment, and the bump-chain parity definition. Reference contract for any race solver. |
-| `scratch_verify_invexp.py` | Retired MC scratch for the inverse-exponential finish-time claim. Never executed (no run tool at writing time); the inverse-exponential claims were verified analytically and superseded by the Wikipedia source in `research/`. Kept only as a record. |
+| `scratch_verify_invexp.py` | Retired MC scratch attempt: no execution tool was available to the librarian interface; the inverse-exponential finish-time claims were verified analytically instead. Superseded by the sourced claim in `research/inverse_exponential_finish_times_wikipedia.md`. |
 | `scratchpad.md` | Provisional work: the diagnosis of the parity-comparator bug, its fix, and the corrected MC run output. |
 | `simulate_order_nobug.py` | Corrected race engine fixing `brute`'s multi-bump overwrite: records every bump edge and computes placed-below sets by graph reachability. Same API as `brute.simulate_order` / `parity_of_new_order`. This is the reference-correct engine. |
 | `tasks.md` | Task checklist: done items (verify sample, fix comparator, MC re-check) and the open task to solve p(13,1800) exactly. |

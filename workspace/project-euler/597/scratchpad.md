@@ -60,3 +60,36 @@ consistency check meaningful.
 ## verifier for the hypothesis
 `verify_hypothesis.py` also has a cosmetic bug in a print string:
 `exact 4.15+4/27` should be `4/15+4/27`. Not functional, but note.
+
+## Task: verify brute oracle + investigate edge-loss in examine_multibump.py
+
+### 1. Worked examples reproduced (fixed engine)
+- All five n=3,L=160 table parities confirmed by both `brute.outcome_parity`
+  and `exact_race.outcome_parity_exact`:
+  none=0, B bumps C=1, A bumps B=1, B->C then A->C=0, A->B->C chain=1.
+- MC p(3,160) 500k = 0.415108 ~ exact 56/135 = 0.414815.
+- MC p(4,400) 500k = 0.512368 (~ given 0.510784; 200k gave 0.51218).
+
+### 2. Edge-loss bug: real, fixed, but impossible to flip order/parity
+- Differential brute vs full-reachability (`simulate_order_nobug`):
+  * above sets differ in ~40% of 2M trials (829245/2M) — brute's single
+    `out_of` chain loses transitive edges.
+  * BUT order_diff = 0 and par_diff = 0 across 2M random trials, and 0 of
+    541981 lost edges flipped a relative order.
+- Reason: a bumped boat continuing can be bumped again, overwriting
+  `bumped_by[k]`; the chain then misses an intermediate. Empirically every
+  lost edge had a direct replacement preserving the order. Regardless, fixed
+  brute.py to record ALL edge `edges[a].append(b)` and compute `above` by full
+  graph reachability (same approach as simulate_order_nobug). After fix:
+  brute.simulate_order == simulate_order_nobug on 500k trials (0 diffs).
+- Note: exact_race.py had the same single-chain bug; it delegates to brute's
+  parity and builds its own above with the same pattern. Both now consistent
+  because parity depends only on inversion count, which survived.
+
+### 3. Parity identity (the clean definition)
+- parity = (number of pairs i<j with a bump chain i->...->j) mod 2.
+  Verified: true chain-count parity == brute parity over 1M trials (0 mismatch).
+
+### 4. Large MC p(13,1800) (fixed engine, Exp(1) speeds)
+- 100k: 0.500470 | 200k: 0.499400 | 300k: 0.499027 | 1.2M: 0.500880.
+- Ballpark target ~0.500 (parity near a fair coin as n grows).
