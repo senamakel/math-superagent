@@ -49,5 +49,3 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2.0/reports_negatives.md` | Fold index: literature reports and negative lookups — report_literature_ranks_powers (clean negative, supersedes report_cited_facts and report_rank_powers) and the five OEIS "No results" pages. Bottom line: the rank-sum-over-cyclic-subgroup statistic is unstudied; all these sequences uncatalogued. |
 | `verify_cambie_yan.py` | Verification script for the Cambie–Yan results: literal-enumeration check of CY Theorems 1.1/1.2 (E[des/inv(π^k)]) for n=3..7, gap-affinity checks of extend_f.json rows, and per-gap pair-probability affineness. NOTE per report_literature_ranks_powers.md: was WRITTEN BUT NOT RUN at time of that report — validates whether the CY hypotheses apply before relying on them. |
 | `verify_facts.py` | Verification script for the cited rank/order facts: checks rank(2,1,3)=3 via the Lehmer/factoradic rank formula and the derived reduction Q(n) = sum over cyclic subgroups H of φ(H)·(n!/H)·Σ_{τ∈H} rank(τ), plus the sum-ranks identity n!(n!+1)/2; oracle for n=2,3 (Q(2)=5, Q(3)=88). |
-(2)=5, Q(3)=88). |
-(2)=5, Q(3)=88). |
