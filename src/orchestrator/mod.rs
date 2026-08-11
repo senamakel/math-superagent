@@ -558,6 +558,50 @@ impl OrchestratorAgent {
     }
 }
 
+/// Folders holding what a program produced, which is what the pattern agent
+/// analyses.
+///
+/// Its own scratch is deliberately not among them: the pattern team writes
+/// `SCRATCHPAD.md` itself, so treating that as new input would make every
+/// cycle look like it had something fresh to read — the team would wake itself
+/// up forever on its own notes.
+const RESULT_FOLDERS: [&str; 2] = ["code/out", "code"];
+
+/// Whether the run's computed results are the same as last time this looked.
+///
+/// Returns the cycle outcome to report when there is nothing new, and `None`
+/// when there is. The comparison is by fingerprint — path, size and
+/// modification time — so it costs a directory walk rather than a model call,
+/// which is the whole point: a team that has to *ask* whether anything changed
+/// has already spent most of what a working cycle costs.
+///
+/// A workspace with no results at all reads as unchanged, so an early cycle on
+/// a run that has computed nothing idles instead of analysing an empty folder.
+fn results_unchanged(
+    workspace: &Path,
+    analysed: &Arc<std::sync::Mutex<Option<u64>>>,
+) -> Option<teams::Cycle> {
+    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+    let mut any = false;
+    for folder in RESULT_FOLDERS {
+        let path = workspace.join(folder);
+        if path.is_dir() {
+            any = true;
+            std::hash::Hash::hash(&teams::fingerprint(&path), &mut hasher);
+        }
+    }
+    if !any {
+        return Some(teams::Cycle::Idle);
+    }
+    let current = std::hash::Hasher::finish(&hasher);
+    let mut seen = analysed.lock().ok()?;
+    if *seen == Some(current) {
+        return Some(teams::Cycle::Idle);
+    }
+    *seen = Some(current);
+    None
+}
+
 fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
         "download_document",
