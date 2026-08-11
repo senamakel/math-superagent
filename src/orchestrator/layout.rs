@@ -20,20 +20,6 @@
 //! filesystem, not through a tool — so the organizer still sweeps. This makes
 //! the sweep small instead of making it the only defence.
 
-/// Folders that already say what they hold, left exactly as addressed.
-///
-/// Each is a place the runtime or an agent files things deliberately, so a
-/// path naming one has already made this decision.
-const SETTLED: [&str; 7] = [
-    "research",
-    "reflections",
-    "toolkits",
-    "code",
-    "raw",
-    "prompts",
-    "notes",
-];
-
 /// The folder every program and its output belongs to.
 pub(super) const CODE_DIR: &str = "code";
 
@@ -93,10 +79,11 @@ pub(super) fn placed(relative: &str) -> String {
     if trimmed.is_empty() {
         return trimmed.to_string();
     }
-    if let Some((folder, _)) = trimmed.split_once('/') {
+    if trimmed.contains('/') {
         // Anything under a folder has already been placed, whether by an agent
-        // that knows where it goes or by a rule like `research_path`.
-        let _ = folder;
+        // that knows where it goes or by a rule like `research_path`. Naming a
+        // folder is a decision, and this module has no better information than
+        // the caller that made it.
         return trimmed.to_string();
     }
     if ROOT_FILES.contains(&trimmed) || ROOT_EXTENSIONS.contains(&extension(trimmed).as_str()) {
@@ -121,11 +108,6 @@ pub(super) fn note(requested: &str, placed: &str) -> String {
         " (filed at {placed}; the workspace root holds the run's Markdown, `{CODE_DIR}/` the \
          programs, and `{OUTPUT_DIR}/` what they produce)"
     )
-}
-
-/// Whether a folder is one the layout already accounts for.
-pub(super) fn settled(folder: &str) -> bool {
-    SETTLED.contains(&folder)
 }
 
 #[cfg(test)]

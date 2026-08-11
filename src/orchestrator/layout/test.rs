@@ -70,13 +70,3 @@ fn a_moved_file_is_reported_and_an_unmoved_one_is_not() {
     assert!(moved.contains("code/out"), "{moved}");
     assert_eq!(note("goal.md", &placed("goal.md")), "");
 }
-
-#[test]
-fn every_folder_the_runtime_files_into_is_accounted_for() {
-    // A folder the layout does not know about is one the organizer would be
-    // asked to tidy away under itself.
-    for folder in ["research", "reflections", "toolkits", "code", "raw"] {
-        assert!(settled(folder), "{folder}");
-    }
-    assert!(!settled("experiments"));
-}

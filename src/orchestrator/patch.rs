@@ -122,11 +122,14 @@ pub(super) fn parse(patch: &str) -> Result<Vec<FileOp>> {
             // update or a delete names a file that already exists, so both
             // are left exactly as addressed.
             let asked = checked_path(path)?;
-            let path = super::layout::placed(&asked);
-            if path != asked {
+            let filed = super::layout::placed(&asked);
+            if filed != asked {
                 requested = Some(asked);
             }
-            FileOp::Add { path, contents }
+            FileOp::Add {
+                path: filed,
+                contents,
+            }
         } else if let Some(path) = line.strip_prefix(DELETE) {
             FileOp::Delete {
                 path: checked_path(path)?,
