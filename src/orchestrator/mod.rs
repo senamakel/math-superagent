@@ -558,21 +558,22 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                     .into_iter()
                     .chain(document_tools),
             ),
-        )?
-        .register(support_agents(research_enabled, document_tools)?);
+        )?;
+    for definition in support_agents(research_enabled, document_tools) {
+        registry.register(definition)?;
+    }
     Ok(registry)
 }
 
-/// Builds the reflection, pattern, inventor, and librarian definitions.
+/// Returns the reflection, pattern, inventor, and librarian definitions.
 ///
-/// Split out of [`default_registry`] purely to keep each function readable;
-/// these four are the agents added for the solution loop.
+/// Split out of [`default_registry`] to keep each function readable; these are
+/// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
     document_tools: [&'static str; 6],
-) -> Result<AgentRegistry> {
-    let mut registry = AgentRegistry::new();
-    registry
+) -> Vec<AgentDefinition> {
+    vec![
         .register(
             AgentDefinition::new(
                 "reflection",

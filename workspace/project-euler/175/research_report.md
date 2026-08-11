@@ -155,15 +155,17 @@ is the one verified by the oracle check below.
 
 ### Sourced statements
 
-**Derived-from-sourced recurrences (each step a tautological consequence of the two sourced
-recurrences f(2m+1)=f(m), f(2m+2)=f(m)+f(m+1)):**
+**Derived recurrences** (each a one-line consequence of the two SOURCED recurrences
+f(2m+1)=f(m) and f(2m+2)=f(m)+f(m+1), which are proved by bijections in Calkin–Wilf 2000 and
+in Wikipedia's Calkin–Wilf article):
 - r(1) = f(1)/f(0) = 1/1.
-- r(2m) = f(2m)/f(2m−1). Since 2m−1 is odd, f(2m−1) = f(m−1) (writing 2m−1 = 2(m−1)+1);
-  and f(2m) = f(2(m−1)+2) = f(m−1)+f(m). Hence r(2m) = (f(m−1)+f(m))/f(m−1) = r(m)+1.
-- r(2m+1) = f(2m+1)/f(2m) = f(m)/(f(m−1)+f(m)) = r(m)/(r(m)+1).
-Let me recompute with the Stern-index shift to state cleanly: with r(n)=s(n+1)/s(n):
-r(2m)=s(2m+1)/s(2m)=(s(m)+s(m+1))/s(m)=r(m)+1; r(2m+1)=s(2m+2)/s(2m+1)=s(m+1)/(s(m)+s(m+1))
-= r(m)/(r(m)+1).
+- r(2m) = f(2m)/f(2m−1): since 2m−1 = 2(m−1)+1, f(2m−1) = f(m−1), and f(2m) =
+  f(2(m−1)+2) = f(m−1)+f(m); hence r(2m) = (f(m−1)+f(m))/f(m−1) = r(m)+1.  **LSB bit 0 ⇒ +1.**
+- r(2m+1) = f(2m+1)/f(2m) = f(m)/(f(m−1)+f(m)) = r(m)/(r(m)+1).  **LSB bit 1 ⇒ r/(r+1).**
+Equivalently with s: r(n)=s(n+1)/s(n), r(2m)=r(m)+1, r(2m+1)=r(m)/(r(m)+1).
+I verified these against the problem's own value list: r(2)=2/1, r(3)=1/2, r(4)=3/1, r(5)=2/3,
+r(6)=3/2, r(7)=1/3, r(8)=4/1, r(10)=5/3 all agree. (The workspace scratchpad's "3/5" entry
+for n=9 is a typo: f(9)/f(8) = 3/4 = r(9) = r(4)/(r(4)+1); f(10)/f(9) = 5/3 = r(10).)
 
 **Enumeration statement (from OEIS, verbatim):** "a(n)/a(n+1) runs through all the reduced
 nonnegative rationals exactly once." For the reciprocal ratio r(n)=s(n+1)/s(n) this is the
