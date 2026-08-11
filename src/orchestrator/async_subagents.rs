@@ -250,32 +250,32 @@ impl HarnessExecutor {
             && !observations.is_empty()
         {
             let _ = langfuse
-                .send_observations(self.trace_config(run_id), &observations)
+                .send_observations(trace_config(&self.session, &self.role, run_id), &observations)
                 .await;
         }
     }
+}
 
-    /// Names this run's Langfuse trace uniquely and describes what produced it.
-    ///
-    /// The default configuration derives the trace id from the first
-    /// observation's run id, and run ids are allocated per process from one:
-    /// every container's first specialist run is `agent-run-1`. Two problems
-    /// solved side by side, or one problem restarted, therefore merged into a
-    /// single trace whose observations interleaved runs that shared nothing.
-    /// Qualifying the id with the session makes each run its own trace, and
-    /// the session id groups the runs that genuinely belong together.
-    fn trace_config(&self, run_id: &str) -> LangfuseTraceConfig {
-        let mut tags = vec![self.role.clone()];
-        if let Some(label) = workspace_label() {
-            tags.push(label);
-        }
-        LangfuseTraceConfig {
-            trace_id: Some(format!("{}-{run_id}", self.session)),
-            name: Some(self.role.clone()),
-            session_id: Some(self.session.to_string()),
-            tags,
-            ..LangfuseTraceConfig::default()
-        }
+/// Names a run's Langfuse trace uniquely and describes what produced it.
+///
+/// The default configuration derives the trace id from the first observation's
+/// run id, and run ids are allocated per process from one: every container's
+/// first specialist run is `agent-run-1`. Two problems solved side by side, or
+/// one problem restarted, therefore merged into a single trace whose
+/// observations interleaved runs that shared nothing. Qualifying the id with
+/// the session makes each run its own trace, and the session id groups the runs
+/// that genuinely belong together.
+fn trace_config(session: &str, role: &str, run_id: &str) -> LangfuseTraceConfig {
+    let mut tags = vec![role.to_string()];
+    if let Some(label) = workspace_label() {
+        tags.push(label);
+    }
+    LangfuseTraceConfig {
+        trace_id: Some(format!("{session}-{run_id}")),
+        name: Some(role.to_string()),
+        session_id: Some(session.to_string()),
+        tags,
+        ..LangfuseTraceConfig::default()
     }
 }
 

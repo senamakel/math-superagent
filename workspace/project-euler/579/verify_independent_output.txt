@@ -1,0 +1,38 @@
+==============================================================================
+Independent verification of PE 579 machinery (not the final answer)
+==============================================================================
+
+[Task 1] Primary-quaternion parametrization logic
+  (a) For every odd N in 1..30, frames(all primitive quats) == frames(primary primitive quats): PASS
+  (b) N == edge length for every primary frame: PASS
+  Task 1 wall: 0.63s
+  => PASS
+
+[Task 2] No primitive frame has even edge length (exhaustive, n<=80)
+  primitive frames with coordinate spans in box n=80: 1941
+  of those, edge length even: 0, odd: 1941
+  -> NO primitive frame has even edge length up to n=80: CONFIRMED (0 even)
+  Task 2 wall: 0.82s (vector-pairing enumeration, n=80)
+
+[Task 3] Independent C(n), S(n) via frame enumeration + power sums
+     n         C(n)             S(n)  C-ok  S-ok
+     1            1                8  True    True
+     2            9               91  True    True
+     4          100             1878  True    True
+     5          229             5832  True    True
+    10         4469           387003  True    True
+    50      8154671      29948928129  True    True
+  Oracle C: [1, 9, 100, 229, 4469, 8154671]
+  Oracle S: [8, 91, 1878, 5832, 387003, 29948928129]
+  => Task 3 PASS (all match oracle)
+
+[Task 4] solution.py quaternion enumeration vs frame_method (n up to 200)
+  /workspace/solution.py does not exist -> task N/A (no quaternion-enumeration implementation to compare yet).
+
+==============================================================================
+SUMMARY
+  Task 1 (primary quats == all primitive quats, odd N<=30; N==edgelen): PASS
+  Task 2 (no even-edge primitive frame, n<=80): PASS
+  Task 3 (C/S match oracle at n=1,2,4,5,10,50): PASS
+  Task 4 (solution.py quaternion vs frame_method): N/A (no solution.py)
+==============================================================================
