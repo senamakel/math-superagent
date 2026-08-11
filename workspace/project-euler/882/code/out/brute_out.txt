@@ -1,12 +1,13 @@
-=== TASK A: real-game minimax ===
-explicit-move check n=2: S(2) = 2
-verify n=1: explicit S=1, memo S=1, match=True
-verify n=2: explicit S=2, memo S=2, match=True
-verify n=3: explicit S=8, memo S=8, match=True
+=== brute.py: naive minimax over the REAL bit-deletion game ===
 
-S(n) real game (memoized minimax), n=1..8:
-  S(1) = 1   states_memoized=3
-  S(2) = 2   states_memoized=21
-  S(3) = 8   states_memoized=184
-  S(4) = 9   states_memoized=3270
-  S(5) = 17   states_memoized=83052
+[1] Statement sample n=2: S(2) = 2   (given 2)
+[2] verify n=1: explicit S=1, naive S=1, match=True
+[2] verify n=2: explicit S=2, naive S=2, match=True
+[2] verify n=3: explicit S=8, naive S=8, match=True
+
+[3] S(n) real game, n=1..8:
+    S(1) = 1   states_memoized=5
+    S(2) = 2   states_memoized=47
+    S(3) = 8   states_memoized=1064
+    S(4) = 9   states_memoized=22297
+    S(5) = 17   states_memoized=1045296
