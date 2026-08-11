@@ -293,6 +293,8 @@ impl OrchestratorAgent {
                 documents: &documents,
                 vector_store: vector_store.clone(),
                 exa: exa.clone(),
+                workspace: workspace.clone(),
+                delegation: async_subagents.tools(PATTERN_DELEGATES),
             },
             SupportPrompts {
                 reflection: prompts.reflection,
