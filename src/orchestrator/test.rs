@@ -121,3 +121,77 @@ fn disabling_research_removes_exa_from_the_advertised_tools() -> agent::Result<(
     assert!(research.tools.iter().any(|tool| tool == "recall_research"));
     Ok(())
 }
+
+#[test]
+fn the_registry_advertises_every_agent_the_solution_loop_drives() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    for expected in [
+        "research",
+        "tool_builder",
+        "goals",
+        "reflection",
+        "pattern_finder",
+        "inventor",
+        "librarian",
+    ] {
+        assert!(
+            registry.contains(expected),
+            "`{expected}` must be registered"
+        );
+    }
+    Ok(())
+}
+
+#[test]
+fn reflection_has_no_research_or_execution_authority() -> agent::Result<()> {
+    // Reflection judges an attempt. Giving it search or a shell would let it
+    // drift into solving the problem it is supposed to be assessing.
+    let registry = default_registry(true)?;
+    let reflection = registry.get("reflection").ok_or_else(|| {
+        tinyagents::TinyAgentsError::Validation("reflection is registered".into())
+    })?;
+    for forbidden in [
+        "exa_search",
+        "execute_command",
+        "write_tool_file",
+        "spawn_agent",
+    ] {
+        assert!(
+            !reflection.tools.iter().any(|tool| tool == forbidden),
+            "reflection must not have `{forbidden}`"
+        );
+    }
+    Ok(())
+}
+
+#[test]
+fn pattern_finder_gets_the_sequence_tools_and_no_shell() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let patterns = registry.get("pattern_finder").ok_or_else(|| {
+        tinyagents::TinyAgentsError::Validation("pattern_finder is registered".into())
+    })?;
+    assert!(patterns.tools.iter().any(|tool| tool == "analyze_sequence"));
+    assert!(
+        patterns
+            .tools
+            .iter()
+            .any(|tool| tool == "find_linear_recurrence")
+    );
+    assert!(!patterns.tools.iter().any(|tool| tool == "execute_command"));
+    Ok(())
+}
+
+#[test]
+fn disabling_research_also_withholds_search_from_inventor_and_librarian() -> agent::Result<()> {
+    let registry = default_registry(false)?;
+    for role in ["inventor", "librarian"] {
+        let agent = registry
+            .get(role)
+            .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
+        assert!(
+            !agent.tools.iter().any(|tool| tool == "exa_search"),
+            "`{role}` must not have search when research is disabled"
+        );
+    }
+    Ok(())
+}

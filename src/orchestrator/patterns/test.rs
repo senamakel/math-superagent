@@ -61,7 +61,10 @@ fn analysis_never_claims_a_pattern_is_proved() {
     // conjecture, and the report must say so or the next agent will treat it
     // as established.
     let lowered = report.to_lowercase();
-    assert!(lowered.contains("is a proof"), "report must address proof status");
+    assert!(
+        lowered.contains("is a proof"),
+        "report must address proof status"
+    );
     assert!(lowered.contains("none of it is a proof"));
     assert!(lowered.contains("conjecture"));
 }
