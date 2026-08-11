@@ -33,6 +33,14 @@ game up to n=10).
 - **Real-game oracle values on disk (source of cross-check)**: S(1)=1, S(2)=2,
   S(3)=8, S(4)=9, S(5)=17 (code/brute.py), S(10)=64 (given).  These all equal
   ceil(G(n)) under the dyadic model.
+- **Real-game oracle confirmed live (this task)**: re-ran code/brute.py (budgeted
+  real-game minimax) and code/fastbrute.py (budget-removed optimizer) and
+  confirmed S(1..5)=1,2,8,9,17; statement S(2)=2,S(5)=17 and hand-known
+  S(1)=1,S(3)=8 all match; n=1..3 double-checked against an explicit
+  independent game search. n=6 NOT reached within ~5 min (budget sweep hit
+  >1.5M memo states through budget=18 still inf, then 290s timeout) ⇒ S(6)>18
+  is all that is established; n=6+ are infeasible for the exact minimax. Oracle
+  table: /workspace/oracle_S.txt.
 - **S_ceil(n)=ceil(G(n)) table n=1..20** (from solution.py, exact Fractions):
   n:   1   2   3   4   5   6   7   8   9  10
   S:   1   2   8   9  17  23  44  45  56  64

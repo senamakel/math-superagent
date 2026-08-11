@@ -39,7 +39,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `norm_hunt3.py` | Closed-form hunt for A_n,B_n (n=2..11 from extend_f.json): focuses on deficit D_n=(n!)^2/2 minus A_n and its normalizations and the slope c_n=abs(B)/(n-1)!. |
 | `ntau.py` | Exploratory: computes N(tau)=#{(pi,i) with pi^i=tau, i in 1..n!} and tests whether N(tau) depends only on tau's cycle type (n=3,4); also re-derives Q = sum over tau of rank(tau)*N(tau) |
 | `pattern1.py` | Closed-form hunt for the gap constants A_n, B_n (n=2..11, hard-coded from extend_f.json): prints prime factorizations of A_n (n=2..11) and abs(B_n) (n=3..11), ratios A_n/A_(n-1), and A_n/B_n normalized by (n-1)!, n!, including |
-| `pattern_total.py` | _(undescribed)_ |
+| `pattern_total.py` | Closed-form hunt for the gap constants A_n, B_n (n=2..11, hard-coded from extend_f.json): computes the total over k of f_n(k) = (n-1)A_n + B_n(n-1)(n-2)/2 and verifies the theory identity sum_k f_n(k) == sum_pi (n!/L0)*S0 where L0 = length of the cycle containing 0 and S0 = sum of its elements (checked n=2..7 by enumerating S_n with itertools and reading the cycle of 0). Prints sums/recurrence hints; no output file. |
 | `perpi.py` | Exploratory: per-permutation analysis for n=5 — orders, cyclic-subgroup rank sums, grouped by cycle type, looking for structure in the intra-subgroup rank sum |
 | `psid.py` | Exploratory: verifies Q(n)=sum over d dividing n! of psi(d)*phi(n!/d) for n=5 with psi(d)=F-value for i with gcd(i,n!)=d, and prints psi(d) over all divisors to look for structure |
 | `qtable.py` | Exploratory: computes Q(n) via the period/orbit formula for n=2..10 and prints normalization ratios Q/n! and Q/(n!)^2 to look for a closed form; quantifies the runtime wall at n=10 |
