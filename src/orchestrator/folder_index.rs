@@ -21,6 +21,7 @@
 //! index that quietly disagrees with the folder it describes.
 
 use std::collections::BTreeMap;
+use std::fmt::Write as _;
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -98,7 +99,7 @@ pub(super) fn render(folder: &str, entries: &BTreeMap<String, String>) -> String
         } else {
             description.trim()
         };
-        out.push_str(&format!("| `{name}` | {description} |\n"));
+        let _ = writeln!(out, "| `{name}` | {description} |");
     }
     if entries.is_empty() {
         // Deliberately not a table row. A placeholder row parses back as a
