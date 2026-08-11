@@ -107,8 +107,11 @@ later runs. The database uses deterministic local feature vectors, so it does
 not need another embedding API. Pass `--no-research` to withhold web search
 entirely, which turns a run into a test of reasoning rather than of lookup.
 
-All model calls use DeepSeek V4 Flash through OpenRouter and StreamLake by
-default. TinyAgents provides the model loop, tools, delegation, and middleware.
+All model calls use DeepSeek V4 Flash through OpenRouter, preferring the
+DeepInfra route by default so the large fixed prompt prefix keeps hitting one
+provider's cache. Fallbacks stay enabled, so a busy provider never halts the
+runtime. Set `OPENROUTER_MODEL` or `MATH_AGENT_PROVIDER` to change either.
+TinyAgents provides the model loop, tools, delegation, and middleware.
 
 ## Watching a run
 
