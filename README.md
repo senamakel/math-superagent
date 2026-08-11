@@ -70,11 +70,12 @@ arms concurrently: the librarian followed by the scholar, the pattern agent, and
 the inventor. Between them they bring in material, structure, and a different
 approach before the next attempt.
 
-Housekeeping follows the work that creates it. A finished `tool_builder` run
-triggers an `organizer` run, and a finished `research` run triggers a `scholar`
-then an `organizer`. Those follow-ups are fire-and-forget and serialised, so
-`await_agent` returns as soon as the delegated work itself is done and tidying
-never sits on the critical path.
+Some runs trigger housekeeping when they finish. A completed `tool_builder` run
+starts an `organizer`, and a completed `research` run starts a `scholar` and then
+an `organizer`, which is the moment the new files exist and their purpose is still
+settled. Those follow-ups are fire-and-forget and serialised, so `await_agent`
+returns as soon as the delegated work itself is done and tidying never sits on the
+critical path.
 
 The container includes `python`, `python3`, `pip`, and `pip3`, with `sympy`,
 `numpy`, `scipy`, `gmpy2`, and `networkx` baked into the image. A run that has
