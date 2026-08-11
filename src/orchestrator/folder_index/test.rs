@@ -62,14 +62,14 @@ fn a_tree_level_is_described_in_the_index_at_its_root() {
     // `research` after the levels went in, found no files directly in it, and
     // dropped all fourteen descriptions as stale.
     assert_eq!(
-        split("research/L1/paper.md"),
-        ("research".to_string(), "L1/paper.md".to_string())
+        split("research/L1.0/paper.md"),
+        ("research".to_string(), "L1.0/paper.md".to_string())
     );
     assert_eq!(
-        split("reflections/L0/1700_01_learnings.md"),
+        split("reflections/L0.0/1700_01_learnings.md"),
         (
             "reflections".to_string(),
-            "L0/1700_01_learnings.md".to_string()
+            "L0.0/1700_01_learnings.md".to_string()
         )
     );
     // An ordinary subfolder still keeps its own index.
@@ -77,7 +77,7 @@ fn a_tree_level_is_described_in_the_index_at_its_root() {
         split("toolkits/pell.py"),
         ("toolkits".to_string(), "pell.py".to_string())
     );
-    assert!(super::is_level("L0") && super::is_level("L12"));
+    assert!(super::is_level("L0") && super::is_level("L0.0") && super::is_level("L12.3"));
     assert!(!super::is_level("L") && !super::is_level("Lib") && !super::is_level("folds"));
 }
 
@@ -105,7 +105,7 @@ async fn describing_a_sources_full_text_points_at_the_digest_instead() -> Result
                 name: "describe_file".into(),
                 invalid: None,
                 arguments: serde_json::json!({
-                    "path": "research/L0/paper.full.md",
+                    "path": "research/L0.0/paper.full.md",
                     "purpose": "the whole converted paper"
                 }),
             },
@@ -116,7 +116,7 @@ async fn describing_a_sources_full_text_points_at_the_digest_instead() -> Result
         .err()
         .map(|error| error.to_string())
         .unwrap_or_default();
-    assert!(message.contains("L0/paper.md"), "{message}");
+    assert!(message.contains("L0.0/paper.md"), "{message}");
     let _ = std::fs::remove_dir_all(&root);
     Ok(())
 }
@@ -128,22 +128,22 @@ fn a_row_written_as_a_wikilink_still_names_its_file() {
     // way. Every row then matched nothing on disk and the next refresh
     // dropped twelve descriptions as stale.
     let index = "| File | Purpose |\n| --- | --- |\n\
-                 | L2/[[rank_lehmer]] | Lehmer digits are the lex rank |\n\
-                 | L2/[[mechanism_pair_inversions]]* | **Core**: gap-affine probabilities |\n\
-                 | `L1/paper.md` | the ordinary spelling still works |\n";
+                 | L2.0/[[rank_lehmer]] | Lehmer digits are the lex rank |\n\
+                 | L2.0/[[mechanism_pair_inversions]]* | **Core**: gap-affine probabilities |\n\
+                 | `L1.0/paper.md` | the ordinary spelling still works |\n";
     let parsed = parse(index);
     assert_eq!(
-        parsed.get("L2/rank_lehmer.md").map(String::as_str),
+        parsed.get("L2.0/rank_lehmer.md").map(String::as_str),
         Some("Lehmer digits are the lex rank")
     );
     assert_eq!(
         parsed
-            .get("L2/mechanism_pair_inversions.md")
+            .get("L2.0/mechanism_pair_inversions.md")
             .map(String::as_str),
         Some("**Core**: gap-affine probabilities")
     );
     assert_eq!(
-        parsed.get("L1/paper.md").map(String::as_str),
+        parsed.get("L1.0/paper.md").map(String::as_str),
         Some("the ordinary spelling still works")
     );
 }
@@ -153,7 +153,7 @@ fn an_index_is_never_a_row_in_another_index() {
     // `file_names` reports a tree's levels as `L1/paper.md`, so a whole-name
     // comparison against `INDEX.md` stops catching `L0/INDEX.md`. A live
     // research index grew rows for two indexes nobody could describe.
-    for name in ["INDEX.md", "L0/INDEX.md", "L1/INDEX.md"] {
+    for name in ["INDEX.md", "L0.0/INDEX.md", "L1.2/INDEX.md"] {
         assert_eq!(
             name.rsplit('/').next(),
             Some(INDEX_FILE),

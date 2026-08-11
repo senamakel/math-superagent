@@ -36,15 +36,13 @@ pub(super) const INDEX_FILE: &str = "INDEX.md";
 /// Placeholder for a file nobody has described yet.
 const UNDESCRIBED: &str = "_(undescribed)_";
 
-/// Opens the synthesis an index may carry above its table.
+/// Opens a synthesis an older index carries above its table.
 ///
-/// `research/INDEX.md` is the root of the summary tree
-/// ([`super::context_tree`]), so it has to say what the library *establishes*
-/// and not only what each file is. That synthesis is written by an agent and
-/// the table below it is derived from the directory, which puts two authors on
-/// one file; the markers are what let each rewrite its own half. Without them
-/// the first `refresh_index` after a fold would silently replace the root of
-/// the tree with a file listing.
+/// The tree's synthesis now lives in its own `ROOT.md`, because holding it and
+/// the derived table in one file put an agent and a tool in contention over
+/// that file and cost three separate rounds of lost descriptions. These
+/// markers stay so an index written before the split keeps what it was
+/// carrying rather than having it dropped on the next refresh.
 const BRIEF_OPEN: &str = "<!-- brief -->";
 
 /// Closes the synthesis an index may carry above its table.
@@ -79,12 +77,12 @@ pub(super) fn is_level(segment: &str) -> bool {
 /// Splits a path into the folder whose index describes it, and the name that
 /// index calls it.
 ///
-/// A level folder has no index of its own: the tree's root carries one index
-/// covering every level, so `research/L1/paper.md` is described in
-/// `research/INDEX.md` under the name `L1/paper.md`. Giving each level its own
-/// index would scatter the library's descriptions across as many files as the
-/// tree has levels, and the root — the one file a reader is meant to open
-/// first — would describe none of them.
+/// A batch folder has no index of its own: the tree carries one index covering
+/// every batch, so `research/L1.0/paper.md` is described in
+/// `research/INDEX.md` under the name `L1.0/paper.md`. Giving each batch its
+/// own index would scatter the library's descriptions across as many files as
+/// the tree has batches, and the one file a reader is meant to open first
+/// would describe none of them.
 fn split(relative: &str) -> (String, String) {
     let trimmed = folder_name(relative);
     let Some((folder, name)) = trimmed.rsplit_once('/') else {
