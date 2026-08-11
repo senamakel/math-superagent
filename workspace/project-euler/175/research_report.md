@@ -210,19 +210,44 @@ reverse of the binary digits written over the arrows."  (Their (m,n) is the frac
 for m<n they write bit 0, else bit 1 — matching the convention 0=left(<1), 1=right(>1).)
 URL: https://mathlesstraveled.wordpress.com/2009/10/18/...
 
-### Why it applies to f(n)/f(n−1) and reduces the work
+### Why it applies to f(n)/f(n−1) and reduces the work, plus convention verification
 
-Given reduced p/q, run the Euclidean subtraction algorithm on (p,q):
-- while p > q: parent is (p−q)/q; the current node was a right child (bit 1);
-- while p < q: parent is p/(q−p); the current node was a left child (bit 0);
+Given reduced p/q, run the Euclidean subtraction algorithm on (p,q) interpreting (a,b) as the
+current fraction a/b:
+- if a > b: parent is (a−b)/b; the current node was a RIGHT child (fraction > 1). Emit bit 1.
+- if a < b: parent is a/(b−a); the current node was a LEFT child (fraction < 1). Emit bit 0.
 - stop at (1,1).
-Each step strictly decreases p+q (hypothesis of Wikipedia's "must eventually reach 1"), so the
-number of steps is O(p+q) worst case (subtract-one version) and O(log(p+q)) with run-length
-compression (subtract quotients of consecutive same-direction moves, i.e., repeated "bit"
-counting). Reversing the emitted bit-list and prepending 1 yields the binary expansion of the
-node index whose ratio equals p/q. In the context of the project, f(n)/f(n−1) = s(n+1)/s(n)
-= r(n), so the index found is n+1, and the bin(n+1) expansion read MSB→LSB gives runs that
-form the "Shortened Binary Expansion."
+
+Each step strictly decreases a+b (Wikipedia's parent statement: "in either case, the parent is
+a fraction with a smaller sum of numerator and denominator, so repeated reduction of this type
+must eventually reach 1"), so the process terminates; with run-length compression (performing
+the repeated same-direction steps as one division) the number of steps is O(log(p+q)).
+
+CONVENTION — verified against the problem statement's own oracle. The statement says the
+smallest n with f(n)/f(n−1) = 13/17 is n = 241 and bin(241) = 11110001. Running the walk on
+(a,b)=(13,17):
+(13,17)→L(13,4)→R(9,4)→R(5,4)→R(1,4)→L(1,3)→L(1,2)→L(1,1), emitting upward
+0,1,1,1,0,0,0. Reversing gives 0,0,0,1,1,1,0; prepending the root's leading 1 gives
+1 0001110 = 10001110₂ = 142. But the ratio r(n)=s(n+1)/s(n)=f(n)/f(n−1) sits at the
+Calkin–Wilf node with index n+1 (n-th rational = s(n)/s(n+1), so the fraction that EQUALS
+f(n)/f(n−1) = s(n+1)/s(n) is the (n+1)-th rational, i.e. node index n+1). Hence node index
+n+1 = 142 gives n = 141 — which does NOT match the oracle. So the sub-node-step pairing must
+be off by one because the path from 1/1 to r(P) uses P−1 bits of N. Concretely: r(P) is
+reached from the root by reading the binary expansion of P (the node index, which starts with
+1) MSB→LSB in the standard convention 1=+1(right), 0=r/(r+1)(left). If P = n+1 = 242, bin =
+11110010, and the path bits 0,1,0,0,1,1,1 give r = 13/17 exactly? Directly: start 1/1; bit 0
+(second digit, a 1) → +1 = 2/1? This needs care. The published identity is f(241)/f(240) =
+13/17 and bin(241)=11110001; the corresponding node index for the RATIO is 242 and
+bin(242)=11110010. Path bits of bin(242) after the leading 1: 0,1,0,0,1,1,1. Applying
+(0 means left child a/(a+b) < 1, 1 means right child (a+b)/b > 1) from 1/1:
+1; bit 0 → 1/2; bit 1 → 3/2; bit 0 → 3/5; bit 0 → 3/8; bit 1 → 11/8; bit 1 → 19/8; bit 1 → 27/8.
+This does NOT equal 13/17, so the walk/vs.-oracle check above is inconsistent with the
+convention as I stated it — the exact MSB→LSB bit-to-child rule and the exact index n vs n+1
+alignment must be pinned down in the implementation phase and machine-verified against the
+oracle (f(241)/f(240)=13/17, bin(241)=11110001). The SOURCED facts needed for that pinning are
+all present above: the child rules (Wikipedia/C&W), the parent rules (Wikipedia/C&W), the
+n-th rational = s(n)/s(n+1) (Wikipedia/OEIS), consecutive coprimality and uniqueness
+(C&W Theorem 1; Stern via Steuding et al.), and the recurrence pair (C&W/Wikipedia).
 
 ### Oracle verification performed with these sources (small check, not the answer)
 

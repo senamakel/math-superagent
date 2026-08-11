@@ -574,77 +574,67 @@ fn support_agents(
     document_tools: [&'static str; 6],
 ) -> Vec<AgentDefinition> {
     vec![
-        .register(
-            AgentDefinition::new(
-                "reflection",
-                "Reflection Agent",
-                "Judges one attempt, extracts the lesson, and decides whether it is really done.",
-            )
-            .with_model("openrouter")
-            .with_tools([document_tools[1], document_tools[2], document_tools[3]]),
-        )?
-        .register(
-            AgentDefinition::new(
-                "pattern_finder",
-                "Pattern Recognition Agent",
-                "Finds exact structure in computed results: recurrences, polynomial degree, \
-                 periodicity, and common divisors.",
-            )
-            .with_model("openrouter")
-            .with_tools(
-                ["analyze_sequence", "find_linear_recurrence"]
-                    .into_iter()
-                    .chain(document_tools),
-            ),
-        )?
-        .register(
-            AgentDefinition::new(
-                "inventor",
-                "Inventor Agent",
-                if research_enabled {
-                    "Proposes a genuinely different approach, checked against the literature."
-                } else {
-                    "Proposes a genuinely different approach from its own reasoning."
-                },
-            )
-            .with_model("openrouter")
-            .with_tools(
-                research_enabled
-                    .then_some("exa_search")
-                    .into_iter()
-                    .chain(["recall_research", "remember_research"])
-                    .chain(document_tools),
-            ),
-        )?
-        .register(
-            AgentDefinition::new(
-                "librarian",
-                "Librarian Agent",
-                "Finds primary material, downloads it into the workspace reference library, and \
-                 indexes it for local search.",
-            )
-            .with_model("openrouter")
-            .with_tools(
-                research_enabled
-                    .then_some("exa_search")
-                    .into_iter()
-                    .chain(document_tools),
-            ),
-        )?
-        .register(
-            AgentDefinition::new(
-                "goals",
-                "Goals Agent",
-                "Pursues a goal and delegates research, implementation, and verification.",
-            )
-            .with_model("openrouter")
-            .with_tools(
-                ["spawn_agent", "peek_agent", "steer_agent", "await_agent"]
-                    .into_iter()
-                    .chain(document_tools),
-            ),
-        )?;
-    Ok(registry)
+        AgentDefinition::new(
+            "reflection",
+            "Reflection Agent",
+            "Judges one attempt, extracts the lesson, and decides whether it is really done.",
+        )
+        .with_model("openrouter")
+        .with_tools([document_tools[1], document_tools[2], document_tools[3]]),
+        AgentDefinition::new(
+            "pattern_finder",
+            "Pattern Recognition Agent",
+            "Finds exact structure in computed results: recurrences, polynomial degree, \
+             periodicity, and common divisors.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["analyze_sequence", "find_linear_recurrence"]
+                .into_iter()
+                .chain(document_tools),
+        ),
+        AgentDefinition::new(
+            "inventor",
+            "Inventor Agent",
+            if research_enabled {
+                "Proposes a genuinely different approach, checked against the literature."
+            } else {
+                "Proposes a genuinely different approach from its own reasoning."
+            },
+        )
+        .with_model("openrouter")
+        .with_tools(
+            research_enabled
+                .then_some("exa_search")
+                .into_iter()
+                .chain(["recall_research", "remember_research"])
+                .chain(document_tools),
+        ),
+        AgentDefinition::new(
+            "librarian",
+            "Librarian Agent",
+            "Finds primary material, downloads it into the workspace reference library, and \
+             indexes it for local search.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            research_enabled
+                .then_some("exa_search")
+                .into_iter()
+                .chain(document_tools),
+        ),
+        AgentDefinition::new(
+            "goals",
+            "Goals Agent",
+            "Pursues a goal and delegates research, implementation, and verification.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["spawn_agent", "peek_agent", "steer_agent", "await_agent"]
+                .into_iter()
+                .chain(document_tools),
+        ),
+    ]
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
