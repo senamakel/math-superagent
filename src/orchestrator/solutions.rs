@@ -163,12 +163,36 @@ async fn attempt_step(
             state.fresh_context
         )
     };
+    // Every attempt after the first continues work already on disk. Without
+    // saying so, each one restarts at "read the statement and write it down",
+    // and a run can spend its whole budget re-documenting the problem without
+    // ever executing anything.
+    let continuation = if state.attempts == 1 {
+        "This is the first attempt. Start by reading the statement, then immediately write and \
+         run a program that reproduces the worked examples it gives."
+            .to_string()
+    } else {
+        format!(
+            "This is attempt {}. Earlier attempts already wrote the workspace files; read \
+             goal.md and memory.md and CONTINUE from there. Do not re-extract or re-document the \
+             statement — that work is done, and repeating it is how this run fails.",
+            state.attempts
+        )
+    };
     let prompt = format!(
-        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{}\n{fresh}\n\n\
-         Follow the method policy: understand, find the governing structure, derive, implement, \
-         then verify by a second independent route. Report the answer, the method, and the \
-         verification, or state precisely where you are blocked and what you established along \
-         the way.",
+        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{}\n\
+         {fresh}\n\n\
+         Requirements for this attempt, all of them:\n\
+         - You must end this attempt with at least one program written to the workspace and \
+           executed. An attempt that produces only notes, plans, or restatements has failed, \
+           however well written they are.\n\
+         - Reproduce every worked example in the statement with that program before running \
+           anything at full size.\n\
+         - Delegate the writing and running to tool_builder; it is the only role that can \
+           execute.\n\
+         - Then report the answer, the method, and how you verified it by a second independent \
+           route; or state precisely where you are blocked, what you executed, and what its \
+           output was.",
         state.problem,
         state.lesson_briefing()
     );
