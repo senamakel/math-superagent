@@ -200,7 +200,39 @@ fn html_to_markdown(html: &str, table: &mut LinkTable) -> String {
             continue;
         }
 
-        match (name.as_str(), closing) {
+        apply_tag(&mut TagContext {
+            out: &mut out,
+            list_stack: &mut list_stack,
+            in_pre: &mut in_pre,
+            link_target: &mut link_target,
+            link_text: &mut link_text,
+            table,
+        }, &name, closing, raw);
+    }
+    if link_target.is_some() {
+        // An anchor that never closed: keep its text rather than losing it.
+        flush_text(&mut link_text, &mut pending_text, in_pre);
+        out.push_str(link_text.trim());
+    } else {
+        flush_text(&mut out, &mut pending_text, in_pre);
+    }
+    out
+}
+
+/// The mutable state a tag handler acts on.
+struct TagContext<'a> {
+    out: &'a mut String,
+    list_stack: &'a mut Vec<Option<usize>>,
+    in_pre: &'a mut bool,
+    link_target: &'a mut Option<String>,
+    link_text: &'a mut String,
+    table: &'a mut LinkTable,
+}
+
+/// Emits the Markdown for one opening or closing tag.
+fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
+    let out = &mut *ctx.out;
+    match (name, closing) {
             ("br", _) => out.push('\n'),
             ("hr", _) => out.push_str("\n\n---\n\n"),
             ("p" | "div" | "section" | "article" | "tr" | "blockquote", _) => {
@@ -211,7 +243,7 @@ fn html_to_markdown(html: &str, table: &mut LinkTable) -> String {
                 let level = name[1..].parse::<usize>().unwrap_or(1);
                 let _ = write!(out, "{} ", "#".repeat(level.clamp(1, 6)));
             }
-            ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", true) => ensure_blank_line(&mut out),
+
             ("ul", false) => {
                 ensure_blank_line(&mut out);
                 list_stack.push(None);
@@ -255,7 +287,9 @@ fn html_to_markdown(html: &str, table: &mut LinkTable) -> String {
             ("strong" | "b", _) => out.push_str("**"),
             ("em" | "i", _) => out.push('*'),
             ("td" | "th", true) => out.push_str(" | "),
-            ("table", _) => ensure_blank_line(&mut out),
+            ("table", _) | ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", true) => {
+                ensure_blank_line(&mut out);
+            }
             ("img", false) => {
                 if let Some(alt) = attribute(raw, "alt")
                     && !alt.trim().is_empty()
@@ -544,15 +578,12 @@ fn decode_entities(text: &str) -> String {
                 .and_then(char::from_u32)
                 .map(|c| c.to_string()),
         };
-        match decoded {
-            Some(value) => {
-                out.push_str(&value);
-                rest = &tail[end + 1..];
-            }
-            None => {
-                out.push('&');
-                rest = &tail[1..];
-            }
+        if let Some(value) = decoded {
+            out.push_str(&value);
+            rest = &tail[end + 1..];
+        } else {
+            out.push('&');
+            rest = &tail[1..];
         }
     }
     out.push_str(rest);
