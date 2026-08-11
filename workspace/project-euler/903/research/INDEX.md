@@ -7,7 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L0/INDEX.md` | _(undescribed)_ |
 | `L0/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
 | `L0/sack_ulfarsson_refined_inversion_pdf.md` | downloaded source — from https://arxiv.org/pdf/1106.1995; not yet read, excerpt pending a scholar summary |
-| `L0/sack_ulfarsson_refined_inversion_statistics.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/1106.1995; not yet read, excerpt pending a scholar summary |
+| `L0/sack_ulfarsson_refined_inversion_statistics.md` | Duplicate short note of the Sack&Úlfarsson papers (abstract-page source); points to the PDF full text at [[sack_ulfarsson_refined_inversion_pdf.full]]. Redundant with the pdf.md summary. |
 | `L1/INDEX.md` | _(undescribed)_ |
 | `L1/archer_geary_descents_powers.md` | _(undescribed)_ |
 | `L1/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
@@ -31,7 +31,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1/report_cited_facts.md` | _(undescribed)_ |
 | `L1/report_literature_ranks_powers.md` | _(undescribed)_ |
 | `L1/report_rank_powers.md` | _(undescribed)_ |
-| `L1/sack_ulfarsson_refined_inversion_statistics.md` | Summary of arXiv:1106.1995 (Sack & Úlfarsson) — gap-refined inversion statistics: k-step inversion distribution H_{n,k} via Eulerian polynomials (Thm 4.4), non-inversion-sum/dot-product identity 1·π=n(n+1)(2n+1)/6−invsum (Thm 2.5), zone-crossing vectors & N_n(q) recurrence (Thm 3.8). Analytical machinery for the per-gap pair-inversion counts f_n(k)=A_n+(k−1)B_n; does not cover powers {π^i}. |
+| `L1/sack_ulfarsson_refined_inversion_statistics.md` | Summary of Sack & Úlfarsson (arXiv:1106.1995): gap-refined inversion statistics — k-step inversion distribution H_{n,k} via Eulerian polynomials (Thm 4.4), non-inversion-sum/dot-product identity 1·π=n(n+1)(2n+1)/6−invsum (Thm 2.5), zone-crossing vectors & N_n(q) recurrence (Thm 3.8). Exact per-gap machinery for f_n(k)=A_n+(k−1)B_n; does not cover the powers {π^i}. |
 | `L1/stong_average_order_permutation.md` | _(undescribed)_ |
 | `L2/INDEX.md` | _(undescribed)_ |
 | `L2/cycle_type_toolkit.md` | _(undescribed)_ |

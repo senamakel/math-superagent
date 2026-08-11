@@ -26,4 +26,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `report_cited_facts.md` | Superseded literature report; replaced by `report_literature_ranks_powers.md` |
 | `report_literature_ranks_powers.md` | Current literature report: closest match is Cambie-Yan; NO source gives a closed form for the rank-sum over a cyclic subgroup (the novel core) |
 | `report_rank_powers.md` | Superseded literature report; replaced by `report_literature_ranks_powers.md` |
+| `sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `stong_average_order_permutation.md` | Summary of Stong (EJC 5 R41, 1998): average order log μ_n = C√(n/log n)+O(√n loglog n/log n); the n!/ord(π) weight regime in brute2. Full text in L0 |
