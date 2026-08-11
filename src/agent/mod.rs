@@ -111,21 +111,30 @@ impl ObservedAgent {
 
     pub(crate) fn from_harness(mut harness: SlimAgent) -> Result<Self> {
         let _ = dotenvy::dotenv();
-        configure_tool_deadline(&mut harness);
+        configure_run_budget(&mut harness, RunBudget::from_env());
         Ok(Self {
             harness,
             langfuse: LangfuseClient::from_env()?,
+            tracer: None,
         })
+    }
+
+    /// Attaches a tracer so this run's model and tool activity is streamed to
+    /// the console and the workspace journal as it happens.
+    #[must_use]
+    pub(crate) fn with_tracer(mut self, tracer: Arc<RunTracer>) -> Self {
+        self.tracer = Some(tracer);
+        self
     }
 }
 
-pub(crate) fn configure_tool_deadline(harness: &mut SlimAgent) {
-    harness.with_tool_timeout_settings(ToolTimeoutSettings::new(
-        TOOL_TIMEOUT_MS,
-        1,
-        TOOL_TIMEOUT_MS,
-        0,
-    ));
+/// Applies the run budget to a harness: per-tool deadline, per-run call and
+/// wall-clock caps, partial-result stopping, and payload capture.
+pub(crate) fn configure_run_budget(harness: &mut SlimAgent, budget: RunBudget) {
+    let tool_timeout_ms = budget.tool_timeout_ms();
+    harness
+        .with_tool_timeout_settings(ToolTimeoutSettings::new(tool_timeout_ms, 1, tool_timeout_ms, 0))
+        .with_policy(budget.run_policy());
 }
 
 pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
