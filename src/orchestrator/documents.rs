@@ -227,18 +227,33 @@ enum DocumentToolKind {
     Edit,
     Index,
     Search,
+    List,
 }
 
 impl DocumentToolKind {
-    const ALL: [Self; 6] = [
+    const ALL: [Self; 7] = [
         Self::Download,
         Self::Read,
         Self::Write,
         Self::Edit,
         Self::Index,
         Self::Search,
+        Self::List,
     ];
 }
+
+/// Entries never worth showing an agent: its own bookkeeping, installed
+/// packages, and the multi-megabyte event log.
+const HIDDEN_ENTRIES: [&str; 5] = [
+    ".workspace-history",
+    ".python-packages",
+    "__pycache__",
+    ".document-index.json",
+    "trace.jsonl",
+];
+
+/// Largest number of entries one listing returns.
+const MAX_LISTING_ENTRIES: usize = 400;
 
 #[derive(Debug)]
 struct DocumentTool {
@@ -324,6 +339,7 @@ impl Tool<()> for DocumentTool {
             DocumentToolKind::Edit => "edit_document",
             DocumentToolKind::Index => "index_document",
             DocumentToolKind::Search => "search_documents",
+            DocumentToolKind::List => "list_workspace",
         }
     }
 
@@ -338,6 +354,10 @@ impl Tool<()> for DocumentTool {
             DocumentToolKind::Write => "Stores a UTF-8 document in /workspace.",
             DocumentToolKind::Edit => "Replaces one exact text occurrence in a workspace document.",
             DocumentToolKind::Index => "Adds a workspace document to the local searchable index.",
+            DocumentToolKind::List => {
+                "Lists the files and directories under a workspace path, with sizes, so relevant \
+                 files can be found without guessing their names."
+            }
             DocumentToolKind::Search => {
                 "Searches indexed workspace documents and returns ranked snippets."
             }
@@ -412,6 +432,10 @@ impl Tool<()> for DocumentTool {
                 let path = required_string(&call.arguments, "path")?;
                 let words = self.documents.index(&path).await?;
                 format!("indexed {path} ({words} words)")
+            }
+            DocumentToolKind::List => {
+                "Lists the files and directories under a workspace path, with sizes, so relevant \
+                 files can be found without guessing their names."
             }
             DocumentToolKind::Search => {
                 let results = self
