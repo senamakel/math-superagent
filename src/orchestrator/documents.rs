@@ -137,8 +137,17 @@ impl WorkspaceDocuments {
         })
     }
 
+    /// Writes a document on an agent's behalf.
+    ///
+    /// Refuses the runtime's own bookkeeping. The index writes through
+    /// [`Self::write_internal`] instead, because the runtime maintaining its
+    /// own index is not an agent reaching for it.
     async fn write(&self, relative: &str, content: &str) -> Result<()> {
         ensure_visible(relative)?;
+        self.write_internal(relative, content).await
+    }
+
+    async fn write_internal(&self, relative: &str, content: &str) -> Result<()> {
         if content.len() > MAX_DOCUMENT_BYTES {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
                 "document content exceeds {MAX_DOCUMENT_BYTES} bytes"
@@ -229,7 +238,7 @@ impl WorkspaceDocuments {
             paths.push(relative.to_string());
             paths.sort();
         }
-        self.write(INDEX_PATH, &serde_json::to_string_pretty(&paths)?)
+        self.write_internal(INDEX_PATH, &serde_json::to_string_pretty(&paths)?)
             .await?;
         Ok(content.split_whitespace().count())
     }
