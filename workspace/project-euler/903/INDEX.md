@@ -11,7 +11,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `aj3.py` | Computes M_j (Lehmer-coefficient power sums) for n=9,10 to extend the f_n(k)=A_n-B_n(k-1) data for closed-form fitting. |
 | `ana.py` | Exploratory closed-form hunt for the gap constants A_n and B_n (n=2..11): ratios A_n/A_(n-1) vs (n-1)(n-2), normalizations A/n!², A/(n!(n-1)!), abs(B)/(n-1)!, and cross-relations abs(B)/A. Prints only, no output file |
 | `ana2.py` | Exploratory closed-form hunt for A_n, B_n (n=5..11): checks A_{n+1}/abs(B_n) and the normalized sequence c_n = abs(B)/(n-1)! (30,290,2464,23130,235080,2728368), c_n/c_{n-1} ratios, and abs(B)/[(n-1)! n (n-1)]. Prints only, no output file. Successor probing of ana.py's open leads |
-| `ana3.py` | Exploratory closed-form hunt for A_n, B_n (n=2..11): normalizes alpha_n=A/(n!(n-1)!), beta_n=abs(B)/(n!(n-1)!), checks for exact rational patterns (2 alpha-n, 3 alpha-n, beta*(n-2)!, A/(n!(n-2)!). Prints only, no output file |
+| `ana3.py` | Exploratory closed-form hunt for A_n, B_n (n=2..11): normalizes alpha_n=A/(n!(n-1)!), beta_n=\ |
 | `ana4.py` | Exploratory exact-rational continuation of the closed-form hunt: checks 2 alpha-n, 3 alpha-n, 4 alpha-3n, alpha*(n-2)! = A/[n!(n-1)], beta*(n-2)! = abs(B)/[n!(n-1)]. Prints only, no output file |
 | `brute.py` | Method-1 oracle: literal double sum Q(n) = sum over pi of sum_{i} rank(pi^i) by walking every power. O((n!)^2), exact; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(6)=133103808. Writes results.json |
 | `brute2.py` | Method-2 oracle (independent): Q(n) = sum over pi of (n!/ord(pi)) * sum over tau in <pi> of rank(tau), using periodicity d = ord(pi) = lcm of cycle lengths. Cross-validates brute.py for n=2..7. Writes results2.json |
