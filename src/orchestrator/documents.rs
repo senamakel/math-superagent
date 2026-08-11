@@ -167,6 +167,14 @@ impl WorkspaceDocuments {
     /// the next call rather than the next few. Returns an empty string when
     /// there is nothing useful to add, so the caller can always append it.
     fn nearby(&self, relative: &str) -> String {
+        // A note's batch number is the one thing an agent cannot infer: it
+        // knows the name, and which of `L1.0`, `L1.1`, `L1.2` holds it is an
+        // accident of when it arrived. Seven of one live run's twenty-three
+        // tool failures were exactly this guess. Naming the file's real home
+        // answers the question the failed read was asking.
+        if let Some(found) = self.same_name_elsewhere(relative) {
+            return format!("; it is at `{found}`");
+        }
         let requested = std::path::Path::new(relative);
         let folder = match requested.parent() {
             Some(parent) if !parent.as_os_str().is_empty() => parent.to_path_buf(),
