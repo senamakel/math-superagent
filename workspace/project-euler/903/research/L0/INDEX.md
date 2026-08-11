@@ -12,7 +12,7 @@ Full texts (never edited). Read the matching `../L1/<name>.md` summary first; op
 | `cambie_yan_html.full.md` | Full text: Cambie-Yan (2408.01211) expected descents/inversions in π^k, divisor-function closed forms |
 | `conjugacy_class_statistics.full.md` | Earlier full text of the Campion-Loth conjugacy-class statistics paper (superseded by `conjugacy_class_statistics_body.full.md`) |
 | `conjugacy_class_statistics_body.full.md` | Full text: Campion-Loth et al (2301.00898) body — per-cycle-type inversion probs, translation-invariant and affine in gap (one proof route for A_n,B_n). The curated core source |
-| `factorial_number_system_wiki.md`→(none) | Factorial-number-system summary lives in L1; full text is the Wikipedia page (not kept as a separate L0 file) |
+| `factorial_number_system_wiki.full.md` | Full text of the Wikipedia factorial-number-system page (factoradic/Lehmer digits and rank); summary in `../L1/factorial_number_system_wiki.md` |
 | `ford_cycle_type_toolkit.full.md` | Full text: Ford "Cycle type of random permutations: A toolkit" — short/partial save (5048 b) |
 | `ford_cycle_type_toolkit.full.full.md` | Earlier, larger full text of the same Ford paper (122469 b); superseded by `ford_cycle_type_toolkit.full.md`, kept not current |
 | `gaetz_ryba_stable_chars_permutation_patterns.full.md` | Full text: Gaetz & Ryba on stable characters / permutation patterns (no L1 summary yet) |
