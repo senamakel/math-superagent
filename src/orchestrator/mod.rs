@@ -551,6 +551,71 @@ struct RolePrompts {
     organizer: String,
 }
 
+/// Every role's assembled system prompt, for inspection.
+///
+/// A role's prompt is built from three sources — the shared method policy, the
+/// built-in role prompt, and whichever workspace files that role is entitled
+/// to — and until now the only way to see the result was to run the agent and
+/// read a provider trace. That made the most consequential text in the runtime
+/// the least reviewable, and a mistake in it (a rule that reads as optional, a
+/// file routed to the wrong role, a prompt that has silently doubled in size)
+/// invisible until it changed a run's behaviour.
+///
+/// The token estimates matter as much as the text. Every one of these is sent
+/// on every model call in that role's run, so a prompt that has grown is a bill
+/// that has grown, and the shared prefix is what the provider cache is keyed
+/// on.
+///
+/// # Errors
+///
+/// Returns an error when a workspace file is unreadable, oversized, or not
+/// UTF-8.
+pub fn prompt_report(workspace: &Path) -> Result<String> {
+    let prompts = RolePrompts::load(workspace)?;
+    let mut out = format!(
+        "# Assembled agent prompts\n\nworkspace: {}\n\n\
+         Each prompt is the shared method policy, then the role's built-in prompt, then the \
+         workspace files that role receives.\n",
+        workspace.display()
+    );
+    let mut total = 0_u64;
+    for (role, prompt) in prompts.by_role() {
+        let tokens = estimate_tokens(prompt);
+        total += tokens;
+        let _ = write!(
+            out,
+            "\n\n---\n\n## {role}\n\n_{} chars, ~{tokens} tokens_\n\n```text\n{prompt}\n```",
+            prompt.len()
+        );
+    }
+    let _ = write!(
+        out,
+        "\n\n---\n\n_~{total} tokens across {} roles; the shared method policy is ~{} of them, \
+         repeated in every one._\n",
+        prompts.by_role().len(),
+        estimate_tokens(SHARED_METHOD_POLICY)
+    );
+    Ok(out)
+}
+
+impl RolePrompts {
+    /// Returns each role's name paired with its assembled prompt.
+    fn by_role(&self) -> Vec<(&'static str, &str)> {
+        vec![
+            ("orchestrator", self.orchestrator.as_str()),
+            ("goals", self.goals.as_str()),
+            ("research", self.research.as_str()),
+            ("tool_builder", self.tool_builder.as_str()),
+            ("reflection", self.reflection.as_str()),
+            ("pattern_finder", self.pattern.as_str()),
+            ("inventor", self.inventor.as_str()),
+            ("librarian", self.librarian.as_str()),
+            ("scholar", self.scholar.as_str()),
+            ("organizer", self.organizer.as_str()),
+        ]
+    }
+}
+
 /// The workspace context every role receives.
 ///
 /// `AGENTS.md` is the method policy and applies to everyone. Nothing else does.
