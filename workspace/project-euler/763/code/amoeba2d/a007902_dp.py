@@ -1,17 +1,8 @@
 #!/usr/bin/env python3
 """Exact DP for OEIS A007902 (2D amoeba / chessboard-pebbling counts).
 
-G(k, m) = number of 2D reachable configs with k pebbles whose top structure
-sits at level m (the CGMO auxiliary, encoded by Alois P. Heinz on OEIS).
-a(n) = A007902(n) offset 1: a(1)=1, a(n)=G(n,0) for n>=2.
-
-Recurrence (from CGMO eqs 2.1-2.3, verified against the run's 2D BFS oracle):
-  G(k, m):
-    k < 1          -> 0
-    m = 0          -> 2*G(k-1,0) + G(k,1) + (1 if k==2 else 0)
-    m = 1          -> G(k-3,0) + 2*G(k-2,1) + G(k-1,2) + G(k-4,1)
-    m >= 2         -> G(k-m-2,m-1) + 2*G(k-m-1,m) + G(k-m,m+1)
-  a(1)=1; a(n)=G(n,0).
+Imports the canonical G(k,m)/a(n) from lib/amoeba2d (single shared
+definition) and prints a(1..N) with the OEIS match check.
 
 Run: python code/amoeba2d/a007902_dp.py [max_n]
 """
@@ -27,8 +18,9 @@ A007902_FIRST_22 = [
 def main():
     max_n = int(sys.argv[1]) if len(sys.argv) > 1 else 22
     seq = [a(n) for n in range(1, max_n + 1)]
-    print("a(1..N) =", seq)
-    print("matches OEIS A007902 first N:", seq == A007902_FIRST_22[:max_n])
+    print(f"a(1..{max_n}) = {seq}")
+    print(f"matches OEIS A007902 first {max_n}: "
+          f"{seq == A007902_FIRST_22[:max_n]}")
 
 
 if __name__ == "__main__":
