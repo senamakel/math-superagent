@@ -385,9 +385,9 @@ impl AsyncSubagentManager {
         let follow_up = FOLLOW_UPS
             .iter()
             .find(|(after, _)| *after == agent_name)
-            .map(|(_, then)| FollowUp {
+            .map(|(_, steps)| FollowUp {
                 manager: self.clone(),
-                agent: (*then).to_string(),
+                steps,
             });
         tokio::spawn(async move {
             // Queue for a slot before doing anything else. Acquiring here
