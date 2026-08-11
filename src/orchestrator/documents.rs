@@ -688,11 +688,11 @@ pub(super) fn research_excerpt(full: &str, full_relative: &str) -> String {
         .rsplit_once('\n')
         .map_or(head.as_str(), |(body, _)| body);
     format!(
-        "> **Excerpt only — read this first.** The complete text is beside it at \
+        "> **Excerpt only — read this first.** The complete text is one level down at \
          `{full_relative}`; open that only when this file does not answer the question, because \
          it is large. Replace this excerpt with a summary of what the source establishes and what \
-         it implies for this problem — under 1000 tokens, and specific enough that nobody needs \
-         the full text.\n\n{head}\n\n\
+         it implies for this problem — under 1000 tokens, specific enough that nobody needs the \
+         full text, and wikilinking it so they can still reach it.\n\n{head}\n\n\
          *[excerpt ends; {} characters not shown — see `{full_relative}`]*\n",
         full.chars().count().saturating_sub(head.chars().count())
     )

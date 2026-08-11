@@ -7,6 +7,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `bitcount.md` | OEIS A000788: summatory binary 1-bit count (popcount) with O(log n) divide-and-conquer recurrences; supplies A(n) for the (A,B) counting game at n=10^5. Full source text in bitcount.full.md (fallback — read the summary first). |
 | `cgt.md` | CGT framework: partisan games and the recursive position form (set of Left moves, set of Right moves); numbers as games; disjunctive sums. Justifies the board decomposing into a sum of subgames. Full source text in cgt.full.md (fallback — read the summary first). |
 | `confusioninterval.full.md` | Computer Science > Information Theory — from https://doi.org/10.48550/arxiv.1911.04268; not yet read, excerpt pending a scholar summary |
+| `confusioninterval2.full.md` | High Energy Physics - Phenomenology — from https://arxiv.org/abs/1911.10203; not yet read, excerpt pending a scholar summary |
+| `confusioninterval3.full.md` | High Energy Physics - Phenomenology — from https://arxiv.org/abs/1908.06045; not yet read, excerpt pending a scholar summary |
 | `disjsum.md` | Core structural result: each number with a 1-bits and b 0-bits is the game G(a,b) that equals the integer a-b, so the whole board reduces to the two totals A,B. Full source text in disjsum.full.md (fallback — read the summary first). |
 | `loopy.md` | Why the skip creates a self-loop in the DP, resolved as a fixpoint; the game is a stopper so a finite S(n) exists. Full source text in loopy.full.md (fallback — read the summary first). |
 | `normalplay.md` | Connects "unable to move loses" to the normal-play convention; why One (Left) wins without skips given A−B>0. |
