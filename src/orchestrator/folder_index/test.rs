@@ -103,3 +103,35 @@ fn naming_the_mount_point_from_inside_it_resolves_to_the_folder_meant() {
         ("toolkits".into(), "frames.py".into())
     );
 }
+
+#[tokio::test]
+async fn the_workspace_root_can_be_refreshed_by_every_spelling_of_itself() -> Result<()> {
+    // A live organizer lost its root refresh to this: the front door normalises
+    // `.` to the empty string, and the folder listing turned it straight back
+    // into `.`, which the path checker refuses as traversal. Every spelling an
+    // agent standing in /workspace would reach for has to mean the same folder.
+    let root = workspace("root-refresh")?;
+    std::fs::write(root.join("solution.py"), "print(1)").expect("a file is writable");
+    let documents = WorkspaceDocuments::new(root.clone())?;
+
+    for spelling in [".", "", "/workspace", "workspace", "./"] {
+        let tool = FolderIndexTool::new(IndexToolKind::Refresh, &documents);
+        let result = tool
+            .call(
+                &(),
+                ToolCall {
+                    id: "call-1".into(),
+                    name: "refresh_index".into(),
+                    invalid: None,
+                    arguments: serde_json::json!({ "path": spelling }),
+                },
+            )
+            .await?;
+        assert!(
+            result.content.contains("solution.py") || result.content.contains("1 files"),
+            "`{spelling}` must name the workspace root, got: {}",
+            result.content
+        );
+    }
+    Ok(())
+}
