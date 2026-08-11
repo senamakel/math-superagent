@@ -221,7 +221,11 @@ impl Tool<()> for ExaSearchTool {
     }
 
     fn description(&self) -> &'static str {
-        "Searches the live web with Exa and returns concise highlights with source URLs."
+        "Searches the live web with Exa and returns each source's URL, a summary, and the passages \
+         matching the query. Set `category` to `research paper` to search the literature rather \
+         than the open web — that is usually what a mathematical question wants. Search several \
+         distinct phrasings rather than one: the named theory, the objects involved, and the \
+         numbers themselves each surface different sources."
     }
 
     fn schema(&self) -> ToolSchema {
@@ -234,6 +238,11 @@ impl Tool<()> for ExaSearchTool {
                     "query": {
                         "type": "string",
                         "description": "A specific natural-language web search query."
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "Narrows the search to one kind of source.",
+                        "enum": ["research paper", "pdf", "news", "company", "github"]
                     }
                 },
                 "required": ["query"],
