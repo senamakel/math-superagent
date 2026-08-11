@@ -52,7 +52,8 @@ def build_treap_pairs_mod2(n, priority):
 def treap_parity(n, L, speeds, kind):
     if kind == 'a':
         # w_i = v_i / (L - 40*i)
-        pri = [speeds[i] / (L - 40.0 * i) for i in range(n)]
+        pri = [speeds[i] / d if abs(d) > 1e-12 else float('inf')
+               for i, d in enumerate([(L - 40.0 * j) for j in range(n)])]
     elif kind == 'b':
         # finish time (L-40*i)/v_i  -> min-priority = fastest finish
         pri = [(L - 40.0 * i) / speeds[i] for i in range(n)]
@@ -127,7 +128,7 @@ def q3(n, L, trials, seed=777):
     print(f"samples with a non-increasing-index edge: {idx_viol}")
     print("distinct chronological edge sets and frequencies:")
     for eset,c in edge_counts.most_common():
-        print(f"  edges={list(eset):20s} count={c:8d}  freq={c/trials:.6f}")
+        print(f"  edges={[list(eset)]!s:20s} count={c:8d}  freq={c/trials:.6f}")
     print("  (table: none=4/15=0.2667, B->C=8/45=0.1778, A->B=1/3=0.3333,"
           " B->C,A->C=4/27=0.1481, A->B,B->C=2/27=0.0741)")
     return edge_counts

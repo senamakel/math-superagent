@@ -4,16 +4,16 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `L0/flajolet_weighted_digitalsums.full.md` | Computer Science > Data Structures and Algorithms — from https://arxiv.org/abs/1003.0150; not yet read, excerpt pending a scholar summary |
 | `L0/li_zuchswang.md` | _(undescribed)_ |
-| `L0/minabutdinov_qweighted.full.md` | Mathematics > Dynamical Systems — from https://arxiv.org/abs/1801.03120; not yet read, excerpt pending a scholar summary |
 | `L0/siegel_zugzwang.md` | _(undescribed)_ |
 | `L1/a083652.md` | OEIS A083652 summatory bit-length, exact O(1) closed form; third leg of total bits = ones+zeros. |
 | `L1/bitcount.md` | OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |
 | `L1/cgt.md` | CGT framework (Conway ONAG, Winning Ways): numbers as games, disjunctive sum; board decomposes. |
 | `L1/disjsum.md` | Core structural fact: G(a,b)=a−b, board's no-skip value = A−B. |
+| `L1/flajolet_weighted_digitalsums.md` | Cheung–Flajolet–Golin–Lee 2010 (arXiv:1003.0150): weighted binary digital sums have exact main-term + periodic-fluctuation closed forms → polylog warrant for k·-weighted A(n),B(n). |
 | `L1/loopy.md` | Loopy games, stoppers: skip self-loop → DP fixpoint, finite S(n). |
 | `L1/mfl_pass.md` | Morrison–Friedman–Landsberg 2011 (arXiv:1204.3222): a one-time pass can drastically change game structure (Nim vs Chomp) — S(n) not readable off no-skip value. |
+| `L1/minabutdinov_qweighted.md` | Primary (arXiv) generalized Trollope–Delange for weighted digit sums with Takagi–Landsberg limit curves; corroborates that k·-weighted A(n),B(n) stay polylog-computable. |
 | `L1/misfiled.md` | Ledger of four accidental arXiv downloads in L0/ unrelated to the problem (compression, KOTO, COHERENT, medical segmentation); dead. |
 | `L1/normalplay.md` | Unable-to-move loses; A−B>0 ⇒ One wins without skips. |
 | `L1/partisan.md` | Sprague–Grundy inapplicable (disjoint move sets); minimax over (A,B). |
@@ -30,4 +30,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1/zerocount.md` | OEIS A059015 summatory 0-bit count → B(n); identity A059015 = A083652 − A000788. |
 | `L1/zugzwang.md` | Skip = "passing, if allowed, would be best"; One's forced 1-bit consumption → zugzwang. |
 | `L2/counting-arithmetic.md` | L2 synthesis: polylog evaluation of A(n)=Σk·popcount(k) and B(n)=Σk·zerocount(k) at n=10^5 scale — summatory A000788/A059015 recurrences, Trollope–Delange structure, k·-weighted moment closed forms; S(n) ∉ OEIS. Synthesises bitcount/zerocount/a083652/trollopedelange/verify_trollopedelange/weightedmom/weightedsearch. |
-| `L2/game-reduction-and-pass.md` | _(undescribed)_ |
+| `L2/game-reduction-and-pass.md` | L2 synthesis: the partisan game, its reduction to counters (A,B)=(total 1-bits,total 0-bits) with a budgeted skip, why the no-skip value is A−B yet S(n)≠A−B comes from the (A,B) minimax DP. Synthesises cgt/disjsum/surreal/partisan/normalplay/zugzwang/loopy/pass_waiting/mfl_pass/siegel_zugzwang/strategy. |
