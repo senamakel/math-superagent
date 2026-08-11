@@ -207,7 +207,10 @@ pub(super) async fn record_description(
     let mut entries = parse(&existing);
     entries.insert(name, description.trim().replace('\n', " "));
     let _ = documents
-        .write_document(&index_for(&folder), &render(&folder, &entries))
+        .write_document(
+            &index_for(&folder),
+            &render(&folder, &entries, &brief(&existing)),
+        )
         .await;
 }
 
