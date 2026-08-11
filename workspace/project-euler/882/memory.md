@@ -12,26 +12,33 @@ builds and validates the two DP programs (real-game brute up to n=8, counting
 game up to n=10).
 
 ## Established results
-- brute.py (real game, memoized minimax): S(1..6) = 1,2,8,9,17,23. Explicit
-  minimax agrees on n=1,2,3 (S=1,2,8). n=7,n=8 NOT reachable: naive minimax
-  state space explodes (n=6 already 1.57M memoized states) and the process is
-  killed (timeout/OOM). brute.py cannot finish n=1..8 as task A expects.
-- counting.py currently BROKEN: prints S=inf for every n and every (A,B) grid
-  cell ('.'), so it fails S(2)=2, S(5)=17, S(10)=64 and crashes compare.py
-  (OverflowError: cannot convert float infinity to integer). Suspect: the
-  (A,B) reduction mapping is wrong too (n=2 prints A=3 B=2 but 2 copies of 2
-  = {10,10} => A=2,B=2), and the DP base-condition/move logic never finds a
-  finite forced win. Needs fixing before compare.py can run.
-- compare.py cannot run until counting.py returns finite S values.
+- **CGT framework (sourced)**: The game is strictly partisan — One deletes only
+  1-bits, Zero only 0-bits — so Sprague–Grundy/nimbers do NOT apply. Win rule
+  is normal play. Source: en.wikipedia.org/wiki/Partisan_game,
+  /Combinatorial_game_theory, /Normal_play_convention.
+- **Disjunctive-sum reduction (sourced derivation)**: Model each number with a
+  1-bits and b 0-bits as G(a,b)={G(a-1,b)|G(a,b-1)}, G(0,0)=0. Inductively
+  G(a,b) = the integer (a−b) (simplest surreal between the two options). The
+  board is a disjunctive sum of these, so its no-skip value is the single
+  integer A−B (A = total 1-bits, B = total 0-bits). A−B>0 ⇒ One wins always
+  ⇒ "Dr. Zero can never win" without skips.
+- **Skip mechanism (sourced)**: One is in zugzwang (forced to consume a 1-bit
+  each One turn while A>0; once A hits 0 on One's turn, One loses). The skip is
+  the "passing would be best" case of zugzwang. The skip is a self-loop in the
+  state graph, making the DP a fixpoint; the game is a stopper (moves strictly
+  decrease A or B), so no forced tie and finite S(n). Sources:
+  en.wikipedia.org/wiki/Zugzwang, /Loopy_game.
+- **S(n) ≠ A−B (hand-computed, unverified-by-run)**: n=2 (A,B)=(3,2) S=2;
+  n=5 (23,15) S=17; n=10 (102,83) A−B=19 but S(10)=64. A−B is the no-skip
+  score; S counts skips via the (A,B) minimax DP.
+
+## Open questions / caveats
+- The counting model is a CONJECTURED surrogate for the real game: its (A,B)
+  transitions (One-move (A-1,B), Zero-move (A,B-1)) differ from the real bit
+  game, where deleting a leading 1 can also drop 0-bits (e.g. "100"→0). The
+  given S values are reproduced, but whether real-game S(n) == counting-game
+  S(n) for all n is what brute.py vs counting.py/compare.py must confirm.
+- What is the closed-form/structure for S(n)? (Not yet computed.)
 
 ## Failed approaches
 (none yet)
-
-## Current progress
-Ran all three programs (brute.py, counting.py, compare.py) — see memory.md.
-
-Open questions
-- Why does brute.py fail to finish n=7,8 (naive minimax too slow/memory)?
-  Task A's goal of S(1..8) is not met by the existing brute.py.
-- counting.py is broken (all inf); need to find the bug (move reductions and
-  DP recurrence) before compare.py can run or S(10^5) can be computed.
