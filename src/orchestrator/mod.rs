@@ -20,7 +20,7 @@ use tinyagents::harness::summarization::{
 
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
-    openrouter_model_from_env,
+    configure_tool_deadline, openrouter_model_from_env,
 };
 use crate::hello_agent::ExaSearchTool;
 use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
@@ -29,7 +29,7 @@ pub use tinyagents::harness::host::AgentDefinition;
 
 const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
 const RECENT_MESSAGES_TO_KEEP: usize = 12;
-const COMMAND_TIMEOUT: Duration = Duration::from_secs(30);
+const COMMAND_TIMEOUT: Duration = Duration::from_secs(10 * 60);
 const MAX_COMMAND_OUTPUT_BYTES: usize = 64 * 1024;
 const MAX_WORKSPACE_CONTEXT_BYTES: usize = 256 * 1024;
 
@@ -37,18 +37,21 @@ const ORCHESTRATOR_PROMPT: &str = "You are an orchestrator. Delegate web researc
     verification to research. Delegate creating, editing, testing, or running local tools to \
     tool_builder. Give each specialist a focused, self-contained task, combine their results, \
     and clearly identify sources and executed work. Do not claim delegation occurred unless you \
-    called the corresponding agent tool.";
+    called the corresponding agent tool. Never propose or delegate an algorithm with exponential \
+    time or space complexity.";
 
 const RESEARCH_PROMPT: &str = "You are the research specialist. Check recall_research for useful \
     prior findings, then use exa_search for factual or current claims. Search iteratively when \
     needed, compare the returned evidence, cite source URLs, and distinguish evidence from \
     inference. Save concise, reusable, source-backed findings with remember_research. Do not \
-    invent sources.";
+    invent sources. Never recommend an algorithm with exponential time or space complexity.";
 
 const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work only in \
     /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \
     source, scripts, tests, and documentation. Use execute_command to run, test, and debug them. \
     Python and pip are available as python and pip; pip installs into the current workspace. \
+    State the time and space complexity before substantial execution. Refuse algorithms with \
+    exponential time or space complexity and use a polynomial or better approach instead. \
     Inspect command output, iterate until the requested tool works, and report every path changed \
     plus the validation command. Treat the workspace as untrusted and never print credentials.";
 
@@ -291,6 +294,7 @@ impl OrchestratorAgent {
 
 fn specialist_harness(model: Arc<dyn ChatModel<()>>) -> AgentHarness<()> {
     let mut harness = AgentHarness::new();
+    configure_tool_deadline(&mut harness);
     harness
         .register_model("openrouter", model.clone())
         .set_default_model("openrouter")
