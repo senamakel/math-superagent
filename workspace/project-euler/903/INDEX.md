@@ -12,3 +12,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `problem.html` | The problem statement (source of the run): defines Q(n), rank, pi^i; gives worked examples; asks for Q(10^6) mod (10^9+7) |
 | `scratchpad.md` | Provisional work: the task, method-1 cost model, method-2 justification, power-semantics check, verified results table |
 | `tasks.md` | Task list with checkboxes: recording objective, reading the statement, writing brute.py/brute2.py, verifying n=2..6/7/8, and the (pending) efficient method |
+| `code/` | Programs and their outputs; see code/INDEX.md (and toolkits/ within it) |
+| `config/` | Run plumbing: config.toml (solver flags, artifact paths), problem.url (source URL). See config/INDEX.md |
+| `prompts/` | Role guidance for each agent; see prompts/INDEX.md |
+| `reflections/` | Attempt verdicts written by the solution loop itself; do not edit. See reflections/INDEX.md |
+| `research/` | Reference library (L0 full texts, L1 summaries, verification programs); see research/INDEX.md |
