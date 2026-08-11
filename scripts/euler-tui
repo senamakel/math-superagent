@@ -262,33 +262,59 @@ def watch(screen, runs: Runs) -> None:
             curses.init_pair(pair, foreground, -1)
         COLOURS = True
     curses.curs_set(0)
-    screen.nodelay(True)
-    screen.timeout(200)
+    screen.keypad(True)
+    # How long `getch` may block. This was 200ms, which is the frame budget of
+    # a slideshow: every keypress waited up to a fifth of a second before
+    # anything moved, and Tab felt like it had been dropped. Fifteen is below
+    # what a hand registers, and the cost is an empty wakeup sixty times a
+    # second, which is nothing next to one line of parsing.
+    screen.timeout(POLL_MS)
     tab, offset = 0, 0
+    painted = 0.0
+    dirty = True
     while True:
-        tab = draw(screen, runs, tab, offset)
+        now = time.monotonic()
+        # Redraw when a key moved something, and otherwise a few times a
+        # second so the tail keeps advancing. Repainting on every poll would
+        # be sixty full-screen writes a second to show the same frame.
+        if dirty or now - painted >= REFRESH_SECONDS:
+            tab = draw(screen, runs, tab, offset)
+            painted, dirty = now, False
         try:
             key = screen.getch()
         except curses.error:
             key = -1
-        if key in (ord("q"), 27):
-            return
-        if key in (ord("n"), curses.KEY_RIGHT, ord("\t")):
-            tab, offset = tab + 1, 0
-        elif key in (ord("p"), curses.KEY_LEFT):
-            tab, offset = tab - 1, 0
-        elif key == curses.KEY_UP:
-            offset += 1
-        elif key == curses.KEY_DOWN:
-            offset = max(0, offset - 1)
-        elif key == curses.KEY_NPAGE:
-            offset = max(0, offset - (screen.getmaxyx()[0] - 2))
-        elif key == curses.KEY_PPAGE:
-            offset += screen.getmaxyx()[0] - 2
-        elif key == ord("g"):
-            offset = 0
-        elif ord("1") <= key <= ord("9"):
-            tab, offset = key - ord("1"), 0
+        if key == -1:
+            continue
+        page = max(1, screen.getmaxyx()[0] - 2)
+        # Every key waiting is consumed before the next repaint, so a held
+        # arrow scrolls by its whole run rather than one line per frame.
+        while key != -1:
+            if key in (ord("q"), 27):
+                return
+            if key in (ord("n"), ord("\t"), curses.KEY_RIGHT):
+                tab, offset = tab + 1, 0
+            elif key in (ord("p"), curses.KEY_BTAB, curses.KEY_LEFT):
+                tab, offset = tab - 1, 0
+            elif key == curses.KEY_UP:
+                offset += 1
+            elif key == curses.KEY_DOWN:
+                offset = max(0, offset - 1)
+            elif key == curses.KEY_NPAGE:
+                offset = max(0, offset - page)
+            elif key == curses.KEY_PPAGE:
+                offset += page
+            elif key in (ord("g"), curses.KEY_END):
+                offset = 0
+            elif ord("1") <= key <= ord("9"):
+                tab, offset = key - ord("1"), 0
+            elif key == curses.KEY_RESIZE:
+                pass
+            dirty = True
+            try:
+                key = screen.getch()
+            except curses.error:
+                key = -1
 
 
 def main() -> int:
