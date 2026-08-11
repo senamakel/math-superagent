@@ -132,6 +132,9 @@ fn runtime_bookkeeping_cannot_be_read_into_an_agents_context() {
         "research/pell.md",
         "reflections/1_01_learnings.md",
     ] {
-        assert!(ensure_visible(visible).is_ok(), "{visible} must be readable");
+        assert!(
+            ensure_visible(visible).is_ok(),
+            "{visible} must be readable"
+        );
     }
 }
