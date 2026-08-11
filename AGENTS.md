@@ -239,6 +239,7 @@ The Rust crate vendors TinyAgents and keeps the integration deliberately small.
 ```text
 src/
 ├── lib.rs              # public exports
+├── prompts/            # built-in role prompts, included at compile time
 ├── agent/              # TinyAgents facade, OpenRouter, Langfuse
 │   ├── budget.rs       # per-run call, wall-clock, and capture policy
 │   ├── reflection.rs   # in-run middleware that reflects on failing tools
@@ -686,6 +687,31 @@ Use the checkout's normal target configuration.
 An auto-commit hook may checkpoint edits while work is in progress. Those
 commits are expected. Do not reset or rewrite them. Commit manually only when a
 specific boundary matters.
+
+## Prompts
+
+The built-in prompts live in `src/prompts/*.md` and are pulled in with
+`include_str!`, not written as Rust string literals. They were literals, and
+the escaping made the most consequential text in the runtime the most awkward
+to edit: every line ended in a `\` continuation, every newline was `\n`, and a
+reflow produced a diff nobody could read. A Markdown file has none of that, and
+`include_str!` keeps them compiled in, so the container still needs no prompt
+files mounted.
+
+Inspect the assembled result with `./agent prompts` (add `--workspace <path>`
+to render a specific workspace), which prints every role's full system prompt
+with character and token counts. It runs on the host and needs no container,
+provider key, or spend. Use it after changing a prompt or the context routing:
+until it existed the only way to see what an agent was actually told was to
+start a run and read a provider trace, which made a misrouted file or a rule
+that reads as optional invisible until it changed a run's behaviour. The token
+counts are the other half — every prompt is re-sent on every model call in that
+role's run, so a prompt that has grown is a bill that has grown.
+
+Keep the shared method policy leading every assembled prompt. The provider
+cache is keyed on the exact leading prefix, so role-specific text first would
+make each agent its own cache namespace. A test asserts both the ordering and
+that no prompt file's stray trailing newline can change the prefix.
 
 ## Documentation rules
 
