@@ -44,9 +44,10 @@ use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 pub use tinyagents::harness::host::AgentDefinition;
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 7] = [
+const SPECIALISTS: [&str; 8] = [
     "research",
     "tool_builder",
+    "coder",
     "pattern_finder",
     "inventor",
     "librarian",
@@ -64,9 +65,10 @@ const SPECIALISTS: [&str; 7] = [
 const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 9] = [
+const DELEGATES: [&str; 10] = [
     "research",
     "tool_builder",
+    "coder",
     "goals",
     "reflection",
     "pattern_finder",
@@ -96,6 +98,7 @@ const ORCHESTRATOR_PROMPT: &str = include_str!("../prompts/orchestrator.md");
 const RESEARCH_PROMPT: &str = include_str!("../prompts/research.md");
 
 const TOOL_BUILDER_PROMPT: &str = include_str!("../prompts/tool_builder.md");
+const CODER_PROMPT: &str = include_str!("../prompts/coder.md");
 
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
 
@@ -542,6 +545,7 @@ struct RolePrompts {
     orchestrator: String,
     research: String,
     tool_builder: String,
+    coder: String,
     goals: String,
     reflection: String,
     pattern: String,
@@ -606,6 +610,7 @@ impl RolePrompts {
             ("goals", self.goals.as_str()),
             ("research", self.research.as_str()),
             ("tool_builder", self.tool_builder.as_str()),
+            ("coder", self.coder.as_str()),
             ("reflection", self.reflection.as_str()),
             ("pattern_finder", self.pattern.as_str()),
             ("inventor", self.inventor.as_str()),
@@ -742,6 +747,7 @@ impl RolePrompts {
             orchestrator: role("orchestrator", ORCHESTRATOR_PROMPT)?,
             research: role("research", RESEARCH_PROMPT)?,
             tool_builder: role("tool_builder", TOOL_BUILDER_PROMPT)?,
+            coder: role("coder", CODER_PROMPT)?,
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
             pattern: role("pattern_finder", PATTERN_PROMPT)?,
