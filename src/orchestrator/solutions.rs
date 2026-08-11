@@ -438,7 +438,7 @@ async fn diversify_step(
             format!(
                 "Read the reference library against this investigation and turn it into usable \
                  knowledge. For each source that bears on the problem, record what it actually \
-                 establishes and what it implies here, and keep research/DIGEST.md current as \
+                 establishes and what it implies here, and keep research/INDEX.md current as \
                  the way in. Say which sources do not help and why. Flag anything that \
                  contradicts what memory.md currently asserts.\n\n\
                  Problem:\n{}\n\nJust gathered:\n{library}\n\n{}",
