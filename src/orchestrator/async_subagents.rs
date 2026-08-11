@@ -888,38 +888,6 @@ impl Tool<()> for AsyncSubagentTool {
     }
 }
 
-#[async_trait]
-impl Tool<()> for AsyncSubagentTool {
-    fn name(&self) -> &'static str {
-        match self.kind {
-            AsyncToolKind::Spawn => "spawn_agent",
-            AsyncToolKind::SpawnMany => "spawn_agents",
-            AsyncToolKind::AwaitMany => "await_agents",
-            AsyncToolKind::Peek => "peek_agent",
-            AsyncToolKind::Steer => "steer_agent",
-            AsyncToolKind::Await => "await_agent",
-        }
-    }
-
-    fn description(&self) -> &'static str {
-        match self.kind {
-            AsyncToolKind::Spawn => {
-                "Starts a subagent asynchronously and immediately returns its run id. Keep `input` \
-                 to a short brief — say what the agent must do and what to report back, in a few \
-                 sentences. Do not restate the problem, the derivation so far, or the contents of \
-                 any file: the agent is given the workspace and reads it itself. A brief long \
-                 enough to exhaust the turn's output budget is cut off mid-argument and the call \
-                 never happens."
-            }
-            AsyncToolKind::Peek => {
-                "Returns the current status and any completed response for a subagent run."
-            }
-            AsyncToolKind::Steer => "Redirects a live subagent with an additional instruction.",
-            AsyncToolKind::Await => "Waits for a subagent run and returns its status and response.",
-        }
-    }
-}
-
 fn run_id_schema(max_wait_seconds: Option<u64>) -> Value {
     match max_wait_seconds {
         Some(maximum) => json!({
