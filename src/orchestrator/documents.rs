@@ -418,6 +418,41 @@ impl WorkspaceDocuments {
         self.write_internal(relative, content).await
     }
 
+    /// Writes a file the runtime maintains rather than an agent.
+    ///
+    /// The frontier's ledger and its rendered table are written by code on
+    /// every download, the way the reflection log is written by the loop. Both
+    /// go through here rather than through [`Self::write`] because the visible
+    /// check exists to stop an *agent* reaching for the runtime's bookkeeping,
+    /// and the runtime keeping its own books is not that.
+    pub(super) async fn write_runtime(&self, relative: &str, content: &str) -> Result<()> {
+        self.write_internal(relative, content).await
+    }
+
+    /// Reads a file the runtime maintains, bypassing the visibility check.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the file is absent, oversized, or not UTF-8.
+    pub(super) async fn read_runtime(&self, relative: &str) -> Result<String> {
+        let path = self.path(relative)?;
+        let bytes = tokio::fs::read(&path).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to read workspace document `{relative}`: {error}"
+            ))
+        })?;
+        if bytes.len() > MAX_DOCUMENT_BYTES {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "document `{relative}` exceeds {MAX_DOCUMENT_BYTES} bytes"
+            )));
+        }
+        String::from_utf8(bytes).map_err(|error| {
+            tinyagents::TinyAgentsError::Validation(format!(
+                "document `{relative}` is not UTF-8: {error}"
+            ))
+        })
+    }
+
     async fn write_internal(&self, relative: &str, content: &str) -> Result<()> {
         if content.len() > MAX_DOCUMENT_BYTES {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
