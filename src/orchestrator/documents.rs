@@ -951,6 +951,21 @@ impl DocumentTool {
         Ok((bytes.to_vec(), content_type))
     }
 
+    /// Re-derives the claim ledger when the written file is a research note.
+    ///
+    /// Done in the write path rather than asked for in a prompt, on the same
+    /// argument as placement: a derived file that disagrees with its sources
+    /// is worse than no derived file, because the next reader trusts the row
+    /// instead of opening the note. Returns the sentence to append to the tool
+    /// result — a model not told the ledger moved has no reason to read it.
+    async fn reledger(&self, path: &str) -> String {
+        if !super::claims::is_note(path) {
+            return String::new();
+        }
+        super::claims::refresh(&self.documents).await;
+        format!(" and re-derived {}", super::claims::CLAIMS_PATH)
+    }
+
     /// Fetches a URL and stores it as Markdown.
     ///
     /// Split out of the tool dispatch because it is the only branch that does
