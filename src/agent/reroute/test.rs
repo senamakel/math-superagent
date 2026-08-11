@@ -24,6 +24,7 @@ fn upstream(message: &str) -> TinyAgentsError {
         message: message.to_string(),
         retryable: false,
         retry_after_ms: None,
+        raw: None,
     }))
 }
 
@@ -97,6 +98,8 @@ fn a_malformed_request_is_not_rerouted() {
             message: "Provider returned error".to_string(),
             retryable: true,
             retry_after_ms: None,
+            raw: None,
+        raw: None,
         }
     ))));
     // A failure with no structure at all cannot be classified this way.
