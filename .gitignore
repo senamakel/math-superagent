@@ -37,7 +37,11 @@ __pycache__/
 
 # Runtime event logs. Several megabytes per run, and the derivation and notes
 # already carry the reasoning worth keeping. Read them locally or in Langfuse.
-/workspace/**/trace.jsonl
+# `config/` holds the run's plumbing; `config.toml` and `problem.url` in it are
+# small and worth keeping, so the two bulky entries are named rather than the
+# folder.
+/workspace/**/config/trace.jsonl
+/workspace/**/config/.document-index.json
 
 # Linked worktrees created by the local `worktree` helper
 worktrees/*

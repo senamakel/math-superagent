@@ -217,7 +217,7 @@ available, so the agent can still record and recall its own findings.
 Every run in the tree carries a `RunTracer` (`src/agent/trace.rs`). It prints an
 elapsed-time console line per model call, tool call, and tool result, labelled
 with the agent that produced it, and appends every event as JSON to
-`trace.jsonl` in the selected workspace. Alongside the event records it writes
+`config/trace.jsonl` in the selected workspace. Alongside the event records it writes
 a `model_accounting` line per model call carrying the agent, the provider and
 model that served it, prompt/cached/output/reasoning tokens, and the USD cost
 the provider reported. The event stream cannot supply these: `ModelCompleted`
@@ -467,9 +467,8 @@ input, and a panic there would destroy work unrelated to the document.
 ## Workspace layout
 
 The workspace root is an allowlist, not a default. It holds the run's Markdown
-— goal, tasks, memory, scratchpad, context, derivation — plus `config.toml`,
-`README.md`, `AGENTS.md`, `INDEX.md`, and the problem statement. Everything
-else is filed:
+— goal, tasks, memory, scratchpad, context, derivation — plus `README.md`,
+`AGENTS.md`, `INDEX.md`, and the problem statement. Everything else is filed:
 
 | Kind | Folder |
 | --- | --- |
@@ -478,6 +477,7 @@ else is filed:
 | downloaded sources | `research/L0/`, digested into `research/L1/` |
 | reflections | `reflections/L0/` |
 | reusable helpers | `code/toolkits/` |
+| plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index | `config/` |
 | untouched download bytes | `raw/` |
 
 `layout::placed` decides this in the write path — `write_document` and an
@@ -590,7 +590,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `code/toolkits/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
+| orchestrator, goals | `config/config.toml`, `goal.md`, `tasks.md`, `memory.md`, `code/toolkits/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
 | tool_builder, coder | the planners' files plus `scratchpad.md`, minus `reflections/INDEX.md` |
 | reflection | `goal.md`, `tasks.md`, `memory.md`, `INDEX.md`, `reflections/INDEX.md` |
 | pattern_finder | `goal.md`, `memory.md`, `scratchpad.md`, `code/toolkits/INDEX.md` |
@@ -675,7 +675,7 @@ may already have seen beats a private dialect it has to learn from a schema.
 
 Every runtime agent receives the workspace document tools: bounded download,
 read, write, exact edit, index, and search. The index is
-`/workspace/.document-index.json` and contains only relative paths in the
+`/workspace/config/.document-index.json` and contains only relative paths in the
 selected workspace. Keep the 5 MiB per-document limit and reject non-HTTP
 downloads, traversal, symlink escapes, non-UTF-8 content, and missing exact-edit
 targets.

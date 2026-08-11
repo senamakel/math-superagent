@@ -259,6 +259,12 @@ async fn a_corrupt_index_rebuilds_instead_of_failing_forever() -> Result<()> {
     let documents = WorkspaceDocuments::new(path.clone())?;
     documents.write("notes/proof.md", "a bijection").await?;
     // Byte-for-byte the wreckage Euler 579 produced.
+    std::fs::create_dir_all(
+        path.join(super::INDEX_PATH)
+            .parent()
+            .expect("index has a parent"),
+    )
+    .expect("the config folder is creatable");
     std::fs::write(
         path.join(super::INDEX_PATH),
         "[\n  \"research/ehrhart_cubes.pdf\"\n]f\"\n]",

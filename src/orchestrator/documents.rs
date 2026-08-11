@@ -489,6 +489,11 @@ impl WorkspaceDocuments {
     async fn write_index(&self, content: &str) -> Result<()> {
         let final_path = self.workspace.join(INDEX_PATH);
         let temporary = self.workspace.join(format!("{INDEX_PATH}.tmp"));
+        // The index lives under `config/`, which a fresh workspace does not
+        // have until something writes there first.
+        if let Some(parent) = final_path.parent() {
+            let _ = tokio::fs::create_dir_all(parent).await;
+        }
         tokio::fs::write(&temporary, content)
             .await
             .map_err(|error| {

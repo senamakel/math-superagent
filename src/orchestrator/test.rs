@@ -306,13 +306,13 @@ fn the_pattern_agent_sees_the_raw_data_it_analyses() {
 fn only_executing_roles_receive_the_runtime_configuration() {
     for role in ["tool_builder", "goals", "orchestrator"] {
         assert!(
-            role_context(role).contains(&"config.toml"),
+            role_context(role).contains(&"config/config.toml"),
             "`{role}` acts on the runtime limits"
         );
     }
     for role in ["reflection", "inventor", "pattern_finder", "librarian"] {
         assert!(
-            !role_context(role).contains(&"config.toml"),
+            !role_context(role).contains(&"config/config.toml"),
             "`{role}` does not execute anything"
         );
     }
@@ -423,7 +423,7 @@ fn both_code_writing_roles_see_the_same_working_context() {
     // attempted, what is already built, and the provisional numbers.
     assert_eq!(role_context("coder"), role_context("tool_builder"));
     assert!(role_context("coder").contains(&"scratchpad.md"));
-    assert!(role_context("coder").contains(&"toolkits/INDEX.md"));
+    assert!(role_context("coder").contains(&"code/toolkits/INDEX.md"));
 }
 
 #[test]

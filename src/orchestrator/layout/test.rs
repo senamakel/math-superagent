@@ -11,12 +11,20 @@ fn the_root_keeps_the_runs_prose_and_its_configuration() {
         "solution.md",
         "context.md",
         "AGENTS.md",
-        "config.toml",
         "problem.html",
-        "problem.url",
     ] {
         assert_eq!(placed(name), name);
     }
+}
+
+#[test]
+fn the_runs_plumbing_is_not_the_roots_business() {
+    // Configuration, the trace, the document index and the source URL are
+    // things the runtime writes and reads. None of them is work, and none of
+    // them earns a line in the listing every agent reads first.
+    assert_eq!(placed("config.toml"), "config/config.toml");
+    assert_eq!(placed("problem.url"), "config/problem.url");
+    assert_eq!(placed("trace.jsonl"), "config/trace.jsonl");
 }
 
 #[test]

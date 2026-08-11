@@ -1,69 +1,22 @@
 # Shared context
 
-Standing brief: what the `research/` library establishes for PE 597 (Torpids),
-so any role can act without opening sources. Detail lives in the fold notes
-behind wikilinks; `research/INDEX.md` lists every source with its URL.
+Standing brief: what the `research/` library establishes for PE 597 (Torpids). Detail lives in the fold notes behind wikilinks; `research/INDEX.md` lists every source with its URL.
 
 ## Model
 
-Speeds v_j are iid Exp(1) (v_j = −ln X_j, X_j~U(0,1)). Boat j rows at constant
-v_j until it finishes (at L) or bumps the nearest rowing boat ahead (then OUT,
-passed freely; bumped boat continues). Parity of the new order = the inversion
-count (# pairs i<j with a bump chain i→…→j) mod 2. Goal: p(13,1800).
+Speeds v_j are iid Exp(1). Boat j rows at v_j until it finishes (at L) or bumps the nearest rowing boat ahead (then OUT, passed freely; bumped boat keeps rowing). New-order parity = (# pairs i<j with a bump chain i→…→j) mod 2. Target: p(13,1800).
 
 ## Established (sources)
 
-- **Exponential spacings.** The order-statistic spacings of n iid Exp(1) are
-  independent exponentials with rates n, n−1, …, 1; survivors of an exponential
-  remain exponential at original rates (memoryless). This is the structure that
-  decomposes an Exp-speed integration into products over independent rates
-  rather than high-dimensional integrals. [[exponential_order_statistics_memoryless_kth]]
-- **Competing heterogeneous clocks.** For independent Exps with rates λ_i:
-  min is Exp(Σλ_i), P(j fires first) = λ_j/Σλ_i, and a specific firing order
-  has probability = product of rate ratios (one factor per event, survivor
-  rates). [[competing_exponential_clocks_uchicago]]
+- **Rate-ratio products.** Order-statistic spacings of iid Exp(1) are independent Exps with rates n,…,1 ([[exponential_order_statistics_memoryless_kth]]); for independent Exps with rates λ_i, P(i fires first)=λ_i/Σλ and a specific firing order has probability = product of rate ratios over survivors ([[competing_exponential_clocks_uchicago]]). For inid exponentials the successive order statistics are the Nevzorov/Tikhov antirank sequence: P(next is i)=λ_i/Σ_survivors λ ([[inid_exponential_order_statistics_nagaraja]]).
+- **The clocks are relative speeds.** W_i = v_i/(t−i) ~ Exp(t−i), rate = *distance* t−i, so "slowest relative to target t" is chosen with probability proportional to its distance; recursing on the two subranges makes p(n,L) a sum of products of distance ratios — the exact-integration route memory.md demands (parity depends on speed magnitudes, not just rank order). Finish times are NOT clocks: (L−p_j)/v_j is inverse-exponential ([[inverse_exponential_finish_times_wikipedia]]); a pair's relative speed v_j−v_i is standard Laplace ([[laplace_difference_of_exponentials_libretexts]]). Normalized speeds are uniform on the simplex, so p(n,L) is a simplex volume of the parity region ([[dirichlet_distribution_wikipedia]]).
+- **Subrange recursion is a treap.** Root = boat slowest relative to t; left/right subtrees are the treaps of the adjacent ranges. With i.i.d. continuous priorities (here the Exp speeds) the two subtrees are independent random treaps, so p(n,L) = Σ_root (distance-ratio weight)·p(left)·p(right), no cross-range coupling ([[randomized_search_trees_treaps_seidel_aragon]]).
 
-Together: an event chronology whose event times are exponential has an exact
-probability as a product of rate ratios — no sample enumeration. (What the
-clocks are is now resolved below.)
-- **Relative (bump) speed is Laplace.** The relative speed v_j−v_i of two iid
-  Exp(1) boats is standard Laplace (density (1/2)e^{−|u|}, even moments, |Z|~Exp).
-  So each catch-up's timing is built from a Laplace relative speed, not an
-  exponential clock. [[laplace_difference_of_exponentials_libretexts]]
-- **The clocks are relative speeds, and their ordering is survivor-proportional
-  rate ratios — now a named theorem (NEW).** Relative speed of boat i to a target
-  at coordinate t is W_i = v_i/(t−i) ~ Exp(t−i), rate = the *distance* t−i. The
-  slowest relative to t is chosen among the survivors with probability proportional
-  to its rate (Nevzorov/Tikhov inid order-statistic representation, Nagaraja):
-  P(antirank = i) = (t−i)/Σ_survivors(t−s). This is exactly what the exact recursion
-  sums: probabilities are products of distance-ratio factors, conditioning on the
-  slowest boat and recursing on the two subranges. Caveat: inid spacings are NOT
-  independent, and finish times are still inverse-exponential (not clocks).
-  [[inid_exponential_order_statistics_nagaraja]]
-- **The recursion's two sides are independent — the structure is a treap (NEW).**
-  Root = boat slowest relative to the target; left/right subtrees = the two subranges;
-  this is exactly the treap / randomized search tree of Seidel & Aragon (Algorithmica
-  1996). The treap theorem supplies the **independence**: for i.i.d. continuous
-  priorities the two subtrees are independent random treaps, so p(n,L) = Σ over the
-  root boat of (distance-ratio weight) × p(left subrange) × p(right subrange) — no
-  cross-range coupling. The root-rank *weighting* is not the uniform treap one but
-  the inid rate-proportional (distance) one of the Nagaraja bullet above.
-  [[randomized_search_trees_treaps_seidel_aragon]]
+## Known limits
 
-## Caveat
-
-- **Finish times are NOT exponential clocks.** T_j = (L−p_j)/v_j with
-  v_j~Exp(1) is inverse-exponential (density (c/t²)e^{−c/t}, CDF e^{−c/t},
-  non-constant hazard). Product-of-rate-ratios applies only where event times
-  are genuinely exponential; finish events contribute an inverse-exponential
-  competing hazard. [[inverse_exponential_finish_times_wikipedia]]
+- w-order hypothesis (parity from rank of w_j = v_j/(L−p_j) alone) REFUTED (memory.md): magnitudes matter; exact integration required.
+- MC pins p(13,1800) ≈ 0.5002 ± 0.00007 (60M samples): any true bias ≤ ~3e-4; the 10-dp answer needs the exact recursion, not MC.
 
 ## Contradictions / gaps
 
-None between sources and the model. The run now has the structural fact it
-lacks before this cycle: conditional on a target t, the slowest boat relative to
-it is chosen with probability proportional to rate (=distance), and recursing on
-subranges turns p(n,L) into products of distance ratios (Nevzorov/Tikhov, Nagaraja).
-memory.md: parity depends on speed magnitudes, not just the rank of
-w_j = v_j/(L−p_j) (w-order hypothesis refuted) — exact integration over the Exp
-speeds is required, and the recursion above is the route that integration takes.
+None between sources and the model.

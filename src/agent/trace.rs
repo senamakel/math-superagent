@@ -144,6 +144,11 @@ impl RunTracer {
     pub fn new(label: impl Into<String>, journal_path: Option<&Path>) -> Arc<Self> {
         let journal = journal_path
             .and_then(|path| {
+                // The journal lives under `config/`, which a fresh workspace
+                // does not have until something writes there first.
+                if let Some(parent) = path.parent() {
+                    let _ = std::fs::create_dir_all(parent);
+                }
                 std::fs::OpenOptions::new()
                     .create(true)
                     .append(true)
