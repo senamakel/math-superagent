@@ -228,17 +228,23 @@ impl FolderIndexTool {
             .collect()
     }
 
+    /// Reads a folder's index as it stands, or the empty string.
+    async fn existing(&self, folder: &str) -> String {
+        self.documents
+            .read_document(&index_for(folder))
+            .await
+            .unwrap_or_default()
+    }
+
     /// Reads a folder's current index entries, if it has one.
     async fn entries(&self, folder: &str) -> BTreeMap<String, String> {
-        match self.documents.read_document(&index_for(folder)).await {
-            Ok(existing) => parse(&existing),
-            Err(_) => BTreeMap::new(),
-        }
+        parse(&self.existing(folder).await)
     }
 
     async fn write(&self, folder: &str, entries: &BTreeMap<String, String>) -> Result<()> {
+        let brief = brief(&self.existing(folder).await);
         self.documents
-            .write_document(&index_for(folder), &render(folder, entries))
+            .write_document(&index_for(folder), &render(folder, entries, &brief))
             .await
     }
 
