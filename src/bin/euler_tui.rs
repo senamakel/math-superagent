@@ -583,7 +583,7 @@ fn options() -> Result<Options, String> {
             if argument.contains("..") || argument.starts_with('/') {
                 return Err("workspace must be a relative path without traversal".to_string());
             }
-            label = argument.clone();
+            label.clone_from(&argument);
             workspace = Some(argument);
             continue;
         }
