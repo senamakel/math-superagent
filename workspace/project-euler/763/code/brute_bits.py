@@ -12,6 +12,9 @@ does NOT change between levels.
 Successor: a cube p=(x,y,z) may divide if its three positive-unit neighbours
 (a,b,c) are empty; the new configuration is S with p cleared and a,b,c set.
 
+The one-step successor next_level_bits is imported from lib/amoeba.py, the
+single shelved definition; it is not duplicated here.
+
 Correctness cross-checked against brute_extended.py (the frozenset oracle, itself
 validated on D(2)=3 and D(10)=44499) for N=0..12.
 """

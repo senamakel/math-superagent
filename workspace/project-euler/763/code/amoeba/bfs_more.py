@@ -10,6 +10,9 @@ FIXED W for every level, so a cube has the same bit regardless of level
 (a config after n divisions has each coordinate in [0,n], so W = max_n+1
 covers all levels and the encoding never changes).
 
+The one-step successor next_level_bits is imported from lib/amoeba.py, the
+single shelved definition; it is not duplicated here.
+
 We drive level-by-level from N=0 upward, stopping when a single level exceeds
 a time budget (~90s) or the frontier exceeds ~2M states. We keep D(N) for
 every N reached and write a fresh complete file D(0)..D(Nmax).
