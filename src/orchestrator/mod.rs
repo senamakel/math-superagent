@@ -183,8 +183,17 @@ impl OrchestratorAgent {
         let model = openrouter_model_from_env()?;
         let async_subagents = AsyncSubagentManager::new();
         let documents = WorkspaceDocuments::new(workspace.clone())?;
-        let shared_guidance =
-            load_workspace_files(&workspace, &["AGENTS.md", "config.toml", "memory.md"])?;
+        let shared_guidance = load_workspace_files(
+            &workspace,
+            &[
+                "AGENTS.md",
+                "config.toml",
+                "goal.md",
+                "tasks.md",
+                "memory.md",
+                "scratchpad.md",
+            ],
+        )?;
         let orchestrator_prompt = workspace_prompt(
             ORCHESTRATOR_PROMPT,
             &shared_guidance,
