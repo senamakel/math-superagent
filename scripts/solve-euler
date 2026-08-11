@@ -56,13 +56,14 @@ export MATH_AGENT_LOCAL_GID=$(id -g)
 ./agent --workspace "$workspace_subdir" build >/dev/null
 docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
     set -eu
+    mkdir -p /workspace/raw
     url="https://projecteuler.net/minimal=$1"
     curl --fail --silent --show-error --location \
         --retry 3 --retry-delay 1 --max-time 30 \
         --user-agent "math-agent-project-euler-wrapper/1.0" \
-        "$url" > /workspace/problem.html.tmp
-    test -s /workspace/problem.html.tmp
-    mv /workspace/problem.html.tmp /workspace/problem.html
+        "$url" > /workspace/raw/problem.html.tmp
+    test -s /workspace/raw/problem.html.tmp
+    mv /workspace/raw/problem.html.tmp /workspace/raw/problem.html
     mkdir -p /workspace/config
     printf "%s\n" "$url" > /workspace/config/problem.url
 ' sh "$problem_number"
@@ -74,13 +75,13 @@ else
 fi
 
 extra_instructions=$*
-task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.html (read_document renders it as Markdown).
+task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.md.
 
 Work in this order. Steps 1 and 2 together should take a small part of the run; most of it belongs in 3 and 4.
 
-1. Understand by executing. Read the statement, restate it precisely in /workspace/goal.md with every symbol defined, and record the worked examples it gives — those are your test oracle. Then immediately have tool_builder write /workspace/brute.py, a naive but obviously-correct program, and run it to reproduce every one of those examples. If it cannot reproduce them, your reading of the definition is wrong and nothing else matters until it is fixed.
+1. Understand by executing. Read the statement, restate it precisely in /workspace/GOAL.md with every symbol defined, and record the worked examples it gives — those are your test oracle. Then immediately have tool_builder write /workspace/brute.py, a naive but obviously-correct program, and run it to reproduce every one of those examples. If it cannot reproduce them, your reading of the definition is wrong and nothing else matters until it is fixed.
 
-2. Identify the governing theory: the mathematical objects involved and the named theorem, algorithm, or identity that controls them. Record it in /workspace/memory.md with the precise statement and hypotheses. $research_clause
+2. Identify the governing theory: the mathematical objects involved and the named theorem, algorithm, or identity that controls them. Record it in /workspace/MEMORY.md with the precise statement and hypotheses. $research_clause
 
 3. Derive the efficient method and write the derivation to /workspace/solution.md: the result it rests on, why it applies, and what it reduces the work to. A method whose cost grows with the bound in the statement is the wrong method.
 
