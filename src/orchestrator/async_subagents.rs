@@ -39,6 +39,7 @@ trait AgentExecutor: Send + Sync {
 struct HarnessExecutor {
     harness: Arc<AgentHarness<()>>,
     system_prompt: String,
+    langfuse: Option<Arc<LangfuseClient>>,
 }
 
 #[async_trait]
