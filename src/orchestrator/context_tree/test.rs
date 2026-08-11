@@ -244,7 +244,7 @@ fn a_seal_is_given_room_to_be_detailed_and_a_root_is_not() {
         !over.contains(&"research/L1.0/detailed.md".to_string()),
         "a detailed seal is the point, not a fault: {over:?}"
     );
-    assert!(SEAL_TOKENS > ROOT_TOKENS);
+    const { assert!(SEAL_TOKENS > ROOT_TOKENS) };
 }
 
 #[test]
