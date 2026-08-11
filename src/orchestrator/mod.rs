@@ -3,8 +3,10 @@
 pub(crate) mod async_subagents;
 mod checkpoint;
 mod context_tree;
+mod digest;
 mod documents;
 mod folder_index;
+mod frontier;
 mod layout;
 mod patch;
 mod patterns;
