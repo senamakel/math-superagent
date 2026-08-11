@@ -310,6 +310,24 @@ impl OrchestratorAgent {
         register_recall(&mut coder_harness, &workspace);
         async_subagents.register("coder", Arc::new(coder_harness), prompts.coder)?;
 
+        // solver: the same authority again, and a third mandate. It answers a
+        // question that has been reduced to a finite decision or optimisation
+        // problem by encoding it for CP-SAT, a SAT solver, or an SMT solver
+        // rather than by writing the search itself. A hand-written backtracking
+        // search over the same space is the answer-space search the method
+        // policy prohibits, written in the language most likely to hide its own
+        // bugs; a declarative encoding states what a solution is and hands the
+        // search to an engine that does propagation and clause learning
+        // properly. It is a separate role rather than a paragraph in the
+        // coder's prompt because the failure modes are entirely different —
+        // reporting UNKNOWN as solved, weakening a constraint to obtain a
+        // model, an unsound symmetry break — and each needs its own rule.
+        let mut solver_harness =
+            build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
+        solver_harness.push_middleware(checkpoint.clone());
+        register_recall(&mut solver_harness, &workspace);
+        async_subagents.register("solver", Arc::new(solver_harness), prompts.solver)?;
+
         register_support_agents(
             &async_subagents,
             &SupportAgents {
