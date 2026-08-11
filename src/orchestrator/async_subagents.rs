@@ -184,6 +184,12 @@ struct HarnessExecutor {
     system_prompt: String,
     langfuse: Option<Arc<LangfuseClient>>,
     max_turn_output_tokens: u32,
+    /// Registry name of the specialist this executor runs, used as the
+    /// Langfuse trace name so a trace says which role produced it.
+    role: String,
+    /// Identifies this process, so runs from different containers — or from
+    /// the same container before and after a restart — never share a trace id.
+    session: Arc<str>,
 }
 
 #[async_trait]
