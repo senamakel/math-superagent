@@ -366,18 +366,26 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
             AgentDefinition::new(
                 "research",
                 "Research Agent",
-                "Uses Exa to research current facts and return cited evidence.",
+                if research_enabled {
+                    "Uses Exa to research current facts and return cited evidence."
+                } else {
+                    "Web search is disabled this run; recalls and records saved notes only."
+                },
             )
             .with_model("openrouter")
-            .with_tools([
-                "exa_search",
-                "recall_research",
-                "remember_research",
-                document_tools[0],
-                document_tools[1],
-                document_tools[4],
-                document_tools[5],
-            ]),
+            .with_tools(
+                research_enabled
+                    .then_some("exa_search")
+                    .into_iter()
+                    .chain([
+                        "recall_research",
+                        "remember_research",
+                        document_tools[0],
+                        document_tools[1],
+                        document_tools[4],
+                        document_tools[5],
+                    ]),
+            ),
         )?
         .register(
             AgentDefinition::new(
