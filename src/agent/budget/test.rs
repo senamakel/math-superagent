@@ -67,10 +67,13 @@ fn a_turn_is_bounded_so_wall_clock_is_bounded() {
     // uncapped wall clock. A live turn reached 9,361 tokens and 2.9 minutes.
     let budget = RunBudget::default();
     assert!(budget.max_turn_output_tokens > 0);
+    // Above the largest observed real turn (9,361). A cap that trips on
+    // ordinary work truncates the model mid-answer and forces a retry, which
+    // costs more than the long turn it was meant to prevent.
     assert!(
-        budget.max_turn_output_tokens < 9_000,
-        "cap must be below the runaway turn that motivated it"
+        budget.max_turn_output_tokens > 9_361,
+        "a cap that trips routinely causes truncation retries"
     );
-    // Still generous enough for a real derivation step.
-    assert!(budget.max_turn_output_tokens >= 2_000);
+    // ...but still a ceiling, not unlimited.
+    assert!(budget.max_turn_output_tokens <= 32_000);
 }

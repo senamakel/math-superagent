@@ -38,10 +38,17 @@ const DEFAULT_TOOL_MINUTES: u64 = 10;
 /// uncapped turn is an uncapped wall clock, and a run spends its budget on
 /// prose nobody reads instead of on executing anything.
 ///
-/// Four thousand tokens is far more than any single decision, tool call, or
-/// derivation step needs, while bounding a turn to roughly a minute. Raising
-/// this trades wall clock for verbosity; it does not buy better reasoning.
-const DEFAULT_TURN_OUTPUT_TOKENS: u32 = 4_000;
+/// This is a safety ceiling, not a behavioural control, and the difference
+/// matters. Set to 4,000 it bound a normal turn exactly: the model was
+/// truncated mid-generation, emitted no usable tool call, and the loop retried
+/// — spending 66 seconds to accomplish nothing, which is worse than the long
+/// turn it was meant to shorten. A cap that trips routinely does not make a
+/// model concise, it makes it repeat itself.
+///
+/// Twelve thousand sits above the largest turn observed (9,361) so real work
+/// is never cut off, while still bounding a pathological turn to a few
+/// minutes. Brevity is bought in the prompt, not here.
+const DEFAULT_TURN_OUTPUT_TOKENS: u32 = 12_000;
 
 /// Attempts allowed for one model call, counting the first try.
 ///

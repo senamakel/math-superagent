@@ -111,12 +111,16 @@ dies with it. Whatever the run ceiling is, `await_agent` must be able to wait it
 out, or the orchestrator is structurally unable to collect the result of the
 deepest work it delegated.
 
-Each model turn is capped at 4000 output tokens
+Each model turn is capped at 12000 output tokens
 (`MATH_AGENT_TURN_OUTPUT_TOKENS`). Generation time is linear in output length,
 so an uncapped turn is an uncapped wall clock: a measured turn ran to 9,361
-tokens and 2.9 minutes, and longer ones exceeded seven. The model was not
-hanging, it was writing an essay where a decision was wanted. Raising the cap
-trades wall clock for verbosity and does not buy better reasoning.
+tokens and 2.9 minutes, and longer ones exceeded seven.
+
+Treat this as a safety ceiling, not a way to make the model concise. Set to
+4000 it bound an ordinary turn exactly, truncating the model mid-generation so
+it emitted no usable tool call and the loop retried — 66 seconds spent to
+accomplish nothing. A cap that trips routinely is worse than the long turns it
+prevents. Buy brevity in the prompt instead.
 
 A timeout is a safety ceiling, not permission to run an intractable approach.
 Before substantial execution, the tool-builder must state both time and space
