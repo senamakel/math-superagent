@@ -385,6 +385,8 @@ host repository through the container.
 ```text
 agent                       simple Docker Compose helper
 euler                       Project Euler problem wrapper
+langfuse-turns              recorded-turn query helper
+langfuse-review             recorded-turn review helper
 Dockerfile                  build and runtime jail
 compose.yaml                agent and Qdrant services
 scripts/run-agent           helper implementation
@@ -392,10 +394,23 @@ scripts/solve-euler         fetch and solve workflow
 workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, config, and memory
 src/
-├── agent/                  TinyAgents facade and Langfuse observations
+├── prompts/                built-in role prompts, included at compile time
+├── agent/                  TinyAgents facade, OpenRouter, Langfuse
+│   ├── accounting.rs       per-call provider, token, and cost accounting
+│   ├── budget.rs           per-run call, wall-clock, and capture policy
+│   ├── reflection.rs       in-run middleware that reflects on failing tools
+│   ├── resilient.rs        tool-error and request-timeout wrappers
+│   ├── sticky.rs           provider affinity that keeps the prompt cache warm
+│   └── trace.rs            live console and trace.jsonl event listener
 ├── orchestrator/           registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs  graph-backed spawn, peek, steer, and await controls
+│   ├── checkpoint.rs       workspace git history under .workspace-history
 │   ├── documents.rs        bounded workspace document storage and search
+│   ├── folder_index.rs     per-folder INDEX.md description tracking
+│   ├── patch.rs            atomic, exact-match Codex-format patches
+│   ├── patterns.rs         exact sequence analysis and recurrence search
+│   ├── readable.rs         HTML and PDF to Markdown conversion
+│   ├── solutions.rs        graph-backed attempt/reflect/diversify loop
 │   └── vector.rs           Qdrant research store and local feature vectors
 ├── hello_agent/            small single-agent example
 ├── error/                  crate-wide errors

@@ -350,3 +350,29 @@ fn the_method_policy_leads_every_assembled_prompt() {
     // silently invalidate every cached prefix.
     assert!(!assembled.contains("\n\n\n"), "{assembled}");
 }
+
+#[test]
+fn the_coding_agent_can_write_and_run_the_program_it_owns() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let coder = registry
+        .get("coder")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("coder is registered".into()))?;
+    for needed in ["write_tool_file", "execute_command"] {
+        assert!(
+            coder.tools.iter().any(|tool| tool == needed),
+            "coder must have `{needed}`"
+        );
+    }
+    // It implements from an established result rather than going to find one.
+    assert!(!coder.tools.iter().any(|tool| tool == "exa_search"));
+    Ok(())
+}
+
+#[test]
+fn both_code_writing_roles_see_the_same_working_context() {
+    // They differ in mandate, not in what they need to know: what is being
+    // attempted, what is already built, and the provisional numbers.
+    assert_eq!(role_context("coder"), role_context("tool_builder"));
+    assert!(role_context("coder").contains(&"scratchpad.md"));
+    assert!(role_context("coder").contains(&"toolkits/INDEX.md"));
+}
