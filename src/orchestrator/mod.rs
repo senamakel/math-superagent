@@ -361,14 +361,86 @@ impl OrchestratorAgent {
     /// failing specialist becomes a lesson rather than a failure.
     pub async fn solve(&self, problem: impl Into<String>) -> Result<String> {
         let state = solutions::SolutionState::new(problem);
+        // The support teams run *beside* the loop, not inside it. Everything
+        // they do — gathering sources, digesting them, keeping the workspace
+        // navigable — is work the solver benefits from but must never wait on.
+        // Inside the loop they were exactly that wait: a live run spent 56 of
+        // its 74 minutes unable to start its second attempt because a support
+        // agent had not finished.
+        let support = self.spawn_support_teams(&state.problem());
         let finished = solutions::run(
             self.subagents.clone(),
             Some(self.tracer.clone()),
             Some(self.workspace.clone()),
             state,
         )
-        .await?;
-        Ok(finished.outcome())
+        .await;
+        // The solve is the run. Once it is done the teams have nobody left to
+        // serve, so they stop rather than spending the rest of their budgets
+        // enriching a workspace no attempt will read.
+        for team in &support {
+            team.cancel();
+        }
+        Ok(finished?.outcome())
+    }
+
+    /// Starts the long-lived teams that work alongside the solution loop.
+    ///
+    /// Each gets its own budget and wall clock: `RunBudget` bounds a single
+    /// agent run, and a team runs many, so a per-run bound says nothing about
+    /// what the team as a whole costs. A team that exhausts its allowance stops
+    /// and says so while the others carry on.
+    fn spawn_support_teams(&self, problem: &str) -> Vec<teams::TeamHandle> {
+        let mut handles = Vec::new();
+        for (name, agent, brief) in [
+            (
+                "research",
+                "librarian",
+                "Enrich this run's reference library. Find one source the workspace does not \
+                 already have that bears on the problem, file it under research/, and describe \
+                 it. Consult research/INDEX.md first and do not fetch what is already there. \
+                 Then record in context.md, in a few lines, what the library now establishes \
+                 that it did not before. Stop when further sources would not change what \
+                 context.md says.",
+            ),
+            (
+                "background",
+                "organizer",
+                "Keep the workspace navigable. Refresh the folder indexes so they match what is \
+                 on disk, describe any file that has no description, and leave reflections/ \
+                 alone — the loop writes that itself. Change nothing a result or derivation \
+                 depends on.",
+            ),
+        ] {
+            if !self.subagents.knows(agent) {
+                continue;
+            }
+            let subagents = self.subagents.clone();
+            let prompt = format!("{brief}\n\nProblem this run is solving:\n{problem}");
+            handles.push(teams::spawn(
+                name,
+                teams::TeamBudget::support(),
+                Some(self.tracer.clone()),
+                move |inbox: Vec<teams::TeamMessage>| {
+                    let subagents = subagents.clone();
+                    let mut prompt = prompt.clone();
+                    for message in &inbox {
+                        let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);
+                    }
+                    async move {
+                        match subagents.run_to_completion(agent, prompt).await {
+                            Ok(_) => teams::Cycle::Worked,
+                            // A failed cycle is not a reason to end the team:
+                            // the next one may well succeed, and a support team
+                            // that quits on one error stops serving the solve
+                            // for the rest of the run.
+                            Err(_) => teams::Cycle::Idle,
+                        }
+                    }
+                },
+            ));
+        }
+        handles
     }
 
     /// Returns the registry used for delegation.
