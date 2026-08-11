@@ -296,9 +296,9 @@ start of every run.
 
 Everything downloaded is filed under `research/`, enforced in code rather than
 asked for in a prompt, so gathered material stays separate from the run's own
-derivations and programs. The tool-builder accumulates reusable helpers under
-`code/toolkits/`, one function per file, so reading the helper you need costs a few
-hundred bytes rather than the whole library.
+derivations. The tool-builder accumulates reusable helpers under
+`code/toolkits/`, one function per file, so reading the helper you need costs a
+few hundred bytes rather than the whole library.
 
 Every folder carries an `INDEX.md` saying what each file is for. `list_workspace`
 can answer what exists but not what anything is *for*, and after a long run
