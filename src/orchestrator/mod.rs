@@ -520,6 +520,31 @@ fn workspace_prompt(base: &str, shared: &str, role: &str) -> String {
     )
 }
 
+/// Opens the workspace trace journal and announces the run's operating limits.
+///
+/// The header line is the first thing an operator sees, and it makes the two
+/// settings that most change a run's behaviour visible up front rather than
+/// inferable only from how the run ends.
+fn start_tracer(workspace: &Path, budget: RunBudget, research_enabled: bool) -> Arc<RunTracer> {
+    let tracer = RunTracer::new(
+        "orchestrator",
+        Some(RunTracer::journal_path(workspace).as_path()),
+    );
+    tracer.note(&format!(
+        "budget: {} model calls, {} tool calls, {} minute run, {} minute tool; research {}",
+        budget.max_model_calls,
+        budget.max_tool_calls,
+        budget.run_timeout.as_secs() / 60,
+        budget.tool_timeout.as_secs() / 60,
+        if research_enabled {
+            "enabled"
+        } else {
+            "disabled"
+        }
+    ));
+    tracer
+}
+
 /// Returns whether the research agent may reach the web this run.
 ///
 /// Set `MATH_AGENT_RESEARCH=off` to withhold `exa_search`. The workspace note
