@@ -76,6 +76,7 @@ impl<S: Send + Sync> StickyProviderModel<S> {
         Self {
             inner,
             pinned: Arc::new(RwLock::new(None)),
+            blocked: Arc::new(RwLock::new(None)),
         }
     }
 
