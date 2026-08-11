@@ -290,6 +290,63 @@ impl OrchestratorAgent {
     }
 }
 
+fn default_registry() -> Result<AgentRegistry> {
+    let document_tools = [
+        "download_document",
+        "read_document",
+        "write_document",
+        "edit_document",
+        "index_document",
+        "search_documents",
+    ];
+    let mut registry = AgentRegistry::new();
+    registry
+        .register(
+            AgentDefinition::new(
+                "research",
+                "Research Agent",
+                "Uses Exa to research current facts and return cited evidence.",
+            )
+            .with_model("openrouter")
+            .with_tools([
+                "exa_search",
+                "recall_research",
+                "remember_research",
+                document_tools[0],
+                document_tools[1],
+                document_tools[4],
+                document_tools[5],
+            ]),
+        )?
+        .register(
+            AgentDefinition::new(
+                "tool_builder",
+                "Tool Builder Agent",
+                "Writes and executes tools in the jailed /workspace directory.",
+            )
+            .with_model("openrouter")
+            .with_tools(
+                ["write_tool_file", "execute_command"]
+                    .into_iter()
+                    .chain(document_tools),
+            ),
+        )?
+        .register(
+            AgentDefinition::new(
+                "goals",
+                "Goals Agent",
+                "Pursues a goal and delegates research, implementation, and verification.",
+            )
+            .with_model("openrouter")
+            .with_tools(
+                ["spawn_agent", "peek_agent", "steer_agent", "await_agent"]
+                    .into_iter()
+                    .chain(document_tools),
+            ),
+        )?;
+    Ok(registry)
+}
+
 fn specialist_harness(model: Arc<dyn ChatModel<()>>) -> AgentHarness<()> {
     let mut harness = AgentHarness::new();
     configure_tool_deadline(&mut harness);
