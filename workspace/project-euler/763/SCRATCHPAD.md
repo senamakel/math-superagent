@@ -35,6 +35,35 @@ by both frozenset (~200s, MEMORY) and bitmask (6.4s).
   free but the cgroup caps the container, not the host.
 - Also removed the stray root brute.py (superseded; replica at code/brute_capped.py).
 
+## Pattern-finder re-verification (this run)
+
+Re-derived the max-level decomposition fresh from data/level_N.txt + 
+code/out/mhist_13_14.txt (N=13,14 are OOS, never fit on). All confirmed:
+
+- Diagonal M=N: R(N,N)=3^(N-1) EXACTLY for all N=2..14.
+- Q_k(N)=R(N,N-k)/3^(N-2k-1), degree-k poly in N: leading coeff == 1/k!
+  confirmed for k=0..4 (k=5 has too few points to fix full degree).
+- Closed forms exact over all computed points:
+  Q_0=1, Q_1=n-3, Q_2=(n-5)(n+2)/2, Q_3=(n^3-73n+168)/6,
+  Q_4=n^4/24+n^3/4-205n^2/24+97n/4+27.
+- Then D(N)=sum_{k=0}^{N-2} Q_k(N) 3^(N-2k-1).
+
+NEW NEGATIVE (this run): NO short local transfer recurrence on the R(N,M)
+max-level array. Did rank-safe exact rational least-squares over
+R(N,M)=sum c_j R(N-j,M+d) for windows (L=1..3, d in various sets incl
+[-1,0,1],[-2..2]); trained on N=3..13, tested OOS on N=14. Every candidate
+fails: train residuals 119..55103, OOS residuals 823..402630, never exact.
+So the 3D analog of the 2D G(k,m) two-index kernel recurrence does NOT exist
+in local form. Recorded dead end: do not re-search this.
+
+Growth ratio settled at ~3.4009 as N->14. D(0..14) reconfirmed NOT in OEIS
+(oeis_lookup miss again). Prior results (order-7 constant-coeff recurrence =
+overfit; NOT holonomic; D2d == A007902 sourced) stand unchanged.
+
+Files: code/pattern/q_decomp_verify.py, q_bivariate.py, transfer_hunt.py,
+transfer_search.py, transfer_search2.py (all exploratory; negative transfer
+result is the durable finding).
+
 ## C1 conjecture test (origin-connected == reachable?)
 
 Program code/test_c1.py.  C1 FALSE in 2D and 3D.  Origin-connected sets are
