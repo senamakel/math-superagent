@@ -27,5 +27,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1/weightedsearch.md` | Dead end: OEIS search on sample S(n) → no result; S(n) ∉ OEIS. |
 | `L1/zerocount.md` | OEIS A059015 summatory 0-bit count → B(n); identity A059015 = A083652 − A000788. |
 | `L1/zugzwang.md` | Skip = "passing, if allowed, would be best"; One's forced 1-bit consumption → zugzwang. |
-| `L2/counting-arithmetic.md` | _(undescribed)_ |
+| `L2/counting-arithmetic.md` | L2 synthesis: polylog evaluation of A(n)=Σk·popcount(k) and B(n)=Σk·zerocount(k) at n=10^5 scale — summatory A000788/A059015 recurrences, Trollope–Delange structure, k·-weighted moment closed forms; S(n) ∉ OEIS. Synthesises bitcount/zerocount/a083652/trollopedelange/verify_trollopedelange/weightedmom/weightedsearch. |
 | `L2/game-reduction-and-pass.md` | _(undescribed)_ |
