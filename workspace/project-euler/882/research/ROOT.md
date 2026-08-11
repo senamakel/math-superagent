@@ -1,7 +1,8 @@
 # ROOT — what the reference library establishes
 
-Two L2 folds hold the whole library's claims; seal [[L0.0]] covers the L0
-originals that feed one of them.
+Three L2 folds hold the whole library's claims; seals [[L0.0]] and [[L0.1]]
+cover the L0 originals that feed them, and [[L1.0]] (this L2.0 folder) seals
+the L1.0 batch — the arithmetic engine and its CGT counting frame.
 
 ## The game's values are dyadic Numbers (exact), not the integer A−B
 [[game-reduction-and-pass]] (L2.0) reduces the board to a disjunctive sum of
@@ -34,6 +35,18 @@ theorem), pass theory ([[pass_waiting]], [[mfl_pass]], [[raw_mfl_pass]]),
 surreal values ([[surreal]]) — and a second primary weighted Trollope–Delange
 warrant ([[minabutdinov_qweighted]]), plus the strategy dead end. Together they
 make the skip a legitimate loopy/zugzwang object and confirm S(n) ≠ A−B.
+
+## L1.0 batch is sealed
+[[L1.0]] (this L2.0 folder) seals the ten L1.0 notes:
+[[a083652]], [[bitcount]], [[cgt]], [[disjsum]], [[flajolet_weighted_digitalsums]],
+[[loopy]], [[mfl_pass]], [[minabutdinov_qweighted]], [[misfiled]], [[normalplay]].
+They establish the counting model (disjunctive sum ⇒ G(a,b)=a−b ⇒ board value
+A−B; [[normalplay]] win rule; [[loopy]]/[[mfl_pass]] skip ⇒ S(n)≠A−B) and the
+**polylog arithmetic engine** (A(n) via [[bitcount]] A000788, B(n) via
+[[a083652]]+[[zerocount]] identity, weighted-digit-sum structure from
+[[flajolet_weighted_digitalsums]] and [[minabutdinov_qweighted]]), letting the
+DP run at n=10⁵. [[misfiled]] records the dead-end downloads. Sealed once;
+never revisited.
 
 ## Standing caveat (open)
 The dyadic Simplicity Rule is the exact game rule sourced here; the counting

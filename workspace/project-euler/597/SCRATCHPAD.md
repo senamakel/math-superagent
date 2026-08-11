@@ -1,5 +1,37 @@
 # Scratchpad
 
+## Run (tool_builder): naive oracle code/brute.py verified against the whole statement
+
+Command: `cd /workspace && python3 code/task1_verify.py`
+
+Used the already-present `code/brute.py` (naive chronological replay that
+records every bump edge and builds the new order by full reachability) rather
+than writing a second oracle. Exact output:
+
+```
+=== TASK 1a: table parity reproduction (n=3,L=160) ===
+  none                         speeds=[0.157, 0.607, 1.473] order=[0, 1, 2] parity=even expected=even  [OK]
+  B bumps C                    speeds=[0.073, 0.215, 0.093] order=[0, 2, 1] parity=odd expected=odd  [OK]
+  A bumps B                    speeds=[0.257, 0.137, 1.662] order=[1, 0, 2] parity=odd expected=odd  [OK]
+  B bumps C then A bumps C     speeds=[2.205, 2.057, 0.126] order=[2, 0, 1] parity=even expected=even  [OK]
+  A bumps B then B bumps C     speeds=[3.218, 2.055, 1.316] order=[2, 1, 0] parity=odd expected=odd  [OK]
+  all five parities: PASS
+
+=== TASK 1b: MC p(3,160) and p(4,400) at ~200k ===
+  MC p(3,160) = 0.415850   (target 56/135=0.414815)
+  MC p(4,400) = 0.509220   (target given 0.510784)
+```
+
+Every worked example matched:
+- new orders agree with the statement table ([0,1,2]=ABC, [0,2,1]=ACB,
+  [1,0,2]=BAC, [2,0,1]=CAB, [2,1,0]=CBA) and the parities agree (even/odd).
+- MC p(3,160)=0.415850 vs exact 56/135=0.414815 (within SE~0.0011).
+- MC p(4,400)=0.509220 vs given 0.510784 (within SE~0.0011).
+- p(3,160) MC here is relative to exact 56/135; p(4,400) to the given value.
+
+Conclusion: the naive oracle's reading of the definition is correct. All
+statement examples reproduced.
+
 ## Task
 Run `/workspace/verify_hypothesis.py` with N=200000; report the four MC
 estimates (expect p(3,160)≈0.4148, p(4,400)≈0.5108) and whether any w-order
