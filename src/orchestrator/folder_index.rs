@@ -42,11 +42,19 @@ const UNDESCRIBED: &str = "_(undescribed)_";
 /// downstream, because a folder is allowed to be the empty string — the
 /// workspace root — and the checker rejects that as naming no file. So
 /// `workspace` has to become `""` before it gets there, not after.
+///
+/// `.` is the root for the same reason. It is the obvious way to ask for the
+/// current folder, and the path checker refuses it as traversal — a true
+/// answer to a question nobody asked, since the model wanted the folder it is
+/// already standing in.
 fn folder_name(requested: &str) -> String {
-    super::strip_workspace_prefix(requested)
+    let normalised = super::strip_workspace_prefix(requested)
         .trim_start_matches("./")
-        .trim_matches('/')
-        .to_string()
+        .trim_matches('/');
+    if normalised == "." {
+        return String::new();
+    }
+    normalised.to_string()
 }
 
 /// Splits a path into its folder and file name.
