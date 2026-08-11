@@ -1,7 +1,9 @@
 //! Unit tests for the solution loop's routing policy and lesson extraction.
 #![allow(clippy::expect_used)]
 
-use super::{MAX_ATTEMPTS, Route, STUCK_THRESHOLD, SolutionState, extract_lesson, route};
+use super::{
+    MAX_ATTEMPTS, PatternMailbox, Route, STUCK_THRESHOLD, SolutionState, extract_lesson, route,
+};
 
 fn state() -> SolutionState {
     SolutionState::new("find the largest x")
@@ -183,4 +185,45 @@ async fn a_reflection_is_indexed_with_its_verdict_and_lesson() {
     assert!(index.contains("Attempt 4"), "{index}");
     assert!(index.contains("solved"), "{index}");
     let _ = std::fs::remove_dir_all(&workspace);
+}
+
+#[test]
+fn a_pattern_report_that_arrives_late_still_reaches_a_later_attempt() {
+    // The pattern agent is detached so it cannot gate the loop, which only
+    // helps if what it finds is not simply dropped. A live run sat 33 minutes
+    // unable to start its next attempt while an awaited pattern agent worked.
+    let mailbox = PatternMailbox::default();
+    assert_eq!(mailbox.collect(), "", "nothing has been posted yet");
+
+    mailbox.post("period 6 in the residues".to_string());
+    let collected = mailbox.collect();
+    assert!(collected.contains("period 6"), "got: {collected}");
+    assert_eq!(
+        mailbox.collect(),
+        "",
+        "a report is delivered once, not to every later attempt"
+    );
+}
+
+#[test]
+fn several_pattern_runs_outliving_their_attempts_are_all_delivered() {
+    // Detaching means a run can outlive the attempt that started it, so more
+    // than one report can be waiting. Keeping only the newest would silently
+    // discard the analysis an attempt paid for.
+    let mailbox = PatternMailbox::default();
+    mailbox.post("first: no linear recurrence".to_string());
+    mailbox.post("second: divisibility by 9".to_string());
+
+    let collected = mailbox.collect();
+    assert!(collected.contains("no linear recurrence"), "{collected}");
+    assert!(collected.contains("divisibility by 9"), "{collected}");
+}
+
+#[test]
+fn an_empty_pattern_report_is_not_posted_as_context() {
+    // A failed or silent pattern run must not present itself to the next
+    // attempt as an analysis that found nothing to report.
+    let mailbox = PatternMailbox::default();
+    mailbox.post("   \n  ".to_string());
+    assert_eq!(mailbox.collect(), "");
 }
