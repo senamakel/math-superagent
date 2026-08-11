@@ -349,19 +349,48 @@ impl WorkspaceDocuments {
                 )));
             }
         };
-        serde_json::from_slice(&bytes).map_err(Into::into)
+        // A damaged index is rebuilt, not reported. It is runtime bookkeeping
+        // the model never sees and cannot repair, so handing it a parse error
+        // only converts a self-healing condition into a dead end — which is
+        // exactly what happened on Euler 579, where three `index_document`
+        // calls in a row failed against a corrupt file. The cost of starting
+        // over is that `search_documents` misses whatever had been indexed
+        // until those documents are indexed again; the cost of the error was
+        // that indexing could never succeed again for the rest of the run.
+        Ok(serde_json::from_slice(&bytes).unwrap_or_default())
     }
 
     async fn index(&self, relative: &str) -> Result<usize> {
         let content = self.read(relative).await?;
+        let _guard = self.index_lock.lock().await;
         let mut paths = self.indexed_paths().await?;
         if !paths.iter().any(|path| path == relative) {
             paths.push(relative.to_string());
             paths.sort();
         }
-        self.write_internal(INDEX_PATH, &serde_json::to_string_pretty(&paths)?)
+        self.write_index(&serde_json::to_string_pretty(&paths)?)
             .await?;
         Ok(content.split_whitespace().count())
+    }
+
+    /// Replaces the index in one step that cannot be observed half-written.
+    ///
+    /// The lock above orders writers inside this process; the rename is what
+    /// makes each write atomic on disk, so a crash or an unexpected second
+    /// writer leaves the previous index intact rather than a truncated one.
+    async fn write_index(&self, content: &str) -> Result<()> {
+        let final_path = self.workspace.join(INDEX_PATH);
+        let temporary = self.workspace.join(format!("{INDEX_PATH}.tmp"));
+        tokio::fs::write(&temporary, content)
+            .await
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("failed to stage document index: {error}"))
+            })?;
+        tokio::fs::rename(&temporary, &final_path)
+            .await
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("failed to replace document index: {error}"))
+            })
     }
 
     async fn search(&self, query: &str) -> Result<Vec<Value>> {

@@ -1,6 +1,36 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/cabanillas-labbe-ostrowski-variant.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+<!-- source: https://arxiv.org/abs/1904.01874 ; full text at https://ar5iv.labs.arxiv.org/html/1904.01874 | converted from HTML -->
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/1904.01874 | converted from HTML -->
+## Summary
+
+Cabanillas-López & Labbé, "A variant of Ostrowski numeration", arXiv:1904.01874 (2019).
+
+This is the PRIMARY algorithm behind PE591. It builds an Ostrowski-style numeration (α-numeration) based on the continued fraction of an irrational α∈[0,1) that codes every integer n and every fractional part {nα} by the SAME finite digit sequence, and uses it to analyze order properties of Kronecker sequences ({nα−β}).
+
+**Notation / setup (Section 2.3):** α has CF [0; a_1,a_2,…], convergents p_n/q_n, and the error sequence
+  δ_{-1}=1, δ_0=α, δ_n = −a_n·δ_{n−1} + δ_{n−2}   (so δ_n = (−1)^n(q_n α − p_n) > 0).
+(δ_n is positive and decreases to 0.)
+
+**α-numeration of β∈[0,1) (Algorithm 3(ii), the greedy rule):** set β_0=β; for k=1,2,…:
+  b_k = min(a_k, ⌈ β_{k−1}/δ_{k−1} ⌉)
+  β_k = b_k·δ_{k−1} − β_{k−1}
+These digits b_k are the "α-numeration" of β; integer n has α-numeration digits d_k with n = Σ d_k q_{k−1} (Algorithm 3(i)).
+
+**Central theorem — best left/right α-approximations (Section 4.3):**
+{nα} is a *best right (resp. left) α-approximation* of β if it is closer from the right (resp. left) than every {kα}, k<n. A best α-approximation (in circular distance ‖·‖=min({·},{−·})) is always a best right or left approximation.
+
+Prop 9 (best RIGHT, α irrational — Case 2): the best right candidates are n=0, n=Σ_{i=1}^{s} b_i q_{i−1} (terminal, if b_k=0 ∀k>s), and
+  n = Σ_{i=1}^{2k−1} b_i q_{i−1} + j·q_{2k−1},   j ∈ {0,…,b_{2k}−1},  k≥1.
+
+Prop 10 (best LEFT, α irrational — Case 2): the best left candidates are n=Σ_{i=1}^{s} b_i q_{i−1} (if b_k=0 ∀k>s) and
+  n = Σ_{i=1}^{2k} b_i q_{i−1} + j·q_{2k},   j ∈ {0,…,b_{2k+1}−1},  k≥0.
+
+The proof derives these from the order isomorphism Λ_α between the α-admissible sequences (with alternate lexicographic order) and [0,1), identifying best sided approximations as minimal points of the sequences ({nα−β}, n) in the product order.
+
+**Why O(log B):** for b limited by B, the CF denominators q_k grow like q_k ~ const^φk (exponentially), so only O(log B) digits/levels k are needed; the candidate enumeration is O(log B). This is the core subproblem: find b∈[0,B] minimizing the circular distance from {bα} to β. Negative b in PE591 is handled by running the same routine with target {−π}=1−{π}.
+
+Related results in the paper: Section 4.1 gives a one-page proof of the **three-distance theorem** (points {kα}, k=1..N−1 divide [0,1] into at most 3 interval lengths, largest = sum of others; explicit lengths in terms of δ_s, δ_{s−1}). Section 2.4 gives the CFE-complement for α-numeration of negative integers.
+
+Full text: `research/cabanillas-labbe-ostrowski-variant.full.md`.
 
 [1904.01874] Contents
 
