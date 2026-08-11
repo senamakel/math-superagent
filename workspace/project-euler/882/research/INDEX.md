@@ -4,7 +4,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `L0/flajolet_weighted_digitalsums.full.md` | Computer Science > Data Structures and Algorithms — from https://arxiv.org/abs/1003.0150; not yet read, excerpt pending a scholar summary |
 | `L0/li_zuchswang.md` | _(undescribed)_ |
+| `L0/minabutdinov_qweighted.full.md` | Mathematics > Dynamical Systems — from https://arxiv.org/abs/1801.03120; not yet read, excerpt pending a scholar summary |
 | `L0/siegel_zugzwang.md` | _(undescribed)_ |
 | `L1/a083652.md` | OEIS A083652 summatory bit-length, exact O(1) closed form; third leg of total bits = ones+zeros. |
 | `L1/bitcount.md` | OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |

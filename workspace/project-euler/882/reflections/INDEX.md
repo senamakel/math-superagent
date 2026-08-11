@@ -4,13 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-
-_This folder is empty._
-
-Each attempt is judged once, and the verdict is archived here as
-`<epoch_ms>_<outcome>.md` — `nothing` when the attempt taught the run nothing,
-`<n>_learnings` otherwise, so a directory listing alone shows which attempts
-were worth something. The solution loop writes both the reflection and its row
-in this table; you do not need to file them by hand. Read this before repeating
-an approach: a row saying an attempt failed and why is the cheapest result in
-the workspace.
+| `L0/1786464765420_01_learnings.md` | Attempt 1, judged unsolved, 1 learning(s). The run never started—the delegated `goals` agent died on an OpenRouter HTTP 400 and the attempt treated that infrastructure error as fatal, so no file was written and no answer or verification exists. Next time, retry the subagent call (provider 400s are often transient or caused by a model name the provider lacks), and if the same agent keeps failing, do that step inline with another model instead of aborting the whole run. |
