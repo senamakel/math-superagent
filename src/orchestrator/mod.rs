@@ -559,6 +559,20 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                     .chain(document_tools),
             ),
         )?
+        .register(support_agents(research_enabled, document_tools)?);
+    Ok(registry)
+}
+
+/// Builds the reflection, pattern, inventor, and librarian definitions.
+///
+/// Split out of [`default_registry`] purely to keep each function readable;
+/// these four are the agents added for the solution loop.
+fn support_agents(
+    research_enabled: bool,
+    document_tools: [&'static str; 6],
+) -> Result<AgentRegistry> {
+    let mut registry = AgentRegistry::new();
+    registry
         .register(
             AgentDefinition::new(
                 "reflection",
