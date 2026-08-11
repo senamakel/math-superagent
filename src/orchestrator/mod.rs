@@ -564,6 +564,48 @@ fn support_agents(
     ]
 }
 
+/// Every role's system prompt, assembled from its built-in policy plus the
+/// workspace's own guidance files.
+struct RolePrompts {
+    orchestrator: String,
+    research: String,
+    tool_builder: String,
+    goals: String,
+    reflection: String,
+    pattern: String,
+    inventor: String,
+    librarian: String,
+}
+
+impl RolePrompts {
+    /// Loads each role's prompt, layering `prompts/<role>.md` from the
+    /// workspace over the built-in policy.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when a workspace prompt file is unreadable, oversized,
+    /// or not UTF-8. A file that is simply absent is skipped.
+    fn load(workspace: &Path, shared: &str) -> Result<Self> {
+        let role = |base: &str, file: &str| -> Result<String> {
+            Ok(workspace_prompt(
+                base,
+                shared,
+                &load_workspace_files(workspace, &[file])?,
+            ))
+        };
+        Ok(Self {
+            orchestrator: role(ORCHESTRATOR_PROMPT, "prompts/orchestrator.md")?,
+            research: role(RESEARCH_PROMPT, "prompts/research.md")?,
+            tool_builder: role(TOOL_BUILDER_PROMPT, "prompts/tool_builder.md")?,
+            goals: role(GOALS_PROMPT, "prompts/goals.md")?,
+            reflection: role(REFLECTION_PROMPT, "prompts/reflection.md")?,
+            pattern: role(PATTERN_PROMPT, "prompts/pattern_finder.md")?,
+            inventor: role(INVENTOR_PROMPT, "prompts/inventor.md")?,
+            librarian: role(LIBRARIAN_PROMPT, "prompts/librarian.md")?,
+        })
+    }
+}
+
 /// The shared pieces every support agent's harness is assembled from.
 struct SupportAgents<'a> {
     model: &'a Arc<dyn ChatModel<()>>,
