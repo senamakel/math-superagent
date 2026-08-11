@@ -2,7 +2,7 @@
 
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, checked_workspace_path,
-    compression_policy, default_registry, validate_complexity, workspace_prompt,
+    compression_policy, default_registry, role_context, validate_complexity, workspace_prompt,
 };
 use crate::agent;
 
@@ -194,4 +194,50 @@ fn disabling_research_also_withholds_search_from_inventor_and_librarian() -> age
         );
     }
     Ok(())
+}
+
+#[test]
+fn reflection_sees_the_criteria_it_judges_against_but_not_scratch_work() {
+    let context = role_context("reflection");
+    // Judging "solved" against criteria it cannot see is guesswork, and a
+    // wrong SOLVED ends the whole investigation.
+    assert!(context.contains(&"goal.md"));
+    assert!(context.contains(&"memory.md"));
+    // Unsettled scratch work is not evidence of progress.
+    assert!(!context.contains(&"scratchpad.md"));
+}
+
+#[test]
+fn the_inventor_sees_what_already_failed() {
+    // memory.md carries the failed-approaches section. Without it the inventor
+    // re-proposes exactly what it exists to avoid.
+    assert!(role_context("inventor").contains(&"memory.md"));
+}
+
+#[test]
+fn the_pattern_agent_sees_the_raw_data_it_analyses() {
+    let context = role_context("pattern_finder");
+    assert!(context.contains(&"scratchpad.md"));
+    assert!(context.contains(&"memory.md"));
+}
+
+#[test]
+fn only_executing_roles_receive_the_runtime_configuration() {
+    for role in ["tool_builder", "goals", "orchestrator"] {
+        assert!(
+            role_context(role).contains(&"config.toml"),
+            "`{role}` acts on the runtime limits"
+        );
+    }
+    for role in ["reflection", "inventor", "pattern_finder", "librarian"] {
+        assert!(
+            !role_context(role).contains(&"config.toml"),
+            "`{role}` does not execute anything"
+        );
+    }
+}
+
+#[test]
+fn an_unknown_role_receives_no_working_files() {
+    assert!(role_context("nonexistent").is_empty());
 }
