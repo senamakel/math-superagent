@@ -254,7 +254,6 @@ fn changed_since(workspace: &Path, parent: &str, children: &[String]) -> Vec<Str
         .collect()
 }
 
-
 /// Adds the sealing work one tree needs, and its folds to `nodes`.
 ///
 /// Split out of [`plan`] because the batch walk and the node walk are two
@@ -274,9 +273,9 @@ fn seal_tasks(
         // from the cap every level above it is held to.
         if *level > 0 {
             nodes.extend(held.iter().map(|note| Node {
-            path: note.clone(),
-            tokens: tokens(workspace, note),
-            children: linked(workspace, note),
+                path: note.clone(),
+                tokens: tokens(workspace, note),
+                children: linked(workspace, note),
             }));
         }
         if held.len() < FANOUT {
@@ -290,12 +289,12 @@ fn seal_tasks(
         );
         if !workspace.join(&summary).is_file() {
             unsealed.push(Task {
-            node: Node {
-                path: folder.clone(),
-                tokens: 0,
-                children: held,
-            },
-            fault: Fault::Unsealed { summary },
+                node: Node {
+                    path: folder.clone(),
+                    tokens: 0,
+                    children: held,
+                },
+                fault: Fault::Unsealed { summary },
             });
             continue;
         }
@@ -310,15 +309,15 @@ fn seal_tasks(
             .collect();
         if !missing.is_empty() {
             unlinked.push(Task {
-            node: Node {
-                path: summary,
-                tokens: 0,
-                children: held,
-            },
-            fault: Fault::Unlinked {
-                batch: folder.clone(),
-                missing,
-            },
+                node: Node {
+                    path: summary,
+                    tokens: 0,
+                    children: held,
+                },
+                fault: Fault::Unlinked {
+                    batch: folder.clone(),
+                    missing,
+                },
             });
         }
     }
@@ -370,7 +369,14 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
             children: top_notes,
         });
 
-        seal_tasks(workspace, root, &batches, &mut nodes, &mut unsealed, &mut unlinked);
+        seal_tasks(
+            workspace,
+            root,
+            &batches,
+            &mut nodes,
+            &mut unsealed,
+            &mut unlinked,
+        );
     }
 
     for node in &nodes {
