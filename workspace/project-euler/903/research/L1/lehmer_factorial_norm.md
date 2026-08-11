@@ -1,201 +1,42 @@
-> **Excerpt only — read this first.** The complete text is one level down at `research/L0/lehmer_factorial_norm.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
-
-<!-- source: https://arxiv.org/abs/2111.03951 | converted from HTML -->
-
-[2111.03951] The Lehmer factorial norm on $S_{n}$
-
-Skip to main content
-
-System maintenance August 4th and 5th [Learn more][1] ×
-
-Press Enter to search &middot; [Advanced search][2]
-
--->
-
-# Mathematics > Group Theory
-
-**arXiv:2111.03951**(math)
-
-[Submitted on 6 Nov 2021]
-
-# Title: The Lehmer factorial norm on $S_{n}$
-
-Authors: [Paweł Zawiślak][3]
-
-View a PDF of the paper titled The Lehmer factorial norm on $S_{n}$, by Pawe{\l} Zawi\'slak
-
-[View PDF][4]
-
-Abstract: We introduce a new family of norms on the permutation groups $S_{n}$. We examine their properties.
-
-Subjects: | Group Theory (math.GR) |
-
-Cite as: | [arXiv:2111.03951][5] [math.GR] |
-
- | (or [arXiv:2111.03951v1][6] [math.GR] for this version)  |
-
- | [https://doi.org/10.48550/arXiv.2111.03951][7]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
- |
-
-## Submission history
-
-From: Pawel Zawislak [[view email][8]]
-**[v1]**Sat, 6 Nov 2021 19:53:30 UTC (16 KB)
-
-Full-text links:
-
-## Access Paper:
-
-View a PDF of the paper titled The Lehmer factorial norm on $S_{n}$, by Pawe{\l} Zawi\'slak
-
-- [View PDF][4]
-- [TeX Source][9]
-
-[image: license icon] [view license][10]
-
-### Current browse context:
-
-math.GR
-
-[< prev][11] | [next >][12]
-
-[new][13] | [recent][14] | [2021-11][15]
-
-Change to browse by:
-
-[math][16]
-
-### References & Citations
-
-- [NASA ADS][17]
-- [Google Scholar][18]
-- [Semantic Scholar][19]
-
-export BibTeX citation Loading...
-
-## BibTeX formatted citation
-
-×
-
-loading...
-
-Data provided by:
-
-### Bookmark
-
-[image: BibSonomy] [20][image: Reddit] [21]
-
-Bibliographic Tools
-
-# Bibliographic and Citation Tools
-
-Bibliographic Explorer Toggle
-
-Bibliographic Explorer*( [What is the Explorer?][22])*
-
-Connected Papers Toggle
-
-Connected Papers*( [What is Connected Papers?][23])*
-
-Litmaps Toggle
-
-Litmaps*( [What is Litmaps?][24])*
-
-scite.ai Toggle
-
-scite Smart Citations*( [What are Smart Citations?][25])*
-
-Code, Data, Media
-
-# Code, Data and Media Associated with this Article
-
-alphaXiv Toggle
-
-alphaXiv*( [What is alphaXiv?][26])*
-
-Links to Code Toggle
-
-CatalyzeX Code Finder for Papers*( [What is CatalyzeX?][27])*
-
-DagsHub Toggle
-
-DagsHub*( [What is DagsHub?][28])*
-
-GotitPub Toggle
-
-Gotit.pub*( [What is GotitPub?][29])*
-
-Huggingface Toggle
-
-Hugging Face*( [What is Huggingface?][30])*
-
-ScienceCast Toggle
-
-ScienceCast*( [What is ScienceCast?][31])*
-
-Demos
-
-# Demos
-
-Replicate Toggle
-
-Replicate*( [What is Replicate?][32])*
-
-Spaces Toggle
-
-Hugging Face Spaces*( [What is Spaces?][33])*
-
-Spaces Toggle
-
-TXYZ.AI*( [What is TXYZ.AI?][34])*
-
-Related Papers
-
-# Recommenders and Search Tools
-
-Link to Influence Flower
-
-Influence Flower*( [What are Influence Flowers?][35])*
-
-Core recommender toggle
-
-CORE Recommender*( [What is CORE?][36])*
-
-- Author
-- Venue
-- Institution
-- Topic
-
-About arXivLabs
-
-# arXivLabs: experimental projects with community collaborators
-
-arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
-
-Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
-
-Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][37].
-
-[Which authors of this paper are endorsers?][38] | Disable MathJax ( [What is MathJax?][39])
-
-
-## Links
-
-[1]: https://status.arxiv.org
-[2]: https://arxiv.org/search/advanced
-[3]: https://arxiv.org/search/math?searchtype=author&amp;query=Zawi%C5%9Blak,+P
-[4]: /pdf/2111.03951
-[5]: https://arxiv.org/abs/2111.03951
-[6]: https://arxiv.org/abs/2111.03951v1
-[7]: https://doi.org/10.48550/arXiv.2111.03951
-[8]: /show-email/49e66147/2111.03951
-[9]: /src/2111.03951
-[10]: http://creativecommons.org/licenses/by/4.0/
-[11]: /prevnext?id=2111.03951&amp;function=prev&amp;context=math.GR
-
-*[excerpt ends; 1332 characters not shown — see `research/L0/lehmer_factorial_norm.full.md`]*
+# The Lehmer factorial norm on S_n (Zawiślak, arXiv:2111.03951)
+
+Author: Paweł Zawiślak (SGH Warsaw School of Economics). arXiv:2111.03951v1,
+submitted 6 Nov 2021, math.GR / math.CO. MSC 05A05, 62H20, 54E35, 20B99.
+Source: https://arxiv.org/abs/2111.03951.
+Complete text: `research/L0/lehmer_factorial_norm.body.full.md`.
+
+## What the source establishes
+
+- **Lehmer code distribution on S_n is factorized and uniform per digit.**
+  For σ∈S_n the Lehmer code digits are c_i(σ) = #{j>i : σ(j)<σ(i)} (i=1..n),
+  and the vector whose i-th entry is uniform on {0,...,i} over the uniform S_n
+  — i.e. the factorial/factoradic digits of σ are *independent and each uniform
+  on its own range* (Lemmas 3.1, 3.3, Cor 3.2). This is the classical Lehmer /
+  factorial-number-system fact, restated here with proof.
+- **Distribution of the Lehmer norm is fully described** (Theorems 4.5, 4.6 with
+  Lemma 4.4), on every S_n and on S_∞. The "Lehmer factorial norm"
+  LF2(σ) = Σ_i (2^i − 2^{i−k_i(σ)}) (a base-2 weight on the Lehmer digits k_i
+  = c_{n−i}) is a norm/transition-invariant metric; its distribution across S_n
+  follows from the independence above.
+
+## What it implies for this problem (Project Euler 903)
+
+Q(n) = Σ_pi Σ_{i=1}^{n!} rank(pi^i), rank = 1 + Σ_j a_j·(n−1−j)! with a_j the
+Lehmer (factoradic) digits. The paper's Lemma 3.1/3.3/Cor 3.2 give an independent,
+cited proof that **uniform S_n ⇒ the factoradic digits rank depends on are
+independent with each digit uniform on {0,...,j}** — the structural fact behind
+how the run's pair-inversion sums, and hence A_n, B_n, average over all pi. It is
+a *confirmation/re-proof* of the rank structure already in place via
+[[factorial_number_system_wiki]], not a new mechanism.
+
+## Caveats (recorded so nobody over-claims)
+
+- The paper studies the Lehmer *code of a single σ*, and the metric built from it,
+  over all of S_n. It does **not** treat powers σ^i, the cyclic subgroup {σ^i},
+  or the sum of ranks over that subgroup — the genuinely novel unresolved core of
+  Q(10^6). Theorems 4.5/4.6 are about the norm's distribution, unrelated to A_n,
+  B_n. So it is a marginal structural confirmation, not a route to a closed form
+  for A_n, B_n.
+- Filing rationale: fills a small gap (Lehmer-digit independence as cited
+  mathematics) and rules the paper out of the A_n/B_n route without anyone having
+  to re-open it.
