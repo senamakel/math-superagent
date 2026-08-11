@@ -1,54 +1,63 @@
-# Pattern-finder scratchpad
+# Pattern-finder findings (PE763)
 
-## Dead end: order-7 constant-coefficient linear recurrence is an OVERFIT
+## 1. DEAD END: order-7 constant-coefficient recurrence is an OVERFIT
 
-`find_linear_recurrence` over D(0..14) found an exact order-7 constant-coeff
-recurrence:
-  3 D[n] = 9 D[n-1] + 12 D[n-2] - 17 D[n-3] - 30 D[n-4] - 31 D[n-5] + 63 D[n-6]
-verified over all 15 supplied terms. BUT tested against held-out statement
-values it is definitively dead:
-  - extrapolating, 3*D(n) numerator is not divisible by 3 starting at n=18
-    (3*D(18) = 2387442214, rem 1), so it cannot equal an integer D(18).
-  - therefore it can never reproduce D(20)=9204559704 or D(100) last digits.
-Conclusion: any 15-term exactly-fitted linear recurrence is uninformative here;
-the recurrence is a fit artifact, not a structural fact. Recorded as a known
-dead end so nobody re-derives it.
+`find_linear_recurrence` over D(0..14) found an exact order-7 recurrence
+3D[n]=9D[n-1]+12D[n-2]-17D[n-3]-30D[n-4]-31D[n-5]+63D[n-6], verified on all 15
+terms. But extrapolating, 3*D(18)=2387442214 is NOT divisible by 3, so it
+cannot equal integer D(18). First falsifier n=18. It can never reproduce the
+statement's D(20)=9204559704 or D(100) last digits. => any 15-term exactly
+fitted linear recurrence here is a fit artifact. Do not re-derive.
 
-## OEIS
+## 2. OEIS misses for the d=3 sequence
 
 D(0..14)=1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267,5949063
-has NO OEIS entry. Not catalogued -> no looked-up closed form; structure must
-come from the problem. (Recorded.)
+is NOT in OEIS. No looked-up closed form; structure must come from the problem.
+(Recorded already.)
 
-## Exact structural facts from per-config feature dumps (data/level_N.txt)
+## 3. SOURCED: d=2 sequence == OEIS A007902 (pebbling configurations)
 
-N(N,M) = #distinct reachable configs after N divisions with max level = M.
+D_2(N) (2D amoeba, count distinct configs after N divisions) for N=0..21:
+1,1,2,4,9,20,46,105,243,561,1301,3014,6995,16227,37668,87426,202961,471150,
+1093819,2539348,5895408,13686805
+matches OEIS A007902(N+1) exactly (filed research/L1.0/oeis_a007902.md).
+Sourced; asymptotic D_2(N)~0.1227*2.3216^N (Knessl 2006). d=2 has NO simple
+constant-coefficient recurrence either (order<=12 fails) — its OEIS form is a
+two-index G(k,m) recursion. First falsifier (untested): D2(22) vs A007902(23)=
+31775756 (d=2 BFS OOM'd at 22 in this container).
 
-Diagonal M=N:  N(N,N) = 3^(N-1), exact for N=2..12.
-  3, 9, 27, 81, 243, 729, 2187, 6561, 19683, 59049, 177147.
+## 4. Structural: configs decompose by max level M
 
-Sub-diagonal M=N-1:  N(N,N-1) = (N-3)*3^(N-3), exact for N=4..12.
-  3, 18, 81, 324, 1215, 4374, 15309, 52488, 177147.
-  (ratio to diagonal = (N-3)/3: 1/9,2/9,...,9/9.)
+N(N,M) = # distinct reachable configs after N divisions with max level M
+(=x+y+z) satisfies EXACTLY (N=2..12):
+   N(N, N-k) = Q_k(N) · 3^(N-2k-1)   where Q_k is a polynomial in N, degree k.
+   Q_0 = 1
+   Q_1 = N-3
+   Q_2 = (N-5)(N+2)/2
+   Q_3 = (N^3 - 73N + 168)/6
+   Q_4, Q_5: 4,9,82,203,384,... ; 72,418 (too few points to pin down yet)
+D(N) = sum_M N(N,M). This decomposition reproduces D(2..8) totally; for
+N>=9, D = (k<=K model sum) + (deeper offsets), matching exactly only when all
+offsets included.
 
-Both are CONJECTURES beyond the computed range (structural: configs that reach
-the top level; candidate derivation via monotone/straight-line chains).
+Q-array (row N, col k=N-M):
+N=2: 1
+N=3: 1
+N=4: 1 1
+N=5: 1 2
+N=6: 1 3 4
+N=7: 1 4 9
+N=8: 1 5 15 16
+N=9: 1 6 22 40 9
+N=10: 1 7 30 73 82
+N=11: 1 8 39 116 203 72
+N=12: 1 9 49 170 384 418
 
-Full (N,M) table observed (row N, entries M:N(N,M)):
-N=2: 2:3
-N=3: 3:9
-N=4: 3:3, 4:27
-N=5: 4:18, 5:81
-N=6: 4:12, 5:81, 6:243
-N=7: 5:81, 6:324, 7:729
-N=8: 5:48, 6:405, 7:1215, 8:2187
-N=9: 5:9, 6:360, 7:1782, 8:4374, 9:6561
-N=10: 6:246, 7:1971, 8:7290, 9:15309, 10:19683
-N=11: 6:72, 7:1827, 8:9396, 9:28431, 10:52488, 11:59049
-N=12: 6:30, 7:1254, 8:10368, 9:41310, 10:107163, 11:177147, 12:177147
+Other exact column forms seen: count(M=N)=3^(N-1); count(M=N-1)=(N-3)3^(N-3).
 
-Sum of each row = D(N) (check: N=12 sum = 514419 ✓).
-
-## Pending
-- d=2 BFS (agent-run-10) for D_2(N) to high N: will give a much longer clean
-  sequence; test if IT has a linear recurrence / OEIS match.
+## Status of conjectures
+- All are CONJECTURES beyond computed range; none promoted to MEMORY yet.
+- (N,M) decomposition + Q_0..Q_3 verified EXACTLY over every computed point
+  (attacked; consistent). Survived its break attempt for the points available.
+- Q_4, Q_5 have too few points (only ~3-4 rows) to confirm closed forms.
+- First falsifier for diagonal 3^(N-1): N=13 (needs M=13, not BFS-computed).
