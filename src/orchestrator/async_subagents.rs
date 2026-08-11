@@ -1038,7 +1038,49 @@ impl Tool<()> for AsyncSubagentTool {
             serde_json::to_string(&value)?,
         ))
     }
+
+    /// Lets a wait outlive the per-tool ceiling it was never meant to obey.
+    ///
+    /// The run ceiling and the tool ceiling are separate limits, and a wait is
+    /// governed by the first: a caller must be able to wait out a child using
+    /// its full run budget, or the orchestrator is structurally unable to
+    /// collect the result of the deepest work it delegated. The schema already
+    /// says so — `wait_seconds` accepts up to the run ceiling — but the
+    /// harness applied the ten-minute tool ceiling on top, so a wait for
+    /// longer than that died with a timeout error rather than the child's
+    /// result. A live `pattern_finder` asked for 600 seconds, was killed at
+    /// exactly 600,000 ms, and lost the run it had commissioned.
+    ///
+    /// The deadline is the requested wait plus a grace, so the wait itself
+    /// expires first and returns what it knows rather than being cut off. Only
+    /// the awaiting kinds override this; every other call is a fast local
+    /// operation and inherits the ordinary ceiling.
+    fn timeout_policy(&self, call: &ToolCall) -> tinyagents::harness::tool::ToolTimeout {
+        use tinyagents::harness::tool::ToolTimeout;
+        if !matches!(self.kind, AsyncToolKind::Await | AsyncToolKind::AwaitMany) {
+            return ToolTimeout::Inherit;
+        }
+        let maximum = self.manager.max_await_seconds();
+        let requested = call
+            .arguments
+            .get("wait_seconds")
+            .and_then(Value::as_u64)
+            .unwrap_or(maximum)
+            .min(maximum);
+        ToolTimeout::Millis(
+            requested
+                .saturating_add(AWAIT_GRACE_SECONDS)
+                .saturating_mul(1_000),
+        )
+    }
 }
+
+/// Headroom between a wait's own expiry and the deadline around it.
+///
+/// The wait must be the thing that ends, because it ends by *returning* — with
+/// the child's state as it stands. A deadline that fired first would replace
+/// that with an error, which is the failure this exists to prevent.
+const AWAIT_GRACE_SECONDS: u64 = 60;
 
 fn run_id_schema(max_wait_seconds: Option<u64>) -> Value {
     match max_wait_seconds {
