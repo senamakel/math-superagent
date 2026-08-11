@@ -79,8 +79,9 @@ pub(super) fn to_markdown(
     source: &str,
 ) -> crate::agent::Result<String> {
     let format = detect(bytes, content_type);
+    let mut links = LinkTable::default();
     let body = match format {
-        Format::Html => html_to_markdown(&String::from_utf8_lossy(bytes)),
+        Format::Html => html_to_markdown(&String::from_utf8_lossy(bytes), &mut links),
         Format::Pdf => pdf_to_text(bytes)?,
         Format::Text => String::from_utf8_lossy(bytes).into_owned(),
         Format::Binary => {
@@ -100,8 +101,10 @@ pub(super) fn to_markdown(
         )));
     }
     Ok(format!(
-        "<!-- source: {source} | converted from {} -->\n\n{body}\n",
-        format.label()
+        "<!-- source: {} | converted from {} -->\n\n{body}\n{}",
+        clean_url(source),
+        format.label(),
+        links.render()
     ))
 }
 
@@ -133,7 +136,7 @@ const DROPPED: [&str; 8] = [
 ];
 
 /// Converts HTML to Markdown, preserving TeX delimiters and code verbatim.
-fn html_to_markdown(html: &str) -> String {
+fn html_to_markdown(html: &str, table: &mut LinkTable) -> String {
     let mut out = String::with_capacity(html.len() / 2);
     let mut chars = html.char_indices().peekable();
     let mut list_stack: Vec<Option<usize>> = Vec::new();
@@ -263,15 +266,102 @@ fn html_to_markdown(html: &str) -> String {
         }
     }
     flush_text(&mut out, &mut pending_text, in_pre);
-    finish_links(&out)
+    finish_links(&out, table)
+}
+
+/// Query parameters that carry no meaning and cost tokens.
+const TRACKING_PARAMS: [&str; 9] = [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content",
+    "fbclid",
+    "gclid",
+    "mc_cid",
+    "ref_src",
+];
+
+/// Collects links so each distinct URL is written once.
+///
+/// A reference page can carry the same long URL a dozen times, and an inline
+/// `[text](https://…)` pays for the whole thing at every occurrence. Numbering
+/// them and listing each once at the end costs a couple of characters per use
+/// instead, which on a real page is the difference between a readable document
+/// and one that fills the context with navigation targets.
+#[derive(Debug, Default)]
+pub(super) struct LinkTable {
+    urls: Vec<String>,
+}
+
+impl LinkTable {
+    /// Returns the one-based reference number for `url`, adding it if new.
+    fn reference(&mut self, url: &str) -> usize {
+        let cleaned = clean_url(url);
+        if let Some(position) = self.urls.iter().position(|existing| *existing == cleaned) {
+            return position + 1;
+        }
+        self.urls.push(cleaned);
+        self.urls.len()
+    }
+
+    /// Renders the reference list appended below the document.
+    fn render(&self) -> String {
+        if self.urls.is_empty() {
+            return String::new();
+        }
+        let mut out = String::from("\n\n## Links\n\n");
+        for (index, url) in self.urls.iter().enumerate() {
+            let _ = writeln!(out, "[{}]: {url}", index + 1);
+        }
+        out
+    }
+}
+
+/// Removes tracking parameters and a redundant trailing slash from a URL.
+pub(super) fn clean_url(url: &str) -> String {
+    let (base, query) = match url.split_once('?') {
+        Some((base, query)) => (base, Some(query)),
+        None => (url, None),
+    };
+    let (query, fragment) = match query {
+        Some(query) => match query.split_once('#') {
+            Some((query, fragment)) => (Some(query), Some(fragment)),
+            None => (Some(query), None),
+        },
+        None => (None, None),
+    };
+    let kept: Vec<&str> = query
+        .map(|query| {
+            query
+                .split('&')
+                .filter(|pair| {
+                    let key = pair.split('=').next().unwrap_or(pair);
+                    !TRACKING_PARAMS.contains(&key) && !pair.is_empty()
+                })
+                .collect()
+        })
+        .unwrap_or_default();
+    let mut out = base.to_string();
+    if !kept.is_empty() {
+        out.push('?');
+        out.push_str(&kept.join("&"));
+    }
+    if let Some(fragment) = fragment
+        && !fragment.is_empty()
+    {
+        out.push('#');
+        out.push_str(fragment);
+    }
+    out
 }
 
 /// Rewrites the link placeholders left by the anchor handling.
 ///
 /// Anchors are emitted as `[` plus a delimited href, because the link text is
-/// only known once the closing tag arrives. This pass turns each pair into
-/// `[text](href)`, and drops any placeholder whose anchor never closed.
-fn finish_links(text: &str) -> String {
+/// only known once the closing tag arrives. This pass turns each pair into a
+/// reference-style `[text][n]` and records the URL in `table`.
+fn finish_links(text: &str, table: &mut LinkTable) -> String {
     let mut out = String::with_capacity(text.len());
     let mut rest = text;
     while let Some(start) = rest.find('\u{0}') {
@@ -298,9 +388,9 @@ fn finish_links(text: &str) -> String {
                     if out.ends_with('[') {
                         out.pop();
                     }
-                    let _ = write!(out, "<{href}>");
+                    let _ = write!(out, "[{}]", table.reference(href));
                 } else {
-                    let _ = write!(out, "{label}]({href})");
+                    let _ = write!(out, "{label}][{}]", table.reference(href));
                 }
                 rest = &after[label_end.min(after.len())..];
             }
