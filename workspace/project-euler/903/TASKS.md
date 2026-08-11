@@ -11,7 +11,9 @@
       method 1 skipped — measured n=7 speed predicts 8.7 min > 5 min budget
       (gate in brute.py confirmed: [gate] estimate too large -> skipped).
 - [x] Record verified values and timings in memory.md.
-- [ ] (Later) Derive efficient method for Q(10^6) mod p; validate against oracle values.
+- [x] Derive efficient method for Q(10^6) mod p.  **DONE**: closedform_derivation.md
+      gives closed forms A_n, B_n; solution103.py (modular) + closedform_exact.py
+      (exact) both ALL PASS.  **ANSWER: Q(10^6) mod p = 128553191**.
 
 - [x] gaps.py: compute T(j,m) for n=2..9 by period formula (exact, no literal
       n!-power iteration). Verified translation invariance (all j) and found
@@ -26,3 +28,14 @@
       arithmetic in k (2nd diff all zero).  New rows n=10, n=11 recorded.
 - [x] verify_f_method2.py: independent cycle-type-decomposition recomputation of
       the n=10,11 rows; matches extend_f.json exactly (n=10 24.5s, n=11 319s).
+- [x] verify_red.py: central reduction verified n=2..8; Q(10) mod p via
+      extend_f.json chain reproduces 468421536.
+- [x] closedform_derivation.md: closed forms A_n,B_n derived (sigma-measure
+      decomposition + Campion-Loth Lemma 4.7 + three mu-moments); O(n) modular
+      scheme.
+- [x] closedform_exact.py: exact verification — ALL PASS (Lemma 4.7 per-class,
+      mu-moments by orbit sum, closed-form rows == extend_f.json n=2..11,
+      Q via verified reduction, Q(10)==468421536).
+- [x] solution103.py: modular O(n) evaluator — ALL PASS (self-tests n=2..11,
+      S direct/phi + exact/modular cross-checks, stability at 10^6).
+      **ANSWER: Q(10^6) mod (10^9+7) = 128553191** (out/solution103_output.txt).

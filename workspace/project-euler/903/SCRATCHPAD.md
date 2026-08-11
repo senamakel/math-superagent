@@ -1,5 +1,20 @@
 # Scratchpad
 
+## COMPLETED — closed forms sealed, answer computed (18 Sep 2025)
+
+closedform_exact.py (exact) and solution103.py (modular) both exit 0, ALL PASS.
+**Q(10^6) mod (10^9+7) = 128553191**, with A=351421860, B=80980398,
+S=695671486, H_n=881884276, n!=641102369 mod p.  Verbatim outputs:
+code/out/closedform_exact_output.txt, code/out/solution103_output.txt.
+All identities reproduce the oracle rows (extend_f.json n=2..11), brute Q(2..8),
+and the Q(10)==468421536 statement example before the final number.
+
+One normalization trap fixed during development: closed_AB returns the
+NORMALIZED A_n/(n!)^2; the Q reduction needs the actual COUNT A_n (multiply by
+(n!)^2 mod p in the modular evaluator; big-int (n!)^2 times the Fraction in the
+exact script).  Initially passed normalized A into Q in solution103.py and got
+wrong Q for every n until the count conversion was fixed in both Q routes.
+
 ## Tool-builder pipeline re-run (oracle + reduction + ccsum), 18 Sep 2025
 
 Step 1 (oracle): `python3 brute.py 2 3 6` and `python3 brute2.py 2 3 6` both exit 0.
