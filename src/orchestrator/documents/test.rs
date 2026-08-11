@@ -259,3 +259,45 @@ async fn a_corrupt_index_rebuilds_instead_of_failing_forever() -> Result<()> {
     let _ = std::fs::remove_dir_all(path);
     Ok(())
 }
+
+#[tokio::test]
+async fn a_missing_document_names_what_the_folder_actually_holds() -> Result<()> {
+    // A model that guessed `research/DIGEST.md` otherwise learns only that it
+    // guessed wrong, and guesses again — a full model turn per attempt.
+    let workspace = tempfile::tempdir().expect("temporary workspace");
+    let research = workspace.path().join("research");
+    std::fs::create_dir_all(&research).expect("research folder is creatable");
+    std::fs::write(research.join("INDEX.md"), "index").expect("index is writable");
+    std::fs::write(research.join("kiss_kutas.md"), "source").expect("source is writable");
+    std::fs::create_dir_all(research.join("raw")).expect("raw folder is creatable");
+
+    let documents = WorkspaceDocuments::new(workspace.path().to_path_buf())?;
+    let error = documents
+        .read("research/DIGEST.md")
+        .await
+        .expect_err("a missing document must fail");
+    let message = error.to_string();
+    assert!(message.contains("INDEX.md"), "got: {message}");
+    assert!(message.contains("kiss_kutas.md"), "got: {message}");
+    assert!(
+        !message.contains("raw/"),
+        "the raw folder is hidden from agents and must stay hidden: {message}"
+    );
+    Ok(())
+}
+
+#[tokio::test]
+async fn listing_a_folder_that_is_not_there_names_the_ones_that_are() -> Result<()> {
+    let workspace = tempfile::tempdir().expect("temporary workspace");
+    let research = workspace.path().join("research");
+    std::fs::create_dir_all(&research).expect("research folder is creatable");
+    std::fs::write(research.join("INDEX.md"), "index").expect("index is writable");
+
+    let documents = WorkspaceDocuments::new(workspace.path().to_path_buf())?;
+    let error = documents
+        .list("research/raw", 2)
+        .await
+        .expect_err("a missing directory must fail");
+    assert!(error.to_string().contains("INDEX.md"), "got: {error}");
+    Ok(())
+}
