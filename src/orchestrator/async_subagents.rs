@@ -266,14 +266,14 @@ impl AsyncSubagentManager {
         task_id: &str,
         wait_seconds: u64,
     ) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
-        let deadline =
-            tokio::time::Instant::now() + Duration::from_secs(wait_seconds.min(MAX_AWAIT_SECONDS));
+        let deadline = tokio::time::Instant::now()
+            + Duration::from_secs(wait_seconds.min(self.max_await_seconds()));
         loop {
             let record = self.record(task_id)?;
             if record.status.is_terminal() || tokio::time::Instant::now() >= deadline {
                 return Ok(record);
             }
-            tokio::time::sleep(Duration::from_millis(20)).await;
+            tokio::time::sleep(Duration::from_millis(200)).await;
         }
     }
 
