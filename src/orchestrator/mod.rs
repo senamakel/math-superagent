@@ -107,6 +107,8 @@ const CODER_PROMPT: &str = include_str!("../prompts/coder.md");
 
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
 
+const JUDGE_PROMPT: &str = include_str!("../prompts/judge.md");
+
 const PATTERN_PROMPT: &str = include_str!("../prompts/pattern_finder.md");
 
 const INVENTOR_PROMPT: &str = include_str!("../prompts/inventor.md");
@@ -758,6 +760,7 @@ impl RolePrompts {
             ("tool_builder", self.tool_builder.as_str()),
             ("coder", self.coder.as_str()),
             ("reflection", self.reflection.as_str()),
+            ("judge", self.judge.as_str()),
             ("pattern_finder", self.pattern.as_str()),
             ("inventor", self.inventor.as_str()),
             ("librarian", self.librarian.as_str()),
@@ -971,6 +974,7 @@ impl RolePrompts {
             coder: role("coder", CODER_PROMPT)?,
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
+            judge: role("judge", JUDGE_PROMPT)?,
             pattern: role("pattern_finder", PATTERN_PROMPT)?,
             inventor: role("inventor", INVENTOR_PROMPT)?,
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
@@ -1030,6 +1034,7 @@ struct SupportAgents<'a> {
 /// Role prompts for the four agents the solution loop adds.
 struct SupportPrompts {
     reflection: String,
+    judge: String,
     pattern: String,
     inventor: String,
     librarian: String,
