@@ -312,15 +312,33 @@ fn worth_exporting(observations: Vec<AgentObservation>) -> Vec<AgentObservation>
 /// the session makes each run its own trace, and the session id groups the runs
 /// that genuinely belong together.
 fn trace_config(session: &str, role: &str, run_id: &str) -> LangfuseTraceConfig {
-    let mut tags = vec![role.to_string()];
-    if let Some(label) = workspace_label() {
-        tags.push(label);
+    let workspace = workspace_label();
+    let mut tags = vec![format!("agent:{role}")];
+    if let Some(label) = workspace.as_ref() {
+        tags.push(format!("problem:{label}"));
     }
     LangfuseTraceConfig {
         trace_id: Some(format!("{session}-{run_id}")),
-        name: Some(role.to_string()),
-        session_id: Some(session.to_string()),
+        // Named for the role so the trace list reads as a list of agents rather
+        // than of opaque ids, and one role's turns can be picked out by name.
+        name: Some(format!("{role} · {run_id}")),
+        // Langfuse groups and filters by user before anything else, and the
+        // question asked of this data is almost always "what happened on 591",
+        // so the problem occupies that dimension. Nothing here is a person.
+        user_id: workspace.clone(),
+        // One attempt at one problem: every agent the container ran, from the
+        // orchestrator down, lands in the same session. A restart deliberately
+        // opens a new one, because its runs share a workspace but not a state.
+        session_id: Some(match workspace.as_ref() {
+            Some(label) => format!("{label}@{session}"),
+            None => session.to_string(),
+        }),
         tags,
+        metadata: json!({
+            "agent": role,
+            "run_id": run_id,
+            "workspace": workspace,
+        }),
         ..LangfuseTraceConfig::default()
     }
 }
