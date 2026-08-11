@@ -13,6 +13,14 @@ fn default_budget_is_far_above_the_tinyagents_defaults() {
 }
 
 #[test]
+fn tool_cap_stays_out_of_reach_of_the_model_cap() {
+    // Only the model-call cap stops gracefully in the vendored agent loop, so
+    // the tool cap must not be reachable by parallel tool calling first.
+    let budget = RunBudget::default();
+    assert!(budget.max_tool_calls >= budget.max_model_calls * 8);
+}
+
+#[test]
 fn policy_stops_with_partial_results_and_captures_payloads() {
     let policy = RunBudget::default().run_policy();
     assert_eq!(policy.limits.behavior, LimitBehavior::StopWithPartial);
