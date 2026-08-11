@@ -24,6 +24,22 @@ use crate::agent::Result;
 /// Repeats of one failing tool before the note escalates.
 const REPEAT_ESCALATION: usize = 2;
 
+/// Recognises a tool call whose arguments were cut off mid-generation.
+///
+/// The provider returns a well-formed response whose `arguments` string is
+/// simply incomplete — `{"agent": "tool_builder", "input": "` — because the
+/// turn hit its output-token cap partway through writing them. The vendored
+/// `truncated_empty` recovery does not cover this: that path needs a turn with
+/// *no* tool calls, and here there is one. So the failure arrives as an
+/// ordinary tool error, and the generic advice below is actively misleading —
+/// it tells the model to work out what was wrong with its arguments, when the
+/// arguments were right and merely unfinished. Observed twice on one problem,
+/// each time as a multi-minute ladder of identical over-long retries.
+fn truncated_arguments(content: &str) -> bool {
+    content.contains("invalid JSON arguments")
+        && (content.contains("EOF while parsing") || content.contains("control character"))
+}
+
 /// Tracks failures per tool within a single run.
 #[derive(Debug, Default)]
 pub struct ReflectionMiddleware {
