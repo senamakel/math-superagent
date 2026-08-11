@@ -9,6 +9,14 @@ it finishes within ~5 min.  Second independent method (brute2.py):
 Q(n) = sum_pi (n!/ord(pi)) * sum_{tau in <pi>} rank(tau), ord = lcm of cycle lengths,
 <pi> = distinct powers.  Verify agreement n=2..6 (will compare 2..7).  Report both.
 
+## Current sub-task (extend_f.py)
+Compute f_n(k) = #{(pi,i): 0<=i<n!, (pi^i)(k) < (pi^i)(0)} for n=2..11,
+0-based, period formula, row j=0 only, exact ints, no mod.  Save to
+extend_f.json as {n: [f(1),...,f(n-1)]}.  Print each row with first/second
+differences (all-zero 2nd diff => exactly arithmetic).  Gate at ~280 s per n.
+DONE: n=2..11 all computed (n=11 334.8s), every row exactly arithmetic,
+n=10,11 verified independently by verify_f_method2.py (cycle-type decomp).
+
 ## Method-1 cost model
 n=7: 5040 perms x 5040 powers = 25.4M tuple builds (len 7) + dict lookups -> seconds.
 n=8: 40320^2 = 1.63e9 -> ~64x n=7; gate on t7*64*(8/7) <= 290 s, hard budget 300 s.
