@@ -427,7 +427,7 @@ impl Tool<()> for AsyncSubagentTool {
                     .arguments
                     .get("wait_seconds")
                     .and_then(Value::as_u64)
-                    .unwrap_or(MAX_AWAIT_SECONDS);
+                    .unwrap_or_else(|| self.manager.max_await_seconds());
                 serde_json::to_value(
                     self.manager
                         .await_record(&required_string(&call.arguments, "run_id")?, wait_seconds)
