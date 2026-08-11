@@ -394,7 +394,7 @@ impl Tool<()> for ApplyPatchTool {
     }
 
     fn schema(&self) -> ToolSchema {
-        ToolSchema::new(json!({
+        ToolSchema::new(self.name(), self.description(), json!({
             "type": "object",
             "properties": { "patch": { "type": "string" } },
             "required": ["patch"],
