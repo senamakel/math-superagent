@@ -339,7 +339,7 @@ fn truncate_chars(text: &str, limit: usize) -> String {
 
 #[cfg(test)]
 mod test {
-    use super::{VECTOR_SIZE, embed, point_id};
+    use super::{VECTOR_SIZE, collection_now_exists, embed, point_id};
 
     #[test]
     fn local_embedding_has_fixed_size_and_unit_length() {
@@ -353,5 +353,15 @@ mod test {
     fn point_ids_are_deterministic() {
         assert_eq!(point_id("same note"), point_id("same note"));
         assert_ne!(point_id("same note"), point_id("different note"));
+    }
+
+    #[test]
+    fn losing_the_collection_creation_race_counts_as_success() {
+        assert!(collection_now_exists(reqwest::StatusCode::OK));
+        assert!(collection_now_exists(reqwest::StatusCode::CONFLICT));
+        assert!(!collection_now_exists(
+            reqwest::StatusCode::INTERNAL_SERVER_ERROR
+        ));
+        assert!(!collection_now_exists(reqwest::StatusCode::UNAUTHORIZED));
     }
 }
