@@ -72,6 +72,7 @@ impl<S: Send + Sync> UntruncatedModel<S> {
         Self {
             inner,
             tracer: None,
+            agent: String::new(),
         }
     }
 
