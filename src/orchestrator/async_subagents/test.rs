@@ -503,7 +503,7 @@ fn a_wait_outlives_the_per_tool_ceiling_it_was_never_meant_to_obey() {
         panic!("a wait carries its own deadline");
     };
     assert!(
-        deadline > budget.tool_timeout.as_millis() as u64,
+        u128::from(deadline) > budget.tool_timeout.as_millis(),
         "the wait outlives the tool ceiling: {deadline}"
     );
     assert!(
