@@ -1,5 +1,46 @@
 # Working memory
 
+## THE ANSWER
+
+**Q(10^6) mod (10^9+7) = 128553191**
+
+Computed by code/solution103.py (modular O(n) evaluator) and cross-verified by
+code/closedform_exact.py (exact Fraction/big-int).  Both exit 0 with ALL PASS.
+Constituent values at n=10^6 mod p: A_n=351421860, B_n=80980398,
+S(n)=695671486, H_n=881884276, n!=641102369.
+
+## The closed forms (SEALED 18 Sep 2025 — every identity verified)
+
+f_n(k) = A_n + (k-1) B_n, with (n >= 3; n=2 special: A_2=1, B_2=0):
+  E1 = H_n
+  E2 = (1/4) H_{floor(n/2)}
+  E11 = n + S(n),  S(n) = sum_{a+b<=n} 1/lcm(a,b)
+  A_n/(n!)^2 = 1/2 + E2/[n(n-1)] - (E11-E1)/[2 n (n-1)]
+  B_n/(n!)^2 = [n - (n+1)E1 + E11 - 2 E2] / [n(n-1)(n-2)]
+  Q(n) = (n!)^2 + A_n (n!-1) + (B_n/2) T(n),  T(n)=sum_{m=1}^{n-1} m(m-1)m!
+S(n) evaluated mod p as sum_{d<=n/2} phi(d)/d^2 * T(n//d), T(m)=T(m-1)+2H_{m-1}/m
+(1/lcm = gcd/ab, gcd = sum_{d|a,d|b} phi(d)).  Full derivation: code/closedform_derivation.md.
+
+VERIFIED EXACTLY (code/closedform_exact.py, ALL PASS):
+  (a) Campion-Loth Lemma 4.7 per-class inversion probability — direct
+      enumeration vs formula, every class x every gap, n=4..7: PASS.
+  (b) The three mu-moments by DIRECT orbit summation n=3..9:
+      E_mu[a1]=H_n, E_mu[a2]=(1/4)H_{floor(n/2)}, E_mu[a1^2]=n+S(n): ALL PASS.
+  (c) Closed-form f_n rows == out/extend_f.json n=2..11 (exact big-int);
+      Q(n) via verified reduction == brute Q(2..8) and extend_f Q(9,10,11);
+      Q(10) mod p == 468421536 (statement oracle): ALL PASS.
+
+MODULAR EVALUATOR (code/solution103.py, ALL PASS): self-tests Q mod p for
+n=2..11; S direct O(n^2) vs phi-method at 10^4 and 5*10^4; exact-Fraction
+phi-S vs modular at 2000 and 5000; stability at 10^6 (telescoped == direct).
+Independent route: exact-rational closed form == modular at n=12,13,20,30,50,100.
+
+Closed-form values A_n/(n!)^2, B_n/(n!)^2 (n=2..11):
+  n=2: 1/4, 0; n=3: 5/18, 1/36; n=4: 23/72, 0; n=5: 421/1200, -3/400;
+  n=6: 83/225, -1/144; n=7: 6841/17640, -29/3528; n=8: 9413/23520, -11/1440;
+  n=9: 74477/181440, -257/36288; n=10: 23743/56700, -653/100800;
+  n=11: 1301911/3049200, -18947/3049200.
+
 ## Problem
 
 Q(n) = sum over all permutations pi of {1..n} of [ sum_{i=1}^{n!} rank(pi^i) ],

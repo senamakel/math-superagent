@@ -23,12 +23,15 @@ pi^i = i-th iterate of pi (order-preserving power, pi^1 = pi, pi^0 = identity).
 
 ## Status
 - [x] Objective recorded (above).
-- [ ] Sub-task: brute.py + brute2.py written, run for n=2..7 (+ n=8 if feasible), values checked.
-- [ ] Sub-task: efficient solution.py agreeing with brute force.
+- [x] Sub-task: brute.py + brute2.py written, run for n=2..7 (+ n=8 if feasible), values checked.
+- [x] Sub-task: efficient solution.py agreeing with brute force.
+- [x] **DONE — closed forms A_n, B_n FOUND and SEALED.** code/closedform_exact.py
+      (exact) and code/solution103.py (modular) both ALL PASS. The answer is
+      Q(10^6) mod (10^9+7) = 128553191. (18 Sep 2025)
 - [x] gaps.py: T(j,m) computed for n=2..9 with period formula; shown
       translation-invariant in j and exactly arithmetic in the gap k.
       (memory.md has tables. This is a structural lead for the n=10^6 method.)
 - [x] verify_red.py: central reduction Q(n) = (n!)^2 + A_n*S + (B_n/2)*T with
       S=Sigma m*m! (=n!-1), T=Sigma m(m-1)*m!, A=f[0], B=f[1]-f[0], verified
       EXACT big-int match against Q(2..8). ALL PASS.  Problem reduced to
-      finding A_n and B_n (memory.md).
+      finding A_n and B_n — NOW RESOLVED by the closed forms above.
