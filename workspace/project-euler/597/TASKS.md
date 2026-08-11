@@ -33,6 +33,11 @@
       Trivial n=2 counterexample (v0<v1, no bump, even; treap predicts odd).
       Tree-model MC p(3,160)=0.333 (given 0.4148), p(4,400)=0.833 (given 0.5108),
       p(13,1800)=0.536. Structure of the treap does not match the bump-chronology.
+- [x] Validation-oracle extras: exact p(3,L) for 16 extra integer L
+      (120,200,280,360,440,520,560,720,900,1100,1400,2000,2400,3000,4000,5000)
+      with ncells, saved to code/out/exact_p3_extra.json by code/exact_p3_extra.py.
+      All 12 anchors re-derived exactly; all 16 extras double-verified by the
+      independent enumerator p_cell_exact + MC. (n=3 only, as requested.)
 - [x] structure_taxonomy.py: reproduce n=3,L=160 five-row table + p(4,400) MC;
       collect bump-graph taxonomy (out/in degree, forest/cycle, chain length,
       distinct structures) over 360k races -> bump graph is always a forest;

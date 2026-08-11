@@ -113,6 +113,25 @@ decisively in research_recursion_test.py (all three parts):
   1.2M: 0.500880). Expect the exact answer near 0.500, consistent with the
   parity being asymptotically a fair coin as n grows.
 
+## Exact p(3,L) arrangement validation table (all cross-verified)
+- Anchor values (first 12, from exact_p3_data.py) were re-derived exactly by
+  code/exact_p3_extra.py via the arrangement enumeration and all matched:
+  160→56/135, 240→2/5, 320→36/91, 400→542/1377, 480→272/693, 640→1532/3915,
+  800→824/2109, 1000→1981/5076, 1200→1934/4959, 1400→444/1139,
+  1600→10532/27027, 1800→2237/5742 (all 32 cells).
+- Extra L values computed exactly (ncells listed), saved to
+  code/out/exact_p3_extra.json:
+  L=120: 4/9 (27 cells), L=200: 17/42 (32), L=280: 118/297 (32),
+  L=360: 71/180 (32), L=440: 112/285 (32), L=520: 487/1242 (32),
+  L=560: 382/975 (32), L=720: 658/1683 (32), L=900: 4231/10836 (32),
+  L=1100: 6451/16536 (32), L=1400: 444/1139 (32, = anchor),
+  L=2000: 5554/14259 (32), L=2400: 896/2301 (32), L=3000: 6352/16317 (32),
+  L=4000: 68312/175527 (32), L=5000: 5959/15314 (32).
+- Verification: every one of the 16 extras independently reproduced by the
+  second enumerator (toolkits/arr_enum + p_cell_exact.py); MC 400k at
+  L=120/900/5000 within 1 SE (0.4439 vs 4/9=0.4444, 0.3906 vs 4231/10836,
+  0.3897 vs 5959/15314). The n=3 arrangement method is a validated oracle.
+
 ## Sanity checks (2024 result)
 - Fixed a latent Python bug in `exact_race.simulate_order_exact`: candidates
   were compared as tuples (`c < best[0]`) which threw `TypeError` for Fraction

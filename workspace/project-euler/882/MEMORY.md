@@ -94,6 +94,19 @@ game up to n=10).
   A−B (S(5)=17 vs A−B=8), so S depends on the DISTRIBUTION of bit-strings, not
   just the totals. Output: code/out/counting_proper.txt.
 - What is the closed-form/structure for S(n)? (Not yet computed.)
+- **S(6) real-game oracle NOT obtained (run this session).** RealSolver(6)
+  (fastbrute.py, budget-removed minimax) was run under `timeout 500` with a
+  progress probe (code/tmp/real6.py, probe6.py). Both timed out: after 500s it
+  had memoized ~1.49e9 distinct (state,turn) values and was still ascending
+  (n_states 1.48e9, One=7.55e8/Zero=7.32e8 at 499.8s), so it does not converge
+  in reasonable time — the real-game position space is explosive at n=6. The
+  dyadic theory predicts S_theory=ceil(G(6))=ceil(22.5)=23 (g(1..6)=
+  1,1/2,2,1/4,3/2,1, so G(6)=sum k*g(k)=45/2; computed exactly by
+  code/tmp/dyadic6.py using toolkits/simplest_dyadic). But there is NO oracle
+  S(6) to compare against — "matched the dyadic value" is UNVERIFIED, not a
+  yes. Consistent with code/out/oracle_S.txt: n=6 never reached, only S(1..5)=
+  1,2,8,9,17 established. This confirms brute-force real-game minimax cannot
+  reach S(6); a structural method is needed.
 
 ## KEY RESULT for Project Euler 882 (this pattern-recognition branch)
 

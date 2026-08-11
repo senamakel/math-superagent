@@ -1,5 +1,44 @@
 # Scratchpad
 
+## Run: exact p(3,L) for 16 extra L values (validation oracle, n=3 only)
+
+Command: `cd /workspace/code && python3 exact_p3_extra.py`
+
+The n=3 arrangement enumerator already existed (`code/arrangement_pn.py`,
+whose default L list is exactly the 12 known anchors). I wrote
+`code/exact_p3_extra.py` to (A) re-derive+assert all 12 known anchors, (B)
+compute the 16 requested extras, (C) write `out/exact_p3_extra.json` in the
+requested {"L": {"p": "num/den", "ncells": int}} format.
+
+Anchor re-derivation: all 12 matched exactly (32 cells each): 160→56/135,
+240→2/5, 320→36/91, 400→542/1377, 480→272/693, 640→1532/3915, 800→824/2109,
+1000→1981/5076, 1200→1934/4959, 1400→444/1139, 1600→10532/27027,
+1800→2237/5742.
+
+Extras (exact rational, ncells):
+  L= 120 -> 4/9        (cells=27)   L= 200 -> 17/42      (cells=32)
+  L= 280 -> 118/297    (cells=32)   L= 360 -> 71/180     (cells=32)
+  L= 440 -> 112/285    (cells=32)   L= 520 -> 487/1242   (cells=32)
+  L= 560 -> 382/975    (cells=32)   L= 720 -> 658/1683   (cells=32)
+  L= 900 -> 4231/10836 (cells=32)   L=1100 -> 6451/16536 (cells=32)
+  L=1400 -> 444/1139   (cells=32)   L=2000 -> 5554/14259 (cells=32)
+  L=2400 -> 896/2301   (cells=32)   L=3000 -> 6352/16317 (cells=32)
+  L=4000 -> 68312/175527 (cells=32) L=5000 -> 5959/15314 (cells=32)
+1500 reproducible extras, 27/32-cell pattern; only L=120 (shortest course
+below the first anchor) has 27 cells.
+
+Verification (three independent routes, all agree):
+  1. exact_p3_extra.py re-derives all 12 anchors exactly (assert inside).
+  2. second independent enumerator p_cell_exact.py (+ toolkits/arr_enum.py)
+     reproduced all 16 extras exactly (cells, even-vol, p all match).
+  3. MC 400k (brute engine): L=120 0.44386±0.00079 vs 4/9=0.44444;
+     L=900 0.39062±0.00077 vs 4231/10836=0.390458; L=5000 0.38973±0.00077
+     vs 5959/15314=0.389121 — all within 1 SE.
+
+No commands modified any existing files; only added exact_p3_extra.py and
+out/exact_p3_extra.json (index refreshed). L=1400 appears in both lists and
+is consistent (444/1139) — noted in output.
+
 ## Run (tool_builder): naive oracle code/brute.py verified against the whole statement
 
 Command: `cd /workspace && python3 code/task1_verify.py`
