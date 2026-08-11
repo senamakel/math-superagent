@@ -114,7 +114,11 @@ pub(super) fn parse(patch: &str) -> Result<Vec<FileOp>> {
                 lines.next();
             }
             FileOp::Add {
-                path: checked_path(path)?,
+                // A new file is placed by the same rule as a written one:
+                // adding through a patch must not be the way around the
+                // layout. An update names a file that already exists, so it
+                // is left exactly as addressed.
+                path: super::layout::placed(&checked_path(path)?),
                 contents,
             }
         } else if let Some(path) = line.strip_prefix(DELETE) {
