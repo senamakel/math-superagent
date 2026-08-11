@@ -133,7 +133,11 @@ pub(super) fn note(requested: &str, placed: &str) -> String {
     }
     format!(
         " (filed at {placed}; the workspace root holds the run's Markdown, `{CODE_DIR}/` the \
-         programs, and `{OUTPUT_DIR}/` what they produce)"
+         programs, and `{OUTPUT_DIR}/` what they produce. `{CODE_DIR}/` is a package tree, not a \
+         drawer: what another program imports belongs in `{LIB_DIR}/<subject>.py` and is reached \
+         as `from lib.<subject> import <name>`, and a program exploring one question belongs in \
+         `{CODE_DIR}/<question>/` beside the others attacking it. Name the folder yourself and \
+         this file goes there instead)"
     )
 }
 
