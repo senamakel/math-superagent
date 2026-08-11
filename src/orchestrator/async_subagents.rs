@@ -318,6 +318,8 @@ pub(crate) struct AsyncSubagentManager {
     slots: Arc<Semaphore>,
     /// Serialises follow-up runs so two never rewrite one index at once.
     housekeeping: Arc<tokio::sync::Mutex<()>>,
+    /// Distinguishes this process's Langfuse traces from every other process's.
+    session: Arc<str>,
 }
 
 impl std::fmt::Debug for AsyncSubagentManager {
