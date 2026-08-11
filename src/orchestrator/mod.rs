@@ -114,6 +114,7 @@ const RESEARCH_PROMPT: &str = include_str!("../prompts/research.md");
 
 const TOOL_BUILDER_PROMPT: &str = include_str!("../prompts/tool_builder.md");
 const CODER_PROMPT: &str = include_str!("../prompts/coder.md");
+const SOLVER_PROMPT: &str = include_str!("../prompts/solver.md");
 
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
 
