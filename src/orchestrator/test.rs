@@ -262,3 +262,26 @@ fn only_executing_roles_receive_the_runtime_configuration() {
 fn an_unknown_role_receives_no_working_files() {
     assert!(role_context("nonexistent").is_empty());
 }
+
+#[test]
+fn oversized_command_output_keeps_the_end_where_the_answer_is() {
+    use super::{MAX_COMMAND_OUTPUT_BYTES, truncate_output};
+
+    // A verification script prints its working first and its conclusion last.
+    // Keeping only the head discarded the answer of a run that had computed it.
+    let mut raw = b"START-OF-RUN\n".to_vec();
+    raw.resize(MAX_COMMAND_OUTPUT_BYTES * 2, b'x');
+    raw.extend_from_slice(b"\n[final answer] 4,3,1\n");
+
+    let rendered = truncate_output(&raw);
+    assert!(
+        rendered.contains("[final answer] 4,3,1"),
+        "the tail must survive"
+    );
+    assert!(rendered.contains("START-OF-RUN"), "the head must survive");
+    assert!(rendered.contains("truncated from the middle"));
+
+    // Output that fits is passed through untouched.
+    let small = b"answer: 661\n";
+    assert_eq!(truncate_output(small), "answer: 661\n");
+}

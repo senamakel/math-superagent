@@ -1241,12 +1241,33 @@ fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
         })
 }
 
+/// Bounds command output, keeping both ends and dropping the middle.
+///
+/// Keeping only the head — which this did — throws away the most valuable
+/// part. A program prints its setup first and its conclusion last: the final
+/// answer, the assertion that passed, the traceback that explains the failure.
+/// Observed live: a verification script printed a ~65 KB reconstructed binary
+/// string and then its answer, and the answer was exactly what fell off the
+/// end, so the run executed correctly and learned nothing from it.
+///
+/// The tail therefore gets the larger share. The head is kept too, because the
+/// first lines carry the command's own echo of what it was doing, and a lone
+/// tail can be unreadable without it.
 fn truncate_output(bytes: &[u8]) -> String {
-    let kept = &bytes[..bytes.len().min(MAX_COMMAND_OUTPUT_BYTES)];
-    let mut rendered = String::from_utf8_lossy(kept).into_owned();
-    if bytes.len() > kept.len() {
-        let _ = write!(rendered, "\n[{} bytes truncated]", bytes.len() - kept.len());
+    if bytes.len() <= MAX_COMMAND_OUTPUT_BYTES {
+        return String::from_utf8_lossy(bytes).into_owned();
     }
+    let head_budget = MAX_COMMAND_OUTPUT_BYTES / 4;
+    let tail_budget = MAX_COMMAND_OUTPUT_BYTES - head_budget;
+    let dropped = bytes.len() - MAX_COMMAND_OUTPUT_BYTES;
+    let mut rendered = String::from_utf8_lossy(&bytes[..head_budget]).into_owned();
+    let _ = write!(
+        rendered,
+        "\n[{dropped} bytes truncated from the middle; the end of the output follows]\n"
+    );
+    rendered.push_str(&String::from_utf8_lossy(
+        &bytes[bytes.len() - tail_budget..],
+    ));
     rendered
 }
 
