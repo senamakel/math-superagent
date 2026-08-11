@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `AGENTS.md` | Folder convention doc for code/: every program lives here and its output in code/out/; how to describe programs in the index (say what establishes correctness: examples reproduced, brute agreement, size reached); one job per file, exact arithmetic, never delete a program carrying a result. |
+| `arrangement_pn.py` | _(undescribed)_ |
 | `brute.py` | Naive exact oracle for PE 597: chronological race simulation + parity of the new order derived from bump chains. Exposes `simulate_order`, `parity_of_new_order`, `outcome_parity`. Reproduces all five rows of the n=3,L=160 table. Uses full-reachability `above` (the multi-bump edge-loss bug is fixed), so it is the reference-correct engine — byte-identical in dynamics to `simulate_order_nobug.py`. |
 | `bump_forest.py` | TASK 2. Returns the bump forest as a parent array (`parent[j]=k` when boat j bumped k, None for finishers); each boat bumps at most once so `parent[]` is a valid parent array. Verifies over N=1e6 trials at n=3,L=160 that the forest ancestor-descendant-pair count mod 2 equals `brute.outcome_parity` — the parity == (# bumped chain pairs) correspondence. MC verifier, not a solver. |
 | `bump_study.py` | Monte Carlo structural study (small n, L=160): for each sample records parity, bump multiset, finishes, chain-pair count; verifies `parity == (#chain pairs) mod 2` on every sample and histograms bump-pattern types split by parity. MC driver, not a solver. |
