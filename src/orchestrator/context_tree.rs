@@ -106,6 +106,13 @@ pub(super) enum Fault {
         /// Where the summarising note belongs.
         summary: String,
     },
+    /// A seal does not link back to everything it compressed.
+    Unlinked {
+        /// The batch the seal covers.
+        batch: String,
+        /// Notes in that batch the seal does not link.
+        missing: Vec<String>,
+    },
     /// What the node covers has changed since it was written.
     Stale(Vec<String>),
 }
@@ -256,6 +263,7 @@ fn changed_since(workspace: &Path, parent: &str, children: &[String]) -> Vec<Str
 pub(super) fn plan(workspace: &Path) -> Vec<Task> {
     let mut over_budget = Vec::new();
     let mut unsealed = Vec::new();
+    let mut unlinked = Vec::new();
     let mut stale = Vec::new();
 
     let mut nodes = vec![Node {
@@ -321,6 +329,29 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
                     },
                     fault: Fault::Unsealed { summary },
                 });
+                continue;
+            }
+            // A seal that does not link what it compressed has not compressed
+            // it — it has replaced it. The link is the whole reason a fold is
+            // safe to write, so it is checked rather than requested.
+            let covered = linked(workspace, &summary);
+            let missing: Vec<String> = held
+                .iter()
+                .filter(|note| !covered.contains(note))
+                .cloned()
+                .collect();
+            if !missing.is_empty() {
+                unlinked.push(Task {
+                    node: Node {
+                        path: summary,
+                        tokens: 0,
+                        children: held,
+                    },
+                    fault: Fault::Unlinked {
+                        batch: folder.clone(),
+                        missing,
+                    },
+                });
             }
         }
     }
@@ -347,6 +378,7 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
     }
 
     over_budget.extend(unsealed);
+    over_budget.extend(unlinked);
     over_budget.extend(stale);
     over_budget
 }
@@ -430,6 +462,21 @@ pub(super) fn briefing(workspace: &Path) -> Option<String> {
                 node.children.len(),
                 node.children.len(),
                 list(&node.children),
+            );
+        }
+        Fault::Unlinked { batch, missing } => {
+            let _ = write!(
+                out,
+                "`{}` seals `{batch}` but does not link {} of the {} notes it compressed. \
+                 A seal that drops a link has not compressed that note, it has replaced \
+                 it: nothing points at the detail any more, and a claim nobody can trace \
+                 to a source is worth less than no claim. Add a wikilink for each, and \
+                 say in one clause what each contributes — a bare link list is a \
+                 directory, not a fold. Missing:\n{}",
+                node.path,
+                missing.len(),
+                node.children.len(),
+                list(missing),
             );
         }
         Fault::Stale(changed) => {
