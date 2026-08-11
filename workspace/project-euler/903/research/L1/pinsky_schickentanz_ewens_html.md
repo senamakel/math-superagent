@@ -4,7 +4,7 @@ Authors: Ross G. Pinsky, Dominic T. Schickentanz. arXiv:2510.20654v2 [math.PR/ma
 submitted 23 Oct 2025, revised 17 Nov 2025.
 URL: https://arxiv.org/abs/2510.20654 (full text: https://arxiv.org/html/2510.20654v2)
 
-Companion abstract/front page: `research/pinsky_schickentanz_ewens_inversions.md` (+ `.full.md`).
+Companion abstract/front page: `research/pinsky_schickentanz_ewens_inversions.md` (+ `.full.md`). (The top of this note can be truncated because the E-file with the full bibliographic record is under the 1000-token cap; the substantive content is long but each section is short.)
 This file is the summary of the full HTML text; the complete text is at
 `research/pinsky_schickentanz_ewens_html.full.md`.
 

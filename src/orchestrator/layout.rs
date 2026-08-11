@@ -20,6 +20,9 @@
 //! filesystem, not through a tool — so the organizer still sweeps. This makes
 //! the sweep small instead of making it the only defence.
 
+/// The folder holding the run's plumbing rather than its work.
+pub(super) const CONFIG_DIR: &str = "config";
+
 /// The folder every program and its output belongs to.
 pub(super) const CODE_DIR: &str = "code";
 
@@ -84,6 +87,11 @@ pub(super) fn placed(relative: &str) -> String {
     }
     if ROOT_FILES.contains(&trimmed) || ROOT_EXTENSIONS.contains(&extension(trimmed).as_str()) {
         return trimmed.to_string();
+    }
+    if trimmed == "config.toml" || trimmed == "problem.url" || trimmed == "trace.jsonl" {
+        // Plumbing the runtime itself writes or reads. It has a home, and the
+        // root listing is not it.
+        return format!("{CONFIG_DIR}/{trimmed}");
     }
     if PROGRAM.contains(&extension(trimmed).as_str()) {
         return format!("{CODE_DIR}/{trimmed}");
