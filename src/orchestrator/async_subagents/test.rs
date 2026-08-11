@@ -365,10 +365,40 @@ fn two_managers_never_share_a_trace_id() {
 #[test]
 fn a_trace_is_named_for_the_role_that_produced_it() {
     let config = super::trace_config("s-session", "scholar", "agent-run-1");
-    assert_eq!(config.name.as_deref(), Some("scholar"));
-    assert_eq!(config.session_id.as_deref(), Some("s-session"));
+    assert_eq!(config.name.as_deref(), Some("scholar · agent-run-1"));
     assert_eq!(config.trace_id.as_deref(), Some("s-session-agent-run-1"));
-    assert!(config.tags.contains(&"scholar".to_string()));
+    assert!(config.tags.contains(&"agent:scholar".to_string()));
+    assert_eq!(config.metadata["agent"], "scholar");
+    assert_eq!(config.metadata["run_id"], "agent-run-1");
+}
+
+#[test]
+fn every_agent_on_one_problem_shares_a_session_and_a_user() {
+    // Langfuse filters by user before anything else, and the question asked of
+    // this data is "what happened on 591", so the problem occupies that
+    // dimension. Grouping every role into one session is what makes a run
+    // readable as one investigation rather than as unrelated traces.
+    //
+    // SAFETY-adjacent: the variable is process-wide, so this test must not run
+    // beside another that reads it. It is the only one that does.
+    unsafe { std::env::set_var("MATH_AGENT_WORKSPACE_LABEL", "project-euler/591") };
+    let scholar = super::trace_config("s-1", "scholar", "agent-run-4");
+    let organizer = super::trace_config("s-1", "organizer", "agent-run-5");
+    unsafe { std::env::remove_var("MATH_AGENT_WORKSPACE_LABEL") };
+
+    assert_eq!(scholar.user_id.as_deref(), Some("project-euler/591"));
+    assert_eq!(organizer.user_id, scholar.user_id);
+    assert_eq!(
+        scholar.session_id.as_deref(),
+        Some("project-euler/591@s-1"),
+        "one attempt at one problem is one session"
+    );
+    assert_eq!(organizer.session_id, scholar.session_id);
+    assert_ne!(
+        scholar.trace_id, organizer.trace_id,
+        "each agent still gets its own trace inside that session"
+    );
+    assert!(scholar.tags.contains(&"problem:project-euler/591".to_string()));
 }
 
 #[tokio::test]
