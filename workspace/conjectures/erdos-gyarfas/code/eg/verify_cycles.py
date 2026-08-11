@@ -63,7 +63,8 @@ def main():
     # a 5-cycle and a 6-cycle joined at one vertex -> cycles {5, 6}
     G = nx.Graph()
     G.add_edges_from([(0, 1), (1, 2), (2, 3), (3, 4), (4, 0)])   # C5
-    G.add_edges_from([(0, 5), (5, 6), (6, 7), (7, 8), (8, 0)])   # C6 sharing vertex 0
+    G.add_edges_from([(0, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 0)])  # C6 at 0
+    # a 6-cycle needs 6 edges: now it truly is 0-5-6-7-8-9-0
     check("C5+C6 share", G, 2, {5, 6}, 5)
 
     # two disjoint triangles joined by a bridge -> girth 3, cycles {3}
