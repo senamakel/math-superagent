@@ -350,31 +350,52 @@ async fn the_workspace_root_can_be_refreshed_by_every_spelling_of_itself() -> Re
 }
 
 #[tokio::test]
-async fn the_reflections_tree_refuses_an_index_call() {
+async fn the_reflections_tree_refuses_an_index_call() -> Result<()> {
     // The loop writes each reflection and its row together, and the row
     // carries the verdict and the lesson. The organizer's prompt already says
     // to leave it alone; a live organizer refreshed it anyway, which is why
     // this is a refusal rather than a sentence.
     let root = std::env::temp_dir().join(format!("math-agent-loop-owned-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
-    std::fs::create_dir_all(root.join("reflections/L0.0")).expect("the workspace is creatable");
+    std::fs::create_dir_all(root.join("reflections/L0.0")).expect("workspace is creatable");
+    let root = root.canonicalize().expect("workspace resolves");
     std::fs::write(root.join("reflections/L0.0/1_learnings.md"), "lesson")
         .expect("a reflection is writable");
-    let index = "# Index — reflections\n\n| File | Purpose |\n| --- | --- |\n\
+    let index = "# Index \u{2014} reflections\n\n| File | Purpose |\n| --- | --- |\n\
                  | `L0.0/1_learnings.md` | Attempt 1, judged unsolved, 1 learning(s). |\n";
     std::fs::write(root.join("reflections/INDEX.md"), index).expect("the index is writable");
+    let documents = super::super::documents::WorkspaceDocuments::new(root.clone())?;
+    let tools = super::FolderIndexTool::all(&documents);
 
-    let tool = tool_for(&root);
-    for call in [
-        ToolCall::new("a", "refresh_index", json!({ "path": "reflections" })),
-        ToolCall::new(
-            "b",
+    for (name, arguments) in [
+        (
+            "refresh_index",
+            serde_json::json!({ "path": "reflections" }),
+        ),
+        (
             "describe_file",
-            json!({ "path": "reflections/L0.0/1_learnings.md", "purpose": "something else" }),
+            serde_json::json!({
+                "path": "reflections/L0.0/1_learnings.md",
+                "purpose": "something else"
+            }),
         ),
     ] {
-        let refused = tool.call(&(), call).await;
-        assert!(refused.is_err(), "an index call on reflections is refused");
+        let tool = tools
+            .iter()
+            .find(|tool| tool.name() == name)
+            .expect("the index tools are registered");
+        let refused = tool
+            .call(
+                &(),
+                crate::agent::ToolCall {
+                    id: "call-1".into(),
+                    name: name.into(),
+                    invalid: None,
+                    arguments,
+                },
+            )
+            .await;
+        assert!(refused.is_err(), "{name} on reflections is refused");
     }
 
     assert_eq!(
@@ -383,4 +404,5 @@ async fn the_reflections_tree_refuses_an_index_call() {
         "the verdict and the lesson are still in the row"
     );
     let _ = std::fs::remove_dir_all(&root);
+    Ok(())
 }
