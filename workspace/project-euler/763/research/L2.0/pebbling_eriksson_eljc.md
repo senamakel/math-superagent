@@ -1,62 +1,24 @@
-<!-- source: https://doi.org/10.37236/1201 | converted from HTML -->
+# Pebblings (DOI landing page) — Henriks Eriksson, EJC 2 (1995) #R7
 
-Pebblings | The Electronic Journal of Combinatorics
+<!-- source: https://doi.org/10.37236/1201 ; full PDF digest: research/L2.0/pebbling_ejc_survey.md -->
 
-Skip to main content Skip to main navigation menu Skip to site footer
+This DOI page is the canonical landing record for Eriksson's "Pebblings"
+article; its own content is the title, author, abstract and bibliographic
+data:
 
-# Pebblings
+- **Title:** Pebblings
+- **Author:** Henrik Eriksson, NADA, KTH, Stockholm
+- **Journal:** The Electronic Journal of Combinatorics 2 (1995), #R7.
+- **DOI:** 10.37236/1201
+- **Abstract:** "The analysis of chessboard pebbling by Fan Chung, Ron Graham,
+  John Morrison and Andrew Odlyzko is strengthened and generalized, first to
+  higher dimension and then to arbitrary posets."
+- **Published:** 1995-04-05.
 
-- Henrik Eriksson
+All actual mathematical content (polyominoids, voidance sets, the crossing
+subtlety, the n≥3 folded-polyominoid Theorem 9 bijection, the Fig. 3 count
+table) is digested in research/L2.0/pebbling_ejc_survey.md, whose full text
+lives at research/L0.0/pebbling_ejc_survey.full.md.
 
-DOI: [https://doi.org/10.37236/1201][1]
-
-### Abstract
-
-The analysis of chessboard pebbling by Fan Chung, Ron Graham, John Morrison and Andrew Odlyzko is strengthened and generalized, first to higher dimension and then to arbitrary posets.
-
-- [PDF][2]
-
-Published
-
-1995-04-05
-
-How to Cite
-
-Eriksson, H. (1995). Pebblings. *The Electronic Journal of Combinatorics*, *2*(1), #R7. https://doi.org/10.37236/1201
-
-More Citation Formats
-
-- [ACM][3]
-- [ACS][4]
-- [APA][5]
-- [Chicago][6]
-- [Turabian][7]
-- [Vancouver][8]
-
-Download Citation
-
-- [Endnote/Zotero/Mendeley (RIS)][9]
-- [BibTeX][10]
-
-Issue
-
-[Volume 2 (1995)][11]
-
-Article Number
-
-R7
-
-
-## Links
-
-[1]: https://doi.org/10.37236/1201
-[2]: https://www.combinatorics.org/ojs/index.php/eljc/article/view/v2i1r7/pdf
-[3]: https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/get/acm-sig-proceedings?submissionId=1201
-[4]: https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/get/acs-nano?submissionId=1201
-[5]: https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/get/apa?submissionId=1201
-[6]: https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/get/chicago-author-date?submissionId=1201
-[7]: https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/get/turabian-fullnote-bibliography?submissionId=1201
-[8]: https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/get/vancouver?submissionId=1201
-[9]: https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/download/ris?submissionId=1201
-[10]: https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/download/bibtex?submissionId=1201
-[11]: https://www.combinatorics.org/ojs/index.php/eljc/issue/view/Volume2
+URL: https://doi.org/10.37236/1201
+PDF: https://www.combinatorics.org/ojs/index.php/eljc/article/view/v2i1r7/pdf
