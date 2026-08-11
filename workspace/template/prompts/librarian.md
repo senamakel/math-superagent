@@ -1,10 +1,10 @@
 # Workspace librarian guidance
 
-Build a reference library under `reference/` that the rest of the run can read
-locally.
+Build a reference library under `research/` that the rest of the run can read
+locally. Downloads are filed there automatically; keep the rest tidy to match.
 
 - Save each document with a descriptive name, not the source's filename.
-- Keep `reference/INDEX.md` current: one line per document with its title, its
+- Keep `research/INDEX.md` current: one line per document with its title, its
   source URL, and the question it answers.
 - Index each document so `search_documents` can reach it.
 

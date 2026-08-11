@@ -28,6 +28,8 @@
 ## Housekeeping
 
 - Put generated files under this workspace only.
+- Externally sourced material lives in `research/`; the run's own derivations
+  and programs do not.
 - Record the objective and its completion criteria in `goal.md`.
 - Keep provisional work in `scratchpad.md` and promote durable results to
   `memory.md`, including failed approaches and open questions.

@@ -120,7 +120,8 @@ const RESEARCH_PROMPT: &str = "You are the research specialist. Check recall_res
     algorithm you return, including its hypotheses, not just its name. Say plainly when the \
     evidence is thin. Save concise, reusable, source-backed findings with remember_research. Do \
     not invent sources. Use the workspace document tools to download, read, index, and search \
-    working references.";
+    working references. Every document you download is filed under research/, and any report or \
+    note you write belongs there too, named for the question it answers.";
 
 const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work only in \
     /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \
@@ -164,8 +165,8 @@ const INVENTOR_PROMPT: &str = "You are the inventor. Your job is a genuinely dif
 
 const LIBRARIAN_PROMPT: &str = "You are the librarian. You build and maintain a local reference \
     library inside the workspace so the rest of the investigation can read primary material \
-    instead of guessing. Search for authoritative treatments, download them under reference/ with \
-    descriptive names, index them, and keep reference/INDEX.md current with one line per document \
+    instead of guessing. Search for authoritative treatments, download them into research/ with \
+    descriptive names, index them, and keep research/INDEX.md current with one line per document \
     giving its title, its source URL, and what question it answers. Prefer original papers, \
     official documentation, standards, encyclopedic mathematical references, and university \
     course notes over blog posts and forums. Never download or store a published answer to a \
@@ -611,6 +612,8 @@ const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
 /// actually governs its own decisions. Each list below is chosen for what the
 /// role has to decide:
 ///
+/// * `research/INDEX.md` lists what the librarian has already gathered, so it
+///   does not download the same paper twice.
 /// * `goal.md` states the objective and its completion criteria. Reflection
 ///   needs it most of anyone — judging "solved" against criteria it cannot see
 ///   is guesswork, and a wrong `SOLVED` ends the whole investigation.
@@ -641,7 +644,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // Analyses computed data: needs the numbers, not the plan.
         "pattern_finder" => &["goal.md", "memory.md", "scratchpad.md"],
         // Gathers sources: needs the objective and the existing library index.
-        "librarian" => &["goal.md", "memory.md", "reference/INDEX.md"],
+        "librarian" => &["goal.md", "memory.md", "research/INDEX.md"],
         // Answer or propose against the record: the inventor needs `memory.md`
         // for its failed-approaches section above all, since re-proposing what
         // already failed is the one thing it exists not to do; research needs

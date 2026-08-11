@@ -68,3 +68,23 @@ fn html_and_pdf_are_converted_on_read_but_notes_are_not() {
     // A note quoting HTML is still a note.
     assert!(!needs_conversion("notes.md", b"see <html> tags"));
 }
+
+#[test]
+fn downloads_are_filed_under_the_research_folder() {
+    use super::research_path;
+    // Enforced in code, not asked for in a prompt: a prompt instruction holds
+    // only until a model decides otherwise.
+    assert_eq!(research_path("pell.md"), "research/pell.md");
+    assert_eq!(
+        research_path("papers/lagrange.md"),
+        "research/papers/lagrange.md"
+    );
+    // Already in place: left exactly as given.
+    assert_eq!(research_path("research/pell.md"), "research/pell.md");
+    // Common spellings must not produce research/workspace/...
+    assert_eq!(research_path("/workspace/pell.md"), "research/pell.md");
+    assert_eq!(research_path("./pell.md"), "research/pell.md");
+    assert_eq!(research_path("/pell.md"), "research/pell.md");
+    // A blank path still lands somewhere sensible rather than at the root.
+    assert_eq!(research_path("   "), "research/document.md");
+}

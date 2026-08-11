@@ -13,3 +13,7 @@ a contest problem. Finding the answer invalidates the run.
 
 When web search is disabled for a run, `exa_search` is not registered. Recall
 saved notes, say plainly what you cannot establish without the web, and return.
+
+Everything you download is stored under `research/`. Write any report or note
+you produce there as well, named for the question it answers, so gathered
+material is never mixed with the run's own derivations.
