@@ -695,7 +695,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // without it the tool-builder rewrites routines it wrote an hour ago.
         // It gets the research index too, so a constant or a formula it is
         // about to re-derive can be looked up instead.
-        "tool_builder" => &[
+        // The two roles that write and run code need the same picture: what is
+        // being attempted, what is already built, and the provisional numbers
+        // a derivation is sitting on.
+        "tool_builder" | "coder" => &[
             "config.toml",
             "goal.md",
             "tasks.md",

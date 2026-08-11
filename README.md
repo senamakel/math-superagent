@@ -291,7 +291,10 @@ Subagent work runs asynchronously through TinyAgents graphs. `spawn_agent`
 returns a run ID immediately, so independent research and computation can run
 in parallel. The calling agent can use `peek_agent` to inspect status,
 `steer_agent` to redirect live work, and `await_agent` to retrieve the eventual
-response. The orchestrator and goals agent share this control surface.
+response. `spawn_agents` and `await_agents` do the same for a batch in one turn,
+which is the shape most delegation takes: awaiting one run at a time serialises
+work that already ran in parallel and costs a turn for each. The orchestrator and
+goals agent share this control surface; there is no blocking delegation call.
 
 Up to fifty runs execute concurrently; further spawns queue for a slot without
 blocking the caller. Set `MATH_AGENT_MAX_CONCURRENT_AGENTS` to change the cap.
