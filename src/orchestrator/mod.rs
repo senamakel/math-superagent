@@ -581,19 +581,50 @@ fn workspace_from_env() -> Result<PathBuf> {
     Ok(workspace)
 }
 
-fn checked_workspace_path(workspace: &Path, relative: &str) -> Result<PathBuf> {
-    let relative = Path::new(relative);
+/// Resolves a model-supplied path against the workspace root.
+///
+/// Accepts either a relative path or one written against the `/workspace` mount
+/// point, because every prompt, and the problem statement handed to the agents,
+/// names files as `/workspace/solution.md`. Rejecting that spelling as
+/// "traversal" fails a tool call that asked for exactly the right file, and an
+/// in-tool validation error aborts the whole specialist run rather than being
+/// handed back for the model to correct.
+///
+/// Stripping the prefix is not a relaxation: `/workspace/x` and `x` denote the
+/// same file, and every other absolute path, traversal component, and empty
+/// path is still refused here, with callers that write also re-checking the
+/// canonical parent.
+fn checked_workspace_path(workspace: &Path, requested: &str) -> Result<PathBuf> {
+    let relative = Path::new(strip_workspace_prefix(requested));
     if relative.as_os_str().is_empty()
         || relative.is_absolute()
         || relative
             .components()
             .any(|part| !matches!(part, Component::Normal(_)))
     {
-        return Err(tinyagents::TinyAgentsError::Validation(
-            "path must be a non-empty relative path without traversal".into(),
-        ));
+        return Err(tinyagents::TinyAgentsError::Validation(format!(
+            "path `{requested}` must name a file below /workspace, written relative to it or as \
+             an absolute /workspace path, with no traversal"
+        )));
     }
     Ok(workspace.join(relative))
+}
+
+/// Removes a leading `/workspace` mount-point prefix from a requested path.
+///
+/// Only an exact path component match is stripped, so a sibling directory such
+/// as `/workspace-other/secret` keeps its absolute form and is refused by the
+/// caller.
+fn strip_workspace_prefix(requested: &str) -> &str {
+    let trimmed = requested.trim();
+    for prefix in ["/workspace/", "/workspace"] {
+        if let Some(rest) = trimmed.strip_prefix(prefix)
+            && (prefix.ends_with('/') || rest.is_empty() || rest.starts_with('/'))
+        {
+            return rest.trim_start_matches('/');
+        }
+    }
+    trimmed
 }
 
 #[derive(Debug)]
