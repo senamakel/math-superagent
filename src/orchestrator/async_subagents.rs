@@ -18,6 +18,7 @@ use tinyagents::harness::observability::{
     HarnessEventJournal, InMemoryEventJournal, JournalSink, LangfuseClient, LangfuseTraceConfig,
 };
 use tinyagents::harness::steering::{SteeringCommand, SteeringHandle};
+use tokio::sync::Semaphore;
 
 use crate::agent::budget::RunBudget;
 use crate::agent::trace::RunTracer;
