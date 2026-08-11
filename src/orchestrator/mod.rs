@@ -917,6 +917,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/toolkits/INDEX.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // What the library establishes, one row per claim, and which
+            // directions the run is pursuing. Both are derived from disk, so
+            // neither can drift from the notes; both are what a planner needs
+            // to decide what is worth delegating rather than re-establishing.
+            // The threads table is where a dead end is recorded, which is the
+            // single most useful row a planner can read.
+            "research/CLAIMS.md",
+            "research/THREADS.md",
             // What the library *means* for this problem, as against
             // `research/INDEX.md`, which says what each file is. The index
             // makes every role re-synthesise thirteen one-line descriptions
@@ -953,6 +961,12 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/toolkits/INDEX.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // A constant, a bound, or a closed form the library already
+            // establishes is one row here and an afternoon of re-derivation
+            // otherwise. The `holds-here` column is the load-bearing part:
+            // implementing a theorem whose hypotheses fail here produces a
+            // program that runs and computes the wrong thing.
+            "research/CLAIMS.md",
             "CONTEXT.md",
         ],
         // Judges: needs the criteria and the record, never provisional work.
@@ -1006,6 +1020,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "SCRATCHPAD.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // The role that writes claim blocks must see the ones already
+            // written: a source is worth reading for what it settles that the
+            // ledger does not, and a source contradicting a standing claim is
+            // the most valuable thing the scholar can find. It reads the
+            // threads for the same reason — a paper is worth most to the
+            // direction currently blocked on it.
+            "research/CLAIMS.md",
+            "research/THREADS.md",
             // It reads what the library is already taken to establish, so a
             // new source is judged against the standing brief rather than
             // re-stating it.
@@ -1037,6 +1059,16 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "MEMORY.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // What the library already establishes, so a search is for what is
+            // missing rather than for what is on disk, and what each direction
+            // is blocked on, which is the best statement of the gap a search
+            // could be aimed at.
+            "research/CLAIMS.md",
+            "research/THREADS.md",
+            // What this library's own sources cite, ranked by how many of them
+            // agree. A source three papers cite is the standard reference for
+            // the subject, and no rephrasing of a query surfaces that.
+            "research/FRONTIER.md",
             // The research team maintains this, and its Gaps section is the
             // list of what to look for next. Without it the team re-derives
             // its own agenda every cycle.
@@ -1051,6 +1083,12 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "MEMORY.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // The dead threads are the second half of its failed-approaches
+            // record: `MEMORY.md` says which attempts failed, the thread table
+            // says which *directions* are closed and why, and re-proposing one
+            // is the single thing this role exists not to do.
+            "research/THREADS.md",
+            "research/CLAIMS.md",
             "reflections/ROOT.md",
             "reflections/INDEX.md",
             // A genuinely different approach has to start from theory the run
