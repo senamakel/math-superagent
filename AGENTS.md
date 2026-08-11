@@ -140,6 +140,17 @@ The runtime image must expose both `python` and `python3`, plus `pip` and
 `pip3`. Pip installs belong under `/workspace/.python-packages`; do not make the
 container root filesystem writable for package installation.
 
+The scientific stack — `sympy`, `numpy`, `scipy`, `gmpy2`, `networkx` — is
+baked into the image from apt rather than installed per run. A run that has to
+install `sympy` before it can factor anything spends minutes of its budget on
+setup, fails outright when the index is slow, and every workspace pays again.
+They come from apt rather than pip because the container root filesystem is
+read-only at runtime, so system packages are the only ones importable without
+writing to `/workspace` first. Two more failure modes on the same class of tool
+are worth stating: a truncated tool call and a corrupt document index. Both are
+covered under the reflection middleware and `documents.rs` respectively, and
+neither may be allowed to end a run.
+
 ## Run budget
 
 `RunBudget` in `src/agent/budget.rs` is the single source of truth for what one
