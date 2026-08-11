@@ -470,6 +470,7 @@ impl OrchestratorAgent {
                 Some(self.workspace.clone()),
                 move |inbox: Vec<teams::TeamMessage>| {
                     let subagents = subagents.clone();
+                    let outbox = outbox.clone();
                     let mut prompt = prompt.clone();
                     // Maintaining the tree outranks extending it. A library
                     // whose root nobody can afford to read is not a library
