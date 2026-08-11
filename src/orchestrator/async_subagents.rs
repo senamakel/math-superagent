@@ -13,7 +13,10 @@ use tinyagents::graph::{
 };
 use tinyagents::harness::context::{RunConfig, RunContext};
 use tinyagents::harness::events::EventSink;
-use tinyagents::harness::ids::TaskId;
+use tinyagents::harness::ids::{RunId, TaskId};
+use tinyagents::harness::observability::{
+    HarnessEventJournal, InMemoryEventJournal, JournalSink, LangfuseClient, LangfuseTraceConfig,
+};
 use tinyagents::harness::steering::{SteeringCommand, SteeringHandle};
 
 use crate::agent::budget::RunBudget;
