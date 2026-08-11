@@ -92,12 +92,23 @@ impl std::fmt::Debug for AsyncSubagentManager {
 }
 
 impl AsyncSubagentManager {
-    pub(crate) fn new() -> Self {
+    pub(crate) fn new(budget: RunBudget, tracer: Option<Arc<RunTracer>>) -> Self {
         Self {
             agents: Arc::default(),
             store: Arc::new(InMemoryTaskStore::new()),
             steering: SteeringRegistry::new(),
+            budget,
+            tracer,
         }
+    }
+
+    /// Longest an `await_agent` call may block, in seconds.
+    ///
+    /// A caller must be able to wait out a child that is using its full run
+    /// budget, otherwise the orchestrator is structurally unable to collect
+    /// the result of the deepest work it delegated.
+    fn max_await_seconds(&self) -> u64 {
+        self.budget.run_timeout.as_secs().max(60)
     }
 
     pub(crate) fn register(
