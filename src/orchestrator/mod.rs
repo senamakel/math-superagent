@@ -367,7 +367,7 @@ impl OrchestratorAgent {
         // Inside the loop they were exactly that wait: a live run spent 56 of
         // its 74 minutes unable to start its second attempt because a support
         // agent had not finished.
-        let support = self.spawn_support_teams(&state.problem());
+        let support = self.spawn_support_teams(state.problem());
         let finished = solutions::run(
             self.subagents.clone(),
             Some(self.tracer.clone()),

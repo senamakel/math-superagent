@@ -75,7 +75,7 @@ impl TeamBudget {
     pub(super) const fn support() -> Self {
         Self {
             max_cycles: 40,
-            wall_clock: Duration::from_secs(90 * 60),
+            wall_clock: Duration::from_mins(90),
         }
     }
 }
