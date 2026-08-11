@@ -351,8 +351,65 @@ async fn reflect_step(
         state.last_attempt,
         state.lesson_briefing()
     );
-    let reflection = delegate(subagents, "reflection", prompt).await;
+    // Reflection judges; the pattern agent looks at the same attempt for
+    // structure the judgement cannot see. They run concurrently because
+    // neither reads the other's output, and because reflection is on the
+    // critical path of every single attempt — making it wait for a sequence
+    // analysis would tax the common case to serve the occasional one.
+    //
+    // The pattern agent runs after *every* attempt rather than only when the
+    // loop is stuck, because the exploitable regularity in a sequence is
+    // usually visible in the first few terms a run computes. Waiting for two
+    // consecutive unproductive attempts means the run has already spent the
+    // budget the pattern would have saved.
+    let patterns = delegate(
+        subagents,
+        "pattern_finder",
+        format!(
+            "Look for exploitable structure in the data this attempt just produced. Read the \
+             workspace results, extract the integer sequences in them, and run the sequence tools \
+             on them. Where a check needs a computation the tools do not do, write and run the \
+             program yourself, or delegate it. Report only regularities that hold exactly over \
+             every term supplied, say plainly that they are conjectures, and give the first term \
+             that would falsify each one.\n\nProblem:\n{}",
+            state.problem
+        ),
+    );
+    // Past the rescue threshold the literature is re-opened on every
+    // reflection, with what the run now knows rather than what it knew at the
+    // start.
+    let rescue = async {
+        if state.solved || state.attempts < RESEARCH_RESCUE_ATTEMPTS {
+            return String::new();
+        }
+        if let Some(tracer) = tracer {
+            tracer.note(&format!(
+                "solution loop: {} attempts without a verified answer, re-opening the literature",
+                state.attempts
+            ));
+        }
+        delegate(
+            subagents,
+            "research",
+            format!(
+                "This investigation has made {} attempts without reaching a verified answer. \
+                 Search for how this problem, or the structure it reduces to, has actually been \
+                 solved. Read the workspace first so your queries use what the run now knows — \
+                 the methods it tried, why they failed, and the numbers it computed — rather than \
+                 the statement alone. Search several distinct phrasings, including the named \
+                 theory, the sequence values themselves, and any classification the objects \
+                 belong to. Return concrete methods with source URLs, and say which of the \
+                 approaches already tried each one supersedes.\n\nProblem:\n{}\n\n{}",
+                state.attempts,
+                state.problem,
+                state.lesson_briefing()
+            ),
+        )
+        .await
+    };
+    let (reflection, patterns, rescue) = tokio::join!(reflection, patterns, rescue);
     log_reflection(workspace, state.attempts, &reflection, tracer).await;
+    state.fresh_context = merge_context(&[("Pattern analysis", &patterns), ("Research", &rescue)]);
 
     let upper = reflection.to_uppercase();
     // Require the explicit positive verdict: anything unparsable or hedged
