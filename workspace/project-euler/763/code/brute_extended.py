@@ -16,23 +16,7 @@ statement before extending.
 import sys
 import time
 
-E1, E2, E3 = (1, 0, 0), (0, 1, 0), (0, 0, 1)
-
-
-def next_level(level):
-    """One BFS step: all one-division successors of states in `level`."""
-    nxt = set()
-    for S in level:
-        Sset = set(S)
-        for p in S:
-            a = (p[0] + E1[0], p[1] + E1[1], p[2] + E1[2])
-            b = (p[0] + E2[0], p[1] + E2[1], p[2] + E2[2])
-            c = (p[0] + E3[0], p[1] + E3[1], p[2] + E3[2])
-            if a not in Sset and b not in Sset and c not in Sset:
-                ns = Sset - {p} | {a, b, c}
-                nxt.add(frozenset(ns))
-    return nxt
-
+from lib.amoeba import next_level_fs
 
 def main(max_n, level_time_budget):
     level = {frozenset({(0, 0, 0)})}
@@ -40,7 +24,7 @@ def main(max_n, level_time_budget):
     print(f"D(0) = 1")
     for n in range(1, max_n + 1):
         t0 = time.time()
-        level = next_level(level)
+        level = next_level_fs(level)
         dt = time.time() - t0
         if not level:
             print(f"level {n}: empty (no states) after {dt:.2f}s")

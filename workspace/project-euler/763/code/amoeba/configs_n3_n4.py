@@ -13,22 +13,7 @@ Correctness: reproduces D(3)=9 and D(4)=30 from the established sequence
 in code/out/d_values.txt (itself validated on D(2)=3, D(10)=44499).
 """
 
-E1, E2, E3 = (1, 0, 0), (0, 1, 0), (0, 0, 1)
-
-
-def next_level(level):
-    nxt = set()
-    for S in level:
-        Sset = set(S)
-        for p in S:
-            a = (p[0] + E1[0], p[1] + E1[1], p[2] + E1[2])
-            b = (p[0] + E2[0], p[1] + E2[1], p[2] + E2[2])
-            c = (p[0] + E3[0], p[1] + E3[1], p[2] + E3[2])
-            if a not in Sset and b not in Sset and c not in Sset:
-                ns = Sset - {p} | {a, b, c}
-                nxt.add(frozenset(ns))
-    return nxt
-
+from lib.amoeba import next_level_fs
 
 def fmt_config(S):
     """Render a config as a readable sorted list of (x,y,z) triples."""
@@ -39,7 +24,7 @@ def main(out_path):
     level = {frozenset({(0, 0, 0)})}
     all_levels = {0: level}
     for n in range(1, 5):
-        level = next_level(level)
+        level = next_level_fs(level)
         all_levels[n] = level
 
     lines = []

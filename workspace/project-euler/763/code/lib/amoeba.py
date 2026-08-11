@@ -22,6 +22,37 @@ reproducing D(2)=3 and D(10)=44499); this module only supplies parse/feature
 helpers shared by the driver and the data dumps.
 """
 
+# --- BFS step on frozenset-of-tuples configs ------------------------------
+
+
+def next_level_fs(level):
+    """One BFS step over 3D frozenset-of-tuples configs (exact arithmetic).
+
+    `level` is an iterable of frozensets of (x,y,z) cubes.  Returns the set
+    of all distinct configurations reachable by exactly one division: a cube
+    p may divide iff its three positive-unit neighbours (x+1,y,z), (x,y+1,z),
+    (x,y,z+1) are all empty, and the result replaces p with those three.
+
+    This is the naive frozenset oracle step — exponential state space, used
+    only for small-N definition checks and for dumping actual configs.  Its
+    correctness is established by reproducing D(2)=3 and D(10)=44499 (see the
+    brute oracles), and it is the same frozenset semantics as the bitmask
+    twin next_level_bits.
+    """
+    E1, E2, E3 = (1, 0, 0), (0, 1, 0), (0, 0, 1)
+    nxt = set()
+    for S in level:
+        Sset = set(S)
+        for p in S:
+            a = (p[0] + E1[0], p[1] + E1[1], p[2] + E1[2])
+            b = (p[0] + E2[0], p[1] + E2[1], p[2] + E2[2])
+            c = (p[0] + E3[0], p[1] + E3[1], p[2] + E3[2])
+            if a not in Sset and b not in Sset and c not in Sset:
+                ns = Sset - {p} | {a, b, c}
+                nxt.add(frozenset(ns))
+    return nxt
+
+
 # --- decoding -------------------------------------------------------------
 
 
