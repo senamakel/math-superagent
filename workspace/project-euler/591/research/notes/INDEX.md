@@ -2,11 +2,9 @@
 
 What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
-NOTE: the automated `refresh_index` tool truncates descriptions containing literal `|` characters (e.g. `|I_d|`, `|a|`), because it treats them as table-column delimiters. Maintain this file by hand, or re-verify pipe-rich rows after any refresh.
-
 | File | Purpose |
 | --- | --- |
 | `inhomogeneous_record_structure.md` | The run's consolidated theory report. Restates the PE591 reduction to the inhomogeneous problem min over b in [0,L] of the distance of b*alpha-beta to nearest integer (alpha = fractional part of sqrt(d), beta = fractional part of pi); explains why the semiconvergent-denominator hypothesis is false in the inhomogeneous case; and gives the exact O(log L) answer via Cabanillas Prop 9/10 plus Berthe-Imbert, with a worked derivation and the full source list. The governing theory (with the both-signs-of-b handling) behind solution.py / solution_bothsides.py. |
-| `pattern_analysis.md` | Earlier pattern-finder report on the computed data (record-b sequences per d; the verified structural facts record-b sequences are Cabanillas candidates, |I_d| = nint(b_d*sqrt(d)-pi), the m^2*d scaling rule; and non-facts, no linear/polynomial regularity). NOTE: its single-form |a| identity (`nint(b_d*sqrt(d))-3`) is superseded by pattern_verify.md's sign-split master identity. |
-| `pattern_findings.md` | Pattern-finder report on the n=1e13 both-sign data (results_full_bothsides.txt, S=526007984625966): verified exact laws over all 90 d (sign-opposition; the master |a| identity; m^2-scaling 36/36; equal-|a| groups with common squarefree part) and non-structure (no polynomial or low-order linear recurrence in d; b_d not semiconvergents). |
-| `pattern_verify.md` | **Current** pattern-finder independent verification from results_full_bothsides.txt: re-confirms no in-d recurrence, re-verifies sign-opposition 90/90, the m^2-scaling law 36/36 and 18/18, and CORRECTS the master identity to the sign-split form (|a| = nint(|b|√d−π) if b>0; nint(π+|b|√d) if b<0); records the failed "constant |b|√d per squarefree core" dead end. Supersedes the single-form identity stated in pattern_analysis.md / pattern_findings.md. |
+| `pattern_analysis.md` | Earlier pattern-finder report on the computed data (record-b sequences per d; the verified structural facts record-b sequences are Cabanillas candidates, |
+| `pattern_findings.md` | Pattern-finder report on the n=1e13 both-sign data (results_full_bothsides.txt, S=526007984625966): verified exact laws over all 90 d (sign-opposition; the master |
+| `pattern_verify.md` | **Current** pattern-finder independent verification from results_full_bothsides.txt: re-confirms no in-d recurrence, re-verifies sign-opposition 90/90, the m^2-scaling law 36/36 and 18/18, and CORRECTS the master identity to the sign-split form ( |
