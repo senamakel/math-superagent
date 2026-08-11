@@ -15,6 +15,7 @@ mod readable;
 mod recall;
 mod solutions;
 mod teams;
+mod threads;
 mod vector;
 
 use std::fmt::Write as _;

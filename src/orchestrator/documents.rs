@@ -959,11 +959,22 @@ impl DocumentTool {
     /// instead of opening the note. Returns the sentence to append to the tool
     /// result — a model not told the ledger moved has no reason to read it.
     async fn reledger(&self, path: &str) -> String {
+        if super::threads::is_thread(path) {
+            super::threads::refresh(&self.documents).await;
+            return format!(" and re-derived {}", super::threads::THREADS_PATH);
+        }
         if !super::claims::is_note(path) {
             return String::new();
         }
         super::claims::refresh(&self.documents).await;
-        format!(" and re-derived {}", super::claims::CLAIMS_PATH)
+        // A thread rests on claim ids, so a note that changes what the library
+        // establishes can strand a thread on a claim that is no longer there.
+        super::threads::refresh(&self.documents).await;
+        format!(
+            " and re-derived {} and {}",
+            super::claims::CLAIMS_PATH,
+            super::threads::THREADS_PATH
+        )
     }
 
     /// Fetches a URL and stores it as Markdown.

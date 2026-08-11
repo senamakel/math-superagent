@@ -473,6 +473,14 @@ impl Ledger {
         }
     }
 
+    /// The ids of every claim on disk.
+    ///
+    /// Used to check that a thread rests on something the library actually
+    /// establishes, rather than on a belief nobody wrote down.
+    pub(super) fn ids(&self) -> std::collections::BTreeSet<String> {
+        self.claims.iter().map(|claim| claim.id.clone()).collect()
+    }
+
     /// Returns the claims matching `query`, best first.
     ///
     /// Ranked on term overlap across the statement, its hypotheses, and what
