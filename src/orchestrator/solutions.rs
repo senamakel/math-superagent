@@ -384,6 +384,7 @@ async fn reflect_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
+    patterns: &PatternMailbox,
     mut state: SolutionState,
 ) -> SolutionState {
     let prompt = format!(
@@ -467,7 +468,7 @@ async fn reflect_step(
         )
         .await
     };
-    let (reflection, patterns, rescue) = tokio::join!(reflection, patterns, rescue);
+    let (reflection, rescue) = tokio::join!(reflection, rescue);
     log_reflection(workspace, state.attempts, &reflection, tracer).await;
     state.fresh_context = merge_context(&[("Pattern analysis", &patterns), ("Research", &rescue)]);
 
@@ -678,6 +679,7 @@ pub(super) async fn run(
     let reflect_workspace = workspace;
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
+    let pattern_mailbox = PatternMailbox::default();
 
     let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
         .add_node("attempt", move |state: SolutionState, _ctx: NodeContext| {
@@ -691,11 +693,19 @@ pub(super) async fn run(
         })
         .add_node("reflect", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = reflect_agents.clone();
+            let mailbox = pattern_mailbox.clone();
             let tracer = reflect_tracer.clone();
             let workspace = reflect_workspace.clone();
             async move {
                 Ok(NodeResult::Update(
-                    reflect_step(&subagents, tracer.as_ref(), workspace.as_deref(), state).await,
+                    reflect_step(
+                        &subagents,
+                        tracer.as_ref(),
+                        workspace.as_deref(),
+                        &mailbox,
+                        state,
+                    )
+                    .await,
                 ))
             }
         })
