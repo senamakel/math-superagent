@@ -15,7 +15,7 @@ tools, examples, tests, and documentation.
 
 ## Expected problem-solving behavior
 
-The runtime has eight roles plus an explicit solution loop.
+The runtime has nine roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -46,6 +46,13 @@ The runtime has eight roles plus an explicit solution loop.
   nobody has opened has cost the run context and taught it nothing. It has no
   search tool on purpose, so it digests the library instead of drifting into
   another search the librarian has already done.
+- The organizer keeps the workspace navigable: folder indexes, the layout and
+  naming of `research/`, and `toolkit.md` matching `toolkit.py`. It has files
+  and index tools only — no search, no shell, no note memory — because every
+  tool it lacks is a way a filing job cannot turn into an editing one. It may
+  not delete anything carrying a result, a derivation, or a source, and may not
+  change what a file says; an obsolete file is labelled obsolete in the index
+  rather than removed.
 
 ## The solution loop
 
@@ -247,7 +254,8 @@ workspace/              # selectable writable agent workspaces
 ```
 
 The executable registry contains `goals`, `research`, `tool_builder`,
-`reflection`, `pattern_finder`, `inventor`, `librarian`, and `scholar`.
+`reflection`, `pattern_finder`, `inventor`, `librarian`, `scholar`, and
+`organizer`.
 Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
 The goals agent also receives the research and tool-builder delegation tools,
 so it can pursue a goal through nested, focused work.
@@ -365,15 +373,31 @@ Two details are deliberate and should not be simplified away:
 - Magic bytes beat the declared content type. Servers mislabel routinely, and a
   PDF served as `text/html` is still a PDF.
 
-A download is split. The converted Markdown is archived whole under `raw/`,
-and `research/` receives only a bounded excerpt — one real reference page
-converted to 91,190 characters, about 23,000 tokens, and three of those fill a
-specialist's context before it has done any work. The excerpt is a placeholder
-with a job: it names the archive and asks the scholar to replace it with a
-summary of what the source establishes, under a thousand tokens. So the size
-bound on `research/` is mechanical for a fresh download and a standard the
-scholar is held to thereafter. A document short enough already is stored whole,
-without a truncation notice for truncation that did not happen.
+A download lands as two files side by side: `<name>.md` holding a bounded
+excerpt, and `<name>.full.md` holding the complete converted text. One real
+reference page converted to 91,190 characters, about 23,000 tokens, and three
+of those fill a specialist's context before it has done any work — so reading
+the short one is the default and reading the long one is a decision, which is
+what the split buys. Both stay in `research/`, because a source whose detail is
+genuinely needed must be reachable without leaving the workspace.
+
+The excerpt is a placeholder with a job: it names its companion and asks the
+scholar to replace it with a summary of what the source establishes, under a
+thousand tokens. The bound is mechanical for a fresh download and a standard
+the scholar is held to thereafter. A document already short enough is stored
+whole, with no truncation notice for truncation that did not happen.
+
+Every folder carries an `INDEX.md` saying what each file is for
+(`src/orchestrator/folder_index.rs`). `list_workspace` answers what exists and
+cannot answer what anything is *for*, and after a long run nothing on disk
+distinguishes the oracle from the answer, or a superseded experiment from the
+file the result came out of. `describe_file` records a purpose;
+`refresh_index` re-derives the file list from disk, keeps existing
+descriptions, marks new files undescribed, and drops rows for files that are
+gone. Descriptions are left to explicit tool calls because only the agent that
+wrote a file knows why; agreement between the index and the directory is not,
+so a forgotten description shows as a visible gap rather than as an index that
+quietly disagrees with its folder.
 
 Links are compressed. Anchors become reference-style `[text][n]` with one
 `## Links` list at the end, so a URL repeated a dozen times on a page is
@@ -427,6 +451,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | inventor, research | `goal.md`, `memory.md` |
 | librarian | `goal.md`, `memory.md`, `research/INDEX.md` |
 | scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md`, `research/DIGEST.md` |
+| organizer | `goal.md`, `tasks.md`, `toolkit.md`, `research/INDEX.md`, `research/DIGEST.md` |
 
 The tool-builder accumulates reusable helpers in `toolkit.py` and describes
 each one in `toolkit.md` — signature, return, and what established it is
