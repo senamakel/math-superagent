@@ -32,11 +32,52 @@ The runtime image must expose both `python` and `python3`, plus `pip` and
 `pip3`. Pip installs belong under `/workspace/.python-packages`; do not make the
 container root filesystem writable for package installation.
 
-Every tool call has a hard ten-minute deadline. Before substantial execution,
-the tool-builder must state both time and space complexity. Algorithms with
-exponential time or space complexity are prohibited; choose a polynomial or
-better formulation. The timeout is a safety ceiling, not permission to run an
-intractable approach.
+## Run budget
+
+`RunBudget` in `src/agent/budget.rs` is the single source of truth for what one
+agent run may spend, and it applies to the orchestrator and every specialist
+alike. The defaults are 250 model calls, 500 tool calls, a two-hour run
+ceiling, and a ten-minute ceiling per tool call. Each is overridable through
+`MATH_AGENT_MAX_MODEL_CALLS`, `MATH_AGENT_MAX_TOOL_CALLS`,
+`MATH_AGENT_RUN_MINUTES`, and `MATH_AGENT_TOOL_MINUTES`; an unset, empty,
+unparsable, or zero value keeps the default.
+
+These are far above the `TinyAgents` defaults of 25 model calls and 50 tool
+calls, which fit a short question-answering turn rather than an investigation.
+A run that reaches a cap stops with partial results instead of failing, so the
+work already done survives. Keep it that way: discarding a completed derivation
+because a counter tripped is the worst outcome available.
+
+The run ceiling and the tool ceiling are separate limits and must stay
+separate. Collapsing them means a specialist that runs one long computation
+dies with it. Whatever the run ceiling is, `await_agent` must be able to wait it
+out, or the orchestrator is structurally unable to collect the result of the
+deepest work it delegated.
+
+A timeout is a safety ceiling, not permission to run an intractable approach.
+Before substantial execution, the tool-builder must state both time and space
+complexity. Algorithms with exponential time or space complexity are
+prohibited; choose a polynomial or better formulation.
+
+## Research gating
+
+`MATH_AGENT_RESEARCH=off`, or the `--no-research` flag on `./agent` and
+`./euler`, withholds `exa_search` from the research agent, so a self-contained
+problem tests the runtime's reasoning rather than its ability to look an answer
+up. It is enforced by not registering the tool, not by asking the model to
+abstain: a prompt instruction is not a control. The workspace note tools stay
+available, so the agent can still record and recall its own findings.
+
+## Observability
+
+Every run in the tree carries a `RunTracer` (`src/agent/trace.rs`). It prints an
+elapsed-time console line per model call, tool call, and tool result, labelled
+with the agent that produced it, and appends every event as JSON to
+`trace.jsonl` in the selected workspace. Specialist runs also export their own
+observations to Langfuse, and payload capture is enabled, so a Langfuse trace
+carries the prompts, tool arguments, and results rather than bare ids. Read
+`trace.jsonl` or the Langfuse trace when diagnosing a run; do not add a
+separate logging mechanism beside them.
 
 When changing prompts or agent behavior, keep these rules intact:
 
