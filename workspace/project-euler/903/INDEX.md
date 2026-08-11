@@ -4,16 +4,16 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `AGENTS.md` | _(undescribed)_ |
-| `README.md` | _(undescribed)_ |
-| `brute.py` | _(undescribed)_ |
-| `brute2.py` | Method 2 oracle (independent): Q(n) = sum_pi (n!/ord(pi)) * sum_{tau in <pi>} rank(tau), with ord = lcm of cycle lengths and <pi> = distinct powers, from periodicity d |
-| `config.toml` | _(undescribed)_ |
-| `goal.md` | _(undescribed)_ |
-| `memory.md` | _(undescribed)_ |
-| `problem.html` | _(undescribed)_ |
-| `problem.url` | _(undescribed)_ |
-| `results.json` | _(undescribed)_ |
-| `results2.json` | _(undescribed)_ |
-| `scratchpad.md` | _(undescribed)_ |
-| `tasks.md` | _(undescribed)_ |
+| `AGENTS.md` | Method policy for the whole run: how to reason (compute before prose), evidence rules (every number from a run, every theorem cited), housekeeping conventions |
+| `README.md` | Overview of the workspace and its entry points (AGENTS.md, prompts/, goal.md, tasks.md, scratchpad.md, memory.md) |
+| `brute.py` | Method-1 oracle: literal double sum Q(n) = Σ_π Σ_i rank(π^i) by walking every power. O((n!)²), exact; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(6)=133103808. Writes results.json. |
+| `brute2.py` | Method-2 oracle (independent): Q(n) = Σ_π (n!/ord(π)) · Σ_{τ∈⟨π⟩} rank(τ), using periodicity d = ord(π) = lcm of cycle lengths. Cross-validates brute.py for n=2..7. Writes results2.json. |
+| `config.toml` | Run configuration: workspace kind, solver flags (exact arithmetic, verify with code, cite sources, forbid exponential), artifact file paths |
+| `goal.md` | Objective: compute Q(10^6) mod (10^9+7); statement, worked examples (Q(2)=5, Q(3)=88, Q(6)=133103808, Q(10)≡468421536), completion criteria, current status |
+| `memory.md` | Working memory: problem restatement, verified Q(n) table (n=2..8) with both methods' timings, established results, failed approaches (none), open questions (the n=10^6 method) |
+| `problem.html` | The problem statement (source of the run): defines Q(n), rank, π^i; gives worked examples; asks for Q(10^6) mod (10^9+7) |
+| `problem.url` | Source URL for the problem statement: https://projecteuler.net/minimal=903 |
+| `results.json` | Output of brute.py (method 1, literal): exact Q(n) and Q mod p for n=2..7; n=8 skipped (budget estimate exceeds cap) |
+| `results2.json` | Output of brute2.py (method 2, period formula): exact Q(n) and Q mod p for n=2..8 |
+| `scratchpad.md` | Provisional work: the task, method-1 cost model, method-2 justification, power-semantics check, verified results table |
+| `tasks.md` | Task list with checkboxes: recording objective, reading the statement, writing brute.py/brute2.py, verifying n=2..6/7/8, and the (pending) efficient method |
