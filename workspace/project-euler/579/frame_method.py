@@ -115,6 +115,50 @@ def enumerate_primitive_frames(n):
     return out
 
 
+def enumerate_primitive_frames_lean(n):
+    """Memory-leaner version: only group vectors by norm (no extra vecs list).
+    Same return as enumerate_primitive_frames."""
+    bynorm = {}
+    for x in range(-n, n + 1):
+        for y in range(-n, n + 1):
+            for z in range(-n, n + 1):
+                m = x * x + y * y + z * z
+                if 1 <= m <= n * n:
+                    bynorm.setdefault(m, []).append((x, y, z))
+
+    out = {}
+    for m, group in bynorm.items():
+        ell = isqrt(m)
+        if ell * ell != m:
+            continue
+        for u in group:
+            for v in group:
+                if u[0] * v[0] + u[1] * v[1] + u[2] * v[2] != 0:
+                    continue
+                cx, cy, cz = cross(u, v)
+                if cx % ell or cy % ell or cz % ell:
+                    continue
+                w = (cx // ell, cy // ell, cz // ell)
+                if w[0] * w[0] + w[1] * w[1] + w[2] * w[2] != m:
+                    continue
+                g = 0
+                for cc in (u[0], u[1], u[2], v[0], v[1], v[2], w[0], w[1], w[2]):
+                    g = math.gcd(g, cc)
+                if g != 1:
+                    continue
+                key = canonical_key(u, v, w)
+                if key in out:
+                    continue
+                A = abs(u[0]) + abs(v[0]) + abs(w[0])
+                B = abs(u[1]) + abs(v[1]) + abs(w[1])
+                C = abs(u[2]) + abs(v[2]) + abs(w[2])
+                D = (gcd3(u[0], u[1], u[2])
+                     + gcd3(v[0], v[1], v[2])
+                     + gcd3(w[0], w[1], w[2]))
+                out[key] = (ell, A, B, C, D)
+    return out
+
+
 def compute(n, frames):
     """Return (C(n), S(n)) from the primitive-frame dict."""
     C = 0
@@ -180,7 +224,7 @@ def main():
             continue
         t0 = time.time()
         try:
-            frames = enumerate_primitive_frames(n)
+            frames = enumerate_primitive_frames_lean(n)
             wall = time.time() - t0
             frame_counts[n] = len(frames)
             line = (f"growth n={n:>3}: distinct_primitive_frames={len(frames):<8} "

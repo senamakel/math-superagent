@@ -765,19 +765,24 @@ const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
 ///   on them.
 fn role_context(role: &str) -> &'static [&'static str] {
     match role {
-        // Plans and combines: needs the objective, the plan, and what is known.
-        // The catalogue goes to the planners too: what has already been built
-        // and verified changes what is worth delegating next.
+        // Plans and combines: needs the objective, the plan, and what is known,
+        // plus both catalogues. What has already been built and what has
+        // already been gathered both change what is worth delegating next, and
+        // an index costs a few hundred tokens where the files it describes cost
+        // tens of thousands.
         "orchestrator" | "goals" => &[
             "config.toml",
             "goal.md",
             "tasks.md",
             "memory.md",
             "toolkits/INDEX.md",
+            "research/INDEX.md",
         ],
         // Executes: needs everything the plan depends on, its own scratch, and
         // the catalogue of helpers the run has already built and verified —
         // without it the tool-builder rewrites routines it wrote an hour ago.
+        // It gets the research index too, so a constant or a formula it is
+        // about to re-derive can be looked up instead.
         "tool_builder" => &[
             "config.toml",
             "goal.md",
@@ -785,11 +790,23 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "memory.md",
             "scratchpad.md",
             "toolkits/INDEX.md",
+            "research/INDEX.md",
         ],
         // Judges: needs the criteria and the record, never provisional work.
-        "reflection" => &["goal.md", "tasks.md", "memory.md"],
-        // Analyses computed data: needs the numbers, not the plan.
-        "pattern_finder" => &["goal.md", "memory.md", "scratchpad.md"],
+        // The workspace index is the exception worth making — deciding whether
+        // an answer was actually produced means knowing which artifacts exist,
+        // and the index says what each one is without the derivations
+        // themselves. It still does not see `scratchpad.md`.
+        "reflection" => &["goal.md", "tasks.md", "memory.md", "INDEX.md"],
+        // Analyses computed data: needs the numbers, not the plan. The toolkit
+        // catalogue lets it reuse a verified helper rather than reimplement the
+        // arithmetic it is about to check.
+        "pattern_finder" => &[
+            "goal.md",
+            "memory.md",
+            "scratchpad.md",
+            "toolkits/INDEX.md",
+        ],
         // Gathers sources: needs the objective and the existing library index.
         "librarian" => &["goal.md", "memory.md", "research/INDEX.md"],
         // Digests sources into knowledge. The one role that legitimately needs
@@ -806,21 +823,23 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/INDEX.md",
         ],
         // Organises rather than reasons. It needs the objective, to judge what
-        // is worth surfacing, and the catalogues it maintains — but not
+        // is worth surfacing, and every index it maintains — but not
         // `memory.md` or `scratchpad.md`: the run's beliefs and provisional
         // arithmetic are not its business, and giving it opinions about the
         // mathematics is how a filing job turns into an editing job.
         "organizer" => &[
             "goal.md",
             "tasks.md",
+            "INDEX.md",
             "toolkits/INDEX.md",
             "research/INDEX.md",
         ],
         // Answer or propose against the record: the inventor needs `memory.md`
         // for its failed-approaches section above all, since re-proposing what
         // already failed is the one thing it exists not to do; research needs
-        // the same file so it does not re-establish a known fact.
-        "inventor" | "research" => &["goal.md", "memory.md"],
+        // the same file so it does not re-establish a known fact. Both get the
+        // research index so neither re-establishes what is already on disk.
+        "inventor" | "research" => &["goal.md", "memory.md", "research/INDEX.md"],
         _ => &[],
     }
 }
