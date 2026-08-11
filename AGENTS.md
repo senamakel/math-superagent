@@ -36,7 +36,7 @@ container root filesystem writable for package installation.
 
 `RunBudget` in `src/agent/budget.rs` is the single source of truth for what one
 agent run may spend, and it applies to the orchestrator and every specialist
-alike. The defaults are 250 model calls, 500 tool calls, a two-hour run
+alike. The defaults are 250 model calls, 4000 tool calls, a two-hour run
 ceiling, and a ten-minute ceiling per tool call. Each is overridable through
 `MATH_AGENT_MAX_MODEL_CALLS`, `MATH_AGENT_MAX_TOOL_CALLS`,
 `MATH_AGENT_RUN_MINUTES`, and `MATH_AGENT_TOOL_MINUTES`; an unset, empty,
@@ -44,9 +44,16 @@ unparsable, or zero value keeps the default.
 
 These are far above the `TinyAgents` defaults of 25 model calls and 50 tool
 calls, which fit a short question-answering turn rather than an investigation.
-A run that reaches a cap stops with partial results instead of failing, so the
-work already done survives. Keep it that way: discarding a completed derivation
-because a counter tripped is the worst outcome available.
+A run that reaches the model-call cap stops with partial results instead of
+failing, so the work already done survives. Keep it that way: discarding a
+completed derivation because a counter tripped is the worst outcome available.
+
+The tool-call cap is the exception, and the reason it is set so far above the
+model-call cap. `LimitBehavior::StopWithPartial` is honoured on the model-call
+path in the vendored agent loop but not on the tool-call path, which still
+fails the run outright. Until that is fixed upstream, the tool cap must stay out
+of reach so the graceful cap is always the one that trips. Do not narrow it to
+just above the model cap: one model turn can request several tool calls.
 
 The run ceiling and the tool ceiling are separate limits and must stay
 separate. Collapsing them means a specialist that runs one long computation

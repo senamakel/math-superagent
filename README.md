@@ -21,8 +21,9 @@ read-only container filesystem stays intact and dependencies persist with the
 problem artifacts.
 
 A single tool call may run for ten minutes and a whole agent run for two hours.
-Within that, an agent gets 250 model calls and 500 tool calls; a run that
-reaches a cap stops and returns what it has rather than discarding the work.
+Within that, an agent gets 250 model calls and 4000 tool calls; a run that
+reaches the model-call cap stops and returns what it has rather than
+discarding the work.
 Every limit is overridable through the `MATH_AGENT_*` variables documented in
 `.env.example`.
 
