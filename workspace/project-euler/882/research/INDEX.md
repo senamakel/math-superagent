@@ -28,7 +28,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.1/verify_trollopedelange.md` | Numeric check-list to run before quoting Girgensohn. |
 | `L1.1/weightedmom.md` | Larcher & Pillichshammer 2005: k·-weighted moments admit Delange-type closed form (our k·-weighted A,B). |
 | `L1.2/L0.0.md` | Seal note for batch L0.0: the 10 original notes (a083652, bitcount, cgt, confusioninterval×3, disjsum, flajolet×2, li_zuchswang) establish the game's no-skip value A−B, the polylog arithmetic engine, and record the misfiled li/confusion dead-ends. Wikilinks each covered note; sealed once, never revisited. |
-| `L1.2/L0.1.md` | Seal note for batch L0.1: the 10 original notes (loopy, siegel_zugzwang, pass_waiting, raw_mfl_pass, raw_pass_waiting_check, surreal, minabutdinov_qweighted, strategy) establish the skip as a loopy/zugzwang/pass object (so S(n)≠A−B) and give a second primary weighted Trollope–Delange warrant for the polylog arithmetic; records the strategy dead end and the doubled-full-text mis-saves. Sealed once, never revisited. |
+| `L1.2/L0.1.md` | Seal note for batch L0.1 (skip/loopy theory, pass theory, surreal values, weighted sums): the skip is a loopy/zugzwang object so S(n)≠A−B, plus a second primary weighted Trollope–Delange warrant. Sealed once, never revisited. |
 | `L1.2/weightedsearch.md` | Dead end: OEIS search on sample S(n) → no result; S(n) ∉ OEIS. |
 | `L1.2/zerocount.md` | OEIS A059015 summatory 0-bit count → B(n); identity A059015 = A083652 − A000788. |
 | `L1.2/zugzwang.md` | Skip = "passing, if allowed, would be best"; One's forced 1-bit consumption → zugzwang. |
