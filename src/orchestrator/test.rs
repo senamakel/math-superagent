@@ -447,3 +447,34 @@ fn the_reflections_index_reaches_the_roles_that_must_not_repeat_an_attempt() {
     // Reflection still never sees provisional work.
     assert!(!role_context("reflection").contains(&"scratchpad.md"));
 }
+
+#[test]
+fn the_shared_brief_reaches_the_roles_that_reason_and_not_the_ones_that_file() {
+    // `context.md` is the research team's synthesis: what the library means
+    // for this problem, as against `research/INDEX.md`, which says only what
+    // each file is. Every role that decides what to attempt, build, or propose
+    // needs the synthesis; the roles that file and judge do not.
+    for role in [
+        "goals",
+        "orchestrator",
+        "tool_builder",
+        "coder",
+        "pattern_finder",
+        "scholar",
+        "librarian",
+        "research",
+        "inventor",
+    ] {
+        assert!(
+            role_context(role).contains(&"context.md"),
+            "{role} reasons about the mathematics and needs the shared brief"
+        );
+    }
+    // The organiser files rather than reasons; giving it opinions about the
+    // mathematics is how a filing job turns into an editing one.
+    assert!(!role_context("organizer").contains(&"context.md"));
+    // Reflection judges an attempt against the criteria and the record. A
+    // standing brief of what sources assert is exactly the material it must
+    // not mistake for verification.
+    assert!(!role_context("reflection").contains(&"context.md"));
+}
