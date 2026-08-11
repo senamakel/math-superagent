@@ -759,6 +759,20 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                     .into_iter()
                     .chain(document_tools),
             ),
+        )?
+        .register(
+            AgentDefinition::new(
+                "solver",
+                "Constraint Solving Agent",
+                "Encodes a finite decision or optimisation problem for CP-SAT, SAT, SMT, or \
+                 MILP, and validates the model it gets back.",
+            )
+            .with_model("openrouter")
+            .with_tools(
+                ["write_tool_file", "execute_command"]
+                    .into_iter()
+                    .chain(document_tools),
+            ),
         )?;
     for definition in support_agents(research_enabled, document_tools) {
         registry.register(definition)?;
