@@ -1,7 +1,7 @@
 //! Bounded tools for workspace documents and a local searchable index.
 
-use std::path::PathBuf;
 use std::cmp::Reverse;
+use std::path::PathBuf;
 use std::sync::Arc;
 
 use async_trait::async_trait;
