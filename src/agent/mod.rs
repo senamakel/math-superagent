@@ -8,8 +8,8 @@ pub mod budget;
 pub mod reflection;
 pub mod resilient;
 pub mod sticky;
-pub mod untruncated;
 pub mod trace;
+pub mod untruncated;
 
 use std::sync::Arc;
 

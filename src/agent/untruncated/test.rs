@@ -79,7 +79,10 @@ async fn a_turn_cut_off_mid_answer_is_asked_for_again_with_a_bigger_cap() {
         .await
         .expect("the call succeeds");
 
-    assert!(response.text().contains("verified two ways"), "{response:?}");
+    assert!(
+        response.text().contains("verified two ways"),
+        "{response:?}"
+    );
     let caps = caps.lock().expect("recorded caps are not poisoned");
     assert_eq!(caps.as_slice(), &[Some(12_000), Some(24_000)]);
 }
@@ -137,5 +140,8 @@ async fn a_request_with_no_cap_of_its_own_is_left_alone() {
         .expect("the call succeeds");
 
     assert_eq!(response.text(), "half");
-    assert_eq!(caps.lock().expect("recorded caps are not poisoned").len(), 1);
+    assert_eq!(
+        caps.lock().expect("recorded caps are not poisoned").len(),
+        1
+    );
 }
