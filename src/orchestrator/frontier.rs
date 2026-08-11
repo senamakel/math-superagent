@@ -127,6 +127,7 @@ impl Candidate {
 pub(super) async fn record(
     documents: &WorkspaceDocuments,
     source_url: &str,
+    stored_path: &str,
     links: &[LinkRecord],
     goal: &str,
 ) {
@@ -136,7 +137,7 @@ pub(super) async fn record(
     ledger
         .entry(super::readable::clean_url(source_url))
         .or_default()
-        .fetched = true;
+        .path = stored_path.to_string();
     for link in links.iter().filter(|link| worth_offering(&link.url)).take(
         // Bounded per download rather than globally, so one link-heavy page
         // cannot crowd out the references of every paper beside it.
