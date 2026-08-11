@@ -647,42 +647,20 @@ fn main() -> std::process::ExitCode {
         return std::process::ExitCode::SUCCESS;
     }
 
-    let container = running_for(&workspace);
-    match (&container, options.mode == Mode::Attach) {
-        (Some(name), _) => {
-            if let Ok(mut state) = runs.lock() {
-                state.add(&format!(
-                    "attaching to {name}, already running problem {}",
-                    options.problem
-                ));
-            }
-        }
-        (None, true) => {
-            eprintln!(
-                "nothing is running for problem {}; drop --attach to start it",
-                options.problem
-            );
-            return std::process::ExitCode::FAILURE;
-        }
-        (None, false) => {
-            let continuing = workspace.join("code").is_dir();
-            if let Ok(mut state) = runs.lock() {
-                state.add(&format!(
-                    "{} problem {}: building the image, fetching the statement, starting the \
-                     container. This part is silent and slow on a cold build; the first [00:00] \
-                     line below is the run itself.",
-                    if continuing { "continuing" } else { "starting" },
-                    options.problem
-                ));
-            }
-            start_detached(
-                &root,
-                options.problem,
-                options.research,
-                &options.extra,
-                &workspace.join("config").join("start.log"),
-            );
-        }
+    let Some(container) = running_for(&workspace) else {
+        eprintln!(
+            "nothing is running for problem {problem}.\n\
+             Start it with `./euler {problem}`, then run this again to watch it,\n\
+             or `./euler-tui {problem} --replay` to read the last run's log.",
+            problem = options.problem
+        );
+        return std::process::ExitCode::FAILURE;
+    };
+    if let Ok(mut state) = runs.lock() {
+        state.add(&format!(
+            "watching {container}, running problem {}",
+            options.problem
+        ));
     }
 
     let stop = Arc::new(AtomicBool::new(false));
