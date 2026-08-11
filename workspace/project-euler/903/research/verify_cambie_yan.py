@@ -4,10 +4,10 @@ check gap-affinity of f_n(k); and test the "two-pinning probabilities" model
 for E[inv(pi^i)] under the random-power law.
 
 Model being tested for the random-power law (pi uniform in S_n, i uniform in
-1..n!, sigma = pi^i): per pair j<m,
-  P(sigma(j) > sigma(m)) = 1/2 + (j-m)*C(n)   (exact; forced to be affine in
-the gap by pair-count symmetry, since E[inv(sigma)] only constrains the sum).
-We measure P_n(gap) = S_n(gap)/(n-k) directly and check it is affine in gap.
+1..n!, sigma = pi^i): per pair j<m, does P(sigma(j) > sigma(m)) depend on the
+gap m-j only, and is it affine in that gap?  Empirically (n<=11) the unweighted
+counts f_n(k) are exactly affine; we re-measure the pair probabilities here and
+check both properties from scratch for n=5..7.
 """
 from itertools import permutations
 from math import factorial, gcd
