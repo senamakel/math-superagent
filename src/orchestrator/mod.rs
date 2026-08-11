@@ -22,6 +22,7 @@ use tinyagents::harness::summarization::{
 };
 
 use crate::agent::budget::RunBudget;
+use crate::agent::reflection::ReflectionMiddleware;
 use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
 use patterns::PatternTool;
 use crate::agent::trace::RunTracer;
@@ -556,6 +557,63 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         )?
         .register(
             AgentDefinition::new(
+                "reflection",
+                "Reflection Agent",
+                "Judges one attempt, extracts the lesson, and decides whether it is really done.",
+            )
+            .with_model("openrouter")
+            .with_tools([document_tools[1], document_tools[2], document_tools[3]]),
+        )?
+        .register(
+            AgentDefinition::new(
+                "pattern_finder",
+                "Pattern Recognition Agent",
+                "Finds exact structure in computed results: recurrences, polynomial degree, \
+                 periodicity, and common divisors.",
+            )
+            .with_model("openrouter")
+            .with_tools(
+                ["analyze_sequence", "find_linear_recurrence"]
+                    .into_iter()
+                    .chain(document_tools),
+            ),
+        )?
+        .register(
+            AgentDefinition::new(
+                "inventor",
+                "Inventor Agent",
+                if research_enabled {
+                    "Proposes a genuinely different approach, checked against the literature."
+                } else {
+                    "Proposes a genuinely different approach from its own reasoning."
+                },
+            )
+            .with_model("openrouter")
+            .with_tools(
+                research_enabled
+                    .then_some("exa_search")
+                    .into_iter()
+                    .chain(["recall_research", "remember_research"])
+                    .chain(document_tools),
+            ),
+        )?
+        .register(
+            AgentDefinition::new(
+                "librarian",
+                "Librarian Agent",
+                "Finds primary material, downloads it into the workspace reference library, and \
+                 indexes it for local search.",
+            )
+            .with_model("openrouter")
+            .with_tools(
+                research_enabled
+                    .then_some("exa_search")
+                    .into_iter()
+                    .chain(document_tools),
+            ),
+        )?
+        .register(
+            AgentDefinition::new(
                 "goals",
                 "Goals Agent",
                 "Pursues a goal and delegates research, implementation, and verification.",
@@ -585,7 +643,10 @@ fn specialist_harness(model: Arc<dyn ChatModel<()>>, budget: RunBudget) -> Agent
         .push_middleware(Arc::new(ContextCompressionMiddleware::with_summarizer(
             compression_policy(),
             Box::new(ModelSummarizer::new(model)),
-        )));
+        )))
+        // Reflects on a failing tool the moment it fails, rather than waiting
+        // for the attempt to end. See `agent::reflection`.
+        .push_middleware(Arc::new(ReflectionMiddleware::new()));
     harness
 }
 
