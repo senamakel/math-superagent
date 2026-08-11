@@ -761,6 +761,10 @@ struct SupportAgents<'a> {
     documents: &'a WorkspaceDocuments,
     vector_store: VectorStore,
     exa: Option<Arc<dyn Tool<()>>>,
+    /// The jail root, for the one support agent allowed to execute.
+    workspace: PathBuf,
+    /// Delegation tools, so the pattern agent can commission a computation.
+    delegation: Vec<Arc<dyn Tool<()>>>,
 }
 
 /// Role prompts for the four agents the solution loop adds.
