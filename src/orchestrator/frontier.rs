@@ -104,8 +104,19 @@ struct Candidate {
     label: String,
     /// The sentence explaining why it was cited.
     context: String,
-    /// Whether the run has already downloaded it.
-    fetched: bool,
+    /// Where the run filed it, empty until it has been downloaded.
+    ///
+    /// Carried so a refused second download can name the file that already
+    /// holds the source, rather than telling an agent only that it may not
+    /// have what it asked for.
+    path: String,
+}
+
+impl Candidate {
+    /// Whether the run has already downloaded this source.
+    fn fetched(&self) -> bool {
+        !self.path.is_empty()
+    }
 }
 
 /// Records what a freshly downloaded source cites, and re-renders the table.
