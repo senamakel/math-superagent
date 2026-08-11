@@ -26,7 +26,7 @@ def forward_level(level):
     for S in level:
         Sset = set(S)
         for p in Sset:
-            ch = children(p)
+            ch = children(p, DIM)
             if all(c not in Sset for c in ch):
                 nxt.add(frozenset((Sset - {p}) | set(ch)))
     return nxt
@@ -42,7 +42,7 @@ def mergeable(key, cand, memo):
     for p in cand:
         if p in Sset:
             continue
-        ch = children(p)
+        ch = children(p, DIM)
         if all(c in Sset for c in ch):
             ns = frozenset((Sset - set(ch)) | {p})
             if mergeable(ns, cand, memo):
