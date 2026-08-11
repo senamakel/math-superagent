@@ -90,6 +90,24 @@ fn the_first_attempt_starts_fresh_and_later_ones_continue() {
 }
 
 #[test]
+fn the_first_attempt_opens_with_an_oracle_run_of_its_own() {
+    // Two live runs reached ten minutes with no execution because their goals
+    // agent never delegated. The loop no longer depends on it for the first
+    // one: the oracle task names the file, forbids optimisation, and asks for
+    // the exact output so the attempt has something to check against.
+    let prompt = super::oracle_prompt("Compute S(10^8).");
+    assert!(prompt.contains("code/brute.py"), "{prompt}");
+    assert!(prompt.contains("Compute S(10^8)."), "{prompt}");
+    assert!(prompt.contains("worked example"), "{prompt}");
+    // It must not turn into a second solver racing the real attempt.
+    assert!(
+        prompt.contains("do not derive the efficient method"),
+        "{prompt}"
+    );
+    assert!(prompt.contains("already holds such a program"), "{prompt}");
+}
+
+#[test]
 fn reflection_filenames_encode_the_outcome() {
     use super::reflection_filename;
     // A directory listing alone should show which attempts taught anything.

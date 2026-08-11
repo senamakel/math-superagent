@@ -243,7 +243,18 @@ fn open_with_execution(
     problem: &str,
 ) {
     let subagents = subagents.clone();
-    let prompt = format!(
+    let prompt = oracle_prompt(problem);
+    if let Some(tracer) = tracer {
+        tracer.note("solution loop: opening the attempt with an oracle run");
+    }
+    tokio::spawn(async move {
+        let _ = subagents.run_to_completion("tool_builder", prompt).await;
+    });
+}
+
+/// The task the loop hands its opening oracle run.
+fn oracle_prompt(problem: &str) -> String {
+    format!(
         "Write the naive oracle for this problem and run it now.\n\nProblem:\n{problem}\n\n\
          Write it to code/brute.py — obviously correct rather than fast, exact integer or \
          rational arithmetic — and execute it against every worked example the statement \
@@ -251,13 +262,7 @@ fn open_with_execution(
          another agent is doing that in parallel. If the workspace already holds such a \
          program, run that instead of writing a second one. Report the command you ran and \
          its exact output, and say for each worked example whether it matched."
-    );
-    if let Some(tracer) = tracer {
-        tracer.note("solution loop: opening the attempt with an oracle run");
-    }
-    tokio::spawn(async move {
-        let _ = subagents.run_to_completion("tool_builder", prompt).await;
-    });
+    )
 }
 
 /// Tells an attempt whether it is starting fresh or continuing existing work.
