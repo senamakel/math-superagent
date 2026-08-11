@@ -510,6 +510,34 @@ fn the_solver_prompt_states_the_verdicts_that_are_not_answers() {
 }
 
 #[test]
+fn the_formalisation_agent_must_report_what_the_kernel_checked() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let lean = registry.get("lean_prover").ok_or_else(|| {
+        tinyagents::TinyAgentsError::Validation("lean_prover is registered".into())
+    })?;
+    for needed in ["write_tool_file", "execute_command"] {
+        assert!(
+            lean.tools.iter().any(|tool| tool == needed),
+            "lean_prover must have `{needed}`"
+        );
+    }
+    assert!(SPECIALISTS.contains(&"lean_prover"));
+    assert!(DELEGATES.contains(&"lean_prover"));
+    // The two ways a formalisation lies: an undeclared `sorry`, and a proof
+    // resting on an axiom nobody looked at. Both are checkable mechanically
+    // and the prompt has to name the check.
+    for rule in ["sorry", "#print axioms", "sorryAx"] {
+        assert!(
+            LEAN_PROVER_PROMPT.contains(rule),
+            "the lean prompt must require `{rule}`"
+        );
+    }
+    // Mathlib is pre-built and read-only at runtime. A role that tries to
+    // build it from source spends the entire run on it.
+    assert!(LEAN_PROVER_PROMPT.contains("lake exe cache get"));
+}
+
+#[test]
 fn the_reflections_index_reaches_the_roles_that_must_not_repeat_an_attempt() {
     // An index nobody reads is not a flow. These three each make a decision
     // that depends on what earlier attempts established.
