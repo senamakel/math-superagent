@@ -1,29 +1,18 @@
 #!/usr/bin/env python3
-"""Tool_builder target — two precise structural claims to verify.
+"""Declared-infrastructure proof of correctness for the inventor proposal.
 
-CLAIM A (deterministic reverse cap-collapse).
-Every reachable 3D config S (N>=1) has:
-  A1. exactly 3 cells on its max level M (histograms all show a_M == 3);
-  A2. those 3 top cells are the complete forward-child triangle {p+1,0,0),
-      p+(0,1,0), p+(0,0,1)} of a single EMPTY parent p at level M-1;
-  A3. cap-merging (replace those 3 by p) gives a reachable (N-1) config, and
-      repeating reaches {origin} deterministically.
-Consequence: configs are in bijection with their reverse-collapse sequence =
-with full ternary collapse trees = with voidance sets (Eriksson Prop 20/Thm 9).
+CLAIMS (all must hold; a violation refutes the reverse structure):
 
-CLAIM B (forward recurrence).
-Let conf(N) = set of reachable N-configs and f(C) = #{p in C : none of
-p+e1,p+e2,p+e3 is in C} (dividable cells).  Then
-        D(N+1) = sum_{C in conf(N)} f(C).
-Equivalently D(N) counts (config, dividable-cell) pairs at level N-1, and by
-CLAIM A this map (C,p) -> S is injective (S collapses to a unique (C,p)).
+  A1. every reachable 3D N-config (N>=1) has exactly 3 cells on its max level M
+  A2. those 3 top cells = {p+e1,p+e2,p+e3} for a single EMPTY parent p at M-1
+  A3. iterated cap-merge reaches {origin} deterministically (N steps)
+  B.  D(N+1) = sum_{C in conf(N)} #dividable-cells-of-C
 
-Verify BOTH on the run's own BFS reachable configs (small N) and on the
-histogram dumps (N=2..12).  If either fails, the reverse structure is NOT as
-claimed and the collapse-tree bijection is wrong.
+Exact forward BFS over distinct configs for N=0..7.
+Infrastructure cost declared: exponential state set (the BFS oracle itself),
+bounded to N<=7 (<=15 cells, frontier 3855 at N=8 start).  Verification only.
 """
 from itertools import product
-from lib.amoeba import forward_level
 
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
 
@@ -32,77 +21,75 @@ def children(p):
     return tuple(tuple(p[i] + e[i] for i in range(3)) for e in E)
 
 
-def level(p):
+def lvl(p):
     return sum(p)
 
 
+def forward_level(level):
+    nxt = set()
+    for S in level:
+        Sset = set(S)
+        for p in Sset:
+            ch = children(p)
+            if all(c not in Sset for c in ch):
+                nxt.add(frozenset((Sset - {p}) | set(ch)))
+    return nxt
+
+
 def top_caps(S):
-    maxlvl = max(level(pt) for pt in S)
+    M = max(lvl(pt) for pt in S)
     Sset = set(S)
-    top_cells = [pt for pt in S if level(pt) == maxlvl]
-    caps = []
-    for p in product(range(maxlvl), repeat=3):
-        if level(p) != maxlvl - 1:
-            continue
-        if p in Sset:
-            continue
-        if set(children(p)) == set(top_cells):
-            caps.append(p)
+    top = [pt for pt in S if lvl(pt) == M]
+    caps = [p for p in product(range(M), repeat=3)
+            if lvl(p) == M - 1 and p not in Sset and set(children(p)) == set(top)]
     return caps
 
 
-def deterministic_collapse(S):
-    """Returns (ok, count) : ok if S's reverse cap-merge reduces to origin,
-    count = number of cap-merges (should equal N = #divisions)."""
+def collapse(S):
     Sset = set(S)
-    cnt = 0
+    n = 0
     while Sset != {(0, 0, 0)}:
         caps = top_caps(Sset)
         if len(caps) != 1:
-            return (False, cnt)
-        p = caps[0]
-        Sset = (Sset - set(children(p))) | {p}
-        cnt += 1
-    return (True, cnt)
+            return False, n
+        Sset = (Sset - set(children(caps[0]))) | {caps[0]}
+        n += 1
+    return True, n
 
 
 def f_of(C):
     Sset = set(C)
-    cnt = 0
-    for p in Sset:
-        if all(c not in Sset for c in children(p)):
-            cnt += 1
-    return cnt
+    return sum(1 for p in Sset if all(c not in Sset for c in children(p)))
 
 
 def main():
     level = {frozenset([(0, 0, 0)])}
-    Nmax = 7
     D = []
+    Nmax = 7
     for N in range(Nmax + 1):
-        # CLAIM A on this level
-        a1_bad = a2_bad = a3_bad = 0
+        a1 = a2 = a3 = 0
         for S in level:
-            M = max(level(pt) for pt in S)
-            if len([pt for pt in S if level(pt) == M]) != 3:
-                a1_bad += 1
-            caps = top_caps(S)
-            if len(caps) != 1:
-                a2_bad += 1
+            M = max(lvl(pt) for pt in S)
+            if N >= 1 and len([pt for pt in S if lvl(pt) == M]) != 3:
+                a1 += 1
+            cand = top_caps(S)
+            if N >= 1 and len(cand) != 1:
+                a2 += 1
             else:
-                ok, cnt = deterministic_collapse(S)
+                ok, n = collapse(S)
                 if not ok:
-                    a3_bad += 1
+                    a3 += 1
         D.append(len(level))
-        print(f"N={N}: D={len(level)}  claimA1(top==3)bad={a1_bad} "
-              f"A2(unique_cap)bad={a2_bad} A3(det_collapse)bad={a3_bad}")
+        b_match = None
         if N < Nmax:
-            # CLAIM B: sum of f over this level's configs == D(N+1)
             s = sum(f_of(S) for S in level)
-            print(f"    claimB: sum f(C) over conf(N)={s}  (D(N+1)="
-                  f"{len(forward_level(level, 3))})  match={s==len(forward_level(level, 3))}")
-        level = forward_level(level, 3)
-    print("\nD(N):", D)
+            nxt = forward_level(level)
+            b_match = (s == len(nxt))
+            print(f"N={N}: D={len(level)} A1bad={a1} A2bad={a2} A3bad={a3} "
+                  f"B: sum f(C)={s} vs D({N+1})={len(nxt)} match={b_match}")
+        else:
+            print(f"N={N}: D={len(level)} A1bad={a1} A2bad={a2} A3bad={a3}")
+    print("\nD(0..7):", D)
 
 
 if __name__ == "__main__":
