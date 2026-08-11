@@ -1,4 +1,5 @@
 [
+  "research/bitcount.md",
   "research/cgt.md",
   "research/disjsum.md",
   "research/loopy.md",
@@ -6,5 +7,6 @@
   "research/partisan.md",
   "research/strategy.md",
   "research/surreal.md",
+  "research/zerocount.md",
   "research/zugzwang.md"
 ]
