@@ -27,6 +27,22 @@ pub(super) const RESEARCH_DIR: &str = "research";
 /// it exists for a human debugging a conversion, not for the run.
 pub(super) const RAW_DIR: &str = "raw";
 const MAX_DOCUMENT_BYTES: usize = 5 * 1024 * 1024;
+/// Characters of a downloaded document kept in `research/` before it has been
+/// digested.
+///
+/// A converted document is not small: one downloaded reference page came to
+/// 91,190 characters, roughly 23,000 tokens, and three of them would fill a
+/// specialist's context before it had done any work. Filing the whole thing
+/// where agents read it means the run pays that cost every time anyone opens
+/// it, to re-read prose it has already been through.
+///
+/// So `research/` holds a bounded excerpt and `raw/` holds the whole text. The
+/// excerpt is a placeholder with a job: the scholar replaces it with a real
+/// summary of what the source establishes. Four thousand characters is about a
+/// thousand tokens — enough to carry a paper's abstract and the opening of its
+/// first section, which is usually enough to tell whether it is worth
+/// digesting at all.
+const RESEARCH_EXCERPT_CHARS: usize = 4_000;
 const MAX_SEARCH_RESULTS: usize = 10;
 
 #[derive(Clone, Debug)]
@@ -451,6 +467,28 @@ pub(super) fn raw_path(research_relative: &str) -> String {
     format!("{RAW_DIR}/{tail}")
 }
 
+/// Builds the bounded stand-in filed under `research/` for a fresh download.
+///
+/// Returns the whole text unchanged when it is already short enough, so a
+/// small source is not decorated with a notice about truncation that did not
+/// happen.
+pub(super) fn research_excerpt(full: &str, raw_relative: &str) -> String {
+    if full.chars().count() <= RESEARCH_EXCERPT_CHARS {
+        return full.to_string();
+    }
+    let head: String = full.chars().take(RESEARCH_EXCERPT_CHARS).collect();
+    // Cut at a line boundary so the excerpt does not end mid-sentence.
+    let head = head.rsplit_once('\n').map_or(head.as_str(), |(body, _)| body);
+    format!(
+        "> **Excerpt only.** The full converted text is archived at `{raw_relative}` and is not \
+         loaded into any agent's context. Replace this file with a summary of what the source \
+         establishes and what it implies for this problem — under 1000 tokens, and specific \
+         enough that nobody needs the original.\n\n{head}\n\n\
+         *[excerpt ends; {} characters not shown]*\n",
+        full.chars().count().saturating_sub(head.chars().count())
+    )
+}
+
 /// Renders the heading for a listing root.
 fn display_root(relative: &str) -> String {
     if relative == "." || relative.is_empty() {
@@ -596,19 +634,42 @@ impl DocumentTool {
             // archive keeps the requested name, and so keeps the true
             // extension of the bytes it holds.
             let path = markdown_path(&requested);
-            // Keep the untouched bytes too. A failure to archive them must not
-            // fail a download that otherwise succeeded, so it is best effort.
-            let raw = raw_path(&requested);
-            let archived = self.documents.write_bytes(&raw, &bytes).await.is_ok();
-            self.documents.write(&path, &content).await?;
+            // Two archives, both best effort: the original bytes, and the full
+            // converted text. Neither failing may fail a download that
+            // otherwise succeeded.
+            let raw_original = raw_path(&requested);
+            let raw_markdown = raw_path(&path);
+            let archived = self
+                .documents
+                .write_bytes(&raw_original, &bytes)
+                .await
+                .is_ok()
+                && self
+                    .documents
+                    .write_bytes(&raw_markdown, content.as_bytes())
+                    .await
+                    .is_ok();
+            // Only a bounded excerpt is filed where agents read it. The full
+            // text stays in the archive until the scholar turns it into a
+            // summary worth carrying.
+            let excerpt = research_excerpt(&content, &raw_markdown);
+            let truncated = excerpt.len() < content.len();
+            self.documents.write(&path, &excerpt).await?;
             format!(
-                "downloaded {} bytes from {url}, converted to {} bytes of Markdown at {path}{}",
+                "downloaded {} bytes from {url}, converted to {} bytes of Markdown{}. \
+                 {path} holds {} bytes{}",
                 bytes.len(),
                 content.len(),
                 if archived {
-                    ""
+                    format!(", archived in full at {raw_markdown}")
                 } else {
-                    " (original bytes not archived)"
+                    " (full text not archived)".to_string()
+                },
+                excerpt.len(),
+                if truncated {
+                    "; have the scholar replace it with a summary of what the source establishes"
+                } else {
+                    " (the whole document)"
                 }
             )
         };
