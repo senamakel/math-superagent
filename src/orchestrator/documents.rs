@@ -902,7 +902,7 @@ impl DocumentTool {
     /// Bounded twice — once on the declared length and once on what actually
     /// arrived — because a server may understate the first and the second is
     /// the only one that has to be true.
-    async fn fetch(&self, url: &str) -> Result<(bytes::Bytes, Option<String>)> {
+    async fn fetch(&self, url: &str) -> Result<(Vec<u8>, Option<String>)> {
         let parsed = reqwest::Url::parse(url).map_err(|error| {
             tinyagents::TinyAgentsError::Validation(format!("invalid document URL: {error}"))
         })?;
@@ -945,7 +945,7 @@ impl DocumentTool {
                 "downloaded document is too large".into(),
             ));
         }
-        Ok((bytes, content_type))
+        Ok((bytes.to_vec(), content_type))
     }
 
     /// Fetches a URL and stores it as Markdown.
