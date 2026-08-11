@@ -328,10 +328,49 @@ impl Tool<()> for ExaSearchTool {
                             .join(" ")
                     })
                     .unwrap_or_default();
-                format!("{}. {title}\n{url}\n{highlights}", index + 1)
+                let summary = result
+                    .get("summary")
+                    .and_then(serde_json::Value::as_str)
+                    .unwrap_or_default();
+                // Provenance, so a source can be weighed rather than merely
+                // cited. A 1994 paper by the author the problem is named after
+                // is worth more than a forum post, and nothing else in the
+                // result says so.
+                let mut rendered = format!("{}. {title}\n{url}", index + 1);
+                let author = result
+                    .get("author")
+                    .and_then(serde_json::Value::as_str)
+                    .unwrap_or_default();
+                let published = result
+                    .get("publishedDate")
+                    .and_then(serde_json::Value::as_str)
+                    .unwrap_or_default();
+                if !author.trim().is_empty() || !published.trim().is_empty() {
+                    let _ = write!(
+                        rendered,
+                        "\n{}{}{}",
+                        author.trim(),
+                        if !author.trim().is_empty() && !published.trim().is_empty() {
+                            ", "
+                        } else {
+                            ""
+                        },
+                        published.trim()
+                    );
+                }
+                if !summary.trim().is_empty() {
+                    let _ = write!(rendered, "\n{}", clip(summary, EXA_RESULT_CHARS));
+                }
+                if !highlights.trim().is_empty() {
+                    let _ = write!(rendered, "\nMatching passages: {}", clip(&highlights, EXA_RESULT_CHARS));
+                }
+                rendered
             })
             .collect::<Vec<_>>()
             .join("\n\n");
+        // A wider search must not become a context bill. The per-result clip
+        // above bounds a verbose source; this bounds a verbose set of them.
+        let rendered = clip(&rendered, EXA_TOTAL_CHARS);
 
         Ok(ToolResult::text(call.id, self.name(), rendered))
     }
