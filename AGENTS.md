@@ -430,6 +430,23 @@ agent's built-in system policy. `goal.md`, `tasks.md`, and `scratchpad.md` are
 also loaded. Workspace context must never replace built-in tool or container
 restrictions.
 
+The tool-builder also gets `apply_patch` (`src/orchestrator/patch.rs`), which
+applies a Codex-format envelope — `*** Begin Patch`, `*** Add File:` /
+`*** Update File:` / `*** Delete File:` sections, `@@` hunks with ` `/`-`/`+`
+line prefixes — across several files at once. Two deviations from upstream are
+deliberate and should stay. Context matching is **exact**, and an ambiguous
+hunk is refused rather than resolved: Codex falls back to fuzzy matching, which
+suits an interactive tool with a human watching and not a run where a patch
+landing in the wrong place yields a program that executes and computes
+something else. Application is **atomic**: every operation is resolved against
+the current files before a byte is written, so a bad hunk in the third file
+cannot leave the first two rewritten. A context line missing its leading space
+is read as context anyway — that reading is unambiguous, and it is the most
+common way a small model malforms the envelope.
+
+The format is borrowed rather than invented because a documented one the model
+may already have seen beats a private dialect it has to learn from a schema.
+
 Every runtime agent receives the workspace document tools: bounded download,
 read, write, exact edit, index, and search. The index is
 `/workspace/.document-index.json` and contains only relative paths in the
