@@ -48,6 +48,18 @@
 - Verify a result by a second, independent route, or say it is unverified.
 - Do not describe numerical evidence as proof.
 
+## Finding your way around
+
+- Each folder has an `INDEX.md` saying what every file in it is for. Read it
+  before opening files, and before writing a file that may already exist.
+- Describe a file when you create it, and refresh the folder's index after
+  adding, renaming, or deleting one. An index that disagrees with its folder
+  misleads every later reader, including you.
+- A downloaded source is stored twice: a short summary, and the complete text
+  beside it as `<name>.full.md`. Read the summary first. Open the full text
+  only when the summary does not answer the question — it is large, and
+  reading it costs context the rest of the work needs.
+
 ## Housekeeping
 
 - Put generated files under this workspace only.

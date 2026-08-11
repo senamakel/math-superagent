@@ -119,7 +119,12 @@ const SHARED_METHOD_POLICY: &str = "\n\nMethod policy, which applies to every st
     11. Distinguish proof, numerical evidence, heuristic, and sourced claim. Never present \
     sampled or floating-point evidence as proof, and never invent a theorem, citation, or \
     computation result.\n\
-    12. Assume you are wrong until a program says otherwise. You are a small, fast model and you \
+    12. Keep the workspace legible. Each folder's INDEX.md says what every file in it is for; \
+    read it before opening files, describe_file each file you create, and refresh_index after \
+    adding, renaming, or deleting one. A downloaded source is stored twice: read the short \
+    summary first, and open its `.full.md` companion only when the summary does not answer the \
+    question, because the full text is large enough to crowd out the work.\n\
+    13. Assume you are wrong until a program says otherwise. You are a small, fast model and you \
     confabulate: you will produce theorem statements that do not exist, arithmetic that does not \
     check, and confident final answers you never computed. This is not a reason to hesitate, it \
     is a reason to route every factual claim through something mechanical. Numbers come from a \
@@ -547,6 +552,8 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "index_document",
         "search_documents",
         "list_workspace",
+        "describe_file",
+        "refresh_index",
     ];
     let mut registry = AgentRegistry::new();
     registry
