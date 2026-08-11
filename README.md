@@ -163,6 +163,9 @@ files already present. The seed includes local agent instructions, role
 prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, and `memory.md`.
 The runtime reads those files at the start of every run.
 
+Everything downloaded is filed under `research/`, so gathered material stays
+separate from the run's own derivations and programs.
+
 Agents can traverse the workspace with `list_workspace` to find files rather
 than guess their names, and every reflection is archived under `reflections/`
 with a filename recording whether it produced learnings.

@@ -292,6 +292,19 @@ agent will never follow.
 The PDF extractor runs inside `catch_unwind` because it panics on malformed
 input, and a panic there would destroy work unrelated to the document.
 
+## Research folder
+
+Every downloaded document is filed under `research/`, enforced by
+`documents::research_path` rather than requested in a prompt. Downloads are the
+one kind of file that arrives from outside the run, and separating them from the
+run's own derivations is what lets an agent tell at a glance what it gathered
+from what it worked out. A path already inside `research/` is left alone;
+anything else is moved into it, with `/workspace/` and `./` prefixes trimmed
+first so the common spellings do not produce `research/workspace/...`.
+
+The librarian keeps `research/INDEX.md` current, and receives it as context so
+it does not download the same paper twice.
+
 ## Workspace discovery and the reflection log
 
 `list_workspace` renders a bounded tree with file sizes. Agents previously knew
@@ -320,7 +333,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | reflection | `goal.md`, `tasks.md`, `memory.md` |
 | pattern_finder | `goal.md`, `memory.md`, `scratchpad.md` |
 | inventor, research | `goal.md`, `memory.md` |
-| librarian | `goal.md`, `memory.md`, `reference/INDEX.md` |
+| librarian | `goal.md`, `memory.md`, `research/INDEX.md` |
 
 Three of these are load-bearing rather than tidy-minded:
 
