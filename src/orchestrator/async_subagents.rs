@@ -61,7 +61,7 @@ impl AgentExecutor for HarnessExecutor {
 }
 
 #[derive(Clone)]
-pub(super) struct AsyncSubagentManager {
+pub(crate) struct AsyncSubagentManager {
     agents: Arc<RwLock<HashMap<String, Arc<dyn AgentExecutor>>>>,
     store: Arc<InMemoryTaskStore>,
     steering: SteeringRegistry,
@@ -82,7 +82,7 @@ impl std::fmt::Debug for AsyncSubagentManager {
 }
 
 impl AsyncSubagentManager {
-    pub(super) fn new() -> Self {
+    pub(crate) fn new() -> Self {
         Self {
             agents: Arc::default(),
             store: Arc::new(InMemoryTaskStore::new()),
@@ -90,7 +90,7 @@ impl AsyncSubagentManager {
         }
     }
 
-    pub(super) fn register(
+    pub(crate) fn register(
         &self,
         name: impl Into<String>,
         harness: Arc<AgentHarness<()>>,
@@ -247,7 +247,7 @@ impl AsyncSubagentManager {
         }
     }
 
-    pub(super) fn tools(
+    pub(crate) fn tools(
         &self,
         allowed_agents: impl IntoIterator<Item = &'static str>,
     ) -> Vec<Arc<dyn Tool<()>>> {

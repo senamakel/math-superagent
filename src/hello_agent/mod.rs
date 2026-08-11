@@ -4,16 +4,17 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use serde_json::json;
-use tinyagents::harness::subagent::{SubAgent, SubAgentTool};
 
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
     configure_tool_deadline, openrouter_model_from_env,
 };
+use crate::orchestrator::async_subagents::AsyncSubagentManager;
 
 const SYSTEM_PROMPT: &str = "You are a friendly hello-world agent. Use tools when they help. \
     Use add_numbers for arithmetic instead of calculating mentally. Delegate a focused piece of \
-    work to spawn_subagent when the user asks for checking or a second opinion. Use exa_search \
+    work with spawn_agent when the user asks for checking or a second opinion. Keep its run id \
+    and use await_agent to retrieve the response. Use exa_search \
     for current facts or web research. Keep the final answer concise, cite returned URLs when \
     search was used, and mention useful tool results naturally.";
 
@@ -42,12 +43,8 @@ impl HelloAgent {
             .register_model("openrouter", model.clone())
             .set_default_model("openrouter");
         configure_tool_deadline(&mut child_harness);
-        let child = SubAgent::new(
-            "spawn_subagent",
-            "Delegates a focused task to a separate helper agent.",
-            Arc::new(child_harness),
-        )
-        .with_system_prompt(SUBAGENT_PROMPT);
+        let async_subagents = AsyncSubagentManager::new();
+        async_subagents.register("helper", Arc::new(child_harness), SUBAGENT_PROMPT)?;
 
         let mut parent_harness: AgentHarness<()> = AgentHarness::new();
         parent_harness
@@ -55,8 +52,10 @@ impl HelloAgent {
             .set_default_model("openrouter")
             .register_tool(Arc::new(EchoTool))
             .register_tool(Arc::new(AddTool))
-            .register_tool(Arc::new(ExaSearchTool::from_env()?))
-            .register_tool(Arc::new(SubAgentTool::new(Arc::new(child))));
+            .register_tool(Arc::new(ExaSearchTool::from_env()?));
+        for tool in async_subagents.tools(["helper"]) {
+            parent_harness.register_tool(tool);
+        }
 
         Ok(Self {
             inner: ObservedAgent::from_harness(parent_harness)?,
