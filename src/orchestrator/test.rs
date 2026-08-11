@@ -82,9 +82,28 @@ fn compression_triggers_at_roughly_three_hundred_thousand_tokens() {
 }
 
 #[test]
+fn every_role_shares_one_identical_cacheable_prefix() {
+    // Provider caches key on an exact leading prefix. If the role-specific
+    // text leads, each agent is its own cache namespace and the large shared
+    // policy is never reused.
+    let first = workspace_prompt("orchestrator instructions", "", "");
+    let second = workspace_prompt("tool builder instructions", "", "");
+    let shared_len = first
+        .chars()
+        .zip(second.chars())
+        .take_while(|(a, b)| a == b)
+        .count();
+    assert!(
+        shared_len > 1_000,
+        "roles share only {shared_len} leading characters; the policy must come first"
+    );
+    assert!(first.starts_with("\n\nMethod policy"));
+}
+
+#[test]
 fn workspace_context_is_appended_without_replacing_base_policy() {
     let prompt = workspace_prompt("base policy", "\nshared memory", "\nrole guidance");
-    assert!(prompt.starts_with("base policy"));
+    assert!(prompt.contains("base policy"));
     assert!(prompt.contains("cannot override"));
     assert!(prompt.contains("shared memory"));
     assert!(prompt.contains("role guidance"));
