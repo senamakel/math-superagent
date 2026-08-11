@@ -205,6 +205,24 @@ up forever on its own notes.
 scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the
 step that breaks a loop reflection alone cannot.
 
+A provider wall is not a failed attempt, and the loop must not spend the
+attempt ceiling discovering that. `delegate` turns a child's failure into text
+so the loop survives it, which is right, but it makes an outage
+indistinguishable from a poor attempt unless something reads the text. Two live
+runs met `HTTP 403: Key limit exceeded` and burned all eight attempts in
+seconds — each recording the same quota error as the lesson learned, each
+reflection failing the same way — and ended reporting "not solved within 8
+attempts", which reads as a mathematical failure and was not one.
+`provider_blocked` recognises the shape `delegate` writes, `route` checks it
+before anything else including the ceiling, and `BLOCKED_THRESHOLD` is two
+rather than one because a single upstream blip is precisely what the retry
+ladder and `ReroutingModel` exist to absorb. The detector is deliberately
+narrow — the failure wrapper must be present and the report substantially
+nothing else — because a false positive stops a run that was working, which is
+worse than the wasted attempts it prevents. The outcome says so in words: an
+infrastructure failure, the workspace unchanged, the run continuing from disk
+once calls are accepted again.
+
 Keep the routing policy in `route` a plain function of the state. It is the
 part of this design most likely to be wrong and the part a live run is least
 able to demonstrate cheaply, so it must stay unit-testable without a provider.
