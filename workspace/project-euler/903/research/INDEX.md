@@ -1,34 +1,27 @@
 # Index — research
 
-<!-- brief -->
 Reference library for PE 903: Q(n)=ΣπΣ_{i=1}^{n!} rank(π^i) mod(1e9+7). memory.md/verify_red.py reduce it to closed forms for A_n,B_n in the gap-affine pair-inversion count f_n(k)=A_n+(k−1)B_n. `L0/` holds full texts (never edited); `L1/` holds one note per source.
 
-CORE MECHANISM PROVED, two independent routes: per-cycle-type inversion prob is translation-invariant and affine in the gap, depending only on n, a_1=#fixed, a_2=#2-cycles ([[conjugacy_class_statistics_body]] Lemma 4.7 / Thm 4.8); exact identically, under Ewens uniform, with fixed-point-conditioning ([[pinsky_schickentanz_ewens_html]] Thm 1a, Prop 10a). NEW this cycle: [[pinsky_inversion_fixed_points]] gives the EXACT finite-n per-pair inversion probability conditioned on exactly k fixed points — the concrete fixed-point-conditioned summation route to A_n, B_n, closing the gap between the two proved mechanisms.
+## Core mechanism — f_n gap-affine & affine-in-gap is PROVED, two independent routes
+- [[conjugacy_class_statistics_body]] (Campion-Loth et al, 2301.00898): per-cycle-type inversion prob Prλ[I_{i,j}=1] is translation-invariant, affine in gap, depends only on n,a_1=#fixed,a_2=#2-cycles (Lemma 4.7); weighted-inversion means depend only on n,a_1,a_2 (Thm 4.8). L0: `conjugacy_class_statistics_body.full.md`.
+- [[pinsky_schickentanz_ewens_html]] (Pinsky & Schickentanz, 2510.20654): exact pair-inversion probs under Ewens (uniform=θ=1), unconditioned (Thm 1a, affine in gap) and fixed-point-conditioned (Prop 10a); θ=0 rotation: 1/2+(j−i−1)/[(n−1)(n−2)]. Second independent proof of the A_n,B_n mechanism; concrete summation route. L0: `pinsky_schickentanz_ewens_html.full.md`.
+- [[cambie_yan_html]] (Cambie-Yan, 2408.01211): closed forms for expected descents/inversions in π^k for fixed k, n≥2k+1, via divisor functions; confirms [[archer_geary_descents_powers]]. Small-exponent regime only (not the n=1e6 sum). L0: `cambie_yan_html.full.md`.
 
-Rank/Lehmer structure: [[lehmer_factorial_norm]] & [[factorial_number_system_wiki]] — factoradic digits give lexicographic rank.
+## Rank/Lehmer structure
+- [[lehmer_factorial_norm]] (Zawiślak 2111.03951) & [[factorial_number_system_wiki]]: factoradic (Lehmer) digits give lexicographic rank; digits independent, j-th uniform on {0..j}. Neither addresses powers or the cyclic subgroup {π^i}.
 
-Closed forms for descents/inversions of π^k (fixed k) via divisor functions: [[cambie_yan_html]] (confirms [[archer_geary_descents_powers]]); small-exponent regime only.
+## Supporting / routed
+- [[hultman_products_random_permutations]] (1301.0430): irreducible-character method for expected stats on products of class-distributed perms; template, not solution (covers independent products, not {π^i}).
+- [[nathanson_fixed_points_powers]] (2206.04021): F(σ^ℓ)=Σ_{k|ℓ}k·C(k), Möbius inversion recovers cycle counts — fixed points of powers determine conjugacy class; cross-check for the a_1,a_2 sums.
+- [[leanos_mth_roots_of_permutations]] (1005.1531): exact m-th-root counts by cycle type; NOT directly usable (root counts don't feed the intra-subgroup rank sum).
 
-Supporting: [[hultman_products_random_permutations]] (character method, independent products only); [[nathanson_fixed_points_powers]] (fixed points of powers ↔ class); [[leanos_mth_roots_of_permutations]] (root counts, not usable).
+## Reports & negative lookups
+- [[report_literature_ranks_powers]] (current; supersedes [[report_cited_facts]] & [[report_rank_powers]]): closest match is Cambie-Yan; NO source gives a closed form for the rank-sum over a cyclic subgroup (the genuinely novel core); clean negative OEIS lookups — [[oeis_Aseq]] [[oeis_Qseq]] [[oeis_Bdiv]] [[oeis_invpowers]] [[oeis_invpowers2]] all "no results".
 
-Negative: [[report_literature_ranks_powers]] — no source gives a closed form for the rank-sum over a cyclic subgroup (the novel core); OEIS probes [[oeis_Aseq]][[oeis_Qseq]][[oeis_Bdiv]][[oeis_invpowers]][[oeis_invpowers2]] all "no results".
-<!-- /brief -->
+## Verification programs (kept beside the library they check)
+- `verify_cambie_yan.py` — run's own program, not a source: directly enumerates S_n (n=3..7) to check Cambie-Yan Thms 1.1/1.2 for E[des(π^k)] and E[inv(π^k)], re-measures the per-gap pair-inversion probabilities for the random-power law, and reads extend_f.json to confirm f_n(k) is affine in k. Run from workspace root (opens extend_f.json by relative path).
+- `verify_facts.py` — run's own program, not a source: tiny Lehmer-code rank oracle reproducing statement examples (rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(5)) and checking the sum-of-ranks identity n!(n!+1)/2; kept here as the sanity oracle that originally validated the problem is understood.
 
-## File table
-| File | Purpose |
-| --- | --- |
-| `L1/archer_geary_descents_powers.md` | A&G 2406.09369; provenance of CY descent-in-powers line |
-| `L1/cambie_yan_html.md` | Cambie-Yan 2408.01211; closed forms for descents/inversions in π^k |
-| `L1/conjugacy_class_statistics_body.md` | Campion-Loth et al 2301.00898; per-cycle-type inversion probs |
-| `L1/factorial_number_system_wiki.md` | factoradic/Lehmer code → lexicographic rank |
-| `L1/hultman_products_random_permutations.md` | 1301.0430; character method for product stats |
-| `L1/leanos_mth_roots_of_permutations.md` | 1005.1531; m-th-root counts by cycle type |
-| `L1/lehmer_factorial_norm.md` | Zawiślak 2111.03951; factoradic digits |
-| `L1/nathanson_fixed_points_powers.md` | 2206.04021; fixed points of powers ↔ class |
-| `L1/oeis_*.md` | negative OEIS lookups (no results) |
-| `L1/pinsky_inversion_fixed_points.md` | Pinsky EJC P2.36 (10.37236/14250): exact finite-n fixed-point-conditioned per-pair inversion prob |
-| `L1/pinsky_schickentanz_ewens_html.md` | P&S 2510.20654; Ewens inversion probs (affine in gap) |
-| `L1/pinsky_schickentanz_ewens_inversions.md` | P&S inversion-statistic paper |
-| `L1/report_literature_ranks_powers.md` | current negative report (supersedes report_cited_facts, report_rank_powers) |
-| `L0/*.full.md` | full texts (never edited) |
-| `verify_cambie_yan.py` `verify_facts.py` | verification scripts |
+## Redundant / superseded L1 excerpts (kept, not current)
+- `cambie_yan_descents_inversions_powers.md` — redundant download of the Cambie-Yan arXiv *abstract page*; the substance is in `cambie_yan_html.md` (+ `.full.md`).
+- `conjugacy_class_statistics.md`, `pinsky_schickentanz_ewens_inversions.md` — raw HTML excerpts superseded by the curated body notes [[conjugacy_class_statistics_body]] and [[pinsky_schickentanz_ewens_html]] and their `.full.md` companions; read those instead.

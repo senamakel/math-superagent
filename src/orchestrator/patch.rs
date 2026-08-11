@@ -170,7 +170,9 @@ pub(super) fn parse(patch: &str) -> Result<Vec<FileOp>> {
             )));
         };
 
-        if !seen.insert(op.path().to_string()) {
+        let collided = !seen.insert(op.path().to_string())
+            || requested.take().is_some_and(|asked| !seen.insert(asked));
+        if collided {
             return Err(invalid(format!(
                 "`{}` appears twice in one patch; combine the changes into a single operation",
                 op.path()
