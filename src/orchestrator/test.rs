@@ -101,7 +101,9 @@ fn command_policy_rejects_exponential_complexity_declarations() {
 fn every_prompt_carries_the_shared_method_policy() {
     let prompt = workspace_prompt("base policy", "", "");
     assert!(prompt.contains("Do not search the answer space"));
-    assert!(prompt.contains("Understand before computing"));
+    assert!(prompt.contains("Understand by computing"));
+    // The rule that actually prevents a run spending itself on documentation.
+    assert!(prompt.contains("no program executed"));
     assert!(prompt.contains("Verify independently"));
 }
 
