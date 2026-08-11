@@ -67,10 +67,22 @@ class Runs:
         self.tabs: OrderedDict[str, deque[str]] = OrderedDict()
         self.tabs["all"] = deque(maxlen=SCROLLBACK)
         self.counts = OrderedDict((name, 0) for name in COUNTED)
-        self.elapsed = "00:00"
+        self.elapsed = ""
         self.cost = ""
         self.lock = threading.Lock()
         self.ended = False
+        self.started = time.monotonic()
+
+    def waiting(self) -> str:
+        """How long since launch, for the window before the run's own clock.
+
+        `./euler` builds the image, fetches the statement, and builds again
+        with `--quiet`, emitting nothing throughout — tens of seconds warm and
+        minutes cold. Showing a frozen `00:00` across all of it is why the
+        first version of this looked like it had failed to start.
+        """
+        seconds = int(time.monotonic() - self.started)
+        return f"{seconds // 60:02d}:{seconds % 60:02d}"
 
     def add(self, line: str) -> None:
         """Files one raw line, creating a tab the first time a role speaks."""
