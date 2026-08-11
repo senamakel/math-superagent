@@ -476,3 +476,49 @@ async fn reading_does_not_hold_the_lock_that_filing_needs() -> Result<()> {
     );
     Ok(())
 }
+
+#[test]
+fn a_wait_outlives_the_per_tool_ceiling_it_was_never_meant_to_obey() {
+    // The run ceiling and the tool ceiling are separate limits, and a wait is
+    // governed by the first. A live `pattern_finder` asked for 600 seconds,
+    // was killed at exactly 600,000 ms by the ten-minute tool ceiling, and
+    // lost the run it had commissioned.
+    use tinyagents::harness::tool::ToolTimeout;
+
+    let budget = RunBudget::default();
+    let manager = Arc::new(AsyncSubagentManager::new(budget, None));
+    let tools = super::AsyncSubagentTool::all(&manager);
+    let waiting = tools
+        .iter()
+        .find(|tool| tool.name() == "await_agent")
+        .expect("await_agent is registered");
+
+    let asked = crate::agent::ToolCall {
+        id: "call-1".into(),
+        name: "await_agent".into(),
+        invalid: None,
+        arguments: serde_json::json!({ "run_id": "agent-run-1", "wait_seconds": 600 }),
+    };
+    let ToolTimeout::Millis(deadline) = waiting.timeout_policy(&asked) else {
+        panic!("a wait carries its own deadline");
+    };
+    assert!(
+        deadline > budget.tool_timeout.as_millis() as u64,
+        "the wait outlives the tool ceiling: {deadline}"
+    );
+    assert!(
+        deadline > 600 * 1_000,
+        "and outlives the wait it was asked for, so the wait returns rather than being cut off"
+    );
+
+    // Everything else is a fast local operation and keeps the ordinary ceiling.
+    let spawning = tools
+        .iter()
+        .find(|tool| tool.name() == "spawn_agent")
+        .expect("spawn_agent is registered");
+    assert_eq!(
+        spawning.timeout_policy(&asked),
+        ToolTimeout::Inherit,
+        "a spawn returns immediately and needs no exemption"
+    );
+}

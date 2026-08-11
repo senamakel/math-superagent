@@ -288,29 +288,93 @@ def tetra_constraints(n):
     return cons
 
 def cells_3d(lines):
-    """Enumerate full-dimensional cells by incremental splitting of the tetra."""
-    cells = [tetra_constraints(4)]
+    """Enumerate full-dim cells by incremental convex clipping.
+
+    Each cell is (cons, verts): cons = accumulated halfspace constraints
+    ((coeffs3, const), lin >= 0), verts = its exact vertices. Splitting by a
+    plane finds segment crossing points along the cell's facet boundary edges,
+    so a cell costs O(verts+edges) per plane rather than a fresh triple-
+    enumeration. Volume is computed later in compute_pn."""
+    init_cons = tetra_constraints(4)
+    init_verts = [(F(0), F(0), F(0)), (F(1), F(0), F(0)),
+                  (F(0), F(1), F(0)), (F(0), F(0), F(1))]
+    cells = [(list(init_cons), list(init_verts))]
     for name, g in lines:
         newcells = []
-        for cell in cells:
-            verts = poly_vertices(cell)
+        for cons, verts in cells:
             if not verts:
                 continue
             signs = [lin_eval(g, v) for v in verts]
-            mn, mx = min(signs), max(signs)
-            if mn >= 0 or mx <= 0:
-                newcells.append(cell)
+            if all(s >= 0 for s in signs) or all(s <= 0 for s in signs):
+                newcells.append((cons, verts))
                 continue
-            for side in (1, -1):
-                if side == 1:
-                    nc = cell + [(g[0], g[1])]
-                else:
-                    ng = lin_scalar(g, -1)
-                    nc = cell + [(ng[0], ng[1])]
-                if poly_volume(nc) > 0:
-                    newcells.append(nc)
+            edges = poly_edges(cons, verts)
+            crossing = []
+            for (u, w) in edges:
+                su = lin_eval(g, u); sw = lin_eval(g, w)
+                if su == 0 or sw == 0:
+                    continue
+                if (su < 0 and sw > 0) or (su > 0 and sw < 0):
+                    crossing.append(inter_pt(u, w, g))
+            pos_cons = cons + [(g[0], g[1])]
+            neg_cons = cons + [([-x for x in g[0]], -g[1])]
+            posv = [v for v, s in zip(verts, signs) if s >= 0]
+            negv = [v for v, s in zip(verts, signs) if s <= 0]
+            newcells.append((pos_cons, posv + crossing))
+            newcells.append((neg_cons, negv + crossing))
         cells = newcells
     return cells
+
+
+def inter_pt(u, w, g):
+    """Intersection of segment u-w with plane g (lin_eval(g, .) = 0)."""
+    su = lin_eval(g, u); sw = lin_eval(g, w)
+    t = su / (su - sw)
+    return tuple(u[k] + t * (w[k] - u[k]) for k in range(3))
+
+
+def poly_edges(cons, verts):
+    """Edge set of a convex 3D polyhedron from its facet boundaries.
+    Each facet (constraint idx) is a polygon whose consecutive vertices are an
+    edge; collect deduped vertex pairs."""
+    eset = set()
+    vidx = {v: i for i, v in enumerate(verts)}
+    for idx in range(len(cons)):
+        l = cons[idx]
+        face = [v for v in verts if lin_eval(l, v) == 0]
+        if len(face) < 3:
+            continue
+        order = facet_order(face, cons, idx)
+        for i in range(len(order)):
+            a = order[i]; b = order[(i + 1) % len(order)]
+            key = tuple(sorted((vidx[a], vidx[b])))
+            eset.add(key)
+    return [(verts[i], verts[j]) for (i, j) in eset]
+
+
+def facet_order(face, cons, idx):
+    """Order the 2D facet vertices into a boundary polygon by polar angle in
+    the facet plane (dominant-coordinate projection)."""
+    c = cons[idx][0]
+    dom = max(range(3), key=lambda t: abs(c[t]))
+    other = [t for t in range(3) if t != dom]
+    pts = [(v[other[0]], v[other[1]]) for v in face]
+    cx = sum(p[0] for p in pts) / F(len(pts))
+    cy = sum(p[1] for p in pts) / F(len(pts))
+    def cmp(a, b):
+        ax, ay = pts[a][0] - cx, pts[a][1] - cy
+        bx, by = pts[b][0] - cx, pts[b][1] - cy
+        ha = 0 if (ay > 0 or (ay == 0 and ax >= 0)) else 1
+        hb = 0 if (by > 0 or (by == 0 and bx >= 0)) else 1
+        if ha != hb:
+            return -1 if ha < hb else 1
+        cr = ax * by - ay * bx
+        if cr != 0:
+            return -1 if cr > 0 else 1
+        return 0
+    import functools
+    order = sorted(range(len(face)), key=functools.cmp_to_key(cmp))
+    return [face[i] for i in order]
 
 
 def compute_pn(n, L, lines):
@@ -334,13 +398,14 @@ def compute_pn(n, L, lines):
         cells = cells_3d(lines)
         density = F(6)
         measure = F(0)
-        for cell in cells:
-            verts = poly_vertices(cell)
+        for cons, verts in cells:
+            if len(verts) < 4:
+                continue
             c0 = tuple(sum(v[k] for v in verts) / F(len(verts)) for k in range(3))
             v3 = 1 - c0[0] - c0[1] - c0[2]
             speeds = [c0[0], c0[1], c0[2], v3]
             par = outcome_parity_exact(n, Lv, speeds)
-            vol = poly_volume(cell)
+            vol = poly_volume(cons)
             if par == 0:
                 measure += vol
         return density * measure, len(cells)
