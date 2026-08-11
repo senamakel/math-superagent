@@ -24,7 +24,7 @@ for n in (4, 5, 6):
     print(f"n={n} n!={nf}")
     print(f"  F(n!)=sum_pi rank(pi^n!): actual {s_nf}, "
           f"assumed-avg {nf*(nf+1)//2}")
-    print(f"  sum_{d|n!, d<n!} F(d) = {s_prop}")
+    print(f"  proper-divisor sum = {s_prop}")
     print(f"  sum_all_d F(d)        = {s_all}")
     print(f"  suggested G(a)={s_prop//nf}*({nf}+1) -> "
           f"{(s_prop//nf)*(nf+1)}  (ratio {s_prop/(nf*(nf+1)):.6f})")
