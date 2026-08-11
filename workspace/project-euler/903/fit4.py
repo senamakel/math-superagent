@@ -53,13 +53,12 @@ bf = {
  '1/(n(n-1))': lambda n:F(1,n*(n-1)),
 }
 
-def fit(name_vec, target, names, rank=1):
-    # solve target[n]=sum c_i b_i(n) for c_i (rational) at first |vec| points
+def fit(names, target):
+    # solve target[n]=sum c_i b_i(n) for c_i (rational) at first m points
     # then check exactness on all points.
-    m=len(vec)
-    # build matrix rows = b_i(n) for each data point n in vec
+    m=len(names)
     funcs=[bf[x] for x in names]
-    pts=[ns[0]+t for t in range(m)]
+    pts=ns[:m]
     # Gaussian elimination with fractions
     A=[[ funcs[i](n) for i in range(m)] for n in pts]
     y=[ target[n] for n in pts]
