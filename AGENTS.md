@@ -25,7 +25,11 @@ The runtime has nine roles plus an explicit solution loop.
   or current facts, and is deliberately reluctant: gathering costs a download,
   a digest, an index row, and a share of every later reader's attention, so it
   fetches only when the solver reports an attempt STUCK, when `ROOT.md` names a
-  specific gap it knows a specific source for, or not at all. The loop posts
+  specific gap it knows a specific source for, or not at all. It works the open
+  rows of `research/REQUESTS.md` — gaps other roles stated precisely — before
+  anything it thought of itself, checks `search_claims` before going looking for
+  what the library may already establish, and follows `research/FRONTIER.md`,
+  the citations inside the sources it already has. The loop posts
   each attempt's verdict to the teams so "is the run short of something" is a
   signal rather than a guess. It returns source URLs, separates evidence from inference,
   and can save reusable notes to Qdrant.
