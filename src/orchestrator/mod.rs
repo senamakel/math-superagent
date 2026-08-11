@@ -1,5 +1,6 @@
 //! Registry-backed orchestrator with research and tool-building specialists.
 
+mod async_subagents;
 mod vector;
 
 use std::fmt::Write as _;
@@ -12,7 +13,7 @@ use serde_json::json;
 use tinyagents::harness::message::estimate_slice_tokens;
 use tinyagents::harness::middleware::ContextCompressionMiddleware;
 use tinyagents::harness::model::{ChatModel, ModelRequest};
-use tinyagents::harness::subagent::{SubAgent, SubAgentTool};
+use tinyagents::harness::subagent::SubAgent;
 use tinyagents::harness::summarization::{
     CompressionProvenance, SummarizationPolicy, Summarizer, SummaryRecord, estimate_tokens,
     render_message_for_summary,
@@ -23,6 +24,7 @@ use crate::agent::{
     configure_tool_deadline, openrouter_model_from_env,
 };
 use crate::hello_agent::ExaSearchTool;
+use async_subagents::AsyncSubagentManager;
 use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 
 pub use tinyagents::harness::host::AgentDefinition;
@@ -37,8 +39,9 @@ const ORCHESTRATOR_PROMPT: &str = "You are an orchestrator. Delegate web researc
     verification to research. Delegate creating, editing, testing, or running local tools to \
     tool_builder. Give each specialist a focused, self-contained task, combine their results, \
     and clearly identify sources and executed work. Do not claim delegation occurred unless you \
-    called the corresponding agent tool. Never propose or delegate an algorithm with exponential \
-    time or space complexity.";
+    called the corresponding agent tool. Spawn independent subagents asynchronously, keep their \
+    run ids, peek or steer them when useful, and await every response needed for the final answer. \
+    Never propose or delegate an algorithm with exponential time or space complexity.";
 
 const RESEARCH_PROMPT: &str = "You are the research specialist. Check recall_research for useful \
     prior findings, then use exa_search for factual or current claims. Search iteratively when \
@@ -58,9 +61,10 @@ const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work
 const GOALS_PROMPT: &str = "You are the goals agent. Turn the assigned goal into concrete, \
     verifiable completion criteria and pursue them until they are met or a genuine blocker is \
     established. Spawn research for external evidence and tool_builder for implementation, \
-    computation, and verification. Give each child a focused, self-contained task. Track what is \
-    complete, what remains, and the evidence for completion. Never use or request an algorithm \
-    with exponential time or space complexity.";
+    computation, and verification. Run independent work in parallel, keep every run id, peek or \
+    steer live work when useful, and await required responses. Give each child a focused, \
+    self-contained task. Track what is complete, what remains, and the evidence for completion. \
+    Never use or request an algorithm with exponential time or space complexity.";
 
 /// A small in-memory catalogue of named, executable child agents.
 #[derive(Default)]
@@ -152,12 +156,6 @@ impl AgentRegistry {
             .map(|entry| entry.agent.clone())
     }
 
-    fn delegation_tools(&self) -> Vec<Arc<dyn Tool<()>>> {
-        self.entries
-            .iter()
-            .map(|entry| Arc::new(SubAgentTool::new(entry.agent.clone())) as Arc<dyn Tool<()>>)
-            .collect()
-    }
 }
 
 /// OpenRouter-backed orchestrator over the registered specialist agents.
@@ -191,6 +189,7 @@ impl OrchestratorAgent {
         require_container_runtime()?;
         let workspace = workspace_from_env()?;
         let model = openrouter_model_from_env()?;
+        let async_subagents = AsyncSubagentManager::new();
         let shared_guidance =
             load_workspace_files(&workspace, &["AGENTS.md", "config.toml", "memory.md"])?;
         let orchestrator_prompt = workspace_prompt(
@@ -226,7 +225,7 @@ impl OrchestratorAgent {
                 "Researches current questions with Exa and returns evidence with source URLs.",
                 Arc::new(research_harness),
             )
-            .with_system_prompt(research_prompt),
+            .with_system_prompt(research_prompt.clone()),
         );
 
         let mut tool_builder_harness = specialist_harness(model.clone());
@@ -239,21 +238,33 @@ impl OrchestratorAgent {
                 "Writes, executes, tests, and repairs tools inside the jailed workspace.",
                 Arc::new(tool_builder_harness),
             )
-            .with_system_prompt(tool_builder_prompt),
+            .with_system_prompt(tool_builder_prompt.clone()),
         );
 
+        async_subagents.register(
+            "research",
+            research.harness().clone(),
+            research_prompt,
+        )?;
+        async_subagents.register(
+            "tool_builder",
+            tool_builder.harness().clone(),
+            tool_builder_prompt,
+        )?;
+
         let mut goals_harness = specialist_harness(model.clone());
-        goals_harness
-            .register_tool(Arc::new(SubAgentTool::new(research.clone())))
-            .register_tool(Arc::new(SubAgentTool::new(tool_builder.clone())));
+        for tool in async_subagents.tools(["research", "tool_builder"]) {
+            goals_harness.register_tool(tool);
+        }
         let goals = Arc::new(
             SubAgent::new(
                 "goals",
                 "Pursues a goal to verifiable completion by spawning focused specialists.",
                 Arc::new(goals_harness),
             )
-            .with_system_prompt(goals_prompt),
+            .with_system_prompt(goals_prompt.clone()),
         );
+        async_subagents.register("goals", goals.harness().clone(), goals_prompt)?;
 
         let mut registry = AgentRegistry::new();
         registry
@@ -290,7 +301,7 @@ impl OrchestratorAgent {
         let registry = Arc::new(registry);
 
         let mut orchestrator_harness = specialist_harness(model);
-        for tool in registry.delegation_tools() {
+        for tool in async_subagents.tools(["research", "tool_builder", "goals"]) {
             orchestrator_harness.register_tool(tool);
         }
 
