@@ -1,5 +1,15 @@
 # Scratchpad
 
+Naive BFS oracle results (exact integers). Ran the existing oracle
+`code/brute.py` (command: `python code/brute.py`) against the worked examples
+this run:
+
+- D(2) = 3           ✓ matches statement
+- D(10) = 44499      ✓ matches statement
+
+Also confirmed the full sequence via `code/brute_capped.py 11` (see table
+below). D(20) and D(100) are beyond the exponential oracle, as expected.
+
 Naive BFS oracle results (exact integers), /workspace/brute.py:
 
 depth N | D(N) | states at previous depth | frontier time
