@@ -948,6 +948,16 @@ impl DocumentTool {
                     "document URL must use HTTP or HTTPS".into(),
                 ));
             }
+            // A source already in the library is not downloaded twice. The
+            // refusal names the file, so the model's next move is to read what
+            // the run already has rather than to guess at another spelling of
+            // the same URL.
+            if let Some(existing) = super::frontier::already_fetched(&self.documents, &url).await {
+                return Err(tinyagents::TinyAgentsError::Validation(format!(
+                    "{url} is already in this library at `{existing}` — read that instead of \
+                     downloading it again"
+                )));
+            }
             let response = self
                 .documents
                 .client
