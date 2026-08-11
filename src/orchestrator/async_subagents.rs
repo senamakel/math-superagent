@@ -246,17 +246,39 @@ impl HarnessExecutor {
         let Some(langfuse) = self.langfuse.as_ref() else {
             return;
         };
-        if let Ok(observations) = journal.read_from(run_id, 0).await
-            && !observations.is_empty()
-        {
-            let _ = langfuse
-                .send_observations(
-                    trace_config(&self.session, &self.role, run_id),
-                    &observations,
-                )
-                .await;
+        if let Ok(observations) = journal.read_from(run_id, 0).await {
+            let observations = worth_exporting(observations);
+            if !observations.is_empty() {
+                let _ = langfuse
+                    .send_observations(
+                        trace_config(&self.session, &self.role, run_id),
+                        &observations,
+                    )
+                    .await;
+            }
         }
     }
+}
+
+/// Drops the observations that say nothing a reader could act on.
+///
+/// Both middleware hooks fire on both sides of every model call and every tool
+/// call, and each event carries only the middleware's name — no duration, no
+/// outcome. On one measured run they were four fifths of the stream. Sending
+/// them buries the model and tool observations an operator opens Langfuse to
+/// read, and the sheer count is what makes a broad query on the legacy
+/// observations endpoint fail outright. What they would have reported is
+/// written to the run's own journal as a summary instead.
+fn worth_exporting(observations: Vec<EventRecord>) -> Vec<EventRecord> {
+    observations
+        .into_iter()
+        .filter(|record| {
+            !matches!(
+                record.event,
+                AgentEvent::MiddlewareStarted { .. } | AgentEvent::MiddlewareCompleted { .. }
+            )
+        })
+        .collect()
 }
 
 /// Names a run's Langfuse trace uniquely and describes what produced it.
