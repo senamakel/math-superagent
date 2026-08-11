@@ -1303,58 +1303,6 @@ fn register_support_agents(
         &mut inventor,
         Arc::new(RecallResearchTool::new(parts.vector_store.clone())),
     );
-    PATTERN_TAIL
-    for tool in PatternTool::all() {
-        register_resilient(&mut pattern, tool);
-    }
-    for tool in parts.documents.tools() {
-        register_resilient(&mut pattern, tool);
-    }
-    // The pattern agent computes as well as observes. Its own tools answer
-    // only what holds across terms it is handed, so without a way to generate
-    // more terms it can neither test a conjecture past the data that suggested
-    // it nor find the first term that breaks one — which is the finding worth
-    // having. It gets shell and file-write authority for that, and delegation
-    // besides, so a check too large to run inline becomes a commissioned
-    // program rather than an abandoned question.
-    register_resilient(
-        &mut pattern,
-        Arc::new(WriteToolFile::new(parts.workspace.clone())),
-    );
-    register_resilient(
-        &mut pattern,
-        Arc::new(ExecuteCommand::new(
-            parts.workspace.clone(),
-            parts.budget.tool_timeout,
-        )),
-    );
-    for tool in parts.delegation.iter().cloned() {
-        register_resilient(&mut pattern, tool);
-    }
-    // The one search this role may have. It has no web search on purpose — a
-    // bounded structural question must not turn into a second investigation —
-    // and an encyclopedia lookup keyed on terms it has already computed cannot
-    // become one: the terms either match a catalogued sequence or they do not.
-    // It is also the role holding the terms, so making it ask another agent to
-    // run the lookup would spend a child run to pass a list of integers along.
-    for tool in parts.oeis.iter().cloned() {
-        register_resilient(&mut pattern, tool);
-    }
-    register_recall(&mut pattern, &parts.workspace);
-    subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
-
-    let mut inventor =
-        specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
-    if let Some(exa) = parts.exa.clone() {
-        register_resilient(&mut inventor, exa);
-    }
-    for tool in parts.oeis.iter().cloned() {
-        register_resilient(&mut inventor, tool);
-    }
-    register_resilient(
-        &mut inventor,
-        Arc::new(RecallResearchTool::new(parts.vector_store.clone())),
-    );
     register_resilient(
         &mut inventor,
         Arc::new(RememberResearchTool::new(parts.vector_store.clone())),
