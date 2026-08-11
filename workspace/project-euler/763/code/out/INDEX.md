@@ -4,7 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `c1_test_results.md` | _(undescribed)_ |
+| `c1_test_results.md` | Result record of testing claim C1 (reachable amoeba sets == origin-connected sets): C1 is FALSE in both 2D and 3D. Enumerates origin-connected sets by size and compares to D_2D(N)/D(N); first disagreement N=1. The 2D count equals OEIS A005773 (directed animals), not the amoeba sequence. Records the reason: reachability constrains level distribution by division mass, so an arbitrary directed animal is not reachable. Dead end archived so the C1 structural hypothesis is not re-hunted. |
 | `configs_n3_n4.txt` | Output data: the actual reachable configurations of Project Euler 763 for N=3 (9 configs) and N=4 (30 configs), each a sorted set of (x,y,z) cubes, one per line; produced by code/amoeba/configs_n3_n4.py. |
 | `d2_values.txt` | Output data: D2(N) for the 2D amoeba N=0..20 = 1,1,2,4,9,20,46,105,243,561,1301,3014,6995,16227,37668,87426,202961,471150,1093819,2539348,5895408, written by code/amoeba/d2_bfs.py using the compact bitmask encoding from lib/amoeba2d. Extends the D_2D sequence beyond the d2d_values.txt N=0..14 record. |
 | `d2d_values.txt` | Output of the 2D analogue run: D_2D(N) for N=0..14 = 1,1,2,4,9,20,46,105,243,561,1301,3014,6995,16227,37668, verified by two independent BFS routes (frozenset and int-encoded). |

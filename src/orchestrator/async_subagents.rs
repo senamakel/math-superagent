@@ -30,8 +30,7 @@ static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 /// Runs that automatically trigger a follow-up run when they succeed.
 ///
 /// The code-writing roles are the ones that create files, and the moment one
-/// finishes
-/// is when the workspace is least tidy and most legible: the files are new,
+/// finishes is when the workspace is least tidy and most legible: the files are new,
 /// their purpose is settled, and nothing else has happened since. Leaving the
 /// tidying to whoever happens to run next means it competes with mathematics
 /// for attention and reliably loses, so the index drifts out of step with the
@@ -51,9 +50,9 @@ static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 /// the critical path of an investigation waiting for its result.
 const FOLLOW_UPS: [(&str, &[FollowUpStep]); 4] = [
     ("tool_builder", &[ORGANIZE_AFTER_TOOLS]),
-    // The coder and the solver write into the same tree and leave it in the
-    // same state; a program filed under `code/` with no row describing it is
-    // undescribed whichever role wrote it.
+    // The coder and the SAT solver write into the same tree and leave it in
+    // the same state; a program filed under `code/` with no row describing it
+    // is undescribed whichever role wrote it.
     ("coder", &[ORGANIZE_AFTER_TOOLS]),
     ("sat_solver", &[ORGANIZE_AFTER_TOOLS]),
     (
