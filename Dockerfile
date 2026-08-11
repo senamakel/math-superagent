@@ -66,6 +66,42 @@ RUN apt-get update \
     && pip3 install --break-system-packages --no-cache-dir ortools python-sat \
     && rm -rf /var/lib/apt/lists/*
 
+# Lean 4 with a pre-built Mathlib, for the `lean_prover` role. Everything else
+# this runtime produces is evidence; a Lean proof that compiles with no `sorry`
+# is the thing itself, and that is worth the size. It is the largest layer here
+# by a wide margin and is placed last of the toolchains, before the binary, so
+# editing Rust source invalidates only the COPY below it.
+#
+# `lake exe cache get` downloads the compiled oleans rather than building
+# Mathlib from source — the difference is minutes against many hours. `elan
+# default` sets the toolchain globally, not just inside /opt/mathlib4: an
+# override is directory-scoped, and the agent's working directory is
+# /workspace, where a `lean` invocation would otherwise fail with "no default
+# toolchain configured".
+ENV ELAN_HOME=/opt/elan
+ENV PATH=/usr/local/bin:/opt/elan/bin:$PATH
+RUN curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh \
+    && sh /tmp/elan-init.sh -y --default-toolchain none \
+    && rm /tmp/elan-init.sh \
+    && git clone --depth 1 https://github.com/leanprover-community/mathlib4.git /opt/mathlib4 \
+    && cd /opt/mathlib4 \
+    && elan toolchain install "$(cat lean-toolchain)" \
+    && elan default "$(cat lean-toolchain)" \
+    && lake exe cache get \
+    && lake build \
+    && lake env printenv LEAN_PATH > /opt/lean_path.txt
+
+# `lean` is wrapped rather than given an `ENV LEAN_PATH`, because the value is
+# the search path of every Mathlib dependency and is only known after the build
+# above ran — and `ENV` cannot take a command substitution. Without the full
+# path a plain `import Mathlib.…` fails on `unknown module prefix 'Batteries'`,
+# which reads as a broken install rather than a missing variable.
+RUN printf '#!/bin/sh\nLEAN_PATH="$(cat /opt/lean_path.txt)${LEAN_PATH:+:$LEAN_PATH}"\nexport LEAN_PATH\nexec /opt/elan/bin/lean "$@"\n' > /usr/local/bin/lean \
+    && chmod 0755 /usr/local/bin/lean \
+    && printf '%s\n' 'import Mathlib.Combinatorics.SimpleGraph.Finite' > /tmp/smoke.lean \
+    && lean /tmp/smoke.lean \
+    && rm /tmp/smoke.lean
+
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
 
 USER agent
