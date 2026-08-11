@@ -3,7 +3,7 @@
 Source: Timo Koski, "Order statistics for independent exponential variables",
 KTH Royal Institute of Technology, course SF2955 (Computer intensive methods).
 URL: https://www.math.kth.se/matstat/gru/sf2955/exponorderstats.pdf
-Full text: `research/exponential_order_statistics_memoryless_kth.full.md`
+Full text is in this same file (the downloader's whole-document conversion).
 
 ## What it establishes
 

@@ -16,14 +16,26 @@ approach, or a fresh judgement can act on without opening anything.
 
 ## Established
 
-What the library now lets this run treat as known, with the file that
-establishes each. Empty until the research team has read something.
+- The spacings of the order statistics of n i.i.d. Exp(1) variables are
+  **independent** exponentials: X_(1) ~ Exp(n) and X_(i)−X_(i−1) ~ Exp(n+1−i).
+  Equivalently, after the smallest of a set of independent exponentials fires,
+  the survivors stay independent exponentials with their original rates
+  (memoryless "clocks" view). Source:
+  `research/exponential_order_statistics_memoryless_kth.md` (KTH course notes,
+  Timo Koski, SF2955; theorem with full Jacobian proof). This is exactly the
+  structure memory.md flagged as the likely key to an exact (non-MC,
+  non-enumerative) integration over the iid Exp(1) boat speeds in PE 597: it
+  lets the bump/finish chronology decompose into products over independent
+  exponential rates rather than high-dimensional integrals over the speeds.
 
 ## Contradictions
 
-Where sources disagree, or where a source contradicts `memory.md`. These are
-the most valuable rows here: record them rather than silently picking a side.
+None. The source agrees with the run's working model (speeds iid Exp(1),
+memoryless property).
 
 ## Gaps
 
-What the run still needs from the literature and has not found.
+The library holds the exponential order-statistics theory, but no source yet
+derives the specific event-chronology decomposition (bump-chain parity
+integral) for this race; that is the run's own derivation task, not a
+literature lookup.

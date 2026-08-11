@@ -194,3 +194,22 @@ async fn a_team_that_finishes_on_its_first_cycle_reports_having_run_one() {
 
     assert!(settle(|| team.cycles() == 1).await, "got {}", team.cycles());
 }
+
+#[test]
+fn a_standing_goal_treats_nothing_further_as_idle_rather_than_done() {
+    // The failure this exists to stop: on a fresh workspace there is nothing
+    // to tidy, the organiser truthfully said "nothing further", and the
+    // background team ended for the whole run — while files accumulated for
+    // two hours with nobody to index them.
+    assert_eq!(
+        super::Completion::Standing.nothing_further(),
+        Cycle::Idle,
+        "a custodial team comes back when the workspace has changed"
+    );
+    // Acquiring is different: once more sources stop changing the shared
+    // brief, fetching more of them is waste.
+    assert_eq!(
+        super::Completion::Attainable.nothing_further(),
+        Cycle::Finished
+    );
+}

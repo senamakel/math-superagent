@@ -29,6 +29,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `prompts/` | Role-specific agent guidance files; see `prompts/INDEX.md`. |
 | `reflections/` | Attempt-by-attempt verdicts and lessons; written by the reflection loop (do not hand-edit). |
-| `research/` | External sourced-material library; currently empty, see `research/INDEX.md`. |
+| `research/` | External sourced-material library; see `research/INDEX.md` (holds the KTH exponential-order-statistics notes). |
 | `research_notes/` | The run's own structural explorations of the parity problem; see `research_notes/INDEX.md`. |
 | `toolkits/` | One-function-per-file reusable helpers; currently empty, see `toolkits/INDEX.md`. |
