@@ -39,6 +39,7 @@ pub type SlimAgent = AgentHarness<()>;
 pub struct ObservedAgent {
     harness: SlimAgent,
     langfuse: LangfuseClient,
+    tracer: Option<Arc<RunTracer>>,
 }
 
 impl std::fmt::Debug for ObservedAgent {
