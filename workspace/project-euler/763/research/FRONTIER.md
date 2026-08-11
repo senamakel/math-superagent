@@ -20,6 +20,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://info.arxiv.org/labs/index.html | Learn more about arXivLabs | these values and only works with partners that adhere to them. Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][39]. [Which authors of this paper… |
 | 1 | https://replicate.com/docs/arxiv/about | What is Replicate? | is Huggingface?][32])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][33])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][34])* Spaces Toggle Hugging Face Spaces*( [What is… |
 | 1 | https://txyz.ai | What is TXYZ.AI? | Toggle Replicate*( [What is Replicate?][34])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][35])* Spaces Toggle TXYZ.AI*( [What is TXYZ.AI?][36])* Related Papers # Recommenders and Search… |
+| 1 | https://www.combinatorics.org/ojs/index.php/eljc/citationstylelanguage/download/bibtex?submissionId=1201 | BibTeX | [ACM][3] - [ACS][4] - [APA][5] - [Chicago][6] - [Turabian][7] - [Vancouver][8] Download Citation - [Endnote/Zotero/Mendeley (RIS)][9] - [BibTeX][10] Issue [Volume 2 (1995)][11] Article Number R7 |
+| 1 | https://www.combinatorics.org/ojs/index.php/eljc/issue/view/Volume2 | Volume 2 (1995) | [APA][5] - [Chicago][6] - [Turabian][7] - [Vancouver][8] Download Citation - [Endnote/Zotero/Mendeley (RIS)][9] - [BibTeX][10] Issue [Volume 2 (1995)][11] Article Number R7 |
 | 1 | http://gotit.pub/faq | What is GotitPub? | Code Finder for Papers*( [What is CatalyzeX?][29])* DagsHub Toggle DagsHub*( [What is DagsHub?][30])* GotitPub Toggle Gotit.pub*( [What is GotitPub?][31])* Huggingface Toggle Hugging Face*( [What is… |
 | 1 | https://alphaxiv.org/ | What is alphaXiv? | [What are Smart Citations?][27])* Code, Data, Media # Code, Data and Media Associated with this Article alphaXiv Toggle alphaXiv*( [What is alphaXiv?][28])* Links to Code Toggle CatalyzeX Code Finder… |
 | 1 | https://api.semanticscholar.org/arXiv:1009.5731 | Semantic Scholar | \| [2010-09][16] Change to browse by: [math][17] [math.CA][18] ### References & Citations - [NASA ADS][19] - [Google Scholar][20] - [Semantic Scholar][21] export BibTeX citation Loading... ## BibTeX… |
@@ -44,7 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://oeis.org/A005717 | A005717 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A005773 | A005773 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A005817 | A005817 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A006533 | A006533 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A006561 | A006561 | cross-referenced from A001006 |
 
-_57 further candidates not shown; they are cited once each._
+_67 further candidates not shown; they are cited once each._
