@@ -119,16 +119,35 @@ The console shows an elapsed-time line for every model call, tool call, and
 tool result, labelled with the agent that produced it:
 
 ```text
-[00:00] orchestrator     budget: 250 model calls, 500 tool calls, 120 minute run, 10 minute tool; research enabled
-[00:02] orchestrator     tool  call #1 -> spawn_agent
-[00:02] tool_builder/agent-run-1  spawned: Read /workspace/problem.html and extract the exact statement...
-[00:19] tool_builder/agent-run-1  tool  done    execute_command in 412ms, 1180 bytes
+[00:00] orchestrator     run started (run-1)
+[00:00] orchestrator     model call #1 -> deepseek/deepseek-v4-flash-0731
+[00:14] orchestrator     model done    13820ms in=9241 cached=8960 out=612 | profile model 96% tool 0% idle 4% | cache 96% | $0.0031
+[00:14] orchestrator     tool  call #1 -> spawn_agent
+[00:14] tool_builder/agent-run-2  spawned: Read /workspace/problem.html and extract the exact statement...
+[00:33] tool_builder/agent-run-2  tool  done    execute_command in 412ms, 1180 bytes
+[01:12] orchestrator     solution loop: verdict unsolved, progress yes, next attempt
 ```
 
-The same events are appended as JSON to `trace.jsonl` in the selected
-workspace, and the orchestrator and every specialist export their observations
-to Langfuse with prompts and tool payloads attached. Use `trace.jsonl` for a
-quick local replay and Langfuse when you need the full prompts.
+Every model completion carries the run's time attribution, prompt-cache hit
+rate, and cumulative spend, so a slow or expensive run is visible without
+leaving the console. Once agents run concurrently the percentages become shares
+of agent time and a concurrency factor replaces `idle`, because summed agent
+time legitimately exceeds the wall clock.
+
+The same events are appended as JSON to `trace.jsonl` in the selected workspace,
+alongside a `model_accounting` record per model call naming the agent, the
+provider and model that actually served it, the prompt, cached, output, and
+reasoning token counts, and the cost the provider reported. With fallbacks
+enabled the route genuinely varies per call, so it is read from each response
+body rather than derived from a local price table. The orchestrator and every
+specialist also export their observations to Langfuse with prompts and tool
+payloads attached. Use `trace.jsonl` for a quick local replay and Langfuse when
+you need the full prompts; `./langfuse-turns` and `./langfuse-review` query
+recorded turns from the host.
+
+The document tools refuse to read `trace.jsonl` back. One reflection run pulled
+its own 1.1 MB event log into a single 339,652-token call to re-read a verbatim
+replay of what it had already seen.
 
 ## Run a problem
 
