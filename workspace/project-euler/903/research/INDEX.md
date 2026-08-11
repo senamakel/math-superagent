@@ -15,7 +15,7 @@ See [[report_literature_ranks_powers]] (clean negative) and
 | File | Purpose |
 | --- | --- |
 | L1/[[rank_lehmer]] | Lehmer/factoradic digits = lex rank; the rank model |
-| L1/[[mechanism_pair_inversions]]* | **Core**: gap-affine pair-inversion probs (A_n,B_n mechanism) |
+| L2/[[mechanism_pair_inversions]]* | **Core**: gap-affine pair-inversion probs (A_n,B_n mechanism) |
 | L1/[[order_random_permutation]] | ord(π) law → n!/ord(π) weights |
 | L1/[[cycle_type_toolkit]] | Cycle-type summation engine for A_n,B_n |
 | L1/[[cambie_yan_descents_inversions_powers]] | Small-exponent (n≥2k+1) closed forms for lifts |
