@@ -123,3 +123,66 @@ fn recorded_costs_accumulate_across_agents() {
         tracer.spent_usd()
     );
 }
+
+#[test]
+fn a_middleware_that_short_circuits_leaves_no_line() {
+    // Both hooks fire on both sides of every model and tool call, and the
+    // events carry only a name. On one measured run they were 5,108 of 6,406
+    // events and four fifths of a 24 MB journal, burying the model and tool
+    // records an operator opens the trace to read.
+    let directory =
+        std::env::temp_dir().join(format!("math-agent-middleware-{}", std::process::id()));
+    std::fs::create_dir_all(&directory).expect("temporary trace directory is creatable");
+    let path = RunTracer::journal_path(&directory);
+    let _ = std::fs::remove_file(&path);
+
+    let tracer = RunTracer::new("reflection", Some(path.as_path()));
+    for _ in 0..50 {
+        tracer.on_event(&record(AgentEvent::MiddlewareStarted {
+            name: "context_compression".to_string(),
+        }));
+        tracer.on_event(&record(AgentEvent::MiddlewareCompleted {
+            name: "context_compression".to_string(),
+        }));
+    }
+    let written = std::fs::read_to_string(&path).expect("trace journal is readable");
+    assert!(
+        written.is_empty(),
+        "a hook that returned immediately did nothing worth a line, got: {written}"
+    );
+
+    // The run's end still accounts for every one of them, so suppressing the
+    // lines cannot be mistaken for the hooks never having run.
+    tracer.on_event(&record(AgentEvent::RunCompleted {
+        run_id: RunId::new("run-1"),
+        output: None,
+    }));
+    let written = std::fs::read_to_string(&path).expect("trace journal is readable");
+    assert!(written.contains("middleware_summary"));
+    assert!(written.contains("\"calls\":50"));
+    let _ = std::fs::remove_dir_all(&directory);
+}
+
+#[test]
+fn a_middleware_that_actually_works_is_recorded_where_it_happened() {
+    let directory =
+        std::env::temp_dir().join(format!("math-agent-middleware-slow-{}", std::process::id()));
+    std::fs::create_dir_all(&directory).expect("temporary trace directory is creatable");
+    let path = RunTracer::journal_path(&directory);
+    let _ = std::fs::remove_file(&path);
+
+    let tracer = RunTracer::new("orchestrator", Some(path.as_path()));
+    tracer.on_event(&record(AgentEvent::MiddlewareStarted {
+        name: "workspace_checkpoint".to_string(),
+    }));
+    std::thread::sleep(super::MIDDLEWARE_JOURNAL_THRESHOLD * 3);
+    tracer.on_event(&record(AgentEvent::MiddlewareCompleted {
+        name: "workspace_checkpoint".to_string(),
+    }));
+
+    let written = std::fs::read_to_string(&path).expect("trace journal is readable");
+    assert!(written.contains("middleware_executed"));
+    assert!(written.contains("workspace_checkpoint"));
+    assert!(written.contains("duration_us"));
+    let _ = std::fs::remove_dir_all(&directory);
+}
