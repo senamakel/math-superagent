@@ -116,6 +116,53 @@ fn requests_without_a_timeout_get_a_bounded_one() {
 }
 
 #[test]
+fn a_turn_granted_a_bigger_output_budget_is_given_time_to_produce_it() {
+    use tinyagents::harness::model::ModelRequest;
+    use tinyagents::harness::providers::MockModel;
+
+    // Upstream recovers a truncated turn by re-issuing it with `max_tokens`
+    // doubled, clamped at four times. Generation time is linear in output
+    // length, so a flat ceiling made that recovery unable to succeed: a live
+    // turn produced 12,000 tokens in 281 seconds, and its 24,000-token retry
+    // needed nine minutes against a seven-minute bound. Every recovery timed
+    // out, spending a full timeout to accomplish nothing.
+    let model = BoundedTimeoutModel::<()>::new(Arc::new(MockModel::constant("hi")));
+    let ordinary = model
+        .bound(ModelRequest::new(vec![]).with_max_tokens(12_000))
+        .timeout_ms
+        .expect("a timeout is applied when unset");
+    let doubled = model
+        .bound(ModelRequest::new(vec![]).with_max_tokens(24_000))
+        .timeout_ms
+        .expect("a timeout is applied when unset");
+    let clamped = model
+        .bound(ModelRequest::new(vec![]).with_max_tokens(48_000))
+        .timeout_ms
+        .expect("a timeout is applied when unset");
+
+    // At the measured 43 tokens per second, 24,000 tokens needs about 558
+    // seconds. Anything at or below the flat 7-minute bound cannot produce it.
+    assert!(
+        doubled > 558_000,
+        "a 24,000-token turn needs longer than {doubled}ms to be producible"
+    );
+    assert!(clamped > doubled, "{clamped}ms must exceed {doubled}ms");
+    // An ordinary turn keeps exactly the bound it had before, so this widens
+    // nothing that was not widened by upstream first.
+    assert_eq!(ordinary, 420_000);
+}
+
+#[test]
+fn a_request_that_names_no_output_budget_keeps_the_flat_bound() {
+    use tinyagents::harness::model::ModelRequest;
+    use tinyagents::harness::providers::MockModel;
+
+    let model = BoundedTimeoutModel::<()>::new(Arc::new(MockModel::constant("hi")));
+    let bounded = model.bound(ModelRequest::new(vec![]));
+    assert_eq!(bounded.timeout_ms, Some(420_000));
+}
+
+#[test]
 fn an_explicit_request_timeout_is_left_alone() {
     use tinyagents::harness::model::ModelRequest;
     use tinyagents::harness::providers::MockModel;

@@ -102,6 +102,7 @@ def solve_d(d, n):
     return b_d, a_d, len(cands)
 
 def main():
+    mp.mp.dps = 80
     n = 10**13
     lines = []
     S = 0
