@@ -4,6 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `L0/homomesies_permutations_arxiv.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/2206.13409; not yet read, excerpt pending a scholar summary |
 | `L0/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
 | `L0/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
 | `L0/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |

@@ -140,16 +140,23 @@ fn a_turn_granted_a_bigger_output_budget_is_given_time_to_produce_it() {
         .timeout_ms
         .expect("a timeout is applied when unset");
 
-    // At the measured 43 tokens per second, 24,000 tokens needs about 558
-    // seconds. Anything at or below the flat 7-minute bound cannot produce it.
+    // The bound has to be producible at the slowest rate actually observed —
+    // 12.2 tokens per second, from a live tool_builder turn — because the
+    // slow turns are the ones carrying the most work, and cutting them off
+    // discards it entirely.
     assert!(
-        doubled > 558_000,
+        doubled > 24_000 * 1_000 / 13,
         "a 24,000-token turn needs longer than {doubled}ms to be producible"
     );
     assert!(clamped > doubled, "{clamped}ms must exceed {doubled}ms");
-    // An ordinary turn keeps exactly the bound it had before, so this widens
-    // nothing that was not widened by upstream first.
-    assert_eq!(ordinary, 420_000);
+    // An ordinary full-cap turn is no longer held to the flat floor: at the
+    // observed tail rate it cannot produce 12,000 tokens inside seven
+    // minutes, so the floor was cutting off exactly the turns worth keeping.
+    assert!(
+        ordinary > 12_000 * 1_000 / 13,
+        "a full-cap turn needs longer than {ordinary}ms to be producible"
+    );
+    assert!(ordinary >= 420_000, "the flat bound is still a floor");
 }
 
 #[test]
