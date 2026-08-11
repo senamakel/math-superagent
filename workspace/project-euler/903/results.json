@@ -1,0 +1,61 @@
+[
+  {
+    "n": 2,
+    "method": "literal",
+    "Q": 5,
+    "Qmod": 5,
+    "t_ranks_s": 0.0,
+    "t_compute_s": 0.0,
+    "steps": 4
+  },
+  {
+    "n": 3,
+    "method": "literal",
+    "Q": 88,
+    "Qmod": 88,
+    "t_ranks_s": 0.0,
+    "t_compute_s": 0.0,
+    "steps": 36
+  },
+  {
+    "n": 4,
+    "method": "literal",
+    "Q": 4808,
+    "Qmod": 4808,
+    "t_ranks_s": 0.0,
+    "t_compute_s": 0.0,
+    "steps": 576
+  },
+  {
+    "n": 5,
+    "method": "literal",
+    "Q": 597876,
+    "Qmod": 597876,
+    "t_ranks_s": 0.0,
+    "t_compute_s": 0.003,
+    "steps": 14400
+  },
+  {
+    "n": 6,
+    "method": "literal",
+    "Q": 133103808,
+    "Qmod": 133103808,
+    "t_ranks_s": 0.0,
+    "t_compute_s": 0.133,
+    "steps": 518400
+  },
+  {
+    "n": 7,
+    "method": "literal",
+    "Q": 47124948960,
+    "Qmod": 124948631,
+    "t_ranks_s": 0.001,
+    "t_compute_s": 7.182,
+    "steps": 25401600
+  },
+  {
+    "n": 8,
+    "method": "literal",
+    "skipped": "estimated time exceeds budget"
+  }
+]

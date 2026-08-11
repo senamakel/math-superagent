@@ -23,7 +23,11 @@ sum_i rank(pi^i) = (n!/d) * sum_{tau in <pi>} rank(tau).  Exact integer, then mo
 cur_next = tuple(pi[v-1] for v in cur).  Sanity: pi=(2,1) -> (1,2)=id after 2 steps.
 Q(2)=5 by hand: id contributes 2*1, (2,1) contributes (2/2)*(2+1)=3.  Total 5. OK.
 
-## Verification plan
-- brute.py: assert rank((2,1,3))==3, Q(2)==5, Q(3)==88, Q(6)==133103808; save results.json.
-- brute2.py: independent code (rebuilds rank dict), assert same examples, load results.json
-  and compare with method 1 for each n both reached; print agreement table.
+## Verified results (both methods agree exactly for n=2..7; method 2 only for n=8)
+| n | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|
+| Q(n) | 5 | 88 | 4808 | 597876 | 133103808 | 47124948960 | 24768798220800 |
+| Q(n) mod p | 5 | 88 | 4808 | 597876 | 133103808 | 124948631 | 798047424 |
+
+Timings: method 1 (literal): n=6 0.13s, n=7 7.18s; n=8 skipped (est. 8.8 min).
+Method 2 (period formula): n=7 0.02s, n=8 0.16s.

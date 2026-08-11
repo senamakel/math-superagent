@@ -1,0 +1,44 @@
+[
+  {
+    "n": 2,
+    "method": "period",
+    "Q": 5,
+    "Qmod": 5
+  },
+  {
+    "n": 3,
+    "method": "period",
+    "Q": 88,
+    "Qmod": 88
+  },
+  {
+    "n": 4,
+    "method": "period",
+    "Q": 4808,
+    "Qmod": 4808
+  },
+  {
+    "n": 5,
+    "method": "period",
+    "Q": 597876,
+    "Qmod": 597876
+  },
+  {
+    "n": 6,
+    "method": "period",
+    "Q": 133103808,
+    "Qmod": 133103808
+  },
+  {
+    "n": 7,
+    "method": "period",
+    "Q": 47124948960,
+    "Qmod": 124948631
+  },
+  {
+    "n": 8,
+    "method": "period",
+    "Q": 24768798220800,
+    "Qmod": 798047424
+  }
+]
