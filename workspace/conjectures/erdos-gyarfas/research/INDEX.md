@@ -26,3 +26,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.1/luo-ma-zhao-dean.md` | downloaded source — from https://arxiv.org/pdf/2601.13552; not yet read, excerpt pending a scholar summary |
 | `L1.1/markstrom-extremal-cycles.md` | downloaded source — from http://abel.math.umu.se/~klasm/Uppsatser/cycex.pdf; not yet read, excerpt pending a scholar summary |
 | `L1.1/pirzada-2power-unicyclic-cubic.md` | [image: Page Header] — from https://doi.org/10.5614/ejgta.2022.10.1.24; not yet read, excerpt pending a scholar summary |
+| `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
