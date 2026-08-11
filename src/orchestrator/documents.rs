@@ -231,9 +231,8 @@ impl WorkspaceDocuments {
     /// Returns an error when the folder escapes the workspace or cannot be
     /// read.
     pub(super) async fn file_names(&self, relative: &str) -> Result<Vec<String>> {
-        let folder = if relative.is_empty() { "." } else { relative };
-        ensure_visible(folder)?;
-        let path = self.path(folder)?;
+        ensure_visible(relative)?;
+        let path = self.folder_path(relative)?;
         let mut entries = tokio::fs::read_dir(&path).await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!(
                 "failed to read workspace folder `{relative}`: {error}"
