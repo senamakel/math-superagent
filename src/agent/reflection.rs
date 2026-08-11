@@ -57,7 +57,18 @@ impl ReflectionMiddleware {
     }
 
     /// Builds the note appended to a failed tool result.
-    fn note(tool: &str, count: usize) -> String {
+    fn note(tool: &str, count: usize, content: &str) -> String {
+        if truncated_arguments(content) {
+            return format!(
+                "\n\n[reflection] `{tool}` was never called: the arguments stopped mid-JSON \
+                 because the turn ran out of output tokens while still writing them. Nothing was \
+                 wrong with your intent, so do not rephrase it — the call was simply too long to \
+                 finish. Re-issue it now with the longest string argument cut down hard, to a few \
+                 sentences. A brief for another agent does not need to restate the problem, the \
+                 derivation so far, or anything already on disk: that agent reads the workspace \
+                 files itself. Say what it must do and what to report back."
+            );
+        }
         if count > REPEAT_ESCALATION {
             format!(
                 "\n\n[reflection] `{tool}` has now failed {count} times in this run. Repeating it \
