@@ -32,3 +32,11 @@ cubes are all empty. The dividing amoeba disappears.
 - solution.py agrees with brute.py on every case brute.py can reach and
   reproduces D(20) and the D(100) last-nine-digits example.
 - Final D(10000) verified by a second independent route.
+
+## Progress notes
+
+- Exact BFS oracle ceiling reached: D(14)=5949063 is the last D(N) computable
+  by exact BFS in this container (2 GiB cgroup memory cap; D(15) ~20M states
+  needs ~12+ GiB). D(14) verified by three independent routes.
+- Actual reachable configs for N=3 (9) and N=4 (30) dumped to
+  code/out/configs_n3_n4.txt for structural study.
