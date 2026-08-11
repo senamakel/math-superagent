@@ -12,7 +12,7 @@
 //! meets this on its first turn dies before doing anything, and the solution
 //! loop records the attempt that delegated to it as having executed nothing. A
 //! live run lost two of its eight attempts to exactly that, each ending with
-//! `agent \`goals\` failed: model error: openrouter returned HTTP 400: Provider
+//! the goals agent having failed on `openrouter returned HTTP 400: Provider
 //! returned error` and a reflection correctly concluding that no program had
 //! run — a full attempt spent on a provider hiccup.
 //!
