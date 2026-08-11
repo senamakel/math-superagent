@@ -15,8 +15,17 @@ use tinyagents::harness::runtime::{PayloadCapture, RunPolicy};
 
 /// Model calls allowed in one agent run before it stops with partial results.
 const DEFAULT_MAX_MODEL_CALLS: usize = 250;
-/// Tool calls allowed in one agent run before it stops with partial results.
-const DEFAULT_MAX_TOOL_CALLS: usize = 500;
+/// Tool calls allowed in one agent run.
+///
+/// Deliberately far above what `DEFAULT_MAX_MODEL_CALLS` turns of parallel tool
+/// calling can reach, so the model-call cap is the one that actually trips.
+/// `LimitBehavior::StopWithPartial` is honoured on the model-call path in the
+/// vendored agent loop but not on the tool-call path, which still fails the run
+/// outright (`vendor/tinyagents/src/harness/agent_loop/tools.rs`). Until that is
+/// fixed upstream, keeping the tool cap out of reach is what makes a budgeted
+/// stop graceful instead of destructive. Do not narrow this to "just above" the
+/// model cap: one model turn can request several tool calls at once.
+const DEFAULT_MAX_TOOL_CALLS: usize = 4_000;
 /// Wall-clock ceiling for one agent run, in minutes.
 const DEFAULT_RUN_MINUTES: u64 = 120;
 /// Wall-clock ceiling for a single tool call, in minutes.
