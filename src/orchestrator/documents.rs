@@ -1160,9 +1160,10 @@ impl Tool<()> for DocumentTool {
                 let path = super::layout::placed(&requested);
                 self.documents.write(&path, &content).await?;
                 format!(
-                    "wrote {} bytes to {path}{}",
+                    "wrote {} bytes to {path}{}{}",
                     content.len(),
-                    super::layout::note(&requested, &path)
+                    super::layout::note(&requested, &path),
+                    self.reledger(&path).await
                 )
             }
             DocumentToolKind::Edit => {
