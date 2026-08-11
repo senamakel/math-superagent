@@ -380,11 +380,7 @@ impl WorkspaceDocuments {
     /// included because they are what distinguishes a finished derivation from
     /// an empty placeholder.
     async fn list(&self, relative: &str, depth: usize) -> Result<String> {
-        let root = if relative == "." || relative.is_empty() {
-            self.workspace.clone()
-        } else {
-            self.path(relative)?
-        };
+        let root = self.folder_path(relative)?;
         if !root.is_dir() {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
                 "`{relative}` is not a directory in the workspace{}",
