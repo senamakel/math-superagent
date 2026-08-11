@@ -281,7 +281,7 @@ log are excluded; read a trace locally or in Langfuse.
 
 Downloads are converted to Markdown before they are stored: HTML is stripped of
 scripts, styles, and navigation, a PDF's text layer is extracted, and TeX is
-preserved intact — the HTML converter is hand-written because a general-purpose
+preserved intact. The HTML converter is hand-written because a general-purpose
 one escapes the backslashes in `\(…\)` and destroys the mathematics. Magic bytes
 beat the declared content type, since a PDF served as `text/html` is still a PDF.
 Links become reference-style with a single list at the end and tracking
