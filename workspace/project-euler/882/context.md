@@ -39,6 +39,24 @@ analysis and the L0 full text — the tree still reaches every detail, but the
 per-call context load drops by ~1400 tokens. No new mathematical content was
 added this cycle; the run's pass-theory picture was already complete.
 
+**Enrichment this cycle — [[siegel_zugzwang]] (Siegel, *Coping with cycles*, Games of No
+Chance 3, MSRI 2009).** A primary, theorem-level treatment of **partizan loopy
+games** — the rigorous basis the earlier Wikipedia-level skip/pass picture
+([[zugzwang]], [[loopy]]) was missing. It delivers:
+- **Stoppers**: loop games that always terminate; canonical-form & comparison
+  theorems. The no-skip bit game is a stopper, so its value is a well-founded game.
+- **Sides `s & t`** + Swivel Chair Thm: a loopy game's behaviour reduces to its
+  onside/offside stoppers; a pass move is exactly a 1-cycle loop (`f0|passg=over`,
+  `fpass|=on`, `fpass|passg=dud`).
+- **Li's zugzwang games (1976)**: games where moving is disadvantageous; Li's
+  Theorem — a loopy game is a zugzwang game iff it equals `x & y` for dyadic
+  rationals `x ≤ y`. This is precisely our structure: Zero's skip is the pass loop,
+  One is forced to consume a 1-bit (zugzwang). It corroborates that S(n) ≠ A−B and
+  needs the (A,B) fixpoint DP.
+Li's original 1976 paper is paywalled (recorded in `[[li_zuchswang]]`); this survey
+proves the theory and stands in its place. It is structural warrant, not a formula —
+the budgeted skip count S(n) still comes from the run's DP.
+
 **Caveat (open):** the counting model is a *surrogate* — its (A,B) transitions
 (One →(A−1,B), Zero →(A,B−1)) ignore that deleting a leading 1 can also drop 0-bits
 (e.g. "100"→0). Given S(2)=2, S(5)=17, S(10)=64 are reproduced, but real-vs-counting

@@ -23,6 +23,11 @@ the two counters (A,B) with a budgeted skip**. Together they establish:
   play); [[mfl_pass]] (Morrison–Friedman–Landsberg 2011, arXiv:1204.3222) shows
   dynamically that a pass can *dramatically* change a game's structure (Nim),
   so S(n) cannot be read off the no-skip value and must come from the DP.
+  The rigorous *loopy-game* frame for the pass as a 1-cycle, and **Li's zugzwang-
+  game theory** (zugzwang games are exactly `x & y` for dyadic `x≤y`), is now the
+  primary source [[siegel_zugzwang]] (Siegel 2009, Games of No Chance 3) — the
+  theorem-level basis for [[zugzwang]]/[[loopy]]: the no-skip board is a stopper,
+  the skip is a pass loop, One is in zugzwang.
 - [[strategy]] is a dead end here: generic strategic game theory contributes
   nothing to computing S(n).
 
