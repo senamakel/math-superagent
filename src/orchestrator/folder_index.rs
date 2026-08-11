@@ -108,6 +108,33 @@ fn index_for(folder: &str) -> String {
     }
 }
 
+/// Recovers the file a row names, however the row spells it.
+///
+/// An agent maintaining a summary tree is told to link its notes as
+/// `[[wikilinks]]`, and it applies that to the index table too: a live
+/// research index came back with every row keyed `L2/[[rank_lehmer]]` instead
+/// of `` `L2/rank_lehmer.md` ``. Every row then matched no file on disk, so the
+/// next refresh dropped all of them as stale and re-listed the real files
+/// undescribed — twelve descriptions lost in one pass.
+///
+/// The row was not wrong so much as written in the vocabulary the rest of the
+/// tree uses. Reading it is cheaper and more robust than forbidding it, since
+/// a prompt rule against reformatting had already failed once.
+fn file_name(named: &str) -> String {
+    let bare = named
+        .trim()
+        .trim_end_matches('*')
+        .trim_end_matches(']')
+        .trim_start_matches('[');
+    let bare = bare.trim_matches(|character| character == '[' || character == ']');
+    // A wikilink carries no extension by convention; a plain row already has
+    // one, and adding a second would invent a file.
+    match std::path::Path::new(bare).extension() {
+        Some(_) => bare.to_string(),
+        None => format!("{bare}.md"),
+    }
+}
+
 /// Reads the descriptions already recorded in an index.
 ///
 /// Tolerant by design: an index a human or an agent has reformatted must not
