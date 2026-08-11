@@ -4,12 +4,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `AGENTS.md` | _(undescribed)_ |
-| `amoeba_2d.py` | BFS for 2D amoeba process, D_2D(N) N=0..15, to test the A007902 identity suggested by the run's index. |
-| `amoeba_extend.py` | _(undescribed)_ |
-| `amoeba_verify.py` | _(undescribed)_ |
-| `brute.py` | _(undescribed)_ |
-| `brute_bits.py` | _(undescribed)_ |
-| `brute_capped.py` | _(undescribed)_ |
+| `AGENTS.md` | House rules for working inside code/: programs live here, outputs in code/out/, code is a package tree with lib/, and every program's index row must say what established it correct (brute oracle keeps its agreed examples). Read before writing a program. |
+| `amoeba_2d.py` | Standalone 2D amoeba BFS: amoeba at (x,y) divides into (x+1,y),(x,y+1) if both empty, counts distinct reachable occupied sets after N divisions, printing D_2D(N) N=0..15 for comparison against A007902. Overlaps purpose with code/amoeba2d/d2d.py and code/amoeba/d2_bfs.py; kept as an independent standalone check for the A007902 identity. |
+| `amoeba_extend.py` | Extended BFS oracle for PE763 that also dumps per-config structural features (level histogram, bbox dims, max level M) for levels in a range to /workspace/data/level_N.txt. Uses lib/amoeba.py for verified BFS + feature code. Reproduces D(2)=3, D(10)=44499, D(12)=514419, D(13)=1749267; cap is 5,000,000 states. |
+| `amoeba_verify.py` | Second independent BFS oracle for PE763 D(N), written to differ structurally from lib/amoeba.next_level_bits (builds a non-blocked-cube set, re-derived step) so large-N values get a second route. Validated by reproducing D(0..13); confirms the primary bitmask D(14)=5949063 result. |
+| `brute.py` | Naive BFS oracle for D(N): enumerates every distinct set of occupied cubes reachable after exactly N divisions. Returns len of reachable sets. Verified: D(2)=3, D(10)=44499 match the statement. Exponential state space; only for N<=~10. |
+| `brute_bits.py` | Memory-compact BFS oracle for D(N) using fixed-width W bitmask per config, so the encoding is level-independent. Cross-checked against brute_extended.py (the frozenset oracle, validated on D(2)=3, D(10)=44499) for N=0..12. The one-step successor next_level_bits is IMPORTED from lib/amoeba.py (the single shelved definition), not duplicated here. Same exponential state space; pushes the oracle a little further. |
+| `brute_capped.py` | Capped BFS oracle for D(N): drives levels up to a max-depth arg, stops when the frontier exceeds 600k states, prints the full D(N) sequence and the checks D(2)=3, D(10)=44499. This is the live-at-root brute.py, moved under code/ so the root holds only Markdown; verified reproducing D(2)=3 and D(10)=44499. |
 | `brute_extended.py` | Level-by-level BFS oracle for D(N): same definition as brute.py but drives one BFS step per level from N=0 up, recording D(N) for every level, and stops when a level exceeds a time budget. Verified reproducing D(2)=3 and D(10)=44499 first. Same exponential state space as brute.py; only used to push the oracle a little beyond what brute.py reaches. |
+| `check_a007902.py` | Verifies that OEIS A007902's exact G(k,m) recurrence (from the amaobea2d_pebbling_a007902 finding) reproduces the 2D amoeba sequence: computes a(1..15) via the memoised recurrence and checks it equals D_2D(0..14). Confirms the 2D-amoeba=A007902 identity by an independent structural route. |
 | `research_structure.py` | Structural analysis of PE763 growth rule: BFS computation of D(N) in d=2 and d=3, and verification of the reverse-merge (children→parent) reducibility characterization. |
