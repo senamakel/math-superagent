@@ -81,6 +81,27 @@ Verified by two independent routes:
 (`config_features`, `feature_record`). Both `amoeba_bits.py` and data dumps
 import from it (no duplicated definition).
 
+## M-histograms (N=13, N=14)
+
+Counting distinct configs grouped by max level M = max(x+y+z) at N=13 and
+N=14 (driven with the same lib/amoeba.next_level_bits BFS as amoeba_extend.py;
+program code/amoeba/mhist_13_14.py, output code/out/mhist_13_14.txt):
+
+N=13: M=7:612 M=8:9342 M=9:51678 M=10:172044 M=11:393660 M=12:590490 M=13:531441
+N=14: M=7:267 M=8:7122 M=9:54756 M=10:237897 M=11:688905 M=12:1417176 M=13:1948617 M=14:1594323
+
+Totals sum to D(13)=1749267 and D(14)=5949063 (verified). Notable structure:
+the maximal-level bin M=N equals 3^(N-1) (3^12=531441 for N=13, 3^13=1594323
+for N=14) — consistent with a single chain of length N (each of the N-1
+non-root steps can move along any of 3 axes). M>=7 at these N (a config after
+N divisions always has its MAXIMUM level at least 7 for N=13,14; the M=N bin
+is the chain(s)).
+
+Also of note: the run must gc.collect() between levels or the N=14 step
+OOM-kills at the 2 GiB cgroup cap (peak ~2.147e9 bytes, right at the limit).
+Without GC the first attempt exited 137; with explicit collection it
+completes in ~69s total (~23s for the N=14 BFS step, ~30s for the histogram).
+
 ## 2D seed: the exact structural DP for A007902 (to be lifted to 3D)
 
 The 2D amoeba (a cell at (x,y) splits into (x+1,y),(x,y+1) if both empty) is
