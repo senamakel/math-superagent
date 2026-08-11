@@ -9,34 +9,19 @@ D_2D(N) = number of DISTINCT sets of occupied cells reachable after exactly N
 divisions.
 
 This is a BFS over frozensets of (x,y) cells (the small, fine case; the 2D
-state space is far smaller than 3D), matching the structure of code/brute.py.
-Correctness can be sanity-checked for N=0 (the single config {(0,0)}) and by
-hand for N=1 (one division -> {(1,0),(0,1)} so D_2D(1)=1).
+state space is far smaller than 3D).  It uses the canonical 2D driver
+reachable_sets/D from lib/amoeba at d=2, which matches the structure formerly
+duplicated in this file (this copy genuinely applied the 2D rule, diverging
+from the 3D brute.py — resolved by the d parameter, not by choosing one).
+Correctness sanity: N=0 -> {(0,0)} (single config), N=1 -> {(1,0),(0,1)} so
+D_2D(1)=1.
 """
 
-
-def reachable_sets(N):
-    """All distinct occupied-cell frozensets reachable after exactly N divisions."""
-    start = frozenset({(0, 0)})
-    level = {start}
-    for _ in range(N):
-        nxt = set()
-        for S in level:
-            Sset = set(S)
-            for (x, y) in S:
-                a = (x + 1, y)
-                b = (x, y + 1)
-                if a not in Sset and b not in Sset:
-                    ns = Sset - {(x, y)} | {a, b}
-                    nxt.add(frozenset(ns))
-        level = nxt
-        if not level:
-            break
-    return level
+from lib.amoeba import D
 
 
 def D_2D(N):
-    return len(reachable_sets(N))
+    return D(N, d=2)
 
 
 if __name__ == "__main__":
