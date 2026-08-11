@@ -617,12 +617,13 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "reflection" => &["goal.md", "tasks.md", "memory.md"],
         // Analyses computed data: needs the numbers, not the plan.
         "pattern_finder" => &["goal.md", "memory.md", "scratchpad.md"],
-        // Proposes alternatives: needs the objective and what already failed.
-        "inventor" => &["goal.md", "memory.md"],
         // Gathers sources: needs the objective and the existing library index.
         "librarian" => &["goal.md", "memory.md", "reference/INDEX.md"],
-        // Answers a focused question: needs the objective and prior findings.
-        "research" => &["goal.md", "memory.md"],
+        // Answer or propose against the record: the inventor needs `memory.md`
+        // for its failed-approaches section above all, since re-proposing what
+        // already failed is the one thing it exists not to do; research needs
+        // the same file so it does not re-establish a known fact.
+        "inventor" | "research" => &["goal.md", "memory.md"],
         _ => &[],
     }
 }

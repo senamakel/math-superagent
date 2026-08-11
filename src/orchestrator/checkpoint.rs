@@ -16,7 +16,9 @@
 //! explicit work tree avoids that entirely: the outer repository ignores one
 //! directory and sees ordinary files.
 
-use std::path::{Path, PathBuf};
+#[cfg(test)]
+use std::path::Path;
+use std::path::PathBuf;
 use std::process::Stdio;
 use std::sync::Arc;
 
@@ -181,10 +183,9 @@ fn summarise(content: &str) -> String {
     condensed.chars().take(72).collect()
 }
 
-/// Returns the path of the workspace history directory, for callers that need
-/// to exclude it.
-#[must_use]
-pub(super) fn history_directory(workspace: &Path) -> PathBuf {
+/// Returns the path of the workspace history directory.
+#[cfg(test)]
+fn history_directory(workspace: &Path) -> PathBuf {
     workspace.join(HISTORY_DIR)
 }
 
