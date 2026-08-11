@@ -5,10 +5,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `L0.0/homomesies_permutations_arxiv.md` | _(undescribed)_ |
-| `L1.1/legendre_number_system_cyclic_shift.md` | _(undescribed)_ |
 | `L0.1/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
 | `L0.2/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
-| `L1.2/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `L1.0/archer_geary_descents_powers.md` | _(undescribed)_ |
 | `L1.0/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
 | `L1.0/cambie_yan_html.md` | _(undescribed)_ |
@@ -16,7 +14,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/conjugacy_class_statistics_body.md` | _(undescribed)_ |
 | `L1.0/factorial_number_system_wiki.md` | _(undescribed)_ |
 | `L1.0/ford_cycle_type_toolkit.md` | _(undescribed)_ |
-| `L1.0/gaetz_ryba_stable_chars_permutation_patterns.md` | _(undescribed)_ |
+| `L1.0/gaetz_ryba_stable_chars_permutation_patterns.md` | ERRONEOUS DOWNLOAD marker: the file name promises the Gaetz–Ryba stable-characters/permutation-patterns paper but the L0.0 companion actually contains arXiv:2107.10110 (a NeurIPS machine-learning paper on zeroth-order optimization), unrelated to permutations. Negative/dead download — filename untrustworthy, do not re-read; no support for any belief here. |
 | `L1.0/homomesies_permutations.md` | _(undescribed)_ |
 | `L1.0/hultman_products_random_permutations.md` | _(undescribed)_ |
 | `L1.1/leanos_mth_roots_of_permutations.md` | _(undescribed)_ |
@@ -39,6 +37,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2.0/cycle_type_toolkit.md` | _(undescribed)_ |
 | `L2.0/mechanism_pair_inversions.md` | _(undescribed)_ |
 | `L2.0/order_random_permutation.md` | _(undescribed)_ |
+| `L2.0/rank_lehmer.md` | _(undescribed)_ |
+| `L2.0/report_A_n_B_n_closed_forms_sources.md` | _(undescribed)_ |
+| `L2.0/reports_negatives.md` | _(undescribed)_ |
+_random_permutation.md` | _(undescribed)_ |
 | `L2.0/rank_lehmer.md` | _(undescribed)_ |
 | `L2.0/report_A_n_B_n_closed_forms_sources.md` | _(undescribed)_ |
 | `L2.0/reports_negatives.md` | _(undescribed)_ |

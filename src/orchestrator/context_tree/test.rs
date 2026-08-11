@@ -123,6 +123,56 @@ fn a_sealed_batch_is_not_asked_for_again() {
 }
 
 #[test]
+fn a_seal_must_link_back_to_everything_it_compressed() {
+    let root = workspace("seal-links");
+    fill(&root, "research/L0.0", FANOUT);
+    // A seal naming only two of the ten notes has replaced the other eight
+    // rather than compressed them: nothing points at their detail any more.
+    text(
+        &root,
+        "research/L1.0/L0.0.md",
+        "Together these establish the bound. See [[s00]] and [[s01]].",
+    );
+    write(&root, "research/ROOT.md", 400);
+    touch(&root, "research/ROOT.md");
+    let task = plan(&root)
+        .into_iter()
+        .find(|task| matches!(task.fault, Fault::Unlinked { .. }))
+        .expect("a seal that drops links is reported");
+    assert_eq!(task.node.path, "research/L1.0/L0.0.md");
+    let Fault::Unlinked { batch, missing } = task.fault else {
+        unreachable!("matched above")
+    };
+    assert_eq!(batch, "research/L0.0");
+    assert_eq!(missing.len(), FANOUT - 2, "{missing:?}");
+    assert!(missing.contains(&"research/L0.0/s09.md".to_string()));
+
+    let brief = briefing(&root).unwrap_or_default();
+    assert!(brief.contains("research/L0.0/s09.md"), "{brief}");
+    assert!(brief.contains("directory, not a fold"), "{brief}");
+}
+
+#[test]
+fn a_seal_that_links_its_whole_batch_is_accepted() {
+    let root = workspace("seal-linked");
+    fill(&root, "research/L0.0", FANOUT);
+    let body = (0..FANOUT)
+        .map(|index| format!("[[s{index:02}]] contributes a term."))
+        .collect::<Vec<_>>()
+        .join(" ");
+    text(&root, "research/L1.0/L0.0.md", &body);
+    write(&root, "research/ROOT.md", 400);
+    touch(&root, "research/ROOT.md");
+    assert!(
+        !faults(&root)
+            .iter()
+            .any(|fault| matches!(fault, Fault::Unlinked { .. })),
+        "{:?}",
+        faults(&root)
+    );
+}
+
+#[test]
 fn a_batch_still_filling_is_left_alone() {
     let root = workspace("filling");
     fill(&root, "research/L0.0", FANOUT - 1);
