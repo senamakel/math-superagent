@@ -637,6 +637,12 @@ impl Tool<()> for AsyncSubagentTool {
             }
             AsyncToolKind::Steer => "Redirects a live subagent with an additional instruction.",
             AsyncToolKind::Await => "Waits for a subagent run and returns its status and response.",
+            AsyncToolKind::SpawnMany => {
+                "Starts several subagents at once and returns all their run ids. Prefer this over                  repeated spawn_agent: every call you make costs a full turn, so launching five                  agents one at a time spends minutes of generation before any of them starts,                  while this launches them together. Split the work into pieces that do not depend                  on each other and launch every piece here in one call — the runtime executes                  dozens concurrently. Each brief is a few sentences; the agents read the                  workspace themselves."
+            }
+            AsyncToolKind::AwaitMany => {
+                "Waits for several subagent runs and returns all their results together. Use it                  after spawn_agents: awaiting one run at a time serialises work that already ran                  in parallel, and costs a turn for each. Omit `run_ids` to wait for every run you                  have started that is still outstanding."
+            }
         }
     }
 
