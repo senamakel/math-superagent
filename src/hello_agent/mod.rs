@@ -7,8 +7,9 @@ use serde_json::json;
 
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
-    configure_tool_deadline, openrouter_model_from_env,
+    configure_run_budget, openrouter_model_from_env,
 };
+use crate::agent::budget::RunBudget;
 use crate::orchestrator::async_subagents::AsyncSubagentManager;
 
 const SYSTEM_PROMPT: &str = "You are a friendly hello-world agent. Use tools when they help. \
@@ -37,13 +38,14 @@ impl HelloAgent {
     /// variables are missing or invalid.
     pub fn from_env() -> Result<Self> {
         let model = openrouter_model_from_env()?;
+        let budget = RunBudget::from_env();
 
         let mut child_harness: AgentHarness<()> = AgentHarness::new();
         child_harness
             .register_model("openrouter", model.clone())
             .set_default_model("openrouter");
-        configure_tool_deadline(&mut child_harness);
-        let async_subagents = AsyncSubagentManager::new();
+        configure_run_budget(&mut child_harness, budget);
+        let async_subagents = AsyncSubagentManager::new(budget, None);
         async_subagents.register("helper", Arc::new(child_harness), SUBAGENT_PROMPT)?;
 
         let mut parent_harness: AgentHarness<()> = AgentHarness::new();

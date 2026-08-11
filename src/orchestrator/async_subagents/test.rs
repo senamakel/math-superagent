@@ -8,6 +8,8 @@ use tokio::sync::Semaphore;
 
 use super::{AgentExecutor, AsyncSubagentManager};
 use crate::agent::Result;
+use crate::agent::budget::RunBudget;
+use crate::agent::trace::RunTracer;
 
 struct SteerableExecutor {
     started: Arc<Semaphore>,
@@ -21,6 +23,7 @@ impl AgentExecutor for SteerableExecutor {
         _run_id: &str,
         input: String,
         steering: tinyagents::harness::steering::SteeringHandle,
+        _tracer: Option<Arc<RunTracer>>,
     ) -> Result<String> {
         self.started.add_permits(1);
         let _permit = self.release.acquire().await.map_err(|error| {
@@ -39,7 +42,7 @@ impl AgentExecutor for SteerableExecutor {
 
 #[tokio::test]
 async fn spawn_returns_before_completion_then_peek_and_await_return_response() -> Result<()> {
-    let manager = AsyncSubagentManager::new();
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
     let started = Arc::new(Semaphore::new(0));
     let release = Arc::new(Semaphore::new(0));
     manager.register_executor(
@@ -70,7 +73,7 @@ async fn spawn_returns_before_completion_then_peek_and_await_return_response() -
 
 #[tokio::test]
 async fn independent_runs_can_execute_in_parallel() -> Result<()> {
-    let manager = AsyncSubagentManager::new();
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
     let started = Arc::new(Semaphore::new(0));
     let release = Arc::new(Semaphore::new(0));
     manager.register_executor(
