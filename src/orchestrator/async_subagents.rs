@@ -155,6 +155,7 @@ impl AsyncSubagentManager {
             Arc::new(HarnessExecutor {
                 harness,
                 system_prompt: system_prompt.into(),
+                langfuse: self.langfuse.clone(),
             }),
         )
     }
