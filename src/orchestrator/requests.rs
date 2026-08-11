@@ -124,6 +124,13 @@ pub(super) async fn refresh(documents: &WorkspaceDocuments) {
     let _ = documents
         .write_runtime(REQUESTS_PATH, &render(&queue, &ledger))
         .await;
+    super::folder_index::record_description(
+        documents,
+        REQUESTS_PATH,
+        "Derived: gaps other roles walked into and stated precisely, and whether a claim has \
+         closed each. Rewritten on every request and research write; do not edit.",
+    )
+    .await;
 }
 
 /// How many of a request's distinctive words a claim carries.

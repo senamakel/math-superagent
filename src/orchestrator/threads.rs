@@ -313,6 +313,13 @@ pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) {
     let _ = documents
         .write_runtime(THREADS_PATH, &threads.render(&ledger))
         .await;
+    super::folder_index::record_description(
+        documents,
+        THREADS_PATH,
+        "Derived: every direction of attack under research/threads/, what each rests on, and why \
+         the dead ones died. Rewritten on every research write; do not edit.",
+    )
+    .await;
 }
 
 /// Whether a written path is a thread file the table is derived from.

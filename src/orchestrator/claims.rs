@@ -574,6 +574,16 @@ pub(super) fn is_markdown(relative: &str) -> bool {
 pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) -> Ledger {
     let ledger = collect(documents.root());
     let _ = documents.write_runtime(CLAIMS_PATH, &ledger.render()).await;
+    // Described here rather than left to the organizer, because a derived file
+    // nobody wrote by hand has no author to ask what it is for, and an index
+    // row reading `_(undescribed)_` for the life of a run is worse than none.
+    super::folder_index::record_description(
+        documents,
+        CLAIMS_PATH,
+        "Derived: every claim block in the notes, one row each, with whether its hypotheses hold \
+         here and what evidence stands behind it. Rewritten on every research write; do not edit.",
+    )
+    .await;
     ledger
 }
 

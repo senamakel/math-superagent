@@ -155,6 +155,13 @@ pub(super) async fn record(
     store(documents, &ledger).await;
     let rendered = render(&ledger, goal);
     let _ = documents.write_runtime(FRONTIER_PATH, &rendered).await;
+    super::folder_index::record_description(
+        documents,
+        FRONTIER_PATH,
+        "Derived: sources this library's own documents cite but the run has not read, ranked by \
+         how many of them cite each. Rewritten on every download; do not edit.",
+    )
+    .await;
 }
 
 /// Returns where the run already filed `url`, if it has downloaded it.
