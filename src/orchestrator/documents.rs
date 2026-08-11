@@ -1023,12 +1023,22 @@ impl DocumentTool {
                 },
                 if split {
                     format!(
-                        "{path} holds a {} byte excerpt to read first; the complete text is at \
-                         {full}. Have the scholar replace the excerpt with a summary.",
-                        excerpt.len()
+                        "{path} holds a {} byte structural digest to read first — its outline, \
+                         what it claims, and the statements it makes; the complete text is at \
+                         {full}. Have the scholar replace the digest with a summary. {} of its \
+                         citations were added to {}.",
+                        excerpt.len(),
+                        converted.links.len(),
+                        super::frontier::FRONTIER_PATH
                     )
                 } else {
-                    format!("{path} holds the whole document ({} bytes)", excerpt.len())
+                    format!(
+                        "{path} holds the whole document ({} bytes); {} of its citations were \
+                         added to {}.",
+                        excerpt.len(),
+                        converted.links.len(),
+                        super::frontier::FRONTIER_PATH
+                    )
                 }
             )
         };
