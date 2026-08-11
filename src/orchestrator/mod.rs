@@ -438,6 +438,13 @@ impl OrchestratorAgent {
                  library now establishes that it did not before.",
             ),
             (
+                "patterns",
+                "pattern_finder",
+                teams::Completion::Standing,
+                teams::TeamBudget::custodial(),
+                "Look for exploitable structure in the results this run has already computed.                  Read what is on disk, extract the integer sequences in it, and run the                  sequence tools over them. Where a check needs terms the run has not                  computed, write and run the program yourself or commission it — a                  conjecture tested only on the data that suggested it is untested. Report                  only regularities that hold exactly over every term supplied, say plainly                  that they are conjectures, and give the first term that would falsify                  each. An invented pattern costs the run more than no pattern, so when the                  results have not changed since you last looked, or hold too few terms to                  say anything exact, reply NOTHING FURTHER rather than reaching. Record                  what you do find in SCRATCHPAD.md, and promote it to MEMORY.md only once                  it has survived an attempt to break it.",
+            ),
+            (
                 "background",
                 "organizer",
                 teams::Completion::Standing,
