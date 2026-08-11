@@ -169,7 +169,8 @@ fn cross_references(entry: &Value, from: &str) -> Vec<LinkRecord> {
         let digits: String = bytes[index + 1..]
             .iter()
             .take(6)
-            .take_while(char::is_ascii_digit)
+            .copied()
+            .take_while(|digit| digit.is_ascii_digit())
             .collect();
         if digits.len() != 6 {
             continue;
