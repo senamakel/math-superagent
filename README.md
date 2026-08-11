@@ -191,14 +191,23 @@ time legitimately exceeds the wall clock.
 That one stream carries eleven roles and every child run they spawn, which is
 right for a trace and wrong for watching: in one live run the organizer alone
 produced 232 of the first 400 lines, so the solve's own progress scrolled past
-between two index refreshes. `./euler-tui <number>` runs or continues the same
-box behind a tab per team:
+between two index refreshes. `./euler-tui <number>` watches the same box
+behind a tab per team:
 
 ```sh
-./euler-tui 763                 # start or continue, one tab per team
+./euler-tui 763                 # attach, or start the run if none is going
+./euler-tui 763 --attach        # attach only; fail rather than start one
 ./euler-tui 763 --replay        # open the tabs on a finished run's log
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
 ```
+
+The run is a detached container and this is a client of it. `euler-tui` asks
+Docker which container has the workspace mounted and follows that one, starting
+a run only when none is going, so opening a second view attaches rather than
+starting a second run — which put two runs on one workspace, writing the same
+files and making checkpoint commits over each other, before it worked this way.
+`docker logs` replays a container from its start, so a client attaching an hour
+in still gets every tab populated before its first frame.
 
 `Tab`, `n`, or the right arrow move to the next team and `Shift-Tab`, `p`, or
 the left arrow to the previous; the digits jump straight to one; the arrows and
@@ -495,7 +504,6 @@ Dockerfile                  build and runtime jail
 compose.yaml                agent and Qdrant services
 scripts/run-agent           helper implementation
 scripts/solve-euler         fetch and solve workflow
-scripts/euler-tui           tabbed console implementation
 workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, config, and memory
 src/
