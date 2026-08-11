@@ -698,6 +698,13 @@ import. Asking an organizer to notice a routine typed out three times would
 cost it a read of every program in `code/` to discover, which is most of what a
 cycle costs; it is a count rather than a judgement, so it is counted.
 
+Every write path enforces it: `write_document`, an `apply_patch` addition, and
+`write_tool_file`. That last one was the hole — it wrote wherever it was asked,
+so `write_tool_file` with `path: "brute.py"` put a program at the root while
+every other path was guarded. A live run did it within four minutes of starting
+and left two different `brute.py` files, one filed and one loose, with nothing
+to say which was current.
+
 What the write path cannot catch is a shell redirect or a heredoc:
 `cat > solve.py <<'EOF'` and `python solve.py > out.txt` reach the filesystem
 directly, and the tool sees only a command and an exit code. Asking the
@@ -709,7 +716,9 @@ backstop rather than the defence.
 
 Three rules keep a sweep that frequent safe. A destination that already exists
 is left alone, because a file carrying a result must never be overwritten by
-one that shares its name. A failure to move anything is silent, because the
+one that shares its name — but the collision is *reported*, because silence
+leaves the stray at the root for the rest of the run with nothing to say which
+of the two files is current. A failure to move anything is silent, because the
 command succeeded and tidying must not turn that into an error. And every move
 is named in the tool result, for the same reason `layout::note` exists: an
 agent not told where its file went runs `python solve.py` again and cannot
