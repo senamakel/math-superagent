@@ -474,8 +474,8 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | --- | --- |
 | programs (`.py`, `.sh`, `.c`, `.rs`, …) | `code/` |
 | what a program produced | `code/out/` |
-| downloaded sources | `research/L0/`, digested into `research/L1/` |
-| reflections | `reflections/L0/` |
+| downloaded sources | `research/L0.<n>/`, digested into `research/L1.<n>/` |
+| reflections | `reflections/L0.<n>/` |
 | reusable helpers | `code/toolkits/` |
 | plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index | `config/` |
 | untouched download bytes | `raw/` |
@@ -517,18 +517,29 @@ from what it worked out.
 (`src/orchestrator/context_tree.rs`):
 
 ```text
-research/            reflections/
-├── INDEX.md         ├── INDEX.md      the root — what it all now means
-├── L0/              ├── L0/           originals, never edited
-├── L1/              ├── L1/           one note per original
-└── L2/              └── L2/           one note per ten notes below
+research/
+├── ROOT.md          what the whole library now establishes
+├── INDEX.md         what each file is — maintained by the index tools
+├── L0.0/            the first ten originals, sealed
+├── L0.1/            the next ten, still filling
+├── L1.0/            one note per sealed L0 batch: L0.0.md, L0.1.md, …
+└── L2.0/            one note per sealed L1 batch, once L1.0 fills
 ```
 
 `L0` is the untouched original — the complete converted document, or the
-reflection the loop wrote. Each level above holds one note per ten below,
-capped at a thousand tokens, and a new level appears only when the one under it
-outgrows a single node. `CONTEXT.md` is a root in its own right under the same
-cap.
+reflection the loop wrote. A *batch* holds at most ten notes; when it fills it
+is sealed by one note a level up, named for the batch it covers, capped at a
+thousand tokens, and never revisited. Sealing once is the point: a flat level
+is re-summarised every time anything is added, so the same sources are
+re-compressed indefinitely and the summary drifts. `CONTEXT.md` is a root in
+its own right under the same cap.
+
+`ROOT.md` is deliberately not `INDEX.md`. The index says what each file *is*
+and is derived from the directory by the index tools; the root says what the
+library *means* and is written by an agent. Holding both in one file put a tool
+and an agent in contention over it and cost three separate rounds of lost
+descriptions — a refresh overwriting a synthesis, then a synthesis overwriting
+rows, then rows rewritten in a spelling the refresh could not match.
 
 The cap is the point. These files are re-sent on every model call in every role
 that reads them, and asking a prompt for "a few hundred words" produced a 6.8 KB
@@ -541,7 +552,7 @@ so the workspace opens as a vault and what a fold leaves out is one step down
 rather than gone.
 
 `context_tree::plan` measures this on disk and reports one fault at a time —
-over budget, then outgrown, then behind its children — and `briefing` renders
+over budget, then waiting to be sealed, then behind what it covers — and `briefing` renders
 the highest-priority one into the research team's next cycle. It writes
 nothing: a fold is a judgement about meaning, so an agent writes it; whether a
 node is within budget and reflects what is under it is not a judgement, so it
@@ -549,11 +560,10 @@ is measured. Structure is recovered from the links themselves rather than a
 manifest, because a fold that has stopped linking a note has stopped covering
 it — exactly the fact a manifest would hide.
 
-`research/INDEX.md` therefore carries a synthesis as well as a table. The
-synthesis sits between `<!-- brief -->` markers and is written by an agent; the
-table below is derived from the directory by `refresh_index`. The markers are
-what let each rewrite its own half — without them the first refresh after a
-fold would silently replace the root of the tree with a file listing.
+`documents::research_path` and the reflection log both file into the *open*
+batch, which `context_tree::open_batch` derives from disk: the highest-numbered
+batch still under the fan-out, or the next one when it is full. No writer needs
+to know the tree's history.
 
 The librarian receives the root as context so it does not download the same
 paper twice. Toolkits keep the older flat shape: a folder, an `INDEX.md`, and
@@ -568,7 +578,7 @@ an empty placeholder. The listing hides `.workspace-history`,
 `.python-packages`, `__pycache__`, the document index, and `trace.jsonl`, and
 truncates rather than dumping an unbounded tree.
 
-Every reflection is archived to `reflections/L0/<epoch_ms>_<outcome>.md`, where the
+Every reflection is archived to `reflections/L0.<n>/<epoch_ms>_<outcome>.md`, where the
 outcome is `nothing` or `<n>_learnings`, and indexed in `reflections/INDEX.md`
 in the same step. The folder carries an index for the same reason `research/`
 and `code/toolkits/` do: a directory of epoch-stamped filenames says when each
