@@ -16,47 +16,15 @@ See [[report_literature_ranks_powers]] (clean negative) and
 [[report_A_n_B_n_closed_forms_sources]] (derivation route).
 <!-- /brief -->
 
-What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+The way in: start in **`L2/`** (the curated core-mechanism and synthesis notes),
+then **`L1/`** (one short summary file per source), then **`L0/`** (raw fetches / full
+texts, read only when the L1 summary is not enough). The two per-folder index files
+below this one list and describe every file in each.
 
-| File | Purpose |
+| Folder / File | Purpose |
 | --- | --- |
-| `L0/homomesies_permutations_arxiv.md` | _(undescribed)_ |
-| `L0/legendre_number_system_cyclic_shift.md` | _(undescribed)_ |
-| `L0/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
-| `L0/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
-| `L0/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
-| `L1/archer_geary_descents_powers.md` | _(undescribed)_ |
-| `L1/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
-| `L1/cambie_yan_html.md` | _(undescribed)_ |
-| `L1/conjugacy_class_statistics.md` | _(undescribed)_ |
-| `L1/conjugacy_class_statistics_body.md` | _(undescribed)_ |
-| `L1/factorial_number_system_wiki.md` | _(undescribed)_ |
-| `L1/ford_cycle_type_toolkit.md` | _(undescribed)_ |
-| `L1/gaetz_ryba_stable_chars_permutation_patterns.md` | _(undescribed)_ |
-| `L1/homomesies_permutations.md` | _(undescribed)_ |
-| `L1/hultman_products_random_permutations.md` | _(undescribed)_ |
-| `L1/leanos_mth_roots_of_permutations.md` | _(undescribed)_ |
-| `L1/legendre_number_system_cyclic_shift.md` | L1 summary of Legendre arXiv:1007.2870: a number system ranking/unranking permutations inside a cyclic-shift orbit. Shares PE 903's "rank within one map-orbit" shape but the map is one-line word rotation (orbit size n), not the permutation-power subgroup {π^1..π^d} the problem sums over — closest located related-framework source, not a solution to A_n,B_n. |
-| `L1/lehmer_factorial_norm.md` | _(undescribed)_ |
-| `L1/nathanson_fixed_points_powers.md` | _(undescribed)_ |
-| `L1/oeis_Aseq.md` | _(undescribed)_ |
-| `L1/oeis_Bdiv.md` | _(undescribed)_ |
-| `L1/oeis_Qseq.md` | _(undescribed)_ |
-| `L1/oeis_invpowers.md` | _(undescribed)_ |
-| `L1/oeis_invpowers2.md` | _(undescribed)_ |
-| `L1/pinsky_inversion_fixed_points.md` | _(undescribed)_ |
-| `L1/pinsky_schickentanz_ewens_html.md` | _(undescribed)_ |
-| `L1/pinsky_schickentanz_ewens_inversions.md` | _(undescribed)_ |
-| `L1/report_cited_facts.md` | _(undescribed)_ |
-| `L1/report_literature_ranks_powers.md` | _(undescribed)_ |
-| `L1/report_rank_powers.md` | _(undescribed)_ |
-| `L1/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
-| `L1/stong_average_order_permutation.md` | _(undescribed)_ |
-| `L2/cycle_type_toolkit.md` | _(undescribed)_ |
-| `L2/mechanism_pair_inversions.md` | _(undescribed)_ |
-| `L2/order_random_permutation.md` | _(undescribed)_ |
-| `L2/rank_lehmer.md` | _(undescribed)_ |
-| `L2/report_A_n_B_n_closed_forms_sources.md` | _(undescribed)_ |
-| `L2/reports_negatives.md` | _(undescribed)_ |
-| `verify_cambie_yan.py` | _(undescribed)_ |
-| `verify_facts.py` | _(undescribed)_ |
+| `L2/` → INDEX.md | Curated synthesis: `mechanism_pair_inversions.md` (PROVED per-gap affine mechanism, two proofs), `rank_lehmer.md` (rank model), `order_random_permutation.md` (n!/ord weights), `cycle_type_toolkit.md` (summation engine), `report_A_n_B_n_closed_forms_sources.md` (step-by-step derivation route to A_n,B_n), `reports_negatives.md` (clean negative on the cyclic-subgroup rank-sum) |
+| `L1/` → INDEX.md | One short summary per source: Cambie-Yan (small-exponent powers), Campion-Loth (per-class gap-affine), Pinsky-Schickentanz & Pinsky (Ewens / fixed-point inversion), Sack-Úlfarsson (per-gap Eulerian machinery), Ford (cycle-type toolkit), Hultman, Leaños, Nathanson, Legendre (cyclic-orbit rank), homomesy framework, Stong (average order), OEIS negative lookups, literature reports |
+| `L0/` → INDEX.md | Raw fetches and `.full.md` full texts (one companion per L1 summary); includes flagged dead downloads (Gaetz-Ryba mislabel, Pinsky derangement marker). Read the L1 summary first, open full only when needed |
+| `verify_cambie_yan.py` | Verification script: checks Cambie-Yan (2408.01211) Thms 1.1/1.2 expected-descents/inversions formulas vs direct enumeration n=3..7, checks the f_n(k) gap-affinity from extend_f.json, and re-measures per-gap pair-inversion probabilities under the random-power law n=5..7 |
+| `verify_facts.py` | Verification oracle: literal rank(pi^i) double-sum Q(n) for reachable n, plus the rank-statistics check sum of all 1-based ranks = n!(n!+1)/2; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88 |
