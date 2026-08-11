@@ -302,10 +302,38 @@ impl OrchestratorAgent {
             &load_workspace_files(&workspace, &["prompts/goals.md"])?,
         );
 
-        let mut research_harness = specialist_harness(model.clone(), budget);
+        let reflection_prompt = workspace_prompt(
+            REFLECTION_PROMPT,
+            &shared_guidance,
+            &load_workspace_files(&workspace, &["prompts/reflection.md"])?,
+        );
+        let pattern_prompt = workspace_prompt(
+            PATTERN_PROMPT,
+            &shared_guidance,
+            &load_workspace_files(&workspace, &["prompts/pattern_finder.md"])?,
+        );
+        let inventor_prompt = workspace_prompt(
+            INVENTOR_PROMPT,
+            &shared_guidance,
+            &load_workspace_files(&workspace, &["prompts/inventor.md"])?,
+        );
+        let librarian_prompt = workspace_prompt(
+            LIBRARIAN_PROMPT,
+            &shared_guidance,
+            &load_workspace_files(&workspace, &["prompts/librarian.md"])?,
+        );
+
         let vector_store = VectorStore::from_env()?;
-        if research_enabled {
-            register_resilient(&mut research_harness, Arc::new(ExaSearchTool::from_env()?));
+        let exa = if research_enabled {
+            Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>)
+        } else {
+            None
+        };
+
+        // research: search the web, and remember what it found.
+        let mut research_harness = specialist_harness(model.clone(), budget);
+        if let Some(exa) = exa.clone() {
+            register_resilient(&mut research_harness, exa);
         }
         register_resilient(
             &mut research_harness,
@@ -313,13 +341,14 @@ impl OrchestratorAgent {
         );
         register_resilient(
             &mut research_harness,
-            Arc::new(RememberResearchTool::new(vector_store)),
+            Arc::new(RememberResearchTool::new(vector_store.clone())),
         );
         for tool in documents.tools() {
             register_resilient(&mut research_harness, tool);
         }
-        let research_harness = Arc::new(research_harness);
+        async_subagents.register("research", Arc::new(research_harness), research_prompt)?;
 
+        // tool_builder: the only role with shell and file-write authority.
         let mut tool_builder_harness = specialist_harness(model.clone(), budget);
         register_resilient(
             &mut tool_builder_harness,
@@ -327,18 +356,67 @@ impl OrchestratorAgent {
         );
         register_resilient(
             &mut tool_builder_harness,
-            Arc::new(ExecuteCommand::new(workspace, budget.tool_timeout)),
+            Arc::new(ExecuteCommand::new(workspace.clone(), budget.tool_timeout)),
         );
         for tool in documents.tools() {
             register_resilient(&mut tool_builder_harness, tool);
         }
-        let tool_builder_harness = Arc::new(tool_builder_harness);
+        async_subagents.register(
+            "tool_builder",
+            Arc::new(tool_builder_harness),
+            tool_builder_prompt,
+        )?;
 
-        async_subagents.register("research", research_harness, research_prompt)?;
-        async_subagents.register("tool_builder", tool_builder_harness, tool_builder_prompt)?;
+        // reflection: judges an attempt. Deliberately has no research or
+        // execution tools, so it cannot wander into solving the problem itself.
+        let mut reflection_harness = specialist_harness(model.clone(), budget);
+        for tool in documents.tools() {
+            register_resilient(&mut reflection_harness, tool);
+        }
+        async_subagents.register("reflection", Arc::new(reflection_harness), reflection_prompt)?;
 
+        // pattern_finder: exact sequence analysis over results already computed.
+        let mut pattern_harness = specialist_harness(model.clone(), budget);
+        for tool in PatternTool::all() {
+            register_resilient(&mut pattern_harness, tool);
+        }
+        for tool in documents.tools() {
+            register_resilient(&mut pattern_harness, tool);
+        }
+        async_subagents.register("pattern_finder", Arc::new(pattern_harness), pattern_prompt)?;
+
+        // inventor: proposes a different approach, backed by research.
+        let mut inventor_harness = specialist_harness(model.clone(), budget);
+        if let Some(exa) = exa.clone() {
+            register_resilient(&mut inventor_harness, exa);
+        }
+        register_resilient(
+            &mut inventor_harness,
+            Arc::new(RecallResearchTool::new(vector_store.clone())),
+        );
+        register_resilient(
+            &mut inventor_harness,
+            Arc::new(RememberResearchTool::new(vector_store)),
+        );
+        for tool in documents.tools() {
+            register_resilient(&mut inventor_harness, tool);
+        }
+        async_subagents.register("inventor", Arc::new(inventor_harness), inventor_prompt)?;
+
+        // librarian: gathers primary material into a workspace reference library.
+        let mut librarian_harness = specialist_harness(model.clone(), budget);
+        if let Some(exa) = exa {
+            register_resilient(&mut librarian_harness, exa);
+        }
+        for tool in documents.tools() {
+            register_resilient(&mut librarian_harness, tool);
+        }
+        async_subagents.register("librarian", Arc::new(librarian_harness), librarian_prompt)?;
+
+        // goals: the worker the solution loop drives, with the full specialist
+        // bench beneath it.
         let mut goals_harness = specialist_harness(model.clone(), budget);
-        for tool in async_subagents.tools(["research", "tool_builder"]) {
+        for tool in async_subagents.tools(SPECIALISTS) {
             register_resilient(&mut goals_harness, tool);
         }
         for tool in documents.tools() {
@@ -349,7 +427,7 @@ impl OrchestratorAgent {
         let registry = Arc::new(default_registry(research_enabled)?);
 
         let mut orchestrator_harness = specialist_harness(model, budget);
-        for tool in async_subagents.tools(["research", "tool_builder", "goals"]) {
+        for tool in async_subagents.tools(DELEGATES) {
             register_resilient(&mut orchestrator_harness, tool);
         }
         for tool in documents.tools() {
@@ -357,10 +435,30 @@ impl OrchestratorAgent {
         }
 
         Ok(Self {
-            inner: ObservedAgent::from_harness(orchestrator_harness)?.with_tracer(tracer),
+            inner: ObservedAgent::from_harness(orchestrator_harness)?.with_tracer(tracer.clone()),
             registry,
             system_prompt: orchestrator_prompt,
+            subagents: async_subagents,
+            tracer,
         })
+    }
+
+    /// Runs the graph-backed solution loop over a problem.
+    ///
+    /// Unlike [`Self::run`], which gives the orchestrator a single turn and
+    /// trusts it to delegate well, this drives an explicit attempt, reflect,
+    /// diversify cycle. Use it when the problem is hard enough that the first
+    /// approach is likely to be wrong.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error only when the loop graph cannot be compiled or run; a
+    /// failing specialist becomes a lesson rather than a failure.
+    pub async fn solve(&self, problem: impl Into<String>) -> Result<String> {
+        let state = solutions::SolutionState::new(problem);
+        let finished =
+            solutions::run(self.subagents.clone(), Some(self.tracer.clone()), state).await?;
+        Ok(finished.outcome())
     }
 
     /// Returns the registry used for delegation.
