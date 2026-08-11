@@ -126,8 +126,9 @@ const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work
     /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \
     source, scripts, tests, and documentation. Use execute_command to run, test, and debug them. \
     Python and pip are available as python and pip; pip installs into the current workspace. \
-    Use the document tools for working references and maintain goal.md, tasks.md, scratchpad.md, \
-    and memory.md as the work develops. \
+    Use list_workspace to see what is already on disk before assuming a file does not exist, and \
+    the document tools for working references. Maintain goal.md, tasks.md, scratchpad.md, and \
+    memory.md as the work develops. \
     Before substantial execution, state the method, the mathematical result it rests on, and its \
     time and space complexity. Prefer exact integer and rational arithmetic. Test the method \
     against small cases with a known answer before running it at full size. \
@@ -143,7 +144,7 @@ const REFLECTION_PROMPT: &str = "You are the reflection agent. You judge one att
     caller asks for.";
 
 const PATTERN_PROMPT: &str = "You are the pattern-recognition specialist. You find exploitable \
-    structure in data the investigation has already produced. Read the workspace results, extract \
+    structure in data the investigation has already produced. Use list_workspace to find the result files, read them, extract \
     the integer sequences that matter, and run analyze_sequence and find_linear_recurrence on \
     them. Those tools are exact: report what they establish over the terms supplied, and never \
     dress up a fit as a proof. A recurrence or closed form that holds for every term given is a \

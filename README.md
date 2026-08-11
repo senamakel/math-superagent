@@ -163,6 +163,10 @@ files already present. The seed includes local agent instructions, role
 prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, and `memory.md`.
 The runtime reads those files at the start of every run.
 
+Agents can traverse the workspace with `list_workspace` to find files rather
+than guess their names, and every reflection is archived under `reflections/`
+with a filename recording whether it produced learnings.
+
 Each agent receives only the working files its role actually needs: reflection
 sees the goal and the record but never the scratchpad, the inventor always sees
 which approaches already failed, and the pattern agent sees the raw computed

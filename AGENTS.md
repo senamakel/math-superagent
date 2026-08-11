@@ -292,6 +292,21 @@ agent will never follow.
 The PDF extractor runs inside `catch_unwind` because it panics on malformed
 input, and a panic there would destroy work unrelated to the document.
 
+## Workspace discovery and the reflection log
+
+`list_workspace` renders a bounded tree with file sizes. Agents previously knew
+only the file names their prompt happened to mention, so work already on disk
+went unread; sizes matter because they distinguish a finished derivation from
+an empty placeholder. The listing hides `.workspace-history`,
+`.python-packages`, `__pycache__`, the document index, and `trace.jsonl`, and
+truncates rather than dumping an unbounded tree.
+
+Every reflection is archived to `reflections/<epoch_ms>_<outcome>.md`, where the
+outcome is `nothing` or `<n>_learnings`. The name carries the result so a
+directory listing alone shows which attempts taught the run something. Writing
+the log is best effort: the lesson is already in the loop state, and losing the
+archive copy must not cost the run the lesson.
+
 ## Workspace context routing
 
 Context is authority, and it is also noise. `role_context` in
