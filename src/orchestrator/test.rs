@@ -149,14 +149,16 @@ fn a_declaration_whose_class_contradicts_its_prose_is_refused() {
     // over all n! permutations, twice nested, declared `polynomial` with
     // `O((n!)^2)` in the free text. The forbidden list looked for `o(n!` and
     // the extra parenthesis meant it never matched.
-    let message = match validate_complexity(
+    let refused = validate_complexity(
         "n=7: 5040^2 x 7 tuple operations; polynomial (O((n!)^2))",
         "polynomial",
         None,
-    ) {
-        Ok(()) => panic!("prose naming a factorial cost must not pass as polynomial"),
-        Err(refused) => refused.to_string(),
-    };
+    );
+    assert!(
+        refused.is_err(),
+        "prose naming a factorial cost must not pass as polynomial"
+    );
+    let message = refused.err().map(|error| error.to_string()).unwrap_or_default();
     assert!(
         message.contains("oracle_bound"),
         "the refusal must say how to declare it honestly: {message}"
