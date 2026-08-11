@@ -97,7 +97,10 @@ fn every_role_shares_one_identical_cacheable_prefix() {
         shared_len > 1_000,
         "roles share only {shared_len} leading characters; the policy must come first"
     );
-    assert!(first.starts_with("\n\nMethod policy"));
+    // No leading blank lines: the prompt now comes from a file, and starting
+    // the most-cached string in the runtime with whitespace is a wart that
+    // survived only because it was buried in a Rust literal.
+    assert!(first.starts_with("Method policy"), "{}", &first[..40]);
 }
 
 #[test]
