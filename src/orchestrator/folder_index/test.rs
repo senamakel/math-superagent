@@ -81,6 +81,34 @@ fn a_tree_level_is_described_in_the_index_at_its_root() {
     assert!(!super::is_level("L") && !super::is_level("Lib") && !super::is_level("folds"));
 }
 
+#[tokio::test]
+async fn describing_a_sources_full_text_points_at_the_digest_instead() -> Result<()> {
+    // `refresh` never lists a full text, so a description of one is discarded
+    // on the next pass. A live organizer spent seventeen calls that way.
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let documents = super::super::documents::WorkspaceDocuments::new(workspace.path().into())?;
+    let tools = super::FolderIndexTool::all(&documents);
+    let describe = tools
+        .iter()
+        .find(|tool| tool.name() == "describe_file")
+        .expect("describe_file is registered");
+
+    let refused = describe
+        .call(&crate::agent::ToolCall::new(
+            "1",
+            "describe_file",
+            serde_json::json!({
+                "path": "research/L0/paper.full.md",
+                "purpose": "the whole converted paper"
+            }),
+        ))
+        .await;
+
+    let message = refused.map_or_else(|error| error.to_string(), |result| result.to_string());
+    assert!(message.contains("research/L0/paper.md"), "{message}");
+    Ok(())
+}
+
 #[test]
 fn a_row_written_as_a_wikilink_still_names_its_file() {
     // A live research index came back with every row keyed
