@@ -58,6 +58,15 @@ RUN apt-get update \
 # the container root filesystem is read-only at runtime and a run that has to
 # install its solver before it can encode anything has already lost minutes of
 # its budget.
+#
+# `numpy scipy pandas matplotlib` are re-installed from pip beside them, and
+# that is not redundancy. CP-SAT depends on NumPy 2, pip therefore upgrades it,
+# and Debian's `python3-matplotlib` and `python3-pandas` are compiled against
+# NumPy 1 — so `import igraph`, which pulls matplotlib transitively, printed six
+# `_ARRAY_API not found` tracebacks before struggling on. Pip installs into
+# `/usr/local/lib/python3/dist-packages`, which precedes the apt tree on
+# `sys.path`, so the pip wheels shadow the apt builds and the whole stack agrees
+# on one NumPy.
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
        python3-z3 python3-pulp python3-pycosat python3-igraph \
@@ -90,17 +99,25 @@ RUN curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-ini
     && elan default "$(cat lean-toolchain)" \
     && lake exe cache get \
     && lake build \
-    && lake env printenv LEAN_PATH > /opt/lean_path.txt
+    && lake env printenv LEAN_PATH > /opt/lean_path.txt \
+    && chmod -R a+rX /opt/elan /opt/mathlib4 /opt/lean_path.txt
 
 # `lean` is wrapped rather than given an `ENV LEAN_PATH`, because the value is
 # the search path of every Mathlib dependency and is only known after the build
 # above ran — and `ENV` cannot take a command substitution. Without the full
 # path a plain `import Mathlib.…` fails on `unknown module prefix 'Batteries'`,
 # which reads as a broken install rather than a missing variable.
+#
+# The smoke test runs as the unprivileged runtime user, not as root. `lake exe
+# cache get` unpacks its oleans mode 600, so every import failed at runtime with
+# `Permission denied` on a file that plainly existed — a root-only smoke test
+# passes and tells you nothing about the run.
 RUN printf '#!/bin/sh\nLEAN_PATH="$(cat /opt/lean_path.txt)${LEAN_PATH:+:$LEAN_PATH}"\nexport LEAN_PATH\nexec /opt/elan/bin/lean "$@"\n' > /usr/local/bin/lean \
     && chmod 0755 /usr/local/bin/lean \
     && printf '%s\n' 'import Mathlib.Combinatorics.SimpleGraph.Finite' > /tmp/smoke.lean \
-    && lean /tmp/smoke.lean \
+    && chmod 0644 /tmp/smoke.lean \
+    && su agent -s /bin/sh -c 'lean /tmp/smoke.lean' \
+    && su agent -s /bin/sh -c 'python3 -W error::RuntimeWarning -c "import igraph, matplotlib, pandas, numpy, z3, pysat.solvers; from ortools.sat.python import cp_model"' \
     && rm /tmp/smoke.lean
 
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
