@@ -8,7 +8,7 @@ use tinyagents::harness::subagent::{SubAgent, SubAgentTool};
 
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
-    openrouter_model_from_env,
+    configure_tool_deadline, openrouter_model_from_env,
 };
 
 const SYSTEM_PROMPT: &str = "You are a friendly hello-world agent. Use tools when they help. \
@@ -41,6 +41,7 @@ impl HelloAgent {
         child_harness
             .register_model("openrouter", model.clone())
             .set_default_model("openrouter");
+        configure_tool_deadline(&mut child_harness);
         let child = SubAgent::new(
             "spawn_subagent",
             "Delegates a focused task to a separate helper agent.",

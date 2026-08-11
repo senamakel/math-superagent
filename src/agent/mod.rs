@@ -14,8 +14,10 @@ use tinyagents::harness::observability::{
     HarnessEventJournal, InMemoryEventJournal, JournalSink, LangfuseClient, LangfuseTraceConfig,
 };
 use tinyagents::harness::providers::openai::OpenAiModel;
+use tinyagents::harness::tool::ToolTimeoutSettings;
 
 const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
+const TOOL_TIMEOUT_MS: u64 = 10 * 60 * 1_000;
 
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
@@ -98,13 +100,23 @@ impl ObservedAgent {
         result
     }
 
-    pub(crate) fn from_harness(harness: SlimAgent) -> Result<Self> {
+    pub(crate) fn from_harness(mut harness: SlimAgent) -> Result<Self> {
         let _ = dotenvy::dotenv();
+        configure_tool_deadline(&mut harness);
         Ok(Self {
             harness,
             langfuse: LangfuseClient::from_env()?,
         })
     }
+}
+
+pub(crate) fn configure_tool_deadline(harness: &mut SlimAgent) {
+    harness.with_tool_timeout_settings(ToolTimeoutSettings::new(
+        TOOL_TIMEOUT_MS,
+        1,
+        TOOL_TIMEOUT_MS,
+        0,
+    ));
 }
 
 pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
