@@ -6,7 +6,7 @@ use tinyagents::graph::OrchestrationTaskStatus;
 use tinyagents::harness::steering::SteeringCommand;
 use tokio::sync::Semaphore;
 
-use super::{AgentExecutor, AsyncSubagentManager};
+use super::{AgentExecutor, AsyncSubagentManager, DEFAULT_MAX_CONCURRENT_AGENTS};
 use crate::agent::Result;
 use crate::agent::budget::RunBudget;
 use crate::agent::trace::RunTracer;
@@ -107,5 +107,52 @@ async fn independent_runs_can_execute_in_parallel() -> Result<()> {
         manager.await_record(second.as_str(), 1).await?.status,
         OrchestrationTaskStatus::Completed
     );
+    Ok(())
+}
+
+#[tokio::test]
+async fn the_default_cap_is_wide_enough_for_the_fan_out_the_registry_can_produce() {
+    // The cap bounds provider concurrency; it is not a queue. A parent holds
+    // its slot while awaiting children, so the default has to stay far above
+    // the depth and width the registry can reach.
+    assert!(DEFAULT_MAX_CONCURRENT_AGENTS >= 50);
+}
+
+#[tokio::test]
+async fn concurrent_runs_are_capped_and_the_queue_drains() -> Result<()> {
+    let manager = AsyncSubagentManager::with_concurrency(RunBudget::default(), None, 2);
+    let started = Arc::new(Semaphore::new(0));
+    let release = Arc::new(Semaphore::new(0));
+    manager.register_executor(
+        "worker",
+        Arc::new(SteerableExecutor {
+            started: started.clone(),
+            release: release.clone(),
+        }),
+    )?;
+
+    let ids = (0..4)
+        .map(|index| manager.spawn("worker", format!("task-{index}")))
+        .collect::<Result<Vec<_>>>()?;
+
+    // Two runs start; the other two wait for a slot rather than for input.
+    let _first_pair = started.acquire_many(2).await.map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("test start semaphore closed: {error}"))
+    })?;
+    assert_eq!(started.available_permits(), 0);
+
+    // Spawning stayed non-blocking: every run has an id and a record already.
+    for id in &ids {
+        assert!(manager.record(id.as_str()).is_ok());
+    }
+
+    // Releasing the running pair lets the queued pair through.
+    release.add_permits(4);
+    for id in &ids {
+        assert_eq!(
+            manager.await_record(id.as_str(), 5).await?.status,
+            OrchestrationTaskStatus::Completed
+        );
+    }
     Ok(())
 }
