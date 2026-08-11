@@ -126,7 +126,8 @@ impl WorkspaceDocuments {
         let path = self.path(relative)?;
         let canonical = path.canonicalize().map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!(
-                "failed to resolve workspace document `{relative}`: {error}"
+                "failed to resolve workspace document `{relative}`: {error}{}",
+                self.nearby(relative)
             ))
         })?;
         if !canonical.starts_with(&self.workspace) || !canonical.is_file() {
