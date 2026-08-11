@@ -88,7 +88,7 @@ const DIGEST_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
             beliefs. For each new source, replace its placeholder excerpt with what it actually \
             establishes and what that implies here, under a thousand tokens. Say which sources do \
             not help and why, and flag anything that contradicts what memory.md asserts.",
-    rewrites_shared_index: true,
+    rewrites_shared_index: false,
 };
 
 const ORGANIZE_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
