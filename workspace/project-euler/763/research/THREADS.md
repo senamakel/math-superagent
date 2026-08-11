@@ -4,4 +4,6 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[lift_gkm_to_3d]] | Can the 3D D(N) = folded-polyominoid reachable-position count be computed to N=10000 via a 3D analogue of the 2D CGMO G(k,m) recurrence, rather than exact BFS… | open | n3-folded-polyominoid-voidance, d2-positions-are-polyominoid-voidance | use data/level_N.txt (level histograms, max level M, bbox for N=2..12) to identify how D(N) decomposes by top-level/highest-pebble structure — the 2D G(k,m)… |

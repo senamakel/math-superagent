@@ -44,5 +44,12 @@ level-histogram DP), but the correct counting object is now named and sourced.
 ## Sources of evidence
 Every theorem above is sourced with a URL in the named notes; none is invented.
 The G(k,m) recurrence and the reverse-merge/folded-polyominoid picture on small
-N are cross-checked against the run's own BFS (see code/amoeba2d/).
-Deliberately NOT consulted: any Project Euler 763 solution/forum thread.
+N are cross-checked against the run's own BFS (see code/amoeba2d/). The three
+primary-source digests have been verified against their full texts: CGMO's
+Lemmas 1-3 & Theorem 1 ([[L2.0/cgmo_opening_dijkstra]] ⇄ [[L0.0/cgmo_opening_dijkstra.full]]),
+Zhen-Knessl's recurrence/contour/asymptotics ([[L2.0/pebbling_knessl_pdf]] ⇄
+[[L0.0/pebbling_knessl_pdf.full]]), and Eriksson's Theorems 9,10, Props 20,24,
+and Fig.3 table ([[L2.0/pebbling_ejc_survey]] ⇄ [[L0.0/pebbling_ejc_survey.full]],
+column n=2 = Catalan and row k=2 = n(3n-1)/2 both re-checked by hand). The two
+structural claims are marked holds-here=yes. Deliberately NOT consulted: any
+Project Euler 763 solution/forum thread.
