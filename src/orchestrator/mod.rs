@@ -2,6 +2,7 @@
 
 pub(crate) mod async_subagents;
 mod checkpoint;
+mod context_tree;
 mod documents;
 mod folder_index;
 mod patch;
