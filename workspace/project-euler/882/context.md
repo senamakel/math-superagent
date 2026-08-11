@@ -28,3 +28,17 @@ unweighted summatory sequences; the run's own derivation applies the same
 bit-position decomposition for the weighting.) Also now on record: a source
 caveat that the leading-bit-deletion effect means the counting model is a
 surrogate whose S(n)-agreement with the real game is being checked empirically.
+
+**Newest addition (weightedmom.md):** the *weighted* side now has a named,
+citable theory backing the k·-weighting instead of a bare derivation. Larcher &
+Pillichshammer (2005), "Moments of the weighted sum-of-digits function", shows
+that first-moment digit sums (Σ k·popcount(k), Σ k·zerocount(k) are exactly
+first moments of digit-count functions) admit **Delange-type closed forms** —
+a main term plus a fluctuation — rather than needing term-by-term summation. So
+the k·-weighted A(n) and B(n) are not merely unweighted-with-a-patch: they are
+instances of a class of functions known to have polylog-expressible moments.
+Caveat recorded: only the abstract is locally available (PDF gated); the paper
+is cited for the existence/structure of the weighted moment formulas, and the
+specific O(log n) recurrences still come from A000788/A059015 plus the run's
+bit-position decomposition.
+
