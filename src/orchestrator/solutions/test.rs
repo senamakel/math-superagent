@@ -343,8 +343,7 @@ fn one_provider_failure_is_absorbed_rather_than_ending_the_run() {
     // exist to absorb. Ending a run on one would throw away work they would
     // have recovered.
     let mut current = state();
-    current.blocked = 1;
-    assert!(BLOCKED_THRESHOLD > 1);
+    current.blocked = BLOCKED_THRESHOLD - 1;
     assert_eq!(route(&current), Route::Retry);
 }
 
