@@ -378,6 +378,8 @@ impl AsyncSubagentManager {
         harness: Arc<AgentHarness<()>>,
         system_prompt: impl Into<String>,
     ) -> Result<()> {
+        let name = name.into();
+        let role = name.clone();
         self.register_executor(
             name,
             Arc::new(HarnessExecutor {
@@ -385,6 +387,8 @@ impl AsyncSubagentManager {
                 system_prompt: system_prompt.into(),
                 langfuse: self.langfuse.clone(),
                 max_turn_output_tokens: self.budget.max_turn_output_tokens,
+                role,
+                session: self.session.clone(),
             }),
         )
     }
