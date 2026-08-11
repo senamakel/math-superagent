@@ -247,61 +247,7 @@ impl OrchestratorAgent {
         }
         async_subagents.register("goals", Arc::new(goals_harness), goals_prompt)?;
 
-        let mut registry = AgentRegistry::new();
-        registry
-            .register(
-                AgentDefinition::new(
-                    "research",
-                    "Research Agent",
-                    "Uses Exa to research current facts and return cited evidence.",
-                )
-                .with_model("openrouter")
-                .with_tools([
-                    "exa_search",
-                    "recall_research",
-                    "remember_research",
-                    "download_document",
-                    "read_document",
-                    "index_document",
-                    "search_documents",
-                ]),
-            )?
-            .register(
-                AgentDefinition::new(
-                    "tool_builder",
-                    "Tool Builder Agent",
-                    "Writes and executes tools in the jailed /workspace directory.",
-                )
-                .with_model("openrouter")
-                .with_tools([
-                    "write_tool_file",
-                    "execute_command",
-                    "download_document",
-                    "read_document",
-                    "write_document",
-                    "edit_document",
-                    "index_document",
-                    "search_documents",
-                ]),
-            )?
-            .register(
-                AgentDefinition::new(
-                    "goals",
-                    "Goals Agent",
-                    "Pursues a goal and delegates research, implementation, and verification.",
-                )
-                .with_model("openrouter")
-                .with_tools([
-                    "spawn_agent",
-                    "peek_agent",
-                    "steer_agent",
-                    "await_agent",
-                    "read_document",
-                    "write_document",
-                    "edit_document",
-                ]),
-            )?;
-        let registry = Arc::new(registry);
+        let registry = Arc::new(default_registry()?);
 
         let mut orchestrator_harness = specialist_harness(model);
         for tool in async_subagents.tools(["research", "tool_builder", "goals"]) {
