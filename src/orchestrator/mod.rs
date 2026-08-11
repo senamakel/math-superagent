@@ -816,12 +816,18 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // The two roles that write and run code need the same picture: what is
         // being attempted, what is already built, and the provisional numbers
         // a derivation is sitting on.
+        // They also get `code/`: the rules for working there travel with the
+        // folder, and its index says which programs exist and what established
+        // each is correct — which is what stops the run writing a fourth
+        // variant of a check it already has.
         "tool_builder" | "coder" => &[
             "config.toml",
             "goal.md",
             "tasks.md",
             "memory.md",
             "scratchpad.md",
+            "code/AGENTS.md",
+            "code/INDEX.md",
             "toolkits/INDEX.md",
             "research/INDEX.md",
             "context.md",
