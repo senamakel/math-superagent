@@ -1,0 +1,21 @@
+Naive real-game minimax oracle (code/brute.py) against the statement's worked examples.
+
+Worked examples given in problem 882 (problem.md):
+  S(2)=2, S(5)=17, S(10)=64.
+
+Oracle reproductions:
+
+n=1: explicit S=1, memo S=1, match=True      (not in statement; oracle baseline)
+n=2: explicit S=2, memo S=2, match=True      -> WORKED EXAMPLE S(2)=2  REPRODUCED
+n=3: explicit S=3? -> actually both 8        (not in statement)
+n=5: S(5)=17, states_memoized=83052          -> WORKED EXAMPLE S(5)=17 REPRODUCED
+n=10: timed out (>240s)                      -> WORKED EXAMPLE S(10)=64 NOT reached
+      by the naive oracle; the stated bound is intended to defeat enumeration.
+
+Command line that produced S(2),S(5):
+  timeout 60 python3 -c "... from brute import S_explicit,S_real ..."   (n=1,2,3)
+  timeout 120 python3 -c "... from brute import S_real; S_real(5) ..."  (n=5)
+
+The real-game move generator one_deletions/zero_deletions deletes one '1' or '0'
+bit from the canonical binary string, drops leading zeros (empty -> 0), and a
+move on 0 is impossible.  That precisely matches the statement.
