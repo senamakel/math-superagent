@@ -9,6 +9,7 @@ mod documents;
 mod folder_index;
 mod frontier;
 mod layout;
+mod oeis;
 mod patch;
 mod patterns;
 mod readable;
@@ -621,6 +622,12 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "list_workspace",
         "describe_file",
         "refresh_index",
+        // Derived from the library rather than written into it, and available
+        // wherever the document tools are: the role that needs to know what
+        // the run establishes, or that walks into a gap, is whichever one is
+        // working.
+        "search_claims",
+        "request_research",
     ];
     let mut registry = AgentRegistry::new();
     registry
@@ -635,7 +642,9 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 },
             )
             .with_model("openrouter")
-            .with_tools(research_enabled.then_some("exa_search").into_iter().chain([
+            .with_tools(research_enabled.then_some("exa_search").into_iter().chain(
+                research_enabled.then_some("oeis_lookup")
+            ).chain([
                 "recall_research",
                 "remember_research",
                 document_tools[0],
@@ -685,7 +694,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
 /// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 9],
+    document_tools: [&'static str; 11],
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
@@ -718,6 +727,11 @@ fn support_agents(
             [
                 "analyze_sequence",
                 "find_linear_recurrence",
+                // The one lookup whose query is not a phrasing problem: terms
+                // it has computed either match a catalogued sequence or they
+                // do not, so it cannot turn a bounded structural question into
+                // a second investigation.
+                "oeis_lookup",
                 // It tests conjectures by computing more terms, so it needs to
                 // write and run a program like any other worker.
                 "write_tool_file",
@@ -740,6 +754,7 @@ fn support_agents(
             research_enabled
                 .then_some("exa_search")
                 .into_iter()
+                .chain(research_enabled.then_some("oeis_lookup"))
                 .chain(["recall_research", "remember_research"])
                 .chain(document_tools),
         ),
@@ -754,6 +769,7 @@ fn support_agents(
             research_enabled
                 .then_some("exa_search")
                 .into_iter()
+                .chain(research_enabled.then_some("oeis_lookup"))
                 .chain(document_tools),
         ),
         AgentDefinition::new(
