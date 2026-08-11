@@ -11,6 +11,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `conjugacy_class_statistics_body.md` | Summary of Campion-Loth et al (2301.00898): per-cycle-type inversion probability is translation-invariant and affine in gap, depends only on n,a_1,a_2 (Lemma 4.7); one route proving the A_n,B_n mechanism |
 | `factorial_number_system_wiki.md` | Summary: factoradic (Lehmer) digits give lexicographic rank; digits independent, j-th uniform on {0..j} |
 | `ford_cycle_type_toolkit.md` | Summary of Ford, "Cycle type of random permutations: A toolkit" (2104.12019): exact factorial moments of cycle counts, Poisson(1) fixed points, sieve methods — summation engine for the cycle-type sums behind A_n,B_n |
+| `homomesies_permutations.md` | Summary of Elder et al (2206.13409): homomesy (statistic average constant on each map orbit); Lehmer-code rotation orbits all size lcm(1..n), inversion stats homomesic (Thm 4.7/4.8). Framework for averaging a statistic over {π^i}; rank not covered |
 | `hultman_products_random_permutations.md` | Summary of Hultman (1301.0430): irreducible-character method for expected stats on products of class-distributed perms; template, not solution (independent products, not {π^i}) |
 | `leanos_mth_roots_of_permutations.md` | Summary of Leaños (1005.1531): exact m-th-root counts by cycle type; NOT directly usable for the intra-subgroup rank sum |
 | `lehmer_factorial_norm.md` | Summary of Zawiślak (2111.03951) on Lehmer/factoradic digits and ranks; neither addresses powers or the cyclic subgroup {π^i} |

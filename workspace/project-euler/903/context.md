@@ -19,6 +19,7 @@ Established (all mechanism/route; none solves rank-sum over {π^i}):
 - [[stong_average_order_permutation]]: average-order law governing the n!/ord(π) weights.
 - [[factorial_number_system_wiki]]: Lehmer code = lex rank. [[oeis_Aseq]]/[[oeis_Bdiv]]/[[oeis_Qseq]]: A_n,B_n,Q(n) uncatalogued.
 - [[sack_ulfarsson_refined_inversion_statistics]]: gap-resolved inversion statistics — closed per-gap k-step inversion distribution H_{n,k} via Eulerian polynomials (Thm 4.4), dot-product identity 1·π=n(n+1)(2n+1)/6−invsum (Thm 2.5), zone-crossing recurrence. New machinery for the per-gap counts f_n(k); single-permutation only, not {π^i}.
+- [[homomesies_permutations]] (Elder et al, 2206.13409): NEW — the homomesy framework. A statistic is homomesic under a map when its average is constant on every orbit, so an orbit-average equals the global average. Lehmer-code rotation: every orbit has size lcm(1..n) (Thm 4.8) and 45 inversion-linked stats are homomesic there (Thm 4.7). This is the natural phrasing of the open 'average rank over the cyclic subgroup {π^i}' question, but the map is rotation (not permutation-power/{π^i}) and rank itself is not homomesic there. So it sharpens but does not close the core.
 
 Open core: no closed form for A_n,B_n; summing Lehmer ranks over the cyclic subgroup {π^i} is
 covered by no source located — all above are routes, not the Q(10^6) computation.

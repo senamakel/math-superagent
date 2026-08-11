@@ -4,10 +4,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `L0/homomesies_permutations_arxiv.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/2206.13409; not yet read, excerpt pending a scholar summary |
+| `L0/homomesies_permutations_arxiv.md` | Raw summary of the arXiv abstract page for Elder–Lafrenière–McNicholas–Striker–Welch, "Homomesies on permutations" (2206.13409): 128 homomesy instances on S_n under Lehmer-code rotation, etc. Full text companion is homomesies_permutations_arxiv.full.md (abstract only; PDF not captured). Only a route toward the run's open core (averaging rank over the cyclic subgroup {pi^i}), not the solution — map here is Lehmer-code rotation, not permutation power, and rank is not among the homomesic statistics. Curated summary: L1/homomesies_permutations.md |
 | `L0/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
 | `L0/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
-| `L0/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
+| `L0/sack_ulfarsson_refined_inversion_statistics.md` | Redundant parallel summary of the same Sack & Úlfarsson source (arXiv:1106.1995) also covered by sack_ulfarsson_refined_inversion_pdf.md — same k-step inversion results; kept, not current (duplicate of pdf.md) |
 | `L1/archer_geary_descents_powers.md` | _(undescribed)_ |
 | `L1/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
 | `L1/cambie_yan_html.md` | _(undescribed)_ |
@@ -15,6 +15,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1/conjugacy_class_statistics_body.md` | _(undescribed)_ |
 | `L1/factorial_number_system_wiki.md` | _(undescribed)_ |
 | `L1/ford_cycle_type_toolkit.md` | _(undescribed)_ |
+| `L1/homomesies_permutations.md` | Summary of Elder et al (2206.13409): homomesy — statistic average constant on each orbit of a map; Lehmer-code rotation orbits all size lcm(1..n), 45 inversion stats homomesic (Thm 4.7/4.8); conceptual framework for averaging rank over the cyclic subgroup {π^i}, rank itself not covered |
 | `L1/hultman_products_random_permutations.md` | _(undescribed)_ |
 | `L1/leanos_mth_roots_of_permutations.md` | _(undescribed)_ |
 | `L1/lehmer_factorial_norm.md` | _(undescribed)_ |
