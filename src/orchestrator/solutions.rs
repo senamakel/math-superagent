@@ -84,6 +84,12 @@ impl SolutionState {
         }
     }
 
+    /// Returns the problem as posed, for briefing work that runs beside the
+    /// loop rather than inside it.
+    pub(super) fn problem(&self) -> &str {
+        &self.problem
+    }
+
     /// Renders the accumulated lessons for a child prompt.
     fn lesson_briefing(&self) -> String {
         if self.lessons.is_empty() {

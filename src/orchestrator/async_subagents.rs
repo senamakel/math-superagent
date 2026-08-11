@@ -485,7 +485,7 @@ impl AsyncSubagentManager {
     }
 
     /// Reports whether an agent is registered under this name.
-    fn knows(&self, agent: &str) -> bool {
+    pub(super) fn knows(&self, agent: &str) -> bool {
         self.agents
             .read()
             .is_ok_and(|agents| agents.contains_key(agent))

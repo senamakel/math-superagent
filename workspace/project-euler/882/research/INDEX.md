@@ -11,4 +11,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `partisan.md` | Wikipedia excerpt on partisan games (not impartial; asymmetric player moves, Sprague–Grundy does not apply). The bit-deletion game is partisan: One deletes 1-bits, Zero deletes 0-bits. |
 | `strategy.md` | Dead end: generic strategy article, nothing relevant. Marked as examined so nobody reads it again. |
 | `surreal.md` | Wikipedia excerpt on surreal numbers (ordered field generalizing the reals, originating in Go endgame analysis). Possible lens for assigning numeric values to game positions. |
-| `zugzwang.md` | Wikipedia excerpt on zugzwang (obligation to move is a disadvantage; passing, if allowed, would be best). Directly relevant to the skip/pass mechanic. |
+| `zugzwang.md` | Mechanism the skip exploits: One is forced to consume 1-bits each turn (zugzwang); "passing, if allowed, would be best" is the classical description of the skip. |
