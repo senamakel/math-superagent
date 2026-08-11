@@ -503,11 +503,12 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `toolkits/INDEX.md`, `research/INDEX.md` |
-| tool_builder | the above plus `scratchpad.md` |
-| reflection | `goal.md`, `tasks.md`, `memory.md`, `INDEX.md` |
+| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `toolkits/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
+| tool_builder, coder | the planners' files plus `scratchpad.md`, minus `reflections/INDEX.md` |
+| reflection | `goal.md`, `tasks.md`, `memory.md`, `INDEX.md`, `reflections/INDEX.md` |
 | pattern_finder | `goal.md`, `memory.md`, `scratchpad.md`, `toolkits/INDEX.md` |
-| librarian, inventor, research | `goal.md`, `memory.md`, `research/INDEX.md` |
+| librarian, research | `goal.md`, `memory.md`, `research/INDEX.md` |
+| inventor | the above plus `reflections/INDEX.md` |
 | scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md` |
 | organizer | `goal.md`, `tasks.md`, `INDEX.md`, `toolkits/INDEX.md`, `research/INDEX.md` |
 

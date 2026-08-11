@@ -15,7 +15,9 @@ present, every signature right, every row saying what established the function
 is correct. A row describing a function that has since changed is the most
 dangerous thing in the workspace, because the next agent calls it as described
 instead of reading it. Split a file holding more than one function, so reading
-the one you need stays cheap. Move, rename, and consolidate when it genuinely
+the one you need stays cheap. Leave reflections/ alone: the solution loop
+writes both each reflection and its row, so a refresh there would replace
+verdicts and lessons with blanks. Move, rename, and consolidate when it genuinely
 helps, and update every index you affect in the same step. Do not delete
 anything carrying a result, a derivation, or a source; when something looks
 obsolete, say so in the index rather than removing it. Never edit a derivation,

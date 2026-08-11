@@ -35,6 +35,12 @@ instead of reading it.
 One function per file. If a file has grown to hold several, split it, so
 reading the one you need stays cheap — and update the index in the same step.
 
+## `reflections/`
+
+Do not touch it. The solution loop writes each reflection and its index row
+itself, including the verdict and the lesson; refreshing that index by hand
+would replace them with `_(undescribed)_`.
+
 ## Limits
 
 - Move, rename, and consolidate when it genuinely helps, and update every index
