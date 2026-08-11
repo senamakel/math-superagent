@@ -22,7 +22,12 @@ The runtime has nine roles plus an explicit solution loop.
 - The goals agent translates an objective into completion criteria and spawns
   specialist subagents until the goal is met or precisely blocked.
 - The research agent uses Exa to find definitions, papers, official references,
-  or current facts. It returns source URLs, separates evidence from inference,
+  or current facts, and is deliberately reluctant: gathering costs a download,
+  a digest, an index row, and a share of every later reader's attention, so it
+  fetches only when the solver reports an attempt STUCK, when `ROOT.md` names a
+  specific gap it knows a specific source for, or not at all. The loop posts
+  each attempt's verdict to the teams so "is the run short of something" is a
+  signal rather than a guess. It returns source URLs, separates evidence from inference,
   and can save reusable notes to Qdrant.
 - The tool-builder writes and executes shell or Python tools in `/workspace`.
   It handles numerical checks, counterexample searches, data extraction, and
@@ -538,8 +543,19 @@ research/
 
 `L0` is the untouched original — the complete converted document, or the
 reflection the loop wrote. A *batch* holds at most ten notes; when it fills it
-is sealed by one note a level up, named for the batch it covers, capped at a
-thousand tokens, and never revisited. Sealing once is the point: a flat level
+is sealed by one note a level up, named for the batch it covers, and never
+revisited.
+
+Two budgets, and the difference is the point. `CONTEXT.md` and each tree's
+`ROOT.md` are held to a thousand tokens because they are routed into system
+prompts, so every model call in every role pays for them. A seal is held to
+four thousand, because nothing carries it in a prompt — it is read on demand by
+whoever follows a link down. Applying the tighter cap to both was the wrong
+reading of why the cap exists, and it showed: a live seal covering four sources
+came to 1,417 bytes against 7,800 bytes of notes, and what survived was one
+line per source. That is a catalogue, and `INDEX.md` already is one. A seal is
+what a reader opens *instead of* the ten notes below it, so it carries every
+distinct result with its hypotheses, not their titles. Sealing once is the point: a flat level
 is re-summarised every time anything is added, so the same sources are
 re-compressed indefinitely and the summary drifts. `CONTEXT.md` is a root in
 its own right under the same cap.
