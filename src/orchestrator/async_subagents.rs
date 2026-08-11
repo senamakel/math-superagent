@@ -269,7 +269,7 @@ impl HarnessExecutor {
 /// read, and the sheer count is what makes a broad query on the legacy
 /// observations endpoint fail outright. What they would have reported is
 /// written to the run's own journal as a summary instead.
-fn worth_exporting(observations: Vec<EventRecord>) -> Vec<EventRecord> {
+fn worth_exporting(observations: Vec<AgentObservation>) -> Vec<AgentObservation> {
     observations
         .into_iter()
         .filter(|record| {
