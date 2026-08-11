@@ -2,16 +2,32 @@
 
 ## Problem
 
-Record the exact question and any interpretation choices.
+Project Euler-style problem (presented in `/workspace/problem.html`; this setup
+labels the objective "problem 175").
+
+- $f(0)=1$; for $n\ge 1$, $f(n)$ = number of ways to write $n$ as a sum of
+  powers of $2$ with no power occurring more than twice.
+- Worked facts (oracle, from the statement, unverified independently so far):
+  - $f(10)=5$ with the five listed decompositions.
+  - Smallest $n$ with $f(n)/f(n-1)=13/17$ is $241$; binary $11110001$;
+    Shortened Binary Expansion (run lengths from MSB) is `4,3,1`.
+- Target: SBE of the smallest $n$ with
+  $f(n)/f(n-1)=123456789/987654321$, output as comma-separated integers, no
+  whitespace.
 
 ## Established results
 
-Record proved steps, verified computations, and source-backed facts.
+(none yet — extraction/writing only; no solving done)
 
 ## Failed approaches
 
-Record attempts that should not be repeated without a new reason.
+(none)
 
 ## Open questions
 
-Record the next unresolved steps.
+- Method to compute the smallest $n$ (do not iterate to the bound; the SBE is
+  expected to be short — a recursive/CF-like construction of the ratio
+  $f(n)/f(n-1)$ is the likely route). Not to be pursued until the oracle cases
+  are reproduced.
+
+Source document: `/workspace/problem.html` (local, no external sources used).
