@@ -1,0 +1,7 @@
+# Index — research/L0
+
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+
+| File | Purpose |
+| --- | --- |
+| `lehmer_factorial_norm.body.full.md` | The Lehmer factorial norm on S n S_{n} — from https://ar5iv.labs.arxiv.org/html/2111.03951; not yet read, excerpt pending a scholar summary |
