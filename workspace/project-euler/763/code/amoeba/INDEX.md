@@ -10,7 +10,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `brute.py` | _(undescribed)_ |
 | `brute_bits.py` | Memory-compact int-bitmask 3D BFS oracle for D(N): each config a fixed-width W bitmask so encoding is level-independent. Imports next_level_bits from lib/amoeba.py (not duplicated). Cross-checked against the frozenset oracle for N=0..12. Canonical copy relocated from code/ root. |
 | `brute_capped.py` | _(undescribed)_ |
-| `brute_extended.py` | _(undescribed)_ |
+| `brute_extended.py` | Level-by-level BFS oracle for D(N): one BFS step per level from N=0 up, recording D(N) every level, stops when a level exceeds a time budget. Verified reproducing D(2)=3 and D(10)=44499. Same exponential state space as brute.py; pushes the oracle a little further. Canonical copy relocated from code/ root. |
 | `configs_n3_n4.py` | BFS oracle with exact frozenset-of-tuples arithmetic that prints the actual reachable configurations of Project Euler 763 for N=3 (9 states) and N=4 (30 states), sorted, one per line, to code/out/configs_n3_n4.txt. Asserts the counts match D(3)=9, D(4)=30. Now imports its one-step successor as next_level_fs from lib/amoeba.py (previously a local copy). |
 | `d2_bfs.py` | Clean exact level-by-level BFS oracle for the 2D amoeba D2(N) using the compact bitmask encoding from lib/amoeba2d; pushes much higher than the d=3 ceiling of N=14 because the 2D state space grows far more slowly. Writes D2(0..Nmax) to code/out/d2_values.txt. Validated at small N against the frozenset oracle (d2_check.py). |
 | `d2_check.py` | Frozenset oracle for the 2D amoeba; independent validation that the bitmask BFS matches for N=0..12 (D2 = 1,1,2,4,9,20,46,105,243,561,1301,3014,6995). |

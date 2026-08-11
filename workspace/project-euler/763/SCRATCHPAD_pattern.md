@@ -73,3 +73,25 @@ falsifier for each is N=15, not BFS-reachable here):
   diagonal count(M=N) = 3^(N-1).
 No NEW structure found this run beyond the already-recorded max-level
 decomposition; re-verified it error-free.
+
+## 7. THIS RUN: k-columns re-confirmed OOS incl N=13,14; leading coeff == 1/k!
+Fresh sympy-exact run (code/pattern/q_columns_fresh.py, q_fresh_verify.py,
+q_coeff_pattern.py) over the full Q_k table rebuilt from data/level_2..12.txt +
+code/out/mhist_13_14.txt:
+- Finite-difference check: each Q_k column vanishes exactly at difference level
+  k, i.e. Q_k is EXACTLY a degree-k polynomial, for k=0..4, using the fresh
+  N=13,14 points as out-of-sample (never in any fit).
+- Leading coefficient of Q_k is EXACTLY 1/k! for k=0..4: k=1:1, k=2:1/2,
+  k=3:1/6, k=4:1/24.
+- Q_5 (needs 6 points, have 4): 4-point degree-5 interpolant gives leading
+  coeff 16 (NOT 1/120), so 1/k! is UNVERIFIED for k>=5; fit unreliable.
+- Q_2 column 4,9,15,22,30,39,49,60,72 (N=6..14) MATCHES OEIS A055999
+  a(n)=n(n+7)/2: for n=N-5 gives (N-5)(N+2)/2, confirming the known Q_2 form
+  from an independent catalogue route. Q_3, Q_4, Q_5 columns NOT in OEIS.
+- Reconstructed D(N) from columns k=0..4 exact for N=2..10, deviates from N=11
+  (k>=5 columns then contribute). Full evaluation still needs general Q_k.
+
+STRONGEST surviving structure (hand to inventor/orchestrator):
+  D(N) = sum_{k=0}^{N-2} Q_k(N) 3^(N-2k-1), each Q_k degree-k poly with leading
+  coefficient 1/k!. First falsifier for the k>=5 column claim: N=15 (needs
+  M-histogram there, not BFS-reachable). Q_2==A055999 sourced, exact N=6..14.

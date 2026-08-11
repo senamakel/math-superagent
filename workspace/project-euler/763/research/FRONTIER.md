@@ -35,16 +35,16 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://info.arxiv.org/labs/showcase.html#arxiv-bibliographic-explorer | What is the Explorer? | Reddit] [23] Bibliographic Tools # Bibliographic and Citation Tools Bibliographic Explorer Toggle Bibliographic Explorer*( [What is the Explorer?][24])* Connected Papers Toggle Connected Papers*(… |
 | 1 | https://oeis.org/A000012 | A000012 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A000045 | A000045 | cross-referenced from A005207 |
+| 1 | https://oeis.org/A000096 | A000096 | cross-referenced from A055999 |
+| 1 | https://oeis.org/A000217 | A000217 | cross-referenced from A055999 |
+| 1 | https://oeis.org/A000290 | A000290 | cross-referenced from A055999 |
 | 1 | https://oeis.org/A001405 | A001405 | cross-referenced from A001006 |
+| 1 | https://oeis.org/A001477 | A001477 | cross-referenced from A055999 |
 | 1 | https://oeis.org/A001519 | A001519 | cross-referenced from A005207 |
 | 1 | https://oeis.org/A001850 | A001850 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A001906 | A001906 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A002476 | A002476 | cross-referenced from A001006 |
+| 1 | https://oeis.org/A002522 | A002522 | cross-referenced from A055999 |
 | 1 | https://oeis.org/A004148 | A004148 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A004149 | A004149 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A005043 | A005043 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A005717 | A005717 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A005773 | A005773 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A005817 | A005817 | cross-referenced from A001006 |
 
-_67 further candidates not shown; they are cited once each._
+_82 further candidates not shown; they are cited once each._

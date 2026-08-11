@@ -29,7 +29,7 @@ def forward_level(level):
     for S in level:
         Sset = set(S)
         for p in Sset:
-            ch = children(p)
+            ch = children(p, DIM)
             if all(c not in Sset for c in ch):
                 nxt.add(frozenset((Sset - {p}) | set(ch)))
     return nxt
@@ -45,7 +45,7 @@ def top_caps(S):
     for p in product(range(maxlvl), repeat=3):
         if level(p) != maxlvl - 1:
             continue
-        ch = children(p)
+        ch = children(p, DIM)
         if p not in Sset and set(ch) == set(top_cells):
             caps.append(p)
     return caps
