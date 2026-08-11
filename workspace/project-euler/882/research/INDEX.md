@@ -4,8 +4,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `L0.0/li_zuchswang.md` | _(undescribed)_ |
-| `L1.1/siegel_zugzwang.md` | _(undescribed)_ |
+| `L0.0/li_zuchswang.md` | Li, "Sums of zugzwang games" (1976), the original zugzwang-game paper — NOT obtained (Elsevier paywall); recorded so the attempt is not repeated. Theory sourced instead via Siegel's survey. |
+| `L0.1/siegel_zugzwang.md` | _(undescribed)_ |
 | `L1.0/a083652.md` | OEIS A083652 summatory bit-length, exact O(1) closed form; third leg of total bits = ones+zeros. |
 | `L1.0/bitcount.md` | OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |
 | `L1.0/cgt.md` | CGT framework (Conway ONAG, Winning Ways): numbers as games, disjunctive sum; board decomposes. |
@@ -26,6 +26,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.1/trollopedelange.md` | Girgensohn 2011 INTEGERS #A54: explicit Trollope–Delange closed forms (1-periodic fluctuation). |
 | `L1.1/verify_trollopedelange.md` | Numeric check-list to run before quoting Girgensohn. |
 | `L1.1/weightedmom.md` | Larcher & Pillichshammer 2005: k·-weighted moments admit Delange-type closed form (our k·-weighted A,B). |
+| `L1.2/L0.0.md` | _(undescribed)_ |
 | `L1.2/weightedsearch.md` | Dead end: OEIS search on sample S(n) → no result; S(n) ∉ OEIS. |
 | `L1.2/zerocount.md` | OEIS A059015 summatory 0-bit count → B(n); identity A059015 = A083652 − A000788. |
 | `L1.2/zugzwang.md` | Skip = "passing, if allowed, would be best"; One's forced 1-bit consumption → zugzwang. |
