@@ -9,6 +9,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `brute.py` | Method-1 oracle: literal double sum Q(n) = Σ_π Σ_i rank(π^i) by walking every power. O((n!)²), exact; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(6)=133103808. Writes results.json. |
 | `brute2.py` | Method-2 oracle (independent): Q(n) = Σ_π (n!/ord(π)) · Σ_{τ∈⟨π⟩} rank(τ), using periodicity d = ord(π) = lcm of cycle lengths. Cross-validates brute.py for n=2..7. Writes results2.json. |
 | `config.toml` | Run configuration: workspace kind, solver flags (exact arithmetic, verify with code, cite sources, forbid exponential), artifact file paths |
+| `explore.py` | Exploratory script for n=2..7: computes M_j = sum_pi sum_{i=0}^{n!-1} a_j(pi^i) (a_j = Lehmer code coefficient) and the pairwise matrix N(j,m) = #{(pi,i): 0<=i<n!, (pi^i)[m] < (pi^i)[j]}, exact integers. Verified M_j == sum_{m>j} N[j][m]. Revealed N depends only on gap m-j (translation-invariant), so M_j is the suffix sum of the gap function f(k). |
 | `goal.md` | Objective: compute Q(10^6) mod (10^9+7); statement, worked examples (Q(2)=5, Q(3)=88, Q(6)=133103808, Q(10)≡468421536), completion criteria, current status |
 | `memory.md` | Working memory: problem restatement, verified Q(n) table (n=2..8) with both methods' timings, established results, failed approaches (none), open questions (the n=10^6 method) |
 | `problem.html` | The problem statement (source of the run): defines Q(n), rank, π^i; gives worked examples; asks for Q(10^6) mod (10^9+7) |

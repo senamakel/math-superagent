@@ -48,6 +48,48 @@ formula), all run 18 Sep 2025 (UTC), exact integers then reduced mod p:
 - Q(10) check against statement (468421536 mod p) still pending — brute is
   infeasible for n=10; needs the efficient method.
 
+## Structural finding from explore.py (n = 2..7, exact integers, 18 Sep 2025)
+
+Definitions (0-indexed one-line permutation of {0..n-1}):
+  a_j(tau) = #{ m>j : tau[m] < tau[j] }   (Lehmer coefficient)
+  M_j      = sum_pi sum_{i=0}^{n!-1} a_j(pi^i)
+  N(j,m)   = #{(pi,i) : 0<=i<n!, (pi^i)[m] < (pi^i)[j]}
+
+Verified on every n=2..7:  M_j = sum_{m>j} N[j][m]  (linearity; identity is
+exact, not asymptotic).
+
+KEY PATTERN: N(j,m) depends ONLY on the gap k = m-j (translation invariance),
+i.e. N(j,m) = f(k).  So M_j = sum_{k=1}^{n-1-j} f(k)  is a suffix sum of the
+gap function f(k).  Hence M_j is NOT constant in j; it decreases with j.
+
+Observed f(k) = N(j, j+k):
+  n=2: f(1)=1
+  n=3: f(1)=10,  f(2)=11
+  n=4: f(1)=f(2)=f(3)=184
+  n=5: f(1..4)=5052,4944,4836,4728  (arithmetic, step -108)
+  n=6: f(1..5)=191232,187632,184032,180432,176832  (arithmetic, step -3600)
+  n=7: f(1..6)=9851040,9642240,9433440,9224640,9015840,8807040 (step -208800)
+
+M_j vectors (j=0..n-1):
+  n=2: [1,0]
+  n=3: [21,10,0]
+  n=4: [552,368,184,0]
+  n=5: [19560,14832,9996,5052,0]
+  n=6: [920160,743328,562896,378864,191232,0]
+  n=7: [55974240,47167200,38151360,28926720,19493280,9851040,0]
+
+So the per-position Lehmer contributions are translation-invariant in pairwise
+form, and M_j is the suffix sum of f(k).  To get Q(n) we need sum_j (n-j)! M_j
+then + (n!)^2 (rank = 1 + sum_j a_j (n-j)! over powers; the +1 per power term
+sums to n!·n! = (n!)^2).  Next step: derive a closed form for f(k).
+
+CORRECT factoradic weight (verified by exact Q reconstruction for n=2..7):
+  rank(tau) = 1 + sum_{j=0}^{n-2} a_j(tau) * (n-1-j)!   [weight is (n-1-j)!, NOT (n-j)!]
+  Q(n) = (n!)^2 + sum_{j=0}^{n-2} (n-1-j)! * M_j
+Cross-check: with M_j from explore.py and this formula, Q matches all of
+Q(2..7)={5,88,4808,597876,133103808,47124948960} exactly (done 18 Sep 2025).
+This is an independent second route to the M_j tables' correctness.
+
 ## Established results
 
 Record proved steps, verified computations, and source-backed facts.

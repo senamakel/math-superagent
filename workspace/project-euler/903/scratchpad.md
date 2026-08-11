@@ -31,3 +31,13 @@ Q(2)=5 by hand: id contributes 2*1, (2,1) contributes (2/2)*(2+1)=3.  Total 5. O
 
 Timings: method 1 (literal): n=6 0.13s, n=7 7.18s; n=8 skipped (est. 8.8 min).
 Method 2 (period formula): n=7 0.02s, n=8 0.16s.
+
+## explore.py (18 Sep 2025) -- run, saved to explore.out.txt
+
+Task: for n=2..7 compute M_j = sum_pi sum_{i=0}^{n!-1} a_j(pi^i) with
+a_j(tau)=#{m>j: tau[m]<tau[j]}, and N(j,m)=#{(pi,i):0<=i<n!,(pi^i)[m]<(pi^i)[j]}.
+Output tables in explore.out.txt.  Exact integers.
+
+Findings (see memory.md): N(j,m) depends only on gap m-j -> M_j is a suffix
+sum of gap function f(k).  M_j not constant; decreases with j.  Verified
+M_j == sum_{m>j} N[j][m] for all n=2..7.

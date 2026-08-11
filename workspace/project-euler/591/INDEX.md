@@ -29,4 +29,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `struct_probe.py` | Probe verifying the d=2 given oracle b,a satisfy the BQA relation and scanning small-scale record b's for d=2; early structural investigation. |
 | `tasks.md` | Task checklist for the run: brute-force example reproduction, record probes, semiconvergent hypothesis, deriving the method, computing and verifying S. |
 | `verify_cabanillas.py` | Standalone small-scale verification of Cabanillas Prop 9/10 candidate structure for a few alpha,beta pairs against brute force. Superseded as a toolkit by toolkits/ostrowski_verify.py and toolkits/verify_cabanillas_exact.py. |
+| `verify_run_report.md` | The tool-builder's run verification report: verbatim outputs of brute.py and solution_bothsides.py (all four worked examples reproduced, S=526007984625966), the independent re-sum of the |a| column from results_full_bothsides.txt confirming S, and a PASS verdict. |
 | `verify_run_report.md` | Verbatim output and independent re-sum verification of the PE591 oracle run (brute.py, solution_bothsides.py, results_full_bothsides.txt) confirming S = 526007984625966. |
