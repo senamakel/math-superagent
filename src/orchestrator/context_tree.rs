@@ -161,9 +161,7 @@ fn links(text: &str) -> Vec<String> {
     let mut found = Vec::new();
     let mut push = |target: &str| {
         let target = target.trim().trim_start_matches("./");
-        if !target.is_empty()
-            && !target.contains("://")
-            && !found.iter().any(|seen| seen == target)
+        if !target.is_empty() && !target.contains("://") && !found.iter().any(|seen| seen == target)
         {
             found.push(target.to_string());
         }

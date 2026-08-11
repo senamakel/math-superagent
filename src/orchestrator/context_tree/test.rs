@@ -182,7 +182,11 @@ fn a_flat_folder_is_read_as_the_first_level_it_always_was() {
 fn reflections_carry_a_tree_of_their_own() {
     let root = workspace("reflections");
     for index in 0..12 {
-        write(&root, &format!("reflections/L0/17{index:02}_1_learnings.md"), 100);
+        write(
+            &root,
+            &format!("reflections/L0/17{index:02}_1_learnings.md"),
+            100,
+        );
     }
     let outgrown = plan(&root)
         .into_iter()
@@ -246,7 +250,10 @@ fn a_parent_that_does_not_exist_yet_is_behind_every_note_below_it() {
     let changed = changed_since(
         &root,
         "research/INDEX.md",
-        &["research/L1/a.md".to_string(), "research/L1/b.md".to_string()],
+        &[
+            "research/L1/a.md".to_string(),
+            "research/L1/b.md".to_string(),
+        ],
     );
     assert_eq!(changed.len(), 2);
 }
