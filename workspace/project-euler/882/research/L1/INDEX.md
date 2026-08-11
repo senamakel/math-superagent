@@ -14,8 +14,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `normalplay.md` | Unable-to-move loses; A−B>0 ⇒ One wins without skips. |
 | `partisan.md` | Sprague–Grundy inapplicable (disjoint move sets); minimax over (A,B). |
 | `pass_waiting.md` | Larsson–Nowakowski–Santos 2015 (arXiv:1505.01907), primary pass/waiting-move theory. |
-| `raw_mfl_pass.md` | _(undescribed)_ |
-| `raw_pass_waiting_check.md` | _(undescribed)_ |
+| `raw_mfl_pass.md` | Raw arXiv abstract of 1204.3222; proper analysis in mfl_pass.md. |
+| `raw_pass_waiting_check.md` | Raw arXiv abstract of 1505.01907; proper analysis in pass_waiting.md. |
 | `strategy.md` | Dead end: generic strategy article, nothing relevant. |
 | `surreal.md` | Why a−b is exact (simplest surreal between options); skips outside short games ⇒ A−B ≠ S(n). |
 | `trollopedelange.md` | Girgensohn 2011 INTEGERS #A54: explicit Trollope–Delange closed forms (1-periodic fluctuation). |
