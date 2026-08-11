@@ -13,4 +13,9 @@
 - [x] Validate power-sum vs oracle (C/S for n=1,2,4,5,10,50 all OK) and
       bit-for-bit equality vs direct t-loop at n=50 (assert). Evidence in
       /workspace/power_validate.txt.
-- [ ] Implement full solution.py (canonical primitive-frame enumeration via primary Hurwitz quaternions) agreeing with brute; compute S(5000) mod 10^9 and verify.
+- [x] Implement full /workspace/solution.py: canonical primitive-frame enumeration
+      via primary Hurwitz quaternions (streaming, injective) + O(1) power-sum;
+      frame-set identity vs frame_method for n=1,2,4,5,10,50,100,200 ALL YES;
+      C/S oracle all OK; power-sum == direct-loop bit-for-bit at n=5000 PASS;
+      independent route matches.  Compute S(5000) mod 10^9 = 3,805,524.
+      Evidence in /workspace/solution_output.txt.

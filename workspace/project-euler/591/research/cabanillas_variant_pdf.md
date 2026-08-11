@@ -1,77 +1,69 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/cabanillas_variant_pdf.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Cabanillas, "A variant of Ostrowski numeration" — arXiv:1904.01874v2
 
-<!-- source: https://arxiv.org/pdf/1904.01874 | converted from PDF -->
+Source: https://arxiv.org/pdf/1904.01874 (full text read). This is the **primary
+source** for this run: it supplies the exact algorithm that replaces the
+(unscalable) scan for the PE591 answer.
 
-arXiv:1904.01874v2  [math.NT]  12 Sep 2019
-A variant of Ostrowski numeration
+## What it establishes (with locations)
 
-Emmanuel Cabanillas
+- **defines a variant of Ostrowski α-numeration** (`§2.3`, Def. 4) coding all
+  integers and all reals of `[0,1)` with the same α-admissible digit sequence.
+  Digits `d_k ∈ {0..a_k}` with the Markovian-style condition
+  `d_k = 0 ⇒ (d_{k-1}=a_{k-1} or d_i=0 ∀i≥k)` (differs from classical Ostrowski).
 
-ABSTRACT :
+- **δ-sequence** (`§2.3`): `δ_{-1}=1, δ_0=α, δ_k = -a_k δ_{k-1}+δ_{k-2}`,
+  `δ_k = |q_k α − p_k|`, strictly decreasing to 0.
 
-In this article, we propose a variant of the usual Ostrowski α-numeration ( where α is a real in
-[0, 1[) that codes integers ( positive as well as negative) and reals of [0, 1[ ( instead of [−α, 1−α[),
-so that for every integer n, n and {nα} have the same coding sequence. These coding sequences
-respect natural lexicographic orders and will be used to prove well known results on order prop-
-erties of Kronecker sequences ({nα − β})n.
+- **Algorithm 3(ii) — α-numeration of a real β∈[0,1)**:
+  `b_k = min(a_k, ⌈β_{k-1}/δ_{k-1}⌉)`, `β_k = b_k δ_{k-1} − β_{k-1}`, `β_0=β`,
+  `k=1,2,…`. Output `(b_k)` is the α-numeration of β.
 
-Contents
+- **Def. 6** `§4.3`: `{nα}` is a *best α-approximation* of β iff
+  `||nα−β|| < ||kα−β||` for all `0 ≤ k < n`. A best α-approximation is always a
+  best **right** or best **left** α-approximation.
 
-1 Introduction 2
-1.1 overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
-1.2 notations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
-1.3 continued fraction expansions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
-1.4 semi-convergents and best rationals . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+- **Prop. 9** `§4.3` (best *right* positive approximations, `{nα} ≥ β`):
+  `n = 0`; terminal prefix `n = Σ_{i=1}^{s} b_i q_{i-1}` if expansion terminates;
+  and `n = Σ_{i=1}^{2k−1} b_i q_{i−1} + j·q_{2k−1}`, `j ∈ {0,…,b_{2k}−1}`, `k≥1`.
 
-2 A numeration system 7
-2.1 Ostrowski’s numeration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-2.2 α-numeration for a rational α . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
-2.3 α-numeration for an irrational α . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
-2.4 α-numeration of negative integers . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+- **Prop. 10** `§4.3` (best *left* positive approximations, `{nα} ≤ β`):
+  terminal prefix `n = Σ_{i=1}^{s} b_i q_{i−1}`; and
+  `n = Σ_{i=1}^{2k} b_i q_{i−1} + j·q_{2k}`, `j ∈ {0,…,b_{2k+1}−1}`, `k≥0`.
 
-3 Complements 22
-3.1 dynamic generating α-numeration . . . . . . . . . . . . . . . . . . . . . . . . . . 22
-3.2 α-germs and orbits of α-rotation . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
-3.3 shift and inductive structure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+  (Here `(q_i)` are the convergent denominators, `q_{-1}=0,q_0=1`; `(b_i)` the
+  α-numeration of β.)
 
-4 Order properties of Kronecker sequences 28
-4.1 a one-page proof of the ”three distance theorem” . . . . . . . . . . . . . . . . . . 28
-4.2 order coincidence of ({nα})n and ({nα′})n . . . . . . . . . . . . . . . . . . . . . . 30
-4.3 best left or right α-approximation of a real in [0, 1[ . . . . . . . . . . . . . . . . . 32
-4.4 measure of repartition of ({kα})0⩽k<ν . . . . . . . . . . . . . . . . . . . . . . . . 34
+- **Thm. 1** `§4.1`: three-distance theorem with precise gap lengths in terms of
+  the `δ_k` and convergents.
 
-5 References 37
+## Why it applies here / what it lets us compute
 
-1
+Set `α = {√d} = √d − ⌊√d⌋ ∈ (0,1)` (turning `b·√d` into a circle rotation mod 1)
+and `β = {π} ≈ 0.14159…`. For fixed `b`, the best integral part is
+`a = round(π − b·√d)`, and the error is `||b·√d − π||_Z = ||b·α − β||_Z`. Both
+`b` signs matter (approximation to `+β` via `β`, to `−β` via `1−β`).
 
-1 Introduction
+Cabanillas Def. 6 + Prop. 9/10 give an exact, **finite** (`O(log L)`) candidate
+list for the global minimum of `||nα−β||` over `n ≤ L`: the union of the Prop 9
+and Prop 10 records, restricted to `n ≤ L`. `α` is irrational here (√d
+non-square), so the irrational-irrational case (Prop. 9/10 Case 2) applies.
+This is the scalable method for `n = 10^13` — no scan of `[0,L]`.
 
-1.1 overview
+## Hypotheses check
+- `α` irrational: holds (`α={√d}`, d non-square).
+- `β ∈ [0,1)`: holds (`β={π}`).
+- The propositions enumerate **positive** `n` for β and, by symmetry, for `1−β`/
+  negative `n` (paper §2.4 gives α-numeration of negative integers and the
+  complement `β → 1−β`). PE591 needs both sides ⇒ consider β **and** `1−β`.
 
-Ostrowski’s numeration system is based on convergents (qn)n∈N of a real α ∈ [0, 1[ and code,
-with a sequence of digits non negative integers as well as reals in [−α, 1 − α[ ( see [6] for the
-original article and [1] for a survey). Deﬁnitions are mentioned in 2.1
-In 2.2 and 2.3, we propose a variant of this system : it is still based on (qn)n, but the ”
-markovian condition” is changed and we will be able to code any integer n and any real {nα}
-with the same ﬁnite sequence ( {x} denotes the fractional part of a real x). We study separately
-the cases α irrational and α rational. This last case could appear uninteresting, but it is useful
-for applications to numerical semigroups for example ( see [3]).
-In 3, we give some dynamical aspects of this α-numeration.
-In 4, we use it to explore some order properties of Kronecker sequences ({nα + β})n, as the
-famous ” three distance theorem”. These sequences have been widely studied with various points
-of view and we refer to [1] for an exhaustive bibliography.
+## What it does not settle
+- Not a numeric PE591 answer (paper is pure theory).
+- Requires high-precision π for the α-numeration digits, and exact integer
+  convergents; the paper does not address finite-precision stops.
+- Sections §3.2/§4.4 (D_α, counting) are not needed here.
 
-1.2 notations
-
-All along this paper, we will denote : Z the set of integers, N∗ the set of positive integers and
-N the set of non negative integers.
-For all reals x, ⌊x⌋ denotes its ﬂoor ,⌈x⌉ its ceiling and {x} its fractional part.
-For a sequence d = (dk)k∈N∗, we use the following notations for slices of d : for all integers r, s
-such that 0 < r ⩽ s :
- d[r,s] = (dr, dr+1, · · · , ds) ; d[r,∞] = (dr, dr+1, · · · )
-
-We will also use concatenation of sequences and intuitive notations as (3, 5, 04, 1, 6, 0∞) to de-
-note (3, 5, 0, 0, 0, 0, 1, 6, 0, 0, 0, · · · ). Moreover, if (ak)k∈N∗ is a sequence of positive integers and
-if we restrict ourself to sequences in ∏k{0 · · · ak}, then max at the index k will denote ak : for
-
-*[excerpt ends; 76952 characters not shown — see `research/cabanillas_variant_pdf.full.md`]*
+## Verification status
+The run's `toolkits/ostrowski_verify.py` checks these candidate sets against
+brute force on small `(α,β,L)`. I could not execute code in this session, but the
+harness exists and reproduces the structure; final numeric confirmation is a
+remaining task.
