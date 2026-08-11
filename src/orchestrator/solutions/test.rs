@@ -68,3 +68,20 @@ fn outcome_reports_progress_even_when_unsolved() {
     assert!(outcome.contains("reached the derivation"));
     assert!(outcome.contains("verify with a second route"));
 }
+
+#[test]
+fn the_first_attempt_starts_fresh_and_later_ones_continue() {
+    use super::continuation_briefing;
+
+    let first = continuation_briefing(1);
+    assert!(first.contains("first attempt"));
+    assert!(first.contains("run a program"));
+
+    // The failure this exists to prevent: every attempt restarting at "read
+    // the statement and write it down", so the run never executes anything.
+    let third = continuation_briefing(3);
+    assert!(third.contains("attempt 3"));
+    assert!(third.contains("CONTINUE"));
+    assert!(third.contains("Do not re-extract"));
+    assert!(!third.contains("first attempt"));
+}
