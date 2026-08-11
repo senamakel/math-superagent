@@ -37,6 +37,7 @@ async fn a_team_stops_at_its_cycle_budget_rather_than_running_forever() {
         "research",
         budget(3, Duration::from_mins(1)),
         None,
+        None,
         move |_inbox| {
             let counter = counter.clone();
             async move {
@@ -70,6 +71,7 @@ async fn a_cancelled_team_stops_without_finishing_its_budget() {
         "background",
         budget(1_000, Duration::from_mins(1)),
         None,
+        None,
         move |_inbox| {
             let counter = counter.clone();
             async move {
@@ -97,6 +99,7 @@ async fn a_team_that_says_it_is_finished_is_not_asked_again() {
         "background",
         budget(1_000, Duration::from_mins(1)),
         None,
+        None,
         move |_inbox| {
             let counter = counter.clone();
             async move {
@@ -120,6 +123,7 @@ async fn a_busy_team_sees_its_whole_backlog_in_one_cycle() {
     let team = spawn(
         "research",
         budget(1_000, Duration::from_mins(1)),
+        None,
         None,
         move |inbox| {
             let record = record.clone();
@@ -163,6 +167,7 @@ async fn posting_to_a_team_never_blocks_the_sender() {
         "research",
         budget(1, Duration::from_mins(1)),
         None,
+        None,
         move |_inbox| async move {
             tokio::time::sleep(Duration::from_secs(30)).await;
             Cycle::Worked
@@ -188,6 +193,7 @@ async fn a_team_that_finishes_on_its_first_cycle_reports_having_run_one() {
     let team = spawn(
         "background",
         budget(1_000, Duration::from_mins(1)),
+        None,
         None,
         move |_inbox| async move { Cycle::Finished },
     );

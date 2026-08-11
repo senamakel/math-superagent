@@ -430,6 +430,7 @@ impl OrchestratorAgent {
                 name,
                 teams::TeamBudget::support(),
                 Some(self.tracer.clone()),
+                Some(self.workspace.clone()),
                 move |inbox: Vec<teams::TeamMessage>| {
                     let subagents = subagents.clone();
                     let mut prompt = prompt.clone();
