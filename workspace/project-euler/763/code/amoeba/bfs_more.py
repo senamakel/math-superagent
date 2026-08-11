@@ -22,29 +22,10 @@ N=0..12; this run must reproduce D(0..13) before reporting anything beyond.
 import sys
 import time
 
+from lib.amoeba import next_level_bits
+
 MAX_STATES = 30_000_000
 TIME_BUDGET = 90.0
-
-
-def next_level_bits(level, W):
-    """One BFS step on a set of int-masked configs; W fixed grid width."""
-    nxt = set()
-    W2 = W * W
-    for S in level:
-        m = S
-        while m:
-            low = m & -m
-            i = low.bit_length() - 1
-            m ^= low
-            x, r = divmod(i, W2)
-            y, z = divmod(r, W)
-            a = 1 << ((x + 1) * W2 + y * W + z)
-            b = 1 << (x * W2 + (y + 1) * W + z)
-            c = 1 << (x * W2 + y * W + (z + 1))
-            if (S & (a | b | c)) == 0:
-                ns = (S ^ low) | a | b | c
-                nxt.add(ns)
-    return nxt
 
 
 def main(max_n, budget, out_path):

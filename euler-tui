@@ -1,5 +1,20 @@
 #!/bin/sh
+# Tabbed console for one Project Euler run, a tab per team.
+#
+# Builds the binary once and then execs it. Cargo no-ops in well under a
+# second when nothing has changed, so the cost is paid on the first run and on
+# a rebuild rather than on every attach. The release profile is used because
+# this renders a full screen several times a second against a run that can
+# print thousands of lines a minute.
 set -eu
 
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-exec "$repository_root/scripts/euler-tui" "$@"
+cd "$repository_root"
+
+binary=target/release/euler-tui
+if ! cargo build --release --features tui --bin euler-tui --quiet; then
+    echo "euler-tui failed to build" >&2
+    exit 1
+fi
+
+exec "$binary" "$@"

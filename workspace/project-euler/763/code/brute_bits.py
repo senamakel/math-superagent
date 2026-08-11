@@ -19,26 +19,7 @@ validated on D(2)=3 and D(10)=44499) for N=0..12.
 import sys
 import time
 
-
-def next_level_bits(level, W):
-    """One BFS step on a set of int-masked configs; W is fixed grid width."""
-    nxt = set()
-    W2 = W * W
-    for S in level:
-        m = S
-        while m:
-            low = m & -m
-            i = low.bit_length() - 1
-            m ^= low
-            x, r = divmod(i, W2)
-            y, z = divmod(r, W)
-            a = 1 << ((x + 1) * W2 + y * W + z)
-            b = 1 << (x * W2 + (y + 1) * W + z)
-            c = 1 << (x * W2 + y * W + (z + 1))
-            if (S & (a | b | c)) == 0:
-                ns = (S ^ low) | a | b | c
-                nxt.add(ns)
-    return nxt
+from lib.amoeba import next_level_bits
 
 
 def main(max_n, budget):
