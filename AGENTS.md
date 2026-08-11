@@ -527,7 +527,7 @@ an empty placeholder. The listing hides `.workspace-history`,
 `.python-packages`, `__pycache__`, the document index, and `trace.jsonl`, and
 truncates rather than dumping an unbounded tree.
 
-Every reflection is archived to `reflections/<epoch_ms>_<outcome>.md`, where the
+Every reflection is archived to `reflections/L0/<epoch_ms>_<outcome>.md`, where the
 outcome is `nothing` or `<n>_learnings`, and indexed in `reflections/INDEX.md`
 in the same step. The folder carries an index for the same reason `research/`
 and `toolkits/` do: a directory of epoch-stamped filenames says when each
