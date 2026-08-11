@@ -372,6 +372,7 @@ impl OrchestratorAgent {
             self.subagents.clone(),
             Some(self.tracer.clone()),
             Some(self.workspace.clone()),
+            support.clone(),
             state,
         )
         .await;
@@ -380,6 +381,11 @@ impl OrchestratorAgent {
         // enriching a workspace no attempt will read.
         for team in &support {
             team.cancel();
+            self.tracer.note(&format!(
+                "team {}: {} cycle(s) alongside the solve",
+                team.name(),
+                team.cycles()
+            ));
         }
         Ok(finished?.outcome())
     }
@@ -401,7 +407,7 @@ impl OrchestratorAgent {
                  it. Consult research/INDEX.md first and do not fetch what is already there. \
                  Then record in context.md, in a few lines, what the library now establishes \
                  that it did not before. Stop when further sources would not change what \
-                 context.md says.",
+                 context.md says. Reply with NOTHING FURTHER when that point is reached.",
             ),
             (
                 "background",
@@ -409,7 +415,7 @@ impl OrchestratorAgent {
                 "Keep the workspace navigable. Refresh the folder indexes so they match what is \
                  on disk, describe any file that has no description, and leave reflections/ \
                  alone — the loop writes that itself. Change nothing a result or derivation \
-                 depends on.",
+                 depends on. Reply with NOTHING FURTHER when the workspace is already tidy.",
             ),
         ] {
             if !self.subagents.knows(agent) {
@@ -429,6 +435,12 @@ impl OrchestratorAgent {
                     }
                     async move {
                         match subagents.run_to_completion(agent, prompt).await {
+                            // A team whose goal is open-ended needs a way to
+                            // say it has run out of useful work, or it spends
+                            // its whole allowance re-tidying a tidy workspace.
+                            Ok(reply) if reply.to_uppercase().contains("NOTHING FURTHER") => {
+                                teams::Cycle::Finished
+                            }
                             Ok(_) => teams::Cycle::Worked,
                             // A failed cycle is not a reason to end the team:
                             // the next one may well succeed, and a support team
