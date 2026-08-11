@@ -1,6 +1,6 @@
 //! Registry-backed orchestrator with research and tool-building specialists.
 
-mod async_subagents;
+pub(crate) mod async_subagents;
 mod vector;
 
 use std::fmt::Write as _;
@@ -13,7 +13,6 @@ use serde_json::json;
 use tinyagents::harness::message::estimate_slice_tokens;
 use tinyagents::harness::middleware::ContextCompressionMiddleware;
 use tinyagents::harness::model::{ChatModel, ModelRequest};
-use tinyagents::harness::subagent::SubAgent;
 use tinyagents::harness::summarization::{
     CompressionProvenance, SummarizationPolicy, Summarizer, SummaryRecord, estimate_tokens,
     render_message_for_summary,
@@ -74,7 +73,6 @@ pub struct AgentRegistry {
 
 struct RegisteredAgent {
     definition: AgentDefinition,
-    agent: Arc<SubAgent<(), ()>>,
 }
 
 impl std::fmt::Debug for AgentRegistry {
@@ -93,28 +91,16 @@ impl AgentRegistry {
         Self::default()
     }
 
-    /// Registers one executable agent and its model-visible metadata.
+    /// Registers one asynchronous agent's model-visible metadata.
     ///
     /// # Errors
     ///
-    /// Returns an error when the id is empty, does not match the subagent name,
-    /// or is already registered.
-    pub fn register(
-        &mut self,
-        definition: AgentDefinition,
-        agent: Arc<SubAgent<(), ()>>,
-    ) -> Result<&mut Self> {
+    /// Returns an error when the id is empty or is already registered.
+    pub fn register(&mut self, definition: AgentDefinition) -> Result<&mut Self> {
         if definition.id.trim().is_empty() {
             return Err(tinyagents::TinyAgentsError::Validation(
                 "agent id cannot be empty".into(),
             ));
-        }
-        if definition.id != agent.name() {
-            return Err(tinyagents::TinyAgentsError::Validation(format!(
-                "agent id `{}` does not match subagent name `{}`",
-                definition.id,
-                agent.name()
-            )));
         }
         if self.contains(&definition.id) {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
@@ -122,7 +108,7 @@ impl AgentRegistry {
                 definition.id
             )));
         }
-        self.entries.push(RegisteredAgent { definition, agent });
+        self.entries.push(RegisteredAgent { definition });
         Ok(self)
     }
 
@@ -147,13 +133,13 @@ impl AgentRegistry {
         self.entries.iter().map(|entry| &entry.definition).collect()
     }
 
-    /// Resolves an executable child agent by id.
+    /// Resolves an agent definition by id.
     #[must_use]
-    pub fn get(&self, id: &str) -> Option<Arc<SubAgent<(), ()>>> {
+    pub fn get(&self, id: &str) -> Option<&AgentDefinition> {
         self.entries
             .iter()
             .find(|entry| entry.definition.id == id)
-            .map(|entry| entry.agent.clone())
+            .map(|entry| &entry.definition)
     }
 }
 
