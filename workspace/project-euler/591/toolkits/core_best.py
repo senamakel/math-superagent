@@ -56,7 +56,7 @@ def core_best(d, beta, B, dps=200, max_digits=20000):
     """Return (best_b, best_dist, candidates). See module docstring."""
     import mpmath as mp
     mp.mp.dps = dps
-    mp.pretty = True
+    mp.mp.pretty = True
 
     if B < 0:
         return 0, mp.mpf(1), [0]
