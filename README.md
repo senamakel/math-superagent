@@ -216,7 +216,7 @@ Dockerfile                  build and runtime jail
 compose.yaml                agent and Qdrant services
 scripts/run-agent           helper implementation
 scripts/solve-euler         fetch and solve workflow
-workspace/                  selectable agent workspaces, ignored by Git
+workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, config, and memory
 src/
 ├── agent/                  TinyAgents facade and Langfuse observations

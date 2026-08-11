@@ -200,8 +200,19 @@ absolute paths, and verify canonical parents before writing. Command tools run
 with `/workspace` as their current directory. A prompt instruction is not a
 security control; enforce boundaries in code and Docker configuration.
 
-Generated workspace files are ignored by Git except for `workspace/.gitkeep`
-and `workspace/template/`. When a workspace is first used, the helper copies
+Workspace contents are committed. The derivation, the program, the per-run
+notes, and `trace.jsonl` are the record of how an answer was reached, which is
+the point of the product, so they belong in history rather than only on the
+machine that produced them. Only machine-regenerable artifacts are ignored:
+`.python-packages/` (pip installs, which land in the workspace because the
+container root filesystem is read-only) and bytecode caches. Do not add a
+generated artifact to a source directory; leave it in its workspace.
+
+Note that `trace.jsonl` grows to several megabytes for a long run. If workspace
+history starts to dominate the repository, prune old run traces deliberately
+rather than re-ignoring the whole workspace.
+
+When a workspace is first used, the helper copies
 the template into it without replacing existing files. The runtime appends
 `AGENTS.md`, `config.toml`, `memory.md`, and the relevant role prompt to each
 agent's built-in system policy. `goal.md`, `tasks.md`, and `scratchpad.md` are
