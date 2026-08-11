@@ -425,6 +425,48 @@ impl WorkspaceDocuments {
         self.write_internal(relative, content).await
     }
 
+    /// Fetches a URL and returns its body as text.
+    ///
+    /// For the structured endpoints a source adapter talks to, where the reply
+    /// is JSON to be read rather than a document to be filed. Bounded by the
+    /// same limit and served by the same client, so an adapter cannot become a
+    /// way around either.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the URL is not HTTP, the request fails, the reply
+    /// exceeds the document limit, or it is not UTF-8.
+    pub(super) async fn fetch_text(&self, url: &str) -> Result<String> {
+        let parsed = reqwest::Url::parse(url).map_err(|error| {
+            tinyagents::TinyAgentsError::Validation(format!("invalid URL: {error}"))
+        })?;
+        if !matches!(parsed.scheme(), "http" | "https") {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "URL must use HTTP or HTTPS".into(),
+            ));
+        }
+        let response = self
+            .client
+            .get(parsed)
+            .send()
+            .await
+            .map_err(|error| tinyagents::TinyAgentsError::Tool(format!("request failed: {error}")))?
+            .error_for_status()
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("request failed: {error}"))
+            })?;
+        let bytes = response.bytes().await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to read the reply: {error}"))
+        })?;
+        if bytes.len() > MAX_DOCUMENT_BYTES {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "the reply is too large".into(),
+            ));
+        }
+        String::from_utf8(bytes.to_vec())
+            .map_err(|error| tinyagents::TinyAgentsError::Validation(format!("reply is not UTF-8: {error}")))
+    }
+
     /// Reads a file the runtime maintains, bypassing the visibility check.
     ///
     /// # Errors
