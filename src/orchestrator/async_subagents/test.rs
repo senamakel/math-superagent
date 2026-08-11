@@ -395,7 +395,11 @@ fn every_agent_on_one_problem_shares_a_session_and_a_user() {
         scholar.trace_id, organizer.trace_id,
         "each agent still gets its own trace inside that session"
     );
-    assert!(scholar.tags.contains(&"problem:project-euler/591".to_string()));
+    assert!(
+        scholar
+            .tags
+            .contains(&"problem:project-euler/591".to_string())
+    );
 }
 
 #[tokio::test]
