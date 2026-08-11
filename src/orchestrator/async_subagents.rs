@@ -856,7 +856,35 @@ impl Tool<()> for AsyncSubagentTool {
                     }
                 }
                 json!({ "runs": finished })
-        })
+            }
+            AsyncToolKind::Peek => serde_json::to_value(
+                self.manager
+                    .record(&required_string(&call.arguments, "run_id")?)?,
+            )?,
+            AsyncToolKind::Steer => {
+                let run_id = required_string(&call.arguments, "run_id")?;
+                self.manager
+                    .steer(&run_id, required_string(&call.arguments, "instruction")?)?;
+                json!({ "run_id": run_id, "accepted": true })
+            }
+            AsyncToolKind::Await => {
+                let wait_seconds = call
+                    .arguments
+                    .get("wait_seconds")
+                    .and_then(Value::as_u64)
+                    .unwrap_or_else(|| self.manager.max_await_seconds());
+                serde_json::to_value(
+                    self.manager
+                        .await_record(&required_string(&call.arguments, "run_id")?, wait_seconds)
+                        .await?,
+                )?
+            }
+        };
+        Ok(ToolResult::text(
+            call.id,
+            self.name(),
+            serde_json::to_string(&value)?,
+        ))
     }
 }
 
