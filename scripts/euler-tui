@@ -394,31 +394,45 @@ def main() -> int:
         if tabs:
             curses.wrapper(watch, runs)
         return 0
-    # Seed the view so its first frame says what is happening. An empty body
-    # under a one-entry tab bar is indistinguishable from a program that never
-    # started, which is exactly how the first version of this was read: the
-    # build and the statement fetch are silent, so nothing appeared for half a
-    # minute warm and would appear for minutes cold.
-    runs.add(
-        f"{'continuing' if existing else 'starting'} problem {arguments.problem}:"
-        " building the image, fetching the statement, starting the container."
-        " This part is silent and slow on a cold build; the first [00:00] line"
-        " below is the run itself."
-    )
+    container = running_for(workspace)
+    if container:
+        runs.add(f"attaching to {container}, which is already running problem {arguments.problem}")
+    elif arguments.attach:
+        print(
+            f"nothing is running for problem {arguments.problem};"
+            " drop --attach to start it",
+            file=sys.stderr,
+        )
+        return 1
+    else:
+        # Seed the view so its first frame says what is happening. An empty
+        # body under a one-entry tab bar is indistinguishable from a program
+        # that never started, which is how the first version of this was read:
+        # the build and the statement fetch are silent, so nothing appeared for
+        # half a minute warm and would appear for minutes cold.
+        runs.add(
+            f"{'continuing' if existing else 'starting'} problem {arguments.problem}:"
+            " building the image, fetching the statement, starting the container."
+            " This part is silent and slow on a cold build; the first [00:00] line"
+            " below is the run itself."
+        )
+        start_detached(root, arguments, log_path)
+        container = await_container(workspace, runs)
+        if not container:
+            runs.add("the container did not appear; see the log for what the build said")
 
-    with open(log_path, "a", encoding="utf-8") as log, subprocess.Popen(
-        command,
-        cwd=root,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,
-        # Its own process group, so the terminal's Ctrl-C reaches this script
-        # and not the container: quitting the view must never kill the run.
-        start_new_session=True,
-    ) as child:
+    with open(log_path, "a", encoding="utf-8") as log:
+        follow = subprocess.Popen(
+            ["docker", "logs", "--follow", "--tail", "all", container]
+            if container
+            else ["true"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+        )
         reader = threading.Thread(
-            target=pump, args=(child.stdout, runs, log, not tabs), daemon=True
+            target=pump, args=(follow.stdout, runs, log, not tabs), daemon=True
         )
         reader.start()
         try:
@@ -428,18 +442,19 @@ def main() -> int:
                 reader.join()
         except KeyboardInterrupt:
             pass
-        if child.poll() is None:
-            # Detaching is the default; the run continues in Docker and this
-            # script can be started again against the same log. A `return`
-            # inside `finally` would swallow whatever brought us here, so the
-            # decision is made in the normal path.
+        # Only the follower is stopped. The run is a detached container and
+        # outlives every client, which is the whole point of attaching rather
+        # than owning: quitting the view, losing the terminal, or opening a
+        # second one must not touch the run.
+        if follow.poll() is None:
+            follow.terminate()
+        if tabs:
             print(
-                f"detached — the run continues; follow it with `tail -f {log_path}`",
+                f"detached — {container or 'the run'} continues."
+                f" Re-attach with the same command, or `tail -f {log_path}`",
                 file=sys.stderr,
             )
-            os.killpg(child.pid, signal.SIGCONT)
-            return 0
-        return child.wait()
+    return 0
 
 
 if __name__ == "__main__":
