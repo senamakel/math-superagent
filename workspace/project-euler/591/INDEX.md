@@ -19,7 +19,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `probe_structure.py` | Fast float scan: whether d=2 record b's match convergent denominators of pi/sqrt2, pi*sqrt2, etc. Probe; superseded by the Cabanillas candidate-set method. |
 | `problem.html` | The PE591 problem statement (converted to HTML); the 4 worked example values and the question about I_d. |
 | `problem.url` | The Project Euler URL for problem 591 (https://projecteuler.net/minimal=591). |
-| `results_brute_n7.txt` | _(undescribed)_ |
+| `results_brute_n7.txt` | Output file written by brute_n7.py: rows (d b a |a| error) from the independent n=1e7 brute-force BQA scan for the 16 selected d values. Same numbers as the top of brute_n7_run.log. These are n=1e7 values, not the target n=1e13 result; the file has no trailing S line. |
 | `results_full.txt` | Output of solution.py (positive-b-only) for PE591 at n=1e13: rows d, b, a, abs(a), and S=sum(abs(a))=498809825393729. **Candidate result, now challenged by results_full_bothsides.txt (the problem allows b of either sign).** |
 | `results_full_bothsides.txt` | Output of solution_bothsides.py (both signs of b) for PE591 at n=1e13: rows d, b, a, abs(a), and S=526007984625966. Updated candidate answer consistent with the problem statement (b sign is free); supersedes results_full.txt subject to the run's resolution. |
 | `results_solver_n7.txt` | Row data (d b a |
