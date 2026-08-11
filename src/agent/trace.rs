@@ -159,6 +159,8 @@ impl RunTracer {
                 cached_tokens: AtomicU64::new(0),
                 output_tokens: AtomicU64::new(0),
                 micro_usd: AtomicU64::new(0),
+                middleware_started: Mutex::new(HashMap::new()),
+                middleware_totals: Mutex::new(HashMap::new()),
             }),
         })
     }
