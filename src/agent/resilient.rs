@@ -174,7 +174,8 @@ impl<S: Send + Sync> BoundedTimeoutModel<S> {
         if request.timeout_ms.is_some() {
             return request;
         }
-        let millis = u64::try_from(self.allowance(request.max_tokens).as_millis()).unwrap_or(u64::MAX);
+        let millis =
+            u64::try_from(self.allowance(request.max_tokens).as_millis()).unwrap_or(u64::MAX);
         request.with_timeout_ms(millis)
     }
 
