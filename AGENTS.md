@@ -15,18 +15,67 @@ tools, examples, tests, and documentation.
 
 ## Expected problem-solving behavior
 
-The runtime has four roles:
+The runtime has seven roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
 - The goals agent translates an objective into completion criteria and spawns
-  research or tool-builder subagents until the goal is met or precisely blocked.
+  specialist subagents until the goal is met or precisely blocked.
 - The research agent uses Exa to find definitions, papers, official references,
   or current facts. It returns source URLs, separates evidence from inference,
   and can save reusable notes to Qdrant.
 - The tool-builder writes and executes shell or Python tools in `/workspace`.
   It handles numerical checks, counterexample searches, data extraction, and
-  other reproducible calculations.
+  other reproducible calculations. It is the only role with shell authority.
+- The reflection agent judges one attempt and extracts one lesson. It has no
+  research or execution tools on purpose: a judge that can start solving stops
+  judging. Its hardest job is refusing to call an unverified answer solved.
+- The pattern-recognition agent runs exact sequence analysis over results the
+  run already computed. Its tools report only what holds for every term
+  supplied, and label the finding a conjecture, because an invented pattern
+  costs more than no pattern.
+- The inventor proposes a different line of attack when the current one has
+  stalled, backed by research. It is told what failed so it does not re-propose
+  it.
+- The librarian builds a local reference library under `reference/` so the rest
+  of the run reads primary material instead of guessing.
+
+## The solution loop
+
+`orchestrator::solutions` is a `TinyAgents` graph, not a prompt:
+
+```text
+  attempt ──> reflect ──┬─ solved ────────────────> done
+     ▲                  ├─ retry ─────────────────> attempt
+     │                  └─ stuck ──> diversify ────┘
+     └────────────────────────────────────────────┘
+```
+
+Reflection runs after *every* attempt, not only after a failure, because the
+lesson from a partial success is what stops the next attempt repeating it.
+`diversify` runs the librarian, the pattern agent, and the inventor
+concurrently, and only when repeated attempts stop making progress; it is the
+step that breaks a loop reflection alone cannot.
+
+Keep the routing policy in `route` a plain function of the state. It is the
+part of this design most likely to be wrong and the part a live run is least
+able to demonstrate cheaply, so it must stay unit-testable without a provider.
+Two rules in it are load-bearing: an unparsable verdict must not count as
+solved, and the attempt ceiling must outrank the stuck rule or the loop can
+diversify forever.
+
+Enable the loop with `--loop` on `./agent` or `./euler`, or
+`MATH_AGENT_SOLVE_LOOP=on`. The default remains a single orchestrator turn.
+
+## Failure handling
+
+A recoverable tool failure must never end a run. Tools are registered through
+`ResilientTool`, which turns an `Err` into a `ToolResult` carrying the error so
+the model can correct itself; `ReflectionMiddleware` then appends advice, and
+escalates when the same tool fails repeatedly. Before this existed, a Qdrant
+`409`, a `/workspace/`-prefixed path, a `403`, and a non-UTF-8 download each
+destroyed an entire run's accumulated work. Do not reintroduce a tool whose
+argument or transport failure propagates out of the run.
 
 The runtime image must expose both `python` and `python3`, plus `pip` and
 `pip3`. Pip installs belong under `/workspace/.python-packages`; do not make the
