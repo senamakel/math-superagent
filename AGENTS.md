@@ -575,6 +575,52 @@ delete a program carrying a result — so the rules for working there travel wit
 the folder. Its `INDEX.md` says what established each program is correct, which
 is the part that is not readable from the source.
 
+## Inside `code/`
+
+`code/` is a Python package tree, not a drawer. `/workspace/code` is on
+`PYTHONPATH` (see the `Dockerfile`), so every folder in it is importable by
+name from any working directory and any invocation: `code/lib/perms.py` is
+`from lib.perms import lex_ranks`. That line is the whole foundation. Before
+it, `PYTHONPATH` held only the pip prefix, so an import resolved by accident —
+when a program happened to be started as `python code/<name>.py` and Python put
+that folder on the path itself — and failed under every other invocation. The
+committed workspaces carry three separate `sys.path.insert` dialects from
+agents working that out the hard way, and an agent burned once inlines the
+routine instead. Reuse has to be the cheap path or it does not happen.
+
+`code/lib/` holds what other programs import, one subject per module; every
+other program is grouped by the question it attacks, one folder per question,
+each with its own `INDEX.md`, and what those programs produced under
+`code/out/`. `layout::placed` deliberately does not decide which question a
+program belongs to. That is a judgement about the mathematics, and a rule
+guessing at it would file by extension, which sorts a folder by the one fact
+nobody cares about. So the default sink stays `code/`, a caller that names a
+folder is trusted, and whether the sink has grown into a pile is measured after
+the fact.
+
+`code_layout::plan` is that measurement, and it is built like
+`context_tree::plan`: it walks `code/`, reports one fault at a time, writes
+nothing, and `briefing` renders the highest-priority one into the organizer's
+next cycle. The faults are ordered by cost. A top-level `def` or `class`
+defined in three or more programs comes first — copies drift, and a check
+passing against one says nothing about the other two; two copies are not a
+fault, because a program and the naive oracle it is checked against are
+supposed to hold the same routine. Then a `code/` past ten loose programs,
+which is what makes the copying invisible. Then a folder of programs with no
+`INDEX.md`, which is only illegible rather than wrong.
+
+Measuring this rather than requesting it is the same argument the rest of this
+document makes about tidiness, and the same evidence. Six committed Euler
+workspaces were asked in a prompt to build a toolkit: one reached forty-six
+sibling programs defining `H(n)` seven times, `lex_ranks` six and `power` five;
+another wrote thirteen helpers and imported none of them, because what it filed
+under `toolkits/` were one-off scripts with their data pasted into the source.
+The folder was renamed `lib/` for that reason — a folder called `toolkits`
+reads as somewhere to put tools, where `lib/` reads as things other files
+import. Asking an organizer to notice a routine typed out three times would
+cost it a read of every program in `code/` to discover, which is most of what a
+cycle costs; it is a count rather than a judgement, so it is counted.
+
 What the write path cannot catch is a shell redirect or a heredoc:
 `cat > solve.py <<'EOF'` and `python solve.py > out.txt` reach the filesystem
 directly, and the tool sees only a command and an exit code. Asking the
