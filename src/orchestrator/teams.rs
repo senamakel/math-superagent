@@ -234,7 +234,7 @@ pub(super) enum Cycle {
 /// run, so including it would make every fingerprint differ and the check
 /// would never fire — it would report change from the solver's activity rather
 /// than the team's.
-fn fingerprint(workspace: &Path) -> u64 {
+pub(super) fn fingerprint(workspace: &Path) -> u64 {
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
     let mut seen = 0usize;
     let mut stack = vec![(workspace.to_path_buf(), 0usize)];
