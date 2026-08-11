@@ -19,9 +19,11 @@ use tinyagents::harness::summarization::{
     render_message_for_summary,
 };
 
+use crate::agent::budget::RunBudget;
+use crate::agent::trace::RunTracer;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
-    configure_tool_deadline, openrouter_model_from_env,
+    configure_run_budget, openrouter_model_from_env,
 };
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
