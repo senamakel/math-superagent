@@ -92,21 +92,47 @@ impl<S: Send + Sync> StickyProviderModel<S> {
     /// an optimisation, and silently overriding a deliberate route would make
     /// the escape hatch useless.
     fn steer(&self, request: ModelRequest) -> ModelRequest {
-        let Some(provider) = self.pinned() else {
-            return request;
-        };
         if request.provider_options.get("provider").is_some() {
             return request;
         }
+        // A provider that just failed is skipped for one request. That takes
+        // priority over the pin, because after a failure they name the same
+        // provider and following the pin is what hangs.
+        let choice = match self.take_blocked() {
+            Some(blocked) => json!({ "ignore": [blocked], "allow_fallbacks": true }),
+            None => match self.pinned() {
+                Some(provider) => json!({ "order": [provider], "allow_fallbacks": true }),
+                None => return request,
+            },
+        };
         let mut options = match request.provider_options.clone() {
             Value::Object(map) => map,
             _ => serde_json::Map::new(),
         };
-        options.insert(
-            "provider".to_string(),
-            json!({ "order": [provider], "allow_fallbacks": true }),
-        );
+        options.insert("provider".to_string(), choice);
         request.with_provider_options(Value::Object(options))
+    }
+
+    /// Consumes the one-request exclusion, if one is set.
+    fn take_blocked(&self) -> Option<String> {
+        self.blocked.write().ok()?.take()
+    }
+
+    /// Records that the pinned provider failed to answer.
+    ///
+    /// The pin is cleared as well as blocked, so a request after the diverted
+    /// one asks for nothing in particular rather than returning to a route
+    /// that has not answered since.
+    fn fault(&self) {
+        let Some(provider) = self.pinned() else {
+            return;
+        };
+        if let Ok(mut slot) = self.blocked.write() {
+            *slot = Some(provider);
+        }
+        if let Ok(mut slot) = self.pinned.write() {
+            *slot = None;
+        }
     }
 
     /// Records the provider that served a response.
