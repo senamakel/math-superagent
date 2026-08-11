@@ -347,3 +347,46 @@ async fn a_batch_with_one_forbidden_agent_starts_nothing() -> Result<()> {
     );
     Ok(())
 }
+
+#[test]
+fn two_managers_never_share_a_trace_id() {
+    // Run ids are allocated per process from one, so every container's first
+    // specialist run is `agent-run-1`. Before the session qualified the trace
+    // id, two problems solved side by side reported into a single Langfuse
+    // trace whose observations interleaved runs that shared nothing.
+    let first = AsyncSubagentManager::new(RunBudget::default(), None);
+    let second = AsyncSubagentManager::new(RunBudget::default(), None);
+    assert_ne!(
+        first.session, second.session,
+        "each process's runs need their own trace namespace"
+    );
+}
+
+#[test]
+fn a_trace_is_named_for_the_role_that_produced_it() {
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    let executor = super::HarnessExecutor {
+        harness: Arc::new(
+            tinyagents::harness::AgentHarness::builder()
+                .model(Arc::new(crate::orchestrator::test_support::StubModel::new()))
+                .build()
+                .expect("a stub harness builds"),
+        ),
+        system_prompt: String::new(),
+        langfuse: None,
+        max_turn_output_tokens: 1,
+        role: "scholar".into(),
+        session: manager.session.clone(),
+    };
+    let config = executor.trace_config("agent-run-1");
+    assert_eq!(config.name.as_deref(), Some("scholar"));
+    assert_eq!(config.session_id.as_deref(), Some(&*manager.session));
+    assert!(
+        config
+            .trace_id
+            .as_deref()
+            .is_some_and(|id| id.ends_with("-agent-run-1") && id != "agent-run-1"),
+        "the trace id must be qualified by the session"
+    );
+    assert!(config.tags.contains(&"scholar".to_string()));
+}
