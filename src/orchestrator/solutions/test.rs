@@ -143,3 +143,38 @@ fn a_claimed_solution_with_no_program_is_not_accepted() {
 
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[tokio::test]
+async fn a_reflection_is_indexed_with_its_verdict_and_lesson() {
+    let workspace = std::env::temp_dir().join("math-agent-reflection-index");
+    let _ = std::fs::remove_dir_all(&workspace);
+    std::fs::create_dir_all(&workspace).expect("create test workspace");
+
+    super::log_reflection(
+        Some(&workspace),
+        3,
+        "VERDICT: UNSOLVED\nPROGRESS: YES\nLESSON: the frame enumeration recomputes primitive \
+         frames for every n; cache them across calls.",
+        None,
+    )
+    .await;
+
+    let index = std::fs::read_to_string(workspace.join("reflections").join("INDEX.md"))
+        .expect("reflections index was written");
+    // The row has to carry what a reader needs without opening the file:
+    // which attempt, how it was judged, and what it taught.
+    assert!(index.contains("Attempt 3"), "{index}");
+    assert!(index.contains("unsolved"), "{index}");
+    assert!(index.contains("cache them across calls"), "{index}");
+    // And it must name the file it describes.
+    assert!(index.contains("_learnings.md"), "{index}");
+
+    // A second reflection joins the table rather than replacing it.
+    super::log_reflection(Some(&workspace), 4, "VERDICT: SOLVED\nPROGRESS: YES\n", None).await;
+    let index = std::fs::read_to_string(workspace.join("reflections").join("INDEX.md"))
+        .expect("reflections index still there");
+    assert!(index.contains("Attempt 3"), "{index}");
+    assert!(index.contains("Attempt 4"), "{index}");
+    assert!(index.contains("solved"), "{index}");
+    let _ = std::fs::remove_dir_all(&workspace);
+}
