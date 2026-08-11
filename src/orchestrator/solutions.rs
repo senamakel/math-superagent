@@ -19,6 +19,7 @@
 //! reference material, looks for structure in the results already computed, and
 //! asks for a genuinely different approach, in parallel, before trying again.
 
+use std::fmt::Write as _;
 use std::sync::Arc;
 
 use tinyagents::graph::{GraphBuilder, NodeContext, NodeResult};
@@ -72,7 +73,7 @@ impl SolutionState {
         }
         let mut rendered = String::from("Lessons from previous attempts, newest last:\n");
         for (index, lesson) in self.lessons.iter().enumerate() {
-            rendered.push_str(&format!("{}. {lesson}\n", index + 1));
+            let _ = writeln!(rendered, "{}. {lesson}", index + 1);
         }
         rendered
     }
@@ -142,6 +143,137 @@ async fn delegate(subagents: &AsyncSubagentManager, agent: &str, prompt: String)
         Ok(text) => text,
         Err(error) => format!("[{agent} failed: {error}]"),
     }
+}
+
+/// Carries out one attempt at the problem, briefed with every lesson so far.
+async fn attempt_step(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    mut state: SolutionState,
+) -> SolutionState {
+    state.attempts += 1;
+    if let Some(tracer) = tracer {
+        tracer.note(&format!("solution loop: attempt {}", state.attempts));
+    }
+    let fresh = if state.fresh_context.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "New material gathered since the last attempt:\n{}",
+            state.fresh_context
+        )
+    };
+    let prompt = format!(
+        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{}\n{fresh}\n\n\
+         Follow the method policy: understand, find the governing structure, derive, implement, \
+         then verify by a second independent route. Report the answer, the method, and the \
+         verification, or state precisely where you are blocked and what you established along \
+         the way.",
+        state.problem,
+        state.lesson_briefing()
+    );
+    state.last_attempt = delegate(subagents, "goals", prompt).await;
+    state.fresh_context.clear();
+    state
+}
+
+/// Judges the last attempt and records the lesson it yields.
+async fn reflect_step(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    mut state: SolutionState,
+) -> SolutionState {
+    let prompt = format!(
+        "Judge one attempt at a problem and extract the lesson.\n\nProblem:\n{}\n\n\
+         Attempt report:\n{}\n\n{}\n\n\
+         Answer exactly these three things:\n\
+         VERDICT: SOLVED if the attempt reached a specific final answer AND verified it by a \
+         second independent route; otherwise UNSOLVED. An unverified answer is UNSOLVED.\n\
+         PROGRESS: YES if this attempt established something the previous ones had not; \
+         otherwise NO.\n\
+         LESSON: one or two sentences naming the specific thing to do differently next time. \
+         Name the misstep and the concrete alternative. Do not restate the problem or give \
+         generic advice.",
+        state.problem,
+        state.last_attempt,
+        state.lesson_briefing()
+    );
+    let reflection = delegate(subagents, "reflection", prompt).await;
+
+    let upper = reflection.to_uppercase();
+    // Require the explicit positive verdict: anything unparsable or hedged
+    // leaves the loop running rather than declaring success.
+    state.solved = upper.contains("VERDICT: SOLVED") || upper.contains("VERDICT:SOLVED");
+    let progressed = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
+    if progressed {
+        state.unproductive = 0;
+    } else {
+        state.unproductive += 1;
+    }
+    if let Some(tracer) = tracer {
+        tracer.note(&format!(
+            "solution loop: verdict {}, progress {}, next {}",
+            if state.solved { "solved" } else { "unsolved" },
+            if progressed { "yes" } else { "no" },
+            route(&state)
+        ));
+    }
+    state.lessons.push(extract_lesson(&reflection));
+    state
+}
+
+/// Gathers three independent angles concurrently to break a stalled loop.
+async fn diversify_step(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    mut state: SolutionState,
+) -> SolutionState {
+    if let Some(tracer) = tracer {
+        tracer.note("solution loop: stuck, gathering new angles");
+    }
+    let library = delegate(
+        subagents,
+        "librarian",
+        format!(
+            "Build a local reference set for this problem. Find primary treatments of the \
+             mathematics involved, download them into the workspace reference library, index \
+             them, and report what is now available locally with its source URLs.\n\n\
+             Problem:\n{}\n\n{}",
+            state.problem,
+            state.lesson_briefing()
+        ),
+    );
+    let patterns = delegate(
+        subagents,
+        "pattern_finder",
+        format!(
+            "Look for exploitable structure in the data this investigation has already produced. \
+             Read the workspace results, extract the relevant integer sequences, and run the \
+             sequence tools on them. Report only regularities that hold exactly over every term, \
+             and say plainly that they are conjectures.\n\nProblem:\n{}",
+            state.problem
+        ),
+    );
+    let invention = delegate(
+        subagents,
+        "inventor",
+        format!(
+            "Propose a genuinely different line of attack. The approaches tried so far have not \
+             worked; do not restate them. Name a specific alternative formulation, transform, or \
+             theory, say why it suits this problem, and give the first concrete \
+             step.\n\nProblem:\n{}\n\n{}",
+            state.problem,
+            state.lesson_briefing()
+        ),
+    );
+    let (library, patterns, invention) = tokio::join!(library, patterns, invention);
+
+    state.fresh_context = format!(
+        "Reference material:\n{library}\n\nStructural observations:\n{patterns}\n\n\
+         Proposed alternative approach:\n{invention}"
+    );
+    state.unproductive = 0;
+    state
 }
 
 /// Builds and runs the solution loop over the registered specialists.

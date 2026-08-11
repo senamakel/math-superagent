@@ -191,7 +191,7 @@ fn solve(matrix: &mut [Vec<Frac>], unknowns: usize) -> Option<Vec<Frac>> {
         let pivot = (pivot_row..rows).find(|row| !matrix[*row][column].is_zero())?;
         matrix.swap(pivot_row, pivot);
         let divisor = matrix[pivot_row][column];
-        for value in matrix[pivot_row][column..=unknowns].iter_mut() {
+        for value in &mut matrix[pivot_row][column..=unknowns] {
             *value = value.div(divisor)?;
         }
         for row in 0..rows {
