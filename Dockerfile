@@ -37,6 +37,27 @@ RUN apt-get update \
     && apt-get install --yes --no-install-recommends sagemath \
     && rm -rf /var/lib/apt/lists/*
 
+# The constraint-solving stack, for the `solver` role. A declarative encoding
+# handed to an engine that does propagation, clause learning, and symmetry
+# breaking beats a backtracking search written from scratch in one turn, and
+# rewriting one of these by hand is precisely the answer-space search the
+# method policy prohibits — so the engines have to be present or the role
+# cannot exist. Placed after SageMath so editing this list does not invalidate
+# that layer.
+#
+# CP-SAT and PySAT come from pip because Debian ships neither: `python3-ortools`
+# resolves as a name and has no installation candidate. They are baked at build
+# time into the system site-packages, before PIP_TARGET is set below, because
+# the container root filesystem is read-only at runtime and a run that has to
+# install its solver before it can encode anything has already lost minutes of
+# its budget.
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+       python3-z3 python3-pulp python3-pycosat python3-igraph \
+       z3 cvc5 minisat cryptominisat glpk-utils coinor-cbc \
+    && pip3 install --break-system-packages --no-cache-dir ortools python-sat \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
 
 USER agent
