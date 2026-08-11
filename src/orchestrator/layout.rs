@@ -40,10 +40,9 @@ const PROGRAM: [&str; 10] = [
 /// Files allowed at the workspace root, by exact name.
 ///
 /// The run's prose and the problem statement it was given. Configuration, the
-/// trace, the document index, and the source URL are plumbing rather than work,
-/// so they live under `raw/` with the untouched download bytes — nothing in
-/// them is worth a line in the listing every agent reads before deciding what
-/// to do next.
+/// trace, the document index, and the source URL are plumbing rather than
+/// work, so they live under `config/` — nothing in them is worth a line in the
+/// listing every agent reads before deciding what to do next.
 const ROOT_FILES: [&str; 4] = ["AGENTS.md", "README.md", "INDEX.md", "problem.html"];
 
 /// Extensions allowed at the workspace root.

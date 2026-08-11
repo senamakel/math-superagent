@@ -10,11 +10,11 @@ use serde_json::{Value, json};
 
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
-/// The local search index, kept under `raw/` with the run's other plumbing.
+/// The local search index, kept under `config/` with the run's other plumbing.
 ///
-/// It is runtime bookkeeping, not work: nothing in it is worth a row in a
+/// It is runtime bookkeeping, not work: nothing in it is worth a row in the
 /// listing an agent reads before deciding what to do next.
-const INDEX_PATH: &str = "raw/.document-index.json";
+const INDEX_PATH: &str = "config/.document-index.json";
 /// Folder every externally-sourced document is filed under.
 ///
 /// Enforced here rather than asked for in a prompt: downloads are the one kind
