@@ -765,7 +765,17 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // fact; the librarian needs it so it does not chase a question already
         // answered. All three get the research index so none re-fetches what
         // is already on disk.
-        "librarian" | "inventor" | "research" => &["goal.md", "memory.md", "research/INDEX.md"],
+        "librarian" | "research" => &["goal.md", "memory.md", "research/INDEX.md"],
+        // The inventor gets the reflections index on top, for the same reason
+        // it gets `memory.md`: the one thing it exists not to do is re-propose
+        // an approach that already failed, and the index names each failure
+        // with the attempt that produced it.
+        "inventor" => &[
+            "goal.md",
+            "memory.md",
+            "research/INDEX.md",
+            "reflections/INDEX.md",
+        ],
         _ => &[],
     }
 }
