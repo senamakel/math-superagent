@@ -509,6 +509,7 @@ scripts/run-agent           helper implementation
 scripts/solve-euler         fetch and solve workflow
 workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, config, and memory
+src/bin/euler_tui.rs        the tabbed console, behind the `tui` feature
 src/
 ├── prompts/                built-in role prompts, included at compile time
 ├── agent/                  TinyAgents facade, OpenRouter, Langfuse
