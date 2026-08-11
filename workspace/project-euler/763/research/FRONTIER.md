@@ -10,6 +10,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | http://oeis.org/ | — | # Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/ Search: seq:1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267,5949063 No results. # Content is available… |
 | 2 | http://oeis.org/LICENSE | — | No results. # Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE |
 | 2 | https://arxiv.org/abs/1009.5731v1 | arXiv:1009.5731v1 | \| Subjects: \| Combinatorics (math.CO); Classical Analysis and ODEs (math.CA) \| Cite as: \| [arXiv:1009.5731][6] [math.CO] \| \| (or [arXiv:1009.5731v1][7] [math.CO] for this version) \| \|… |
+| 2 | https://oeis.org/A000045 | A000045 | cross-referenced from A005207 |
 | 2 | https://oeis.org/A000108 | A000108 | cross-referenced from A001006 |
 | 1 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | titled An Explicit Solution to the Chessboard Pebbling Problem, by Qiang Zhen and Charles Knessl - [View PDF][5] - [TeX Source][10] [view license][11] ### Current browse context: math.CO [< prev][12]… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Knessl,+C | Charles Knessl | [Submitted on 29 Sep 2010] # Title: An Explicit Solution to the Chessboard Pebbling Problem Authors: [Qiang Zhen][3], [Charles Knessl][4] View a PDF of the paper titled An Explicit Solution to the… |
@@ -34,17 +35,16 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://info.arxiv.org/help/mathjax.html | What is MathJax? | value for arXiv's community? ****[Learn more about arXivLabs][39]. [Which authors of this paper are endorsers?][40] \| Disable MathJax ( [What is MathJax?][41]) |
 | 1 | https://info.arxiv.org/labs/showcase.html#arxiv-bibliographic-explorer | What is the Explorer? | Reddit] [23] Bibliographic Tools # Bibliographic and Citation Tools Bibliographic Explorer Toggle Bibliographic Explorer*( [What is the Explorer?][24])* Connected Papers Toggle Connected Papers*(… |
 | 1 | https://oeis.org/A000012 | A000012 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A000045 | A000045 | cross-referenced from A005207 |
+| 1 | https://oeis.org/A000040 | A000040 | cross-referenced from A383891 |
 | 1 | https://oeis.org/A000096 | A000096 | cross-referenced from A055999 |
 | 1 | https://oeis.org/A000217 | A000217 | cross-referenced from A055999 |
 | 1 | https://oeis.org/A000290 | A000290 | cross-referenced from A055999 |
 | 1 | https://oeis.org/A001405 | A001405 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A001477 | A001477 | cross-referenced from A055999 |
 | 1 | https://oeis.org/A001519 | A001519 | cross-referenced from A005207 |
+| 1 | https://oeis.org/A001522 | A001522 | cross-referenced from A186085 |
+| 1 | https://oeis.org/A001523 | A001523 | cross-referenced from A186085 |
+| 1 | https://oeis.org/A001524 | A001524 | cross-referenced from A186085 |
 | 1 | https://oeis.org/A001850 | A001850 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A001906 | A001906 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A002476 | A002476 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A002522 | A002522 | cross-referenced from A055999 |
-| 1 | https://oeis.org/A004148 | A004148 | cross-referenced from A001006 |
 
-_82 further candidates not shown; they are cited once each._
+_93 further candidates not shown; they are cited once each._
