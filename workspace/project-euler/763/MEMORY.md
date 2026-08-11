@@ -8,7 +8,15 @@ empty. Start: one amoeba at (0,0,0). After N divisions there are 2N+1 amoebas.
 D(N) = number of distinct reachable sets of occupied cubes after exactly N
 divisions, counted once even if reachable multiple ways.
 
-## Established results (verified by brute-force BFS in /workspace/brute.py)
+## Established results (verified by brute-force BFS — current oracle filed at code/brute.py)
+
+Re-verified this run: `python code/brute.py` → D(2)=3 ✓ and D(10)=44499 ✓
+(match statement). `code/brute_capped.py 11` confirmed the sequence
+1,1,3,9,30,99,336,1134,3855,13086,44499,151263 through N=11.
+
+D(2) and D(10) are the two worked examples reachable by the exponential BFS
+oracle; the other two (D(20), D(100) last nine digits) are out of its reach
+by design.
 
 D(N) for N = 0..13:
 D(0)=1, D(1)=1, D(2)=3, D(3)=9, D(4)=30, D(5)=99, D(6)=336, D(7)=1134,
