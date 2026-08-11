@@ -2,16 +2,12 @@
 
 What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
-The research library is organised in tiers. Start at `L1/` (one short summary
-per source). Open the matching `L0/` full text only when the summary does not
-answer the question. `L2/` holds the two synthesis notes that distil everything
-toward the goal. `folds/` holds cross-cutting fold notes; `L0/` also holds some
-misfiled/accidental arXiv downloads unrelated to the problem (see `L1/misfiled.md`).
-
-## L1 — one short summary per source (read first)
-
 | File | Purpose |
 | --- | --- |
+| `L0/INDEX.md` | _(undescribed)_ |
+| `L0/li_zuchswang.md` | _(undescribed)_ |
+| `L0/siegel_zugzwang.md` | _(undescribed)_ |
+| `L1/INDEX.md` | _(undescribed)_ |
 | `L1/a083652.md` | OEIS A083652 summatory bit-length, exact O(1) closed form; third leg of total bits = ones+zeros. |
 | `L1/bitcount.md` | OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |
 | `L1/cgt.md` | CGT framework (Conway ONAG, Winning Ways): numbers as games, disjunctive sum; board decomposes. |
@@ -33,19 +29,6 @@ misfiled/accidental arXiv downloads unrelated to the problem (see `L1/misfiled.m
 | `L1/weightedsearch.md` | Dead end: OEIS search on sample S(n) → no result; S(n) ∉ OEIS. |
 | `L1/zerocount.md` | OEIS A059015 summatory 0-bit count → B(n); identity A059015 = A083652 − A000788. |
 | `L1/zugzwang.md` | Skip = "passing, if allowed, would be best"; One's forced 1-bit consumption → zugzwang. |
-
-## L0 — full-text companions (open only after L1)
-
-Indexed in `L0/INDEX.md`. These are the `.full.md` full texts for each L1
-summary plus the accidental/misfiled arXiv downloads documented in
-`L1/misfiled.md`, and `siegel_zugzwang(.full).md`.
-
-## L2 — synthesis notes
-
-Indexed in `L2/INDEX.md`. Two notes distil the library toward the goal:
-`counting-arithmetic.md` (evaluating A,B at the 10^5 scale) and
-`game-reduction-and-pass.md` (the game → (A,B) counters + skip DP).
-
-## folds — cross-cutting fold notes
-
-Indexed in `folds/INDEX.md`: counting-arithmetic, deadends, game-core, passes.
+| `L2/INDEX.md` | _(undescribed)_ |
+| `L2/counting-arithmetic.md` | _(undescribed)_ |
+| `L2/game-reduction-and-pass.md` | _(undescribed)_ |

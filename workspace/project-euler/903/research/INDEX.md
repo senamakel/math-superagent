@@ -4,6 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `L0/gaetz_ryba_stable_chars_permutation_patterns.full.full.md` | Full text of the erroneous fetch (arXiv:2107.10110, a zeroth-order-optimization ML paper) — unrelated to permutation combinatorics. Dead download; see L1 flag. |
 | `L0/homomesies_permutations_arxiv.md` | Raw summary of the arXiv abstract page for Elder–Lafrenière–McNicholas–Striker–Welch, "Homomesies on permutations" (2206.13409): 128 homomesy instances on S_n under Lehmer-code rotation, etc. Full text companion is homomesies_permutations_arxiv.full.md (abstract only; PDF not captured). Only a route toward the run's open core (averaging rank over the cyclic subgroup {pi^i}), not the solution — map here is Lehmer-code rotation, not permutation power, and rank is not among the homomesic statistics. Curated summary: L1/homomesies_permutations.md |
 | `L0/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
 | `L0/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
@@ -37,9 +38,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2/mechanism_pair_inversions.md` | _(undescribed)_ |
 | `L2/order_random_permutation.md` | _(undescribed)_ |
 | `L2/rank_lehmer.md` | _(undescribed)_ |
-| `L2/report_A_n_B_n_closed_forms_sources.md` | Synthesis of all located sources giving the per-gap affine pair-inversion probabilities (Campion-Loth Lemma 4.7, Pinsky-Schickentanz Thm 1a/Prop 10a, Pinsky EJC P2.36), the fixed-point/cycle-type summation machinery (Ford), and the Eulerian-polynomial per-gap k-step inversion distribution (Sack-Ulfarsson Thm 4.4) — the concrete routes to closed forms for A_n and B_n in f_n(k)=A_n+(k-1)B_n. Records the clean-negative finding that no source gives the cyclic-subgroup rank-sum. |
+| `L2/report_A_n_B_n_closed_forms_sources.md` | Synthesis note (12KB) answering which located sources give (a) per-gap pair-inversion probabilities affine in the gap (Campion-Loth Lemma 4.7 + Thm 4.8, Pinsky-Schickentanz Thm 1a/Prop 10a), (b) concrete summation routes to A_n,B_n via cycle-type calculus (Ford), and (c) an Eulerian-polynomial closed form for per-gap k-step inversion counts (Sack-Ulfarsson Thm 4.4). Records the clean-negative finding: no source computes the rank-sum over the cyclic subgroup {pi^i} (the novel core), and describes the step-by-step route to derive A_n,B_n. The concrete "how to compute Q(10^6)" synthesis for the open problem. |
 | `L2/reports_negatives.md` | _(undescribed)_ |
 | `verify_cambie_yan.py` | Verification script: checks Cambie-Yan (2408.01211) Thms 1.1/1.2 expected-descents/inversions formulas vs direct enumeration n=3..7; checks the f_n(k) gap-affinity from extend_f.json; and re-measures per-gap pair-inversion probabilities under the random-power law n=5..7 |
-| `verify_facts.py` | Verification oracle: literal rank(pi^i) double-sum Q(n) for reachable n, plus the rank-statistics check sum of all 1-based ranks = n!(n!+1)/2; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88 |
-measures per-gap pair-inversion probabilities under the random-power law n=5..7 |
 | `verify_facts.py` | Verification oracle: literal rank(pi^i) double-sum Q(n) for reachable n, plus the rank-statistics check sum of all 1-based ranks = n!(n!+1)/2; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88 |

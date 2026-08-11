@@ -1,7 +1,6 @@
 # Index — research/L2
 
-Synthesis notes distilling the L1/L0 sources into two records directly serving
-the goal. These are the "bottom line" of the research library.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
