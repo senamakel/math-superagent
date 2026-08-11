@@ -43,5 +43,11 @@ brute.py reproduces examples 1,2,3 exactly (see run output in scratchpad).
 
 ## Open questions (all resolved)
 - CONFIRMED (all closed): b_d at n=10^13 via Cabanillas candidates reproduces
-  d=2 oracle (b=4375636191520, a=-6188084046055). S = sum|a_d| = 498809825393729.
-  Written to /workspace/results_full.txt by /workspace/solution.py.
+  d=2 oracle (b=4375636191520, a=-6188084046055).
+- **CRITICAL correction**: b may be NEGATIVE. solution.py searched only b>=0 and
+  got S=498809825393729, which is WRONG. Corrected both-sign solver
+  /workspace/solution_bothsides.py reproduces examples 1-4 (d=2,n=10 has b=-2;
+  d=7,n=1e6 has b=-211781) and matches brute force on all 90 d at n=1e6
+  (toolkits/validate_bothsides.py). **S (corrected) = 526007984625966**,
+  written to /workspace/results_full_bothsides.txt. Positive-only was strictly
+  worse on 45 d (negative-b winners), never better.

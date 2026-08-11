@@ -1025,8 +1025,14 @@ fn specialist_harness(
     // prefix they cache, so one agent's fallback must not drag the others onto
     // a provider where their prefix is cold. See `agent::sticky`.
     let model: Arc<dyn ChatModel<()>> = Arc::new(StickyProviderModel::new(model));
-    // Account outside the affinity wrapper so the recorded provider is the one
-    // that actually served the call, including a fallback the pin did not get.
+    // Re-issue a turn the provider cut off mid-answer. Outside the affinity
+    // and timeout wrappers, so each re-issue is routed and bounded on its own
+    // larger cap rather than inheriting the cut-off attempt's. See
+    // `agent::untruncated`.
+    let model: Arc<dyn ChatModel<()>> = Arc::new(UntruncatedModel::new(model));
+    // Account outside everything else so the recorded provider is the one that
+    // actually served the call, including a fallback the pin did not get, and
+    // every re-issued attempt is billed as the separate call it was.
     let model: Arc<dyn ChatModel<()>> =
         Arc::new(AccountingModel::new(model, agent, tracer.clone()));
     let mut harness = AgentHarness::new();
