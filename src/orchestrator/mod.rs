@@ -1340,12 +1340,11 @@ fn specialist_harness(
     // Being outermost also puts each attempt through affinity and the timeout
     // bound on its own larger cap, rather than inheriting the cut-off
     // attempt's. See `agent::untruncated`.
-    let model: Arc<dyn ChatModel<()>> =
-        Arc::new(
-            UntruncatedModel::new(model)
-                .with_tracer(tracer.clone(), agent)
-                .with_turn_cap(budget.max_turn_output_tokens),
-        );
+    let model: Arc<dyn ChatModel<()>> = Arc::new(
+        UntruncatedModel::new(model)
+            .with_tracer(tracer.clone(), agent)
+            .with_turn_cap(budget.max_turn_output_tokens),
+    );
     // Route around a provider that failed, outermost of all, so the retry is
     // steered by the affinity wrapper's one-request block and reaches a
     // different provider rather than the one that just failed. See

@@ -161,8 +161,8 @@ async fn a_turn_the_loop_already_doubled_is_not_doubled_again() {
     // twice the cap — and read as an original, that doubles again. A live
     // `goals` agent reached a 48,000-token re-issue exactly this way, four
     // times the configured ceiling.
-    let inner = CountingModel::new(vec![cut_off_response(), cut_off_response()]);
-    let model = UntruncatedModel::new(inner.clone()).with_turn_cap(12_000);
+    let (inner, caps) = ScriptedModel::new(vec![truncated("cut off"), finished("done")]);
+    let model = UntruncatedModel::new(inner).with_turn_cap(12_000);
 
     let _ = model
         .invoke(&(), ModelRequest::new(Vec::new()).with_max_tokens(24_000))
@@ -170,13 +170,8 @@ async fn a_turn_the_loop_already_doubled_is_not_doubled_again() {
         .expect("an already-doubled turn still answers");
 
     assert_eq!(
-        inner.calls(),
-        1,
-        "the turn is already at the shared ceiling, so it is not re-issued"
-    );
-    assert_eq!(
-        inner.caps(),
+        *caps.lock().expect("recorded caps are not poisoned"),
         vec![Some(24_000)],
-        "and nothing asked for more than the ceiling allows"
+        "the turn is already at the shared ceiling, so it is not re-issued"
     );
 }
