@@ -13,6 +13,14 @@
 //! carries its own `AGENTS.md` and `INDEX.md` so the rules for working there
 //! travel with the folder.
 //!
+//! Inside `code/` there is a second level this module deliberately does not
+//! decide. Where a program belongs among the questions a run is attacking is a
+//! judgement about the mathematics, and a rule that guessed at it would file
+//! by extension — which is how a folder ends up sorted by a fact nobody cares
+//! about. So a caller that names a folder is trusted, the default sink stays
+//! `code/`, and whether that sink has grown into a pile is measured after the
+//! fact by [`super::code_layout`].
+//!
 //! Placement is enforced here, in the write path, for the same reason
 //! [`super::documents::research_path`] enforces `research/`: a prompt asking
 //! for tidiness holds only until a model is busy. What cannot be enforced here
