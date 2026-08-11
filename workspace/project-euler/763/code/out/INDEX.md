@@ -10,4 +10,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `extension_summary.md` | Record of the extension run: method, per-level timings, which N failed (15 & 16 unreachable under the 5M cap), verification of D(14). |
 | `recur.py` | _(undescribed)_ |
 | `recur2.py` | _(undescribed)_ |
-| `recur3.py` | _(undescribed)_ |
+| `recur3.py` | Recurrence out-of-sample test (program, not output data — a third program that landed in code/out/ from a shell): fits the order-7 constant-coefficient linear recurrence to only the first 14 terms of D(N) (a 7x7 square system, unique coefficients), then predicts D(14)=5949063 and checks it matches; also fits to 12 terms leaving a 2-parameter family and checks the unfitted relations and D(14) are satisfied identically. Confirms the order-7 recurrence conjectured in recur.py/recur2.py generalizes beyond the fitted range. MISFILED here like recur.py/recur2.py; does not change what any other program computes. |
