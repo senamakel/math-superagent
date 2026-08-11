@@ -117,14 +117,16 @@ pub(super) fn parse(patch: &str) -> Result<Vec<FileOp>> {
                 contents.push('\n');
                 lines.next();
             }
-            FileOp::Add {
-                // A new file is placed by the same rule as a written one:
-                // adding through a patch must not be the way around the
-                // layout. An update names a file that already exists, so it
-                // is left exactly as addressed.
-                path: super::layout::placed(&checked_path(path)?),
-                contents,
+            // A new file is placed by the same rule as a written one: adding
+            // through a patch must not be the way around the layout. An
+            // update or a delete names a file that already exists, so both
+            // are left exactly as addressed.
+            let asked = checked_path(path)?;
+            let path = super::layout::placed(&asked);
+            if path != asked {
+                requested = Some(asked);
             }
+            FileOp::Add { path, contents }
         } else if let Some(path) = line.strip_prefix(DELETE) {
             FileOp::Delete {
                 path: checked_path(path)?,
