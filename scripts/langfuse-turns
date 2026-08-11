@@ -68,8 +68,11 @@ request_observations() {
     if [ -n "$trace_id" ]; then
         set -- "$@" --data-urlencode "traceId=$trace_id"
     fi
-    set -- "$@" --output "$response_file" --write-out '%{http_code}'
-    curl "$@" <<EOF
+    # The legacy endpoint answers slowly on a wide window and can hang well past
+    # any useful wait, so bound it rather than leaving an operator watching a
+    # dead terminal.
+    set -- "$@" --max-time 45 --output "$response_file" --write-out '%{http_code}'
+    curl "$@" <<EOF || echo 000
 user = "$LANGFUSE_PUBLIC_KEY:$LANGFUSE_SECRET_KEY"
 url = "$base_url/$endpoint"
 EOF
@@ -78,10 +81,21 @@ EOF
 status=$(request_observations "api/public/v2/observations")
 if [ "$status" -eq 404 ]; then
     status=$(request_observations "api/public/observations")
+    legacy=1
+else
+    legacy=0
 fi
 if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
     echo "Langfuse observations request failed with HTTP $status" >&2
     jq -c '{error: (.message // .error // "unknown Langfuse error")}' "$response_file" >&2 2>/dev/null || true
+    # A deployment without the v2 API leaves only the legacy endpoint, which
+    # refuses or times out on a wide window rather than returning less. Saying
+    # so here is the difference between a dead end and a working next command.
+    if [ "$legacy" -eq 1 ] && { [ "$status" -eq 422 ] || [ "$status" -eq 000 ]; }; then
+        echo "this deployment serves only the legacy observations endpoint, which \
+refuses broad queries; retry with a shorter --hours and a smaller --limit, or \
+filter to one run with --trace <trace-id>" >&2
+    fi
     exit 1
 fi
 
