@@ -1248,6 +1248,7 @@ impl RolePrompts {
             research: role("research", RESEARCH_PROMPT)?,
             tool_builder: role("tool_builder", TOOL_BUILDER_PROMPT)?,
             coder: role("coder", CODER_PROMPT)?,
+            solver: role("solver", SOLVER_PROMPT)?,
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
             judge: role("judge", JUDGE_PROMPT)?,
