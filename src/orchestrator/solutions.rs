@@ -264,15 +264,23 @@ fn continuation_briefing(attempt: usize, resumed: bool) -> String {
 /// exists for — a confident answer with nothing behind it — without pretending
 /// to judge mathematics from the filesystem.
 fn has_executable_artifact(workspace: &Path) -> bool {
-    let Ok(entries) = std::fs::read_dir(workspace) else {
-        return false;
-    };
-    entries.filter_map(std::result::Result::ok).any(|entry| {
-        let name = entry.file_name();
-        let name = name.to_string_lossy();
-        (name.ends_with(".py") || name.ends_with(".sh"))
-            && entry.metadata().is_ok_and(|meta| meta.len() > 0)
-    })
+    // `code/` first, then the root. Programs are filed under `code/` now, and
+    // a check that looked only at the root started answering "no programs" for
+    // every workspace the moment they moved — which told each restarted run it
+    // was starting fresh, so it re-read a workspace it should have continued
+    // from. The root is still searched because a shell redirect can put a
+    // program there and because older workspaces predate the move.
+    [workspace.join(super::layout::CODE_DIR), workspace.to_path_buf()]
+        .iter()
+        .filter_map(|folder| std::fs::read_dir(folder).ok())
+        .flatten()
+        .filter_map(std::result::Result::ok)
+        .any(|entry| {
+            let name = entry.file_name();
+            let name = name.to_string_lossy();
+            (name.ends_with(".py") || name.ends_with(".sh"))
+                && entry.metadata().is_ok_and(|meta| meta.len() > 0)
+        })
 }
 
 /// Counts the distinct lessons a reflection produced.
