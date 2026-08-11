@@ -110,6 +110,25 @@ game up to n=10).
   A−B (S(5)=17 vs A−B=8), so S depends on the DISTRIBUTION of bit-strings, not
   just the totals. Output: code/out/counting_proper.txt.
 - What is the closed-form/structure for S(n)? (Not yet computed.)
+
+## RESULT (verified 2025 via tool_builder run)
+PE882 answer: **S(100000) = 15800662276**, with
+G(100000) = 517756101446417/32768 (= 15800662275.5865…, non-integer; S=ceil).
+Confirmed by THREE independent code paths that all agree exactly on
+G(100000)=517756101446417/32768 and S(100000)=15800662276:
+  - solution.py (forward ascending sweep, toolkits.simplest_dyadic): also
+    asserts every k in 1..100000 is a Number (max(Left)<min(Right), no violation)
+    and its oracle cross-check S(1,2,3,4,5,10)=1,2,8,9,17,64 reports ALL MATCH.
+  - verify_dyadic.py 100000: independent birthday-scan simplest-dyadic path,
+    G=517756101446417/32768, S=15800662276.
+  - indep_check.py (WRITTEN AS NEW in this run): DIRECT RECURSIVE surreal g(k)
+    with its own from-scratch birthday-ordered simplest-dyadic-between and exact
+    numerator/denominator sum, G(100000)=517756101446417/32768,
+    integer check False (G non-integer), S=15800662276. AGREES.
+Real-game oracle (brute.py) reproduced S(1..5)=1,2,8,9,17 (matched examples
+S(2)=2, S(5)=17); fastbrute.py reached S(1..3)=1,2,8 before timeout at n=4.
+brute.py timed out above n=5, fastbrute.py above n=3 — both expected.
+So solution.py's answer 15800662276 is independently verified.
 - **S(6) real-game oracle NOT obtained (run this session).** RealSolver(6)
   (fastbrute.py, budget-removed minimax) was run under `timeout 500` with a
   progress probe (code/tmp/real6.py, probe6.py). Both timed out: after 500s it

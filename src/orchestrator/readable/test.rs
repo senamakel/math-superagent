@@ -1,7 +1,9 @@
 //! Unit tests for document conversion and URL compression.
 #![allow(clippy::expect_used)]
 
-use super::{Format, LinkTable, clean_url, decode_entities, detect, html_to_markdown, to_markdown};
+use super::{
+    Format, LinkTable, clean_url, convert, decode_entities, detect, html_to_markdown, to_markdown,
+};
 
 fn render(html: &str) -> String {
     let mut table = LinkTable::default();
@@ -165,4 +167,95 @@ fn a_real_project_euler_statement_converts_without_losing_mathematics() {
     assert!(markdown.contains("Shortened Binary Expansion"));
     assert!(!markdown.contains("<dfn>"));
     assert!(!markdown.contains("<p>"));
+}
+
+#[test]
+fn a_citation_carries_the_sentence_that_explains_it() {
+    // The URL says a document exists; the sentence says why this source
+    // thought it mattered, which is the difference between a reading list and
+    // a list of URLs.
+    let html = "<p>For the general theory of loopy games we follow \
+                <a href=\"https://example.org/siegel.pdf\">Siegel's survey</a>, which settles the \
+                canonical form question.</p>";
+    let converted = convert(
+        html.as_bytes(),
+        Some("text/html"),
+        "https://source.example/page",
+    )
+    .expect("html");
+
+    let record = converted
+        .links
+        .iter()
+        .find(|link| link.url == "https://example.org/siegel.pdf")
+        .expect("the citation is recorded");
+    assert_eq!(record.label, "Siegel's survey");
+    assert!(record.context.contains("loopy games we follow"));
+    assert!(
+        record.context.contains("canonical form"),
+        "context reaches past the citation, not only before it: {}",
+        record.context
+    );
+}
+
+#[test]
+fn a_document_citing_itself_is_not_a_lead() {
+    let html = "<p>Read the <a href=\"https://source.example/page\">canonical version</a>.</p>";
+    let converted = convert(
+        html.as_bytes(),
+        Some("text/html"),
+        "https://source.example/page",
+    )
+    .expect("html");
+    assert!(converted.links.is_empty());
+}
+
+#[test]
+fn a_pdf_reference_list_yields_arxiv_and_doi_citations() {
+    // The case that matters most: a mathematical paper names the primary
+    // literature on its subject as identifiers, not as anchors, and a
+    // converted PDF has no markup left to read them from.
+    let text = "References\n[1] Larsson, Nowakowski, Santos. Pass and waiting moves, \
+                arXiv:1505.01907, 2015.\n[2] Girgensohn. Digital sums, doi:10.1000/integers.a54.\n\
+                [3] See also https://oeis.org/A000788 for the summatory sequence.\n";
+    let converted = convert(
+        text.as_bytes(),
+        Some("text/plain"),
+        "https://example.org/paper",
+    )
+    .expect("plain text");
+
+    let urls: Vec<&str> = converted
+        .links
+        .iter()
+        .map(|link| link.url.as_str())
+        .collect();
+    assert!(
+        urls.contains(&"https://arxiv.org/abs/1505.01907"),
+        "{urls:?}"
+    );
+    assert!(
+        urls.contains(&"https://doi.org/10.1000/integers.a54"),
+        "{urls:?}"
+    );
+    assert!(urls.contains(&"https://oeis.org/A000788"), "{urls:?}");
+
+    let pass = converted
+        .links
+        .iter()
+        .find(|link| link.url.contains("1505.01907"))
+        .expect("the arXiv citation");
+    assert!(pass.context.contains("Pass and waiting moves"));
+}
+
+#[test]
+fn the_same_reference_cited_twice_is_one_record() {
+    let html = "<p>See <a href=\"https://example.org/a\">the survey</a> and later \
+                <a href=\"https://example.org/a?utm_source=nav\">the survey again</a>.</p>";
+    let converted =
+        convert(html.as_bytes(), Some("text/html"), "https://source.example").expect("html");
+    assert_eq!(converted.links.len(), 1);
+    // The first citation is the one that came with prose; the repeat is
+    // usually navigation.
+    assert_eq!(converted.links[0].label, "the survey");
 }

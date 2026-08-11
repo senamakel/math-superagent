@@ -33,6 +33,18 @@
       Trivial n=2 counterexample (v0<v1, no bump, even; treap predicts odd).
       Tree-model MC p(3,160)=0.333 (given 0.4148), p(4,400)=0.833 (given 0.5108),
       p(13,1800)=0.536. Structure of the treap does not match the bump-chronology.
+- [x] EXACT rational integration oracle for small n (cell_exact.py +
+      toolkits/arr_enum.py + toolkits/arr_polytope.py). p(3,160)=56/135 and
+      p(4,400)=521/1020=0.5107843137 EXACTLY; full small-n table (n=2,3,4;
+      L=160,400,1800) in MEMORY.md + code/out/exact_small_n_results.json.
+      Verified by a second independent solver (arrangement_pn.py) and MC.
+- [x] Parity-cell counts: n=3 -> 32 cells (17 even), n=4 -> 1202 (595 even),
+      L-independent. n=5 arrangement = 85 planes / ~13,750 cells: too heavy
+      for the naive vertex solver -> p(5,1800)=0.5327±0.0003 by MC (per steering).
+- [ ] Exact p(13,1800). The n<=4 arrangement is exact but n=13 requires a
+      completely different route: the research library's treap/Plackett-Luce
+      recursion is the candidate (see CONTEXT.md), though cross-range coupling
+      tests (cross_*, crux_*) remain open. Not yet solved exactly.
 - [x] Validation-oracle extras: exact p(3,L) for 16 extra integer L
       (120,200,280,360,440,520,560,720,900,1100,1400,2000,2400,3000,4000,5000)
       with ncells, saved to code/out/exact_p3_extra.json by code/exact_p3_extra.py.

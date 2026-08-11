@@ -229,43 +229,6 @@ fn a_converted_document_is_named_for_what_it_now_contains() {
     );
 }
 
-#[test]
-fn a_downloaded_document_is_excerpted_where_agents_read_it() {
-    use super::{RESEARCH_EXCERPT_CHARS, research_excerpt};
-
-    // One real downloaded page converted to 91,190 characters — roughly 23,000
-    // tokens. Three of those fill a specialist's context before it has done
-    // any work, so only a bounded stand-in is filed under research/.
-    let full = (0..4_000)
-        .map(|line| format!("line {line} of a long converted paper"))
-        .collect::<Vec<_>>()
-        .join("\n");
-    assert!(full.chars().count() > RESEARCH_EXCERPT_CHARS);
-
-    let excerpt = research_excerpt(&full, "raw/paper.md");
-
-    assert!(excerpt.chars().count() < full.chars().count() / 4);
-    assert!(
-        excerpt.contains("raw/paper.md"),
-        "it must say where the rest is"
-    );
-    assert!(
-        excerpt.contains("1000 tokens"),
-        "and what to replace it with"
-    );
-    assert!(excerpt.contains("line 0 of a long"), "the opening survives");
-    // Cut at a line boundary rather than mid-sentence.
-    assert!(!excerpt.contains("*[excerpt ends; 0 characters"));
-}
-
-#[test]
-fn a_short_document_is_stored_whole_without_a_truncation_notice() {
-    use super::research_excerpt;
-
-    let full = "# Pell's equation\n\nThe fundamental solution is minimal.\n";
-    assert_eq!(research_excerpt(full, "raw/pell.md"), full);
-}
-
 #[tokio::test]
 async fn concurrent_indexing_keeps_every_entry() -> Result<()> {
     let path = workspace("index-race")?;

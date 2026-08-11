@@ -46,27 +46,6 @@ const SOURCE_LEVEL: usize = 0;
 /// Level of the research tree holding one note per source.
 const DIGEST_LEVEL: usize = 1;
 
-/// Characters of a downloaded document kept in the summary file before it has
-/// been digested.
-///
-/// A converted document is not small: one downloaded reference page came to
-/// 91,190 characters, roughly 23,000 tokens, and three of them would fill a
-/// specialist's context before it had done any work. Filing the whole thing
-/// where agents read it means the run pays that cost every time anyone opens
-/// it, to re-read prose it has already been through.
-///
-/// So a download lands as two files side by side: `<name>.md` carries a
-/// bounded excerpt that the scholar replaces with a real summary, and
-/// `<name>.full.md` carries the whole converted text. Both stay in `research/`
-/// where an agent can reach them, because a source whose detail is genuinely
-/// needed must be readable without leaving the workspace. What the split buys
-/// is that reading the short one is the default and reading the long one is a
-/// decision.
-///
-/// Four thousand characters is about a thousand tokens — enough to carry a
-/// paper's abstract and the opening of its first section, which is usually
-/// enough to tell whether the full text is worth opening.
-const RESEARCH_EXCERPT_CHARS: usize = 4_000;
 const MAX_SEARCH_RESULTS: usize = 10;
 
 #[derive(Clone, Debug)]
@@ -130,12 +109,29 @@ impl WorkspaceDocuments {
             // granted to a role that then becomes the only one able to keep
             // the index honest.
             .chain(super::folder_index::FolderIndexTool::all(self))
+            // What the library establishes is a question every reader of it
+            // has, not only the role that writes the notes.
+            .chain(super::claims::ClaimsTool::all(self))
+            // The role that finds a gap is whichever one walked into it, so
+            // stating one is available to every role rather than only to the
+            // ones that go looking.
+            .chain(super::requests::RequestTool::all(self))
             .collect()
     }
 
     /// The workspace this tool set is rooted at.
     pub(super) fn root(&self) -> &std::path::Path {
         &self.workspace
+    }
+
+    /// Reads the run's objective, or an empty string when it has none.
+    ///
+    /// Used to rank mechanically — how well a citation's prose matches what
+    /// the run is trying to do. A run without a goal file simply ranks on the
+    /// other signals, so a missing file is an empty string rather than an
+    /// error.
+    pub(super) async fn goal(&self) -> String {
+        self.read_runtime("GOAL.md").await.unwrap_or_default()
     }
 
     fn path(&self, relative: &str) -> Result<PathBuf> {
@@ -416,6 +412,84 @@ impl WorkspaceDocuments {
     async fn write(&self, relative: &str, content: &str) -> Result<()> {
         ensure_visible(relative)?;
         self.write_internal(relative, content).await
+    }
+
+    /// Writes a file the runtime maintains rather than an agent.
+    ///
+    /// The frontier's ledger and its rendered table are written by code on
+    /// every download, the way the reflection log is written by the loop. Both
+    /// go through here rather than through [`Self::write`] because the visible
+    /// check exists to stop an *agent* reaching for the runtime's bookkeeping,
+    /// and the runtime keeping its own books is not that.
+    pub(super) async fn write_runtime(&self, relative: &str, content: &str) -> Result<()> {
+        self.write_internal(relative, content).await
+    }
+
+    /// Fetches a URL and returns its body as text.
+    ///
+    /// For the structured endpoints a source adapter talks to, where the reply
+    /// is JSON to be read rather than a document to be filed. Bounded by the
+    /// same limit and served by the same client, so an adapter cannot become a
+    /// way around either.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the URL is not HTTP, the request fails, the reply
+    /// exceeds the document limit, or it is not UTF-8.
+    pub(super) async fn fetch_text(&self, url: &str) -> Result<String> {
+        let parsed = reqwest::Url::parse(url).map_err(|error| {
+            tinyagents::TinyAgentsError::Validation(format!("invalid URL: {error}"))
+        })?;
+        if !matches!(parsed.scheme(), "http" | "https") {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "URL must use HTTP or HTTPS".into(),
+            ));
+        }
+        let response = self
+            .client
+            .get(parsed)
+            .send()
+            .await
+            .map_err(|error| tinyagents::TinyAgentsError::Tool(format!("request failed: {error}")))?
+            .error_for_status()
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("request failed: {error}"))
+            })?;
+        let bytes = response.bytes().await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to read the reply: {error}"))
+        })?;
+        if bytes.len() > MAX_DOCUMENT_BYTES {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "the reply is too large".into(),
+            ));
+        }
+        String::from_utf8(bytes.to_vec()).map_err(|error| {
+            tinyagents::TinyAgentsError::Validation(format!("reply is not UTF-8: {error}"))
+        })
+    }
+
+    /// Reads a file the runtime maintains, bypassing the visibility check.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the file is absent, oversized, or not UTF-8.
+    pub(super) async fn read_runtime(&self, relative: &str) -> Result<String> {
+        let path = self.path(relative)?;
+        let bytes = tokio::fs::read(&path).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to read workspace document `{relative}`: {error}"
+            ))
+        })?;
+        if bytes.len() > MAX_DOCUMENT_BYTES {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "document `{relative}` exceeds {MAX_DOCUMENT_BYTES} bytes"
+            )));
+        }
+        String::from_utf8(bytes).map_err(|error| {
+            tinyagents::TinyAgentsError::Validation(format!(
+                "document `{relative}` is not UTF-8: {error}"
+            ))
+        })
     }
 
     async fn write_internal(&self, relative: &str, content: &str) -> Result<()> {
@@ -756,31 +830,6 @@ pub(super) fn raw_path(research_relative: &str) -> String {
     format!("{RAW_DIR}/{tail}")
 }
 
-/// Builds the bounded stand-in filed under `research/` for a fresh download.
-///
-/// Returns the whole text unchanged when it is already short enough, so a
-/// small source is not decorated with a notice about truncation that did not
-/// happen.
-pub(super) fn research_excerpt(full: &str, full_relative: &str) -> String {
-    if full.chars().count() <= RESEARCH_EXCERPT_CHARS {
-        return full.to_string();
-    }
-    let head: String = full.chars().take(RESEARCH_EXCERPT_CHARS).collect();
-    // Cut at a line boundary so the excerpt does not end mid-sentence.
-    let head = head
-        .rsplit_once('\n')
-        .map_or(head.as_str(), |(body, _)| body);
-    format!(
-        "> **Excerpt only — read this first.** The complete text is one level down at \
-         `{full_relative}`; open that only when this file does not answer the question, because \
-         it is large. Replace this excerpt with a summary of what the source establishes and what \
-         it implies for this problem — under 1000 tokens, specific enough that nobody needs the \
-         full text, and wikilinking it so they can still reach it.\n\n{head}\n\n\
-         *[excerpt ends; {} characters not shown — see `{full_relative}`]*\n",
-        full.chars().count().saturating_sub(head.chars().count())
-    )
-}
-
 /// Returns where a document's complete converted text is filed.
 ///
 /// One level below its summary. The original is what the whole tree is
@@ -837,11 +886,12 @@ impl DocumentToolKind {
 
 /// Entries never worth showing an agent: its own bookkeeping, installed
 /// packages, and the multi-megabyte event log.
-const HIDDEN_ENTRIES: [&str; 6] = [
+const HIDDEN_ENTRIES: [&str; 7] = [
     ".workspace-history",
     ".python-packages",
     "__pycache__",
     ".document-index.json",
+    ".frontier.json",
     "trace.jsonl",
     RAW_DIR,
 ];
@@ -897,6 +947,85 @@ struct DocumentTool {
 }
 
 impl DocumentTool {
+    /// Retrieves a URL's bytes and its declared content type.
+    ///
+    /// Bounded twice — once on the declared length and once on what actually
+    /// arrived — because a server may understate the first and the second is
+    /// the only one that has to be true.
+    async fn fetch(&self, url: &str) -> Result<(Vec<u8>, Option<String>)> {
+        let parsed = reqwest::Url::parse(url).map_err(|error| {
+            tinyagents::TinyAgentsError::Validation(format!("invalid document URL: {error}"))
+        })?;
+        if !matches!(parsed.scheme(), "http" | "https") {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "document URL must use HTTP or HTTPS".into(),
+            ));
+        }
+        let response = self
+            .documents
+            .client
+            .get(parsed)
+            .send()
+            .await
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("document download failed: {error}"))
+            })?
+            .error_for_status()
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("document download failed: {error}"))
+            })?;
+        if response
+            .content_length()
+            .is_some_and(|length| length > MAX_DOCUMENT_BYTES as u64)
+        {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "downloaded document is too large".into(),
+            ));
+        }
+        let content_type = response
+            .headers()
+            .get(reqwest::header::CONTENT_TYPE)
+            .and_then(|value| value.to_str().ok())
+            .map(ToOwned::to_owned);
+        let bytes = response.bytes().await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to read downloaded document: {error}"
+            ))
+        })?;
+        if bytes.len() > MAX_DOCUMENT_BYTES {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "downloaded document is too large".into(),
+            ));
+        }
+        Ok((bytes.to_vec(), content_type))
+    }
+
+    /// Re-derives the claim ledger when the written file is a research note.
+    ///
+    /// Done in the write path rather than asked for in a prompt, on the same
+    /// argument as placement: a derived file that disagrees with its sources
+    /// is worse than no derived file, because the next reader trusts the row
+    /// instead of opening the note. Returns the sentence to append to the tool
+    /// result — a model not told the ledger moved has no reason to read it.
+    async fn reledger(&self, path: &str) -> String {
+        if super::threads::is_thread(path) {
+            super::threads::refresh(&self.documents).await;
+            return format!(" and re-derived {}", super::threads::THREADS_PATH);
+        }
+        if !super::claims::is_note(path) {
+            return String::new();
+        }
+        super::claims::refresh(&self.documents).await;
+        // A thread rests on claim ids, so a note that changes what the library
+        // establishes can strand a thread on a claim that is no longer there.
+        super::threads::refresh(&self.documents).await;
+        format!(
+            " and re-derived {} and {}",
+            super::claims::CLAIMS_PATH,
+            super::threads::THREADS_PATH
+        )
+    }
+
     /// Fetches a URL and stores it as Markdown.
     ///
     /// Split out of the tool dispatch because it is the only branch that does
@@ -904,54 +1033,22 @@ impl DocumentTool {
     async fn download(&self, call: &ToolCall) -> Result<String> {
         let output = {
             let url = required_string(&call.arguments, "url")?;
-            let parsed = reqwest::Url::parse(&url).map_err(|error| {
-                tinyagents::TinyAgentsError::Validation(format!("invalid document URL: {error}"))
-            })?;
-            if !matches!(parsed.scheme(), "http" | "https") {
-                return Err(tinyagents::TinyAgentsError::Validation(
-                    "document URL must use HTTP or HTTPS".into(),
-                ));
+            // A source already in the library is not downloaded twice. The
+            // refusal names the file, so the model's next move is to read what
+            // the run already has rather than to guess at another spelling of
+            // the same URL.
+            if let Some(existing) = super::frontier::already_fetched(&self.documents, &url).await {
+                return Err(tinyagents::TinyAgentsError::Validation(format!(
+                    "{url} is already in this library at `{existing}` — read that instead of \
+                     downloading it again"
+                )));
             }
-            let response = self
-                .documents
-                .client
-                .get(parsed)
-                .send()
-                .await
-                .map_err(|error| {
-                    tinyagents::TinyAgentsError::Tool(format!("document download failed: {error}"))
-                })?
-                .error_for_status()
-                .map_err(|error| {
-                    tinyagents::TinyAgentsError::Tool(format!("document download failed: {error}"))
-                })?;
-            if response
-                .content_length()
-                .is_some_and(|length| length > MAX_DOCUMENT_BYTES as u64)
-            {
-                return Err(tinyagents::TinyAgentsError::Validation(
-                    "downloaded document is too large".into(),
-                ));
-            }
-            let content_type = response
-                .headers()
-                .get(reqwest::header::CONTENT_TYPE)
-                .and_then(|value| value.to_str().ok())
-                .map(ToOwned::to_owned);
-            let bytes = response.bytes().await.map_err(|error| {
-                tinyagents::TinyAgentsError::Tool(format!(
-                    "failed to read downloaded document: {error}"
-                ))
-            })?;
-            if bytes.len() > MAX_DOCUMENT_BYTES {
-                return Err(tinyagents::TinyAgentsError::Validation(
-                    "downloaded document is too large".into(),
-                ));
-            }
+            let (bytes, content_type) = self.fetch(&url).await?;
             // Convert to Markdown rather than storing raw bytes. A PDF or
             // a markup-heavy page is unreadable otherwise, and the old
             // UTF-8 check turned a PDF into an error that ended the run.
-            let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
+            let converted = super::readable::convert(&bytes, content_type.as_deref(), &url)?;
+            let content = converted.markdown;
             let requested = research_path(
                 self.documents.root(),
                 &required_string(&call.arguments, "path")?,
@@ -974,12 +1071,24 @@ impl DocumentTool {
             // The complete converted text sits beside the summary, reachable
             // when the summary is not enough.
             let full = full_text_path(self.documents.root(), &path);
-            let excerpt = research_excerpt(&content, &full);
+            let excerpt = super::digest::digest(&content, &full);
             let split = excerpt.len() < content.len();
             if split {
                 self.documents.write(&full, &content).await?;
             }
             self.documents.write(&path, &excerpt).await?;
+            // What this source cites becomes the run's next set of leads, and
+            // this is the only moment the citations are in hand. Best effort:
+            // the download has already succeeded, and a lost lead must not
+            // turn a stored document into a failed tool call.
+            super::frontier::record(
+                &self.documents,
+                &url,
+                &path,
+                &converted.links,
+                &self.documents.goal().await,
+            )
+            .await;
             // Say what this is while the answer is still known. The scholar
             // replaces this with what the source establishes; until it does,
             // the row names the origin and the title rather than nothing.
@@ -1000,12 +1109,22 @@ impl DocumentTool {
                 },
                 if split {
                     format!(
-                        "{path} holds a {} byte excerpt to read first; the complete text is at \
-                         {full}. Have the scholar replace the excerpt with a summary.",
-                        excerpt.len()
+                        "{path} holds a {} byte structural digest to read first — its outline, \
+                         what it claims, and the statements it makes; the complete text is at \
+                         {full}. Have the scholar replace the digest with a summary. {} of its \
+                         citations were added to {}.",
+                        excerpt.len(),
+                        converted.links.len(),
+                        super::frontier::FRONTIER_PATH
                     )
                 } else {
-                    format!("{path} holds the whole document ({} bytes)", excerpt.len())
+                    format!(
+                        "{path} holds the whole document ({} bytes); {} of its citations were \
+                         added to {}.",
+                        excerpt.len(),
+                        converted.links.len(),
+                        super::frontier::FRONTIER_PATH
+                    )
                 }
             )
         };
@@ -1116,9 +1235,10 @@ impl Tool<()> for DocumentTool {
                 let path = super::layout::placed(&requested);
                 self.documents.write(&path, &content).await?;
                 format!(
-                    "wrote {} bytes to {path}{}",
+                    "wrote {} bytes to {path}{}{}",
                     content.len(),
-                    super::layout::note(&requested, &path)
+                    super::layout::note(&requested, &path),
+                    self.reledger(&path).await
                 )
             }
             DocumentToolKind::Edit => {
@@ -1134,7 +1254,7 @@ impl Tool<()> for DocumentTool {
                 self.documents
                     .write(&path, &content.replacen(&old_text, &new_text, 1))
                     .await?;
-                format!("edited {path}")
+                format!("edited {path}{}", self.reledger(&path).await)
             }
             DocumentToolKind::Index => {
                 let path = required_string(&call.arguments, "path")?;

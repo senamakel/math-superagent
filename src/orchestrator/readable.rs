@@ -69,6 +69,35 @@ pub(super) fn detect(bytes: &[u8], content_type: Option<&str>) -> Format {
     Format::Binary
 }
 
+/// A converted document and the citations it carries.
+///
+/// The links travel beside the Markdown rather than only inside it because
+/// they are evidence in their own right: a URL three of the run's sources all
+/// cite is the standard reference for the subject, and nothing else in the
+/// runtime is in a position to notice that.
+#[derive(Debug)]
+pub(super) struct Converted {
+    /// The document rendered as Markdown.
+    pub(super) markdown: String,
+    /// One record per distinct URL the document cites.
+    pub(super) links: Vec<LinkRecord>,
+}
+
+/// One outbound citation, with enough context to judge it without fetching it.
+///
+/// The context is the point. An anchor's URL says a document exists; the
+/// sentence it was cited in says why this source thought it mattered, which is
+/// the difference between a reading list and a list of URLs.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(super) struct LinkRecord {
+    /// The cited URL, with tracking parameters stripped.
+    pub(super) url: String,
+    /// The anchor text, empty when the citation was a bare URL.
+    pub(super) label: String,
+    /// A one-line window of the prose surrounding the citation.
+    pub(super) context: String,
+}
+
 /// Renders `bytes` to Markdown, or explains why it cannot be read.
 ///
 /// # Errors
@@ -81,12 +110,39 @@ pub(super) fn to_markdown(
     content_type: Option<&str>,
     source: &str,
 ) -> crate::agent::Result<String> {
+    convert(bytes, content_type, source).map(|converted| converted.markdown)
+}
+
+/// Renders `bytes` to Markdown and collects the citations it carries.
+///
+/// # Errors
+///
+/// As [`to_markdown`]: only content with no text at all fails.
+pub(super) fn convert(
+    bytes: &[u8],
+    content_type: Option<&str>,
+    source: &str,
+) -> crate::agent::Result<Converted> {
     let format = detect(bytes, content_type);
     let mut links = LinkTable::default();
-    let body = match format {
-        Format::Html => html_to_markdown(&String::from_utf8_lossy(bytes), &mut links),
-        Format::Pdf => pdf_to_text(bytes)?,
-        Format::Text => String::from_utf8_lossy(bytes).into_owned(),
+    let (body, records) = match format {
+        Format::Html => {
+            let rendered = html_to_markdown(&String::from_utf8_lossy(bytes), &mut links);
+            // Context is read off the pre-trim buffer, where the recorded
+            // offsets still point at the reference markers that produced them.
+            let records = links.records(&rendered);
+            (rendered, records)
+        }
+        Format::Pdf => {
+            let text = pdf_to_text(bytes)?;
+            let records = bare_links(&text);
+            (text, records)
+        }
+        Format::Text => {
+            let text = String::from_utf8_lossy(bytes).into_owned();
+            let records = bare_links(&text);
+            (text, records)
+        }
         Format::Binary => {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
                 "`{source}` is binary content with no readable text, so it cannot be turned into \
@@ -103,12 +159,20 @@ pub(super) fn to_markdown(
             format.label()
         )));
     }
-    Ok(format!(
-        "<!-- source: {} | converted from {} -->\n\n{body}\n{}",
-        clean_url(source),
-        format.label(),
-        links.render()
-    ))
+    let cited = clean_url(source);
+    Ok(Converted {
+        markdown: format!(
+            "<!-- source: {cited} | converted from {} -->\n\n{body}\n{}",
+            format.label(),
+            links.render()
+        ),
+        // A document citing itself is not a lead, and a reference page's link
+        // back to its own canonical URL is the commonest citation there is.
+        links: records
+            .into_iter()
+            .filter(|record| record.url != cited)
+            .collect(),
+    })
 }
 
 /// Extracts a PDF's text layer.
@@ -315,6 +379,7 @@ fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
                 if needs_space(out, "[") {
                     out.push(' ');
                 }
+                ctx.table.cited(reference, &label, out.len());
                 if label.is_empty() {
                     let _ = write!(out, "[{reference}]");
                 } else {
@@ -350,6 +415,12 @@ const TRACKING_PARAMS: [&str; 9] = [
 #[derive(Debug, Default)]
 pub(super) struct LinkTable {
     urls: Vec<String>,
+    /// Where each distinct URL was first cited, and under what anchor text.
+    ///
+    /// Only the first occurrence is kept. A page that links the same reference
+    /// a dozen times cites it once for a reason and eleven times from a
+    /// navigation bar, and the first is the one that came with prose.
+    first: Vec<(String, usize)>,
 }
 
 impl LinkTable {
@@ -360,7 +431,34 @@ impl LinkTable {
             return position + 1;
         }
         self.urls.push(cleaned);
+        self.first.push((String::new(), 0));
         self.urls.len()
+    }
+
+    /// Records the anchor text and position of a URL's first citation.
+    fn cited(&mut self, reference: usize, label: &str, at: usize) {
+        if let Some(entry) = self.first.get_mut(reference.saturating_sub(1))
+            && entry.1 == 0
+        {
+            *entry = (label.to_string(), at);
+        }
+    }
+
+    /// Builds one record per distinct URL, reading context out of `rendered`.
+    ///
+    /// `rendered` must be the buffer the offsets were taken against — the
+    /// conversion output before it is trimmed and its blank lines collapsed —
+    /// or the windows land in the wrong place.
+    fn records(&self, rendered: &str) -> Vec<LinkRecord> {
+        self.urls
+            .iter()
+            .zip(&self.first)
+            .map(|(url, (label, at))| LinkRecord {
+                url: url.clone(),
+                label: label.clone(),
+                context: window(rendered, *at),
+            })
+            .collect()
     }
 
     /// Renders the reference list appended below the document.
@@ -374,6 +472,107 @@ impl LinkTable {
         }
         out
     }
+}
+
+/// Characters of prose kept either side of a citation.
+const CONTEXT_BEFORE: usize = 140;
+
+/// Characters of prose kept after a citation.
+const CONTEXT_AFTER: usize = 160;
+
+/// Reads a one-line window of prose around byte offset `at`.
+///
+/// Collapsed to a single line because the window is destined for a table row.
+/// An empty result is normal and means the citation carried no prose — a
+/// navigation link, or a bare URL on a line of its own.
+fn window(text: &str, at: usize) -> String {
+    if at == 0 || at > text.len() {
+        return String::new();
+    }
+    let start = floor_boundary(text, at.saturating_sub(CONTEXT_BEFORE));
+    let end = ceil_boundary(text, (at + CONTEXT_AFTER).min(text.len()));
+    let mut out = collapse_spaces(&text[start..end].replace('\n', " "));
+    // Both ends are cut mid-word by construction, so drop the partial words
+    // rather than presenting them as text the source wrote.
+    if start > 0
+        && let Some((_, rest)) = out.split_once(' ')
+    {
+        out = rest.to_string();
+    }
+    if end < text.len()
+        && let Some((body, _)) = out.rsplit_once(' ')
+    {
+        out = body.to_string();
+    }
+    out.trim().to_string()
+}
+
+/// Markers introducing a citation in text that has no anchors.
+///
+/// A converted PDF is the case that matters: a mathematical paper's reference
+/// list is where the primary literature on its subject is named, and it names
+/// it as arXiv identifiers and DOIs far more often than as URLs. Reading them
+/// is the difference between a library that grows by search and one that grows
+/// by following what its own sources cite.
+const BARE_MARKERS: [&str; 4] = ["http://", "https://", "arxiv:", "doi:"];
+
+/// Extracts citations from text with no markup to read them from.
+fn bare_links(text: &str) -> Vec<LinkRecord> {
+    let lowered = text.to_ascii_lowercase();
+    let mut records: Vec<LinkRecord> = Vec::new();
+    let mut cursor = 0;
+    while cursor < lowered.len() {
+        let Some((at, marker)) = BARE_MARKERS
+            .iter()
+            .filter_map(|marker| {
+                lowered[cursor..]
+                    .find(marker)
+                    .map(|at| (cursor + at, *marker))
+            })
+            .min_by_key(|(at, _)| *at)
+        else {
+            break;
+        };
+        let rest = &text[at + marker.len()..];
+        let body: String = rest
+            .chars()
+            .take_while(|c| !c.is_whitespace() && !matches!(c, '<' | '>' | '"' | '\\' | '|'))
+            .collect();
+        let body = body.trim_end_matches(['.', ',', ';', ':', ')', ']', '}', '\'']);
+        cursor = at + marker.len() + body.len().max(1);
+        if body.is_empty() {
+            continue;
+        }
+        let url = match marker {
+            "arxiv:" => format!("https://arxiv.org/abs/{body}"),
+            "doi:" => format!("https://doi.org/{body}"),
+            _ => format!("{marker}{body}"),
+        };
+        let url = clean_url(&url);
+        if records.iter().any(|record| record.url == url) {
+            continue;
+        }
+        records.push(LinkRecord {
+            label: String::new(),
+            context: window(text, at),
+            url,
+        });
+    }
+    records
+}
+
+fn floor_boundary(text: &str, mut index: usize) -> usize {
+    while index > 0 && !text.is_char_boundary(index) {
+        index -= 1;
+    }
+    index
+}
+
+fn ceil_boundary(text: &str, mut index: usize) -> usize {
+    while index < text.len() && !text.is_char_boundary(index) {
+        index += 1;
+    }
+    index
 }
 
 /// Removes tracking parameters and a redundant trailing slash from a URL.

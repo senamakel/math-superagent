@@ -56,27 +56,32 @@ The runtime uses a small registry of specialist agents:
 - `orchestrator` breaks a problem into focused tasks and combines the results.
 - `goals` turns an objective into completion criteria and spawns focused
   subagents until the criteria are met or blocked.
-- `research` searches with Exa and returns evidence with source URLs.
+- `research` searches with Exa, looks computed sequences up in the OEIS, and
+  returns evidence with source URLs, working the gaps other roles stated in
+  `research/REQUESTS.md` first.
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
 - `coder` has the same authority and writes the implementation the run stands
-  behind. Splitting the two lets each prompt be strict about one thing instead of
-  hedging between them: the tool-builder about producing a running program
-  quickly, the coder about the program being correct.
+  behind. Splitting the two lets each prompt be strict about one thing: the
+  tool-builder about producing a running program quickly, the coder about the
+  program being correct.
 - `reflection` judges one attempt and extracts the lesson. It has no research
   or execution tools, so it cannot drift into solving what it is judging.
 - `pattern_finder` runs exact sequence analysis over results already computed:
   forward differences and polynomial degree, common divisors, residue
   periodicity, and a verified linear-recurrence search. Its tools report only
-  what holds for every term supplied, and it can commission more terms from the
-  tool-builder so a conjecture is tested past the data that suggested it.
+  what holds for every term supplied; it commissions more terms to test a
+  conjecture past the data that suggested it, and looks them up in the OEIS,
+  where a match usually carries the closed form.
 - `inventor` proposes a different line of attack when the current one stalls.
-- `librarian` downloads primary material into a workspace reference library and
-  indexes it for local search.
+- `librarian` downloads primary material into the reference library and indexes
+  it, following what its own sources cite before searching afresh.
 - `scholar` reads that library. It judges each source against the run's goal and
-  current beliefs and replaces each stored excerpt with what the source actually
+  current beliefs and replaces each stored digest with what the source actually
   establishes, because a downloaded paper nobody has opened has cost the run
-  context and taught it nothing.
+  context and taught it nothing. It records each statement as a `claim` block —
+  hypotheses, whether they hold here, what backs it — so the library is
+  retrievable one statement at a time.
 - `organizer` keeps the workspace navigable: folder indexes, the layout of
   `research/`, and `code/lib/INDEX.md` matching the files beside it. It cannot
   delete a result or change what a file says.
@@ -251,9 +256,8 @@ The wrapper downloads the official statement from Project Euler's minimal
 problem endpoint, then runs the orchestrator in
 `workspace/project-euler/<number>` against a five-phase task: understand the
 statement, establish the governing theory, derive the method, implement it, and
-verify the result independently. Full-size code is not written until the
-derivation is. The small cases and worked example in the statement are the test
-oracle, and `solution.py` must reproduce them before running at scale.
+verify it independently. Full-size code waits on the derivation, and the worked
+examples are the oracle `solution.py` must reproduce before running at scale.
 
 The research agent may look up definitions, named theorems, and standard
 algorithms, but the prompt forbids searching for published Project Euler
@@ -276,16 +280,14 @@ workspace/project-euler/66/
 │   ├── out/            # what those programs produced
 │   ├── lib/            # what other programs import, one subject per module
 │   └── <question>/     # the programs attacking one question, with its INDEX.md
-├── research/           # L0 sources, L1 digests, L2 folds, INDEX.md at the root
-├── reflections/L0/     # one note per judged attempt
-├── raw/                # untouched download bytes, including problem.html
-└── config/             # config.toml, problem.url, the document index, trace.jsonl
+├── research/           # L0/L1/L2 sources, INDEX.md, and the derived ledgers
+├── reflections/L0/     # one note per judged attempt; raw/ holds download bytes
+└── config/             # config.toml, problem.url, the ledgers, trace.jsonl
 ```
 
 Generated programs, calculations, and other artifacts appear in
 `workspace/default` unless another workspace is selected. A new workspace is
-seeded from [`workspace/template/`](workspace/template/) without overwriting
-files already present. The seed includes local agent instructions, role
+seeded from [`workspace/template/`](workspace/template/) without overwriting it. The seed includes local agent instructions, role
 prompts, configuration, `GOAL.md`, `TASKS.md`, `SCRATCHPAD.md`, `MEMORY.md`, and
 empty `research/` and `code/lib/` folders. The runtime reads those files at the
 start of every run.
@@ -307,19 +309,16 @@ than requested because asking for it in a prompt did not work: one committed
 workspace holds forty-six sibling programs defining `H(n)` seven times over,
 beside a helper folder nothing imported.
 
-Every folder carries an `INDEX.md` saying what each file is for. `list_workspace`
-can answer what exists but not what anything is *for*, and after a long run
-nothing on disk distinguishes the oracle from the answer.
+Every folder carries an `INDEX.md` saying what each file is for, because
+`list_workspace` answers what exists but not what anything is *for*, and after a
+long run nothing on disk distinguishes the oracle from the answer.
 `describe_file` records a purpose and `refresh_index` re-derives the file list
 from disk, keeping existing descriptions, marking new files undescribed, and
-dropping rows for files that are gone. Descriptions are left to explicit tool
-calls because only the agent that wrote a file knows why, so a forgotten one
-shows as a visible gap rather than as an index quietly disagreeing with its
-folder.
-
-Agents can traverse the workspace with `list_workspace` to find files rather
-than guess their names, and every reflection is archived under `reflections/`
-with a filename recording whether it produced learnings.
+dropping rows for files that are gone. Descriptions are left to explicit calls
+because only the agent that wrote a file knows why, so a forgotten one shows as
+a visible gap rather than as an index quietly disagreeing with its folder. Every
+reflection is archived under `reflections/` with a filename recording whether it
+produced learnings.
 
 Each agent receives only the working files its role actually needs: reflection
 sees the goal and the record but never the scratchpad, because provisional
@@ -345,30 +344,35 @@ scripts, styles, and navigation, a PDF's text layer is extracted, and TeX is
 preserved intact. The HTML converter is hand-written because a general-purpose
 one escapes the backslashes in `\(…\)` and destroys the mathematics. Magic bytes
 beat the declared content type, since a PDF served as `text/html` is still a PDF.
-Links become reference-style with a single list at the end and tracking
-parameters removed, so a page's URLs cost a few characters each instead of
-filling the context.
+Links become reference-style with one list at the end and tracking parameters
+removed, so a page's URLs cost a few characters each rather than filling the
+context.
 
-A download lands as two files side by side: `<name>.md` holding a bounded excerpt
+A download lands as two files side by side: `<name>.md` holding a bounded digest
 and `<name>.full.md` holding the complete text. One real reference page converted
 to about 23,000 tokens, and three of those fill a specialist's context before it
 has done any work, so reading the short one is the default and reading the long
-one is a decision. The excerpt is a placeholder the scholar is expected to replace
-with what the source establishes, under a thousand tokens.
+one is a decision. The digest is *structural* rather than the leading
+characters — the heading outline, the abstract, and every paragraph opening
+`Theorem`, `Lemma`, `Definition` and the rest — because for a paper the leading
+characters are the title and half the introduction while the labelled
+statements are the payload. Its citations accumulate in `research/FRONTIER.md`,
+ranked by how many of the library's own sources cite each, so a second download
+of one already held is refused and a URL three papers agree on rises to the top.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
-text, read and store files, make exact edits, add documents to a workspace-local
-index, and search that index for ranked snippets. The index lives at
-`.document-index.json` inside the selected workspace. Downloads and individual
-documents are capped at 5 MiB, paths cannot leave `/workspace`, and one
-workspace cannot search another workspace's files.
+text, read and store files, make exact edits, index documents and search that
+index, plus `search_claims` for what the library establishes and
+`request_research` for what it does not. The index lives at
+`.document-index.json` in the selected workspace; downloads are capped at 5
+MiB, paths cannot leave `/workspace`, and one workspace cannot search another's.
 
-The tool-builder additionally gets `apply_patch`, which applies a Codex-format
-envelope across several files at once. Two deviations from that format are
-deliberate: context matching is exact and an ambiguous hunk is refused rather
-than fuzzily resolved, because a patch landing in the wrong place yields a
-program that runs and computes something else; and application is atomic, so a
-bad hunk in the third file cannot leave the first two rewritten.
+The tool-builder additionally gets `apply_patch`, applying a Codex-format
+envelope across several files at once. Two deviations are deliberate: context
+matching is exact and an ambiguous hunk is refused rather than fuzzily
+resolved, because a patch landing in the wrong place yields a program that runs
+and computes something else; and application is atomic, so a bad hunk in the
+third file cannot leave the first two rewritten.
 
 Use `--workspace` to give a run its own subdirectory:
 
@@ -383,38 +387,35 @@ and symlinks that leave the repository's `workspace/` root are rejected.
 
 ## How a run works
 
-The orchestrator decides which specialist should handle each part of the
-problem. Open-ended objectives can go to the goals agent, which can spawn both
-other specialists and track evidence against explicit completion criteria.
-Research questions go to the Exa-backed research agent. That agent can
-recall related notes from Qdrant and save useful sourced findings for later.
-Computations and executable checks go to the tool-builder, and the implementation
-the answer rests on goes to the coder. The orchestrator then writes one answer
-that separates cited facts from its own mathematical reasoning.
+The orchestrator decides which specialist handles each part of the problem.
+Open-ended objectives go to the goals agent, which spawns other specialists and
+tracks evidence against explicit completion criteria; research questions go to
+the Exa-backed research agent, which recalls related notes from Qdrant and saves
+sourced findings; computations and executable checks go to the tool-builder, and
+the implementation the answer rests on to the coder. The orchestrator then
+writes one answer separating cited facts from its own reasoning.
 
 Subagent work runs asynchronously through TinyAgents graphs. `spawn_agent`
-returns a run ID immediately, so independent research and computation can run
-in parallel. The calling agent can use `peek_agent` to inspect status,
-`steer_agent` to redirect live work, and `await_agent` to retrieve the eventual
-response. `spawn_agents` and `await_agents` do the same for a batch in one turn,
-which is the shape most delegation takes: awaiting one run at a time serialises
-work that already ran in parallel and costs a turn for each. The orchestrator and
-goals agent share this control surface; there is no blocking delegation call.
+returns a run ID immediately, so independent research and computation run in
+parallel; `peek_agent` inspects status, `steer_agent` redirects live work, and
+`await_agent` retrieves the response. `spawn_agents` and `await_agents` do the
+same for a batch in one turn, which is the shape most delegation takes —
+awaiting one run at a time serialises work that already ran in parallel. The
+orchestrator and goals agent share this surface; there is no blocking call.
 
 Up to fifty runs execute concurrently; further spawns queue for a slot without
-blocking the caller. Set `MATH_AGENT_MAX_CONCURRENT_AGENTS` to change the cap.
-Each agent also develops an affinity for whichever OpenRouter provider served
-its last turn, so its large fixed prompt prefix keeps hitting that provider's
-cache. Fallbacks stay enabled, so a provider going busy moves the affinity
-rather than stalling the run.
+blocking the caller (`MATH_AGENT_MAX_CONCURRENT_AGENTS`). Each agent develops an
+affinity for whichever OpenRouter provider served its last turn, so its large
+fixed prompt prefix keeps hitting that provider's cache; fallbacks stay enabled,
+so a busy provider moves the affinity rather than stalling the run.
 
 Context compression starts at an estimated 300,000 tokens. A model-backed
 summary keeps the decisions, assumptions, formulas, source URLs, command
-results, and unresolved work. Recent messages remain verbatim. If the summary
+results, and unresolved work; recent messages remain verbatim. If the summary
 call fails, TinyAgents trims old context instead of losing the whole run.
 
-This is a research and computation assistant, not a formal proof checker.
-Important results should still be checked against primary sources or a proof
+This is a research and computation assistant, not a formal proof checker;
+important results should still be checked against primary sources or a proof
 assistant when the stakes justify it.
 
 ## Docker Compose stack
@@ -468,15 +469,14 @@ src/
 │   └── trace.rs            live console and trace.jsonl event listener
 ├── orchestrator/           registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs  graph-backed spawn, peek, steer, and await controls
-│   ├── checkpoint.rs       workspace git history under .workspace-history
-│   ├── code_layout.rs      duplication and grouping measured across code/
-│   ├── documents.rs        bounded workspace document storage and search
-│   ├── folder_index.rs     per-folder INDEX.md description tracking
-│   ├── patch.rs            atomic, exact-match Codex-format patches
-│   ├── patterns.rs         exact sequence analysis and recurrence search
-│   ├── readable.rs         HTML and PDF to Markdown conversion
 │   ├── solutions.rs        graph-backed attempt/reflect/diversify loop
-│   └── vector.rs           Qdrant research store and local feature vectors
+│   ├── documents.rs        bounded workspace document storage and search
+│   ├── readable.rs, digest.rs   HTML/PDF to Markdown; the digest of a download
+│   ├── claims.rs, threads.rs    what the library establishes; where it is going
+│   ├── frontier.rs, requests.rs what it cites; what the run is short of
+│   ├── oeis.rs             sequence lookup, filed and cross-referenced
+│   ├── folder_index.rs, context_tree.rs, code_layout.rs   what is where
+│   └── patch.rs, patterns.rs, checkpoint.rs, vector.rs   the rest
 ├── hello_agent/            small single-agent example
 ├── error/                  crate-wide errors
 └── lib.rs                  public Rust API

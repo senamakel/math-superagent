@@ -171,6 +171,69 @@ decisively in research_recursion_test.py (all three parts):
   since distinguishing a tiny true bias from exactly 0.5 would need >100M
   samples.
 
+## EXACT small-n oracle (cell_exact.py / toolkits/arr_enum.py) — RESULT
+
+Deliverable from the tool-builder exact-integration task. The race outcome is
+a deterministic piecewise-constant function of the speed vector, invariant
+under common scaling; with Exp(1) speeds the normalized vector is uniform on
+the (n-1)-simplex (Dirichlet(1,..,1)), so p(n,L) = (n-1)!(Euclidean volume of
+even-parity cells). The outcome's separating set is a genuine straight-line
+hyperplane arrangement on the simplex (candidate event times are
+const/(linear): F_j=(L-40j)/v_j and C_ab=40(b-a)/(v_a-v_b), so pairwise
+time-equalities — and v_a=v_b — are affine). Parity is constant on open cells
+(verified: 0 inconsistent sign-buckets per 150k samples, every (n,L)).
+
+### Exact values (rational), verified by two independent routes + MC
+| (n,L) | p(n,L) exact | float |
+|---|---|---|
+| (2,160) | 4/7 | 0.5714285714 |
+| (2,400) | 10/19 | 0.5263157895 |
+| (2,1800) | 45/89 | 0.5056179775 |
+| (3,160) | 56/135 | 0.4148148148 |
+| (3,400) | 542/1377 | 0.3936092956 |
+| (3,1800) | 2237/5742 | 0.3895855103 |
+| (4,400) | 521/1020 | 0.5107843137 |
+| (4,1800) | 166802/317985 | 0.5245593346 |
+
+p(2,L) closed form: boat0 bumps boat1 iff v1/v0 < (L-40)/L, so
+P(bump)=(L-40)/(2L-40), p(2,L)=P(no bump)=L/(2L-40). Matches cell enumeration
+and MC. (My first analytic attempt gave P(bump); p is the complement.)
+
+### Anchor verification
+- p(3,160) = 56/135 EXACT — matches the problem's worked example precisely
+  (2*(28/135) with Dirichlet density 2).
+- p(4,400) = 521/1020 = 0.5107843137254902 — the problem's given value
+  0.5107843137 to all 10 dp. Matched exactly.
+- Cross-checked against the independent solver arrangement_pn.py and its data
+  tables (exact_p3_data.py, exact_p4_data.py): identical rationals at every
+  shared L (3:160,240,320,400,480,640,800,1000,1200,1400,1600,1800;
+  4:160,240,320,400,800,1000,1200,1400,1600,1800).
+- MC at 2-10M samples per config: all within 1-3 SE of the exact values.
+
+### Parity-cell counts (arrangement tractability)
+| n | cells | even | odd |
+|---|---|---|---|
+| 2 | 3 | 2 | 1 |
+| 3 | 32 | 17 | 15 |
+| 4 | 1202 | 595 | 607 |
+
+The cell count is L-INDEPENDENT for n=3 (32) and n=4 (1202) at every L
+tested (160..5000); only the cell shapes/volumes depend on L. This means the
+combinatorial complexity is fixed per n by the arrangement's combinatorial
+type, and L only moves the parity of a fixed set of cells.
+
+### n=5 status
+The n=5 arrangement has 85 hyperplanes in the 4-simplex; sampling found
+13,750 distinct nonempty cells in 200k draws. A full exact sum with the naive
+per-cell vertex solver is not tractable in reasonable time (each leaf needs
+an O(choose(m,4)) Fraction vertex solve; m grows with cuts). Delivered as MC:
+p(5,1800) = 0.53273 +/- 0.00029 (3M samples). See TASKS for the arrangement
+speedup (vertex caching, plane pruning, incremental cutting) left as open work.
+
+### n=5,6,13 MC comparison (brute engine, for context)
+p(4,1800) 0.5246, p(5,1800) 0.5327, p(6,1800) ~0.487 (earlier), p(13,1800)
+~0.5002 = target. Small-n exact values are the testbed, not the deliverable.
+
 ## Structural taxonomy (structure_taxonomy.py -> structure_report.md)
 Verified examples + bump-graph taxonomy over 60k MC trials per (n,L), n=3,4,5,
 L in {160,1800} (360k total races), using the reference brute engine:

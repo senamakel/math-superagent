@@ -1,0 +1,28 @@
+{
+  "method": "exact rational cell enumeration of the speed-simplex outcome arrangement",
+  "key_fact": "speeds Exp(1) iid are invariant to common scaling; normalized speeds uniform on (n-1)-simplex (Dirichlet(1,..,1)); p(n,L) = (n-1)! * (Euclidean volume of even-parity cells)",
+  "separators": "candidate event times F_j=(L-40j)/v_j [finish], C_ab=40(b-a)/(v_a-v_b) [catch]; each is const/(linear), so pairwise equalities are affine hyperplanes; speed equalities v_a=v_b affine too -> genuine straight-line arrangement; parity constant on open cells (verified: 0 inconsistent sign-buckets in 150k samples per config)",
+  "cell_counts": {
+    "n=2": {"cells": 3},
+    "n=3": {"cells": 32, "even": 17, "odd": 15, "L-independent": true},
+    "n=4": {"cells": 1202, "even": 595, "odd": 607, "L-independent": true}
+  },
+  "exact_values": {
+    "p(2,L)": "closed form L/(2L-40); 160->4/7, 400->10/19, 1800->45/89",
+    "p(3,160)": "56/135 = 0.4148148148148  [GIVEN example, matched exactly]",
+    "p(3,400)": "542/1377 = 0.393609295570",
+    "p(3,1800)": "2237/5742 = 0.389585510276",
+    "p(4,400)": "521/1020 = 0.5107843137255 [GIVEN 0.5107843137, matched to 10dp]",
+    "p(4,1800)": "166802/317985 = 0.5245593345598",
+    "p(5,1800)": "MC only: 0.53273 +/- 0.00029 (3M samples); exact arrangement infeasible with naive vertex solver (85 hyperplanes in 4-simplex, ~13750 cells)"
+  },
+  "verification": {
+    "p(3,160)": ["exact cell sum 56/135", "MC 10M = 0.414835 +/- 0.000156"],
+    "p(4,400)": ["exact cell sum 521/1020", "MC 10M = 0.510516 +/- 0.000158", "independent arrangement_pn.py: 521/1020"],
+    "p(4,1800)": ["exact cell sum 166802/317985", "MC 2M = 0.524660 +/- 0.000353", "independent arrangement_pn.py/exact_p4_data.py: same rational"],
+    "p(3,400)": ["exact 542/1377", "independent exact_p3_data.DATA: same", "MC 400k = 0.39141 +/- 0.00077"],
+    "p(3,1800)": ["exact 2237/5742", "independent exact_p3_data.DATA: same", "MC 400k = 0.38907 +/- 0.00077"],
+    "p(2)": ["closed form L/(2L-40) derived analytically", "cell sum matches", "MC 2M (L=400) = 0.526996 +/- 0.000353"]
+  },
+  "n=5 note": "exact n=5 arrangement enumerated to 13,750 distinct nonempty cells by sampling (200k); a full exact sum over ~14k cells with the naive per-cell vertex solver would take several hours — left as MC estimate per steering."
+}

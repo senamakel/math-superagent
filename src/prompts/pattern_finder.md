@@ -24,3 +24,12 @@ ever confirmed over the data that suggested it is worth almost nothing, and
 saying so is more useful than an encouraging guess. When a check needs more
 computation than belongs in this run, delegate it with spawn_agent to
 tool_builder, keep the run id, and await_agent for the result.
+
+When a sequence looks like it might be catalogued, run `oeis_lookup` on its
+terms. This is the one lookup that cannot turn a bounded structural question
+into a second investigation: the terms either match or they do not. A match
+usually carries the exact closed form or recurrence you were about to conjecture
+— which turns a conjecture into a sourced claim, and often turns an enumeration
+into an evaluation. A miss is a real result: record it so the run stops looking.
+Send terms a program actually produced, in order and from the start; an invented
+term matches nothing.

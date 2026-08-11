@@ -2,17 +2,23 @@
 
 pub(crate) mod async_subagents;
 mod checkpoint;
+mod claims;
 mod code_layout;
 mod context_tree;
+mod digest;
 mod documents;
 mod folder_index;
+mod frontier;
 mod layout;
+mod oeis;
 mod patch;
 mod patterns;
 mod readable;
 mod recall;
+mod requests;
 mod solutions;
 mod teams;
+mod threads;
 mod vector;
 
 use std::fmt::Write as _;
@@ -255,16 +261,15 @@ impl OrchestratorAgent {
         let prompts = RolePrompts::load(&workspace)?;
 
         let vector_store = VectorStore::from_env()?;
-        let exa = if research_enabled {
-            Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>)
-        } else {
-            None
-        };
+        let SearchTools { exa, oeis } = search_tools(research_enabled, &documents)?;
 
         // research: search the web, and remember what it found.
         let mut research_harness = specialist_harness(model.clone(), budget, "research", &tracer);
         if let Some(exa) = exa.clone() {
             register_resilient(&mut research_harness, exa);
+        }
+        for tool in oeis.iter().cloned() {
+            register_resilient(&mut research_harness, tool);
         }
         register_resilient(
             &mut research_harness,
@@ -311,6 +316,7 @@ impl OrchestratorAgent {
                 documents: &documents,
                 vector_store: vector_store.clone(),
                 exa: exa.clone(),
+                oeis: oeis.clone(),
                 workspace: workspace.clone(),
                 delegation: async_subagents.tools(PATTERN_DELEGATES),
             },
@@ -616,6 +622,49 @@ fn results_unchanged(
     None
 }
 
+/// Builds the tools that reach outside the run, or nothing when research is off.
+///
+/// Both are withheld by not registering them rather than by asking the model
+/// to abstain, because a prompt instruction is not a control. The encyclopedia
+/// is gated with the web search and for the same reason: a self-contained
+/// problem should test the runtime's reasoning rather than its ability to look
+/// an answer up, and a catalogued sequence is the lookup most likely to hand a
+/// run its closed form outright.
+///
+/// # Errors
+///
+/// Returns an error when the search key is missing while research is enabled.
+fn search_tools(research_enabled: bool, documents: &WorkspaceDocuments) -> Result<SearchTools> {
+    if !research_enabled {
+        return Ok(SearchTools::default());
+    }
+    Ok(SearchTools {
+        exa: Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>),
+        oeis: oeis::OeisTool::all(documents),
+    })
+}
+
+/// The tools that reach outside the run, gathered so the research gate is one
+/// decision rather than one per source.
+#[derive(Clone, Default)]
+struct SearchTools {
+    /// General web search, absent when research is disabled.
+    exa: Option<Arc<dyn Tool<()>>>,
+    /// Source adapters. A list because a second one slots into a list and
+    /// would have to rewrite an option.
+    oeis: Vec<Arc<dyn Tool<()>>>,
+}
+
+impl std::fmt::Debug for SearchTools {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("SearchTools")
+            .field("exa", &self.exa.is_some())
+            .field("oeis", &self.oeis.len())
+            .finish()
+    }
+}
+
 fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
         "download_document",
@@ -627,6 +676,12 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "list_workspace",
         "describe_file",
         "refresh_index",
+        // Derived from the library rather than written into it, and available
+        // wherever the document tools are: the role that needs to know what
+        // the run establishes, or that walks into a gap, is whichever one is
+        // working.
+        "search_claims",
+        "request_research",
     ];
     let mut registry = AgentRegistry::new();
     registry
@@ -641,15 +696,21 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 },
             )
             .with_model("openrouter")
-            .with_tools(research_enabled.then_some("exa_search").into_iter().chain([
-                "recall_research",
-                "remember_research",
-                document_tools[0],
-                document_tools[1],
-                document_tools[4],
-                document_tools[5],
-                document_tools[6],
-            ])),
+            .with_tools(
+                research_enabled
+                    .then_some("exa_search")
+                    .into_iter()
+                    .chain(research_enabled.then_some("oeis_lookup"))
+                    .chain([
+                        "recall_research",
+                        "remember_research",
+                        document_tools[0],
+                        document_tools[1],
+                        document_tools[4],
+                        document_tools[5],
+                        document_tools[6],
+                    ]),
+            ),
         )?
         .register(
             AgentDefinition::new(
@@ -691,7 +752,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
 /// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 9],
+    document_tools: [&'static str; 11],
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
@@ -724,6 +785,11 @@ fn support_agents(
             [
                 "analyze_sequence",
                 "find_linear_recurrence",
+                // The one lookup whose query is not a phrasing problem: terms
+                // it has computed either match a catalogued sequence or they
+                // do not, so it cannot turn a bounded structural question into
+                // a second investigation.
+                "oeis_lookup",
                 // It tests conjectures by computing more terms, so it needs to
                 // write and run a program like any other worker.
                 "write_tool_file",
@@ -746,9 +812,26 @@ fn support_agents(
             research_enabled
                 .then_some("exa_search")
                 .into_iter()
+                .chain(research_enabled.then_some("oeis_lookup"))
                 .chain(["recall_research", "remember_research"])
                 .chain(document_tools),
         ),
+    ]
+    .into_iter()
+    .chain(library_agents(research_enabled, document_tools))
+    .collect()
+}
+
+/// Returns the librarian, scholar, organizer, and goals definitions.
+///
+/// Split from [`support_agents`] only to keep each function readable; these
+/// are the roles that build and read the reference library, plus the worker
+/// the solution loop drives.
+fn library_agents(
+    research_enabled: bool,
+    document_tools: [&'static str; 11],
+) -> Vec<AgentDefinition> {
+    vec![
         AgentDefinition::new(
             "librarian",
             "Librarian Agent",
@@ -760,6 +843,7 @@ fn support_agents(
             research_enabled
                 .then_some("exa_search")
                 .into_iter()
+                .chain(research_enabled.then_some("oeis_lookup"))
                 .chain(document_tools),
         ),
         AgentDefinition::new(
@@ -924,6 +1008,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/lib/INDEX.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // What the library establishes, one row per claim, and which
+            // directions the run is pursuing. Both are derived from disk, so
+            // neither can drift from the notes; both are what a planner needs
+            // to decide what is worth delegating rather than re-establishing.
+            // The threads table is where a dead end is recorded, which is the
+            // single most useful row a planner can read.
+            "research/CLAIMS.md",
+            "research/THREADS.md",
             // What the library *means* for this problem, as against
             // `research/INDEX.md`, which says what each file is. The index
             // makes every role re-synthesise thirteen one-line descriptions
@@ -960,6 +1052,12 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/lib/INDEX.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // A constant, a bound, or a closed form the library already
+            // establishes is one row here and an afternoon of re-derivation
+            // otherwise. The `holds-here` column is the load-bearing part:
+            // implementing a theorem whose hypotheses fail here produces a
+            // program that runs and computes the wrong thing.
+            "research/CLAIMS.md",
             "CONTEXT.md",
         ],
         // Judges: needs the criteria and the record, never provisional work.
@@ -1013,6 +1111,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "SCRATCHPAD.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // The role that writes claim blocks must see the ones already
+            // written: a source is worth reading for what it settles that the
+            // ledger does not, and a source contradicting a standing claim is
+            // the most valuable thing the scholar can find. It reads the
+            // threads for the same reason — a paper is worth most to the
+            // direction currently blocked on it.
+            "research/CLAIMS.md",
+            "research/THREADS.md",
             // It reads what the library is already taken to establish, so a
             // new source is judged against the standing brief rather than
             // re-stating it.
@@ -1044,6 +1150,16 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "MEMORY.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // What the library already establishes, so a search is for what is
+            // missing rather than for what is on disk, and what each direction
+            // is blocked on, which is the best statement of the gap a search
+            // could be aimed at.
+            "research/CLAIMS.md",
+            "research/THREADS.md",
+            // What this library's own sources cite, ranked by how many of them
+            // agree. A source three papers cite is the standard reference for
+            // the subject, and no rephrasing of a query surfaces that.
+            "research/FRONTIER.md",
             // The research team maintains this, and its Gaps section is the
             // list of what to look for next. Without it the team re-derives
             // its own agenda every cycle.
@@ -1058,6 +1174,12 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "MEMORY.md",
             "research/ROOT.md",
             "research/INDEX.md",
+            // The dead threads are the second half of its failed-approaches
+            // record: `MEMORY.md` says which attempts failed, the thread table
+            // says which *directions* are closed and why, and re-proposing one
+            // is the single thing this role exists not to do.
+            "research/THREADS.md",
+            "research/CLAIMS.md",
             "reflections/ROOT.md",
             "reflections/INDEX.md",
             // A genuinely different approach has to start from theory the run
@@ -1142,6 +1264,12 @@ struct SupportAgents<'a> {
     documents: &'a WorkspaceDocuments,
     vector_store: VectorStore,
     exa: Option<Arc<dyn Tool<()>>>,
+    /// The OEIS adapter, empty when research is disabled.
+    ///
+    /// Held as a list rather than an option because a source adapter is one of
+    /// a family: the shape a second one slots into is a list, and the shape it
+    /// would have to rewrite is an option.
+    oeis: Vec<Arc<dyn Tool<()>>>,
     /// The jail root, for the one support agent allowed to execute.
     workspace: PathBuf,
     /// Delegation tools, so the pattern agent can commission a computation.
@@ -1157,6 +1285,63 @@ struct SupportPrompts {
     librarian: String,
     scholar: String,
     organizer: String,
+}
+
+/// Registers the pattern agent, which is the tool-richest of the support roles.
+///
+/// Split out of [`register_support_agents`] because of that: it computes as
+/// well as observes, so it carries shell authority, file-write authority,
+/// delegation, and the one lookup it is allowed, and inlining all of it buried
+/// the four other registrations beside it.
+fn register_pattern_agent(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let mut pattern = specialist_harness(
+        parts.model.clone(),
+        parts.budget,
+        "pattern_finder",
+        parts.tracer,
+    );
+    for tool in PatternTool::all() {
+        register_resilient(&mut pattern, tool);
+    }
+    for tool in parts.documents.tools() {
+        register_resilient(&mut pattern, tool);
+    }
+    // The pattern agent computes as well as observes. Its own tools answer
+    // only what holds across terms it is handed, so without a way to generate
+    // more terms it can neither test a conjecture past the data that suggested
+    // it nor find the first term that breaks one — which is the finding worth
+    // having. It gets shell and file-write authority for that, and delegation
+    // besides, so a check too large to run inline becomes a commissioned
+    // program rather than an abandoned question.
+    register_resilient(
+        &mut pattern,
+        Arc::new(WriteToolFile::new(parts.workspace.clone())),
+    );
+    register_resilient(
+        &mut pattern,
+        Arc::new(ExecuteCommand::new(
+            parts.workspace.clone(),
+            parts.budget.tool_timeout,
+        )),
+    );
+    for tool in parts.delegation.iter().cloned() {
+        register_resilient(&mut pattern, tool);
+    }
+    // The one search this role may have. It has no web search on purpose — a
+    // bounded structural question must not turn into a second investigation —
+    // and an encyclopedia lookup keyed on terms it has already computed cannot
+    // become one: the terms either match a catalogued sequence or they do not.
+    // It is also the role holding the terms, so making it ask another agent to
+    // run the lookup would spend a child run to pass a list of integers along.
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut pattern, tool);
+    }
+    register_recall(&mut pattern, &parts.workspace);
+    subagents.register("pattern_finder", Arc::new(pattern), prompt)
 }
 
 /// Registers the reflection, pattern, inventor, and librarian agents.
@@ -1195,46 +1380,15 @@ fn register_support_agents(
     }
     subagents.register("judge", Arc::new(judge), prompts.judge)?;
 
-    let mut pattern = specialist_harness(
-        parts.model.clone(),
-        parts.budget,
-        "pattern_finder",
-        parts.tracer,
-    );
-    for tool in PatternTool::all() {
-        register_resilient(&mut pattern, tool);
-    }
-    for tool in parts.documents.tools() {
-        register_resilient(&mut pattern, tool);
-    }
-    // The pattern agent computes as well as observes. Its own tools answer
-    // only what holds across terms it is handed, so without a way to generate
-    // more terms it can neither test a conjecture past the data that suggested
-    // it nor find the first term that breaks one — which is the finding worth
-    // having. It gets shell and file-write authority for that, and delegation
-    // besides, so a check too large to run inline becomes a commissioned
-    // program rather than an abandoned question.
-    register_resilient(
-        &mut pattern,
-        Arc::new(WriteToolFile::new(parts.workspace.clone())),
-    );
-    register_resilient(
-        &mut pattern,
-        Arc::new(ExecuteCommand::new(
-            parts.workspace.clone(),
-            parts.budget.tool_timeout,
-        )),
-    );
-    for tool in parts.delegation.iter().cloned() {
-        register_resilient(&mut pattern, tool);
-    }
-    register_recall(&mut pattern, &parts.workspace);
-    subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
+    register_pattern_agent(subagents, parts, prompts.pattern)?;
 
     let mut inventor =
         specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut inventor, exa);
+    }
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut inventor, tool);
     }
     register_resilient(
         &mut inventor,
@@ -1254,6 +1408,9 @@ fn register_support_agents(
         specialist_harness(parts.model.clone(), parts.budget, "librarian", parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut librarian, exa);
+    }
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut librarian, tool);
     }
     for tool in parts.documents.tools() {
         register_resilient(&mut librarian, tool);

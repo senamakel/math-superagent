@@ -1,5 +1,49 @@
 # Scratchpad
 
+## Tool-builder run: exact rational integration oracle for small n
+
+### Method
+- Speeds Exp(1) iid -> normalized v is uniform on the (n-1)-simplex
+  (Dirichlet(1..1)). Race outcome invariant to common scaling, piecewise
+  constant; p(n,L) = (n-1)! * (Euclidean volume of even-parity cells).
+- Separating set: candidate times F_j=(L-40j)/v_j, C_ab=40(b-a)/(v_a-v_b). Each
+  time is const/(linear) -> pairwise time-equalities are affine in v; v_a=v_b
+  affine too. So the separators are a genuine straight-line arrangement.
+- Parity constant per open cell: verified 0 inconsistent sign-buckets in
+  150k samples per (n,L) (n=3,4,5; L=160,400,1800).
+- cell_exact.py slices the simplex polytope by each plane (exact Fractions),
+  evaluates exact race parity (exact_race) at each cell centroid, sums
+  even-cell Euclidean volume * (n-1)!.
+
+### Bugs found and fixed during the run
+1. `enumerate_cells`: `progress=True` was set for BOTH sign-resolution and
+   cut -> a fully-resolved node treated as cut, zero leaves. Fixed: separate
+   `did_cut` flag; leaves = nodes with no cut.
+2. `Polytope.volume3`: naive fan `for i in range(1,n-1)` undercounted (tet
+   case 4 verts gave 2*|det|/6, exactly half). Replaced with scipy ConvexHull
+   facet triangulation + exact tetra volumes from Fraction vertices; full
+   simplex now returns 1/6 exactly, sliced polytope {v0+v1<=1/2} = 1/12
+   (matches sympy integral). Total arrangement volume = full simplex volume.
+3. My first analytic p(2,L) formula `(L-40)/(2L-40)` was P(bump)=P(odd); the
+   true p(2,L)=P(no bump)=L/(2L-40): 4/7, 10/19, 45/89. (Cell sum and MC and
+   p2_verify.py all agree.)
+
+### Results (all cross-verified by arrangement_pn.py + MC)
+p(3,160)=56/135 EXACT (n=3 table anchor); p(4,400)=521/1020=0.5107843137
+EXACT = problem's given value; p(4,1800)=166802/317985=0.524559; p(3,400)=
+542/1377; p(3,1800)=2237/5742; p(2,L)=L/(2L-40).
+
+### Cell counts (L-independent)
+n=2: 3 cells (2 even). n=3: 32 (17 even). n=4: 1202 (595 even). Same counts
+at every L tested (160..5000) -> arrangement combinatorial type is fixed per
+n; L only moves cell positions/volumes.
+
+### n=5
+85 hyperplanes / 4-simplex; 13,750 distinct nonempty cells seen in 200k
+samples. Naive exact sum too slow (per-cell O(choose(m,4)) vertex solves).
+Delivered p(5,1800)=0.53273±0.00029 by MC (3M). Steering said don't burn time
+on a full n=5 exact arrangement.
+
 ## [pattern_finder] EXACT CLOSED-FORM RATIONAL FUNCTIONS FOR p(n, L) — validated
 Derived from the exact arrangement enumeration (simplex subdivision oracle):
 

@@ -49,3 +49,20 @@ Target: p(13,1800) to 10 dp.
 2. solution.py exact method agrees with brute on all reachable cases and both
    examples; matches both given example values.
 3. Final n=13 answer reported with a second independent verification.
+
+## Milestone (tool-builder task): exact small-n oracle — DONE
+- Exact rational integration oracle for n<=4: code/cell_exact.py +
+  code/toolkits/arr_enum.py + code/toolkits/arr_polytope.py.
+- p(3,160)=56/135 EXACT, p(4,400)=521/1020=0.5107843137 EXACT (given value
+  matched to 10dp), p(4,1800)=166802/317985, p(3,400)=542/1377,
+  p(3,1800)=2237/5742, p(2,L)=L/(2L-40) closed form.
+- First verification criterion (brute.py reproduces both anchors) is satisfied
+  by construction; exact values cross-verified by a second independent solver
+  (code/arrangement_pn.py) and by 2-10M-sample MC.
+- Parity-cell counts: n=3 -> 32 (17 even), n=4 -> 1202 (595 even),
+  L-independent. n=5 -> ~13,750 cells, too heavy for the naive vertex solver:
+  delivered as MC p(5,1800)=0.53273±0.00029.
+- Still open (overall PE597 goal): exact p(13,1800). The arrangement approach
+  does not scale past n≈5; the exact n=13 route must come from the
+  treap/Plackett-Luce recursion in the research library (see CONTEXT.md) or
+  another structural reduction. All exact small-n values are a testbed for it.

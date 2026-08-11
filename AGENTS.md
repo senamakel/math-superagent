@@ -25,7 +25,11 @@ The runtime has nine roles plus an explicit solution loop.
   or current facts, and is deliberately reluctant: gathering costs a download,
   a digest, an index row, and a share of every later reader's attention, so it
   fetches only when the solver reports an attempt STUCK, when `ROOT.md` names a
-  specific gap it knows a specific source for, or not at all. The loop posts
+  specific gap it knows a specific source for, or not at all. It works the open
+  rows of `research/REQUESTS.md` — gaps other roles stated precisely — before
+  anything it thought of itself, checks `search_claims` before going looking for
+  what the library may already establish, and follows `research/FRONTIER.md`,
+  the citations inside the sources it already has. The loop posts
   each attempt's verdict to the teams so "is the run short of something" is a
   signal rather than a guess. It returns source URLs, separates evidence from inference,
   and can save reusable notes to Qdrant.
@@ -50,9 +54,10 @@ The runtime has nine roles plus an explicit solution loop.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
-  current tasks, and existing beliefs, replaces each source's excerpt with what
-  it actually establishes and what that implies here, and describes it so
-  `research/INDEX.md` is the way in. It exists because acquiring is not reading: a downloaded paper
+  current tasks, and existing beliefs, replaces each source's digest with what
+  it actually establishes and what that implies here, records each statement as
+  a `claim` block so it is retrievable one statement at a time, keeps the
+  threads current, and describes it so `research/INDEX.md` is the way in. It exists because acquiring is not reading: a downloaded paper
   nobody has opened has cost the run context and taught it nothing. It has no
   search tool on purpose, so it digests the library instead of drifting into
   another search the librarian has already done.
@@ -330,7 +335,7 @@ and evidence belongs in the result rather than in an error string.
 ## Research gating
 
 `MATH_AGENT_RESEARCH=off`, or the `--no-research` flag on `./agent` and
-`./euler`, withholds `exa_search` from the research agent, so a self-contained
+`./euler`, withholds `exa_search` and `oeis_lookup`, so a self-contained
 problem tests the runtime's reasoning rather than its ability to look an answer
 up. It is enforced by not registering the tool, not by asking the model to
 abstain: a prompt instruction is not a control. The workspace note tools stay
@@ -413,9 +418,15 @@ src/
 │   └── trace.rs        # live console and trace.jsonl event listener
 ├── orchestrator/       # registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs # graph-backed asynchronous child-run controls
+│   ├── claims.rs       # claim blocks, the derived ledger, and search_claims
 │   ├── code_layout.rs  # measures duplication and grouping in code/
+│   ├── digest.rs       # structural digest of a downloaded source
 │   ├── documents.rs    # bounded workspace documents and local search index
+│   ├── frontier.rs     # citation graph of the library, ranked and deduped
+│   ├── oeis.rs         # sequence lookup adapter, filed and cross-referenced
 │   ├── patterns.rs     # exact sequence analysis and recurrence search
+│   ├── requests.rs     # stated gaps, deduped against the ledger and closed
+│   ├── threads.rs      # the library's topic axis beside its arrival axis
 │   ├── solutions.rs    # graph-backed attempt/reflect/diversify loop
 │   └── vector.rs       # Qdrant tools and deterministic local feature vectors
 ├── hello_agent/        # minimal single-agent example
@@ -562,9 +573,23 @@ the short one is the default and reading the long one is a decision, which is
 what the split buys. Both stay in `research/`, because a source whose detail is
 genuinely needed must be reachable without leaving the workspace.
 
-The excerpt is a placeholder with a job: it names its companion and asks the
-scholar to replace it with a summary of what the source establishes, under a
-thousand tokens. The bound is mechanical for a fresh download and a standard
+The short one is a *structural digest*, not the leading characters
+(`src/orchestrator/digest.rs`). It was the leading four thousand characters,
+which for a paper is the title, the abstract, and half the introduction —
+precisely the part the scholar is told to throw away, so the run paid a
+thousand tokens for the wrong thousand tokens and still had to open the full
+text to decide whether it was worth opening. A mathematical source carries its
+payload in labelled statements, and `Theorem`, `Lemma`, `Definition`,
+`Proposition`, `Corollary`, and `Algorithm` are mechanically locatable; so is
+the heading outline and so is the abstract. The digest is those three under the
+same budget. `Proof` is excluded — it is the argument for a statement already
+captured and the longest block on the page. A document with no headings and no
+labelled statements falls back to the leading characters, because for that
+shape the leading characters genuinely are the document.
+
+The digest is still a placeholder with a job: it names its companion and asks
+the scholar to replace it with a summary of what the source establishes, under
+a thousand tokens. The bound is mechanical for a fresh download and a standard
 the scholar is held to thereafter. A document already short enough is stored
 whole, with no truncation notice for truncation that did not happen.
 
@@ -600,10 +625,11 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | programs (`.py`, `.sh`, `.c`, `.rs`, …) | `code/` |
 | what a program produced | `code/out/` |
 | downloaded sources | `research/L0.<n>/`, digested into `research/L1.<n>/` |
+| directions of attack | `research/threads/` |
 | reflections | `reflections/L0.<n>/` |
 | what other programs import | `code/lib/<subject>.py` |
 | programs attacking one question | `code/<question>/` |
-| plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index | `config/` |
+| plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index, the frontier and request ledgers | `config/` |
 | untouched download bytes | `raw/` |
 
 `layout::placed` decides this in the write path — `write_document` and an
@@ -770,14 +796,114 @@ The librarian receives the root as context so it does not download the same
 paper twice. Toolkits keep the older flat shape: a folder, an `INDEX.md`, and
 one small file per helper.
 
+## The four derived ledgers
+
+Four files beside the library are written by code, never by an agent, and
+re-derived from disk on every relevant write. All four follow the rule
+`INDEX.md` already established: what a source establishes is a judgement and
+stays with the agent that made it; whether the summary agrees with the files is
+not a judgement, so it is measured. Each is described through
+`record_description` when it is written, so no derived file sits in
+`research/INDEX.md` as `_(undescribed)_` for the life of a run.
+
+`research/CLAIMS.md` (`claims.rs`) is the retrieval change. The unit of the
+library was a file, and a file is the wrong thing to retrieve: an agent about
+to compute something needs one statement with its hypotheses, not the note that
+happens to contain it. A note may carry fenced `claim` blocks — `id`,
+`statement`, `hypotheses`, `holds-here`, `status`, `bearing`, `anchor`,
+`contradicts`, `answers` — and `search_claims` retrieves those rows. Two checks
+fall out that were previously asked for in a prompt and never verified.
+`contradicts` naming another claim produces a contradiction the run can see,
+which the scholar prompt calls the most valuable thing it can find and which
+nothing detected. And `holds-here: yes` with `status: asserted` is a
+load-bearing belief nobody verified, which is the distinction the method policy
+requires and the one a long run forgets it made. A block missing its `id` or
+`statement` is reported rather than dropped: a claim silently discarded leaves
+the note reading as though it recorded something.
+
+`research/THREADS.md` (`threads.rs`) is the topic axis. `L0`/`L1`/`L2` fold by
+*arrival* and are sealed once, which keeps provenance honest and scatters a
+subject across batches — a reader asking what the run knows about the pass rule
+gets a seal covering whichever ten things arrived together. One live workspace
+built the missing axis by hand, growing a `research/folds/` folder nobody
+designed with `game-core.md`, `passes.md`, `counting-arithmetic.md`, and
+`deadends.md`. A thread is `research/threads/<slug>.md` with a fenced `thread`
+block — `question`, `status`, `rests-on`, `blocked-by`, `next` — and unlike a
+seal it is live and rewritten as the direction changes. Dead threads are kept:
+a known dead end is a result, and the reason is what stops the next attempt
+paying for it again. A thread resting on a claim id that is not on disk is
+reported, and so is a blocked thread with no blocker stated, because a blocker
+stated precisely is the next research request and one left blank is a mood.
+
+`research/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
+to throw away. `readable.rs` has always parsed every anchor into a reference
+table and kept nothing; a converted PDF yields nothing at all, though a
+mathematical paper's reference list is exactly where the primary literature on
+its subject is named — as arXiv identifiers and DOIs, which are now read too.
+Ranking is mechanical and costs no model call: in-degree first, then how well
+the citing sentence overlaps `GOAL.md`. In-degree is the signal no search can
+provide — a URL three of the library's own sources cite is the standard
+reference for the subject, and rephrasing a query will not surface that. The
+citing *sentence* is stored with each row, because it says why the source
+thought the target mattered, which is the difference between a reading list and
+a list of URLs. It doubles as the fetch ledger: a second download of a URL
+already in the library is refused with the path of the file that holds it. One
+live workspace holds two notes derived from the same arXiv abstract for want of
+that check.
+
+`research/REQUESTS.md` (`requests.rs`) is the demand side. Gathering was
+triggered by inference — a `STUCK` verdict, a gap named in `ROOT.md`, an
+attempt count — and none of those can be closed, so nothing could say whether a
+search answered the thing that prompted it. `request_research` states it
+instead: what is missing, what the asker would do with it, and what would
+falsify the belief they are working from. That last field is what turns a topic
+into a question, and it is the best query the run can hand a search. A request
+is checked against the claim ledger *before* it is queued, so the common case —
+the run knows this and has forgotten — costs a lookup rather than a download;
+that is the runtime's reluctance made mechanical rather than requested. Its id
+is derived from its text, so the same gap stated by two roles is one row. It
+closes when a note carries a claim with `answers: <id>`, so whether the gap was
+filled is read off the library rather than asserted by whoever went looking.
+
+`search_claims` and `request_research` travel with the document tools, for the
+same reason the index tools do: the role that needs to know what the run
+establishes, or that walks into a gap, is whichever one is working.
+
+## Source adapters
+
+`oeis_lookup` (`oeis.rs`) is the first adapter for a structured source, and the
+one lookup in the runtime with no phrasing problem. Every other search depends
+on guessing what a subject is called — the research prompt spends a paragraph
+on that — while a sequence of integers either matches a catalogued entry or
+does not, and a match usually carries the closed form that turns an enumeration
+into an evaluation. It was a sentence in the research prompt, which is to say
+it happened when a model remembered; as a tool it is something a run can be
+seen not to have done. A miss is a result: one live workspace recorded `S(n) ∉
+OEIS` as a finding, which nobody obtains by rephrasing a query.
+
+Two things it does beyond answering. The entry is filed under `research/` like
+any other source, because a formula quoted into a tool result and nowhere else
+is a citation the run cannot check later. And the entry's `Cf.` line — the
+encyclopedia's own citation graph — goes into the frontier, so a hit on one
+sequence surfaces the neighbours describing the same structure.
+
+It is gated with `exa_search` under `MATH_AGENT_RESEARCH`, by not registering
+it rather than by asking the model to abstain, because the encyclopedia is the
+lookup most likely to hand a self-contained problem its answer outright. It is
+granted to `pattern_finder`, which has no web search on purpose — a bounded
+structural question must not become a second investigation — and a lookup keyed
+on terms that role has already computed cannot become one. It is also the role
+holding the terms, so delegating the lookup would spend a child run to pass a
+list of integers along.
+
 ## Workspace discovery and the reflection log
 
 `list_workspace` renders a bounded tree with file sizes. Agents previously knew
 only the file names their prompt happened to mention, so work already on disk
 went unread; sizes matter because they distinguish a finished derivation from
 an empty placeholder. The listing hides `.workspace-history`,
-`.python-packages`, `__pycache__`, the document index, and `trace.jsonl`, and
-truncates rather than dumping an unbounded tree.
+`.python-packages`, `__pycache__`, the document index, the frontier ledger, and
+`trace.jsonl`, and truncates rather than dumping an unbounded tree.
 
 Every reflection is archived to `reflections/L0.<n>/<epoch_ms>_<outcome>.md`, where the
 outcome is `nothing` or `<n>_learnings`, and indexed in `reflections/INDEX.md`
@@ -804,14 +930,15 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/lib/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
-| tool_builder, coder | the planners' files plus `SCRATCHPAD.md`, minus `reflections/INDEX.md` |
-| reflection | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
-| pattern_finder | `GOAL.md`, `MEMORY.md`, `SCRATCHPAD.md`, `code/lib/INDEX.md` |
-| librarian, research | `GOAL.md`, `MEMORY.md`, `research/INDEX.md` |
-| inventor | the above plus `reflections/INDEX.md` |
-| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `SCRATCHPAD.md`, `research/INDEX.md` |
-| organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/lib/INDEX.md`, `research/INDEX.md` |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, `reflections/ROOT.md`, `reflections/INDEX.md` |
+| tool_builder, coder | the planners' files plus `SCRATCHPAD.md` and `code/`, minus the threads and the reflection files |
+| judge | `GOAL.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
+| reflection | the judge's files plus `TASKS.md` and `reflections/ROOT.md` |
+| pattern_finder | `GOAL.md`, `MEMORY.md`, `SCRATCHPAD.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
+| librarian, research | `GOAL.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/FRONTIER.md`, `CONTEXT.md` |
+| inventor | the planners' research files plus `research/THREADS.md` and both reflection files |
+| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `SCRATCHPAD.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/INDEX.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md` |
 
 The tool-builder accumulates what a second program would repeat under
 `code/lib/`, one subject per module, described through `describe_file` so
@@ -836,6 +963,15 @@ Four of these are load-bearing rather than tidy-minded:
   to do.
 - Reflection must *not* see `SCRATCHPAD.md`. Provisional arithmetic is not
   evidence of progress, and treating it as such keeps the loop retrying.
+- Only the librarian and research see `research/FRONTIER.md`. It is a list of
+  things nobody has read, useful exactly to the roles deciding what to fetch
+  next and noise to everyone else.
+- The tool-builder and the coder see `research/CLAIMS.md` but not the threads.
+  A closed form the library establishes changes what they implement; which
+  direction the run is pursuing is the planners' decision, not theirs. The
+  `holds-here` column is the load-bearing part — implementing a theorem whose
+  hypotheses fail here produces a program that runs and computes the wrong
+  thing.
 
 Indexes are the cheap exception to that rule. An index costs a few hundred
 tokens where the files it describes cost tens of thousands, so a role that
