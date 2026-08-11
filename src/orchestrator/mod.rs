@@ -398,6 +398,7 @@ impl OrchestratorAgent {
             &SupportAgents {
                 model: &model,
                 budget,
+                tracer: &tracer,
                 documents: &documents,
                 vector_store: vector_store.clone(),
                 exa: exa.clone(),
@@ -732,6 +733,7 @@ impl RolePrompts {
 struct SupportAgents<'a> {
     model: &'a Arc<dyn ChatModel<()>>,
     budget: RunBudget,
+    tracer: &'a Arc<RunTracer>,
     documents: &'a WorkspaceDocuments,
     vector_store: VectorStore,
     exa: Option<Arc<dyn Tool<()>>>,
@@ -755,13 +757,13 @@ fn register_support_agents(
     parts: &SupportAgents<'_>,
     prompts: SupportPrompts,
 ) -> Result<()> {
-    let mut reflection = specialist_harness(parts.model.clone(), parts.budget, "reflection", &parts.tracer);
+    let mut reflection = specialist_harness(parts.model.clone(), parts.budget, "reflection", parts.tracer);
     for tool in parts.documents.tools() {
         register_resilient(&mut reflection, tool);
     }
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
-    let mut pattern = specialist_harness(parts.model.clone(), parts.budget, "pattern_finder", &parts.tracer);
+    let mut pattern = specialist_harness(parts.model.clone(), parts.budget, "pattern_finder", parts.tracer);
     for tool in PatternTool::all() {
         register_resilient(&mut pattern, tool);
     }
@@ -770,7 +772,7 @@ fn register_support_agents(
     }
     subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
 
-    let mut inventor = specialist_harness(parts.model.clone(), parts.budget, "inventor", &parts.tracer);
+    let mut inventor = specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut inventor, exa);
     }
@@ -787,7 +789,7 @@ fn register_support_agents(
     }
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
-    let mut librarian = specialist_harness(parts.model.clone(), parts.budget, "librarian", &parts.tracer);
+    let mut librarian = specialist_harness(parts.model.clone(), parts.budget, "librarian", parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut librarian, exa);
     }
