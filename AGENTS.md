@@ -246,7 +246,18 @@ fallbacks is what stops a busy provider halting the runtime. Do not restore
 `provider.only`: an exclusive pin makes every other provider unreachable, so a
 rate limit on one route stalls everything while providers serving the same
 model sit idle. Verify any slug before relying on it — `streamlake` sat here
-and silently matched nothing. Exa handles search. Langfuse ingestion
+and silently matched nothing.
+
+Preference alone is not enough, because every fallback costs twice: once for
+the cold call on the new provider, and again next turn when routing swings back
+to the preferred one and finds its cache cold too. `StickyProviderModel`
+(`src/agent/sticky.rs`) closes that gap by reading which provider actually
+served each response and pinning subsequent requests to it, so a fallback
+becomes the new home rather than an oscillation. The pin keeps
+`allow_fallbacks` on — it is an affinity, not an exclusion — and each
+specialist holds its own, because agents differ in the prefix they cache and
+one agent's fallback must not drag the others onto a route where their prefix
+is cold. Exa handles search. Langfuse ingestion
 is best effort and must not turn a successful answer into a failed run.
 
 Langfuse is also available for querying and reviewing recorded turns. Use
