@@ -53,19 +53,13 @@ pub(super) struct WorkspaceCheckpoint {
 }
 
 impl WorkspaceCheckpoint {
-    /// Prepares the workspace history repository.
+    /// Creates the checkpointer.
     ///
-    /// Initialisation failure is reported to the tracer and then ignored:
-    /// checkpointing is a safety net, and a workspace without git available
-    /// must still be able to solve the problem.
-    pub(super) async fn new(workspace: PathBuf, tracer: Option<Arc<RunTracer>>) -> Self {
-        let checkpoint = Self { workspace, tracer };
-        if let Err(error) = checkpoint.initialise().await
-            && let Some(tracer) = checkpoint.tracer.as_ref()
-        {
-            tracer.note(&format!("workspace history unavailable: {error}"));
-        }
-        checkpoint
+    /// The history repository is created lazily on the first commit rather
+    /// than here, so construction stays synchronous and a workspace that is
+    /// never written to never grows a git directory.
+    pub(super) fn new(workspace: PathBuf, tracer: Option<Arc<RunTracer>>) -> Self {
+        Self { workspace, tracer }
     }
 
     fn history_path(&self) -> PathBuf {
@@ -129,6 +123,7 @@ impl WorkspaceCheckpoint {
     /// A commit with nothing staged is not an error: two tools can write the
     /// same content, and the second finding no change is normal.
     async fn commit(&self, message: &str) -> Result<Option<String>> {
+        self.initialise().await?;
         self.git(&["add", "--all"]).await?;
         let staged = self.git(&["diff", "--cached", "--name-only"]).await?;
         if staged.trim().is_empty() {

@@ -37,13 +37,15 @@ async fn checkpoints_commit_only_when_content_changed() {
     let _ = std::fs::remove_dir_all(&directory);
     std::fs::create_dir_all(&directory).expect("temporary workspace is creatable");
 
-    let checkpoint = WorkspaceCheckpoint::new(directory.clone(), None).await;
-    if !history_directory(&directory).is_dir() {
+    let checkpoint = WorkspaceCheckpoint::new(directory.clone(), None);
+    std::fs::write(directory.join("seed.txt"), "seed").expect("write is possible");
+    if checkpoint.commit("seed").await.is_err() {
         // git is unavailable in this environment; the middleware degrades to a
         // no-op by design, so there is nothing further to assert.
         let _ = std::fs::remove_dir_all(&directory);
         return;
     }
+    assert!(history_directory(&directory).is_dir(), "history is created lazily");
 
     std::fs::write(directory.join("solution.py"), "print(1)").expect("write is possible");
     let first = checkpoint.commit("first").await.expect("commit succeeds");
