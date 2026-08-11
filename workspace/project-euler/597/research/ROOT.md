@@ -23,6 +23,10 @@ order is an even permutation, p(13,1800), to 10 dp.
   ([[recursive_inversion_models_permutations_meek_meila]]).
 - The normalized Exp speeds are uniform on the simplex
   ([[dirichlet_distribution_wikipedia]]), so p(n,L) is a simplex volume.
+- That simplex volume is **closed-form computable**: Lasserre gives
+  Laplace-transform volumes of simplex sections Δ∩{a^T x ≤ t} (piecewise
+  polynomial in t), so each linear cut of the parity region — and the whole
+  region — is an exact rational ([[simplex_volume_sections_lasserre]]).
 
 Together (see the sealed batch [[L0.0]]) these give the exact, non-exhaustive
 recursion that the run needs; the exhaustive MC target ≈0.5002±0.00007 needs
