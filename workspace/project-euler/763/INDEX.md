@@ -11,5 +11,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | Orientation for the workspace: one mathematical problem per directory, reproducible work, start with AGENTS.md then prompts/, completion in GOAL.md, work tracked in TASKS.md/SCRATCHPAD.md/MEMORY.md. |
 | `SCRATCHPAD.md` | Scratchpad for temporary calculations, partial derivations, and observations not yet established enough for MEMORY.md. Currently only a section skeleton. |
 | `TASKS.md` | Checklist of concrete steps toward the current goal; currently holds one unfilled step ("record the first concrete step"). |
-| `brute.py` | SUPERSEDED — the capped BFS oracle for D(N) (drives levels to a max-depth arg, stops when frontier exceeds 600k states, prints the D(N) sequence and checks D(2)=3, D(10)=44499). Its content has been replicated at code/brute_capped.py so the root holds only Markdown; keep the root copy only as a historical record of the standard frozenset oracle. |
 | `problem.md` | The Project Euler 763 problem statement (converted from HTML): amoeba division rule, definition of D(N), the four worked examples, and the target D(10000) last-nine-digits. |
