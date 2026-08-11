@@ -1,7 +1,6 @@
 # Index — research/L1
 
-One note per source (full text in L0/, summary at this link). See the
-top-level research/INDEX.md for the fold map ordering these by usefulness.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
@@ -15,6 +14,8 @@ top-level research/INDEX.md for the fold map ordering these by usefulness.
 | `normalplay.md` | Unable-to-move loses; A−B>0 ⇒ One wins without skips. |
 | `partisan.md` | Sprague–Grundy inapplicable (disjoint move sets); minimax over (A,B). |
 | `pass_waiting.md` | Larsson–Nowakowski–Santos 2015 (arXiv:1505.01907), primary pass/waiting-move theory. |
+| `raw_mfl_pass.md` | _(undescribed)_ |
+| `raw_pass_waiting_check.md` | _(undescribed)_ |
 | `strategy.md` | Dead end: generic strategy article, nothing relevant. |
 | `surreal.md` | Why a−b is exact (simplest surreal between options); skips outside short games ⇒ A−B ≠ S(n). |
 | `trollopedelange.md` | Girgensohn 2011 INTEGERS #A54: explicit Trollope–Delange closed forms (1-periodic fluctuation). |
