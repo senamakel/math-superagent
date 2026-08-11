@@ -4,12 +4,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `L0.0/homomesies_permutations_arxiv.md` | _(undescribed)_ |
-| `L0.1/legendre_number_system_cyclic_shift.md` | _(undescribed)_ |
-| `L0.1/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
+| `L0.0/homomesies_permutations_arxiv.md` | Excerpt of the homomesies-on-permutations abstract page (arXiv:2206.13409) — raw arXiv abs-page capture. Curated summary at L1.0/homomesies_permutations.md; full text PDF at arXiv:2206.13409. |
+| `L0.1/legendre_number_system_cyclic_shift.md` | Excerpt of Legendre's cyclic-shift number-system paper (arXiv:1007.2870) — raw arXiv abs-page capture. Curated summary: L1.1/legendre_number_system_cyclic_shift.md; full text: L0.1/legendre_number_system_cyclic_shift.full.md. |
+| `L0.1/pinsky_inversion_derangements.arxiv.md` | ERRONEOUS DOWNLOAD marker: arXiv:2110.01958 is NOT Pinsky's inversion paper (it is an unrelated Elasticsearch CS paper). Keep out of the library; the correct source is EJC DOI 10.37236/14250 filed as L0.1/pinsky_inversion_fixed_points.full.md. |
 | `L0.2/courtois_bard_ault_ppowers.md` | Excerpt of Courtois–Bard–Ault, "Statistics of Random Permutations and the Cryptanalysis of Periodic Block Ciphers" (arXiv:0905.3682). Downloaded but not yet curated: still an excerpt stub awaiting a scholar summary. Context: cycle-structure statistics of random permutations via generating functions; relevant only as cycle-type background, not the cyclic-subgroup rank sum. |
 | `L0.2/courtois_bard_ault_ppowers_body.md` | Summary of Courtois-Bard-Ault: cycle structure of permutation POWERS pi^k via EGFs — fixed points of pi^k = points in divisor-length cycles (count tau(k)), cycle splitting, and fixed-point-distribution EGF of pi^k; mechanism for the run's random-power pair-inversion counts behind A_n,B_n. |
-| `L0.2/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
+| `L0.2/sack_ulfarsson_refined_inversion_pdf.md` | Summary of Sack & Úlfarsson, refined inversion statistics (arXiv:1106.1995): k-step-inversion Eulerian distribution H_{n,k}=I·A_s^t·A_{s-1}^{k−t} (Thm 4.4), non-inversion-sum identities, zone-crossing vectors. Per-gap machinery matching f_n(k); single-permutation only, not the cyclic subgroup {π^i}. Full text: L0.2/sack_ulfarsson_refined_inversion_pdf.full.md. Canonical summary: L1.2/sack_ulfarsson_refined_inversion_statistics.md. |
 | `L0.2/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `L1.0/archer_geary_descents_powers.md` | _(undescribed)_ |
 | `L1.0/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
