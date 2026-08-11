@@ -30,6 +30,6 @@ Subfolders have their own indexes: `research/INDEX.md`, `toolkits/INDEX.md`,
 
 | Folder | Purpose |
 | --- | --- |
-| `research/` | Externally sourced mathematics — see `research/INDEX.md`. Two sources (Berthé–Imbert; Cabanillas-López–Labbé) each stored as a summary + `.full.md`. |
+| `research/` | Externally sourced mathematics — see `research/INDEX.md`. Two sources (Berthé–Imbert; Cabanillas-López–Labbé) each stored as a summary + `.full.md`, plus the final research report `report_pe591_inhomogeneous_approx.md`. |
 | `toolkits/` | Reusable one-function-per-file helpers — see `toolkits/INDEX.md`. Currently empty. |
 | `prompts/` | Role-specific agent guidance — see `prompts/INDEX.md`. |

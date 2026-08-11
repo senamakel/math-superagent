@@ -4,7 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `berthe-imbert-ostrowski.full.md` | _(undescribed)_ |
+| `berthe-imbert-ostrowski.full.md` | Complete converted text of Berthé & Imbert, "Diophantine Approximation, Ostrowski Numeration and the Double-Base Number System", DMTCS 11:1 (2009) 153–172 (~42 KB). Opens only when the summary research/berthe-imbert-ostrowski.md cannot answer; the summary is the way in. |
 | `berthe-imbert-ostrowski.md` | Summary of Berthé & Imbert (DMTCS 2009) on Ostrowski numeration and the inhomogeneous best-left-approximation algorithm; the O(log)-time continued-fraction route for the PE591 core subproblem. |
 | `cabanillas-labbe-ostrowski-variant.full.md` | Complete converted text of arXiv:1904.01874 (~168 KB). Opens only when the summary research/cabanillas-labbe-ostrowski-variant.md cannot answer; the summary is the way in. |
 | `cabanillas-labbe-ostrowski-variant.md` | Summary of Cabanillas-López & Labbé, "A variant of Ostrowski numeration", arXiv:1904.01874 (2019). THE primary algorithm for PE591: Prop 9 (best right) and Prop 10 (best left) give the O(log B) candidate set; Algorithm 3(ii) the α-numeration digits; Section 4.1 the three-distance theorem; Section 2.4 the CFE complement for negative integers. Full text: research/cabanillas-labbe-ostrowski-variant.full.md. |
