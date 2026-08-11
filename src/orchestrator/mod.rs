@@ -483,6 +483,7 @@ impl OrchestratorAgent {
                 inventor: prompts.inventor,
                 librarian: prompts.librarian,
                 scholar: prompts.scholar,
+                organizer: prompts.organizer,
             },
         )?;
 
@@ -697,6 +698,14 @@ fn support_agents(
                 .chain(document_tools),
         ),
         AgentDefinition::new(
+            "organizer",
+            "Organizer Agent",
+            "Keeps the workspace navigable: folder indexes, research layout, and the toolkit \
+             catalogue.",
+        )
+        .with_model("openrouter")
+        .with_tools(document_tools),
+        AgentDefinition::new(
             "goals",
             "Goals Agent",
             "Pursues a goal and delegates research, implementation, and verification.",
@@ -722,6 +731,7 @@ struct RolePrompts {
     inventor: String,
     librarian: String,
     scholar: String,
+    organizer: String,
 }
 
 /// The workspace context every role receives.
@@ -843,6 +853,7 @@ impl RolePrompts {
             inventor: role("inventor", INVENTOR_PROMPT)?,
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
             scholar: role("scholar", SCHOLAR_PROMPT)?,
+            organizer: role("organizer", ORGANIZER_PROMPT)?,
         })
     }
 }
@@ -864,6 +875,7 @@ struct SupportPrompts {
     inventor: String,
     librarian: String,
     scholar: String,
+    organizer: String,
 }
 
 /// Registers the reflection, pattern, inventor, and librarian agents.
@@ -945,7 +957,17 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut scholar, tool);
     }
-    subagents.register("scholar", Arc::new(scholar), prompts.scholar)
+    subagents.register("scholar", Arc::new(scholar), prompts.scholar)?;
+
+    // Files and indexes only. No search, no shell, no note memory: the
+    // organizer describes the work rather than doing it, and every tool it
+    // does not have is a way it cannot start.
+    let mut organizer =
+        specialist_harness(parts.model.clone(), parts.budget, "organizer", parts.tracer);
+    for tool in parts.documents.tools() {
+        register_resilient(&mut organizer, tool);
+    }
+    subagents.register("organizer", Arc::new(organizer), prompts.organizer)
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
