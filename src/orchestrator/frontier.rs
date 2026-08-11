@@ -157,16 +157,18 @@ pub(super) async fn record(
     let _ = documents.write_runtime(FRONTIER_PATH, &rendered).await;
 }
 
-/// Whether the run has already downloaded `url`.
+/// Returns where the run already filed `url`, if it has downloaded it.
 ///
 /// The check is on the canonical form, so the same paper reached by two
 /// spellings — with and without a tracking parameter, say — is recognised as
-/// one document.
-pub(super) async fn already_fetched(documents: &WorkspaceDocuments, url: &str) -> bool {
+/// one document. One live workspace holds two notes derived from the same
+/// arXiv abstract for want of exactly this check.
+pub(super) async fn already_fetched(documents: &WorkspaceDocuments, url: &str) -> Option<String> {
     load(documents)
         .await
         .get(&super::readable::clean_url(url))
-        .is_some_and(|candidate| candidate.fetched)
+        .map(|candidate| candidate.path.clone())
+        .filter(|path| !path.is_empty())
 }
 
 /// Whether a URL is a lead rather than a publisher's furniture.
