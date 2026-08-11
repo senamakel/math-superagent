@@ -291,6 +291,15 @@ re-issues with the cap doubled, clamped at 4x. So a bound turn shows as
 `out=<cap>`, a `model RETRY`, then `out=<2x cap>`. Read that pair as one
 truncation, not as evidence the cap is larger than it is.
 
+`UntruncatedModel` is a second ladder beside that one, covering the shape
+upstream excludes — a turn that produced text but no tool call. The two must
+share a ceiling rather than compose into one. `MAX_CAP_GROWTH` is therefore
+measured from the run's *configured* turn cap, passed in with `with_turn_cap`,
+not from whatever cap the request happens to carry: read as an original, a turn
+upstream had already doubled doubled again, and a live `goals` agent reached a
+48,000-token re-issue — four times the ceiling, against a wrapper documented to
+allow twice, and some twelve minutes of generation for one turn.
+
 A timeout is a safety ceiling, not permission to run an intractable approach.
 Before substantial execution, the tool-builder must state both time and space
 complexity. Algorithms with exponential time or space complexity are
