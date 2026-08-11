@@ -116,8 +116,17 @@ impl<State: Send + Sync + 'static> Middleware<State> for ReflectionMiddleware {
     ) -> Result<()> {
         let tool = result.name.clone();
         if result.is_error() {
-            let count = self.record(&tool);
-            result.content.push_str(&Self::note(&tool, count));
+            // A truncated call is not held against the tool. It never ran, so
+            // counting it would escalate to "stop calling this tool" advice
+            // about a tool that has done nothing wrong, and steer the run off
+            // the delegation it actually needs.
+            let count = if truncated_arguments(&result.content) {
+                0
+            } else {
+                self.record(&tool)
+            };
+            let note = Self::note(&tool, count, &result.content);
+            result.content.push_str(&note);
         } else {
             self.clear(&tool);
         }
