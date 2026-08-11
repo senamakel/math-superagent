@@ -60,7 +60,7 @@ def main():
         Flit = f_by_gcd(n)                 # literal orbit route (oracle)
         assert F == Flit, f"f_table vs literal oracle disagree for n={n}"
         assert F[1] == nf * (nf + 1) // 2, "F(1) identity"
-        assert F[nf] == nf * (nf + 1) // 2, "F(n!) identity (pi^n! = id)"
+        assert F[nf] == nf, "F(n!) identity: pi^n! = id for all pi, rank(id)=1"
 
         Q = 0
         for d in divisors(nf):
