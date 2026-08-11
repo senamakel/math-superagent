@@ -56,7 +56,8 @@ The runtime uses a small registry of specialist agents:
 - `orchestrator` breaks a problem into focused tasks and combines the results.
 - `goals` turns an objective into completion criteria and spawns focused
   subagents until the criteria are met or blocked.
-- `research` searches with Exa and returns evidence with source URLs.
+- `research` searches with Exa, looks computed sequences up in the OEIS, and
+  returns evidence with source URLs.
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
 - `coder` has the same authority and writes the implementation the run stands
@@ -68,17 +69,18 @@ The runtime uses a small registry of specialist agents:
 - `pattern_finder` runs exact sequence analysis over results already computed:
   forward differences and polynomial degree, common divisors, residue
   periodicity, and a verified linear-recurrence search. Its tools report only
-  what holds for every term supplied, and it can commission more terms from the
-  tool-builder so a conjecture is tested past the data that suggested it.
+  what holds for every term supplied; it can commission more terms from the
+  tool-builder so a conjecture is tested past the data that suggested it, and
+  look the terms up in the OEIS, where a match usually carries the closed form.
 - `inventor` proposes a different line of attack when the current one stalls.
-- `librarian` downloads primary material into a workspace reference library and
-  indexes it for local search.
+- `librarian` downloads primary material into the reference library, indexes it,
+  and works the frontier and the open requests before searching afresh.
 - `scholar` reads that library. It judges each source against the run's goal and
   current beliefs and replaces each stored digest with what the source actually
   establishes, because a downloaded paper nobody has opened has cost the run
-  context and taught it nothing. It records each statement as a `claim` block —
-  its hypotheses, whether they hold for this problem, and what evidence stands
-  behind it — so it is retrievable one statement at a time.
+  context and taught it nothing. It records each statement as a `claim` block,
+  with its hypotheses, whether they hold here, and what evidence stands behind
+  it, so the library is retrievable one statement at a time.
 - `organizer` keeps the workspace navigable: folder indexes, the layout of
   `research/`, and `code/toolkits/INDEX.md` matching the files beside it. It cannot
   delete a result or change what a file says.
