@@ -561,7 +561,12 @@ impl Tool<()> for AsyncSubagentTool {
     fn description(&self) -> &'static str {
         match self.kind {
             AsyncToolKind::Spawn => {
-                "Starts a subagent asynchronously and immediately returns its run id."
+                "Starts a subagent asynchronously and immediately returns its run id. Keep `input` \
+                 to a short brief — say what the agent must do and what to report back, in a few \
+                 sentences. Do not restate the problem, the derivation so far, or the contents of \
+                 any file: the agent is given the workspace and reads it itself. A brief long \
+                 enough to exhaust the turn's output budget is cut off mid-argument and the call \
+                 never happens."
             }
             AsyncToolKind::Peek => {
                 "Returns the current status and any completed response for a subagent run."
