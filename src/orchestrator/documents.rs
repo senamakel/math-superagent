@@ -11,6 +11,13 @@ use serde_json::{Value, json};
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
 const INDEX_PATH: &str = ".document-index.json";
+/// Folder every externally-sourced document is filed under.
+///
+/// Enforced here rather than asked for in a prompt: downloads are the one kind
+/// of file that arrives from outside the run, and keeping them in one place is
+/// what lets an agent tell at a glance what it gathered from what it derived.
+/// A prompt instruction would hold only until a model chose otherwise.
+pub(super) const RESEARCH_DIR: &str = "research";
 const MAX_DOCUMENT_BYTES: usize = 5 * 1024 * 1024;
 const MAX_SEARCH_RESULTS: usize = 10;
 
@@ -301,6 +308,26 @@ fn walk<'a>(
         }
         Ok(())
     })
+}
+
+/// Files a downloaded document under the research folder.
+///
+/// A path already inside the folder is left alone; anything else is moved into
+/// it, and a leading `/workspace` or `./` is trimmed first so the common
+/// spellings do not produce `research/workspace/...`.
+pub(super) fn research_path(requested: &str) -> String {
+    let trimmed = requested
+        .trim()
+        .trim_start_matches("/workspace/")
+        .trim_start_matches("./")
+        .trim_start_matches('/');
+    if trimmed.is_empty() {
+        return format!("{RESEARCH_DIR}/document.md");
+    }
+    if trimmed == RESEARCH_DIR || trimmed.starts_with(&format!("{RESEARCH_DIR}/")) {
+        return trimmed.to_string();
+    }
+    format!("{RESEARCH_DIR}/{trimmed}")
 }
 
 /// Renders the heading for a listing root.
