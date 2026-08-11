@@ -1,40 +1,47 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/three_gap_wikipedia.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Three-gap theorem (Steinhaus conjecture) — Wikipedia (background)
 
-<!-- source: https://en.wikipedia.org/wiki/Three-gap_theorem | converted from HTML -->
+Source: https://en.wikipedia.org/wiki/Three-gap_theorem (full text read).
 
-Three-gap theorem - Wikipedia
+## What it establishes
 
-Jump to content
+**Statement.** For any irrational `θ/2π` and any positive integer `n`, the points
+`θ, 2θ, …, nθ` on the circle have **at most three distinct** gaps between adjacent
+points; when there are three, the largest gap equals the sum of the other two.
+Equivalent algebraic form: the fractional parts `{α}, {2α}, …, {nα}` divide the
+unit interval into subintervals of at most three distinct lengths. Unless `α` is a
+rational multiple of something periodic, there are at least two distinct gaps.
 
-[image: This is a good article. Click here for more information.] [1]
+History: conjectured by Steinhaus, first proved in the late 1950s by Sós (1957/58),
+Surányi (1958), Świerczkowski (1959). Liang's short proof also shows the "largest =
+sum of the two others" part and a `3d`-distance generalisation. Related: Slater's
+earlier copy/itinerary variant, and higher-dimensional generalisations
+(Halton; Bleher–Homma–Ji–Roeder–Shen).
 
-From Wikipedia, the free encyclopedia
+## Hypotheses / applicability
 
-On distances between points on a circle
+Needs `n` points of a single rotation `x ↦ x+α (mod 1)`, `α` irrational. Holds here:
+`α = {√d}` irrational (d non-square). It is a **homogeneous** statement — it counts
+gap lengths of `{nα}` itself.
 
-In mathematics, the **three-gap theorem**, **three-distance theorem**, or **Steinhaus conjecture**states that if one places n {\displaystyle n}[image: {\displaystyle n}] points on a circle, at angles of θ, 2 θ, 3 θ,... {\displaystyle \theta ,2\theta ,3\theta ,...}[image: {\displaystyle \theta ,2\theta ,3\theta ,...}] from the starting point, then there will be at most three distinct distances between pairs of points in adjacent positions around the circle. When there are three distances, the largest of the three always equals the sum of the other two. [1] Unless θ {\displaystyle \theta }[image: {\displaystyle \theta }] is a rational multiple of π {\displaystyle \pi }[image: {\displaystyle \pi }], there will also be at least two distinct distances.
+## What it implies for this problem
 
-This result was conjectured by [Hugo Steinhaus][2], and proved in the 1950s by [Vera T. Sós][3], [János Surányi][4] [[hu][5]], and [Stanisław Świerczkowski][6]; more proofs were added by others later. Applications of the three-gap theorem include the study of plant growth and musical tuning systems, and the theory of light reflection within a mirrored square.
+**Background only.** The three-gap theorem explains *why* the record-holding `b`
+for `||bα − β||_Z` are few (the orbit near a target `β` is structured into
+`δ_k`-scale gaps), and it is the basis on which the Berthé–Imbert algorithm is
+built (their Algorithm 2 rests on it). But it does **not** give the minimizer for a
+*fix target* `β`: that is the inhomogeneous problem, solved exactly by Cabanillas
+Props 9/10 (and, one-sided, Berthe-Imbert), not by this theorem. The precise gap
+lengths in terms of `δ_k` used in the run's notes come from van Ravenstein and from
+Cabanillas Thm 1, not from this Wikipedia article.
 
-## Statement
+## Does it contradict memory.md?
 
-[[edit][7]]
+No. It supports the three-gap facts the notes record. Notably it *agrees* with the
+memory claim that semiconvergents/densest-to-0 records describe the homogeneous
+(target 0) case: the theorem has nothing to say about a target `β`, which is why
+the run needed the inhomogeneous theory.
 
-The three-gap theorem can be stated geometrically in terms of points on a circle. In this form, it states that if one places n {\displaystyle n}[image: {\displaystyle n}] points on a circle, at angles of θ, 2 θ, …, n θ {\displaystyle \theta ,2\theta ,\dots ,n\theta }[image: {\displaystyle \theta ,2\theta ,\dots ,n\theta }] from the starting point, then there will be at most three distinct distances between pairs of points in adjacent positions around the circle. An equivalent and more algebraic form involves the [fractional parts][8] of multiples of a [real number][9]. It states that, for any positive real number α {\displaystyle \alpha }[image: {\displaystyle \alpha }] and integer n {\displaystyle n}[image: {\displaystyle n}], the fractional parts of the numbers α, 2 α, …, n α {\displaystyle \alpha ,2\alpha ,\dots ,n\alpha }[image: {\displaystyle \alpha ,2\alpha ,\dots ,n\alpha }] divide the [unit interval][10] into subintervals with at most three different lengths. The two problems are equivalent under a linear correspondence between the unit interval and the circumference of the circle, and a correspondence between the real number α {\displaystyle \alpha }[image: {\displaystyle \alpha }] and the \\theta=2\\pi\\alpha</math>.{{r|mayero|ms|vr88}}"}},"i":0}}]}'>angle θ = 2 π α {\displaystyle \theta =2\pi \alpha }[image: {\displaystyle \theta =2\pi \alpha }]. [2] [3] [4]
+## Verdict
 
-## Applications
-
-[[edit][11]]
-
-### Plant growth
-
-[[edit][12]]
-
-[13] End-on view of a plant stem in which consecutive leaves are separated by the [golden angle][14]
-
-In the study of [phyllotaxis][15], the arrangements of leaves on plant stems, it has been observed that each successive leaf on the stems of many plants is turned from the previous leaf by the [golden angle][14], approximately 137.5 ∘ {\displaystyle 137.5^{\circ }}[image: {\displaystyle 137.5^{\circ }}]. It has been suggested that this angle maximizes the sun-collecting power of the plant's leaves. [5] If one looks end-on at a plant stem that has grown in this way, there will be at most three distinct angles between two leaves that are consecutive in the [cyclic order][16] given by this end-on view. [6]
-
-[17] Points spaced at the golden angle along a [Fermat spiral][18] (center) are more uniformly spaced than for other angles.
-
-
-*[excerpt ends; 46293 characters not shown — see `research/three_gap_wikipedia.full.md`]*
+Useful background; references for proof history and the Liang proof. No
+contradiction; does not compute anything. Nobody needs to re-read it in full.
