@@ -179,62 +179,52 @@ def main():
 
     print()
     print("=" * 78)
-    print("PART 3 -- where the recursion actually fails (decoupling)")
+    print("PART 3 -- why the recursion fails: the two crux claims, tested")
     print("=" * 78)
-    print("  Mathematical identity (always true for ANY permutation):")
-    print("    inv(full perm) = inv(restriction to left) + inv(restriction to")
-    print("                      right) + cross(left,right)")
-    print("  so parity = pL + pR + cross (mod 2) holds with the TRUE")
-    print("  restriction parities.  The treap recursion instead substitutes")
-    print("  the SUB-RACE oracle parity on each slice (the only quantity a")
-    print("  closed-form recursion can compute).  We test both:")
-    bad_true = 0     # with TRUE restriction parities -> must be 0
-    bad_sub = 0      # with SUB-RACE slice parities -> the recursion's claim
-    rng = random.Random(54321)
-    # only valid geometries: every boat starts strictly BELOW the finish line
-    valid = [(n, L) for n in range(3, 7) for L in L_list if 40 * (n - 1) < L]
-    for _ in range(60000):
-        n, L = valid[rng.randrange(len(valid))]
-        speeds = [rng.expovariate(1.0) for _ in range(n)]
-        above = simulate_order(n, L, speeds)
-        par_full, order = parity_of_new_order(n, above)
-        r = min(range(n), key=lambda i: W(speeds, L, i))
-        left = list(range(r))
-        right = list(range(r + 1, n))
-        pos = {boat: i for i, boat in enumerate(order)}
-        # TRUE cross (flipped left-right pairs in the actual race)
-        cross = 0
-        for i in left:
-            for j in right:
-                if i < j and j in above[i]:
-                    cross += 1
-        # TRUE restriction parity of the full permutation on each subset
-        def inv_of(sub):
-            c = 0
-            for x in range(len(sub)):
-                for y in range(x + 1, len(sub)):
-                    i, j = sub[x], sub[y]
-                    if i < j and pos[i] > pos[j]:
-                        c += 1
-            return c % 2
-        pL_true = inv_of(left) if len(left) >= 2 else 0
-        pR_true = inv_of(right) if len(right) >= 2 else 0
-        # recursion's substitute: sub-race oracle parity on each slice
-        pL_sub = outcome_parity(r, L, speeds[:r]) if r >= 2 else 0
-        pR_sub = outcome_parity(n - 1 - r, L, speeds[r + 1:]) if n - 1 - r >= 2 else 0
-        if (pL_true + pR_true + cross) % 2 != par_full:
-            bad_true += 1
-        if (pL_sub + pR_sub + cross) % 2 != par_full:
-            bad_sub += 1
-    print(f"  TRUE restriction parities + true cross: {bad_true}/60000 mismatch")
-    print(f"      -> the pure inversion decomposition holds "
-          f"({'yes, 0 mismatches' if bad_true==0 else 'NO, FAIL'}).")
-    print(f"  SUB-RACE slice parities + true cross : {bad_sub}/60000 mismatch")
-    print(f"      -> treap DECOUPLING fails: the sub-race on a slice does NOT")
-    print(f"         equal the full race's restriction parity on that slice.")
-    print("  The recursion's error is therefore BOTH in the root/cross")
-    print("  prediction and in the assumed left/right decoupling, not in the")
-    print("  parity algebra on a true permutation.")
+    print("  The treap recursion (sum-of-products over min-W roots) needs:")
+    print("  C1  DECOUPLING: the sub-race parity on slice [0..r-1] equals the")
+    print("      restriction parity of the FULL permutation to those indices.")
+    print("  C2  cross = |left| * |right| (every left-right pair 'flips' at")
+    print("      the root, deterministically).")
+    print("  Both are tested against the oracle below (true race).")
+    # C1: sub-race oracle parity on slice [0..r-1] (what a closed-form
+    #     recursion can compute) vs the restriction parity of the full
+    #     permutation to those indices (what the parity identity needs).
+    # C2: true left-right inverted chain-pair count at root vs |left|*|right|.
+    c1bad = 0; c1tot = 0
+    c2bad = 0; c2tot = 0
+    rng = random.Random(4242)
+    for (n, L) in [(3, 160.0), (4, 160.0), (4, 400.0), (5, 400.0), (5, 1800.0)]:
+        c1 = c2 = tot = 0
+        for _ in range(60000):
+            s = [rng.expovariate(1.0) for _ in range(n)]
+            above = simulate_order(n, L, s)
+            _, order = parity_of_new_order(n, above)
+            pos = {b: i for i, b in enumerate(order)}
+            r = min(range(n), key=lambda i: W(s, L, i))
+            # C2
+            cross = sum(1 for i in range(r) for j in range(r + 1, n)
+                        if j in above[i])
+            if cross != r * (n - 1 - r):
+                c2 += 1
+            # C1 (only when left slice has >= 2 boats)
+            if r >= 2:
+                invL = sum(1 for x in range(r)
+                           for y in range(x + 1, r)
+                           if pos[x] > pos[y]) % 2
+                subL = outcome_parity(r, L, s[:r])
+                if invL != subL:
+                    c1 += 1
+            tot += 1
+        c1bad += c1; c1tot += tot
+        c2bad += c2; c2tot += tot
+        print(f"    n={n} L={L}: C1 fails {c1}/{tot}  |  C2 fails {c2}/{tot}")
+    print(f"  C1 (decoupling) fails {c1bad}/{c1tot}  -> REFUTED: the sub-race on")
+    print("      a slice does NOT reproduce the full race's restriction parity.")
+    print(f"  C2 (cross=|L||R|) fails {c2bad}/{c2tot}  -> REFUTED: cross is not")
+    print("      a deterministic |L|*|R| flip; it is set by the real bump")
+    print("      chronology, which the finish events (inverse-exponential, not")
+    print("      clocks) break.  Both are needed for the sum-of-products form.")
 
 
 if __name__ == '__main__':
