@@ -30,6 +30,15 @@ n), which the n=10⁵ scale demands:
   the unweighted total-bit count available in closed form, tightening the
   A(n),B(n) counting-arithmetic toolchain for n=10^5.
 
+**Demotion this cycle — the two raw arXiv-page notes are folded away.**
+`raw_mfl_pass.md` and `raw_pass_waiting_check.md` were the unprocessed arXiv
+abstract pages for papers already analysed in [[mfl_pass]] and [[pass_waiting]];
+each was over the 1000-token cap and re-sent on every model call. Each is now a
+~50-token stub stating the paper's one consequence and wikilinking its proper L1
+analysis and the L0 full text — the tree still reaches every detail, but the
+per-call context load drops by ~1400 tokens. No new mathematical content was
+added this cycle; the run's pass-theory picture was already complete.
+
 **Caveat (open):** the counting model is a *surrogate* — its (A,B) transitions
 (One →(A−1,B), Zero →(A,B−1)) ignore that deleting a leading 1 can also drop 0-bits
 (e.g. "100"→0). Given S(2)=2, S(5)=17, S(10)=64 are reproduced, but real-vs-counting
