@@ -29,11 +29,19 @@ These four are the correctness oracle for any brute force and any real method.
 
 ## Completion criteria
 
-- [ ] Reproduce all 4 worked examples with brute force (as far as feasible; #4 is too big for naive scan).
-- [ ] Derive and state the governing theory in solution.md.
-- [ ] Implement solution.py with exact integer arithmetic, agreeing with brute.py
-      on every case brute can reach, and reproducing examples 1-3.
-- [ ] Reproduce example 4 (the d=2, n=10^13 oracle) with the real method.
-- [ ] Compute S and verify by a second independent route (different method or
-      brute-force agreement at the largest reachable n for every d).
-- [ ] Report the answer, method, and verification.
+- [x] Reproduce all 4 worked examples, brute force where feasible and the real method for #4
+      (brute.py reproduced examples 1-3; solution_bothsides.py reproduced all four, with
+      I_2(BQA_2(pi,1e13)) = -6188084046055).
+- [x] Derive and state the governing theory in solution.md
+      (Cabanillas Prop 9/10 + Algorithm 3(ii), arXiv:1904.01874; precise statement in
+      research/cabanillas_prop9_10_exact_statement.md).
+- [x] Implement solution_bothsides.py with exact integer arithmetic, agreeing with brute force
+      on every case brute can reach (exact (b,a) match on 16 d at n=1e7 and all 90 d at n=1e6,
+      both signs) and reproducing examples 1-3.
+- [x] Reproduce example 4 (the d=2, n=10^13 oracle) with the real method.
+- [x] Compute S and verify by a second independent route
+      (brute force at largest reachable n — exact agreement at n=1e7; independent exact-int
+      re-sum of results_full_bothsides.txt).
+- [x] Report the answer, method, and verification (this report).
+
+Answer: **S = 526007984625966**.

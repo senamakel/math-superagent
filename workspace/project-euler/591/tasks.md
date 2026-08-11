@@ -1,8 +1,10 @@
 # Tasks
 
 - [x] Task 1: verify brute.py reproduces the 3 worked examples; report float caveats.
-- [ ] Task 2: probe_records.py — record b's for ||b sqrt(d)-pi||_Z over several d; test semiconvergent hypothesis.
-- [ ] Task 3: d=2, check b=4375636191520 is a semiconvergent denominator of sqrt(2); verify example 4 numerically.
+- [x] Task 2: probe_records.py — record b's for ||b sqrt(d)-pi||_Z over several d; test semiconvergent hypothesis
+      (done: no linear recurrence/polynomial growth; records are Cabanillas candidates, NOT semiconvergents in general).
+- [x] Task 3: d=2, check b=4375636191520 is a semiconvergent denominator of sqrt(2); verify example 4 numerically
+      (done: b is NOT a semiconvergent; example 4 verified exactly, error ~ -4.29e-15).
 - [x] Derive scalable (CF/Legendre) method; implement solution.py.
 - [x] Reproduce example 4 (d=2 n=1e13: a=-6188084046055) and examples 1-3
       (covered by test_method_scale.py oracle checks) with the real method.
