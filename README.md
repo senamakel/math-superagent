@@ -274,7 +274,8 @@ workspace/project-euler/66/
 ├── INDEX.md            # what each file beside it is for
 ├── code/               # every program, with its own AGENTS.md and INDEX.md
 │   ├── out/            # what those programs produced
-│   └── toolkits/       # reusable verified helpers, one function per file
+│   ├── lib/            # what other programs import, one subject per module
+│   └── <question>/     # the programs attacking one question, with its INDEX.md
 ├── research/           # L0 sources, L1 digests, L2 folds, INDEX.md at the root
 ├── reflections/L0/     # one note per judged attempt
 ├── raw/                # untouched download bytes, including problem.html
@@ -291,9 +292,20 @@ start of every run.
 
 Everything downloaded is filed under `research/`, enforced in code rather than
 asked for in a prompt, so gathered material stays separate from the run's own
-derivations and programs. The tool-builder accumulates reusable helpers under
-`code/lib/`, one function per file, so reading the helper you need costs a few
-hundred bytes rather than the whole library.
+derivations and programs.
+
+`code/` is a Python package tree, and `/workspace/code` is on `PYTHONPATH`, so
+every folder in it is importable by name from any working directory: a helper
+at `code/lib/perms.py` is `from lib.perms import lex_ranks`. The tool-builder
+accumulates what a second program would repeat under `code/lib/`, one subject
+per module, so reading the helper you need costs a few hundred bytes rather
+than the whole library; everything else is grouped by the question it attacks.
+`orchestrator::code_layout` measures the result — a routine defined in three
+separate programs, a `code/` past ten loose files, a folder of programs with no
+index — and hands the organizer one fault per cycle. Reuse is measured rather
+than requested because asking for it in a prompt did not work: one committed
+workspace holds forty-six sibling programs defining `H(n)` seven times over,
+beside a helper folder nothing imported.
 
 Every folder carries an `INDEX.md` saying what each file is for. `list_workspace`
 can answer what exists but not what anything is *for*, and after a long run
@@ -457,6 +469,7 @@ src/
 ├── orchestrator/           registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs  graph-backed spawn, peek, steer, and await controls
 │   ├── checkpoint.rs       workspace git history under .workspace-history
+│   ├── code_layout.rs      duplication and grouping measured across code/
 │   ├── documents.rs        bounded workspace document storage and search
 │   ├── folder_index.rs     per-folder INDEX.md description tracking
 │   ├── patch.rs            atomic, exact-match Codex-format patches

@@ -550,7 +550,8 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | what a program produced | `code/out/` |
 | downloaded sources | `research/L0.<n>/`, digested into `research/L1.<n>/` |
 | reflections | `reflections/L0.<n>/` |
-| reusable helpers | `code/lib/` |
+| what other programs import | `code/lib/<subject>.py` |
+| programs attacking one question | `code/<question>/` |
 | plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index | `config/` |
 | untouched download bytes | `raw/` |
 
@@ -712,14 +713,18 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `SCRATCHPAD.md`, `research/INDEX.md` |
 | organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/lib/INDEX.md`, `research/INDEX.md` |
 
-The tool-builder accumulates reusable helpers under `code/lib/`, one function
-per file, described through `describe_file` so `code/lib/INDEX.md` carries the
-signature, the return, and what established each is correct. One function per
-file is what keeps it cheap: reading the helper you need costs a few hundred
-bytes rather than the whole library. The catalogue is context for the planners
-too, because what has already been built and verified changes what is worth
-delegating next. A row that has drifted from its function is worse than no row:
-the next agent calls it as described rather than reading the source.
+The tool-builder accumulates what a second program would repeat under
+`code/lib/`, one subject per module, described through `describe_file` so
+`code/lib/INDEX.md` carries each function's signature, its return, and what
+established it correct. One subject per module is what keeps it cheap: reading
+the helper you need costs a few hundred bytes rather than the whole library. It
+was one *function* per file, which was the tighter reading of the same rule and
+cost more than it saved — a routine needing a companion function did not fit,
+so it was inlined instead, and the folder filled with helpers nothing imported.
+The catalogue is context for the planners too, because what has already been
+built and verified changes what is worth delegating next. A row that has
+drifted from its function is worse than no row: the next agent calls it as
+described rather than reading the source.
 
 Four of these are load-bearing rather than tidy-minded:
 
