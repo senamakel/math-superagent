@@ -1,0 +1,25 @@
+Faulhaber P(k,n) checked vs literal loop for k=0..6, n=0..200: OK
+
+Faulhaber closed forms used (k: formula):
+  P0(n) = n
+  P1(n) = n(n+1)/2
+  P2(n) = n(n+1)(2n+1)/6
+  P3(n) = [n(n+1)/2]^2
+  P4(n) = n(n+1)(2n+1)(3n^2+3n-1)/30
+  P5(n) = n^2(n+1)^2(2n^2+2n-1)/12
+  P6(n) = n(n+1)(2n+1)(3n^4+6n^3-3n+1)/42
+
+   n       C(power)         S(power)  match oracle?
+   1              1                8  C OK | S OK
+   2              9               91  C OK | S OK
+   4            100             1878  C OK | S OK
+   5            229             5832  C OK | S OK
+  10           4469           387003  C OK | S OK
+  50        8154671      29948928129  C OK | S OK
+
+n=50 power-sum     : C=8154671 S=29948928129
+n=50 direct-loop    : C=8154671 S=29948928129
+power-sum == direct-loop exactly (both C and S): ASSERT OK (bit-for-bit identical)
+n=50 O(1) summation wall time (compute phase only): 0.0009s
+n=50 frame enumeration wall time (excluded from sum timing): 0.2673s
+n=50 frame count: 755
