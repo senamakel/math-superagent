@@ -277,8 +277,7 @@ fn follow(
     // into one in `std` without `unsafe`, and the crate forbids it, so each
     // gets a reader and both feed the same sink.
     let file = Arc::new(Mutex::new(std::fs::File::create(log).ok()));
-    let mut readers = Vec::new();
-    for stream in [
+    let streams: Vec<Box<dyn std::io::Read + Send>> = [
         child
             .stdout
             .take()
@@ -290,14 +289,12 @@ fn follow(
     ]
     .into_iter()
     .flatten()
-    {
-        let (runs, file, stop) = (Arc::clone(runs), Arc::clone(&file), stop);
-        let stopped = stop.load(Ordering::Relaxed);
-        readers.push(std::thread::scope(|_| ()));
-        let _ = stopped;
-        let runs = runs;
-        let file = file;
-        std::thread::spawn(move || {
+    .collect();
+    let mut readers = Vec::new();
+    for stream in streams {
+        let runs = Arc::clone(runs);
+        let file = Arc::clone(&file);
+        readers.push(std::thread::spawn(move || {
             for line in BufReader::new(stream).lines().map_while(Result::ok) {
                 if let Ok(mut state) = runs.lock() {
                     state.add(&line);
@@ -312,7 +309,10 @@ fn follow(
                     println!("{line}");
                 }
             }
-        });
+        }));
+    }
+    for reader in readers {
+        let _ = reader.join();
     }
     let _ = child.wait();
     if let Ok(mut state) = runs.lock() {
