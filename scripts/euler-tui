@@ -496,44 +496,29 @@ def main() -> int:
             " This part is silent and slow on a cold build; the first [00:00] line"
             " below is the run itself."
         )
-        start_detached(root, arguments, log_path)
-        container = await_container(workspace, runs)
-        if not container:
-            runs.add("the container did not appear; see the log for what the build said")
+        start_detached(root, arguments, workspace / "config" / "start.log")
 
-    with open(log_path, "a", encoding="utf-8") as log:
-        follow = subprocess.Popen(
-            ["docker", "logs", "--follow", "--tail", "all", container]
-            if container
-            else ["true"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1,
-        )
-        reader = threading.Thread(
-            target=pump, args=(follow.stdout, runs, log, not tabs), daemon=True
-        )
-        reader.start()
-        try:
-            if tabs:
-                curses.wrapper(watch, runs)
-            else:
-                reader.join()
-        except KeyboardInterrupt:
-            pass
-        # Only the follower is stopped. The run is a detached container and
-        # outlives every client, which is the whole point of attaching rather
-        # than owning: quitting the view, losing the terminal, or opening a
-        # second one must not touch the run.
-        if follow.poll() is None:
-            follow.terminate()
+    reader = threading.Thread(
+        target=feed, args=(workspace, container, runs, log_path, not tabs), daemon=True
+    )
+    reader.start()
+    try:
         if tabs:
-            print(
-                f"detached — {container or 'the run'} continues."
-                f" Re-attach with the same command, or `tail -f {log_path}`",
-                file=sys.stderr,
-            )
+            curses.wrapper(watch, runs)
+        else:
+            reader.join()
+    except KeyboardInterrupt:
+        pass
+    # Nothing is stopped on the way out. The run is a detached container and
+    # outlives every client, which is the point of attaching rather than
+    # owning: quitting the view, closing the terminal, or opening a second one
+    # must not touch the run.
+    if tabs:
+        print(
+            f"detached — the run continues. Re-attach with the same command,"
+            f" or `tail -f {log_path}`",
+            file=sys.stderr,
+        )
     return 0
 
 
