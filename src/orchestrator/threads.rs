@@ -269,7 +269,7 @@ impl Threads {
                 continue;
             }
             let _ = writeln!(
-                out,
+                rows,
                 "- [[{}]] rests on {}, which no claim block on disk establishes",
                 thread.slug,
                 missing
@@ -279,9 +279,14 @@ impl Threads {
                     .join(", ")
             );
         }
-        if !rows.is_empty() {
-            out.push_str(&rows);
+        if rows.is_empty() {
+            return;
         }
+        out.push_str(
+            "\n## Resting on nothing recorded\n\nEither the belief was never written down as a \
+             claim — in which case nobody downstream can check it — or the id is misspelled.\n\n",
+        );
+        out.push_str(&rows);
     }
 
     fn append_faults(&self, out: &mut String) {
