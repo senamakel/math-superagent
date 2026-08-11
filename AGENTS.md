@@ -30,6 +30,12 @@ The runtime image must expose both `python` and `python3`, plus `pip` and
 `pip3`. Pip installs belong under `/workspace/.python-packages`; do not make the
 container root filesystem writable for package installation.
 
+Every tool call has a hard ten-minute deadline. Before substantial execution,
+the tool-builder must state both time and space complexity. Algorithms with
+exponential time or space complexity are prohibited; choose a polynomial or
+better formulation. The timeout is a safety ceiling, not permission to run an
+intractable approach.
+
 When changing prompts or agent behavior, keep these rules intact:
 
 1. State assumptions and define ambiguous notation.

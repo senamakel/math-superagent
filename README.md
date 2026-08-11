@@ -18,6 +18,11 @@ with pip are placed in the selected workspace under `.python-packages`, so the
 read-only container filesystem stays intact and dependencies persist with the
 problem artifacts.
 
+Every tool call has a hard maximum runtime of ten minutes. The tool-builder
+must state time and space complexity before substantial execution, and the
+runtime rejects commands declared as exponential. Exponential-time and
+exponential-space algorithms are outside the allowed operating policy.
+
 Research notes can be saved to a local Qdrant vector database and recalled in
 later runs. The database uses deterministic local feature vectors, so it does
 not need another embedding API.
