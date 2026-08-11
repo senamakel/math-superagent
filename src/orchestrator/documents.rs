@@ -27,6 +27,12 @@ pub(super) const RESEARCH_DIR: &str = "research";
 /// it exists for a human debugging a conversion, not for the run.
 pub(super) const RAW_DIR: &str = "raw";
 const MAX_DOCUMENT_BYTES: usize = 5 * 1024 * 1024;
+
+/// Entries named when a requested path does not exist.
+///
+/// Enough to recognise the file that was meant, few enough that a large folder
+/// cannot turn one failed read into a wall of text.
+const NEARBY_ENTRIES: usize = 20;
 /// Suffix marking the full converted text beside its summary.
 pub(super) const FULL_TEXT_SUFFIX: &str = ".full.md";
 
