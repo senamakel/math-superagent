@@ -3,7 +3,7 @@
 
 use std::collections::BTreeMap;
 
-use crate::agent::{Result, Tool as _};
+use crate::agent::Result;
 
 use super::{INDEX_FILE, folder_name, index_for, parse, render, split};
 
