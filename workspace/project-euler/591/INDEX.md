@@ -4,22 +4,22 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `AGENTS.md` | _(undescribed)_ |
-| `README.md` | _(undescribed)_ |
-| `brute.py` | _(undescribed)_ |
-| `check_rel.py` | _(undescribed)_ |
-| `compute_I.py` | _(undescribed)_ |
-| `config.toml` | _(undescribed)_ |
-| `goal.md` | _(undescribed)_ |
-| `memory.md` | _(undescribed)_ |
-| `probe_records.py` | _(undescribed)_ |
-| `probe_semi.py` | _(undescribed)_ |
-| `probe_structure.py` | _(undescribed)_ |
-| `problem.html` | _(undescribed)_ |
-| `problem.url` | _(undescribed)_ |
-| `results_full.txt` | Output of solution.py for PE591 at n=1e13: one line per non-square d in [2,99] giving d, b, a, |a|, and final line S=sum|a|=498809825393729. |
-| `scratchpad.md` | _(undescribed)_ |
-| `solution.py` | PE591 solver: for each non-square d in [2,99] and n=1e13, finds b_d=argmin of |
-| `struct_probe.py` | _(undescribed)_ |
-| `tasks.md` | _(undescribed)_ |
-| `verify_cabanillas.py` | _(undescribed)_ |
+| `AGENTS.md` | Workspace method and evidence rules: read before any work. Defines the oracle-driven, no-enumeration method policy and the housekeeping conventions for indexes, research/, toolkits/, goal.md, tasks.md, memory.md, scratchpad.md. |
+| `README.md` | The library-level README explaining how a problem workspace is organised (start at AGENTS.md, use prompts/ for role guidance, define completion in goal.md, etc.). |
+| `brute.py` | Naive BQA brute force: for d, x, n scans all b in [-n,n] and takes nearest a to minimise |a+b*sqrt(d)-x|. Reproduces worked examples 1-3. Float arithmetic; not scalable. |
+| `check_rel.py` | Investigating whether |I_d| == round(sqrt(d)*b_d). This hypothesis was **disproved** (see memory.md); kept as a record of a failed approach. |
+| `compute_I.py` | Computes I_d and b_d for all non-square d in [2,99] at n=10^4 by scanning b in [0,n]. Small-scale data generation; also prints the |I_d| sequence. |
+| `config.toml` | Run configuration for the mathematical-research workspace: solver preferences (exact arithmetic, forbid exponential time/space) and artifact file names. |
+| `goal.md` | The objective: PE591, sum of |I_d(BQA_d(pi,10^13))| over non-square d<100. States the 4 worked examples (the test oracle) and the completion criteria. |
+| `memory.md` | Durable working memory: problem restatement, verified worked examples, established results (Cabanillas method, all-90-d validation, d=2 oracle), failed approaches, and the final S=498809825393729. |
+| `probe_records.py` | Task 2 probe: scans b in [0,2e6] for several d, collects record-holding b's of |b*sqrt(d)-pi|_Z, and checks whether each is a semiconvergent denominator of sqrt(d). |
+| `probe_semi.py` | Explores which candidate irrational (pi/sqrt2, pi*sqrt2, 2pi*sqrt2, pi, 2pi) the record b's of d=2 match as semiconvergent/convergent denominators. |
+| `probe_structure.py` | Fast float scan: whether d=2 record b's match convergent denominators of pi/sqrt2, pi*sqrt2, etc. Probe; superseded by the Cabanillas candidate-set method. |
+| `problem.html` | The PE591 problem statement (converted to HTML); the 4 worked example values and the question about I_d. |
+| `problem.url` | The Project Euler URL for problem 591 (https://projecteuler.net/minimal=591). |
+| `results_full.txt` | Output of solution.py for PE591 at n=1e13: one line per non-square d in [2,99] giving d, b, a, |a|, and final line S=sum|a|=498809825393729. This is the reported answer. |
+| `scratchpad.md` | Scratch area for draft findings being validated; durable results promoted to memory.md and research/notes/. |
+| `solution.py` | PE591 scalable solver: for each non-square d in [2,99] at n=1e13, finds b_d = argmin of ||b*sqrt(d)-pi||_Z over b in [0,L] using the Cabanillas (arXiv:1904.01874) Prop 9/10 candidate-set method (O(log L)), then a_d = nint(pi - b_d*sqrt(d)). Reproduces all 4 worked examples; writes results_full.txt. This is the authoritative answer source. |
+| `struct_probe.py` | Probe verifying the d=2 given oracle b,a satisfy the BQA relation and scanning small-scale record b's for d=2; early structural investigation. |
+| `tasks.md` | Task checklist for the run: brute-force example reproduction, record probes, semiconvergent hypothesis, deriving the method, computing and verifying S. |
+| `verify_cabanillas.py` | Standalone small-scale verification of Cabanillas Prop 9/10 candidate structure for a few alpha,beta pairs against brute force. Superseded as a toolkit by toolkits/ostrowski_verify.py and toolkits/verify_cabanillas_exact.py. |
