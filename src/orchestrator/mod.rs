@@ -701,34 +701,33 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "request_research",
     ];
     let mut registry = AgentRegistry::new();
-    registry
-        .register(
-            AgentDefinition::new(
-                "research",
-                "Research Agent",
-                if research_enabled {
-                    "Uses Exa to research current facts and return cited evidence."
-                } else {
-                    "Web search is disabled this run; recalls and records saved notes only."
-                },
-            )
-            .with_model("openrouter")
-            .with_tools(
-                research_enabled
-                    .then_some("exa_search")
-                    .into_iter()
-                    .chain(research_enabled.then_some("oeis_lookup"))
-                    .chain([
-                        "recall_research",
-                        "remember_research",
-                        document_tools[0],
-                        document_tools[1],
-                        document_tools[4],
-                        document_tools[5],
-                        document_tools[6],
-                    ]),
-            ),
-        )?;
+    registry.register(
+        AgentDefinition::new(
+            "research",
+            "Research Agent",
+            if research_enabled {
+                "Uses Exa to research current facts and return cited evidence."
+            } else {
+                "Web search is disabled this run; recalls and records saved notes only."
+            },
+        )
+        .with_model("openrouter")
+        .with_tools(
+            research_enabled
+                .then_some("exa_search")
+                .into_iter()
+                .chain(research_enabled.then_some("oeis_lookup"))
+                .chain([
+                    "recall_research",
+                    "remember_research",
+                    document_tools[0],
+                    document_tools[1],
+                    document_tools[4],
+                    document_tools[5],
+                    document_tools[6],
+                ]),
+        ),
+    )?;
     // The four roles carrying shell and file-write authority. They differ in
     // mandate rather than in tools, so listing them together is what makes the
     // fact that they share an authority boundary visible rather than buried in
