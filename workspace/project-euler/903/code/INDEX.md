@@ -29,12 +29,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `holonomic.py` | Exploratory/gfun-style exact-arithmetic recurrence search for A_n and B_n (the gap constants) for n=2..11: looks for polynomial-coefficient linear recurrences sum_j P_j(k) a_{k+j}=0, reports nullspace dim and leave-last-out prediction; run to hunt a closed form for A_n/B_n from extend_f.json. Successor analysis to fit*.py/seqfit.py |
 | `mean.py` | Exploratory: prints sums of F(d) over proper divisors and total to inspect the pattern inside F(d) for n=4,5,6; inspective, no output file |
 | `ntau.py` | Exploratory: computes N(tau)=#{(pi,i) with pi^i=tau, i in 1..n!} and tests whether N(tau) depends only on tau's cycle type (n=3,4); also re-derives Q = sum over tau of rank(tau)*N(tau) |
-| `out/explore.out.txt` | Saved stdout of explore.py (n=2..7): M_j vectors and N(j,m) matrices exposing the translation-invariant gap function f(k)=N(j,j+k) |
-| `out/extend_f.json` | Output of extend_f.py: exact rows {n: [f(1),...,f(n-1)]} of the gap function f_n(k)=#{(pi,i):0<=i<n!,(pi^i)(k)<(pi^i)(0)} for n=2..11, computed by the period formula (row j=0). Shows f_n exactly arithmetic in k with A_n=f(1), step B_n=f(2)-f(1); the input the closed-form hunt (fit*.py, aj3.py) and verify_f_method2.py check against. |
-| `out/fdtable.json` | Output of fdtable.py: per-n rows {n, d, phi(n!/d), F(d)} for n=4,5,6 plus totals; the verified F(d)/phi divisor table for the Q(n) structure |
-| `out/rerun_output.txt` | Verbatim console output of the fresh re-run of brute.py then brute2.py (18 Sep 2025): rank check, Q(n) tables, oracle checks, cross-check lines; both exit 0 |
-| `out/results.json` | Output of brute.py (method 1, literal): exact Q(n) and Q mod p for n=2..7; n=8 skipped (budget estimate exceeds cap) |
-| `out/results2.json` | Output of brute2.py (method 2, period formula): exact Q(n) and Q mod p for n=2..8 (n=8 reached by method 2 only, 24768798220800), rewritten by the rerun |
 | `perpi.py` | Exploratory: per-permutation analysis for n=5 — orders, cyclic-subgroup rank sums, grouped by cycle type, looking for structure in the intra-subgroup rank sum |
 | `psid.py` | Exploratory: verifies Q(n)=sum over d dividing n! of psi(d)*phi(n!/d) for n=5 with psi(d)=F-value for i with gcd(i,n!)=d, and prints psi(d) over all divisors to look for structure |
 | `qtable.py` | Exploratory: computes Q(n) via the period/orbit formula for n=2..10 and prints normalization ratios Q/n! and Q/(n!)^2 to look for a closed form; quantifies the runtime wall at n=10 |

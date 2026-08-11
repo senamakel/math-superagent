@@ -129,6 +129,11 @@ pub struct RunTracer {
     state: Arc<TraceState>,
 }
 
+/// Folder holding the run's plumbing: configuration, the source URL, the
+/// document index, and this trace. None of it is work, so none of it belongs
+/// in the listing an agent reads before deciding what to do next.
+const CONFIG_DIR: &str = "config";
+
 impl RunTracer {
     /// Creates the root tracer, printing to stderr and, when `journal_path` is
     /// writable, appending every event as one JSON object per line.

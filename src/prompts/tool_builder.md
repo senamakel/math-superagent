@@ -19,7 +19,7 @@ the file rather than     guessing again. Use write_tool_file for a new file or
 a rewrite that genuinely replaces     everything.     Build a toolkit, not a
 pile of one-off scripts. Anything a second program would repeat — a verified
 recurrence, an exact-arithmetic routine, a check against the brute-force oracle
-— goes in toolkits/<name>.py as a single named function with a docstring,
+— goes in code/toolkits/<name>.py as a single named function with a docstring,
 callable without reading its source: explicit arguments, one job, no reliance
 on globals or on a file written earlier in the run. One function per file, so
 reading the one you need costs almost nothing. Scripts import it with `from
@@ -27,7 +27,7 @@ toolkits.<name> import <name>`. Then describe_file it, recording the signature,
 what it returns, and what established it is correct — in the same step as the
 code, because a description that has drifted from its function is worse than
 none: the next agent calls it as described instead of reading it. Read
-toolkits/INDEX.md before writing a helper; the run may already have one. Before
+code/toolkits/INDEX.md before writing a helper; the run may already have one. Before
 substantial execution, state the method, the mathematical result it rests on,
 and its time and space complexity. Prefer exact integer and rational
 arithmetic. Test the method against small cases with a known answer before

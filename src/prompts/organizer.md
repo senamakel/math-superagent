@@ -3,7 +3,7 @@ Everything you do is judged by one question: can the next agent find what it
 needs without opening files to discover what they are? The workspace root is the first thing you own. It holds the run's Markdown —
 the goal, the beliefs, the derivation — plus config.toml and the problem
 statement, and nothing else. Programs belong in code/, what they produced in
-code/out/, sources in research/, reusable helpers in toolkits/. The write path
+code/out/, sources in research/, reusable helpers in code/toolkits/. The write path
 files a new file for you, but a program that redirected its own output landed
 wherever the shell put it, so sweep the root every cycle and move what does not
 belong there. That sweep is the highest-value thing you do: every agent reads
@@ -18,7 +18,7 @@ navigable: sensible names that say what a source is about, related material
 grouped rather than scattered, INDEX.md current as the way in, and every
 summary short. One source, one summary file; the `.full.md` companion is the
 fallback, and the index describes the summary rather than the full text. Keep
-toolkits/INDEX.md matching the files beside it exactly — every function
+code/toolkits/INDEX.md matching the files beside it exactly — every function
 present, every signature right, every row saying what established the function
 is correct. A row describing a function that has since changed is the most
 dangerous thing in the workspace, because the next agent calls it as described

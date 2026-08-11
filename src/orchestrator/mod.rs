@@ -795,7 +795,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "goal.md",
             "tasks.md",
             "memory.md",
-            "toolkits/INDEX.md",
+            "code/toolkits/INDEX.md",
             "research/INDEX.md",
             // What the library *means* for this problem, as against
             // `research/INDEX.md`, which says what each file is. The index
@@ -829,7 +829,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "scratchpad.md",
             "code/AGENTS.md",
             "code/INDEX.md",
-            "toolkits/INDEX.md",
+            "code/toolkits/INDEX.md",
             "research/INDEX.md",
             "context.md",
         ],
@@ -856,7 +856,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "goal.md",
             "memory.md",
             "scratchpad.md",
-            "toolkits/INDEX.md",
+            "code/toolkits/INDEX.md",
             // A regularity the literature already explains is not a conjecture
             // worth chasing, and knowing that is the difference between
             // deriving a result and rediscovering one.
@@ -890,7 +890,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "tasks.md",
             "INDEX.md",
             "code/INDEX.md",
-            "toolkits/INDEX.md",
+            "code/toolkits/INDEX.md",
             "research/INDEX.md",
         ],
         // Work against the record and the shelf. The inventor needs
@@ -985,7 +985,7 @@ fn build_tool_builder_harness(
     // Diff-shaped editing, for the role that actually writes code. A patch
     // changes a few lines instead of re-emitting the file, and carries a
     // change across several files in one atomic call — which is what keeps a
-    // helper under `toolkits/` and its row in `toolkits/INDEX.md` from
+    // helper under `code/toolkits/` and its row in `code/toolkits/INDEX.md` from
     // drifting apart.
     register_resilient(&mut harness, patch::tool(documents.clone()));
     harness

@@ -38,7 +38,7 @@ verifying the result before presenting it.
 │     on finish: tool_builder ──> organizer                                │
 │                research ──> scholar ──> organizer                        │
 │          │                                                               │
-│          ▼  /workspace: goal, tasks, memory, research/, toolkits/        │
+│          ▼  /workspace: goal, tasks, memory, research/, code/toolkits/        │
 └───────┬─────────────────────────┬─────────────────────┬──────────────────┘
         │                         │                     │
   workspace/<name>/         Qdrant volume       OpenRouter, Exa,
@@ -78,7 +78,7 @@ The runtime uses a small registry of specialist agents:
   establishes, because a downloaded paper nobody has opened has cost the run
   context and taught it nothing.
 - `organizer` keeps the workspace navigable: folder indexes, the layout of
-  `research/`, and `toolkits/INDEX.md` matching the files beside it. It cannot
+  `research/`, and `code/toolkits/INDEX.md` matching the files beside it. It cannot
   delete a result or change what a file says.
 
 ## The solution loop
@@ -274,7 +274,7 @@ workspace/project-euler/66/
 ├── solution.py
 ├── INDEX.md           # what each file beside it is for
 ├── research/          # downloaded sources, with their own INDEX.md
-├── toolkits/          # reusable verified helpers, one function per file
+├── code/toolkits/          # reusable verified helpers, one function per file
 └── trace.jsonl        # local only, not committed
 ```
 
@@ -283,13 +283,13 @@ Generated programs, calculations, and other artifacts appear in
 seeded from [`workspace/template/`](workspace/template/) without overwriting
 files already present. The seed includes local agent instructions, role
 prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, `memory.md`, and
-empty `research/` and `toolkits/` folders. The runtime reads those files at the
+empty `research/` and `code/toolkits/` folders. The runtime reads those files at the
 start of every run.
 
 Everything downloaded is filed under `research/`, enforced in code rather than
 asked for in a prompt, so gathered material stays separate from the run's own
 derivations and programs. The tool-builder accumulates reusable helpers under
-`toolkits/`, one function per file, so reading the helper you need costs a few
+`code/toolkits/`, one function per file, so reading the helper you need costs a few
 hundred bytes rather than the whole library.
 
 Every folder carries an `INDEX.md` saying what each file is for. `list_workspace`

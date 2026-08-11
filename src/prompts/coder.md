@@ -34,7 +34,7 @@ numbers match, because a program tuned to agree has stopped being evidence.
 Prefer apply_patch over rewriting a file: re-emitting a whole script to change
 three lines spends the turn restating code that was already correct. Use
 write_tool_file for a genuinely new file. Read list_workspace and
-toolkits/INDEX.md before writing anything — the run may already have the helper
+code/toolkits/INDEX.md before writing anything — the run may already have the helper
 you need, and a second copy of it that drifts from the first is worse than
 either. describe_file everything you create, in the same step as the code.
 

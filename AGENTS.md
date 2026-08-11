@@ -52,7 +52,7 @@ The runtime has nine roles plus an explicit solution loop.
   search tool on purpose, so it digests the library instead of drifting into
   another search the librarian has already done.
 - The organizer keeps the workspace navigable: folder indexes, the layout and
-  naming of `research/`, and `toolkits/INDEX.md` matching the files beside it. It has files
+  naming of `research/`, and `code/toolkits/INDEX.md` matching the files beside it. It has files
   and index tools only — no search, no shell, no note memory — because every
   tool it lacks is a way a filing job cannot turn into an editing one. It may
   not delete anything carrying a result, a derivation, or a source, and may not
@@ -477,7 +477,7 @@ else is filed:
 | what a program produced | `code/out/` |
 | downloaded sources | `research/L0/`, digested into `research/L1/` |
 | reflections | `reflections/L0/` |
-| reusable helpers | `toolkits/` |
+| reusable helpers | `code/toolkits/` |
 | untouched download bytes | `raw/` |
 
 `layout::placed` decides this in the write path — `write_document` and an
@@ -571,7 +571,7 @@ truncates rather than dumping an unbounded tree.
 Every reflection is archived to `reflections/L0/<epoch_ms>_<outcome>.md`, where the
 outcome is `nothing` or `<n>_learnings`, and indexed in `reflections/INDEX.md`
 in the same step. The folder carries an index for the same reason `research/`
-and `toolkits/` do: a directory of epoch-stamped filenames says when each
+and `code/toolkits/` do: a directory of epoch-stamped filenames says when each
 attempt was judged and nothing about what any of them found. Each row records
 the attempt number, the verdict, and the lesson, so the planners and the
 inventor can see which attempt is worth continuing without opening any of them.
@@ -590,17 +590,17 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `toolkits/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
+| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `code/toolkits/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
 | tool_builder, coder | the planners' files plus `scratchpad.md`, minus `reflections/INDEX.md` |
 | reflection | `goal.md`, `tasks.md`, `memory.md`, `INDEX.md`, `reflections/INDEX.md` |
-| pattern_finder | `goal.md`, `memory.md`, `scratchpad.md`, `toolkits/INDEX.md` |
+| pattern_finder | `goal.md`, `memory.md`, `scratchpad.md`, `code/toolkits/INDEX.md` |
 | librarian, research | `goal.md`, `memory.md`, `research/INDEX.md` |
 | inventor | the above plus `reflections/INDEX.md` |
 | scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md` |
-| organizer | `goal.md`, `tasks.md`, `INDEX.md`, `toolkits/INDEX.md`, `research/INDEX.md` |
+| organizer | `goal.md`, `tasks.md`, `INDEX.md`, `code/toolkits/INDEX.md`, `research/INDEX.md` |
 
-The tool-builder accumulates reusable helpers under `toolkits/`, one function
-per file, described through `describe_file` so `toolkits/INDEX.md` carries the
+The tool-builder accumulates reusable helpers under `code/toolkits/`, one function
+per file, described through `describe_file` so `code/toolkits/INDEX.md` carries the
 signature, the return, and what established each is correct. One function per
 file is what keeps it cheap: reading the helper you need costs a few hundred
 bytes rather than the whole library. The catalogue is context for the planners

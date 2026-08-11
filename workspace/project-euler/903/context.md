@@ -40,6 +40,12 @@ A_n, B_n. Everything below feeds that hunt.
   already-proved mechanisms at exact finite n (not just asymptotically).
 - **Negative OEIS**: A_n, B_n/(n−1)!, Q(n), probes uncatalogued — [[oeis_Aseq]],
   [[oeis_Qseq]], [[oeis_Bdiv]].
+- **NEW: canonical cycle-type summation machinery** — [[ford_cycle_type_toolkit]]
+  (Ford, Discrete Analysis 2022:9): exact factorial moments E[∏(C_k)_{r_k}] = ∏ k^{−r_k}
+  for Σ k r_k ≤ n, fixed-point count ~ Poisson(1) with explicit error, sieve/CLT for
+  cycle counts. This is the engine for evaluating the cycle-type sums (A_n, B_n)
+  behind both already-proved gap-affine mechanisms, and its bibliography maps the
+  order-of-permutation literature that governs the n!/ord(π) weights in brute2.
 
 ## Open core (no source addresses it)
 
