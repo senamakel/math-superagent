@@ -4,8 +4,34 @@ set -eu
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$repository_root"
 
+usage() {
+    echo "usage: ./euler [--no-research] <positive-problem-number> [extra instructions...]" >&2
+    echo "       --no-research  withhold web search, so the run is a test of reasoning" >&2
+}
+
+research=on
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --no-research)
+            research=off
+            shift
+            ;;
+        --research)
+            research=on
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
 if [ "$#" -lt 1 ]; then
-    echo "usage: ./euler <positive-problem-number> [extra instructions...]" >&2
+    usage
     exit 2
 fi
 
