@@ -214,34 +214,46 @@ impl RunTracer {
             u64::try_from(self.state.started.elapsed().as_millis().max(1)).unwrap_or(u64::MAX);
         let model = self.state.model_ms.load(Ordering::Relaxed);
         let tool = self.state.tool_ms.load(Ordering::Relaxed);
-        let busy = model.saturating_add(tool);
         let input = self.state.input_tokens.load(Ordering::Relaxed);
         let cached = self.state.cached_tokens.load(Ordering::Relaxed);
 
-        let share = |part: u64, whole: u64| part.saturating_mul(100) / whole.max(1);
-        let attribution = if busy > wall {
-            format!(
-                "model {}% tool {}% of agent time | concurrency x{}.{}",
-                share(model, busy),
-                share(tool, busy),
-                busy / wall,
-                (busy.saturating_mul(10) / wall.max(1)) % 10
-            )
-        } else {
-            format!(
-                "model {}% tool {}% idle {}%",
-                share(model, wall),
-                share(tool, wall),
-                share(wall.saturating_sub(busy), wall)
-            )
-        };
         format!(
-            "profile {attribution} | cache {}% | ${:.4}",
+            "profile {} | cache {}% | ${:.4}",
+            attribution(wall, model, tool),
             share(cached, input),
             self.spent_usd()
         )
     }
 
+/// Returns `part` as a whole-number percentage of `whole`.
+fn share(part: u64, whole: u64) -> u64 {
+    part.saturating_mul(100) / whole.max(1)
+}
+
+/// Renders how a run's time divides between the provider, tools, and waiting.
+///
+/// Kept a pure function of its three inputs so both regimes are testable
+/// without a live clock.
+fn attribution(wall: u64, model: u64, tool: u64) -> String {
+    let busy = model.saturating_add(tool);
+    if busy > wall {
+        return format!(
+            "model {}% tool {}% of agent time | concurrency x{}.{}",
+            share(model, busy),
+            share(tool, busy),
+            busy / wall.max(1),
+            (busy.saturating_mul(10) / wall.max(1)) % 10
+        );
+    }
+    format!(
+        "model {}% tool {}% idle {}%",
+        share(model, wall),
+        share(tool, wall),
+        share(wall.saturating_sub(busy), wall)
+    )
+}
+
+impl RunTracer {
     fn emit_line(&self, message: &str) {
         let elapsed = self.state.started.elapsed().as_secs();
         let mut stderr = std::io::stderr().lock();
