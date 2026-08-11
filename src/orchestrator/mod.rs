@@ -462,6 +462,13 @@ impl OrchestratorAgent {
             let subagents = self.subagents.clone();
             let workspace = self.workspace.clone();
             let outbox = patterns.clone();
+            // What the pattern team has already looked at. Idleness has to be
+            // decided *before* the agent runs: asking it to notice that
+            // nothing changed costs a model call and a read of the workspace
+            // to discover, which is most of what a working cycle costs. A live
+            // team spent thirty `read_document` calls in two minutes doing
+            // exactly that on runs that had produced almost nothing.
+            let analysed = Arc::new(std::sync::Mutex::new(None::<u64>));
             let prompt = format!("{brief}\n\nProblem this run is solving:\n{problem}");
             handles.push(teams::spawn(
                 name,
@@ -471,7 +478,16 @@ impl OrchestratorAgent {
                 move |inbox: Vec<teams::TeamMessage>| {
                     let subagents = subagents.clone();
                     let outbox = outbox.clone();
+                    let analysed = analysed.clone();
                     let mut prompt = prompt.clone();
+                    // The pattern agent reads results, so a cycle over results
+                    // it has already seen can only repeat itself or invent
+                    // something. Skipped without spending anything.
+                    if name == "patterns"
+                        && let Some(skip) = results_unchanged(&workspace, &analysed)
+                    {
+                        return skip;
+                    }
                     // Maintaining the tree outranks extending it. A library
                     // whose root nobody can afford to read is not a library
                     // the run has, and every cycle spent gathering while the
@@ -516,6 +532,7 @@ impl OrchestratorAgent {
     }
 
     /// Returns the registry used for delegation.
+    ///
     #[must_use]
     pub fn registry(&self) -> &Arc<AgentRegistry> {
         &self.registry
