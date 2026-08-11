@@ -168,7 +168,13 @@ impl<S: Send + Sync + 'static> ChatModel<S> for StickyProviderModel<S> {
     }
 
     async fn invoke(&self, state: &S, request: ModelRequest) -> Result<ModelResponse> {
-        let response = self.inner.invoke(state, self.steer(request)).await?;
+        let response = match self.inner.invoke(state, self.steer(request)).await {
+            Ok(response) => response,
+            Err(error) => {
+                self.fault();
+                return Err(error);
+            }
+        };
         self.observe(&response);
         Ok(response)
     }
