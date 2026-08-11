@@ -404,7 +404,9 @@ async fn index_reflection(
         }
     );
     entries.insert(name.to_string(), description);
-    let rendered = folder_index::render("reflections", &entries);
+    // The reflections index is written by the loop and read by the planners;
+    // no agent folds it, so it carries no synthesis to preserve.
+    let rendered = folder_index::render("reflections", &entries, &folder_index::brief(&existing));
     let _ = tokio::fs::write(&index_path, rendered).await;
 }
 
