@@ -230,12 +230,16 @@ impl Tool<()> for DocumentTool {
 
     fn description(&self) -> &'static str {
         match self.kind {
-            DocumentToolKind::Download => "Downloads an HTTP document into /workspace with a size limit.",
+            DocumentToolKind::Download => {
+                "Downloads an HTTP document into /workspace with a size limit."
+            }
             DocumentToolKind::Read => "Reads a UTF-8 document from /workspace.",
             DocumentToolKind::Write => "Stores a UTF-8 document in /workspace.",
             DocumentToolKind::Edit => "Replaces one exact text occurrence in a workspace document.",
             DocumentToolKind::Index => "Adds a workspace document to the local searchable index.",
-            DocumentToolKind::Search => "Searches indexed workspace documents and returns ranked snippets.",
+            DocumentToolKind::Search => {
+                "Searches indexed workspace documents and returns ranked snippets."
+            }
         }
     }
 
@@ -279,7 +283,9 @@ impl Tool<()> for DocumentTool {
             DocumentToolKind::Download => {
                 let url = required_string(&call.arguments, "url")?;
                 let parsed = reqwest::Url::parse(&url).map_err(|error| {
-                    tinyagents::TinyAgentsError::Validation(format!("invalid document URL: {error}"))
+                    tinyagents::TinyAgentsError::Validation(format!(
+                        "invalid document URL: {error}"
+                    ))
                 })?;
                 if !matches!(parsed.scheme(), "http" | "https") {
                     return Err(tinyagents::TinyAgentsError::Validation(
@@ -292,26 +298,49 @@ impl Tool<()> for DocumentTool {
                     .get(parsed)
                     .send()
                     .await
-                    .map_err(|error| tinyagents::TinyAgentsError::Tool(format!("document download failed: {error}")))?
+                    .map_err(|error| {
+                        tinyagents::TinyAgentsError::Tool(format!(
+                            "document download failed: {error}"
+                        ))
+                    })?
                     .error_for_status()
-                    .map_err(|error| tinyagents::TinyAgentsError::Tool(format!("document download failed: {error}")))?;
-                if response.content_length().is_some_and(|length| length > MAX_DOCUMENT_BYTES as u64) {
-                    return Err(tinyagents::TinyAgentsError::Validation("downloaded document is too large".into()));
+                    .map_err(|error| {
+                        tinyagents::TinyAgentsError::Tool(format!(
+                            "document download failed: {error}"
+                        ))
+                    })?;
+                if response
+                    .content_length()
+                    .is_some_and(|length| length > MAX_DOCUMENT_BYTES as u64)
+                {
+                    return Err(tinyagents::TinyAgentsError::Validation(
+                        "downloaded document is too large".into(),
+                    ));
                 }
                 let bytes = response.bytes().await.map_err(|error| {
-                    tinyagents::TinyAgentsError::Tool(format!("failed to read downloaded document: {error}"))
+                    tinyagents::TinyAgentsError::Tool(format!(
+                        "failed to read downloaded document: {error}"
+                    ))
                 })?;
                 if bytes.len() > MAX_DOCUMENT_BYTES {
-                    return Err(tinyagents::TinyAgentsError::Validation("downloaded document is too large".into()));
+                    return Err(tinyagents::TinyAgentsError::Validation(
+                        "downloaded document is too large".into(),
+                    ));
                 }
                 let content = String::from_utf8(bytes.to_vec()).map_err(|error| {
-                    tinyagents::TinyAgentsError::Validation(format!("downloaded document is not UTF-8: {error}"))
+                    tinyagents::TinyAgentsError::Validation(format!(
+                        "downloaded document is not UTF-8: {error}"
+                    ))
                 })?;
                 let path = required_string(&call.arguments, "path")?;
                 self.documents.write(&path, &content).await?;
                 format!("downloaded {} bytes to {path}", content.len())
             }
-            DocumentToolKind::Read => self.documents.read(&required_string(&call.arguments, "path")?).await?,
+            DocumentToolKind::Read => {
+                self.documents
+                    .read(&required_string(&call.arguments, "path")?)
+                    .await?
+            }
             DocumentToolKind::Write => {
                 let path = required_string(&call.arguments, "path")?;
                 let content = string_value(&call.arguments, "content")?;
@@ -324,9 +353,13 @@ impl Tool<()> for DocumentTool {
                 let new_text = string_value(&call.arguments, "new_text")?;
                 let content = self.documents.read(&path).await?;
                 if !content.contains(&old_text) {
-                    return Err(tinyagents::TinyAgentsError::Validation("old_text was not found in the document".into()));
+                    return Err(tinyagents::TinyAgentsError::Validation(
+                        "old_text was not found in the document".into(),
+                    ));
                 }
-                self.documents.write(&path, &content.replacen(&old_text, &new_text, 1)).await?;
+                self.documents
+                    .write(&path, &content.replacen(&old_text, &new_text, 1))
+                    .await?;
                 format!("edited {path}")
             }
             DocumentToolKind::Index => {
@@ -335,7 +368,10 @@ impl Tool<()> for DocumentTool {
                 format!("indexed {path} ({words} words)")
             }
             DocumentToolKind::Search => {
-                let results = self.documents.search(&required_string(&call.arguments, "query")?).await?;
+                let results = self
+                    .documents
+                    .search(&required_string(&call.arguments, "query")?)
+                    .await?;
                 serde_json::to_string(&results)?
             }
         };
