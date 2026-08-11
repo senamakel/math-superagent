@@ -67,7 +67,25 @@ impl<S: Send + Sync> UntruncatedModel<S> {
     /// Wraps `inner` so its truncated turns are re-issued.
     #[must_use]
     pub fn new(inner: Arc<dyn ChatModel<S>>) -> Self {
-        Self { inner }
+        Self {
+            inner,
+            tracer: None,
+        }
+    }
+
+    /// Announces each re-issue on the operator console.
+    ///
+    /// Without this a re-issue is invisible where it matters most. The console
+    /// prints one line per call the *loop* made, and a re-issue happens inside
+    /// one of those, so a turn spending two attempts shows as `model call #2`
+    /// followed by many minutes of nothing — indistinguishable from a wedged
+    /// request, and the wrong diagnosis leads straight to killing a container
+    /// that was working. The cost lands in `trace.jsonl` either way; what was
+    /// missing is knowing to look.
+    #[must_use]
+    pub fn with_tracer(mut self, tracer: Arc<RunTracer>) -> Self {
+        self.tracer = Some(tracer);
+        self
     }
 }
 
