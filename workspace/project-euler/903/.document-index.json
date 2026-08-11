@@ -1,7 +1,9 @@
 [
   "fk.py",
   "gaps.py",
+  "research/L0/pinsky_inversion_fixed_points.full.md",
   "research/L1/lehmer_factorial_norm.md",
+  "research/L1/pinsky_inversion_fixed_points.md",
   "research/archer_geary_descents_powers.full.md",
   "research/cambie_yan_html.full.md",
   "research/conjugacy_class_statistics_body.full.md",
