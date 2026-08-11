@@ -71,6 +71,47 @@ Measured n=10 at 24.6s → extrapolate n=11 ~4.5min, n=12 ~54min, n=13 ~12h.
 No faster cycle-type method is written, so n=12/13 SKIPPED (would exceed the
 few-minute budget).  Report wall instead.
 
+## Pattern-finder pass (19 Sep 2025) — sequence tools on A_n, B_n, and derived counts
+
+Trustworthy source of A_n/B_n: out/extend_f.json (oracle-verified n=2..11). The
+ccsum.py rows (n up to 30) are UNTRUSTED (proven non-class-constant; conflicts
+even at n=3 as [13,8] vs verified [10,11]), so I did NOT fit against n>11.
+
+CONFIRMED EXACT structure (already in memory, re-verified on all n=2..11):
+  f_n(k)=A_n+(k-1)B_n is EXACTLY arithmetic in k (every row's 2nd diff = 0),
+  A_n = f(1), B_n = f(2)-f(1). Sequence tools: find_linear_recurrence finds NO
+  constant-coefficient recurrence of order <=6 for either A_n or B_n; holonomic
+  (polynomial-coeff) fits exist but fail leave-last-out prediction -> spurious.
+  So A_n, B_n are not low-order holonomic/constant-rec over n=2..11.
+
+NEW exact observations (not in memory before):
+  * S_n := sum_k f_n(k) gives S_n/n! an EXACT INTEGER for n=4..11:
+      23, 163, 1278, 11106, 106488, 1119672, 12829680, 159270480
+      (n=2:1/2, n=3:7/2 not integers -- boundary cases).
+    Sequence 23,163,1278,... has ratios ~ n+3ish (7.09,7.84,8.69,9.59,10.51,11.46,12.41)
+    -> grows ~ n!-ish; no clean low-order recurrence found among the 8 terms.
+  * total_inv := sum_k (n-k) f_n(k) (sum of all pair-inversions over (pi,i));
+    total_inv/n! EXACT INTEGER n=4..11: 46,412,3884,39596,434576,5146464,65558880,896450400.
+    total_inv/n! ratios ~ n+4ish. total_inv/n! roughly (S_n/n!)*(1 + small) with
+    total_inv/S_n: 2.0,2.53,3.04,3.57,4.08,4.60,5.11,5.63 (linear-ish ~ n).
+
+Re-derived verification (independent of prior run): central reduction
+Q(n)=n!^2 + A(n!-1)+(B/2)T reproduces exact Q(2..11) AND the M_j-suffix-sum
+route Q=n!^2+sum_j (n-1-j)! M_j (all match, n=2..11). Q(10) mod p = 468421536
+== statement oracle. Q mod p table: 5,88,4808,597876,133103808,124948631,
+798047424,777220173,468421536,247479760.
+
+Interpretation for the run: the only PROVEN global structure remains f_n(k)
+arithmetic in k. The integer-ness of S_n/n! and total_inv/n! (n>=4) is a NEW
+exact regularity that a closed-form derivation of A_n,B_n should reproduce, and
+the sequence tools find nothing smaller-order, so the closed form (if any) is
+not holonomic-low-order over n=2..11. NOT a proof; conjectures over n=2..11.
+
+Dead ends confirmed again this pass: ratios A_n/A_{n-1} irregular; A_n/((n-1)!n!)
+~ 1/2-ish not exact; 2A_n/n!^2 -> below 1, deficit ~ constant (0.5,0.3,0.45,0.49,
+0.57,0.57,0.60,0.61,0.63,0.61) not clean; c_n=|B|/(n-1)! = 30,290,2464,23130,
+235080,2728368 has NO low-order recurrence (the order-3 fit is spurious).
+
 ## Current sub-task (extend_f.py)
 Compute f_n(k) = #{(pi,i): 0<=i<n!, (pi^i)(k) < (pi^i)(0)} for n=2..11,
 0-based, period formula, row j=0 only, exact ints, no mod.  Save to

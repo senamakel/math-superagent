@@ -156,3 +156,34 @@ Command: `cd /workspace && python3 code/structure_taxonomy.py`
   n=5/6). Distinct edge structures: 5 (n=3), 14 (n=4), 14-42 (n=5); edge-set
   and above-reachability counts agree.
 - Findings written to /workspace/structure_report.md.
+
+## Run (tool_builder): research_recursion_test.py — the library recursion is REFUTED
+Command: `cd /workspace && python3 research_recursion_test.py 300000`
+
+Tests the claimed exact recursion (CONTEXT.md / ROOT.md / L1.1/L0.0.md):
+root = argmin W_i=v_i/(L-40i), p([a,b]) = sum over root of (distance-ratio
+weight)·p(left)·p(right)·(-1)^cross, parity = parity(left)·parity(right)·(-1)^cross.
+
+PART 1 (exact Fractions, value-level): rec(cross=|L||R|) gives p(3,160)=2/3
+(truth 56/135≈0.4148) and p(4,400)=5/6 (truth 0.5107843137). WRONG in the very
+given examples. The recursion's value is L-independent (uniform-treap value
+~2/3 or 5/6), while the truth depends on L heavily. rec(cross=0)=1 always.
+
+PART 2 (per-vector parity vs oracle): smallest counterexample n=2, L=160,
+speeds=[0.89157,0.33049]: oracle=1 (odd; v0>v1, boat0 bumps boat1 at 71.3 m
+before the 160 m finish), recursion (root=argmin W, cross=|L||R|)=0. Also
+n=3 L=160 speeds=[0.63879,0.16263,0.10432] oracle=1 recursion=0.
+
+PART 3 (crux claims): C1 decoupling (sub-race slice parity == restriction
+parity of full perm) fails 20177/300000; C2 cross=|L||R| fails 152466/300000.
+Both REFUTED.
+
+Interpretation: finish events are inverse-exponential with non-constant hazard
+(the library's own open gap), not exponential clocks. A bump can be pre-empted
+by a finish, so the left/right subranges do NOT decouple and cross is not a
+deterministic |L||R| flip. The treap/sum-of-products route, and the simplex-
+volume reduction built on it, do not describe the true race. Even n=2 fails at
+value level (recursion says p(2,L)=1.0 for all L; truth p(2,160)≈0.571,
+p(2,400)≈0.526, p(2,1800)≈0.505). The library's recursion is NOT a valid
+solver; an exact route must integrate the true bump/finish chronology over the
+Exp speeds directly (open).

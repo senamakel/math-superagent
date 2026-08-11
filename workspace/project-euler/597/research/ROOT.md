@@ -41,3 +41,13 @@ level plus the Plackett–Luce content recovered from L0.0.
 ## Known limits
 The w-order-only hypothesis is refuted (see MEMORY.md); only exact integration
 over the Exp speeds can give the 10-dp answer.
+**The closed-form recursion claimed above is REFUTED** (see MEMORY.md and
+`research_recursion_test.py`): root = argmin W with p = sum of distance-ratio
+weight · p(left)·p(right)·(−1)^cross gives p(3,160)=2/3 (truth 56/135) and
+p(4,400)=5/6 (truth 0.5107843137); per-vector smallest counterexample
+n=2,L=160,speeds=[0.89157,0.33049] (oracle odd, recursion even); the two crux
+claims C1 (sub-range decoupling, fails 20177/300000) and C2 (cross=|L||R|, fails
+152466/300000) are both false. The treap/sum-of-products route does NOT match
+the race: bump vs finish chronology (finish events are inverse-exponential, not
+clocks) breaks decoupling and the cross value. An exact route must integrate
+the true bump/finish chronology over the Exp speeds.
