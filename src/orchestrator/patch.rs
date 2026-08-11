@@ -253,7 +253,7 @@ fn checked_path(path: &str) -> Result<String> {
             "`{path}` is absolute; patch paths are relative to /workspace"
         )));
     }
-    Ok(path)
+    Ok(path.to_string())
 }
 
 /// Applies one hunk to `content`, returning the rewritten text.
