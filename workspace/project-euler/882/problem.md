@@ -9,7 +9,7 @@ Note that leading zeros are not allowed in any binary expansion; in particular n
 
 They soon realize that Dr. Zero can never win the game. In order to make it more interesting, Dr. Zero is allowed to "skip the turn" several times, i.e. passing the turn back to Dr. One without making a move.
 
-For example, when $n = 2$, Dr. Zero can win the game if allowed to skip $2$ turns. A sample game: $$ [1, 2, 2]\xrightarrow{\textrm{Dr. One}}[1, 0, 2]\xrightarrow{\textrm{Dr. Zero}}[1, 0, 1]\xrightarrow{\textrm{Dr. One}}[1, 0, 0]\xrightarrow[\textrm{skip}]{\textrm{Dr. Zero}} [1, 0, 0]\xrightarrow{\textrm{Dr. One}}[0, 0, 0]\xrightarrow[\textrm{skip}]{\textrm{Dr. Zero}}[0, 0, 0]. $$ Let $S(n)$ be the minimal number of skips needed so that Dr. Zero has a winning strategy.
+For example, when $n = 2$, Dr. Zero can win the game if allowed to skip $2$ turns. A sample game: $$[1, 2, 2]\xrightarrow{\textrm{Dr. One}}[1, 0, 2]\xrightarrow{\textrm{Dr. Zero}}[1, 0, 1]\xrightarrow{\textrm{Dr. One}}[1, 0, 0]\xrightarrow[\textrm{skip}]{\textrm{Dr. Zero}} [1, 0, 0]\xrightarrow{\textrm{Dr. One}}[0, 0, 0]\xrightarrow[\textrm{skip}]{\textrm{Dr. Zero}}[0, 0, 0]. $$ Let $S(n)$ be the minimal number of skips needed so that Dr. Zero has a winning strategy.
 For example, $S(2) = 2$, $S(5) = 17$, $S(10) = 64$.
 
 Find $S(10^5)$.
