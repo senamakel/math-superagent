@@ -81,7 +81,11 @@ pub(super) fn parse(existing: &str) -> BTreeMap<String, String> {
 
 /// Renders an index for `folder` from its entries.
 pub(super) fn render(folder: &str, entries: &BTreeMap<String, String>) -> String {
-    let title = if folder.is_empty() { "workspace" } else { folder };
+    let title = if folder.is_empty() {
+        "workspace"
+    } else {
+        folder
+    };
     let mut out = format!(
         "# Index — {title}\n\n\
          What each file in this folder is for. Keep it current: describe a file when you create \
