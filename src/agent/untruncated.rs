@@ -158,7 +158,10 @@ impl<S: Send + Sync + 'static> ChatModel<S> for UntruncatedModel<S> {
             // identical thing and get the identical answer.
             return Ok(response);
         };
-        let ceiling = original.saturating_mul(MAX_CAP_GROWTH);
+        let ceiling = self
+            .configured
+            .unwrap_or(original)
+            .saturating_mul(MAX_CAP_GROWTH);
         let mut cap = original;
         for _ in 0..MAX_REISSUES {
             if !cut_off(&response) || cap >= ceiling {
