@@ -267,6 +267,48 @@ caches, and `trace.jsonl`. The trace is several megabytes per run and the
 derivation and notes already carry the reasoning worth keeping; read it locally
 or in Langfuse instead.
 
+## Workspace context routing
+
+Context is authority, and it is also noise. `role_context` in
+`src/orchestrator/mod.rs` decides which working files enter each agent's system
+prompt. Only `AGENTS.md`, the method policy, goes to everyone.
+
+| Role | Additional files |
+| --- | --- |
+| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md` |
+| tool_builder | the above plus `scratchpad.md` |
+| reflection | `goal.md`, `tasks.md`, `memory.md` |
+| pattern_finder | `goal.md`, `memory.md`, `scratchpad.md` |
+| inventor, research | `goal.md`, `memory.md` |
+| librarian | `goal.md`, `memory.md`, `reference/INDEX.md` |
+
+Three of these are load-bearing rather than tidy-minded:
+
+- Reflection must see `goal.md`. It judges whether the criteria are met, and
+  judging against criteria it cannot see is guesswork; a wrong `SOLVED` ends
+  the investigation.
+- The inventor must see `memory.md` for its failed-approaches section. Without
+  it, it re-proposes what already failed, which is the one thing it exists not
+  to do.
+- Reflection must *not* see `scratchpad.md`. Provisional arithmetic is not
+  evidence of progress, and treating it as such keeps the loop retrying.
+
+Adding a file to every role is the easy mistake. Ask what the role has to
+decide, and give it only what that decision needs.
+
+## Workspace checkpointing
+
+`checkpoint::WorkspaceCheckpoint` commits the workspace after every successful
+write, so a rewritten `solution.py` or an edited belief in `memory.md` is
+recoverable instead of lost, and the commit sequence reads as an account of how
+the answer was reached.
+
+History lives in `.workspace-history`, not `.git`, with an explicit work tree.
+A conventional `.git` would make the product repository treat each workspace as
+an embedded repository and refuse to track through it. Only writing tools
+trigger a commit, an unchanged tree is a no-op rather than an error, and a
+failed checkpoint never fails the tool that succeeded.
+
 When a workspace is first used, the helper copies
 the template into it without replacing existing files. The runtime appends
 `AGENTS.md`, `config.toml`, `memory.md`, and the relevant role prompt to each

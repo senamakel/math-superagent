@@ -163,6 +163,13 @@ files already present. The seed includes local agent instructions, role
 prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, and `memory.md`.
 The runtime reads those files at the start of every run.
 
+Each agent receives only the working files its role actually needs: reflection
+sees the goal and the record but never the scratchpad, the inventor always sees
+which approaches already failed, and the pattern agent sees the raw computed
+data. The workspace is also its own git repository, kept in
+`.workspace-history`, and the runtime commits after every successful write, so
+an overwritten program or a revised belief stays recoverable.
+
 These files are committed rather than ignored, so a solved problem keeps its
 derivation, program, and notes in history. Pip installs under
 `.python-packages/`, bytecode caches, and the multi-megabyte `trace.jsonl` event
