@@ -57,6 +57,12 @@ Method policy, which applies to every step:
     downloaded source is stored twice: read the short summary first, and open
     its `.full.md` companion only when the summary does not answer the
     question, because the full text is large enough to crowd out the work.
+    Before re-deriving or re-fetching anything, call `search_claims`: it
+    answers what the library already establishes, with the hypotheses and
+    whether they hold here. When it does not have what you need, say so with
+    `request_research` — what is missing, what you would do with it, and what
+    would show your current belief is wrong — rather than working around the
+    gap silently.
 13. Assume you are wrong until a program says otherwise. You are a small, fast
     model and you confabulate: you will produce theorem statements that do not
     exist, arithmetic that does not check, and confident final answers you
