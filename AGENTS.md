@@ -516,9 +516,23 @@ the short one is the default and reading the long one is a decision, which is
 what the split buys. Both stay in `research/`, because a source whose detail is
 genuinely needed must be reachable without leaving the workspace.
 
-The excerpt is a placeholder with a job: it names its companion and asks the
-scholar to replace it with a summary of what the source establishes, under a
-thousand tokens. The bound is mechanical for a fresh download and a standard
+The short one is a *structural digest*, not the leading characters
+(`src/orchestrator/digest.rs`). It was the leading four thousand characters,
+which for a paper is the title, the abstract, and half the introduction —
+precisely the part the scholar is told to throw away, so the run paid a
+thousand tokens for the wrong thousand tokens and still had to open the full
+text to decide whether it was worth opening. A mathematical source carries its
+payload in labelled statements, and `Theorem`, `Lemma`, `Definition`,
+`Proposition`, `Corollary`, and `Algorithm` are mechanically locatable; so is
+the heading outline and so is the abstract. The digest is those three under the
+same budget. `Proof` is excluded — it is the argument for a statement already
+captured and the longest block on the page. A document with no headings and no
+labelled statements falls back to the leading characters, because for that
+shape the leading characters genuinely are the document.
+
+The digest is still a placeholder with a job: it names its companion and asks
+the scholar to replace it with a summary of what the source establishes, under
+a thousand tokens. The bound is mechanical for a fresh download and a standard
 the scholar is held to thereafter. A document already short enough is stored
 whole, with no truncation notice for truncation that did not happen.
 
