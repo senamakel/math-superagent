@@ -374,12 +374,16 @@ impl OrchestratorAgent {
         // Inside the loop they were exactly that wait: a live run spent 56 of
         // its 74 minutes unable to start its second attempt because a support
         // agent had not finished.
-        let support = self.spawn_support_teams(state.problem());
+        // One mailbox, shared: the pattern team posts what it finds and the
+        // loop picks it up at the next reflection. Nothing waits on it.
+        let patterns = solutions::PatternMailbox::default();
+        let support = self.spawn_support_teams(state.problem(), &patterns);
         let finished = solutions::run(
             self.subagents.clone(),
             Some(self.tracer.clone()),
             Some(self.workspace.clone()),
             support.clone(),
+            patterns,
             state,
         )
         .await;
@@ -403,7 +407,11 @@ impl OrchestratorAgent {
     /// agent run, and a team runs many, so a per-run bound says nothing about
     /// what the team as a whole costs. A team that exhausts its allowance stops
     /// and says so while the others carry on.
-    fn spawn_support_teams(&self, problem: &str) -> Vec<teams::TeamHandle> {
+    fn spawn_support_teams(
+        &self,
+        problem: &str,
+        patterns: &solutions::PatternMailbox,
+    ) -> Vec<teams::TeamHandle> {
         let mut handles = Vec::new();
         for (name, agent, completion, budget, brief) in [
             (
