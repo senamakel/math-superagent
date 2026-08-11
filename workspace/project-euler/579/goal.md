@@ -21,5 +21,14 @@ Find S(5000) mod 10^9.
 2. [DONE] Point-in-cube logic validated on cubes A and B.
 3. [DONE] Governing theory identified and recorded (Ehrhart / Ionascu Thm 3.1; primitive-frame parametrization).
 4. [DONE] /workspace/frame_method.py validates the efficient frame-based method (primitive frames + Ehrhart point formula) against the oracle for n=1,2,4,5,10,50 (all OK). Growth data collected (primitive frames n=10:31 ... n=200:12129).
-5. [ ] Full efficient method derived: O(1)-per-frame t-summation (power sums) + canonical primitive-frame enumeration (primary Hurwitz quaternions) so cost stops growing with n. To be written in solution.md.
-6. [ ] Final answer S(5000) mod 10^9 computed and verified by a second independent route.
+5. [DONE] Full efficient method derived: O(1)-per-frame t-summation (power sums) + canonical primitive-frame enumeration (primary Hurwitz quaternions) so cost stops growing with n. Written in solution.py.
+6. [DONE] Final answer S(5000) mod 10^9 computed and verified by a second independent route.
+
+## FINAL ANSWER
+
+**S(5000) mod 10^9 = 3,805,524**
+
+- C(5000) = 70,412,723,738,165,060
+- S(5000) = 197,963,224,555,524,859,003,805,524
+- distinct primitive frames(5000) = 7,598,249
+- Verified: frame-set identity vs frame_method for n=1..200 (all YES); C/S oracle all OK; power-sum == direct-loop bit-for-bit (PASS); independent re-derivation (separately written code) matches exactly.
