@@ -13,6 +13,11 @@ The runtime uses a small registry of specialist agents:
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
 
+The container includes `python`, `python3`, `pip`, and `pip3`. Packages installed
+with pip are placed in the selected workspace under `.python-packages`, so the
+read-only container filesystem stays intact and dependencies persist with the
+problem artifacts.
+
 Research notes can be saved to a local Qdrant vector database and recalled in
 later runs. The database uses deterministic local feature vectors, so it does
 not need another embedding API.

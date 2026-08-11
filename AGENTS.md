@@ -26,6 +26,10 @@ The runtime has three roles:
   It handles numerical checks, counterexample searches, data extraction, and
   other reproducible calculations.
 
+The runtime image must expose both `python` and `python3`, plus `pip` and
+`pip3`. Pip installs belong under `/workspace/.python-packages`; do not make the
+container root filesystem writable for package installation.
+
 When changing prompts or agent behavior, keep these rules intact:
 
 1. State assumptions and define ambiguous notation.

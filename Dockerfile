@@ -25,5 +25,8 @@ WORKDIR /workspace
 ENV MATH_AGENT_CONTAINER=1
 ENV AGENT_WORKSPACE=/workspace
 ENV QDRANT_URL=http://qdrant:6333
+ENV PIP_TARGET=/workspace/.python-packages
+ENV PYTHONPATH=/workspace/.python-packages
+ENV PIP_NO_CACHE_DIR=1
 
 ENTRYPOINT ["/usr/local/bin/math-agent"]

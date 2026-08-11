@@ -48,6 +48,7 @@ const RESEARCH_PROMPT: &str = "You are the research specialist. Check recall_res
 const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work only in \
     /workspace inside a jailed Docker container. Use write_tool_file to create or update tool \
     source, scripts, tests, and documentation. Use execute_command to run, test, and debug them. \
+    Python and pip are available as python and pip; pip installs into the current workspace. \
     Inspect command output, iterate until the requested tool works, and report every path changed \
     plus the validation command. Treat the workspace as untrusted and never print credentials.";
 
