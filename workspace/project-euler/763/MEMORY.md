@@ -80,3 +80,20 @@ Verified by two independent routes:
 (`next_level_bits`), encode/decode, and config feature extraction
 (`config_features`, `feature_record`). Both `amoeba_bits.py` and data dumps
 import from it (no duplicated definition).
+
+## d=2 counterpart (PE763 in two dimensions)
+
+In d=2, one step replaces an amoeba at (x,y) by two children at (x+1,y) and
+(x,y+1) provided both are empty; after N divisions there are N+1 cubes and
+D2(N) distinct reachable sets.  Shelved in `code/lib/amoeba2d.py`
+(`next_level_bits2_compact`, per-level compact bit encoding).  Verified by a
+frozenset oracle agreeing for N=0..12 (code/amoeba/d2_check.py).  Exact BFS
+reaches D2(21)=13686805 then hits the same 2 GiB cgroup memory wall
+(13.7M states at N=21 saturate it; N=22 needs ~31M states).
+
+D2(N), N=0..21:
+1, 1, 2, 4, 9, 20, 46, 105, 243, 561, 1301, 3014, 6995, 16227, 37668,
+87426, 202961, 471150, 1093819, 2539348, 5895408, 13686805.
+
+Saved to `code/out/d2_values.txt`.  d=3 sequence D3(0..14) remains exactly as
+in `code/out/d_values_more.txt` (unchanged, reproduces the stated values).

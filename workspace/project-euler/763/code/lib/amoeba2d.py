@@ -15,6 +15,29 @@ Encodings supported:
 """
 
 
+def next_level_fs2(level):
+    """One BFS step over 2D frozenset-of-tuples configs (exact arithmetic).
+
+    `level` is an iterable of frozensets of (x,y) cells.  Returns the set of
+    all distinct configurations reachable by exactly one division: a cell p
+    may divide iff both forward neighbours (x+1,y) and (x,y+1) are empty, and
+    the result replaces p with those two.  Naive exponential-state oracle
+    step, 2D analogue of lib/amoeba.next_level_fs; established correct by the
+    2D frozenset oracle and cross-check against the bitmask in
+    code/amoeba/d2_check.py.
+    """
+    nxt = set()
+    for S in level:
+        Sset = set(S)
+        for (x, y) in S:
+            a = (x + 1, y)
+            b = (x, y + 1)
+            if a not in Sset and b not in Sset:
+                ns = Sset - {(x, y)} | {a, b}
+                nxt.add(frozenset(ns))
+    return nxt
+
+
 def decode_bits2(S, W):
     """Decode an int bitmask (width W) into a frozenset of (x,y) tuples."""
     cells = set()
