@@ -73,7 +73,7 @@ impl WorkspaceDocuments {
 
     async fn read(&self, relative: &str) -> Result<String> {
         let path = self.readable_path(relative)?;
-        let bytes = tokio::fs::read(path).await.map_err(|error| {
+        let bytes = tokio::fs::read(&path).await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!(
                 "failed to read workspace document `{relative}`: {error}"
             ))
@@ -82,6 +82,13 @@ impl WorkspaceDocuments {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
                 "document `{relative}` exceeds {MAX_DOCUMENT_BYTES} bytes"
             )));
+        }
+        // Markup and PDFs on disk are converted on the way out, not only on
+        // download. Files arrive here by other routes too: the Project Euler
+        // wrapper fetches `problem.html` with curl, and that statement is the
+        // single most-read document in a run.
+        if needs_conversion(relative, &bytes) {
+            return super::readable::to_markdown(&bytes, None, relative);
         }
         String::from_utf8(bytes).map_err(|error| {
             tinyagents::TinyAgentsError::Validation(format!(
@@ -197,6 +204,21 @@ impl WorkspaceDocuments {
     }
 }
 
+/// Returns whether a stored document should be rendered to Markdown on read.
+///
+/// Keyed on the extension, plus the PDF magic bytes for a file saved without
+/// one. Deliberately narrow: content sniffing every read would eventually
+/// mangle a Markdown note that happens to quote some HTML.
+fn needs_conversion(relative: &str, bytes: &[u8]) -> bool {
+    if bytes.starts_with(b"%PDF-") {
+        return true;
+    }
+    let lowered = relative.to_ascii_lowercase();
+    [".html", ".htm", ".xhtml", ".pdf"]
+        .iter()
+        .any(|extension| lowered.ends_with(extension))
+}
+
 #[derive(Clone, Copy, Debug)]
 enum DocumentToolKind {
     Download,
@@ -310,7 +332,9 @@ impl Tool<()> for DocumentTool {
             DocumentToolKind::Download => {
                 "Downloads an HTTP or HTTPS document into /workspace, converting HTML and PDF to                  Markdown."
             }
-            DocumentToolKind::Read => "Reads a UTF-8 document from /workspace.",
+            DocumentToolKind::Read => {
+                "Reads a document from /workspace, rendering HTML and PDF to Markdown."
+            }
             DocumentToolKind::Write => "Stores a UTF-8 document in /workspace.",
             DocumentToolKind::Edit => "Replaces one exact text occurrence in a workspace document.",
             DocumentToolKind::Index => "Adds a workspace document to the local searchable index.",
