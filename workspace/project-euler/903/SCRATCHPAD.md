@@ -1,5 +1,12 @@
 # Scratchpad
 
+## Tool-builder oracle run (oracle subtask, current)
+Reused existing code/brute.py (naive literal double sum) on the worked-example
+sizes only.  `python code/brute.py 2 3 6` -> exit 0, all oracles OK:
+  rank(2,1,3)=3   Q(2)=5   Q(3)=88   Q(6)=133103808
+<0.15s total (n=6: 518400 power-steps).  Wrote code/results.json.  Reading of
+the definition is thereby pinned; size bound 10^6 is left to the derivation.
+
 ## Task (from user)
 Write brute.py in /workspace: enumerate all n! permutations in lex order, rank dict
 (tuple -> 1-based rank), reproduce rank((2,1,3)) = 3. For each pi, compute pi^i for
