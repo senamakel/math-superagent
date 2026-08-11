@@ -108,15 +108,15 @@ async fn a_complete_turn_is_returned_without_a_second_call() {
 }
 
 #[tokio::test]
-async fn cap_growth_stops_at_four_times_the_original() {
-    // A turn needing more than four times its budget is being asked the wrong
-    // question, and re-issuing forever would spend the run on one turn.
-    let (inner, caps) = ScriptedModel::new(vec![
-        truncated("one"),
-        truncated("two"),
-        truncated("three"),
-        truncated("four"),
-    ]);
+async fn a_turn_that_truncates_again_is_not_escalated_a_second_time() {
+    // The second doubling was measured and was pure cost: a live turn that
+    // truncated at twice its cap went on to spend 22.8 minutes generating the
+    // full 48,000 tokens and still emitted no tool call, while the *first*
+    // doubling is what unblocked a stuck run. Generation time is linear in
+    // output length, so the third attempt is the most expensive and the least
+    // likely to work.
+    let (inner, caps) =
+        ScriptedModel::new(vec![truncated("one"), truncated("two"), truncated("three")]);
     let model = UntruncatedModel::new(inner);
 
     let response = model
@@ -125,10 +125,15 @@ async fn cap_growth_stops_at_four_times_the_original() {
         .expect("the call succeeds");
 
     let caps = caps.lock().expect("recorded caps are not poisoned");
-    assert_eq!(caps.as_slice(), &[Some(10_000), Some(20_000), Some(40_000)]);
-    // Still truncated after the ceiling: the fragment is returned rather than
-    // an error, because a truncated answer beats no answer.
-    assert_eq!(response.text(), "three");
+    assert_eq!(
+        caps.as_slice(),
+        &[Some(10_000), Some(20_000)],
+        "one re-issue at twice the cap, and no more"
+    );
+    // Still truncated after the single re-issue: the fragment is returned
+    // rather than an error, because a truncated answer beats no answer, and
+    // upstream's own recovery still has its ladder.
+    assert_eq!(response.text(), "two");
 }
 
 #[tokio::test]
