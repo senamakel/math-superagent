@@ -16,9 +16,9 @@ lcov.info
 
 # Host directory mounted as the jailed agent runtime's /workspace.
 #
-# Workspace contents are committed on purpose: the derivation, the program, the
-# per-run notes, and `trace.jsonl` are the record of how an answer was reached,
-# which is the point of the product. Only machine-regenerable artifacts are
+# Workspace contents are committed on purpose: the derivation, the program, and
+# the per-run notes are the record of how an answer was reached, which is the
+# point of the product. Only machine-regenerable and bulky artifacts are
 # excluded below.
 #
 # Pip installs land here because the container root filesystem is read-only.
@@ -26,6 +26,10 @@ lcov.info
 /workspace/**/.python-packages/
 __pycache__/
 *.py[cod]
+
+# Runtime event logs. Several megabytes per run, and the derivation and notes
+# already carry the reasoning worth keeping. Read them locally or in Langfuse.
+/workspace/**/trace.jsonl
 
 # Linked worktrees created by the local `worktree` helper
 worktrees/*
