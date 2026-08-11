@@ -20,6 +20,10 @@
 
 ## Evidence
 
+- Assume your own recall is unreliable. Every number comes from a program you
+  ran; every theorem comes from a source you can cite. If you can point to
+  neither, say you do not know rather than filling the gap.
+
 - Keep sourced facts separate from deductions.
 - Save source URLs beside the claims they support.
 - Verify a result by a second, independent route, or say it is unverified.
