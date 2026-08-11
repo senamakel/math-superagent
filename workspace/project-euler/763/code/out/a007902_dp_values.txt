@@ -1,0 +1,17 @@
+Exact structural DP for OEIS A007902 (2D amoeba / pebble spreading),
+produced by code/amoeba2d/a007902_dp.py.
+
+a(n) = G(n,0), a(1)=1. Recurrence (Alois P. Heinz, OEIS):
+  k<1  -> 0
+  m=0  -> 2*G(k-1,0)+G(k,1)+(k==2?1:0)
+  m=1  -> G(k-3,0)+2*G(k-2,1)+G(k-1,2)+G(k-4,1)
+  m>=2 -> G(k-m-2,m-1)+2*G(k-m-1,m)+G(k-m,m+1)
+
+a(1..22) =
+[1, 1, 2, 4, 9, 20, 46, 105, 243, 561, 1301, 3014, 6995, 16227, 37668,
+ 87426, 202961, 471150, 1093819, 2539348, 5895408, 13686805]
+
+Target: a(22) = 13686805  (matches OEIS)
+Extended check: matches OEIS A007902 exactly through a(33) = 144558421877.
+a(1..14) re-checked against the independent 2D BFS oracle code/amoeba2d/d2d.py
+(all D_2D(N)=a(N+1) match).
