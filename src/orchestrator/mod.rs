@@ -292,37 +292,23 @@ impl OrchestratorAgent {
         register_recall(&mut research_harness, &workspace);
         async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
 
-        let mut tool_builder_harness =
-            build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
-        tool_builder_harness.push_middleware(checkpoint.clone());
-        async_subagents.register(
-            "tool_builder",
-            Arc::new(tool_builder_harness),
-            prompts.tool_builder,
+        register_code_writing_agents(
+            &async_subagents,
+            &CodeWriters {
+                model: &model,
+                budget,
+                tracer: &tracer,
+                workspace: &workspace,
+                documents: &documents,
+                checkpoint: &checkpoint,
+            },
+            [
+                ("tool_builder", prompts.tool_builder),
+                ("coder", prompts.coder),
+                ("sat_solver", prompts.sat_solver),
+                ("lean_prover", prompts.lean_prover),
+            ],
         )?;
-
-        // Three more roles with exactly the tool-builder's authority and three
-        // different mandates. The tool-builder writes experiments and toolkit
-        // helpers; the coder writes the implementation the run stands behind;
-        // the SAT solver encodes a finite question rather than writing a search
-        // for it; the Lean prover produces the one artifact here that is not
-        // evidence but proof. Splitting them is what lets each prompt be strict
-        // about one thing instead of one prompt hedging between four, and their
-        // failure modes have nothing in common — a program that ran but is
-        // wrong, an `UNKNOWN` reported as solved, a `sorry` left undeclared.
-        // They share a harness because the authority a role needs and the
-        // judgement it exercises are different questions.
-        for (name, prompt) in [
-            ("coder", prompts.coder),
-            ("sat_solver", prompts.sat_solver),
-            ("lean_prover", prompts.lean_prover),
-        ] {
-            let mut harness =
-                build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
-            harness.push_middleware(checkpoint.clone());
-            register_recall(&mut harness, &workspace);
-            async_subagents.register(name, Arc::new(harness), prompt)?;
-        }
 
         register_support_agents(
             &async_subagents,
