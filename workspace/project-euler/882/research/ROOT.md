@@ -28,7 +28,12 @@ run at n=10⁵.
 ## L0 originals
 [[L0.0]] (L1.2 seal) is the underlying CGT/arithmetic foundation behind
 [[counting-arithmetic]] and the dead-end/misfiled artifacts (paywalled Li 1976;
-three unrelated arXiv pdfs), so attempts are not repeated.
+three unrelated arXiv pdfs), so attempts are not repeated. [[L0.1]] (L1.2 seal)
+covers the skip/loopy side — loopy/zugzwang theory ([[siegel_zugzwang]], Li's
+theorem), pass theory ([[pass_waiting]], [[mfl_pass]], [[raw_mfl_pass]]),
+surreal values ([[surreal]]) — and a second primary weighted Trollope–Delange
+warrant ([[minabutdinov_qweighted]]), plus the strategy dead end. Together they
+make the skip a legitimate loopy/zugzwang object and confirm S(n) ≠ A−B.
 
 ## Standing caveat (open)
 The dyadic Simplicity Rule is the exact game rule sourced here; the counting
