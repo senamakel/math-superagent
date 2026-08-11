@@ -62,11 +62,7 @@ impl ChatModel<()> for RecordingModel {
 }
 
 fn ordered_provider(options: &Value) -> Option<&str> {
-    options
-        .get("provider")?
-        .get("order")?
-        .get(0)?
-        .as_str()
+    options.get("provider")?.get("order")?.get(0)?.as_str()
 }
 
 #[tokio::test]
@@ -97,7 +93,8 @@ async fn a_fallback_moves_the_pin_instead_of_oscillating_back() {
     // second. Without re-pinning, the third call would route back to the
     // preferred provider and find its cache cold — the oscillation this
     // wrapper exists to stop.
-    let (inner, seen) = RecordingModel::new(vec![Some("deepinfra"), Some("novita"), Some("novita")]);
+    let (inner, seen) =
+        RecordingModel::new(vec![Some("deepinfra"), Some("novita"), Some("novita")]);
     let sticky = StickyProviderModel::new(inner);
 
     for _ in 0..3 {
