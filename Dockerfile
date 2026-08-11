@@ -28,6 +28,22 @@ RUN apt-get update \
     && mkdir /workspace \
     && chown agent:agent /workspace
 
+# SageMath, off by default. It is the most capable tool on this list and by
+# far the most expensive: 723 packages and roughly two gigabytes, which every
+# rebuild then pays for. That trade is wrong while the runtime is being changed
+# and rebuilt continuously, and right for a long unattended run on a problem
+# that needs Sage specifically — so it is a switch rather than a default.
+# Build with `--build-arg INSTALL_SAGE=1`, or `MATH_AGENT_SAGE=1 ./agent build`.
+# sympy, mpmath, and gmpy2 already cover exact algebra, arbitrary-precision
+# arithmetic, and fast integers, which is most of what Sage would be used for
+# here.
+ARG INSTALL_SAGE=0
+RUN if [ "$INSTALL_SAGE" = "1" ]; then \
+        apt-get update \
+        && apt-get install --yes --no-install-recommends sagemath \
+        && rm -rf /var/lib/apt/lists/*; \
+    fi
+
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
 
 USER agent
