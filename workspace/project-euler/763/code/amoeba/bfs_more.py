@@ -22,7 +22,7 @@ N=0..12; this run must reproduce D(0..13) before reporting anything beyond.
 import sys
 import time
 
-MAX_STATES = 2_000_000
+MAX_STATES = 30_000_000
 TIME_BUDGET = 90.0
 
 
