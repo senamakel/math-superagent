@@ -810,14 +810,15 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/toolkits/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
-| tool_builder, coder | the planners' files plus `SCRATCHPAD.md`, minus `reflections/INDEX.md` |
-| reflection | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
-| pattern_finder | `GOAL.md`, `MEMORY.md`, `SCRATCHPAD.md`, `code/toolkits/INDEX.md` |
-| librarian, research | `GOAL.md`, `MEMORY.md`, `research/INDEX.md` |
-| inventor | the above plus `reflections/INDEX.md` |
-| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `SCRATCHPAD.md`, `research/INDEX.md` |
-| organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/toolkits/INDEX.md`, `research/INDEX.md` |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/toolkits/INDEX.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, `reflections/ROOT.md`, `reflections/INDEX.md` |
+| tool_builder, coder | the planners' files plus `SCRATCHPAD.md` and `code/`, minus the threads and the reflection files |
+| judge | `GOAL.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
+| reflection | the judge's files plus `TASKS.md` and `reflections/ROOT.md` |
+| pattern_finder | `GOAL.md`, `MEMORY.md`, `SCRATCHPAD.md`, `code/toolkits/INDEX.md`, `CONTEXT.md` |
+| librarian, research | `GOAL.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/FRONTIER.md`, `CONTEXT.md` |
+| inventor | the planners' research files plus `research/THREADS.md` and both reflection files |
+| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `SCRATCHPAD.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/INDEX.md`, `code/toolkits/INDEX.md`, `research/ROOT.md`, `research/INDEX.md` |
 
 The tool-builder accumulates reusable helpers under `code/toolkits/`, one function
 per file, described through `describe_file` so `code/toolkits/INDEX.md` carries the
@@ -838,6 +839,15 @@ Four of these are load-bearing rather than tidy-minded:
   to do.
 - Reflection must *not* see `SCRATCHPAD.md`. Provisional arithmetic is not
   evidence of progress, and treating it as such keeps the loop retrying.
+- Only the librarian and research see `research/FRONTIER.md`. It is a list of
+  things nobody has read, useful exactly to the roles deciding what to fetch
+  next and noise to everyone else.
+- The tool-builder and the coder see `research/CLAIMS.md` but not the threads.
+  A closed form the library establishes changes what they implement; which
+  direction the run is pursuing is the planners' decision, not theirs. The
+  `holds-here` column is the load-bearing part — implementing a theorem whose
+  hypotheses fail here produces a program that runs and computes the wrong
+  thing.
 
 Indexes are the cheap exception to that rule. An index costs a few hundred
 tokens where the files it describes cost tens of thousands, so a role that
