@@ -122,11 +122,11 @@ pub(super) fn parse(patch: &str) -> Result<Vec<FileOp>> {
                 path: checked_path(path)?,
             }
         } else if let Some(raw) = line.strip_prefix(UPDATE) {
-            let path = checked_path(raw)?;
+            let target = checked_path(raw)?;
             let move_to = match lines.peek().and_then(|next| next.strip_prefix(MOVE)) {
-                Some(target) => {
+                Some(renamed) => {
                     lines.next();
-                    Some(checked_path(target)?)
+                    Some(checked_path(renamed)?)
                 }
                 None => None,
             };
@@ -144,11 +144,11 @@ pub(super) fn parse(patch: &str) -> Result<Vec<FileOp>> {
             }
             if hunks.is_empty() {
                 return Err(invalid(format!(
-                    "`{UPDATE}{path}` has no `@@` hunk; an update must say what to change"
+                    "`{UPDATE}{target}` has no `@@` hunk; an update must say what to change"
                 )));
             }
             FileOp::Update {
-                path,
+                path: target,
                 move_to,
                 hunks,
             }

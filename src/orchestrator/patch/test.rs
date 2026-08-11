@@ -1,5 +1,6 @@
 //! Unit tests for the `apply_patch` envelope.
 #![allow(clippy::expect_used)]
+#![allow(clippy::panic)]
 
 use super::{FileOp, apply_hunk, parse};
 
