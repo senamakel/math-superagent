@@ -137,34 +137,42 @@ struct FollowUp {
 }
 
 impl FollowUp {
-    /// Runs the sequence in order, one sequence at a time across the runtime.
+    /// Runs the sequence in order, taking the housekeeping lock per step.
     ///
-    /// Serialised deliberately: two organizers refreshing the same `INDEX.md`
-    /// concurrently would each write the list it read, and the later write
-    /// would silently drop the other's descriptions. Housekeeping is not on
-    /// anyone's critical path, so waiting for the lock costs nothing.
+    /// Only a step that rewrites a shared `INDEX.md` needs excluding, and the
+    /// organizer is the one that does. Holding the lock across a whole sequence
+    /// instead made every follow-up wait for every other: a scholar reading a
+    /// new library for six minutes blocked the organizer that a tool-builder
+    /// had finished with long before, and the filing that is supposed to happen
+    /// while the files are new and their purpose settled arrived after the run
+    /// had moved on. Locking per step lets the reading proceed concurrently
+    /// with anything else and serialises only the writes that would collide.
     ///
-    /// The steps run sequentially inside one lock acquisition rather than each
-    /// triggering the next. Chaining would work — the lock is released before
-    /// a successor could want it — but it would make every follow-up agent a
+    /// The steps still run in order within a sequence, and are still a sequence
+    /// rather than a chain: chaining would make every follow-up agent a
     /// potential trigger, and the invariant that keeps this terminating is
-    /// precisely that none of them is. Order still matters within a sequence:
-    /// the scholar has to finish before the organizer files what it wrote.
+    /// precisely that none of them is. Order matters here because the scholar
+    /// has to finish before the organizer files what it wrote.
     ///
     /// Every failure is swallowed, and a failed step does not cancel the rest.
     /// A run that tidies the workspace must never be able to fail the
     /// investigation that triggered it, and an unregistered follow-up agent —
     /// a registry built without one — is simply nothing to do.
     async fn run(self) {
-        let _guard = self.manager.housekeeping.lock().await;
         for step in self.steps {
             if !self.manager.knows(step.agent) {
                 continue;
             }
+            let guard = if step.rewrites_shared_index {
+                Some(self.manager.housekeeping.lock().await)
+            } else {
+                None
+            };
             let _ = self
                 .manager
                 .run_to_completion(step.agent, step.brief.to_string())
                 .await;
+            drop(guard);
         }
     }
 }
