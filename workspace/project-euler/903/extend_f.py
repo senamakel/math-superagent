@@ -131,3 +131,17 @@ def main():
         if dt > TIME_GATE:
             stopped = n
             print(f"    n = {n} exceeded {TIME_GATE:.0f} s -> stopping",
+                  flush=True)
+            break
+
+    with open("extend_f.json", "w") as fh:
+        json.dump({str(k): v for k, v in results.items()}, fh)
+    print(f"\nTotal wall time: {time.time() - t_start:.2f} s",
+          "  (stopped after n = %d)" % stopped if stopped else "",
+          flush=True)
+    print("Saved:", json.dumps({str(k): v for k, v in results.items()}),
+          flush=True)
+
+
+if __name__ == "__main__":
+    main()
