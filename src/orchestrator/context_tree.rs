@@ -163,15 +163,29 @@ fn linked_children(workspace: &Path, node: &str) -> Vec<String> {
     };
     links(&text)
         .into_iter()
-        .map(|target| {
-            if target.contains('/') {
-                target
-            } else {
-                format!("{folder}/{target}")
-            }
-        })
+        .map(|target| resolve(folder, &target))
         .filter(|target| workspace.join(target).is_file())
         .collect()
+}
+
+/// Resolves a link target against the folder holding the file that wrote it.
+///
+/// `..` is popped here rather than left to the filesystem, because a fold in
+/// `research/folds/` naturally links its sources as `../paper.md` and a path
+/// still carrying that segment matches nothing when compared against the
+/// relative paths the rest of this module works in.
+fn resolve(folder: &str, target: &str) -> String {
+    let mut parts: Vec<&str> = folder.split('/').filter(|part| !part.is_empty()).collect();
+    for part in target.split('/') {
+        match part {
+            "" | "." => {}
+            ".." => {
+                parts.pop();
+            }
+            part => parts.push(part),
+        }
+    }
+    parts.join("/")
 }
 
 /// Children written since the parent was, as relative paths.
