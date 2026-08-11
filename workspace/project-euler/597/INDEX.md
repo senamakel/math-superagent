@@ -21,5 +21,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `scratch_verify_invexp.py` | RETIRED MC scratch attempt (no execution tool at the time). The inverse-exponential finish-time claims it was meant to check were instead verified analytically; superseded by the source in `research/inverse_exponential_finish_times_wikipedia.md`. Kept as a record. |
 | `scratchpad.md` | Provisional work: the diagnosis of the parity-comparator bug, its fix, and the corrected MC run output. |
 | `simulate_order_nobug.py` | Corrected race engine fixing `brute`'s multi-bump overwrite: records every bump edge and computes placed-below sets by graph reachability. Same API as `brute.simulate_order` / `parity_of_new_order`. This is the reference-correct engine. |
+| `scratch_verify_invexp.py` | Retired MC scratch: analytically verified the inverse-exponential finish-time claims (CDF/density/hazard) from context.md. Superseded by the sourced notes in `research/inverse_exponential_finish_times_wikipedia.md`; kept as a record. |
 | `tasks.md` | Task checklist: done items (verify sample, fix comparator, MC re-check) and the open task to solve p(13,1800) exactly. |
 | `verify_hypothesis.py` | MC verifier of both statement examples plus the structural test "final parity depends only on the w-order" — which it refutes (buckets hold both parities). |
