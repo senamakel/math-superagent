@@ -82,7 +82,7 @@ const JUDGING_TOOL_CALLS: usize = 60;
 /// Five minutes, against an attempt that takes the better part of an hour.
 /// This is the ceiling for a pathological turn, not the expected cost — a
 /// judge answering as instructed returns in seconds.
-const JUDGING_RUN_TIMEOUT: Duration = Duration::from_secs(300);
+const JUDGING_RUN_TIMEOUT: Duration = Duration::from_mins(5);
 
 /// The resolved budget shared by the orchestrator and every specialist.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
