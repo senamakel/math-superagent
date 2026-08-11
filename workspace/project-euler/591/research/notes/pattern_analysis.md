@@ -65,7 +65,20 @@ This is a derived consequence of the verified method; verified 36/36 and 14/14.
   the 36 pairs available.
 
 ## The final answer's structure
-The computed S = 498809825393729 comes from summing |a_d|, a_d = nint(π − b_d√d)
-with b_d the Cabanillas-candidate minimizer. Independent verification (a separate
-implementation) is the remaining cross-check; the d=2 row matches the official
-oracle I_2(BQA_2(π,10^13)) = −6188084046055.
+The **corrected** S (both signs of b) = 526007984625966, a_d = nint(π − b_d√d).
+The earlier positive-only S = 498809825393729 was WRONG: it ignored negative b,
+which win for 45 of the 90 d (strictly smaller errors: typically 1e-13 vs 1e-12).
+Corrected solver reproduced examples 1-4 exactly and matched brute force on all
+90 d at n=10^6 (validate_bothsides.py). The |I|-, m^2- and b1=b0/m laws hold
+exactly on the corrected data (90/90, 36/36, 18/18).
+
+## Corrected-data confirmation of the laws
+- |I_d| == |nint(b_d sqrt(d) − π)|: 90/90 (both signs).
+- m^2·d: |I_{m^2 d0}| == |I_{d0}| iff m | b_{d0}: 36/36; and b_{m^2 d0} == b_{d0}/m
+  in all 18 equality cases.
+These hold on the corrected (both-sign) data exactly.
+
+## Falsification bounds
+- Both-sign candidate method: falsified at the first d where a correct brute-force
+  computation at any scale disagrees; searched all 90 d at n=10^6 (0 mismatches),
+  examples 1-4, and (pending) n=10^7 brute on ~16 d.
