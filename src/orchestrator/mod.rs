@@ -461,6 +461,7 @@ impl OrchestratorAgent {
             }
             let subagents = self.subagents.clone();
             let workspace = self.workspace.clone();
+            let outbox = patterns.clone();
             let prompt = format!("{brief}\n\nProblem this run is solving:\n{problem}");
             handles.push(teams::spawn(
                 name,
@@ -490,7 +491,16 @@ impl OrchestratorAgent {
                             Ok(reply) if reply.to_uppercase().contains("NOTHING FURTHER") => {
                                 completion.nothing_further()
                             }
-                            Ok(_) => teams::Cycle::Worked,
+                            Ok(reply) => {
+                                // A structural finding is worth as much an
+                                // attempt later, so it is left where the next
+                                // reflection collects it rather than
+                                // interrupting the solve to deliver it.
+                                if name == "patterns" {
+                                    outbox.post(reply);
+                                }
+                                teams::Cycle::Worked
+                            }
                             // A failed cycle is not a reason to end the team:
                             // the next one may well succeed, and a support team
                             // that quits on one error stops serving the solve
