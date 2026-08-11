@@ -393,7 +393,7 @@ impl Tool<()> for AsyncSubagentTool {
                 "required": ["run_id", "instruction"],
                 "additionalProperties": false
             }),
-            AsyncToolKind::Await => run_id_schema(true),
+            AsyncToolKind::Await => run_id_schema(Some(self.manager.max_await_seconds())),
         };
         ToolSchema::new(self.name(), self.description(), parameters)
     }
