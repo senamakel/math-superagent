@@ -10,10 +10,41 @@ The runtime uses a small registry of specialist agents:
 
 - `orchestrator` breaks a problem into focused tasks and combines the results.
 - `goals` turns an objective into completion criteria and spawns focused
-  research and tool-building subagents until the criteria are met or blocked.
+  subagents until the criteria are met or blocked.
 - `research` searches with Exa and returns evidence with source URLs.
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
+- `reflection` judges one attempt and extracts the lesson. It has no research
+  or execution tools, so it cannot drift into solving what it is judging.
+- `pattern_finder` runs exact sequence analysis over results already computed:
+  forward differences and polynomial degree, common divisors, residue
+  periodicity, and a verified linear-recurrence search.
+- `inventor` proposes a different line of attack when the current one stalls.
+- `librarian` downloads primary material into a workspace reference library and
+  indexes it for local search.
+
+## The solution loop
+
+By default the orchestrator gets one turn. Pass `--loop` to drive the run with
+an explicit attempt, reflect, diversify cycle instead:
+
+```sh
+./euler 175 --loop
+./agent --loop "prove or disprove ..."
+```
+
+```text
+  attempt ──> reflect ──┬─ solved ────────────────> done
+     ▲                  ├─ retry ─────────────────> attempt
+     │                  └─ stuck ──> diversify ────┘
+     └────────────────────────────────────────────┘
+```
+
+Reflection runs after every attempt, not only after failures, and an answer
+that was not verified by a second independent route counts as unsolved. When
+attempts stop making progress, `diversify` runs the librarian, the pattern
+agent, and the inventor concurrently to bring in material, structure, and a
+different approach before trying again.
 
 The container includes `python`, `python3`, `pip`, and `pip3`. Packages installed
 with pip are placed in the selected workspace under `.python-packages`, so the

@@ -169,10 +169,14 @@ src/
 ├── lib.rs              # public exports
 ├── agent/              # TinyAgents facade, OpenRouter, Langfuse
 │   ├── budget.rs       # per-run call, wall-clock, and capture policy
+│   ├── reflection.rs   # in-run middleware that reflects on failing tools
+│   ├── resilient.rs    # tool-error and request-timeout wrappers
 │   └── trace.rs        # live console and trace.jsonl event listener
 ├── orchestrator/       # registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs # graph-backed asynchronous child-run controls
 │   ├── documents.rs    # bounded workspace documents and local search index
+│   ├── patterns.rs     # exact sequence analysis and recurrence search
+│   ├── solutions.rs    # graph-backed attempt/reflect/diversify loop
 │   └── vector.rs       # Qdrant tools and deterministic local feature vectors
 ├── hello_agent/        # minimal single-agent example
 ├── error/              # crate-wide Error and Result<T>
@@ -190,7 +194,8 @@ workspace/              # selectable writable agent workspaces
 └── template/           # seed instructions, prompts, config, and memory
 ```
 
-The executable registry contains `goals`, `research`, and `tool_builder`.
+The executable registry contains `goals`, `research`, `tool_builder`,
+`reflection`, `pattern_finder`, `inventor`, and `librarian`.
 Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
 The goals agent also receives the research and tool-builder delegation tools,
 so it can pursue a goal through nested, focused work.
