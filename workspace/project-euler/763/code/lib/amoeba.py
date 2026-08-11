@@ -100,6 +100,42 @@ def forward_level(level, d):
     return nxt
 
 
+# --- naive BFS driver -----------------------------------------------------
+
+
+def reachable_sets(N, d=3):
+    """All distinct frozensets of d-tuples reachable after exactly N divisions.
+
+    Naive level-by-level BFS driver: start from the single config {(0,...,0)}
+    and apply forward_level one step per division.  For d=3 this is exactly
+    the 3D oracle used in the brute programs (D(2)=3, D(10)=44499); for d=2
+    it is the 2D oracle (D_2D).  Exponential state space; only for tiny N as
+    a definition check.
+
+    This is the single CANONICAL definition of the naive `reachable_sets`
+    driver, consolidating three copies that were previously in
+    code/brute.py, code/amoeba/brute.py (identical 3D copies) and
+    code/amoeba2d/d2d.py (a genuinely divergent 2D copy).  The divergence is
+    resolved by the dimension parameter d, not by silently choosing one: the
+    two 3D copies agreed with each other exactly, and the 2D copy reduces to
+    this at d=2.  Correctness of the underlying one-level step is established
+    by the brute oracles reproducing D(2)=3 and D(10)=44499.
+    """
+    start = frozenset({(0,) * d})
+    level = {start}
+    for _ in range(N):
+        level = forward_level(level, d)
+        if not level:
+            break
+    return level
+
+
+def D(N, d=3):
+    """Number of distinct frozenset configs reachable after exactly N divisions
+    in d dimensions (d=3 for PE763, d=2 for the 2D analogue)."""
+    return len(reachable_sets(N, d))
+
+
 # --- decoding -------------------------------------------------------------
 
 

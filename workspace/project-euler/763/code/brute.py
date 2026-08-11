@@ -10,38 +10,15 @@ divisions (same arrangement reachable many ways counts once).
 
 This is the naive oracle: BFS over sets of occupied cubes, level = number of
 divisions. Exponential state space; only for tiny N as a definition check.
+
+Root copy of code/amoeba/brute.py; both now import the canonical
+reachable_sets/D from lib/amoeba (d=3).
 """
 
-from functools import lru_cache
-
-
-def reachable_sets(N):
-    """Return the set of frozensets of cubes reachable after exactly N divisions."""
-    E1, E2, E3 = (1, 0, 0), (0, 1, 0), (0, 0, 1)
-    start = frozenset({(0, 0, 0)})
-    level = {start}
-    for _ in range(N):
-        nxt = set()
-        for S in level:
-            Sset = set(S)
-            for p in S:
-                a = (p[0] + E1[0], p[1] + E1[1], p[2] + E1[2])
-                b = (p[0] + E2[0], p[1] + E2[1], p[2] + E2[2])
-                c = (p[0] + E3[0], p[1] + E3[1], p[2] + E3[2])
-                if a not in Sset and b not in Sset and c not in Sset:
-                    ns = Sset - {p} | {a, b, c}
-                    nxt.add(frozenset(ns))
-        level = nxt
-        if not level:
-            break
-    return level
-
-
-def D(N):
-    return len(reachable_sets(N))
+from lib.amoeba import D
 
 
 if __name__ == "__main__":
     for n in [2, 10]:
-        d = D(n)
+        d = D(n, d=3)
         print(f"D({n}) = {d}")
