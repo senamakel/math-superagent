@@ -26,6 +26,26 @@ use crate::agent::{AgentHarness, Message, Result, Tool, ToolCall, ToolResult, To
 
 static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 
+/// Runs that automatically trigger a follow-up run when they succeed.
+///
+/// The tool-builder is the role that creates files, and the moment it finishes
+/// is when the workspace is least tidy and most legible: the files are new,
+/// their purpose is settled, and nothing else has happened since. Leaving the
+/// tidying to whoever happens to run next means it competes with mathematics
+/// for attention and reliably loses, so the index drifts out of step with the
+/// directory exactly when it is most needed.
+///
+/// The follow-up is fire-and-forget. The caller's `await_agent` returns as soon
+/// as the tool-builder itself is done, because housekeeping must not sit on the
+/// critical path of an investigation waiting for its result.
+const FOLLOW_UPS: [(&str, &str); 1] = [("tool_builder", "organizer")];
+
+/// The instruction a follow-up run receives.
+const FOLLOW_UP_BRIEF: &str = "The tool-builder just finished. Bring the workspace back into \
+    order: refresh each folder's INDEX.md so it matches what is on disk, describe every file \
+    that is now undescribed, and correct any row whose description no longer matches its file. \
+    Keep toolkits/INDEX.md in step with the files beside it. Do not change what any file says.";
+
 /// Spawned runs allowed to execute at the same time.
 ///
 /// A spawn is non-blocking and the model is encouraged to launch independent
@@ -275,6 +295,13 @@ impl AsyncSubagentManager {
             tracer.note(&format!("spawned: {}", preview_input(&input)));
         }
         let slots = self.slots.clone();
+        let follow_up = FOLLOW_UPS
+            .iter()
+            .find(|(after, _)| *after == agent_name)
+            .map(|(_, then)| FollowUp {
+                manager: self.clone(),
+                agent: (*then).to_string(),
+            });
         tokio::spawn(async move {
             // Queue for a slot before doing anything else. Acquiring here
             // rather than in `spawn` is what keeps a spawn cheap and
@@ -318,6 +345,7 @@ impl AsyncSubagentManager {
                 .and_then(|result| result),
                 Err(error) => Err(error),
             };
+            let succeeded = outcome.is_ok();
             match outcome {
                 Ok(execution) => {
                     let response = execution.state.response.unwrap_or_default();
@@ -329,6 +357,9 @@ impl AsyncSubagentManager {
                 }
             }
             steering_registry.deregister(&spawned_task_id);
+            if succeeded && let Some(follow_up) = follow_up {
+                follow_up.run().await;
+            }
         });
         Ok(task_id)
     }
