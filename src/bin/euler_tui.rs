@@ -165,7 +165,11 @@ fn parse(line: &str) -> Option<(String, String, String)> {
     }
     let rest = rest.trim_start();
     let (who, tail) = rest.split_once(char::is_whitespace)?;
-    Some((elapsed.to_string(), who.to_string(), tail.trim().to_string()))
+    Some((
+        elapsed.to_string(),
+        who.to_string(),
+        tail.trim().to_string(),
+    ))
 }
 
 /// Names the container already running this workspace, if one is.
@@ -210,7 +214,11 @@ fn running_for(workspace: &Path) -> Option<String> {
 /// `docker logs` to be recovered from and is kept here instead — it is also
 /// the only place a failed build says why.
 fn start_detached(root: &Path, problem: u32, research: bool, extra: &[String], log: &Path) {
-    let Ok(handle) = std::fs::OpenOptions::new().create(true).append(true).open(log) else {
+    let Ok(handle) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(log)
+    else {
         return;
     };
     let Ok(errors) = handle.try_clone() else {
@@ -237,15 +245,16 @@ fn start_detached(root: &Path, problem: u32, research: bool, extra: &[String], l
 /// first frame. That is why the log is rewritten rather than appended to:
 /// re-attaching would otherwise stack a second copy of the same history.
 fn follow(
-    workspace: PathBuf,
-    mut container: Option<String>,
-    runs: Arc<Mutex<Runs>>,
-    log: PathBuf,
+    workspace: &Path,
+    container: Option<String>,
+    runs: &Arc<Mutex<Runs>>,
+    log: &Path,
     echo: bool,
-    stop: Arc<AtomicBool>,
+    stop: &AtomicBool,
 ) {
+    let mut container = container;
     while container.is_none() && !stop.load(Ordering::Relaxed) {
-        container = running_for(&workspace);
+        container = running_for(workspace);
         if container.is_none() {
             std::thread::sleep(Duration::from_secs(1));
         }
@@ -263,7 +272,7 @@ fn follow(
     let Some(output) = child.stdout.take() else {
         return;
     };
-    let mut file = std::fs::File::create(&log).ok();
+    let mut file = std::fs::File::create(log).ok();
     for line in BufReader::new(output).lines().map_while(Result::ok) {
         if let Ok(mut state) = runs.lock() {
             state.add(&line);
@@ -303,9 +312,14 @@ fn style_for(line: &str) -> Style {
     if line.contains("error") {
         return Style::default().fg(Color::Red);
     }
-    if ["TRUNCATED", "model RETRY", "PROVIDER FAILED", "workspace root"]
-        .iter()
-        .any(|word| line.contains(word))
+    if [
+        "TRUNCATED",
+        "model RETRY",
+        "PROVIDER FAILED",
+        "workspace root",
+    ]
+    .iter()
+    .any(|word| line.contains(word))
     {
         return Style::default().fg(Color::Magenta);
     }
@@ -434,16 +448,18 @@ fn watch(runs: &Arc<Mutex<Runs>>, started: Instant) -> std::io::Result<()> {
     execute!(out, EnterAlternateScreen)?;
     let mut terminal = Terminal::new(CrosstermBackend::new(out))?;
     let mut view = View::default();
-    let mut painted = Instant::now() - REFRESH;
+    // `None` until the first frame, so the view paints immediately rather than
+    // waiting a refresh interval to show anything.
+    let mut painted: Option<Instant> = None;
     let outcome = loop {
         let elapsed = started.elapsed().as_secs();
         let waiting = format!("{:02}:{:02}", elapsed / 60, elapsed % 60);
-        if painted.elapsed() >= REFRESH {
+        if painted.is_none_or(|at| at.elapsed() >= REFRESH) {
             if let Ok(state) = runs.lock() {
                 view.tab = view.tab.min(state.order.len().saturating_sub(1));
                 terminal.draw(|frame| render(frame, &state, &view, &waiting))?;
             }
-            painted = Instant::now();
+            painted = Some(Instant::now());
         }
         if !event::poll(POLL)? {
             continue;
@@ -463,7 +479,11 @@ fn watch(runs: &Arc<Mutex<Runs>>, started: Instant) -> std::io::Result<()> {
             if key.kind != KeyEventKind::Press {
                 break;
             }
-            let tabs = runs.lock().map(|state| state.order.len()).unwrap_or(1).max(1);
+            let tabs = runs
+                .lock()
+                .map(|state| state.order.len())
+                .unwrap_or(1)
+                .max(1);
             match key.code {
                 KeyCode::Char('q') | KeyCode::Esc => {
                     leave = true;
@@ -497,7 +517,7 @@ fn watch(runs: &Arc<Mutex<Runs>>, started: Instant) -> std::io::Result<()> {
                 }
                 _ => {}
             }
-            painted = Instant::now() - REFRESH;
+            painted = None;
             if !event::poll(Duration::ZERO)? {
                 break;
             }
@@ -659,7 +679,7 @@ fn main() -> std::process::ExitCode {
     let reader = {
         let (runs, stop) = (Arc::clone(&runs), Arc::clone(&stop));
         let (workspace, log) = (workspace.clone(), log.clone());
-        std::thread::spawn(move || follow(workspace, container, runs, log, !tabs, stop))
+        std::thread::spawn(move || follow(&workspace, container, &runs, &log, !tabs, &stop))
     };
 
     if tabs {
