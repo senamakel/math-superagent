@@ -3,7 +3,7 @@
 
 use std::collections::BTreeMap;
 
-use super::{INDEX_FILE, index_for, parse, render, split};
+use super::{folder_name, INDEX_FILE, index_for, parse, render, split};
 
 fn entries(pairs: &[(&str, &str)]) -> BTreeMap<String, String> {
     pairs
@@ -82,4 +82,20 @@ fn a_path_resolves_to_the_index_beside_it() {
 
     assert_eq!(index_for("research"), format!("research/{INDEX_FILE}"));
     assert_eq!(index_for(""), INDEX_FILE);
+}
+
+#[test]
+fn naming_the_mount_point_from_inside_it_resolves_to_the_folder_meant() {
+    // A live run failed three refreshes in a row on exactly these spellings.
+    assert_eq!(folder_name("workspace"), "");
+    assert_eq!(folder_name("workspace/toolkits"), "toolkits");
+    assert_eq!(folder_name("workspace/research"), "research");
+    assert_eq!(folder_name("/workspace/research"), "research");
+    assert_eq!(folder_name("research"), "research");
+    // The root index is what `workspace` should have named all along.
+    assert_eq!(index_for(&folder_name("workspace")), INDEX_FILE);
+    assert_eq!(
+        split("workspace/toolkits/frames.py"),
+        ("toolkits".into(), "frames.py".into())
+    );
 }
