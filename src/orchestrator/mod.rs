@@ -31,6 +31,7 @@ use crate::agent::budget::RunBudget;
 use crate::agent::reflection::ReflectionMiddleware;
 use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
 use crate::agent::sticky::StickyProviderModel;
+use crate::agent::untruncated::UntruncatedModel;
 use crate::agent::trace::RunTracer;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,

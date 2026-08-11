@@ -17,14 +17,21 @@ For fixed b, best a = round(pi - b*sqrt(d)), error = ||b sqrt(d) - pi||_Z.
 
 ## Verified (Task 1)
 brute.py reproduces examples 1,2,3 exactly (see run output in scratchpad).
+solution_bothsides.py reproduces ALL FOUR examples (1-3 plus the d=2 n=1e13 oracle).
+
+## Additional exact laws (verified on corrected both-sign data, n=1e13)
+- |I_d| == |nint(b_d sqrt(d) - pi)| for all 90 d (90/90).
+- m^2 scaling: |I_{m^2 d0}| == |I_{d0}| iff m | b_{d0} (36/36 pairs); when equal,
+  b_{m^2 d0} == b_{d0}/m (18/18).
 
 ## Established results
 - Cabanillas Prop 9/10 (arXiv:1904.01874) candidate set for record b's of
   ||b alpha - beta||_Z, alpha={sqrt d}, beta={pi}, verified EXACTLY against
   brute force on d in {2,3,5,7,11}, N in {200,1000,5000} AND at full method
-  scale n=10^6 for d in {2,3,5,6,7,8,10,11,13,92,83,57}:
-  b_d = Cabanillas candidate with minimum distance to beta; a = nint(pi - b sqrt(d)).
-  (toolkits/verify_cabanillas_exact.py, toolkits/test_method_scale.py)
+  scale n=10^6 for ALL 90 non-square d (both signs of b):
+  b_d = Cabanillas candidate with minimum distance; a = nint(pi - b sqrt(d)).
+  (toolkits/verify_cabanillas_exact.py, toolkits/validate_all_d.py,
+   toolkits/validate_bothsides.py)
 - d=2 oracle verified exactly: a+b.sqrt(2)-pi = -4.2930117e-15; b=4375636191520
   is NOT a sqrt(2) semiconvergent denominator (toolkits/verify_oracle_d2.py).
 - uniform exact relation at n=10^4 (90 d's): |I_d| = nint(b_d*sqrt(d) - pi)
