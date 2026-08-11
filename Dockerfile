@@ -45,7 +45,16 @@ ENV MATH_AGENT_CONTAINER=1
 ENV AGENT_WORKSPACE=/workspace
 ENV QDRANT_URL=http://qdrant:6333
 ENV PIP_TARGET=/workspace/.python-packages
-ENV PYTHONPATH=/workspace/.python-packages
+# Pip installs first, then the run's own code. `/workspace/code` on the path is
+# what makes reuse work at all: every agent's working directory is /workspace,
+# so `from lib.perms import lex_ranks` resolved only by accident, when a
+# program happened to be started as `python code/<name>.py` and Python put that
+# folder on the path itself. Any other invocation raised ImportError, and the
+# committed workspaces carry three separate `sys.path.insert` dialects from
+# agents working that out the hard way — after which they stopped importing and
+# started pasting, one of them ending with seven copies of the same function.
+# Reuse has to be the cheap path or it does not happen.
+ENV PYTHONPATH=/workspace/.python-packages:/workspace/code
 ENV PIP_NO_CACHE_DIR=1
 
 ENTRYPOINT ["/usr/local/bin/math-agent"]
