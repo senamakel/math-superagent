@@ -4,4 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `amoeba.py` | Reusable routines for PE763 3D amoeba: bitmask/frozenset encode-decode, config feature extraction (level histogram a_k, bounding box, max level M), and the one-step BFS successor function on bitmask encodings. Used by the extended BFS driver and the data dumps. |
+| `amoeba.py` | Reusable PE763 routines shared by every oracle and data dump: fixed-width int-bitmask encode/decode, structural feature extraction (level histogram, bbox, max level M), and the one-step BFS successor function next_level_bits. Correctness established by the brute oracles reproducing D(2)=3 and D(10)=44499. |
