@@ -593,6 +593,13 @@ fn support_agents(
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
+            "judge",
+            "Judge",
+            "Scores how an attempt was conducted and decides whether the run must start over.",
+        )
+        .with_model("openrouter")
+        .with_tools([document_tools[1]]),
+        AgentDefinition::new(
             "reflection",
             "Reflection Agent",
             "Judges one attempt, extracts the lesson, and decides whether it is really done.",
@@ -696,6 +703,7 @@ struct RolePrompts {
     coder: String,
     goals: String,
     reflection: String,
+    judge: String,
     pattern: String,
     inventor: String,
     librarian: String,
@@ -861,6 +869,18 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // PROGRESS means judging *relative to previous attempts*, and a verdict
         // on whether this attempt established something new is guesswork
         // without the record of what the earlier ones established.
+        // Judges the conduct of an attempt, not its mathematics. It gets the
+        // criteria it is judging against and the record of what earlier
+        // attempts established — enough to tell a run repeating a disproved
+        // belief from one exploring honestly — and nothing that would let it
+        // start solving. No `SCRATCHPAD.md`: provisional arithmetic is not
+        // evidence about how an attempt was conducted.
+        "judge" => &[
+            "GOAL.md",
+            "MEMORY.md",
+            "INDEX.md",
+            "reflections/INDEX.md",
+        ],
         "reflection" => &[
             "GOAL.md",
             "TASKS.md",
@@ -1063,6 +1083,15 @@ fn register_support_agents(
     }
     register_recall(&mut reflection, &parts.workspace);
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
+
+    // The judge is as tool-poor as reflection, and for the same reason: a
+    // judge that can start solving stops judging. It reads the workspace only
+    // to check a claim in the report against what is on disk.
+    let mut judge = specialist_harness(parts.model.clone(), parts.budget, "judge", parts.tracer);
+    for tool in parts.documents.tools() {
+        register_resilient(&mut judge, tool);
+    }
+    subagents.register("judge", Arc::new(judge), prompts.judge)?;
 
     let mut pattern = specialist_harness(
         parts.model.clone(),
