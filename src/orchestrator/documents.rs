@@ -33,8 +33,14 @@ const MAX_DOCUMENT_BYTES: usize = 5 * 1024 * 1024;
 /// Enough to recognise the file that was meant, few enough that a large folder
 /// cannot turn one failed read into a wall of text.
 const NEARBY_ENTRIES: usize = 20;
-/// Suffix marking the full converted text beside its summary.
+/// Suffix marking the full converted text of a source.
 pub(super) const FULL_TEXT_SUFFIX: &str = ".full.md";
+
+/// Level of the research tree holding untouched originals.
+const SOURCE_DIR: &str = "L0";
+
+/// Level of the research tree holding one note per source.
+const DIGEST_DIR: &str = "L1";
 
 /// Characters of a downloaded document kept in the summary file before it has
 /// been digested.
