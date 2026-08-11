@@ -39,6 +39,20 @@ Extra ran beyond the required n<=5: n=3 C=36 S=496; n=6 C=473 S=15925.
   Together with the n=10 match this gives two independent routes to the small-n
   values, satisfying the verify-independently requirement at the oracle level.
 
+- O(1)-per-frame power-sum summation: /workspace/solution_power.py replaces the
+  per-frame t-loop with Faulhaber closed forms.  With X=n+1,
+    T(t) = X^3 - X^2(A+B+C)t + X(AB+AC+BC)t^2 - (ABC)t^3
+    pts(t) = ell^3 t^3 + ell*D t^2 + D t + 1
+    g(t) = pts*T  (degree 6)
+  C-contrib = sum_j p_j*P(j,tmax),  S-contrib = sum_k c_k*P(k,tmax), where
+  P(k,n)=sum_{t=1}^n t^k via exact integer Faulhaber forms (P0..P6).  Cost per
+  frame is O(1).  It imports the enumeration unchanged from frame_method.py (so
+  identical), and only the summation differs.
+  Validation (power_validate.txt): Faulhaber P(k,n) matched a literal loop for
+  k=0..6, n=0..200; C/S matched oracle for n=1,2,4,5,10,50 (all OK); and at n=50
+  the power-sum result is bit-for-bit identical (asserted) to the direct t-loop.
+  n=50 O(1) summation wall time ~0.001s (enumeration, ~0.3s, excluded).
+
 ## Failed approaches
 
 - Initially derived w = (u x v) / m (dividing by the squared norm).  This is

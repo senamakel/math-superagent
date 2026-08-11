@@ -1130,14 +1130,24 @@ fn checked_workspace_path(workspace: &Path, requested: &str) -> Result<PathBuf> 
     Ok(workspace.join(relative))
 }
 
-/// Removes a leading `/workspace` mount-point prefix from a requested path.
+/// Removes a leading `workspace` mount-point prefix from a requested path.
 ///
 /// Only an exact path component match is stripped, so a sibling directory such
 /// as `/workspace-other/secret` keeps its absolute form and is refused by the
 /// caller.
+///
+/// The relative spellings — `workspace/toolkits`, or bare `workspace` — are
+/// stripped too. Every agent's working directory *is* `/workspace`, so a path
+/// beginning with that component is always the same mistake: naming the mount
+/// point from inside it. It cost a live run three consecutive `refresh_index`
+/// failures on `workspace`, `workspace/toolkits`, and `workspace/research`,
+/// none of which the model could tell apart from the folder genuinely being
+/// absent. Nothing is lost by refusing the literal reading: a folder actually
+/// named `workspace` inside the workspace would be `/workspace/workspace`,
+/// which no part of the runtime or template creates.
 fn strip_workspace_prefix(requested: &str) -> &str {
     let trimmed = requested.trim();
-    for prefix in ["/workspace/", "/workspace"] {
+    for prefix in ["/workspace/", "/workspace", "workspace/", "workspace"] {
         if let Some(rest) = trimmed.strip_prefix(prefix)
             && (prefix.ends_with('/') || rest.is_empty() || rest.starts_with('/'))
         {
