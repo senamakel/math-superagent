@@ -77,3 +77,33 @@ fn a_turn_is_bounded_so_wall_clock_is_bounded() {
     // ...but still a ceiling, not unlimited.
     assert!(budget.max_turn_output_tokens <= 32_000);
 }
+
+#[test]
+fn a_judging_budget_is_narrowed_but_never_widened() {
+    // The judge sits on the critical path of every attempt, and its job is to
+    // read a report and answer in four lines. A live judge given an
+    // investigation's budget spent four minutes and fifteen model calls
+    // reading the programs the attempt had written.
+    let full = RunBudget::default();
+    let judging = full.for_judging();
+
+    assert!(judging.max_model_calls < full.max_model_calls);
+    assert!(judging.run_timeout < full.run_timeout);
+    assert!(
+        judging.max_tool_calls > judging.max_model_calls,
+        "one turn can request several reads, so the graceful cap stays the model one"
+    );
+
+    // A run already tighter than the judging bounds keeps its own: this
+    // narrows a budget and must never hand one more room than it was given.
+    let tight = RunBudget {
+        max_model_calls: 3,
+        max_tool_calls: 4,
+        run_timeout: std::time::Duration::from_secs(30),
+        ..full
+    };
+    let narrowed = tight.for_judging();
+    assert_eq!(narrowed.max_model_calls, 3);
+    assert_eq!(narrowed.max_tool_calls, 4);
+    assert_eq!(narrowed.run_timeout, std::time::Duration::from_secs(30));
+}
