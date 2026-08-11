@@ -1293,13 +1293,17 @@ fn register_support_agents(
 
     let mut inventor =
         specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
-    PATTERN_PLACEHOLDER
-    let mut pattern = specialist_harness(
-        parts.model.clone(),
-        parts.budget,
-        "pattern_finder",
-        parts.tracer,
+    if let Some(exa) = parts.exa.clone() {
+        register_resilient(&mut inventor, exa);
+    }
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut inventor, tool);
+    }
+    register_resilient(
+        &mut inventor,
+        Arc::new(RecallResearchTool::new(parts.vector_store.clone())),
     );
+    PATTERN_TAIL
     for tool in PatternTool::all() {
         register_resilient(&mut pattern, tool);
     }
