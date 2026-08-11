@@ -36,7 +36,7 @@ def numeration(alpha, beta, a, nterms):
     """Algorithm 3(ii): digits b_k, deltas delta_k (delta_-1=1, delta_0=alpha,...).
     Here `a` = full CFE list [a0,a1,a2,...] so the k-th partial quotient (k>=1) is a[k],
     valid only while k < len(a)."""
-    n = min(nterms, len(a) - 1)   # a[k] defined for k in 0..len(a)-1
+    n = min(nterms, len(a) - 2)   # a[k] defined for k in 0..len(a)-1; need up to n+1
     delta = { -1: mp.mpf(1), 0: alpha }
     for k in range(1, n + 2):
         delta[k] = delta[k-2] - a[k] * delta[k-1]
@@ -58,7 +58,7 @@ def candidates(alpha, beta, nterms=45):
         idx_end = 2*k - 1
         if idx_end > nterms: break
         pref = sum(b[i] * q[i-1] for i in range(1, idx_end + 1))
-        jmax = b[2*k] - 1 if 2*k <= nterms else 0
+        jmax = (b[2*k] - 1) if 2*k in b else 0
         for j in range(0, jmax + 1):
             out.add(pref + j * q[2*k - 1])
     # best left: k in N -> 2k <= nterms-1
@@ -66,8 +66,7 @@ def candidates(alpha, beta, nterms=45):
         idx_end = 2*k
         if idx_end > nterms: break
         pref = sum(b[i] * q[i-1] for i in range(1, idx_end + 1))
-        # j in 0..b_{2k+1}-1; if 2k+1 > nterms, b=0 -> only j=0
-        jmax = b[2*k + 1] - 1 if 2*k + 1 <= nterms else 0
+        jmax = (b[2*k + 1] - 1) if 2*k + 1 in b else 0
         for j in range(0, jmax + 1):
             out.add(pref + j * q[2*k])
     return sorted(x for x in out if x >= 0), b, q
