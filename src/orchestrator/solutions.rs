@@ -212,6 +212,24 @@ fn continuation_briefing(attempt: usize) -> String {
     }
 }
 
+/// Returns whether the workspace holds a program the run could have executed.
+///
+/// A deliberately shallow check: it asks whether any `.py` or `.sh` file
+/// exists, not whether it is correct. That is enough to catch the failure it
+/// exists for — a confident answer with nothing behind it — without pretending
+/// to judge mathematics from the filesystem.
+fn has_executable_artifact(workspace: &Path) -> bool {
+    let Ok(entries) = std::fs::read_dir(workspace) else {
+        return false;
+    };
+    entries.filter_map(std::result::Result::ok).any(|entry| {
+        let name = entry.file_name();
+        let name = name.to_string_lossy();
+        (name.ends_with(".py") || name.ends_with(".sh"))
+            && entry.metadata().is_ok_and(|meta| meta.len() > 0)
+    })
+}
+
 /// Counts the distinct lessons a reflection produced.
 ///
 /// A `LESSON:` line may carry several points as bullets; each is a separate
@@ -324,7 +342,26 @@ async fn reflect_step(
     let upper = reflection.to_uppercase();
     // Require the explicit positive verdict: anything unparsable or hedged
     // leaves the loop running rather than declaring success.
-    state.solved = upper.contains("VERDICT: SOLVED") || upper.contains("VERDICT:SOLVED");
+    let claimed = upper.contains("VERDICT: SOLVED") || upper.contains("VERDICT:SOLVED");
+    // ...and require evidence on disk that a program was actually written.
+    //
+    // The verdict comes from a model, and this runtime deliberately uses a
+    // small fast one that confabulates. A claimed answer with no program in
+    // the workspace is the signature failure: a confident final report,
+    // plausible numbers, and nothing that ever ran. Ending the loop on that
+    // is worse than not finishing, because it presents a guess as a result.
+    let evidenced = workspace.is_none_or(has_executable_artifact);
+    state.solved = claimed && evidenced;
+    if claimed && !evidenced {
+        state.lessons.push(
+            "Reported SOLVED but the workspace contains no program. An answer that was never \
+             computed is not an answer: write the program, run it, and show its output."
+                .to_string(),
+        );
+        if let Some(tracer) = tracer {
+            tracer.note("solution loop: SOLVED rejected, no program in the workspace");
+        }
+    }
     let progressed = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
     if progressed {
         state.unproductive = 0;
