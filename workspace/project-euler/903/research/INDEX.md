@@ -4,11 +4,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `L0/INDEX.md` | Index of research/L0: raw full texts and excerpt captures behind the L1 summaries; read the L1 summary first |
 | `L0/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
 | `L0/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
 | `L0/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
-| `L1/INDEX.md` | Index of research/L1: curated per-source summaries, each under 1000 tokens; the front door into the library |
 | `L1/archer_geary_descents_powers.md` | _(undescribed)_ |
 | `L1/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
 | `L1/cambie_yan_html.md` | _(undescribed)_ |
@@ -33,7 +31,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1/report_rank_powers.md` | _(undescribed)_ |
 | `L1/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `L1/stong_average_order_permutation.md` | _(undescribed)_ |
-| `L2/INDEX.md` | Index of research/L2: synthesis notes, the proved core mechanism, summation machinery, negative reports |
 | `L2/cycle_type_toolkit.md` | _(undescribed)_ |
 | `L2/mechanism_pair_inversions.md` | _(undescribed)_ |
 | `L2/order_random_permutation.md` | _(undescribed)_ |
