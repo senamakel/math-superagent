@@ -1,3 +1,9 @@
+# D(N) for PE763, extended BFS oracle
+# Values reproduced/established:
+#   D(0..12) from the frozenset oracle; D(13)=1749267 checked by both the
+#   frozenset and bitmask oracles; D(14)=5949063 confirmed by TWO independent
+#   implementations (lib/amoeba.next_level_bits and amoeba_verify.py).
+# Checked against statement: D(2)=3, D(10)=44499.
 D(0)=1
 D(1)=1
 D(2)=3
@@ -12,3 +18,4 @@ D(10)=44499
 D(11)=151263
 D(12)=514419
 D(13)=1749267
+D(14)=5949063
