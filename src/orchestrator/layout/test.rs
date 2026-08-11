@@ -79,3 +79,57 @@ fn a_moved_file_is_reported_and_an_unmoved_one_is_not() {
     assert!(moved.contains("code/out"), "{moved}");
     assert_eq!(note("GOAL.md", &placed("GOAL.md")), "");
 }
+
+#[tokio::test]
+async fn a_program_written_through_the_shell_is_filed_after_the_command() {
+    // The hole the write path cannot close: a heredoc and a redirect reach the
+    // filesystem directly, so the tool sees a command and an exit code. One
+    // live workspace collected six root programs in nineteen minutes this way.
+    let root = std::env::temp_dir().join(format!("math-agent-sweep-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("the sweep workspace is creatable");
+    for name in ["dyadic.py", "table.json", "GOAL.md", ".keep"] {
+        std::fs::write(root.join(name), "x").expect("a workspace file is writable");
+    }
+
+    let moved = sweep(&root).await;
+
+    assert!(root.join("code/dyadic.py").is_file(), "a program is filed");
+    assert!(
+        root.join("code/out/table.json").is_file(),
+        "what a program produced is filed apart from it"
+    );
+    assert!(root.join("GOAL.md").is_file(), "the run's prose stays put");
+    assert!(root.join(".keep").is_file(), "machinery is not the run's work");
+    assert_eq!(moved.len(), 2, "{moved:?}");
+
+    let note = swept_note(&moved);
+    assert!(note.contains("code/dyadic.py"), "{note}");
+    assert!(
+        swept_note(&[]).is_empty(),
+        "a command that moved nothing says nothing"
+    );
+    let _ = std::fs::remove_dir_all(&root);
+}
+
+#[tokio::test]
+async fn a_sweep_never_overwrites_a_file_already_filed() {
+    // A file carrying a result must not be replaced by one that happens to
+    // share its name — the earlier run's output is the record of how an answer
+    // was reached.
+    let root = std::env::temp_dir().join(format!("math-agent-sweep-keep-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code")).expect("the sweep workspace is creatable");
+    std::fs::write(root.join("code/solve.py"), "the real one").expect("a filed program is writable");
+    std::fs::write(root.join("solve.py"), "a later stray").expect("a stray is writable");
+
+    let moved = sweep(&root).await;
+
+    assert!(moved.is_empty(), "{moved:?}");
+    assert_eq!(
+        std::fs::read_to_string(root.join("code/solve.py")).expect("the filed program is readable"),
+        "the real one"
+    );
+    assert!(root.join("solve.py").is_file(), "the stray is left in place");
+    let _ = std::fs::remove_dir_all(&root);
+}
