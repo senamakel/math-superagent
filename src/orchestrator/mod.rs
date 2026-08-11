@@ -23,6 +23,7 @@ use tinyagents::harness::summarization::{
 
 use crate::agent::budget::RunBudget;
 use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
+use patterns::PatternTool;
 use crate::agent::trace::RunTracer;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
@@ -34,6 +35,26 @@ use documents::WorkspaceDocuments;
 use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 
 pub use tinyagents::harness::host::AgentDefinition;
+
+/// Specialists the goals agent may delegate to.
+const SPECIALISTS: [&str; 5] = [
+    "research",
+    "tool_builder",
+    "pattern_finder",
+    "inventor",
+    "librarian",
+];
+
+/// Agents the top-level orchestrator may delegate to directly.
+const DELEGATES: [&str; 7] = [
+    "research",
+    "tool_builder",
+    "goals",
+    "reflection",
+    "pattern_finder",
+    "inventor",
+    "librarian",
+];
 
 const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
 const RECENT_MESSAGES_TO_KEEP: usize = 12;
@@ -234,6 +255,8 @@ pub struct OrchestratorAgent {
     inner: ObservedAgent,
     registry: Arc<AgentRegistry>,
     system_prompt: String,
+    subagents: AsyncSubagentManager,
+    tracer: Arc<RunTracer>,
 }
 
 impl std::fmt::Debug for OrchestratorAgent {
