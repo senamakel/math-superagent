@@ -662,11 +662,12 @@ impl Tool<()> for WriteToolFile {
 #[derive(Debug)]
 struct ExecuteCommand {
     workspace: PathBuf,
+    timeout: Duration,
 }
 
 impl ExecuteCommand {
-    fn new(workspace: PathBuf) -> Self {
-        Self { workspace }
+    fn new(workspace: PathBuf, timeout: Duration) -> Self {
+        Self { workspace, timeout }
     }
 }
 
