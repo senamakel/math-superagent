@@ -249,7 +249,36 @@ install `sympy` before it can factor anything spends minutes of its budget on
 setup, fails outright when the index is slow, and every workspace pays again.
 They come from apt rather than pip because the container root filesystem is
 read-only at runtime, so system packages are the only ones importable without
-writing to `/workspace` first. Two more failure modes on the same class of tool
+writing to `/workspace` first.
+
+The constraint stack sits beside it for the same reason and pays for the
+`sat_solver` role: `python3-z3`, `python3-pulp`, `python3-pycosat`,
+`python3-igraph`, the `z3`, `cvc5`, `minisat`, `cryptominisat`, `glpsol`, and
+`cbc` binaries, and `nauty` — whose Debian binaries are prefixed, so it is
+`nauty-geng`, not `geng`. CP-SAT (`ortools`) and PySAT (`python-sat`) come from
+pip at *build* time, into the system site-packages, because Debian ships
+neither: `apt-cache show python3-ortools` resolves as a name and has no
+installation candidate. Exhaustive generation up to isomorphism is what turns a
+solver's `UNSAT` from an assertion into a cross-checked bound, which is why
+`nauty` is here rather than left to a hand-rolled generator grinding through
+`n!` relabellings.
+
+Lean 4 with a pre-built Mathlib is the largest thing in the image and pays for
+`lean_prover`. `lake exe cache get` downloads the compiled `.olean` files
+rather than building Mathlib from source; the difference is minutes against
+many hours. Two details are load-bearing. `elan default` is set globally rather
+than as a directory override, because an override is scoped to `/opt/mathlib4`
+and every agent's working directory is `/workspace`, where `lean` would
+otherwise fail with "no default toolchain configured". And `lean` is a wrapper
+script rather than an `ENV LEAN_PATH`, because the value is the search path of
+every Mathlib dependency and is known only after the build ran — `ENV` cannot
+take a command substitution, and without the full path an `import Mathlib.…`
+fails on `unknown module prefix 'Batteries'`, which reads as a broken install
+rather than a missing variable. The image is smoke-tested on both at build
+time, so a Lean install that cannot import Mathlib fails the build rather than
+the run.
+
+Two more failure modes on the same class of tool
 are worth stating: a truncated tool call and a corrupt document index. Both are
 covered under the reflection middleware and `documents.rs` respectively, and
 neither may be allowed to end a run.
@@ -553,6 +582,22 @@ Starting a run and watching one are separate commands on purpose.
 ./euler-tui 763 --replay        # read the last run's log; touch nothing
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
 ```
+
+A Project Euler problem has one number as its answer and a ceiling on how long
+it can reasonably take. An open conjecture has neither, so it gets its own
+launcher and its own task shape — build the library, extract what is known,
+build the oracle, then loop — and the workspace rather than a number is its
+identity:
+
+```sh
+./conjecture erdos-gyarfas      # start or continue workspace/conjectures/erdos-gyarfas
+./euler-tui --workspace conjectures/erdos-gyarfas
+```
+
+`./conjecture <slug>` requires `workspace/conjectures/<slug>/problem.md` to
+exist and reads `GOAL.md` beside it. The statement, what counts as a result,
+and the leads into the literature are the workspace's, not the script's: a
+launcher that carried the mathematics would need editing for every problem.
 
 `./euler-tui` **only watches**. It finds the container that has the workspace
 mounted and follows it, and it cannot start, stop, or restart anything. That is
