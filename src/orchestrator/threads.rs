@@ -318,7 +318,7 @@ pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) {
 /// Whether a written path is a thread file the table is derived from.
 pub(super) fn is_thread(relative: &str) -> bool {
     relative.starts_with(&format!("{THREADS_DIR}/"))
-        && relative.ends_with(".md")
+        && super::claims::is_markdown(relative)
         && !relative.ends_with(super::folder_index::INDEX_FILE)
 }
 

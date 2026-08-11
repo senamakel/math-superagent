@@ -218,15 +218,14 @@ pub(super) fn fields(block: &str) -> Vec<(String, String)> {
                 key.trim().to_ascii_lowercase().replace('_', "-"),
                 value.trim().to_string(),
             )),
-            _ => match out.last_mut() {
-                Some((_, value)) => {
+            _ => {
+                if let Some((_, value)) = out.last_mut() {
                     if !value.is_empty() {
                         value.push(' ');
                     }
                     value.push_str(trimmed);
                 }
-                None => continue,
-            },
+            }
         }
     }
     out
@@ -557,6 +556,13 @@ pub(super) fn detail(claim: &Claim) -> String {
     out
 }
 
+/// Whether a path names a Markdown file, however it is cased.
+pub(super) fn is_markdown(relative: &str) -> bool {
+    std::path::Path::new(relative)
+        .extension()
+        .is_some_and(|extension| extension.eq_ignore_ascii_case("md"))
+}
+
 /// Re-derives the ledger from disk and rewrites [`CLAIMS_PATH`].
 ///
 /// Called from the write path rather than left to a tool, for the same reason
@@ -574,7 +580,7 @@ pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) ->
 /// Whether a written path is a note the ledger is derived from.
 pub(super) fn is_note(relative: &str) -> bool {
     relative.starts_with(&format!("{}/", super::documents::RESEARCH_DIR))
-        && relative.ends_with(".md")
+        && is_markdown(relative)
         && !relative.ends_with(super::documents::FULL_TEXT_SUFFIX)
         && !relative.ends_with(CLAIMS_PATH)
 }
