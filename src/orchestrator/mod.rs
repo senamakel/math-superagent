@@ -397,6 +397,18 @@ impl OrchestratorAgent {
     /// what the team as a whole costs. A team that exhausts its allowance stops
     /// and says so while the others carry on.
     fn spawn_support_teams(&self, problem: &str) -> Vec<teams::TeamHandle> {
+        /// Bytes of `context.md` past which the research team must compress
+        /// before it may gather anything more.
+        ///
+        /// The brief asks for a few lines per cycle and the file still grew
+        /// from 1.2 KB to 6.8 KB in an hour, because each cycle appends what it
+        /// learned and nothing ever asks what the file now costs. It is routed
+        /// into nine roles' system prompts, so every kilobyte is re-sent on
+        /// every model call those roles make; at 6.8 KB the standing brief was
+        /// approaching two thousand tokens a call. A ceiling enforced against
+        /// the file on disk holds where an instruction in a prompt did not.
+        const CONTEXT_BUDGET_BYTES: u64 = 4_096;
+
         let mut handles = Vec::new();
         for (name, agent, completion, budget, brief) in [
             (
@@ -427,6 +439,7 @@ impl OrchestratorAgent {
                 continue;
             }
             let subagents = self.subagents.clone();
+            let context_file = self.workspace.join("context.md");
             let prompt = format!("{brief}\n\nProblem this run is solving:\n{problem}");
             handles.push(teams::spawn(
                 name,
@@ -436,6 +449,20 @@ impl OrchestratorAgent {
                 move |inbox: Vec<teams::TeamMessage>| {
                     let subagents = subagents.clone();
                     let mut prompt = prompt.clone();
+                    if name == "research"
+                        && std::fs::metadata(context_file.as_path())
+                            .is_ok_and(|meta| meta.len() > CONTEXT_BUDGET_BYTES)
+                    {
+                        let _ = write!(
+                            prompt,
+                            "\n\nBefore anything else: context.md has grown past \
+                             {CONTEXT_BUDGET_BYTES} bytes and is re-sent on every model call in \
+                             nine roles. Rewrite it shorter than that this cycle — merge \
+                             duplicate findings, drop what later work has settled, and keep the \
+                             statements and their consequences rather than the narrative. \
+                             Gather nothing new until it fits."
+                        );
+                    }
                     for message in &inbox {
                         let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);
                     }
