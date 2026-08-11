@@ -57,6 +57,31 @@ fn a_reformatted_index_does_not_lose_its_descriptions() {
 }
 
 #[test]
+fn a_tree_level_is_described_in_the_index_at_its_root() {
+    // One index per tree, not one per level. A live organizer refreshed
+    // `research` after the levels went in, found no files directly in it, and
+    // dropped all fourteen descriptions as stale.
+    assert_eq!(
+        split("research/L1/paper.md"),
+        ("research".to_string(), "L1/paper.md".to_string())
+    );
+    assert_eq!(
+        split("reflections/L0/1700_01_learnings.md"),
+        (
+            "reflections".to_string(),
+            "L0/1700_01_learnings.md".to_string()
+        )
+    );
+    // An ordinary subfolder still keeps its own index.
+    assert_eq!(
+        split("toolkits/pell.py"),
+        ("toolkits".to_string(), "pell.py".to_string())
+    );
+    assert!(super::is_level("L0") && super::is_level("L12"));
+    assert!(!super::is_level("L") && !super::is_level("Lib") && !super::is_level("folds"));
+}
+
+#[test]
 fn a_synthesis_survives_the_refresh_that_rewrites_the_table_beneath_it() {
     // `research/INDEX.md` is the root of the summary tree, so a refresh that
     // re-derives the file list must not take the fold down with it.
