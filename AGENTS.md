@@ -470,15 +470,53 @@ Every downloaded document is filed under `research/`, enforced by
 `documents::research_path` rather than requested in a prompt. Downloads are the
 one kind of file that arrives from outside the run, and separating them from the
 run's own derivations is what lets an agent tell at a glance what it gathered
-from what it worked out. A path already inside `research/` is left alone;
-anything else is moved into it, with `/workspace/` and `./` prefixes trimmed
-first so the common spellings do not produce `research/workspace/...`.
+from what it worked out.
 
-The librarian keeps `research/INDEX.md` current, and receives it as context so
-it does not download the same paper twice. Research and toolkits follow one
-shape: a folder, an `INDEX.md`, and one small file per thing — per source, per
-helper function — so reading what you need never means loading what you do
-not.
+`research/` and `reflections/` are summary trees, not flat folders
+(`src/orchestrator/context_tree.rs`):
+
+```text
+research/            reflections/
+├── INDEX.md         ├── INDEX.md      the root — what it all now means
+├── L0/              ├── L0/           originals, never edited
+├── L1/              ├── L1/           one note per original
+└── L2/              └── L2/           one note per ten notes below
+```
+
+`L0` is the untouched original — the complete converted document, or the
+reflection the loop wrote. Each level above holds one note per ten below,
+capped at a thousand tokens, and a new level appears only when the one under it
+outgrows a single node. `context.md` is a root in its own right under the same
+cap.
+
+The cap is the point. These files are re-sent on every model call in every role
+that reads them, and asking a prompt for "a few hundred words" produced a 6.8 KB
+`context.md` inside an hour, because each cycle appends what it learned and
+nothing ever asks what the file now costs. So compression is a tree rather than
+a rewrite: a flat rewrite drops what the last pass judged unimportant, records
+nothing about what it dropped, and ends up confident about things no longer
+traceable to a source. Every node links what it covers with Obsidian wikilinks,
+so the workspace opens as a vault and what a fold leaves out is one step down
+rather than gone.
+
+`context_tree::plan` measures this on disk and reports one fault at a time —
+over budget, then outgrown, then behind its children — and `briefing` renders
+the highest-priority one into the research team's next cycle. It writes
+nothing: a fold is a judgement about meaning, so an agent writes it; whether a
+node is within budget and reflects what is under it is not a judgement, so it
+is measured. Structure is recovered from the links themselves rather than a
+manifest, because a fold that has stopped linking a note has stopped covering
+it — exactly the fact a manifest would hide.
+
+`research/INDEX.md` therefore carries a synthesis as well as a table. The
+synthesis sits between `<!-- brief -->` markers and is written by an agent; the
+table below is derived from the directory by `refresh_index`. The markers are
+what let each rewrite its own half — without them the first refresh after a
+fold would silently replace the root of the tree with a file listing.
+
+The librarian receives the root as context so it does not download the same
+paper twice. Toolkits keep the older flat shape: a folder, an `INDEX.md`, and
+one small file per helper.
 
 ## Workspace discovery and the reflection log
 
