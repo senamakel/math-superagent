@@ -155,6 +155,7 @@ ORACLE_S = {1: 8, 2: 91, 4: 1878, 5: 5832, 10: 387003, 50: 29948928129}
 def main():
     lines = []
     def emit(s):
+        """Print and record a line of evidence."""
         print(s)
         lines.append(s)
 
