@@ -7,6 +7,8 @@ use tinyagents::graph::OrchestrationTaskStatus;
 use tinyagents::harness::steering::SteeringCommand;
 use tokio::sync::Semaphore;
 
+use crate::agent::Tool as _;
+
 use super::{AgentExecutor, AsyncSubagentManager, DEFAULT_MAX_CONCURRENT_AGENTS};
 use crate::agent::Result;
 use crate::agent::budget::RunBudget;
@@ -284,6 +286,7 @@ async fn one_call_launches_a_whole_fan_out_and_one_call_collects_it() -> Result<
             crate::agent::ToolCall {
                 id: "call-1".into(),
                 name: "spawn_agents".into(),
+                invalid: None,
                 arguments: serde_json::json!({ "runs": runs }),
             },
         )
@@ -302,6 +305,7 @@ async fn one_call_launches_a_whole_fan_out_and_one_call_collects_it() -> Result<
             crate::agent::ToolCall {
                 id: "call-2".into(),
                 name: "await_agents".into(),
+                invalid: None,
                 arguments: serde_json::json!({ "wait_seconds": 10 }),
             },
         )
@@ -328,6 +332,7 @@ async fn a_batch_with_one_forbidden_agent_starts_nothing() -> Result<()> {
             crate::agent::ToolCall {
                 id: "call-1".into(),
                 name: "spawn_agents".into(),
+                invalid: None,
                 arguments: serde_json::json!({ "runs": [
                     { "agent": "worker", "input": "allowed" },
                     { "agent": "intruder", "input": "not allowed" }
