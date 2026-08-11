@@ -10,6 +10,7 @@ top-level research/INDEX.md for the fold map ordering these by usefulness.
 | `cgt.md` | CGT framework (Conway ONAG, Winning Ways): numbers as games, disjunctive sum; board decomposes. |
 | `disjsum.md` | Core structural fact: G(a,b)=a−b, board's no-skip value = A−B. |
 | `loopy.md` | Loopy games, stoppers: skip self-loop → DP fixpoint, finite S(n). |
+| `mfl_pass.md` | Morrison–Friedman–Landsberg 2011 (arXiv:1204.3222): a one-time pass can drastically change game structure (Nim vs Chomp) — S(n) not readable off no-skip value. |
 | `misfiled.md` | Ledger of four accidental arXiv downloads in L0/ unrelated to the problem (compression, KOTO, COHERENT, medical segmentation); dead. |
 | `normalplay.md` | Unable-to-move loses; A−B>0 ⇒ One wins without skips. |
 | `partisan.md` | Sprague–Grundy inapplicable (disjoint move sets); minimax over (A,B). |
