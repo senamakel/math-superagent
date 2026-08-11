@@ -200,12 +200,25 @@ box behind a tab per team:
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
 ```
 
-`n` and `p` or the arrows change tab, the digits jump to one, the arrows and
+`Tab`, `n`, or the right arrow move to the next team and `Shift-Tab`, `p`, or
+the left arrow to the previous; the digits jump straight to one; the arrows and
 page keys scroll back, `g` returns to live, and `q` detaches without stopping
-the run — the container keeps going and the command can be re-attached. The
-loop's own lines — attempt boundaries, judge scores, verdicts, team lifecycle —
-appear in *every* tab, because they are the run's spine and nobody should have
-to be on the right tab to see one.
+the run — the container keeps going and the command can be re-attached. Input
+is polled every 15ms and every key waiting is consumed before the next repaint,
+so a keypress lands immediately and a held arrow scrolls by its whole run
+rather than one line per frame.
+
+Lines are coloured by what they report, so the shape of a run is readable while
+it scrolls: faults red, the loop's own verdicts yellow and bold, a spawn blue, a
+started tool call cyan and a finished one green — the gap between those two is
+where a ten-minute command sits, visible as a colour nothing has answered yet.
+Model calls are dimmed, because they are the bulk of the stream and rarely what
+is being looked for. The status bar turns red when the run has met a fault and
+carries the count. A terminal without colour falls back to plain attributes.
+
+The loop's own lines — attempt boundaries, judge scores, verdicts, team
+lifecycle — appear in *every* tab, because they are the run's spine and nobody
+should have to be on the right tab to see one.
 
 Nothing is filtered out of the record: the raw stream is teed verbatim to
 `config/console.log` in the workspace, so `grep` and the existing tooling work
