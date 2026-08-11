@@ -94,16 +94,16 @@ fn reflection_filenames_encode_the_outcome() {
     use super::reflection_filename;
     // A directory listing alone should show which attempts taught anything.
     assert_eq!(
-        reflection_filename(1700, 0),
-        "reflections/L0/1700_nothing.md"
+        reflection_filename(None, 1700, 0),
+        "reflections/L0.0/1700_nothing.md"
     );
     assert_eq!(
-        reflection_filename(1700, 1),
-        "reflections/L0/1700_01_learnings.md"
+        reflection_filename(None, 1700, 1),
+        "reflections/L0.0/1700_01_learnings.md"
     );
     assert_eq!(
-        reflection_filename(1700, 12),
-        "reflections/L0/1700_12_learnings.md"
+        reflection_filename(None, 1700, 12),
+        "reflections/L0.0/1700_12_learnings.md"
     );
 }
 

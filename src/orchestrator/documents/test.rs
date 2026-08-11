@@ -84,11 +84,20 @@ fn downloads_are_filed_under_the_research_folder() {
         research_path(root, "papers/lagrange.md"),
         "research/L1.0/lagrange.md"
     );
-    assert_eq!(research_path(root, "research/pell.md"), "research/L1.0/pell.md");
+    assert_eq!(
+        research_path(root, "research/pell.md"),
+        "research/L1.0/pell.md"
+    );
     // A path that already names a level knows where it belongs.
-    assert_eq!(research_path(root, "research/L2.0/pell.md"), "research/L2.0/pell.md");
+    assert_eq!(
+        research_path(root, "research/L2.0/pell.md"),
+        "research/L2.0/pell.md"
+    );
     // Common spellings must not produce research/workspace/...
-    assert_eq!(research_path(root, "/workspace/pell.md"), "research/L1.0/pell.md");
+    assert_eq!(
+        research_path(root, "/workspace/pell.md"),
+        "research/L1.0/pell.md"
+    );
     assert_eq!(research_path(root, "./pell.md"), "research/L1.0/pell.md");
     assert_eq!(research_path(root, "/pell.md"), "research/L1.0/pell.md");
     // A blank path still lands somewhere sensible rather than at the root.

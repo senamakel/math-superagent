@@ -362,7 +362,7 @@ async fn log_reflection(
         .map(|elapsed| elapsed.as_millis())
         .unwrap_or_default();
     let learnings = count_learnings(reflection);
-    let relative = reflection_filename(millis, learnings);
+    let relative = reflection_filename(Some(workspace), millis, learnings);
     let path = workspace.join(&relative);
     if let Some(parent) = path.parent() {
         let _ = tokio::fs::create_dir_all(parent).await;

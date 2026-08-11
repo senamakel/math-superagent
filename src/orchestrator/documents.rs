@@ -918,7 +918,10 @@ impl DocumentTool {
             // a markup-heavy page is unreadable otherwise, and the old
             // UTF-8 check turned a PDF into an error that ended the run.
             let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
-            let requested = research_path(self.documents.root(), &required_string(&call.arguments, "path")?);
+            let requested = research_path(
+                self.documents.root(),
+                &required_string(&call.arguments, "path")?,
+            );
             // The stored document is Markdown, so it is named `.md`. The
             // archive keeps the requested name, and so keeps the true
             // extension of the bytes it holds.
