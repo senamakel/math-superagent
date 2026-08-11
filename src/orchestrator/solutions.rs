@@ -413,19 +413,28 @@ async fn reflect_step(
     // usually visible in the first few terms a run computes. Waiting for two
     // consecutive unproductive attempts means the run has already spent the
     // budget the pattern would have saved.
-    let patterns = delegate(
-        subagents,
-        "pattern_finder",
-        format!(
-            "Look for exploitable structure in the data this attempt just produced. Read the \
-             workspace results, extract the integer sequences in them, and run the sequence tools \
-             on them. Where a check needs a computation the tools do not do, write and run the \
-             program yourself, or delegate it. Report only regularities that hold exactly over \
-             every term supplied, say plainly that they are conjectures, and give the first term \
-             that would falsify each one.\n\nProblem:\n{}",
-            state.problem
-        ),
+    //
+    // It is *detached*, not awaited: see [`PatternMailbox`]. The loop routes on
+    // the reflection alone, so making it wait for a sequence analysis bought
+    // nothing and cost a live run half an hour of stalled loop.
+    let pattern_prompt = format!(
+        "Look for exploitable structure in the data this attempt just produced. Read the \
+         workspace results, extract the integer sequences in them, and run the sequence tools \
+         on them. Where a check needs a computation the tools do not do, write and run the \
+         program yourself, or delegate it. Report only regularities that hold exactly over \
+         every term supplied, say plainly that they are conjectures, and give the first term \
+         that would falsify each one.\n\nProblem:\n{}",
+        state.problem
     );
+    let pattern_agents = subagents.clone();
+    let pattern_outbox = patterns.clone();
+    tokio::spawn(async move {
+        let report = delegate(&pattern_agents, "pattern_finder", pattern_prompt).await;
+        pattern_outbox.post(report);
+    });
+    // Whatever earlier pattern runs have finished by now joins this attempt's
+    // context. The report is no less true for arriving an attempt late.
+    let patterns = patterns.collect();
     // Past the rescue threshold the literature is re-opened on every
     // reflection, with what the run now knows rather than what it knew at the
     // start.
