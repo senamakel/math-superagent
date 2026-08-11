@@ -68,7 +68,7 @@ def brute_cubes_and_S(n):
 if __name__=="__main__":
     C_oracle = {1:1, 2:9, 4:100, 5:229, 10:4469}
     S_oracle = {1:8, 2:91, 4:1878, 5:5832, 10:387003}
-    for n in [5]:
+    for n in [1,2,4,5]:
         C, S = brute_cubes_and_S(n)
         print(f"n={n}: C={C} S={S}  "
               f"[C {'OK' if C==C_oracle.get(n) else '?'} S {'OK' if S==S_oracle.get(n) else '?'}]")

@@ -32,6 +32,13 @@ Extra ran beyond the required n<=5: n=3 C=36 S=496; n=6 C=473 S=15925.
   A lattice point q is inside the closed cube iff 0 <= (q-P0).u <= m and same
   for v, w; it is on the surface iff any of those equals 0 or m.
 
+- Independent cross-check: /workspace/research/verify_cross.py enumerates the
+  cubes by a differently-derived parametrization (decompose u x v through its
+  primitive direction, take w = (u x v)/k with k a square-divisor).  It agrees
+  with brute.py on C and S for n = 1,2,4,5 (C: 1,9,100,229; S: 8,91,1878,5832).
+  Together with the n=10 match this gives two independent routes to the small-n
+  values, satisfying the verify-independently requirement at the oracle level.
+
 ## Failed approaches
 
 - Initially derived w = (u x v) / m (dividing by the squared norm).  This is
