@@ -6,7 +6,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `level_10.txt` | _(undescribed)_ |
 | `level_11.txt` | _(undescribed)_ |
-| `level_12.txt` | _(undescribed)_ |
+| `level_12.txt` | Feature dump for level N=12 (D(12)=514419 configs): one line per reachable config, `level_hist_as_spaced_list |
 | `level_2.txt` | _(undescribed)_ |
 | `level_3.txt` | _(undescribed)_ |
 | `level_4.txt` | _(undescribed)_ |
