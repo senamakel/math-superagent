@@ -38,17 +38,29 @@ use crate::agent::trace::RunTracer;
 
 /// How many times one turn may be re-issued after being cut off.
 ///
-/// Two, matching the 4x clamp below: the first doubles the cap, the second
-/// doubles it again and reaches the ceiling. A third would spend minutes of
-/// generation to re-learn what the second established.
-const MAX_REISSUES: u32 = 2;
+/// One. This was two, matching upstream's 4x clamp, and the second doubling
+/// turned out to be pure cost. The evidence is one-sided: a re-issue at twice
+/// the cap is what unblocked a run whose every attempt had been ending on a
+/// truncated fragment, while a turn that then truncated *again* at twice the
+/// cap went on to spend 22.8 minutes generating the full 48,000 tokens and
+/// still emitted no tool call. Generation time is linear in output length, so
+/// the third attempt is always the most expensive and, on the evidence, the
+/// least likely to work.
+///
+/// A turn that has already failed at twice its budget is not short of room. It
+/// is doing something else — usually spending everything on the hidden
+/// reasoning channel — and the answer to that is a prompt, not another
+/// half-hour of generation. Returning the fragment hands it to upstream's own
+/// recovery, which still has its ladder.
+const MAX_REISSUES: u32 = 1;
 
 /// Ceiling on cap growth, as a multiple of the turn's original cap.
 ///
-/// The same 4x upstream uses. A turn needing more than four times the
-/// configured budget is not being truncated by an unlucky cap; it is being
-/// asked for the wrong thing, and the fix belongs in the prompt.
-const MAX_CAP_GROWTH: u32 = 4;
+/// Twice, so the single re-issue above can double once and no further. Kept as
+/// its own bound rather than folded into the count, because they answer
+/// different questions: how many extra calls a turn may cost, and how large
+/// any one of them may get.
+const MAX_CAP_GROWTH: u32 = 2;
 
 /// Wraps a chat model so a turn cut off at the cap is asked for again.
 pub struct UntruncatedModel<S: Send + Sync> {
