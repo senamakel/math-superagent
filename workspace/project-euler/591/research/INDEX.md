@@ -8,3 +8,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `berthe-imbert-ostrowski.md` | Summary of Berthé & Imbert (DMTCS 2009) on Ostrowski numeration and the inhomogeneous best-left-approximation algorithm; the O(log)-time continued-fraction route for the PE591 core subproblem. |
 | `cabanillas-labbe-ostrowski-variant.full.md` | _(undescribed)_ |
 | `cabanillas-labbe-ostrowski-variant.md` | _(undescribed)_ |
+| `report_pe591_inhomogeneous_approx.md` | Final research report: the inhomogeneous Diophantine approximation / nearest-lattice-point mathematics behind PE591 — the exact O(log B) Ostrowski α-numeration algorithm (Cabanillas-López & Labbé Props 9 & 10), the three-distance theorem structure, why the optimum is not Pell/unit related — with cited URLs for every claim. |
