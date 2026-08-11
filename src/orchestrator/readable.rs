@@ -379,6 +379,7 @@ fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
                 if needs_space(out, "[") {
                     out.push(' ');
                 }
+                ctx.table.cited(reference, &label, out.len());
                 if label.is_empty() {
                     let _ = write!(out, "[{reference}]");
                 } else {
