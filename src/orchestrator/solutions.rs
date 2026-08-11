@@ -167,18 +167,7 @@ async fn attempt_step(
     // saying so, each one restarts at "read the statement and write it down",
     // and a run can spend its whole budget re-documenting the problem without
     // ever executing anything.
-    let continuation = if state.attempts == 1 {
-        "This is the first attempt. Start by reading the statement, then immediately write and \
-         run a program that reproduces the worked examples it gives."
-            .to_string()
-    } else {
-        format!(
-            "This is attempt {}. Earlier attempts already wrote the workspace files; read \
-             goal.md and memory.md and CONTINUE from there. Do not re-extract or re-document the \
-             statement — that work is done, and repeating it is how this run fails.",
-            state.attempts
-        )
-    };
+    let continuation = continuation_briefing(state.attempts);
     let prompt = format!(
         "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{}\n\
          {fresh}\n\n\
@@ -199,6 +188,26 @@ async fn attempt_step(
     state.last_attempt = delegate(subagents, "goals", prompt).await;
     state.fresh_context.clear();
     state
+}
+
+/// Tells an attempt whether it is starting fresh or continuing existing work.
+///
+/// Without this every attempt restarts at "read the statement and write it
+/// down": the workspace files it would continue from are exactly the ones it
+/// re-creates. A run can then spend its whole budget re-documenting the problem
+/// and never execute anything, which is precisely what two live runs did.
+fn continuation_briefing(attempt: usize) -> String {
+    if attempt <= 1 {
+        "This is the first attempt. Start by reading the statement, then immediately write and \
+         run a program that reproduces the worked examples it gives."
+            .to_string()
+    } else {
+        format!(
+            "This is attempt {attempt}. Earlier attempts already wrote the workspace files; read \
+             goal.md and memory.md and CONTINUE from there. Do not re-extract or re-document the \
+             statement — that work is done, and repeating it is how this run fails."
+        )
+    }
 }
 
 /// Judges the last attempt and records the lesson it yields.
