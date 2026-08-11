@@ -462,6 +462,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "edit_document",
         "index_document",
         "search_documents",
+        "list_workspace",
     ];
     let mut registry = AgentRegistry::new();
     registry
@@ -483,6 +484,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 document_tools[1],
                 document_tools[4],
                 document_tools[5],
+                document_tools[6],
             ])),
         )?
         .register(
@@ -510,7 +512,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
 /// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 6],
+    document_tools: [&'static str; 7],
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
@@ -519,7 +521,12 @@ fn support_agents(
             "Judges one attempt, extracts the lesson, and decides whether it is really done.",
         )
         .with_model("openrouter")
-        .with_tools([document_tools[1], document_tools[2], document_tools[3]]),
+        .with_tools([
+            document_tools[1],
+            document_tools[2],
+            document_tools[3],
+            document_tools[6],
+        ]),
         AgentDefinition::new(
             "pattern_finder",
             "Pattern Recognition Agent",
