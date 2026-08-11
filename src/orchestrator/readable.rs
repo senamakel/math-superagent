@@ -69,6 +69,35 @@ pub(super) fn detect(bytes: &[u8], content_type: Option<&str>) -> Format {
     Format::Binary
 }
 
+/// A converted document and the citations it carries.
+///
+/// The links travel beside the Markdown rather than only inside it because
+/// they are evidence in their own right: a URL three of the run's sources all
+/// cite is the standard reference for the subject, and nothing else in the
+/// runtime is in a position to notice that.
+#[derive(Debug)]
+pub(super) struct Converted {
+    /// The document rendered as Markdown.
+    pub(super) markdown: String,
+    /// One record per distinct URL the document cites.
+    pub(super) links: Vec<LinkRecord>,
+}
+
+/// One outbound citation, with enough context to judge it without fetching it.
+///
+/// The context is the point. An anchor's URL says a document exists; the
+/// sentence it was cited in says why this source thought it mattered, which is
+/// the difference between a reading list and a list of URLs.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(super) struct LinkRecord {
+    /// The cited URL, with tracking parameters stripped.
+    pub(super) url: String,
+    /// The anchor text, empty when the citation was a bare URL.
+    pub(super) label: String,
+    /// A one-line window of the prose surrounding the citation.
+    pub(super) context: String,
+}
+
 /// Renders `bytes` to Markdown, or explains why it cannot be read.
 ///
 /// # Errors
@@ -81,12 +110,39 @@ pub(super) fn to_markdown(
     content_type: Option<&str>,
     source: &str,
 ) -> crate::agent::Result<String> {
+    convert(bytes, content_type, source).map(|converted| converted.markdown)
+}
+
+/// Renders `bytes` to Markdown and collects the citations it carries.
+///
+/// # Errors
+///
+/// As [`to_markdown`]: only content with no text at all fails.
+pub(super) fn convert(
+    bytes: &[u8],
+    content_type: Option<&str>,
+    source: &str,
+) -> crate::agent::Result<Converted> {
     let format = detect(bytes, content_type);
     let mut links = LinkTable::default();
-    let body = match format {
-        Format::Html => html_to_markdown(&String::from_utf8_lossy(bytes), &mut links),
-        Format::Pdf => pdf_to_text(bytes)?,
-        Format::Text => String::from_utf8_lossy(bytes).into_owned(),
+    let (body, records) = match format {
+        Format::Html => {
+            let rendered = html_to_markdown(&String::from_utf8_lossy(bytes), &mut links);
+            // Context is read off the pre-trim buffer, where the recorded
+            // offsets still point at the reference markers that produced them.
+            let records = links.records(&rendered);
+            (rendered, records)
+        }
+        Format::Pdf => {
+            let text = pdf_to_text(bytes)?;
+            let records = bare_links(&text);
+            (text, records)
+        }
+        Format::Text => {
+            let text = String::from_utf8_lossy(bytes).into_owned();
+            let records = bare_links(&text);
+            (text, records)
+        }
         Format::Binary => {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
                 "`{source}` is binary content with no readable text, so it cannot be turned into \
@@ -103,12 +159,20 @@ pub(super) fn to_markdown(
             format.label()
         )));
     }
-    Ok(format!(
-        "<!-- source: {} | converted from {} -->\n\n{body}\n{}",
-        clean_url(source),
-        format.label(),
-        links.render()
-    ))
+    let cited = clean_url(source);
+    Ok(Converted {
+        markdown: format!(
+            "<!-- source: {cited} | converted from {} -->\n\n{body}\n{}",
+            format.label(),
+            links.render()
+        ),
+        // A document citing itself is not a lead, and a reference page's link
+        // back to its own canonical URL is the commonest citation there is.
+        links: records
+            .into_iter()
+            .filter(|record| record.url != cited)
+            .collect(),
+    })
 }
 
 /// Extracts a PDF's text layer.
