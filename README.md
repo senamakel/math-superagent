@@ -57,7 +57,8 @@ The runtime uses a small registry of specialist agents:
 - `goals` turns an objective into completion criteria and spawns focused
   subagents until the criteria are met or blocked.
 - `research` searches with Exa, looks computed sequences up in the OEIS, and
-  returns evidence with source URLs.
+  returns evidence with source URLs. It works the gaps other roles stated in
+  `research/REQUESTS.md` before anything it thought of itself.
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
 - `coder` has the same authority and writes the implementation the run stands
@@ -69,18 +70,18 @@ The runtime uses a small registry of specialist agents:
 - `pattern_finder` runs exact sequence analysis over results already computed:
   forward differences and polynomial degree, common divisors, residue
   periodicity, and a verified linear-recurrence search. Its tools report only
-  what holds for every term supplied; it can commission more terms from the
-  tool-builder so a conjecture is tested past the data that suggested it, and
-  look the terms up in the OEIS, where a match usually carries the closed form.
+  what holds for every term supplied; it commissions more terms from the
+  tool-builder to test a conjecture past the data that suggested it, and looks
+  them up in the OEIS, where a match usually carries the closed form.
 - `inventor` proposes a different line of attack when the current one stalls.
-- `librarian` downloads primary material into the reference library, indexes it,
-  and works the frontier and the open requests before searching afresh.
+- `librarian` downloads primary material into the reference library and indexes
+  it, following what the library's own sources cite before searching afresh.
 - `scholar` reads that library. It judges each source against the run's goal and
   current beliefs and replaces each stored digest with what the source actually
   establishes, because a downloaded paper nobody has opened has cost the run
-  context and taught it nothing. It records each statement as a `claim` block,
-  with its hypotheses, whether they hold here, and what evidence stands behind
-  it, so the library is retrievable one statement at a time.
+  context and taught it nothing. It records each statement as a `claim` block —
+  hypotheses, whether they hold here, what evidence stands behind it — so the
+  library is retrievable one statement at a time.
 - `organizer` keeps the workspace navigable: folder indexes, the layout of
   `research/`, and `code/toolkits/INDEX.md` matching the files beside it. It cannot
   delete a result or change what a file says.
@@ -351,14 +352,12 @@ heading outline, the abstract, and every paragraph opening with `Theorem`,
 `Lemma`, `Definition`, and the rest. For a paper the leading characters are the
 title and half the introduction; the labelled statements are the payload, and
 are mechanically locatable. A source with neither falls back to its leading
-characters, and the scholar replaces the digest with what the source
-establishes.
+characters. The scholar replaces the digest with what the source establishes.
 
 Each download's citations accumulate in `research/FRONTIER.md`, ranked by how
 many of the library's own sources cite each — a URL three of your papers cite
-is the standard reference, which no rephrasing of a query surfaces. Each row
-carries the sentence the citation appeared in, and a second download of a URL
-already in the library is refused, naming the file that holds it.
+is the standard reference, which no rephrasing of a query surfaces. A second
+download of one already in the library is refused, naming the file holding it.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
