@@ -41,10 +41,10 @@ const NEARBY_ENTRIES: usize = 20;
 pub(super) const FULL_TEXT_SUFFIX: &str = ".full.md";
 
 /// Level of the research tree holding untouched originals.
-const SOURCE_DIR: &str = "L0";
+const SOURCE_LEVEL: usize = 0;
 
 /// Level of the research tree holding one note per source.
-const DIGEST_DIR: &str = "L1";
+const DIGEST_LEVEL: usize = 1;
 
 /// Characters of a downloaded document kept in the summary file before it has
 /// been digested.
@@ -642,7 +642,7 @@ fn walk<'a>(
 /// A path already inside the folder is left alone; anything else is moved into
 /// it, and a leading `/workspace` or `./` is trimmed first so the common
 /// spellings do not produce `research/workspace/...`.
-pub(super) fn research_path(requested: &str) -> String {
+pub(super) fn research_path(workspace: &std::path::Path, requested: &str) -> String {
     let trimmed = requested
         .trim()
         .trim_start_matches("/workspace/")
@@ -654,13 +654,19 @@ pub(super) fn research_path(requested: &str) -> String {
     let inside = trimmed
         .strip_prefix(&format!("{RESEARCH_DIR}/"))
         .unwrap_or(if trimmed == RESEARCH_DIR { "" } else { trimmed });
+    let digest = super::context_tree::batch_dir(
+        DIGEST_LEVEL,
+        super::context_tree::open_batch(workspace, RESEARCH_DIR, DIGEST_LEVEL),
+    );
     if inside.is_empty() {
-        return format!("{RESEARCH_DIR}/{DIGEST_DIR}/document.md");
+        return format!("{RESEARCH_DIR}/{digest}/document.md");
     }
     // A path naming a level already knows where it belongs. Anything else is
     // a source arriving from outside, and a source's readable form is a
     // level-1 note whatever the caller called it.
-    if inside.starts_with('L') && inside.contains('/') {
+    if let Some((folder, _)) = inside.split_once('/')
+        && super::context_tree::batch_of(folder).is_some()
+    {
         return format!("{RESEARCH_DIR}/{inside}");
     }
     let name = inside.rsplit('/').next().unwrap_or(inside);
@@ -672,7 +678,7 @@ pub(super) fn research_path(requested: &str) -> String {
         Some(stem) => format!("{stem}.md"),
         None => name.to_string(),
     };
-    format!("{RESEARCH_DIR}/{DIGEST_DIR}/{name}")
+    format!("{RESEARCH_DIR}/{digest}/{name}")
 }
 
 /// Renames a stored document to `.md`, because that is what it now contains.
@@ -744,7 +750,7 @@ pub(super) fn research_excerpt(full: &str, full_relative: &str) -> String {
 /// One level below its summary. The original is what the whole tree is
 /// anchored to and the one thing in it nobody may rewrite, so it lives in its
 /// own folder rather than beside a note an agent is expected to replace.
-pub(super) fn full_text_path(summary_relative: &str) -> String {
+pub(super) fn full_text_path(workspace: &std::path::Path, summary_relative: &str) -> String {
     let stem = summary_relative
         .strip_suffix(".md")
         .unwrap_or(summary_relative);
@@ -754,7 +760,11 @@ pub(super) fn full_text_path(summary_relative: &str) -> String {
     // produced `x.full.full.md`, and seven of them landed in one live
     // workspace before this stripped the marker it already had.
     let name = name.strip_suffix(".full").unwrap_or(name);
-    format!("{RESEARCH_DIR}/{SOURCE_DIR}/{name}{FULL_TEXT_SUFFIX}")
+    let source = super::context_tree::batch_dir(
+        SOURCE_LEVEL,
+        super::context_tree::open_batch(workspace, RESEARCH_DIR, SOURCE_LEVEL),
+    );
+    format!("{RESEARCH_DIR}/{source}/{name}{FULL_TEXT_SUFFIX}")
 }
 
 /// Renders the heading for a listing root.
@@ -906,7 +916,7 @@ impl DocumentTool {
             // a markup-heavy page is unreadable otherwise, and the old
             // UTF-8 check turned a PDF into an error that ended the run.
             let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
-            let requested = research_path(&required_string(&call.arguments, "path")?);
+            let requested = research_path(self.documents.root(), &required_string(&call.arguments, "path")?);
             // The stored document is Markdown, so it is named `.md`. The
             // archive keeps the requested name, and so keeps the true
             // extension of the bytes it holds.
@@ -924,7 +934,7 @@ impl DocumentTool {
                 .is_ok();
             // The complete converted text sits beside the summary, reachable
             // when the summary is not enough.
-            let full = full_text_path(&path);
+            let full = full_text_path(self.documents.root(), &path);
             let excerpt = research_excerpt(&content, &full);
             let split = excerpt.len() < content.len();
             if split {

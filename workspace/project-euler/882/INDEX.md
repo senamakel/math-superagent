@@ -11,6 +11,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | Standard project boilerplate: how to use AGENTS.md, prompts/, goal/tasks/scratchpad/memory. |
 | `SCRATCHPAD.md` | Scratchpad for provisional calculations not yet ready for memory.md. |
 | `TASKS.md` | Task checklist (single placeholder task row). |
-| `brute.py` | _(undescribed)_ |
+| `brute.py` | Root copy of TASK A: naive minimax over the REAL bit-deletion game, mirrors code/brute.py. Kept at root because GOAL.md names /workspace/brute.py; the canonical program is code/brute.py. |
 | `problem.md` | The problem statement: partisan bit-deletion game, definition of S(n), given values S(2)=2, S(5)=17, S(10)=64, ask for S(10^5). |
 | `scratchpad_run.md` | Scratch log note ("run existing programs, executed inline, see transcript") from an earlier scratch run; no durable claims. |
