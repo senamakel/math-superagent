@@ -7,6 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `AGENTS.md` | Workspace method and housekeeping rules for every agent. |
 | `CONTEXT.md` | Records what the reference library now establishes beyond its prior state: O(log n) computation of A(n),B(n) via OEIS A000788/A059015 for the (A,B) counting game at n=10^5. |
 | `GOAL.md` | The objective and completion criteria: build and validate TASK A (real-game brute) and TASK B (counting-game (A,B) DP). |
+| `L1.2/L0.1.md` | not used |
 | `MEMORY.md` | Working memory: problem restatement, given values, established results (to fill), failed approaches, open questions. |
 | `README.md` | Standard project boilerplate: how to use AGENTS.md, prompts/, goal/tasks/scratchpad/memory. |
 | `SCRATCHPAD.md` | Scratchpad for provisional calculations not yet ready for memory.md. |
