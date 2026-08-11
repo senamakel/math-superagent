@@ -33,6 +33,12 @@ game up to n=10).
 - **Real-game oracle values on disk (source of cross-check)**: S(1)=1, S(2)=2,
   S(3)=8, S(4)=9, S(5)=17 (code/brute.py), S(10)=64 (given).  These all equal
   ceil(G(n)) under the dyadic model.
+- **S_ceil(n)=ceil(G(n)) table n=1..20** (from solution.py, exact Fractions):
+  n:   1   2   3   4   5   6   7   8   9  10
+  S:   1   2   8   9  17  23  44  45  56  64
+   n:  11  12  13  14  15  16  17  18  19  20
+  S:  91  97 123 151 211 212 231 243 285 293
+  Matches real oracle at 1,2,3,4,5,10.
 - **CGT framework (sourced)**: The game is strictly partisan — One deletes only
   1-bits, Zero only 0-bits — so Sprague–Grundy/nimbers do NOT apply. Win rule
   is normal play. Source: en.wikipedia.org/wiki/Partisan_game,
@@ -54,6 +60,16 @@ game up to n=10).
   score; S counts skips via the (A,B) minimax DP.
 
 ## Open questions / caveats
+- **Standing caveat**: the dyadic Number model is a structural hypothesis
+  (each single number is a canonical dyadic Number via the Simplicity Rule).
+  It is strongly corroborated: S_ceil(n)=ceil(G(n)) matches the real-game
+  oracle for ALL available real values (S(1..5) from brute.py and S(10)=64
+  given), and every k in 1..100000 is a Number.  But the real-game oracle
+  itself does not reach S(6)..S(9) or S(100000) independently (the stated bound
+  defeats enumeration), so the equality of ceil(G(n)) with the true S(n) beyond
+  n=10 rests on the model.  If the model holds, S(100000)=15800662276.
+- The old single-aggregate (A,B) counting surrogate is REFUTED (see below);
+  the surviving exact rule is the dyadic one above, not (A,B) totals.
 - The counting model is a CONJECTURED surrogate for the real game: its (A,B)
   transitions (One-move (A-1,B), Zero-move (A,B-1)) differ from the real bit
   game, where deleting a leading 1 can also drop 0-bits (e.g. "100"→0). The
