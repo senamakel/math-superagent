@@ -1041,7 +1041,8 @@ fn specialist_harness(
     // Being outermost also puts each attempt through affinity and the timeout
     // bound on its own larger cap, rather than inheriting the cut-off
     // attempt's. See `agent::untruncated`.
-    let model: Arc<dyn ChatModel<()>> = Arc::new(UntruncatedModel::new(model));
+    let model: Arc<dyn ChatModel<()>> =
+        Arc::new(UntruncatedModel::new(model).with_tracer(tracer.clone()));
     let mut harness = AgentHarness::new();
     configure_run_budget(&mut harness, budget);
     harness

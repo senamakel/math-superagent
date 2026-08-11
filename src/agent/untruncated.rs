@@ -34,6 +34,7 @@ use tinyagents::harness::model::{
 };
 
 use crate::agent::Result;
+use crate::agent::trace::RunTracer;
 
 /// How many times one turn may be re-issued after being cut off.
 ///
