@@ -364,29 +364,9 @@ fn two_managers_never_share_a_trace_id() {
 
 #[test]
 fn a_trace_is_named_for_the_role_that_produced_it() {
-    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
-    let executor = super::HarnessExecutor {
-        harness: Arc::new(
-            tinyagents::harness::AgentHarness::builder()
-                .model(Arc::new(crate::orchestrator::test_support::StubModel::new()))
-                .build()
-                .expect("a stub harness builds"),
-        ),
-        system_prompt: String::new(),
-        langfuse: None,
-        max_turn_output_tokens: 1,
-        role: "scholar".into(),
-        session: manager.session.clone(),
-    };
-    let config = executor.trace_config("agent-run-1");
+    let config = super::trace_config("s-session", "scholar", "agent-run-1");
     assert_eq!(config.name.as_deref(), Some("scholar"));
-    assert_eq!(config.session_id.as_deref(), Some(&*manager.session));
-    assert!(
-        config
-            .trace_id
-            .as_deref()
-            .is_some_and(|id| id.ends_with("-agent-run-1") && id != "agent-run-1"),
-        "the trace id must be qualified by the session"
-    );
+    assert_eq!(config.session_id.as_deref(), Some("s-session"));
+    assert_eq!(config.trace_id.as_deref(), Some("s-session-agent-run-1"));
     assert!(config.tags.contains(&"scholar".to_string()));
 }
