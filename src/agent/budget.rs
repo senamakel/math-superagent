@@ -122,6 +122,31 @@ impl RunBudget {
         }
     }
 
+    /// Returns this budget narrowed to what judging one attempt should cost.
+    ///
+    /// The judge sits on the critical path: every attempt waits for it before
+    /// it can be reflected on. Its job is to read a report and answer in four
+    /// lines, so an investigation's budget is the wrong size for it — and left
+    /// with one, it investigates. A live judge spent four minutes, fifteen
+    /// model calls, and a 6,906-token turn reading `CONTEXT.md` and the
+    /// programs the attempt had written, while the attempt it was judging sat
+    /// finished and waiting.
+    ///
+    /// Reaching the cap is safe by construction, which is what makes a tight
+    /// one the right answer rather than a gamble. The run stops with partial
+    /// results, so a judge cut off before its verdict returns something the
+    /// loop cannot parse — and an unparsable verdict is PROCEED, because a
+    /// judge the loop cannot read must not throw work away by accident.
+    #[must_use]
+    pub fn for_judging(self) -> Self {
+        Self {
+            max_model_calls: self.max_model_calls.min(JUDGING_MODEL_CALLS),
+            max_tool_calls: self.max_tool_calls.min(JUDGING_TOOL_CALLS),
+            run_timeout: self.run_timeout.min(JUDGING_RUN_TIMEOUT),
+            ..self
+        }
+    }
+
     /// Returns the tool timeout in milliseconds, saturating at `u64::MAX`.
     #[must_use]
     pub fn tool_timeout_ms(&self) -> u64 {
