@@ -1,78 +1,57 @@
-"""Check what the record b's actually are: convergent denominators of pi/sqrt(d)
-and pi*sqrt(d), vs semiconvergents of sqrt(d). Uses exact-ish high precision."""
+"""Structure of record b's: which continued fraction denominators do they match?
+Fast float scan; CF denominators computed exactly for the specific irrational."""
+import math
 import sympy as sp
 
-PI = sp.N(sp.pi, 80)
+PI = 3.14159265358979323846264338327950288419716939937510
 
-def cf_convergent_denoms(x, N):
-    """Return set of convergent denominators q of CF of x with q<=N."""
-    xv = x
-    # compute CF terms
+def cf_denoms(x, N):
+    """Convergent denominators of CF of x, up to N, via exact high-precision."""
+    xv = sp.Rational(x) if isinstance(x, int) else x
+    t = sp.N(sp.pi / sp.sqrt(d), 120) if not isinstance(x, (int, float)) else x
     a = []
-    t = xv
-    for _ in range(200):
-        ai = sp.floor(t)
-        a.append(int(ai))
-        if t - ai < sp.Float('1e-60'):
-            break
-        t = 1 / (t - ai)
-        if t > N * 10:
-            pass
-    # convergents denominators
+    # operate in high precision float is enough for order
+    if hasattr(x, 'evalf'):
+        tv = x.evalf(120)
+    else:
+        tv = x
     q_2, q_1 = 0, 1
-    denoms = set()
-    for ai in a:
+    denoms = []
+    for _ in range(400):
+        ai = math.floor(tv)
+        a.append(ai)
         q = ai * q_1 + q_2
         if q > N:
             break
-        denoms.add(q)
+        denoms.append(q)
+        rem = tv - ai
+        if rem < 1e-60:
+            break
+        tv = 1.0 / rem
         q_2, q_1 = q_1, q
     return denoms
 
-def semiconv_sqrt_d(d, N):
-    res = sp.continued_fraction_periodic(0, 1, d)
-    a0 = res[0]; period = list(res[1])
-    a = [a0] + period * 500
-    q_2, q_1 = 0, 1
-    denoms = set()
-    for k in range(len(a) - 1):
-        ak = a[k]
-        qk = ak * q_1 + q_2
-        qkm1 = q_1
-        m = 0
-        while True:
-            s = m * qk + qkm1
-            if s > N:
-                break
-            denoms.add(s)
-            m += 1
-            if s >= a[k+1] * qk + qkm1:
-                break
-        q_2, q_1 = q_1, qk
-    return denoms
-
-def records(d, N):
-    sd = sp.sqrt(d)
-    best = sp.oo
+def records_float(d, N):
+    sd = math.sqrt(d)
+    best = 1e18
     recs = []
     for b in range(0, N + 1):
         v = b * sd - PI
-        r = sp.floor(v + sp.Rational(1, 2))
+        r = round(v)
         err = abs(v - r)
-        if err < best:
+        if err < best - 1e-18:
             best = err
             recs.append(b)
     return recs
 
-for d in [2, 3, 5, 6, 7, 8, 10]:
-    N = 2_000_000
-    recs = records(d, N)
-    pids = cf_convergent_denoms(PI / sp.sqrt(d), N)
-    pidx = cf_convergent_denoms(PI * sp.sqrt(d), N)
-    ss = semiconv_sqrt_d(d, N)
-    m_pids = sum(1 for b in recs if b in pids)
-    m_pidx = sum(1 for b in recs if b in pidx)
-    m_ss = sum(1 for b in recs if b in ss)
-    print(f"d={d}: {len(recs)} records. in pi/sqrt(d) conv: {m_pids}, in pi*sqrt(d) conv: {m_pidx}, in sqrt(d) semiconv: {m_ss}")
-    non = [b for b in recs if b not in pids and b not in pidx]
-    print("   records not in either pi-CF: ", non)
+d = 2
+N = 2_000_000
+recs = records_float(d, N)
+print(f"d={d} records:", recs)
+
+# denominators of CF of pi/sqrt(d) and pi*sqrt(d) and pi
+for name, x in [("pi/sqrt2", sp.pi / sp.sqrt(2)), ("pi*sqrt2", sp.pi * sp.sqrt(2)),
+                ("2*pi/sqrt2", 2*sp.pi/sp.sqrt(2)), ("pi/2", sp.pi/2)]:
+    ds_ = cf_denoms(x, N)
+    hit = [b for b in recs if b in set(ds_)]
+    print(f"  {name}: {len(hit)}/{len(recs)} records in conv denoms. hit={hit}")
