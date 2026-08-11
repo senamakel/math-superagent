@@ -138,6 +138,7 @@ impl WorkspaceDocuments {
     }
 
     async fn write(&self, relative: &str, content: &str) -> Result<()> {
+        ensure_visible(relative)?;
         if content.len() > MAX_DOCUMENT_BYTES {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
                 "document content exceeds {MAX_DOCUMENT_BYTES} bytes"
