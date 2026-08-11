@@ -14,6 +14,34 @@ Encodings supported:
   * int bitmask: bit index x*W + y, grid width W
 """
 
+from functools import lru_cache
+
+
+@lru_cache(maxsize=None)
+def G(k, m):
+    """A007902 auxiliary G(k, m): counts 2D reachable configs with k pebbles
+    whose extra/top structure sits at level m.  Returns 0 for k < 1.
+
+    The recurrence below is translated from the OEIS A007902 entry (Alois P.
+    Heinz).  Correctness established by reproducing OEIS A007902 a(1..33)
+    exactly (incl. a(22)=13686805) and by matching the independent 2D BFS
+    oracle code/amoeba2d/d2d.py on a(1..14).
+    """
+    if k < 1:
+        return 0
+    if m == 0:
+        return 2 * G(k - 1, 0) + G(k, 1) + (1 if k == 2 else 0)
+    if m == 1:
+        return G(k - 3, 0) + 2 * G(k - 2, 1) + G(k - 1, 2) + G(k - 4, 1)
+    # m >= 2
+    return G(k - m - 2, m - 1) + 2 * G(k - m - 1, m) + G(k - m, m + 1)
+
+
+def a(n):
+    """Number of reachable 2D amoeba configs with n pebbles, OEIS A007902,
+    offset 1 (a(1)=1; a(n)=G(n,0) for n>=2)."""
+    return 1 if n == 1 else G(n, 0)
+
 
 def next_level_fs2(level):
     """One BFS step over 2D frozenset-of-tuples configs (exact arithmetic).
