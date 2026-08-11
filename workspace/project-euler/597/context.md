@@ -28,6 +28,29 @@ approach, or a fresh judgement can act on without opening anything.
   lets the bump/finish chronology decompose into products over independent
   exponential rates rather than high-dimensional integrals over the speeds.
 
+- **Heterogeneous competing exponential clocks** (new addition). For
+  *independent* Exps with possibly different rates λ_i: min is Exp(Σλ_i), the
+  probability that clock j fires first is λ_j/Σλ_i, and by repeating
+  (memorylessness) the probability of a *specific firing order* i_1,…,i_D is
+  the product
+  (λ_{i1}/Σλ)·(λ_{i2}/(Σλ−λ_{i1}))·(λ_{i3}/(Σλ−λ_{i1}−λ_{i2}))·… .
+  Source: `research/competing_exponential_clocks_uchicago.md` (UChicago
+  STAT253/317 Lecture 9, Yibi Huang).
+  This adds what the i.i.d. spacings theorem alone did not: an exact,
+  combinatorial, enumeration-free way to sum over any *specific order of
+  events* when each boat/configuration has its own rate. Where the racing
+  dyamics reduce to "next event among a set of clocks wins with probability
+  proportional to its rate", this product form gives the exact probability of
+  a full bump/finish chronology without a high-dimensional integral over the
+  speeds or a sample-space enumeration.
+
+Together the two facts say: any event chronology of this race has a
+probability expressible as a product of rate ratios (one factor per event,
+each a rate of the winner over the sum of surviving rates). The remaining
+work — pinning down what the "clocks" are given the catch-up kinematics
+(a bump's rate is a function of relative speed, not raw v) — is the run's own
+derivation, and is now the only open piece.
+
 ## Contradictions
 
 None. The source agrees with the run's working model (speeds iid Exp(1),

@@ -42,12 +42,33 @@ the most valuable rows here: record them rather than silently picking a side.
 
 (none recorded yet)
 
+## New
+
+What this turn's enrichment added that was not known before.
+
+- **Per-conjugacy-class inversion probabilities are affine in the gap and
+  translation-invariant, with a closed form.** Campion Loth, Levet, Liu, Stucky,
+  Sundaram, Yin, arXiv:2301.00898 (research/conjugacy_class_statistics_body*),
+  Lemma 4.7: Pr_λ[I_{i,j}=1] = 1/2 + a_2/(n(n−1)) − a_1(a_1−1)/(2n(n−1))
+  + (j−i−1)·[n − n·a_1 − a_1 + a_1² − 2a_2]/[n(n−1)(n−2)], depending on the gap
+  j−i but not the absolute positions, and linear in that gap — the *proved*
+  version of the run's empirical f_n(k)=A_n+(k−1)B_n.  λ is the cycle type
+  (a_1 = #fixed points, a_2 = #2-cycles).  Weighted-inversion statistics
+  (Theorem 4.8) have first moments depending only on n, a_1, a_2; higher moments
+  are polynomial in n for symmetric constraints (Theorems 7.16, 7.26).
+- **Implication / open step refined.**  This and Cambie-Yan (inversion counts
+  in pi^k, n≥2k+1) are two complementary sources of the same gap-affine
+  mechanism.  Together they make plausible the route to closed forms for A_n, B_n
+  by summing the per-ν formula over cycle types.  Neither covers the still-open
+  core: summing Lehmer/factoradic ranks over the cyclic subgroup {pi^i} of a
+  single permutation.
+
 ## Gaps
 
 What the run still needs from the literature and has not found.
 
-- What the library newly establishes (Hultman's machine) still does NOT cover:
-  the sum of Lehmer/factoradic ranks (a non-class statistic) over the cyclic
+- The sum of Lehmer/factoradic ranks (a non-class statistic) over the cyclic
   subgroup {pi^i} of a single permutation.  memory.md has reduced Q(10^6) to
-  closed forms for A_n and B_n, but no source gives those closed forms; that
+  closed forms for A_n and B_n; Campion-Loth et al. now gives the per-gap,
+  per-class mechanism but still no closed form for A_n, B_n themselves.  That
   remains the core open step.
