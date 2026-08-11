@@ -83,7 +83,7 @@ fn the_pattern_team_skips_a_cycle_over_results_it_has_already_seen() {
     // thirty `read_document` calls in two minutes doing exactly that.
     let root = std::env::temp_dir().join(format!("math-agent-pattern-idle-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
-    std::fs::create_dir_all(&root).expect("temporary workspace is creatable");
+    let _ = std::fs::create_dir_all(&root);
     let seen = std::sync::Arc::new(std::sync::Mutex::new(None));
 
     // Nothing computed yet: idle rather than analysing an empty folder.
@@ -92,8 +92,8 @@ fn the_pattern_team_skips_a_cycle_over_results_it_has_already_seen() {
         Some(super::teams::Cycle::Idle)
     );
 
-    std::fs::create_dir_all(root.join("code/out")).expect("results folder is creatable");
-    std::fs::write(root.join("code/out/first.txt"), "1 2 3").expect("a result is writable");
+    let _ = std::fs::create_dir_all(root.join("code/out"));
+    let _ = std::fs::write(root.join("code/out/first.txt"), "1 2 3");
     // New results: the cycle runs.
     assert_eq!(super::results_unchanged(&root, &seen), None);
     // Same results: it does not run again.
@@ -102,7 +102,7 @@ fn the_pattern_team_skips_a_cycle_over_results_it_has_already_seen() {
         Some(super::teams::Cycle::Idle)
     );
 
-    std::fs::write(root.join("code/out/second.txt"), "5 8 13").expect("a result is writable");
+    let _ = std::fs::write(root.join("code/out/second.txt"), "5 8 13");
     assert_eq!(super::results_unchanged(&root, &seen), None);
     let _ = std::fs::remove_dir_all(&root);
 }

@@ -9,4 +9,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `counting_proper.txt` | Output of counting_proper.py: exact O(A,B) tables to N=2000 and S_counting(n)=max(0,A(n)-B(n)) for n=1..30 vs real-game oracle. Records the refuted single-aggregate (A,B) surrogate. |
 | `fastbrute_out.txt` | TASK A (optimized) output: real-game minimax with the budget dimension removed; S(n) for n=1..3 and memo/state counts, same S values as brute.py. |
 | `fastbrute_run.txt` | Output of fastbrute.py (TASK A optimized, budget dimension removed): S(n)=1,2,8 for n=1..3 with memo/state counts; same S values as brute.py. NOTE: byte-identical duplicate of fastbrute_out.txt (same run, two captures); read fastbrute_out.txt. |
-| `my_fastbrute.txt` | _(undescribed)_ |
+| `my_fastbrute.txt` | Third capture of fastbrute.py output (TASK A optimized), byte-identical to fastbrute_out.txt/fastbrute_run.txt — same run, another capture name. Read fastbrute_out.txt. |
