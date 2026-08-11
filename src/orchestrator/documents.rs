@@ -127,6 +127,22 @@ impl WorkspaceDocuments {
         super::checked_workspace_path(&self.workspace, relative)
     }
 
+    /// Resolves a folder, treating an empty path and `.` as the workspace root.
+    ///
+    /// The path checker refuses both — one is empty, the other is a `CurDir`
+    /// component it cannot distinguish from traversal — and it is right to for
+    /// a *file*. A folder argument is different: `.` is the obvious way to name
+    /// the directory an agent is already standing in, and callers that
+    /// normalise it to `""` on the way in would otherwise have it converted
+    /// back to `.` here and refused. That cost a live organizer its
+    /// `refresh_index` on the workspace root.
+    fn folder_path(&self, relative: &str) -> Result<PathBuf> {
+        if relative.is_empty() || relative == "." {
+            return Ok(self.workspace.clone());
+        }
+        self.path(relative)
+    }
+
     /// Names what does exist beside a path that does not.
     ///
     /// A model that guessed `research/DIGEST.md` or `research/raw` learns only
