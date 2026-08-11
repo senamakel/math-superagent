@@ -265,13 +265,37 @@ impl WorkspaceDocuments {
             ))
         })?;
         let mut names = Vec::new();
+        let mut levels = Vec::new();
         while let Ok(Some(entry)) = entries.next_entry().await {
             let name = entry.file_name().to_string_lossy().into_owned();
             if HIDDEN_ENTRIES.contains(&name.as_str()) || name.starts_with('.') {
                 continue;
             }
-            if entry.file_type().await.is_ok_and(|kind| kind.is_file()) {
+            let Ok(kind) = entry.file_type().await else {
+                continue;
+            };
+            if kind.is_file() {
                 names.push(name);
+            } else if kind.is_dir() && super::folder_index::is_level(&name) {
+                levels.push(name);
+            }
+        }
+        // A summary tree's levels belong to the index at its root. Listing
+        // only the immediate files would report a research folder holding
+        // thirty notes as empty, and the refresh that followed would drop
+        // every description in it.
+        for level in levels {
+            let Ok(mut inside) = tokio::fs::read_dir(path.join(&level)).await else {
+                continue;
+            };
+            while let Ok(Some(entry)) = inside.next_entry().await {
+                let name = entry.file_name().to_string_lossy().into_owned();
+                if name.starts_with('.') {
+                    continue;
+                }
+                if entry.file_type().await.is_ok_and(|kind| kind.is_file()) {
+                    names.push(format!("{level}/{name}"));
+                }
             }
         }
         names.sort();
