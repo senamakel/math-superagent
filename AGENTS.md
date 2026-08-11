@@ -103,6 +103,14 @@ write the list it read and the later write would drop the other's descriptions.
 A follow-up that was itself followed up would tidy forever, so the chain is
 asserted acyclic in a test.
 
+A trigger's follow-ups are a *sequence*, run in order inside one lock
+acquisition rather than each triggering the next. Order is the point after
+research: acquiring is not reading, so the scholar says what each new source
+establishes before the organizer files it, and an organizer running first would
+index excerpts nobody had read. Running them as a sequence rather than a chain
+is what keeps the acyclic invariant simple — no follow-up agent is itself a
+trigger — and a failed step does not cancel the rest.
+
 `diversify` runs three arms concurrently — the librarian followed by the
 scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the
 step that breaks a loop reflection alone cannot.
