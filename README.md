@@ -75,7 +75,7 @@ The runtime uses a small registry of specialist agents:
   where a match usually carries the closed form.
 - `inventor` proposes a different line of attack when the current one stalls.
 - `librarian` downloads primary material into the reference library and indexes
-  it, following what the library's own sources cite before searching afresh.
+  it, following what its own sources cite before searching afresh.
 - `scholar` reads that library. It judges each source against the run's goal and
   current beliefs and replaces each stored digest with what the source actually
   establishes, because a downloaded paper nobody has opened has cost the run
@@ -335,9 +335,9 @@ scripts, styles, and navigation, a PDF's text layer is extracted, and TeX is
 preserved intact. The HTML converter is hand-written because a general-purpose
 one escapes the backslashes in `\(…\)` and destroys the mathematics. Magic bytes
 beat the declared content type, since a PDF served as `text/html` is still a PDF.
-Links become reference-style with a single list at the end and tracking
-parameters removed, so a page's URLs cost a few characters each instead of
-filling the context.
+Links become reference-style with one list at the end and tracking parameters
+removed, so a page's URLs cost a few characters each rather than filling the
+context.
 
 A download lands as two files side by side: `<name>.md` holding a bounded digest
 and `<name>.full.md` holding the complete text. One real reference page converted
@@ -405,8 +405,8 @@ summary keeps the decisions, assumptions, formulas, source URLs, command
 results, and unresolved work; recent messages remain verbatim. If the summary
 call fails, TinyAgents trims old context instead of losing the whole run.
 
-This is a research and computation assistant, not a formal proof checker.
-Important results should still be checked against primary sources or a proof
+This is a research and computation assistant, not a formal proof checker;
+important results should still be checked against primary sources or a proof
 assistant when the stakes justify it.
 
 ## Docker Compose stack
