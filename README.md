@@ -355,12 +355,12 @@ ranked by how many of the library's own sources cite each, so a second download
 of one already held is refused and a URL three papers agree on rises to the top.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
-text, read and store files, make exact edits, add documents to a workspace-local
-index, and search that index for ranked snippets, plus `search_claims` for what
-the library establishes and `request_research` for what it does not. The index
-lives at `.document-index.json` inside the selected workspace. Downloads are
-capped at 5 MiB, paths cannot leave `/workspace`, and one workspace cannot
-search another's files.
+text, read and store files, make exact edits, index documents and search that
+index, plus `search_claims` for what the library establishes and
+`request_research` for what it does not. The index lives at
+`.document-index.json` in the selected workspace; downloads are capped at 5
+MiB, paths cannot leave `/workspace`, and one workspace cannot search another's
+files.
 
 The tool-builder additionally gets `apply_patch`, which applies a Codex-format
 envelope across several files at once. Two deviations are deliberate: context
