@@ -106,3 +106,57 @@ def power_of_two_cycle_lengths(graph, min_length=4):
         l for l in cycle_lengths(graph)
         if l >= min_length and _is_power_of_two(l)
     )
+
+
+def exists_delta3_no_power2_cycle(n, lines=None):
+    """True iff some connected graph on ``n`` vertices has min degree >= 3 and
+    contains no cycle of power-of-two length (>=4). This is the Erdős–Gyárfás
+    counterexample predicate.
+
+    ``lines`` is an iterable of graph6 strings for connected min-degree-3 graphs
+    on n vertices (one per isomorphism class), produced by e.g.
+    ``nauty-geng -q -c -d3 n``. If it is None, the function generates that set
+    itself via nauty-geng. Exact; the enumeration is what is exponential, so
+    n must stay small (this is the oracle edge).
+    """
+    if lines is None:
+        lines = _geng_graph6(n)
+    for g6 in lines:
+        g6 = g6.strip()
+        if not g6:
+            continue
+        G = nx.from_graph6_bytes(g6.encode())
+        if min_degree(G) >= 3 and not has_power_of_two_cycle(G):
+            return True
+    return False
+
+
+def _geng_graph6(n):
+    import subprocess
+    proc = subprocess.run(
+        ["nauty-geng", "-q", "-c", "-d3", str(n)],
+        capture_output=True, text=True, check=True,
+    )
+    return proc.stdout.splitlines()
+
+
+def report_delta3_no_power2(n, lines=None):
+    """Return (count_checked, counterexamples) where counterexamples is a list
+    of graph6 strings of graphs on n vertices with min degree >=3 and no
+    power-of-two cycle. Every min-degree-3 connected graph on n vertices (up to
+    iso) is checked. Exact."""
+    if lines is None:
+        lines = _geng_graph6(n)
+    seen = 0
+    counterexamples = []
+    for g6 in lines:
+        g6 = g6.strip()
+        if not g6:
+            continue
+        G = nx.from_graph6_bytes(g6.encode())
+        if min_degree(G) < 3:
+            continue
+        seen += 1
+        if not has_power_of_two_cycle(G):
+            counterexamples.append(g6)
+    return seen, counterexamples

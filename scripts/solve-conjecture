@@ -42,6 +42,20 @@ case "$slug" in
         ;;
 esac
 
+# The wall clock is the one budget that is not safe to reach. A run that hits
+# the model-call cap stops with partial results and keeps what it derived; a run
+# that hits the wall clock raises a hard Timeout, and the attempt's work product
+# is lost. So the ceiling has to be set high enough that the graceful cap is
+# always the one that trips — the same argument the tool-call cap already makes.
+#
+# Two hours is the default because a Project Euler problem is a two-hour
+# problem. An open conjecture is not: the library phase alone can spend that,
+# and the `goals` run driving an attempt starts with the run and ages with it,
+# so it is the one run that can actually reach the ceiling. A live Euler run
+# spent seventy-five minutes inside attempt 1 and was on course to meet it.
+MATH_AGENT_RUN_MINUTES=${MATH_AGENT_RUN_MINUTES:-720}
+export MATH_AGENT_RUN_MINUTES
+
 workspace_subdir=conjectures/$slug
 workspace_path=$repository_root/workspace/$workspace_subdir
 if [ ! -f "$workspace_path/problem.md" ]; then
