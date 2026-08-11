@@ -347,17 +347,13 @@ A download lands as two files side by side: `<name>.md` holding a bounded digest
 and `<name>.full.md` holding the complete text. One real reference page converted
 to about 23,000 tokens, and three of those fill a specialist's context before it
 has done any work, so reading the short one is the default and reading the long
-one is a decision. The digest is *structural*, not the leading characters: the
-heading outline, the abstract, and every paragraph opening with `Theorem`,
-`Lemma`, `Definition`, and the rest. For a paper the leading characters are the
-title and half the introduction; the labelled statements are the payload, and
-are mechanically locatable. A source with neither falls back to its leading
-characters. The scholar replaces the digest with what the source establishes.
-
-Each download's citations accumulate in `research/FRONTIER.md`, ranked by how
-many of the library's own sources cite each — a URL three of your papers cite
-is the standard reference, which no rephrasing of a query surfaces. A second
-download of one already in the library is refused, naming the file holding it.
+one is a decision. The digest is *structural* rather than the leading
+characters — the heading outline, the abstract, and every paragraph opening
+`Theorem`, `Lemma`, `Definition` and the rest — because for a paper the leading
+characters are the title and half the introduction while the labelled
+statements are the payload. Its citations accumulate in `research/FRONTIER.md`,
+ranked by how many of the library's own sources cite each, so a second download
+of one already held is refused and a URL three papers agree on rises to the top.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
