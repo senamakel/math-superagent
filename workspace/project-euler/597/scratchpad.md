@@ -93,3 +93,19 @@ consistency check meaningful.
 ### 4. Large MC p(13,1800) (fixed engine, Exp(1) speeds)
 - 100k: 0.500470 | 200k: 0.499400 | 300k: 0.499027 | 1.2M: 0.500880.
 - Ballpark target ~0.500 (parity near a fair coin as n grows).
+
+## Cartesian-tree (treap) hypothesis: REFUTED (test_treap.py)
+- Tested: min-heap Cartesian tree over indices with priority w_i=v_i/(L-40i),
+  in-order = index order; hypothesis "bump chain i->...->j <=> ancestor/desc.,
+  parity = (# such pairs) mod 2".
+- Outcome: n=2..6, L in {160,400,1800}, 20k samples each -> every (n,L) starts
+  mismatching from the first handful of trials; 30 mismatches within ~62 total.
+- Tree-MC implied probabilities are badly wrong: p(3,160)=0.333 (given
+  56/135=0.4148), p(4,400)=0.833 (given 0.5108), p(13,1800)=0.536.
+- Minimal counterexample n=2: v=[0.13269,0.56728], L=160. v0<v1 -> boat0 never
+  catches boat1, no bump -> oracle even. But w0=0.0008<w1=0.0047 makes 0 the
+  treap root, so {0,1} an ancestor pair -> tree predicts odd. Treap ancestor
+  relation is NOT bump-chronology reachability.
+- Root cause: bumping depends on pairwise RELATIVE speed and actual catch/finish
+  chronology; a single scalar priority (time-to-finish rate) cannot encode which
+  pairs actually chain. Treap ancestry over-counts relations the race never makes.
