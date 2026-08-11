@@ -354,9 +354,11 @@ where
                     // Pace a team whose work never finishes. A message waiting
                     // skips the wait: the point is to stop idle churn, not to
                     // delay a request that has already arrived.
-                    let elapsed = cycle_started.elapsed();
-                    if idle && elapsed < budget.min_interval {
-                        tokio::time::sleep(budget.min_interval - elapsed).await;
+                    if idle
+                        && let Some(remaining) =
+                            budget.min_interval.checked_sub(cycle_started.elapsed())
+                    {
+                        tokio::time::sleep(remaining).await;
                     }
                 }
                 Cycle::Idle => {
