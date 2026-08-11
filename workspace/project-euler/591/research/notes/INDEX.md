@@ -2,8 +2,6 @@
 
 What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
-Run-produced derivations, theory reports, and pattern analysis (not downloaded sources - those live in research/ directly).
-
 | File | Purpose |
 | --- | --- |
 | `inhomogeneous_record_structure.md` | The run's consolidated theory report. Restates the PE591 reduction to the inhomogeneous problem min over b in [0,L] of the distance of b*alpha-beta to nearest integer (alpha = fractional part of sqrt(d), beta = fractional part of pi); explains why the semiconvergent-denominator hypothesis is false in the inhomogeneous case; and gives the exact O(log L) answer via Cabanillas Prop 9/10 plus Berthe-Imbert, with a worked derivation and the full source list. The governing theory behind solution.py. |

@@ -1428,7 +1428,8 @@ impl Tool<()> for ExecuteCommand {
         let command = string_argument(&call, "command")?;
         let complexity = string_argument(&call, "complexity")?;
         let complexity_class = string_argument(&call, "complexity_class")?;
-        validate_complexity(&complexity, &complexity_class)?;
+        let oracle_bound = string_argument(&call, "oracle_bound").ok();
+        validate_complexity(&complexity, &complexity_class, oracle_bound.as_deref())?;
         let mut process = tokio::process::Command::new("/bin/sh");
         process
             .arg("-lc")

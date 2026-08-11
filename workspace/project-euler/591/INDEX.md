@@ -18,8 +18,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `problem.html` | The PE591 problem statement (converted to HTML); the 4 worked example values and the question about I_d. |
 | `problem.url` | The Project Euler URL for problem 591 (https://projecteuler.net/minimal=591). |
 | `results_full.txt` | Output of solution.py for PE591 at n=1e13: one line per non-square d in [2,99] giving d, b, a, abs(a), and the final line S=sum(abs(a))=498809825393729. This is the reported answer. |
+| `results_full_bothsides.txt` | _(undescribed)_ |
 | `scratchpad.md` | Scratch area for draft findings being validated; durable results promoted to memory.md and research/notes/. |
 | `solution.py` | PE591 scalable solver: for each non-square d in [2,99] at n=1e13, finds b_d = argmin of the distance of b*sqrt(d)-pi to nearest integer over b in [0,L] using the Cabanillas (arXiv:1904.01874) Prop 9/10 candidate-set method (O(log L)), then a_d = nint(pi - b_d*sqrt(d)). Reproduces all 4 worked examples; writes results_full.txt. Authoritative answer source. |
+| `solution_bothsides.py` | _(undescribed)_ |
 | `struct_probe.py` | Probe verifying the d=2 given oracle b,a satisfy the BQA relation and scanning small-scale record b's for d=2; early structural investigation. |
 | `tasks.md` | Task checklist for the run: brute-force example reproduction, record probes, semiconvergent hypothesis, deriving the method, computing and verifying S. |
 | `verify_cabanillas.py` | Standalone small-scale verification of Cabanillas Prop 9/10 candidate structure for a few alpha,beta pairs against brute force. Superseded as a toolkit by toolkits/ostrowski_verify.py and toolkits/verify_cabanillas_exact.py. |
