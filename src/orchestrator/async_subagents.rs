@@ -311,8 +311,13 @@ fn worth_exporting(observations: Vec<AgentObservation>) -> Vec<AgentObservation>
 /// observations interleaved runs that shared nothing. Qualifying the id with
 /// the session makes each run its own trace, and the session id groups the runs
 /// that genuinely belong together.
-fn trace_config(session: &str, role: &str, run_id: &str) -> LangfuseTraceConfig {
-    let workspace = workspace_label();
+fn trace_config(
+    session: &str,
+    role: &str,
+    run_id: &str,
+    workspace: Option<&str>,
+) -> LangfuseTraceConfig {
+    let workspace = workspace.map(str::to_string);
     let mut tags = vec![format!("agent:{role}")];
     if let Some(label) = workspace.as_ref() {
         tags.push(format!("problem:{label}"));
