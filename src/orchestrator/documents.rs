@@ -138,6 +138,16 @@ impl WorkspaceDocuments {
         &self.workspace
     }
 
+    /// Reads the run's objective, or an empty string when it has none.
+    ///
+    /// Used to rank mechanically — how well a citation's prose matches what
+    /// the run is trying to do. A run without a goal file simply ranks on the
+    /// other signals, so a missing file is an empty string rather than an
+    /// error.
+    pub(super) async fn goal(&self) -> String {
+        self.read_runtime("GOAL.md").await.unwrap_or_default()
+    }
+
     fn path(&self, relative: &str) -> Result<PathBuf> {
         super::checked_workspace_path(&self.workspace, relative)
     }
