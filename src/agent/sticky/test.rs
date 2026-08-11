@@ -141,10 +141,7 @@ async fn a_provider_is_skipped_for_one_request_rather_than_until_it_recovers() {
     // A block held open would be a slow way to strand a run. If the failure
     // was not the provider's fault, or it is the only one serving the model,
     // an indefinite exclusion is worse than the stall it was avoiding.
-    let (inner, seen) = RecordingModel::with_failures(
-        vec![Some("deepinfra"), None, None, None],
-        vec![1, 2],
-    );
+    let (inner, seen) = RecordingModel::with_failures(vec![Some("deepinfra"), None], vec![1, 2]);
     let sticky = StickyProviderModel::new(inner);
 
     sticky
