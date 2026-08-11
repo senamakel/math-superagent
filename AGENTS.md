@@ -33,7 +33,12 @@ The runtime has nine roles plus an explicit solution loop.
 - The pattern-recognition agent runs exact sequence analysis over results the
   run already computed. Its tools report only what holds for every term
   supplied, and label the finding a conjecture, because an invented pattern
-  costs more than no pattern.
+  costs more than no pattern. It can also execute code and commission it from
+  the tool-builder: its own tools describe the terms handed to them and cannot
+  extend a sequence, so without a way to generate more terms it could neither
+  test a conjecture past the data that suggested it nor find the first term
+  that breaks one. It has no search tool, because a bounded structural question
+  must not turn into a second investigation.
 - The inventor proposes a different line of attack when the current one has
   stalled, backed by research. It is told what failed so it does not re-propose
   it.
