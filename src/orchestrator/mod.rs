@@ -1184,7 +1184,12 @@ fn register_support_agents(
     // The judge is as tool-poor as reflection, and for the same reason: a
     // judge that can start solving stops judging. It reads the workspace only
     // to check a claim in the report against what is on disk.
-    let mut judge = specialist_harness(parts.model.clone(), parts.budget, "judge", parts.tracer);
+    let mut judge = specialist_harness(
+        parts.model.clone(),
+        parts.budget.for_judging(),
+        "judge",
+        parts.tracer,
+    );
     for tool in parts.documents.tools() {
         register_resilient(&mut judge, tool);
     }
