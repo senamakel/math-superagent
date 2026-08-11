@@ -159,30 +159,47 @@ def A_B_mod(n, inv, Hn, Sval):
     return A, B
 
 
-def q_compute(n, A, B):
-    """Q(n) mod p from (normalized) A, B: telescoped route.
-    Q = (n!)^2 + A(n!-1) + (B/2) T(n), T(n) = sum_{w=1}^{n-1} w! w (w-1)."""
-    fact = 1
+def q_compute(n, A, B, fact=None):
+    """Q(n) mod p from (normalized) A_n/(n!)^2, B_n/(n!)^2.
+
+    Convert to the actual counts first:  A_int = A * (n!)^2, B_int = B*(n!)^2
+    (mod p), then the telescoped route
+        Q = (n!)^2 + A_int (n!-1) + (B_int/2) T(n),
+        T(n) = sum_{w=1}^{n-1} w! w (w-1).
+    """
+    if fact is None:
+        fact = 1
+        for m in range(1, n + 1):
+            fact = fact * m % P
+    n2 = fact * fact % P
+    A_int = A * n2 % P
+    B_int = B * n2 % P
+    # accumulate T(n) while building factorials
+    f = 1
     Tn = 0
     for m in range(1, n):
-        fact = fact * m % P          # fact = m!
-        Tn = (Tn + fact * m % P * (m - 1)) % P
-    fact = fact * n % P              # fact = n!
-    return (fact * fact % P
-            + A * (fact - 1) % P
-            + B * INV2 % P * Tn) % P
+        f = f * m % P          # f = m!
+        Tn = (Tn + f * m % P * (m - 1)) % P
+    return (n2 + A_int * (fact - 1) % P + B_int * INV2 % P * Tn) % P
 
 
-def q_compute_direct(n, A, B):
-    """Q(n) mod p by the direct accumulation route:
-    Q = (n!)^2 + sum_{w=1}^{n-1} w! (w A + w(w-1) B/2)."""
-    fact = 1
+def q_compute_direct(n, A, B, fact=None):
+    """Q(n) mod p by the direct accumulation route (A, B normalized):
+        Q = (n!)^2 + sum_{w=1}^{n-1} w! (w A_int + w(w-1) B_int/2)."""
+    if fact is None:
+        fact = 1
+        for m in range(1, n + 1):
+            fact = fact * m % P
+    n2 = fact * fact % P
+    A_int = A * n2 % P
+    B_int = B * n2 % P
+    f = 1
     s = 0
     for w in range(1, n):
-        fact = fact * w % P          # fact = w!
-        s = (s + fact * (w * A % P + w * (w - 1) % P * B % P * INV2 % P)) % P
-    fact = fact * n % P              # n!
-    return (fact * fact % P + s) % P
+        f = f * w % P          # f = w!
+        s = (s + f * (w * A_int % P + w * (w - 1) % P * B_int % P
+                      * INV2 % P)) % P
+    return (n2 + s) % P
 
 
 # ----------------------------------------------------------------------

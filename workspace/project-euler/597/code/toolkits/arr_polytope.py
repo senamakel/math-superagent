@@ -160,6 +160,12 @@ class Polytope:
 
     def volume(self):
         d = self.dim
+        if d == 1:
+            vs = self.vertices()
+            if len(vs) < 2:
+                return F(0)
+            xs = [v[0] for v in vs]
+            return max(xs) - min(xs)
         if d == 2:
             return self.area2()
         elif d == 3:
