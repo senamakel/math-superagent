@@ -4,13 +4,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-
-_This folder is empty._
-
-Each attempt is judged once, and the verdict is archived here as
-`<epoch_ms>_<outcome>.md` — `nothing` when the attempt taught the run nothing,
-`<n>_learnings` otherwise, so a directory listing alone shows which attempts
-were worth something. The solution loop writes both the reflection and its row
-in this table; you do not need to file them by hand. Read this before repeating
-an approach: a row saying an attempt failed and why is the cheapest result in
-the workspace.
+| `L0.0/1786485082040_nothing.md` | Attempt 1, judged unsolved, 0 learning(s). [reflection failed: tool error: agent `reflection` failed: model error: openrouter returned HTTP 403: Key limit exceeded (daily limit). Manage it using https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263] |
+| `L0.0/1786485083851_nothing.md` | Attempt 2, judged unsolved, 0 learning(s). [reflection failed: tool error: agent `reflection` failed: model error: openrouter returned HTTP 403: Key limit exceeded (daily limit). Manage it using https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263] |
+| `L0.0/1786485087677_nothing.md` | Attempt 3, judged unsolved, 0 learning(s). [reflection failed: tool error: agent `reflection` failed: model error: openrouter returned HTTP 403: Key limit exceeded (daily limit). Manage it using https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263] |
+| `L0.0/1786485090094_nothing.md` | Attempt 4, judged unsolved, 0 learning(s). [reflection failed: tool error: agent `reflection` failed: model error: openrouter returned HTTP 403: Key limit exceeded (daily limit). Manage it using https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263] |
+| `L0.0/1786485093719_nothing.md` | Attempt 5, judged unsolved, 0 learning(s). [reflection failed: tool error: agent `reflection` failed: model error: openrouter returned HTTP 403: Key limit exceeded (daily limit). Manage it using https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263] |
+| `L0.0/1786485095732_nothing.md` | Attempt 6, judged unsolved, 0 learning(s). [reflection failed: tool error: agent `reflection` failed: model error: openrouter returned HTTP 403: Key limit exceeded (daily limit). Manage it using https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263] |
