@@ -18,7 +18,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `problem.html` | The downloaded PE 597 statement (Torpids) — the source document this run is solving. |
 | `problem.url` | URL of the PE 597 statement (projecteuler.net/minimal=597). |
 | `race_spec.md` | Exact chronological race-dynamics specification for implementation: event simulation, bump/OUT/FINISH treatment, and the bump-chain parity definition. Reference contract for any race solver. |
-| `scratch_verify_invexp.py` | Retired MC scratch attempt: no execution tool was available to the librarian interface; the inverse-exponential finish-time claims were verified analytically instead. Superseded by the sourced claim in `research/inverse_exponential_finish_times_wikipedia.md`. |
+| `scratch_verify_invexp.py` | RETIRED MC scratch attempt (librarian interface had no execution tool, so it never ran). The inverse-exponential finish-time claims it would verify were instead checked analytically and are superseded by `research/inverse_exponential_finish_times_wikipedia.md`. Keep only as a record. |
 | `scratchpad.md` | Provisional work: the diagnosis of the parity-comparator bug, its fix, and the corrected MC run output. |
 | `simulate_order_nobug.py` | Corrected race engine fixing `brute`'s multi-bump overwrite: records every bump edge and computes placed-below sets by graph reachability. Same API as `brute.simulate_order` / `parity_of_new_order`. This is the reference-correct engine. |
 | `tasks.md` | Task checklist: done items (verify sample, fix comparator, MC re-check) and the open task to solve p(13,1800) exactly. |
