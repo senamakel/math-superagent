@@ -167,19 +167,86 @@ pub(super) struct Ledger {
     malformed: Vec<Malformed>,
 }
 
+/// The library's block format: a fenced block of `key: value` lines.
+///
+/// Borrowed rather than invented, in the same spirit as the patch envelope:
+/// it is the front-matter shape a model has seen a thousand times, inside a
+/// code fence so it survives every Markdown renderer and stays visibly
+/// separate from the prose around it. Both the claim ledger and the thread
+/// table read it, so an agent learns one format for the whole library.
+///
+/// Returns the body of each block opened by `` ```<fence> ``, and whether any
+/// block was left unclosed.
+pub(super) fn fenced<'a>(text: &'a str, fence: &str) -> (Vec<&'a str>, bool) {
+    let opener = format!("```{fence}");
+    let mut blocks = Vec::new();
+    let mut rest = text;
+    let mut unclosed = false;
+    while let Some(open) = rest.find(&opener) {
+        let after = &rest[open + opener.len()..];
+        let Some(close) = after.find("```") else {
+            unclosed = true;
+            break;
+        };
+        blocks.push(&after[..close]);
+        rest = &after[close + 3..];
+    }
+    (blocks, unclosed)
+}
+
+/// Reads one block's fields, in order.
+///
+/// A line with no key continues the previous value, so a statement may run to
+/// several lines without being reformatted into one. Keys are lowercased and
+/// underscores folded to hyphens, because a model asked for `holds-here`
+/// writes `holds_here` about as often.
+pub(super) fn fields(block: &str) -> Vec<(String, String)> {
+    let mut out: Vec<(String, String)> = Vec::new();
+    for line in block.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() {
+            continue;
+        }
+        match trimmed.split_once(':') {
+            // A key is one word, so a colon inside a statement does not open a
+            // new field. `S(n): the skip count` would otherwise become a field
+            // named after the function it defines.
+            Some((key, value)) if is_key(key) => out.push((
+                key.trim().to_ascii_lowercase().replace('_', "-"),
+                value.trim().to_string(),
+            )),
+            _ => match out.last_mut() {
+                Some((_, value)) => {
+                    if !value.is_empty() {
+                        value.push(' ');
+                    }
+                    value.push_str(trimmed);
+                }
+                None => continue,
+            },
+        }
+    }
+    out
+}
+
+/// Splits a comma- or whitespace-separated list of identifiers.
+pub(super) fn identifiers(value: &str) -> Vec<String> {
+    value
+        .split(|c: char| c == ',' || c.is_whitespace())
+        .map(|id| id.trim_matches(['`', '[', ']']).to_string())
+        .filter(|id| !id.is_empty())
+        .collect()
+}
+
 /// Reads every claim block in `text`, attributing each to `source`.
 pub(super) fn parse(text: &str, source: &str) -> (Vec<Claim>, Vec<&'static str>) {
     let mut claims = Vec::new();
     let mut faults = Vec::new();
-    let mut rest = text;
-    while let Some(open) = rest.find(FENCE) {
-        let after = &rest[open + FENCE.len()..];
-        let Some(close) = after.find("```") else {
-            faults.push("a claim block was never closed");
-            break;
-        };
-        let block = &after[..close];
-        rest = &after[close + 3..];
+    let (blocks, unclosed) = fenced(text, "claim");
+    if unclosed {
+        faults.push("a claim block was never closed");
+    }
+    for block in blocks {
         let claim = read_block(block, source);
         if claim.id.is_empty() {
             faults.push("a claim block has no `id`, so nothing can refer to it");
@@ -192,31 +259,14 @@ pub(super) fn parse(text: &str, source: &str) -> (Vec<Claim>, Vec<&'static str>)
     (claims, faults)
 }
 
-/// Reads one block's `key: value` lines.
-///
-/// A line with no key continues the previous value, so a statement may run to
-/// several lines without being reformatted into one.
+/// Reads one block's fields into a claim.
 fn read_block(block: &str, source: &str) -> Claim {
     let mut claim = Claim {
         source: source.to_string(),
         ..Claim::default()
     };
-    let mut current = String::new();
-    for line in block.lines() {
-        let trimmed = line.trim();
-        if trimmed.is_empty() {
-            continue;
-        }
-        match trimmed.split_once(':') {
-            // A key is one word, so a colon inside a statement does not open a
-            // new field. `S(n): the skip count` would otherwise become a field
-            // named after the function it defines.
-            Some((key, value)) if is_key(key) => {
-                current = key.trim().to_ascii_lowercase().replace('_', "-");
-                set(&mut claim, &current, value.trim());
-            }
-            _ => append(&mut claim, &current, trimmed),
-        }
+    for (key, value) in fields(block) {
+        set(&mut claim, &key, &value);
     }
     claim
 }
