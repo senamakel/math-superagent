@@ -254,6 +254,79 @@ fn changed_since(workspace: &Path, parent: &str, children: &[String]) -> Vec<Str
         .collect()
 }
 
+
+/// Adds the sealing work one tree needs, and its folds to `nodes`.
+///
+/// Split out of [`plan`] because the batch walk and the node walk are two
+/// separate passes over different things, and reading either meant reading
+/// both.
+fn seal_tasks(
+    workspace: &Path,
+    root: &str,
+    batches: &[(usize, usize, String)],
+    nodes: &mut Vec<Node>,
+    unsealed: &mut Vec<Task>,
+    unlinked: &mut Vec<Task>,
+) {
+    for (level, batch, folder) in batches {
+        let held = notes(workspace, folder);
+        // Level 0 holds originals: never rewritten, never folded, exempt
+        // from the cap every level above it is held to.
+        if *level > 0 {
+            nodes.extend(held.iter().map(|note| Node {
+            path: note.clone(),
+            tokens: tokens(workspace, note),
+            children: linked(workspace, note),
+            }));
+        }
+        if held.len() < FANOUT {
+            continue;
+        }
+        // A full batch is sealed by one note, one level up, named for it.
+        let summary = format!(
+            "{root}/{}/{}.md",
+            batch_dir(level + 1, open_batch(workspace, root, level + 1)),
+            batch_dir(*level, *batch)
+        );
+        if !workspace.join(&summary).is_file() {
+            unsealed.push(Task {
+            node: Node {
+                path: folder.clone(),
+                tokens: 0,
+                children: held,
+            },
+            fault: Fault::Unsealed { summary },
+            });
+            continue;
+        }
+        // A seal that does not link what it compressed has not compressed
+        // it — it has replaced it. The link is the whole reason a fold is
+        // safe to write, so it is checked rather than requested.
+        let covered = linked(workspace, &summary);
+        let missing: Vec<String> = held
+            .iter()
+            .filter(|note| !covered.contains(note))
+            .cloned()
+            .collect();
+        if !missing.is_empty() {
+            unlinked.push(Task {
+            node: Node {
+                path: summary,
+                tokens: 0,
+                children: held,
+            },
+            fault: Fault::Unlinked {
+                batch: folder.clone(),
+                missing,
+            },
+            });
+        }
+        }
+    }
+
+    }
+}
+
 /// Works out what the trees need, highest priority first.
 ///
 /// Budget first, then sealing, then freshness: a node over budget charges
@@ -300,60 +373,7 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
             children: top_notes,
         });
 
-        for (level, batch, folder) in &batches {
-            let held = notes(workspace, folder);
-            // Level 0 holds originals: never rewritten, never folded, exempt
-            // from the cap every level above it is held to.
-            if *level > 0 {
-                nodes.extend(held.iter().map(|note| Node {
-                    path: note.clone(),
-                    tokens: tokens(workspace, note),
-                    children: linked(workspace, note),
-                }));
-            }
-            if held.len() < FANOUT {
-                continue;
-            }
-            // A full batch is sealed by one note, one level up, named for it.
-            let summary = format!(
-                "{root}/{}/{}.md",
-                batch_dir(level + 1, open_batch(workspace, root, level + 1)),
-                batch_dir(*level, *batch)
-            );
-            if !workspace.join(&summary).is_file() {
-                unsealed.push(Task {
-                    node: Node {
-                        path: folder.clone(),
-                        tokens: 0,
-                        children: held,
-                    },
-                    fault: Fault::Unsealed { summary },
-                });
-                continue;
-            }
-            // A seal that does not link what it compressed has not compressed
-            // it — it has replaced it. The link is the whole reason a fold is
-            // safe to write, so it is checked rather than requested.
-            let covered = linked(workspace, &summary);
-            let missing: Vec<String> = held
-                .iter()
-                .filter(|note| !covered.contains(note))
-                .cloned()
-                .collect();
-            if !missing.is_empty() {
-                unlinked.push(Task {
-                    node: Node {
-                        path: summary,
-                        tokens: 0,
-                        children: held,
-                    },
-                    fault: Fault::Unlinked {
-                        batch: folder.clone(),
-                        missing,
-                    },
-                });
-            }
-        }
+        seal_tasks(workspace, root, &batches, &mut nodes, &mut unsealed, &mut unlinked);
     }
 
     for node in &nodes {
