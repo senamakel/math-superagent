@@ -54,6 +54,7 @@ const MAX_CAP_GROWTH: u32 = 4;
 pub struct UntruncatedModel<S: Send + Sync> {
     inner: Arc<dyn ChatModel<S>>,
     tracer: Option<Arc<RunTracer>>,
+    agent: String,
 }
 
 impl<S: Send + Sync> std::fmt::Debug for UntruncatedModel<S> {
