@@ -269,25 +269,14 @@ impl OrchestratorAgent {
         let vector_store = VectorStore::from_env()?;
         let SearchTools { exa, oeis } = search_tools(research_enabled, &documents)?;
 
-        // research: search the web, and remember what it found.
-        let mut research_harness = specialist_harness(model.clone(), budget, "research", &tracer);
-        if let Some(exa) = exa.clone() {
-            register_resilient(&mut research_harness, exa);
-        }
-        for tool in oeis.iter().cloned() {
-            register_resilient(&mut research_harness, tool);
-        }
-        register_resilient(
-            &mut research_harness,
-            Arc::new(RecallResearchTool::new(vector_store.clone())),
+        let mut research_harness = build_research_harness(
+            &model,
+            budget,
+            &tracer,
+            &documents,
+            &vector_store,
+            (exa.clone(), oeis.clone()),
         );
-        register_resilient(
-            &mut research_harness,
-            Arc::new(RememberResearchTool::new(vector_store.clone())),
-        );
-        for tool in documents.tools() {
-            register_resilient(&mut research_harness, tool);
-        }
         research_harness.push_middleware(checkpoint.clone());
         register_recall(&mut research_harness, &workspace);
         async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
