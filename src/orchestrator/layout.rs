@@ -177,9 +177,9 @@ fn swept(name: &str) -> bool {
 /// - every move is named in the result, for the reason [`note`] exists — an
 ///   agent not told where its file went runs `python solve.py` again and
 ///   cannot find it.
-pub(super) async fn sweep(workspace: &std::path::Path) -> Vec<(String, String)> {
+pub(super) async fn sweep(workspace: &std::path::Path) -> Swept {
     let Ok(mut entries) = tokio::fs::read_dir(workspace).await else {
-        return Vec::new();
+        return Swept::default();
     };
     let mut swept_files = Swept::default();
     while let Ok(Some(entry)) = entries.next_entry().await {
