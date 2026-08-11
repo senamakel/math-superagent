@@ -191,9 +191,10 @@ impl AsyncSubagentManager {
                     move |mut state: RunState, _context: NodeContext| {
                         let executor = executor.clone();
                         let steering = steering.clone();
+                        let tracer = tracer.clone();
                         async move {
                             let response = executor
-                                .execute(&state.run_id, state.input.clone(), steering)
+                                .execute(&state.run_id, state.input.clone(), steering, tracer)
                                 .await?;
                             state.response = Some(response);
                             Ok(NodeResult::Update(state))
@@ -203,11 +204,11 @@ impl AsyncSubagentManager {
                 .set_entry("subagent")
                 .set_finish("subagent")
                 .compile()
-                .map(|graph| graph.with_run_deadline(RUN_TIMEOUT));
+                .map(|graph| graph.with_run_deadline(run_timeout));
 
             let outcome = match graph {
                 Ok(graph) => tokio::time::timeout(
-                    RUN_TIMEOUT,
+                    run_timeout,
                     graph.run(RunState {
                         run_id,
                         input,
