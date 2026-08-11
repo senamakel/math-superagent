@@ -33,16 +33,16 @@ def conv_q(a):
     return q
 
 def numeration(alpha, beta, a, nterms):
-    """Algorithm 3(ii): digits b_k, deltas delta_k (delta_-1=1, delta_0=alpha,...)."""
+    """Algorithm 3(ii): digits b_k, deltas delta_k (delta_-1=1, delta_0=alpha,...).
+    Here `a` = full CFE list [a0,a1,a2,...] so the k-th partial quotient (k>=1) is a[k]."""
     delta = { -1: mp.mpf(1), 0: alpha }
-    # delta_k = delta_{k-2} - a_k delta_{k-1}
+    # delta_k = delta_{k-2} - a_k delta_{k-1}, with a_k = a[k] (a[0]=a0=0 here)
     for k in range(1, nterms + 2):
-        delta[k] = delta[k-2] - a[k-1] * delta[k-1]
+        delta[k] = delta[k-2] - a[k] * delta[k-1]
     b = {}
     cur = beta
     for k in range(1, nterms + 1):
-        bk = min(a[k-1], mp.ceil(cur / delta[k-1]))
-        # due to the min with a_k, bk can equal a_k which might be > ceil; keep as mp int
+        bk = min(a[k], mp.ceil(cur / delta[k-1]))
         b[k] = int(bk)
         cur = bk * delta[k-1] - cur
     return b, delta
