@@ -26,10 +26,11 @@ def cf_terms(x, nterms):
     return a
 
 def conv_q(a):
-    """convergent denominators q[-1]=0,q[0]=1 and q[k] for k>=1; a is [a0,a1,...]."""
+    """convergent denominators q[-1]=0,q[0]=1 and q[k] for k>=1; a=[a0,a1,...],
+    and the k-th partial quotient is a[k] (k>=1)."""
     q = { -1: 0, 0: 1 }
-    for k in range(1, len(a) + 1):
-        q[k] = a[k-1] * q[k-1] + q[k-2]
+    for k in range(1, len(a)):
+        q[k] = a[k] * q[k-1] + q[k-2]
     return q
 
 def numeration(alpha, beta, a, nterms):
