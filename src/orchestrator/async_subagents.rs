@@ -87,6 +87,16 @@ const ORGANIZE_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
             change what any file says.",
 };
 
+/// Runs one `spawn_agents` call may launch.
+///
+/// Generous, because the point of the tool is to make width cheap: the
+/// concurrency cap below is what actually bounds execution, and a caller that
+/// has genuinely found sixteen independent pieces of work should not have to
+/// issue four calls — each of which costs a full model turn — to start them.
+/// The bound exists only so a malformed argument cannot start an unbounded
+/// number of runs.
+const MAX_BATCH_SPAWNS: usize = 16;
+
 /// Spawned runs allowed to execute at the same time.
 ///
 /// A spawn is non-blocking and the model is encouraged to launch independent
@@ -491,6 +501,27 @@ impl AsyncSubagentManager {
         })
     }
 
+    /// Lists runs that have been started and have not yet finished.
+    ///
+    /// Lets `await_agents` be called with no arguments, which is the shape a
+    /// caller actually wants after a batch spawn: it knows it is waiting for
+    /// "everything I just started" and should not have to copy run ids back
+    /// out of a previous tool result to say so.
+    fn outstanding_runs(&self) -> Vec<String> {
+        self.store
+            .list(tinyagents::graph::OrchestrationTaskFilter::default())
+            .into_iter()
+            .filter(|record| {
+                matches!(
+                    record.status,
+                    tinyagents::graph::OrchestrationTaskStatus::Pending
+                        | tinyagents::graph::OrchestrationTaskStatus::Running
+                )
+            })
+            .map(|record| record.task_id.to_string())
+            .collect()
+    }
+
     fn steer(&self, task_id: &str, instruction: String) -> Result<()> {
         let task_id = TaskId::new(task_id);
         let record = self.store.get(&task_id).ok_or_else(|| {
@@ -796,19 +827,26 @@ impl Tool<()> for AsyncSubagentTool {
                 // Waited concurrently, so the batch costs the slowest run
                 // rather than the sum. Awaiting them in sequence would undo
                 // the parallelism the spawn just bought.
-                let waits = requested.iter().map(|run_id| {
+                let mut waits = tokio::task::JoinSet::new();
+                for run_id in requested {
                     let manager = self.manager.clone();
-                    let run_id = run_id.clone();
-                    async move {
+                    waits.spawn(async move {
                         match manager.await_record(&run_id, wait_seconds).await {
-                            Ok(record) => serde_json::to_value(record).unwrap_or_else(
-                                |error| json!({ "run_id": run_id, "error": error.to_string() }),
-                            ),
+                            Ok(record) => serde_json::to_value(record).unwrap_or_else(|error| {
+                                json!({ "run_id": run_id, "error": error.to_string() })
+                            }),
                             Err(error) => json!({ "run_id": run_id, "error": error.to_string() }),
                         }
+                    });
+                }
+                let mut finished = Vec::new();
+                while let Some(joined) = waits.join_next().await {
+                    match joined {
+                        Ok(value) => finished.push(value),
+                        Err(error) => finished.push(json!({ "error": error.to_string() })),
                     }
-                });
-                json!({ "runs": futures::future::join_all(waits).await })
+                }
+                json!({ "runs": finished })
             }
             AsyncToolKind::Peek => serde_json::to_value(
                 self.manager
