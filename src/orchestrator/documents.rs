@@ -239,9 +239,8 @@ impl Tool<()> for DocumentTool {
 
     fn description(&self) -> &'static str {
         match self.kind {
-            DocumentToolKind::Download => self.download(&call).await?,
-            DocumentToolKind::Never => {
-                "Downloads an HTTP document into /workspace with a size limit."
+            DocumentToolKind::Download => {
+                "Downloads an HTTP or HTTPS document into /workspace, converting HTML and PDF to                  Markdown."
             }
             DocumentToolKind::Read => "Reads a UTF-8 document from /workspace.",
             DocumentToolKind::Write => "Stores a UTF-8 document in /workspace.",
