@@ -121,8 +121,8 @@ pub(super) fn parse(patch: &str) -> Result<Vec<FileOp>> {
             FileOp::Delete {
                 path: checked_path(path)?,
             }
-        } else if let Some(path) = line.strip_prefix(UPDATE) {
-            let path = checked_path(path)?;
+        } else if let Some(raw) = line.strip_prefix(UPDATE) {
+            let path = checked_path(raw)?;
             let move_to = match lines.peek().and_then(|next| next.strip_prefix(MOVE)) {
                 Some(target) => {
                     lines.next();
@@ -335,7 +335,7 @@ impl ApplyPatchTool {
         for op in ops {
             match op {
                 FileOp::Add { path, contents } => {
-                    if self.documents.exists(path).await {
+                    if self.documents.exists(path) {
                         return Err(invalid(format!(
                             "`{path}` already exists; use `{UPDATE}{path}` to change it"
                         )));
@@ -346,7 +346,7 @@ impl ApplyPatchTool {
                     });
                 }
                 FileOp::Delete { path } => {
-                    if !self.documents.exists(path).await {
+                    if !self.documents.exists(path) {
                         return Err(invalid(format!("`{path}` does not exist")));
                     }
                     planned.push(Planned::Remove { path: path.clone() });
@@ -383,11 +383,11 @@ enum Planned {
 
 #[async_trait]
 impl Tool<()> for ApplyPatchTool {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "apply_patch"
     }
 
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "Applies a multi-file patch envelope atomically. Cheaper than rewriting a whole file to \
          change a few lines, and the way to keep a change and its documentation in step. Format: \
          `*** Begin Patch` / one or more of `*** Add File: <path>` (every following line prefixed \

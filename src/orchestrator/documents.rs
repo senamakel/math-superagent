@@ -115,7 +115,7 @@ impl WorkspaceDocuments {
     }
 
     /// Reports whether a visible workspace document exists.
-    pub(super) async fn exists(&self, relative: &str) -> bool {
+    pub(super) fn exists(&self, relative: &str) -> bool {
         self.readable_path(relative).is_ok()
     }
 
