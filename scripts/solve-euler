@@ -73,21 +73,23 @@ else
 fi
 
 extra_instructions=$*
-task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.html.
+task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.html (read_document renders it as Markdown).
 
-Work in these phases and do not skip ahead.
+Work in this order. Steps 1 and 2 together should take a small part of the run; most of it belongs in 3 and 4.
 
-Phase 1, understand. Spawn tool_builder to read /workspace/problem.html and extract the exact statement. Restate the problem precisely, define every symbol, and record the small cases the statement gives, including the worked example, in /workspace/goal.md. Those examples are your test oracle.
+1. Understand by executing. Read the statement, restate it precisely in /workspace/goal.md with every symbol defined, and record the worked examples it gives — those are your test oracle. Then immediately have tool_builder write /workspace/brute.py, a naive but obviously-correct program, and run it to reproduce every one of those examples. If it cannot reproduce them, your reading of the definition is wrong and nothing else matters until it is fixed.
 
-Phase 2, context. Identify the mathematical objects the problem is really about and the classical theory that governs them. Write what you find, including the precise statement of any theorem or algorithm and its hypotheses, to /workspace/memory.md. $research_clause
+2. Identify the governing theory: the mathematical objects involved and the named theorem, algorithm, or identity that controls them. Record it in /workspace/memory.md with the precise statement and hypotheses. $research_clause
 
-Phase 3, derive. State the method and the result it rests on, why that result applies here, and what it reduces the work to. A method whose cost grows with the bound in the statement is the wrong method; find the structural one. Write the derivation to /workspace/solution.md before any full-size code is written.
+3. Derive the efficient method and write the derivation to /workspace/solution.md: the result it rests on, why it applies, and what it reduces the work to. A method whose cost grows with the bound in the statement is the wrong method.
 
-Phase 4, implement. Spawn tool_builder to write /workspace/solution.py using the derived method with exact integer or rational arithmetic. It must first reproduce every small case from the statement, and only then run at full size.
+4. Implement it as /workspace/solution.py with exact integer or rational arithmetic. It must agree with brute.py on every case brute.py can reach, and reproduce every example from the statement, before you run it at full size.
 
-Phase 5, verify. Confirm the answer by a second, independent route: a different derivation, an independent program, or agreement with a brute-force result on the largest instance brute force can reach. Report which route was used.
+5. Verify the final answer by a second independent route — a different derivation, an independent program, or brute-force agreement at the largest size it can manage — and report which.
 
-Spawn subagents asynchronously, keep every run ID, and await each response you rely on. In the final response, state the answer, explain the method and the result it rests on, report the verification command and what it confirmed, and list the saved files."
+Delegate execution to tool_builder; it is the only agent that can run code. Spawn subagents asynchronously, keep every run ID, and await each response you rely on. Never search for a published answer.
+
+In the final response, state the answer, explain the method and the result it rests on, report the verification command and what it confirmed, and list the saved files."
 
 if [ -n "$extra_instructions" ]; then
     task="$task
