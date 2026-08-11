@@ -257,6 +257,18 @@ fails the run outright. Until that is fixed upstream, the tool cap must stay out
 of reach so the graceful cap is always the one that trips. Do not narrow it to
 just above the model cap: one model turn can request several tool calls.
 
+The wall clock is a third path with the same defect, and unlike the tool cap it
+is *not* out of reach. `run_loop.rs` checks the deadline before each model call
+and returns `TinyAgentsError::Timeout` — `StopWithPartial` is not consulted, so
+a run that reaches its ceiling fails outright and its accumulated answer is
+lost, exactly as a provider error would lose it. Only the long-lived agents can
+reach this: a child spawned late inherits a fresh ceiling, but the `goals` run
+driving an attempt starts with the run and ages with it. Two live runs spent
+their first ninety minutes inside attempt 1 and were on course to meet it. When
+that happens the loop itself survives — `delegate` turns the failure into a
+report reflection can read — but the attempt's work product does not. Treat a
+run ceiling reached mid-attempt as data loss, not as a clean stop.
+
 The run ceiling and the tool ceiling are separate limits and must stay
 separate. Collapsing them means a specialist that runs one long computation
 dies with it. Whatever the run ceiling is, `await_agent` must be able to wait it

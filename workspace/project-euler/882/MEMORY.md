@@ -80,6 +80,10 @@ game up to n=10).
   score; S counts skips via the (A,B) minimax DP.
 
 ## Open questions / caveats
+- The dyadic-CGT surrogacy is CONFIRMED on every reachable oracle value (n≤5
+  real-game brute S=1,2,8,9,17 all match ceil(G(n))), though the real-game n=6
+  is computationally unreachable, so the agreement beyond n=5 is unverified by
+  direct brute force. This is the standard limitation of the CGT reduction.
 - **Standing caveat**: the dyadic Number model is a structural hypothesis
   (each single number is a canonical dyadic Number via the Simplicity Rule).
   It is strongly corroborated: S_ceil(n)=ceil(G(n)) matches the real-game
