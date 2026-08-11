@@ -608,6 +608,48 @@ fn merge_context(sections: &[(&str, &str)]) -> String {
     merged
 }
 
+/// Where a detached pattern run leaves its report for a later attempt.
+///
+/// The pattern agent used to be awaited beside the reflection, and that made
+/// it a gate on the whole loop: a live run sat 33 minutes unable to start its
+/// next attempt because the pattern agent it had already collected a verdict
+/// beside was still working. Nothing bounds a pattern run against the loop —
+/// it has its own budget of hundreds of model calls — so the gate had no
+/// ceiling.
+///
+/// Detaching it is safe precisely because nothing in the routing decision
+/// reads it: `route` turns on the reflection's verdict alone. So the run is
+/// spawned, the loop proceeds on the reflection, and whatever the pattern
+/// agent finds is posted here and picked up by the next attempt that asks. A
+/// structural observation is worth as much one attempt later; a stalled loop
+/// is not.
+#[derive(Clone, Default)]
+struct PatternMailbox(Arc<std::sync::Mutex<Vec<String>>>);
+
+impl PatternMailbox {
+    /// Leaves a finished report for the next attempt.
+    fn post(&self, report: String) {
+        if report.trim().is_empty() {
+            return;
+        }
+        if let Ok(mut slot) = self.0.lock() {
+            slot.push(report);
+        }
+    }
+
+    /// Takes every report that has arrived since the last collection.
+    ///
+    /// More than one can be waiting when a pattern run outlives the attempt
+    /// that started it, which is the normal case now that they are detached.
+    fn collect(&self) -> String {
+        let Ok(mut slot) = self.0.lock() else {
+            return String::new();
+        };
+        let reports = std::mem::take(&mut *slot);
+        reports.join("\n\n")
+    }
+}
+
 /// Builds and runs the solution loop over the registered specialists.
 ///
 /// # Errors
