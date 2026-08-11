@@ -34,10 +34,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `match_seq.py` | Closed-form hunt for the gap constants A_n and B_n (hard-coded n=2..11 from extend_f.json): prints normalization ratios A_n/n!, abs(B_n)/(n-1)!, A_n/abs(B_n), compares c_n=abs(B)/(n-1)! against Bell numbers, and A_n/(n! n^2 n^3). Prints only, no output file; successor probe of the ana-star and seqfit closed-form leads. |
 | `mean.py` | Exploratory: prints sums of F(d) over proper divisors and total to inspect the pattern inside F(d) for n=4,5,6; inspective, no output file |
 | `norm_hunt.py` | _(undescribed)_ |
-| `norm_hunt2.py` | _(undescribed)_ |
+| `norm_hunt2.py` | Exploratory closed-form hunt for gap constants A_n and B_n (hard-coded n=2..11 from extend_f.json): prints A_n and abs(B_n) normalizations plus harmonic-number combinations on the deficit D_n=(n!)^2/2 - A_n and the normalized slope c_n=abs(B)/(n-1)!; successor to norm_hunt.py. Prints only; no output file. |
 | `norm_hunt3.py` | Exploratory closed-form hunt for A_n, B_n (n=2..11, hard-coded from extend_f.json): focuses on the deficit D_n=(n!)^2/2-A_n and its normalizations (D/(n!(n-1)!), D/n!^2, harmonic-combination differences d_n-H_n/H_{n-1}), plus c_n= |
 | `ntau.py` | Exploratory: computes N(tau)=#{(pi,i) with pi^i=tau, i in 1..n!} and tests whether N(tau) depends only on tau's cycle type (n=3,4); also re-derives Q = sum over tau of rank(tau)*N(tau) |
-| `pattern1.py` | Exploratory: likely a pattern-finder for the gap constants — prints factorizations of A_n and abs(B_n) for n=2..11 and normalization ratios (A/(n-1)!, A/n!, |B|/(n-1)!, |B|/n!) hunting a closed-form recurrence. Prints only, no output file. Reuses hard-coded A,B from extend_f.json. |
+| `pattern1.py` | Exploratory: likely a pattern-finder for the gap constants — prints factorizations of A_n and abs(B_n) for n=2..11 and normalization ratios (A/(n-1)!, A/n!, |
 | `perpi.py` | Exploratory: per-permutation analysis for n=5 — orders, cyclic-subgroup rank sums, grouped by cycle type, looking for structure in the intra-subgroup rank sum |
 | `psid.py` | Exploratory: verifies Q(n)=sum over d dividing n! of psi(d)*phi(n!/d) for n=5 with psi(d)=F-value for i with gcd(i,n!)=d, and prints psi(d) over all divisors to look for structure |
 | `qtable.py` | Exploratory: computes Q(n) via the period/orbit formula for n=2..10 and prints normalization ratios Q/n! and Q/(n!)^2 to look for a closed form; quantifies the runtime wall at n=10 |

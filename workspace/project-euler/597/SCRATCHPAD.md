@@ -141,3 +141,18 @@ consistency check meaningful.
 - Root cause: bumping depends on pairwise RELATIVE speed and actual catch/finish
   chronology; a single scalar priority (time-to-finish rate) cannot encode which
   pairs actually chain. Treap ancestry over-counts relations the race never makes.
+
+## Run (tool_builder): structure_taxonomy.py — worked-table verification + bump-graph taxonomy
+Command: `cd /workspace && python3 code/structure_taxonomy.py`
+- Part A: n=3,L=160 five-row table all reproduced (parities even/odd/odd/even/odd
+  for none/B->C/A->B/B&C->C/A->B->C). Exact rational: all-five sum = 1,
+  even-rows sum = 4/15+4/27 = 56/135 = p(3,160). PASS.
+- Part B: MC p(4,400) = 0.511487 +/- 0.000790 vs given 0.5107843137. PASS.
+- Part C (60k trials each, n=3,4,5 x L=160,1800 = 360k races): bump graph is
+  ALWAYS a forest: out-deg<=1, edges strictly increasing, zero cycles in every
+  trial. Boat n-1 never bumps, boat 0 never bumped (P=0 over 100k). In-degree
+  unbounded (up to 4 at n=5); top boats are the most-bumped targets.
+  Chains/roots need not be consecutive (bumper-set non-consecutive ~1-3% at
+  n=5/6). Distinct edge structures: 5 (n=3), 14 (n=4), 14-42 (n=5); edge-set
+  and above-reachability counts agree.
+- Findings written to /workspace/structure_report.md.

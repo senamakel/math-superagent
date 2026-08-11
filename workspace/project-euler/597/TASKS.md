@@ -23,3 +23,7 @@
       Trivial n=2 counterexample (v0<v1, no bump, even; treap predicts odd).
       Tree-model MC p(3,160)=0.333 (given 0.4148), p(4,400)=0.833 (given 0.5108),
       p(13,1800)=0.536. Structure of the treap does not match the bump-chronology.
+- [x] structure_taxonomy.py: reproduce n=3,L=160 five-row table + p(4,400) MC;
+      collect bump-graph taxonomy (out/in degree, forest/cycle, chain length,
+      distinct structures) over 360k races -> bump graph is always a forest;
+      findings in structure_report.md.

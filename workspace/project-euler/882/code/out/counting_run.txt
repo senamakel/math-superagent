@@ -1,0 +1,48 @@
+=== TASK B: counting game (A,B) DP ===
+  n=2: A=3 B=2 need_oneturn=inf expected 2 -> MISMATCH
+  n=5: A=23 B=15 need_oneturn=inf expected 17 -> MISMATCH
+  n=10: A=102 B=83 need_oneturn=inf expected 64 -> MISMATCH
+
+S(n) counting game n=1..10:
+  n= 1 A=  1 B=  0 S=inf
+  n= 2 A=  3 B=  2 S=inf
+  n= 3 A=  9 B=  2 S=inf
+  n= 4 A= 13 B= 10 S=inf
+  n= 5 A= 23 B= 15 S=inf
+  n= 6 A= 35 B= 21 S=inf
+  n= 7 A= 56 B= 21 S=inf
+  n= 8 A= 64 B= 45 S=inf
+  n= 9 A= 82 B= 63 S=inf
+  n=10 A=102 B= 83 S=inf
+
+need_oneturn(A,B) for A,B in 0..12 (minimal skips Zero needs, One to move):
+  A= 0:   0   0   0   0   0   0   0   0   0   0   0   0   0
+  A= 1:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 2:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 3:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 4:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 5:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 6:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 7:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 8:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 9:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A=10:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A=11:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A=12:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  (columns B=0..12, '.' = unable to force a win)
+
+need_zeroturn(A,B) for A,B in 0..12:
+  A= 0:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 1:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 2:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 3:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 4:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 5:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 6:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 7:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 8:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A= 9:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A=10:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A=11:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  A=12:   .   .   .   .   .   .   .   .   .   .   .   .   .
+  (columns B=0..12, '.' = unable to force a win)

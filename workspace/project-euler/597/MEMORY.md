@@ -122,3 +122,28 @@ p(3,160)=56/135≈0.4148; p(4,400)=0.5107843137. Goal: p(13,1800).
   (0.5002 +/- 0.00007). Final 10-dp answer needs the exact method, not MC,
   since distinguishing a tiny true bias from exactly 0.5 would need >100M
   samples.
+
+## Structural taxonomy (structure_taxonomy.py -> structure_report.md)
+Verified examples + bump-graph taxonomy over 60k MC trials per (n,L), n=3,4,5,
+L in {160,1800} (360k total races), using the reference brute engine:
+- n=3,L=160 five-row table: all parities reproduced; exact rational sums
+  all-five=1 (partition) and even-rows=56/135 = p(3,160). MC p(4,400)=0.5115
+  +/- 0.0008 (given 0.510784).
+- CENTRAL: the bump directed graph is ALWAYS a FOREST — every boat out-deg <= 1,
+  every edge strictly index-increasing, zero cycles, across all 360k trials.
+  Deterministic consequences (proved): boat 0 is never a target, boat n-1 never
+  bumps (confirmed P=0 over 100k trials); components are in-arborescences
+  rooted at never-bump finishers; max chain length reaches n-1 (0->1->...->n-1).
+- In-degree is unbounded: a bumped boat keeps rowing and can be re-bumped by
+  several lower boats; targets concentrate on the highest boats (boat n-1
+  bumped prob ~0.45-0.49).
+- Chains/roots are NOT consecutive: the set of boats bumping a target need not
+  be a consecutive lower block; above[] can skip intermediate boats (a boat
+  passes boats already OUT). Bumper-set non-consecutive ~1-3% at n=5/6.
+- Distinct edge structures reached grow with n: 5 (n=3), 14 (n=4), 14-42 (n=5);
+  edge-set and above-reachability representations agree in count (bijective on
+  observed data).
+- Multiple disjoint forest components per race (independent index intervals),
+  parity = product of component parities = #chain-pairs mod 2. This is the
+  structural reason single-scalar treap hypotheses fail: bumping is a
+  chronological forest-of-chains process, not a one-root Cartesian tree.
