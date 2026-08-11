@@ -29,7 +29,8 @@ static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 
 /// Runs that automatically trigger a follow-up run when they succeed.
 ///
-/// The tool-builder is the role that creates files, and the moment it finishes
+/// The code-writing roles are the ones that create files, and the moment one
+/// finishes
 /// is when the workspace is least tidy and most legible: the files are new,
 /// their purpose is settled, and nothing else has happened since. Leaving the
 /// tidying to whoever happens to run next means it competes with mathematics
