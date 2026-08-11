@@ -672,18 +672,16 @@ fn main() -> std::process::ExitCode {
 
     let Some(container) = running_for(&workspace) else {
         eprintln!(
-            "nothing is running for problem {problem}.\n\
-             Start it with `./euler {problem}`, then run this again to watch it,\n\
-             or `./euler-tui {problem} --replay` to read the last run's log.",
-            problem = options.problem
+            "nothing is running for {label}.\n\
+             Start it, then run this again to watch it, or add --replay to read\n\
+             the last run's log at {log}.",
+            label = options.label,
+            log = log.display()
         );
         return std::process::ExitCode::FAILURE;
     };
     if let Ok(mut state) = runs.lock() {
-        state.add(&format!(
-            "watching {container}, running problem {}",
-            options.problem
-        ));
+        state.add(&format!("watching {container}, running {}", options.label));
     }
 
     let stop = Arc::new(AtomicBool::new(false));
