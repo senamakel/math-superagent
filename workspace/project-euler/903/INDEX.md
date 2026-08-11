@@ -6,11 +6,14 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `AGENTS.md` | Method policy for the whole run: how to reason (compute before prose), evidence rules (every number from a run, every theorem cited), housekeeping conventions |
 | `README.md` | Overview of the workspace and its entry points (AGENTS.md, prompts/, goal.md, tasks.md, scratchpad.md, memory.md) |
-| `config.toml` | Run configuration: workspace kind, solver flags (exact arithmetic, verify with code, cite sources, forbid exponential), artifact file paths |
 | `context.md` | Shared-context brief written by the research team and read by every role: what the reference library under research/ means for this problem (established results usable as known, contradictions, and the open gaps). Kept short so each new attempt can act on it without opening the sources. Complements research/INDEX.md, which only says what each file is. |
 | `goal.md` | Objective: compute Q(10^6) mod (10^9+7); statement, worked examples (Q(2)=5, Q(3)=88, Q(6)=133103808, Q(10) about 468421536), completion criteria, current status |
 | `memory.md` | Working memory: problem restatement, verified Q(n) table (n=2..8) with both methods' timings, established results, failed approaches (none), open questions (the n=10^6 method) |
 | `problem.html` | The problem statement (source of the run): defines Q(n), rank, pi^i; gives worked examples; asks for Q(10^6) mod (10^9+7) |
-| `problem.url` | Source URL for the problem statement: https://projecteuler.net/minimal=903 |
 | `scratchpad.md` | Provisional work: the task, method-1 cost model, method-2 justification, power-semantics check, verified results table |
 | `tasks.md` | Task list with checkboxes: recording objective, reading the statement, writing brute.py/brute2.py, verifying n=2..6/7/8, and the (pending) efficient method |
+| `code/` | Programs and their outputs; see code/INDEX.md (and toolkits/ within it) |
+| `config/` | Run plumbing: config.toml (solver flags, artifact paths), problem.url (source URL). See config/INDEX.md |
+| `prompts/` | Role guidance for each agent; see prompts/INDEX.md |
+| `reflections/` | Attempt verdicts written by the solution loop itself; do not edit. See reflections/INDEX.md |
+| `research/` | Reference library (L0 full texts, L1 summaries, verification programs); see research/INDEX.md |
