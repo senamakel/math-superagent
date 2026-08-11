@@ -41,6 +41,28 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 /// truncating good calls is the more expensive mistake.
 const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_mins(7);
 
+/// Slowest generation rate, in output tokens per second, a request is given
+/// time for.
+///
+/// A flat timeout silently assumed every turn is allowed the same number of
+/// output tokens, and upstream `truncated_empty` recovery breaks that
+/// assumption: a turn that ends at the cap having emitted no tool call is
+/// re-issued with `max_tokens` doubled, clamped at four times. Generation time
+/// is linear in output length, so the recovery attempt needs proportionally
+/// more wall clock and was given none.
+///
+/// That made the recovery structurally unable to succeed. A live turn produced
+/// 12,000 tokens in 281 seconds — about 43 per second — and truncated. Its
+/// retry at 24,000 tokens therefore needed some nine minutes against a
+/// seven-minute ceiling, and at the 4x clamp roughly nineteen. Every
+/// truncation recovery timed out, burning a full timeout per attempt to
+/// accomplish nothing, which is exactly the self-inflicted outage the flat
+/// timeout was raised to 7 minutes to avoid.
+///
+/// Thirty is deliberately below the measured rate, so the bound stays a
+/// safety ceiling rather than a limit a working call can reach.
+const MIN_OUTPUT_TOKENS_PER_SECOND: u64 = 30;
+
 /// Wraps a tool so a recoverable failure answers the model instead of killing
 /// the run.
 ///
