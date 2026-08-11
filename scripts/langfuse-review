@@ -1,0 +1,39 @@
+#!/bin/sh
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+turns_file=$(mktemp)
+trap 'rm -f "$turns_file"' EXIT HUP INT TERM
+
+"$repository_root/scripts/langfuse-turns" "$@" > "$turns_file"
+jq '
+  . as $report |
+  {
+    fetched_at,
+    observations_reviewed: .count,
+    traces_reviewed: ([.turns[].trace_id] | unique | length),
+    improvement_candidates: [
+      .turns[] |
+      select(
+        (.level == "ERROR") or
+        ((.status_message // "") != "") or
+        (.output == null) or
+        ((.output | type) == "string" and (.output | length) == 0)
+      ) |
+      {
+        trace_id,
+        observation_id,
+        name,
+        reason: (
+          if .level == "ERROR" then "error observation"
+          elif (.status_message // "") != "" then .status_message
+          else "missing or empty output"
+          end
+        ),
+        input,
+        output
+      }
+    ],
+    turns: $report.turns
+  }
+' "$turns_file"

@@ -1,0 +1,104 @@
+#!/bin/sh
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$repository_root"
+
+usage() {
+    echo "usage: ./langfuse-turns [--limit 1..1000] [--hours positive-integer] [--trace trace-id] [--raw]" >&2
+}
+
+limit=50
+hours=24
+trace_id=
+raw=0
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --limit) [ "$#" -ge 2 ] || { usage; exit 2; }; limit=$2; shift 2 ;;
+        --hours) [ "$#" -ge 2 ] || { usage; exit 2; }; hours=$2; shift 2 ;;
+        --trace) [ "$#" -ge 2 ] || { usage; exit 2; }; trace_id=$2; shift 2 ;;
+        --raw) raw=1; shift ;;
+        -h|--help|help) usage; exit 0 ;;
+        *) usage; exit 2 ;;
+    esac
+done
+
+case "$limit" in ''|*[!0-9]*) echo "limit must be an integer from 1 to 1000" >&2; exit 2 ;; esac
+[ "$limit" -ge 1 ] && [ "$limit" -le 1000 ] || {
+    echo "limit must be an integer from 1 to 1000" >&2
+    exit 2
+}
+case "$hours" in ''|*[!0-9]*) echo "hours must be a positive integer" >&2; exit 2 ;; esac
+[ "$hours" -ge 1 ] || { echo "hours must be a positive integer" >&2; exit 2; }
+
+if [ ! -f .env ]; then
+    echo "missing .env" >&2
+    exit 1
+fi
+set -a
+# The ignored repository-local file is trusted configuration and is never printed.
+. ./.env
+set +a
+: "${LANGFUSE_BASE_URL:?LANGFUSE_BASE_URL is required in .env}"
+: "${LANGFUSE_PUBLIC_KEY:?LANGFUSE_PUBLIC_KEY is required in .env}"
+: "${LANGFUSE_SECRET_KEY:?LANGFUSE_SECRET_KEY is required in .env}"
+
+from_time=$(date -u -d "$hours hours ago" '+%Y-%m-%dT%H:%M:%SZ')
+to_time=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+response_file=$(mktemp)
+trap 'rm -f "$response_file"' EXIT HUP INT TERM
+
+set -- \
+    --silent --show-error --location --config - --get \
+    --data-urlencode "fields=core,basic,time,io,metadata,model,usage,metrics,trace_context" \
+    --data-urlencode "fromStartTime=$from_time" \
+    --data-urlencode "toStartTime=$to_time" \
+    --data-urlencode "limit=$limit"
+if [ -n "$trace_id" ]; then
+    set -- "$@" --data-urlencode "traceId=$trace_id"
+fi
+set -- "$@" --output "$response_file" --write-out '%{http_code}'
+
+base_url=${LANGFUSE_BASE_URL%/}
+status=$(curl "$@" <<EOF
+user = "$LANGFUSE_PUBLIC_KEY:$LANGFUSE_SECRET_KEY"
+url = "$base_url/api/public/v2/observations"
+EOF
+)
+if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+    echo "Langfuse observations request failed with HTTP $status" >&2
+    jq -c '{error: (.message // .error // "unknown Langfuse error")}' "$response_file" >&2 2>/dev/null || true
+    exit 1
+fi
+
+if [ "$raw" -eq 1 ]; then
+    jq . "$response_file"
+    exit 0
+fi
+
+jq --arg fetched_at "$to_time" '
+  {
+    fetched_at: $fetched_at,
+    count: (.data | length),
+    next_cursor: (.meta.cursor // null),
+    turns: [.data[] | {
+      trace_id: .traceId,
+      observation_id: .id,
+      parent_observation_id: .parentObservationId,
+      trace_name: .traceName,
+      name,
+      type,
+      level,
+      status_message: .statusMessage,
+      start_time: .startTime,
+      end_time: .endTime,
+      latency: .latency,
+      model: (.providedModelName // .modelId),
+      input,
+      output,
+      usage: (.usageDetails // {input: .inputUsage, output: .outputUsage, total: .totalUsage}),
+      cost: (.costDetails // {input: .inputCost, output: .outputCost, total: .totalCost}),
+      metadata
+    }]
+  }
+' "$response_file"

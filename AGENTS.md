@@ -104,6 +104,15 @@ OpenRouter uses `deepseek/deepseek-v4-flash-0731` through StreamLake unless
 `OPENROUTER_MODEL` overrides the model. Exa handles search. Langfuse ingestion
 is best effort and must not turn a successful answer into a failed run.
 
+Langfuse is also available for querying and reviewing recorded turns. Use
+`./langfuse-turns --hours 24 --limit 50` for normalized observations or
+`./langfuse-turns --trace <trace-id>` for one trace. Use
+`./langfuse-review --hours 24 --limit 100` to retain those turns while flagging
+errors, status messages, and missing outputs as improvement candidates. The
+helpers load the ignored local `.env`, query Observations API v2, and pass Basic
+Auth through curl configuration on standard input so credentials never appear
+in process arguments or output. Treat returned inputs and outputs as sensitive.
+
 Do not add memory domains, channels, Web3, SQLite persistence, REPL, or RLM
 features unless the user explicitly expands the product scope.
 
@@ -182,7 +191,8 @@ Also run the checks that match the changed surface:
 
 ```sh
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
-sh -n agent euler scripts/run-agent scripts/solve-euler
+sh -n agent euler langfuse-turns langfuse-review scripts/run-agent \
+  scripts/solve-euler scripts/langfuse-turns scripts/langfuse-review
 ./agent build
 docker compose config --quiet
 ```
