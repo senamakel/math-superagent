@@ -27,8 +27,11 @@ pub(super) const RESEARCH_DIR: &str = "research";
 /// it exists for a human debugging a conversion, not for the run.
 pub(super) const RAW_DIR: &str = "raw";
 const MAX_DOCUMENT_BYTES: usize = 5 * 1024 * 1024;
-/// Characters of a downloaded document kept in `research/` before it has been
-/// digested.
+/// Suffix marking the full converted text beside its summary.
+pub(super) const FULL_TEXT_SUFFIX: &str = ".full.md";
+
+/// Characters of a downloaded document kept in the summary file before it has
+/// been digested.
 ///
 /// A converted document is not small: one downloaded reference page came to
 /// 91,190 characters, roughly 23,000 tokens, and three of them would fill a
@@ -36,12 +39,17 @@ const MAX_DOCUMENT_BYTES: usize = 5 * 1024 * 1024;
 /// where agents read it means the run pays that cost every time anyone opens
 /// it, to re-read prose it has already been through.
 ///
-/// So `research/` holds a bounded excerpt and `raw/` holds the whole text. The
-/// excerpt is a placeholder with a job: the scholar replaces it with a real
-/// summary of what the source establishes. Four thousand characters is about a
-/// thousand tokens — enough to carry a paper's abstract and the opening of its
-/// first section, which is usually enough to tell whether it is worth
-/// digesting at all.
+/// So a download lands as two files side by side: `<name>.md` carries a
+/// bounded excerpt that the scholar replaces with a real summary, and
+/// `<name>.full.md` carries the whole converted text. Both stay in `research/`
+/// where an agent can reach them, because a source whose detail is genuinely
+/// needed must be readable without leaving the workspace. What the split buys
+/// is that reading the short one is the default and reading the long one is a
+/// decision.
+///
+/// Four thousand characters is about a thousand tokens — enough to carry a
+/// paper's abstract and the opening of its first section, which is usually
+/// enough to tell whether the full text is worth opening.
 const RESEARCH_EXCERPT_CHARS: usize = 4_000;
 const MAX_SEARCH_RESULTS: usize = 10;
 
@@ -639,39 +647,40 @@ impl DocumentTool {
             // Two archives, both best effort: the original bytes, and the full
             // converted text. Neither failing may fail a download that
             // otherwise succeeded.
+            // The original bytes are archived out of sight; a failure there
+            // must not fail a download that otherwise succeeded.
             let raw_original = raw_path(&requested);
-            let raw_markdown = raw_path(&path);
             let archived = self
                 .documents
                 .write_bytes(&raw_original, &bytes)
                 .await
-                .is_ok()
-                && self
-                    .documents
-                    .write_bytes(&raw_markdown, content.as_bytes())
-                    .await
-                    .is_ok();
-            // Only a bounded excerpt is filed where agents read it. The full
-            // text stays in the archive until the scholar turns it into a
-            // summary worth carrying.
-            let excerpt = research_excerpt(&content, &raw_markdown);
-            let truncated = excerpt.len() < content.len();
+                .is_ok();
+            // The complete converted text sits beside the summary, reachable
+            // when the summary is not enough.
+            let full = full_text_path(&path);
+            let excerpt = research_excerpt(&content, &full);
+            let split = excerpt.len() < content.len();
+            if split {
+                self.documents.write(&full, &content).await?;
+            }
             self.documents.write(&path, &excerpt).await?;
             format!(
-                "downloaded {} bytes from {url}, converted to {} bytes of Markdown{}. \
-                 {path} holds {} bytes{}",
+                "downloaded {} bytes from {url}, converted to {} bytes of Markdown{}. {}",
                 bytes.len(),
                 content.len(),
                 if archived {
-                    format!(", archived in full at {raw_markdown}")
+                    ""
                 } else {
-                    " (full text not archived)".to_string()
+                    " (original bytes not archived)"
                 },
-                excerpt.len(),
-                if truncated {
-                    "; have the scholar replace it with a summary of what the source establishes"
+                if split {
+                    format!(
+                        "{path} holds a {} byte excerpt to read first; the complete text is at \
+                         {full}. Have the scholar replace the excerpt with a summary.",
+                        excerpt.len()
+                    )
                 } else {
-                    " (the whole document)"
+                    format!("{path} holds the whole document ({} bytes)", excerpt.len())
                 }
             )
         };
