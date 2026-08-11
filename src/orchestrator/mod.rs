@@ -305,47 +305,7 @@ impl OrchestratorAgent {
                 "scratchpad.md",
             ],
         )?;
-        let orchestrator_prompt = workspace_prompt(
-            ORCHESTRATOR_PROMPT,
-            &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/orchestrator.md"])?,
-        );
-        let research_prompt = workspace_prompt(
-            RESEARCH_PROMPT,
-            &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/research.md"])?,
-        );
-        let tool_builder_prompt = workspace_prompt(
-            TOOL_BUILDER_PROMPT,
-            &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/tool_builder.md"])?,
-        );
-        let goals_prompt = workspace_prompt(
-            GOALS_PROMPT,
-            &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/goals.md"])?,
-        );
-
-        let reflection_prompt = workspace_prompt(
-            REFLECTION_PROMPT,
-            &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/reflection.md"])?,
-        );
-        let pattern_prompt = workspace_prompt(
-            PATTERN_PROMPT,
-            &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/pattern_finder.md"])?,
-        );
-        let inventor_prompt = workspace_prompt(
-            INVENTOR_PROMPT,
-            &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/inventor.md"])?,
-        );
-        let librarian_prompt = workspace_prompt(
-            LIBRARIAN_PROMPT,
-            &shared_guidance,
-            &load_workspace_files(&workspace, &["prompts/librarian.md"])?,
-        );
+        let prompts = RolePrompts::load(&workspace, &shared_guidance)?;
 
         let vector_store = VectorStore::from_env()?;
         let exa = if research_enabled {
@@ -370,7 +330,7 @@ impl OrchestratorAgent {
         for tool in documents.tools() {
             register_resilient(&mut research_harness, tool);
         }
-        async_subagents.register("research", Arc::new(research_harness), research_prompt)?;
+        async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
 
         // tool_builder: the only role with shell and file-write authority.
         let mut tool_builder_harness = specialist_harness(model.clone(), budget);
@@ -388,7 +348,7 @@ impl OrchestratorAgent {
         async_subagents.register(
             "tool_builder",
             Arc::new(tool_builder_harness),
-            tool_builder_prompt,
+            prompts.tool_builder,
         )?;
 
         register_support_agents(
@@ -401,10 +361,10 @@ impl OrchestratorAgent {
                 exa: exa.clone(),
             },
             SupportPrompts {
-                reflection: reflection_prompt,
-                pattern: pattern_prompt,
-                inventor: inventor_prompt,
-                librarian: librarian_prompt,
+                reflection: prompts.reflection,
+                pattern: prompts.pattern,
+                inventor: prompts.inventor,
+                librarian: prompts.librarian,
             },
         )?;
 
@@ -417,7 +377,7 @@ impl OrchestratorAgent {
         for tool in documents.tools() {
             register_resilient(&mut goals_harness, tool);
         }
-        async_subagents.register("goals", Arc::new(goals_harness), goals_prompt)?;
+        async_subagents.register("goals", Arc::new(goals_harness), prompts.goals)?;
 
         let registry = Arc::new(default_registry(research_enabled)?);
 
@@ -432,7 +392,7 @@ impl OrchestratorAgent {
         Ok(Self {
             inner: ObservedAgent::from_harness(orchestrator_harness)?.with_tracer(tracer.clone()),
             registry,
-            system_prompt: orchestrator_prompt,
+            system_prompt: prompts.orchestrator,
             subagents: async_subagents,
             tracer,
         })
