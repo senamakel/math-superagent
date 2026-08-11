@@ -91,6 +91,9 @@ impl ObservedAgent {
         ));
         let events = EventSink::with_stream_id(&run_id);
         events.subscribe(journal_sink.clone());
+        if let Some(tracer) = self.tracer.clone() {
+            events.subscribe(tracer);
+        }
         let context = RunContext::new(RunConfig::new(&run_id), ()).with_events(events);
 
         let result = self.harness.invoke_in_context(&(), context, input).await;
