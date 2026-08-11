@@ -168,6 +168,18 @@ impl std::fmt::Debug for AsyncSubagentManager {
 
 impl AsyncSubagentManager {
     pub(crate) fn new(budget: RunBudget, tracer: Option<Arc<RunTracer>>) -> Self {
+        Self::with_concurrency(budget, tracer, max_concurrent_agents())
+    }
+
+    /// Builds a manager with an explicit concurrent-run cap.
+    ///
+    /// Separate from [`Self::new`] so the cap can be exercised without setting
+    /// a process-wide environment variable from a test.
+    fn with_concurrency(
+        budget: RunBudget,
+        tracer: Option<Arc<RunTracer>>,
+        concurrency: usize,
+    ) -> Self {
         Self {
             agents: Arc::default(),
             store: Arc::new(InMemoryTaskStore::new()),
