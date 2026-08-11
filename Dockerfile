@@ -37,50 +37,13 @@ RUN apt-get update \
     && apt-get install --yes --no-install-recommends sagemath \
     && rm -rf /var/lib/apt/lists/*
 
-# The constraint-solving stack, for the `solver` role. A declarative encoding
-# handed to an engine that does propagation, clause learning, and symmetry
-# breaking beats a backtracking search written from scratch in one turn, and
-# rewriting one of these by hand is precisely the answer-space search the
-# method policy prohibits — so the engines have to be present or the role
-# cannot exist. Placed after SageMath so editing this list does not invalidate
-# that layer.
-#
-# `nauty` is here rather than with the scientific stack because it belongs to
-# the same job: exhaustive generation of graphs up to isomorphism is what turns
-# a SAT solver's `UNSAT` from an assertion into a cross-checked bound, and
-# `nauty-geng -d3 <n>` is the oracle for any statement about small graphs of
-# minimum degree three. Debian prefixes every binary, so it is `nauty-geng`,
-# not `geng`.
-#
-# CP-SAT and PySAT come from pip because Debian ships neither: `python3-ortools`
-# resolves as a name and has no installation candidate. They are baked at build
-# time into the system site-packages, before PIP_TARGET is set below, because
-# the container root filesystem is read-only at runtime and a run that has to
-# install its solver before it can encode anything has already lost minutes of
-# its budget.
-#
-# `numpy scipy pandas matplotlib` are re-installed from pip beside them, and
-# that is not redundancy. CP-SAT depends on NumPy 2, pip therefore upgrades it,
-# and Debian's `python3-matplotlib` and `python3-pandas` are compiled against
-# NumPy 1 — so `import igraph`, which pulls matplotlib transitively, printed six
-# `_ARRAY_API not found` tracebacks before struggling on. Pip installs into
-# `/usr/local/lib/python3/dist-packages`, which precedes the apt tree on
-# `sys.path`, so the pip wheels shadow the apt builds and the whole stack agrees
-# on one NumPy.
-RUN apt-get update \
-    && apt-get install --yes --no-install-recommends \
-       python3-z3 python3-pulp python3-pycosat python3-igraph \
-       z3 cvc5 minisat cryptominisat glpk-utils coinor-cbc \
-       nauty \
-    && pip3 install --break-system-packages --no-cache-dir \
-       ortools python-sat numpy scipy pandas matplotlib \
-    && rm -rf /var/lib/apt/lists/*
-
 # Lean 4 with a pre-built Mathlib, for the `lean_prover` role. Everything else
 # this runtime produces is evidence; a Lean proof that compiles with no `sorry`
 # is the thing itself, and that is worth the size. It is the largest layer here
-# by a wide margin and is placed last of the toolchains, before the binary, so
-# editing Rust source invalidates only the COPY below it.
+# by a wide margin, and it goes *above* the smaller stacks rather than below
+# them: Docker invalidates every layer after the one that changed, so the
+# cheapest thing to rebuild belongs last. With this beneath the constraint
+# stack, adding one solver package re-downloaded 8,684 Mathlib oleans.
 #
 # `lake exe cache get` downloads the compiled oleans rather than building
 # Mathlib from source — the difference is minutes against many hours. `elan
@@ -117,8 +80,54 @@ RUN printf '#!/bin/sh\nLEAN_PATH="$(cat /opt/lean_path.txt)${LEAN_PATH:+:$LEAN_P
     && printf '%s\n' 'import Mathlib.Combinatorics.SimpleGraph.Finite' > /tmp/smoke.lean \
     && chmod 0644 /tmp/smoke.lean \
     && su agent -s /bin/sh -c 'lean /tmp/smoke.lean' \
-    && su agent -s /bin/sh -c 'python3 -W error::RuntimeWarning -c "import igraph, matplotlib, pandas, numpy, z3, pysat.solvers; from ortools.sat.python import cp_model"' \
     && rm /tmp/smoke.lean
+
+# The constraint-solving stack, for the `solver` role. A declarative encoding
+# handed to an engine that does propagation, clause learning, and symmetry
+# breaking beats a backtracking search written from scratch in one turn, and
+# rewriting one of these by hand is precisely the answer-space search the
+# method policy prohibits — so the engines have to be present or the role
+# cannot exist. It is the layer most likely to gain a package, so it is placed
+# last of the toolchains where a rebuild costs the least.
+#
+# `nauty` is here rather than with the scientific stack because it belongs to
+# the same job: exhaustive generation of graphs up to isomorphism is what turns
+# a SAT solver's `UNSAT` from an assertion into a cross-checked bound, and
+# `nauty-geng -d3 <n>` is the oracle for any statement about small graphs of
+# minimum degree three. Debian prefixes every binary, so it is `nauty-geng`,
+# not `geng`.
+#
+# CP-SAT and PySAT come from pip because Debian ships neither: `python3-ortools`
+# resolves as a name and has no installation candidate. They are baked at build
+# time into the system site-packages, before PIP_TARGET is set below, because
+# the container root filesystem is read-only at runtime and a run that has to
+# install its solver before it can encode anything has already lost minutes of
+# its budget.
+#
+# `numpy scipy pandas matplotlib` are re-installed from pip beside them, and
+# that is not redundancy. CP-SAT depends on NumPy 2, pip therefore upgrades it,
+# and Debian's `python3-matplotlib` and `python3-pandas` are compiled against
+# NumPy 1 — so `import igraph`, which pulls matplotlib transitively, printed six
+# `_ARRAY_API not found` tracebacks before struggling on. Pip installs into
+# `/usr/local/lib/python3/dist-packages`, which precedes the apt tree on
+# `sys.path`, so the pip wheels shadow the apt builds and the whole stack agrees
+# on one NumPy. `--upgrade` is load-bearing: apt's builds carry dist-info, so
+# without it pip reports them already satisfied, installs nothing, and the
+# tracebacks survive a build that reported success.
+#
+# The smoke test runs as the unprivileged runtime user rather than as root, for
+# the same reason the Lean one does: a check that passes as root says nothing
+# about the run.
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+       python3-z3 python3-pulp python3-pycosat python3-igraph \
+       z3 cvc5 minisat cryptominisat glpk-utils coinor-cbc \
+       nauty \
+    && pip3 install --break-system-packages --no-cache-dir --upgrade \
+       ortools python-sat numpy scipy pandas matplotlib \
+    && rm -rf /var/lib/apt/lists/* \
+    && su agent -s /bin/sh -c 'python3 -W error::RuntimeWarning -c "import igraph, matplotlib, pandas, numpy, z3, pycosat, pulp, pysat.solvers; from ortools.sat.python import cp_model"' \
+    && su agent -s /bin/sh -c 'nauty-geng -q -c -d3 8 | wc -l'
 
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
 
