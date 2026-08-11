@@ -370,14 +370,21 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md` |
+| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `toolkit.md` |
 | tool_builder | the above plus `scratchpad.md` |
 | reflection | `goal.md`, `tasks.md`, `memory.md` |
 | pattern_finder | `goal.md`, `memory.md`, `scratchpad.md` |
 | inventor, research | `goal.md`, `memory.md` |
 | librarian | `goal.md`, `memory.md`, `research/INDEX.md` |
 
-Three of these are load-bearing rather than tidy-minded:
+The tool-builder accumulates reusable helpers in `toolkit.py` and describes
+each one in `toolkit.md` — signature, return, and what established it is
+correct. The catalogue is context for the planners as well, because what has
+already been built and verified changes what is worth delegating next. A row
+that has drifted from its function is worse than no row: the next agent calls
+it as described rather than reading the source.
+
+Four of these are load-bearing rather than tidy-minded:
 
 - Reflection must see `goal.md`. It judges whether the criteria are met, and
   judging against criteria it cannot see is guesswork; a wrong `SOLVED` ends
