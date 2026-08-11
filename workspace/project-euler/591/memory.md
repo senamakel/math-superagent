@@ -71,3 +71,13 @@ every d, which is expected: the optimum (a,b) changes with n.
   (toolkits/validate_bothsides.py). **S (corrected) = 526007984625966**,
   written to /workspace/results_full_bothsides.txt. Positive-only was strictly
   worse on 45 d (negative-b winners), never better.
+
+## Final answer (this attempt, re-verified by execution)
+S = 526007984625966. Re-verified fresh on this run: brute.py reproduced examples
+1-3 verbatim ((6,-2), (-55,26), (560323,-211781)); solution_bothsides.py
+reproduced examples 1-4 (d=2, n=1e13 -> a=-6188084046055, b=4375636191520);
+independent exact-int re-sum of results_full_bothsides.txt = 526007984625966;
+solver vs brute at n=1e7: exact (b,a) on all 16 d (verify_n7_rerun.py);
+solver vs brute at n=1e6, both signs, all 90 d: 0 mismatches (validate_bothsides.py).
+Derivation in solution.md; precise theorem statement in
+research/cabanillas_prop9_10_exact_statement.md.

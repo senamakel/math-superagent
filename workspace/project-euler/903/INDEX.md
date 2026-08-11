@@ -14,6 +14,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `memory.md` | Working memory: problem restatement, verified Q(n) table (n=2..8) with both methods' timings, established results, failed approaches (none), open questions (the n=10^6 method) |
 | `problem.html` | The problem statement (source of the run): defines Q(n), rank, π^i; gives worked examples; asks for Q(10^6) mod (10^9+7) |
 | `problem.url` | Source URL for the problem statement: https://projecteuler.net/minimal=903 |
+| `psid.py` | Exploratory: verifies Q(n)=sum_{d|n!} psi(d)*phi(n!/d) for n=5 with psi(d)=F-value for i with gcd(i,n!)=d, and prints psi(d) over all divisors to look for structure. |
 | `results.json` | Output of brute.py (method 1, literal): exact Q(n) and Q mod p for n=2..7; n=8 skipped (budget estimate exceeds cap) |
 | `results2.json` | Output of brute2.py (method 2, period formula): exact Q(n) and Q mod p for n=2..8 |
 | `scratchpad.md` | Provisional work: the task, method-1 cost model, method-2 justification, power-semantics check, verified results table |
