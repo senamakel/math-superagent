@@ -30,6 +30,16 @@ piece is what the "clocks" are.
   Exp(1) boats is standard Laplace (density (1/2)e^{−|u|}, even moments, |Z|~Exp).
   So each catch-up's timing is built from a Laplace relative speed, not an
   exponential clock. [[laplace_difference_of_exponentials_libretexts]]
+- **The clocks are relative speeds, and their ordering is survivor-proportional
+  rate ratios — now a named theorem (NEW).** Relative speed of boat i to a target
+  at coordinate t is W_i = v_i/(t−i) ~ Exp(t−i), rate = the *distance* t−i. The
+  slowest relative to t is chosen among the survivors with probability proportional
+  to its rate (Nevzorov/Tikhov inid order-statistic representation, Nagaraja):
+  P(antirank = i) = (t−i)/Σ_survivors(t−s). This is exactly what the exact recursion
+  sums: probabilities are products of distance-ratio factors, conditioning on the
+  slowest boat and recursing on the two subranges. Caveat: inid spacings are NOT
+  independent, and finish times are still inverse-exponential (not clocks).
+  [[inid_exponential_order_statistics_nagaraja]]
 
 ## Caveat
 
