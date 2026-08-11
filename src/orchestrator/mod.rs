@@ -1042,7 +1042,7 @@ fn specialist_harness(
     // bound on its own larger cap, rather than inheriting the cut-off
     // attempt's. See `agent::untruncated`.
     let model: Arc<dyn ChatModel<()>> =
-        Arc::new(UntruncatedModel::new(model).with_tracer(tracer.clone()));
+        Arc::new(UntruncatedModel::new(model).with_tracer(tracer.clone(), agent));
     let mut harness = AgentHarness::new();
     configure_run_budget(&mut harness, budget);
     harness
