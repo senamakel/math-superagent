@@ -250,10 +250,60 @@ impl HarnessExecutor {
             && !observations.is_empty()
         {
             let _ = langfuse
-                .send_observations(LangfuseTraceConfig::default(), &observations)
+                .send_observations(self.trace_config(run_id), &observations)
                 .await;
         }
     }
+
+    /// Names this run's Langfuse trace uniquely and describes what produced it.
+    ///
+    /// The default configuration derives the trace id from the first
+    /// observation's run id, and run ids are allocated per process from one:
+    /// every container's first specialist run is `agent-run-1`. Two problems
+    /// solved side by side, or one problem restarted, therefore merged into a
+    /// single trace whose observations interleaved runs that shared nothing.
+    /// Qualifying the id with the session makes each run its own trace, and
+    /// the session id groups the runs that genuinely belong together.
+    fn trace_config(&self, run_id: &str) -> LangfuseTraceConfig {
+        let mut tags = vec![self.role.clone()];
+        if let Some(label) = workspace_label() {
+            tags.push(label);
+        }
+        LangfuseTraceConfig {
+            trace_id: Some(format!("{}-{run_id}", self.session)),
+            name: Some(self.role.clone()),
+            session_id: Some(self.session.to_string()),
+            tags,
+            ..LangfuseTraceConfig::default()
+        }
+    }
+}
+
+/// The workspace this container was started for, as the host wrapper named it.
+///
+/// Every container mounts its workspace at the same path, so the label
+/// forwarded from `scripts/run-agent` is the only thing that distinguishes one
+/// problem's traces from another's.
+fn workspace_label() -> Option<String> {
+    let label = std::env::var("MATH_AGENT_WORKSPACE_LABEL").ok()?;
+    let trimmed = label.trim();
+    if trimmed.is_empty() {
+        return None;
+    }
+    Some(trimmed.to_string())
+}
+
+/// Builds an identifier for this process's runs.
+///
+/// Uniqueness across processes is what the trace id needs; the wall clock and
+/// the process id together give that without a dependency, and a clock that
+/// failed to read still yields a usable id from the process id alone.
+fn session_id() -> Arc<str> {
+    let nanos = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|since| since.as_nanos())
+        .unwrap_or_default();
+    Arc::from(format!("s{nanos:x}-{}", std::process::id()).as_str())
 }
 
 #[derive(Clone)]
