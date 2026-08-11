@@ -90,6 +90,105 @@ fn ordered_provider(options: &Value) -> Option<&str> {
     options.get("provider")?.get("order")?.get(0)?.as_str()
 }
 
+fn ignored_provider(options: &Value) -> Option<&str> {
+    options.get("provider")?.get("ignore")?.get(0)?.as_str()
+}
+
+#[tokio::test]
+async fn a_failed_request_is_retried_somewhere_other_than_the_provider_that_failed() {
+    // The stall this exists to stop: a provider accepts the connection and
+    // never answers, so `allow_fallbacks` does not consider it unavailable.
+    // Following the pin on the retry asks the same provider first and hangs
+    // for a second full timeout. Three live runs lost seven minutes each to
+    // exactly this within one minute of each other.
+    let (inner, seen) =
+        RecordingModel::with_failures(vec![Some("deepinfra"), None, Some("novita")], vec![1]);
+    let sticky = StickyProviderModel::new(inner);
+
+    sticky
+        .invoke(&(), ModelRequest::new(Vec::new()))
+        .await
+        .expect("the first call succeeds");
+    sticky
+        .invoke(&(), ModelRequest::new(Vec::new()))
+        .await
+        .expect_err("the second call fails");
+    sticky
+        .invoke(&(), ModelRequest::new(Vec::new()))
+        .await
+        .expect("the retry succeeds");
+
+    let seen = seen.lock().expect("recorded requests are not poisoned");
+    assert_eq!(ordered_provider(&seen[1]), Some("deepinfra"));
+    assert_eq!(
+        ignored_provider(&seen[2]),
+        Some("deepinfra"),
+        "the retry must route away from the provider that just failed: {}",
+        seen[2]
+    );
+    assert_eq!(
+        ordered_provider(&seen[2]),
+        None,
+        "the failed provider must not also be asked for first: {}",
+        seen[2]
+    );
+    assert_eq!(sticky.pinned().as_deref(), Some("novita"));
+}
+
+#[tokio::test]
+async fn a_provider_is_skipped_for_one_request_rather_than_until_it_recovers() {
+    // A block held open would be a slow way to strand a run. If the failure
+    // was not the provider's fault, or it is the only one serving the model,
+    // an indefinite exclusion is worse than the stall it was avoiding.
+    let (inner, seen) = RecordingModel::with_failures(
+        vec![Some("deepinfra"), None, None, None],
+        vec![1, 2],
+    );
+    let sticky = StickyProviderModel::new(inner);
+
+    sticky
+        .invoke(&(), ModelRequest::new(Vec::new()))
+        .await
+        .expect("the first call succeeds");
+    for _ in 0..2 {
+        sticky
+            .invoke(&(), ModelRequest::new(Vec::new()))
+            .await
+            .expect_err("the failing calls fail");
+    }
+    sticky
+        .invoke(&(), ModelRequest::new(Vec::new()))
+        .await
+        .expect("the last call succeeds");
+
+    let seen = seen.lock().expect("recorded requests are not poisoned");
+    assert_eq!(ignored_provider(&seen[2]), Some("deepinfra"));
+    // The second failure had no pin left to blame, so nothing is excluded and
+    // the baked preference is left to route.
+    assert_eq!(seen[3].get("provider"), None, "{}", seen[3]);
+}
+
+#[tokio::test]
+async fn skipping_a_failed_provider_still_allows_every_other_one() {
+    let (inner, seen) = RecordingModel::with_failures(vec![Some("deepinfra"), None], vec![1]);
+    let sticky = StickyProviderModel::new(inner);
+
+    sticky
+        .invoke(&(), ModelRequest::new(Vec::new()))
+        .await
+        .expect("the first call succeeds");
+    sticky
+        .invoke(&(), ModelRequest::new(Vec::new()))
+        .await
+        .expect_err("the second call fails");
+    let _ = sticky.invoke(&(), ModelRequest::new(Vec::new())).await;
+
+    let seen = seen.lock().expect("recorded requests are not poisoned");
+    let provider = seen[2].get("provider").expect("the exclusion was applied");
+    assert_eq!(provider.get("allow_fallbacks"), Some(&json!(true)));
+    assert!(provider.get("only").is_none(), "{provider}");
+}
+
 #[tokio::test]
 async fn the_first_call_is_unsteered_and_later_calls_follow_the_provider_that_served_it() {
     let (inner, seen) = RecordingModel::new(vec![Some("deepinfra"), Some("deepinfra")]);
