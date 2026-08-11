@@ -73,39 +73,41 @@ fn html_and_pdf_are_converted_on_read_but_notes_are_not() {
 #[test]
 fn downloads_are_filed_under_the_research_folder() {
     use super::{full_text_path, research_path};
+    // An empty workspace has no batches yet, so everything joins the first.
+    let root = std::path::Path::new("/nonexistent-workspace");
     // Enforced in code, not asked for in a prompt: a prompt instruction holds
     // only until a model decides otherwise.
-    assert_eq!(research_path("pell.md"), "research/L1/pell.md");
+    assert_eq!(research_path(root, "pell.md"), "research/L1.0/pell.md");
     // A source arriving from outside is a level-1 note whatever folder the
     // caller invented for it.
     assert_eq!(
-        research_path("papers/lagrange.md"),
-        "research/L1/lagrange.md"
+        research_path(root, "papers/lagrange.md"),
+        "research/L1.0/lagrange.md"
     );
-    assert_eq!(research_path("research/pell.md"), "research/L1/pell.md");
+    assert_eq!(research_path(root, "research/pell.md"), "research/L1.0/pell.md");
     // A path that already names a level knows where it belongs.
-    assert_eq!(research_path("research/L2/pell.md"), "research/L2/pell.md");
+    assert_eq!(research_path(root, "research/L2.0/pell.md"), "research/L2.0/pell.md");
     // Common spellings must not produce research/workspace/...
-    assert_eq!(research_path("/workspace/pell.md"), "research/L1/pell.md");
-    assert_eq!(research_path("./pell.md"), "research/L1/pell.md");
-    assert_eq!(research_path("/pell.md"), "research/L1/pell.md");
+    assert_eq!(research_path(root, "/workspace/pell.md"), "research/L1.0/pell.md");
+    assert_eq!(research_path(root, "./pell.md"), "research/L1.0/pell.md");
+    assert_eq!(research_path(root, "/pell.md"), "research/L1.0/pell.md");
     // A blank path still lands somewhere sensible rather than at the root.
-    assert_eq!(research_path("   "), "research/L1/document.md");
+    assert_eq!(research_path(root, "   "), "research/L1.0/document.md");
     // Naming the full text names the wrong half of the pair: the digest is
     // what a download produces at level 1.
     assert_eq!(
-        research_path("confusioninterval.full.md"),
-        "research/L1/confusioninterval.md"
+        research_path(root, "confusioninterval.full.md"),
+        "research/L1.0/confusioninterval.md"
     );
     // A name that already carries the marker does not earn a second one.
     assert_eq!(
-        full_text_path("research/L0/paper.full.md"),
-        "research/L0/paper.full.md"
+        full_text_path(root, "research/L0.0/paper.full.md"),
+        "research/L0.0/paper.full.md"
     );
     // The untouched original sits one level below the note that digests it.
     assert_eq!(
-        full_text_path("research/L1/pell.md"),
-        "research/L0/pell.full.md"
+        full_text_path(root, "research/L1.0/pell.md"),
+        "research/L0.0/pell.full.md"
     );
 }
 

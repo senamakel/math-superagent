@@ -653,9 +653,6 @@ pub(super) fn research_path(workspace: &std::path::Path, requested: &str) -> Str
         .trim_start_matches("/workspace/")
         .trim_start_matches("./")
         .trim_start_matches('/');
-    if trimmed.is_empty() {
-        return format!("{RESEARCH_DIR}/{DIGEST_DIR}/document.md");
-    }
     let inside = trimmed
         .strip_prefix(&format!("{RESEARCH_DIR}/"))
         .unwrap_or(if trimmed == RESEARCH_DIR { "" } else { trimmed });
