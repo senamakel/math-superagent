@@ -133,6 +133,11 @@ impl WorkspaceDocuments {
             .collect()
     }
 
+    /// The workspace this tool set is rooted at.
+    pub(super) fn root(&self) -> &std::path::Path {
+        &self.workspace
+    }
+
     fn path(&self, relative: &str) -> Result<PathBuf> {
         super::checked_workspace_path(&self.workspace, relative)
     }
