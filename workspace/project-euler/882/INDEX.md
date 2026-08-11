@@ -16,7 +16,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `brute.py` | TASK A: naive minimax on the REAL game (multiset state, whose turn, skip budget). Prints S(n) for n=1..8 and verifies n=1..3 against an explicit move-search. |
 | `counting.py` | TASK B: the same minimax DP on the reduced counting game (A,B) where A=total 1-bits, B=total 0-bits; One-move (A-1,B), Zero-move (A,B-1), skip passes. Verifies S(2)=2, S(5)=17, S(10)=64; prints S(n) n=1..10 and the need_oneturn/need_zeroturn grids for A,B in 0..12. |
 | `compare.py` | Cross-check: real-game S(n) (brute.py, n=1..8) vs counting-game S(n) (counting.py) for n=1..8; prints match/mismatch per row. |
-| `prompts/` | Role-specific guidance files for each agent role (organizer, scholar, tool_builder, etc.). |
+| `prompts/` | Role-specific guidance files for each agent role (organizer, scholar, tool_builder, etc.); 10 files, indexed in `prompts/INDEX.md`. |
 | `reflections/` | Archived per-attempt verdicts; written by the solution loop itself, do not hand-edit. |
-| `research/` | Externally sourced material (currently empty). |
-| `toolkits/` | Reusable one-function-per-file helpers (currently empty). |
+| `research/` | Externally sourced material: 8 Wikipedia excerpts plus 6 full-text companions on combinatorial game theory, partisan games, surreal numbers, zugzwang, and related topics; indexed in `research/INDEX.md`. |
+| `toolkits/` | Reusable one-function-per-file helpers (no function files yet). |
