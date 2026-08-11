@@ -370,3 +370,50 @@ fn a_trace_is_named_for_the_role_that_produced_it() {
     assert_eq!(config.trace_id.as_deref(), Some("s-session-agent-run-1"));
     assert!(config.tags.contains(&"scholar".to_string()));
 }
+
+#[tokio::test]
+async fn reading_does_not_hold_the_lock_that_filing_needs() -> Result<()> {
+    // The scholar is the slowest step in any sequence and rewrites only the
+    // sources it was pointed at. Holding the shared-index lock across it made a
+    // tool-builder's organizer wait out a six-minute read to refresh an index
+    // the scholar never touches, so the filing that is supposed to happen while
+    // the files are new arrived after the run had moved on.
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    let started = Arc::new(Semaphore::new(0));
+    let release = Arc::new(Semaphore::new(0));
+    for name in ["research", "scholar", "organizer", "tool_builder"] {
+        manager.register_executor(
+            name,
+            Arc::new(SteerableExecutor {
+                started: started.clone(),
+                release: release.clone(),
+            }),
+        )?;
+    }
+
+    // Research finishes, so its sequence begins with the scholar and holds it
+    // there by never releasing that step.
+    let research = manager.spawn("research", "find it".into())?;
+    release.add_permits(1);
+    assert_eq!(
+        manager.await_record(research.as_str(), 5).await?.status,
+        OrchestrationTaskStatus::Completed
+    );
+    let _ = tokio::time::timeout(Duration::from_secs(5), started.acquire()).await;
+
+    // With the scholar still running, a tool-builder's organizer must be able
+    // to start rather than queue behind it.
+    let tools = manager.spawn("tool_builder", "build it".into())?;
+    release.add_permits(2);
+    assert_eq!(
+        manager.await_record(tools.as_str(), 5).await?.status,
+        OrchestrationTaskStatus::Completed
+    );
+    assert!(
+        tokio::time::timeout(Duration::from_secs(5), started.acquire())
+            .await
+            .is_ok(),
+        "the organizer must not wait for an unrelated scholar to finish"
+    );
+    Ok(())
+}
