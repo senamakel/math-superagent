@@ -15,7 +15,7 @@ tools, examples, tests, and documentation.
 
 ## Expected problem-solving behavior
 
-The runtime has nine roles plus an explicit solution loop.
+The runtime has eleven roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -35,7 +35,22 @@ The runtime has nine roles plus an explicit solution loop.
   and can save reusable notes to Qdrant.
 - The tool-builder writes and executes shell or Python tools in `/workspace`.
   It handles numerical checks, counterexample searches, data extraction, and
-  other reproducible calculations. It is the only role with shell authority.
+  other reproducible calculations.
+- The SAT solver answers a question that has already been reduced to a finite
+  decision or optimisation problem, by *encoding* it for CP-SAT, a SAT solver,
+  an SMT solver, or an MILP solver rather than by writing the search itself. A
+  hand-written backtracking search over the same space is the answer-space
+  search the method policy prohibits, written in the language most likely to
+  hide its own bugs. Its failure modes are its own: reporting `UNKNOWN` or
+  `FEASIBLE` as an answer, weakening a constraint until a model appears, and an
+  unsound symmetry break that silently loses solutions. `UNSAT` is a result and
+  is never to be relaxed away.
+- The Lean prover writes Lean 4 against a pre-built Mathlib. It is the only
+  role whose output is not evidence: everything else here — a program's output,
+  a numerical check, an argument that reads well — is a reason to believe
+  something, and a proof that compiles with no `sorry` is the thing itself. It
+  is held to reporting `#print axioms` and every remaining `sorry`, because a
+  formalisation that hides one is worse than none.
 - The reflection agent judges one attempt and extracts one lesson. It has no
   research or execution tools on purpose: a judge that can start solving stops
   judging. Its hardest job is refusing to call an unverified answer solved.
@@ -450,9 +465,19 @@ workspace/              # selectable writable agent workspaces
 └── template/           # seed instructions, prompts, config, and memory
 ```
 
-The executable registry contains `goals`, `research`, `tool_builder`,
-`reflection`, `judge`, `pattern_finder`, `inventor`, `librarian`, `scholar`, and
-`organizer`.
+The executable registry contains `goals`, `research`, `tool_builder`, `coder`,
+`sat_solver`, `lean_prover`, `reflection`, `judge`, `pattern_finder`,
+`inventor`, `librarian`, `scholar`, and `organizer`.
+
+Four of those — `tool_builder`, `coder`, `sat_solver`, `lean_prover` — carry
+exactly the same authority: shell, file write, `apply_patch`, and the document
+tools. They are separate roles because they differ in *mandate*, and because
+their failure modes have nothing in common: a program that ran but computes the
+wrong thing, an `UNKNOWN` reported as solved, a `sorry` left undeclared. One
+prompt hedging between four of those is strict about none of them. They are
+built from one list in `register_code_writing_agents`, so the shared authority
+boundary is visible rather than buried in four near-identical blocks — a tool
+granted there reaches all four.
 Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
 The goals agent also receives the research and tool-builder delegation tools,
 so it can pursue a goal through nested, focused work.
@@ -994,7 +1019,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | Role | Additional files |
 | --- | --- |
 | orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, `reflections/ROOT.md`, `reflections/INDEX.md` |
-| tool_builder, coder | the planners' files plus `SCRATCHPAD.md` and `code/`, minus the threads and the reflection files |
+| tool_builder, coder, sat_solver, lean_prover | the planners' files plus `SCRATCHPAD.md` and `code/`, minus the threads and the reflection files |
 | judge | `GOAL.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` and `reflections/ROOT.md` |
 | pattern_finder | `GOAL.md`, `MEMORY.md`, `SCRATCHPAD.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
