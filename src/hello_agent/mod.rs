@@ -163,6 +163,39 @@ fn number_argument(call: &ToolCall, name: &str) -> Result<f64> {
         .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{name} must be a number")))
 }
 
+/// Results requested per search.
+///
+/// Five was too few for the way this runtime searches. A mathematical question
+/// rarely has one right source: the run wants the original paper, a survey
+/// that places it, and whatever states the identity in the form it needs, and
+/// the first five hits for a technical query are routinely three restatements
+/// of the problem and two unrelated pages. Ten is enough for the useful source
+/// to be present without the result becoming a context bill of its own, which
+/// the per-result and total bounds below then hold it to.
+const EXA_RESULTS: usize = 10;
+/// Characters kept from any one result's text.
+const EXA_RESULT_CHARS: usize = 1_200;
+/// Characters kept across the whole rendered result.
+const EXA_TOTAL_CHARS: usize = 12_000;
+
+fn exa_results() -> usize {
+    std::env::var("MATH_AGENT_EXA_RESULTS")
+        .ok()
+        .and_then(|value| value.trim().parse::<usize>().ok())
+        .filter(|count| *count > 0)
+        .unwrap_or(EXA_RESULTS)
+}
+
+/// Truncates on a character boundary, marking that it did.
+fn clip(text: &str, limit: usize) -> String {
+    let trimmed = text.trim();
+    if trimmed.chars().count() <= limit {
+        return trimmed.to_string();
+    }
+    let kept: String = trimmed.chars().take(limit).collect();
+    format!("{kept}…")
+}
+
 #[derive(Debug)]
 pub(crate) struct ExaSearchTool {
     client: reqwest::Client,
