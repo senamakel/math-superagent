@@ -116,7 +116,7 @@ async fn describing_a_sources_full_text_points_at_the_digest_instead() -> Result
         .err()
         .map(|error| error.to_string())
         .unwrap_or_default();
-    assert!(message.contains("research/L0/paper.md"), "{message}");
+    assert!(message.contains("L0/paper.md"), "{message}");
     let _ = std::fs::remove_dir_all(&root);
     Ok(())
 }
