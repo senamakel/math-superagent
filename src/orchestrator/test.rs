@@ -2,7 +2,7 @@
 
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, checked_workspace_path,
-    compression_policy, validate_complexity, workspace_prompt,
+    compression_policy, default_registry, validate_complexity, workspace_prompt,
 };
 use crate::agent;
 
@@ -69,4 +69,29 @@ fn command_policy_rejects_exponential_complexity_declarations() {
     assert!(validate_complexity("time O(2^n), space O(n)", "polynomial").is_err());
     assert!(validate_complexity("time O(n log n), space O(n)", "quasilinear").is_ok());
     assert!(validate_complexity("time O(n), space O(n)", "exponential").is_err());
+}
+
+#[test]
+fn every_prompt_carries_the_shared_method_policy() {
+    let prompt = workspace_prompt("base policy", "", "");
+    assert!(prompt.contains("Do not search the answer space"));
+    assert!(prompt.contains("Understand before computing"));
+    assert!(prompt.contains("Verify independently"));
+}
+
+#[test]
+fn disabling_research_removes_exa_from_the_advertised_tools() -> agent::Result<()> {
+    let enabled = default_registry(true)?;
+    let research = enabled
+        .get("research")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("research is registered".into()))?;
+    assert!(research.tools.iter().any(|tool| tool == "exa_search"));
+
+    let disabled = default_registry(false)?;
+    let research = disabled
+        .get("research")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("research is registered".into()))?;
+    assert!(!research.tools.iter().any(|tool| tool == "exa_search"));
+    assert!(research.tools.iter().any(|tool| tool == "recall_research"));
+    Ok(())
 }
