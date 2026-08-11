@@ -37,7 +37,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `norm_hunt2.py` | _(undescribed)_ |
 | `norm_hunt3.py` | Exploratory closed-form hunt for A_n, B_n (n=2..11, hard-coded from extend_f.json): focuses on the deficit D_n=(n!)^2/2-A_n and its normalizations (D/(n!(n-1)!), D/n!^2, harmonic-combination differences d_n-H_n/H_{n-1}), plus c_n= |
 | `ntau.py` | Exploratory: computes N(tau)=#{(pi,i) with pi^i=tau, i in 1..n!} and tests whether N(tau) depends only on tau's cycle type (n=3,4); also re-derives Q = sum over tau of rank(tau)*N(tau) |
-| `pattern1.py` | _(undescribed)_ |
+| `pattern1.py` | Exploratory closed-form hunt for A_n, B_n (n=2..11, hard-coded from extend_f.json): prints prime factorizations of A_n and |
 | `perpi.py` | Exploratory: per-permutation analysis for n=5 — orders, cyclic-subgroup rank sums, grouped by cycle type, looking for structure in the intra-subgroup rank sum |
 | `psid.py` | Exploratory: verifies Q(n)=sum over d dividing n! of psi(d)*phi(n!/d) for n=5 with psi(d)=F-value for i with gcd(i,n!)=d, and prints psi(d) over all divisors to look for structure |
 | `qtable.py` | Exploratory: computes Q(n) via the period/orbit formula for n=2..10 and prints normalization ratios Q/n! and Q/(n!)^2 to look for a closed form; quantifies the runtime wall at n=10 |
