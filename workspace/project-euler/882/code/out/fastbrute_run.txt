@@ -1,0 +1,4 @@
+=== TASK A (optimized): real-game minimax, budget dimension removed ===
+  S(1) = 1   states_memoized=3 (One=2, Zero=1)  move_cache=3
+  S(2) = 2   states_memoized=40 (One=23, Zero=17)  move_cache=12
+  S(3) = 8   states_memoized=19017 (One=9976, Zero=9041)  move_cache=98
