@@ -420,6 +420,38 @@ const HIDDEN_ENTRIES: [&str; 6] = [
 /// Largest number of entries one listing returns.
 const MAX_LISTING_ENTRIES: usize = 400;
 
+/// Rejects a path that names one of the runtime's own hidden entries.
+///
+/// Hiding these from `list_workspace` was never enough, because an agent can
+/// name a path the listing did not offer it. A reflection run did exactly
+/// that: it read `/workspace/trace.jsonl` — 1,124,798 bytes of the run's own
+/// event log — straight into its context, producing a single 339,652-token
+/// model call, pushing the run past the 300,000-token compression trigger and
+/// collapsing the prompt-cache hit rate from 71% to 26% in one turn.
+///
+/// The content is the worst possible thing to feed back in. The trace is a
+/// verbatim record of every prompt and tool result the run has already seen,
+/// so re-reading it tells the agent nothing new while costing more than any
+/// real document could. Worse, the reader is the judge: reflection consuming a
+/// replay of the attempt it is meant to assess is not evidence, it is an echo.
+///
+/// Enforced here rather than by asking the model to avoid the file, because a
+/// prompt instruction is not a control — and the workspace policy previously
+/// told agents to read this very file.
+fn ensure_visible(relative: &str) -> Result<()> {
+    let hidden = std::path::Path::new(relative)
+        .components()
+        .filter_map(|component| component.as_os_str().to_str())
+        .find(|name| HIDDEN_ENTRIES.contains(name));
+    if let Some(hidden) = hidden {
+        return Err(tinyagents::TinyAgentsError::Validation(format!(
+            "`{hidden}` is runtime bookkeeping, not a workspace document; it is \
+             already in your context or irrelevant to the problem"
+        )));
+    }
+    Ok(())
+}
+
 #[derive(Debug)]
 struct DocumentTool {
     kind: DocumentToolKind,
