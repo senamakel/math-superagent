@@ -55,9 +55,10 @@ Independent of solution.py's Euclidean-peel loop; cross-checks the same answer.
 
 ## Open questions
 
-- Use the recurrences to derive the SBE for ratio 123456789/987654321
-  without brute force at full size. (Brute scanning to the bound is
-  prohibited; the correct method walks a binary/ratio tree, not the n-line.)
+- None blocking. The final SBE [1,13717420,8] is confirmed by two independent
+  routes (Euclidean peel in solution.py; unipotent-matrix run model in
+  verify_matrix.py), each reproducing the n=241 worked example and the target
+  ratio, and by n reconstruction (bit length 13717429, RLE [1,13717420,8]).
 
 ## Sourced confirmation (research/sources_calkin_wilf_hyperbinary.md)
 
