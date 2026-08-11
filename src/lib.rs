@@ -40,4 +40,4 @@ mod orchestrator;
 pub use error::{Error, Result};
 pub use greeting::greet;
 pub use hello_agent::HelloAgent;
-pub use orchestrator::{AgentDefinition, AgentRegistry, OrchestratorAgent};
+pub use orchestrator::{AgentDefinition, AgentRegistry, OrchestratorAgent, prompt_report};
