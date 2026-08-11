@@ -34,6 +34,14 @@ struct TraceState {
     /// Prompt tokens sent, and the portion served from the provider cache.
     input_tokens: AtomicU64,
     cached_tokens: AtomicU64,
+    /// Output tokens generated, summed across every agent.
+    output_tokens: AtomicU64,
+    /// Run cost in micro-USD, summed across every agent.
+    ///
+    /// Held as an integer because it is accumulated from several threads and a
+    /// float has no atomic. Micro-USD keeps a full cent to four decimal places,
+    /// far finer than any single call is priced.
+    micro_usd: AtomicU64,
 }
 
 /// An event listener that prints a compact live trace for one run and appends
@@ -72,6 +80,8 @@ impl RunTracer {
                 tool_ms: AtomicU64::new(0),
                 input_tokens: AtomicU64::new(0),
                 cached_tokens: AtomicU64::new(0),
+                output_tokens: AtomicU64::new(0),
+                micro_usd: AtomicU64::new(0),
             }),
         })
     }
@@ -90,6 +100,42 @@ impl RunTracer {
     #[must_use]
     pub fn journal_path(workspace: &Path) -> PathBuf {
         workspace.join("trace.jsonl")
+    }
+
+    /// Records what one model call actually cost and who served it.
+    ///
+    /// The event stream cannot answer this. `ModelCompleted` carries token
+    /// counts but names neither the provider that served the call nor the
+    /// price, and with `allow_fallbacks` on, the provider varies per call —
+    /// so "which route did this run actually use, and what did it cost" was
+    /// unanswerable from the trace. The figures come from the response body,
+    /// which is why this is reported by a model wrapper rather than derived
+    /// from an event.
+    pub fn record_model_cost(&self, accounting: &ModelAccounting) {
+        self.state
+            .output_tokens
+            .fetch_add(accounting.output_tokens, Ordering::Relaxed);
+        self.state
+            .micro_usd
+            .fetch_add(accounting.micro_usd(), Ordering::Relaxed);
+        self.write_line(&serde_json::json!({
+            "type": "model_accounting",
+            "agent": accounting.agent,
+            "provider": accounting.provider,
+            "model": accounting.model,
+            "input_tokens": accounting.input_tokens,
+            "cached_tokens": accounting.cached_tokens,
+            "output_tokens": accounting.output_tokens,
+            "reasoning_tokens": accounting.reasoning_tokens,
+            "usd": accounting.usd,
+            "elapsed_ms": self.state.started.elapsed().as_millis() as u64,
+        }));
+    }
+
+    /// Returns the run's accumulated cost in USD.
+    #[must_use]
+    pub fn spent_usd(&self) -> f64 {
+        self.state.micro_usd.load(Ordering::Relaxed) as f64 / 1_000_000.0
     }
 
     /// Prints one operator-facing progress line outside the event stream.
@@ -142,6 +188,17 @@ impl RunTracer {
             self.label
         );
         let _ = stderr.flush();
+    }
+
+    /// Appends one JSON object to the journal, if there is one.
+    fn write_line(&self, line: &serde_json::Value) {
+        let Some(journal) = self.state.journal.as_ref() else {
+            return;
+        };
+        if let Ok(mut file) = journal.lock() {
+            let _ = writeln!(file, "{line}");
+            let _ = file.flush();
+        }
     }
 
     fn write_journal(&self, record: &EventRecord) {
