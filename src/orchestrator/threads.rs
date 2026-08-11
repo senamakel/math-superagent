@@ -237,21 +237,23 @@ impl Threads {
             let reason = if thread.blocked_by.is_empty() {
                 "_no blocker recorded — say what would unstick it, or the row is only a mood_"
             } else {
-                &thread.blocked_by
+                thread.blocked_by.as_str()
             };
             let _ = writeln!(
-                out,
+                rows,
                 "- [[{}]] ({}): {reason}",
                 thread.slug,
                 thread.stance.label()
             );
         }
-        if rows.is_empty() && !out.is_empty() {
-            // Written straight into `out` above; nothing further to append.
+        if rows.is_empty() {
+            return;
         }
-        if !rows.is_empty() {
-            out.push_str(&rows);
-        }
+        out.push_str(
+            "\n## What is in the way\n\nEach blocked or dead thread and what would move it. A \
+             blocker stated precisely is the next research request; one left blank is a mood.\n\n",
+        );
+        out.push_str(&rows);
     }
 
     /// Lists threads resting on claims that are not in the ledger.
