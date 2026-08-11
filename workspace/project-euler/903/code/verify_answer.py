@@ -125,6 +125,44 @@ def direct_S(n):
     return S
 
 
+def S_phi(n):
+    """S(n) mod p via the phi-decomposition (the method used in solve())."""
+    inv = [0] * (n + 1)
+    inv[1] = 1
+    for i in range(2, n + 1):
+        inv[i] = (P - (P // i) * inv[P % i] % P) % P
+    H = [0] * (n + 1)
+    for m in range(1, n + 1):
+        H[m] = (H[m - 1] + inv[m]) % P
+    T = [0] * (n + 1)
+    for m in range(2, n + 1):
+        T[m] = (T[m - 1] + (2 * H[m - 1] % P) * inv[m]) % P
+    M = n // 2
+    phi = list(range(M + 1))
+    phi[1] = 1
+    is_comp = [False] * (M + 1)
+    primes = []
+    for i in range(2, M + 1):
+        if not is_comp[i]:
+            primes.append(i)
+            phi[i] = i - 1
+        for q in primes:
+            ip = i * q
+            if ip > M:
+                break
+            is_comp[ip] = True
+            if i % q == 0:
+                phi[ip] = phi[i] * q
+                break
+            else:
+                phi[ip] = phi[i] * (q - 1)
+    S = 0
+    for d in range(1, M + 1):
+        d_inv2 = inv[d] * inv[d] % P
+        S = (S + phi[d] * d_inv2 % P * T[n // d]) % P
+    return S
+
+
 def direct_Q_small(n):
     """Exact-integer Q(n) from the closed-form A,B (uses Python big ints).
 
@@ -191,11 +229,15 @@ if __name__ == "__main__":
             ss = solve(m)  # smoke
             assert solve(m) == solve(m)
         for m in (8, 9, 10, 11):
-            dS = direct_S(m)
-            # recompute S-only indirectly: compare E11 via full solve for small
-            # Use direct Fractions Q as the real oracle
             exact = direct_Q_small(m) % P
             assert solve(m) == exact, f"n={m}: modular {solve(m)} != exact {exact}"
-            print(f"direct-S cross-check n={m}: OK")
+            print(f"direct-Fraction cross-check n={m}: OK")
+        # brief-required cross-check: S(n) by direct O(n^2) pair sum vs the
+        # phi-decomposition mod p at n = 20000.
+        nsc = 20000
+        dS = direct_S(nsc)
+        pS = S_phi(nsc)
+        assert dS == pS, f"S cross-check n={nsc}: direct {dS} != phi {pS}"
+        print(f"S(n) direct-vs-phi cross-check n={nsc}: OK ({pS})")
     ans = solve(n)
     print(f"Q({n}) mod ({P}) = {ans}")
