@@ -67,9 +67,9 @@ def parity_of_new_order(n, above):
     # ascending comparator: a before b iff a placed lower than b:
     #   b above a  OR (incomparable and a<b)
     def lower(a, b):      # is a placed lower than b?
-        if a in above and b in above[a]:   # b above a -> a lower
+        if a in above[b]:   # a in above[b] -> b placed above a -> a lower
             return True
-        if b in above and a in above[b]:   # a above b -> b lower, a not
+        if b in above[a]:   # b in above[a] -> a placed above b -> a not lower
             return False
         # incomparable -> keep start order a<b => a lower
         return a < b

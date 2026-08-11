@@ -44,7 +44,7 @@ if __name__ == '__main__':
     N = int(sys.argv[1]) if len(sys.argv) > 1 else 150000
     r1 = mc(3, 160, N, seed=11)
     r2 = mc(4, 400, N, seed=12)
-    print(f"MC p(3,160)   = {r1:.6f}  (exact 4.15+4/27 = 56/135 = {56/135:.6f})")
+    print(f"MC p(3,160)   = {r1:.6f}  (exact 4/15+4/27 = 56/135 = {56/135:.6f})")
     print(f"MC p(4,400)   = {r2:.6f}  (given 0.5107843137)")
     for (n, L) in [(3,160),(4,160),(4,400),(5,400),(5,1800)]:
         check_consistency(n, L, min(N, 60000))
