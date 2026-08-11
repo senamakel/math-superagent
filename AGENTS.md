@@ -464,6 +464,47 @@ agent will never follow.
 The PDF extractor runs inside `catch_unwind` because it panics on malformed
 input, and a panic there would destroy work unrelated to the document.
 
+## Workspace layout
+
+The workspace root is an allowlist, not a default. It holds the run's Markdown
+— goal, tasks, memory, scratchpad, context, derivation — plus `config.toml`,
+`README.md`, `AGENTS.md`, `INDEX.md`, and the problem statement. Everything
+else is filed:
+
+| Kind | Folder |
+| --- | --- |
+| programs (`.py`, `.sh`, `.c`, `.rs`, …) | `code/` |
+| what a program produced | `code/out/` |
+| downloaded sources | `research/L0/`, digested into `research/L1/` |
+| reflections | `reflections/L0/` |
+| reusable helpers | `toolkits/` |
+| untouched download bytes | `raw/` |
+
+`layout::placed` decides this in the write path — `write_document` and an
+`apply_patch` `*** Add File:` — for the same reason `documents::research_path`
+enforces `research/`: a prompt asking for tidiness holds only until a model is
+busy. One live run reached thirty-one Python programs, four JSON tables, and a
+scatter of `.out.txt` captures at its root, so the listing every agent reads
+before deciding anything was mostly noise and the two files carrying the
+derivation were buried in it.
+
+A path that already names a folder is left alone. Naming a folder is a
+decision, and the layout has no better information than the caller that made
+it. A move is reported in the tool result rather than performed silently: a
+model not told where its file went writes the next one to the same place and
+then cannot read either back.
+
+`code/` carries its own `AGENTS.md` — one job per file, name for what it
+computes, state the complexity before running, keep the naive oracle, never
+delete a program carrying a result — so the rules for working there travel with
+the folder. Its `INDEX.md` says what established each program is correct, which
+is the part that is not readable from the source.
+
+What this cannot catch is a shell redirect: `python solve.py > out.txt` writes
+through the filesystem, not through a tool. So the organizer sweeps the root
+every cycle. Enforcement in the write path is what makes that sweep small
+rather than the only defence.
+
 ## Research folder
 
 Every downloaded document is filed under `research/`, enforced by
