@@ -27,6 +27,13 @@ struct TraceState {
     journal: Option<Mutex<std::fs::File>>,
     model_calls: AtomicU64,
     tool_calls: AtomicU64,
+    /// Milliseconds spent inside provider calls, summed across every agent.
+    model_ms: AtomicU64,
+    /// Milliseconds spent inside tool calls, summed across every agent.
+    tool_ms: AtomicU64,
+    /// Prompt tokens sent, and the portion served from the provider cache.
+    input_tokens: AtomicU64,
+    cached_tokens: AtomicU64,
 }
 
 /// An event listener that prints a compact live trace for one run and appends
@@ -61,6 +68,10 @@ impl RunTracer {
                 journal,
                 model_calls: AtomicU64::new(0),
                 tool_calls: AtomicU64::new(0),
+                model_ms: AtomicU64::new(0),
+                tool_ms: AtomicU64::new(0),
+                input_tokens: AtomicU64::new(0),
+                cached_tokens: AtomicU64::new(0),
             }),
         })
     }
@@ -93,6 +104,30 @@ impl RunTracer {
         (
             self.state.model_calls.load(Ordering::Relaxed),
             self.state.tool_calls.load(Ordering::Relaxed),
+        )
+    }
+
+    /// Renders the cumulative time and cache profile for the whole run tree.
+    ///
+    /// Printed on every model completion because that is the moment the
+    /// numbers change and the moment an operator is asking "why is this
+    /// slow". `idle` is wall clock attributable to neither the provider nor a
+    /// tool: scheduling, backoff sleeps, and waiting on a sibling agent.
+    fn profile(&self) -> String {
+        let wall = self.state.started.elapsed().as_millis().max(1);
+        let wall = u64::try_from(wall).unwrap_or(u64::MAX);
+        let model = self.state.model_ms.load(Ordering::Relaxed);
+        let tool = self.state.tool_ms.load(Ordering::Relaxed);
+        let idle = wall.saturating_sub(model.saturating_add(tool));
+        let input = self.state.input_tokens.load(Ordering::Relaxed);
+        let cached = self.state.cached_tokens.load(Ordering::Relaxed);
+        let percent = |part: u64| part.saturating_mul(100) / wall.max(1);
+        format!(
+            "profile model {}% tool {}% idle {}% | cache {}%",
+            percent(model),
+            percent(tool),
+            percent(idle),
+            cached.saturating_mul(100) / input.max(1)
         )
     }
 
@@ -141,6 +176,41 @@ impl EventListener for RunTracer {
                 let count = self.state.tool_calls.fetch_add(1, Ordering::Relaxed) + 1;
                 self.emit_line(&format!("tool  call #{count} -> {tool_name}"));
             }
+            // Where the wall clock actually goes. Without this a run that is
+            // waiting on one slow provider call and a run that is doing lots
+            // of fast work look identical from the console: both just sit
+            // there between events.
+            AgentEvent::ModelCompleted {
+                started_at_ms,
+                usage,
+                ..
+            } => {
+                let elapsed = started_at_ms.and_then(|start| {
+                    epoch_millis().and_then(|now| now.checked_sub(start))
+                });
+                if let Some(elapsed) = elapsed {
+                    self.state.model_ms.fetch_add(elapsed, Ordering::Relaxed);
+                }
+                if let Some(usage) = usage {
+                    self.state
+                        .input_tokens
+                        .fetch_add(u64::from(usage.input_tokens), Ordering::Relaxed);
+                    self.state
+                        .cached_tokens
+                        .fetch_add(u64::from(usage.cache_read_tokens), Ordering::Relaxed);
+                }
+                let detail = usage.as_ref().map_or_else(String::new, |usage| {
+                    format!(
+                        " in={} cached={} out={}",
+                        usage.input_tokens, usage.cache_read_tokens, usage.output_tokens
+                    )
+                });
+                self.emit_line(&format!(
+                    "model done    {}{detail} | {}",
+                    elapsed.map_or_else(|| "?".to_string(), |ms| format!("{ms}ms")),
+                    self.profile()
+                ));
+            }
             AgentEvent::ToolCompleted {
                 tool_name,
                 input,
@@ -151,6 +221,7 @@ impl EventListener for RunTracer {
             } => {
                 let mut detail = format!("tool  done    {tool_name}");
                 if let Some(duration) = duration_ms {
+                    self.state.tool_ms.fetch_add(*duration, Ordering::Relaxed);
                     let _ = write!(detail, " in {duration}ms");
                 }
                 if let Some(bytes) = output_bytes {
@@ -182,6 +253,14 @@ impl EventListener for RunTracer {
             _ => {}
         }
     }
+}
+
+/// Returns the current Unix time in milliseconds.
+fn epoch_millis() -> Option<u64> {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .ok()
+        .and_then(|elapsed| u64::try_from(elapsed.as_millis()).ok())
 }
 
 fn preview(text: &str) -> String {
