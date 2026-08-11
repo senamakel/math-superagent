@@ -72,22 +72,30 @@ fn html_and_pdf_are_converted_on_read_but_notes_are_not() {
 
 #[test]
 fn downloads_are_filed_under_the_research_folder() {
-    use super::research_path;
+    use super::{full_text_path, research_path};
     // Enforced in code, not asked for in a prompt: a prompt instruction holds
     // only until a model decides otherwise.
-    assert_eq!(research_path("pell.md"), "research/pell.md");
+    assert_eq!(research_path("pell.md"), "research/L1/pell.md");
+    // A source arriving from outside is a level-1 note whatever folder the
+    // caller invented for it.
     assert_eq!(
         research_path("papers/lagrange.md"),
-        "research/papers/lagrange.md"
+        "research/L1/lagrange.md"
     );
-    // Already in place: left exactly as given.
-    assert_eq!(research_path("research/pell.md"), "research/pell.md");
+    assert_eq!(research_path("research/pell.md"), "research/L1/pell.md");
+    // A path that already names a level knows where it belongs.
+    assert_eq!(research_path("research/L2/pell.md"), "research/L2/pell.md");
     // Common spellings must not produce research/workspace/...
-    assert_eq!(research_path("/workspace/pell.md"), "research/pell.md");
-    assert_eq!(research_path("./pell.md"), "research/pell.md");
-    assert_eq!(research_path("/pell.md"), "research/pell.md");
+    assert_eq!(research_path("/workspace/pell.md"), "research/L1/pell.md");
+    assert_eq!(research_path("./pell.md"), "research/L1/pell.md");
+    assert_eq!(research_path("/pell.md"), "research/L1/pell.md");
     // A blank path still lands somewhere sensible rather than at the root.
-    assert_eq!(research_path("   "), "research/document.md");
+    assert_eq!(research_path("   "), "research/L1/document.md");
+    // The untouched original sits one level below the note that digests it.
+    assert_eq!(
+        full_text_path("research/L1/pell.md"),
+        "research/L0/pell.full.md"
+    );
 }
 
 #[test]

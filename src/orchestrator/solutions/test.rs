@@ -93,14 +93,17 @@ fn the_first_attempt_starts_fresh_and_later_ones_continue() {
 fn reflection_filenames_encode_the_outcome() {
     use super::reflection_filename;
     // A directory listing alone should show which attempts taught anything.
-    assert_eq!(reflection_filename(1700, 0), "reflections/1700_nothing.md");
+    assert_eq!(
+        reflection_filename(1700, 0),
+        "reflections/L0/1700_nothing.md"
+    );
     assert_eq!(
         reflection_filename(1700, 1),
-        "reflections/1700_01_learnings.md"
+        "reflections/L0/1700_01_learnings.md"
     );
     assert_eq!(
         reflection_filename(1700, 12),
-        "reflections/1700_12_learnings.md"
+        "reflections/L0/1700_12_learnings.md"
     );
 }
 
