@@ -32,6 +32,9 @@ brute.py reproduces examples 1,2,3 exactly (see run output in scratchpad).
   (check_rel.py claims were false).
 - record-b sequences (probe_records.py, N=2e6) show NO simple linear recurrence,
   no polynomial growth; all are Cabanillas candidates, NOT semiconvergents in general.
+- **ALL 90 non-square d validated**: at n=10^6, Cabanillas-candidate b_d equals
+  brute-force argmin for every d in [2,99] (toolkits/validate_all_d.py, 47s,
+  zero mismatches). This is the uniform cross-check of the method across all d.
 
 ## Failed approaches
 - "records are semiconvergents of sqrt(d)" hypothesis: FALSE (d=2 oracle b not a
