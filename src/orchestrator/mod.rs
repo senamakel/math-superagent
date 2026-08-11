@@ -391,55 +391,22 @@ impl OrchestratorAgent {
             tool_builder_prompt,
         )?;
 
-        // reflection: judges an attempt. Deliberately has no research or
-        // execution tools, so it cannot wander into solving the problem itself.
-        let mut reflection_harness = specialist_harness(model.clone(), budget);
-        for tool in documents.tools() {
-            register_resilient(&mut reflection_harness, tool);
-        }
-        async_subagents.register(
-            "reflection",
-            Arc::new(reflection_harness),
-            reflection_prompt,
+        register_support_agents(
+            &async_subagents,
+            &SupportAgents {
+                model: &model,
+                budget,
+                documents: &documents,
+                vector_store,
+                exa: exa.clone(),
+                prompts: SupportPrompts {
+                    reflection: reflection_prompt,
+                    pattern: pattern_prompt,
+                    inventor: inventor_prompt,
+                    librarian: librarian_prompt,
+                },
+            },
         )?;
-
-        // pattern_finder: exact sequence analysis over results already computed.
-        let mut pattern_harness = specialist_harness(model.clone(), budget);
-        for tool in PatternTool::all() {
-            register_resilient(&mut pattern_harness, tool);
-        }
-        for tool in documents.tools() {
-            register_resilient(&mut pattern_harness, tool);
-        }
-        async_subagents.register("pattern_finder", Arc::new(pattern_harness), pattern_prompt)?;
-
-        // inventor: proposes a different approach, backed by research.
-        let mut inventor_harness = specialist_harness(model.clone(), budget);
-        if let Some(exa) = exa.clone() {
-            register_resilient(&mut inventor_harness, exa);
-        }
-        register_resilient(
-            &mut inventor_harness,
-            Arc::new(RecallResearchTool::new(vector_store.clone())),
-        );
-        register_resilient(
-            &mut inventor_harness,
-            Arc::new(RememberResearchTool::new(vector_store)),
-        );
-        for tool in documents.tools() {
-            register_resilient(&mut inventor_harness, tool);
-        }
-        async_subagents.register("inventor", Arc::new(inventor_harness), inventor_prompt)?;
-
-        // librarian: gathers primary material into a workspace reference library.
-        let mut librarian_harness = specialist_harness(model.clone(), budget);
-        if let Some(exa) = exa {
-            register_resilient(&mut librarian_harness, exa);
-        }
-        for tool in documents.tools() {
-            register_resilient(&mut librarian_harness, tool);
-        }
-        async_subagents.register("librarian", Arc::new(librarian_harness), librarian_prompt)?;
 
         // goals: the worker the solution loop drives, with the full specialist
         // bench beneath it.
@@ -635,6 +602,75 @@ fn support_agents(
                 .chain(document_tools),
         ),
     ]
+}
+
+/// The shared pieces every support agent's harness is assembled from.
+struct SupportAgents<'a> {
+    model: &'a Arc<dyn ChatModel<()>>,
+    budget: RunBudget,
+    documents: &'a WorkspaceDocuments,
+    vector_store: VectorStore,
+    exa: Option<Arc<dyn Tool<()>>>,
+}
+
+/// Role prompts for the four agents the solution loop adds.
+struct SupportPrompts {
+    reflection: String,
+    pattern: String,
+    inventor: String,
+    librarian: String,
+}
+
+/// Registers the reflection, pattern, inventor, and librarian agents.
+///
+/// Each gets only the tools its role needs: reflection has no research or
+/// execution tools at all, so it cannot drift into solving the problem it is
+/// supposed to be judging.
+fn register_support_agents(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompts: SupportPrompts,
+) -> Result<()> {
+    let mut reflection = specialist_harness(parts.model.clone(), parts.budget);
+    for tool in parts.documents.tools() {
+        register_resilient(&mut reflection, tool);
+    }
+    subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
+
+    let mut pattern = specialist_harness(parts.model.clone(), parts.budget);
+    for tool in PatternTool::all() {
+        register_resilient(&mut pattern, tool);
+    }
+    for tool in parts.documents.tools() {
+        register_resilient(&mut pattern, tool);
+    }
+    subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
+
+    let mut inventor = specialist_harness(parts.model.clone(), parts.budget);
+    if let Some(exa) = parts.exa.clone() {
+        register_resilient(&mut inventor, exa);
+    }
+    register_resilient(
+        &mut inventor,
+        Arc::new(RecallResearchTool::new(parts.vector_store.clone())),
+    );
+    register_resilient(
+        &mut inventor,
+        Arc::new(RememberResearchTool::new(parts.vector_store.clone())),
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut inventor, tool);
+    }
+    subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
+
+    let mut librarian = specialist_harness(parts.model.clone(), parts.budget);
+    if let Some(exa) = parts.exa.clone() {
+        register_resilient(&mut librarian, exa);
+    }
+    for tool in parts.documents.tools() {
+        register_resilient(&mut librarian, tool);
+    }
+    subagents.register("librarian", Arc::new(librarian), prompts.librarian)
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than

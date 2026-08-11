@@ -251,26 +251,15 @@ n-th rational = s(n)/s(n+1) (Wikipedia/OEIS), consecutive coprimality and unique
 
 ### Oracle verification performed with these sources (small check, not the answer)
 
-For p/q = 13/17 per the problem statement's example: (13,17)→(13,4)→(9,4)→(5,4)→(1,4)→(1,3)
-→(1,2)→(1,1), bits upward: 0,1,1,1,0,0,0; reversed: 0001110; prepend 1: 10001110 = 142 = n+1,
-so n=141, NOT 241? Let me be careful: the example says the smallest n with f(n)/f(n−1)=13/17
-is 241, bin(241)=11110001.
-
-Let me recompute the convention carefully. If instead we take r(2m)=r(m)+1 (right/bit-0
-convention for >1...) — the two conventions differ. I will not state 13/17→241 as derived from
-the subtracted walk with the Yorgey convention until I recheck indices; the source's own
-example computes a primary occurrence of 5 at index 10 = binary 1010 = path 0,1,0 with
-left=0,right=1 under their labeling, which is exactly r(10+1)=? I'll simply state the
-published identity f(241)/f(240)=13/17 (from the problem statement) and verify the 
-correspondence rule directly in code in Phase 4 rather than assert a hand-quote here.
-
-### Caveat on this specific verification
-
-The Yorgey convention (0=left/<1, 1=right/>1; prepend 1) reproduces the published example
-241=11110001 for 13/17 ONLY if the node-index and ratio-index are aligned appropriately
-(n = index−1). Because of the two competing conventions in the literature, the report records
-this as "to be resolved and machine-verified in the implementation phase"; the underlying
-facts (tree rules, parent rules, enumeration-once) are all firmly sourced above.
+The problem statement's oracle is f(241)/f(240) = 13/17 with bin(241) = 11110001 (SBE 4,3,1).
+I used this oracle to stress-test my reading of the index/path conventions rather than to
+derive the answer. The verification above shows that the naive "node index = n+1" and
+"path bits = bin(n+1) MSB→LSB" reading does NOT reproduce 13/17, so I did NOT elevate any
+hand-derived convention to a claim. The point of recording this here is to hand the
+implementation phase a precise check: whichever exact convention is implemented must map
+13/17 to n=241 = 11110001. The underlying sourced facts (child rules, parent rules, n-th
+rational = s(n)/s(n+1), uniqueness + coprimality, pairwise recurrences) are all confirmed
+above and are what the implementation will pin together.
 
 ---
 
@@ -282,9 +271,14 @@ facts (tree rules, parent rules, enumeration-once) are all firmly sourced above.
    different theorem. The identity per se is fully sourced via Calkin–Wilf 2000, OEIS A002487,
    and Wikipedia.
 2. Any single citable page that states BOTH ratio recurrences r(2m)=r(m)+1 and r(2m+1)=
-   r(m)/(r(m)+1) in exactly that form. They follow immediately from the sourced recurrences,
-   but I did not find them printed verbatim in one place.
-3. Wikipedia "Hyperbinary representation" article: does not exist (404).
+   r(m)/(r(m)+1) in exactly that form. They are immediate consequences of the sourced
+   recurrences (f(2m+1)=f(m), f(2m+2)=f(m)+f(m+1)), but I did not find them printed verbatim
+   in one place.
+3. The exact MSB→LSB bit-to-child convention and the n-vs-(n+1) index alignment in a single
+   primary source. Multiple sources (blog, arXiv:1411.1747, OEIS comment, Wikipedia) agree on
+   the *shape* (paths correspond to binary expansions) but differ in left/right bit assignment
+   and indexing; the report keeps this flagged as an implementation-phase check, not a claim.
+4. Wikipedia "Hyperbinary representation" article: does not exist (404).
 
 ## Source URL list
 
