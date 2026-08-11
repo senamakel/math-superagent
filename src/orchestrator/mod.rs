@@ -27,6 +27,7 @@ use tinyagents::harness::summarization::{
 use crate::agent::budget::RunBudget;
 use crate::agent::reflection::ReflectionMiddleware;
 use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
+use crate::agent::accounting::AccountingModel;
 use crate::agent::sticky::StickyProviderModel;
 use crate::agent::trace::RunTracer;
 use crate::agent::{
@@ -349,7 +350,7 @@ impl OrchestratorAgent {
         };
 
         // research: search the web, and remember what it found.
-        let mut research_harness = specialist_harness(model.clone(), budget);
+        let mut research_harness = specialist_harness(model.clone(), budget, "research", &tracer);
         if let Some(exa) = exa.clone() {
             register_resilient(&mut research_harness, exa);
         }
@@ -368,7 +369,7 @@ impl OrchestratorAgent {
         async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
 
         // tool_builder: the only role with shell and file-write authority.
-        let mut tool_builder_harness = specialist_harness(model.clone(), budget);
+        let mut tool_builder_harness = specialist_harness(model.clone(), budget, "tool_builder", &tracer);
         register_resilient(
             &mut tool_builder_harness,
             Arc::new(WriteToolFile::new(workspace.clone())),
@@ -411,7 +412,7 @@ impl OrchestratorAgent {
 
         // goals: the worker the solution loop drives, with the full specialist
         // bench beneath it.
-        let mut goals_harness = specialist_harness(model.clone(), budget);
+        let mut goals_harness = specialist_harness(model.clone(), budget, "goals", &tracer);
         for tool in async_subagents.tools(SPECIALISTS) {
             register_resilient(&mut goals_harness, tool);
         }
@@ -422,7 +423,7 @@ impl OrchestratorAgent {
 
         let registry = Arc::new(default_registry(research_enabled)?);
 
-        let mut orchestrator_harness = specialist_harness(model, budget);
+        let mut orchestrator_harness = specialist_harness(model, budget, "orchestrator", &tracer);
         for tool in async_subagents.tools(DELEGATES) {
             register_resilient(&mut orchestrator_harness, tool);
         }
@@ -754,13 +755,13 @@ fn register_support_agents(
     parts: &SupportAgents<'_>,
     prompts: SupportPrompts,
 ) -> Result<()> {
-    let mut reflection = specialist_harness(parts.model.clone(), parts.budget);
+    let mut reflection = specialist_harness(parts.model.clone(), parts.budget, "reflection", &parts.tracer);
     for tool in parts.documents.tools() {
         register_resilient(&mut reflection, tool);
     }
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
-    let mut pattern = specialist_harness(parts.model.clone(), parts.budget);
+    let mut pattern = specialist_harness(parts.model.clone(), parts.budget, "pattern_finder", &parts.tracer);
     for tool in PatternTool::all() {
         register_resilient(&mut pattern, tool);
     }
@@ -769,7 +770,7 @@ fn register_support_agents(
     }
     subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
 
-    let mut inventor = specialist_harness(parts.model.clone(), parts.budget);
+    let mut inventor = specialist_harness(parts.model.clone(), parts.budget, "inventor", &parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut inventor, exa);
     }
@@ -786,7 +787,7 @@ fn register_support_agents(
     }
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
-    let mut librarian = specialist_harness(parts.model.clone(), parts.budget);
+    let mut librarian = specialist_harness(parts.model.clone(), parts.budget, "librarian", &parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut librarian, exa);
     }
@@ -802,12 +803,26 @@ fn register_resilient(harness: &mut AgentHarness<()>, tool: Arc<dyn Tool<()>>) {
     harness.register_tool(Arc::new(ResilientTool::new(tool)));
 }
 
-fn specialist_harness(model: Arc<dyn ChatModel<()>>, budget: RunBudget) -> AgentHarness<()> {
+/// Builds one specialist's harness, wrapping its model for affinity and
+/// accounting.
+///
+/// `agent` names the role in the trace, so a cost line can be attributed to
+/// the specialist that incurred it rather than to the run as a whole.
+fn specialist_harness(
+    model: Arc<dyn ChatModel<()>>,
+    budget: RunBudget,
+    agent: &str,
+    tracer: &Arc<RunTracer>,
+) -> AgentHarness<()> {
     // Give this specialist its own provider affinity. The wrapper is per
     // harness rather than shared, because agents differ in the large fixed
     // prefix they cache, so one agent's fallback must not drag the others onto
     // a provider where their prefix is cold. See `agent::sticky`.
     let model: Arc<dyn ChatModel<()>> = Arc::new(StickyProviderModel::new(model));
+    // Account outside the affinity wrapper so the recorded provider is the one
+    // that actually served the call, including a fallback the pin did not get.
+    let model: Arc<dyn ChatModel<()>> =
+        Arc::new(AccountingModel::new(model, agent, tracer.clone()));
     let mut harness = AgentHarness::new();
     configure_run_budget(&mut harness, budget);
     harness
