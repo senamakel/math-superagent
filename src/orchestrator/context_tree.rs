@@ -31,7 +31,7 @@
 
 use std::fmt::Write as _;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::time::SystemTime;
 
 use super::folder_index::INDEX_FILE;
@@ -123,9 +123,7 @@ fn digests(folder: &Path) -> Vec<String> {
         .flatten()
         .filter(|entry| entry.file_type().is_ok_and(|kind| kind.is_file()))
         .map(|entry| entry.file_name().to_string_lossy().into_owned())
-        .filter(|name| {
-            name.ends_with(".md") && !name.ends_with(FULL_SUFFIX) && name != INDEX_FILE
-        })
+        .filter(|name| name.ends_with(".md") && !name.ends_with(FULL_SUFFIX) && name != INDEX_FILE)
         .collect();
     found.sort();
     found
