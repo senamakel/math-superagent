@@ -18,13 +18,10 @@ evaluate the exact race parity there, summing exact cell volume weighted by the
 Dirichlet density (n-1)! so that p(n,L) = sum of even-cell normalized volumes.
 
 API:
-  enumerate_cells(dim, L, n) -> (leaves, total_normalized_even_volume)
+  enumerate_cells(n, L) -> (leaves, planes)
 """
 from fractions import Fraction as F
-from itertools import combinations
 from arr_polytope import Polytope
-
-_cache_signhelper = {}
 
 
 def _candidate_events(n):
@@ -37,6 +34,27 @@ def _candidate_events(n):
     return evs
 
 
+def _linform(j, d):
+    """Linear form equal to v_j expressed over free coords v0..v_{d-1}
+    (v_d = 1 - sum free). Returns (row, const)."""
+    if j < d:
+        row = [F(0)] * d
+        row[j] = F(1)
+        return (row, F(0))
+    else:
+        row = [F(-1)] * d
+        return (row, F(1))
+
+
+def _T_aff(ev, d):
+    """Candidate event time as num/(row.v + const). Returns (num, row, const)."""
+    typ, j, k = ev
+    if typ == 'F':
+        num = F(L_current if False else 0)  # placeholder, replaced below
+    # handle by caller passing L; we store L closure
+    raise NotImplementedError
+
+
 def _hyperplanes(n, L):
     """Return list of (coeffs, c) with coeffs over free coords v0..v_{d-1},
     meaning (coeffs.x + c) = 0. d = n-1, v_{n-1} = 1 - sum(free)."""
@@ -44,59 +62,39 @@ def _hyperplanes(n, L):
     evs = _candidate_events(n)
     planes = set()
 
-    def aff(vcoeffs, cval):
-        return (tuple(vcoeffs), F(cval))
+    def aff(row, cval):
+        return (tuple(row), F(cval))
 
     # speed equalities v_a = v_b  -> (v_a - v_b) = 0
     for a in range(n):
         for b in range(a + 1, n):
-            row = [F(0)] * d
-            if a < d:
-                row[a] += 1
-            if b < d:
-                row[b] -= 1
-            # v_{n-1}=1-sum; if b==d: -v_{n-1} -> +sum ... handle via substitute
-            if a == d:
-                for i in range(d):
-                    row[i] += 1
-            if b == d:
-                for i in range(d):
-                    row[i] -= 1
-            planes.add(aff(row, 0))
+            r1, c1 = _linform(a, d)
+            r2, c2 = _linform(b, d)
+            row = [r1[i] - r2[i] for i in range(d)]
+            planes.add(aff(row, c1 - c2))
 
-    # time equality T1 - T2 = 0. Represent T as (num_coeffs, den_linear).
-    def T_aff(ev):
+    # candidate event times as (num, denom_row, denom_const)
+    def T(ev):
         typ, j, k = ev
         if typ == 'F':
-            # (L-40j)/v_j : numerator c=L-40j, denom v_j
-            row = [F(0)] * d
-            if j < d:
-                row[j] = F(1)
-            else:  # j==d -> v_d = 1 - sum
-                for i in range(d):
-                    row[i] = F(-1)
-            return (F(L - 40 * j), row, F(1))  # c / (row.v + 1) but v_d=1-sum gives constant 1
+            num = F(L - 40 * j)
+            row, cc = _linform(j, d)
+            return (num, row, cc)
         else:
-            # 40(b-a)/(v_a - v_b): numerator 40(b-a), denom v_a - v_b
             num = F(40) * (k - j)
-            row = [F(0)] * d
-            if a_sub := None:
-                pass
-            for idx, sgn in ((j, 1), (k, -1)):
-                if idx < d:
-                    row[idx] += sgn
-                else:
-                    for i in range(d):
-                        row[i] += sgn * (-1)  # v_d = 1 - sum -> -1 per free var
-            return (num, row, F(0))  # num / (row.v + 0)
+            rj, cj = _linform(j, d)
+            rk, ck = _linform(k, d)
+            row = [rj[i] - rk[i] for i in range(d)]
+            cc = cj - ck
+            return (num, row, cc)
 
-    Taff = [T_aff(ev) for ev in evs]
-    # T1 - T2 = 0  <=>  num1*den2 - num2*den1 = 0, affine in v
+    Taff = [T(ev) for ev in evs]
+
+    # T1 - T2 = 0  <=>  num1*(den2) - num2*(den1) = 0
     for i in range(len(Taff)):
         for j in range(i + 1, len(Taff)):
             n1, r1, c1 = Taff[i]
             n2, r2, c2 = Taff[j]
-            # n1*(r2.v+c2) - n2*(r1.v+c1)
             row = [n1 * r2[t] - n2 * r1[t] for t in range(d)]
             cval = n1 * c2 - n2 * c1
             planes.add(aff(row, cval))
@@ -104,7 +102,8 @@ def _hyperplanes(n, L):
 
 
 def _simplex_polytope(d):
-    """The d-simplex {x_i>=0, sum x_i <= 1} in free coords."""
+    """The d-simplex {x_i>=0, sum x_i <= 1} in free coords, as inequalities
+    -x_i <= 0 and sum x_i <= 1."""
     ineqs = []
     for i in range(d):
         row = [F(0)] * d
@@ -112,65 +111,6 @@ def _simplex_polytope(d):
         ineqs.append((row, F(0)))
     ineqs.append(([F(1)] * d, F(1)))   # sum x <= 1
     return Polytope(d, ineqs)
-
-
-def enumerate_cells(n, L, verbose=False):
-    d = n - 1
-    planes = _hyperplanes(n, L)
-    if verbose:
-        print(f"n={n} L={L}: d={d}, {len(planes)} arrangement hyperplanes")
-    # BFS slice over polytopes. Each item: (polytope, sign_vector) where
-    # sign_vector[pi] in {-1,0,1} records current known sign of plane pi
-    # (0 = undetermined yet).
-    root = _simplex_polytope(d)
-    stack = [(root, [0] * len(planes))]
-    leaves = []          # list of (polytope, full_sign_vector)
-    ncut = 0
-    while stack:
-        poly, svec = stack.pop()
-        # find first undetermined plane (-1 stall guard)
-        progress = False
-        for pi, (coeffs, c) in enumerate(planes):
-            if svec[pi] != 0:
-                continue
-            vals = [ _mul(coeffs, v) + c for v in poly.vertices() ]
-            sgns = set()
-            for val in vals:
-                if val > 0:
-                    sgns.add(1)
-                elif val < 0:
-                    sgns.add(-1)
-                else:
-                    sgns.add(0)
-            if sgns == {1}:
-                svec[pi] = 1
-                progress = True
-            elif sgns == {-1}:
-                svec[pi] = -1
-                progress = True
-            elif sgns == {0}:
-                svec[pi] = 0  # degenerate; treat as 0 (on plane)
-                progress = True
-            elif 1 in sgns and -1 in sgns:
-                # straddles -> slice
-                ncut += 1
-                v = poly.vertices()
-                for which in (1, -1):
-                    sub = slice_poly(poly, coeffs, c, which)
-                    if sub is not None:
-                        sv2 = list(svec)
-                        sv2[pi] = which
-                        stack.append((sub, sv2))
-                progress = True
-                break
-            else:  # sgns == {0,1} or {0,-1}: degenerate touch, treat fully
-                target = 1 if 1 in sgns else -1
-                svec[pi] = target
-                progress = True
-        if not progress:
-            # all planes determined -> leaf
-            leaves.append((poly, tuple(svec)))
-    return leaves, planes
 
 
 def _mul(row, v):
@@ -192,11 +132,59 @@ def slice_poly(poly, coeffs, c, which):
 
 
 def leaf_interior(poly):
-    """Vertex-average = strict interior point (the closure of one open cell)."""
+    """Vertex-average = strict interior point (closure of one open cell)."""
     vs = poly.vertices()
-    d = poly.dim
     if not vs:
         return None
     n = len(vs)
+    d = poly.dim
     pt = tuple(sum(v[i] for v in vs) / n for i in range(d))
     return pt
+
+
+def enumerate_cells(n, L, verbose=False):
+    d = n - 1
+    planes = _hyperplanes(n, L)
+    if verbose:
+        print(f"n={n} L={L}: d={d}, {len(planes)} arrangement hyperplanes")
+    root = _simplex_polytope(d)
+    stack = [(root, [0] * len(planes))]
+    leaves = []
+    ncut = 0
+    while stack:
+        poly, svec = stack.pop()
+        progress = False
+        for pi in range(len(planes)):
+            if svec[pi] != 0:
+                continue
+            coeffs, c = planes[pi]
+            vals = [_mul(coeffs, v) + c for v in poly.vertices()]
+            sgns = set()
+            for val in vals:
+                sgns.add(1 if val > 0 else (-1 if val < 0 else 0))
+            if sgns == {1}:
+                svec[pi] = 1
+                progress = True
+            elif sgns == {-1}:
+                svec[pi] = -1
+                progress = True
+            elif sgns == {0}:
+                svec[pi] = 0
+                progress = True
+            elif 1 in sgns and -1 in sgns:
+                ncut += 1
+                for which in (1, -1):
+                    sub = slice_poly(poly, coeffs, c, which)
+                    if sub is not None:
+                        sv2 = list(svec)
+                        sv2[pi] = which
+                        stack.append((sub, sv2))
+                progress = True
+                break
+            else:  # {0,1} or {0,-1}: degenerate touch
+                target = 1 if 1 in sgns else -1
+                svec[pi] = target
+                progress = True
+        if not progress:
+            leaves.append((poly, tuple(svec)))
+    return leaves, planes
