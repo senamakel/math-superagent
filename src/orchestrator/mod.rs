@@ -268,10 +268,7 @@ impl OrchestratorAgent {
             register_resilient(&mut research_harness, tool);
         }
         research_harness.push_middleware(checkpoint.clone());
-        register_resilient(
-            &mut research_harness,
-            recall::RecallWorkspaceTool::registered(workspace.clone()),
-        );
+        register_recall(&mut research_harness, &workspace);
         async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
 
         let mut tool_builder_harness =
@@ -292,10 +289,7 @@ impl OrchestratorAgent {
         let mut coder_harness =
             build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
         coder_harness.push_middleware(checkpoint.clone());
-        register_resilient(
-            &mut coder_harness,
-            recall::RecallWorkspaceTool::registered(workspace.clone()),
-        );
+        register_recall(&mut coder_harness, &workspace);
         async_subagents.register("coder", Arc::new(coder_harness), prompts.coder)?;
 
         register_support_agents(
@@ -329,10 +323,7 @@ impl OrchestratorAgent {
         for tool in documents.tools() {
             register_resilient(&mut goals_harness, tool);
         }
-        register_resilient(
-            &mut goals_harness,
-            recall::RecallWorkspaceTool::registered(workspace.clone()),
-        );
+        register_recall(&mut goals_harness, &workspace);
         async_subagents.register("goals", Arc::new(goals_harness), prompts.goals)?;
 
         let registry = Arc::new(default_registry(research_enabled)?);
@@ -901,10 +892,7 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut reflection, tool);
     }
-    register_resilient(
-        &mut reflection,
-        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
-    );
+    register_recall(&mut reflection, &parts.workspace);
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
     let mut pattern = specialist_harness(
@@ -940,10 +928,7 @@ fn register_support_agents(
     for tool in parts.delegation.iter().cloned() {
         register_resilient(&mut pattern, tool);
     }
-    register_resilient(
-        &mut pattern,
-        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
-    );
+    register_recall(&mut pattern, &parts.workspace);
     subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
 
     let mut inventor =
@@ -962,10 +947,7 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut inventor, tool);
     }
-    register_resilient(
-        &mut inventor,
-        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
-    );
+    register_recall(&mut inventor, &parts.workspace);
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
     let mut librarian =
@@ -976,10 +958,7 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut librarian, tool);
     }
-    register_resilient(
-        &mut librarian,
-        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
-    );
+    register_recall(&mut librarian, &parts.workspace);
     subagents.register("librarian", Arc::new(librarian), prompts.librarian)?;
 
     // The scholar reads; it does not fetch. Withholding `exa_search` is what
@@ -998,10 +977,7 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut scholar, tool);
     }
-    register_resilient(
-        &mut scholar,
-        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
-    );
+    register_recall(&mut scholar, &parts.workspace);
     subagents.register("scholar", Arc::new(scholar), prompts.scholar)?;
 
     // Files and indexes only. No search, no shell, no note memory: the
