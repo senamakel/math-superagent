@@ -114,6 +114,46 @@ impl WorkspaceDocuments {
         })
     }
 
+    /// Reports whether a visible workspace document exists.
+    pub(super) async fn exists(&self, relative: &str) -> bool {
+        self.readable_path(relative).is_ok()
+    }
+
+    /// Reads a visible workspace document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the path is hidden, escapes the workspace, is
+    /// missing, oversized, or is not UTF-8.
+    pub(super) async fn read_document(&self, relative: &str) -> Result<String> {
+        self.read(relative).await
+    }
+
+    /// Writes a visible workspace document on an agent's behalf.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the path is hidden, escapes the workspace, or the
+    /// content exceeds the per-document limit.
+    pub(super) async fn write_document(&self, relative: &str, content: &str) -> Result<()> {
+        self.write(relative, content).await
+    }
+
+    /// Deletes a visible workspace document.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the path is hidden, escapes the workspace, or the
+    /// file cannot be removed.
+    pub(super) async fn remove(&self, relative: &str) -> Result<()> {
+        let path = self.readable_path(relative)?;
+        tokio::fs::remove_file(&path).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to delete workspace document `{relative}`: {error}"
+            ))
+        })
+    }
+
     /// Writes raw bytes, used for the untouched copy of a download.
     async fn write_bytes(&self, relative: &str, bytes: &[u8]) -> Result<()> {
         if bytes.len() > MAX_DOCUMENT_BYTES {
