@@ -60,6 +60,33 @@ PINNED = ("solution loop:", "team ")
 # and costs a few megabytes; the log file holds everything regardless.
 SCROLLBACK = 10_000
 
+# Colour pair numbers. Named rather than numbered at the call site so the
+# meaning survives someone rearranging the palette.
+TAB, LOOP, FAULT, WARN, SPAWN, DONE, CALL = range(1, 8)
+
+# Pair number to foreground colour. The terminal's own background is kept, so
+# the view sits inside whatever theme the user already chose rather than
+# painting a black rectangle over it.
+PALETTE = {
+    TAB: curses.COLOR_CYAN,
+    LOOP: curses.COLOR_YELLOW,
+    FAULT: curses.COLOR_RED,
+    WARN: curses.COLOR_MAGENTA,
+    SPAWN: curses.COLOR_BLUE,
+    DONE: curses.COLOR_GREEN,
+    CALL: curses.COLOR_CYAN,
+}
+
+# Set once the terminal is known to have colour. A monochrome terminal — a
+# pipe, a dumb TERM, an old console — falls back to attributes alone rather
+# than failing, because the point is to read the run, not to be pretty.
+COLOURS = False
+
+
+def colour(pair: int) -> int:
+    """Returns the attribute for a pair, or nothing on a monochrome terminal."""
+    return curses.color_pair(pair) if COLOURS else curses.A_NORMAL
+
 
 class Runs:
     """The stream, split by role, plus the counters and the last cost."""
