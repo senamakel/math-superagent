@@ -142,14 +142,24 @@ fn html_to_markdown(html: &str, table: &mut LinkTable) -> String {
     let mut list_stack: Vec<Option<usize>> = Vec::new();
     let mut in_pre = false;
     let mut pending_text = String::new();
+    // While inside an anchor, text is buffered here instead of being written
+    // out, because the reference number is only emitted once the label is
+    // known at the closing tag.
+    let mut link_target: Option<String> = None;
+    let mut link_text = String::new();
 
     while let Some((index, character)) = chars.next() {
         if character != '<' {
             pending_text.push(character);
             continue;
         }
-        // Flush the text accumulated before this tag.
-        flush_text(&mut out, &mut pending_text, in_pre);
+        // Flush the text accumulated before this tag into whichever buffer is
+        // currently collecting.
+        if link_target.is_some() {
+            flush_text(&mut link_text, &mut pending_text, in_pre);
+        } else {
+            flush_text(&mut out, &mut pending_text, in_pre);
+        }
 
         let Some(close) = html[index..].find('>') else {
             break;
@@ -253,20 +263,38 @@ fn html_to_markdown(html: &str, table: &mut LinkTable) -> String {
             ("a", false) => {
                 if let Some(href) = attribute(raw, "href")
                     && !href.starts_with('#')
+                    && !href.starts_with("javascript:")
                 {
-                    out.push('[');
-                    // Remember the target for the closing tag.
-                    pending_text.clear();
-                    out.push_str("\u{0}");
-                    out.push_str(&href);
-                    out.push_str("\u{0}");
+                    link_target = Some(href);
+                    link_text.clear();
+                }
+            }
+            ("a", true) => {
+                if let Some(href) = link_target.take() {
+                    let label = link_text.trim().to_string();
+                    let reference = table.reference(&href);
+                    if needs_space(&out, "[") {
+                        out.push(' ');
+                    }
+                    if label.is_empty() {
+                        let _ = write!(out, "[{reference}]");
+                    } else {
+                        let _ = write!(out, "[{label}][{reference}]");
+                    }
+                    link_text.clear();
                 }
             }
             _ => {}
         }
     }
-    flush_text(&mut out, &mut pending_text, in_pre);
-    finish_links(&out, table)
+    if link_target.is_some() {
+        // An anchor that never closed: keep its text rather than losing it.
+        flush_text(&mut link_text, &mut pending_text, in_pre);
+        out.push_str(link_text.trim());
+    } else {
+        flush_text(&mut out, &mut pending_text, in_pre);
+    }
+    out
 }
 
 /// Query parameters that carry no meaning and cost tokens.
@@ -353,56 +381,6 @@ pub(super) fn clean_url(url: &str) -> String {
         out.push('#');
         out.push_str(fragment);
     }
-    out
-}
-
-/// Rewrites the link placeholders left by the anchor handling.
-///
-/// Anchors are emitted as `[` plus a delimited href, because the link text is
-/// only known once the closing tag arrives. This pass turns each pair into a
-/// reference-style `[text][n]` and records the URL in `table`.
-fn finish_links(text: &str, table: &mut LinkTable) -> String {
-    let mut out = String::with_capacity(text.len());
-    let mut rest = text;
-    while let Some(start) = rest.find('\u{0}') {
-        let (before, tail) = rest.split_at(start);
-        out.push_str(before);
-        let tail = &tail[1..];
-        let Some(end) = tail.find('\u{0}') else {
-            // Unterminated placeholder: drop the stray `[` we emitted.
-            if out.ends_with('[') {
-                out.pop();
-            }
-            out.push_str(tail);
-            return out;
-        };
-        let href = &tail[..end];
-        let after = &tail[end + 1..];
-        // The link text runs to the end of this anchor's content.
-        match after.find("</a") {
-            Some(_) => {
-                let label_end = after.find('\u{0}').unwrap_or(after.len());
-                let label = &after[..label_end];
-                let label = label.split('<').next().unwrap_or(label).trim();
-                if label.is_empty() {
-                    if out.ends_with('[') {
-                        out.pop();
-                    }
-                    let _ = write!(out, "[{}]", table.reference(href));
-                } else {
-                    let _ = write!(out, "{label}][{}]", table.reference(href));
-                }
-                rest = &after[label_end.min(after.len())..];
-            }
-            None => {
-                if out.ends_with('[') {
-                    out.pop();
-                }
-                rest = after;
-            }
-        }
-    }
-    out.push_str(rest);
     out
 }
 
