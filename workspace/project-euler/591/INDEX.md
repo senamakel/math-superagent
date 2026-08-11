@@ -7,8 +7,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `AGENTS.md` | Workspace method and evidence rules; read before any work. Defines the oracle-driven, no-enumeration method policy and the housekeeping conventions for indexes, research/, toolkits/, goal.md, tasks.md, memory.md, scratchpad.md. |
 | `README.md` | Library-level README explaining how a problem workspace is organised (start at AGENTS.md, use prompts/ for role guidance, define completion in goal.md, etc.). |
 | `brute.py` | Naive BQA brute force: for d, x, n scans all b in [-n,n] and takes the nearest a to minimise abs(a+b*sqrt(d)-x). Reproduces worked examples 1-3. Float arithmetic; not scalable. |
-| `brute_n7.py` | _(undescribed)_ |
-| `brute_n7_run.log` | _(undescribed)_ |
+| `brute_n7.py` | Independent brute force at n=10^7 (mpmath dps=40): scans all b in [-floor(n/sqrt(d)),floor(n/sqrt(d))] for the 16 chosen d, a=nint(pi-b*sqrt(d)) clamped to [-n,n], minimises |
+| `brute_n7_run.log` | Captured stdout of the brute_n7.py run: per-d (d,b,a, |
 | `check_rel.py` | Investigated whether abs(I_d) equals round(sqrt(d)*b_d). Hypothesis **disproved** (see memory.md); kept as a record of a failed approach. |
 | `compute_I.py` | Computes I_d and b_d for all non-square d in [2,99] at n=10^4 by scanning b in [0,n]. Small-scale data generation; also prints the abs(I_d) sequence. |
 | `config.toml` | Run configuration for the mathematical-research workspace: solver preferences (exact arithmetic, forbid exponential time/space) and artifact file names. |
@@ -19,10 +19,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `probe_structure.py` | Fast float scan: whether d=2 record b's match convergent denominators of pi/sqrt2, pi*sqrt2, etc. Probe; superseded by the Cabanillas candidate-set method. |
 | `problem.html` | The PE591 problem statement (converted to HTML); the 4 worked example values and the question about I_d. |
 | `problem.url` | The Project Euler URL for problem 591 (https://projecteuler.net/minimal=591). |
-| `results_brute_n7.txt` | Output file written by brute_n7.py: rows (d b a |a| error) from the independent n=1e7 brute-force BQA scan for the 16 selected d values. Same numbers as the top of brute_n7_run.log. These are n=1e7 values, not the target n=1e13 result; the file has no trailing S line. |
+| `results_brute_n7.txt` | Per-d rows (d b a |
 | `results_full.txt` | Output of solution.py (positive-b-only) for PE591 at n=1e13: rows d, b, a, abs(a), and S=sum(abs(a))=498809825393729. **Candidate result, now challenged by results_full_bothsides.txt (the problem allows b of either sign).** |
 | `results_full_bothsides.txt` | Output of solution_bothsides.py (both signs of b) for PE591 at n=1e13: rows d, b, a, abs(a), and S=526007984625966. Updated candidate answer consistent with the problem statement (b sign is free); supersedes results_full.txt subject to the run's resolution. |
-| `results_solver_n7.txt` | Row data (d b a |
+| `results_solver_n7.txt` | Row data (d b a abs(a)) for the n=1e7 brute-force scan — the same 16 d values and numbers as the top of brute_n7_run.log. These are the valid n=1e7 independent-check values (not the n=1e13 result). |
 | `scratchpad.md` | Scratch area for draft findings being validated; durable results promoted to memory.md and research/notes/. |
 | `solution.py` | PE591 solver that considers only positive b (b in [0,L]): Cabanillas (arXiv:1904.01874) Prop 9/10 candidate-set method, a_d = nint(pi - b_d*sqrt(d)). Writes results_full.txt. **One-sided; superseded by solution_bothsides.py.** |
 | `solution_bothsides.py` | Corrected PE591 solver considering BOTH signs of b (matching the problem, where b's sign is free): runs the Cabanillas candidate method for beta={pi} (b positive) and 1-beta (b negative), takes the global min, a = nint(pi - b*sqrt(d)). Reproduces worked examples 1-4; writes results_full_bothsides.txt. Current authoritative solver. |

@@ -8,3 +8,6 @@
       (covered by test_method_scale.py oracle checks) with the real method.
 - [x] Compute S and verify by independent route (re-sum of results_full.txt,
       b<=L and a==nint(pi-b sd) checks on all 90 rows; S=498809825393729).
+- [x] Mid-scale independent check at n=10^7: brute_n7.py (16 d, mpmath dps=40)
+      vs corrected both-sides solver at the same n — exact (b,a) agreement on
+      all 16 d (results_brute_n7.txt, results_solver_n7.txt, brute_n7_run.log).

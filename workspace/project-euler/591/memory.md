@@ -19,6 +19,19 @@ For fixed b, best a = round(pi - b*sqrt(d)), error = ||b sqrt(d) - pi||_Z.
 brute.py reproduces examples 1,2,3 exactly (see run output in scratchpad).
 solution_bothsides.py reproduces ALL FOUR examples (1-3 plus the d=2 n=1e13 oracle).
 
+## Verified (mid-scale independent check, n=10^7)
+brute_n7.py scans all b in [-floor(n/sqrt(d)), floor(n/sqrt(d))] at mpmath
+dps=40 for d in [2,13,14,15,18,19,21,22,27,29,41,42,52,59,80,98] with n=10^7,
+setting a = nint(pi - b*sqrt(d)) clamped to [-n,n].  Results in
+results_brute_n7.txt; run log in brute_n7_run.log.
+
+Comparison vs the corrected both-sides solver (solution_bothsides.py) run at
+the SAME n=10^7 (results_solver_n7.txt): exact (b, a) agreement on all 16 d.
+So the corrected solver is independently validated at 10^7 — 1000x above the
+previously validated 10^6 and 1e6x below the 10^13 target.  NOTE: comparing
+brute@1e7 against results_full_bothsides.txt (n=1e13) shows mismatches for
+every d, which is expected: the optimum (a,b) changes with n.
+
 ## Additional exact laws (verified on corrected both-sign data, n=1e13)
 - |I_d| == |nint(b_d sqrt(d) - pi)| for all 90 d (90/90).
 - m^2 scaling: |I_{m^2 d0}| == |I_{d0}| iff m | b_{d0} (36/36 pairs); when equal,
