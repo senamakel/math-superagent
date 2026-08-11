@@ -260,21 +260,7 @@ impl OrchestratorAgent {
         let prompts = RolePrompts::load(&workspace)?;
 
         let vector_store = VectorStore::from_env()?;
-        let exa = if research_enabled {
-            Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>)
-        } else {
-            None
-        };
-        // Gated with the rest of the literature, and for the same reason: a
-        // self-contained problem should test the runtime's reasoning rather
-        // than its ability to look an answer up, and the encyclopedia is the
-        // one lookup most likely to hand a run its closed form outright.
-        // Withheld by not registering it, never by asking the model to abstain.
-        let oeis: Vec<Arc<dyn Tool<()>>> = if research_enabled {
-            oeis::OeisTool::all(&documents)
-        } else {
-            Vec::new()
-        };
+        let (exa, oeis) = search_tools(research_enabled, &documents)?;
 
         // research: search the web, and remember what it found.
         let mut research_harness = specialist_harness(model.clone(), budget, "research", &tracer);
@@ -625,6 +611,31 @@ fn results_unchanged(
     None
 }
 
+/// Builds the tools that reach outside the run, or nothing when research is off.
+///
+/// Both are withheld by not registering them rather than by asking the model
+/// to abstain, because a prompt instruction is not a control. The encyclopedia
+/// is gated with the web search and for the same reason: a self-contained
+/// problem should test the runtime's reasoning rather than its ability to look
+/// an answer up, and a catalogued sequence is the lookup most likely to hand a
+/// run its closed form outright.
+///
+/// # Errors
+///
+/// Returns an error when the search key is missing while research is enabled.
+fn search_tools(
+    research_enabled: bool,
+    documents: &WorkspaceDocuments,
+) -> Result<(Option<Arc<dyn Tool<()>>>, Vec<Arc<dyn Tool<()>>>)> {
+    if !research_enabled {
+        return Ok((None, Vec::new()));
+    }
+    Ok((
+        Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>),
+        oeis::OeisTool::all(documents),
+    ))
+}
+
 fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
         "download_document",
@@ -776,6 +787,22 @@ fn support_agents(
                 .chain(["recall_research", "remember_research"])
                 .chain(document_tools),
         ),
+    ]
+    .into_iter()
+    .chain(library_agents(research_enabled, document_tools))
+    .collect()
+}
+
+/// Returns the librarian, scholar, organizer, and goals definitions.
+///
+/// Split from [`support_agents`] only to keep each function readable; these
+/// are the roles that build and read the reference library, plus the worker
+/// the solution loop drives.
+fn library_agents(
+    research_enabled: bool,
+    document_tools: [&'static str; 11],
+) -> Vec<AgentDefinition> {
+    vec![
         AgentDefinition::new(
             "librarian",
             "Librarian Agent",
@@ -1262,6 +1289,11 @@ fn register_support_agents(
     }
     subagents.register("judge", Arc::new(judge), prompts.judge)?;
 
+    register_pattern_agent(subagents, parts, prompts.pattern)?;
+
+    let mut inventor =
+        specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
+    PATTERN_PLACEHOLDER
     let mut pattern = specialist_harness(
         parts.model.clone(),
         parts.budget,
