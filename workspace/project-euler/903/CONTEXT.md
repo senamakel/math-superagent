@@ -13,6 +13,11 @@ Established (all mechanism/route; none solves rank-sum over {π^i}):
 - [[ford_cycle_type_toolkit]]: factorial moments E∏(C_k)_{r_k}=∏k^{−r_k}; the engine for the
   cycle-type sums behind A_n,B_n; bibliography maps the order literature.
 - [[cambie_yan_html]]: descents/inversions of π^k closed forms, small-exponent regime (n≥2k+1).
+- [[../L0.2/courtois_bard_ault_ppowers_body]] (0905.3682): NEW — POWER-side cycle structure of π^k:
+  x fixed by π^k iff x in a π-cycle of divisor length (count τ(k); cycle splitting by gcd(i,k);
+  fixed-point-distribution EGF exp(Σ_{i|k}(y^i−1)/i)). Governs the random-power σ=π^i over which
+  f_n(k) is a pair-inversion count — the missing power-side mechanism, complementing the base-π
+  conjugacy-class/Ewens sources. Still mechanism only.
 - [[nathanson_fixed_points_powers]]: powers' fixed points ↔ cycle counts (Möbius inversion).
 - [[hultman_products_random_permutations]]: characters for products of class-distributed perms,
   not the cyclic subgroup {π^i}.
@@ -30,5 +35,7 @@ Established (all mechanism/route; none solves rank-sum over {π^i}):
 Open core: no closed form for A_n,B_n; summing Lehmer ranks over the cyclic subgroup {π^i} is
 covered by no source located — all above are routes, not the Q(10^6) computation. The library
 now additionally establishes that "ranking permutations inside a cyclic-orbit" is a studied,
-solved-for-rotation framework (Legendre), but that the power-subgroup variant central to PE 903
-remains uncovered.
+solved-for-rotation framework (Legendre), that the fixed-point/cycle structure of the POWER
+π^k is rigorously characterized (Courtois–Bard–Ault: τ(k) fixed points, cycle splitting, EGF
+for the fixed-point distribution), but that the power-subgroup rank-sum variant central to
+PE 903 remains uncovered.
