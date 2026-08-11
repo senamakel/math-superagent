@@ -5,12 +5,11 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `AGENTS.md` | Method and evidence rules for the whole run: restate the problem, test small cases, prefer theory over enumeration, keep sourced facts separate from deductions, keep files described. |
+| `CONTEXT.md` | _(undescribed)_ |
+| `GOAL.md` | _(undescribed)_ |
+| `MEMORY.md` | _(undescribed)_ |
 | `README.md` | Folder-layout note pointing newcomers to AGENTS.md, `prompts/`, and the goal/tasks/scratchpad/memory working files. |
-| `context.md` | Standing brief synthesizing what the `research/` library establishes for this problem (definitions, available results, contradictions, gaps). Written by the research team; a few-hundred-word brief to act on without opening sources. |
-| `goal.md` | Restated PE 597 goal with the full setup (every symbol defined), the n=3,L=160 worked probability table, the given p(4,400), the target p(13,1800), and the completion criteria. |
-| `memory.md` | Working memory: established results (brute reproduces the table; comparator bug fixed), failed approaches (the w-order-only hypothesis, refuted), and the open question of the exact method. |
-| `problem.html` | The downloaded PE 597 statement (Torpids) — the source document this run is solving. |
+| `SCRATCHPAD.md` | _(undescribed)_ |
+| `TASKS.md` | _(undescribed)_ |
 | `race_spec.md` | Exact chronological race-dynamics specification for implementation: event simulation, bump/OUT/FINISH treatment, and the bump-chain parity definition. Reference contract for any race solver. |
-| `scratchpad.md` | Provisional work: the diagnosis of the parity-comparator bug, its fix, and the corrected MC run output. |
-| `tasks.md` | Task checklist: done items (verify sample, fix comparator, MC re-check) and the open task to solve p(13,1800) exactly. |
 | `test_treap.py` | Deterministic test of the Cartesian-tree (min-heap treap) hypothesis for PE 597: compares tree-parity (count of ancestor/descendant index pairs in the min-w treap) against the true oracle outcome_parity on many random Exp(1) speed vectors, and Monte-Carlos the tree model's implied p(3,160), p(4,400), p(13,1800). Reports total mismatches and concrete failing cases. |
