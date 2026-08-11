@@ -172,7 +172,7 @@ tool result, labelled with the agent that produced it:
 [00:00] orchestrator     model call #1 -> deepseek/deepseek-v4-flash-0731
 [00:14] orchestrator     model done    13820ms in=9241 cached=8960 out=612 | profile model 96% tool 0% idle 4% | cache 96% | $0.0031
 [00:14] orchestrator     tool  call #1 -> spawn_agent
-[00:14] tool_builder/agent-run-2  spawned: Read /workspace/problem.html and extract the exact statement...
+[00:14] tool_builder/agent-run-2  spawned: Read /workspace/problem.md and extract the exact statement...
 [00:33] tool_builder/agent-run-2  tool  done    execute_command in 412ms, 1180 bytes
 [01:12] orchestrator     solution loop: verdict unsolved, progress yes, next attempt
 ```
@@ -266,7 +266,7 @@ beside the solution:
 
 ```text
 workspace/project-euler/66/
-├── problem.html
+├── problem.md
 ├── problem.url
 ├── GOAL.md
 ├── MEMORY.md
