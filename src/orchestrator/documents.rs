@@ -57,6 +57,22 @@ const MAX_SEARCH_RESULTS: usize = 10;
 pub(super) struct WorkspaceDocuments {
     workspace: PathBuf,
     client: reqwest::Client,
+    /// Serialises the index's read-modify-write cycle.
+    ///
+    /// A model routinely issues several `index_document` calls in one turn,
+    /// and the harness runs them concurrently. Each reads the index, appends
+    /// its own path, and writes the result back, so without this the last
+    /// write silently discards the others' entries.
+    ///
+    /// Worse was observed on Euler 579. `tokio::fs::write` truncates and then
+    /// writes, which is two operations, not one: three concurrent calls
+    /// interleaved so a 34-byte write landed inside a 38-byte file and left
+    /// the previous content's last four bytes stranded on the end. The index
+    /// became `[…]f"\n]` — invalid JSON — and every subsequent
+    /// `index_document` failed with a serialization error the model had no
+    /// way to act on, because the corruption was in runtime bookkeeping it
+    /// cannot see or repair.
+    index_lock: Arc<tokio::sync::Mutex<()>>,
 }
 
 impl WorkspaceDocuments {
