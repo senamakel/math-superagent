@@ -159,10 +159,17 @@ the solve — like research and background — cycling on its own cadence over
 whatever results are on disk, and posts what it finds to a mailbox the next
 reflection collects. Nothing waits on it: a structural observation is worth as
 much an attempt later, and an earlier version that gated the loop on one cost a
-live run half an hour of stalled solve. It is told to reply NOTHING FURTHER
-when the results have not changed since it last looked or hold too few terms to
-say anything exact, because an invented pattern costs the run more than no
-pattern.
+live run half an hour of stalled solve. An invented pattern costs the run more than no pattern, so it idles
+readily — and idleness is decided *before* the agent runs, by fingerprinting
+`code/` and `code/out/` and comparing against what the team last analysed.
+Asking the agent to notice that nothing changed would cost a model call and a
+walk of the workspace to discover, which is most of what a working cycle costs:
+a live team spent thirty `read_document` calls in two minutes doing exactly
+that on runs that had computed almost nothing. A workspace with no results at
+all reads as unchanged, so an early cycle idles rather than analysing an empty
+folder. Its own `SCRATCHPAD.md` is deliberately not part of the fingerprint —
+the team writes that itself, and including it would have the team waking itself
+up forever on its own notes.
 
 `diversify` runs three arms concurrently — the librarian followed by the
 scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the

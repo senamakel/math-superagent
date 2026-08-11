@@ -12,14 +12,18 @@ the {π^i} sum because rank is not a class function; Leaños m-th roots — prei
 counts, not the orbit sum; Legendre cyclic-shift rank code — rank-in-a-cyclic-orbit
 solved only for rotation; Zawiślak Lehmer-digit independence; Nathanson
 fixed-points-of-powers↔C(k) Möbius; Pinsky EJC fixed-point-conditioned per-gap
-inversion formula, the A_n,B_n mechanism). Library = [[rank_lehmer]] + [[mechanism_pair_inversions]]
-(core mechanism, two proofs) + [[order_random_permutation]] (weights) +
-[[cycle_type_toolkit]] (summation engine) + small-exponent
-[[cambie_yan_descents_inversions_powers]] + [[sack_ulfarsson_refined_inversion_statistics]]
-(per-gap inversion machinery) + [[homomesies_permutations]] (framework) +
-[[../L0.2/courtois_bard_ault_ppowers_body]] (power-side cycle structure of π^k:
-τ(k) fixed points, cycle splitting, fixed-point EGF).
-[[legendre_number_system_cyclic_shift]] shares the "rank inside a
-cyclic-orbit" shape but for rotation, not powers — related framework only.
-See [[report_literature_ranks_powers]] (clean negative) and
-[[report_A_n_B_n_closed_forms_sources]] (derivation route).
+inversion formula, the A_n,B_n mechanism). **L0.2 sealed by [[L1.2/L0.2]]**
+(power-side cycle structure of π^k: τ(k) fixed points, gcd(i,k)-splitting, fixed-point
+EGF exp(Σ_{i|k}(y^i−1)/i) — Courtois–Bard–Ault; the SECOND independent proof of the
+gap-affine pair-inversion mechanism, Pinsky–Schickentanz Ewens Thm 1a/Prop 10a, uniform
+θ=1 case being what Q(n) sums over; Sack–Úlfarsson k-step gap-resolved inversion
+distribution H_{n,k}; Stong average-order law log μ_n=C√(n/log n) bounding the n!/ord
+weights. All mechanism/route; none computes the {π^i} sum). Library = [[rank_lehmer]] +
+[[mechanism_pair_inversions]] (core mechanism, two proofs: Campion-Loth + Ewens) +
+[[order_random_permutation]] (weights) + [[cycle_type_toolkit]] (summation engine) +
+small-exponent [[cambie_yan_descents_inversions_powers]] +
+[[sack_ulfarsson_refined_inversion_statistics]] (per-gap inversion machinery) +
+[[homomesies_permutations]] (framework) + power-side structure now under [[L1.2/L0.2]].
+[[legendre_number_system_cyclic_shift]] shares the "rank inside a cyclic-orbit" shape
+but for rotation, not powers — related framework only. See [[report_literature_ranks_powers]]
+(clean negative) and [[report_A_n_B_n_closed_forms_sources]] (derivation route).
