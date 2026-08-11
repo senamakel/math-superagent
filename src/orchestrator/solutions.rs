@@ -50,6 +50,13 @@ use super::teams::TeamHandle;
 const MAX_ATTEMPTS: usize = 8;
 /// Consecutive unproductive attempts before diversifying rather than retrying.
 const STUCK_THRESHOLD: usize = 2;
+/// Consecutive attempts lost to the provider before the loop stops trying.
+///
+/// Two rather than one, because a single upstream blip is exactly what the
+/// retry ladder and `ReroutingModel` exist to absorb, and ending a run on one
+/// would throw away work they would have recovered. Two in a row is a wall
+/// rather than a blip, and no number of further attempts gets past it.
+const BLOCKED_THRESHOLD: usize = 2;
 /// Attempts after which each reflection also re-opens the literature.
 ///
 /// Diversification triggers on *consecutive* unproductive attempts, so a run
@@ -98,6 +105,8 @@ pub(super) struct SolutionState {
     scores: Vec<u8>,
     /// What the judge made of the attempt just finished.
     judged: Verdict,
+    /// Consecutive attempts that produced nothing but a provider failure.
+    blocked: usize,
 }
 
 impl SolutionState {
@@ -114,6 +123,7 @@ impl SolutionState {
             restarts: 0,
             scores: Vec::new(),
             judged: Verdict::Proceed,
+            blocked: 0,
         }
     }
 
@@ -139,6 +149,17 @@ impl SolutionState {
     pub(super) fn outcome(&self) -> String {
         let mut report = if self.solved {
             format!("Solved after {} attempt(s).\n\n", self.attempts)
+        } else if self.blocked >= BLOCKED_THRESHOLD {
+            // Said plainly, because the default wording reports a count of
+            // attempts and reads as a mathematical failure. This run did not
+            // fail at the mathematics; it never got to try.
+            format!(
+                "Stopped after {} attempt(s): the model provider refused every call, so no \
+                 attempt reached the problem. This is an infrastructure failure, not a result \
+                 about the mathematics. The workspace is unchanged and the run continues from \
+                 disk once the provider accepts calls again.\n\n",
+                self.attempts
+            )
         } else {
             format!(
                 "Not solved within {} attempt(s); reporting the furthest progress reached.\n\n",
@@ -163,6 +184,8 @@ enum Route {
     Retry,
     /// Repeated attempts are not advancing; gather new angles first.
     Diversify,
+    /// The provider, not the mathematics, is what stopped the run.
+    Blocked,
 }
 
 impl std::fmt::Display for Route {
@@ -171,6 +194,7 @@ impl std::fmt::Display for Route {
             Self::Solved => "solved",
             Self::Retry => "retry",
             Self::Diversify => "diversify",
+            Self::Blocked => "blocked",
         };
         formatter.write_str(label)
     }
@@ -182,7 +206,17 @@ impl std::fmt::Display for Route {
 /// the routing rule is the part of this design most likely to be wrong, and it
 /// is the part a live run is least able to demonstrate cheaply.
 fn route(state: &SolutionState) -> Route {
-    if state.solved || state.attempts >= MAX_ATTEMPTS {
+    // Checked before anything else, and before the attempt ceiling. An attempt
+    // that died on the provider is not evidence about the mathematics, so
+    // spending the ceiling on more of them is spending the run's one budget on
+    // a condition no attempt can affect: a live pair of runs met an
+    // `HTTP 403: Key limit exceeded` and burned all eight attempts in seconds,
+    // each one recording the same quota error as the lesson learned, and ended
+    // reporting "not solved within 8 attempts" — which reads as a mathematical
+    // failure and is not one.
+    if state.blocked >= BLOCKED_THRESHOLD {
+        Route::Blocked
+    } else if state.solved || state.attempts >= MAX_ATTEMPTS {
         Route::Solved
     } else if state.unproductive >= STUCK_THRESHOLD {
         Route::Diversify
@@ -780,6 +814,15 @@ async fn reflect_step(
         if let Some(tracer) = tracer {
             tracer.note("solution loop: SOLVED rejected, no program in the workspace");
         }
+    }
+    // A blocked attempt is counted before progress is judged, because
+    // reflection on a provider error cannot report progress and would
+    // otherwise register as an unproductive attempt — driving the run into
+    // diversification, which is three more child runs into the same wall.
+    if provider_blocked(&state.last_attempt) {
+        state.blocked += 1;
+    } else {
+        state.blocked = 0;
     }
     let progressed = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
     if progressed {
