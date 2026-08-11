@@ -18,11 +18,9 @@ The runtime uses a small registry of specialist agents:
   or execution tools, so it cannot drift into solving what it is judging.
 - `pattern_finder` runs exact sequence analysis over results already computed:
   forward differences and polynomial degree, common divisors, residue
-  periodicity, and a verified linear-recurrence search.
-
-  Its tools report only what holds for every term supplied, and it can commission
-  more terms from the tool-builder so a conjecture is tested past the data that
-  suggested it.
+  periodicity, and a verified linear-recurrence search. Its tools report only
+  what holds for every term supplied, and it can commission more terms from the
+  tool-builder so a conjecture is tested past the data that suggested it.
 - `inventor` proposes a different line of attack when the current one stalls.
 - `librarian` downloads primary material into a workspace reference library and
   indexes it for local search.
