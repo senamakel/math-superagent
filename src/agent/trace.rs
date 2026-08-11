@@ -295,6 +295,78 @@ impl RunTracer {
         }
     }
 
+    /// Starts the clock on one middleware hook.
+    fn begin_middleware(&self, name: &str) {
+        if let Ok(mut started) = self.state.middleware_started.lock() {
+            started.insert((self.label.clone(), name.to_string()), Instant::now());
+        }
+    }
+
+    /// Closes one middleware hook, journalling it only if it did real work.
+    ///
+    /// A hook whose start was never seen is treated as instantaneous rather
+    /// than dropped, so a lost start cannot make a slow hook invisible.
+    fn finish_middleware(&self, name: &str) {
+        let elapsed = self
+            .state
+            .middleware_started
+            .lock()
+            .ok()
+            .and_then(|mut started| started.remove(&(self.label.clone(), name.to_string())))
+            .map(|start| start.elapsed())
+            .unwrap_or_default();
+        let micros = u64::try_from(elapsed.as_micros()).unwrap_or(u64::MAX);
+        if let Ok(mut totals) = self.state.middleware_totals.lock() {
+            let entry = totals.entry(name.to_string()).or_insert((0, 0));
+            entry.0 += 1;
+            entry.1 = entry.1.saturating_add(micros);
+        }
+        if elapsed < MIDDLEWARE_JOURNAL_THRESHOLD {
+            return;
+        }
+        self.write_line(&serde_json::json!({
+            "agent": self.label,
+            "event": {
+                "kind": "middleware_executed",
+                "name": name,
+                "duration_us": micros,
+            },
+            "input_tokens": self.state.input_tokens.load(Ordering::Relaxed),
+            "cached_tokens": self.state.cached_tokens.load(Ordering::Relaxed),
+            "output_tokens": self.state.output_tokens.load(Ordering::Relaxed),
+            "micro_usd": self.state.micro_usd.load(Ordering::Relaxed),
+            "elapsed_ms": u64::try_from(self.state.started.elapsed().as_millis())
+                .unwrap_or(u64::MAX),
+        }));
+    }
+
+    /// Writes what the suppressed middleware lines would have said, once.
+    ///
+    /// Silently dropping thousands of events would leave the journal looking
+    /// like the hooks never ran. One line per run says how often each fired and
+    /// what it cost in total, which is the whole of what those events carried.
+    fn write_middleware_summary(&self) {
+        let Ok(totals) = self.state.middleware_totals.lock() else {
+            return;
+        };
+        if totals.is_empty() {
+            return;
+        }
+        let mut middlewares: Vec<_> = totals
+            .iter()
+            .map(|(name, (count, micros))| {
+                serde_json::json!({ "name": name, "calls": count, "total_us": micros })
+            })
+            .collect();
+        middlewares.sort_by_key(|entry| entry["name"].as_str().unwrap_or_default().to_string());
+        self.write_line(&serde_json::json!({
+            "agent": self.label,
+            "event": { "kind": "middleware_summary", "middlewares": middlewares },
+            "elapsed_ms": u64::try_from(self.state.started.elapsed().as_millis())
+                .unwrap_or(u64::MAX),
+        }));
+    }
+
     fn write_journal(&self, record: &EventRecord) {
         let Some(journal) = self.state.journal.as_ref() else {
             return;
