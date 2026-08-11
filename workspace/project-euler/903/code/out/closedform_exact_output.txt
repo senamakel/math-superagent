@@ -1,0 +1,57 @@
+==============================================================================
+(a) Campion-Loth Lemma 4.7 (arXiv:2301.00898) — per-class count vs formula
+    Pr[sigma(0) > sigma(k)] on class C_lambda, gaps k=1..n-1
+    for EVERY conjugacy class of S_n (n = 4,5,6,7).
+==============================================================================
+  n=4: 5 classes x 3 gaps: [PASS]
+  n=5: 7 classes x 4 gaps: [PASS]
+  n=6: 11 classes x 5 gaps: [PASS]
+  n=7: 15 classes x 6 gaps: [PASS]
+(a) result: ALL PASS
+==============================================================================
+(b) The three mu-moments by DIRECT orbit summation over all pi
+    E_mu[g] = sum_pi (n!/ord) sum_{i mod ord} g(pi^i) / (n!)^2
+    vs  H_n,  (1/4)H_{floor(n/2)},  n + S(n)
+==============================================================================
+  n=3: E[a1]=11/6 vs H_n=11/6 [PASS]; E[a2]=1/4 vs (1/4)H[1]=1/4 [PASS]; E[a1^2]=5 vs n+S(n)=5 [PASS]
+  n=4: E[a1]=25/12 vs H_n=25/12 [PASS]; E[a2]=3/8 vs (1/4)H[2]=3/8 [PASS]; E[a1^2]=43/6 vs n+S(n)=43/6 [PASS]
+  n=5: E[a1]=137/60 vs H_n=137/60 [PASS]; E[a2]=3/8 vs (1/4)H[2]=3/8 [PASS]; E[a1^2]=9 vs n+S(n)=9 [PASS]
+  n=6: E[a1]=49/20 vs H_n=49/20 [PASS]; E[a2]=11/24 vs (1/4)H[3]=11/24 [PASS]; E[a1^2]=337/30 vs n+S(n)=337/30 [PASS]
+  n=7: E[a1]=363/140 vs H_n=363/140 [PASS]; E[a2]=11/24 vs (1/4)H[3]=11/24 [PASS]; E[a1^2]=194/15 vs n+S(n)=194/15 [PASS]
+  n=8: E[a1]=761/280 vs H_n=761/280 [PASS]; E[a2]=25/48 vs (1/4)H[4]=25/48 [PASS]; E[a1^2]=2091/140 vs n+S(n)=2091/140 [PASS]
+  n=9: E[a1]=7129/2520 vs H_n=7129/2520 [PASS]; E[a2]=25/48 vs (1/4)H[4]=25/48 [PASS]; E[a1^2]=352/21 vs n+S(n)=352/21 [PASS]
+(b) result: ALL PASS
+    (largest n checked: 9 )
+==============================================================================
+(c) Closed-form A_n, B_n -> f_n(k) rows vs oracle (out/extend_f.json)
+    and Q(n) via the verified reduction vs brute / extend_f values.
+==============================================================================
+--- (c1) f_n(k) = (A_n + (k-1) B_n)(n!)^2 exact vs oracle rows ---
+  n=2: A_n=1/4 B_n=0  row match: PASS
+  n=3: A_n=5/18 B_n=1/36  row match: PASS
+  n=4: A_n=23/72 B_n=0  row match: PASS
+  n=5: A_n=421/1200 B_n=-3/400  row match: PASS
+  n=6: A_n=83/225 B_n=-1/144  row match: PASS
+  n=7: A_n=6841/17640 B_n=-29/3528  row match: PASS
+  n=8: A_n=9413/23520 B_n=-11/1440  row match: PASS
+  n=9: A_n=74477/181440 B_n=-257/36288  row match: PASS
+  n=10: A_n=23743/56700 B_n=-653/100800  row match: PASS
+  n=11: A_n=1301911/3049200 B_n=-18947/3049200  row match: PASS
+  (c1) result: ALL PASS
+--- (c2) Q(n) via verified reduction from closed-form A_n, B_n ---
+  n=2: Q mod p = 5  vs brute 5  [PASS]
+  n=3: Q mod p = 88  vs brute 88  [PASS]
+  n=4: Q mod p = 4808  vs brute 4808  [PASS]
+  n=5: Q mod p = 597876  vs brute 597876  [PASS]
+  n=6: Q mod p = 133103808  vs brute 133103808  [PASS]
+  n=7: Q mod p = 124948631  vs brute 47124948960  [PASS]
+  n=8: Q mod p = 798047424  vs brute 24768798220800  [PASS]
+  n=9: Q mod p = 777220173  vs extend_f Q=777220173 (mod p)  [PASS]
+  n=10: Q mod p = 468421536  vs extend_f Q=468421536 (mod p)  [PASS]
+  n=11: Q mod p = 247479760  vs extend_f Q=247479760 (mod p)  [PASS]
+  Q(10) mod p = 468421536  (statement oracle 468421536): PASS
+  (c2) result: ALL PASS
+
+==============================================================================
+closedform_exact.py overall: ALL PASS
+==============================================================================

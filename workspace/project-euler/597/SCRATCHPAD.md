@@ -1,6 +1,23 @@
 # Scratchpad
 
-## Run: exact p(3,L) for 16 extra L values (validation oracle, n=3 only)
+## [pattern_finder] EXACT CLOSED-FORM RATIONAL FUNCTIONS FOR p(n, L) — validated
+Derived from the exact arrangement enumeration (simplex subdivision oracle):
+
+- p(3, 40m) = (7 m^2 - 17 m + 12)/(18 m^2 - 45 m + 27), m = L/40.
+  Verified EXACT on 27 distinct L values: the 12 anchors (160..1800) PLUS 15
+  unseen-in-fit values (120,200,280,360,440,520,560,720,900,1100,2000,2400,
+  3000,4000,5000). ZERO mismatches. Limit m->inf = 7/18 = 0.38888..., matching
+  MC large-L limit ~0.389. Constant cell count 32 for all these L.
+- p(4, 40m) = (19 m^3 - 119 m^2 + 244 m - 162)/(36 m^3 - 216 m^2 + 423 m - 270).
+  Fits all 10 exact n=4 points (L=160..400 + 800..1800) EXACTLY.
+  Limit m->inf = 19/36 = 0.52777..., matching MC large-L limit ~0.5286.
+  AWAITING independent validation on unseen L (agent-run-40).
+
+Origin: p(n,L) is the uniform-simplex volume of the parity region; a rational
+function of L because the cell arrangement is stable across wide L ranges
+(ncells constant). Anchor checks: p(3,160)=56/135, p(4,400)=521/1020 exactly.
+
+## Run (tool_builder): exact p(3,L) for 16 extra L values (validation oracle, n=3 only)
 
 Command: `cd /workspace/code && python3 exact_p3_extra.py`
 

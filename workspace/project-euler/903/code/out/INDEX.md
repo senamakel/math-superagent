@@ -4,6 +4,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `closedform_exact_output.txt` | Verbatim stdout of closedform_exact.py: ALL PASS on Lemma 4.7 per-class check (n=4..7), the three mu-moments by direct orbit summation (n=3..9), closed-form f_n rows == extend_f.json n=2..11, Q(n) via verified reduction == brute/extend_f, Q(10)==468421536 |
+| `solution103_output.txt` | Verbatim stdout of solution103.py at n=10^6: A=351421860, B=80980398, S=695671486, H_n=881884276, n!=641102369 mod p; all self-tests/cross-checks/stability PASS; THE ANSWER Q(10^6) mod p = 128553191 |
 | `anbtable.txt` | Printed table from code/anbtable.py: for every n (2..30) the A, B, A//(n-1)!, B//(n-1)!, A%(n-1)!, B%(n-1)! rows from ccsum_ab.json with a per-row TRUST flag, plus the trusted n=2..11 reference table from extend_f.json. |
 | `ccsum.json` | Output of code/ccsum.py re-run (18 Sep 2025, n=2..30): conjugacy-class f_n(k) rows. UNTRUSTED for every n>=3 — CONFLICTS with the oracle-verified rows of out/extend_f.json (n=3 here is [13,8] vs verified [10,11]); root cause proven in test_classconst.py (subgroup count not class-constant). Only n=2 matches extend_f.json. Do not use as A_n/B_n. Old untrusted capture preserved at ccsum.json.untrusted.bak. |
 | `ccsum.json.untrusted.bak` | Backup of the earlier untrusted ccsum.json capture preserved before the 18 Sep 2025 re-run overwrote it. UNTRUSTED for n>=3 (conjugacy-class rows conflict with extend_f.json, root cause proven in test_classconst.py); kept only as a historical record of the old capture. |
