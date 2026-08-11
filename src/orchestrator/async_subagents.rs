@@ -55,7 +55,7 @@ const FOLLOW_UPS: [(&str, &[FollowUpStep]); 4] = [
     // same state; a program filed under `code/` with no row describing it is
     // undescribed whichever role wrote it.
     ("coder", &[ORGANIZE_AFTER_TOOLS]),
-    ("solver", &[ORGANIZE_AFTER_TOOLS]),
+    ("sat_solver", &[ORGANIZE_AFTER_TOOLS]),
     (
         "research",
         &[DIGEST_AFTER_RESEARCH, ORGANIZE_AFTER_RESEARCH],

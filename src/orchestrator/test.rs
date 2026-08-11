@@ -455,19 +455,19 @@ fn both_code_writing_roles_see_the_same_working_context() {
     // They differ in mandate, not in what they need to know: what is being
     // attempted, what is already built, and the provisional numbers.
     assert_eq!(role_context("coder"), role_context("tool_builder"));
-    assert_eq!(role_context("solver"), role_context("tool_builder"));
+    assert_eq!(role_context("sat_solver"), role_context("tool_builder"));
     assert!(role_context("coder").contains(&"SCRATCHPAD.md"));
     assert!(role_context("coder").contains(&"code/lib/INDEX.md"));
     // An encoding rests on what the run believes about the objects it encodes,
     // and a bound the library already establishes removes constraints.
-    assert!(role_context("solver").contains(&"research/CLAIMS.md"));
+    assert!(role_context("sat_solver").contains(&"research/CLAIMS.md"));
 }
 
 #[test]
 fn the_solving_agent_encodes_rather_than_searches() -> agent::Result<()> {
     let registry = default_registry(true)?;
     let solver = registry
-        .get("solver")
+        .get("sat_solver")
         .ok_or_else(|| tinyagents::TinyAgentsError::Validation("solver is registered".into()))?;
     // It writes the encoding and runs the engine over it, like any other
     // program: the solvers are libraries and binaries in the image, not tools
@@ -481,8 +481,8 @@ fn the_solving_agent_encodes_rather_than_searches() -> agent::Result<()> {
     // It is handed a reduced problem, not a topic to go and investigate.
     assert!(!solver.tools.iter().any(|tool| tool == "exa_search"));
     // The planners can reach it, or it may as well not exist.
-    assert!(SPECIALISTS.contains(&"solver"));
-    assert!(DELEGATES.contains(&"solver"));
+    assert!(SPECIALISTS.contains(&"sat_solver"));
+    assert!(DELEGATES.contains(&"sat_solver"));
     Ok(())
 }
 
@@ -493,7 +493,7 @@ fn the_solver_prompt_states_the_verdicts_that_are_not_answers() {
     // timeout, and `INFEASIBLE` is a result that must never be relaxed away.
     for verdict in ["FEASIBLE", "UNKNOWN", "INFEASIBLE", "UNSAT"] {
         assert!(
-            SOLVER_PROMPT.contains(verdict),
+            SAT_SOLVER_PROMPT.contains(verdict),
             "the solver prompt must say what `{verdict}` means"
         );
     }
@@ -501,7 +501,7 @@ fn the_solver_prompt_states_the_verdicts_that_are_not_answers() {
     // the search it exists to avoid.
     for engine in ["cp_model", "pysat", "z3", "cvc5", "cbc"] {
         assert!(
-            SOLVER_PROMPT.contains(engine),
+            SAT_SOLVER_PROMPT.contains(engine),
             "the solver prompt must name `{engine}`"
         );
     }
