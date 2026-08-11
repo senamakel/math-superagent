@@ -355,7 +355,12 @@ genuinely varies per call. They are read from the response body by
 `AccountingModel` (`src/agent/accounting.rs`), which is why it is a model
 wrapper rather than an event listener. Cost is recorded as the provider
 reports it; deriving it from a local price table would mean reporting fiction
-the moment a price changed. The console profile carries the running total.
+the moment a price changed. The console profile carries the running total. It also prints a line when a
+run *fails*, which it did not: a live `organizer` retried one call six times
+over two and a half minutes and then died on `openai response contained no
+choices`, and the console showed the retry ladder but not its outcome — the
+run simply stopped appearing. The error was in `trace.jsonl` the whole time,
+which is the wrong place to need it when someone is watching the console.
 The document tools refuse to read it
 back: a reflection run pulled its own 1.1 MB event log into a single
 339,652-token call, blowing past the compression trigger and dropping the
