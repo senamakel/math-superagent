@@ -314,6 +314,7 @@ impl OrchestratorAgent {
             },
             SupportPrompts {
                 reflection: prompts.reflection,
+                judge: prompts.judge,
                 pattern: prompts.pattern,
                 inventor: prompts.inventor,
                 librarian: prompts.librarian,
