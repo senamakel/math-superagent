@@ -6,7 +6,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 3 | https://oeis.org/A007901 | A007901 | cross-referenced from A007902 |
+| 4 | https://oeis.org/A007901 | A007901 | cross-referenced from A007902 |
 | 2 | http://oeis.org/ | — | # Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/ Search: seq:1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267,5949063 No results. # Content is available… |
 | 2 | http://oeis.org/LICENSE | — | No results. # Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE |
 | 2 | https://arxiv.org/abs/1009.5731v1 | arXiv:1009.5731v1 | \| Subjects: \| Combinatorics (math.CO); Classical Analysis and ODEs (math.CA) \| Cite as: \| [arXiv:1009.5731][6] [math.CO] \| \| (or [arXiv:1009.5731v1][7] [math.CO] for this version) \| \|… |
