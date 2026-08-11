@@ -417,6 +417,7 @@ src/
 └── lib.rs                  public Rust API
 examples/
 ├── orchestrator.rs         Docker runtime entry point
+├── dump_prompts.rs         host-side prompt renderer behind `./agent prompts`
 └── hello_agent.rs          direct single-agent example
 vendor/tinyagents/          pinned TinyAgents submodule
 ```
