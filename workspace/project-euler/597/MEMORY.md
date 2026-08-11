@@ -60,6 +60,35 @@ p(3,160)=56/135≈0.4148; p(4,400)=0.5107843137. Goal: p(13,1800).
   race parity. The race parity depends on pairwise relative speeds and the
   actual chronological order, not on a single scalar priority ordering.
 
+## Research-library recursion (L1.1/L0.0, CONTEXT.md): REFUTED
+The claimed "exact non-exhaustive recursion" — root = argmin W_i=v_i/(L-40i),
+p([a,b]) = sum over root of (distance-ratio weight)·p(left)·p(right)·(-1)^cross,
+parity propagates as parity(left)·parity(right)·(−1)^cross — is WRONG. Tested
+decisively in research_recursion_test.py (all three parts):
+1. VALUE-LEVEL (exact Fractions): the closed-form with cross=|L||R| gives
+   p(3,160)=2/3 (truth 4/15+4/27=56/135≈0.4148) and p(4,400)=5/6
+   (truth 0.5107843137). Wrong in the very given examples. (The recursion value
+   is L-independent: it equals the uniform-treap value ~2/3 or 5/6 regardless
+   of L, whereas the truth depends heavily on L.) cross=0 gives p=1 always.
+2. PER-VECTOR: smallest counterexample n=2, L=160, speeds=[0.89157,0.33049]:
+   oracle parity=1 (odd; boat0 bumps boat1 since v0>v1 and catches at 71.3 m
+   before the 160 m finish), recursion (root=argmin W, cross=|L||R|) says 0.
+   A full n=3 example speeds=[0.63879,0.16263,0.10432] also mismatches (11).
+3. CRUX CLAIMS (the recursion requires both):
+   C1  DECOUPLING: sub-race parity on slice [0..r-1] == restriction parity of
+       the full permutation -> FAILS (20177/300000), even with the LEFT slice.
+   C2  cross = |left|*|right| -> FAILS (152466/300000). cross is NOT a
+       deterministic |L||R| flip.
+   Root cause: the finish events are inverse-exponential (non-constant hazard),
+   not exponential clocks, so a bump can be pre-empted by a finish; the
+   left/right subranges do NOT decouple and the treap cross value is wrong.
+   Also n=2 value-level fails: recursion says p(2,L)=1.0 for all L, truth is
+   p(2,160)≈0.571, p(2,400)≈0.526, p(2,1800)≈0.505 (MC). This is the cleanest
+   single refutation: the recursion misses that a 2-boat race is not always a
+   bump (the slower/equal-speed finish case keeps identity order).
+   => The library's closed-form route is NOT valid. An exact route must handle
+   the bump-vs-finish chronology over the Exp speeds directly (open).
+
 ## Oralce edge-loss bug: FOUND and FIXED (see scratchpad)
 - `brute.simulate_order` recorded only the LAST bumper of each boat
   (`bumped_by[k]=j`) and rebuilt `above` by following that single `out_of`

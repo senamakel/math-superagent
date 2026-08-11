@@ -18,6 +18,16 @@
       within ~2-3 SE of 0.5). Conclusion: p(13,1800) indistinguishable from 0.5.
 - [ ] Solve p(13,1800) exactly. Hypothesis of w-order-only reduction is refuted;
       need the true continuous dynamics (bump/finish chronology over Exp speeds).
+- [x] research_recursion_test.py: the L1.1/CONTEXT library recursion
+      (root=argmin W, p=sum distance-ratio weight·p(left)·p(right)·(-1)^cross,
+      parity parity(left)·parity(right)·(−1)^cross) is REFUTED. Value-level
+      gives p(3,160)=2/3 (truth 56/135) and p(4,400)=5/6 (truth 0.5108);
+      per-vector smallest counterexample n=2,L=160,speeds=[0.89157,0.33049]
+      (oracle odd, recursion even); crux claims C1 decoupling (fails
+      20177/300000) and C2 cross=|L||R| (fails 152466/300000) both false.
+      The finish events (inverse-exponential, non-clocks) break the treap
+      sum-of-products form; an exact route must handle bump/finish chronology
+      over Exp speeds directly.
 - [x] test_treap.py: Cartesian-tree/min-heap-treap hypothesis REFUTED. n=2..6,
       L in (160,400,1800), 20k trials each -> 30 mismatches by trial ~60.
       Trivial n=2 counterexample (v0<v1, no bump, even; treap predicts odd).
