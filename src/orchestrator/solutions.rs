@@ -20,7 +20,9 @@
 //! asks for a genuinely different approach, in parallel, before trying again.
 
 use std::fmt::Write as _;
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use tinyagents::graph::{GraphBuilder, NodeContext, NodeResult};
 
@@ -210,10 +212,92 @@ fn continuation_briefing(attempt: usize) -> String {
     }
 }
 
+/// Counts the distinct lessons a reflection produced.
+///
+/// A `LESSON:` line may carry several points as bullets; each is a separate
+/// thing the next attempt could act on, so they are counted individually.
+fn count_learnings(reflection: &str) -> usize {
+    let mut inside = false;
+    let mut count = 0;
+    for line in reflection.lines() {
+        let trimmed = line.trim();
+        if trimmed.to_uppercase().starts_with("LESSON:") {
+            inside = true;
+            if !trimmed[7..].trim().is_empty() {
+                count += 1;
+            }
+            continue;
+        }
+        if inside {
+            if trimmed.is_empty() {
+                continue;
+            }
+            if trimmed.starts_with('-') || trimmed.starts_with('*') {
+                count += 1;
+            } else if trimmed
+                .chars()
+                .next()
+                .is_some_and(|c| c.is_ascii_uppercase())
+                && trimmed.contains(':')
+            {
+                // A new labelled section ends the lesson block.
+                break;
+            }
+        }
+    }
+    count
+}
+
+/// Builds the file name a reflection is logged under.
+///
+/// The name carries the outcome so a directory listing alone shows which
+/// attempts taught the run something: `<ms>_nothing.md` when a reflection
+/// yielded no actionable lesson, `<ms>_<n>_learnings.md` otherwise.
+fn reflection_filename(millis: u128, learnings: usize) -> String {
+    if learnings == 0 {
+        format!("reflections/{millis}_nothing.md")
+    } else {
+        format!("reflections/{millis}_{learnings:02}_learnings.md")
+    }
+}
+
+/// Writes a reflection to the workspace log.
+///
+/// Failure is deliberately silent to the caller: the reflection has already
+/// been folded into the loop state, and losing its archive copy must not cost
+/// the run the lesson itself.
+async fn log_reflection(
+    workspace: Option<&Path>,
+    attempt: usize,
+    reflection: &str,
+    tracer: Option<&Arc<RunTracer>>,
+) {
+    let Some(workspace) = workspace else {
+        return;
+    };
+    let millis = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|elapsed| elapsed.as_millis())
+        .unwrap_or_default();
+    let learnings = count_learnings(reflection);
+    let relative = reflection_filename(millis, learnings);
+    let path = workspace.join(&relative);
+    if let Some(parent) = path.parent() {
+        let _ = tokio::fs::create_dir_all(parent).await;
+    }
+    let body = format!("# Reflection after attempt {attempt}\n\n{}\n", reflection.trim());
+    if tokio::fs::write(&path, body).await.is_ok()
+        && let Some(tracer) = tracer
+    {
+        tracer.note(&format!("logged {relative}"));
+    }
+}
+
 /// Judges the last attempt and records the lesson it yields.
 async fn reflect_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
     mut state: SolutionState,
 ) -> SolutionState {
     let prompt = format!(
@@ -232,6 +316,7 @@ async fn reflect_step(
         state.lesson_briefing()
     );
     let reflection = delegate(subagents, "reflection", prompt).await;
+    log_reflection(workspace, state.attempts, &reflection, tracer).await;
 
     let upper = reflection.to_uppercase();
     // Require the explicit positive verdict: anything unparsable or hedged
@@ -318,12 +403,14 @@ async fn diversify_step(
 pub(super) async fn run(
     subagents: AsyncSubagentManager,
     tracer: Option<Arc<RunTracer>>,
+    workspace: Option<PathBuf>,
     state: SolutionState,
 ) -> Result<SolutionState> {
     let attempt_agents = subagents.clone();
     let attempt_tracer = tracer.clone();
     let reflect_agents = subagents.clone();
     let reflect_tracer = tracer.clone();
+    let reflect_workspace = workspace;
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
 
@@ -340,9 +427,10 @@ pub(super) async fn run(
         .add_node("reflect", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = reflect_agents.clone();
             let tracer = reflect_tracer.clone();
+            let workspace = reflect_workspace.clone();
             async move {
                 Ok(NodeResult::Update(
-                    reflect_step(&subagents, tracer.as_ref(), state).await,
+                    reflect_step(&subagents, tracer.as_ref(), workspace.as_deref(), state).await,
                 ))
             }
         })

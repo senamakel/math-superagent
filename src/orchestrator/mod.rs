@@ -267,6 +267,7 @@ pub struct OrchestratorAgent {
     system_prompt: String,
     subagents: AsyncSubagentManager,
     tracer: Arc<RunTracer>,
+    workspace: PathBuf,
 }
 
 impl std::fmt::Debug for OrchestratorAgent {
@@ -400,6 +401,7 @@ impl OrchestratorAgent {
             system_prompt: prompts.orchestrator,
             subagents: async_subagents,
             tracer,
+            workspace,
         })
     }
 
@@ -416,8 +418,13 @@ impl OrchestratorAgent {
     /// failing specialist becomes a lesson rather than a failure.
     pub async fn solve(&self, problem: impl Into<String>) -> Result<String> {
         let state = solutions::SolutionState::new(problem);
-        let finished =
-            solutions::run(self.subagents.clone(), Some(self.tracer.clone()), state).await?;
+        let finished = solutions::run(
+            self.subagents.clone(),
+            Some(self.tracer.clone()),
+            Some(self.workspace.clone()),
+            state,
+        )
+        .await?;
         Ok(finished.outcome())
     }
 
