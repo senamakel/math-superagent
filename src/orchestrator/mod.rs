@@ -61,7 +61,7 @@ const SPECIALISTS: [&str; 9] = [
     "research",
     "tool_builder",
     "coder",
-    "solver",
+    "sat_solver",
     "pattern_finder",
     "inventor",
     "librarian",
@@ -83,7 +83,7 @@ const DELEGATES: [&str; 11] = [
     "research",
     "tool_builder",
     "coder",
-    "solver",
+    "sat_solver",
     "goals",
     "reflection",
     "pattern_finder",
@@ -114,7 +114,7 @@ const RESEARCH_PROMPT: &str = include_str!("../prompts/research.md");
 
 const TOOL_BUILDER_PROMPT: &str = include_str!("../prompts/tool_builder.md");
 const CODER_PROMPT: &str = include_str!("../prompts/coder.md");
-const SOLVER_PROMPT: &str = include_str!("../prompts/solver.md");
+const SAT_SOLVER_PROMPT: &str = include_str!("../prompts/sat_solver.md");
 
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
 
@@ -322,11 +322,11 @@ impl OrchestratorAgent {
         // coder's prompt because the failure modes are entirely different —
         // reporting UNKNOWN as solved, weakening a constraint to obtain a
         // model, an unsound symmetry break — and each needs its own rule.
-        let mut solver_harness =
+        let mut sat_solver_harness =
             build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
-        solver_harness.push_middleware(checkpoint.clone());
-        register_recall(&mut solver_harness, &workspace);
-        async_subagents.register("solver", Arc::new(solver_harness), prompts.solver)?;
+        sat_solver_harness.push_middleware(checkpoint.clone());
+        register_recall(&mut sat_solver_harness, &workspace);
+        async_subagents.register("sat_solver", Arc::new(sat_solver_harness), prompts.sat_solver)?;
 
         register_support_agents(
             &async_subagents,
@@ -762,7 +762,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         )?
         .register(
             AgentDefinition::new(
-                "solver",
+                "sat_solver",
                 "Constraint Solving Agent",
                 "Encodes a finite decision or optimisation problem for CP-SAT, SAT, SMT, or \
                  MILP, and validates the model it gets back.",
@@ -989,7 +989,7 @@ impl RolePrompts {
             ("research", self.research.as_str()),
             ("tool_builder", self.tool_builder.as_str()),
             ("coder", self.coder.as_str()),
-            ("solver", self.solver.as_str()),
+            ("sat_solver", self.solver.as_str()),
             ("reflection", self.reflection.as_str()),
             ("judge", self.judge.as_str()),
             ("pattern_finder", self.pattern.as_str()),
@@ -1082,7 +1082,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // the run believes about the objects being encoded, and `CLAIMS.md` is
         // where a closed form or a bound that removes half the constraints is
         // recorded.
-        "tool_builder" | "coder" | "solver" => &[
+        "tool_builder" | "coder" | "sat_solver" => &[
             "config/config.toml",
             "GOAL.md",
             "TASKS.md",
@@ -1252,7 +1252,7 @@ impl RolePrompts {
             research: role("research", RESEARCH_PROMPT)?,
             tool_builder: role("tool_builder", TOOL_BUILDER_PROMPT)?,
             coder: role("coder", CODER_PROMPT)?,
-            solver: role("solver", SOLVER_PROMPT)?,
+            solver: role("sat_solver", SAT_SOLVER_PROMPT)?,
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
             judge: role("judge", JUDGE_PROMPT)?,
