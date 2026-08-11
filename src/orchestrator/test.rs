@@ -536,6 +536,7 @@ fn the_formalisation_agent_must_report_what_the_kernel_checked() -> agent::Resul
     // Mathlib is pre-built and read-only at runtime. A role that tries to
     // build it from source spends the entire run on it.
     assert!(LEAN_PROVER_PROMPT.contains("lake exe cache get"));
+    Ok(())
 }
 
 #[test]
