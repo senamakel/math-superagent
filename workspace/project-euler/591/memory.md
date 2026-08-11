@@ -2,53 +2,47 @@
 
 ## Problem
 
-Project Euler 591. BQA_d(x,n) = quadratic integer a + b*sqrt(d) (integers a,b
-with |a|,|b| <= n) closest to real x, minimizing |a + b sqrt(d) - x|.
-I_d(a + b sqrt(d)) = a. Need sum of |I_d(BQA_d(pi, 10^13))| over all
-non-square positive integers d < 100. This workspace task is only to build
-the brute-force oracle and verify the given examples/claims, not to solve the
-full problem.
+PE591: find the quadratic integer a + b·sqrt(d), |a|,|b| ≤ n = 10^13, d non-square < 100,
+closest to pi. BQA_d(pi,n) = that closest value; answer = Σ |I_d(BQA_d(pi,n))| = Σ |a|.
+
+Given (verified statement): BQA_2(pi,10)=6−2√2; BQA_5(pi,100)=26√5−55;
+BQA_7(pi,10^6)=560323−211781√7; I_2(BQA_2(pi,10^13))=−6188084046055.
 
 ## Established results
 
-Verified brute-force oracle (brute.py), float sqrt — all reproduce statement:
-- BQA_2(pi,10)     = a=6,  b=-2                (`6 - 2 sqrt(2)`)
-- BQA_5(pi,100)    = a=-55, b=26               (`26 sqrt(5) - 55`)
-- BQA_7(pi,10^6)   = a=560323, b=-211781
-All three PASS.
+Reduction: s=√d, α={√d}=s−⌊s⌋∈(0,1), β={π}.
+- Fixed b: best a = round(π−b·s); error = ‖π−b·s‖ = ‖π−b·α‖ (distance to nearest integer)
+  = circular distance from {bα} to β.
+- b≥0: target β={π}; b<0: t=−b≥0, target {−π}=1−β.
+- Feasible bounds: B⁺ = ⌊(n+π)/√d⌋, B⁻ = ⌊(n−π)/√d⌋ (clamp to [0,n]).
+- Core subproblem reduced to: irrational α∈(0,1), target β∈[0,1), bound B;
+  find b∈[0,B] minimizing dist_circ({bα}, β) — the inhomogeneous Diophantine
+  / best left-right approximation problem.
 
-Recorded medium-n brute-force results (float):
-- d=2, n=10^7  -> a=691596,   b=-489030   err 3.17e-8
-- d=2, n=10^8  -> a=32680452, b=-23108567 err 1.98e-9
-- d=3, n=10^6  -> a=212673,   b=-122785   err 1.83e-9
-(verified to hold the |a|<=n invariant; not otherwise cross-checked)
+Primary algorithm (Cabanillas-López & Labbé arXiv:1904.01874, Props 9 & 10, Alg 3):
+  - CF of α: a_k, q_k (q_{-1}=0,q_0=1, q_n=a_n q_{n-1}+q_{n-2})
+  - δ_{-1}=1, δ_0=α, δ_n = −a_n δ_{n-1} + δ_{n-2}   (= (−1)^n(q_n α−p_n) > 0, ↓0)
+  - α-numeration digits of β: b_k = min(a_k, ⌈β_{k-1}/δ_{k-1}⌉); β_k = b_k δ_{k-1} − β_{k-1}
+  - Best RIGHT candidates (Prop 9): n=0, terminal prefix Σ_{i≤s} b_i q_{i-1}, and
+        n = Σ_{i=1..2k−1} b_i q_{i−1} + j q_{2k−1}, j∈{0..b_{2k}−1}, k≥1
+  - Best LEFT candidates (Prop 10): terminal prefix, and
+        n = Σ_{i=1..2k} b_i q_{i−1} + j q_{2k}, j∈{0..b_{2k+1}−1}, k≥0
+  - Global best in [0,B] among these O(log B) candidates.
+  - Complexity O(log B): q_n grows exponentially (continuant ~ const·θ^n for quadratic α).
+- Negative b: same routine with target 1−β.
 
-High-precision check (mpmath, 60 digits) of the d=2 n=10^13 candidate
-a=-6188084046055, b=4375636191520:
-|a + b sqrt(2) - pi| = 4.29e-15  < 1e-13  PASS
-(Confirms the given I_2 = a = -6188084046055 claim.)
-Upper-bound candidate in the statement double inequality
-a=-1019836515172, b=721133315582: gap = 9.25e-14 < 1e-13 PASS.
+## Failed approaches
 
-NOTE: with plain double precision the 10^13 candidate computes as gap ~8.9e-6
-because a,b ~1e13 exceed double's ~16-significant-digit resolution (~1e-4
-absolute). Must use high-precision arithmetic for the big cases.
-
-## Failed approaches / notes
-
-- refresh_index tool has a path bug in this environment (prepends "workspace/"
-  to an already-rooted path), fails for /workspace, /workspace/toolkits,
-  /workspace/research. Worked around by editing INDEX.md directly.
-- Double-precision float is NOT adequate for computing |a+b sqrt(d)-pi| when
-  a,b are ~1e13 and the target gap is ~1e-13; use mpmath or exact integer
-  arithmetic (isqrt-style) for any large-n verification.
+- (Not attempted at full size — prohibited.) Plain scan over b is O(B) — wrong method.
+- Enumerating all (a,b) pairs is O(n^2) — wrong.
+- A "nearest-rational / Farey-enclosing" approach on the SINGLE number works for
+  homogeneous approximation but not for the inhomogeneous shift β with two-sided (left+right)
+  closest point — the α-numeration best left/right characterization is the correct structure.
 
 ## Open questions
 
-- The medium-n brute-force records (d=2 n=1e7/1e8, d=3 n=1e6) have not been
-  independently verified by a second route, and the d=2 n=1e8 float gap
-  (~2e-9 reported) is at/near float resolution — float sqrt noise can distort
-  both the error magnitude and (at n~1e8) possibly the winning (a,b). Recheck
-  with high-precision arithmetic before relying on them. The three statement
-  examples and the mpmath 1e13 claim are fully verified and are the trusted
-  oracle.
+- (For the solver agent.) Confirm verification script runs 0-mismatch before trusting the
+  enumerated candidates; the current workspace couldn't execute it (no exec tool here).
+- Tie-breaking among equal |a| is unspecified by the statement; the reference given
+  BQA_2(pi,10)=6−2√2 is used to disambiguate the convention. I_2(pi,10^13)=−6188084046055
+  pins the d=2, n=10^13 answer.

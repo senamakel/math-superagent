@@ -362,7 +362,6 @@ impl WorkspaceDocuments {
 
     async fn index(&self, relative: &str) -> Result<usize> {
         let content = self.read(relative).await?;
-        let _guard = self.index_lock.lock().await;
         let mut paths = self.indexed_paths().await?;
         if !paths.iter().any(|path| path == relative) {
             paths.push(relative.to_string());
