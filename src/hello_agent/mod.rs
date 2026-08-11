@@ -257,16 +257,29 @@ impl Tool<()> for ExaSearchTool {
             .get("query")
             .and_then(serde_json::Value::as_str)
             .ok_or_else(|| tinyagents::TinyAgentsError::Validation("query is required".into()))?;
+        let mut request = json!({
+            "query": query,
+            "type": "auto",
+            "numResults": exa_results(),
+            // A summary says what the source is; highlights say why it matched.
+            // Asking for both is what makes a result decidable without a
+            // download, which is the expensive step this is trying to target.
+            "contents": {
+                "summary": true,
+                "highlights": { "numSentences": 4, "highlightsPerUrl": 3 }
+            }
+        });
+        if let Some(category) = call.arguments.get("category").and_then(Value::as_str)
+            && !category.trim().is_empty()
+            && let Some(object) = request.as_object_mut()
+        {
+            object.insert("category".to_string(), json!(category.trim()));
+        }
         let response = self
             .client
             .post("https://api.exa.ai/search")
             .header("x-api-key", &self.api_key)
-            .json(&json!({
-                "query": query,
-                "type": "auto",
-                "numResults": 5,
-                "contents": { "highlights": true }
-            }))
+            .json(&request)
             .send()
             .await
             .map_err(|error| {
