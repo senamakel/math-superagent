@@ -1,23 +1,12 @@
 # Diagnostic holonomic scan: see WHY each fit fails and find the first
 # non-integer/pole step. Wider order/degree range.
 from sympy import Rational, Matrix, symbols
+from lib.holonomic import fit
 
 D = [1, 1, 3, 9, 30, 99, 336, 1134, 3855, 13086, 44499, 151263,
      514419, 1749267, 5949063]
 NTERM = len(D)
 n = symbols('n')
-
-def fit(m, d):
-    ncols = (m+1)*(d+1)
-    rows = NTERM - m
-    A = Matrix.zeros(rows, ncols)
-    for i in range(rows):
-        col = 0
-        for j in range(m+1):
-            for t in range(d+1):
-                A[i, col] = Rational(D[i+j]) * (i**t)
-                col += 1
-    return A.nullspace()
 
 def first_failure(m, d, sol):
     seq = list(D)

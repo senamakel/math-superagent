@@ -5,27 +5,12 @@
 # Any candidate that reproduces D(20) exactly (and D(100) mod 1e9) is
 # a decisive structural result. A fit that misses D(20) is refuted.
 from sympy import Rational, Matrix, symbols, linsolve, simplify
+from lib.holonomic import fit
 
 D = [1, 1, 3, 9, 30, 99, 336, 1134, 3855, 13086, 44499, 151263,
      514419, 1749267, 5949063]
 NTERM = len(D)
 n = symbols('n')
-
-def fit(m, d):
-    # unknowns a[j][t], j=0..m, t=0..d : p_j(N)=sum_t a[j][t]*N^t
-    # equations: for i in 0..(NTERM-m-1): sum_j p_j(i)*D[i+j] = 0
-    ncols = (m+1)*(d+1)
-    rows = NTERM - m
-    A = Matrix.zeros(rows, ncols)
-    for i in range(rows):
-        col = 0
-        for j in range(m+1):
-            v = Rational(D[i+j])
-            for t in range(d+1):
-                A[i,col] = v * (i**t)
-                col += 1
-    ns = A.nullspace()
-    return ns
 
 def make_polys(sol, m, d):
     p = []

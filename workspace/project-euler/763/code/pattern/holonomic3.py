@@ -5,25 +5,12 @@
 #   D(20)=9204559704,  D(100) mod 1e9 = 780166455.
 # These held-out values are the falsifiers: any recurrence that misses them is dead.
 from sympy import Rational, Matrix, symbols
+from lib.holonomic import fit
 
 D = [1, 1, 3, 9, 30, 99, 336, 1134, 3855, 13086, 44499, 151263,
      514419, 1749267, 5949063]
 NTERM = len(D)   # 15 terms, indices 0..14
 n = symbols('n')
-
-def fit(m, d):
-    # unknowns a[j][t] for j=0..m, t=0..d   (p_j(N)=sum_t a[j][t] N^t)
-    # We fix p_m monic? Leave free; nullspace gives all solutions.
-    ncols = (m+1)*(d+1)
-    rows = NTERM - m        # recurrences for N = 0,1,...,NTERM-m-1
-    A = Matrix.zeros(rows, ncols)
-    for i in range(rows):
-        col = 0
-        for j in range(m+1):
-            for t in range(d+1):
-                A[i, col] = Rational(D[i+j]) * (i**t)
-                col += 1
-    return A.nullspace()
 
 def extend_holonomic(m, d, sol):
     # p_j(N) = sum_t sol[j*(d+1)+t] N^t
