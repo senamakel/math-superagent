@@ -4,6 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `L1/raw_mfl_pass.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/1204.3222; not yet read, excerpt pending a scholar summary |
 | `L1/raw_pass_waiting_check.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/1505.01907; not yet read, excerpt pending a scholar summary |
 | `Note` | Purpose |
 | `[[L1/a083652]]` | A083652: summatory bit-length, exact O(1) closed form; third leg total = ones+zeros. |
