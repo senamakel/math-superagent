@@ -13,7 +13,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `TASKS.md` | Task checklist (single placeholder task row). |
 | `brute.py` | Root copy of TASK A: naive minimax over the REAL bit-deletion game, mirrors code/brute.py. Kept at root because GOAL.md names /workspace/brute.py; the canonical program is code/brute.py. |
 | `dyadic_clean.py` | Root copy of code/dyadic_clean.py (identical bytes) kept at root as a duplicate capture; the canonical program is code/dyadic_clean.py. Same role: cleaned dyadic CGT scratch derivation of g(k) and S=ceil(G(n)) vs real-game oracle. |
-| `gstudy.py` | _(undescribed)_ |
-| `gtable.py` | _(undescribed)_ |
+| `gstudy.py` | Scratch analysis of the single-number dyadic CGT value g(k) structure: checks g(2k) vs g(k)/2 for divergences and prints g around powers of 2, using the same one/zero-deletion + Simplicity-Rule engine as gtable.py/dyadic_clean.py. Exploratory; stdout only, no saved output. |
+| `gtable.py` | Computes the single-number dyadic CGT value g(k) via the Simplicity Rule (one/zero-deletion options) up to a chosen bound (argv default 60), prints k and g(k) tab-separated, and S(n)=ceil(G(n)) for the board. Part of the dyadic-value scratch line of work (dyadic.py/dyadic_clean.py/gstudy.py); exploratory, stdout only, no saved output. |
 | `problem.md` | The problem statement: partisan bit-deletion game, definition of S(n), given values S(2)=2, S(5)=17, S(10)=64, ask for S(10^5). |
 | `scratchpad_run.md` | Scratch log note ("run existing programs, executed inline, see transcript") from an earlier scratch run; no durable claims. |
+| `solve_dyadic.py` | _(undescribed)_ |
