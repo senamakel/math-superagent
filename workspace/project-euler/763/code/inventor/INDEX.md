@@ -4,9 +4,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `_run_all.py` | _(undescribed)_ |
 | `_run_fig3.py` | _(undescribed)_ |
 | `check_eriksson_fig3.py` | _(undescribed)_ |
-| `check_recurrence.py` | Tool_builder target: CLAIM A (deterministic reverse cap-collapse, top cap = exactly 3 cells = full child-triangle of one empty parent) and CLAIM B (D(N+1) = sum over conf(N) of f(C) = #dividable cells). Both verified on BFS reachable configs. |
+| `check_recurrence.py` | Tool_builder target verifying CLAIM A (deterministic reverse cap-collapse: every reachable 3D config has exactly 3 cells on its max level, forming the full child-triangle of one empty parent) and CLAIM B (D(N+1) = sum over conf(N) of f(C)=#dividable cells). One-step BFS now imported as canonical forward_level(level,3) from lib/amoeba (was a local hardcoded d=3 copy; identical semantics). |
 | `probe_reachable.py` | Forward-BFS 3D config probe: verifies reverse-merge reachability (Eriksson voidance characterization) and voidance-set structure for small N. |
 | `probe_topcap.py` | Empirical probe testing the top-cap collapse structure (T1 top==3, T2 unique cap, T3 deterministic collapse to origin) on forward-BFS 3D configs N<=6. |
 | `research_structure.py` | _(undescribed)_ |
