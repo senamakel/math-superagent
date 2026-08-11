@@ -486,8 +486,8 @@ fn a_wait_outlives_the_per_tool_ceiling_it_was_never_meant_to_obey() {
     use tinyagents::harness::tool::ToolTimeout;
 
     let budget = RunBudget::default();
-    let manager = Arc::new(AsyncSubagentManager::new(budget, None));
-    let tools = super::AsyncSubagentTool::all(&manager);
+    let manager = AsyncSubagentManager::new(budget, None);
+    let tools = manager.tools(["worker"]);
     let waiting = tools
         .iter()
         .find(|tool| tool.name() == "await_agent")
