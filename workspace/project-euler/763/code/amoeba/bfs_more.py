@@ -14,12 +14,18 @@ The one-step successor next_level_bits is imported from lib/amoeba.py, the
 single shelved definition; it is not duplicated here.
 
 We drive level-by-level from N=0 upward, stopping when a single level exceeds
-a time budget (~90s) or the frontier exceeds ~2M states. We keep D(N) for
+a time budget or the frontier exceeds a state-count guard. We keep D(N) for
 every N reached and write a fresh complete file D(0)..D(Nmax).
 
 Correctness: the bit encoding was cross-checked in brute_bits.py against the
 frozenset oracle (brute_extended.py, validated on D(2)=3 and D(10)=44499) for
 N=0..12; this run must reproduce D(0..13) before reporting anything beyond.
+
+Memory note: each configuration is one Python int whose value has bit length
+up to W^3 (W fixed across the run). At N=15 the frontier holds ~2e7 such ints
+(~10-12 GB), at N=16 ~7e7 (~35 GB) which exceeds RAM, so N=15 is the practical
+ceiling for this representation. State count, not wall time, is the binding
+constraint once past N=14.
 """
 
 import sys
@@ -27,8 +33,8 @@ import time
 
 from lib.amoeba import next_level_bits
 
-MAX_STATES = 30_000_000
-TIME_BUDGET = 90.0
+MAX_STATES = 40_000_000
+TIME_BUDGET = 470.0
 
 
 def main(max_n, budget, out_path):
