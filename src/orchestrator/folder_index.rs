@@ -101,7 +101,10 @@ pub(super) fn render(folder: &str, entries: &BTreeMap<String, String>) -> String
         out.push_str(&format!("| `{name}` | {description} |\n"));
     }
     if entries.is_empty() {
-        out.push_str("| _(empty)_ | |\n");
+        // Deliberately not a table row. A placeholder row parses back as a
+        // file called `_(empty)_`, which the next refresh would then carry
+        // forward as though the folder contained it.
+        out.push_str("\n_This folder is empty._\n");
     }
     out
 }
