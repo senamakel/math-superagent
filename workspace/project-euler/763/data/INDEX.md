@@ -5,7 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `level_10.txt` | 44499 |
-| `level_11.txt` | Output data: one line per reachable PE763 config at N=11, format `level_hist | M | dx dy dz` (hist a_k = #cubes at level k, M=max level, bbox dims). All 151263 configs (D(11)=151263), written by code/amoeba_extend.py. |
+| `level_11.txt` | Output data: one line per reachable PE763 config at N=11, format `level_hist |
 | `level_12.txt` | Per-config structural features for all 514419 reachable PE763 configs at N=12, written by code/amoeba_extend.py. D(12)=514419. |
 | `level_2.txt` | 3 |
 | `level_3.txt` | 9 |
