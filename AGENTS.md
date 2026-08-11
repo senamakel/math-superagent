@@ -216,6 +216,16 @@ All model-visible delegation uses the graph-backed asynchronous controls:
 run ID immediately. Callers may launch independent work in parallel, inspect
 or redirect live runs, and must await every result needed for their final
 answer. Do not reintroduce blocking `SubAgentTool` calls.
+
+Fifty runs may execute at once (`MATH_AGENT_MAX_CONCURRENT_AGENTS`); the rest
+queue for a slot, and spawning stays non-blocking either way, so a caller gets
+its run ID immediately whether or not a slot was free. The cap bounds provider
+concurrency rather than rationing work: unbounded fan-out becomes upstream rate
+limiting, which the retry ladder then absorbs as simultaneous backoff across
+every run. Keep it far above the fan-out the registry can produce. A run holds
+its slot while it waits in `await_agent` for children it spawned itself, so a
+pool that could fill entirely with parents waiting on queued children would
+deadlock; the headroom is what makes that unreachable.
 The research agent has Exa plus `recall_research` and `remember_research` tools.
 Qdrant persists the notes in a named Compose volume. The vector tools use a
 small deterministic feature-hashing encoder, not an external embedding model.
