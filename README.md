@@ -60,15 +60,15 @@ The pattern agent runs concurrently with reflection on the same attempt, because
 the exploitable regularity in a sequence is usually visible in the first terms a
 run computes and waiting for the loop to stall means spending the budget it
 would have saved. Past five attempts without a verified answer, each reflection
-also re-opens the literature — by then the run knows what it tried and what the
+also re-opens the literature. By then the run knows what it tried and what the
 numbers look like, which makes a far better query than the statement alone. The
 loop stops after eight attempts and returns what it has.
 
 Diversification triggers on *consecutive* unproductive attempts, so a run making
 thin but genuine progress never reaches it. When it does, `diversify` runs three
-arms concurrently — the librarian followed by the scholar, the pattern agent, and
-the inventor — to bring in material, structure, and a different approach before
-trying again.
+arms concurrently: the librarian followed by the scholar, the pattern agent, and
+the inventor. Between them they bring in material, structure, and a different
+approach before the next attempt.
 
 Housekeeping follows the work that creates it. A finished `tool_builder` run
 triggers an `organizer` run, and a finished `research` run triggers a `scholar`
@@ -77,7 +77,7 @@ then an `organizer`. Those follow-ups are fire-and-forget and serialised, so
 never sits on the critical path.
 
 The container includes `python`, `python3`, `pip`, and `pip3`, with `sympy`,
-`numpy`, `scipy`, `gmpy2`, and `networkx` baked into the image — a run that has
+`numpy`, `scipy`, `gmpy2`, and `networkx` baked into the image. A run that has
 to install `sympy` before it can factor anything spends minutes of its budget on
 setup. Packages installed with pip are placed in the selected workspace under
 `.python-packages`, so the read-only container filesystem stays intact and
