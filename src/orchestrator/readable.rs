@@ -240,10 +240,7 @@ fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
     match (name, closing) {
         ("br", _) => out.push('\n'),
         ("hr", _) => out.push_str("\n\n---\n\n"),
-        (
-            "p" | "div" | "section" | "article" | "tr" | "blockquote" | "table",
-            _,
-        )
+        ("p" | "div" | "section" | "article" | "tr" | "blockquote" | "table", _)
         | ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", true) => ensure_blank_line(out),
         ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", false) => {
             ensure_blank_line(out);
