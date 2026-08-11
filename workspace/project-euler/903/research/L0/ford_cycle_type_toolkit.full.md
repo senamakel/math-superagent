@@ -1,198 +1,51 @@
 > **Excerpt only — read this first.** The complete text is one level down at `research/L0/ford_cycle_type_toolkit.full.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
 
-<!-- source: https://arxiv.org/abs/2104.12019 | converted from HTML -->
+<!-- source: https://ar5iv.labs.arxiv.org/html/2104.12019 | converted from HTML -->
 
-[2104.12019] Cycle type of random permutations: A toolkit
+[2104.12019] 1Introduction
 
-Skip to main content
+###### Abstract
 
-arXiv is now an independent nonprofit! [Learn more][1] ×
+We provide a standard reference for fundamental distributional results about the cycle type of a random permutation σ ∈ 𝒮 n \sigma\in\mathcal{S}_{n}, emphasizing methods which are combinatorial or probabilistic in nature and adaptable to other situations. Many of our techniques are borrowed from methods used to prove analogous theorems about the prime factorization of random integers. Included here are results about the proportion of permutations σ \sigma having a given number of cycles with lengths from a given set, the distribution of the smallest and largest cycle, and the distribution of the sizes of fixed sets of σ \sigma.
 
-Press Enter to search &middot; [Advanced search][2]
+† † daj-author-details: title = Cycle Type of Random Permutations:
+a Toolkit, author = Kevin Ford, plaintextauthor = Kevin Ford, keywords = random permutations, cycle type, , † † daj-editor-details: year=2022, number=9, received=10 May 2021, revised=18 February 2022, published=8 September 2022, doi=10.19086/da.38090,
 
--->
+## 1 Introduction
 
-# Mathematics > Combinatorics
+The theory of the cycle type of random permutations of the symmetric group 𝒮 n \mathcal{S}_{n} is very active, with many applications in combinatorics, group theory and number theory. A selection of applications includes
 
-**arXiv:2104.12019**(math)
+- •
 
-[Submitted on 24 Apr 2021 ( [v1][3]), last revised 7 Sep 2022 (this version, v3)]
+the distribution of orders of permutations (the least common multiple of cycle lengths) [1, 7, 10, 13, 22, 23, 24, 25, 26, 27, 28, 38, 50, 57, 61, 62, 63] and [40, Sec. 6];
 
-# Title: Cycle type of random permutations: A toolkit
+- •
 
-Authors: [Kevin Ford][4]
+invariable generation of the symmetric group [16, 18, 53, 67] and other classical groups [59];
 
-View a PDF of the paper titled Cycle type of random permutations: A toolkit, by Kevin Ford
+- •
 
-[View PDF][5]
+the distribution of fixed sets (divisors) of permutations [14, 17, 18, 19, 33, 53, 73];
 
-Abstract: We prove a number of results, new and old, about the cycle type of a random permutation on S_n. Underlying our analysis is the idea that the number of cycles of size k is roughly Poisson distributed with parameter 1/k. In particular, we establish strong results about the distribution of the number of cycles whose lengths lie in a fixed but arbitrary set I. Our techniques are motivated by the theory of sieves in number theory.
+- •
 
-Comments: | Final published version for in Discrete Analysis |
+permutations contained in transitive subgroups [12, 19, 45];
 
-Subjects: | Combinatorics (math.CO); Group Theory (math.GR); Number Theory (math.NT); Probability (math.PR) |
+- •
 
-Cite as: | [arXiv:2104.12019][6] [math.CO] |
+irreducibility of polynomials over the rationals [8, 9];
 
- | (or [arXiv:2104.12019v3][7] [math.CO] for this version)  |
+- •
 
- | [https://doi.org/10.48550/arXiv.2104.12019][8]
+permutation groups containing elements with a single cycle that is not a fixed point (Jordan groups) [45, 37] and [69, Ch. 10];
 
-Focus to learn more
+- •
 
-arXiv-issued DOI via DataCite
+polynomial factorization in finite fields [3, 8, 68].
 
- |
+The main purpose of this paper is provide a standard reference for fundamental distributional results about cycle types, which heretofore have been scattered across many papers with widely varying strength and generality. We showcase methods which are both *general*and *combinatorial*. While many of the results stated here are weaker than existing results in the literature, they are far more general, have significantly shorter proofs and are more adaptable to new situations. This paper is an expanded version of portions of the author’s lecture notes on permutations prepared for the course “Anatomy of integers and random permutations”.
 
-Journal reference: | Discrete Analysis 2022:9, 36 pp |
+Our methods are borrowed from the theory of numbers, particularly the theory of sieves and the theory of averages of multiplicative functions (see [48, Part 3, Part 4] for uses in number theory). As positive integers factor uniquely into a product of prime numbers, and permutations factor uniquely into a product of cycles, the connection between the distributions of the two objects, prime factors and cycles, is not surprising. The first explicit mention of such a connection, however, is the paper of Knuth and Trabb Pardo [46] in 1976. On the other hand, there are significant differences in the structure of the two objects which explains why there is no simple *transference principle*between statements about prime factorizations and the corresponding statement about the cycle structure of permutations. Deeper inspection, however, reveals that the *distribution*of the two factorizations have many common features, and for much the same underlying reasons.
 
-Related DOI:  | [https://doi.org/10.19086/da.38090][9]
 
-Focus to learn more
-
-DOI(s) linking to related resources
-
- |
-
-## Submission history
-
-From: Kevin Ford [[view email][10]]
-**[[v1]][11]**Sat, 24 Apr 2021 20:34:42 UTC (30 KB)
-**[[v2]][12]**Mon, 18 Jul 2022 14:54:36 UTC (43 KB)
-**[v3]**Wed, 7 Sep 2022 01:15:40 UTC (61 KB)
-
-Full-text links:
-
-## Access Paper:
-
-View a PDF of the paper titled Cycle type of random permutations: A toolkit, by Kevin Ford
-
-- [View PDF][5]
-- [TeX Source][13]
-
-[view license][14]
-
-### Current browse context:
-
-math.CO
-
-[< prev][15] | [next >][16]
-
-[new][17] | [recent][18] | [2021-04][19]
-
-Change to browse by:
-
-[math][20]
-[math.GR][21]
-[math.NT][22]
-[math.PR][23]
-
-### References & Citations
-
-- [NASA ADS][24]
-- [Google Scholar][25]
-- [Semantic Scholar][26]
-
-export BibTeX citation Loading...
-
-## BibTeX formatted citation
-
-×
-
-loading...
-
-Data provided by:
-
-### Bookmark
-
-[image: BibSonomy] [27][image: Reddit] [28]
-
-Bibliographic Tools
-
-# Bibliographic and Citation Tools
-
-Bibliographic Explorer Toggle
-
-Bibliographic Explorer*( [What is the Explorer?][29])*
-
-Connected Papers Toggle
-
-Connected Papers*( [What is Connected Papers?][30])*
-
-Litmaps Toggle
-
-Litmaps*( [What is Litmaps?][31])*
-
-scite.ai Toggle
-
-scite Smart Citations*( [What are Smart Citations?][32])*
-
-Code, Data, Media
-
-# Code, Data and Media Associated with this Article
-
-alphaXiv Toggle
-
-alphaXiv*( [What is alphaXiv?][33])*
-
-Links to Code Toggle
-
-CatalyzeX Code Finder for Papers*( [What is CatalyzeX?][34])*
-
-DagsHub Toggle
-
-DagsHub*( [What is DagsHub?][35])*
-
-GotitPub Toggle
-
-Gotit.pub*( [What is GotitPub?][36])*
-
-Huggingface Toggle
-
-Hugging Face*( [What is Huggingface?][37])*
-
-ScienceCast Toggle
-
-ScienceCast*( [What is ScienceCast?][38])*
-
-Demos
-
-# Demos
-
-Replicate Toggle
-
-Replicate*( [What is Replicate?][39])*
-
-Spaces Toggle
-
-Hugging Face Spaces*( [What is Spaces?][40])*
-
-Spaces Toggle
-
-TXYZ.AI*( [What is TXYZ.AI?][41])*
-
-Related Papers
-
-# Recommenders and Search Tools
-
-Link to Influence Flower
-
-Influence Flower*( [What are Influence Flowers?][42])*
-
-Core recommender toggle
-
-CORE Recommender*( [What is CORE?][43])*
-
-- Author
-- Venue
-- Institution
-- Topic
-
-About arXivLabs
-
-# arXivLabs: experimental projects with community collaborators
-
-arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
-
-
-*[excerpt ends; 2522 characters not shown — see `research/L0/ford_cycle_type_toolkit.full.full.md`]*
+*[excerpt ends; 111181 characters not shown — see `research/L0/ford_cycle_type_toolkit.full.full.md`]*
