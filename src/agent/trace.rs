@@ -176,14 +176,21 @@ impl RunTracer {
             "output_tokens": accounting.output_tokens,
             "reasoning_tokens": accounting.reasoning_tokens,
             "usd": accounting.usd,
-            "elapsed_ms": self.state.started.elapsed().as_millis() as u64,
+            "elapsed_ms": u64::try_from(self.state.started.elapsed().as_millis())
+                .unwrap_or(u64::MAX),
         }));
     }
 
     /// Returns the run's accumulated cost in USD.
     #[must_use]
     pub fn spent_usd(&self) -> f64 {
-        self.state.micro_usd.load(Ordering::Relaxed) as f64 / 1_000_000.0
+        // Precision is lost only above 2^53 micro-USD, or nine billion dollars.
+        #[expect(
+            clippy::cast_precision_loss,
+            reason = "a run would have to cost nine billion dollars to lose a cent"
+        )]
+        let usd = self.state.micro_usd.load(Ordering::Relaxed) as f64 / 1_000_000.0;
+        usd
     }
 
     /// Prints one operator-facing progress line outside the event stream.

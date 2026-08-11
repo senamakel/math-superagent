@@ -53,10 +53,22 @@ def norm2(v):
     return dot(v, v)
 
 
+def isqrt(n):
+    x = int(round(n ** 0.5))
+    while x * x > n:
+        x -= 1
+    while (x + 1) * (x + 1) <= n:
+        x += 1
+    return x
+
+
 def build_frames(n):
-    """Return the set of all frames (u,v,w) whose 8 unit-cube offsets are
-    integer triples each coordinate in [-n,n] and |u|^2=|v|^2=|w|^2=m>0,
-    u.v=u.w=v.w=0."""
+    """Return all frames (u,v,w): |u|^2=|v|^2=|w|^2=m>0, pairwise orthogonal.
+
+    For a genuine lattice cube m = |u|^2 is a perfect square (m = k^2), because
+    w is parallel to u x v and u x v = +-k*w (since |u x v| = m = k^2 = k|w|),
+    forcing k = (u x v)_i / w_i to be rational, hence an integer.  So we only
+    consider square m and take w = (u x v)/k."""
     vecs = [(x, y, z) for x in range(-n, n + 1)
             for y in range(-n, n + 1) for z in range(-n, n + 1)]
     bynorm = defaultdict(list)
@@ -67,14 +79,17 @@ def build_frames(n):
 
     frames = set()
     for m, vl in bynorm.items():
+        k = isqrt(m)
+        if k * k != m:
+            continue  # not a perfect square: cannot be a lattice cube's edge
         for u in vl:
             for v in vl:
                 if dot(u, v) == 0:
                     cx, cy, cz = cross(u, v)
-                    if cx % m == 0 and cy % m == 0 and cz % m == 0:
-                        w = (cx // m, cy // m, cz // m)
+                    if cx % k == 0 and cy % k == 0 and cz % k == 0:
+                        w = (cx // k, cy // k, cz // k)
                         # sanity: w must have norm m and be orthogonal
-                        assert norm2(w) == m
+                        assert norm2(w) == m, (u, v, w, m)
                         assert dot(u, w) == 0 and dot(v, w) == 0
                         # include both w and -w sign (both valid cubes)
                         frames.add((u, v, w))
