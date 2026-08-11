@@ -25,3 +25,6 @@ pi^i = i-th iterate of pi (order-preserving power, pi^1 = pi, pi^0 = identity).
 - [x] Objective recorded (above).
 - [ ] Sub-task: brute.py + brute2.py written, run for n=2..7 (+ n=8 if feasible), values checked.
 - [ ] Sub-task: efficient solution.py agreeing with brute force.
+- [x] gaps.py: T(j,m) computed for n=2..9 with period formula; shown
+      translation-invariant in j and exactly arithmetic in the gap k.
+      (memory.md has tables. This is a structural lead for the n=10^6 method.)

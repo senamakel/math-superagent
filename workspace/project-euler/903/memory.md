@@ -39,6 +39,32 @@ formula), all run 18 Sep 2025 (UTC), exact integers then reduced mod p:
 
 (none yet)
 
+## gaps.py — T(j,m) translation invariance & arithmetic form (18 Sep 2025)
+
+T(j,m) = #{(pi,i): 0<=i<n!, (pi^i)(m) < (pi^i)(j)}, computed for n=2..9 with
+the period formula T(j,m) = sum_pi (n!/ord(pi)) * #{tau in <pi>: tau(m)<tau(j)}
+with exact Fractions (no literal n!-power iteration).
+
+Verified: literal double-count oracle agrees for n=2,3 (in-script), n=4,5
+(separate oracle).  Translation invariance T(j,j+k) independent of j holds for
+ALL j in every n (checked exhaustively).  f_n(k)=T(1,1+k) is exactly
+ARITHMETIC (constant 2nd difference = 0) for every n>=3, with values:
+
+| n | f_n(k) = A_n + (k-1) B_n | A_n = f(1) | B_n (step) |
+|---|---|---|---|
+| 2 | [1] (trivial) | 1 | - |
+| 3 | 10,11 | 10 | +1 |
+| 4 | 184,184,184 | 184 | 0 |
+| 5 | 5052,4944,4836,4728 | 5052 | -108 |
+| 6 | 191232,187632,184032,180432,176832 | 191232 | -3600 |
+| 7 | 9851040,9642240,9433440,9224640,9015840,8807040 | 9851040 | -208800 |
+| 8 | 650626560,638208000,625789440,613370880,600952320,588533760,576115200 | 650626560 | -12418560 |
+| 9 | 54052427520,53119825920,52187224320,51254622720,50322021120,49389419520,48456817920,47524216320 | 54052427520 | -932601600 |
+
+Conjecture (structure): f_n(k) = A_n + (k-1) B_n is arithmetic in the gap k for
+all n; B_n<=0 for n>=5.  Sequence A_n: 1,10,184,5052,191232,9851040,...
+(no obvious closed form derived yet).
+
 ## Open questions
 
 - Efficient method for n = 10^6 (n! is astronomically beyond enumeration):
