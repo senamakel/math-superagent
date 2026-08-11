@@ -20,6 +20,9 @@ out stays one wikilink away.
   [[L1/verify_trollopedelange]].
 - [[folds/deadends]] — examined, no yield: S(n) is not in OEIS; a generic
   strategy article is irrelevant. Covers [[L1/strategy]] [[L1/weightedsearch]].
+- [[L1/misfiled]] — four arXiv downloads saved in L0/ that are unrelated to the
+  problem (compression, KOTO, COHERENT, medical segmentation); accidental,
+  dead. No L1 summary, no fold. See the note; do not re-open the L0 files.
 
 ## Notes by source (full text in L0/, summaries at the L1 link)
 | Note | Purpose |
