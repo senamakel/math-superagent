@@ -779,6 +779,12 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "memory.md",
             "toolkits/INDEX.md",
             "research/INDEX.md",
+            // What the library *means* for this problem, as against
+            // `research/INDEX.md`, which says what each file is. The index
+            // makes every role re-synthesise thirteen one-line descriptions
+            // for itself; this is the synthesis, written once by the research
+            // team and read by everyone.
+            "context.md",
             // What every previous attempt was judged to have established, in
             // one table. `memory.md` records beliefs; this records the
             // attempt-by-attempt record that produced them, so a planner can
@@ -801,6 +807,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "scratchpad.md",
             "toolkits/INDEX.md",
             "research/INDEX.md",
+            "context.md",
         ],
         // Judges: needs the criteria and the record, never provisional work.
         // The workspace index is the exception worth making — deciding whether
@@ -821,7 +828,16 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // Analyses computed data: needs the numbers, not the plan. The toolkit
         // catalogue lets it reuse a verified helper rather than reimplement the
         // arithmetic it is about to check.
-        "pattern_finder" => &["goal.md", "memory.md", "scratchpad.md", "toolkits/INDEX.md"],
+        "pattern_finder" => &[
+            "goal.md",
+            "memory.md",
+            "scratchpad.md",
+            "toolkits/INDEX.md",
+            // A regularity the literature already explains is not a conjecture
+            // worth chasing, and knowing that is the difference between
+            // deriving a result and rediscovering one.
+            "context.md",
+        ],
 
         // Digests sources into knowledge. The one role that legitimately needs
         // nearly everything: it judges each source against what the run is
@@ -835,6 +851,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "memory.md",
             "scratchpad.md",
             "research/INDEX.md",
+            // It reads what the library is already taken to establish, so a
+            // new source is judged against the standing brief rather than
+            // re-stating it.
+            "context.md",
         ],
         // Organises rather than reasons. It needs the objective, to judge what
         // is worth surfacing, and every index it maintains — but not
@@ -855,7 +875,15 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // fact; the librarian needs it so it does not chase a question already
         // answered. All three get the research index so none re-fetches what
         // is already on disk.
-        "librarian" | "research" => &["goal.md", "memory.md", "research/INDEX.md"],
+        "librarian" | "research" => &[
+            "goal.md",
+            "memory.md",
+            "research/INDEX.md",
+            // The research team maintains this, and its Gaps section is the
+            // list of what to look for next. Without it the team re-derives
+            // its own agenda every cycle.
+            "context.md",
+        ],
         // The inventor gets the reflections index on top, for the same reason
         // it gets `memory.md`: the one thing it exists not to do is re-propose
         // an approach that already failed, and the index names each failure
@@ -865,6 +893,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "memory.md",
             "research/INDEX.md",
             "reflections/INDEX.md",
+            // A genuinely different approach has to start from theory the run
+            // can actually reach. This says which theory that is.
+            "context.md",
         ],
         _ => &[],
     }
