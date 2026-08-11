@@ -79,10 +79,11 @@ const SPECIALISTS: [&str; 9] = [
 const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 10] = [
+const DELEGATES: [&str; 11] = [
     "research",
     "tool_builder",
     "coder",
+    "solver",
     "goals",
     "reflection",
     "pattern_finder",
