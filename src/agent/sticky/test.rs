@@ -17,6 +17,9 @@ use super::StickyProviderModel;
 struct RecordingModel {
     served_by: Mutex<Vec<Option<String>>>,
     seen: Arc<Mutex<Vec<Value>>>,
+    /// Call indexes, from zero, that fail instead of answering.
+    failing: Vec<usize>,
+    calls: Mutex<usize>,
 }
 
 impl RecordingModel {
