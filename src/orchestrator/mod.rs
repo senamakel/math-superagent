@@ -888,6 +888,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "goal.md",
             "tasks.md",
             "INDEX.md",
+            "code/INDEX.md",
             "toolkits/INDEX.md",
             "research/INDEX.md",
         ],
