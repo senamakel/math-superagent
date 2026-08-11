@@ -498,6 +498,16 @@ impl OrchestratorAgent {
                     {
                         let _ = write!(prompt, "\n\n{work}");
                     }
+                    // The same argument one folder over. Asking an organizer to
+                    // notice that a routine has been typed out three times
+                    // costs it a read of every program in `code/` to discover,
+                    // which is more than a cycle can afford — and it is a
+                    // count, not a judgement, so it is counted here instead.
+                    if name == "background"
+                        && let Some(work) = code_layout::briefing(workspace.as_path())
+                    {
+                        let _ = write!(prompt, "\n\n{work}");
+                    }
                     for message in &inbox {
                         let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);
                     }
