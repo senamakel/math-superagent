@@ -266,7 +266,7 @@ fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
         })
 }
 
-fn embed(text: &str) -> Vec<f32> {
+pub(super) fn embed(text: &str) -> Vec<f32> {
     let mut vector = vec![0.0_f32; VECTOR_SIZE];
     for token in text
         .split(|character: char| !character.is_alphanumeric())
