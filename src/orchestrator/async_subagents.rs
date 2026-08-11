@@ -571,9 +571,11 @@ struct RunState {
 #[derive(Clone, Copy, Debug)]
 enum AsyncToolKind {
     Spawn,
+    SpawnMany,
     Peek,
     Steer,
     Await,
+    AwaitMany,
 }
 
 #[derive(Debug)]
