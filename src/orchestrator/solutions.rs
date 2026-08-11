@@ -31,6 +31,7 @@ use crate::agent::trace::RunTracer;
 
 use super::async_subagents::AsyncSubagentManager;
 use super::folder_index;
+use super::teams::TeamHandle;
 
 /// Attempts allowed before the loop reports what it has.
 ///
@@ -391,6 +392,7 @@ async fn reflect_step(
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
     patterns: &PatternMailbox,
+    teams: &[TeamHandle],
     mut state: SolutionState,
 ) -> SolutionState {
     let prompt = format!(
@@ -676,6 +678,7 @@ pub(super) async fn run(
     subagents: AsyncSubagentManager,
     tracer: Option<Arc<RunTracer>>,
     workspace: Option<PathBuf>,
+    teams: Vec<TeamHandle>,
     state: SolutionState,
 ) -> Result<SolutionState> {
     let attempt_agents = subagents.clone();
@@ -686,6 +689,7 @@ pub(super) async fn run(
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
     let pattern_mailbox = PatternMailbox::default();
+    let reflect_teams = teams;
 
     let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
         .add_node("attempt", move |state: SolutionState, _ctx: NodeContext| {
@@ -700,6 +704,7 @@ pub(super) async fn run(
         .add_node("reflect", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = reflect_agents.clone();
             let mailbox = pattern_mailbox.clone();
+            let teams = reflect_teams.clone();
             let tracer = reflect_tracer.clone();
             let workspace = reflect_workspace.clone();
             async move {
@@ -709,6 +714,7 @@ pub(super) async fn run(
                         tracer.as_ref(),
                         workspace.as_deref(),
                         &mailbox,
+                        &teams,
                         state,
                     )
                     .await,
