@@ -45,10 +45,11 @@ verifying the result before presenting it.
   committed to git          research notes      Langfuse, trace.jsonl
 ```
 
-Every arrow out of the orchestrator is asynchronous: a spawn returns a run ID
-straight away, so independent research and computation overlap instead of
-queueing behind each other. Nothing about a run is hidden from the workspace,
-which is committed alongside the answer.
+Every delegation is asynchronous. A spawn returns a run ID straight away, so
+independent research and computation overlap instead of queueing behind each
+other, and the orchestrator collects the results when it needs them. The
+specialists share one `/workspace`, which is committed as the run proceeds, so
+the derivation and the programs survive alongside the answer.
 
 The runtime uses a small registry of specialist agents:
 
