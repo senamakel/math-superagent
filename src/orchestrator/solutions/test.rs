@@ -76,13 +76,13 @@ fn outcome_reports_progress_even_when_unsolved() {
 fn the_first_attempt_starts_fresh_and_later_ones_continue() {
     use super::continuation_briefing;
 
-    let first = continuation_briefing(1);
+    let first = continuation_briefing(1, false);
     assert!(first.contains("first attempt"));
     assert!(first.contains("run a program"));
 
     // The failure this exists to prevent: every attempt restarting at "read
     // the statement and write it down", so the run never executes anything.
-    let third = continuation_briefing(3);
+    let third = continuation_briefing(3, false);
     assert!(third.contains("attempt 3"));
     assert!(third.contains("CONTINUE"));
     assert!(third.contains("Do not re-extract"));
@@ -226,4 +226,27 @@ fn an_empty_pattern_report_is_not_posted_as_context() {
     let mailbox = PatternMailbox::default();
     mailbox.post("   \n  ".to_string());
     assert_eq!(mailbox.collect(), "");
+}
+
+#[test]
+fn a_restarted_run_is_told_it_is_continuing_even_on_its_first_attempt() {
+    use super::continuation_briefing;
+
+    // Every restart resets the attempt counter while the workspace survives,
+    // so attempt 1 of a resumed run sits on programs, notes and beliefs it is
+    // told to establish from scratch. A live solver spent fourteen minutes and
+    // fifty-nine model calls on seventeen `read_document` calls and nothing
+    // else, reconciling a statement it had been told to extract afresh against
+    // thirty-one programs already on disk.
+    let resumed = continuation_briefing(1, true);
+    assert!(resumed.contains("CONTINUE"), "{resumed}");
+    assert!(resumed.contains("memory.md"), "{resumed}");
+    assert!(
+        !resumed.contains("first attempt"),
+        "a resumed run must not be told to start fresh: {resumed}"
+    );
+    // A genuinely fresh workspace still gets the fresh briefing: the oracle
+    // has to be written before anything can be continued from.
+    let fresh = continuation_briefing(1, false);
+    assert!(fresh.contains("first attempt"), "{fresh}");
 }
