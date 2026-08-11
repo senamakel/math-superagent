@@ -85,27 +85,39 @@ fn a_tree_level_is_described_in_the_index_at_its_root() {
 async fn describing_a_sources_full_text_points_at_the_digest_instead() -> Result<()> {
     // `refresh` never lists a full text, so a description of one is discarded
     // on the next pass. A live organizer spent seventeen calls that way.
-    let workspace = tempfile::tempdir().expect("a temporary workspace");
-    let documents = super::super::documents::WorkspaceDocuments::new(workspace.path().into())?;
+    let root =
+        std::env::temp_dir().join(format!("math-agent-describe-full-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("temporary workspace is creatable");
+    let root = root.canonicalize().expect("workspace resolves");
+    let documents = super::super::documents::WorkspaceDocuments::new(root.clone())?;
     let tools = super::FolderIndexTool::all(&documents);
-    let describe = tools
+    let tool = tools
         .iter()
         .find(|tool| tool.name() == "describe_file")
         .expect("describe_file is registered");
 
-    let refused = describe
-        .call(&crate::agent::ToolCall::new(
-            "1",
-            "describe_file",
-            serde_json::json!({
-                "path": "research/L0/paper.full.md",
-                "purpose": "the whole converted paper"
-            }),
-        ))
+    let refused = tool
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "call-1".into(),
+                name: "describe_file".into(),
+                invalid: None,
+                arguments: serde_json::json!({
+                    "path": "research/L0/paper.full.md",
+                    "purpose": "the whole converted paper"
+                }),
+            },
+        )
         .await;
 
-    let message = refused.map_or_else(|error| error.to_string(), |result| result.to_string());
+    let message = refused
+        .err()
+        .map(|error| error.to_string())
+        .unwrap_or_default();
     assert!(message.contains("research/L0/paper.md"), "{message}");
+    let _ = std::fs::remove_dir_all(&root);
     Ok(())
 }
 
