@@ -108,6 +108,7 @@ pub(crate) struct AsyncSubagentManager {
     steering: SteeringRegistry,
     budget: RunBudget,
     tracer: Option<Arc<RunTracer>>,
+    langfuse: Option<Arc<LangfuseClient>>,
 }
 
 impl std::fmt::Debug for AsyncSubagentManager {
