@@ -223,6 +223,9 @@ workspace/project-euler/66/
 ├── memory.md
 ├── solution.md
 ├── solution.py
+├── INDEX.md           # what each file beside it is for
+├── research/          # downloaded sources, with their own INDEX.md
+├── toolkits/          # reusable verified helpers, one function per file
 └── trace.jsonl        # local only, not committed
 ```
 
@@ -230,11 +233,25 @@ Generated programs, calculations, and other artifacts appear in
 `workspace/default` unless another workspace is selected. A new workspace is
 seeded from [`workspace/template/`](workspace/template/) without overwriting
 files already present. The seed includes local agent instructions, role
-prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, and `memory.md`.
-The runtime reads those files at the start of every run.
+prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, `memory.md`, and
+empty `research/` and `toolkits/` folders. The runtime reads those files at the
+start of every run.
 
-Everything downloaded is filed under `research/`, so gathered material stays
-separate from the run's own derivations and programs.
+Everything downloaded is filed under `research/`, enforced in code rather than
+asked for in a prompt, so gathered material stays separate from the run's own
+derivations and programs. The tool-builder accumulates reusable helpers under
+`toolkits/`, one function per file, so reading the helper you need costs a few
+hundred bytes rather than the whole library.
+
+Every folder carries an `INDEX.md` saying what each file is for, because
+`list_workspace` can answer what exists but not what anything is *for* — and
+after a long run nothing on disk distinguishes the oracle from the answer.
+`describe_file` records a purpose and `refresh_index` re-derives the file list
+from disk, keeping existing descriptions, marking new files undescribed, and
+dropping rows for files that are gone. Descriptions are left to explicit tool
+calls because only the agent that wrote a file knows why, so a forgotten one
+shows as a visible gap rather than as an index quietly disagreeing with its
+folder.
 
 Agents can traverse the workspace with `list_workspace` to find files rather
 than guess their names, and every reflection is archived under `reflections/`

@@ -30,6 +30,7 @@ use crate::agent::Result;
 use crate::agent::trace::RunTracer;
 
 use super::async_subagents::AsyncSubagentManager;
+use super::folder_index;
 
 /// Attempts allowed before the loop reports what it has.
 ///
@@ -322,11 +323,60 @@ async fn log_reflection(
         "# Reflection after attempt {attempt}\n\n{}\n",
         reflection.trim()
     );
-    if tokio::fs::write(&path, body).await.is_ok()
-        && let Some(tracer) = tracer
-    {
-        tracer.note(&format!("logged {relative}"));
+    if tokio::fs::write(&path, body).await.is_ok() {
+        index_reflection(workspace, &relative, attempt, reflection, learnings).await;
+        if let Some(tracer) = tracer {
+            tracer.note(&format!("logged {relative}"));
+        }
     }
+}
+
+/// Records the new reflection in `reflections/INDEX.md`.
+///
+/// The folder carries an index for the same reason `research/` and `toolkits/`
+/// do: a directory of `1786436304918_01_learnings.md` says when each attempt
+/// was judged and nothing about what any of them found, so anyone looking for
+/// the attempt that established something has to open all of them. The
+/// filename already encodes whether a reflection taught the run anything; the
+/// index is what says *what*.
+///
+/// Written directly rather than through the index tools because no agent is in
+/// the loop here — the solution graph writes this file itself — and best
+/// effort for the same reason the reflection body is: the lesson is already in
+/// the loop state, and losing a row must not cost the run anything.
+async fn index_reflection(
+    workspace: &Path,
+    relative: &str,
+    attempt: usize,
+    reflection: &str,
+    learnings: usize,
+) {
+    let index_path = workspace.join("reflections").join(folder_index::INDEX_FILE);
+    let existing = tokio::fs::read_to_string(&index_path)
+        .await
+        .unwrap_or_default();
+    let mut entries = folder_index::parse(&existing);
+    let Some(name) = relative.rsplit('/').next() else {
+        return;
+    };
+    let verdict = if reflection.to_uppercase().contains("VERDICT: SOLVED") {
+        "solved"
+    } else {
+        "unsolved"
+    };
+    let summary = extract_lesson(reflection);
+    let summary = summary.trim().replace('\n', " ");
+    let description = format!(
+        "Attempt {attempt}, judged {verdict}, {learnings} learning(s). {}",
+        if summary.is_empty() {
+            "No actionable lesson.".to_string()
+        } else {
+            summary
+        }
+    );
+    entries.insert(name.to_string(), description);
+    let rendered = folder_index::render("reflections", &entries);
+    let _ = tokio::fs::write(&index_path, rendered).await;
 }
 
 /// Judges the last attempt and records the lesson it yields.
