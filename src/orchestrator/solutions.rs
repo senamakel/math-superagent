@@ -719,24 +719,6 @@ async fn reflect_step(
     // consecutive unproductive attempts means the run has already spent the
     // budget the pattern would have saved.
     //
-    // It is *detached*, not awaited: see [`PatternMailbox`]. The loop routes on
-    // the reflection alone, so making it wait for a sequence analysis bought
-    // nothing and cost a live run half an hour of stalled loop.
-    let pattern_prompt = format!(
-        "Look for exploitable structure in the data this attempt just produced. Read the \
-         workspace results, extract the integer sequences in them, and run the sequence tools \
-         on them. Where a check needs a computation the tools do not do, write and run the \
-         program yourself, or delegate it. Report only regularities that hold exactly over \
-         every term supplied, say plainly that they are conjectures, and give the first term \
-         that would falsify each one.\n\nProblem:\n{}",
-        state.problem
-    );
-    let pattern_agents = subagents.clone();
-    let pattern_outbox = patterns.clone();
-    tokio::spawn(async move {
-        let report = delegate(&pattern_agents, "pattern_finder", pattern_prompt).await;
-        pattern_outbox.post(report);
-    });
     // Whatever earlier pattern runs have finished by now joins this attempt's
     // context. The report is no less true for arriving an attempt late.
     let patterns = patterns.collect();
@@ -965,11 +947,11 @@ fn merge_context(sections: &[(&str, &str)]) -> String {
 /// structural observation is worth as much one attempt later; a stalled loop
 /// is not.
 #[derive(Clone, Default)]
-struct PatternMailbox(Arc<std::sync::Mutex<Vec<String>>>);
+pub(super) struct PatternMailbox(Arc<std::sync::Mutex<Vec<String>>>);
 
 impl PatternMailbox {
     /// Leaves a finished report for the next attempt.
-    fn post(&self, report: String) {
+    pub(super) fn post(&self, report: String) {
         if report.trim().is_empty() {
             return;
         }
@@ -982,7 +964,7 @@ impl PatternMailbox {
     ///
     /// More than one can be waiting when a pattern run outlives the attempt
     /// that started it, which is the normal case now that they are detached.
-    fn collect(&self) -> String {
+    pub(super) fn collect(&self) -> String {
         let Ok(mut slot) = self.0.lock() else {
             return String::new();
         };
@@ -1002,6 +984,7 @@ pub(super) async fn run(
     tracer: Option<Arc<RunTracer>>,
     workspace: Option<PathBuf>,
     teams: Vec<TeamHandle>,
+    patterns: PatternMailbox,
     state: SolutionState,
 ) -> Result<SolutionState> {
     let attempt_agents = subagents.clone();
@@ -1014,7 +997,7 @@ pub(super) async fn run(
     let reflect_workspace = workspace;
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
-    let pattern_mailbox = PatternMailbox::default();
+    let pattern_mailbox = patterns;
     let reflect_teams = teams;
 
     let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
