@@ -5,8 +5,7 @@ import random
 from fractions import Fraction
 from toolkits.simplest_dyadic import simplest_between
 
-MAXB = 14          # dyadics with birthday <= MAXB (small)
-DIG = MAXB
+MAXB = 16          # dyadics with birthday <= MAXB (small)
 
 def birthday(x):
     x = abs(x)

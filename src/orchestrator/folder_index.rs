@@ -96,6 +96,38 @@ fn split(relative: &str) -> (String, String) {
 }
 
 /// Returns the index path for the folder holding `relative`.
+/// The tree whose index the solution loop maintains itself.
+pub(super) const REFLECTIONS_DIR: &str = "reflections";
+
+/// Refuses an index call on a folder no agent belongs in.
+///
+/// The loop writes each reflection *and* its row in one step, and the row
+/// carries the attempt number, the verdict, and the lesson — none of which is
+/// recoverable from the file list. A refresh keeps existing descriptions, so
+/// this is not always destructive, but it is never useful and it is one key
+/// mismatch away from replacing every verdict with `_(undescribed)_`; that
+/// exact loss has happened three times on the research tree, each time from a
+/// row spelled a way the refresh could not match.
+///
+/// The organizer's prompt already says to leave the folder alone, and a live
+/// organizer refreshed it anyway. A prompt instruction is not a control.
+///
+/// # Errors
+///
+/// Returns a validation error when `folder` is the reflections tree.
+fn loop_owned(folder: &str) -> Result<()> {
+    let root = folder.split('/').next().unwrap_or(folder);
+    if root == REFLECTIONS_DIR {
+        return Err(tinyagents::TinyAgentsError::Validation(format!(
+            "`{REFLECTIONS_DIR}/` is maintained by the solution loop, which writes each \
+             reflection and its row together — the row carries the attempt number, the verdict, \
+             and the lesson, and nothing here can recover those from a file listing. Leave it \
+             alone; every other folder is yours"
+        )));
+    }
+    Ok(())
+}
+
 fn index_for(folder: &str) -> String {
     if folder.is_empty() {
         INDEX_FILE.to_string()
