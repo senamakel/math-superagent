@@ -50,13 +50,18 @@ impl AgentExecutor for HarnessExecutor {
         steering: SteeringHandle,
         tracer: Option<Arc<RunTracer>>,
     ) -> Result<String> {
-        let mut context = RunContext::new(RunConfig::new(run_id), ()).with_steering(steering);
+        let journal = Arc::new(InMemoryEventJournal::new());
+        let durable: Arc<dyn HarnessEventJournal> = journal.clone();
+        let journal_sink = Arc::new(JournalSink::new(durable, RunId::new(run_id)));
+        let events = EventSink::with_stream_id(run_id);
+        events.subscribe(journal_sink.clone());
         if let Some(tracer) = tracer {
-            let events = EventSink::with_stream_id(run_id);
             events.subscribe(tracer);
-            context = context.with_events(events);
         }
-        let run = self
+        let context = RunContext::new(RunConfig::new(run_id), ())
+            .with_steering(steering)
+            .with_events(events);
+        let result = self
             .harness
             .invoke_in_context(
                 &(),
@@ -66,8 +71,32 @@ impl AgentExecutor for HarnessExecutor {
                     Message::user(input),
                 ],
             )
-            .await?;
-        Ok(run.text().unwrap_or_default())
+            .await;
+        journal_sink.flush();
+        self.export_to_langfuse(run_id, &journal).await;
+        Ok(result?.text().unwrap_or_default())
+    }
+}
+
+impl HarnessExecutor {
+    /// Ships this specialist run's observations to Langfuse.
+    ///
+    /// Specialist runs are where most of the work happens, so a trace that
+    /// covers only the orchestrator hides the part an operator needs when a run
+    /// goes wrong. Delivery is best effort in both directions: a missing
+    /// Langfuse configuration and a failed send are both ignored, because
+    /// telemetry must never turn a completed derivation into a failed run.
+    async fn export_to_langfuse(&self, run_id: &str, journal: &Arc<InMemoryEventJournal>) {
+        let Some(langfuse) = self.langfuse.as_ref() else {
+            return;
+        };
+        if let Ok(observations) = journal.read_from(run_id, 0).await
+            && !observations.is_empty()
+        {
+            let _ = langfuse
+                .send_observations(LangfuseTraceConfig::default(), &observations)
+                .await;
+        }
     }
 }
 
