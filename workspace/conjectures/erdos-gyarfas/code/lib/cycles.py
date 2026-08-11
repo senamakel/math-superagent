@@ -48,11 +48,23 @@ def cycle_lengths(graph, max_nodes=None, cap=None):
     networkx.simple_cycles (limit on input size when the graph is huge; do not
     use for exactness-critical calls).
     """
+    # networkx.simple_cycles only works on directed graphs. Convert the
+    # undirected graph to a bidirected digraph (each edge u-v becomes arcs
+    # u->v and v->u). Each undirected simple cycle of length L appears in the
+    # digraph as exactly two length-L directed cycles (one per orientation),
+    # so the *set* of lengths is unchanged. The digraph also produces spurious
+    # 2-cycles (u->v->u) where the undirected graph has just an edge, which we
+    # drop by keeping only lengths >= 3.
+    dig = nx.DiGraph()
+    dig.add_nodes_from(graph.nodes())
+    for u, v in graph.edges():
+        dig.add_edge(u, v)
+        dig.add_edge(v, u)
     if cap is not None:
-        it = _capped(nx.simple_cycles(graph), cap)
+        it = _capped(nx.simple_cycles(dig), cap)
     else:
-        it = nx.simple_cycles(graph)
-    return {len(c) for c in it}
+        it = nx.simple_cycles(dig)
+    return {len(c) for c in it if len(c) >= 3}
 
 
 def _capped(iterator, cap):
