@@ -42,6 +42,9 @@ __pycache__/
 # folder.
 /workspace/**/config/trace.jsonl
 /workspace/**/config/.document-index.json
+# What `euler-tui` teed from the console. It is the same events `trace.jsonl`
+# already carries, formatted for a reader rather than a parser.
+/workspace/**/config/console.log
 
 # Linked worktrees created by the local `worktree` helper
 worktrees/*
