@@ -1,6 +1,10 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/cambie_yan_descents_inversions_powers.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Summary: Cambie & Yan (arXiv:2408.01211) — arXiv abstract page
 
-<!-- source: https://arxiv.org/abs/2408.01211 | converted from HTML -->
+Redundant download; the substantive full text is in
+research/cambie_yan_html.md (+ .full.md).  This page only confirms: authors,
+title, MSC 05A05, submitted 2024-08-02 (v1) / 2024-08-23 (v2), DOI
+10.48550/arXiv.2408.01211.  See research/cambie_yan_html.md for the theorem
+statements and what they imply for Q(n).  Nothing further is needed from this file.
 
 [2408.01211] Descents and inversions in powers of permutations
 

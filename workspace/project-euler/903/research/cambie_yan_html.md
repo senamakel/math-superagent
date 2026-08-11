@@ -1,6 +1,48 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/cambie_yan_html.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Summary: Cambie & Yan, "Descents and inversions in powers of permutations" (arXiv:2408.01211)
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/2408.01211 | converted from HTML -->
+Full text: research/cambie_yan_html.full.md (converted from ar5iv HTML).  This page was
+downloaded twice — `cambie_yan_descents_inversions_powers.md/.full.md` hold the arXiv
+abs page and are redundant.
+
+## What the paper establishes (statements)
+
+For uniform pi in S_n and k in Z^+:
+- Theorem 1.1 (descents), valid for n >= 2k+1:
+    (1/n!) sum_pi des(pi^k) = (n-1)/2 - (tau(k)^2 - tau(k) - tau_o(k) + sigma(k)) / (2n)
+- Theorem 1.2 (inversions), valid for n >= 2k+1:
+    (1/n!) sum_pi inv(pi^k) = n(n-1)/4 - (tau(k)-1) n/6
+                              - (tau(k)^2 - tau(k) - tau_o(k) + sigma(k)) / 12
+  with tau(k)=#divisors, sigma(k)=sum of divisors, tau_o(k)=#odd divisors
+  (= tau(k / 2^{nu_2(k)})).
+- k=2,3 descents both (n-1)/2 - 2/n, confirming Archer-Geary's conjecture.
+- Grassmannian permutation counts for pi^k (Theorems 1.3-1.5), via Gessel-Reutenauer.
+
+## Why it matters for this run (Q(n) = sum_{pi,i} rank(pi^i))
+
+Our f_n(k) = #{(pi,i): (pi^i)(m) < (pi^i)(j)} is, for each fixed exponent t, the
+per-pair inversion count of pi^t summed over pi.  The proof of Theorem 1.2
+(Section 2, Lemmas 2.1-2.6 + the Type 2-7 bookkeeping in "Proof of Theorem 1.2")
+shows that for fixed t with n >= 2t+1 the number of pi with an inversion at
+(i, i+d) in pi^t is translation-invariant in i and AFFINE in the gap d:
+   Inv_t(i,i+d) = (n-d-1)(tau(t)n - tau(t)^2 - sigma(t)) (n-3)!
+                + (n+d-3)(n - tau(t) - tau_o(t)) (n-3)! + tau_o(t) (n-2)!
+                + (type-1 term independent of i,d),
+which is exactly the per-exponent source of the gap-linearity of f_n(k) empirically
+observed for n <= 11 (extend_f.json, gaps.py).
+
+## Hypotheses checked / not checked for this problem
+
+- The n >= 2k+1 (final remark: n >= k + l(k), largest proper divisor) hypothesis does
+  NOT cover exponents t > (n-1)/2 that appear in the full sum over i=1..n!.  A naive
+  extrapolation FAILS: sum over t=1..n! of the per-exponent slopes for n=3 gives 32,
+  while the true B_3 = 1 (hand check).  The large-exponent regime (where pi^t is
+  periodic with small ord(pi)) must be handled separately; that is the open step to a
+  closed form for f_n(k) and then Q(n).
+
+## Not settled by this paper
+
+- No formula for rank(pi^i) or for sums of rank over a cyclic subgroup <pi>.
+- No result for the (pi,i)-uniform distribution E[rank(pi^i)] we need.
 
 [2408.01211] Descents and inversions in powers of permutations
 

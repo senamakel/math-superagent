@@ -1,6 +1,27 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/archer_geary_descents_powers.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Summary: Archer & Geary, "Descents in powers of permutations" (arXiv:2406.09369)
 
-<!-- source: https://arxiv.org/abs/2406.09369 | converted from HTML -->
+## What this source is
+
+The paper studied by Cambie-Yan (arXiv:2408.01211).  It enumerates Grassmannian
+permutations pi in S_n whose pi^2 has j descents, and permutation sets whose
+pi^2/pi^3 have a fixed descent count, and poses the conjecture that
+E[des(pi^2)] = E[des(pi^3)] = (n-1)/2 - 2/n for all but small n.
+
+## Why it matters here
+
+It is the origin of the descent-in-powers questions; Cambie-Yan confirmed its
+conjecture and extended to explicit divisor-function formulas for all k and for
+inversions (Theorems 1.1, 1.2 there).  For OUR statistic it contains no closed form
+for rank(pi^i); its value here is (a) provenance of the CY result, and (b) its
+Gessel-Reutenauer-type counting techniques for Grassmannian cycles (Lemmas 3.3-3.4,
+N_n = (1/n) sum_{d|n,d!=n} mu(d)(2^{n/d}-2)) which are the same style of counting one
+would need for a full proof of the gap-linearity of f_n(k).  It does not settle the
+large-exponent regime of our sum.
+
+## Verdict
+
+Supporting/context source; not directly usable for Q(n).  Full text beside it:
+research/archer_geary_descents_powers.full.md (arXiv abs page HTML).
 
 [2406.09369] Descents in powers of permutations
 

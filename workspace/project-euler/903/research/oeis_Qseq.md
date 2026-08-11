@@ -1,8 +1,4 @@
-<!-- source: https://oeis.org/search?q=5,88,4808,597876,133103808&fmt=text | converted from plain text -->
+# Summary: OEIS absence results (see oeis_Aseq.md for the full account)
 
-# Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/
-
-Search: seq:5,88,4808,597876,133103808
-No results.
-
-# Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE
+This file documents the OEIS lookup of the Q(n) sequence 5,88,4808,597876,133103808
+(n=2..6): "No results".  Q(n) is not catalogued; no recurrence or closed form in OEIS.

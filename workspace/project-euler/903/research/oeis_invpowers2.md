@@ -1,8 +1,4 @@
-<!-- source: https://oeis.org/search?q=1,4,82,1448,24832,415968,6983744,117072128&fmt=text | converted from plain text -->
+# Summary: OEIS absence results (see oeis_Aseq.md for the full account)
 
-# Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/
-
-Search: seq:1,4,82,1448,24832,415968,6983744,117072128
-No results.
-
-# Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE
+Probe sequence 1,4,82,1448,24832,415968,6983744,117072128 (derived from the
+expected-inversion formulas) -> "No results".
