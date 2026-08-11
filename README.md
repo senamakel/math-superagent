@@ -57,8 +57,8 @@ The runtime uses a small registry of specialist agents:
 - `goals` turns an objective into completion criteria and spawns focused
   subagents until the criteria are met or blocked.
 - `research` searches with Exa, looks computed sequences up in the OEIS, and
-  returns evidence with source URLs. It works the gaps other roles stated in
-  `research/REQUESTS.md` before anything it thought of itself.
+  returns evidence with source URLs, working the gaps other roles stated in
+  `research/REQUESTS.md` first.
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
 - `coder` has the same authority and writes the implementation the run stands
@@ -80,8 +80,8 @@ The runtime uses a small registry of specialist agents:
   current beliefs and replaces each stored digest with what the source actually
   establishes, because a downloaded paper nobody has opened has cost the run
   context and taught it nothing. It records each statement as a `claim` block —
-  hypotheses, whether they hold here, what evidence stands behind it — so the
-  library is retrievable one statement at a time.
+  hypotheses, whether they hold here, what backs it — so the library is
+  retrievable one statement at a time.
 - `organizer` keeps the workspace navigable: folder indexes, the layout of
   `research/`, and `code/toolkits/INDEX.md` matching the files beside it. It cannot
   delete a result or change what a file says.
@@ -281,8 +281,7 @@ workspace/project-euler/66/
 │   ├── out/            # what those programs produced
 │   └── toolkits/       # reusable verified helpers, one function per file
 ├── research/           # L0 sources, L1 digests, L2 folds, INDEX.md at the root
-│   ├── CLAIMS.md, THREADS.md   # derived: what it establishes; where it is going
-│   └── FRONTIER.md, REQUESTS.md # derived: what it cites; what it is short of
+│   ├── CLAIMS.md, THREADS.md, FRONTIER.md, REQUESTS.md  # all derived
 ├── reflections/L0/     # one note per judged attempt
 ├── raw/                # untouched download bytes, including problem.html
 └── config/             # config.toml, problem.url, the document index, trace.jsonl
@@ -359,9 +358,9 @@ Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
 index, and search that index for ranked snippets, plus `search_claims` for what
 the library establishes and `request_research` for what it does not. The index
-lives at `.document-index.json` inside the selected workspace. Downloads and
-individual documents are capped at 5 MiB, paths cannot leave `/workspace`, and
-one workspace cannot search another workspace's files.
+lives at `.document-index.json` inside the selected workspace. Downloads are
+capped at 5 MiB, paths cannot leave `/workspace`, and one workspace cannot
+search another's files.
 
 The tool-builder additionally gets `apply_patch`, which applies a Codex-format
 envelope across several files at once. Two deviations are deliberate: context
@@ -475,8 +474,7 @@ src/
 │   ├── frontier.rs, requests.rs what it cites; what the run is short of
 │   ├── oeis.rs             sequence lookup, filed and cross-referenced
 │   ├── folder_index.rs, context_tree.rs   the indexes and the summary trees
-│   ├── patch.rs, patterns.rs    exact patches; exact sequence analysis
-│   └── checkpoint.rs, vector.rs workspace history; the Qdrant research store
+│   └── patch.rs, patterns.rs, checkpoint.rs, vector.rs   the rest
 ├── hello_agent/            small single-agent example
 ├── error/                  crate-wide errors
 └── lib.rs                  public Rust API
