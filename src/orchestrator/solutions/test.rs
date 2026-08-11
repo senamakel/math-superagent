@@ -108,6 +108,50 @@ fn the_first_attempt_opens_with_an_oracle_run_of_its_own() {
 }
 
 #[test]
+fn an_unreadable_judge_reply_never_throws_an_attempt_away() {
+    use super::{Verdict, judge_verdict};
+    // The expensive outcome needs the explicit word, in the same spirit as an
+    // unparsable reflection not counting as solved.
+    assert_eq!(judge_verdict("VERDICT: RESTART"), Verdict::Restart);
+    assert_eq!(judge_verdict("verdict:restart"), Verdict::Restart);
+    assert_eq!(judge_verdict("VERDICT: STEER"), Verdict::Steer);
+    assert_eq!(judge_verdict("VERDICT: PROCEED"), Verdict::Proceed);
+    assert_eq!(
+        judge_verdict("the attempt was a disaster"),
+        Verdict::Proceed
+    );
+    assert_eq!(judge_verdict(""), Verdict::Proceed);
+}
+
+#[test]
+fn the_judges_score_and_guidance_are_read_when_they_are_there() {
+    use super::{judge_guidance, judge_score};
+    let reply = "SCORE: 2/5\nVERDICT: STEER\nBECAUSE: nothing ran.\nNEXT: run the oracle first.";
+    assert_eq!(judge_score(reply), Some(2));
+    assert_eq!(judge_guidance(reply), "run the oracle first.");
+    // A score outside the rubric is no score at all rather than a wrong one.
+    assert_eq!(judge_score("SCORE: 9/5"), None);
+    assert_eq!(judge_score("no score here"), None);
+    assert_eq!(judge_guidance("SCORE: 5/5\nVERDICT: PROCEED"), "");
+}
+
+#[test]
+fn the_attempt_ceiling_outranks_a_restart() {
+    use super::{Judged, MAX_ATTEMPTS, SolutionState, Verdict, judged_route};
+    // A run at its last attempt must reflect on what it has rather than throw
+    // it away and stop with nothing.
+    let mut state = SolutionState::new("problem");
+    state.judged = Verdict::Restart;
+    state.attempts = 1;
+    assert_eq!(judged_route(&state), Judged::Restart);
+    state.attempts = MAX_ATTEMPTS;
+    assert_eq!(judged_route(&state), Judged::Reflect);
+    state.judged = Verdict::Proceed;
+    state.attempts = 1;
+    assert_eq!(judged_route(&state), Judged::Reflect);
+}
+
+#[test]
 fn reflection_filenames_encode_the_outcome() {
     use super::reflection_filename;
     // A directory listing alone should show which attempts taught anything.

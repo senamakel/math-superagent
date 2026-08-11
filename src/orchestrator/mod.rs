@@ -876,12 +876,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // belief from one exploring honestly — and nothing that would let it
         // start solving. No `SCRATCHPAD.md`: provisional arithmetic is not
         // evidence about how an attempt was conducted.
-        "judge" => &[
-            "GOAL.md",
-            "MEMORY.md",
-            "INDEX.md",
-            "reflections/INDEX.md",
-        ],
+        "judge" => &["GOAL.md", "MEMORY.md", "INDEX.md", "reflections/INDEX.md"],
         "reflection" => &[
             "GOAL.md",
             "TASKS.md",
