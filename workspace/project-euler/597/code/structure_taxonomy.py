@@ -179,7 +179,7 @@ def part_c(configs, trials=60000, seed=2024):
                 indeg_hits[d] += 1
             mi = max(indeg.values(), default=0)
             maxindeg_per_samp[mi] += 1
-            above_sets[frozenset(_edges_to_above(n, edges))] += 1
+            above_sets[_edges_to_above(n, edges)] += 1   # tuple of tuples, hashable
             edge_sets[tuple(sorted(edges))] += 1
         print(f"\n----- n={n}, L={L} -----")
         print(f"  always forest (outdeg<=1 & edges strictly increasing & acyclic): "
