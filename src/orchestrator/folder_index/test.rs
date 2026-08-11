@@ -64,8 +64,10 @@ fn an_undescribed_file_is_marked_rather_than_left_blank() {
 #[test]
 fn an_empty_folder_still_renders_a_usable_table() {
     let rendered = render("notes", &BTreeMap::new());
-    assert!(rendered.contains("_(empty)_"), "{rendered}");
-    assert_eq!(parse(&rendered).len(), 0);
+    assert!(rendered.contains("This folder is empty"), "{rendered}");
+    // The placeholder must not be a table row: parsed back it would become a
+    // file the next refresh carries forward as though it existed.
+    assert_eq!(parse(&rendered).len(), 0, "{rendered}");
 }
 
 #[test]
