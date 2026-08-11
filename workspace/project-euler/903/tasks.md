@@ -12,6 +12,11 @@
       (gate in brute.py confirmed: [gate] estimate too large -> skipped).
 - [x] Record verified values and timings in memory.md.
 - [ ] (Later) Derive efficient method for Q(10^6) mod p; validate against oracle values.
+
+- [x] gaps.py: compute T(j,m) for n=2..9 by period formula (exact, no literal
+      n!-power iteration). Verified translation invariance (all j) and found
+      f_n(k)=T(1,1+k) is exactly arithmetic in k for n>=3. Oracle-checked n=2..5.
+      A_n and B_n tables recorded in memory.md.
 - [x] Ran brute.py and brute2.py for n=2..7; oracle OK (rank(2,1,3)=3, Q(2)=5,
       Q(3)=88, Q(6)=133103808); methods agree exactly on all n=2..7.
 - [x] Wrote and ran explore.py (n=2..7): M_j and N(j,m) tables.  Pattern found:
