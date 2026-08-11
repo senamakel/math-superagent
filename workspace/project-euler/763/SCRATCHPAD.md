@@ -73,3 +73,17 @@ positive directed animals; counts by size match A005773 in 2D
 m=11 in 3D (~6.4M sets) OOM-killed in this container (2 GiB cap).  Generator
 verified by subset oracle (verify_c1_subsets.py).  Details in
 code/out/c1_test_results.md.
+
+## Pattern-finder (PE763) — max-level decomposition, OOS strength
+
+Fresh sympy-exact re-confirmation (code/pattern/q_columns_fresh.py,
+q_fresh_verify.py) rebuilt the full Q_k table from data + mhist_13_14.txt:
+- Q_k(N) = R(N,N-k)/3^(N-2k-1) is EXACTLY a degree-k polynomial for k=0..4,
+  now checked with N=13,14 as out-of-sample (finite differences vanish at
+  level k).
+- Leading coefficient of Q_k == 1/k! for k=0..4 (k=1:1, k=2:1/2, k=3:1/6,
+  k=4:1/24).
+- Q_2 column == OEIS A055999 (n(n+7)/2) sourcing the Q_2=(N-5)(N+2)/2 closed
+  form. Q_3,Q_4,Q_5 columns not in OEIS (misses recorded).
+- D(N)=sum_k Q_k(N)3^(N-2k-1) reproduces D(N) exactly N=2..10; k>=5 columns
+  contribute from N=11. First falsifier for k>=5: N=15 (unreachable by BFS).
