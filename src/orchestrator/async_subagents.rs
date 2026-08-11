@@ -73,6 +73,8 @@ pub(crate) struct AsyncSubagentManager {
     agents: Arc<RwLock<HashMap<String, Arc<dyn AgentExecutor>>>>,
     store: Arc<InMemoryTaskStore>,
     steering: SteeringRegistry,
+    budget: RunBudget,
+    tracer: Option<Arc<RunTracer>>,
 }
 
 impl std::fmt::Debug for AsyncSubagentManager {
