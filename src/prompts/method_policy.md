@@ -41,7 +41,11 @@ Method policy, which applies to every step:
    keep it as the oracle that checks the real method. Say explicitly when
    output is such a check. What is prohibited is brute force at full size, not
    brute force as verification.
-9. Never use an algorithm with exponential time or space complexity.
+9. Never use an algorithm with exponential time or space complexity as the
+   method. The oracle of rule 8 is the exception, and the only one: declare
+   `complexity_class` as `exponential` or `factorial` and set `oracle_bound`
+   to the input bound that keeps it small. Declare the cost you actually have
+   — a class that contradicts the complexity you describe is refused.
 10. Verify independently. A result needs a second, different route to the same
     value, or an explicit statement that it is unverified.
 11. Distinguish proof, numerical evidence, heuristic, and sourced claim. Never
