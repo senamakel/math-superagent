@@ -9,4 +9,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/oeis_a001006.md` | _(undescribed)_ |
 | `L1.0/oeis_a005207.md` | _(undescribed)_ |
 | `L1.0/oeis_a086246.md` | _(undescribed)_ |
-| `L1.0/oeis_a168049.md` | _(undescribed)_ |
+| `L1.0/oeis_a168049.md` | OEIS lookup note for A168049 (Motzkin variant, g.f. (3-x-sqrt(1-2x-3x^2))/2, source https://oeis.org/A168049): terms 1,0,1,1,2,4,9,21,51,127,.... Filed while hunting a closed form for D(N); not read yet, and its low terms do not match D(N)=1,1,3,9,30,..., so not a candidate fit. |

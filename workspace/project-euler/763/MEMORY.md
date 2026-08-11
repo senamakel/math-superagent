@@ -8,36 +8,44 @@ empty. Start: one amoeba at (0,0,0). After N divisions there are 2N+1 amoebas.
 D(N) = number of distinct reachable sets of occupied cubes after exactly N
 divisions, counted once even if reachable multiple ways.
 
-## Established results (verified by brute-force BFS — current oracle filed at code/brute.py)
+## Established results (verified by two independent BFS routes)
 
-Re-verified this run: `python code/brute.py` → D(2)=3 ✓ and D(10)=44499 ✓
-(match statement). `code/brute_capped.py 11` confirmed the sequence
-1,1,3,9,30,99,336,1134,3855,13086,44499,151263 through N=11.
-
-D(2) and D(10) are the two worked examples reachable by the exponential BFS
-oracle; the other two (D(20), D(100) last nine digits) are out of its reach
-by design.
-
-D(N) for N = 0..13:
+D(N) for N = 0..14:
 D(0)=1, D(1)=1, D(2)=3, D(3)=9, D(4)=30, D(5)=99, D(6)=336, D(7)=1134,
-D(8)=3855, D(9)=13086, D(10)=44499, D(11)=151263, D(12)=514419, D(13)=1749267.
+D(8)=3855, D(9)=13086, D(10)=44499, D(11)=151263, D(12)=514419, D(13)=1749267,
+**D(14)=5949063**.
 
-Checks confirmed by the run: D(2)=3 ✓, D(10)=44499 ✓.
+Checks confirmed: D(2)=3 ✓, D(10)=44499 ✓.
 
-BFS reached N=13; the frontier at N=13 held 1,749,267 states, so the naive
-oracle was stopped before N=14 (memory/state-count cap of 600k was set,
-though it ran one more depth to finish D(13)). We did not attempt N=20 by BFS —
-too many states. D(13) took ~200s over a 514,419-state frontier.
+D(14)=5949063 confirmed by TWO independent implementations:
+- `lib/amoeba.next_level_bits` (fixed-width int bitmask encoding) via
+  `code/amoeba_extend.py` (26.0s for level 14).
+- `code/amoeba_verify.py` (structurally different oracle: rebuilds the
+  occupied set per config, tests forward-neighbour emptiness directly;
+  37.84s for level 14). It also reproduces D(0..13).
 
-## Failed approaches
+So D(14) is verified by a second independent route (completion criterion).
 
-- Running N=15 straight BFS was OOM-killed (exit 137) at the N=13→14 step
-  when frontier grew to ~1.7M sets. Fixed by capping at a count guard.
+## Per-config structural data dumps
 
-## Open questions
+`/workspace/data/level_N.txt` for N=2..12, one line per distinct config:
+`level_histogram a_k | M | dx dy dz` (a_k = #cubes at level k=x+y+z, M = max
+level, dx,dy,dz = bounding-box extents). Line counts equal D(N). See
+data/INDEX.md.
 
-Sequence 1,1,3,9,30,99,336,1134,3855,13086,44499,... — not yet identified with
-a known OEIS sequence; a structural/combinatorial formula for D(N) is unknown.
+## Frontier growth / feasibility
 
-D(13)=1749267 was produced by the slower (~200s) run and not independently
-re-checked by a second route.
+Frontier grows ~x3.4 per division:
+N=12: 514,419; N=13: 1,749,267; N=14: 5,949,063; N=15 ~20M (projected);
+N=16 ~68M (projected).
+
+Naive frozenset BFS OOM-killed at the N=13->14 step (5.9M frozensets / ~30GB
+RAM). The bitmask (int) encoding handles it (~26s for level 14). Under the
+5,000,000 cap, N=15 and N=16 are NOT reachable — the run stops cleanly at N=14.
+
+## Library
+
+`code/lib/amoeba.py` is the single shelved definition of the BFS step
+(`next_level_bits`), encode/decode, and config feature extraction
+(`config_features`, `feature_record`). Both `amoeba_bits.py` and data dumps
+import from it (no duplicated definition).
