@@ -472,17 +472,15 @@ src/
 │   └── trace.rs            live console and trace.jsonl event listener
 ├── orchestrator/           registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs  graph-backed spawn, peek, steer, and await controls
-│   ├── checkpoint.rs       workspace git history under .workspace-history
-│   ├── claims.rs, digest.rs   the claim ledger; the digest of a download
-│   ├── documents.rs        bounded workspace document storage and search
-│   ├── folder_index.rs     per-folder INDEX.md description tracking
-│   ├── frontier.rs, oeis.rs   the citation graph; the sequence lookup
-│   ├── requests.rs, threads.rs   stated gaps; the topic axis
-│   ├── patch.rs            atomic, exact-match Codex-format patches
-│   ├── patterns.rs         exact sequence analysis and recurrence search
-│   ├── readable.rs         HTML and PDF to Markdown conversion
 │   ├── solutions.rs        graph-backed attempt/reflect/diversify loop
-│   └── vector.rs           Qdrant research store and local feature vectors
+│   ├── documents.rs        bounded workspace document storage and search
+│   ├── readable.rs, digest.rs   HTML/PDF to Markdown; the digest of a download
+│   ├── claims.rs, threads.rs    what the library establishes; where it is going
+│   ├── frontier.rs, requests.rs what it cites; what the run is short of
+│   ├── oeis.rs             sequence lookup, filed and cross-referenced
+│   ├── folder_index.rs, context_tree.rs   the indexes and the summary trees
+│   ├── patch.rs, patterns.rs    exact patches; exact sequence analysis
+│   └── checkpoint.rs, vector.rs workspace history; the Qdrant research store
 ├── hello_agent/            small single-agent example
 ├── error/                  crate-wide errors
 └── lib.rs                  public Rust API
