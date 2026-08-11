@@ -150,6 +150,49 @@ async fn describing_a_sources_full_text_points_at_the_digest_instead() -> Result
     Ok(())
 }
 
+#[tokio::test]
+async fn a_refresh_says_how_many_originals_it_passed_over() -> Result<()> {
+    // Without it the caller sees a folder holding sources and an index
+    // listing none of them, and its next move is to describe each in turn.
+    let root =
+        std::env::temp_dir().join(format!("math-agent-refresh-skips-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L0.0")).expect("workspace is creatable");
+    let root = root.canonicalize().expect("workspace resolves");
+    std::fs::write(root.join("research/L0.0/a.full.md"), "full").expect("original is writable");
+    std::fs::write(root.join("research/L0.0/b.full.md"), "full").expect("original is writable");
+    let documents = super::super::documents::WorkspaceDocuments::new(root.clone())?;
+    let tools = super::FolderIndexTool::all(&documents);
+    let tool = tools
+        .iter()
+        .find(|tool| tool.name() == "refresh_index")
+        .expect("refresh_index is registered");
+
+    let result = tool
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "call-1".into(),
+                name: "refresh_index".into(),
+                invalid: None,
+                arguments: serde_json::json!({ "path": "research" }),
+            },
+        )
+        .await?;
+    assert!(
+        result.content.contains("2 source full text"),
+        "{}",
+        result.content
+    );
+    assert!(
+        result.content.contains("never indexed"),
+        "{}",
+        result.content
+    );
+    let _ = std::fs::remove_dir_all(&root);
+    Ok(())
+}
+
 #[test]
 fn a_row_written_as_a_wikilink_still_names_its_file() {
     // A live research index came back with every row keyed
