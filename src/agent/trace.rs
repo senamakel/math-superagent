@@ -193,10 +193,10 @@ impl EventListener for RunTracer {
                 if let Some(usage) = usage {
                     self.state
                         .input_tokens
-                        .fetch_add(u64::from(usage.input_tokens), Ordering::Relaxed);
+                        .fetch_add(usage.input_tokens, Ordering::Relaxed);
                     self.state
                         .cached_tokens
-                        .fetch_add(u64::from(usage.cache_read_tokens), Ordering::Relaxed);
+                        .fetch_add(usage.cache_read_tokens, Ordering::Relaxed);
                 }
                 let detail = usage.as_ref().map_or_else(String::new, |usage| {
                     format!(
