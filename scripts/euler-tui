@@ -1,0 +1,277 @@
+#!/usr/bin/env python3
+"""A tabbed console for one Project Euler run, one tab per team.
+
+The runtime prints a single interleaved stream: eleven roles, several
+concurrent child runs each, one line per model call, tool call, and tool
+result. It is the right format for a trace and the wrong one for watching —
+the organizer alone produced 232 of one run's first 400 lines, so the solve's
+own progress scrolls past between two index refreshes.
+
+This splits that stream by role without changing it. Every byte still lands in
+a log file exactly as the runtime emitted it, so `grep` over the file and the
+existing `trace.jsonl` tooling keep working; the tabs are a view, not a
+filter, and no line is dropped from the record because a tab was not open.
+
+Without a terminal it degrades to a plain tee. That is deliberate: the same
+command has to work when a person is watching and when something is scraping
+the output.
+"""
+
+from __future__ import annotations
+
+import argparse
+import curses
+import os
+import re
+import signal
+import subprocess
+import sys
+import threading
+from collections import OrderedDict, deque
+from pathlib import Path
+
+# `[MM:SS] role/agent-run-N  rest` or `[MM:SS] orchestrator  rest`. The
+# timestamp is elapsed run time, not wall clock, which is why it is kept
+# verbatim rather than reformatted: it is what the console and the trace agree
+# on when something has to be found in both.
+LINE = re.compile(r"^\[(?P<elapsed>[\d:]+)\]\s+(?P<who>\S+)\s+(?P<rest>.*)$")
+
+# Lines worth counting in the status bar. Each names a failure the runtime is
+# built to survive, so the count answers "is this run healthy" without reading
+# any tab.
+COUNTED = OrderedDict(
+    (
+        ("err", "error: tool error"),
+        ("trunc", "TRUNCATED"),
+        ("retry", "model RETRY"),
+        ("reroute", "PROVIDER FAILED"),
+        ("timeout", "timed out after"),
+        ("filed", "filed from the workspace root"),
+    )
+)
+
+# Lines every tab shows, whichever role emitted them. The loop's verdicts are
+# the run's spine: a score, a verdict, and an attempt boundary are the three
+# things a watcher never wants to have switched tabs to miss.
+PINNED = ("solution loop:", "team ")
+
+# Per-tab scrollback. Ten thousand lines is roughly an hour of one busy role
+# and costs a few megabytes; the log file holds everything regardless.
+SCROLLBACK = 10_000
+
+
+class Runs:
+    """The stream, split by role, plus the counters and the last cost."""
+
+    def __init__(self) -> None:
+        self.tabs: OrderedDict[str, deque[str]] = OrderedDict()
+        self.tabs["all"] = deque(maxlen=SCROLLBACK)
+        self.counts = OrderedDict((name, 0) for name in COUNTED)
+        self.elapsed = "00:00"
+        self.cost = ""
+        self.lock = threading.Lock()
+        self.ended = False
+
+    def add(self, line: str) -> None:
+        """Files one raw line, creating a tab the first time a role speaks."""
+        line = line.rstrip("\n")
+        match = LINE.match(line)
+        with self.lock:
+            self.tabs["all"].append(line)
+            for name, needle in COUNTED.items():
+                if needle in line:
+                    self.counts[name] += 1
+            cost = line.rsplit("$", 1)
+            if len(cost) == 2 and cost[1].replace(".", "", 1).isdigit():
+                self.cost = "$" + cost[1]
+            if not match:
+                # Anything unparsed — a build line, a panic, a bare traceback —
+                # belongs somewhere a reader will actually look.
+                return
+            self.elapsed = match["elapsed"]
+            role = match["who"].split("/", 1)[0]
+            if role not in self.tabs:
+                self.tabs[role] = deque(maxlen=SCROLLBACK)
+            self.tabs[role].append(line)
+            if any(pin in line for pin in PINNED):
+                for name, rows in self.tabs.items():
+                    if name not in ("all", role):
+                        rows.append(line)
+
+    def snapshot(self) -> tuple[list[str], dict[str, deque[str]], dict[str, int], str, str]:
+        with self.lock:
+            return (
+                list(self.tabs),
+                dict(self.tabs),
+                dict(self.counts),
+                self.elapsed,
+                self.cost,
+            )
+
+
+def pump(stream, runs: Runs, log, echo: bool) -> None:
+    """Reads the child's output into the model, the log, and maybe stdout."""
+    for raw in iter(stream.readline, ""):
+        runs.add(raw)
+        log.write(raw)
+        log.flush()
+        if echo:
+            sys.stdout.write(raw)
+            sys.stdout.flush()
+    runs.ended = True
+
+
+def draw(screen, runs: Runs, tab: int, offset: int) -> int:
+    """Paints one frame and returns the tab index actually shown."""
+    names, tabs, counts, elapsed, cost = runs.snapshot()
+    tab = max(0, min(tab, len(names) - 1))
+    height, width = screen.getmaxyx()
+    screen.erase()
+
+    header = "  ".join(
+        f"{index + 1}:{name}" if index != tab else f"[{index + 1}:{name}]"
+        for index, name in enumerate(names)
+    )
+    screen.addnstr(0, 0, header, width - 1, curses.A_BOLD)
+
+    rows = list(tabs[names[tab]])
+    body = height - 2
+    # `offset` counts lines back from the live end, so zero follows the tail.
+    end = len(rows) - offset
+    view = rows[max(0, end - body) : max(0, end)]
+    for index, line in enumerate(view):
+        attribute = curses.A_NORMAL
+        if any(pin in line for pin in PINNED):
+            attribute = curses.A_BOLD
+        elif "error" in line or "TRUNCATED" in line:
+            attribute = curses.A_DIM
+        screen.addnstr(1 + index, 0, line, width - 1, attribute)
+
+    faults = " ".join(f"{name}={value}" for name, value in counts.items() if value)
+    state = "ended" if runs.ended else "running"
+    live = "LIVE" if offset == 0 else f"-{offset}"
+    status = f" {elapsed} {state} {live} {cost} {faults}  [n/p tab, arrows scroll, q quit] "
+    screen.addnstr(height - 1, 0, status.ljust(width - 1), width - 1, curses.A_REVERSE)
+    screen.refresh()
+    return tab
+
+
+def watch(screen, runs: Runs) -> None:
+    """The curses loop. Quitting detaches; it never stops the run."""
+    curses.curs_set(0)
+    screen.nodelay(True)
+    screen.timeout(200)
+    tab, offset = 0, 0
+    while True:
+        tab = draw(screen, runs, tab, offset)
+        try:
+            key = screen.getch()
+        except curses.error:
+            key = -1
+        if key in (ord("q"), 27):
+            return
+        if key in (ord("n"), curses.KEY_RIGHT, ord("\t")):
+            tab, offset = tab + 1, 0
+        elif key in (ord("p"), curses.KEY_LEFT):
+            tab, offset = tab - 1, 0
+        elif key == curses.KEY_UP:
+            offset += 1
+        elif key == curses.KEY_DOWN:
+            offset = max(0, offset - 1)
+        elif key == curses.KEY_NPAGE:
+            offset = max(0, offset - (screen.getmaxyx()[0] - 2))
+        elif key == curses.KEY_PPAGE:
+            offset += screen.getmaxyx()[0] - 2
+        elif key == ord("g"):
+            offset = 0
+        elif ord("1") <= key <= ord("9"):
+            tab, offset = key - ord("1"), 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        prog="euler-tui",
+        description="Run or continue one Project Euler box with a tab per team.",
+    )
+    parser.add_argument("problem", type=int, help="Project Euler problem number")
+    parser.add_argument(
+        "--no-research",
+        action="store_true",
+        help="withhold web search, so the run tests reasoning rather than lookup",
+    )
+    parser.add_argument(
+        "--log",
+        type=Path,
+        help="where to tee the raw stream (default: the workspace's config/console.log)",
+    )
+    parser.add_argument(
+        "--plain",
+        action="store_true",
+        help="skip the tabs and stream to stdout, as when scripting",
+    )
+    parser.add_argument("extra", nargs="*", help="extra instructions for the run")
+    arguments = parser.parse_args()
+
+    if arguments.problem <= 0:
+        parser.error("problem number must be a positive integer")
+
+    root = Path(__file__).resolve().parent.parent
+    workspace = root / "workspace" / "project-euler" / str(arguments.problem)
+    log_path = arguments.log or workspace / "config" / "console.log"
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+
+    command = [str(root / "euler")]
+    if arguments.no_research:
+        command.append("--no-research")
+    command.append(str(arguments.problem))
+    command.extend(arguments.extra)
+
+    # A workspace that already holds work is continued rather than restarted:
+    # `euler` seeds only what is missing, and the loop reads what is on disk.
+    existing = workspace.exists() and any(workspace.glob("code/*.py"))
+    print(
+        f"{'continuing' if existing else 'starting'} problem {arguments.problem}"
+        f" — log at {log_path}",
+        file=sys.stderr,
+    )
+
+    runs = Runs()
+    tabs = not arguments.plain and sys.stdout.isatty()
+    with open(log_path, "a", encoding="utf-8") as log, subprocess.Popen(
+        command,
+        cwd=root,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,
+        # Its own process group, so the terminal's Ctrl-C reaches this script
+        # and not the container: quitting the view must never kill the run.
+        start_new_session=True,
+    ) as child:
+        reader = threading.Thread(
+            target=pump, args=(child.stdout, runs, log, not tabs), daemon=True
+        )
+        reader.start()
+        try:
+            if tabs:
+                curses.wrapper(watch, runs)
+            else:
+                reader.join()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            if tabs and child.poll() is None:
+                # Detaching is the default; the run continues in Docker and
+                # this script can be started again against the same log.
+                print(
+                    f"detached — the run continues; follow it with"
+                    f" `tail -f {log_path}`",
+                    file=sys.stderr,
+                )
+                os.killpg(child.pid, signal.SIGCONT)
+                return 0
+        return child.wait()
+
+
+if __name__ == "__main__":
+    sys.exit(main())
