@@ -256,9 +256,8 @@ The wrapper downloads the official statement from Project Euler's minimal
 problem endpoint, then runs the orchestrator in
 `workspace/project-euler/<number>` against a five-phase task: understand the
 statement, establish the governing theory, derive the method, implement it, and
-verify the result independently. Full-size code is not written until the
-derivation is. The small cases and worked example in the statement are the test
-oracle, and `solution.py` must reproduce them before running at scale.
+verify it independently. Full-size code waits on the derivation, and the worked
+examples are the oracle `solution.py` must reproduce before running at scale.
 
 The research agent may look up definitions, named theorems, and standard
 algorithms, but the prompt forbids searching for published Project Euler
