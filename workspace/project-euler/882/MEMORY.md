@@ -12,6 +12,18 @@ builds and validates the two DP programs (real-game brute up to n=8, counting
 game up to n=10).
 
 ## Established results
+- **S(n) = ceil(G(n)), G(n)=Σ_{k≤n} k·g(k)** (all conditions of the Simplicity
+  Rule hold up to n=10^5: every single number g(k) is a canonical Number, i.e.
+  max(One-options) < min(Zero-options) for all k≤10^5 — zero violations).
+  Reproduces every known value: S(1..5)=1,2,8,9,17 (matches the real-game brute
+  oracle), S(10)=64, S(2)=2, S(5)=17 (the statement's worked examples).
+- **Final answer: S(10^5) = 15800662276.** G(10^5)=517756101446417/32768 =
+  15800662275.58646…, floor 15800662275, ceil 15800662276. Confirmed by three
+  independent implementations (solve_dyadic.py, verify_dyadic.py, inline
+  Fraction sweep) giving the identical exact rational and identical S.
+- The brute-force real-game oracle reaches only n≤5 (S=1,2,8,9,17); n=6 is
+  unreachable (≈1.5e9 states at 500s, still climbing). So the dyadic-CGT rule
+  is the only structural route, and it reproduces every reachable oracle value.
 - **Dyadic CGT solution COMPUTED and CROSS-CHECKED (this run)**: g(k) = simplest
   dyadic strictly between max(Left=1-deletions) and min(Right=0-deletions),
   g(0)=0.  Every k in 1..100000 is a Number (max(Left) < min(Right); no
