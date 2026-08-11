@@ -379,40 +379,71 @@ async fn reading_does_not_hold_the_lock_that_filing_needs() -> Result<()> {
     // the scholar never touches, so the filing that is supposed to happen while
     // the files are new arrived after the run had moved on.
     let manager = AsyncSubagentManager::new(RunBudget::default(), None);
-    let started = Arc::new(Semaphore::new(0));
-    let release = Arc::new(Semaphore::new(0));
-    for name in ["research", "scholar", "organizer", "tool_builder"] {
+    // Each role gets its own gate. Sharing one would let the scholar consume a
+    // permit meant for the organizer and finish, which is exactly the state the
+    // test has to rule out.
+    let spawner_started = Arc::new(Semaphore::new(0));
+    let spawner_release = Arc::new(Semaphore::new(16));
+    let scholar_started = Arc::new(Semaphore::new(0));
+    // Never given a permit: the scholar stays running for the whole test.
+    let scholar_release = Arc::new(Semaphore::new(0));
+    let organizer_started = Arc::new(Semaphore::new(0));
+    let organizer_release = Arc::new(Semaphore::new(16));
+    for name in ["research", "tool_builder"] {
         manager.register_executor(
             name,
             Arc::new(SteerableExecutor {
-                started: started.clone(),
-                release: release.clone(),
+                started: spawner_started.clone(),
+                release: spawner_release.clone(),
             }),
         )?;
     }
+    manager.register_executor(
+        "scholar",
+        Arc::new(SteerableExecutor {
+            started: scholar_started.clone(),
+            release: scholar_release.clone(),
+        }),
+    )?;
+    manager.register_executor(
+        "organizer",
+        Arc::new(SteerableExecutor {
+            started: organizer_started.clone(),
+            release: organizer_release.clone(),
+        }),
+    )?;
 
-    // Research finishes, so its sequence begins with the scholar and holds it
-    // there by never releasing that step.
+    // Research finishes, so its sequence begins with the scholar, which then
+    // stays running because nothing will ever release it.
     let research = manager.spawn("research", "find it".into())?;
-    release.add_permits(1);
     assert_eq!(
         manager.await_record(research.as_str(), 5).await?.status,
         OrchestrationTaskStatus::Completed
     );
-    let _ = tokio::time::timeout(std::time::Duration::from_secs(5), started.acquire()).await;
+    assert!(
+        tokio::time::timeout(
+            std::time::Duration::from_secs(5),
+            scholar_started.acquire()
+        )
+        .await
+        .is_ok(),
+        "research must hand off to the scholar"
+    );
 
-    // With the scholar still running, a tool-builder's organizer must be able
-    // to start rather than queue behind it.
+    // With the scholar still running, a tool-builder's organizer must start
+    // rather than queue behind it.
     let tools = manager.spawn("tool_builder", "build it".into())?;
-    release.add_permits(2);
     assert_eq!(
         manager.await_record(tools.as_str(), 5).await?.status,
         OrchestrationTaskStatus::Completed
     );
     assert!(
-        tokio::time::timeout(std::time::Duration::from_secs(5), started.acquire())
-            .await
-            .is_ok(),
+        tokio::time::timeout(
+            std::time::Duration::from_secs(5),
+            organizer_started.acquire()
+        )
+        .await
+        .is_ok(),
         "the organizer must not wait for an unrelated scholar to finish"
     );
     Ok(())
