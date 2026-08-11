@@ -20,6 +20,6 @@ Faulhaber closed forms used (k: formula):
 n=50 power-sum     : C=8154671 S=29948928129
 n=50 direct-loop    : C=8154671 S=29948928129
 power-sum == direct-loop exactly (both C and S): ASSERT OK (bit-for-bit identical)
-n=50 O(1) summation wall time (compute phase only): 0.0009s
-n=50 frame enumeration wall time (excluded from sum timing): 0.2673s
+n=50 O(1) summation wall time (compute phase only): 0.0011s
+n=50 frame enumeration wall time (excluded from sum timing): 0.3112s
 n=50 frame count: 755
