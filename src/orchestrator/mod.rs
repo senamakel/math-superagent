@@ -294,18 +294,7 @@ impl OrchestratorAgent {
         let tracer = start_tracer(&workspace, budget, research_enabled);
         let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()));
         let documents = WorkspaceDocuments::new(workspace.clone())?;
-        let shared_guidance = load_workspace_files(
-            &workspace,
-            &[
-                "AGENTS.md",
-                "config.toml",
-                "goal.md",
-                "tasks.md",
-                "memory.md",
-                "scratchpad.md",
-            ],
-        )?;
-        let prompts = RolePrompts::load(&workspace, &shared_guidance)?;
+        let prompts = RolePrompts::load(&workspace)?;
 
         let vector_store = VectorStore::from_env()?;
         let exa = if research_enabled {
@@ -577,31 +566,84 @@ struct RolePrompts {
     librarian: String,
 }
 
+/// The workspace context every role receives.
+///
+/// `AGENTS.md` is the method policy and applies to everyone. Nothing else does.
+const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
+
+/// Workspace files loaded into each role's system prompt, beyond
+/// [`UNIVERSAL_CONTEXT`].
+///
+/// Context is authority and it is also noise. Loading all six working files
+/// into all eight agents made every specialist read the orchestrator's task
+/// list and the tool-builder's scratch arithmetic, which buries the part that
+/// actually governs its own decisions. Each list below is chosen for what the
+/// role has to decide:
+///
+/// * `goal.md` states the objective and its completion criteria. Reflection
+///   needs it most of anyone — judging "solved" against criteria it cannot see
+///   is guesswork, and a wrong `SOLVED` ends the whole investigation.
+/// * `memory.md` records established results and, critically, failed
+///   approaches. The inventor must have it or it will re-propose exactly what
+///   already failed, which is the one thing it exists not to do.
+/// * `scratchpad.md` holds provisional data. The pattern agent wants it
+///   because raw computed terms are its input; the reflection agent must not,
+///   because unsettled scratch work is not evidence of progress.
+/// * `tasks.md` tracks what is done and outstanding, so it goes to the roles
+///   that plan and execute, not to the ones answering a single question.
+/// * `config.toml` carries runtime limits and only the executing roles act
+///   on them.
+fn role_context(role: &str) -> &'static [&'static str] {
+    match role {
+        // Plans and combines: needs the objective, the plan, and what is known.
+        "orchestrator" | "goals" => &["config.toml", "goal.md", "tasks.md", "memory.md"],
+        // Executes: needs everything the plan depends on plus its own scratch.
+        "tool_builder" => &[
+            "config.toml",
+            "goal.md",
+            "tasks.md",
+            "memory.md",
+            "scratchpad.md",
+        ],
+        // Judges: needs the criteria and the record, never provisional work.
+        "reflection" => &["goal.md", "tasks.md", "memory.md"],
+        // Analyses computed data: needs the numbers, not the plan.
+        "pattern_finder" => &["goal.md", "memory.md", "scratchpad.md"],
+        // Proposes alternatives: needs the objective and what already failed.
+        "inventor" => &["goal.md", "memory.md"],
+        // Gathers sources: needs the objective and the existing library index.
+        "librarian" => &["goal.md", "memory.md", "reference/INDEX.md"],
+        // Answers a focused question: needs the objective and prior findings.
+        "research" => &["goal.md", "memory.md"],
+        _ => &[],
+    }
+}
+
 impl RolePrompts {
-    /// Loads each role's prompt, layering `prompts/<role>.md` from the
-    /// workspace over the built-in policy.
+    /// Loads each role's prompt: built-in policy, the workspace context that
+    /// role is entitled to, then its `prompts/<role>.md` guidance.
     ///
     /// # Errors
     ///
-    /// Returns an error when a workspace prompt file is unreadable, oversized,
-    /// or not UTF-8. A file that is simply absent is skipped.
-    fn load(workspace: &Path, shared: &str) -> Result<Self> {
-        let role = |base: &str, file: &str| -> Result<String> {
-            Ok(workspace_prompt(
-                base,
-                shared,
-                &load_workspace_files(workspace, &[file])?,
-            ))
+    /// Returns an error when a workspace file is unreadable, oversized, or not
+    /// UTF-8. A file that is simply absent is skipped.
+    fn load(workspace: &Path) -> Result<Self> {
+        let role = |name: &str, base: &str| -> Result<String> {
+            let mut files: Vec<&str> = UNIVERSAL_CONTEXT.to_vec();
+            files.extend_from_slice(role_context(name));
+            let context = load_workspace_files(workspace, &files)?;
+            let guidance = load_workspace_files(workspace, &[&format!("prompts/{name}.md")])?;
+            Ok(workspace_prompt(base, &context, &guidance))
         };
         Ok(Self {
-            orchestrator: role(ORCHESTRATOR_PROMPT, "prompts/orchestrator.md")?,
-            research: role(RESEARCH_PROMPT, "prompts/research.md")?,
-            tool_builder: role(TOOL_BUILDER_PROMPT, "prompts/tool_builder.md")?,
-            goals: role(GOALS_PROMPT, "prompts/goals.md")?,
-            reflection: role(REFLECTION_PROMPT, "prompts/reflection.md")?,
-            pattern: role(PATTERN_PROMPT, "prompts/pattern_finder.md")?,
-            inventor: role(INVENTOR_PROMPT, "prompts/inventor.md")?,
-            librarian: role(LIBRARIAN_PROMPT, "prompts/librarian.md")?,
+            orchestrator: role("orchestrator", ORCHESTRATOR_PROMPT)?,
+            research: role("research", RESEARCH_PROMPT)?,
+            tool_builder: role("tool_builder", TOOL_BUILDER_PROMPT)?,
+            goals: role("goals", GOALS_PROMPT)?,
+            reflection: role("reflection", REFLECTION_PROMPT)?,
+            pattern: role("pattern_finder", PATTERN_PROMPT)?,
+            inventor: role("inventor", INVENTOR_PROMPT)?,
+            librarian: role("librarian", LIBRARIAN_PROMPT)?,
         })
     }
 }
