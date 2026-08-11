@@ -46,27 +46,6 @@ const SOURCE_LEVEL: usize = 0;
 /// Level of the research tree holding one note per source.
 const DIGEST_LEVEL: usize = 1;
 
-/// Characters of a downloaded document kept in the summary file before it has
-/// been digested.
-///
-/// A converted document is not small: one downloaded reference page came to
-/// 91,190 characters, roughly 23,000 tokens, and three of them would fill a
-/// specialist's context before it had done any work. Filing the whole thing
-/// where agents read it means the run pays that cost every time anyone opens
-/// it, to re-read prose it has already been through.
-///
-/// So a download lands as two files side by side: `<name>.md` carries a
-/// bounded excerpt that the scholar replaces with a real summary, and
-/// `<name>.full.md` carries the whole converted text. Both stay in `research/`
-/// where an agent can reach them, because a source whose detail is genuinely
-/// needed must be readable without leaving the workspace. What the split buys
-/// is that reading the short one is the default and reading the long one is a
-/// decision.
-///
-/// Four thousand characters is about a thousand tokens — enough to carry a
-/// paper's abstract and the opening of its first section, which is usually
-/// enough to tell whether the full text is worth opening.
-const RESEARCH_EXCERPT_CHARS: usize = 4_000;
 const MAX_SEARCH_RESULTS: usize = 10;
 
 #[derive(Clone, Debug)]
