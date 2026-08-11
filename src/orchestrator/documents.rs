@@ -93,7 +93,11 @@ impl WorkspaceDocuments {
                     "failed to build document HTTP client: {error}"
                 ))
             })?;
-        Ok(Self { workspace, client })
+        Ok(Self {
+            workspace,
+            client,
+            index_lock: Arc::new(tokio::sync::Mutex::new(())),
+        })
     }
 
     pub(super) fn tools(&self) -> Vec<Arc<dyn Tool<()>>> {
