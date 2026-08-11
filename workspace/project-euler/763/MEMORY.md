@@ -178,3 +178,40 @@ D2(N), N=0..21:
 
 Saved to `code/out/d2_values.txt`.  d=3 sequence D3(0..14) remains exactly as
 in `code/out/d_values_more.txt` (unchanged, reproduces the stated values).
+
+## CONFIRMED: max-level decomposition of D(N) (exact, survived out-of-sample)
+
+N(N,M) = # distinct reachable configs after N divisions with max level M
+(=max x+y+z).  For fixed offset k=N-M (k>=0), over N=2..14 (from
+data/level_N.txt N=2..12 PLUS fresh histogram data at N=13,14:
+
+  N(N, N-k) = Q_k(N) * 3^(N-2k-1)   with Q_k a degree-k polynomial in N.
+
+Column closed forms (all match fresh N=13,14 out-of-sample; Q_0..Q_3 fit on
+N<=12 predict N=13,14 exactly):
+  Q_0(N) = 1                  [diag count(N,N)=3^(N-1), N=2..14]
+  Q_1(N) = N-3                [count(N,N-1)=(N-3)3^(N-3), N=4..14]
+  Q_2(N) = (N-5)(N+2)/2
+  Q_3(N) = (N^3 - 73N + 168)/6
+  Q_4(N) = N^4/24 + N^3/4 - 205N^2/24 + 97N/4 + 27
+  (Q_5, Q_6 undetermined — too few rows)
+D(N) = sum_M N(N,M) = sum_{k=0}^{N-2} Q_k(N) 3^(N-2k-1).
+
+Status: EXACT over every computed point (incl. fresh N=13,14 never fit on);
+still a CONJECTURE beyond N=14.  Derived basis unknown (likely counting
+configs by farthest chain length). Analysis in code/pattern/q_verify.py,
+q_fresh_test.py, full_triangle.py; scratch SCRATCHPAD_pattern.md.
+
+## NEGATIVE results (pattern-finder)
+
+1. Order-7 constant-coefficient recurrence found by find_linear_recurrence on
+   D(0..14) is an OVERFIT: extrapolating gives non-integer at n=18
+   (3*D(18)=2387442214 not divisible by 3).  Cannot hit D(20)=9204559704.
+   Any small exactly-fit linear recurrence on this data is a fit artifact.
+2. D(0..14) is NOT in OEIS (no catalogued closed form).
+3. D(N) is NOT small-order holonomic (P-recursive): all order 1..8, degree
+   1..5 fits either hit a leading-coefficient pole or produce a non-integer at
+   the first extrapolated step.  Consistent with 2D (A007902 has only a
+   two-index recursion, no simple one-index recurrence).
+4. d=2 analog == OEIS A007902 (pebbling configs), asymptotic 0.1227*2.3216^N.
+   Its exact DP (two-index G(k,m)) generalizing to 3D is the governing route.

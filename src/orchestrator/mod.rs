@@ -1236,6 +1236,35 @@ impl RolePrompts {
     }
 }
 
+/// Assembles the research agent's harness: search the web, and remember what
+/// it found.
+fn build_research_harness(
+    model: &Arc<dyn ChatModel<()>>,
+    budget: RunBudget,
+    tracer: &Arc<RunTracer>,
+    documents: &WorkspaceDocuments,
+    vector_store: &VectorStore,
+    search: (Option<Arc<dyn Tool<()>>>, Option<Arc<dyn Tool<()>>>),
+) -> AgentHarness<()> {
+    let (exa, oeis) = search;
+    let mut harness = specialist_harness(model.clone(), budget, "research", tracer);
+    for tool in exa.into_iter().chain(oeis) {
+        register_resilient(&mut harness, tool);
+    }
+    register_resilient(
+        &mut harness,
+        Arc::new(RecallResearchTool::new(vector_store.clone())),
+    );
+    register_resilient(
+        &mut harness,
+        Arc::new(RememberResearchTool::new(vector_store.clone())),
+    );
+    for tool in documents.tools() {
+        register_resilient(&mut harness, tool);
+    }
+    harness
+}
+
 /// What every code-writing role's harness is built from.
 struct CodeWriters<'a> {
     model: &'a Arc<dyn ChatModel<()>>,
