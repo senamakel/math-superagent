@@ -1,4 +1,11 @@
 //! Runs the Docker-jailed registry-backed orchestrator.
+//!
+//! Two modes. The default gives the orchestrator one turn and trusts it to
+//! delegate well, which suits a problem whose approach is clear. Setting
+//! `MATH_AGENT_SOLVE_LOOP=on` instead runs the graph-backed solution loop,
+//! which attempts, reflects on what happened, and diversifies when repeated
+//! attempts stop making progress. Use the loop when the first approach is
+//! likely to be wrong, which is the usual case for a hard problem.
 
 use math_agent::OrchestratorAgent;
 
@@ -14,7 +21,23 @@ async fn main() -> math_agent::agent::Result<()> {
     };
 
     let agent = OrchestratorAgent::from_env()?;
-    let answer = agent.run("orchestrator", task).await?;
+    let answer = if solution_loop_enabled() {
+        agent.solve(task).await?
+    } else {
+        agent.run("orchestrator", task).await?
+    };
     println!("{answer}");
     Ok(())
+}
+
+/// Returns whether the graph-backed solution loop should drive this run.
+fn solution_loop_enabled() -> bool {
+    matches!(
+        std::env::var("MATH_AGENT_SOLVE_LOOP")
+            .unwrap_or_default()
+            .trim()
+            .to_ascii_lowercase()
+            .as_str(),
+        "on" | "1" | "true" | "yes" | "enabled"
+    )
 }
