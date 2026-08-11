@@ -24,10 +24,10 @@ use tinyagents::harness::summarization::{
     render_message_for_summary,
 };
 
+use crate::agent::accounting::AccountingModel;
 use crate::agent::budget::RunBudget;
 use crate::agent::reflection::ReflectionMiddleware;
 use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
-use crate::agent::accounting::AccountingModel;
 use crate::agent::sticky::StickyProviderModel;
 use crate::agent::trace::RunTracer;
 use crate::agent::{
@@ -369,7 +369,8 @@ impl OrchestratorAgent {
         async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
 
         // tool_builder: the only role with shell and file-write authority.
-        let mut tool_builder_harness = specialist_harness(model.clone(), budget, "tool_builder", &tracer);
+        let mut tool_builder_harness =
+            specialist_harness(model.clone(), budget, "tool_builder", &tracer);
         register_resilient(
             &mut tool_builder_harness,
             Arc::new(WriteToolFile::new(workspace.clone())),
@@ -757,13 +758,23 @@ fn register_support_agents(
     parts: &SupportAgents<'_>,
     prompts: SupportPrompts,
 ) -> Result<()> {
-    let mut reflection = specialist_harness(parts.model.clone(), parts.budget, "reflection", parts.tracer);
+    let mut reflection = specialist_harness(
+        parts.model.clone(),
+        parts.budget,
+        "reflection",
+        parts.tracer,
+    );
     for tool in parts.documents.tools() {
         register_resilient(&mut reflection, tool);
     }
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
-    let mut pattern = specialist_harness(parts.model.clone(), parts.budget, "pattern_finder", parts.tracer);
+    let mut pattern = specialist_harness(
+        parts.model.clone(),
+        parts.budget,
+        "pattern_finder",
+        parts.tracer,
+    );
     for tool in PatternTool::all() {
         register_resilient(&mut pattern, tool);
     }
@@ -772,7 +783,8 @@ fn register_support_agents(
     }
     subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
 
-    let mut inventor = specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
+    let mut inventor =
+        specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut inventor, exa);
     }
@@ -789,7 +801,8 @@ fn register_support_agents(
     }
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
-    let mut librarian = specialist_harness(parts.model.clone(), parts.budget, "librarian", parts.tracer);
+    let mut librarian =
+        specialist_harness(parts.model.clone(), parts.budget, "librarian", parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut librarian, exa);
     }

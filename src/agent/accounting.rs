@@ -47,7 +47,11 @@ impl<S: Send + Sync> std::fmt::Debug for AccountingModel<S> {
 impl<S: Send + Sync> AccountingModel<S> {
     /// Wraps `inner`, reporting its calls as `agent`.
     #[must_use]
-    pub fn new(inner: Arc<dyn ChatModel<S>>, agent: impl Into<String>, tracer: Arc<RunTracer>) -> Self {
+    pub fn new(
+        inner: Arc<dyn ChatModel<S>>,
+        agent: impl Into<String>,
+        tracer: Arc<RunTracer>,
+    ) -> Self {
         Self {
             inner,
             agent: agent.into(),
@@ -75,9 +79,8 @@ pub(crate) fn accounting_from(agent: &str, raw: &Value) -> ModelAccounting {
             .and_then(Value::as_u64)
             .unwrap_or_default()
     };
-    let nested = |key: &str, child: &str| -> u64 {
-        number(usage.and_then(|usage| usage.get(key)), child)
-    };
+    let nested =
+        |key: &str, child: &str| -> u64 { number(usage.and_then(|usage| usage.get(key)), child) };
 
     ModelAccounting {
         agent: agent.to_string(),

@@ -210,7 +210,8 @@ impl RunTracer {
     /// percentages become shares of agent time and a concurrency factor
     /// replaces idle.
     fn profile(&self) -> String {
-        let wall = u64::try_from(self.state.started.elapsed().as_millis().max(1)).unwrap_or(u64::MAX);
+        let wall =
+            u64::try_from(self.state.started.elapsed().as_millis().max(1)).unwrap_or(u64::MAX);
         let model = self.state.model_ms.load(Ordering::Relaxed);
         let tool = self.state.tool_ms.load(Ordering::Relaxed);
         let busy = model.saturating_add(tool);
