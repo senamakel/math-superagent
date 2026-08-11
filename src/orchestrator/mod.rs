@@ -479,9 +479,16 @@ fn support_agents(
         )
         .with_model("openrouter")
         .with_tools(
-            ["analyze_sequence", "find_linear_recurrence"]
-                .into_iter()
-                .chain(document_tools),
+            [
+                "analyze_sequence",
+                "find_linear_recurrence",
+                // It tests conjectures by computing more terms, so it needs to
+                // write and run a program like any other worker.
+                "write_tool_file",
+                "execute_command",
+            ]
+            .into_iter()
+            .chain(document_tools),
         ),
         AgentDefinition::new(
             "inventor",
