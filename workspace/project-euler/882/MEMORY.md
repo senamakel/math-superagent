@@ -50,6 +50,31 @@ game up to n=10).
   just the totals. Output: code/out/counting_proper.txt.
 - What is the closed-form/structure for S(n)? (Not yet computed.)
 
+## KEY RESULT for Project Euler 882 (this pattern-recognition branch)
+
+**S(n) = ceil(G(n)), G(n) = Σ_{k=1..n} k·g(k)** where g(k) is the CGT value of
+the single-number bit-deletion game:
+- g(0)=0; One(Left) deletes a 1-bit → option values g(j); Zero(Right) deletes a
+  0-bit → option values g(j); g(k) = simplest dyadic strictly between
+  max(Left) and min(Right) (Simplicity Rule for canonical Numbers). Verified
+  k≤4096: always a Number (max L < min R), never a game that needs a switch.
+- Board is a disjunctive sum of k copies of k → value G(n)=Σ k·g(k).
+- Each Right(skip) adds −1, so Zero (Right) wins iff G(n)−m≤0 ⇒ **S(n)=ceil(G(n))**.
+- Cheap at full size: G(n) direct O(n log n) iteration; no polylog needed since
+  n=10^5 ⇒ S(10^5) = **15800662276** (G=517756101446417/32768≈1.5801e10).
+
+**Verification.** Two independent code paths agree (both exact fractions):
+solve_dyadic.py and verify_dyadic.py → same G, same S. Repro of all known
+values: real-game brute confirms S(1..5)=1,2,8,9,17; given S(10)=64; ceil(G)
+gives exactly 1,2,8,9,17,23,44,45,56,64 for n=1..10. So the dyadic rule matches
+every value brute can reach and every statement example.
+
+## Structure notes (g(k))
+- g(2^p)=1/2^p; g(2^p−1)=p (Mersenne); g(2^p+1)=(2^p+1)/2^p.
+- NOT g(2k)=g(k)/2 in general (first diverges k=7). S sequence has no low
+  degree polynomial / plain linear recurrence (analyze_sequence). The
+  computable structure is the dyadic CGT rule itself, not a closed form of S.
+
 ## Failed approaches
 - **Single-aggregate (A,B) counting surrogate (both skip readings)** — refuted
   by counting_proper.py. With the corrected skip semantics the exact
@@ -57,3 +82,7 @@ game up to n=10).
   n=1 of the real oracle 1,2,8,9,17 matches (it gives 1,1,7,3,8). The real
   game's S depends on the distribution/positions of bits, not the totals A,B.
   A dead end worth recording so no later run rebuilds it.
+- **Fitting S(n) to a low-order recurrence / polynomial** — no structure found,
+  matching expectation: S comes from the dyadic CGT rule, and G(n)'s dyadic
+  increments make S a jumpy sequence, not a clean recurrence. Don't re-derive
+  S(n) independently; compute G(n)=Σ k·g(k) and take ceil.
