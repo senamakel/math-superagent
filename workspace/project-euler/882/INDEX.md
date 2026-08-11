@@ -12,5 +12,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `SCRATCHPAD.md` | Scratchpad for provisional calculations not yet ready for memory.md. |
 | `TASKS.md` | Task checklist (single placeholder task row). |
 | `brute.py` | Root copy of TASK A: naive minimax over the REAL bit-deletion game, mirrors code/brute.py. Kept at root because GOAL.md names /workspace/brute.py; the canonical program is code/brute.py. |
+| `dyadic_clean.py` | STRAY root copy of the exploratory dyadic-CGT program; the canonical copy is code/dyadic_clean.py. Same content (g(k)=simplest dyadic between one/zero-deletion options, board value G(n)=sum k*g(k), S_theory=ceil(G(n))). Kept here only because it landed in the root and cannot be moved; read code/dyadic_clean.py instead. |
 | `problem.md` | The problem statement: partisan bit-deletion game, definition of S(n), given values S(2)=2, S(5)=17, S(10)=64, ask for S(10^5). |
 | `scratchpad_run.md` | Scratch log note ("run existing programs, executed inline, see transcript") from an earlier scratch run; no durable claims. |
