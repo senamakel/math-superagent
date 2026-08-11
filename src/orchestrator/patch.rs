@@ -102,6 +102,10 @@ pub(super) fn parse(patch: &str) -> Result<Vec<FileOp>> {
     let mut ops: Vec<FileOp> = Vec::new();
     let mut seen: HashSet<String> = HashSet::new();
 
+    // The path an `Add` asked for, when placement moved it. Both spellings
+    // have to collide with a later operation: a patch adding `a.py` and then
+    // deleting `a.py` is malformed whichever folder the add landed in.
+    let mut requested: Option<String> = None;
     while let Some(line) = lines.next() {
         let op = if let Some(path) = line.strip_prefix(ADD) {
             let mut contents = String::new();
