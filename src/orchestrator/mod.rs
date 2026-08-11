@@ -5,6 +5,7 @@ mod checkpoint;
 mod context_tree;
 mod documents;
 mod folder_index;
+mod layout;
 mod patch;
 mod patterns;
 mod readable;

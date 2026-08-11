@@ -47,7 +47,10 @@ fn a_path_naming_a_folder_is_left_where_the_caller_put_it() {
     assert_eq!(placed("research/L1/paper.md"), "research/L1/paper.md");
     assert_eq!(placed("toolkits/pell.py"), "toolkits/pell.py");
     assert_eq!(placed("code/out/run.log"), "code/out/run.log");
-    assert_eq!(placed("experiments/first/try.py"), "experiments/first/try.py");
+    assert_eq!(
+        placed("experiments/first/try.py"),
+        "experiments/first/try.py"
+    );
 }
 
 #[test]
