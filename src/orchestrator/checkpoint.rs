@@ -1,7 +1,7 @@
 //! Automatic version control over the agent's own workspace.
 //!
 //! A long investigation overwrites its own files: `solution.py` is rewritten a
-//! dozen times, `memory.md` is edited as beliefs change, and a wrong turn
+//! dozen times, `MEMORY.md` is edited as beliefs change, and a wrong turn
 //! silently destroys the working version that preceded it. Nothing records
 //! that a file used to be right. This middleware commits the workspace after
 //! every successful write, so each state is recoverable and the sequence of

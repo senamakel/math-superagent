@@ -52,9 +52,9 @@ fn a_tidy_tree_needs_nothing() {
     write(&root, "research/L0/paper.full.md", 90_000);
     write(&root, "research/L1/paper.md", 400);
     write(&root, "research/INDEX.md", 400);
-    write(&root, "context.md", 400);
+    write(&root, "CONTEXT.md", 400);
     touch(&root, "research/INDEX.md");
-    touch(&root, "context.md");
+    touch(&root, "CONTEXT.md");
     assert_eq!(plan(&root), Vec::new());
     assert_eq!(briefing(&root), None);
 }
@@ -79,14 +79,14 @@ fn originals_are_exempt_from_the_cap_every_level_above_them_is_held_to() {
 fn an_oversized_root_is_the_first_thing_reported() {
     let root = workspace("oversized");
     // Over a thousand tokens at four characters each.
-    write(&root, "context.md", 8_000);
+    write(&root, "CONTEXT.md", 8_000);
     write(&root, "research/INDEX.md", 400);
     write(&root, "research/L1/a.md", 100);
     let first = plan(&root).into_iter().next().expect("a task");
     assert_eq!(first.fault, Fault::OverBudget);
-    assert_eq!(first.node.path, "context.md");
+    assert_eq!(first.node.path, "CONTEXT.md");
     let brief = briefing(&root).unwrap_or_default();
-    assert!(brief.contains("context.md"), "{brief}");
+    assert!(brief.contains("CONTEXT.md"), "{brief}");
     assert!(brief.contains("[[note-name]]"), "{brief}");
 }
 
@@ -264,9 +264,9 @@ fn one_new_note_does_not_force_a_refold() {
     write(&root, "research/INDEX.md", 400);
     write(&root, "research/L1/a.md", 100);
     write(&root, "research/L1/b.md", 100);
-    write(&root, "context.md", 100);
+    write(&root, "CONTEXT.md", 100);
     touch(&root, "research/INDEX.md");
-    touch(&root, "context.md");
+    touch(&root, "CONTEXT.md");
     write(&root, "research/L1/c.md", 100);
     assert_eq!(
         faults(&root)
@@ -281,10 +281,10 @@ fn one_new_note_does_not_force_a_refold() {
 #[test]
 fn only_one_task_is_asked_for_at_a_time() {
     let root = workspace("single");
-    write(&root, "context.md", 8_000);
+    write(&root, "CONTEXT.md", 8_000);
     write(&root, "research/INDEX.md", 8_000);
     write(&root, "research/L1/a.md", 100);
     let brief = briefing(&root).unwrap_or_default();
-    assert!(brief.contains("context.md"), "{brief}");
+    assert!(brief.contains("CONTEXT.md"), "{brief}");
     assert!(!brief.contains("research/INDEX.md"), "{brief}");
 }

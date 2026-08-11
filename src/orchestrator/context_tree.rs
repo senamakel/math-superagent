@@ -73,7 +73,7 @@ const STALE_CHILDREN: usize = 3;
 const ROOTS: [&str; 2] = ["research", "reflections"];
 
 /// The run-wide standing brief, a root in its own right.
-const CONTEXT_FILE: &str = "context.md";
+const CONTEXT_FILE: &str = "CONTEXT.md";
 
 /// Deepest level the planner will look for.
 ///

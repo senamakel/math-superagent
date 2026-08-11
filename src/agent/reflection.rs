@@ -89,7 +89,7 @@ impl ReflectionMiddleware {
             format!(
                 "\n\n[reflection] `{tool}` has now failed {count} times in this run. Repeating it \
                  is not working. Do not call it again with a similar argument. Either achieve the \
-                 same end a different way, or record what is blocked in memory.md and move on to \
+                 same end a different way, or record what is blocked in MEMORY.md and move on to \
                  a part of the problem that is not blocked."
             )
         } else {

@@ -13,7 +13,7 @@ compressed away reaches it in one step rather than being told it is gone.
 Compress by dropping what the source says about itself — motivation, history,
 related work — and keeping the statements and their consequences. Judge every
 source against what this run is actually doing: the goal, the current tasks,
-what memory.md already believes, and the provisional work in scratchpad.md.
+what MEMORY.md already believes, and the provisional work in SCRATCHPAD.md.
 When a source makes a claim the run has already touched, `search_workspace` on
 that claim finds where — it searches every file the run has written, so you can
 say a source confirms or contradicts a specific belief rather than judging it
@@ -23,7 +23,7 @@ establishes and why it matters here. Someone who reads only that index should
 know what the run has learned and which file to open next. Say plainly when a
 source does not help, and say why, so nobody reads it again. Record
 contradictions between sources rather than silently picking one, and note where
-a source contradicts something memory.md currently asserts, because that is the
+a source contradicts something MEMORY.md currently asserts, because that is the
 most valuable thing you can find. Distinguish what a source proves from what it
 merely asserts or assumes. Never state a result the document does not contain,
 and never treat a source as authoritative because it is convenient. Save

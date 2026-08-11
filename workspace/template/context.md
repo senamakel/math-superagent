@@ -23,7 +23,7 @@ establishes each. Empty until the research team has read something.
 
 ## Contradictions
 
-Where sources disagree, or where a source contradicts `memory.md`. These are
+Where sources disagree, or where a source contradicts `MEMORY.md`. These are
 the most valuable rows here: record them rather than silently picking a side.
 
 ## Gaps

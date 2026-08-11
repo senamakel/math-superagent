@@ -527,12 +527,12 @@ research/            reflections/
 `L0` is the untouched original — the complete converted document, or the
 reflection the loop wrote. Each level above holds one note per ten below,
 capped at a thousand tokens, and a new level appears only when the one under it
-outgrows a single node. `context.md` is a root in its own right under the same
+outgrows a single node. `CONTEXT.md` is a root in its own right under the same
 cap.
 
 The cap is the point. These files are re-sent on every model call in every role
 that reads them, and asking a prompt for "a few hundred words" produced a 6.8 KB
-`context.md` inside an hour, because each cycle appends what it learned and
+`CONTEXT.md` inside an hour, because each cycle appends what it learned and
 nothing ever asks what the file now costs. So compression is a tree rather than
 a rewrite: a flat rewrite drops what the last pass judged unimportant, records
 nothing about what it dropped, and ends up confident about things no longer
@@ -590,14 +590,14 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `goal.md`, `tasks.md`, `memory.md`, `code/toolkits/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
-| tool_builder, coder | the planners' files plus `scratchpad.md`, minus `reflections/INDEX.md` |
-| reflection | `goal.md`, `tasks.md`, `memory.md`, `INDEX.md`, `reflections/INDEX.md` |
-| pattern_finder | `goal.md`, `memory.md`, `scratchpad.md`, `code/toolkits/INDEX.md` |
-| librarian, research | `goal.md`, `memory.md`, `research/INDEX.md` |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/toolkits/INDEX.md`, `research/INDEX.md`, `reflections/INDEX.md` |
+| tool_builder, coder | the planners' files plus `SCRATCHPAD.md`, minus `reflections/INDEX.md` |
+| reflection | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
+| pattern_finder | `GOAL.md`, `MEMORY.md`, `SCRATCHPAD.md`, `code/toolkits/INDEX.md` |
+| librarian, research | `GOAL.md`, `MEMORY.md`, `research/INDEX.md` |
 | inventor | the above plus `reflections/INDEX.md` |
-| scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md` |
-| organizer | `goal.md`, `tasks.md`, `INDEX.md`, `code/toolkits/INDEX.md`, `research/INDEX.md` |
+| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `SCRATCHPAD.md`, `research/INDEX.md` |
+| organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/toolkits/INDEX.md`, `research/INDEX.md` |
 
 The tool-builder accumulates reusable helpers under `code/toolkits/`, one function
 per file, described through `describe_file` so `code/toolkits/INDEX.md` carries the
@@ -610,13 +610,13 @@ the next agent calls it as described rather than reading the source.
 
 Four of these are load-bearing rather than tidy-minded:
 
-- Reflection must see `goal.md`. It judges whether the criteria are met, and
+- Reflection must see `GOAL.md`. It judges whether the criteria are met, and
   judging against criteria it cannot see is guesswork; a wrong `SOLVED` ends
   the investigation.
-- The inventor must see `memory.md` for its failed-approaches section. Without
+- The inventor must see `MEMORY.md` for its failed-approaches section. Without
   it, it re-proposes what already failed, which is the one thing it exists not
   to do.
-- Reflection must *not* see `scratchpad.md`. Provisional arithmetic is not
+- Reflection must *not* see `SCRATCHPAD.md`. Provisional arithmetic is not
   evidence of progress, and treating it as such keeps the loop retrying.
 
 Indexes are the cheap exception to that rule. An index costs a few hundred
@@ -633,13 +633,13 @@ Adding a file to every role is the easy mistake. Ask what the role has to
 decide, and give it only what that decision needs. The scholar is the one
 legitimate exception: judging whether a source is worth anything requires
 knowing what the run wants, what it already believes, and what it is currently
-attempting, so it needs all three — and `scratchpad.md` besides, because a
+attempting, so it needs all three — and `SCRATCHPAD.md` besides, because a
 half-finished derivation is exactly the kind of thing a paper resolves.
 
 ## Workspace checkpointing
 
 `checkpoint::WorkspaceCheckpoint` commits the workspace after every successful
-write, so a rewritten `solution.py` or an edited belief in `memory.md` is
+write, so a rewritten `solution.py` or an edited belief in `MEMORY.md` is
 recoverable instead of lost, and the commit sequence reads as an account of how
 the answer was reached.
 
@@ -651,8 +651,8 @@ failed checkpoint never fails the tool that succeeded.
 
 When a workspace is first used, the helper copies
 the template into it without replacing existing files. The runtime appends
-`AGENTS.md`, `config.toml`, `memory.md`, and the relevant role prompt to each
-agent's built-in system policy. `goal.md`, `tasks.md`, and `scratchpad.md` are
+`AGENTS.md`, `config.toml`, `MEMORY.md`, and the relevant role prompt to each
+agent's built-in system policy. `GOAL.md`, `TASKS.md`, and `SCRATCHPAD.md` are
 also loaded. Workspace context must never replace built-in tool or container
 restrictions.
 

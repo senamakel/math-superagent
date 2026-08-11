@@ -282,24 +282,24 @@ fn reflection_sees_the_criteria_it_judges_against_but_not_scratch_work() {
     let context = role_context("reflection");
     // Judging "solved" against criteria it cannot see is guesswork, and a
     // wrong SOLVED ends the whole investigation.
-    assert!(context.contains(&"goal.md"));
-    assert!(context.contains(&"memory.md"));
+    assert!(context.contains(&"GOAL.md"));
+    assert!(context.contains(&"MEMORY.md"));
     // Unsettled scratch work is not evidence of progress.
-    assert!(!context.contains(&"scratchpad.md"));
+    assert!(!context.contains(&"SCRATCHPAD.md"));
 }
 
 #[test]
 fn the_inventor_sees_what_already_failed() {
-    // memory.md carries the failed-approaches section. Without it the inventor
+    // MEMORY.md carries the failed-approaches section. Without it the inventor
     // re-proposes exactly what it exists to avoid.
-    assert!(role_context("inventor").contains(&"memory.md"));
+    assert!(role_context("inventor").contains(&"MEMORY.md"));
 }
 
 #[test]
 fn the_pattern_agent_sees_the_raw_data_it_analyses() {
     let context = role_context("pattern_finder");
-    assert!(context.contains(&"scratchpad.md"));
-    assert!(context.contains(&"memory.md"));
+    assert!(context.contains(&"SCRATCHPAD.md"));
+    assert!(context.contains(&"MEMORY.md"));
 }
 
 #[test]
@@ -422,7 +422,7 @@ fn both_code_writing_roles_see_the_same_working_context() {
     // They differ in mandate, not in what they need to know: what is being
     // attempted, what is already built, and the provisional numbers.
     assert_eq!(role_context("coder"), role_context("tool_builder"));
-    assert!(role_context("coder").contains(&"scratchpad.md"));
+    assert!(role_context("coder").contains(&"SCRATCHPAD.md"));
     assert!(role_context("coder").contains(&"code/toolkits/INDEX.md"));
 }
 
@@ -445,12 +445,12 @@ fn the_reflections_index_reaches_the_roles_that_must_not_repeat_an_attempt() {
         );
     }
     // Reflection still never sees provisional work.
-    assert!(!role_context("reflection").contains(&"scratchpad.md"));
+    assert!(!role_context("reflection").contains(&"SCRATCHPAD.md"));
 }
 
 #[test]
 fn the_shared_brief_reaches_the_roles_that_reason_and_not_the_ones_that_file() {
-    // `context.md` is the research team's synthesis: what the library means
+    // `CONTEXT.md` is the research team's synthesis: what the library means
     // for this problem, as against `research/INDEX.md`, which says only what
     // each file is. Every role that decides what to attempt, build, or propose
     // needs the synthesis; the roles that file and judge do not.
@@ -466,15 +466,15 @@ fn the_shared_brief_reaches_the_roles_that_reason_and_not_the_ones_that_file() {
         "inventor",
     ] {
         assert!(
-            role_context(role).contains(&"context.md"),
+            role_context(role).contains(&"CONTEXT.md"),
             "{role} reasons about the mathematics and needs the shared brief"
         );
     }
     // The organiser files rather than reasons; giving it opinions about the
     // mathematics is how a filing job turns into an editing one.
-    assert!(!role_context("organizer").contains(&"context.md"));
+    assert!(!role_context("organizer").contains(&"CONTEXT.md"));
     // Reflection judges an attempt against the criteria and the record. A
     // standing brief of what sources assert is exactly the material it must
     // not mistake for verification.
-    assert!(!role_context("reflection").contains(&"context.md"));
+    assert!(!role_context("reflection").contains(&"CONTEXT.md"));
 }

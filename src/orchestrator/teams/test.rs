@@ -230,7 +230,7 @@ async fn a_cycle_that_changed_nothing_backs_off_however_productive_it_claims_to_
     let root = std::env::temp_dir().join(format!("math-agent-team-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
     std::fs::create_dir_all(&root).expect("temporary workspace is creatable");
-    std::fs::write(root.join("goal.md"), "solve it").expect("a file is writable");
+    std::fs::write(root.join("GOAL.md"), "solve it").expect("a file is writable");
 
     let ran = Arc::new(AtomicU64::new(0));
     let counter = ran.clone();

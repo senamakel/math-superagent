@@ -268,8 +268,8 @@ beside the solution:
 workspace/project-euler/66/
 ├── problem.html
 ├── problem.url
-├── goal.md
-├── memory.md
+├── GOAL.md
+├── MEMORY.md
 ├── solution.md
 ├── solution.py
 ├── INDEX.md           # what each file beside it is for
@@ -282,7 +282,7 @@ Generated programs, calculations, and other artifacts appear in
 `workspace/default` unless another workspace is selected. A new workspace is
 seeded from [`workspace/template/`](workspace/template/) without overwriting
 files already present. The seed includes local agent instructions, role
-prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, `memory.md`, and
+prompts, configuration, `GOAL.md`, `TASKS.md`, `SCRATCHPAD.md`, `MEMORY.md`, and
 empty `research/` and `code/toolkits/` folders. The runtime reads those files at the
 start of every run.
 

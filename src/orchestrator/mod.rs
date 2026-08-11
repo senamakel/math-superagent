@@ -409,9 +409,9 @@ impl OrchestratorAgent {
                 "Enrich this run's reference library. Find one source the workspace does not \
                  already have that bears on the problem, file it under research/, and describe \
                  it. Consult research/INDEX.md first and do not fetch what is already there. \
-                 Then record in context.md, in a few lines, what the library now establishes \
+                 Then record in CONTEXT.md, in a few lines, what the library now establishes \
                  that it did not before. Stop when further sources would not change what \
-                 context.md says. Reply with NOTHING FURTHER when that point is reached.",
+                 CONTEXT.md says. Reply with NOTHING FURTHER when that point is reached.",
             ),
             (
                 "background",
@@ -770,16 +770,16 @@ const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
 ///
 /// * `research/INDEX.md` lists what the librarian has already gathered, so it
 ///   does not download the same paper twice.
-/// * `goal.md` states the objective and its completion criteria. Reflection
+/// * `GOAL.md` states the objective and its completion criteria. Reflection
 ///   needs it most of anyone — judging "solved" against criteria it cannot see
 ///   is guesswork, and a wrong `SOLVED` ends the whole investigation.
-/// * `memory.md` records established results and, critically, failed
+/// * `MEMORY.md` records established results and, critically, failed
 ///   approaches. The inventor must have it or it will re-propose exactly what
 ///   already failed, which is the one thing it exists not to do.
-/// * `scratchpad.md` holds provisional data. The pattern agent wants it
+/// * `SCRATCHPAD.md` holds provisional data. The pattern agent wants it
 ///   because raw computed terms are its input; the reflection agent must not,
 ///   because unsettled scratch work is not evidence of progress.
-/// * `tasks.md` tracks what is done and outstanding, so it goes to the roles
+/// * `TASKS.md` tracks what is done and outstanding, so it goes to the roles
 ///   that plan and execute, not to the ones answering a single question.
 /// * `config.toml` carries runtime limits and only the executing roles act
 ///   on them.
@@ -792,9 +792,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // tens of thousands.
         "orchestrator" | "goals" => &[
             "config/config.toml",
-            "goal.md",
-            "tasks.md",
-            "memory.md",
+            "GOAL.md",
+            "TASKS.md",
+            "MEMORY.md",
             "code/toolkits/INDEX.md",
             "research/INDEX.md",
             // What the library *means* for this problem, as against
@@ -802,9 +802,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
             // makes every role re-synthesise thirteen one-line descriptions
             // for itself; this is the synthesis, written once by the research
             // team and read by everyone.
-            "context.md",
+            "CONTEXT.md",
             // What every previous attempt was judged to have established, in
-            // one table. `memory.md` records beliefs; this records the
+            // one table. `MEMORY.md` records beliefs; this records the
             // attempt-by-attempt record that produced them, so a planner can
             // see which attempt is worth continuing rather than starting over.
             "reflections/INDEX.md",
@@ -823,29 +823,29 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // variant of a check it already has.
         "tool_builder" | "coder" => &[
             "config/config.toml",
-            "goal.md",
-            "tasks.md",
-            "memory.md",
-            "scratchpad.md",
+            "GOAL.md",
+            "TASKS.md",
+            "MEMORY.md",
+            "SCRATCHPAD.md",
             "code/AGENTS.md",
             "code/INDEX.md",
             "code/toolkits/INDEX.md",
             "research/INDEX.md",
-            "context.md",
+            "CONTEXT.md",
         ],
         // Judges: needs the criteria and the record, never provisional work.
         // The workspace index is the exception worth making — deciding whether
         // an answer was actually produced means knowing which artifacts exist,
         // and the index says what each one is without the derivations
-        // themselves. It still does not see `scratchpad.md`.
+        // themselves. It still does not see `SCRATCHPAD.md`.
         // It also sees the reflections index — its own back-catalogue. Judging
         // PROGRESS means judging *relative to previous attempts*, and a verdict
         // on whether this attempt established something new is guesswork
         // without the record of what the earlier ones established.
         "reflection" => &[
-            "goal.md",
-            "tasks.md",
-            "memory.md",
+            "GOAL.md",
+            "TASKS.md",
+            "MEMORY.md",
             "INDEX.md",
             "reflections/INDEX.md",
         ],
@@ -853,74 +853,74 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // catalogue lets it reuse a verified helper rather than reimplement the
         // arithmetic it is about to check.
         "pattern_finder" => &[
-            "goal.md",
-            "memory.md",
-            "scratchpad.md",
+            "GOAL.md",
+            "MEMORY.md",
+            "SCRATCHPAD.md",
             "code/toolkits/INDEX.md",
             // A regularity the literature already explains is not a conjecture
             // worth chasing, and knowing that is the difference between
             // deriving a result and rediscovering one.
-            "context.md",
+            "CONTEXT.md",
         ],
 
         // Digests sources into knowledge. The one role that legitimately needs
         // nearly everything: it judges each source against what the run is
         // trying to do, already believes, and is currently attempting, and a
         // source's value cannot be assessed without all three. It sees
-        // `scratchpad.md` because a half-finished derivation is exactly the
+        // `SCRATCHPAD.md` because a half-finished derivation is exactly the
         // kind of thing a paper resolves.
         "scholar" => &[
-            "goal.md",
-            "tasks.md",
-            "memory.md",
-            "scratchpad.md",
+            "GOAL.md",
+            "TASKS.md",
+            "MEMORY.md",
+            "SCRATCHPAD.md",
             "research/INDEX.md",
             // It reads what the library is already taken to establish, so a
             // new source is judged against the standing brief rather than
             // re-stating it.
-            "context.md",
+            "CONTEXT.md",
         ],
         // Organises rather than reasons. It needs the objective, to judge what
         // is worth surfacing, and every index it maintains — but not
-        // `memory.md` or `scratchpad.md`: the run's beliefs and provisional
+        // `MEMORY.md` or `SCRATCHPAD.md`: the run's beliefs and provisional
         // arithmetic are not its business, and giving it opinions about the
         // mathematics is how a filing job turns into an editing job.
         "organizer" => &[
-            "goal.md",
-            "tasks.md",
+            "GOAL.md",
+            "TASKS.md",
             "INDEX.md",
             "code/INDEX.md",
             "code/toolkits/INDEX.md",
             "research/INDEX.md",
         ],
         // Work against the record and the shelf. The inventor needs
-        // `memory.md` for its failed-approaches section above all, since
+        // `MEMORY.md` for its failed-approaches section above all, since
         // re-proposing what already failed is the one thing it exists not to
         // do; research needs the same file so it does not re-establish a known
         // fact; the librarian needs it so it does not chase a question already
         // answered. All three get the research index so none re-fetches what
         // is already on disk.
         "librarian" | "research" => &[
-            "goal.md",
-            "memory.md",
+            "GOAL.md",
+            "MEMORY.md",
             "research/INDEX.md",
             // The research team maintains this, and its Gaps section is the
             // list of what to look for next. Without it the team re-derives
             // its own agenda every cycle.
-            "context.md",
+            "CONTEXT.md",
         ],
         // The inventor gets the reflections index on top, for the same reason
-        // it gets `memory.md`: the one thing it exists not to do is re-propose
+        // it gets `MEMORY.md`: the one thing it exists not to do is re-propose
         // an approach that already failed, and the index names each failure
         // with the attempt that produced it.
         "inventor" => &[
-            "goal.md",
-            "memory.md",
+            "GOAL.md",
+            "MEMORY.md",
             "research/INDEX.md",
             "reflections/INDEX.md",
             // A genuinely different approach has to start from theory the run
             // can actually reach. This says which theory that is.
-            "context.md",
+            "CONTEXT.md",
         ],
         _ => &[],
     }

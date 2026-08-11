@@ -239,8 +239,8 @@ fn continuation_briefing(attempt: usize, resumed: bool) -> String {
         // The attempt counter is in memory and the workspace is on disk, so
         // only the workspace can say whether this run is continuing something.
         return "This run continues work already in the workspace: earlier programs, notes and \
-                beliefs are on disk. Read goal.md and memory.md, then CONTINUE from what they \
-                say. Do not re-extract the statement or re-derive what memory.md already \
+                beliefs are on disk. Read GOAL.md and MEMORY.md, then CONTINUE from what they \
+                say. Do not re-extract the statement or re-derive what MEMORY.md already \
                 records — establish the next unresolved thing and run a program that settles it."
             .to_string();
     }
@@ -251,7 +251,7 @@ fn continuation_briefing(attempt: usize, resumed: bool) -> String {
     } else {
         format!(
             "This is attempt {attempt}. Earlier attempts already wrote the workspace files; read \
-             goal.md and memory.md and CONTINUE from there. Do not re-extract or re-document the \
+             GOAL.md and MEMORY.md and CONTINUE from there. Do not re-extract or re-document the \
              statement — that work is done, and repeating it is how this run fails."
         )
     }
@@ -630,7 +630,7 @@ async fn diversify_step(
                  knowledge. For each source that bears on the problem, record what it actually \
                  establishes and what it implies here, and keep research/INDEX.md current as \
                  the way in. Say which sources do not help and why. Flag anything that \
-                 contradicts what memory.md currently asserts.\n\n\
+                 contradicts what MEMORY.md currently asserts.\n\n\
                  Problem:\n{}\n\nJust gathered:\n{library}\n\n{}",
                 state.problem,
                 state.lesson_briefing()

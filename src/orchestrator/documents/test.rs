@@ -63,7 +63,7 @@ fn html_and_pdf_are_converted_on_read_but_notes_are_not() {
     assert!(needs_conversion("reference/paper.PDF", b"anything"));
     assert!(needs_conversion("saved-without-extension", b"%PDF-1.4 ..."));
     // Working notes and source must come back byte-for-byte.
-    assert!(!needs_conversion("memory.md", b"# Working memory"));
+    assert!(!needs_conversion("MEMORY.md", b"# Working memory"));
     assert!(!needs_conversion("solution.py", b"print(1)"));
     assert!(!needs_conversion("results.tsv", b"1\t2"));
     // A note quoting HTML is still a note.
@@ -142,7 +142,7 @@ fn runtime_bookkeeping_cannot_be_read_into_an_agents_context() {
 
     // The run's own working files stay reachable.
     for visible in [
-        "memory.md",
+        "MEMORY.md",
         "solution.py",
         "research/pell.md",
         "reflections/1_01_learnings.md",
@@ -312,8 +312,8 @@ async fn a_missing_file_at_the_workspace_root_names_its_neighbours() -> Result<(
     // thing a live run reached for — and an empty parent is what the file path
     // checker refuses, so this is the case the helper must not miss.
     let root = workspace("missing-at-root")?;
-    std::fs::write(root.join("memory.md"), "beliefs").expect("file is writable");
-    std::fs::write(root.join("scratchpad.md"), "working").expect("file is writable");
+    std::fs::write(root.join("MEMORY.md"), "beliefs").expect("file is writable");
+    std::fs::write(root.join("SCRATCHPAD.md"), "working").expect("file is writable");
     std::fs::write(root.join("trace.jsonl"), "{}").expect("trace is writable");
 
     let documents = WorkspaceDocuments::new(root.clone())?;
@@ -322,8 +322,8 @@ async fn a_missing_file_at_the_workspace_root_names_its_neighbours() -> Result<(
         .await
         .expect_err("a missing document must fail");
     let message = error.to_string();
-    assert!(message.contains("memory.md"), "got: {message}");
-    assert!(message.contains("scratchpad.md"), "got: {message}");
+    assert!(message.contains("MEMORY.md"), "got: {message}");
+    assert!(message.contains("SCRATCHPAD.md"), "got: {message}");
     assert!(
         !message.contains("trace.jsonl"),
         "the event log stays hidden: {message}"

@@ -243,7 +243,7 @@ fn a_restarted_run_is_told_it_is_continuing_even_on_its_first_attempt() {
     // thirty-one programs already on disk.
     let resumed = continuation_briefing(1, true);
     assert!(resumed.contains("CONTINUE"), "{resumed}");
-    assert!(resumed.contains("memory.md"), "{resumed}");
+    assert!(resumed.contains("MEMORY.md"), "{resumed}");
     assert!(
         !resumed.contains("first attempt"),
         "a resumed run must not be told to start fresh: {resumed}"

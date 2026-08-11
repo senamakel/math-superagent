@@ -2,8 +2,8 @@
 //!
 //! `search_documents` answers a different question: it matches literal terms,
 //! and only against documents an agent explicitly called `index_document` on.
-//! Downloads get indexed; the run's own thinking does not. So `memory.md`,
-//! `reflections/`, `scratchpad.md`, and the toolkit sat unreachable to anything
+//! Downloads get indexed; the run's own thinking does not. So `MEMORY.md`,
+//! `reflections/`, `SCRATCHPAD.md`, and the toolkit sat unreachable to anything
 //! but a path an agent already knew, which meant the inventor re-proposed
 //! approaches whose failure was recorded three files away, and the pattern
 //! agent rebuilt helpers that already existed.
@@ -143,7 +143,7 @@ impl Tool<()> for RecallWorkspaceTool {
 
     fn description(&self) -> &'static str {
         "Finds files in this workspace whose wording is closest to a question, across derivations, \
-         memory.md, reflections, research summaries, and toolkit helpers. Use it before proposing \
+         MEMORY.md, reflections, research summaries, and toolkit helpers. Use it before proposing \
          an approach or building a helper, to see what the run already tried, learned, or wrote. \
          Returns paths with a snippet; read the file for the detail."
     }
