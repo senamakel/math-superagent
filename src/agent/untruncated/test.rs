@@ -11,14 +11,17 @@ use crate::agent::Result as ModelResult;
 
 use super::UntruncatedModel;
 
+/// The output cap each request carried, in call order.
+type RecordedCaps = Arc<Mutex<Vec<Option<u32>>>>;
+
 /// Answers with a scripted sequence and records each request's cap.
 struct ScriptedModel {
     replies: Mutex<Vec<ModelResponse>>,
-    caps: Arc<Mutex<Vec<Option<u32>>>>,
+    caps: RecordedCaps,
 }
 
 impl ScriptedModel {
-    fn new(replies: Vec<ModelResponse>) -> (Arc<Self>, Arc<Mutex<Vec<Option<u32>>>>) {
+    fn new(replies: Vec<ModelResponse>) -> (Arc<Self>, RecordedCaps) {
         let caps = Arc::new(Mutex::new(Vec::new()));
         let model = Arc::new(Self {
             replies: Mutex::new(replies.into_iter().rev().collect()),

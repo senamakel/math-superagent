@@ -19,14 +19,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `probe_structure.py` | Fast float scan: whether d=2 record b's match convergent denominators of pi/sqrt2, pi*sqrt2, etc. Probe; superseded by the Cabanillas candidate-set method. |
 | `problem.html` | The PE591 problem statement (converted to HTML); the 4 worked example values and the question about I_d. |
 | `problem.url` | The Project Euler URL for problem 591 (https://projecteuler.net/minimal=591). |
+| `results_brute_n7.txt` | _(undescribed)_ |
 | `results_full.txt` | Output of solution.py (positive-b-only) for PE591 at n=1e13: rows d, b, a, abs(a), and S=sum(abs(a))=498809825393729. **Candidate result, now challenged by results_full_bothsides.txt (the problem allows b of either sign).** |
 | `results_full_bothsides.txt` | Output of solution_bothsides.py (both signs of b) for PE591 at n=1e13: rows d, b, a, abs(a), and S=526007984625966. Updated candidate answer consistent with the problem statement (b sign is free); supersedes results_full.txt subject to the run's resolution. |
-| `results_solver_n7.txt` | Row data (d b a |a|) for the n=1e7 brute-force scan — same 16 d values and numbers as the top of brute_n7_run.log. These are the valid n=1e7 independent-check values (not the n=1e13 result). |
+| `results_solver_n7.txt` | Row data (d b a |
 | `scratchpad.md` | Scratch area for draft findings being validated; durable results promoted to memory.md and research/notes/. |
 | `solution.py` | PE591 solver that considers only positive b (b in [0,L]): Cabanillas (arXiv:1904.01874) Prop 9/10 candidate-set method, a_d = nint(pi - b_d*sqrt(d)). Writes results_full.txt. **One-sided; superseded by solution_bothsides.py.** |
 | `solution_bothsides.py` | Corrected PE591 solver considering BOTH signs of b (matching the problem, where b's sign is free): runs the Cabanillas candidate method for beta={pi} (b positive) and 1-beta (b negative), takes the global min, a = nint(pi - b*sqrt(d)). Reproduces worked examples 1-4; writes results_full_bothsides.txt. Current authoritative solver. |
 | `struct_probe.py` | Probe verifying the d=2 given oracle b,a satisfy the BQA relation and scanning small-scale record b's for d=2; early structural investigation. |
 | `tasks.md` | Task checklist for the run: brute-force example reproduction, record probes, semiconvergent hypothesis, deriving the method, computing and verifying S. |
 | `verify_cabanillas.py` | Standalone small-scale verification of Cabanillas Prop 9/10 candidate structure for a few alpha,beta pairs against brute force. Superseded as a toolkit by toolkits/ostrowski_verify.py and toolkits/verify_cabanillas_exact.py. |
-ll-scale verification of Cabanillas Prop 9/10 candidate structure for a few alpha,beta pairs against brute force. Superseded as a toolkit by toolkits/ostrowski_verify.py and toolkits/verify_cabanillas_exact.py. |
-structure for a few alpha,beta pairs against brute force. Superseded as a toolkit by toolkits/ostrowski_verify.py and toolkits/verify_cabanillas_exact.py. |
