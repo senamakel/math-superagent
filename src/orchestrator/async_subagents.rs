@@ -77,7 +77,8 @@ const ORGANIZE_AFTER_TOOLS: FollowUpStep = FollowUpStep {
     brief: "The tool-builder just finished. Bring the workspace back into order: refresh each \
             folder's INDEX.md so it matches what is on disk, describe every file that is now \
             undescribed, and correct any row whose description no longer matches its file. Keep \
-            toolkits/INDEX.md in step with the files beside it. Do not change what any file says.",
+            code/lib/INDEX.md in step with the files beside it. Do not change what any file \
+            says.",
     rewrites_shared_index: true,
 };
 
