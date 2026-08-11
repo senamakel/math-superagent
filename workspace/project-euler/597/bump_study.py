@@ -48,13 +48,13 @@ def mc_study(n, L, N, seed=7):
 
 if __name__ == '__main__':
     N = int(sys.argv[1]) if len(sys.argv) > 1 else 300000
-    for (n, L) in [(2, 160), (3, 160)]:
+    configs = [(2, 160, None), (3, 160, 56/135), (4, 160, None), (4, 400, 0.5107843137)]
+    for (n, L, known) in configs:
         p, se, hist, ident_ok, mism = mc_study(n, L, N)
         print(f"n={n} L={L}  N={N}")
         print(f"  MC P(even) = {p:.6f}  +/- {se:.6f}")
-        known = {3: 56/135}.get(n)
         if known:
-            print(f"   exact     = {known:.6f}  (statement n=3,L=160)")
+            print(f"   exact     = {known:.6f}  (statement/given)")
         print(f"  parity == (#chain pairs) mod 2 holds on all samples: {ident_ok}"
               f" (mismatches={mism})")
         print("  bump-pattern histogram (pattern: even_count/total, P(even|pattern)):")

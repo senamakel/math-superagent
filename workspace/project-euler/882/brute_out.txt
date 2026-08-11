@@ -1,0 +1,11 @@
+=== TASK A: real-game minimax ===
+explicit-move check n=2: S(2) = 2
+verify n=1: explicit S=1, memo S=1, match=True
+verify n=2: explicit S=2, memo S=2, match=True
+verify n=3: explicit S=8, memo S=8, match=True
+
+S(n) real game (memoized minimax), n=1..8:
+  S(1) = 1   states_memoized=3
+  S(2) = 2   states_memoized=21
+  S(3) = 8   states_memoized=184
+  S(4) = 9   states_memoized=3270
