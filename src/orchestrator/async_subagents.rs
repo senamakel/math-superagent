@@ -250,7 +250,10 @@ impl HarnessExecutor {
             && !observations.is_empty()
         {
             let _ = langfuse
-                .send_observations(trace_config(&self.session, &self.role, run_id), &observations)
+                .send_observations(
+                    trace_config(&self.session, &self.role, run_id),
+                    &observations,
+                )
                 .await;
         }
     }
