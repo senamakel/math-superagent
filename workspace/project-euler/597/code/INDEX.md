@@ -10,7 +10,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `bump_study.py` | Monte Carlo structural study (small n, L=160): for each sample records parity, bump multiset, finishes, chain-pair count; verifies `parity == (#chain pairs) mod 2` on every sample and histograms bump-pattern types split by parity. MC driver, not a solver. |
 | `check_counterexample.py` | Sanity/oracle check: validates the counterexample pair ce1/ce2 (n=3) give opposite parities with float and exact agreement, and prints uniform-grid even-count ratios for M in (8,16,32). Grid converges to 0.5, not 56/135 — a sampling-measure artifact (uniform grid ≠ Exp(1)), not a parity bug. |
 | `cross_decoupling_test.py` | _(undescribed)_ |
-| `cross_direct_test.py` | _(undescribed)_ |
+| `cross_direct_test.py` | Direct test of the two decisive treap claims at the root: (a) is cross == r*(n-1-r) always?, and (b) is cross constant across speed vectors sharing the same min-W root? Counts violations against the true race oracle across (n,L) configs. Diagnostic of the treap hypothesis, not a solver. |
 | `crux_decoupling_test.py` | _(undescribed)_ |
 | `exact_race.py` | Exact-rational race dynamics mirroring the fixed `brute` on Fractions (`simulate_order_exact`, `outcome_parity_exact`); tuple-vs-Fraction comparison bug fixed so it runs. Uses full-reachability `above` like the fixed `brute`. |
 | `examine_multibump.py` | Retired diagnostic that once demonstrated the multi-bump overwrite bug in `brute.simulate_order`: `bumped_by[k]` kept only the last bumper, silently losing earlier bump edges. The bug is since fixed in `brute.py`, so this now only shows the correct full-reachability behavior; kept as the record of the bug. Not a solver. |

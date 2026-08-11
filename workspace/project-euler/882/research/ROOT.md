@@ -48,6 +48,23 @@ A−B; [[normalplay]] win rule; [[loopy]]/[[mfl_pass]] skip ⇒ S(n)≠A−B) an
 DP run at n=10⁵. [[misfiled]] records the dead-end downloads. Sealed once;
 never revisited.
 
+## L1.1 batch is sealed
+[[L1.1]] (this L2.0 folder) seals the ten L1.1 notes: [[partisan]],
+[[pass_waiting]], [[raw_mfl_pass]], [[raw_pass_waiting_check]],
+[[siegel_zugzwang]], [[strategy]], [[surreal]], [[trollopedelange]],
+[[verify_trollopedelange]], [[weightedmom]]. Group (A) — game structure:
+strictly partisan so Sprague–Grundy does not apply ([[partisan]]); each
+number's no-skip value is the surreal integer a−b so the board value is A−B
+([[surreal]]); the skip is a genuine loopy zugzwang/pass object ([[siegel_
+zugzwang]] Li's theorem, stoppers; [[pass_waiting]]/[[raw_mfl_pass]] show a
+pass perturbs structure) so **S(n) ≠ A−B, not a closed-form CGT value — it
+comes from the (A,B) minimax DP**. [[strategy]] is a ruled-out dead end.
+Group (B) — arithmetic engine: the unweighted one- and zero-count summatory
+functions obey the O(log n) Trollope–Delange recurrences ([[trollopedelange]],
+checklist [[verify_trollopedelange]]) and weighted first-moment digit sums keep
+Delange-type closed-form structure ([[weightedmom]]), warranting polylog
+evaluation of A(n), B(n) at n=10⁵.
+
 ## Standing caveat (open)
 The dyadic Simplicity Rule is the exact game rule sourced here; the counting
 (A,B) form is the old approximate surrogate (its leading-1/drop-0 shortcut),
