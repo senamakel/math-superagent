@@ -19,6 +19,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `fi.py` | Exploratory: studies F_i(n)=sum over pi of rank(pi^i) over i=1..n! for n=4,5 — frequencies of distinct F_i values and mean (checks mean equals n!(n!+1)/2) |
 | `fi2.py` | Exploratory: groups F_i(n) by g = gcd(i, n!) for n=4,5 to test whether F_i is constant on each gcd class (the independence claim behind F(d)); predecessor of toolkits/f_literal.py's assert |
 | `fit.py` | Symbolic/float exploration of alpha_n and beta_n closed forms for the f_n(k)=n!(n-1)![alpha-beta(k-1)] fit in the Q(n) problem. |
+| `fit2.py` | _(undescribed)_ |
 | `fk.py` | Computes the gap function f(k)=N(j,j+k) for n=2..9 and tests the affine structure f(k)=A-Bk and extracts A,B. |
 | `gaps.py` | Computes T(j,m)=#{(pi,i): 0<=i<n!, (pi^i)(m)<(pi^i)(j)} for n=2..9 exactly via the period formula T(j,m)=sum_pi (n!/ord(pi)) * #{tau in <pi>: tau(m)<tau(j)} (Fractions), without iterating all n! powers. Verifies translation invariance T(j,j+k) independent of j, and reports f_n(k)=T(1,1+k), its differences, and whether f is exactly arithmetic (A_n=f(1), step B_n). Oracle-checked n=2,3 (in-script literal) and n=4,5 (separate literal). Established the structural lead that f_n is arithmetic in k for all n. |
 | `goal.md` | Objective: compute Q(10^6) mod (10^9+7); statement, worked examples (Q(2)=5, Q(3)=88, Q(6)=133103808, Q(10) about 468421536), completion criteria, current status |
@@ -31,6 +32,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `psid.py` | Exploratory: verifies Q(n)=sum over d dividing n! of psi(d)*phi(n!/d) for n=5 with psi(d)=F-value for i with gcd(i,n!)=d, and prints psi(d) over all divisors to look for structure |
 | `qtable.py` | Exploratory: computes Q(n) via the period/orbit formula for n=2..10 and prints normalization ratios Q/n! and Q/(n!)^2 to look for a closed form; quantifies the runtime wall at n=10 |
 | `results.json` | Output of brute.py (method 1, literal): exact Q(n) and Q mod p for n=2..7; n=8 skipped (budget estimate exceeds cap) |
-| `results2.json` | Output of brute2.py (method 2, period formula): exact Q(n) and Q mod p for n=2..8 |
+| `results2.json` | Output of brute2.py (method 2, period formula): exact Q(n) and Q mod p for n=2..7 (the n=8 value 24768798220800 lives in memory.md but was never written to this file) |
 | `scratchpad.md` | Provisional work: the task, method-1 cost model, method-2 justification, power-semantics check, verified results table |
 | `tasks.md` | Task list with checkboxes: recording objective, reading the statement, writing brute.py/brute2.py, verifying n=2..6/7/8, and the (pending) efficient method |
