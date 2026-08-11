@@ -200,17 +200,17 @@ absolute paths, and verify canonical parents before writing. Command tools run
 with `/workspace` as their current directory. A prompt instruction is not a
 security control; enforce boundaries in code and Docker configuration.
 
-Workspace contents are committed. The derivation, the program, the per-run
-notes, and `trace.jsonl` are the record of how an answer was reached, which is
-the point of the product, so they belong in history rather than only on the
-machine that produced them. Only machine-regenerable artifacts are ignored:
-`.python-packages/` (pip installs, which land in the workspace because the
-container root filesystem is read-only) and bytecode caches. Do not add a
-generated artifact to a source directory; leave it in its workspace.
+Workspace contents are committed. The derivation, the program, and the per-run
+notes are the record of how an answer was reached, which is the point of the
+product, so they belong in history rather than only on the machine that produced
+them. Do not add a generated artifact to a source directory; leave it in its
+workspace.
 
-Note that `trace.jsonl` grows to several megabytes for a long run. If workspace
-history starts to dominate the repository, prune old run traces deliberately
-rather than re-ignoring the whole workspace.
+Three things are ignored: `.python-packages/` (pip installs, which land in the
+workspace only because the container root filesystem is read-only), bytecode
+caches, and `trace.jsonl`. The trace is several megabytes per run and the
+derivation and notes already carry the reasoning worth keeping; read it locally
+or in Langfuse instead.
 
 When a workspace is first used, the helper copies
 the template into it without replacing existing files. The runtime appends

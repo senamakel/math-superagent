@@ -137,8 +137,9 @@ prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, and `memory.md`.
 The runtime reads those files at the start of every run.
 
 These files are committed rather than ignored, so a solved problem keeps its
-derivation, program, notes, and event log in history. Only pip installs under
-`.python-packages/` and bytecode caches are excluded.
+derivation, program, and notes in history. Pip installs under
+`.python-packages/`, bytecode caches, and the multi-megabyte `trace.jsonl` event
+log are excluded; read a trace locally or in Langfuse.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
