@@ -627,7 +627,7 @@ pub(super) fn research_path(requested: &str) -> String {
     // A path naming a level already knows where it belongs. Anything else is
     // a source arriving from outside, and a source's readable form is a
     // level-1 note whatever the caller called it.
-    if inside.starts_with("L") && inside.contains('/') {
+    if inside.starts_with('L') && inside.contains('/') {
         return format!("{RESEARCH_DIR}/{inside}");
     }
     let name = inside.rsplit('/').next().unwrap_or(inside);

@@ -218,10 +218,11 @@ fn linked_children(workspace: &Path, node: &str, candidates: &[String]) -> Vec<S
             Some(beside)
         } else {
             let name = target.rsplit('/').next().unwrap_or(&target);
-            let name = if name.ends_with(".md") {
-                name.to_string()
-            } else {
-                format!("{name}.md")
+            let name = match Path::new(name).extension() {
+                Some(extension) if extension.eq_ignore_ascii_case("md") => name.to_string(),
+                // A wikilink drops the extension by convention, so a bare
+                // note name is the common case rather than the odd one.
+                _ => format!("{name}.md"),
             };
             candidates
                 .iter()
@@ -325,8 +326,7 @@ pub(super) fn plan(workspace: &Path) -> Vec<Task> {
         for (level, at) in levels.iter().filter(|(level, _)| *level > 0) {
             let below = levels
                 .iter()
-                .filter(|(under, _)| under < level)
-                .next_back()
+                .rfind(|(under, _)| under < level)
                 .map(|(_, notes)| notes.clone())
                 .unwrap_or_default();
             for note in at {
