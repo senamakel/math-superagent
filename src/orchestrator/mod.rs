@@ -43,16 +43,17 @@ use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 pub use tinyagents::harness::host::AgentDefinition;
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 5] = [
+const SPECIALISTS: [&str; 6] = [
     "research",
     "tool_builder",
     "pattern_finder",
     "inventor",
     "librarian",
+    "scholar",
 ];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 7] = [
+const DELEGATES: [&str; 8] = [
     "research",
     "tool_builder",
     "goals",
@@ -60,6 +61,7 @@ const DELEGATES: [&str; 7] = [
     "pattern_finder",
     "inventor",
     "librarian",
+    "scholar",
 ];
 
 const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
@@ -207,6 +209,27 @@ const LIBRARIAN_PROMPT: &str = "You are the librarian. You build and maintain a 
     contest problem. A download that fails is not a dead end: try another source, and record in \
     the index what you could not obtain and why. Report what is now available locally and where \
     it is.";
+
+const SCHOLAR_PROMPT: &str = "You are the scholar. The run has gathered sources; your job is to \
+    turn them into knowledge it can act on. Nobody else does this: the librarian acquires \
+    documents and stops, and a downloaded paper nobody has read is worth nothing. \
+    Read what is in research/ against what this run is actually trying to do — the goal, the \
+    current tasks, what memory.md already believes, and the provisional work in scratchpad.md. \
+    For each source that matters, write research/notes/<slug>.md recording what it actually \
+    establishes: the precise statement of each definition, theorem, or algorithm, its hypotheses, \
+    where in the document it appears, and — the part that matters most — what it implies for this \
+    problem specifically. A restatement of the abstract is not a note. \
+    Then maintain research/DIGEST.md as the way in: one entry per source giving what it \
+    establishes, why it matters here, and a link to its note, ordered by usefulness to the \
+    current goal rather than by when it arrived. Someone who reads only DIGEST.md should know \
+    what the run has learned and which note to open next. \
+    Say plainly when a source does not help, and say why, so nobody reads it again. Record \
+    contradictions between sources rather than silently picking one, and note where a source \
+    contradicts something memory.md currently asserts, because that is the most valuable thing \
+    you can find. Distinguish what a source proves from what it merely asserts or assumes. \
+    Never state a result the document does not contain, and never treat a source as authoritative \
+    because it is convenient. Save durable, source-backed findings with remember_research. \
+    Report what you added, what you concluded, and what the run still lacks.";
 
 const GOALS_PROMPT: &str = "You are the goals agent. Turn the assigned goal into concrete, \
     verifiable completion criteria and pursue them until they are met or a genuine blocker is \
@@ -706,6 +729,20 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "pattern_finder" => &["goal.md", "memory.md", "scratchpad.md"],
         // Gathers sources: needs the objective and the existing library index.
         "librarian" => &["goal.md", "memory.md", "research/INDEX.md"],
+        // Digests sources into knowledge. The one role that legitimately needs
+        // nearly everything: it judges each source against what the run is
+        // trying to do, already believes, and is currently attempting, and a
+        // source's value cannot be assessed without all three. It sees
+        // `scratchpad.md` because a half-finished derivation is exactly the
+        // kind of thing a paper resolves.
+        "scholar" => &[
+            "goal.md",
+            "tasks.md",
+            "memory.md",
+            "scratchpad.md",
+            "research/INDEX.md",
+            "research/DIGEST.md",
+        ],
         // Answer or propose against the record: the inventor needs `memory.md`
         // for its failed-approaches section above all, since re-proposing what
         // already failed is the one thing it exists not to do; research needs
