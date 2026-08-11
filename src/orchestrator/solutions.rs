@@ -351,6 +351,7 @@ async fn reflect_step(
         state.last_attempt,
         state.lesson_briefing()
     );
+    let reflection = delegate(subagents, "reflection", prompt);
     // Reflection judges; the pattern agent looks at the same attempt for
     // structure the judgement cannot see. They run concurrently because
     // neither reads the other's output, and because reflection is on the
