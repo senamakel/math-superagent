@@ -524,13 +524,38 @@ async fn diversify_step(
     };
     let ((library, digest), patterns, invention) = tokio::join!(reading, patterns, invention);
 
-    state.fresh_context = format!(
-        "Reference material:\n{library}\n\nWhat the sources establish:\n{digest}\n\n\
-         Structural observations:\n{patterns}\n\n\
-         Proposed alternative approach:\n{invention}"
-    );
+    // Merged rather than assigned: the reflection that routed here has already
+    // put this attempt's pattern analysis, and possibly a literature rescue,
+    // into the same field. Overwriting would throw away the findings that
+    // motivated diversifying in the first place.
+    state.fresh_context = merge_context(&[
+        ("Carried forward", &state.fresh_context.clone()),
+        ("Reference material", &library),
+        ("What the sources establish", &digest),
+        ("Structural observations", &patterns),
+        ("Proposed alternative approach", &invention),
+    ]);
     state.unproductive = 0;
     state
+}
+
+/// Joins the labelled sections that have content into one briefing.
+///
+/// Empty sections are dropped rather than rendered as a heading with nothing
+/// under it: a child asked to act on "Research:\n\n" reasonably concludes the
+/// research found nothing, which is a different claim from its not having run.
+fn merge_context(sections: &[(&str, &str)]) -> String {
+    let mut merged = String::new();
+    for (label, body) in sections {
+        if body.trim().is_empty() {
+            continue;
+        }
+        if !merged.is_empty() {
+            merged.push_str("\n\n");
+        }
+        let _ = write!(merged, "{label}:\n{}", body.trim());
+    }
+    merged
 }
 
 /// Builds and runs the solution loop over the registered specialists.
