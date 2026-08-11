@@ -225,35 +225,6 @@ impl RunTracer {
         )
     }
 
-/// Returns `part` as a whole-number percentage of `whole`.
-fn share(part: u64, whole: u64) -> u64 {
-    part.saturating_mul(100) / whole.max(1)
-}
-
-/// Renders how a run's time divides between the provider, tools, and waiting.
-///
-/// Kept a pure function of its three inputs so both regimes are testable
-/// without a live clock.
-fn attribution(wall: u64, model: u64, tool: u64) -> String {
-    let busy = model.saturating_add(tool);
-    if busy > wall {
-        return format!(
-            "model {}% tool {}% of agent time | concurrency x{}.{}",
-            share(model, busy),
-            share(tool, busy),
-            busy / wall.max(1),
-            (busy.saturating_mul(10) / wall.max(1)) % 10
-        );
-    }
-    format!(
-        "model {}% tool {}% idle {}%",
-        share(model, wall),
-        share(tool, wall),
-        share(wall.saturating_sub(busy), wall)
-    )
-}
-
-impl RunTracer {
     fn emit_line(&self, message: &str) {
         let elapsed = self.state.started.elapsed().as_secs();
         let mut stderr = std::io::stderr().lock();
@@ -406,6 +377,34 @@ fn preview(text: &str) -> String {
         .take(CONSOLE_PREVIEW_CHARS)
         .collect::<String>();
     format!("{kept}...")
+}
+
+/// Returns `part` as a whole-number percentage of `whole`.
+fn share(part: u64, whole: u64) -> u64 {
+    part.saturating_mul(100) / whole.max(1)
+}
+
+/// Renders how a run's time divides between the provider, tools, and waiting.
+///
+/// Kept a pure function of its three inputs so both regimes are testable
+/// without a live clock.
+fn attribution(wall: u64, model: u64, tool: u64) -> String {
+    let busy = model.saturating_add(tool);
+    if busy > wall {
+        return format!(
+            "model {}% tool {}% of agent time | concurrency x{}.{}",
+            share(model, busy),
+            share(tool, busy),
+            busy / wall.max(1),
+            (busy.saturating_mul(10) / wall.max(1)) % 10
+        );
+    }
+    format!(
+        "model {}% tool {}% idle {}%",
+        share(model, wall),
+        share(tool, wall),
+        share(wall.saturating_sub(busy), wall)
+    )
 }
 
 #[cfg(test)]
