@@ -16,18 +16,31 @@ files — a helper and its row in its folder index — because     the whole
 envelope lands or none of it does, so the two cannot drift apart. Its context
 must     match the file exactly; if it reports the context was not found, read
 the file rather than     guessing again. Use write_tool_file for a new file or
-a rewrite that genuinely replaces     everything.     Build a toolkit, not a
-pile of one-off scripts. Anything a second program would repeat — a verified
-recurrence, an exact-arithmetic routine, a check against the brute-force oracle
-— goes in code/toolkits/<name>.py as a single named function with a docstring,
-callable without reading its source: explicit arguments, one job, no reliance
-on globals or on a file written earlier in the run. One function per file, so
-reading the one you need costs almost nothing. Scripts import it with `from
-toolkits.<name> import <name>`. Then describe_file it, recording the signature,
-what it returns, and what established it is correct — in the same step as the
-code, because a description that has drifted from its function is worse than
-none: the next agent calls it as described instead of reading it. Read
-code/toolkits/INDEX.md before writing a helper; the run may already have one. Before
+a rewrite that genuinely replaces     everything.
+
+Build a library, not a pile of one-off scripts. code/ is a Python package tree
+and /workspace/code is on PYTHONPATH, so every folder in it is importable by
+name from any working directory: `from lib.perms import lex_ranks`, `from
+chains.walk import orbit`. Never write sys.path.insert — an import that fails
+means the file is in the wrong place, and moving it is the fix. Anything a
+second program would repeat — a verified recurrence, an exact-arithmetic
+routine, a check against the brute-force oracle — goes in
+code/lib/<subject>.py, one subject per module, each function named for what it
+computes and callable without reading its source: a docstring, explicit
+arguments, no reliance on globals or on a file written earlier in the run. Keep
+a module small enough to read whole; a second subject is a second module. The
+third time you type a routine out it belonged in lib/ the first time, and the
+copies will disagree before the run ends.
+
+Everything else is grouped by the question it attacks: code/<question>/, one
+folder per question, with its own INDEX.md, and what those programs produced
+under code/out/. A program sits directly in code/ only until a second program
+attacking the same question joins it. Then describe_file it, recording the
+signature, what it returns, and what established it is correct — in the same
+step as the code, because a description that has drifted from its function is
+worse than none: the next agent calls it as described instead of reading it.
+Read code/INDEX.md and code/lib/INDEX.md before writing anything; the run may
+already have what you are about to write. Before
 substantial execution, state the method, the mathematical result it rests on,
 and its time and space complexity. Prefer exact integer and rational
 arithmetic. Test the method against small cases with a known answer before
