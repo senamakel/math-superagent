@@ -54,6 +54,15 @@ const SPECIALISTS: [&str; 7] = [
     "organizer",
 ];
 
+/// Agents the pattern agent may commission work from.
+///
+/// Only the tool-builder. A sequence check that needs more terms than the
+/// pattern agent should compute inline is a programming job, and that is the
+/// role that does programming jobs. Nothing else is offered, because every
+/// further delegate is a way for a bounded structural question to turn into a
+/// second investigation running beside the first.
+const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
+
 /// Agents the top-level orchestrator may delegate to directly.
 const DELEGATES: [&str; 9] = [
     "research",
