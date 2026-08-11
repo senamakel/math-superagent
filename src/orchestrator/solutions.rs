@@ -334,8 +334,15 @@ fn oracle_prompt(problem: &str) -> String {
          rational arithmetic — and execute it against every worked example the statement \
          gives. Do not optimise, do not derive the efficient method, and do not write a plan: \
          another agent is doing that in parallel. If the workspace already holds such a \
-         program, run that instead of writing a second one. Report the command you ran and \
-         its exact output, and say for each worked example whether it matched."
+         program, run that instead of writing a second one.\n\n\
+         Run it only at the sizes the worked examples use. The oracle exists to pin down \
+         what the statement means, and it earns that in seconds; the bound in the statement \
+         is chosen to defeat exactly this method, so pointing it at full size buys nothing \
+         and costs the attempt. If a run has not finished in about a minute, it is at the \
+         wrong size — stop it, drop to a smaller case, and report that instead. Cap it \
+         yourself so a slow case cannot run away.\n\n\
+         Report the command you ran and its exact output, and say for each worked example \
+         whether it matched."
     )
 }
 

@@ -26,7 +26,8 @@ artifacts. [[L1.2/L0.1.md]] = skip/loopy side ([[siegel_zugzwang]], [[pass_waiti
 loopy object. [[L1.0]] (seal [[L2.0/L1.0.md]]) seals ten L1.0 notes
 ([[a083652]], [[bitcount]], [[cgt]], [[disjsum]], [[flajolet_weighted_digitalsums]],
 [[loopy]], [[mfl_pass]], [[minabutdinov_qweighted]], [[misfiled]], [[normalplay]]):
-counting model, win rule, skip ⇒ S(n)≠A−B, polylog engine. [[L1.1]] seals the ten
+counting model, win rule, skip ⇒ S(n)≠A−B, polylog engine. [[L1.1]] (seal
+[[L2.0/L1.1.md]]) seals the ten
 L1.1 notes (game structure: [[partisan]], [[surreal]], [[siegel_zugzwang]],
 [[pass_waiting]], [[strategy]] dead end; arithmetic: [[trollopedelange]],
 [[verify_trollopedelange]], [[weightedmom]]). All seals are one-time, never revisited.
