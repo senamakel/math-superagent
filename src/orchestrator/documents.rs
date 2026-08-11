@@ -1,6 +1,7 @@
 //! Bounded tools for workspace documents and a local searchable index.
 
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
+use std::cmp::Reverse;
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -179,7 +180,7 @@ impl WorkspaceDocuments {
                 }),
             ));
         }
-        results.sort_by(|left, right| right.0.cmp(&left.0));
+        results.sort_by_key(|result| Reverse(result.0));
         Ok(results
             .into_iter()
             .take(MAX_SEARCH_RESULTS)

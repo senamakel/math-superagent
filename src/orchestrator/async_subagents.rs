@@ -144,7 +144,7 @@ impl AsyncSubagentManager {
                 agent: agent_name.to_string(),
             },
         )
-        .with_timeout_ms(RUN_TIMEOUT.as_millis() as u64)
+        .with_timeout_ms(10 * 60 * 1_000)
         .with_input(json!({ "prompt": input }));
         self.store.insert(spec)?;
 

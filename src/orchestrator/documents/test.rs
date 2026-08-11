@@ -5,16 +5,20 @@ use std::path::PathBuf;
 use super::WorkspaceDocuments;
 use crate::agent::Result;
 
-fn workspace(name: &str) -> PathBuf {
+fn workspace(name: &str) -> Result<PathBuf> {
     let path = std::env::temp_dir().join(format!("math-agent-documents-{name}"));
     let _ = std::fs::remove_dir_all(&path);
-    std::fs::create_dir_all(&path).expect("test workspace should be created");
-    path.canonicalize().expect("test workspace should resolve")
+    std::fs::create_dir_all(&path).map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("failed to create test workspace: {error}"))
+    })?;
+    path.canonicalize().map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("failed to resolve test workspace: {error}"))
+    })
 }
 
 #[tokio::test]
 async fn stores_edits_indexes_and_searches_documents() -> Result<()> {
-    let path = workspace("search");
+    let path = workspace("search")?;
     let documents = WorkspaceDocuments::new(path.clone())?;
     documents
         .write(
@@ -42,7 +46,7 @@ async fn stores_edits_indexes_and_searches_documents() -> Result<()> {
 
 #[tokio::test]
 async fn rejects_paths_outside_the_workspace() -> Result<()> {
-    let path = workspace("boundary");
+    let path = workspace("boundary")?;
     let documents = WorkspaceDocuments::new(path.clone())?;
     assert!(documents.write("../outside.md", "no").await.is_err());
     let _ = std::fs::remove_dir_all(path);
