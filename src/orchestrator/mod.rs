@@ -1026,16 +1026,22 @@ fn specialist_harness(
     // prefix they cache, so one agent's fallback must not drag the others onto
     // a provider where their prefix is cold. See `agent::sticky`.
     let model: Arc<dyn ChatModel<()>> = Arc::new(StickyProviderModel::new(model));
-    // Re-issue a turn the provider cut off mid-answer. Outside the affinity
-    // and timeout wrappers, so each re-issue is routed and bounded on its own
-    // larger cap rather than inheriting the cut-off attempt's. See
-    // `agent::untruncated`.
-    let model: Arc<dyn ChatModel<()>> = Arc::new(UntruncatedModel::new(model));
-    // Account outside everything else so the recorded provider is the one that
-    // actually served the call, including a fallback the pin did not get, and
-    // every re-issued attempt is billed as the separate call it was.
+    // Account outside the affinity wrapper so the recorded provider is the one
+    // that actually served the call, including a fallback the pin did not get.
     let model: Arc<dyn ChatModel<()>> =
         Arc::new(AccountingModel::new(model, agent, tracer.clone()));
+    // Re-issue a turn the provider cut off mid-answer, outermost of all.
+    //
+    // Each re-issue is a real provider call that costs real money, and it must
+    // pass back through accounting to be recorded as one. Wrapped the other way
+    // round — accounting outside — a turn's re-issues collapse into the single
+    // call the loop asked for: their cost vanishes from `model_accounting`, and
+    // a turn quietly spending three attempts looks from the console like one
+    // very long call with nothing to distinguish it from a wedged request.
+    // Being outermost also puts each attempt through affinity and the timeout
+    // bound on its own larger cap, rather than inheriting the cut-off
+    // attempt's. See `agent::untruncated`.
+    let model: Arc<dyn ChatModel<()>> = Arc::new(UntruncatedModel::new(model));
     let mut harness = AgentHarness::new();
     configure_run_budget(&mut harness, budget);
     harness
