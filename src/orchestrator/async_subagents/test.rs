@@ -399,7 +399,7 @@ async fn reading_does_not_hold_the_lock_that_filing_needs() -> Result<()> {
         manager.await_record(research.as_str(), 5).await?.status,
         OrchestrationTaskStatus::Completed
     );
-    let _ = tokio::time::timeout(Duration::from_secs(5), started.acquire()).await;
+    let _ = tokio::time::timeout(std::time::Duration::from_secs(5), started.acquire()).await;
 
     // With the scholar still running, a tool-builder's organizer must be able
     // to start rather than queue behind it.
@@ -410,7 +410,7 @@ async fn reading_does_not_hold_the_lock_that_filing_needs() -> Result<()> {
         OrchestrationTaskStatus::Completed
     );
     assert!(
-        tokio::time::timeout(Duration::from_secs(5), started.acquire())
+        tokio::time::timeout(std::time::Duration::from_secs(5), started.acquire())
             .await
             .is_ok(),
         "the organizer must not wait for an unrelated scholar to finish"
