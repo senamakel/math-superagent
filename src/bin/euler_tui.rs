@@ -1,4 +1,4 @@
-//! A tabbed console for one Project Euler run, one tab per team.
+//! A tabbed console for one run, one tab per team.
 //!
 //! The runtime prints a single interleaved stream: eleven roles, several
 //! concurrent child runs each, one line per model call, tool call, and tool
@@ -21,9 +21,11 @@
 //! and quitting it, closing the terminal, or opening a second one is
 //! guaranteed to leave the run alone.
 //!
-//! Runs are started with `./euler <number>`, which is one command in one
-//! place, so "is something already running for this problem" has one answer
-//! rather than one per terminal.
+//! Runs are started with `./euler <number>` or `./conjecture <slug>`, which is
+//! one command in one place, so "is something already running for this
+//! problem" has one answer rather than one per terminal. The workspace is the
+//! identity here, not the problem number: a Euler run lives at
+//! `project-euler/<n>` and everything else is named with `--workspace`.
 
 use std::collections::BTreeMap;
 use std::io::{BufRead, BufReader, Write};
