@@ -499,8 +499,9 @@ fn a_wait_outlives_the_per_tool_ceiling_it_was_never_meant_to_obey() {
         invalid: None,
         arguments: serde_json::json!({ "run_id": "agent-run-1", "wait_seconds": 600 }),
     };
-    let ToolTimeout::Millis(deadline) = waiting.timeout_policy(&asked) else {
-        panic!("a wait carries its own deadline");
+    let deadline = match waiting.timeout_policy(&asked) {
+        ToolTimeout::Millis(deadline) => deadline,
+        other => unreachable!("a wait carries its own deadline, not {other:?}"),
     };
     assert!(
         u128::from(deadline) > budget.tool_timeout.as_millis(),
