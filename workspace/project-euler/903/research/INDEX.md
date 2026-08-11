@@ -22,6 +22,15 @@ Reference library for PE 903: Q(n)=ΣπΣ_{i=1}^{n!} rank(π^i) mod(1e9+7). memo
 - `verify_cambie_yan.py` — run's own program, not a source: directly enumerates S_n (n=3..7) to check Cambie-Yan Thms 1.1/1.2 for E[des(π^k)] and E[inv(π^k)], re-measures the per-gap pair-inversion probabilities for the random-power law, and reads extend_f.json to confirm f_n(k) is affine in k. Run from workspace root (opens extend_f.json by relative path).
 - `verify_facts.py` — run's own program, not a source: tiny Lehmer-code rank oracle reproducing statement examples (rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(5)) and checking the sum-of-ranks identity n!(n!+1)/2; kept here as the sanity oracle that originally validated the problem is understood.
 
+## Additional sources (on disk, referenced above but not tabulated)
+- [[archer_geary_descents_powers]] (preprint on expected descents/inversions of π^k): L1 note `archer_geary_descents_powers.md`, full text `L0/archer_geary_descents_powers.full.md`. Small-exponent regime; cited by [[cambie_yan_html]] as prior confirmation.
+- [[pinsky_inversion_fixed_points]] (Pinsky, EJC DOI 10.37236/14250): the CORRECT source of Pinsky's fixed-point-conditioned inversion result; L1 note `pinsky_inversion_fixed_points.md`, full text `L0/pinsky_inversion_fixed_points.full.md`. Supersedes the two erroneous downloads flagged below.
+
+## Erroneous downloads (self-flagged in the files; keep out of the library — do not cite)
+- `L0/gaetz_ryba_stable_chars_permutation_patterns.full.md` / `.full.full.md` — arXiv 2107.10110 is an UNRELATED ML paper (zeroth-order optimization), NOT Gaetz-Ryba stable characters. Ignore.
+- `L0/pinsky_inversion_derangements.arxiv.md` / `.full.md` — arXiv 2110.01958 is an UNRELATED CS paper (Elasticsearch entity resolution), NOT Pinsky's inversion paper. Ignore; use [[pinsky_inversion_fixed_points]] instead.
+
 ## Redundant / superseded L1 excerpts (kept, not current)
 - `cambie_yan_descents_inversions_powers.md` — redundant download of the Cambie-Yan arXiv *abstract page*; the substance is in `cambie_yan_html.md` (+ `.full.md`).
 - `conjugacy_class_statistics.md`, `pinsky_schickentanz_ewens_inversions.md` — raw HTML excerpts superseded by the curated body notes [[conjugacy_class_statistics_body]] and [[pinsky_schickentanz_ewens_html]] and their `.full.md` companions; read those instead.
+- `L0/lehmer_factorial_norm.body.full.md` / `.full.full.md` — intermediate duplicate variants of the Zawiślak text; the canonical full text is `L0/lehmer_factorial_norm.full.md`, the note is `L1/lehmer_factorial_norm.md`.
