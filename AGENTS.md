@@ -47,7 +47,7 @@ The runtime has nine roles plus an explicit solution loop.
   search tool on purpose, so it digests the library instead of drifting into
   another search the librarian has already done.
 - The organizer keeps the workspace navigable: folder indexes, the layout and
-  naming of `research/`, and `toolkit.md` matching `toolkit.py`. It has files
+  naming of `research/`, and `toolkits/INDEX.md` matching the files beside it. It has files
   and index tools only — no search, no shell, no note memory — because every
   tool it lacks is a way a filing job cannot turn into an editing one. It may
   not delete anything carrying a result, a derivation, or a source, and may not
@@ -444,21 +444,23 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `toolkit.md` |
+| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `toolkits/INDEX.md` |
 | tool_builder | the above plus `scratchpad.md` |
 | reflection | `goal.md`, `tasks.md`, `memory.md` |
 | pattern_finder | `goal.md`, `memory.md`, `scratchpad.md` |
 | inventor, research | `goal.md`, `memory.md` |
 | librarian | `goal.md`, `memory.md`, `research/INDEX.md` |
 | scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md`, `research/DIGEST.md` |
-| organizer | `goal.md`, `tasks.md`, `toolkit.md`, `research/INDEX.md`, `research/DIGEST.md` |
+| organizer | `goal.md`, `tasks.md`, `toolkits/INDEX.md`, `research/INDEX.md`, `research/DIGEST.md` |
 
-The tool-builder accumulates reusable helpers in `toolkit.py` and describes
-each one in `toolkit.md` — signature, return, and what established it is
-correct. The catalogue is context for the planners as well, because what has
-already been built and verified changes what is worth delegating next. A row
-that has drifted from its function is worse than no row: the next agent calls
-it as described rather than reading the source.
+The tool-builder accumulates reusable helpers under `toolkits/`, one function
+per file, described through `describe_file` so `toolkits/INDEX.md` carries the
+signature, the return, and what established each is correct. One function per
+file is what keeps it cheap: reading the helper you need costs a few hundred
+bytes rather than the whole library. The catalogue is context for the planners
+too, because what has already been built and verified changes what is worth
+delegating next. A row that has drifted from its function is worse than no row:
+the next agent calls it as described rather than reading the source.
 
 Four of these are load-bearing rather than tidy-minded:
 

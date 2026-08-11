@@ -73,5 +73,6 @@
   a verbatim replay of what you have already seen, so reading it would spend a
   large part of your context to learn nothing. Operators read it outside the
   run.
-- Build reusable helpers in `toolkit.py` instead of rewriting the same routine
-  in each script, and describe every one of them in `toolkit.md`.
+- Build reusable helpers in `toolkits/<name>.py`, one function per file, and
+  describe each with `describe_file` so `toolkits/INDEX.md` stays accurate.
+  Import them with `from toolkits.<name> import <name>`.
