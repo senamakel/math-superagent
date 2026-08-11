@@ -12,13 +12,14 @@ use tinyagents::graph::{
     OrchestrationTaskResult, OrchestrationTaskSpec, SteeringRegistry, TaskStore,
 };
 use tinyagents::harness::context::{RunConfig, RunContext};
+use tinyagents::harness::events::EventSink;
 use tinyagents::harness::ids::TaskId;
 use tinyagents::harness::steering::{SteeringCommand, SteeringHandle};
 
+use crate::agent::budget::RunBudget;
+use crate::agent::trace::RunTracer;
 use crate::agent::{AgentHarness, Message, Result, Tool, ToolCall, ToolResult, ToolSchema};
 
-const RUN_TIMEOUT: Duration = Duration::from_mins(10);
-const MAX_AWAIT_SECONDS: u64 = 599;
 static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 
 #[async_trait]
@@ -28,6 +29,7 @@ trait AgentExecutor: Send + Sync {
         run_id: &str,
         input: String,
         steering: SteeringHandle,
+        tracer: Option<Arc<RunTracer>>,
     ) -> Result<String>;
 }
 
@@ -43,8 +45,14 @@ impl AgentExecutor for HarnessExecutor {
         run_id: &str,
         input: String,
         steering: SteeringHandle,
+        tracer: Option<Arc<RunTracer>>,
     ) -> Result<String> {
-        let context = RunContext::new(RunConfig::new(run_id), ()).with_steering(steering);
+        let mut context = RunContext::new(RunConfig::new(run_id), ()).with_steering(steering);
+        if let Some(tracer) = tracer {
+            let events = EventSink::with_stream_id(run_id);
+            events.subscribe(tracer);
+            context = context.with_events(events);
+        }
         let run = self
             .harness
             .invoke_in_context(
