@@ -34,3 +34,13 @@ by both frozenset (~200s, MEMORY) and bitmask (6.4s).
   saturates it, and D(15) ~20M states would need ~12 GiB. The host has 30 GB
   free but the cgroup caps the container, not the host.
 - Also removed the stray root brute.py (superseded; replica at code/brute_capped.py).
+
+## C1 conjecture test (origin-connected == reachable?)
+
+Program code/test_c1.py.  C1 FALSE in 2D and 3D.  Origin-connected sets are
+positive directed animals; counts by size match A005773 in 2D
+(1,2,5,13,35,96,267,750,2123,6046,17303,49721,143365), not the amoeba D_2D.
+3D counts 1,3,12,52,237,1113,5339,26011,128247,638346 — always above D(N).
+m=11 in 3D (~6.4M sets) OOM-killed in this container (2 GiB cap).  Generator
+verified by subset oracle (verify_c1_subsets.py).  Details in
+code/out/c1_test_results.md.
