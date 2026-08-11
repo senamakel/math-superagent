@@ -174,6 +174,7 @@ async fn delegate(subagents: &AsyncSubagentManager, agent: &str, prompt: String)
 async fn attempt_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
     mut state: SolutionState,
 ) -> SolutionState {
     state.attempts += 1;
@@ -192,7 +193,12 @@ async fn attempt_step(
     // saying so, each one restarts at "read the statement and write it down",
     // and a run can spend its whole budget re-documenting the problem without
     // ever executing anything.
-    let continuation = continuation_briefing(state.attempts);
+    // Resumption is a property of the workspace, not of the loop's counter:
+    // every restart resets the counter while the files survive.
+    let continuation = continuation_briefing(
+        state.attempts,
+        workspace.is_some_and(has_executable_artifact),
+    );
     let prompt = format!(
         "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{}\n\
          {fresh}\n\n\
@@ -221,12 +227,24 @@ async fn attempt_step(
 /// down": the workspace files it would continue from are exactly the ones it
 /// re-creates. A run can then spend its whole budget re-documenting the problem
 /// and never execute anything, which is precisely what two live runs did.
-fn continuation_briefing(attempt: usize) -> String {
+fn continuation_briefing(attempt: usize, resumed: bool) -> String {
+    if attempt <= 1 && resumed {
+        // A restarted run begins at attempt 1 with a workspace full of earlier
+        // work, and telling it to start fresh is how that work gets re-read
+        // instead of used. A live solver spent fourteen minutes and fifty-nine
+        // model calls on seventeen `read_document` calls and nothing else,
+        // reconciling a statement it had been told to extract afresh against
+        // thirty-one programs already on disk.
+        //
+        // The attempt counter is in memory and the workspace is on disk, so
+        // only the workspace can say whether this run is continuing something.
+        return "This run continues work already in the workspace: earlier programs, notes and \
+                beliefs are on disk. Read goal.md and memory.md, then CONTINUE from what they \
+                say. Do not re-extract the statement or re-derive what memory.md already \
+                records — establish the next unresolved thing and run a program that settles it."
+            .to_string();
+    }
     if attempt <= 1 {
-        "This is the first attempt. Start by reading the statement, then immediately write and \
-         run a program that reproduces the worked examples it gives."
-            .to_string()
-    } else {
         format!(
             "This is attempt {attempt}. Earlier attempts already wrote the workspace files; read \
              goal.md and memory.md and CONTINUE from there. Do not re-extract or re-document the \
@@ -694,6 +712,7 @@ pub(super) async fn run(
     let attempt_tracer = tracer.clone();
     let reflect_agents = subagents.clone();
     let reflect_tracer = tracer.clone();
+    let attempt_workspace = workspace.clone();
     let reflect_workspace = workspace;
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
@@ -704,9 +723,10 @@ pub(super) async fn run(
         .add_node("attempt", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = attempt_agents.clone();
             let tracer = attempt_tracer.clone();
+            let workspace = attempt_workspace.clone();
             async move {
                 Ok(NodeResult::Update(
-                    attempt_step(&subagents, tracer.as_ref(), state).await,
+                    attempt_step(&subagents, tracer.as_ref(), workspace.as_deref(), state).await,
                 ))
             }
         })
