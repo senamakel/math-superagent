@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/Distance_(graph_theory) | Radius | to the Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6 \| [Girth][7] \| 3 \| [Automorphisms][8] \| 3 \|… |
 | 1 | https://arxiv.org/abs/1904.03818 | — | 277–292. [4] S. Chiba and T. Yamashita, Minimum degree conditions for the existence of cycles of all lengths modulo k in graphs, arXiv:1904.03818 [math.CO] 8 April 2019. [5] N. Dean, Which graphs are… |
 
-_83 further candidates not shown; they are cited once each._
+_86 further candidates not shown; they are cited once each._
