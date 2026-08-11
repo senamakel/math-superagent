@@ -74,9 +74,12 @@ The runtime uses a small registry of specialist agents:
 - `librarian` downloads primary material into a workspace reference library and
   indexes it for local search.
 - `scholar` reads that library. It judges each source against the run's goal and
-  current beliefs and replaces each stored excerpt with what the source actually
+  current beliefs and replaces each stored digest with what the source actually
   establishes, because a downloaded paper nobody has opened has cost the run
-  context and taught it nothing.
+  context and taught it nothing. It records each statement as a `claim` block —
+  its hypotheses, whether they hold for this problem, and what evidence stands
+  behind it — so the library is retrievable one statement at a time rather than
+  one file at a time.
 - `organizer` keeps the workspace navigable: folder indexes, the layout of
   `research/`, and `code/toolkits/INDEX.md` matching the files beside it. It cannot
   delete a result or change what a file says.
@@ -276,6 +279,11 @@ workspace/project-euler/66/
 │   ├── out/            # what those programs produced
 │   └── toolkits/       # reusable verified helpers, one function per file
 ├── research/           # L0 sources, L1 digests, L2 folds, INDEX.md at the root
+│   ├── CLAIMS.md       # derived: what the library establishes, one row per claim
+│   ├── THREADS.md      # derived: the directions the run is pursuing, and the dead ones
+│   ├── FRONTIER.md     # derived: what this library's own sources cite, ranked
+│   ├── REQUESTS.md     # derived: gaps other roles stated, and whether one closed
+│   └── threads/        # one file per direction of attack
 ├── reflections/L0/     # one note per judged attempt
 ├── raw/                # untouched download bytes, including problem.html
 └── config/             # config.toml, problem.url, the document index, trace.jsonl
@@ -337,12 +345,27 @@ Links become reference-style with a single list at the end and tracking
 parameters removed, so a page's URLs cost a few characters each instead of
 filling the context.
 
-A download lands as two files side by side: `<name>.md` holding a bounded excerpt
+A download lands as two files side by side: `<name>.md` holding a bounded digest
 and `<name>.full.md` holding the complete text. One real reference page converted
 to about 23,000 tokens, and three of those fill a specialist's context before it
 has done any work, so reading the short one is the default and reading the long
-one is a decision. The excerpt is a placeholder the scholar is expected to replace
-with what the source establishes, under a thousand tokens.
+one is a decision. The digest is *structural*, not the leading characters: the
+heading outline, the abstract, and every paragraph opening with `Theorem`,
+`Lemma`, `Definition`, `Proposition`, `Corollary`, or `Algorithm`. For a paper
+the leading characters are the title and half the introduction, which is the
+part a reader is least likely to need; the labelled statements are the payload
+and they are mechanically locatable. A source with no headings and no labelled
+statements falls back to its leading characters. The digest is a placeholder the
+scholar is expected to replace with what the source establishes, under a
+thousand tokens.
+
+The citations inside each download are kept rather than discarded, and
+accumulate in `research/FRONTIER.md` ranked by how many of the library's own
+sources cite each target — a URL three of your papers cite is the standard
+reference for the subject, which no rephrasing of a search query will surface.
+Each row carries the sentence the citation appeared in, so a lead says why it
+mattered. A second download of a URL already in the library is refused, naming
+the file that holds it.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
@@ -457,8 +480,14 @@ src/
 ├── orchestrator/           registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs  graph-backed spawn, peek, steer, and await controls
 │   ├── checkpoint.rs       workspace git history under .workspace-history
+│   ├── claims.rs           claim blocks, the derived ledger, and search_claims
+│   ├── digest.rs           structural digest of a downloaded source
 │   ├── documents.rs        bounded workspace document storage and search
 │   ├── folder_index.rs     per-folder INDEX.md description tracking
+│   ├── frontier.rs         the library's citation graph, ranked and deduped
+│   ├── oeis.rs             sequence lookup, filed and cross-referenced
+│   ├── requests.rs         stated gaps, deduped against the ledger and closed
+│   ├── threads.rs          the topic axis beside the arrival tree
 │   ├── patch.rs            atomic, exact-match Codex-format patches
 │   ├── patterns.rs         exact sequence analysis and recurrence search
 │   ├── readable.rs         HTML and PDF to Markdown conversion
