@@ -1461,11 +1461,36 @@ impl Tool<()> for ExecuteCommand {
     }
 }
 
-fn validate_complexity(complexity: &str, complexity_class: &str) -> Result<()> {
-    if !matches!(
-        complexity_class,
-        "constant" | "logarithmic" | "linear" | "quasilinear" | "polynomial"
-    ) {
+/// Rejects an intractable method while allowing a deliberately bounded oracle.
+///
+/// The gate used to refuse every declared exponential cost, and the schema
+/// offered no honest way to say so. That produced the opposite of what it was
+/// for. A tool-builder that truthfully declared a naive minimax as exponential
+/// was refused and could not write the oracle the method policy requires as its
+/// first step; another, running a genuinely factorial search over all `n!`
+/// permutations twice nested, wrote `polynomial (O((n!)²))` in the free-text
+/// field and sailed through, because the forbidden list looked for `o(n!` and
+/// the parenthesis did not match. The gate punished accuracy and was defeated
+/// by punctuation.
+///
+/// So exponential and factorial are declarable, and legitimate only with a
+/// concrete `oracle_bound` — brute force validating the real method on small
+/// instances, which the method policy has always called for. What stays
+/// prohibited is the thing that was meant to be: an intractable *method*,
+/// unbounded. A declaration whose class and prose disagree is refused, because
+/// that mismatch is how the old gate was evaded.
+fn validate_complexity(
+    complexity: &str,
+    complexity_class: &str,
+    oracle_bound: Option<&str>,
+) -> Result<()> {
+    let intractable = matches!(complexity_class, "exponential" | "factorial");
+    if !intractable
+        && !matches!(
+            complexity_class,
+            "constant" | "logarithmic" | "linear" | "quasilinear" | "polynomial"
+        )
+    {
         return Err(tinyagents::TinyAgentsError::Validation(
             "complexity class must be polynomial or better".into(),
         ));
@@ -1476,13 +1501,29 @@ fn validate_complexity(complexity: &str, complexity_class: &str) -> Result<()> {
         "factorial",
         "o(2^",
         "o(2**",
-        "o(n!",
+        "n!",
         "2^n",
         "2**n",
     ];
-    if forbidden.iter().any(|term| normalized.contains(term)) {
+    let claims_intractable = forbidden.iter().any(|term| normalized.contains(term));
+    if intractable {
+        let bounded = oracle_bound.map(str::trim).is_some_and(|bound| !bound.is_empty());
+        if !bounded {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "an exponential or factorial command is allowed only as a brute-force oracle: \
+                 set oracle_bound to the concrete input bound that keeps this run small, such \
+                 as `n <= 7`. The real method must still be polynomial or better"
+                    .into(),
+            ));
+        }
+        return Ok(());
+    }
+    if claims_intractable {
         return Err(tinyagents::TinyAgentsError::Validation(
-            "exponential time or space complexity is not allowed".into(),
+            "the stated complexity is exponential or factorial but the class says otherwise: \
+             declare complexity_class as exponential or factorial and set oracle_bound if this \
+             is a bounded oracle, or choose a polynomial formulation"
+                .into(),
         ));
     }
     Ok(())
