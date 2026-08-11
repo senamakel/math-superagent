@@ -44,17 +44,18 @@ use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 pub use tinyagents::harness::host::AgentDefinition;
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 6] = [
+const SPECIALISTS: [&str; 7] = [
     "research",
     "tool_builder",
     "pattern_finder",
     "inventor",
     "librarian",
     "scholar",
+    "organizer",
 ];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 8] = [
+const DELEGATES: [&str; 9] = [
     "research",
     "tool_builder",
     "goals",
@@ -63,6 +64,7 @@ const DELEGATES: [&str; 8] = [
     "inventor",
     "librarian",
     "scholar",
+    "organizer",
 ];
 
 const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
@@ -243,6 +245,27 @@ const SCHOLAR_PROMPT: &str = "You are the scholar. The run has gathered sources;
     Never state a result the document does not contain, and never treat a source as authoritative \
     because it is convenient. Save durable, source-backed findings with remember_research. \
     Report what you added, what you concluded, and what the run still lacks.";
+
+const ORGANIZER_PROMPT: &str = "You are the organizer. You own the shape of the workspace, not \
+    its mathematics. Everything you do is judged by one question: can the next agent find what it \
+    needs without opening files to discover what they are? \
+    Keep every folder's INDEX.md accurate and useful. Refresh each one so it matches what is \
+    actually on disk, then describe every file left undescribed — say what it is and why it \
+    exists, because a name repeated as its own description helps nobody. Mark superseded files as \
+    superseded and say what replaced them; a stale experiment that looks current is worse than \
+    one plainly labelled dead. \
+    Keep research/ navigable: sensible names that say what a source is about, related material \
+    grouped rather than scattered, DIGEST.md current as the way in, and every summary short. \
+    When a source has a `.full.md` companion, the short file is what the index points at. \
+    Keep toolkit.md matching toolkit.py exactly — every function present, every signature right, \
+    every row saying what established the function is correct. A row describing a function that \
+    has since changed is the most dangerous thing in the workspace, because the next agent calls \
+    it as described instead of reading it. \
+    Move, rename, and consolidate when it genuinely helps, and update every index you affect in \
+    the same step. Do not delete anything carrying a result, a derivation, or a source; when \
+    something looks obsolete, say so in the index rather than removing it. Never edit a \
+    derivation, a program, or a note to say something different — describing the work is your \
+    job, changing it is not. Report what you reorganised and what is still unclear.";
 
 const GOALS_PROMPT: &str = "You are the goals agent. Turn the assigned goal into concrete, \
     verifiable completion criteria and pursue them until they are met or a genuine blocker is \
@@ -770,6 +793,18 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "tasks.md",
             "memory.md",
             "scratchpad.md",
+            "research/INDEX.md",
+            "research/DIGEST.md",
+        ],
+        // Organises rather than reasons. It needs the objective, to judge what
+        // is worth surfacing, and the catalogues it maintains — but not
+        // `memory.md` or `scratchpad.md`: the run's beliefs and provisional
+        // arithmetic are not its business, and giving it opinions about the
+        // mathematics is how a filing job turns into an editing job.
+        "organizer" => &[
+            "goal.md",
+            "tasks.md",
+            "toolkit.md",
             "research/INDEX.md",
             "research/DIGEST.md",
         ],
