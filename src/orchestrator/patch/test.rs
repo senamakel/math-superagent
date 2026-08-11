@@ -70,8 +70,8 @@ fn a_context_line_missing_its_leading_space_is_still_read_as_context() {
     .expect("the patch parses");
     let before = "def peel(p, q):\n    return None\n";
 
-    let after = apply_hunk("solution.py", before, &update_hunks(&ops[0])[0])
-        .expect("the hunk applies");
+    let after =
+        apply_hunk("solution.py", before, &update_hunks(&ops[0])[0]).expect("the hunk applies");
     assert_eq!(after, "def peel(p, q):\n    return p - q\n");
 }
 
@@ -89,10 +89,13 @@ fn a_hunk_rewrites_only_the_lines_it_names() {
     .expect("the patch parses");
     let before = "def peel(p, q):\n    return None\n\nprint(peel(3, 1))\n";
 
-    let after = apply_hunk("solution.py", before, &update_hunks(&ops[0])[0])
-        .expect("the hunk applies");
+    let after =
+        apply_hunk("solution.py", before, &update_hunks(&ops[0])[0]).expect("the hunk applies");
 
-    assert_eq!(after, "def peel(p, q):\n    return p - q\n\nprint(peel(3, 1))\n");
+    assert_eq!(
+        after,
+        "def peel(p, q):\n    return p - q\n\nprint(peel(3, 1))\n"
+    );
 }
 
 #[test]

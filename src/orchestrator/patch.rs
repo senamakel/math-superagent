@@ -399,12 +399,16 @@ impl Tool<()> for ApplyPatchTool {
     }
 
     fn schema(&self) -> ToolSchema {
-        ToolSchema::new(self.name(), self.description(), json!({
-            "type": "object",
-            "properties": { "patch": { "type": "string" } },
-            "required": ["patch"],
-            "additionalProperties": false
-        }))
+        ToolSchema::new(
+            self.name(),
+            self.description(),
+            json!({
+                "type": "object",
+                "properties": { "patch": { "type": "string" } },
+                "required": ["patch"],
+                "additionalProperties": false
+            }),
+        )
     }
 
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {

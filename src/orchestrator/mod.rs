@@ -380,6 +380,11 @@ impl OrchestratorAgent {
         for tool in documents.tools() {
             register_resilient(&mut tool_builder_harness, tool);
         }
+        // Diff-shaped editing, for the role that actually writes code. A patch
+        // changes a few lines instead of re-emitting the file, and carries a
+        // change across several files in one atomic call — which is what keeps
+        // `toolkit.py` and its row in `toolkit.md` from drifting apart.
+        register_resilient(&mut tool_builder_harness, patch::tool(documents.clone()));
         tool_builder_harness.push_middleware(checkpoint.clone());
         async_subagents.register(
             "tool_builder",

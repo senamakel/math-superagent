@@ -40,11 +40,12 @@ const COMMIT_NAME: &str = "math-agent";
 const COMMIT_EMAIL: &str = "math-agent@localhost";
 
 /// Tools whose success means the workspace changed on disk.
-const WRITING_TOOLS: [&str; 4] = [
+const WRITING_TOOLS: [&str; 5] = [
     "write_tool_file",
     "write_document",
     "edit_document",
     "download_document",
+    "apply_patch",
 ];
 
 /// Commits the workspace after each successful write.
