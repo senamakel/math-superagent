@@ -25,7 +25,7 @@ fn a_rendered_index_round_trips_through_the_parser() {
         ),
     ]);
 
-    let parsed = parse(&render("", &original));
+    let parsed = parse(&render("", &original, ""));
 
     assert_eq!(parsed, original);
 }
@@ -58,14 +58,14 @@ fn a_reformatted_index_does_not_lose_its_descriptions() {
 
 #[test]
 fn an_undescribed_file_is_marked_rather_than_left_blank() {
-    let rendered = render("research", &entries(&[("paper.md", "")]));
+    let rendered = render("research", &entries(&[("paper.md", "")]), "");
     assert!(rendered.contains("_(undescribed)_"), "{rendered}");
     assert!(rendered.contains("# Index — research"), "{rendered}");
 }
 
 #[test]
 fn an_empty_folder_still_renders_a_usable_table() {
-    let rendered = render("notes", &BTreeMap::new());
+    let rendered = render("notes", &BTreeMap::new(), "");
     assert!(rendered.contains("This folder is empty"), "{rendered}");
     // The placeholder must not be a table row: parsed back it would become a
     // file the next refresh carries forward as though it existed.
