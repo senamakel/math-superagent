@@ -832,9 +832,9 @@ impl Tool<()> for AsyncSubagentTool {
                     let manager = self.manager.clone();
                     waits.spawn(async move {
                         match manager.await_record(&run_id, wait_seconds).await {
-                            Ok(record) => serde_json::to_value(record).unwrap_or_else(|error| {
-                                json!({ "run_id": run_id, "error": error.to_string() })
-                            }),
+                            Ok(record) => serde_json::to_value(record).unwrap_or_else(
+                                |error| json!({ "run_id": run_id, "error": error.to_string() }),
+                            ),
                             Err(error) => json!({ "run_id": run_id, "error": error.to_string() }),
                         }
                     });
