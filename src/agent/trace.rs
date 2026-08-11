@@ -90,7 +90,35 @@ struct TraceState {
     /// float has no atomic. Micro-USD keeps a full cent to four decimal places,
     /// far finer than any single call is priced.
     micro_usd: AtomicU64,
+    /// Middleware hooks that have started and not yet completed, keyed by the
+    /// agent label and the middleware name.
+    ///
+    /// Keyed by both because children share this state: two specialists running
+    /// concurrently pass through the same middleware names, and a key of name
+    /// alone would let one agent's completion consume another's start time.
+    /// Within a single agent the hooks are sequential, so the pair is unique.
+    middleware_started: Mutex<HashMap<(String, String), Instant>>,
+    /// How many times each middleware ran and how long it spent, in
+    /// microseconds, so the summary can report what the suppressed lines would
+    /// have said.
+    middleware_totals: Mutex<HashMap<String, (u64, u64)>>,
 }
+
+/// How long a middleware hook must take before it earns a journal line.
+///
+/// The middleware events carry only a name — no duration, no outcome, nothing
+/// the surrounding model and tool events do not already imply — and both hooks
+/// fire on both sides of every model call and every tool call. On one measured
+/// run they were 5,108 of 6,406 events, four fifths of a 24 MB journal, and the
+/// same volume reached Langfuse, where it is what makes a broad query fail.
+///
+/// A hook that returns in under a millisecond did nothing: the reflection
+/// middleware short-circuits when no tool has failed, and compression
+/// short-circuits below its token trigger. Recording that thousands of times
+/// buries the events that matter. So the fast ones are counted and summarised
+/// at the end of the run, and only a hook slow enough to have actually worked
+/// is written where it happened.
+const MIDDLEWARE_JOURNAL_THRESHOLD: std::time::Duration = std::time::Duration::from_millis(1);
 
 /// An event listener that prints a compact live trace for one run and appends
 /// full event records to a shared JSONL file inside the workspace.
