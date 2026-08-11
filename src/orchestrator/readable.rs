@@ -414,6 +414,12 @@ const TRACKING_PARAMS: [&str; 9] = [
 #[derive(Debug, Default)]
 pub(super) struct LinkTable {
     urls: Vec<String>,
+    /// Where each distinct URL was first cited, and under what anchor text.
+    ///
+    /// Only the first occurrence is kept. A page that links the same reference
+    /// a dozen times cites it once for a reason and eleven times from a
+    /// navigation bar, and the first is the one that came with prose.
+    first: Vec<(String, usize)>,
 }
 
 impl LinkTable {
@@ -424,7 +430,34 @@ impl LinkTable {
             return position + 1;
         }
         self.urls.push(cleaned);
+        self.first.push((String::new(), 0));
         self.urls.len()
+    }
+
+    /// Records the anchor text and position of a URL's first citation.
+    fn cited(&mut self, reference: usize, label: &str, at: usize) {
+        if let Some(entry) = self.first.get_mut(reference.saturating_sub(1))
+            && entry.1 == 0
+        {
+            *entry = (label.to_string(), at);
+        }
+    }
+
+    /// Builds one record per distinct URL, reading context out of `rendered`.
+    ///
+    /// `rendered` must be the buffer the offsets were taken against — the
+    /// conversion output before it is trimmed and its blank lines collapsed —
+    /// or the windows land in the wrong place.
+    fn records(&self, rendered: &str) -> Vec<LinkRecord> {
+        self.urls
+            .iter()
+            .zip(&self.first)
+            .map(|(url, (label, at))| LinkRecord {
+                url: url.clone(),
+                label: label.clone(),
+                context: window(rendered, *at),
+            })
+            .collect()
     }
 
     /// Renders the reference list appended below the document.
