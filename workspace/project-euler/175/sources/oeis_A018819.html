@@ -1,0 +1,717 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+  
+  <head>
+  <link rel="stylesheet" href="/styles.css">
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="OEIS,integer sequences,Sloane" />
+  
+  
+  <title>A018819 - OEIS</title>
+  <link rel="search" type="application/opensearchdescription+xml" title="OEIS" href="/oeis.xml">
+  <script>
+  var myURL = "\/A018819"
+  function redir() {
+      var host = document.location.hostname;
+      if(host != "oeis.org" && host != "127.0.0.1" && !/^([0-9.]+)$/.test(host) && host != "localhost" && host != "localhost.localdomain") {
+          document.location = "https"+":"+"//"+"oeis"+".org/" + myURL;
+      }
+  }
+  function sf() {
+      if(document.location.pathname == "/" && document.f) document.f.q.focus();
+  }
+  </script>
+  </head>
+  <body bgcolor=#ffffff onload="redir();sf()">
+    <div class=loginbar>
+      <div class=login>
+      
+        <a href="/login?redirect=%2fA018819">login</a>
+      
+      </div>
+    </div>
+
+    <div class=center><div class=top>
+    <center>
+    <div class=donors>
+    The OEIS is supported by <a href="http://oeisf.org/#DONATE">the many generous donors to the OEIS Foundation</a>.
+    </div>
+
+    <div class=banner>
+    <a href="/"><img class=banner border="0" width="600" src="/banner2021.jpg" alt="A018819 - OEIS"></a>
+    </div>
+
+    
+    </center>
+    </div></div>
+
+    <div class=center><div class=pagebody>
+      
+    
+    <div class=searchbarcenter>
+        <form name=f action="/search" method="GET">
+            <div class=searchbargreet>
+                <div class=searchbar>
+                    <div class=searchq>
+                        <input class=searchbox maxLength=1024 name=q value="" title="Search Query">
+                        
+                        
+                        
+                        
+                    </div>
+                    <div class=searchsubmit>
+                        <input type=submit value="Search" name=go>
+                    </div>
+                    <div class=hints>
+                        <span class=hints><a href="/hints.html">Hints</a></span>
+                    </div>
+                </div>
+                <div class=searchgreet>
+                    (Greetings from <a href="/welcome">The On-Line Encyclopedia of Integer Sequences</a>!)
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class=sequence>
+        <div class=space1></div>
+        <div class=line></div>
+        
+        <div class=seqhead>
+            <div class=seqnumname>
+                <div class=seqnum>
+                    
+                        A018819
+                    
+                </div>
+                <div class=seqname>
+                    Binary partition function: number of partitions of n into powers of 2.
+                    
+                </div>
+            </div>
+            <div class=scorerefs>
+                        
+                        138
+            </div>
+        </div>
+        
+            
+    
+    
+    <div>
+        <div class=seqdatabox>
+            <div class=seqdata>1, 1, 2, 2, 4, 4, 6, 6, 10, 10, 14, 14, 20, 20, 26, 26, 36, 36, 46, 46, 60, 60, 74, 74, 94, 94, 114, 114, 140, 140, 166, 166, 202, 202, 238, 238, 284, 284, 330, 330, 390, 390, 450, 450, 524, 524, 598, 598, 692, 692, 786, 786, 900, 900, 1014, 1014, 1154, 1154, 1294, 1294</div>
+            
+                <div class=seqdatalinks>
+                (<a href="/A018819/list">list</a>;
+                
+                
+                
+                    <a href="/A018819/graph">graph</a>;
+                
+                <a href="/search?q=A018819+-id:A018819">refs</a>;
+                <a href="/A018819/listen">listen</a>;
+                <a href="/history?seq=A018819">history</a>;
+                
+                <a href="/search?q=id:A018819&fmt=text">text</a>;
+                <a href="/A018819/internal">internal format</a>)
+                </div>
+            
+        </div>
+    </div>
+    <div class=entry>
+        
+            
+        
+            
+        
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>OFFSET</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>0,3</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>COMMENTS</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>First differences of <a href="/A000123" title="Number of binary partitions: number of partitions of 2n into powers of 2.">A000123</a>; also <a href="/A000123" title="Number of binary partitions: number of partitions of 2n into powers of 2.">A000123</a> with terms repeated. See the relevant proof that follows the first formula below.</div>
+                             
+                                 <div class=sectline>Among these partitions there is exactly one partition with all distinct terms, as every number can be expressed as the sum of the distinct powers of 2.</div>
+                             
+                                 <div class=sectline>Euler transform of <a href="/A036987" title="Fredholm-Rueppel sequence.">A036987</a> with offset 1.</div>
+                             
+                                 <div class=sectline>a(n) is the number of &quot;non-squashing&quot; partitions of n, that is, partitions n = p_1 + p_2 + ... + p_k with 1 &lt;= p_1 &lt;= p_2 &lt;= ... &lt;= p_k and p_1 + p_2 + ... + p_i &lt;= p_{i+1} for all 1 &lt;= i &lt; k. - <a href="/wiki/User:N._J._A._Sloane">N. J. A. Sloane</a>, Nov 30 2003</div>
+                             
+                                 <div class=sectline>Normally the OEIS does not include sequences like this where every term is repeated, but an exception was made for this one because of its importance. The unrepeated sequence <a href="/A000123" title="Number of binary partitions: number of partitions of 2n into powers of 2.">A000123</a> is the main entry.</div>
+                             
+                                 <div class=sectline>Number of different partial sums from 1 + [1, *2] + [1, *2] + ..., where [1, *2] means we can either add 1 or multiply by 2. E.g., a(6) = 6 because we have 6 = 1 + 1 + 1 + 1 + 1 + 1 = (1+1) * 2 + 1 + 1 = 1 * 2 * 2 + 1 + 1 = (1+1+1) * 2 = 1 * 2 + 1 + 1 + 1 + 1 = (1*2+1) * 2 where the connection is defined via expanding each bracket; e.g., this is 6 = 1 + 1 + 1 + 1 + 1 + 1 = 2 + 2 + 1 + 1 = 4 + 1 + 1 = 2 + 2 + 2 = 2 + 1 + 1 + 1 + 1 = 4 + 2. - <a href="/wiki/User:Jon_Perry">Jon Perry</a>, Jan 01 2004</div>
+                             
+                                 <div class=sectline>Number of partitions p of n such that the number of compositions generated by p is odd. For proof see the Alekseyev and Adams-Watters link. - <a href="/wiki/User:Vladeta_Jovovic">Vladeta Jovovic</a>, Aug 06 2007</div>
+                             
+                                 <div class=sectline>Differs from <a href="/A008645" title="Molien series of 6 X 6 upper triangular matrices over GF( 2 ).">A008645</a> first at a(64). - <a href="/wiki/User:R._J._Mathar">R. J. Mathar</a>, May 28 2008</div>
+                             
+                                 <div class=sectline>Appears to be row sums of <a href="/A155077" title="Matrix inverse of A155076.">A155077</a>. - <a href="/wiki/User:Mats_Granvik">Mats Granvik</a>, Jan 19 2009</div>
+                             
+                                 <div class=sectline>Number of partitions (p_1, p_2, ..., p_k) of n, with p_1 &gt;= p_2 &gt;= ... &gt;= p_k, such that for each i, p_i &gt;= p_{i+1} + ... + p_k. - John MCKAY (mckay(AT)encs.concordia.ca), Mar 06 2009 (these are the &quot;non-squashing&quot; partitions as nonincreasing lists).</div>
+                             
+                                 <div class=sectline>Equals rightmost diagonal of triangle of <a href="/A168261" title="Triangle read by rows, A115361 * the diagonalized variant of A018819.">A168261</a>. Starting with offset 1 = eigensequence of triangle <a href="/A115361" title="Inverse of matrix (1,x)-(x,x^2) (expressed in Riordan array notation).">A115361</a> and row sums of triangle <a href="/A168261" title="Triangle read by rows, A115361 * the diagonalized variant of A018819.">A168261</a>. - <a href="/wiki/User:Gary_W._Adamson">Gary W. Adamson</a>, Nov 21 2009</div>
+                             
+                                 <div class=sectline>Equals convolution square root of <a href="/A171238" title="Given M = triangle A122196 as an infinite lower triangular matrix, this sequence is lim_{k-&gt;infinity} M^k.">A171238</a>: (1, 2, 5, 8, 16, 24, 40, 56, 88, ...). - <a href="/wiki/User:Gary_W._Adamson">Gary W. Adamson</a>, Dec 05 2009</div>
+                             
+                                 <div class=sectline>Let B = the n-th convolution power of the sequence and C = the aerated variant of B. It appears that B/C = the binomial sequence beginning (1, n, ...). Example: Third convolution power of the sequence is (1, 3, 9, 19, 42, 78, 146, ...), with C = (1, 0, 3, 0, 9, 0, 19, ...). Then B/C = (1, 3, 6, 10, 15, 21, ...). - <a href="/wiki/User:Gary_W._Adamson">Gary W. Adamson</a>, Aug 15 2016</div>
+                             
+                                 <div class=sectline>From <a href="/wiki/User:Gary_W._Adamson">Gary W. Adamson</a>, Sep 08 2016: (Start)</div>
+                             
+                                 <div class=sectline>The limit of the matrix power M^k as n--&gt;inf results in a single column vector equal to the sequence, where M is the following production matrix:</div>
+                             
+                                 <div class=sectline>  1, 0, 0, 0, 0, ...</div>
+                             
+                                 <div class=sectline>  1, 0, 0, 0, 0, ...</div>
+                             
+                                 <div class=sectline>  1, 1, 0, 0, 0, ...</div>
+                             
+                                 <div class=sectline>  1, 1, 0, 0, 0, ...</div>
+                             
+                                 <div class=sectline>  1, 1, 1, 0, 0, ...</div>
+                             
+                                 <div class=sectline>  1, 1, 1, 0, 0, ...</div>
+                             
+                                 <div class=sectline>  1, 1, 1, 1, 0, ...</div>
+                             
+                                 <div class=sectline>  1, 1, 1, 1, 0, ...</div>
+                             
+                                 <div class=sectline>  1, 1, 1, 1, 1, ...</div>
+                             
+                                 <div class=sectline>  ... (End)</div>
+                             
+                                 <div class=sectline>a(n) is the number of &quot;non-borrowing&quot; partitions of n, meaning binary subtraction of a smaller part from a larger part will never require place-value borrowing. - <a href="/wiki/User:David_V._Feldman">David V. Feldman</a>, Jan 29 2020</div>
+                             
+                                 <div class=sectline>From <a href="/wiki/User:Gus_Wiseman">Gus Wiseman</a>, May 25 2024: (Start)</div>
+                             
+                                 <div class=sectline>Also the number of multisets of positive integers whose binary rank is n, where the binary rank of a multiset m is given by Sum_i 2^(m_i-1). For example, the a(1) = 1 through a(8) = 10 multisets are:</div>
+                             
+                                 <div class=sectline>  {1}  {2}   {12}   {3}     {13}     {23}      {123}      {4}</div>
+                             
+                                 <div class=sectline>       {11}  {111}  {22}    {122}    {113}     {1113}     {33}</div>
+                             
+                                 <div class=sectline>                    {112}   {1112}   {222}     {1222}     {223}</div>
+                             
+                                 <div class=sectline>                    {1111}  {11111}  {1122}    {11122}    {1123}</div>
+                             
+                                 <div class=sectline>                                     {11112}   {111112}   {2222}</div>
+                             
+                                 <div class=sectline>                                     {111111}  {1111111}  {11113}</div>
+                             
+                                 <div class=sectline>                                                          {11222}</div>
+                             
+                                 <div class=sectline>                                                          {111122}</div>
+                             
+                                 <div class=sectline>                                                          {1111112}</div>
+                             
+                                 <div class=sectline>                                                          {11111111}</div>
+                             
+                                 <div class=sectline>(End)</div>
+                             
+                                 <div class=sectline>Also the number of nonzero terms appearing in the unsigned elementary polysymmetric expansion of the homogeneous polysymmetric function H_n. - <a href="/wiki/User:Aditya_Khanna">Aditya Khanna</a>, Nov 28 2025</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+            
+        
+            
+                 
+                 
+                 
+                     
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>LINKS</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>T. D. Noe, <a href="/A018819/b018819.txt">Table of n, a(n) for n = 0..1000</a></div>
+                             
+                                 <div class=sectline>Max Alekseyev and Franklin T. Adams-Watters, <a href="/A018819/a018819.txt">Two proofs of an observation of Vladeta Jovovic</a>.</div>
+                             
+                                 <div class=sectline>Giedrius Alkauskas, <a href="http://uosis.mif.vu.lt/~alkauskas/MP3/rodseth.pdf">Generalization of the Rodseth-Gupta theorem on binary partitions</a>, Lithuanian Math. J. 43(2) (2003), 103-110.</div>
+                             
+                                 <div class=sectline>Giedrius Alkauskas, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL13/Alkauskas/alkauskas2.html">Congruence Properties of the Function that Counts Compositions into Powers of 2 </a>, J. Int. Seq. 13 (2010), Art. 10.5.3.</div>
+                             
+                                 <div class=sectline>Joerg Arndt, <a href="http://www.jjj.de/fxt/#fxtbook">Matters Computational (The Fxtbook)</a>. See p. 279 (Sect. 38.1).</div>
+                             
+                                 <div class=sectline>Scott M. Bailey and Donald M. Larson, <a href="https://arxiv.org/abs/2107.01316">The A(1)-module structure of the homology of Brown-Gitler spectra</a>, arXiv:2107.01316 [math.AT], 2021.</div>
+                             
+                                 <div class=sectline>Valentin P. Bakoev, <a href="https://doi.org/10.1016/S0012-365X(03)00096-7">Algorithmic approach to counting of certain types m-ary partitions</a>, Disc. Math. 275 (2004), 17-41.</div>
+                             
+                                 <div class=sectline>Philippe Biane, <a href="https://arxiv.org/abs/1810.00548">Laver tables and combinatorics</a>, arXiv:1810.00548 [math.CO], 2018. Mentions this sequence.</div>
+                             
+                                 <div class=sectline>Peter J. Cameron, Firdous Ee Jannat, Rajat Kanti Nath, and Reza Sharafdini, <a href="https://arxiv.org/abs/2403.09423">A survey on conjugacy class graphs of groups</a>, arXiv:2403.09423 [math.GR], 2024.</div>
+                             
+                                 <div class=sectline>Karl Dilcher and Larry Ericksen, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL22/Dilcher/dilcher44.html">Polynomial Analogues of Restricted b-ary Partition Functions</a>, J. Int. Seq. 22 (2019), Art. 19.3.2.</div>
+                             
+                                 <div class=sectline>Philippe Flajolet and Robert Sedgewick, <a href="https://algo.inria.fr/flajolet/Publications/books.html">Analytic Combinatorics</a>, 2009. See pp. 48, 581.</div>
+                             
+                                 <div class=sectline>Maciej Gawron, Piotr Miska and Maciej Ulas, <a href="https://arxiv.org/abs/1703.01955">Arithmetic properties of coefficients of power series expansion of Prod_{n&gt;=0} (1-x^(2^n))^t</a>, arXiv:1703.01955 [math.NT], 2017.</div>
+                             
+                                 <div class=sectline>Michael D. Hirschhorn and James A. Sellers, <a href="https://web.maths.unsw.edu.au/~mikeh/webpapers/paper110.pdf">A different view of m-ary partitions</a>, Australas. J. Combin. 30 (2004), 193-196.</div>
+                             
+                                 <div class=sectline>Jonathan Jordan and Richard Southwell, <a href="https://doi.org/10.4236/am.2010.15045">Further Properties of Reproducing Graphs</a>, Appl. Math. 1(5) (2010), 344-350. - From <a href="/wiki/User:N._J._A._Sloane">N. J. A. Sloane</a>, Feb 03 2013</div>
+                             
+                                 <div class=sectline>Yasuyuki Kachi and Pavlos Tzermias, <a href="http://mi.mathnet.ru/adm508">On the m-ary partition numbers</a>, Algeb. Disc. Math. 19(1) (2015), 67-76.</div>
+                             
+                                 <div class=sectline>Aditya Khanna, <a href="https://doi.org/10.1007/s00026-026-00838-6">Transition Matrices Between Plethystic Bases of Polysymmetric Functions via Bijective Methods</a>, Ann. Comb. (2026). See pp. 6, 58-59. See also <a href="https://arxiv.org/abs/2510.12723">arXiv:2510.12723</a> [math.CO], 2025. See pp. 5, 46.</div>
+                             
+                                 <div class=sectline>Matjaž Konvalinka and Igor Pak, <a href="https://www.math.ucla.edu/~pak/papers/CayleyComp7.pdf">Cayley compositions, partitions, polytopes, and geometric bijections</a>, J. Combin. Theory, Series A 123(1) (April 2014), 86-91; see also <a href="https://doi.org/10.1016/j.jcta.2013.11.008">DOI link</a>. - From <a href="/wiki/User:N._J._A._Sloane">N. J. A. Sloane</a>, Dec 22 2012</div>
+                             
+                                 <div class=sectline>Apisit Pakapongpun and Thomas Ward, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL12/Ward/ward17.html">Functorial Orbit counting</a>, J. Int. Seq. 12 (2009) Art. 09.2.4. See Example 25.</div>
+                             
+                                 <div class=sectline>Øystein J. Rodseth and James A. Sellers, <a href="https://cs.uwaterloo.ca/journals/JIS/VOL8/Sellers/sellers75.html">On a Restricted m-Non-Squashing Partition Function</a>, J. Int. Seq. 8 (2005), Art. 05.5.4.</div>
+                             
+                                 <div class=sectline>David Ruelle, <a href="https://www.ams.org/notices/200208/fea-ruelle.pdf">Dynamical zeta functions and transfer operators</a>, Notices Amer. Math. Soc. 49(8) (2002), 887-895. See p. 888.</div>
+                             
+                                 <div class=sectline>N. J. A. Sloane and James A. Sellers, <a href="https://arxiv.org/abs/math/0312418">On non-squashing partitions</a>, arXiv:math/0312418 [math.CO], 2003.</div>
+                             
+                                 <div class=sectline>N. J. A. Sloane and James A. Sellers, <a href="https://doi.org/10.1016/j.disc.2004.11.014">On non-squashing partitions</a>, Discrete Math. 294 (2005), 259-274.</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>FORMULA</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>a(2m+1) = a(2m), a(2m) = a(2m-1) + a(m). Proof: If n is odd there is a part of size 1; removing it gives a partition of n - 1. If n is even either there is a part of size 1, whose removal gives a partition of n - 1, or else all parts have even sizes and dividing each part by 2 gives a partition of n/2.</div>
+                             
+                                 <div class=sectline>G.f.: 1 / Product_{j&gt;=0} (1-x^(2^j)).</div>
+                             
+                                 <div class=sectline>a(n) = (1/n)*Sum_{k = 1..n} <a href="/A038712" title="Let k be the exponent of highest power of 2 dividing n (A007814); a(n) = 2^(k+1)-1.">A038712</a>(k)*a(n-k), n &gt; 1, a(0) = 1. - <a href="/wiki/User:Vladeta_Jovovic">Vladeta Jovovic</a>, Aug 22 2002</div>
+                             
+                                 <div class=sectline>a(2*n) = a(2*n + 1) = <a href="/A000123" title="Number of binary partitions: number of partitions of 2n into powers of 2.">A000123</a>(n). - <a href="/wiki/User:Michael_Somos">Michael Somos</a>, Aug 25 2003</div>
+                             
+                                 <div class=sectline>a(n) = 1 if n = 0, Sum_{j = 0..floor(n/2)} a(j) if n &gt; 0. - <a href="/wiki/User:David_W._Wilson">David W. Wilson</a>, Aug 16 2007</div>
+                             
+                                 <div class=sectline>G.f. A(x) satisfies A(x^2) = (1-x) * A(x). - <a href="/wiki/User:Michael_Somos">Michael Somos</a>, Aug 25 2003</div>
+                             
+                                 <div class=sectline>G.f. A(x) satisfies 0 = f(A(x), A(x^2), A(x^4)) where f(u, v, w) = u^2*w - 2*u*v^2 + v^3. - <a href="/wiki/User:Michael_Somos">Michael Somos</a>, Apr 10 2005</div>
+                             
+                                 <div class=sectline>G.f. A(x) satisfies 0 = f(A(x), A(x^2), A(x^3), A(x^6)) where f(u1, u2, u3, u6) = u6 * u1^3 - 3*u3*u2*u1^2 + 3*u3*u2^2*u1 - u3*u2^3. - <a href="/wiki/User:Michael_Somos">Michael Somos</a>, Oct 15 2006</div>
+                             
+                                 <div class=sectline>G.f.: 1/( Sum_{n &gt;= 0} x^evil(n) - x^odious(n) ), where evil(n) = <a href="/A001969" title="Evil numbers: nonnegative integers with an even number of 1's in their binary expansion.">A001969</a>(n) and odious(n) = <a href="/A000069" title="Odious numbers: numbers with an odd number of 1's in their binary expansion.">A000069</a>(n). - <a href="/wiki/User:Paul_D._Hanna">Paul D. Hanna</a>, Jan 23 2012</div>
+                             
+                                 <div class=sectline>Let A(x) by the g.f. and B(x) = A(x^k), then 0 = B*((1-A)^k - (-A)^k) + (-A)^k, see fxtbook link. - <a href="/wiki/User:Joerg_Arndt">Joerg Arndt</a>, Dec 17 2012</div>
+                             
+                                 <div class=sectline>G.f.: Product_{n&gt;=0} (1+x^(2^n))^(n+1), see the fxtbook link. - <a href="/wiki/User:Joerg_Arndt">Joerg Arndt</a>, Feb 28 2014</div>
+                             
+                                 <div class=sectline>G.f.: 1 + Sum_{i&gt;=0} x^(2^i) / Product_{j=0..i} (1 - x^(2^j)). - <a href="/wiki/User:Ilya_Gutkovskiy">Ilya Gutkovskiy</a>, May 07 2017</div>
+                             
+                                 <div class=sectline>a(n) = a(n-2) + a(floor(n/2)) for n &gt;= 2. - <a href="/wiki/User:Alan_Michael_Gómez_Calderón">Alan Michael Gómez Calderón</a>, Sep 13 2025</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>EXAMPLE</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>G.f. = 1 + x + 2*x^2 + 2*x^3 + 4*x^4 + 4*x^5 + 6*x^6 + 6*x^7 + 10*x^8 + ...</div>
+                             
+                                 <div class=sectline>a(4) = 4: the partitions are 4, 2 + 2, 2 + 1 + 1, 1 + 1 + 1 + 1.</div>
+                             
+                                 <div class=sectline>a(7) = 6: the partitions are 4 + 2 + 1, 4 + 1 + 1 + 1, 2 + 2 + 2 + 1, 2 + 2 + 1 + 1 + 1, 2 + 1 + 1 + 1 + 1 + 1, 1 + 1 + 1 + 1 + 1 + 1 + 1.</div>
+                             
+                                 <div class=sectline>From <a href="/wiki/User:Joerg_Arndt">Joerg Arndt</a>, Dec 17 2012: (Start)</div>
+                             
+                                 <div class=sectline>The a(10) = 14 binary partitions of 10 are (in lexicographic order)</div>
+                             
+                                 <div class=sectline>  [ 1] [ 1 1 1 1 1 1 1 1 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 2] [ 2 1 1 1 1 1 1 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 3] [ 2 2 1 1 1 1 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 4] [ 2 2 2 1 1 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 5] [ 2 2 2 2 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 6] [ 2 2 2 2 2 ]</div>
+                             
+                                 <div class=sectline>  [ 7] [ 4 1 1 1 1 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 8] [ 4 2 1 1 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 9] [ 4 2 2 1 1 ]</div>
+                             
+                                 <div class=sectline>  [10] [ 4 2 2 2 ]</div>
+                             
+                                 <div class=sectline>  [11] [ 4 4 1 1 ]</div>
+                             
+                                 <div class=sectline>  [12] [ 4 4 2 ]</div>
+                             
+                                 <div class=sectline>  [13] [ 8 1 1 ]</div>
+                             
+                                 <div class=sectline>  [14] [ 8 2 ]</div>
+                             
+                                 <div class=sectline>The a(11) = 14 binary partitions of 11 are obtained by appending 1 to each partition in the list.</div>
+                             
+                                 <div class=sectline>The a(10) = 14 non-squashing partitions of 10 are (in lexicographic order)</div>
+                             
+                                 <div class=sectline>  [ 1] [ 6 3 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 2] [ 6 3 2 ]</div>
+                             
+                                 <div class=sectline>  [ 3] [ 6 4 1 ]</div>
+                             
+                                 <div class=sectline>  [ 4] [ 6 5 ]</div>
+                             
+                                 <div class=sectline>  [ 5] [ 7 2 1 1 ]</div>
+                             
+                                 <div class=sectline>  [ 6] [ 7 2 2 ]</div>
+                             
+                                 <div class=sectline>  [ 7] [ 7 3 1 ]</div>
+                             
+                                 <div class=sectline>  [ 8] [ 7 4 ]</div>
+                             
+                                 <div class=sectline>  [ 9] [ 8 2 1 ]</div>
+                             
+                                 <div class=sectline>  [10] [ 8 3 ]</div>
+                             
+                                 <div class=sectline>  [11] [ 9 1 1 ]</div>
+                             
+                                 <div class=sectline>  [12] [ 9 2 ]</div>
+                             
+                                 <div class=sectline>  [13] [ 10 1 ]</div>
+                             
+                                 <div class=sectline>  [14] [ 11 ]</div>
+                             
+                                 <div class=sectline>The a(11) = 14 non-squashing partitions of 11 are obtained by adding 1 to the first part in each partition in the list.</div>
+                             
+                                 <div class=sectline>(End)</div>
+                             
+                                 <div class=sectline>From <a href="/wiki/User:David_V._Feldman">David V. Feldman</a>, Jan 29 2020: (Start)</div>
+                             
+                                 <div class=sectline>The a(10) = 14 non-borrowing partitions of 10 are (in lexicographic order)</div>
+                             
+                                 <div class=sectline>  [ 1] [1 1 1 1 1 1 1 1 1 1]</div>
+                             
+                                 <div class=sectline>  [ 2] [2 2 2 2 2]</div>
+                             
+                                 <div class=sectline>  [ 3] [3 1 1 1 1 1 1 1]</div>
+                             
+                                 <div class=sectline>  [ 4] [3 3 1 1 1 1]</div>
+                             
+                                 <div class=sectline>  [ 5] [3 3 2 2]</div>
+                             
+                                 <div class=sectline>  [ 6] [3 3 3 1]</div>
+                             
+                                 <div class=sectline>  [ 7] [5 1 1 1 1 1]</div>
+                             
+                                 <div class=sectline>  [ 8] [5 5]</div>
+                             
+                                 <div class=sectline>  [ 9] [6 2 2]</div>
+                             
+                                 <div class=sectline>  [10] [6 4]</div>
+                             
+                                 <div class=sectline>  [11] [7 1 1 1]</div>
+                             
+                                 <div class=sectline>  [12] [7 3]</div>
+                             
+                                 <div class=sectline>  [13] [9 1]</div>
+                             
+                                 <div class=sectline>  [14] [10]</div>
+                             
+                                 <div class=sectline>The a(11) = 14 non-borrowing partitions of 11 are obtained either by adding 1 to the first even part in each partition (if any) or else appending a 1 after the last part.</div>
+                             
+                                 <div class=sectline>(End)</div>
+                             
+                                 <div class=sectline>For example, the five partitions of 4, written in nonincreasing order, are [1, 1, 1, 1], [2, 1, 1], [2, 2], [3, 1], [4]. The last four satisfy the condition, and a(4) = 4. The Maple program below verifies this for small values of n.</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>MAPLE</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>with(combinat); N:=8; a:=array(1..N); c:=array(1..N);</div>
+                             
+                                 <div class=sectline>for n from 1 to N do p:=partition(n); np:=nops(p); t:=0;</div>
+                             
+                                 <div class=sectline>for s to np do r:=p[s]; r:=sort(r, `&gt;`); nr:=nops(r); j:=1;</div>
+                             
+                                 <div class=sectline># while j&lt;nr and r[j]&gt;sum(r[k], k=j+1..nr) do j:=j+1; od; # gives <a href="/A040039" title="First differences of A033485; also A033485 with terms repeated.">A040039</a></div>
+                             
+                                 <div class=sectline>while j&lt;nr and r[j]&gt;= sum(r[k], k=j+1..nr) do j:=j+1; od; # gives <a href="/A018819" title="Binary partition function: number of partitions of n into powers of 2.">A018819</a></div>
+                             
+                                 <div class=sectline>if j=nr then t:=t+1; fi od; a[n]:=t; od; # John McKay</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>MATHEMATICA</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>max = 59; a[0] = a[1] = 1; a[n_?OddQ] := a[n] = a[n-1]; a[n_?EvenQ] := a[n] = a[n-1] + a[n/2]; Table[a[n], {n, 0, max}]</div>
+                             
+                                 <div class=sectline>(* or *) CoefficientList[Series[1/Product[(1-x^(2^j)), {j, 0, Log[2, max] // Ceiling}], {x, 0, max}], x] (* <a href="/wiki/User:Jean-François_Alcover">Jean-François Alcover</a>, May 17 2011, updated Feb 17 2014 *)</div>
+                             
+                                 <div class=sectline>a[ n_] := If[n&lt;1, Boole[n==0], a[n] = a[n-1] + If[EvenQ@n, a[Quotient[n, 2]], 0]]; (* <a href="/wiki/User:Michael_Somos">Michael Somos</a>, May 04 2022 *)</div>
+                             
+                                 <div class=sectline>Table[Count[IntegerPartitions[n], _?(AllTrue[Log2[#], IntegerQ]&amp;)], {n, 0, 60}] (* <a href="/wiki/User:Harvey_P._Dale">Harvey P. Dale</a>, Jun 20 2024 *)</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>PROG</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>(PARI) { n=15; v=vector(n); for (i=1, n, v[i]=vector(2^(i-1))); v[1][1]=1; for (i=2, n, k=length(v[i-1]); for (j=1, k, v[i][j]=v[i-1][j]+1; v[i][j+k]=v[i-1][j]*2)); c=vector(n); for (i=1, n, for (j=1, 2^(i-1), if (v[i][j]&lt;=n, c[v[i][j]]++))); c } /* <a href="/wiki/User:Jon_Perry">Jon Perry</a> */</div>
+                             
+                                 <div class=sectline>(PARI) {a(n) = my(A, m); if( n&lt;1, n==0, m=1; A = 1 + O(x); while(m&lt;=n, m*=2; A = subst(A, x, x^2) / (1 - x)); polcoeff(A, n))}; /* <a href="/wiki/User:Michael_Somos">Michael Somos</a>, Aug 25 2003 */</div>
+                             
+                                 <div class=sectline>(PARI) {a(n) = if( n&lt;1, n==0, if( n%2, a(n-1), a(n/2)+a(n-1)))}; /* <a href="/wiki/User:Michael_Somos">Michael Somos</a>, Aug 25 2003 */</div>
+                             
+                                 <div class=sectline>(Haskell)</div>
+                             
+                                 <div class=sectline>a018819 n = a018819_list !! n</div>
+                             
+                                 <div class=sectline>a018819_list = 1 : f (tail a008619_list) where</div>
+                             
+                                 <div class=sectline>   f (x:xs) = (sum $ take x a018819_list) : f xs</div>
+                             
+                                 <div class=sectline>-- <a href="/wiki/User:Reinhard_Zumkeller">Reinhard Zumkeller</a>, Jan 28 2012</div>
+                             
+                                 <div class=sectline>(Haskell)</div>
+                             
+                                 <div class=sectline>import Data.List (intersperse)</div>
+                             
+                                 <div class=sectline>a018819 = (a018819_list !!)</div>
+                             
+                                 <div class=sectline>a018819_list = 1 : 1 : (&lt;*&gt;) (zipWith (+)) (intersperse 0) (tail a018819_list)</div>
+                             
+                                 <div class=sectline>-- <a href="/wiki/User:Johan_Wiltink">Johan Wiltink</a>, Nov 08 2018</div>
+                             
+                                 <div class=sectline>(Python)</div>
+                             
+                                 <div class=sectline>from functools import lru_cache</div>
+                             
+                                 <div class=sectline>@lru_cache(maxsize=None)</div>
+                             
+                                 <div class=sectline>def <a href="/A018819" title="Binary partition function: number of partitions of n into powers of 2.">A018819</a>(n): return 1 if n == 0 else <a href="/A018819" title="Binary partition function: number of partitions of n into powers of 2.">A018819</a>(n-1) + (0 if n % 2 else <a href="/A018819" title="Binary partition function: number of partitions of n into powers of 2.">A018819</a>(n//2)) # <a href="/wiki/User:Chai_Wah_Wu">Chai Wah Wu</a>, Jan 18 2022</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                     
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>CROSSREFS</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline><a href="/A000123" title="Number of binary partitions: number of partitions of 2n into powers of 2.">A000123</a> is the main entry for the binary partition function and gives many more properties and references.</div>
+                             
+                                 <div class=sectline>Cf. <a href="/A115625" title="Number of partitions of {1,...,n} into block sizes a power of 2.">A115625</a> (labeled binary partitions), <a href="/A115626" title="Number of non-squashing partitions of {1,...,n}.">A115626</a> (labeled non-squashing partitions).</div>
+                             
+                                 <div class=sectline>Convolution inverse of <a href="/A106400" title="Thue-Morse sequence: let A_k denote the first 2^k terms; then A_0 = 1 and for k &gt;= 0, A_{k+1} = A_k B_k, where B_k is obtain...">A106400</a>.</div>
+                             
+                                 <div class=sectline>Cf. <a href="/A023893" title="Number of partitions of n into prime power parts (1 included); number of nonisomorphic Abelian subgroups of symmetric group S_n.">A023893</a>, <a href="/A062051" title="Number of partitions of n into powers of 3.">A062051</a>, <a href="/A105420" title="Number of partitions of n into 3-smooth parts.">A105420</a>, <a href="/A131995" title="Number of partitions of n into powers of 2 or of 3.">A131995</a>, <a href="/A040039" title="First differences of A033485; also A033485 with terms repeated.">A040039</a>, <a href="/A018819" title="Binary partition function: number of partitions of n into powers of 2.">A018819</a>, <a href="/A088567" title="Number of &quot;non-squashing&quot; partitions of n into distinct parts.">A088567</a>, <a href="/A089054" title="Solution to the non-squashing boxes problem (version 1).">A089054</a>, <a href="/A115361" title="Inverse of matrix (1,x)-(x,x^2) (expressed in Riordan array notation).">A115361</a>, <a href="/A168261" title="Triangle read by rows, A115361 * the diagonalized variant of A018819.">A168261</a>, <a href="/A171238" title="Given M = triangle A122196 as an infinite lower triangular matrix, this sequence is lim_{k-&gt;infinity} M^k.">A171238</a>, <a href="/A179051" title="Number of partitions of n into powers of 10 (cf. A011557).">A179051</a>, <a href="/A008619" title="Positive integers repeated.">A008619</a>.</div>
+                             
+                                 <div class=sectline>Multiplicity of n in <a href="/A048675" title="If n = p_i^e_i * ... * p_k^e_k, p_i &lt; ... &lt; p_k primes (with p_i = prime(i)), then a(n) = (1/2) * (e_i * 2^i + ... + e_k * 2^k).">A048675</a>, for distinct prime indices <a href="/A087207" title="A binary representation of the primes that divide a number, shown in decimal.">A087207</a>.</div>
+                             
+                                 <div class=sectline>Row lengths of <a href="/A277905" title="Irregular table: Each row n (n &gt;= 0) lists in ascending order all A018819(n) numbers k for which A048675(k) = n.">A277905</a>.</div>
+                             
+                                 <div class=sectline><a href="/A118462" title="Decimal equivalent of binary encoding of partitions into distinct parts.">A118462</a> lists binary ranks of strict integer partitions, row sums <a href="/A372888" title="Sum of binary ranks of all strict integer partitions of n, where the binary rank of a partition y is given by Sum_i 2^(y_i-1).">A372888</a>.</div>
+                             
+                                 <div class=sectline><a href="/A372890" title="Sum of binary ranks of all integer partitions of n, where the binary rank of a partition y is given by Sum_i 2^(y_i-1).">A372890</a> adds up binary ranks of integer partitions.</div>
+                             
+                                 <div class=sectline>Binary indices: <a href="/A000120" title="Ones-counting sequence: number of 1's in binary expansion of n (or the binary weight of n).">A000120</a>, <a href="/A001511" title="The ruler function: exponent of the highest power of 2 dividing 2n. Equivalently, the 2-adic valuation of 2n.">A001511</a>, <a href="/A029931" title="If 2n = Sum 2^e_i, a(n) = Sum e_i.">A029931</a>, <a href="/A048793" title="List giving all subsets of natural numbers arranged in standard statistical (or Yates) order.">A048793</a>, <a href="/A070939" title="Length of binary representation of n.">A070939</a>, <a href="/A272020" title="Irregular triangle read by rows: strictly decreasing sequences of positive numbers given in lexicographic order.">A272020</a>.</div>
+                             
+                                 <div class=sectline>Cf. <a href="/A005940" title="The Doudna sequence: write n-1 in binary; power of prime(k) in a(n) is # of 1's that are followed by k-1 0's.">A005940</a>, <a href="/A019565" title="The squarefree numbers ordered lexicographically by their prime factorization (with factors written in decreasing order). a(...">A019565</a>, <a href="/A056239" title="If n = Product_{k &gt;= 1} (p_k)^(c_k) where p_k is k-th prime and c_k &gt;= 0 then a(n) = Sum_{k &gt;= 1} k*c_k.">A056239</a>, <a href="/A158704" title="Nonnegative integers with an even number of even powers of 2 in their base-2 representation.">A158704</a>, <a href="/A158705" title="Nonnegative integers with an odd number of even powers of 2 in their base-2 representation.">A158705</a>, <a href="/A231204" title="If n = Sum_{i=0..m} c(i)*2^i, c(i) = 0 or 1, then a(n) = Sum_{i=0..m} (m-i)*c(i).">A231204</a>, <a href="/A277319" title="Numbers k such that A048675(k) is a prime.">A277319</a>, <a href="/A372688" title="Number of integer partitions y of n whose rank Sum_i 2^(y_i-1) is prime.">A372688</a>.</div>
+                             
+                                 <div class=sectline>Sequence in context: <a href="/A008643" title="Molien series for group of 4 X 4 upper triangular matrices over GF(2).">A008643</a> <a href="/A008644" title="Molien series of 5 X 5 upper triangular matrices over GF( 2 ).">A008644</a> <a href="/A008645" title="Molien series of 6 X 6 upper triangular matrices over GF( 2 ).">A008645</a> * <a href="/A357454" title="Number of partitions of n into pentanacci numbers 1,2,4,8,16,31, ... (A001591).">A357454</a> <a href="/A357452" title="Number of partitions of n into tetranacci numbers 1,2,4,8,15,29, ... (A000078).">A357452</a> <a href="/A211511" title="Number of ordered triples (w,x,y) with all terms in {1,...,n} and w^2=2x*y.">A211511</a></div>
+                             
+                                 <div class=sectline>Adjacent sequences:  <a href="/A018816" title="Number of lines through exactly 9 points of an n X n grid of points.">A018816</a> <a href="/A018817" title="Number of lines through exactly 10 points of an n X n grid of points.">A018817</a> <a href="/A018818" title="Number of partitions of n into divisors of n.">A018818</a> * <a href="/A018820" title="Numbers k that are the sum of m nonzero squares for all 1 &lt;= m &lt;= k - 14.">A018820</a> <a href="/A018821" title="n is the sum of k nonzero squares for all 2 &lt;= k &lt;= n-14.">A018821</a> <a href="/A018822" title="n is the sum of k nonzero squares for all 3 &lt;= k &lt;= n-14.">A018822</a></div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>KEYWORD</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline><span title="a sequence of nonnegative numbers">nonn</span>,<span title="an exceptionally nice sequence">nice</span>,<span title="it is very easy to produce terms of sequence">easy</span>,<span title="edited within the last two weeks">changed</span></div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>AUTHOR</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline><a href="/wiki/User:David_W._Wilson">David W. Wilson</a>, <a href="/wiki/User:N._J._A._Sloane">N. J. A. Sloane</a> and <a href="/wiki/User:J._H._Conway">J. H. Conway</a></div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+            
+        
+            
+                 
+                 
+                 
+                 
+                     <div class=section>
+                         <div class=sectname>STATUS</div>
+                         <div class=sectbody>
+                             
+                                 <div class=sectline>approved</div>
+                             
+                         </div>
+                     </div>
+                 
+            
+        
+
+        
+    </div>
+
+        
+        <div class=space10></div>
+    </div>
+
+    </div></div>
+
+    <p>
+
+    <div class=footerpad></div>
+    <div class=footer>
+    <center>
+    <div class=bottom>
+    <div class=linksbar>
+      <a href="/">Lookup</a>
+      <a href="/wiki/Welcome"><font color="red">Welcome</font></a>
+      <a href="/wiki/Main_Page"><font color="red">Wiki</font></a>
+      <a href="/wiki/Special:RequestAccount">Register</a>
+      
+      <a href="/play.html">Music</a>
+      <a href="/plot2.html">Plot 2</a>
+      <a href="/demo1.html">Demos</a>
+      <a href="/wiki/Index_to_OEIS">Index</a>
+      <a href="/webcam">WebCam</a>
+      <a href="/Submit.html">Contribute</a>
+      <a href="/eishelp2.html">Format</a>
+      <a href="/wiki/Style_Sheet">Style Sheet</a>
+      <a href="/transforms.html">Transforms</a>
+      <a href="/ol.html">Superseeker</a>
+      <a href="/recent">Recents</a>
+    </div>
+    <div class=linksbar>
+      <a href="/community.html">The OEIS Community</a>
+    </div>
+    <div class=linksbar>
+      Maintained by <a href="http://oeisf.org">The OEIS Foundation Inc.</a>
+    </div>
+
+    <div class=dbinfo>Last modified August 11 00:58 EDT 2026.  Contains 398202 sequences.</div>
+    <div class=legal>
+    <a href="/wiki/Legal_Documents">License Agreements, Terms of Use, Privacy Policy</a>
+    </div>
+
+    </div>
+    </center>
+    </div>
+  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a294ad19fccc7ccf',t:'MTc4NjQyNDQyMQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

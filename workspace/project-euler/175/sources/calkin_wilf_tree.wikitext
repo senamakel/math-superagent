@@ -1,0 +1,176 @@
+{{Short description|Binary tree of rational numbers}}
+{{multiple image|image1=Calkin–Wilf tree.svg|caption1=The Calkin–Wilf tree|width1=300|image2=Calkin-Wilf tree children from parent.gif|caption2=How values are derived from their parent|width2=175}}
+In [[number theory]], the '''Calkin–Wilf tree''' is a [[tree (graph theory)|tree]] in which the [[Vertex (graph theory)|vertices]] correspond [[bijection|one-to-one]] to the [[positive number|positive]] [[rational number]]s. The tree is rooted at the number 1, and any rational number {{mvar|q}} expressed in simplest terms as the [[Fraction (mathematics)|fraction]] {{math|{{sfrac|''a''|''b''}}}} has as its two children the numbers {{math|{{sfrac|1|1+1/''q''}} {{=}} {{sfrac|''a''|''a'' + ''b''}}}} and {{math|''q'' + 1 {{=}} {{sfrac|''a'' + ''b''|''b''}}}}. Every positive rational number appears exactly once in the tree. It is named after [[Neil Calkin]] and [[Herbert Wilf]], but appears in other works including [[Johannes Kepler|Kepler's]] ''[[Harmonices Mundi]]''.
+
+The sequence of rational numbers in a [[breadth-first search|breadth-first traversal]] of the Calkin–Wilf tree is known as the '''Calkin–Wilf sequence'''. Its sequence of numerators (or, offset by one, denominators) is '''Stern's diatomic series''', and can be computed by the '''fusc function'''.
+
+==History==
+[[File:Kepler Tree-original.jpg|thumb|upright=1.35|The tree from [[Johannes Kepler|Kepler's]] ''[[Harmonices Mundi]]'' (1619)]]
+The Calkin–Wilf tree is named after [[Neil Calkin]] and [[Herbert Wilf]], who considered it in a 2000 paper. In a 1997 paper, [[Jean Berstel]] and Aldo de Luca<ref>{{harvtxt|Berstel|de Luca|1997}}, Section 6.</ref> called the same tree the ''Raney tree'', since they drew some ideas from a 1973 paper by George N. Raney.<ref>{{harvtxt|Raney|1973}}.</ref> Stern's diatomic series was formulated much earlier by [[Moritz Abraham Stern]], a 19th-century German mathematician who also invented the closely related [[Stern–Brocot tree]]. Even earlier, a similar tree (including only the fractions between 0 and 1) appears in [[Johannes Kepler|Kepler's]] ''[[Harmonices Mundi]]'' (1619).<ref>{{citation|first=J.|last=Kepler|authorlink=Johannes Kepler|title=Harmonices Mundi|volume=III|page=27|url=https://archive.org/stream/ioanniskepplerih00kepl#page/26/mode/2up|year=1619}}.</ref>
+
+==Definition and structure==
+[[File:Calkin-Wilf tree.svg|thumb|upright=1.8|The Calkin–Wilf tree, drawn using an [[H tree]] layout.]]
+The Calkin–Wilf tree may be defined as a [[directed graph]] in which each positive rational number {{math|{{sfrac|''a''|''b''}}}} occurs as a vertex and has one outgoing edge to another vertex, its parent, except for the root of the tree, the number 1, which has no parent.
+
+The parent of any rational number {{math|''q'' ≠ 1}} can be determined after placing the number into simplest terms, as a fraction {{math|{{sfrac|''a''|''b''}}}} with {{math|''a'' ≠ ''b''}} [[relatively prime]].  If {{math|''q'' {{=}} {{sfrac|''a''|''b''}} < 1}}, its parent is {{math|{{sfrac|1|1/''q'' − 1}} {{=}} {{sfrac|''a''|''b'' − ''a''}}}}; if {{math|''q'' {{=}} {{sfrac|''a''|''b''}} > 1}}, its parent is {{math|''q'' − 1 {{=}} {{sfrac|''a'' − ''b''|''b''}}}}. Thus, in either case, the parent is a fraction with a smaller sum of numerator and denominator, so repeated reduction of this type must eventually reach the number 1. As a graph with one outgoing edge per vertex and one root reachable by all other vertices, the Calkin–Wilf tree must indeed be a tree.
+
+The children of any vertex in the Calkin–Wilf tree may be computed by inverting the formula for the parents of a vertex. Each vertex {{math|{{sfrac|''a''|''b''}}}} has one child whose value is less than 1, {{math|{{sfrac|''a''|''a'' + ''b''}}}} (because {{math|''a'' + ''b'' > ''a''}}). Similarly, each vertex {{math|{{sfrac|''a''|''b''}}}} has one child whose value is greater than 1, {{math|{{sfrac|''a'' + ''b''|''b''}}}}.<ref>The description here is dual to the original definition by Calkin and Wilf, which begins by defining the child relationship and derives the parent relationship as part of a proof that every rational appears once in the tree. As defined here, every rational appears once by definition, and instead the fact that the resulting structure is a tree requires a proof.</ref>
+
+As each vertex has two children, the Calkin–Wilf tree is a binary tree. However, it is not a [[binary search tree]]: its inorder does not coincide with the sorted order of its vertices. However, it is closely related to a different binary search tree on the same set of vertices, the [[Stern–Brocot tree]]: the vertices at each level of the two trees coincide, and are related to each other by a [[bit-reversal permutation]].{{sfnp|Gibbons|Lester|Bird|2006}}
+
+==Breadth first traversal==
+[[File:Calkin-Wilf spiral.svg|thumb|upright=1.2|The Calkin–Wilf sequence, depicted as the red spiral tracing through the Calkin–Wilf tree]]
+The '''Calkin–Wilf sequence''' is the sequence of rational numbers generated by a breadth-first traversal of the Calkin–Wilf tree,
+:{{sfrac|1|1}}, {{sfrac|1|2}}, {{sfrac|2|1}}, {{sfrac|1|3}}, {{sfrac|3|2}}, {{sfrac|2|3}}, {{sfrac|3|1}}, {{sfrac|1|4}}, {{sfrac|4|3}}, {{sfrac|3|5}}, {{sfrac|5|2}}, {{sfrac|2|5}}, {{sfrac|5|3}}, {{sfrac|3|4}}, ….
+Because the Calkin–Wilf tree contains every positive rational number exactly once, so does this sequence.<ref>{{harvtxt|Calkin|Wilf|2000}}: "a list of all positive rational numbers, each appearing once and only once, can be made by writing down {{sfrac|1|1}}, then the fractions on the level just below the top of the tree, reading from left to right, then the fractions on the next level down, reading from left to right, etc." {{harvtxt|Gibbons|Lester|Bird|2006}} discuss efficient [[functional programming]] techniques for performing this breadth first traversal.</ref> The denominator of each fraction equals the numerator of the next fraction in the sequence.
+The Calkin–Wilf sequence can also be generated directly by the formula
+
+:<math>q_{i+1} = \frac{1}{2\lfloor q_i\rfloor - q_i + 1}</math>
+
+where {{mvar|q<sub>i</sub>}} denotes the {{mvar|i}}th number in the sequence, starting from {{math|''q''<sub>1</sub> {{=}} 1}}, and {{math|⌊ ''q<sub>i</sub>'' ⌋}} represents the [[Floor and ceiling functions|integral part]].<ref>{{harvtxt|Knuth|Rupert|Smith|Stong|2003}} credit this formula to Moshe Newman.</ref>
+
+It's also possible to calculate {{mvar|q<sub>i</sub>}} directly from the [[run-length encoding]] of the [[binary representation]] of {{mvar|i}}:
+the number of consecutive 1s starting from the least significant bit, then the number of consecutive 0s starting from the first block of 1s, and so on. The sequence of numbers generated in this way gives the [[continued fraction]] representation of {{mvar|q<sub>i</sub>}}. Example:
+
+:i = 1081 = 10000111001<sub>2</sub>: The continued fraction is [1;2,3,4,1] hence {{math|''q''<sub>1081</sub> {{=}} {{sfrac|53|37}}}}.
+:i = 1990 = 11111000110<sub>2</sub>: The continued fraction is [0;1,2,3,5] hence {{math|''q''<sub>1990</sub> {{=}} {{sfrac|37|53}}}}.
+
+In the other direction, using the continued fraction of any {{mvar|q<sub>i</sub>}} as the run-length encoding of a binary number gives back {{mvar|i}} itself. Example:
+
+:{{math|''q<sub>i</sub>'' {{=}} {{sfrac|3|4}}}}: The [[continued fraction]] is [0;1,3] hence {{mvar|i}} = 1110<sub>2</sub> = 14.
+:{{math|''q<sub>i</sub>'' {{=}} {{sfrac|4|3}}}}: The [[continued fraction]] is [1;3]. But to use this method, the length of the continued fraction must be an [[odd number]]. So [1;3] should be replaced by the equivalent continued fraction [1;2,1]. Hence {{mvar|i}} = 1001<sub>2</sub> = 9.
+
+A similar conversion between run-length-encoded binary numbers and continued fractions can also be used to evaluate [[Minkowski's question mark function]]; however, in the Calkin–Wilf tree the binary numbers are integers (positions in the breadth-first traversal) while in the question mark function they are real numbers between 0 and 1.
+
+==Stern's diatomic sequence==
+[[File:Fusc plot 4096.svg|thumb|upright=1.5|[[Scatter plot|Scatterplot]] of {{math|fusc(0...4096)}}]]
+'''Stern's diatomic sequence''' is the [[integer sequence]]
+:0, 1, 1, 2, 1, 3, 2, 3, 1, 4, 3, 5, 2, 5, 3, 4, 1, … {{OEIS|id=A002487}}.
+Using [[zero-based numbering]], the {{mvar|n}}th value in the sequence is the value {{math|fusc(''n'')}} of the '''fusc function''', named<ref>The fusc name was given in 1976 by [[Edsger W. Dijkstra]]; see EWD570 and EWD578.</ref> according to the obfuscating appearance of the sequence of values and defined by the [[recurrence relation]]s
+:<math>\begin{align}
+\operatorname{fusc}(2n) &= \operatorname{fusc}(n) \\
+\operatorname{fusc}(2n+1) &= \operatorname{fusc}(n) + \operatorname{fusc}(n+1),
+\end{align}</math>
+with the base cases {{math|fusc(0) {{=}} 0}} and {{math|fusc(1) {{=}} 1}}.
+
+The {{mvar|n}}th rational number in a breadth-first traversal of the Calkin–Wilf tree is the number {{math|{{sfrac|fusc(''n'')|fusc(''n'' + 1)}}}}.<ref>{{harvtxt|Calkin|Wilf|2000}}, Theorem 1.</ref> Thus, the diatomic sequence forms both the sequence of numerators and the sequence of denominators of the numbers in the Calkin–Wilf sequence.
+
+The function {{math|fusc(''n'' + 1)}} is the number of odd [[binomial coefficient]]s of the form {{math|<big><big>(</big></big>{{su|p=''n'' − ''r''|b=''r''|a=c}}<big><big>)</big></big>}}, {{math|0 ≤ 2''r'' < ''n''}},<ref>{{harvtxt|Carlitz|1964}}.</ref> and also counts the number of ways of writing {{mvar|n}} as a sum of [[power of two|powers of two]] in which each power occurs at most twice. This can be seen from the recurrence defining fusc: the expressions as a sum of powers of two for an even number {{math|2''n''}} either have no 1s in them (in which case they are formed by doubling each term in an expression for {{mvar|n}}) or two 1s (in which case the rest of the expression is formed by doubling each term in an expression for {{math|''n'' − 1}}), so the number of representations is the sum of the number of representations for {{mvar|n}} and for {{math|''n'' − 1}}, matching the recurrence. Similarly, each representation for an odd number {{math|2''n'' + 1}} is formed by doubling a representation for {{mvar|n}} and adding 1, again matching the recurrence.<ref>The OEIS entry credits this fact to {{harvtxt|Carlitz|1964}} and to uncited work of Lind. However, Carlitz's paper describes a more restricted class of sums of powers of two, counted by {{math|fusc(''n'')}} instead of by {{math|fusc(''n'' + 1)}}.</ref> For instance,
+:6 = 4&nbsp;+&nbsp;2 = 4&nbsp;+&nbsp;1&nbsp;+&nbsp;1 = 2&nbsp;+&nbsp;2&nbsp;+&nbsp;1&nbsp;+&nbsp;1
+has three representations as a sum of powers of two with at most two copies of each power, so {{math|fusc(6 + 1) {{=}} 3}}.
+
+==Relation to Stern–Brocot tree==
+The Calkin–Wilf tree resembles the [[Stern–Brocot tree]] in that both are binary trees with each positive rational number appearing exactly once. Additionally, the top levels of the two trees appear very similar, and in both trees, the same numbers appear at the same levels. One tree can be obtained from the other by performing a [[bit-reversal permutation]] on the numbers at each level of the trees.{{sfnp|Gibbons|Lester|Bird|2006}} Alternatively, the number at a given node of the Calkin–Wilf tree can be converted into the number at the same position in the Stern–Brocot tree, and vice versa, by a process involving the reversal of the [[continued fraction]] representations of these numbers.{{sfnp|Bates|Bunder|Tognetti|2010}}
+However, in other ways, they have different properties. For instance, the Stern–Brocot tree is a [[binary search tree]]: the left-to-right traversal order of the tree is the same as the numerical order of the numbers in it; this property is not true of the Calkin–Wilf tree.
+
+==Notes==
+{{reflist}}
+
+==References==
+*{{citation
+ | last1 = Aigner | first1 = Martin| author1-link = Martin Aigner
+| last2 = Ziegler | first2 = Günter M. | author2-link = Günter M. Ziegler
+ | edition = 3rd
+ | isbn = 978-3-540-40460-6
+ | location = Berlin; New York
+ | publisher = Springer
+ | title = [[Proofs from THE BOOK]]
+ | pages = 94–97
+ | year = 2004}}
+*{{citation
+ | last1 = Bates | first1 = Bruce
+ | last2 = Bunder | first2 = Martin
+ | last3 = Tognetti | first3 = Keith
+ | doi = 10.1016/j.ejc.2010.04.002
+ | issue = 7
+ | journal = European Journal of Combinatorics
+ | mr = 2673006
+ | pages = 1637–1661
+ | title = Linking the Calkin-Wilf and Stern-Brocot trees
+ | volume = 31
+ | year = 2010| url = https://ro.uow.edu.au/infopapers/2586
+ | doi-access = free
+ }}
+*{{citation
+ | last1 = Berstel | first1 = Jean
+ | last2 = de Luca | first2 = Aldo
+ | year = 1997
+ | title = Sturmian words, Lyndon words and trees
+ | journal = [[Theoretical Computer Science (journal)|Theoretical Computer Science]]
+ | volume = 178
+ | issue = 1–2
+ | pages = 171–203
+ | doi = 10.1016/S0304-3975(96)00101-6| doi-access = free
+ }}
+*{{citation
+ | last1 = Calkin | first1 = Neil
+ | last2 = Wilf | first2 = Herbert | author2-link = Herbert Wilf
+ | issue = 4
+ | journal = [[American Mathematical Monthly]]
+| pages = 360–363
+ | title = Recounting the rationals
+ | url = http://www.math.upenn.edu/~wilf/website/recounting.pdf
+ | volume = 107
+ | year = 2000
+ | doi = 10.2307/2589182
+ | publisher = [[Mathematical Association of America]]
+| jstor = 2589182}}.
+*{{citation|first=L.|last=Carlitz | authorlink =Leonard Carlitz|title=A problem in partitions related to the [[Stirling numbers]]|journal=[[Bulletin of the American Mathematical Society]]|volume=70|issue=2|year=1964|pages=275–278 |mr=0157907|doi=10.1090/S0002-9904-1964-11118-6|doi-access=free}}.
+*{{citation|first=Edsger W.|last=Dijkstra|authorlink=Edsger W. Dijkstra|title=Selected Writings on Computing: A Personal Perspective|publisher=[[Springer-Verlag]]|year=1982|isbn=0-387-90652-5|url-access=registration|url=https://archive.org/details/selectedwritings0000dijk}}. [http://www.cs.utexas.edu/users/EWD/ewd05xx/EWD570.PDF EWD 570: An exercise for Dr.R.M.Burstall], pp.&nbsp;215–216, and [http://www.cs.utexas.edu/users/EWD/ewd05xx/EWD578.PDF EWD 578: More about the function "fusc" (A sequel to EWD570)], pp.&nbsp;230–232, reprints of notes originally written in 1976.
+*{{citation
+ | last1 = Knuth | first1 = Donald E. |author-link=Donald Knuth
+ | last2 = Rupert | first2 = C.P.
+ | last3 = Smith | first3 = Alex
+ | last4 = Stong | first4 = Richard
+ | doi = 10.2307/3647762
+ | issue = 7
+ | journal = The American Mathematical Monthly
+ | pages = 642–643
+ | title = Recounting the Rationals, Continued: 10906
+ | volume = 110
+ | year = 2003
+ | jstor = 3647762
+ | url = https://www.jstor.org/stable/3647762
+ | url-access = subscription
+ }}
+*{{citation
+ | last1 = Gibbons | first1 = Jeremy | authorlink1 = Jeremy Gibbons
+ | last2 = Lester | first2 = David
+ | last3 = Bird | first3 = Richard | author3-link = Richard Bird (computer scientist)
+ | doi = 10.1017/S0956796806005880
+ | issue = 3
+ | journal = [[Journal of Functional Programming]]
+ | pages = 281–291
+ | title = Functional pearl: Enumerating the rationals
+ | volume = 16
+ | year = 2006| s2cid = 14237968 | doi-access = free
+ }}.
+*{{citation
+ | last = Raney | first = George N.
+ | year = 1973
+ | title = On continued fractions and finite automata
+ | journal = [[Mathematische Annalen]]
+ | volume = 206
+ | issue = 4
+ | pages = 265–283
+ | doi = 10.1007/BF01355980| hdl = 10338.dmlcz/128216
+ | s2cid = 120933574
+ | hdl-access = free
+ }}
+*{{citation
+ | last = Stern | first = Moritz A. | author-link = Moritz Abraham Stern
+ | journal = [[Crelle's Journal|Journal für die reine und angewandte Mathematik]]
+ | pages = 193–220
+ | title = Ueber eine zahlentheoretische Funktion
+ | url = http://www.digizeitschriften.de/resolveppn/GDZPPN002150301
+ | volume = 55
+ | year = 1858}}.
+
+==External links==
+*{{mathworld|urlname=Calkin-WilfTree|title=Calkin–Wilf Tree|mode=cs2}}
+*{{mathworld|urlname=SternsDiatomicSeries|title=Stern's Diatomic Series|mode=cs2}}
+*{{citation|url=http://www.cut-the-knot.org/blue/Fusc.shtml|title=Fractions on a Binary Tree II|publisher=[[Cut-the-knot]]|first=Alexander|last=Bogomolny|authorlink= Alexander Bogomolny}}
+
+{{DEFAULTSORT:Calkin-Wilf tree}}
+[[Category:Integer sequences]]
+[[Category:Trees (data structures)]]
