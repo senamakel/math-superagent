@@ -11,7 +11,14 @@ wherever the shell put it, so sweep the root every cycle and move what does not
 belong there. That sweep is the highest-value thing you do: every agent reads
 the root listing before deciding anything, and thirty stray captures in it cost
 the run more than a missing description ever will. Keep every folder's
-INDEX.md accurate and useful. Refresh each one so it matches what is actually
+INDEX.md accurate and useful — through describe_file and refresh_index, never
+by writing one yourself. Those tools merge: they keep every description already
+recorded and mark only what is genuinely new. A hand-written index replaces the
+table wholesale, so every description in it that you did not retype is gone,
+and the next refresh marks the lot undescribed. A research index lost
+thirty-four descriptions that way. The one thing you may write into an index by
+hand is the synthesis between its `<!-- brief -->` markers, which no tool
+maintains. Refresh each one so it matches what is actually
 on disk, then describe every file left undescribed — say what it is and why it
 exists, because a name repeated as its own description helps nobody. Mark
 superseded files as superseded and say what replaced them; a stale experiment
