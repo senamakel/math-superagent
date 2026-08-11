@@ -692,12 +692,17 @@ pub(super) fn research_excerpt(full: &str, full_relative: &str) -> String {
     )
 }
 
-/// Returns where a document's complete converted text sits beside its summary.
+/// Returns where a document's complete converted text is filed.
+///
+/// One level below its summary. The original is what the whole tree is
+/// anchored to and the one thing in it nobody may rewrite, so it lives in its
+/// own folder rather than beside a note an agent is expected to replace.
 pub(super) fn full_text_path(summary_relative: &str) -> String {
     let stem = summary_relative
         .strip_suffix(".md")
         .unwrap_or(summary_relative);
-    format!("{stem}{FULL_TEXT_SUFFIX}")
+    let name = stem.rsplit('/').next().unwrap_or(stem);
+    format!("{RESEARCH_DIR}/{SOURCE_DIR}/{name}{FULL_TEXT_SUFFIX}")
 }
 
 /// Renders the heading for a listing root.
