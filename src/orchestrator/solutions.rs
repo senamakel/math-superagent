@@ -32,9 +32,24 @@ use crate::agent::trace::RunTracer;
 use super::async_subagents::AsyncSubagentManager;
 
 /// Attempts allowed before the loop reports what it has.
-const MAX_ATTEMPTS: usize = 6;
+///
+/// Raised past the research rescue below so the rescue has attempts left to
+/// pay off in. A ceiling that trips first would spend a fresh literature
+/// search and then stop.
+const MAX_ATTEMPTS: usize = 8;
 /// Consecutive unproductive attempts before diversifying rather than retrying.
 const STUCK_THRESHOLD: usize = 2;
+/// Attempts after which each reflection also re-opens the literature.
+///
+/// Diversification triggers on *consecutive* unproductive attempts, so a run
+/// making thin but genuine progress every time never reaches it, and can grind
+/// most of its budget away on a method that was never going to arrive. Five
+/// attempts is enough evidence that the approach in hand is not the intended
+/// one. The search is re-run rather than recalled because the workspace has
+/// changed since the first one: by now the run knows what it tried, what
+/// failed, and what the numbers look like, which is a far better query than
+/// anything available at the start.
+const RESEARCH_RESCUE_ATTEMPTS: usize = 5;
 
 /// State carried around the solution loop.
 #[derive(Clone, Debug)]
