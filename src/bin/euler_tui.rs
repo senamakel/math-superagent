@@ -641,10 +641,7 @@ fn main() -> std::process::ExitCode {
             return std::process::ExitCode::FAILURE;
         }
     };
-    let workspace = root
-        .join("workspace")
-        .join("project-euler")
-        .join(options.problem.to_string());
+    let workspace = root.join("workspace").join(&options.workspace);
     let log = workspace.join("config").join("console.log");
     let _ = std::fs::create_dir_all(workspace.join("config"));
 
