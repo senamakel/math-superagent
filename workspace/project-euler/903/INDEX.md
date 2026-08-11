@@ -8,6 +8,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | Overview of the workspace and its entry points (AGENTS.md, prompts/, goal.md, tasks.md, scratchpad.md, memory.md) |
 | `aj.py` | Exploratory: decomposes Q(n) = sum over j of (n-j)!*A_j + (n!)^2 via Lehmer coefficients, verifies Q and prints A_j values for n=2..5; fed the A_j-pattern hunt later carried by aj2.py |
 | `aj2.py` | Exploratory: computes A_j(n) = sum over i, pi of c_j(pi^i) for n=2..8 (Lehmer route, orbit-walk optimized) and reconstructs Q = n!^2 + sum_j (n-j)!*A_j; faster successor to aj.py for the A_j table |
+| `aj3.py` | Computes M_j (Lehmer-coefficient power sums) for n=9,10 to extend the f_n(k)=A_n-B_n(k-1) data for closed-form fitting. |
 | `brute.py` | Method-1 oracle: literal double sum Q(n) = sum over pi of sum_{i} rank(pi^i) by walking every power. O((n!)^2), exact; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(6)=133103808. Writes results.json |
 | `brute2.py` | Method-2 oracle (independent): Q(n) = sum over pi of (n!/ord(pi)) * sum over tau in <pi> of rank(tau), using periodicity d = ord(pi) = lcm of cycle lengths. Cross-validates brute.py for n=2..7. Writes results2.json |
 | `config.toml` | Run configuration: workspace kind, solver flags (exact arithmetic, verify with code, cite sources, forbid exponential), artifact file paths |
@@ -17,6 +18,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `fdtable.py` | Verifier for the F(d) route: computes Q(n)=sum over d dividing n! of phi(n!/d)*F(d), cross-checks toolkits/f_table.py against toolkits/f_literal.py for n=4,5,6, asserts known Q values (4808, 597876, 133103808), writes fdtable.json |
 | `fi.py` | Exploratory: studies F_i(n)=sum over pi of rank(pi^i) over i=1..n! for n=4,5 — frequencies of distinct F_i values and mean (checks mean equals n!(n!+1)/2) |
 | `fi2.py` | Exploratory: groups F_i(n) by g = gcd(i, n!) for n=4,5 to test whether F_i is constant on each gcd class (the independence claim behind F(d)); predecessor of toolkits/f_literal.py's assert |
+| `fit.py` | Symbolic/float exploration of alpha_n and beta_n closed forms for the f_n(k)=n!(n-1)![alpha-beta(k-1)] fit in the Q(n) problem. |
+| `fk.py` | Computes the gap function f(k)=N(j,j+k) for n=2..9 and tests the affine structure f(k)=A-Bk and extracts A,B. |
 | `gaps.py` | Computes T(j,m)=#{(pi,i): 0<=i<n!, (pi^i)(m)<(pi^i)(j)} for n=2..9 exactly via the period formula T(j,m)=sum_pi (n!/ord(pi)) * #{tau in <pi>: tau(m)<tau(j)} (Fractions), without iterating all n! powers. Verifies translation invariance T(j,j+k) independent of j, and reports f_n(k)=T(1,1+k), its differences, and whether f is exactly arithmetic (A_n=f(1), step B_n). Oracle-checked n=2,3 (in-script literal) and n=4,5 (separate literal). Established the structural lead that f_n is arithmetic in k for all n. |
 | `goal.md` | Objective: compute Q(10^6) mod (10^9+7); statement, worked examples (Q(2)=5, Q(3)=88, Q(6)=133103808, Q(10) about 468421536), completion criteria, current status |
 | `mean.py` | Exploratory: prints sums of F(d) over proper divisors and total to inspect the pattern inside F(d) for n=4,5,6; inspective, no output file |
