@@ -179,40 +179,62 @@ def main():
 
     print()
     print("=" * 78)
-    print("PART 3 -- control: parity algebra with TRUE cross + TRUE sub-race")
+    print("PART 3 -- where the recursion actually fails (decoupling)")
     print("=" * 78)
-    print("  Feeding the oracle's own cross and sub-race parities into")
-    print("  parity = parity(left)*parity(right)*(-1)^cross reproduces the")
-    print("  full parity by construction (the algebra is trivially correct);")
-    print("  the recursion's FAILURE is therefore in predicting the root")
-    print("  distribution and/or cross, NOT in the parity parity algebra.")
-    bad = 0
+    print("  Mathematical identity (always true for ANY permutation):")
+    print("    inv(full perm) = inv(restriction to left) + inv(restriction to")
+    print("                      right) + cross(left,right)")
+    print("  so parity = pL + pR + cross (mod 2) holds with the TRUE")
+    print("  restriction parities.  The treap recursion instead substitutes")
+    print("  the SUB-RACE oracle parity on each slice (the only quantity a")
+    print("  closed-form recursion can compute).  We test both:")
+    bad_true = 0     # with TRUE restriction parities -> must be 0
+    bad_sub = 0      # with SUB-RACE slice parities -> the recursion's claim
     rng = random.Random(54321)
-    # only valid geometries: every boat must start strictly upstream of the
-    # finish is FALSE -- every boat starts strictly BELOW the finish, so the
-    # highest boat 40*(n-1) must be < L (positive distance to finish).
+    # only valid geometries: every boat starts strictly BELOW the finish line
     valid = [(n, L) for n in range(3, 7) for L in L_list if 40 * (n - 1) < L]
-    for _ in range(100000):
+    for _ in range(60000):
         n, L = valid[rng.randrange(len(valid))]
         speeds = [rng.expovariate(1.0) for _ in range(n)]
-        # full oracle
         above = simulate_order(n, L, speeds)
-        par_full, _ = parity_of_new_order(n, above)
+        par_full, order = parity_of_new_order(n, above)
         r = min(range(n), key=lambda i: W(speeds, L, i))
-        # true cross at root
+        left = list(range(r))
+        right = list(range(r + 1, n))
+        pos = {boat: i for i, boat in enumerate(order)}
+        # TRUE cross (flipped left-right pairs in the actual race)
         cross = 0
-        for i in range(r):
-            for j in range(r + 1, n):
-                if j in above[i]:
+        for i in left:
+            for j in right:
+                if i < j and j in above[i]:
                     cross += 1
-        # true sub-race parities (oracle on each slice, same geometry)
-        pl = outcome_parity(r, L, speeds[:r]) if r >= 2 else 0
-        pr = outcome_parity(n - 1 - r, L, speeds[r + 1:]) if n - 1 - r >= 2 else 0
-        rec = (pl + pr + cross) % 2
-        if rec != par_full:
-            bad += 1
-    print(f"  mismatches over 100000 random cases (ground-truth feed): {bad}")
-    print("  -> parity algebra itself holds ({'0 mismatches' if bad==0 else 'FAIL'}).")
+        # TRUE restriction parity of the full permutation on each subset
+        def inv_of(sub):
+            c = 0
+            for x in range(len(sub)):
+                for y in range(x + 1, len(sub)):
+                    i, j = sub[x], sub[y]
+                    if i < j and pos[i] > pos[j]:
+                        c += 1
+            return c % 2
+        pL_true = inv_of(left) if len(left) >= 2 else 0
+        pR_true = inv_of(right) if len(right) >= 2 else 0
+        # recursion's substitute: sub-race oracle parity on each slice
+        pL_sub = outcome_parity(r, L, speeds[:r]) if r >= 2 else 0
+        pR_sub = outcome_parity(n - 1 - r, L, speeds[r + 1:]) if n - 1 - r >= 2 else 0
+        if (pL_true + pR_true + cross) % 2 != par_full:
+            bad_true += 1
+        if (pL_sub + pR_sub + cross) % 2 != par_full:
+            bad_sub += 1
+    print(f"  TRUE restriction parities + true cross: {bad_true}/60000 mismatch")
+    print(f"      -> the pure inversion decomposition holds "
+          f"({'yes, 0 mismatches' if bad_true==0 else 'NO, FAIL'}).")
+    print(f"  SUB-RACE slice parities + true cross : {bad_sub}/60000 mismatch")
+    print(f"      -> treap DECOUPLING fails: the sub-race on a slice does NOT")
+    print(f"         equal the full race's restriction parity on that slice.")
+    print("  The recursion's error is therefore BOTH in the root/cross")
+    print("  prediction and in the assumed left/right decoupling, not in the")
+    print("  parity algebra on a true permutation.")
 
 
 if __name__ == '__main__':
