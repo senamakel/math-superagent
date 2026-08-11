@@ -102,3 +102,36 @@ fn raw_originals_mirror_the_research_layout_and_stay_hidden() {
     // Never surfaced to an agent: it would only compete for context.
     assert!(HIDDEN_ENTRIES.contains(&RAW_DIR));
 }
+
+#[test]
+fn runtime_bookkeeping_cannot_be_read_into_an_agents_context() {
+    use super::ensure_visible;
+
+    // A reflection run read `/workspace/trace.jsonl` — 1.1 MB of the run's own
+    // event log — into one 339,652-token model call. Hiding these from
+    // `list_workspace` was not enough: an agent can name a path the listing
+    // never offered it.
+    for hidden in [
+        "trace.jsonl",
+        "/workspace/trace.jsonl",
+        "./trace.jsonl",
+        ".document-index.json",
+        "raw/papers/lagrange.md",
+        ".workspace-history/HEAD",
+    ] {
+        assert!(
+            ensure_visible(hidden).is_err(),
+            "{hidden} must not be readable"
+        );
+    }
+
+    // The run's own working files stay reachable.
+    for visible in [
+        "memory.md",
+        "solution.py",
+        "research/pell.md",
+        "reflections/1_01_learnings.md",
+    ] {
+        assert!(ensure_visible(visible).is_ok(), "{visible} must be readable");
+    }
+}
