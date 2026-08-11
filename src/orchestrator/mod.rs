@@ -1832,10 +1832,14 @@ impl Tool<()> for ExecuteCommand {
             .status
             .code()
             .map_or_else(|| "signal".to_string(), |code| code.to_string());
+        // File anything the command wrote through the shell. `layout::placed`
+        // covers the write path; a heredoc and a redirect go round it, and
+        // that is how a root fills up while an organizer is running.
+        let swept = layout::swept_note(&layout::sweep(&self.workspace).await);
         Ok(ToolResult::text(
             call.id,
             self.name(),
-            format!("exit: {status}\nstdout:\n{stdout}\nstderr:\n{stderr}"),
+            format!("exit: {status}\nstdout:\n{stdout}\nstderr:\n{stderr}{swept}"),
         ))
     }
 }
