@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Standalone reverse-merge verification: confirm every config the forward
-BFS reaches is reverse-merge-reducible to {origin}, in 2D and 3D.
+"""Reverse-merge verification: is every reachable config (forward BFS)
+reverse-merge-reducible to {origin}?  Runs standalone (no package imports).
 """
 from itertools import product
 
