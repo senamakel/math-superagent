@@ -295,135 +295,40 @@ pub(super) async fn run(
     let diversify_tracer = tracer;
 
     let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
-        .add_node("attempt", move |mut state: SolutionState, _ctx: NodeContext| {
+        .add_node("attempt", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = attempt_agents.clone();
             let tracer = attempt_tracer.clone();
             async move {
-                state.attempts += 1;
-                if let Some(tracer) = tracer.as_ref() {
-                    tracer.note(&format!("solution loop: attempt {}", state.attempts));
-                }
-                let prompt = format!(
-                    "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{}\n{}\n\n\
-                     Follow the method policy: understand, find the governing structure, derive, \
-                     implement, then verify by a second independent route. Report the answer, the \
-                     method, and the verification, or state precisely where you are blocked and \
-                     what you established along the way.",
-                    state.problem,
-                    state.lesson_briefing(),
-                    if state.fresh_context.is_empty() {
-                        String::new()
-                    } else {
-                        format!("New material gathered since the last attempt:\n{}", state.fresh_context)
-                    }
-                );
-                state.last_attempt = delegate(&subagents, "goals", prompt).await;
-                state.fresh_context.clear();
-                Ok(NodeResult::Update(state))
+                Ok(NodeResult::Update(
+                    attempt_step(&subagents, tracer.as_ref(), state).await,
+                ))
             }
         })
-        .add_node("reflect", move |mut state: SolutionState, _ctx: NodeContext| {
+        .add_node("reflect", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = reflect_agents.clone();
             let tracer = reflect_tracer.clone();
             async move {
-                let prompt = format!(
-                    "Judge one attempt at a problem and extract the lesson.\n\nProblem:\n{}\n\n\
-                     Attempt report:\n{}\n\n{}\n\n\
-                     Answer exactly these three things:\n\
-                     VERDICT: SOLVED if the attempt reached a specific final answer AND verified \
-                     it by a second independent route; otherwise UNSOLVED. An unverified answer \
-                     is UNSOLVED.\n\
-                     PROGRESS: YES if this attempt established something the previous ones had \
-                     not; otherwise NO.\n\
-                     LESSON: one or two sentences naming the specific thing to do differently \
-                     next time. Name the misstep and the concrete alternative. Do not restate the \
-                     problem or give generic advice.",
-                    state.problem,
-                    state.last_attempt,
-                    state.lesson_briefing()
-                );
-                let reflection = delegate(&subagents, "reflection", prompt).await;
-
-                let upper = reflection.to_uppercase();
-                // Require the explicit positive verdict: anything unparsable or
-                // hedged leaves the loop running rather than declaring success.
-                state.solved = upper.contains("VERDICT: SOLVED")
-                    || upper.contains("VERDICT:SOLVED");
-                let progressed = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
-                if progressed {
-                    state.unproductive = 0;
-                } else {
-                    state.unproductive += 1;
-                }
-                let lesson = extract_lesson(&reflection);
-                if let Some(tracer) = tracer.as_ref() {
-                    tracer.note(&format!(
-                        "solution loop: verdict {}, progress {}, next {}",
-                        if state.solved { "solved" } else { "unsolved" },
-                        if progressed { "yes" } else { "no" },
-                        route(&state)
-                    ));
-                }
-                state.lessons.push(lesson);
-                Ok(NodeResult::Update(state))
+                Ok(NodeResult::Update(
+                    reflect_step(&subagents, tracer.as_ref(), state).await,
+                ))
             }
         })
-        .add_node("diversify", move |mut state: SolutionState, _ctx: NodeContext| {
-            let subagents = diversify_agents.clone();
-            let tracer = diversify_tracer.clone();
-            async move {
-                if let Some(tracer) = tracer.as_ref() {
-                    tracer.note("solution loop: stuck, gathering new angles");
+        .add_node(
+            "diversify",
+            move |state: SolutionState, _ctx: NodeContext| {
+                let subagents = diversify_agents.clone();
+                let tracer = diversify_tracer.clone();
+                async move {
+                    Ok(NodeResult::Update(
+                        diversify_step(&subagents, tracer.as_ref(), state).await,
+                    ))
                 }
-                // Three independent angles, run concurrently: what is already
-                // written down, what the numbers themselves say, and what a
-                // different method would be.
-                let library = delegate(
-                    &subagents,
-                    "librarian",
-                    format!(
-                        "Build a local reference set for this problem. Find primary treatments of \
-                         the mathematics involved, download them into the workspace reference \
-                         library, index them, and report what is now available locally with its \
-                         source URLs.\n\nProblem:\n{}\n\n{}",
-                        state.problem,
-                        state.lesson_briefing()
-                    ),
-                );
-                let patterns = delegate(
-                    &subagents,
-                    "pattern_finder",
-                    format!(
-                        "Look for exploitable structure in the data this investigation has already \
-                         produced. Read the workspace results, extract the relevant integer \
-                         sequences, and run the sequence tools on them. Report only regularities \
-                         that hold exactly over every term, and say plainly that they are \
-                         conjectures.\n\nProblem:\n{}",
-                        state.problem
-                    ),
-                );
-                let invention = delegate(
-                    &subagents,
-                    "inventor",
-                    format!(
-                        "Propose a genuinely different line of attack. The approaches tried so far \
-                         have not worked; do not restate them. Name a specific alternative \
-                         formulation, transform, or theory, say why it suits this problem, and \
-                         give the first concrete step.\n\nProblem:\n{}\n\n{}",
-                        state.problem,
-                        state.lesson_briefing()
-                    ),
-                );
-                let (library, patterns, invention) = tokio::join!(library, patterns, invention);
-
-                state.fresh_context = format!(
-                    "Reference material:\n{library}\n\nStructural observations:\n{patterns}\n\n\
-                     Proposed alternative approach:\n{invention}"
-                );
-                state.unproductive = 0;
-                Ok(NodeResult::Update(state))
-            }
-        })
+            },
+        )
+        .add_node(
+            "done",
+            |state: SolutionState, _ctx: NodeContext| async move { Ok(NodeResult::Update(state)) },
+        )
         .set_entry("attempt")
         .add_edge("attempt", "reflect")
         .add_conditional_edges(
@@ -436,9 +341,6 @@ pub(super) async fn run(
             ],
         )
         .add_edge("diversify", "attempt")
-        .add_node("done", |state: SolutionState, _ctx: NodeContext| async move {
-            Ok(NodeResult::Update(state))
-        })
         .set_finish("done")
         .compile()?;
 
