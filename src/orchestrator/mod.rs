@@ -1910,7 +1910,11 @@ impl Tool<()> for WriteToolFile {
         Ok(ToolResult::text(
             call.id,
             self.name(),
-            format!("wrote {} bytes to {relative}", content.len()),
+            format!(
+                "wrote {} bytes to {relative}{}",
+                content.len(),
+                layout::note(&requested, &relative)
+            ),
         ))
     }
 }
