@@ -711,6 +711,15 @@ const HIDDEN_ENTRIES: [&str; 6] = [
     RAW_DIR,
 ];
 
+/// Returns whether an entry is runtime bookkeeping rather than a document.
+///
+/// Shared so every way into the workspace — listing, folder names, similarity
+/// search — hides the same things. A search that could reach the event log
+/// would be a path around the rule that keeps it out of an agent's context.
+pub(super) fn is_hidden(name: &str) -> bool {
+    HIDDEN_ENTRIES.contains(&name)
+}
+
 /// Largest number of entries one listing returns.
 const MAX_LISTING_ENTRIES: usize = 400;
 
