@@ -31,6 +31,10 @@ __pycache__/
 # repository's history. A nested `.git` would make this an embedded repo.
 /workspace/**/.workspace-history/
 
+# Untouched bytes of every download, kept only for debugging a conversion.
+# Regenerable by re-downloading, and often large or binary.
+/workspace/**/raw/
+
 # Runtime event logs. Several megabytes per run, and the derivation and notes
 # already carry the reasoning worth keeping. Read them locally or in Langfuse.
 /workspace/**/trace.jsonl

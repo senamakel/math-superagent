@@ -487,9 +487,14 @@ impl DocumentTool {
             let archived = self.documents.write_bytes(&raw, &bytes).await.is_ok();
             self.documents.write(&path, &content).await?;
             format!(
-                "downloaded {} bytes from {url}, converted to {} bytes of Markdown at {path}",
+                "downloaded {} bytes from {url}, converted to {} bytes of Markdown at {path}{}",
                 bytes.len(),
-                content.len()
+                content.len(),
+                if archived {
+                    ""
+                } else {
+                    " (original bytes not archived)"
+                }
             )
         };
         Ok(output)

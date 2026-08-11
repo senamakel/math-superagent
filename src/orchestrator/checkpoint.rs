@@ -114,7 +114,7 @@ impl WorkspaceCheckpoint {
         }
         let _ = tokio::fs::write(
             &excludes,
-            format!("{HISTORY_DIR}/\n.python-packages/\n__pycache__/\ntrace.jsonl\n"),
+            format!("{HISTORY_DIR}/\n.python-packages/\n__pycache__/\ntrace.jsonl\nraw/\n"),
         )
         .await;
         Ok(())

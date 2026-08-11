@@ -88,3 +88,17 @@ fn downloads_are_filed_under_the_research_folder() {
     // A blank path still lands somewhere sensible rather than at the root.
     assert_eq!(research_path("   "), "research/document.md");
 }
+
+#[test]
+fn raw_originals_mirror_the_research_layout_and_stay_hidden() {
+    use super::{HIDDEN_ENTRIES, RAW_DIR, raw_path};
+    // Conversion is lossy; the original is what distinguishes a bad source
+    // from a bad converter when a document reads oddly.
+    assert_eq!(raw_path("research/pell.md"), "raw/pell.md");
+    assert_eq!(
+        raw_path("research/papers/lagrange.md"),
+        "raw/papers/lagrange.md"
+    );
+    // Never surfaced to an agent: it would only compete for context.
+    assert!(HIDDEN_ENTRIES.contains(&RAW_DIR));
+}
