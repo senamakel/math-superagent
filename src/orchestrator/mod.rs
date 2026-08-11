@@ -4,6 +4,7 @@ pub(crate) mod async_subagents;
 mod checkpoint;
 mod documents;
 mod patterns;
+mod readable;
 mod solutions;
 mod vector;
 

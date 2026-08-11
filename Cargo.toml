@@ -45,6 +45,8 @@ dotenvy = "0.15"
 # Derive macros for the crate-wide error type in `src/error/mod.rs`. Every
 # dependency entry should carry a comment like this one saying why it is here.
 thiserror = "2"
+# Extracts the text layer from downloaded PDFs so a paper becomes readable
+# Markdown instead of a UTF-8 failure that ends the run.
 pdf-extract = { version = "0.12", default-features = false }
 
 [features]
