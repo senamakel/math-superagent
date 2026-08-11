@@ -201,6 +201,14 @@ behind a tab per team:
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
 ```
 
+The workspace is the identity, not the problem number, so anything else is
+watched by naming it:
+
+```sh
+./conjecture erdos-gyarfas      # start or continue an open-problem run
+./euler-tui --workspace conjectures/erdos-gyarfas
+```
+
 `euler-tui` **only watches**. It finds the container that has the workspace
 mounted and follows it, and cannot start, stop, or restart a run. That is the
 design rather than a gap: when starting was part of the same command, opening a
@@ -301,6 +309,25 @@ Pass a positive problem number to the Project Euler wrapper:
 ./euler 66 --no-research
 ./euler 10 "also compare the optimized method with a brute-force check"
 ```
+
+### Open conjectures
+
+A Project Euler problem has one number as its answer and a ceiling on how long
+it can reasonably take. An open conjecture has neither, so `./conjecture <slug>`
+carries a different task shape: build the reference library first, extract what
+is actually known about the problem, build an exact oracle, and only then work
+the attempt loop. It reads `workspace/conjectures/<slug>/problem.md` and
+`GOAL.md` — the statement and what counts as a result live in the workspace, not
+in the script.
+
+```sh
+./conjecture erdos-gyarfas
+```
+
+`workspace/conjectures/erdos-gyarfas/` is the worked example: the Erdős–Gyárfás
+conjecture, that every finite simple graph with minimum degree at least 3 has a
+cycle whose length is a power of two. It is open, and the run is told so — the
+deliverable is a partial result stated exactly, never a claim of the whole.
 
 The wrapper downloads the official statement from Project Euler's minimal
 problem endpoint, then runs the orchestrator in
@@ -500,6 +527,7 @@ host repository through the container.
 ```text
 agent                       simple Docker Compose helper
 euler                       Project Euler problem wrapper
+conjecture                  open-conjecture run wrapper
 euler-tui                   tabbed console for one run, a tab per team
 langfuse-turns              recorded-turn query helper
 langfuse-review             recorded-turn review helper
