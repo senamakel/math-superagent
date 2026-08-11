@@ -801,12 +801,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // Analyses computed data: needs the numbers, not the plan. The toolkit
         // catalogue lets it reuse a verified helper rather than reimplement the
         // arithmetic it is about to check.
-        "pattern_finder" => &[
-            "goal.md",
-            "memory.md",
-            "scratchpad.md",
-            "toolkits/INDEX.md",
-        ],
+        "pattern_finder" => &["goal.md", "memory.md", "scratchpad.md", "toolkits/INDEX.md"],
         // Gathers sources: needs the objective and the existing library index.
         "librarian" => &["goal.md", "memory.md", "research/INDEX.md"],
         // Digests sources into knowledge. The one role that legitimately needs

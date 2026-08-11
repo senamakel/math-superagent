@@ -20,6 +20,6 @@ Find S(5000) mod 10^9.
 1. [DONE] /workspace/brute.py reproduces every oracle example it can reach.
 2. [DONE] Point-in-cube logic validated on cubes A and B.
 3. [DONE] Governing theory identified and recorded (Ehrhart / Ionascu Thm 3.1; primitive-frame parametrization).
-4. [IN PROGRESS] /workspace/frame_method.py validates the efficient frame-based method (primitive frames + Ehrhart point formula) against the oracle for small/medium n (1,2,4,5,10,50).
-5. [ ] Full efficient method derived in solution.md (complexity not growing with the answer).
+4. [DONE] /workspace/frame_method.py validates the efficient frame-based method (primitive frames + Ehrhart point formula) against the oracle for n=1,2,4,5,10,50 (all OK). Growth data collected (primitive frames n=10:31 ... n=200:12129).
+5. [ ] Full efficient method derived: O(1)-per-frame t-summation (power sums) + canonical primitive-frame enumeration (primary Hurwitz quaternions) so cost stops growing with n. To be written in solution.md.
 6. [ ] Final answer S(5000) mod 10^9 computed and verified by a second independent route.

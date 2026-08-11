@@ -4,6 +4,8 @@
 - [x] Write /workspace/pointcount.py independent point-count validation.
 - [x] Validate point-count on cubes A and B (both OK).
 - [x] Run brute for n=1..6,10; all oracle values match; save brute_output.txt.
-- [ ] Identify governing theory (orthogonal equal-norm integer triples) with sources.
-- [ ] Derive efficient method for S(n) (not growing with the answer).
-- [ ] Implement solution.py agreeing with brute; compute S(5000) mod 10^9 and verify.
+- [x] Identify governing theory (orthogonal equal-norm integer triples; Ehrhart / Ionascu Thm 3.1) with sources.
+- [x] Validate the frame-based efficient method via /workspace/frame_method.py against the oracle for n=1,2,4,5,10,50 (all OK).
+- [x] Collect primitive-frame growth data (n=10..200).
+- [ ] Derive the O(1)-per-frame summation (power-sum / Faulhaber) so cost stops growing with n.
+- [ ] Implement full solution.py (canonical primitive-frame enumeration via primary Hurwitz quaternions) agreeing with brute; compute S(5000) mod 10^9 and verify.

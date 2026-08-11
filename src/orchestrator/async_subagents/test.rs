@@ -157,3 +157,70 @@ async fn concurrent_runs_are_capped_and_the_queue_drains() -> Result<()> {
     }
     Ok(())
 }
+
+#[tokio::test]
+async fn a_finished_tool_builder_triggers_the_organizer() -> Result<()> {
+    // The workspace is least tidy and most legible the moment the role that
+    // creates files stops, so the tidying is chained rather than left to
+    // whoever runs next and has mathematics to do instead.
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    let started = Arc::new(Semaphore::new(0));
+    let release = Arc::new(Semaphore::new(0));
+    for name in ["tool_builder", "organizer"] {
+        manager.register_executor(
+            name,
+            Arc::new(SteerableExecutor {
+                started: started.clone(),
+                release: release.clone(),
+            }),
+        )?;
+    }
+
+    let run_id = manager.spawn("tool_builder", "build it".into())?;
+    release.add_permits(2);
+    assert_eq!(
+        manager.await_record(run_id.as_str(), 5).await?.status,
+        OrchestrationTaskStatus::Completed
+    );
+
+    // The follow-up is fire-and-forget, so it starts after the caller's await
+    // has already returned. Two starts means both runs happened.
+    let _both = started.acquire_many(2).await.map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("test start semaphore closed: {error}"))
+    })?;
+    Ok(())
+}
+
+#[tokio::test]
+async fn a_missing_follow_up_agent_is_not_an_error() -> Result<()> {
+    // A registry built without an organizer must still run tool_builder.
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    let started = Arc::new(Semaphore::new(0));
+    let release = Arc::new(Semaphore::new(0));
+    manager.register_executor(
+        "tool_builder",
+        Arc::new(SteerableExecutor {
+            started: started.clone(),
+            release: release.clone(),
+        }),
+    )?;
+
+    let run_id = manager.spawn("tool_builder", "build it".into())?;
+    release.add_permits(1);
+    assert_eq!(
+        manager.await_record(run_id.as_str(), 5).await?.status,
+        OrchestrationTaskStatus::Completed
+    );
+    Ok(())
+}
+
+#[test]
+fn the_follow_up_chain_cannot_loop() {
+    // A follow-up that was itself followed up would tidy forever.
+    for (_, then) in super::FOLLOW_UPS {
+        assert!(
+            !super::FOLLOW_UPS.iter().any(|(after, _)| *after == then),
+            "{then} triggers a follow-up and is one"
+        );
+    }
+}
