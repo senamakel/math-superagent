@@ -181,8 +181,15 @@ impl<S: Send + Sync + 'static> ChatModel<S> for StickyProviderModel<S> {
 
     async fn stream(&self, state: &S, request: ModelRequest) -> Result<ModelStream> {
         // The streaming path cannot learn a pin, because the accumulated
-        // terminal response carries no raw body. It can still honour one.
-        self.inner.stream(state, self.steer(request)).await
+        // terminal response carries no raw body. It can still honour one, and
+        // a stream that fails to open is the same evidence as a failed call.
+        match self.inner.stream(state, self.steer(request)).await {
+            Ok(stream) => Ok(stream),
+            Err(error) => {
+                self.fault();
+                Err(error)
+            }
+        }
     }
 }
 
