@@ -13,11 +13,11 @@ struct AlwaysFails;
 
 #[async_trait]
 impl Tool<()> for AlwaysFails {
-    fn name(&self) -> &'static str {
+    fn name(&self) -> &str {
         "always_fails"
     }
 
-    fn description(&self) -> &'static str {
+    fn description(&self) -> &str {
         "Fails every call."
     }
 
@@ -37,11 +37,11 @@ struct AlwaysSucceeds;
 
 #[async_trait]
 impl Tool<()> for AlwaysSucceeds {
-    fn name(&self) -> &'static str {
+    fn name(&self) -> &str {
         "always_succeeds"
     }
 
-    fn description(&self) -> &'static str {
+    fn description(&self) -> &str {
         "Succeeds every call."
     }
 
@@ -100,7 +100,7 @@ fn requests_without_a_timeout_get_a_bounded_one() {
     use tinyagents::harness::model::ModelRequest;
     use tinyagents::harness::providers::MockModel;
 
-    let model = BoundedTimeoutModel::new(Arc::new(MockModel::constant("hi")));
+    let model = BoundedTimeoutModel::<()>::new(Arc::new(MockModel::constant("hi")));
     let bounded = model.bound(ModelRequest::new(vec![]));
     let millis = bounded.timeout_ms.expect("a timeout is applied when unset");
     assert!(millis > 0);
@@ -113,7 +113,7 @@ fn an_explicit_request_timeout_is_left_alone() {
     use tinyagents::harness::model::ModelRequest;
     use tinyagents::harness::providers::MockModel;
 
-    let model = BoundedTimeoutModel::new(Arc::new(MockModel::constant("hi")));
+    let model = BoundedTimeoutModel::<()>::new(Arc::new(MockModel::constant("hi")));
     let bounded = model.bound(ModelRequest::new(vec![]).with_timeout_ms(1_234));
     assert_eq!(bounded.timeout_ms, Some(1_234));
 }

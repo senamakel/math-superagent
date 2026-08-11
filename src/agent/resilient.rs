@@ -20,6 +20,8 @@ use std::time::Duration;
 use async_trait::async_trait;
 use tinyagents::harness::model::{ChatModel, ModelProfile, ModelRequest, ModelResponse, ModelStream};
 
+use tinyagents::harness::tool::ToolPolicy;
+
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
 /// Default per-request provider timeout.
@@ -36,9 +38,17 @@ const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_secs(150);
 /// correct. This does not weaken any boundary: a rejected call still did not
 /// happen, and the rejection reason is what the model needs in order to stop
 /// repeating it.
-#[derive(Debug)]
 pub struct ResilientTool<S: Send + Sync> {
     inner: Arc<dyn Tool<S>>,
+}
+
+impl<S: Send + Sync> std::fmt::Debug for ResilientTool<S> {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("ResilientTool")
+            .field("tool", &self.inner.name())
+            .finish_non_exhaustive()
+    }
 }
 
 impl<S: Send + Sync> ResilientTool<S> {
@@ -51,16 +61,33 @@ impl<S: Send + Sync> ResilientTool<S> {
 
 #[async_trait]
 impl<S: Send + Sync + 'static> Tool<S> for ResilientTool<S> {
-    fn name(&self) -> &'static str {
+    fn name(&self) -> &str {
         self.inner.name()
     }
 
-    fn description(&self) -> &'static str {
+    fn description(&self) -> &str {
         self.inner.description()
     }
 
     fn schema(&self) -> ToolSchema {
         self.inner.schema()
+    }
+
+    /// Forwards the wrapped tool's safety classification.
+    ///
+    /// Falling back to the default here would silently declassify every
+    /// filesystem and network tool in the runtime and disarm policy
+    /// enforcement, which is the opposite of what this wrapper is for.
+    fn policy(&self) -> ToolPolicy {
+        self.inner.policy()
+    }
+
+    fn display_label(&self, call: &ToolCall) -> Option<String> {
+        self.inner.display_label(call)
+    }
+
+    fn display_detail(&self, call: &ToolCall) -> Option<String> {
+        self.inner.display_detail(call)
     }
 
     async fn call(&self, state: &S, call: ToolCall) -> Result<ToolResult> {
@@ -69,7 +96,7 @@ impl<S: Send + Sync + 'static> Tool<S> for ResilientTool<S> {
             Ok(result) => Ok(result),
             Err(error) => Ok(ToolResult::error(
                 call_id,
-                self.inner.name(),
+                self.inner.name().to_string(),
                 format!(
                     "{error}\n\nThis call did not run. Correct the arguments and try again, or \
                      use a different approach. Do not repeat the identical call."
