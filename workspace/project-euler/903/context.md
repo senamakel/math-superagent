@@ -38,6 +38,12 @@ A_n, B_n. Everything below feeds that hunt.
   to A_n, B_n: average the per-gap inversion probability over the fixed-point
   count distribution of a uniform permutation. Closes the gap between the two
   already-proved mechanisms at exact finite n (not just asymptotically).
+- **NEW: order-of-random-permutation law** — [[stong_average_order_permutation]]
+  (Stong, EJC 5 R41, 1998): log of the average order µ_n = C√(n/log n)+O(√n loglog
+  n/log n), C≈2.99047 (fix + refine Goh–Schmutz; background Erdős–Turán: log ord(π)
+  asymptotically normal, mean (log 2)n/2, var (log 3)n/3). Governs the n!/ord(π)
+  period-mean weights in brute2 and completes the order-literature map Ford pointed
+  to; mechanism/route only, not a closed form for A_n,B_n.
 - **Negative OEIS**: A_n, B_n/(n−1)!, Q(n), probes uncatalogued — [[oeis_Aseq]],
   [[oeis_Qseq]], [[oeis_Bdiv]].
 - **NEW: canonical cycle-type summation machinery** — [[ford_cycle_type_toolkit]]

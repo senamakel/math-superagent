@@ -1,6 +1,6 @@
 # Index — research/L1
 
-One summary note per source. Each has a `.full.md` companion in `research/L0/` (complete text, never edited). Read the summary first; open the `L0/` full text only when the summary doesn't answer the question. The curated tour (what each source means for the Q(n) problem, which results are established vs open) is in `../INDEX.md`.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
@@ -14,7 +14,7 @@ One summary note per source. Each has a `.full.md` companion in `research/L0/` (
 | `hultman_products_random_permutations.md` | Summary of Hultman (1301.0430): irreducible-character method for expected stats on products of class-distributed perms; template, not solution (independent products, not {π^i}) |
 | `leanos_mth_roots_of_permutations.md` | Summary of Leaños (1005.1531): exact m-th-root counts by cycle type; NOT directly usable for the intra-subgroup rank sum |
 | `lehmer_factorial_norm.md` | Summary of Zawiślak (2111.03951) on Lehmer/factoradic digits and ranks; neither addresses powers or the cyclic subgroup {π^i} |
-| `nathanson_fixed_points_powers.md` | Summary of Nathanson (2206.04021): F(σ^ℓ)=Σ_{k|ℓ}k·C(k) and Möbius inversion recovering cycle counts from fixed points of powers; cross-check for a_1,a_2 sums |
+| `nathanson_fixed_points_powers.md` | Summary of Nathanson (2206.04021): F(σ^ℓ)=Σ_{k |
 | `oeis_Aseq.md` | Negative OEIS lookup for the A_n sequence — no results |
 | `oeis_Bdiv.md` | Negative OEIS lookup — no results |
 | `oeis_Qseq.md` | Negative OEIS lookup for the Q(n) sequence — no results |
@@ -26,3 +26,4 @@ One summary note per source. Each has a `.full.md` companion in `research/L0/` (
 | `report_cited_facts.md` | Superseded literature report; replaced by `report_literature_ranks_powers.md` |
 | `report_literature_ranks_powers.md` | Current literature report: closest match is Cambie-Yan; NO source gives a closed form for the rank-sum over a cyclic subgroup (the novel core) |
 | `report_rank_powers.md` | Superseded literature report; replaced by `report_literature_ranks_powers.md` |
+| `stong_average_order_permutation.md` | Summary of Stong (EJC 5 R41, 1998): average order log μ_n = C√(n/log n)+O(√n loglog n/log n); the n!/ord(π) weight regime in brute2. Full text in L0 |

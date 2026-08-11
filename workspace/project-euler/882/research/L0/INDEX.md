@@ -23,6 +23,7 @@ question. Each row names the L1 summary it backs.
 | `weightedmom.full.md` | Full text of Larcher & Pillichshammer 2005; backs `L1/weightedmom.md`. |
 | `zerocount.full.md` | Full text of OEIS A059015 (summatory 0-bit count); backs `L1/zerocount.md`. |
 | `zugzwang.full.md` | Full text on zugzwang (On Numbers and Games material); backs `L1/zugzwang.md`. |
+| `li_zuchswang.md` | Failed download stub (113 B): redirect placeholder from https://doi.org/10.1016/0097-3165(76)90046-7, no content captured; pending a real fetch / scholar summary. Keep as a record; not usable as a source yet. |
 | `confusioninterval.full.md`, `confusioninterval.full.full.md` | Misfiled accidental download (arXiv:1911.04268, Slepian–Wolf coding). Not part of the solution; see `L1/misfiled.md`. |
 | `confusioninterval2.full.md`, `confusioninterval2.full.full.md` | Misfiled accidental download (arXiv:1911.10203, KOTO anomaly, hep-ph). See `L1/misfiled.md`. |
 | `confusioninterval3.full.md`, `confusioninterval3.full.full.md` | Misfiled accidental download (arXiv:1908.06045, COHERENT neutrino scattering). See `L1/misfiled.md`. |

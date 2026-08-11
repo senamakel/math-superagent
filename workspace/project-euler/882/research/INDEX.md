@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `L0/INDEX.md` | Index of the `.full.md` full-text companions to the L1 summaries, including misfiled/accidental downloads. |
+| `L0/li_zuchswang.md` | downloaded source — from https://doi.org/10.1016/0097-3165(76)90046-7; not yet read, excerpt pending a scholar summary |
 | `L1/INDEX.md` | Index of per-source L1 summaries; read it first to find a source's one-line purpose. |
 | `L1/a083652.md` | OEIS A083652 summatory bit-length, exact O(1) closed form; third leg of total bits = ones+zeros. |
 | `L1/bitcount.md` | OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |

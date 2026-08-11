@@ -18,3 +18,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `task1_verify.py` | TASK 1. Verify script: reproduces all five n=3,L=160 table parities (searches an Exp(1) speed vector per expected chronological edge set, then checks the resulting order parity), and MC-estimates p(3,160)~0.4148 and p(4,400)~0.5108 at 200k samples. Oracle check, not a solver. |
 | `task3_dataset.py` | TASK 3 empirical dataset over Exp(1) speeds: for n in {3,4,5,6} and L in {160,400,900,1800}, samples ~500k speed vectors per (n,L), records per-sample parity, parent array, new order, and free finish times, accumulates p=fraction even, and appends raw JSONL samples to code/out/forest_samples.jsonl. MC dataset generator, not a solver. |
 | `verify_hypothesis.py` | MC verifier of both statement examples plus the structural test "final parity depends only on the w-order" — which it refutes (buckets hold both parities). |
+| `out/` | Program outputs (e.g. task3's `forest_samples.jsonl`); currently empty. |
+| `toolkits/` | One-function-per-file reusable helpers; see `code/toolkits/INDEX.md`. |
