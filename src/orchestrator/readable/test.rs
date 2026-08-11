@@ -11,9 +11,15 @@ fn render(html: &str) -> String {
 fn magic_bytes_beat_a_mislabelled_content_type() {
     // Servers mislabel routinely; a PDF served as text/html is still a PDF.
     assert_eq!(detect(b"%PDF-1.7\nstuff", Some("text/html")), Format::Pdf);
-    assert_eq!(detect(b"<!DOCTYPE html><p>x", Some("text/plain")), Format::Html);
+    assert_eq!(
+        detect(b"<!DOCTYPE html><p>x", Some("text/plain")),
+        Format::Html
+    );
     assert_eq!(detect(b"plain words", Some("text/plain")), Format::Text);
-    assert_eq!(detect(&[0xff, 0xd8, 0xff, 0xe0, 0x00], Some("image/jpeg")), Format::Binary);
+    assert_eq!(
+        detect(&[0xff, 0xd8, 0xff, 0xe0, 0x00], Some("image/jpeg")),
+        Format::Binary
+    );
 }
 
 #[test]
@@ -65,9 +71,7 @@ fn entities_are_decoded_including_numeric_and_hex() {
 #[test]
 fn repeated_links_are_numbered_once_not_repeated_inline() {
     let long = "https://example.org/a/very/long/path/that/costs/many/tokens";
-    let html = format!(
-        "<p><a href=\"{long}\">first</a> and <a href=\"{long}\">second</a></p>"
-    );
+    let html = format!("<p><a href=\"{long}\">first</a> and <a href=\"{long}\">second</a></p>");
     let mut table = LinkTable::default();
     let markdown = html_to_markdown(&html, &mut table);
     assert!(markdown.contains("first][1]"));
@@ -95,16 +99,26 @@ fn tracking_parameters_are_stripped_from_urls() {
         "https://x.test/p?id=7"
     );
     // A URL with only tracking loses its query entirely.
-    assert_eq!(clean_url("https://x.test/p?utm_medium=email"), "https://x.test/p");
+    assert_eq!(
+        clean_url("https://x.test/p?utm_medium=email"),
+        "https://x.test/p"
+    );
     // Meaningful queries and fragments survive.
-    assert_eq!(clean_url("https://x.test/p?q=1#frag"), "https://x.test/p?q=1#frag");
+    assert_eq!(
+        clean_url("https://x.test/p?q=1#frag"),
+        "https://x.test/p?q=1#frag"
+    );
     assert_eq!(clean_url("https://x.test/plain"), "https://x.test/plain");
 }
 
 #[test]
 fn conversion_records_its_source_and_format() {
-    let markdown = to_markdown(b"<p>Hello</p>", Some("text/html"), "https://x.test/a?utm_term=z")
-        .expect("html converts");
+    let markdown = to_markdown(
+        b"<p>Hello</p>",
+        Some("text/html"),
+        "https://x.test/a?utm_term=z",
+    )
+    .expect("html converts");
     assert!(markdown.contains("converted from HTML"));
     // The recorded source is compressed too.
     assert!(markdown.contains("source: https://x.test/a "));

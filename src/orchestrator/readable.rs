@@ -50,7 +50,10 @@ pub(super) fn detect(bytes: &[u8], content_type: Option<&str>) -> Format {
     let leading = String::from_utf8_lossy(&bytes[..bytes.len().min(1024)])
         .trim_start()
         .to_ascii_lowercase();
-    if leading.starts_with("<!doctype html") || leading.starts_with("<html") || leading.contains("<head") {
+    if leading.starts_with("<!doctype html")
+        || leading.starts_with("<html")
+        || leading.contains("<head")
+    {
         return Format::Html;
     }
     let declared = content_type.unwrap_or_default().to_ascii_lowercase();
