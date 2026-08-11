@@ -15,13 +15,10 @@ NOTE: the full set-of-all-merge-orderings voidance computation is exponential
 in config size; it is bounded here to N<=5 (configs of 11 cells).
 """
 from itertools import product
+from lib.amoeba import children
 
 DIM = 3
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
-
-
-def children(p):
-    return tuple(tuple(p[i] + e[i] for i in range(DIM)) for e in E)
 
 
 def forward_level(level):
@@ -66,7 +63,7 @@ def all_voidance_sets(key, cand, memo):
     for p in cand:
         if p in Sset:
             continue
-        ch = children(p)
+        ch = children(p, DIM)
         if all(c in Sset for c in ch):
             ns = frozenset((Sset - set(ch)) | {p})
             for sub in all_voidance_sets(ns, cand, memo):

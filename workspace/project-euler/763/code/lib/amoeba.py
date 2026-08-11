@@ -22,6 +22,23 @@ reproducing D(2)=3 and D(10)=44499); this module only supplies parse/feature
 helpers shared by the driver and the data dumps.
 """
 
+# --- forward neighbours ----------------------------------------------------
+
+
+def children(p, d):
+    """Forward d-neighbours of a point p in Z^d: p + e_i for i in 0..d-1
+    (one unit added to coordinate i).  Returns a list of the d child tuples.
+
+    This is the single canonical shared definition of the amoeba division's
+    forward children, consolidated from four copies formerly in
+    verify_reverse_merge.py, probe_reachable.py and the two
+    research_structure.py files (they had NOT diverged, so no definition was
+    chosen over another).  Correctness established by those programs
+    reproducing D(2)=3 and D(10)=44499.
+    """
+    return [tuple(p[i] + (1 if i == j else 0) for i in range(d)) for j in range(d)]
+
+
 # --- BFS step on frozenset-of-tuples configs ------------------------------
 
 
