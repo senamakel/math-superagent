@@ -158,7 +158,10 @@ fn a_declaration_whose_class_contradicts_its_prose_is_refused() {
         refused.is_err(),
         "prose naming a factorial cost must not pass as polynomial"
     );
-    let message = refused.err().map(|error| error.to_string()).unwrap_or_default();
+    let message = refused
+        .err()
+        .map(|error| error.to_string())
+        .unwrap_or_default();
     assert!(
         message.contains("oracle_bound"),
         "the refusal must say how to declare it honestly: {message}"

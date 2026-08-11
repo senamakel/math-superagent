@@ -2,8 +2,6 @@
 
 What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
-These are standalone verification and analysis scripts (not importable helpers). Each builds on the Cabanillas (arXiv:1904.01874) candidate-set method or checks a structural relation against computed data.
-
 | File | Purpose |
 | --- | --- |
 | `analyze_Id_b.py` | Tests the exact-integer relation abs(I_d) = nint(b_d*sqrt(d) - pi) = nint(b_d*sqrt(d)) - 3 across all non-square d in [2,99] at n=10^4, re-scanning b when needed. Established the uniform I/b relation used to derive a from b. |
