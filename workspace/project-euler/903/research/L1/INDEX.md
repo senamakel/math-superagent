@@ -7,7 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `archer_geary_descents_powers.md` | Summary of Archer & Geary: expected descents/inversions in powers π^k of a random permutation; confirms the Cambie-Yan small-exponent regime |
 | `cambie_yan_descents_inversions_powers.md` | Redundant download of the Cambie-Yan arXiv *abstract page*; substance is in `cambie_yan_html.md` — kept, not current |
 | `cambie_yan_html.md` | Summary of Cambie-Yan (2408.01211): closed forms for expected descents and inversions in π^k for fixed k, n≥2k+1, via divisor functions; small-exponent regime only |
-| `conjugacy_class_statistics.md` | Raw HTML excerpt superseded by the curated `conjugacy_class_statistics_body.md` — kept, not current |
+| `conjugacy_class_statistics.md` | Superseded raw arXiv abstract page for Campion-Loth et al (2301.00898); self-sufficient recap of Lemma 4.7 (per-class gap-affine inversion prob) & Thm 4.8. Substance in `conjugacy_class_statistics_body.md` |
 | `conjugacy_class_statistics_body.md` | Summary of Campion-Loth et al (2301.00898): per-cycle-type inversion probability is translation-invariant and affine in gap, depends only on n,a_1,a_2 (Lemma 4.7); one route proving the A_n,B_n mechanism |
 | `factorial_number_system_wiki.md` | Summary: factoradic (Lehmer) digits give lexicographic rank; digits independent, j-th uniform on {0..j} |
 | `ford_cycle_type_toolkit.md` | Summary of Ford, "Cycle type of random permutations: A toolkit" (2104.12019): exact factorial moments of cycle counts, Poisson(1) fixed points, sieve methods — summation engine for the cycle-type sums behind A_n,B_n |
