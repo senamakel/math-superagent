@@ -25,6 +25,8 @@ D(14)=5949063 confirmed by TWO independent implementations:
   37.84s for level 14). It also reproduces D(0..13).
 
 So D(14) is verified by a second independent route (completion criterion).
+Seen again by a third route: `code/amoeba/bfs_more.py`'s compact per-level
+encoding (width W=level+1) reproduces D(0..14) exactly.
 
 ## Per-config structural data dumps
 
@@ -42,6 +44,19 @@ N=16 ~68M (projected).
 Naive frozenset BFS OOM-killed at the N=13->14 step (5.9M frozensets / ~30GB
 RAM). The bitmask (int) encoding handles it (~26s for level 14). Under the
 5,000,000 cap, N=15 and N=16 are NOT reachable — the run stops cleanly at N=14.
+
+The effective hard ceiling is the container's cgroup memory limit: 2 GiB
+(/sys/fs/cgroup/memory.max = 2147483648), independent of the host's 30 GB
+free RAM. The compact encoding holds ~5.9M states at N=14 (~most of that 2 GiB),
+so D(15) (~20M states, ~12+ GiB) is unreachable by any exact BFS in this
+container. N=14 is the last computable exact D(N) here.
+
+## N=3 / N=4 configurations
+
+Actual reachable configs for N=3 (9) and N=4 (30) are dumped, sorted, one per
+line in `code/out/configs_n3_n4.txt` (produced by code/amoeba/configs_n3_n4.py).
+Useful for studying structure (e.g. the chains/(0,0,0)->... paths and the
+cross-product shapes).
 
 ## Library
 
