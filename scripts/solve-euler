@@ -7,11 +7,17 @@ cd "$repository_root"
 usage() {
     echo "usage: ./euler [--no-research] <positive-problem-number> [extra instructions...]" >&2
     echo "       --no-research  withhold web search, so the run is a test of reasoning" >&2
+    echo "       --loop         attempt, reflect, and diversify until solved or out of attempts" >&2
 }
 
 research=on
+solve_loop=${MATH_AGENT_SOLVE_LOOP:-off}
 while [ "$#" -gt 0 ]; do
     case "$1" in
+        --loop)
+            solve_loop=on
+            shift
+            ;;
         --no-research)
             research=off
             shift
@@ -95,4 +101,4 @@ if [ -n "$extra_instructions" ]; then
 Additional instructions: $extra_instructions"
 fi
 
-exec env MATH_AGENT_RESEARCH="$research" ./agent --workspace "$workspace_subdir" "$task"
+exec env MATH_AGENT_RESEARCH="$research" MATH_AGENT_SOLVE_LOOP="$solve_loop" ./agent --workspace "$workspace_subdir" "$task"
