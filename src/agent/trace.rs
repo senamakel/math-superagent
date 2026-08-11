@@ -8,6 +8,7 @@
 //! start time, one counter pair, and one journal file, so the console shows a
 //! single ordered stream of the whole investigation.
 
+use std::fmt::Write as _;
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -150,16 +151,16 @@ impl EventListener for RunTracer {
             } => {
                 let mut detail = format!("tool  done    {tool_name}");
                 if let Some(duration) = duration_ms {
-                    detail.push_str(&format!(" in {duration}ms"));
+                    let _ = write!(detail, " in {duration}ms");
                 }
                 if let Some(bytes) = output_bytes {
-                    detail.push_str(&format!(", {bytes} bytes"));
+                    let _ = write!(detail, ", {bytes} bytes");
                 }
                 if let Some(message) = error {
-                    detail.push_str(&format!(", error: {message}"));
+                    let _ = write!(detail, ", error: {message}");
                 }
                 if let Some(arguments) = input {
-                    detail.push_str(&format!(" | {}", preview(&arguments.to_string())));
+                    let _ = write!(detail, " | {}", preview(&arguments.to_string()));
                 }
                 self.emit_line(&detail);
             }

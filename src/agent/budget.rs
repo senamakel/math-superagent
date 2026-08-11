@@ -59,9 +59,11 @@ impl RunBudget {
         let defaults = Self::default();
         Self {
             max_model_calls: positive_env("MATH_AGENT_MAX_MODEL_CALLS")
-                .map_or(defaults.max_model_calls, |value| value as usize),
+                .and_then(|value| usize::try_from(value).ok())
+                .unwrap_or(defaults.max_model_calls),
             max_tool_calls: positive_env("MATH_AGENT_MAX_TOOL_CALLS")
-                .map_or(defaults.max_tool_calls, |value| value as usize),
+                .and_then(|value| usize::try_from(value).ok())
+                .unwrap_or(defaults.max_tool_calls),
             run_timeout: positive_env("MATH_AGENT_RUN_MINUTES")
                 .map_or(defaults.run_timeout, |value| {
                     Duration::from_secs(value.saturating_mul(60))
