@@ -198,6 +198,68 @@ fn clip(text: &str, limit: usize) -> String {
     format!("{kept}…")
 }
 
+/// Renders one Exa result: what it is, who wrote it, and why it matched.
+fn render_exa_result(index: usize, result: &Value) -> String {
+    let title = result
+        .get("title")
+        .and_then(Value::as_str)
+        .unwrap_or("Untitled");
+    let url = result
+        .get("url")
+        .and_then(Value::as_str)
+        .unwrap_or("No URL");
+    let mut rendered = format!("{}. {title}\n{url}", index + 1);
+
+    // Provenance, so a source can be weighed rather than merely cited. A 1994
+    // paper by the author the problem is named after is worth more than a
+    // forum post, and nothing else in the result says so.
+    let author = result
+        .get("author")
+        .and_then(Value::as_str)
+        .unwrap_or_default()
+        .trim();
+    let published = result
+        .get("publishedDate")
+        .and_then(Value::as_str)
+        .unwrap_or_default()
+        .trim();
+    let separator = if author.is_empty() || published.is_empty() {
+        ""
+    } else {
+        ", "
+    };
+    if !author.is_empty() || !published.is_empty() {
+        let _ = write!(rendered, "\n{author}{separator}{published}");
+    }
+
+    let summary = result
+        .get("summary")
+        .and_then(Value::as_str)
+        .unwrap_or_default();
+    if !summary.trim().is_empty() {
+        let _ = write!(rendered, "\n{}", clip(summary, EXA_RESULT_CHARS));
+    }
+    let highlights = result
+        .get("highlights")
+        .and_then(Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(Value::as_str)
+                .collect::<Vec<_>>()
+                .join(" ")
+        })
+        .unwrap_or_default();
+    if !highlights.trim().is_empty() {
+        let _ = write!(
+            rendered,
+            "\nMatching passages: {}",
+            clip(&highlights, EXA_RESULT_CHARS)
+        );
+    }
+    rendered
+}
+
 #[derive(Debug)]
 pub(crate) struct ExaSearchTool {
     client: reqwest::Client,
@@ -310,72 +372,12 @@ impl Tool<()> for ExaSearchTool {
         let rendered = results
             .iter()
             .enumerate()
-            .map(|(index, result)| {
-                let title = result
-                    .get("title")
-                    .and_then(serde_json::Value::as_str)
-                    .unwrap_or("Untitled");
-                let url = result
-                    .get("url")
-                    .and_then(serde_json::Value::as_str)
-                    .unwrap_or("No URL");
-                let highlights = result
-                    .get("highlights")
-                    .and_then(serde_json::Value::as_array)
-                    .map(|items| {
-                        items
-                            .iter()
-                            .filter_map(serde_json::Value::as_str)
-                            .collect::<Vec<_>>()
-                            .join(" ")
-                    })
-                    .unwrap_or_default();
-                let summary = result
-                    .get("summary")
-                    .and_then(serde_json::Value::as_str)
-                    .unwrap_or_default();
-                // Provenance, so a source can be weighed rather than merely
-                // cited. A 1994 paper by the author the problem is named after
-                // is worth more than a forum post, and nothing else in the
-                // result says so.
-                let mut rendered = format!("{}. {title}\n{url}", index + 1);
-                let author = result
-                    .get("author")
-                    .and_then(serde_json::Value::as_str)
-                    .unwrap_or_default();
-                let published = result
-                    .get("publishedDate")
-                    .and_then(serde_json::Value::as_str)
-                    .unwrap_or_default();
-                if !author.trim().is_empty() || !published.trim().is_empty() {
-                    let _ = write!(
-                        rendered,
-                        "\n{}{}{}",
-                        author.trim(),
-                        if !author.trim().is_empty() && !published.trim().is_empty() {
-                            ", "
-                        } else {
-                            ""
-                        },
-                        published.trim()
-                    );
-                }
-                if !summary.trim().is_empty() {
-                    let _ = write!(rendered, "\n{}", clip(summary, EXA_RESULT_CHARS));
-                }
-                if !highlights.trim().is_empty() {
-                    let _ = write!(
-                        rendered,
-                        "\nMatching passages: {}",
-                        clip(&highlights, EXA_RESULT_CHARS)
-                    );
-                }
-                rendered
-            })
+            .map(|(index, result)| render_exa_result(index, result))
             .collect::<Vec<_>>()
             .join("\n\n");
         // A wider search must not become a context bill. The per-result clip
-        // above bounds a verbose source; this bounds a verbose set of them.
+        // in the renderer bounds a verbose source; this bounds a verbose set
+        // of them.
         let rendered = clip(&rendered, EXA_TOTAL_CHARS);
 
         Ok(ToolResult::text(call.id, self.name(), rendered))
