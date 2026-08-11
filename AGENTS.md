@@ -67,6 +67,19 @@ The runtime has nine roles plus an explicit solution loop.
 
 Reflection runs after *every* attempt, not only after a failure, because the
 lesson from a partial success is what stops the next attempt repeating it.
+A finished `tool_builder` run automatically triggers an `organizer` run
+(`FOLLOW_UPS` in `src/orchestrator/async_subagents.rs`). That moment is when
+the workspace is least tidy and most legible — the files are new and their
+purpose is settled — and leaving the tidying to whoever runs next means it
+competes with mathematics and loses. The follow-up is fire-and-forget, so
+`await_agent` returns as soon as the tool-builder itself is done and
+housekeeping never sits on the critical path; it is spawned separately so the
+tool-builder's concurrency slot is released first; and follow-ups are
+serialised, because two organizers refreshing one `INDEX.md` at once would each
+write the list it read and the later write would drop the other's descriptions.
+A follow-up that was itself followed up would tidy forever, so the chain is
+asserted acyclic in a test.
+
 `diversify` runs three arms concurrently — the librarian followed by the
 scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the
 step that breaks a loop reflection alone cannot.
@@ -447,14 +460,14 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `toolkits/INDEX.md` |
+| orchestrator, goals | `config.toml`, `goal.md`, `tasks.md`, `memory.md`, `toolkits/INDEX.md`, `research/INDEX.md` |
 | tool_builder | the above plus `scratchpad.md` |
-| reflection | `goal.md`, `tasks.md`, `memory.md` |
-| pattern_finder | `goal.md`, `memory.md`, `scratchpad.md` |
-| inventor, research | `goal.md`, `memory.md` |
+| reflection | `goal.md`, `tasks.md`, `memory.md`, `INDEX.md` |
+| pattern_finder | `goal.md`, `memory.md`, `scratchpad.md`, `toolkits/INDEX.md` |
+| inventor, research | `goal.md`, `memory.md`, `research/INDEX.md` |
 | librarian | `goal.md`, `memory.md`, `research/INDEX.md` |
 | scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md` |
-| organizer | `goal.md`, `tasks.md`, `toolkits/INDEX.md`, `research/INDEX.md` |
+| organizer | `goal.md`, `tasks.md`, `INDEX.md`, `toolkits/INDEX.md`, `research/INDEX.md` |
 
 The tool-builder accumulates reusable helpers under `toolkits/`, one function
 per file, described through `describe_file` so `toolkits/INDEX.md` carries the
@@ -475,6 +488,16 @@ Four of these are load-bearing rather than tidy-minded:
   to do.
 - Reflection must *not* see `scratchpad.md`. Provisional arithmetic is not
   evidence of progress, and treating it as such keeps the loop retrying.
+
+Indexes are the cheap exception to that rule. An index costs a few hundred
+tokens where the files it describes cost tens of thousands, so a role that
+might otherwise re-derive or re-fetch something gets the relevant catalogue:
+both to the planners, the research index to research and the inventor so
+neither re-establishes what is on disk, the toolkit index to `pattern_finder`
+so it reuses a verified helper. Reflection gets the workspace index and nothing
+more of the kind — deciding whether an answer was actually produced means
+knowing which artifacts exist, and the index says what each one is without the
+derivations themselves.
 
 Adding a file to every role is the easy mistake. Ask what the role has to
 decide, and give it only what that decision needs. The scholar is the one
