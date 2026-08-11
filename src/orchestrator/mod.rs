@@ -295,6 +295,14 @@ impl OrchestratorAgent {
         let tracer = start_tracer(&workspace, budget, research_enabled);
         let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()));
         let documents = WorkspaceDocuments::new(workspace.clone())?;
+        // Commits the workspace after every successful write, so a rewritten
+        // solution or an edited belief is recoverable rather than lost.
+        let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> = Arc::new(
+            futures::executor::block_on(checkpoint::WorkspaceCheckpoint::new(
+                workspace.clone(),
+                Some(tracer.clone()),
+            )),
+        );
         let prompts = RolePrompts::load(&workspace)?;
 
         let vector_store = VectorStore::from_env()?;
@@ -320,6 +328,7 @@ impl OrchestratorAgent {
         for tool in documents.tools() {
             register_resilient(&mut research_harness, tool);
         }
+        research_harness.push_middleware(checkpoint.clone());
         async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
 
         // tool_builder: the only role with shell and file-write authority.
@@ -335,6 +344,7 @@ impl OrchestratorAgent {
         for tool in documents.tools() {
             register_resilient(&mut tool_builder_harness, tool);
         }
+        tool_builder_harness.push_middleware(checkpoint.clone());
         async_subagents.register(
             "tool_builder",
             Arc::new(tool_builder_harness),

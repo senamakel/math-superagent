@@ -10,7 +10,7 @@ RUN cargo build --locked --release --example orchestrator
 FROM debian:bookworm-slim
 
 RUN apt-get update \
-    && apt-get install --yes --no-install-recommends ca-certificates curl jq python3 python3-pip \
+    && apt-get install --yes --no-install-recommends ca-certificates curl git jq python3 python3-pip \
     && ln -s /usr/bin/python3 /usr/local/bin/python \
     && ln -s /usr/bin/pip3 /usr/local/bin/pip \
     && rm -rf /var/lib/apt/lists/* \
