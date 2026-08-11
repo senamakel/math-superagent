@@ -14,12 +14,10 @@ Declared infrastructure cost: exact BFS + reverse cap-merge, exponential in
 config size, bounded to N<=6 (configs of <=13 cells).  Oracle only.
 """
 from itertools import product
+from lib.amoeba import children
 
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
-
-
-def children(p):
-    return tuple(tuple(p[i] + e[i] for i in range(3)) for e in E)
+DIM = 3
 
 
 def level(p):
@@ -62,7 +60,7 @@ def collapse_to_origin(S):
         if len(caps) != 1:
             return (False, merges)
         p = caps[0]
-        ch = children(p)
+        ch = children(p, DIM)
         Sset = (Sset - set(ch)) | {p}
         merges.append(p)
     return (True, merges)

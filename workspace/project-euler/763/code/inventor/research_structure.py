@@ -12,8 +12,7 @@ in d=2 and d=3 by exact BFS.
 """
 
 
-def children(p, d):
-    return [tuple(p[i] + (1 if i == j else 0) for i in range(d)) for j in range(d)]
+from lib.amoeba import children
 
 
 def one_step(level, d):
