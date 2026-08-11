@@ -348,3 +348,39 @@ async fn the_workspace_root_can_be_refreshed_by_every_spelling_of_itself() -> Re
     let _ = std::fs::remove_dir_all(&root);
     Ok(())
 }
+
+#[tokio::test]
+async fn the_reflections_tree_refuses_an_index_call() {
+    // The loop writes each reflection and its row together, and the row
+    // carries the verdict and the lesson. The organizer's prompt already says
+    // to leave it alone; a live organizer refreshed it anyway, which is why
+    // this is a refusal rather than a sentence.
+    let root = std::env::temp_dir().join(format!("math-agent-loop-owned-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("reflections/L0.0")).expect("the workspace is creatable");
+    std::fs::write(root.join("reflections/L0.0/1_learnings.md"), "lesson")
+        .expect("a reflection is writable");
+    let index = "# Index — reflections\n\n| File | Purpose |\n| --- | --- |\n\
+                 | `L0.0/1_learnings.md` | Attempt 1, judged unsolved, 1 learning(s). |\n";
+    std::fs::write(root.join("reflections/INDEX.md"), index).expect("the index is writable");
+
+    let tool = tool_for(&root);
+    for call in [
+        ToolCall::new("a", "refresh_index", json!({ "path": "reflections" })),
+        ToolCall::new(
+            "b",
+            "describe_file",
+            json!({ "path": "reflections/L0.0/1_learnings.md", "purpose": "something else" }),
+        ),
+    ] {
+        let refused = tool.call(&(), call).await;
+        assert!(refused.is_err(), "an index call on reflections is refused");
+    }
+
+    assert_eq!(
+        std::fs::read_to_string(root.join("reflections/INDEX.md")).expect("the index survives"),
+        index,
+        "the verdict and the lesson are still in the row"
+    );
+    let _ = std::fs::remove_dir_all(&root);
+}
