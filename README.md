@@ -266,16 +266,19 @@ beside the solution:
 
 ```text
 workspace/project-euler/66/
-├── problem.md
-├── problem.url
-├── GOAL.md
+├── problem.md          # the statement, converted from the fetched HTML
+├── GOAL.md             # system files are upper-case; the run's own prose
 ├── MEMORY.md
+├── CONTEXT.md
 ├── solution.md
-├── solution.py
-├── INDEX.md           # what each file beside it is for
-├── research/          # downloaded sources, with their own INDEX.md
-├── code/toolkits/          # reusable verified helpers, one function per file
-└── trace.jsonl        # local only, not committed
+├── INDEX.md            # what each file beside it is for
+├── code/               # every program, with its own AGENTS.md and INDEX.md
+│   ├── out/            # what those programs produced
+│   └── toolkits/       # reusable verified helpers, one function per file
+├── research/           # L0 sources, L1 digests, L2 folds, INDEX.md at the root
+├── reflections/L0/     # one note per judged attempt
+├── raw/                # untouched download bytes, including problem.html
+└── config/             # config.toml, problem.url, the document index, trace.jsonl
 ```
 
 Generated programs, calculations, and other artifacts appear in
