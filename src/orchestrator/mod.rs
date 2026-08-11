@@ -167,13 +167,14 @@ const TOOL_BUILDER_PROMPT: &str = "You are the tool-builder specialist. You work
     memory.md as the work develops. \
     Prefer apply_patch over rewriting a file. Re-emitting a whole script to change three lines     spends most of a turn restating code that was already correct, and a long turn is a slow one.     Use it especially when one change spans files — a helper and its row in toolkit.md — because     the whole envelope lands or none of it does, so the two cannot drift apart. Its context must     match the file exactly; if it reports the context was not found, read the file rather than     guessing again. Use write_tool_file for a new file or a rewrite that genuinely replaces     everything.     Build a toolkit, not a pile of one-off scripts. Anything a second program would repeat — a \
     verified recurrence, an exact-arithmetic routine, a check against the brute-force oracle — \
-    goes in toolkit.py as a named function with a docstring, callable without reading its source: \
-    explicit arguments, one job, no reliance on globals or on a file written earlier in the run. \
-    Scripts import it with `from toolkit import ...`. Record each function in toolkit.md with its \
-    signature, what it returns, and what established it is correct, and update that row in the \
-    same step as the code — a description that has drifted from the function is worse than none, \
-    because the next agent will trust it instead of reading the source. Read toolkit.md before \
-    writing a helper; the run may already have one. \
+    goes in toolkits/<name>.py as a single named function with a docstring, callable without \
+    reading its source: explicit arguments, one job, no reliance on globals or on a file written \
+    earlier in the run. One function per file, so reading the one you need costs almost nothing. \
+    Scripts import it with `from toolkits.<name> import <name>`. Then describe_file it, recording \
+    the signature, what it returns, and what established it is correct — in the same step as the \
+    code, because a description that has drifted from its function is worse than none: the next \
+    agent calls it as described instead of reading it. Read toolkits/INDEX.md before writing a \
+    helper; the run may already have one. \
     Before substantial execution, state the method, the mathematical result it rests on, and its \
     time and space complexity. Prefer exact integer and rational arithmetic. Test the method \
     against small cases with a known answer before running it at full size. \
@@ -257,10 +258,11 @@ const ORGANIZER_PROMPT: &str = "You are the organizer. You own the shape of the 
     Keep research/ navigable: sensible names that say what a source is about, related material \
     grouped rather than scattered, DIGEST.md current as the way in, and every summary short. \
     When a source has a `.full.md` companion, the short file is what the index points at. \
-    Keep toolkit.md matching toolkit.py exactly — every function present, every signature right, \
-    every row saying what established the function is correct. A row describing a function that \
-    has since changed is the most dangerous thing in the workspace, because the next agent calls \
-    it as described instead of reading it. \
+    Keep toolkits/INDEX.md matching the files beside it exactly — every function present, every \
+    signature right, every row saying what established the function is correct. A row describing \
+    a function that has since changed is the most dangerous thing in the workspace, because the \
+    next agent calls it as described instead of reading it. Split a file holding more than one \
+    function, so reading the one you need stays cheap. \
     Move, rename, and consolidate when it genuinely helps, and update every index you affect in \
     the same step. Do not delete anything carrying a result, a derivation, or a source; when \
     something looks obsolete, say so in the index rather than removing it. Never edit a \
@@ -773,7 +775,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "goal.md",
             "tasks.md",
             "memory.md",
-            "toolkit.md",
+            "toolkits/INDEX.md",
         ],
         // Executes: needs everything the plan depends on, its own scratch, and
         // the catalogue of helpers the run has already built and verified —
@@ -784,7 +786,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "tasks.md",
             "memory.md",
             "scratchpad.md",
-            "toolkit.md",
+            "toolkits/INDEX.md",
         ],
         // Judges: needs the criteria and the record, never provisional work.
         "reflection" => &["goal.md", "tasks.md", "memory.md"],
@@ -814,7 +816,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "organizer" => &[
             "goal.md",
             "tasks.md",
-            "toolkit.md",
+            "toolkits/INDEX.md",
             "research/INDEX.md",
             "research/DIGEST.md",
         ],
