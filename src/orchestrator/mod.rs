@@ -1015,6 +1015,18 @@ fn register_support_agents(
     subagents.register("organizer", Arc::new(organizer), prompts.organizer)
 }
 
+/// Grants a role similarity search over everything the run has written down.
+///
+/// Every reasoning role gets it and the organizer does not: the organizer
+/// describes work rather than doing it, and each tool it lacks is a way a
+/// filing job cannot turn into an investigation.
+fn register_recall(harness: &mut AgentHarness<()>, workspace: &Path) {
+    register_resilient(
+        harness,
+        recall::RecallWorkspaceTool::registered(workspace.to_path_buf()),
+    );
+}
+
 /// Registers a tool so its recoverable failures answer the model rather than
 /// ending the run that called it.
 fn register_resilient(harness: &mut AgentHarness<()>, tool: Arc<dyn Tool<()>>) {
