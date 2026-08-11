@@ -1,4 +1,5 @@
 //! Unit tests for the shared run tracer.
+#![allow(clippy::expect_used)]
 
 use std::sync::Arc;
 
