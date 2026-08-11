@@ -5,8 +5,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `L0.0/homomesies_permutations_arxiv.md` | _(undescribed)_ |
+| `L0.1/legendre_number_system_cyclic_shift.md` | _(undescribed)_ |
 | `L0.1/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
 | `L0.2/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
+| `L0.2/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `L1.0/archer_geary_descents_powers.md` | _(undescribed)_ |
 | `L1.0/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
 | `L1.0/cambie_yan_html.md` | _(undescribed)_ |
@@ -25,22 +27,20 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.1/oeis_Bdiv.md` | _(undescribed)_ |
 | `L1.1/oeis_Qseq.md` | _(undescribed)_ |
 | `L1.1/oeis_invpowers.md` | _(undescribed)_ |
-| `L1.1/oeis_invpowers2.md` | _(undescribed)_ |
+| `L1.1/oeis_invpowers2.md` | OEIS negative lookup for probe sequence 1,4,82,1448,24832,415968,6983744,117072128 (derived from expected-inversion formulas): "No results". |
 | `L1.1/pinsky_inversion_fixed_points.md` | _(undescribed)_ |
 | `L1.2/pinsky_schickentanz_ewens_html.md` | _(undescribed)_ |
 | `L1.2/pinsky_schickentanz_ewens_inversions.md` | _(undescribed)_ |
 | `L1.2/report_cited_facts.md` | _(undescribed)_ |
 | `L1.2/report_literature_ranks_powers.md` | _(undescribed)_ |
-| `L1.2/report_rank_powers.md` | _(undescribed)_ |
+| `L1.2/report_rank_powers.md` | Earlier research report (superseded by report_literature_ranks_powers.md): established facts for Q(n) — rank=Lehmer/factoradic (cited), ord(π)=lcm of cycle lengths and powers repeat with that period (cited), Σ rank=n!(n!+1)/2 (corollary), m-th-root counts (cited, not directly usable); and the derived reduction Q(n)=Σ_{H cyclic} φ( |
 | `L1.2/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `L1.2/stong_average_order_permutation.md` | _(undescribed)_ |
 | `L2.0/cycle_type_toolkit.md` | _(undescribed)_ |
 | `L2.0/mechanism_pair_inversions.md` | _(undescribed)_ |
 | `L2.0/order_random_permutation.md` | _(undescribed)_ |
 | `L2.0/rank_lehmer.md` | _(undescribed)_ |
-| `L2.0/report_A_n_B_n_closed_forms_sources.md` | _(undescribed)_ |
+| `L2.0/report_A_n_B_n_closed_forms_sources.md` | Research report on sources for closed forms of A_n,B_n in f_n(k)=A_n+(k−1)B_n: per-gap pair-inversion probabilities affine in the gap (Campion-Loth Lemma 4.7, Pinsky–Schickentanz Thm 1a/Prop 10a, Pinsky EJC), the concrete cycle-type summation route to A_n,B_n via Source 1 + Ford factorial moments, Sack–Úlfarsson Eulerian k-step-inversion closed forms — and clean negatives (Cambie–Yan n≥2k+1 limit; no source computes the rank-sum over {π^i}; OEIS all negative). Bottom line: sources give the per-gap mechanism and summation tools, not A_n,B_n themselves. |
 | `L2.0/reports_negatives.md` | _(undescribed)_ |
-_random_permutation.md` | _(undescribed)_ |
-| `L2.0/rank_lehmer.md` | _(undescribed)_ |
-| `L2.0/report_A_n_B_n_closed_forms_sources.md` | _(undescribed)_ |
-| `L2.0/reports_negatives.md` | _(undescribed)_ |
+| `verify_cambie_yan.py` | _(undescribed)_ |
+| `verify_facts.py` | Verification script for the cited rank/order facts: checks rank(2,1,3)=3 via the Lehmer/factoradic rank formula and the derived reduction Q(n)=Σ_{H cyclic}φ( |

@@ -25,9 +25,12 @@ Arithmetic engine — **polylog**, not iterating to n, which n=10⁵ demands:
   Takagi–Landsberg limits), upgrading the abstract-only [[weightedmom]].
 - S(n) ∉ OEIS ([[weightedsearch]]) — no lookup shortcut.
 
-**Caveat (open):** counting is a *surrogate* — its (A,B) One-move (A−1,B),
-Zero-move (A,B−1) ignore that deleting a leading 1 can also drop 0-bits
-("100"→0). Given S(2)=2, S(5)=17, S(10)=64 are reproduced; real-vs-counting S(n)
-agreement for all n is checked empirically by brute.py vs counting.py
-([[disjsum]] records the caveat; see MEMORY.md, which also records the refuted
-single-aggregate skip-readings).
+**Exact structural rule (new, [[simplicity_rule_dyadic]]):** each single-number
+component of the real game is a *canonical Number*, so its value is the
+**simplest dyadic rational strictly between** its Left/Right option values
+(Simplicity Rule, Fenner–Rogers 2015, arXiv:1505.07416) — **not** the integer
+a−b the counting surrogate asserts. This is why S(n) grows faster than A−B.
+The board value G(n)=Σ k·g(k) with g(k) dyadic; a Right-only skip adds the game
+−1, so **S(n)=min{k : G(n)−k≤0}**. This upgrades the old caveat: counting is a
+surrogate, and the exact survivor is the dyadic rule above, not (A,B) totals.
+(Old caveat and refuted single-aggregate readings remain in MEMORY.md.)

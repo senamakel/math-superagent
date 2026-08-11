@@ -3,14 +3,19 @@
 Two L2 folds hold the whole library's claims; seal [[L0.0]] covers the L0
 originals that feed one of them.
 
-## The game reduces to counters, and S(n) is a minimax DP
-[[game-reduction-and-pass]] (L2.0): the board is a disjunctive sum of short
-partisan games; each number is the integer a−b, so the no-skip value is the
-single integer **A−B**. Sprague–Grundy does not apply (strictly partisan). The
-skip is a zugzwang/pass self-loop (a stopper, so finite S(n)); pass theory
-(Larsson–Nowakowski–Santos; Morrison–Friedman–Landsberg) shows a pass changes
-outcomes, so **S(n) ≠ A−B**: S(n) is the minimal skip budget for Zero to win,
-computed by the (A,B) minimax DP.
+## The game's values are dyadic Numbers (exact), not the integer A−B
+[[game-reduction-and-pass]] (L2.0) reduces the board to a disjunctive sum of
+short partisan games; the no-skip surrogate value is **A−B**. Sprague–Grundy
+does not apply (strictly partisan). The skip is a zugzwang/pass self-loop (a
+stopper, so finite S(n)); pass theory (Larsson–Nowakowski–Santos;
+Morrison–Friedman–Landsberg) shows a pass changes outcomes, so **S(n) ≠ A−B**.
+
+The **exact** rule is now sourced: each single-number component is a canonical
+**Number**, valued as the simplest dyadic rational strictly between its Left/
+Right option values (Simplicity Rule, [[simplicity_rule_dyadic]]). So the board
+value is G(n)=Σ k·g(k) with g(k) dyadic, a Right-only skip adds the game −1,
+and **S(n)=min{k : G(n)−k≤0}**. This replaces the A−B counting surrogate as the
+structural fact and explains S(n)>A−B.
 
 ## The arithmetic engine is polylog
 [[counting-arithmetic]] (L2.0): A(n)=Σ k·popcount(k) and B(n)=Σ k·zerocount(k)
@@ -26,9 +31,8 @@ run at n=10⁵.
 three unrelated arXiv pdfs), so attempts are not repeated.
 
 ## Standing caveat (open)
-Counting (A,B) is a conjectured surrogate — its moves ignore that deleting a
-leading 1 can drop 0-bits. Given S(2)=2, S(5)=17, S(10)=64 are reproduced; the
-real-vs-counting agreement for all n is checked empirically (brute.py vs
-counting.py), and single-aggregate skip-readings were refuted (see MEMORY).
-The library pins down **what and how to compute**; the open piece is the S(n)
-structure itself.
+The dyadic Simplicity Rule is the exact game rule sourced here; the counting
+(A,B) form is the old approximate surrogate (its leading-1/drop-0 shortcut),
+given S(2)=2, S(5)=17, S(10)=64 are reproduced by it. The library pins down
+**what to compute** (dyadic G(n), S(n)=min k with G(n)−k≤0) and **how**; the
+open piece is the closed-form/rapid evaluation of G(n) at n=10⁵.
