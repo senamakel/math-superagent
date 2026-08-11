@@ -6,6 +6,7 @@
 pub mod accounting;
 pub mod budget;
 pub mod reflection;
+pub mod reroute;
 pub mod resilient;
 pub mod sticky;
 pub mod trace;
