@@ -555,6 +555,16 @@ impl AsyncSubagentManager {
             Arc::new(AsyncSubagentTool::new(
                 AsyncToolKind::Await,
                 self.clone(),
+                allowed.clone(),
+            )),
+            Arc::new(AsyncSubagentTool::new(
+                AsyncToolKind::SpawnMany,
+                self.clone(),
+                allowed.clone(),
+            )),
+            Arc::new(AsyncSubagentTool::new(
+                AsyncToolKind::AwaitMany,
+                self.clone(),
                 allowed,
             )),
         ]
@@ -604,6 +614,8 @@ impl Tool<()> for AsyncSubagentTool {
     fn name(&self) -> &'static str {
         match self.kind {
             AsyncToolKind::Spawn => "spawn_agent",
+            AsyncToolKind::SpawnMany => "spawn_agents",
+            AsyncToolKind::AwaitMany => "await_agents",
             AsyncToolKind::Peek => "peek_agent",
             AsyncToolKind::Steer => "steer_agent",
             AsyncToolKind::Await => "await_agent",
