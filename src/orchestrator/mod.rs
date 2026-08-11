@@ -204,48 +204,22 @@ impl OrchestratorAgent {
             .register_tool(Arc::new(ExaSearchTool::from_env()?))
             .register_tool(Arc::new(RecallResearchTool::new(vector_store.clone())))
             .register_tool(Arc::new(RememberResearchTool::new(vector_store)));
-        let research = Arc::new(
-            SubAgent::new(
-                "research",
-                "Researches current questions with Exa and returns evidence with source URLs.",
-                Arc::new(research_harness),
-            )
-            .with_system_prompt(research_prompt.clone()),
-        );
+        let research_harness = Arc::new(research_harness);
 
         let mut tool_builder_harness = specialist_harness(model.clone());
         tool_builder_harness
             .register_tool(Arc::new(WriteToolFile::new(workspace.clone())))
             .register_tool(Arc::new(ExecuteCommand::new(workspace)));
-        let tool_builder = Arc::new(
-            SubAgent::new(
-                "tool_builder",
-                "Writes, executes, tests, and repairs tools inside the jailed workspace.",
-                Arc::new(tool_builder_harness),
-            )
-            .with_system_prompt(tool_builder_prompt.clone()),
-        );
+        let tool_builder_harness = Arc::new(tool_builder_harness);
 
-        async_subagents.register("research", research.harness().clone(), research_prompt)?;
-        async_subagents.register(
-            "tool_builder",
-            tool_builder.harness().clone(),
-            tool_builder_prompt,
-        )?;
+        async_subagents.register("research", research_harness, research_prompt)?;
+        async_subagents.register("tool_builder", tool_builder_harness, tool_builder_prompt)?;
 
         let mut goals_harness = specialist_harness(model.clone());
         for tool in async_subagents.tools(["research", "tool_builder"]) {
             goals_harness.register_tool(tool);
         }
-        let goals = Arc::new(
-            SubAgent::new(
-                "goals",
-                "Pursues a goal to verifiable completion by spawning focused specialists.",
-                Arc::new(goals_harness),
-            )
-            .with_system_prompt(goals_prompt.clone()),
-        );
-        async_subagents.register("goals", goals.harness().clone(), goals_prompt)?;
+        async_subagents.register("goals", Arc::new(goals_harness), goals_prompt)?;
 
         let mut registry = AgentRegistry::new();
         registry
@@ -257,7 +231,6 @@ impl OrchestratorAgent {
                 )
                 .with_model("openrouter")
                 .with_tools(["exa_search", "recall_research", "remember_research"]),
-                research,
             )?
             .register(
                 AgentDefinition::new(
@@ -267,7 +240,6 @@ impl OrchestratorAgent {
                 )
                 .with_model("openrouter")
                 .with_tools(["write_tool_file", "execute_command"]),
-                tool_builder,
             )?
             .register(
                 AgentDefinition::new(
@@ -277,7 +249,6 @@ impl OrchestratorAgent {
                 )
                 .with_model("openrouter")
                 .with_tools(["research", "tool_builder"]),
-                goals,
             )?;
         let registry = Arc::new(registry);
 
