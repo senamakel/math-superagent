@@ -205,17 +205,21 @@ def running_for(workspace: Path) -> str | None:
     return None
 
 
-def start_detached(root: Path, arguments, log_path: Path) -> None:
-    """Starts the run so it outlives this process, and every later client."""
+def start_detached(root: Path, arguments, start_log: Path) -> None:
+    """Starts the run so it outlives this process, and every later client.
+
+    Its own session, and its output to a file rather than a pipe, so nothing
+    about the run depends on this process still existing. The build and the
+    statement fetch happen before any container does, so that output has no
+    `docker logs` to be recovered from and is kept here instead — it is also
+    the only place a failed build says why.
+    """
     command = [str(root / "euler")]
     if arguments.no_research:
         command.append("--no-research")
     command.append(str(arguments.problem))
     command.extend(arguments.extra)
-    # The build and fetch output has no container to be read from later, so it
-    # goes straight to the log; once the container exists, `docker logs` is the
-    # source and carries its own history.
-    with open(log_path, "a", encoding="utf-8") as log:
+    with open(start_log, "a", encoding="utf-8") as log:
         subprocess.Popen(
             command,
             cwd=root,
@@ -225,16 +229,28 @@ def start_detached(root: Path, arguments, log_path: Path) -> None:
         )
 
 
-def await_container(workspace: Path, runs: Runs, patience: float = 900.0) -> str | None:
-    """Waits for the container to appear, reporting the wait as it goes."""
-    deadline = time.monotonic() + patience
-    while time.monotonic() < deadline:
+def feed(workspace: Path, container: str | None, runs: Runs, log_path: Path, echo: bool) -> None:
+    """Follows the run's container, waiting for it to exist if it must.
+
+    `docker logs` replays a container from its start, so a client that attaches
+    an hour in still gets the whole run and every tab is populated before the
+    first frame. That is why the log is rewritten rather than appended to:
+    re-attaching would otherwise stack a second copy of the same history.
+    """
+    while container is None:
         container = running_for(workspace)
-        if container:
-            runs.add(f"container {container} is up; following it")
-            return container
-        time.sleep(1.0)
-    return None
+        if container is None:
+            time.sleep(1.0)
+    runs.add(f"following {container}")
+    with open(log_path, "w", encoding="utf-8") as log:
+        follower = subprocess.Popen(
+            ["docker", "logs", "--follow", "--tail", "all", container],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+        )
+        pump(follower.stdout, runs, log, echo)
 
 
 def paint(line: str) -> int:

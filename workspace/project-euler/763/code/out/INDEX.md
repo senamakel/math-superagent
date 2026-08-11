@@ -4,5 +4,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `configs_n3_n4.txt` | _(undescribed)_ |
+| `configs_n3_n4.txt` | Oracle output: the 9 distinct reachable arrangements for N=3 and the 30 for N=4 of Project Euler 763, each printed as a sorted set of (x,y,z) triples. Written by code/amoeba/configs_n3_n4.py, which asserts these counts match D(3)=9 and D(4)=30 from the established d_values sequence. |
 | `d_values.txt` | Oracle output: D(N) for N=0..13 (1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267), reproduced from the BFS oracles; D(2)=3 and D(10)=44499 confirm the statement's worked examples. |
+| `d_values_more.txt` | _(undescribed)_ |
