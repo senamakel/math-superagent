@@ -1179,7 +1179,7 @@ impl Tool<()> for DocumentTool {
                 self.documents
                     .write(&path, &content.replacen(&old_text, &new_text, 1))
                     .await?;
-                format!("edited {path}")
+                format!("edited {path}{}", self.reledger(&path).await)
             }
             DocumentToolKind::Index => {
                 let path = required_string(&call.arguments, "path")?;
