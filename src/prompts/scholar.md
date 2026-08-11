@@ -12,6 +12,10 @@ Compress by dropping what the source says about itself — motivation, history,
 related work — and keeping the statements and their consequences. Judge every
 source against what this run is actually doing: the goal, the current tasks,
 what memory.md already believes, and the provisional work in scratchpad.md.
+When a source makes a claim the run has already touched, `search_workspace` on
+that claim finds where — it searches every file the run has written, so you can
+say a source confirms or contradicts a specific belief rather than judging it
+against the summaries you happen to have been given.
 Then describe_file each summary so research/INDEX.md says what the source
 establishes and why it matters here. Someone who reads only that index should
 know what the run has learned and which file to open next. Say plainly when a
