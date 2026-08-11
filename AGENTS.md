@@ -15,7 +15,7 @@ tools, examples, tests, and documentation.
 
 ## Expected problem-solving behavior
 
-The runtime has seven roles plus an explicit solution loop.
+The runtime has eight roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -37,8 +37,15 @@ The runtime has seven roles plus an explicit solution loop.
 - The inventor proposes a different line of attack when the current one has
   stalled, backed by research. It is told what failed so it does not re-propose
   it.
-- The librarian builds a local reference library under `reference/` so the rest
+- The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
+- The scholar reads that library. It judges each source against the run's goal,
+  current tasks, and existing beliefs, records what the source actually
+  establishes and what it implies here, and maintains `research/DIGEST.md` as
+  the way in. It exists because acquiring is not reading: a downloaded paper
+  nobody has opened has cost the run context and taught it nothing. It has no
+  search tool on purpose, so it digests the library instead of drifting into
+  another search the librarian has already done.
 
 ## The solution loop
 
@@ -53,8 +60,8 @@ The runtime has seven roles plus an explicit solution loop.
 
 Reflection runs after *every* attempt, not only after a failure, because the
 lesson from a partial success is what stops the next attempt repeating it.
-`diversify` runs the librarian, the pattern agent, and the inventor
-concurrently, and only when repeated attempts stop making progress; it is the
+`diversify` runs three arms concurrently — the librarian followed by the
+scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the
 step that breaks a loop reflection alone cannot.
 
 Keep the routing policy in `route` a plain function of the state. It is the
@@ -240,7 +247,7 @@ workspace/              # selectable writable agent workspaces
 ```
 
 The executable registry contains `goals`, `research`, `tool_builder`,
-`reflection`, `pattern_finder`, `inventor`, and `librarian`.
+`reflection`, `pattern_finder`, `inventor`, `librarian`, and `scholar`.
 Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
 The goals agent also receives the research and tool-builder delegation tools,
 so it can pursue a goal through nested, focused work.
@@ -409,6 +416,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | pattern_finder | `goal.md`, `memory.md`, `scratchpad.md` |
 | inventor, research | `goal.md`, `memory.md` |
 | librarian | `goal.md`, `memory.md`, `research/INDEX.md` |
+| scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md`, `research/DIGEST.md` |
 
 The tool-builder accumulates reusable helpers in `toolkit.py` and describes
 each one in `toolkit.md` — signature, return, and what established it is
@@ -429,7 +437,11 @@ Four of these are load-bearing rather than tidy-minded:
   evidence of progress, and treating it as such keeps the loop retrying.
 
 Adding a file to every role is the easy mistake. Ask what the role has to
-decide, and give it only what that decision needs.
+decide, and give it only what that decision needs. The scholar is the one
+legitimate exception: judging whether a source is worth anything requires
+knowing what the run wants, what it already believes, and what it is currently
+attempting, so it needs all three — and `scratchpad.md` besides, because a
+half-finished derivation is exactly the kind of thing a paper resolves.
 
 ## Workspace checkpointing
 
