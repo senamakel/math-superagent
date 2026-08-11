@@ -9,6 +9,13 @@ services:
       AGENT_WORKSPACE: /workspace
       QDRANT_URL: http://qdrant:6333
       MATH_AGENT_CONTAINER: "1"
+      # Run controls forwarded from the host wrapper. Empty means "use the
+      # built-in default", so an unset variable never widens or narrows a run.
+      MATH_AGENT_RESEARCH: ${MATH_AGENT_RESEARCH:-on}
+      MATH_AGENT_MAX_MODEL_CALLS: ${MATH_AGENT_MAX_MODEL_CALLS:-}
+      MATH_AGENT_MAX_TOOL_CALLS: ${MATH_AGENT_MAX_TOOL_CALLS:-}
+      MATH_AGENT_RUN_MINUTES: ${MATH_AGENT_RUN_MINUTES:-}
+      MATH_AGENT_TOOL_MINUTES: ${MATH_AGENT_TOOL_MINUTES:-}
     user: "${MATH_AGENT_LOCAL_UID:-1000}:${MATH_AGENT_LOCAL_GID:-1000}"
     working_dir: /workspace
     read_only: true
