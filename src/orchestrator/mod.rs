@@ -810,6 +810,27 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut pattern, tool);
     }
+    // The pattern agent computes as well as observes. Its own tools answer
+    // only what holds across terms it is handed, so without a way to generate
+    // more terms it can neither test a conjecture past the data that suggested
+    // it nor find the first term that breaks one — which is the finding worth
+    // having. It gets shell and file-write authority for that, and delegation
+    // besides, so a check too large to run inline becomes a commissioned
+    // program rather than an abandoned question.
+    register_resilient(
+        &mut pattern,
+        Arc::new(WriteToolFile::new(parts.workspace.clone())),
+    );
+    register_resilient(
+        &mut pattern,
+        Arc::new(ExecuteCommand::new(
+            parts.workspace.clone(),
+            parts.budget.tool_timeout,
+        )),
+    );
+    for tool in parts.delegation.iter().cloned() {
+        register_resilient(&mut pattern, tool);
+    }
     subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
 
     let mut inventor =
