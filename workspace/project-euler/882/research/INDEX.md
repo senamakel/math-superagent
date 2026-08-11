@@ -6,7 +6,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `L0.0/li_zuchswang.md` | Li, "Sums of zugzwang games" (1976), the original zugzwang-game paper — NOT obtained (Elsevier paywall); recorded so the attempt is not repeated. Theory sourced instead via Siegel's survey. |
 | `L0.1/siegel_zugzwang.md` | Summary of Siegel, "Coping with cycles" (Games of No Chance 3, 2009): partizan loopy CGT — stoppers, sides (on/off/over/dud), Li zugzwang games (x & y with dyadic x<=y), pseudonumbers. Warrants the (A,B) stopper/loopy model for the bit game's skip-as-pass loop; no formula for S(n). Reference analysis in L1.1/siegel_zugzwang.md. |
-| `L0.2/simplicity_rule_dyadic.md` | Fenner & Rogers 2015 (arXiv:1505.07416): Simplicity Rule — each finite numeric game equals the simplest dyadic rational strictly between its Left/Right option values (v({0 |
+| `L0.2/simplicity_rule_dyadic.md` | Fenner & Rogers 2015 (arXiv:1505.07416): Simplicity Rule — each finite numeric game equals the simplest dyadic rational between its Left/Right option values. Basis for the exact rule that each single-number component is a canonical dyadic Number. |
 | `L1.0/a083652.md` | OEIS A083652 summatory bit-length, exact O(1) closed form; third leg of total bits = ones+zeros. |
 | `L1.0/bitcount.md` | OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |
 | `L1.0/cgt.md` | CGT framework (Conway ONAG, Winning Ways): numbers as games, disjunctive sum; board decomposes. |

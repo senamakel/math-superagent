@@ -8,7 +8,9 @@ A_n,B_n,Q(n) are uncatalogued. Library = [[rank_lehmer]] + [[mechanism_pair_inve
 (core mechanism, two proofs) + [[order_random_permutation]] (weights) +
 [[cycle_type_toolkit]] (summation engine) + small-exponent
 [[cambie_yan_descents_inversions_powers]] + [[sack_ulfarsson_refined_inversion_statistics]]
-(per-gap inversion machinery) + [[homomesies_permutations]] (framework).
+(per-gap inversion machinery) + [[homomesies_permutations]] (framework) +
+[[../L0.2/courtois_bard_ault_ppowers_body]] (power-side cycle structure of π^k:
+τ(k) fixed points, cycle splitting, fixed-point EGF).
 [[legendre_number_system_cyclic_shift]] shares the "rank inside a
 cyclic-orbit" shape but for rotation, not powers — related framework only.
 See [[report_literature_ranks_powers]] (clean negative) and
