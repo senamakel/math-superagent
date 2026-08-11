@@ -63,6 +63,8 @@ src/
 ├── lib.rs              # public exports
 ├── agent/              # TinyAgents facade, OpenRouter, Langfuse
 ├── orchestrator/       # registry, specialists, compression, workspace tools
+│   ├── async_subagents.rs # graph-backed asynchronous child-run controls
+│   ├── documents.rs    # bounded workspace documents and local search index
 │   └── vector.rs       # Qdrant tools and deterministic local feature vectors
 ├── hello_agent/        # minimal single-agent example
 ├── error/              # crate-wide Error and Result<T>
@@ -134,8 +136,16 @@ Generated workspace files are ignored by Git except for `workspace/.gitkeep`
 and `workspace/template/`. When a workspace is first used, the helper copies
 the template into it without replacing existing files. The runtime appends
 `AGENTS.md`, `config.toml`, `memory.md`, and the relevant role prompt to each
-agent's built-in system policy. Workspace context must never replace built-in
-tool or container restrictions.
+agent's built-in system policy. `goal.md`, `tasks.md`, and `scratchpad.md` are
+also loaded. Workspace context must never replace built-in tool or container
+restrictions.
+
+Every runtime agent receives the workspace document tools: bounded download,
+read, write, exact edit, index, and search. The index is
+`/workspace/.document-index.json` and contains only relative paths in the
+selected workspace. Keep the 5 MiB per-document limit and reject non-HTTP
+downloads, traversal, symlink escapes, non-UTF-8 content, and missing exact-edit
+targets.
 Do not move generated artifacts into source directories unless the user asks
 to promote a specific artifact into the product.
 

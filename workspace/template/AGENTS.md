@@ -10,5 +10,9 @@
   polynomial or better formulation instead.
 - Do not describe numerical evidence as proof.
 - Put generated files under this workspace only.
+- Use the document tools to download, read, store, edit, index, and search
+  working references. Index documents that should be discoverable later.
+- Keep the objective and completion criteria in `goal.md`, active work in
+  `tasks.md`, and provisional calculations in `scratchpad.md`.
 - Update `memory.md` with durable results, failed approaches, and open questions.
 - Never write credentials or environment values to workspace files.

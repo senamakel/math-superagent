@@ -96,8 +96,15 @@ Generated programs, calculations, and other artifacts appear in
 `workspace/default` unless another workspace is selected. A new workspace is
 seeded from [`workspace/template/`](workspace/template/) without overwriting
 files already present. The seed includes local agent instructions, role
-prompts, configuration, and `memory.md`. The runtime reads those files at the
-start of every run.
+prompts, configuration, `goal.md`, `tasks.md`, `scratchpad.md`, and `memory.md`.
+The runtime reads those files at the start of every run.
+
+Every runtime agent can use bounded document tools to download HTTP or HTTPS
+text, read and store files, make exact edits, add documents to a workspace-local
+index, and search that index for ranked snippets. The index lives at
+`.document-index.json` inside the selected workspace. Downloads and individual
+documents are capped at 5 MiB, paths cannot leave `/workspace`, and one
+workspace cannot search another workspace's files.
 
 Use `--workspace` to give a run its own subdirectory:
 
@@ -177,6 +184,8 @@ workspace/                  selectable agent workspaces, ignored by Git
 src/
 ├── agent/                  TinyAgents facade and Langfuse observations
 ├── orchestrator/           registry, specialists, compression, workspace tools
+│   ├── async_subagents.rs  graph-backed spawn, peek, steer, and await controls
+│   ├── documents.rs        bounded workspace document storage and search
 │   └── vector.rs           Qdrant research store and local feature vectors
 ├── hello_agent/            small single-agent example
 ├── error/                  crate-wide errors
