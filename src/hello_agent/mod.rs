@@ -364,7 +364,11 @@ impl Tool<()> for ExaSearchTool {
                     let _ = write!(rendered, "\n{}", clip(summary, EXA_RESULT_CHARS));
                 }
                 if !highlights.trim().is_empty() {
-                    let _ = write!(rendered, "\nMatching passages: {}", clip(&highlights, EXA_RESULT_CHARS));
+                    let _ = write!(
+                        rendered,
+                        "\nMatching passages: {}",
+                        clip(&highlights, EXA_RESULT_CHARS)
+                    );
                 }
                 rendered
             })

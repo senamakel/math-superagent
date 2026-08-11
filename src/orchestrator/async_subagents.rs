@@ -49,7 +49,10 @@ static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 /// the critical path of an investigation waiting for its result.
 const FOLLOW_UPS: [(&str, &[FollowUpStep]); 2] = [
     ("tool_builder", &[ORGANIZE_AFTER_TOOLS]),
-    ("research", &[DIGEST_AFTER_RESEARCH, ORGANIZE_AFTER_RESEARCH]),
+    (
+        "research",
+        &[DIGEST_AFTER_RESEARCH, ORGANIZE_AFTER_RESEARCH],
+    ),
 ];
 
 /// One queued run in a trigger's follow-up sequence.
