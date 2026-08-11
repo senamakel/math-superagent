@@ -1,10 +1,10 @@
 # Tasks
 
 - [x] Record objective and completion criteria in goal.md (already present from prior context).
-- [x] Read problem statement (problem.html) and confirm worked examples: rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(6)=133103808, Q(10) mod p = 468421536.
-- [ ] Write /workspace/brute.py — method 1: literal double sum, for every pi compute pi^i for i=1..n! and sum rank(pi^i); lex-order rank dict; reproduce rank(2,1,3)=3.
-- [ ] Write /workspace/brute2.py — method 2: Q(n) = sum_pi (n!/ord(pi)) * sum_{tau in <pi>} rank(tau) over distinct powers.
-- [ ] Run both for n=2,3,4,5,6; check Q(2)=5, Q(3)=88, Q(6)=133103808; methods agree.
+- [x] Pipeline re-verified 18 Sep 2025: brute.py + brute2.py at n=2,3,6 (all oracles OK, methods agree); solution.py self-test n=2..8 OK after fixing a path bug (out/extend_f.json); task12.py OK (Q(10) mod p = 468421536).
+- [x] ccsum.py conjugacy-class engine run CCSUM_MAX=30 CCSUM_GATE=120: reaches n=30 fast but matches extend_f.json ONLY at n=2. Root cause PROVEN (test_classconst.py): cyclic-subgroup count S(lambda,k) is NOT constant on a conjugacy class, so the single-representative-per-class design is invalid. ccsum rows n>=3 are UNTRUSTED; written out/ccsum.json + out/ccsum_ab.json (n=2..30) with old captures backed up.
+- [x] Wrote code/anbtable.py -> code/out/anbtable.txt (A, B, A//(n-1)!, B//(n-1)!, A%(n-1)!, B%(n-1)! for n=2..30 with per-row TRUST flag, plus trusted n=2..11 reference from extend_f.json). No closed form attempted (per instruction).
+- [ ] (Later) Derive efficient method for Q(10^6) mod p; validate against oracle values. NOTE: the ccsum.py conjugacy-class engine does NOT provide valid A_n/B_n past n=11 — a correct method must sum S over all representatives per class, not one representative.
 - [x] Run n=7 (both methods).  Method1 7.17s, method2 0.02s; exact agreement.
       Q(7)=47124948960, mod p = 124948631.
 - [x] Run n=8: method 2 gave Q(8)=24768798220800, mod p = 798047424 (0.16s);
