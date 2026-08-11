@@ -260,25 +260,32 @@ impl OrchestratorAgent {
         let mut research_harness = specialist_harness(model.clone(), budget);
         let vector_store = VectorStore::from_env()?;
         if research_enabled {
-            research_harness.register_tool(Arc::new(ExaSearchTool::from_env()?));
+            register_resilient(&mut research_harness, Arc::new(ExaSearchTool::from_env()?));
         }
-        research_harness
-            .register_tool(Arc::new(RecallResearchTool::new(vector_store.clone())))
-            .register_tool(Arc::new(RememberResearchTool::new(vector_store)));
+        register_resilient(
+            &mut research_harness,
+            Arc::new(RecallResearchTool::new(vector_store.clone())),
+        );
+        register_resilient(
+            &mut research_harness,
+            Arc::new(RememberResearchTool::new(vector_store)),
+        );
         for tool in documents.tools() {
-            research_harness.register_tool(tool);
+            register_resilient(&mut research_harness, tool);
         }
         let research_harness = Arc::new(research_harness);
 
         let mut tool_builder_harness = specialist_harness(model.clone(), budget);
-        tool_builder_harness
-            .register_tool(Arc::new(WriteToolFile::new(workspace.clone())))
-            .register_tool(Arc::new(ExecuteCommand::new(
-                workspace,
-                budget.tool_timeout,
-            )));
+        register_resilient(
+            &mut tool_builder_harness,
+            Arc::new(WriteToolFile::new(workspace.clone())),
+        );
+        register_resilient(
+            &mut tool_builder_harness,
+            Arc::new(ExecuteCommand::new(workspace, budget.tool_timeout)),
+        );
         for tool in documents.tools() {
-            tool_builder_harness.register_tool(tool);
+            register_resilient(&mut tool_builder_harness, tool);
         }
         let tool_builder_harness = Arc::new(tool_builder_harness);
 
@@ -287,10 +294,10 @@ impl OrchestratorAgent {
 
         let mut goals_harness = specialist_harness(model.clone(), budget);
         for tool in async_subagents.tools(["research", "tool_builder"]) {
-            goals_harness.register_tool(tool);
+            register_resilient(&mut goals_harness, tool);
         }
         for tool in documents.tools() {
-            goals_harness.register_tool(tool);
+            register_resilient(&mut goals_harness, tool);
         }
         async_subagents.register("goals", Arc::new(goals_harness), goals_prompt)?;
 
@@ -298,10 +305,10 @@ impl OrchestratorAgent {
 
         let mut orchestrator_harness = specialist_harness(model, budget);
         for tool in async_subagents.tools(["research", "tool_builder", "goals"]) {
-            orchestrator_harness.register_tool(tool);
+            register_resilient(&mut orchestrator_harness, tool);
         }
         for tool in documents.tools() {
-            orchestrator_harness.register_tool(tool);
+            register_resilient(&mut orchestrator_harness, tool);
         }
 
         Ok(Self {
