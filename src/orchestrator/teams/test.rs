@@ -219,3 +219,78 @@ fn a_standing_goal_treats_nothing_further_as_idle_rather_than_done() {
         Cycle::Finished
     );
 }
+
+#[tokio::test]
+async fn a_cycle_that_changed_nothing_backs_off_however_productive_it_claims_to_be() {
+    // The live failure: a background team ran seven cycles in six minutes —
+    // 26 reads, 16 listings, seven index refreshes, zero descriptions —
+    // reporting work every time, so it never backed off and was on course to
+    // spend its whole allowance re-reading a workspace it was not changing.
+    let root = std::env::temp_dir().join(format!("math-agent-team-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("temporary workspace is creatable");
+    std::fs::write(root.join("goal.md"), "solve it").expect("a file is writable");
+
+    let ran = Arc::new(AtomicU64::new(0));
+    let counter = ran.clone();
+    let _team = spawn(
+        "background",
+        budget(1_000, Duration::from_mins(1)),
+        None,
+        Some(root.clone()),
+        move |_inbox| {
+            let counter = counter.clone();
+            // Claims to have worked, touches nothing.
+            async move {
+                counter.fetch_add(1, Ordering::Relaxed);
+                Cycle::Worked
+            }
+        },
+    );
+
+    assert!(settle(|| ran.load(Ordering::Relaxed) >= 1).await);
+    // With the claim believed, this would spin through many cycles. Backed
+    // off, it manages one and then waits out the idle interval.
+    tokio::time::sleep(Duration::from_millis(400)).await;
+    assert!(
+        ran.load(Ordering::Relaxed) <= 2,
+        "spun {} cycles without changing anything",
+        ran.load(Ordering::Relaxed)
+    );
+    let _ = std::fs::remove_dir_all(&root);
+}
+
+#[tokio::test]
+async fn a_cycle_that_actually_changed_the_workspace_is_believed() {
+    // The check must not punish a team that is working: a cycle that wrote a
+    // file goes straight round again.
+    let root = std::env::temp_dir().join(format!("math-agent-team-busy-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("temporary workspace is creatable");
+
+    let ran = Arc::new(AtomicU64::new(0));
+    let counter = ran.clone();
+    let folder = root.clone();
+    let _team = spawn(
+        "background",
+        budget(4, Duration::from_mins(1)),
+        None,
+        Some(root.clone()),
+        move |_inbox| {
+            let counter = counter.clone();
+            let folder = folder.clone();
+            async move {
+                let index = counter.fetch_add(1, Ordering::Relaxed);
+                let _ = std::fs::write(folder.join(format!("note-{index}.md")), "written");
+                Cycle::Worked
+            }
+        },
+    );
+
+    assert!(
+        settle(|| ran.load(Ordering::Relaxed) >= 4).await,
+        "a productive team ran only {} cycles",
+        ran.load(Ordering::Relaxed)
+    );
+    let _ = std::fs::remove_dir_all(&root);
+}
