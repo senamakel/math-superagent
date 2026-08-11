@@ -9,6 +9,7 @@ mod patterns;
 mod readable;
 mod recall;
 mod solutions;
+mod teams;
 mod vector;
 
 use std::fmt::Write as _;
