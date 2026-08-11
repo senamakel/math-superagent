@@ -385,9 +385,9 @@ fn default_registry() -> Result<AgentRegistry> {
     Ok(registry)
 }
 
-fn specialist_harness(model: Arc<dyn ChatModel<()>>) -> AgentHarness<()> {
+fn specialist_harness(model: Arc<dyn ChatModel<()>>, budget: RunBudget) -> AgentHarness<()> {
     let mut harness = AgentHarness::new();
-    configure_tool_deadline(&mut harness);
+    configure_run_budget(&mut harness, budget);
     harness
         .register_model("openrouter", model.clone())
         .set_default_model("openrouter")
