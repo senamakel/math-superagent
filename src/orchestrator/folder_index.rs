@@ -353,6 +353,7 @@ impl FolderIndexTool {
         let present = self.documents.file_names(&folder).await?;
 
         let mut entries = BTreeMap::new();
+        let mut originals = 0usize;
         for name in &present {
             // The index lists what a reader should open. The full text is not
             // that: it is reached from the summary beside it, which names it,
@@ -363,10 +364,11 @@ impl FolderIndexTool {
             // against `INDEX.md` stopped catching `L0/INDEX.md` — and a live
             // research index grew rows for two indexes nobody had described.
             let file = name.rsplit('/').next().unwrap_or(name);
-            if file == INDEX_FILE
-                || file == super::context_tree::ROOT_FILE
-                || name.ends_with(super::documents::FULL_TEXT_SUFFIX)
-            {
+            if name.ends_with(super::documents::FULL_TEXT_SUFFIX) {
+                originals += 1;
+                continue;
+            }
+            if file == INDEX_FILE || file == super::context_tree::ROOT_FILE {
                 continue;
             }
             let description = described.get(name).cloned().unwrap_or_default();
@@ -381,9 +383,21 @@ impl FolderIndexTool {
             .filter(|name| !entries.contains_key(*name))
             .count();
         self.write(&folder, &entries).await?;
+        // Say how many originals were passed over. Without it the caller sees
+        // a folder holding ten files and an index listing none of them, and
+        // its next move is to describe each one in turn — a live organizer
+        // spent ten refused calls doing exactly that, twice.
+        let skipped = if originals == 0 {
+            String::new()
+        } else {
+            format!(
+                ", {originals} source full text(s) passed over — they are never indexed; the \
+                 digests that read them are"
+            )
+        };
         Ok(format!(
             "refreshed {} — {} files, {added} newly listed and needing a purpose, {removed} stale \
-             rows dropped",
+             rows dropped{skipped}",
             index_for(&folder),
             entries.len()
         ))
