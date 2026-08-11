@@ -30,6 +30,7 @@ class Polytope:
         """ineqs: iterable of (A_row, b) with A_row length `dim`, b Fraction."""
         self.dim = dim
         self.ineqs = [(tuple(F(c) for c in row), F(b)) for row, b in ineqs]
+        self._verts = None
 
     def copy(self):
         return Polytope(self.dim, self.ineqs)
@@ -37,6 +38,8 @@ class Polytope:
     def vertices(self):
         """All extreme / tight vertices (exact). Uses every subset of `dim`
         inequalities as a candidate boundary intersection."""
+        if self._verts is not None:
+            return self._verts
         d = self.dim
         m = len(self.ineqs)
         # candidates: solve d equations from each d-subset, keep those
@@ -76,6 +79,7 @@ class Polytope:
             tight = [i for i in range(m) if _mul_row(self.ineqs[i][0], pt) == self.ineqs[i][1]]
             if len(set(tight) & set(idxs)) >= d and pt not in verts:
                 verts.append(pt)
+        self._verts = verts
         return verts
 
     def interior_vertex(self):

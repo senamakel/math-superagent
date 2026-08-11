@@ -63,6 +63,27 @@ const DEFAULT_BACKOFF_MS: u64 = 2_000;
 /// Longest backoff between model-call attempts, in milliseconds.
 const DEFAULT_MAX_BACKOFF_MS: u64 = 60_000;
 
+/// Model calls one judging run may spend.
+///
+/// Twelve. A verdict needs the report, and at most a look at one or two files
+/// to check a claim in it against what is on disk. Everything past that is the
+/// judge starting to solve the problem, which is the thing it exists not to
+/// do.
+const JUDGING_MODEL_CALLS: usize = 12;
+
+/// Tool calls one judging run may spend.
+///
+/// Kept well above the model-call cap for the reason the main budget is: one
+/// turn can request several reads, and the graceful cap must be the model one.
+const JUDGING_TOOL_CALLS: usize = 60;
+
+/// Wall clock one judging run may spend.
+///
+/// Five minutes, against an attempt that takes the better part of an hour.
+/// This is the ceiling for a pathological turn, not the expected cost — a
+/// judge answering as instructed returns in seconds.
+const JUDGING_RUN_TIMEOUT: Duration = Duration::from_secs(300);
+
 /// The resolved budget shared by the orchestrator and every specialist.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct RunBudget {
