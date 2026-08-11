@@ -85,9 +85,15 @@ impl<S: Send + Sync> UntruncatedModel<S> {
     /// request, and the wrong diagnosis leads straight to killing a container
     /// that was working. The cost lands in `trace.jsonl` either way; what was
     /// missing is knowing to look.
+    ///
+    /// The note names `agent`, because the tracer it prints through belongs to
+    /// the run as a whole. Several specialists truncate independently and
+    /// concurrently, so an unattributed line says a turn was cut off without
+    /// saying whose — which is most of what the reader needs.
     #[must_use]
-    pub fn with_tracer(mut self, tracer: Arc<RunTracer>) -> Self {
+    pub fn with_tracer(mut self, tracer: Arc<RunTracer>, agent: impl Into<String>) -> Self {
         self.tracer = Some(tracer);
+        self.agent = agent.into();
         self
     }
 }
