@@ -351,7 +351,7 @@ impl OrchestratorAgent {
     }
 }
 
-fn default_registry() -> Result<AgentRegistry> {
+fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
         "download_document",
         "read_document",
