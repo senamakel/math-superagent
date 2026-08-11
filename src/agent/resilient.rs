@@ -39,7 +39,7 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 /// still under the vendored 600-second default, so a genuinely wedged request
 /// fails with retries left in the budget. Raise it before lowering it:
 /// truncating good calls is the more expensive mistake.
-const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_secs(420);
+const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_mins(7);
 
 /// Wraps a tool so a recoverable failure answers the model instead of killing
 /// the run.
