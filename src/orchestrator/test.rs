@@ -114,9 +114,52 @@ fn workspace_context_is_appended_without_replacing_base_policy() {
 
 #[test]
 fn command_policy_rejects_exponential_complexity_declarations() {
-    assert!(validate_complexity("time O(2^n), space O(n)", "polynomial").is_err());
-    assert!(validate_complexity("time O(n log n), space O(n)", "quasilinear").is_ok());
-    assert!(validate_complexity("time O(n), space O(n)", "exponential").is_err());
+    assert!(validate_complexity("time O(2^n), space O(n)", "polynomial", None).is_err());
+    assert!(validate_complexity("time O(n log n), space O(n)", "quasilinear", None).is_ok());
+    // An intractable class with no bound is still the thing the gate is for.
+    assert!(validate_complexity("time O(n), space O(n)", "exponential", None).is_err());
+    assert!(validate_complexity("time O(2^n)", "exponential", Some("   ")).is_err());
+    assert!(validate_complexity("time O(n), space O(n)", "unbounded", None).is_err());
+}
+
+#[test]
+fn a_bounded_brute_force_oracle_may_declare_the_cost_it_actually_has() {
+    // The method policy requires a naive oracle as the first step, and for a
+    // partisan game or a sum over all n! permutations that oracle is
+    // exponential. A live tool-builder declared its minimax honestly, was
+    // refused, and could not write the program the task said nothing else
+    // mattered until it had.
+    assert!(
+        validate_complexity(
+            "time O(2^n) minimax over the real game, space O(n)",
+            "exponential",
+            Some("n <= 12"),
+        )
+        .is_ok()
+    );
+    assert!(
+        validate_complexity("time O((n!)^2)", "factorial", Some("n <= 7")).is_ok(),
+        "a bounded factorial oracle is legitimate"
+    );
+}
+
+#[test]
+fn a_declaration_whose_class_contradicts_its_prose_is_refused() {
+    // How the old gate was actually defeated: a genuinely factorial search
+    // over all n! permutations, twice nested, declared `polynomial` with
+    // `O((n!)^2)` in the free text. The forbidden list looked for `o(n!` and
+    // the extra parenthesis meant it never matched.
+    let refused = validate_complexity(
+        "n=7: 5040^2 x 7 tuple operations; polynomial (O((n!)^2))",
+        "polynomial",
+        None,
+    )
+    .expect_err("prose naming a factorial cost must not pass as polynomial");
+    let message = refused.to_string();
+    assert!(
+        message.contains("oracle_bound"),
+        "the refusal must say how to declare it honestly: {message}"
+    );
 }
 
 #[test]
