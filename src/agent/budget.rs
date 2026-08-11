@@ -30,6 +30,18 @@ const DEFAULT_MAX_TOOL_CALLS: usize = 4_000;
 const DEFAULT_RUN_MINUTES: u64 = 120;
 /// Wall-clock ceiling for a single tool call, in minutes.
 const DEFAULT_TOOL_MINUTES: u64 = 10;
+/// Attempts allowed for one model call, counting the first try.
+///
+/// The vendored defaults are four attempts backing off from 200ms, which suits
+/// a fast API returning a clean 503. They do not suit this runtime: a provider
+/// stream that drops mid-body surfaces as a decode failure, and three retries
+/// spaced under two seconds all hit the same bad minute and exhaust before the
+/// condition clears. Both a longer ladder and a slower one are needed.
+const DEFAULT_MODEL_ATTEMPTS: usize = 7;
+/// First backoff between model-call attempts, in milliseconds.
+const DEFAULT_BACKOFF_MS: u64 = 2_000;
+/// Longest backoff between model-call attempts, in milliseconds.
+const DEFAULT_MAX_BACKOFF_MS: u64 = 60_000;
 
 /// The resolved budget shared by the orchestrator and every specialist.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -110,6 +122,17 @@ impl RunBudget {
         policy.limits.max_wall_clock_ms = Some(self.run_timeout_ms());
         policy.limits.behavior = LimitBehavior::StopWithPartial;
         policy.capture = PayloadCapture::all();
+
+        // The loop takes the stricter of these two caps, so raising the retry
+        // policy alone would change nothing: `RunLimits::max_retries_per_call`
+        // defaults to 3 and would silently win.
+        policy.limits.max_retries_per_call = DEFAULT_MODEL_ATTEMPTS.saturating_sub(1);
+        policy.retry.max_attempts = DEFAULT_MODEL_ATTEMPTS;
+        policy.retry.initial_backoff_ms = DEFAULT_BACKOFF_MS;
+        policy.retry.max_backoff_ms = DEFAULT_MAX_BACKOFF_MS;
+        // Jitter matters because runs are launched together and retry in
+        // lockstep otherwise, so every attempt lands in the same bad instant.
+        policy.retry.jitter = true;
         policy
     }
 }

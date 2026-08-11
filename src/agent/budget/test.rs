@@ -33,6 +33,22 @@ fn policy_stops_with_partial_results_and_captures_payloads() {
 }
 
 #[test]
+fn the_retry_ladder_is_longer_and_slower_than_the_vendored_default() {
+    let policy = RunBudget::default().run_policy();
+    // A transport failure that drops a stream mid-body needs more than the
+    // vendored four attempts backing off from 200ms.
+    assert!(policy.retry.max_attempts >= 6);
+    assert!(policy.retry.initial_backoff_ms >= 1_000);
+    assert!(
+        policy.retry.jitter,
+        "concurrent runs must not retry in lockstep"
+    );
+    // The loop takes the stricter cap, so this one has to be raised too or the
+    // longer ladder is silently ignored.
+    assert!(policy.limits.max_retries_per_call >= policy.retry.max_attempts - 1);
+}
+
+#[test]
 fn millisecond_conversions_match_the_configured_durations() {
     let budget = RunBudget::default();
     assert_eq!(
