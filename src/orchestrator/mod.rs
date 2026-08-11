@@ -72,6 +72,13 @@ const GOALS_PROMPT: &str = "You are the goals agent. Turn the assigned goal into
     evidence for completion. \
     Never use or request an algorithm with exponential time or space complexity.";
 
+struct AgentPrompts {
+    orchestrator: String,
+    research: String,
+    tool_builder: String,
+    goals: String,
+}
+
 /// A small in-memory catalogue of named, executable child agents.
 #[derive(Default)]
 pub struct AgentRegistry {
