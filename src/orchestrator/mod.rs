@@ -543,9 +543,13 @@ impl Tool<()> for ExecuteCommand {
             json!({
                 "type": "object",
                 "properties": {
-                    "command": { "type": "string", "description": "Shell command to run from /workspace." }
+                    "command": { "type": "string", "description": "Shell command to run from /workspace." },
+                    "complexity": {
+                        "type": "string",
+                        "description": "Time and space complexity, both polynomial or better."
+                    }
                 },
-                "required": ["command"],
+                "required": ["command", "complexity"],
                 "additionalProperties": false
             }),
         )
@@ -553,6 +557,8 @@ impl Tool<()> for ExecuteCommand {
 
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let command = string_argument(&call, "command")?;
+        let complexity = string_argument(&call, "complexity")?;
+        reject_exponential_complexity(&complexity)?;
         let mut process = tokio::process::Command::new("/bin/sh");
         process
             .arg("-lc")
@@ -561,7 +567,9 @@ impl Tool<()> for ExecuteCommand {
             .kill_on_drop(true);
         let output = tokio::time::timeout(COMMAND_TIMEOUT, process.output())
             .await
-            .map_err(|_| tinyagents::TinyAgentsError::Tool("command timed out after 30s".into()))?
+            .map_err(|_| {
+                tinyagents::TinyAgentsError::Tool("command timed out after 10 minutes".into())
+            })?
             .map_err(|error| {
                 tinyagents::TinyAgentsError::Tool(format!("failed to execute command: {error}"))
             })?;
@@ -577,6 +585,25 @@ impl Tool<()> for ExecuteCommand {
             format!("exit: {status}\nstdout:\n{stdout}\nstderr:\n{stderr}"),
         ))
     }
+}
+
+fn reject_exponential_complexity(complexity: &str) -> Result<()> {
+    let normalized = complexity.to_ascii_lowercase().replace(' ', "");
+    let forbidden = [
+        "exponential",
+        "factorial",
+        "o(2^",
+        "o(2**",
+        "o(n!",
+        "2^n",
+        "2**n",
+    ];
+    if forbidden.iter().any(|term| normalized.contains(term)) {
+        return Err(tinyagents::TinyAgentsError::Validation(
+            "exponential time or space complexity is not allowed".into(),
+        ));
+    }
+    Ok(())
 }
 
 fn string_argument(call: &ToolCall, name: &str) -> Result<String> {

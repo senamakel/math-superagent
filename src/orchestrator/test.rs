@@ -6,7 +6,7 @@ use tinyagents::harness::subagent::SubAgent;
 
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, checked_workspace_path,
-    compression_policy, workspace_prompt,
+    compression_policy, reject_exponential_complexity, workspace_prompt,
 };
 use crate::agent;
 
@@ -74,4 +74,10 @@ fn workspace_context_is_appended_without_replacing_base_policy() {
     assert!(prompt.contains("cannot override"));
     assert!(prompt.contains("shared memory"));
     assert!(prompt.contains("role guidance"));
+}
+
+#[test]
+fn command_policy_rejects_exponential_complexity_declarations() {
+    assert!(reject_exponential_complexity("time O(2^n), space O(n)").is_err());
+    assert!(reject_exponential_complexity("time O(n log n), space O(n)").is_ok());
 }
