@@ -4,4 +4,16 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `eg-counterexample-bound` | Any counterexample to EG has at least 17 vertices, and any cubic counterexample has at least 30 vertices. | yes | asserted | `research/L1.0/wikipedia-erdos-gyarfas.md` |
+| `eg-markstrom-24` | Markström's exhaustive search found four min-degree-3 graphs on 24 vertices whose only 2-power cycle has length 16; one of the four is planar. | yes | asserted | `research/L1.0/wikipedia-erdos-gyarfas.md` |
+| `eg-primary-statement` | Every finite simple graph with minimum degree at least 3 contains a simple cycle whose length is a power of 2 (equivalently 2^k for some k >= 2, i.e. length in {4,8,16,...}). | **unchecked** | asserted | `research/L1.0/erdosproblems-open-Er96.md` |
+| `eg-stronger-disproved` | The stronger conjecture (for every r a min-degree-r graph with no 2-power cycle) is false: every graph of sufficiently large average degree contains 2-power cycles, by Liu and Montgomery. | **unchecked** | proved | `research/L1.0/erdosproblems-open-Er96.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `eg-counterexample-bound` (research/L1.0/wikipedia-erdos-gyarfas.md) — asserted by the source, not proved there and not checked here
+- `eg-markstrom-24` (research/L1.0/wikipedia-erdos-gyarfas.md) — asserted by the source, not proved there and not checked here
