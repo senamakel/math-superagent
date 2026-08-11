@@ -11,13 +11,19 @@
 //! `trace.jsonl` tooling keep working; the tabs are a view, not a filter, and
 //! nothing is dropped from the record because a tab was not open.
 //!
-//! The run is a detached container and this is a client of it. `euler-tui`
-//! asks Docker which container has the workspace mounted and follows that one,
-//! starting a run only when none is going. Before that, every invocation
-//! started its own: opening a second view put two runs on one workspace, both
-//! writing the same files and both making checkpoint commits over each other,
-//! which a live pair did for four minutes before it was noticed. Quitting the
-//! view, closing the terminal, or opening a second one cannot touch the run.
+//! This only ever *watches*. It asks Docker which container has the workspace
+//! mounted and follows that one; it cannot start, stop, or restart a run. That
+//! is not a missing feature, it is the point. When starting was part of the
+//! same command, opening a second view started a second run on the same
+//! workspace — both writing the same files and both making checkpoint commits
+//! over each other — which happened three times in one evening, twice
+//! unnoticed for several minutes. A viewer that cannot launch cannot do that,
+//! and quitting it, closing the terminal, or opening a second one is
+//! guaranteed to leave the run alone.
+//!
+//! Runs are started with `./euler <number>`, which is one command in one
+//! place, so "is something already running for this problem" has one answer
+//! rather than one per terminal.
 
 use std::collections::BTreeMap;
 use std::io::{BufRead, BufReader, Write};
@@ -204,38 +210,6 @@ fn running_for(workspace: &Path) -> Option<String> {
         }
     }
     None
-}
-
-/// Starts the run so it outlives this process, and every later client.
-///
-/// Its own session, and its output to a file rather than a pipe, so nothing
-/// about the run depends on this process still existing. The build and the
-/// statement fetch happen before any container does, so that output has no
-/// `docker logs` to be recovered from and is kept here instead — it is also
-/// the only place a failed build says why.
-fn start_detached(root: &Path, problem: u32, research: bool, extra: &[String], log: &Path) {
-    let Ok(handle) = std::fs::OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open(log)
-    else {
-        return;
-    };
-    let Ok(errors) = handle.try_clone() else {
-        return;
-    };
-    let mut command = Command::new(root.join("euler"));
-    if !research {
-        command.arg("--no-research");
-    }
-    command.arg(problem.to_string());
-    command.args(extra);
-    let _ = command
-        .current_dir(root)
-        .stdout(Stdio::from(handle))
-        .stderr(Stdio::from(errors))
-        .stdin(Stdio::null())
-        .spawn();
 }
 
 /// Follows the run's container, waiting for it to exist if it must.
@@ -555,18 +529,17 @@ fn watch(runs: &Arc<Mutex<Runs>>, started: Instant) -> std::io::Result<()> {
     outcome
 }
 
-/// What the client should do: attach to a run, start one, or read a log.
+/// What the client should do: watch a live run, or read a finished one's log.
 ///
-/// A mode rather than three booleans, because they were never independent —
-/// `--replay --attach` has no meaning, and a struct of flags invites the
+/// A mode rather than a pair of booleans, because they were never independent
+/// — `--replay --attach` has no meaning, and a struct of flags invites the
 /// caller to ask about a combination that cannot happen.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 enum Mode {
-    /// Attach to a running container, or start one if none is going.
-    Follow,
-    /// Attach only, and fail rather than start a run.
+    /// Follow the container running this workspace.
+    #[default]
     Attach,
-    /// Read the existing log and start nothing.
+    /// Read the existing log; touch nothing.
     Replay,
 }
 
