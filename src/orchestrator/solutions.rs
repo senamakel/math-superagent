@@ -137,11 +137,7 @@ fn route(state: &SolutionState) -> Route {
 ///
 /// A child that fails must not end the loop: the failure is itself information
 /// the reflection step should see and act on.
-async fn delegate(
-    subagents: &AsyncSubagentManager,
-    agent: &str,
-    prompt: String,
-) -> String {
+async fn delegate(subagents: &AsyncSubagentManager, agent: &str, prompt: String) -> String {
     match subagents.run_to_completion(agent, prompt).await {
         Ok(text) => text,
         Err(error) => format!("[{agent} failed: {error}]"),

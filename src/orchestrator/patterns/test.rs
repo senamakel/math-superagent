@@ -1,7 +1,9 @@
 //! Unit tests for the deterministic sequence-analysis tools.
 #![allow(clippy::expect_used)]
 
-use super::{Frac, analyze, detect_periodicity, difference_table, find_recurrence, render_recurrence};
+use super::{
+    Frac, analyze, detect_periodicity, difference_table, find_recurrence, render_recurrence,
+};
 
 #[test]
 fn constant_differences_identify_a_polynomial() {

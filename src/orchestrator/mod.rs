@@ -24,7 +24,6 @@ use tinyagents::harness::summarization::{
 use crate::agent::budget::RunBudget;
 use crate::agent::reflection::ReflectionMiddleware;
 use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
-use patterns::PatternTool;
 use crate::agent::trace::RunTracer;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
@@ -33,6 +32,7 @@ use crate::agent::{
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
 use documents::WorkspaceDocuments;
+use patterns::PatternTool;
 use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 
 pub use tinyagents::harness::host::AgentDefinition;
@@ -397,7 +397,11 @@ impl OrchestratorAgent {
         for tool in documents.tools() {
             register_resilient(&mut reflection_harness, tool);
         }
-        async_subagents.register("reflection", Arc::new(reflection_harness), reflection_prompt)?;
+        async_subagents.register(
+            "reflection",
+            Arc::new(reflection_harness),
+            reflection_prompt,
+        )?;
 
         // pattern_finder: exact sequence analysis over results already computed.
         let mut pattern_harness = specialist_harness(model.clone(), budget);

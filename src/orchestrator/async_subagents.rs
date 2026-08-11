@@ -291,14 +291,11 @@ impl AsyncSubagentManager {
                 "agent `{agent}` failed: {error}"
             )));
         }
-        record
-            .result
-            .and_then(|result| result.text)
-            .ok_or_else(|| {
-                tinyagents::TinyAgentsError::Tool(format!(
-                    "agent `{agent}` produced no response before its deadline"
-                ))
-            })
+        record.result.and_then(|result| result.text).ok_or_else(|| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "agent `{agent}` produced no response before its deadline"
+            ))
+        })
     }
 
     fn record(&self, task_id: &str) -> Result<tinyagents::graph::OrchestrationTaskRecord> {

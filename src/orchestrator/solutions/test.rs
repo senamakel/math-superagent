@@ -1,6 +1,6 @@
 //! Unit tests for the solution loop's routing policy and lesson extraction.
 
-use super::{MAX_ATTEMPTS, Route, SolutionState, STUCK_THRESHOLD, extract_lesson, route};
+use super::{MAX_ATTEMPTS, Route, STUCK_THRESHOLD, SolutionState, extract_lesson, route};
 
 fn state() -> SolutionState {
     SolutionState::new("find the largest x")
@@ -60,7 +60,9 @@ fn outcome_reports_progress_even_when_unsolved() {
     let mut current = state();
     current.attempts = 2;
     current.last_attempt = "reached the derivation but did not verify".to_string();
-    current.lessons.push("verify with a second route".to_string());
+    current
+        .lessons
+        .push("verify with a second route".to_string());
     let outcome = current.outcome();
     assert!(outcome.contains("Not solved"));
     assert!(outcome.contains("reached the derivation"));

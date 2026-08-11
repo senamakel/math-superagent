@@ -245,9 +245,7 @@ fn render_recurrence(coefficients: &[Frac]) -> String {
         .iter()
         .enumerate()
         .filter(|(_, coefficient)| !coefficient.is_zero())
-        .map(|(offset, coefficient)| {
-            format!("({}) * a(n-{})", coefficient.render(), offset + 1)
-        })
+        .map(|(offset, coefficient)| format!("({}) * a(n-{})", coefficient.render(), offset + 1))
         .collect::<Vec<_>>();
     if terms.is_empty() {
         "a(n) = 0".to_string()
@@ -440,9 +438,9 @@ fn analyze(terms: &[i128]) -> String {
         );
     }
 
-    let divisor = terms.iter().fold(0, |accumulator, term| {
-        gcd(accumulator, *term)
-    });
+    let divisor = terms
+        .iter()
+        .fold(0, |accumulator, term| gcd(accumulator, *term));
     if divisor > 1 {
         let _ = write!(
             report,
