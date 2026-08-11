@@ -268,6 +268,15 @@ def main() -> int:
 
     runs = Runs()
     tabs = not arguments.plain and sys.stdout.isatty()
+    # Seed the view so its first frame says what is happening. An empty body
+    // under an empty tab bar is indistinguishable from a program that failed
+    # to start, which is exactly how this was first read.
+    runs.add(
+        f"{'continuing' if existing else 'starting'} problem {arguments.problem}: "
+        "building the image, fetching the statement, starting the container. "
+        "This is silent and can take a few minutes on a cold build — the first "
+        "[00:00] line below is the run itself."
+    )
 
     if arguments.replay:
         # Reading a log costs nothing and starts nothing, which makes it both
