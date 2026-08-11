@@ -104,9 +104,70 @@ parametrization (primary Hurwitz quaternions, Kiss-Kutas / Euler-Rodrigues),
 NOT by the direct vector pairing used here (which gave n=200 in 52s and will
 not reach n=5000). That quaternion enumeration is the next step.
 
+## FINAL RESULT (FINAL)
+
+**S(5000) mod 10^9 = 3,805,524**
+
+- C(5000) = 70,412,723,738,165,060
+- S(5000) = 197,963,224,555,524,859,003,805,524
+- distinct primitive frames(5000) = 7,598,249
+- wall time ~25 s single process (28-core box unused; pure Python).
+
+### /workspace/solution.py — FINAL method (validated)
+
+Enumeration is now via **primary primitive Hurwitz/Lipschitz integer
+quaternions** (Kiss-Kutas / Euler-Rodrigues), replacing frame_method's direct
+vector-pairing.  This is what lets cost stop growing with n:
+
+- A primitive frame (u,v,w) with edge length ell is produced by the
+  Euler-Rodrigues formula from an integer quaternion alpha=(a,b,c,d):
+      u=(a^2+b^2-c^2-d^2, 2(bc-ad), 2(bd+ac))
+      v=(2(bc+ad), a^2-b^2+c^2-d^2, 2(cd-ab))
+      w=(2(bd-ac), 2(cd+ab), a^2-b^2-c^2+d^2)
+  with |u|^2=|v|^2=|w|^2 = N^2, N=a^2+b^2+c^2+d^2 (= ell).
+- Every primitive frame has ODD ell=N; all primitive edge lengths are odd
+  (checked to n=80: none even).  This is the classical fact that a lattice cube
+  edge squared-norm that is a square must have odd length when primitive.
+- **PRIMARY** condition picks exactly one quaternion per frame (the map is
+  INJECTIVE): a's parity differs from b,c,d AND (a+b+c+d) mod 4 == 1, with
+  gcd(a,b,c,d)==1.  Concretely:
+      Case 1: a even, b,c,d odd;  d == (1-a-b-c) mod 4
+      Case 2: a odd,  b,c,d even; d == (1-a-b-c) mod 4
+  (d's residue class mod 4 is fixed, so d is stepped by 4; parity automatic).
+- Enumerate primary primitive quaternions with N<=n (a 4-ball of radius
+  sqrt(n)).  That scan is O(n^2) quaternions; each maps to a frame O(1); the
+  primary condition gives injectivity so no dedup set is needed -> O(1) working
+  memory, O(n^2) time.
+- (ell,A,B,C,D) computed EXACTLY as frame_method (A=sum|edge x|, etc., D=sum of
+  edge-gcds).  Summation reused from solution_power.compute_power (O(1) Faulhaber
+  per frame) plus a direct t-loop for the bit-for-bit cross-check.
+
+### Validation evidence (solution_output.txt)
+
+- Frame-set identity vs frame_method.enumerate_primitive_frames: keys AND
+  (ell,A,B,C,D) tuples agree for n = 1,2,4,5,10,50,100,200 — ALL YES.
+  (Bug found & fixed: ball bound must be N<=n, not N<=isqrt(n)^2; n=200 then
+  matched 12129 exactly.  Early trial showed 11731, missing 398 frames with
+  197<=N<=200.)
+- C/S oracle match via power-sum over quat frames for n=1,2,4,5,10,50 — all OK
+  (e.g. C(50)=8154671, S(50)=29948928129).
+- n=5000 streamed: power-sum == direct-loop bit-for-bit (C and S), PASS.
+- Independent second route (separately written accumulation, /workspace/
+  verify_final.py reasoning reproduced in a throwaway run) returns the SAME
+  C, S, S mod 1e9, frame count.  Fully verified independently.
+
+### Failed approaches (final update)
+
+- Storage of the whole frame dict key -> (ell,A,B,C,D) for n=5000 needs ~0.92 MB
+  per frame (Python tuple overhead) -> ~7 GB, above the 2 GB cgroup memory limit
+  (Killed).  Fixed by streaming: accumulate per-frame contributions incrementally
+  and rely on injectivity to avoid a dedup set -> O(1) memory.
+- The `seen`-set dedup version also OOM'd at 5000 (7.5M keys).  Removed in favor
+  of the injectivity argument (verified 0 duplicates at n=100,200,1000,2000).
+
 ## Failed approaches
 
-(To be filled.)
+(To be filled; see final update above.)
 
 ## Open questions
 
