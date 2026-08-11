@@ -18,7 +18,9 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use async_trait::async_trait;
-use tinyagents::harness::model::{ChatModel, ModelProfile, ModelRequest, ModelResponse, ModelStream};
+use tinyagents::harness::model::{
+    ChatModel, ModelProfile, ModelRequest, ModelResponse, ModelStream,
+};
 
 use tinyagents::harness::tool::ToolPolicy;
 
