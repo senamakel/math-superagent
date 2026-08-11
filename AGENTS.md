@@ -196,6 +196,19 @@ escalates when the same tool fails repeatedly. Before this existed, a Qdrant
 destroyed an entire run's accumulated work. Do not reintroduce a tool whose
 argument or transport failure propagates out of the run.
 
+A model error is the same class of loss one level up. It propagates out of a
+child run as that child's whole result, so a specialist that meets one on its
+first turn dies before doing anything and the solution loop records the attempt
+that delegated to it as having executed nothing. `ReroutingModel`
+(`src/agent/reroute.rs`) closes the one case the retry ladder cannot:
+`OpenRouter` reports an upstream provider's failure as its own HTTP 400
+carrying `Provider returned error`, and a 400 is classified as permanent, so
+nothing retried it. It is matched on the status *and* the message, because a
+genuine request-shape 400 is permanent and retrying it would replace a fast
+honest failure with a slow identical one. It wraps outermost so each retry
+passes back through the affinity wrapper's one-request block and reaches a
+different provider rather than the one that just failed.
+
 The runtime image must expose both `python` and `python3`, plus `pip` and
 `pip3`. Pip installs belong under `/workspace/.python-packages`; do not make the
 container root filesystem writable for package installation.
