@@ -897,6 +897,57 @@ struct DocumentTool {
 }
 
 impl DocumentTool {
+    /// Retrieves a URL's bytes and its declared content type.
+    ///
+    /// Bounded twice — once on the declared length and once on what actually
+    /// arrived — because a server may understate the first and the second is
+    /// the only one that has to be true.
+    async fn fetch(&self, url: &str) -> Result<(bytes::Bytes, Option<String>)> {
+        let parsed = reqwest::Url::parse(url).map_err(|error| {
+            tinyagents::TinyAgentsError::Validation(format!("invalid document URL: {error}"))
+        })?;
+        if !matches!(parsed.scheme(), "http" | "https") {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "document URL must use HTTP or HTTPS".into(),
+            ));
+        }
+        let response = self
+            .documents
+            .client
+            .get(parsed)
+            .send()
+            .await
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("document download failed: {error}"))
+            })?
+            .error_for_status()
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("document download failed: {error}"))
+            })?;
+        if response
+            .content_length()
+            .is_some_and(|length| length > MAX_DOCUMENT_BYTES as u64)
+        {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "downloaded document is too large".into(),
+            ));
+        }
+        let content_type = response
+            .headers()
+            .get(reqwest::header::CONTENT_TYPE)
+            .and_then(|value| value.to_str().ok())
+            .map(ToOwned::to_owned);
+        let bytes = response.bytes().await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to read downloaded document: {error}"))
+        })?;
+        if bytes.len() > MAX_DOCUMENT_BYTES {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "downloaded document is too large".into(),
+            ));
+        }
+        Ok((bytes, content_type))
+    }
+
     /// Fetches a URL and stores it as Markdown.
     ///
     /// Split out of the tool dispatch because it is the only branch that does
