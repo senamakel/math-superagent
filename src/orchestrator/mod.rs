@@ -239,6 +239,7 @@ impl OrchestratorAgent {
         let budget = RunBudget::from_env();
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
+        convert_problem_statement(&workspace);
         let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()));
         let documents = WorkspaceDocuments::new(workspace.clone())?;
         // Commits the workspace after every successful write, so a rewritten
