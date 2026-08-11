@@ -1507,7 +1507,9 @@ fn validate_complexity(
     ];
     let claims_intractable = forbidden.iter().any(|term| normalized.contains(term));
     if intractable {
-        let bounded = oracle_bound.map(str::trim).is_some_and(|bound| !bound.is_empty());
+        let bounded = oracle_bound
+            .map(str::trim)
+            .is_some_and(|bound| !bound.is_empty());
         if !bounded {
             return Err(tinyagents::TinyAgentsError::Validation(
                 "an exponential or factorial command is allowed only as a brute-force oracle: \
