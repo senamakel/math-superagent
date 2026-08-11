@@ -58,6 +58,22 @@ line in `code/out/configs_n3_n4.txt` (produced by code/amoeba/configs_n3_n4.py).
 Useful for studying structure (e.g. the chains/(0,0,0)->... paths and the
 cross-product shapes).
 
+## 2D analogue (new)
+
+2D rule: an amoeba at (x,y) divides into (x+1,y) and (x,y+1) if both are
+empty; parent disappears; start at (0,0); after N divisions a config holds N+1
+cells. D_2D(N) = number of distinct reachable occupied-cell sets.
+
+D_2D(N) for N=0..14:
+1, 1, 2, 4, 9, 20, 46, 105, 243, 561, 1301, 3014, 6995, 16227, 37668
+
+Verified by two independent routes:
+- `code/amoeba2d/d2d.py` (frozenset BFS, mirrors code/brute.py) — matched.
+- inline int-encoded bitmask BFS (independent encoding) — identical full list.
+
+(For reference, 3D D(N) for N=0..14: 1,1,3,9,30,99,336,1134,3855,13086,44499,
+151263,514419,1749267,5949063.)
+
 ## Library
 
 `code/lib/amoeba.py` is the single shelved definition of the BFS step

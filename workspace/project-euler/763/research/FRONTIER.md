@@ -6,6 +6,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
+| 2 | http://oeis.org/ | — | # Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/ Search: seq:1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267,5949063 No results. # Content is available… |
+| 2 | http://oeis.org/LICENSE | — | No results. # Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE |
 | 2 | https://oeis.org/A000108 | A000108 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A000012 | A000012 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A000045 | A000045 | cross-referenced from A005207 |
@@ -44,7 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://oeis.org/A054726 | A054726 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A064189 | A064189 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A064191 | A064191 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A064645 | A064645 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A066796 | A066796 | cross-referenced from A001006 |
 
-_27 further candidates not shown; they are cited once each._
+_29 further candidates not shown; they are cited once each._

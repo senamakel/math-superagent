@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `configs_n3_n4.txt` | Output data: the actual reachable configurations of Project Euler 763 for N=3 (9 configs) and N=4 (30 configs), each a sorted set of (x,y,z) cubes, one per line; produced by code/amoeba/configs_n3_n4.py. |
+| `d2d_values.txt` | Output of the 2D analogue run: D_2D(N) for N=0..14 = 1,1,2,4,9,20,46,105,243,561,1301,3014,6995,16227,37668, verified by two independent BFS routes (frozenset and int-encoded). |
 | `d_values.txt` | Oracle output: D(N) for N=0..13 (1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267), reproduced from the BFS oracles; D(2)=3 and D(10)=44499 confirm the statement's worked examples. Superseded as a record by d_values_more.txt (which also has D(14)). |
 | `d_values_more.txt` | Output data: fresh complete BFS-oracle D(N) sequence D(0)..D(14) = 1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267,5949063. Produced by code/amoeba/bfs_more.py; D(14) independently confirmed. |
 | `extension_summary.md` | Record of the extension run: method, per-level timings, which N failed (15 & 16 unreachable under the 5M cap), verification of D(14). |
