@@ -1247,6 +1247,59 @@ impl RolePrompts {
     }
 }
 
+/// What every code-writing role's harness is built from.
+struct CodeWriters<'a> {
+    model: &'a Arc<dyn ChatModel<()>>,
+    budget: RunBudget,
+    tracer: &'a Arc<RunTracer>,
+    workspace: &'a Path,
+    documents: &'a WorkspaceDocuments,
+    checkpoint: &'a Arc<dyn tinyagents::harness::middleware::Middleware<()>>,
+}
+
+/// Registers the roles carrying shell and file-write authority.
+///
+/// They differ in mandate rather than in tools. The tool-builder writes
+/// experiments and toolkit helpers; the coder writes the implementation the run
+/// stands behind; the SAT solver encodes a finite question rather than writing
+/// a search for it; the Lean prover produces the one artifact in this runtime
+/// that is not evidence but proof. Splitting them is what lets each prompt be
+/// strict about one thing rather than one prompt hedging between four, and
+/// their failure modes have nothing in common — a program that ran but is
+/// wrong, an `UNKNOWN` reported as solved, a `sorry` left undeclared.
+///
+/// Building them from one list is what keeps the shared authority boundary
+/// visible: a tool granted here reaches all four, which is a decision worth
+/// seeing rather than one buried in four near-identical blocks.
+///
+/// # Errors
+///
+/// Returns an error when a name is already registered.
+fn register_code_writing_agents(
+    subagents: &AsyncSubagentManager,
+    parts: &CodeWriters<'_>,
+    roles: [(&str, String); 4],
+) -> Result<()> {
+    for (name, prompt) in roles {
+        let mut harness = build_tool_builder_harness(
+            parts.model,
+            parts.budget,
+            parts.tracer,
+            parts.workspace,
+            parts.documents,
+        );
+        harness.push_middleware(parts.checkpoint.clone());
+        // The tool-builder is the exception: it writes probes and throwaway
+        // experiments, and a recall tool over its own output would mostly
+        // return them.
+        if name != "tool_builder" {
+            register_recall(&mut harness, parts.workspace);
+        }
+        subagents.register(name, Arc::new(harness), prompt)?;
+    }
+    Ok(())
+}
+
 /// Assembles the tool-builder's harness: the only role with shell and
 /// file-write authority.
 fn build_tool_builder_harness(
