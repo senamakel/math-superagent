@@ -362,10 +362,11 @@ of a URL already in the library is refused, naming the file that holds it.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
-index, and search that index for ranked snippets. The index lives at
-`.document-index.json` inside the selected workspace. Downloads and individual
-documents are capped at 5 MiB, paths cannot leave `/workspace`, and one
-workspace cannot search another workspace's files.
+index, and search that index for ranked snippets, plus `search_claims` for what
+the library establishes and `request_research` for what it does not. The index
+lives at `.document-index.json` inside the selected workspace. Downloads and
+individual documents are capped at 5 MiB, paths cannot leave `/workspace`, and
+one workspace cannot search another workspace's files.
 
 The tool-builder additionally gets `apply_patch`, which applies a Codex-format
 envelope across several files at once. Two deviations from that format are
