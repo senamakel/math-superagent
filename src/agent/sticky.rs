@@ -56,6 +56,8 @@ pub struct StickyProviderModel<S: Send + Sync> {
     inner: Arc<dyn ChatModel<S>>,
     /// The provider that served this agent's most recent response.
     pinned: Arc<RwLock<Option<String>>>,
+    /// A provider whose request just failed, to be skipped once.
+    blocked: Arc<RwLock<Option<String>>>,
 }
 
 impl<S: Send + Sync> std::fmt::Debug for StickyProviderModel<S> {
