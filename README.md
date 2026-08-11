@@ -398,15 +398,14 @@ awaiting one run at a time serialises work that already ran in parallel. The
 orchestrator and goals agent share this surface; there is no blocking call.
 
 Up to fifty runs execute concurrently; further spawns queue for a slot without
-blocking the caller. Set `MATH_AGENT_MAX_CONCURRENT_AGENTS` to change the cap.
-Each agent also develops an affinity for whichever OpenRouter provider served
-its last turn, so its large fixed prompt prefix keeps hitting that provider's
-cache. Fallbacks stay enabled, so a provider going busy moves the affinity
-rather than stalling the run.
+blocking the caller (`MATH_AGENT_MAX_CONCURRENT_AGENTS`). Each agent develops an
+affinity for whichever OpenRouter provider served its last turn, so its large
+fixed prompt prefix keeps hitting that provider's cache; fallbacks stay enabled,
+so a busy provider moves the affinity rather than stalling the run.
 
 Context compression starts at an estimated 300,000 tokens. A model-backed
 summary keeps the decisions, assumptions, formulas, source URLs, command
-results, and unresolved work. Recent messages remain verbatim. If the summary
+results, and unresolved work; recent messages remain verbatim. If the summary
 call fails, TinyAgents trims old context instead of losing the whole run.
 
 This is a research and computation assistant, not a formal proof checker.
