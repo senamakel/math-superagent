@@ -25,3 +25,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `simulate_order_nobug.py` | Corrected race engine fixing `brute`'s multi-bump overwrite: records every bump edge and computes placed-below sets by graph reachability. Same API as `brute.simulate_order` / `parity_of_new_order`. This is the reference-correct engine. |
 | `tasks.md` | Task checklist: done items (verify sample, fix comparator, MC re-check) and the open task to solve p(13,1800) exactly. |
 | `verify_hypothesis.py` | MC verifier of both statement examples plus the structural test "final parity depends only on the w-order" — which it refutes (buckets hold both parities). |
+
+## Subfolders
+
+| Folder | Purpose |
+| --- | --- |
+| `prompts/` | Role-specific agent guidance files; see `prompts/INDEX.md`. |
+| `reflections/` | Attempt-by-attempt verdicts and lessons; written by the reflection loop (do not hand-edit). |
+| `research/` | External sourced-material library; see `research/INDEX.md`. |
+| `research_notes/` | The run's own structural explorations of the parity problem; see `research_notes/INDEX.md`. |
+| `toolkits/` | One-function-per-file reusable helpers; see `toolkits/INDEX.md`. |
