@@ -32,9 +32,6 @@ use std::path::Path;
 /// The derived table, filed with the library it describes.
 pub(super) const CLAIMS_PATH: &str = "research/CLAIMS.md";
 
-/// Opening fence of a claim block.
-const FENCE: &str = "```claim";
-
 /// Rows the rendered table carries.
 ///
 /// `CLAIMS.md` is routed into system prompts, so every model call in every
@@ -289,30 +286,12 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
         "holds-here" | "holds" => claim.holds = Holds::parse(value),
         "status" | "evidence" => claim.status = Status::parse(value),
         "bearing" | "implies" => claim.bearing = value.to_string(),
-        "contradicts" => {
-            claim.contradicts = value
-                .split(|c: char| c == ',' || c.is_whitespace())
-                .map(|id| id.trim_matches(['`', '[', ']']).to_string())
-                .filter(|id| !id.is_empty())
-                .collect();
-        }
+        "contradicts" => claim.contradicts = identifiers(value),
         "anchor" | "source" | "where" => claim.anchor = value.to_string(),
         _ => {}
     }
 }
 
-fn append(claim: &mut Claim, key: &str, line: &str) {
-    let target = match key {
-        "statement" => &mut claim.statement,
-        "hypotheses" | "hypothesis" => &mut claim.hypotheses,
-        "bearing" | "implies" => &mut claim.bearing,
-        _ => return,
-    };
-    if !target.is_empty() {
-        target.push(' ');
-    }
-    target.push_str(line);
-}
 
 /// Derives the ledger from every note under `research/`.
 ///
