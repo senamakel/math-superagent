@@ -177,7 +177,10 @@ impl WorkspaceDocuments {
         folders.sort();
         folders.into_iter().find_map(|folder| {
             let candidate = format!("{root}/{folder}/{name}");
-            self.workspace.join(&candidate).is_file().then_some(candidate)
+            self.workspace
+                .join(&candidate)
+                .is_file()
+                .then_some(candidate)
         })
     }
 

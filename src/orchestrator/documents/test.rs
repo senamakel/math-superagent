@@ -120,6 +120,36 @@ fn downloads_are_filed_under_the_research_folder() {
     );
 }
 
+#[tokio::test]
+async fn a_note_guessed_into_the_wrong_batch_is_pointed_at_its_real_one() -> Result<()> {
+    // A note's batch number is the one thing an agent cannot infer: it knows
+    // the name, and which batch holds it is an accident of when it arrived.
+    // Seven of one live run's twenty-three tool failures were this guess.
+    let root = std::env::temp_dir().join(format!("math-agent-batch-hint-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.2")).expect("workspace is creatable");
+    let root = root.canonicalize().expect("workspace resolves");
+    std::fs::write(root.join("research/L1.2/paper.md"), "note").expect("note is writable");
+    let documents = WorkspaceDocuments::new(root.clone())?;
+
+    let error = documents
+        .read_document("research/L1.0/paper.md")
+        .await
+        .expect_err("the guessed batch does not hold it");
+    let message = error.to_string();
+    assert!(message.contains("research/L1.2/paper.md"), "{message}");
+
+    // A name that is genuinely absent still gets the folder listing rather
+    // than a confident wrong answer.
+    let missing = documents
+        .read_document("research/L1.0/absent.md")
+        .await
+        .expect_err("no such note anywhere");
+    assert!(!missing.to_string().contains("L1.2/absent.md"));
+    let _ = std::fs::remove_dir_all(&root);
+    Ok(())
+}
+
 #[test]
 fn raw_originals_mirror_the_research_layout_and_stay_hidden() {
     use super::{HIDDEN_ENTRIES, RAW_DIR, raw_path};
