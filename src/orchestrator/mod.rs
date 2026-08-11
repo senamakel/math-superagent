@@ -989,6 +989,7 @@ impl RolePrompts {
             ("research", self.research.as_str()),
             ("tool_builder", self.tool_builder.as_str()),
             ("coder", self.coder.as_str()),
+            ("solver", self.solver.as_str()),
             ("reflection", self.reflection.as_str()),
             ("judge", self.judge.as_str()),
             ("pattern_finder", self.pattern.as_str()),
