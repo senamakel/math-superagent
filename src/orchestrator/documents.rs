@@ -384,12 +384,16 @@ impl WorkspaceDocuments {
         tokio::fs::write(&temporary, content)
             .await
             .map_err(|error| {
-                tinyagents::TinyAgentsError::Tool(format!("failed to stage document index: {error}"))
+                tinyagents::TinyAgentsError::Tool(format!(
+                    "failed to stage document index: {error}"
+                ))
             })?;
         tokio::fs::rename(&temporary, &final_path)
             .await
             .map_err(|error| {
-                tinyagents::TinyAgentsError::Tool(format!("failed to replace document index: {error}"))
+                tinyagents::TinyAgentsError::Tool(format!(
+                    "failed to replace document index: {error}"
+                ))
             })
     }
 
