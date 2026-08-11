@@ -260,7 +260,7 @@ impl OrchestratorAgent {
         let prompts = RolePrompts::load(&workspace)?;
 
         let vector_store = VectorStore::from_env()?;
-        let (exa, oeis) = search_tools(research_enabled, &documents)?;
+        let SearchTools { exa, oeis } = search_tools(research_enabled, &documents)?;
 
         // research: search the web, and remember what it found.
         let mut research_harness = specialist_harness(model.clone(), budget, "research", &tracer);
@@ -623,17 +623,35 @@ fn results_unchanged(
 /// # Errors
 ///
 /// Returns an error when the search key is missing while research is enabled.
-fn search_tools(
-    research_enabled: bool,
-    documents: &WorkspaceDocuments,
-) -> Result<(Option<Arc<dyn Tool<()>>>, Vec<Arc<dyn Tool<()>>>)> {
+fn search_tools(research_enabled: bool, documents: &WorkspaceDocuments) -> Result<SearchTools> {
     if !research_enabled {
-        return Ok((None, Vec::new()));
+        return Ok(SearchTools::default());
     }
-    Ok((
-        Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>),
-        oeis::OeisTool::all(documents),
-    ))
+    Ok(SearchTools {
+        exa: Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>),
+        oeis: oeis::OeisTool::all(documents),
+    })
+}
+
+/// The tools that reach outside the run, gathered so the research gate is one
+/// decision rather than one per source.
+#[derive(Clone, Default)]
+struct SearchTools {
+    /// General web search, absent when research is disabled.
+    exa: Option<Arc<dyn Tool<()>>>,
+    /// Source adapters. A list because a second one slots into a list and
+    /// would have to rewrite an option.
+    oeis: Vec<Arc<dyn Tool<()>>>,
+}
+
+impl std::fmt::Debug for SearchTools {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("SearchTools")
+            .field("exa", &self.exa.is_some())
+            .field("oeis", &self.oeis.len())
+            .finish()
+    }
 }
 
 fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
