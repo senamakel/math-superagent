@@ -4,8 +4,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `L0.1/order_statistic_wikipedia_renyi_representation.full.md` | Notation and examples — from https://en.wikipedia.org/wiki/Order_statistic; not yet read, excerpt pending a scholar summary |
-| `L0.1/renyi_1953_order_statistics.full.md` | On the theory of order statistics — from https://doi.org/10.1007/BF02127580; not yet read, excerpt pending a scholar summary |
 | `L1.0/L0.0.md` | Sealing note for batch L0.0 (10 notes): names the shared result — relative-speed clocks form the Plackett-Luce exponential race, p(n,L) = sum over roots of distance-ratio weight · p(left)·p(right) with parity propagated additively, thanks to independent-subtree treap structure. |
 | `L1.0/competing_exponential_clocks_uchicago.md` | Summary of UChicago STAT253/317 Lecture 9 (Yibi Huang): min-of-exponentials pooled rate, P(fires first)=λ_j/Σλ, memoryless property, and product-of-rate-ratios form for any specific firing order. Candidate machinery for exact chronology sums. |
 | `L1.0/dirichlet_distribution_wikipedia.md` | Summary of Wikipedia "Dirichlet distribution": normalized iid Exp(1) are uniform on the simplex (Dirichlet(1,…,1)); race outcome is invariant under common scaling of speeds, so p(n,L) = uniform-simplex measure of the parity region — the exact integration target. |
