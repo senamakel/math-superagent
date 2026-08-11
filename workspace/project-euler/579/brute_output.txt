@@ -1,0 +1,7 @@
+n=1: C(n)=1  S(n)=8   [C oracle 1: OK]  [S oracle 8: OK]
+n=2: C(n)=9  S(n)=91   [C oracle 9: OK]  [S oracle 91: OK]
+n=3: C(n)=36  S(n)=496
+n=4: C(n)=100  S(n)=1878   [C oracle 100: OK]  [S oracle 1878: OK]
+n=5: C(n)=229  S(n)=5832   [C oracle 229: OK]  [S oracle 5832: OK]
+n=6: C(n)=473  S(n)=15925
+n=10: C(n)=4469  S(n)=387003   [C oracle 4469: OK]  [S oracle 387003: OK]
