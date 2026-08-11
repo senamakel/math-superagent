@@ -111,6 +111,16 @@ index excerpts nobody had read. Running them as a sequence rather than a chain
 is what keeps the acyclic invariant simple — no follow-up agent is itself a
 trigger — and a failed step does not cancel the rest.
 
+The first attempt also opens its own oracle run. The method policy's first step
+is a naive program executed against the statement's worked examples, and the
+goals agent is asked to delegate that immediately; two live runs instead spent
+ten minutes each on `read_document` and `list_workspace`, and both burned a
+whole 12,000-token turn on hidden reasoning without emitting a tool call. Two
+prompt revisions failed to move it, so `attempt_step` stopped asking and spawns
+the oracle itself — fire-and-forget, first attempt only, never blocking. If the
+goals agent does delegate promptly the two simply agree: a duplicate oracle
+costs one child run, where no oracle at all costs the whole attempt.
+
 `diversify` runs three arms concurrently — the librarian followed by the
 scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the
 step that breaks a loop reflection alone cannot.
