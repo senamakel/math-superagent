@@ -312,10 +312,26 @@ impl FolderIndexTool {
         // them in a single run. Naming the digest turns the wasted call into
         // the useful one.
         if name.ends_with(super::documents::FULL_TEXT_SUFFIX) {
-            let digest = name.replace(super::documents::FULL_TEXT_SUFFIX, ".md");
+            // Name where the digest actually is, not where it would be if the
+            // tree were flat. Deriving it by suffix alone put it in the
+            // original's own batch — `L0.0/paper.md` — and no such file exists,
+            // because a digest lives at the level above. A live organizer took
+            // that hint ten times in one turn and failed every time.
+            let stem = name.replace(super::documents::FULL_TEXT_SUFFIX, ".md");
+            let probe = if folder.is_empty() {
+                stem.clone()
+            } else {
+                format!("{folder}/{stem}")
+            };
+            let advice = match self.documents.same_name_elsewhere(&probe) {
+                Some(found) => format!("describe `{found}` instead, which is the note that reads it"),
+                None => "nothing digests it yet, so there is no row to describe — the scholar \
+                         writes that note first"
+                    .to_string(),
+            };
             return Err(tinyagents::TinyAgentsError::Validation(format!(
-                "`{name}` is a source's full text, which the index does not list; describe the \
-                 digest that reads it instead — `{digest}` one level up"
+                "`{name}` is a source's full text, and the index lists digests rather than \
+                 originals; {advice}"
             )));
         }
         let mut entries = self.entries(&folder).await;
