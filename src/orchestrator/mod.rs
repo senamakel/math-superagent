@@ -397,14 +397,14 @@ impl OrchestratorAgent {
                 model: &model,
                 budget,
                 documents: &documents,
-                vector_store,
+                vector_store: vector_store.clone(),
                 exa: exa.clone(),
-                prompts: SupportPrompts {
-                    reflection: reflection_prompt,
-                    pattern: pattern_prompt,
-                    inventor: inventor_prompt,
-                    librarian: librarian_prompt,
-                },
+            },
+            SupportPrompts {
+                reflection: reflection_prompt,
+                pattern: pattern_prompt,
+                inventor: inventor_prompt,
+                librarian: librarian_prompt,
             },
         )?;
 
