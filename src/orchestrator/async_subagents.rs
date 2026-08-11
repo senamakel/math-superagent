@@ -582,7 +582,13 @@ impl Tool<()> for AsyncSubagentTool {
                 "type": "object",
                 "properties": {
                     "agent": { "type": "string", "enum": self.allowed_agents.as_ref() },
-                    "input": { "type": "string" }
+                    "input": {
+                        "type": "string",
+                        "description": "A short brief: the task and what to report back. A few \
+                                        sentences, not a transcript — the agent reads the \
+                                        workspace itself.",
+                        "maxLength": 2000
+                    }
                 },
                 "required": ["agent", "input"],
                 "additionalProperties": false
