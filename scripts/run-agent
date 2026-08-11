@@ -87,6 +87,10 @@ if [ -d "$template_path" ]; then
 fi
 
 export MATH_AGENT_WORKSPACE_PATH=$workspace_path
+# The container always mounts the selected workspace at /workspace, so nothing
+# inside it can tell one problem's run from another's. The label is the only
+# identity a Langfuse trace can carry that survives into the container.
+export MATH_AGENT_WORKSPACE_LABEL=$workspace_subdir
 export MATH_AGENT_LOCAL_UID=$(id -u)
 export MATH_AGENT_LOCAL_GID=$(id -g)
 
