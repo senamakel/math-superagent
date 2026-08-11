@@ -517,7 +517,16 @@ async fn reflect_step(
             route(&state)
         ));
     }
-    state.lessons.push(extract_lesson(&reflection));
+    let lesson = extract_lesson(&reflection);
+    // Tell the teams what this attempt learned. They run beside the loop and
+    // would otherwise keep enriching the workspace against the run's opening
+    // understanding of the problem, which is the understanding the attempts
+    // have been busy correcting. Posting never waits: a full inbox drops the
+    // note rather than stalling the solve to deliver it.
+    for team in teams {
+        team.post("solver", format!("Attempt {}: {lesson}", state.attempts));
+    }
+    state.lessons.push(lesson);
     state
 }
 
