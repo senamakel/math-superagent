@@ -889,6 +889,10 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut reflection, tool);
     }
+    register_resilient(
+        &mut reflection,
+        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+    );
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
     let mut pattern = specialist_harness(
@@ -924,6 +928,10 @@ fn register_support_agents(
     for tool in parts.delegation.iter().cloned() {
         register_resilient(&mut pattern, tool);
     }
+    register_resilient(
+        &mut pattern,
+        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+    );
     subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
 
     let mut inventor =
@@ -942,6 +950,10 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut inventor, tool);
     }
+    register_resilient(
+        &mut inventor,
+        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+    );
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
     let mut librarian =
@@ -952,6 +964,10 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut librarian, tool);
     }
+    register_resilient(
+        &mut librarian,
+        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+    );
     subagents.register("librarian", Arc::new(librarian), prompts.librarian)?;
 
     // The scholar reads; it does not fetch. Withholding `exa_search` is what
@@ -970,6 +986,10 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut scholar, tool);
     }
+    register_resilient(
+        &mut scholar,
+        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+    );
     subagents.register("scholar", Arc::new(scholar), prompts.scholar)?;
 
     // Files and indexes only. No search, no shell, no note memory: the
