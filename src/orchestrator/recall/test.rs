@@ -1,7 +1,7 @@
 //! Unit tests for workspace similarity search.
 #![allow(clippy::expect_used)]
 
-use crate::agent::{Result, Tool as _, ToolCall};
+use crate::agent::{Result, ToolCall};
 
 fn workspace(name: &str) -> std::path::PathBuf {
     let path =
@@ -12,7 +12,7 @@ fn workspace(name: &str) -> std::path::PathBuf {
 }
 
 async fn search(root: &std::path::Path, query: &str) -> Result<String> {
-    let tool = super::RecallWorkspaceTool::new(root.to_path_buf());
+    let tool = super::RecallWorkspaceTool::registered(root.to_path_buf());
     Ok(tool
         .call(
             &(),

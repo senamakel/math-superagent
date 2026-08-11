@@ -270,7 +270,7 @@ impl OrchestratorAgent {
         research_harness.push_middleware(checkpoint.clone());
         register_resilient(
             &mut research_harness,
-            recall::RecallWorkspaceTool::new(workspace.clone()),
+            recall::RecallWorkspaceTool::registered(workspace.clone()),
         );
         async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
 
@@ -294,7 +294,7 @@ impl OrchestratorAgent {
         coder_harness.push_middleware(checkpoint.clone());
         register_resilient(
             &mut coder_harness,
-            recall::RecallWorkspaceTool::new(workspace.clone()),
+            recall::RecallWorkspaceTool::registered(workspace.clone()),
         );
         async_subagents.register("coder", Arc::new(coder_harness), prompts.coder)?;
 
@@ -331,7 +331,7 @@ impl OrchestratorAgent {
         }
         register_resilient(
             &mut goals_harness,
-            recall::RecallWorkspaceTool::new(workspace.clone()),
+            recall::RecallWorkspaceTool::registered(workspace.clone()),
         );
         async_subagents.register("goals", Arc::new(goals_harness), prompts.goals)?;
 
@@ -903,7 +903,7 @@ fn register_support_agents(
     }
     register_resilient(
         &mut reflection,
-        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
     );
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
@@ -942,7 +942,7 @@ fn register_support_agents(
     }
     register_resilient(
         &mut pattern,
-        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
     );
     subagents.register("pattern_finder", Arc::new(pattern), prompts.pattern)?;
 
@@ -964,7 +964,7 @@ fn register_support_agents(
     }
     register_resilient(
         &mut inventor,
-        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
     );
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
@@ -978,7 +978,7 @@ fn register_support_agents(
     }
     register_resilient(
         &mut librarian,
-        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
     );
     subagents.register("librarian", Arc::new(librarian), prompts.librarian)?;
 
@@ -1000,7 +1000,7 @@ fn register_support_agents(
     }
     register_resilient(
         &mut scholar,
-        recall::RecallWorkspaceTool::new(parts.workspace.clone()),
+        recall::RecallWorkspaceTool::registered(parts.workspace.clone()),
     );
     subagents.register("scholar", Arc::new(scholar), prompts.scholar)?;
 

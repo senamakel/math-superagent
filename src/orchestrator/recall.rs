@@ -55,12 +55,13 @@ pub(super) struct RecallWorkspaceTool {
 }
 
 impl RecallWorkspaceTool {
-    pub(super) fn new(workspace: PathBuf) -> Arc<dyn Tool<()>> {
+    /// Builds the tool as a registrable handle.
+    pub(super) fn registered(workspace: PathBuf) -> Arc<dyn Tool<()>> {
         Arc::new(Self { workspace })
     }
 
     /// Collects readable text files below the workspace root.
-    fn collect(&self, folder: &Path, depth: usize, found: &mut Vec<PathBuf>) {
+    fn collect(folder: &Path, depth: usize, found: &mut Vec<PathBuf>) {
         if depth > MAX_DEPTH || found.len() >= MAX_FILES_SCANNED {
             return;
         }
@@ -80,7 +81,7 @@ impl RecallWorkspaceTool {
             }
             let path = entry.path();
             if path.is_dir() {
-                self.collect(&path, depth + 1, found);
+                Self::collect(&path, depth + 1, found);
             } else if is_text(&path) {
                 found.push(path);
             }
@@ -91,7 +92,7 @@ impl RecallWorkspaceTool {
     fn search(&self, query: &str) -> Vec<Value> {
         let wanted = super::vector::embed(query);
         let mut files = Vec::new();
-        self.collect(&self.workspace, 0, &mut files);
+        Self::collect(&self.workspace, 0, &mut files);
 
         let mut scored: Vec<(f32, Value)> = Vec::new();
         for path in files {
