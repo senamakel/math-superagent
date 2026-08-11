@@ -11,5 +11,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `brute.py` | _(undescribed)_ |
 | `brute_bits.py` | _(undescribed)_ |
 | `brute_capped.py` | _(undescribed)_ |
-| `brute_extended.py` | _(undescribed)_ |
+| `brute_extended.py` | Level-by-level BFS oracle for D(N): same definition as brute.py but drives one BFS step per level from N=0 up, recording D(N) for every level, and stops when a level exceeds a time budget. Verified reproducing D(2)=3 and D(10)=44499 first. Same exponential state space as brute.py; only used to push the oracle a little beyond what brute.py reaches. |
 | `research_structure.py` | _(undescribed)_ |
