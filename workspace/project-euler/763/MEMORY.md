@@ -81,6 +81,38 @@ Verified by two independent routes:
 (`config_features`, `feature_record`). Both `amoeba_bits.py` and data dumps
 import from it (no duplicated definition).
 
+## C1 conjecture — DISPROVEN (2D and 3D)
+
+Conjecture C1: "a set S of cells containing the origin is reachable iff S is
+origin-connected (every non-origin cell has a backward neighbour)".  Tested by
+enumerating origin-connected sets by size and comparing counts to D(N).
+
+Origin-connected sets == positive directed animals rooted at origin (every
+cell reached from origin by a directed lattice path).  Finite: in a set of
+size m every coordinate is <= m-1, so candidates live in [0,m-1]^d; a set is
+origin-connected iff growable from {origin} by appending forward neighbours,
+so forward-growth level BFS enumerates them exactly.
+
+RESULT: C1 is FALSE in both dimensions.
+* 2D (size N+1): C1_2D(N) = 1,2,5,13,35,96,267,750,2123,6046,17303,49721,
+  143365 for N=0..12 — the 2D directed-animal count (OEIS A005773), NOT the
+  amoeba D_2D (=1,1,2,4,9,20,46,105,243,561,1301,3014,6995).  First mismatch
+  at N=1: {(0,0),(2,0)} is origin-connected but not a division result.
+* 3D (size 2N+1): C1_3D counts by size m=1..10:
+  1,3,12,52,237,1113,5339,26011,128247,638346; always >> D(N)
+  (1,1,3,9,30,...).  m=11 (~6.4M sets) OOM-killed under 2 GiB container cap.
+
+Why: reachability is far more constrained than origin-connectivity — a
+division moves one unit of "mass" up one level (k->k+1), bounding how many
+cells a level can hold, so an arbitrary directed animal need not be
+reachable.  In 2D {(0,0),(1,0),(0,1)} is origin-connected but unreachable
+(one amoeba divides into exactly 2 cells).
+
+Verified by a second independent route: code/out/verify_c1_subsets.py
+enumerates all subsets of the box and counts literally origin-connected ones,
+matching the generator (2D 1,2,5,13,35,96; 3D 1,3,12,52).  Full result table
+in code/out/c1_test_results.md.
+
 ## d=2 counterpart (PE763 in two dimensions)
 
 In d=2, one step replaces an amoeba at (x,y) by two children at (x+1,y) and
