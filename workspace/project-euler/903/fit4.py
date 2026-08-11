@@ -88,12 +88,12 @@ print("=== alpha_n ===")
 pool=list(bf.keys())
 for K in (1,2,3,4):
     for names in combinations(pool,K):
-        r=fit(None, alpha, list(names))
+        r=fit(list(names), alpha)
         if r:
             print(f"  alpha fit (K={K}) {r}")
 print("=== beta_n ===")
 for K in (1,2,3,4):
     for names in combinations(pool,K):
-        r=fit(None, beta, list(names))
+        r=fit(list(names), beta)
         if r:
             print(f"  beta fit (K={K}) {r}")
