@@ -655,6 +655,14 @@ pub(super) fn research_path(requested: &str) -> String {
         return format!("{RESEARCH_DIR}/{inside}");
     }
     let name = inside.rsplit('/').next().unwrap_or(inside);
+    // A caller naming the full text is naming the wrong half of the pair. The
+    // digest is what a download produces at level 1; strip the marker rather
+    // than filing `x.full.md` there and giving its companion the name
+    // `x.full.full.md`, which is what a live run produced.
+    let name = match name.strip_suffix(FULL_TEXT_SUFFIX) {
+        Some(stem) => format!("{stem}.md"),
+        None => name.to_string(),
+    };
     format!("{RESEARCH_DIR}/{DIGEST_DIR}/{name}")
 }
 
