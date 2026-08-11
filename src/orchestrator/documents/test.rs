@@ -1,4 +1,5 @@
 //! Unit tests for workspace document storage and search.
+#![allow(clippy::expect_used)]
 
 use std::path::PathBuf;
 

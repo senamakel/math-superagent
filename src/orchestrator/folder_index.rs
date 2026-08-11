@@ -62,7 +62,7 @@ fn split(relative: &str) -> (String, String) {
     let trimmed = folder_name(relative);
     match trimmed.rsplit_once('/') {
         Some((folder, name)) => (folder.to_string(), name.to_string()),
-        None => (String::new(), trimmed.to_string()),
+        None => (String::new(), trimmed),
     }
 }
 
