@@ -37,9 +37,20 @@ formula), all run 18 Sep 2025 (UTC), exact integers then reduced mod p:
 
 ## Failed approaches
 
-(none yet)
+### ccsum.py conjugacy-class engine is INVALID (18 Sep 2025, re-confirmed)
+ccsum.py tried f_n(k) = sum over partitions lambda of class_size*(n!/lcm(lambda))*S(lambda,k),
+reading S(lambda,k)=#{tau in <pi>: tau(k)<tau(0)} off ONE representative per cycle
+type and multiplying by class size.  OUTCOME: rows match oracle-verified
+out/extend_f.json ONLY at n=2; differ for every n=3..30 and aren't even arithmetic in
+k (trusted rows are exactly arithmetic).  ROOT CAUSE PROVEN (test_classconst.py and a
+direct S_3/S_4 count in this run): S is NOT a class function — within one cycle type
+it takes several distinct values (n=4 type (1,3): S in {0,1,2}).  So a single
+representative per class does not represent the class's S-values.  DEAD END for ccsum
+as written; a correct engine would sum S over all representatives per class (or weight
+by the intra-class S distribution), which defeats the perf advantage.  Trusted A_n/B_n
+remain n=2..11 from out/extend_f.json.
 
-## gaps.py — T(j,m) translation invariance & arithmetic form (18 Sep 2025)
+## Open questions
 
 T(j,m) = #{(pi,i): 0<=i<n!, (pi^i)(m) < (pi^i)(j)}, computed for n=2..9 with
 the period formula T(j,m) = sum_pi (n!/ord(pi)) * #{tau in <pi>: tau(m)<tau(j)}
