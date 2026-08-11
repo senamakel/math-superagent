@@ -437,19 +437,14 @@ impl OrchestratorAgent {
                 move |inbox: Vec<teams::TeamMessage>| {
                     let subagents = subagents.clone();
                     let mut prompt = prompt.clone();
+                    // Maintaining the tree outranks extending it. A library
+                    // whose root nobody can afford to read is not a library
+                    // the run has, and every cycle spent gathering while the
+                    // root is over budget charges every other role for it.
                     if name == "research"
-                        && std::fs::metadata(context_file.as_path())
-                            .is_ok_and(|meta| meta.len() > CONTEXT_BUDGET_BYTES)
+                        && let Some(work) = context_tree::briefing(workspace.as_path())
                     {
-                        let _ = write!(
-                            prompt,
-                            "\n\nBefore anything else: context.md has grown past \
-                             {CONTEXT_BUDGET_BYTES} bytes and is re-sent on every model call in \
-                             nine roles. Rewrite it shorter than that this cycle — merge \
-                             duplicate findings, drop what later work has settled, and keep the \
-                             statements and their consequences rather than the narrative. \
-                             Gather nothing new until it fits."
-                        );
+                        let _ = write!(prompt, "\n\n{work}");
                     }
                     for message in &inbox {
                         let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);

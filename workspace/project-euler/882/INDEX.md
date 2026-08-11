@@ -18,7 +18,3 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `scratchpad.md` | Scratchpad for provisional calculations not yet ready for memory.md. |
 | `scratchpad_td.py` | Superseded scratch verification harness: the Trollope–Delange checklist it encoded was moved to research/verify_trollopedelange.md for tool_builder to execute. Kept only as a record; no numerical claims from Girgensohn (2011) were confirmed by a run. |
 | `tasks.md` | Task checklist (single placeholder task row). |
-| `prompts/` | Agent role prompts (orchestrator, tool_builder, scholar, etc.); see `prompts/INDEX.md`. |
-| `reflections/` | Solution-loop reflections with verdicts and lessons; written by the loop itself — do not touch. |
-| `research/` | External sources (OEIS pages, CGT/literature summaries with `.full.md` companions); see `research/INDEX.md`, ordered by usefulness. |
-| `toolkits/` | Reusable one-function-per-file helpers; currently empty, see `toolkits/INDEX.md`. |
