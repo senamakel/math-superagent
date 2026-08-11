@@ -24,6 +24,13 @@ struct RecordingModel {
 
 impl RecordingModel {
     fn new(served_by: Vec<Option<&str>>) -> (Arc<Self>, Arc<Mutex<Vec<Value>>>) {
+        Self::with_failures(served_by, Vec::new())
+    }
+
+    fn with_failures(
+        served_by: Vec<Option<&str>>,
+        failing: Vec<usize>,
+    ) -> (Arc<Self>, Arc<Mutex<Vec<Value>>>) {
         let seen = Arc::new(Mutex::new(Vec::new()));
         let model = Arc::new(Self {
             served_by: Mutex::new(
@@ -34,6 +41,8 @@ impl RecordingModel {
                     .collect(),
             ),
             seen: seen.clone(),
+            failing,
+            calls: Mutex::new(0),
         });
         (model, seen)
     }
