@@ -6,7 +6,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `anbtable.txt` | Printed table from code/anbtable.py: for every n (2..30) the A, B, A//(n-1)!, B//(n-1)!, A%(n-1)!, B%(n-1)! rows from ccsum_ab.json with a per-row TRUST flag, plus the trusted n=2..11 reference table from extend_f.json. |
 | `ccsum.json` | Output of code/ccsum.py re-run (18 Sep 2025, n=2..30): conjugacy-class f_n(k) rows. UNTRUSTED for every n>=3 — CONFLICTS with the oracle-verified rows of out/extend_f.json (n=3 here is [13,8] vs verified [10,11]); root cause proven in test_classconst.py (subgroup count not class-constant). Only n=2 matches extend_f.json. Do not use as A_n/B_n. Old untrusted capture preserved at ccsum.json.untrusted.bak. |
-| `ccsum.json.untrusted.bak` | _(undescribed)_ |
+| `ccsum.json.untrusted.bak` | Backup of the earlier untrusted ccsum.json capture preserved before the 18 Sep 2025 re-run overwrote it. UNTRUSTED for n>=3 (conjugacy-class rows conflict with extend_f.json, root cause proven in test_classconst.py); kept only as a historical record of the old capture. |
 | `ccsum_ab.json` | Output of code/ccsum.py re-run: derived A_n=f(1), B_n=f(2)-f(1) for n=2..30. UNTRUSTED for n>=3 (see ccsum.json) — do not use as A_n/B_n; extend_f.json remains the trustworthy source for n=2..11. Old capture: ccsum_ab.json.untrusted.bak. |
 | `ccsum_ab.json.untrusted.bak` | Backup of the earlier untrusted ccsum_ab.json capture preserved before the 18 Sep 2025 re-run overwrote it. UNTRUSTED for n>=3; kept only as a historical record of the old capture. |
 | `explore.out.txt` | Saved stdout of explore.py (n=2..7): M_j vectors and N(j,m) matrices exposing the translation-invariant gap function f(k)=N(j,j+k) |
