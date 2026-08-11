@@ -101,8 +101,9 @@ async fn a_failed_request_is_retried_somewhere_other_than_the_provider_that_fail
     // Following the pin on the retry asks the same provider first and hangs
     // for a second full timeout. Three live runs lost seven minutes each to
     // exactly this within one minute of each other.
+    // A failing call answers with nothing, so it consumes no scripted provider.
     let (inner, seen) =
-        RecordingModel::with_failures(vec![Some("deepinfra"), None, Some("novita")], vec![1]);
+        RecordingModel::with_failures(vec![Some("deepinfra"), Some("novita")], vec![1]);
     let sticky = StickyProviderModel::new(inner);
 
     sticky
