@@ -7,6 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `AGENTS.md` | Workspace method and housekeeping rules for every agent. |
 | `README.md` | Standard project boilerplate: how to use AGENTS.md, prompts/, goal/tasks/scratchpad/memory. |
 | `brute.py` | TASK A: naive minimax on the REAL game (multiset state, whose turn, skip budget). Prints S(n) for n=1..8 and verifies n=1..3 against an explicit move-search. |
+| `brute_out.txt` | Captured stdout from a brute.py run: real-game S(1..5) via memoized minimax, with n=1..3 verified against the explicit move-search (all match). The run appears truncated — S(6..8) and the memoized-state counts beyond n=5 are not in this capture; re-run brute.py for the full table. Result file, not source. |
 | `compare.py` | Cross-check: real-game S(n) (brute.py, n=1..8) vs counting-game S(n) (counting.py) for n=1..8; prints match/mismatch per row. |
 | `config.toml` | Workspace/tooling config: kind "mathematical-research", solver flags (exact arithmetic, forbid exponential, etc.), artifact file names. |
 | `context.md` | Records what the reference library now establishes beyond its prior state: O(log n) computation of A(n),B(n) via OEIS A000788/A059015 for the (A,B) counting game at n=10^5. |
