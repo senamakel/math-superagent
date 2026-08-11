@@ -296,6 +296,18 @@ fn fnv1a(bytes: &[u8]) -> u64 {
     })
 }
 
+/// Returns whether a collection-creation response leaves the collection in
+/// place.
+///
+/// A 409 means another caller created it between our existence check and our
+/// `PUT`. The postcondition is "the collection exists", and it does, so that is
+/// success rather than a conflict. Check-then-create is inherently racy and
+/// specialists run in parallel, so losing the race is routine: treating it as an
+/// error fails `recall_research` for whichever agent arrives second.
+fn collection_now_exists(status: reqwest::StatusCode) -> bool {
+    status.is_success() || status == reqwest::StatusCode::CONFLICT
+}
+
 fn qdrant_transport_error(error: &reqwest::Error) -> tinyagents::TinyAgentsError {
     tinyagents::TinyAgentsError::Tool(format!("Qdrant request failed: {error}"))
 }
