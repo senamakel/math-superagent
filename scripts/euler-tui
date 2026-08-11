@@ -252,6 +252,15 @@ def draw(screen, runs: Runs, tab: int, offset: int) -> int:
 
 def watch(screen, runs: Runs) -> None:
     """The curses loop. Quitting detaches; it never stops the run."""
+    global COLOURS
+    if curses.has_colors():
+        curses.start_color()
+        # -1 keeps the terminal's own background, which is what makes this sit
+        # inside the user's theme instead of painting over it.
+        curses.use_default_colors()
+        for pair, foreground in PALETTE.items():
+            curses.init_pair(pair, foreground, -1)
+        COLOURS = True
     curses.curs_set(0)
     screen.nodelay(True)
     screen.timeout(200)
