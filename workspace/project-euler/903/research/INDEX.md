@@ -6,6 +6,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `L0/INDEX.md` | _(undescribed)_ |
 | `L0/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
+| `L0/sack_ulfarsson_refined_inversion_pdf.md` | downloaded source — from https://arxiv.org/pdf/1106.1995; not yet read, excerpt pending a scholar summary |
+| `L0/sack_ulfarsson_refined_inversion_statistics.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/1106.1995; not yet read, excerpt pending a scholar summary |
 | `L1/INDEX.md` | _(undescribed)_ |
 | `L1/archer_geary_descents_powers.md` | _(undescribed)_ |
 | `L1/cambie_yan_descents_inversions_powers.md` | _(undescribed)_ |
