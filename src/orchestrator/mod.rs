@@ -219,7 +219,12 @@ impl OrchestratorAgent {
         let _ = dotenvy::dotenv();
         require_container_runtime()?;
         let workspace = workspace_from_env()?;
-        let model = openrouter_model_from_env()?;
+        // Bound every provider request: the vendored default only applies when
+        // the request leaves `timeout_ms` unset, and the agent loop never sets
+        // it, so a stalled connection otherwise blocks for ten minutes before
+        // the first retry.
+        let model: Arc<dyn ChatModel<()>> =
+            Arc::new(BoundedTimeoutModel::new(openrouter_model_from_env()?));
         let budget = RunBudget::from_env();
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
