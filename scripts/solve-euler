@@ -66,11 +66,33 @@ docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
     printf "%s\n" "$url" > /workspace/problem.url
 ' sh "$problem_number"
 
-extra_instructions=$*
-task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.html. Spawn tool_builder to read and extract the statement, then derive and implement an efficient solution. Keep its run ID and await its response. Save a clear derivation to /workspace/solution.md and a reproducible Python program to /workspace/solution.py. Run the program and independently check its exact final answer. Use research only for mathematical definitions or primary references, never to look up a published answer or solution. In the final response, state the answer, explain the method, report the verification command, and list the saved files."
-
-if [ -n "$extra_instructions" ]; then
-    task="$task Additional instructions: $extra_instructions"
+if [ "$research" = off ]; then
+    research_clause="Web search is disabled for this run, so solve the problem from the statement and your own mathematical reasoning. Do not ask research to search the web; it can only recall and record workspace notes."
+else
+    research_clause="Use research for mathematical definitions, named theorems, and standard algorithms, and cite the returned URLs. Never search for a published Project Euler answer, solution, or forum thread; searching for the answer invalidates the run."
 fi
 
-exec ./agent --workspace "$workspace_subdir" "$task"
+extra_instructions=$*
+task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.html.
+
+Work in these phases and do not skip ahead.
+
+Phase 1, understand. Spawn tool_builder to read /workspace/problem.html and extract the exact statement. Restate the problem precisely, define every symbol, and record the small cases the statement gives, including the worked example, in /workspace/goal.md. Those examples are your test oracle.
+
+Phase 2, context. Identify the mathematical objects the problem is really about and the classical theory that governs them. Write what you find, including the precise statement of any theorem or algorithm and its hypotheses, to /workspace/memory.md. $research_clause
+
+Phase 3, derive. State the method and the result it rests on, why that result applies here, and what it reduces the work to. A method whose cost grows with the bound in the statement is the wrong method; find the structural one. Write the derivation to /workspace/solution.md before any full-size code is written.
+
+Phase 4, implement. Spawn tool_builder to write /workspace/solution.py using the derived method with exact integer or rational arithmetic. It must first reproduce every small case from the statement, and only then run at full size.
+
+Phase 5, verify. Confirm the answer by a second, independent route: a different derivation, an independent program, or agreement with a brute-force result on the largest instance brute force can reach. Report which route was used.
+
+Spawn subagents asynchronously, keep every run ID, and await each response you rely on. In the final response, state the answer, explain the method and the result it rests on, report the verification command and what it confirmed, and list the saved files."
+
+if [ -n "$extra_instructions" ]; then
+    task="$task
+
+Additional instructions: $extra_instructions"
+fi
+
+exec env MATH_AGENT_RESEARCH="$research" ./agent --workspace "$workspace_subdir" "$task"
