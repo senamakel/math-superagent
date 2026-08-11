@@ -4,14 +4,14 @@ use std::sync::Arc;
 
 use tinyagents::graph::OrchestrationTaskStatus;
 use tinyagents::harness::steering::SteeringCommand;
-use tokio::sync::Notify;
+use tokio::sync::Semaphore;
 
 use super::{AgentExecutor, AsyncSubagentManager};
 use crate::agent::Result;
 
 struct SteerableExecutor {
-    started: Arc<Notify>,
-    release: Arc<Notify>,
+    started: Arc<Semaphore>,
+    release: Arc<Semaphore>,
 }
 
 #[async_trait::async_trait]
@@ -22,8 +22,10 @@ impl AgentExecutor for SteerableExecutor {
         input: String,
         steering: tinyagents::harness::steering::SteeringHandle,
     ) -> Result<String> {
-        self.started.notify_one();
-        self.release.notified().await;
+        self.started.add_permits(1);
+        let _permit = self.release.acquire().await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("test release semaphore closed: {error}"))
+        })?;
         let redirect = steering
             .drain()
             .into_iter()
@@ -38,8 +40,8 @@ impl AgentExecutor for SteerableExecutor {
 #[tokio::test]
 async fn spawn_returns_before_completion_then_peek_and_await_return_response() -> Result<()> {
     let manager = AsyncSubagentManager::new();
-    let started = Arc::new(Notify::new());
-    let release = Arc::new(Notify::new());
+    let started = Arc::new(Semaphore::new(0));
+    let release = Arc::new(Semaphore::new(0));
     manager.register_executor(
         "worker",
         Arc::new(SteerableExecutor {
@@ -49,12 +51,14 @@ async fn spawn_returns_before_completion_then_peek_and_await_return_response() -
     )?;
 
     let run_id = manager.spawn("worker", "initial".into())?;
-    started.notified().await;
+    let _started = started.acquire().await.map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("test start semaphore closed: {error}"))
+    })?;
     let running = manager.record(run_id.as_str())?;
     assert_eq!(running.status, OrchestrationTaskStatus::Running);
 
     manager.steer(run_id.as_str(), "focus on proof".into())?;
-    release.notify_one();
+    release.add_permits(1);
     let completed = manager.await_record(run_id.as_str(), 1).await?;
     assert_eq!(completed.status, OrchestrationTaskStatus::Completed);
     assert_eq!(
@@ -67,8 +71,8 @@ async fn spawn_returns_before_completion_then_peek_and_await_return_response() -
 #[tokio::test]
 async fn independent_runs_can_execute_in_parallel() -> Result<()> {
     let manager = AsyncSubagentManager::new();
-    let started = Arc::new(Notify::new());
-    let release = Arc::new(Notify::new());
+    let started = Arc::new(Semaphore::new(0));
+    let release = Arc::new(Semaphore::new(0));
     manager.register_executor(
         "worker",
         Arc::new(SteerableExecutor {
@@ -79,8 +83,9 @@ async fn independent_runs_can_execute_in_parallel() -> Result<()> {
 
     let first = manager.spawn("worker", "first".into())?;
     let second = manager.spawn("worker", "second".into())?;
-    started.notified().await;
-    started.notified().await;
+    let _started = started.acquire_many(2).await.map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("test start semaphore closed: {error}"))
+    })?;
     assert_eq!(
         manager.record(first.as_str())?.status,
         OrchestrationTaskStatus::Running
@@ -90,7 +95,7 @@ async fn independent_runs_can_execute_in_parallel() -> Result<()> {
         OrchestrationTaskStatus::Running
     );
 
-    release.notify_waiters();
+    release.add_permits(2);
     assert_eq!(
         manager.await_record(first.as_str(), 1).await?.status,
         OrchestrationTaskStatus::Completed

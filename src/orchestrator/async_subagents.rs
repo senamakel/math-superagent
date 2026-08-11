@@ -9,11 +9,10 @@ use async_trait::async_trait;
 use serde_json::{Value, json};
 use tinyagents::graph::{
     GraphBuilder, InMemoryTaskStore, NodeContext, NodeResult, OrchestrationTaskKind,
-    OrchestrationTaskResult, OrchestrationTaskSpec, OrchestrationTaskStatus, SteeringRegistry,
-    TaskStore,
+    OrchestrationTaskResult, OrchestrationTaskSpec, SteeringRegistry, TaskStore,
 };
 use tinyagents::harness::context::{RunConfig, RunContext};
-use tinyagents::harness::ids::{GraphId, TaskId};
+use tinyagents::harness::ids::TaskId;
 use tinyagents::harness::steering::{SteeringCommand, SteeringHandle};
 
 use crate::agent::{AgentHarness, Message, Result, Tool, ToolCall, ToolResult, ToolSchema};
