@@ -326,6 +326,11 @@ impl Tool<()> for DocumentTool {
                         "downloaded document is too large".into(),
                     ));
                 }
+                let content_type = response
+                    .headers()
+                    .get(reqwest::header::CONTENT_TYPE)
+                    .and_then(|value| value.to_str().ok())
+                    .map(ToOwned::to_owned);
                 let bytes = response.bytes().await.map_err(|error| {
                     tinyagents::TinyAgentsError::Tool(format!(
                         "failed to read downloaded document: {error}"
@@ -336,14 +341,17 @@ impl Tool<()> for DocumentTool {
                         "downloaded document is too large".into(),
                     ));
                 }
-                let content = String::from_utf8(bytes.to_vec()).map_err(|error| {
-                    tinyagents::TinyAgentsError::Validation(format!(
-                        "downloaded document is not UTF-8: {error}"
-                    ))
-                })?;
+                // Convert to Markdown rather than storing raw bytes. A PDF or
+                // a markup-heavy page is unreadable otherwise, and the old
+                // UTF-8 check turned a PDF into an error that ended the run.
+                let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
                 let path = required_string(&call.arguments, "path")?;
                 self.documents.write(&path, &content).await?;
-                format!("downloaded {} bytes to {path}", content.len())
+                format!(
+                    "downloaded {} bytes from {url}, converted to {} bytes of Markdown at {path}",
+                    bytes.len(),
+                    content.len()
+                )
             }
             DocumentToolKind::Read => {
                 self.documents
