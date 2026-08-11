@@ -236,23 +236,26 @@ fn listed(pairs: &[(String, String)]) -> String {
 
 /// Reports what the sweep moved, in the result of the command that ran.
 pub(super) fn swept_note(swept: &Swept) -> String {
+    use std::fmt::Write as _;
     let mut note = String::new();
     if !swept.moved.is_empty() {
-        note.push_str(&format!(
+        let _ = write!(
+            note,
             "\n\nfiled from the workspace root: {}. The root holds the run's Markdown, \
              `{CODE_DIR}/` the programs, and `{OUTPUT_DIR}/` what they produce — write there \
              directly, or run these by their new path.",
             listed(&swept.moved)
-        ));
+        );
     }
     if !swept.blocked.is_empty() {
-        note.push_str(&format!(
+        let _ = write!(
+            note,
             "\n\nleft at the workspace root because the filed name is taken: {}. Nothing here \
              is overwritten, so two files now share a name and only one is filed. Decide which \
              is current: fold the change into the filed copy, or move the stray to a new name \
              under `{CODE_DIR}/` and delete it from the root.",
             listed(&swept.blocked)
-        ));
+        );
     }
     note
 }

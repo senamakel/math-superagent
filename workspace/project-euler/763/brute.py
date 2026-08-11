@@ -30,6 +30,10 @@ def main(max_depth):
     times = [0.0]
     print(f"max_depth={max_depth}", flush=True)
     for N in range(1, max_depth + 1):
+        # stop if states grow too numerous to keep resident
+        if len(frontier) > 600_000:
+            print(f"stopping: frontier {len(frontier)} states too numerous", flush=True)
+            break
         t0 = time.time()
         nxt = set()
         for st in frontier:
@@ -41,6 +45,8 @@ def main(max_depth):
               flush=True)
         frontier = nxt
     print("DONE", flush=True)
+    print(f"\nChecks: D(2)={results[2]} (expect 3), D(10)={results[10]} (expect 44499)")
+    print("Full sequence:", results)
 
 
 if __name__ == "__main__":
