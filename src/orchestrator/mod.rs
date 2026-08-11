@@ -72,13 +72,6 @@ const GOALS_PROMPT: &str = "You are the goals agent. Turn the assigned goal into
     evidence for completion. \
     Never use or request an algorithm with exponential time or space complexity.";
 
-struct AgentPrompts {
-    orchestrator: String,
-    research: String,
-    tool_builder: String,
-    goals: String,
-}
-
 /// A small in-memory catalogue of named, executable child agents.
 #[derive(Default)]
 pub struct AgentRegistry {
@@ -190,7 +183,17 @@ impl OrchestratorAgent {
         let model = openrouter_model_from_env()?;
         let async_subagents = AsyncSubagentManager::new();
         let documents = WorkspaceDocuments::new(workspace.clone())?;
-        let prompts = load_agent_prompts(&workspace)?;
+        let shared_guidance = load_workspace_files(
+            &workspace,
+            &[
+                "AGENTS.md",
+                "config.toml",
+                "goal.md",
+                "tasks.md",
+                "memory.md",
+                "scratchpad.md",
+            ],
+        )?;
         let orchestrator_prompt = workspace_prompt(
             ORCHESTRATOR_PROMPT,
             &shared_guidance,
