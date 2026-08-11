@@ -55,12 +55,33 @@ fn parses_the_documented_multi_operation_example() {
 }
 
 #[test]
-fn a_hunk_rewrites_only_the_lines_it_names() {
+fn a_context_line_missing_its_leading_space_is_still_read_as_context() {
+    // The most common way a small model malforms this envelope. The reading is
+    // unambiguous, so accepting it saves a wasted turn.
     let ops = parse(
         "*** Begin Patch\n\
          *** Update File: solution.py\n\
          @@\n\
          def peel(p, q):\n\
+         -    return None\n\
+         +    return p - q\n\
+         *** End Patch\n",
+    )
+    .expect("the patch parses");
+    let before = "def peel(p, q):\n    return None\n";
+
+    let after = apply_hunk("solution.py", before, &update_hunks(&ops[0])[0])
+        .expect("the hunk applies");
+    assert_eq!(after, "def peel(p, q):\n    return p - q\n");
+}
+
+#[test]
+fn a_hunk_rewrites_only_the_lines_it_names() {
+    let ops = parse(
+        "*** Begin Patch\n\
+         *** Update File: solution.py\n\
+         @@\n\
+         \x20def peel(p, q):\n\
          -    return None\n\
          +    return p - q\n\
          *** End Patch\n",
@@ -144,10 +165,6 @@ fn malformed_envelopes_are_rejected_with_the_reason() {
         (
             "*** Begin Patch\n*** Update File: a.py\n*** End Patch\n",
             "no `@@` hunk",
-        ),
-        (
-            "*** Begin Patch\n*** Update File: a.py\n@@\n?bad\n*** End Patch\n",
-            "must start with",
         ),
         (
             "*** Begin Patch\n*** Add File: /etc/passwd\n+x\n*** End Patch\n",

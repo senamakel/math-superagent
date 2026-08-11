@@ -221,10 +221,15 @@ fn read_hunk<'a>(
                 expected.push(String::new());
                 replacement.push(String::new());
             }
-            Some(other) => {
-                return Err(invalid(format!(
-                    "hunk line must start with ' ', '-', or '+', found `{other}` in `{line}`"
-                )));
+            // An unprefixed line is a context line whose leading space the
+            // model dropped — the single most common way a small model
+            // malforms this envelope. The reading is unambiguous (only ' ',
+            // '-' and '+' carry meaning, and the other two are present), and
+            // rejecting it would spend a whole turn on punctuation. Strictness
+            // that matters lives in the matching, not here.
+            Some(_) => {
+                expected.push(line.clone());
+                replacement.push(line);
             }
         }
     }
