@@ -1,4 +1,3 @@
 # Scratchpad
 
-Use this file for temporary calculations, partial derivations, and observations
-that are not yet established well enough for `memory.md`.
+Draft findings being validated. Full report goes in research/notes/...
