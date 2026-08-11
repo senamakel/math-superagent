@@ -3,6 +3,9 @@
 //! This facade exposes the vendored, provider-neutral `tinyagents` engine with
 //! its optional `SQLite`, REPL, and RLM features disabled.
 
+pub mod budget;
+pub mod trace;
+
 use std::sync::Arc;
 
 use tinyagents::harness::context::{RunConfig, RunContext};
@@ -16,8 +19,10 @@ use tinyagents::harness::observability::{
 use tinyagents::harness::providers::openai::OpenAiModel;
 use tinyagents::harness::tool::ToolTimeoutSettings;
 
+use budget::RunBudget;
+use trace::RunTracer;
+
 const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
-const TOOL_TIMEOUT_MS: u64 = 10 * 60 * 1_000;
 
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
