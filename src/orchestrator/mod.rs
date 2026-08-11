@@ -427,7 +427,7 @@ impl OrchestratorAgent {
                 continue;
             }
             let subagents = self.subagents.clone();
-            let context_file = self.workspace.join("context.md");
+            let workspace = self.workspace.clone();
             let prompt = format!("{brief}\n\nProblem this run is solving:\n{problem}");
             handles.push(teams::spawn(
                 name,

@@ -7,8 +7,9 @@ DOI: 10.2989/16073600509486132.
 
 Note on availability: this entry holds the abstract plus editorial metadata only.
 The full PDF is subscription-gated on the AJOL page, so only the abstract-level
-claims below could be recorded. Stored once (no `.full.md` needed; both files
-hold the same abstract).
+claims below could be recorded. Stored twice: `weightedmom.md` is this summary;
+`weightedmom.full.md` holds the AJOL landing page with the same abstract
+(fallback — read the summary first).
 
 ## What it establishes
 - The **weighted sum-of-digits function** generalizes the ordinary sum-of-digits
