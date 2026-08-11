@@ -97,7 +97,9 @@ fn a_row_written_as_a_wikilink_still_names_its_file() {
         Some("Lehmer digits are the lex rank")
     );
     assert_eq!(
-        parsed.get("L2/mechanism_pair_inversions.md").map(String::as_str),
+        parsed
+            .get("L2/mechanism_pair_inversions.md")
+            .map(String::as_str),
         Some("**Core**: gap-affine probabilities")
     );
     assert_eq!(
