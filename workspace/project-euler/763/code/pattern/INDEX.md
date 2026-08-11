@@ -12,7 +12,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `holonomic3.py` | Clean sweep of the holonomic (P-recursive) hypothesis: fits sum_j p_j(N)D[N+j]=0, p_j degree d, over m=1..6, d=1..4 on D(0..14); extends each nullspace solution to D(100) requiring integer values, and tags any exactly reproducing both held-out values D(20)=9204559704 and D(100) mod 10^9=780166455. Companion to holonomic_fit.py/holonomic2.py; refutes the holonomic P-recursive closed form. |
 | `holonomic_diag.py` | _(undescribed)_ |
 | `holonomic_fit.py` | _(undescribed)_ |
-| `mdist.py` | Counts reachable configs at each N by max level M from the /workspace/data/level_N.txt feature dumps, where M is read as the second field of each line, printing the M-distribution per N. Used to study how the structural parameter M grows with N. |
+| `mdist.py` | Counts reachable configs by max level M from the data/level_N.txt feature dumps, producing the (N,M) histogram rows that underlie the max-level decomposition. |
 | `offsets.py` | Extracts the N(N,M) table (configs by max level M) from data/level_N.txt and examines fixed-offset diagonals M-N=k: prints v(N,N+k)/3^(N-1) for each N to look for a pattern N(N,N+k)=poly(N)*3^(N-1). Structural probe extending the diagonal study of diagonal.py. |
 | `oos_predict.py` | _(undescribed)_ |
 | `poly_test.py` | Tests whether D(N) = 3^(N-1)*P(N) for a polynomial P of fixed degree: computes R(N)=D(N)/3^(N-1) as exact rationals and checks whether its finite differences vanish (constant) at some order. Decisive structural test: if R(N) is a polynomial, D(N) has all characteristic roots equal to 3. |
@@ -20,6 +20,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `q_array.py` | Extracts the full triangular array Q_k(N) = N(N,N-k)/3^(N-2k-1) from the data/level_N.txt feature dumps and prints each offset column k as a sequence of exact rationals, for OEIS-style closed-form hunting on the N(N,M) table. |
 | `q_fresh_test.py` | Tests the fitted Q_k(N) closed forms (Q_0=1, Q_1=n-3, Q_2=(n-5)(n+2)/2, Q_3=(n^3-73n+168)/6) at FRESH out-of-sample points N=13,14 from code/out/mhist_13_14.txt — points never used in the N=2..12 fit — plus the diagonal/subdiagonal count formulas. Verifies the N(N,M)=Q_k(N)*3^(N-2k-1) submodel survives out-of-sample. |
 | `q_verify.py` | Verifies exact closed forms for the offset columns of the N(N,M) table: Q_0=1, Q_1=n-3, Q_2=(n-5)(n+2)/2, Q_3=(n^3-73n+168)/6 against N(N,N-k)=Q_k(N)*3^(N-2k-1) over the computed range N=2..12, then reconstructs D(N) as the sum of the modeled columns to confirm the submodel matches the true D(N). |
+| `recur.py` | Recurrence search over D(0..14): constant-coefficient orders 1..7, holonomic forms, and asymptotic ratio fit. Found the order-7 constant-coeff recurrence that is later shown (recur_deadend.py) to be an overfit. |
+| `recur2.py` | _(undescribed)_ |
+| `recur3.py` | _(undescribed)_ |
 | `recur_deadend.py` | Characterizes the order-7 constant-coefficient recurrence (3D[n]=9D[n-1]+12D[n-2]-17D[n-3]-30D[n-4]-31D[n-5]+63D[n-6]) fitted over D(0..14): shows its first extrapolated term is non-integer (fails at n=18), so the recurrence can never reproduce D(20)/D(100). Records this as a dead end. |
 | `recur_integral.py` | Second check of the same order-7 recurrence: extrapolates from the fitted 15 terms through n=200 and confirms it fails integrality at the first extrapolated term (n=15), so no integer linear recurrence of this order extends the sequence. Independent route to the dead-end conclusion in recur_deadend.py. |
 | `recur_test.py` | Tests the conjectured order-7 linear recurrence against the held-out statement values D(20)=9204559704 and D(100) mod 10^9=780166455, and prints predicted D(15..30) and D(10000). Establishes the recurrence does NOT match the statement (the fitted recurrence is not the answer). |
+

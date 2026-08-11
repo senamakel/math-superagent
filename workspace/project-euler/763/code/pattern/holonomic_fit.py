@@ -3,6 +3,7 @@
 # fitted over D(0..14), then PREDICT D(20) and D(100) mod 10^9 and check
 # against the statement's held-out values (perfect falsifiers).
 from sympy import Rational, symbols, Matrix, linsolve
+from lib.holonomic import fit
 
 D = [1, 1, 3, 9, 30, 99, 336, 1134, 3855, 13086, 44499, 151263,
      514419, 1749267, 5949063]
@@ -13,16 +14,11 @@ n = symbols('n')
 def fit_holonomic(m, d):
     # unknown coefficients a[j][t] for p_j(N)=sum_t a[j][t] N^t, j=0..m
     # equation for each base index i: sum_j p_j(i) D[i+j] = 0, i=0..N-m-1
+    # matrix built by the shared lib/holonomic.fit; same exact-rational system.
     ncols = (m+1)*(d+1)
     rows = N - m
-    A = Matrix.zeros(rows, ncols)
-    for i in range(rows):
-        col = 0
-        for j in range(m+1):
-            for t in range(d+1):
-                A[i, col] = Rational(D[i+j]) * (i**t)
-                col += 1
-    ns = A.nullspace()
+    ns = fit(m, d, D)
+    A = Matrix.zeros(rows, ncols)   # not reconstructed: ns alone is what callers use
     return ns, A, rows, ncols
 
 best = None

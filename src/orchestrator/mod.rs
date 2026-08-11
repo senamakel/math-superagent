@@ -275,7 +275,10 @@ impl OrchestratorAgent {
             &tracer,
             &documents,
             &vector_store,
-            (exa.clone(), oeis.clone()),
+            SearchTools {
+                exa: exa.clone(),
+                oeis: oeis.clone(),
+            },
         );
         research_harness.push_middleware(checkpoint.clone());
         register_recall(&mut research_harness, &workspace);
@@ -1244,9 +1247,9 @@ fn build_research_harness(
     tracer: &Arc<RunTracer>,
     documents: &WorkspaceDocuments,
     vector_store: &VectorStore,
-    search: (Option<Arc<dyn Tool<()>>>, Vec<Arc<dyn Tool<()>>>),
+    search: SearchTools,
 ) -> AgentHarness<()> {
-    let (exa, oeis) = search;
+    let SearchTools { exa, oeis } = search;
     let mut harness = specialist_harness(model.clone(), budget, "research", tracer);
     for tool in exa.into_iter().chain(oeis) {
         register_resilient(&mut harness, tool);

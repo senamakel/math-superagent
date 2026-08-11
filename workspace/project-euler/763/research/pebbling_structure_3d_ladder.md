@@ -48,15 +48,22 @@ in the polyominoid) and is later emptied (its right and upper neighbours are
 left/lower boundary points); such a **crossing** is a singleton on its level,
 and the second play replaces two old voidance points by one new one. Reachable
 *positions* therefore correspond to folded polyominoids with an *arbitrary
-subset of their crossings marked as voidance points*, with generating function
-```
-g(x) = (1 − 6x + 4x² + 4x³ + √(1−4x²)) / (2(1 − 6x + 8x² − 4x⁴))
-     = 1 + 2x + 5x² + 14x³ + 43x⁴ + 140x⁵ + …
-```
-growth constant G ≈ 4.112. **This is the bounding object of the 2D reachable
-sequence = OEIS A007902.** (Voidance sets alone have the different GF
-h(x) = 1+2x+5x²+15x³+51x⁴+…, growth 4.147, matching CGMO's minimal-unavoidable
-constant.)
+subset of their crossings marked as voidance points*, with a generating
+function g(x) whose series begins 1+2x+5x²+14x³+43x⁴+140x⁵+⋯ and asymptotic
+g_k ~ C·G^k, G ≈ 4.112. (Voidance sets alone have the GF h(x) whose series
+begins 1+2x+5x²+15x³+51x⁴+187x⁵+⋯, growth 4.147, matching CGMO's
+minimal-unavoidable constant.)
+
+**IMPORTANT — do not conflate these two 2D counts.** Eriksson's g(x) (growth
+≈ 4.112) counts reachable *positions* stratified by the level of the highest
+pebble — a COARSER object that includes stopped positions with empty cells. It
+is **NOT** the sequence this run calls D2D / OEIS **A007902** (growth ≈
+2.3216), which counts *reachable configurations with exactly k pebbles*. The
+exact polynomial closed forms of g and h in the source PDF are OCR-mangled in
+the full-text conversion (the constant term does not even check out), so treat
+only the stated series heads and the growth constants (4.112, 4.147) as
+reliable; the polynomial coefficients otherwise are UNVERIFIED transcription.
+A007902's growth is d = 2.321642… (see §2).
 
 ### n ≥ 3: folded polyominoids — the 3D case (Eriksson Theorem 9)
 For the n-dimensional game (a pebble at (x_1,…,x_n) → n pebbles one unit out
