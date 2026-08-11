@@ -801,31 +801,6 @@ pub(super) fn raw_path(research_relative: &str) -> String {
     format!("{RAW_DIR}/{tail}")
 }
 
-/// Builds the bounded stand-in filed under `research/` for a fresh download.
-///
-/// Returns the whole text unchanged when it is already short enough, so a
-/// small source is not decorated with a notice about truncation that did not
-/// happen.
-pub(super) fn research_excerpt(full: &str, full_relative: &str) -> String {
-    if full.chars().count() <= RESEARCH_EXCERPT_CHARS {
-        return full.to_string();
-    }
-    let head: String = full.chars().take(RESEARCH_EXCERPT_CHARS).collect();
-    // Cut at a line boundary so the excerpt does not end mid-sentence.
-    let head = head
-        .rsplit_once('\n')
-        .map_or(head.as_str(), |(body, _)| body);
-    format!(
-        "> **Excerpt only — read this first.** The complete text is one level down at \
-         `{full_relative}`; open that only when this file does not answer the question, because \
-         it is large. Replace this excerpt with a summary of what the source establishes and what \
-         it implies for this problem — under 1000 tokens, specific enough that nobody needs the \
-         full text, and wikilinking it so they can still reach it.\n\n{head}\n\n\
-         *[excerpt ends; {} characters not shown — see `{full_relative}`]*\n",
-        full.chars().count().saturating_sub(head.chars().count())
-    )
-}
-
 /// Returns where a document's complete converted text is filed.
 ///
 /// One level below its summary. The original is what the whole tree is
