@@ -28,6 +28,8 @@
 //!   team always has one more source it could fetch — needs a stop that does
 //!   not depend on it deciding to stop.
 
+use std::hash::{Hash as _, Hasher as _};
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Duration, Instant};
@@ -41,6 +43,16 @@ use crate::agent::trace::RunTracer;
 /// Long enough that an idle team costs nothing, short enough that a message
 /// posted by the solver is picked up while it still matters.
 const IDLE_BACKOFF: Duration = Duration::from_secs(20);
+
+/// Files a workspace fingerprint will look at.
+///
+/// A bound, not a budget: the fingerprint runs between every pair of cycles,
+/// and walking an unbounded tree to decide whether to sleep would cost more
+/// than the sleep saves.
+const FINGERPRINT_FILES: usize = 600;
+
+/// Directory depth the fingerprint walks.
+const FINGERPRINT_DEPTH: usize = 4;
 
 /// Messages queued for one team before the sender is made to wait.
 ///
@@ -185,6 +197,63 @@ pub(super) enum Cycle {
     Finished,
 }
 
+/// Summarises the workspace as it stands, for detecting a cycle that changed
+/// nothing.
+///
+/// Path, length and modification time of every file, hashed. It does not read
+/// contents: a cycle that rewrote a file with identical bytes did no useful
+/// work either, and reading the whole workspace twice per cycle to prove that
+/// would cost more than the finding is worth.
+///
+/// `trace.jsonl` is excluded deliberately. It grows on every model call in the
+/// run, so including it would make every fingerprint differ and the check
+/// would never fire — it would report change from the solver's activity rather
+/// than the team's.
+fn fingerprint(workspace: &Path) -> u64 {
+    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+    let mut seen = 0usize;
+    let mut stack = vec![(workspace.to_path_buf(), 0usize)];
+    let mut entries: Vec<(PathBuf, u64, Option<std::time::SystemTime>)> = Vec::new();
+    while let Some((folder, depth)) = stack.pop() {
+        if depth > FINGERPRINT_DEPTH || seen >= FINGERPRINT_FILES {
+            continue;
+        }
+        let Ok(listing) = std::fs::read_dir(&folder) else {
+            continue;
+        };
+        for entry in listing.flatten() {
+            let name = entry.file_name().to_string_lossy().to_string();
+            if name.starts_with('.') || name == "trace.jsonl" || name == "__pycache__" {
+                continue;
+            }
+            let path = entry.path();
+            if path.is_dir() {
+                stack.push((path, depth + 1));
+                continue;
+            }
+            let Ok(meta) = entry.metadata() else { continue };
+            entries.push((path, meta.len(), meta.modified().ok()));
+            seen += 1;
+            if seen >= FINGERPRINT_FILES {
+                break;
+            }
+        }
+    }
+    // Directory order is not stable across reads, so sort before hashing or
+    // the fingerprint changes when nothing has.
+    entries.sort();
+    for (path, len, modified) in entries {
+        path.hash(&mut hasher);
+        len.hash(&mut hasher);
+        if let Some(modified) = modified
+            && let Ok(since) = modified.duration_since(std::time::UNIX_EPOCH)
+        {
+            since.as_millis().hash(&mut hasher);
+        }
+    }
+    hasher.finish()
+}
+
 /// Runs `cycle` as a team until its budget, its own judgement, or its owner
 /// stops it.
 ///
@@ -194,6 +263,7 @@ pub(super) fn spawn<F, Fut>(
     name: impl Into<String>,
     budget: TeamBudget,
     tracer: Option<Arc<RunTracer>>,
+    workspace: Option<PathBuf>,
     mut cycle: F,
 ) -> TeamHandle
 where
@@ -236,7 +306,23 @@ where
             // reports having run none, which reads as a team that never
             // started rather than one that did its job and stopped.
             cycles.fetch_add(1, Ordering::Relaxed);
-            match cycle(inbox).await {
+            let before = workspace.as_deref().map(fingerprint);
+            let mut outcome = cycle(inbox).await;
+            // A cycle that reports work but left the workspace exactly as it
+            // found it did not work. A live background team ran seven cycles
+            // in six minutes — 26 reads, 16 listings, seven index refreshes,
+            // and not one description — reporting progress each time, so it
+            // never backed off and was on course to spend its whole allowance
+            // re-reading a workspace it was not changing. What a team claims
+            // about its own productivity cannot be the thing that decides
+            // whether to believe it.
+            if outcome == Cycle::Worked
+                && let Some(before) = before
+                && workspace.as_deref().map(fingerprint) == Some(before)
+            {
+                outcome = Cycle::Idle;
+            }
+            match outcome {
                 Cycle::Finished => break TeamExit::Done,
                 Cycle::Worked => {}
                 Cycle::Idle => {
