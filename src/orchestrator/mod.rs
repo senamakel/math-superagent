@@ -20,6 +20,7 @@ use tinyagents::harness::summarization::{
 };
 
 use crate::agent::budget::RunBudget;
+use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
 use crate::agent::trace::RunTracer;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
@@ -394,6 +395,12 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
             ),
         )?;
     Ok(registry)
+}
+
+/// Registers a tool so its recoverable failures answer the model rather than
+/// ending the run that called it.
+fn register_resilient(harness: &mut AgentHarness<()>, tool: Arc<dyn Tool<()>>) {
+    harness.register_tool(Arc::new(ResilientTool::new(tool)));
 }
 
 fn specialist_harness(model: Arc<dyn ChatModel<()>>, budget: RunBudget) -> AgentHarness<()> {
