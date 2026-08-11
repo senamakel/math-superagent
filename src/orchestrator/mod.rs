@@ -213,6 +213,13 @@ const LIBRARIAN_PROMPT: &str = "You are the librarian. You build and maintain a 
 const SCHOLAR_PROMPT: &str = "You are the scholar. The run has gathered sources; your job is to \
     turn them into knowledge it can act on. Nobody else does this: the librarian acquires \
     documents and stops, and a downloaded paper nobody has read is worth nothing. \
+    A freshly downloaded source arrives as a bounded excerpt with its full text archived out of \
+    context. Replacing that excerpt with a real summary is your first job and the reason the \
+    excerpt exists. Keep every file in research/ under a thousand tokens: whoever reads it must \
+    come away knowing what the source establishes without opening the original, and a summary \
+    long enough to need its own summary has failed. Compress by dropping what the source says \
+    about itself — its motivation, history, and related work — and keeping the statements, the \
+    hypotheses, and the consequences for this problem. \
     Read what is in research/ against what this run is actually trying to do — the goal, the \
     current tasks, what memory.md already believes, and the provisional work in scratchpad.md. \
     For each source that matters, write research/notes/<slug>.md recording what it actually \

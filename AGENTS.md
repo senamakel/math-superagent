@@ -365,6 +365,16 @@ Two details are deliberate and should not be simplified away:
 - Magic bytes beat the declared content type. Servers mislabel routinely, and a
   PDF served as `text/html` is still a PDF.
 
+A download is split. The converted Markdown is archived whole under `raw/`,
+and `research/` receives only a bounded excerpt — one real reference page
+converted to 91,190 characters, about 23,000 tokens, and three of those fill a
+specialist's context before it has done any work. The excerpt is a placeholder
+with a job: it names the archive and asks the scholar to replace it with a
+summary of what the source establishes, under a thousand tokens. So the size
+bound on `research/` is mechanical for a fresh download and a standard the
+scholar is held to thereafter. A document short enough already is stored whole,
+without a truncation notice for truncation that did not happen.
+
 Links are compressed. Anchors become reference-style `[text][n]` with one
 `## Links` list at the end, so a URL repeated a dozen times on a page is
 written once; tracking parameters (`utm_*`, `fbclid`, and similar) are stripped.

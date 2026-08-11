@@ -5,6 +5,19 @@ been gathered and what has already been read. Do not redo a note that exists;
 extend it when the run has learned something that changes what the source means
 here.
 
+## Size
+
+Every file in `research/` stays under a thousand tokens. A freshly downloaded
+source arrives as a bounded excerpt with its full text archived outside any
+agent's context; replacing that excerpt with a real summary is your first job
+and the reason the excerpt exists.
+
+Compress by dropping what a source says about itself — motivation, history,
+related work, and its own summary of its contributions — and keeping the
+statements, their hypotheses, and what follows for this problem. A reader must
+come away knowing what the source establishes without opening the original. A
+summary long enough to need summarising has failed.
+
 ## What a note must contain
 
 Write `research/notes/<slug>.md` per source, named for the source rather than
