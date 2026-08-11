@@ -18,6 +18,14 @@ const INDEX_PATH: &str = ".document-index.json";
 /// what lets an agent tell at a glance what it gathered from what it derived.
 /// A prompt instruction would hold only until a model chose otherwise.
 pub(super) const RESEARCH_DIR: &str = "research";
+/// Folder holding the untouched bytes of every download.
+///
+/// Kept because conversion is lossy and occasionally wrong: when a converted
+/// document reads oddly, the only way to tell a bad source from a bad
+/// converter is the original. It is hidden from `list_workspace` and excluded
+/// from the index so it never competes for an agent's attention or context —
+/// it exists for a human debugging a conversion, not for the run.
+pub(super) const RAW_DIR: &str = "raw";
 const MAX_DOCUMENT_BYTES: usize = 5 * 1024 * 1024;
 const MAX_SEARCH_RESULTS: usize = 10;
 
@@ -101,6 +109,29 @@ impl WorkspaceDocuments {
         String::from_utf8(bytes).map_err(|error| {
             tinyagents::TinyAgentsError::Validation(format!(
                 "document `{relative}` is not UTF-8: {error}"
+            ))
+        })
+    }
+
+    /// Writes raw bytes, used for the untouched copy of a download.
+    async fn write_bytes(&self, relative: &str, bytes: &[u8]) -> Result<()> {
+        if bytes.len() > MAX_DOCUMENT_BYTES {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "document content exceeds {MAX_DOCUMENT_BYTES} bytes"
+            )));
+        }
+        let path = self.path(relative)?;
+        let parent = path.parent().ok_or_else(|| {
+            tinyagents::TinyAgentsError::Validation("document path has no parent".into())
+        })?;
+        tokio::fs::create_dir_all(parent).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to create document directory: {error}"
+            ))
+        })?;
+        tokio::fs::write(path, bytes).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to write workspace document `{relative}`: {error}"
             ))
         })
     }
@@ -330,6 +361,17 @@ pub(super) fn research_path(requested: &str) -> String {
     format!("{RESEARCH_DIR}/{trimmed}")
 }
 
+/// Returns where a converted document's original bytes are archived.
+///
+/// Mirrors the research layout under [`RAW_DIR`] so the two stay in
+/// correspondence: `research/papers/pell.md` archives to `raw/papers/pell.md`.
+pub(super) fn raw_path(research_relative: &str) -> String {
+    let tail = research_relative
+        .strip_prefix(&format!("{RESEARCH_DIR}/"))
+        .unwrap_or(research_relative);
+    format!("{RAW_DIR}/{tail}")
+}
+
 /// Renders the heading for a listing root.
 fn display_root(relative: &str) -> String {
     if relative == "." || relative.is_empty() {
@@ -364,12 +406,13 @@ impl DocumentToolKind {
 
 /// Entries never worth showing an agent: its own bookkeeping, installed
 /// packages, and the multi-megabyte event log.
-const HIDDEN_ENTRIES: [&str; 5] = [
+const HIDDEN_ENTRIES: [&str; 6] = [
     ".workspace-history",
     ".python-packages",
     "__pycache__",
     ".document-index.json",
     "trace.jsonl",
+    RAW_DIR,
 ];
 
 /// Largest number of entries one listing returns.
@@ -438,6 +481,10 @@ impl DocumentTool {
             // UTF-8 check turned a PDF into an error that ended the run.
             let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
             let path = research_path(&required_string(&call.arguments, "path")?);
+            // Keep the untouched bytes too. A failure to archive them must not
+            // fail a download that otherwise succeeded, so it is best effort.
+            let raw = raw_path(&path);
+            let archived = self.documents.write_bytes(&raw, &bytes).await.is_ok();
             self.documents.write(&path, &content).await?;
             format!(
                 "downloaded {} bytes from {url}, converted to {} bytes of Markdown at {path}",
