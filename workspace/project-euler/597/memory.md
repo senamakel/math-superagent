@@ -36,6 +36,30 @@ p(3,160)=56/135≈0.4148; p(4,400)=0.5107843137. Goal: p(13,1800).
   exact/analytic route, likely order-statistics/memoryless exponential
   structure. Not yet attacked.
 
+## Oralce edge-loss bug: FOUND and FIXED (see scratchpad)
+- `brute.simulate_order` recorded only the LAST bumper of each boat
+  (`bumped_by[k]=j`) and rebuilt `above` by following that single `out_of`
+  chain. A bumped boat keeps rowing and can be bumped again; the earlier edge
+  was silently dropped, so `above` lost transitive-chain edges in ~40% of
+  random cases (against a full-reachability reference).
+- IMPACT: the lost edges never changed the reconstructed total order or parity
+  in 2M random trials (order_diff=0, par_diff=0), because every lost
+  intermediate edge had a direct replacement, and the inversion count was
+  preserved. So the probability measure was UNCHANGED by the bug — but the
+  data structure was wrong-by-construction. Fixed brute.py to record every
+  bump edge and compute `above` by full graph reachability.
+- After the fix, `brute.simulate_order` is byte-identical to
+  `simulate_order_nobug` (full reachability) on 500k random trials, and the
+  worked-example values are reproduced: MC p(3,160)~0.415, MC p(4,400)~0.512.
+- Correct parity identity confirmed: parity = (# pairs i<j with a bump chain
+  i -> ... -> j) mod 2, i.e. the inversion count of the permutation. 1M-trial
+  check vs full reachability: 0 mismatches.
+
+## Ballpark target (MC, n=13, L=1800, fixed engine)
+- p(13,1800) ~ 0.500 (100k: 0.500470; 200k: 0.499400; 300k: 0.499027;
+  1.2M: 0.500880). Expect the exact answer near 0.500, consistent with the
+  parity being asymptotically a fair coin as n grows.
+
 ## Sanity checks (2024 result)
 - Fixed a latent Python bug in `exact_race.simulate_order_exact`: candidates
   were compared as tuples (`c < best[0]`) which threw `TypeError` for Fraction
