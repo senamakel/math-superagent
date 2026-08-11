@@ -1,3 +1,5 @@
+use std::fmt::Write as _;
+
 use super::{DIGEST_CHARS, digest, split_links};
 
 /// A source already inside the budget is stored whole, with no notice about
@@ -16,10 +18,11 @@ fn statements_survive_where_leading_prose_would_not() {
     full.push_str("# On the pass rule\n\n## 1. Introduction\n\n");
     // Enough motivation to bury the statements past any leading-characters cut.
     for index in 0..80 {
-        full.push_str(&format!(
+        let _ = write!(
+            full,
             "The history of this subject is long and the literature is wide, and this paragraph \
              number {index} recounts a further part of it at some length for the reader.\n\n"
-        ));
+        );
     }
     full.push_str("## 4. The main result\n\n");
     full.push_str("**Theorem 4.1.** Every stopper has a canonical form.\n\n");
@@ -68,11 +71,12 @@ fn unstructured_text_falls_back_to_leading_characters() {
 fn digest_stays_near_its_budget() {
     let mut full = String::from("# Paper\n\n");
     for index in 0..60 {
-        full.push_str(&format!("## Section {index}\n\n"));
-        full.push_str(&format!(
+        let _ = write!(full, "## Section {index}\n\n");
+        let _ = write!(
+            full,
             "**Theorem {index}.** {}\n\n",
             "A long statement that runs on and on and on. ".repeat(40)
-        ));
+        );
     }
     let digested = digest(&full, "research/L0.0/paper.full.md");
     // Header, provenance, and the closing note sit outside the content budget.

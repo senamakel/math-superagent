@@ -23,6 +23,8 @@
 //! characters exactly as before, because for that shape the leading characters
 //! genuinely are the document.
 
+use std::fmt::Write as _;
+
 /// Characters the whole digest is held to.
 ///
 /// About a thousand tokens: enough to tell whether the full text is worth
@@ -221,7 +223,7 @@ fn outline(blocks: &[&str]) -> String {
         // Two spaces per level below the top, so the outline reads as the
         // document's shape rather than a flat list of names.
         let indent = "  ".repeat(level.saturating_sub(1).min(4));
-        out.push_str(&format!("{indent}- {text}\n"));
+        let _ = writeln!(out, "{indent}- {text}");
         rows += 1;
     }
     out
