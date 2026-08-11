@@ -122,6 +122,13 @@ it emitted no usable tool call and the loop retried — 66 seconds spent to
 accomplish nothing. A cap that trips routinely is worse than the long turns it
 prevents. Buy brevity in the prompt instead.
 
+The retry is upstream `truncated_empty` recovery in `agent_loop/run_loop.rs`:
+when a turn ends with `finish_reason == "length"`, no text, and no tool calls —
+the model spent the whole budget on its hidden reasoning channel — the loop
+re-issues with the cap doubled, clamped at 4x. So a bound turn shows as
+`out=<cap>`, a `model RETRY`, then `out=<2x cap>`. Read that pair as one
+truncation, not as evidence the cap is larger than it is.
+
 A timeout is a safety ceiling, not permission to run an intractable approach.
 Before substantial execution, the tool-builder must state both time and space
 complexity. Algorithms with exponential time or space complexity are
@@ -141,7 +148,12 @@ available, so the agent can still record and recall its own findings.
 Every run in the tree carries a `RunTracer` (`src/agent/trace.rs`). It prints an
 elapsed-time console line per model call, tool call, and tool result, labelled
 with the agent that produced it, and appends every event as JSON to
-`trace.jsonl` in the selected workspace. Specialist runs also export their own
+`trace.jsonl` in the selected workspace. The document tools refuse to read it
+back: a reflection run pulled its own 1.1 MB event log into a single
+339,652-token call, blowing past the compression trigger and dropping the
+cache hit rate to 26% to re-read a verbatim replay of what it had already
+seen. Hiding it from `list_workspace` was not enough, because an agent can
+name a path the listing never offered it. Specialist runs also export their own
 observations to Langfuse, and payload capture is enabled, so a Langfuse trace
 carries the prompts, tool arguments, and results rather than bare ids. Read
 `trace.jsonl` or the Langfuse trace when diagnosing a run; do not add a
