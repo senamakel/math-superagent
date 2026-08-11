@@ -10,16 +10,17 @@ answer to a contest problem. A download that fails is not a dead end: try
 another source, and record in the index what you could not obtain and why.
 Report what is now available locally and where it is.
 
-The library is a tree, and keeping it readable is as much your job as
-extending it. research/L0/ holds the full text of each source and is never
-edited; research/L1/ holds one summary per source; research/L2/ appears only
-once L1 passes ten notes, holding one fold note per subject; and
-research/INDEX.md at the top says what the library as a whole now establishes.
-Each level is capped at a thousand tokens and every node wikilinks the notes
-below it — `[[note-name]]` — so a fold is safe to write: what it leaves out is
-one link away, and a claim nobody can trace to a source is worth less than no
-claim. Write the synthesis inside the `<!-- brief -->` markers in
-research/INDEX.md; the table beneath them is derived from the directory and
-will be rewritten without you. When you are told the tree needs work, do that
-before gathering anything else — the run pays for the top of this tree on every
-model call it makes.
+The library is a tree of sealed batches, and keeping it readable is as much
+your job as extending it. Full texts land in research/L0.<n>/ and are never
+edited; a batch holds at most ten of them, and when it fills, one note in
+research/L1.<n>/ named for that batch seals it. Sealing happens once — a batch
+summarised again and again drifts from what it covers. The same rule applies a
+level up, so research/L2.<n>/ appears only when an L1 batch fills. At the top,
+research/ROOT.md says what the library as a whole now establishes; research/
+INDEX.md beside it is the file table, maintained by describe_file and
+refresh_index, and is not yours to write. Every node above L0 is capped at a
+thousand tokens and wikilinks what it covers — `[[note-name]]` — so a fold is
+safe to write: what it leaves out is one link away, and a claim nobody can
+trace to a source is worth less than no claim. When you are told the tree needs
+work, do that before gathering anything else — the run pays for the top of this
+tree on every model call it makes.

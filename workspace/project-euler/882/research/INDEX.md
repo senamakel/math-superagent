@@ -6,9 +6,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `L0/li_zuchswang.md` | _(undescribed)_ |
 | `L0/siegel_zugzwang.md` | _(undescribed)_ |
-| `L0/strategy.full.md` | Full text of the generic-strategy article (dead end); companion to summary research/L1/strategy.md. |
-| `L0/temp_confusion.full.md` | downloaded source — from https://doi.org/10.1016/j.tcs.2020.11.015; not yet read, excerpt pending a scholar summary |
-| `L0/temperature_passing.full.md` | Misfiled accidental download (arXiv:1909.07809, medical organ segmentation CV) — unrelated; see ledger research/L1/misfiled.md. |
 | `L1/a083652.md` | OEIS A083652 summatory bit-length, exact O(1) closed form; third leg of total bits = ones+zeros. |
 | `L1/bitcount.md` | OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |
 | `L1/cgt.md` | CGT framework (Conway ONAG, Winning Ways): numbers as games, disjunctive sum; board decomposes. |

@@ -16,9 +16,9 @@ by writing one yourself. Those tools merge: they keep every description already
 recorded and mark only what is genuinely new. A hand-written index replaces the
 table wholesale, so every description in it that you did not retype is gone,
 and the next refresh marks the lot undescribed. A research index lost
-thirty-four descriptions that way. The one thing you may write into an index by
-hand is the synthesis between its `<!-- brief -->` markers, which no tool
-maintains. Refresh each one so it matches what is actually
+thirty-four descriptions that way. Never write an index by hand at all: a tree's synthesis
+lives in its own ROOT.md, which the research team writes, so the index has no
+half that belongs to you. Refresh each one so it matches what is actually
 on disk, then describe every file left undescribed — say what it is and why it
 exists, because a name repeated as its own description helps nobody. Mark
 superseded files as superseded and say what replaced them; a stale experiment
