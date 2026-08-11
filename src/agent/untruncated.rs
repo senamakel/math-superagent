@@ -118,6 +118,12 @@ impl<S: Send + Sync + 'static> ChatModel<S> for UntruncatedModel<S> {
                 break;
             }
             cap = cap.saturating_mul(2).min(ceiling);
+            if let Some(tracer) = self.tracer.as_ref() {
+                tracer.note(&format!(
+                    "model TRUNCATED at {} output tokens with no tool call; re-issuing at {cap}",
+                    cap / 2
+                ));
+            }
             response = self
                 .inner
                 .invoke(state, request.clone().with_max_tokens(cap))
