@@ -1330,6 +1330,9 @@ fn register_support_agents(
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut librarian, exa);
     }
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut librarian, tool);
+    }
     for tool in parts.documents.tools() {
         register_resilient(&mut librarian, tool);
     }
