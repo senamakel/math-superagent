@@ -362,6 +362,7 @@ src/
 │   └── trace.rs        # live console and trace.jsonl event listener
 ├── orchestrator/       # registry, specialists, compression, workspace tools
 │   ├── async_subagents.rs # graph-backed asynchronous child-run controls
+│   ├── code_layout.rs  # measures duplication and grouping in code/
 │   ├── documents.rs    # bounded workspace documents and local search index
 │   ├── patterns.rs     # exact sequence analysis and recurrence search
 │   ├── solutions.rs    # graph-backed attempt/reflect/diversify loop
@@ -573,10 +574,22 @@ delete a program carrying a result — so the rules for working there travel wit
 the folder. Its `INDEX.md` says what established each program is correct, which
 is the part that is not readable from the source.
 
-What this cannot catch is a shell redirect: `python solve.py > out.txt` writes
-through the filesystem, not through a tool. So the organizer sweeps the root
-every cycle. Enforcement in the write path is what makes that sweep small
-rather than the only defence.
+What the write path cannot catch is a shell redirect or a heredoc:
+`cat > solve.py <<'EOF'` and `python solve.py > out.txt` reach the filesystem
+directly, and the tool sees only a command and an exit code. Asking the
+organizer to sweep was not enough — one live workspace collected six root
+programs in nineteen minutes, written entirely through the shell while its
+organizer was running. So `layout::sweep` runs at the end of every
+`execute_command`, where the files appear, and the organizer's sweep is the
+backstop rather than the defence.
+
+Three rules keep a sweep that frequent safe. A destination that already exists
+is left alone, because a file carrying a result must never be overwritten by
+one that shares its name. A failure to move anything is silent, because the
+command succeeded and tidying must not turn that into an error. And every move
+is named in the tool result, for the same reason `layout::note` exists: an
+agent not told where its file went runs `python solve.py` again and cannot
+find it.
 
 ## Research folder
 
