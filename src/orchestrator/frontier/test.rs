@@ -98,7 +98,9 @@ fn publisher_furniture_is_not_a_lead() {
     assert!(worth_offering("https://oeis.org/A000788"));
     assert!(!worth_offering("https://twitter.com/some_journal"));
     assert!(!worth_offering("https://www.facebook.com/journal"));
-    assert!(!worth_offering("https://publisher.example/login?next=/paper"));
+    assert!(!worth_offering(
+        "https://publisher.example/login?next=/paper"
+    ));
     assert!(!worth_offering("https://publisher.example/terms-of-use"));
     assert!(!worth_offering("mailto:editor@example.org"));
 }

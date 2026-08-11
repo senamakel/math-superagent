@@ -494,10 +494,14 @@ fn window(text: &str, at: usize) -> String {
     let mut out = collapse_spaces(&text[start..end].replace('\n', " "));
     // Both ends are cut mid-word by construction, so drop the partial words
     // rather than presenting them as text the source wrote.
-    if start > 0 && let Some((_, rest)) = out.split_once(' ') {
+    if start > 0
+        && let Some((_, rest)) = out.split_once(' ')
+    {
         out = rest.to_string();
     }
-    if end < text.len() && let Some((body, _)) = out.rsplit_once(' ') {
+    if end < text.len()
+        && let Some((body, _)) = out.rsplit_once(' ')
+    {
         out = body.to_string();
     }
     out.trim().to_string()
@@ -520,7 +524,11 @@ fn bare_links(text: &str) -> Vec<LinkRecord> {
     while cursor < lowered.len() {
         let Some((at, marker)) = BARE_MARKERS
             .iter()
-            .filter_map(|marker| lowered[cursor..].find(marker).map(|at| (cursor + at, *marker)))
+            .filter_map(|marker| {
+                lowered[cursor..]
+                    .find(marker)
+                    .map(|at| (cursor + at, *marker))
+            })
             .min_by_key(|(at, _)| *at)
         else {
             break;

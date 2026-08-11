@@ -198,7 +198,10 @@ fn render(ledger: &BTreeMap<String, Candidate>, goal: &str) -> String {
         .iter()
         .filter(|(_, candidate)| candidate.citers > 0)
         .map(|(url, candidate)| {
-            let overlap = overlap(&terms, &format!("{} {}", candidate.label, candidate.context));
+            let overlap = overlap(
+                &terms,
+                &format!("{} {}", candidate.label, candidate.context),
+            );
             (url, candidate, overlap)
         })
         .collect();

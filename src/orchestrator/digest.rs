@@ -92,7 +92,10 @@ pub(super) fn digest(full: &str, full_relative: &str) -> String {
     // The statements get whatever the other two did not use, and never less
     // than half the budget: they are the reason this file exists.
     let spent = outline.chars().count() + abstract_text.chars().count();
-    let statements = statements(&blocks, DIGEST_CHARS.saturating_sub(spent).max(DIGEST_CHARS / 2));
+    let statements = statements(
+        &blocks,
+        DIGEST_CHARS.saturating_sub(spent).max(DIGEST_CHARS / 2),
+    );
 
     if outline.is_empty() && statements.is_empty() {
         return leading(full, full_relative);
