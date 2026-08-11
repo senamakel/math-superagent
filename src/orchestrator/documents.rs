@@ -121,6 +121,54 @@ impl WorkspaceDocuments {
         super::checked_workspace_path(&self.workspace, relative)
     }
 
+    /// Names what does exist beside a path that does not.
+    ///
+    /// A model that guessed `research/DIGEST.md` or `research/raw` learns only
+    /// that it guessed wrong, and its cheapest next move is to guess again —
+    /// each attempt costing a full model turn. Listing the folder's real
+    /// entries turns the failure into the answer, so the correction happens on
+    /// the next call rather than the next few. Returns an empty string when
+    /// there is nothing useful to add, so the caller can always append it.
+    fn nearby(&self, relative: &str) -> String {
+        let requested = std::path::Path::new(relative);
+        let folder = match requested.parent() {
+            Some(parent) if !parent.as_os_str().is_empty() => parent.to_path_buf(),
+            _ => std::path::PathBuf::new(),
+        };
+        let Ok(directory) = self.path(folder.to_string_lossy().as_ref()) else {
+            return String::new();
+        };
+        let Ok(entries) = std::fs::read_dir(&directory) else {
+            // The parent is missing too, so name the deepest folder that is
+            // real rather than reporting nothing at all.
+            return match folder.parent() {
+                Some(grandparent) => self.nearby(&folder.to_string_lossy()).replace(
+                    "; the folder holds",
+                    &format!("; `{}` does not exist either, and its parent holds", grandparent.display()),
+                ),
+                None => String::new(),
+            };
+        };
+        let mut names: Vec<String> = entries
+            .flatten()
+            .map(|entry| {
+                let name = entry.file_name().to_string_lossy().to_string();
+                if entry.file_type().is_ok_and(|kind| kind.is_dir()) {
+                    format!("{name}/")
+                } else {
+                    name
+                }
+            })
+            .filter(|name| !name.starts_with('.'))
+            .collect();
+        if names.is_empty() {
+            return String::new();
+        }
+        names.sort();
+        names.truncate(NEARBY_ENTRIES);
+        format!("; the folder holds {}", names.join(", "))
+    }
+
     fn readable_path(&self, relative: &str) -> Result<PathBuf> {
         ensure_visible(relative)?;
         let path = self.path(relative)?;
