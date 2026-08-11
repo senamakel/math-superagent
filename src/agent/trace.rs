@@ -20,6 +20,46 @@ use tinyagents::harness::events::{AgentEvent, EventListener, EventRecord};
 /// Maximum characters of a tool argument echoed to the console.
 const CONSOLE_PREVIEW_CHARS: usize = 240;
 
+/// What one model call used and cost.
+///
+/// Assembled from the provider's response body, which is the only place that
+/// carries the route and the price.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct ModelAccounting {
+    /// The agent whose call this was.
+    pub agent: String,
+    /// The provider that served it, when the body names one.
+    pub provider: Option<String>,
+    /// The model that served it, when the body names one.
+    pub model: Option<String>,
+    /// Prompt tokens sent.
+    pub input_tokens: u64,
+    /// The portion of those prompt tokens served from the provider's cache.
+    pub cached_tokens: u64,
+    /// Tokens generated.
+    pub output_tokens: u64,
+    /// The portion of generated tokens spent on a hidden reasoning channel.
+    ///
+    /// Worth separating: a turn that spends its whole budget here returns no
+    /// usable content and is retried at double the cap, so this is what makes
+    /// that failure legible instead of mysterious.
+    pub reasoning_tokens: u64,
+    /// What the provider charged, in USD.
+    pub usd: f64,
+}
+
+impl ModelAccounting {
+    /// Returns the cost in micro-USD for atomic accumulation.
+    #[must_use]
+    pub fn micro_usd(&self) -> u64 {
+        // Negative or non-finite costs are provider noise, not credits.
+        if !self.usd.is_finite() || self.usd <= 0.0 {
+            return 0;
+        }
+        (self.usd * 1_000_000.0).round() as u64
+    }
+}
+
 /// State shared by every tracer in one investigation.
 #[derive(Debug)]
 struct TraceState {

@@ -3,6 +3,7 @@
 //! This facade exposes the vendored, provider-neutral `tinyagents` engine with
 //! its optional `SQLite`, REPL, and RLM features disabled.
 
+pub mod accounting;
 pub mod budget;
 pub mod reflection;
 pub mod resilient;
