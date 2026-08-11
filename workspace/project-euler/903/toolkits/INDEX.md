@@ -4,5 +4,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-
-_This folder is empty._
+| `f_literal.py` | _(undescribed)_ |
+| `f_table.py` | Computes the F(d) table for Q(n)=sum_{d |
