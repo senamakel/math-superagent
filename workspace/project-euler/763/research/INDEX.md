@@ -4,23 +4,23 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `CLAIMS.md` | _(undescribed)_ |
-| `FRONTIER.md` | _(undescribed)_ |
-| `L1.0/oeis_a001006.md` | _(undescribed)_ |
-| `L1.0/oeis_a005207.md` | _(undescribed)_ |
-| `L1.0/oeis_a007902.md` | _(undescribed)_ |
-| `L1.0/oeis_a086246.md` | _(undescribed)_ |
-| `L1.0/oeis_a168049.md` | _(undescribed)_ |
-| `L1.0/oeis_direct.md` | _(undescribed)_ |
-| `L1.0/oeis_partial.md` | _(undescribed)_ |
-| `L2.0/cgmo_opening_dijkstra.md` | _(undescribed)_ |
-| `L2.0/pebbling_amz.md` | _(undescribed)_ |
-| `L2.0/pebbling_ejc_survey.md` | _(undescribed)_ |
-| `L2.0/pebbling_eriksson_eljc.md` | _(undescribed)_ |
-| `L2.0/pebbling_knessl_pdf.md` | _(undescribed)_ |
+| `CLAIMS.md` | Derived: every claim block in the notes, one row each, with whether its hypotheses hold here and what evidence stands behind it. Rewritten on every research write; do not edit. |
+| `FRONTIER.md` | Derived: sources this library's own documents cite but the run has not read, ranked by how many of them cite each. Rewritten on every download; do not edit. |
+| `L1.0/oeis_a001006.md` | OEIS A001006 (Motzkin numbers) lookup note: closed forms, recurrence, g.f., source https://oeis.org/A001006. Filed hunting a closed form for D(N); low terms 1,1,2,4,9,21,... diverge from D(N)=1,1,3,9,30,... at n=2 — dead end, not a candidate fit. |
+| `L1.0/oeis_a005207.md` | OEIS lookup note for A005207 (a(n)=(F(2n-1)+F(n+1))/2, Fibonaccis; g.f. 1-x(1-2x-x^2+x^3)/((x^2+x-1)(x^2-3x+1)), source https://oeis.org/A005207): terms 1,1,2,4,9,21,51,127,322,826,.... Filed hunting a closed form for D(N); diverges from D(N) by term 3 (2 vs 3), so not a candidate fit. |
+| `L1.0/oeis_a007902.md` | Raw OEIS A007902 (pebbling configurations) lookup dump: terms, Knessl asymptotic formula, and the exact G(k,m) memoized recurrence. NOTE: still carries its original "filed by OEIS lookup, not read — replace this" placeholder trailer and contains NO claim block; the D_2D identification (D_2D(N)=A007902(N+1), claim d2d-equals-a007902) is established in research/amoeba2d_pebbling_a007902.md and oeis_lookup_2d_3d.md, not in this file. Read this file only for the raw terms/recurrence. |
+| `L1.0/oeis_a086246.md` | OEIS lookup note for A086246 (Motzkin variant, g.f. (1+x-sqrt(1-2x-3x^2))/2, source https://oeis.org/A086246): terms 0,1,1,1,2,4,9,21,51,127,.... Filed while hunting a closed form for D(N); its low terms do not match D(N)=1,1,3,9,30,..., so not a candidate fit. |
+| `L1.0/oeis_a168049.md` | OEIS A168049 (Motzkin variant, g.f. (3-x-sqrt(1-2x-3x^2))/2, source https://oeis.org/A168049): terms 1,0,1,1,2,4,9,21,51,127,... Filed while hunting a closed form for D(N); its low terms do not match D(N)=1,1,3,9,30,..., so not a candidate fit. |
+| `L1.0/oeis_direct.md` | Direct OEIS search of the full 15-term 3D amoeba sequence D(0..14)=1,1,3,9,30,...,5949063: returns "No results". Authoritative negative — the 3D D(N) is not catalogued. Claim dN-not-in-oeis. |
+| `L1.0/oeis_partial.md` | Direct OEIS search of offset-1 partial 11 terms 1,3,9,30,...,44499: "No results", confirming the 3D D(N) is absent from OEIS regardless of offset. Claim dN-offset-also-not-in-oeis. |
+| `L2.0/cgmo_opening_dijkstra.md` | Structural digest of the CGMO/Dijkstra source (A Monthly 102.2, Feb 1995 opening) on chessboard-pebbling unavoidability lemmas and Theorem 1 (a set is unavoidable iff after the moves some cell holds >=3 pebbles); companion research/L0.0/cgmo_opening_dijkstra.full.md holds the full text. Foundation for the 2D pebbling=amoeba reading; digest is STILL A PLACEHOLDER, not yet summarized. |
+| `L2.0/pebbling_amz.md` | Structural digest of the arXiv entry for "An Explicit Solution to the Chessboard Pebbling Problem" (Zhen & Knessl, arXiv:1009.5731): studies reachable-configuration count G(k) and double sequence G(k,m), exact expressions and asymptotics. Companion research/L0.0/pebbling_amz.full.md is the full text; digest STILL A PLACEHOLDER. |
+| `L2.0/pebbling_ejc_survey.md` | Structural digest of the Electronic J. Combinatorics chessboard-pebbling survey (v2i1r7 PDF); companion research/L0.0/pebbling_ejc_survey.full.md is the full text; digest is effectively empty / STILL A PLACEHOLDER — only the framing survived the conversion. |
+| `L2.0/pebbling_eriksson_eljc.md` | Hand-shaped summary of Eriksson 1995, "Pebblings", EJC 2(1) #R7 (DOI 10.37236/1201): strengthens and generalizes Chung-Graham-Morrison-Odlyzko chessboard pebbling to higher dimension and to arbitrary posets — the closest source to the 3D amoeba. Has no L0.0 companion (full text is the external PDF). |
+| `L2.0/pebbling_knessl_pdf.md` | Structural digest of the Zhen-Knessl PDF (arXiv:1009.5731, "An Explicit Solution to the Chessboard Pebbling Problem"): Theorems 2.1/2.2 + Corollaries giving exact expressions and asymptotics for G(k,m) and G(k). Companion research/L0.0/pebbling_knessl_pdf.full.md is the full text; digest STILL A PLACEHOLDER. |
 | `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
-| `amoeba2d_pebbling_a007902.md` | _(undescribed)_ |
-| `amoeba_seq_oeis.md` | _(undescribed)_ |
-| `oeis_lookup_2d_3d.md` | _(undescribed)_ |
-| `pebbling_structure_3d_ladder.md` | _(undescribed)_ |
-| `scholar_report.md` | _(undescribed)_ |
+| `amoeba2d_pebbling_a007902.md` | Identifies the 2D amoeba process (PE763 in d=2) as the classical chessboard-pebbling problem = OEIS A007902 under D_2D(N)=A007902(N+1); records the exact G(k,m) recurrence, polyominoid/voidance-set bijective structure, asymptotics, and sources (Kontsevich, Khodulev, Chung-Graham-Morrison-Odlyzko, Zhen-Knessl arXiv:1009.5731). The 3D D(N) is contextually the higher-dimensional cousin. |
+| `amoeba_seq_oeis.md` | OEIS/literature status of the 3D-amoeba sequence D(N): confirmed not in OEIS (both direct queries return No results), closest structural relatives (directed lattice animals), and saved source URLs. The run-level note that no catalogued closed form exists. |
+| `oeis_lookup_2d_3d.md` | Resolution record for the requested OEIS lookups: the 2D amoeba sequence = A007902 (pebbling configurations), confirmed on 15 requested terms plus extended BFS terms; and the 3D sequence (8 terms) is NOT in OEIS — a permanent negative so nobody re-searches. Distinguishes A007902 (correct 2D identity) from A005773 (directed animals, divergent, not this). |
+| `pebbling_structure_3d_ladder.md` | Structural bridge from 2D chessboard-pebbling to the 3D PE763 case. Establishes (sourced from Eriksson EJC 2(1995)#R7): reachable pebbling positions = polyominoids represented by voidance sets in 2D; and in n>=3 (this run's 3D PE763) positions = voidance sets = folded polyominoids bijectively (Theorem 9), with no cell ever played twice (Prop 24) so the hard crossing-marking combinatorics vanish. Names folded (3-labelled) polyominoids as the correct counting object for D(N); records the CGMO G(k,m) recurrence, Knessl asymptotics, and the fully-sourced claim blocks n3-folded-polyominoid-voidance and d2-positions-are-polyominoid-voidance. The numeric D(N) source of truth remains the run's BFS. |
+| `scholar_report.md` | Scholar's digest of the L1.0 OEIS batch: the four dead-end closed-form candidates, the two "No results" negatives, and the A007902 = 2D-amoeba identification (with the correction of the first read). |
