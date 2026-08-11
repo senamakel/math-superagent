@@ -351,7 +351,7 @@ impl ApplyPatchTool {
                     move_to,
                     hunks,
                 } => {
-                    let mut contents = self.documents.read(path).await?;
+                    let mut contents = self.documents.read_document(path).await?;
                     for hunk in hunks {
                         contents = apply_hunk(path, &contents, hunk)?;
                     }
