@@ -242,6 +242,19 @@ impl OrchestratorAgent {
             .with_system_prompt(tool_builder_prompt),
         );
 
+        let mut goals_harness = specialist_harness(model.clone());
+        goals_harness
+            .register_tool(Arc::new(SubAgentTool::new(research.clone())))
+            .register_tool(Arc::new(SubAgentTool::new(tool_builder.clone())));
+        let goals = Arc::new(
+            SubAgent::new(
+                "goals",
+                "Pursues a goal to verifiable completion by spawning focused specialists.",
+                Arc::new(goals_harness),
+            )
+            .with_system_prompt(goals_prompt),
+        );
+
         let mut registry = AgentRegistry::new();
         registry
             .register(
@@ -263,6 +276,16 @@ impl OrchestratorAgent {
                 .with_model("openrouter")
                 .with_tools(["write_tool_file", "execute_command"]),
                 tool_builder,
+            )?
+            .register(
+                AgentDefinition::new(
+                    "goals",
+                    "Goals Agent",
+                    "Pursues a goal and delegates research, implementation, and verification.",
+                )
+                .with_model("openrouter")
+                .with_tools(["research", "tool_builder"]),
+                goals,
             )?;
         let registry = Arc::new(registry);
 
