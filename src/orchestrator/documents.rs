@@ -144,16 +144,11 @@ impl WorkspaceDocuments {
         let Ok(directory) = self.path(folder.to_string_lossy().as_ref()) else {
             return String::new();
         };
+        // A missing parent is left unreported rather than walked upwards: the
+        // useful answer is what sits beside the requested name, and naming a
+        // grandparent's contents invites a second wrong guess.
         let Ok(entries) = std::fs::read_dir(&directory) else {
-            // The parent is missing too, so name the deepest folder that is
-            // real rather than reporting nothing at all.
-            return match folder.parent() {
-                Some(grandparent) => self.nearby(&folder.to_string_lossy()).replace(
-                    "; the folder holds",
-                    &format!("; `{}` does not exist either, and its parent holds", grandparent.display()),
-                ),
-                None => String::new(),
-            };
+            return String::new();
         };
         let mut names: Vec<String> = entries
             .flatten()
@@ -165,7 +160,15 @@ impl WorkspaceDocuments {
                     name
                 }
             })
-            .filter(|name| !name.starts_with('.'))
+            // Whatever the listing hides, this hides too. Naming the raw
+            // download folder here would advertise the one directory the run is
+            // deliberately kept out of.
+            .filter(|name| {
+                !name.starts_with('.')
+                    && name != &format!("{RAW_DIR}/")
+                    && name != "__pycache__/"
+                    && name != "trace.jsonl"
+            })
             .collect();
         if names.is_empty() {
             return String::new();
