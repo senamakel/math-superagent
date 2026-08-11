@@ -14,6 +14,10 @@ The runtime uses a small registry of specialist agents:
 - `research` searches with Exa and returns evidence with source URLs.
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
+- `coder` has the same authority and writes the implementation the run stands
+  behind. Splitting the two lets each prompt be strict about one thing — the
+  tool-builder about producing a running program quickly, the coder about the
+  program being correct — instead of one prompt hedging between them.
 - `reflection` judges one attempt and extracts the lesson. It has no research
   or execution tools, so it cannot drift into solving what it is judging.
 - `pattern_finder` runs exact sequence analysis over results already computed:
