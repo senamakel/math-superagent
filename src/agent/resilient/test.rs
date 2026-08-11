@@ -104,9 +104,15 @@ fn requests_without_a_timeout_get_a_bounded_one() {
     let model = BoundedTimeoutModel::<()>::new(Arc::new(MockModel::constant("hi")));
     let bounded = model.bound(ModelRequest::new(vec![]));
     let millis = bounded.timeout_ms.expect("a timeout is applied when unset");
-    assert!(millis > 0);
     // Must stay under the vendored 600s default, or it changes nothing.
     assert!(millis < 600_000);
+    // ...and well above the slowest legitimate call. A tight bound turns a
+    // slow-but-working request into a guaranteed failure once the retry
+    // ladder exhausts, which is worse than the hang it bounds.
+    assert!(
+        millis >= 300_000,
+        "timeout {millis}ms is tight enough to truncate working calls"
+    );
 }
 
 #[test]
