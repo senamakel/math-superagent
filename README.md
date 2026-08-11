@@ -188,6 +188,31 @@ leaving the console. Once agents run concurrently the percentages become shares
 of agent time and a concurrency factor replaces `idle`, because summed agent
 time legitimately exceeds the wall clock.
 
+That one stream carries eleven roles and every child run they spawn, which is
+right for a trace and wrong for watching: in one live run the organizer alone
+produced 232 of the first 400 lines, so the solve's own progress scrolled past
+between two index refreshes. `./euler-tui <number>` runs or continues the same
+box behind a tab per team:
+
+```sh
+./euler-tui 763                 # start or continue, one tab per team
+./euler-tui 763 --replay        # open the tabs on a finished run's log
+./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
+```
+
+`n` and `p` or the arrows change tab, the digits jump to one, the arrows and
+page keys scroll back, `g` returns to live, and `q` detaches without stopping
+the run — the container keeps going and the command can be re-attached. The
+loop's own lines — attempt boundaries, judge scores, verdicts, team lifecycle —
+appear in *every* tab, because they are the run's spine and nobody should have
+to be on the right tab to see one.
+
+Nothing is filtered out of the record: the raw stream is teed verbatim to
+`config/console.log` in the workspace, so `grep` and the existing tooling work
+unchanged, and a tab nobody opened still loses nothing. Without a terminal the
+command degrades to a plain tee, so the same invocation works when a person is
+watching and when something is scraping.
+
 The same events are appended as JSON to `trace.jsonl` in the selected workspace,
 alongside a `model_accounting` record per model call naming the agent, the
 provider and model that actually served it, the prompt, cached, output, and
