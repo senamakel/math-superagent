@@ -17,9 +17,9 @@
 //! child runs still working had nobody left to collect them.
 //!
 //! So this wrapper applies the same recovery to the case upstream excludes.
-//! It sits outside the timeout and affinity wrappers, so each re-issue is
-//! bounded and routed on its own terms rather than inheriting the cut-off
-//! attempt's.
+//! It sits outside the timeout, affinity, and accounting wrappers, so each
+//! re-issue is bounded and routed on its own terms rather than inheriting the
+//! cut-off attempt's, and is recorded as the separate paid call it is.
 //!
 //! It cannot fix a turn that has genuinely run out of things to say within any
 //! budget, so growth is clamped exactly as upstream clamps it and the last
