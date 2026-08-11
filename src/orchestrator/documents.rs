@@ -161,7 +161,7 @@ impl WorkspaceDocuments {
         // empty parent, and the file checker refuses that. Routing it through
         // `path` made this whole helper silently do nothing for exactly the
         // paths agents get wrong most — the ones at the root.
-        let Ok(directory) = self.path(folder.to_string_lossy().as_ref()) else {
+        let Ok(directory) = self.folder_path(folder.to_string_lossy().as_ref()) else {
             return String::new();
         };
         // A missing parent is left unreported rather than walked upwards: the

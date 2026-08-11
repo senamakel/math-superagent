@@ -24,7 +24,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `scratchpad.md` | Temporary calculations not yet promoted to `memory.md`. Currently empty. |
 | `solution.py` | Final PE579 solution: canonical primitive-frame enumeration via primary Hurwitz quaternions (Euler-Rodrigues, streaming, O(1) memory) + O(1) Faulhaber power-sum summation. THIS IS THE ANSWER SOURCE. Validated: frame-set identity vs frame_method n=1..200 (ALL YES), C/S oracle all OK, power-sum==direct-loop bit-for-bit PASS, independent route (verify_final.py) matches. S(5000) mod 10^9 = 3805524. Evidence in `solution_output.txt`. |
 | `solution_power.py` | O(1)-per-frame Faulhaber power-sum summation. Reuses `frame_method.py`'s enumeration unchanged (import); only the t-summation differs. Validated bit-for-bit against the direct t-loop at n=50 and against the oracle. |
-| `tasks.md` | Task checklist. Finished up to `solution_power.py` validation; the last item (full `solution.py` verified + S(5000) computed/verified) unchecked. |
+| `solution_output.txt` | Final evidence for `solution.py`: frame-set identity per n (1..200 ALL YES), C/S oracle matches, n=5000 C / S / S mod 1e9 = 3805524, bit-for-bit cross-check PASS, wall time, and independent-route (verify_final.py) confirmation. |
+| `tasks.md` | Task checklist. All items DONE, including the final one: full `solution.py` verified and S(5000) mod 10^9 computed (3805524) and checked by an independent route. |
 | `toolkit.md` | Documents every `toolkit.py` function (signature, returns, what verified it); kept in step with `toolkit.py`. |
 | `toolkit.py` | Reusable exact-integer helpers shared by the scripts: `dot`, `norm2`, `corner_and_edges`, `count_points`. |
 | `toolkits/` | One-function-per-file helper library (currently empty; see `toolkits/INDEX.md`). The working helpers live in root `toolkit.py` instead. |
