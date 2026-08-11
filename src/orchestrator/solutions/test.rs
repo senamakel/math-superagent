@@ -170,7 +170,13 @@ async fn a_reflection_is_indexed_with_its_verdict_and_lesson() {
     assert!(index.contains("_learnings.md"), "{index}");
 
     // A second reflection joins the table rather than replacing it.
-    super::log_reflection(Some(&workspace), 4, "VERDICT: SOLVED\nPROGRESS: YES\n", None).await;
+    super::log_reflection(
+        Some(&workspace),
+        4,
+        "VERDICT: SOLVED\nPROGRESS: YES\n",
+        None,
+    )
+    .await;
     let index = std::fs::read_to_string(workspace.join("reflections").join("INDEX.md"))
         .expect("reflections index still there");
     assert!(index.contains("Attempt 3"), "{index}");

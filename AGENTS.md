@@ -490,7 +490,15 @@ an empty placeholder. The listing hides `.workspace-history`,
 truncates rather than dumping an unbounded tree.
 
 Every reflection is archived to `reflections/<epoch_ms>_<outcome>.md`, where the
-outcome is `nothing` or `<n>_learnings`. The name carries the result so a
+outcome is `nothing` or `<n>_learnings`, and indexed in `reflections/INDEX.md`
+in the same step. The folder carries an index for the same reason `research/`
+and `toolkits/` do: a directory of epoch-stamped filenames says when each
+attempt was judged and nothing about what any of them found. Each row records
+the attempt number, the verdict, and the lesson, so the planners and the
+inventor can see which attempt is worth continuing without opening any of them.
+The loop writes both the file and the row itself — no agent is in that path —
+which is why the organizer is told to leave the folder alone: a hand refresh
+would replace verdicts and lessons with `_(undescribed)_`. The name carries the result so a
 directory listing alone shows which attempts taught the run something. Writing
 the log is best effort: the lesson is already in the loop state, and losing the
 archive copy must not cost the run the lesson.
