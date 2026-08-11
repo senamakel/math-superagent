@@ -25,6 +25,15 @@ Run:  python code/amoeba2d/a007902_dp.py  [max_n]  [--table k]
 
 import sys
 from lib.amoeba2d import G, a
+
+# Reference values from OEIS A007902 (offset 1) used by main() below.
+A007902_FIRST_22 = [
+    1, 1, 2, 4, 9, 20, 46, 105, 243, 561, 1301, 3014, 6995, 16227, 37668,
+    87426, 202961, 471150, 1093819, 2539348, 5895408, 13686805,
+]
+
+
+def a_seq(max_n):
     return [a(n) for n in range(1, max_n + 1)]
 
 
