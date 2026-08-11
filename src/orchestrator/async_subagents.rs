@@ -640,38 +640,27 @@ impl AsyncSubagentTool {
     }
 }
 
-#[async_trait]
-impl Tool<()> for AsyncSubagentTool {
-    fn name(&self) -> &'static str {
-        match self.kind {
-            AsyncToolKind::Spawn => "spawn_agent",
-            AsyncToolKind::SpawnMany => "spawn_agents",
-            AsyncToolKind::AwaitMany => "await_agents",
-            AsyncToolKind::Peek => "peek_agent",
-            AsyncToolKind::Steer => "steer_agent",
-            AsyncToolKind::Await => "await_agent",
-        }
+impl AsyncSubagentTool {
+    /// Launches a whole fan-out in one call.
+    ///
+    /// Every tool call costs the caller a full model turn, so issuing five
+    /// spawns one at a time spends minutes of generation before any of the
+    /// work starts. This makes width free: the concurrency cap, not the
+    /// number of calls, is what bounds execution.
+    async fn spawn_many(&self, call: &ToolCall) -> Result<Value> {
+        Ok({
+
+                "Starts several subagents at once and returns all their run ids. Prefer this over                  repeated spawn_agent: every call you make costs a full turn, so launching five                  agents one at a time spends minutes of generation before any of them starts,                  while this launches them together. Split the work into pieces that do not depend                  on each other and launch every piece here in one call — the runtime executes                  dozens concurrently. Each brief is a few sentences; the agents read the                  workspace themselves."
+        })
     }
 
-    fn description(&self) -> &'static str {
-        match self.kind {
-            AsyncToolKind::Spawn => {
-                "Starts a subagent asynchronously and immediately returns its run id. Keep `input` \
-                 to a short brief — say what the agent must do and what to report back, in a few \
-                 sentences. Do not restate the problem, the derivation so far, or the contents of \
-                 any file: the agent is given the workspace and reads it itself. A brief long \
-                 enough to exhaust the turn's output budget is cut off mid-argument and the call \
-                 never happens."
-            }
-            AsyncToolKind::Peek => {
-                "Returns the current status and any completed response for a subagent run."
-            }
-            AsyncToolKind::Steer => "Redirects a live subagent with an additional instruction.",
-            AsyncToolKind::Await => "Waits for a subagent run and returns its status and response.",
-            AsyncToolKind::SpawnMany => {
-                "Starts several subagents at once and returns all their run ids. Prefer this over                  repeated spawn_agent: every call you make costs a full turn, so launching five                  agents one at a time spends minutes of generation before any of them starts,                  while this launches them together. Split the work into pieces that do not depend                  on each other and launch every piece here in one call — the runtime executes                  dozens concurrently. Each brief is a few sentences; the agents read the                  workspace themselves."
-            }
-            AsyncToolKind::AwaitMany => {
+    /// Collects several runs at once, waiting for them concurrently.
+    ///
+    /// Awaiting one run at a time would re-serialise work the spawn just
+    /// parallelised, and cost a turn for each.
+    async fn await_many(&self, call: &ToolCall) -> Result<Value> {
+        Ok({
+
                 "Waits for several subagent runs and returns all their results together. Use it                  after spawn_agents: awaiting one run at a time serialises work that already ran                  in parallel, and costs a turn for each. Omit `run_ids` to wait for every run you                  have started that is still outstanding."
             }
         }
@@ -847,7 +836,40 @@ impl Tool<()> for AsyncSubagentTool {
                     }
                 }
                 json!({ "runs": finished })
+        })
+    }
+}
+
+#[async_trait]
+impl Tool<()> for AsyncSubagentTool {
+    fn name(&self) -> &'static str {
+        match self.kind {
+            AsyncToolKind::Spawn => "spawn_agent",
+            AsyncToolKind::SpawnMany => "spawn_agents",
+            AsyncToolKind::AwaitMany => "await_agents",
+            AsyncToolKind::Peek => "peek_agent",
+            AsyncToolKind::Steer => "steer_agent",
+            AsyncToolKind::Await => "await_agent",
+        }
+    }
+
+    fn description(&self) -> &'static str {
+        match self.kind {
+            AsyncToolKind::Spawn => {
+                "Starts a subagent asynchronously and immediately returns its run id. Keep `input` \
+                 to a short brief — say what the agent must do and what to report back, in a few \
+                 sentences. Do not restate the problem, the derivation so far, or the contents of \
+                 any file: the agent is given the workspace and reads it itself. A brief long \
+                 enough to exhaust the turn's output budget is cut off mid-argument and the call \
+                 never happens."
             }
+            AsyncToolKind::Peek => {
+                "Returns the current status and any completed response for a subagent run."
+            }
+            AsyncToolKind::Steer => "Redirects a live subagent with an additional instruction.",
+            AsyncToolKind::Await => "Waits for a subagent run and returns its status and response.",
+            AsyncToolKind::SpawnMany => self.spawn_many(&call).await?,
+            AsyncToolKind::AwaitMany => self.await_many(&call).await?,
             AsyncToolKind::Peek => serde_json::to_value(
                 self.manager
                     .record(&required_string(&call.arguments, "run_id")?)?,
