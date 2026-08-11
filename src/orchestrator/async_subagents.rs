@@ -116,33 +116,42 @@ fn max_concurrent_agents() -> usize {
         .unwrap_or(DEFAULT_MAX_CONCURRENT_AGENTS)
 }
 
-/// A housekeeping run queued behind another run's completion.
+/// A housekeeping sequence queued behind another run's completion.
 struct FollowUp {
     manager: AsyncSubagentManager,
-    agent: String,
+    steps: &'static [FollowUpStep],
 }
 
 impl FollowUp {
-    /// Runs the follow-up, one at a time across the whole runtime.
+    /// Runs the sequence in order, one sequence at a time across the runtime.
     ///
     /// Serialised deliberately: two organizers refreshing the same `INDEX.md`
     /// concurrently would each write the list it read, and the later write
     /// would silently drop the other's descriptions. Housekeeping is not on
     /// anyone's critical path, so waiting for the lock costs nothing.
     ///
-    /// Every failure is swallowed. A run that tidies the workspace must never
-    /// be able to fail the investigation that triggered it, and an unregistered
-    /// follow-up agent — a registry built without one — is simply nothing to
-    /// do.
+    /// The steps run sequentially inside one lock acquisition rather than each
+    /// triggering the next. Chaining would work — the lock is released before
+    /// a successor could want it — but it would make every follow-up agent a
+    /// potential trigger, and the invariant that keeps this terminating is
+    /// precisely that none of them is. Order still matters within a sequence:
+    /// the scholar has to finish before the organizer files what it wrote.
+    ///
+    /// Every failure is swallowed, and a failed step does not cancel the rest.
+    /// A run that tidies the workspace must never be able to fail the
+    /// investigation that triggered it, and an unregistered follow-up agent —
+    /// a registry built without one — is simply nothing to do.
     async fn run(self) {
-        if !self.manager.knows(&self.agent) {
-            return;
-        }
         let _guard = self.manager.housekeeping.lock().await;
-        let _ = self
-            .manager
-            .run_to_completion(&self.agent, FOLLOW_UP_BRIEF.to_string())
-            .await;
+        for step in self.steps {
+            if !self.manager.knows(step.agent) {
+                continue;
+            }
+            let _ = self
+                .manager
+                .run_to_completion(step.agent, step.brief.to_string())
+                .await;
+        }
     }
 }
 
