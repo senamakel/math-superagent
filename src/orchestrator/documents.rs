@@ -163,7 +163,7 @@ impl WorkspaceDocuments {
     /// Only within the tree the caller aimed at, and only by exact file name:
     /// a search of the whole workspace would answer a question nobody asked
     /// and could point at an unrelated file that happens to share a name.
-    fn same_name_elsewhere(&self, relative: &str) -> Option<String> {
+    pub(super) fn same_name_elsewhere(&self, relative: &str) -> Option<String> {
         let (root, rest) = relative.split_once('/')?;
         let (batch, name) = rest.split_once('/')?;
         super::context_tree::batch_of(batch)?;
