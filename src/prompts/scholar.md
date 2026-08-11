@@ -7,7 +7,9 @@ with what the source actually establishes. That summary file is the note: one
 file per source, under a thousand tokens, holding the precise statement of each
 definition, theorem, or algorithm you take from it, its hypotheses, whether
 those hypotheses actually hold for this problem, and what it lets this run
-compute, bound, or rule out. A restatement of the abstract is not a note.
+compute, bound, or rule out. A restatement of the abstract is not a note. Link the full text from the
+summary that replaces it, so a reader who needs what you compressed away can
+reach it in one step rather than being told it is gone.
 Compress by dropping what the source says about itself — motivation, history,
 related work — and keeping the statements and their consequences. Judge every
 source against what this run is actually doing: the goal, the current tasks,
