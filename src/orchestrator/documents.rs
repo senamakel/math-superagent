@@ -463,8 +463,9 @@ impl WorkspaceDocuments {
                 "the reply is too large".into(),
             ));
         }
-        String::from_utf8(bytes.to_vec())
-            .map_err(|error| tinyagents::TinyAgentsError::Validation(format!("reply is not UTF-8: {error}")))
+        String::from_utf8(bytes.to_vec()).map_err(|error| {
+            tinyagents::TinyAgentsError::Validation(format!("reply is not UTF-8: {error}"))
+        })
     }
 
     /// Reads a file the runtime maintains, bypassing the visibility check.
@@ -987,7 +988,9 @@ impl DocumentTool {
             .and_then(|value| value.to_str().ok())
             .map(ToOwned::to_owned);
         let bytes = response.bytes().await.map_err(|error| {
-            tinyagents::TinyAgentsError::Tool(format!("failed to read downloaded document: {error}"))
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to read downloaded document: {error}"
+            ))
         })?;
         if bytes.len() > MAX_DOCUMENT_BYTES {
             return Err(tinyagents::TinyAgentsError::Validation(

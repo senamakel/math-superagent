@@ -95,11 +95,7 @@ impl Tool<()> for ClaimsTool {
                      worth naming."
                 )
             } else {
-                found
-                    .into_iter()
-                    .map(detail)
-                    .collect::<Vec<_>>()
-                    .join("\n")
+                found.into_iter().map(detail).collect::<Vec<_>>().join("\n")
             }
         };
         Ok(ToolResult::text(call.id, self.name(), output))

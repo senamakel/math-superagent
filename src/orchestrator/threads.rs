@@ -159,8 +159,9 @@ pub(super) fn collect(workspace: &Path) -> Threads {
             }
         }
         if thread.question.is_empty() {
-            out.faults
-                .push(format!("`{slug}` names no question, so it is a note, not a thread"));
+            out.faults.push(format!(
+                "`{slug}` names no question, so it is a note, not a thread"
+            ));
         }
         out.threads.push(thread);
     }
@@ -197,7 +198,9 @@ impl Threads {
             self.append_faults(&mut out);
             return out;
         }
-        out.push_str("| Thread | Question | Status | Rests on | Next |\n| --- | --- | --- | --- | --- |\n");
+        out.push_str(
+            "| Thread | Question | Status | Rests on | Next |\n| --- | --- | --- | --- | --- |\n",
+        );
         for thread in self.threads.iter().take(MAX_ROWS) {
             let _ = writeln!(
                 out,

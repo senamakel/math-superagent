@@ -299,7 +299,6 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
     }
 }
 
-
 /// Derives the ledger from every note under `research/`.
 ///
 /// Full texts are skipped: they are the untouched original, nothing may edit
@@ -354,12 +353,12 @@ fn walk(root: &Path, directory: &Path, depth: usize, budget: &mut usize, ledger:
             .into_owned();
         let (claims, faults) = parse(&text, &relative);
         ledger.claims.extend(claims);
-        ledger.malformed.extend(faults.into_iter().map(|reason| {
-            Malformed {
+        ledger
+            .malformed
+            .extend(faults.into_iter().map(|reason| Malformed {
                 source: relative.clone(),
                 reason,
-            }
-        }));
+            }));
     }
 }
 
@@ -524,12 +523,7 @@ impl Ledger {
             })
             .filter(|(score, _)| *score > 0)
             .collect();
-        scored.sort_by(|left, right| {
-            right
-                .0
-                .cmp(&left.0)
-                .then(left.1.id.cmp(&right.1.id))
-        });
+        scored.sort_by(|left, right| right.0.cmp(&left.0).then(left.1.id.cmp(&right.1.id)));
         scored
             .into_iter()
             .take(MAX_RESULTS)
@@ -573,9 +567,7 @@ pub(super) fn detail(claim: &Claim) -> String {
 /// that succeeded.
 pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) -> Ledger {
     let ledger = collect(documents.root());
-    let _ = documents
-        .write_runtime(CLAIMS_PATH, &ledger.render())
-        .await;
+    let _ = documents.write_runtime(CLAIMS_PATH, &ledger.render()).await;
     ledger
 }
 

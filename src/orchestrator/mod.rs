@@ -656,17 +656,21 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 },
             )
             .with_model("openrouter")
-            .with_tools(research_enabled.then_some("exa_search").into_iter().chain(
-                research_enabled.then_some("oeis_lookup")
-            ).chain([
-                "recall_research",
-                "remember_research",
-                document_tools[0],
-                document_tools[1],
-                document_tools[4],
-                document_tools[5],
-                document_tools[6],
-            ])),
+            .with_tools(
+                research_enabled
+                    .then_some("exa_search")
+                    .into_iter()
+                    .chain(research_enabled.then_some("oeis_lookup"))
+                    .chain([
+                        "recall_research",
+                        "remember_research",
+                        document_tools[0],
+                        document_tools[1],
+                        document_tools[4],
+                        document_tools[5],
+                        document_tools[6],
+                    ]),
+            ),
         )?
         .register(
             AgentDefinition::new(

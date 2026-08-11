@@ -22,7 +22,10 @@ fn the_same_need_names_the_same_request() {
     let first = identifier("Whether the pass loop keeps the game a stopper");
     let second = identifier("whether the PASS loop keeps the game a stopper");
     assert_eq!(first, second);
-    assert_ne!(first, identifier("Whether the recurrence has a closed form"));
+    assert_ne!(
+        first,
+        identifier("Whether the recurrence has a closed form")
+    );
     // The id reads as what it asks for, so a claim answering it is legible.
     assert!(first.starts_with("whether-pass-loop"), "{first}");
 }

@@ -128,7 +128,8 @@ pub(super) async fn refresh(documents: &WorkspaceDocuments) {
 
 /// How many of a request's distinctive words a claim carries.
 fn overlap(need: &str, claim: &super::claims::Claim) -> usize {
-    let haystack = format!("{} {} {}", claim.id, claim.statement, claim.bearing).to_ascii_lowercase();
+    let haystack =
+        format!("{} {} {}", claim.id, claim.statement, claim.bearing).to_ascii_lowercase();
     need.split(|c: char| !c.is_alphanumeric())
         .filter(|word| word.len() > 4)
         .map(str::to_ascii_lowercase)
@@ -219,7 +220,10 @@ fn render(queue: &BTreeMap<String, Request>, ledger: &Ledger) -> String {
             let _ = writeln!(
                 out,
                 "- `{id}` — {}",
-                queue.get(id).map(|request| request.need.as_str()).unwrap_or_default()
+                queue
+                    .get(id)
+                    .map(|request| request.need.as_str())
+                    .unwrap_or_default()
             );
         }
     }

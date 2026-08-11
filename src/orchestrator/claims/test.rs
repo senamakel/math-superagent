@@ -73,7 +73,9 @@ fn the_ledger_is_derived_from_the_notes_on_disk() -> std::io::Result<()> {
     std::fs::create_dir_all(root.join("research/L0.0"))?;
     std::fs::write(
         root.join("research/L1.0/trollope.md"),
-        note("id: trollope-delange\nstatement: The summatory bit count has a closed form.\nstatus: proved\nholds-here: yes"),
+        note(
+            "id: trollope-delange\nstatement: The summatory bit count has a closed form.\nstatus: proved\nholds-here: yes",
+        ),
     )?;
     std::fs::write(
         root.join("research/L0.0/trollope.full.md"),
@@ -147,11 +149,15 @@ fn load_bearing_but_unverified_claims_are_listed() -> std::io::Result<()> {
     std::fs::create_dir_all(root.join("research/L1.0"))?;
     std::fs::write(
         root.join("research/L1.0/asserted.md"),
-        note("id: taken-on-trust\nstatement: The bound is tight.\nholds-here: yes\nstatus: asserted"),
+        note(
+            "id: taken-on-trust\nstatement: The bound is tight.\nholds-here: yes\nstatus: asserted",
+        ),
     )?;
     std::fs::write(
         root.join("research/L1.0/proved.md"),
-        note("id: established\nstatement: The recurrence terminates.\nholds-here: yes\nstatus: proved"),
+        note(
+            "id: established\nstatement: The recurrence terminates.\nholds-here: yes\nstatus: proved",
+        ),
     )?;
     let rendered = collect(&root).render();
     assert!(rendered.contains("## Load-bearing but unverified"));
@@ -171,7 +177,9 @@ fn search_ranks_by_how_much_of_the_query_a_claim_carries() -> std::io::Result<()
     std::fs::create_dir_all(root.join("research/L1.0"))?;
     std::fs::write(
         root.join("research/L1.0/on-point.md"),
-        note("id: popcount-closed-form\nstatement: The summatory popcount admits a closed form.\nbearing: lets A(n) be evaluated in polylog time"),
+        note(
+            "id: popcount-closed-form\nstatement: The summatory popcount admits a closed form.\nbearing: lets A(n) be evaluated in polylog time",
+        ),
     )?;
     std::fs::write(
         root.join("research/L1.0/off-point.md"),
