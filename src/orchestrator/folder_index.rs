@@ -149,6 +149,36 @@ pub(super) struct FolderIndexTool {
     documents: WorkspaceDocuments,
 }
 
+/// Records a file's purpose in its folder index, outside any tool call.
+///
+/// A download knows its own provenance the moment it lands — the URL it came
+/// from and the heading it opens with — and nothing later recovers that as
+/// cheaply. Leaving the row blank for an agent to fill in produced an index of
+/// `_(undescribed)_` against every source, which is worse than no index: it
+/// costs the reader a row and tells them nothing.
+///
+/// Best effort by contract. The description is a convenience; failing to write
+/// it must never fail the download that produced the file.
+pub(super) async fn record_description(
+    documents: &WorkspaceDocuments,
+    relative: &str,
+    description: &str,
+) {
+    let (folder, name) = split(relative);
+    if name.is_empty() || name == INDEX_FILE {
+        return;
+    }
+    let existing = documents
+        .read_document(&index_for(&folder))
+        .await
+        .unwrap_or_default();
+    let mut entries = parse(&existing);
+    entries.insert(name, description.trim().replace('\n', " "));
+    let _ = documents
+        .write_document(&index_for(&folder), &render(&folder, &entries))
+        .await;
+}
+
 impl FolderIndexTool {
     /// Builds both index tools.
     pub(super) fn all(documents: &WorkspaceDocuments) -> Vec<Arc<dyn Tool<()>>> {
@@ -209,7 +239,11 @@ impl FolderIndexTool {
 
         let mut entries = BTreeMap::new();
         for name in &present {
-            if name == INDEX_FILE {
+            // The index lists what a reader should open. The full text is not
+            // that: it is reached from the summary beside it, which names it,
+            // so a row here doubles the length of every research index to
+            // point at something nobody should read first.
+            if name == INDEX_FILE || name.ends_with(super::documents::FULL_TEXT_SUFFIX) {
                 continue;
             }
             let description = described.get(name).cloned().unwrap_or_default();
