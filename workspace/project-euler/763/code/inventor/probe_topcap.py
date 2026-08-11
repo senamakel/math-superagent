@@ -14,7 +14,7 @@ Declared infrastructure cost: exact BFS + reverse cap-merge, exponential in
 config size, bounded to N<=6 (configs of <=13 cells).  Oracle only.
 """
 from itertools import product
-from lib.amoeba import children
+from lib.amoeba import children, forward_level
 
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
 DIM = 3
@@ -22,17 +22,6 @@ DIM = 3
 
 def level(p):
     return sum(p)
-
-
-def forward_level(level):
-    nxt = set()
-    for S in level:
-        Sset = set(S)
-        for p in Sset:
-            ch = children(p, DIM)
-            if all(c not in Sset for c in ch):
-                nxt.add(frozenset((Sset - {p}) | set(ch)))
-    return nxt
 
 
 def top_caps(S):
@@ -89,7 +78,7 @@ def main():
               f"T2(unique_cap)bad={t2_bad}  T3(collapse)bad={t3_bad}")
         if N == Nmax:
             break
-        level = forward_level(level)
+        level = forward_level(level, 3)
 
 
 if __name__ == "__main__":
