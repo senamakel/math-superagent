@@ -19,13 +19,8 @@ verifying the result before presenting it.
 │   └──────┬───────┘                                                       │
 │          │ one solution loop per run                                     │
 │  ┌────────────────────────────────────────────────────────────────────┐  │
-│  │ the solution loop, below: every attempt is reflected on, and       │  │
-│  │ repeated unproductive attempts trigger diversify                   │  │
-│  │                                                                    │  │
-│  │   attempt ──> reflect ──┬── solved ──> done                        │  │
-│  │      ▲                  ├── retry ──────────────┐                  │  │
-│  │      │                  └── stuck ──> diversify ┤                  │  │
-│  │      └──────────────────────────────────────────┘                  │  │
+│  │ attempt ──> reflect ──> retry, or diversify when stuck, or done     │  │
+│  │ reflection judges every attempt; see "The solution loop" below      │  │
 │  └────────────────────────────────────────────────────────────────────┘  │
 │          │ spawn_agent(s) returns a run ID immediately                   │
 │          │ peek_agent, steer_agent, await_agent(s)                       │
