@@ -1,26 +1,23 @@
 # Index — research
 
-What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+What each file in this folder is for. Keep it current: describe a file when you
+create it, and refresh this index after adding, renaming, or deleting files.
+
+The research is organised in tiers:
+
+| Folder | Purpose |
+| --- | --- |
+| `L0/` | Full downloaded source texts (one `.full.md` per source, some with duplicate `.full.full.md` companions). Read the L1 summary first; open these only when the summary does not answer the question. |
+| `L1/` | One short summary note per source, each linking its full text in `L0/`. The way in for any single source. See `L1/INDEX.md`. |
+| `L2/` | Derived notes restating the applied mathematics (counting arithmetic, game reduction + pass) on top of L1. |
+| `folds/` | One-subject synthesis notes aggregating the L1 sources they link (game-core, passes, counting-arithmetic, deadends). Most useful ordering of the material; see `folds/INDEX.md`. |
+
+Top-level notes:
 
 | File | Purpose |
 | --- | --- |
-| `L1/raw_mfl_pass.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/1204.3222; not yet read, excerpt pending a scholar summary |
-| `L1/raw_pass_waiting_check.md` | Mathematics > Combinatorics — from https://arxiv.org/abs/1505.01907; not yet read, excerpt pending a scholar summary |
-| `Note` | Purpose |
-| `[[L1/a083652]]` | A083652: summatory bit-length, exact O(1) closed form; third leg total = ones+zeros. |
-| `[[L1/bitcount]]` | A000788: summatory 1-bits, O(log n) recurrences → A(n). |
-| `[[L1/cgt]]` | CGT position form / disjunctive sums; board decomposes. |
-| `[[L1/disjsum]]` | Core: G(a,b)=a−b, board → the two totals A,B. |
-| `[[L1/loopy]]` | skip self-loop → DP fixpoint; stopper ⇒ finite S(n). |
-| `[[L1/misfiled]]` | accidental arXiv downloads unrelated to the problem; see note. |
-| `[[L1/normalplay]]` | unable-to-move loses; A−B>0 ⇒ One wins without skips. |
-| `[[L1/partisan]]` | S−G inapplicable (disjoint move sets); minimax over (A,B). |
-| `[[L1/pass_waiting]]` | Larsson–Nowakowski–Santos 2015 arXiv:1505.01907 primary pass theory. |
-| `[[L1/strategy]]` | dead end. |
-| `[[L1/surreal]]` | Why a−b is exact; skips outside short games ⇒ A−B ≠ S(n). |
-| `[[L1/trollopedelange]]` | Girgensohn 2011 #A54: explicit Delange closed forms (1-periodic fluctuation). |
-| `[[L1/verify_trollopedelange]]` | numeric checks to run before quoting Girgensohn. |
-| `[[L1/weightedmom]]` | Larcher & Pillichshammer 2005: k·-weighted moments admit same closed forms. |
-| `[[L1/weightedsearch]]` | dead end: S(n) ∉ OEIS. |
-| `[[L1/zerocount]]` | A059015: summatory 0-bits → B(n). |
-| `[[L1/zugzwang]]` | skip = "passing, if allowed, would be best". |
+| `L1/raw_mfl_pass.md` | Raw capture from arXiv:1204.3222 (Morrison–Friedman–Landsberg), awaiting a scholar summary; see L1/mfl_pass.md once summarised. |
+| `L1/raw_pass_waiting_check.md` | Raw capture from arXiv:1505.01907 (Larsson–Nowakowski–Santos), awaiting verification; see L1/pass_waiting.md. |
+
+Recommended reading order (most useful first): `folds/game-core.md`, `folds/passes.md`,
+`folds/counting-arithmetic.md`, `folds/deadends.md`, then the L1 notes each fold links.
