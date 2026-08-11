@@ -201,6 +201,11 @@ where
                 inbox.push(message);
             }
             let idle = inbox.is_empty();
+            // Counted before the cycle runs, not after. Counting after means a
+            // team that finishes or is cancelled during its first cycle
+            // reports having run none, which reads as a team that never
+            // started rather than one that did its job and stopped.
+            cycles.fetch_add(1, Ordering::Relaxed);
             match cycle(inbox).await {
                 Cycle::Finished => break TeamExit::Done,
                 Cycle::Worked => {}
@@ -213,7 +218,6 @@ where
                     }
                 }
             }
-            cycles.fetch_add(1, Ordering::Relaxed);
         };
         if let Some(tracer) = tracer {
             tracer.note(&format!(

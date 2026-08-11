@@ -179,3 +179,18 @@ async fn posting_to_a_team_never_blocks_the_sender() {
         started.elapsed()
     );
 }
+
+#[tokio::test]
+async fn a_team_that_finishes_on_its_first_cycle_reports_having_run_one() {
+    // A live background team replied "nothing further" immediately and the
+    // console said it "stopped after 0 cycle(s)", which reads as a team that
+    // never started rather than one that did its job at once.
+    let team = spawn(
+        "background",
+        budget(1_000, Duration::from_mins(1)),
+        None,
+        move |_inbox| async move { Cycle::Finished },
+    );
+
+    assert!(settle(|| team.cycles() == 1).await, "got {}", team.cycles());
+}
