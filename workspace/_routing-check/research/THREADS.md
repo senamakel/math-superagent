@@ -1,3 +1,0 @@
-# Threads
-
-row: polylog-evaluation
