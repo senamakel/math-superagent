@@ -97,7 +97,21 @@ impl<S: Send + Sync> UntruncatedModel<S> {
             inner,
             tracer: None,
             agent: String::new(),
+            configured: None,
         }
+    }
+
+    /// Tells the wrapper the run's configured per-turn output cap.
+    ///
+    /// Growth is measured from this rather than from the request's own cap, so
+    /// a turn the vendored loop has already doubled is recognised as such and
+    /// not doubled a second time. Left unset, growth falls back to the
+    /// request's cap, which is the old behaviour and the right degradation:
+    /// re-issuing once too generously still beats never re-issuing.
+    #[must_use]
+    pub fn with_turn_cap(mut self, tokens: u32) -> Self {
+        self.configured = Some(tokens);
+        self
     }
 
     /// Announces each re-issue on the operator console.

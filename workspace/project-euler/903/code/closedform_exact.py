@@ -261,6 +261,7 @@ def check_closed():
     print("--- (c1) f_n(k) = (A_n + (k-1) B_n)(n!)^2 exact vs oracle rows ---")
     ok_rows = True
     for n in range(2, 12):
+        row = extend[n]
         An, Bn = closed_AB(n)
         P = math.factorial(n) ** 2
         closed_row = [int((An + (k - 1) * Bn) * P) for k in range(1, n)]
