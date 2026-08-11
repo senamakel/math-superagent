@@ -18,3 +18,8 @@
       within ~2-3 SE of 0.5). Conclusion: p(13,1800) indistinguishable from 0.5.
 - [ ] Solve p(13,1800) exactly. Hypothesis of w-order-only reduction is refuted;
       need the true continuous dynamics (bump/finish chronology over Exp speeds).
+- [x] test_treap.py: Cartesian-tree/min-heap-treap hypothesis REFUTED. n=2..6,
+      L in (160,400,1800), 20k trials each -> 30 mismatches by trial ~60.
+      Trivial n=2 counterexample (v0<v1, no bump, even; treap predicts odd).
+      Tree-model MC p(3,160)=0.333 (given 0.4148), p(4,400)=0.833 (given 0.5108),
+      p(13,1800)=0.536. Structure of the treap does not match the bump-chronology.
