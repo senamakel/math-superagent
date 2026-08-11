@@ -612,10 +612,20 @@ pub(super) fn research_path(requested: &str) -> String {
     if trimmed.is_empty() {
         return format!("{RESEARCH_DIR}/document.md");
     }
-    if trimmed == RESEARCH_DIR || trimmed.starts_with(&format!("{RESEARCH_DIR}/")) {
-        return trimmed.to_string();
+    let inside = trimmed
+        .strip_prefix(&format!("{RESEARCH_DIR}/"))
+        .unwrap_or(if trimmed == RESEARCH_DIR { "" } else { trimmed });
+    if inside.is_empty() {
+        return format!("{RESEARCH_DIR}/{DIGEST_DIR}/document.md");
     }
-    format!("{RESEARCH_DIR}/{trimmed}")
+    // A path naming a level already knows where it belongs. Anything else is
+    // a source arriving from outside, and a source's readable form is a
+    // level-1 note whatever the caller called it.
+    if inside.starts_with("L") && inside.contains('/') {
+        return format!("{RESEARCH_DIR}/{inside}");
+    }
+    let name = inside.rsplit('/').next().unwrap_or(inside);
+    format!("{RESEARCH_DIR}/{DIGEST_DIR}/{name}")
 }
 
 /// Renames a stored document to `.md`, because that is what it now contains.
