@@ -8,4 +8,3 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_ggm_recurrence.py` | _(undescribed)_ |
 | `d2d.py` | 2D BFS oracle for D_2D(N): an amoeba at (x,y) divides into (x+1,y) and (x,y+1) if both empty, parent disappears, after N divisions a config holds N+1 cells; D_2D(N)=#distinct reachable occupied-cell sets. Verified 0..14 by an independent int-encoded bitmask BFS (both give 1,1,2,4,9,20,46,105,243,561,1301,3014,6995,16227,37668). |
 | `verify_reverse_merge.py` | Verifies the reverse-merge (voidance-set) characterization of amoeba reachability for both 2D and 3D: every config reachable by forward BFS is also reducible to {origin} by repeatedly merging the d children of a common missing parent (Eriksson's Fact 5). Runs standalone over all reachable configs for small N (d=2 to N=8, d=3 to N=4). Supports the run's structural reverse-merge claim. |
-ibed)_ |
