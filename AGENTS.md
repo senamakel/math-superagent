@@ -19,6 +19,8 @@ The runtime has three roles:
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
+- The goals agent translates an objective into completion criteria and spawns
+  research or tool-builder subagents until the goal is met or precisely blocked.
 - The research agent uses Exa to find definitions, papers, official references,
   or current facts. It returns source URLs, separates evidence from inference,
   and can save reusable notes to Qdrant.
@@ -78,8 +80,10 @@ workspace/              # selectable writable agent workspaces
 └── template/           # seed instructions, prompts, config, and memory
 ```
 
-The executable registry currently contains `research` and `tool_builder`.
+The executable registry contains `goals`, `research`, and `tool_builder`.
 Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
+The goals agent also receives the research and tool-builder delegation tools,
+so it can pursue a goal through nested, focused work.
 The research agent has Exa plus `recall_research` and `remember_research` tools.
 Qdrant persists the notes in a named Compose volume. The vector tools use a
 small deterministic feature-hashing encoder, not an external embedding model.

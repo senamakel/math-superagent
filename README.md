@@ -9,6 +9,8 @@ verifying the result before presenting it.
 The runtime uses a small registry of specialist agents:
 
 - `orchestrator` breaks a problem into focused tasks and combines the results.
+- `goals` turns an objective into completion criteria and spawns focused
+  research and tool-building subagents until the criteria are met or blocked.
 - `research` searches with Exa and returns evidence with source URLs.
 - `tool_builder` writes and runs shell or Python tools for numerical checks,
   experiments, data processing, and reproducible calculations.
@@ -111,7 +113,9 @@ and symlinks that leave the repository's `workspace/` root are rejected.
 ## How a run works
 
 The orchestrator decides which specialist should handle each part of the
-problem. Research questions go to the Exa-backed research agent. That agent can
+problem. Open-ended objectives can go to the goals agent, which can spawn both
+other specialists and track evidence against explicit completion criteria.
+Research questions go to the Exa-backed research agent. That agent can
 recall related notes from Qdrant and save useful sourced findings for later.
 Computations and executable checks go to the tool-builder. The orchestrator
 then writes one answer that separates cited facts from its own mathematical
