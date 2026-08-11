@@ -148,10 +148,16 @@ pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
     let _ = dotenvy::dotenv();
     let api_key = std::env::var("OPENROUTER_API_KEY")
         .map_err(|_| TinyAgentsError::Validation("OPENROUTER_API_KEY is required".to_string()))?;
+    // StreamLake stays the preferred route, but as an ordering rather than an
+    // exclusive pin. `only` made every other provider unreachable, so when
+    // StreamLake rate-limited the model the whole runtime stalled — requests
+    // hung for minutes and exhausted their retries against a provider that had
+    // nothing to give, while other providers serving the same model sat idle.
+    // `allow_fallbacks` is what makes adding a provider actually help.
     let mut model = OpenAiModel::openrouter(api_key)
         .with_model(DEFAULT_OPENROUTER_MODEL)
         .with_default_provider_options(serde_json::json!({
-            "provider": { "only": ["streamlake"] }
+            "provider": { "order": ["streamlake"], "allow_fallbacks": true }
         }));
     if let Ok(model_name) = std::env::var("OPENROUTER_MODEL")
         && !model_name.trim().is_empty()

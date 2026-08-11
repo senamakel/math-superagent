@@ -214,8 +214,11 @@ estimated 300,000-token trigger. The summary should retain mathematical
 assumptions, intermediate results, source URLs, tool output, and unfinished
 work.
 
-OpenRouter uses `deepseek/deepseek-v4-flash-0731` through StreamLake unless
-`OPENROUTER_MODEL` overrides the model. Exa handles search. Langfuse ingestion
+OpenRouter uses `deepseek/deepseek-v4-flash-0731` unless `OPENROUTER_MODEL`
+overrides the model. StreamLake is preferred through `provider.order`, with
+`allow_fallbacks` enabled. Do not restore `provider.only`: an exclusive pin
+makes every other provider unreachable, so a rate limit on one route stalls the
+whole runtime while providers serving the same model sit idle. Exa handles search. Langfuse ingestion
 is best effort and must not turn a successful answer into a failed run.
 
 Langfuse is also available for querying and reviewing recorded turns. Use
