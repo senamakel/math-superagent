@@ -5,14 +5,14 @@ Independent verification of PE 579 machinery (not the final answer)
 [Task 1] Primary-quaternion parametrization logic
   (a) For every odd N in 1..30, frames(all primitive quats) == frames(primary primitive quats): PASS
   (b) N == edge length for every primary frame: PASS
-  Task 1 wall: 0.63s
+  Task 1 wall: 0.65s
   => PASS
 
 [Task 2] No primitive frame has even edge length (exhaustive, n<=80)
-  primitive frames with coordinate spans in box n=80: 1941
-  of those, edge length even: 0, odd: 1941
-  -> NO primitive frame has even edge length up to n=80: CONFIRMED (0 even)
-  Task 2 wall: 0.82s (vector-pairing enumeration, n=80)
+  frame_method enumeration (raw, ell<=n): 1941 frames; even edge: 0, odd: 1941  -> 0 even
+  Strengthened (norm cap relaxed to sqrt(3)*n AND box-fit spans<=n): 805 frames; even edge: 0  -> 0 even
+  -> NO primitive frame that can occur in [0,n]^3 has even edge length up to n=80: CONFIRMED (0 even in both)
+  Task 2 wall: 0.84s (vector-pairing enumeration, n=80)
 
 [Task 3] Independent C(n), S(n) via frame enumeration + power sums
      n         C(n)             S(n)  C-ok  S-ok

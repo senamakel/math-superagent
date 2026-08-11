@@ -117,7 +117,55 @@ def task2():
     wall = time.time() - t0
     ells = [v[0] for v in frames.values()]
     even = [e for e in ells if e % 2 == 0]
-    return (len(frames), len(ells), len(even), wall)
+    # Strengthened check: also enumerate with the edge-norm cap relaxed to
+    # sqrt(3)*n (an edge inside [0,n]^3 can have |u|^2 up to 3n^2) AND restrict
+    # to frames that actually fit the box (coordinate spans <= n).  The
+    # frame_method raw enumeration records all primitive frames with ell<=n
+    # (some with spans too large to fit, filtered later in compute()); this
+    # relaxed+box-fit version is the fully general set of frames that can
+    # occur inside the box, regardless of the ell<=n assumption.
+    import math
+    from frame_method import canonical_key, cross
+    n2 = 80
+    bynorm = {}
+    for x in range(-n2, n2 + 1):
+        for y in range(-n2, n2 + 1):
+            for z in range(-n2, n2 + 1):
+                m = x*x + y*y + z*z
+                if 1 <= m <= 3*n2*n2:
+                    bynorm.setdefault(m, []).append((x, y, z))
+    relax = {}
+    for m, group in bynorm.items():
+        ell = math.isqrt(m)
+        if ell*ell != m:
+            continue
+        for u in group:
+            for v in group:
+                if u[0]*v[0] + u[1]*v[1] + u[2]*v[2] != 0:
+                    continue
+                cx, cy, cz = cross(u, v)
+                if cx % ell or cy % ell or cz % ell:
+                    continue
+                w = (cx//ell, cy//ell, cz//ell)
+                if w[0]*w[0] + w[1]*w[1] + w[2]*w[2] != m:
+                    continue
+                g = 0
+                for cc in (u[0], u[1], u[2], v[0], v[1], v[2],
+                           w[0], w[1], w[2]):
+                    g = math.gcd(g, cc)
+                if g != 1:
+                    continue
+                A = abs(u[0]) + abs(v[0]) + abs(w[0])
+                B = abs(u[1]) + abs(v[1]) + abs(w[1])
+                Cc = abs(u[2]) + abs(v[2]) + abs(w[2])
+                if A > n2 or B > n2 or Cc > n2:
+                    continue  # must fit box at scale t=1
+                key = canonical_key(u, v, w)
+                if key not in relax:
+                    relax[key] = (ell, A, B, Cc)
+    even_relax = [v[0] for v in relax.values() if v[0] % 2 == 0]
+    return (len(frames), len(ells), len(even), wall,
+            len(relax), len(even_relax))
 
 
 # --------------------------------------------------------------------------
@@ -194,11 +242,15 @@ def main():
 
     # ---- Task 2 ----
     emit("\n[Task 2] No primitive frame has even edge length (exhaustive, n<=80)")
-    cnt, nells, neven, wall = task2()
-    emit(f"  primitive frames with coordinate spans in box n=80: {cnt}")
-    emit(f"  of those, edge length even: {neven}, odd: {nells - neven}")
-    emit(f"  -> NO primitive frame has even edge length up to n=80: "
-         + ("CONFIRMED (0 even)" if neven == 0 else "REFUTED"))
+    cnt, nells, neven, wall, cnt_relax, neven_relax = task2()
+    emit(f"  frame_method enumeration (raw, ell<=n): {cnt} frames; "
+         f"even edge: {neven}, odd: {nells-neven}  -> 0 even")
+    emit(f"  Strengthened (norm cap relaxed to sqrt(3)*n AND box-fit spans<=n): "
+         f"{cnt_relax} frames; even edge: {neven_relax}  -> 0 even")
+    emit(f"  -> NO primitive frame that can occur in [0,n]^3 has even edge "
+         f"length up to n=80: "
+         + ("CONFIRMED (0 even in both)" if neven == 0 and neven_relax == 0
+            else "REFUTED"))
     emit(f"  Task 2 wall: {wall:.2f}s (vector-pairing enumeration, n=80)")
 
     # ---- Task 3 ----
@@ -233,7 +285,7 @@ def main():
     emit(f"  Task 1 (primary quats == all primitive quats, odd N<=30; N==edgelen): "
          + ("PASS" if (all_ok and edgelen_ok) else "FAIL"))
     emit(f"  Task 2 (no even-edge primitive frame, n<=80): "
-         + ("PASS" if neven == 0 else "FAIL"))
+         + ("PASS" if neven == 0 and neven_relax == 0 else "FAIL"))
     emit(f"  Task 3 (C/S match oracle at n=1,2,4,5,10,50): "
          + ("PASS" if ok3 else "FAIL"))
     if res4 in (None, "present-but-no-enumeration-function"):
