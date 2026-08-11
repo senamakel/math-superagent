@@ -278,9 +278,19 @@ log are excluded; read a trace locally or in Langfuse.
 
 Downloads are converted to Markdown before they are stored: HTML is stripped of
 scripts, styles, and navigation, a PDF's text layer is extracted, and TeX is
-preserved intact. Links become reference-style with a single list at the end
-and tracking parameters removed, so a page's URLs cost a few characters each
-instead of filling the context.
+preserved intact — the HTML converter is hand-written because a general-purpose
+one escapes the backslashes in `\(…\)` and destroys the mathematics. Magic bytes
+beat the declared content type, since a PDF served as `text/html` is still a PDF.
+Links become reference-style with a single list at the end and tracking
+parameters removed, so a page's URLs cost a few characters each instead of
+filling the context.
+
+A download lands as two files side by side: `<name>.md` holding a bounded excerpt
+and `<name>.full.md` holding the complete text. One real reference page converted
+to about 23,000 tokens, and three of those fill a specialist's context before it
+has done any work — so reading the short one is the default and reading the long
+one is a decision. The excerpt is a placeholder the scholar is expected to replace
+with what the source establishes, under a thousand tokens.
 
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
@@ -288,6 +298,13 @@ index, and search that index for ranked snippets. The index lives at
 `.document-index.json` inside the selected workspace. Downloads and individual
 documents are capped at 5 MiB, paths cannot leave `/workspace`, and one
 workspace cannot search another workspace's files.
+
+The tool-builder additionally gets `apply_patch`, which applies a Codex-format
+envelope across several files at once. Two deviations from that format are
+deliberate: context matching is exact and an ambiguous hunk is refused rather
+than fuzzily resolved, because a patch landing in the wrong place yields a
+program that runs and computes something else; and application is atomic, so a
+bad hunk in the third file cannot leave the first two rewritten.
 
 Use `--workspace` to give a run its own subdirectory:
 
