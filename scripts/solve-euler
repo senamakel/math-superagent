@@ -63,7 +63,8 @@ docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
         "$url" > /workspace/problem.html.tmp
     test -s /workspace/problem.html.tmp
     mv /workspace/problem.html.tmp /workspace/problem.html
-    printf "%s\n" "$url" > /workspace/problem.url
+    mkdir -p /workspace/raw
+    printf "%s\n" "$url" > /workspace/raw/problem.url
 ' sh "$problem_number"
 
 if [ "$research" = off ]; then

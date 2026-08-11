@@ -178,7 +178,7 @@ impl RunTracer {
     /// Returns the conventional journal path for a workspace.
     #[must_use]
     pub fn journal_path(workspace: &Path) -> PathBuf {
-        workspace.join("trace.jsonl")
+        workspace.join("raw").join("trace.jsonl")
     }
 
     /// Records what one model call actually cost and who served it.

@@ -791,7 +791,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // an index costs a few hundred tokens where the files it describes cost
         // tens of thousands.
         "orchestrator" | "goals" => &[
-            "config.toml",
+            "raw/config.toml",
             "goal.md",
             "tasks.md",
             "memory.md",
@@ -822,7 +822,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // each is correct — which is what stops the run writing a fourth
         // variant of a check it already has.
         "tool_builder" | "coder" => &[
-            "config.toml",
+            "raw/config.toml",
             "goal.md",
             "tasks.md",
             "memory.md",
