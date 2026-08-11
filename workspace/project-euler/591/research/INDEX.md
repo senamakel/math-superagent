@@ -4,9 +4,16 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `berthe_imbert_ostrowski.md` | Summary of Berthe-Imbert, Diophantine Approximation, Ostrowski Numeration and the Double-Base Number System (DMTCS 11:1, 2009, pp.153-172): their one-sided inhomogeneous best-left approximation algorithm built on the three-gap theorem. **Excerpt only - not yet replaced with a real summary by the scholar.** |
-| `cabanillas_labbe_nearest.md` | arXiv landing page (metadata only) for Cabanillas' paper; kept for provenance, no mathematical content. Redundant with cabanillas_variant_pdf.* |
-| `cabanillas_prop9_10_exact_statement.md` | _(undescribed)_ |
-| `cabanillas_variant_pdf.md` | **Primary source** (arXiv:1904.01874), read in full: the alpha-numeration algorithm (Algorithm 3(ii)) and Propositions 9/10 giving the exact O(log L) candidate set for the argmin of the distance of n*alpha-beta to nearest integer. This is the method solution.py uses for PE591. |
-| `ostrowski_wikipedia.md` | Summary of the Wikipedia Ostrowski numeration article: integer and real Ostrowski numeration bases derived from continued-fraction convergents. **Excerpt only - not yet replaced with a real summary by the scholar.** |
-| `three_gap_wikipedia.md` | Summary of the Wikipedia Three-gap theorem article: statement and history of the Steinhaus conjecture - the orbit points {n*alpha} divide the circle into at most three distinct arc lengths. **Excerpt only - not yet replaced with a real summary by the scholar.** |
+| `berthe_imbert_ostrowski.md` | **Digitized.** Berthe-Imbert (DMTCS 11:1, 2009): Ostrowski numeration of integers/reals, Algorithm 2 (inhomogeneous best-left approximations), Props 4-6 (correctness, O(log log x)), Prop 7 (two-sided greedy fails naive). Independent one-sided check on the run's Cabanillas method; corroborates both-signs-of-b correction and the "records not semiconvergents" finding. |
+| `cabanillas_labbe_nearest.md` | arXiv landing metadata only; **no content**. Redundant with cabanillas_variant_pdf.*; kept for provenance, nobody should read it again. |
+| `cabanillas_prop9_10_exact_statement.md` | Exact transcription of Cabanillas Algorithm 3(ii) and Props 9/10 (both rational & irrational cases) from the PDF, with hypothesis checks and the O(log L) candidate-union argument for PE591. |
+| `cabanillas_variant_pdf.md` | **Primary source** (arXiv:1904.01874v2), read in full: the α-numeration algorithm (Alg 3(ii)) and Props 9/10 giving the exact O(log L) candidate set for the argmin of ||nα−β||_Z. This is the method solution.py uses for PE591. |
+| `ostrowski_wikipedia.md` | **Digitized.** Background: classical Ostrowski integer & real numeration bases from convergent denominators; Zeckendorf case. No inhomogeneous result; context only. |
+| `three_gap_wikipedia.md` | **Digitized.** Background: three-gap/Steinhaus theorem statement, history (Sós/Surányi/Świerczkowski), Liang proof. Homogeneous only; explains why inhomogeneous theory (Cabanillas) is needed. |
+
+## Notes (research/notes)
+
+| File | Purpose |
+| --- | --- |
+| `inhomogeneous_record_structure.md` | The run's consolidated theory report: reduction to min over b of ||bα−β||_Z, why semiconvergent hypothesis is false in the inhomogeneous case, exact O(log L) answer via Cabanillas Props 9/10 and the one-sided Berthe-Imbert Algorithm 2, full source list. Governing theory behind solution.py. |
+| `pattern_analysis.md` | Pattern-finder report: record-b sequences (Cabanillas candidates, no linear/polynomial regularity); |I_d| laws (nint(b√d−π), m²d scaling); corrected S = 526007984625966. |

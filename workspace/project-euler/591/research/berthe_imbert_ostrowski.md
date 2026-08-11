@@ -1,127 +1,75 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/berthe_imbert_ostrowski.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Berthé & Imbert, "Diophantine Approximation, Ostrowski Numeration and the Double-Base Number System" — DMTCS 11:1 (2009) 153–172
 
-<!-- source: https://dmtcs.episciences.org/450/pdf | converted from PDF -->
+Source: https://dmtcs.episciences.org/450/pdf (full text read).
 
-Discrete Mathematics and Theoretical Computer Science DMTCS vol. 11:1, 2009, 153–172
+## What it establishes (with locations)
 
-Diophantine Approximation, Ostrowski
-Numeration and the Double-Base Number
+**Problem setting.** Given `x ≥ 2`, find the largest `2^a 3^b ≤ x` (best default
+approximation, the key step of a greedy DBNS algorithm, Alg. 1). Taking logs with
+`α = log_3 2`, `β = {log_3 x}`, this is the inhomogeneous Diophantine problem:
+maximize `kα − l ∈ [0, β]`. The paper attacks it with an Ostrowski-type number
+system.
 
-Val´erie Berth´e
-1 and Laurent Imbert
-12
+**Ostrowski integer system (Prop 1, §3).** Every integer `N` is written uniquely as
+`N = Σ_{k=1}^{m} b_k q_{k-1}` with `0 ≤ b_1 ≤ a_1−1`, `0 ≤ b_k ≤ a_k (k≥2)`, and
+`b_k = 0` when `b_{k+1} = a_{k+1}` (Markovian/no-consecutive-max). Real-β base
+(Prop 2) uses `θ_n = q_n α − p_n` with alternating signs; Prop 3 gives a
+best-left base in `|θ_n|` but the paper notes (Remark 3) these digit sequences do
+**not** directly yield the inhomogeneous best approximations.
 
-1 CNRS, LIRMM, Universit´e Montpellier 2, 161 rue Ada, 34390 Montpellier, France
-2 CNRS, PIMS, Centre for Information Security and Cryptography, University of Calgary, 2500 University Drive NW,
-Calgary, AB, T2N 1N4, Canada
+**Main algorithm (Algorithm 2, §4) — inhomogeneous best-left approximations.**
+Set `f_n = |q_n α − p_n|`, `f_{-1}=1, f_0=α`, `f_n = a_{n+1} f_{n+1} + f_n` (so
+`f_{n-1} = a_{n+1} f_n + f_{n+1}`). Iterate `(k_0,l_0)=(0,0)`; at step `i` write
+`β − (k_i α − l_i) = c_i f_{n_i} + f_{n_i+1} + e_i` with unique `n_i, c_i, e_i`
+(`0 < e_i ≤ f_{n_i}`); then update
+- `n_i` even: `(k_{i+1}, l_{i+1}) = (k_i + q_{n_i}, l_i + p_{n_i})`
+- `n_i` odd:  `(k_{i+1}, l_{i+1}) = (k_i − c_i q_{n_i} + q_{n_i+1}, l_i − c_i p_{n_i} + p_{n_i+1})`.
 
-received July 16, 2008, revised January 15, 2009, accepted March 6, 2009.
+**Prop 4** proves these `0 < k_i α − l_i` are *exactly* the inhomogeneous best-left
+approximations of `β` (any `k`, `k_i < k < k_{i+1}`, has `kα−l < k_i α−l_i`).
+**Prop 5** — the max over `k ≤ ⌊log_2 x⌋` is attained at the last `k_v ≤ ⌊log_2 x⌋`
+(this is the bounded-horizon stopping rule). **Prop 6** — for `m`-bit `x` the
+algorithm terminates in **O(log log x)** iterations (proof uses that `q`-denominators
+grow at Fibonacci rate ⇒ `w(x) = O(log log x)`).
 
-A partition of x > 0 of the form x = P
+**Complexity/precision (Remark 2, Table 1).** Only denominators `q_i ≤ m` are needed;
+double precision ≈ convergent 16 provides enough for inputs up to ~17 million bits.
 
-i 2
-ai 3
-bi with distinct parts is called a double-base expansion of x. Such a rep-
-resentation can be obtained using a greedy approach, assuming one can efﬁciently compute the largest {2, 3}-integer,
-i.e., a number of the form 2
-a3
-b, less than or equal to x. In order to solve this problem, we propose an algorithm
-based on continued fractions in the vein of the Ostrowski number system, we prove its correctness and we analyse
-its complexity. In a second part, we present some experimental results on the length of double-base expansions when
-only a few iterations of our algorithm are performed.
+**Prop 7 (§5) — signed/two-sided greedy fails** if done naively (the two-sided best
+approximation need not give the largest `2^a3^b ≤ x`); the correct two-sided
+strategy is: solve the best-left for `β` AND the best-right (via `1−α, 1−β`
+symmetry) and take whichever side is closer.
 
-Keywords: Double-base number system, Ostrowski numeration, diophantine approximation
+## Hypotheses
 
-1 Introduction
+`α ∈ (0,1)` irrational; `0 < β ≤ 1`. Here `α = {√d}` irrational holds; `β = {π}` holds.
 
-In this paper, we consider representations of integers in two coprime bases. More exactly, we analyze
-decompositions of positive integers in the form
+## What it implies for this problem
 
-x =
- ℓ∑
+A second, *independent* exact construction of the record-holders of the left-side
+inhomogeneous approximation — and it is a genuine check on the run's method, not a
+duplicate: it iterates a different recursion (based on the `f_n` and `c_i`) than
+Cabanillas' α-numeration prefixes. The run's consolidated note
+(`research/notes/inhomogeneous_record_structure.md` §3.2) describes exactly this
+Algorithm 2 and correctly flags its limitation: it is **one-sided** (best-left
+only), whereas PE591 needs the two-sided circular minimum `||bα − β||_Z`; Cabanillas
+Prop 9/10 gives both sides directly, so it remains the primary method. The
+signed/two-sided caution of Prop 7 corroborates the run's critical correction that
+**both signs of b matter**.
 
-i=1 2
-ai3bi, (1)
+## Does it contradict memory.md?
 
-with ai, bi ≥ 0 and (ai, bi) ̸= (aj, bj) if i ̸= j.
-Apart from its practical interest in real life applications such as digital signal processing [13] and
-cryptography [10, 14], this so-called double-base number system (DBNS) has many intriguing properties
-and leads to interesting Diophantine approximation problems. We focus on bases 2 and 3 but most of the
-results and algorithms presented in this paper remain valid for arbitrary bases.
-Clearly, such a decomposition always exists, the binary expansion is a special case of (1). In fact,
-this number system is even extremely redundant. For a given integer x > 0, the number f (x) of DBNS
+No — it *confirms*. The record updates (`+q_n` even; `−c_i q_n + q_{n+1}` odd with a
+target-dependent `c_i`) are **not** plain semiconvergent denominators
+`m q_k + q_{k-1}`, matching memory's "records are NOT semiconvergents in general"
+(falsified hypothesis). And Prop 7's warning that the two-sided best approximation
+can fail when naively combined corroborates why the run's both-sign solver
+(β AND 1−β) reproduces the oracle while a one-sided/positive-only search gave the
+wrong S.
 
-1365–8050 c⃝ 2009 Discrete Mathematics and Theoretical Computer Science (DMTCS), Nancy, France
+## Verdict
 
-154 Val´erie Berth´e and Laurent Imbert
-
-representations is given by (see [11] for more details):
-
-f (x) =
- 
-
-1 if x = 1,
-f (x − 1) + f (x/3) if x ≡ 0 (mod 3),
-f (x − 1) otherwise.
-
-It is not difﬁcult to see that the elements of this sequence go by triples and correspond to the number of
-partitions of 3x into powers of 3, also called ternary partitions (see [3] and the sequence #A005704 from
-the on-line encyclopedia of integer sequences), whose ﬁrst terms are:
-
-1, 2, 3, 5, 7, 9, 12, 15, 18, 23, 28, 33, 40, 47, 54, 63, 72, 81, 93, 105, 117, . . .
-
-For a given x > 0, ﬁnding an expansion of minimal length ℓ (i.e., it is not possible to write x with
-ℓ − 1 or fewer terms) is believed to be a difﬁcult problem. Those representations of minimal length are
-extremely sparse. For example, among its 783 representations, the integer 127 can be written as a sum of
-exactly three terms in 6 different ways:
-
-127 = 2
-23
-3 + 2
-13
-2 + 2
-03
-0 = 108 + 18 + 1
-
-127 = 2
-23
-3 + 2
-43
-0 + 2
-03
-1 = 108 + 16 + 3
-
-127 = 2
-53
-1 + 2
-03
-3 + 2
-23
-0 = 96 + 27 + 4
-
-127 = 2
-33
-2 + 2
-13
-3 + 203
-0 = 72 + 54 + 1
-
-127 = 2
-63
-0 + 213
-3 + 203
-2 = 64 + 54 + 9
-
-127 = 2
-630 + 223
-2 + 2
-03
-3 = 64 + 36 + 27
-
-This observation suggests that 127 cannot be expressed with fewer than three terms. In fact, the smallest
-integer requiring three summands is 23 (as pointed out in [27] by Tijdeman); the smallest integer requiring
-four summands is 431. Similarly, the next smallest numbers requiring ﬁve, six and seven summands are
-18431, 3448733, and 1441896119 (a 21-bit integer), respectively.
-For large numbers, such as those used in cryptographic applications, ﬁnding a representation of minimal
-
-*[excerpt ends; 36757 characters not shown — see `research/berthe_imbert_ostrowski.full.md`]*
+Primary-corrobating source, not the primary method. It independently derives the
+left-side records and motivates the both-sides handling; the run's method
+(Cabanillas) covers both sides and is already verified. Keep as the independent
+cross-check for the record structure.
