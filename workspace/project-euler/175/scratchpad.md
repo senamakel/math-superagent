@@ -8,33 +8,29 @@ f(5)=2 (4+1, 2+2+1), f(6)=3 (4+2, 4+1+1, 2+2+1+1), f(7)=1 (4+2+1), f(8)=4
 
 Ratio table f(n)/f(n-1), n=1..10: 1/1, 2/1, 1/2, 3/1, 2/3, 3/2, 1/3, 4/1, 3/5, 5/3.
 
-## Phase 3 — structural insight (derivation sketch, to be promoted after research confirms)
+## Phase 3 — structural insight (Phase 2 research complete: see research_report.md and memory.md)
 
-Hypothesis: f(n) = s(n+1), s = Stern's diatomic sequence, s(0)=0, s(1)=1,
-s(2n)=s(n), s(2n+1)=s(n)+s(n+1). Then f(n)/f(n-1) = s(n+1)/s(n) =: r(n).
+Sourced facts (URLs in memory.md):
+- f(n) = s(n+1), s = Stern's diatomic sequence (OEIS A002487; Wikipedia; Calkin–Wilf 2000).
+- C&W tree: root 1/1; left child a/(a+b), right child (a+b)/b; n-th rational = s(n)/s(n+1),
+  all reduced, each positive reduced rational exactly once; consecutive terms coprime.
+- Ratio recurrences (derived from sourced pairwise recurrences):
+  r(2m) = r(m)+1, r(2m+1) = r(m)/(r(m)+1), r(1)=1/1.
+- Path/binary: index = leading 1 + path bits (0=left,1=right); Euclidean inverse emits bits
+  LSB-first, reverse then prepend 1.
+- OPEN: exact n-vs-(n+1) index alignment and MSB→LSB read; must be machine-verified against
+  oracle 13/17 → 241 = 11110001 (SBE 4,3,1) before full-size work.
 
-Hand-checked: s(n+1) for n=0..10 = 1,1,2,1,3,2,3,1,4,3,5 = f(0..10). ✔
+## Phase 4 (next) — implementation checklist
 
-Recurrences for r(n) = s(n+1)/s(n):
-- r(2m) = s(2m+1)/s(2m) = (s(m)+s(m+1))/s(m) = r(m)+1   (right child, index ends in bit 0)
-- r(2m+1) = s(2m+2)/s(2m+1) = s(m+1)/(s(m)+s(m+1)) = r(m)/(r(m)+1)   (left child, bit 1)
-
-So appending bit 0 to the binary index = "r := r+1" (right child of the Calkin–Wilf tree
-with left child p/(p+q), right child (p+q)/q); appending bit 1 = "r := r/(r+1)" (left child).
-
-Consequently r(n) is found at index n whose binary expansion is 1 followed by the path
-bits (0 = right, 1 = left) — VERIFIED against known values: 1/1@1, 2/1@2, 1/2@3, 3/1@4,
-2/3@5, 3/2@6, 1/3@7, 4/1@8, 3/5@13, 5/3@10. ✔ (hand-checked via Stern table)
-
-Inverse walk (target → root), the Euclidean algorithm with digit emission:
-- current r = a/b, gcd(a,b)=1.
-- if a > b: parent is (a-b)/b; going down used bit 0.  (r = parent + 1)
-- if a < b: parent is a/(b-a); going down used bit 1.  (r = parent/(parent+1))
-- stop at (1,1) = root.
-bits emitted upward; n's binary = '1' + reverse(bits).
-
-Oracle check: 13/17 → steps: (13,17)→'1'(1/4 family ...). Bits up: 1,0,0,0,1,1,1 →
-binary 11110001 = 241. SBE of 11110001 = 4,3,1. ✔ (matches statement exactly)
+1. Write f(n) via Stern/fusc (O(log n)) and verify f(10)=5.
+2. Implement ratio-walk (EuEuclidean): (a,b)→(a,b−a) bit 0 / (a−b,b) bit 1 to (1,1);
+   bits reversed, prepend 1; then adjust index alignment so 13/17 → 241 (bin 11110001, SBE
+   4,3,1). Try both "node index = P" and "n = P−1" variants and pick the one matching 241.
+3. Reduce 123456789/987654321 by gcd (9): 13717421/109739369; walk; SBE; independent
+   verification route (e.g., forward recomputation of f(241+1) ratio check, or a second
+   implementation by a different recurrence).
+4. Keep total complexity O(log(a+b)) (compressed subtract-quotient runs).
 
 ## Reduced form of the target
 
@@ -55,4 +51,7 @@ and independently confirmed.)
 
 - Research agent: cite confirmed theorem f(n) = s(n+1) (hyperbinary ↔ Stern) and the
   Calkin–Wilf bijection + digit-to-move correspondence + coprimality of consecutive Stern terms.
-- Double check run-length merging: leading '1' merges with a following 1-run only.
+  **DONE in Phase 2** — see research_report.md, memory.md (sources: OEIS A002487, Wikipedia
+  Calkin–Wilf, C&W 2000 PDF, Steuding et al. 2008, MathWorld, Yorgey blog).
+- Double check run-length merging: leading '1' merges with a following 1-run only. (Still to
+  confirm in code: exact bit alignment for the oracle 13/17 → 241.)
