@@ -208,8 +208,8 @@ fn render(ledger: &BTreeMap<String, Candidate>, goal: &str) -> String {
     // stronger signal and the cheaper one to trust.
     ranked.sort_by(|left, right| {
         left.1
-            .fetched
-            .cmp(&right.1.fetched)
+            .fetched()
+            .cmp(&right.1.fetched())
             .then(right.1.citers.cmp(&left.1.citers))
             .then(right.2.cmp(&left.2))
             .then(left.0.cmp(right.0))
