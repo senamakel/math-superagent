@@ -517,6 +517,55 @@ in process arguments or output. Treat returned inputs and outputs as sensitive.
 Do not add memory domains, channels, Web3, SQLite persistence, REPL, or RLM
 features unless the user explicitly expands the product scope.
 
+## Running and watching a run
+
+Starting a run and watching one are separate commands on purpose.
+
+```sh
+./euler 763                     # start or continue problem 763
+./euler 763 --no-research       # the same, with web search withheld
+./euler-tui 763                 # watch it, a tab per team
+./euler-tui 763 --replay        # read the last run's log; touch nothing
+./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
+```
+
+`./euler-tui` **only watches**. It finds the container that has the workspace
+mounted and follows it, and it cannot start, stop, or restart anything. That is
+the design, not a gap: when starting was part of the same command, opening a
+second view started a second run on the same workspace — both writing the same
+files and both making checkpoint commits over each other. That happened three
+times in one evening, twice unnoticed for minutes. A viewer that cannot launch
+cannot do it, and one start command means "is something already running for
+this problem" has a single answer rather than one per terminal.
+
+Start a run detached so it outlives the terminal, then watch it:
+
+```sh
+nohup ./euler 763 > workspace/project-euler/763/config/start.log 2>&1 &
+```
+
+`start.log` holds the image build and the statement fetch, which happen before
+any container exists and are therefore the only place a failed start says why.
+Everything after that is the container's, readable with `docker logs` or
+`./euler-tui`.
+
+Before starting anything, check nothing is already running for that workspace:
+
+```sh
+docker ps --format '{{.Names}}' | grep riemann-agent-run
+docker inspect <name> --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' | grep project-euler
+```
+
+Two containers on one workspace is the failure to look for, and it is silent:
+both runs work, both write, and the damage shows up later as a checkpoint
+history that interleaves two investigations. Stop a run with
+`docker rm -f <name>`; the workspace survives and the next `./euler` on it
+continues from what is on disk.
+
+The runtime's console arrives on the container's **stderr**, not its stdout —
+a live container had 643 lines there and none on stdout — so `docker logs`
+needs `2>&1` and any follower must read both streams.
+
 ## Docker and workspace rules
 
 The orchestrator must run through `./agent`, which starts the runtime and Qdrant
