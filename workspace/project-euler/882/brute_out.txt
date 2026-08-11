@@ -9,3 +9,4 @@ S(n) real game (memoized minimax), n=1..8:
   S(2) = 2   states_memoized=21
   S(3) = 8   states_memoized=184
   S(4) = 9   states_memoized=3270
+  S(5) = 17   states_memoized=83052
