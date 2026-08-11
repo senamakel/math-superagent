@@ -71,12 +71,31 @@ fn folder_name(requested: &str) -> String {
     normalised.to_string()
 }
 
-/// Splits a path into its folder and file name.
+/// Whether a folder segment names a level of a summary tree.
+pub(super) fn is_level(segment: &str) -> bool {
+    segment
+        .strip_prefix('L')
+        .is_some_and(|rest| !rest.is_empty() && rest.bytes().all(|byte| byte.is_ascii_digit()))
+}
+
+/// Splits a path into the folder whose index describes it, and the name that
+/// index calls it.
+///
+/// A level folder has no index of its own: the tree's root carries one index
+/// covering every level, so `research/L1/paper.md` is described in
+/// `research/INDEX.md` under the name `L1/paper.md`. Giving each level its own
+/// index would scatter the library's descriptions across as many files as the
+/// tree has levels, and the root — the one file a reader is meant to open
+/// first — would describe none of them.
 fn split(relative: &str) -> (String, String) {
     let trimmed = folder_name(relative);
-    match trimmed.rsplit_once('/') {
-        Some((folder, name)) => (folder.to_string(), name.to_string()),
-        None => (String::new(), trimmed),
+    let Some((folder, name)) = trimmed.rsplit_once('/') else {
+        return (String::new(), trimmed);
+    };
+    match folder.rsplit_once('/') {
+        Some((root, level)) if is_level(level) => (root.to_string(), format!("{level}/{name}")),
+        None if is_level(folder) => (String::new(), format!("{folder}/{name}")),
+        _ => (folder.to_string(), name.to_string()),
     }
 }
 
