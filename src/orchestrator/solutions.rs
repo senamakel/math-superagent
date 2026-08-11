@@ -424,10 +424,36 @@ async fn diversify_step(
             state.lesson_briefing()
         ),
     );
-    let (library, patterns, invention) = tokio::join!(library, patterns, invention);
+    // Gathering and digesting are one sequential arm, run concurrently with
+    // the other two. The scholar has to follow the librarian rather than join
+    // it: it reads what was just downloaded, and a digest written before the
+    // documents land describes nothing. Acquiring without reading is the gap
+    // this closes — a downloaded paper nobody has read has cost the run
+    // context and taught it nothing.
+    let reading = async {
+        let library = library.await;
+        let digest = delegate(
+            subagents,
+            "scholar",
+            format!(
+                "Read the reference library against this investigation and turn it into usable \
+                 knowledge. For each source that bears on the problem, record what it actually \
+                 establishes and what it implies here, and keep research/DIGEST.md current as \
+                 the way in. Say which sources do not help and why. Flag anything that \
+                 contradicts what memory.md currently asserts.\n\n\
+                 Problem:\n{}\n\nJust gathered:\n{library}\n\n{}",
+                state.problem,
+                state.lesson_briefing()
+            ),
+        )
+        .await;
+        (library, digest)
+    };
+    let ((library, digest), patterns, invention) = tokio::join!(reading, patterns, invention);
 
     state.fresh_context = format!(
-        "Reference material:\n{library}\n\nStructural observations:\n{patterns}\n\n\
+        "Reference material:\n{library}\n\nWhat the sources establish:\n{digest}\n\n\
+         Structural observations:\n{patterns}\n\n\
          Proposed alternative approach:\n{invention}"
     );
     state.unproductive = 0;
