@@ -1809,29 +1809,20 @@ impl Tool<()> for ExecuteCommand {
         let complexity_class = string_argument(&call, "complexity_class")?;
         let oracle_bound = string_argument(&call, "oracle_bound").ok();
         validate_complexity(&complexity, &complexity_class, oracle_bound.as_deref())?;
-        let mut process = tokio::process::Command::new("/bin/sh");
-        process
-            .arg("-lc")
-            .arg(&command)
-            .current_dir(&self.workspace)
-            .kill_on_drop(true);
-        let output = tokio::time::timeout(self.timeout, process.output())
-            .await
-            .map_err(|_| {
-                tinyagents::TinyAgentsError::Tool(format!(
-                    "command timed out after {} seconds",
-                    self.timeout.as_secs()
-                ))
-            })?
-            .map_err(|error| {
-                tinyagents::TinyAgentsError::Tool(format!("failed to execute command: {error}"))
-            })?;
+        let output = self.run(&command).await?;
         let stdout = truncate_output(&output.stdout);
         let stderr = truncate_output(&output.stderr);
-        let status = output
-            .status
-            .code()
-            .map_or_else(|| "signal".to_string(), |code| code.to_string());
+        let status = match output.status {
+            Some(status) => status
+                .code()
+                .map_or_else(|| "signal".to_string(), |code| code.to_string()),
+            None => format!(
+                "timed out after {} seconds, killed. The output above is what it had printed by \
+                 then — read it for how far the computation got, and run a smaller instance \
+                 rather than the same one again",
+                self.timeout.as_secs()
+            ),
+        };
         // File anything the command wrote through the shell. `layout::placed`
         // covers the write path; a heredoc and a redirect go round it, and
         // that is how a root fills up while an organizer is running.
