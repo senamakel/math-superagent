@@ -82,6 +82,31 @@ fn a_tree_level_is_described_in_the_index_at_its_root() {
 }
 
 #[test]
+fn a_row_written_as_a_wikilink_still_names_its_file() {
+    // A live research index came back with every row keyed
+    // `L2/[[rank_lehmer]]`, because the tree tells agents to link notes that
+    // way. Every row then matched nothing on disk and the next refresh
+    // dropped twelve descriptions as stale.
+    let index = "| File | Purpose |\n| --- | --- |\n\
+                 | L2/[[rank_lehmer]] | Lehmer digits are the lex rank |\n\
+                 | L2/[[mechanism_pair_inversions]]* | **Core**: gap-affine probabilities |\n\
+                 | `L1/paper.md` | the ordinary spelling still works |\n";
+    let parsed = parse(index);
+    assert_eq!(
+        parsed.get("L2/rank_lehmer.md").map(String::as_str),
+        Some("Lehmer digits are the lex rank")
+    );
+    assert_eq!(
+        parsed.get("L2/mechanism_pair_inversions.md").map(String::as_str),
+        Some("**Core**: gap-affine probabilities")
+    );
+    assert_eq!(
+        parsed.get("L1/paper.md").map(String::as_str),
+        Some("the ordinary spelling still works")
+    );
+}
+
+#[test]
 fn an_index_is_never_a_row_in_another_index() {
     // `file_names` reports a tree's levels as `L1/paper.md`, so a whole-name
     // comparison against `INDEX.md` stops catching `L0/INDEX.md`. A live
