@@ -1,48 +1,49 @@
 # Working memory
 
 ## Problem
-
-PE591: find the quadratic integer a + b·sqrt(d), |a|,|b| ≤ n = 10^13, d non-square < 100,
-closest to pi. BQA_d(pi,n) = that closest value; answer = Σ |I_d(BQA_d(pi,n))| = Σ |a|.
-
-Given (verified statement): BQA_2(pi,10)=6−2√2; BQA_5(pi,100)=26√5−55;
-BQA_7(pi,10^6)=560323−211781√7; I_2(BQA_2(pi,10^13))=−6188084046055.
+PE 591: for each non-square integer d with 1<=d<100, find BQA_d(pi, 10^13) =
+the quadratic integer a + b*sqrt(d) (|a|<=n, |b|<=n, n=10^13) minimizing
+|a + b*sqrt(d) - pi|. I_d(...) = a. Answer = sum of |a_d| over 90 non-square d.
 
 ## Established results
+- Brute-force oracle /workspace/brute.py reproduces all 3 worked examples:
+  BQA_2(pi,10)=6-2√2 (a=6,b=-2); BQA_5(pi,100)=26√5-55 (a=-55,b=26);
+  BQA_7(pi,1e6)=560323-211781√7. PASS.
+- /workspace/verify_big.py confirms (60-digit mpmath) that for d=2,n=1e13,
+  a=-6188084046055,b=4375636191520 gives |a+b√2-pi| = 4.293e-15 < 1e-13. PASS.
+  (matches the statement's double inequality lower bound exactly).
 
-Reduction: s=√d, α={√d}=s−⌊s⌋∈(0,1), β={π}.
-- Fixed b: best a = round(π−b·s); error = ‖π−b·s‖ = ‖π−b·α‖ (distance to nearest integer)
-  = circular distance from {bα} to β.
-- b≥0: target β={π}; b<0: t=−b≥0, target {−π}=1−β.
-- Feasible bounds: B⁺ = ⌊(n+π)/√d⌋, B⁻ = ⌊(n−π)/√d⌋ (clamp to [0,n]).
-- Core subproblem reduced to: irrational α∈(0,1), target β∈[0,1), bound B;
-  find b∈[0,B] minimizing dist_circ({bα}, β) — the inhomogeneous Diophantine
-  / best left-right approximation problem.
+## Core subproblem and governing theory
+For fixed b, best a = round(pi - b*s), s=√d. So error = circular distance
+dist({b·α}, β) where α = {√d} = s - floor(s), β = {π}. Negative b handled by
+the same routine with target β' = {-π} = 1 - β.
+Feasible ranges: b>=0 -> B+ = floor((n+pi)/s); b<0 (b=-c) -> B- = floor((n-pi)/s).
 
-Primary algorithm (Cabanillas-López & Labbé arXiv:1904.01874, Props 9 & 10, Alg 3):
-  - CF of α: a_k, q_k (q_{-1}=0,q_0=1, q_n=a_n q_{n-1}+q_{n-2})
-  - δ_{-1}=1, δ_0=α, δ_n = −a_n δ_{n-1} + δ_{n-2}   (= (−1)^n(q_n α−p_n) > 0, ↓0)
-  - α-numeration digits of β: b_k = min(a_k, ⌈β_{k-1}/δ_{k-1}⌉); β_k = b_k δ_{k-1} − β_{k-1}
-  - Best RIGHT candidates (Prop 9): n=0, terminal prefix Σ_{i≤s} b_i q_{i-1}, and
-        n = Σ_{i=1..2k−1} b_i q_{i−1} + j q_{2k−1}, j∈{0..b_{2k}−1}, k≥1
-  - Best LEFT candidates (Prop 10): terminal prefix, and
-        n = Σ_{i=1..2k} b_i q_{i−1} + j q_{2k}, j∈{0..b_{2k+1}−1}, k≥0
-  - Global best in [0,B] among these O(log B) candidates.
-  - Complexity O(log B): q_n grows exponentially (continuant ~ const·θ^n for quadratic α).
-- Negative b: same routine with target 1−β.
+Theory (Cabanillas-Lopez & Labbe arXiv:1904.01874, Props 9 & 10, Alg 3(ii)):
+Ostrowski alpha-numeration of beta. CF of alpha: q_{-1}=0,q_0=1,q_k=a_k q_{k-1}+q_{k-2};
+deltas delta_{-1}=1, delta_0=alpha, delta_k = -a_k delta_{k-1}+delta_{k-2} (>0, down to 0).
+Greedy digits b_k = min(a_k, ceil(beta_{k-1}/delta_{k-1})), beta_k = b_k delta_{k-1}-beta_{k-1}.
+Best-RIGHT candidates (Prop 9): n=0; terminal prefix; and
+  n = sum_{i=1..2k-1} b_i q_{i-1} + j q_{2k-1}, j in {0..b_{2k}-1}, k>=1.
+Best-LEFT candidates (Prop 10): terminal prefix; and
+  n = sum_{i=1..2k} b_i q_{i-1} + j q_{2k}, j in {0..b_{2k+1}-1}, k>=0.
+Global min over [0,B] is min of these candidate distances (filtered to <=B).
+Complexity O(log B) since q_k grows geometrically for quadratic alpha.
+
+Independent second route: Berthe & Imbert (DMTCS 11:1(2009)) Algorithm 2, best
+left alpha-approximations from convergents (p_n/q_n), errors f_n=|q_n alpha-p_n|;
+apply to beta and to 1-beta to cover both sides.
+
+Why NOT Pell: optimum solves inhomogeneous problem with shift beta; not a Pell unit
+(example 6-2√2 has norm 28 != ±1).
+
+## Precision
+n=1e13, values ~1e14, best gap ~1e-13..1e-15. Need >~30 significant digits;
+use mpmath with DPS ~ 80 to resolve the winner safely.
 
 ## Failed approaches
-
-- (Not attempted at full size — prohibited.) Plain scan over b is O(B) — wrong method.
-- Enumerating all (a,b) pairs is O(n^2) — wrong.
-- A "nearest-rational / Farey-enclosing" approach on the SINGLE number works for
-  homogeneous approximation but not for the inhomogeneous shift β with two-sided (left+right)
-  closest point — the α-numeration best left/right characterization is the correct structure.
+(none yet)
 
 ## Open questions
-
-- (For the solver agent.) Confirm verification script runs 0-mismatch before trusting the
-  enumerated candidates; the current workspace couldn't execute it (no exec tool here).
-- Tie-breaking among equal |a| is unspecified by the statement; the reference given
-  BQA_2(pi,10)=6−2√2 is used to disambiguate the convention. I_2(pi,10^13)=−6188084046055
-  pins the d=2, n=10^13 answer.
+- Must tune candidate enumeration level count (q_k up to > Bound).
+- Confirm tie-break rule with statement/brute (min error, then smaller |a|).
