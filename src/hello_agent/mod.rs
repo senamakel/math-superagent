@@ -3,7 +3,9 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use serde_json::json;
+use std::fmt::Write as _;
+
+use serde_json::{Value, json};
 
 use crate::agent::budget::RunBudget;
 use crate::agent::{
