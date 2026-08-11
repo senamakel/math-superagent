@@ -155,7 +155,6 @@ fn a_middleware_that_short_circuits_leaves_no_line() {
     // lines cannot be mistaken for the hooks never having run.
     tracer.on_event(&record(AgentEvent::RunCompleted {
         run_id: RunId::new("run-1"),
-        output: None,
     }));
     let written = std::fs::read_to_string(&path).expect("trace journal is readable");
     assert!(written.contains("middleware_summary"));
