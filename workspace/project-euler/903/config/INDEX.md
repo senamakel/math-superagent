@@ -1,7 +1,6 @@
 # Index — config
 
-Run plumbing. Nothing mathematical lives here; these are the run's settings and
-records. Keep this index matching the folder.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
