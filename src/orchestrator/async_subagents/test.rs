@@ -244,3 +244,101 @@ fn reading_is_filed_only_after_it_has_been_done() {
     let agents: Vec<&str> = steps.iter().map(|step| step.agent).collect();
     assert_eq!(agents, vec!["scholar", "organizer"]);
 }
+
+/// An executor that finishes immediately, echoing its brief.
+struct EchoExecutor;
+
+#[async_trait::async_trait]
+impl AgentExecutor for EchoExecutor {
+    async fn execute(
+        &self,
+        run_id: &str,
+        input: String,
+        _steering: tinyagents::harness::steering::SteeringHandle,
+        _tracer: Option<Arc<RunTracer>>,
+    ) -> Result<String> {
+        Ok(format!("{run_id}:{input}"))
+    }
+}
+
+#[tokio::test]
+async fn one_call_launches_a_whole_fan_out_and_one_call_collects_it() -> Result<()> {
+    // The reason this tool exists: each spawn_agent costs a full model turn,
+    // measured at a p90 of 197s on a live run, so launching five agents one at
+    // a time spent minutes before any of them started.
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    manager.register_executor("worker", Arc::new(EchoExecutor))?;
+    let allowed = Arc::new(vec!["worker".to_string()]);
+    let spawn = super::AsyncSubagentTool::new(
+        super::AsyncToolKind::SpawnMany,
+        manager.clone(),
+        allowed.clone(),
+    );
+
+    let runs: Vec<serde_json::Value> = (0..5)
+        .map(|n| serde_json::json!({ "agent": "worker", "input": format!("piece {n}") }))
+        .collect();
+    let result = spawn
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "call-1".into(),
+                name: "spawn_agents".into(),
+                arguments: serde_json::json!({ "runs": runs }),
+            },
+        )
+        .await?;
+    let started: serde_json::Value = serde_json::from_str(&result.content)?;
+    let ids = started["runs"].as_array().expect("runs array");
+    assert_eq!(ids.len(), 5);
+
+    // Omitting run_ids collects everything outstanding, which is the shape a
+    // caller wants right after a batch spawn.
+    let await_tool =
+        super::AsyncSubagentTool::new(super::AsyncToolKind::AwaitMany, manager.clone(), allowed);
+    let collected = await_tool
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "call-2".into(),
+                name: "await_agents".into(),
+                arguments: serde_json::json!({ "wait_seconds": 10 }),
+            },
+        )
+        .await?;
+    let collected: serde_json::Value = serde_json::from_str(&collected.content)?;
+    assert_eq!(collected["runs"].as_array().expect("runs array").len(), 5);
+    Ok(())
+}
+
+#[tokio::test]
+async fn a_batch_with_one_forbidden_agent_starts_nothing() -> Result<()> {
+    // Half-launching is worse than refusing: the caller is told the call
+    // failed while agents it never accounted for are already spending budget.
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    manager.register_executor("worker", Arc::new(EchoExecutor))?;
+    let spawn = super::AsyncSubagentTool::new(
+        super::AsyncToolKind::SpawnMany,
+        manager.clone(),
+        Arc::new(vec!["worker".to_string()]),
+    );
+    let result = spawn
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "call-1".into(),
+                name: "spawn_agents".into(),
+                arguments: serde_json::json!({ "runs": [
+                    { "agent": "worker", "input": "allowed" },
+                    { "agent": "intruder", "input": "not allowed" }
+                ] }),
+            },
+        )
+        .await;
+    assert!(result.is_err(), "a forbidden agent must refuse the batch");
+    assert!(
+        manager.outstanding_runs().is_empty(),
+        "nothing may have started"
+    );
+    Ok(())
+}
