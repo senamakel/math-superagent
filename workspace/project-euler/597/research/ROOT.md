@@ -28,9 +28,14 @@ order is an even permutation, p(13,1800), to 10 dp.
   polynomial in t), so each linear cut of the parity region — and the whole
   region — is an exact rational ([[simplex_volume_sections_lasserre]]).
 
-Together (see the sealed batch [[L0.0]]) these give the exact, non-exhaustive
-recursion that the run needs; the exhaustive MC target ≈0.5002±0.00007 needs
-this exact route to reach 10 dp.
+Together (see the sealed batch [[L0.0]] and its seal [[L1.0]]) these give the
+exact, non-exhaustive recursion that the run needs; the exhaustive MC target
+≈0.5002±0.00007 needs this exact route to reach 10 dp. The L1.0 batch is now
+sealed at [[L1.0]] (read as research/L2.0/L1.0.md): it carries every definition,
+theorem, bound and verdict of the ten L1 summaries, plus the Plackett–Luce
+content recovered from L0.0, and records the one open gap — finish events are
+inverse-exponential (not clocks), so the bump/finish interleaving is the run's
+own derivation.
 
 ## Known limits
 The w-order-only hypothesis is refuted (see MEMORY.md); only exact integration
