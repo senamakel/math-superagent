@@ -716,10 +716,13 @@ impl Tool<()> for ExecuteCommand {
             .arg(&command)
             .current_dir(&self.workspace)
             .kill_on_drop(true);
-        let output = tokio::time::timeout(COMMAND_TIMEOUT, process.output())
+        let output = tokio::time::timeout(self.timeout, process.output())
             .await
             .map_err(|_| {
-                tinyagents::TinyAgentsError::Tool("command timed out after 10 minutes".into())
+                tinyagents::TinyAgentsError::Tool(format!(
+                    "command timed out after {} seconds",
+                    self.timeout.as_secs()
+                ))
             })?
             .map_err(|error| {
                 tinyagents::TinyAgentsError::Tool(format!("failed to execute command: {error}"))
