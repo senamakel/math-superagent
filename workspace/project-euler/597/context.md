@@ -25,8 +25,11 @@ count (# pairs i<j with a bump chain i→…→j) mod 2. Goal: p(13,1800).
 
 Together: an event chronology whose event times are exponential has an exact
 probability as a product of rate ratios — no sample enumeration. The only open
-piece is what the "clocks" are (a bump's rate depends on relative speed, not
-raw v).
+piece is what the "clocks" are.
+- **Relative (bump) speed is Laplace.** The relative speed v_j−v_i of two iid
+  Exp(1) boats is standard Laplace (density (1/2)e^{−|u|}, even moments, |Z|~Exp).
+  So each catch-up's timing is built from a Laplace relative speed, not an
+  exponential clock. [[laplace_difference_of_exponentials_libretexts]]
 
 ## Caveat
 
