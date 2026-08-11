@@ -185,9 +185,8 @@ impl EventListener for RunTracer {
                 usage,
                 ..
             } => {
-                let elapsed = started_at_ms.and_then(|start| {
-                    epoch_millis().and_then(|now| now.checked_sub(start))
-                });
+                let elapsed = started_at_ms
+                    .and_then(|start| epoch_millis().and_then(|now| now.checked_sub(start)));
                 if let Some(elapsed) = elapsed {
                     self.state.model_ms.fetch_add(elapsed, Ordering::Relaxed);
                 }

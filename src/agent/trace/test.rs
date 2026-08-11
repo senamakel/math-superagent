@@ -62,3 +62,23 @@ fn preview_collapses_whitespace_and_bounds_length() {
     assert!(shortened.ends_with("..."));
     assert_eq!(shortened.chars().count(), CONSOLE_PREVIEW_CHARS + 3);
 }
+
+#[test]
+fn the_profile_attributes_wall_clock_and_cache() {
+    use std::sync::atomic::Ordering;
+
+    let tracer = RunTracer::new("orchestrator", None);
+    // 200ms of provider time and 50ms of tool time against a live wall clock.
+    tracer.state.model_ms.store(200, Ordering::Relaxed);
+    tracer.state.tool_ms.store(50, Ordering::Relaxed);
+    tracer.state.input_tokens.store(1000, Ordering::Relaxed);
+    tracer.state.cached_tokens.store(250, Ordering::Relaxed);
+
+    let profile = tracer.profile();
+    assert!(profile.contains("model "), "{profile}");
+    assert!(profile.contains("tool "), "{profile}");
+    // Idle is the diagnostic that matters: time in neither the provider nor a
+    // tool is backoff, scheduling, or waiting on a sibling agent.
+    assert!(profile.contains("idle "), "{profile}");
+    assert!(profile.contains("cache 25%"), "{profile}");
+}
