@@ -90,10 +90,16 @@ if [ "$raw" -eq 1 ]; then
     exit 0
 fi
 
+# Normalized for both endpoints: v1 omits traceName, reports the model as
+# `model`, and carries flat calculated costs, so every field falls back rather
+# than reading null on the deployment that happens to be configured. v1 also
+# pages oldest first, and a review of "recent turns" that opens with the oldest
+# is the wrong way round, so the page is sorted newest first here.
 jq --arg fetched_at "$to_time" '
   {
     fetched_at: $fetched_at,
     count: (.data | length),
+    total_items: (.meta.totalItems // null),
     next_cursor: (.meta.cursor // null),
     turns: [.data[] | {
       trace_id: .traceId,
@@ -107,12 +113,16 @@ jq --arg fetched_at "$to_time" '
       start_time: .startTime,
       end_time: .endTime,
       latency: .latency,
-      model: (.providedModelName // .modelId),
+      model: (.providedModelName // .model // .modelId),
       input,
       output,
       usage: (.usageDetails // {input: .inputUsage, output: .outputUsage, total: .totalUsage}),
-      cost: (.costDetails // {input: .inputCost, output: .outputCost, total: .totalCost}),
+      cost: (.costDetails // {
+        input: (.inputCost // .calculatedInputCost),
+        output: (.outputCost // .calculatedOutputCost),
+        total: (.totalCost // .calculatedTotalCost)
+      }),
       metadata
-    }]
+    }] | sort_by(.start_time) | reverse
   }
 ' "$response_file"
