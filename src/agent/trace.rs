@@ -199,21 +199,45 @@ impl RunTracer {
     /// numbers change and the moment an operator is asking "why is this
     /// slow". `idle` is wall clock attributable to neither the provider nor a
     /// tool: scheduling, backoff sleeps, and waiting on a sibling agent.
+    /// Renders the run's time attribution, cache rate, and spend.
+    ///
+    /// Two regimes, because one formula cannot describe both. With a single
+    /// agent running, model + tool + idle partition the wall clock and idle is
+    /// the diagnostic that matters: time in neither the provider nor a tool is
+    /// backoff, scheduling, or waiting. Once agents run concurrently their
+    /// summed time legitimately exceeds the wall clock, and reporting that as
+    /// `model 103%` reads as a bug rather than as overlap. In that regime the
+    /// percentages become shares of agent time and a concurrency factor
+    /// replaces idle.
     fn profile(&self) -> String {
-        let wall = self.state.started.elapsed().as_millis().max(1);
-        let wall = u64::try_from(wall).unwrap_or(u64::MAX);
+        let wall = u64::try_from(self.state.started.elapsed().as_millis().max(1)).unwrap_or(u64::MAX);
         let model = self.state.model_ms.load(Ordering::Relaxed);
         let tool = self.state.tool_ms.load(Ordering::Relaxed);
-        let idle = wall.saturating_sub(model.saturating_add(tool));
+        let busy = model.saturating_add(tool);
         let input = self.state.input_tokens.load(Ordering::Relaxed);
         let cached = self.state.cached_tokens.load(Ordering::Relaxed);
-        let percent = |part: u64| part.saturating_mul(100) / wall.max(1);
+
+        let share = |part: u64, whole: u64| part.saturating_mul(100) / whole.max(1);
+        let attribution = if busy > wall {
+            format!(
+                "model {}% tool {}% of agent time | concurrency x{}.{}",
+                share(model, busy),
+                share(tool, busy),
+                busy / wall,
+                (busy.saturating_mul(10) / wall.max(1)) % 10
+            )
+        } else {
+            format!(
+                "model {}% tool {}% idle {}%",
+                share(model, wall),
+                share(tool, wall),
+                share(wall.saturating_sub(busy), wall)
+            )
+        };
         format!(
-            "profile model {}% tool {}% idle {}% | cache {}%",
-            percent(model),
-            percent(tool),
-            percent(idle),
-            cached.saturating_mul(100) / input.max(1)
+            "profile {attribution} | cache {}% | ${:.4}",
+            share(cached, input),
+            self.spent_usd()
         )
     }
 
