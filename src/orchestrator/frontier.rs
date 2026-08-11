@@ -316,10 +316,7 @@ async fn load(documents: &WorkspaceDocuments) -> BTreeMap<String, Candidate> {
                     .unwrap_or_default(),
                 label: string(&value, "label"),
                 context: string(&value, "context"),
-                fetched: value
-                    .get("fetched")
-                    .and_then(Value::as_bool)
-                    .unwrap_or_default(),
+                path: string(&value, "path"),
             };
             (url, candidate)
         })
