@@ -50,9 +50,10 @@ The runtime has nine roles plus an explicit solution loop.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
-  current tasks, and existing beliefs, replaces each source's excerpt with what
-  it actually establishes and what that implies here, and describes it so
-  `research/INDEX.md` is the way in. It exists because acquiring is not reading: a downloaded paper
+  current tasks, and existing beliefs, replaces each source's digest with what
+  it actually establishes and what that implies here, records each statement as
+  a `claim` block so it is retrievable one statement at a time, keeps the
+  threads current, and describes it so `research/INDEX.md` is the way in. It exists because acquiring is not reading: a downloaded paper
   nobody has opened has cost the run context and taught it nothing. It has no
   search tool on purpose, so it digests the library instead of drifting into
   another search the librarian has already done.
@@ -279,7 +280,7 @@ prohibited; choose a polynomial or better formulation.
 ## Research gating
 
 `MATH_AGENT_RESEARCH=off`, or the `--no-research` flag on `./agent` and
-`./euler`, withholds `exa_search` from the research agent, so a self-contained
+`./euler`, withholds `exa_search` and `oeis_lookup`, so a self-contained
 problem tests the runtime's reasoning rather than its ability to look an answer
 up. It is enforced by not registering the tool, not by asking the model to
 abstain: a prompt instruction is not a control. The workspace note tools stay
@@ -568,9 +569,10 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | programs (`.py`, `.sh`, `.c`, `.rs`, …) | `code/` |
 | what a program produced | `code/out/` |
 | downloaded sources | `research/L0.<n>/`, digested into `research/L1.<n>/` |
+| directions of attack | `research/threads/` |
 | reflections | `reflections/L0.<n>/` |
 | reusable helpers | `code/toolkits/` |
-| plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index | `config/` |
+| plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index, the frontier and request ledgers | `config/` |
 | untouched download bytes | `raw/` |
 
 `layout::placed` decides this in the write path — `write_document` and an
@@ -785,8 +787,8 @@ list of integers along.
 only the file names their prompt happened to mention, so work already on disk
 went unread; sizes matter because they distinguish a finished derivation from
 an empty placeholder. The listing hides `.workspace-history`,
-`.python-packages`, `__pycache__`, the document index, and `trace.jsonl`, and
-truncates rather than dumping an unbounded tree.
+`.python-packages`, `__pycache__`, the document index, the frontier ledger, and
+`trace.jsonl`, and truncates rather than dumping an unbounded tree.
 
 Every reflection is archived to `reflections/L0.<n>/<epoch_ms>_<outcome>.md`, where the
 outcome is `nothing` or `<n>_learnings`, and indexed in `reflections/INDEX.md`
