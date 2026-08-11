@@ -20,8 +20,8 @@ O(poly log n) — A via A000788, B = A059015 = A083652−A000788, Trollope–Del
 lets the DP run at n=10⁵.
 
 ## L0 / L1 / L2 folds
-[[L0.0]] (seal [[L0.1/L0.0.md]]) = CGT/arithmetic foundation plus dead-end/misfiled
-artifacts. [[L2.0/L0.1.md]] = skip/loopy side ([[siegel_zugzwang]], [[pass_waiting]],
+[[L0.0]] (seal [[L1.2/L0.0.md]]) = CGT/arithmetic foundation plus dead-end/misfiled
+artifacts. [[L1.2/L0.1.md]] = skip/loopy side ([[siegel_zugzwang]], [[pass_waiting]],
 [[mfl_pass]], [[surreal]], [[minabutdinov_qweighted]]) making the skip a legitimate
 loopy object. [[L1.0]] (seal [[L2.0/L1.0.md]]) seals ten L1.0 notes
 ([[a083652]], [[bitcount]], [[cgt]], [[disjsum]], [[flajolet_weighted_digitalsums]],
