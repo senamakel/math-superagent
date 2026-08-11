@@ -1,11 +1,46 @@
 # Scratchpad
 
-## Tool-builder oracle run (oracle subtask, current)
-Reused existing code/brute.py (naive literal double sum) on the worked-example
-sizes only.  `python code/brute.py 2 3 6` -> exit 0, all oracles OK:
-  rank(2,1,3)=3   Q(2)=5   Q(3)=88   Q(6)=133103808
-<0.15s total (n=6: 518400 power-steps).  Wrote code/results.json.  Reading of
-the definition is thereby pinned; size bound 10^6 is left to the derivation.
+## Tool-builder pipeline re-run (oracle + reduction + ccsum), 18 Sep 2025
+
+Step 1 (oracle): `python3 brute.py 2 3 6` and `python3 brute2.py 2 3 6` both exit 0.
+  rank(2,1,3)=3 OK; Q(2)=5, Q(3)=88, Q(6)=133103808 OK; methods agree exactly on
+  2,3,6.  Full verbatim output above in conversation.
+
+Step 2 (reduction): `python3 task12.py` exit 0 — Q(10) mod p = 468421536 OK,
+  Q(6)=133103808 OK, Q(8)=798047424 OK (chain Q=(n!)^2+A(n!-1)+(B/2)T).
+  `python3 solution.py` self-test: had a PATH BUG (looked for extend_f.json in
+  code/ root, not code/out/).  FIXED with apply_patch (now opens
+  out/extend_f.json).  After fix: n=2..8 ALL OK, exit 0.
+
+Step 3 (conjugacy-class engine): `CCSUM_MAX=30 CCSUM_GATE=120 python3 ccsum.py`
+  runs to n=30 in 3.68s total (fast) but its rows match out/extend_f.json ONLY
+  for n=2.  For every n=3..30 they differ AND are not arithmetic in k.  Old
+  untrusted capture backed up to out/ccsum.json.untrusted.bak and
+  out/ccsum_ab.json.untrusted.bak; fresh ccsum.json/ccsum_ab.json (n=2..30)
+  rewritten.  ROOT CAUSE PROVEN via test_classconst.py (and a direct check in
+  the conversation): the engine assumes the cyclic-subgroup count
+  S(lambda,k)=#{tau in <pi>: tau(k)<tau(0)} is constant on each conjugacy class
+  (one representative x class size).  FALSE: e.g. n=4 type (1,3) has S in
+  {0,1,2} within one class; n=3 type (1,2) has S in {0,1}.  So ccsum.py is
+  mathematically invalid for n>=3; its A_n/B_n are NOT trustworthy.  Only
+  extend_f.json (n=2..11) holds true A_n/B_n.
+
+Step 4: wrote code/anbtable.py (prints A, B, A//(n-1)!, B//(n-1)!, A%(n-1)!,
+  B%(n-1)! from out/ccsum_ab.json for n=2..30 with a per-row TRUST flag, plus a
+  trusted n=2..11 reference from extend_f.json).  Output saved to
+  code/out/anbtable.txt.  No closed form attempted (per instruction).
+
+## ccsum.py engine is invalid — root cause (this run, 18 Sep 2025)
+The whole conjugacy-class reduction in ccsum.py reads S(lambda,k) off ONE
+representative per cycle type and multiplies by class size.  But S is not a
+class function: the check (with itertools over S_3,S_4) counts
+#{tau in <pi>: tau(k)<tau(0)} per permutation and shows within one cycle type
+the value varies (n=4 type (1,3): S in {0,1,2}).  Hence ccsum's n>=3 rows are
+wrong.  This CONFIRMS and explains the pre-existing out/INDEX.md warning
+(n=3 [13,8] vs [10,11]).  A correct conjugacy-class engine would need to sum
+S over all representatives in each class (or weight by the intra-class
+distribution of S), not use a single representative.
+
 
 Same run re-executed (this session) -> identical output; brute2.py (independent
 period-formula oracle) also run at n=2,3,6 -> exact agreement on all three and
