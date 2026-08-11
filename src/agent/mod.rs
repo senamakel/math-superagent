@@ -6,6 +6,7 @@
 pub mod budget;
 pub mod reflection;
 pub mod resilient;
+pub mod sticky;
 pub mod trace;
 
 use std::sync::Arc;
