@@ -14,18 +14,26 @@ Complexity: O(N log N) time, O(N) space, with N the largest target.
 
 
 def f_table(max_n):
-    """Return list f[0..max_n] of the counts."""
+    """Return list f[0..max_n] of the counts.
+
+    Bounded-multiplicity coin DP: coin value c may be used 0, 1, or 2 times.
+    For each coin value c we build a fresh ndp from the OLD dp so that
+    dp_old[j], dp_old[j-c], dp_old[j-2c] are combined WITHOUT stacking more
+    than two copies of c.  ndp[j] = dp[j] + dp[j-c] + dp[j-2c].
+    """
     dp = [0] * (max_n + 1)
     dp[0] = 1
-    k = 0
     c = 1  # 2^k
     while c <= max_n:
-        # Add 1 and 2 copies of coin value c (each used 0,1,2 times total).
-        for copies in (1, 2):
-            step = copies * c
-            for j in range(max_n, step - 1, -1):
-                dp[j] += dp[j - step]
-        k += 1
+        ndp = [0] * (max_n + 1)
+        for j in range(max_n + 1):
+            v = dp[j]
+            if j >= c:
+                v += dp[j - c]
+            if j >= 2 * c:
+                v += dp[j - 2 * c]
+            ndp[j] = v
+        dp = ndp
         c *= 2
     return dp
 
