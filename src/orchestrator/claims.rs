@@ -511,6 +511,30 @@ pub(super) fn detail(claim: &Claim) -> String {
     out
 }
 
+/// Re-derives the ledger from disk and rewrites [`CLAIMS_PATH`].
+///
+/// Called from the write path rather than left to a tool, for the same reason
+/// placement is: a prompt asking an agent to keep a derived file current holds
+/// only until a model is busy, and a ledger that disagrees with the notes is
+/// worse than no ledger — the next reader trusts the row instead of opening
+/// the note. Writing is best effort; a failed refresh must not fail the write
+/// that succeeded.
+pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) -> Ledger {
+    let ledger = collect(documents.root());
+    let _ = documents
+        .write_runtime(CLAIMS_PATH, &ledger.render())
+        .await;
+    ledger
+}
+
+/// Whether a written path is a note the ledger is derived from.
+pub(super) fn is_note(relative: &str) -> bool {
+    relative.starts_with(&format!("{}/", super::documents::RESEARCH_DIR))
+        && relative.ends_with(".md")
+        && !relative.ends_with(super::documents::FULL_TEXT_SUFFIX)
+        && !relative.ends_with(CLAIMS_PATH)
+}
+
 fn cell(text: &str) -> String {
     if text.trim().is_empty() {
         return "—".to_string();
