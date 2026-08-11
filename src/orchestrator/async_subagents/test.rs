@@ -110,12 +110,13 @@ async fn independent_runs_can_execute_in_parallel() -> Result<()> {
     Ok(())
 }
 
-#[tokio::test]
-async fn the_default_cap_is_wide_enough_for_the_fan_out_the_registry_can_produce() {
+#[test]
+fn the_default_cap_is_wide_enough_for_the_fan_out_the_registry_can_produce() {
     // The cap bounds provider concurrency; it is not a queue. A parent holds
     // its slot while awaiting children, so the default has to stay far above
-    // the depth and width the registry can reach.
-    assert!(DEFAULT_MAX_CONCURRENT_AGENTS >= 50);
+    // the depth and width the registry can reach, or a pool full of parents
+    // waiting on queued children would deadlock.
+    const { assert!(DEFAULT_MAX_CONCURRENT_AGENTS >= 50) }
 }
 
 #[tokio::test]

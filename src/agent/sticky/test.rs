@@ -57,7 +57,9 @@ impl ChatModel<()> for RecordingModel {
     }
 
     async fn stream(&self, _state: &(), _request: ModelRequest) -> ModelResult<ModelStream> {
-        unimplemented!("the sticky wrapper's streaming path is not exercised here")
+        Err(tinyagents::TinyAgentsError::Tool(
+            "the sticky wrapper's streaming path is not exercised here".into(),
+        ))
     }
 }
 
