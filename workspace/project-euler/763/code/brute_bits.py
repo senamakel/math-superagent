@@ -1,38 +1,30 @@
 """Memory-compact BFS oracle for Project Euler 763.
 
-Same reachability definition as brute.py/brute_extended.py, but each occupied-
-cube configuration is stored as a single Python int: bit index
-(x*W + y)*W + z with W = N+1 covers all reachable coordinates (each coordinate
-is bounded by the number of divisions N, so x,y,z in [0,N]).
+Same reachability definition as brute.py / brute_extended.py, but each
+occupied-cube configuration is stored as a single Python int: bit index
+(x*W + y)*W + z with a FIXED W (>= max coordinate) used for every level, so a
+given cube maps to the same bit regardless of level.
+
+A config reached after exactly n divisions has 2n+1 cubes, each coordinate in
+[0,n]. So W = max_n + 1 covers all levels 0..max_n, and crucially the encoding
+does NOT change between levels.
 
 Successor: a cube p=(x,y,z) may divide if its three positive-unit neighbours
 (a,b,c) are empty; the new configuration is S with p cleared and a,b,c set.
 
-This keeps each state as one int (~W^3 bits) instead of a frozenset of 2N+1
-tuple objects, so the per-state memory is far smaller and we can reach higher
-N within the container's 2 GiB limit.
-
-Correctness cross-checked against brute_extended.py for N=0..12.
+Correctness cross-checked against brute_extended.py (the frozenset oracle, itself
+validated on D(2)=3 and D(10)=44499) for N=0..12.
 """
 
 import sys
 import time
 
 
-def config_to_bit(S, W):
-    """Encode a config (set of (x,y,z)) into one int over a W^3 grid."""
-    bits = 0
-    for (x, y, z) in S:
-        bits |= 1 << ((x * W + y) * W + z)
-    return bits
-
-
 def next_level_bits(level, W):
-    """One BFS step on a set of int-masked configs; W = N+1 for current N."""
+    """One BFS step on a set of int-masked configs; W is fixed grid width."""
     nxt = set()
     W2 = W * W
     for S in level:
-        # iterate over set cubes
         m = S
         while m:
             low = m & -m
@@ -50,13 +42,11 @@ def next_level_bits(level, W):
 
 
 def main(max_n, budget):
-    # start config {(0,0,0)}
-    W = 1
-    level = {1}  # bit 0
+    W = max_n + 1  # fixed grid width for all levels
+    level = {1}  # cube (0,0,0) at bit 0
     results = {0: 1}
     print("D(0) = 1")
     for n in range(1, max_n + 1):
-        W = n + 1  # coordinates in [0,n] for a config reached after n divisions
         t0 = time.time()
         level = next_level_bits(level, W)
         dt = time.time() - t0
