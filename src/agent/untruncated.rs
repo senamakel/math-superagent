@@ -52,6 +52,7 @@ const MAX_CAP_GROWTH: u32 = 4;
 /// Wraps a chat model so a turn cut off at the cap is asked for again.
 pub struct UntruncatedModel<S: Send + Sync> {
     inner: Arc<dyn ChatModel<S>>,
+    tracer: Option<Arc<RunTracer>>,
 }
 
 impl<S: Send + Sync> std::fmt::Debug for UntruncatedModel<S> {
