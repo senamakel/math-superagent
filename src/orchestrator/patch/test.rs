@@ -31,7 +31,9 @@ fn parses_the_documented_multi_operation_example() {
     assert_eq!(
         ops[0],
         FileOp::Add {
-            path: "hello.txt".into(),
+            // Placed on the way in: adding through a patch is not a way
+            // around the workspace layout.
+            path: "code/out/hello.txt".into(),
             contents: "Hello world\n".into()
         }
     );
