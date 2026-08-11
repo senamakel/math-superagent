@@ -674,6 +674,52 @@ impl Tool<()> for AsyncSubagentTool {
                 "additionalProperties": false
             }),
             AsyncToolKind::Await => run_id_schema(Some(self.manager.max_await_seconds())),
+            AsyncToolKind::SpawnMany => json!({
+                "type": "object",
+                "properties": {
+                    "runs": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": MAX_BATCH_SPAWNS,
+                        "description": "Every independent piece of work to launch together.",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "agent": {
+                                    "type": "string",
+                                    "enum": self.allowed_agents.as_ref()
+                                },
+                                "input": {
+                                    "type": "string",
+                                    "description": "A short brief: the task and what to report \
+                                                    back.",
+                                    "maxLength": 2000
+                                }
+                            },
+                            "required": ["agent", "input"],
+                            "additionalProperties": false
+                        }
+                    }
+                },
+                "required": ["runs"],
+                "additionalProperties": false
+            }),
+            AsyncToolKind::AwaitMany => json!({
+                "type": "object",
+                "properties": {
+                    "run_ids": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Runs to wait for. Omit to wait for every outstanding run."
+                    },
+                    "wait_seconds": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": self.manager.max_await_seconds()
+                    }
+                },
+                "additionalProperties": false
+            }),
         };
         ToolSchema::new(self.name(), self.description(), parameters)
     }
@@ -691,6 +737,78 @@ impl Tool<()> for AsyncSubagentTool {
                 let input = required_string(&call.arguments, "input")?;
                 let run_id = self.manager.spawn(&agent, input)?;
                 json!({ "run_id": run_id, "status": "pending" })
+            }
+            AsyncToolKind::SpawnMany => {
+                let runs = call
+                    .arguments
+                    .get("runs")
+                    .and_then(Value::as_array)
+                    .ok_or_else(|| {
+                        tinyagents::TinyAgentsError::Validation(
+                            "`runs` is required and must be a non-empty array".into(),
+                        )
+                    })?;
+                if runs.len() > MAX_BATCH_SPAWNS {
+                    return Err(tinyagents::TinyAgentsError::Validation(format!(
+                        "at most {MAX_BATCH_SPAWNS} runs may be launched in one call"
+                    )));
+                }
+                // Every brief is checked before any run starts. A batch that
+                // half-launches is worse than one that is refused: the caller
+                // is told the call failed while agents it did not account for
+                // are already consuming budget.
+                let mut planned = Vec::with_capacity(runs.len());
+                for entry in runs {
+                    let agent = required_string(entry, "agent")?;
+                    if !self.allowed_agents.contains(&agent) {
+                        return Err(tinyagents::TinyAgentsError::Validation(format!(
+                            "subagent `{agent}` is not allowed from this caller"
+                        )));
+                    }
+                    planned.push((agent, required_string(entry, "input")?));
+                }
+                let mut started = Vec::with_capacity(planned.len());
+                for (agent, input) in planned {
+                    let run_id = self.manager.spawn(&agent, input)?;
+                    started.push(json!({ "agent": agent, "run_id": run_id }));
+                }
+                json!({ "runs": started, "status": "pending" })
+            }
+            AsyncToolKind::AwaitMany => {
+                let wait_seconds = call
+                    .arguments
+                    .get("wait_seconds")
+                    .and_then(Value::as_u64)
+                    .unwrap_or_else(|| self.manager.max_await_seconds());
+                let requested: Vec<String> = match call.arguments.get("run_ids") {
+                    Some(Value::Array(ids)) => ids
+                        .iter()
+                        .filter_map(Value::as_str)
+                        .map(str::to_string)
+                        .collect(),
+                    _ => self.manager.outstanding_runs(),
+                };
+                if requested.is_empty() {
+                    return Err(tinyagents::TinyAgentsError::Validation(
+                        "no runs to wait for: pass `run_ids`, or start runs first".into(),
+                    ));
+                }
+                // Waited concurrently, so the batch costs the slowest run
+                // rather than the sum. Awaiting them in sequence would undo
+                // the parallelism the spawn just bought.
+                let waits = requested.iter().map(|run_id| {
+                    let manager = self.manager.clone();
+                    let run_id = run_id.clone();
+                    async move {
+                        match manager.await_record(&run_id, wait_seconds).await {
+                            Ok(record) => serde_json::to_value(record).unwrap_or_else(
+                                |error| json!({ "run_id": run_id, "error": error.to_string() }),
+                            ),
+                            Err(error) => json!({ "run_id": run_id, "error": error.to_string() }),
+                        }
+                    }
+                });
+                json!({ "runs": futures::future::join_all(waits).await })
             }
             AsyncToolKind::Peek => serde_json::to_value(
                 self.manager
