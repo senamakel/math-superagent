@@ -63,7 +63,8 @@ RUN apt-get update \
        python3-z3 python3-pulp python3-pycosat python3-igraph \
        z3 cvc5 minisat cryptominisat glpk-utils coinor-cbc \
        nauty \
-    && pip3 install --break-system-packages --no-cache-dir ortools python-sat \
+    && pip3 install --break-system-packages --no-cache-dir \
+       ortools python-sat numpy scipy pandas matplotlib \
     && rm -rf /var/lib/apt/lists/*
 
 # Lean 4 with a pre-built Mathlib, for the `lean_prover` role. Everything else
