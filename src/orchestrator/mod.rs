@@ -271,10 +271,12 @@ impl OrchestratorAgent {
             &load_workspace_files(&workspace, &["prompts/goals.md"])?,
         );
 
-        let mut research_harness = specialist_harness(model.clone());
+        let mut research_harness = specialist_harness(model.clone(), budget);
         let vector_store = VectorStore::from_env()?;
+        if research_enabled {
+            research_harness.register_tool(Arc::new(ExaSearchTool::from_env()?));
+        }
         research_harness
-            .register_tool(Arc::new(ExaSearchTool::from_env()?))
             .register_tool(Arc::new(RecallResearchTool::new(vector_store.clone())))
             .register_tool(Arc::new(RememberResearchTool::new(vector_store)));
         for tool in documents.tools() {
@@ -282,10 +284,13 @@ impl OrchestratorAgent {
         }
         let research_harness = Arc::new(research_harness);
 
-        let mut tool_builder_harness = specialist_harness(model.clone());
+        let mut tool_builder_harness = specialist_harness(model.clone(), budget);
         tool_builder_harness
             .register_tool(Arc::new(WriteToolFile::new(workspace.clone())))
-            .register_tool(Arc::new(ExecuteCommand::new(workspace)));
+            .register_tool(Arc::new(ExecuteCommand::new(
+                workspace,
+                budget.tool_timeout,
+            )));
         for tool in documents.tools() {
             tool_builder_harness.register_tool(tool);
         }
@@ -294,7 +299,7 @@ impl OrchestratorAgent {
         async_subagents.register("research", research_harness, research_prompt)?;
         async_subagents.register("tool_builder", tool_builder_harness, tool_builder_prompt)?;
 
-        let mut goals_harness = specialist_harness(model.clone());
+        let mut goals_harness = specialist_harness(model.clone(), budget);
         for tool in async_subagents.tools(["research", "tool_builder"]) {
             goals_harness.register_tool(tool);
         }
@@ -303,9 +308,9 @@ impl OrchestratorAgent {
         }
         async_subagents.register("goals", Arc::new(goals_harness), goals_prompt)?;
 
-        let registry = Arc::new(default_registry()?);
+        let registry = Arc::new(default_registry(research_enabled)?);
 
-        let mut orchestrator_harness = specialist_harness(model);
+        let mut orchestrator_harness = specialist_harness(model, budget);
         for tool in async_subagents.tools(["research", "tool_builder", "goals"]) {
             orchestrator_harness.register_tool(tool);
         }
@@ -314,7 +319,7 @@ impl OrchestratorAgent {
         }
 
         Ok(Self {
-            inner: ObservedAgent::from_harness(orchestrator_harness)?,
+            inner: ObservedAgent::from_harness(orchestrator_harness)?.with_tracer(tracer),
             registry,
             system_prompt: orchestrator_prompt,
         })
