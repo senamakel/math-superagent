@@ -3,29 +3,39 @@
 What the run's reference library establishes, in the words of the run rather
 than of the sources. The research team writes this; everyone reads it.
 
-It exists because `research/INDEX.md` answers a narrower question — what the
-library establishes — while this file says what the run as a whole is standing
-on: the results now available, what they let it compute or rule out, and where
-two sources disagree.
-
-**A thousand tokens, hard.** This file is re-sent on every model call in every
-role that reads it, so length here is a bill the whole run pays. It is the top
-of a tree, not a growing record: below it sit `research/INDEX.md`, the fold
-notes in `research/folds/`, one summary per source, and the untouched full
-texts. Compress upward rather than appending, and link down to the file that
-still holds the detail you cut. A statement nobody can trace to a source is
-worth less than no statement.
+**A thousand tokens, hard.** Compress upward; link down to the file holding the
+detail you cut.
 
 ## Established
 
-What the library now lets this run treat as known, with a link to the file that
-establishes each. Empty until the research team has read something.
+**Nothing yet.** As of this digest, `research/` holds only scaffolding
+(`ROOT.md`, `INDEX.md`, `CLAIMS.md`). No source has landed: no `L0.<n>` batch,
+no `<name>.md` summary, no `<name>.full.md` companion. Until a source arrives,
+the run has no sourced claims and `CLAIMS.md` legitimately records none.
+
+The standing beliefs that do exist are the run's own, in `MEMORY.md` / `problem.md`,
+not source-backed:
+- Erdős–Gyárfás is open as of this run's start (to be confirmed against a
+  primary source when one lands).
+- δ≥2 is insufficient: a long non-power-of-two cycle has δ=2.
+- An interval result on [a,b] forces a power of two only when b ≥ 2a; the gap
+  below 2^(k+1) is 2^k. This is the obstruction any approach must beat.
+
+## What the librarian is gathering (per problem.md, unverified leads)
+
+- Primary statement of the conjecture in Erdős's problem papers (mid-1990s).
+- Partial results for restricted classes: planar, cubic, claw-free, bounded
+  degree, girth conditions — exact hypotheses and conclusions.
+- Computational verification bound and method (nauty-geng -q -c -d3 as oracle).
+- Adjacent cycle-length machinery: Bondy–Vince, Verstraëte, Sudakov–Verstraëte,
+  Liu–Ma, Gao–Huo–Liu–Ma. All names/years here are starting queries, not facts.
 
 ## Contradictions
 
-Where sources disagree, or where a source contradicts `MEMORY.md`. These are
-the most valuable rows here: record them rather than silently picking a side.
+None recorded — no sources to compare yet.
 
 ## Gaps
 
-What the run still needs from the literature and has not found.
+Entire library. First priority when sources land: the primary statement and at
+least one computational-verification result, since the latter anchors the
+oracle for Phase 3 of TASKS.md.
