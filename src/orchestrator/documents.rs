@@ -480,7 +480,7 @@ pub(super) fn raw_path(research_relative: &str) -> String {
 /// Returns the whole text unchanged when it is already short enough, so a
 /// small source is not decorated with a notice about truncation that did not
 /// happen.
-pub(super) fn research_excerpt(full: &str, raw_relative: &str) -> String {
+pub(super) fn research_excerpt(full: &str, full_relative: &str) -> String {
     if full.chars().count() <= RESEARCH_EXCERPT_CHARS {
         return full.to_string();
     }
@@ -490,13 +490,22 @@ pub(super) fn research_excerpt(full: &str, raw_relative: &str) -> String {
         .rsplit_once('\n')
         .map_or(head.as_str(), |(body, _)| body);
     format!(
-        "> **Excerpt only.** The full converted text is archived at `{raw_relative}` and is not \
-         loaded into any agent's context. Replace this file with a summary of what the source \
-         establishes and what it implies for this problem — under 1000 tokens, and specific \
-         enough that nobody needs the original.\n\n{head}\n\n\
-         *[excerpt ends; {} characters not shown]*\n",
+        "> **Excerpt only — read this first.** The complete text is beside it at \
+         `{full_relative}`; open that only when this file does not answer the question, because \
+         it is large. Replace this excerpt with a summary of what the source establishes and what \
+         it implies for this problem — under 1000 tokens, and specific enough that nobody needs \
+         the full text.\n\n{head}\n\n\
+         *[excerpt ends; {} characters not shown — see `{full_relative}`]*\n",
         full.chars().count().saturating_sub(head.chars().count())
     )
+}
+
+/// Returns where a document's complete converted text sits beside its summary.
+pub(super) fn full_text_path(summary_relative: &str) -> String {
+    let stem = summary_relative
+        .strip_suffix(".md")
+        .unwrap_or(summary_relative);
+    format!("{stem}{FULL_TEXT_SUFFIX}")
 }
 
 /// Renders the heading for a listing root.
