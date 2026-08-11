@@ -10,8 +10,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `level_2.txt` | 3 |
 | `level_3.txt` | 9 |
 | `level_4.txt` | 30 |
-| `level_5.txt` | 99 |
+| `level_5.txt` | Per-config structural features for all 99 reachable PE763 configs at N=5 (code/amoeba_extend.py). D(5)=99. |
 | `level_6.txt` | 336 |
 | `level_7.txt` | 1134 |
 | `level_8.txt` | 3855 |
 | `level_9.txt` | 13086 |
+086 |
