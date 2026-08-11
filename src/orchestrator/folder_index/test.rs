@@ -82,6 +82,20 @@ fn a_tree_level_is_described_in_the_index_at_its_root() {
 }
 
 #[test]
+fn an_index_is_never_a_row_in_another_index() {
+    // `file_names` reports a tree's levels as `L1/paper.md`, so a whole-name
+    // comparison against `INDEX.md` stops catching `L0/INDEX.md`. A live
+    // research index grew rows for two indexes nobody could describe.
+    for name in ["INDEX.md", "L0/INDEX.md", "L1/INDEX.md"] {
+        assert_eq!(
+            name.rsplit('/').next(),
+            Some(INDEX_FILE),
+            "{name} must be recognised as an index"
+        );
+    }
+}
+
+#[test]
 fn a_synthesis_survives_the_refresh_that_rewrites_the_table_beneath_it() {
     // `research/INDEX.md` is the root of the summary tree, so a refresh that
     // re-derives the file list must not take the fold down with it.
