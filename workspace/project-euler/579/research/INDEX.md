@@ -4,7 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `DIGEST.md` | _(undescribed)_ |
+| `DIGEST.md` | Entry point to research/ — which source establishes what, ordered by usefulness, plus open gaps for the n=5000 canonical enumeration. |
 | `cubic_sublattices.md` | Independent cross-product proof (Horváth arXiv:2203.01901) of cubic-sublattice existence/classification; corroborates frame×scale decomposition. Non-quaternion route. |
 | `ehrhart_cubes.md` | Ionascu Thm 3.1 Ehrhart polynomial of a lattice cube; backs the pts(t) point-count formula validated on cubes A and B. |
 | `goswick_0806.3943.md` | **Primary 3D source.** Euler-matrix quaternion parametrization; Sárközy Thm 1.2 (primitive 3-icube ↔ primitive Lipschitz quaternion of odd norm); Cor 5.12 frame×scale; Thm 5.10 twin count. Basis of frame enumeration. Full text: `icubes_goswick.md`. |
