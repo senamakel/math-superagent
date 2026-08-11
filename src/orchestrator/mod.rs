@@ -922,6 +922,7 @@ struct RolePrompts {
     research: String,
     tool_builder: String,
     coder: String,
+    solver: String,
     goals: String,
     reflection: String,
     judge: String,
