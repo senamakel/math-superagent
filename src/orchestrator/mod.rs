@@ -1273,6 +1273,35 @@ fn require_container_runtime() -> Result<()> {
     ))
 }
 
+/// Converts a fetched problem statement into the Markdown the run reads.
+///
+/// The statement arrives as HTML, and the entry script that fetches it has no
+/// converter — the hand-written one lives here, and it exists because a
+/// general-purpose converter escapes the backslashes in `\(…\)` and destroys
+/// the mathematics. So the bytes land in `raw/problem.html` where every
+/// untouched download lives, and this turns them into `problem.md` once.
+///
+/// Naming it `.md` without converting would be worse than leaving it HTML:
+/// `read_document` renders by suffix, so the run would be handed raw markup
+/// and told it was Markdown.
+///
+/// Best effort. A workspace with no fetched statement is the normal case for
+/// every problem that did not come through the Euler wrapper, and a conversion
+/// that fails must not stop a run whose statement is already in its prompt.
+fn convert_problem_statement(workspace: &Path) {
+    let markdown = workspace.join("problem.md");
+    if markdown.exists() {
+        return;
+    }
+    let source = workspace.join(documents::RAW_DIR).join("problem.html");
+    let Ok(bytes) = std::fs::read(&source) else {
+        return;
+    };
+    if let Ok(converted) = readable::to_markdown(&bytes, Some("text/html"), "problem.html") {
+        let _ = std::fs::write(&markdown, converted);
+    }
+}
+
 fn load_workspace_files(workspace: &Path, relative_paths: &[&str]) -> Result<String> {
     let mut combined = String::new();
     for relative in relative_paths {
