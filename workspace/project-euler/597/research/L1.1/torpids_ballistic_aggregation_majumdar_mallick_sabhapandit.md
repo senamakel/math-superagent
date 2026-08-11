@@ -1,151 +1,22 @@
-> **Excerpt only — read this first.** The complete text is one level down at `research/L0.1/torpids_ballistic_aggregation_majumdar_mallick_sabhapandit.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# 1D ballistic aggregation final state — Majumdar, Mallick & Sabhapandit (Phys. Rev. E 79, 021109, 2009)
 
-<!-- source: https://journals.aps.org/pre/abstract/10.1103/PhysRevE.79.021109 | converted from HTML -->
+<!-- source: https://journals.aps.org/pre/abstract/10.1103/PhysRevE.79.021109 | peer-reviewed version; DOI 10.1103/PhysRevE.79.021109 -->
 
-Statistical properties of the final state in one-dimensional ballistic aggregation | Phys. Rev. E
+The peer-reviewed (PRE) version of the 1D sticky-gas result. It is identical in substance to the arXiv preprint; the APS `.full.md` sibling here contains only the journal abstract page (paywall, article text not retrievable), so every substantive claim below comes from the arXiv full text [[torpids_ballistic_aggregation_arxiv.full]] (arXiv:0811.0908), not from this page. I flag that distinction so nobody mistakes the paywalled abstract for the derivation.
 
-## Export citation
+## What the paper establishes (pure, no-boundary model)
+Model: N unit-mass particles on a line, ballistic at constant speeds v_i, forming sticky clusters on collision (mass & momentum conserved, energy dissipated); initial v_i iid from any continuous φ(v). No boundary. In the long-time limit the system reaches the **fan state**: clusters whose velocities strictly increase left→right, so no further collisions.
 
-# Export citation
+- **Final partition = convex minorant** of the random walk with steps (1, v_i) (cumulative mass & momentum). Each straight minorant segment is one cluster; its slope = cluster velocity = mean of the v's in that contiguous index block.
+- **Universal (φ-independent) cluster statistics:**
+  - P(k clusters) = S1(N,k)/N! = P(a uniform random permutation of N has k cycles); mean # clusters H_N ~ ln N.
+  - Unordered cluster-size distribution = random-permutation cycle-length distribution: Pr(#clusters of size j = c_j) = δ(Σ j c_j = N)·Π_j 1/(j^{c_j} c_j!).
+  - Largest cluster ~ Golomb–Dickman 0.6243299885·N; smallest ~ e^{−γ} ln N; typical cluster N/ln N; per-cluster factor 1/n from **Raney's lemma** (of the n cyclic rotations of an n-step block, exactly one keeps the walk above its chord).
+- **Leader** (rightmost/highest-velocity cluster; φ with finite σ²): leader size ⟨n⟩ ~ b√N with b = e^{C/2}√π = 2.63533…, universal scaling W(x)=b/π^{1/2} x^{−3/2}(1−x)^{−1/2}; leader velocity distribution is non-universal (depends on φ). Cauchy φ (σ² infinite): conditional leader size ~ N/ln N, exactly solvable.
 
-Choose format for download:
-
-BibTeX EndNote (RIS) [Download Citation][1]
-
-# Statistical properties of the final state in one-dimensional ballistic aggregation
-
-[Satya N. Majumdar][2]
-
-[Kirone Mallick][3]
-
-[Sanjib Sabhapandit][4]
-
-open icon close icon
-
-- Laboratoire de Physique Théorique et de Modèles Statistiques (UMR 8626 du CNRS), Université Paris-Sud, Bâtiment 100 91405 Orsay Cedex, France
-
-- Institut de Physique Théorique Centre d’Études de Saclay, 91191 Gif-sur-Yvette Cedex, France
-
-- Raman Research Institute, Bangalore 560080, India
-
-[PDF][5] Share open icon close icon
-
-- X
-- Facebook
-- Mendeley
-- LinkedIn
-- Reddit
-- Sina Weibo
-
-Phys. Rev. E **79**, 021109 – **Published 9 February, 2009**
+## What it implies for PE 597
+- Identifies the **pure bumper race (no finish line)** — boats merging into the convoy of the next rowing boat ahead — with these convex-minorant clusters; bump leaders = right-to-left record minima of the speeds (see [[torpids_record_runs_platoons_haghighi_talab]]). The pure-case bump partition is therefore *cycles of a uniform random permutation*, a concretely computable object whose parity is a signed sum over the block/cycle structure (a derivation the paper does not itself carry out).
+- **Does NOT solve the target p(13,1800).** The entire theory is for the boundary-free problem. The finish line at L removes boats from the convoy by finishing (inverse-exponential finish times, [[inverse_exponential_finish_times_wikipedia.full]]), which the convex-minorant mapping does not model — it is precisely the missing boundary that MEMORY.md's refuted treap/rate-ratio recursions failed to absorb. So this is background structure for the no-finish limit, not a closed recursion for the finite-finish probability.
+- **No contradiction with MEMORY.md.** It corroborates the library's reading (parity depends on magnitudes of speeds, not w-order alone; the finish line is the obstruction), and independently explains why the earlier exponential-clock/treap route failed.
 
 DOI: https://doi.org/10.1103/PhysRevE.79.021109
-
-Export Citation
-
-Show metrics Hide metrics open icon close icon
-
-## Abstract
-
-We investigate the long time behavior of the one-dimensional ballistic aggregation model that represents a sticky gas of N particles with random initial positions and velocities, moving deterministically, and forming aggregates when they collide. We obtain a closed formula for the stationary measure of the system which allows us to analyze some remarkable features of the final “fan” state. In particular, we identify universal properties which are independent of the initial position and velocity distributions of the particles. We study cluster distributions and derive exact results for extreme value statistics (because of correlations these distributions do not belong to the Gumbel-Fréchet-Weibull universality classes). We also derive the energy distribution in the final state. This model generates dynamically many different scales and can be viewed as one of the simplest exactly solvable model of N -body dissipative dynamics.
-
-Close
-
-Prev Next
-
-##
-
-View figure in article
-
-# Authorization Required
-
-We need you to provide your credentials before accessing this content.
-
-## Log in via your institution
-
-If your institution provides access using Shibboleth/OpenAthens log in.
-
-## Log in via APS Member Subscription
-
-If you have a personal subscription through your APS membership please log in.
-
-Starting August 1, 2019 APS member subscribers will need to log in using your member credentials instead of your APS Journal Account.
-
-[APS Member Log In][6]
-
-## Other Options
-
-- [Buy Article »][7]
-- [Log in with APS Journals Account][8]
-- [Log in with username/password provided by your institution][9]
-- [Get access through a U.S. public or high school][10]
-
-## [References (Subscription Required)][5]
-
-Outline Information
-
-- [Citing Articles (11)][11]
-- Abstract
-- Article Text
-- References
-
-Phys. Rev. E **79**, 021109 – Published 9 February, 2009
-
-[Vol. 79, Iss. 2 — February 2009][12]
-
-- Received 6 November 2008
-
-Export Citation
-
-[Reuse & Permissions][13]
-
-DOI: [https://doi.org/10.1103/PhysRevE.79.021109][14]
-
-© 2009 American Physical Society
-
-Outline Information
-
-# Outline
-
-- [Citing Articles (11)][11]
-- Abstract
-- Article Text
-- References
-
-# Information
-
-Phys. Rev. E **79**, 021109 – Published 9 February, 2009
-
-[Vol. 79, Iss. 2 — February 2009][12]
-
-- Received 6 November 2008
-
-Export Citation
-
-[Reuse & Permissions][13]
-
-DOI: [https://doi.org/10.1103/PhysRevE.79.021109][14]
-
-© 2009 American Physical Society
-
-## Sign In to Your Journals Account
-
-## Filter
-
-## Filter
-
-## Article Lookup
-
-## Enter a citation
-
-
-## Links
-
-[1]: /pre/export/10.1103/PhysRevE.79.021109?type=bibtex&amp;download=true
-[2]: /search/field/author/Satya%20N%20Majumdar
-[3]: /search/field/author/Kirone%20Mallick
-[4]: /search/field/author/Sanjib%20Sabhapandit
-[5]: /pre/pdf/10.1103/PhysRevE.79.021109
-[6]: /auth/apsmember/login?rt=https%3A%2F%2Fjournals.aps.org%2Fpre%2Fabstract%2F10.1103%2FPhysRevE.79.021109
-
-*[excerpt ends; 715 characters not shown — see `research/L0.1/torpids_ballistic_aggregation_majumdar_mallick_sabhapandit.full.md`]*
