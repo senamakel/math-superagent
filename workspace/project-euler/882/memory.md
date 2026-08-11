@@ -38,7 +38,22 @@ game up to n=10).
   game, where deleting a leading 1 can also drop 0-bits (e.g. "100"→0). The
   given S values are reproduced, but whether real-game S(n) == counting-game
   S(n) for all n is what brute.py vs counting.py/compare.py must confirm.
+- **Correct-skip-semantics surrogate is REFUTED (counting_proper.py)**: even
+  with the corrected skip rule (skip always allowed, costs 1, passes the turn;
+  O(0,B)=0 ⇔ Zero wins the moment One has no 1-bit on One's turn), the exact
+  recurrence O(A,B)=Z(A-1,B), Z(A,B)=min(O(A,B-1) if B>=1, 1+O(A,B)) collapses
+  to the closed form **O(A,B)=max(0, A−B)**. Hence S_counting(n)=max(0,A(n)−B(n))
+  — for n=1..5 that gives 1,1,7,3,8 vs the real oracle 1,2,8,9,17; only n=1
+  matches. So the single-aggregate (A,B) counting model is NOT a faithful
+  surrogate under either skip interpretation; the real S grows far faster than
+  A−B (S(5)=17 vs A−B=8), so S depends on the DISTRIBUTION of bit-strings, not
+  just the totals. Output: code/out/counting_proper.txt.
 - What is the closed-form/structure for S(n)? (Not yet computed.)
 
 ## Failed approaches
-(none yet)
+- **Single-aggregate (A,B) counting surrogate (both skip readings)** — refuted
+  by counting_proper.py. With the corrected skip semantics the exact
+  recurrence yields O(A,B)=max(0,A−B), so S_counting = max(0,A(n)−B(n)); only
+  n=1 of the real oracle 1,2,8,9,17 matches (it gives 1,1,7,3,8). The real
+  game's S depends on the distribution/positions of bits, not the totals A,B.
+  A dead end worth recording so no later run rebuilds it.
