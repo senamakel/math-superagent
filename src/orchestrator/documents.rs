@@ -270,11 +270,10 @@ fn walk<'a>(
         if depth == 0 || *truncated {
             return Ok(());
         }
-        let mut entries = match tokio::fs::read_dir(directory).await {
-            Ok(entries) => entries,
-            // An unreadable directory is reported as absent rather than
-            // failing the whole listing.
-            Err(_) => return Ok(()),
+        // An unreadable directory is skipped rather than failing the whole
+        // listing: one bad permission should not hide the rest of the tree.
+        let Ok(mut entries) = tokio::fs::read_dir(directory).await else {
+            return Ok(());
         };
         while let Ok(Some(entry)) = entries.next_entry().await {
             if lines.len() >= MAX_LISTING_ENTRIES {
