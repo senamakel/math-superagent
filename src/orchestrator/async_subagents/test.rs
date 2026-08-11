@@ -421,12 +421,9 @@ async fn reading_does_not_hold_the_lock_that_filing_needs() -> Result<()> {
         OrchestrationTaskStatus::Completed
     );
     assert!(
-        tokio::time::timeout(
-            std::time::Duration::from_secs(5),
-            scholar_started.acquire()
-        )
-        .await
-        .is_ok(),
+        tokio::time::timeout(std::time::Duration::from_secs(5), scholar_started.acquire())
+            .await
+            .is_ok(),
         "research must hand off to the scholar"
     );
 
