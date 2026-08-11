@@ -45,6 +45,13 @@ RUN apt-get update \
 # cannot exist. Placed after SageMath so editing this list does not invalidate
 # that layer.
 #
+# `nauty` is here rather than with the scientific stack because it belongs to
+# the same job: exhaustive generation of graphs up to isomorphism is what turns
+# a SAT solver's `UNSAT` from an assertion into a cross-checked bound, and
+# `nauty-geng -d3 <n>` is the oracle for any statement about small graphs of
+# minimum degree three. Debian prefixes every binary, so it is `nauty-geng`,
+# not `geng`.
+#
 # CP-SAT and PySAT come from pip because Debian ships neither: `python3-ortools`
 # resolves as a name and has no installation candidate. They are baked at build
 # time into the system site-packages, before PIP_TARGET is set below, because
