@@ -4,6 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `L0/seidel_aragon_randomized_search_trees.full.md` | downloaded source — from https://faculty.washington.edu/aragon/pubs/rst96.pdf; not yet read, excerpt pending a scholar summary |
 | `L1/competing_exponential_clocks_uchicago.md` | Summary of UChicago STAT253/317 Lecture 9 (Yibi Huang): min-of-exponentials pooled rate, P(fires first)=λ_j/Σλ, memoryless property, and product-of-rate-ratios form for any specific firing order. Candidate machinery for exact chronology sums. |
 | `L1/dirichlet_distribution_wikipedia.md` | Summary of Wikipedia "Dirichlet distribution": normalized iid Exp(1) are uniform on the simplex (Dirichlet(1,…,1)); race outcome is invariant under common scaling of speeds, so p(n,L) = uniform-simplex measure of the parity region — the exact integration target. |
 | `L1/exponential_order_statistics_memoryless_kth.md` | Summary of KTH order-statistics note (Timo Koski): order-statistic spacings of iid Exp(1) are independent exponentials with rates n,n-1,...,1; the memoryless structure for exact integration over the Exp speeds. |
