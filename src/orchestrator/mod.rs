@@ -582,7 +582,8 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     Ok(registry)
 }
 
-/// Returns the reflection, pattern, inventor, and librarian definitions.
+/// Returns the reflection, pattern, inventor, librarian, and scholar
+/// definitions.
 ///
 /// Split out of [`default_registry`] to keep each function readable; these are
 /// the agents the solution loop adds on top of the original three.
@@ -642,6 +643,18 @@ fn support_agents(
         .with_tools(
             research_enabled
                 .then_some("exa_search")
+                .into_iter()
+                .chain(document_tools),
+        ),
+        AgentDefinition::new(
+            "scholar",
+            "Scholar Agent",
+            "Reads the downloaded reference library against the run's own goal and beliefs, \
+             records what each source establishes, and maintains a navigable digest of it.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["recall_research", "remember_research"]
                 .into_iter()
                 .chain(document_tools),
         ),
