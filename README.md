@@ -6,6 +6,55 @@ where a good answer may require several kinds of work: understanding the
 mathematics, checking a theorem or definition, writing a small program, and
 verifying the result before presenting it.
 
+```text
+                ./agent "problem"        ./euler 66
+                        │                     │
+                        └──────────┬──────────┘
+                                   │
+┌──────────────────────────────────▼───────────────────────────────────────┐
+│ Docker: unprivileged, no capabilities, read-only root                    │
+│                                                                          │
+│   ┌──────────────┐                                                       │
+│   │ orchestrator │  decomposes, delegates, writes the answer             │
+│   └──────┬───────┘                                                       │
+│          │ one solution loop per run                                     │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │ the solution loop, below: every attempt is reflected on, and       │  │
+│  │ repeated unproductive attempts trigger diversify                   │  │
+│  │                                                                    │  │
+│  │   attempt ──> reflect ──┬── solved ──> done                        │  │
+│  │      ▲                  ├── retry ──────────────┐                  │  │
+│  │      │                  └── stuck ──> diversify ┤                  │  │
+│  │      └──────────────────────────────────────────┘                  │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+│          │ spawn_agent(s) returns a run ID immediately                   │
+│          │ peek_agent, steer_agent, await_agent(s)                       │
+│          ▼                                                               │
+│  ┌────────────────┬────────────────┬────────────────┬────────────────┐   │
+│  │ goals          │ research       │ tool_builder   │ coder          │   │
+│  │ criteria       │ Exa, notes     │ experiments    │ the program    │   │
+│  ├────────────────┼────────────────┼────────────────┼────────────────┤   │
+│  │ librarian      │ scholar        │ organizer      │ reflection     │   │
+│  │ downloads      │ digests them   │ indexes        │ judges one try │   │
+│  ├────────────────┼────────────────┼────────────────┼────────────────┤   │
+│  │ inventor       │ pattern_finder │                │                │   │
+│  │ a new angle    │ exact sequences│                │                │   │
+│  └────────────────┴────────────────┴────────────────┴────────────────┘   │
+│     on finish: tool_builder ──> organizer                                │
+│                research ──> scholar ──> organizer                        │
+│          │                                                               │
+│          ▼  /workspace: goal, tasks, memory, research/, toolkits/        │
+└───────┬─────────────────────────┬─────────────────────┬──────────────────┘
+        │                         │                     │
+  workspace/<name>/         Qdrant volume       OpenRouter, Exa,
+  committed to git          research notes      Langfuse, trace.jsonl
+```
+
+Every arrow out of the orchestrator is asynchronous: a spawn returns a run ID
+straight away, so independent research and computation overlap instead of
+queueing behind each other. Nothing about a run is hidden from the workspace,
+which is committed alongside the answer.
+
 The runtime uses a small registry of specialist agents:
 
 - `orchestrator` breaks a problem into focused tasks and combines the results.
