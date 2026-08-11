@@ -287,6 +287,31 @@ async fn a_missing_document_names_what_the_folder_actually_holds() -> Result<()>
 }
 
 #[tokio::test]
+async fn a_missing_file_at_the_workspace_root_names_its_neighbours() -> Result<()> {
+    // The root is where an agent guesses most — `solution.md` was the first
+    // thing a live run reached for — and an empty parent is what the file path
+    // checker refuses, so this is the case the helper must not miss.
+    let root = workspace("missing-at-root")?;
+    std::fs::write(root.join("memory.md"), "beliefs").expect("file is writable");
+    std::fs::write(root.join("scratchpad.md"), "working").expect("file is writable");
+    std::fs::write(root.join("trace.jsonl"), "{}").expect("trace is writable");
+
+    let documents = WorkspaceDocuments::new(root.clone())?;
+    let error = documents
+        .read("solution.md")
+        .await
+        .expect_err("a missing document must fail");
+    let message = error.to_string();
+    assert!(message.contains("memory.md"), "got: {message}");
+    assert!(message.contains("scratchpad.md"), "got: {message}");
+    assert!(
+        !message.contains("trace.jsonl"),
+        "the event log stays hidden: {message}"
+    );
+    Ok(())
+}
+
+#[tokio::test]
 async fn listing_a_folder_that_is_not_there_names_the_ones_that_are() -> Result<()> {
     let root = workspace("missing-folder")?;
     let research = root.join("research");
