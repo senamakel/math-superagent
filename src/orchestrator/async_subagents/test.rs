@@ -1,4 +1,5 @@
 //! Deterministic tests for graph-backed asynchronous subagent controls.
+#![allow(clippy::expect_used)]
 
 use std::sync::Arc;
 
