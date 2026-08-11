@@ -31,6 +31,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1/report_cited_facts.md` | _(undescribed)_ |
 | `L1/report_literature_ranks_powers.md` | _(undescribed)_ |
 | `L1/report_rank_powers.md` | _(undescribed)_ |
+| `L1/sack_ulfarsson_refined_inversion_statistics.md` | Summary of arXiv:1106.1995 (Sack & Úlfarsson) — gap-refined inversion statistics: k-step inversion distribution H_{n,k} via Eulerian polynomials (Thm 4.4), non-inversion-sum/dot-product identity 1·π=n(n+1)(2n+1)/6−invsum (Thm 2.5), zone-crossing vectors & N_n(q) recurrence (Thm 3.8). Analytical machinery for the per-gap pair-inversion counts f_n(k)=A_n+(k−1)B_n; does not cover powers {π^i}. |
 | `L1/stong_average_order_permutation.md` | _(undescribed)_ |
 | `L2/INDEX.md` | _(undescribed)_ |
 | `L2/cycle_type_toolkit.md` | _(undescribed)_ |

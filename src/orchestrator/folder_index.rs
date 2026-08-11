@@ -303,7 +303,12 @@ impl FolderIndexTool {
             // that: it is reached from the summary beside it, which names it,
             // so a row here doubles the length of every research index to
             // point at something nobody should read first.
-            if name == INDEX_FILE || name.ends_with(super::documents::FULL_TEXT_SUFFIX) {
+            // An index is never a row, at any level. `file_names` returns a
+            // tree's levels as `L1/paper.md`, so comparing the whole name
+            // against `INDEX.md` stopped catching `L0/INDEX.md` — and a live
+            // research index grew rows for two indexes nobody had described.
+            let file = name.rsplit('/').next().unwrap_or(name);
+            if file == INDEX_FILE || name.ends_with(super::documents::FULL_TEXT_SUFFIX) {
                 continue;
             }
             let description = described.get(name).cloned().unwrap_or_default();

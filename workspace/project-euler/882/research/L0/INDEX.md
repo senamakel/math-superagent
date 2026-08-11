@@ -1,29 +1,37 @@
 # Index — research/L0
 
-What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
-
-These are the `.full.md` full-text companions to the L1 summaries in `research/L1/`
-(see `research/L1/INDEX.md` for each source's one-line purpose). Read the L1
-summary first; open a full text here only when the summary does not answer the
-question. Each row names the L1 summary it backs.
+Full-text companions to the `research/L1/` summaries, plus accidental/misfiled
+downloads. Read the L1 summary first; open the L0 full text only when the
+summary does not answer the question. Note: each source is stored twice — a
+short summary (L1) and this full text (L0); a few also have a `.full.full.md`
+super-set companion (the `.full.md` is itself only an excerpt).
 
 | File | Purpose |
 | --- | --- |
-| `a083652.full.md` | Full text of OEIS A083652 (summatory bit-length); backs `L1/a083652.md`. |
-| `bitcount.full.md` | Full text of OEIS A000788 (summatory 1-bit count); backs `L1/bitcount.md`. |
-| `cgt.full.md` | Full text on CGT framework (Conway ONAG, Winning Ways); backs `L1/cgt.md`. |
-| `disjsum.full.md` | Full text backing `L1/disjsum.md` (board value = A−B). |
-| `li_zuchswang.md` | Failed-download note: Li 1976 'Sums of Zuchswang games' is paywalled (DOI redirect, ScienceDirect 403); points to Siegel for the zugzwang-game theory. |
-| `loopy.full.md` | Full text on loopy games / stoppers; backs `L1/loopy.md`. |
-| `pass_waiting.full.md`, `pass_waiting.full.full.md` | Larsson–Nowakowski–Santos 2015 (arXiv:1505.01907) full text (variant duplicate capture); backs `L1/pass_waiting.md`. |
-| `raw_mfl_pass.full.md` | Raw arXiv full text for 1204.3222; backs `L1/mfl_pass.md`. |
-| `raw_pass_waiting_check.full.md` | Raw arXiv full text for 1505.01907; backs `L1/pass_waiting.md`. |
-| `siegel_zugzwang.md` | Excerpt/summary of Siegel 2009 'Coping with cycles' to read before the full text; backs `L1/siegel_zugzwang.md`. |
-| `siegel_zugzwang.full.md` | Full text (65075 B) of Siegel 2009 'Coping with cycles' (loopy / zugzwang-game theory); backs `L1/siegel_zugzwang.md`. |
-| `strategy.full.md` | Full text of the generic strategy article; dead end, backs `L1/strategy.md`. |
-| `surreal.full.md` | Full text on surreals / why a−b is exact; backs `L1/surreal.md`. |
-| `trollopedelange.full.md` | Full text of Girgensohn 2011 (INTEGERS #A54); backs `L1/trollopedelange.md`. |
-| `weightedmom.full.md` | Full text of Larcher & Pillichshammer 2005; backs `L1/weightedmom.md`. |
-| `zerocount.full.md` | Full text of OEIS A059015 (summatory 0-bit count); backs `L1/zerocount.md`. |
-| `zugzwang.full.md` | Full text on zugzwang (On Numbers and Games material); backs `L1/zugzwang.md`. |
-| `confusioninterval*`, `temperature_passing*` | Misfiled accidental downloads unrelated to the problem; see `L1/misfiled.md`. |
+| `a083652.full.md` | Full text for L1/a083652.md — OEIS A083652 summatory bit-length, exact closed form; third leg of total bits = ones+zeros. |
+| `bitcount.full.md` | Full text for L1/bitcount.md — OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |
+| `cgt.full.md` | Full text for L1/cgt.md — CGT framework (Conway ONAG/Winning Ways): numbers as games, disjunctive sum. |
+| `disjsum.full.md` | Full text for L1/disjsum.md — G(a,b)=a−b, board's no-skip value = A−B. |
+| `loopy.full.md` | Full text for L1/loopy.md — loopy games/stoppers, skip self-loop → DP fixpoint. |
+| `pass_waiting.full.md` | Excerpt (arXiv:1505.01907) for L1/pass_waiting.md — Larsson–Nowakowski–Santos pass/waiting-move theory. |
+| `pass_waiting.full.full.md` | Complete text superset of pass_waiting.full.md for the same source. |
+| `raw_mfl_pass.full.md` | Full text for L1/raw_mfl_pass.md — raw arXiv abstract of 1204.3222 (analysis in mfl_pass.md). |
+| `raw_pass_waiting_check.full.md` | Full text for L1/raw_pass_waiting_check.md — raw arXiv abstract of 1505.01907. |
+| `siegel_zugzwang.md` | Summary: A. Siegel, "Coping with cycles" (Games of No Chance 3, 2009): partizan loopy games, stoppers, Li zugzwang games. |
+| `siegel_zugzwang.full.md` | Full text of the Siegel loopy/zugzwang survey. |
+| `strategy.full.md` | Full text for L1/strategy.md — generic strategy article; dead end. |
+| `surreal.full.md` | Full text for L1/surreal.md — why a−b exact (simplest surreal), skips outside short games. |
+| `trollopedelange.full.md` | Full text for L1/trollopedelange.md — Girgensohn 2011 Trollope–Delange closed forms. |
+| `weightedmom.full.md` | Full text for L1/weightedmom.md — Larcher & Pillichshammer k·-weighted moments. |
+| `zerocount.full.md` | Full text for L1/zerocount.md — OEIS A059015 summatory 0-bit count → B(n). |
+| `zugzwang.full.md` | Full text for L1/zugzwang.md — skip as zugzwang escape, One's forced 1-bit consumption. |
+
+### Misfiled / accidental downloads — unrelated, kept as record (see `research/L1/misfiled.md`)
+
+| File | Source | Topic |
+| --- | --- | --- |
+| `confusioninterval.full(.full).md` | arXiv:1911.04268 | Universal lossless compression / Slepian–Wolf coding (info theory). |
+| `confusioninterval2.full(.full).md` | arXiv:1911.10203 | Light scalars and the KOTO anomaly (hep-ph). |
+| `confusioninterval3.full(.full).md` | arXiv:1908.06045 | COHERENT neutrino–nucleus scattering (hep-ph). |
+| `temperature_passing.full(.full).md` | arXiv:1909.07809 | Few-shot medical organ segmentation (CV). |
+| `li_zuchswang.md` | Li 1976 | Failed-download note: paywalled; points to Siegel for zugzwang-game theory. |
