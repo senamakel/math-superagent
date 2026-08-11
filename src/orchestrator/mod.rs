@@ -219,7 +219,25 @@ impl OrchestratorAgent {
         require_container_runtime()?;
         let workspace = workspace_from_env()?;
         let model = openrouter_model_from_env()?;
-        let async_subagents = AsyncSubagentManager::new();
+        let budget = RunBudget::from_env();
+        let research_enabled = research_enabled_from_env();
+        let tracer = RunTracer::new(
+            "orchestrator",
+            Some(RunTracer::journal_path(&workspace).as_path()),
+        );
+        tracer.note(&format!(
+            "budget: {} model calls, {} tool calls, {} minute run, {} minute tool; research {}",
+            budget.max_model_calls,
+            budget.max_tool_calls,
+            budget.run_timeout.as_secs() / 60,
+            budget.tool_timeout.as_secs() / 60,
+            if research_enabled {
+                "enabled"
+            } else {
+                "disabled"
+            }
+        ));
+        let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()));
         let documents = WorkspaceDocuments::new(workspace.clone())?;
         let shared_guidance = load_workspace_files(
             &workspace,
