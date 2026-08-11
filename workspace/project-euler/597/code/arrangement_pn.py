@@ -393,7 +393,7 @@ def compute_pn(n, L, lines):
             area = poly_area(cell)
             if par == 0:
                 measure += area
-        return density * measure, len(cells)
+        return density * measure, len(cells), cells
     elif n == 4:
         cells = cells_3d(lines)
         density = F(6)
@@ -408,7 +408,7 @@ def compute_pn(n, L, lines):
             vol = poly_volume(cons)
             if par == 0:
                 measure += vol
-        return density * measure, len(cells)
+        return density * measure, len(cells), cells
     else:
         raise ValueError("n must be 3 or 4")
 
@@ -423,14 +423,13 @@ def main():
         results["L"][str(n)] = {}
         for L in Ls:
             lines, events = build_lines(n, L)
-            p, ncells = compute_pn(n, L, lines)
+            p, ncells, cells = compute_pn(n, L, lines)
             # sanity: total measure must be the simplex volume (density/(n-1)!)
             sim_vol = F(1) / math.factorial(n - 1)
-            tot_measure = F(0)
             if n == 3:
-                tot_measure = sum(poly_area(c) for c in cells_2d(lines))
+                tot_measure = sum(poly_area(c) for c in cells)
             else:
-                tot_measure = sum(poly_volume(c[0]) for c in cells_3d(lines))
+                tot_measure = sum(poly_volume(c[0]) for c in cells)
             assert tot_measure == sim_vol, (n, L, tot_measure, sim_vol)
             results["L"][str(n)][str(L)] = {"p": f"{p.numerator}/{p.denominator}",
                                             "float": float(p), "ncells": ncells}
