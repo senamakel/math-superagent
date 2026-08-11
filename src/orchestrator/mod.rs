@@ -266,26 +266,8 @@ impl OrchestratorAgent {
         research_harness.push_middleware(checkpoint.clone());
         async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
 
-        // tool_builder: the only role with shell and file-write authority.
         let mut tool_builder_harness =
-            specialist_harness(model.clone(), budget, "tool_builder", &tracer);
-        register_resilient(
-            &mut tool_builder_harness,
-            Arc::new(WriteToolFile::new(workspace.clone())),
-        );
-        register_resilient(
-            &mut tool_builder_harness,
-            Arc::new(ExecuteCommand::new(workspace.clone(), budget.tool_timeout)),
-        );
-        for tool in documents.tools() {
-            register_resilient(&mut tool_builder_harness, tool);
-        }
-        // Diff-shaped editing, for the role that actually writes code. A patch
-        // changes a few lines instead of re-emitting the file, and carries a
-        // change across several files in one atomic call — which is what keeps
-        // a helper under `toolkits/` and its row in `toolkits/INDEX.md` from
-        // drifting apart.
-        register_resilient(&mut tool_builder_harness, patch::tool(documents.clone()));
+            build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
         tool_builder_harness.push_middleware(checkpoint.clone());
         async_subagents.register(
             "tool_builder",
@@ -769,6 +751,39 @@ impl RolePrompts {
             organizer: role("organizer", ORGANIZER_PROMPT)?,
         })
     }
+}
+
+/// Assembles the tool-builder's harness: the only role with shell and
+/// file-write authority.
+fn build_tool_builder_harness(
+    model: &Arc<dyn ChatModel<()>>,
+    budget: RunBudget,
+    tracer: &Arc<RunTracer>,
+    workspace: &Path,
+    documents: &WorkspaceDocuments,
+) -> AgentHarness<()> {
+    let mut harness = specialist_harness(model.clone(), budget, "tool_builder", tracer);
+    register_resilient(
+        &mut harness,
+        Arc::new(WriteToolFile::new(workspace.to_path_buf())),
+    );
+    register_resilient(
+        &mut harness,
+        Arc::new(ExecuteCommand::new(
+            workspace.to_path_buf(),
+            budget.tool_timeout,
+        )),
+    );
+    for tool in documents.tools() {
+        register_resilient(&mut harness, tool);
+    }
+    // Diff-shaped editing, for the role that actually writes code. A patch
+    // changes a few lines instead of re-emitting the file, and carries a
+    // change across several files in one atomic call — which is what keeps a
+    // helper under `toolkits/` and its row in `toolkits/INDEX.md` from
+    // drifting apart.
+    register_resilient(&mut harness, patch::tool(documents.clone()));
+    harness
 }
 
 /// The shared pieces every support agent's harness is assembled from.
