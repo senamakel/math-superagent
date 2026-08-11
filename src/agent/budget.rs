@@ -30,6 +30,19 @@ const DEFAULT_MAX_TOOL_CALLS: usize = 4_000;
 const DEFAULT_RUN_MINUTES: u64 = 120;
 /// Wall-clock ceiling for a single tool call, in minutes.
 const DEFAULT_TOOL_MINUTES: u64 = 10;
+/// Output tokens allowed in one model turn.
+///
+/// Left unset, a turn ran to 9,361 tokens and took 2.9 minutes, and longer
+/// turns took over seven. The model was not hanging: it was writing an essay
+/// where a decision was wanted. Generation is linear in output length, so an
+/// uncapped turn is an uncapped wall clock, and a run spends its budget on
+/// prose nobody reads instead of on executing anything.
+///
+/// Four thousand tokens is far more than any single decision, tool call, or
+/// derivation step needs, while bounding a turn to roughly a minute. Raising
+/// this trades wall clock for verbosity; it does not buy better reasoning.
+const DEFAULT_TURN_OUTPUT_TOKENS: u32 = 4_000;
+
 /// Attempts allowed for one model call, counting the first try.
 ///
 /// The vendored defaults are four attempts backing off from 200ms, which suits
@@ -54,6 +67,8 @@ pub struct RunBudget {
     pub run_timeout: Duration,
     /// Maximum wall-clock time for one tool call.
     pub tool_timeout: Duration,
+    /// Maximum output tokens for one model turn.
+    pub max_turn_output_tokens: u32,
 }
 
 impl Default for RunBudget {
@@ -63,6 +78,7 @@ impl Default for RunBudget {
             max_tool_calls: DEFAULT_MAX_TOOL_CALLS,
             run_timeout: Duration::from_secs(DEFAULT_RUN_MINUTES * 60),
             tool_timeout: Duration::from_secs(DEFAULT_TOOL_MINUTES * 60),
+            max_turn_output_tokens: DEFAULT_TURN_OUTPUT_TOKENS,
         }
     }
 }
@@ -93,6 +109,9 @@ impl RunBudget {
                 .map_or(defaults.tool_timeout, |value| {
                     Duration::from_secs(value.saturating_mul(60))
                 }),
+            max_turn_output_tokens: positive_env("MATH_AGENT_TURN_OUTPUT_TOKENS")
+                .and_then(|value| u32::try_from(value).ok())
+                .unwrap_or(defaults.max_turn_output_tokens),
         }
     }
 

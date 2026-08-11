@@ -40,6 +40,7 @@ struct HarnessExecutor {
     harness: Arc<AgentHarness<()>>,
     system_prompt: String,
     langfuse: Option<Arc<LangfuseClient>>,
+    max_turn_output_tokens: u32,
 }
 
 #[async_trait]
@@ -59,7 +60,12 @@ impl AgentExecutor for HarnessExecutor {
         if let Some(tracer) = tracer {
             events.subscribe(tracer);
         }
-        let context = RunContext::new(RunConfig::new(run_id), ())
+        // Bound each turn's generation. Child runs do not inherit a cap that
+        // was never set on the parent, and the specialists are exactly where
+        // the long turns happen.
+        let config = RunConfig::new(run_id)
+            .with_max_turn_output_tokens(self.max_turn_output_tokens);
+        let context = RunContext::new(config, ())
             .with_steering(steering)
             .with_events(events);
         let result = self
@@ -158,6 +164,7 @@ impl AsyncSubagentManager {
                 harness,
                 system_prompt: system_prompt.into(),
                 langfuse: self.langfuse.clone(),
+                max_turn_output_tokens: self.budget.max_turn_output_tokens,
             }),
         )
     }

@@ -100,7 +100,9 @@ impl ObservedAgent {
         if let Some(tracer) = self.tracer.clone() {
             events.subscribe(tracer);
         }
-        let context = RunContext::new(RunConfig::new(&run_id), ()).with_events(events);
+        let config = RunConfig::new(&run_id)
+            .with_max_turn_output_tokens(RunBudget::from_env().max_turn_output_tokens);
+        let context = RunContext::new(config, ()).with_events(events);
 
         let result = self.harness.invoke_in_context(&(), context, input).await;
         journal_sink.flush();
