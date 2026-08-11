@@ -133,7 +133,12 @@ impl ObservedAgent {
 pub(crate) fn configure_run_budget(harness: &mut SlimAgent, budget: RunBudget) {
     let tool_timeout_ms = budget.tool_timeout_ms();
     harness
-        .with_tool_timeout_settings(ToolTimeoutSettings::new(tool_timeout_ms, 1, tool_timeout_ms, 0))
+        .with_tool_timeout_settings(ToolTimeoutSettings::new(
+            tool_timeout_ms,
+            1,
+            tool_timeout_ms,
+            0,
+        ))
         .with_policy(budget.run_policy());
 }
 

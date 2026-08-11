@@ -5,11 +5,11 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use serde_json::json;
 
+use crate::agent::budget::RunBudget;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
     configure_run_budget, openrouter_model_from_env,
 };
-use crate::agent::budget::RunBudget;
 use crate::orchestrator::async_subagents::AsyncSubagentManager;
 
 const SYSTEM_PROMPT: &str = "You are a friendly hello-world agent. Use tools when they help. \
