@@ -455,8 +455,56 @@ fn both_code_writing_roles_see_the_same_working_context() {
     // They differ in mandate, not in what they need to know: what is being
     // attempted, what is already built, and the provisional numbers.
     assert_eq!(role_context("coder"), role_context("tool_builder"));
+    assert_eq!(role_context("solver"), role_context("tool_builder"));
     assert!(role_context("coder").contains(&"SCRATCHPAD.md"));
     assert!(role_context("coder").contains(&"code/lib/INDEX.md"));
+    // An encoding rests on what the run believes about the objects it encodes,
+    // and a bound the library already establishes removes constraints.
+    assert!(role_context("solver").contains(&"research/CLAIMS.md"));
+}
+
+#[test]
+fn the_solving_agent_encodes_rather_than_searches() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let solver = registry
+        .get("solver")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("solver is registered".into()))?;
+    // It writes the encoding and runs the engine over it, like any other
+    // program: the solvers are libraries and binaries in the image, not tools
+    // of their own, so a new engine is an image change rather than a schema.
+    for needed in ["write_tool_file", "execute_command"] {
+        assert!(
+            solver.tools.iter().any(|tool| tool == needed),
+            "solver must have `{needed}`"
+        );
+    }
+    // It is handed a reduced problem, not a topic to go and investigate.
+    assert!(!solver.tools.iter().any(|tool| tool == "exa_search"));
+    // The planners can reach it, or it may as well not exist.
+    assert!(SPECIALISTS.contains(&"solver"));
+    assert!(DELEGATES.contains(&"solver"));
+    Ok(())
+}
+
+#[test]
+fn the_solver_prompt_states_the_verdicts_that_are_not_answers() {
+    // The failure this role produces is reporting a solver's non-answer as an
+    // answer: `FEASIBLE` on an optimisation problem is a bound, `UNKNOWN` is a
+    // timeout, and `INFEASIBLE` is a result that must never be relaxed away.
+    for verdict in ["FEASIBLE", "UNKNOWN", "INFEASIBLE", "UNSAT"] {
+        assert!(
+            SOLVER_PROMPT.contains(verdict),
+            "the solver prompt must say what `{verdict}` means"
+        );
+    }
+    // Every engine the image installs is named, or the role will reimplement
+    // the search it exists to avoid.
+    for engine in ["cp_model", "pysat", "z3", "cvc5", "cbc"] {
+        assert!(
+            SOLVER_PROMPT.contains(engine),
+            "the solver prompt must name `{engine}`"
+        );
+    }
 }
 
 #[test]
