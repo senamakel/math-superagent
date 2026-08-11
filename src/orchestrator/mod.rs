@@ -1748,10 +1748,87 @@ struct ExecuteCommand {
     timeout: Duration,
 }
 
+/// What a command printed, and how it ended.
+///
+/// `status` is `None` when the command hit the ceiling and was killed, which
+/// is why this exists instead of `std::process::Output`: that type cannot
+/// represent a process with output but no exit status.
+struct CommandOutput {
+    stdout: Vec<u8>,
+    stderr: Vec<u8>,
+    status: Option<std::process::ExitStatus>,
+}
+
 impl ExecuteCommand {
     fn new(workspace: PathBuf, timeout: Duration) -> Self {
         Self { workspace, timeout }
     }
+
+    /// Runs one command, keeping what it printed even if it has to be killed.
+    ///
+    /// `Command::output()` inside a `timeout` discards everything on expiry:
+    /// the future is dropped mid-read, so a program that printed nine minutes
+    /// of progress and then hit the ceiling returned the agent nothing but
+    /// `command timed out`. Two such commands cost one live run twenty of its
+    /// first forty-four minutes and taught it nothing either time — it could
+    /// not tell a program that was nearly done from one that had not got past
+    /// its first loop, so it had no basis for choosing a smaller bound.
+    ///
+    /// So the pipes are drained by their own tasks. Killing the child closes
+    /// them, which ends those reads, and whatever arrived before the ceiling
+    /// is returned with the timeout reported as the exit status rather than as
+    /// an error. A timeout is evidence about the method, and evidence belongs
+    /// in the result.
+    async fn run(&self, command: &str) -> Result<CommandOutput> {
+        let mut process = tokio::process::Command::new("/bin/sh");
+        let mut child = process
+            .arg("-lc")
+            .arg(command)
+            .current_dir(&self.workspace)
+            .kill_on_drop(true)
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .spawn()
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Tool(format!("failed to execute command: {error}"))
+            })?;
+        let mut out = child.stdout.take();
+        let mut err = child.stderr.take();
+        let reading_out = tokio::spawn(async move { drain(&mut out).await });
+        let reading_err = tokio::spawn(async move { drain(&mut err).await });
+        let finished = tokio::time::timeout(self.timeout, child.wait()).await;
+        if finished.is_err() {
+            // Killing the child is what closes the pipes, so the drains above
+            // finish. Without it they wait for a process nobody is watching.
+            let _ = child.kill().await;
+        }
+        let stdout = reading_out.await.unwrap_or_default();
+        let stderr = reading_err.await.unwrap_or_default();
+        let status = match finished {
+            Ok(Ok(status)) => Some(status),
+            Ok(Err(error)) => {
+                return Err(tinyagents::TinyAgentsError::Tool(format!(
+                    "failed to execute command: {error}"
+                )));
+            }
+            Err(_) => None,
+        };
+        Ok(CommandOutput {
+            stdout,
+            stderr,
+            status,
+        })
+    }
+}
+
+/// Reads a pipe to its end, returning whatever arrived before it closed.
+async fn drain<R: tokio::io::AsyncRead + Unpin>(pipe: &mut Option<R>) -> Vec<u8> {
+    use tokio::io::AsyncReadExt;
+    let mut buffer = Vec::new();
+    if let Some(pipe) = pipe.as_mut() {
+        let _ = pipe.read_to_end(&mut buffer).await;
+    }
+    buffer
 }
 
 #[async_trait]
