@@ -23,7 +23,7 @@ Anchor checks implemented/tested IN this file's correctness history:
     p(3,160) = 56/135 ~ 0.4148148148...
     p(4,400) = 0.5107843137... (given 10 dp)
 """
-import sys, os, json, itertools
+import sys, os, json, itertools, math
 from fractions import Fraction as F
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from exact_race import outcome_parity_exact
@@ -417,18 +417,26 @@ def main():
     which = sys.argv[1] if len(sys.argv) > 1 else '3'
     Ls = [int(x) for x in sys.argv[2:]] or [160, 240, 320, 400, 480, 640,
                                             800, 1000, 1200, 1400, 1600, 1800]
-    n = int(which)
-    results = {"n": n, "L": {}, "anchors": {}}
-    for L in Ls:
-        lines, events = build_lines(n, L)
-        p, ncells = compute_pn(n, L, lines)
-        results["L"][str(L)] = {"p": f"{p.numerator}/{p.denominator}",
-                                "float": float(p), "ncells": ncells}
-        print(f"n={n} L={L}: p={p} = {float(p):.10f}  (cells={ncells})")
-    if n == 3 and 160 in Ls:
-        results["anchors"]["p(3,160)"] = "56/135"
-    if n == 4 and 400 in Ls:
-        results["anchors"]["p(4,400)"] = "0.5107843137"
+    ns = [int(which)] if which in ('3', '4') else [3, 4]
+    results = {"L": {}, "anchors": {}}
+    for n in ns:
+        results["L"][str(n)] = {}
+        for L in Ls:
+            lines, events = build_lines(n, L)
+            p, ncells = compute_pn(n, L, lines)
+            # sanity: total measure must be the simplex volume (density/(n-1)!)
+            sim_vol = F(1) / math.factorial(n - 1)
+            tot_measure = F(0)
+            if n == 3:
+                tot_measure = sum(poly_area(c) for c in cells_2d(lines))
+            else:
+                tot_measure = sum(poly_volume(c[0]) for c in cells_3d(lines))
+            assert tot_measure == sim_vol, (n, L, tot_measure, sim_vol)
+            results["L"][str(n)][str(L)] = {"p": f"{p.numerator}/{p.denominator}",
+                                            "float": float(p), "ncells": ncells}
+            print(f"n={n} L={L}: p={p} = {float(p):.10f}  (cells={ncells})")
+    results["anchors"]["p(3,160)"] = "56/135=0.4148148148..."
+    results["anchors"]["p(4,400)"] = "521/1020=0.5107843137..."
     os.makedirs('out', exist_ok=True)
     with open(os.path.join('out', 'exact_pn.json'), 'w') as f:
         json.dump(results, f, indent=2)
