@@ -190,15 +190,12 @@ impl FolderIndexTool {
     }
 
     async fn refresh(&self, call: &ToolCall) -> Result<String> {
-        let folder = call
-            .arguments
-            .get("path")
-            .and_then(Value::as_str)
-            .unwrap_or_default()
-            .trim()
-            .trim_start_matches("./")
-            .trim_matches('/')
-            .to_string();
+        let folder = folder_name(
+            call.arguments
+                .get("path")
+                .and_then(Value::as_str)
+                .unwrap_or_default(),
+        );
         let described = self.entries(&folder).await;
         let present = self.documents.file_names(&folder).await?;
 

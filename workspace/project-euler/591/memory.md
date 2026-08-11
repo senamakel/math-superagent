@@ -46,4 +46,9 @@ absolute). Must use high-precision arithmetic for the big cases.
 ## Open questions
 
 - The medium-n brute-force records (d=2 n=1e7/1e8, d=3 n=1e6) have not been
-  independently verified by a second route.
+  independently verified by a second route, and the d=2 n=1e8 float gap
+  (~2e-9 reported) is at/near float resolution — float sqrt noise can distort
+  both the error magnitude and (at n~1e8) possibly the winning (a,b). Recheck
+  with high-precision arithmetic before relying on them. The three statement
+  examples and the mpmath 1e13 claim are fully verified and are the trusted
+  oracle.
