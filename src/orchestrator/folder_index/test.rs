@@ -3,6 +3,8 @@
 
 use std::collections::BTreeMap;
 
+use crate::agent::{Result, Tool as _};
+
 use super::{INDEX_FILE, folder_name, index_for, parse, render, split};
 
 fn entries(pairs: &[(&str, &str)]) -> BTreeMap<String, String> {
@@ -140,5 +142,6 @@ async fn the_workspace_root_can_be_refreshed_by_every_spelling_of_itself() -> Re
             result.content
         );
     }
+    let _ = std::fs::remove_dir_all(&root);
     Ok(())
 }
