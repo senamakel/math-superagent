@@ -289,8 +289,7 @@ workspace/project-euler/66/
 
 Generated programs, calculations, and other artifacts appear in
 `workspace/default` unless another workspace is selected. A new workspace is
-seeded from [`workspace/template/`](workspace/template/) without overwriting
-files already present. The seed includes local agent instructions, role
+seeded from [`workspace/template/`](workspace/template/) without overwriting it. The seed includes local agent instructions, role
 prompts, configuration, `GOAL.md`, `TASKS.md`, `SCRATCHPAD.md`, `MEMORY.md`, and
 empty `research/` and `code/toolkits/` folders. The runtime reads those files at the
 start of every run.
@@ -481,11 +480,11 @@ src/
 │   ├── folder_index.rs     per-folder INDEX.md description tracking
 │   ├── frontier.rs         the library's citation graph, ranked and deduped
 │   ├── oeis.rs             sequence lookup, filed and cross-referenced
-│   ├── requests.rs         stated gaps, deduped against the ledger and closed
+│   ├── requests.rs         stated gaps, deduped and closed by a claim
 │   ├── threads.rs          the topic axis beside the arrival tree
+│   ├── readable.rs         HTML and PDF to Markdown conversion
 │   ├── patch.rs            atomic, exact-match Codex-format patches
 │   ├── patterns.rs         exact sequence analysis and recurrence search
-│   ├── readable.rs         HTML and PDF to Markdown conversion
 │   ├── solutions.rs        graph-backed attempt/reflect/diversify loop
 │   └── vector.rs           Qdrant research store and local feature vectors
 ├── hello_agent/            small single-agent example
