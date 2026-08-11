@@ -216,11 +216,30 @@ async fn a_missing_follow_up_agent_is_not_an_error() -> Result<()> {
 
 #[test]
 fn the_follow_up_chain_cannot_loop() {
-    // A follow-up that was itself followed up would tidy forever.
-    for (_, then) in super::FOLLOW_UPS {
-        assert!(
-            !super::FOLLOW_UPS.iter().any(|(after, _)| *after == then),
-            "{then} triggers a follow-up and is one"
-        );
+    // A follow-up that was itself followed up would tidy forever. Steps run
+    // sequentially inside one sequence, so this invariant is what bounds the
+    // whole mechanism at a single level.
+    for (_, steps) in super::FOLLOW_UPS {
+        for step in steps {
+            assert!(
+                !super::FOLLOW_UPS
+                    .iter()
+                    .any(|(after, _)| *after == step.agent),
+                "{} triggers a follow-up and is one",
+                step.agent
+            );
+        }
     }
+}
+
+#[test]
+fn reading_is_filed_only_after_it_has_been_done() {
+    // The scholar must precede the organizer: an organizer running first would
+    // index excerpts nobody had read yet.
+    let (_, steps) = super::FOLLOW_UPS
+        .iter()
+        .find(|(after, _)| *after == "research")
+        .expect("research triggers a follow-up sequence");
+    let agents: Vec<&str> = steps.iter().map(|step| step.agent).collect();
+    assert_eq!(agents, vec!["scholar", "organizer"]);
 }
