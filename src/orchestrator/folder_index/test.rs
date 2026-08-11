@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 
 use crate::agent::Result;
 
-use super::{INDEX_FILE, folder_name, index_for, parse, render, split};
+use super::{INDEX_FILE, brief, folder_name, index_for, parse, render, split};
 
 fn entries(pairs: &[(&str, &str)]) -> BTreeMap<String, String> {
     pairs
