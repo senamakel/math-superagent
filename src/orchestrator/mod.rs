@@ -310,7 +310,7 @@ impl OrchestratorAgent {
         register_recall(&mut coder_harness, &workspace);
         async_subagents.register("coder", Arc::new(coder_harness), prompts.coder)?;
 
-        // solver: the same authority again, and a third mandate. It answers a
+        // sat_solver: the same authority again, and a third mandate. It answers a
         // question that has been reduced to a finite decision or optimisation
         // problem by encoding it for CP-SAT, a SAT solver, or an SMT solver
         // rather than by writing the search itself. A hand-written backtracking
@@ -326,7 +326,11 @@ impl OrchestratorAgent {
             build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
         sat_solver_harness.push_middleware(checkpoint.clone());
         register_recall(&mut sat_solver_harness, &workspace);
-        async_subagents.register("sat_solver", Arc::new(sat_solver_harness), prompts.sat_solver)?;
+        async_subagents.register(
+            "sat_solver",
+            Arc::new(sat_solver_harness),
+            prompts.sat_solver,
+        )?;
 
         register_support_agents(
             &async_subagents,

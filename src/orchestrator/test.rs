@@ -3,8 +3,8 @@
 
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, DELEGATES, SAT_SOLVER_PROMPT,
-    SPECIALISTS, checked_workspace_path,
-    compression_policy, default_registry, role_context, validate_complexity, workspace_prompt,
+    SPECIALISTS, checked_workspace_path, compression_policy, default_registry, role_context,
+    validate_complexity, workspace_prompt,
 };
 use crate::agent;
 
