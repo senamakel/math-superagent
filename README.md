@@ -175,6 +175,12 @@ derivation, program, and notes in history. Pip installs under
 `.python-packages/`, bytecode caches, and the multi-megabyte `trace.jsonl` event
 log are excluded; read a trace locally or in Langfuse.
 
+Downloads are converted to Markdown before they are stored: HTML is stripped of
+scripts, styles, and navigation, a PDF's text layer is extracted, and TeX is
+preserved intact. Links become reference-style with a single list at the end
+and tracking parameters removed, so a page's URLs cost a few characters each
+instead of filling the context.
+
 Every runtime agent can use bounded document tools to download HTTP or HTTPS
 text, read and store files, make exact edits, add documents to a workspace-local
 index, and search that index for ranked snippets. The index lives at

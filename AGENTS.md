@@ -267,6 +267,31 @@ caches, and `trace.jsonl`. The trace is several megabytes per run and the
 derivation and notes already carry the reasoning worth keeping; read it locally
 or in Langfuse instead.
 
+## Document conversion
+
+`readable::to_markdown` converts every downloaded document before it is
+stored. HTML becomes Markdown, a PDF's text layer is extracted, plain text
+passes through, and genuinely binary content returns an error that names the
+format and says to find another source.
+
+Two details are deliberate and should not be simplified away:
+
+- The HTML converter is hand-written rather than taken from a crate because
+  mathematical sources carry TeX, delimited `\(…\)` or `$…$`, and a
+  general-purpose converter escapes the backslashes and destroys it. There is a
+  regression test using a real Project Euler statement.
+- Magic bytes beat the declared content type. Servers mislabel routinely, and a
+  PDF served as `text/html` is still a PDF.
+
+Links are compressed. Anchors become reference-style `[text][n]` with one
+`## Links` list at the end, so a URL repeated a dozen times on a page is
+written once; tracking parameters (`utm_*`, `fbclid`, and similar) are stripped.
+A reference page's navigation targets otherwise fill the context with URLs the
+agent will never follow.
+
+The PDF extractor runs inside `catch_unwind` because it panics on malformed
+input, and a panic there would destroy work unrelated to the document.
+
 ## Workspace context routing
 
 Context is authority, and it is also noise. `role_context` in
