@@ -516,6 +516,25 @@ impl WorkspaceDocuments {
     }
 }
 
+
+/// Describes a freshly downloaded source from what it already carries.
+///
+/// The first heading is the document's own title far more often than not, and
+/// the URL is its provenance. Together they answer "what is this and where did
+/// it come from", which is the whole job of an index row until somebody has
+/// actually read the thing.
+fn provisional_description(content: &str, url: &str) -> String {
+    let title = content
+        .lines()
+        .map(str::trim)
+        .find(|line| line.starts_with('#'))
+        .map(|line| line.trim_start_matches('#').trim())
+        .filter(|title| !title.is_empty())
+        .unwrap_or("downloaded source");
+    let title: String = title.chars().take(120).collect();
+    format!("{title} — from {url}; not yet read, excerpt pending a scholar summary")
+}
+
 /// Returns whether a stored document should be rendered to Markdown on read.
 ///
 /// Keyed on the extension, plus the PDF magic bytes for a file saved without
@@ -842,6 +861,15 @@ impl DocumentTool {
                 self.documents.write(&full, &content).await?;
             }
             self.documents.write(&path, &excerpt).await?;
+            // Say what this is while the answer is still known. The scholar
+            // replaces this with what the source establishes; until it does,
+            // the row names the origin and the title rather than nothing.
+            super::folder_index::record_description(
+                &self.documents,
+                &path,
+                &provisional_description(&content, &url),
+            )
+            .await;
             format!(
                 "downloaded {} bytes from {url}, converted to {} bytes of Markdown{}. {}",
                 bytes.len(),
