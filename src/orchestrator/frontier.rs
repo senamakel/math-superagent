@@ -341,7 +341,7 @@ async fn store(documents: &WorkspaceDocuments, ledger: &BTreeMap<String, Candida
                     "citers": candidate.citers,
                     "label": candidate.label,
                     "context": candidate.context,
-                    "fetched": candidate.fetched,
+                    "path": candidate.path,
                 }),
             )
         })
