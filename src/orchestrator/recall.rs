@@ -136,11 +136,11 @@ impl RecallWorkspaceTool {
 
 #[async_trait]
 impl Tool<()> for RecallWorkspaceTool {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "search_workspace"
     }
 
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "Finds files in this workspace whose wording is closest to a question, across derivations, \
          memory.md, reflections, research summaries, and toolkit helpers. Use it before proposing \
          an approach or building a helper, to see what the run already tried, learned, or wrote. \
@@ -148,7 +148,10 @@ impl Tool<()> for RecallWorkspaceTool {
     }
 
     fn schema(&self) -> ToolSchema {
-        ToolSchema::new(json!({
+        ToolSchema::new(
+            self.name(),
+            self.description(),
+            json!({
             "type": "object",
             "properties": {
                 "query": {
@@ -158,9 +161,10 @@ impl Tool<()> for RecallWorkspaceTool {
                     "maxLength": 500
                 }
             },
-            "required": ["query"],
-            "additionalProperties": false
-        }))
+                "required": ["query"],
+                "additionalProperties": false
+            }),
+        )
     }
 
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
@@ -178,13 +182,15 @@ impl Tool<()> for RecallWorkspaceTool {
         // and the useful next move — widen the wording, or accept that the run
         // has not been here before — depends on knowing which it was.
         if matches.is_empty() {
-            return Ok(ToolResult::new(
+            return Ok(ToolResult::text(
                 call.id,
+                self.name(),
                 format!("nothing in this workspace resembles `{query}` yet"),
             ));
         }
-        Ok(ToolResult::new(
+        Ok(ToolResult::text(
             call.id,
+            self.name(),
             serde_json::to_string_pretty(&json!({ "matches": matches }))?,
         ))
     }
