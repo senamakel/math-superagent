@@ -8,6 +8,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `d2_oeis.py` | Verifies the run's 2D amoeba sequence D2(N) (N=0..21) against the published OEIS A007902 pebbling-configurations terms, confirming D2(N)=A007902(N+1) on every term and printing the last few growth ratios against Knessl's asymptotic d=2.3216. The program backing the d2d-equals-a007902 identification claim. |
 | `diagonal.py` | Checks the M=N diagonal conjecture for PE763's structural parameter M (max level): tabulates count of configs with max level M=N against 3^(N-1), plus the near-diagonal M=N-1 column, reading the /workspace/data/level_N.txt feature dumps. |
 | `holonomic2.py` | Second sweep of the holonomic (P-recursive) hypothesis: fits sum_j p_j(N)D[N+j]=0, p_j polynomial degree d, over m=1..5, d=1..4 on the same D(0..14); extends each nullspace solution to D(20) (must stay integer) and D(100), checking exactly reproduced held-out values D(20)=9204559704 and D(100) mod 10^9=780166455. Refutes the holonomic P-recursive closed form; companion to holonomic_fit.py. |
+| `holonomic3.py` | _(undescribed)_ |
+| `holonomic_diag.py` | _(undescribed)_ |
 | `holonomic_fit.py` | _(undescribed)_ |
 | `mdist.py` | Counts reachable configs at each N by max level M from the /workspace/data/level_N.txt feature dumps, where M is read as the second field of each line, printing the M-distribution per N. Used to study how the structural parameter M grows with N. |
 | `offsets.py` | Extracts the N(N,M) table (configs by max level M) from data/level_N.txt and examines fixed-offset diagonals M-N=k: prints v(N,N+k)/3^(N-1) for each N to look for a pattern N(N,N+k)=poly(N)*3^(N-1). Structural probe extending the diagonal study of diagonal.py. |

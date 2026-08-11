@@ -4,21 +4,7 @@ amoeba BFS oracle, and cross-check Eriksson Fig.3 identities.
 """
 from functools import lru_cache
 from math import comb
-
-
-@lru_cache(maxsize=None)
-def G(k, m):
-    if k < 1:
-        return 0
-    if m == 0:
-        return 2 * G(k - 1, 0) + G(k, 1) + (1 if k == 2 else 0)
-    if m == 1:
-        return G(k - 3, 0) + 2 * G(k - 2, 1) + G(k - 1, 2) + G(k - 4, 1)
-    return G(k - m - 2, m - 1) + 2 * G(k - m - 1, m) + G(k - m, m + 1)
-
-
-def a(n):
-    return 1 if n == 1 else G(n, 0)
+from lib.amoeba2d import G, a
 
 
 # 2D amoeba BFS oracle values D2D(N) (the run's own verified counts).
