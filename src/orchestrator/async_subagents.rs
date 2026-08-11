@@ -229,7 +229,14 @@ impl AsyncSubagentManager {
         if let Some(tracer) = tracer.as_ref() {
             tracer.note(&format!("spawned: {}", preview_input(&input)));
         }
+        let slots = self.slots.clone();
         tokio::spawn(async move {
+            // Queue for a slot before doing anything else. Acquiring here
+            // rather than in `spawn` is what keeps a spawn cheap and
+            // non-blocking: the caller gets its run id immediately and the
+            // queue drains behind it. The run deadline starts after the wait,
+            // so a queued run is not charged for time it spent waiting.
+            let _permit = slots.acquire().await;
             let _ = store.mark_running(&spawned_task_id);
             let graph = GraphBuilder::<RunState, RunState>::overwrite()
                 .add_node(
