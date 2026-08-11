@@ -189,7 +189,7 @@ fn reflection_has_no_research_or_execution_authority() -> agent::Result<()> {
 }
 
 #[test]
-fn pattern_finder_gets_the_sequence_tools_and_no_shell() -> agent::Result<()> {
+fn pattern_finder_can_test_a_conjecture_but_not_search() -> agent::Result<()> {
     let registry = default_registry(true)?;
     let patterns = registry.get("pattern_finder").ok_or_else(|| {
         tinyagents::TinyAgentsError::Validation("pattern_finder is registered".into())
@@ -201,7 +201,15 @@ fn pattern_finder_gets_the_sequence_tools_and_no_shell() -> agent::Result<()> {
             .iter()
             .any(|tool| tool == "find_linear_recurrence")
     );
-    assert!(!patterns.tools.iter().any(|tool| tool == "execute_command"));
+    // It computes more terms to attack a conjecture: a fit over the data that
+    // suggested it is weak evidence, and the sequence tools cannot extend a
+    // sequence, only describe the terms handed to them.
+    assert!(patterns.tools.iter().any(|tool| tool == "execute_command"));
+    assert!(patterns.tools.iter().any(|tool| tool == "write_tool_file"));
+    // Searching is still somebody else's job. The pattern agent reasons from
+    // the run's own numbers, and a search tool here turns a bounded structural
+    // question into a second investigation.
+    assert!(!patterns.tools.iter().any(|tool| tool == "exa_search"));
     Ok(())
 }
 
