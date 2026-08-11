@@ -381,23 +381,21 @@ and symlinks that leave the repository's `workspace/` root are rejected.
 
 ## How a run works
 
-The orchestrator decides which specialist should handle each part of the
-problem. Open-ended objectives can go to the goals agent, which can spawn both
-other specialists and track evidence against explicit completion criteria.
-Research questions go to the Exa-backed research agent. That agent can
-recall related notes from Qdrant and save useful sourced findings for later.
-Computations and executable checks go to the tool-builder, and the implementation
-the answer rests on goes to the coder. The orchestrator then writes one answer
-that separates cited facts from its own mathematical reasoning.
+The orchestrator decides which specialist handles each part of the problem.
+Open-ended objectives go to the goals agent, which spawns other specialists and
+tracks evidence against explicit completion criteria; research questions go to
+the Exa-backed research agent, which recalls related notes from Qdrant and saves
+sourced findings; computations and executable checks go to the tool-builder, and
+the implementation the answer rests on to the coder. The orchestrator then
+writes one answer separating cited facts from its own reasoning.
 
 Subagent work runs asynchronously through TinyAgents graphs. `spawn_agent`
-returns a run ID immediately, so independent research and computation can run
-in parallel. The calling agent can use `peek_agent` to inspect status,
-`steer_agent` to redirect live work, and `await_agent` to retrieve the eventual
-response. `spawn_agents` and `await_agents` do the same for a batch in one turn,
-which is the shape most delegation takes: awaiting one run at a time serialises
-work that already ran in parallel and costs a turn for each. The orchestrator and
-goals agent share this control surface; there is no blocking delegation call.
+returns a run ID immediately, so independent research and computation run in
+parallel; `peek_agent` inspects status, `steer_agent` redirects live work, and
+`await_agent` retrieves the response. `spawn_agents` and `await_agents` do the
+same for a batch in one turn, which is the shape most delegation takes —
+awaiting one run at a time serialises work that already ran in parallel. The
+orchestrator and goals agent share this surface; there is no blocking call.
 
 Up to fifty runs execute concurrently; further spawns queue for a slot without
 blocking the caller. Set `MATH_AGENT_MAX_CONCURRENT_AGENTS` to change the cap.
