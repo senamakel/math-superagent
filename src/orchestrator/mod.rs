@@ -797,6 +797,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "TASKS.md",
             "MEMORY.md",
             "code/toolkits/INDEX.md",
+            "research/ROOT.md",
             "research/INDEX.md",
             // What the library *means* for this problem, as against
             // `research/INDEX.md`, which says what each file is. The index
@@ -808,6 +809,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             // one table. `MEMORY.md` records beliefs; this records the
             // attempt-by-attempt record that produced them, so a planner can
             // see which attempt is worth continuing rather than starting over.
+            "reflections/ROOT.md",
             "reflections/INDEX.md",
         ],
         // Executes: needs everything the plan depends on, its own scratch, and
@@ -831,6 +833,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/AGENTS.md",
             "code/INDEX.md",
             "code/toolkits/INDEX.md",
+            "research/ROOT.md",
             "research/INDEX.md",
             "CONTEXT.md",
         ],
@@ -848,6 +851,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "TASKS.md",
             "MEMORY.md",
             "INDEX.md",
+            "reflections/ROOT.md",
             "reflections/INDEX.md",
         ],
         // Analyses computed data: needs the numbers, not the plan. The toolkit
@@ -875,6 +879,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "TASKS.md",
             "MEMORY.md",
             "SCRATCHPAD.md",
+            "research/ROOT.md",
             "research/INDEX.md",
             // It reads what the library is already taken to establish, so a
             // new source is judged against the standing brief rather than
@@ -892,6 +897,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "INDEX.md",
             "code/INDEX.md",
             "code/toolkits/INDEX.md",
+            "research/ROOT.md",
             "research/INDEX.md",
         ],
         // Work against the record and the shelf. The inventor needs
@@ -904,6 +910,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "librarian" | "research" => &[
             "GOAL.md",
             "MEMORY.md",
+            "research/ROOT.md",
             "research/INDEX.md",
             // The research team maintains this, and its Gaps section is the
             // list of what to look for next. Without it the team re-derives
@@ -917,7 +924,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "inventor" => &[
             "GOAL.md",
             "MEMORY.md",
+            "research/ROOT.md",
             "research/INDEX.md",
+            "reflections/ROOT.md",
             "reflections/INDEX.md",
             // A genuinely different approach has to start from theory the run
             // can actually reach. This says which theory that is.

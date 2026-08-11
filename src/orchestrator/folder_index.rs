@@ -73,9 +73,7 @@ fn folder_name(requested: &str) -> String {
 
 /// Whether a folder segment names a level of a summary tree.
 pub(super) fn is_level(segment: &str) -> bool {
-    segment
-        .strip_prefix('L')
-        .is_some_and(|rest| !rest.is_empty() && rest.bytes().all(|byte| byte.is_ascii_digit()))
+    super::context_tree::batch_of(segment).is_some()
 }
 
 /// Splits a path into the folder whose index describes it, and the name that
@@ -349,7 +347,10 @@ impl FolderIndexTool {
             // against `INDEX.md` stopped catching `L0/INDEX.md` — and a live
             // research index grew rows for two indexes nobody had described.
             let file = name.rsplit('/').next().unwrap_or(name);
-            if file == INDEX_FILE || name.ends_with(super::documents::FULL_TEXT_SUFFIX) {
+            if file == INDEX_FILE
+                || file == super::context_tree::ROOT_FILE
+                || name.ends_with(super::documents::FULL_TEXT_SUFFIX)
+            {
                 continue;
             }
             let description = described.get(name).cloned().unwrap_or_default();
