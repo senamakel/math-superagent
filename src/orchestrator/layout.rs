@@ -26,6 +26,25 @@ pub(super) const CONFIG_DIR: &str = "config";
 /// The folder every program and its output belongs to.
 pub(super) const CODE_DIR: &str = "code";
 
+/// The folder holding what other programs import.
+///
+/// Named `lib` rather than `toolkits` because the name is what decides how it
+/// gets used. A folder called `toolkits` reads as somewhere to put tools, and
+/// that is exactly what a live run did with it: thirteen one-off scripts with
+/// their data pasted into the source, and not one import anywhere in the
+/// workspace. `lib` reads as things other files import, which is the only
+/// thing that belongs here.
+///
+/// `/workspace/code` is on `PYTHONPATH` (see the `Dockerfile`), so a module
+/// here is `from lib.<module> import <name>` from any working directory and
+/// any invocation. That is deliberate: before it, importing worked only when a
+/// program happened to be run as `python code/<name>.py`, and three separate
+/// `sys.path.insert` dialects appear in the committed workspaces where agents
+/// discovered that the hard way. An agent burned once inlines the routine
+/// instead, which is how a folder ends up holding seven copies of one
+/// function.
+pub(super) const LIB_DIR: &str = "code/lib";
+
 /// Data a program produced, kept apart from the programs themselves.
 ///
 /// A folder holding `solve.py` beside `solve.out.txt`, `fdtable.json`, and
