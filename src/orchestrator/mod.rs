@@ -604,7 +604,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
 /// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 7],
+    document_tools: [&'static str; 9],
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
