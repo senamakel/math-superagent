@@ -638,6 +638,96 @@ impl AsyncSubagentTool {
             allowed_agents,
         }
     }
+
+    /// Launches a whole fan-out in one call.
+    ///
+    /// Every tool call costs the caller a full model turn — measured at a p90
+    /// of 197 seconds on a live run — so issuing five spawns one at a time
+    /// spends minutes of generation before any of the work starts. This makes
+    /// width cheap: the concurrency cap, not the number of calls, is then what
+    /// bounds execution.
+    fn spawn_many(&self, call: &ToolCall) -> Result<Value> {
+        let runs = call
+            .arguments
+            .get("runs")
+            .and_then(Value::as_array)
+            .ok_or_else(|| {
+                tinyagents::TinyAgentsError::Validation(
+                    "`runs` is required and must be a non-empty array".into(),
+                )
+            })?;
+        if runs.len() > MAX_BATCH_SPAWNS {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "at most {MAX_BATCH_SPAWNS} runs may be launched in one call"
+            )));
+        }
+        // Every brief is checked before any run starts. A batch that
+        // half-launches is worse than one that is refused: the caller is told
+        // the call failed while agents it did not account for are already
+        // consuming budget.
+        let mut planned = Vec::with_capacity(runs.len());
+        for entry in runs {
+            let agent = required_string(entry, "agent")?;
+            if !self.allowed_agents.contains(&agent) {
+                return Err(tinyagents::TinyAgentsError::Validation(format!(
+                    "subagent `{agent}` is not allowed from this caller"
+                )));
+            }
+            planned.push((agent, required_string(entry, "input")?));
+        }
+        let mut started = Vec::with_capacity(planned.len());
+        for (agent, input) in planned {
+            let run_id = self.manager.spawn(&agent, input)?;
+            started.push(json!({ "agent": agent, "run_id": run_id }));
+        }
+        Ok(json!({ "runs": started, "status": "pending" }))
+    }
+
+    /// Collects several runs at once, waiting for them concurrently.
+    ///
+    /// Awaiting one at a time would re-serialise work the spawn just
+    /// parallelised, and cost a turn for each.
+    async fn await_many(&self, call: &ToolCall) -> Result<Value> {
+        let wait_seconds = call
+            .arguments
+            .get("wait_seconds")
+            .and_then(Value::as_u64)
+            .unwrap_or_else(|| self.manager.max_await_seconds());
+        let requested: Vec<String> = match call.arguments.get("run_ids") {
+            Some(Value::Array(ids)) => ids
+                .iter()
+                .filter_map(Value::as_str)
+                .map(str::to_string)
+                .collect(),
+            _ => self.manager.outstanding_runs(),
+        };
+        if requested.is_empty() {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "no runs to wait for: pass `run_ids`, or start runs first".into(),
+            ));
+        }
+        // Waited concurrently, so the batch costs the slowest run rather than
+        // the sum.
+        let mut waits = tokio::task::JoinSet::new();
+        for run_id in requested {
+            let manager = self.manager.clone();
+            waits.spawn(async move {
+                match manager.await_record(&run_id, wait_seconds).await {
+                    Ok(record) => serde_json::to_value(record)
+                        .unwrap_or_else(|error| json!({ "run_id": run_id, "error": error.to_string() })),
+                    Err(error) => json!({ "run_id": run_id, "error": error.to_string() }),
+                }
+            });
+        }
+        let mut finished = Vec::new();
+        while let Some(joined) = waits.join_next().await {
+            match joined {
+                Ok(value) => finished.push(value),
+                Err(error) => finished.push(json!({ "error": error.to_string() })),
+            }
+        }
+        Ok(json!({ "runs": finished }))
+    }
 }
 
 #[async_trait]
