@@ -223,6 +223,13 @@ in parallel. The calling agent can use `peek_agent` to inspect status,
 `steer_agent` to redirect live work, and `await_agent` to retrieve the eventual
 response. The orchestrator and goals agent share this control surface.
 
+Up to fifty runs execute concurrently; further spawns queue for a slot without
+blocking the caller. Set `MATH_AGENT_MAX_CONCURRENT_AGENTS` to change the cap.
+Each agent also develops an affinity for whichever OpenRouter provider served
+its last turn, so its large fixed prompt prefix keeps hitting that provider's
+cache. Fallbacks stay enabled, so a provider going busy moves the affinity
+rather than stalling the run.
+
 Context compression starts at an estimated 300,000 tokens. A model-backed
 summary keeps the decisions, assumptions, formulas, source URLs, command
 results, and unresolved work. Recent messages remain verbatim. If the summary
