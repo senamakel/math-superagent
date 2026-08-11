@@ -1244,7 +1244,7 @@ fn build_research_harness(
     tracer: &Arc<RunTracer>,
     documents: &WorkspaceDocuments,
     vector_store: &VectorStore,
-    search: (Option<Arc<dyn Tool<()>>>, Option<Arc<dyn Tool<()>>>),
+    search: (Option<Arc<dyn Tool<()>>>, Vec<Arc<dyn Tool<()>>>),
 ) -> AgentHarness<()> {
     let (exa, oeis) = search;
     let mut harness = specialist_harness(model.clone(), budget, "research", tracer);
