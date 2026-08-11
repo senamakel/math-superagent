@@ -689,6 +689,11 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "memory.md",
             "toolkits/INDEX.md",
             "research/INDEX.md",
+            // What every previous attempt was judged to have established, in
+            // one table. `memory.md` records beliefs; this records the
+            // attempt-by-attempt record that produced them, so a planner can
+            // see which attempt is worth continuing rather than starting over.
+            "reflections/INDEX.md",
         ],
         // Executes: needs everything the plan depends on, its own scratch, and
         // the catalogue of helpers the run has already built and verified —
@@ -712,7 +717,17 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // an answer was actually produced means knowing which artifacts exist,
         // and the index says what each one is without the derivations
         // themselves. It still does not see `scratchpad.md`.
-        "reflection" => &["goal.md", "tasks.md", "memory.md", "INDEX.md"],
+        // It also sees the reflections index — its own back-catalogue. Judging
+        // PROGRESS means judging *relative to previous attempts*, and a verdict
+        // on whether this attempt established something new is guesswork
+        // without the record of what the earlier ones established.
+        "reflection" => &[
+            "goal.md",
+            "tasks.md",
+            "memory.md",
+            "INDEX.md",
+            "reflections/INDEX.md",
+        ],
         // Analyses computed data: needs the numbers, not the plan. The toolkit
         // catalogue lets it reuse a verified helper rather than reimplement the
         // arithmetic it is about to check.
