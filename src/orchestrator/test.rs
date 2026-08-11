@@ -76,6 +76,38 @@ fn workspace_prefix_stripping_does_not_open_up_sibling_directories() {
 }
 
 #[test]
+fn the_pattern_team_skips_a_cycle_over_results_it_has_already_seen() {
+    // Idleness has to be decided before the agent runs. Asking it to notice
+    // that nothing changed costs a model call and a walk of the workspace to
+    // discover — most of what a working cycle costs — and a live team spent
+    // thirty `read_document` calls in two minutes doing exactly that.
+    let root = std::env::temp_dir().join(format!("math-agent-pattern-idle-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("temporary workspace is creatable");
+    let seen = std::sync::Arc::new(std::sync::Mutex::new(None));
+
+    // Nothing computed yet: idle rather than analysing an empty folder.
+    assert_eq!(
+        super::results_unchanged(&root, &seen),
+        Some(super::teams::Cycle::Idle)
+    );
+
+    std::fs::create_dir_all(root.join("code/out")).expect("results folder is creatable");
+    std::fs::write(root.join("code/out/first.txt"), "1 2 3").expect("a result is writable");
+    // New results: the cycle runs.
+    assert_eq!(super::results_unchanged(&root, &seen), None);
+    // Same results: it does not run again.
+    assert_eq!(
+        super::results_unchanged(&root, &seen),
+        Some(super::teams::Cycle::Idle)
+    );
+
+    std::fs::write(root.join("code/out/second.txt"), "5 8 13").expect("a result is writable");
+    assert_eq!(super::results_unchanged(&root, &seen), None);
+    let _ = std::fs::remove_dir_all(&root);
+}
+
+#[test]
 fn compression_triggers_at_roughly_three_hundred_thousand_tokens() {
     let policy = compression_policy();
     assert_eq!(policy.trigger_budget(), COMPRESSION_TRIGGER_TOKENS);
