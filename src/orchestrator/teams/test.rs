@@ -295,3 +295,75 @@ async fn a_cycle_that_actually_changed_the_workspace_is_believed() {
     );
     let _ = std::fs::remove_dir_all(&root);
 }
+
+#[tokio::test]
+async fn a_custodial_team_is_paced_even_when_it_reports_work() {
+    // The fingerprint check alone could not do this. Teams run concurrently
+    // with the solver, so somebody has usually written a file while a cycle
+    // was running, and every empty cycle was believed: a measured 1.35 cycles
+    // a minute producing 20 reads, 12 listings, four refreshes and no
+    // descriptions. Rate is the honest bound for work that never finishes.
+    let ran = Arc::new(AtomicU64::new(0));
+    let counter = ran.clone();
+    let _team = spawn(
+        "background",
+        TeamBudget {
+            max_cycles: 1_000,
+            wall_clock: Duration::from_mins(1),
+            min_interval: Duration::from_millis(400),
+        },
+        None,
+        None,
+        move |_inbox| {
+            let counter = counter.clone();
+            async move {
+                counter.fetch_add(1, Ordering::Relaxed);
+                Cycle::Worked
+            }
+        },
+    );
+
+    assert!(settle(|| ran.load(Ordering::Relaxed) >= 1).await);
+    tokio::time::sleep(Duration::from_millis(500)).await;
+    assert!(
+        ran.load(Ordering::Relaxed) <= 3,
+        "ran {} cycles; the floor should hold it near one per interval",
+        ran.load(Ordering::Relaxed)
+    );
+}
+
+#[tokio::test]
+async fn a_waiting_message_skips_the_pacing_floor() {
+    // Pacing exists to stop idle churn, not to delay a request that has
+    // already arrived.
+    let seen = Arc::new(AtomicU64::new(0));
+    let counter = seen.clone();
+    let team = spawn(
+        "background",
+        TeamBudget {
+            max_cycles: 1_000,
+            wall_clock: Duration::from_mins(1),
+            min_interval: Duration::from_secs(30),
+        },
+        None,
+        None,
+        move |inbox| {
+            let counter = counter.clone();
+            async move {
+                if !inbox.is_empty() {
+                    counter.fetch_add(1, Ordering::Relaxed);
+                }
+                Cycle::Worked
+            }
+        },
+    );
+
+    // First cycle runs immediately and starts the floor; post during it.
+    for index in 0..2 {
+        team.post("solver", format!("attempt {index} learned something"));
+    }
+    assert!(
+        settle(|| seen.load(Ordering::Relaxed) >= 1).await,
+        "a queued message must not wait out a 30s pacing floor"
+    );
+}
