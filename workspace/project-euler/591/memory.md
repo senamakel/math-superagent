@@ -55,6 +55,12 @@ every d, which is expected: the optimum (a,b) changes with n.
 - **ALL 90 non-square d validated**: at n=10^6, Cabanillas-candidate b_d equals
   brute-force argmin for every d in [2,99] (toolkits/validate_all_d.py, 47s,
   zero mismatches). This is the uniform cross-check of the method across all d.
+- **FINAL two-route cross-check** (crosscheck_two_routes.py): results_full_bothsides.txt
+  (Cabanillas candidate) and results_ostrowski_n13.txt (Ostrowski numeration) are
+  byte-identical (diff empty, exit 0). Parse: 90 numeric rows each; (b,a) identical
+  on every d; |a|,|b| <= 1e13 on all rows; both indicate S=526007984625966, and
+  independent exact re-sums of the |a| column both equal 526007984625966. audit_results.py
+  passes all 7 checks (90/90 each) with d=2 oracle residual -4.2930117e-15.
 
 ## Failed approaches
 - "records are semiconvergents of sqrt(d)" hypothesis: FALSE (d=2 oracle b not a
