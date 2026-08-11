@@ -69,11 +69,39 @@ The runtime has nine roles plus an explicit solution loop.
 `orchestrator::solutions` is a `TinyAgents` graph, not a prompt:
 
 ```text
-  attempt ──> reflect ──┬─ solved ────────────────> done
-     ▲                  ├─ retry ─────────────────> attempt
-     │                  └─ stuck ──> diversify ────┘
-     └────────────────────────────────────────────┘
+  attempt ──> judge ──┬─ restart ──────────────────> attempt
+     ▲                └─ reflect ──┬─ solved ──────> done
+     │                             ├─ retry ───────> attempt
+     │                             └─ stuck ──> diversify ──┐
+     └──────────────────────────────────────────────────────┘
 ```
+
+The judge and the reflection answer different questions. Reflection asks
+whether the answer is right and what the run learned, and it alone can end the
+loop. The judge asks whether the attempt was *conducted* in a way the next one
+should inherit: it scores it out of five against what the attempt actually did
+— executed and checked, executed but thin, wrote code without running it, prose
+only — and returns PROCEED, STEER, or RESTART. STEER's one sentence is carried
+into the next attempt's prompt; RESTART discards the direction and re-enters
+`attempt` without reflecting.
+
+Three rules in it are load-bearing. An unreadable reply is PROCEED, in the same
+spirit as an unparsable verdict not counting as solved: a judge the loop cannot
+read must not throw work away by accident. `MAX_RESTARTS` is two, because a
+judge that dislikes the run's whole approach would otherwise reset it until the
+attempt ceiling stopped the loop, and the run would end having explored nothing
+to its conclusion. And the attempt ceiling outranks a restart — a run on its
+last attempt reflects on what it has rather than discarding it and stopping
+with nothing.
+
+The prompt makes the judge reluctant rather than exacting. It is told to assume
+the attempt was reasonable, that most are, and that a run which computed the
+wrong thing or ended blocked has still done its job. RESTART is reserved for
+four named faults in the *conduct* of a run — an answer no executed program
+produced, a method that searches the answer space, a verification that checks a
+program against itself, or building on a belief already disproved — and if it
+cannot name which occurred and point at the words showing it, the verdict is
+PROCEED.
 
 Reflection runs after *every* attempt, not only after a failure, because the
 lesson from a partial success is what stops the next attempt repeating it. The
@@ -325,7 +353,7 @@ workspace/              # selectable writable agent workspaces
 ```
 
 The executable registry contains `goals`, `research`, `tool_builder`,
-`reflection`, `pattern_finder`, `inventor`, `librarian`, `scholar`, and
+`reflection`, `judge`, `pattern_finder`, `inventor`, `librarian`, `scholar`, and
 `organizer`.
 Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
 The goals agent also receives the research and tool-builder delegation tools,

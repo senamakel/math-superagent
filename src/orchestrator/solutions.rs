@@ -7,11 +7,20 @@
 //! judgement:
 //!
 //! ```text
-//!   attempt ──> reflect ──┬─ solved ────────────────> done
-//!      ▲                  ├─ retry ─────────────────> attempt
-//!      │                  └─ stuck ──> diversify ────┘
-//!      └────────────────────────────────────────────┘
+//!   attempt ──> judge ──┬─ restart ──────────────────> attempt
+//!      ▲                └─ reflect ──┬─ solved ──────> done
+//!      │                             ├─ retry ───────> attempt
+//!      │                             └─ stuck ──> diversify ──┐
+//!      └──────────────────────────────────────────────────────┘
 //! ```
+//!
+//! The two judgements are separate on purpose. `reflect` asks whether the
+//! answer is right and what the run learned, and it alone can end the loop.
+//! `judge` asks the narrower question of whether the attempt was *conducted*
+//! in a way the next one should inherit, scores it, and may throw the current
+//! direction away — bounded by `MAX_RESTARTS`, and never on an unreadable
+//! reply. It runs first so a restart costs a judge call rather than a judge
+//! call plus a reflection about to be discarded.
 //!
 //! `reflect` runs after *every* attempt, not only after a failure, because the
 //! lesson from a partial success is what stops the next attempt repeating it.
