@@ -123,13 +123,19 @@ class Runs:
 
 def pump(stream, runs: Runs, log, echo: bool) -> None:
     """Reads the child's output into the model, the log, and maybe stdout."""
-    for raw in iter(stream.readline, ""):
-        runs.add(raw)
-        log.write(raw)
-        log.flush()
-        if echo:
-            sys.stdout.write(raw)
-            sys.stdout.flush()
+    try:
+        for raw in iter(stream.readline, ""):
+            runs.add(raw)
+            log.write(raw)
+            log.flush()
+            if echo:
+                sys.stdout.write(raw)
+                sys.stdout.flush()
+    except ValueError:
+        # Detaching closes the pipe under this thread. That is the normal way
+        # the view ends, so it must not print a traceback over the terminal
+        # the user is about to get back.
+        pass
     runs.ended = True
 
 
