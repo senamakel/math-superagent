@@ -209,13 +209,16 @@ files and making checkpoint commits over each other, before it worked this way.
 `docker logs` replays a container from its start, so a client attaching an hour
 in still gets every tab populated before its first frame.
 
+It is a `ratatui` binary, built behind the optional `tui` feature so the
+runtime image — which has no terminal — does not carry a terminal library. The
+`./euler-tui` wrapper builds it once in release mode and then execs it.
+
 `Tab`, `n`, or the right arrow move to the next team and `Shift-Tab`, `p`, or
 the left arrow to the previous; the digits jump straight to one; the arrows and
 page keys scroll back, `g` returns to live, and `q` detaches without stopping
-the run — the container keeps going and the command can be re-attached. Input
-is polled every 15ms and every key waiting is consumed before the next repaint,
-so a keypress lands immediately and a held arrow scrolls by its whole run
-rather than one line per frame.
+the run. Input is polled every 15ms and every event waiting is consumed before
+the next repaint, so a keypress lands immediately and a held arrow scrolls by
+its whole run rather than one line per frame.
 
 Lines are coloured by what they report, so the shape of a run is readable while
 it scrolls: faults red, the loop's own verdicts yellow and bold, a spawn blue, a
