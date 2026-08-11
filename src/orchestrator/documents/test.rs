@@ -204,3 +204,57 @@ fn a_short_document_is_stored_whole_without_a_truncation_notice() {
     let full = "# Pell's equation\n\nThe fundamental solution is minimal.\n";
     assert_eq!(research_excerpt(full, "raw/pell.md"), full);
 }
+
+#[tokio::test]
+async fn concurrent_indexing_keeps_every_entry() -> Result<()> {
+    let path = workspace("index-race")?;
+    let documents = WorkspaceDocuments::new(path.clone())?;
+    let names: Vec<String> = (0..12).map(|n| format!("notes/source{n}.md")).collect();
+    for name in &names {
+        documents
+            .write(name, "a lattice cube has eight vertices")
+            .await?;
+    }
+
+    // The shape that corrupted a live run: one turn's worth of index calls,
+    // all in flight at once against the same file.
+    let mut tasks = tokio::task::JoinSet::new();
+    for name in names.clone() {
+        let documents = documents.clone();
+        tasks.spawn(async move { documents.index(&name).await });
+    }
+    while let Some(joined) = tasks.join_next().await {
+        joined.expect("index task panicked")?;
+    }
+
+    let indexed = documents.indexed_paths().await?;
+    assert_eq!(indexed.len(), names.len(), "lost entries: {indexed:?}");
+    // Readable as JSON, not merely non-empty: the failure being guarded
+    // against left a file that parsed as far as column 2 of line 3.
+    let raw = std::fs::read(path.join(super::INDEX_PATH)).expect("index is on disk");
+    let parsed: Vec<String> = serde_json::from_slice(&raw).expect("index is valid JSON");
+    assert_eq!(parsed.len(), names.len());
+    let _ = std::fs::remove_dir_all(path);
+    Ok(())
+}
+
+#[tokio::test]
+async fn a_corrupt_index_rebuilds_instead_of_failing_forever() -> Result<()> {
+    let path = workspace("index-corrupt")?;
+    let documents = WorkspaceDocuments::new(path.clone())?;
+    documents.write("notes/proof.md", "a bijection").await?;
+    // Byte-for-byte the wreckage Euler 579 produced.
+    std::fs::write(
+        path.join(super::INDEX_PATH),
+        "[\n  \"research/ehrhart_cubes.pdf\"\n]f\"\n]",
+    )
+    .expect("seed a corrupt index");
+
+    // Indexing must still succeed; the model cannot repair bookkeeping it
+    // never sees.
+    documents.index("notes/proof.md").await?;
+    let indexed = documents.indexed_paths().await?;
+    assert_eq!(indexed, vec!["notes/proof.md".to_string()]);
+    let _ = std::fs::remove_dir_all(path);
+    Ok(())
+}

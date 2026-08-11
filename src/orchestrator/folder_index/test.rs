@@ -3,7 +3,7 @@
 
 use std::collections::BTreeMap;
 
-use super::{folder_name, INDEX_FILE, index_for, parse, render, split};
+use super::{INDEX_FILE, folder_name, index_for, parse, render, split};
 
 fn entries(pairs: &[(&str, &str)]) -> BTreeMap<String, String> {
     pairs
