@@ -776,6 +776,11 @@ fn register_resilient(harness: &mut AgentHarness<()>, tool: Arc<dyn Tool<()>>) {
 }
 
 fn specialist_harness(model: Arc<dyn ChatModel<()>>, budget: RunBudget) -> AgentHarness<()> {
+    // Give this specialist its own provider affinity. The wrapper is per
+    // harness rather than shared, because agents differ in the large fixed
+    // prefix they cache, so one agent's fallback must not drag the others onto
+    // a provider where their prefix is cold. See `agent::sticky`.
+    let model: Arc<dyn ChatModel<()>> = Arc::new(StickyProviderModel::new(model));
     let mut harness = AgentHarness::new();
     configure_run_budget(&mut harness, budget);
     harness
