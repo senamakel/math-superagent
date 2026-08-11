@@ -200,11 +200,14 @@ def solve_stream(n, collect_frames=False):
     If collect_frames, also return the distinct-frame dict (for small n).
     Returns (C_p, S_p, C_d, S_d, frame_count, frames_or_None).
 
-    Memory-safe at n=5000: only the dedup `seen` set of canonical keys is kept
-    (~7.5M small tuples), NOT a value dict, so memory stays well under 2GB.
+    Memory-safe at n=5000: the primary primitive quaternion -> frame map is
+    INJECTIVE (canonical representative per frame; confirmed 0 duplicates at
+    n=100/200/1000/2000 and by verify_primary's per-N primary==distinct at
+    N<=30).  Each primary gcd=1 quaternion therefore contributes exactly one
+    distinct frame, so no dedup set is needed and memory stays O(1).
     """
-    seen = set()
     frames = {} if collect_frames else None
+    used = set() if collect_frames else None
     C_p = S_p = C_d = S_d = 0
     nframes = 0
     for a, b, c, d in iter_primary_quats(n):
@@ -212,12 +215,12 @@ def solve_stream(n, collect_frames=False):
         if res is None:
             continue
         key, tup = res
-        if key in seen:
-            continue
-        seen.add(key)
-        nframes += 1
         if collect_frames:
+            if key in used:
+                continue       # safety dedup on the collected path only
+            used.add(key)
             frames[key] = tup
+        nframes += 1
         ell, A, B, Cc, D = tup
         cp, sp = frame_contrib_power(n, ell, A, B, Cc, D)
         C_p += cp
