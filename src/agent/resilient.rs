@@ -59,9 +59,22 @@ const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_mins(7);
 /// accomplish nothing, which is exactly the self-inflicted outage the flat
 /// timeout was raised to 7 minutes to avoid.
 ///
-/// Thirty is deliberately below the measured rate, so the bound stays a
-/// safety ceiling rather than a limit a working call can reach.
-const MIN_OUTPUT_TOKENS_PER_SECOND: u64 = 30;
+/// Thirty was chosen from that measurement and is too optimistic. Across four
+/// live runs the rate is 27–33 tokens per second in the ordinary case but
+/// falls much further in the tail: one `tool_builder` turn produced 4,653
+/// tokens in 383 seconds, **12.2 per second**. At that rate a turn allowed the
+/// full 12,000-token cap needs some sixteen minutes, against the 400 seconds
+/// thirty would have granted it — so the slowest turns, which are the ones
+/// carrying the most work, are exactly the ones a rate-derived bound would cut
+/// off. Worse, truncation recovery doubles the cap, so the retry needs twice
+/// the wall clock and the doubling makes the timeout *more* likely rather than
+/// less.
+///
+/// Twelve is the slowest rate actually observed. It keeps the bound a safety
+/// ceiling rather than a limit a working call can reach, which is the whole
+/// point: a cap that trips routinely costs more than the long turns it
+/// prevents.
+const MIN_OUTPUT_TOKENS_PER_SECOND: u64 = 12;
 
 /// Wraps a tool so a recoverable failure answers the model instead of killing
 /// the run.
