@@ -1,0 +1,2 @@
+g-Number-ness: first_violating_k=none (checked k=1..100000)
+S(100000)=ceil(G(100000))= 15800662276
