@@ -89,6 +89,11 @@ impl WorkspaceDocuments {
                     documents: self.clone(),
                 }) as Arc<dyn Tool<()>>
             })
+            // Every agent that can create a file can describe it, so the
+            // index tools travel with the document tools rather than being
+            // granted to a role that then becomes the only one able to keep
+            // the index honest.
+            .chain(super::folder_index::FolderIndexTool::all(self))
             .collect()
     }
 
