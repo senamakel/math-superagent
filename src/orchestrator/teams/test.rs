@@ -367,3 +367,38 @@ async fn a_waiting_message_skips_the_pacing_floor() {
         "a queued message must not wait out a 30s pacing floor"
     );
 }
+
+#[tokio::test]
+async fn an_idle_custodial_cycle_is_paced_like_a_working_one() {
+    // Pacing the worked branch alone was measured and was not enough: a
+    // custodial team reporting "nothing to tidy" takes the idle branch, so the
+    // case most in need of a floor was the one escaping it. Two live teams ran
+    // a cycle every 66 and 108 seconds against a three-minute floor.
+    let ran = Arc::new(AtomicU64::new(0));
+    let counter = ran.clone();
+    let _team = spawn(
+        "background",
+        TeamBudget {
+            max_cycles: 1_000,
+            wall_clock: Duration::from_mins(1),
+            min_interval: Duration::from_millis(600),
+        },
+        None,
+        None,
+        move |_inbox| {
+            let counter = counter.clone();
+            async move {
+                counter.fetch_add(1, Ordering::Relaxed);
+                Cycle::Idle
+            }
+        },
+    );
+
+    assert!(settle(|| ran.load(Ordering::Relaxed) >= 1).await);
+    tokio::time::sleep(Duration::from_millis(700)).await;
+    assert!(
+        ran.load(Ordering::Relaxed) <= 3,
+        "an idle team ran {} cycles; the floor must apply to idle too",
+        ran.load(Ordering::Relaxed)
+    );
+}

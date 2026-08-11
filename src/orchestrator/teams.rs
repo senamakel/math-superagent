@@ -350,23 +350,26 @@ where
             }
             match outcome {
                 Cycle::Finished => break TeamExit::Done,
-                Cycle::Worked => {
-                    // Pace a team whose work never finishes. A message waiting
-                    // skips the wait: the point is to stop idle churn, not to
-                    // delay a request that has already arrived.
-                    if idle
-                        && let Some(remaining) =
-                            budget.min_interval.checked_sub(cycle_started.elapsed())
-                    {
-                        tokio::time::sleep(remaining).await;
-                    }
-                }
-                Cycle::Idle => {
-                    // Only sleep when there was genuinely nothing waiting.
-                    // Backing off with a full inbox would delay the message
-                    // that arrived precisely to be acted on.
+                // Both outcomes wait, and for the same reason: a team with
+                // nothing waiting for it should not come straight back.
+                //
+                // Pacing the worked branch alone was measured and was not
+                // enough. A custodial team that reports "nothing to tidy"
+                // takes the *idle* branch, so the one case most in need of a
+                // floor was the one case escaping it: two live teams ran a
+                // cycle every 66 and 108 seconds against a three-minute floor,
+                // while a third — which happened to be reporting work — was
+                // paced correctly.
+                //
+                // A message waiting skips the wait entirely. The point is to
+                // stop idle churn, not to delay a request that has already
+                // arrived.
+                Cycle::Worked | Cycle::Idle => {
                     if idle {
-                        tokio::time::sleep(IDLE_BACKOFF).await;
+                        let floor = IDLE_BACKOFF.max(budget.min_interval);
+                        if let Some(remaining) = floor.checked_sub(cycle_started.elapsed()) {
+                            tokio::time::sleep(remaining).await;
+                        }
                     }
                 }
             }
