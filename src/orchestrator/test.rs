@@ -285,3 +285,57 @@ fn oversized_command_output_keeps_the_end_where_the_answer_is() {
     let small = b"answer: 661\n";
     assert_eq!(truncate_output(small), "answer: 661\n");
 }
+
+#[test]
+fn every_built_in_prompt_is_present_and_bounded() {
+    use super::{
+        GOALS_PROMPT, INVENTOR_PROMPT, LIBRARIAN_PROMPT, ORCHESTRATOR_PROMPT, ORGANIZER_PROMPT,
+        PATTERN_PROMPT, REFLECTION_PROMPT, RESEARCH_PROMPT, SCHOLAR_PROMPT, SHARED_METHOD_POLICY,
+        TOOL_BUILDER_PROMPT,
+    };
+
+    // The prompts live in `src/prompts/*.md` and are included at compile time.
+    // A renamed or emptied file must fail here rather than in a live run.
+    for (name, prompt) in [
+        ("method_policy", SHARED_METHOD_POLICY),
+        ("orchestrator", ORCHESTRATOR_PROMPT),
+        ("research", RESEARCH_PROMPT),
+        ("tool_builder", TOOL_BUILDER_PROMPT),
+        ("reflection", REFLECTION_PROMPT),
+        ("pattern_finder", PATTERN_PROMPT),
+        ("inventor", INVENTOR_PROMPT),
+        ("librarian", LIBRARIAN_PROMPT),
+        ("scholar", SCHOLAR_PROMPT),
+        ("organizer", ORGANIZER_PROMPT),
+        ("goals", GOALS_PROMPT),
+    ] {
+        assert!(
+            prompt.trim().len() > 200,
+            "{name} prompt is missing or stub"
+        );
+        // Every prompt is re-sent on every model call in its role's run, so an
+        // accidental paste of a whole document into one is a bill, not a typo.
+        assert!(
+            prompt.len() < 20_000,
+            "{name} prompt has grown unreasonably"
+        );
+    }
+}
+
+#[test]
+fn the_method_policy_leads_every_assembled_prompt() {
+    use super::{SHARED_METHOD_POLICY, workspace_prompt};
+
+    // The provider cache is keyed on the exact leading prefix, so the one part
+    // every role shares has to come first or none of them share a prefix.
+    let assembled = workspace_prompt("ROLE BODY", "\n\nshared ctx", "\n\nrole ctx");
+    assert!(
+        assembled.starts_with(SHARED_METHOD_POLICY.trim()),
+        "the shared policy must lead"
+    );
+    assert!(assembled.contains("ROLE BODY"));
+    assert!(assembled.ends_with("role ctx"));
+    // Trimmed, so an editor adding a trailing newline to a prompt file cannot
+    // silently invalidate every cached prefix.
+    assert!(!assembled.contains("\n\n\n"), "{assembled}");
+}
