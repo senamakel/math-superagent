@@ -2,6 +2,8 @@
 
 pub(crate) mod async_subagents;
 mod documents;
+mod patterns;
+mod solutions;
 mod vector;
 
 use std::fmt::Write as _;
