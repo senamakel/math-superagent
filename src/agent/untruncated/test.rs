@@ -153,3 +153,30 @@ async fn a_request_with_no_cap_of_its_own_is_left_alone() {
         1
     );
 }
+
+#[tokio::test]
+async fn a_turn_the_loop_already_doubled_is_not_doubled_again() {
+    // This is not the only ladder. The vendored loop recovers its own shape of
+    // truncation the same way, so a turn it has re-issued arrives here at
+    // twice the cap — and read as an original, that doubles again. A live
+    // `goals` agent reached a 48,000-token re-issue exactly this way, four
+    // times the configured ceiling.
+    let inner = CountingModel::new(vec![cut_off_response(), cut_off_response()]);
+    let model = UntruncatedModel::new(inner.clone()).with_turn_cap(12_000);
+
+    let _ = model
+        .invoke(&(), ModelRequest::new(Vec::new()).with_max_tokens(24_000))
+        .await
+        .expect("an already-doubled turn still answers");
+
+    assert_eq!(
+        inner.calls(),
+        1,
+        "the turn is already at the shared ceiling, so it is not re-issued"
+    );
+    assert_eq!(
+        inner.caps(),
+        vec![Some(24_000)],
+        "and nothing asked for more than the ceiling allows"
+    );
+}
