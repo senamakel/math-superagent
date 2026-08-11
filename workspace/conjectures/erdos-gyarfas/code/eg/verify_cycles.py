@@ -51,8 +51,11 @@ def main():
     # K5: complete on 5 = min deg 4, all cycle lengths 3..5
     check("K5", nx.complete_graph(5), 4, {3, 4, 5}, 3)
 
-    # K2,3: min degree 2, cycles {4, 6}
-    check("K2,3", nx.complete_bipartite_graph(2, 3), 2, {4, 6}, 4)
+    # K2,3: min degree 2. Simple cycles alternate between the parts, so a
+    # length-6 cycle would need 3 vertices from the size-2 part — impossible.
+    # Only length 4 exists. (The oracle is what told us this; my first guess
+    # of {4,6} was wrong.)
+    check("K2,3", nx.complete_bipartite_graph(2, 3), 2, {4}, 4)
 
     # single triangle
     check("triangle", nx.cycle_graph(3), 2, {3}, 3)

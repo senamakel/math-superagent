@@ -113,10 +113,10 @@ def run_here():
     for i in range(5):
         P[i].append((i + 1) % 5)
         P[(i + 1) % 5].append(i)
-    for i in range(5, 10):
-        j = 5 + ((i + 1) % 5)
-        P[i].append(j % 10)
-        P[j % 10].append(i)
+    for i in range(5):
+        j = 5 + ((i + 2) % 5)   # pentagram step: inner 5,7,9,6,8
+        P[5 + i].append(j)
+        P[j].append(5 + i)
     for i in range(5):
         P[i].append(i + 5)
         P[i + 5].append(i)
@@ -131,9 +131,9 @@ def run_here():
                 Q[b].append(a)
     report(Q, "cube Q3")
 
-    # Also exercise the graph6 path: K4 in graph6 is "F~z" -- check it agrees
-    # with the hand-built K4 above.
-    print("graph6 K4:", report(from_graph6("F~z"), "K4[g6]"))
+    # Also exercise the graph6 path: K4 in graph6 is "C~" (from nauty). Check
+    # it agrees with the hand-built K4 above.
+    print("graph6 K4:", report(from_graph6("C~"), "K4[g6]"))
 
 
 if __name__ == "__main__":

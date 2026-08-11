@@ -17,4 +17,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/wikipedia-erdos-gyarfas.md` | References — from https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gy%C3%A1rf%C3%A1s_conjecture; not yet read, excerpt pending a scholar summary |
 | `L1.1/gao-huo-liu-ma-unified.md` | downloaded source — from https://arxiv.org/pdf/1904.08126; not yet read, excerpt pending a scholar summary |
 | `L1.1/ghaffari-mostaghim-cayley.md` | Erdős–Gyárfás conjecture for some families of Cayley graphs — from https://link.springer.com/article/10.1007/s00010-017-0518-3; not yet read, excerpt pending a scholar summary |
+| `L1.1/liu-montgomery-odd-cycle.md` | downloaded source — from https://arxiv.org/pdf/2010.15802; not yet read, excerpt pending a scholar summary |
 | `L1.1/luo-ma-zhao-dean.md` | downloaded source — from https://arxiv.org/pdf/2601.13552; not yet read, excerpt pending a scholar summary |
+| `L1.1/markstrom-extremal-cycles.md` | downloaded source — from http://abel.math.umu.se/~klasm/Uppsatser/cycex.pdf; not yet read, excerpt pending a scholar summary |
