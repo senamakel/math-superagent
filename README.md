@@ -19,9 +19,20 @@ The runtime uses a small registry of specialist agents:
 - `pattern_finder` runs exact sequence analysis over results already computed:
   forward differences and polynomial degree, common divisors, residue
   periodicity, and a verified linear-recurrence search.
+
+  Its tools report only what holds for every term supplied, and it can commission
+  more terms from the tool-builder so a conjecture is tested past the data that
+  suggested it.
 - `inventor` proposes a different line of attack when the current one stalls.
 - `librarian` downloads primary material into a workspace reference library and
   indexes it for local search.
+- `scholar` reads that library. It judges each source against the run's goal and
+  current beliefs and replaces each stored excerpt with what the source actually
+  establishes, because a downloaded paper nobody has opened has cost the run
+  context and taught it nothing.
+- `organizer` keeps the workspace navigable: folder indexes, the layout of
+  `research/`, and `toolkits/INDEX.md` matching the files beside it. It cannot
+  delete a result or change what a file says.
 
 ## The solution loop
 
