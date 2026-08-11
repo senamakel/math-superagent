@@ -29,7 +29,7 @@ pub use tinyagents::harness::host::AgentDefinition;
 
 const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
 const RECENT_MESSAGES_TO_KEEP: usize = 12;
-const COMMAND_TIMEOUT: Duration = Duration::from_secs(10 * 60);
+const COMMAND_TIMEOUT: Duration = Duration::from_mins(10);
 const MAX_COMMAND_OUTPUT_BYTES: usize = 64 * 1024;
 const MAX_WORKSPACE_CONTEXT_BYTES: usize = 256 * 1024;
 
@@ -547,9 +547,14 @@ impl Tool<()> for ExecuteCommand {
                     "complexity": {
                         "type": "string",
                         "description": "Time and space complexity, both polynomial or better."
+                    },
+                    "complexity_class": {
+                        "type": "string",
+                        "enum": ["constant", "logarithmic", "linear", "quasilinear", "polynomial"],
+                        "description": "Worst of the command's time and space complexity classes."
                     }
                 },
-                "required": ["command", "complexity"],
+                "required": ["command", "complexity", "complexity_class"],
                 "additionalProperties": false
             }),
         )
@@ -558,7 +563,8 @@ impl Tool<()> for ExecuteCommand {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let command = string_argument(&call, "command")?;
         let complexity = string_argument(&call, "complexity")?;
-        reject_exponential_complexity(&complexity)?;
+        let complexity_class = string_argument(&call, "complexity_class")?;
+        validate_complexity(&complexity, &complexity_class)?;
         let mut process = tokio::process::Command::new("/bin/sh");
         process
             .arg("-lc")
@@ -587,7 +593,15 @@ impl Tool<()> for ExecuteCommand {
     }
 }
 
-fn reject_exponential_complexity(complexity: &str) -> Result<()> {
+fn validate_complexity(complexity: &str, complexity_class: &str) -> Result<()> {
+    if !matches!(
+        complexity_class,
+        "constant" | "logarithmic" | "linear" | "quasilinear" | "polynomial"
+    ) {
+        return Err(tinyagents::TinyAgentsError::Validation(
+            "complexity class must be polynomial or better".into(),
+        ));
+    }
     let normalized = complexity.to_ascii_lowercase().replace(' ', "");
     let forbidden = [
         "exponential",
