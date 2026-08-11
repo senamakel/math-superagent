@@ -25,6 +25,38 @@ use crate::agent::{AgentHarness, Message, Result, Tool, ToolCall, ToolResult, To
 
 static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 
+/// Spawned runs allowed to execute at the same time.
+///
+/// A spawn is non-blocking and the model is encouraged to launch independent
+/// work in parallel, so nothing previously bounded how many runs could be in
+/// flight at once. Unbounded fan-out is not free: every run holds a full
+/// transcript in memory and, more importantly, competes for the same provider
+/// account, so a wide fan-out turns into upstream rate limiting, which the
+/// retry ladder then absorbs as minutes of backoff across every run at once.
+///
+/// Fifty is deliberately well above any realistic fan-out rather than a tight
+/// queue, and that headroom is load-bearing. A permit is held for a run's
+/// whole life, including while it waits in `await_agent` for children it
+/// spawned itself, so a parent occupies a slot while its children queue for
+/// theirs. If the pool could be filled entirely by parents waiting on
+/// children, the pool would deadlock. Keeping the cap far above the depth and
+/// width the registry can actually produce is what makes that unreachable.
+/// Lowering it towards the real fan-out would reintroduce exactly that risk.
+const DEFAULT_MAX_CONCURRENT_AGENTS: usize = 50;
+
+/// Reads the concurrent-run cap from the environment.
+///
+/// `MATH_AGENT_MAX_CONCURRENT_AGENTS` overrides the default. An unset, empty,
+/// unparsable, or zero value keeps it, so a malformed override never silently
+/// serialises the runtime or removes the bound.
+fn max_concurrent_agents() -> usize {
+    std::env::var("MATH_AGENT_MAX_CONCURRENT_AGENTS")
+        .ok()
+        .and_then(|value| value.trim().parse::<usize>().ok())
+        .filter(|value| *value > 0)
+        .unwrap_or(DEFAULT_MAX_CONCURRENT_AGENTS)
+}
+
 #[async_trait]
 trait AgentExecutor: Send + Sync {
     async fn execute(
