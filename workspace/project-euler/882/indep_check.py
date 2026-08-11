@@ -74,49 +74,44 @@ def birthday(x):
     return n + d + 1
 
 
-def simplest_dyadic_between(a, b):
-    """Simplest dyadic strictly between a<b by pure birthday scan.
+def _dyadics_of_birthday(b):
+    """Generator of all dyadics whose CGT birthday is exactly b (|.| bounded).
 
-    a, b are exact Fractions (dyadic), or None meaning -inf/+inf.
-    Scans denominators 1, 2, 4, ..., 2**25; returns the member of (a,b) of
-    globally minimal birthday.  Independent from-scratch routine.
+    Dyadic |x| = n + m/2^d with m odd has birthday n+d+1; integer n has
+    birthday |n|.  Yields both x and -x.  Bound n by b so all are finite.
     """
-    best_val = None
-    best_bday = None
-    DEN_CAP = 25
-    for d in range(0, DEN_CAP + 1):
-        den = 1 << d
-        lo = None if a is None else Fraction(a.numerator * den, a.denominator)
-        hi = None if b is None else Fraction(b.numerator * den, b.denominator)
-        if lo is None:
-            m_start = -10 ** 12
-        else:
-            m_start = (lo.numerator // lo.denominator) + 1
-            while Fraction(m_start, den) <= lo:
-                m_start += 1
-        if hi is None:
-            m_end = 10 ** 12
-        else:
-            m_end = (hi.numerator // hi.denominator)
-            while Fraction(m_end, den) >= hi:
-                m_end -= 1
-        if m_end < m_start:
+    # integers with birthday b
+    if b > 0:
+        yield Fraction(b)
+        yield Fraction(-b)
+    # non-integers
+    for n in range(0, b):            # n+d+1 = b  =>  d = b-n-1
+        d = b - n - 1
+        if d < 1:
             continue
-        # scan integers in [m_start, m_end]; cap for sanity
-        m = m_start
-        step_limit = 10 ** 8
-        cnt = 0
-        while m <= m_end and cnt < step_limit:
-            v = Fraction(m, den)
-            bd = birthday(v)
-            if best_bday is None or bd < best_bday:
-                best_bday = bd
-                best_val = v
-            m += 1
-            cnt += 1
-    if best_val is None:
-        raise RuntimeError(f"no dyadic found in ({a},{b}) up to 2^{DEN_CAP}")
-    return best_val
+        for m in range(1, (1 << d), 2):   # m odd in [1, 2^d - 1]
+            f = Fraction(m, (1 << d))
+            yield Fraction(n) + f
+            yield -(Fraction(n) + f)
+
+
+def simplest_dyadic_between(a, b):
+    """Simplest dyadic strictly between a<b, by birthday-ordered scan.
+
+    a, b are exact Fractions (dyadic), or None meaning -inf/+inf.  Enumerates
+    dyadics in increasing CGT birthday and returns the first lying strictly in
+    the open interval.  Independent from-scratch routine distinct from
+    toolkits.simplest_dyadic.
+    """
+    BDAY_CAP = 60
+    for bday in range(0, BDAY_CAP + 1):
+        for v in _dyadics_of_birthday(bday):
+            if a is not None and not (a < v):
+                continue
+            if b is not None and not (v < b):
+                continue
+            return v
+    raise RuntimeError(f"no dyadic found in ({a},{b}) up to birthday {BDAY_CAP}")
 
 
 _g_memo = {0: Fraction(0)}
