@@ -97,6 +97,11 @@ fn downloads_are_filed_under_the_research_folder() {
         research_path("confusioninterval.full.md"),
         "research/L1/confusioninterval.md"
     );
+    // A name that already carries the marker does not earn a second one.
+    assert_eq!(
+        full_text_path("research/L0/paper.full.md"),
+        "research/L0/paper.full.md"
+    );
     // The untouched original sits one level below the note that digests it.
     assert_eq!(
         full_text_path("research/L1/pell.md"),

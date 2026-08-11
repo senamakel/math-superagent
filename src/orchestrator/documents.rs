@@ -749,6 +749,11 @@ pub(super) fn full_text_path(summary_relative: &str) -> String {
         .strip_suffix(".md")
         .unwrap_or(summary_relative);
     let name = stem.rsplit('/').next().unwrap_or(stem);
+    // A caller may address the download at the level holding originals, in
+    // which case the name already carries the marker. Appending a second
+    // produced `x.full.full.md`, and seven of them landed in one live
+    // workspace before this stripped the marker it already had.
+    let name = name.strip_suffix(".full").unwrap_or(name);
     format!("{RESEARCH_DIR}/{SOURCE_DIR}/{name}{FULL_TEXT_SUFFIX}")
 }
 
