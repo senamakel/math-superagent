@@ -297,6 +297,7 @@ impl FolderIndexTool {
         let path = required(&call.arguments, "path")?;
         let purpose = required(&call.arguments, "purpose")?;
         let (folder, name) = split(&path);
+        loop_owned(&folder)?;
         if name.is_empty() {
             return Err(tinyagents::TinyAgentsError::Validation(
                 "`path` must name a file, not a folder".into(),
