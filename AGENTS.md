@@ -215,10 +215,17 @@ assumptions, intermediate results, source URLs, tool output, and unfinished
 work.
 
 OpenRouter uses `deepseek/deepseek-v4-flash-0731` unless `OPENROUTER_MODEL`
-overrides the model. StreamLake is preferred through `provider.order`, with
-`allow_fallbacks` enabled. Do not restore `provider.only`: an exclusive pin
-makes every other provider unreachable, so a rate limit on one route stalls the
-whole runtime while providers serving the same model sit idle. Exa handles search. Langfuse ingestion
+overrides the model. `DeepInfra` is preferred through `provider.order`, overridable with
+`MATH_AGENT_PROVIDER`, and `allow_fallbacks` is enabled.
+
+Preferring one provider is what makes prompt caching pay: the cache is
+per-provider, and these agents carry a large fixed prefix, so bouncing between
+routes re-sends the whole system prompt at full price every turn. Allowing
+fallbacks is what stops a busy provider halting the runtime. Do not restore
+`provider.only`: an exclusive pin makes every other provider unreachable, so a
+rate limit on one route stalls everything while providers serving the same
+model sit idle. Verify any slug before relying on it — `streamlake` sat here
+and silently matched nothing. Exa handles search. Langfuse ingestion
 is best effort and must not turn a successful answer into a failed run.
 
 Langfuse is also available for querying and reviewing recorded turns. Use

@@ -25,6 +25,10 @@ use budget::RunBudget;
 use trace::RunTracer;
 
 const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
+/// Preferred `OpenRouter` provider slug, verified to route to `DeepInfra`.
+///
+/// Overridable with `MATH_AGENT_PROVIDER` when a route is degraded.
+const PREFERRED_PROVIDER: &str = "deepinfra";
 
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
@@ -148,17 +152,33 @@ pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
     let _ = dotenvy::dotenv();
     let api_key = std::env::var("OPENROUTER_API_KEY")
         .map_err(|_| TinyAgentsError::Validation("OPENROUTER_API_KEY is required".to_string()))?;
-    // StreamLake stays the preferred route, but as an ordering rather than an
-    // exclusive pin. `only` made every other provider unreachable, so when
-    // StreamLake rate-limited the model the whole runtime stalled — requests
-    // hung for minutes and exhausted their retries against a provider that had
-    // nothing to give, while other providers serving the same model sat idle.
-    // `allow_fallbacks` is what makes adding a provider actually help.
+    // One preferred provider, with fallbacks. Both halves matter.
+    //
+    // Preferring a single route is what makes prompt caching pay: the cache is
+    // per-provider, so a run that bounces between providers re-sends its whole
+    // system prompt and transcript at full price every turn. These agents carry
+    // a large fixed prefix, so the cached reads are most of the saving.
+    //
+    // Allowing fallbacks is what keeps a busy provider from stopping the
+    // runtime. An exclusive `only` pin previously left requests hanging for
+    // minutes and exhausting their retries while other providers serving the
+    // same model sat idle.
+    //
+    // Verify any slug you put here actually routes: `streamlake` sat in this
+    // list and silently matched nothing, so the documented preference had no
+    // effect at all.
     let mut model = OpenAiModel::openrouter(api_key)
         .with_model(DEFAULT_OPENROUTER_MODEL)
         .with_default_provider_options(serde_json::json!({
-            "provider": { "order": ["streamlake"], "allow_fallbacks": true }
+            "provider": { "order": [PREFERRED_PROVIDER], "allow_fallbacks": true }
         }));
+    if let Ok(provider) = std::env::var("MATH_AGENT_PROVIDER")
+        && !provider.trim().is_empty()
+    {
+        model = model.with_default_provider_options(serde_json::json!({
+            "provider": { "order": [provider.trim()], "allow_fallbacks": true }
+        }));
+    }
     if let Ok(model_name) = std::env::var("OPENROUTER_MODEL")
         && !model_name.trim().is_empty()
     {
