@@ -1395,12 +1395,27 @@ impl Tool<()> for ExecuteCommand {
                     "command": { "type": "string", "description": "Shell command to run from /workspace." },
                     "complexity": {
                         "type": "string",
-                        "description": "Time and space complexity, both polynomial or better."
+                        "description": "Time and space complexity, both polynomial or better \
+                                        unless this is a bounded oracle."
                     },
                     "complexity_class": {
                         "type": "string",
-                        "enum": ["constant", "logarithmic", "linear", "quasilinear", "polynomial"],
-                        "description": "Worst of the command's time and space complexity classes."
+                        "enum": [
+                            "constant", "logarithmic", "linear", "quasilinear", "polynomial",
+                            "exponential", "factorial"
+                        ],
+                        "description": "Worst of the command's time and space complexity \
+                                        classes. Declare it honestly: `exponential` and \
+                                        `factorial` are allowed only for a brute-force oracle \
+                                        and only with `oracle_bound` set."
+                    },
+                    "oracle_bound": {
+                        "type": "string",
+                        "description": "Required when the class is exponential or factorial: \
+                                        the concrete input bound that keeps this run small, \
+                                        such as `n <= 7`. A brute-force oracle validating the \
+                                        real method on small instances is legitimate; the real \
+                                        method itself must still be polynomial or better."
                     }
                 },
                 "required": ["command", "complexity", "complexity_class"],

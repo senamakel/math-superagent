@@ -4,6 +4,7 @@ Also compare with the old positive-only candidates to confirm where they differ.
 import math, time, mpmath as mp
 mp.mp.dps = 50
 PI = mp.mpf('3.14159265358979323846264338327950288419716939937510')
+import sys; sys.path.insert(0,'/workspace')
 from solution_bothsides import solve_d_both
 
 def brute_best(d, n):
