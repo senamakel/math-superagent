@@ -6,8 +6,8 @@ mod documents;
 mod folder_index;
 mod patch;
 mod patterns;
-mod recall;
 mod readable;
+mod recall;
 mod solutions;
 mod vector;
 

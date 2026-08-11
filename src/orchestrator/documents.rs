@@ -516,7 +516,6 @@ impl WorkspaceDocuments {
     }
 }
 
-
 /// Describes a freshly downloaded source from what it already carries.
 ///
 /// The first heading is the document's own title far more often than not, and
