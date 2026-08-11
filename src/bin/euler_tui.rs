@@ -269,25 +269,52 @@ fn follow(
         .stderr(Stdio::piped())
         .spawn();
     let Ok(mut child) = child else { return };
-    let Some(output) = child.stdout.take() else {
-        return;
-    };
-    let mut file = std::fs::File::create(log).ok();
-    for line in BufReader::new(output).lines().map_while(Result::ok) {
-        if let Ok(mut state) = runs.lock() {
-            state.add(&line);
-        }
-        if let Some(file) = file.as_mut() {
-            let _ = writeln!(file, "{line}");
-            let _ = file.flush();
-        }
-        if echo {
-            println!("{line}");
-        }
-        if stop.load(Ordering::Relaxed) {
-            break;
-        }
+    // Both streams are read, and this is not a detail. The runtime's console
+    // goes to the container's *stderr* — a live container had 643 lines there
+    // and none on stdout — so a follower that reads only stdout attaches
+    // successfully and then shows an empty screen forever, which is exactly
+    // how this failed the first time. There is no safe way to merge two pipes
+    // into one in `std` without `unsafe`, and the crate forbids it, so each
+    // gets a reader and both feed the same sink.
+    let file = Arc::new(Mutex::new(std::fs::File::create(log).ok()));
+    let mut readers = Vec::new();
+    for stream in [
+        child
+            .stdout
+            .take()
+            .map(|out| Box::new(out) as Box<dyn std::io::Read + Send>),
+        child
+            .stderr
+            .take()
+            .map(|err| Box::new(err) as Box<dyn std::io::Read + Send>),
+    ]
+    .into_iter()
+    .flatten()
+    {
+        let (runs, file, stop) = (Arc::clone(runs), Arc::clone(&file), stop);
+        let stopped = stop.load(Ordering::Relaxed);
+        readers.push(std::thread::scope(|_| ()));
+        let _ = stopped;
+        let runs = runs;
+        let file = file;
+        std::thread::spawn(move || {
+            for line in BufReader::new(stream).lines().map_while(Result::ok) {
+                if let Ok(mut state) = runs.lock() {
+                    state.add(&line);
+                }
+                if let Ok(mut handle) = file.lock()
+                    && let Some(handle) = handle.as_mut()
+                {
+                    let _ = writeln!(handle, "{line}");
+                    let _ = handle.flush();
+                }
+                if echo {
+                    println!("{line}");
+                }
+            }
+        });
     }
+    let _ = child.wait();
     if let Ok(mut state) = runs.lock() {
         state.ended = true;
     }
