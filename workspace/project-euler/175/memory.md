@@ -17,7 +17,11 @@ labels the objective "problem 175").
 
 ## Established results
 
-(none yet — extraction/writing only; no solving done)
+- Phase 1 (extraction) complete: verbatim statement written to
+  `/workspace/problem_statement.md` (verified against raw HTML of
+  `/workspace/problem.html`).
+- Output format, verbatim: "Give your answer as comma separated integers,
+  without any whitespaces." (e.g., `4,3,1` for the sample n=241).
 
 ## Failed approaches
 
