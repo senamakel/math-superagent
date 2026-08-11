@@ -28,9 +28,18 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
 /// Default per-request provider timeout.
 ///
-/// Well below the vendored 600-second default, so a wedged request fails while
-/// the retry ladder can still do something useful with the remaining budget.
-const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_secs(150);
+/// This has to sit between two failure modes, and it was first set far too
+/// low. At 150 seconds every attempt at a legitimately slow call timed out,
+/// the retry ladder exhausted on a request that would have succeeded, and two
+/// runs died having done nothing — a self-inflicted outage strictly worse than
+/// the hang it was meant to bound. Calls of several minutes are normal for a
+/// reasoning model given a large system prompt and a full transcript.
+///
+/// Seven minutes is long enough that a working call is never cut off, and
+/// still under the vendored 600-second default, so a genuinely wedged request
+/// fails with retries left in the budget. Raise it before lowering it:
+/// truncating good calls is the more expensive mistake.
+const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_secs(420);
 
 /// Wraps a tool so a recoverable failure answers the model instead of killing
 /// the run.

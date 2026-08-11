@@ -169,6 +169,16 @@ impl EventListener for RunTracer {
             } => {
                 self.emit_line(&format!("tool  failed  {tool_name}: {error}"));
             }
+            // Retries and model failures were invisible on the console, so a
+            // run could spend ten minutes silently exhausting its retry ladder
+            // and look merely slow. These two lines are what turn that into an
+            // obvious symptom.
+            AgentEvent::RetryScheduled { call_id, attempt } => {
+                self.emit_line(&format!("model RETRY   attempt {attempt} for {call_id}"));
+            }
+            AgentEvent::ModelFailed { error, .. } => {
+                self.emit_line(&format!("model FAILED  {error}"));
+            }
             _ => {}
         }
     }
