@@ -997,7 +997,8 @@ impl DocumentTool {
             // Convert to Markdown rather than storing raw bytes. A PDF or
             // a markup-heavy page is unreadable otherwise, and the old
             // UTF-8 check turned a PDF into an error that ended the run.
-            let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
+            let converted = super::readable::convert(&bytes, content_type.as_deref(), &url)?;
+            let content = converted.markdown;
             let requested = research_path(
                 self.documents.root(),
                 &required_string(&call.arguments, "path")?,
