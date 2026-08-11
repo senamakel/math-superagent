@@ -29,6 +29,15 @@ A_n, B_n. Everything below feeds that hunt.
   F(σ^ℓ)=Σ_{k|ℓ}k·C(k), Möbius inversion recovers cycle counts. Character-free
   cross-check for the (a_1,a_2) sums behind A_n, B_n.
 - **Lehmer/factorial code gives lexicographic rank** — [[factorial_number_system_wiki]].
+- **NEW: exact fixed-point-conditioned per-pair inversion probability at finite n**
+  — [[pinsky_inversion_fixed_points]] (Pinsky, EJC 33(2) P2.36, DOI 10.37236/14250):
+  exact formula for P_n^(k)(σ_i^{-1}<σ_j^{-1}) and the expected inversion count
+  under uniform measure conditioned on exactly k fixed points, plus derangement
+  (k=0: n(n−1)/4+n/6+1/12+o(1)) and k≥1 asymptotics. Together with
+  [[pinsky_schickentanz_ewens_html]] Prop 10a this is a concrete summation route
+  to A_n, B_n: average the per-gap inversion probability over the fixed-point
+  count distribution of a uniform permutation. Closes the gap between the two
+  already-proved mechanisms at exact finite n (not just asymptotically).
 - **Negative OEIS**: A_n, B_n/(n−1)!, Q(n), probes uncatalogued — [[oeis_Aseq]],
   [[oeis_Qseq]], [[oeis_Bdiv]].
 
