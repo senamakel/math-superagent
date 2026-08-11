@@ -728,7 +728,6 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                         document_tools[6],
                     ]),
             ),
-        )?
         )?;
     // The four roles carrying shell and file-write authority. They differ in
     // mandate rather than in tools, so listing them together is what makes the
