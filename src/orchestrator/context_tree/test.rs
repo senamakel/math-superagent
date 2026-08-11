@@ -204,7 +204,8 @@ fn originals_are_exempt_from_the_cap_every_level_above_them_is_held_to() {
 #[test]
 fn a_fold_that_outgrew_its_cap_is_reported_before_any_sealing() {
     let root = workspace("priority");
-    write(&root, "research/L1.0/sprawling.md", 9_000);
+    // A seal gets four times a root's budget, so "too big" starts higher.
+    write(&root, "research/L1.0/sprawling.md", 40_000);
     fill(&root, "research/L0.0", FANOUT);
     write(&root, "research/ROOT.md", 400);
     touch(&root, "research/ROOT.md");
@@ -218,6 +219,32 @@ fn a_fold_that_outgrew_its_cap_is_reported_before_any_sealing() {
         .position(|fault| matches!(fault, Fault::Unsealed { .. }))
         .expect("a batch waiting to seal");
     assert!(budget < sealing, "{faults:?}");
+}
+
+#[test]
+fn a_seal_is_given_room_to_be_detailed_and_a_root_is_not() {
+    // The cap exists because a file is re-sent on every model call. That is
+    // true of the roots a system prompt carries and false of a seal, which is
+    // read on demand — and reading the two the same way produced a live seal
+    // of 1,417 bytes covering 7,800 bytes of notes, one line per source.
+    let root = workspace("budgets");
+    // Comfortably over a root's thousand tokens, comfortably under a seal's.
+    write(&root, "research/L1.0/detailed.md", 8_000);
+    write(&root, "research/ROOT.md", 8_000);
+    write(&root, "CONTEXT.md", 8_000);
+    touch(&root, "research/ROOT.md");
+    let over: Vec<String> = plan(&root)
+        .into_iter()
+        .filter(|task| task.fault == Fault::OverBudget)
+        .map(|task| task.node.path)
+        .collect();
+    assert!(over.contains(&"CONTEXT.md".to_string()), "{over:?}");
+    assert!(over.contains(&"research/ROOT.md".to_string()), "{over:?}");
+    assert!(
+        !over.contains(&"research/L1.0/detailed.md".to_string()),
+        "a detailed seal is the point, not a fault: {over:?}"
+    );
+    assert!(SEAL_TOKENS > ROOT_TOKENS);
 }
 
 #[test]
