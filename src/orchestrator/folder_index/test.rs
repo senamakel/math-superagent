@@ -88,8 +88,13 @@ async fn describing_a_sources_full_text_points_at_the_digest_instead() -> Result
     let root =
         std::env::temp_dir().join(format!("math-agent-describe-full-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
-    std::fs::create_dir_all(&root).expect("temporary workspace is creatable");
+    std::fs::create_dir_all(root.join("research/L0.0")).expect("temporary workspace is creatable");
+    std::fs::create_dir_all(root.join("research/L1.0")).expect("digest level is creatable");
     let root = root.canonicalize().expect("workspace resolves");
+    // The digest lives a level above the original it reads, so the hint has to
+    // name that batch and not the original's own.
+    std::fs::write(root.join("research/L0.0/paper.full.md"), "full").expect("original is writable");
+    std::fs::write(root.join("research/L1.0/paper.md"), "digest").expect("digest is writable");
     let documents = super::super::documents::WorkspaceDocuments::new(root.clone())?;
     let tools = super::FolderIndexTool::all(&documents);
     let tool = tools
@@ -116,7 +121,31 @@ async fn describing_a_sources_full_text_points_at_the_digest_instead() -> Result
         .err()
         .map(|error| error.to_string())
         .unwrap_or_default();
-    assert!(message.contains("L0.0/paper.md"), "{message}");
+    assert!(message.contains("L1.0/paper.md"), "{message}");
+    assert!(!message.contains("L0.0/paper.md"), "{message}");
+    // A source nothing has digested yet has no row to describe, and saying so
+    // beats naming a file that is not there.
+    let _ = std::fs::write(root.join("research/L0.0/orphan.full.md"), "full");
+    let orphan = tool
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "call-2".into(),
+                name: "describe_file".into(),
+                invalid: None,
+                arguments: serde_json::json!({
+                    "path": "research/L0.0/orphan.full.md",
+                    "purpose": "the whole converted paper"
+                }),
+            },
+        )
+        .await;
+    let message = orphan
+        .err()
+        .map(|error| error.to_string())
+        .unwrap_or_default();
+    assert!(message.contains("nothing digests it yet"), "{message}");
+
     let _ = std::fs::remove_dir_all(&root);
     Ok(())
 }

@@ -324,7 +324,9 @@ impl FolderIndexTool {
                 format!("{folder}/{stem}")
             };
             let advice = match self.documents.same_name_elsewhere(&probe) {
-                Some(found) => format!("describe `{found}` instead, which is the note that reads it"),
+                Some(found) => {
+                    format!("describe `{found}` instead, which is the note that reads it")
+                }
                 None => "nothing digests it yet, so there is no row to describe — the scholar \
                          writes that note first"
                     .to_string(),
