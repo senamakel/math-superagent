@@ -49,7 +49,8 @@ def main():
 
     # ---- a few extra graphs ---------------------------------------------
     # K5: complete on 5 = min deg 4, all cycle lengths 3..5
-    check("K5", nx.complete_graph(5), 4, {3, 4, 5}, 3)
+    K5 = nx.complete_graph(5)
+    check("K5", K5, 4, {3, 4, 5}, 3)
 
     # K2,3: min degree 2. Simple cycles alternate between the parts, so a
     # length-6 cycle would need 3 vertices from the size-2 part — impossible.
@@ -89,7 +90,7 @@ def main():
     # ---- power-of-two cycle predicate -----------------------------------
     print("Power-of-two-cycle predicate (>=4):")
     for name, graph in [("K4", K4), ("K3,3", K33), ("cube", cube),
-                        ("Petersen", petersen), ("K5", K5), ("C5only", G)]:
+                        ("Petersen", petersen), ("K5", K5), ("C5+C6", G)]:
         got = has_power_of_two_cycle(graph)
         two = power_of_two_cycle_lengths(graph)
         print(f"  {name:9s} has_power2={got}  power2_lengths={two}")
