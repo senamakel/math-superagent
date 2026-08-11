@@ -169,7 +169,7 @@ async fn citations_accumulate_across_downloads() -> std::io::Result<()> {
             &documents,
             url,
             &format!("research/L1.0/source{index}.md"),
-            &[shared.clone()],
+            std::slice::from_ref(&shared),
             "",
         )
         .await;
