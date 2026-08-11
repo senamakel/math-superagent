@@ -667,7 +667,7 @@ fn main() -> std::process::ExitCode {
     let reader = {
         let (runs, stop) = (Arc::clone(&runs), Arc::clone(&stop));
         let (workspace, log) = (workspace.clone(), log.clone());
-        std::thread::spawn(move || follow(&workspace, container, &runs, &log, !tabs, &stop))
+        std::thread::spawn(move || follow(&workspace, Some(container), &runs, &log, !tabs, &stop))
     };
 
     if tabs {
