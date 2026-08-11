@@ -171,7 +171,6 @@ impl<S: Send + Sync + 'static> ChatModel<S> for StickyProviderModel<S> {
         let response = match self.inner.invoke(state, self.steer(request)).await {
             Ok(response) => response,
             Err(error) => {
-                self.fault();
                 return Err(error);
             }
         };
