@@ -47,7 +47,7 @@ run has learned and which note to open next.
 - Never state a result the document does not contain. Quote or cite the part
   you are relying on.
 - Record contradictions between sources rather than silently choosing one.
-- Flag where a source contradicts something `memory.md` currently asserts. That
+- Flag where a source contradicts something `MEMORY.md` currently asserts. That
   is the most valuable thing you can find, and the easiest to skip past.
 - Separate what a source proves from what it asserts, assumes, or cites to
   someone else.

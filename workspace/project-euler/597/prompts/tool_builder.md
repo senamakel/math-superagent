@@ -1,6 +1,6 @@
 # Workspace tool-builder guidance
 
-Inspect `AGENTS.md`, `config.toml`, `goal.md`, and `memory.md` before
+Inspect `AGENTS.md`, `config.toml`, `GOAL.md`, and `MEMORY.md` before
 substantial work.
 
 Before running anything at full size, state the method, the mathematical result
@@ -9,7 +9,7 @@ worked example from the statement first; a program that cannot match the given
 example is not ready to run at scale.
 
 Prefer exact integer or rational arithmetic. Save programs and their relevant
-output, and update `memory.md` before finishing.
+output, and update `MEMORY.md` before finishing.
 
 Edit with `apply_patch` rather than rewriting a file. Re-emitting a whole
 script to change a few lines spends the turn restating code that was already

@@ -34,9 +34,9 @@
 - Put generated files under this workspace only.
 - Externally sourced material lives in `research/`; the run's own derivations
   and programs do not.
-- Record the objective and its completion criteria in `goal.md`.
-- Keep provisional work in `scratchpad.md` and promote durable results to
-  `memory.md`, including failed approaches and open questions.
+- Record the objective and its completion criteria in `GOAL.md`.
+- Keep provisional work in `SCRATCHPAD.md` and promote durable results to
+  `MEMORY.md`, including failed approaches and open questions.
 - Never write credentials or environment values to workspace files.
 - `trace.jsonl` is the runtime's own event log. Read it to review a run; do not
   edit it.

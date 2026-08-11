@@ -12,5 +12,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder.md` | Pattern-recognition role: mine the run's computed integer sequences with exact `analyze_sequence` / `find_linear_recurrence` tools; report a verified recurrence as a conjecture, not a proof. |
 | `reflection.md` | Reflection role: judge each attempt, not the problem; flag unverified answers as UNSOLVED and phantom progress as NO; give a lesson actionable by the next attempt. |
 | `research.md` | Research role: prefer primary sources and return exact URLs; several search angles; return plain statements with hypotheses; never fetch a published contest answer. |
-| `scholar.md` | Scholar role: read downloaded sources (summary then `.full.md`), write the one short summary per source, describe_file it, and flag where a source contradicts `memory.md`. |
+| `scholar.md` | Scholar role: read downloaded sources (summary then `.full.md`), write the one short summary per source, describe_file it, and flag where a source contradicts `MEMORY.md`. |
 | `tool_builder.md` | Tool-builder role: implement and run programs; reproduce worked examples before scale; prefer exact arithmetic; build one-function-per-file toolkit helpers in `toolkits/` and describe each. |
