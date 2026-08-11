@@ -60,3 +60,17 @@ fn millisecond_conversions_match_the_configured_durations() {
         budget.run_timeout.as_secs() * 1_000
     );
 }
+
+#[test]
+fn a_turn_is_bounded_so_wall_clock_is_bounded() {
+    // Generation time is linear in output length, so an uncapped turn is an
+    // uncapped wall clock. A live turn reached 9,361 tokens and 2.9 minutes.
+    let budget = RunBudget::default();
+    assert!(budget.max_turn_output_tokens > 0);
+    assert!(
+        budget.max_turn_output_tokens < 9_000,
+        "cap must be below the runaway turn that motivated it"
+    );
+    // Still generous enough for a real derivation step.
+    assert!(budget.max_turn_output_tokens >= 2_000);
+}

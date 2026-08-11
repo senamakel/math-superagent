@@ -63,8 +63,8 @@ impl AgentExecutor for HarnessExecutor {
         // Bound each turn's generation. Child runs do not inherit a cap that
         // was never set on the parent, and the specialists are exactly where
         // the long turns happen.
-        let config = RunConfig::new(run_id)
-            .with_max_turn_output_tokens(self.max_turn_output_tokens);
+        let config =
+            RunConfig::new(run_id).with_max_turn_output_tokens(self.max_turn_output_tokens);
         let context = RunContext::new(config, ())
             .with_steering(steering)
             .with_events(events);
