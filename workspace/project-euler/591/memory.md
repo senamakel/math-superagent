@@ -72,6 +72,30 @@ every d, which is expected: the optimum (a,b) changes with n.
   written to /workspace/results_full_bothsides.txt. Positive-only was strictly
   worse on 45 d (negative-b winners), never better.
 
+## Independent full-scale confirmation (solution_ostrowski.py)
+Wrote a FULLY INDEPENDENT solver fresh from the theorems in
+research/cabanillas_prop9_10_exact_statement.md (Algorithm 3(ii), Prop 9, Prop 10,
+irrational-alpha Case 2) — no code imported/copied from solution.py or
+solution_bothsides.py. Distinct implementation: sqrt(d) CF via the EXACT integer
+periodic (P,Q,a) recurrence so all q_k are exact ints; alpha=sqrt(d)-floor(sqrt(d));
+numeration of beta={pi} and 1-beta via Algorithm 3(ii) at mpmath dps=220;
+Prop 9+10 candidates kept to n<=L=floor(1e13/sqrt(d)); min distance per side sets
+sign of b; a=nint(pi-b sqrt(d)). Margin check confirmed: no ceil(beta/delta) digit
+decision within 1e-90 of an integer (flagged decisions occur only at k far beyond
+where the numeration prefix exceeds L — no relevant digit is near an integer).
+Driver (solution_ostrowski.py) reproduces:
+  - all 4 worked examples exactly (d=2 n=10 -> (6,-2); d=5 n=100 -> (-55,26);
+    d=7 n=1e6 -> (560323,-211781); d=2 n=1e13 -> a=-6188084046055,b=4375636191520);
+  - 0 mismatches vs brute scan (b in [-L,L], a=nint(pi-b sqrt d), dps=50) on ALL
+    90 non-square d at n=1e6;
+  - 0 mismatches on the 16 d at n=1e7 vs results_brute_n7.txt;
+  - full n=1e13 run -> /workspace/results_ostrowski_n13.txt, S=526007984625966;
+  - row-by-row (b,a) for all 90 d IDENTICAL to results_full_bothsides.txt
+    (0 mismatches);
+  - independent exact re-sum of results_ostrowski_n13.txt = 526007984625966 = S.
+This is a second, independent full-scale route to the same answer as
+solution_bothsides.py, confirming S = 526007984625966.
+
 ## Final answer (this attempt, re-verified by execution)
 S = 526007984625966. Re-verified fresh on this run: brute.py reproduced examples
 1-3 verbatim ((6,-2), (-55,26), (560323,-211781)); solution_bothsides.py
