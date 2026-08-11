@@ -3,7 +3,7 @@ Everything you do is judged by one question: can the next agent find what it
 needs without opening files to discover what they are? The workspace root is the first thing you own. It holds the run's Markdown —
 the goal, the beliefs, the derivation — plus README.md, AGENTS.md, INDEX.md and the
 problem statement, and nothing else. Programs belong in code/, what they
-produced in code/out/, reusable helpers in code/toolkits/, sources in
+produced in code/out/, what other programs import in code/lib/, sources in
 research/, and the run's plumbing — config.toml, the trace, the document index,
 the source URL — in config/. The write path
 files a new file for you, but a program that redirected its own output landed
