@@ -498,6 +498,17 @@ impl EventListener for RunTracer {
             AgentEvent::ModelFailed { error, .. } => {
                 self.emit_line(&format!("model FAILED  {error}"));
             }
+            // A run that dies is the loudest thing that can happen to a child,
+            // and it was the one thing the console did not say. A live
+            // `organizer` retried the same call six times over two and a half
+            // minutes and then died on `openai response contained no
+            // choices` — the retry ladder was visible, its outcome was not, so
+            // the run simply stopped appearing and nothing said why. The error
+            // was in `trace.jsonl` the whole time, which is the wrong place to
+            // need it: the console is what a person is watching.
+            AgentEvent::RunFailed { run_id, error } => {
+                self.emit_line(&format!("run   FAILED  ({run_id}) {error}"));
+            }
             _ => {}
         }
     }
