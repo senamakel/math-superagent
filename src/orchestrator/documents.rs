@@ -112,6 +112,10 @@ impl WorkspaceDocuments {
             // What the library establishes is a question every reader of it
             // has, not only the role that writes the notes.
             .chain(super::claims::ClaimsTool::all(self))
+            // The role that finds a gap is whichever one walked into it, so
+            // stating one is available to every role rather than only to the
+            // ones that go looking.
+            .chain(super::requests::RequestTool::all(self))
             .collect()
     }
 

@@ -62,8 +62,6 @@ struct Request {
     why: String,
     /// What would show the asker's current belief is wrong.
     falsifies: String,
-    /// Which role asked.
-    asker: String,
 }
 
 /// Posts a request, unless the library already answers it.
@@ -73,7 +71,6 @@ struct Request {
 /// looking for what is already in front of them.
 pub(super) async fn post(
     documents: &WorkspaceDocuments,
-    asker: &str,
     need: &str,
     why: &str,
     falsifies: &str,
@@ -106,7 +103,6 @@ pub(super) async fn post(
             need: truncate(need, MAX_FIELD),
             why: truncate(why, MAX_FIELD),
             falsifies: truncate(falsifies, MAX_FIELD),
-            asker: asker.to_string(),
         },
     );
     store(documents, &queue).await;
@@ -192,17 +188,16 @@ fn render(queue: &BTreeMap<String, Request>, ledger: &Ledger) -> String {
         out.push_str("_Nothing outstanding._\n");
     } else {
         out.push_str(
-            "| Request | Needed | What it would settle | What would falsify the current belief | \
-             Asked by |\n| --- | --- | --- | --- | --- |\n",
+            "| Request | Needed | What it would settle | What would falsify the current belief |\n\
+             | --- | --- | --- | --- |\n",
         );
         for (id, request) in open.iter().take(MAX_ROWS) {
             let _ = writeln!(
                 out,
-                "| `{id}` | {} | {} | {} | {} |",
+                "| `{id}` | {} | {} | {} |",
                 cell(&request.need),
                 cell(&request.why),
-                cell(&request.falsifies),
-                cell(&request.asker)
+                cell(&request.falsifies)
             );
         }
         if open.len() > MAX_ROWS {
@@ -264,7 +259,6 @@ async fn load(documents: &WorkspaceDocuments) -> BTreeMap<String, Request> {
                 need: string(&value, "need"),
                 why: string(&value, "why"),
                 falsifies: string(&value, "falsifies"),
-                asker: string(&value, "asker"),
             };
             (id, request)
         })
@@ -289,7 +283,6 @@ async fn store(documents: &WorkspaceDocuments, queue: &BTreeMap<String, Request>
                     "need": request.need,
                     "why": request.why,
                     "falsifies": request.falsifies,
-                    "asker": request.asker,
                 }),
             )
         })

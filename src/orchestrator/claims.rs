@@ -144,6 +144,12 @@ pub(super) struct Claim {
     pub(super) bearing: String,
     /// Claim ids this one contradicts.
     pub(super) contradicts: Vec<String>,
+    /// Request ids this claim answers.
+    ///
+    /// How a stated gap closes. The note that fills it says so, so whether a
+    /// request was met is read off the library rather than asserted by
+    /// whoever went looking.
+    pub(super) answers: Vec<String>,
     /// Where in the source text to check it.
     pub(super) anchor: String,
     /// The note the block was found in.
@@ -287,6 +293,7 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
         "status" | "evidence" => claim.status = Status::parse(value),
         "bearing" | "implies" => claim.bearing = value.to_string(),
         "contradicts" => claim.contradicts = identifiers(value),
+        "answers" | "closes" => claim.answers = identifiers(value),
         "anchor" | "source" | "where" => claim.anchor = value.to_string(),
         _ => {}
     }
@@ -471,6 +478,14 @@ impl Ledger {
         for fault in &self.malformed {
             let _ = writeln!(out, "- `{}`: {}", fault.source, fault.reason);
         }
+    }
+
+    /// The request ids the library's claims say they answer.
+    pub(super) fn answered(&self) -> std::collections::BTreeSet<String> {
+        self.claims
+            .iter()
+            .flat_map(|claim| claim.answers.iter().cloned())
+            .collect()
     }
 
     /// The ids of every claim on disk.

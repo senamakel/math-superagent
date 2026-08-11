@@ -89,7 +89,6 @@ impl Tool<()> for RequestTool {
         }
         let output = post(
             &self.documents,
-            &call.agent_hint(),
             &need,
             &string(&call.arguments, "why"),
             &string(&call.arguments, "falsifies"),
