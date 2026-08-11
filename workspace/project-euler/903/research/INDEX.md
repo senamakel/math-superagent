@@ -25,7 +25,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.1/nathanson_fixed_points_powers.md` | _(undescribed)_ |
 | `L1.1/oeis_Aseq.md` | _(undescribed)_ |
 | `L1.1/oeis_Bdiv.md` | _(undescribed)_ |
-| `L1.1/oeis_Qseq.md` | _(undescribed)_ |
+| `L1.1/oeis_Qseq.md` | OEIS negative lookup for the rank-sum sequence Q(n) = 5,88,4808,597876,133103808 (n=2..6): "No results". Q(n) is not catalogued; no recurrence or closed form in OEIS. |
 | `L1.1/oeis_invpowers.md` | _(undescribed)_ |
 | `L1.1/oeis_invpowers2.md` | OEIS negative lookup for probe sequence 1,4,82,1448,24832,415968,6983744,117072128 (derived from expected-inversion formulas): "No results". |
 | `L1.1/pinsky_inversion_fixed_points.md` | _(undescribed)_ |
@@ -44,3 +44,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2.0/reports_negatives.md` | _(undescribed)_ |
 | `verify_cambie_yan.py` | _(undescribed)_ |
 | `verify_facts.py` | Verification script for the cited rank/order facts: checks rank(2,1,3)=3 via the Lehmer/factoradic rank formula and the derived reduction Q(n)=Σ_{H cyclic}φ( |
+ reduction Q(n)=Σ_{H cyclic}φ( |
