@@ -55,6 +55,17 @@ impl ChatModel<()> for RecordingModel {
             .lock()
             .expect("recorded requests are not poisoned")
             .push(request.provider_options.clone());
+        let index = {
+            let mut calls = self.calls.lock().expect("the call counter is not poisoned");
+            let index = *calls;
+            *calls += 1;
+            index
+        };
+        if self.failing.contains(&index) {
+            return Err(tinyagents::TinyAgentsError::Tool(
+                "request timed out".into(),
+            ));
+        }
         let served = self
             .served_by
             .lock()
