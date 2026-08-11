@@ -457,6 +457,7 @@ fn both_code_writing_roles_see_the_same_working_context() {
     // attempted, what is already built, and the provisional numbers.
     assert_eq!(role_context("coder"), role_context("tool_builder"));
     assert_eq!(role_context("sat_solver"), role_context("tool_builder"));
+    assert_eq!(role_context("lean_prover"), role_context("tool_builder"));
     assert!(role_context("coder").contains(&"SCRATCHPAD.md"));
     assert!(role_context("coder").contains(&"code/lib/INDEX.md"));
     // An encoding rests on what the run believes about the objects it encodes,
