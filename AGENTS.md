@@ -40,9 +40,9 @@ The runtime has nine roles plus an explicit solution loop.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
-  current tasks, and existing beliefs, records what the source actually
-  establishes and what it implies here, and maintains `research/DIGEST.md` as
-  the way in. It exists because acquiring is not reading: a downloaded paper
+  current tasks, and existing beliefs, replaces each source's excerpt with what
+  it actually establishes and what that implies here, and describes it so
+  `research/INDEX.md` is the way in. It exists because acquiring is not reading: a downloaded paper
   nobody has opened has cost the run context and taught it nothing. It has no
   search tool on purpose, so it digests the library instead of drifting into
   another search the librarian has already done.
@@ -419,7 +419,10 @@ anything else is moved into it, with `/workspace/` and `./` prefixes trimmed
 first so the common spellings do not produce `research/workspace/...`.
 
 The librarian keeps `research/INDEX.md` current, and receives it as context so
-it does not download the same paper twice.
+it does not download the same paper twice. Research and toolkits follow one
+shape: a folder, an `INDEX.md`, and one small file per thing — per source, per
+helper function — so reading what you need never means loading what you do
+not.
 
 ## Workspace discovery and the reflection log
 
@@ -450,8 +453,8 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | pattern_finder | `goal.md`, `memory.md`, `scratchpad.md` |
 | inventor, research | `goal.md`, `memory.md` |
 | librarian | `goal.md`, `memory.md`, `research/INDEX.md` |
-| scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md`, `research/DIGEST.md` |
-| organizer | `goal.md`, `tasks.md`, `toolkits/INDEX.md`, `research/INDEX.md`, `research/DIGEST.md` |
+| scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md` |
+| organizer | `goal.md`, `tasks.md`, `toolkits/INDEX.md`, `research/INDEX.md` |
 
 The tool-builder accumulates reusable helpers under `toolkits/`, one function
 per file, described through `describe_file` so `toolkits/INDEX.md` carries the

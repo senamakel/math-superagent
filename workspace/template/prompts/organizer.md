@@ -17,10 +17,10 @@ discover what they are?
 ## `research/`
 
 - Names should say what a source is about, not where it came from.
-- Keep `DIGEST.md` current as the way in, ordered by usefulness to the goal.
-- Where a source has a `.full.md` companion, the index and digest point at the
-  short summary. The full text is for someone who has read the summary and
-  still needs more.
+- Keep `INDEX.md` current as the way in, ordered by usefulness to the goal.
+- One source, one summary file. Where a source has a `.full.md` companion, the
+  index describes the summary; the full text is for someone who has read the
+  summary and still needs more.
 - Keep summaries short. If one has grown past about a thousand tokens, say so
   in your report rather than rewriting the mathematics yourself.
 
