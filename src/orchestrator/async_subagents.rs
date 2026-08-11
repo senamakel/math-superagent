@@ -12,7 +12,7 @@ use tinyagents::graph::{
     OrchestrationTaskResult, OrchestrationTaskSpec, SteeringRegistry, TaskStore,
 };
 use tinyagents::harness::context::{RunConfig, RunContext};
-use tinyagents::harness::events::EventSink;
+use tinyagents::harness::events::{AgentEvent, EventRecord, EventSink};
 use tinyagents::harness::ids::{RunId, TaskId};
 use tinyagents::harness::observability::{
     HarnessEventJournal, InMemoryEventJournal, JournalSink, LangfuseClient, LangfuseTraceConfig,
