@@ -648,14 +648,25 @@ const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
 fn role_context(role: &str) -> &'static [&'static str] {
     match role {
         // Plans and combines: needs the objective, the plan, and what is known.
-        "orchestrator" | "goals" => &["config.toml", "goal.md", "tasks.md", "memory.md"],
-        // Executes: needs everything the plan depends on plus its own scratch.
+        // The catalogue goes to the planners too: what has already been built
+        // and verified changes what is worth delegating next.
+        "orchestrator" | "goals" => &[
+            "config.toml",
+            "goal.md",
+            "tasks.md",
+            "memory.md",
+            "toolkit.md",
+        ],
+        // Executes: needs everything the plan depends on, its own scratch, and
+        // the catalogue of helpers the run has already built and verified —
+        // without it the tool-builder rewrites routines it wrote an hour ago.
         "tool_builder" => &[
             "config.toml",
             "goal.md",
             "tasks.md",
             "memory.md",
             "scratchpad.md",
+            "toolkit.md",
         ],
         // Judges: needs the criteria and the record, never provisional work.
         "reflection" => &["goal.md", "tasks.md", "memory.md"],
