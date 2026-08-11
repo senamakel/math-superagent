@@ -20,7 +20,7 @@ def simulate_order(n, L, speeds):
     """Return above: above[i] = set of boats placed below i via bump chains."""
     state = [0]*n            # 0 ROWING, 1 FINISHED, 2 OUT
     pos = [40.0*j for j in range(n)]
-    bumped_by = [-1]*n
+    edges = [[] for _ in range(n)]     # every bump edge: edges[a].append(b)
     while True:
         rowing = [j for j in range(n) if state[j] == 0]
         if not rowing:
@@ -48,17 +48,19 @@ def simulate_order(n, L, speeds):
         else:
             state[j] = 2
             pos[j] = pos[k]
-            bumped_by[k] = j
-    out_of = [-1]*n
-    for k in range(n):
-        if bumped_by[k] != -1:
-            out_of[bumped_by[k]] = k
+            edges[j].append(k)
+    # above[i] = all boats reachable from i along bump edges (i placed above them)
     above = [set() for _ in range(n)]
     for i in range(n):
-        cur = out_of[i]
-        while cur != -1:
-            above[i].add(cur)
-            cur = out_of[cur]
+        seen = {i}
+        stack = [i]
+        while stack:
+            u = stack.pop()
+            for w in edges[u]:
+                if w not in seen:
+                    seen.add(w)
+                    stack.append(w)
+        above[i] = seen - {i}
     return above
 
 def parity_of_new_order(n, above):
