@@ -12,6 +12,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `partisan.md` | Why Sprague–Grundy does NOT apply (disjoint move sets: One deletes 1-bits, Zero deletes 0-bits), so the run uses minimax over (A,B) not nimbers. |
 | `strategy.md` | Dead end: generic strategy article, nothing relevant. Marked as examined so nobody reads it again. |
 | `surreal.md` | Why G(a,b)=a−b is EXACT (simplest number strictly between left/right options); skips fall outside short-game numbers, so value A−B alone does not give S(n). |
+| `trollopedelange.md` | A54 INTEGERS 11 (2011) — from https://emis.muni.cz/journals/INTEGERS/papers/l54/l54.pdf; not yet read, excerpt pending a scholar summary |
 | `weightedmom.md` | Larcher & Pillichshammer (2005), "Moments of the weighted sum-of-digits function": the governing theory for the run's weighted board totals A(n)=Σk·popcount(k) and B(n)=Σk·zerocount(k). Establishes that first-moment digit sums admit Delange-type closed forms (main term + fluctuation), warranting O(poly log n) evaluation. Only abstract obtainable (PDF gated). |
 | `weightedsearch.md` | OEIS search on the given S(n) sample 1,3,9,13,23,35,56,64; excerpt pulled, full results not yet summarised. |
 | `zerocount.md` | OEIS A059015: summatory binary 0-bit count with O(log n) recurrences and identity A059015 = A083652 − A000788; supplies B(n) for the (A,B) counting game. |

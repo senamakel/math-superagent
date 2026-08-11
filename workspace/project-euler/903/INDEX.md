@@ -9,8 +9,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `aj.py` | Exploratory: decomposes Q(n) = sum over j of (n-j)!*A_j + (n!)^2 via Lehmer coefficients, verifies Q and prints A_j values for n=2..5; fed the A_j-pattern hunt later carried by aj2.py |
 | `aj2.py` | Exploratory: computes A_j(n) = sum over i, pi of c_j(pi^i) for n=2..8 (Lehmer route, orbit-walk optimized) and reconstructs Q = n!^2 + sum_j (n-j)!*A_j; faster successor to aj.py for the A_j table |
 | `aj3.py` | Computes M_j (Lehmer-coefficient power sums) for n=9,10 to extend the f_n(k)=A_n-B_n(k-1) data for closed-form fitting. |
-| `ana.py` | Exploratory closed-form hunt for the gap constants A_n and B_n (n=2..11): ratios A_n/A_(n-1) vs (n-1)(n-2), normalizations A/n!², A/(n!(n-1)!), |
-| `ana2.py` | Exploratory closed-form hunt for A_n, B_n (n=5..11): checks A_{n+1}/ |
+| `ana.py` | Exploratory closed-form hunt for the gap constants A_n and B_n (n=2..11): ratios A_n/A_(n-1) vs (n-1)(n-2), normalizations A/n!², A/(n!(n-1)!), |B|/(n-1)!, and cross-relations \|B\|/A — prints only, no output file. Same family as fit*.py, seqfit.py, holonomic.py |
+| `ana2.py` | Exploratory closed-form hunt for A_n, B_n (n=5..11): checks A_{n+1}/\|B_n\|, the normalized sequence c_n=\|B\|/(n-1)! (30,290,2464,23130,235080,2728368), c_n/c_{n-1} ratios, and c_n/(n-2)! — prints only, no output file. Successor probing of ana.py's open leads |
 | `ana3.py` | Exploratory closed-form hunt for A_n, B_n (n=2..11): normalizes alpha_n=A/(n!(n-1)!), beta_n= |
 | `ana4.py` | Exploratory exact-rational continuation of the closed-form hunt: checks 2*alpha-n, 3*alpha-n, 4*alpha-3n, alpha*(n-2)!=A/[n!(n-1)], |
 | `brute.py` | Method-1 oracle: literal double sum Q(n) = sum over pi of sum_{i} rank(pi^i) by walking every power. O((n!)^2), exact; reproduces rank(2,1,3)=3, Q(2)=5, Q(3)=88, Q(6)=133103808. Writes results.json |
