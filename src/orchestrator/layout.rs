@@ -149,5 +149,81 @@ pub(super) fn note(requested: &str, placed: &str) -> String {
     )
 }
 
+/// Files the sweep never touches, whatever their extension.
+///
+/// A dotfile at the root is machinery — the checkpoint history, the pip
+/// prefix, a bytecode cache — and none of it is the run's work to file.
+fn swept(name: &str) -> bool {
+    !name.starts_with('.') && placed(name) != name
+}
+
+/// Moves root-level files the layout does not admit into the folders it does.
+///
+/// [`placed`] enforces the layout in the write path, which covers every file
+/// that arrives through a tool. It cannot cover a shell redirect or a heredoc:
+/// `cat > solve.py <<'EOF'` and `python solve.py > out.txt` write through the
+/// filesystem, and the tool sees only a command and an exit code. Left to a
+/// prompt, that hole reopens the problem the layout exists to close — one live
+/// workspace accumulated six programs at its root in nineteen minutes, written
+/// entirely through the shell while its organizer was running.
+///
+/// So the sweep runs where the files appear, immediately after the command
+/// that could have made them. Three rules keep it safe to run that often:
+///
+/// - a destination that already exists is left alone, because a file carrying
+///   a result must never be overwritten by one that happens to share its name;
+/// - a failure to move anything is silent, because the command itself
+///   succeeded and a tidying step must not turn that into an error;
+/// - every move is named in the result, for the reason [`note`] exists — an
+///   agent not told where its file went runs `python solve.py` again and
+///   cannot find it.
+pub(super) async fn sweep(workspace: &std::path::Path) -> Vec<(String, String)> {
+    let Ok(mut entries) = tokio::fs::read_dir(workspace).await else {
+        return Vec::new();
+    };
+    let mut moved = Vec::new();
+    while let Ok(Some(entry)) = entries.next_entry().await {
+        if !entry.file_type().await.is_ok_and(|kind| kind.is_file()) {
+            continue;
+        }
+        let name = entry.file_name().to_string_lossy().to_string();
+        if !swept(&name) {
+            continue;
+        }
+        let destination = placed(&name);
+        let target = workspace.join(&destination);
+        if target.exists() {
+            continue;
+        }
+        let Some(parent) = target.parent() else {
+            continue;
+        };
+        if tokio::fs::create_dir_all(parent).await.is_err() {
+            continue;
+        }
+        if tokio::fs::rename(entry.path(), &target).await.is_ok() {
+            moved.push((name, destination));
+        }
+    }
+    moved
+}
+
+/// Reports what the sweep moved, in the result of the command that ran.
+pub(super) fn swept_note(moved: &[(String, String)]) -> String {
+    if moved.is_empty() {
+        return String::new();
+    }
+    let list = moved
+        .iter()
+        .map(|(from, to)| format!("{from} -> {to}"))
+        .collect::<Vec<_>>()
+        .join(", ");
+    format!(
+        "\n\nfiled from the workspace root: {list}. The root holds the run's Markdown, \
+         `{CODE_DIR}/` the programs, and `{OUTPUT_DIR}/` what they produce — write there \
+         directly, or run these by their new path."
+    )
+}
+
 #[cfg(test)]
 mod test;
