@@ -214,8 +214,11 @@ def draw(screen, runs: Runs, tab: int, offset: int) -> int:
         state = "starting"
     live = "LIVE" if offset == 0 else f"-{offset}"
     clock = elapsed or runs.waiting()
-    status = f" {clock} {state} {live} {cost} {faults}  [n/p tab, arrows scroll, q quit] "
-    screen.addnstr(height - 1, 0, status.ljust(width - 1), width - 1, curses.A_REVERSE)
+    status = f" {clock} {state} {live} {cost} {faults}  [tab/n/p tab, arrows scroll, q quit] "
+    # A status bar carrying a fault count is worth colouring: red says the run
+    # has met something, and the count says how often, without opening a tab.
+    bar = colour(FAULT) if faults else colour(TAB)
+    screen.addnstr(height - 1, 0, status.ljust(width - 1), width - 1, bar | curses.A_REVERSE)
     screen.refresh()
     return tab
 
