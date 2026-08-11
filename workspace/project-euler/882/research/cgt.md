@@ -1,30 +1,20 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/cgt.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Combinatorial game theory (CGT) — framework for the bit-deletion game
 
-<!-- source: https://en.wikipedia.org/wiki/Combinatorial_game_theory | converted from HTML -->
+Source: https://en.wikipedia.org/wiki/Combinatorial_game_theory
+(Covers Conway/Berlekamp/Guy; primary texts: Conway, *On Numbers and Games*, Academic Press 1976; Berlekamp/Conway/Guy, *Winning Ways*, 1982.)
 
-Combinatorial game theory - Wikipedia
+## What it establishes
+- A **partisan game** is one where the move sets of the two players differ (relaxation of the impartial condition). The theory of partisan games was introduced by Berlekamp, Conway, Guy (Winning Ways 1982), first published in Conway's ONAG (1976).
+- The recursive definition: a position is `{L | R}`, `L` the set of moves open to Left, `R` the moves open to Right; each option is itself a game. Alternation of turns is implicit.
+- The **zero game** `0 = {|}`, where neither player can move; the player whose turn it is loses.
+- **Numbers as games**: positive = advantage to Left, negative = advantage to Right; e.g. `1={0|}`, `-1={|0}`, and sums behave like integer arithmetic. Games that are numbers belong to the surreal numbers.
+- The **disjunctive sum** G+H: each player per turn moves in exactly one of the two components; game ends when no move exists in any component. This leads to the group/abelian structure of games and is the fundamental reduction tool.
+- Outcome is a function of the position's value: when a game is a number, its sign (and who is to move) determines the winner.
 
-Jump to content
+## Why it applies to this problem
+- The whole board is a **disjunctive sum** of one subgame per number: each turn a player picks exactly one number and alters it. That is precisely the definition of a disjunctive sum (source, "Disjunctive sum" section and "Difference with traditional game theory" re: Go decompositions).
+- In the run's counting reduction, each number x with a 1-bits and b 0-bits is modelled as the game `{G(a-1,b) | G(a,b-1)}`, G(0,0)=0. One can show by induction this equals the integer `a-b`: the position's total value is therefore `A-B`, an integer (surreal number). Hence the outcome without skips is decided by the sign of `A-B`.
+- The run's `counting.py` is exactly this sum-of-numbers model plus a pass option.
 
-From Wikipedia, the free encyclopedia
-
-Branch of game theory about two-player sequential games with perfect information
-
-This article is about the theory of combinatorial games. For the theory that includes games of chance and games of imperfect knowledge, see [Game theory][1].
-
-[2] Mathematicians playing [Kōnane][3] at a combinatorial game theory workshop
-
-**Combinatorial game theory**is a branch of [mathematics][4] and [theoretical computer science][5] that typically studies [sequential games][6] with [perfect information][7]. Research in this field has primarily focused on two-player [games][8] in which a *position*evolves through alternating *moves*, each governed by well-defined rules, with the aim of achieving a specific winning condition. Unlike [economic game theory][1], combinatorial game theory generally avoids the study of [games of chance][9] or games involving [imperfect information][10], preferring instead games in which the current state and the full set of available moves are always known to both players. [1] However, as mathematical techniques develop, the scope of analyzable games expands, and the boundaries of the field continue to evolve. [2] Authors typically define the term "game" at the outset of academic papers, with definitions tailored to the specific game under analysis rather than reflecting the field’s full scope.
-
-[Combinatorial][11] games include well-known examples such as [chess][12], [checkers][13], and [Go][14], which are considered complex and non-trivial, as well as simpler, "solved" games like [tic-tac-toe][15]. Some combinatorial games, such as [infinite chess][16], may feature an [unbounded][17] playing area. In the context of combinatorial game theory, the structure of such games is typically modeled using a [game tree][18]. The field also encompasses single-player puzzles like [Sudoku][19], and zero-player automata such as [Conway's Game of Life][20] —although these are sometimes more accurately categorized as [mathematical puzzles][21] or [automata][22], given that the strictest definitions of "game" imply the involvement of multiple participants. [3]
-
-A key concept in combinatorial game theory is that of the [solved game][23]. For instance, [tic-tac-toe][15] is solved in that optimal play by both participants always results in a draw. Determining such outcomes for more complex games is significantly more difficult. Notably, in 2007, [checkers][24] was announced to be [weakly solved][25], with perfect play by both sides leading to a draw; however, this result required a [computer-assisted proof][26]. [4] Many real-world games remain too complex for complete analysis, though combinatorial methods have shown some success in the study of [Go endgames][27]. In combinatorial game theory, analyzing a *position*means finding the best sequence of moves for both players until the game ends, but this becomes extremely difficult for anything more complex than simple games.
-
-It is useful to distinguish between combinatorial "mathgames"—games of primary interest to mathematicians and scientists for theoretical exploration—and "playgames," which are more widely played for entertainment and competition. [5] Some games, such as [Nim][28], straddle both categories. Nim played a foundational role in the development of combinatorial game theory and was among the earliest games to be programmed on a computer. [6] [Tic-tac-toe][15] continues to be used in teaching fundamental concepts of [game AI][29] design to [computer science][30] students. [7]
-
-## Difference with traditional game theory
-
-[[edit][31]]
-
-
-*[excerpt ends; 53171 characters not shown — see `research/cgt.full.md`]*
+## What it does NOT settle
+- The CGT value `a-b` is derived in the *counting* model, which assumes a One-move removes exactly one 1-bit and leaves B unchanged. In the real bit game, deleting the leading 1 of e.g. "1000" exposes leading zeros that are dropped, destroying additional 0-bits. CGT alone does not prove the counting model equals the real game; that equivalence is an empirical conjecture the run is validating (given values S(2)=2, S(5)=17, S(10)=64). Sources do not discuss bit-deletion games.

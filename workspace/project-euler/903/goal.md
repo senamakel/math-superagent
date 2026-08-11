@@ -28,3 +28,7 @@ pi^i = i-th iterate of pi (order-preserving power, pi^1 = pi, pi^0 = identity).
 - [x] gaps.py: T(j,m) computed for n=2..9 with period formula; shown
       translation-invariant in j and exactly arithmetic in the gap k.
       (memory.md has tables. This is a structural lead for the n=10^6 method.)
+- [x] verify_red.py: central reduction Q(n) = (n!)^2 + A_n*S + (B_n/2)*T with
+      S=Sigma m*m! (=n!-1), T=Sigma m(m-1)*m!, A=f[0], B=f[1]-f[0], verified
+      EXACT big-int match against Q(2..8). ALL PASS.  Problem reduced to
+      finding A_n and B_n (memory.md).

@@ -157,6 +157,25 @@ This is an independent second route to the M_j tables' correctness.
 
 ## Established results
 
+### CENTRAL REDUCTION VERIFIED (verify_red.py, 18 Sep 2025) -- ALL PASS n=2..8
+
+Using Q(n) = (n!)^2 + sum_{j=0}^{n-2} (n-1-j)! * M_j, M_j = sum_{k=1}^{n-1-j} f(k),
+and f(k)=A_n+(k-1)B_n (exactly arithmetic, verified), substituting r=n-1-j:
+
+  Q(n) = (n!)^2 + A_n * S(n) + (B_n/2) * T(n)
+  S(n) = Sigma_{m=1}^{n-1} m*m!  =  n! - 1   (telescoping, verified n=3..8)
+  T(n) = Sigma_{m=1}^{n-1} m*(m-1)*m!
+  A_n = f[0],  B_n = f[1]-f[0]  (from extend_f.json; n=2: A=1, B term=0)
+
+Verified EXACTLY (big ints) against Q(2..8): 5, 88, 4808, 597876, 133103808,
+47124948960, 24768798220800.  All PASS.  Caveat encountered: use (B*T)//2
+(B*T always even since m(m-1) is even), NOT (B//2)*T which fails at n=3.
+
+So the whole Q(10^6) problem is now reduced to finding A_n and B_n (or
+f_n(k)=A_n+(k-1)B_n).  A_n: 1,10,184,5052,191232,9851040,650626560,
+54052427520,5514150297600,680309947699200.  B_n (n>=3): 1,0,-108,-3600,
+-208800,-12418560,-932601600,-85305830400,-9900701798400.
+
 Record proved steps, verified computations, and source-backed facts.
 
 ## Failed approaches
