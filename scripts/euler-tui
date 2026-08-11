@@ -140,6 +140,38 @@ def pump(stream, runs: Runs, log, echo: bool) -> None:
     runs.ended = True
 
 
+def paint(line: str) -> int:
+    """Chooses the colour for one line, by what the line reports.
+
+    Colour is doing one job here: making the shape of a run readable at a
+    glance, so an eye scanning a fast-scrolling tab lands on the events that
+    change what happens next. Faults are red because they are the reason to
+    look; the loop's own verdicts are yellow and bold because they are the run
+    changing state; a finished tool call is green and a started one cyan, so
+    the gap between them — where a ten-minute command sits — is visible as a
+    colour that has not yet been answered. Model calls are dimmed, because
+    they are the bulk of the stream and almost never the thing being looked
+    for.
+    """
+    if any(pin in line for pin in PINNED):
+        return colour(LOOP) | curses.A_BOLD
+    if "error" in line:
+        return colour(FAULT)
+    if any(word in line for word in ("TRUNCATED", "model RETRY", "PROVIDER FAILED")):
+        return colour(WARN)
+    if "filed from the workspace root" in line or "left at the workspace root" in line:
+        return colour(WARN)
+    if "spawned:" in line or "run started" in line:
+        return colour(SPAWN)
+    if "tool  done" in line:
+        return colour(DONE)
+    if "tool  call" in line:
+        return colour(CALL)
+    if "model" in line:
+        return curses.A_DIM
+    return curses.A_NORMAL
+
+
 def draw(screen, runs: Runs, tab: int, offset: int) -> int:
     """Paints one frame and returns the tab index actually shown."""
     names, tabs, counts, elapsed, cost = runs.snapshot()
@@ -147,11 +179,21 @@ def draw(screen, runs: Runs, tab: int, offset: int) -> int:
     height, width = screen.getmaxyx()
     screen.erase()
 
-    header = "  ".join(
-        f"{index + 1}:{name}" if index != tab else f"[{index + 1}:{name}]"
-        for index, name in enumerate(names)
-    )
-    screen.addnstr(0, 0, header, width - 1, curses.A_BOLD)
+    # The tab bar is drawn piece by piece rather than as one string, so the
+    # open tab can be reversed and the rest dimmed. A bar where every entry
+    # looks alike is a bar you have to read instead of glance at.
+    column = 0
+    for index, name in enumerate(names):
+        label = f" {index + 1}:{name} "
+        if column + len(label) >= width - 1:
+            break
+        attribute = (
+            colour(TAB) | curses.A_REVERSE | curses.A_BOLD
+            if index == tab
+            else colour(TAB) | curses.A_DIM
+        )
+        screen.addnstr(0, column, label, width - 1 - column, attribute)
+        column += len(label)
 
     rows = list(tabs[names[tab]])
     body = height - 2
@@ -159,12 +201,7 @@ def draw(screen, runs: Runs, tab: int, offset: int) -> int:
     end = len(rows) - offset
     view = rows[max(0, end - body) : max(0, end)]
     for index, line in enumerate(view):
-        attribute = curses.A_NORMAL
-        if any(pin in line for pin in PINNED):
-            attribute = curses.A_BOLD
-        elif "error" in line or "TRUNCATED" in line:
-            attribute = curses.A_DIM
-        screen.addnstr(1 + index, 0, line, width - 1, attribute)
+        screen.addnstr(1 + index, 0, line, width - 1, paint(line))
 
     faults = " ".join(f"{name}={value}" for name, value in counts.items() if value)
     if runs.ended:
