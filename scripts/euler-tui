@@ -209,6 +209,11 @@ def main() -> int:
         action="store_true",
         help="skip the tabs and stream to stdout, as when scripting",
     )
+    parser.add_argument(
+        "--replay",
+        action="store_true",
+        help="open the tabs on the existing log without starting or continuing a run",
+    )
     parser.add_argument("extra", nargs="*", help="extra instructions for the run")
     arguments = parser.parse_args()
 

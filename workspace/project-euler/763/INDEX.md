@@ -12,4 +12,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `SCRATCHPAD.md` | _(undescribed)_ |
 | `TASKS.md` | Checklist of concrete steps toward the current goal; currently holds one unfilled step ("record the first concrete step"). |
 | `brute.py` | _(undescribed)_ |
-| `problem.md` | _(undescribed)_ |
+| `problem.md` | Official Project Euler 763 statement, downloaded from https://projecteuler.net/minimal=763 and converted to Markdown; the source of truth the run solves. |
