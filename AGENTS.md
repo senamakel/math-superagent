@@ -464,8 +464,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | tool_builder | the above plus `scratchpad.md` |
 | reflection | `goal.md`, `tasks.md`, `memory.md`, `INDEX.md` |
 | pattern_finder | `goal.md`, `memory.md`, `scratchpad.md`, `toolkits/INDEX.md` |
-| inventor, research | `goal.md`, `memory.md`, `research/INDEX.md` |
-| librarian | `goal.md`, `memory.md`, `research/INDEX.md` |
+| librarian, inventor, research | `goal.md`, `memory.md`, `research/INDEX.md` |
 | scholar | `goal.md`, `tasks.md`, `memory.md`, `scratchpad.md`, `research/INDEX.md` |
 | organizer | `goal.md`, `tasks.md`, `INDEX.md`, `toolkits/INDEX.md`, `research/INDEX.md` |
 
@@ -492,8 +491,8 @@ Four of these are load-bearing rather than tidy-minded:
 Indexes are the cheap exception to that rule. An index costs a few hundred
 tokens where the files it describes cost tens of thousands, so a role that
 might otherwise re-derive or re-fetch something gets the relevant catalogue:
-both to the planners, the research index to research and the inventor so
-neither re-establishes what is on disk, the toolkit index to `pattern_finder`
+both to the planners, the research index to research, the librarian, and the
+inventor so none re-establishes what is on disk, the toolkit index to `pattern_finder`
 so it reuses a verified helper. Reflection gets the workspace index and nothing
 more of the kind — deciding whether an answer was actually produced means
 knowing which artifacts exist, and the index says what each one is without the
