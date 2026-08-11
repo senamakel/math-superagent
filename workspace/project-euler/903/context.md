@@ -40,6 +40,14 @@ establishes each. Empty until the research team has read something.
   subgroup {pi^i} nor lexicographic rank, which are the unresolved pieces.
 - **Negative OEIS results**: A_n, B_n/(n-1)!, Q(n), and probe sequences are not
   in the OEIS — no catalogued closed form/recurrence (research/oeis_*.md).
+- **Fixed-point counts of powers determine the conjugacy class.** Nathanson
+  arXiv:2206.04021 (research/nathanson_fixed_points_powers*, Archiv der Math
+  120, 2023): for permutation σ with C(k) k-cycles, the fixed-point count of
+  σ^ℓ is F(σ^ℓ) = Σ_{k|ℓ} k·C(k), with cycle counts recovered by Möbius
+  inversion C(ℓ) = (1/ℓ)Σ_{d|ℓ}μ(ℓ/d)F(σ^d). A third, character-free way to
+  express the conjugacy-class (a₁,a₂) data behind A_n, B_n in terms of fixed
+  points of powers — a cross-check machine beside the inversion-probability
+  routes, not a closed form.
 
 ## Contradictions
 
@@ -76,6 +84,11 @@ What this turn's enrichment added that was not known before.
 - **θ=0 (cyclic/rotation) exact pair-inversion probability:**
   1/2 + (j−i−1)/[(n−1)(n−2)] (recoverable from Thm 1a), the small-exponent
   inversion structure f_n(k) aggregates.
+- **This turn: fixed-points-of-powers identity added.** Nathanson arXiv:2206.04021
+  (research/nathanson_fixed_points_powers*): F(σ^ℓ)=Σ_{k|ℓ}k·C(k), Möbius
+  reconstruction of cycle counts, conjugacy class determined by fixed points of
+  powers — a third independent, character-free structural fact for the a₁/a₂
+  conjugacy-class sums behind A_n, B_n.
 - **Implication / open step refined.**  As with Campion-Loth and Cambie-Yan,
   neither source covers the still-open core: summing Lehmer/factoradic ranks over
   the cyclic subgroup {π^i} of a single permutation; and the exact derivations
@@ -92,3 +105,10 @@ What the run still needs from the literature and has not found.
   closed forms for A_n and B_n; Campion-Loth et al. now gives the per-gap,
   per-class mechanism but still no closed form for A_n, B_n themselves.  That
   remains the core open step.
+
+- A closed form / full summation for A_n and B_n (the only remaining inputs for
+  Q(10^6)).  The library now has three independent structural facts tying these
+  to conjugacy-class data (Campion-Loth Lemma 4.7; Pinsky–Schickentanz
+  Prop 10a/4; Nathanson fixed-points-of-powers identity), plus a
+  character-theoretic machine (Hultman) — all routes to the summation, none yet
+  executed to a closed form.
