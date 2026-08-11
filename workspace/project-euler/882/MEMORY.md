@@ -12,6 +12,27 @@ builds and validates the two DP programs (real-game brute up to n=8, counting
 game up to n=10).
 
 ## Established results
+- **Dyadic CGT solution COMPUTED and CROSS-CHECKED (this run)**: g(k) = simplest
+  dyadic strictly between max(Left=1-deletions) and min(Right=0-deletions),
+  g(0)=0.  Every k in 1..100000 is a Number (max(Left) < min(Right); no
+  violation found).  G(n)=Σ k·g(k) exact Fractions, S(n)=ceil(G(n)).
+  Verified S_ceil(1,2,3,4,5,10)=1,2,8,9,17,64 — ALL match the real-game oracle
+  values on disk.  G(100000)=517756101446417/32768, so
+  **S(100000) = ceil(G(100000)) = 15800662276**.  Cross-checked by an
+  independent birthday-scan implementation (reproduces G(1..12)) and by exact
+  integer arithmetic on the final fraction (floor 15800662275, remainder
+  19217, so ceil = 15800662276).  Script: /workspace/solution.py; answer in
+  /workspace/dyadic_answer.txt.
+- **simplest-between validated (this run)**: toolkit
+  code/toolkits/simplest_dyadic.py simplest_between(a,b) (a,b Fraction or None
+  for ±inf) returns the simplest (minimal-birthday) dyadic strictly between;
+  validated against an independent birthday oracle
+  (code/test_simplest_dyadic.py, 166 intervals, 0 mismatches) and the four
+  required cases (0,1)->1/2, (1,2)->3/2, (1/2,2)->1, (-1,1)->0.  Hand-checked
+  g(1..8)=1,1/2,2,1/4,3/2,1,3,1/8 reproduced exactly by solution.py.
+- **Real-game oracle values on disk (source of cross-check)**: S(1)=1, S(2)=2,
+  S(3)=8, S(4)=9, S(5)=17 (code/brute.py), S(10)=64 (given).  These all equal
+  ceil(G(n)) under the dyadic model.
 - **CGT framework (sourced)**: The game is strictly partisan — One deletes only
   1-bits, Zero only 0-bits — so Sprague–Grundy/nimbers do NOT apply. Win rule
   is normal play. Source: en.wikipedia.org/wiki/Partisan_game,
