@@ -13,11 +13,11 @@ struct AlwaysFails;
 
 #[async_trait]
 impl Tool<()> for AlwaysFails {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "always_fails"
     }
 
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "Fails every call."
     }
 
@@ -37,11 +37,11 @@ struct AlwaysSucceeds;
 
 #[async_trait]
 impl Tool<()> for AlwaysSucceeds {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "always_succeeds"
     }
 
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "Succeeds every call."
     }
 
