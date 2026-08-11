@@ -153,7 +153,7 @@ def enumerate_cells(n, L, verbose=False):
     ncut = 0
     while stack:
         poly, svec = stack.pop()
-        progress = False
+        did_cut = False
         for pi in range(len(planes)):
             if svec[pi] != 0:
                 continue
@@ -164,13 +164,10 @@ def enumerate_cells(n, L, verbose=False):
                 sgns.add(1 if val > 0 else (-1 if val < 0 else 0))
             if sgns == {1}:
                 svec[pi] = 1
-                progress = True
             elif sgns == {-1}:
                 svec[pi] = -1
-                progress = True
             elif sgns == {0}:
                 svec[pi] = 0
-                progress = True
             elif 1 in sgns and -1 in sgns:
                 ncut += 1
                 for which in (1, -1):
@@ -179,12 +176,11 @@ def enumerate_cells(n, L, verbose=False):
                         sv2 = list(svec)
                         sv2[pi] = which
                         stack.append((sub, sv2))
-                progress = True
+                did_cut = True
                 break
             else:  # {0,1} or {0,-1}: degenerate touch
                 target = 1 if 1 in sgns else -1
                 svec[pi] = target
-                progress = True
-        if not progress:
+        if not did_cut:
             leaves.append((poly, tuple(svec)))
     return leaves, planes

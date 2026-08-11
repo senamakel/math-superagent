@@ -1,0 +1,23 @@
+S(n) for the real bit-deletion game (Project Euler 882) — real-game minimax oracle.
+
+n : S(n)
+1 : 1
+2 : 2
+3 : 8
+4 : 9
+5 : 17
+
+Reached: n = 1..5.
+n = 6 and above: NOT reached — state space too large for the ~5 min budget.
+  (The budget sweep for n=6 exceeded 1.5M memoized states by budget=18 and still
+  returned inf, then timed out at 290s; S(6) > 18 is all that is established.)
+
+Cross-checks:
+  - statement example S(2) = 2  -> matched
+  - statement example S(5) = 17 -> matched
+  - hand-known S(1) = 1, S(3) = 8 -> matched
+  - n=1..3 verified by a fully explicit independent move/game search (brute.py)
+
+Produced by: /workspace/code/brute.py (budgeted real-game minimax), values
+confirmed by /workspace/code/fastbrute.py (budget-removed optimizer) for
+n=1..3.

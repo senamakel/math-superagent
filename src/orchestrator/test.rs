@@ -514,6 +514,8 @@ fn the_shared_brief_reaches_the_roles_that_reason_and_not_the_ones_that_file() {
 
 #[tokio::test]
 async fn a_command_that_hits_the_ceiling_still_returns_what_it_printed() {
+    use crate::agent::Tool as _;
+
     // `Command::output()` inside a `timeout` drops the read mid-flight, so a
     // program that printed for nine minutes and then hit the ceiling returned
     // the agent nothing at all. Two such commands cost one live run twenty of
@@ -521,7 +523,6 @@ async fn a_command_that_hits_the_ceiling_still_returns_what_it_printed() {
     let root = std::env::temp_dir().join(format!("math-agent-timeout-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
     std::fs::create_dir_all(&root).expect("the workspace is creatable");
-    use crate::agent::Tool as _;
     let tool = super::ExecuteCommand::new(root.clone(), std::time::Duration::from_secs(1));
 
     let result = tool
