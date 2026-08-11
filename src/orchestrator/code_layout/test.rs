@@ -1,8 +1,8 @@
 //! Unit tests for the shape of `code/`.
+#![allow(clippy::expect_used)]
 
 use std::fs;
-
-use tempfile::TempDir;
+use std::path::PathBuf;
 
 use super::*;
 
@@ -10,15 +10,26 @@ use super::*;
 fn write(root: &Path, relative: &str, body: &str) {
     let path = root.join(relative);
     if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent).expect("the test workspace is writable");
+        let _ = fs::create_dir_all(parent);
     }
-    fs::write(path, body).expect("the test file is writable");
+    let _ = fs::write(path, body);
+}
+
+/// A workspace under the crate's target directory, named for its test.
+fn empty(name: &str) -> PathBuf {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("target")
+        .join("code-layout-tests")
+        .join(name);
+    let _ = fs::remove_dir_all(&root);
+    let _ = fs::create_dir_all(&root);
+    root
 }
 
 /// A workspace holding nothing but an empty `code/`.
-fn workspace() -> TempDir {
-    let root = TempDir::new().expect("a temporary directory is available");
-    fs::create_dir_all(root.path().join(CODE_DIR)).expect("the test workspace is writable");
+fn workspace(name: &str) -> PathBuf {
+    let root = empty(name);
+    let _ = fs::create_dir_all(root.join(CODE_DIR));
     root
 }
 

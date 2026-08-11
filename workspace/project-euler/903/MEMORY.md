@@ -50,7 +50,7 @@ as written; a correct engine would sum S over all representatives per class (or 
 by the intra-class S distribution), which defeats the perf advantage.  Trusted A_n/B_n
 remain n=2..11 from out/extend_f.json.
 
-## Open questions
+## gaps.py — T(j,m) translation invariance & arithmetic form (18 Sep 2025)
 
 T(j,m) = #{(pi,i): 0<=i<n!, (pi^i)(m) < (pi^i)(j)}, computed for n=2..9 with
 the period formula T(j,m) = sum_pi (n!/ord(pi)) * #{tau in <pi>: tau(m)<tau(j)}
@@ -191,13 +191,3 @@ So the whole Q(10^6) problem is now reduced to finding A_n and B_n (or
 f_n(k)=A_n+(k-1)B_n).  A_n: 1,10,184,5052,191232,9851040,650626560,
 54052427520,5514150297600,680309947699200.  B_n (n>=3): 1,0,-108,-3600,
 -208800,-12418560,-932601600,-85305830400,-9900701798400.
-
-Record proved steps, verified computations, and source-backed facts.
-
-## Failed approaches
-
-Record attempts that should not be repeated without a new reason.
-
-## Open questions
-
-Record the next unresolved steps.
