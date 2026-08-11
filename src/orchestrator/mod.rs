@@ -57,10 +57,11 @@ use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 pub use tinyagents::harness::host::AgentDefinition;
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 8] = [
+const SPECIALISTS: [&str; 9] = [
     "research",
     "tool_builder",
     "coder",
+    "solver",
     "pattern_finder",
     "inventor",
     "librarian",
