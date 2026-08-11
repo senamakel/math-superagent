@@ -53,6 +53,17 @@ const STUCK_THRESHOLD: usize = 2;
 /// anything available at the start.
 const RESEARCH_RESCUE_ATTEMPTS: usize = 5;
 
+/// Restarts the judge may force in one run.
+///
+/// A restart throws away the direction an attempt was taking and spends a
+/// fresh one, so it has to be rare and it has to be bounded. Unbounded, a
+/// judge that dislikes the run's whole approach would keep resetting it until
+/// the attempt ceiling stopped the loop, and the run would end having explored
+/// nothing to its conclusion. Two is enough for the fault the judge exists to
+/// catch — a run building on something untrue — to be caught twice, and few
+/// enough that the loop still spends most of its attempts attempting.
+const MAX_RESTARTS: usize = 2;
+
 /// State carried around the solution loop.
 #[derive(Clone, Debug)]
 pub(super) struct SolutionState {
@@ -70,6 +81,12 @@ pub(super) struct SolutionState {
     fresh_context: String,
     /// Whether reflection judged the problem solved and verified.
     solved: bool,
+    /// The judge's steer for the next attempt, if it gave one.
+    steer: String,
+    /// Restarts the judge has already forced.
+    restarts: usize,
+    /// The judge's score for each attempt so far, oldest first.
+    scores: Vec<u8>,
 }
 
 impl SolutionState {
@@ -82,6 +99,9 @@ impl SolutionState {
             lessons: Vec::new(),
             fresh_context: String::new(),
             solved: false,
+            steer: String::new(),
+            restarts: 0,
+            scores: Vec::new(),
         }
     }
 
