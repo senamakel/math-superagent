@@ -71,8 +71,26 @@ The runtime has nine roles plus an explicit solution loop.
 ```
 
 Reflection runs after *every* attempt, not only after a failure, because the
-lesson from a partial success is what stops the next attempt repeating it.
-A finished `tool_builder` run automatically triggers an `organizer` run
+lesson from a partial success is what stops the next attempt repeating it. The
+pattern agent runs concurrently with it, on the same attempt, for the same
+reason: the exploitable regularity in a sequence is usually visible in the
+first few terms a run computes, and waiting for the loop to get stuck means
+spending the budget the pattern would have saved. They run in parallel because
+neither reads the other's output and reflection is on the critical path of
+every attempt.
+
+Past `RESEARCH_RESCUE_ATTEMPTS` — five — each reflection also re-opens the
+literature. Diversification triggers on *consecutive* unproductive attempts, so
+a run making thin but genuine progress every time never reaches it and can
+grind most of its budget on a method that was never going to arrive. The search
+is re-run rather than recalled because the workspace has changed: by then the
+run knows what it tried, what failed, and what the numbers look like, which is
+a far better query than anything available at the start. `MAX_ATTEMPTS` is
+eight so the rescue has attempts left to pay off in; a ceiling that tripped
+first would buy a fresh literature search and then stop.
+
+A finished `tool_builder` run automatically triggers an `organizer` run, and a
+finished `research` run triggers a `scholar` then an `organizer`
 (`FOLLOW_UPS` in `src/orchestrator/async_subagents.rs`). That moment is when
 the workspace is least tidy and most legible — the files are new and their
 purpose is settled — and leaving the tidying to whoever runs next means it
