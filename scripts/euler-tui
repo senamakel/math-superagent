@@ -60,6 +60,12 @@ PINNED = ("solution loop:", "team ")
 # and costs a few megabytes; the log file holds everything regardless.
 SCROLLBACK = 10_000
 
+# How long `getch` may block, in milliseconds, and how often the view repaints
+# when no key was pressed. Input latency is the first number; the second only
+# governs how quickly a quiet tab shows a new line.
+POLL_MS = 15
+REFRESH_SECONDS = 0.2
+
 # Colour pair numbers. Named rather than numbered at the call site so the
 # meaning survives someone rearranging the palette.
 TAB, LOOP, FAULT, WARN, SPAWN, DONE, CALL = range(1, 8)
