@@ -276,6 +276,16 @@ Before substantial execution, the tool-builder must state both time and space
 complexity. Algorithms with exponential time or space complexity are
 prohibited; choose a polynomial or better formulation.
 
+A command that hits the ceiling is killed, but what it printed is kept and
+returned with the timeout reported as its exit status. `Command::output()`
+inside a `timeout` discards all of it — the read is dropped mid-flight — so a
+program that printed for nine minutes taught the agent nothing, and it could
+not tell a computation that was nearly done from one that never got past its
+first loop. Two such commands cost one live run twenty of its first
+forty-four minutes. The pipes are therefore drained by their own tasks, and
+killing the child is what closes them. A timeout is evidence about the method,
+and evidence belongs in the result rather than in an error string.
+
 ## Research gating
 
 `MATH_AGENT_RESEARCH=off`, or the `--no-research` flag on `./agent` and
