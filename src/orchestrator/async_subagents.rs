@@ -359,6 +359,7 @@ impl AsyncSubagentManager {
             langfuse: LangfuseClient::from_env().ok().map(Arc::new),
             slots: Arc::new(Semaphore::new(concurrency)),
             housekeeping: Arc::new(tokio::sync::Mutex::new(())),
+            session: session_id(),
         }
     }
 
