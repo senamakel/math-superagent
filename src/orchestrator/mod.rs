@@ -1078,7 +1078,11 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // folder, and its index says which programs exist and what established
         // each is correct — which is what stops the run writing a fourth
         // variant of a check it already has.
-        "tool_builder" | "coder" => &[
+        // The solver joins them for the same reason: an encoding rests on what
+        // the run believes about the objects being encoded, and `CLAIMS.md` is
+        // where a closed form or a bound that removes half the constraints is
+        // recorded.
+        "tool_builder" | "coder" | "solver" => &[
             "config/config.toml",
             "GOAL.md",
             "TASKS.md",
