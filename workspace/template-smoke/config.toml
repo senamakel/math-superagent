@@ -1,0 +1,12 @@
+[workspace]
+kind = "mathematical-research"
+
+[solver]
+show_derivation = true
+verify_with_code = true
+prefer_exact_arithmetic = true
+cite_external_claims = true
+
+[artifacts]
+memory = "memory.md"
+solution = "solution.md"

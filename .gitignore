@@ -15,10 +15,17 @@ lcov.info
 .env.local
 
 # Host directory mounted as the jailed agent runtime's /workspace.
-/workspace/*
-!/workspace/.gitkeep
-!/workspace/template/
-!/workspace/template/**
+#
+# Workspace contents are committed on purpose: the derivation, the program, the
+# per-run notes, and `trace.jsonl` are the record of how an answer was reached,
+# which is the point of the product. Only machine-regenerable artifacts are
+# excluded below.
+#
+# Pip installs land here because the container root filesystem is read-only.
+# They are vendored dependencies, not work product, and are reinstallable.
+/workspace/**/.python-packages/
+__pycache__/
+*.py[cod]
 
 # Linked worktrees created by the local `worktree` helper
 worktrees/*
