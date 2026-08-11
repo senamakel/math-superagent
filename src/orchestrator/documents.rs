@@ -421,10 +421,9 @@ pub(super) fn research_path(requested: &str) -> String {
 /// suffix. The original bytes keep their true extension under `raw/`, which is
 /// where a genuine PDF still lives.
 pub(super) fn markdown_path(relative: &str) -> String {
-    let (stem, extension) = match relative.rsplit_once('.') {
-        Some(parts) => parts,
-        // No extension at all: give it the one it has earned.
-        None => return format!("{relative}.md"),
+    // No extension at all: give it the one it has earned.
+    let Some((stem, extension)) = relative.rsplit_once('.') else {
+        return format!("{relative}.md");
     };
     // A dot in a directory name is not an extension, and neither is a version
     // number in `zeta.2.1` — only rewrite when the tail looks like a suffix.
