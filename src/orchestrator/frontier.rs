@@ -231,8 +231,8 @@ fn render(ledger: &BTreeMap<String, Candidate>, goal: &str) -> String {
     }
     let shown = ranked.len().min(MAX_ROWS);
     for (url, candidate, _) in ranked.iter().take(MAX_ROWS) {
-        let name = if candidate.fetched {
-            format!("~~{url}~~")
+        let name = if candidate.fetched() {
+            format!("~~{url}~~ → `{}`", candidate.path)
         } else {
             (*url).clone()
         };
