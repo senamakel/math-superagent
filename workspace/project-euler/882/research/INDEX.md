@@ -6,7 +6,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `L0/INDEX.md` | Index of the `.full.md` full-text companions to the L1 summaries, including misfiled/accidental downloads. |
 | `L0/li_zuchswang.md` | Failed-download note: Li 1976 'Sums of Zuchswang games' is paywalled (DOI redirect, ScienceDirect 403); records what could not be obtained and points to Siegel for the zugzwang-game theory. |
-| `L0/siegel_zugzwang.md` | !3 — from https://library.slmath.org/books/Book56/files/12siegel.pdf; not yet read, excerpt pending a scholar summary |
+| `L0/siegel_zugzwang.md` | Excerpt/summary of Siegel 2009 'Coping with cycles' (Games of No Chance 3, MSRI 56) from https://library.slmath.org/books/Book56/files/12siegel.pdf; read before the full text `L0/siegel_zugzwang.full.md`; backs `L1/siegel_zugzwang.md`. |
 | `L1/INDEX.md` | Index of per-source L1 summaries; read it first to find a source's one-line purpose. |
 | `L1/a083652.md` | OEIS A083652 summatory bit-length, exact O(1) closed form; third leg of total bits = ones+zeros. |
 | `L1/bitcount.md` | OEIS A000788 summatory 1-bit count, O(log n) recurrences → A(n). |
@@ -20,7 +20,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1/pass_waiting.md` | Larsson–Nowakowski–Santos 2015 (arXiv:1505.01907), primary pass/waiting-move theory. |
 | `L1/raw_mfl_pass.md` | Raw arXiv abstract of 1204.3222; proper analysis in mfl_pass.md. |
 | `L1/raw_pass_waiting_check.md` | Raw arXiv abstract of 1505.01907; proper analysis in pass_waiting.md. |
-| `L1/siegel_zugzwang.md` | _(undescribed)_ |
+| `L1/siegel_zugzwang.md` | Siegel 2009 (Games of No Chance 3) 'Coping with cycles': primary theorem-level loopy-game & Li zugzwang-game theory (stoppers, sides s&t, pseudonumbers); rigorous basis for the skip-as-pass / One-in-zugzwang picture, and why budgeted S(n) still needs the (A,B) DP. |
 | `L1/strategy.md` | Dead end: generic strategy article, nothing relevant. |
 | `L1/surreal.md` | Why a−b is exact (simplest surreal between options); skips outside short games ⇒ A−B ≠ S(n). |
 | `L1/trollopedelange.md` | Girgensohn 2011 INTEGERS #A54: explicit Trollope–Delange closed forms (1-periodic fluctuation). |
