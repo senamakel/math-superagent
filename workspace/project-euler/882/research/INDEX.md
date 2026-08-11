@@ -10,5 +10,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `normalplay.md` | Wikipedia excerpt on the normal play convention (last player able to move wins; misère is the opposite). Background for the win/loss convention used here. |
 | `partisan.md` | Wikipedia excerpt on partisan games (not impartial; asymmetric player moves, Sprague–Grundy does not apply). The bit-deletion game is partisan: One deletes 1-bits, Zero deletes 0-bits. |
 | `strategy.md` | Dead end: generic strategy article, nothing relevant. Marked as examined so nobody reads it again. |
-| `surreal.md` | Wikipedia excerpt on surreal numbers (ordered field generalizing the reals, originating in Go endgame analysis). Possible lens for assigning numeric values to game positions. |
+| `surreal.md` | Why G(a,b)=a−b is EXACT (simplest number strictly between left/right options); skips fall outside short-game numbers, so value A−B alone does not give S(n). |
 | `zugzwang.md` | Mechanism the skip exploits: One is forced to consume 1-bits each turn (zugzwang); "passing, if allowed, would be best" is the classical description of the skip. |
