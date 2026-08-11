@@ -46,15 +46,44 @@ single-turn path differed only in throwing that information away.
 ```
 
 Reflection runs after every attempt, not only after failures, and an answer
-that was not verified by a second independent route counts as unsolved. When
-attempts stop making progress, `diversify` runs the librarian, the pattern
-agent, and the inventor concurrently to bring in material, structure, and a
-different approach before trying again.
+that was not verified by a second independent route counts as unsolved. A
+`SOLVED` verdict is also rejected unless the workspace actually contains a
+program: a confident final report with nothing that ever ran is the signature
+failure of a small fast model, and ending the loop on it presents a guess as a
+result.
 
-The container includes `python`, `python3`, `pip`, and `pip3`. Packages installed
-with pip are placed in the selected workspace under `.python-packages`, so the
-read-only container filesystem stays intact and dependencies persist with the
-problem artifacts.
+The pattern agent runs concurrently with reflection on the same attempt, because
+the exploitable regularity in a sequence is usually visible in the first terms a
+run computes and waiting for the loop to stall means spending the budget it
+would have saved. Past five attempts without a verified answer, each reflection
+also re-opens the literature — by then the run knows what it tried and what the
+numbers look like, which makes a far better query than the statement alone. The
+loop stops after eight attempts and returns what it has.
+
+Diversification triggers on *consecutive* unproductive attempts, so a run making
+thin but genuine progress never reaches it. When it does, `diversify` runs three
+arms concurrently — the librarian followed by the scholar, the pattern agent, and
+the inventor — to bring in material, structure, and a different approach before
+trying again.
+
+Housekeeping follows the work that creates it. A finished `tool_builder` run
+triggers an `organizer` run, and a finished `research` run triggers a `scholar`
+then an `organizer`. Those follow-ups are fire-and-forget and serialised, so
+`await_agent` returns as soon as the delegated work itself is done and tidying
+never sits on the critical path.
+
+The container includes `python`, `python3`, `pip`, and `pip3`, with `sympy`,
+`numpy`, `scipy`, `gmpy2`, and `networkx` baked into the image — a run that has
+to install `sympy` before it can factor anything spends minutes of its budget on
+setup. Packages installed with pip are placed in the selected workspace under
+`.python-packages`, so the read-only container filesystem stays intact and
+dependencies persist with the problem artifacts.
+
+A recoverable tool failure never ends a run. Every tool is registered through a
+resilient wrapper that turns an error into a result the model can read and
+correct, and middleware appends advice and escalates when the same tool keeps
+failing. A Qdrant conflict, a bad path, or a non-UTF-8 download costs a turn
+rather than the run's accumulated work.
 
 A single tool call may run for ten minutes and a whole agent run for two hours.
 Within that, an agent gets 250 model calls and 4000 tool calls; a run that
