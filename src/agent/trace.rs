@@ -8,6 +8,7 @@
 //! start time, one counter pair, and one journal file, so the console shows a
 //! single ordered stream of the whole investigation.
 
+use std::collections::HashMap;
 use std::fmt::Write as _;
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
