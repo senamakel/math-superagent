@@ -7,6 +7,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L0.0/homomesies_permutations_arxiv.md` | _(undescribed)_ |
 | `L0.1/legendre_number_system_cyclic_shift.md` | _(undescribed)_ |
 | `L0.1/pinsky_inversion_derangements.arxiv.md` | _(undescribed)_ |
+| `L0.2/courtois_bard_ault_ppowers.md` | Excerpt of Courtois–Bard–Ault, "Statistics of Random Permutations and the Cryptanalysis of Periodic Block Ciphers" (arXiv:0905.3682). Downloaded but not yet curated: still an excerpt stub awaiting a scholar summary. Context: cycle-structure statistics of random permutations via generating functions; relevant only as cycle-type background, not the cyclic-subgroup rank sum. |
+| `L0.2/courtois_bard_ault_ppowers_body.md` | Statistics of Random Permutations and the Cryptanalysis Of Periodic Block Ciphers DOI: [xxx][1] — from https://ar5iv.labs.arxiv.org/html/0905.3682; not yet read, excerpt pending a scholar summary |
 | `L0.2/sack_ulfarsson_refined_inversion_pdf.md` | _(undescribed)_ |
 | `L0.2/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `L1.0/archer_geary_descents_powers.md` | _(undescribed)_ |
@@ -41,6 +43,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2.0/order_random_permutation.md` | _(undescribed)_ |
 | `L2.0/rank_lehmer.md` | _(undescribed)_ |
 | `L2.0/report_A_n_B_n_closed_forms_sources.md` | Research report on sources for closed forms of A_n,B_n in f_n(k)=A_n+(k−1)B_n: per-gap pair-inversion probabilities affine in the gap (Campion-Loth Lemma 4.7, Pinsky–Schickentanz Thm 1a/Prop 10a, Pinsky EJC), the concrete cycle-type summation route to A_n,B_n via Source 1 + Ford factorial moments, Sack–Úlfarsson Eulerian k-step-inversion closed forms — and clean negatives (Cambie–Yan n≥2k+1 limit; no source computes the rank-sum over {π^i}; OEIS all negative). Bottom line: sources give the per-gap mechanism and summation tools, not A_n,B_n themselves. |
-| `L2.0/reports_negatives.md` | Fold index: literature reports and negative lookups — report_literature_ranks_powers (clean negative, supersedes report_cited_facts & report_rank_powers) and the five OEIS "No results" pages (A_n, Q(n), |B_n|/(n−1)!, two probes). Records the clean-negative status of the novel core. |
+| `L2.0/reports_negatives.md` | Fold index: literature reports and negative lookups — report_literature_ranks_powers (clean negative, supersedes report_cited_facts & report_rank_powers) and the five OEIS "No results" pages (A_n, Q(n), |
 | `verify_cambie_yan.py` | _(undescribed)_ |
 | `verify_facts.py` | Verification script for the cited rank/order facts: checks rank(2,1,3)=3 via the Lehmer/factoradic rank formula and the derived reduction Q(n)=Σ_{H cyclic}φ( |
