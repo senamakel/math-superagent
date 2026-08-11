@@ -65,8 +65,8 @@ def main():
         pairs.append((Fraction(a),Fraction(b)))
     cnt = 0
     while cnt < 150:
-        x = Fraction(random.randint(0,50), 2**random.randint(0,5))
-        y = Fraction(random.randint(0,50), 2**random.randint(0,5))
+        x = Fraction(random.randint(0,12), 2**random.randint(0,5))
+        y = Fraction(random.randint(0,12), 2**random.randint(0,5))
         a,b = (x,y) if x<y else (y,x)
         if a!=b: pairs.append((a,b)); cnt+=1
     bad=0

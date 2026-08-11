@@ -350,6 +350,7 @@ impl FolderIndexTool {
                 .and_then(Value::as_str)
                 .unwrap_or_default(),
         );
+        loop_owned(&folder)?;
         let described = self.entries(&folder).await;
         let present = self.documents.file_names(&folder).await?;
 
