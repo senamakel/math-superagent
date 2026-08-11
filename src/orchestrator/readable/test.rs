@@ -128,3 +128,26 @@ fn empty_documents_are_reported_rather_than_returned_blank() {
         .expect_err("an empty page is not usable");
     assert!(error.to_string().contains("no extractable text"));
 }
+
+#[test]
+fn a_real_project_euler_statement_converts_without_losing_mathematics() {
+    // Project Euler delimits maths with `$…$` and uses `<br>` for the line
+    // breaks that separate worked examples. Both must survive: the examples
+    // are the run's test oracle.
+    let html = "<p>Define $f(0)=1$ and $f(n)$ to be the number of ways to write $n$ as a sum of \
+                powers of $2$ where no power occurs more than twice.</p>\n\n<p>\nFor example, \
+                $f(10)=5$ since there are five different ways to express $10$:<br>$10 = 8+2 = \
+                8+1+1 = 4+4+2$</p><p>We shall call the string $4,3,1$ the <dfn>Shortened Binary \
+                Expansion</dfn> of $241$.</p>";
+    let markdown = render(html);
+
+    assert!(markdown.contains("$f(0)=1$"));
+    assert!(markdown.contains("$f(10)=5$"));
+    assert!(markdown.contains("$10 = 8+2 = 8+1+1 = 4+4+2$"));
+    // The <br> before the worked example must become a real line break.
+    assert!(markdown.contains(":\n$10 = 8+2"));
+    // Inline semantic tags are unwrapped, not dropped with their text.
+    assert!(markdown.contains("Shortened Binary Expansion"));
+    assert!(!markdown.contains("<dfn>"));
+    assert!(!markdown.contains("<p>"));
+}
