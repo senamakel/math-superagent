@@ -54,12 +54,22 @@ use crate::agent::trace::RunTracer;
 /// recovery, which still has its ladder.
 const MAX_REISSUES: u32 = 1;
 
-/// Ceiling on cap growth, as a multiple of the turn's original cap.
+/// Ceiling on cap growth, as a multiple of the run's configured turn cap.
 ///
 /// Twice, so the single re-issue above can double once and no further. Kept as
 /// its own bound rather than folded into the count, because they answer
 /// different questions: how many extra calls a turn may cost, and how large
 /// any one of them may get.
+///
+/// A multiple of the *configured* cap rather than of whatever this request
+/// happens to carry, because this is not the only thing that doubles. The
+/// vendored loop recovers its own shape of truncation the same way, so a turn
+/// it has already re-issued arrives here at twice the cap — and read as an
+/// original, that doubles again. A live `goals` agent reached a 48,000-token
+/// re-issue exactly this way, four times the configured ceiling and some
+/// twelve minutes of generation, against a wrapper documented to allow twice.
+/// Measuring growth from the configured cap makes the two ladders share one
+/// ceiling instead of composing into it.
 const MAX_CAP_GROWTH: u32 = 2;
 
 /// Wraps a chat model so a turn cut off at the cap is asked for again.
@@ -67,6 +77,8 @@ pub struct UntruncatedModel<S: Send + Sync> {
     inner: Arc<dyn ChatModel<S>>,
     tracer: Option<Arc<RunTracer>>,
     agent: String,
+    /// The run's configured per-turn output cap, when it is known.
+    configured: Option<u32>,
 }
 
 impl<S: Send + Sync> std::fmt::Debug for UntruncatedModel<S> {
