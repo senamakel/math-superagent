@@ -224,6 +224,80 @@ struct DocumentTool {
     documents: WorkspaceDocuments,
 }
 
+impl DocumentTool {
+    /// Fetches a URL and stores it as Markdown.
+    ///
+    /// Split out of the tool dispatch because it is the only branch that does
+    /// network work, size checks, and format conversion.
+    async fn download(&self, call: &ToolCall) -> Result<String> {
+        let output = {
+                let url = required_string(&call.arguments, "url")?;
+                let parsed = reqwest::Url::parse(&url).map_err(|error| {
+                    tinyagents::TinyAgentsError::Validation(format!(
+                        "invalid document URL: {error}"
+                    ))
+                })?;
+                if !matches!(parsed.scheme(), "http" | "https") {
+                    return Err(tinyagents::TinyAgentsError::Validation(
+                        "document URL must use HTTP or HTTPS".into(),
+                    ));
+                }
+                let response = self
+                    .documents
+                    .client
+                    .get(parsed)
+                    .send()
+                    .await
+                    .map_err(|error| {
+                        tinyagents::TinyAgentsError::Tool(format!(
+                            "document download failed: {error}"
+                        ))
+                    })?
+                    .error_for_status()
+                    .map_err(|error| {
+                        tinyagents::TinyAgentsError::Tool(format!(
+                            "document download failed: {error}"
+                        ))
+                    })?;
+                if response
+                    .content_length()
+                    .is_some_and(|length| length > MAX_DOCUMENT_BYTES as u64)
+                {
+                    return Err(tinyagents::TinyAgentsError::Validation(
+                        "downloaded document is too large".into(),
+                    ));
+                }
+                let content_type = response
+                    .headers()
+                    .get(reqwest::header::CONTENT_TYPE)
+                    .and_then(|value| value.to_str().ok())
+                    .map(ToOwned::to_owned);
+                let bytes = response.bytes().await.map_err(|error| {
+                    tinyagents::TinyAgentsError::Tool(format!(
+                        "failed to read downloaded document: {error}"
+                    ))
+                })?;
+                if bytes.len() > MAX_DOCUMENT_BYTES {
+                    return Err(tinyagents::TinyAgentsError::Validation(
+                        "downloaded document is too large".into(),
+                    ));
+                }
+                // Convert to Markdown rather than storing raw bytes. A PDF or
+                // a markup-heavy page is unreadable otherwise, and the old
+                // UTF-8 check turned a PDF into an error that ended the run.
+                let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
+                let path = required_string(&call.arguments, "path")?;
+                self.documents.write(&path, &content).await?;
+                format!(
+                    "downloaded {} bytes from {url}, converted to {} bytes of Markdown at {path}",
+                    bytes.len(),
+                    content.len()
+                )
+            };
+        Ok(output)
+    }
+}
+
 #[async_trait]
 impl Tool<()> for DocumentTool {
     fn name(&self) -> &'static str {
@@ -290,70 +364,6 @@ impl Tool<()> for DocumentTool {
         self.schema().validate_call(&call)?;
         let output = match self.kind {
             DocumentToolKind::Download => self.download(&call).await?,
-            DocumentToolKind::Never => {
-                let url = required_string(&call.arguments, "url")?;
-                let parsed = reqwest::Url::parse(&url).map_err(|error| {
-                    tinyagents::TinyAgentsError::Validation(format!(
-                        "invalid document URL: {error}"
-                    ))
-                })?;
-                if !matches!(parsed.scheme(), "http" | "https") {
-                    return Err(tinyagents::TinyAgentsError::Validation(
-                        "document URL must use HTTP or HTTPS".into(),
-                    ));
-                }
-                let response = self
-                    .documents
-                    .client
-                    .get(parsed)
-                    .send()
-                    .await
-                    .map_err(|error| {
-                        tinyagents::TinyAgentsError::Tool(format!(
-                            "document download failed: {error}"
-                        ))
-                    })?
-                    .error_for_status()
-                    .map_err(|error| {
-                        tinyagents::TinyAgentsError::Tool(format!(
-                            "document download failed: {error}"
-                        ))
-                    })?;
-                if response
-                    .content_length()
-                    .is_some_and(|length| length > MAX_DOCUMENT_BYTES as u64)
-                {
-                    return Err(tinyagents::TinyAgentsError::Validation(
-                        "downloaded document is too large".into(),
-                    ));
-                }
-                let content_type = response
-                    .headers()
-                    .get(reqwest::header::CONTENT_TYPE)
-                    .and_then(|value| value.to_str().ok())
-                    .map(ToOwned::to_owned);
-                let bytes = response.bytes().await.map_err(|error| {
-                    tinyagents::TinyAgentsError::Tool(format!(
-                        "failed to read downloaded document: {error}"
-                    ))
-                })?;
-                if bytes.len() > MAX_DOCUMENT_BYTES {
-                    return Err(tinyagents::TinyAgentsError::Validation(
-                        "downloaded document is too large".into(),
-                    ));
-                }
-                // Convert to Markdown rather than storing raw bytes. A PDF or
-                // a markup-heavy page is unreadable otherwise, and the old
-                // UTF-8 check turned a PDF into an error that ended the run.
-                let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
-                let path = required_string(&call.arguments, "path")?;
-                self.documents.write(&path, &content).await?;
-                format!(
-                    "downloaded {} bytes from {url}, converted to {} bytes of Markdown at {path}",
-                    bytes.len(),
-                    content.len()
-                )
-            }
             DocumentToolKind::Read => {
                 self.documents
                     .read(&required_string(&call.arguments, "path")?)
