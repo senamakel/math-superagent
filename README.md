@@ -126,7 +126,7 @@ workspace/project-euler/66/
 ├── memory.md
 ├── solution.md
 ├── solution.py
-└── trace.jsonl
+└── trace.jsonl        # local only, not committed
 ```
 
 Generated programs, calculations, and other artifacts appear in
