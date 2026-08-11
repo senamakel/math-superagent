@@ -1,8 +1,17 @@
-> **Excerpt only — read this first.** The complete text is one level down at `research/L0/ford_cycle_type_toolkit.full.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Ford, "Cycle type of random permutations: A toolkit" (arXiv:2104.12019v3; Discrete Analysis 2022:9)
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/2104.12019 | converted from HTML -->
+Full text (ar5iv HTML) of Kevin Ford's toolkit. URL: https://ar5iv.labs.arxiv.org/html/2104.12019. Published: Discrete Analysis 2022:9, DOI 10.19086/da.38090. Summary/queries answered: [[ford_cycle_type_toolkit]] (L1).
 
-[2104.12019] 1Introduction
+## What it establishes (statements)
+
+- Unit of study: cycle counts C_k(σ) of a uniform random σ ∈ S_n; §1-2 develop the Poisson(1/k) heuristic with exact combinatorics.
+- Exact factorial moments: E[∏_k (C_k)_{r_k}] = ∏_k k^{−r_k} for Σ_k k·r_k ≤ n (falling-factorial notation). The basis for all exact cycle-type sums.
+- Fixed points: C_1 → Poisson(1), explicit error; largest/smallest cycle; cycles with lengths in arbitrary sets I — sieve upper/lower bounds and Poisson/CLT when Σ_{k∈I} 1/k grows.
+- Bibliography maps the order-of-permutation distribution literature (Erdős–Turán, Goh–Schmutz, and refs [1,7,10,13,22–28,38,50,57,61–63]).
+
+## Implications for Q(n)
+
+The A_n, B_n sums (fixed-point-count averages of gap-affine pair-inversion probabilities from [[conjugacy_class_statistics_body]] and [[pinsky_schickentanz_ewens_html]]) are cycle-type sums; Ford gives the exact summation identities and the asymptotic replacement scheme at n = 10⁶. Also the literature router for the n!/ord(π) weights used in brute2.
 
 ###### Abstract
 
