@@ -278,6 +278,17 @@ impl OrchestratorAgent {
             prompts.tool_builder,
         )?;
 
+        // coder: the same authority as the tool-builder, a different mandate.
+        // The tool-builder writes experiments and toolkit helpers; the coder
+        // writes the implementation the run stands behind. Splitting them is
+        // what lets each prompt be strict about one thing — the tool-builder
+        // about producing a running program quickly, the coder about the
+        // program being correct — instead of one prompt hedging between them.
+        let mut coder_harness =
+            build_tool_builder_harness(&model, budget, &tracer, &workspace, &documents);
+        coder_harness.push_middleware(checkpoint.clone());
+        async_subagents.register("coder", Arc::new(coder_harness), prompts.coder)?;
+
         register_support_agents(
             &async_subagents,
             &SupportAgents {
@@ -420,6 +431,20 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 "tool_builder",
                 "Tool Builder Agent",
                 "Writes and executes tools in the jailed /workspace directory.",
+            )
+            .with_model("openrouter")
+            .with_tools(
+                ["write_tool_file", "execute_command"]
+                    .into_iter()
+                    .chain(document_tools),
+            ),
+        )?
+        .register(
+            AgentDefinition::new(
+                "coder",
+                "Coding Agent",
+                "Implements the solution program from an established result, and verifies it \
+                 against the oracle.",
             )
             .with_model("openrouter")
             .with_tools(
