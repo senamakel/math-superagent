@@ -187,7 +187,7 @@ impl AsyncSubagentManager {
             budget,
             tracer,
             langfuse: LangfuseClient::from_env().ok().map(Arc::new),
-            slots: Arc::new(Semaphore::new(max_concurrent_agents())),
+            slots: Arc::new(Semaphore::new(concurrency)),
         }
     }
 
