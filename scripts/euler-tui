@@ -242,6 +242,23 @@ def main() -> int:
 
     runs = Runs()
     tabs = not arguments.plain and sys.stdout.isatty()
+
+    if arguments.replay:
+        # Reading a log costs nothing and starts nothing, which makes it both
+        # the way to look at a finished run and the only way to exercise the
+        # tabs without spending a container.
+        if not log_path.exists():
+            print(f"no log at {log_path}", file=sys.stderr)
+            return 1
+        with open(log_path, encoding="utf-8", errors="replace") as log:
+            for raw in log:
+                runs.add(raw)
+                if not tabs:
+                    sys.stdout.write(raw)
+        runs.ended = True
+        if tabs:
+            curses.wrapper(watch, runs)
+        return 0
     with open(log_path, "a", encoding="utf-8") as log, subprocess.Popen(
         command,
         cwd=root,
