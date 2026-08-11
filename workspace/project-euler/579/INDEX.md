@@ -22,7 +22,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `reflections/` | Archived attempt verdicts; written by the solution loop itself (see `reflections/INDEX.md`). |
 | `research/` | Externally sourced material: source summaries, full texts, and the run's verification scripts against them (see `research/INDEX.md`). |
 | `scratchpad.md` | Temporary calculations not yet promoted to `memory.md`. Currently empty. |
-| `solution.py` | Full PE579 solution: canonical primitive-frame enumeration via primary Hurwitz quaternions + O(1) Faulhaber summation; computes S(5000) mod 10^9. Implemented, but the final n=5000 run/results are not yet recorded in any output file, so the answer is unverified. |
+| `solution.py` | Final PE579 solution: canonical primitive-frame enumeration via primary Hurwitz quaternions (Euler-Rodrigues, streaming, O(1) memory) + O(1) Faulhaber power-sum summation. THIS IS THE ANSWER SOURCE. Validated: frame-set identity vs frame_method n=1..200 (ALL YES), C/S oracle all OK, power-sum==direct-loop bit-for-bit PASS, independent route (verify_final.py) matches. S(5000) mod 10^9 = 3805524. Evidence in `solution_output.txt`. |
 | `solution_power.py` | O(1)-per-frame Faulhaber power-sum summation. Reuses `frame_method.py`'s enumeration unchanged (import); only the t-summation differs. Validated bit-for-bit against the direct t-loop at n=50 and against the oracle. |
 | `tasks.md` | Task checklist. Finished up to `solution_power.py` validation; the last item (full `solution.py` verified + S(5000) computed/verified) unchecked. |
 | `toolkit.md` | Documents every `toolkit.py` function (signature, returns, what verified it); kept in step with `toolkit.py`. |
