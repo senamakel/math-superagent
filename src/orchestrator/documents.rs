@@ -872,11 +872,12 @@ impl DocumentToolKind {
 
 /// Entries never worth showing an agent: its own bookkeeping, installed
 /// packages, and the multi-megabyte event log.
-const HIDDEN_ENTRIES: [&str; 6] = [
+const HIDDEN_ENTRIES: [&str; 7] = [
     ".workspace-history",
     ".python-packages",
     "__pycache__",
     ".document-index.json",
+    ".frontier.json",
     "trace.jsonl",
     RAW_DIR,
 ];
