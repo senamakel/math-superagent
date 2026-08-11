@@ -287,12 +287,12 @@ async fn a_missing_document_names_what_the_folder_actually_holds() -> Result<()>
 }
 
 #[tokio::test]
-async fn listing_a_folder_that_is_not_there_names_the_ones_that_are() -> Result<()> {
+    let root = workspace("missing-folder")?;
     let root = workspace("missing-document")?;
     let research = root.join("research");
     std::fs::create_dir_all(&research).expect("research folder is creatable");
     std::fs::write(research.join("INDEX.md"), "index").expect("index is writable");
-
+    let documents = WorkspaceDocuments::new(root.clone())?;
     let documents = WorkspaceDocuments::new(workspace.path().to_path_buf())?;
     let error = documents
         .list("research/raw", 2)
