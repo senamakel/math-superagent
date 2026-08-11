@@ -1,69 +1,45 @@
-> **Excerpt only — read this first.** The complete text is beside it at `research/inverse_exponential_finish_times_wikipedia.full.md`; open that only when this file does not answer the question, because it is large. Replace this excerpt with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, and specific enough that nobody needs the full text.
+# Inverse (reciprocal) distribution — the distribution of finish times — Wikipedia "Inverse distribution"
 
 <!-- source: https://en.wikipedia.org/wiki/Inverse_distribution | converted from HTML -->
 
-Inverse distribution - Wikipedia
+## What the source establishes
 
-Jump to content
+For a positive random variable X with density f(x) and CDF F(x), the distribution
+of the reciprocal Y = 1/X is:
 
-From Wikipedia, the free encyclopedia
+- CDF: G(y) = P(Y ≤ y) = P(X ≥ 1/y) = 1 − F(1/y), for y > 0.
+- density: g(y) = (1/y²) · f(1/y).
 
-Probability theory
+Specializing to X ~ Exp(λ): the **inverse (reciprocal) exponential** Y = 1/X has
 
-[image: icon] [1]
+- density  g(y) = λ/y² · e^(−λ/y),  y > 0
+- CDF     G(y) = e^(−λ/y)
+- finite raw moments E[Y^k] exist only for k < 1 (mean and variance do **not**
+  exist); quantile G⁻¹(p) = −λ/ln(p).
 
- |
+Note the reciprocal transform is applied to a *single* random variable; it is the
+simplest case of a ratio distribution (degenerate numerator).
 
-This article **needs [more citations][2]**. Please help [improve this article][3] by [adding citations to reliable sources][4]. Unsourced material may be challenged and [removed][5].
-*Find sources:*["Inverse distribution"][6] – [news][7]**·**[newspapers][8]**·**[books][9]**·**[scholar][10]**·**[JSTOR][11]*( March 2025)**( [Learn how and when to remove this message][12])*
+## Implication for PE 597 — this CORRECTS the standing "clocks" brief
 
- |
+Boat j's **finish time** is T_j = (L − p_j)/v_j, where v_j ~ Exp(1). Since v_j is
+exponential, each finish time T_j = c_j/v_j is an **inverse-exponential** random
+variable with scale c_j = L − p_j: density (c_j/t²)e^(−c_j/t).
 
-Not to be confused with [Inverse distribution function][13].
+The crucial structural consequence: **finish events are NOT competing exponential
+clocks.** The hazard of T_j is
 
-In [probability theory][14] and [statistics][15], an **inverse distribution**is the distribution of the [reciprocal][16] of a random variable. Inverse distributions arise in particular in the [Bayesian][17] context of [prior distributions][18] and [posterior distributions][19] for [scale parameters][20]. In the [algebra of random variables][21], inverse distributions are special cases of the class of [ratio distributions][22], in which the numerator random variable has a [degenerate distribution][23].
+    h_j(t) = f(t)/(1−F(t)) = (c_j/t²) / (1 − e^(−c_j/t)),
 
-## Relation to original distribution
+which is *not constant* in t (it behaves like c_j/t² for small t and is large for
+small t). Therefore the "next finish wins with probability λ_j/Σλ" product-of-rate-
+ratios picture in context.md applies to the *bump* dynamics only if a bump time can
+be re-expressed as an exponential clock — that is the genuinely open piece — but it
+does **not** by itself give an exact product form over the whole chronology, because
+finish times are inverse-exponential (non-constant hazard). The memoryless property
+belongs to the *speeds* v_j, not to the induced finish times 1/v_j.
 
-[[edit][24]]
-
-In general, given the [probability distribution][25] of a random variable *X*with strictly positive support, it is possible to find the distribution of the reciprocal, *Y*= 1 / X. If the distribution of *X*is [continuous][26] with [density function][27]*f*(*x*) and [cumulative distribution function][28]*F*(*x*), then the cumulative distribution function, *G*(*y*), of the reciprocal is found by noting that
-
-G ( y) = Pr ( Y ≤ y) = Pr ( X ≥ 1 y) = 1 − Pr ( X < 1 y) = 1 − F ( 1 y). {\displaystyle G(y)=\Pr(Y\leq y)=\Pr \left(X\geq {\frac {1}{y}}\right)=1-\Pr \left(X<{\frac {1}{y}}\right)=1-F\left({\frac {1}{y}}\right).}[image: {\displaystyle G(y)=\Pr(Y\leq y)=\Pr \left(X\geq {\frac {1}{y}}\right)=1-\Pr \left(X<{\frac {1}{y}}\right)=1-F\left({\frac {1}{y}}\right).}]
-
-Then the density function of *Y*is found as the derivative of the cumulative distribution function:
-
-g ( y) = 1 y 2 f ( 1 y). {\displaystyle g(y)={\frac {1}{y^{2}}}f\left({\frac {1}{y}}\right).}[image: {\displaystyle g(y)={\frac {1}{y^{2}}}f\left({\frac {1}{y}}\right).}]
-
-## Examples
-
-[[edit][29]]
-
-### Reciprocal distribution
-
-[[edit][30]]
-
-The [reciprocal distribution][31] has a density function of the form [1]
-
-f ( x) ∝ x − 1 for 0 < a < x < b, {\displaystyle f(x)\propto x^{-1}\quad {\text{ for }}0<a<x<b,}[image: {\displaystyle f(x)\propto x^{-1}\quad {\text{ for }}0<a<x<b,}]
-
-where ∝ {\displaystyle \propto \!\,}[image: {\displaystyle \propto \!\,}] means ["is proportional to"][32]. It follows that the inverse distribution in this case is of the form
-
-g ( y) ∝ y − 1 for 0 ≤ b − 1 < y < a − 1, {\displaystyle g(y)\propto y^{-1}\quad {\text{ for }}0\leq b^{-1}<y<a^{-1},}[image: {\displaystyle g(y)\propto y^{-1}\quad {\text{ for }}0\leq b^{-1}<y<a^{-1},}]
-
-which is again a reciprocal distribution.
-
-### Inverse uniform distribution
-
-[[edit][33]]
-
-0 < a < b, \\quad a, b \\in \\R</math>"},"support":{"wt":"<math> [ b^{-1} , a^{-1} ] </math>"},"pdf":{"wt":"<math> y^{-2} \\frac{ 1 }{ b-a } </math>"},"cdf":{"wt":"<math> \\frac{ b - y^{-1} }{ b - a } </math>"},"mean":{"wt":"<math> \\frac{ \\ln(b) - \\ln(a)}{ b - a } </math>"},"median":{"wt":"<math> \\frac{ 2}{ a+b }</math>"},"variance":{"wt":"<math> \\frac{1}{a \\cdot b} - \\left( \\frac{ \\ln(b) - \\ln(a)}{ b - a } \\right)^2 </math>"},"skewness":{"wt":""},"kurtosis":{"wt":""},"entropy":{"wt":""},"mgf":{"wt":""},"char":{"wt":""},"pgf":{"wt":""},"fisher":{"wt":""}},"i":0}}]}'>
-
-Inverse uniform distribution |
-
-[Parameters][34] | 0 < a < b, a, b ∈ R {\displaystyle 0<a<b,\quad a,b\in \mathbb {R} }[image: {\displaystyle 0<a<b,\quad a,b\in \mathbb {R} }] |
-
-[Support][35] | [b − 1, a − 1] {\displaystyle [b^{-1},a^{-1}]}[image: {\displaystyle [b^{-1},a^{-1}]}] |
-
-
-*[excerpt ends; 19601 characters not shown — see `research/inverse_exponential_finish_times_wikipedia.full.md`]*
+So the library now states exactly what the finish-time distribution is, why it breaks
+the naive "all clocks are exponential" reduction, and what the remaining derivation
+(bump-rate + finish-hazard mixed chronology) must overcome. That pinpointing is what
+was previously left vague in context.md's "pinning down what the clocks are" gap.

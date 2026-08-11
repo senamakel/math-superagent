@@ -62,3 +62,18 @@ The library holds the exponential order-statistics theory, but no source yet
 derives the specific event-chronology decomposition (bump-chain parity
 integral) for this race; that is the run's own derivation task, not a
 literature lookup.
+
+## What the library now establishes that it did not before
+
+- **Finish times are NOT exponential clocks (correction to the brief above).**
+  The reciprocal-transform result (`research/inverse_exponential_finish_times_wikipedia.md`,
+  Wikipedia "Inverse distribution"): for v ~ Exp(1) and scale c = L−p_j, the
+  finish time T = c/v is **inverse-exponential** — density (c/t²)e^(−c/t), CDF
+  e^(−c/t), hazard h(t) = (c/t²)/(1−e^(−c/t)) which is *not constant* in t, and
+  no finite moments of order ≥ 1. So "next finish event wins with probability
+  λ_j/Σλ" does **not** hold for finish events; the product-of-rate-ratios
+  machinery applies only where event times are genuinely exponential. This
+  pins the open derivation to: express the *bump* event rate (a function of
+  relative speed, not raw v) and handle finish events as the non-exponential
+  inverse-exponential competing hazard mixed in — the run's own derivation
+  task, now precisely scoped rather than the vague "figure out the clocks".
