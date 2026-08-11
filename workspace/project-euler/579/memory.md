@@ -54,6 +54,42 @@ Extra ran beyond the required n<=5: n=3 C=36 S=496; n=6 C=473 S=15925.
   reaches n=10 comfortably but will not scale to n=5000.  Need the efficient
   method (criterion 4-6).
 
+## Frame-based method VALIDATED (frame_method.py) — criterion 3/4 progress
+
+The efficient method decomposes every cube into a **primitive frame** times an
+integer scale t:
+  * A primitive frame (u,v,w) has pairwise-orthogonal equal-norm integer edges,
+    |u|^2=|v|^2=|w|^2=ell^2, with gcd of all 9 coordinates = 1.
+  * A cube = frame scaled by t (t = gcd of the cube's 9 edge coords).
+  * Coordinate spans of the t-scaled frame: t*A, t*B, t*C where
+      A=|ux|+|vx|+|wx|, B=|uy|+|vy|+|wy|, C=|uz|+|vz|+|wz|.
+  * Lattice-point count (Ionascu Thm 3.1, Ehrhart) of the t-dilated cube:
+      pts(t) = ell^3 t^3 + ell*D t^2 + D*t + 1,
+    with D = sum of the 3 edge-gcds of the primitive frame.
+  * Box-fit corner count: T(t) = (n+1-tA)(n+1-tB)(n+1-tC) for 1<=t<=tmax,
+    tmax = min(n//A, n//B, n//C).
+  * C-contribution = sum_t T(t); S-contribution = sum_t pts(t)*T(t).
+
+Verified by /workspace/frame_method.py against the oracle (all OK):
+  n=1: C=1 S=8           (1 primitive)
+  n=2: C=9 S=91          (1)
+  n=4: C=100 S=1878      (5)
+  n=5: C=229 S=5832      (11)
+  n=10:C=4469 S=387003   (31)
+  n=50:C=8154671 S=29948928129  (755)
+Growth of distinct primitive-frame count:
+  n=10:31, n=20:119, n=50:755, n=100:3053, n=200:12129.
+Full run wall times: n=50 0.26s, n=100 1.70s, n=200 52.53s (enumeration cost
+dominated by pairing vectors within norm groups, ~(2n+1)^3 vectors).
+
+This structure is the key to efficiency: each primitive frame contributes a
+polynomial (degree 3 in t for C, degree 6 for S) in t, and the t-sum can be
+replaced by power-sum / Faulhaber identities — so the cost per frame is O(1)
+after power sums. For n=5000 the enumeration must be primed by a canonical
+parametrization (primary Hurwitz quaternions, Kiss-Kutas / Euler-Rodrigues),
+NOT by the direct vector pairing used here (which gave n=200 in 52s and will
+not reach n=5000). That quaternion enumeration is the next step.
+
 ## Failed approaches
 
 (To be filled.)

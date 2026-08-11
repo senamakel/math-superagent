@@ -1,0 +1,9 @@
+n=  1: C=1            S=8                primitives=1      [C OK] [S OK]  wall=0.00s (frames 0.00s)
+n=  2: C=9            S=91               primitives=1      [C OK] [S OK]  wall=0.00s (frames 0.00s)
+n=  4: C=100          S=1878             primitives=5      [C OK] [S OK]  wall=0.00s (frames 0.00s)
+n=  5: C=229          S=5832             primitives=11     [C OK] [S OK]  wall=0.00s (frames 0.00s)
+n= 10: C=4469         S=387003           primitives=31     [C OK] [S OK]  wall=0.00s (frames 0.00s)
+n= 50: C=8154671      S=29948928129      primitives=755    [C OK] [S OK]  wall=0.26s (frames 0.26s)
+growth n= 20: distinct_primitive_frames=119      wall=0.01s
+growth n=100: distinct_primitive_frames=3053     wall=1.70s
+growth n=200: distinct_primitive_frames=12129    wall=52.53s

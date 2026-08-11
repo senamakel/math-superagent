@@ -78,6 +78,36 @@ fn max_concurrent_agents() -> usize {
         .unwrap_or(DEFAULT_MAX_CONCURRENT_AGENTS)
 }
 
+/// A housekeeping run queued behind another run's completion.
+struct FollowUp {
+    manager: AsyncSubagentManager,
+    agent: String,
+}
+
+impl FollowUp {
+    /// Runs the follow-up, one at a time across the whole runtime.
+    ///
+    /// Serialised deliberately: two organizers refreshing the same `INDEX.md`
+    /// concurrently would each write the list it read, and the later write
+    /// would silently drop the other's descriptions. Housekeeping is not on
+    /// anyone's critical path, so waiting for the lock costs nothing.
+    ///
+    /// Every failure is swallowed. A run that tidies the workspace must never
+    /// be able to fail the investigation that triggered it, and an unregistered
+    /// follow-up agent — a registry built without one — is simply nothing to
+    /// do.
+    async fn run(self) {
+        if !self.manager.knows(&self.agent) {
+            return;
+        }
+        let _guard = self.manager.housekeeping.lock().await;
+        let _ = self
+            .manager
+            .run_to_completion(&self.agent, FOLLOW_UP_BRIEF.to_string())
+            .await;
+    }
+}
+
 #[async_trait]
 trait AgentExecutor: Send + Sync {
     async fn execute(
@@ -170,6 +200,8 @@ pub(crate) struct AsyncSubagentManager {
     langfuse: Option<Arc<LangfuseClient>>,
     /// Bounds how many spawned runs execute at once. See [`max_concurrent_agents`].
     slots: Arc<Semaphore>,
+    /// Serialises follow-up runs so two never rewrite one index at once.
+    housekeeping: Arc<tokio::sync::Mutex<()>>,
 }
 
 impl std::fmt::Debug for AsyncSubagentManager {
@@ -208,6 +240,7 @@ impl AsyncSubagentManager {
             tracer,
             langfuse: LangfuseClient::from_env().ok().map(Arc::new),
             slots: Arc::new(Semaphore::new(concurrency)),
+            housekeeping: Arc::new(tokio::sync::Mutex::new(())),
         }
     }
 
@@ -252,6 +285,13 @@ impl AsyncSubagentManager {
             )));
         }
         Ok(())
+    }
+
+    /// Reports whether an agent is registered under this name.
+    fn knows(&self, agent: &str) -> bool {
+        self.agents
+            .read()
+            .is_ok_and(|agents| agents.contains_key(agent))
     }
 
     fn spawn(&self, agent_name: &str, input: String) -> Result<TaskId> {
@@ -358,7 +398,10 @@ impl AsyncSubagentManager {
             }
             steering_registry.deregister(&spawned_task_id);
             if succeeded && let Some(follow_up) = follow_up {
-                follow_up.run().await;
+                // Spawned separately so this run's slot is released first.
+                // Chaining inline would make every in-flight tool-builder hold
+                // two slots, one of them doing nothing but waiting.
+                tokio::spawn(async move { follow_up.run().await });
             }
         });
         Ok(task_id)
