@@ -11,5 +11,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | _(undescribed)_ |
 | `SCRATCHPAD.md` | Scratchpad for temporary calculations, partial derivations, and observations not yet established enough for MEMORY.md. Currently empty. |
 | `TASKS.md` | _(undescribed)_ |
-| `brute.py` | _(undescribed)_ |
+| `brute.py` | Standalone BFS oracle for D(N) taking a max depth argument; a duplicate of code/brute.py. Lives at the root where prose should go — flagged for consolidation into code/. |
 | `problem.md` | _(undescribed)_ |
