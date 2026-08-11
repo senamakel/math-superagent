@@ -181,7 +181,7 @@ pub(super) async fn sweep(workspace: &std::path::Path) -> Vec<(String, String)> 
     let Ok(mut entries) = tokio::fs::read_dir(workspace).await else {
         return Vec::new();
     };
-    let mut moved = Vec::new();
+    let mut swept_files = Swept::default();
     while let Ok(Some(entry)) = entries.next_entry().await {
         if !entry.file_type().await.is_ok_and(|kind| kind.is_file()) {
             continue;
@@ -193,6 +193,14 @@ pub(super) async fn sweep(workspace: &std::path::Path) -> Vec<(String, String)> 
         let destination = placed(&name);
         let target = workspace.join(&destination);
         if target.exists() {
+            // A file carrying a result must never be overwritten by one that
+            // shares its name — but silence here is its own failure. The stray
+            // stays at the root for the rest of the run, the two files drift,
+            // and nothing says which is current. A live run reached exactly
+            // this: `brute.py` at the root and a different `code/brute.py`
+            // beside it, four minutes apart. So the collision is reported and
+            // the caller decides.
+            swept_files.blocked.push((name, destination));
             continue;
         }
         let Some(parent) = target.parent() else {
@@ -202,27 +210,51 @@ pub(super) async fn sweep(workspace: &std::path::Path) -> Vec<(String, String)> 
             continue;
         }
         if tokio::fs::rename(entry.path(), &target).await.is_ok() {
-            moved.push((name, destination));
+            swept_files.moved.push((name, destination));
         }
     }
-    moved
+    swept_files
 }
 
-/// Reports what the sweep moved, in the result of the command that ran.
-pub(super) fn swept_note(moved: &[(String, String)]) -> String {
-    if moved.is_empty() {
-        return String::new();
-    }
-    let list = moved
+/// What one sweep did, and what it refused to do.
+#[derive(Default)]
+pub(super) struct Swept {
+    /// Files filed away, as `(was, is)`.
+    moved: Vec<(String, String)>,
+    /// Strays left in place because their destination was taken.
+    blocked: Vec<(String, String)>,
+}
+
+/// Renders a list of `(from, to)` pairs for a tool result.
+fn listed(pairs: &[(String, String)]) -> String {
+    pairs
         .iter()
         .map(|(from, to)| format!("{from} -> {to}"))
         .collect::<Vec<_>>()
-        .join(", ");
-    format!(
-        "\n\nfiled from the workspace root: {list}. The root holds the run's Markdown, \
-         `{CODE_DIR}/` the programs, and `{OUTPUT_DIR}/` what they produce — write there \
-         directly, or run these by their new path."
-    )
+        .join(", ")
+}
+
+/// Reports what the sweep moved, in the result of the command that ran.
+pub(super) fn swept_note(swept: &Swept) -> String {
+    let mut note = String::new();
+    if !swept.moved.is_empty() {
+        note.push_str(&format!(
+            "\n\nfiled from the workspace root: {}. The root holds the run's Markdown, \
+             `{CODE_DIR}/` the programs, and `{OUTPUT_DIR}/` what they produce — write there \
+             directly, or run these by their new path.",
+            listed(&swept.moved)
+        ));
+    }
+    if !swept.blocked.is_empty() {
+        note.push_str(&format!(
+            "\n\nleft at the workspace root because the filed name is taken: {}. Nothing here \
+             is overwritten, so two files now share a name and only one is filed. Decide which \
+             is current: fold the change into the filed copy, or move the stray to a new name \
+             under `{CODE_DIR}/` and delete it from the root.",
+            listed(&swept.blocked)
+        ));
+    }
+    note
 }
 
 #[cfg(test)]
