@@ -36,6 +36,30 @@ p(3,160)=56/135≈0.4148; p(4,400)=0.5107843137. Goal: p(13,1800).
   exact/analytic route, likely order-statistics/memoryless exponential
   structure. Not yet attacked.
 
+## Cartesian-tree (min-heap treap) hypothesis: REFUTED
+- Conjecture tested in test_treap.py: with priority w_i = v_i/(L-40i), the
+  bump-chain pairs should equal the ancestor/descendant pairs of the min-w
+  Cartesian tree, giving parity = (# such pairs) mod 2.
+- RESULT: fails instantly. n=2..6, L in {160,400,1800}, 20k trials per (n,L):
+  30 mismatches after ~62 trials. Tree-MC p(3,160)=0.333 (given 0.4148),
+  p(4,400)=0.833 (given 0.5108), p(13,1800)=0.536 — the treap parity is a
+  different random variable entirely.
+- Trivial n=2 counterexample: v=[0.13269,0.56728], L=160. v0<v1 so boat0 can
+  never catch boat1 -> no bump -> even parity (oracle=0, bumps=[]). But w0=0.0008
+  < w1=0.0047 so boat0 is the treap root and the pair {0,1} counts as an
+  ancestor/descendant pair -> tree predicts odd. The treap's ancestor relation is
+  NOT the bumper-chronology reachability: bumping is about the CARETAKER between
+  boats (relative speed and distances), a genuinely different structure than
+  treap-ancestry by time-to-finish-rate.
+- n=3 case oracle=0 tree=1 with bumps [(1,2),(0,2)] (2-root treap): the treap
+  counts {0,1,2} triple chains wrongly; race reachability gives only 1->2,0->2
+  (2 chain-pairs, even), while the treap with root 2,left-subtree 0->1 claims
+  {0,1} is an ancestor pair too -> odd. Treap ancestry over-counts non-adjacent
+  index relations that the bump chronology never realizes.
+- Takeaway: treap/tree structures built on w_i = speed/distance do NOT encode the
+  race parity. The race parity depends on pairwise relative speeds and the
+  actual chronological order, not on a single scalar priority ordering.
+
 ## Oralce edge-loss bug: FOUND and FIXED (see scratchpad)
 - `brute.simulate_order` recorded only the LAST bumper of each boat
   (`bumped_by[k]=j`) and rebuilt `above` by following that single `out_of`
