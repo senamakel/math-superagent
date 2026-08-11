@@ -47,6 +47,32 @@ fn workspace_paths_reject_absolute_and_parent_traversal() {
     assert!(checked_workspace_path(workspace, "tools/check.sh").is_ok());
     assert!(checked_workspace_path(workspace, "/etc/passwd").is_err());
     assert!(checked_workspace_path(workspace, "../outside").is_err());
+    assert!(checked_workspace_path(workspace, "").is_err());
+    assert!(checked_workspace_path(workspace, "tools/../../outside").is_err());
+}
+
+#[test]
+fn workspace_paths_accept_the_mount_point_spelling_agents_are_given() {
+    // Every prompt names files as `/workspace/solution.md`; that must resolve
+    // to the same file as the relative spelling, not fail as traversal.
+    let workspace = std::path::Path::new("/workspace");
+    assert_eq!(
+        checked_workspace_path(workspace, "/workspace/solution.md").ok(),
+        checked_workspace_path(workspace, "solution.md").ok()
+    );
+    assert_eq!(
+        checked_workspace_path(workspace, "/workspace/tools/check.sh").ok(),
+        checked_workspace_path(workspace, "tools/check.sh").ok()
+    );
+}
+
+#[test]
+fn workspace_prefix_stripping_does_not_open_up_sibling_directories() {
+    let workspace = std::path::Path::new("/workspace");
+    assert!(checked_workspace_path(workspace, "/workspace-other/secret").is_err());
+    assert!(checked_workspace_path(workspace, "/workspaces/secret").is_err());
+    assert!(checked_workspace_path(workspace, "/workspace/../etc/passwd").is_err());
+    assert!(checked_workspace_path(workspace, "/workspace").is_err());
 }
 
 #[test]
