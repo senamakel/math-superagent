@@ -174,12 +174,19 @@ The shorter form above is equivalent to:
 ./agent run "your problem"
 ```
 
-Two helper commands are also available:
+Three helper commands are also available:
 
 ```sh
-./agent build   # build the runtime image
-./agent shell   # open a shell under the same Docker restrictions
+./agent build     # build the runtime image
+./agent shell     # open a shell under the same Docker restrictions
+./agent prompts   # print every role's assembled system prompt with token counts
 ```
+
+`./agent prompts` runs on the host and needs no container, provider key, or
+spend. Use it after changing a prompt or the context routing: it is the only way
+to see what an agent is actually told without starting a run, and the token
+counts matter because every prompt is re-sent on every model call in that role's
+run.
 
 ## Solve a Project Euler problem
 
