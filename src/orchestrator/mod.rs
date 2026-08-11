@@ -33,6 +33,7 @@ use crate::agent::accounting::AccountingModel;
 use crate::agent::budget::RunBudget;
 use crate::agent::reflection::ReflectionMiddleware;
 use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
+use crate::agent::reroute::ReroutingModel;
 use crate::agent::sticky::StickyProviderModel;
 use crate::agent::trace::RunTracer;
 use crate::agent::untruncated::UntruncatedModel;
