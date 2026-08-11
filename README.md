@@ -20,18 +20,43 @@ with pip are placed in the selected workspace under `.python-packages`, so the
 read-only container filesystem stays intact and dependencies persist with the
 problem artifacts.
 
-Every tool call has a hard maximum runtime of ten minutes. The tool-builder
-must state time and space complexity before substantial execution, and the
-runtime rejects commands declared as exponential. Exponential-time and
-exponential-space algorithms are outside the allowed operating policy.
+A single tool call may run for ten minutes and a whole agent run for two hours.
+Within that, an agent gets 250 model calls and 500 tool calls; a run that
+reaches a cap stops and returns what it has rather than discarding the work.
+Every limit is overridable through the `MATH_AGENT_*` variables documented in
+`.env.example`.
+
+The runtime is built to find the structure in a problem rather than to search
+its answer space. The tool-builder must state time and space complexity before
+substantial execution, and the runtime rejects commands declared as
+exponential. A method whose cost grows with the bound in the problem statement
+is treated as the wrong method, not as a slow one, and brute force is reserved
+for checking the real method on small cases.
 
 Research notes can be saved to a local Qdrant vector database and recalled in
 later runs. The database uses deterministic local feature vectors, so it does
-not need another embedding API.
+not need another embedding API. Pass `--no-research` to withhold web search
+entirely, which turns a run into a test of reasoning rather than of lookup.
 
 All model calls use DeepSeek V4 Flash through OpenRouter and StreamLake by
 default. TinyAgents provides the model loop, tools, delegation, and middleware.
-Langfuse receives best-effort observations from each run.
+
+## Watching a run
+
+The console shows an elapsed-time line for every model call, tool call, and
+tool result, labelled with the agent that produced it:
+
+```text
+[00:00] orchestrator     budget: 250 model calls, 500 tool calls, 120 minute run, 10 minute tool; research enabled
+[00:02] orchestrator     tool  call #1 -> spawn_agent
+[00:02] tool_builder/agent-run-1  spawned: Read /workspace/problem.html and extract the exact statement...
+[00:19] tool_builder/agent-run-1  tool  done    execute_command in 412ms, 1180 bytes
+```
+
+The same events are appended as JSON to `trace.jsonl` in the selected
+workspace, and the orchestrator and every specialist export their observations
+to Langfuse with prompts and tool payloads attached. Use `trace.jsonl` for a
+quick local replay and Langfuse when you need the full prompts.
 
 ## Run a problem
 
