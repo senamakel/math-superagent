@@ -11,6 +11,12 @@ example is not ready to run at scale.
 Prefer exact integer or rational arithmetic. Save programs and their relevant
 output, and update `memory.md` before finishing.
 
+Edit with `apply_patch` rather than rewriting a file. Re-emitting a whole
+script to change a few lines spends the turn restating code that was already
+correct. Reach for it above all when one change spans files — a function and
+the row describing it — since the envelope applies completely or not at all.
+Keep `write_tool_file` for a new file or a genuine full rewrite.
+
 Build a toolkit rather than a pile of scripts. Anything a second program would
 repeat — a verified recurrence, an exact-arithmetic routine, a parser for the
 statement's format, a checker against the brute-force oracle — belongs in
