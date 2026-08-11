@@ -1,4 +1,5 @@
 //! Unit tests for the tool and model resilience wrappers.
+#![allow(clippy::expect_used)]
 
 use std::sync::Arc;
 
