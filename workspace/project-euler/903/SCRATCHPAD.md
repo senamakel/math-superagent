@@ -7,6 +7,10 @@ sizes only.  `python code/brute.py 2 3 6` -> exit 0, all oracles OK:
 <0.15s total (n=6: 518400 power-steps).  Wrote code/results.json.  Reading of
 the definition is thereby pinned; size bound 10^6 is left to the derivation.
 
+Same run re-executed (this session) -> identical output; brute2.py (independent
+period-formula oracle) also run at n=2,3,6 -> exact agreement on all three and
+cross-check vs method 1 all True.  results.json / results2.json regenerated.
+
 ## Task (from user)
 Write brute.py in /workspace: enumerate all n! permutations in lex order, rank dict
 (tuple -> 1-based rank), reproduce rank((2,1,3)) = 3. For each pi, compute pi^i for
