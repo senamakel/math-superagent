@@ -259,17 +259,17 @@ def main() -> int:
                 reader.join()
         except KeyboardInterrupt:
             pass
-        finally:
-            if tabs and child.poll() is None:
-                # Detaching is the default; the run continues in Docker and
-                # this script can be started again against the same log.
-                print(
-                    f"detached — the run continues; follow it with"
-                    f" `tail -f {log_path}`",
-                    file=sys.stderr,
-                )
-                os.killpg(child.pid, signal.SIGCONT)
-                return 0
+        if child.poll() is None:
+            # Detaching is the default; the run continues in Docker and this
+            # script can be started again against the same log. A `return`
+            # inside `finally` would swallow whatever brought us here, so the
+            # decision is made in the normal path.
+            print(
+                f"detached — the run continues; follow it with `tail -f {log_path}`",
+                file=sys.stderr,
+            )
+            os.killpg(child.pid, signal.SIGCONT)
+            return 0
         return child.wait()
 
 
