@@ -241,7 +241,10 @@ fn continuation_briefing(attempt: usize, resumed: bool) -> String {
         return "This run continues work already in the workspace: earlier programs, notes and \
                 beliefs are on disk. Read GOAL.md and MEMORY.md, then CONTINUE from what they \
                 say. Do not re-extract the statement or re-derive what MEMORY.md already \
-                records — establish the next unresolved thing and run a program that settles it."
+                records — establish the next unresolved thing and run a program that settles it. \
+                Your very next action is a spawn: name the next unresolved thing and hand it to \
+                tool_builder. Two live runs spent ten minutes and two whole 12,000-token turns \
+                deciding what to spawn and never spawned anything."
             .to_string();
     }
     if attempt <= 1 {
