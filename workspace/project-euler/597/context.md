@@ -40,6 +40,15 @@ clocks are is now resolved below.)
   slowest boat and recursing on the two subranges. Caveat: inid spacings are NOT
   independent, and finish times are still inverse-exponential (not clocks).
   [[inid_exponential_order_statistics_nagaraja]]
+- **The recursion's two sides are independent — the structure is a treap (NEW).**
+  Root = boat slowest relative to the target; left/right subtrees = the two subranges;
+  this is exactly the treap / randomized search tree of Seidel & Aragon (Algorithmica
+  1996). The treap theorem supplies the **independence**: for i.i.d. continuous
+  priorities the two subtrees are independent random treaps, so p(n,L) = Σ over the
+  root boat of (distance-ratio weight) × p(left subrange) × p(right subrange) — no
+  cross-range coupling. The root-rank *weighting* is not the uniform treap one but
+  the inid rate-proportional (distance) one of the Nagaraja bullet above.
+  [[randomized_search_trees_treaps_seidel_aragon]]
 
 ## Caveat
 

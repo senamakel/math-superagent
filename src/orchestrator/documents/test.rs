@@ -91,6 +91,12 @@ fn downloads_are_filed_under_the_research_folder() {
     assert_eq!(research_path("/pell.md"), "research/L1/pell.md");
     // A blank path still lands somewhere sensible rather than at the root.
     assert_eq!(research_path("   "), "research/L1/document.md");
+    // Naming the full text names the wrong half of the pair: the digest is
+    // what a download produces at level 1.
+    assert_eq!(
+        research_path("confusioninterval.full.md"),
+        "research/L1/confusioninterval.md"
+    );
     // The untouched original sits one level below the note that digests it.
     assert_eq!(
         full_text_path("research/L1/pell.md"),
