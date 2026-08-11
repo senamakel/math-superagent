@@ -16,5 +16,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `problem.html` | The problem statement: partisan bit-deletion game, definition of S(n), given values S(2)=2, S(5)=17, S(10)=64, ask for S(10^5). |
 | `problem.url` | Source URL: https://projecteuler.net/minimal=882 — Project Euler 882, from which problem.html was converted. |
 | `scratchpad.md` | Scratchpad for provisional calculations not yet ready for memory.md. |
-| `scratchpad_td.py` | Provisional numeric verification of Trollope-Delange identities: S(2n)=2S(n)+n, S(n+p(n)) and S(n+2p(n)) recurrences, S(2^e)=e·2^(e-1), formula 35 reconstruction, and the ones/zeros total-bits cross-check. Scratch; superseded if tool_builder runs it and confirms. |
+| `scratchpad_td.py` | Superseded scratch verification harness: the Trollope–Delange checklist it encoded was moved to research/verify_trollopedelange.md for tool_builder to execute. Kept only as a record; no numerical claims from Girgensohn (2011) were confirmed by a run. |
 | `tasks.md` | Task checklist (single placeholder task row). |
