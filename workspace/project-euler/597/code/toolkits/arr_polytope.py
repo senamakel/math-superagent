@@ -135,13 +135,70 @@ class Polytope:
         # interior point = average of vertices
         n = len(vs)
         c = tuple(sum(v[i] for v in vs) / n for i in range(3))
+        # Robust: sign every triangular facet of the hull (unique for a convex
+        # polytope) and cone to interior point c, summing signed volumes
+        # (a-b)x(a-d) dot (c-a) with outward orientation.  Simpler and
+        # obviously-correct: triangulate each facet polygon into triangles and
+        # cone to c, taking absolute values of each signed tetrahedron (all
+        # positive with c inside).
+        from itertools import combinations
+        # facets are the maximal sets of coplanar vertices; enumerate all
+        # triangles of a facet by finding coplanar groups.  Naive-but-correct
+        # fallback for small polytopes: use an interior subdivision through the
+        # centroid and each triangular facet from a full vertex triangulation.
+        # For a convex hull we can orient via a known support: sum over all
+        # triples, cone to c, and take (signed) but that double counts.  Use
+        # the direct hull-facet triangulation below.
+        return self._fan_volume(vs, c)
+
+    def _fan_volume(self, vs, c):
+        """Decompose a convex polyhedron into tetrahedra by coning an interior
+        point to the triangulation of each boundary facet.
+        Facet detection: a triple (i,j,k) whose triangle lies on the hull and
+        is a face.  For a convex polytope given by its extreme vertices, a
+        triple is a triangle facet iff all other vertices lie on one side of
+        its plane (all cross products same sign) AND the triangle area is
+        nonzero.  We cone each such triangle to c and add |det|/6."""
+        verts = vs
+        idx = list(range(len(verts)))
+        planes = []
+        from itertools import combinations
+        for triple in combinations(idx, 3):
+            i, j, k = triple
+            a, b, cc = verts[i], verts[j], verts[k]
+            # normal = (b-a) x (c-a)
+            u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]]
+            w = [cc[0] - a[0], cc[1] - a[1], cc[2] - a[2]]
+            nrm = [u[1] * w[2] - u[2] * w[1],
+                   u[2] * w[0] - u[0] * w[2],
+                   u[0] * w[1] - u[1] * w[0]]
+            normsq = nrm[0] ** 2 + nrm[1] ** 2 + nrm[2] ** 2
+            if normsq == 0:
+                continue
+            # sign test: all other vertices on one side of plane through a
+            sgns = set()
+            for t in idx:
+                if t in triple:
+                    continue
+                p = verts[t]
+                dp = (nrm[0] * (p[0] - a[0]) + nrm[1] * (p[1] - a[1])
+                      + nrm[2] * (p[2] - a[2]))
+                if dp > 0:
+                    sgns.add(1)
+                elif dp < 0:
+                    sgns.add(-1)
+            if len(sgns) <= 1:
+                planes.append(triple)
+        # cone: sum of signed tetra volumes should be total; interior c means
+        # all tetrahedra with the centroid are positively oriented w.r.t. the
+        # outward normal. Compute each facet triangle's signed tetra volume
+        # |det(a-c,b-c,cc-c)|/6 and sum.
         vol = F(0)
-        for i in range(1, n - 1):
-            a, bb, cc = vs[0], vs[i], vs[i + 1]
-            # tetra c,a,bb,cc volume = |det(a-c,bb-c,cc-c)|/6
+        for triple in planes:
+            a, b, cc = (verts[i] for i in triple)
             m = [
                 [a[0] - c[0], a[1] - c[1], a[2] - c[2]],
-                [bb[0] - c[0], bb[1] - c[1], bb[2] - c[2]],
+                [b[0] - c[0], b[1] - c[1], b[2] - c[2]],
                 [cc[0] - c[0], cc[1] - c[1], cc[2] - c[2]],
             ]
             det = (m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1])

@@ -4,4 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `simplest_dyadic.py` | simplest_between(a,b): the simplest (minimal-birthday) dyadic Fraction strictly between two dyadics a<b (or None for ±inf). Validated against an independent birthday oracle (code/test_simplest_dyadic.py). |
+| `simplest_dyadic.py` | Reusable toolkit helper simplest_between(a,b): the simplest dyadic (minimal birthday, Simplicity Rule) strictly between a<b (Fractions, or None for +/-inf). Validated against an independent birthday oracle and four worked cases; imported by solution.py. |
