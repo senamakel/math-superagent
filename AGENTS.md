@@ -15,7 +15,7 @@ tools, examples, tests, and documentation.
 
 ## Expected problem-solving behavior
 
-The runtime has three roles:
+The runtime has four roles:
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -84,6 +84,11 @@ The executable registry contains `goals`, `research`, and `tool_builder`.
 Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
 The goals agent also receives the research and tool-builder delegation tools,
 so it can pursue a goal through nested, focused work.
+All model-visible delegation uses the graph-backed asynchronous controls:
+`spawn_agent`, `peek_agent`, `steer_agent`, and `await_agent`. A spawn returns a
+run ID immediately. Callers may launch independent work in parallel, inspect
+or redirect live runs, and must await every result needed for their final
+answer. Do not reintroduce blocking `SubAgentTool` calls.
 The research agent has Exa plus `recall_research` and `remember_research` tools.
 Qdrant persists the notes in a named Compose volume. The vector tools use a
 small deterministic feature-hashing encoder, not an external embedding model.

@@ -41,7 +41,7 @@ docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
 ' sh "$problem_number"
 
 extra_instructions=$*
-task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.html. Ask tool_builder to read and extract the statement, then derive and implement an efficient solution. Save a clear derivation to /workspace/solution.md and a reproducible Python program to /workspace/solution.py. Run the program and independently check its exact final answer. Use research only for mathematical definitions or primary references, never to look up a published answer or solution. In the final response, state the answer, explain the method, report the verification command, and list the saved files."
+task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.html. Spawn tool_builder to read and extract the statement, then derive and implement an efficient solution. Keep its run ID and await its response. Save a clear derivation to /workspace/solution.md and a reproducible Python program to /workspace/solution.py. Run the program and independently check its exact final answer. Use research only for mathematical definitions or primary references, never to look up a published answer or solution. In the final response, state the answer, explain the method, report the verification command, and list the saved files."
 
 if [ -n "$extra_instructions" ]; then
     task="$task Additional instructions: $extra_instructions"

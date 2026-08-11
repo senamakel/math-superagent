@@ -121,6 +121,12 @@ Computations and executable checks go to the tool-builder. The orchestrator
 then writes one answer that separates cited facts from its own mathematical
 reasoning.
 
+Subagent work runs asynchronously through TinyAgents graphs. `spawn_agent`
+returns a run ID immediately, so independent research and computation can run
+in parallel. The calling agent can use `peek_agent` to inspect status,
+`steer_agent` to redirect live work, and `await_agent` to retrieve the eventual
+response. The orchestrator and goals agent share this control surface.
+
 Context compression starts at an estimated 300,000 tokens. A model-backed
 summary keeps the decisions, assumptions, formulas, source URLs, command
 results, and unresolved work. Recent messages remain verbatim. If the summary
