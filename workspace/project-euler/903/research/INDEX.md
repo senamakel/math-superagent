@@ -37,11 +37,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.2/sack_ulfarsson_refined_inversion_statistics.md` | _(undescribed)_ |
 | `L1.2/stong_average_order_permutation.md` | _(undescribed)_ |
 | `L2.0/cycle_type_toolkit.md` | _(undescribed)_ |
-| `L2.0/mechanism_pair_inversions.md` | _(undescribed)_ |
+| `L2.0/mechanism_pair_inversions.md` | Fold index: the PROVED gap-affine pair-inversion mechanism behind f_n(k)=A_n+(k−1)B_n, established two independent ways — Campion-Loth et al per-conjugacy-class affine inversion probability (Lemma 4.7) and Pinsky–Schickentanz Ewens/θ=1 pair-inversion probability (Thm 1a), plus Pinsky's fixed-point-conditioned EJC formula and Cambie–Yan small-exponent closed forms. Open: the rank-sum over the cyclic subgroup {π^i} and the large-exponent regime. |
 | `L2.0/order_random_permutation.md` | _(undescribed)_ |
 | `L2.0/rank_lehmer.md` | _(undescribed)_ |
 | `L2.0/report_A_n_B_n_closed_forms_sources.md` | Research report on sources for closed forms of A_n,B_n in f_n(k)=A_n+(k−1)B_n: per-gap pair-inversion probabilities affine in the gap (Campion-Loth Lemma 4.7, Pinsky–Schickentanz Thm 1a/Prop 10a, Pinsky EJC), the concrete cycle-type summation route to A_n,B_n via Source 1 + Ford factorial moments, Sack–Úlfarsson Eulerian k-step-inversion closed forms — and clean negatives (Cambie–Yan n≥2k+1 limit; no source computes the rank-sum over {π^i}; OEIS all negative). Bottom line: sources give the per-gap mechanism and summation tools, not A_n,B_n themselves. |
-| `L2.0/reports_negatives.md` | _(undescribed)_ |
+| `L2.0/reports_negatives.md` | Fold index: literature reports and negative lookups — report_literature_ranks_powers (clean negative, supersedes report_cited_facts & report_rank_powers) and the five OEIS "No results" pages (A_n, Q(n), |B_n|/(n−1)!, two probes). Records the clean-negative status of the novel core. |
 | `verify_cambie_yan.py` | _(undescribed)_ |
 | `verify_facts.py` | Verification script for the cited rank/order facts: checks rank(2,1,3)=3 via the Lehmer/factoradic rank formula and the derived reduction Q(n)=Σ_{H cyclic}φ( |
- reduction Q(n)=Σ_{H cyclic}φ( |
