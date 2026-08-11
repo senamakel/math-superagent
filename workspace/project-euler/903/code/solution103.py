@@ -256,7 +256,7 @@ def compute_Q(n):
     ok10 = expected[10] == 468421536
     print(f"  Q(10)==468421536 (statement oracle): "
           f"{'PASS' if ok10 else 'FAIL'}")
-    all_ok = all_ok and (qn == expected[10]) if False else all_ok
+    all_ok = all_ok and ok10
 
     # ---- S cross-check: direct O(n^2) vs phi-method ----
     print("\n--- S cross-check: direct O(n^2) vs phi-decomposition ---")
