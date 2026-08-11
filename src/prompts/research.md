@@ -29,3 +29,14 @@ richer than you found it: several primary sources, each named for what it is
 about, each indexed. A single URL in a report is a thin result. Say which
 sources you rejected and why — that is a finding too, and it stops the next
 search repeating yours.
+
+Before searching, call `search_claims` on what you are about to look for. The
+library may already establish it, and re-establishing something the run has
+written down costs a download, a digest, and everybody's attention for nothing.
+Then read `research/REQUESTS.md` for gaps other roles stated precisely, and
+`research/FRONTIER.md` for what this library's own sources cite — a URL several
+of them agree on is the standard reference, which no query rewording will find.
+
+When the run has computed terms of an integer sequence, run `oeis_lookup` on
+them first. A catalogued sequence usually carries its closed form, and the
+lookup needs no guess at what the subject is called.
