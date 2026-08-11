@@ -412,6 +412,35 @@ pub(super) fn research_path(requested: &str) -> String {
     format!("{RESEARCH_DIR}/{trimmed}")
 }
 
+/// Renames a stored document to `.md`, because that is what it now contains.
+///
+/// Everything filed under `research/` has been through `to_markdown`, so a
+/// stored file called `paper.pdf` is a lie: it holds Markdown. The wrong
+/// extension misleads every later reader — an agent deciding whether it can
+/// read a file, a human opening the workspace, and any tool that dispatches on
+/// suffix. The original bytes keep their true extension under `raw/`, which is
+/// where a genuine PDF still lives.
+pub(super) fn markdown_path(relative: &str) -> String {
+    let (stem, extension) = match relative.rsplit_once('.') {
+        Some(parts) => parts,
+        // No extension at all: give it the one it has earned.
+        None => return format!("{relative}.md"),
+    };
+    // A dot in a directory name is not an extension, and neither is a version
+    // number in `zeta.2.1` — only rewrite when the tail looks like a suffix.
+    if stem.is_empty()
+        || extension.contains('/')
+        || extension.is_empty()
+        || !extension.chars().all(|c| c.is_ascii_alphanumeric())
+    {
+        return format!("{relative}.md");
+    }
+    if extension.eq_ignore_ascii_case("md") {
+        return relative.to_string();
+    }
+    format!("{stem}.md")
+}
+
 /// Returns where a converted document's original bytes are archived.
 ///
 /// Mirrors the research layout under [`RAW_DIR`] so the two stay in
@@ -563,10 +592,14 @@ impl DocumentTool {
             // a markup-heavy page is unreadable otherwise, and the old
             // UTF-8 check turned a PDF into an error that ended the run.
             let content = super::readable::to_markdown(&bytes, content_type.as_deref(), &url)?;
-            let path = research_path(&required_string(&call.arguments, "path")?);
+            let requested = research_path(&required_string(&call.arguments, "path")?);
+            // The stored document is Markdown, so it is named `.md`. The
+            // archive keeps the requested name, and so keeps the true
+            // extension of the bytes it holds.
+            let path = markdown_path(&requested);
             // Keep the untouched bytes too. A failure to archive them must not
             // fail a download that otherwise succeeded, so it is best effort.
-            let raw = raw_path(&path);
+            let raw = raw_path(&requested);
             let archived = self.documents.write_bytes(&raw, &bytes).await.is_ok();
             self.documents.write(&path, &content).await?;
             format!(

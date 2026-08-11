@@ -138,3 +138,32 @@ fn runtime_bookkeeping_cannot_be_read_into_an_agents_context() {
         );
     }
 }
+
+#[test]
+fn a_converted_document_is_named_for_what_it_now_contains() {
+    use super::{markdown_path, raw_path};
+
+    // Everything under research/ has been through `to_markdown`, so a stored
+    // `paper.pdf` holds Markdown and the suffix misleads every later reader.
+    assert_eq!(
+        markdown_path("research/recounting_rationals.pdf"),
+        "research/recounting_rationals.md"
+    );
+    assert_eq!(
+        markdown_path("research/oeis_A002487.html"),
+        "research/oeis_A002487.md"
+    );
+    // Already Markdown, or no extension at all.
+    assert_eq!(markdown_path("research/pell.md"), "research/pell.md");
+    assert_eq!(markdown_path("research/PELL.MD"), "research/PELL.MD");
+    assert_eq!(markdown_path("research/notes"), "research/notes.md");
+    // A dot that is not a suffix must not eat part of the name.
+    assert_eq!(markdown_path("research/v1.2/zeta"), "research/v1.2/zeta.md");
+
+    // The archive keeps the requested name, so the original bytes keep the
+    // extension that actually describes them.
+    assert_eq!(
+        raw_path("research/recounting_rationals.pdf"),
+        "raw/recounting_rationals.pdf"
+    );
+}
