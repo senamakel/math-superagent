@@ -119,31 +119,44 @@ def mc_estimate(n, L, N, seed=None):
 
 
 if __name__ == "__main__":
-    import sys
-    # small exact sanity checks on the n=3,L=160 table pattern
-    print("=== sanity: n=3,L=160 table patterns ===")
-    cases = [
-        ([1.0, 0.5, 0.5], 0),   # none  -> even
-        ([1.0, 2.0, 1.0], 1),   # B bumps C -> odd
-        ([2.0, 1.0, 1.0], 1),   # A bumps B -> odd
-        ([1.0, 2.0, 3.0], 0),   # B->C then A->C -> even
-        ([3.0, 2.0, 1.0], 1),   # A bumps B then B bumps C -> odd
-    ]
-    for speeds, exp in cases:
-        par, edges = race_parity(3, 160.0, speeds)
-        print(f" speeds={speeds} edges={edges} parity={par} expected={exp} "
-              f"{'OK' if par == exp else 'MISMATCH'}")
+    import sys, os
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "code"))
+    import brute
 
+    print("=== differential test: this engine vs brute.outcome_parity ===")
+    rng = random.Random(2024)
+    total = 0
+    mism = 0
+    for (n, L, trials) in [(2, 160, 20000), (2, 400, 20000), (3, 160, 40000),
+                           (3, 400, 40000), (4, 400, 40000), (4, 1800, 40000),
+                           (5, 1800, 40000), (6, 1800, 20000)]:
+        m = 0
+        for _ in range(trials):
+            speeds = [rng.expovariate(1.0) for _ in range(n)]
+            my_par, _ = race_parity(n, L, speeds)
+            ref = brute.outcome_parity(n, L, speeds)
+            m += (my_par != ref)
+        total += trials
+        mism += m
+        print(f"n={n} L={L} trials={trials}: mismatches={m}")
+    print(f"TOTAL mismatches / trials = {mism} / {total}")
     print()
-    print("=== MC cross-checks ===")
-    for (n, L, N) in [(2, 160, 200000), (2, 400, 200000),
-                      (3, 160, 50000), (3, 160, 500000),
-                      (4, 400, 50000), (4, 400, 500000)]:
+
+    print("=== MC cross-checks (this engine, Exp(1) speeds) ===")
+    anchors = [
+        (2, 160, 200000, "n=2 exact MC"),
+        (2, 400, 200000, "n=2 exact MC"),
+        (3, 160, 200000, "exact 56/135 = 0.414815"),
+        (3, 160, 50000, "exact 56/135 = 0.414815"),
+        (4, 400, 50000, "given 0.5107843137"),
+        (4, 400, 500000, "given 0.5107843137"),
+    ]
+    for (n, L, N, note) in anchors:
         p, se, even = mc_estimate(n, L, N, seed=12345)
-        print(f"n={n} L={L} N={N}: p={p:.6f} SE={se:.6f} even={even}")
+        print(f"n={n} L={L} N={N}: p={p:.6f} SE={se:.6f} even={even}  [{note}]")
 
     # deliverable: p(13,1800)
     print()
-    for N in [50000, 200000, 1500000]:
-        p, se, even = mc_estimate(13, 1800, N, seed=99)
-        print(f"n=13 L=1800 N={N}: p={p:.6f} SE={se:.6f} even={even}")
+    print("=== deliverable: p(13,1800) ===")
+    p, se, even = mc_estimate(13, 1800, 1500000, seed=99)
+    print(f"N=1500000: p={p:.6f} SE={se:.6f} even={even}")

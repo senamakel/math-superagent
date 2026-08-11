@@ -158,6 +158,29 @@ impl WorkspaceDocuments {
         self.path(relative)
     }
 
+    /// Finds a file of the same name in another batch of the same tree.
+    ///
+    /// Only within the tree the caller aimed at, and only by exact file name:
+    /// a search of the whole workspace would answer a question nobody asked
+    /// and could point at an unrelated file that happens to share a name.
+    fn same_name_elsewhere(&self, relative: &str) -> Option<String> {
+        let (root, rest) = relative.split_once('/')?;
+        let (batch, name) = rest.split_once('/')?;
+        super::context_tree::batch_of(batch)?;
+        let entries = std::fs::read_dir(self.workspace.join(root)).ok()?;
+        let mut folders: Vec<String> = entries
+            .flatten()
+            .filter(|entry| entry.file_type().is_ok_and(|kind| kind.is_dir()))
+            .map(|entry| entry.file_name().to_string_lossy().into_owned())
+            .filter(|folder| super::context_tree::batch_of(folder).is_some())
+            .collect();
+        folders.sort();
+        folders.into_iter().find_map(|folder| {
+            let candidate = format!("{root}/{folder}/{name}");
+            self.workspace.join(&candidate).is_file().then_some(candidate)
+        })
+    }
+
     /// Names what does exist beside a path that does not.
     ///
     /// A model that guessed `research/DIGEST.md` or `research/raw` learns only
