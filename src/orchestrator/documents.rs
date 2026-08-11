@@ -138,6 +138,38 @@ impl WorkspaceDocuments {
         })
     }
 
+    /// Lists the visible file names directly inside `relative`.
+    ///
+    /// Hidden runtime bookkeeping is excluded, so an index built from this can
+    /// never advertise a file the tools refuse to open.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the folder escapes the workspace or cannot be
+    /// read.
+    pub(super) async fn file_names(&self, relative: &str) -> Result<Vec<String>> {
+        let folder = if relative.is_empty() { "." } else { relative };
+        ensure_visible(folder)?;
+        let path = self.path(folder)?;
+        let mut entries = tokio::fs::read_dir(&path).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "failed to read workspace folder `{relative}`: {error}"
+            ))
+        })?;
+        let mut names = Vec::new();
+        while let Ok(Some(entry)) = entries.next_entry().await {
+            let name = entry.file_name().to_string_lossy().into_owned();
+            if HIDDEN_ENTRIES.contains(&name.as_str()) || name.starts_with('.') {
+                continue;
+            }
+            if entry.file_type().await.is_ok_and(|kind| kind.is_file()) {
+                names.push(name);
+            }
+        }
+        names.sort();
+        Ok(names)
+    }
+
     /// Reports whether a visible workspace document exists.
     pub(super) fn exists(&self, relative: &str) -> bool {
         self.readable_path(relative).is_ok()

@@ -3,6 +3,7 @@
 pub(crate) mod async_subagents;
 mod checkpoint;
 mod documents;
+mod folder_index;
 mod patch;
 mod patterns;
 mod readable;
