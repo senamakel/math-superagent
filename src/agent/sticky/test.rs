@@ -6,9 +6,9 @@ use std::sync::Mutex;
 
 use async_trait::async_trait;
 use serde_json::{Value, json};
-use tinyagents::harness::model::{
-    ChatModel, ModelRequest, ModelResponse, ModelStream, Result as ModelResult,
-};
+use tinyagents::harness::model::{ChatModel, ModelRequest, ModelResponse, ModelStream};
+
+use crate::agent::Result as ModelResult;
 
 use super::StickyProviderModel;
 
