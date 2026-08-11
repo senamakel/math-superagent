@@ -478,7 +478,9 @@ pub(super) fn research_excerpt(full: &str, raw_relative: &str) -> String {
     }
     let head: String = full.chars().take(RESEARCH_EXCERPT_CHARS).collect();
     // Cut at a line boundary so the excerpt does not end mid-sentence.
-    let head = head.rsplit_once('\n').map_or(head.as_str(), |(body, _)| body);
+    let head = head
+        .rsplit_once('\n')
+        .map_or(head.as_str(), |(body, _)| body);
     format!(
         "> **Excerpt only.** The full converted text is archived at `{raw_relative}` and is not \
          loaded into any agent's context. Replace this file with a summary of what the source \
