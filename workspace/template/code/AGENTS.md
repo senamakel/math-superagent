@@ -14,9 +14,38 @@ the code does — that is readable — but **what established it is correct**: t
 examples it reproduces, the brute force it agrees with, the size it has been
 run to.
 
+## The shape
+
+This is a Python package tree, not a drawer of scripts. `/workspace/code` is on
+`PYTHONPATH`, so every folder here is importable by name from any working
+directory and any invocation:
+
+```text
+code/
+├── lib/            what other programs import — one subject per module
+├── <question>/     the programs attacking one question, with its own INDEX.md
+└── out/            what those programs produced
+```
+
+```python
+from lib.perms import lex_ranks      # code/lib/perms.py
+from chains.walk import orbit        # code/chains/walk.py
+```
+
+Never write `sys.path.insert`. An import that fails means the file is in the
+wrong place, and moving it is the fix.
+
+A program starts at `code/` directly and moves into a folder as soon as a
+second program attacks the same question. Name the folder for the mathematics —
+`chains/`, `dyadic/` — never for when the files were written.
+
 ## Rules
 
 - One job per file. A file that grew a second job is two files.
+- The third time you type a routine out, it belonged in `lib/` the first time.
+  Copies drift, and a check that passes against one says nothing about the
+  others. Move the definition into the `lib/` module for its subject and import
+  it everywhere it was copied.
 - Name a program for what it computes, not for when it was written.
   `count_chains.py` survives; `try3.py` is unreadable a day later.
 - Say the complexity before running anything substantial, in time *and* space.

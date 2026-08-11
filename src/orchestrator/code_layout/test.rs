@@ -54,7 +54,10 @@ fn only_top_level_definitions_count_as_a_routine() {
     assert!(symbols("def test_count():\n    pass\n").is_empty());
     assert!(symbols("def _helper():\n    pass\n").is_empty());
     // A file defining the same name twice has still only defined it once.
-    assert_eq!(symbols("def f(n):\n    pass\ndef f(n, m):\n    pass\n"), ["f"]);
+    assert_eq!(
+        symbols("def f(n):\n    pass\ndef f(n, m):\n    pass\n"),
+        ["f"]
+    );
 }
 
 #[test]

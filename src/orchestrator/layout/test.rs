@@ -1,4 +1,5 @@
 //! Unit tests for workspace placement.
+#![allow(clippy::expect_used)]
 
 use super::*;
 
@@ -100,7 +101,10 @@ async fn a_program_written_through_the_shell_is_filed_after_the_command() {
         "what a program produced is filed apart from it"
     );
     assert!(root.join("GOAL.md").is_file(), "the run's prose stays put");
-    assert!(root.join(".keep").is_file(), "machinery is not the run's work");
+    assert!(
+        root.join(".keep").is_file(),
+        "machinery is not the run's work"
+    );
     assert_eq!(moved.len(), 2, "{moved:?}");
 
     let note = swept_note(&moved);
@@ -120,7 +124,8 @@ async fn a_sweep_never_overwrites_a_file_already_filed() {
     let root = std::env::temp_dir().join(format!("math-agent-sweep-keep-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
     std::fs::create_dir_all(root.join("code")).expect("the sweep workspace is creatable");
-    std::fs::write(root.join("code/solve.py"), "the real one").expect("a filed program is writable");
+    std::fs::write(root.join("code/solve.py"), "the real one")
+        .expect("a filed program is writable");
     std::fs::write(root.join("solve.py"), "a later stray").expect("a stray is writable");
 
     let moved = sweep(&root).await;
@@ -130,6 +135,9 @@ async fn a_sweep_never_overwrites_a_file_already_filed() {
         std::fs::read_to_string(root.join("code/solve.py")).expect("the filed program is readable"),
         "the real one"
     );
-    assert!(root.join("solve.py").is_file(), "the stray is left in place");
+    assert!(
+        root.join("solve.py").is_file(),
+        "the stray is left in place"
+    );
     let _ = std::fs::remove_dir_all(&root);
 }
