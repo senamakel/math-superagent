@@ -2,6 +2,12 @@
 
 What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
+Convention: one source, one summary row. Sources that also have a `<name>.full.md`
+companion store the complete downloaded text there; this index describes the
+summary, and the full text is for after the summary has been read. Bulletproof
+`.full.md` companions exist for: bitcount, cgt, disjsum, loopy, strategy, surreal,
+trollopedelange, weightedmom, zerocount, zugzwang.
+
 | File | Purpose |
 | --- | --- |
 | `bitcount.md` | OEIS A000788: summatory binary 1-bit count (popcount) with O(log n) divide-and-conquer recurrences; supplies A(n) for the (A,B) counting game at n=10^5. |
