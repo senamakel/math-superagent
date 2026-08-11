@@ -408,12 +408,23 @@ impl OrchestratorAgent {
                 "librarian",
                 teams::Completion::Attainable,
                 teams::TeamBudget::acquiring(),
-                "Enrich this run's reference library. Find one source the workspace does not \
-                 already have that bears on the problem, file it under research/, and describe \
-                 it. Consult research/INDEX.md first and do not fetch what is already there. \
-                 Then record in CONTEXT.md, in a few lines, what the library now establishes \
-                 that it did not before. Stop when further sources would not change what \
-                 CONTEXT.md says. Reply with NOTHING FURTHER when that point is reached.",
+                "Keep this run's reference library useful, which mostly means not adding to \
+                 it. Gathering is not free: every source costs a download, a digest, a row, \
+                 and a share of the attention of every agent that reads the library \
+                 afterwards, so a source nobody needed is a cost the whole run pays. Fetch \
+                 only when one of these holds.\n\
+                 - You are told below that the summary tree needs work. Do that instead, and \
+                   gather nothing this cycle.\n\
+                 - A message from the solver says an attempt was STUCK. Then find the one \
+                   source that bears on what it says is blocking, and only that.\n\
+                 - research/ROOT.md names a specific gap, and you know a specific source \
+                   that closes it. A general wish for more background is not a gap.\n\
+                 None of those holding is the normal case, and the right answer then is to \
+                 reply NOTHING FURTHER and spend nothing. Do not fetch to look busy, do not \
+                 fetch a survey of a field the run has already picked its way through, and \
+                 do not re-fetch what research/INDEX.md already lists. When you do gather, \
+                 file it under research/, describe it, and say in research/ROOT.md what the \
+                 library now establishes that it did not before.",
             ),
             (
                 "background",
