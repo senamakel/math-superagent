@@ -17,4 +17,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pe579_lattice_cube_theory.md` | Run's own synthesized theory note (enumeration strategy + Ehrhart + power-sum plan). Full derivation not executed here; flagged for implementer. |
 | `verify_cross.py` | Independent cross-product-divisor parametrization of cubes; cross-checks brute.py C/S for n=1,2,4,5. |
 | `verify_examples.py` | Naive brute-force cube enumerator (independent of frame method) for oracle check. Run it to confirm C(1..4). |
-| `verify_primary.py` | Validates that primary primitive odd-norm quats generate each primitive frame exactly once (vs all primitive quats). **Must be run by implementer.** |
+| `verify_primary.py` | Validates that primary primitive odd-norm quats generate each primitive frame exactly once (vs all primitive quats). Its logic has since been run and passed as Task 1 of `/workspace/verify_independent.py` (see `verify_independent_output.txt`). |

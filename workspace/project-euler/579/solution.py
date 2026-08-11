@@ -198,11 +198,15 @@ def solve_stream(n, collect_frames=False):
     """Stream primary frames, accumulate C,S by power-sum and by direct loop.
 
     If collect_frames, also return the distinct-frame dict (for small n).
-    Returns (C_p, S_p, C_d, S_d, frames_or_None).
+    Returns (C_p, S_p, C_d, S_d, frame_count, frames_or_None).
+
+    Memory-safe at n=5000: only the dedup `seen` set of canonical keys is kept
+    (~7.5M small tuples), NOT a value dict, so memory stays well under 2GB.
     """
     seen = set()
     frames = {} if collect_frames else None
     C_p = S_p = C_d = S_d = 0
+    nframes = 0
     for a, b, c, d in iter_primary_quats(n):
         res = frame_of(a, b, c, d)
         if res is None:
@@ -211,6 +215,7 @@ def solve_stream(n, collect_frames=False):
         if key in seen:
             continue
         seen.add(key)
+        nframes += 1
         if collect_frames:
             frames[key] = tup
         ell, A, B, Cc, D = tup
@@ -220,7 +225,7 @@ def solve_stream(n, collect_frames=False):
         cd, sd = frame_contrib_direct(n, ell, A, B, Cc, D)
         C_d += cd
         S_d += sd
-    return C_p, S_p, C_d, S_d, frames
+    return C_p, S_p, C_d, S_d, nframes, frames
 
 
 def main():
@@ -272,10 +277,27 @@ def main():
     emit("\n[3] n=5000 full computation (streamed)")
     n = 5000
     t0 = time.time()
-    # First do a full streaming pass accumulating frames count + C/S both ways.
-    C_p, S_p, C_d, S_d, frames = solve_stream(n, collect_frames=True)
-    # NOTE: collect_frames=True materializes the dict (~7GB) -- NOT usable at 2GB.
-    raise SystemExit("internal: collect_frames should be False at n=5000")
+    C_p, S_p, C_d, S_d, nframes, _frames = solve_stream(n, collect_frames=False)
+    t_total = time.time() - t0
+    cross_ok = (C_p == C_d) and (S_p == S_d)
+
+    emit(f"n=5000 distinct primitive frames = {nframes}")
+    emit(f"C(5000) = {C_p}")
+    emit(f"S(5000) = {S_p}")
+    emit(f"S(5000) mod 10^9 = {S_p % 10**9}")
+    emit(f"direct-loop C = {C_d}  S = {S_d}")
+    emit(f"bit-for-bit cross-check (power-sum == direct-loop): "
+         + ("PASS (identical)" if cross_ok else "FAIL"))
+    emit(f"wall time (enum + both summations, streamed): {t_total:.1f}s")
+
+    if not cross_ok:
+        raise SystemExit("CROSS-CHECK FAILED")
+    if not all_ok:
+        raise SystemExit("FRAME-SET/MATCH FAILED")
+
+    with open("/workspace/solution_output.txt", "w") as f:
+        f.write("\n".join(lines) + "\n")
+    print("\nWrote /workspace/solution_output.txt")
 
 
 if __name__ == "__main__":
