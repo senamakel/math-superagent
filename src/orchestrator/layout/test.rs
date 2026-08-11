@@ -11,7 +11,7 @@ fn the_root_keeps_the_runs_prose_and_its_configuration() {
         "solution.md",
         "CONTEXT.md",
         "AGENTS.md",
-        "problem.html",
+        "problem.md",
     ] {
         assert_eq!(placed(name), name);
     }

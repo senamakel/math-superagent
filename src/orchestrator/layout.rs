@@ -46,7 +46,7 @@ const PROGRAM: [&str; 10] = [
 /// trace, the document index, and the source URL are plumbing rather than
 /// work, so they live under `config/` — nothing in them is worth a line in the
 /// listing every agent reads before deciding what to do next.
-const ROOT_FILES: [&str; 4] = ["AGENTS.md", "README.md", "INDEX.md", "problem.html"];
+const ROOT_FILES: [&str; 4] = ["AGENTS.md", "README.md", "INDEX.md", "problem.md"];
 
 /// Extensions allowed at the workspace root.
 ///
@@ -88,7 +88,11 @@ pub(super) fn placed(relative: &str) -> String {
     if ROOT_FILES.contains(&trimmed) || ROOT_EXTENSIONS.contains(&extension(trimmed).as_str()) {
         return trimmed.to_string();
     }
-    if trimmed == "config.toml" || trimmed == "problem.url" || trimmed == "trace.jsonl" {
+    if trimmed == "config.toml"
+        || trimmed == "problem.url"
+        || trimmed == "problem.html"
+        || trimmed == "trace.jsonl"
+    {
         // Plumbing the runtime itself writes or reads. It has a home, and the
         // root listing is not it.
         return format!("{CONFIG_DIR}/{trimmed}");
