@@ -191,6 +191,15 @@ enum Judged {
     Restart,
 }
 
+impl std::fmt::Display for Judged {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str(match self {
+            Self::Reflect => "reflect",
+            Self::Restart => "restart",
+        })
+    }
+}
+
 /// Routes out of the judge node.
 ///
 /// A plain function of the state for the same reason [`route`] is: it is a
