@@ -258,9 +258,16 @@ than guess their names, and every reflection is archived under `reflections/`
 with a filename recording whether it produced learnings.
 
 Each agent receives only the working files its role actually needs: reflection
-sees the goal and the record but never the scratchpad, the inventor always sees
-which approaches already failed, and the pattern agent sees the raw computed
-data. The workspace is also its own git repository, kept in
+sees the goal and the record but never the scratchpad, because provisional
+arithmetic is not evidence of progress; the inventor always sees which approaches
+already failed; and the pattern agent sees the raw computed data. Indexes are the
+cheap exception, costing a few hundred tokens where the files they describe cost
+tens of thousands, so each planning role gets the catalogues that change what is
+worth delegating next. `AGENTS.md`, the method policy, is the only file every
+role receives. The full routing table is in
+[`AGENTS.md`](AGENTS.md); `./agent prompts` shows the result.
+
+The workspace is also its own git repository, kept in
 `.workspace-history`, and the runtime commits after every successful write, so
 an overwritten program or a revised belief stays recoverable.
 
