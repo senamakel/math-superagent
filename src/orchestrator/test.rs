@@ -376,3 +376,25 @@ fn both_code_writing_roles_see_the_same_working_context() {
     assert!(role_context("coder").contains(&"scratchpad.md"));
     assert!(role_context("coder").contains(&"toolkits/INDEX.md"));
 }
+
+#[test]
+fn the_reflections_index_reaches_the_roles_that_must_not_repeat_an_attempt() {
+    // An index nobody reads is not a flow. These three each make a decision
+    // that depends on what earlier attempts established.
+    for role in ["orchestrator", "goals", "reflection", "inventor"] {
+        assert!(
+            role_context(role).contains(&"reflections/INDEX.md"),
+            "{role} must see the reflections index"
+        );
+    }
+    // It is not given to everyone: a role that neither plans nor judges gains
+    // nothing from the attempt-by-attempt record and pays for it in context.
+    for role in ["tool_builder", "coder", "scholar", "librarian", "organizer"] {
+        assert!(
+            !role_context(role).contains(&"reflections/INDEX.md"),
+            "{role} does not need the reflections index"
+        );
+    }
+    // Reflection still never sees provisional work.
+    assert!(!role_context("reflection").contains(&"scratchpad.md"));
+}
