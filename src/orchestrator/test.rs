@@ -520,6 +520,7 @@ async fn a_command_that_hits_the_ceiling_still_returns_what_it_printed() {
     let root = std::env::temp_dir().join(format!("math-agent-timeout-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
     std::fs::create_dir_all(&root).expect("the workspace is creatable");
+    use crate::agent::Tool as _;
     let tool = super::ExecuteCommand::new(root.clone(), std::time::Duration::from_secs(1));
 
     let result = tool
