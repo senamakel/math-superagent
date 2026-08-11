@@ -165,7 +165,7 @@ impl AsyncSubagentManager {
                 agent: agent_name.to_string(),
             },
         )
-        .with_timeout_ms(10 * 60 * 1_000)
+        .with_timeout_ms(self.budget.run_timeout_ms())
         .with_input(json!({ "prompt": input }));
         self.store.insert(spec)?;
 
@@ -175,6 +175,14 @@ impl AsyncSubagentManager {
         let run_id = task_id.as_str().to_string();
         let steering = SteeringHandle::allow_all();
         steering_registry.register(task_id.clone(), steering.clone());
+        let run_timeout = self.budget.run_timeout;
+        let tracer = self
+            .tracer
+            .as_ref()
+            .map(|tracer| tracer.child(format!("{agent_name}/{run_id}")));
+        if let Some(tracer) = tracer.as_ref() {
+            tracer.note(&format!("spawned: {}", preview_input(&input)));
+        }
         tokio::spawn(async move {
             let _ = store.mark_running(&spawned_task_id);
             let graph = GraphBuilder::<RunState, RunState>::overwrite()
