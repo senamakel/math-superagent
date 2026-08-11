@@ -200,14 +200,19 @@ fn html_to_markdown(html: &str, table: &mut LinkTable) -> String {
             continue;
         }
 
-        apply_tag(&mut TagContext {
-            out: &mut out,
-            list_stack: &mut list_stack,
-            in_pre: &mut in_pre,
-            link_target: &mut link_target,
-            link_text: &mut link_text,
-            table,
-        }, &name, closing, raw);
+        apply_tag(
+            &mut TagContext {
+                out: &mut out,
+                list_stack: &mut list_stack,
+                in_pre: &mut in_pre,
+                link_target: &mut link_target,
+                link_text: &mut link_text,
+                table,
+            },
+            &name,
+            closing,
+            raw,
+        );
     }
     if link_target.is_some() {
         // An anchor that never closed: keep its text rather than losing it.
@@ -233,95 +238,95 @@ struct TagContext<'a> {
 fn apply_tag(ctx: &mut TagContext<'_>, name: &str, closing: bool, raw: &str) {
     let out = &mut *ctx.out;
     match (name, closing) {
-            ("br", _) => out.push('\n'),
-            ("hr", _) => out.push_str("\n\n---\n\n"),
-            ("p" | "div" | "section" | "article" | "tr" | "blockquote", _) => {
-                ensure_blank_line(out);
-            }
-            ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", false) => {
-                ensure_blank_line(out);
-                let level = name[1..].parse::<usize>().unwrap_or(1);
-                let _ = write!(out, "{} ", "#".repeat(level.clamp(1, 6)));
-            }
+        ("br", _) => out.push('\n'),
+        ("hr", _) => out.push_str("\n\n---\n\n"),
+        ("p" | "div" | "section" | "article" | "tr" | "blockquote", _) => {
+            ensure_blank_line(out);
+        }
+        ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", false) => {
+            ensure_blank_line(out);
+            let level = name[1..].parse::<usize>().unwrap_or(1);
+            let _ = write!(out, "{} ", "#".repeat(level.clamp(1, 6)));
+        }
 
-            ("ul", false) => {
-                ensure_blank_line(out);
-                ctx.list_stack.push(None);
+        ("ul", false) => {
+            ensure_blank_line(out);
+            ctx.list_stack.push(None);
+        }
+        ("ol", false) => {
+            ensure_blank_line(out);
+            ctx.list_stack.push(Some(1));
+        }
+        ("ul" | "ol", true) => {
+            ctx.list_stack.pop();
+            ensure_blank_line(out);
+        }
+        ("li", false) => {
+            trim_trailing_spaces(out);
+            if !out.ends_with('\n') {
+                out.push('\n');
             }
-            ("ol", false) => {
-                ensure_blank_line(out);
-                ctx.list_stack.push(Some(1));
-            }
-            ("ul" | "ol", true) => {
-                ctx.list_stack.pop();
-                ensure_blank_line(out);
-            }
-            ("li", false) => {
-                trim_trailing_spaces(out);
-                if !out.ends_with('\n') {
-                    out.push('\n');
+            let depth = ctx.list_stack.len().saturating_sub(1);
+            out.push_str(&"  ".repeat(depth));
+            match ctx.list_stack.last_mut() {
+                Some(Some(counter)) => {
+                    let _ = write!(out, "{counter}. ");
+                    *counter += 1;
                 }
-                let depth = ctx.list_stack.len().saturating_sub(1);
-                out.push_str(&"  ".repeat(depth));
-                match ctx.list_stack.last_mut() {
-                    Some(Some(counter)) => {
-                        let _ = write!(out, "{counter}. ");
-                        *counter += 1;
-                    }
-                    _ => out.push_str("- "),
+                _ => out.push_str("- "),
+            }
+        }
+        ("pre", false) => {
+            ensure_blank_line(out);
+            out.push_str("```\n");
+            *ctx.in_pre = true;
+        }
+        ("pre", true) => {
+            *ctx.in_pre = false;
+            if !out.ends_with('\n') {
+                out.push('\n');
+            }
+            out.push_str("```\n\n");
+        }
+        ("code", _) if !*ctx.in_pre => out.push('`'),
+        ("strong" | "b", _) => out.push_str("**"),
+        ("em" | "i", _) => out.push('*'),
+        ("td" | "th", true) => out.push_str(" | "),
+        ("table", _) | ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", true) => {
+            ensure_blank_line(out);
+        }
+        ("img", false) => {
+            if let Some(alt) = attribute(raw, "alt")
+                && !alt.trim().is_empty()
+            {
+                let _ = write!(out, "[image: {}]", decode_entities(&alt));
+            }
+        }
+        ("a", false) => {
+            if let Some(href) = attribute(raw, "href")
+                && !href.starts_with('#')
+                && !href.starts_with("javascript:")
+            {
+                *ctx.link_target = Some(href);
+                ctx.link_text.clear();
+            }
+        }
+        ("a", true) => {
+            if let Some(href) = ctx.link_target.take() {
+                let label = ctx.link_text.trim().to_string();
+                let reference = ctx.table.reference(&href);
+                if needs_space(out, "[") {
+                    out.push(' ');
                 }
-            }
-            ("pre", false) => {
-                ensure_blank_line(out);
-                out.push_str("```\n");
-                *ctx.in_pre = true;
-            }
-            ("pre", true) => {
-                *ctx.in_pre = false;
-                if !out.ends_with('\n') {
-                    out.push('\n');
+                if label.is_empty() {
+                    let _ = write!(out, "[{reference}]");
+                } else {
+                    let _ = write!(out, "[{label}][{reference}]");
                 }
-                out.push_str("```\n\n");
+                ctx.link_text.clear();
             }
-            ("code", _) if !*ctx.in_pre => out.push('`'),
-            ("strong" | "b", _) => out.push_str("**"),
-            ("em" | "i", _) => out.push('*'),
-            ("td" | "th", true) => out.push_str(" | "),
-            ("table", _) | ("h1" | "h2" | "h3" | "h4" | "h5" | "h6", true) => {
-                ensure_blank_line(out);
-            }
-            ("img", false) => {
-                if let Some(alt) = attribute(raw, "alt")
-                    && !alt.trim().is_empty()
-                {
-                    let _ = write!(out, "[image: {}]", decode_entities(&alt));
-                }
-            }
-            ("a", false) => {
-                if let Some(href) = attribute(raw, "href")
-                    && !href.starts_with('#')
-                    && !href.starts_with("javascript:")
-                {
-                    *ctx.link_target = Some(href);
-                    ctx.link_text.clear();
-                }
-            }
-            ("a", true) => {
-                if let Some(href) = ctx.link_target.take() {
-                    let label = ctx.link_text.trim().to_string();
-                    let reference = ctx.table.reference(&href);
-                    if needs_space(out, "[") {
-                        out.push(' ');
-                    }
-                    if label.is_empty() {
-                        let _ = write!(out, "[{reference}]");
-                    } else {
-                        let _ = write!(out, "[{label}][{reference}]");
-                    }
-                    ctx.link_text.clear();
-                }
-            }
-            _ => {}
+        }
+        _ => {}
     }
 }
 
