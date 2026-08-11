@@ -240,6 +240,7 @@ impl OrchestratorAgent {
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
         convert_problem_statement(&workspace);
+        seed_tree_roots(&workspace);
         let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()));
         let documents = WorkspaceDocuments::new(workspace.clone())?;
         // Commits the workspace after every successful write, so a rewritten
@@ -1280,6 +1281,42 @@ fn require_container_runtime() -> Result<()> {
     Err(tinyagents::TinyAgentsError::Validation(
         "orchestrator must be launched with ./agent inside Docker".into(),
     ))
+}
+
+/// Gives every tree the root the prompts promise it has.
+///
+/// `role_context` routes `research/ROOT.md` into six roles and the librarian
+/// is told it is the top of the tree, so a workspace without one has agents
+/// reading a file that is not there. Three live runs spent a call each
+/// discovering that.
+///
+/// The placeholder says what the file is for rather than pretending to a
+/// synthesis nobody has written: an empty root is an honest statement that the
+/// library has not been read yet, and the research team replaces it on its
+/// first cycle.
+fn seed_tree_roots(workspace: &Path) {
+    for tree in ["research", "reflections"] {
+        let folder = workspace.join(tree);
+        if !folder.is_dir() {
+            continue;
+        }
+        let root = folder.join(context_tree::ROOT_FILE);
+        if root.exists() {
+            continue;
+        }
+        let _ = std::fs::write(
+            &root,
+            format!(
+                "# {tree} — what this now establishes\n\n\
+                 The top of this tree. Everything below is reached from here: sealed \n\
+                 batches of originals in `L0.<n>/`, one note per sealed batch a level \n\
+                 up, and so on. Say what the whole of it now lets this run treat as \n\
+                 known, under 1000 tokens, wikilinking the note that establishes each \n\
+                 claim so nothing here is untraceable.\n\n\
+                 _Empty until the batches below have been read._\n"
+            ),
+        );
+    }
 }
 
 /// Converts a fetched problem statement into the Markdown the run reads.

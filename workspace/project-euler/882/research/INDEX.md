@@ -26,7 +26,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.1/trollopedelange.md` | Girgensohn 2011 INTEGERS #A54: explicit Trollope–Delange closed forms (1-periodic fluctuation). |
 | `L1.1/verify_trollopedelange.md` | Numeric check-list to run before quoting Girgensohn. |
 | `L1.1/weightedmom.md` | Larcher & Pillichshammer 2005: k·-weighted moments admit Delange-type closed form (our k·-weighted A,B). |
-| `L1.2/L0.0.md` | _(undescribed)_ |
+| `L1.2/L0.0.md` | L0.0 batch seal: synthesises the CGT/counting foundation (no-skip value A−B) and the polylog arithmetic engine (A000788/A059015/A083652, Flajolet weighted digital sums), and records the misfiled dead-end artifacts. |
 | `L1.2/weightedsearch.md` | Dead end: OEIS search on sample S(n) → no result; S(n) ∉ OEIS. |
 | `L1.2/zerocount.md` | OEIS A059015 summatory 0-bit count → B(n); identity A059015 = A083652 − A000788. |
 | `L1.2/zugzwang.md` | Skip = "passing, if allowed, would be best"; One's forced 1-bit consumption → zugzwang. |
