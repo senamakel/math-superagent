@@ -57,11 +57,12 @@ use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 pub use tinyagents::harness::host::AgentDefinition;
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 9] = [
+const SPECIALISTS: [&str; 10] = [
     "research",
     "tool_builder",
     "coder",
     "sat_solver",
+    "lean_prover",
     "pattern_finder",
     "inventor",
     "librarian",
@@ -79,11 +80,12 @@ const SPECIALISTS: [&str; 9] = [
 const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 11] = [
+const DELEGATES: [&str; 12] = [
     "research",
     "tool_builder",
     "coder",
     "sat_solver",
+    "lean_prover",
     "goals",
     "reflection",
     "pattern_finder",
@@ -115,6 +117,7 @@ const RESEARCH_PROMPT: &str = include_str!("../prompts/research.md");
 const TOOL_BUILDER_PROMPT: &str = include_str!("../prompts/tool_builder.md");
 const CODER_PROMPT: &str = include_str!("../prompts/coder.md");
 const SAT_SOLVER_PROMPT: &str = include_str!("../prompts/sat_solver.md");
+const LEAN_PROVER_PROMPT: &str = include_str!("../prompts/lean_prover.md");
 
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
 
@@ -777,6 +780,20 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                     .into_iter()
                     .chain(document_tools),
             ),
+        )?
+        .register(
+            AgentDefinition::new(
+                "lean_prover",
+                "Lean Formalisation Agent",
+                "Writes Lean 4 statements and proofs against Mathlib, and reports what the \
+                 kernel actually checked.",
+            )
+            .with_model("openrouter")
+            .with_tools(
+                ["write_tool_file", "execute_command"]
+                    .into_iter()
+                    .chain(document_tools),
+            ),
         )?;
     for definition in support_agents(research_enabled, document_tools) {
         registry.register(definition)?;
@@ -927,6 +944,7 @@ struct RolePrompts {
     tool_builder: String,
     coder: String,
     sat_solver: String,
+    lean_prover: String,
     goals: String,
     reflection: String,
     judge: String,
@@ -994,6 +1012,7 @@ impl RolePrompts {
             ("tool_builder", self.tool_builder.as_str()),
             ("coder", self.coder.as_str()),
             ("sat_solver", self.sat_solver.as_str()),
+            ("lean_prover", self.lean_prover.as_str()),
             ("reflection", self.reflection.as_str()),
             ("judge", self.judge.as_str()),
             ("pattern_finder", self.pattern.as_str()),
@@ -1086,7 +1105,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // the run believes about the objects being encoded, and `CLAIMS.md` is
         // where a closed form or a bound that removes half the constraints is
         // recorded.
-        "tool_builder" | "coder" | "sat_solver" => &[
+        "tool_builder" | "coder" | "sat_solver" | "lean_prover" => &[
             "config/config.toml",
             "GOAL.md",
             "TASKS.md",
@@ -1257,6 +1276,7 @@ impl RolePrompts {
             tool_builder: role("tool_builder", TOOL_BUILDER_PROMPT)?,
             coder: role("coder", CODER_PROMPT)?,
             sat_solver: role("sat_solver", SAT_SOLVER_PROMPT)?,
+            lean_prover: role("lean_prover", LEAN_PROVER_PROMPT)?,
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
             judge: role("judge", JUDGE_PROMPT)?,
