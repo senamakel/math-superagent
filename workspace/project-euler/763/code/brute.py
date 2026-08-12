@@ -11,8 +11,6 @@ divisions (same arrangement reachable many ways counts once).
 This is the naive oracle: BFS over sets of occupied cubes, level = number of
 divisions. Exponential state space; only for tiny N as a definition check.
 
-Root copy of code/amoeba/brute.py; both now import the canonical
-reachable_sets/D from lib/amoeba (d=3).
 """
 
 from lib.amoeba import D
