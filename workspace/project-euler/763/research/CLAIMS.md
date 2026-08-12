@@ -7,19 +7,27 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `d2-positions-are-polyominoid-voidance` | In the 2D chessboard-pebbling game, reachable positions correspond bijectively to polyominoid sets (sites on/between two lattice paths with common endpoints) via their voidance sets (the left+lower boundary points);… | yes | asserted | `research/pebbling_structure_3d_ladder.md` |
+| `d2d-equals-a007902` | The 2D amoeba count D_2D(N) (configs after N splits) equals A007902(N+1), the number of pebbling configurations with N+1 pebbles; A007902 is governed by the exact two-index recurrence G(k,m) (CGMO eqs 2.1-2.3) and has… | yes | asserted | `research/L1.0/oeis_a007902.md` |
 | `dN-not-a086246` | Motzkin variant A086246 (0,1,1,1,2,4,9,...) is not D(N). | yes | proved | `research/L1.0/oeis_a086246.md` |
 | `dN-not-a168049` | Motzkin variant A168049 (1,0,1,1,2,4,9,...) is not D(N). | yes | proved | `research/L1.0/oeis_a168049.md` |
 | `dN-not-fibonacci-f2n1` | D(N)=1,1,3,9,30,99,336,... diverges from A005207 ((F(2n-1)+F(n+1))/2) = 1,1,2,4,9,21,... at n=2. | yes | proved | `research/L1.0/oeis_a005207.md` |
 | `dN-not-in-oeis` | The 15-term amoeba sequence D(0..14)=1,1,3,9,30,...,5949063 returns "No results" from a direct OEIS search; it is not catalogued. | yes | asserted | `research/L1.0/oeis_direct.md` |
 | `dN-not-motzkin` | The amoeba sequence D(N)=1,1,3,9,30,99,336,... is not the Motzkin sequence A001006 (1,1,2,4,9,21,...); they diverge at n=2 (2 vs 3). | yes | proved | `research/L1.0/oeis_a001006.md` |
 | `dN-offset-also-not-in-oeis` | The offset-1 partial sequence 1,3,9,30,...,44499 also returns "No results" from OEIS, confirming D(N) is absent regardless of offset. | yes | asserted | `research/L1.0/oeis_partial.md` |
+| `histogram-count-equals-a186085` | The count H(N) of distinct level-histograms over reachable 3D N-configs equals OEIS A186085 (1D sandpiles / smooth compositions) exactly for N=2..14; H grows ~1.67/step while D(N) grows ~3.4/step, so H is the shape… | yes | asserted | `research/L1.1/oeis_a186085.md` |
 | `n3-folded-polyominoid-voidance` | For pebbling in Z^n with n>=3, reachable positions, voidance sets of cardinality k+1, folded polyominoids with boundary-path length k, and labelled vector-pair (u,v) positions all correspond bijectively (Eriksson… | yes | asserted | `research/pebbling_structure_3d_ladder.md` |
+| `q2-column-equals-nn7-2-family` | The 3D max-level column Q_2(N)=R(N,N-2)/3^(N-5)= (N-5)(N+2)/2 equals the A055999/A074171/A134227 quadratic family (n(n+7)/2 up to offset) exactly for N=6..14; no higher k-column (Q_3,Q_4,Q_5) matches a catalogued… | yes | asserted | `research/L1.0/oeis_a055999.md` |
+| `q2-column-equals-nn7-2-family` | The 3D max-level column Q_2(N)=R(N,N-2)/3^(N-5)= (N-5)(N+2)/2 equals the A055999/A074171/A134227 quadratic family (n(n+7)/2 up to offset) exactly for N=6..14. | yes | asserted | `research/L1.0/oeis_a074171.md` |
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `d2-positions-are-polyominoid-voidance` (research/pebbling_structure_3d_ladder.md) — asserted by the source, not proved there and not checked here
+- `d2d-equals-a007902` (research/L1.0/oeis_a007902.md) — asserted by the source, not proved there and not checked here
 - `dN-not-in-oeis` (research/L1.0/oeis_direct.md) — asserted by the source, not proved there and not checked here
 - `dN-offset-also-not-in-oeis` (research/L1.0/oeis_partial.md) — asserted by the source, not proved there and not checked here
+- `histogram-count-equals-a186085` (research/L1.1/oeis_a186085.md) — asserted by the source, not proved there and not checked here
 - `n3-folded-polyominoid-voidance` (research/pebbling_structure_3d_ladder.md) — asserted by the source, not proved there and not checked here
+- `q2-column-equals-nn7-2-family` (research/L1.0/oeis_a055999.md) — asserted by the source, not proved there and not checked here
+- `q2-column-equals-nn7-2-family` (research/L1.0/oeis_a074171.md) — asserted by the source, not proved there and not checked here

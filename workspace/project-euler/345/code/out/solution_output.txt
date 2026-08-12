@@ -1,0 +1,8 @@
+(a/b) 5x5 example Matrix Sum via Hungarian = 3315
+      chosen column permutation = [4, 1, 2, 3, 0]
+      chosen elements          = [863, 383, 343, 959, 767]
+      worked example MATCHED (expected 3315)
+(c) 15x15 Matrix Sum = 13938
+    chosen column permutation = [9, 10, 7, 4, 3, 0, 13, 2, 14, 11, 6, 5, 12, 8, 1]
+    chosen elements          = [973, 957, 993, 853, 962, 870, 992, 972, 848, 976, 969, 901, 823, 966, 883]
+(d) random small-matrix agreement checks: 300 passed vs brute.py

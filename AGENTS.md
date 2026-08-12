@@ -180,7 +180,33 @@ a far better query than anything available at the start. `MAX_ATTEMPTS` is
 eight so the rescue has attempts left to pay off in; a ceiling that tripped
 first would buy a fresh literature search and then stop.
 
-Housekeeping is gated on the workspace having changed, and the gate is shared.
+Housekeeping runs on a narrowed budget, `RunBudget::for_housekeeping` — 25
+model calls and 300 tool calls, and deliberately *no* wall-clock ceiling — for
+the same reason the judge does.
+Filing is bounded work, read a listing and write a row per file, and a role left
+with an investigation's budget investigates. The measurement that forced this is
+worth keeping: two live runs spent 60% and 64% of every model call they made
+inside the organizer, and the cause was *not* frequency — it ran nine and ten
+times. It ran long. One organizer run spent 62 model calls tidying, another 56,
+against a solve that had spent 14 on the mathematics. Reaching the cap is safe:
+`StopWithPartial` keeps the rows already written, and a file left undescribed
+shows as a visible gap rather than as an index quietly disagreeing with its
+folder, which is what the index tools were designed around anyway.
+
+The wall clock is left alone on purpose, and the attempt to narrow it is worth
+recording because it made things worse. A ten-minute housekeeping ceiling looked
+consistent with 25 model calls and was not: at the turn lengths this runtime
+actually sees, 25 calls do not fit in ten minutes, so the organizer reliably met
+the clock instead of the call cap. Two live organizer runs died on `run timed
+out: exceeded its remaining wall-clock` after spending 20 and 13 model calls
+each, and because the wall-clock path does not honour `StopWithPartial`, every
+row they had written was discarded and the filing had to be done again — which
+is how a cap meant to *reduce* organizer cost raised its share from 49% to 52%.
+Whatever else a narrowed budget bounds, the graceful cap must be the one that
+trips.
+
+Frequency is gated separately, on the workspace having changed, and the gate is
+shared.
 Filing is cheap to *do* and expensive to *decide*: an organizer asked to notice
 that nothing has changed must walk the workspace and spend a model call to
 discover it, which is most of what a cycle costs. Two live runs spent 49% and
@@ -425,6 +451,36 @@ A timeout is a safety ceiling, not permission to run an intractable approach.
 Before substantial execution, the tool-builder must state both time and space
 complexity. Algorithms with exponential time or space complexity are
 prohibited; choose a polynomial or better formulation.
+
+`validate_complexity` enforces that, and the field it reads has been evaded
+three times in three different ways. First by notation: a factorial search
+wrote `polynomial (O((n!)²))` and the forbidden list looked for `o(n!` , which
+the parenthesis defeated. Then by honesty running the wrong way: a truthful
+`exponential` on the naive oracle rule 8 *requires* was refused outright, so
+the gate punished accuracy and blocked the method policy's own first step —
+which is why `exponential` and `factorial` are declarable with a concrete
+`oracle_bound`. And then by saying nothing at all: a live run on Project Euler
+185 declared `complexity: "backtracking with pruning"` against
+`complexity_class: "polynomial"` and was allowed through, because that string
+names a method and states no quantity, so neither the class check nor the
+notation check had anything to match. Sixteen digits is ten quadrillion
+candidates, and the run held a `sat_solver` it never spawned.
+
+So a declaration naming a search strategy over candidate solutions —
+`backtrack`, `brute force`, `exhaustive`, `branch and bound` — with no
+`oracle_bound` is refused, and the refusal names `sat_solver`, because a gate
+that blocks the wrong method without pointing at the right one costs the run a
+turn to rediscover it. `enumerate` is deliberately not on that list:
+"enumerate the divisors of n" is an honest description of an `O(√n)` method,
+and refusing it would repeat the second evasion above. A bounded oracle
+declares its bound and never reaches the check, so rule 8 is untouched.
+
+The wider lesson is the one this document keeps recording. Five solver and
+prover roles were registered, tool-equipped, prompt-written, and provisioned in
+the image, and naming them in the planners' prompts did not get a single one
+spawned; the run reached for `tool_builder` and commissioned the prohibited
+method instead. A prompt instruction is not a control, and the control belongs
+where the action happens.
 
 A command that hits the ceiling is killed, but what it printed is kept and
 returned with the timeout reported as its exit status. `Command::output()`
@@ -728,7 +784,19 @@ security control; enforce boundaries in code and Docker configuration.
 Workspace contents are committed. The derivation, the program, and the per-run
 notes are the record of how an answer was reached, which is the point of the
 product, so they belong in history rather than only on the machine that produced
-them. Do not add a generated artifact to a source directory; leave it in its
+them.
+
+They belong in history, not in every commit. A live run writes into `workspace/`
+continuously, so a host-side auto-commit hook firing on each tool call turns
+that into commit spam: one measured hour produced 97 commits on `main`, 87 of
+them touching nothing but `workspace/`, with model-written subjects that did not
+always match their diffs — one read `remove outdated project euler problem 763
+files` for a change that removed nothing and added five lines to a prompt.
+`.claude/settings.json` therefore sets `AUTO_COMMIT_EVERY=25` for this
+repository. Everything is still committed and nothing is excluded; it is
+batched. The fine-grained record is not lost either, because the runtime keeps
+its own per-write checkpoint in each workspace's `.workspace-history`, which is
+what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a source directory; leave it in its
 workspace.
 
 Three things are ignored: `.python-packages/` (pip installs, which land in the

@@ -107,3 +107,43 @@ fn a_judging_budget_is_narrowed_but_never_widened() {
     assert_eq!(narrowed.max_tool_calls, 4);
     assert_eq!(narrowed.run_timeout, std::time::Duration::from_secs(30));
 }
+
+#[test]
+fn a_housekeeping_budget_is_narrowed_but_never_widened() {
+    // Filing is bounded work — read a listing, write a row per file — and the
+    // default budget is sized for an investigation. Two live runs spent 60%
+    // and 64% of every model call inside the organizer, not because it ran
+    // often (nine and ten times) but because one run spent 62 model calls
+    // tidying while the solve had spent 14 on the mathematics.
+    let full = RunBudget::default();
+    let filing = full.for_housekeeping();
+
+    assert!(filing.max_model_calls < full.max_model_calls);
+    // The wall clock must NOT be narrowed. It fails a run outright rather than
+    // stopping with partial results: a ten-minute housekeeping ceiling killed
+    // two live organizer runs after 20 and 13 model calls and threw away every
+    // row they had written. The graceful cap has to be the one that trips.
+    assert_eq!(filing.run_timeout, full.run_timeout);
+    // The observed 62-call run must not fit inside the new cap, or the cap
+    // does not bind the behaviour it was written for.
+    assert!(filing.max_model_calls < 62);
+    assert!(
+        filing.max_tool_calls > filing.max_model_calls,
+        "one turn can request several reads, so the graceful cap stays the model one"
+    );
+    // A judge is tighter still: it answers in four lines, where filing walks
+    // several folders.
+    assert!(filing.max_model_calls > full.for_judging().max_model_calls);
+
+    // Narrows only. An environment override already below these keeps its own.
+    let tight = RunBudget {
+        max_model_calls: 3,
+        max_tool_calls: 4,
+        run_timeout: std::time::Duration::from_secs(30),
+        ..full
+    };
+    let narrowed = tight.for_housekeeping();
+    assert_eq!(narrowed.max_model_calls, 3);
+    assert_eq!(narrowed.max_tool_calls, 4);
+    assert_eq!(narrowed.run_timeout, std::time::Duration::from_secs(30));
+}
