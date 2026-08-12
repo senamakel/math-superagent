@@ -1,46 +1,40 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/apollonius-problem-mathworld.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Apollonius' Problem — Wolfram MathWorld
 
-<!-- source: https://mathworld.wolfram.com/ApolloniusProblem.html | converted from HTML -->
+[[research/sources/apollonius-problem-mathworld.full.md]] · source:
+https://mathworld.wolfram.com/ApolloniusProblem.html
 
-## What is in it
+## What it establishes
 
-- Apollonius' Problem
-  - See also
-  - Explore with Wolfram|Alpha
-  - References
-  - Referenced on Wolfram|Alpha
-  - Cite this as:
-  - Subject classifications
+Apollonius' problem: given three objects (points, lines, circles), construct all
+circles tangent to each. Ten cases; the hardest is three given circles, with up
+to eight solution circles (the "Apollonius circles"), obtained by solving three
+simultaneous quadratics in the unknown center (x,y) and radius r for the eight
+sign choices of internal/external tangency:
 
+    (x−x_i)² + (y−y_i)² − (r ± r_i)² = 0,  i = 1,2,3.
 
-## What it claims
+For the two-circle sub-case, the tangency equations reduce to a locus: a
+quadratic equation in x, y (with r eliminated), which is the ellipse/hyperbola
+locus of centers (see MathWorld's equation 4: expanding and subtracting pairs
+gives linear relations; the centers lie on the conic with the two given centers
+as foci).
 
-Given three objects, each of which may be a [point][1], [line][2], or [circle][3], draw a [circle][3] that is [tangent][4] to each. There are a total of ten cases. The two easiest involve three points or three [lines][2], and the hardest involves three [circles][3]. Euclid solved the two easiest cases in his *Elements*, and the others (with the exception of the three [circle][3] problem), appeared in the *Tangencies*of Apollonius which was, however, lost. The general problem is, in principle, solvable by [straightedge][5] and [compass][6] alone.
+## Implication for PE620
 
-[image: ApolloniusCircleConstr]
+The problem of a single planet tangent to C and S is exactly the *two-given-
+circles* Apollonius case (one circle inside the other): the tangency equations
+give the ellipse locus of planet centers. This is the encyclopedic entry fixing
+the statement and names ("Apollonius circles", "Problem of Apollonius",
+Gergonne construction, Van Roomen hyperbola approach) and its standard
+algebraic form is the one used to write the discrete count.
 
-The three- [circle][3] problem was solved by Vi&egrave;te (Boyer 1968), and the solutions are called [Apollonius circles][7]. There are eight total solutions. The simplest solution is obtained by solving the three simultaneous quadratic equations
+Also relevant: the *three*-circle Apollonius construction is what would decide
+whether a circle tangent to a given planet AND C AND S exists — but PE620 does
+not require planets to touch each other (overlap allowed), so the single-planet
+(two-circle) case is the one that counts.
 
-[image:  (x-x_1)^2+(y-y_1)^2-(r+/-r_1)^2=0 ] |
+## Cross-references
 
-(1)
-
-|
-
-[image:  (x-x_2)^2+(y-y_2)^2-(r+/-r_2)^2=0 ] |
-
-(2)
-
-|
-
-[image:  (x-x_3)^2+(y-y_3)^2-(r+/-r_3)^2=0 ] |
-
-(3)
-
-|
-
-in the three [unknowns][8][image: x], [image: y], [image: r] for the eight triplets of signs…
-
-[im…
-
-*[digest of a 8538 character source; every section, statement, and proof in full at `research/sources/apollonius-problem-mathworld.full.md`]*
+- Eppstein Geometry Junkyard "Apollonian circles" (same library): the 8
+  Apollonius solutions, compass-straightedge construction, inversion argument.
+- Cut-the-Knot / Pappus / Steiner: ellipse locus of the two-circle case.

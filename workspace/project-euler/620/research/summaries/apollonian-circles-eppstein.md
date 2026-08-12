@@ -1,27 +1,32 @@
-<!-- source: https://ics.uci.edu/~eppstein/junkyard/tangencies/apollonian.html | converted from HTML -->
+# Tangencies: Apollonian Circles — Geometry Junkyard (Eppstein)
 
-The Geometry Junkyard: Tangencies: Apollonian Circles
+[[research/sources/apollonian-circles-eppstein.md]] · source:
+https://ics.uci.edu/~eppstein/junkyard/tangencies/apollonian.html
 
-## [Tangencies][1]: Apollonian Circles
+## What it establishes
 
-Given any three circles, one can construct up to eight circles tangent to all three. Apollonius of Perga first showed how to do this with compass and straightedge.
+A compact reference page (David Eppstein, Geometry Junkyard) on Apollonius
+circles: given three mutually tangent circles there are exactly two Apollonius
+circles tangent to all three (Soddy's "Kiss Precise" formula covers radii).
+Includes a compass-and-straightedge construction: from the triangle of centers,
+drop perpendiculars to opposite edges, connect the cut points to tangency
+points of the other two circles; the green lines cut the circles at the
+tangency points of the Apollonius circles. An inversion argument proves the
+construction (invert at the A–B tangency point → the two given circles become
+parallel lines; Apollonius tangencies arise on the bisector, inverted back).
 
-If the initial three circles are mutually tangent, there are only two Apollonian circles. The poem "The Kiss Precise" by Frederick Soddy describes the formula for the tangent's radii, but there is also a simple compass and straightedge construction:
+## Implication for PE620
 
-Form a triangle connecting the three circle centers (black), and drop a perpendicular line from each center to the opposite triangle edge (blue). This line cuts its circle at two points; draw a line from each cut point to the point of tangency of the other two circles (green). These green lines cut their circles in two more points, which are the points of tangency of the Apollonian circles. Once these three points on each Apollonian circle are known, the circles themselves are easily constructed.
+Background. PE620 planets are NOT required to be tangent to each other (overlap
+is explicitly permitted), so the Apollonius (three-circle) tangency is not the
+counting object. The relevant construction is the two-given-circles locus
+(ellipse). This page fixes the classical terminology and connects to Soddy /
+inversive treatments of tangent circles, which the problem's "tangential
+inscription" language shares.
 
-[image: Apollonian circles]
+## Cross-references
 
-The correctness of this construction can be proven by [inversion][2] (possibly surprising, since inversion doesn't preserve centers of circles, and this construction definitely uses the centers): let the three initial circles be A, B, and C, and let D be a circle centered at the point where A and B are tangent, such that C and D cross at right angles. Then inverting through D produces a figure in which A and B have been transmuted to parallel lines a and b(specifically, the lines through the pairs of points where these circles are crossed by D). The blue perpendicular we constructed is a third parallel line halfway between a and b; all pairs of circles that touch each other and a and b have their point of mutual tangency on this [bisector][3]. In particular, the circles that are tangent to a, b, and C touch C at the two crossing points with this line. To find the points of tangency for A, B, and C, we need only apply the inversion again to these crossing points. Since C is perpendicular to D, it is preserved by the inversion, but its inside and outside arcs are swapped. The green radial lines are also preserved by the inversion, and help us find the point on the inside arc corresponding to the crossing point on the outside arc and vice versa.
-
-The newly constructed circles are part of several more triples of tangent circles, so one can iterate this process, producing more and more tangent circles. The result of this iteration is called the **Apollonian gasket**.
-
-Note also that the lines of the construction form three triples that meet in common points. The point where the blue lines meet is just the orthocenter of the triangle, but [what are the two green points?][4]
-
-
-## Links
-
-[1]: https://www.ics.uci.edu/~eppstein/junkyard/tangencies/
-[2]: inversion.html
-[3]: bisector.html
-[4]: /~eppstein/pubs/p-tstc.html
+- MathWorld Apollonius Problem (same library): the 8-solution statement and
+  algebraic form.
+- Cut-the-Knot / Pappus / Steiner: ellipse locus (two-circle case), the actual
+  counting object.
