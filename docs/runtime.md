@@ -362,13 +362,11 @@ firing first replaces that with an error.
 Each model turn is capped at 12000 output tokens
 (`MATH_AGENT_TURN_OUTPUT_TOKENS`). Generation time is linear in output length,
 so an uncapped turn is an uncapped wall clock: a measured turn ran to 9,361
-tokens and 2.9 minutes, and longer ones exceeded seven.
-
-Treat this as a safety ceiling, not a way to make the model concise. Set to
-4000 it bound an ordinary turn exactly, truncating the model mid-generation so
-it emitted no usable tool call and the loop retried — 66 seconds spent to
-accomplish nothing. A cap that trips routinely is worse than the long turns it
-prevents. Buy brevity in the prompt instead.
+tokens and 2.9 minutes, and longer ones exceeded seven. Treat it as a safety
+ceiling, not a way to make the model concise — set to 4000 it bound an ordinary
+turn exactly, truncating mid-generation so no usable tool call was emitted and
+the loop retried, 66 seconds spent to accomplish nothing. A cap that trips
+routinely is worse than the long turns it prevents. Buy brevity in the prompt.
 
 The inventor is the exception at 32000 (`RunBudget::for_invention`): the one
 role whose product *is* the long turn, where a live 597 inventor was cut off
