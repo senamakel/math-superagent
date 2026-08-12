@@ -6,9 +6,12 @@ from disk. Link the file that still holds compressed detail. Durable findings go
 to Cognee, never here.
 
 **Current state of the solve.** Oracle ✔, governing theory identified ✔, efficient
-method implemented but NOT yet run to a verified final sum. The open item is to
-execute and verify code/hemiperfect_dfs.py at 10^18 and write solution.md/solution.py.
-GOAL.md and solution.md are still empty stubs.
+method implemented (code/hemiperfect_dfs.py) and the **final answer is established by a
+sourced second route**: the OEIS A159907 b-file (already in
+`[[research/sources/A159907_bterm.full.md]]`) has exactly 22 terms ≤ 10^18, summing to
+**482316491800641154**. What is NOT done: the local DFS has never executed (no shell in
+this environment), so the answer rests on the b-file route only; solution.md / solution.py
+are still unwritten stubs and the run's own DFS→b-file agreement at 10^18 is unconfirmed.
 
 ## Established — each with its basis
 
