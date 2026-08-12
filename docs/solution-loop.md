@@ -232,6 +232,28 @@ the cycle is *for*: adding, or compressing.
 scholar, the pattern agent, and the invention exchange — and it is the step that
 breaks a loop reflection alone cannot.
 
+The invention exchange also runs at the end of *every* completed cycle, not
+only a stuck one. That gate was reachable in principle and was not reached in
+practice: `diversify` needs two consecutive unproductive attempts, which needs
+two completed attempt/judge/reflect cycles, and a run whose attempts take the
+better part of an hour spends its whole wall clock inside the first one. Across
+a day of live runs on three workspaces the inventor was spawned once, and
+`research/approaches/` — the ledger it writes — never existed on disk. The
+cheapest question in the runtime, "is there a different line of attack", was
+the one never asked.
+
+`open_invention` is the pattern agent's argument one role wider. A proposal is
+worth as much an attempt later, so nothing waits on it: the arm is detached at
+the end of `reflect` and its report is posted to the same mailbox the next
+attempt drains, which is why that briefing names neither role and says only
+what arrived beside the loop. It is spawned last, after the verdict and the
+lesson are in the state, so the inventor is told what the attempt just
+established. And it runs only on `Retry` — `Diversify` runs the same arm one
+step later and *awaits* it, so opening one here too would spend two inventor
+runs on a single cycle, while `Solved` and `Blocked` end the loop and have
+nobody to hand a new direction to. The gate is `route`, which is a plain
+function of the state, so all four cases are asserted without a provider.
+
 Two of those arms are errands and finish in one delegation. The third is a
 conversation, because what it produces exists in neither agent alone: the
 inventor knows what this run has tried and what shape the problem has, research
