@@ -129,11 +129,11 @@ Two details are deliberate and should not be simplified away:
 
 A download lands as two files side by side: `<name>.md` holding a bounded
 excerpt, and `<name>.full.md` holding the complete converted text. One real
-reference page converted to 91,190 characters, about 23,000 tokens, and three
-of those fill a specialist's context before it has done any work — so reading
-the short one is the default and reading the long one is a decision, which is
-what the split buys. Both stay in `research/`, because a source whose detail is
-genuinely needed must be reachable without leaving the workspace.
+reference page converted to 91,190 characters, about 23,000 tokens, and three of
+those fill a specialist's context before it has done any work — so reading the
+short one is the default and reading the long one is a decision, which is what
+the split buys. Both stay in `research/`: a source whose detail is genuinely
+needed must be reachable without leaving the workspace.
 
 The short one is a *structural digest*, not the leading characters
 (`src/orchestrator/digest.rs`). It was the leading four thousand characters,
