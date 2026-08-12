@@ -6,7 +6,9 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
+| 6 | https://info.arxiv.org/about | Learn more | Every Minimal Counterexample to the Erdős–Gyárfás Conjecture is Predominantly Cubic arXiv is now an independent nonprofit! [Learn more][1] × [License: arXiv.org perpetual non-exclusive license][2]… |
 | 6 | https://arxiv.org/search/advanced | Advanced search | Minimal Counterexample to the Erdős-Gyárfás Conjecture is Predominantly Cubic Skip to main content Press Enter to search &middot; [Advanced search][1] --> # Mathematics > Combinatorics… |
+| 6 | https://info.arxiv.org/help/license/index.html#licenses-available | License: arXiv.org perpetual non-exclusive license | Counterexample to the Erdős–Gyárfás Conjecture is Predominantly Cubic arXiv is now an independent nonprofit! [Learn more][1] × [License: arXiv.org perpetual non-exclusive license][2]… |
 | 6 | https://core.ac.uk/services/recommender | What is CORE? | Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][35])* Core recommender toggle CORE Recommender*( [What is CORE?][36])* - Author - Venue - Institution - Topic About… |
 | 6 | https://info.arxiv.org/help/mathjax.html | What is MathJax? | value for arXiv's community? ****[Learn more about arXivLabs][37]. [Which authors of this paper are endorsers?][38] \| Disable MathJax ( [What is MathJax?][39]) |
 | 6 | https://info.arxiv.org/labs/index.html | Learn more about arXivLabs | these values and only works with partners that adhere to them. Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][37]. [Which authors of this paper… |
@@ -24,8 +26,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 6 | https://www.catalyzex.com | What is CatalyzeX? | with this Article alphaXiv Toggle alphaXiv*( [What is alphaXiv?][26])* Links to Code Toggle CatalyzeX Code Finder for Papers*( [What is CatalyzeX?][27])* DagsHub Toggle DagsHub*( [What is… |
 | 6 | https://www.litmaps.co/ | What is Litmaps? | [What is the Explorer?][22])* Connected Papers Toggle Connected Papers*( [What is Connected Papers?][23])* Litmaps Toggle Litmaps*( [What is Litmaps?][24])* scite.ai Toggle scite Smart Citations*(… |
 | 6 | https://www.scite.ai/ | What are Smart Citations? | Papers*( [What is Connected Papers?][23])* Litmaps Toggle Litmaps*( [What is Litmaps?][24])* scite.ai Toggle scite Smart Citations*( [What are Smart Citations?][25])* Code, Data, Media # Code, Data… |
-| 5 | https://info.arxiv.org/about | Learn more | Every Minimal Counterexample to the Erdős–Gyárfás Conjecture is Predominantly Cubic arXiv is now an independent nonprofit! [Learn more][1] × [License: arXiv.org perpetual non-exclusive license][2]… |
-| 5 | https://info.arxiv.org/help/license/index.html#licenses-available | License: arXiv.org perpetual non-exclusive license | Counterexample to the Erdős–Gyárfás Conjecture is Predominantly Cubic arXiv is now an independent nonprofit! [Learn more][1] × [License: arXiv.org perpetual non-exclusive license][2]… |
 | 4 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | the Erd\H{o}s-Gy\'arf\'as Conjecture is Predominantly Cubic, by Avery Carr - [View PDF][3] - [HTML (experimental)][4] - [TeX Source][9] [view license][10] ### Current browse context: math.CO [<… |
 | 3 | https://oeis.org/A000207 | A000207 | cross-referenced from A027610 |
 | 3 | https://oeis.org/A001764 | A001764 | cross-referenced from A027610 |
@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 3 | https://oeis.org/A047775 | A047775 | cross-referenced from A027610 |
 | 3 | https://oeis.org/A047776 | A047776 | cross-referenced from A027610 |
 
-_217 further candidates not shown; they are cited once each._
+_225 further candidates not shown; they are cited once each._
