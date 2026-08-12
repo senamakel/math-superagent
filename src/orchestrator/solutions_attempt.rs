@@ -210,6 +210,7 @@ impl std::fmt::Display for Route {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let label = match self {
             Self::Solved => "solved",
+            Self::Reported => "reported unverified",
             Self::Retry => "retry",
             Self::Diversify => "diversify",
             Self::Blocked => "blocked",
