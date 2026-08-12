@@ -310,23 +310,30 @@ fn a_finished_cycle_opens_an_invention_only_when_the_loop_will_try_again() {
 }
 
 #[test]
-fn an_attempt_is_told_what_the_pattern_team_found() {
+fn an_attempt_is_told_what_arrived_beside_the_loop() {
     use super::{attempt_prompt, observations_briefing};
 
-    // Reflection was the only collector, so the team reached the work exactly
-    // once per *completed* attempt — never on a first attempt that runs long.
-    // A live Erdős–Gyárfás run spent forty minutes in attempt 1 while its
-    // pattern team computed the survivor counts and identified the sequence,
-    // and the agent directing the work re-commissioned the same enumeration.
+    // Reflection was the only collector, so what ran beside the loop reached
+    // the work exactly once per *completed* attempt — never on a first attempt
+    // that runs long. A live Erdős–Gyárfás run spent forty minutes in attempt 1
+    // while its pattern team computed the survivor counts and identified the
+    // sequence, and the agent directing the work re-commissioned the same
+    // enumeration.
+    //
+    // The mailbox carries the inventor's proposals too, which is why the
+    // heading names neither role: both are things that arrived since the last
+    // attempt, and both are worth as much an attempt late.
     let mailbox = Mailbox::default();
     mailbox.post("every no-4 survivor for n<=16 has an 8-cycle".to_string());
+    mailbox.post("Proposed lines of attack\nan ear decomposition argument".to_string());
 
     let observations = observations_briefing(&mailbox);
     let state = SolutionState::new("find the cycle lengths");
     let prompt = attempt_prompt(&state, "", &observations, "");
 
-    assert!(prompt.contains("pattern team"), "{prompt}");
+    assert!(prompt.contains("beside the loop"), "{prompt}");
     assert!(prompt.contains("has an 8-cycle"), "{prompt}");
+    assert!(prompt.contains("ear decomposition"), "{prompt}");
 }
 
 #[test]
