@@ -306,12 +306,31 @@ async fn attempt_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
+    patterns: &PatternMailbox,
     mut state: SolutionState,
 ) -> SolutionState {
     state.attempts += 1;
     if let Some(tracer) = tracer {
         tracer.note(&format!("solution loop: attempt {}", state.attempts));
     }
+    // The attempt drains the mailbox too, not only the reflection that follows
+    // it. Reflection was the sole collector, and that made the pattern team's
+    // findings reachable exactly once per completed attempt — so a run whose
+    // first attempt is long never sees them at all. A live Erdős–Gyárfás run
+    // spent forty minutes in attempt 1 while its pattern team computed the
+    // survivor counts, identified the sequence, and pushed it past the data
+    // that suggested it; none of that reached the agent directing the work,
+    // which re-commissioned the same enumeration from `tool_builder`.
+    //
+    // Collecting here as well costs nothing when reflection has already run —
+    // the mailbox is empty and the section is omitted — and it is the only
+    // path that exists on the first attempt of every run.
+    let observations = patterns.collect();
+    let observations = if observations.is_empty() {
+        String::new()
+    } else {
+        format!("Structural observations from the pattern team:\n{observations}\n\n")
+    };
     let fresh = if state.fresh_context.is_empty() {
         String::new()
     } else {
