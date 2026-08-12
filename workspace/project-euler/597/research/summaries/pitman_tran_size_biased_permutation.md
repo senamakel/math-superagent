@@ -1,19 +1,26 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/pitman_tran_size_biased_permutation.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Pitman & Tran, "Size-biased permutation of a finite sequence..." — summary
 
-<!-- source: https://doi.org/10.3150/14-bej652 | converted from HTML -->
+<!-- source: https://doi.org/10.3150/14-bej652 | J. Pitman, N. M. Tran, Bernoulli 21 (2015) -->
 
-## What is in it
+Full text at `research/sources/pitman_tran_size_biased_permutation.full.md`.
 
-  - Abstract
-  - Citation
-  - Information
-  - KEYWORDS/PHRASES
-  - PUBLICATION TITLE:
-  - PUBLICATION YEARS
+## What the retrieval actually contains
 
+The DOI fetch returned only the journal landing/abstract shell (abstract, citations,
+keywords) — **no recoverable theorem content**. The abstract states the paper's
+subject: the finite i.i.d. size-biased permutation of n positive random variables,
+the finite analogue of the size-biased permutation of ranked jumps of a subordinator
+(Perman–Pitman–Yor), with an induced-order-statistics (concomitant) treatment and a
+Poisson coupling to the smallest order statistics (their Theorem 25). That is the
+extent of what we can attribute to it.
 
-## What it claims
+## Why it is filed
 
-This paper focuses on the size-biased permutation of $n$ independent and identically distributed (i.i.d.) positive random variables. This is a finite dimensional analogue of the size-biased permutation of ranked jumps of a subordinator studied in Perman–Pitman–Yor (PPY) [ *Probab. Theory Related Fields***92**(1992) 21–39], as well as a special form of *induced order statistics*[ *Bull. Inst. Internat. Statist.***45**(1973) 295–300; *Ann. Statist.***2**(1974) 1034–1039]. This intersection grants us different tools for deriving distributional properties. Their comparisons lead to new results, as well as simpler proofs of existing ones. Our main contribution, Theorem 25 in Section 6, describes the asymptotic distribution of the last few terms in a finite i.i.d. size-biased permutation via a Poisson coupling with its few smallest order statistics.
-
-*[digest of a 5081 character source; every section, statement, and proof in full at `research/sources/pitman_tran_size_biased_permutation.full.md`]*
+It is a *pointer to a technique* only: size-biased permutations and induced order
+statistics are the machinery by which a random ordering of iid values is analyzed,
+which is adjacent to the torpids ranking question. But because the actual content is
+behind the paywall, **no specific result is attributed to this source**, and it is
+not the right tool for the finite-finish bump/finish chronology (which is not a
+size-biased permutation — the finish event breaks that structure). Do not re-fetch.
+The Laplace-transform / order-statistic content this name represents is already
+carried by the L0.0/L1.0 exponential order-statistics notes.

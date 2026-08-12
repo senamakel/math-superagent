@@ -1,4 +1,4 @@
-<!-- source: https://doi.org/10.3150/14-bej652 | converted from HTML -->
+<!-- source: https://doi.org/10.3150/14-bej652 | converted from HTML | PAYWALL SHELL: DOI fetch returned only abstract/citation page; no usable theorem content. Summary at ../summaries/pitman_tran_size_biased_permutation.md records this. -->
 
 Size-biased permutation of a finite sequence with independent and identically distributed terms
 

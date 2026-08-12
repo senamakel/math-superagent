@@ -101,6 +101,19 @@ Two-phase mechanism: stage on radius-1/v arc keeping diametrically opposite the
 runner, then tangent chord to a shore point offset by B. This is the template
 the n-gon generalizes.
 
+Corroborations in the claims ledger (`research/CLAIMS.md`; read via `search_claims`):
+- **arXiv:2401.14994 "Complete Solution of the Lady in the Lake" (AFRL/SciTech 2024):** the
+  two-phase stage-then-dash is **proved** the unique zero-sum differential-game equilibrium
+  (Focal/Universal lines, Theorem 1) — the circle mechanism is no longer a heuristic, it is a
+  sourced saddle-point theorem; still circle-only, no polygons.
+- **Shishika & Kumar, "Perimeter-defense Game on Arbitrary Convex Shapes" (arXiv:1909.03989):**
+  capture-barrier framework for defender-on-boundary games, corroborating the boundary-time
+  equalization mechanism — but reports win/lose barriers (defender ≥ equal speed) only, **no
+  critical speed ratios for n-gons → corroboration of mechanism, NOT an independent hexagon
+  route.**
+- **OEIS A328227:** V_circle = 1/A213053 is **transcendental** (V = √(1+x²), x the least
+  positive root of tan x = x) — no algebraic closed form exists; do not hunt for one.
+
 ## Ruled out / dead ends
 
 - **Naive "stage at antipode + straight dash"** gives only π+1 ≈ 4.1416, NOT
