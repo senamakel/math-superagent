@@ -21,7 +21,7 @@ The outlaw constructions are the "are these rationals ruled out" direction; the 
 id: property22-denominator-divides
 statement: If I(n)=sigma(n)/n = r/s in lowest terms, then s | n (gcd(r,s)=1 implies s|n since s | n and gcd(k,m)=1).
 hypotheses: n>=2, r/s in lowest terms
-holds-here: yes (r=2k+1 odd, s=2)
+holds-here: yes
 status: proved
 bearing: proves every candidate is even; sets the 2-adic base of the DFS
 anchor: research/sources/holdener_stanton_outlaws.full.md

@@ -8,9 +8,9 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | --- | --- | --- | --- | --- |
 | `a088912-abundancy-threshold` | The smallest m with sigma(m)=(k+1/2)m is 2,24,4320,8910720,17116004505600 for k=1..5 (all < 1e18) and ~1.7e44 for k=6, so no number <= 1e18 realizes any half-integer abundancy k+1/2 with k >= 6. | yes | asserted | `research/summaries/oeis_A088912.md` |
 | `a159907-sequence-even` | Every hemiperfect number is even (sigma(n)/n = k/2, k odd, implies n even). | yes | asserted | `research/summaries/oeis_a159907.md` |
-| `a242484-equivalence` | For even n, sigma(n)/n is a half-integer iff antisigma(n)/n is an integer (since (sigma(n)+antisigma(n))/n=(n+1)/2), so the hemiperfects from 24 on sit inside A242484 unless an odd multiply-perfect number exists. | **unchecked** | asserted | `research/summaries/oeis_a242484.md` |
+| `a242484-equivalence` | For even n, sigma(n)/n is a half-integer iff antisigma(n)/n is an integer (since (sigma(n)+antisigma(n))/n=(n+1)/2), so the hemiperfects from 24 on sit inside A242484 unless an odd multiply-perfect number exists. | yes | asserted | `research/summaries/oeis_a242484.md` |
 | `hemi-abundance-bound` | No positive integer n <= 10^18 has half-integer abundancy k/2 with k >= 13, because the smallest such number a(6) ~ 1.7e44 exceeds 10^18; hence only abundancies 3/2..11/2 are reachable. | yes | asserted | `research/summaries/hemiperfect_wikipedia.md` |
-| `property22-denominator-divides` | If I(n)=sigma(n)/n = r/s in lowest terms, then s \| n (gcd(r,s)=1 implies s\|n since s \| n and gcd(k,m)=1). | **unchecked** | proved | `research/summaries/holdener_stanton_outlaws.md` |
+| `property22-denominator-divides` | If I(n)=sigma(n)/n = r/s in lowest terms, then s \| n (gcd(r,s)=1 implies s\|n since s \| n and gcd(k,m)=1). | yes | proved | `research/summaries/holdener_stanton_outlaws.md` |
 | `weiner-outlaw-no-bound` | The abundancy-outlaw search techniques (odd-perfect equivalence, t-bounds for (sigma(N)+t)/N) classify rationals that fail to be abundancy indices; they do not enumerate n attaining a given k+1/2. | **unchecked** | asserted | `research/summaries/weiner_searching_outlaws.md` |
 
 ## Load-bearing but unverified
@@ -19,4 +19,5 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `a088912-abundancy-threshold` (research/summaries/oeis_A088912.md) — asserted by the source, not proved there and not checked here
 - `a159907-sequence-even` (research/summaries/oeis_a159907.md) — asserted by the source, not proved there and not checked here
+- `a242484-equivalence` (research/summaries/oeis_a242484.md) — asserted by the source, not proved there and not checked here
 - `hemi-abundance-bound` (research/summaries/hemiperfect_wikipedia.md) — asserted by the source, not proved there and not checked here
