@@ -1,53 +1,76 @@
-"""Naive oracle for Project Euler 346 (strong repunits).
+#!/usr/bin/env python3
+"""Literal brute-force oracle for the strong-repunit problem (Project Euler 346).
 
-A repunit in base b is a number whose base-b representation is a string of
-all 1's, i.e. R_k(b) = 1 + b + b^2 + ... + b^(k-1) = (b^k - 1)/(b - 1) for
-k >= 1.  The length-1 repunit equals 1, whatever the base, so the number 1 is
-a repunit in every base.
+A number n is a strong repunit if it equals a repunit (a string of all 1's) in
+at least two distinct bases b > 1.  For a base b, the repunits are
+    1, 1 + b, 1 + b + b^2, 1 + b + b^2 + b^3, ...
+that is R_1(b)=1 and R_{k+1}(b) = R_k(b) * b + 1.
 
-A strong repunit is a positive integer that is a repunit in at least two
-distinct bases b > 1.
+This is implemented *literally* from the definition, with no cleverness:
 
-This file implements the definition directly, without any cleverness: for
-each n it counts, over every base 2 <= b <= n, how many bases represent n as
-a repunit, and reports n as strong when the count is at least 2.  It is the
-oracle the efficient solver is checked against.
+    for each n:
+        for each base b from 2 to n-1:
+            build the repunit sequence 1, 1+b, 1+b+b^2, ... for this base,
+            count how many distinct bases produce n
+        n is strong iff that count >= 2
+
+n = 1 is a repunit in every base (the length-1 repunit R_1(b) = 1), so it is
+included as strong.
+
+Complexity: O(N^2) numbers examined in total (each n scans ~n bases, and each
+base's repunit sequence in base b has O(log_b n) terms), O(1) extra space.
+This is the naive oracle, meant to validate the efficient solver on small
+bounds.  It is not intended to reach 1e12.
 """
 
+import sys
 
-def is_repunit(n, b):
-    """True iff n is a repunit (string of all 1's) in base b, b > 1."""
+
+def repunit_values_in_base(b, limit):
+    """Yield repunit values 1, 1+b, 1+b+b^2, ... for base b up to `limit`."""
+    # R_1(b) = 1; then R_{k+1} = R_k * b + 1
+    val = 1
+    while val <= limit:
+        yield val
+        val = val * b + 1
+
+
+def is_strong(n):
+    """True iff n is a repunit in at least two distinct bases b > 1."""
     if n == 1:
-        return True          # R_1(b) = 1 in every base
-    if b < 2:
-        return False
-    # build repunits R_k(b) = (b^k-1)/(b-1) for k = 2, 3, ... while <= n
-    val = 1 + b              # R_2(b)
-    while val <= n:
-        if val == n:
-            return True
-        val = val * b + 1    # next length: R_{k+1} = R_k * b + 1
-        if val < 0:          # guard against runaway growth (unused here)
-            break
-    return False
-
-
-def base_count(n):
-    """Number of bases b in [2, n] in which n is a repunit."""
-    if n == 1:
-        # R_1(b) = 1 for every base b > 1, so 1 is a repunit in all bases
-        # and hence a strong repunit.
-        return 2
-    return sum(1 for b in range(2, n + 1) if is_repunit(n, b))
+        return True                      # 1 = R_1(b) in every base b > 1
+    count = 0
+    for b in range(2, n):                # base b from 2 to n-1
+        for r in repunit_values_in_base(b, n):
+            if r == n:
+                count += 1
+                break                    # this base represents n; stop scanning it
+    return count >= 2
 
 
 def strong_repunits(bound):
     """All strong repunits n with 1 <= n < bound, in increasing order."""
-    return [n for n in range(1, bound) if base_count(n) >= 2]
+    return [n for n in range(1, bound) if is_strong(n)]
+
+
+def main():
+    if len(sys.argv) < 2:
+        print("usage: brute.py N", file=sys.stderr)
+        sys.exit(1)
+    N = int(sys.argv[1])
+
+    # 1. sorted list of strong repunits below 50
+    sr50 = strong_repunits(50)
+    print("strong repunits below 50:", sr50)
+
+    # 2. sum of strong repunits below 1000
+    sr1000 = strong_repunits(1000)
+    print("sum of strong repunits below 1000:", sum(sr1000))
+
+    # 3. sum of strong repunits below N (from argv)
+    srN = strong_repunits(N)
+    print(f"sum of strong repunits below {N}:", sum(srN))
 
 
 if __name__ == "__main__":
-    for bound in (50, 1000):
-        s = strong_repunits(bound)
-        print(f"below {bound}: {s}")
-        print(f"  count = {len(s)}, sum = {sum(s)}")
+    main()
