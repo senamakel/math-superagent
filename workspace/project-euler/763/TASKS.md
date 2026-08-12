@@ -26,3 +26,5 @@
       (D(N+1)=sum f(C)) fails from N=3 (forward map not injective). Details in
       MEMORY.md.
 - [ ] (future) A structural/combinatorial formula for D(N) to reach N=10000 — brute-force BFS caps out near N=14.
+- [x] Task 1: re-run naive fr__BFS oracle (code/brute.py). D(2)=3, D(10)=44499 both MATCH; D(0..13)=1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267 all reproduced; stops cleanly at D(13) when the 1.75M frontier exceeds the 1M cap. D(20) unreachable by exact BFS (~9.2e9 states).
+- [x] Task 2: P-recursive extrapolation test (code/holonomic_test.py -> code/out/holonomic_test.txt). For every (m=2..6, d=0..4), exact-rational nullspace over D(0..14), extrapolate exactly to D(20) and D(100). RESULT: NO (m,d) reproduces BOTH checks (D20≡204559704, D100 last-nine=780166455). Fitted recurrences break immediately out-of-sample (division-by-zero at p_m(n)=0, or non-integer output by N=20) — they are overfits, not true recurrences. Hence no low-order P-recursive fit can reach D(10000); do not re-search this route (confirms prior lib.holonomic negative).
