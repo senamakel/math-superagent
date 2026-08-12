@@ -85,7 +85,10 @@ def phase_a(src_classes, outdir):
     if os.path.exists(done_marker):
         with open(done_marker) as f:
             done = int(f.read().strip())
-    if done >= len(src_classes):
+    # total number of source classes (count lines once)
+    with open(src_classes) as cnt:
+        total_classes = sum(1 for _ in cnt if _.strip())
+    if done >= total_classes:
         with open(target) as f:
             lines_written = sum(1 for _ in f)
         return lines_written, True
@@ -112,9 +115,9 @@ def phase_a(src_classes, outdir):
                 with open(done_marker, "w") as f:
                     f.write(str(done))
                 w.flush()
-                print(f"  pool: {done}/{len(src_classes)} classes, {nb} lines, "
+                print(f"  pool: {done}/{total_classes} classes, {nb} lines, "
                       f"{time.time()-t0:.1f}s", flush=True)
-        if done >= len(src_classes):
+        if done >= total_classes:
             with open(done_marker, "w") as f:
                 f.write(str(done))
     with open(target) as f:
