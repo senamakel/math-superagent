@@ -152,6 +152,20 @@ a far better query than anything available at the start. `MAX_ATTEMPTS` is
 eight so the rescue has attempts left to pay off in; a ceiling that tripped
 first would buy a fresh literature search and then stop.
 
+Housekeeping is gated on the workspace having changed, and the gate is shared.
+Filing is cheap to *do* and expensive to *decide*: an organizer asked to notice
+that nothing has changed must walk the workspace and spend a model call to
+discover it, which is most of what a cycle costs. Two live runs spent 49% and
+38% of every model call they made on the organizer, against 11% and 4% on the
+agent actually solving the problem — and the indexes still carried undescribed
+rows, so the budget did not even buy the filing. `filing_unchanged` fingerprints
+the tree, `INDEX.md` excluded, and both the standing `background` team and the
+follow-up consult the *same* fingerprint: two separate gates would each read the
+other's filing as new work and wake each other indefinitely. Excluding
+`INDEX.md` is the load-bearing part — it is what the organizer writes, so
+counting it would have the team waking itself forever on the filing it just did,
+which is the pattern team's `SCRATCHPAD.md` lesson one folder wider.
+
 A finished `tool_builder` run automatically triggers an `organizer` run, and a
 finished `research` run triggers a `scholar` then an `organizer`
 (`FOLLOW_UPS` in `src/orchestrator/async_subagents.rs`). That moment is when
