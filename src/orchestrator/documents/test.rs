@@ -368,7 +368,12 @@ async fn listing_a_folder_that_is_not_there_names_the_ones_that_are() -> Result<
 /// hands over a `Vec` has already done the buffering the bound exists to
 /// prevent. Nothing leaves the machine, so this stays a deterministic unit test
 /// rather than the live network tests that belong outside the suite.
-async fn serving(body: Vec<u8>, chunked: bool) -> Result<String> {
+///
+/// `declare_length` chooses which of the two bounds is under test. Without it
+/// the body is delimited by the close, which is what a real chunked transfer
+/// looks like to the caller: no `Content-Length` for the pre-check to read, so
+/// the streaming bound is the only one left.
+async fn serving(body: Vec<u8>, declare_length: bool) -> Result<String> {
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
         .await
         .map_err(|error| {
@@ -381,42 +386,35 @@ async fn serving(body: Vec<u8>, chunked: bool) -> Result<String> {
         let Ok((mut socket, _)) = listener.accept().await else {
             return;
         };
-        use tokio::io::AsyncWriteExt as _;
-        let header = if chunked {
-            // No `Content-Length`, so the declared-length check has nothing to
-            // look at and the streaming bound is the only one left.
-            "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nTransfer-Encoding: chunked\r\n\r\n"
-                .to_string()
-        } else {
+        use tokio::io::{AsyncReadExt as _, AsyncWriteExt as _};
+        // Read the request before answering it. Closing a socket that still
+        // holds unread bytes makes the kernel send RST rather than FIN, and an
+        // RST discards whatever the peer has not yet read — so a small response
+        // arrived intact and a large one came back as a decode error, which
+        // looks exactly like the bound under test failing.
+        let mut request = [0_u8; 2048];
+        let _ = socket.read(&mut request).await;
+        let header = if declare_length {
             format!(
-                "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n",
+                "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\
+                 Connection: close\r\n\r\n",
                 body.len()
             )
+        } else {
+            "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n".to_string()
         };
         if socket.write_all(header.as_bytes()).await.is_err() {
             return;
         }
-        if chunked {
-            for piece in body.chunks(16 * 1024) {
-                let framed = format!("{:x}\r\n", piece.len());
-                if let Err(error) = socket.write_all(framed.as_bytes()).await {
-                    eprintln!("DBG framed: {error}");
-                    return;
-                }
-                if let Err(error) = socket.write_all(piece).await {
-                    eprintln!("DBG piece: {error}");
-                    return;
-                }
-                if let Err(error) = socket.write_all(b"\r\n").await {
-                    eprintln!("DBG crlf: {error}");
-                    return;
-                }
+        // In pieces, so the client genuinely reads a stream rather than one
+        // buffer handed over whole.
+        for piece in body.chunks(16 * 1024) {
+            if socket.write_all(piece).await.is_err() {
+                return;
             }
-            let _ = socket.write_all(b"0\r\n\r\n").await;
-        } else {
-            let _ = socket.write_all(&body).await;
         }
         let _ = socket.flush().await;
+        let _ = socket.shutdown().await;
     });
     Ok(format!("http://{address}/source.txt"))
 }
@@ -425,7 +423,7 @@ async fn serving(body: Vec<u8>, chunked: bool) -> Result<String> {
 async fn a_document_within_the_limit_downloads_whole() -> Result<()> {
     let path = workspace("download-small")?;
     let documents = WorkspaceDocuments::new(path)?;
-    let url = serving(b"Theorem 1. The bound is respected.\n".to_vec(), true).await?;
+    let url = serving(b"Theorem 1. The bound is respected.\n".to_vec(), false).await?;
     let (bytes, content_type) = super::DocumentTool {
         kind: super::DocumentToolKind::Download,
         documents,
@@ -438,15 +436,14 @@ async fn a_document_within_the_limit_downloads_whole() -> Result<()> {
 }
 
 #[tokio::test]
-async fn an_oversized_chunked_body_is_refused_without_being_buffered() -> Result<()> {
-    // A chunked response carries no `Content-Length`, so the pre-check has
-    // nothing to read and the whole body used to reach memory before its size
-    // could be compared. The container has a hard `mem_limit` and an OOM kill
-    // loses everything in flight, so the bound has to apply as it arrives.
+async fn an_undeclared_oversized_body_is_refused_without_being_buffered() -> Result<()> {
+    // Without a `Content-Length` the pre-check has nothing to read, so the
+    // whole body used to reach memory before its size could be compared. The
+    // container has a hard `mem_limit` and an OOM kill loses everything in
+    // flight, so the bound has to apply as the bytes arrive.
     let path = workspace("download-oversized")?;
     let documents = WorkspaceDocuments::new(path)?;
-    let url = serving(vec![b'x'; 6 * 1024 * 1024], true).await?;
-    eprintln!("DBG body = 1 MiB");
+    let url = serving(vec![b'x'; super::MAX_DOCUMENT_BYTES + 64 * 1024], false).await?;
     let refused = super::DocumentTool {
         kind: super::DocumentToolKind::Download,
         documents,
@@ -468,7 +465,7 @@ async fn an_oversized_chunked_body_is_refused_without_being_buffered() -> Result
 async fn a_declared_length_over_the_limit_is_refused_before_the_body_arrives() -> Result<()> {
     let path = workspace("download-declared")?;
     let documents = WorkspaceDocuments::new(path)?;
-    let url = serving(vec![b'x'; super::MAX_DOCUMENT_BYTES + 1], false).await?;
+    let url = serving(vec![b'x'; super::MAX_DOCUMENT_BYTES + 1], true).await?;
     let refused = super::DocumentTool {
         kind: super::DocumentToolKind::Download,
         documents,
