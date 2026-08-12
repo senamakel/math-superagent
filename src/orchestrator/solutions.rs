@@ -68,6 +68,21 @@ const BLOCKED_THRESHOLD: usize = 2;
 /// anything available at the start.
 const RESEARCH_RESCUE_ATTEMPTS: usize = 5;
 
+/// Consecutive attempts whose only gain was a larger instance, before the loop
+/// treats scaling as the thing to break out of.
+///
+/// This exists because "did the attempt establish something new" and "is the
+/// run getting anywhere" turned out to be different questions, and the loop
+/// only asked the first. Pushing an exhaustive search from n=14 to n=16
+/// honestly establishes something the run did not have, so reflection answers
+/// PROGRESS: YES, which resets [`SolutionState::unproductive`] — and an
+/// unproductive count that never reaches [`STUCK_THRESHOLD`] means the run
+/// never diversifies and never reaches the inventor at all. A run can spend its
+/// whole budget that way, each attempt genuinely progressing and the method
+/// never changing. Two is the same evidence bar the unproductive count uses:
+/// once is what an attempt looks like, twice is a pattern.
+const COMPUTATIONAL_THRESHOLD: usize = 2;
+
 /// Restarts the judge may force in one run.
 ///
 /// A restart throws away the direction an attempt was taking and spends a
@@ -106,6 +121,9 @@ pub(super) struct SolutionState {
     judged: Verdict,
     /// Consecutive attempts that produced nothing but a provider failure.
     blocked: usize,
+    /// Consecutive attempts whose only gain was a larger instance of something
+    /// an earlier attempt already computed.
+    computational: usize,
 }
 
 impl SolutionState {
@@ -123,6 +141,7 @@ impl SolutionState {
             scores: Vec::new(),
             judged: Verdict::Proceed,
             blocked: 0,
+            computational: 0,
         }
     }
 
@@ -218,6 +237,12 @@ fn route(state: &SolutionState) -> Route {
     } else if state.solved || state.attempts >= MAX_ATTEMPTS {
         Route::Solved
     } else if state.unproductive >= STUCK_THRESHOLD {
+        Route::Diversify
+    } else if state.computational >= COMPUTATIONAL_THRESHOLD {
+        // Progress that is only ever a bigger instance of the same computation
+        // routes here too. This arm is the one that catches a run doing well by
+        // its own report and going nowhere: every attempt establishes something
+        // and none of them changes the method, so the arm above never fires.
         Route::Diversify
     } else {
         Route::Retry
@@ -725,11 +750,17 @@ async fn reflect_step(
     let prompt = format!(
         "Judge one attempt at a problem and extract the lesson.\n\nProblem:\n{}\n\n\
          Attempt report:\n{}\n\n{}\n\n\
-         Answer exactly these three things:\n\
+         Answer exactly these four things:\n\
          VERDICT: SOLVED if the attempt reached a specific final answer AND verified it by a \
          second independent route; otherwise UNSOLVED. An unverified answer is UNSOLVED.\n\
          PROGRESS: YES if this attempt established something the previous ones had not; \
          otherwise NO.\n\
+         KIND: MATHEMATICAL if what it established is a fact, bound, structure, or refutation \
+         that holds independently of how far a program was run. COMPUTATIONAL if it is a larger \
+         instance of something an earlier attempt already computed — the same method at a bigger \
+         size, a bound pushed further, more cases checked. NONE if it established nothing. \
+         Verifying more cases of a conjecture is COMPUTATIONAL; finding out why the cases hold \
+         is MATHEMATICAL.\n\
          LESSON: one or two sentences naming the specific thing to do differently next time. \
          Name the misstep and the concrete alternative. Do not restate the problem or give \
          generic advice.",
@@ -827,6 +858,17 @@ async fn reflect_step(
     } else {
         state.unproductive += 1;
     }
+    // Counted only on an explicit COMPUTATIONAL. A reflection that omitted the
+    // field, or whose wording could not be parsed, leaves the count where it
+    // was: an unparsed verdict must never be what drives the loop somewhere,
+    // and treating silence as "scaling again" would send a run diversifying on
+    // the strength of two malformed replies. MATHEMATICAL clears it, because
+    // the run has changed what it is doing.
+    if kind_of(&upper) == Progress::Computational {
+        state.computational += 1;
+    } else if kind_of(&upper) == Progress::Mathematical {
+        state.computational = 0;
+    }
     if let Some(tracer) = tracer {
         tracer.note(&format!(
             "solution loop: verdict {}, progress {}, next {}",
@@ -839,6 +881,38 @@ async fn reflect_step(
     tell_teams(teams, &state, progressed, &lesson);
     state.lessons.push(lesson);
     state
+}
+
+/// What kind of gain an attempt reported.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Progress {
+    /// A fact, bound, structure, or refutation that stands on its own.
+    Mathematical,
+    /// A larger instance of a computation the run had already done.
+    Computational,
+    /// Nothing, or nothing this could read.
+    Unstated,
+}
+
+/// Reads the reflection's `KIND` field from an already-uppercased reply.
+///
+/// Deliberately conservative: anything other than an explicit, recognised
+/// answer is [`Progress::Unstated`], which moves no counter. The field decides
+/// whether a run that reports progress every attempt still gets pushed into
+/// diversifying, and a misread there either strands a run that was working or
+/// spends three child runs on one that did not need it.
+fn kind_of(upper: &str) -> Progress {
+    for (marker, kind) in [
+        ("KIND: MATHEMATICAL", Progress::Mathematical),
+        ("KIND:MATHEMATICAL", Progress::Mathematical),
+        ("KIND: COMPUTATIONAL", Progress::Computational),
+        ("KIND:COMPUTATIONAL", Progress::Computational),
+    ] {
+        if upper.contains(marker) {
+            return kind;
+        }
+    }
+    Progress::Unstated
 }
 
 /// Tells the support teams how the attempt went.
@@ -867,9 +941,15 @@ fn tell_teams(teams: &[TeamHandle], state: &SolutionState, progressed: bool, les
 }
 
 /// Gathers three independent angles concurrently to break a stalled loop.
+///
+/// Two of the three are gathering: the library arm fetches and reads, the
+/// pattern arm looks at the numbers already computed. The third is invention,
+/// and unlike the other two it is a conversation rather than an errand — see
+/// [`invention_arm`].
 async fn diversify_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
     mut state: SolutionState,
 ) -> SolutionState {
     if let Some(tracer) = tracer {
@@ -898,18 +978,7 @@ async fn diversify_step(
             state.problem
         ),
     );
-    let invention = delegate(
-        subagents,
-        "inventor",
-        format!(
-            "Propose a genuinely different line of attack. The approaches tried so far have not \
-             worked; do not restate them. Name a specific alternative formulation, transform, or \
-             theory, say why it suits this problem, and give the first concrete \
-             step.\n\nProblem:\n{}\n\n{}",
-            state.problem,
-            state.lesson_briefing()
-        ),
-    );
+    let invention = invention_arm(subagents, workspace, &state);
     // Gathering and digesting are one sequential arm, run concurrently with
     // the other two. The scholar has to follow the librarian rather than join
     // it: it reads what was just downloaded, and a digest written before the
@@ -935,7 +1004,8 @@ async fn diversify_step(
         .await;
         (library, digest)
     };
-    let ((library, digest), patterns, invention) = tokio::join!(reading, patterns, invention);
+    let ((library, digest), patterns, (grounding, chosen)) =
+        tokio::join!(reading, patterns, invention);
 
     // Merged rather than assigned: the reflection that routed here has already
     // put this attempt's pattern analysis, and possibly a literature rescue,
@@ -946,10 +1016,103 @@ async fn diversify_step(
         ("Reference material", &library),
         ("What the sources establish", &digest),
         ("Structural observations", &patterns),
-        ("Proposed alternative approach", &invention),
+        ("What the literature says about the candidates", &grounding),
+        ("Line of attack chosen", &chosen),
     ]);
     state.unproductive = 0;
+    // Diversifying *is* the answer to a run that has only been scaling, so the
+    // count that routed here is cleared with the other one. Leaving it set
+    // would send the very next reflection straight back here.
+    state.computational = 0;
     state
+}
+
+/// Runs the invention arm: propose, ground, converge.
+///
+/// The other two arms are errands — fetch this, analyse that — and finish in
+/// one delegation. This one is three, in sequence, because the thing being
+/// produced does not exist in either agent alone. The inventor knows the shape
+/// of the problem and what has failed; research knows what is already named,
+/// proved, and tried. An idea that is genuinely new *and* not already closed in
+/// the literature is the intersection, and the intersection is only reachable
+/// by passing the candidates across and back.
+///
+/// It ran as a single inventor call before, concurrent with the library arm and
+/// blind to it. That produced a paragraph of prose, once, which was merged into
+/// the next attempt's context and then lost — so an idea proposed at attempt
+/// three could be proposed again at attempt six, and the literature check that
+/// would have killed it never happened. The exchange writes to
+/// `research/approaches/`, so the next round starts from what this one closed.
+///
+/// Three sequential children rather than one. The arm still runs beside the
+/// library arm's two, so a diversify costs roughly one extra child run, not
+/// three.
+async fn invention_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> (String, String) {
+    // Read from disk now rather than from the prompt loaded at startup. On a
+    // twelve-hour conjecture run this is the difference between the inventor
+    // seeing the work and seeing the empty workspace it began with.
+    let dossier = workspace.map(super::dossier::inventor).unwrap_or_default();
+    let candidates = delegate(
+        subagents,
+        "inventor",
+        format!(
+            "Propose three genuinely different lines of attack, and write each one to \
+             `research/approaches/<slug>.md` as a fenced `approach` block with `idea`, \
+             `mechanism`, `status: proposed`, and `first-step` lines. The approaches tried so far \
+             have not worked; do not restate them, and do not re-propose anything the record \
+             below already closed. Diverge: three variations on one idea are worth less here than \
+             three ideas, and a proposal you are unsure of is worth more than a safe one, because \
+             research is about to check all three. Name the actual mathematics in each — a \
+             transform, a bijection, an invariant, a named theorem — rather than describing a \
+             direction. Report the three slugs and what each one is.\n\n\
+             Problem:\n{}\n\n{}\n\n{dossier}",
+            state.problem,
+            state.lesson_briefing()
+        ),
+    )
+    .await;
+    let grounding = delegate(
+        subagents,
+        "research",
+        format!(
+            "The inventor has proposed these lines of attack for the problem below. Take each one \
+             to the literature and report, per candidate: what the reformulation is actually \
+             called, the precise statement of any theorem it relies on and whether its hypotheses \
+             hold here, whether anyone has applied it to this problem, and what it would buy. \
+             Then update that candidate's file under `research/approaches/`: fill `precedent` \
+             with the source URLs and claim ids you found, and set `status` to `grounded` when \
+             the literature supports it or `refuted` with a `killed-by` line when it does not. \
+             Refuting one is as useful as backing one — it is what stops the next round \
+             proposing it again — but refute on evidence, not on absence: say plainly when you \
+             simply could not find anything.\n\n\
+             Candidates:\n{candidates}\n\nProblem:\n{}\n\n{dossier}",
+            state.problem
+        ),
+    )
+    .await;
+    let chosen = delegate(
+        subagents,
+        "inventor",
+        format!(
+            "Research has checked your candidates against the literature. Decide. Either adopt \
+             the one that now looks best, or — if what research turned up suggests something \
+             neither of you named — propose that instead, which is the better outcome when it is \
+             available: the combination of your reformulation and what the literature actually \
+             says is where a new line of attack usually comes from. Write the choice to its file \
+             with `status: adopted` and a `first-step` a tool_builder could start on today, and \
+             set the others to `refuted` with a `killed-by` line each. Report the adopted \
+             approach, why it beat the others, and its first concrete step.\n\n\
+             Your candidates:\n{candidates}\n\nWhat research found:\n{grounding}\n\n\
+             Problem:\n{}",
+            state.problem
+        ),
+    )
+    .await;
+    (grounding, chosen)
 }
 
 /// Joins the labelled sections that have content into one briefing.
@@ -1060,7 +1223,8 @@ pub(super) async fn run(
     let reflect_agents = subagents.clone();
     let reflect_tracer = tracer.clone();
     let attempt_workspace = workspace.clone();
-    let reflect_workspace = workspace;
+    let reflect_workspace = workspace.clone();
+    let diversify_workspace = workspace;
     let reflect_memory = memory;
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
@@ -1126,9 +1290,11 @@ pub(super) async fn run(
             move |state: SolutionState, _ctx: NodeContext| {
                 let subagents = diversify_agents.clone();
                 let tracer = diversify_tracer.clone();
+                let workspace = diversify_workspace.clone();
                 async move {
                     Ok(NodeResult::Update(
-                        diversify_step(&subagents, tracer.as_ref(), state).await,
+                        diversify_step(&subagents, tracer.as_ref(), workspace.as_deref(), state)
+                            .await,
                     ))
                 }
             },
