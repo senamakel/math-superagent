@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `AGENTS.md` | Working instructions for the code/ tree: the package layout (lib/ for imports, question folders, out/ for outputs), the rule that /workspace/code is on PYTHONPATH (never sys.path.insert), naming and complexity conventions, one-job-per-file, keeping the naive program as the oracle, exact arithmetic, and never deleting a program that carries a result. Guidance for agents writing code in this run — describes the tree, not mathematics. |
+| `_smoke_check.md` | _(undescribed)_ |
 | `brute.py` | Naive-oracle demo and worked-example harness: builds K4, K3,3, Petersen, cube Q3 by hand and prints min_degree and cycle-length set, importing the compute-core from the shelf (lib.cycles via lib.oracle) instead of carrying its own DFS copy. Verification demo, not a separate implementation. |
-| `count_mindeg3.py` | _(undescribed)_ |
+| `count_mindeg3.py` | Oracle counting harness (nauty-geng -c -d3): counts connected min-degree-3 graphs by order n and girth>=5 survivors, printing exact counts per n to compare with OEIS A007112 — the Phase 3 anchor for where exhaustive generation stops being the method. Mirrors eg/bruteforce_bound.py and eg/girth_survivors.py so numbers match what tool_builder runs. Depends on lib.cycles (_geng_graph6, min_degree, girth). |
 | `verify_cycles.py` | Verification harness for the shelved lib/cycles.py: checks min_degree and cycle_lengths on K4, K3,3, cube Q3 and Petersen against hand-known answers. Run: cd code && python verify_cycles.py. A non-importing duplicate of the oracle itself; depends on lib.cycles being right. |
