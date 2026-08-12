@@ -10,7 +10,6 @@ Method (same as pattern_deg_v2_exact.py route A, exact):
 sympy.minimal_polynomial of the exact algebraic expression is authoritative.
 """
 import signal
-import sys
 import time
 import warnings
 
@@ -90,9 +89,8 @@ def main():
         finally:
             signal.alarm(0)
         phi = int(sp.totient(n))
-        phistr = poly if method == "exact" else f"(numeric) {poly}"
-        print(f"{n:2d}  {K}  {d:3d}  {phi:5d}  {str(d == phi):>5}  "
-              f"{method:>7}   {phistr}   [{time.time()-t0:.0f}s]", flush=True)
+        print(f"{n:2d}  {int(K)}  {int(d):3d}  {int(phi):5d}  {str(int(d) == int(phi)):>5}  "
+              f"{method:>7}   {poly}   [{time.time()-t0:.0f}s]", flush=True)
     print("done", flush=True)
 
 
