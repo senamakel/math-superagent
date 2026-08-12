@@ -832,7 +832,7 @@ async fn reflect_step(
     // Every completed cycle opens a line-of-attack search, not only a stuck
     // one. Spawned last, once the verdict and the lesson are in the state, so
     // the inventor is told what this attempt actually established.
-    open_invention(subagents, tracer, workspace, outbox, &state);
+    open_invention(subagents, tracer, workspace, mailbox, &state);
     state
 }
 
