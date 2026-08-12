@@ -68,11 +68,13 @@ where C4/C8 already appear — not in the girth regime.
 minDegree≥3 ⇒ ∃ cycle p with p.length = 2^k ∧ 2≤k). No lemmas proved in it;
 body is one intentional `sorry`; the file ends with `#print axioms
 erdos_gyarfas`. Axioms on a compiled copy: [propext, sorryAx,
-Classical.choice, Quot.sound] — sorryAx the only non-standard axiom. NEW:
-`lean/c4_lemma.lean` formalises the first real lemma (a 4-cycle already
-satisfies the EG conclusion, witness k=2; no sorry) — compile status
-**unverified** this session; re-run `lean lean/c4_lemma.lean` before citing.
-[[lean/STATUS.md]]
+Classical.choice, Quot.sound] — sorryAx the only non-standard axiom.
+`lean/c4_lemma.lean` PROVES the first real lemma `c4_gives_eg_conclusion` (a
+4-cycle satisfies the EG conclusion, witness k=2) — **kernel-checked,
+sorry-free**, `#print axioms` = [propext, Classical.choice, Quot.sound], no
+sorryAx (re-verified this session, lean/STATUS.md). This kernel-checks the
+"a counterexample must be C4-free" direction, justifying the nauty-geng -f
+reduction. [[lean/STATUS.md]]
 
 ## Durable memory / reflections
 
@@ -117,6 +119,5 @@ itself — that is the open core.
   [[code/eg/survivor_sequences.md]].
 - Scratch/durable memory hold nothing further on this problem's mathematics
   (earlier `recall_memory` surface hit an unrelated PE346 repunit chunk).
-  Two audit notes were stored this cycle: the S5/A366224 unverified-state
-  finding and the Lean c4_lemma compile-unverified flag — queriable via
-  `recall_memory`.
+  Durable memory now stores the S5/A366224 RESOLVED break-at-n=18 finding and
+  the Lean c4_lemma kernel-check — queriable via `recall_memory`.

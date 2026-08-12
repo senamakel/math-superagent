@@ -1,0 +1,267 @@
+# Roles, adapters, and what each one can reach
+
+The fourteen roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+
+The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
+
+## Expected problem-solving behavior
+
+The runtime has fourteen roles plus an explicit solution loop.
+
+- The orchestrator decomposes a problem, delegates focused tasks, and combines
+  the results.
+- The goals agent translates an objective into completion criteria and spawns
+  specialist subagents until the goal is met or precisely blocked.
+- The research agent uses Exa to find definitions, papers, official references,
+  or current facts, and is deliberately reluctant: gathering costs a download,
+  a digest, an index row, and a share of every later reader's attention, so it
+  fetches only when the solver reports an attempt STUCK, when `ROOT.md` names a
+  specific gap it knows a specific source for, or not at all. It works the open
+  rows of `research/REQUESTS.md` — gaps other roles stated precisely — before
+  anything it thought of itself, checks `search_claims` before going looking for
+  what the library may already establish, and follows `research/FRONTIER.md`,
+  the citations inside the sources it already has. The loop posts
+  each attempt's verdict to the teams so "is the run short of something" is a
+  signal rather than a guess. It returns source URLs, separates evidence from inference,
+  and can save reusable notes to Qdrant.
+- The tool-builder writes and executes shell or Python tools in `/workspace`.
+  It handles numerical checks, counterexample searches, data extraction, and
+  other reproducible calculations.
+- The SAT solver answers a question that has already been reduced to a finite
+  decision or optimisation problem, by *encoding* it for CP-SAT, a SAT solver,
+  an SMT solver, or an MILP solver rather than by writing the search itself. A
+  hand-written backtracking search over the same space is the answer-space
+  search the method policy prohibits, written in the language most likely to
+  hide its own bugs. Its failure modes are its own: reporting `UNKNOWN` or
+  `FEASIBLE` as an answer, weakening a constraint until a model appears, and an
+  unsound symmetry break that silently loses solutions. `UNSAT` is a result and
+  is never to be relaxed away.
+- The SMT solver settles a statement *modulo theories* rather than over a
+  finite encoding, with Z3 and cvc5. Its one irreplaceable move is proving a
+  universal claim by asserting the negation and getting `unsat` — the only tool
+  here besides Lean that establishes something for all values rather than
+  checking it on many. It is held to naming the logic it used, because
+  `QF_LIA` is decidable and nonlinear integer arithmetic is not, and `unknown`
+  is a statement about the solver rather than about the mathematics. It must
+  check the hypotheses are satisfiable *alone* before believing any `unsat`:
+  from contradictory hypotheses everything follows, and that is how a bad
+  encoding looks like a proof.
+- The theorem prover hands first-order statements to a saturation prover
+  (`eprover`, TPTP). It sits between the SMT solver, which is weak once
+  quantifier reasoning dominates, and Lean, which costs a human-scale effort
+  per theorem. The axiomatisation is the whole job and the whole risk: a prover
+  proves what was written down, not what was meant, so it reports the axioms in
+  prose, checks them for consistency, and says "proved from these axioms"
+  rather than "proved". `CounterSatisfiable` is a real result — the axioms are
+  too weak, and the missing hypothesis is what to go find.
+- The symbolic mathematician works with expressions rather than numbers:
+  closed forms, summations, recurrences, generating functions, exact algebra,
+  through sympy, mpmath, PARI/GP, Singular, and SageMath. It exists because the
+  run's most common error is arithmetic that looks right — a float agreeing to
+  twelve digits with something false, a closed form fitting six terms. It may
+  not report an identity because both sides agree at sample points; the
+  difference has to simplify to zero, and a residual that will not close is the
+  finding.
+- The Lean prover writes Lean 4 against a pre-built Mathlib. It is the only
+  role whose output is not evidence: everything else here — a program's output,
+  a numerical check, an argument that reads well — is a reason to believe
+  something, and a proof that compiles with no `sorry` is the thing itself. It
+  is held to reporting `#print axioms` and every remaining `sorry`, because a
+  formalisation that hides one is worse than none.
+- The reflection agent judges one attempt and extracts one lesson. It has no
+  research or execution tools on purpose: a judge that can start solving stops
+  judging. Its hardest job is refusing to call an unverified answer solved.
+- The pattern-recognition agent runs exact sequence analysis over results the
+  run already computed. Its tools report only what holds for every term
+  supplied, and label the finding a conjecture, because an invented pattern
+  costs more than no pattern. It can also execute code and commission it from
+  the tool-builder: its own tools describe the terms handed to them and cannot
+  extend a sequence, so without a way to generate more terms it could neither
+  test a conjecture past the data that suggested it nor find the first term
+  that breaks one. It has no *web* search, because a bounded structural
+  question must not turn into a second investigation — but it recalls what the
+  run and the note store already hold, since a regularity the library already
+  explains is not a conjecture worth chasing.
+- The inventor proposes a different line of attack when the current one has
+  stalled, backed by research. It is told what failed so it does not re-propose
+  it.
+- The librarian builds a local reference library under `research/` so the rest
+  of the run reads primary material instead of guessing.
+- The scholar reads that library. It judges each source against the run's goal,
+  current tasks, and existing beliefs, replaces each source's digest with what
+  it actually establishes and what that implies here, records each statement as
+  a `claim` block so it is retrievable one statement at a time, keeps the
+  threads current, and describes it so `research/INDEX.md` is the way in. It exists because acquiring is not reading: a downloaded paper
+  nobody has opened has cost the run context and taught it nothing. It has no
+  search tool on purpose, so it digests the library instead of drifting into
+  another search the librarian has already done.
+- The organizer keeps the workspace navigable: folder indexes, the layout and
+  naming of `research/`, and `code/lib/INDEX.md` matching the files beside it. It has files
+  and index tools only — no search, no shell, no note memory — because every
+  tool it lacks is a way a filing job cannot turn into an editing one. It may
+  not delete anything carrying a result, a derivation, or a source, and may not
+  change what a file says; an obsolete file is labelled obsolete in the index
+  rather than removed.
+
+## Source adapters
+
+`oeis_lookup` (`oeis.rs`) is the first adapter for a structured source, and the
+one lookup in the runtime with no phrasing problem. Every other search depends
+on guessing what a subject is called — the research prompt spends a paragraph
+on that — while a sequence of integers either matches a catalogued entry or
+does not, and a match usually carries the closed form that turns an enumeration
+into an evaluation. It was a sentence in the research prompt, which is to say
+it happened when a model remembered; as a tool it is something a run can be
+seen not to have done. A miss is a result: one live workspace recorded `S(n) ∉
+OEIS` as a finding, which nobody obtains by rephrasing a query.
+
+Two things it does beyond answering. The entry is filed under `research/` like
+any other source, because a formula quoted into a tool result and nowhere else
+is a citation the run cannot check later. And the entry's `Cf.` line — the
+encyclopedia's own citation graph — goes into the frontier, so a hit on one
+sequence surfaces the neighbours describing the same structure.
+
+It is gated with `exa_search` under `MATH_AGENT_RESEARCH`, by not registering
+it rather than by asking the model to abstain, because the encyclopedia is the
+lookup most likely to hand a self-contained problem its answer outright. It is
+granted to `pattern_finder`, which has no web search on purpose — a bounded
+structural question must not become a second investigation — and a lookup keyed
+on terms that role has already computed cannot become one. It is also the role
+holding the terms, so delegating the lookup would spend a child run to pass a
+list of integers along.
+
+## Recall: the two ways back into what is known
+
+A run accumulates faster than any one agent can hold, and four tools answer
+four different questions about it. `search_documents` matches literal terms
+against documents someone called `index_document` on, so it finds a downloaded
+source and nothing else. `search_claims` retrieves one statement with its
+hypotheses out of the claim ledger. Those two cover the library. The run's own
+thinking was covered by neither.
+
+`search_workspace` (`recall.rs`) closes that. It walks the workspace rather
+than an index and ranks by cosine similarity over the same deterministic
+feature-hashing encoder the notes use, so `MEMORY.md`, `reflections/`,
+and `code/lib/` are reachable by wording rather than by a path
+an agent already knew. Before it, the inventor re-proposed approaches whose
+failure was recorded three files away and the pattern agent rebuilt helpers
+that already existed. It hides exactly what `list_workspace` hides: an agent
+must not reach the event log through a search when it cannot reach it through a
+path.
+
+`recall_research` is the other half and a different question — not what did
+*this* run write down, but what has been established before. The notes are in
+Qdrant and outlive the workspace.
+
+Both travel to every reasoning role, and `remember_research` does not. Reading
+a note costs a lookup; writing one puts a statement into a store every later
+run reads, so it stays with the three roles whose output is durable knowledge:
+research, the scholar, and the inventor. A test asserts that split, because it
+is the kind of boundary that erodes one convenient grant at a time.
+
+Three exclusions, each the same argument the rest of this document makes about
+tools being authority. The **judge** gets neither: it answers four lines on
+twelve model calls against an attempt that took the better part of an hour, and
+a search over the whole workspace is precisely the invitation to spend them
+reading — a live judge already did that with the document tools alone. The
+**organizer** gets neither, because every tool it lacks is a way a filing job
+cannot turn into an investigation. The **tool-builder** gets `recall_research`
+but not `search_workspace`: it writes probes and throwaway experiments, so a
+similarity search over its own output would mostly return them.
+
+## Workspace context routing
+
+Context is authority, and it is also noise. `role_context` in
+`src/orchestrator/mod.rs` decides which working files enter each agent's system
+prompt. Only `AGENTS.md`, the method policy, goes to everyone.
+
+| Role | Additional files |
+| --- | --- |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, `reflections/ROOT.md`, `reflections/INDEX.md` |
+| tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files plus `code/`, minus the threads and the reflection files |
+| judge | `GOAL.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
+| reflection | the judge's files plus `TASKS.md` and `reflections/ROOT.md` |
+| pattern_finder | `GOAL.md`, `MEMORY.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
+| librarian, research | `GOAL.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/FRONTIER.md`, `CONTEXT.md` |
+| inventor | the planners' research files plus `research/THREADS.md` and both reflection files |
+| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `SCRATCHPAD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/INDEX.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md` |
+
+The tool-builder accumulates what a second program would repeat under
+`code/lib/`, one subject per module, described through `describe_file` so
+`code/lib/INDEX.md` carries each function's signature, its return, and what
+established it correct. One subject per module is what keeps it cheap: reading
+the helper you need costs a few hundred bytes rather than the whole library. It
+was one *function* per file, which was the tighter reading of the same rule and
+cost more than it saved — a routine needing a companion function did not fit,
+so it was inlined instead, and the folder filled with helpers nothing imported.
+The catalogue is context for the planners too, because what has already been
+built and verified changes what is worth delegating next. A row that has
+drifted from its function is worse than no row: the next agent calls it as
+described rather than reading the source.
+
+Four of these are load-bearing rather than tidy-minded:
+
+- Reflection must see `GOAL.md`. It judges whether the criteria are met, and
+  judging against criteria it cannot see is guesswork; a wrong `SOLVED` ends
+  the investigation.
+- The inventor must see `MEMORY.md` for its failed-approaches section. Without
+  it, it re-proposes what already failed, which is the one thing it exists not
+  to do.
+- Reflection must not reach the scratch. Provisional arithmetic is not
+  evidence of progress, and treating it as such keeps the loop retrying. That
+  was a routing decision while the scratch was `SCRATCHPAD.md`; now that it is
+  a Cognee store it is a tool boundary, enforced by `register_scratch`.
+- Only the librarian and research see `research/FRONTIER.md`. It is a list of
+  things nobody has read, useful exactly to the roles deciding what to fetch
+  next and noise to everyone else.
+- The tool-builder and the coder see `research/CLAIMS.md` but not the threads.
+  A closed form the library establishes changes what they implement; which
+  direction the run is pursuing is the planners' decision, not theirs. The
+  `holds-here` column is the load-bearing part — implementing a theorem whose
+  hypotheses fail here produces a program that runs and computes the wrong
+  thing.
+
+Indexes are the cheap exception to that rule. An index costs a few hundred
+tokens where the files it describes cost tens of thousands, so a role that
+might otherwise re-derive or re-fetch something gets the relevant catalogue:
+both to the planners, the research index to research, the librarian, and the
+inventor so none re-establishes what is on disk, the toolkit index to `pattern_finder`
+so it reuses a verified helper. Reflection gets the workspace index and nothing
+more of the kind — deciding whether an answer was actually produced means
+knowing which artifacts exist, and the index says what each one is without the
+derivations themselves.
+
+Adding a file to every role is the easy mistake. Ask what the role has to
+decide, and give it only what that decision needs. The scholar is the one
+legitimate exception: judging whether a source is worth anything requires
+knowing what the run wants, what it already believes, and what it is currently
+attempting, so it needs all three — and `recall_scratch` besides, because a
+half-finished derivation is exactly the kind of thing a paper resolves. It gets
+the read half only: it judges provisional work rather than producing any.
+
+## Prompts
+
+The built-in prompts live in `src/prompts/*.md` and are pulled in with
+`include_str!`, not written as Rust string literals. They were literals, and
+the escaping made the most consequential text in the runtime the most awkward
+to edit: every line ended in a `\` continuation, every newline was `\n`, and a
+reflow produced a diff nobody could read. A Markdown file has none of that, and
+`include_str!` keeps them compiled in, so the container still needs no prompt
+files mounted.
+
+Inspect the assembled result with `./agent prompts` (add `--workspace <path>`
+to render a specific workspace), which prints every role's full system prompt
+with character and token counts. It runs on the host and needs no container,
+provider key, or spend. Use it after changing a prompt or the context routing:
+until it existed the only way to see what an agent was actually told was to
+start a run and read a provider trace, which made a misrouted file or a rule
+that reads as optional invisible until it changed a run's behaviour. The token
+counts are the other half — every prompt is re-sent on every model call in that
+role's run, so a prompt that has grown is a bill that has grown.
+
+Keep the shared method policy leading every assembled prompt. The provider
+cache is keyed on the exact leading prefix, so role-specific text first would
+make each agent its own cache namespace. A test asserts both the ordering and
+that no prompt file's stray trailing newline can change the prefix.
