@@ -452,6 +452,36 @@ Before substantial execution, the tool-builder must state both time and space
 complexity. Algorithms with exponential time or space complexity are
 prohibited; choose a polynomial or better formulation.
 
+`validate_complexity` enforces that, and the field it reads has been evaded
+three times in three different ways. First by notation: a factorial search
+wrote `polynomial (O((n!)²))` and the forbidden list looked for `o(n!` , which
+the parenthesis defeated. Then by honesty running the wrong way: a truthful
+`exponential` on the naive oracle rule 8 *requires* was refused outright, so
+the gate punished accuracy and blocked the method policy's own first step —
+which is why `exponential` and `factorial` are declarable with a concrete
+`oracle_bound`. And then by saying nothing at all: a live run on Project Euler
+185 declared `complexity: "backtracking with pruning"` against
+`complexity_class: "polynomial"` and was allowed through, because that string
+names a method and states no quantity, so neither the class check nor the
+notation check had anything to match. Sixteen digits is ten quadrillion
+candidates, and the run held a `sat_solver` it never spawned.
+
+So a declaration naming a search strategy over candidate solutions —
+`backtrack`, `brute force`, `exhaustive`, `branch and bound` — with no
+`oracle_bound` is refused, and the refusal names `sat_solver`, because a gate
+that blocks the wrong method without pointing at the right one costs the run a
+turn to rediscover it. `enumerate` is deliberately not on that list:
+"enumerate the divisors of n" is an honest description of an `O(√n)` method,
+and refusing it would repeat the second evasion above. A bounded oracle
+declares its bound and never reaches the check, so rule 8 is untouched.
+
+The wider lesson is the one this document keeps recording. Five solver and
+prover roles were registered, tool-equipped, prompt-written, and provisioned in
+the image, and naming them in the planners' prompts did not get a single one
+spawned; the run reached for `tool_builder` and commissioned the prohibited
+method instead. A prompt instruction is not a control, and the control belongs
+where the action happens.
+
 A command that hits the ceiling is killed, but what it printed is kept and
 returned with the timeout reported as its exit status. `Command::output()`
 inside a `timeout` discards all of it — the read is dropped mid-flight — so a
