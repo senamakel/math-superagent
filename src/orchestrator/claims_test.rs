@@ -305,3 +305,33 @@ fn only_a_research_note_triggers_a_rederivation() {
     assert!(!is_note("code/lib/hemisum.py"));
     assert!(!is_note("SCRATCHPAD.md"));
 }
+
+/// A refutation with its reason attached must still read as a refutation.
+///
+/// `Status::parse` matched on a prefix and `Holds::parse` demanded an exact
+/// value, and the inconsistency cost PE620 its own best finding. That run
+/// established its oracle model was wrong — `g(16,5,5,6) = 0` against a stated
+/// `9` — and wrote `holds-here: false — contradicts the worked oracle value 9.`
+/// The trailing clause is exactly what every other field here asks for, and it
+/// turned a checked refutation into `**unchecked**` in the ledger every
+/// planning role reads.
+#[test]
+fn a_holds_field_may_carry_the_reason_beside_the_answer() {
+    use super::Holds;
+
+    assert_eq!(Holds::parse("false — contradicts the worked oracle value 9."), Holds::No);
+    assert_eq!(Holds::parse("no, the hypotheses need a prime modulus"), Holds::No);
+    assert_eq!(Holds::parse("yes (checked against n=3..9)"), Holds::Yes);
+    assert_eq!(Holds::parse("fails: the graph is not simple"), Holds::No);
+
+    // Bare values keep working.
+    assert_eq!(Holds::parse("yes"), Holds::Yes);
+    assert_eq!(Holds::parse("no"), Holds::No);
+    assert_eq!(Holds::parse("unchecked"), Holds::Unchecked);
+
+    // A prefix must not be read out of a longer word: `notation` is not `no`,
+    // and a hedge is never read as a decision.
+    assert_eq!(Holds::parse("notation differs"), Holds::Unchecked);
+    assert_eq!(Holds::parse("yesterday's run said so"), Holds::Unchecked);
+    assert_eq!(Holds::parse("probably not"), Holds::Unchecked);
+}
