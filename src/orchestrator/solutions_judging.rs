@@ -371,7 +371,6 @@ fn mentions_oracle(captured: &[PathBuf]) -> bool {
 }
 
 /// Counts a folder's entries, bounded, and answers zero for a missing folder.
-/// Counts a folder's entries, bounded, and answers zero for a missing folder.
 ///
 /// Scaffolding does not count. `workspace/template` seeds
 /// `research/approaches/` and `research/threads/` so the roles told to write

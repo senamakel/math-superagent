@@ -1,89 +1,54 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/single-planetary-teeth-matching-zou-2015.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Single Planetary Mechanism Teeth Matching Conditions — Zou, Wei, Chang, Zhou (ICAMIA 2015, Atlantis Press)
 
-<!-- source: https://www.atlantis-press.com/article/25846284.pdf | converted from PDF -->
+[[research/sources/single-planetary-teeth-matching-zou-2015.full.md]] · source:
+https://www.atlantis-press.com/article/25846284.pdf
 
-Single Planetary Mechanism Teeth Matching
-Conditions
+## What it establishes
 
-Naiwei Zou1,2, Yuting Wei
-2, Sheng Chang1 and Dashuai Zhou
-1
-1College of Mechanical Engineering, Jiamusi University, Jiamusi Heilongjiang China
-2Guangxi Liugong Machinery Co., Ltd. Liuzhou Guangxi China
+Four teeth-matching conditions for single-pin planetary mechanisms (2K-H: sun gear +
+ring gear + planet carrier), derived from first principles:
 
-Abstract—Teeth matching conditions for planetary mechanism of
-single pin,  dual pin and  multiple pin  planetary mechanisms are
-studied in details in this thesis. Single planetary mechanism teeth
-matching  conditions include: concentric condition,  homogeneity
-distribution condition, neighbor condition and gear ratio
-condition. With  the  increase  of meshed gear pairs between sun
-gear  and  gear ring,  the concentric condition will  become  wider
-and wider, while neighbor condition become stricter and stricter.
-Gear  ratio  condition is  applied to check the  deviation of actual
-and theoretical gear  ratio of  planetary  mechanism under  the
-teeth matching condition. If the  deviation is large, adjustment
-could be made by revising structural parameters and number of
-planetary gear pairs participating  in  the  meshing. Homogeneity
-distribution condition is most easily  ignored,  thus enough
-attention should be paid to it. In this thesis, the angle expression
-of  planetary mechanism when  each component is  not interfered
-and  homogeneously distributed is inputted  its  rotation speed
-equation, and after  deduction, the homogeneity distribution
-condition is gained  for various  single planetary  mechanisms,
-which will provide reference for engineers.
+- **Concentric condition**: 2·Z_g = Z_R − Z_S (X-zero gears). The centre distances of
+  the sun–planet and planet–ring meshes must be equal — this is the pitch-radius
+  relation; note PE620 fixes `c = s + p + q` (ring circumference = sun + planet
+  circumferences) as the tangency condition instead.
+- **Homogeneity distribution condition — derived from a phase-alignment argument**:
+  evenly distribute n_b planets at spacing α_H = 2π/n_b; fix the ring, rotate the
+  carrier by α_H and require the sun to end up an integer number of teeth from where
+  it started; substituting the sun's rotation into the kinematic equation yields
+  **`(Z_R + Z_S) / n_b = N`, N integer** (eq. 4: "the sum of ring gear and sun gear
+  teeth must be an integral multiple of number of planetary gears").
+- **Neighbour condition**: centre distance of neighbouring planets ≥ tip diameter
+  (interference bound).
+- **Gear ratio condition**: actual vs theoretical ratio within tolerance.
 
-Keywords-planetary  mechanism; teeth matching  condition;
-meshing; interference
- I.  INTRODUCTION
+- Dual-pin case: homogeneity condition is `(Z_R − Z_S)/n_b = N` (sign flips because
+  the second mesh reverses the phase accumulation) — consistent with Guo eq. (5.25)
+  where d_i = 2 gives denominator Z_R − Z_S.
 
-With the advantages of small size, light weight, compact
-structure, large gear ratio, smooth transmission, and etc.,
-planetary  mechanism is  widely used  in  mechanical
-transmission  field. In recent  years, with  the development of
-hybrid power technology, planetary mechanisms can realize the
-power coupling requirement of hybrid  system by two
-characteristics: 2 degrees  of freedom  structure and coaxial
-power input and output [1]. Single planetary mechanism is the
-most  commonly  used in hybrid system, during the  design
-process  both teeth  matching condition  and  power  coupling
-condition  should be satisfied.  In the thesis,  teeth  matching
-conditions of  various  single planetary  mechanisms will be
-studied systematically, which  will provide  reference for
-engineers when they design these mechanisms.
+## Implication for PE620
 
-II.  PLANETARY MECHANISM CHARACTERISTICS
+This is the *derivation-level* source for the equal-spacing assembly condition and its
+underlying phase-alignment mechanism (fix one member, rotate the carrier, the other
+member must advance an integer number of teeth). It corroborates Guo eq. (5.21) —
+which extends the same idea to arbitrary (not just equal) spacing: planets lie at
+multiples of 2π/(Z_R+Z_S). The mismatch between the pe620 layout (off-centre S, planets
+not on a rigid carrier) and the design-guide statements is resolved exactly as in the
+`assembly_condition_simple_planetary_guo` claim: each planet is its own d_i = 1 train.
 
-Single planetary  mechanism refers  to  2K-H structure
-composed  of  two sun  gears  (sun gear and ring  gear) and a
-planet carrier.  According to the number  of  planetary gears
-participating in  meshing  transmission on the planet  carrier,
-single planetary mechanism can be  divided  into  three
-categories: single  pin, double pin  and  multiple  pin planet
-mechanisms.
- There are 2 degrees of  freedom  in  planetary  mechanism,
-and the rotation  speed  of two of  the components  must  be
-confirmed before the third component’s rotation speed is
-confirmed. The kinematical equation of gear train which
-utilizes the absolute rotation speed  of 3 components  and
-structure characteristic parameter ρ of the planetary mechanism
-can be expressed as [2]:
-
- [1 (1) ] (1) 0
-nn
-HS R           
-
-In the expression:  S - Absolute rotation speed of sun gear
-s
--1;  R - Absolute rotation speed of ring gear s
--1;  H - Absolute
-rotation speed of planet carrier s
--1;  n -Number of gear pairs
-meshed  externally on the planet  carrier;  ρ-Characteristic
-parameters of planetary mechanism, ρ= SZ / RZ ;  RZ - Number of
-teeth of ring gear;  SZ - Number of teeth of sun gear.
-
-From  expression (1), it is  known that in  2K-H  single
-planetary mechanism,  no matter  how many meshed  planetary
-gears there are, the sum of the coefficient of the 3 components’
-
-*[excerpt ends; 13099 characters not shown — see `research/sources/single-planetary-teeth-matching-zou-2015.full.md`]*
+```claim
+id: homogeneity_condition_zou
+statement: For evenly spaced identical planets in a single-pin planetary mechanism,
+  the assembly condition is (Z_R + Z_S)/n_b = N with N integer; it is derived by
+  fixing the ring gear, rotating the carrier by the inter-planet angle alpha_H =
+  2*pi/n_b, and requiring the sun gear to have advanced by an integer number of teeth.
+hypotheses: X-zero (unmodified) gears; ideal geometry; equally spaced identical planets.
+holds-here: partially — equal spacing is the special case of PE620 where two or more
+  planets coincide in allowable phase; the general (unequal) step is 2*pi/(Z_R+Z_S)
+  from Guo (5.21), of which this is the n_b-fold-restricted version.
+status: sourced (Zou et al. 2015, ICAMIA 2015, Atlantis Press, open access).
+bearing: corroborates the discreteness theorem at derivation level and gives a worked
+  phase-alignment argument; supports the pattern that the least-mesh-angle rule is
+  derived, not asserted.
+anchor: research/sources/single-planetary-teeth-matching-zou-2015.full.md
+```

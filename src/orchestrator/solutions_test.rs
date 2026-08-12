@@ -798,3 +798,32 @@ fn the_unverified_count_needs_a_program_and_resets() -> std::io::Result<()> {
     assert_eq!(current.unverified, 0, "a different verdict clears the count");
     Ok(())
 }
+
+/// The seeded README of an empty folder is not a proposal.
+///
+/// `workspace/template` seeds `research/approaches/` and `research/threads/` so
+/// the inventor finds the directory its prompt names — PE620's spent eight model
+/// calls and then hit `research/approaches is not a directory`. Each seeded
+/// folder needs a file for git to track it, and counting that file would tell
+/// the judge every run had proposed an approach before doing anything.
+#[test]
+fn seeded_scaffolding_is_not_counted_as_work() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-scaffolding");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/approaches"))?;
+    std::fs::create_dir_all(root.join("research/threads"))?;
+    std::fs::write(root.join("research/approaches/README.md"), "what goes here")?;
+    std::fs::write(root.join("research/threads/README.md"), "what goes here")?;
+
+    let brief = evidence_briefing(&root);
+    assert!(brief.contains("approaches proposed: 0"), "{brief}");
+    assert!(brief.contains("threads open: 0"), "{brief}");
+
+    // A real proposal counts.
+    std::fs::write(root.join("research/approaches/conformal-map.md"), "an idea")?;
+    assert!(
+        evidence_briefing(&root).contains("approaches proposed: 1"),
+        "a written approach must count"
+    );
+    Ok(())
+}
