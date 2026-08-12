@@ -28,6 +28,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.1/pirzada-2power-unicyclic-cubic.md` | _(undescribed)_ |
 | `L1.2/L0.0.md` | _(undescribed)_ |
 | `L1.2/oeis_a007112.md` | _(undescribed)_ |
-| `L2.0/L1.0.md` | _(undescribed)_ |
+| `L2.0/L1.0.md` | Seal of research/L1.0/ (10 digests, 8 distinct works): EG statement + original belief, Carr predominantly-cubic structure, 17/30-vertex bound + four 24-vertex near-counterexamples, closed restricted classes, Sudakov–Verstraëte sparse bound exp(O(log* n)), and the interval-spans-factor-of-two obstruction. |
 | `L2.0/L1.1.md` | _(undescribed)_ |
 | `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
