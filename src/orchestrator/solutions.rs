@@ -788,7 +788,7 @@ async fn reflect_step(
     //
     // Whatever earlier pattern runs have finished by now joins this attempt's
     // context. The report is no less true for arriving an attempt late.
-    let patterns = patterns.collect();
+    let patterns = mailbox.collect();
     // Past the rescue threshold the literature is re-opened on every
     // reflection, with what the run now knows rather than what it knew at the
     // start.
