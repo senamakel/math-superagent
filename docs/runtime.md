@@ -383,13 +383,13 @@ truncation, not as evidence the cap is larger than it is.
 
 `UntruncatedModel` is a second ladder beside that one, covering the shape
 upstream excludes — a turn that produced text but no tool call. The two must
-share a ceiling rather than compose into one. `MAX_CAP_GROWTH` is therefore
-measured from the run's *configured* turn cap, passed in with `with_turn_cap`,
-not from whatever cap the request happens to carry: read as an original, a turn
-upstream had already doubled doubled again, and a live `goals` agent reached a
-48,000-token re-issue — four times the ceiling, against a wrapper documented to
-allow twice. The inventor's 32000 therefore tops out at 64000, and generation
-being linear in length, that is its wall clock as much as its size.
+share a ceiling rather than compose into one, so `MAX_CAP_GROWTH` is measured
+from the run's *configured* turn cap, passed in with `with_turn_cap`, not from
+whatever cap the request carries: read as an original, a turn upstream had
+already doubled doubled again, and a live `goals` agent reached a 48,000-token
+re-issue — four times the ceiling, against a wrapper documented to allow twice.
+The inventor's 32000 tops out at 64000, which is its wall clock as much as its
+size.
 
 A timeout is a safety ceiling, not permission to run an intractable approach.
 Before substantial execution the tool-builder must state both time and space
