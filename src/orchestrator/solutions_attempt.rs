@@ -237,6 +237,15 @@ fn route(state: &SolutionState) -> Route {
         Route::Blocked
     } else if state.solved || state.attempts >= MAX_ATTEMPTS {
         Route::Solved
+    } else if state.unverified >= UNVERIFIED_THRESHOLD {
+        // Ahead of the two stuck arms, which would otherwise claim this: an
+        // attempt that reaches the same answer it already had reports no
+        // progress, so the unproductive count is exactly what an UNVERIFIED run
+        // accumulates. Diversifying on that spends three child runs looking for
+        // a new line of attack on a problem whose answer is already on disk,
+        // and the thing actually missing — a second independent route — is the
+        // one thing the run has just said twice that it cannot build.
+        Route::Reported
     } else if state.unproductive >= STUCK_THRESHOLD {
         Route::Diversify
     } else if state.computational >= COMPUTATIONAL_THRESHOLD {
