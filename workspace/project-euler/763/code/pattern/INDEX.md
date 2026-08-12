@@ -35,7 +35,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `inv_collisions.py` | Investigates why CLAIM B (D(N+1)=sum_C f(C)) fails: counts, per reachable child, the number of empty preimage-parent cells p whose full child triangle lies inside it, demonstrating the forward map (C,p)->child is not injective (colliding children) for N=0..6. Uses children/f_of from lib/amoeba. Companion to inventor/diagnose_B.py & diagnose_B2.py. |
 | `mdist.py` | Counts reachable configs by max level M from the data/level_N.txt feature dumps, producing the (N,M) histogram rows that underlie the max-level decomposition. |
 | `mdist2.py` | Investigates the completeness of the Q_k max-level decomposition: computes M_min per N and checks whether all M >= (N+1)/2 (the rows the Q_k model covers), quantifying the missing/off-diagonal part the decomposition fails to reproduce. Uses sorted_key from lib/datafiles. |
-| `mult_structure.py` | _(undescribed)_ |
+| `mult_structure.py` | Studies per-histogram multiplicities from data/level_N.txt: lists distinct histograms per max-level M, checks whether all multiplicities are 2^a*3^b (smooth) or carry other primes, and details the subdiagonal M=N-1 histograms. Part of the per-histogram multiplicity hunt. |
 | `multiset_to_b.py` | _(undescribed)_ |
 | `offsets.py` | Extracts the (N,M) table and examines fixed-offset diagonals k=M-N, printing N(N,N+k)/3^(N-1) per row to hunt a pattern/closed form in the max-level counts. |
 | `oos_mult_closedform.py` | _(undescribed)_ |
