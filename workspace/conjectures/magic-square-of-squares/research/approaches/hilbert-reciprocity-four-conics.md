@@ -1,6 +1,65 @@
+# Approach: Hilbert reciprocity / four conics (REFUTED)
+
 ```approach
-idea: Express the four-AP condition as simultaneous solubility of four ternary quadratic forms (or equivalently triviality of four quaternion algebras over Q), and derive a contradiction from Hilbert reciprocity combined with the additive relations u + v = (u+v), u − v = (u−v).
-mechanism: The condition that e² ± d are both squares for a given d means the ternary quadratic form X² + Y² = 2Z² has a solution with certain linear constraints, or equivalently that the quaternion algebra (e²+d, e²−d) is split over Q — i.e., its Hilbert symbol (e²+d, e²−d)_p = 1 for all places p. For the four differences d ∈ {u, v, u+v, u−v}, we have four quaternion algebras A_u = (e²+u, e²−u), A_v = (e²+v, e²−v), A_{u+v} = (e²+u+v, e²−u−v), A_{u−v} = (e²+u−v, e²−u+v). The additive relations u + v = (u+v) and u − v = (u−v) impose multiplicative relations among the entries of these algebras: (e²+u)(e²+v) is related to (e²+u+v) times something, etc. Concretely, from the definitions, (e²+u)(e²+v) − (e²+u+v)e² = uv, so the algebras are linked by the common factor e² and the additive relations. One can attempt to express A_{u+v} as a product (in the Brauer group) of A_u, A_v, and an algebra depending only on e² and uv. Since the Brauer group of Q is huge, the product of these four algebras must be trivial in Br(Q) by some identity. However, local solubility mod every prime power (known: problem.md) constrains the local invariants. The question is whether there exists a global relation among the Hilbert symbols that forces a contradiction — this is a reciprocity computation at the level of the Brauer group of Q, much simpler than the full Brauer-Manin obstruction on the K3 surface. If the four conics are pairwise linked by the additive relations in a way that forces the product of local invariants to be nontrivial, then no rational solution exists.
-status: proposed
-first-step: Derive the explicit relationship between the four quaternion algebras A_u, A_v, A_{u+v}, A_{u−v} in the Brauer group Br(Q). Express A_{u+v} and A_{u−v} in terms of A_u, A_v, and an auxiliary algebra depending on u,v,e². Then compute the product of the four invariants at each place p and apply Hilbert reciprocity to see if a contradiction emerges unconditionally.
+idea: Express each of the four AP conditions c ± d both squares as the splitting
+of a quaternion algebra A_d = (c+d, c−d)_Q, compute the product of the four
+algebras in the Brauer group, and apply Hilbert reciprocity to derive a
+contradiction from local invariants.
 ```
+
+## Verdict
+
+**status: refuted.** The hoped-for contradiction cannot arise, for two independent
+reasons, one of which makes the entire computation vacuous. This is a documented
+dead end worth keeping so the next round does not propose it again.
+
+## Why it dies (killed-by)
+
+**Reason 1 — each A_d is trivially split by the hypothesis itself.** The AP
+condition for difference d is that `c+d` and `c−d` are **both perfect squares**.
+The Hilbert symbol has the property `(a², b)_p = 1` for every p (a square in any
+entry makes the symbol 1), so `(c+d, c−d)_p = 1` at every place by the very
+assumption that `c±d` are squares. Hence each quaternion algebra `A_d` is the
+trivial element of Br(Q), its local invariant is 0 everywhere, and the product of
+the four algebras is tautologically trivial. There are no nontrivial local
+invariants to run Hilbert reciprocity against.
+
+**Reason 2 — geometrically, all four points lie on the same conic, and local
+solubility is everywhere.** Write `c = e²`. Each AP `c±d` both squares gives
+`e² + d = A²`, `e² − d = B²`, so `A² + B² = 2e²`: every (A,B) lies on the **single
+conic** `X² + Y² = 2e²`. A ternary quadratic form / conic over Q has a rational
+point if and only if it has one over every completion (Hasse–Minkowski). The run
+already establishes that the full system is locally solvable mod every prime
+power (problem.md), so this conic is everywhere locally solvable and Hasse–
+Minkowski permits (indeed, `X=Y=e` gives a real point; and the run's oracle has
+found many `c±d`-both-square pairs, e.g. both realised AP differences in
+Bremner's 7-square witness) a rational point. There is **no local-to-global
+obstruction** at the level of a single conic over Q.
+
+**Why the literature moves beyond this.** A conic (genus 0) cannot carry a
+Brauer obstruction over Q; Brauer–Manin obstruction needs the **K3 surface**,
+exactly what the `brauer-manin-k3-surface` approach targets. The heuristic
+"additive relations might force a nontrivial product" contradicts the fact that
+the four algebras are *individually* the zero element of Br(Q); a product of zeros
+is zero no matter how the ADDITIVE relations are arranged.
+
+## Precedent
+
+- Quaternion-algebra / Hilbert-symbol framework (standard): any quaternion
+  algebra (a,b) over Q splits iff it splits at every place; Hilbert reciprocity
+  says the sum of local invariants is 0 (a tautology over Q — it is *always*
+  true, so it cannot obstruct anything by itself). Sources:
+  - Lam, "Introduction to Quadratic Forms over Fields", for Hilbert symbols;
+  - Hasse–Minkowski theorem for ternary forms/conics over Q.
+- The conclusion matches the run's own `Ruled out` entry: "Pure modular/local
+  sieves cannot prove non-existence — the system is locally solvable mod every
+  prime power." This candidate is exactly a local-solubility argument and dies on
+  the same ground.
+
+## What the refutation establishes
+
+A proof of non-existence **cannot** come from Q-level quaternion algebras / a
+single-conic obstruction: the AP conditions make every such algebra trivial and
+local solubility is global. Any surviving obstruction must be attached to the
+higher-dimensional variety itself (the K3 surface via Brauer–Manin), where
+`Br(S)/Br(Q)` can be nonzero even though `Br(Q) = 0`.
