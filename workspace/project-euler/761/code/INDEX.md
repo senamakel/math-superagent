@@ -20,6 +20,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `k_sequence_exact.py` | _(undescribed)_ |
 | `patseq_deg.py` | _(undescribed)_ |
 | `patseq_k.py` | Computes K(n) (stewbasic critical-speed cutoff index) for regular n-gons n=3..60 with mpmath dps=50, printed as a comma list. K(n)=largest k in [0,n] with sin(k*pi/n)-(k+n)tan(pi/n)cos(k*pi/n)<0. Correct per the definition; cross-checked against an exact sympy route for the same range (identical output) and matches known K values (K(4)=1, K(6)=2, K(3)=1). |
+| `patseq_k_recurrence_falsify.py` | Finds the exact first n where the empirically-observed K(n) order-8 recurrence fails (n=86) and where K(n)!=floor(3n/7) (also n=86), with valid anchors K(3..10). This is the falsifying term for the period-7 structure conjecture. |
 | `pattern_V_closedforms.py` | _(undescribed)_ |
 | `pattern_asymptotic.py` | _(undescribed)_ |
 | `pattern_asymptotic2.py` | _(undescribed)_ |
