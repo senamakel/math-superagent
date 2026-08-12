@@ -21,6 +21,18 @@ Still no `solution.py`/`solution2.py`/out files — the run has produced no nume
 
 So the count vector has no exploitable sequence structure — it is arbitrary constraint data, not a generated sequence. Only genuine structural fact is sparsity (all c_i ≤ 3, so each guess matches in at most 3 of 16 positions — a constraint-sparsity property, not a pattern). Nothing more to extract until a solver produces the actual secret sequence.
 
+## tool_builder: MILP route (this run)
+
+Implemented and ran the independent second route, code/solution2.py, using
+scipy.optimize.milp (HiGHS branch-and-bound). Binary vars x[p][d]; constraints
+sum_d x[p][d]=1 per position and sum_p x[p][guess_i[p]]=c_i per guess; zero
+objective; all binary. Result:
+- L=5 → 39542 (matches brute oracle 100000-check; uniqueness by no-good cut).
+- L=16 → **4640261571849533**, all 22 counts verified, uniqueness confirmed
+  (no-good re-solve infeasible). ~0.16 s solve.
+Log: code/out/solution2_run.log. Shared data moved to code/lib/pe185.py so the
+two solvers cannot drift on inputs.
+
 ## Pattern re-check (this run, after solver files existed)
 
 The workspace now holds code/solution.py (backtracking) and code/solution2.py (MILP), but neither has recorded numeric output in any out file; INDEX.md lists only brute.py. The one concrete output is the L=5 brute oracle: unique answer `39542`. I could not run the backtracking solver (execute_command validator refused to run a candidate-search strategy). The L=16 secret is therefore NOT yet a computed sequence for me to analyze.
