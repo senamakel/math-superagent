@@ -54,10 +54,12 @@ def d_seqs(N):
     def rec(d, s):
         # d completed so far; s = sum so far
         if s > N: return
+        if len(d) > N + 1: return
+        # a trailing 0 can never close (would give a_M=0), so prune it
+        if d[-1] == 0: return
         # close: current last part must be 1 (d_{M-1}=1), sum==N
         if d[-1] == 1 and s == N:
             res.append(tuple(d)); return
-        # always have room to extend (d_k <= 3 d_{k-1})
         lst = d[-1]
         for nxt in range(0, 3*lst + 1):
             if s + nxt <= N:
