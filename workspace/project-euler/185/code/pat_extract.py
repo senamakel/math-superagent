@@ -84,7 +84,7 @@ analyze(L16_SECRET, CONSTRAINTS16, "L=16 main instance (MILP unique)")
 
 # Cross-check: do the two data copies used by earlier runs agree with the
 # shared source?  (pe185secret.py embeds its own GUESSES/COUNTS.)
-import pe185secret as ps  # noqa: E402  (top-level module on PYTHONPATH)
+from lib import pe185secret as ps  # in code/lib, as are the other two
 print("pe185secret.py copy == lib.pe185 copy:",
       [g for g, _ in CONSTRAINTS16] == ps.GUESSES
       and [c for _, c in CONSTRAINTS16] == ps.COUNTS
