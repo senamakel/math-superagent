@@ -387,7 +387,11 @@ a turn with text but no tool call. The two share a ceiling rather than compose, 
 `MAX_CAP_GROWTH` is measured from the run's *configured* turn cap, passed with `with_turn_cap`,
 not the cap the request carries: read as an original, a turn upstream had already doubled
 doubled again and a live `goals` reached a 48,000-token re-issue — four times the ceiling,
-against a wrapper documented to allow twice. The inventor's 32000 tops out at 64000.
+against a wrapper documented to allow twice. The inventor's 32000 tops out at 64000. The re-issue also *says why*: room alone is not the
+fix, since `cut_off` requires no tool call at all and a turn doing real work emits tool calls,
+so what arrives here is usually an essay and a doubled budget buys a longer one — PE236's
+`tool_builder` truncated at 12,000, was re-issued at 24,000, and had written nothing five
+minutes later. It is appended as a system message so it is the most recent thing said.
 
 A timeout is a safety ceiling, not permission to run an intractable approach. Before
 substantial execution the tool-builder must state both time and space complexity;
