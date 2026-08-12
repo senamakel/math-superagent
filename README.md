@@ -503,25 +503,28 @@ assistant when the stakes justify it.
 
 ## Docker Compose stack
 
-`./agent` uses [`compose.yaml`](compose.yaml) to run four services:
+`./agent` uses [`compose.yaml`](compose.yaml), and by default it starts exactly
+one service: `agent`, the Rust orchestrator and its specialist tools.
+`docker compose config --services` returns `agent` alone.
 
-- `agent` is the Rust orchestrator and its specialist tools.
-- `cognee` is the local memory API. It builds a knowledge graph from durable
-  research notes, learnings, and scoped agent-session records using DeepSeek V4
-  Flash through OpenRouter; `cognee-data`
-  persists that graph and its vector index across containers and workspaces.
-- `neo4j` persists Cognee's knowledge graph without relying on an embedded
-  database extension download during startup.
-- `cognee-ui` is Cognee's experimental local web UI at
-  `http://localhost:3000`; its API is bound locally at `http://localhost:8000`.
+The memory server is **shared rather than per-checkout**. Cognee scopes its graph
+by project, so one instance serves every checkout on the box with the datasets
+kept apart; `compose.yaml` joins an external network named by `COGNEE_NETWORK`
+(default `cognee-local_default`) and reaches it as `cognee:8000`. There is no
+`depends_on`: the memory server outlives any one run, and a run must never be
+able to take it down.
+
+The self-hosted stack — `cognee`, its Neo4j graph store, and the experimental UI
+on `http://localhost:3000` — is still defined but parked behind
+`--profile own-memory`. Starting a second copy beside the shared one is a
+failure rather than a preference: both bind the same local ports, so the second
+does not come up, and running two graph stores against one project splits the
+run's memory in half.
 
 Cognee publishes a native Rust SDK, but it is an embedded engine rather than a
-client for a running Cognee service. The agent therefore uses Cognee's `/api/v1`
-HTTP contract so it and the UI always read and write the same service-owned
-database instead of opening independent embedded stores.
-
-Stop the background services with `docker compose down`. Add `--volumes` only
-when you deliberately want to erase Cognee's saved memory and graph.
+client for a running service. The agent therefore uses Cognee's `/api/v1` HTTP
+contract, so it and the UI always read and write the same service-owned database
+instead of opening independent embedded stores.
 
 ## Docker boundary
 
@@ -532,7 +535,8 @@ restrictions:
 - `no-new-privileges` is enabled;
 - the container root filesystem is read-only;
 - process count and memory are capped;
-- only the local `workspace/` directory is mounted read-write at `/workspace`;
+- only the selected `workspace/` subdirectory is mounted read-write at
+  `/workspace`;
 - the repository and Docker socket are not mounted.
 
 Network access stays enabled because OpenRouter, Exa, and Langfuse require it.
@@ -550,40 +554,22 @@ langfuse-turns              recorded-turn query helper
 langfuse-review             recorded-turn review helper
 Dockerfile                  build and runtime jail
 compose.yaml                agent, Cognee UI/API, and Neo4j services
-scripts/run-agent           helper implementation
-scripts/solve-euler         fetch and solve workflow
-scripts/solve-conjecture    open-conjecture run workflow
+scripts/                    the helpers' implementations
 workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, and config
+src/prompts/                built-in role prompts, included at compile time
+src/agent/                  TinyAgents facade, OpenRouter, budget, tracing
+src/orchestrator/           registry, specialists, workspace and document tools
 src/bin/euler_tui.rs        the tabbed console, behind the `tui` feature
-src/
-├── prompts/                built-in role prompts, included at compile time
-├── agent/                  TinyAgents facade, OpenRouter, Langfuse
-│   ├── accounting.rs       per-call provider, token, and cost accounting
-│   ├── budget.rs           per-run call, wall-clock, and capture policy
-│   ├── reflection.rs       in-run middleware that reflects on failing tools
-│   ├── resilient.rs        tool-error and request-timeout wrappers
-│   ├── sticky.rs           provider affinity that keeps the prompt cache warm
-│   └── trace.rs            live console and trace.jsonl event listener
-├── orchestrator/           registry, specialists, compression, workspace tools
-│   ├── async_subagents.rs  graph-backed spawn, peek, steer, and await controls
-│   ├── solutions.rs        graph-backed attempt/reflect/diversify loop
-│   ├── documents.rs        bounded workspace document storage and search
-│   ├── readable.rs, digest.rs   HTML/PDF to Markdown; the digest of a download
-│   ├── claims.rs, threads.rs    what the library establishes; where it is going
-│   ├── frontier.rs, requests.rs what it cites; what the run is short of
-│   ├── oeis.rs             sequence lookup, filed and cross-referenced
-│   ├── folder_index.rs     optional indexes for artifact/code folders
-│   └── patch.rs, patterns.rs, checkpoint.rs, vector.rs   Cognee and the rest
-├── hello_agent/            small single-agent example
-├── error/                  crate-wide errors
-└── lib.rs                  public Rust API
-examples/
-├── orchestrator.rs         Docker runtime entry point
-├── dump_prompts.rs         host-side prompt renderer behind `./agent prompts`
-└── hello_agent.rs          direct single-agent example
+examples/                   the Docker entry point and two direct examples
+docs/                       the rationale behind the rules in AGENTS.md
 vendor/tinyagents/          pinned TinyAgents submodule
 ```
+
+[`docs/runtime.md`](docs/runtime.md) carries the module-by-module map and says
+what each one is responsible for. It lives there rather than here because a
+file-level tree in a README drifts silently: nothing fails when a module is
+added, so the map quietly stops describing the crate.
 
 The crate deliberately leaves out TinyAgents memory domains, channels, Web3,
 SQLite persistence, REPL, and RLM features. The goal is a small mathematical
@@ -591,7 +577,7 @@ research runtime, not a general agent platform.
 
 ## Development
 
-Initialize the vendored dependency and run the same checks as CI:
+Initialize the vendored dependency and run the build contract:
 
 ```sh
 git submodule update --init --recursive

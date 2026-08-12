@@ -252,8 +252,9 @@ The research agent gets Exa and both Qdrant note tools. The tool-builder gets
 workspace file and command tools. The orchestrator gets specialist delegation
 tools, not direct shell access. Recall is the one thing granted broadly rather
 than narrowly, and the argument for it is the same one: reading what the run
-already established is how a role avoids re-establishing it. See *Recall: the
-two ways back into what is known* for who is excluded and why.
+already established is how a role avoids re-establishing it. See
+[*Recall: the two ways back into what is known*](docs/roles.md#recall-the-two-ways-back-into-what-is-known)
+for who is excluded and why.
 
 For a new tool:
 
