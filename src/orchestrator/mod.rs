@@ -657,7 +657,31 @@ fn standing_teams() -> [(
 /// like it had something fresh to read — the team would wake itself up forever
 /// on its own notes. That is now free rather than arranged, because its scratch
 /// went to `note_scratch` and is no longer a file in the workspace at all.
+///
+/// `code/out` sits inside `code`, so it is walked twice. That is deliberate
+/// rather than an oversight: [`teams::fingerprint`] stops after a fixed number
+/// of files, and naming the output folder separately gives it a budget of its
+/// own. Without that, a `code/` grown past the cap could hide every result the
+/// team exists to read behind the programs that produced them. Hashing the same
+/// bytes twice is free and changes nothing about the comparison.
 const RESULT_FOLDERS: [&str; 2] = ["code/out", "code"];
+
+/// Reads a team's last-seen fingerprint, recovering a poisoned lock.
+///
+/// A poisoned lock means some thread panicked while holding it, not that the
+/// value inside is unusable — it is one `Option<u64>`, written under the guard
+/// with nothing between that can fail. Treating the poison as "unknown" is what
+/// costs something: the caller read it as *changed*, so the team ran, and
+/// because the same read is what stores the new fingerprint, it stayed changed.
+/// One panic anywhere would have turned an idle gate into a model call every
+/// cycle for the rest of the run — the exact expense the gate exists to avoid.
+fn last_seen(
+    analysed: &Arc<std::sync::Mutex<Option<u64>>>,
+) -> std::sync::MutexGuard<'_, Option<u64>> {
+    analysed
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+}
 
 /// Whether the run's computed results are the same as last time this looked.
 ///
@@ -686,7 +710,7 @@ fn results_unchanged(
         return Some(teams::Cycle::Idle);
     }
     let current = std::hash::Hasher::finish(&hasher);
-    let mut seen = analysed.lock().ok()?;
+    let mut seen = last_seen(analysed);
     if *seen == Some(current) {
         return Some(teams::Cycle::Idle);
     }
@@ -708,7 +732,7 @@ fn workspace_unchanged(
     excluded: &[&str],
 ) -> Option<teams::Cycle> {
     let current = teams::fingerprint_excluding(workspace, excluded);
-    let mut seen = analysed.lock().ok()?;
+    let mut seen = last_seen(analysed);
     if *seen == Some(current) {
         return Some(teams::Cycle::Idle);
     }

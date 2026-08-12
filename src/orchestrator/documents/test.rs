@@ -383,10 +383,10 @@ async fn serving(body: Vec<u8>, declare_length: bool) -> Result<String> {
         tinyagents::TinyAgentsError::Tool(format!("failed to read test listener address: {error}"))
     })?;
     tokio::spawn(async move {
+        use tokio::io::{AsyncReadExt as _, AsyncWriteExt as _};
         let Ok((mut socket, _)) = listener.accept().await else {
             return;
         };
-        use tokio::io::{AsyncReadExt as _, AsyncWriteExt as _};
         // Read the request before answering it. Closing a socket that still
         // holds unread bytes makes the kernel send RST rather than FIN, and an
         // RST discards whatever the peer has not yet read — so a small response
