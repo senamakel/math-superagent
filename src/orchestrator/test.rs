@@ -4,9 +4,9 @@
 use super::exec::validate_complexity;
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, DELEGATES, GOALS_PROMPT,
-    LEAN_PROVER_PROMPT, ORCHESTRATOR_PROMPT, SAT_SOLVER_PROMPT, SMT_SOLVER_PROMPT, SPECIALISTS,
-    SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT, compression_policy, default_registry,
-    role_context, workspace_prompt,
+    INVENTION_BENCH, LEAN_PROVER_PROMPT, ORCHESTRATOR_PROMPT, REASONING_ROLES, SAT_SOLVER_PROMPT,
+    SMT_SOLVER_PROMPT, SPECIALISTS, SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT,
+    compression_policy, default_registry, role_context, workspace_prompt,
 };
 use crate::agent;
 
@@ -1012,5 +1012,75 @@ fn every_role_with_memory_can_query_the_graph_and_not_only_the_chunks() -> agent
             "{role} can read memory but never write it"
         );
     }
+    Ok(())
+}
+
+/// The stronger model goes to the roles whose output is a judgement nothing
+/// mechanical can check, and only while they stay cheap.
+///
+/// Asserted rather than left to the constant's own comment, because the
+/// expensive mistake here is silent: adding a role to the list costs money on
+/// every run and nothing fails to say so.
+#[test]
+fn the_reasoning_model_reaches_the_judgement_roles() {
+    for role in ["inventor", "judge", "reflection", "director"] {
+        assert!(
+            REASONING_ROLES.contains(&role),
+            "{role} judges and should be on the reasoning model"
+        );
+    }
+}
+
+/// The roles kept off it, each for a reason the constant records: the curator
+/// is a run's measured top consumer and runs on a schedule, the library roles
+/// read whole documents, and the rest execute or drive rather than judge.
+#[test]
+fn the_reasoning_model_is_kept_from_the_expensive_and_the_mechanical() {
+    for role in [
+        "context_curator",
+        "scholar",
+        "research",
+        "librarian",
+        "pattern_finder",
+        "tool_builder",
+        "coder",
+        "goals",
+        "orchestrator",
+    ] {
+        assert!(
+            !REASONING_ROLES.contains(&role),
+            "{role} would put the expensive model on frequent or bulk work"
+        );
+    }
+}
+
+/// Every role on the reasoning model must be one the runtime actually
+/// registers, or the list is quietly describing a role that does not exist.
+#[test]
+fn every_reasoning_role_is_a_registered_agent() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    for role in REASONING_ROLES {
+        assert!(
+            registry.get(role).is_some(),
+            "{role} is on the reasoning model but is not registered"
+        );
+    }
+    Ok(())
+}
+
+/// The inventor's bench must name a registered agent too, for the same reason:
+/// a spawn at a name nothing answers to is a failure the run only finds live.
+#[test]
+fn the_inventors_bench_is_a_registered_agent() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    for role in INVENTION_BENCH {
+        assert!(
+            registry.get(role).is_some(),
+            "the inventor may delegate to {role}, which is not registered"
+        );
+    }
+    // Bounded at one level: the bench holds a role that cannot itself delegate.
+    assert_eq!(INVENTION_BENCH.len(), 1);
+    assert!(!SPECIALISTS.contains(&"goals"));
     Ok(())
 }

@@ -107,6 +107,35 @@ const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
 /// generate possibilities.
 const INVENTION_BENCH: [&str; 1] = ["research"];
 
+/// Roles that run on the stronger reasoning model rather than the run's
+/// default.
+///
+/// The test for membership is two questions, and a role has to pass both. Is
+/// its output a *judgement* no tool can check — as against a report of what a
+/// program did, which the method policy already routes through something
+/// mechanical? And is it cheap: short output, few calls, and not on a schedule?
+///
+/// - `inventor` — whether a reformulation is genuinely different, whether a
+///   theorem's hypotheses hold here, whether the literature suggests something
+///   better than what was proposed. Runs only at a diversify.
+/// - `judge` — scores how an attempt was conducted and rarely stops the run.
+///   Capped at twelve calls and five minutes, and answers in four lines.
+/// - `reflection` — solved, progressed, and now what *kind* of progress. That
+///   last one decides whether a run reporting progress every attempt is sent to
+///   diversify anyway, and telling a new bound from a new fact is exactly the
+///   subtle call a fast model gets wrong. Its output is three fields and a
+///   sentence.
+/// - `director` — reads a human directive against what the run is doing.
+///   Housekeeping's budget, and it only wakes when somebody steers.
+///
+/// Deliberately excluded, each for a stated reason. `context_curator` is a
+/// judgement role and fails the second question outright: it is the measured
+/// top consumer of a run, once at 28 model calls, and it runs on a schedule.
+/// `scholar` and `research` read whole documents, so their turns are large.
+/// `pattern_finder` and the code writers execute rather than judge, and the
+/// planners drive every turn of the run.
+const REASONING_ROLES: [&str; 4] = ["inventor", "judge", "reflection", "director"];
+
 /// Agents the top-level orchestrator may delegate to directly.
 const DELEGATES: [&str; 14] = [
     "research",
@@ -1727,6 +1756,21 @@ struct SupportAgents<'a> {
     delegation: Vec<Arc<dyn Tool<()>>>,
 }
 
+impl SupportAgents<'_> {
+    /// The model `role` runs on.
+    ///
+    /// One place decides it, so which roles are on the stronger model is a
+    /// list to read rather than a property to reconstruct from five call
+    /// sites. See [`REASONING_ROLES`].
+    fn model_for(&self, role: &str) -> Arc<dyn ChatModel<()>> {
+        if REASONING_ROLES.contains(&role) {
+            self.reasoning.clone()
+        } else {
+            self.model.clone()
+        }
+    }
+}
+
 /// Role prompts for the four agents the solution loop adds.
 struct SupportPrompts {
     reflection: String,
@@ -1751,7 +1795,7 @@ fn register_pattern_agent(
     prompt: String,
 ) -> Result<()> {
     let mut pattern = specialist_harness(
-        parts.model.clone(),
+        parts.model_for("pattern_finder"),
         parts.budget,
         "pattern_finder",
         parts.tracer,
@@ -1808,7 +1852,7 @@ fn register_support_agents(
     prompts: SupportPrompts,
 ) -> Result<()> {
     let mut reflection = specialist_harness(
-        parts.model.clone(),
+        parts.model_for("reflection"),
         parts.budget,
         "reflection",
         parts.tracer,
@@ -1823,7 +1867,7 @@ fn register_support_agents(
     // judge that can start solving stops judging. It reads the workspace only
     // to check a claim in the report against what is on disk.
     let mut judge = specialist_harness(
-        parts.model.clone(),
+        parts.model_for("judge"),
         parts.budget.for_judging(),
         "judge",
         parts.tracer,
@@ -1842,7 +1886,7 @@ fn register_support_agents(
     // default. Everything else about its harness is the same, so the swap is
     // one argument and is visible here rather than buried in a config table.
     let mut inventor = specialist_harness(
-        parts.reasoning.clone(),
+        parts.model_for("inventor"),
         parts.budget,
         "inventor",
         parts.tracer,
@@ -1865,7 +1909,7 @@ fn register_support_agents(
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
     let mut librarian =
-        specialist_harness(parts.model.clone(), parts.budget, "librarian", parts.tracer);
+        specialist_harness(parts.model_for("librarian"), parts.budget, "librarian", parts.tracer);
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut librarian, exa);
     }
@@ -1882,7 +1926,7 @@ fn register_support_agents(
     // keeps it digesting the library the run already has instead of drifting
     // into another search, which is the librarian's job and already done.
     let mut scholar =
-        specialist_harness(parts.model.clone(), parts.budget, "scholar", parts.tracer);
+        specialist_harness(parts.model_for("scholar"), parts.budget, "scholar", parts.tracer);
     for tool in parts.documents.tools() {
         register_resilient(&mut scholar, tool);
     }
@@ -1916,7 +1960,7 @@ fn register_support_agents(
     // single cycle cost eleven model calls. Frequency and length are separate
     // axes and both need a bound; this is the second one.
     let mut curator = specialist_harness(
-        parts.model.clone(),
+        parts.model_for("context_curator"),
         parts.budget.for_housekeeping(),
         "context_curator",
         parts.tracer,
@@ -1936,7 +1980,7 @@ fn register_support_agents(
     // turned into eleven model calls of its own would make asking for
     // something the most expensive thing an operator can do.
     let mut director = specialist_harness(
-        parts.model.clone(),
+        parts.model_for("director"),
         parts.budget.for_housekeeping(),
         "director",
         parts.tracer,
