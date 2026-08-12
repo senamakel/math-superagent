@@ -1,1 +1,0 @@
-<!-- ERRONEOUS DOWNLOAD. arXiv 2110.01958 is an unrelated CS paper (Elasticsearch entity recognition), NOT Pinsky's inversion paper. Do not cite. The correct source is filed as pinsky_inversion_fixed_points.full.md (DOI 10.37236/14250). -->

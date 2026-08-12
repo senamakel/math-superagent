@@ -1,1 +1,0 @@
-<!-- ERRONEOUS DOWNLOAD: arXiv 2110.01958 is NOT Pinsky's inversion paper; it is an unrelated CS paper on Elasticsearch affiliation disambiguation. Keep out of the library. The correct source is the EJC DOI 10.37236/14250, filed as pinsky_inversion_fixed_points.full.md. -->
