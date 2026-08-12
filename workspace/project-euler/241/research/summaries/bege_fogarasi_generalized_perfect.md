@@ -1,30 +1,17 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/bege_fogarasi_generalized_perfect.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Bérges & Fogarasi — Generalized perfect numbers (arXiv abstract page)
 
-<!-- source: https://arxiv.org/abs/1008.0155 | converted from HTML -->
+**Source:** https://arxiv.org/abs/1008.0155 — `[[bege_fogarasi_generalized_perfect.full]]`
+(A. Bérges, B. Fogarasi, "Generalized perfect numbers", arXiv:1008.0155).
 
-## What is in it
+The digest only captured the arXiv landing page (the actual abstract text is not present
+in the excerpt). Bibliographic: authors consider generalizations of perfect numbers
+(σ(n)=kn and variants).
 
-- Mathematics > Number Theory
-- Title: Generalized perfect numbers
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+## Assessment
 
-
-## What it claims
-
-Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
-
-Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][38].
-
-[Which authors of this paper are endorsers?][39] | Disable MathJax ( [What is MathJax?][40])
-
-*[digest of a 5456 character source; every section, statement, and proof in full at `research/sources/bege_fogarasi_generalized_perfect.full.md`]*
+The full text is on disk but the abstract-page digest carries no statement.
+This is a peripheral "generalized perfect numbers" paper in the same σ-linear-equation
+family already covered authoritatively by Alekseyev's complete machinery
+(`[[alekseyev_diophantine_sigma_html]]`) and Flammenkamp. It contributes no bound or
+method that the run lacks, and no numeric value below 1e18. Treat as background only;
+do not open the full text for the solver.

@@ -141,9 +141,10 @@ pub(super) async fn run(
         .add_node("judge", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = judge_agents.clone();
             let tracer = judge_tracer.clone();
+            let workspace = judge_workspace.clone();
             async move {
                 Ok(NodeResult::Update(
-                    judge_step(&subagents, tracer.as_ref(), state).await,
+                    judge_step(&subagents, tracer.as_ref(), workspace.as_deref(), state).await,
                 ))
             }
         })
