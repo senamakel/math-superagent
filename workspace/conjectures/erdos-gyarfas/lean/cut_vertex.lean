@@ -102,12 +102,11 @@ lemma cycle_middle_avoids_v {G : SimpleGraph V} [DecidableEq V]
   have hv' : v ∈ (p.tail.support).dropLast := by rwa [hsupp] at hv
   -- tail.support = dropLast ++ [v]  (v is the last element of the support)
   have hne : (p.tail.support) ≠ [] := List.ne_nil_of_mem hmem
-  have hlast' : (p.tail.support).getLast hne = v := by
-    simp [p.tail.getLast_support]
   have hsplit : (p.tail.support).dropLast ++ [v] = (p.tail.support) := by
     have hg : (p.tail.support).dropLast ++ [(p.tail.support).getLast hne] = (p.tail.support) :=
       List.dropLast_append_getLast hne
-    simp [hlast']
+    simp [show (p.tail.support).getLast hne = v by
+      simpa using (p.tail.getLast_support)]
   have hcount2 : 2 ≤ (p.tail.support).count v := by
     rw [← hsplit]
     rw [List.count_append, List.count_cons_self]
