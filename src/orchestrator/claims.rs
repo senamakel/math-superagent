@@ -395,6 +395,28 @@ fn walk(root: &Path, directory: &Path, depth: usize, budget: &mut usize, ledger:
 }
 
 impl Ledger {
+    /// How many claims this run established itself, by proof or by computation.
+    pub(super) fn established(&self) -> usize {
+        self.count(|status| matches!(status, Status::Proved | Status::Checked))
+    }
+
+    /// How many claims rest on a source's word alone.
+    pub(super) fn asserted(&self) -> usize {
+        self.count(|status| status == Status::Asserted)
+    }
+
+    /// How many claims were read out of a catalogue rather than derived.
+    pub(super) fn catalogued(&self) -> usize {
+        self.count(|status| status == Status::Catalogued)
+    }
+
+    fn count(&self, wanted: impl Fn(Status) -> bool) -> usize {
+        self.claims
+            .iter()
+            .filter(|claim| wanted(claim.status))
+            .count()
+    }
+
     /// Renders the table routed into the roles that reason about the library.
     pub(super) fn render(&self) -> String {
         let mut out = String::from(
