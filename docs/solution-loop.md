@@ -498,11 +498,9 @@ script rather than an `ENV LEAN_PATH`, because the value is the search path of
 every Mathlib dependency and is known only after the build ran — `ENV` cannot
 take a command substitution, and without the full path an `import Mathlib.…`
 fails on `unknown module prefix 'Batteries'`, which reads as a broken install
-rather than a missing variable. The image is smoke-tested on both at build
-time, so a Lean install that cannot import Mathlib fails the build rather than
-the run.
+rather than a missing variable. The image is smoke-tested on both at build time,
+so a Lean install that cannot import Mathlib fails the build rather than the run.
 
-Two more failure modes on the same class of tool
-are worth stating: a truncated tool call and a corrupt document index. Both are
-covered under the reflection middleware and `documents.rs` respectively, and
-neither may be allowed to end a run.
+Two more failure modes on the same class of tool are worth stating: a truncated
+tool call and a corrupt document index. Both are covered under the reflection
+middleware and `documents.rs` respectively, and neither may end a run.
