@@ -24,65 +24,59 @@ velocity ratio, teeth align with grooves. `g(c,s,p,q)` = number of valid
 arrangements (finite; only discrete positions mesh). `G(n)=Σ_{s+p+q≤n} g(s+p+q,
 s,p,q)`, p<q, p,s ≥5. Worked: g(16,5,5,6)=9, G(16)=9, G(20)=205; target G(500).
 
-**Working model — concrete and implemented, NOT yet run against the oracle.**
-`C` at the origin, radius R=c/2π; `S` at (d,0), radius r=s/2π. The free
-parameter is the centre distance d (S↔C offset); the ≥1cm gap gives
-R−r−d ≥ 1. A planet of circumference m (ρ=m/2π) tangent internally to C and
-externally to S has its centre on circle(O, R−ρ) ∩ circle(S, r+ρ) — up to two
-points, mirror images across the line of centres. So each planet type has two
-forced candidate positions; a chosen d fixes the four planet positions. This
-(not a free "plane lattice") is the discrete configuration space.
-
-**Meshing reduces to a single scalar condition (derived in `lib/gears.py`,
-unverified).** The four planets give 8 tooth-alignment congruences in 6 gear
-phases; eliminating the phases (integer 3-dim left nullspace of the 8×6 matrix)
-leaves three consistency conditions that must all be (near-)integers:
-`2F_p, 2F_q, H ∈ ℤ (mod 1)`, where F_m = β_m·R − γ_m·r − T_m and H = (β_p−β_q)·R
-− (γ_p−γ_q)·r − (T_p−T_q), with β the planet's angle about O, γ its angle about
-S, T the planet arc between its two contacts. `g_count` scans the d-interval and
-counts d* where these hold (excluding degenerate d where a type's two positions
-coincide). This is the brute/oracle route; the exact d-solver does not exist yet.
-
-**Least mesh angle (sourced, holds-here true, reconciles with the model).** The
-sourced β = 2π/(s+c) is the angular step keeping planets meshed; Drivetrain Hub
-gives it as tick angle 2π/(z₁−z₃) with z₃ *negative* for an internal gear, i.e.
-2π/(z₁+|z₃|) = 2π/(sun+ring) — consistent with UTS and Gear Solutions, no
-contradiction. Claims `least_mesh_angle*` in `research/CLAIMS.md`.
-
-**Planet-center locus is an ellipse (sourced, holds-here true)**, foci at C and
-S centres, major semiaxis (c+s)/4π (p cancels); the equivalent two-circle
-framing above is what gears.py actually uses. Claim `tangent_circle_center_ellipse`.
+**The continuous centre-distance model is DEAD** (see Ruled out). The run's
+working hypothesis is now the **discrete least-mesh-angle lattice model**, not
+yet implemented: each planet meshes with both S and C only at angular positions
+about S's centre that are integer multiples of β = 2π/(s+c) (`least_mesh_angle*`
+claims, three independent sources). A planet of circumference m tangent to C
+internally and S externally has its centre on the ellipse with foci at C's and
+S's centres, major semiaxis (c+s)/4π (m cancels) (`tangent_circle_center_ellipse`).
+So each legal arrangement should be a lattice point (multiple of β) lying on that
+ellipse; g(c,s,p,q) is then a discrete count over such points. **This has not
+been implemented or checked against the oracle — nothing about it is verified.**
 
 ## Ruled out
 
-Nothing dead yet — but nothing is trusted either. The two-circle + phase-
-consistency model (`lib/gears.py`) is implemented yet has produced **no output**
-(`code/out/` empty): it has not reproduced 9/9/205, so the meshing/arrangement
-reading is still unconfirmed. Do not build on the model as fact until the oracle
-matches.
+**The continuous centre-distance model (code/lib/gears.py) — FAILED, checked.**
+It parametrizes each planet centre as circle(O, R−ρ) ∩ circle(S, r+ρ) with a
+single free centre-offset d (R=c/2π, r=s/2π), and derives the meshing condition
+as three phase-eliminated congruences `2F_p, 2F_q, H ∈ ℤ (mod 1)` holding at
+valid d. Running it gives **g(16,5,5,6)=0 vs stated 9**; a 20k-point scan found
+no non-degenerate valid d (global residual min only at the degenerate endpoint
+d=1/2π where the two same-size planets coincide). `oracle_test.py` reports all
+three oracle values DISAGREE (G(16): 0 vs 9 over 1 pair; G(20): 0 vs 205 over 22
+pairs). The parameterization itself misses all 9 arrangements — the intended
+models are NOT a single continuous d. Detail + claim `oracle_model_reproduces_zero`
+in `code/out/oracle-model-broken.md`; full test log `code/out/oracle_test.txt`.
+This is why the paid-but-continuous `lib/gears.py` oracle must be replaced by a
+discrete model.
 
 ## Numbers
 
-Oracle values from the statement — **still UNVERIFIED by any program** (no run
-output exists; `brute.py`/`solution.py` not written):
+Oracle values from the statement — reproduced by **no** program yet (the discrete
+oracle does not exist):
 - g(16,5,5,6) = 9,  G(16) = 9,  G(20) = 205,  target G(500).
-`lib/gears.py` computes g(c,s,p,q) by continuous d-grid scan (mpmath/scipy); it
-must reproduce these before the exact method is trusted.
+The only computed numbers on disk are the *failures*: gears.py returns 0 for all
+values it touches. Each (c,s,p,q) pair with s+p+q≤20, s,p≥5, p<q has g=0 under
+the dead model (listed in `code/out/oracle_test.txt`).
 
 ## Recalled
 
-Durable Cognee memory holds the four gear-geometry source cards backing the
-above claims (Drivetrain Hub, UTS, Gear Solutions, Cut-the-Knot). Scratch and
-memory both confirm **no computed terms exist yet** — pattern/sequence analysis
-is blocked until `code/out/` holds real g/G output. No prior PE620 result is
-importable; the run's numbers must stand on its own computation.
+Durable Cognee memory holds the four gear-geometry source cards (Drivetrain Hub,
+UTS, Gear Solutions, Cut-the-Knot) backing the `least_mesh_angle*` and
+`tangent_circle_center_ellipse` claims, and the dead-model claim
+`oracle_model_reproduces_zero`. Scratch confirms no computed g/G sequence exists —
+pattern/sequence analysis stays blocked until the discrete model emits real terms.
+No prior PE620 result is importable; the run's numbers must stand on its own.
 
 ## Gaps
 
-- **Oracle not run**: gears.py exists in lib but nothing has executed it; no
-  `code/brute.py`, no `code/out/` files, so 9/9/205 unconfirmed.
-- **Exact method**: replacing the continuous d-grid scan with an exact/symbolic
-  way to find the d at which 2F_p,2F_q,H are integers, and summing G(500) without
-  enumerating all s+p+q ≤ 500 — cost must not grow with 500.
-- The ≥1cm gap (R−r−d ≥ 1) is a bound on d; how g counts distinct valid d (and
-  the forced four positions per d) enters the count is the model under test.
+- **No working oracle**: `brute.py`/`solution.py` don't exist. The discrete
+  lattice model must be implemented and reproduce 9/9/205 before anything is
+  trusted (completion criteria in `GOAL.md`, step 1).
+- **Exact method**: how the ellipse ∩ β-lattice intersection is counted exactly,
+  and how G(500) is summed without enumerating all s+p+q ≤ 500 — cost must not
+  grow with the bound 500.
+- Whether/how d (S↔C offset) and the ≥1cm gap enter the count is pinned by the
+  geometry (ellipse-focus separation = d), but the discrete counting detail is
+  open until the model runs.
