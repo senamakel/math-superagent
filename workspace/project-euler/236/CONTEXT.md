@@ -4,7 +4,9 @@ What this run knows and on what basis. Nearly every role is sent this file on ev
 
 ## Established
 
-**PE236 — Luxury Hampers (sourced: `problem.md`, official Project Euler statement).** Let a_i = count supplied by A of product i, b_i = count for B, s_i/t_i = respective spoiled counts. The single ratio m satisfies, for all five products i: t_i/b_i = m·(s_i/a_i) (B's per-product rate worse by m), and overall: (Σs_i)/(Σa_i) = m·(Σt_i)/(Σb_i) (A's overall rate worse by m), with m > 1 rational. All counts are integers; m determined by the smallest positive integers (s_i, t_i) consistent with the first five equalities. Supply data (computed, hand-checked):
+**PE236 — Luxury Hampers (sourced: `problem.md`, official statement at https://projecteuler.net/minimal=236).** a_i = count supplied by A of product i, b_i = count for B, s_i/t_i = respective spoiled counts; all integers with 1 ≤ s_i ≤ a_i, 1 ≤ t_i ≤ b_i. The single rational m > 1 satisfies, for all five products i: t_i/b_i = m·(s_i/a_i) (B's per-product rate worse by m), and overall: (Σs)/(ΣA) = m·(Σt)/(ΣB) (A's overall rate worse by the same m). Statement's worked oracle: 35 values of m exist; smallest = **1476/1475**; answer = the largest, reduced u/v.
+
+**Definition reading CONFIRMED (basis: `code/brute.py` run + `code/verify_oracle.py`; see code/INDEX.md).** The six equalities above with s_i/t_i = (a_i/b_i)/m per product reproduce count 35 and smallest 1476/1475, so the earlier "direction flip" uncertainty in this file is resolved. Supply data (gcds hand-verified):
 
 | i | product | a_i | b_i |
 |---|---------|-----|-----|
@@ -14,27 +16,29 @@ What this run knows and on what basis. Nearly every role is sent this file on ev
 | 4 | Vintage Port | 5760 | 3776 |
 | 5 | Champagne Truffles | 3936 | 5664 |
 
-**Numbers structure (computed + hand-checked):**
-- ΣA = 18880 = 2^6·5·59, ΣB = 15744 = 2^7·3·41, gcd = 64 → ΣA/ΣB in lowest terms = **295/246**.
-- Reducing all a_i, b_i by 32: A = 32·(164,41,82,180,123), B = 32·(20,59,118,118,177).
-- Per-product ratios R_i = a_i/b_i reduce to: 41/5, 41/59, 41/59, 90/59, 41/59. Prime factors of the five reduced ratios are within {2,3,5,41,59}.
-- Worked examples from the statement (the oracle): 35 values of m exist; smallest = **1476/1475**; answer = largest, a reduced fraction u/v.
+**Numbers structure (arithmetic hand-verified):** ΣA = 18880 = 2^6·5·59, ΣB = 15744 = 2^7·3·41, gcd 64 → ΣA/ΣB = **295/246**. Scaling by 32: A = 32·(164,41,82,180,123), B = 32·(20,59,118,118,177). Reduced per-product ratios R_i = a_i/b_i: **41/5, 41/59, 41/59, 90/59, 41/59** — primes {2,3,5,41,59} suffice for the ratios.
 
-**Problem shape (correct reduction, tentative — must be confirmed by `code/brute.py`):** per-product condition is B worse than A by factor m: t_i/b_i = m·(s_i/a_i), i.e. **s_i/t_i = R_i/m** for each i, with bounds 1 ≤ s_i ≤ a_i, 1 ≤ t_i ≤ b_i. NOTE THE DIRECTION FLIP (the paradox): per product B is worse by m, so (Σt)/(Σb) = m·(Σs)/(Σa) holds ONLY per product i.e. t_i/b_i = m·(s_i/a_i); overall A is worse by m, i.e. (Σs)/(Σa) = m·(Σt)/(Σb) ⟺ rate_B overall = rate_A / m. This matches GOAL.md and the statement; earlier text here had the overall direction flipped. For a candidate m = p/q, per product we need s_i/t_i = (a_i·q)/(b_i·p); feasibility per product needs the reduced numerator ≤ a_i and reduced denominator ≤ b_i (with the reduced fraction = (a_i·q)/(b_i·p)/gcd(a_i·q, b_i·p) times a common scale). The global constraint then couples the products. All 35 m fall between 1476/1475 and the largest; the largest is NOT known to be near 1 — do not assume a magnitude. Verify the final m against all six equalities exactly before reporting.
+**ORACLE COMPUTED — exactly 35 valid m; SMALLEST = 1476/1475 ≈ 1.0007; LARGEST = 123/59 ≈ 2.0847.** The full sorted 35-value list is embedded (identical, curator re-counted 35) in `code/verify_oracle.py`, `code/theory_check.py`, `code/factor_analysis.py`. Agreement by independent routes: `brute.py` (base product = Christmas Cake, fewest (s,t) pairs) and `verify_oracle.py` check B (base product = Beluga Caviar) return the same set; check A builds explicit spoilage witnesses (s_i,t_i) for all 35 and verifies all six equalities literally with Fraction arithmetic; check C re-confirms smallest/largest. Reference factorizations (hand-checked): 1476 = 2²·3²·41, 1475 = 5²·59, 123 = 3·41, 1003 = 17·59, 885 = 3·5·59, 1711 = 29·59.
+
+**Structural theorem — verified by `code/theory_check.py`, 0 mismatches vs direct enumeration on all 35 m (basis: code file, its own docstring).** For reduced m = p/q, per-product condition forces s_i/t_i = A_i·q/(B_i·p), so (s_i,t_i) = k_i·(c_i,d_i) with c_i = A_i·q/g_i, d_i = B_i·p/g_i, g_i = gcd(A_i·q, B_i·p). An integer solution exists **iff g_i ≥ max(p,q)**, and then 1 ≤ k_i ≤ K_i = g_i // max(p,q). The overall equality becomes the exact bounded 5-term condition Σ k_i·w_i = 0, w_i = q·ΣB·c_i − p·ΣA·d_i (subset-sum over each k_i ∈ [1,K_i]). This reduction is the engine of brute.py, theory_check.py, verify_oracle.py.
 
 ## Ruled out
 
-_Nothing failed yet — this run has not yet executed any code._
+- **"All m are built only from prime powers of the reduced-ratio primes {2,3,5,41,59}" — FALSIFIED** by the computed list (`code/factor_analysis.py` over all 35 values). Counter-examples in the list: 902/885 = 2·11·41/(3·5·59), 1230/1003 = 2·3·5·41/(17·59), 3321/3245 = 3⁴·41/(5·11·59), 2460/1711 = 2²·3·5·41/(29·59) — primes 11, 17, 29 appear. Any derived method must not assume prime support confined to {2,3,5,41,59}.
+- Nothing else has failed. Earlier draft claims here ("no code run yet", "largest not near 1 — do not assume") are superseded by the computed oracle above, not merely supplemented.
 
 ## Recalled
 
-Durable memory holds **nothing** on PE236 or on luxury-hamper/relative-prime-power-ratio problems (recalled 2026-04-25; all hits are from runs on PE597, EG conjecture, PE761 — unrelated). A failed cell from run PE597 is context only: "never use speed-order enumeration" — irrelevant to this problem's shape. Do not search the web for a published PE236 answer; that invalidates the run. `request_research` is available for named-theorem gaps (a likely one, if needed: "relative prime power fractions" / the structure of m = product of per-product reduced-ratio prime powers).
+- Pre-run durable memory (recalled 2026-04-25): nothing on PE236 or relative-ratio problems; all hits were PE597/EG/NO4 and unrelated. A PE597 failed cell ("never use speed-order enumeration") does not bear on this problem's shape.
+- This run has stored three durable memories in Cognee (source: the code files, this cycle): the oracle result (35 values, 1476/1475 smallest, 123/59 largest), the gcd-threshold structural theorem, and the falsified prime-support conjecture. Scratch holds only the earlier hand-gcd ratio analysis (session s18cb19a9a83edc64-1) — consistent with, and superseded by, the verified computation.
+- Do not search for a published PE236 answer; that invalidates the run.
 
 ## Gaps
 
-- No code has been run yet. Need: `code/brute.py` naive oracle (enumerates small s,t per product, computes all valid m by the exact six equalities, reproduces 1476/1475 and the count 35) — this validates the reading of the definition, then `code/solution.py` derived method at full size. Until the oracle reproduces 1476/1475 and 35, everything above on "numbers structure" is arithmetic without machine confirmation.
-- Open question for the derived method: exact structural characterization of all m (the 35) and a proof that the largest can be found without enumerating candidate m or spoilage counts up to any large bound. Candidate structure (conjectured, not yet proved): m's numerator/denominator are built from the prime powers of the five reduced ratios 41/5, 41/59, 90/59; candidates are all 2^a·3^b·5^c·41^d·59^e·(...) with numerator > denominator, checked against the linear constraint. This is the intended PE236 crux; do not brute force it.
+- **`code/solution.py` (derived, exact, full-size method) does not exist yet; TASKS.md is still a stub.** The oracle routes enumerate all (s,t) pairs of one base product (Christmas Cake: 2,477,056 pairs) — correct as oracle, wrong at scale per method policy. A method whose cost grows with a_i·b_i is prohibited; the intended crux is a structural characterization of the valid m using the gcd-threshold form g_i ≥ max(p,q) (a divisibility filter on candidates), not pair enumeration.
+- Completion criteria unmet only at the last step: brute.py reproduces the oracle; solution.py must agree with it and produce the largest at full size. **Largest = 123/59 so far rests on the two oracle routes only** (brute.py; verify_oracle.py checks A–C); solution.py agreement is the required third route before reporting.
+- `research/CLAIMS.md` is empty: the structural theorem is a verified result but no claim block has been written into a research note yet.
 
 ## Contradictions
 
-_None recorded — no independent sources or computations disagree yet._
+- None recorded: brute.py (both base products), theory_check.py, verify_oracle.py checks A–C, and the statement's own two examples all agree.
