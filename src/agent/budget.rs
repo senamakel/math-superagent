@@ -45,10 +45,28 @@ const DEFAULT_TOOL_MINUTES: u64 = 10;
 /// turn it was meant to shorten. A cap that trips routinely does not make a
 /// model concise, it makes it repeat itself.
 ///
-/// Twelve thousand sits above the largest turn observed (9,361) so real work
-/// is never cut off, while still bounding a pathological turn to a few
-/// minutes. Brevity is bought in the prompt, not here.
-const DEFAULT_TURN_OUTPUT_TOKENS: u32 = 12_000;
+/// Twelve thousand sat above the largest *visible* turn observed (9,361), and
+/// that was the wrong quantity to measure. This cap bounds total generated
+/// tokens, and on a reasoning model most of them are never visible: across
+/// 4,180 accounted calls on a live Erdős–Gyárfás run, **77.8%** of all output
+/// tokens went to the hidden reasoning channel (4,079,727 of 5,246,058). Every
+/// turn that reached the re-issue ceiling reported `out=24000` with
+/// `reasoning_tokens=23999` — one visible token. So a 12,000 cap was not
+/// budgeting twelve thousand tokens of answer; it was budgeting roughly 2,600,
+/// and cutting the model off mid-thought before it could act.
+///
+/// The measured distribution is heavily skewed rather than broadly large: over
+/// 152 turns, the median was 461 tokens and the 90th percentile 5,352. Only 3
+/// turns in 152 hit the cap. Raising it therefore costs nothing on the common
+/// path — a cap is not an allowance, and a turn that needs 500 tokens still
+/// takes 500 — while removing the ceiling from the 2% that were being
+/// truncated into a wasted re-issue.
+///
+/// Forty-eight thousand, and it stays a safety ceiling: generation is linear in
+/// output length, so this is also the wall clock for one turn. The evidence
+/// that it is not an invitation to spend is the same distribution — the median
+/// turn uses one percent of it.
+const DEFAULT_TURN_OUTPUT_TOKENS: u32 = 48_000;
 
 /// Attempts allowed for one model call, counting the first try.
 ///
@@ -132,6 +150,14 @@ const HOUSEKEEPING_TOOL_CALLS: usize = 300;
 /// inventor's wall clock. It is paired with a control that checks the files
 /// were actually written, because a larger cap buys room to comply and does
 /// not make complying more likely.
+///
+/// It now sits *below* [`DEFAULT_TURN_OUTPUT_TOKENS`], which measuring the
+/// reasoning channel raised to 48,000, so on a default run this is inert —
+/// [`RunBudget::for_invention`] takes the larger of the two. It is kept rather
+/// than deleted because it is a floor, not a value: an operator who narrows
+/// `MATH_AGENT_TURN_OUTPUT_TOKENS` for a cheap run narrows every role, and the
+/// inventor is the one whose product is the long turn. Deleting it would make
+/// that narrowing silently reintroduce the truncation it was written for.
 const INVENTION_TURN_OUTPUT_TOKENS: u32 = 32_000;
 
 // There is deliberately no housekeeping wall-clock ceiling. Narrowing one to
