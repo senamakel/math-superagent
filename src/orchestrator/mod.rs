@@ -923,8 +923,9 @@ fn support_agents(
         )
         .with_model("openrouter")
         .with_tools(
-            ["recall_memory", "relate_memory", SCRATCH_READ_TOOL]
+            [SCRATCH_READ_TOOL]
                 .into_iter()
+                .chain(memory_tools)
                 .chain(document_tools),
         ),
         AgentDefinition::new(
