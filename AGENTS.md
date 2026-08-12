@@ -784,7 +784,19 @@ security control; enforce boundaries in code and Docker configuration.
 Workspace contents are committed. The derivation, the program, and the per-run
 notes are the record of how an answer was reached, which is the point of the
 product, so they belong in history rather than only on the machine that produced
-them. Do not add a generated artifact to a source directory; leave it in its
+them.
+
+They belong in history, not in every commit. A live run writes into `workspace/`
+continuously, so a host-side auto-commit hook firing on each tool call turns
+that into commit spam: one measured hour produced 97 commits on `main`, 87 of
+them touching nothing but `workspace/`, with model-written subjects that did not
+always match their diffs — one read `remove outdated project euler problem 763
+files` for a change that removed nothing and added five lines to a prompt.
+`.claude/settings.json` therefore sets `AUTO_COMMIT_EVERY=25` for this
+repository. Everything is still committed and nothing is excluded; it is
+batched. The fine-grained record is not lost either, because the runtime keeps
+its own per-write checkpoint in each workspace's `.workspace-history`, which is
+what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a source directory; leave it in its
 workspace.
 
 Three things are ignored: `.python-packages/` (pip installs, which land in the
