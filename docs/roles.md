@@ -177,16 +177,25 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, `reflections/ROOT.md`, `reflections/INDEX.md` |
-| tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files plus `code/`, minus the threads and the reflection files |
-| judge | `GOAL.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
-| reflection | the judge's files plus `TASKS.md` and `reflections/ROOT.md` |
-| pattern_finder | `GOAL.md`, `MEMORY.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
-| librarian, research | `GOAL.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/FRONTIER.md`, `CONTEXT.md` |
-| inventor | the planners' research files plus `research/THREADS.md` and both reflection files |
-| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
-| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `SCRATCHPAD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
-| organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/INDEX.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md` |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files, minus the threads, plus `code/AGENTS.md` and `code/INDEX.md` |
+| judge | `GOAL.md`, `INDEX.md` |
+| reflection | the judge's files plus `TASKS.md` |
+| pattern_finder | `GOAL.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
+| librarian, research | `GOAL.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/FRONTIER.md`, `CONTEXT.md` |
+| inventor | `GOAL.md`, `research/THREADS.md`, `research/CLAIMS.md`, `CONTEXT.md` |
+| scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| organizer | none — it falls through to the empty default |
+
+That table is what `role_context` returns today, and it is narrower than what
+this document described for a long time. `MEMORY.md`, `research/ROOT.md`,
+`research/INDEX.md`, `reflections/ROOT.md`, and `reflections/INDEX.md` appear in
+no arm of the match, and the organizer has no arm at all. Whether the code or
+the older table is the mistake is **unresolved** — see the note below on the
+inventor, which is the case where it matters most — and it is recorded here
+rather than quietly reconciled, because a routing table that flatters the code
+is how a role comes to be missing the one file its prompt is written around.
 
 The tool-builder accumulates what a second program would repeat under
 `code/lib/`, one subject per module, described through `describe_file` so
