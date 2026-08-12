@@ -283,12 +283,11 @@ its `precedent`, and the inventor adopts one or synthesises a better one from
 what came back. The arm still runs beside the library arm's two, so a diversify
 costs roughly one extra child run rather than three.
 
-It was one inventor call before, concurrent with the library arm and blind to
-it. That produced a paragraph of prose, once, merged into the next attempt's
-context and then lost — so an idea proposed at attempt three could be proposed
-again at attempt six, and the literature check that would have killed it never
-happened. Writing to the approach ledger is what makes the next round start from
-what this one closed.
+It was one inventor call before, concurrent with the library arm and blind to it.
+That produced a paragraph of prose, once, merged into the next attempt's context
+and then lost — so an idea proposed at attempt three could be proposed again at
+attempt six, and the literature check that would have killed it never happened.
+The approach ledger is what makes the next round start from what this one closed.
 
 Asking for that write is not the same as getting it. The inventor's system
 prompt asks it to write each candidate before reporting, the arm's own prompt
