@@ -497,5 +497,4 @@ When changing prompts or agent behavior, keep these rules intact:
 13. Say when the evidence is incomplete. Never invent a theorem, citation, or
     computation result.
 
-The runtime is not a formal proof assistant. Do not describe sampled evidence or a
-floating-point experiment as proof.
+The runtime is not a formal proof assistant. Do not describe sampled evidence or a floating-point experiment as proof.
