@@ -90,6 +90,23 @@ const SPECIALISTS: [&str; 12] = [
 /// second investigation running beside the first.
 const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
 
+/// Agents the inventor may delegate to.
+///
+/// Only research, and that is the whole point rather than a restriction. A new
+/// line of attack has to be two things at once: different from what this run
+/// has tried, and not something the literature already closed. The inventor
+/// knows the first and cannot know the second; research knows the second and
+/// has no view on the first. The solution loop passes candidates between them
+/// at a diversify, and this bench is the same exchange available mid-thought,
+/// for the single check that would settle whether an idea is worth writing
+/// down at all.
+///
+/// Recursion is bounded at one level by construction, not by instruction:
+/// research holds no delegation tools, so nothing it is handed can spawn
+/// further. That is why this is safe to grant to a role whose job is to
+/// generate possibilities.
+const INVENTION_BENCH: [&str; 1] = ["research"];
+
 /// Agents the top-level orchestrator may delegate to directly.
 const DELEGATES: [&str; 14] = [
     "research",
@@ -1153,6 +1170,11 @@ fn support_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
+                // A literature question it cannot settle from its own search
+                // becomes one delegated check rather than an abandoned idea.
+                // The singular pair, as with the pattern agent: this role asks
+                // one focused question, where the planners fan out.
+                .chain(["spawn_agent", "await_agent"])
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
@@ -1794,6 +1816,11 @@ fn register_support_agents(
         register_resilient(&mut inventor, tool);
     }
     for tool in parts.documents.tools() {
+        register_resilient(&mut inventor, tool);
+    }
+    // The one delegation bench outside the two planners. See [`INVENTION_BENCH`]
+    // for why the inventor has one and why it holds exactly one role.
+    for tool in subagents.tools(INVENTION_BENCH) {
         register_resilient(&mut inventor, tool);
     }
     register_memory(&mut inventor, &parts.vector_store);

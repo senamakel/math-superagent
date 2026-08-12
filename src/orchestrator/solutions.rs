@@ -464,6 +464,11 @@ fn attempt_prompt(
            however well written they are.\n\
          - Reproduce every worked example in the statement with that program before running \
            anything at full size.\n\
+         - Before running any computation at a larger size than one this run has already run, \
+           say in one line what the larger run would settle that the smaller one did not. If you \
+           cannot name it, the bigger run is not the next step and doing it anyway spends the \
+           attempt for nothing: the next step is a different formulation, and \
+           `research/APPROACHES.md` holds the ones this run has opened and what closed each.\n\
          - Delegate the writing and running to tool_builder; it is the only role that can \
            execute.\n\
          - Then report the answer, the method, and how you verified it by a second independent \
