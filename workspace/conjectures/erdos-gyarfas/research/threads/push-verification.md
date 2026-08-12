@@ -2,11 +2,25 @@
 
 ```thread
 question: Can the documented verification bound (n≤15 general, n≤29 cubic) be raised by exploiting the independent-set + ≥4/7-cubic structure as a SAT/SMS propagator, and can the P12-free ⇒ C4-or-C8 computer proof be reproduced/beaten?
-status: open; sources digested, no computation run on this yet
+status: open; n=6-9 UNSAT (base clauses alone unsatisfiable below n=10); n=10 CEGAR NOT converging — needs structural propagators
 rests-on: EG-markstrom-dichotomy, EG-predominantly-cubic, EG-verification-bound, EG-markstrom-24-graphs, EG-P12-free-C4C8
-blocked-by: the mixed (V1≠∅) case has only the ≤15 general bound; the ≤29 cubic bound is unconditional but not structural
-next: build a SAT/degree-sequence program that forces V1 independent + ≥4/7 cubic + δ≥3 and searches for absence of C4,C8,C16; if UNSAT past n=29 it is a genuine strengthening. Use the four Markström 24-vertex graphs as a test oracle. Run the Hegde public code path for P12 to confirm the reported times reproduce.
+blocked-by: the mixed (V1≠∅) case has only the ≤15 general bound; the ≤29 cubic bound is unconditional but not structural; the raw CEGAR loop (solve/block cycles/repeat) does not converge on n=10 — 2865 iterations, 36,459 clauses, 138s, every model has C8 as the sole power-of-two cycle with cycle set {3,5,6,7,8,9,10}
+next: add Carr's ≥4/7-cubic + degree-≥4-independent-set propagators as base CNF constraints (not merely cycle-blocking), then re-run n=10 as a test; the 2865-iteration stall is quantitative evidence that pure cycle-blocking enumerates models without structural guidance
 ```
+
+## Results so far
+
+| n | base_clauses | result | iterations | time | cumulative clauses |
+|---|-------------|--------|------------|------|-------------------|
+| 6 | 123 | UNSAT iter=1 | 1 | 0.0s | — |
+| 7 | 231 | UNSAT iter=1 | 1 | 0.0s | — |
+| 8 | 394 | UNSAT iter=1 | 1 | 0.0s | — |
+| 9 | 630 | UNSAT iter=1 | 1 | 0.7s | — |
+| 10 | 960 | **no decision** | 2865 | 138s | 36,459 |
+
+**n=10 analysis**: Every model has min-degree 3, no C4, and cycle set {3,5,6,7,8,9,10} — the Petersen-like profile with C8 as the sole power-of-two cycle. The CEGAR loop blocks each discovered C8 cycle with a negative clause, but the SAT solver keeps producing new graphs with different C8 cycles. After 2865 iterations, there is no sign of convergence: the per-iteration solve time is increasing (reaching 0.1s toward the end), and the clause accumulation rate is ~13 clauses per iteration. This is effectively enumerating C8-containing graphs one at a time — a brute-force search through the SAT solver. The C8-free cubic space is known to be nonempty at n=10 (Petersen is girth-5), and the no-C4 constraint is automatically satisfied for girth≥5 graphs. The solver is finding C8 cycles in graphs that have girth 3 (triangles present) and blocking them, but the combinatorial space of how triangles and 8-cycles interact on 10 vertices is large.
+
+**Decision**: pure CEGAR with cycle blocking does not converge on n=10. The next step must encode structural constraints (Carr's degree dichotomy) into the base CNF to prune the search space before the solver starts. This is not a tweak — it is a different encoding.
 
 ## Resting claims (source-anchored)
 
