@@ -83,6 +83,16 @@ s,p,q)`, p<q, p,s ≥5. Worked: g(16,5,5,6)=9, G(16)=9, G(20)=205; target G(500)
    should write the checked claim. Unrun sibling: `code/pattern/phase_grid.py`
    (clean signed phase re-derivation E = Rβ − rγ − ρψ, mirror-signed β/γ, ψ =
    lamS−lamC, 400k-point fine scan of d; NO output on disk yet).
+3. **Idler-phase B-model — NEW checked failure.** `code/pattern/phase_model_probe.py` →
+   `code/out/phase_model_test.txt`: NO position lattice; d free over
+   (max_t|a_t−b_t|, R−r−1]; idler-spin elimination leaves B_t =
+   (r+ε·t/2π)·γ + ε·(R−t/2π)·β, valid iff 2B_p, 2B_q, B_p−B_q ∈ ℤ (mod 1),
+   ε=±1: **g(16,5,5,6)=0 for BOTH ε variants** (0.09 s). This is pattern_finder's
+   derivation — a DIFFERENT congruence system from the W-model (Established #2;
+   (s±t),(c∓t) vs s,c,t), so it does not settle the live hypothesis. Two
+   phase-elimination systems now dead with the same shape of conditions — any
+   NEW one is a hypothesis to pin against g=9 first, not the oracle. Raw output
+   only; write the checked claim before reuse.
 
 ## Numbers
 

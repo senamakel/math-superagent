@@ -1,25 +1,19 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wikipedia-magic-square-of-squares.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wikipedia, "Magic square of squares" — [[wikipedia-magic-square-of-squares.full]]
 
-<!-- source: https://en.wikipedia.org/wiki/Magic_square_of_squares | converted from HTML -->
+Encyclopaedia article. Confirms the status (open, LaBar 1984, Guy D15, Gardner's prize, Boyer's prize), the two near-misses (Sallows LS1; Bremner's 7-square square), the Buell bound (centre > 25×10²⁴ if it exists), and the basic structure (centre lines are APs). Also covers the extension-field/4×4/5×5 non-third-order constructions at a survey level.
 
-## What is in it
+**Bearing:** low-to-moderate. Corroborates the witness set and bounds already in this run's library from the primary sources (Bremner, Boyer, Buell). It is a tertiary source: cite the primary papers, not Wikipedia, for any claim. The useful, independently-checkable facts it states are all already captured; no new structural claim.
 
-  - Background
-  - Problem
-  - Current research
-    - Properties of a magic square of squares
-  - Notable attempts
-    - Sallows' Square
-    - Bremner Square
-    - Parker square
-  - Non third-order magic squares of squares
-  - References
+**Does not help** beyond corroboration. No claim blocks extracted; the run's primary-source digests supersede it.
 
-
-## What it claims
-
-The **magic square of squares**is an [unsolved problem in mathematics][2] which asks whether it is possible to construct a three-by-three [magic square][3], the elements of which are all [square numbers][4]. The problem was first posed by Martin LaBar in the January 1984 College Mathematics Journal, before being included in [Richard Guy][5] 's *Unsolved problems in number theory (2nd edition)*in 1994. [1] [2]
-
-The problem has been a popular choice for [recreational mathematicians][6] following two articles [Martin Gardner][7] published in *[Quantum Magazine][8]*on the problem, offering a prize of [US$][9] 100 in 1996. [3] [4] Other prizes have subsequently been offered for the first solution. [5]
-
-*[digest of a 19098 character source; every section, statement, and proof in full at `research/sources/wikipedia-magic-square-of-squares.full.md`]*
+```claim
+id: mss-status-wikipedia
+statement: The 3×3 magic square of squares is open; Salows LS1 (7/8 sums 21609) and Bremner's
+  7-square square exist as near-misses; Buell's bound: centre > 25×10²⁴; no 8- or 9-square
+  example known over Q.
+hypotheses: —
+holds-here: yes (corroborates)
+status: catalogued (tertiary source; see Bremner/Boyer/Buell for provenance)
+bearing: corroboration only
+anchor: research/sources/wikipedia-magic-square-of-squares.full.md
+```
