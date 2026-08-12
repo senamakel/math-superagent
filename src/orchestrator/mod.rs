@@ -1466,6 +1466,11 @@ fn register_code_writing_agents(
         if name != "tool_builder" {
             register_recall(&mut harness, parts.workspace);
         }
+        // The note store is a different question and every one of them has it:
+        // a closed form or a bound a previous run established changes what this
+        // one implements, and re-deriving it is the most expensive way to find
+        // out it was already known.
+        register_note_recall(&mut harness, parts.vector_store);
         subagents.register(name, Arc::new(harness), prompt)?;
     }
     Ok(())
