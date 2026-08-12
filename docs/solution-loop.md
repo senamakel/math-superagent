@@ -109,6 +109,31 @@ question the report cannot when the run cap has destroyed it — whether the
 attempt left anything behind at all. The original rule assumed a report exists;
 where one does not, "the evidence has to be in the report" means no evidence.
 
+Reflection answers in three verdicts, not two. SOLVED needs a specific final
+answer *and* a second independent route, and it needs a program on disk — a
+claimed answer with nothing executable in the workspace is rejected outright, and
+that gate covers the third verdict too. UNVERIFIED is the third: a specific final
+answer that exactly one route supports, where the reflection can say concretely
+why no second route is available. Said twice it routes to `Route::Reported`,
+which is terminal, and the run ends saying what it has and what is missing.
+
+The loop had two words for an attempt and needed three. PE761 reached
+`V_hexagon = 5.05505046`, reduced it to the exact surd `2 + 2√21/3`, and
+reproduced the formula's published anchors at n=3, n=4 and n→∞ — and could not
+close, correctly, because the value rests on one Math.SE answer while Abel et al.
+(arXiv:2007.08965) list regular n-gons with n>4 as an open problem. There is no
+second route to build. With only SOLVED and UNSOLVED available the loop said
+retry, and would have spent every remaining attempt re-deriving a number already
+on disk, its own workspace recording the contradiction: `GOAL.md` ticking
+"verified by a second independent route" while `CONTEXT.md` called that an
+overclaim. `Route::Reported` sits above both stuck arms deliberately — an attempt
+reaching the answer it already had reports no progress, so `unproductive` is
+exactly what an UNVERIFIED run accumulates, and diversifying on it spends three
+child runs hunting a new line of attack on a problem whose answer is settled.
+`UNVERIFIED_THRESHOLD` is two on the same evidence bar as every other threshold
+here: once is an attempt saying it could not find a second route, twice is the
+run having tried.
+
 Reflection runs after *every* attempt, not only after a failure, because the
 lesson from a partial success is what stops the next attempt repeating it. The
 pattern agent runs concurrently with it, on the same attempt, for the same
