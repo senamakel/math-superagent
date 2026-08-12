@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://www.connectedpapers.com/about | What is Connected Papers? | Tools Bibliographic Explorer Toggle Bibliographic Explorer*( [What is the Explorer?][30])* Connected Papers Toggle Connected Papers*( [What is Connected Papers?][31])* Litmaps Toggle Litmaps*( [What… |
 | 2 | https://www.sagemath.org | — | Angewandte Mathematik, 1 (1826), pp. 349–364. [doi]. [55] The Sage Developers, SageMath, the Sage Mathematics Software System, 2023. https://www.sagemath.org. [56] M. L. Vergnas, Matro¨ıdes… |
 
-_796 further candidates not shown; they are cited once each._
+_797 further candidates not shown; they are cited once each._
