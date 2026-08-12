@@ -371,8 +371,27 @@ fn mentions_oracle(captured: &[PathBuf]) -> bool {
 }
 
 /// Counts a folder's entries, bounded, and answers zero for a missing folder.
+/// Counts a folder's entries, bounded, and answers zero for a missing folder.
+///
+/// Scaffolding does not count. `workspace/template` seeds
+/// `research/approaches/` and `research/threads/` so the roles told to write
+/// there find a directory, and each seeded folder carries a `README.md` saying
+/// what belongs in it — which git needs anyway, since it cannot track an empty
+/// directory. Counting those would tell the judge every run had proposed an
+/// approach and opened a thread before it did anything at all, which is the
+/// briefing inventing evidence rather than measuring it.
 fn count_entries(folder: &Path) -> usize {
-    std::fs::read_dir(folder).map_or(0, |entries| entries.flatten().take(MAX_COUNTED).count())
+    std::fs::read_dir(folder).map_or(0, |entries| {
+        entries
+            .flatten()
+            .take(MAX_COUNTED)
+            .filter(|entry| {
+                let name = entry.file_name();
+                let name = name.to_string_lossy();
+                !name.starts_with('.') && !name.eq_ignore_ascii_case("README.md")
+            })
+            .count()
+    })
 }
 
 /// Returns whether the workspace holds a program the run could have executed.
