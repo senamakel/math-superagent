@@ -1,0 +1,12 @@
+# Approach: S-unit equations over the parametrisation field
+
+```approach
+idea: Each of the nine entries in the parametrised grid is a linear form L_i(c, u, v) that must equal a perfect square s_i². This is a system of nine equations L_i = s_i². By treating u/v or similar as the variable and c/e² as the parameter, the nine "linear-form-equals-square" conditions reduce to a system of S-unit equations over a finitely generated field, to which the subspace theorem (or the more specific results on the number of solutions to S-unit equations) applies.
+
+mechanism: Fix the centre c = e². The entries are c ± u, c ± v, c ± (u+v), c ± (u−v), c − u − v, c + u + v. Each must be a square. Write u = e²α, v = e²β, so the entries are e²(1 ± α), e²(1 ± β), e²(1 ± (α+β)), e²(1 ± (α−β)), e²(1 − α − β), e²(1 + α + β). All must be e² times a rational square. So (1 ± α), (1 ± β), etc. must all be rational squares. This is a system of equations of the form X² − Y² = (difference of the α, β expressions), which after clearing denominators becomes a multiplicative relation among S-units in the ring Z[1/N] for some N determined by primes dividing denominators.
+
+The key structure: the four AP condition means that 1 ± α, 1 ± β, 1 ± (α+β), 1 ± (α−β) are all squares in Q. This is a system of eight S-unit equations. The finiteness theorem for S-unit equations in two variables (Mahler, Evertse, Schlickewei) says that equations of the form ax + by = c, where x,y are S-units, have finitely many solutions. The eight conditions together impose enough constraints to force a classification of all possibilities, which can then be checked exhaustively. Unlike a direct search of c,u,v, the S-unit approach bounds the height of solutions and reduces to a finite but large computation.
+
+status: proposed
+first-step: Set c = e², define α = u/e², β = v/e², and write the eight conditions (1±α), (1±β), (1±(α+β)), (1±(α−β)) are all rational squares. Parametrise each as (p/q)² = 1+α, etc., eliminate α,β, and reduce to a single Diophantine equation to which known S-unit finiteness results apply. Check compatibility with the known near-misses (they must survive as S-unit solutions before the final "all nine" condition).
+```
