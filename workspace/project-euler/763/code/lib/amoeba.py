@@ -133,6 +133,21 @@ def dividable_count(S, d=3):
     return sum(1 for p in Sset if all(c not in Sset for c in children(p, d)))
 
 
+def f_of(C):
+    """f_of(C) == dividable_count(C, 3): the number of dividable cells of a 3D
+    config C — cells p whose three forward children p+e_i are all absent.
+
+    This is the single CANONICAL home of the name `f_of` used by the inventor
+    probe programs (check_recurrence, decomp_probe, definitive_check,
+    diagnose_B, diagnose_B2, structure_probe). It is exactly an alias for
+    dividable_count(C, 3) at d=3. All six programs import it from here; none
+    keeps a local definition any more. Correctness established by those
+    programs reproducing D(2)=3 and D(10)=44499 and by their claim-B checks
+    (D(N+1) == sum_C f(C)).
+    """
+    return dividable_count(C, 3)
+
+
 # --- naive BFS driver -----------------------------------------------------
 
 
