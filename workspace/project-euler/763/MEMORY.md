@@ -69,8 +69,40 @@ power.  Conclusion recorded: D(N) is NOT P-recursive of low order on the
 observed window, and no recurrence fit here is a viable route to D(10000).
 Do NOT re-run this search.
 
+## NEW FINDINGS (this run, pattern-finder)
+
+### CORRECTION — the Q_k max-level decomposition does NOT equal D(N) for even N
+Prior notes claimed "D(N)=sum_k Q_k(N)3^(N-2k-1) reproduces D(N) exactly
+N=2..10 (and holds)." That is INCOMPLETE: it holds only for odd N (and N<=11).
+At N=12 it misses 30 configs, at N=14 it misses 267
+(code/pattern/qdecomp_falsify.py). Cause: for even N, the column with max level
+M=N/2 (offset k=N/2, exponent 2M-N-1 = -1) is excluded by the e>=0 gate, yet
+such configs exist (R(12,6)=30, R(14,7)=267). The per-column Q_k polynomial
+closed forms remain exact for M>(N+1)/2 (verified OOS at N=13,14 for those
+columns); only the summed-IDENTITY reading is false. First falsifier of the sum
+formula: N=12, NOT N=15 as previously guessed. The diagonal R(N,N)=3^(N-1)
+(confirmed all N=2..14) is unaffected.
+
+### NEW SOURCED MATCH — histogram-count H(N) == OEIS A186085 (sandpiles)
+The count H(N) of DISTINCT level-histograms over reachable N-configs,
+N=2..14 = 1,1,2,3,5,8,13,22,36,60,100,166,277, equals OEIS A186085
+("number of 1D sandpiles with n grains" = smooth compositions with first/last
+part 1, |consecutive Δ|<=1) exactly (oeis_lookup + verify program
+code/pattern/check_a186085_recurrence.py). H(N)≠D(N) — H counts histogram
+shapes, D counts configurations — but it identifies the "shape space" of the
+3D amoeba as the smooth-composition family. Strongest new structural lead;
+deriving how many configs realize each histogram is the open refinement.
+
+### OVERFIT CONFIRMED AGAIN
+find_linear_recurrence returned an order-6 const-coeff recurrence fitting H(2..14)
+perfectly, but it diverges from published A186085 at n=6. Direct proof that a
+finite-window recurrence fit is not predictive even when it fits exactly.
+
 ## Files
 - code/inventor/check_recurrence.py — tool_builder target verifying CLAIM A
   (top-cap deterministic collapse) and CLAIM B (D(N+1)=sum f(C)) on BFS
   configs N<=7.
 - code/inventor/probe_topcap.py, probe_reachable.py — empirical probes.
+- code/pattern/check_a186085_recurrence.py, qdecomp_falsify.py, mdist2.py,
+  full_triangle_dump.py, pn_poly.py — this run's pattern-finder probes
+  (A186085 histogram match; even-N Q-decomposition falsification).
