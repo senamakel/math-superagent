@@ -68,6 +68,34 @@ struct Recording<'a> {
     input: &'a str,
     store: &'a Arc<InMemoryTaskStore>,
     task_id: &'a TaskId,
+    /// Where a failure to record is said out loud.
+    ///
+    /// Session memory used to be written with the result discarded, so whether
+    /// a run had recorded itself was unanswerable from the console or from
+    /// `trace.jsonl` — the enqueue could time out, Cognee could refuse the
+    /// document, and the run read exactly as it does when it worked. The write
+    /// stays best effort; only its silence was the fault.
+    tracer: Option<&'a Arc<RunTracer>>,
+}
+
+/// Writes one finished run to the session memory, saying so when it fails.
+///
+/// Best effort by design: the result is already in the task store, and a
+/// memory server that is down must not turn a completed run into a failed one.
+async fn record_session(into: &Recording<'_>, output: &str) {
+    let Some(memory) = into.memory else {
+        return;
+    };
+    if let Err(error) = memory
+        .remember_session(into.agent, into.run_id, into.input, output)
+        .await
+        && let Some(tracer) = into.tracer
+    {
+        tracer.note(&format!(
+            "session memory failed for {}/{}: {error}",
+            into.agent, into.run_id
+        ));
+    }
 }
 
 /// Files a finished run's result into the task store and the session memory,
@@ -86,11 +114,7 @@ async fn record_outcome(
     match outcome {
         Ok(execution) => {
             let response = execution.state.response.unwrap_or_default();
-            if let Some(memory) = into.memory {
-                let _ = memory
-                    .remember_session(into.agent, into.run_id, into.input, &response)
-                    .await;
-            }
+            record_session(into, &response).await;
             let _ = into
                 .store
                 .complete(into.task_id, OrchestrationTaskResult::text(response));
@@ -98,16 +122,7 @@ async fn record_outcome(
         }
         Err(error) => {
             let error = error.to_string();
-            if let Some(memory) = into.memory {
-                let _ = memory
-                    .remember_session(
-                        into.agent,
-                        into.run_id,
-                        into.input,
-                        &format!("SESSION FAILED: {error}"),
-                    )
-                    .await;
-            }
+            record_session(into, &format!("SESSION FAILED: {error}")).await;
             let _ = into.store.fail(into.task_id, error);
             false
         }
@@ -530,6 +545,9 @@ impl AsyncSubagentManager {
         if let Some(tracer) = tracer.as_ref() {
             tracer.note(&format!("spawned: {}", preview_input(&input)));
         }
+        // The run's own tracer is moved into the graph node; recording happens
+        // after that node has finished, so it needs its own handle.
+        let record_tracer = tracer.clone();
         let slots = self.slots.clone();
         let session_memory = self.memory.clone();
         let session_agent = agent_name.to_string();
@@ -594,6 +612,7 @@ impl AsyncSubagentManager {
                     input: &session_input,
                     store: &store,
                     task_id: &spawned_task_id,
+                    tracer: record_tracer.as_ref(),
                 },
             )
             .await;
