@@ -28,6 +28,8 @@
 //! reference material, looks for structure in the results already computed, and
 //! asks for a genuinely different approach, in parallel, before trying again.
 
+use std::collections::BTreeSet;
+use std::ffi::OsString;
 use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
