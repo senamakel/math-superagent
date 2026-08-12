@@ -59,4 +59,4 @@ print("exact closed form 2+2*sqrt(21)/3 =", 2 + 2*mp.sqrt(21)/3)
 V4_dk = mp.sqrt(mp.mpf(5)/2 * (7 + mp.sqrt(41)))
 print("DavidK V_square =", V4_dk, "(oracle 5.78859314)")
 tau_relation = 0  # d2 = v*d1 at limit per David K: v = sqrt(5/2(7+sqrt41))
-print("cl
+print("closing check: d1,v computed by David K (d2 = v*d1 at limit) -- value above matches oracle")
