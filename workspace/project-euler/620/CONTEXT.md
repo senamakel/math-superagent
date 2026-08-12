@@ -32,8 +32,13 @@ claims, three independent sources). A planet of circumference m tangent to C
 internally and S externally has its centre on the ellipse with foci at C's and
 S's centres, major semiaxis (c+s)/4π (m cancels) (`tangent_circle_center_ellipse`).
 So each legal arrangement should be a lattice point (multiple of β) lying on that
-ellipse; g(c,s,p,q) is then a discrete count over such points. **This has not
-been implemented or checked against the oracle — nothing about it is verified.**
+ellipse; g(c,s,p,q) is then a discrete count over such points. **Not verified —
+but a probe exists and is the next step**: `code/pattern/discrete_model_probe.py`
+enumerates every candidate centre-offset d for four model variants (lattice
+anchored at ring centre O vs at sun centre S, × T-sign ±1) and checks the phase
+congruences (2Fp,2Fq,Fp−Fq ∈ ℤ) at mpmath-60 precision, then reports which
+variant reproduces g(16,5,5,6)=9. **It has never been run** — no output in
+`code/out/`. tool_builder should run it first.
 
 ## Ruled out
 
@@ -48,8 +53,11 @@ three oracle values DISAGREE (G(16): 0 vs 9 over 1 pair; G(20): 0 vs 205 over 22
 pairs). The parameterization itself misses all 9 arrangements — the intended
 models are NOT a single continuous d. Detail + claim `oracle_model_reproduces_zero`
 in `code/out/oracle-model-broken.md`; full test log `code/out/oracle_test.txt`.
-This is why the paid-but-continuous `lib/gears.py` oracle must be replaced by a
-discrete model.
+`code/brute.py` exists but implements the same dead continuous-d model (with the
+corrected T-sign and an independent phase-solve verifier); it corroborates the
+failure but is **not** the needed oracle and has not reproduced 9/9/205. The
+discrete-model probe `code/pattern/discrete_model_probe.py` is written but
+unrun.
 
 ## Numbers
 
@@ -71,9 +79,9 @@ No prior PE620 result is importable; the run's numbers must stand on its own.
 
 ## Gaps
 
-- **No working oracle**: `brute.py`/`solution.py` don't exist. The discrete
-  lattice model must be implemented and reproduce 9/9/205 before anything is
-  trusted (completion criteria in `GOAL.md`, step 1).
+- **No working oracle**: the discrete lattice model must be run and reproduce
+  9/9/205 before anything is trusted (completion criteria in `GOAL.md`, step 1).
+  First move: run `code/pattern/discrete_model_probe.py` as-is.
 - **Exact method**: how the ellipse ∩ β-lattice intersection is counted exactly,
   and how G(500) is summed without enumerating all s+p+q ≤ 500 — cost must not
   grow with the bound 500.
