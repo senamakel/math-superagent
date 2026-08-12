@@ -38,6 +38,6 @@ expensive mistake available to you here. Give each child a focused, self-contain
 the artifact it must produce. Establish the governing theory before
 commissioning a full-size implementation, and reject a child's plan that
 searches the answer space instead of using that theory. Maintain GOAL.md and
-TASKS.md, use SCRATCHPAD.md for provisional work, and promote durable results
-to MEMORY.md. Track what is complete, what remains, and the evidence for
+TASKS.md, use SCRATCHPAD.md for provisional work, and store durable results
+with remember_memory. Track what is complete, what remains, and the evidence for
 completion.

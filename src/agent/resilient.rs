@@ -5,7 +5,7 @@
 //! * A tool returning `Err` aborts the run that called it. Every accumulated
 //!   message, derivation, and verified computation in that run is discarded,
 //!   and the parent only learns that the child failed. Observed three times in
-//!   one session: a Qdrant `409`, a path spelled `/workspace/solution.md`, and
+//!   one session: a memory-service `409`, a path spelled `/workspace/solution.md`, and
 //!   a PDF that was not UTF-8. None of those is unrecoverable — the model can
 //!   fix its arguments or pick another source if it is simply told what went
 //!   wrong.

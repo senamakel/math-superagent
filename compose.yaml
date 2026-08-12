@@ -7,7 +7,7 @@ services:
       - .env
     environment:
       AGENT_WORKSPACE: /workspace
-      QDRANT_URL: http://qdrant:6333
+      COGNEE_API_URL: http://cognee:8000
       MATH_AGENT_CONTAINER: "1"
       # Run controls forwarded from the host wrapper. Empty means "use the
       # built-in default", so an unset variable never widens or narrows a run.
@@ -36,14 +36,74 @@ services:
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
         target: /workspace
     depends_on:
-      qdrant:
-        condition: service_started
+      cognee:
+        condition: service_healthy
 
-  qdrant:
-    image: qdrant/qdrant:v1.18.2
+  cognee:
+    image: cognee/cognee:1.4.2
     restart: unless-stopped
+    environment:
+      LLM_PROVIDER: custom
+      LLM_MODEL: openrouter/deepseek/deepseek-v4-flash-0731
+      LLM_API_KEY: ${OPENROUTER_API_KEY}
+      LLM_ENDPOINT: https://openrouter.ai/api/v1
+      EMBEDDING_PROVIDER: fastembed
+      EMBEDDING_MODEL: BAAI/bge-small-en-v1.5
+      EMBEDDING_DIMENSIONS: 384
+      HUGGINGFACE_TOKENIZER: BAAI/bge-small-en-v1.5
+      GRAPH_DATABASE_PROVIDER: neo4j
+      GRAPH_DATABASE_URL: bolt://neo4j:7687
+      GRAPH_DATABASE_NAME: neo4j
+      GRAPH_DATABASE_USERNAME: neo4j
+      GRAPH_DATABASE_PASSWORD: cognee-local
+      REQUIRE_AUTHENTICATION: "false"
+      ENABLE_BACKEND_ACCESS_CONTROL: "false"
+      UI_APP_URL: http://localhost:3000
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    mem_limit: 8g
     volumes:
-      - qdrant-data:/qdrant/storage
+      - cognee-system:/app/cognee/.cognee_system
+      - cognee-data:/app/cognee/.data_storage
+    depends_on:
+      neo4j:
+        condition: service_healthy
+
+  neo4j:
+    image: neo4j:5.26
+    restart: unless-stopped
+    environment:
+      NEO4J_AUTH: neo4j/cognee-local
+      NEO4J_PLUGINS: '["apoc"]'
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p cognee-local 'RETURN 1' >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    volumes:
+      - neo4j-data:/data
+
+  cognee-ui:
+    build:
+      context: https://github.com/topoteretes/cognee.git#v1.4.2:cognee-frontend
+    image: cognee-ui:1.4.2-local
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_LOCAL_API_URL: http://localhost:8000
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      cognee:
+        condition: service_healthy
 
 volumes:
-  qdrant-data:
+  cognee-system:
+  cognee-data:
+  neo4j-data:

@@ -162,53 +162,20 @@ async fn concurrent_runs_are_capped_and_the_queue_drains() -> Result<()> {
 }
 
 #[tokio::test]
-async fn a_finished_tool_builder_triggers_the_organizer() -> Result<()> {
-    // The workspace is least tidy and most legible the moment the role that
-    // creates files stops, so the tidying is chained rather than left to
-    // whoever runs next and has mathematics to do instead.
-    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
-    let started = Arc::new(Semaphore::new(0));
-    let release = Arc::new(Semaphore::new(0));
-    for name in ["tool_builder", "organizer"] {
-        manager.register_executor(
-            name,
-            Arc::new(SteerableExecutor {
-                started: started.clone(),
-                release: release.clone(),
-            }),
-        )?;
-    }
-
-    let run_id = manager.spawn("tool_builder", "build it".into())?;
-    release.add_permits(2);
-    assert_eq!(
-        manager.await_record(run_id.as_str(), 5).await?.status,
-        OrchestrationTaskStatus::Completed
-    );
-
-    // The follow-up is fire-and-forget, so it starts after the caller's await
-    // has already returned. Two starts means both runs happened.
-    let _both = started.acquire_many(2).await.map_err(|error| {
-        tinyagents::TinyAgentsError::Tool(format!("test start semaphore closed: {error}"))
-    })?;
-    Ok(())
-}
-
-#[tokio::test]
 async fn a_missing_follow_up_agent_is_not_an_error() -> Result<()> {
-    // A registry built without an organizer must still run tool_builder.
+    // A registry built without the scholar must still run research.
     let manager = AsyncSubagentManager::new(RunBudget::default(), None);
     let started = Arc::new(Semaphore::new(0));
     let release = Arc::new(Semaphore::new(0));
     manager.register_executor(
-        "tool_builder",
+        "research",
         Arc::new(SteerableExecutor {
             started: started.clone(),
             release: release.clone(),
         }),
     )?;
 
-    let run_id = manager.spawn("tool_builder", "build it".into())?;
+    let run_id = manager.spawn("research", "find it".into())?;
     release.add_permits(1);
     assert_eq!(
         manager.await_record(run_id.as_str(), 5).await?.status,
@@ -236,15 +203,13 @@ fn the_follow_up_chain_cannot_loop() {
 }
 
 #[test]
-fn reading_is_filed_only_after_it_has_been_done() {
-    // The scholar must precede the organizer: an organizer running first would
-    // index excerpts nobody had read yet.
+fn research_is_followed_by_the_scholar_only() {
     let (_, steps) = super::FOLLOW_UPS
         .iter()
         .find(|(after, _)| *after == "research")
         .expect("research triggers a follow-up sequence");
     let agents: Vec<&str> = steps.iter().map(|step| step.agent).collect();
-    assert_eq!(agents, vec!["scholar", "organizer"]);
+    assert_eq!(agents, vec!["scholar"]);
 }
 
 /// An executor that finishes immediately, echoing its brief.
@@ -381,18 +346,18 @@ fn every_agent_on_one_problem_shares_a_session_and_a_user() {
     //
     let problem = Some("project-euler/591");
     let scholar = super::trace_config("s-1", "scholar", "agent-run-4", problem);
-    let organizer = super::trace_config("s-1", "organizer", "agent-run-5", problem);
+    let learner = super::trace_config("s-1", "reflection", "agent-run-5", problem);
 
     assert_eq!(scholar.user_id.as_deref(), Some("project-euler/591"));
-    assert_eq!(organizer.user_id, scholar.user_id);
+    assert_eq!(learner.user_id, scholar.user_id);
     assert_eq!(
         scholar.session_id.as_deref(),
         Some("project-euler/591@s-1"),
         "one attempt at one problem is one session"
     );
-    assert_eq!(organizer.session_id, scholar.session_id);
+    assert_eq!(learner.session_id, scholar.session_id);
     assert_ne!(
-        scholar.trace_id, organizer.trace_id,
+        scholar.trace_id, learner.trace_id,
         "each agent still gets its own trace inside that session"
     );
     assert!(
@@ -400,81 +365,6 @@ fn every_agent_on_one_problem_shares_a_session_and_a_user() {
             .tags
             .contains(&"problem:project-euler/591".to_string())
     );
-}
-
-#[tokio::test]
-async fn reading_does_not_hold_the_lock_that_filing_needs() -> Result<()> {
-    // The scholar is the slowest step in any sequence and rewrites only the
-    // sources it was pointed at. Holding the shared-index lock across it made a
-    // tool-builder's organizer wait out a six-minute read to refresh an index
-    // the scholar never touches, so the filing that is supposed to happen while
-    // the files are new arrived after the run had moved on.
-    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
-    // Each role gets its own gate. Sharing one would let the scholar consume a
-    // permit meant for the organizer and finish, which is exactly the state the
-    // test has to rule out.
-    let spawner_started = Arc::new(Semaphore::new(0));
-    let spawner_release = Arc::new(Semaphore::new(16));
-    let scholar_started = Arc::new(Semaphore::new(0));
-    // Never given a permit: the scholar stays running for the whole test.
-    let scholar_release = Arc::new(Semaphore::new(0));
-    let organizer_started = Arc::new(Semaphore::new(0));
-    let organizer_release = Arc::new(Semaphore::new(16));
-    for name in ["research", "tool_builder"] {
-        manager.register_executor(
-            name,
-            Arc::new(SteerableExecutor {
-                started: spawner_started.clone(),
-                release: spawner_release.clone(),
-            }),
-        )?;
-    }
-    manager.register_executor(
-        "scholar",
-        Arc::new(SteerableExecutor {
-            started: scholar_started.clone(),
-            release: scholar_release.clone(),
-        }),
-    )?;
-    manager.register_executor(
-        "organizer",
-        Arc::new(SteerableExecutor {
-            started: organizer_started.clone(),
-            release: organizer_release.clone(),
-        }),
-    )?;
-
-    // Research finishes, so its sequence begins with the scholar, which then
-    // stays running because nothing will ever release it.
-    let research = manager.spawn("research", "find it".into())?;
-    assert_eq!(
-        manager.await_record(research.as_str(), 5).await?.status,
-        OrchestrationTaskStatus::Completed
-    );
-    assert!(
-        tokio::time::timeout(std::time::Duration::from_secs(5), scholar_started.acquire())
-            .await
-            .is_ok(),
-        "research must hand off to the scholar"
-    );
-
-    // With the scholar still running, a tool-builder's organizer must start
-    // rather than queue behind it.
-    let tools = manager.spawn("tool_builder", "build it".into())?;
-    assert_eq!(
-        manager.await_record(tools.as_str(), 5).await?.status,
-        OrchestrationTaskStatus::Completed
-    );
-    assert!(
-        tokio::time::timeout(
-            std::time::Duration::from_secs(5),
-            organizer_started.acquire()
-        )
-        .await
-        .is_ok(),
-        "the organizer must not wait for an unrelated scholar to finish"
-    );
-    Ok(())
 }
 
 #[test]

@@ -40,11 +40,8 @@ const NEARBY_ENTRIES: usize = 20;
 /// Suffix marking the full converted text of a source.
 pub(super) const FULL_TEXT_SUFFIX: &str = ".full.md";
 
-/// Level of the research tree holding untouched originals.
-const SOURCE_LEVEL: usize = 0;
-
-/// Level of the research tree holding one note per source.
-const DIGEST_LEVEL: usize = 1;
+const SOURCE_DIR: &str = "research/sources";
+const DIGEST_DIR: &str = "research/summaries";
 
 const MAX_SEARCH_RESULTS: usize = 10;
 
@@ -145,7 +142,7 @@ impl WorkspaceDocuments {
     /// a *file*. A folder argument is different: `.` is the obvious way to name
     /// the directory an agent is already standing in, and callers that
     /// normalise it to `""` on the way in would otherwise have it converted
-    /// back to `.` here and refused. That cost a live organizer its
+    /// back to `.` here and refused. That cost a live agent its
     /// `refresh_index` on the workspace root.
     fn folder_path(&self, relative: &str) -> Result<PathBuf> {
         if relative.is_empty() || relative == "." {
@@ -154,29 +151,19 @@ impl WorkspaceDocuments {
         self.path(relative)
     }
 
-    /// Finds a file of the same name in another batch of the same tree.
-    ///
-    /// Only within the tree the caller aimed at, and only by exact file name:
-    /// a search of the whole workspace would answer a question nobody asked
-    /// and could point at an unrelated file that happens to share a name.
+    /// Finds a file of the same name elsewhere under the requested root.
     pub(super) fn same_name_elsewhere(&self, relative: &str) -> Option<String> {
-        let (root, rest) = relative.split_once('/')?;
-        let (batch, name) = rest.split_once('/')?;
-        super::context_tree::batch_of(batch)?;
-        let entries = std::fs::read_dir(self.workspace.join(root)).ok()?;
-        let mut folders: Vec<String> = entries
-            .flatten()
-            .filter(|entry| entry.file_type().is_ok_and(|kind| kind.is_dir()))
-            .map(|entry| entry.file_name().to_string_lossy().into_owned())
-            .filter(|folder| super::context_tree::batch_of(folder).is_some())
-            .collect();
-        folders.sort();
-        folders.into_iter().find_map(|folder| {
-            let candidate = format!("{root}/{folder}/{name}");
+        let (root, name) = relative.split_once('/')?;
+        let name = std::path::Path::new(name).file_name()?;
+        [SOURCE_DIR, DIGEST_DIR].into_iter().find_map(|folder| {
+            if !folder.starts_with(root) {
+                return None;
+            }
+            let candidate = std::path::Path::new(folder).join(name);
             self.workspace
                 .join(&candidate)
                 .is_file()
-                .then_some(candidate)
+                .then(|| candidate.to_string_lossy().into_owned())
         })
     }
 
@@ -304,7 +291,6 @@ impl WorkspaceDocuments {
             ))
         })?;
         let mut names = Vec::new();
-        let mut levels = Vec::new();
         while let Ok(Some(entry)) = entries.next_entry().await {
             let name = entry.file_name().to_string_lossy().into_owned();
             if HIDDEN_ENTRIES.contains(&name.as_str()) || name.starts_with('.') {
@@ -315,26 +301,6 @@ impl WorkspaceDocuments {
             };
             if kind.is_file() {
                 names.push(name);
-            } else if kind.is_dir() && super::folder_index::is_level(&name) {
-                levels.push(name);
-            }
-        }
-        // A summary tree's levels belong to the index at its root. Listing
-        // only the immediate files would report a research folder holding
-        // thirty notes as empty, and the refresh that followed would drop
-        // every description in it.
-        for level in levels {
-            let Ok(mut inside) = tokio::fs::read_dir(path.join(&level)).await else {
-                continue;
-            };
-            while let Ok(Some(entry)) = inside.next_entry().await {
-                let name = entry.file_name().to_string_lossy().into_owned();
-                if name.starts_with('.') {
-                    continue;
-                }
-                if entry.file_type().await.is_ok_and(|kind| kind.is_file()) {
-                    names.push(format!("{level}/{name}"));
-                }
             }
         }
         names.sort();
@@ -755,7 +721,7 @@ fn walk<'a>(
 /// A path already inside the folder is left alone; anything else is moved into
 /// it, and a leading `/workspace` or `./` is trimmed first so the common
 /// spellings do not produce `research/workspace/...`.
-pub(super) fn research_path(workspace: &std::path::Path, requested: &str) -> String {
+pub(super) fn research_path(_workspace: &std::path::Path, requested: &str) -> String {
     let trimmed = requested
         .trim()
         .trim_start_matches("/workspace/")
@@ -764,20 +730,8 @@ pub(super) fn research_path(workspace: &std::path::Path, requested: &str) -> Str
     let inside = trimmed
         .strip_prefix(&format!("{RESEARCH_DIR}/"))
         .unwrap_or(if trimmed == RESEARCH_DIR { "" } else { trimmed });
-    let digest = super::context_tree::batch_dir(
-        DIGEST_LEVEL,
-        super::context_tree::open_batch(workspace, RESEARCH_DIR, DIGEST_LEVEL),
-    );
     if inside.is_empty() {
-        return format!("{RESEARCH_DIR}/{digest}/document.md");
-    }
-    // A path naming a level already knows where it belongs. Anything else is
-    // a source arriving from outside, and a source's readable form is a
-    // level-1 note whatever the caller called it.
-    if let Some((folder, _)) = inside.split_once('/')
-        && super::context_tree::batch_of(folder).is_some()
-    {
-        return format!("{RESEARCH_DIR}/{inside}");
+        return format!("{DIGEST_DIR}/document.md");
     }
     let name = inside.rsplit('/').next().unwrap_or(inside);
     // A caller naming the full text is naming the wrong half of the pair. The
@@ -788,7 +742,7 @@ pub(super) fn research_path(workspace: &std::path::Path, requested: &str) -> Str
         Some(stem) => format!("{stem}.md"),
         None => name.to_string(),
     };
-    format!("{RESEARCH_DIR}/{digest}/{name}")
+    format!("{DIGEST_DIR}/{name}")
 }
 
 /// Renames a stored document to `.md`, because that is what it now contains.
@@ -835,7 +789,7 @@ pub(super) fn raw_path(research_relative: &str) -> String {
 /// One level below its summary. The original is what the whole tree is
 /// anchored to and the one thing in it nobody may rewrite, so it lives in its
 /// own folder rather than beside a note an agent is expected to replace.
-pub(super) fn full_text_path(workspace: &std::path::Path, summary_relative: &str) -> String {
+pub(super) fn full_text_path(_workspace: &std::path::Path, summary_relative: &str) -> String {
     let stem = summary_relative
         .strip_suffix(".md")
         .unwrap_or(summary_relative);
@@ -845,11 +799,7 @@ pub(super) fn full_text_path(workspace: &std::path::Path, summary_relative: &str
     // produced `x.full.full.md`, and seven of them landed in one live
     // workspace before this stripped the marker it already had.
     let name = name.strip_suffix(".full").unwrap_or(name);
-    let source = super::context_tree::batch_dir(
-        SOURCE_LEVEL,
-        super::context_tree::open_batch(workspace, RESEARCH_DIR, SOURCE_LEVEL),
-    );
-    format!("{RESEARCH_DIR}/{source}/{name}{FULL_TEXT_SUFFIX}")
+    format!("{SOURCE_DIR}/{name}{FULL_TEXT_SUFFIX}")
 }
 
 /// Renders the heading for a listing root.
@@ -895,15 +845,6 @@ const HIDDEN_ENTRIES: [&str; 7] = [
     "trace.jsonl",
     RAW_DIR,
 ];
-
-/// Returns whether an entry is runtime bookkeeping rather than a document.
-///
-/// Shared so every way into the workspace — listing, folder names, similarity
-/// search — hides the same things. A search that could reach the event log
-/// would be a path around the rule that keeps it out of an agent's context.
-pub(super) fn is_hidden(name: &str) -> bool {
-    HIDDEN_ENTRIES.contains(&name)
-}
 
 /// Largest number of entries one listing returns.
 const MAX_LISTING_ENTRIES: usize = 400;

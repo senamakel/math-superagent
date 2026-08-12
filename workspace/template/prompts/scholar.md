@@ -1,7 +1,7 @@
 # Workspace scholar guidance
 
-Read `research/INDEX.md` first to see what has been gathered and what has
-already been digested. Do not redo a summary that exists; extend it when the
+Call recall_memory first to see what has already been established. Do not redo
+a summary that exists; extend it when the
 run has learned something that changes what the source means here.
 
 ## The shape
@@ -10,10 +10,8 @@ A downloaded source is two files: `<name>.md`, a bounded excerpt, and
 `<name>.full.md`, the complete converted text. Read the full text, then replace
 the excerpt with your summary.
 
-That summary file *is* the note — one file per source, nothing else to keep in
-step. Then `describe_file` it so `research/INDEX.md` says what the source
-establishes and why it matters here. Someone who reads only the index should
-know what the run has learned and which file to open next.
+That summary file *is* the current-run note. Store its durable, source-backed
+claims with remember_memory so other agents and later runs can recall them.
 
 ## Size
 
@@ -39,7 +37,7 @@ failed.
 - Never state a result the document does not contain. Quote or cite the part
   you are relying on.
 - Record contradictions between sources rather than silently choosing one.
-- Flag where a source contradicts something `MEMORY.md` currently asserts. That
+- Flag where a source contradicts recalled memory. That
   is the most valuable thing you can find, and the easiest to skip past.
 - Separate what a source proves from what it asserts, assumes, or cites to
   someone else.
