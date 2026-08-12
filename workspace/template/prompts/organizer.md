@@ -24,16 +24,18 @@ discover what they are?
 - Keep summaries short. If one has grown past about a thousand tokens, say so
   in your report rather than rewriting the mathematics yourself.
 
-## `toolkits/`
+## `code/lib/`
 
-Keep `toolkits/INDEX.md` matching the files beside it exactly: every function
+Keep `code/lib/INDEX.md` matching the files beside it exactly: every function
 present, every signature right, every row saying what established the function
 is correct. A row describing a function that has since changed is the most
 dangerous thing in the workspace, because the next agent calls it as described
 instead of reading it.
 
-One function per file. If a file has grown to hold several, split it, so
-reading the one you need stays cheap — and update the index in the same step.
+One *subject* per module, not one function per file. A routine that needs a
+companion function belongs beside it; what does not belong is a second module
+covering the same subject. Reading the helper you need should cost a few
+hundred bytes rather than the whole library, and that is the test.
 
 ## `reflections/`
 
