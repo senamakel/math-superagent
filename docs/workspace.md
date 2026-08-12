@@ -314,11 +314,11 @@ built the missing axis by hand, growing a `research/folds/` folder nobody
 designed with `game-core.md`, `passes.md`, `counting-arithmetic.md`, and
 `deadends.md`. A thread is `research/threads/<slug>.md` with a fenced `thread`
 block — `question`, `status`, `rests-on`, `blocked-by`, `next` — and unlike a
-seal it is live and rewritten as the direction changes. Dead threads are kept:
-a known dead end is a result, and the reason is what stops the next attempt
-paying for it again. A thread resting on a claim id that is not on disk is
-reported, and so is a blocked thread with no blocker stated, because a blocker
-stated precisely is the next research request and one left blank is a mood.
+seal it is live and rewritten as the direction changes. Dead threads are kept: a
+known dead end is a result, and the reason is what stops the next attempt paying
+for it again. A thread resting on a claim id not on disk is reported, and so is a
+blocked thread with no blocker stated — a blocker stated precisely is the next
+research request, and one left blank is a mood.
 
 `research/APPROACHES.md` (`approaches.rs`) is what the run has tried to
 *think* of, beside what it has tried to compute. A thread is already anchored
