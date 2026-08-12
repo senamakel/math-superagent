@@ -86,6 +86,13 @@ the n-gon generalizes.
   changes smoothly, so none of this affects the 8-dp answer. OEIS small-term
   matches (A057357) are coincidences. Details: `code/k_*` files,
   `code/pattern_findings.md`.
+- **A general closed form V(n)² = quadratic surd for all n is FALSE.** Exact
+  minpolys (computed, sympy): n=3 x²−56x+64, n=4 x²−35x+50, n=6 9x²−240x+256
+  (roots 28±12√5, 5/2(7±√41), (40±8√21)/3 — the last is exactly the hexagon
+  V²); V(5)² and n≥7 are NOT quadratic (minimal-polynomial degree >2, and a
+  PSLQ-style search finds no small integer quadratic for V(5)²). Clean surd
+  closed forms exist only for n=3,4,6 — do not chase one for other n. Code:
+  `code/v2_quadratic_test.py`, `code/v2_quad_independent2.py`.
 
 ## Numbers / anchors (cheap to restate, expensive to recompute)
 
