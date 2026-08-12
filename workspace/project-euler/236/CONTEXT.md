@@ -14,13 +14,13 @@ What this run knows and on what basis. Nearly every role is sent this file on ev
 | 4 | Vintage Port | 5760 | 3776 |
 | 5 | Champagne Truffles | 3936 | 5664 |
 
-**Numbers structure (computed + hand-checked, in `code/brute.py` once written):**
+**Numbers structure (computed + hand-checked):**
 - ΣA = 18880 = 2^6·5·59, ΣB = 15744 = 2^7·3·41, gcd = 64 → ΣA/ΣB in lowest terms = **295/246**.
-- Reducing all a_i, b_i by gcd 32: A = 32·(164,41,82,180,123), B = 32·(20,59,118,118,177).
-- Per-product ratios a_i/b_i reduce to: 41/5, 41/59, 41/59, 90/59, 41/59. All numerators/denominators ≤ 90 — brute-force search space over candidate (s,t) per product is tiny.
+- Reducing all a_i, b_i by 32: A = 32·(164,41,82,180,123), B = 32·(20,59,118,118,177).
+- Per-product ratios R_i = a_i/b_i reduce to: 41/5, 41/59, 41/59, 90/59, 41/59. Prime factors of the five reduced ratios are within {2,3,5,41,59}.
 - Worked examples from the statement (the oracle): 35 values of m exist; smallest = **1476/1475**; answer = largest, a reduced fraction u/v.
 
-**Problem shape (analyst's reduction, in `GOAL.md`/`solution.md` when written):** the first five equalities force m = L_i/M_i where L_i, M_i are the reduced numerator/denominator of a_i/b_i. The overall equality is then a linear diophantine equation in the scale factors; m must appear in every per-product ratio's reduced form. If the answer is 1476/1475-style (near 1), the largest m is likely (numerically) close to 1 as well — almost certainly within 10^-2 of 1, so any floating-point search that prints m near 1.0 is not a counterexample to the number theory, it is the signal. Verify the final m against all six equalities exactly before reporting.
+**Problem shape (correct reduction, tentative — must be confirmed by `code/brute.py`):** per-product condition is B worse than A by factor m: t_i/b_i = m·(s_i/a_i), i.e. **s_i/t_i = R_i/m** for each i, with bounds 1 ≤ s_i ≤ a_i, 1 ≤ t_i ≤ b_i. Overall: B worse than A by same m: (Σt)/(Σb) = m·(Σs)/(Σa). For a candidate m = p/q, per product we need s_i/t_i = (a_i·q)/(b_i·p); feasibility per product needs the reduced numerator ≤ a_i and reduced denominator ≤ b_i (with the reduced fraction = (a_i·q)/(b_i·p)/gcd(a_i·q, b_i·p) times a common scale). The global constraint then couples the products. All 35 m fall between 1476/1475 and the largest; the largest is NOT known to be near 1 — do not assume a magnitude. Verify the final m against all six equalities exactly before reporting.
 
 ## Ruled out
 
