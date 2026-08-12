@@ -181,11 +181,17 @@ its own per-write checkpoint in each workspace's `.workspace-history`, which is
 what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a source directory; leave it in its
 workspace.
 
-Three things are ignored: `.python-packages/` (pip installs, which land in the
-workspace only because the container root filesystem is read-only), bytecode
-caches, and `trace.jsonl`. The trace is several megabytes per run and the
+What is ignored is what a reader would never open: `.python-packages/` (pip
+installs, which land in the workspace only because the container root filesystem
+is read-only), bytecode caches, `raw/`, the bulky enumeration pools beside the
+counts that cite them, `trace.jsonl` and `console.log`, and the hidden
+`config/.*.json` state. The trace is several megabytes per run and the
 derivation and notes already carry the reasoning worth keeping; read it locally
-or in Langfuse instead.
+or in Langfuse instead. The hidden JSON is the runtime's own cache of the
+frontier, the request ledger, and the document index, rewritten on nearly every
+tool call — each already has a committed human-readable counterpart beside it,
+`research/FRONTIER.md` and `research/REQUESTS.md`, which is what the derivation
+cites. Everything a reader would open stays committed.
 
 ## Secrets
 
