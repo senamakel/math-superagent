@@ -35,28 +35,9 @@ from lib.cycle_oracle import oracle, all_simple_cycles
 OUT = "/workspace/code/out/cutvertex/shape_sat"
 
 
-def blocking_clauses_for_cycles(cycles, n):
-    """For each distinct simple cycle of length 4/8/16, a blocking clause."""
-    clauses = []
-    for cyc in cycles:
-        if len(cyc) not in (4, 8, 16):
-            continue
-        lits = set()
-        k = len(cyc)
-        for t in range(k):
-            i, j = cyc[t], cyc[(t + 1) % k]
-            lits.add(arg_edge_id_bi(edge_id(i, j, n), n) if False else _eid(i, j, n))
-        clauses.append(sorted(-x for x in lits))
-    return clauses
-
-
 def _eid(i, j, n):
     from pushverify.encode import edge_id
     return edge_id(i, j, n)
-
-
-def arg_edge_id_bi(eid, n):
-    return arg_edge_id(eid, n)
 
 
 def canon(cycle):

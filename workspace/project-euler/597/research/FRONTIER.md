@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/html/1509.00850v1 | HTML (experimental) | of $\displaystyle{z_{n+1}=\frac{\alpha + \beta z_{n}+ \gamma z_{n-1}}{A + B z_n + C z_{n-1}}}$, by Sk. Sarif Hassan [View PDF][3] [HTML (experimental)][4] Abstract: The dynamics of the second order… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=De+Loera,+J | Jesus De Loera | ( [v1][2]), last revised 2 Apr 2012 (this version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5],… |
 
-_639 further candidates not shown; they are cited once each._
+_642 further candidates not shown; they are cited once each._
