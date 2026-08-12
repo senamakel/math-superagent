@@ -1,0 +1,13 @@
+Direct tooth-phase meshing model (L_j congruence, n-integer form)
+n_t(d) = [(c-t)*beta + (t-s)*mu]/pi;  g = #{d: n_p,n_q in Z,
+n_p - n_q == q-p (mod 2)}
+========================================================================
+
+g(16,5,5,6) with parity n_p-n_q == 0 (mod 2): 0  
+
+g(16,5,5,6) with parity n_p-n_q == 1 (mod 2): 1  
+    d=0.15915494309189526   n_p=0  n_q=11
+
+Check the mirror-quantity levels: n_p should hit consecutive integers
+as d varies; list the levels for the winning parity if any.
+(no parity-1 winner for g(16,5,5,6); G-sums skipped)

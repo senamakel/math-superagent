@@ -11,6 +11,25 @@ representation requirement forces c to have ≥ 3 distinct prime factors ≡ 1 m
 and the additive constraints impose multiplicative restrictions that no integer
 can satisfy simultaneously — a combinatorial contradiction in the distribution of
 Gaussian prime factors.
+status: grounded
+precedent: Onno Cain, "Gaussian Integers, Rings, Finite Fields, and the Magic
+  Square of Squares", arXiv:1908.03236 (2019),
+  https://arxiv.org/abs/1908.03236 and library:
+  research/summaries/cain-gaussian-integers-magic-square-of-squares-2019.md (the
+  problem is equivalent to quartic factorisation constraints over an abelian
+  extension of Q; the Gaussian case is a new SEARCH method only, not a proof);
+  A. Bremner, "On squares of squares II", Acta Arith. 99 (2001) (the c=m^2+n^2,
+  d=2mn parametrisation; the 7-square witness realises TWO of the four
+  factorisations; the Q(sqrt3) 8-square families); Bremner 1999 (extension-field
+  MSS exist, the hinge). Causes for the additive constraints: they are satisfiable
+  (Bremner's witness realises two factorisations), so any contradiction must be
+  delicate enough to allow that witness while forbidding the fourth. Necessary
+  condition (>= 3 primes ≡ 1 mod 4 for four representations) is standard Fermat
+  two-squares and holds here.
+first-step: Follow Cain's quartic/abelian-extension formulation rather than
+  re-deriving it; treat the ">= 3 primes ≡ 1 mod 4" condition as a check, and test
+  any prospective contradiction against Bremner's witness (which realises two of
+  the four factorisations, so the constraint system is genuinely non-empty).
 ```
 
 ## What this reformulation is actually called
@@ -94,3 +113,35 @@ Follow Cain's quartic/abelian-extension formulation rather than re-deriving it;
 treat the "≥ 3 primes ≡ 1 mod 4" necessary condition as a check, and test any
 prospective contradiction against Bremner's witness (which realises two of the
 four factorisations, so the constraint system is genuinely non-empty).
+
+```claim
+id: hilbert-symbol-of-two-squares-trivially-split
+statement: If c±d are both squares (A^2,B^2), then the quaternion algebra
+  (c+d,c-d) has Hilbert symbol (A^2,B^2)_p=1 at every prime, so it is the zero
+  element of Br(Q); every AP-of-squares difference gives a trivially-split
+  algebra, and no Hilbert-reciprocity/local-invariant contradiction can arise at
+  the level of Q. Geometrically all AP points on X^2+Y^2=2c, which is locally
+  soluble everywhere, so Hasse-Minkowski gives no obstruction.
+hypotheses: c,d rationals with c±d rational squares
+holds-here: yes (every realised AP difference in Bremner's witness satisfies this)
+status: proved (bimultiplicativity of the Hilbert symbol; Hasse-Minkowski for
+  ternary/conic forms)
+bearing: rules out the Hilbert-reciprocity/four-conics line and any Q-level
+  quaternion local-obstruction; forces higher-dimension (K3/Brauer-Manin) tools
+anchor: research/approaches/hilbert-reciprocity-four-conics.md
+```
+
+```claim
+id: gaussian-factorisation-is-cains-reformulation
+statement: The Gaussian-integer factorisation of the four centre APs is exactly
+  Onno Cain's arXiv:1908.03236 reformulation: the 3x3 MSS problem is equivalent
+  to quartic factorisation constraints over an abelian extension of Q, and the
+  Gaussian case yields a new search method, not a proof; no prime-distribution
+  contradiction is established anywhere.
+hypotheses: c=e^2 a square, four AP representations, additive constraints
+holds-here: yes (the reformulation; Bremner's witness realises two factorisations,
+  so the constraint system is non-empty)
+status: asserted (per Cain's abstract/claim; verified reformulation standard)
+bearing: grounds the candidate as a search reformulation; its proof goal remains open
+anchor: research/approaches/gaussian-integer-factorisations.md
+```

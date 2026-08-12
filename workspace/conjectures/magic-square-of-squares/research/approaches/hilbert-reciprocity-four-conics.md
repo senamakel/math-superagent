@@ -5,6 +5,24 @@ idea: Express each of the four AP conditions c ± d both squares as the splittin
 of a quaternion algebra A_d = (c+d, c−d)_Q, compute the product of the four
 algebras in the Brauer group, and apply Hilbert reciprocity to derive a
 contradiction from local invariants.
+status: refuted
+killed-by: If c±d are both squares (A^2,B^2) then the Hilbert symbol
+  (A^2,B^2)_p = 1 at every prime (bimultiplicativity: (a^2,b)_p=(a,b)_p^2=1), so
+  every A_d=(c+d,c-d) is the zero element of Br(Q), its local invariant is 0
+  everywhere, the product of the four is tautologically trivial, and Hilbert
+  reciprocity (always true on Q) has nothing to contradict. Geometrically all
+  four AP points lie on the single conic X^2+Y^2=2c (c=e^2, point (e,e)); by
+  Hasse-Minkowski a conic over Q has a rational point iff locally, and local
+  solubility holds everywhere, so there is no local-to-global obstruction. This
+  is exactly why the literature needs the K3 surface (Br(S)/Br(Q)) via
+  Brauer-Manin rather than Q-level quaternion algebras. Complementary check
+  recorded: code/check_hilbert_splitness.py
+precedent: Lam, "Introduction to Quadratic Forms over Fields" (Hilbert symbol
+  bimultiplicativity); Hasse-Minkowski theorem for ternary forms/conics over Q;
+  matches the run's own Ruled out entry that the system is locally solvable mod
+  every prime power.
+first-step: none — the approach is vacuous by the very hypothesis that c±d are
+  both squares.
 ```
 
 ## Verdict

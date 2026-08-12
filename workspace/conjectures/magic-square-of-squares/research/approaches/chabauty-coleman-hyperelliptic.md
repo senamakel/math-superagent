@@ -12,6 +12,19 @@ f(t) = square, generally of high genus. If the relevant curve has rk J(Q) < g,
 Chabauty–Coleman either finds all rational points or proves none exist beyond the
 known 7-square witness (1). Covering all 16 configurations would settle the
 8-square sub-question.
+status: grounded
+precedent: A. Bremner, "On squares of squares II", Acta Arith. 99 (2001) 289-308
+  (library: research/summaries/bremner-on-squares-of-squares-II-2001.md) gives the
+  six-square -> hyperelliptic reduction f(t)=square but NO explicit f(t) for the
+  7->8 transition and no genus/rank; C. Chabauty, CRAS 212 (1941); R. Coleman,
+  Duke Math J 52 (1985); Coleman integration for even-degree hyperelliptic curves,
+  LMS J Comput Math 18 (2015),
+  https://www.cambridge.org/core/journals/lms-journal-of-computation-and-mathematics/article/coleman-integration-for-evendegree-models-of-hyperelliptic-curves/AF72EF6830BFCDB0BBB14B996A5BE733 ;
+  On the Coleman-Chabauty bound (method fails when r >= g),
+  https://www.sciencedirect.com/science/article/abs/pii/S0764444200800415
+first-step: Extract from Bremner II Category VII the explicit polynomial f(t) whose
+  square condition gives the 8th square entry on top of the 7-square witness; compute
+  its genus and the Jacobian rank; only if r < g proceed to Coleman integration.
 ```
 
 ## What this reformulation is actually called
@@ -100,3 +113,19 @@ f(t) whose square condition gives the 8th square entry on top of the 7-square
 witness; compute its genus the Jacobian rank; only if r < g proceed to Coleman
 integration. Until that is done this candidate is a method in search of its
 object.
+
+```claim
+id: chabauty-coleman-grounded-but-application-open
+statement: Bremner II reduces a 7th square entry to rational points on hyperelliptic
+  curves f(t)=square (generally high genus); Chabauty-Coleman (r<g) is the standard
+  p-adic method to compute such points, but the explicit f(t) for the 7->8 transition,
+  its genus, and its Jacobian rank are not in any source, and the decisive r<g
+  hypothesis is unverified.
+hypotheses: C/Q genus g≥2, rk J(Q)<g
+holds-here: unverified (the applicability hypothesis r<g is unknown for every
+  magic-square curve; f(t) never written down)
+status: sourced/asserted
+bearing: the 8-square sub-question could be settled per-configuration IF r<g holds;
+  otherwise the method gives nothing
+anchor: research/approaches/chabauty-coleman-hyperelliptic.md
+```

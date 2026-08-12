@@ -26,40 +26,17 @@ arrangements (finite; only discrete positions mesh). `G(n)=Σ_{s+p+q≤n}
 g(s+p+q,s,p,q)`, p<q, p,s ≥5. Worked: g(16,5,5,6)=9, G(16)=9, G(20)=205; target
 G(500).
 
-**Tangency forces positions — the count is over d, not over a beta-lattice
-(asserted geometry; holds-here: yes; claim `offcentre_two_positions_per_type`).**
-For planet size t (radius ρ_t=t/2π): exact tangency to both gears forces
-|SP|=(s+t)/2π AND |CP|=(c−t)/2π simultaneously. With the two centres d apart
-this is the intersection of two circles = exactly **two** points, mirror images
-across the line of centres. So an arrangement (2 p-planets + 2 q-planets) is
-fixed by d alone. d ∈ (d_min, d_max): d_min = max(|a_p−b_p|, |a_q−b_q|) with
-a_t=(s+t)/2π, b_t=(c−t)/2π; d_max = (c−s)/2π − 1 (the 1 cm gap). This is WHY
-both single-centre beta-lattice models returned 0 (below): they enumerated
-angular positions on a lattice that tangency had already ruled out. The centres
-all lie on one shared ellipse (foci O,S, sum of focal distances (c+s)/2π; planet
-size cancels) — consistent with, and looser than, the two-positions fact.
-
-**Leading hypothesis — off-centre dual-mesh phase model (derived in full;
-holds-here UNCHECKED, oracle pending; claims `offcentre_dual_mesh_phase_invariant`,
-`coaxial_limit_reproduces_lattice`).** The thread
-`research/threads/offcentre-mesh-phase-model.md` derives from tooth-phase
-congruences (Guo 5.21–5.22 pitch-point convention; internal-ring phase −c·contact
-angle) that simultaneous meshing of all four planets is equivalent to the
-per-planet invariants W_j = s·φ_j + c·χ_j − t_j·γ_j being pairwise congruent
-mod 2π, where (φ,χ,γ) are the triangle angles at S, C, P from the law of cosines
-(φ+χ+γ=π; γ=π only coaxially). This reduces to three explicit one-variable
-congruences in d:
-- mirror pair of one type: s·φ_t + c·χ_t ∈ π·ℤ
-- cross-type: s(φ_p−φ_q) + c(χ_p−χ_q) − p·γ_p + q·γ_q ∈ 2π·ℤ
-g = #{d ∈ (d_min,d_max) satisfying all three} × κ, with κ = mirror-identification
-factor ∈ {1,2} to be fixed by the oracle (also decide whether the degenerate
-single-contact endpoint d=d_min counts — there the two planets of a type
-coincide). Coaxial limit d→0 reduces to W=(s+c)ψ − t·π and gives ψ ∈
-(2π/(s+c))·ℤ — reproducing the least-mesh-angle rule of all three design guides
-and Guo 5.21–5.22, so this model contains the sourced rule as a special case.
-Cost per g is O(#solutions), independent of any bound. **This is the current
-direction; only its setup is shown consistent — it has NOT yet been checked
-against 9/9/205.**
+**Tangency enumeration — FIRST ORACLE MATCH: g(16,5,5,6)=9** (`code/out/tangency_enum.txt`,
+`code/pattern/tangency_enum.py`). Residue model: each planet's tooth-mesh residue
+Q = sigma*rho*(beta-gamma) - eta*R*beta + theta*r*gamma (mod 1), where beta=angle
+about O, gamma=angle about S, rho planet radius. Mirror identity Q(L) = -Q(U)
+(mod 1). Variant (sigma=-1, eta=-1, theta=-1): **9 valid d values, all from
+pp=UU qq=UU (9) and pp=LL qq=LL (9) — no mixed (UL) combos survive.** The
+other 7 sign variants give 6-10 but only (sigma=-1, eta=-1, theta=-1) yields
+exactly 9. **G(20)=205 NOT YET CHECKED** — the enumerator is hardwired to
+(16,5,5,6); generalizing it to all 22 G(20) tuples is the immediate next task
+(TASKS.md STEP 1). Grid: 2^20+1 points over d in [d_min, d_max] (spacing ~5.6e-7),
+COARSE_TOL=1e-4 (grid clustering), TIGHT_TOL=1e-9 (mpmath refinement).
 
 ## Ruled out — three implemented models FAILED (all checked; all return 0)
 
@@ -91,9 +68,11 @@ E = Rβ − rγ − ρψ; no output on disk).
 
 ## Numbers
 
-Oracle values — still reproduced by **no** program: g(16,5,5,6)=9, G(16)=9,
-G(20)=205. Every computed g value on disk is 0 (three dead models above). No
-positive terms exist ⇒ sequence/OEIS analysis remains blocked.
+Oracle values: g(16,5,5,6)=9 **NOW REPRODUCED** by tangency enumeration
+`code/pattern/tangency_enum.py` → `code/out/tangency_enum.txt` (variant
+sigma=-1, eta=-1, theta=-1; grid 2^20+1 points). G(16)=9 follows (only pair).
+G(20)=205 **NOT YET CHECKED** — the enumerator must be generalized to accept
+arbitrary (c,s,p,q) arguments and run over all 22 tuples.
 
 ## Recalled
 
@@ -107,14 +86,13 @@ its own computation.
 
 ## Gaps
 
-- **No oracle reproduces 9/9/205** — the top blocker (GOAL.md step 1). Every
-  model so far returns 0, so the reading of "perfectly meshing" / discreteness
-  is still unvalidated.
-- Immediate next step (from the thread): probe the W-invariant model — all 4
-  independent sign combinations of the χ- and γ-coefficient terms; if all return
-  0, fall back to enumerating the 9 (16,5,5,6) configurations directly by
-  tangency, computing tooth phases numerically, and reading the meshing
-  condition off what survives. Also pin κ and the endpoint convention.
-- Exact count of g, then summing G(500) without enumerating s+p+q ≤ 500 (cost
-  must not grow with the bound 500). The W-model's O(#solutions) per g is the
-  intended route.
+- **G(20) not yet verified** — the top blocker. One matched value (g(16,5,5,6)=9)
+  is a coincidence until all 22 G(20) tuples sum to 205. Generalize the
+  tangency enumerator and run it.
+- **No claim written** for the tangency enumeration result — the claim must go
+  beside the output in code/out/, with status=checked, the exact sign convention,
+  grid/tolerance params, and the mirror structure (only UU/LL survive).
+- **No bound-independent formula** for g(c,s,p,q). The enumerator uses a 1M-point
+  grid scan — fine for oracle verification, wrong for G(500). Need the algebraic
+  equation that Q_p(d) == Q_q(d) (mod 1) reduces to.
+- Exact count of g, then summing G(500) without enumerating s+p+q ≤ 500.
