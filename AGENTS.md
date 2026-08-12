@@ -265,9 +265,10 @@ walk of the workspace to discover, which is most of what a working cycle costs:
 a live team spent thirty `read_document` calls in two minutes doing exactly
 that on runs that had computed almost nothing. A workspace with no results at
 all reads as unchanged, so an early cycle idles rather than analysing an empty
-folder. Its own `SCRATCHPAD.md` is deliberately not part of the fingerprint —
-the team writes that itself, and including it would have the team waking itself
-up forever on its own notes.
+folder. Its own notes are deliberately not part of the fingerprint — the team
+writes those itself, and including them would have the team waking itself up
+forever on its own notes. That is now free rather than arranged: its scratch
+went to `note_scratch` and is no longer a file in the workspace at all.
 
 `diversify` runs three arms concurrently — the librarian followed by the
 scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the
@@ -1247,6 +1248,40 @@ reading — a live judge already did that with the document tools alone. The
 cannot turn into an investigation. The **tool-builder** gets `recall_research`
 but not `search_workspace`: it writes probes and throwaway experiments, so a
 similarity search over its own output would mostly return them.
+
+## The scratch
+
+`SCRATCHPAD.md` was the third store and the only one still a file, and it was
+the wrong shape for what it held. Being in `role_context` meant every model call
+in every role holding it paid for every number anyone had jotted down, whether
+or not the turn was about them, and appending a line meant reading the file
+whole. `note_scratch` and `recall_scratch` (`vector.rs`) make it the same trade
+`remember_memory` and `recall_memory` already make: written once, read back by
+wording.
+
+It is a third store rather than a flag on the durable one, and the separation is
+the point. `visible_datasets` excludes `math_agent_scratch__*` outright, so
+neither `recall_memory` nor `relate_memory` can return provisional work — a
+half-finished calculation cannot come back looking like something the run
+established, which is the distinction the method policy rests on. It is also
+not the knowledge graph: `relate_memory` answers what the run's entities are
+connected to, and no amount of traversal recovers what a solve was in the
+middle of.
+
+Access is a tool boundary rather than a routing decision, since the file is
+gone. `register_scratch` grants both halves to the roles that do provisional
+work — the seven code writers, `pattern_finder`, and `goals` — the read half
+alone to the scholar and the context curator, which judge provisional work
+without producing any, and neither to reflection or the judge, for exactly the
+reason the file was withheld from them: unsettled arithmetic read as progress is
+what keeps a loop retrying. A test asserts that split.
+
+The dataset is scoped to the project, not the run, for the reason recorded on
+the session dataset: `./euler 763` continues from what is on disk, and a scratch
+that vanished on restart would be worse than the file it replaces. Ingest is
+backgrounded, because a note is written mid-derivation and waiting on an index
+would put the memory on the critical path of the arithmetic it describes, which
+is the one thing a file did not do.
 
 ## Workspace discovery and the reflection log
 
