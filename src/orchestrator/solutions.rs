@@ -973,6 +973,7 @@ pub(super) async fn run(
     let reflect_memory = memory;
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
+    let attempt_mailbox = patterns.clone();
     let pattern_mailbox = patterns;
     let reflect_teams = teams;
 
