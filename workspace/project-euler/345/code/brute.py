@@ -65,8 +65,6 @@ def main(argv):
     if len(argv) > 1:
         with open(argv[1]) as f:
             matrix = read_matrix(f)
-    elif not sys.stdin.isatty():
-        matrix = read_matrix(sys.stdin)
     else:
         matrix = EXAMPLE
 
