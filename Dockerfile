@@ -90,6 +90,18 @@ RUN printf '#!/bin/sh\nLEAN_PATH="$(cat /opt/lean_path.txt)${LEAN_PATH:+:$LEAN_P
 # cannot exist. It is the layer most likely to gain a package, so it is placed
 # last of the toolchains where a rebuild costs the least.
 #
+# `eprover`, `pari-gp` and `singular` join them because they answer the same
+# kind of question with different machinery, and the roles that use them are
+# separate for that reason. E is a first-order saturation prover reading TPTP,
+# for statements whose content is quantifier reasoning over relations rather
+# than arithmetic. PARI/GP is far faster than sympy on integer factorisation and
+# on anything algebraic-number-theoretic. Singular answers ideal membership by
+# Gröbner basis, which nothing else installed here does.
+#
+# `maxima` and `gap` were tried and left out: both segfault or exit silently in
+# this container, and naming a tool in a prompt that does not run costs the run
+# a turn to discover. SageMath, already installed above, carries that ground.
+#
 # `nauty` is here rather than with the scientific stack because it belongs to
 # the same job: exhaustive generation of graphs up to isomorphism is what turns
 # a SAT solver's `UNSAT` from an assertion into a cross-checked bound, and
@@ -123,11 +135,21 @@ RUN apt-get update \
        python3-z3 python3-pulp python3-pycosat python3-igraph \
        z3 cvc5 minisat cryptominisat glpk-utils coinor-cbc \
        nauty \
+       eprover pari-gp singular \
     && pip3 install --break-system-packages --no-cache-dir --upgrade \
        ortools python-sat numpy scipy pandas matplotlib \
     && rm -rf /var/lib/apt/lists/* \
     && su agent -s /bin/sh -c 'python3 -W error::RuntimeWarning -c "import igraph, matplotlib, pandas, numpy, z3, pycosat, pulp, pysat.solvers; from ortools.sat.python import cp_model"' \
-    && su agent -s /bin/sh -c 'nauty-geng -q -c -d3 8 | wc -l'
+    && su agent -s /bin/sh -c 'nauty-geng -q -c -d3 8 | wc -l' \
+    && printf '%s\n' 'fof(a1, axiom, ![X]: (p(X) => q(X))).' 'fof(a2, axiom, p(a)).' \
+       'fof(goal, conjecture, q(a)).' > /tmp/smoke.p \
+    && chmod 0644 /tmp/smoke.p \
+    && su agent -s /bin/sh -c 'eprover --auto --cpu-limit=30 /tmp/smoke.p | grep -q "SZS status Theorem"' \
+    && su agent -s /bin/sh -c 'echo "print(factor(2^67-1))" | gp -q' \
+    && printf '%s\n' 'ring r=0,(x,y),dp; ideal I=x2+y2-1,x-y; std(I); quit;' > /tmp/smoke.sing \
+    && chmod 0644 /tmp/smoke.sing \
+    && su agent -s /bin/sh -c 'Singular -q /tmp/smoke.sing' \
+    && rm /tmp/smoke.p /tmp/smoke.sing
 
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
 
