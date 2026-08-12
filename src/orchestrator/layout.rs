@@ -125,11 +125,8 @@ pub(super) fn has_results(workspace: &std::path::Path) -> bool {
 
 /// Whether a file under `code/` was written by a person rather than a program.
 pub(super) fn is_authored(name: &str) -> bool {
-    let lower = name.to_ascii_lowercase();
-    lower.ends_with(".md")
-        || PROGRAM
-            .iter()
-            .any(|extension| lower.ends_with(&format!(".{extension}")))
+    let found = extension(name);
+    found == "md" || PROGRAM.iter().any(|program| found == *program)
 }
 
 /// Files allowed at the workspace root, by exact name.

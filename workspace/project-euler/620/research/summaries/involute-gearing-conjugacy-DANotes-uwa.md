@@ -1,19 +1,36 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/involute-gearing-conjugacy-DANotes-uwa.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Involute gearing: tooth form / conjugacy — DANotes (UWA)
 
-<!-- source: https://danotes.mech.uwa.edu.au/gears/toothForm/toothForm.html | converted from HTML -->
+[[research/sources/involute-gearing-conjugacy-DANotes-uwa.full.md]] · source:
+https://danotes.mech.uwa.edu.au/gears/toothForm/toothForm.html
 
-## What is in it
+## What it establishes
 
-    - Conjugate tooth action
-    - The involute tooth
+University (UWA) machine-design notes on **conjugate action** of gear teeth:
 
+1. Correct gear meshing requires (a) equal module (same tooth size), and
+   (b) conjugate tooth shapes so the speed ratio is constant.
+2. For a constant speed ratio the contact point's **common normal must pass
+   through a fixed pitch point** on the line of centers (the law of gearing);
+   the line of action then stays fixed.
+3. The **involute** tooth profile guarantees this: unwinding a taut cord from a
+   base circle traces an involute; the generating line is normal to the involute
+   and tangent to the base circle. Two involutes mesh with constant ratio and
+   the contact point moves along the common tangent line (line of action).
+4. Involute gears retain conjugate action when the **center distance is varied**
+   (within limits): the pitch point/pitch circles are redefined by the line of
+   action intersection, and the speed ratio is unchanged.
 
-## What it claims
+## Implication for PE620
 
-We have seen that one essential for correctly meshing gears is that the size of the teeth ( the module ) must be the same for the two gears. We now examine another requirement - [image: conjugacy requirements] the shape of teeth necessary for the speed ratio to remain constant during an increment of rotation; this behaviour of the contacting surfaces (ie. the teeth flanks) is known as *conjugate action.*
+- Justifies why meshing teeth impose both a *size* condition (equal pitch:
+  the 1 cm pitch circles of circumference = tooth count) and a *shape* condition
+  (involute/conjugate — assumed by "gears with perfectly meshing teeth").
+- The rolling pitch circles used throughout the problem (radii = circumference/
+  2π) are the circles whose rolling reproduces the gear motion (pitch-line
+  velocity equality ω₁R₁ = ω₂R₂).
 
-Consider the two rigid bodies 1 and 2 which rotate about fixed centres, O, with angular velocities &omega;. The bodies touch at the contact point, C, through which the common tangent and normal are drawn.
-The absolute velocity v of the contact point reckoned as a point on either body, is perpendicular to the radius from that body's centre O to the contact point. For the bodies to remain in contact, there must be no component of relative motion along the common normal, so that from the velocity triangles :-
-&#160 &#160 &#160 &#160 &#160 &#160 v 2 cos&theta; 2 &#160 = &#160 v 1 cos&theta; 1 &#160 &#160 &#160 where &#160 v 1 = &omega; 1 . O 1 C &#160 ; &#160 &#160 &#160 v 2 = &omega;…
+## Cross-references
 
-*[digest of a 6605 character source; every section, statement, and proof in full at `research/sources/involute-gearing-conjugacy-DANotes-uwa.full.md`]*
+- Law of gearing (UNC Charlotte) summary: statement + proof of the same result.
+- Involute meshing (DANotes) full text: pitch-circle/center-distance formulas
+  R_i = C·z_i/Σz used to place planets between C and S.
