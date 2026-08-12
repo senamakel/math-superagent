@@ -9,7 +9,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `bbox_vs_mult.py` | _(undescribed)_ |
 | `bottom_probe.py` | Probes the bottom of the (N,M) max-level triangle: reports the min-M per N (and whether it stays near N/2) from data/level_N.txt + code/out/mhist_13_14.txt, and prints the full Q_k = count/3^(N-2k-1) array including negative-exponent (large k) rows as exact Fractions, testing whether the Q_k-polynomial column model extends into large k. Structural probe of the max-level decomposition. |
 | `check_3exp.py` | _(undescribed)_ |
-| `check_4power.py` | _(undescribed)_ |
+| `check_4power.py` | Structural probe testing the per-histogram multiplicity hypothesis mult(hist)=2^(2*#4s)*3^e for every histogram in data/level_N.txt: factors each config-count and checks whether the 2-power equals 2*(count of '4' entries), reporting the residual 3^e and any non-2,3 prime exceptions. Part of the per-histogram closed-form hunt. |
 | `check_a186085_recurrence.py` | Tests the guessed order-6 recurrence a(n)=a(n-1)+a(n-2)+a(n-3)-a(n-4)-a(n-6) against all published OEIS A186085 terms (n=0..44) and checks the run's distinct-histogram counts H(N)==A186085(N) for N=2..14. |
 | `columns.py` | Verifies the max-level column model N(N,M)=Q_k(N)*3^(2M-N-1) (k=N-M) over N=2..12: computes v*3^(N-2k+1) and checks Q_k is a degree-k poly via finite differences. Early check of the offset-column decomposition. |
 | `d2_oeis.py` | Compares the 2D amoeba D2(N) against OEIS A007902 over N=0..21 (asserts D2(N)==A007902(N+1)) and prints the last few growth ratios against the Knessl asymptotic 2.3216. Confirms the 2D identification. |
@@ -36,7 +36,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `offsets.py` | Extracts the (N,M) table and examines fixed-offset diagonals k=M-N, printing N(N,N+k)/3^(N-1) per row to hunt a pattern/closed form in the max-level counts. |
 | `oos_predict.py` | Decisive out-of-sample test of the column-polynomial model: fits Q_0..Q_5 polynomials using ONLY N=2..12 data, then predicts N(N,M)=Q_k(N)*3^(N-2k-1) at fresh N=13,14 (from code/out/mhist_13_14.txt) and reconstructs D(N). Checks the N(N,M)=Q_k(N)*3^(N-2k-1) submodel holds on points never used in the fit. |
 | `per_hist_detail.py` | _(undescribed)_ |
-| `per_hist_dist.py` | _(undescribed)_ |
+| `per_hist_dist.py` | Structural probe: for each N in 2..10, counts how many configs realize each distinct level-histogram and prints the multiset of per-histogram multiplicities (sum = D(N), histogram count = A186085), looking for structure in how D(N) refines into histogram counts. Reads data/level_N.txt. Exploratory. |
 | `pn_poly.py` | Computes P_N(x)=sum_k Q_k(N)x^k and checks D(N)=3^(N-1)P_N(1/9); detects the even-N discrepancy in the Q-decomposition. |
 | `poly_test.py` | Tests the hypothesis D(N)=3^(N-1)*P(N) with P a fixed-degree polynomial in N: computes R(N)=D(N)/3^(N-1) as exact Fractions and checks whether its finite differences ever go constant (the polynomial diagnostic). Refutes/characterizes the polynomial-times-exponential closed form. |
 | `q45.py` | Fits the Q_4 and Q_5 column polynomials using the fresh N=13,14 data and checks whether the (N,M)=Q_k(N)*3^(N-2k-1) model with these higher columns reproduces D(13),D(14) exactly. Extends the Q_k closed-form study to the k=4,5 offsets. |
