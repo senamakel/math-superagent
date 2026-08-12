@@ -22,7 +22,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2.0/L1.0.md` | _(undescribed)_ |
 | `L2.0/cgmo_opening_dijkstra.md` | _(undescribed)_ |
 | `L2.0/pebbling_amz.md` | _(undescribed)_ |
-| `L2.0/pebbling_ejc_survey.md` | _(undescribed)_ |
+| `L2.0/pebbling_ejc_survey.md` | Complete structural digest of the EJC chessboard-pebbling survey (Eriksson, EJC 2 (1995) #R7) — the pivotal source: n-dim weight, voidance bijection (Prop 20), polyominoids + Catalan, 2D crossing subtlety & GFs, n>=3 folded-polyominoid four-way bijection (Thm 9), minimal-unavoidable structure, Fig.3 table. Verified against the full text research/L0.0/pebbling_ejc_survey.full.md incl. Fig.3 (col n=2 = Catalan, row k=2 = n(3n-1)/2) re-checked by hand. |
 | `L2.0/pebbling_eriksson_eljc.md` | _(undescribed)_ |
 | `L2.0/pebbling_knessl_pdf.md` | _(undescribed)_ |
 | `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
@@ -32,4 +32,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `inventor_proposal_collapse.md` | _(undescribed)_ |
 | `oeis_lookup_2d_3d.md` | _(undescribed)_ |
 | `pebbling_structure_3d_ladder.md` | _(undescribed)_ |
-| `scholar_report.md` | _(undescribed)_ |
+| `scholar_report.md` | Verification pass report over the research library: re-checked each primary-source digest against its full text (CGMO lemmas/theorem, Zhen-Knessl recurrence/contour/asymptotics, Eriksson Thm 9/Prop 24/Fig.3 which was verified by hand), fixed the stale 'placeholder' index rows, and confirmed no contradiction with MEMORY.md values. Records what remains lacking: a 3D recurrence/DP reaching N=10000. |

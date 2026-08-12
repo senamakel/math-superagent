@@ -1181,13 +1181,8 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // the run believes about the objects being encoded, and `CLAIMS.md` is
         // where a closed form or a bound that removes half the constraints is
         // recorded.
-        "tool_builder"
-        | "coder"
-        | "sat_solver"
-        | "smt_solver"
-        | "theorem_prover"
-        | "symbolic_math"
-        | "lean_prover" => &[
+        "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
+        | "symbolic_math" | "lean_prover" => &[
             "config/config.toml",
             "GOAL.md",
             "TASKS.md",

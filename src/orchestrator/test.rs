@@ -3,8 +3,9 @@
 
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, DELEGATES, LEAN_PROVER_PROMPT,
-    SAT_SOLVER_PROMPT, SPECIALISTS, checked_workspace_path, compression_policy, default_registry,
-    role_context, validate_complexity, workspace_prompt,
+    SAT_SOLVER_PROMPT, SMT_SOLVER_PROMPT, SPECIALISTS, SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT,
+    checked_workspace_path, compression_policy, default_registry, role_context,
+    validate_complexity, workspace_prompt,
 };
 use crate::agent;
 
@@ -458,6 +459,9 @@ fn both_code_writing_roles_see_the_same_working_context() {
     assert_eq!(role_context("coder"), role_context("tool_builder"));
     assert_eq!(role_context("sat_solver"), role_context("tool_builder"));
     assert_eq!(role_context("lean_prover"), role_context("tool_builder"));
+    for role in ["smt_solver", "theorem_prover", "symbolic_math"] {
+        assert_eq!(role_context(role), role_context("tool_builder"), "{role}");
+    }
     assert!(role_context("coder").contains(&"SCRATCHPAD.md"));
     assert!(role_context("coder").contains(&"code/lib/INDEX.md"));
     // An encoding rests on what the run believes about the objects it encodes,
@@ -675,4 +679,58 @@ fn the_organizer_skips_a_cycle_over_a_workspace_it_has_already_filed() {
     let _ = std::fs::write(root.join("code/second.py"), "print(2)");
     assert_eq!(super::filing_unchanged(&root, &filed), None);
     let _ = std::fs::remove_dir_all(&root);
+}
+
+#[test]
+fn every_reasoning_specialist_is_registered_and_reachable() -> agent::Result<()> {
+    // Each answers a question the others answer badly: a finite encoding, a
+    // theory, first-order axioms, exact algebra, a kernel-checked proof. A role
+    // the planners cannot reach may as well not exist, which is how
+    // `lean_prover` once shipped registered-but-unspawnable.
+    let registry = default_registry(true)?;
+    for role in [
+        "sat_solver",
+        "smt_solver",
+        "theorem_prover",
+        "symbolic_math",
+        "lean_prover",
+    ] {
+        let agent = registry.get(role).ok_or_else(|| {
+            tinyagents::TinyAgentsError::Validation(format!("{role} is registered").into())
+        })?;
+        for needed in ["write_tool_file", "execute_command"] {
+            assert!(
+                agent.tools.iter().any(|tool| tool == needed),
+                "{role} must have `{needed}`"
+            );
+        }
+        // Handed a reduced question, not a topic to go investigate.
+        assert!(
+            !agent.tools.iter().any(|tool| tool == "exa_search"),
+            "{role}"
+        );
+        assert!(SPECIALISTS.contains(&role), "{role} unreachable from goals");
+        assert!(
+            DELEGATES.contains(&role),
+            "{role} unreachable from orchestrator"
+        );
+    }
+    Ok(())
+}
+
+#[test]
+fn each_solver_prompt_names_the_verdict_that_is_not_an_answer() {
+    // The shared failure of every automated prover: a status that means the
+    // search gave up, reported as though it settled something.
+    assert!(SMT_SOLVER_PROMPT.contains("unknown"));
+    assert!(SMT_SOLVER_PROMPT.contains("get-unsat-core"));
+    // The check that stops a vacuous proof: contradictory hypotheses make
+    // everything follow, so `unsat` alone proves nothing.
+    assert!(SMT_SOLVER_PROMPT.contains("already contradictory"));
+    assert!(THEOREM_PROVER_PROMPT.contains("ResourceOut"));
+    assert!(THEOREM_PROVER_PROMPT.contains("CounterSatisfiable"));
+    assert!(THEOREM_PROVER_PROMPT.contains("consistent before believing"));
+    // Symbolic work fails by agreeing numerically rather than exactly.
+    assert!(SYMBOLIC_MATH_PROMPT.contains("simplify(A - B)"));
+    assert!(SYMBOLIC_MATH_PROMPT.contains("unverified"));
 }
