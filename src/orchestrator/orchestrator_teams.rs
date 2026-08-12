@@ -267,7 +267,7 @@ fn results_unchanged(
     workspace: &Path,
     analysed: &Arc<std::sync::Mutex<Option<u64>>>,
 ) -> Option<teams::Cycle> {
-    if !super::layout::has_results(workspace) {
+    if !layout::has_results(workspace) {
         return Some(teams::Cycle::Idle);
     }
     let mut hasher = std::collections::hash_map::DefaultHasher::new();

@@ -90,8 +90,8 @@ const RESULT_SCAN: usize = 500;
 /// conclusion the run had already written down itself, in
 /// `code/out/oracle-model-broken.md`, saying its sequence tools "were therefore
 /// not run: there are no program-produced terms to feed them".
-pub(super) fn has_results(workspace: &Path) -> bool {
-    fn walk(folder: &Path, depth: usize, budget: &mut usize) -> bool {
+pub(super) fn has_results(workspace: &std::path::Path) -> bool {
+    fn walk(folder: &std::path::Path, depth: usize, budget: &mut usize) -> bool {
         if depth == 0 || *budget == 0 {
             return false;
         }
