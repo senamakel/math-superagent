@@ -1221,7 +1221,7 @@ thinking was covered by neither.
 `search_workspace` (`recall.rs`) closes that. It walks the workspace rather
 than an index and ranks by cosine similarity over the same deterministic
 feature-hashing encoder the notes use, so `MEMORY.md`, `reflections/`,
-`SCRATCHPAD.md`, and `code/lib/` are reachable by wording rather than by a path
+and `code/lib/` are reachable by wording rather than by a path
 an agent already knew. Before it, the inventor re-proposed approaches whose
 failure was recorded three files away and the pattern agent rebuilt helpers
 that already existed. It hides exactly what `list_workspace` hides: an agent
@@ -1283,13 +1283,13 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | Role | Additional files |
 | --- | --- |
 | orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, `reflections/ROOT.md`, `reflections/INDEX.md` |
-| tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files plus `SCRATCHPAD.md` and `code/`, minus the threads and the reflection files |
+| tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files plus `code/`, minus the threads and the reflection files |
 | judge | `GOAL.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` and `reflections/ROOT.md` |
-| pattern_finder | `GOAL.md`, `MEMORY.md`, `SCRATCHPAD.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
+| pattern_finder | `GOAL.md`, `MEMORY.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
 | librarian, research | `GOAL.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/FRONTIER.md`, `CONTEXT.md` |
 | inventor | the planners' research files plus `research/THREADS.md` and both reflection files |
-| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `SCRATCHPAD.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
 | organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/INDEX.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md` |
 
 The tool-builder accumulates what a second program would repeat under
@@ -1313,8 +1313,10 @@ Four of these are load-bearing rather than tidy-minded:
 - The inventor must see `MEMORY.md` for its failed-approaches section. Without
   it, it re-proposes what already failed, which is the one thing it exists not
   to do.
-- Reflection must *not* see `SCRATCHPAD.md`. Provisional arithmetic is not
-  evidence of progress, and treating it as such keeps the loop retrying.
+- Reflection must not reach the scratch. Provisional arithmetic is not
+  evidence of progress, and treating it as such keeps the loop retrying. That
+  was a routing decision while the scratch was `SCRATCHPAD.md`; now that it is
+  a Cognee store it is a tool boundary, enforced by `register_scratch`.
 - Only the librarian and research see `research/FRONTIER.md`. It is a list of
   things nobody has read, useful exactly to the roles deciding what to fetch
   next and noise to everyone else.
@@ -1339,8 +1341,9 @@ Adding a file to every role is the easy mistake. Ask what the role has to
 decide, and give it only what that decision needs. The scholar is the one
 legitimate exception: judging whether a source is worth anything requires
 knowing what the run wants, what it already believes, and what it is currently
-attempting, so it needs all three — and `SCRATCHPAD.md` besides, because a
-half-finished derivation is exactly the kind of thing a paper resolves.
+attempting, so it needs all three — and `recall_scratch` besides, because a
+half-finished derivation is exactly the kind of thing a paper resolves. It gets
+the read half only: it judges provisional work rather than producing any.
 
 ## Workspace checkpointing
 
@@ -1358,8 +1361,7 @@ failed checkpoint never fails the tool that succeeded.
 When a workspace is first used, the helper copies
 the template into it without replacing existing files. The runtime appends
 `AGENTS.md`, `config.toml`, `MEMORY.md`, and the relevant role prompt to each
-agent's built-in system policy. `GOAL.md`, `TASKS.md`, and `SCRATCHPAD.md` are
-also loaded. Workspace context must never replace built-in tool or container
+agent's built-in system policy. `GOAL.md` and `TASKS.md` are also loaded. Workspace context must never replace built-in tool or container
 restrictions.
 
 The tool-builder also gets `apply_patch` (`src/orchestrator/patch.rs`), which

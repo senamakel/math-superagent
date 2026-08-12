@@ -681,7 +681,7 @@ fn the_brief_is_curated_by_a_standing_team_at_the_configured_rate() {
     // come back later rather than stop — the distinction that cost an earlier
     // background team its whole allowance on cycle one.
     assert_eq!(completion, super::teams::Completion::Standing);
-    assert_eq!(budget.min_interval, shared_context::cycle_interval());
+    assert_eq!(budget.min_interval, super::shared_context::cycle_interval());
     assert!(brief.contains("NOTHING FURTHER"));
     assert_eq!(name, "context");
 }
