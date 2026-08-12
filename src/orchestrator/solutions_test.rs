@@ -3,8 +3,8 @@
 
 use super::{
     BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, Mailbox, Progress, Route,
-    STUCK_THRESHOLD, SolutionState, approach_slugs, evidence_briefing, extract_lesson, kind_of,
-    provider_blocked, route,
+    STUCK_THRESHOLD, SolutionState, UNVERIFIED_THRESHOLD, approach_slugs, evidence_briefing,
+    extract_lesson, kind_of, provider_blocked, record_verdict, route,
 };
 
 fn state() -> SolutionState {
