@@ -27,24 +27,21 @@ into the next attempt's prompt; RESTART discards the direction and re-enters
 `attempt` without reflecting.
 
 It is given the workspace as well as the report, because the report is the first
-thing lost. The ordinary way an attempt ends is the run cap killing it, which
+thing lost: the ordinary way an attempt ends is the run cap killing it, which
 destroys its context and its report and leaves every file it wrote. One evening
 all three live Euler attempts died at exactly 30:00 and every verdict that
-followed was 1/5 or 2/5 with "progress no" — one of them against a workspace
-holding both check values its problem supplied, reproduced to ten digits, and 38
-points cross-validated two ways. The judge was scoring silence. `evidence_briefing`
-therefore counts what is on disk — `code/out/` entries, claims split by whether
-the run established them or read them, approaches, threads — and says which of
-the two to believe when they disagree. It counts and never reads: what a file
-*means* is the judgement the judge is about to make, but whether the attempt
-executed, established, or proposed anything is not.
-
-It also carries one fault. If `code/` holds `brute.py` and at least one faster
-program, and nothing under `code/out/` so much as names the oracle, the judge is
-told so. Keeping the naive oracle was already enforced; agreeing with it was not.
-Project Euler 241's `solution.py` justified its pruning with a claim that is
-false — no later σ factor can supply the cancelling prime, when σ(13) = 14 — and
-found 5 of the 9 terms below 10⁸ while `brute.py` sat beside it unrun.
+followed was 1/5 or 2/5 with "progress no" — one against a workspace holding both
+check values its problem supplied, reproduced to ten digits, and 38 points
+cross-validated two ways. The judge was scoring silence. `evidence_briefing`
+counts what is on disk — `code/out/` entries, claims split by whether the run
+established or read them, approaches, threads — and says which to believe when
+the two disagree. It counts and never reads: what a file *means* is the
+judgement the judge is about to make; whether the attempt executed, established,
+or proposed anything is not. It also carries one fault — `code/` holding
+`brute.py` and a faster program while nothing under `code/out/` names the oracle.
+Keeping the naive oracle was enforced; agreeing with it was not, and PE241's
+`solution.py` justified its pruning with a falsehood (no later σ factor supplies
+the cancelling prime, when σ(13) = 14) and found 5 of 9 terms below 10⁸.
 
 The judge runs on a narrowed budget (`RunBudget::for_judging`): twelve model
 calls and five minutes, against an attempt that takes the better part of an
