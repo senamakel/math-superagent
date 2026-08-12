@@ -5,12 +5,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `CLAIMS.md` | Derived: every claim block in the notes, one row each, with whether its hypotheses hold here and what evidence stands behind it. Rewritten on every research write; do not edit. |
-| `FRONTIER.md` | _(undescribed)_ |
-| `L1.0/oeis_a001006.md` | _(undescribed)_ |
-| `L1.0/oeis_a005207.md` | _(undescribed)_ |
-| `L1.0/oeis_a007902.md` | _(undescribed)_ |
-| `L1.0/oeis_a055999.md` | _(undescribed)_ |
-| `L1.0/oeis_a074171.md` | _(undescribed)_ |
+| `FRONTIER.md` | Derived: leads harvested from the citations inside every downloaded document (ranked by how many library sources cite each; struck-through = already in library). A row is a lead, not a recommendation; nothing here is judged. Rewritten on each download; do not edit by hand. |
+| `L1.0/oeis_a001006.md` | Motzkin numbers A001006 lookup note (g.f., D-finite recurrence, closed form). Establishes D(N) is NOT Motzkin (diverges at n=2). Kills the Motzkin closed-form candidate for D(N). |
+| `L1.0/oeis_a005207.md` | Fibonacci-family lookup note ((F(2n-1)+F(n+1))/2 sequ; diverges from D(N) at n=2). Rules out a Fibonacci closed form for D(N). |
+| `L1.0/oeis_a007902.md` | A007902 (pebbling configurations) = the run's 2D amoeba sequence D_2D(N), matched on every term (D_2D(N)=A007902(N+1)). Names the 2D analogue: no closed form, only asymptotics (~2.32^n) and a memoized G(k,m) recurrence. Not the 3D D(N). Claim d2d-equals-a007902. |
+| `L1.0/oeis_a055999.md` | OEIS A055999 (a(n)=n(n+7)/2 quadratic) lookup note. Hit: the PE763 max-level column Q_2(N)=R(N,N-2)/3^(N-5) equals A055999(N-5)=(N-5)(N+2)/2 exactly for N=6..14, confirming the Q_2 closed form from a catalogued sequence. Source https://oeis.org/A055999. |
+| `L1.0/oeis_a074171.md` | OEIS A074171 (a(1)=1,a(2)=3 then n(n+7)/2, 'essentially A055999') lookup note. Matched only as a sibling of A055999, which gives the run's Q_2(N)=(N-5)(N+2)/2 max-level-column closed form on N=6..14. Source https://oeis.org/A074171. |
 | `L1.0/oeis_a086246.md` | _(undescribed)_ |
 | `L1.0/oeis_a134227.md` | _(undescribed)_ |
 | `L1.0/oeis_a168049.md` | _(undescribed)_ |
