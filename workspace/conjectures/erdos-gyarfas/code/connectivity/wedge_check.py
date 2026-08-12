@@ -1,18 +1,10 @@
-"""Check the wedge-of-two-triangles claim from durable memory.
-A wedge of two triangles sharing exactly one vertex: does it have min degree 3?
-Plain computation below. (Context-curator verification, not a solver result.)
+"""NOTE (context curator): This check is NOT needed and has been superseded.
+The 'wedge of two triangles sharing one vertex' example cited in an old durable-
+memory entry is WRONG: such a graph has min degree 2 (vertex 0 has degree 4, the
+other four vertices have degree 2), so it is NOT a delta>=3 graph and cannot
+serve as the counterexample to a 2-connectivity lemma. The correct example of a
+delta>=3 graph with a cut vertex and delta<=2 lobes is the glued 3xPetersen
+graph from code/out/connectivity/verify_connectivity.log (n=31, delta=3, node
+connectivity 1, lobes of v have delta=1). Standalone hand-argument, not a
+program run; do not cite this file.
 """
-import networkx as nx
-
-# wedge of two triangles sharing vertex 0
-G = nx.Graph()
-G.add_edges_from([(0,1),(0,2),(1,2)])  # triangle 1
-G.add_edges_from([(0,3),(0,4),(3,4)])  # triangle 2 (shares 0)
-
-d = dict(G.degree())
-print("n =", G.number_of_nodes(), " m =", G.number_of_edges())
-print("degrees:", sorted(d.values()))
-print("min degree =", min(d.values()))
-print("has cut vertex 0 (nx):", not nx.is_connected(G) or not nx.is_connected(nx.restricted_view(G, [0], [])) is False)
-# direct: node connectivity
-print("node connectivity =", nx.node_connectivity(G))
