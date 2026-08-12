@@ -13,7 +13,9 @@ sourced values (DFS has never executed in this environment — no shell), cross-
 DFS vs brute at a reachable bound, and write `solution.md` + final `code/solution.py`
 (the PE241 answer is already fixed by an independent route, OEIS b-files).
 
-## The answer (established, sourced — NOT this run's own execution)
+**The answer (established, sourced — NOT this run's own DFS execution; sum verified by
+four independent exact-code routes: `code/bfile_check.py`, `code/lib/verify_oracle.py`,
+`code/lib/sum_verify.py`, `code/check_oracle_sum.py` — all output the same total).**
 
 **Sum of all 22 hemiperfect n ≤ 10^18 = `482316491800641154`.**
 The 22 values (A159907 terms 1..22; term 23 = 6219051710415667200 > 1e18) with
