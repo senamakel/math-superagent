@@ -415,16 +415,15 @@ alone shows which attempts taught the run something — and indexed in
 `reflections/INDEX.md` in the same step. The folder carries an index for the
 same reason `research/` and `code/lib/` do: a directory of epoch-stamped
 filenames says when each attempt was judged and nothing about what any of them
-found. Each row records the attempt number, the verdict, and the lesson, so
-the planners and the inventor can see which attempt is worth continuing
-without opening any of them. The loop writes both the file and the row itself
-— no agent is in that path — which is why `refresh_index` and `describe_file`
-refuse the folder outright (`folder_index::loop_owned`): a hand refresh would
-replace verdicts and lessons with `_(undescribed)_`. The organizer's prompt
-said to leave it alone and a live organizer refreshed it anyway, which is the
-usual lesson — a prompt instruction is not a control. Writing the log is best
-effort: the lesson is already in the loop state, and losing the archive copy
-must not cost the run the lesson.
+found. Each row records the attempt number, the verdict, and the lesson, so the
+planners and the inventor can see which attempt is worth continuing without
+opening any of them. The loop writes both the file and the row — no agent is in
+that path — which is why `refresh_index` and `describe_file` refuse the folder
+outright (`folder_index::loop_owned`): a hand refresh would replace verdicts and
+lessons with `_(undescribed)_`. The organizer's prompt said to leave it alone and
+a live organizer refreshed it anyway, the usual lesson — a prompt instruction is
+not a control. Writing the log is best effort: the lesson is already in the loop
+state, and losing the archive copy must not cost the run the lesson.
 
 ## The directive queue
 
