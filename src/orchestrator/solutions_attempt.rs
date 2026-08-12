@@ -149,6 +149,21 @@ impl SolutionState {
     pub(super) fn outcome(&self) -> String {
         let mut report = if self.solved {
             format!("Solved after {} attempt(s).\n\n", self.attempts)
+        } else if self.unverified >= UNVERIFIED_THRESHOLD {
+            // Distinct from both endings on purpose. "Solved" would present a
+            // single-route answer as a verified one, which is the failure the
+            // verification bar exists to stop; "not solved" would throw away a
+            // specific final answer with an exact closed form, which is the
+            // failure of reporting nothing rather than reporting honestly. The
+            // provenance gap is the result here, and it is stated rather than
+            // rounded to either neighbour.
+            format!(
+                "Answered but not independently verified, after {} attempt(s). The run reached a \
+                 specific final answer and could not build a second route to it; the reflection \
+                 below names the answer and the route that is missing. Treat the answer as \
+                 resting on the single route stated, not as confirmed.\n\n",
+                self.attempts
+            )
         } else if self.blocked >= BLOCKED_THRESHOLD {
             // Said plainly, because the default wording reports a count of
             // attempts and reads as a mathematical failure. This run did not
