@@ -3,9 +3,7 @@ The Q-decomposition D(N)=sum_k Q_k(N)3^(N-2k-1) only covers M with
 e=2M-N-1>=0 i.e. M>=(N+1)/2. Compute M_min per N and see when M_min>=(N+1)/2.
 Also test whether there is structure to the lower-M ('off-diagonal') part."""
 import collections, glob
-
-def sorted_key(path):
-    return int(path.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 R = collections.defaultdict(dict)
 for path in sorted(glob.glob('/workspace/data/level_*.txt'), key=sorted_key):
