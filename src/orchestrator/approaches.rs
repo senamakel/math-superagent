@@ -138,11 +138,6 @@ impl Approaches {
             .iter()
             .filter(|approach| approach.stance.is_closed())
     }
-
-    /// Whether any approach has been recorded at all.
-    pub(super) fn is_empty(&self) -> bool {
-        self.approaches.is_empty()
-    }
 }
 
 /// Reads every approach file under [`APPROACHES_DIR`].

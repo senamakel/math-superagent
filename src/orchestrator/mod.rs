@@ -6,6 +6,7 @@ mod checkpoint;
 mod claims;
 mod digest;
 mod documents;
+mod dossier;
 mod exec;
 mod folder_index;
 mod frontier;

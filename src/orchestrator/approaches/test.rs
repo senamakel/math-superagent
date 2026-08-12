@@ -195,9 +195,7 @@ fn the_full_rendering_keeps_an_idea_a_row_would_cut() -> std::io::Result<()> {
 #[test]
 fn an_empty_folder_says_how_to_start() -> std::io::Result<()> {
     let root = workspace("empty")?;
-    let approaches = collect(&root);
-    assert!(approaches.is_empty());
-    let rendered = approaches.render();
+    let rendered = collect(&root).render();
     assert!(rendered.contains("No approaches yet"));
     assert!(rendered.contains("research/approaches/<name>.md"));
     Ok(())
