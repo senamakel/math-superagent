@@ -5,7 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `AGENTS.md` | _(undescribed)_ |
-| `CONTEXT.md` | _(undescribed)_ |
+| `CONTEXT.md` | Working state / task guidance context for the run. |
 | `GOAL.md` | _(undescribed)_ |
 | `MEMORY.md` | _(undescribed)_ |
 | `README.md` | _(undescribed)_ |
