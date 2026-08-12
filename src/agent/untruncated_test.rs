@@ -156,24 +156,25 @@ async fn a_request_with_no_cap_of_its_own_is_left_alone() {
 }
 
 #[tokio::test]
-async fn a_turn_the_loop_already_doubled_is_not_doubled_again() {
-    // This is not the only ladder. The vendored loop recovers its own shape of
-    // truncation the same way, so a turn it has re-issued arrives here at
-    // twice the cap — and read as an original, that doubles again. A live
-    // `goals` agent reached a 48,000-token re-issue exactly this way, four
-    // times the configured ceiling.
+async fn a_reissued_turn_keeps_the_cap_it_was_cut_off_at() {
+    // Measuring the reasoning channel removed the doubling. Every turn that
+    // reached the old doubled ceiling reported `out=24000` against
+    // `reasoning_tokens=23999` — one visible token — so it was not short of
+    // room, and a larger budget bought a longer silence and a second full
+    // generation to pay for it. The room now lives in `RunBudget`'s 48,000 cap.
     let (inner, caps) = ScriptedModel::new(vec![truncated("cut off"), finished("done")]);
-    let model = UntruncatedModel::new(inner).with_turn_cap(12_000);
+    let model = UntruncatedModel::new(inner);
 
-    let _ = model
-        .invoke(&(), ModelRequest::new(Vec::new()).with_max_tokens(24_000))
+    let response = model
+        .invoke(&(), ModelRequest::new(Vec::new()).with_max_tokens(12_000))
         .await
-        .expect("an already-doubled turn still answers");
+        .expect("a cut-off turn is asked again");
 
+    assert_eq!(response.text(), "done");
     assert_eq!(
         *caps.lock().expect("recorded caps are not poisoned"),
-        vec![Some(24_000)],
-        "the turn is already at the shared ceiling, so it is not re-issued"
+        vec![Some(12_000), Some(12_000)],
+        "the re-issue carries the reason, not a bigger budget"
     );
 }
 
