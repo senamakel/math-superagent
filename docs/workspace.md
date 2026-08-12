@@ -393,12 +393,12 @@ without producing any, and neither to reflection or the judge, for exactly the
 reason the file was withheld from them: unsettled arithmetic read as progress is
 what keeps a loop retrying. A test asserts that split.
 
-The dataset is scoped to the project, not the run, for the reason recorded on
-the session dataset: `./euler 763` continues from what is on disk, and a scratch
-that vanished on restart would be worse than the file it replaces. Ingest is
-backgrounded, because a note is written mid-derivation and waiting on an index
-would put the memory on the critical path of the arithmetic it describes, which
-is the one thing a file did not do.
+The dataset is scoped to the project, not the run, for the reason recorded on the
+session dataset: `./euler 763` continues from what is on disk, and a scratch that
+vanished on restart would be worse than the file it replaces. Ingest is
+backgrounded: a note is written mid-derivation, and waiting on an index would put
+the memory on the critical path of the arithmetic it describes — the one thing a
+file did not do.
 
 ## Workspace discovery and the reflection log
 
