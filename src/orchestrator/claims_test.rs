@@ -218,6 +218,46 @@ fn a_catalogued_claim_is_separated_from_an_asserted_one() -> std::io::Result<()>
     Ok(())
 }
 
+/// What the run computed counts as much as what it read.
+///
+/// The ledger walked only `research/`, so a claim could originate only in a
+/// note about a *source* — the run recorded what it had read and forgot what it
+/// had proved. Project Euler 597 sat at `proved=0` for fourteen consecutive
+/// sweeps while holding the check value its own problem statement supplies,
+/// reproduced exactly, and 38 points cross-validated two ways.
+#[test]
+fn a_claim_computed_in_code_out_reaches_the_ledger() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-computed");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.0"))?;
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: p4-400-reproduced\nstatement: p(4,400) = 521/1020, matching the stated \
+             check to ten digits.\nholds-here: yes\nstatus: checked",
+        ),
+    )?;
+    std::fs::write(
+        root.join("research/L1.0/read.md"),
+        note("id: from-a-paper\nstatement: The bound is tight.\nholds-here: yes\nstatus: proved"),
+    )?;
+    let ledger = collect(&root);
+    let rendered = ledger.render();
+
+    assert!(
+        rendered.contains("`p4-400-reproduced`"),
+        "a computed claim must reach the ledger: {rendered}"
+    );
+    assert!(rendered.contains("`from-a-paper`"));
+    // Both are things this run stands behind, so both count as established —
+    // that total is what the judge is shown when an attempt is cut off before
+    // it can report.
+    assert_eq!(ledger.established(), 2);
+    assert_eq!(ledger.asserted(), 0);
+    Ok(())
+}
+
 /// Retrieval is the point: a query naming an object finds the claims about it.
 #[test]
 fn search_ranks_by_how_much_of_the_query_a_claim_carries() -> std::io::Result<()> {

@@ -40,6 +40,10 @@ now a sourced, verified list + sum, replacing the prior conjecture.** The DFS at
 lists known members; completeness is the solver's proof, per the claim's
 hypotheses).
 
+**Operational note (this cycle):** the Cognee tools (`recall_memory`, `recall_scratch`,
+`relate_memory`) have been timing out / returning 409 throughout this cycle. Prefer disk
+(`research/`, `code/`, `[[]]` links) for any lookup; do not burn turns retrying recall.
+
 ## Established — each with its basis
 
 - **Problem (sourced, `[[problem.md]]`).** PE 241. σ(n)=sum of divisors;
