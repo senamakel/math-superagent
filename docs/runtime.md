@@ -379,6 +379,15 @@ re-issues with the cap doubled, clamped at 4x. So a bound turn shows as
 `out=<cap>`, a `model RETRY`, then `out=<2x cap>`. Read that pair as one
 truncation, not as evidence the cap is larger than it is.
 
+`ReroutingModel` is outermost, so every provider failure passes through it
+once. Anything it does not reroute is handed back to the harness's own retry
+ladder, which announces `model RETRY attempt N` and nothing more: upstream's
+`AgentEvent::RetryScheduled` carries a call id and an attempt number, no error.
+A live `pattern_finder` retried one call six times over three and a half
+minutes with the cause in neither the console nor `trace.jsonl` — a documented
+stall signal arriving with nothing to diagnose from. It now notes the cause and
+the agent on the way past, one line per *failed* call.
+
 `UntruncatedModel` is a second ladder beside that one, covering the shape
 upstream excludes — a turn that produced text but no tool call. The two must
 share a ceiling rather than compose into one, so `MAX_CAP_GROWTH` is measured
