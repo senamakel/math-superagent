@@ -108,51 +108,21 @@ def solve(L, constraints, extra_cuts=None):
 
 def main():
     # ---------------- L=5 example ----------------
-    L5 = 5
-    cons5 = [
-        ("90342", 2), ("70794", 0), ("39458", 2), ("34109", 1),
-        ("51545", 2), ("12531", 1),
-    ]
     print("=== L=5 instance ===")
-    sol5, res5 = solve(L5, cons5)
+    sol5, res5 = solve(L5, CONSTRAINTS5)
     print(f"status             : {res5.message}")
     print(f"secret (MILP)      : {sol5}")
-    n5 = brute_count_reserved()
     if sol5 == "39542":
         print("CONFIRMED: L=5 answer 39542 (matches brute oracle 100000-check).")
     else:
         print("MISMATCH with expected 39542.")
     # uniqueness check for L=5 (extra cut forbids the found solution)
-    sol5b, res5b = solve(L5, cons5, extra_cuts=[sol5])
+    sol5b, res5b = solve(L5, CONSTRAINTS5, extra_cuts=[sol5])
     print(f"L=5 uniqueness     : "
           f"{'UNIQUE (no second solution)' if sol5b is None and not res5b.success else 'multiple'}")
 
     # ---------------- L=16 main instance ----------------
-    L16 = 16
-    cons16 = [
-        ("5616185650518293", 2),
-        ("3847439647293047", 1),
-        ("5855462940810587", 3),
-        ("9742855507068353", 3),
-        ("4296849643607543", 3),
-        ("3174248439465858", 1),
-        ("4513559094146117", 2),
-        ("7890971548908067", 3),
-        ("8157356344118483", 1),
-        ("2615250744386899", 2),
-        ("8690095851526254", 3),
-        ("6375711915077050", 1),
-        ("6913859173121360", 1),
-        ("6442889055042768", 2),
-        ("2321386104303845", 0),
-        ("2326509471271448", 2),
-        ("5251583379644322", 2),
-        ("1748270476758276", 3),
-        ("4895722652190306", 1),
-        ("3041631117224635", 3),
-        ("1841236454324589", 3),
-        ("2659862637316867", 2),
-    ]
+    cons16 = CONSTRAINTS16
     print()
     print("=== L=16 instance ===")
     from time import perf_counter
@@ -183,12 +153,6 @@ def main():
                   f"{t3 - t2:.3f} s)")
         else:
             print(f"uniqueness      : MULTIPLE — found another solution {sol16b}")
-
-
-def brute_count_reserved():
-    """Placeholder hook (L=5 uniqueness already confirmed by code/brute.py).
-    Returns None; the print logic does not rely on this value."""
-    return None
 
 
 if __name__ == "__main__":
