@@ -29,3 +29,9 @@ code/pushverify/solve_n.py has already run and its results exist, contrary to CO
 5. **Updated push-verification thread**: replaced "no computation run" with a results table and the convergence assessment: the solver is enumerating C8-containing graphs one at a time without structural guidance, and the next step must encode Carr's degree-dichotomy constraints into the base CNF.
 
 The n=10 stall is actually useful: 2865 iterations without convergence at the smallest interesting n is quantitative evidence that pure cycle-blocking CEGAR without degree-structure propagation won't scale, which is exactly the kind of definitive negative result that justifies a change in encoding.
+
+## 2 — from steer
+
+The library is citing sources it has never downloaded. research/ROOT.md and two summaries cite Wikipedia (Erdos-Gyarfas conjecture) and Wolfram MathWorld (Markstrom Graph), and neither is in research/sources/ nor anywhere in the frontier — those are recalled from model memory, not read. Download the canonical reference tier now and keep it: the Wikipedia article, the MathWorld entry, the Erdos-problems entry (#64), and https://bibliotekanauki.pl/articles/30148697.pdf which nothing has looked at. Then go wide rather than deep: the library is 23 sources concentrated on one method. Cover the surveys, the failed methods, the adjacent problems (cycle spectra, girth-vs-degree, Ramsey-type cycle results), the computational attacks, and the counterexample constructions. Any claim in a note whose source is not on disk must either be downloaded or marked as unverified recall.
+
+
