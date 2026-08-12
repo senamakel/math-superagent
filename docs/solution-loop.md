@@ -47,11 +47,26 @@ with nothing.
 The prompt makes the judge reluctant rather than exacting. It is told to assume
 the attempt was reasonable, that most are, and that a run which computed the
 wrong thing or ended blocked has still done its job. RESTART is reserved for
-four named faults in the *conduct* of a run — an answer no executed program
+five named faults in the *conduct* of a run — an answer no executed program
 produced, a method that searches the answer space, a verification that checks a
-program against itself, or building on a belief already disproved — and if it
-cannot name which occurred and point at the words showing it, the verdict is
-PROCEED.
+program against itself, building on a belief already disproved, or a computation
+run at a larger size than an earlier one without naming what the larger run
+settles — and if it cannot name which occurred and point at the words showing
+it, the verdict is PROCEED.
+
+The score is not purely an execution ladder any more, and that was deliberate.
+Every rung above 2 required "executed", which is right for the failure it was
+written against — a small fast model reporting an answer nobody computed — but
+it meant a new reformulation with a citation and a first step could score at
+most 2, so the only scoreable act was running something. A run stuck scaling one
+method had no way to be credited for the thing that would get it unstuck. A
+reformulation now reaches 4 when it is checkable — named in mathematics, with
+cited precedent, a reason it fits, a first step, and an alternative closed with
+its reason — and 3 when nobody took it to the literature or weighed it against
+anything. A suggestion to think differently still scores 1. The judge is
+deliberately not routed `research/APPROACHES.md`, so the evidence has to be in
+the report: a judge holding the ledger would credit an attempt for approaches
+the report never mentions.
 
 Reflection runs after *every* attempt, not only after a failure, because the
 lesson from a partial success is what stops the next attempt repeating it. The
@@ -214,8 +229,41 @@ per cycle and written into the brief, because it is the fact that decides what
 the cycle is *for*: adding, or compressing.
 
 `diversify` runs three arms concurrently — the librarian followed by the
-scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the
-step that breaks a loop reflection alone cannot.
+scholar, the pattern agent, and the invention exchange — and it is the step that
+breaks a loop reflection alone cannot.
+
+Two of those arms are errands and finish in one delegation. The third is a
+conversation, because what it produces exists in neither agent alone: the
+inventor knows what this run has tried and what shape the problem has, research
+knows what is already named, proved, and attempted elsewhere, and a line of
+attack worth adopting has to be both new to this run and not something the
+literature already closed. So `invention_arm` runs three children in sequence —
+the inventor proposes three divergent candidates and writes each to
+`research/approaches/<slug>.md`, research grounds or refutes each and fills in
+its `precedent`, and the inventor adopts one or synthesises a better one from
+what came back. The arm still runs beside the library arm's two, so a diversify
+costs roughly one extra child run rather than three.
+
+It was one inventor call before, concurrent with the library arm and blind to
+it. That produced a paragraph of prose, once, merged into the next attempt's
+context and then lost — so an idea proposed at attempt three could be proposed
+again at attempt six, and the literature check that would have killed it never
+happened. Writing to the approach ledger is what makes the next round start from
+what this one closed.
+
+`COMPUTATIONAL_THRESHOLD` is the second way into this step, and it exists
+because "did the attempt establish something new" and "is the run getting
+anywhere" turned out to be different questions and `route` only asked the first.
+Pushing an exhaustive search from n=14 to n=16 honestly establishes something
+the run did not have, so reflection answers `PROGRESS: YES`, which resets
+`unproductive` — and since `unproductive >= STUCK_THRESHOLD` was the only route
+to `diversify`, a run scaling one method never reached the inventor at all. It
+could spend its whole budget that way, every attempt genuinely progressing and
+the method never changing. Reflection now also answers `KIND: MATHEMATICAL |
+COMPUTATIONAL | NONE`, and two consecutive COMPUTATIONAL answers route here. The
+parse is conservative: only an explicit, recognised answer moves the counter, so
+a reflection the loop cannot read never drives it — treating silence as "scaling
+again" would divert a working run on two malformed replies.
 
 A provider wall is not a failed attempt, and the loop must not spend the
 attempt ceiling discovering that. `delegate` turns a child's failure into text
