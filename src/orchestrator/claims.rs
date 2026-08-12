@@ -102,6 +102,23 @@ pub(super) enum Status {
     Asserted,
     /// Suggestive rather than established.
     Heuristic,
+    /// Read out of a catalogue: a term list, a table, a b-file.
+    ///
+    /// This is not a weaker `Asserted`, it is a different thing, and Project
+    /// Euler 241 is why it needs its own name. That run's answer —
+    /// 482,316,491,800,641,154 — came from `sum_answer.py`, twenty lines
+    /// summing a hardcoded copy of OEIS A159907's b-file, whose definition is
+    /// the problem's own condition restated. Its actual derivation,
+    /// `solution.py`, was wrong: 5 of the 9 terms below 10^8. Nothing on disk
+    /// distinguished the two files, so a correct number sat beside a broken
+    /// proof and the run had no way to notice.
+    ///
+    /// A catalogue is a legitimate and often excellent source — `oeis_lookup`
+    /// is the first thing the librarian is told to reach for, and rightly. The
+    /// failure is not consulting one, it is letting a lookup *stand in for* the
+    /// derivation without saying so. Marked, it is a cross-check that confirms
+    /// a result; unmarked, it is a substitute for one.
+    Catalogued,
 }
 
 impl Status {
