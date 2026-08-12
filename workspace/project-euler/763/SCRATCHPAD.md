@@ -62,6 +62,27 @@ as a full identity. First falsified at N=12, not N=15 as previously guessed.
 
 ## This tool-builder task's runs
 
+### Holonomic/P-recursive route — re-test (negative, matches documented dead-end)
+Task 2 of this tool-builder run. Program code/holonomic_test.py, output
+code/out/holonomic_test.txt.
+- First re-confirmed D(0..14)=1,1,3,9,30,99,336,1134,3855,13086,44499,
+  151263,514419,1749267,5949063 by running code/brute.py (D(2)=3, D(10)=44499
+  both MATCH; BFS stops cleanly at D(13), frontier 1,749,267 > cap 1,000,000).
+- For each (m=2..6, d=0..4), built the exact-rational nullspace recurrence
+  sum_j p_j(N)D[N+j]=0 over D(0..14) (shares the fit construction with
+  lib.holonomic.fit), then extrapolated EVERY independent solution with exact
+  Fraction arithmetic to D(20) and D(100), reduced mod 10^9, compared to
+  D(20)≡204559704 and D(100) last-nine=780166455.
+- RESULT: NO (m,d) reproduces BOTH checks. Mechanistic overfit proof: every
+  fitted recurrence breaks immediately out-of-sample — either p_m(n) hits 0
+  (division-by-zero) or the extrapolation is non-integer already at N=20
+  (integer_output=False). The exact fit to D(0..14) is an interpolation, not a
+  true recurrence of the sequence.
+- Conclusion (matches prior lib.holonomic / holonomic_probe negative): D(N) is
+  not low-order P-recursive; a literal holonomic fit cannot reach D(10000). Do
+  NOT re-search. The open transfer-matrix DP over smooth compositions (steering
+  redirect) is the live direction for D(10000).
+
 ### Pure naive frozenset BFS oracle (definition check + capacity report)
 Program code/brute.py, naive level-by-level frozenset BFS via
 lib.amoeba.forward_level, one step per division, stopping when the CURRENT
