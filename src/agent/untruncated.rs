@@ -186,26 +186,21 @@ impl<S: Send + Sync + 'static> ChatModel<S> for UntruncatedModel<S> {
 
     async fn invoke(&self, state: &S, request: ModelRequest) -> Result<ModelResponse> {
         let mut response = self.inner.invoke(state, request.clone()).await?;
-        let Some(original) = request.max_tokens else {
-            // With no cap of our own to raise, a re-issue would ask for the
-            // identical thing and get the identical answer.
+        let Some(cap) = request.max_tokens else {
+            // With no cap of our own there is nothing to tell the model about
+            // why its turn ended, and no reason to think an identical request
+            // would answer differently.
             return Ok(response);
         };
-        let ceiling = self
-            .configured
-            .unwrap_or(original)
-            .saturating_mul(MAX_CAP_GROWTH);
-        let mut cap = original;
         for _ in 0..MAX_REISSUES {
-            if !cut_off(&response) || cap >= ceiling {
+            if !cut_off(&response) {
                 break;
             }
-            cap = cap.saturating_mul(2).min(ceiling);
             if let Some(tracer) = self.tracer.as_ref() {
                 tracer.note(&format!(
-                    "{} model TRUNCATED at {} output tokens with no tool call; re-issuing at {cap}",
-                    self.agent,
-                    cap / 2
+                    "{} model TRUNCATED at {cap} output tokens with no tool call; re-issuing with \
+                     the reason",
+                    self.agent
                 ));
             }
             response = self.inner.invoke(state, reissued(&request, cap)).await?;

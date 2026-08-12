@@ -122,7 +122,7 @@ def main():
         if num <= den:
             continue
         g = gcd(num, den)
-        p, q = num // g, den // den  # careful: num/den already reduced by base_set
+        p, q = num, den  # base_set returns reduced pairs, so g=1
         if witness(p, q) is not None:
             results.append((p, q))
     results = sorted(set(results))
