@@ -149,6 +149,43 @@ downloaded).
 - **Royle 2^n primary note confirmed on disk** (`research/sources/royle-2n-conjecture.md`).
   Thread item ticked.
 
+## What this cycle added (librarian run 3)
+
+- **Narins–Pokrovskiy–Szabó 2017** (Combinatorica 37, 495–519; full text
+  `research/sources/narins-pokrovskiy-szabo-degree3-critical-pdf.full.md`): degree
+  3-critical graphs (the class containing a minimal EG counterexample) do NOT force all
+  short cycles — infinite families with no C23 exist; every such graph with n≥6 has a
+  C6; refutes the EFRS 1988 short-cycle conjecture. **Warning: no "degree-3-critical ⇒
+  many cycle lengths" argument can prove EG; the power-of-two must come from a specific
+  structural fact.** Nuances the EFRS 1988 "induced" reading (verbatim discussion in the
+  paper).
+- **Couch–Daniel–Wright 2021** (Australas. J. Combin. 79, 100–105, full text on disk):
+  Caro's integer-power question settled for claw-free δ≥3, for graphs whose induced-claw
+  centers are independent, and almost claw-free δ≥3 — strictly weaker than the
+  power-of-two conjecture for claw-free graphs, which stays open. Also cites Shauger 2002
+  "Claw-free cubic graphs of low genus...", Congr. Numer. 159 (a primary source still not
+  in the library).
+- **West's open-problems page** re-located to `dwest.web.illinois.edu/openp/2powcyc.html`
+  and fetched: verbatim statement of the Shauger 1998 class (K1,m-free, δ≥m+1 or Δ≥2m−1)
+  and Daniel–Shauger 2001 (planar claw-free) — this settles the *statement* halves of the
+  two REQUESTS rows (full proceedings text still unobtainable).
+- **Markström cubicavoid catalog** (`abel.math.umu.se/~klasm/Data/cubicavoid.html`,
+  live): NO 3-connected cubic graph on n≤52 avoids C4,C8,C16 — the strongest verified
+  exhaustion for that class. Claim `EG-markstrom-3conn-cubic-n52`.
+- **Exoo live CYCLES catalog** (`isu.indstate.edu/ge/COMBIN/CYCLES/index.html`, live) and
+  **full Exoo paper** (arXiv:1403.5636 PDF now on disk): f(2)=10, f(3)=24, f(4)∈[54,78],
+  f(5)≤450 (2014) but **smallest known no-C4/C8/C16/C32 is 540** (newer catalog). G420 is a
+  3-connected cubic planar 420-vertex graph with NO C4/C8/C16, showing Heckman–Krakovski's
+  m≤4 suggestion is false. **Reconciled the 450-vs-540 discrepancy**: 450 is Exoo 2014's
+  construction bound; 540 is the newer "smallest known" in the live catalog. CONTEXT.md's
+  "f(5)≤450" is the 2014 construction; the honest current figure is "smallest known 540".
+- **Sudakov–Verstraëte "Cycles in sparse graphs II"** (arXiv:1010.5309, full text on
+  disk): independence-ratio regime, prime-length and sparse-sequence cycles forced; the
+  sequence condition log σ_r ≤ σ_{r−1} explicitly excludes powers of two (their growth
+  gap) — a boundary marker for the run's central obstruction.
+- Shah–Purohit–Gulzar 2017 survey: MaRDI/zbMATH record captured (theorem on n−2 degree-3 +
+  2 degree-2 vertices and distance n/2+1 → a cubic graph with no C_{2^n}); no open PDF.
+
 ### Still NOT on disk (genuine gaps)
 - **Gebendorfer girth-12 paper** ("...Cubic Vertex-Transitive Graphs of Girth
   Twelve Without Sixteen-Cycles...", 2026): no open copy — ResearchGate 403,
