@@ -1,73 +1,53 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/alexander-bishop-ghrist-capture-unbounded.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Alexander, Bishop, Ghrist — "Capture pursuit games on unbounded domains"
 
-<!-- source: https://www2.math.upenn.edu/~ghrist/preprints/convexcapture.pdf | converted from PDF -->
+Source: L'Enseignement Mathématique (2) 55 (2009) 103–125. Author preprint PDF:
+`https://www2.math.upenn.edu/~ghrist/preprints/convexcapture.pdf`; EMS article page:
+`https://ems.press/journals/lem/articles/12139`. Full text:
+`research/sources/alexander-bishop-ghrist-capture-unbounded.full.md`.
 
-## What it claims
+## What it establishes
 
-ABSTRACT. We introduce simple tools from geometric convexity to analyze capture-
-type (or “Lion and Man”) pursuit problems in unbounded domains. The main result is
-a necessary and sufﬁcient condition for eventual capture in equal-speed discrete-time
-multi-pursuer capture games on convex Euclidean domains of arbitrary dimension and
-shape. This condition is presented in terms of recession sets in unit tangent spheres.
-The chief difﬁculties lie in utilizing the boundary of the domain as a constraint on the
-evader’s escape route. We also show that these convex-geometric techniques provide
-sufﬁcient criteria for pursuit problems in non-convex domains with a convex decom-
-position.
- 1. INTRODUCTION
+Develops elementary tools from geometric convexity to analyze **capture** ("Lion and Man")
+pursuit games in *unbounded* convex Euclidean domains, in any dimension, in **discrete
+time** with equal speeds.
 
-Games of pursuit and evasion are among the oldest and most elegant problems in
-game theory, osculating differential equations, control theory, differential geometry,
-and graph theory. This paper focuses on global geometric features of capture-type
-pursuit problems. The primary contribution is an introduction of tools from geometric
-convexity which allow for results so general as to be…
+**Main result.** A necessary-and-sufficient condition for eventual capture — the
+**Boundedness Condition** (stated via *recession sets* in the unit tangent sphere) —
+exactly characterizes when equal-speed capture is possible in a convex unbounded domain
+(Theorem 17). It introduces the `Radius` and refined `RotatingRadius` pursuit algorithms,
+treats the domain boundary as a stationary constraint that blocks the evader's escape
+route, and extends the criteria to non-convex domains admitting a convex decomposition.
 
-1.1.…
+## Why it matters for this run
 
-## Statements it makes
+- This is one of the **canonical modern references in the frontier** of the 
+  lion-and-man lineage (cited by the Abel et al. paper as [ABG09]).
+- It shows how the *boundary of the domain* is used as a constraint on escape routes — the
+  same structural role the pool's boundary plays in PE 761 (the swimmer must leave through
+  the boundary, the runner patrols it). The "boundary as constraint" and "recession set"
+  viewpoints are the geometric machinery behind explaining *why* the critical threshold is
+  set by the boundary-time comparison.
+- It is a **capture** (pursuer-centric) companion to the *escape*-centric Abel et al. model:
+  together they pose the two sides of the same dichotomy PE 761 asks (escape iff v < V).
 
-Algorithm 1 P ′ = Radius(P, E′, O)
+## What it does NOT settle
+- Unbounded, discrete-time, equal-speed capture — a different regime from PE 761's
+  bounded pool, continuous time, speed-ratio escape.
+- No polygon critical speed ratios and no hexagon value.
 
-Lemma 7. For D ⊂ En convex, N 0 = R. Equivalently, x ∈ R if and only if H−x ⊃ N .
+## Notes
+- Author-page preprint is a clean primary copy of the published L'Enseignement paper.
+- Its own reference list is a useful bibliography of the classic pursuit literature
+  (Besicovitch, Littlewood, Croft, Flynn, Sgall, Isaacs).
 
-Lemma 8. For D ⊂ En convex, N lies in a closed hemisphere of Sn−1 if and only if D is
-unbounded.
+## Claims
 
-Theorem 9. The following are equivalent:
-
-Proposition 10. The Boundedness Condition is a necessary condition for the existence of a
-successful pursuit strategy.
-
-Theorem 12. For any convex unbounded D, the pursuers win if (1) the Boundedness Condi-
-tion holds and (2) [EPj] ∈ R for all j.
-
-Lemma 15. Assume there is a single pursuer P , and that R ∪ U = Sn−1. Then the pursuer
-wins following Radius if the Boundedness Condition holds.
-
-Theorem 16. In the case of a single pursuer, if D contains a cone with central angle at least
-π/4, then the Boundedness Condition guarantees capture via Radius.
-
-Theorem 17. Discrete-time equal-speed capture on a convex domain D is achievable if and
-only if the initial positions of the pursuers and evader satisfy the Boundedness Condition.
-
-Lemma 18. If P t+1
-j ̸= Et+1,
- |Ot
-jP t
-j |
-2 + 1 < |Ot+1
-j P t+1
-j |
-2.
-
-Algorithm 2 (P ′, O′) = RotatingRadius(P, E′, O, D)
-
-Lemma 19. cl Ct+1 ⊂ Ct for every t.
-
-Corollary 20. Under the Boundedness Condition, if Qj ∈ (B0
-j ∩ D), then the pursuers catch
-the evader in time
-
-Theorem 22. The Extended Boundedness Condition is sufﬁcient to ensure discrete-time equal-
-speed capture on D.
-
-*[digest of a 43701 character source; every section, statement, and proof in full at `research/sources/alexander-bishop-ghrist-capture-unbounded.full.md`]*
+```claim
+id: abg-capture-unbounded-boundedness-condition
+statement: In a convex unbounded Euclidean domain, discrete-time equal-speed capture of a single evader by pursuers is possible if and only if the initial configuration satisfies the Boundedness Condition (a recession-set condition in the unit tangent sphere); the boundary acts as a constraint blocking escape routes.
+hypotheses: convex unbounded domain, arbitrary dimension; discrete-time; equal speeds; capture = pursuer reaches evader.
+holds-here: partially — the domain-boundary-as-constraint idea is the structural principle behind the pool-boundary chase in PE 761, but the regime (unbounded, discrete, equal-speed) differs from the bounded pool / continuous / speed-ratio escape of the problem.
+status: proved (published paper).
+bearing: canonical modern reference for pursuit-evasion capture in domains with boundary; frames how the pool boundary constrains escape, the conceptual basis of the critical-speed dichotomy.
+anchor: research/sources/alexander-bishop-ghrist-capture-unbounded.full.md
+```

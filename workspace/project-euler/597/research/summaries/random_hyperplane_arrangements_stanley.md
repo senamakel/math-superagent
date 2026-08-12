@@ -1,44 +1,34 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/random_hyperplane_arrangements_stanley.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# MIS-FILED — replaced (summary of the correction)
 
-<!-- source: https://arxiv.org/abs/math/0405119 | converted from HTML -->
+**This entry previously described Shelah, "What majority decisions are
+possible" (arXiv:math/0405119) as though it were a hyperplane-arrangements
+source — it was NOT.** The Shelah paper is an unrelated combinatorics/social
+choice paper; it has been re-filed at its honest identity:
+`research/sources/shelah_majority_decisions_math0405119.full.md`.
 
-## What is in it
+The genuine source under this name is Stanley's **"An Introduction to
+Hyperplane Arrangements"** (IAS/PCMI 2004 lecture notes, published in
+Geometric Combinatorics, IAS/Park City Math. Series 13 (2007) 389–496),
+filed at `research/sources/hyperplane_arrangements_stanley_ias_pcmi.full.md`
+with URL https://static.ias.edu/pcmi/2004/program/Stanleynotes.pdf.
 
-- Mathematics > Combinatorics
-- Title: What majority decisions are possible
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+**What the genuine source establishes (Zaslavsky's theorem, Theorem 2.5):
+for a real hyperplane arrangement A in R^n with characteristic polynomial
+χ_A(t) (defined via the Möbius function of the intersection poset L(A)):**
 
+- r(A) = (−1)^n χ_A(−1) — the number of regions (connected components of
+  R^n \ ∪A) is given by the characteristic polynomial evaluated at −1;
+- b(A) = (−1)^rank(A) χ_A(1) — the number of relatively bounded regions by
+  evaluation at 1;
+- r(A) and b(A) depend only on the intersection poset L(A) (Corollary 2.1).
 
-## What it claims
-
-Abstract: Suppose we are given a family of choice functions on pairs from a given finite set (with at least three elements) closed under permutations of the given set. The set is considered the set of alternatives (say candidates for an office). The question is, what are the choice functions c on pairs of this set of the following form: for some (finite) family of ``voters'', each having a preference, i.e., a choice from each pair from the given family, c{x,y} is chosen by the preference of the majority of voters. We give full characterization.
-
-Subjects: | Combinatorics (math.CO); Logic (math.LO) |
-
-Report number: | Shelah [Sh:816] |
-
-Cite as: | [arXiv:math/0405119][6] [math.CO] |
-
-| (or [arXiv:math/0405119v3][7] [math.CO] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.math/0405119][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-Journal reference: | Discrete Math. 309 No. 8 (2009) 2349--2364 |
-
-*[digest of a 6080 character source; every section, statement, and proof in full at `research/sources/random_hyperplane_arrangements_stanley.full.md`]*
+**Bearing on PE597:** the run's parity-region argument asserts the separating
+hyperplanes (v_a=v_b and event-time equalities, all linear in the normalized
+speed simplex) form a hyperplane arrangement whose even-parity cells can in
+principle be summed by simplex-section volumes. Zaslavsky's theorem gives the
+canonical bound r(A) = |χ_A(−1)| on the number of cells from the arrangement's
+intersection poset — the named justification that region count is controlled
+by the combinatorial structure, not by enumeration of bump outcomes. The run's
+own enumeration (n=4: 1202 cells; n=5: ~13,750) shows the practical constant
+still explodes for naive cell enumeration; Zaslavsky bounds the geometry, not
+the solver's cost.

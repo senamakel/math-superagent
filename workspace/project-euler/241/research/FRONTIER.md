@@ -7,6 +7,21 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
 | 2 | http://www.numericana.com/answer/numbers.htm#multiperfect | "Number Theory" | [[edit][13]] - [Semiperfect number][14] - [Perfect number][15] - [Multiply perfect number][16] ## References [[edit][17]] 1. 1 2 3 ["Number Theory"][18]. Numericana.com. Retrieved 2012-08-21. -… |
+| 2 | https://oeis.org/A000203 | A000203 | cross-referenced from A159907 |
+| 2 | https://oeis.org/A000396 | A000396 | cross-referenced from A159907 |
+| 2 | https://oeis.org/A007691 | A007691 | cross-referenced from A159907 |
+| 2 | https://oeis.org/A024816 | A024816 | cross-referenced from A159907 |
+| 2 | https://oeis.org/A055153 | A055153 | cross-referenced from A159907 |
+| 2 | https://oeis.org/A141643 | A141643 | cross-referenced from A159907 |
+| 2 | https://oeis.org/A141645 | A141645 | cross-referenced from A159907 |
+| 2 | https://oeis.org/A159271 | A159271 | cross-referenced from A159907 |
+| 2 | https://oeis.org/A229110 | A229110 | cross-referenced from A242484 |
+| 2 | https://oeis.org/A242480 | A242480 | cross-referenced from A242484 |
+| 2 | https://oeis.org/A242481 | A242481 | cross-referenced from A242484 |
+| 2 | https://oeis.org/A242482 | A242482 | cross-referenced from A242484 |
+| 2 | https://oeis.org/A242483 | A242483 | cross-referenced from A242484 |
+| 2 | https://oeis.org/A242485 | A242485 | cross-referenced from A242484 |
+| 2 | https://oeis.org/A242486 | A242486 | cross-referenced from A242484 |
 | 1 | http://www.sgdl.org/ | La soci&eacute;t&eacute; des gens de lettres | means of support, Jeanne Andr&eacute;e Aurifeuille, living 26 place Mage (a nice part of Toulouse)... He joined a French writers guild: [La soci&eacute;t&eacute; des gens de lettres][148] (founded in… |
 | 1 | http://bancroft.berkeley.edu/Exhibits/Math/dnla.html | D.N. Lehmer | would cripple Mathematical discourse with dubious "special cases".) Historically, some number theorists did list "1" as a prime (e.g., [D.N. Lehmer][113], the father of D.H. Lehmer, in 1914). Some… |
 | 1 | http://bibli.polytechnique.fr/F/?func=file&amp;file_name=find-b&amp;local_base=BCXC2 | Polytechnique | He once lived in [Turkey][146] where he became editor-in-chief of the *Revue de Constantinople*in 1875-1876. According to the records at [Polytechnique][147] (which he entered in 1841) Antoine… |
@@ -31,20 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://www.amazon.fr/Vendeurs-bonne-aventure-Alfred-Caston/dp/B001CEIYAG | Les vendeurs de Bonne Aventure | Signing "de Caston", Aurifeuille authored several other books, related to "magic" or not, including: [Tartuffe Spirite][141] (1866), [Les vendeurs de Bonne Aventure][142] (1866), [La Turquie en… |
 | 1 | http://www.answerpool.com/6/ubb.x?a=tpc&amp;s=669605981&amp;f=552608402&amp;m=745607233 | 2002-06-23 | the more obvious factorization (1+i)(1-i) uses a Gaussian integer which is not *positive*in the above sense... --- AlisonWonder ( [2002-06-23][129]) How do you find the lowest common multiple (LCM)… |
 | 1 | http://www.edgar-bonet.org | Physicist | like to call "prime", along with the polynomials of degree 1 and those polynomials of degree 2 which have no real roots. *Edgar Bonet*, [Physicist][116] \| What you're describing are, in fact, the… |
-| 1 | http://www.iankeable.co.uk | Ian Keable | Antoine Aurifeuille (aka Alfred de Caston) ] [149] The attached caricature of Antoine Aurifeuille / Alfred de Caston (provided by [Ian Keable][150] on 2012-02-12) appeared in the French magazine… |
-| 1 | http://www.jstor.org/discover/10.2307/2152968 | How was F6 factored | (1842-1891). Besides Mersenne primes, that 14-digit number is the largest prime ever discovered without the help of a computer. [How was F6 factored][152]? by [Hugh C. Williams][153] (1993)… |
-| 1 | http://www.math.uconn.edu/~kconrad/ | Keith Conrad | [B&eacute;zout's Identity for Gaussian Integers][102] by *Larry Freeman*. [Arithmetic Progressions of Three Squares][103] by [Keith Conrad][104]. \| - **[A Computational Introduction to Number Theory… |
-| 1 | http://www.math.uconn.edu/~kconrad/blurbs/ugradnumthy/3squarearithprog.pdf | Arithmetic Progressions of Three Squares | Half-Totient Tree][100] by [Kevin Brown][101] (1995-02-03) [B&eacute;zout's Identity for Gaussian Integers][102] by *Larry Freeman*. [Arithmetic Progressions of Three Squares][103] by [Keith… |
-| 1 | http://www.mathmojo.com | Math Mojo | up to 9997. ### Related Links (Outside this Site) [Mathematics Enrichment][92] \| [NRICH Prime Site][93] \| [Plus Magazine][94] \| [Math Mojo][95] [What's Special About This Number][96]? by [Erich… |
-| 1 | http://www.mathpages.com/home/kmath168.htm | The Half-Totient Tree | by [Erich Friedman][97] of Stetson University. [Conjectures][98] at [The Prime Puzzles & Problems Connection][99], by Carlos Rivera. [The Half-Totient Tree][100] by [Kevin Brown][101] (1995-02-03)… |
-| 1 | http://www.mathpages.com/home/kmath491/kmath491.htm | Charles Henry Gauss | factorizations with [Edouard Lucas][135] (1842-1891) and [Eug&egrave;ne Catalan][136] (1814-1894; X1833). Another amateur of that era was [Charles Henry Gauss][137] (1845-1913) grandson of the great… |
-| 1 | http://www.mersenneforum.org/showthread.php?t=10439 | Aurifeuillian Factorizations | the help of a computer. [How was F6 factored][152]? by [Hugh C. Williams][153] (1993) [Cunningham Numbers][154] by Tim Morrow \| [Aurifeuillian Factorizations][155] (MersenneForum) **Video :**(a+b) 2… |
-| 1 | http://www.numericana.com/ | home | Integer Arithmetic, Number Theory - Numericana [home][1] \| [index][2] \| [units][3] \| [counting][4] \| [geometry][5] \| [algebra][6] \| [trigonometry][7] \| [calculus][8] \| [functions][9] [analysis][10] \|… |
-| 1 | http://www.numericana.com/answer/numbers.htm#multiplicative | Multiplicative functions | diviseurs et hypothèse de Riemann, J. Math. Pures Appl. 63 (1984), 187-213. LINKS [Table of n, a(n) for n=1..7.][16] G. P. Michon, [Multiplicative functions][17]: Abundancy = sigma(n)/n G. P. Michon,… |
-| 1 | http://www.numericana.com/data/hpn11.htm | Hemiperfect numbers of abundancy 11/2 | functions][17]: Abundancy = sigma(n)/n G. P. Michon, [Multiperfect and hemiperfect integers][18] G. P. Michon and M. Marcus, [Hemiperfect numbers of abundancy 11/2][19] G. P. Michon and M. Marcus,… |
-| 1 | http://www.numericana.com/data/hpn13.htm | Hemiperfect numbers of abundancy 13/2 | and hemiperfect integers][18] G. P. Michon and M. Marcus, [Hemiperfect numbers of abundancy 11/2][19] G. P. Michon and M. Marcus, [Hemiperfect numbers of abundancy 13/2][20] G. P. Michon and M.… |
-| 1 | http://www.numericana.com/data/hpn15.htm | Hemiperfect numbers of abundancy 15/2 | numbers of abundancy 11/2][19] G. P. Michon and M. Marcus, [Hemiperfect numbers of abundancy 13/2][20] G. P. Michon and M. Marcus, [Hemiperfect numbers of abundancy 15/2][21] G. P. Michon and M.… |
-| 1 | http://www.numericana.com/data/hpn17.htm | Hemiperfect numbers of abundancy 17/2 | numbers of abundancy 13/2][20] G. P. Michon and M. Marcus, [Hemiperfect numbers of abundancy 15/2][21] G. P. Michon and M. Marcus, [Hemiperfect numbers of abundancy 17/2][22] Walter Nissen,… |
-| 1 | http://www.paris-anecdote.fr/Alfred-de-Caston-polytechnicien.html | Alfred de Caston | with C. Dumont ( 1860). Curiously, Aurifeuille became quite famous as an illusionist under the stage name of [Vicomte] [Alfred de Caston][139]. The great magician [Robert-Houdin][140] (1805-1871) was… |
 
 _107 further candidates not shown; they are cited once each._
