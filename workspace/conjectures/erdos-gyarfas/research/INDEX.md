@@ -15,7 +15,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/sudakov-verstraete-sparse-pdf.md` | _(undescribed)_ |
 | `L1.0/sudakov-verstraete-sparse.md` | Digest of Sudakov & Verstraëte, "Cycle lengths in sparse graphs" (arXiv:0707.2117, abs/HTML conversion). Part 1 proves Erdős's conjecture |
 | `L1.0/west-openproblems-2powcyc.md` | _(undescribed)_ |
-| `L1.0/wikipedia-erdos-gyarfas.md` | _(undescribed)_ |
+| `L1.0/wikipedia-erdos-gyarfas.md` | Digest of the Wikipedia "Erdős–Gyárfás conjecture" article (secondary source, converted from HTML). Useful chiefly for the computational verification bound that anchors Phase 3 of the oracle: any counterexample has >=17 vertices, any cubic one >=30, Markström found four 24-vertex graphs whose only 2-power cycle is length 16 (one planar), and 3-connected cubic planar is proved (Heckman–Krakovski, so the planar 24-vertex near-counterexample is not 3-connected). Also prize framing ($100/$50). Carries claim blocks eg-counterexample-bound and eg-markstrom-24. |
 | `L1.1/carr-diameter2.md` | _(undescribed)_ |
 | `L1.1/gao-huo-liu-ma-unified.md` | _(undescribed)_ |
 | `L1.1/gao-ma-bondy-vince.md` | _(undescribed)_ |
