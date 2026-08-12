@@ -74,12 +74,13 @@ def pure_race_parity(n, speeds):
 
 
 def mc_estimate(sampler, n, trials, seed):
-    """Mean of parity over trials draws of Exp(1) speeds + binomial SE."""
+    """Fraction of EVEN-parity outcomes over trials draws of Exp(1) speeds +
+    binomial SE."""
     rng = np.random.default_rng(seed)
     s = 0
     for _ in range(trials):
         v = rng.exponential(size=n)
-        s += sampler(v)
+        s += 1 - sampler(v)          # sampler returns parity (0=even) -> count even
     p = s / trials
     se = math.sqrt(p * (1 - p) / trials)
     return p, se

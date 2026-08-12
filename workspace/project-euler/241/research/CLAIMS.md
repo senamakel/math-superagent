@@ -4,4 +4,12 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `hemi-abundance-bound` | No positive integer n <= 10^18 has half-integer abundancy k/2 with k >= 13, because the smallest such number a(6) ~ 1.7e44 exceeds 10^18; hence only abundancies 3/2..11/2 are reachable. | yes | asserted | `research/summaries/hemiperfect_wikipedia.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `hemi-abundance-bound` (research/summaries/hemiperfect_wikipedia.md) — asserted by the source, not proved there and not checked here
