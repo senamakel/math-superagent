@@ -307,6 +307,7 @@ async fn attempt_step(
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
     patterns: &Mailbox,
+    directives: &Mailbox,
     mut state: SolutionState,
 ) -> SolutionState {
     state.attempts += 1;
@@ -326,6 +327,15 @@ async fn attempt_step(
     // the mailbox is empty and the section is omitted — and it is the only
     // path that exists on the first attempt of every run.
     let observations = observations_briefing(patterns);
+    // The attempt is the *only* collector of operator direction, unlike the
+    // pattern mailbox above which reflection drains as well. A second collector
+    // would be a second place a directive could be taken out of the mailbox and
+    // then rendered under some other heading — reflection folds what it
+    // collects into `fresh_context`, which reaches the next attempt as material
+    // gathered rather than as an instruction. Losing the distinction is the one
+    // failure that matters here: the whole point of the channel is that a human
+    // asked for this, and it outranks what the run inferred.
+    let direction = direction_briefing(directives);
     // Every attempt after the first continues work already on disk. Without
     // saying so, each one restarts at "read the statement and write it down",
     // and a run can spend its whole budget re-documenting the problem without
@@ -336,7 +346,12 @@ async fn attempt_step(
         state.attempts,
         workspace.is_some_and(has_executable_artifact),
     );
-    let prompt = attempt_prompt(&state, &continuation, &observations);
+    let prompt = attempt_prompt(&state, &continuation, &observations, &direction);
+    if !direction.is_empty()
+        && let Some(tracer) = tracer
+    {
+        tracer.note("solution loop: this attempt carries direction from the operator");
+    }
     if state.attempts == 1 {
         open_with_execution(subagents, tracer, &state.problem);
     }
@@ -361,11 +376,43 @@ fn observations_briefing(patterns: &Mailbox) -> String {
     format!("Structural observations from the pattern team:\n{observations}\n\n")
 }
 
+/// Renders what an operator has asked for, or nothing when they have asked for
+/// nothing.
+///
+/// The text is passed through exactly as it was typed. Everything else in this
+/// prompt is one model's account of another model's work, and is hedged
+/// accordingly; this is the one line in it that a person wrote on purpose, and
+/// summarising it would be discarding the only part nothing else can
+/// reconstruct.
+///
+/// It is also the one input here that cannot be checked. A directive is
+/// asserted, not evidenced, so it is labelled as coming from the operator
+/// rather than presented as something the run established — an instruction the
+/// attempt should follow, not a fact it may build on.
+fn direction_briefing(directives: &Mailbox) -> String {
+    let direction = directives.collect();
+    if direction.is_empty() {
+        return String::new();
+    }
+    format!(
+        "Direction from the operator running this investigation, which takes precedence over the \
+         judge's steer and over the plan you would otherwise continue:\n{direction}\n\n\
+         Follow it in this attempt. If it asks for something you can show is wrong, say so plainly \
+         in your report and say what you did instead — do not silently ignore it, and do not \
+         abandon verified work to comply with it.\n\n"
+    )
+}
+
 /// Builds the task one attempt is given, as a plain function of the state.
 ///
 /// Kept separate from `attempt_step` so what an attempt is actually told is
 /// testable without a provider — the same argument `route` makes.
-fn attempt_prompt(state: &SolutionState, continuation: &str, observations: &str) -> String {
+fn attempt_prompt(
+    state: &SolutionState,
+    continuation: &str,
+    observations: &str,
+    direction: &str,
+) -> String {
     let fresh = if state.fresh_context.is_empty() {
         String::new()
     } else {
@@ -383,7 +430,8 @@ fn attempt_prompt(state: &SolutionState, continuation: &str, observations: &str)
         )
     };
     format!(
-        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{steer}{}\n\
+        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n\
+         {direction}{steer}{}\n\
          {observations}{fresh}\n\n\
          Requirements for this attempt, all of them:\n\
          - You must end this attempt with at least one program written to the workspace and \
@@ -985,6 +1033,7 @@ pub(super) async fn run(
     memory: VectorStore,
     teams: Vec<TeamHandle>,
     patterns: Mailbox,
+    directives: Mailbox,
     state: SolutionState,
 ) -> Result<SolutionState> {
     let attempt_agents = subagents.clone();
@@ -1000,6 +1049,7 @@ pub(super) async fn run(
     let diversify_tracer = tracer;
     let attempt_mailbox = patterns.clone();
     let pattern_mailbox = patterns;
+    let attempt_directives = directives;
     let reflect_teams = teams;
 
     let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
@@ -1008,6 +1058,7 @@ pub(super) async fn run(
             let tracer = attempt_tracer.clone();
             let workspace = attempt_workspace.clone();
             let mailbox = attempt_mailbox.clone();
+            let directives = attempt_directives.clone();
             async move {
                 Ok(NodeResult::Update(
                     attempt_step(
@@ -1015,6 +1066,7 @@ pub(super) async fn run(
                         tracer.as_ref(),
                         workspace.as_deref(),
                         &mailbox,
+                        &directives,
                         state,
                     )
                     .await,
