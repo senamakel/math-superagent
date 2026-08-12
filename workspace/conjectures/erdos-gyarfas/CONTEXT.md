@@ -98,9 +98,10 @@ itself — that is the open core.
 
 - **S5 vs A366224** (S5 = connected min-degree≥3 girth≥5; A366224 =
   3-connected girth≥5, McKay; source: [[research/summaries/A366224_offset.md]]).
-  **Computed equal through n=14** (1,0,2,4,23 — matches A366224 terms, and
-  S5≤3connected is trivially false, so S5 ≥ A366224 and equality means **every
-  S5 graph is 3-connected** on n≤14). The identity is **provably NOT a
+  **Computed equal through n=14** (1,0,2,4,23 — matches A366224; every
+  3-connected girth≥5 graph is in S5 (3-connectivity with girth-5 ≥ δ≥3), so
+  S5 < A366224 is impossible and equality means **every S5 graph is
+  3-connected** on n≤14). The identity is **provably NOT a
   theorem**: Petersen-amalgam (two copies glued at one vertex, n=19) is
   connected min-degree≥3 girth-5 with a cut vertex ⇒ S5(19) > A366224(19).
   Open question: **at what first n does S5 grow past A366224** — that n is the
