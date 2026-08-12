@@ -31,5 +31,3 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2.0/L1.0.md` | _(undescribed)_ |
 | `L2.0/L1.1.md` | _(undescribed)_ |
 | `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
-o ignore. Do not revisit. |
-| `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
