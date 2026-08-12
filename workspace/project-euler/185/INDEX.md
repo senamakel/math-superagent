@@ -7,8 +7,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `AGENTS.md` | _(undescribed)_ |
 | `CONTEXT.md` | Working state / task guidance context for the run. |
 | `GOAL.md` | _(undescribed)_ |
-| `MEMORY.md` | _(undescribed)_ |
+| `MEMORY.md` | Durable run memory: problem restatement, established results, failed approaches, open questions. Stub template at present; belongs to the solver loop. |
 | `README.md` | _(undescribed)_ |
 | `SCRATCHPAD.md` | _(undescribed)_ |
 | `TASKS.md` | _(undescribed)_ |
 | `problem.md` | Official Project Euler 185 (Number Mind) statement, converted from projecteuler.net/minimal=185. The canonical statement this run solves. |
+al statement this run solves. |
