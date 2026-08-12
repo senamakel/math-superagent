@@ -446,15 +446,15 @@ half-written cursor reads as zero, which would redeliver every directive the run
 had already acted on.
 
 A directive's identifier is its line number, not a stored field. That is what
-makes delivery exactly-once without a counter anyone could disagree about, and
-it is why a line the reader cannot parse is skipped *and still counted* — a torn
+makes delivery exactly-once without a counter anyone could disagree about, and it
+is why a line the reader cannot parse is skipped *and still counted* — a torn
 append costs that one directive rather than the alignment of every later one. A
-host append can interleave with the checkpoint commit below, so this is a case
-worth surviving rather than a hypothetical.
+host append can interleave with the checkpoint commit below, so this is worth
+surviving rather than a hypothetical.
 
-Directive text is capped at 2000 characters, which keeps a rendered line inside
-the size an append lands in one piece. Anything longer is a document, and the
-run can be pointed at it instead.
+Directive text is capped at 2000 characters, keeping a rendered line inside the
+size an append lands in one piece. Anything longer is a document, and the run can
+be pointed at it instead.
 
 The queue is committed like everything else in the workspace. What an operator
 asked for, and when, is part of how an answer was reached — a run that changed
