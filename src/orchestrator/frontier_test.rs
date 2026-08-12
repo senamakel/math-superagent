@@ -184,3 +184,58 @@ async fn citations_accumulate_across_downloads() -> std::io::Result<()> {
     );
     Ok(())
 }
+
+#[test]
+fn the_scholarly_tooling_toolbar_is_not_a_citation() {
+    // The failure this closes, taken verbatim from a live Erdős–Gyárfás
+    // frontier whose top seventeen rows were all of this kind, tied at six
+    // citers, above every actual paper. They accumulate citers faster than any
+    // reference can because they appear on *every* arXiv abstract page — and
+    // the librarian is told to work that file before searching.
+    for url in [
+        "https://info.arxiv.org/about",
+        "https://info.arxiv.org/help/mathjax.html",
+        "https://arxiv.org/search/advanced",
+        "https://core.ac.uk/services/recommender",
+        "https://www.connectedpapers.com/about",
+        "http://gotit.pub/faq",
+        "https://alphaxiv.org/",
+        "https://dagshub.com/",
+        "https://huggingface.co/docs/hub/spaces",
+        "https://replicate.com/docs/arxiv/about",
+        "https://sciencecast.org/welcome",
+        "https://txyz.ai",
+        "https://influencemap.cmlab.dev/",
+        "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+    ] {
+        assert!(!super::worth_offering(url), "{url} is site furniture");
+    }
+}
+
+#[test]
+fn a_paper_on_a_host_that_also_serves_furniture_is_still_offered() {
+    // The filters must not ban a host outright where it serves both. CORE
+    // hosts papers at `/download/` and its recommender pitch at `/services/`;
+    // arXiv hosts papers at `/abs/` and its search form at `/search/advanced`.
+    for url in [
+        "https://arxiv.org/abs/2410.22842",
+        "https://core.ac.uk/download/pdf/12345.pdf",
+        "https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gy%C3%A1rf%C3%A1s_conjecture",
+        "https://bibliotekanauki.pl/articles/30148697.pdf",
+        "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v11i1r62",
+        "https://ui.adsabs.harvard.edu/abs/2004math......1049M",
+    ] {
+        assert!(super::worth_offering(url), "{url} is a real lead");
+    }
+}
+
+#[test]
+fn a_host_with_no_dot_is_not_on_the_public_internet() {
+    // A container name on the page's own network, reachable only from where
+    // that page was rendered. A live library had 64 candidates on
+    // `backend:8080` — the House of Graphs internal API, a fifth of the whole
+    // frontier — and not one was fetchable from the run.
+    assert!(!super::worth_offering("http://backend:8080/api/graph_invariants/51419/1"));
+    assert!(!super::worth_offering("http://localhost:3000/graphs"));
+    assert!(super::worth_offering("https://houseofgraphs.org/graphs/51419"));
+}
