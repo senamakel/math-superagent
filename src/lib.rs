@@ -20,6 +20,12 @@
 //! - `agent` exposes the `TinyAgents` harness facade.
 //! - [`HelloAgent`] exposes the runnable hello-world agent.
 //! - [`OrchestratorAgent`] exposes the registry-backed multi-agent runtime.
+//! - [`directives`] exposes the queue an operator directs a live run through.
+//!   It is public because it is the whole external control surface: anything
+//!   that can link this crate — the `euler-tui` viewer, `scripts/steer`, or a
+//!   service standing in front of them — directs a run by calling
+//!   [`directives::enqueue`], and nothing has to open a port into the sandbox
+//!   to do it.
 //!
 //! # Example
 //!
@@ -32,11 +38,13 @@
 //! ```
 //!
 pub mod agent;
+pub mod directives;
 mod error;
 mod greeting;
 mod hello_agent;
 mod orchestrator;
 
+pub use directives::Directive;
 pub use error::{Error, Result};
 pub use greeting::greet;
 pub use hello_agent::HelloAgent;

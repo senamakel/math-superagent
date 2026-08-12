@@ -7,10 +7,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `AGENTS.md` | _(undescribed)_ |
 | `_run_tmp.py` | _(undescribed)_ |
 | `brute.py` | _(undescribed)_ |
+| `confirm_hexagon_closedform.py` | Independent mpmath confirmation of V_hexagon = 2 + 2sqrt21/3 via two routes (stewbasic direct eval vs closed-form surd), agreeing to 4.27e-50 and matching the 8-dp answer. |
 | `explore_general_dash.py` | Disproof oracle-check: general straight-line dash (free direction phi) from the stage point (rho,0), landing where the ray hits the unit circle, runner takes shorter arc from antipode. >V = pi+1 = 4.14159265 for every dash direction. This is the brute-force proof that the task's "stage at antipode then dash" model cannot reproduce 4.60333885: any straight dash from the radially-opposite stage point tops out at pi+1. Kept as the falsifying oracle that forced the correct two-phase model in brute.py. |
 | `hex_check.py` | Hand-cross-check of stewbasic general-n formula for n=4 and n=6 (redundant with polygon_critical.py; kept as an independent numeric reference for the hexagon candidate). |
+| `hexagon_closed_form.py` | _(undescribed)_ |
 | `k_deviation_structure.py` | _(undescribed)_ |
 | `k_sequence_exact.py` | _(undescribed)_ |
+| `pattern_V_closedforms.py` | _(undescribed)_ |
 | `pattern_asymptotic.py` | _(undescribed)_ |
 | `pattern_asymptotic2.py` | _(undescribed)_ |
 | `pattern_break.py` | _(undescribed)_ |
