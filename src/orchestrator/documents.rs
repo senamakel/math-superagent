@@ -859,14 +859,23 @@ impl DocumentToolKind {
 }
 
 /// Entries never worth showing an agent: its own bookkeeping, installed
-/// packages, and the multi-megabyte event log.
-const HIDDEN_ENTRIES: [&str; 7] = [
+/// packages, and the console and event logs.
+///
+/// `start.log` is the console stream, and it is the same failure as
+/// `trace.jsonl` wearing a different name. The launchers redirect a detached
+/// run's output into it, so it holds every model call, tool call and tool
+/// result the run has already produced, and it grows for as long as the run
+/// does. A live `context_curator` read 37,609 bytes of one straight into a
+/// model call. Hiding the trace and leaving this beside it hid the file the
+/// policy names and not the one an agent actually reaches for.
+const HIDDEN_ENTRIES: [&str; 8] = [
     ".workspace-history",
     ".python-packages",
     "__pycache__",
     ".document-index.json",
     ".frontier.json",
     "trace.jsonl",
+    "start.log",
     RAW_DIR,
 ];
 
