@@ -40,9 +40,8 @@ with open('/workspace/code/out/distinct_hist_counts.txt') as f:
         line = line.strip()
         if not line: continue
         parts = line.split()
-        if parts[0].startswith('N') and len(parts) == 2:
-            N = int(parts[0].split()[0].split('_')[0][1:]) if False else int(parts[0].replace('N',''))
-            counts[N] = int(parts[1])
+        if len(parts) == 2 and parts[0].isdigit():
+            counts[int(parts[0])] = int(parts[1])
 
 all_ok = True
 for N in range(2, 15):
