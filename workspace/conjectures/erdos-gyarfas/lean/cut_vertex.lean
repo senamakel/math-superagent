@@ -46,7 +46,7 @@ lemma cycle_snd_ne_v {G : SimpleGraph V} {v : V} {p : G.Walk v v}
 adjacent to `v`. -/
 lemma cycle_penultimate_ne_v {G : SimpleGraph V} {v : V} {p : G.Walk v v}
     (hp : p.IsCycle) : p.penultimate ≠ v := by
-  exact (p.adj_penultimate hp.not_nil).ne'
+  exact (p.adj_penultimate hp.not_nil).ne.symm
 
 /-- The two neighbours are distinct (v is not a hairpin) — Mathlib's own
 `IsCycle.snd_ne_penultimate`. -/

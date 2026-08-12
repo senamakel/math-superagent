@@ -252,15 +252,14 @@ rather than requested: a seal that drops a link has not compressed that note,
 it has replaced it — nothing points at the detail any more, and a claim nobody
 can trace to a source is worth less than no claim.
 
-`context_tree::plan` measures this on disk and reports one fault at a time —
-over budget, then waiting to be sealed, then sealed without its links, then
-behind what it covers — and `briefing` renders
-the highest-priority one into the research team's next cycle. It writes
-nothing: a fold is a judgement about meaning, so an agent writes it; whether a
-node is within budget and reflects what is under it is not a judgement, so it
-is measured. Structure is recovered from the links themselves rather than a
-manifest, because a fold that has stopped linking a note has stopped covering
-it — exactly the fact a manifest would hide.
+`context_tree::plan` measures this on disk and reports one fault at a time — over
+budget, then waiting to be sealed, then sealed without its links, then behind
+what it covers — and `briefing` renders the highest-priority one into the
+research team's next cycle. It writes nothing: a fold is a judgement about
+meaning, so an agent writes it; whether a node is within budget and reflects what
+is under it is not, so it is measured. Structure is recovered from the links
+themselves rather than a manifest, because a fold that has stopped linking a note
+has stopped covering it — exactly the fact a manifest would hide.
 
 `documents::research_path` and the reflection log both file into the *open*
 batch, which `context_tree::open_batch` derives from disk: the highest-numbered
