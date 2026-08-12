@@ -370,15 +370,12 @@ it emitted no usable tool call and the loop retried — 66 seconds spent to
 accomplish nothing. A cap that trips routinely is worse than the long turns it
 prevents. Buy brevity in the prompt instead.
 
-The inventor is the exception, at 32000 (`RunBudget::for_invention`) — the one
-role whose product *is* the long turn, where 12000 bound the work rather than a
-pathology: a live 597 inventor was cut off with no tool call, re-issued, and
-reached the same place. The widened cap must reach both `specialist_harness`,
-which sets the ceiling a cut-off turn may grow *to*, and
-`register_with_turn_cap`, which sets what the first attempt asks for. It is also
-the one budget method that widens: the others bound *authority*, where an
-operator who lowered the defaults meant to, so they narrow only — a turn cap
-bounds one generation, and `for_invention` uses `max`.
+The inventor is the exception at 32000 (`RunBudget::for_invention`): the one
+role whose product *is* the long turn, where a live 597 inventor was cut off
+with no tool call, re-issued, and reached the same place. The cap must reach
+both `specialist_harness`, the ceiling a cut-off turn grows *to*, and
+`register_with_turn_cap`, what the first attempt asks for. It is also the one
+budget method that widens — the others bound authority, which only narrows.
 
 The retry is upstream `truncated_empty` recovery in `agent_loop/run_loop.rs`:
 when a turn ends with `finish_reason == "length"`, no text, and no tool calls —
