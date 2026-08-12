@@ -52,6 +52,14 @@ Say `unchecked` when you have not checked rather than `yes` when you hope.
 `status` separates what the source proves from what it asserts — a claim marked
 `holds-here: yes` and `status: asserted` is listed as load-bearing but
 unverified, which is what you want when the run is leaning on somebody's word.
+A claim block also belongs in a Markdown note beside a program's output under
+`code/out/`, and `status: checked` is what a verified computation earns. The
+ledger used to read `research/` alone, so the run recorded what it had read and
+forgot what it had proved: one run held a check value from its own problem
+statement, reproduced to all ten digits, and 38 points cross-validated two ways,
+and its ledger said it had established nothing. If the run computed it and
+checked it, write it down where it was computed.
+
 Use `status: catalogued` when the evidence is a term list, a table, or an OEIS
 b-file rather than an argument. That is not a lesser `asserted`, it is a
 different question: an asserted claim needs a proof or a second source, a
