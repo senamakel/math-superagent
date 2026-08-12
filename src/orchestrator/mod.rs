@@ -268,7 +268,11 @@ impl OrchestratorAgent {
         let vector_store = VectorStore::from_env()?;
         let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()))
             .with_session_memory(vector_store.clone());
-        let documents = WorkspaceDocuments::new(workspace.clone())?;
+        // Every download is filed in this project's library dataset as well as
+        // under `research/`, so what the run gathered is reachable by wording
+        // rather than only by a path someone remembers.
+        let documents =
+            WorkspaceDocuments::new(workspace.clone())?.with_library(vector_store.clone());
         // Commits the workspace after every successful write, so a rewritten
         // solution or an edited belief is recoverable rather than lost.
         let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> = Arc::new(
@@ -408,21 +412,16 @@ impl OrchestratorAgent {
         let outcome = match finished {
             Ok(finished) => finished.outcome(),
             Err(error) => {
-                let _ = self
-                    .memory
-                    .remember_session(
-                        "orchestrator",
-                        "solution-loop",
-                        &problem,
-                        &format!("SESSION FAILED: {error}"),
-                    )
-                    .await;
+                self.record_session(
+                    "solution-loop",
+                    &problem,
+                    &format!("SESSION FAILED: {error}"),
+                )
+                .await;
                 return Err(error);
             }
         };
-        let _ = self
-            .memory
-            .remember_session("orchestrator", "solution-loop", &problem, &outcome)
+        self.record_session("solution-loop", &problem, &outcome)
             .await;
         Ok(outcome)
     }
@@ -553,24 +552,35 @@ impl OrchestratorAgent {
         let run = match run {
             Ok(run) => run,
             Err(error) => {
-                let _ = self
-                    .memory
-                    .remember_session(
-                        "orchestrator",
-                        &run_id,
-                        &task,
-                        &format!("SESSION FAILED: {error}"),
-                    )
+                self.record_session(&run_id, &task, &format!("SESSION FAILED: {error}"))
                     .await;
                 return Err(error);
             }
         };
         let output = run.text().unwrap_or_default();
-        let _ = self
-            .memory
-            .remember_session("orchestrator", &run_id, &task, &output)
-            .await;
+        self.record_session(&run_id, &task, &output).await;
         Ok(output)
+    }
+
+    /// Writes one orchestrator run to the session memory, saying so when it
+    /// fails.
+    ///
+    /// Best effort, as it has always been — the answer is already returned to
+    /// the caller and a memory server that is down must not turn a finished
+    /// solve into a failed one. What is new is that a failure is *said*: the
+    /// four call sites discarded the result, so a session nobody recorded and a
+    /// session recorded fine read identically on the console and in
+    /// `trace.jsonl`.
+    async fn record_session(&self, run_id: &str, input: &str, output: &str) {
+        if let Err(error) = self
+            .memory
+            .remember_session("orchestrator", run_id, input, output)
+            .await
+        {
+            self.tracer.note(&format!(
+                "session memory failed for orchestrator/{run_id}: {error}"
+            ));
+        }
     }
 }
 
@@ -867,13 +877,20 @@ fn support_agents(
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
+        // One tool: read a file. The judge answers four lines on twelve model
+        // calls against an attempt that took the better part of an hour, and
+        // every way of looking things up is an invitation to spend them
+        // looking things up — a live judge already did exactly that with the
+        // document tools alone. Recall is granted broadly and this is one of
+        // the three roles it is withheld from, alongside the organizer and the
+        // scratch's exclusions.
         AgentDefinition::new(
             "judge",
             "Judge",
             "Scores how an attempt was conducted and decides whether the run must start over.",
         )
         .with_model("openrouter")
-        .with_tools(memory_tools.into_iter().chain([document_tools[1]])),
+        .with_tools([document_tools[1]]),
         AgentDefinition::new(
             "reflection",
             "Reflection Agent",
@@ -1555,7 +1572,9 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut judge, tool);
     }
-    register_memory(&mut judge, &parts.vector_store);
+    // No `register_memory` here, and that is the boundary rather than an
+    // omission: recall is the invitation to investigate, and the judge is the
+    // one role whose budget cannot absorb it.
     subagents.register("judge", Arc::new(judge), prompts.judge)?;
 
     register_pattern_agent(subagents, parts, prompts.pattern)?;

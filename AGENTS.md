@@ -683,6 +683,41 @@ also accepts `<project>__<anything>`, so the per-run datasets the old naming
 stranded are readable again — with the `__` separator required, because without
 it project `euler_18` would read `euler_185`'s memory.
 
+`visible_datasets` is an **allowlist**: the shared brain, this project's session
+datasets, and this project's library, and nothing else. It was a denylist —
+everything except another project's sessions and any scratch — which passes
+whatever a name fails to classify, and a live server proved what that costs. A
+`project_euler_903_L0` dataset holding thirty-six downloaded sources sat there
+from an earlier build, and every run on the box searched it: for a Project Euler
+problem that is another problem's literature arriving unasked, and at worst its
+answer. A dataset this runtime does not name belongs to another project or an
+older build, and neither of those is this run's.
+
+The library is the third per-project dataset, `math_agent_library__<project>`,
+and it closes the gap between what a run gathered and what it could recall.
+`download_document` wrote `research/…` and `index_document` wrote a local
+literal-term index; nothing reached Cognee, while every prompt told the roles
+that Cognee was the durable catalogue. Filing happens in the download path,
+where the converted text is already in hand and free to file, bounded at
+`MAX_SOURCE_CHARS` — recall returns a chunk either way and the whole text stays
+on disk beside the digest. It is best effort and *reported*: a memory that
+refused the document must not fail a download that succeeded, but a library the
+run believes is searchable and is not is worse than one it knows is not.
+
+Every write to Cognee is queued rather than awaited, and one number —
+`ENQUEUE_TIMEOUT` — bounds the enqueue for all of them. `remember` used to wait
+for indexing to finish, which means waiting on entity extraction: four live
+`remember_memory` calls took 66, 114 and 177 seconds, and the fourth met the
+ten-minute tool ceiling and was killed, losing the falsified conjecture it
+carried. A store a run is charged minutes to write is a store the run stops
+writing to.
+
+A failed session write is traced rather than discarded. The four `remember_session`
+call sites dropped their results, so a run that never recorded itself and one
+that recorded fine read identically on the console and in `trace.jsonl`. The
+write stays best effort — the answer is already returned to the caller — but its
+silence was the fault, not its optimism.
+
 Every role with memory gets three tools, not two: `remember_memory` writes,
 `recall_memory` returns the passages nearest a phrase, and `relate_memory`
 returns the *edges* the graph holds around a subject. The third is the one that
