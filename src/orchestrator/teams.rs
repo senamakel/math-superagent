@@ -235,6 +235,17 @@ pub(super) enum Cycle {
 /// would never fire — it would report change from the solver's activity rather
 /// than the team's.
 pub(super) fn fingerprint(workspace: &Path) -> u64 {
+    fingerprint_excluding(workspace, &[])
+}
+
+/// The same, ignoring files with any of the given names.
+///
+/// A team that writes into the folders it watches would otherwise wake itself
+/// forever on its own output — the reason the pattern team's `SCRATCHPAD.md` is
+/// kept out of its fingerprint. The organizer has the same problem one folder
+/// wider: it rewrites `INDEX.md`, so an unfiltered fingerprint of the tree it
+/// files changes every time it files, and every cycle looks like fresh work.
+pub(super) fn fingerprint_excluding(workspace: &Path, excluded: &[&str]) -> u64 {
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
     let mut seen = 0usize;
     let mut stack = vec![(workspace.to_path_buf(), 0usize)];
@@ -248,7 +259,11 @@ pub(super) fn fingerprint(workspace: &Path) -> u64 {
         };
         for entry in listing.flatten() {
             let name = entry.file_name().to_string_lossy().to_string();
-            if name.starts_with('.') || name == "trace.jsonl" || name == "__pycache__" {
+            if name.starts_with('.')
+                || name == "trace.jsonl"
+                || name == "__pycache__"
+                || excluded.contains(&name.as_str())
+            {
                 continue;
             }
             let path = entry.path();
