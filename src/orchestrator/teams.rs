@@ -173,11 +173,23 @@ impl TeamBudget {
 /// before the work starts was never attainable; it was abstention with a
 /// completion flag on it.
 ///
-/// So an empty cycle now always means come back later. A team that should truly
-/// stop can be given a variant again, with the evidence that it stops for the
-/// right reason.
+/// So an empty cycle now always means come back later. [`Attainable`] is kept
+/// rather than deleted, because the concept is sound and the failure was in one
+/// team's brief rather than in the idea that some work finishes; it is marked
+/// unused so that staying unused is visible rather than assumed.
+///
+/// [`Attainable`]: Self::Attainable
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum Completion {
+    /// The goal can be reached; "nothing further" ends the team.
+    ///
+    /// No team uses this. Research was the last, and retired inside ninety
+    /// seconds on every live run.
+    #[expect(
+        dead_code,
+        reason = "kept as an available mode; see the type documentation for why no team holds it"
+    )]
+    Attainable,
     /// The goal is standing; "nothing further" only means idle for now.
     Standing,
 }
@@ -186,6 +198,7 @@ impl Completion {
     /// Maps a cycle that reported nothing further to do.
     pub(super) const fn nothing_further(self) -> Cycle {
         match self {
+            Self::Attainable => Cycle::Finished,
             Self::Standing => Cycle::Idle,
         }
     }
