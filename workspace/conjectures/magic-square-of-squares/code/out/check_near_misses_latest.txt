@@ -1,0 +1,64 @@
+==============================================================================
+check_near_misses.py — exact-integer oracle checks:
+verifier, statement worked examples, the two 7-square near-misses,
+magic-graph rank, (c,u,v) extraction, Pythagorean pairs.
+==============================================================================
+[1] verifier known-answer cases
+    ok   Lo Shu classic (integer magic square, not all squares): strict False / relaxed False (not-a-square)
+    ok   nine 1s (magic + squares, not distinct): strict False / relaxed True (not-distinct)
+    ok   distinct positive squares, not magic: strict False / relaxed False (not-magic)
+    ok   parametrised c=25,u=6,v=9 grid: strict False / relaxed False (not-a-square)
+    ok   float entry: strict False / relaxed False (non-integer)
+    ok   wrong shape: strict False / relaxed False (shape)
+    -> PASS
+[2] statement worked examples, rerun fresh
+    identity: 585640 grids (c in 1..40, |u|,|v| <= 60), all magic with constant 3c and centre c: PASS
+    completeness: 68026 grids reconstruct exactly from (centre, a00-centre, a02-centre): PASS
+    AP structure: 65025 grids (c in 1..25, |u|,|v| <= 25), the four centre lines in AP with differences u-v, u+v, u, v up to sign: PASS
+    -> PASS
+[3a] Sallows LS1 (Bremner 1999 (1)) — printed orientation
+       3364 =  58^2 |  2116 =  46^2 | 16129 = 127^2
+       8836 =  94^2 | 12769 = 113^2 |     4 =   2^2
+       9409 =  97^2 |  6724 =  82^2 |  5476 =  74^2
+      line sums: (21609, 21609, 21609, 21609, 21609, 21609, 21609, 38307)
+      7 of 8 lines equal 21609 = 147^2 = 21609; failing line: non-principal diagonal, sum 38307
+      all entries squares: True, distinct: True
+      -> PASS
+[3b] Bremner's true magic square (Bremner 1999 p. 290)
+      139129 = 373^2 |  83521 = 289^2 | 319225 = 565^2
+      360721 (non-square) | 180625 = 425^2 |    529 =  23^2
+       42025 = 205^2 | 277729 = 527^2 | 222121 (non-square)
+      magic sum M = 541875 (all 8 lines), centre = 180625 = 425^2 = M/3: True
+      square entries: 7; non-squares: [222121, 360721]
+      -> PASS
+[4] magic graph: 8 lines x 9 cells incidence matrix over Q, rank = 7, so dim kernel = 2
+    kernel basis (exact Fractions):
+      0, -1, 1, 1, 0, -1, -1, 1, 0
+      -1, 0, 1, 2, 0, -2, -1, 0, 1
+    single Q-relation among the 8 line vectors: [-1, -1, -1, 1, 1, 1, 0, 0] i.e. col sums 1+2+3 == row sums 1+2+3 (diagonals free)
+    u-grid pattern   [1, -1, 0, -1, 0, 1, 0, 1, -1]
+    v-grid pattern   [0, -1, 1, 1, 0, -1, -1, 1, 0]
+    witness grid_from_params(1,3,-5) line sums all equal: True (sums (3, 3, 3, 3, 3, 3, 3, 3))
+    affine magic space: rank(differences L2-L1..L8-L1) = 6 over 9 cells -> dimension 3 = 1 (constant) + 2 (u,v), matching grid_from_params(c,u,v)
+    -> PASS: kernel dim 2 = u,v vectors; affine dim 3 = c,u,v basis
+[5] Bremner grid: extract (c, u, v) from entries, c = M/3, and test the four centre-line AP differences
+    M = 541875, c = M/3 = 180625, extracted from entries: 180625 (grid[1][1])
+    u = a00 - c = -41496, v = a02 - c = 138600
+    c == 425^2: True
+    d =   u =    -41496: c+d =     139129 = 373^2, c-d =     222121 (non-square) -> both squares: False
+    d =   v =    138600: c+d =     319225 = 565^2, c-d =      42025 = 205^2 -> both squares: True
+    d = u+v =     97104: c+d =     277729 = 527^2, c-d =      83521 = 289^2 -> both squares: True
+    d = u-v =   -180096: c+d =        529 = 23^2, c-d =     360721 (non-square) -> both squares: False
+    booleans: [('u', False), ('v', True), ('u+v', True), ('u-v', False)]
+    exactly TWO true, namely ['v', 'u+v']: True
+[6] Pythagorean split pairs of c = 425^2 = x^2 + y^2 (x >= y > 0): [(420, 65), (416, 87), (408, 119), (385, 180), (375, 200), (340, 255), (304, 297)]
+    d = v = 138600 realised by (385, 180): 385^2 + 180^2 = 180625 = 425^2: True; 2*385*180 = 138600 = d: True
+    d = u+v = 97104 realised by (408, 119): 408^2 + 119^2 = 180625 = 425^2: True; 2*408*119 = 97104 = d: True
+    direct (385, 180) -> v: 385-style check 385^2 + 180^2 = 180625 (== 180625: True), 2ab = 138600 (== 138600: True)
+    direct (408, 119) -> u+v: 385-style check 408^2 + 119^2 = 180625 (== 180625: True), 2ab = 97104 (== 97104: True)
+    -> PASS: c = x^2 + y^2, d = 2xy realised exactly twice
+
+Wrote code/out/near_misses.json
+==============================================================================
+Overall: ALL CHECKS PASSED (0.71s)
+==============================================================================
