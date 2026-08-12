@@ -1419,8 +1419,7 @@ fn register_planners(
     goals_prompt: String,
 ) -> Result<AgentHarness<()>> {
     let mut build = |role: &'static str, bench: &[&str]| {
-        let mut harness =
-            specialist_harness(parts.model.clone(), parts.budget, role, parts.tracer);
+        let mut harness = specialist_harness(parts.model.clone(), parts.budget, role, parts.tracer);
         for tool in subagents.tools(bench.iter().copied()) {
             register_resilient(&mut harness, tool);
         }
@@ -1431,7 +1430,11 @@ fn register_planners(
         register_note_recall(&mut harness, parts.vector_store);
         harness
     };
-    subagents.register("goals", Arc::new(build("goals", &SPECIALISTS)), goals_prompt)?;
+    subagents.register(
+        "goals",
+        Arc::new(build("goals", &SPECIALISTS)),
+        goals_prompt,
+    )?;
     Ok(build("orchestrator", &DELEGATES))
 }
 
