@@ -864,16 +864,26 @@ async fn reflect_step(
     // and treating silence as "scaling again" would send a run diversifying on
     // the strength of two malformed replies. MATHEMATICAL clears it, because
     // the run has changed what it is doing.
-    if kind_of(&upper) == Progress::Computational {
-        state.computational += 1;
-    } else if kind_of(&upper) == Progress::Mathematical {
-        state.computational = 0;
+    match kind_of(&upper) {
+        Progress::Computational => state.computational += 1,
+        Progress::Mathematical => state.computational = 0,
+        Progress::Unstated => {}
     }
     if let Some(tracer) = tracer {
+        // The kind is on the line because it is the one signal here that can
+        // send a run to diversify while it is reporting progress every time.
+        // Without it that turn reads, to anyone watching, as the loop giving up
+        // on an attempt that had just succeeded.
         tracer.note(&format!(
-            "solution loop: verdict {}, progress {}, next {}",
+            "solution loop: verdict {}, progress {} ({}, {} consecutive scaling), next {}",
             if state.solved { "solved" } else { "unsolved" },
             if progressed { "yes" } else { "no" },
+            match kind_of(&upper) {
+                Progress::Mathematical => "mathematical",
+                Progress::Computational => "computational",
+                Progress::Unstated => "kind unstated",
+            },
+            state.computational,
             route(&state)
         ));
     }
