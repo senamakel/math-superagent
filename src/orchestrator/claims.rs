@@ -691,8 +691,16 @@ pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) ->
 }
 
 /// Whether a written path is a note the ledger is derived from.
+///
+/// The trigger has to match what [`collect`] walks, or a claim enters the
+/// library and the table does not show it until something unrelated is written.
+/// That is worse than not collecting it at all: the note is on disk, the run
+/// believes it recorded a result, and the ledger every other role reads
+/// disagrees without saying so.
 pub(super) fn is_note(relative: &str) -> bool {
-    relative.starts_with(&format!("{}/", super::documents::RESEARCH_DIR))
+    let research = format!("{}/", super::documents::RESEARCH_DIR);
+    let computed = format!("{}/", super::layout::OUTPUT_DIR);
+    (relative.starts_with(&research) || relative.starts_with(&computed))
         && is_markdown(relative)
         && !relative.ends_with(super::documents::FULL_TEXT_SUFFIX)
         && !relative.ends_with(CLAIMS_PATH)
