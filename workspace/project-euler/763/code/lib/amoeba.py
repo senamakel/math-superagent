@@ -39,6 +39,20 @@ def children(p, d):
     return [tuple(p[i] + (1 if i == j else 0) for i in range(d)) for j in range(d)]
 
 
+def lvl(p):
+    """The 'level' (generation) of a cell p in Z^d: the sum of its coordinates.
+
+    This is the single canonical shared definition of the max-x+y+z level of
+    a cell, consolidated from four identical copies formerly in
+    inventor/check_recurrence.py, inventor/probe_failures.py,
+    inventor/probe_live.py and inventor/structure_probe.py.  The four copies
+    had NOT diverged — each was `sum(p)` — so no definition was chosen over
+    another.  Correctness established by those programs reproducing D(2)=3
+    and D(10)=44499 and by their structural-per-config reports.
+    """
+    return sum(p)
+
+
 # --- BFS step on frozenset-of-tuples configs ------------------------------
 
 
