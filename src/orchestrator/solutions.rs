@@ -359,7 +359,7 @@ async fn attempt_step(
     };
     let prompt = format!(
         "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{steer}{}\n\
-         {fresh}\n\n\
+         {observations}{fresh}\n\n\
          Requirements for this attempt, all of them:\n\
          - You must end this attempt with at least one program written to the workspace and \
            executed. An attempt that produces only notes, plans, or restatements has failed, \
