@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[offcentre-mesh-phase-model]] | What exactly are the tooth-phase congruences that make four planets (2x p, 2x q), each tangent to an off-centre sun S (s teeth, radius s/2pi) and an internal… | open | assembly_condition_simple_planetary_guo, (Guo, 5.21-5.22), least_mesh_angle*, (design-guide, lattice), tangent_circle_center_ellipse | programmer implements the 1-D congruence solver below; the sign conventions inside the invariant W are the first thing the oracle pins down (the 4 variants of… |
+| [[offcentre-mesh-phase-model]] | What exactly are the tooth-phase congruences that make four planets (2x p, 2x q), each tangent to an off-centre sun S (s teeth, radius s/2pi) and an internal… | open | assembly_condition_simple_planetary_guo, (Guo, 5.21-5.22), least_mesh_angle*, (design-guide, lattice), tangent_circle_center_ellipse | (1) Extend phase_model_probe.py to probe all 4 independent sign combinations on the gamma-term and beta-term coefficients; (2) if all still return 0, enumerate… |
 
 ## Resting on nothing recorded
 

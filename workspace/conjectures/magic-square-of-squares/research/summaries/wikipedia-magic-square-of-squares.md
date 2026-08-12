@@ -1,19 +1,25 @@
-# Wikipedia, "Magic square of squares" — [[wikipedia-magic-square-of-squares.full]]
+# Wikipedia, "Magic square of squares"
 
-Encyclopaedia article. Confirms the status (open, LaBar 1984, Guy D15, Gardner's prize, Boyer's prize), the two near-misses (Sallows LS1; Bremner's 7-square square), the Buell bound (centre > 25×10²⁴ if it exists), and the basic structure (centre lines are APs). Also covers the extension-field/4×4/5×5 non-third-order constructions at a survey level.
+[[wikipedia-magic-square-of-squares]]
 
-**Bearing:** low-to-moderate. Corroborates the witness set and bounds already in this run's library from the primary sources (Bremner, Boyer, Buell). It is a tertiary source: cite the primary papers, not Wikipedia, for any claim. The useful, independently-checkable facts it states are all already captured; no new structural claim.
+Encyclopedia summary of the problem and known results (open question since LaBar 1984,
+Gardner's 1996 prize).
 
-**Does not help** beyond corroboration. No claim blocks extracted; the run's primary-source digests supersede it.
+## What it establishes
+- Problem status: **unsolved**. First posed by Martin LaBar 1984 (College Math. J.),
+  popularised by Gardner 1996 (Quantum, $100 prize).
+- Lists Sallows' square (LS1), the Bremner square, and the "Parker square" label.
+- Unsourced/incomplete on the modern literature (no K3, no search bounds, no elliptic
+  reduction details).
 
-```claim
-id: mss-status-wikipedia
-statement: The 3×3 magic square of squares is open; Salows LS1 (7/8 sums 21609) and Bremner's
-  7-square square exist as near-misses; Buell's bound: centre > 25×10²⁴; no 8- or 9-square
-  example known over Q.
-hypotheses: —
-holds-here: yes (corroborates)
-status: catalogued (tertiary source; see Bremner/Boyer/Buell for provenance)
-bearing: corroboration only
-anchor: research/sources/wikipedia-magic-square-of-squares.full.md
-```
+## Implications / assessment
+- **Does not help** for the impossibility goal: it is a tertiary restatement with no theorem
+  or bound beyond what the primary sources (Bremner, Morgenstern, Zimmermann) already give.
+  Its value is only as a pointer to LaBar([38], College Math J 1984) and Gardner references,
+  and to confirm the "open both ways" framing (which CONTEXT.md already records).
+- No claim block — nothing here is a new, checkable mathematical statement establishing
+  anything the run needs.
+
+## Contradictions
+- None; consistent with Bremner/Boyer/Morgenstern. It does not carry the 25×10²⁴ centre
+  bound claims that Michaud-Rodgers loosely cites.

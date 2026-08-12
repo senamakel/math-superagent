@@ -1,27 +1,47 @@
-# Michaud-Rodgers, "Magic Squares of Squares", Warwick talk (2019) — [[michaud-rodgers-warwick-talk-2019.full]]
+# Michaud-Rodgers, "Magic Squares of Squares", Warwick talk, 2019
 
-Undergraduate project talk (Philippe Michaud-Rodgers, Warwick). Uses algebraic geometry on the **magic square variety** — the projective variety X ⊂ P⁸ cut out by the seven independent line-equal-sum equations (homogeneous quadrics) in the eight free entries.
+[[michaud-rodgers-warwick-talk-2019]]
 
-## Structural facts presented (asserted, from the project, not independently verified here)
-- The magic square variety X is a **surface** (Hilbert polynomial degree 2, via Gröbner basis).
-- X has **256 singular points** (over C), each with exactly three zero entries; explicit matrices given (entries ±1, ±√2, ±√−1…).
-- **X contains no lines.**
-- The **magic-hourglass** variety also contains no lines.
-- The **near-magic square of squares** variety (Sallows-area, lines/columns + one diagonal equal) contains **infinitely many lines** (a two-dimensional set).
-- Eliminating variables on X yields a class of **degree-8 curves** on the variety, but none passes through any rational point — offered as "further evidence" of non-existence. One such curve given (parametrised with α=1/√−3, equations −(2a²−4ab−b²)/3 = f², etc.).
+An undergraduate-level talk framing the full MSS problem as arithmetic geometry on the
+"magic square variety" `X ⊂ P⁸` (the zero set of the seven homogeneous line-sum equalities,
+with the entries' squares as the coordinates).
 
-**Status:** these are undergraduate-project claims, consistent with Bremner II's "no lines/low-degree rational curves" flavour but with different configuration(s); `asserted`, not reproduced. The "X contains no lines" is a clean, checkable algebraic-geometry statement that would be a genuine structural fact if verified. Note the near-magic variety having lines matches Brenner's infinite parametrised families of squared squares.
+## What it claims (mostly sketch-level, not proof-level)
+
+- **Dimension:** Hilbert polynomial of a Gröbner basis of `I(X)` has degree 2, so the magic
+  square variety is a **surface**.
+- **Singular points:** over C there are precisely **256 singular points**, each with three
+  zero entries (three explicit families of matrices given, plus transposes / reflections).
+- **Lines:** the full magic square variety **contains no lines**; the magic hourglass variety
+  contains no lines; the *near* magic square variety (7 of 8 sums) contains infinitely many
+  lines, a two-dimensional family (this explains the LS1-type squared-square abundance).
+- **Curves:** eliminating variables lifts lines to curves; on the magic square variety there
+  is a class of **degree-8 curves** (one explicit system given with `α=1/√−3`), but **none
+  goes through any rational point** — presented as weak evidence for non-existence.
+- Repeats Euler's 4×4 (sum 8515) and the `centre > 25×10²⁴` heuristic (attributed loosely).
+
+## Implications for this run
+
+- The "no lines on X" and "no rational point on the degree-8 curves" claims, if they can be
+  pinned to precise statements, are geometric support for non-existence. But this is a
+  *talk*, statements are asserted without proof and some are heuristic ("probably not,
+  not a very convincing argument"). **Not a citable proof-level source**; verify each claim
+  against a written source before relying.
+- The full-MSS variety is a surface in P⁸ (intersection of six quadrics per Bremner II),
+  whereas Bremner's K3 is a *six-square* surface — do not conflate the two objects.
+
+## Does not help
+
+As the talk itself disclaims, the centre bound and the "probably not" is explicitly admitted
+to be unconvincing. The degree-8-curve-with-no-rational-points claim needs a written proof.
 
 ```claim
-id: magic-variety-surface-no-lines
-statement: The magic square variety X⊂P⁸ (3×3 grids with all 8 line sums equal) is a
-  surface with 256 singular points and contains no lines; the near-magic square-of-squares
-  variety contains infinitely many lines.
-hypotheses: over C; homogeneous quadrics
-holds-here: unchecked (undergraduate claim, not verified here)
+id: magic-variety-is-surface-no-lines
+statement: The magic square variety X⊂P⁸ (coordinates are the entries; 7 homogeneous
+  line-sum equations) is a surface with 256 singular points (over C); X contains no lines.
+hypotheses: over C; X = full magic square variety
+holds-here: unchecked (talk-level, no proof given)
 status: asserted
-bearing: if confirmed, a structural fact (no line in the projective variety) that a
-  non-existence/geometric argument could build on; the degree-8 curves-through-no-rational-
-  point is a lead for a rational-points obstruction
+bearing: candidate geometric support for non-existence; must be verified from a written source
 anchor: research/sources/michaud-rodgers-warwick-talk-2019.full.md
 ```

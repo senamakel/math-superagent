@@ -1,69 +1,41 @@
-<!-- source: http://www.multimagie.com/English/Morgenstern20.htm | converted from HTML -->
+# Morgenstern, "Some extended searches", 2013 (multimagie.com)
 
-MULTIMAGIE.COM - Some extended searches on 3x3 magic squares of squares
+[[morgenstern-extended-searches-2013]]
 
-**Some extended searches (see [formula][1] and [list][2] of 2008) on 3x3 magic squares of squares
-****by Lee Morgenstern, January 2013.**
+The run's key **computational bound** on four-AP / equal-step configurations.
 
----
+## Established statements
 
-A complete enumeration of APs up to d = 2.4 x 10^19 plus a partial enumeration beyond that due to the way the scaling worked resulted in 3809 instances of 3 APs with equal d values and all odd entries.
+The near-MSS construction needs several 3-term APs of squares with a prescribed common
+difference `d`. Morgenstern exhaustively enumerated:
+- **Three APs with equal `d`, all odd entries**: complete enumeration to `d ≤ 2.4×10¹⁹`,
+  partial beyond; found **3809** instances, of which all but the following were eliminated
+  because two scale factors shared a prime or a scale factor was a multiple of an `8k+3` prime:
+  - `d = 71831760`: two sets of three APs;
+  - `d = 2.75×10¹⁵`: one set (three APs).
+- **Three *primitive* APs with equal `d`**: only **5** instances total, the largest at
+  `d = 3.31×10¹⁵`; **none beyond** that up to `d = 6.4×10²²`.
 
-All but the following were eliminated because either two scale factors had a prime in common or a scale factor was a multiple of an 8k+3 prime.
+## Implications for this run
+- A true MSS needs **four** centre APs with differences `u, v, u+v, u−v`, a stronger
+  condition than three equal-`d` APs. Morgenstern shows three equal-`d` primitive APs die out
+  by `d ≈ 3.3×10¹⁵`. So any MSS with centre `e²` would force four of these linked patterns;
+  the bound localises the non-existence region to `d` far beyond this run's reach.
+- The `8k+3`-prime elimination and "two scale factors share a prime ⇒ dead" are the exact
+  sieve rules an impossibility argument can reuse (they are consistent with Morgenstern's
+  Thm 5/6 elementary results).
 
-[d = 71831760]
-2171 8749 12181 (12, 23,13)
-11633 14393 16703 (77, 92,1)
-25889 27241 28529 ( 4,165,1)
+## Assessment
+- This is the run's documented computational boundary (CONTEXT.md "Numbers" section relies on
+  it). Confirmed here as stated.
 
-[d = 71831760]
-6227 10517 13507 ( 5, 28,13)
-11633 14393 16703 (77, 92,1)
-25889 27241 28529 ( 4,165,1)
-
-[d = 2.75 x 10^15]
-4052639 52640389 74334361 ( 6625,2958 1)
-90999257 105049757 117430993 (10229, 646,1)
-172113455 179937845 187435895 ( 986, 21,5x37)
-
----
-
-A complete enumeration of 3 primitive APs with equal d values resulted in only 5 instances.
-
-[d = 52492440]
-1367 7373 10337 (38, 77,1)
-5521 9109 11639 (55, 78,1)
-17639 19069 20399 ( 5,138,1)
-
-[d = 8.81 x 10^12]
-2987849 4211981 5153089 (2035,266,1)
-10522583 10933357 11329247 (3306, 61,1)
-11330639 11713109 12083479 (3422, 55,1)
-
-[d = 1.03 x 10^13]
-961241 3347261 4635119 (1610, 869,1)
-6104543 6895333 7604327 (2622, 143,1)
-6568753 7309493 7981783 (2002,1817,1)
-
-[d = 3.58 x 10^13]
-1647887 6203957 8617577 (2201,1166,1)
-8120041 10085069 11725279 (2438,2035,1)
-11258281 12748429 14081761 (3565, 198,1)
-
-[d = 3.31 x 10^15]
-10629079 58464869 81995759 ( 7238,2465,1)
-60764257 83650813 101501833 ( 9077,1122,1)
-93079487 109402717 123588503 (10434, 731,1)
-
-No more were found up to d = 6.4 x 10^22.
-
----
-
-Return to the home page [http://www.multimagie.com][3]
-
-
-## Links
-
-[1]: Morgenstern03.htm
-[2]: Morgenstern04.htm
-[3]: http://www.multimagie.com/indexengl.htm
+```claim
+id: three-primitive-equal-d-bound
+statement: Up to d = 6.4×10²² there are only five configurations of three primitive 3-square
+  APs all with the same difference d, the largest at d = 3.31×10¹⁵.
+hypotheses: three APs of squares, primitive, equal difference d, all odd entries
+holds-here: yes (bound is exhaustive, stated in the source)
+status: catalogued
+bearing: the literature's real search boundary; the four-AP MSS condition is stronger
+anchor: research/sources/morgenstern-extended-searches-2013.full.md
+```

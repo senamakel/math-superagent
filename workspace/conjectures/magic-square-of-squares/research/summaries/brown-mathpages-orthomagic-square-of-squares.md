@@ -1,27 +1,34 @@
-# Brown, "Orthomagic Square of Squares" (MathPages) — [[brown-mathpages-orthomagic-square-of-squares.full]]
+# Brown (MathPages), "Orthomagic Square of Squares", kmath427
 
-Web essay (Kevin Brown) proposing and analysing a route via "orthomagic" squares — arrays of squares where only the six row/column sums are equal (diagonals ignored).
+[[brown-mathpages-orthomagic-square-of-squares]]
 
-## Content
-- An OMSOS = 3×3 of distinct squares with the 3 row sums and 3 column sums equal.
-- **Remarkably, most OMSOSs have a square common sum.** The smallest OMSOS has row/column sum 3249 = 57². Of the twelve smallest, nine have a square common sum.
-- Since a fully-magic square of squares would have common sum 3E² (three times the central square), and **a square cannot equal 3 times a nonzero square**, every OMSOS with a square common sum is immediately ruled out as a candidate.
-- The exceptional OMSOSs (common sum not a square) must be checked individually; the smallest non-square-sum OMSOS has common sum 5691 = 3·7·271 and all entries are squared primes.
-- Suggests that if all OMSOSs had square sums (or were otherwise eliminable) the problem would be solved; but this is not established.
+Considers arrangements of nine distinct squares satisfying the **six orthogonal sums** (rows
+and columns) only — an "orthomagic square of squares" (OMSOS) — as an intermediate toward the
+full diagonal conditions.
 
-## Implication
-The central observation — **a full MSS's magic sum would be 3e², and 3e² is never a square (for e>0)** because 3 is squarefree — is a genuinely useful structural fact. Any row/column-sum-equal array whose common sum is a perfect square cannot be a magic square of squares. This is a clean, exact check usable on generator output. But the OMSOS classification is incomplete, so this alone does not resolve the problem.
+## Established claims
 
-**Status:** informal web essay; the 3e²-never-square fact is elementary and exact; the OMSOS claims are asserted.
+- **Common-sum-is-a-square phenomenon.** Most small OMSOS's have a square common sum. Since a
+  full MSS must have common sum `3E²` (3× the central square), and a square can't be 3× a
+  square, **every OMSOS with a square common sum is instantly excluded** from being fully magic.
+- Of the twelve smallest OMSOS's, nine have square common sum (excluded); the other three are
+  ruled out individually. Among 91 primitive OMSOS's with common sum < 30000, 56 have square
+  sum (excluded) and the remaining 35 non-square cases are **none of the form 3k²**, so none
+  can be a full MSS.
+- The square-sum OMSOS's form infinite 1-parameter families (one containing `1²`, another
+  containing `2²`, …); there are infinite 4-parameter families via Euler's four-square product
+  / quaternionic rotation matrices: rows and columns are orthogonal triads, common sum = square
+  of the magnitude.
 
-```claim
-id: sum-never-thrice-square
-statement: The magic sum of any 3×3 magic square of squares equals 3e² where e² is the central
-  entry; since 3 is squarefree, 3e² is never a perfect square for e>0. Therefore any square
-  array whose common line-sum is a perfect square cannot be a magic square of squares.
-hypotheses: distinct positive squares
-holds-here: yes
-status: proved (elementary; magic sum = 3×centre)
-bearing: an exact sieve fact; OMSOSs with square common sum are instantly excluded
-anchor: research/sources/brown-mathpages-orthomagic-square-of-squares.full.md
-```
+## Implications for this run
+- The orthomagic framing is a **different intermediate object** from the run's `(c,u,v)`
+  parametrisation (which fixes centre-line sums). The useful fact here is negative: "most
+  near-solutions die by the square-sum constraint, and the non-square exceptions are never
+  `3k²`" — a heuristic that near the small end, nothing reaches full magic.
+- The "common sum square ⇒ excluded" reasoning is the same modular/3-factor argument as
+  Morgenstern Thm 4/Zimmermann; no new impossibility content for large entries.
+
+## Does not help
+- The exact OMSOS characterisation is open even on this page; it does not provide a reduction
+  to the full problem, and the 4-parameter families apply to the orthomagic-with-square-sum
+  world rather than to the MSS.

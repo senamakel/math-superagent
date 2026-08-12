@@ -70,7 +70,6 @@ holds-here: yes
 status: proved
 bearing: the run's single-curve reformulation; the standard starting point for descent
 anchor: research/sources/bremner-on-squares-of-squares-1999.full.md
-contradicts: (none)
 answers: exact-reduction-magic-507c
 ```
 

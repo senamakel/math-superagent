@@ -4,8 +4,8 @@
 question: What exactly are the tooth-phase congruences that make four planets (2x p, 2x q), each tangent to an off-centre sun S (s teeth, radius s/2pi) and an internal ring C (c teeth, radius c/2pi) with centre separation d, all mesh simultaneously — and does the resulting discrete count g(c,s,p,q) reproduce 9, 9, 205?
 status: model derived in full from tooth-phase congruences; oracle verification pending (no code yet)
 rests-on: assembly_condition_simple_planetary_guo (Guo 5.21-5.22), least_mesh_angle* (design-guide lattice), tangent_circle_center_ellipse
-blocked-by: implementation + oracle: g(16,5,5,6)=9, G(16)=9, G(20)=205
-next: programmer implements the 1-D congruence solver below; the sign conventions inside the invariant W are the first thing the oracle pins down (the 4 variants of the chi/gamma signs are probed against g=9)
+blocked-by: phase_model_probe.py (idler-phase model, not the thread's W-invariant model) tested only 2 of 4 chi/gamma sign variants — both eps=+1 and eps=-1 return g=0. Remaining 2 variants (independent signs on gamma and beta coefficients) must be probed. If all 4 return 0, fall back to direct enumeration of the 9 arrangements for (16,5,5,6).
+next: (1) Extend phase_model_probe.py to probe all 4 independent sign combinations on the gamma-term and beta-term coefficients; (2) if all still return 0, enumerate the (16,5,5,6) configurations directly by tangency, compute tooth phases numerically, and output the 9 that survive — then work backwards from what they look like to the correct meshing condition.
 ```
 
 ## Why the coaxial lattice cannot transfer to PE620
