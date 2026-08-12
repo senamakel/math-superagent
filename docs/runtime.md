@@ -367,12 +367,11 @@ ceiling, not a way to make the model concise: set to 4000 it bound an ordinary
 turn exactly, truncating mid-generation so no usable tool call was emitted and
 the loop retried — 66 seconds to accomplish nothing. Buy brevity in the prompt.
 
-The inventor is the exception at 32000 (`RunBudget::for_invention`) — the one
-role whose product *is* the long turn, where a live 597 inventor was cut off
-with no tool call, re-issued, and reached the same place. The cap must reach
-both `specialist_harness`, the ceiling a cut-off turn grows *to*, and
-`register_with_turn_cap`, what the first attempt asks for. It is the one budget
-method that widens; the rest bound authority, which only narrows.
+The inventor is the exception at 32000 (`RunBudget::for_invention`), the one
+role whose product *is* the long turn: a live 597 inventor was cut off with no
+tool call, re-issued, and reached the same place. The cap must reach both
+`specialist_harness` and `register_with_turn_cap` — the ceiling a cut-off turn
+grows to, and what the first attempt asks for.
 
 The retry is upstream `truncated_empty` recovery in `agent_loop/run_loop.rs`:
 when a turn ends with `finish_reason == "length"`, no text, and no tool calls —
