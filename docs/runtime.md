@@ -355,9 +355,9 @@ top, so any wait longer than that died with a timeout error instead of the
 child's result — a live `pattern_finder` asked for 600 seconds, was killed at
 exactly 600,000 ms, and lost the run it had commissioned. `await_agent` and
 `await_agents` therefore override `timeout_policy` with the requested wait plus
-a minute of grace. The grace matters: the wait must be the thing that ends,
-because it ends by *returning* the child's state as it stands, where a deadline
-firing first replaces that with an error.
+a minute of grace. The grace matters: the wait must be the thing that ends, as
+it ends by *returning* the child's state, where a deadline replaces that with an
+error.
 
 Each model turn is capped at 12000 output tokens
 (`MATH_AGENT_TURN_OUTPUT_TOKENS`). Generation time is linear in output length,
