@@ -122,7 +122,9 @@ all consistent with this run's files. **A durable-memory reflection explicitly
 warns: sympy-vs-mpmath is not an independent route; report the hexagon value as
 single-route unless a game-encoding solver (max over dash-landing point P of
 runner-perimeter-dist(P)/swim-dist(P) at stage 1/V, or a David-K-style n=6
-construction) is actually built.** Treat the stewbasic n-gon formula as a
+construction) is actually built **and its output captured**. That solver now
+exists on disk (`code/indep_game_encoding.py`) but the run output is not
+captured — see Validation/Gaps. Treat the stewbasic n-gon formula as a
 sourced result with strong numeric agreement (square + circle limit reproduced
 two ways, and self-consistent exact closed form for n=6), not a peer-reviewed
 theorem.
