@@ -80,11 +80,11 @@ workspaces were asked in a prompt to build a toolkit: one reached forty-six
 sibling programs defining `H(n)` seven times, `lex_ranks` six and `power` five;
 another wrote thirteen helpers and imported none of them, because what it filed
 under `toolkits/` were one-off scripts with their data pasted into the source.
-The folder was renamed `lib/` for that reason — a folder called `toolkits`
-reads as somewhere to put tools, where `lib/` reads as things other files
-import. Asking an organizer to notice a routine typed out three times would
-cost it a read of every program in `code/` to discover, which is most of what a
-cycle costs; it is a count rather than a judgement, so it is counted.
+The folder was renamed `lib/` for that reason — `toolkits` reads as somewhere to
+put tools, where `lib/` reads as things other files import. Asking an organizer
+to notice a routine typed out three times would cost it a read of every program
+in `code/`, most of what a cycle costs; it is a count rather than a judgement, so
+it is counted.
 
 Every write path enforces it: `write_document`, an `apply_patch` addition, and
 `write_tool_file`. That last one was the hole — it wrote wherever it was asked,
