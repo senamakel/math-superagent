@@ -11,8 +11,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/oeis_a007902.md` | A007902 (pebbling configurations) = the run's 2D amoeba sequence D_2D(N), matched on every term (D_2D(N)=A007902(N+1)). Names the 2D analogue: no closed form, only asymptotics (~2.32^n) and a memoized G(k,m) recurrence. Not the 3D D(N). Claim d2d-equals-a007902. |
 | `L1.0/oeis_a055999.md` | OEIS A055999 (a(n)=n(n+7)/2 quadratic) lookup note. Hit: the PE763 max-level column Q_2(N)=R(N,N-2)/3^(N-5) equals A055999(N-5)=(N-5)(N+2)/2 exactly for N=6..14, confirming the Q_2 closed form from a catalogued sequence. Source https://oeis.org/A055999. |
 | `L1.0/oeis_a074171.md` | OEIS A074171 (a(1)=1,a(2)=3 then n(n+7)/2, 'essentially A055999') lookup note. Matched only as a sibling of A055999, which gives the run's Q_2(N)=(N-5)(N+2)/2 max-level-column closed form on N=6..14. Source https://oeis.org/A074171. |
-| `L1.0/oeis_a086246.md` | _(undescribed)_ |
-| `L1.0/oeis_a134227.md` | _(undescribed)_ |
+| `L1.0/oeis_a086246.md` | Motzkin-variant lookup note ((1+x-sqrt(1-2x-3x^2))/2 sequ). Not D(N); a ruled-out closed-form family candidate. |
+| `L1.0/oeis_a134227.md` | OEIS A134227 ((n-1)(n+6)/2 + [n=1], 'essentially A055999', row sums of A134226) lookup note. Sibling of A055999/A074171 in the n(n+7)/2 family; the run's Q_2(N)=(N-5)(N+2)/2 identification uses A055999. Source https://oeis.org/A134227. |
 | `L1.0/oeis_a168049.md` | _(undescribed)_ |
 | `L1.0/oeis_direct.md` | _(undescribed)_ |
 | `L1.0/oeis_partial.md` | _(undescribed)_ |
