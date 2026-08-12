@@ -30,6 +30,7 @@ Each marked with basis. Detail lives in the linked note.
 - **Cycle-basis-only length check is wrong**: a basis spans the cycle space but its cycle lengths can miss lengths present only as non-basic (symmetric-difference) cycles. Oracle must enumerate all simple cycles. Closed in `cycle_oracle.py` docstring.
 - **"No edge between two degree-≥3 vertices"** (Markström's raw wording) reads impossibly (would leave no edges); the true content is the degree-≥4 independent set. Treat Markström's raw phrasing as unreliable; use Carr's formulation. (See Contradictions.)
 - **Identifying girth-5 min-deg-3 with 3-connected**: true to n=17, **false from n=18** (2-sum breaks it; and all extras contain an 8-cycle, so are not EG near-counterexamples anyway).
+- **"A C4, once created by expansion, is never destroyed" pruning is false**: expanding a vertex on a 4-cycle changes that cycle's length (by ±1/±2 around the triangle), so a C4 need not survive a later expansion. Closing dead end — the base-step (K4→prism keeps C4) is the counterexample; do not re-propose this as a pruning rule.
 - **P_k-free backtracking cannot reach the full conjecture** (Hegde et al. explicitly): the method is P_k-specific; for H-free with cyclic H it runs forever (an infinite min-deg-3 tree is H-free with no power-of-two cycle), and for non-path trees the clique-substitution claw-free example fails too. It only certifies the P_k-free class — do not extend it to the general case. (in push-verification thread + memory.)
 
 ## Recalled (durable memory — not this run's own findings)
