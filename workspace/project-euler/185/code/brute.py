@@ -66,7 +66,18 @@ EXAMPLE = """
 """
 
 
+def _selftest():
+    """Check the 'correct count' semantics against the statement's inline
+    example: sequence 1234, guess 2036 -> 1 correct digit."""
+    assert matches("1234", "2036", 1), "inline example not reproduced"
+    assert not matches("1234", "2036", 0)
+    assert not matches("1234", "2036", 2)
+    # a digit right but in the wrong place must not count
+    assert not matches("1234", "4321", 0)  # all four wrong-position, zero right
+
+
 if __name__ == "__main__":
+    _selftest()
     guesses = parse_guesses(EXAMPLE)
     print("Guesses (string, count):")
     for g, c in guesses:
