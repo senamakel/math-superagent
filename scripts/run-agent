@@ -110,6 +110,21 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
+# This problem's own memory server, brought up before the agent and joined by
+# name. `COGNEE_NETWORK` is what `compose.yaml` resolves its external `memory`
+# network to, and the agent reaches the server as `cognee:8000` inside it, so
+# pointing the variable at a per-problem stack is the whole of the change — the
+# runtime is unaware there is more than one.
+#
+# A shared server was the earlier arrangement and its failure was availability,
+# not privacy: four concurrent runs turned `recall_memory` into a ten-minute
+# hang ending in `409 Conflict`, and a run cannot retry ten minutes it has
+# already spent. Set `COGNEE_NETWORK` yourself to opt back into a shared stack.
+if [ -z "${COGNEE_NETWORK:-}" ]; then
+    COGNEE_NETWORK=$("$repository_root/scripts/memory-up" "$workspace_subdir")
+    export COGNEE_NETWORK
+fi
+
 if [ "$action" = shell ]; then
     exec docker compose run --rm --entrypoint /bin/sh agent
 fi
