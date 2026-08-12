@@ -72,7 +72,10 @@ const DEFAULT_CYCLE_MINUTES: u64 = 15;
 /// `estimate_tokens` is itself an estimate, and the clamp has to cut a string
 /// at a byte offset rather than at a token, so this converts the budget into
 /// something a slice can be taken at. Four is the estimator's own ratio.
-const CHARS_PER_TOKEN: usize = 4;
+///
+/// Shared with [`super::dossier`], which clamps on the same argument. A second
+/// copy is exactly the drift [`super::text`] was written to end.
+pub(super) const CHARS_PER_TOKEN: usize = 4;
 
 /// Reads the shared brief's token budget from the environment.
 ///
@@ -189,7 +192,7 @@ pub(super) fn briefing(workspace: &Path) -> String {
 /// one is private to a module about what a single agent run may spend and this
 /// is about what a file may cost; joining them would make one of the two
 /// modules import the other for a four-line parser.
-fn positive_env(name: &str) -> Option<u64> {
+pub(super) fn positive_env(name: &str) -> Option<u64> {
     std::env::var(name)
         .ok()?
         .trim()
