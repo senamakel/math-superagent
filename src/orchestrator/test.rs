@@ -824,24 +824,37 @@ fn every_reasoning_role_can_reach_what_the_run_already_knows() -> agent::Result<
 }
 
 #[test]
-fn the_judge_has_memory_but_no_execution_or_web_search() -> agent::Result<()> {
+fn the_judge_reads_a_file_and_looks_nothing_up() -> agent::Result<()> {
+    // Twelve model calls and five minutes, against an attempt that took the
+    // better part of an hour. Every way of looking something up is a way of
+    // spending them looking things up instead of answering, and a live judge
+    // did exactly that with the document tools alone. So the judge holds one
+    // tool — read a file, to check a claim in the report against disk — and
+    // recall, which every other reasoning role gets, is withheld here for the
+    // same reason `search_workspace` always was.
     let registry = default_registry(true)?;
     let definition = registry
         .get("judge")
         .ok_or_else(|| tinyagents::TinyAgentsError::Validation("judge registered".into()))?;
-    for expected in ["recall_memory", "remember_memory"] {
-        assert!(definition.tools.iter().any(|tool| tool == expected));
-    }
-    for forbidden in ["exa_search", "execute_command", "write_tool_file"] {
-        assert!(!definition.tools.iter().any(|tool| tool == forbidden));
-    }
+    assert_eq!(definition.tools, vec!["read_document".to_string()]);
     Ok(())
 }
 
 #[test]
-fn every_agent_can_write_durable_memory() -> agent::Result<()> {
+fn every_agent_but_the_judge_can_write_durable_memory() -> agent::Result<()> {
+    // The judge is the one exemption, and it is a budget rather than a
+    // preference: see `the_judge_reads_a_file_and_looks_nothing_up`. Everything
+    // else that reasons must be able to leave what it established where the
+    // next run finds it.
     let registry = default_registry(true)?;
     for role in registry.definitions() {
+        if role.id == "judge" {
+            assert!(
+                !role.tools.iter().any(|tool| tool == "remember_memory"),
+                "the judge must not carry durable memory"
+            );
+            continue;
+        }
         assert!(
             role.tools.iter().any(|tool| tool == "remember_memory"),
             "{}",
