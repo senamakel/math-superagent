@@ -68,11 +68,18 @@ An empty (or warning-only) output means the file elaborated successfully.
 
 ## Axioms
 
-From `axioms_check.lean`:
+From `axioms_check.lean` and `cut_vertex_axioms.lean`:
 
 ```
 'ErdosGyarfas.c4_implies_conclusion' depends on axioms: [propext]
 'ErdosGyarfas.erdos_gyarfas' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+
+'ErdosGyarfas.cycle_in_one_component' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ErdosGyarfas.cycle_middle_avoids_v' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ErdosGyarfas.tail_penultimate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ErdosGyarfas.cycle_second_ne_last' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ErdosGyarfas.cycle_snd_ne_v' depends on axioms: [propext]
+'ErdosGyarfas.cycle_penultimate_ne_v' depends on axioms: [propext, Classical.choice, Quot.sound]
 ```
 
 - `c4_implies_conclusion` is a **real proof**: its only axiom is the harmless
@@ -81,9 +88,13 @@ From `axioms_check.lean`:
   its body is `by sorry`. Beyond `sorryAx` it uses only the standard
   `Classical.choice` and `Quot.sound`, so no hidden unproved axioms were
   introduced.
+- **All `cut_vertex.lean` lemmas are kernel-checked**: the only axioms are the
+  benign `propext` (and `Classical.choice`/`Quot.sound` where the proof uses
+  `classical`). There is **no `sorryAx`** — the file contains no `sorry`.
 
 ## Remaining `sorry`s
 
-Exactly one: the body of `ErdosGyarfas.erdos_gyarfas`. It stands in for the
-open conjecture, and is flagged by Lean's warning
-`declaration uses 'sorry'` at line 45. Every other declaration is `sorry`-free.
+Exactly one in the whole directory: the body of `ErdosGyarfas.erdos_gyarfas`.
+It stands in for the open conjecture, and is flagged by Lean's warning
+`declaration uses 'sorry'`. Every declaration in `c4_lemma.lean` and
+`cut_vertex.lean` is `sorry`-free.

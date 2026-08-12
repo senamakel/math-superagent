@@ -11,3 +11,9 @@ STAGE 1: circle — validation of the staging+dash framework
 ========================================================================
 STAGE 2: hexagon — critical speed of the same framework
 ========================================================================
+  hexagon critical v (framework) : 5.92820323
+Traceback (most recent call last):
+  File "/workspace/code/hexagon_first_principles_explore.py", line 161, in <module>
+    print(f"  known answer 2+2 sqrt21/3      : {2 + 2*mp.sqrt(21)/3:.8f}")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported format string passed to mpf.__format__
