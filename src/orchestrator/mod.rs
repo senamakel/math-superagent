@@ -806,15 +806,8 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
-                .chain([
-                    "recall_research",
-                    "remember_research",
-                    document_tools[0],
-                    document_tools[1],
-                    document_tools[4],
-                    document_tools[5],
-                    document_tools[6],
-                ]),
+                .chain(["recall_research", "remember_research", "search_workspace"])
+                .chain(document_tools),
         ),
     )?;
     // The four roles carrying shell and file-write authority. They differ in
