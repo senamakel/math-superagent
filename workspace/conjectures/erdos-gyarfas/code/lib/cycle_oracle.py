@@ -137,6 +137,42 @@ def _builtins():
     }
 
 
+def _self_test_has_cycle():
+    """Cross-check has_cycle_of_length against exhaustive all_simple_cycles
+    on a spread of small graphs (all L in 3..n)."""
+    cases = []
+    for n in range(4, 11):
+        cases.append(("complete", nx.complete_graph(n)))
+    for n in range(4, 12, 2):
+        cases.append(("bipartite", nx.complete_bipartite_graph(n // 2, n // 2)))
+    for n in range(4, 9):
+        cases.append(("cycle", nx.cycle_graph(n)))
+    cases.append(("cube", nx.hypercube_graph(3)))
+    cases.append(("cube4", nx.hypercube_graph(4)))
+    cases.append(("pet", nx.petersen_graph()))
+    cases.append(("markstrom", nx.from_graph6_bytes(
+        "Ws??W?@@?P?aA_?O?GG?a?@_?gA??a?@CO?CG?A@???a??D".encode())))
+    cases.append(("wheel7", nx.wheel_graph(7)))
+
+    import random
+    rng = random.Random(20250601)
+    for n in range(4, 9):
+        for _ in range(60):
+            p = rng.random() * 0.6
+            cases.append((f"rand{n}-{_}", nx.gnp_random_graph(n, p, seed=rng)))
+
+    mismatches = []
+    for name, G in cases:
+        full = set(distinct_cycle_lengths(G))
+        n = G.number_of_nodes()
+        for L in range(3, n + 1):
+            fast = has_cycle_of_length(G, L)
+            slow = L in full
+            if fast != slow:
+                mismatches.append((name, L, fast, slow))
+    return mismatches
+
+
 if __name__ == "__main__":
     print("cycle_oracle.py — min degree and exact cycle-length set")
     ok = True
@@ -150,4 +186,11 @@ if __name__ == "__main__":
             ok = False
         print(f"  {name:10s} min_deg={got[0]:2d} cycles={got[1]}"
               f" (basis-only={basis}) nx-simple-cycles={sorted(nx_lens)}  -> {match}")
+    mism = _self_test_has_cycle()
+    if mism:
+        ok = False
+        print(f"  has_cycle_of_length self-test MISMATCHES: {mism[:10]}")
+    else:
+        print("  has_cycle_of_length self-test: MATCH on exhaustive "
+              "cycle-length sets for all tested graphs and lengths 3..n")
     print("ALL MATCH" if ok else "MISMATCHES PRESENT")
