@@ -4,7 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `a186085.py` | _(undescribed)_ |
+| `a186085.py` | Computes OEIS A186085 (1D sandpile / smooth-composition) a(0..15) via the Heinz b(n,i) recurrence, to predict a(12..15) and test the run's distinct-level-histogram-count sequence (H(N)==A186085(N) hypothesis) at N=12..14. |
 | `aggregate_triangle.py` | _(undescribed)_ |
 | `bottom_probe.py` | Probes the bottom of the (N,M) max-level triangle: reports the min-M per N (and whether it stays near N/2) from data/level_N.txt + code/out/mhist_13_14.txt, and prints the full Q_k = count/3^(N-2k-1) array including negative-exponent (large k) rows as exact Fractions, testing whether the Q_k-polynomial column model extends into large k. Structural probe of the max-level decomposition. |
 | `check_a186085_recurrence.py` | _(undescribed)_ |
@@ -18,11 +18,11 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `full_triangle_dump.py` | Builds the full R(N,M) max-level triangle (#distinct configs after N divisions with max level M) from data/level_N.txt (N=2..12) plus code/out/mhist_13_14.txt (N=13,14); verifies R(N,N)=3^(N-1) and D(N)=sum_M R(N,M), and prints each fixed-M column R(N,M) as N varies for transfer-structure hunting. Now imports sorted_key from lib/datafiles (its former local split('level_') copy was a fourth duplicate of the canonical definition, now consolidated). |
 | `holonomic2.py` | _(undescribed)_ |
 | `holonomic3.py` | Clean sweep of the holonomic (P-recursive) hypothesis: fits sum_j p_j(N)D[N+j]=0, p_j degree d, over m=1..6, d=1..4 on D(0..14); extends each nullspace solution to D(100) requiring integer values, and tags any exactly reproducing both held-out values D(20)=9204559704 and D(100) mod 10^9=780166455. Companion to holonomic_fit.py/holonomic2.py; refutes the holonomic P-recursive closed form. Uses fit() from lib/holonomic (consolidated). |
-| `holonomic_diag.py` | _(undescribed)_ |
+| `holonomic_diag.py` | Diagnostic holonomic scan: for a wider order (m=1..8)/degree (d=1..5) sweep, finds WHY each candidate P-recursive recurrence fails (first pole or non-integer extrapolated term) and reports any that would reproduce D(20)/D(100) mod 1e9. Uses fit() from lib/holonomic. |
 | `holonomic_fit.py` | _(undescribed)_ |
 | `mdist.py` | Counts reachable configs by max level M from the data/level_N.txt feature dumps, producing the (N,M) histogram rows that underlie the max-level decomposition. |
 | `mdist2.py` | _(undescribed)_ |
-| `offsets.py` | _(undescribed)_ |
+| `offsets.py` | Extracts the (N,M) table and examines fixed-offset diagonals k=M-N, printing N(N,N+k)/3^(N-1) per row to hunt a pattern/closed form in the max-level counts. |
 | `oos_predict.py` | Decisive out-of-sample test of the column-polynomial model: fits Q_0..Q_5 polynomials using ONLY N=2..12 data, then predicts N(N,M)=Q_k(N)*3^(N-2k-1) at fresh N=13,14 (from code/out/mhist_13_14.txt) and reconstructs D(N). Checks the N(N,M)=Q_k(N)*3^(N-2k-1) submodel holds on points never used in the fit. |
 | `pn_poly.py` | Computes P_N(x)=sum_k Q_k(N)x^k and checks D(N)=3^(N-1)P_N(1/9); detects the even-N discrepancy in the Q-decomposition. |
 | `poly_test.py` | _(undescribed)_ |
@@ -34,7 +34,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `q_decomp_verify.py` | _(undescribed)_ |
 | `q_fresh_test.py` | _(undescribed)_ |
 | `q_fresh_verify.py` | Sympy-exact verification of the Q_k closed forms (Q_0..Q_4) and leading coefficients (==1/k!) at every measured point incl the fresh OOS N=13,14; also confirms the Q_2 column == OEIS A055999. |
-| `q_verify.py` | _(undescribed)_ |
+| `q_verify.py` | Verifies the Q_0..Q_3 closed forms exactly on every measured N=2..12 point and reconstructs D(N) as the sum of the model columns over the k=0..3 rows, comparing submodel sums to true D(N). Companion to verify_forms.py / verify_reconstruct.py. |
 | `qdecomp_falsify.py` | _(undescribed)_ |
 | `recur.py` | Recurrence search over D(0..14): constant-coefficient orders 1..7, holonomic forms, and asymptotic ratio fit. Found the order-7 constant-coeff recurrence that is later shown (recur_deadend.py) to be an overfit. |
 | `recur2.py` | _(undescribed)_ |
