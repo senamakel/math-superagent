@@ -28,11 +28,25 @@ that could be one. The first no-4 survivor at n=10 is the Petersen graph
 (has 8-cycle, so NOT a counterexample).
 
 ## S5(n) = girth>=5 (no 4-cycle AND no triangle — stricter)
-n:       4 5 6 7 8 9  10  11  12  13  14
-S5:      0 0 0 0 0 0  1   0   2   4  23
+n:       4 5 6 7 8 9  10  11  12  13  14   15   16    17     18
+S5:      0 0 0 0 0 0  1   0   2   4  23  149 1670  23882  422197
 [From earlier run; girth>=5 forbids both 4-cycles and triangles. The exact
 first EG barrier is "no 4-cycle" only, so NO4 above is the right sequence;
 S5 is the cubic/girth regime that leads to the Moore bound.]
+
+### S5 = A366224 identification: matches n<=17, BREAKS at n=18 (this run)
+A366224 = #3-connected girth>=5 graphs = 1,0,2,4,23,149,1670,23882,422194,...
+S5(n) equals A366224(n) for EVERY n<=17 (each survivor is 3-connected), so the
+structural statement "connected girth-5 min-deg-3 graph on n<=17 is
+3-connected" holds. At n=18, S5(18)=422197 = A366224(18)+3: exactly 3 extras,
+all 2-connected but NOT 3-connected, each split by a 2-vertex separator into
+two 8-vertex girth-5 lobes (internal deg seq [2,2,2,2,3,3,3,3], each lobe
+touching each separator vertex in 2 ends). This is the 2-vertex-sum; a
+1-vertex-sum (cut-vertex) survivor needs n>=19 (Petersen+Petersen at a vertex
+= 19). All 3 extras have an 8-cycle (NOT EG near-counterexamples).
+Full S5 sequence 1,0,2,4,23,149,1670,23882,422197 not in OEIS, no order<=6
+linear recurrence. Numerical evidence (exact, nauty-geng + polynomial checks),
+not a proof.
 
 ## Moore-bound threshold (d=3): smallest n that can possibly survive
 avoiding all 2-powers <= 2^m requires girth >= 2^m+1, Moore min n =

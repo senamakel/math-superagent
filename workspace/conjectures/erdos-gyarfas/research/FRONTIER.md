@@ -9,8 +9,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 6 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A014372 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A014372 - OEIS] [3] A014372 Number of trivalent connected simple graphs with 2n nodes… |
 | 6 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][55] [Format][56] [Style Sheet][57] [Transforms][58] [Superseeker][59] [Recents][60] [The OEIS Community][61] Maintained by [The OEIS Foundation Inc.][62] Last modified August 12 06:15… |
 | 4 | https://oeis.org/A123545 | A123545 | cross-referenced from A007112 |
+| 4 | https://oeis.org/A366225 | A366225 | cross-referenced from A366224 |
 | 3 | http://www.mathe2.uni-bayreuth.de/markus/reggraphs.html | Tables of Regular Graphs | at least 5][15] Jason Kimberley, [Index of sequences counting connected k-regular simple graphs with girth at least g][16] M. Meringer, [Tables of Regular Graphs][17] M. Meringer, [Fast generation of… |
-| 3 | https://oeis.org/A366225 | A366225 | cross-referenced from A366224 |
 | 2 | http://oeis.org/ | — | # Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/ Search: minimum degree 3 girth at least 5 Showing 1-1 of 1 %I A008483 #170 Aug 10 2026 12:11:59 %S A008483 |
 | 2 | https://arxiv.org/search/advanced | Advanced search | [0707.2117] Cycle lengths in sparse graphs Skip to main content Press Enter to search &middot; [Advanced search][1] --> # Mathematics > Combinatorics **arXiv:0707.2117**(math) [Submitted on 14 Jul… |
 | 2 | https://doi.org/10.1002/(SICI)1097-0118(199902)30:2&lt;137::AID-JGT7&gt;3.0.CO;2-G | Fast generation of regular graphs and construction of cages | counting connected k-regular simple graphs with girth at least g][16] M. Meringer, [Tables of Regular Graphs][17] M. Meringer, [Fast generation of regular graphs and construction of cages][18], J.… |
