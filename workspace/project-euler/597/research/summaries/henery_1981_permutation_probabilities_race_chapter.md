@@ -1,34 +1,13 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/henery_1981_permutation_probabilities_race_chapter.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Henery — "Permutation Probabilities as Models for Horse Races" (JRSS-B 43:86–91, 1981)
 
-<!-- source: https://ideas.repec.org/h/wsi/wschap/9789812819192_0022.html | converted from HTML -->
+**Summary.** Henery's foundational paper on modelling race outcomes as stochastic orderings of permutations. Race finish order is a random permutation whose distribution is defined via a stochastic-ordering property, so the ranking probabilities P(π) satisfy a natural compatibility (each prefix's relative order is ignored — "order statistics models"). The paper's key content, and why this run holds the references to it:
 
-## What is in it
+- **Exponential order statistics / Plackett equivalence.** A system of independent exponential order statistics gives exactly Plackett's (1975) first-order permutation model: P(σ) = ∏_k λ_{σ_k}/Σ_{i≥k} λ_{σ_i}, the product-of-rate-ratios over surviving alternatives. Races run with iid exponential finish-time differences = Plackett–Luce ranking probabilities.
+- The other family discussed is the **normal** order-statistics model (Upton & Brook 1974), with an approximation proposed for it.
+- The 1983 companion (Henery, "A Note on Permutation Probabilities", JRSS-B 45:460) and Dansie (1986, "Normal Order Statistics as Permutation Probability Models") generalize the exponential↔Plackett equivalence.
 
-    - Browse Econ Literature
-    - More features
-- Permutation Probabilities as Models for Horse Races
-  - In: *Efficiency Of Racetrack Betting Markets*
-  - Author
-  - Abstract
-  - Suggested Citation
-  - Download full text from publisher
-  - More about this item
-    - Keywords
-    - Statistics
-  - Corrections
-    - More services and features
-      - **
-      - **
-    - About RePEc
-      - **
-      - **
-      - **
-      - **
-    - Help us
+**Relevance to PE597 / why this matters.** This is REQUESTS row 3 (context-completeness). The library's earlier (now-refuted) treap/Plackett–Luce recursion leaned on "exponential clocks ⇒ Plackett–Luce product-of-rate-ratios" — Henery is the primary source pinning that equivalence. Its *use* here is negative: for the finite-finish torpids race the finish times (L−p_j)/v_j are **inverse-exponential, not exponential clocks**, so the pure exponential-order-statistics/Plackett machinery does **not** drive the bump/finish chronology — which is exactly why the refuted recursion failed (see `research_recursion_test.py`, TASKS.md). The paper does not treat bumping/rear-removal or a finish line; it confirms the Plackett layer, not the missing finite-finish recursion.
 
+**Access note (honest).** The original JRSS-B paper is paywalled (Wiley); the open-accessible version held here is the 2008 reprint as a World Scientific book chapter (Hausch/Lo/Ziemba, *Efficiency of Racetrack Betting Markets*, ch. 22, pp. 219–224), which the RePEc/IDEAS page only **abstracts** — the held full text is the RePEc bibliographic page, i.e. abstract + citation, **no paper body**. The substantive theorem content (exponential order statistics = Plackett) is standard and carried by the library's other Plackett–Luce tier summaries; do not re-read this file expecting the derivation.
 
-## What it claims
-
-Some properties of models for the outcomes of races are described, these properties being consequences of a stochastic ordering of the permutations which define the outcomes of a race. Order statistics models which lead to stochastic ordering are also discussed — particular cases of these are the first-order model of Plackett (1975) and the normal model of Upton and Brook (1974). An approximation for the normal model is suggested.
-
-*[digest of a 6147 character source; every section, statement, and proof in full at `research/sources/henery_1981_permutation_probabilities_race_chapter.full.md`]*
+URL: https://ideas.repec.org/h/wsi/wschap/9789812819192_0022.html
