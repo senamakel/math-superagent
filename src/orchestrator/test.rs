@@ -425,7 +425,7 @@ fn the_director_cannot_execute_or_delegate() -> agent::Result<()> {
 #[test]
 fn the_director_team_is_budgeted_to_outlast_a_run_of_idling() {
     let teams = super::standing_teams();
-    let (name, agent, completion, budget, _) = teams
+    let (_, agent, completion, budget, _) = teams
         .into_iter()
         .find(|(name, ..)| *name == "director")
         .expect("the director stands beside the solve");

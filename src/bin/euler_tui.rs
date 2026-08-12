@@ -483,8 +483,59 @@ fn render(frame: &mut ratatui::Frame<'_>, runs: &Runs, view: &View, waiting: &st
     );
 }
 
+/// Applies one keypress while a directive is being composed.
+///
+/// Split out because composing swallows the whole keyboard: `q` is a letter
+/// here and `1` is a digit, so leaving this inline in the navigation match
+/// would mean every future binding had to remember to check the mode first.
+///
+/// `directable` is `None` in replay, where there is no run to direct. The
+/// refusal is here rather than at the `i` binding so the reason can be said in
+/// the status bar at the moment someone tries, rather than the key doing
+/// nothing and reading as a broken viewer.
+fn compose_key(view: &mut View, key: KeyCode, directable: Option<&Path>) {
+    let Some(typed) = view.composing.as_mut() else {
+        return;
+    };
+    match key {
+        KeyCode::Esc => {
+            view.composing = None;
+        }
+        KeyCode::Backspace => {
+            typed.pop();
+        }
+        KeyCode::Char(character) => typed.push(character),
+        KeyCode::Enter => {
+            let text = typed.clone();
+            view.composing = None;
+            let Some(workspace) = directable else {
+                view.sent = Some("replay: no run to direct".to_string());
+                return;
+            };
+            match math_agent::directives::enqueue(workspace, "euler-tui", &text) {
+                Ok(directive) => {
+                    view.count += 1;
+                    // The count, not just the last one, because a directive is
+                    // picked up asynchronously: an operator who sent three and
+                    // sees "sent" cannot tell whether the third one landed.
+                    view.sent = Some(format!("sent #{} ({})", directive.id, view.count));
+                }
+                Err(error) => view.sent = Some(format!("not sent: {error}")),
+            }
+        }
+        _ => {}
+    }
+}
+
 /// Runs the view until the reader asks to leave. Quitting never stops the run.
-fn watch(runs: &Arc<Mutex<Runs>>, started: Instant) -> std::io::Result<()> {
+///
+/// `directable` carries the workspace a directive may be queued in, and is
+/// `None` in replay. Nothing else in this function can reach the run.
+fn watch(
+    runs: &Arc<Mutex<Runs>>,
+    started: Instant,
+    directable: Option<&Path>,
+) -> std::io::Result<()> {
     terminal::enable_raw_mode()?;
     let mut out = std::io::stdout();
     execute!(out, EnterAlternateScreen)?;
@@ -522,7 +573,22 @@ fn watch(runs: &Arc<Mutex<Runs>>, started: Instant) -> std::io::Result<()> {
                 break;
             }
             let tabs = runs.lock().map_or(1, |state| state.order.len()).max(1);
+            // Composing first, and it consumes everything. Falling through to
+            // the navigation keys would make `q` in the middle of a sentence
+            // detach the viewer and lose what had been typed.
+            if view.composing.is_some() {
+                compose_key(&mut view, key.code, directable);
+                painted = None;
+                if !event::poll(Duration::ZERO)? {
+                    break;
+                }
+                continue;
+            }
             match key.code {
+                KeyCode::Char('i') => {
+                    view.composing = Some(String::new());
+                    view.sent = None;
+                }
                 KeyCode::Char('q') | KeyCode::Esc => {
                     leave = true;
                     break;
@@ -704,7 +770,11 @@ fn main() -> std::process::ExitCode {
             }
             state.ended = true;
         }
-        if tabs && let Err(error) = watch(&runs, started) {
+        // Replay has no run to direct: the log is a record of one that has
+        // already finished, and a directive queued against it would sit
+        // unread until somebody started a run on the same workspace and then
+        // arrive as instruction from an hour ago.
+        if tabs && let Err(error) = watch(&runs, started, None) {
             eprintln!("{error}");
             return std::process::ExitCode::FAILURE;
         }
@@ -733,7 +803,7 @@ fn main() -> std::process::ExitCode {
     };
 
     if tabs {
-        if let Err(error) = watch(&runs, started) {
+        if let Err(error) = watch(&runs, started, Some(&workspace)) {
             eprintln!("{error}");
             return std::process::ExitCode::FAILURE;
         }
@@ -749,4 +819,127 @@ fn main() -> std::process::ExitCode {
         let _ = reader.join();
     }
     std::process::ExitCode::SUCCESS
+}
+
+#[cfg(test)]
+mod test {
+    use super::{View, compose_key};
+    use crossterm::event::KeyCode;
+
+    fn typing(view: &mut View, text: &str, workspace: Option<&std::path::Path>) {
+        for character in text.chars() {
+            compose_key(view, KeyCode::Char(character), workspace);
+        }
+    }
+
+    fn workspace(name: &str) -> std::io::Result<std::path::PathBuf> {
+        let root = std::env::temp_dir().join(format!("math-agent-tui-{name}"));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(root.join("config"))?;
+        root.canonicalize()
+    }
+
+    /// The viewer may direct a run that exists. It still cannot start one, and
+    /// what it writes is a line in a file rather than anything that spawns.
+    #[test]
+    fn a_typed_directive_reaches_the_queue() -> std::io::Result<()> {
+        let root = workspace("send")?;
+        let mut view = View {
+            composing: Some(String::new()),
+            ..View::default()
+        };
+        typing(&mut view, "check the n=14 bound", Some(&root));
+        compose_key(&mut view, KeyCode::Enter, Some(&root));
+
+        assert_eq!(view.composing, None, "sending closes the line");
+        assert_eq!(view.count, 1);
+        let queued = std::fs::read_to_string(root.join(math_agent::directives::QUEUE))?;
+        assert!(queued.contains("check the n=14 bound"), "{queued}");
+        assert!(view.sent.is_some_and(|sent| sent.contains("sent #1")));
+        Ok(())
+    }
+
+    /// Replay is a record of a run that has already finished. A directive
+    /// queued against it would sit unread until somebody started a run on the
+    /// same workspace, and then arrive as an instruction from an hour ago.
+    #[test]
+    fn replay_refuses_to_send_and_says_why() -> std::io::Result<()> {
+        let root = workspace("replay")?;
+        let mut view = View {
+            composing: Some(String::new()),
+            ..View::default()
+        };
+        typing(&mut view, "stop enumerating", None);
+        compose_key(&mut view, KeyCode::Enter, None);
+
+        assert_eq!(view.count, 0);
+        assert!(!root.join(math_agent::directives::QUEUE).exists());
+        assert!(
+            view.sent.is_some_and(|sent| sent.contains("replay")),
+            "the refusal has to say why, or the key reads as broken"
+        );
+        Ok(())
+    }
+
+    /// Composing swallows the keyboard. Without that, `q` in the middle of a
+    /// sentence detaches the viewer and loses what was typed.
+    #[test]
+    fn composing_treats_navigation_keys_as_text() -> std::io::Result<()> {
+        let root = workspace("swallow")?;
+        let mut view = View {
+            composing: Some(String::new()),
+            ..View::default()
+        };
+        typing(&mut view, "q1g and prove it", Some(&root));
+        assert_eq!(view.composing.as_deref(), Some("q1g and prove it"));
+        assert_eq!(view.tab, 0, "a digit while composing is not a tab jump");
+        assert_eq!(view.offset, 0);
+        Ok(())
+    }
+
+    /// Escape abandons the line without queueing anything.
+    #[test]
+    fn escape_cancels_without_sending() -> std::io::Result<()> {
+        let root = workspace("cancel")?;
+        let mut view = View {
+            composing: Some(String::new()),
+            ..View::default()
+        };
+        typing(&mut view, "never mind", Some(&root));
+        compose_key(&mut view, KeyCode::Esc, Some(&root));
+
+        assert_eq!(view.composing, None);
+        assert_eq!(view.count, 0);
+        assert!(!root.join(math_agent::directives::QUEUE).exists());
+        Ok(())
+    }
+
+    /// An empty directive is refused by the queue, and the viewer says so
+    /// rather than reporting a send that did not happen.
+    #[test]
+    fn an_empty_line_is_reported_as_not_sent() -> std::io::Result<()> {
+        let root = workspace("empty")?;
+        let mut view = View {
+            composing: Some(String::new()),
+            ..View::default()
+        };
+        compose_key(&mut view, KeyCode::Enter, Some(&root));
+
+        assert_eq!(view.count, 0);
+        assert!(view.sent.is_some_and(|sent| sent.contains("not sent")));
+        Ok(())
+    }
+
+    /// Backspace edits rather than cancelling: a typo in a long directive
+    /// should not cost the whole sentence.
+    #[test]
+    fn backspace_edits_the_line() {
+        let mut view = View {
+            composing: Some(String::new()),
+            ..View::default()
+        };
+        typing(&mut view, "sieve", None);
+        compose_key(&mut view, KeyCode::Backspace, None);
+        assert_eq!(view.composing.as_deref(), Some("siev"));
+    }
 }
