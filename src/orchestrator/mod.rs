@@ -257,7 +257,16 @@ impl OrchestratorAgent {
         let tracer = start_tracer(&workspace, budget, research_enabled);
         convert_problem_statement(&workspace);
         seed_tree_roots(&workspace);
-        let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()));
+        // One filing fingerprint, shared by the standing organizer team and by
+        // the housekeeping follow-up. Two separate ones would each read the
+        // other's filing as new work and wake each other indefinitely.
+        let filed: Arc<std::sync::Mutex<Option<u64>>> = Arc::default();
+        let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()))
+            .with_filing_gate({
+                let workspace = workspace.clone();
+                let filed = filed.clone();
+                Arc::new(move || filing_unchanged(&workspace, &filed).is_none())
+            });
         let documents = WorkspaceDocuments::new(workspace.clone())?;
         // Commits the workspace after every successful write, so a rewritten
         // solution or an edited belief is recoverable rather than lost.
@@ -487,9 +496,15 @@ impl OrchestratorAgent {
                     // it has already seen can only repeat itself or invent
                     // something. Decided before the agent runs, so an idle
                     // cycle costs a directory walk rather than a model call.
-                    let skip = (name == "patterns")
-                        .then(|| results_unchanged(&workspace, &analysed))
-                        .flatten();
+                    let skip = match name {
+                        "patterns" => results_unchanged(&workspace, &analysed),
+                        // The organizer files the same tree the follow-up
+                        // files, through the same gate, so a cycle that finds
+                        // nothing new costs a directory walk rather than a
+                        // model call and a walk of the workspace by an agent.
+                        "background" => filing_unchanged(&workspace, &filed),
+                        _ => None,
+                    };
                     // Maintaining the tree outranks extending it. A library
                     // whose root nobody can afford to read is not a library
                     // the run has, and every cycle spent gathering while the
