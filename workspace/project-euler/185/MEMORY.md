@@ -49,6 +49,19 @@ constraint structure, so it is not "searching the answer space" at the bound.
   already correct — worth remembering reconstruction must map variable index
   to digit, not print the variable value.)
 
+## Pattern findings (pattern_finder)
+
+The L=16 secret digits [4,6,4,0,2,6,1,5,7,1,8,4,9,5,3,3] and its per-position
+hitcounts [3,4,6,2,4,2,3,2,4,2,1,3,0,3,1,4] carry NO exploitable structure:
+not low-degree polynomials, no constant-coefficient linear recurrence of order
+<=6, and not in OEIS. Only definition-forced identity holds:
+sum(hitcounts) = sum(c_i) = 44. Column-majority rule (secret digit = modal
+column digit) holds 1/16; min-multiplicity rule 2/16 — both dead. Last
+survivor, "c=1 guesses match at pairwise-distinct positions" (L16 {0,2,4,6,8,15},
+L5 {0,2}), is barely above the random baseline (Monte Carlo ~5.5-12%) and is
+an empirical coincidence, not a lead. Pattern analysis is closed: the PE185
+secret is arbitrary constraint data.
+
 ## Open questions
 
 - None for the MILP route. The backtracking solver's L=16 completion time
