@@ -20,6 +20,7 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | what other programs import | `code/lib/<subject>.py` |
 | programs attacking one question | `code/<question>/` |
 | plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index, the frontier and request ledgers | `config/` |
+| operator direction: the queue, its cursor, and the receipt | `config/` |
 | untouched download bytes | `raw/` |
 
 `layout::placed` decides this in the write path — `write_document` and an
@@ -410,6 +411,39 @@ instruction is not a control. The name carries the result so a
 directory listing alone shows which attempts taught the run something. Writing
 the log is best effort: the lesson is already in the loop state, and losing the
 archive copy must not cost the run the lesson.
+
+## The directive queue
+
+Three files under `config/` carry human direction into a live run, and which
+side writes each one is the whole design.
+
+| File | Written by | Holds |
+| --- | --- | --- |
+| `directives.jsonl` | the host, append-only | one JSON object per directive: `at`, `from`, `text` |
+| `.directives-cursor` | the runtime only | how many lines it has consumed |
+| `DIRECTIVES.md` | the runtime only | each directive and what the run did about it |
+
+Splitting the writers removes the race rather than managing it. Neither side
+writes what the other writes, so neither needs a lock, and the one number they
+share — how far through the file the run has got — belongs to the side that
+advances it. The cursor is staged and renamed rather than written in place: a
+half-written cursor reads as zero, which would redeliver every directive the run
+had already acted on.
+
+A directive's identifier is its line number, not a stored field. That is what
+makes delivery exactly-once without a counter anyone could disagree about, and
+it is why a line the reader cannot parse is skipped *and still counted* — a torn
+append costs that one directive rather than the alignment of every later one. A
+host append can interleave with the checkpoint commit below, so this is a case
+worth surviving rather than a hypothetical.
+
+Directive text is capped at 2000 characters, which keeps a rendered line inside
+the size an append lands in one piece. Anything longer is a document, and the
+run can be pointed at it instead.
+
+The queue is committed like everything else in the workspace. What an operator
+asked for, and when, is part of how an answer was reached — a run that changed
+direction three attempts in reads as inexplicable without it.
 
 ## Workspace checkpointing
 
