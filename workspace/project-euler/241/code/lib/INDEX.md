@@ -1,39 +1,7 @@
 # Index — code/lib
 
-What other programs import. One subject per module, so reading the part you
-need costs almost nothing.
-
-`/workspace/code` is on `PYTHONPATH`, so a module here is importable by name
-from any working directory and any invocation:
-
-```python
-from lib.perms import lex_ranks
-```
-
-Never write `sys.path.insert`. If an import fails, the file is in the wrong
-place and moving it is the fix.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
-
-_No library modules yet._
-
-## Adding one
-
-A routine earns a place here when a second program would otherwise repeat it,
-or when getting it right took real work — exact arithmetic, an off-by-one in a
-recurrence, a verified base case. A single-use expression does not. The third
-time you type a routine out, it belonged here the first time.
-
-Write `code/lib/<subject>.py` holding the functions for one subject, each with
-a docstring, each callable without reading its source: explicit arguments, one
-job, no reliance on globals or on a file written earlier in the run. Check it
-against a case whose answer is already known, then `describe_file` it. The
-description carries each function's signature, what it returns, and what
-established that it is correct — an unverified helper must say `unverified`, so
-a later agent knows what it is standing on.
-
-Keep a module small enough to read whole. A second subject is a second module.
-
-Every helper uses exact integer or rational arithmetic unless its row says
-otherwise. Say so explicitly when a function returns a float.
+| `verify_oracle.py` | Verifies the sourced oracle claim hemiperfect-22-below-1e18: for each of the 22 candidate values computes sigma(n)/n exactly, confirms every one is k+1/2 with integer k and <= 1e18, confirms A159907 term 23 exceeds 1e18, and sums them. |
