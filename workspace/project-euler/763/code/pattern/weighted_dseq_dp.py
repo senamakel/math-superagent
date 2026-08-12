@@ -51,5 +51,5 @@ for n in range(2, 15):
     val = D_from_dseq(n)
     ok = (val == D[n])
     allok = allok and ok
-    print(f"{n:>2} | {val:>20} | {D[n]:>9} | {ok}")
+    print(f"{n:>2} | {val.numerator:>20} | {D[n]:>9} | {ok}")
 print("\nALL N=2..14 MATCH:", allok)
