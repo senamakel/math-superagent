@@ -302,19 +302,13 @@ fn collect_outputs(folder: &Path, depth: usize, found: &mut Vec<PathBuf>) {
         let path = entry.path();
         if path.is_dir() {
             collect_outputs(&path, depth - 1, found);
-        } else if !is_authored(&name) {
+        } else if !super::layout::is_authored(&name) {
             found.push(path);
         }
     }
 }
 
-/// Whether a file under `code/` was written by a person rather than a program.
-fn is_authored(name: &str) -> bool {
-    let lower = name.to_ascii_lowercase();
-    [".py", ".sh", ".md"]
-        .iter()
-        .any(|suffix| lower.ends_with(suffix))
-}
+
 
 /// The naive oracle's path, as [`oracle_prompt`] names it.
 const ORACLE_FILE: &str = "brute.py";
