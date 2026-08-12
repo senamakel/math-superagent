@@ -6,7 +6,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `hist_counts_10.txt` | Output data: the histogram->count table for N=10, one row per distinct level-histogram with its config count; written by code/pattern/hist_tables.py. Sum of counts = D(10)=44499. |
 | `hist_counts_11.txt` | _(undescribed)_ |
-| `hist_counts_12.txt` | _(undescribed)_ |
+| `hist_counts_12.txt` | Histogram->count table for the 3D amoeba at N=12: one row per distinct level-histogram with its config count, written by code/pattern/hist_tables.py. Counts sum to D(12)=514419 (100 rows), including the 5-factor exception histogram 0 1 3 6 7 5 3 with count=30. |
 | `hist_counts_2.txt` | _(undescribed)_ |
 | `hist_counts_3.txt` | _(undescribed)_ |
 | `hist_counts_4.txt` | Output data: the histogram->count table for N=4, one row per distinct level-histogram with its config count; written by code/pattern/hist_tables.py. Sum of counts = D(4)=30. |
