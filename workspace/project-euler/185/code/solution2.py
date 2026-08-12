@@ -33,6 +33,8 @@ branch-and-bound. Independent of 10**L.
 import numpy as np
 from scipy.optimize import milp, LinearConstraint, Bounds
 
+from lib.pe185 import L5, CONSTRAINTS5, L16, CONSTRAINTS16
+
 
 def build_model(L, constraints):
     """Return (c, integrality, bounds, constraint_matrix, lb, ub) for the MILP.
