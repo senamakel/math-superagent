@@ -42,7 +42,7 @@ circle lies in the annular crescent and touches one internally, the other extern
 holds-here: true — in PE620 the planet (radius p/2π) is tangent internally to C
 (radius c/2π) and externally to S (radius s/2π); S lies inside C; planet center is
 in the crescent.
-status: sourced (Cut-the-Knot / AMM 1947; corroborated by UGA tangent-circle notes).
+status: sourced (Cut-the-Knot / AMM 1947; corroborated on disk by the Pappus-chain and Steiner-chain Wikipedia entries, whose centers-of-circles locus is the identical ellipse statement; the UGA tangent-circle page is NOT in the library — fetch failed, do not cite it).
 bearing: fixes the planet-center locus to an ellipse; combined with least-mesh-angle
 quantization (2π/(s+c)) it gives the finite discrete set of legal planet positions.
 anchor: research/summaries/ellipse-arbelos-cut-the-knot.md

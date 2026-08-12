@@ -1,0 +1,58 @@
+Oracle run for the 3x3 magic square of squares problem
+code/brute.py — verifier + parametrisation generator, exact
+integer arithmetic only; all caps chosen to finish in seconds.
+==============================================================================
+[test 1] parametrisation identity: 585640 grids (c in 1..40, |u|,|v| <= 60) all have magic constant exactly 3c and centre c = M/3; mismatches: 0
+[test 2] centre-line AP structure: 65025 grids (c in 1..25, |u|,|v| <= 25) each have middle row, middle column and both diagonals in arithmetic progression with differences u-v, u+v, u, v up to sign; mismatches: 0
+    ok   Lo Shu classic magic square (entries not all squares) -> strict False / relaxed False (not-a-square)
+    ok   nine 1s: magic and squares, NOT distinct -> strict False / relaxed True (not-distinct)
+    ok   nine 4s: magic and squares, NOT distinct -> strict False / relaxed True (not-distinct)
+    ok   distinct positive squares, not magic -> strict False / relaxed False (not-magic)
+    ok   magic rows/cols with repeats, one diagonal off -> strict False / relaxed False (not-distinct)
+    ok   parametrised grid c=25,u=6,v=9 (magic, exactly 2 squares) -> strict False / relaxed False (not-a-square)
+    ok   negative entry -> strict False / relaxed False (not-a-square)
+    ok   float entry -> strict False / relaxed False (non-integer)
+    ok   wrong shape -> strict False / relaxed False (shape)
+    Lo Shu: magic constant 15, centre 5, centre == M/3: True
+    c=25,u=6,v=9 grid has 2 squares (isqrt) and 2 (set); examples: centre 25 = 5^2, corner 16 = 4^2
+[test 3] decision cases: PASS
+[test 4] parametrisation completeness: 3001 grids reconstruct exactly from (centre, a00-centre, a02-centre) with magic sum 3*centre; mismatches: 0
+    !!! nine squares with repeats: [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
+    !!! nine squares with repeats: [[4, 4, 4], [4, 4, 4], [4, 4, 4]]
+    !!! nine squares with repeats: [[9, 9, 9], [9, 9, 9], [9, 9, 9]]
+    !!! nine squares with repeats: [[16, 16, 16], [16, 16, 16], [16, 16, 16]]
+    !!! nine squares with repeats: [[1, 49, 25], [49, 25, 1], [25, 1, 49]]
+    !!! nine squares with repeats: [[25, 49, 1], [1, 25, 49], [49, 1, 25]]
+    !!! nine squares with repeats: [[25, 25, 25], [25, 25, 25], [25, 25, 25]]
+    !!! nine squares with repeats: [[25, 1, 49], [49, 25, 1], [1, 49, 25]]
+    !!! nine squares with repeats: [[49, 1, 25], [1, 25, 49], [25, 49, 1]]
+    !!! nine squares with repeats: [[36, 36, 36], [36, 36, 36], [36, 36, 36]]
+    !!! nine squares with repeats: [[49, 49, 49], [49, 49, 49], [49, 49, 49]]
+[test 5a] complete scan, entries <= 60: 36020 magic grids with positive entries kept (box 60x119x119); best k = 9 squares, centre 1 (square centre: True); best k with distinct entries = 4; nine-square hits with distinct entries: 0; time 0.34s
+    best grid (k=9): [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
+    square-count distribution over kept grids: {0: 13517, 1: 13836, 2: 6172, 3: 2228, 4: 140, 5: 24, 6: 92, 9: 11}
+    !!! nine squares with repeats: [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
+    !!! nine squares with repeats: [[4, 4, 4], [4, 4, 4], [4, 4, 4]]
+    !!! nine squares with repeats: [[9, 9, 9], [9, 9, 9], [9, 9, 9]]
+    !!! nine squares with repeats: [[16, 16, 16], [16, 16, 16], [16, 16, 16]]
+    !!! nine squares with repeats: [[1, 49, 25], [49, 25, 1], [25, 1, 49]]
+    !!! nine squares with repeats: [[25, 49, 1], [1, 25, 49], [49, 1, 25]]
+    !!! nine squares with repeats: [[25, 25, 25], [25, 25, 25], [25, 25, 25]]
+    !!! nine squares with repeats: [[25, 1, 49], [49, 25, 1], [1, 49, 25]]
+    !!! nine squares with repeats: [[49, 1, 25], [1, 25, 49], [25, 49, 1]]
+    !!! nine squares with repeats: [[36, 36, 36], [36, 36, 36], [36, 36, 36]]
+    !!! nine squares with repeats: [[49, 49, 49], [49, 49, 49], [49, 49, 49]]
+    !!! nine squares with repeats: [[64, 64, 64], [64, 64, 64], [64, 64, 64]]
+    !!! nine squares with repeats: [[81, 81, 81], [81, 81, 81], [81, 81, 81]]
+    !!! nine squares with repeats: [[100, 100, 100], [100, 100, 100], [100, 100, 100]]
+[test 5a] complete scan, entries <= 100: 166700 magic grids with positive entries kept (box 100x199x199); best k = 9 squares, centre 1 (square centre: True); best k with distinct entries = 5; nine-square hits with distinct entries: 0; time 1.57s
+    best grid (k=9): [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
+    square-count distribution over kept grids: {0: 75918, 1: 61772, 2: 22192, 3: 6156, 4: 376, 5: 60, 6: 212, 9: 14}
+[test 5b] near-miss generator: c = e^2, e <= 80, |u|,|v| <= 120: 4052328 all-positive grids; best k = 9 squares (best with distinct entries: 5); time 4.39s
+    best grid (k=9, c,e,u,v = 1,1,0,0): rows [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
+    square entries at [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]; max entry 1
+    best distinct grid (k=5): [[25, 196, 79], [154, 100, 46], [121, 4, 175]]
+    square-count distribution over all-positive grids: {1: 3653312, 2: 309896, 3: 85360, 4: 1952, 5: 748, 6: 964, 7: 4, 9: 92}
+==============================================================================
+Overall: ALL TESTS PASSED (6.90s total)
+==============================================================================

@@ -336,15 +336,16 @@ def complete_scan(B):
                     best_distinct_k = k
                     best_distinct_grid = g
                 if k == 9:
-                    nine_square_hits += 1
                     if len(set(entries)) != 9:
                         print(f"    !!! nine squares with repeats: {g}")
+                    else:
+                        nine_square_hits += 1
     print(f"[test 5a] complete scan, entries <= {B}: {n_kept} magic grids "
           f"with positive entries kept (box {B}x{2*B-1}x{2*B-1}); "
           f"best k = {best_k} squares, centre {best_params[0]} "
           f"(square centre: {is_perfect_square(best_params[0])}); "
           f"best k with distinct entries = {best_distinct_k}; "
-          f"nine-square hits: {nine_square_hits}; "
+          f"nine-square hits with distinct entries: {nine_square_hits}; "
           f"time {time.time() - t:.2f}s")
     if best_k >= 6:
         print(f"    best grid (k={best_k}): {best_grid}")
@@ -397,7 +398,7 @@ def near_miss_scan(E_MAX, V_MAX):
                     best_distinct_grid = g
     print(f"[test 5b] near-miss generator: c = e^2, e <= {E_MAX}, "
           f"|u|,|v| <= {V_MAX}: {n_kept} all-positive grids; "
-          f"best k = {best_k} squares (distinct entries: "
+          f"best k = {best_k} squares (best with distinct entries: "
           f"{best_distinct_k}); time {time.time() - t:.2f}s")
     if best_grid is not None:
         sq_positions = [(r, c_) for r in range(3) for c_ in range(3)
