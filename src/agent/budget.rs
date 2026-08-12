@@ -109,8 +109,16 @@ const HOUSEKEEPING_MODEL_CALLS: usize = 25;
 /// fails a run outright rather than stopping with partial results.
 const HOUSEKEEPING_TOOL_CALLS: usize = 300;
 
-/// Wall clock a housekeeping run may spend.
-const HOUSEKEEPING_RUN_TIMEOUT: Duration = Duration::from_mins(10);
+// There is deliberately no housekeeping wall-clock ceiling. Narrowing one to
+// ten minutes was tried and was a mistake: 25 model calls at the turn lengths
+// this runtime actually sees do not fit in ten minutes, so the organizer
+// reliably hit the clock instead of the call cap. Two live organizer runs died
+// on `run timed out: exceeded its remaining wall-clock` after spending 20 and
+// 13 model calls, and the wall-clock path does not honour `StopWithPartial` —
+// so every row they had written was discarded and the filing had to be redone.
+// That is the same rule the tool-call cap already follows: whatever else is
+// bounded, the *graceful* cap must be the one that trips, so any ceiling that
+// fails a run outright has to stay out of reach.
 
 /// The resolved budget shared by the orchestrator and every specialist.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -200,12 +208,15 @@ impl RunBudget {
     ///
     /// Only ever narrows, like [`Self::for_judging`]: an environment override
     /// that lowered the defaults below these numbers must stay lowered.
+    ///
+    /// The wall clock is deliberately left alone. Unlike the model-call cap it
+    /// fails a run outright rather than stopping with partial results, so a
+    /// tight one turns a bounded filing job into discarded work.
     #[must_use]
     pub fn for_housekeeping(self) -> Self {
         Self {
             max_model_calls: self.max_model_calls.min(HOUSEKEEPING_MODEL_CALLS),
             max_tool_calls: self.max_tool_calls.min(HOUSEKEEPING_TOOL_CALLS),
-            run_timeout: self.run_timeout.min(HOUSEKEEPING_RUN_TIMEOUT),
             ..self
         }
     }

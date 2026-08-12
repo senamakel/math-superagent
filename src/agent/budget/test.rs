@@ -119,7 +119,11 @@ fn a_housekeeping_budget_is_narrowed_but_never_widened() {
     let filing = full.for_housekeeping();
 
     assert!(filing.max_model_calls < full.max_model_calls);
-    assert!(filing.run_timeout < full.run_timeout);
+    // The wall clock must NOT be narrowed. It fails a run outright rather than
+    // stopping with partial results: a ten-minute housekeeping ceiling killed
+    // two live organizer runs after 20 and 13 model calls and threw away every
+    // row they had written. The graceful cap has to be the one that trips.
+    assert_eq!(filing.run_timeout, full.run_timeout);
     // The observed 62-call run must not fit inside the new cap, or the cap
     // does not bind the behaviour it was written for.
     assert!(filing.max_model_calls < 62);
