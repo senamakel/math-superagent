@@ -87,8 +87,10 @@ The runtime has fourteen roles plus an explicit solution loop.
   the tool-builder: its own tools describe the terms handed to them and cannot
   extend a sequence, so without a way to generate more terms it could neither
   test a conjecture past the data that suggested it nor find the first term
-  that breaks one. It has no search tool, because a bounded structural question
-  must not turn into a second investigation.
+  that breaks one. It has no *web* search, because a bounded structural
+  question must not turn into a second investigation — but it recalls what the
+  run and the note store already hold, since a regularity the library already
+  explains is not a conjecture worth chasing.
 - The inventor proposes a different line of attack when the current one has
   stalled, backed by research. It is told what failed so it does not re-propose
   it.
@@ -1351,9 +1353,12 @@ and omit trailing punctuation.
 ## Tools and research changes
 
 Tools are authority boundaries. Give each specialist only the tools it needs.
-The research agent gets Exa and the Qdrant note tools. The tool-builder gets
+The research agent gets Exa and both Qdrant note tools. The tool-builder gets
 workspace file and command tools. The orchestrator gets specialist delegation
-tools, not direct shell access.
+tools, not direct shell access. Recall is the one thing granted broadly rather
+than narrowly, and the argument for it is the same one: reading what the run
+already established is how a role avoids re-establishing it. See *Recall: the
+two ways back into what is known* for who is excluded and why.
 
 For a new tool:
 
