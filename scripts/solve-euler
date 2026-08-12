@@ -85,7 +85,7 @@ Work in this order. Steps 1 and 2 together should take a small part of the run; 
 
 3. Derive the efficient method and write the derivation to /workspace/solution.md: the result it rests on, why it applies, and what it reduces the work to. A method whose cost grows with the bound in the statement is the wrong method.
 
-4. Implement it as /workspace/solution.py with exact integer or rational arithmetic. It must agree with brute.py on every case brute.py can reach, and reproduce every example from the statement, before you run it at full size.
+4. Implement it as /workspace/code/solution.py with exact integer or rational arithmetic. It must agree with code/brute.py on every case it can reach, and reproduce every example from the statement, before you run it at full size.
 
 5. Verify the final answer by a second independent route — a different derivation, an independent program, or brute-force agreement at the largest size it can manage — and report which.
 
