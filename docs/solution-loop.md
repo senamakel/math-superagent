@@ -196,14 +196,14 @@ reached the `goals` agent directing the work, which re-commissioned the same
 nothing when reflection has already run — the mailbox is empty and the section
 is omitted rather than rendered as a heading announcing that no analysis arrived
 — and it is the only path that exists on the first attempt of every run.
-`attempt_prompt` is a plain function of the state for the same reason `route`
-is: what an attempt is actually told must be testable without a provider. An invented pattern costs the run more than no pattern, so it idles
-readily — and idleness is decided *before* the agent runs, by fingerprinting
-`code/` and `code/out/` and comparing against what the team last analysed.
-Asking the agent to notice that nothing changed would cost a model call and a
-walk of the workspace to discover, which is most of what a working cycle costs:
-a live team spent thirty `read_document` calls in two minutes doing exactly
-that on runs that had computed almost nothing. A workspace with no results at
+`attempt_prompt` is a plain function of the state for the same reason `route` is:
+what an attempt is actually told must be testable without a provider. An invented
+pattern costs the run more than no pattern, so it idles readily — and idleness is
+decided *before* the agent runs, by fingerprinting `code/` and `code/out/` and
+comparing against what the team last analysed. Asking the agent to notice that
+nothing changed would cost a model call and a walk of the workspace, most of what
+a working cycle costs: a live team spent thirty `read_document` calls in two
+minutes doing exactly that on runs that had computed almost nothing. A workspace with no results at
 all reads as unchanged, so an early cycle idles rather than analysing an empty
 folder. Its own notes are deliberately not part of the fingerprint — the team
 writes those itself, and including them would have the team waking itself up
