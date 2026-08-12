@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/Luce's_choice_axiom | Luce's choice axiom | ranks the items according to the order in which they decayed. In this interpretation, it is immediately clear that the PL model satisfies [Luce's choice axiom][25] (from the same Luce). Therefore,… |
 | 1 | https://en.wikipedia.org/wiki/Partially_ordered_set | partially ordered set | [natural numbers][48]. Therefore, (**2**) is seen as the Möbius inversion formula for the [incidence algebra][49] of the [partially ordered set][50] of all subsets of A. For a generalization of the… |
 
-_443 further candidates not shown; they are cited once each._
+_445 further candidates not shown; they are cited once each._
