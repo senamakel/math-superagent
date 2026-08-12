@@ -827,3 +827,49 @@ fn seeded_scaffolding_is_not_counted_as_work() -> std::io::Result<()> {
     );
     Ok(())
 }
+
+/// Output that established something and reached no claim is reported.
+///
+/// The claim ledger is what the planning roles read; a result left in a
+/// captured file reaches nobody and the next attempt does the work again. The
+/// magic-square-of-squares run proved its parametrisation complete by an exact
+/// rank computation, verified both literature near-misses digit by digit, and
+/// scanned four million grids — and its ledger held three rows, none of them
+/// the run's own, through a judge verdict and a reflection.
+#[test]
+fn results_that_reached_no_claim_are_reported_to_the_judge() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-unclaimed");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(root.join("code/scan.py"), "# the scan\n")?;
+    std::fs::write(root.join("code/out/scan.txt"), "rank 7, kernel dimension 2\n")?;
+
+    let brief = evidence_briefing(&root);
+    assert!(brief.contains("the claim ledger records nothing this run established"), "{brief}");
+
+    // One established claim clears it: the run is using the ledger.
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        "```claim\nid: rank-seven\nstatement: The incidence matrix has rank 7.\n\
+         holds-here: yes\nstatus: checked\n```\n",
+    )?;
+    assert!(
+        !evidence_briefing(&root).contains("records nothing this run established"),
+        "an established claim clears the fault"
+    );
+    Ok(())
+}
+
+/// A run that has computed nothing yet is not accused of hiding results.
+#[test]
+fn a_run_with_no_output_is_not_told_its_ledger_is_empty() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-unclaimed-empty");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code"))?;
+    std::fs::write(root.join("code/scan.py"), "# written, never run\n")?;
+    assert!(
+        !evidence_briefing(&root).contains("records nothing this run established"),
+        "the fault needs captured output to fire"
+    );
+    Ok(())
+}

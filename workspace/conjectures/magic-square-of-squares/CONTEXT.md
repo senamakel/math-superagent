@@ -71,8 +71,10 @@ of each of the other two. The two realised relations are Pythagorean
 `c = x²+y², d = 2xy` reformulation, realised exactly twice. **This exact structure
 is what any impossibility lemma must survive**: a proof of non-existence cannot
 forbid "two fully-realised + two half-realised AP differences", since Bremner's
-grid is exactly that. **See Contradictions: the suite's `all_checks_passed` flag
-is `false`, so full automatic pass is not yet confirmed.**
+grid is exactly that. **Resolved: the check suite now reports `ALL CHECKS
+PASSED`** (`code/out/check_near_misses_latest.txt`, 0.71 s; `near_misses.json`
+`all_checks_passed: true`) — the structural extraction above is confirmed, no
+longer merely computed.
 
 **Elliptic reformulation — sourced** (Bremner 1999; attributed to Robertson): a
 MSS of squares ⇔ there is `e` with three points of `2E(Q)` (x-coords in
