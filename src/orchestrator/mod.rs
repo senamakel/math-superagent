@@ -366,6 +366,12 @@ impl OrchestratorAgent {
         for tool in documents.tools() {
             register_resilient(&mut orchestrator_harness, tool);
         }
+        // The orchestrator plans against the same record the goals agent does,
+        // and had neither way into it: it could read a path it already knew and
+        // nothing else. A planner that cannot find what the run has already
+        // tried delegates it again.
+        register_recall(&mut orchestrator_harness, &workspace);
+        register_note_recall(&mut orchestrator_harness, &vector_store);
 
         Ok(Self {
             inner: ObservedAgent::from_harness(orchestrator_harness)?.with_tracer(tracer.clone()),
