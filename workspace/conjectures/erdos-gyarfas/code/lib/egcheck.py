@@ -33,30 +33,27 @@ def has_cycle_of_length(G, L):
     adj = {v: set(G.neighbors(v)) for v in G.nodes()}
     nodes = list(G.nodes())
 
+    # Build a simple path s = v0, v1, ..., v_{L-1} of L vertices (L-1 edges),
+    # never revisiting s, and return True iff the last vertex v_{L-1} is
+    # adjacent to s, which closes a simple cycle of length L.  s itself may
+    # only be touched at position 0 (no early chording back to it).
     def dfs(s):
-        # path is [s, ...], keeps vertices already on path so cycles are simple
-        path = [s]
         onpath = {s}
 
-        def go(v):
-            if len(path) == L:
+        def go(v, cnt):
+            # v is the current end, cnt = number of vertices used including v
+            if cnt == L:
                 return s in adj[v]
             for w in adj[v]:
-                if w == s:
-                    if len(path) == L - 1:
-                        return True
-                    continue
-                if w in onpath:
+                if w == s or w in onpath:
                     continue
                 onpath.add(w)
-                path.append(w)
-                if go(w):
+                if go(w, cnt + 1):
                     return True
-                path.pop()
                 onpath.discard(w)
             return False
 
-        return go(s)
+        return go(s, 1)
 
     for s in nodes:
         if dfs(s):
