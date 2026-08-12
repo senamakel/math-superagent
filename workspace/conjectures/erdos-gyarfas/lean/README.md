@@ -32,7 +32,9 @@ export LEAN_PATH="$LEAN_PATH:/workspace/lean"   # adds this dir for imports
 cd /workspace/lean
 lean c4_lemma.lean -o c4_lemma.olean            # must come first: builds the import
 lean erdos_gyarfas.lean -o erdos_gyarfas.olean
-lean axioms_check.lean -o axioms_check.olean    # prints #print axioms for both theorems
+lean cut_vertex.lean -o cut_vertex.olean        # kernel-checked cut-vertex lemma (no import deps)
+lean cut_vertex_axioms.lean -o cut_vertex_axioms.olean  # prints #print axioms
+lean axioms_check.lean -o axioms_check.olean    # prints #print axioms for the c4/conjecture theorems
 ```
 
 An empty (or warning-only) output means the file elaborated successfully.
