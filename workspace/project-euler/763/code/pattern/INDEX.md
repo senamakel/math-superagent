@@ -50,5 +50,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_columns.py` | _(undescribed)_ |
 | `verify_forms.py` | _(undescribed)_ |
 | `verify_mhist.py` | _(undescribed)_ |
-| `verify_reconstruct.py` | _(undescribed)_ |
-described)_ |
+| `verify_reconstruct.py` | Reconstructs D(N) from the max-level column model: verifies the M=N diagonal count equals 3^(N-1) for all N=2..14, then sums the modeled columns N(N,M)=Q_k(N)*3^(N-2k-1) for k=0..4 (closed forms Q_0..Q_4) and checks the sum reproduces the true D(N) where those columns cover every M row (N=8,9 exactly; reports which rows exceed k=4 for larger N). Independent confirmation that the Q_k closed forms re-assemble into D(N). Companion to q_verify.py/verify_forms.py. |
