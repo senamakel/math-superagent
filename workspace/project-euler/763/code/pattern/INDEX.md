@@ -34,6 +34,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `mdist.py` | Counts reachable configs by max level M from the data/level_N.txt feature dumps, producing the (N,M) histogram rows that underlie the max-level decomposition. |
 | `mdist2.py` | Investigates the completeness of the Q_k max-level decomposition: computes M_min per N and checks whether all M >= (N+1)/2 (the rows the Q_k model covers), quantifying the missing/off-diagonal part the decomposition fails to reproduce. Uses sorted_key from lib/datafiles. |
 | `mult_structure.py` | _(undescribed)_ |
+| `multiset_to_b.py` | _(undescribed)_ |
 | `offsets.py` | Extracts the (N,M) table and examines fixed-offset diagonals k=M-N, printing N(N,N+k)/3^(N-1) per row to hunt a pattern/closed form in the max-level counts. |
 | `oos_predict.py` | Decisive out-of-sample test of the column-polynomial model: fits Q_0..Q_5 polynomials using ONLY N=2..12 data, then predicts N(N,M)=Q_k(N)*3^(N-2k-1) at fresh N=13,14 (from code/out/mhist_13_14.txt) and reconstructs D(N). Checks the N(N,M)=Q_k(N)*3^(N-2k-1) submodel holds on points never used in the fit. |
 | `per_hist_detail.py` | _(undescribed)_ |
