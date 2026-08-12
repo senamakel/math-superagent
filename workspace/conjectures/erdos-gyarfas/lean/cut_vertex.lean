@@ -102,9 +102,12 @@ theorem cycle_in_one_component {G : SimpleGraph V} [DecidableEq V]
     exact hmiddle (by simpa [hxv] using hx)
   -- p.tail goes snd -> v, so p.tail.dropLast goes snd -> penultimate of p
   have hpen : p.tail.penultimate = p.penultimate := tail_penultimate hp
+  have hpen' : (⟨p.tail.penultimate, cycle_penultimate_induce hp⟩ : notVSet v) =
+      ⟨p.penultimate, cycle_penultimate_induce hp⟩ := by
+    simp [hpen]
   let q : (G.induce (notVSet v)).Walk
       ⟨p.snd, cycle_snd_induce hp⟩ ⟨p.penultimate, cycle_penultimate_induce hp⟩ :=
-    ((p.tail.dropLast).induce (notVSet v) habit).copy rfl hpen
+    ((p.tail.dropLast).induce (notVSet v) habit).copy rfl hpen'
   refine ⟨q⟩
 
 end ErdosGyarfas
