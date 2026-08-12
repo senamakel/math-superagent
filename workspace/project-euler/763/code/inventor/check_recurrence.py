@@ -14,7 +14,7 @@ bounded to N<=7 (<=15 cells, frontier 3855 at N=8 start).  Verification only.
 """
 from itertools import product
 
-from lib.amoeba import lvl
+from lib.amoeba import lvl, dividable_count
 
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
 
@@ -56,8 +56,12 @@ def collapse(S):
 
 
 def f_of(C):
-    Sset = set(C)
-    return sum(1 for p in Sset if all(c not in Sset for c in children(p)))
+    """#dividable cells of C == lib.amoeba.dividable_count(C, 3).
+
+    Local wrapper kept for call sites; delegates to the canonical
+    lib/amoeba function (was a duplicated local definition).
+    """
+    return dividable_count(C, 3)
 
 
 def main():
