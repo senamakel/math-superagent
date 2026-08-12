@@ -21,6 +21,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `magic-variety-is-surface-no-lines` | The magic square variety X⊂P⁸ (coordinates are the entries; 7 homogeneous line-sum equations) is a surface with 256 singular points (over C); X contains no lines. | **unchecked** | asserted | `research/summaries/michaud-rodgers-warwick-talk-2019.md` |
 | `morgenstern-8-digit-smallest-entry` | All nine entries of any 3×3 magic square of squares with distinct entries are at least the squares of 8-digit numbers; the fixed-start AP generator/termination enumeration is complete for each L up to its termination. | yes | catalogued | `research/summaries/morgenstern-smallest-entry-8-digit.md` |
 | `near-miss-baseline-and-incidence` | the parametrisation identity and completeness hold on the rerun; Sallows LS1 has 7 of 8 line sums 21609 failing the non-principal diagonal 38307; Bremner's grid is a true magic square (all 8 sums 541875, centre 425² =… | yes | asserted | `code/out/oracle_note.md` |
+| `oeis-a006339-min-hypotenuse` | A006339(n) = A046112(n) = min h with prod_{p=1 mod 4}(2 a_i + 1) = 2n - 1, equivalently h^2 a sum of two squares in exactly n ways (including the axis representation); the record values/holders match the run's own… | yes | catalogued | `research/summaries/oeis_a006339.md` |
+| `oeis-a046112-circle-lattice-points` | A046112(n) = min r with 8n-4 lattice points on x^2+y^2 = r^2, equals A006339(n); \|S(e)\| (run's AP-difference count) is the same multiplicative function minus the degenerate axis term. | yes | catalogued | `research/summaries/oeis_a046112.md` |
 | `primitive-mss-entry-congruences` | In a primitive 3x3 MSS all nine entries are odd and ≡1 mod 3; no entry has a 3 mod 8 prime factor; no middle-side entry has a 5 mod 8 factor; central entry ≡1 mod 4 only; and the step ratio z=py excludes p ∈ {0,1,2,3,4}… | **unchecked** | proved | `research/summaries/morgenstern-properties-3x3-square-of-squares-2007.md` |
 | `primitive-mss-modular-124-72` | A primitive 3x3 MSS has all nine entries ≡1 mod 24 and magic sum ≡3 mod 72. | yes | proved | `research/summaries/zimmermann-loria-magic-squares-of-squares-2015.md` |
 | `robertson-elliptic-reduction` | A 3×3 magic square of squares exists iff there is c with three points of 2E(Q), | yes | proved | `research/summaries/bremner-on-squares-of-squares-1999.md` |
@@ -43,5 +45,7 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 
 - `ls1-in-lucas-family` (research/summaries/boyer-notes-supplement-2005.md) — read from a catalogue; no derivation here reproduces it
 - `morgenstern-8-digit-smallest-entry` (research/summaries/morgenstern-smallest-entry-8-digit.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-a006339-min-hypotenuse` (research/summaries/oeis_a006339.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-a046112-circle-lattice-points` (research/summaries/oeis_a046112.md) — read from a catalogue; no derivation here reproduces it
 - `sum-of-two-squares-multiplicity` (research/summaries/oeis_a088111.md) — read from a catalogue; no derivation here reproduces it
 - `three-primitive-equal-d-bound` (research/summaries/morgenstern-extended-searches-2013.md) — read from a catalogue; no derivation here reproduces it
