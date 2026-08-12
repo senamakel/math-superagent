@@ -231,12 +231,12 @@ alternative and is worse: refusing a write costs the run whatever the agent was
 about to record, where cutting the prompt copy keeps the material and turns the
 overrun into the curator's next cycle.
 
-`ROOT.md` is deliberately not `INDEX.md`. The index says what each file *is*
-and is derived from the directory by the index tools; the root says what the
-library *means* and is written by an agent. Holding both in one file put a tool
-and an agent in contention over it and cost three separate rounds of lost
-descriptions — a refresh overwriting a synthesis, then a synthesis overwriting
-rows, then rows rewritten in a spelling the refresh could not match.
+`ROOT.md` is deliberately not `INDEX.md`. The index says what each file *is* and
+is derived from the directory by the index tools; the root says what the library
+*means* and is written by an agent. Holding both in one file put a tool and an
+agent in contention and cost three rounds of lost descriptions — a refresh
+overwriting a synthesis, then a synthesis overwriting rows, then rows rewritten
+in a spelling the refresh could not match.
 
 The cap is the point. These files are re-sent on every model call in every role
 that reads them, and asking a prompt for "a few hundred words" produced a 6.8 KB

@@ -12,42 +12,45 @@ established; the hexagon is the actual PE 761 answer.
   `code/confirm_hexagon_closedform.py`).
 - `davidk-square-closed-form`: formula validated on square (5.78859314 two
   independent ways), giving confidence in the general-n formula's correctness.
-- `escaping-polygon-wellposed-exact-square-disk`: rigorous model confirms the
-  mechanism but has NO hexagon exact value.
+- `escaping-polygon-wellposed-exact-square-disk` (+ `abel-open-ngon-ngt4`):
+  rigorous model confirms the mechanism but has NO hexagon exact value, and
+  explicitly leaves n>4 OPEN in the literature.
 
-## Status — two workstreams in flight (directive 1)
+## Status — value settled, independence gap open
 
-**Candidate V_hexagon = 5.05505046330389… = 2 + 2√21/3 — single route
-(formula), not yet independently verified by the game model.**
+**V_hexagon = 5.05505046330389… = 2 + 2√21/3 — single route (formula).**
+The exact closed form is confirmed and self-consistent; but no *independent,
+correct* game model reproduces it yet.
 
-### Workstream A: librarian — primary-source research pass
-Fetch into `research/sources/` the pursuit-evasion literature this problem
-instantiates:
-- lion-and-man / Besicovitch escape
-- boy-escaping-teacher on regular n-gon (primary formulation beyond Math.SE)
-- swimmer-in-circular-pool (Gardner/Guy origin, rigorous two-phase staging)
-- optimal escape trajectories from convex domains — involutes, chase curves,
-  critical speed ratio
-Every source gets a claim block so it reaches `research/CLAIMS.md`.
+### Workstream A: librarian — primary-source research pass: COMPLETE
+`research/sources/` and the digested claims now cover lion-and-man (Bollobás–
+Leader–Walters, ABG, Sgall, Abrahamsen), the swimmer-circle two-phase (Quanta,
+Ponder-This, Hesterberg, Lady-in-the-Lake, princess-beast, spirograph,
+OEIS A328227), the n-gon boy/teacher (Math.SE stewbasic/David K, Abel et al.,
+Hesterberg thesis), and perimeter-differential-games (Shishika–Kumar, Mora).
+Net: heavy corroboration of the circle MECHANISM and V_circle, and of the
+model; **none gives a hexagon value** — the literature leaves n>4 open.
 
 ### Workstream B: symbolic_math — independent first-principles hexagon derivation
-Derive V_hexagon directly from the geometry of the regular hexagon, without
-relying on the stewbasic K-index. Goal: exact expression agreeing with
-5.05505046330389… to 8 dp. Write derivation to
-`research/notes/hexagon-first-principles.md`. This is the missing independent
-route the CONTEXT.md Gaps flag.
+Still the missing route. `research/notes/hexagon-first-principles.md` does not
+exist; `code/hexagon_first_principles_explore.py` was never run (empty
+captured output). The `david-k-hexagon-construction` approach (synthetic
+equal-time geometry, exact quadratic-surd target) is the planned execution.
+The one independent game-encoding solver built (`code/indep_game_encoding.py`)
+encodes the straight-dash red herring and FAILS the oracles — do not re-run.
 
 ## Next
-- Librarian: download primary sources, write claim blocks.
-- symbolic_math: derive V_hexagon from boundary-time equalization on the
-  hexagon directly.
-- When both land: curator verifies agreement, updates CONTEXT.md, closes the
-  thread.
+- Build the David-K-style hexagon equal-time construction (exact target 2+2√21/3
+  already known; verify 9V⁴−240V²+256's positive root) and CAPTURE its output —
+  that is the missing second route.
+- When it lands: curator confirms agreement with 5.05505046, updates CONTEXT.md,
+  closes the thread.
 
 ```thread
 question: What is V_hexagon to 8 decimals (PE 761 answer)?
-status: candidate 5.05505046 from stewbasic n=6 formula, exact closed form confirmed; two independent workstreams in flight per directive 1
-rests-on: stewbasic-regular-ngon-cutoff, davidk-square-closed-form, escaping-polygon-wellposed-exact-square-disk
-workstreams: (A) librarian primary-source pass → research/sources/, (B) symbolic_math first-principles hexagon derivation
-next: librarian downloads, symbolic_math derives, curator verifies and closes
+status: candidate 5.05505046 from stewbasic n=6 formula, exact closed form 2+2sqrt21/3 confirmed; value single-route (no correct independent model yet reproduces the oracles)
+rests-on: stewbasic-regular-ngon-cutoff, davidk-square-closed-form, escaping-polygon-wellposed-exact-square-disk, abel-open-ngon-ngt4
+workstreams: (A) librarian pass COMPLETE — sources corroborate circle mechanism + literature leaves n>4 open; (B) David-K hexagon construction still the missing independent route
+blocked-by: no independent correct game model; indep_game_encoding.py is the documented red-herring dead end
+next: build + capture David-K hexagonal equal-time construction, then curator verifies and closes
 ```
