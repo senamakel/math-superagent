@@ -1,69 +1,27 @@
-<!-- source: https://doi.org/10.5281/zenodo.18249574 | converted from HTML -->
+# Gebendorfer 2025 — Mechanism Dichotomy for Power-of-Two Cycles in Honeycomb Toroidal Graphs of Girth 6
 
-A Mechanism Dichotomy for Power-of-Two Cycles in Honeycomb Toroidal Graphs of Girth 6 | Zenodo Skip to main
+Source: https://doi.org/10.5281/zenodo.18249574 (Zenodo, v4, 2025-02-06).
+NOT peer-reviewed — self-published Zenodo preprint. Treat as **asserted-by-source**.
 
-You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.
+## Claim
 
-Published February 6, 2025 | Version v4
+The Erdős–Gyárfás conjecture holds for all **honeycomb toroidal graphs (HTGs) of girth 6**:
+such a graph always contains a cycle of length 8 or 16 (kmin ≤ 4).
 
-[Publication][2]**Open
+## Method (as described)
 
-# A Mechanism Dichotomy for Power-of-Two Cycles in Honeycomb Toroidal Graphs of Girth 6
+A "Mechanism Dichotomy" framework for cubic bipartite graphs of girth 6:
+- **Case 1**: tight pairs of hexagons exist ⇒ 8-cycles via symmetric difference (Theta resonance).
+- **Case 2a**: no tight pairs, but 8-cycles exist independently.
+- **Case 2b**: no tight pairs and no 8-cycles ⇒ 16-cycles via Alspach's bypass construction.
 
-### Authors/Creators
+For HTGs the cases are fully classified via column-span analysis and Alspach's cycle
+spectrum results.
 
-- [Gebendorfer, Jonas Jakob][3][image: ORCID icon] [4]
+## Place in the run's picture
 
-## Description
-
-We prove that the Erdos–Gy&aacute;rf&aacute;s as conjecture holds for all honeycomb toroidal graphs (HTGs) of girth 6, establishing that the smallest exponent k such that Gcontains a cycle of length 2k satisfies kmin(G) ≤4. Our main tool is a novel Mechanism Dichotomy framework for cubic bipartite graphs of girth 6:
-
-Case 1: Tight pairs of hexagons exist &rArr;8-cycles via symmetric difference (Thetaresonance).
-
-Case 2a: No tight pairs, but 8-cycles exist independently.
-
-Case 2b: No tight pairs and no 8-cycles &rArr;16-cycles via Alspach&rsquo;s bypass construction.
-
-For HTGs, we fully classify these cases using column-span analysis and Alspach&rsquo;s cycle spectrum results.
-
-## Files
-
-###
-
-EGC HTG v3.pdf**
-
-###
-
-Files (347.3 kB)**
-
-Name | Size | **[Download all][5] |
-
-[EGC HTG v3.pdf][6]
-
-md5:55752671f6c7388773bd88c5eded3a19
-
-**
-
- | 347.3 kB | **[Preview][7]**[Download][6] |
-
-**Jump up
-
-**
-
-**
-
-This site uses cookies. Find out more on [how we use cookies][8]
-
-Accept all cookies Accept only essential cookies
-
-
-## Links
-
-[1]: http://browsehappy.com/
-[2]: /search?q=&amp;f=resource_type%3Apublication
-[3]: /search?q=metadata.creators.person_or_org.name:%22Gebendorfer,+Jonas+Jakob%22
-[4]: https://orcid.org/0009-0008-2991-5198
-[5]: https://zenodo.org/api/records/18504088/files-archive
-[6]: /records/18504088/files/EGC%20HTG%20v3.pdf?download=1
-[7]: /records/18504088/preview/EGC%20HTG%20v3.pdf?include_deleted=0
-[8]: https://about.zenodo.org/cookie-policy
+HTGs are a concrete well-defined family of cubic bipartite vertex-transitive graphs of
+girth 6 — a subclass of the family the companion note
+(`research/summaries/gebendorfer-girth6-cubic-bipartite-vt.md`) treats in full generality.
+Consistent with the kmin ≤ 5 result there. Same caveats as that source: self-published,
+not peer-reviewed; report only with the asserted-by-source label.
