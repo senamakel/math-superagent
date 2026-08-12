@@ -161,9 +161,7 @@ lemma cycle_middle_avoids_v {G : SimpleGraph V} [DecidableEq V]
   have hlast' : (p.tail.support).getLast hne = v := by
     exact p.tail.getLast_support
   have hsplit : (p.tail.support).dropLast ++ [v] = (p.tail.support) := by
-    have hg : (p.tail.support).dropLast ++ [(p.tail.support).getLast hne] = (p.tail.support) :=
-      List.dropLast_append_getLast hne
-    simp [hlast']
+    simp
   have hcount2 : 2 ≤ (p.tail.support).count v := by
     rw [← hsplit]
     rw [List.count_append, List.count_cons_self]

@@ -135,12 +135,12 @@ const MAX_COUNTED: usize = 500;
 /// between an agent's work and a check on it.
 ///
 /// The counts are chosen to be the ones a timed-out attempt cannot tell you
-/// itself. `code/out/` is what a program *produced*, which separates a run
+/// itself. Captured output is what a program *produced*, which separates a run
 /// writing programs from a run running them; the claim split separates what the
 /// run established from what it read somewhere; approaches say whether the
 /// inventor's proposals survived to disk.
 fn evidence_briefing(workspace: &Path) -> String {
-    let outputs = count_outputs(&workspace.join(super::layout::OUTPUT_DIR));
+    let captured = captured_outputs(workspace);
     let ledger = super::claims::collect(workspace);
     let approaches = count_entries(&workspace.join("research/approaches"));
     let threads = count_entries(&workspace.join("research/threads"));
@@ -149,25 +149,171 @@ fn evidence_briefing(workspace: &Path) -> String {
         "\nWhat the attempt left on disk, counted rather than reported — the report above is \
          written last and is the first thing lost when an attempt is cut off, so treat this as \
          the more reliable of the two when they disagree:\n\
-         - `code/out/`: {outputs} file(s) a program produced\n\
+         - captured output under `code/`: {} file(s) a program produced\n\
          - claims: {} established here, {} taken from a source's word, {} read out of a \
          catalogue\n\
          - approaches proposed: {approaches}\n\
          - threads open: {threads}\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
-         nothing and left work here is not — score what is here.{}",
+         nothing and left work here is not — score what is here.{}{}",
+        captured.len(),
         ledger.established(),
         ledger.asserted(),
         ledger.catalogued(),
-        if oracle_unchecked(workspace) {
+        disagreement_warning(workspace, &captured),
+        if oracle_unchecked(workspace, &captured) {
             "\n\nOne thing to weigh against the score: `code/` holds the naive oracle and at \
-             least one faster program, and nothing in `code/out/` records the oracle having \
-             been run. A fast method nobody has checked against the oracle is not a result \
-             yet, however confident its comments are — say so in your steer."
+             least one faster program, and no captured output records the oracle having been \
+             run. A fast method nobody has checked against the oracle is not a result yet, \
+             however confident its comments are — say so in your steer."
         } else {
             ""
         }
     )
+}
+
+/// What a program prints when a check against a known value came out wrong.
+///
+/// Matched against output whose whitespace has been collapsed and lowercased,
+/// so `agree?  False` and `Agree? False` both land. Each marker pairs a
+/// comparison word with a negative rather than standing on one: a bare `FAIL`
+/// is what a legitimate row of a classification table says — one live run's
+/// output has `20  -  FAIL  -  -  NotAlgebraic` for a value that genuinely is
+/// not algebraic — and reading that as a broken check would cry wolf on every
+/// run that enumerates cases honestly.
+const DISAGREEMENT_MARKERS: [&str; 7] = [
+    "agree? false",
+    "agrees? false",
+    "match? false",
+    "matches? false",
+    "mismatch",
+    "disagree",
+    "does not match",
+];
+
+/// How many disagreeing files to name before the list stops helping.
+const MAX_NAMED: usize = 3;
+
+/// Reports captured output whose own text says a check came out wrong.
+///
+/// [`oracle_unchecked`] asks whether the oracle was ever run. This asks the next
+/// question, which is the one Project Euler 761 turns on: it *was* run, and it
+/// disagreed. That workspace holds `code/indep_game_encoding_OUTPUT.txt`, whose
+/// every line reads `agree? False` — the run's only independent solver returns
+/// 4.14159265 for the circle against a published 4.60333885, 4.09372236 for the
+/// square against 5.78859314 — and nothing in the runtime read a word of it. The
+/// run went on holding an answer supported by one route while the file that
+/// would have said so sat unread beside it, and the loop's verdicts were
+/// decided entirely by a report that never mentioned it.
+///
+/// Whether the disagreement is fatal stays a judgement — a deliberately
+/// falsified model *should* print that it disagrees, and one of 761's does. What
+/// is counted is only that the run's own output contains the words, which is
+/// what nobody was looking at.
+fn disagreement_warning(workspace: &Path, captured: &[PathBuf]) -> String {
+    let failing: Vec<String> = captured
+        .iter()
+        .filter(|path| {
+            std::fs::read_to_string(path).is_ok_and(|text| {
+                let flattened = flatten(&text);
+                DISAGREEMENT_MARKERS
+                    .iter()
+                    .any(|marker| flattened.contains(marker))
+            })
+        })
+        .map(|path| {
+            path.strip_prefix(workspace)
+                .unwrap_or(path)
+                .display()
+                .to_string()
+        })
+        .collect();
+    if failing.is_empty() {
+        return String::new();
+    }
+    format!(
+        "\n\nWeigh this before anything the report says: {} captured output(s) record a check \
+         that came out wrong — {}. A program whose own output says it disagrees with a value \
+         the run already trusts has not been reconciled, and an answer standing beside an \
+         unreconciled disagreement is supported by one route, not two. Open the file rather \
+         than taking the report's word, decide whether the disagreement is a falsified model \
+         behaving correctly or a result the run is quietly ignoring, and name in your steer \
+         which one to reconcile first.",
+        failing.len(),
+        failing
+            .iter()
+            .take(MAX_NAMED)
+            .cloned()
+            .collect::<Vec<_>>()
+            .join(", ")
+    )
+}
+
+/// Lowercases text and collapses every run of whitespace to one space.
+fn flatten(text: &str) -> String {
+    text.to_ascii_lowercase()
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+/// How deep under `code/` to look for captured output.
+const MAX_OUTPUT_DEPTH: usize = 3;
+
+/// Collects the files under `code/` that a program wrote rather than a person.
+///
+/// This used to read `code/out/` alone, which is where the layout says captured
+/// output belongs, and a live run showed what "says" is worth. Project Euler 761
+/// captures every run as `code/<program>_OUTPUT.txt` beside the program, so its
+/// `code/out/` held one empty file named `Untitled` while a dozen real outputs
+/// sat one level up — and the briefing would have told the judge the run had
+/// produced nothing and then accused it of never running its oracle, on a run
+/// whose `brute.py` output reproduces the published circle value to eight
+/// digits. A check that only sees the tidy layout reports the untidy run as
+/// idle, which is the opposite of the truth.
+///
+/// Source and notes are excluded by extension: `.py` and `.sh` are what a person
+/// wrote, and `.md` is the run's commentary, already counted as a claim. What
+/// remains is what something printed.
+fn captured_outputs(workspace: &Path) -> Vec<PathBuf> {
+    let mut found = Vec::new();
+    collect_outputs(&workspace.join(super::layout::CODE_DIR), MAX_OUTPUT_DEPTH, &mut found);
+    found
+}
+
+/// Walks one folder into `found`, bounded in both depth and count.
+fn collect_outputs(folder: &Path, depth: usize, found: &mut Vec<PathBuf>) {
+    if depth == 0 || found.len() >= MAX_COUNTED {
+        return;
+    }
+    let Ok(entries) = std::fs::read_dir(folder) else {
+        return;
+    };
+    for entry in entries.flatten().take(MAX_COUNTED) {
+        if found.len() >= MAX_COUNTED {
+            return;
+        }
+        let name = entry.file_name();
+        let name = name.to_string_lossy();
+        // Caches and hidden state are neither source nor result.
+        if name.starts_with('.') || name == "__pycache__" {
+            continue;
+        }
+        let path = entry.path();
+        if path.is_dir() {
+            collect_outputs(&path, depth - 1, found);
+        } else if !is_authored(&name) {
+            found.push(path);
+        }
+    }
+}
+
+/// Whether a file under `code/` was written by a person rather than a program.
+fn is_authored(name: &str) -> bool {
+    let lower = name.to_ascii_lowercase();
+    [".py", ".sh", ".md"]
+        .iter()
+        .any(|suffix| lower.ends_with(suffix))
 }
 
 /// The naive oracle's path, as [`oracle_prompt`] names it.
