@@ -53,16 +53,24 @@ not a circle.
 These anchors make the *formula* trustworthy, but on their own they do not
 verify the *n=6 value* by a second route.
 
-**Hexagon: NO independent game-encoding route exists yet.** `solution.py`
-(mpmath), `verify_hexagon.py` (sympy), and `hex_check.py` (math) all implement
-the SAME stewbasic formula at different precisions — same derivation, one
-route. Do NOT call that independent verification. What IS independent of the
-decimal arithmetic is the exact closed form V=2+2√21/3 above (full-precision
-confirmation), but it still subsumes the formula's correctness. Honest status:
-**value = single (formula) route, numerically confirmed, exact-closed-form
-confirmed; not yet checked by an independent game-encoding solver.** The
-thread `research/threads/hexagon-critical-speed.md` and the reflection memory
-both flag this.
+**Hexagon: the independent route EXISTS on disk but is NOT yet confirmed.**
+`solution.py` (mpmath), `verify_hexagon.py` (sympy), `hex_check.py` (math) all
+implement the SAME stewbasic formula at different precisions — one route; do
+NOT call that independent verification. The genuinely independent geometry-first
+solver exists at **`code/indep_game_encoding.py`** (bisects on v solving
+g(v)=v, g = max over boundary point Q of runner-perimeter-dist(Q)/swim-dist(Q)
+at stage radius 1/v, decoding the circle/square/hexagon oracles itself WITHOUT
+the K/α formula). **Its run output is not captured anywhere — scratch stops at
+"agent-run-15 still running"; no final value in memory or docs; not in
+code/INDEX.md unless refreshed.** What tool_builder should do, and the only
+thing that closes the gap: run `python code/indep_game_encoding.py` and confirm
+it reproduces 4.60333885 (circle), 5.78859314 (square), and 5.05505046
+(hexagon). What IS already independent of the decimal arithmetic is the exact
+closed form V=2+2√21/3 above (full-precision confirmation), but that still
+subsumes the formula's correctness. Honest status: **value = single (formula)
+route, numerically + exact-closed-form confirmed; independent game-encoding
+solver present but its result unconfirmed.** Thread
+`research/threads/hexagon-critical-speed.md` and reflection memory flag this.
 
 ### Circle case (established, sourced, CLOSED — do not re-derive)
 V_circle from cos B=1/V, sin B=(π+B)/V, i.e. tan B=π+B, V=1/cos B ≈ 4.60333885.
