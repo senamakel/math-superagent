@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Brute-force oracle for Project Euler 185 (Number Mind).
+"""Naive brute-force oracle for Project Euler 185 (Number Mind).
 
 For a given length L and a list of (guess_string, c_i) constraints, enumerate
-ALL 10**L candidate digit strings and report exactly those for which, against
-every guess, the number of positions where candidate[j] == guess[j] equals c_i.
+ALL 10**L candidate digit strings (itertools.product over digits) and report
+exactly those for which, against every guess, the number of positions where
+candidate[j] == guess[j] equals c_i. This is the obvious-correctness oracle.
 
-This is the naive, obviously-correct oracle. It is only run on the small L=5
-instance (10^5 candidates); the full L=16 main instance has 10^16 candidates
-and is deliberately NOT enumerated here.
+Run ONLY on the L=5 worked example (10^5 candidates). The L=16 main instance
+has 10^16 candidates and is deliberately NOT enumerated (that is impossible by
+brute force).
 """
 
 import itertools
@@ -15,7 +16,7 @@ import sys
 
 
 def brute_force(L, constraints):
-    """Return the list of satisfying candidate digit strings (exact, ints->str).
+    """Return the list of satisfying candidate digit strings (str).
 
     constraints: iterable of (guess_string, c_i).
     """
@@ -34,7 +35,7 @@ def brute_force(L, constraints):
 
 
 def main():
-    # ---- L=5 example from the problem statement ----
+    # ---- L=5 worked example from the problem statement ----
     L5 = 5
     constraints5 = [
         ("90342", 2),
@@ -46,7 +47,7 @@ def main():
     ]
 
     sols5 = brute_force(L5, constraints5)
-    print("=== L=5 instance ===")
+    print("=== L=5 instance (brute force over all 10^5 strings) ===")
     print(f"length L          : {L5}")
     print(f"number of guesses : {len(constraints5)}")
     print(f"candidates checked: {10**L5}")
@@ -56,44 +57,13 @@ def main():
 
     if len(sols5) == 1 and sols5[0] == "39542":
         print("CONFIRMED: the unique answer for L=5 is 39542.")
+        print("(Uniqueness: exactly 1 of the 100000 candidate strings matched "
+              "all six counts.)")
+        return 0
     else:
         print("NOT confirmed as expected unique 39542.")
-        sys.exit(1)
-
-    # ---- L=16 main instance ----
-    L16 = 16
-    constraints16 = [
-        ("5616185650518293", 2),
-        ("3847439647293047", 1),
-        ("5855462940810587", 3),
-        ("9742855507068353", 3),
-        ("4296849643607543", 3),
-        ("3174248439465858", 1),
-        ("4513559094146117", 2),
-        ("7890971548908067", 3),
-        ("8157356344118483", 1),
-        ("2615250744386899", 2),
-        ("8690095851526254", 3),
-        ("6375711915077050", 1),
-        ("6913859173121360", 1),
-        ("6442889055042768", 2),
-        ("2321386104303845", 0),
-        ("2326509471271448", 2),
-        ("5251583379644322", 2),
-        ("1748270476758276", 3),
-        ("4895722652190306", 1),
-        ("3041631117224635", 3),
-        ("1841236454324589", 3),
-        ("2659862637316867", 2),
-    ]
-    print()
-    print("=== L=16 instance ===")
-    print(f"length L          : {L16}")
-    print(f"candidates would be: {10**16}  (10^16)")
-    print("NOT attempted: full brute force on L=16 would require 10^16 "
-          "enumerations and does not terminate quickly. Only L=5 is verified "
-          "by brute force here.")
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
