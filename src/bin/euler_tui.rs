@@ -11,15 +11,23 @@
 //! `trace.jsonl` tooling keep working; the tabs are a view, not a filter, and
 //! nothing is dropped from the record because a tab was not open.
 //!
-//! This only ever *watches*. It asks Docker which container has the workspace
-//! mounted and follows that one; it cannot start, stop, or restart a run. That
-//! is not a missing feature, it is the point. When starting was part of the
-//! same command, opening a second view started a second run on the same
-//! workspace — both writing the same files and both making checkpoint commits
-//! over each other — which happened three times in one evening, twice
-//! unnoticed for several minutes. A viewer that cannot launch cannot do that,
-//! and quitting it, closing the terminal, or opening a second one is
-//! guaranteed to leave the run alone.
+//! This cannot start, stop, or restart a run. That is not a missing feature,
+//! it is the point. When starting was part of the same command, opening a
+//! second view started a second run on the same workspace — both writing the
+//! same files and both making checkpoint commits over each other — which
+//! happened three times in one evening, twice unnoticed for several minutes. A
+//! viewer that cannot launch cannot do that, and quitting it, closing the
+//! terminal, or opening a second one is guaranteed to leave the run alone.
+//!
+//! It *can* direct a run that already exists. Pressing `i` opens a line, and
+//! what is typed there is appended to the run's directive queue with
+//! [`math_agent::directives::enqueue`]; the run picks it up on its own
+//! schedule and never waits for one. That narrows the rule above without
+//! touching what the rule was written to prevent: a directive creates no
+//! container, and a queue file with nothing in it is a run nobody directed
+//! rather than a second run nobody noticed. Sending is refused under
+//! `--replay`, where there is no live run to direct, and unavailable under
+//! `--plain`, which exists for scripting.
 //!
 //! Runs are started with `./euler <number>` or `./conjecture <slug>`, which is
 //! one command in one place, so "is something already running for this
