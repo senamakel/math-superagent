@@ -615,3 +615,48 @@ fn an_empty_workspace_offers_the_judge_no_comfort() -> std::io::Result<()> {
     assert!(brief.contains("0 established here"));
     Ok(())
 }
+
+/// A fast method nobody checked against the oracle is not a result.
+///
+/// Project Euler 241's `solution.py` justified its central pruning rule with a
+/// claim that is false — no later sigma factor can contribute the cancelling
+/// prime, when sigma(13) = 14 — and found 5 of the 9 terms below 1e8.
+/// `brute.py` was in the same folder and the two were never compared.
+#[test]
+fn an_oracle_that_was_never_run_is_reported_to_the_judge() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-oracle-gap");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(root.join("code/brute.py"), "# obviously correct\n")?;
+    std::fs::write(root.join("code/solution.py"), "# fast and unchecked\n")?;
+    assert!(super::oracle_unchecked(&root));
+    assert!(evidence_briefing(&root).contains("nothing in `code/out/` records the oracle"));
+
+    // Capturing a run of it clears the fault: the check asks whether anything
+    // records the oracle, which is a count, not a judgement about agreement.
+    std::fs::write(
+        root.join("code/out/brute_n8.txt"),
+        "brute.py -> 9 terms below 1e8\n",
+    )?;
+    assert!(!super::oracle_unchecked(&root));
+    Ok(())
+}
+
+/// The fault must not fire where there is nothing to compare.
+#[test]
+fn an_oracle_with_no_rival_and_a_rival_with_no_oracle_are_both_quiet() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-oracle-alone");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code"))?;
+
+    // Only the oracle: nothing faster exists to be wrong.
+    std::fs::write(root.join("code/brute.py"), "# the oracle\n")?;
+    assert!(!super::oracle_unchecked(&root));
+
+    // Only a fast program: a missing oracle is a different fault, and
+    // `oracle_prompt` is what addresses it.
+    std::fs::remove_file(root.join("code/brute.py"))?;
+    std::fs::write(root.join("code/solution.py"), "# fast\n")?;
+    assert!(!super::oracle_unchecked(&root));
+    Ok(())
+}
