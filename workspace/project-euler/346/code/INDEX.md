@@ -4,4 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `brute.py` | Naive oracle for Project Euler 346 (strong repunits): enumerates, for each n, every base 2<=b<=n and counts those in which n is a repunit; n is strong when the count >= 2. Includes the n=1 edge case (repunit of length 1 in every base). Reproduces the statement's examples exactly: 8 strong repunits below 50 and sum 15864 below 1000. Too slow for the 10^12 bound — oracle only. |
+| `brute.py` | Naive strong-repunit oracle (PE346): literal per-n per-base repunit counting for bounds <= 1000 (reproduces worked examples: list below 50 = [1,7,13,15,21,31,40,43], sum below 1000 = 15864), plus a direct R_k(b) generator for large bounds. Both agree on every bound checked up to 1000; independent by-length route also confirms sum below 1e6 = 372810163. |

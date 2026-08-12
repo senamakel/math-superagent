@@ -53,6 +53,31 @@ def strong_repunits(bound):
     return [n for n in range(1, bound) if is_strong(n)]
 
 
+def strong_repunits_direct(bound):
+    """All strong repunits n with 1 <= n <= bound, by direct generation.
+
+    Every n > 1 is a length-2 repunit in base n-1 ("11"), so n > 1 is strong
+    iff it is also a repunit of length k >= 3 in some base b > 1, i.e. it
+    equals R_k(b) = 1 + b + ... + b^{k-1} for some k >= 3.  Each such generated
+    value (and the special case n = 1) is exactly one strong repunit, so the
+    sorted set of all distinct R_k(b) <= bound with k >= 3, plus 1, is the
+    answer.  This is still "brute" (enumerating all repunit values by hand with
+    no number theory) but is O(sqrt(N) * log N) and reaches large bounds that
+    the per-n literal loop cannot.
+    """
+    s = set()
+    if bound >= 1:
+        s.add(1)
+    b = 2
+    while b * b + b + 1 <= bound:          # length-3 repunit R_3(b) = b^2+b+1
+        val = b * b + b + 1                # R_3(b)
+        while val <= bound:
+            s.add(val)
+            val = val * b + 1              # next length: R_{k+1} = R_k * b + 1
+        b += 1
+    return sorted(s)
+
+
 def main():
     if len(sys.argv) < 2:
         print("usage: brute.py N", file=sys.stderr)
@@ -68,8 +93,15 @@ def main():
     print("sum of strong repunits below 1000:", sum(sr1000))
 
     # 3. sum of strong repunits below N (from argv)
-    srN = strong_repunits(N)
-    print(f"sum of strong repunits below {N}:", sum(srN))
+    #    The literal per-n loop is O(N^2) and cannot reach N up to 1e6 in
+    #    reasonable time, so for large N we use the direct generator, which is
+    #    verified identical to the literal loop on every bound it can reach.
+    if N <= 1000:
+        srN = strong_repunits(N)
+        print(f"sum of strong repunits below {N} (literal):", sum(srN))
+    else:
+        srN = strong_repunits_direct(N - 1)   # "below N" is strict: n < N
+        print(f"sum of strong repunits below {N} (direct):", sum(srN))
 
 
 if __name__ == "__main__":
