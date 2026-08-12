@@ -29,20 +29,19 @@ verifying the result before presenting it.
 │  │ goals          │ research       │ tool_builder   │ coder          │   │
 │  │ criteria       │ Exa, notes     │ experiments    │ the program    │   │
 │  ├────────────────┼────────────────┼────────────────┼────────────────┤   │
-│  │ librarian      │ scholar        │ organizer      │ reflection     │   │
-│  │ downloads      │ digests them   │ indexes        │ judges one try │   │
+│  │ librarian      │ scholar        │ reflection     │ judge          │   │
+│  │ downloads      │ digests them   │ learns         │ checks conduct │   │
 │  ├────────────────┼────────────────┼────────────────┼────────────────┤   │
 │  │ inventor       │ pattern_finder │                │                │   │
 │  │ a new angle    │ exact sequences│                │                │   │
 │  └────────────────┴────────────────┴────────────────┴────────────────┘   │
-│     on finish: tool_builder ──> organizer                                │
-│                research ──> scholar ──> organizer                        │
+│     on finish: research ──> scholar                                      │
 │          │                                                               │
-│          ▼  /workspace: goal, tasks, memory, research/, code/lib/        │
+│          ▼  /workspace: goal, tasks, research artifacts, code/lib/       │
 └───────┬─────────────────────────┬─────────────────────┬──────────────────┘
         │                         │                     │
-  workspace/<name>/         Qdrant volume       OpenRouter, Exa,
-  committed to git          research notes      Langfuse, trace.jsonl
+  workspace/<name>/         Cognee + Neo4j       OpenRouter, Exa,
+  committed to git          durable memory       Langfuse, trace.jsonl
 ```
 
 Every delegation is asynchronous. A spawn returns a run ID straight away, so
@@ -65,8 +64,9 @@ The runtime uses a small registry of specialist agents:
   behind. Splitting the two lets each prompt be strict about one thing: the
   tool-builder about producing a running program quickly, the coder about the
   program being correct.
-- `reflection` judges one attempt and extracts the lesson. It has no research
-  or execution tools, so it cannot drift into solving what it is judging.
+- `reflection` is the learning agent: it recalls prior lessons, judges one
+  attempt, and has its new lesson stored automatically in Cognee. It has no
+  research or execution tools, so it cannot drift into solving what it judges.
 - `pattern_finder` runs exact sequence analysis over results already computed:
   forward differences and polynomial degree, common divisors, residue
   periodicity, and a verified linear-recurrence search. Its tools report only
@@ -74,17 +74,21 @@ The runtime uses a small registry of specialist agents:
   conjecture past the data that suggested it, and looks them up in the OEIS,
   where a match usually carries the closed form.
 - `inventor` proposes a different line of attack when the current one stalls.
-- `librarian` downloads primary material into the reference library and indexes
-  it, following what its own sources cite before searching afresh.
+- `librarian` downloads primary material into the reference library, following
+  what its own sources cite before searching afresh.
 - `scholar` reads that library. It judges each source against the run's goal and
   current beliefs and replaces each stored digest with what the source actually
   establishes, because a downloaded paper nobody has opened has cost the run
   context and taught it nothing. It records each statement as a `claim` block —
   hypotheses, whether they hold here, what backs it — so the library is
   retrievable one statement at a time.
-- `organizer` keeps the workspace navigable: folder indexes, the layout of
-  `research/`, and `code/lib/INDEX.md` matching the files beside it. It cannot
-  delete a result or change what a file says.
+
+Every role has `recall_memory` and `remember_memory`. Cognee is the only
+cross-run memory; research sources and program output remain ordinary current-run
+artifacts. Every completed or failed agent session is also queued into a Cognee
+dataset named for the workspace project and runtime session. Recall sees the
+shared brain and research datasets plus only the current project/run session
+dataset, so session traces do not leak across projects.
 
 ## The solution loop
 
@@ -120,12 +124,9 @@ arms concurrently: the librarian followed by the scholar, the pattern agent, and
 the inventor. Between them they bring in material, structure, and a different
 approach before the next attempt.
 
-Some runs trigger housekeeping when they finish. A completed `tool_builder` run
-starts an `organizer`, and a completed `research` run starts a `scholar` and then
-an `organizer`, which is the moment the new files exist and their purpose is still
-settled. Those follow-ups are fire-and-forget and serialised, so `await_agent`
-returns as soon as the delegated work itself is done and tidying never sits on the
-critical path.
+A completed `research` run starts a `scholar`, which reads the new sources and
+stores durable, source-backed findings in Cognee. The follow-up is
+fire-and-forget, so `await_agent` returns as soon as research itself is done.
 
 The container includes `python`, `python3`, `pip`, and `pip3`, with `sympy`,
 `numpy`, `scipy`, `gmpy2`, and `networkx` baked into the image. A run that has
@@ -137,7 +138,7 @@ dependencies persist with the problem artifacts.
 A recoverable tool failure never ends a run. Every tool is registered through a
 resilient wrapper that turns an error into a result the model can read and
 correct, and middleware appends advice and escalates when the same tool keeps
-failing. A Qdrant conflict, a bad path, or a non-UTF-8 download costs a turn
+failing. A Cognee request failure, a bad path, or a non-UTF-8 download costs a turn
 rather than the run's accumulated work.
 
 A single tool call may run for ten minutes and a whole agent run for two hours.
@@ -156,10 +157,11 @@ exponential. A method whose cost grows with the bound in the problem statement
 is treated as the wrong method, not as a slow one, and brute force is reserved
 for checking the real method on small cases.
 
-Research notes can be saved to a local Qdrant vector database and recalled in
-later runs. The database uses deterministic local feature vectors, so it does
-not need another embedding API. Pass `--no-research` to withhold web search
-entirely, which turns a run into a test of reasoning rather than of lookup.
+Cognee is the sole durable memory service. Every role can recall prior results,
+lessons, sources, and failed approaches, and can store concise reusable
+findings. Cognee uses a local FastEmbed model while its graph extraction uses
+DeepSeek V4 through OpenRouter. Pass `--no-research` to withhold web search;
+Cognee recall remains available.
 
 All model calls use DeepSeek V4 Flash through OpenRouter, preferring the
 DeepInfra route by default so the large fixed prompt prefix keeps hitting one
@@ -188,10 +190,8 @@ leaving the console. Once agents run concurrently the percentages become shares
 of agent time and a concurrency factor replaces `idle`, because summed agent
 time legitimately exceeds the wall clock.
 
-That one stream carries eleven roles and every child run they spawn, which is
-right for a trace and wrong for watching: in one live run the organizer alone
-produced 232 of the first 400 lines, so the solve's own progress scrolled past
-between two index refreshes. `./euler-tui <number>` watches the same box
+That one stream carries every role and child run they spawn, which is right for
+a trace and noisy for watching. `./euler-tui <number>` watches the same box
 behind a tab per team:
 
 ```sh
@@ -349,7 +349,6 @@ beside the solution:
 workspace/project-euler/66/
 ├── problem.md          # the statement, converted from the fetched HTML
 ├── GOAL.md             # system files are upper-case; the run's own prose
-├── MEMORY.md
 ├── CONTEXT.md
 ├── solution.md
 ├── INDEX.md            # what each file beside it is for
@@ -357,15 +356,14 @@ workspace/project-euler/66/
 │   ├── out/            # what those programs produced
 │   ├── lib/            # what other programs import, one subject per module
 │   └── <question>/     # the programs attacking one question, with its INDEX.md
-├── research/           # L0/L1/L2 sources, INDEX.md, and the derived ledgers
-├── reflections/L0/     # one note per judged attempt; raw/ holds download bytes
+├── research/           # sources/, summaries/, and current-run derived ledgers
 └── config/             # config.toml, problem.url, the ledgers, trace.jsonl
 ```
 
 Generated programs, calculations, and other artifacts appear in
 `workspace/default` unless another workspace is selected. A new workspace is
 seeded from [`workspace/template/`](workspace/template/) without overwriting it. The seed includes local agent instructions, role
-prompts, configuration, `GOAL.md`, `TASKS.md`, `SCRATCHPAD.md`, `MEMORY.md`, and
+prompts, configuration, `GOAL.md`, `TASKS.md`, `SCRATCHPAD.md`, and
 empty `research/` and `code/lib/` folders. The runtime reads those files at the
 start of every run.
 
@@ -379,31 +377,21 @@ at `code/lib/perms.py` is `from lib.perms import lex_ranks`. The tool-builder
 accumulates what a second program would repeat under `code/lib/`, one subject
 per module, so reading the helper you need costs a few hundred bytes rather
 than the whole library; everything else is grouped by the question it attacks.
-`orchestrator::code_layout` measures the result — a routine defined in three
-separate programs, a `code/` past ten loose files, a folder of programs with no
-index — and hands the organizer one fault per cycle. Reuse is measured rather
-than requested because asking for it in a prompt did not work: one committed
-workspace holds forty-six sibling programs defining `H(n)` seven times over,
-beside a helper folder nothing imported.
-
-Every folder carries an `INDEX.md` saying what each file is for, because
+Code folders may carry an `INDEX.md` saying what each file is for, because
 `list_workspace` answers what exists but not what anything is *for*, and after a
 long run nothing on disk distinguishes the oracle from the answer.
 `describe_file` records a purpose and `refresh_index` re-derives the file list
 from disk, keeping existing descriptions, marking new files undescribed, and
 dropping rows for files that are gone. Descriptions are left to explicit calls
 because only the agent that wrote a file knows why, so a forgotten one shows as
-a visible gap rather than as an index quietly disagreeing with its folder. Every
-reflection is archived under `reflections/` with a filename recording whether it
-produced learnings.
+a visible gap rather than as an index quietly disagreeing with its folder.
+Research and learning folders deliberately have no `INDEX.md`; their durable
+catalogue and recall path is Cognee.
 
 Each agent receives only the working files its role actually needs: reflection
 sees the goal and the record but never the scratchpad, because provisional
-arithmetic is not evidence of progress; the inventor always sees which approaches
-already failed; and the pattern agent sees the raw computed data. Indexes are the
-cheap exception, costing a few hundred tokens where the files they describe cost
-tens of thousands, so each planning role gets the catalogues that change what is
-worth delegating next. `AGENTS.md`, the method policy, is the only file every
+arithmetic is not evidence of progress; the inventor recalls which approaches
+already failed; and the pattern agent sees the raw computed data. `AGENTS.md`, the method policy, is the only file every
 role receives. The full routing table is in
 [`AGENTS.md`](AGENTS.md); `./agent prompts` shows the result.
 
@@ -467,7 +455,7 @@ and symlinks that leave the repository's `workspace/` root are rejected.
 The orchestrator decides which specialist handles each part of the problem.
 Open-ended objectives go to the goals agent, which spawns other specialists and
 tracks evidence against explicit completion criteria; research questions go to
-the Exa-backed research agent, which recalls related notes from Qdrant and saves
+the Exa-backed research agent, which recalls related notes from Cognee and saves
 sourced findings; computations and executable checks go to the tool-builder, and
 the implementation the answer rests on to the coder. The orchestrator then
 writes one answer separating cited facts from its own reasoning.
@@ -497,14 +485,25 @@ assistant when the stakes justify it.
 
 ## Docker Compose stack
 
-`./agent` uses [`compose.yaml`](compose.yaml) to run two services:
+`./agent` uses [`compose.yaml`](compose.yaml) to run four services:
 
 - `agent` is the Rust orchestrator and its specialist tools.
-- `qdrant` is the local vector database. Its `qdrant-data` volume persists
-  research notes across agent containers and workspace selections.
+- `cognee` is the local memory API. It builds a knowledge graph from durable
+  research notes, learnings, and scoped agent-session records using DeepSeek V4
+  Flash through OpenRouter; `cognee-data`
+  persists that graph and its vector index across containers and workspaces.
+- `neo4j` persists Cognee's knowledge graph without relying on an embedded
+  database extension download during startup.
+- `cognee-ui` is Cognee's experimental local web UI at
+  `http://localhost:3000`; its API is bound locally at `http://localhost:8000`.
 
-Stop the background database with `docker compose down`. Add `--volumes` only
-when you deliberately want to erase the saved research index.
+Cognee publishes a native Rust SDK, but it is an embedded engine rather than a
+client for a running Cognee service. The agent therefore uses Cognee's `/api/v1`
+HTTP contract so it and the UI always read and write the same service-owned
+database instead of opening independent embedded stores.
+
+Stop the background services with `docker compose down`. Add `--volumes` only
+when you deliberately want to erase Cognee's saved memory and graph.
 
 ## Docker boundary
 
@@ -532,12 +531,12 @@ euler-tui                   tabbed console for one run, a tab per team
 langfuse-turns              recorded-turn query helper
 langfuse-review             recorded-turn review helper
 Dockerfile                  build and runtime jail
-compose.yaml                agent and Qdrant services
+compose.yaml                agent, Cognee UI/API, and Neo4j services
 scripts/run-agent           helper implementation
 scripts/solve-euler         fetch and solve workflow
 scripts/solve-conjecture    open-conjecture run workflow
 workspace/                  selectable agent workspaces, committed with their runs
-└── template/               seed instructions, prompts, config, and memory
+└── template/               seed instructions, prompts, and config
 src/bin/euler_tui.rs        the tabbed console, behind the `tui` feature
 src/
 ├── prompts/                built-in role prompts, included at compile time
@@ -556,8 +555,8 @@ src/
 │   ├── claims.rs, threads.rs    what the library establishes; where it is going
 │   ├── frontier.rs, requests.rs what it cites; what the run is short of
 │   ├── oeis.rs             sequence lookup, filed and cross-referenced
-│   ├── folder_index.rs, context_tree.rs, code_layout.rs   what is where
-│   └── patch.rs, patterns.rs, checkpoint.rs, vector.rs   the rest
+│   ├── folder_index.rs     optional indexes for artifact/code folders
+│   └── patch.rs, patterns.rs, checkpoint.rs, vector.rs   Cognee and the rest
 ├── hello_agent/            small single-agent example
 ├── error/                  crate-wide errors
 └── lib.rs                  public Rust API

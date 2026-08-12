@@ -50,8 +50,8 @@
 
 ## Finding your way around
 
-- Each folder has an `INDEX.md` saying what every file in it is for. Read it
-  before opening files, and before writing a file that may already exist.
+- Code folders may have an `INDEX.md` saying what every file in them is for.
+  Research and learning use Cognee instead of folder indexes.
 - Describe a file when you create it, and refresh the folder's index after
   adding, renaming, or deleting one. An index that disagrees with its folder
   misleads every later reader, including you.
@@ -66,8 +66,9 @@
 - Externally sourced material lives in `research/`; the run's own derivations
   and programs do not.
 - Record the objective and its completion criteria in `GOAL.md`.
-- Keep provisional work in `SCRATCHPAD.md` and promote durable results to
-  `MEMORY.md`, including failed approaches and open questions.
+- Keep provisional work in `SCRATCHPAD.md`. Recall durable knowledge with
+  `recall_memory` and store verified results, sourced findings, and concrete
+  failed approaches with `remember_memory`.
 - Never write credentials or environment values to workspace files.
 - `trace.jsonl` is the runtime's own event log, and the tools refuse it. It is
   a verbatim replay of what you have already seen, so reading it would spend a

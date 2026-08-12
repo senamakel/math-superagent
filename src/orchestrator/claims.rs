@@ -36,8 +36,7 @@ pub(super) const CLAIMS_PATH: &str = "research/CLAIMS.md";
 ///
 /// `CLAIMS.md` is routed into system prompts, so every model call in every
 /// role that reads it pays for each row. A library with more claims than this
-/// has a compression problem the summary tree exists to solve, and the table
-/// says so rather than growing without limit.
+/// must rely on Cognee recall rather than growing this current-run table.
 const MAX_ROWS: usize = 60;
 
 /// Characters one rendered statement is held to.
@@ -574,7 +573,7 @@ pub(super) fn is_markdown(relative: &str) -> bool {
 pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) -> Ledger {
     let ledger = collect(documents.root());
     let _ = documents.write_runtime(CLAIMS_PATH, &ledger.render()).await;
-    // Described here rather than left to the organizer, because a derived file
+    // Described here at write time, because a derived file
     // nobody wrote by hand has no author to ask what it is for, and an index
     // row reading `_(undescribed)_` for the life of a run is worse than none.
     super::folder_index::record_description(
@@ -593,6 +592,8 @@ pub(super) fn is_note(relative: &str) -> bool {
         && is_markdown(relative)
         && !relative.ends_with(super::documents::FULL_TEXT_SUFFIX)
         && !relative.ends_with(CLAIMS_PATH)
+        && !relative.ends_with("/INDEX.md")
+        && !relative.ends_with("/ROOT.md")
 }
 
 fn cell(text: &str) -> String {

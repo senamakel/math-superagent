@@ -197,12 +197,13 @@ fn search_ranks_by_how_much_of_the_query_a_claim_carries() -> std::io::Result<()
 /// The write path re-derives on a note and leaves everything else alone.
 #[test]
 fn only_a_research_note_triggers_a_rederivation() {
-    assert!(is_note("research/L1.0/siegel.md"));
-    assert!(is_note("research/ROOT.md"));
+    assert!(is_note("research/summaries/siegel.md"));
+    assert!(!is_note("research/ROOT.md"));
+    assert!(!is_note("research/INDEX.md"));
     // The originals carry no claims, and the ledger must not re-derive itself.
-    assert!(!is_note("research/L0.0/siegel.full.md"));
+    assert!(!is_note("research/sources/siegel.full.md"));
     assert!(!is_note("research/CLAIMS.md"));
     // Nor does work outside the library.
     assert!(!is_note("code/solve.py"));
-    assert!(!is_note("MEMORY.md"));
+    assert!(!is_note("SCRATCHPAD.md"));
 }
