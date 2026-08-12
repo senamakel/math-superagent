@@ -1,29 +1,36 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/erdos_multiply_perfect.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Erdős (1956) — On perfect and multiply perfect numbers
 
-<!-- source: https://doi.org/10.1007/BF02411879 | converted from HTML -->
+Source: https://doi.org/10.1007/BF02411879 — `[[erdos_multiply_perfect.full]]`
+(P. Erdős, *Annali di Matematica* 42 (1956) 253–258).
 
-## What is in it
+## What it proves
 
-- On perfect and multiply perfect numbers
-  - Summary
-  - Article PDF
-    - Similar content being viewed by others
-    - [Prime powers dividing products of consecutive integer values of \(x^{2^n}+1\)][7]
-    - [On perfect powers that are difference of two Perrin numbers or two Padovan numbers][8]
-    - [Arithmetic properties of polynomials][9]
-    - Explore related subjects
-  - Literatur
-  - Author information
-    - Authors and Affiliations
-  - Rights and permissions
-  - About this article
-    - Cite this article
-    - Share this article
-    - Keywords
+- P(x) = #{n ≤ x : σ(n) ≡ 0 (mod n)} (multiperfect, incl. abundancy ≥ 2).
+  **P(x) < x^(3/4+ε)**.
+- P₂(x) = #{n ≤ x : σ(n) = 2n} (perfect). **P₂(x) < x^((1−c)/2)** for some c>0.
 
+So the number of perfect numbers up to x is ≪ x^0.5 (a sub-polynomial-power
+density), and multiperfects are ≪ x^0.75+ε.
 
-## What it claims
+## Relevance to PE 241
 
-Denote by P(x) the number of integers n≤x satisfying σ(n)≡*0*(mod n), and by P*2*(x) the number of integers n ≤ x satisfying σ(n)=*2*n. The author proves that P(x)<x*3/4+ɛ*and P*2*(x)<x*(1*−c)/*2*for a certain c>*0*.
+These are early density bounds for the **integer-abundancy** family — the twin
+of this run's half-integer-abundancy set. They do **not** transfer to a bound
+on the hemiperfect count ≤ 10^18: half-integer abundancy is a different
+condition, and no analogous density bound for hemiperfects is given (and none
+is known — A317681 states the k≥4 half-integer sets are not even known
+finite). The Erdős bounds corroborate only the *sparsity* expectation, not a
+numeric count.
 
-*[digest of a 4442 character source; every section, statement, and proof in full at `research/sources/erdos_multiply_perfect.full.md`]*
+## Verdict
+
+**Background; does not help the solver's number.** Confirms the classical
+rarity of the family, consistent with the empirical count 22 below 1e18, but
+gives no enumeration method, no bound on hemiperfects, and no member of the
+answer set. No contradiction with anything on disk.
+
+Keep one line: Erdős 1956 proves sub-polynomial density of perfect and
+multiperfect numbers; sparsity background only.
+
+No separate claim block: the density results are not used by the method, and
+no claim row is warranted (adding dead rows to CLAIMS.md misleads).
