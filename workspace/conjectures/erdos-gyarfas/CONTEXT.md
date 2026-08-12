@@ -89,3 +89,18 @@ structural claim about a minimal counterexample (the predominant-cubic /
 sparse structure is the lever); formalise a lemma in Lean as one stabilises.
 NOTHING from this run has established a new attack on the interval obstruction
 itself — that is the open core.
+
+## Live, unconfirmed (this run, in progress)
+
+- **S5 = A366224 probe** (structural lead, no confirmed output recorded yet):
+  testing whether the S5 survivor count (connected min-degree≥3 girth≥5 graphs
+  by order: 1@10, 0@11, 2@12, 4@13, 23@14) equals OEIS A366224 (3-connected
+  girth≥5, predicted 149@15/1670@16/23882@17/422194@18) — which would imply
+  every girth≥5 min-degree≥3 connected graph is 3-connected. If it breaks down,
+  the extra non-3-connected survivors at n≥15 are exactly what to inspect.
+  Scripts: `code/eg/s5_*.py`; no result file in `code/out/` yet. Treat the
+  identification as conjecture until a count is recorded, not as established.
+  [[code/eg/INDEX.md]]
+- Scratch/durable memory hold nothing further on this problem (earlier
+  `recall_memory` surface hit an unrelated permutations paper; the graph has no
+  other EG entries).

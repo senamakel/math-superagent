@@ -36,6 +36,32 @@ const SCRATCH_DATASET_PREFIX: &str = "math_agent_scratch__";
 /// not.
 const LIBRARY_DATASET_PREFIX: &str = "math_agent_library__";
 
+/// The node set every durable brain document is ingested under.
+const BRAIN_NODE_SET: &str = "math_agent_brain";
+
+/// The prefix of the node set this project's completed sessions carry.
+const SESSION_NODE_SET_PREFIX: &str = "project:";
+
+/// The prefix of the node set this project's provisional notes carry.
+const SCRATCH_NODE_SET_PREFIX: &str = "scratch:";
+
+/// The prefix of the node set this project's downloaded sources carry.
+const LIBRARY_NODE_SET_PREFIX: &str = "library:";
+
+/// Cognee's search type for the passages nearest a phrase.
+const CHUNK_SEARCH: &str = "CHUNKS";
+
+/// Cognee's search type for the edges the graph holds around a subject.
+///
+/// It was `INSIGHTS`, which this server rejects outright — the enum it accepts
+/// has no such member, so every `relate_memory` call ever made returned a 422
+/// naming the eighteen types it does accept, and the graph half of the memory
+/// has never answered anything. `GRAPH_COMPLETION` is the surviving name for
+/// the same question: it retrieves the nodes and edges around the query and
+/// renders them, and with `only_context` set it returns that context rather
+/// than a model's prose about it.
+const GRAPH_SEARCH: &str = "GRAPH_COMPLETION";
+
 /// The most of a source that is handed to Cognee.
 ///
 /// A converted reference page reaches 91,190 characters and a paper more, and
@@ -66,10 +92,11 @@ pub(super) struct VectorStore {
 impl VectorStore {
     /// Runs one search against this project's datasets and renders the hits.
     ///
-    /// `search_type` is Cognee's: `CHUNKS` for passages, `INSIGHTS` for the
-    /// relationships between entities. Both tools share this because the only
-    /// thing that differs between them is that string, and a second copy of the
-    /// request would drift from the first the moment either is corrected.
+    /// `search_type` is Cognee's: [`CHUNK_SEARCH`] for passages,
+    /// [`GRAPH_SEARCH`] for the relationships between entities. Both tools
+    /// share this because the only thing that differs between them is that
+    /// string, and a second copy of the request would drift from the first the
+    /// moment either is corrected.
     ///
     /// Returns `Ok(None)` when the memory has nothing, so each caller can say
     /// so in its own words rather than returning an empty result the model has
@@ -86,14 +113,37 @@ impl VectorStore {
         limit: u64,
     ) -> Result<Option<String>> {
         let datasets = self.recall_datasets().await?;
-        self.search_in(datasets, query, search_type, limit).await
+        self.search_in(
+            datasets,
+            durable_node_sets(&self.project),
+            query,
+            search_type,
+            limit,
+        )
+            .await
     }
 
-    /// Runs one search against exactly the datasets named.
+    /// Runs one search against exactly the datasets and node sets named.
     ///
     /// Split from [`VectorStore::search`] so the scratch can be read without
     /// being listed among the datasets durable recall reaches. Sharing the
     /// request is what keeps a correction to one from drifting from the other.
+    ///
+    /// `node_sets` is the scoping that actually holds, and that is the
+    /// correction of a measured leak rather than a belt-and-braces addition.
+    /// `datasets` is the boundary this runtime was built around — the
+    /// allowlist in [`visible_datasets`] exists to compute it — and the server
+    /// does not apply it: a live probe asking for one project's session
+    /// dataset, then another's, then a third's by UUID, returned the *same*
+    /// chunk from a fourth project every time, while a name that matched no
+    /// dataset was the only request that changed the answer, to an error. So
+    /// every run on the box was reading every other project's memory, and the
+    /// allowlist was scoping a field nothing downstream honoured. `node_name`
+    /// filters on the `node_set` each document was ingested under, which the
+    /// same probe showed is applied exactly: asking for `project:<a>` returned
+    /// only `<a>`'s documents and asking for `project:<b>` only `<b>`'s. Both
+    /// are sent — the dataset list still bounds what a working server would
+    /// search, and it costs nothing to keep asking for the narrower thing.
     ///
     /// # Errors
     ///
@@ -102,11 +152,12 @@ impl VectorStore {
     async fn search_in(
         &self,
         datasets: Vec<String>,
+        node_sets: Vec<String>,
         query: &str,
         search_type: &str,
         limit: u64,
     ) -> Result<Option<String>> {
-        if datasets.is_empty() {
+        if datasets.is_empty() || node_sets.is_empty() {
             return Ok(None);
         }
         let response = self
@@ -115,6 +166,7 @@ impl VectorStore {
             .json(&json!({
                 "query": query,
                 "datasets": datasets,
+                "node_name": node_sets,
                 "search_type": search_type,
                 "only_context": true,
                 "include_references": true,
@@ -206,7 +258,7 @@ impl VectorStore {
             document,
             format!("scratch-{}-{id}.md", slug(topic)),
             &self.scratch_dataset,
-            &format!("scratch:{}", self.project),
+            &scratch_node_set(&self.project),
         )
         .await?;
         Ok(id)
@@ -218,8 +270,21 @@ impl VectorStore {
     ///
     /// Returns an error when Cognee is unreachable or refuses the request.
     pub(super) async fn recall_scratch(&self, query: &str, limit: u64) -> Result<Option<String>> {
-        self.search_in(vec![self.scratch_dataset.clone()], query, "CHUNKS", limit)
-            .await
+        // A project that has not written a scratch note yet has no scratch
+        // dataset, and naming one Cognee does not hold is the single request
+        // shape it refuses outright — "No datasets found". Nothing recorded is
+        // an answer rather than a failure, so it is answered here.
+        if !self.dataset_exists(&self.scratch_dataset).await? {
+            return Ok(None);
+        }
+        self.search_in(
+            vec![self.scratch_dataset.clone()],
+            vec![scratch_node_set(&self.project)],
+            query,
+            CHUNK_SEARCH,
+            limit,
+        )
+        .await
     }
 
     /// Queues one durable Markdown memory in the shared brain.
@@ -272,7 +337,7 @@ impl VectorStore {
             document,
             format!("source-{}.md", slug(path)),
             &self.library_dataset,
-            &format!("library:{}", self.project),
+            &library_node_set(&self.project),
         )
         .await
     }
@@ -293,7 +358,7 @@ impl VectorStore {
             document,
             format!("session-{}-{}.md", slug(agent), slug(run_id)),
             &self.session_dataset,
-            &format!("project:{}", self.project),
+            &session_node_set(&self.project),
         )
         .await
     }
@@ -356,6 +421,27 @@ impl VectorStore {
     /// Returns shared brain/research datasets plus this project's session
     /// dataset, excluding every other project's.
     async fn recall_datasets(&self) -> Result<Vec<String>> {
+        let datasets = self.list_datasets().await?;
+        Ok(visible_datasets(
+            &datasets,
+            &self.session_dataset,
+            &self.library_dataset,
+        ))
+    }
+
+    /// Says whether Cognee holds a dataset under this name.
+    async fn dataset_exists(&self, dataset: &str) -> Result<bool> {
+        let datasets = self.list_datasets().await?;
+        Ok(datasets
+            .as_array()
+            .into_iter()
+            .flatten()
+            .filter_map(|entry| entry.get("name").and_then(Value::as_str))
+            .any(|name| name == dataset))
+    }
+
+    /// Returns Cognee's dataset listing verbatim.
+    async fn list_datasets(&self) -> Result<Value> {
         let response = self
             .client
             .get(format!("{}/api/v1/datasets", self.base_url))
@@ -365,14 +451,9 @@ impl VectorStore {
         if !response.status().is_success() {
             return Err(cognee_response_error("list datasets", response).await);
         }
-        let datasets: Value = response.json().await.map_err(|error| {
+        response.json().await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!("Cognee returned invalid JSON: {error}"))
-        })?;
-        Ok(visible_datasets(
-            &datasets,
-            &self.session_dataset,
-            &self.library_dataset,
-        ))
+        })
     }
 }
 
@@ -476,7 +557,7 @@ impl Tool<()> for RecallMemoryTool {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let query = string_argument(&call, "query")?;
         let limit = limit_argument(&call);
-        let rendered = self.store.search(&query, "CHUNKS", limit).await?;
+        let rendered = self.store.search(&query, CHUNK_SEARCH, limit).await?;
         Ok(ToolResult::text(
             call.id,
             self.name(),
@@ -541,7 +622,7 @@ impl Tool<()> for RelateMemoryTool {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let query = string_argument(&call, "query")?;
         let limit = limit_argument(&call);
-        let rendered = self.store.search(&query, "INSIGHTS", limit).await?;
+        let rendered = self.store.search(&query, GRAPH_SEARCH, limit).await?;
         Ok(ToolResult::text(
             call.id,
             self.name(),
@@ -719,6 +800,43 @@ fn slug(value: &str) -> String {
     } else {
         slug.to_string()
     }
+}
+
+/// The node set this project's completed agent sessions are written under.
+fn session_node_set(project: &str) -> String {
+    format!("{SESSION_NODE_SET_PREFIX}{project}")
+}
+
+/// The node set this project's provisional notes are written under.
+fn scratch_node_set(project: &str) -> String {
+    format!("{SCRATCH_NODE_SET_PREFIX}{project}")
+}
+
+/// The node set this project's downloaded sources are written under.
+fn library_node_set(project: &str) -> String {
+    format!("{LIBRARY_NODE_SET_PREFIX}{project}")
+}
+
+/// The node sets durable recall may read: the shared brain, plus this
+/// project's completed sessions and its library.
+///
+/// This is the scoping that the server actually applies, so it is the one the
+/// separation between the three stores now rests on — see
+/// [`VectorStore::search_in`]. Every writer builds its `node_set` through the
+/// helpers above and this reader consumes the same ones, because a writer and
+/// a reader spelling the same scope apart is a leak nothing would report: the
+/// documents would simply be filed where recall never looks.
+///
+/// The scratch is deliberately absent, for the reason [`visible_datasets`]
+/// records: provisional arithmetic returned by durable recall is how a run
+/// comes to believe something nobody checked. [`VectorStore::recall_scratch`]
+/// is the only way in, and it names [`scratch_node_set`] alone.
+fn durable_node_sets(project: &str) -> Vec<String> {
+    vec![
+        BRAIN_NODE_SET.to_string(),
+        session_node_set(project),
+        library_node_set(project),
+    ]
 }
 
 /// Picks the datasets one run may read: the shared brain, plus this project's
