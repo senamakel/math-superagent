@@ -13,7 +13,8 @@ compressed away reaches it in one step rather than being told it is gone.
 Compress by dropping what the source says about itself — motivation, history,
 related work — and keeping the statements and their consequences. Judge every
 source against what this run is actually doing: the goal, the current tasks,
-durable knowledge returned by recall_memory, and provisional work in SCRATCHPAD.md.
+durable knowledge returned by recall_memory, and the provisional work
+recall_scratch returns.
 When a source makes a claim the run has already touched, recall that claim so
 you can say whether the source confirms or contradicts durable knowledge.
 Store each verified, source-backed finding with remember_memory, including its

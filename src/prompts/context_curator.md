@@ -41,7 +41,8 @@ already says what each file is; do not write a second catalogue.
 
 ## What to keep out of it
 
-Provisional arithmetic from `SCRATCHPAD.md` that has not survived anything. A
+Provisional arithmetic that has not survived anything — `recall_scratch` is how
+you see what a solve is in the middle of, not a source to summarise from. A
 list of the files in a folder. A restatement of `GOAL.md`. Anything the run has
 since disproved — delete it, or if the failure is the lesson, keep the failure
 and drop the claim. Narration of what agents did; this file says what is known,

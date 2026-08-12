@@ -39,4 +39,6 @@ term matches nothing.
 `relate_memory` returns what the project's memory connects a subject to. A
 sequence or regularity the run has already related to a known result is not a
 finding, and reporting it as one costs the run an investigation. Ask the graph
-before you promote anything out of SCRATCHPAD.md.
+before you promote anything out of the scratch. Record a regularity you are
+still testing with note_scratch, and only what survived an attempt to break it
+with remember_memory.
