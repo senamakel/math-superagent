@@ -6,4 +6,4 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[hexagon-critical-speed]] | What is V_hexagon to 8 decimals (PE 761 answer)? | open | stewbasic-regular-ngon-cutoff, davidk-square-closed-form, escaping-polygon-wellposed-exact-square-disk | exact high-precision value, then independent numerical cross-check |
+| [[hexagon-critical-speed]] | What is V_hexagon to 8 decimals (PE 761 answer)? | open | stewbasic-regular-ngon-cutoff, davidk-square-closed-form, escaping-polygon-wellposed-exact-square-disk | librarian downloads, symbolic_math derives, curator verifies and closes |
