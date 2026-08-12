@@ -23,32 +23,56 @@ trace to a source is worth less than no statement.
 
 ## Established
 
-What this run may treat as known, each marked proved, computed and checked,
-sourced, or conjectured, with a link to what establishes it.
+Problem (Project Euler 620, full statement at `problem.md`). A circle C of
+circumference c contains a smaller off-centre circle S of circumference s, and
+four "planet" circles of circumferences p, p, q, q (p<q) inscribed in C but
+outside S, each tangent to both C and S; planets may overlap; the closest gap
+between the S and C boundaries must be ≥1cm. As gears of pitch 1cm, c,s,p,q are
+integers ≥5, and the whole set must mesh "perfectly" (constant angular-velocity
+ratio, teeth align with grooves) with each other — only discrete positions make
+this possible, so g(c,s,p,q) is finite. Sums run over s+p+q≤n with p<q, p≥5,
+s≥5. g(s+p+q,s,p,q) counts arrangements for that combined circumference. Sourced
+from `problem.md`; not yet derived.
+
+The governing structure is unknown a priori (run at step 1). Classical lead:
+Soddy/Descartes circle theorems give the geometry of a circle tangent to two
+others; perfect gear meshing imposes that arcs between contact points along each
+circle are integer multiples of the tooth pitch — the discrete constraint that
+makes g finite. To be verified, not assumed.
 
 ## Ruled out
 
-Approaches that failed, and the reason each failed. A known dead end is a
-result, and this section is what stops the run paying for one twice.
+Nothing yet. Run has produced no code or derivation (GOAL.md, TASKS.md, code/
+still templates).
 
 ## Numbers
 
-Computed terms, the range over which the oracle and the method agree, the size
-of the object at the bound in the statement.
+Oracle for verification, sourced from `problem.md`:
+- g(16,5,5,6) = 9
+- G(16) = 9
+- G(20) = 205
+- Target: G(500).
+
+Brute-force oracle (`code/brute.py`) not yet written; these are the values it
+must reproduce before the real method is trusted. Bound in statement: n=500,
+so summing s+p+q≤500 is the adversarial scale.
 
 ## Recalled
 
-What durable memory holds about this problem or problems of its shape, marked as
-recalled rather than as this run's own finding, with hypotheses checked against
-this problem before being relied on.
+Durable memory (Cognee) for this problem is empty — recall returned nothing and
+then began failing with HTTP 409 (three attempts, differing queries). Treat as
+infrastructure failure, not a finding. No earlier-run results to import; any
+result this run produces must stand on its own computation or a fetched source.
 
 ## Contradictions
 
-Where sources disagree, where a source contradicts recalled memory, or where a
-computation contradicts a conjecture. The most valuable rows here: record them
-rather than silently picking a side.
+None yet — one source (the statement) only.
 
 ## Gaps
 
-What the run still needs and has not found. State a gap precisely enough to be a
-research request rather than a mood.
+- The identity that makes G(500) computable: how g depends on (c,s,p,q)
+  combinatorially (tooth-count/modular constraints coming from meshing, likely
+  a finiteness/recurrence), so the sum over s+p+q≤500 is not enumerated.
+- No brute-force oracle exists yet.
+- Durable memory unreachable (recall failing); if it recovers, re-query for
+  Project Euler 620 / gear-meshing circle problems.
