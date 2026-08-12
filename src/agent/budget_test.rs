@@ -67,15 +67,20 @@ fn a_turn_is_bounded_so_wall_clock_is_bounded() {
     // uncapped wall clock. A live turn reached 9,361 tokens and 2.9 minutes.
     let budget = RunBudget::default();
     assert!(budget.max_turn_output_tokens > 0);
-    // Above the largest observed real turn (9,361). A cap that trips on
-    // ordinary work truncates the model mid-answer and forces a retry, which
-    // costs more than the long turn it was meant to prevent.
+    // Above what a turn actually needs, where "needs" counts the hidden
+    // reasoning channel and not just the visible answer. Across 4,180 accounted
+    // calls on a live run, 77.8% of output tokens were reasoning, and every
+    // turn that hit the old ceiling read `out=24000` with
+    // `reasoning_tokens=23999` — one visible token. A cap that trips on
+    // ordinary work truncates mid-thought and costs more than the long turn it
+    // was meant to prevent.
     assert!(
-        budget.max_turn_output_tokens > 9_361,
+        budget.max_turn_output_tokens >= 40_000,
         "a cap that trips routinely causes truncation retries"
     );
-    // ...but still a ceiling, not unlimited.
-    assert!(budget.max_turn_output_tokens <= 32_000);
+    // ...but still a ceiling, not unlimited. Generation is linear in length, so
+    // this is the wall clock for one turn.
+    assert!(budget.max_turn_output_tokens <= 50_000);
 }
 
 #[test]
@@ -149,25 +154,33 @@ fn a_housekeeping_budget_is_narrowed_but_never_widened() {
 }
 
 #[test]
-fn an_invention_budget_widens_the_turn_cap_and_nothing_else() {
-    // The one budget that widens. A live Project Euler 597 run cut the
-    // inventor off at the default cap with no tool call, re-issued, and
-    // reached the same place: three lines of attack left in prose that never
-    // reached `research/approaches/`.
+fn an_invention_budget_is_a_floor_not_a_widening() {
+    // It was a widening when the default was 12,000. Measuring the reasoning
+    // channel raised the default past it, so on a default run this is inert —
+    // and that is correct, not dead code. It is a floor: an operator who
+    // narrows `MATH_AGENT_TURN_OUTPUT_TOKENS` for a cheap run narrows every
+    // role, and the inventor is the one whose product is the long turn.
     let full = RunBudget::default();
     let invention = full.for_invention();
 
-    assert!(invention.max_turn_output_tokens > full.max_turn_output_tokens);
-    // Authority is untouched. Widening the turn cap says a long *answer* is
-    // legitimate here, not that the inventor may wander further than any other
-    // role.
+    assert_eq!(
+        invention.max_turn_output_tokens, full.max_turn_output_tokens,
+        "the default already exceeds the invention floor"
+    );
+    // Authority is untouched either way. A turn cap says a long answer is
+    // legitimate, not that the inventor may wander further than any other role.
     assert_eq!(invention.max_model_calls, full.max_model_calls);
     assert_eq!(invention.max_tool_calls, full.max_tool_calls);
     assert_eq!(invention.run_timeout, full.run_timeout);
     assert_eq!(invention.tool_timeout, full.tool_timeout);
-    // The observed truncation must fit inside the new cap, or it does not fix
-    // the run it was written for.
-    assert!(invention.max_turn_output_tokens > 12_000);
+
+    // The floor bites when an operator narrows below it, which is the whole
+    // reason it is kept.
+    let narrowed = RunBudget {
+        max_turn_output_tokens: 8_000,
+        ..full
+    };
+    assert!(narrowed.for_invention().max_turn_output_tokens > 12_000);
 }
 
 #[test]
