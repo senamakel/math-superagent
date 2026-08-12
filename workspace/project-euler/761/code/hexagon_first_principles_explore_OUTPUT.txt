@@ -1,3 +1,13 @@
 ========================================================================
 STAGE 1: circle — validation of the staging+dash framework
 ========================================================================
+  circle critical v (single-frame framework): 5.28318531
+  Ponder-This oracle                         : 4.60333885
+  exact identity 1/cos B, sinB=(pi+B)cosB    : 4.603338849
+  match? False
+  profile at v = Vc (psi of max should be ~0: stage at azimuth 0):
+    best psi=2.2800 deg  Q-az=182.2800 deg
+
+========================================================================
+STAGE 2: hexagon — critical speed of the same framework
+========================================================================
