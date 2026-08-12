@@ -113,7 +113,7 @@ lemma cycle_middle_avoids_v {G : SimpleGraph V} [DecidableEq V]
     rw [show [(p.tail.support).getLast hne] = [v] by simp [hlast']]
     exact List.dropLast_append_getLast hne
   have hcount2 : 2 ≤ (p.tail.support).count v := by
-    rw [← hsplit]
+    rw [hsplit]
     rw [List.count_append, List.count_cons_self]
     have : 1 ≤ (p.tail.support).dropLast.count v := List.count_pos_iff.mpr hv'
     omega

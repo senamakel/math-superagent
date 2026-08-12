@@ -1,26 +1,42 @@
-<!-- source: http://abel.math.umu.se/~klasm/Data/cubicavoid.html | converted from HTML -->
+# Markström — "Cubic graphs without given cycles" data catalog
 
-Cubic graphs without given cycles
+Source: http://abel.math.umu.se/~klasm/Data/cubicavoid.html (live, fetched this run)
+Full text: `research/sources/markstrom-cubicavoid-catalog.md`
 
----
+## What it is
 
-#### Cubic graphs avoiding cycles of given lengths
+Klas Markström's data directory of cubic graphs avoiding specified cycle lengths,
+generated exhaustively with a modified Gunnar Brinkmann `minibaum`. Every listed file
+prefix `cubic_noX_Y_Z_..._nN.g6` contains **all 3-connected cubic graphs on N vertices
+with no cycles of lengths X, Y, Z, ...**. No file for a given N means none exist.
 
-- All graphs are stored in the Graph6-format, see Brendan Mackay's webpage for documentation on this format. The graphs were constructed by an exahustive search for each number of vertices using a modified version of Gunnar Brinkmann's generator for cubic graphs minibaum.
-For small N the search was laso done by using an unmodified version of minibaum together with a Fortran90-program which filtered out graphs with unwanted cycles.
-- In a file named
-cubic_noX_Y_Z_..._nN.g6
-you will find all 3-connected cubic graphs on N vertices which do not contain cycles of length X, Y, Z...
-- I have done a complete search for these graphs up to the largest N given here for each given combination of cycle lengths. So if there is no file for a given N this means that there are no 3-connected cubic graphs on that many vertices avoiding the given cycles.
-- I have looked for cubic graphs with no cycles of lengths 4,8,16. If have found no such graphs and have searched all N this paper for more information. Geoff Exoo has found a [graph][1] of this kind with 78 vertices.
-- I have done a search for the smallest graphs with no cycles of lengths 4,6,8,10,12. I have searched up to N Geoff Exoo has also found [several][1] other graphs avoiding certain cycles length, some of which are now known to be the smallest of their kind by this exhaustive search.
+## The run-relevant assertions (primary source)
 
-The [graphs][2].
+1. **"I have looked for cubic graphs with no cycles of lengths 4, 8, 16. I have found no
+   such graphs and have searched all N ≤ 52."** — i.e. no 3-connected cubic graph on
+   n ≤ 52 vertices simultaneously avoids C4, C8, C16. (Exoo's G78 is the smallest known
+   that does, and it is 3-connected cubic: 78 > 52, consistent.)
+2. A search for smallest graphs with no cycles of lengths 4, 6, 8, 10, 12 to N ≤ 66:
+   none found.
+3. Links Exoo's CYCLES catalog for graphs avoiding other lengths, some now proven
+   smallest by this exhaustive search.
 
----
+## Caveat to record
 
+This is the **3-connected** cubic exhaustion (per the page: "all 3-connected cubic
+graphs"). The general cubic (or non-3-connected) case to n≤52 is NOT claimed here —
+the general cubic C4/C8/C16-free exhaustion to n≤29 is Markström's other result, and the
+general min-degree-3 case to n≤15 is Royle's. So the honest statement:
+**no 3-connected cubic counterexample on n ≤ 52** (primary, this catalog), and
+**no cubic counterexample on n ≤ 29** (Markström's paper), and **no general counterexample
+on n ≤ 15** (Royle).
 
-## Links
-
-[1]: http://isu.indstate.edu/ge/COMBIN/CYCLES/index.html
-[2]: cubicavoidcycle/
+```claim
+id: EG-markstrom-3conn-cubic-n52
+statement: There is no 3-connected cubic graph on n ≤ 52 vertices with no cycle of length 4, 8, or 16; i.e. no 3-connected cubic counterexample to the Erdős–Gyárfás conjecture below 53 vertices (the conjecture's hypothesis class restricted to 3-connected cubic).
+hypotheses: cubic and 3-connected, n ≤ 52, δ=3.
+holds-here: yes — the strongest published exhaustion for this class.
+status: computed and checked (Markström, exhaustive minibaum search; primary data catalog)
+bearing: A would-be 3-connected cubic counterexample has at least 53 vertices; combined with Exoo's G78 (3-connected cubic, C4/C8/C16-free) the true minimum for this class lies in [53, 78].
+anchor: research/sources/markstrom-cubicavoid-catalog.md
+```

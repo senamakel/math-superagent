@@ -167,6 +167,28 @@ fn count_entries(folder: &Path) -> usize {
     std::fs::read_dir(folder).map_or(0, |entries| entries.flatten().take(MAX_COUNTED).count())
 }
 
+/// Counts what a program actually produced, ignoring notes written beside it.
+///
+/// A Markdown note in `code/out/` is the run's commentary on an output, and it
+/// is already counted — it is where a computed `claim` block lives. Counting it
+/// here too would report one artifact twice, on two lines that a judge reads as
+/// independent evidence.
+fn count_outputs(folder: &Path) -> usize {
+    std::fs::read_dir(folder).map_or(0, |entries| {
+        entries
+            .flatten()
+            .take(MAX_COUNTED)
+            .filter(|entry| {
+                !entry
+                    .file_name()
+                    .to_string_lossy()
+                    .to_ascii_lowercase()
+                    .ends_with(".md")
+            })
+            .count()
+    })
+}
+
 /// Returns whether the workspace holds a program the run could have executed.
 ///
 /// A deliberately shallow check: it asks whether any `.py` or `.sh` file
