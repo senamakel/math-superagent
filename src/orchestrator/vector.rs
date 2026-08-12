@@ -120,7 +120,7 @@ impl VectorStore {
             search_type,
             limit,
         )
-            .await
+        .await
     }
 
     /// Runs one search against exactly the datasets and node sets named.
@@ -930,7 +930,10 @@ fn truncate_chars(text: &str, limit: usize) -> String {
 mod test {
     use serde_json::json;
 
-    use super::{point_id, render_result, slug, visible_datasets};
+    use super::{
+        durable_node_sets, library_node_set, point_id, render_result, scratch_node_set,
+        session_node_set, slug, visible_datasets,
+    };
 
     #[test]
     fn point_ids_are_deterministic() {
@@ -1070,5 +1073,47 @@ mod test {
             !visible.contains(&"math_agent_sessions__euler_185".to_string()),
             "euler_18 must not read euler_185's memory"
         );
+    }
+
+    #[test]
+    fn durable_recall_reads_the_brain_and_this_project_only() {
+        let ours = durable_node_sets("project_euler_185");
+        assert!(ours.contains(&"math_agent_brain".to_string()));
+        assert!(ours.contains(&session_node_set("project_euler_185")));
+        assert!(ours.contains(&library_node_set("project_euler_185")));
+        assert!(
+            !ours.contains(&session_node_set("project_euler_763")),
+            "one problem must not read another's sessions"
+        );
+    }
+
+    #[test]
+    fn durable_recall_never_reaches_the_scratch() {
+        // The separation the three stores rest on. It used to hold because
+        // `visible_datasets` omitted the scratch dataset; the server does not
+        // apply the dataset filter, so it holds here or nowhere.
+        let project = "project_euler_185";
+        assert!(
+            !durable_node_sets(project).contains(&scratch_node_set(project)),
+            "provisional arithmetic must not come back as durable knowledge"
+        );
+    }
+
+    #[test]
+    fn a_writer_and_a_reader_spell_each_scope_the_same_way() {
+        // A leak nothing would report: documents filed under a node set recall
+        // never names are simply unreachable, and the store reads as empty.
+        let project = "conjectures_erdos_gyarfas";
+        assert_eq!(session_node_set(project), format!("project:{project}"));
+        assert_eq!(scratch_node_set(project), format!("scratch:{project}"));
+        assert_eq!(library_node_set(project), format!("library:{project}"));
+    }
+
+    #[test]
+    fn a_shorter_project_name_does_not_swallow_a_longer_one_in_node_sets() {
+        // The same failure `visible_datasets` guards against, one layer down:
+        // node-set matching is exact, so a prefix cannot widen the scope.
+        assert_ne!(session_node_set("euler_18"), session_node_set("euler_185"));
+        assert!(!durable_node_sets("euler_18").contains(&session_node_set("euler_185")));
     }
 }
