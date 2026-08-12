@@ -4,9 +4,7 @@ Also prints, for each fixed max-level M, the column R(N,M) as N varies,
 so the solver can look for transfer structure per column.
 """
 import collections, glob
-
-def sorted_key(path):
-    return int(path.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 R = {}
 for path in sorted(glob.glob('/workspace/data/level_*.txt'), key=sorted_key):
