@@ -22,3 +22,11 @@ PE 620 oracle test of lib/gears.py meshing model
  18   7   5   6     0   [3.6s]
  19   7   5   7     0   [3.4s]
  20   7   5   8     0   [3.4s]
+ 20   7   6   7     0   [3.5s]
+ 19   8   5   6     0   [3.4s]
+ 20   8   5   7     0   [3.4s]
+ 20   9   5   6     0   [3.5s]
+[3] G(20) per-pair sum = 0   (oracle 205, over 22 pairs, grid 50000)   DISAGREE   [78.1s]
+
+Verdicts: g(16,5,5,6)=9 -> DISAGREE | G(16)=9 -> DISAGREE | G(20)=205 -> DISAGREE
+MODEL DOES NOT MATCH the oracle on all three values.
