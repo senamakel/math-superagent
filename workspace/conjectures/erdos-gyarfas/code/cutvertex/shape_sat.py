@@ -109,8 +109,20 @@ def solve_n(n, max_iter=2000, timeout=600):
             cnf.append(cl)
         s = Cadical153(bootstrap_with=cnf.clauses)
         t0 = time.monotonic()
-        sat = s.solve()
+        if timeout > 0:
+            sat = s.solve_limited(expect_interrupt=False)
+            # solve_limited returns None in manual mode only with interrupt handling;
+            # use a wall-clock guard below instead.
+        else:
+            sat = s.solve()
         dt = time.monotonic() - t0
+        if timeout > 0 and (sat is None or dt > timeout):
+            # wall-clock guard: treat as not solved this iteration
+            msg = (f"n={n} iter={it} solve-timeout ({dt:.1f}s>{timeout}s) "
+                   f"-> NOT-CONVERGED")
+            print(msg); log.write(msg + "\n"); log.flush(); log.close()
+            s.delete()
+            return {"status": "NOT-CONVERGED", "iterations": it}
         if not sat:
             msg = (f"n={n} iter={it} UNSAT  solve={dt:.1f}s "
                    f"total={time.monotonic()-t_total:.1f}s blocked={len(added)} "

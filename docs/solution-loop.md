@@ -289,15 +289,15 @@ and then lost — so an idea proposed at attempt three could be proposed again a
 attempt six, and the literature check that would have killed it never happened.
 The approach ledger is what makes the next round start from what this one closed.
 
-Asking for that write is not the same as getting it. The inventor's system
-prompt asks it to write each candidate before reporting, the arm's own prompt
-asks again, and a live Project Euler 597 inventor ignored both — nine tool
-calls, every one a read, and the candidates left in a turn that hit the output
-cap. Across three concurrent runs `research/approaches/` had never been created.
-A prompt instruction is not a control, so `ensure_approaches_written` is the
-control: the arm samples the directory before delegating, and if the proposing
-turn added no file it re-issues once, telling the inventor plainly that nothing
-survived and to write down what it already has without revising it.
+Asking for that write is not the same as getting it. The inventor's system prompt
+asks it to write each candidate before reporting, the arm's own prompt asks again,
+and a live Project Euler 597 inventor ignored both — nine tool calls, every one a
+read, and the candidates left in a turn that hit the output cap. Across three
+concurrent runs `research/approaches/` had never been created. A prompt
+instruction is not a control, so `ensure_approaches_written` is: the arm samples
+the directory before delegating, and if the proposing turn added no file it
+re-issues once, telling the inventor plainly that nothing survived and to write
+down what it has without revising it.
 
 Two details decide whether that control is honest. It compares *names added*,
 not a count or an mtime — proposing means new slugs, so a turn that rewrote an
