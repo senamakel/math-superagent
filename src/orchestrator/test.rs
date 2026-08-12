@@ -633,3 +633,46 @@ async fn a_command_that_hits_the_ceiling_still_returns_what_it_printed() {
     );
     let _ = std::fs::remove_dir_all(&root);
 }
+
+#[test]
+fn the_organizer_skips_a_cycle_over_a_workspace_it_has_already_filed() {
+    // Filing is cheap to do and expensive to decide: an organizer asked to
+    // notice nothing changed must walk the workspace and spend a model call to
+    // find out. Two live runs spent 49% and 38% of every model call they made
+    // on the organizer, against 11% and 4% on the agent solving the problem.
+    let root = std::env::temp_dir().join(format!("math-agent-filing-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    let filed = std::sync::Arc::new(std::sync::Mutex::new(None));
+
+    // Nothing on disk at all: idle rather than indexing empty folders.
+    assert_eq!(
+        super::filing_unchanged(&root, &filed),
+        Some(super::teams::Cycle::Idle)
+    );
+
+    let _ = std::fs::create_dir_all(root.join("code"));
+    let _ = std::fs::write(root.join("code/solve.py"), "print(1)");
+    // A new program: the cycle runs.
+    assert_eq!(super::filing_unchanged(&root, &filed), None);
+    // Nothing further has happened: it does not run again.
+    assert_eq!(
+        super::filing_unchanged(&root, &filed),
+        Some(super::teams::Cycle::Idle)
+    );
+
+    // The trap this gate exists to avoid. The organizer's own output is an
+    // INDEX.md, so counting one as a change would have the team waking itself
+    // forever on the filing it just did — the pattern team's SCRATCHPAD.md
+    // lesson, one folder wider.
+    let _ = std::fs::write(root.join("code/INDEX.md"), "| solve.py | prints one |");
+    assert_eq!(
+        super::filing_unchanged(&root, &filed),
+        Some(super::teams::Cycle::Idle),
+        "an INDEX.md write must not wake the organizer that wrote it"
+    );
+
+    // Real new work still wakes it.
+    let _ = std::fs::write(root.join("code/second.py"), "print(2)");
+    assert_eq!(super::filing_unchanged(&root, &filed), None);
+    let _ = std::fs::remove_dir_all(&root);
+}
