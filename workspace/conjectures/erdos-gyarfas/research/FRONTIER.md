@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/Vertex_(graph_theory) | Vertices | found in a computer search for counterexamples to the Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6… |
 | 1 | https://en.wikipedia.org/wiki/Diameter_(graph_theory) | Diameter | Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6 \| [Girth][7] \| 3 \| [Automorphisms][8] \| 3 \| [Table of… |
 
-_131 further candidates not shown; they are cited once each._
+_134 further candidates not shown; they are cited once each._
