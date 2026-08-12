@@ -278,12 +278,11 @@ one small file per helper.
 ## The five derived ledgers
 
 Five files beside the library are written by code, never by an agent, and
-re-derived from disk on every relevant write. All five follow the rule
-`INDEX.md` already established: what a source establishes is a judgement and
-stays with the agent that made it; whether the summary agrees with the files is
-not a judgement, so it is measured. Each is described through
-`record_description` when it is written, so no derived file sits in
-`research/INDEX.md` as `_(undescribed)_` for the life of a run.
+re-derived from disk on every relevant write. All five follow the rule `INDEX.md`
+already established: what a source establishes is a judgement and stays with the
+agent that made it; whether the summary agrees with the files is not, so it is
+measured. Each is described through `record_description` when written, so no
+derived file sits in `research/INDEX.md` as `_(undescribed)_` for a whole run.
 
 `research/CLAIMS.md` (`claims.rs`) is the retrieval change. The unit of the
 library was a file, and a file is the wrong thing to retrieve: an agent about
