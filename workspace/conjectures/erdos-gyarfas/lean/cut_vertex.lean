@@ -31,7 +31,7 @@ abbrev notVSet (v : V) : Set V := {x : V | x ≠ v}
 /-- `G.induce (notVSet v)` has exactly the edges of `G` between vertices
 distinct from `v`: it is graph-theoretic `G - v`. -/
 theorem induce_not_v {G : SimpleGraph V} (v : V) :
-    (G.induce (notVSet v)).Adj = (G.Adj on (Subtype.val : notVSet v → V)) := by
+    (G.induce (notVSet v)).Adj = (fun a b : notVSet v => G.Adj a.1 b.1) := by
   funext a b
   rfl
 
@@ -46,7 +46,7 @@ lemma cycle_snd_ne_v {G : SimpleGraph V} {v : V} {p : G.Walk v v}
 adjacent to `v`. -/
 lemma cycle_penultimate_ne_v {G : SimpleGraph V} {v : V} {p : G.Walk v v}
     (hp : p.IsCycle) : p.penultimate ≠ v := by
-  exact (p.adj_penultimate hp.not_nil).ne.symm
+  exact (p.adj_penultimate hp.not_nil).ne
 
 /-- The two neighbours are distinct (v is not a hairpin) — Mathlib's own
 `IsCycle.snd_ne_penultimate`. -/
