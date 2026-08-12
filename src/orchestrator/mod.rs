@@ -861,8 +861,18 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
             AgentDefinition::new(name, title, description)
                 .with_model("openrouter")
                 .with_tools(
-                    ["write_tool_file", "execute_command"]
+                    ["write_tool_file", "execute_command", "apply_patch"]
                         .into_iter()
+                        // The tool-builder is the one exclusion, and only from
+                        // the workspace half: it writes probes and throwaway
+                        // experiments, so a similarity search over its own
+                        // output would mostly return them.
+                        .chain(
+                            (name != "tool_builder")
+                                .then_some(memory_tools[0])
+                                .into_iter(),
+                        )
+                        .chain([memory_tools[1]])
                         .chain(document_tools),
                 ),
         )?;
