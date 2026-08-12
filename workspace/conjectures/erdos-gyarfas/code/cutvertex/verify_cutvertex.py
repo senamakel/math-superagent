@@ -129,17 +129,18 @@ def check_clauses(name, G, v, want_cut=True):
             a_ok = False
             print(f"    FAIL(a): cycle {c} spans components {idxs}")
         if v in verts:
-            # cycle through v: must use exactly two edges incident to v,
-            # both into the same component.
-            inc = sum(1 for i in range(len(verts))
-                      if G.has_edge(verts[i], verts[(i + 1) % len(verts)]))
-            # count v-neighbours on the cycle
+            # A simple cycle through v uses exactly two edges of the cycle
+            # incident to v (v appears once): equivalently v has exactly two
+            # neighbours on the cycle.  Clause (a) for a v-cycle then holds
+            # iff all its non-v vertices lie in ONE component (so both
+            # v-edges go into the same lobe).
             vn = sum(1 for u in verts if G.has_edge(v, u))
-            if len(idxs) == 1 and len(set(idxs)) == 1 and vn == 2 and inc == 2:
+            if len(set(idxs)) == 1 and vn == 2:
                 pass
             else:
                 a_ok = False
-                print(f"    FAIL(a): v-cycle {verts} vn={vn} inc={inc}")
+                print(f"    FAIL(a): v-cycle {verts} vn={vn} "
+                      f"components={set(idxs)}")
     # union consequence: cycle_lengths(G) == union_i cycle_lengths(L_i)
     lobe_sets = [set(oracle(L)[1]) for L in lobes]
     union = set().union(*lobe_sets) if lobe_sets else set()
@@ -244,7 +245,7 @@ def main():
         all_ok &= ok
 
     # --- III. three lobes at one central cut vertex ---------------------
-    for name, Hs, xs in {
+    for name, (Hs, xs) in {
         "IIIa 3 lobes: 3x Petersen": ([Pet, Pet, Pet], [0, 0, 0]),
         "IIIb 3 lobes: 3x prism": ([prism, prism, prism], [0, 0, 0]),
         "IIIc 3 lobes: Petersen+prism+K4": ([Pet, prism, K4], [0, 0, 0]),
