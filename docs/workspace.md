@@ -369,13 +369,12 @@ to know what the run establishes, or that walks into a gap.
 
 ## The scratch
 
-`SCRATCHPAD.md` was the third store and the only one still a file, and it was
-the wrong shape for what it held. Being in `role_context` meant every model call
-in every role holding it paid for every number anyone had jotted down, whether
-or not the turn was about them, and appending a line meant reading the file
-whole. `note_scratch` and `recall_scratch` (`vector.rs`) make it the same trade
-`remember_memory` and `recall_memory` already make: written once, read back by
-wording.
+`SCRATCHPAD.md` was the third store and the only one still a file, and the wrong
+shape for what it held. Being in `role_context` meant every model call in every
+role holding it paid for every number anyone had jotted down, and appending a
+line meant reading the file whole. `note_scratch` and `recall_scratch`
+(`vector.rs`) make it the same trade `remember_memory` and `recall_memory`
+already make: written once, read back by wording.
 
 It is a third store rather than a flag on the durable one, and the separation
 is the point. `visible_datasets` excludes `math_agent_scratch__*` outright and
