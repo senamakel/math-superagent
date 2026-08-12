@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > This is my workspace to focus on solving complicated math problems based on
-> three fundamental insights I've derived from building harnesses and agents.
+> four fundamental insights I've derived from building harnesses and agents.
 > 
 > 1. Cost of tokens/intelligence has dropped significantly (Deepseek V4 flash) making it incredibly efficient to burn large amount of tokens for intelligence
 > 2. Context rot can be reduced with tiering of agents (subagents)
@@ -12,7 +12,9 @@
 > In this repo you'll find the exact architecture I've used to solve problems and conjectures. It is run entirely on DeepSeek v4 for less than 100$ in tokens.
 > Initial runs faced issues and roadblocks so I started building this engine by getting it to solve simple problems on Project Euler before scaling it up to more complex problems and conjectures.
 >
-> The entire system was run on a 32 GB RAM, 30 core CPU Linux machine.
+> The idea to solve conjectures is that if we have a capable enough harness with decent memory, coding tools (Python) and massive parallelism; then what if we could download all the possible documentations and attempts that were made to prove/disprove the conjecture, compress that into a sizable enough context (10k token limit for context and memory) and just throw a LOT of agents into it?
+> 
+> The entire system was run on a 32 GB RAM, 30 core CPU Linux machine and a 2 TB NVME SSD.
 
 This is a Dockerized agent for solving mathematical problems through careful
 derivation, computation, and source-backed research. It is meant for problems
@@ -120,10 +122,10 @@ no single-turn mode: a hard problem's first approach is usually wrong, and the
 single-turn path differed only in throwing that information away.
 
 ```text
-  attempt ──> reflect ──┬─ solved ────────────────> done
+  attempt ──> reflect ──┬─ solved ──────────────────────────> done
      ▲                  ├─ retry ─────────────────> attempt
      │                  └─ stuck ──> diversify ────┘
-     └────────────────────────────────────────────┘
+     └────────────────────────────────────────────────┘
 ```
 
 Reflection runs after every attempt, not only after failures, and an answer
