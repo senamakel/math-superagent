@@ -4,7 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `AGENTS.md` | _(undescribed)_ |
+| `AGENTS.md` | Workspace-wide working instructions: the method policy (compute before writing prose, brute force only on small instances as oracle, never search the answer space, attack your own method, state complexity before running, distinguish proof from numerical evidence), the evidence rules (every number from a program, every theorem from a source), where things live, and the housekeeping rules for generated files, GOAL/SCRATCHPAD/MEMORY, and code/. Static guidance for every agent; describes the tree and the rules, not mathematics. |
 | `CONTEXT.md` | _(undescribed)_ |
 | `GOAL.md` | _(undescribed)_ |
 | `MEMORY.md` | _(undescribed)_ |
