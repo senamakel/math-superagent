@@ -131,6 +131,11 @@ services:
     build:
       context: https://github.com/topoteretes/cognee.git#v1.4.2:cognee-frontend
     image: cognee-ui:1.4.2-local
+    # Only with `--profile own-memory`. The shared server on the external
+    # `memory` network is the default; standing a second one up would bind the
+    # same host ports and fail.
+    profiles:
+      - own-memory
     restart: unless-stopped
     environment:
       NEXT_PUBLIC_LOCAL_API_URL: http://localhost:8000
