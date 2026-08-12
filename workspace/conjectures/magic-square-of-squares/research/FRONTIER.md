@@ -6,7 +6,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 1 | http://www.multimagie.com/Sallows.pdf | "The Lost Theorem" | research on the "3x3 magic square of squares" problem"][65]. *Multimagie.com*. Retrieved 19 June 2025. 14. 1 2 Sallows, Lee (1997). ["The Lost Theorem"][66] (PDF). *[The Mathematical… |
 | 1 | http://www.mathpages.com/HOME/kmath417.htm | Magic Square of Squares | Christian Boyer. [Latest research on the "3x3 magic square of squares" problem][16], "Multimagic Squares" website. [Br] Kevin Brown. [Magic Square of Squares][17], "Math Pages" website. [Mo] Lee… |
 | 1 | http://multimagie.com/English/SquaresOfSquaresSearch.htm | Latest research on the "3x3 magic square of squares" problem | 27 (2005), 2, 52-64. [Bb] Christian Boyer. [Magic squares of squares][15], "Multimagic Squares" website. [Bc] Christian Boyer. [Latest research on the "3x3 magic square of squares" problem][16],… |
 | 1 | http://www.multimagie.com/English/SquaresOfSquaresSearch.htm | "Latest research on the "3x3 magic square of squares" problem" | of a 3x3 Magic Square of Squares"][64] (PDF). *Multimagie.com*. Christian Boyer. Retrieved April 30, 2026. 13. 1 2 Boyer, Christian. ["Latest research on the "3x3 magic square of squares"… |
@@ -46,5 +45,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://www.primepuzzles.net/puzzles/puzz_287.htm | www.primepuzzles.net/puzzles/puzz_287.ht | [www.primepuzzles.net][59] [www.primepuzzles.net/puzzles/puzz_079.ht][60] [m][60] ( Puzzle 79 � The Chebrakov�s Challenge �) [www.primepuzzles.net/puzzles/puzz_287.ht][61] [m][61] ( Puzzle 287 �… |
 | 1 | http://www.u-picardie.fr/ | University of Picardy | the main points of the article** If you want to see a summary of the article, this part is for you! In a series organized by the [University of Picardy][22], the [ESIEE Amiens][23], the… |
 | 1 | https://www.scientificamerican.com/article/can-you-solve-a-puzzle-unsolved-since-1996/ | "Can You Solve a Puzzle Unsolved Since 1996?" | American]]"}},"i":0}}]}'/> ["Can You Solve a Puzzle Unsolved Since 1996?"][51]. *[Scientific American][52]*. October 2014. 6. ↑ Schwartzman, Steven (1994). **[The Words of Mathematics: |
+| 1 | http://www.ac-amiens.fr/pedagogie/associations/adcs/ | ADCS | this part is for you! In a series organized by the [University of Picardy][22], the [ESIEE Amiens][23], the [URISP-CNISF][24], and the [ADCS][25] in March-April 2005, several scientific lectures were… |
 
 _4 further candidates not shown; they are cited once each._
