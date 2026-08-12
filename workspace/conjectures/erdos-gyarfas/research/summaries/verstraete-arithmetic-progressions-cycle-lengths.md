@@ -1,50 +1,75 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/verstraete-arithmetic-progressions-cycle-lengths.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Verstraëte, "On Arithmetic Progressions of Cycle Lengths in Graphs" (2000)
 
-<!-- source: https://export.arxiv.org/pdf/math/0204222v1.pdf | converted from PDF -->
+**Source:** Jacques Verstraëte, *On Arithmetic Progressions of Cycle Lengths in Graphs*, Combinatorics, Probability and Computing 9 (2000) 369–373 (Cambridge). arXiv:math/0204222 (2002 posting of a 1999 manuscript). Full text on disk: `research/sources/verstraete-arithmetic-progressions-cycle-lengths.full.md`.
 
-## What it claims
+## What the source establishes
 
-Abstract
-A recently posed question of H¨aggkvist and Scott’s asked whether
-or not there exists a constant c such that if G is a graph of minimum
-degree ck then G contains cycles of k consecutive even lengths. In
-this paper we answer the question by proving that for k ≥ 2, a
-bipartite graph of average degree at least 4k and girth g contains
-cycles of (g/2 − 1)k consecutive even lengths. We also obtain a
-short proof of the theorem of Bondy and Simonovits, that a graph
-of order n and size at least 8(k − 1)n1+1/k has a cycle of length 2k.
+The tight degree threshold for forcing an *arithmetic progression* of cycle
+lengths — the "progressions, not prescribed lengths" boundary of the cycle
+machinery, directly relevant to the obstruction paragraph in problem.md.
 
-Erd˝os and Burr [4] conjectured that for every odd number k, there is a
-constant ck such that for every natural number m, every graph of average
-degree at least ck contains a cycle of length m modulo k. Erd˝os and Burr [4]
-settled their conjecture in the case m = 2 and Robertson (see [4]) settled the
-case m = 0. The full conjecture was resolved by Bollob´as [1], who proved
-the conjecture with ck = 2[(k + 1)k − 1]/k. In this paper, we show that
-ck = 8k will do. Thomassen [11] later showed cycles of all even lengths
-modulo k are obtained under the…
+- **Theorem 1.** Let $k \ge 2$ and $G$ a bipartite graph of average degree at
+  least $4k$ and girth $g$. Then $G$ contains cycles of $(g/2 - 1)k$
+  consecutive even lengths; the shortest has length at most twice the radius
+  of $G$.
+- **Corollary 4.** General graphs: average degree at least $8k$ and even girth
+  $g$ gives $(g/2 - 1)k$ consecutive even cycle lengths.
+- **Theorem 5.** Average degree at least $6k$ and girth $g$: for some odd
+  $r \ge 3$, cycles of *all even or all odd* lengths in the interval
+  $[r, r + (g-2)k]$.
+- **Corollary 6.** Chromatic number at least $2k+2$ and girth $g$ gives
+  $k(g-2)$ consecutive cycle lengths.
+- Answers the Häggkvist–Scott question: minimum degree linear in $k$ suffices
+  (they had $\ge 300k^2$).
+- **Theorem 9 / Corollary 10.** Bipartite graphs of size at least
+  $4\lceil 2(k-1)/(g-2)\rceil n^{1+1/k}$ contain a cycle of length $2k$, and
+  size at least $8(k-1)n^{1+1/k}$ forces a cycle of length $2k$ — slight
+  improvements over Bondy–Simonovits.
 
-Bond…
+**The core lemma (Lemma 2).** If $H$ is a cycle with a chord and $(A,B)$ a
+nontrivial vertex partition, then $H$ contains $A$–$B$ paths of every length
+$< |H|$, unless $H$ is bipartite with bipartition $(A,B)$. This is the
+"many lengths from one cycled-with-chord structure" engine: one chorded cycle
+in the right place generates every intermediate path length, and each even
+path length closes to a distinct cycle length. This is *exactly* the 
+progressions machinery that problem.md says cannot force a prescribed sparse
+length: the lengths produced are all in an interval of size $(g-2)k$, and to
+force a power of two the interval must span a gap between consecutive powers,
+which needs $(g-2)k \ge 2^j$ for the largest power below — impossible at
+bounded degree/girth.
 
-## Statements it makes
+## Why it matters for this problem
 
-Theorem 1 Let k ≥ 2 be a natural number and G a bipartite graph of
+- Together with Bondy–Vince (also on disk), this fixes the state of the art on
+  "δ≥3 or large average degree forces *which* cycle lengths": at most
+  *consecutive/progression* lengths in an interval, never a prescribed sparse
+  length. The EG conjecture is the one case where the target set (powers of
+  two) is sparse, which is why none of these theorems touch it.
+- The chorded-cycle lemma (Lemma 2) is genuinely usable in the run's own
+  attack: if a minimal counterexample contains a chorded cycle, the lemma
+  forces many cycle lengths from one structure — possibly a route to show a
+  minimal counterexample must be chordless in a strong sense (every cycle is
+  induced), a structural statement the library does not yet hold.
+- The parity/even-girth machinery explains why 2-power cycles (even lengths)
+  are the natural target: even cycle lengths are what the interval results can
+  deliver in bulk; the failure is only that the interval is too short.
 
-Lemma 2 Let H be a graph comprising a cycle with a chord. Let (A, B)
+```claim
+id: EG-verstraete-AP-cycle-lengths
+statement: A bipartite graph of average degree ≥4k and girth g has cycles of (g/2−1)k consecutive even lengths (shortest ≤ 2·radius); general graphs with average degree ≥8k and even girth g have (g/2−1)k consecutive even lengths. (Verstraëte 2000, answering Häggkvist–Scott)
+hypotheses: finite simple graph; average degree (not minimum); girth g; k≥2
+holds-here: no — average degree ≫ 3 and the conclusion is an interval of lengths, not a prescribed power of two
+status: proved
+bearing: makes precise why the EG conjecture is hard: the strongest cycle-length theorems give progressions/intervals whose length scales with degree×girth, and forcing a power of two needs an interval spanning the gap between consecutive powers, unavailable at bounded degree
+anchor: research/summaries/verstraete-arithmetic-progressions-cycle-lengths.md
+```
 
-Lemma 3 Let k ≥ 2 be a natural number and let G be a graph of average
-
-Corollary 4 Let k ≥ 2 be a natural number, and let G be a graph of average
-
-Theorem 5 Let k ≥ 2 be a natural number, and let G be a graph of average
-
-Corollary 6 Let k ≥ 2 be a natural number, and suppose that G has chro-
-
-Lemma 7 Let G be a graph of order n and size at least cn1+1/k, where
-
-Lemma 8 Let G be a graph of order n with e(G) ≥ 2n1+1/k where k ≥ 2.
-
-Theorem 9 Let G be a bipartite graph of order n and girth g, and of size
-
-Corollary 10 Let G be a graph of order n and size at least 8(k − 1)n1+1/k,
-
-*[digest of a 15550 character source; every section, statement, and proof in full at `research/sources/verstraete-arithmetic-progressions-cycle-lengths.full.md`]*
+```claim
+id: EG-verstraete-chorded-cycle-lemma
+statement: If H is a cycle with one chord and (A,B) a nontrivial partition, then H has A–B paths of every length < |H|, unless H is bipartite with bipartition (A,B). (Verstraëte Lemma 2; implicit in Bondy–Simonovits)
+hypotheses: H = cycle + chord; (A,B) nontrivial partition
+holds-here: yes — a self-contained structural tool; applies to any subgraph of a minimal counterexample that happens to contain a chorded cycle
+status: proved
+bearing: candidate engine for the run's structural argument: a chorded cycle in a minimal counterexample would generate an entire interval of cycle lengths, so a counterexample must be strongly chordless (every cycle induced) — a testable structural claim
+anchor: research/summaries/verstraete-arithmetic-progressions-cycle-lengths.md
+```

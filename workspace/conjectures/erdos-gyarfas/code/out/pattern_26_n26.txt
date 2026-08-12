@@ -1,0 +1,76 @@
+Catalogue check of the Apollonian K4-triangle-expansion census — EXTENSION with the n=26 level
+date: this run | tools: lib/sequences.py (oeis_lookup strict-prefix, analyze_sequence,
+find_linear_recurrence exact Fraction arithmetic, order<=6), independently re-run
+code/eg/recount_26.py over level_26_classes.txt (fresh 40.8s run, matches driver's row
+byte-for-byte). Ground truth n=4..26 = 394,165 classes total, 4,491 C4-free, all checked.
+
+========================================================================
+Census rows (n = vertices; levels n=10..26 step 2):
+  total:        3    7    24    93   434  2110 11002  58713  321776
+  avoidsC4:     1    1     2     5    15    50   202    807    3408
+  avoidsC4C8:   0    0     0     0     0     0     0      1       0
+  avoidsC4C16:  1    1     2     0     0     0     0      0       0
+  avoidsC4C8C16:0    0     0     0     0     0     0      0       0
+  c4free_hasC8_notC16: 0 at every level (forced: avoidsC4C16=0 at n>=16, and at
+       n=10..14 the C4-free members DO lack C16 but the census columns at those
+       levels show avoidsC4C8=0 so they all have C8, none is C8-free+no-C16).
+  n=26 = A027610(12) = 321776 EXACT (12th computed term; b-file extends to n=200).
+
+========================================================================
+SEQUENCE: avoidsC4 (n=10..26)  terms=[1, 1, 2, 5, 15, 50, 202, 807, 3408]
+========================================================================
+analyze_sequence: first_diffs=[0,1,3,10,35,152,605,2601], nondecreasing, no constant
+  difference row -> not a low-degree polynomial.
+find_linear_recurrence(max_order=6, exact Fractions):
+  -> NONE. (Pinned orders only: with 9 terms, windows>=unknowns holds for order<=4;
+  the tool reports no order-1..4 constant-coefficient recurrence fits all 9 terms.)
+OEIS lookup '1,1,2,5,15,50,202,807,3408' (strict prefix): 0 entries, 0 matches.
+  -> not catalogued; no closed form to lift.
+Prior 4th-order rational fit (47/27,1339/54,-3067/54,27/2 — recorded in
+  pattern_26_notes.txt) predicted next term 203921/54 = 3776.31:
+  (a) non-integer -> refuted by integrality already;  (b) n=26 ACTUAL = 3408 != 203921/54
+  -> refuted directly by the computed census value. Fit is dead twice over; do not reuse.
+Ratios a_n/a_{n-1}: 1, 2, 2.5, 3, 10/3, 4.04, 3.995, 4.2230 — not settling; creeping
+  above ~4 per +2 vertices. C4-free fraction of classes: 0.333, 0.143, 0.083, 0.054,
+  0.035, 0.024, 0.018, 0.014, 0.0106 — roughly 1/n-ish decay, but this is a curve-fit
+  heuristic, NOT an exact regularity; do not report as structure.
+
+========================================================================
+SEQUENCE: avoidsC4C16 (n=10..26)  terms=[1, 1, 2, 0, 0, 0, 0, 0, 0]
+========================================================================
+find_linear_recurrence: only the degenerate all-zero order-3 fit (carries nothing).
+OEIS: A130779 "a(0)=a(1)=1, a(2)=2, a(n)=0 for n>=3" — trivial tail, no content.
+C16-CLIFF: avoidsC4C16 = 0 at n=16..26 confirmed. This is the STATED FIRST FALSIFIER
+  (n=26) of the conjecture "every C4-free member at n>=16 contains a C16" — the census
+  was computed and the conjecture SURVIVED. Next falsifier: n=28 (uncomputed).
+
+========================================================================
+JOINT STRUCTURAL STATEMENT (verified-numerically, all classes n=10..26 = 4,491 C4-free)
+========================================================================
+  (S1) Every C4-free member of the family contains an 8-cycle, EXCEPT exactly one
+       member at n=24 (the Markström graph HoG 51419), which lacks C8 but contains C16.
+       [follows from avoidsC4C8 = 0 at every level except n=24 where it is 1]
+  (S2) Every C4-free member at n>=16 contains a 16-cycle; the C4-free members at
+       n=10,12,14 (counts 1,1,2) lack C16.
+  (S3) No member of the family at any level n=4..26 avoids all of {C4,C8,C16}
+       (avoidsC4C8C16 = 0 everywhere; the unique C4,C8-free member still has C16).
+  Status: verified-numerically by exhaustive exact cycle checks over every class on
+  disk (394,165 total, 4,491 C4-free), NOT a proof.
+  Each statement's first falsifier: a C4-free family member at n=28 lacking C8
+  (S1), lacking C16 (S2), or avoiding all three (S3); n=28 census uncomputed.
+  Derivation suggestion: the family is the dual of planar 3-trees; all faces of any
+  member are triangles except three faces (dual of the three initial corners). This
+  face structure plus C4-freeness should force the C8/C16 cycles — the expansion
+  mechanism itself is NOT the route (CONTEXT.md Ruled out: "a C4 once created is never
+  destroyed" is false; expansions shift cycle lengths by +/-1,2).
+
+========================================================================
+OTHER SEQUENCES CHECKED (no new structure)
+========================================================================
+- total classes = A027610(1..12): 12 computed terms, identity holds. Already sourced.
+- lobe probe (cut-vertex (2,2) shape): with-C4 = 6,18,59,250,1387,9826 and with-C8 =
+  0,0,60,265,1467,10559 over n_H=4..14 (6 terms; constructions 6,18,60,285,1530,10689).
+  pow2-free lobes = 0 at every n_H — the structural negative (no (2,2)-glued candidate
+  below order 16) is the content, not a sequence regularity. No tool-exact pattern.
+- pushverify SAT iteration logs: iteration counts, not an integer sequence; no
+  tool-exact statement possible (already recorded in scratch: NOTHING FURTHER there).

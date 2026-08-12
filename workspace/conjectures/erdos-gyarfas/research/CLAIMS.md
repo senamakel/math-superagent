@@ -59,6 +59,8 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | `EG-verification-bound` | No counterexample to the Erdős–Gyárfás conjecture exists on n ≤ 15 vertices in general, and no cubic counterexample exists on n ≤ 29 vertices. | **unchecked** | asserted | `research/ROOT.md` |
 | `EG-verification-bound` | No counterexample exists on n≤15 vertices generally and no cubic counterexample on n≤29 vertices; smallest C4,C8-free cubic graphs have 24 vertices. | yes | asserted | `research/summaries/markstrom-extremal-graphs.md` |
 | `EG-verification-wording-primary` | Primary-source wording of the verification bounds: Royle (archived "2^n conjecture" page) "checked this conjecture for graphs on up to 15 vertices" with makeg modified for (i) min degree 3, (ii) no edge between two… | **unchecked** | asserted | `research/summaries/novelty-check-connectivity-triangles.md` |
+| `EG-verstraete-AP-cycle-lengths` | A bipartite graph of average degree ≥4k and girth g has cycles of (g/2−1)k consecutive even lengths (shortest ≤ 2·radius); general graphs with average degree ≥8k and even girth g have (g/2−1)k consecutive even lengths.… | **unchecked** | proved | `research/summaries/verstraete-arithmetic-progressions-cycle-lengths.md` |
+| `EG-verstraete-chorded-cycle-lemma` | If H is a cycle with one chord and (A,B) a nontrivial partition, then H has A–B paths of every length < \|H\|, unless H is bipartite with bipartition (A,B). (Verstraëte Lemma 2; implicit in Bondy–Simonovits) | **unchecked** | proved | `research/summaries/verstraete-arithmetic-progressions-cycle-lengths.md` |
 
 ## Load-bearing but unverified
 
