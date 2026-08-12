@@ -119,7 +119,8 @@ itself — that is the open core.
   `NO4(n)≈K·3^n·(n−10)!` (locked from n=12) predicts NO4(17) ∈ 30–41M,
   nominal ≈35M. Outside 25–45M flags an enumeration bug. Detail:
   [[code/eg/survivor_sequences.md]].
-- Scratch/durable memory hold nothing further on this problem (earlier
-  `recall_memory` surface hit an unrelated PE346 repunit chunk; the graph's
-  durable memory holds only the run's own oracle-verification and survivor
-  records).
+- Scratch/durable memory hold nothing further on this problem's mathematics
+  (earlier `recall_memory` surface hit an unrelated PE346 repunit chunk).
+  Two audit notes were stored this cycle: the S5/A366224 unverified-state
+  finding and the Lean c4_lemma compile-unverified flag — queriable via
+  `recall_memory`.
