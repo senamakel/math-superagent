@@ -380,7 +380,8 @@ impl OrchestratorAgent {
         // its 74 minutes unable to start its second attempt because a support
         // agent had not finished.
         // One mailbox, shared: the pattern team posts what it finds and the
-        // loop picks it up at the next reflection. Nothing waits on it.
+        // loop drains it at the next attempt or reflection, whichever reaches
+        // it first. Nothing waits on it.
         let patterns = solutions::PatternMailbox::default();
         let support = self.spawn_support_teams(state.problem(), &patterns);
         let finished = solutions::run(
