@@ -389,7 +389,7 @@ impl OrchestratorAgent {
         // One mailbox, shared: the pattern team posts what it finds and the
         // loop drains it at the next attempt or reflection, whichever reaches
         // it first. Nothing waits on it.
-        let patterns = solutions::PatternMailbox::default();
+        let patterns = solutions::Mailbox::default();
         let support = self.spawn_support_teams(state.problem(), &patterns);
         let finished = solutions::run(
             self.subagents.clone(),
@@ -438,7 +438,7 @@ impl OrchestratorAgent {
     fn spawn_support_teams(
         &self,
         problem: &str,
-        patterns: &solutions::PatternMailbox,
+        patterns: &solutions::Mailbox,
     ) -> Vec<teams::TeamHandle> {
         let mut handles = Vec::new();
         for (name, agent, completion, budget, brief) in standing_teams() {

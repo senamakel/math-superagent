@@ -306,7 +306,7 @@ async fn attempt_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
-    patterns: &PatternMailbox,
+    patterns: &Mailbox,
     mut state: SolutionState,
 ) -> SolutionState {
     state.attempts += 1;
@@ -353,7 +353,7 @@ async fn attempt_step(
 /// attempt. Reflection stays a collector too: whichever gets there first
 /// delivers, and an empty mailbox renders an empty section rather than a
 /// heading announcing that no analysis arrived.
-fn observations_briefing(patterns: &PatternMailbox) -> String {
+fn observations_briefing(patterns: &Mailbox) -> String {
     let observations = patterns.collect();
     if observations.is_empty() {
         return String::new();
@@ -670,7 +670,7 @@ async fn reflect_step(
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
     memory: &VectorStore,
-    patterns: &PatternMailbox,
+    patterns: &Mailbox,
     teams: &[TeamHandle],
     mut state: SolutionState,
 ) -> SolutionState {
@@ -923,7 +923,7 @@ fn merge_context(sections: &[(&str, &str)]) -> String {
     merged
 }
 
-/// Where a detached pattern run leaves its report for a later attempt.
+/// Where something working outside the loop leaves text for a later attempt.
 ///
 /// The pattern agent used to be awaited beside the reflection, and that made
 /// it a gate on the whole loop: a live run sat 33 minutes unable to start its
@@ -938,10 +938,17 @@ fn merge_context(sections: &[(&str, &str)]) -> String {
 /// agent finds is posted here and picked up by the next attempt that asks. A
 /// structural observation is worth as much one attempt later; a stalled loop
 /// is not.
+///
+/// Human direction arrives the same way and for a stronger version of the same
+/// reason. A person is slower than any support agent, so a loop that waited on
+/// one would be that 33-minute gate with no bound at all. Two mailboxes are
+/// therefore built from this one type — one carrying what the pattern team
+/// found, one carrying what an operator asked for — and they differ only in
+/// the heading their contents are rendered under.
 #[derive(Clone, Default)]
-pub(super) struct PatternMailbox(Arc<std::sync::Mutex<Vec<String>>>);
+pub(super) struct Mailbox(Arc<std::sync::Mutex<Vec<String>>>);
 
-impl PatternMailbox {
+impl Mailbox {
     /// Leaves a finished report for the next attempt.
     pub(super) fn post(&self, report: String) {
         if report.trim().is_empty() {
@@ -977,7 +984,7 @@ pub(super) async fn run(
     workspace: Option<PathBuf>,
     memory: VectorStore,
     teams: Vec<TeamHandle>,
-    patterns: PatternMailbox,
+    patterns: Mailbox,
     state: SolutionState,
 ) -> Result<SolutionState> {
     let attempt_agents = subagents.clone();

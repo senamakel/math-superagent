@@ -2,7 +2,7 @@
 #![allow(clippy::expect_used)]
 
 use super::{
-    BLOCKED_THRESHOLD, MAX_ATTEMPTS, PatternMailbox, Route, STUCK_THRESHOLD, SolutionState,
+    BLOCKED_THRESHOLD, MAX_ATTEMPTS, Mailbox, Route, STUCK_THRESHOLD, SolutionState,
     extract_lesson, provider_blocked, route,
 };
 
@@ -180,7 +180,7 @@ fn a_pattern_report_that_arrives_late_still_reaches_a_later_attempt() {
     // The pattern agent is detached so it cannot gate the loop, which only
     // helps if what it finds is not simply dropped. A live run sat 33 minutes
     // unable to start its next attempt while an awaited pattern agent worked.
-    let mailbox = PatternMailbox::default();
+    let mailbox = Mailbox::default();
     assert_eq!(mailbox.collect(), "", "nothing has been posted yet");
 
     mailbox.post("period 6 in the residues".to_string());
@@ -198,7 +198,7 @@ fn several_pattern_runs_outliving_their_attempts_are_all_delivered() {
     // Detaching means a run can outlive the attempt that started it, so more
     // than one report can be waiting. Keeping only the newest would silently
     // discard the analysis an attempt paid for.
-    let mailbox = PatternMailbox::default();
+    let mailbox = Mailbox::default();
     mailbox.post("first: no linear recurrence".to_string());
     mailbox.post("second: divisibility by 9".to_string());
 
@@ -216,7 +216,7 @@ fn an_attempt_is_told_what_the_pattern_team_found() {
     // A live Erdős–Gyárfás run spent forty minutes in attempt 1 while its
     // pattern team computed the survivor counts and identified the sequence,
     // and the agent directing the work re-commissioned the same enumeration.
-    let mailbox = PatternMailbox::default();
+    let mailbox = Mailbox::default();
     mailbox.post("every no-4 survivor for n<=16 has an 8-cycle".to_string());
 
     let observations = observations_briefing(&mailbox);
@@ -233,7 +233,7 @@ fn an_attempt_with_nothing_from_the_pattern_team_says_nothing_about_it() {
 
     // A heading announcing that no analysis arrived is worse than silence: it
     // spends context to tell the attempt something it cannot act on.
-    let mailbox = PatternMailbox::default();
+    let mailbox = Mailbox::default();
     let observations = observations_briefing(&mailbox);
     assert_eq!(observations, "");
 
@@ -246,7 +246,7 @@ fn an_attempt_with_nothing_from_the_pattern_team_says_nothing_about_it() {
 fn an_empty_pattern_report_is_not_posted_as_context() {
     // A failed or silent pattern run must not present itself to the next
     // attempt as an analysis that found nothing to report.
-    let mailbox = PatternMailbox::default();
+    let mailbox = Mailbox::default();
     mailbox.post("   \n  ".to_string());
     assert_eq!(mailbox.collect(), "");
 }
