@@ -57,6 +57,17 @@ Status: **grounded** as an exact root-counting route *conditional on*
 `offcentre_dual_mesh_phase_invariant` holding. Refuted with it if that invariant
 is ever refuted.
 
+```claim
+id: chebyshev_sturm_exact_root_count_grounded
+statement: The pipeline 'rational parametrize the planet-centre ellipse by eccentric anomaly E → express cos phi, cos chi as Chebyshev of a rational function of cos E → substitute t=tan(E/2) (trig polynomial of trig-degree d maps to a rational of degree <=2d, Mulholland & Monagan) → clear radicals → count real roots exactly via Sturm's theorem' is a bona fide exact, non-scanning way to count the d-values at which a phase congruence of the W-model (s*phi+c*chi-t*gamma in pi*Z / 2pi*Z) holds.
+hypotheses: Chebyshev identities T_n(cos)=cos(n.), U_{n-1}(cos)sin=sin(n.); tangent half-angle is a ring morphism Q[sin,cos]->Q(t); Sturm's theorem counts real roots of a square-free real polynomial exactly in rational arithmetic.
+holds-here: yes for the machinery; the guarantee is UPSTREAM — the polynomial encodes the W-model phase condition (claim offcentre_dual_mesh_phase_invariant) which is oracle-unverified (has not reproduced g(16,5,5,6)=9). If that invariant is wrong the polynomial root-counts a wrong condition.
+status: grounded (conditional).
+bearing: gives the exact route to g once the W-model discreteness is validated; radical-clearing can inject spurious roots (re-check against the congruence) and blow the degree past 2(c+s).
+anchor: research/approaches/algebraic-elimination-chebyshev.md (also sibling tangent-half-angle)
+```
+
+
 ## Grounded — what the literature actually says vs. the candidate's claim
 
 The candidate's central factual claims were confirmed by search:

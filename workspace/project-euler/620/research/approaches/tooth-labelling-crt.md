@@ -51,6 +51,17 @@ Status: **grounded** for the congruence reformulation (incl. off-centre); the
 not found in the literature and contradicted in outline by the tangency-forces-
 position structure. Must be tested against a correct g before it pays.
 
+```claim
+id: tooth_count_congruence_reformulation_grounded
+statement: Phrasing the PE620 meshing discreteness as integer congruences on tooth-count sums (angle x tooth-count === integer multiple of pi) is well-precedented INCLUDING for the off-centre (eccentric) case: Kurasov 2020 (gear eccentric systems, toothed-contours method) eq.7 2*phi_v*z_v + phi_n*z_n - phi_C1*z_C1 - phi_C2*z_C2 - pi*K = 0 and eq.8 give the assembly condition exactly this way for eccentric gears; Xue 2020 frames it as 'assembly misalignment angle = integer multiple of the minimum non-zero misalignment angle'. This grounds the tooth-labelling-crt reformulation.
+hypotheses: ideal involute gears; integer tooth counts; the assembly discreteness is an integer-multiple-of-minimum-angle condition.
+holds-here: yes for the reformulation itself.
+status: grounded (reformulation); the multiplicative/gcd-closed-form half and the gcd-factorisation of delta_t(d) are UNSUPPORTED (no source establishes g is multiplicative or closed-form; the tangency-forces-position structure means four ring-tooth indices are NOT independent, so the index<->d identification overcounts).
+bearing: supports casting g as count of solutions to tooth-count congruences; does NOT support an O(n log n) divisor-structure sum for G(500).
+anchor: research/approaches/tooth-labelling-crt.md (also sibling number-theoretic-crt)
+```
+
+
 **Verification requirement:** both halves must reproduce g(16,5,5,6)=9,
 G(16)=9, G(20)=205 before any closed-form claim earns trust.
 

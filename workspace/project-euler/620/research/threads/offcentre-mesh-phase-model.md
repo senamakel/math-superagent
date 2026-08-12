@@ -8,6 +8,40 @@ blocked-by: (none hard) — the remaining work is G(20) verification of the winn
 next: (1) Generalize tangency_enum.py to accept (c,s,p,q) and run the (sigma=-1, eta=-1, theta=-1) variant over all 22 G(20) tuples, summing against 205 (TASKS.md STEP 1); (2) write the checked claim in code/out/ anchored to tangency_enum.txt (TASKS.md STEP 2); (3) derive the algebraic equation for Q_p(d) == Q_q(d) (mod 1) that replaces the 1M-point grid scan.
 ```
 
+## Independent corroboration of the counting structure (2026 scholar pass)
+
+Three new sources establish, at derivation level, that PE620's g is a count of
+integer-level crossings of a signed angle×tooth-count sum — the W-invariant form —
+and NOT a position lattice:
+
+- **Segade-Robleda et al. 2012 (IntechOpen, four-gear simultaneous meshing):**
+  curvilinear-quadrilateral "pitch difference" = whole number of pitches;
+  `r1·α + r2·β − r3·γ − r4·δ = n·π·m`, signs by internal/external mesh
+  (claim `split_torque_curvilinear_quadrilateral_condition`). Worked 30/50/20/12 →
+  n ∈ {−12,…,30}, a discrete set of levels crossed by a monotone transcendental.
+- **Zhao & Li 2018 (JSME JAMDSM, duplex-idler torque split):** the universal design
+  method — meshing condition `#pitch between the two contact points on the output
+  gear = whole number`, reducing to a signed angle×tooth-count = integer·2π sum, one
+  transcendental in a centre-angle, with 0/1/2 discrete configurations per integer N.
+  Internal-mesh (ring) variant has its own sign (claim `zhao_li_2018_duplex_idler_meshing_condition`).
+  This is the strongest published analogue of PE620's count.
+- **White & Patil 2020 (AGMA/PTE, idler double mesh):** a gear meshing two central
+  gears is perfectly/ simultaneously meshed iff `N = z2(σ2^L−σ2^R)/2π ∈ ℤ` — an integer
+  condition on the planet's own tooth count × angular span (claim `idler_double_mesh_integer_index_condition`).
+  Corroborates the `t·γ` planet term in W.
+- **You/Luo/Xu 2026 (Frontiers):** minor; confirms the odd/even-teeth parity effect
+  at the assembly phase (corroborates `p·γ_p − q·γ_q` parity). Not load-bearing.
+- **Mulholland & Monagan:** the tangent half-angle + Sturm pipeline is now a viable
+  *exact* replacement for grid scans, since the sign convention is oracle-pinned
+  (claim `tangent_half_angle_exact_root_count`).
+
+**Status correction (important).** Scratch text from an earlier pass overstates the
+result: it says the tangency model "reproduces g(16,5,5,6)=9 = ORACLE" and implies
+G(16)/G(20) are done. The checked claim `tangency_enum_oracle_match` and its run note
+`code/out/tangency_enum_claim.md` show **only g(16,5,5,6)=9 is verified**; G(16)=9 and
+G(20)=205 are still NOT RUN (the enumerator is hardwired to (16,5,5,6)). TASKS.md
+STEP 1 remains open.
+
 ## Winning variant (2025 run, checked g=9)
 
 Direct enumeration `code/pattern/tangency_enum.py` (output `code/out/tangency_enum.txt`)
