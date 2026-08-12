@@ -379,10 +379,10 @@ re-issues with the cap doubled, clamped at 4x. So a bound turn shows as
 `out=<cap>`, a `model RETRY`, then `out=<2x cap>`. Read that pair as one
 truncation, not as evidence the cap is larger than it is.
 
-`ReroutingModel` is outermost, so every provider failure passes it once, and it now notes
-the cause and the agent on the way past: `AgentEvent::RetryScheduled` carries a call id and
-an attempt but no error, so a live `pattern_finder` retried six times over three minutes
-with the reason recorded nowhere.
+`ReroutingModel` is outermost, so every provider failure passes it once, and it now notes the
+cause and agent on the way past: `AgentEvent::RetryScheduled` carries a call id and an attempt
+but no error, so a live `pattern_finder` retried six times over three minutes with the reason
+recorded nowhere.
 
 `UntruncatedModel` is a second ladder beside that one, covering the shape upstream excludes
 — a turn with text but no tool call. The two share a ceiling rather than compose, so
@@ -392,10 +392,9 @@ already doubled doubled again and a live `goals` reached a 48,000-token re-issue
 times the ceiling, against a wrapper documented to allow twice. The inventor's 32000 tops
 out at 64000.
 
-A timeout is a safety ceiling, not permission to run an intractable approach.
-Before substantial execution the tool-builder must state both time and space
-complexity; exponential time or space is prohibited, so choose a polynomial or
-better formulation.
+A timeout is a safety ceiling, not permission to run an intractable approach. Before
+substantial execution the tool-builder must state both time and space complexity;
+exponential time or space is prohibited, so choose a polynomial or better formulation.
 
 `validate_complexity` enforces that, and the field it reads has been evaded
 three times in three different ways. First by notation: a factorial search
