@@ -46,9 +46,21 @@ services:
     # MEMORY.md as a mathematical ceiling, "exact BFS stops at N=14".
     #
     # A limit is kept because the sandbox requires one; it is the value that was
-    # wrong. Four gigabytes still leaves the host comfortable with several runs
-    # at once (30 GiB total, 19 available with three running).
-    mem_limit: 4g
+    # wrong. Four gigabytes was wrong too: a live Erdős–Gyárfás run was
+    # OOM-killed at forty minutes — `docker events` shows `oom` then
+    # `die exitCode=137`, execDuration 2427s — while holding a `nauty-geng`
+    # enumeration of 34,758,006 graphs at n=17 and an expansion census to n=22
+    # beside five concurrent child runs. Nothing reached the console; the run
+    # simply stopped appearing, which is why the first check after it read as a
+    # hung specialist rather than a dead container.
+    #
+    # Eight gigabytes still leaves the host comfortable with three runs at once
+    # (30 GiB total, 21 available with three running). Read
+    # `docker events --filter event=oom` whenever a container vanishes without
+    # an error, and treat the answer as a sandbox limit rather than a
+    # mathematical ceiling — problem 763 recorded the old cap in its own notes
+    # as "exact BFS stops at N=14", which was never true of the mathematics.
+    mem_limit: 8g
     volumes:
       - type: bind
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
