@@ -360,3 +360,128 @@ async fn listing_a_folder_that_is_not_there_names_the_ones_that_are() -> Result<
     assert!(error.to_string().contains("INDEX.md"), "got: {error}");
     Ok(())
 }
+
+/// Serves one response on loopback and returns the URL to fetch it from.
+///
+/// A real socket rather than a mocked client, because the thing under test is
+/// what the HTTP layer does with a body that arrives in pieces — a mock that
+/// hands over a `Vec` has already done the buffering the bound exists to
+/// prevent. Nothing leaves the machine, so this stays a deterministic unit test
+/// rather than the live network tests that belong outside the suite.
+async fn serving(body: Vec<u8>, chunked: bool) -> Result<String> {
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
+        .await
+        .map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to bind test listener: {error}"))
+        })?;
+    let address = listener.local_addr().map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("failed to read test listener address: {error}"))
+    })?;
+    tokio::spawn(async move {
+        let Ok((mut socket, _)) = listener.accept().await else {
+            return;
+        };
+        use tokio::io::AsyncWriteExt as _;
+        let header = if chunked {
+            // No `Content-Length`, so the declared-length check has nothing to
+            // look at and the streaming bound is the only one left.
+            "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nTransfer-Encoding: chunked\r\n\r\n"
+                .to_string()
+        } else {
+            format!(
+                "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n",
+                body.len()
+            )
+        };
+        if socket.write_all(header.as_bytes()).await.is_err() {
+            return;
+        }
+        if chunked {
+            for piece in body.chunks(16 * 1024) {
+                let framed = format!("{:x}\r\n", piece.len());
+                if socket.write_all(framed.as_bytes()).await.is_err()
+                    || socket.write_all(piece).await.is_err()
+                    || socket.write_all(b"\r\n").await.is_err()
+                {
+                    return;
+                }
+            }
+            let _ = socket.write_all(b"0\r\n\r\n").await;
+        } else {
+            let _ = socket.write_all(&body).await;
+        }
+        let _ = socket.flush().await;
+    });
+    Ok(format!("http://{address}/source.txt"))
+}
+
+#[tokio::test]
+async fn a_document_within_the_limit_downloads_whole() -> Result<()> {
+    let path = workspace("download-small")?;
+    let documents = WorkspaceDocuments::new(path)?;
+    let url = serving(b"Theorem 1. The bound is respected.\n".to_vec(), true).await?;
+    let (bytes, content_type) = super::DocumentTool {
+        kind: super::DocumentToolKind::Download,
+        documents,
+    }
+    .fetch(&url)
+    .await?;
+    assert_eq!(bytes, b"Theorem 1. The bound is respected.\n");
+    assert_eq!(content_type.as_deref(), Some("text/plain"));
+    Ok(())
+}
+
+#[tokio::test]
+async fn an_oversized_chunked_body_is_refused_without_being_buffered() -> Result<()> {
+    // A chunked response carries no `Content-Length`, so the pre-check has
+    // nothing to read and the whole body used to reach memory before its size
+    // could be compared. The container has a hard `mem_limit` and an OOM kill
+    // loses everything in flight, so the bound has to apply as it arrives.
+    let path = workspace("download-oversized")?;
+    let documents = WorkspaceDocuments::new(path)?;
+    let url = serving(vec![b'x'; super::MAX_DOCUMENT_BYTES + 64 * 1024], true).await?;
+    let refused = super::DocumentTool {
+        kind: super::DocumentToolKind::Download,
+        documents,
+    }
+    .fetch(&url)
+    .await;
+    let message = refused
+        .err()
+        .map(|error| error.to_string())
+        .unwrap_or_default();
+    assert!(
+        message.contains("exceeds") && message.contains("abandoned"),
+        "the refusal must say the transfer stopped: {message}"
+    );
+    Ok(())
+}
+
+#[tokio::test]
+async fn a_declared_length_over_the_limit_is_refused_before_the_body_arrives() -> Result<()> {
+    let path = workspace("download-declared")?;
+    let documents = WorkspaceDocuments::new(path)?;
+    let url = serving(vec![b'x'; super::MAX_DOCUMENT_BYTES + 1], false).await?;
+    let refused = super::DocumentTool {
+        kind: super::DocumentToolKind::Download,
+        documents,
+    }
+    .fetch(&url)
+    .await;
+    assert!(refused.is_err(), "an honest oversized header is enough");
+    Ok(())
+}
+
+#[tokio::test]
+async fn a_non_http_scheme_is_refused() -> Result<()> {
+    let path = workspace("download-scheme")?;
+    let documents = WorkspaceDocuments::new(path)?;
+    let refused = super::DocumentTool {
+        kind: super::DocumentToolKind::Download,
+        documents,
+    }
+    .fetch("file:///etc/passwd")
+    .await;
+    assert!(refused.is_err(), "only HTTP and HTTPS are fetchable");
+    Ok(())
+}
