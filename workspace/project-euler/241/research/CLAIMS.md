@@ -6,10 +6,12 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `a067698-robin-not-hemiperfect` | A067698 (sigma(n) >= e^gamma n log log n) concerns Robin's inequality and RH; its members are not hemiperfect and it does not bound or enumerate n with sigma(n)/n = k+1/2. | no | asserted | `research/summaries/oeis_a067698.md` |
 | `a088912-abundancy-threshold` | The smallest m with sigma(m)=(k+1/2)m is 2,24,4320,8910720,17116004505600 for k=1..5 (all < 1e18) and ~1.7e44 for k=6, so no number <= 1e18 realizes any half-integer abundancy k+1/2 with k >= 6. | yes | asserted | `research/summaries/oeis_A088912.md` |
 | `a159907-sequence-even` | Every hemiperfect number is even (sigma(n)/n = k/2, k odd, implies n even). | yes | asserted | `research/summaries/oeis_a159907.md` |
 | `a242484-equivalence` | For even n, sigma(n)/n is a half-integer iff antisigma(n)/n is an integer (since (sigma(n)+antisigma(n))/n=(n+1)/2), so the hemiperfects from 24 on sit inside A242484 unless an odd multiply-perfect number exists. | yes | asserted | `research/summaries/oeis_a242484.md` |
 | `hemi-abundance-bound` | No positive integer n <= 10^18 has half-integer abundancy k/2 with k >= 13, because the smallest such number a(6) ~ 1.7e44 exceeds 10^18; hence only abundancies 3/2..11/2 are reachable. | yes | asserted | `research/summaries/hemiperfect_wikipedia.md` |
+| `laatsch-multiplicativity-density` | I(N)=sigma(N)/N is multiplicative with I(N)=prod_p (p^{a+1}-1)/(p^a(p-1)); the set of abundancy indices is dense in (1,inf) and I is unbounded above; I(kN)>=I(N). | **unchecked** | proved | `research/summaries/laatsch_measuring_abundancy.md` |
 | `property22-denominator-divides` | If I(n)=sigma(n)/n = r/s in lowest terms, then s \| n (gcd(r,s)=1 implies s\|n since s \| n and gcd(k,m)=1). | yes | proved | `research/summaries/holdener_stanton_outlaws.md` |
 | `weiner-outlaw-no-bound` | The abundancy-outlaw search techniques (odd-perfect equivalence, t-bounds for (sigma(N)+t)/N) classify rationals that fail to be abundancy indices; they do not enumerate n attaining a given k+1/2. | no | asserted | `research/summaries/weiner_searching_outlaws.md` |
 

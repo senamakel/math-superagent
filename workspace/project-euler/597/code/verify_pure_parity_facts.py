@@ -49,4 +49,6 @@ for n in [3, 4, 5, 13]:
     e = exp(sum((-1)**c2par(k) * z**k / k for k in range(1, n + 1)))
     coef = series(e, z, 0, n + 1).removeO().coeff(z, n) * factorial(n)
     print(f"  n={n}: P(C(size,2)-sum even) = {coef.nsimplify()} = {float(coef):.5f}")
-print("  (Run result: this != torpids pure-race parity: n=3: 1/2 vs 7/18; n=4: 5/8? vs 19/36.)")
+print("  (Run result: this != torpids pure-race parity. Hand-checked: n=3 gives")
+print("   1/6 (cycle-block) vs 7/18 (torpids pure-race); n=4 gives 5/12 vs 19/36.)")
+print("  Closed form: A(z)=exp(arctan z)/sqrt(1+z^2); P(even)=1/2(1+[z^n]A(z)).")
