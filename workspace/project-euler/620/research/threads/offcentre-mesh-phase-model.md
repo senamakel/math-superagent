@@ -2,11 +2,27 @@
 
 ```thread
 question: What exactly are the tooth-phase congruences that make four planets (2x p, 2x q), each tangent to an off-centre sun S (s teeth, radius s/2pi) and an internal ring C (c teeth, radius c/2pi) with centre separation d, all mesh simultaneously — and does the resulting discrete count g(c,s,p,q) reproduce 9, 9, 205?
-status: model derived in full from tooth-phase congruences; oracle verification pending (no code yet)
-rests-on: assembly_condition_simple_planetary_guo (Guo 5.21-5.22), least_mesh_angle* (design-guide lattice), tangent_circle_center_ellipse
-blocked-by: phase_model_probe.py (idler-phase model, not the thread's W-invariant model) tested only 2 of 4 chi/gamma sign variants — both eps=+1 and eps=-1 return g=0. Remaining 2 variants (independent signs on gamma and beta coefficients) must be probed. If all 4 return 0, fall back to direct enumeration of the 9 arrangements for (16,5,5,6).
-next: (1) Extend phase_model_probe.py to probe all 4 independent sign combinations on the gamma-term and beta-term coefficients; (2) if all still return 0, enumerate the (16,5,5,6) configurations directly by tangency, compute tooth phases numerically, and output the 9 that survive — then work backwards from what they look like to the correct meshing condition.
+status: FIRST ORACLE MATCH — direct tangency enumeration (code/pattern/tangency_enum.py) reproduces g(16,5,5,6)=9 under the residue Q = sigma*rho*(beta-gamma) - eta*R*beta + theta*r*gamma (mod 1) with sign variant (sigma=-1, eta=-1, theta=-1); grid 2^20+1 points, COARSE_TOL=1e-4, TIGHT_TOL=1e-9. G(20)=205 pending.
+rests-on: assembly_condition_simple_planetary_guo (Guo 5.21-5.22), least_mesh_angle* (design-guide lattice), tangent_circle_center_ellipse, offcentre_two_positions_per_type
+blocked-by: (none hard) — the remaining work is G(20) verification of the winning variant and the closed-form reduction, not new sign-variant probes.
+next: (1) Generalize tangency_enum.py to accept (c,s,p,q) and run the (sigma=-1, eta=-1, theta=-1) variant over all 22 G(20) tuples, summing against 205 (TASKS.md STEP 1); (2) write the checked claim in code/out/ anchored to tangency_enum.txt (TASKS.md STEP 2); (3) derive the algebraic equation for Q_p(d) == Q_q(d) (mod 1) that replaces the 1M-point grid scan.
 ```
+
+## Winning variant (2025 run, checked g=9)
+
+Direct enumeration `code/pattern/tangency_enum.py` (output `code/out/tangency_enum.txt`)
+confirms the model's core prediction — arrangements are determined by d alone and
+the count is over isolated d-solutions of a residue congruence — and pins the
+sign convention. Residue per planet: `Q = sigma*rho*(beta-gamma) - eta*R*beta +
+theta*r*gamma` (mod 1), where `beta` = angle of planet centre about O (ring
+centre), `gamma` = angle about S (sun centre), `rho` = planet radius. The mirror
+identity `Q(L) = -Q(U)` holds exactly. Of the 8 independent (sigma, eta, theta)
+sign variants, **(sigma=-1, eta=-1, theta=-1) is the only one giving exactly
+g=9**, matching the oracle; the other seven give 6–10. All 9 valid d come from
+`pp=UU qq=UU` and `pp=LL qq=LL` (the two mirror representations of the same 9 d
+values); all six mixed UL combos give zero. This is the direct-enumeration
+fallback the thread prescribed, and it succeeded — see `code/out/tangency_enum.txt`
+and the claim note beside it.
 
 ## Why the coaxial lattice cannot transfer to PE620
 

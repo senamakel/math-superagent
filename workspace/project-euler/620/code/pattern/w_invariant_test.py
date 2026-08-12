@@ -435,23 +435,30 @@ def main():
     out("")
     out("Sets reproducing g(16,5,5,6)=9: %s" % (sets9 or "NONE"))
 
+    _g16g20 = {}
     for name, _, _ in SETS:
         if per[name][0] == 9:
             G16 = G_sum(16, 10_000_000, out)
             G20 = G_sum(20, 1_000_000, out)
+            _g16g20[name] = (G16[name], G20[name])
             out("")
             out("Set (%s): g-flag = 9, G(16) = %d (oracle 9), "
                 "G(20) = %d (oracle 205)"
                 % (name, G16[name], G20[name]))
-            good = (G16[name] == 9 and G20[name] == 205)
+            good = (_g16g20[name] == (9, 205))
             out("    -> %s" % ("AGREES 9/9/205" if good else "does not agree"))
 
     if sets9:
-        g16ok = False
-        g20ok = False
-        for name in sets9:
-            pass
-        verdict = "no set produced G-sums" if not sets9 else "see above"
+        agree = [name for name, _, _ in SETS
+                 if per[name][0] == 9 and name in _g16g20
+                 and _g16g20[name] == (9, 205)]
+        if agree:
+            verdict = ("set %s reproduces 9/9/205 (g(16,5,5,6)=9, G(16)=9,"
+                       " G(20)=205)" % agree)
+        else:
+            verdict = ("no set reproduces 9/9/205; sets with g(16,5,5,6)=9: %s"
+                       " (their G sums above disagree)"
+                       % [n for n, _, _ in SETS if per[n][0] == 9])
     else:
         verdict = ("no set (A/B/C/D) reproduces 9/9/205; best g(16,5,5,6) "
                    "counts: " + ", ".join(
