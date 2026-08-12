@@ -30,7 +30,18 @@ services:
     security_opt:
       - no-new-privileges:true
     pids_limit: 256
-    mem_limit: 2g
+    # 2g killed a live run outright: the kernel OOM-killed the Erdős–Gyárfás
+    # container mid-attempt (`oom` then `die exit=137`), which loses everything
+    # in flight and writes nothing to the log, so the run simply stops. The cap
+    # covers the Rust runtime, every concurrent child, and every Python
+    # subprocess they spawn together, and this work is graph enumeration and
+    # BFS over millions of states — problem 763 recorded the old cap in its own
+    # MEMORY.md as a mathematical ceiling, "exact BFS stops at N=14".
+    #
+    # A limit is kept because the sandbox requires one; it is the value that was
+    # wrong. Four gigabytes still leaves the host comfortable with several runs
+    # at once (30 GiB total, 19 available with three running).
+    mem_limit: 4g
     volumes:
       - type: bind
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
