@@ -1,10 +1,8 @@
-# Index — code/eg
+# Index — research/L1.2
 
 What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
-| `bruteforce_bound.py` | _(undescribed)_ |
-| `girth_survivors.py` | _(undescribed)_ |
-| `hand_dfs_check.py` | _(undescribed)_ |
-| `verify_cycles.py` | _(undescribed)_ |
+| `L0.0.md` | _(undescribed)_ |
+| `oeis_a007112.md` | _(undescribed)_ |
