@@ -188,7 +188,7 @@ fn a_middleware_that_actually_works_is_recorded_where_it_happened() {
 
 #[test]
 fn a_run_that_dies_says_so_on_the_console() {
-    // A live `organizer` retried the same call six times over two and a half
+    // A live background agent retried the same call six times over two and a half
     // minutes and then died on `openai response contained no choices`. The
     // retry ladder was visible and its outcome was not, so the run simply
     // stopped appearing. The error was in `trace.jsonl` the whole time, which
@@ -199,7 +199,7 @@ fn a_run_that_dies_says_so_on_the_console() {
     let path = RunTracer::journal_path(&directory);
     let _ = std::fs::remove_file(&path);
 
-    let tracer = RunTracer::new("organizer", Some(path.as_path()));
+    let tracer = RunTracer::new("background", Some(path.as_path()));
     tracer.on_event(&record(AgentEvent::RunFailed {
         run_id: RunId::new("agent-run-13"),
         error: "model error: openai response contained no choices".into(),

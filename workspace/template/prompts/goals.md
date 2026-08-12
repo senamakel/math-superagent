@@ -15,7 +15,7 @@ reject a child's plan that enumerates candidates instead of using that theory.
 Require a small-case check against the statement's own worked example before
 accepting a full-size run.
 
-Continue until every criterion is supported by evidence, or record a precise
-blocker and the missing input in `MEMORY.md`. Spawn independent tasks in
+Continue until every criterion is supported by evidence, or store a precise
+blocker and the missing input with remember_memory. Spawn independent tasks in
 parallel, retain their run IDs, steer them when the goal changes, and await
 every response needed to judge completion.

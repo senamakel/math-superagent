@@ -31,15 +31,14 @@
 use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
-use std::time::{SystemTime, UNIX_EPOCH};
 
 use tinyagents::graph::{GraphBuilder, NodeContext, NodeResult};
 
+use super::vector::VectorStore;
 use crate::agent::Result;
 use crate::agent::trace::RunTracer;
 
 use super::async_subagents::AsyncSubagentManager;
-use super::folder_index;
 use super::teams::TeamHandle;
 
 /// Attempts allowed before the loop reports what it has.
@@ -554,10 +553,10 @@ fn continuation_briefing(attempt: usize, resumed: bool) -> String {
         //
         // The attempt counter is in memory and the workspace is on disk, so
         // only the workspace can say whether this run is continuing something.
-        return "This run continues work already in the workspace: earlier programs, notes and \
-                beliefs are on disk. Read GOAL.md and MEMORY.md, then CONTINUE from what they \
-                say. Do not re-extract the statement or re-derive what MEMORY.md already \
-                records — establish the next unresolved thing and run a program that settles it. \
+        return "This run continues earlier work. Read GOAL.md, inspect existing artifacts, and \
+                call recall_memory for prior results, lessons, and failed approaches, then CONTINUE. \
+                Do not re-extract the statement or re-derive what Cognee already recalls — \
+                establish the next unresolved thing and run a program that settles it. \
                 Your very next action is a spawn: name the next unresolved thing and hand it to \
                 tool_builder. Two live runs spent ten minutes and two whole 12,000-token turns \
                 deciding what to spawn and never spawned anything."
@@ -569,8 +568,8 @@ fn continuation_briefing(attempt: usize, resumed: bool) -> String {
             .to_string()
     } else {
         format!(
-            "This is attempt {attempt}. Earlier attempts already wrote the workspace files; read \
-             GOAL.md and MEMORY.md and CONTINUE from there. Do not re-extract or re-document the \
+            "This is attempt {attempt}. Earlier attempts already produced artifacts and stored lessons; \
+             read GOAL.md, call recall_memory, and CONTINUE from there. Do not re-extract or re-document the \
              statement — that work is done, and repeating it is how this run fails."
         )
     }
@@ -605,148 +604,27 @@ fn has_executable_artifact(workspace: &Path) -> bool {
     })
 }
 
-/// Counts the distinct lessons a reflection produced.
-///
-/// A `LESSON:` line may carry several points as bullets; each is a separate
-/// thing the next attempt could act on, so they are counted individually.
-fn count_learnings(reflection: &str) -> usize {
-    let mut inside = false;
-    let mut count = 0;
-    for line in reflection.lines() {
-        let trimmed = line.trim();
-        if trimmed.to_uppercase().starts_with("LESSON:") {
-            inside = true;
-            if !trimmed[7..].trim().is_empty() {
-                count += 1;
-            }
-            continue;
-        }
-        if inside {
-            if trimmed.is_empty() {
-                continue;
-            }
-            if trimmed.starts_with('-') || trimmed.starts_with('*') {
-                count += 1;
-            } else if trimmed
-                .chars()
-                .next()
-                .is_some_and(|c| c.is_ascii_uppercase())
-                && trimmed.contains(':')
-            {
-                // A new labelled section ends the lesson block.
-                break;
-            }
-        }
-    }
-    count
-}
-
-/// Builds the file name a reflection is logged under.
-///
-/// The name carries the outcome so a directory listing alone shows which
-/// attempts taught the run something: `<ms>_nothing.md` when a reflection
-/// yielded no actionable lesson, `<ms>_<n>_learnings.md` otherwise.
-///
-/// It lands in `L0/` because a reflection is an original: the judgement of one
-/// attempt, written once, never rewritten. Folds of it are what the levels
-/// above hold.
-fn reflection_filename(workspace: Option<&Path>, millis: u128, learnings: usize) -> String {
-    let batch = workspace.map_or(0, |workspace| {
-        super::context_tree::open_batch(workspace, "reflections", 0)
-    });
-    let folder = format!("reflections/{}", super::context_tree::batch_dir(0, batch));
-    if learnings == 0 {
-        format!("{folder}/{millis}_nothing.md")
-    } else {
-        format!("{folder}/{millis}_{learnings:02}_learnings.md")
-    }
-}
-
-/// Writes a reflection to the workspace log.
-///
-/// Failure is deliberately silent to the caller: the reflection has already
-/// been folded into the loop state, and losing its archive copy must not cost
-/// the run the lesson itself.
+/// Persists the reflection in Cognee without making memory availability a
+/// precondition for continuing the solution loop.
 async fn log_reflection(
-    workspace: Option<&Path>,
+    memory: &VectorStore,
     attempt: usize,
     reflection: &str,
     tracer: Option<&Arc<RunTracer>>,
 ) {
-    let Some(workspace) = workspace else {
-        return;
-    };
-    let millis = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map(|elapsed| elapsed.as_millis())
-        .unwrap_or_default();
-    let learnings = count_learnings(reflection);
-    let relative = reflection_filename(Some(workspace), millis, learnings);
-    let path = workspace.join(&relative);
-    if let Some(parent) = path.parent() {
-        let _ = tokio::fs::create_dir_all(parent).await;
-    }
-    let body = format!(
-        "# Reflection after attempt {attempt}\n\n{}\n",
-        reflection.trim()
-    );
-    if tokio::fs::write(&path, body).await.is_ok() {
-        index_reflection(workspace, &relative, attempt, reflection, learnings).await;
-        if let Some(tracer) = tracer {
-            tracer.note(&format!("logged {relative}"));
+    let source = format!("reflection agent, attempt {attempt}");
+    match memory.remember(reflection.trim(), &source).await {
+        Ok(id) => {
+            if let Some(tracer) = tracer {
+                tracer.note(&format!("stored reflection memory {id}"));
+            }
+        }
+        Err(error) => {
+            if let Some(tracer) = tracer {
+                tracer.note(&format!("reflection memory failed: {error}"));
+            }
         }
     }
-}
-
-/// Records the new reflection in `reflections/INDEX.md`.
-///
-/// The folder carries an index for the same reason `research/` and `code/lib/`
-/// do: a directory of `1786436304918_01_learnings.md` says when each attempt
-/// was judged and nothing about what any of them found, so anyone looking for
-/// the attempt that established something has to open all of them. The
-/// filename already encodes whether a reflection taught the run anything; the
-/// index is what says *what*.
-///
-/// Written directly rather than through the index tools because no agent is in
-/// the loop here — the solution graph writes this file itself — and best
-/// effort for the same reason the reflection body is: the lesson is already in
-/// the loop state, and losing a row must not cost the run anything.
-async fn index_reflection(
-    workspace: &Path,
-    relative: &str,
-    attempt: usize,
-    reflection: &str,
-    learnings: usize,
-) {
-    let index_path = workspace.join("reflections").join(folder_index::INDEX_FILE);
-    let existing = tokio::fs::read_to_string(&index_path)
-        .await
-        .unwrap_or_default();
-    let mut entries = folder_index::parse(&existing);
-    // Rows name the level the reflection sits in, not just the file, because
-    // the index is the root of the reflections tree rather than a listing of
-    // the folder it happens to share a name with.
-    let name = relative.strip_prefix("reflections/").unwrap_or(relative);
-    let verdict = if reflection.to_uppercase().contains("VERDICT: SOLVED") {
-        "solved"
-    } else {
-        "unsolved"
-    };
-    let summary = extract_lesson(reflection);
-    let summary = summary.trim().replace('\n', " ");
-    let description = format!(
-        "Attempt {attempt}, judged {verdict}, {learnings} learning(s). {}",
-        if summary.is_empty() {
-            "No actionable lesson.".to_string()
-        } else {
-            summary
-        }
-    );
-    entries.insert(name.to_string(), description);
-    // The reflections index is written by the loop and read by the planners;
-    // no agent folds it, so it carries no synthesis to preserve.
-    let rendered = folder_index::render("reflections", &entries, &folder_index::brief(&existing));
-    let _ = tokio::fs::write(&index_path, rendered).await;
 }
 
 /// Judges the last attempt and records the lesson it yields.
@@ -754,6 +632,7 @@ async fn reflect_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
+    memory: &VectorStore,
     patterns: &PatternMailbox,
     teams: &[TeamHandle],
     mut state: SolutionState,
@@ -822,7 +701,7 @@ async fn reflect_step(
         .await
     };
     let (reflection, rescue) = tokio::join!(reflection, rescue);
-    log_reflection(workspace, state.attempts, &reflection, tracer).await;
+    log_reflection(memory, state.attempts, &reflection, tracer).await;
     state.fresh_context = merge_context(&[("Pattern analysis", &patterns), ("Research", &rescue)]);
 
     let upper = reflection.to_uppercase();
@@ -960,9 +839,9 @@ async fn diversify_step(
             format!(
                 "Read the reference library against this investigation and turn it into usable \
                  knowledge. For each source that bears on the problem, record what it actually \
-                 establishes and what it implies here, and keep research/INDEX.md current as \
-                 the way in. Say which sources do not help and why. Flag anything that \
-                 contradicts what MEMORY.md currently asserts.\n\n\
+                 establishes and what it implies here. Store source-backed durable findings with \
+                 remember_memory. Say which sources do not help and why. Flag anything that \
+                 contradicts recalled memory.\n\n\
                  Problem:\n{}\n\nJust gathered:\n{library}\n\n{}",
                 state.problem,
                 state.lesson_briefing()
@@ -1059,6 +938,7 @@ pub(super) async fn run(
     subagents: AsyncSubagentManager,
     tracer: Option<Arc<RunTracer>>,
     workspace: Option<PathBuf>,
+    memory: VectorStore,
     teams: Vec<TeamHandle>,
     patterns: PatternMailbox,
     state: SolutionState,
@@ -1071,6 +951,7 @@ pub(super) async fn run(
     let reflect_tracer = tracer.clone();
     let attempt_workspace = workspace.clone();
     let reflect_workspace = workspace;
+    let reflect_memory = memory;
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
     let pattern_mailbox = patterns;
@@ -1102,12 +983,14 @@ pub(super) async fn run(
             let teams = reflect_teams.clone();
             let tracer = reflect_tracer.clone();
             let workspace = reflect_workspace.clone();
+            let memory = reflect_memory.clone();
             async move {
                 Ok(NodeResult::Update(
                     reflect_step(
                         &subagents,
                         tracer.as_ref(),
                         workspace.as_deref(),
+                        &memory,
                         &mailbox,
                         &teams,
                         state,

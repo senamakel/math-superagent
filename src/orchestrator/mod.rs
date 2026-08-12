@@ -3,8 +3,6 @@
 pub(crate) mod async_subagents;
 mod checkpoint;
 mod claims;
-mod code_layout;
-mod context_tree;
 mod digest;
 mod documents;
 mod folder_index;
@@ -14,7 +12,6 @@ mod oeis;
 mod patch;
 mod patterns;
 mod readable;
-mod recall;
 mod requests;
 mod solutions;
 mod teams;
@@ -52,12 +49,12 @@ use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
 use documents::WorkspaceDocuments;
 use patterns::PatternTool;
-use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
+use vector::{RecallMemoryTool, RememberMemoryTool, VectorStore};
 
 pub use tinyagents::harness::host::AgentDefinition;
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 13] = [
+const SPECIALISTS: [&str; 12] = [
     "research",
     "tool_builder",
     "coder",
@@ -70,7 +67,6 @@ const SPECIALISTS: [&str; 13] = [
     "inventor",
     "librarian",
     "scholar",
-    "organizer",
 ];
 
 /// Agents the pattern agent may commission work from.
@@ -83,7 +79,7 @@ const SPECIALISTS: [&str; 13] = [
 const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 15] = [
+const DELEGATES: [&str; 14] = [
     "research",
     "tool_builder",
     "coder",
@@ -98,7 +94,6 @@ const DELEGATES: [&str; 15] = [
     "inventor",
     "librarian",
     "scholar",
-    "organizer",
 ];
 
 const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
@@ -139,8 +134,6 @@ const INVENTOR_PROMPT: &str = include_str!("../prompts/inventor.md");
 const LIBRARIAN_PROMPT: &str = include_str!("../prompts/librarian.md");
 
 const SCHOLAR_PROMPT: &str = include_str!("../prompts/scholar.md");
-
-const ORGANIZER_PROMPT: &str = include_str!("../prompts/organizer.md");
 
 const GOALS_PROMPT: &str = include_str!("../prompts/goals.md");
 
@@ -230,12 +223,7 @@ pub struct OrchestratorAgent {
     subagents: AsyncSubagentManager,
     tracer: Arc<RunTracer>,
     workspace: PathBuf,
-    /// What the workspace looked like when the organizer last filed it.
-    ///
-    /// Shared with the housekeeping follow-up inside the subagent manager, so
-    /// the standing team and the follow-up cannot wake each other on filing the
-    /// other just did.
-    filed: Arc<std::sync::Mutex<Option<u64>>>,
+    memory: VectorStore,
 }
 
 impl std::fmt::Debug for OrchestratorAgent {
@@ -271,12 +259,9 @@ impl OrchestratorAgent {
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
         convert_problem_statement(&workspace);
-        seed_tree_roots(&workspace);
-        // One filing fingerprint, shared by the standing organizer team and by
-        // the housekeeping follow-up. Two separate ones would each read the
-        // other's filing as new work and wake each other indefinitely.
-        let filed: Arc<std::sync::Mutex<Option<u64>>> = Arc::default();
-        let async_subagents = gated_subagents(budget, &tracer, &workspace, &filed);
+        let vector_store = VectorStore::from_env()?;
+        let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()))
+            .with_session_memory(vector_store.clone());
         let documents = WorkspaceDocuments::new(workspace.clone())?;
         // Commits the workspace after every successful write, so a rewritten
         // solution or an edited belief is recoverable rather than lost.
@@ -285,7 +270,6 @@ impl OrchestratorAgent {
         );
         let mut prompts = RolePrompts::load(&workspace)?;
 
-        let vector_store = VectorStore::from_env()?;
         let SearchTools { exa, oeis } = search_tools(research_enabled, &documents)?;
 
         let mut research_harness = build_research_harness(
@@ -300,7 +284,6 @@ impl OrchestratorAgent {
             },
         );
         research_harness.push_middleware(checkpoint.clone());
-        register_recall(&mut research_harness, &workspace);
         async_subagents.register(
             "research",
             Arc::new(research_harness),
@@ -341,7 +324,6 @@ impl OrchestratorAgent {
                 inventor: prompts.inventor,
                 librarian: prompts.librarian,
                 scholar: prompts.scholar,
-                organizer: prompts.organizer,
             },
         )?;
 
@@ -351,7 +333,6 @@ impl OrchestratorAgent {
                 model: &model,
                 budget,
                 tracer: &tracer,
-                workspace: &workspace,
                 documents: &documents,
                 vector_store: &vector_store,
             },
@@ -367,7 +348,7 @@ impl OrchestratorAgent {
             subagents: async_subagents,
             tracer,
             workspace,
-            filed,
+            memory: vector_store,
         })
     }
 
@@ -383,7 +364,8 @@ impl OrchestratorAgent {
     /// Returns an error only when the loop graph cannot be compiled or run; a
     /// failing specialist becomes a lesson rather than a failure.
     pub async fn solve(&self, problem: impl Into<String>) -> Result<String> {
-        let state = solutions::SolutionState::new(problem);
+        let problem = problem.into();
+        let state = solutions::SolutionState::new(problem.clone());
         // The support teams run *beside* the loop, not inside it. Everything
         // they do — gathering sources, digesting them, keeping the workspace
         // navigable — is work the solver benefits from but must never wait on.
@@ -398,6 +380,7 @@ impl OrchestratorAgent {
             self.subagents.clone(),
             Some(self.tracer.clone()),
             Some(self.workspace.clone()),
+            self.memory.clone(),
             support.clone(),
             patterns,
             state,
@@ -414,7 +397,26 @@ impl OrchestratorAgent {
                 team.cycles()
             ));
         }
-        Ok(finished?.outcome())
+        let outcome = match finished {
+            Ok(finished) => finished.outcome(),
+            Err(error) => {
+                let _ = self
+                    .memory
+                    .remember_session(
+                        "orchestrator",
+                        "solution-loop",
+                        &problem,
+                        &format!("SESSION FAILED: {error}"),
+                    )
+                    .await;
+                return Err(error);
+            }
+        };
+        let _ = self
+            .memory
+            .remember_session("orchestrator", "solution-loop", &problem, &outcome)
+            .await;
+        Ok(outcome)
     }
 
     /// Starts the long-lived teams that work alongside the solution loop.
@@ -435,7 +437,6 @@ impl OrchestratorAgent {
             }
             let subagents = self.subagents.clone();
             let workspace = self.workspace.clone();
-            let filed = self.filed.clone();
             let outbox = patterns.clone();
             // What the pattern team has already looked at. Idleness has to be
             // decided *before* the agent runs: asking it to notice that
@@ -459,34 +460,9 @@ impl OrchestratorAgent {
                     // it has already seen can only repeat itself or invent
                     // something. Decided before the agent runs, so an idle
                     // cycle costs a directory walk rather than a model call.
-                    let skip = match name {
-                        "patterns" => results_unchanged(&workspace, &analysed),
-                        // The organizer files the same tree the follow-up
-                        // files, through the same gate, so a cycle that finds
-                        // nothing new costs a directory walk rather than a
-                        // model call and a walk of the workspace by an agent.
-                        "background" => filing_unchanged(&workspace, &filed),
-                        _ => None,
-                    };
-                    // Maintaining the tree outranks extending it. A library
-                    // whose root nobody can afford to read is not a library
-                    // the run has, and every cycle spent gathering while the
-                    // root is over budget charges every other role for it.
-                    if name == "research"
-                        && let Some(work) = context_tree::briefing(workspace.as_path())
-                    {
-                        let _ = write!(prompt, "\n\n{work}");
-                    }
-                    // The same argument one folder over. Asking an organizer to
-                    // notice that a routine has been typed out three times
-                    // costs it a read of every program in `code/` to discover,
-                    // which is more than a cycle can afford — and it is a
-                    // count, not a judgement, so it is counted here instead.
-                    if name == "background"
-                        && let Some(work) = code_layout::briefing(workspace.as_path())
-                    {
-                        let _ = write!(prompt, "\n\n{work}");
-                    }
+                    let skip = (name == "patterns")
+                        .then(|| results_unchanged(&workspace, &analysed))
+                        .flatten();
                     for message in &inbox {
                         let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);
                     }
@@ -537,17 +513,39 @@ impl OrchestratorAgent {
     ///
     /// Returns any provider, specialist, tool, policy, or loop error.
     pub async fn run(&self, run_id: impl Into<String>, task: impl Into<String>) -> Result<String> {
+        let run_id = run_id.into();
+        let task = task.into();
         let run = self
             .inner
             .invoke(
-                run_id,
+                run_id.clone(),
                 vec![
                     Message::system(self.system_prompt.clone()),
-                    Message::user(task),
+                    Message::user(task.clone()),
                 ],
             )
-            .await?;
-        Ok(run.text().unwrap_or_default())
+            .await;
+        let run = match run {
+            Ok(run) => run,
+            Err(error) => {
+                let _ = self
+                    .memory
+                    .remember_session(
+                        "orchestrator",
+                        &run_id,
+                        &task,
+                        &format!("SESSION FAILED: {error}"),
+                    )
+                    .await;
+                return Err(error);
+            }
+        };
+        let output = run.text().unwrap_or_default();
+        let _ = self
+            .memory
+            .remember_session("orchestrator", &run_id, &task, &output)
+            .await;
+        Ok(output)
     }
 }
 
@@ -562,7 +560,7 @@ fn standing_teams() -> [(
     teams::Completion,
     teams::TeamBudget,
     &'static str,
-); 3] {
+); 2] {
     [
         (
             "research",
@@ -574,53 +572,25 @@ fn standing_teams() -> [(
                  and a share of the attention of every agent that reads the library \
                  afterwards, so a source nobody needed is a cost the whole run pays. Fetch \
                  only when one of these holds.\n\
-                 - You are told below that the summary tree needs work. Do that instead, and \
-                   gather nothing this cycle.\n\
                  - A message from the solver says an attempt was STUCK. Then find the one \
                    source that bears on what it says is blocking, and only that.\n\
-                 - research/ROOT.md names a specific gap, and you know a specific source \
+                 - research/REQUESTS.md names a specific gap, and you know a specific source \
                    that closes it. A general wish for more background is not a gap.\n\
                  None of those holding is the normal case, and the right answer then is to \
                  reply NOTHING FURTHER and spend nothing. Do not fetch to look busy, do not \
                  fetch a survey of a field the run has already picked its way through, and \
-                 do not re-fetch what research/INDEX.md already lists. When you do gather, \
-                 file it under research/, describe it, and say in research/ROOT.md what the \
-                 library now establishes that it did not before.",
+                 use recall_memory before fetching so you do not re-fetch known material. When you do gather, \
+                 file it under research/, describe it, and store the verified finding with \
+                 remember_memory so later runs can recall it.",
         ),
         (
             "patterns",
             "pattern_finder",
             teams::Completion::Standing,
             teams::TeamBudget::custodial(),
-            "Look for exploitable structure in the results this run has already computed.                  Read what is on disk, extract the integer sequences in it, and run the                  sequence tools over them. Where a check needs terms the run has not                  computed, write and run the program yourself or commission it — a                  conjecture tested only on the data that suggested it is untested. Report                  only regularities that hold exactly over every term supplied, say plainly                  that they are conjectures, and give the first term that would falsify                  each. An invented pattern costs the run more than no pattern, so when the                  results have not changed since you last looked, or hold too few terms to                  say anything exact, reply NOTHING FURTHER rather than reaching. Record                  what you do find in SCRATCHPAD.md, and promote it to MEMORY.md only once                  it has survived an attempt to break it.",
-        ),
-        (
-            "background",
-            "organizer",
-            teams::Completion::Standing,
-            teams::TeamBudget::custodial(),
-            "Keep the workspace navigable. Refresh the folder indexes so they match what is \
-                 on disk, describe any file that has no description, and leave reflections/ \
-                 alone — the loop writes that itself. Change nothing a result or derivation \
-                 depends on. Reply with NOTHING FURTHER when there is nothing to tidy right \
-                 now; you will be asked again once the run has produced more.",
+            "Look for exploitable structure in the results this run has already computed.                  Read what is on disk, extract the integer sequences in it, and run the                  sequence tools over them. Where a check needs terms the run has not                  computed, write and run the program yourself or commission it — a                  conjecture tested only on the data that suggested it is untested. Report                  only regularities that hold exactly over every term supplied, say plainly                  that they are conjectures, and give the first term that would falsify                  each. An invented pattern costs the run more than no pattern, so when the                  results have not changed since you last looked, or hold too few terms to                  say anything exact, reply NOTHING FURTHER rather than reaching. Record                  provisional work in SCRATCHPAD.md; after it survives an attempt to break                  it, store the verified finding with remember_memory.",
         ),
     ]
-}
-
-/// Builds the subagent manager with housekeeping gated on the workspace having
-/// changed since the organizer last filed it.
-fn gated_subagents(
-    budget: RunBudget,
-    tracer: &Arc<RunTracer>,
-    workspace: &Path,
-    filed: &Arc<std::sync::Mutex<Option<u64>>>,
-) -> AsyncSubagentManager {
-    let workspace = workspace.to_path_buf();
-    let filed = filed.clone();
-    AsyncSubagentManager::new(budget, Some(tracer.clone())).with_filing_gate(Arc::new(move || {
-        filing_unchanged(&workspace, &filed).is_none()
-    }))
 }
 
 /// Folders holding what a program produced, which is what the pattern agent
@@ -631,48 +601,6 @@ fn gated_subagents(
 /// cycle look like it had something fresh to read — the team would wake itself
 /// up forever on its own notes.
 const RESULT_FOLDERS: [&str; 2] = ["code/out", "code"];
-
-/// What the organizer writes, and therefore what its own idleness check must
-/// ignore.
-///
-/// The organizer rewrites `INDEX.md` in every folder it files. Fingerprinting
-/// the tree without excluding them means every cycle sees a changed workspace —
-/// the one it just changed — so the team wakes itself forever on its own
-/// filing. It is the `SCRATCHPAD.md` lesson from the pattern team, one folder
-/// wider.
-const FILED_EXCLUDED: [&str; 1] = ["INDEX.md"];
-
-/// Whether the workspace has changed since the organizer last filed it.
-///
-/// Same argument as [`results_unchanged`], and the same evidence. Filing is
-/// cheap to *do* and expensive to *decide*: an organizer asked to notice that
-/// nothing has changed must walk the workspace and spend a model call to
-/// discover it, which is most of what a working cycle costs. Two live runs spent
-/// 49% and 38% of every model call they made on the organizer, against 11% and
-/// 4% on the agent actually solving the problem — and the indexes still carried
-/// undescribed rows, so the budget did not even buy the filing.
-///
-/// The gate is shared between the standing team and the follow-up that fires
-/// after a code-writing run, because they file the same tree: two separate
-/// fingerprints would each see the other's work as new and wake each other.
-///
-/// An empty workspace reads as unchanged, so a run that has produced nothing
-/// idles rather than indexing empty folders.
-fn filing_unchanged(
-    workspace: &Path,
-    filed: &Arc<std::sync::Mutex<Option<u64>>>,
-) -> Option<teams::Cycle> {
-    if !workspace.is_dir() {
-        return Some(teams::Cycle::Idle);
-    }
-    let current = teams::fingerprint_excluding(workspace, &FILED_EXCLUDED);
-    let mut seen = filed.lock().ok()?;
-    if *seen == Some(current) {
-        return Some(teams::Cycle::Idle);
-    }
-    *seen = Some(current);
-    None
-}
 
 /// Whether the run's computed results are the same as last time this looked.
 ///
@@ -774,7 +702,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     // workspace's own record, and the note store that outlives it. They are
     // listed together because a caller deciding who to delegate to is asking
     // one question — can this role find out what the run already has.
-    let memory_tools = ["search_workspace", "recall_research"];
+    let memory_tools = ["recall_memory", "remember_memory"];
     let mut registry = AgentRegistry::new();
     registry.register(
         AgentDefinition::new(
@@ -792,7 +720,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
-                .chain(["recall_research", "remember_research", "search_workspace"])
+                .chain(memory_tools)
                 .chain(document_tools),
         ),
     )?;
@@ -850,12 +778,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .with_tools(
                     ["write_tool_file", "execute_command", "apply_patch"]
                         .into_iter()
-                        // The tool-builder is the one exclusion, and only from
-                        // the workspace half: it writes probes and throwaway
-                        // experiments, so a similarity search over its own
-                        // output would mostly return them.
-                        .chain((name != "tool_builder").then_some(memory_tools[0]))
-                        .chain([memory_tools[1]])
+                        .chain(memory_tools)
                         .chain(document_tools),
                 ),
         )?;
@@ -883,7 +806,7 @@ fn support_agents(
             "Scores how an attempt was conducted and decides whether the run must start over.",
         )
         .with_model("openrouter")
-        .with_tools([document_tools[1]]),
+        .with_tools(memory_tools.into_iter().chain([document_tools[1]])),
         AgentDefinition::new(
             "reflection",
             "Reflection Agent",
@@ -935,7 +858,7 @@ fn support_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
-                .chain(["recall_research", "remember_research", memory_tools[0]])
+                .chain(memory_tools)
                 .chain(document_tools),
         ),
     ]
@@ -948,7 +871,7 @@ fn support_agents(
     .collect()
 }
 
-/// Returns the librarian, scholar, organizer, and goals definitions.
+/// Returns the librarian, scholar, and goals definitions.
 ///
 /// Split from [`support_agents`] only to keep each function readable; these
 /// are the roles that build and read the reference library, plus the worker
@@ -981,19 +904,7 @@ fn library_agents(
              records what each source establishes, and maintains a navigable digest of it.",
         )
         .with_model("openrouter")
-        .with_tools(
-            ["recall_research", "remember_research", memory_tools[0]]
-                .into_iter()
-                .chain(document_tools),
-        ),
-        AgentDefinition::new(
-            "organizer",
-            "Organizer Agent",
-            "Keeps the workspace navigable: folder indexes, research layout, and the toolkit \
-             catalogue.",
-        )
-        .with_model("openrouter")
-        .with_tools(document_tools),
+        .with_tools(memory_tools.into_iter().chain(document_tools)),
         AgentDefinition::new(
             "goals",
             "Goals Agent",
@@ -1039,7 +950,6 @@ struct RolePrompts {
     inventor: String,
     librarian: String,
     scholar: String,
-    organizer: String,
 }
 
 /// Every role's assembled system prompt, for inspection.
@@ -1123,7 +1033,6 @@ impl RolePrompts {
             ("inventor", self.inventor.as_str()),
             ("librarian", self.librarian.as_str()),
             ("scholar", self.scholar.as_str()),
-            ("organizer", self.organizer.as_str()),
         ]
     }
 }
@@ -1133,226 +1042,60 @@ impl RolePrompts {
 /// `AGENTS.md` is the method policy and applies to everyone. Nothing else does.
 const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
 
-/// Workspace files loaded into each role's system prompt, beyond
-/// [`UNIVERSAL_CONTEXT`].
-///
-/// Context is authority and it is also noise. Loading all six working files
-/// into all eight agents made every specialist read the orchestrator's task
-/// list and the tool-builder's scratch arithmetic, which buries the part that
-/// actually governs its own decisions. Each list below is chosen for what the
-/// role has to decide:
-///
-/// * `research/INDEX.md` lists what the librarian has already gathered, so it
-///   does not download the same paper twice.
-/// * `GOAL.md` states the objective and its completion criteria. Reflection
-///   needs it most of anyone — judging "solved" against criteria it cannot see
-///   is guesswork, and a wrong `SOLVED` ends the whole investigation.
-/// * `MEMORY.md` records established results and, critically, failed
-///   approaches. The inventor must have it or it will re-propose exactly what
-///   already failed, which is the one thing it exists not to do.
-/// * `SCRATCHPAD.md` holds provisional data. The pattern agent wants it
-///   because raw computed terms are its input; the reflection agent must not,
-///   because unsettled scratch work is not evidence of progress.
-/// * `TASKS.md` tracks what is done and outstanding, so it goes to the roles
-///   that plan and execute, not to the ones answering a single question.
-/// * `config.toml` carries runtime limits and only the executing roles act
-///   on them.
+/// Workspace artifacts loaded into each role's system prompt, beyond
+/// [`UNIVERSAL_CONTEXT`]. Durable knowledge is not duplicated here: every role
+/// recalls it from Cognee with `recall_memory` and can store verified findings
+/// with `remember_memory`.
 fn role_context(role: &str) -> &'static [&'static str] {
     match role {
-        // Plans and combines: needs the objective, the plan, and what is known,
-        // plus both catalogues. What has already been built and what has
-        // already been gathered both change what is worth delegating next, and
-        // an index costs a few hundred tokens where the files it describes cost
-        // tens of thousands.
         "orchestrator" | "goals" => &[
             "config/config.toml",
             "GOAL.md",
             "TASKS.md",
-            "MEMORY.md",
             "code/lib/INDEX.md",
-            "research/ROOT.md",
-            "research/INDEX.md",
-            // What the library establishes, one row per claim, and which
-            // directions the run is pursuing. Both are derived from disk, so
-            // neither can drift from the notes; both are what a planner needs
-            // to decide what is worth delegating rather than re-establishing.
-            // The threads table is where a dead end is recorded, which is the
-            // single most useful row a planner can read.
             "research/CLAIMS.md",
             "research/THREADS.md",
-            // What the library *means* for this problem, as against
-            // `research/INDEX.md`, which says what each file is. The index
-            // makes every role re-synthesise thirteen one-line descriptions
-            // for itself; this is the synthesis, written once by the research
-            // team and read by everyone.
             "CONTEXT.md",
-            // What every previous attempt was judged to have established, in
-            // one table. `MEMORY.md` records beliefs; this records the
-            // attempt-by-attempt record that produced them, so a planner can
-            // see which attempt is worth continuing rather than starting over.
-            "reflections/ROOT.md",
-            "reflections/INDEX.md",
         ],
-        // Executes: needs everything the plan depends on, its own scratch, and
-        // the catalogue of helpers the run has already built and verified —
-        // without it the tool-builder rewrites routines it wrote an hour ago.
-        // It gets the research index too, so a constant or a formula it is
-        // about to re-derive can be looked up instead.
-        // The two roles that write and run code need the same picture: what is
-        // being attempted, what is already built, and the provisional numbers
-        // a derivation is sitting on.
-        // They also get `code/`: the rules for working there travel with the
-        // folder, and its index says which programs exist and what established
-        // each is correct — which is what stops the run writing a fourth
-        // variant of a check it already has.
-        // The solver joins them for the same reason: an encoding rests on what
-        // the run believes about the objects being encoded, and `CLAIMS.md` is
-        // where a closed form or a bound that removes half the constraints is
-        // recorded.
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
         | "symbolic_math" | "lean_prover" => &[
             "config/config.toml",
             "GOAL.md",
             "TASKS.md",
-            "MEMORY.md",
             "SCRATCHPAD.md",
             "code/AGENTS.md",
             "code/INDEX.md",
             "code/lib/INDEX.md",
-            "research/ROOT.md",
-            "research/INDEX.md",
-            // A constant, a bound, or a closed form the library already
-            // establishes is one row here and an afternoon of re-derivation
-            // otherwise. The `holds-here` column is the load-bearing part:
-            // implementing a theorem whose hypotheses fail here produces a
-            // program that runs and computes the wrong thing.
             "research/CLAIMS.md",
             "CONTEXT.md",
         ],
-        // Judges: needs the criteria and the record, never provisional work.
-        // The workspace index is the exception worth making — deciding whether
-        // an answer was actually produced means knowing which artifacts exist,
-        // and the index says what each one is without the derivations
-        // themselves. It still does not see `SCRATCHPAD.md`.
-        // It also sees the reflections index — its own back-catalogue. Judging
-        // PROGRESS means judging *relative to previous attempts*, and a verdict
-        // on whether this attempt established something new is guesswork
-        // without the record of what the earlier ones established.
-        // Judges the conduct of an attempt, not its mathematics. It gets the
-        // criteria it is judging against and the record of what earlier
-        // attempts established — enough to tell a run repeating a disproved
-        // belief from one exploring honestly — and nothing that would let it
-        // start solving. No `SCRATCHPAD.md`: provisional arithmetic is not
-        // evidence about how an attempt was conducted.
-        "judge" => &["GOAL.md", "MEMORY.md", "INDEX.md", "reflections/INDEX.md"],
-        "reflection" => &[
-            "GOAL.md",
-            "TASKS.md",
-            "MEMORY.md",
-            "INDEX.md",
-            "reflections/ROOT.md",
-            "reflections/INDEX.md",
-        ],
-        // Analyses computed data: needs the numbers, not the plan. The toolkit
-        // catalogue lets it reuse a verified helper rather than reimplement the
-        // arithmetic it is about to check.
+        "judge" => &["GOAL.md", "INDEX.md"],
+        "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md"],
         "pattern_finder" => &[
             "GOAL.md",
-            "MEMORY.md",
             "SCRATCHPAD.md",
             "code/lib/INDEX.md",
-            // A regularity the literature already explains is not a conjecture
-            // worth chasing, and knowing that is the difference between
-            // deriving a result and rediscovering one.
             "CONTEXT.md",
         ],
-
-        // Digests sources into knowledge. The one role that legitimately needs
-        // nearly everything: it judges each source against what the run is
-        // trying to do, already believes, and is currently attempting, and a
-        // source's value cannot be assessed without all three. It sees
-        // `SCRATCHPAD.md` because a half-finished derivation is exactly the
-        // kind of thing a paper resolves.
         "scholar" => &[
             "GOAL.md",
             "TASKS.md",
-            "MEMORY.md",
             "SCRATCHPAD.md",
-            "research/ROOT.md",
-            "research/INDEX.md",
-            // The role that writes claim blocks must see the ones already
-            // written: a source is worth reading for what it settles that the
-            // ledger does not, and a source contradicting a standing claim is
-            // the most valuable thing the scholar can find. It reads the
-            // threads for the same reason — a paper is worth most to the
-            // direction currently blocked on it.
             "research/CLAIMS.md",
             "research/THREADS.md",
-            // It reads what the library is already taken to establish, so a
-            // new source is judged against the standing brief rather than
-            // re-stating it.
             "CONTEXT.md",
         ],
-        // Organises rather than reasons. It needs the objective, to judge what
-        // is worth surfacing, and every index it maintains — but not
-        // `MEMORY.md` or `SCRATCHPAD.md`: the run's beliefs and provisional
-        // arithmetic are not its business, and giving it opinions about the
-        // mathematics is how a filing job turns into an editing job.
-        "organizer" => &[
-            "GOAL.md",
-            "TASKS.md",
-            "INDEX.md",
-            "code/INDEX.md",
-            "code/lib/INDEX.md",
-            "research/ROOT.md",
-            "research/INDEX.md",
-        ],
-        // Work against the record and the shelf. The inventor needs
-        // `MEMORY.md` for its failed-approaches section above all, since
-        // re-proposing what already failed is the one thing it exists not to
-        // do; research needs the same file so it does not re-establish a known
-        // fact; the librarian needs it so it does not chase a question already
-        // answered. All three get the research index so none re-fetches what
-        // is already on disk.
         "librarian" | "research" => &[
             "GOAL.md",
-            "MEMORY.md",
-            "research/ROOT.md",
-            "research/INDEX.md",
-            // What the library already establishes, so a search is for what is
-            // missing rather than for what is on disk, and what each direction
-            // is blocked on, which is the best statement of the gap a search
-            // could be aimed at.
             "research/CLAIMS.md",
             "research/THREADS.md",
-            // What this library's own sources cite, ranked by how many of them
-            // agree. A source three papers cite is the standard reference for
-            // the subject, and no rephrasing of a query surfaces that.
             "research/FRONTIER.md",
-            // The research team maintains this, and its Gaps section is the
-            // list of what to look for next. Without it the team re-derives
-            // its own agenda every cycle.
             "CONTEXT.md",
         ],
-        // The inventor gets the reflections index on top, for the same reason
-        // it gets `MEMORY.md`: the one thing it exists not to do is re-propose
-        // an approach that already failed, and the index names each failure
-        // with the attempt that produced it.
         "inventor" => &[
             "GOAL.md",
-            "MEMORY.md",
-            "research/ROOT.md",
-            "research/INDEX.md",
-            // The dead threads are the second half of its failed-approaches
-            // record: `MEMORY.md` says which attempts failed, the thread table
-            // says which *directions* are closed and why, and re-proposing one
-            // is the single thing this role exists not to do.
             "research/THREADS.md",
             "research/CLAIMS.md",
-            "reflections/ROOT.md",
-            "reflections/INDEX.md",
-            // A genuinely different approach has to start from theory the run
-            // can actually reach. This says which theory that is.
             "CONTEXT.md",
         ],
         _ => &[],
@@ -1392,7 +1135,6 @@ impl RolePrompts {
             inventor: role("inventor", INVENTOR_PROMPT)?,
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
             scholar: role("scholar", SCHOLAR_PROMPT)?,
-            organizer: role("organizer", ORGANIZER_PROMPT)?,
         })
     }
 }
@@ -1404,7 +1146,6 @@ struct Planners<'a> {
     model: &'a Arc<dyn ChatModel<()>>,
     budget: RunBudget,
     tracer: &'a Arc<RunTracer>,
-    workspace: &'a Path,
     documents: &'a WorkspaceDocuments,
     vector_store: &'a VectorStore,
 }
@@ -1455,8 +1196,7 @@ fn build_planner_harness<const N: usize>(
     for tool in parts.documents.tools() {
         register_resilient(&mut harness, tool);
     }
-    register_recall(&mut harness, parts.workspace);
-    register_note_recall(&mut harness, parts.vector_store);
+    register_memory(&mut harness, parts.vector_store);
     harness
 }
 
@@ -1473,14 +1213,7 @@ fn build_research_harness(
     for tool in exa.into_iter().chain(oeis) {
         register_resilient(&mut harness, tool);
     }
-    register_resilient(
-        &mut harness,
-        Arc::new(RecallResearchTool::new(vector_store.clone())),
-    );
-    register_resilient(
-        &mut harness,
-        Arc::new(RememberResearchTool::new(vector_store.clone())),
-    );
+    register_memory(&mut harness, vector_store);
     for tool in documents.tools() {
         register_resilient(&mut harness, tool);
     }
@@ -1532,17 +1265,7 @@ fn register_code_writing_agents(
             parts.documents,
         );
         harness.push_middleware(parts.checkpoint.clone());
-        // The tool-builder is the exception: it writes probes and throwaway
-        // experiments, and a recall tool over its own output would mostly
-        // return them.
-        if name != "tool_builder" {
-            register_recall(&mut harness, parts.workspace);
-        }
-        // The note store is a different question and every one of them has it:
-        // a closed form or a bound a previous run established changes what this
-        // one implements, and re-deriving it is the most expensive way to find
-        // out it was already known.
-        register_note_recall(&mut harness, parts.vector_store);
+        register_memory(&mut harness, parts.vector_store);
         subagents.register(name, Arc::new(harness), prompt)?;
     }
     Ok(())
@@ -1609,7 +1332,6 @@ struct SupportPrompts {
     inventor: String,
     librarian: String,
     scholar: String,
-    organizer: String,
 }
 
 /// Registers the pattern agent, which is the tool-richest of the support roles.
@@ -1665,11 +1387,7 @@ fn register_pattern_agent(
     for tool in parts.oeis.iter().cloned() {
         register_resilient(&mut pattern, tool);
     }
-    register_recall(&mut pattern, &parts.workspace);
-    // A regularity the library already explains is not a conjecture worth
-    // chasing, and this is the cheapest way to find that out — cheaper than the
-    // program it would otherwise commission to test one.
-    register_note_recall(&mut pattern, &parts.vector_store);
+    register_memory(&mut pattern, &parts.vector_store);
     subagents.register("pattern_finder", Arc::new(pattern), prompt)
 }
 
@@ -1692,12 +1410,7 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut reflection, tool);
     }
-    register_recall(&mut reflection, &parts.workspace);
-    // Recall, not search. Reflection has no way to gather and must not acquire
-    // one; reading what the run has already written down is the opposite move —
-    // it is how a lesson gets checked against what was established rather than
-    // asserted fresh every attempt.
-    register_note_recall(&mut reflection, &parts.vector_store);
+    register_memory(&mut reflection, &parts.vector_store);
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
     // The judge is as tool-poor as reflection, and for the same reason: a
@@ -1712,6 +1425,7 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut judge, tool);
     }
+    register_memory(&mut judge, &parts.vector_store);
     subagents.register("judge", Arc::new(judge), prompts.judge)?;
 
     register_pattern_agent(subagents, parts, prompts.pattern)?;
@@ -1724,18 +1438,10 @@ fn register_support_agents(
     for tool in parts.oeis.iter().cloned() {
         register_resilient(&mut inventor, tool);
     }
-    register_resilient(
-        &mut inventor,
-        Arc::new(RecallResearchTool::new(parts.vector_store.clone())),
-    );
-    register_resilient(
-        &mut inventor,
-        Arc::new(RememberResearchTool::new(parts.vector_store.clone())),
-    );
     for tool in parts.documents.tools() {
         register_resilient(&mut inventor, tool);
     }
-    register_recall(&mut inventor, &parts.workspace);
+    register_memory(&mut inventor, &parts.vector_store);
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
     let mut librarian =
@@ -1749,14 +1455,7 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut librarian, tool);
     }
-    register_recall(&mut librarian, &parts.workspace);
-    // The role that decides what to download is the one that most needs to know
-    // what is already known. It is told to be reluctant, and reluctance without
-    // a way to check is just a slower search: a note from an earlier run saying
-    // the question is settled is the cheapest possible reason not to fetch.
-    // Recall only — the librarian acquires sources, and what they establish is
-    // the scholar's to record.
-    register_note_recall(&mut librarian, &parts.vector_store);
+    register_memory(&mut librarian, &parts.vector_store);
     subagents.register("librarian", Arc::new(librarian), prompts.librarian)?;
 
     // The scholar reads; it does not fetch. Withholding `exa_search` is what
@@ -1764,18 +1463,10 @@ fn register_support_agents(
     // into another search, which is the librarian's job and already done.
     let mut scholar =
         specialist_harness(parts.model.clone(), parts.budget, "scholar", parts.tracer);
-    register_resilient(
-        &mut scholar,
-        Arc::new(RecallResearchTool::new(parts.vector_store.clone())),
-    );
-    register_resilient(
-        &mut scholar,
-        Arc::new(RememberResearchTool::new(parts.vector_store.clone())),
-    );
     for tool in parts.documents.tools() {
         register_resilient(&mut scholar, tool);
     }
-    register_recall(&mut scholar, &parts.workspace);
+    register_memory(&mut scholar, &parts.vector_store);
     subagents.register("scholar", Arc::new(scholar), prompts.scholar)?;
 
     // Files and indexes only. No search, no shell, no note memory: the
@@ -1795,36 +1486,10 @@ fn register_support_agents(
     subagents.register("organizer", Arc::new(organizer), prompts.organizer)
 }
 
-/// Grants a role similarity search over everything the run has written down.
-///
-/// Every reasoning role gets it. Two do not, and both exclusions are the same
-/// argument rather than an oversight. The organizer describes work rather than
-/// doing it, and each tool it lacks is a way a filing job cannot turn into an
-/// investigation. The judge answers four lines on twelve model calls against an
-/// attempt that took the better part of an hour, and a search over the whole
-/// workspace is precisely the invitation to spend them reading instead — a live
-/// judge already did that with the document tools alone.
-fn register_recall(harness: &mut AgentHarness<()>, workspace: &Path) {
-    register_resilient(
-        harness,
-        recall::RecallWorkspaceTool::registered(workspace.to_path_buf()),
-    );
-}
-
-/// Grants a role read access to the run's saved research notes.
-///
-/// [`register_recall`] searches this workspace; this searches the note store,
-/// which outlives it. The two answer different questions — what did *this* run
-/// write down, against what has been established before — and a role holding
-/// only the first re-derives what a previous run already paid for.
-///
-/// Recall travels widely and `remember_research` does not. Reading a note costs
-/// a lookup; writing one puts a statement into a store every later run reads, so
-/// that stays with the three roles whose output is durable knowledge — research,
-/// the scholar, and the inventor — rather than with every role that happens to
-/// learn something mid-task.
-fn register_note_recall(harness: &mut AgentHarness<()>, store: &VectorStore) {
-    register_resilient(harness, Arc::new(RecallResearchTool::new(store.clone())));
+/// Gives every agent the same durable Cognee read/write memory boundary.
+fn register_memory(harness: &mut AgentHarness<()>, store: &VectorStore) {
+    register_resilient(harness, Arc::new(RecallMemoryTool::new(store.clone())));
+    register_resilient(harness, Arc::new(RememberMemoryTool::new(store.clone())));
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
@@ -1961,42 +1626,6 @@ fn require_container_runtime() -> Result<()> {
     Err(tinyagents::TinyAgentsError::Validation(
         "orchestrator must be launched with ./agent inside Docker".into(),
     ))
-}
-
-/// Gives every tree the root the prompts promise it has.
-///
-/// `role_context` routes `research/ROOT.md` into six roles and the librarian
-/// is told it is the top of the tree, so a workspace without one has agents
-/// reading a file that is not there. Three live runs spent a call each
-/// discovering that.
-///
-/// The placeholder says what the file is for rather than pretending to a
-/// synthesis nobody has written: an empty root is an honest statement that the
-/// library has not been read yet, and the research team replaces it on its
-/// first cycle.
-fn seed_tree_roots(workspace: &Path) {
-    for tree in ["research", "reflections"] {
-        let folder = workspace.join(tree);
-        if !folder.is_dir() {
-            continue;
-        }
-        let root = folder.join(context_tree::ROOT_FILE);
-        if root.exists() {
-            continue;
-        }
-        let _ = std::fs::write(
-            &root,
-            format!(
-                "# {tree} — what this now establishes\n\n\
-                 The top of this tree. Everything below is reached from here: sealed \n\
-                 batches of originals in `L0.<n>/`, one note per sealed batch a level \n\
-                 up, and so on. Say what the whole of it now lets this run treat as \n\
-                 known, under 1000 tokens, wikilinking the note that establishes each \n\
-                 claim so nothing here is untraceable.\n\n\
-                 _Empty until the batches below have been read._\n"
-            ),
-        );
-    }
 }
 
 /// Converts a fetched problem statement into the Markdown the run reads.
@@ -2446,7 +2075,7 @@ impl Tool<()> for ExecuteCommand {
         };
         // File anything the command wrote through the shell. `layout::placed`
         // covers the write path; a heredoc and a redirect go round it, and
-        // that is how a root fills up while an organizer is running.
+        // that is how a root fills up during a run.
         let swept = layout::swept_note(&layout::sweep(&self.workspace).await);
         Ok(ToolResult::text(
             call.id,

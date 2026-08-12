@@ -25,7 +25,7 @@
 //! [`super::documents::research_path`] enforces `research/`: a prompt asking
 //! for tidiness holds only until a model is busy. What cannot be enforced here
 //! is a shell redirect — `python solve.py > out.txt` writes through the
-//! filesystem, not through a tool — so the organizer still sweeps. This makes
+//! filesystem, not through a tool — so later readers still sweep. This makes
 //! the sweep small instead of making it the only defence.
 
 /// The folder holding the run's plumbing rather than its work.
@@ -165,7 +165,7 @@ fn swept(name: &str) -> bool {
 /// filesystem, and the tool sees only a command and an exit code. Left to a
 /// prompt, that hole reopens the problem the layout exists to close — one live
 /// workspace accumulated six programs at its root in nineteen minutes, written
-/// entirely through the shell while its organizer was running.
+/// entirely through the shell while another agent was running.
 ///
 /// So the sweep runs where the files appear, immediately after the command
 /// that could have made them. Three rules keep it safe to run that often:

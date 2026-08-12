@@ -63,7 +63,7 @@ fn html_and_pdf_are_converted_on_read_but_notes_are_not() {
     assert!(needs_conversion("reference/paper.PDF", b"anything"));
     assert!(needs_conversion("saved-without-extension", b"%PDF-1.4 ..."));
     // Working notes and source must come back byte-for-byte.
-    assert!(!needs_conversion("MEMORY.md", b"# Working memory"));
+    assert!(!needs_conversion("SCRATCHPAD.md", b"# Working notes"));
     assert!(!needs_conversion("solution.py", b"print(1)"));
     assert!(!needs_conversion("results.tsv", b"1\t2"));
     // A note quoting HTML is still a note.
@@ -73,79 +73,79 @@ fn html_and_pdf_are_converted_on_read_but_notes_are_not() {
 #[test]
 fn downloads_are_filed_under_the_research_folder() {
     use super::{full_text_path, research_path};
-    // An empty workspace has no batches yet, so everything joins the first.
     let root = std::path::Path::new("/nonexistent-workspace");
     // Enforced in code, not asked for in a prompt: a prompt instruction holds
     // only until a model decides otherwise.
-    assert_eq!(research_path(root, "pell.md"), "research/L1.0/pell.md");
-    // A source arriving from outside is a level-1 note whatever folder the
-    // caller invented for it.
+    assert_eq!(research_path(root, "pell.md"), "research/summaries/pell.md");
     assert_eq!(
         research_path(root, "papers/lagrange.md"),
-        "research/L1.0/lagrange.md"
+        "research/summaries/lagrange.md"
     );
     assert_eq!(
         research_path(root, "research/pell.md"),
-        "research/L1.0/pell.md"
+        "research/summaries/pell.md"
     );
-    // A path that already names a level knows where it belongs.
     assert_eq!(
-        research_path(root, "research/L2.0/pell.md"),
-        "research/L2.0/pell.md"
+        research_path(root, "research/summaries/pell.md"),
+        "research/summaries/pell.md"
     );
     // Common spellings must not produce research/workspace/...
     assert_eq!(
         research_path(root, "/workspace/pell.md"),
-        "research/L1.0/pell.md"
+        "research/summaries/pell.md"
     );
-    assert_eq!(research_path(root, "./pell.md"), "research/L1.0/pell.md");
-    assert_eq!(research_path(root, "/pell.md"), "research/L1.0/pell.md");
+    assert_eq!(
+        research_path(root, "./pell.md"),
+        "research/summaries/pell.md"
+    );
+    assert_eq!(
+        research_path(root, "/pell.md"),
+        "research/summaries/pell.md"
+    );
     // A blank path still lands somewhere sensible rather than at the root.
-    assert_eq!(research_path(root, "   "), "research/L1.0/document.md");
+    assert_eq!(research_path(root, "   "), "research/summaries/document.md");
     // Naming the full text names the wrong half of the pair: the digest is
     // what a download produces at level 1.
     assert_eq!(
         research_path(root, "confusioninterval.full.md"),
-        "research/L1.0/confusioninterval.md"
+        "research/summaries/confusioninterval.md"
     );
     // A name that already carries the marker does not earn a second one.
     assert_eq!(
-        full_text_path(root, "research/L0.0/paper.full.md"),
-        "research/L0.0/paper.full.md"
+        full_text_path(root, "research/sources/paper.full.md"),
+        "research/sources/paper.full.md"
     );
     // The untouched original sits one level below the note that digests it.
     assert_eq!(
-        full_text_path(root, "research/L1.0/pell.md"),
-        "research/L0.0/pell.full.md"
+        full_text_path(root, "research/summaries/pell.md"),
+        "research/sources/pell.full.md"
     );
 }
 
 #[tokio::test]
-async fn a_note_guessed_into_the_wrong_batch_is_pointed_at_its_real_one() -> Result<()> {
-    // A note's batch number is the one thing an agent cannot infer: it knows
-    // the name, and which batch holds it is an accident of when it arrived.
-    // Seven of one live run's twenty-three tool failures were this guess.
+async fn a_note_requested_from_the_wrong_research_folder_is_pointed_at_its_real_one() -> Result<()>
+{
     let root = std::env::temp_dir().join(format!("math-agent-batch-hint-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
-    std::fs::create_dir_all(root.join("research/L1.2")).expect("workspace is creatable");
+    std::fs::create_dir_all(root.join("research/summaries")).expect("workspace is creatable");
     let root = root.canonicalize().expect("workspace resolves");
-    std::fs::write(root.join("research/L1.2/paper.md"), "note").expect("note is writable");
+    std::fs::write(root.join("research/summaries/paper.md"), "note").expect("note is writable");
     let documents = WorkspaceDocuments::new(root.clone())?;
 
     let error = documents
-        .read_document("research/L1.0/paper.md")
+        .read_document("research/sources/paper.md")
         .await
         .expect_err("the guessed batch does not hold it");
     let message = error.to_string();
-    assert!(message.contains("research/L1.2/paper.md"), "{message}");
+    assert!(message.contains("research/summaries/paper.md"), "{message}");
 
     // A name that is genuinely absent still gets the folder listing rather
     // than a confident wrong answer.
     let missing = documents
-        .read_document("research/L1.0/absent.md")
+        .read_document("research/sources/absent.md")
         .await
         .expect_err("no such note anywhere");
-    assert!(!missing.to_string().contains("L1.2/absent.md"));
+    assert!(!missing.to_string().contains("summaries/absent.md"));
     let _ = std::fs::remove_dir_all(&root);
     Ok(())
 }
@@ -188,10 +188,10 @@ fn runtime_bookkeeping_cannot_be_read_into_an_agents_context() {
 
     // The run's own working files stay reachable.
     for visible in [
-        "MEMORY.md",
+        "SCRATCHPAD.md",
         "solution.py",
         "research/pell.md",
-        "reflections/1_01_learnings.md",
+        "research/summaries/pell.md",
     ] {
         assert!(
             ensure_visible(visible).is_ok(),
@@ -321,7 +321,7 @@ async fn a_missing_file_at_the_workspace_root_names_its_neighbours() -> Result<(
     // thing a live run reached for — and an empty parent is what the file path
     // checker refuses, so this is the case the helper must not miss.
     let root = workspace("missing-at-root")?;
-    std::fs::write(root.join("MEMORY.md"), "beliefs").expect("file is writable");
+    std::fs::write(root.join("GOAL.md"), "objective").expect("file is writable");
     std::fs::write(root.join("SCRATCHPAD.md"), "working").expect("file is writable");
     std::fs::write(root.join("trace.jsonl"), "{}").expect("trace is writable");
 
@@ -331,7 +331,7 @@ async fn a_missing_file_at_the_workspace_root_names_its_neighbours() -> Result<(
         .await
         .expect_err("a missing document must fail");
     let message = error.to_string();
-    assert!(message.contains("MEMORY.md"), "got: {message}");
+    assert!(message.contains("GOAL.md"), "got: {message}");
     assert!(message.contains("SCRATCHPAD.md"), "got: {message}");
     assert!(
         !message.contains("trace.jsonl"),
