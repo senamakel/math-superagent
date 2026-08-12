@@ -4,9 +4,7 @@ Also print Q_k(N) = R(N,N-k)/3^(N-2k-1) columns as exact rationals.
 """
 from fractions import Fraction
 import glob, collections
-
-def sorted_key(path):
-    return int(path.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 # collect R(N,M): max-level M histograms
 R = {}  # N -> {M: count}

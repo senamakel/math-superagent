@@ -4,7 +4,7 @@ why.  For each failing config, print the full collapse trace (levels and the
 parent chosen at each step) so we see whether it loops, diverges, or reaches a
 non-origin fixed point.
 """
-from lib.amoeba import forward_level, children, lvl, triangle_parent
+from lib.amoeba import forward_level, lvl, triangle_parent
 
 def trace_collapse(S):
     Sset = set(S)

@@ -2,9 +2,7 @@
 """Fit Q_k(N) as exact polynomials in N and inspect coefficients/structure."""
 from fractions import Fraction
 import glob, collections, sympy
-
-def sorted_key(path):
-    return int(path.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 R = {}
 for path in sorted(glob.glob('/workspace/data/level_*.txt'), key=sorted_key):

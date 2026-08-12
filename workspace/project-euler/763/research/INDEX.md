@@ -5,7 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `CLAIMS.md` | Derived: every claim block in the notes, one row each, with whether its hypotheses hold here and what evidence stands behind it. Rewritten on every research write; do not edit. |
-| `FRONTIER.md` | Derived: leads harvested from the citations inside every downloaded document (ranked by how many library sources cite each; struck-through = already in library). A row is a lead, not a recommendation; nothing here is judged. Rewritten on each download; do not edit by hand. |
+| `FRONTIER.md` | Derived: sources this library's own documents cite but the run has not read, ranked by how many of them cite each. Rewritten on every download; do not edit. |
 | `L1.0/oeis_a001006.md` | Motzkin numbers A001006 lookup note (g.f., D-finite recurrence, closed form). Establishes D(N) is NOT Motzkin (diverges at n=2). Kills the Motzkin closed-form candidate for D(N). |
 | `L1.0/oeis_a005207.md` | Fibonacci-family lookup note ((F(2n-1)+F(n+1))/2 sequ; diverges from D(N) at n=2). Rules out a Fibonacci closed form for D(N). |
 | `L1.0/oeis_a007902.md` | A007902 (pebbling configurations) = the run's 2D amoeba sequence D_2D(N), matched on every term (D_2D(N)=A007902(N+1)). Names the 2D analogue: no closed form, only asymptotics (~2.32^n) and a memoized G(k,m) recurrence. Not the 3D D(N). Claim d2d-equals-a007902. |

@@ -8,9 +8,7 @@ distinct-histogram sequence independently of any BFS, straight from the
 files on disk.
 """
 import glob, collections
-
-def sorted_key(path):
-    return int(path.split('_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 for path in sorted(glob.glob('data/level_*.txt'), key=sorted_key):
     N = int(path.split('_')[1].split('.')[0])
