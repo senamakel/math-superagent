@@ -1,6 +1,6 @@
 # Shared context
 
-Token budget 10,000; currently ~430 tokens, well under. Re-sent on every model
+Token budget 10,000; currently ~1,300 tokens, well under. Re-sent on every model
 call in every reading role, so keep it to what an agent would otherwise rebuild
 from disk. Link the file that still holds compressed detail. Durable findings go
 to Cognee, never here.
@@ -20,7 +20,8 @@ GOAL.md and solution.md are still empty stubs.
   ≤10^6 → {2,24,4320,4680,26208}, k=1,2,3,3,3, sum 35234 (code/brute.py spf-sieve,
   cross-checked vs trial-division over 1..2e5 and 1e6). ≤10^7 adds 8910720. ≤3e7 adds
   17428320, 20427264 → {2,24,4320,4680,26208,8910720,17428320,20427264}, the first 8
-  A159907 terms (code/verify_2adic.py; all beyond 24 have abundancy 7/2).
+  A159907 terms (code/verify_2adic.py; per scratch, up to 1e7 all beyond 24 have
+  abundancy 7/2; the 3e7 additions' k not separately verified).
 - **2-adic structure (computed & checked, code/verify_2adic.py).** For n=2^a·u (u odd),
   the half-integer condition forces v2(σ(u))=a−1 and the exact identity
   σ(u)/u = (2k+1)2^(a−1)/(2^(a+1)−1). Verified for all 8 known qualifying n.

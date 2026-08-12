@@ -18,6 +18,45 @@ fn review_interval() -> std::time::Duration {
     )
 }
 
+/// The review team's entry, lifted out because its brief is the longest here.
+///
+/// Split from [`standing_teams`] for the reason the pattern agent's
+/// registration was split from its neighbours: the array is a table, and one
+/// entry three times the height of the others stops it reading as one.
+fn review_team() -> (
+    &'static str,
+    &'static str,
+    teams::Completion,
+    teams::TeamBudget,
+    &'static str,
+) {
+    (
+            "review",
+            "judge",
+            teams::Completion::Standing,
+            teams::TeamBudget::paced(review_interval()),
+            "Judge the work in flight, not a finished attempt. The solution loop scores an \
+             attempt when it returns, and on an open conjecture that is hours away — a live \
+             Erdős–Gyárfás run spent thirty-six minutes inside attempt 1 while its `goals` \
+             agent spawned and awaited children, so nothing had been judged at all. You are \
+             the periodic version of that verdict, and the point of you is that a wrong \
+             direction gets named while it can still be changed rather than after the hours \
+             are spent.\n\
+             Read what is on disk — CONTEXT.md, TASKS.md, research/CLAIMS.md, the newest \
+             files under code/out/ — and answer three questions in a few lines each. Is the \
+             method the run is executing capable of settling the question, or is it scaling \
+             something that has already failed at a smaller size? Is what the run believes \
+             supported by what it has actually computed or read, or has an assertion been \
+             promoted to a fact? What is the single most valuable next move.\n\
+             Say it plainly and briefly; your reply is handed to the next attempt as an \
+             observation from beside the loop, so a paragraph that names one wrong turn is \
+             worth more than a page that surveys everything. You do not compute, do not write \
+             programs, and do not answer the mathematics — the roles that execute are already \
+             doing that. When the work has not moved since you last looked, or has moved too \
+             little to judge, reply NOTHING FURTHER and spend nothing."
+        )
+}
+
 /// The teams that run beside the solve, each with the brief it wakes up to.
 ///
 /// Lifted out of [`OrchestratorAgent::spawn_support_teams`] so the briefs — the
@@ -95,31 +134,7 @@ fn standing_teams() -> [(
                  describe it, and store the verified finding with `remember_memory` so later \
                  runs can recall it."
         ),
-        (
-            "review",
-            "judge",
-            teams::Completion::Standing,
-            teams::TeamBudget::paced(review_interval()),
-            "Judge the work in flight, not a finished attempt. The solution loop scores an \
-             attempt when it returns, and on an open conjecture that is hours away — a live \
-             Erdős–Gyárfás run spent thirty-six minutes inside attempt 1 while its `goals` \
-             agent spawned and awaited children, so nothing had been judged at all. You are \
-             the periodic version of that verdict, and the point of you is that a wrong \
-             direction gets named while it can still be changed rather than after the hours \
-             are spent.\n\
-             Read what is on disk — CONTEXT.md, TASKS.md, research/CLAIMS.md, the newest \
-             files under code/out/ — and answer three questions in a few lines each. Is the \
-             method the run is executing capable of settling the question, or is it scaling \
-             something that has already failed at a smaller size? Is what the run believes \
-             supported by what it has actually computed or read, or has an assertion been \
-             promoted to a fact? What is the single most valuable next move.\n\
-             Say it plainly and briefly; your reply is handed to the next attempt as an \
-             observation from beside the loop, so a paragraph that names one wrong turn is \
-             worth more than a page that surveys everything. You do not compute, do not write \
-             programs, and do not answer the mathematics — the roles that execute are already \
-             doing that. When the work has not moved since you last looked, or has moved too \
-             little to judge, reply NOTHING FURTHER and spend nothing."
-        ),
+        review_team(),
         (
             "patterns",
             "pattern_finder",
