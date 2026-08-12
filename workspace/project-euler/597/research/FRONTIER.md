@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Dutra,+B | Brandon Dutra | 2 Apr 2012 (this version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6],… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Koeppe,+M | Matthias Koeppe | version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6], [Gregory… |
 
-_555 further candidates not shown; they are cited once each._
+_556 further candidates not shown; they are cited once each._
