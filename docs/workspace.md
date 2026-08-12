@@ -327,11 +327,11 @@ That went into one prose field on the solution state and was gone by the next
 attempt, so an idea proposed at attempt three could be proposed again at
 attempt six and the literature check that would have killed it never happened.
 An approach is `research/approaches/<slug>.md` with a fenced `approach` block
-— `idea`, `mechanism`, `status`, `precedent`, `first-step`, `killed-by` —
-whose stances are a life cycle rather than a flag: `proposed`, `grounded`,
-`refuted`, `adopted`, `spent`. Empty `precedent` means nobody checked, which
-is not the same as nothing having been found; refuted and spent approaches are
-kept with their reasons, on the dead-thread argument.
+— `idea`, `mechanism`, `status`, `precedent`, `first-step`, `killed-by` — whose
+stances are a life cycle rather than a flag: `proposed`, `grounded`, `refuted`,
+`adopted`, `spent`. Empty `precedent` means nobody checked, which is not the same
+as nothing having been found; refuted and spent approaches are kept with their
+reasons, on the dead-thread argument.
 
 `research/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
 to throw away. `readable.rs` has always parsed every anchor into a reference
