@@ -254,10 +254,24 @@ costs one child run, where no oracle at all costs the whole attempt.
 
 The pattern agent is a *team*, not a step. It runs its own async loop beside
 the solve — like research and background — cycling on its own cadence over
-whatever results are on disk, and posts what it finds to a mailbox the next
-reflection collects. Nothing waits on it: a structural observation is worth as
-much an attempt later, and an earlier version that gated the loop on one cost a
-live run half an hour of stalled solve. An invented pattern costs the run more than no pattern, so it idles
+whatever results are on disk, and posts what it finds to a mailbox the loop
+drains at the next `attempt` or `reflect`, whichever reaches it first. Nothing
+waits on it: a structural observation is worth as much an attempt later, and an
+earlier version that gated the loop on one cost a live run half an hour of
+stalled solve.
+
+Reflection was the only collector, and that made the team's findings reachable
+exactly once per *completed* attempt — so a run whose first attempt is long
+never saw them at all. A live Erdős–Gyárfás run spent forty minutes in attempt 1
+while its pattern team computed the C₄-free survivor counts, matched the
+sequence against OEIS and pushed it past the terms that suggested it; none of it
+reached the `goals` agent directing the work, which re-commissioned the same
+`nauty-geng` enumeration from `tool_builder`. Draining at the attempt costs
+nothing when reflection has already run — the mailbox is empty and the section
+is omitted rather than rendered as a heading announcing that no analysis arrived
+— and it is the only path that exists on the first attempt of every run.
+`attempt_prompt` is a plain function of the state for the same reason `route`
+is: what an attempt is actually told must be testable without a provider. An invented pattern costs the run more than no pattern, so it idles
 readily — and idleness is decided *before* the agent runs, by fingerprinting
 `code/` and `code/out/` and comparing against what the team last analysed.
 Asking the agent to notice that nothing changed would cost a model call and a
