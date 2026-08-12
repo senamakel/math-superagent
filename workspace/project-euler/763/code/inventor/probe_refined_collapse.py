@@ -11,17 +11,7 @@ the cap parent is present.
 Also verifies the refined A2 (top 3 is always a single parent's triangle).
 Runs live BFS N<=7 (frozenset oracle).
 """
-from lib.amoeba import forward_level, children, lvl
-
-def triangle_parent(top):
-    a, b, c = top
-    s = (a[0]+b[0]+c[0]-1, a[1]+b[1]+c[1]-1, a[2]+b[2]+c[2]-1)
-    if s[0] % 3 or s[1] % 3 or s[2] % 3:
-        return None
-    p = (s[0]//3, s[1]//3, s[2]//3)
-    if set(children(p, 3)) == set(top):
-        return p
-    return None
+from lib.amoeba import forward_level, children, lvl, triangle_parent
 
 def refined_collapse(S):
     """Refined unique-collapse to origin.  top-3 = triangle of parent p
