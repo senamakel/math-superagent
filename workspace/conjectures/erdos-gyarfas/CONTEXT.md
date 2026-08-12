@@ -65,10 +65,14 @@ where C4/C8 already appear — not in the girth regime.
 ## Lean
 
 `lean/erdos_gyarfas.lean` elaborates the formal statement (SimpleGraph V,
-minDegree≥3 ⇒ ∃ cycle p with p.length = 2^k ∧ 2≤k). No lemmas proved; body is
-one intentional `sorry`. `#print axioms`: [propext, sorryAx,
-Classical.choice, Quot.sound] — sorryAx the only non-standard axiom. Add
-`#print axioms` to the file. [[lean/STATUS.md]]
+minDegree≥3 ⇒ ∃ cycle p with p.length = 2^k ∧ 2≤k). No lemmas proved in it;
+body is one intentional `sorry`; the file ends with `#print axioms
+erdos_gyarfas`. Axioms on a compiled copy: [propext, sorryAx,
+Classical.choice, Quot.sound] — sorryAx the only non-standard axiom. NEW:
+`lean/c4_lemma.lean` formalises the first real lemma (a 4-cycle already
+satisfies the EG conclusion, witness k=2; no sorry) — compile status
+**unverified** this session; re-run `lean lean/c4_lemma.lean` before citing.
+[[lean/STATUS.md]]
 
 ## Durable memory / reflections
 
@@ -92,22 +96,29 @@ itself — that is the open core.
 
 ## Live (this run, partly settled)
 
-- **S5 vs A366224** (S5 = connected min-degree≥3 girth≥5 graphs; A366224 =
-  3-connected girth≥5). **Verified equal through n=14** (S5 = A366224 =
-  1,0,2,4,23). But the identity is **provably NOT a theorem**: joining two
-  girth≥5 min-degree≥3 graphs at a cut vertex (e.g. Petersen+Petersen at one
-  vertex, n=19) gives a connected min-degree≥3 girth-5 graph with a cut vertex
-  that is not 3-connected ⇒ S5(n) > A366224(n) at n=19. So the question the
-  probe answers is **at what first n it breaks** — finding the smallest
-  non-3-connected girth≥5 min-degree≥3 graph. That breakdown n is structural
-  (a 1-/2-separator in a low-girth cubic graph) and is exactly where a
-  non-3-connected survivor could hide. No confirmed count beyond n=14 recorded
-  yet (`code/out/` has none; scripts `code/eg/s5_*.py` stop at the un-run
-  frontier). [[code/eg/INDEX.md]]
+- **S5 vs A366224** (S5 = connected min-degree≥3 girth≥5; A366224 =
+  3-connected girth≥5, McKay; source: [[research/summaries/A366224_offset.md]]).
+  **Computed equal through n=14** (1,0,2,4,23 — matches A366224 terms, and
+  S5≤3connected is trivially false, so S5 ≥ A366224 and equality means **every
+  S5 graph is 3-connected** on n≤14). The identity is **provably NOT a
+  theorem**: Petersen-amalgam (two copies glued at one vertex, n=19) is
+  connected min-degree≥3 girth-5 with a cut vertex ⇒ S5(19) > A366224(19).
+  Open question: **at what first n does S5 grow past A366224** — that n is the
+  smallest non-3-connected girth≥5 δ≥3 graph, structural (a 1-/2-separator in
+  a sparse low-girth graph; all 2-separators are single edges or K2,3 — no
+  decorations fit d=3), and exactly where a non-3-connected EG survivor could
+  hide. **Unresolved status of n≥15 checks**: scripts s5_n17_count/check and
+  s5_n18_check count S5 against predictions 23882@17 / 422194@18 but no result
+  file was found on disk (n18_extra.txt is corrupted binary garbage — likely
+  truncated mid-write) — n=15,16,17,18 counts and 3-conn checks have **no
+  recorded output** and must be re-run before any claim past n=14. Re-run:
+  `s5_identification.py` (full table), `s5_equals_a366224.py`,
+  `s5_3conn_check.py`, `s5_n18_find_extra2.py`. [[code/eg/INDEX.md]]
 - **NO4(17) sanity range** (prediction, unconfirmed): pattern_finder's law
   `NO4(n)≈K·3^n·(n−10)!` (locked from n=12) predicts NO4(17) ∈ 30–41M,
   nominal ≈35M. Outside 25–45M flags an enumeration bug. Detail:
   [[code/eg/survivor_sequences.md]].
 - Scratch/durable memory hold nothing further on this problem (earlier
-  `recall_memory` surface hit an unrelated permutations paper; the graph has no
-  other EG entries).
+  `recall_memory` surface hit an unrelated PE346 repunit chunk; the graph's
+  durable memory holds only the run's own oracle-verification and survivor
+  records).
