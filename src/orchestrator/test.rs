@@ -499,14 +499,15 @@ fn the_coding_agent_can_write_and_run_the_program_it_owns() -> agent::Result<()>
 #[test]
 fn both_code_writing_roles_see_the_same_working_context() {
     // They differ in mandate, not in what they need to know: what is being
-    // attempted, what is already built, and the provisional numbers.
+    // attempted and what is already built. The provisional numbers are not
+    // among them any more: they are recalled on demand from the scratch.
     assert_eq!(role_context("coder"), role_context("tool_builder"));
     assert_eq!(role_context("sat_solver"), role_context("tool_builder"));
     assert_eq!(role_context("lean_prover"), role_context("tool_builder"));
     for role in ["smt_solver", "theorem_prover", "symbolic_math"] {
         assert_eq!(role_context(role), role_context("tool_builder"), "{role}");
     }
-    assert!(role_context("coder").contains(&"SCRATCHPAD.md"));
+    assert!(!role_context("coder").contains(&"SCRATCHPAD.md"));
     assert!(role_context("coder").contains(&"code/lib/INDEX.md"));
     // An encoding rests on what the run believes about the objects it encodes,
     // and a bound the library already establishes removes constraints.
