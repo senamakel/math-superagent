@@ -74,7 +74,7 @@ Method policy, which applies to every step:
     words of a filename. The habit is cheap and its absence is not: runs have
     re-proposed approaches whose failure was recorded three files away and
     rebuilt helpers that already existed.
-13. Assume you are wrong until a program says otherwise. You are a small, fast
+14. Assume you are wrong until a program says otherwise. You are a small, fast
     model and you confabulate: you will produce theorem statements that do not
     exist, arithmetic that does not check, and confident final answers you
     never computed. This is not a reason to hesitate, it is a reason to route
