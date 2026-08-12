@@ -99,14 +99,14 @@ neither reads the other's output and reflection is on the critical path of
 every attempt.
 
 Past `RESEARCH_RESCUE_ATTEMPTS` — five — each reflection also re-opens the
-literature. Diversification triggers on *consecutive* unproductive attempts, so
-a run making thin but genuine progress every time never reaches it and can
-grind most of its budget on a method that was never going to arrive. The search
-is re-run rather than recalled because the workspace has changed: by then the
-run knows what it tried, what failed, and what the numbers look like, which is
-a far better query than anything available at the start. `MAX_ATTEMPTS` is
-eight so the rescue has attempts left to pay off in; a ceiling that tripped
-first would buy a fresh literature search and then stop.
+literature. Diversification triggers on *consecutive* unproductive attempts, so a
+run making thin but genuine progress every time never reaches it and can grind
+most of its budget on a method that was never going to arrive. The search is
+re-run rather than recalled because the workspace has changed: by then the run
+knows what it tried, what failed, and what the numbers look like, a far better
+query than anything available at the start. `MAX_ATTEMPTS` is eight so the rescue
+has attempts left to pay off in; a ceiling that tripped first would buy a fresh
+literature search and then stop.
 
 Housekeeping runs on a narrowed budget, `RunBudget::for_housekeeping` — 25
 model calls and 300 tool calls, and deliberately *no* wall-clock ceiling — for
