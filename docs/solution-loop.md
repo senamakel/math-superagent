@@ -338,12 +338,11 @@ worse than the wasted attempts it prevents. The outcome says so in words: an
 infrastructure failure, the workspace unchanged, the run continuing from disk
 once calls are accepted again.
 
-Keep the routing policy in `route` a plain function of the state. It is the
-part of this design most likely to be wrong and the part a live run is least
-able to demonstrate cheaply, so it must stay unit-testable without a provider.
-Two rules in it are load-bearing: an unparsable verdict must not count as
-solved, and the attempt ceiling must outrank the stuck rule or the loop can
-diversify forever.
+Keep the routing policy in `route` a plain function of the state. It is the part
+of this design most likely to be wrong and the part a live run is least able to
+demonstrate cheaply, so it must stay unit-testable without a provider. Two rules
+in it are load-bearing: an unparsable verdict must not count as solved, and the
+attempt ceiling must outrank the stuck rule or the loop can diversify forever.
 
 The loop is the only execution path. Do not add a single-turn mode back: it
 differed only in discarding the reflection, and a switch between them is one
