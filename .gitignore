@@ -31,6 +31,15 @@ __pycache__/
 # repository's history. A nested `.git` would make this an embedded repo.
 /workspace/**/.workspace-history/
 
+# Enumeration output that regrows by rerunning the program beside it. One
+# level pool reached 70 MB, and nine superseded copies of it put 447 MB into
+# this repository's history before they were purged. What the derivation cites
+# is the counts, the canonical forms, and the INDEX.md next to them, all of
+# which stay committed. Levels below 10 are small and stay committed too.
+/workspace/**/out/**/*_pool.txt
+/workspace/**/out/**/*_classes.txt
+/workspace/**/data/level_[0-9][0-9].txt
+
 # Untouched bytes of every download, kept only for debugging a conversion.
 # Regenerable by re-downloading, and often large or binary.
 /workspace/**/raw/
