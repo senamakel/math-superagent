@@ -399,10 +399,16 @@ async fn serving(body: Vec<u8>, chunked: bool) -> Result<String> {
         if chunked {
             for piece in body.chunks(16 * 1024) {
                 let framed = format!("{:x}\r\n", piece.len());
-                if socket.write_all(framed.as_bytes()).await.is_err()
-                    || socket.write_all(piece).await.is_err()
-                    || socket.write_all(b"\r\n").await.is_err()
-                {
+                if let Err(error) = socket.write_all(framed.as_bytes()).await {
+                    eprintln!("DBG framed: {error}");
+                    return;
+                }
+                if let Err(error) = socket.write_all(piece).await {
+                    eprintln!("DBG piece: {error}");
+                    return;
+                }
+                if let Err(error) = socket.write_all(b"\r\n").await {
+                    eprintln!("DBG crlf: {error}");
                     return;
                 }
             }
@@ -439,7 +445,8 @@ async fn an_oversized_chunked_body_is_refused_without_being_buffered() -> Result
     // loses everything in flight, so the bound has to apply as it arrives.
     let path = workspace("download-oversized")?;
     let documents = WorkspaceDocuments::new(path)?;
-    let url = serving(vec![b'x'; super::MAX_DOCUMENT_BYTES + 64 * 1024], true).await?;
+    let url = serving(vec![b'x'; 6 * 1024 * 1024], true).await?;
+    eprintln!("DBG body = 1 MiB");
     let refused = super::DocumentTool {
         kind: super::DocumentToolKind::Download,
         documents,
