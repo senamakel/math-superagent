@@ -98,7 +98,8 @@ def solve(L, constraints, extra_cuts=None):
     if not res.success:
         return None, res
     x = res.x
-    secret = "".join(str(int(round(x[p * 10 + d]))) for p in range(L)
+    # exactly one d per position has x[p*10+d] == 1; emit that digit
+    secret = "".join(str(d) for p in range(L)
                      for d in range(10) if x[p * 10 + d] > 0.5)
     return secret, res
 
