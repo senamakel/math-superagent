@@ -5,36 +5,6 @@
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
 
-## Judging before the attempt returns
-
-The judge scores an attempt when the attempt returns, and the attempt is a
-single `goals` run told to pursue the goal until it is met. On an open
-conjecture it is never met. Four live runs sat inside attempt 1 for thirty-six
-minutes with zero judge verdicts, zero reflections and zero inventor spawns
-between them, while all the work happened in children the attempt had spawned —
-231 model calls, 47 searches and 36 downloads on one of them, none of it ever
-assessed. `open_invention` needs a completed cycle and `diversify` needs two
-consecutive stuck attempts, so both were unreachable by construction.
-
-Two changes make the loop turn over. The run wall clock is thirty minutes rather
-than two hours, so an attempt concludes and is judged four times in the span it
-used to be judged once. And a `review` team runs beside the solve every twenty
-minutes (`MATH_AGENT_REVIEW_MINUTES`), spawning the judge against the workspace
-as it stands and posting the verdict into the mailbox the attempt already
-drains. It asks the three questions worth asking mid-flight: whether the method
-can settle the question or is scaling something that already failed smaller,
-whether what the run believes is supported by what it computed, and what the
-single most valuable next move is.
-
-The review is the judge rather than a second solver, so it inherits
-`RunBudget::for_judging` — twelve model calls and a five-minute ceiling — and an
-unchanged workspace is skipped before the agent runs rather than by asking a
-model to notice. The wall-clock change is the one with a cost: it bounds every
-agent run, not only the attempt, and a live `tool_builder` spent 1,362 seconds
-inside a single model call. That path does not honour `StopWithPartial`, so a
-child that meets it loses its context and its report — but not its files, and
-`continuation_briefing` is what lets the next attempt resume from them.
-
 ## The solution loop
 
 `orchestrator::solutions` is a `TinyAgents` graph, not a prompt:
@@ -364,6 +334,36 @@ diversify forever.
 The loop is the only execution path. Do not add a single-turn mode back: it
 differed only in discarding the reflection, and a switch between them is one
 more thing to get wrong.
+
+## Judging before the attempt returns
+
+The judge scores an attempt when the attempt returns, and the attempt is a
+single `goals` run told to pursue the goal until it is met. On an open
+conjecture it is never met. Four live runs sat inside attempt 1 for thirty-six
+minutes with zero judge verdicts, zero reflections and zero inventor spawns
+between them, while all the work happened in children the attempt had spawned —
+231 model calls, 47 searches and 36 downloads on one of them, none of it ever
+assessed. `open_invention` needs a completed cycle and `diversify` needs two
+consecutive stuck attempts, so both were unreachable by construction.
+
+Two changes make the loop turn over. The run wall clock is thirty minutes rather
+than two hours, so an attempt concludes and is judged four times in the span it
+used to be judged once. And a `review` team runs beside the solve every twenty
+minutes (`MATH_AGENT_REVIEW_MINUTES`), spawning the judge against the workspace
+as it stands and posting the verdict into the mailbox the attempt already
+drains. It asks the three questions worth asking mid-flight: whether the method
+can settle the question or is scaling something that already failed smaller,
+whether what the run believes is supported by what it computed, and what the
+single most valuable next move is.
+
+The review is the judge rather than a second solver, so it inherits
+`RunBudget::for_judging` — twelve model calls and a five-minute ceiling — and an
+unchanged workspace is skipped before the agent runs rather than by asking a
+model to notice. The wall-clock change is the one with a cost: it bounds every
+agent run, not only the attempt, and a live `tool_builder` spent 1,362 seconds
+inside a single model call. That path does not honour `StopWithPartial`, so a
+child that meets it loses its context and its report — but not its files, and
+`continuation_briefing` is what lets the next attempt resume from them.
 
 ## Direction from a human
 
