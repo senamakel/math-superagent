@@ -20,3 +20,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_verify.py` | _(undescribed)_ |
 | `phi_exact_search.py` | _(undescribed)_ |
 | `phi_extend.py` | _(undescribed)_ |
+| `scholar_parity_check.py` | Drop: a parity/3c-must-be-square-style argument (that a full MSS centre line X = 3c must have c/3 a square) is checked against the two near-misses and shown dead — 3·147² and 3·425² both have v2 = 1 and neither centre line is a full square AP; the 2E(Q) reduction needs B² = 3e² with B irrational. Kept as an explicit probe of a dead argument. |

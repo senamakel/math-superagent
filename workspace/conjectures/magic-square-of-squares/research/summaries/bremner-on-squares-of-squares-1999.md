@@ -6,6 +6,8 @@ The foundational source for problem (A), the "squared square": nine entries all 
 squares, maximise how many of the 8 line-sums are equal. It also records the canonical
 7-square true-magic-square witness used throughout this run.
 
+Source full text: [[bremner-on-squares-of-squares-1999]] → `research/sources/bremner-on-squares-of-squares-1999.full.md`
+
 ## Established statements
 
 **Parametrisation (eq. 2).** Every 3×3 magic square of rationals is
@@ -66,6 +68,24 @@ Also a one-parameter family over `Q(i,√(µ³−µ))`, and one MSS over `Q(u)` 
 
 - Robertson 1996 (the `robertson-magic-squares-of-squares-1996` download) is the *same PDF*
   as this 1999 paper under a different filename; no separate content.
+
+```claim
+id: bremner-deg4-centre-532
+statement: The degree-4 MSS over Q(√3,√133) printed in Bremner 1999 has centre
+  532 = 133·2² = 2²·7·19 and magic constant 1596, not 2926 = "133·22" as the
+  OCR'd text reads. All eight r-terms of the printed entries cancel exactly;
+  Bremner II 2001 prints the same grid transposed with centre "2²·7·19" = 532,
+  an independent agreement. 532 = (2√133)² is a square in Q(√133).
+hypotheses: the printed nine entries; exact arithmetic in Q(√3)
+holds-here: yes (verified by hand row/col/diagonal sum in Q(√3); script
+  code/bremner_deg4_check.py records the field arithmetic)
+status: checked
+bearing: the extension-field MSS hinge (non-existence cannot be purely
+  structural) stands unchanged; only the literal centre value is corrected
+contradicts: earlier reading 'centre 133·22 = 2926' (OCR superscript loss,
+  propagated into memory and the earlier digest)
+anchor: research/summaries/bremner-on-squares-of-squares-1999.md
+```
 
 ```claim
 id: robertson-elliptic-reduction

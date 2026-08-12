@@ -21,100 +21,62 @@ circumference c. S: sun gear, circumference s, OFF-CENTRE inside C. Four planets
 externally to S; planets MAY overlap (waives the neighbor condition); closest
 S–C boundary gap ≥1cm ⇒ centre offset d ≤ R−r−1. c,s,p,q integers ≥5.
 "Perfectly meshing" = constant angular-velocity ratio, teeth align with grooves.
-`g(c,s,p,q)` = number of valid arrangements (finite; only discrete arrangements
-mesh). `G(n)=Σ_{s+p+q≤n} g(s+p+q,s,p,q)`, p<q, p,s≥5. Worked: g(16,5,5,6)=9,
-G(16)=9, G(20)=205; target G(500).
+`g(c,s,p,q)` = number of valid arrangements (finite). `G(n)=Σ_{s+p+q≤n}
+g(s+p+q,s,p,q)`, p<q, p,s≥5. Worked: g(16,5,5,6)=9, G(16)=9, G(20)=205;
+target G(500).
 
-**THE WINNING DISCRETENESS — computed and checked (reproduces all three
-oracles).** The n_t integer meshing model (`code/pattern/n_integer_count.py`,
-checked; high-precision verification `code/pattern/winner_refine.py`, mpmath
-60-digit). For planet type t define
-`n_t(d) := [(c−t)·β(d) + (s+t)·μ(d)] / π`, where β = angle of the *upper*
-tangency point about ring centre O, μ = its angle about sun centre S, at centre
-separation d. A valid arrangement exactly iff:
-(a) `n_p(d), n_q(d) ∈ ℤ`, and (b) `n_p − n_q ≡ p − q (mod 2)`.
-Each valid d gives exactly **one** arrangement: two p-planets at their mirror
-tangency points, two q at theirs (degenerate endpoints, where a pair coincides
-y≈0 and planets are not distinct, are excluded). This reproduces g(16,5,5,6)=9,
-G(16)=9, G(20)=205 (all 22 pairs, `code/out/n_integer_model.txt`).
+**Residue form — settled.** The correct tooth-mesh residue per planet type t is
+`Q_t(d) = (c-t)·β(d) + (s+t)·μ(d)` (the n_t/π form), with sign convention
+(sigma,eta,theta)=(-1,-1,-1) — the only variant of eight giving g(16,5,5,6)=9
+(claim `tangency_enum_oracle_match`, anchor `code/out/tangency_enum.txt`). β =
+angle of planet centre about ring centre O; μ = angle about sun centre S; both
+for the upper tangency position (two mirror positions exist per type at each d).
 
-**Structural identity (computed, high-precision checked).** At every valid d,
-`n_p + n_q = s+c` EXACTLY (21 for the flagship); at non-valid d this fails, so
-it is a genuine constraint, not trivial. `n_p(d)` is increasing in d over the
-open interval (d_min, d_max) and takes consecutive integer values (1..9 for the
-flagship). **So g = the number of valid integer levels of n_p in the interval** —
-an O(#integer levels) count, independent of the bound 500. The intended G(500)
-method is therefore a root-location/bisection over integer levels of n_p, NOT a
-grid scan (the d-grid in n_integer_count.py is a small-case probe of the model
-only). Nine d for the flagship: 0.16096, 0.16657, 0.17670, 0.19273, 0.21733,
-0.25572, 0.31940, 0.43890, 0.73162.
+**Two implementations, one verified:**
 
-**Geometry (sourced).** Planet centre tangent internally to C and externally to
-S lies on the ellipse with foci O,S and sum of focal distances
-(R−ρ)+(r+ρ) = (c+s)/2π — planet size **cancels**, so all four planets share one
-ellipse (focal separation d; major semiaxis (c+s)/4π). Rational parametrization
-via Pappus chain (durable memory). For fixed d and type t, tangency forces
-exactly TWO planet centres, mirror images across the line of centres — the count
-is over d, never over angular positions (claim `offcentre_two_positions_per_type`).
+1. `n_integer_count.py` (grid enumeration, O(N) d-scan): n_t = Q_t / π (not
+   mod-1), conditions n_p∈ℤ, n_q∈ℤ, n_p−n_q≡p−q (mod 2), degenerate endpoints
+   (y≈0) excluded. **Reproduces g=9, G(16)=9, G(20)=205** — all three oracle
+   values. Output: `code/out/n_integer_model.txt` with per-tuple G(20) table.
 
-## Ruled out — every candidate that returns 0 or the wrong count (checked)
+2. `fast_g.py` (monotone f-crossing, no grid): f(d)=Q_p(d)−Q_q(d) strictly
+   increasing; g = #{m∈ℤ : f(DL) < m < f(DU)}. **Reproduces g=9, G(16)=9 but
+   G(20)=213 vs oracle 205** — overcount of 8 (claim `g20_overcount_by_eight`,
+   anchor `code/out/G20_overcount.md`). Sign convention correct; admissibility
+   rule wrong.
 
-1. **Continuous single-d phase-elimination model** (`lib/gears.py`, `brute.py`):
-   g=0 vs 9; residual minimum only at degenerate d=1/(2π). Claims
-   `gears_model_fails_oracle`, `oracle_model_reproduces_zero`.
-2. **Single-centre least-mesh-angle lattice** (`discrete_model_probe.py`): planets
-   at slots k·2π/(s+c) about O or S sharing one d; g=G16=G20=0. Kills only the
-   implementation, not the coaxial lattice theorem; for an OFF-CENTRE sun a
-   single-centre β-lattice is the wrong discretization (tangency forces positions;
-   there is no free angular choice).
-3. **Idler-phase "B-model"** (`phase_model_probe.py`): B_k=(r+ε·ρ_k)γ_k+ε(R−ρ_k)β_k,
-   conditions 2B_p,2B_q,B_p−B_q∈ℤ; g=0 for both ε=±1.
-4. **W-invariant off-centre model** (`w_invariant_test.py`) — previously the live
-   hypothesis, now **checked dead**: thread `offcentre-mesh-phase-model.md`
-   derives per-planet invariant W_j = s·φ_j + c·χ_j − t·γ_j pairwise congruent
-   mod 2π, but NONE of the four tested congruence formulations (A=s·φ+c·χ∈πℤ both
-   types AND cross; B=cross only=5; C=t·γ−c·χ∈πℤ both AND cross=0; D=A with W') 
-   gives g=9 (best B=5, stable to 1e6/4e6/12e6 with independent cluster check).
-   Set C's "identically satisfied" suspicion is falsified (residues to 0.5).
-5. **Tangency-enumeration residue scan** (`tangency_enum.py`): claims a specific
-   (σ,η,θ)=(−1,−1,−1) sign variant gives g=9, but other variants give 6–10 and it
-   was never extended to G(16)/G(20); superseded by the cleaner n_t model.
+**Structural identity (computed).** At valid d, n_p + n_q = s+c exactly; n_p
+increases monotonically with d and takes consecutive integer values 1..9 for the
+flagship. g = number of valid integer levels of n_p in (d_min,d_max).
 
-General lesson (confirmed by four dead families): monotone-integer-level counting
-in a single parameter d is the shape that works; any "both planet types must
-satisfy a congruence at the same d" phase system that cannot be reduced to
-integer levels of ONE monotone function of d has returned 0.
+**Geometry (sourced).** All four planets share one ellipse (foci O,S, major
+semiaxis (c+s)/4π) — planet radius cancels in sum of focal distances. For fixed
+d and type t, exactly two tangency positions (mirror pair across line of
+centres); the count is over d, never over angular positions.
+
+## Ruled out
+
+1. **Continuous single-d phase-elimination** (`lib/gears.py`): g=0 vs 9.
+2. **Single-centre least-mesh-angle lattice** (`discrete_model_probe.py`): g=0.
+3. **Idler-phase B-model** (`phase_model_probe.py`): g=0.
+4. **W-invariant off-centre model** (`w_invariant_test.py`): max 5 vs 9.
+5. **Other 7 sign variants of the tangency residue**: give g∈{6,7,10}, none 9.
+
+All dead models return 0 or wrong count; all used phase-congruence systems that
+didn't reduce to monotone integer-level counting in d. That shape — integer
+levels of ONE monotone function of d — is the one that works.
 
 ## Numbers
 
-All three oracle values are now reproduced by `n_integer_count.py`: g(16,5,5,6)=9,
-G(16)=9, G(20)=205 (`code/out/n_integer_model.txt`, per-pair table present;
-high-precision check `code/out/winner_refine.txt` confirms the n_p+n_q=s+c identity
-to 60 digits). The 22 per-pair g values for G(20) are listed in n_integer_model.txt.
-G(500) remains UNCOMPUTED (n_integer_count's d-grid scans are O(N); the real
-method must count integer levels of n_p without scanning — TASKS.md step 3/4 open).
+Oracle values: g(16,5,5,6)=9, G(16)=9, G(20)=205.
+`n_integer_count.py` reproduces all three; per-tuple G(20) table at
+`code/out/n_integer_model.txt`.
+`fast_g.py` reproduces g=9, G(16)=9, but G(20)=213 (+8 overcount).
+G(500) uncomputed.
 
-## Recalled
+## Current task (directive 3)
 
-Cognee holds the gear-geometry cards (Drivetrain Hub, UTS, Gear Solutions,
-Cut-the-Knot), the teeth-matching/assembly findings (Zou 2015, Xue 2020
-abstract), the four dead-model verdicts above, and — newly promoted — the n_t
-winner with its structural identity (this run's computation). Scratch had
-overstated the tangency-enum "oracle match" as if G(16)/G(20) were done; they
-were not until n_integer_count ran. Earlier runs carry no usable PE620 numeric
-result; the run's numbers must stand on its own computation.
-
-## Gaps / open
-
-- **G(500) by theory, not scanning** (the real method): count valid integer
-  levels of n_p over (d_min,d_max) for each (c,s,p,q) with s+p+q ≤ 500, cost not
-  growing with 500 — root-location/bisection per integer level, plus the parity
-  and degenerate-exclusion filters. `solution.py` must agree with
-  n_integer_count on every reachable case, then compute G(500).
-- **Independent second route** (GOAL step 5): e.g. a different derivation (the
-  pitch-difference/whole-number formulation of the Split-Torque / Zhao-Li /
-  White-Patil sources as a cross-check), or brute agreement at maximum feasible
-  (c,s,p,q). Not yet done.
-- d bounds: d_min = max(|a_p−b_p|,|a_q−b_q|), d_max = min(a_p+b_p, a_q+b_q,
-  R−r−1); parity filter n_p−n_q ≡ p−q (mod 2); degenerate y≈0 endpoints
-  excluded. Counting details for the closed form still open.
+**Diagnose the overcount.** Run `fast_g.py` per-tuple over G(20), compare
+against `n_integer_count.py` table, find which tuples differ, print offending
+d values and planet positions, fix the admissibility rule. The sign convention
+and residue are NOT to be re-derived. See `TASKS.md`.

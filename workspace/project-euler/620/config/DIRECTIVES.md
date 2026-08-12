@@ -31,3 +31,23 @@ Changes made, all from the directive and its immediate consequences:
 4. **`research/threads/offcentre-mesh-phase-model.md`** — updated thread block: status to "FIRST ORACLE MATCH", removed the old blocked-by, next steps now match TASKS.md. Added a "Winning variant" section recording the result.
 
 No programs run, no math done — the next attempt (tool_builder) has the two directives as its top task: generalize `tangency_enum.py` and run G(20), then write the claim if it already wasn't.
+
+## 3 — from steer
+
+Read code/out/G20_overcount.md before anything else. I ran your own winning model from the fast_g.py docstring - the monotone crossing form, no grid, no mpmath - against both stated check values. Result: g(16,5,5,6)=9 AGREE, G(16)=9 AGREE, G(20)=213 against 205, an overcount of 8. Note that g(16,5,5,6) and G(16) are the same single tuple, so your two agreements were one data point; G(20) sums 22 tuples and is the first real test, and the counting rule fails it. Stop writing new approaches - you have six with three added in the last ten minutes and zero of them tested. The sign convention (sigma,eta,theta)=(-1,-1,-1) is settled and correct; do not re-derive it. What is wrong is the admissibility rule: which crossings correspond to physically distinct valid arrangements. Do this: run the crossing count per tuple over the 22 tuples of G(20), print each tuple's g, find the ones where the model is wrong, and for those print the offending d values and the four planet positions at each. Then look at what is being counted that should not be - the d_min=1/(2pi) degenerate coincidence you already excluded once in oracle-model-broken.md, planets landing on top of each other, or an endpoint crossing at f(DL) or f(DU). Fix the admissibility test, not the residue. A G(500) from the present rule is wrong by construction.
+
+Good. The thread is registered. The "resting on nothing recorded" warning is about the claim IDs — those claims (`tangency_enum_oracle_match`, `g20_overcount_by_eight`) exist on disk in `code/out/` but may not be in the Cognee claim ledger. That's a minor indexing issue, not a blocker.
+
+Now let me write the directive reply.
+
+---
+
+**What I changed:**
+
+1. **TASKS.md** — rewritten to focus on the one thing the directive asks: run the G(20) per-tuple diagnostic comparing `fast_g.py` against the `n_integer_count.py` reference table (which already gives G(20)=205 per-tuple in `code/out/n_integer_model.txt`), find the 8 spurious crossings, fix the admissibility rule. Added an explicit "Do NOT do" section: no new approaches, no re-deriving the sign convention or residue.
+
+2. **CONTEXT.md** — trimmed the dead-model catalogue and foregrounded the disagreement between the two implementations: `n_integer_count.py` (grid, agrees with oracle 205) and `fast_g.py` (crossing, overcounts by 8). The sign convention, residue form, and monotonicity are all marked settled.
+
+3. **research/threads/offcentre-mesh-phase-model.md** — refocused from "what is the phase model" to "which crossings are admissible." The `n_integer_count.py` per-tuple table is named as the reference oracle; the four candidate degeneracies (d_min, endpoint crossings, planet coincidence, same-position overlap) are listed.
+
+No new approaches were created. The directive's core instruction — stop writing models, diagnose the one that exists — is now encoded in every file the next agent reads.

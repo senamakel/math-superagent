@@ -1,102 +1,40 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/van-luijk-cubic-points-brauer-manin-k3.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Van Luijk, "Cubic points on cubic curves and the Brauer-Manin obstruction on K3 surfaces"
 
-<!-- source: https://pub.math.leidenuniv.nl/~luijkrmvan/cubics/cubics.pdf | converted from PDF -->
+[[van-luijk-cubic-points-brauer-manin-k3]]
 
-## What it claims
+Source: `https://pub.math.leidenuniv.nl/~luijkrmvan/cubics/cubics.pdf` (preprint, Simon Fraser / Leiden). All statements below are from the paper's own proofs.
 
-Abstract. We show that if over some number ﬁeld there exists a certain
-diagonal plane cubic curve that is locally solvable everywhere, but that does
-not have points over any cubic galois extension of the number ﬁeld, then the
-algebraic part of the Brauer-Manin obstruction is not the only obstruction to
-the Hasse principle for K3 surfaces.
+## What it establishes
 
-1. Introduction
+**Construction.** For a smooth plane cubic `C` over a number field `k`, form `X = (C×C)/ρ` where `ρ(P,Q) = (Q,R)`, `P,Q,R` collinear on `C` (order-3 automorphism). `X` has 9 A₂ double points; its minimal resolution `Y` is a **K3 surface** (Prop. 2.2).
 
-If we want to prove that a variety X deﬁned over the ﬁeld of rational numbers
-Q does not have any rational points, it suﬃces to show that X has no real points
-or no p-adic points for some prime number p. For some varieties the converse
-holds as well. Conics, for instance, have a rational point if and only if they have
-a real point and a p-adic point for every prime p, i.e., if and only if they have a
-point locally everywhere. This is phrased by saying that conics satisfy the Hasse
-principle. Selmer’s famous example of the plane curve given by
+- **Y has a k-point iff C contains three collinear points defined over some Galois (Z/3Z)-extension of k** ("k-cubic points"), permuted transitively by Gal(l/k) (Lemmas 2.5, 2.7). So if C is locally soluble but has no k-cubic points, Y is a **counterexample to the Hasse principle on a K3** (Cor. 2.8, Thm 1.1).
+- **Transcendental-lattice fact** (Prop. 3.9): `T_Y ≅ T_{C×C}(3)`. For diagonal cubics `ax³+by³+cz³=0`: `rk NS(Y) = 20` with **disc NS(Y) = −27** (Prop. 4.1), and if `abc` is not a cube in `k` then **H¹(k, Pic Ȳ) = {1}** (Prop. 4.2).
+- **Proof of Thm 1.1**: when `H¹(k, Pic) = 1`, the Hochschild–Serre sequence gives `Br₁ Y = im Br k`, so the *algebraic* Brauer–Manin set `Y(A_k)^{Br₁} ≠ ∅` — i.e. **for this K3 the algebraic Brauer group does not obstruct** — while `Y(k) = ∅`. Conclusion (exact quote of abstract): "the algebraic part of the Brauer-Manin obstruction is not the only obstruction to the Hasse principle for K3 surfaces", *conditional on the existence of such a cubic*. Whether any cubic with these three properties exists (i.e. the third condition actually holds) is **open** (the Selmer curve `3x³+4y³+5z³=0` fails condition 3 — its collinear triples are Q-cubic points, found explicitly).
+- Open Questions 1–3: existence of such a cubic, existence of a *diagonal* one, and whether BM is the only obstruction for K3 surfaces.
 
-(1) 3x
-3 + 4y3 + 5z3 = 0
+## What it implies here
 
-shows that cubic curves in general do not satisfy the Hasse principle, as this smooth
-curve has points everywhere locally, but it has no points over Q (see [20]).…
+**Holds-here: no — the central conditional is unfulfilled**, and more importantly the surface `Y` is a *different* K3 (a rational quotient of a self-product of a cubic, NS-rank 20 discriminant −27) unrelated to Bremner II's intersection-of-three-quadrics K3 `S: T²+U²=V²+W²=X²+Y², TU+VW+XY=0` (NS(Q)-rank 12). Mapping: the *method* this run's adopted Brauer–Manin approach needs — prove `S(Q)=∅` via an element of Br(S)/Br(Q) with constant nonzero evaluation — is exactly the kind of "alone not sufficient + algebraic part trivial doesn't preclude transcendental" landscape this paper maps, but **no theorem here endows Bremner's S with a nontrivial Br class or controls its evaluations**. The paper's conditional Theorem 1.1 does not apply: nothing here produces a cubic with conditions (1)–(3).
 
-## Statements it makes
+**What it rules out / cautions:** the "hinge" in CONTEXT.md (MSS exist over Q(√3) but not Q ⇒ BM obstruction vanishing upon base change) must fight the Wu result below and this paper's Open Question 3 — for K3s it is *not established* that BM explains all Hasse failures, so a bare computational "no BM obstruction" would prove nothing either way.
 
-Theorem 1.1. Let k be a number ﬁeld. Suppose we have a smooth curve C ⊂ P2
-k
-given by ax
-3 + by3 + cz3 = 0, such that
+```claim
+id: van-luijk-algebraic-br-not-sufficient-on-k3s
+statement: If a smooth diagonal plane cubic a x^3 + b y^3 + c z^3 = 0 over a
+  number field has local points everywhere, has no k-cubic points (three
+  collinear points over a Galois Z/3Z extension), and abc is not a cube, then
+  the K3 Y = min-res(CxC/rho) satisfies Y(A_k)^{Br_1 Y} != empty and Y(k) = empty:
+  the algebraic Brauer-Manin obstruction is not the only one for K3 surfaces.
+hypotheses: existence of such a cubic is OPEN (Selmer curve fails); Y is the
+  cubic-quotient K3, not Bremner II's surface S
+holds-here: no (hypothesis of such a cubic unproven; different K3)
+status: proved (as a theorem conditional on the open existence hypothesis)
+bearing: maps the limits of algebraic-Brauer arguments on K3s; the run's K3
+  is a different surface, so the theorem neither applies nor obstructs the
+  adopted Brauer-Manin line; reinforces that a transcendental class is needed
+anchor: research/sources/van-luijk-cubic-points-brauer-manin-k3.full.md
+contradicts: none (its open Question 3 is compatible with the run's plan)
+```
 
-Proposition 2.2. The surface Y is a smooth K3 surface.
-
-Lemma 2.3. The surface X has a k-rational point if and only if Y does.
-
-Corollary 2.4. If k is a number ﬁeld and C has points locally everywhere, then so
-does Y .
-
-Lemma 2.5. The k-rational points of X correspond to triples (P, Q, R), up to cyclic
-permutation, of collinear points on C that are deﬁned over some galois (Z/3Z)-
-extension l of k and permuted by Gal(l/k).
-
-Lemma 2.7. The surface Y has a k-rational point if and only if there exists a
-galois (Z/3Z)-extension l of k such that C contains three collinear points deﬁned
-over l and permuted by Gal(l/k).
-
-Corollary 2.8. If C has no k-cubic points, then Y has no k-rational points.
-
-Proposition 2.9. Suppose that J(k) is ﬁnite and that 3 does not divide the order
-of J(k). Then the converse of Corollary 2.8 holds as well.
-
-Proposition 2.14. The six points on any two parallel lines in Π lie on a conic
-whose pull-back to X consists of two components.
-
-Proposition 3.1. If Z is a K3 surface, then Pic0 Z = 0 and we have an isomor-
-phism Pic Z ∼ NS(Z).
-
-Proposition 3.2. Let Z be an abelian surface (resp. K3 surface). Then H(Z, Z)
-is an even lattice with discriminant −1 of rank 6 (resp. 22) in which NS(Z) embeds
-as a primitive sublattice.
-
-Lemma 3.4. Let Z be an abelian variety or a K3 surface. Let D be a curve on Z
-with arithmetic genus pa(D). Then we have D2 = 2pa(D) − 2.
-
-Lemma 3.5. Take any point R ∈ C and deﬁne the divisors
-
-Lemma 3.6. We can identify each ALP with F3 and give Π the structure of an
-F3-vectorspace in such a way that
-
-Corollary 3.7. We have [Λ : L] = 27 and disc Λ = 27.
-
-Proposition 3.9. There is a natural isomorphism TY ∼ TC×C(3) of lattices.
-
-Proposition 3.11. We have rk NS(C × C) = 2 + rk End Jac C.
-
-Proposition 3.12. With r = rk End Jac C we have
-
-Corollary 3.14. If C does not admit complex multiplication, then the N´eron-Severi
-lattice NS(YC) has rank 19, discriminant 54, and is generated by the pull back H
-of a line in ˘P
-2, the irreducible components above the P ∈ Π, and the irreducible
-components of the pull backs of the conics of Proposition 2.14.
-
-Proposition 4.1. The N´eron-Severi group of Y has rank 20 and discriminant −27.
-It is generated by the galois-invariant set
-{
-Dζ
-r , Dζ2
-r } ∪ {
-Θ
-ω
-R : R ∈ Π, ω ∈ {ζ, ζ 2}
-}
-
-Proposition 4.2. If abc is not a cube in k, then we have H 1(k, Pic
- Y ) = {1}.
-
-*[digest of a 49141 character source; every section, statement, and proof in full at `research/sources/van-luijk-cubic-points-brauer-manin-k3.full.md`]*
+This source **does not establish** anything about the magic-square K3 directly — it is methodology terrain for the adopted approach, and its conditional result is undischarged. Filed under the brauer-manin thread for the record.

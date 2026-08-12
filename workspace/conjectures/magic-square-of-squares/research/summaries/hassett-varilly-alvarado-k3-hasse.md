@@ -1,87 +1,46 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hassett-varilly-alvarado-k3-hasse.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hassett & Várilly-Alvarado, "Failure of the Hasse principle on general K3 surfaces"
 
-<!-- source: https://www.math.brown.edu/bhassett/papers/K3Hasse/K3Hasse10.pdf | converted from PDF -->
+[[hassett-varilly-alvarado-k3-hasse]]
 
-## What it claims
+Source: `https://www.math.brown.edu/bhassett/papers/K3Hasse/K3Hasse10.pdf` (Advances in Math 288 (2016) 436–478). Statements below are the paper's own theorems; section numbers refer to the local full text.
 
-Abstract. We show that transcendental elements of the Brauer group of an algebraic
-surface can obstruct the Hasse principle. We construct a general K3 surface X of degree 2
-over Q, together with a two-torsion Brauer class α that is unramiﬁed at every ﬁnite prime,
-but ramiﬁes at real points of X. Motivated by Hodge theory, the pair (X, α) is constructed
-from a double cover of P2 × P2 ramiﬁed over a hypersurface of bi-degree (2, 2).
+## What it establishes
 
-1. Introduction
+**Theorem 1.1 (main).** There exists a K3 surface `X₁` of degree 2 over Q — a double cover of P² branched over a smooth plane sextic — together with a **2-torsion Brauer class** `A` (an Azumaya algebra, quaternion `(B²−4AD, A)`) such that:
+- `X₁` has **geometric Picard rank 1** (Prop. 5.5, via Elsenhans–Jahnel specialization and tritangent-line data mod 3 / 11);
+- `X₁` is locally soluble, `X₁(A_Q) ≠ ∅` (Table 1: explicit Q_p-points at R and all bad primes, by Weil conjectures + search);
+- the local invariants are `inv_p A(P) = 0` for all finite p, `inv_∞ A(P) = 1/2` for all real points (Prop. 5.6);
+- hence `X₁(A_Q)^A = ∅` while `X₁(A_Q) ≠ ∅`: a **transcendental Brauer–Manin obstruction to the Hasse principle on a K3 surface** (first such unconditional example).
 
-Let X be a smooth projective geometrically integral variety over a number ﬁeld k. If X has
-a kv-point for every place v of k (equivalently, if its set X(Ak) of adelic points is nonempty),
-yet it does not have a k-point, then we say that X does not satisfy the Hasse principle.
-Manin [Man71] showed that any subset S of the Brauer group Br(X) := H 2
-´et(X, Gm) may
-be used to construct an intermediate set
+**Why the class is transcendental:** with Pic rank 1, `H¹(Q, Pic) = 1`, so by Hochschild–Serre `Br₁ X = Br₀ X` (constant classes never obstruct); `A` is therefore not algebraic (end of §5.5).
 
-X(k) ⊆ X(Ak)
-S ⊆ X(Ak)
+**Blueprint for the run (Thm 1.1 + §3–§4):** for any degree-2 K3 `w² = −½·det(M)` with quadratic forms A,…,F, the quaternion `(B²−4AD, A)` extends to Br(X) (Prop. 3.3); it can ramify **only** at real places, 2-adic places, and primes of bad reduction (Lemmas 4.4, 4.7, Cor. 4.6); at odd bad-reduction primes with < 8 ordinary double points the evaluation is constant (Props 4.1, Lemma 4.2 via Colliot-Thélène–Skorobogatov). The paper's §6 gives the exact **7-step computational certification pipeline** used to construct such (X, A) pairs.
 
-that often explains failures of the Hasse principle, in the sense that X(Ak)
-S may be empty,
-even if X(Ak) is not. In this case, we say there is a Brauer-Manin obstruction to the Hasse
-principle for X. See §4 for the…
+## What it implies here
 
-## Statements it makes
+**Holds-here: machinery, not the surface.** Bremner II's K3 `S` (intersection of three quadrics in P⁵, NS(Q)-rank 12) is not a degree-2 double cover of P², so Theorem 1.1's specific example does not transfer. What transfers:
+1. **The transcendental part of Br matters and is computable in practice** — this paper is the existence proof that a BM obstruction on a K3 can be certified unconditionally, and §6 is a ready-made check-list for the adopted `brauer-manin-k3-surface` approach (compute algebra, control ramification, evaluate at local points, point-count for Pic rank).
+2. The approach file already notes Br(S)/Br(Q) = algebraic + `Br(S_Q̄)^{Gal}`; this paper's Prop. 4.1/Lemma 4.2 machinery (constant evaluation at mild bad reduction) is exactly what the approach's step 3 needs if S has such fibres.
+3. **The "hinge" caution is reinforced but not resolved**: MSS exist over Q(√3) and not (conjecturally) Q — a transcendental class vanishes over a quadratic extension, which is the pattern here; but nothing in this paper constructs such a class for S.
 
-Theorem 1.1. Let X be a K3 surface of degree 2 over a number ﬁeld k, with function ﬁeld
-k(X), given as a sextic in the weighted projective space P(1, 1, 1, 3) = Proj k[x0, x1, x2, w] of
-the form
+**What it does not settle:** whether Bremner's S admits any nontrivial Br class, algebraic or transcendental; the surface is different (rank-12 NS, not rank-1). No theorem here applies directly; only the method does.
 
-Lemma 3.1. Retain the notation above and assume that C1 and C2 are curves. If Y (equiv-
-alently, W ) is not smooth then neither C1 nor C2 is smooth. On the other hand, if W is
-smooth then each πi is ﬂat and Ci is singular if πi has a geometric ﬁber of rank 1, i = 1, 2.
+```claim
+id: hassett-varilly-alvarado-transcendental-bm-k3
+statement: There is an explicit K3 surface X_1/Q of degree 2, geometric
+  Picard rank 1, locally soluble, with a 2-torsion Brauer class A whose
+  invariants are 0 at all finite places and 1/2 at all real points, giving an
+  unconditional transcendental Brauer-Manin obstruction to the Hasse
+  principle (X_1(A_Q) != empty, X_1(A_Q)^A = empty).
+hypotheses: X_1 the explicit sixth-degree double cover of the paper; class A
+  the quaternion (B^2-4AD, A); certification via Elsenhans-Jahnel + CTS
+holds-here: no (the magic-square K3 S is a different surface, not this X_1)
+status: proved
+bearing: method template and local-invariant machinery for the adopted
+  Brauer-Manin line on Bremner II's S; shows a certified transcendental
+  obstruction on a K3 is achievable in practice
+anchor: research/sources/hassett-varilly-alvarado-k3-hasse.full.md
+contradicts: none; complements van-luijk's conditional algebraic-part result
+```
 
-Theorem 3.2. Let O denote a discrete valuation ring with residue ﬁeld F of characteris-
-tic ̸= 2. Let W be a type (2, 2) divisor in P2 × P2 ﬂat over Spec O, and Y → P2 × P2 a
-double cover simply branched along W. For i = 1, 2, let qi : Y → P2 denote the quadric
-surface bundle obtained by projecting onto the i-th factor, and let Ci ⊂ P2 be its discriminant
-divisor. Assume that for some j ∈ {1, 2}, Cj is ﬂat over O, and that (Cj)F is smooth.
-Let rj : Fj → P2 be the relative variety of lines of qj. Then the Stein factorization
-
-Proposition 3.3. Let X be a K3 surface of degree 2 over a number ﬁeld k, given as a sextic
-in the weighted projective space P(1, 1, 1, 3) = Proj k[x0, x1, x2, w] of the form
-
-Proposition 4.1. Let ℓ ̸= p be a prime. Assume that X is regular with geometrically
-integral ﬁbers over Spec O, and that the smooth locus X sm
-F of the closed ﬁber is geometrically
-irreducible and has no connected unramiﬁed cyclic geometric coverings of degree ℓ. If X(k) ̸=
-∅, then, for A ∈ Br(X){ℓ}, the image of the evaluation map evA : X(k) → Br(k) consists of
-one element.
-
-Lemma 4.2. Suppose that p ̸= 2. Let X be a K3 surface deﬁned over k, and let π : X →
-Spec O be a ﬂat proper morphism from a regular scheme with X = X ×O k. Assume that
-the singular locus of the closed ﬁber X0 := XF has r < 8 points, each of which is an ordinary
-double point. Then the smooth locus U ⊂ X0 has no connected unramiﬁed cyclic covers of
-prime degree ℓ ̸= p.
-
-Lemma 4.4. Let X be a K3 surface over a number ﬁeld k as in Proposition 3.3. Let v be
-a ﬁnite place of good reduction for X, and assume that v is not 2-adic. Then A does not
-ramify at v. Consequently, invv A(P ) = 0 for all P ∈ X(kv).
-
-Lemma 4.5. Suppose that the quadratic forms A, B, C, D, E and F satisfy
-(1) A, D and F are negative deﬁnite,
-(2) B, C and E are positive deﬁnite.
-Then, for any real point of X, we have
-
-Corollary 4.6. Suppose the hypotheses of Lemma 4.5 hold. Then the local invariant of A
-at every real point of X is nontrivial.
-
-Lemma 4.7. Write
-
-Theorem 5.2 ([EJ11c]). Let f : X → Spec Z be a proper, ﬂat morphism of schemes. Suppose
-there is a rational prime p ̸= 2 such that the ﬁber Xp of f at p satisﬁes H 1(Xp, OXp) = 0.
-Then the specialization homomorphism Pic(XQ) → Pic(XFp) has torsion-free cokernel.
-
-Proposition 5.3. Let X be a K3 surface of degree 2 over Q, given as a double cover π : X →
-P2 ramiﬁed over a smooth plane sextic curve C. Let p…
-
-
-*[further statements in the full text]*
-
-*[digest of a 62876 character source; every section, statement, and proof in full at `research/sources/hassett-varilly-alvarado-k3-hasse.full.md`]*
+**Does not help directly**: it is not a reduction of the magic-square problem; it is the state-of-the-art toolkit for the approach that is currently adopted. Recorded as such so nobody re-reads the 65k-char text for a magic-square statement that is not there.

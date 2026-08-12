@@ -5,6 +5,8 @@
 The source for problem (B): a fully magic 3×3 square, maximise square entries. Best known = 7
 (Bremner's grid); no 8-square example over Q known.
 
+Source full text: [[bremner-on-squares-of-squares-II-2001]] → `research/sources/bremner-on-squares-of-squares-II-2001.full.md`
+
 ## Established statements
 
 **Six-square configurations.** Six square entries ⇔ intersection of three quadrics in P⁵.

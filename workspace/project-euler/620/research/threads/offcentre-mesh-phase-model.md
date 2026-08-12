@@ -1,21 +1,20 @@
----
-thread:
-  question: >
-    Which crossings of f(d)=Q_p-Q_q on (DL,DU) correspond to physically
-    distinct, admissible gear arrangements, and which are spurious — so that
-    g(c,s,p,q) correctly counts the PE620 "perfectly meshing" arrangements?
-  status: open — sign convention settled; admissibility rule being diagnosed
-  rests-on:
-    - tangency_enum_oracle_match          # (sigma,eta,theta)=(-1,-1,-1) gives 9
-    - g20_overcount_by_eight              # fast_g.py gives G(20)=213 vs 205
-  blocked-by: []
-  next:
-    - Run G_sum(20) verbose per-tuple, compare against grid-enumeration oracle
-      per tuple, save to code/out/G20_diagnostic.txt (TASKS.md item 1)
-    - Identify which tuples differ and inspect the spurious d values
-    - Fix the admissibility rule in fast_g.py's g_fast()
-    - Validate G(16)=9, G(20)=205
----
+```thread
+question: >
+  Which crossings of f(d)=Q_p−Q_q on (DL,DU) correspond to physically
+  distinct, admissible gear arrangements, and which are spurious — so that
+  g(c,s,p,q) correctly counts the PE620 arrangements?
+status: open — sign convention settled; admissibility rule being diagnosed
+rests-on:
+  - tangency_enum_oracle_match
+  - g20_overcount_by_eight
+blocked-by: []
+next:
+  - Run G_sum(20) verbose per-tuple, compare against n_integer_count oracle
+    per-tuple table, save to code/out/G20_diagnostic.txt (TASKS.md item 1)
+  - Identify which tuples differ and inspect the spurious d values
+  - Fix the admissibility rule in fast_g.py's g_fast()
+  - Validate G(16)=9, G(20)=205
+```
 
 # Off-centre mesh phase model — admissibility fix
 
@@ -32,26 +31,26 @@ The problem: G(20) sums to 213 against oracle 205, an overcount of 8 across
 22 tuples (claim `g20_overcount_by_eight`, anchor
 `code/out/G20_overcount.md`).
 
+The grid-enumeration model `code/pattern/n_integer_count.py` (conditions:
+n_p∈ℤ, n_q∈ℤ, n_p−n_q≡p−q (mod 2), y>ε) reproduces all three oracle values,
+including the per-tuple G(20) table at `code/out/n_integer_model.txt`. This
+is the reference for diagnosing which fast_g.py crossings are spurious.
+
 ## Candidates for the 8 spurious crossings
 
 1. **d = d_min ≅ 1/(2π).** The two p-planets coincide here (degenerate
-   endpoint of the valid d interval). Excluded in the original
-   `oracle-model-broken.md` diagnosis; crossing count may re-admit it via
-   an integer m at f(DL) or just above.
-2. **Endpoint crossings.** `#{m: f(DL) < m < f(DU)}` is strict at both ends.
-   A crossing exactly at f(DL) or f(DU) is excluded by the current rule.
-   But numerical f(DL), f(DU) are mpmath-approximate; the floor/ceil may
-   include a boundary m that should be excluded.
-3. **Planet coincidence.** Within a tuple, the two p-planets or two q-planets
-   can coincide at particular d (not just at d_min). These are distinct
-   arrangements geometrically but may not be "valid" under some reading.
-4. **Same-size planet overlap at the same position.** The statement permits
-   planets to overlap but two same-size planets at the same d (mirror pair
-   U/L) may be double-counted.
+   endpoint). The grid model excludes this via y>ε.
+2. **Endpoint crossings.** f crosses an integer exactly at DL or DU. The
+   strict inequality `f(DL) < m < f(DU)` should exclude these, but numerical
+   floor/ceil on mpmath values may admit one.
+3. **Planet coincidence at interior d.** A crossing where y_p or y_q ≈ 0
+   (planets not distinct) — the grid model's y>ε filter catches these.
+4. **Other degeneracy.** Two same-size planets landing at the same position
+   (not just coincident — exactly the same coordinates).
 
 ## What is NOT wrong
 
 - The sign convention. All eight variants tested; only (-1,-1,-1) gives 9.
 - The f-crossing monotonicity. Verified numerically per case.
-- The residue formula Q_t(d) = (c-t)*B_t + (s+t)*G_t.
+- The residue formula Q_t(d) = (c-t)*β + (s+t)*μ.
 - The DL/DU bounds (tangency existence + 1cm gap).

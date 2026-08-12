@@ -34,20 +34,22 @@ def n_t(c, s, t, d):
 def bounds_detail(c, s, p, q):
     R = c / (2.0 * PI)
     r = s / (2.0 * PI)
-    items = []
+    lowers = []   # |a-b| per type
+    uppers = []   # a+b per type
     for t in (p, q):
         rho = t / (2.0 * PI)
         a = R - rho
         b = r + rho
-        items.append(('|a-b| t=%d' % t, abs(a - b)))
-        items.append(('a+b t=%d' % t, a + b))
-    items.append(('gap R-r-1', R - r - 1.0))
-    DL, DLsrc = min((v for _, v in items)), None
-    DU, DUsrc = min((v for _, v in items)), None
-    for name, v in items:
-        if v <= DL + 1e-12:
+        lowers.append(('|a-b| t=%d' % t, abs(a - b)))
+        uppers.append(('a+b t=%d' % t, a + b))
+    uppers.append(('gap R-r-1', R - r - 1.0))
+    DL, DLsrc = max(v for _, v in lowers), None
+    DU, DUsrc = min(v for _, v in uppers), None
+    for name, v in lowers:
+        if v >= DL - 1e-12:
             DLsrc = name
-        if v >= DU - 1e-12:
+    for name, v in uppers:
+        if v <= DU + 1e-12:
             DUsrc = name
     return DL, DU, DLsrc, DUsrc
 

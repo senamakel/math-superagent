@@ -4,7 +4,15 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[four-ap-additive-triple]] | Does any additive triple q1, q2, q1+q2 in the universal rational set Φ exist? (A quadruple q1,q2,q1+q2,q1−q2 all in Φ would be a full MSS.) | open | phi-universal-set, (CONTEXT.md), robertson-elliptic-reduction, three-primitive-equal-d-bound, k3-ns-rank-12-not-maximal | promote Φ/\|S(e)\| into claim blocks; express the additive triple as a single polynomial variety and search its factorisation; correlate with Morgenstern's… |
+
+## Resting on nothing recorded
+
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[four-ap-additive-triple]] rests on `phi-universal-set`, `(CONTEXT.md)`, which no claim block on disk establishes
 
 ## Threads that could not be read
 
