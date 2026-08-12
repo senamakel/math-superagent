@@ -119,6 +119,54 @@ fn continuation_briefing(attempt: usize, resumed: bool) -> String {
     }
 }
 
+/// How many of a folder's entries to count before giving up.
+///
+/// Counting is bounded for the same reason every other walk here is: a
+/// workspace is agent-written and nothing stops it holding ten thousand files.
+/// The number only has to separate "none" from "some" from "a lot".
+const MAX_COUNTED: usize = 500;
+
+/// Renders what the attempt left on disk, for a judge that cannot see it.
+///
+/// Deliberately counts rather than reads. What each file *means* is a
+/// judgement, and the judge is about to make it from the report; whether the
+/// attempt executed anything, established anything, or proposed anything is not
+/// a judgement, so it is measured — the same split the rest of this crate makes
+/// between an agent's work and a check on it.
+///
+/// The counts are chosen to be the ones a timed-out attempt cannot tell you
+/// itself. `code/out/` is what a program *produced*, which separates a run
+/// writing programs from a run running them; the claim split separates what the
+/// run established from what it read somewhere; approaches say whether the
+/// inventor's proposals survived to disk.
+fn evidence_briefing(workspace: &Path) -> String {
+    let outputs = count_entries(&workspace.join(super::layout::OUTPUT_DIR));
+    let ledger = super::claims::collect(workspace);
+    let approaches = count_entries(&workspace.join("research/approaches"));
+    let threads = count_entries(&workspace.join("research/threads"));
+
+    format!(
+        "\nWhat the attempt left on disk, counted rather than reported — the report above is \
+         written last and is the first thing lost when an attempt is cut off, so treat this as \
+         the more reliable of the two when they disagree:\n\
+         - `code/out/`: {outputs} file(s) a program produced\n\
+         - claims: {} established here, {} taken from a source's word, {} read out of a \
+         catalogue\n\
+         - approaches proposed: {approaches}\n\
+         - threads open: {threads}\n\
+         An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
+         nothing and left work here is not — score what is here.",
+        ledger.established(),
+        ledger.asserted(),
+        ledger.catalogued(),
+    )
+}
+
+/// Counts a folder's entries, bounded, and answers zero for a missing folder.
+fn count_entries(folder: &Path) -> usize {
+    std::fs::read_dir(folder).map_or(0, |entries| entries.flatten().take(MAX_COUNTED).count())
+}
+
 /// Returns whether the workspace holds a program the run could have executed.
 ///
 /// A deliberately shallow check: it asks whether any `.py` or `.sh` file

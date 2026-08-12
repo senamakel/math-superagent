@@ -1,36 +1,20 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gu_koenker_accelerated_incremental_enumeration.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Gu–Koenker arXiv:1811.03329 — CORRECTION: not a chamber-enumeration algorithm
 
-<!-- source: https://arxiv.org/abs/1811.03329 | converted from HTML -->
+Jiaying Gu, Roger Koenker, "Nonparametric maximum likelihood methods for binary response models with random coefficients", arXiv:1811.03329 (JASA 117, 2022). [[gu_koenker_accelerated_incremental_enumeration.full]]
 
-## What is in it
+## Correction (important)
 
-- Economics > Econometrics
-- Title: Nonparametric maximum likelihood methods for binary response models with random…
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+CONTEXT.md describes this source as "Gu–Koenker accelerated incremental chamber enumeration" (arXiv:1811.03329) in the exact-volume/chamber tooling tier. **That is a mislabelling.** The paper is an **econometrics** paper about computing NPMLEs for binary-response models with random coefficients. It *uses* the geometry of hyperplane arrangements (regions of the arrangement = possible sign patterns of a linear classifier, so the NPMLE objective is refined over arrangement cells), but it does **not** propose a chamber-enumeration algorithm and contains no volume/enumeration method for arrangements. Do not cite it as a solver for the torpids arrangement. Its abstract-level relevance to PE597 is nil.
 
+## What it actually establishes (sourced)
 
-## What it claims
+- NPMLE computation for single-index binary-response random-coefficient models is made tractable by exploiting that the likelihood is piecewise-constant over the cells of a hyperplane arrangement (the arrangement whose hyperplanes are the indifference curves of the linear predictor).
+- Contrasted with the deconvolution estimator of Gautier–Kitamura (2013); applied to a Washington-DC modal-choice dataset.
 
-Abstract: Single index linear models for binary response with random coefficients have been extensively employed in many econometric settings under various parametric specifications of the distribution of the random coefficients. Nonparametric maximum likelihood estimation (NPMLE) as proposed by Cosslett (1983) and Ichimura and Thompson (1998), in contrast, has received less attention in applied work due primarily to computational difficulties. We propose a new approach to computation of NPMLEs for binary response models that significantly increase their computational tractability thereby facilitating greater flexibility in applications. Our approach, which relies on recent developments involving the geometry of hyperplane arrangements, is contrasted with the recently proposed deconvolution method of Gautier and Kitamura (2013). An application to modal choice for the journey to work in the Washington DC area illustrates the methods.
+## Hypotheses and whether they hold here
 
-Subjects: | Econometrics (econ.EM) |
+The econometric setting (random-coefficient binary response) is unrelated to the torpids bump/finish parity. The shared ingredient is only "a piecewise-constant objective over a hyperplane arrangement" — true here too, but the paper contributes no method that reduces the torpids arrangement's super-exponential cell count.
 
-Cite as: | [arXiv:1811.03329][7] [econ.EM] |
+## Bottom line
 
-| (or [arXiv:1811.03329v3][8] [econ.EM] for this version)  |
-
-|…
-
-Fo…
-
-*[digest of a 6802 character source; every section, statement, and proof in full at `research/sources/gu_koenker_accelerated_incremental_enumeration.full.md`]*
+Same verdict as Latte/Büeler: confirming that arrangement-cell structure underlies a piecewise problem does not make n=13 reachable. Keep the file only as provenance; do not treat it as part of the exact-volume tooling tier.
