@@ -28,11 +28,14 @@ Every `n>=3` is `11` in base `n-1`; `1` is a single-digit repunit in every base.
   -> `{1,7,13,15,21,31,40,43}` (count 8, sum 171) and below 1000 -> 47 strong
   repunits, sum **15864**. Both match the statement exactly. Also `code/brute.py`
   (the naive per-n oracle) reproduces them.
-- **FINAL ANSWER (computed & checked):** sum of strong repunits below `10^12`
-  = **336108797689259276**, count 1011529.
-  `code/pe346/solution.py` (pw-arithmetic enumeration) and the independent
-  `code/pe346/verify.py` (per-length `val=val*b+1` walk, different structure,
-  no pw arithmetic) agree on both the sum and the count at `10^12`.
+- **FINAL ANSWER (computed & checked, three independent routes):** sum of
+  strong repunits below `10^12` = **336108797689259276**, count 1011529.
+  Routes, all agreeing on sum *and* count at `10^12` and on the statement's
+  worked examples: `code/pe346/solution.py` (base-major, pw arithmetic
+  `(pw-1)//(b-1)`), `code/pe346/verify.py` (base-major, per-length
+  `val=val*b+1` walk, no pw division), and `code/pe346/route3.py`
+  (length-major, direct `(pow(b,k)-1)//(b-1)`, asserts both examples and PASSES).
+  Three structurally distinct loops is independent confirmation.
 - The sorted strong-repunit list (with `1` prepended) is **OEIS A053696**
   (sourced, `research/summaries/oeis_a053696.md`), confirmed by enumeration
   matching the exhaustive program — consistent, not an independent check.
@@ -43,6 +46,10 @@ Every `n>=3` is `11` in base `n-1`; `1` is a single-digit repunit in every base.
   `strong_sum(N) = 1 - 31 - 8191 + Σ_{b,k>=3}(b^k-1)/(b-1)` for N>=8191;
   reproduces the 10^12 sum exactly. Why the pair-count is 2 above the
   set-count. Fails trivially for N<=8191.
+  (One recalled memory note — the route3 chunk — says raw pairs exceed deduped
+  values by only 1 at 10^12; that is wrong arithmetic, contradicted by
+  check_reduction.py's checked "+2". At full N both 31 and 8191 are
+  double-represented, so raw = distinct + 2. Do not trust the "+1".)
 
 ## Ruled out
 
