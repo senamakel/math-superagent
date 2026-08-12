@@ -6,9 +6,13 @@
 > 
 > 1. Cost of tokens/intelligence has dropped significantly (Deepseek V4 flash) making it incredibly efficient to burn large amount of tokens for intelligence
 > 2. Context rot can be reduced with tiering of agents (subagents)
-> 3. Running agents at scale, concurrently and parallelly is where the efficiency lies (Rust and using OpenHuman)
+> 3. Running agents at scale, concurrently and parallely is where the efficiency lies (Rust and using OpenHuman). Building an orchestrator layer where agents can share memory, work and code is what multiplies intelligence.
+> 4. Self learning loops is key towards reaching towards a shared goal.
 >
-> In this repo you'll find the exact architecture I've used to solve problems and conjectures. It is run entirely on DeepSeek v4 for less than 100$ in tokens 
+> In this repo you'll find the exact architecture I've used to solve problems and conjectures. It is run entirely on DeepSeek v4 for less than 100$ in tokens.
+> Initial runs faced issues and roadblocks so I started building this engine by getting it to solve simple problems on Project Euler before scaling it up to more complex problems and conjectures.
+>
+> The entire system was run on a 32 GB RAM, 30 core CPU Linux machine.
 
 This is a Dockerized agent for solving mathematical problems through careful
 derivation, computation, and source-backed research. It is meant for problems
