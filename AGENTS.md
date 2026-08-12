@@ -770,7 +770,18 @@ The Docker boundary is part of the security model:
   paths into the runtime.
 - Mount only the selected directory below `workspace/` at `/workspace` for
   agent-written files.
-- Keep process, memory, command-time, and command-output limits.
+- Keep process, memory, command-time, and command-output limits. Keeping a
+  limit is the requirement; the value is a judgement, and 2 GiB was the wrong
+  one. A live Erdős–Gyárfás container was OOM-killed mid-attempt — `oom` then
+  `die exit=137` in `docker events` — and an OOM kill is the worst failure shape
+  available here: the kernel stops the process, so nothing is written to the
+  console, the run simply ceases to appear, and everything in flight is lost.
+  Read `docker events --filter event=oom` when a container vanishes without an
+  error. The cap covers the Rust runtime, every concurrent child run, and every
+  Python subprocess they spawn between them, against work that is graph
+  enumeration and BFS over millions of states; problem 763 had already recorded
+  the old cap in its own `MEMORY.md` as a mathematical ceiling, "exact BFS stops
+  at N=14", which is a sandbox limit masquerading as a result.
 - Keep network access because provider, search, and telemetry calls need it.
 
 Every agent working directory is `/workspace`. The helper accepts
