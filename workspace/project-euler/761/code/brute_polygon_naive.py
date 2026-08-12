@@ -55,7 +55,7 @@ def edge_midpoints(verts):
     return mids
 
 
-def perim_dist_from(mid_index, point, verts, epsilon=1e-12):
+def perim_dist_from(mid_index, point, verts, mids, epsilon=1e-12):
     """Perimeter distance from edge-midpoint mid_index to a boundary point
     (x,y) that lies on an edge, going the shorter way around the polygon."""
     n = len(verts)
@@ -139,7 +139,7 @@ def naive_critical(n, staging_s=0.999):
             d_swim = math.dist(S, P)
             if d_swim < 1e-12:
                 continue
-            d_run, _ = perim_dist_from(mid_index, P, verts)
+            d_run, _ = perim_dist_from(mid_index, P, verts, mids)
             ratio = d_run / d_swim
             if ratio > best:
                 best = ratio
