@@ -71,7 +71,7 @@ def nx_cycle_lengths(G):
 
 
 def check_cycle_agreement(name, G):
-    mine, _ = oracle(G)          # oracle returns (min_deg, sorted lengths)
+    _, mine = oracle(G)          # oracle returns (min_deg, sorted lengths)
     mine_set = set(mine)
     theirs = nx_cycle_lengths(G)
     agree = mine_set == theirs
