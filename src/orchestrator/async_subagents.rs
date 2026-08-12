@@ -60,6 +60,60 @@ const DIGEST_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
 /// number of runs.
 const MAX_BATCH_SPAWNS: usize = 16;
 
+/// Everything one finished run needs to record itself.
+struct Recording<'a> {
+    memory: Option<&'a Arc<VectorStore>>,
+    agent: &'a str,
+    run_id: &'a str,
+    input: &'a str,
+    store: &'a Arc<InMemoryTaskStore>,
+    task_id: &'a TaskId,
+}
+
+/// Files a finished run's result into the task store and the session memory,
+/// and reports whether it succeeded.
+///
+/// Lifted out of `spawn`, which is the one place in this module where a graph
+/// is built, run, timed out, recorded, and followed up; the recording half
+/// reads the same whichever way the run ended.
+async fn record_outcome(
+    outcome: std::result::Result<
+        tinyagents::graph::GraphExecution<RunState>,
+        tinyagents::TinyAgentsError,
+    >,
+    into: &Recording<'_>,
+) -> bool {
+    match outcome {
+        Ok(execution) => {
+            let response = execution.state.response.unwrap_or_default();
+            if let Some(memory) = into.memory {
+                let _ = memory
+                    .remember_session(into.agent, into.run_id, into.input, &response)
+                    .await;
+            }
+            let _ = into
+                .store
+                .complete(into.task_id, OrchestrationTaskResult::text(response));
+            true
+        }
+        Err(error) => {
+            let error = error.to_string();
+            if let Some(memory) = into.memory {
+                let _ = memory
+                    .remember_session(
+                        into.agent,
+                        into.run_id,
+                        into.input,
+                        &format!("SESSION FAILED: {error}"),
+                    )
+                    .await;
+            }
+            let _ = into.store.fail(into.task_id, error);
+            false
+        }
+    }
+}
+
 /// Spawned runs allowed to execute at the same time.
 ///
 /// A spawn is non-blocking and the model is encouraged to launch independent
@@ -521,38 +575,18 @@ impl AsyncSubagentManager {
                 .and_then(|result| result),
                 Err(error) => Err(error),
             };
-            let succeeded = outcome.is_ok();
-            match outcome {
-                Ok(execution) => {
-                    let response = execution.state.response.unwrap_or_default();
-                    if let Some(memory) = session_memory.as_ref() {
-                        let _ = memory
-                            .remember_session(
-                                &session_agent,
-                                &session_run_id,
-                                &session_input,
-                                &response,
-                            )
-                            .await;
-                    }
-                    let _ =
-                        store.complete(&spawned_task_id, OrchestrationTaskResult::text(response));
-                }
-                Err(error) => {
-                    let error = error.to_string();
-                    if let Some(memory) = session_memory.as_ref() {
-                        let _ = memory
-                            .remember_session(
-                                &session_agent,
-                                &session_run_id,
-                                &session_input,
-                                &format!("SESSION FAILED: {error}"),
-                            )
-                            .await;
-                    }
-                    let _ = store.fail(&spawned_task_id, error);
-                }
-            }
+            let succeeded = record_outcome(
+                outcome,
+                &Recording {
+                    memory: session_memory.as_ref(),
+                    agent: &session_agent,
+                    run_id: &session_run_id,
+                    input: &session_input,
+                    store: &store,
+                    task_id: &spawned_task_id,
+                },
+            )
+            .await;
             steering_registry.deregister(&spawned_task_id);
             if succeeded && let Some(follow_up) = follow_up {
                 // Spawned separately so this run's slot is released first.
