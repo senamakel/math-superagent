@@ -40,6 +40,27 @@ const RESEARCH_RESCUE_ATTEMPTS: usize = 5;
 /// once is what an attempt looks like, twice is a pattern.
 const COMPUTATIONAL_THRESHOLD: usize = 2;
 
+/// Consecutive attempts reaching the same single-route answer before the loop
+/// stops asking for a second route and reports what it has.
+///
+/// The loop had two words for an attempt and needed three. Project Euler 761
+/// reached `V_hexagon = 5.05505046`, reduced it to the exact surd
+/// `2 + 2*sqrt(21)/3`, and reproduced the formula's published anchors at n=3,
+/// n=4 and n→∞ — and then could not close, correctly, because the value rests
+/// on one Math.SE answer and the nearest peer-reviewed treatment (Abel et al.,
+/// arXiv:2007.08965) lists regular n-gons with n>4 as an *open problem*. There
+/// is no second route to build. The only verdict available for that was
+/// UNSOLVED, so the run was sent back to retry, and would have spent every
+/// remaining attempt re-deriving a number it already held — its own workspace
+/// recording the contradiction, `GOAL.md` ticking "verified by a second
+/// independent route" while `CONTEXT.md` called that an overclaim.
+///
+/// Two rather than one, for the reason every other threshold here is two: the
+/// first UNVERIFIED is an attempt saying it could not find a second route, and
+/// the run should try once more with the lesson before that becomes the
+/// finding. Twice is the run having tried.
+const UNVERIFIED_THRESHOLD: usize = 2;
+
 /// Restarts the judge may force in one run.
 ///
 /// A restart throws away the direction an attempt was taking and spends a
