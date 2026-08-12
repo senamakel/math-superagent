@@ -1,0 +1,12 @@
+n   K  deg  phi(n)  match    method   poly(cos 2a)
+----------------------------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/code/patseq_deg_phi_extend.py", line 100, in <module>
+    main()
+  File "/workspace/code/patseq_deg_phi_extend.py", line 94, in main
+    print(f"{n:2d}  {K}  {d:3d}  {phi:5d}  {str(d == phi):>5}  "
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 394, in __format__
+    return super().__format__(format_spec)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported format string passed to Integer.__format__

@@ -9,7 +9,6 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | `a067698-robin-not-hemiperfect` | A067698 (sigma(n) >= e^gamma n log log n) concerns Robin's inequality and RH; its members are not hemiperfect and it does not bound or enumerate n with sigma(n)/n = k+1/2. | no | asserted | `research/summaries/oeis_a067698.md` |
 | `a088912-abundancy-threshold` | The smallest m with sigma(m)=(k+1/2)m is 2,24,4320,8910720,17116004505600 for k=1..5 (all < 1e18) and ~1.7e44 for k=6, so no number <= 1e18 realizes any half-integer abundancy k+1/2 with k >= 6. | yes | asserted | `research/summaries/oeis_A088912.md` |
 | `a160678-reachability-13over2` | The smallest n with sigma(n)/n = 13/2 is 170974031122008628879954060917200710847692800 ~ 1.71e44, so no n <= 10^18 has half-integer abundancy 13/2 and the k=6 target contributes zero solutions below 1e18. | yes | asserted | `research/summaries/oeis_A160678.md` |
-| `a242484-equivalence` | For even n, sigma(n)/n is a half-integer iff antisigma(n)/n is an integer (since (sigma(n)+antisigma(n))/n=(n+1)/2), so the hemiperfects from 24 on sit inside A242484 unless an odd multiply-perfect number exists. | yes | asserted | `research/summaries/oeis_a242484.md` |
 | `abundancy-index-multiples-monotone` | The abundancy index I(n)=sigma(n)/n is the perfection quotient of PE241; every multiple of an abundant number is abundant (if 6\|n then sigma(n) >= n+1), and the set of abundant numbers has natural density ~0.2476.… | **unchecked** | asserted | `research/summaries/wikipedia_abundancy_index.md` |
 | `ams-2adic-sigma-formula` | For n = 2^a·u with u odd, v2(sigma(2^a·u)) = v2(sigma(u)), and for odd primes p with alpha = v_p(u), v2(sigma(p^alpha)) = 0 if alpha even, and = v2(p+1)+v2(alpha+1)-1 if alpha odd; hence v2(sigma(n)) depends only on the… | **unchecked** | proved | `research/summaries/amd_2adic_sigma.md` |
 | `cheng-zhang-2adic-sigmak` | For n = 2^a * prod p_i^{alpha_i} (p_i distinct odd primes), v2(sigma_k(n)) = sum_{i: alpha_i odd}(v2(alpha_i+1) + v2(p_i^k+1) - 1); the k odd case reduces to v2(sigma_k(n)) = v2(sigma(n)) (the AMSV formula) with… | **unchecked** | proved | `research/summaries/cheng_zhang_2adic_sigmak.md` |
@@ -30,7 +29,6 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `a088912-abundancy-threshold` (research/summaries/oeis_A088912.md) — asserted by the source, not proved there and not checked here
 - `a160678-reachability-13over2` (research/summaries/oeis_A160678.md) — asserted by the source, not proved there and not checked here
-- `a242484-equivalence` (research/summaries/oeis_a242484.md) — asserted by the source, not proved there and not checked here
 - `flammenkamps-tree-search-method` (research/summaries/flammenkamp_multiply_perfect.md) — asserted by the source, not proved there and not checked here
 - `goto-shibata-multiplicative-monotone-method` (research/summaries/goto_shibata_harmonic_mean.md) — asserted by the source, not proved there and not checked here
 - `hemi-abundance-bound` (research/summaries/hemiperfect_wikipedia.md) — asserted by the source, not proved there and not checked here

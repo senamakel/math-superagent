@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/Number_theory | number theory | Hemiperfect number - Wikipedia Jump to content From Wikipedia, the free encyclopedia Number with a half-integer abundancy index In [number theory][1], a **hemiperfect number**is a [positive… |
 | 1 | https://en.wikipedia.org/wiki/On-Line_Encyclopedia_of_Integer_Sequences | OEIS | hemiperfect numbers are: 2, 24, 4320, 4680, 26208, 8910720, 17428320, 20427264, 91963648, 197064960, ... (sequence [A159907][6] in the [OEIS][7]) ## Example [[edit][8]] 24 is a hemiperfect number… |
 
-_383 further candidates not shown; they are cited once each._
+_385 further candidates not shown; they are cited once each._

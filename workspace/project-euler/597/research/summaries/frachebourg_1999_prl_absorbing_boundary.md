@@ -1,112 +1,19 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/frachebourg_1999_prl_absorbing_boundary.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Frachebourg, "Exact solution of the one-dimensional ballistic aggregation" (PRL 82, 1502, 1999) — summary
 
-<!-- source: https://arxiv.org/pdf/cond-mat/9808077 | converted from PDF -->
+- Source: L. Frachebourg, arXiv:cond-mat/9808077, "Exact solution of the one-dimensional ballistic aggregation", Phys. Rev. Lett. 82, 1502 (1999). URL: https://arxiv.org/pdf/cond-mat/9808077. Full text: `research/sources/frachebourg_1999_prl_absorbing_boundary.full.md`.
+- **Scope (verified against full text): this is a WHOLE-LINE result. There is NO absorbing boundary / half-line / wall anywhere in the paper.** The one-author PRL derives the exact long-time *mass distribution* of the sticky-particle (ballistic aggregation) gas on the infinite line, not a wall problem. (Several literature blurbs — including the exa hit that led here — wrongly label it as half-line; the paper itself treats the unbounded line throughout. Do not cite it as a wall/absorbing-boundary source.)
+- Model: 1D gas of equal-mass point particles on a regular lattice (spacing a), Gaussian iid momenta (β=1/2); perfectly inelastic collisions (mass and momentum conserved, KE dissipated) — the Carnevale–Pomeau–Young / Burgers-shock family.
+- Content: exact scaling ρ(M,t) = t^{-4/3} F(M/t^{2/3}) for the mass distribution, with explicit F via Airy-function sums: F(M') ≃ m²/(π^{5/2})·M'^{-1/2} (M'≪1) and F(M') ≃ (2/π^{3/2})·M'^{5/2}·e^{-M'ω₁−M'³/12} (M'≫1, ω₁=2.3381…), differing from the earlier universal-exponential conjecture. Method: aggregate of mass M=nm at (X,P,t) fixes its constituents' initial positions; statistics reduce to a Brownian motion in momentum space overpassing discrete points on a parabola (continuous barrier in the long-time/continuous limit), solved by the Airy-function kernel K_Z (Groeneboom). Also computes the two-body collision frequency ν₂ (not a product of single masses — invalidates Piasecki's factorizing assumption) and argues universality under Poissonian spacing / bimodal momentum.
+- Bearing on PE597: technical-template only, and it does NOT bear on the open thread's wall question (`research/threads/finish_line_as_absorbing_wall.md`). It is the canonical whole-line sticky-gas exact solution (the quantitative companion to the Majumdar–Mallick–Sabhapandit fan-state/convex-minorant paper already in the library). It contributes: (i) the parabolic-barrier/BM-constrained path-sum technique proven exact in this family; (ii) confirmation that the pure no-finish torpids limit is classical 1D sticky gas. It contributes nothing to the finite finish line (no wall), and its particles coalesce (mass-conserving) whereas the torpids rear boat is removed and the front continues.
 
-arXiv:cond-mat/9808077v1  7 Aug 1998
-Exact solution of the one-dimensional ballistic aggregation
+```claim
+id: sticky-gas-whole-line-exact-scaling
+statement: The one-dimensional sticky-particle (ballistic aggregation) gas on the whole line has an exact long-time mass distribution ρ(M,t)=t^{-4/3}F(M/t^{2/3}) expressed through Airy-function sums (F(M') ~ M'^{-1/2} for M'≪1 and ~ M'^{5/2} exp(−ω₁M'−M'³/12) for M'≫1), derived from Brownian-motion-under-parabolic-constraints path sums; the boundary is absent (whole line only).
+hypotheses: equal masses, regular spacing, Gaussian iid momenta, whole (unbounded) line, perfectly inelastic mass-conserving collisions, continuum/long-time limit.
+holds-here: hypotheses do NOT hold for PE597 — discrete finite n, iid Exp(1) speeds, rear-removal (non-conserving) bumps, exact finite-final-order parity, and a finite finish line. Whole-line technique template only; no wall, no parity.
+status: verified-against-source (arXiv:cond-mat/9808077 full text in library)
+bearing: canonical exact solution for the pure no-finish limit (companion to MMS fan-state); no formula for the finite-finish torpids parity.
+anchor: research/sources/frachebourg_1999_prl_absorbing_boundary.full.md
+```
 
-L. Frachebourg
-
-Institut de Physique Th´eorique
-
-Ecole Polytechnique F´ed´erale de Lausanne
-
-CH-1015 Lausanne, Switzerland
-
-Abstract
-
-An exact expression for the mass distribution ρ(M, t) of the ballistic ag-
-
-gregation model in one dimension is derived in the long time regime. It is
-
-shown that it obeys scaling ρ(M, t) = t−4/3F (M/t2/3) with a scaling function
-
-F (z) ∼ z−1/2 for z ≪ 1 and F (z) ∼ exp(−z3/12) for z ≫ 1. Relevance of
-
-these results to Burgers turbulence is discussed.
-
-Ballistic aggregation provides a simple model of nonequilibrium statistical physics which
-
-is a natural version of a dissipative gas of hard spheres where particles follow the basic laws
-
-of mechanics. It consists in a one-dimensional gas of point-like massive particles which move
-
-freely until they collide. The perfectly inelastic collision of two masses conserves the total
-
-mass and momentum, while dissipation occurs as kinetic energy is loss in each collision. One
-
-can anticipate the formation of more and more massive while slower and slower aggregates.
-
-This model was introduced by Carnevale, Pomeau and Young [1] where they conjectured,
-
-based on scaling arguments and numerical simulations, an asymptotic scaling regime for
-
-the mass distribution ρ(M, t) = F (M/⟨M⟩t)/⟨M⟩2
-t . The average mass per aggregate was
-
-supposed to grow algebraically with time as ⟨M⟩t ∼ t
-2/3 and the scaling function had a simple
-
-universal exponential form F (z) = exp(−z) independent of the initial conditions. Later,
-
-this conjecture was reinforced by Piasecki [2] where he solved the hierarchy of dynamical
-
-1
-
-equations governing the system inside a mean-ﬁeld approximation scheme.
-
-This system, in its continuous limit, was also studied as a simpliﬁed astronomical model
-
-for the agglomeration of cosmic dust into macroscopic objects [3]. In the ballistic aggregation
-
-model, the aggregates interact only through their collisions. An aggregation model where
-
-gravitational interactions are present has been studied in [4].
-
-It is important to mention the connection between this model and some solutions of the
-
-Burgers equation. At very high Reynolds number, the asymptotic solution of the Burgers
-
-equation consists of a train of shock waves. The laws of motion which govern the dynamics
-
-of these shock waves are found to be equivalent to a ballistic aggregation system (see [5]).
-
-In this letter, I verify the scaling hypothesis for the mass distribution and ﬁnd in an
-
-exact calculation an explicit form for the scaling function. It happens to be diﬀerent from
-
-the conjectured simple exponential.
-
-Rather than solving the set of partial diﬀerential equations governing the evolution of
-
-the system, I exploit the fact that, once the initial state of the system is given, the dynamics
-
-is completely deterministic. Our approach will thus be based on a statistical study of the
-
-initial conditions and is largely inspired by the work of Martin and Piasecki [6].
-
-Initially, particles having all the same mass m are regularly placed on a line with the same
-
-inter-particle distance a. Initial mass density is thus ρ0 = m/a. The initial momentum of the
-
-thermalized particles are not correlated and are distributed according to the same Gaussian
-
-distribution φ(p) = √
-β/(2πm) exp(−βp2/(2m)) where I now choose β = 1/2 without loss
-
-of generality.
-
-I compute now the density distribution ρm(X, M, P, t) where ρm(X, M, P, t)dM dP dX
-
-is the number of aggregates located in (X, X + dX) with momentum in (P, P + dP ) and
-
-mass in (M, M + dM) at time t.
-
-When the coordinates (X, M, P, t) of an aggregate are given, they uniquely deﬁne the
-
-number n = M/m as well as the initial positions X − P t/M − M/(2ρ0) ≤ xi ≤ X − P t/M +
-
-M/(2ρ0) (i = 1, . . . , n) of its constituents. A crucial point is that an aggregate, once formed,
-
-
-*[excerpt ends; 11700 characters not shown — see `research/sources/frachebourg_1999_prl_absorbing_boundary.full.md`]*
+_Note on naming: the file/summary names carry `absorbing_boundary`; that is a misnomer inherited from the search blurb — the content is whole-line. The name is kept to match the previously-minted path; the summary and claim above state the true scope._

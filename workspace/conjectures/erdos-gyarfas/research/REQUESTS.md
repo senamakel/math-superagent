@@ -1,0 +1,15 @@
+# Requests — gaps other roles stated, and what would falsify them
+
+A gap is a precise question a source could answer. Each row names what is
+missing, what it would be used for, and what would show the working belief is
+wrong. Open rows get priority in every search cycle; a row is struck through
+when a source settles it.
+
+| Need | Why | Falsifies | Status |
+| --- | --- | --- | --- |
+| Full primary text of Shauger 1998 "Results on the Erdős–Gyárfás conjecture in K1,m-free graphs" (Proc. 29th Southeastern Int. Conf. Combinatorics, Graph Theory and Computing, 61–65). | Two settled classes (K1,m-free with δ≥m+1 or Δ≥2m−1) rest only on Google-Scholar stubs and citations; the exact hypotheses need primary verification before the run reports them as established. | That the K1,m-free class claim as stated (δ≥m+1 or Δ≥2m−1) is misquoted, or that the paper does not prove it. | open |
+| Full primary text of Daniel–Shauger 2001 "A result on the Erdős–Gyárfás conjecture in planar graphs" (Proc. 32nd Southeastern, vol. 153, 129–139). | The planar claw-free settled class likewise rests only on citations; need the exact hypotheses (planar AND claw-free? min degree?) and whether "planar" alone was claimed. | That the planar-claw-free class needs an extra hypothesis, or that the paper is about a different statement. | open |
+| Full text of Shah–Purohit–Gulzar 2017 "A survey and strengthening of Erdős-Gyárfás conjecture" (Advances in Mathematics: Scientific Journal). | The only dedicated survey of the conjecture; would fix the statement, the list of known partial results circa 2017, and any strengthening claims. | That some "settled class" in the run's ROOT.md is actually open, or that a strengthening claim changes the problem. | open |
+| Full text of Verstraëte 2005 "Unavoidable cycle lengths in graphs" (J. Graph Theory 49(2) 151–167). | The exact statement of the density-zero-set theorem (average degree ≥ 10 forces a cycle of length in a prescribed S) is the dense-regime machinery the run cites; only a summary is on disk. | That the bound or the set S is misstated in the summary, affecting the dense-regime claim. | open — paywalled at Wiley; no arXiv copy found |
+| Gebendorfer 2026 (girth-12 cubic vertex-transitive, no 16-cycles) and girth-6 cubic bipartite vertex-transitive power-of-two papers. | Two recent restricted-class results adjacent to the cubic-bipartite frontier; only titles are recorded. | That the run's "cubic-bipartite-60" boundary picture is incomplete; or that a 16-cycle-free girth-12 construction contradicts the "all C4,C8-free cubics have C16 at n=24 only" picture. | open — no open copy found (ResearchGate 403, no arXiv) |
+| Government/ECS documentation of the Royle n<16 search method, beyond the archived UWA page already on disk. | The raw primary bound "n≤15 general" needs its method (makeg filters: min degree 3, no C4 etc.) confirmed from the source itself. | The provenance chain "Royle's 15 → published 17" being explainable by an off-by-one in vertex counting. | mostly settled — royle-2n-conjecture.md on disk; exact method wording captured |

@@ -233,7 +233,20 @@ the tangent-chord staging (circle's sin B=(π+B)/v) or a David-K-style n=6
 construction reproducing at least the square and hexagon oracles. Until such a
 route exists and its output is captured, report the hexagon answer 5.05505046
 as formula-derived + exact-closed-form-confirmed but NOT independently
-game-encoded. Files: `code/solution.py` (exact formula), `code/hexagon_closed_form.py`
+game-encoded. **However, the correct-framework independent solver already
+exists on disk and has simply never been RUN — that is the cheapest pending
+verification, not a from-scratch derivation.** `code/hexagon_first_principles_explore.py`
+is the genuinely independent geometric attempt: homothetic scale-1/v staging,
+CCW committed perimeter, max over (psi,s_Q) of perim−v·|P−Q|, bisected on v, inradius-1 hexagon with runner at edge midpoint. It has a **circle self-validation
+gate** (Stage 1 must reproduce V_circle=4.60333885 before Stage 2's hexagon
+number is trusted), which makes it the correct framework (unlike the two plain
+straight-dash variants). It was never executed — no `_OUTPUT.txt`, no code/INDEX.md entry.
+**Action: run `python code/hexagon_first_principles_explore.py`, capture output,
+and check its hexagon critical v against 2+2√21/3 = 5.05505046.** (By contrast
+`code/hexagon_independent_solver.py`, also never run, is another straight-dash
+red-herring variant — stage rho=P/2v then chord, same dead-end family as
+`indep_game_encoding.py`, expected to cap shapes low; do not use it as the check.)
+Files: `code/solution.py` (exact formula), `code/hexagon_closed_form.py`
 & `code/confirm_hexagon_closedform.py` (exact closed form),
 `code/indep_game_encoding.py` + `code/indep_game_encoding_OUTPUT.txt`
 (independent solver, RUN — fails, dead end), `code/indep_sanity_circle.py`
