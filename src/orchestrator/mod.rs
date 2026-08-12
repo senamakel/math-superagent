@@ -907,12 +907,7 @@ fn support_agents(
             "Judges one attempt, extracts the lesson, and decides whether it is really done.",
         )
         .with_model("openrouter")
-        .with_tools([
-            document_tools[1],
-            document_tools[2],
-            document_tools[3],
-            document_tools[6],
-        ]),
+        .with_tools(memory_tools.into_iter().chain(document_tools)),
         AgentDefinition::new(
             "pattern_finder",
             "Pattern Recognition Agent",
@@ -933,8 +928,13 @@ fn support_agents(
                 // write and run a program like any other worker.
                 "write_tool_file",
                 "execute_command",
+                // A check too large to run inline becomes a commissioned
+                // program rather than an abandoned question.
+                "spawn_agent",
+                "await_agent",
             ]
             .into_iter()
+            .chain(memory_tools)
             .chain(document_tools),
         ),
         AgentDefinition::new(
@@ -952,7 +952,7 @@ fn support_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
-                .chain(["recall_research", "remember_research"])
+                .chain(["recall_research", "remember_research", memory_tools[0]])
                 .chain(document_tools),
         ),
     ]
@@ -984,6 +984,7 @@ fn library_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
+                .chain(memory_tools)
                 .chain(document_tools),
         ),
         AgentDefinition::new(
@@ -994,7 +995,7 @@ fn library_agents(
         )
         .with_model("openrouter")
         .with_tools(
-            ["recall_research", "remember_research"]
+            ["recall_research", "remember_research", memory_tools[0]]
                 .into_iter()
                 .chain(document_tools),
         ),
@@ -1015,6 +1016,7 @@ fn library_agents(
         .with_tools(
             ["spawn_agent", "peek_agent", "steer_agent", "await_agent"]
                 .into_iter()
+                .chain(memory_tools)
                 .chain(document_tools),
         ),
     ]
