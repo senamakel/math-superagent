@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://backend:8080/api/graph_invariants/51419/16 | — | s/12"}},"entity":{"graphId":51419,"invariantId":12,"invariantStatus":2,"invariantValue":3.0,"ofInterest":false}},{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/16"},"associa… |
 | 1 | http://backend:8080/api/graph_invariants/51419/17 | — | s/16"}},"entity":{"graphId":51419,"invariantId":16,"invariantStatus":2,"invariantValue":5.0,"ofInterest":false}},{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/17"},"associa… |
 
-_82 further candidates not shown; they are cited once each._
+_140 further candidates not shown; they are cited once each._
