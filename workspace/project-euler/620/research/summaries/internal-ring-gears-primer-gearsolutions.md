@@ -1,34 +1,35 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/internal-ring-gears-primer-gearsolutions.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Internal ring gears — Gearing 101 primer (Gear Solutions)
 
-<!-- source: https://gearsolutions.com/departments/tooth-tips/gearing-101-a-primer-on-internal-ring-gears/ | converted from HTML -->
+[[research/sources/internal-ring-gears-primer-gearsolutions.full.md]] · source:
+https://gearsolutions.com/departments/tooth-tips/gearing-101-a-primer-on-internal-ring-gears/
 
-## What is in it
+## What it establishes
 
-    - [Tungsten Carbide][24]
-    - [Conversation with Greg Maisch][25]
-    - [Driving into the future][26]
-    - [Empirical Methods of Determining Hardenability][27]
-      - [Machines][28]
-      - [Services][29]
-      - [Tooling][30]
-      - [Marketplace][31]
-    - RELATED ARTICLES
-    - [Variables for Quality Design: The Manufacturing Process][37]
-    - [Tooth Tips: Donald R. McVittie P.E.][38]
-    - [Load, speed, and design life][39]
-    - [Perspectives on helical gearing][40]
-    - [Tooth Tips: Donald R. McVittie P.E.][41]
-      - EDITOR PICKS
-    - [Tempering of Induction Hardened Components][42]
-    - [Acceleration Data-Based Analysis of Tool Wear in Gear Hobbing][43]
-    - [Potentials of Enveloping Crossed Helical Gears][44]
-- …
+Gear-industry primer on internal (ring) gears — the type of gear C is:
 
+- An internal gear is a cylinder with teeth **on the inside** of a circular
+  ring; it always mates with an external spur gear (pinion/planet).
+- Spur internal gears must have the **same pitch (module) and pressure angle**
+  as the mating pinion — here the 1 cm pitch makes circumference = tooth count
+  for every gear, so all four (C, S, p, q planets) share one pitch.
+- The internal gear's tooth profile is reentrant (concave) versus the
+  convex external gear profile; the mesh is an **internal gear mesh**.
+- Interference checks: involute, trochoid, and trimming interference must be
+  passed; planetary systems are the standard application.
 
-## What it claims
+## Implication for PE620
 
-What is an internal gear? An internal ring gear is a type of cylindrical-shaped gear that has teeth inside a circular ring. The gear teeth of the internal gears mesh with the teeth space of a spur gear. Spur gears have a convex-shaped tooth profile and internal gears have reentrant shaped tooth profile. They are a complex type of element commonly found in planetary gear systems and are always paired with a pinion.
+Fixes the geometry: ring gear C of c teeth is an internal gear, and each planet
+of m teeth (m ∈ {p, q}) meshes internally with C and externally with S. The
+"teeth of one gear align with grooves of the other" and 1 cm pitch make each
+gear's pitch circumference = its tooth count, so the pitch radius of gear with
+x teeth is x/(2π). The operating pitch radii in the two meshes of a planet at
+center positions imposed by tangency are then rational multiples of 1/(2π),
+which is what makes the discrete phase-counting exact.
 
-Internal gears are used with pinions to create mechanical systems that reduce speed and increase torque in inline shaft applications. For straight tooth internal gears, the mating pinion(s) must be the same pitch, and the same pressure angle. In addition, the pinion must pass a check for involute interference, trochoid interference, and trimming interference. When the internal gear teeth are helical, the pitch, the pressure angle, the helix angle of both the pinion and the internal gear must be the same; however, the direction of the helix angle of each component must be opposite. In addition, the pinion must pass a check for involute interference, trochoid interference,…
+## Cross-references
 
-*[digest of a 13676 character source; every section, statement, and proof in full at `research/sources/internal-ring-gears-primer-gearsolutions.full.md`]*
+- DANotes meshing summary: operating pitch radius R' = C·z_i/Σz (external
+  pair); internal-mesh analog uses the ring with negative tooth count.
+- Law of gearing (UNC Charlotte): constant-ratio condition.
+- Drivetrain Hub / UTS / Handbook: least-mesh-angle quantization.
