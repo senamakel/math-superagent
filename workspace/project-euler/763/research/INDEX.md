@@ -31,5 +31,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `inventor_confirm_checklist.md` | _(undescribed)_ |
 | `inventor_proposal_collapse.md` | _(undescribed)_ |
 | `oeis_lookup_2d_3d.md` | _(undescribed)_ |
-| `pebbling_structure_3d_ladder.md` | _(undescribed)_ |
+| `pebbling_structure_3d_ladder.md` | The sourced structural characterization ladder: 2D reachable positions = polyominoids via voidance sets (Eriksson Props 7,8,20), 2D crossing subtlety (Thm 10, GF growth 4.112), and for n>=3: positions = voidance sets = folded polyominoids, no cell played twice (Thm 9, Prop 24), plus the G(k,m) recurrence, contour formula and asymptotics for A007902. Names the correct counting object for 3D D(N) (folded 3-labelled polyominoids). Carries the two structural claim blocks. |
 | `scholar_report.md` | Verification pass report over the research library: re-checked each primary-source digest against its full text (CGMO lemmas/theorem, Zhen-Knessl recurrence/contour/asymptotics, Eriksson Thm 9/Prop 24/Fig.3 which was verified by hand), fixed the stale 'placeholder' index rows, and confirmed no contradiction with MEMORY.md values. Records what remains lacking: a 3D recurrence/DP reaching N=10000. |
