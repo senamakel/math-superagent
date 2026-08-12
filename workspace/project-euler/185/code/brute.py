@@ -73,7 +73,7 @@ def _selftest():
     assert not matches("1234", "2036", 0)
     assert not matches("1234", "2036", 2)
     # a digit right but in the wrong place must not count
-    assert not matches("1234", "4321", 0)  # all four wrong-position, zero right
+    assert matches("1234", "4321", 0)  # all four wrong-position, zero right
 
 
 if __name__ == "__main__":
