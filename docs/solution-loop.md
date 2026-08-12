@@ -236,13 +236,12 @@ Reaching the cap is safe, because `StopWithPartial` keeps the brief already
 written.
 
 Its cadence is configuration rather than a constant for one reason: it decides
-how stale the brief every role reads may be. Everything else about its
-allowance is the custodial one — the file keeps changing underneath it, so
-"nothing to add" means come back later rather than stop. Idleness is decided
-before the agent runs, by fingerprinting the workspace with `CONTEXT.md`
-excluded: counting its own output would have the team waking itself forever on
-the brief it just wrote, which is the pattern team's `SCRATCHPAD.md` lesson
-again. And the standing — what the file costs against its budget — is computed
+how stale the brief every role reads may be. Everything else about its allowance
+is the custodial one — the file keeps changing underneath it, so "nothing to add"
+means come back later rather than stop. Idleness is decided before the agent
+runs, by fingerprinting the workspace with `CONTEXT.md` excluded: counting its
+own output would have the team waking itself forever on the brief it just wrote,
+the pattern team's `SCRATCHPAD.md` lesson again. And the standing — what the file costs against its budget — is computed
 per cycle and written into the brief, because it is the fact that decides what
 the cycle is *for*: adding, or compressing.
 
