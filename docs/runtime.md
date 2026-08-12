@@ -388,12 +388,13 @@ measured from the run's *configured* turn cap, passed in with `with_turn_cap`,
 not from whatever cap the request happens to carry: read as an original, a turn
 upstream had already doubled doubled again, and a live `goals` agent reached a
 48,000-token re-issue — four times the ceiling, against a wrapper documented to
-allow twice, and some twelve minutes of generation for one turn.
+allow twice. The inventor's 32000 therefore tops out at 64000, and generation
+being linear in length, that is its wall clock as much as its size.
 
 A timeout is a safety ceiling, not permission to run an intractable approach.
-Before substantial execution, the tool-builder must state both time and space
-complexity. Algorithms with exponential time or space complexity are
-prohibited; choose a polynomial or better formulation.
+Before substantial execution the tool-builder must state both time and space
+complexity; exponential time or space is prohibited, so choose a polynomial or
+better formulation.
 
 `validate_complexity` enforces that, and the field it reads has been evaded
 three times in three different ways. First by notation: a factorial search
