@@ -41,8 +41,8 @@ What this run knows and on what basis. Nearly every role is sent this file on ev
   Diophantine equations. Thread: `research/threads/theory-pass.md`.
   Sources land in `research/sources/` with claim blocks; librarian role fills
   each.
-- **`code/solution.py` now exists on disk as the derived, exact full-size method** (see `code/lib/pe236.py` for the shared machinery: base_set over a fixed product, per-product gcd-threshold feasibility g_i ≥ max(p,q), and the bounded subset-sum Σ k_i·w_i = 0 via reachable-sum sets). It contains asserts for count 35, smallest 1476/1475, largest 123/59, plus a literal six-equality Fraction witness check on the largest. **Status: written, and it is the required third route, but this cycle has not recorded tool_builder actually executing it and seeing those asserts pass** — do not claim solution.py agreement until a run confirms it. `TASKS.md` is still a stub.
-- The oracle routes (`brute.py` base Christmas Cake; `verify_oracle.py` checks A–C) remain the two established routes to the 35 values / 1476/1475 / 123/59. **Largest = 123/59 rests on those two routes only until solution.py is run.**
+- **`code/solution.py` has been EXECUTED and confirmed** (tool_builder verification run): the derived exact full-size method (shared machinery in `code/lib/pe236.py`: base_set over product 1, per-product gcd-threshold feasibility g_i ≥ max(p,q), bounded subset-sum Σ k_i·w_i = 0 via reachable-sum sets) passes all its asserts — count 35, smallest 1476/1475, largest 123/59 — and its literal six-equality Fraction witness check on the largest passes (m=123/59, k=[7,1,1,1,10], s=[413,1,1,30,10], t=[105,3,3,41,30]). Runtimes: solution 53s, brute 42s, verify_oracle 300s.
+- The oracle routes (`brute.py` base Christmas Cake; `verify_oracle.py` checks A–C) re-ran and still reproduce count 35, smallest 1476/1475, largest 123/59. **Largest = 123/59 now rests on three mutually independent routes: brute.py, verify_oracle.py, and solution.py.**
 - `research/CLAIMS.md` is empty: the structural theorem is a verified result but no claim block has been written into a research note yet.
 
 ## Contradictions

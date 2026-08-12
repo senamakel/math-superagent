@@ -37,7 +37,8 @@ the smallest is m = 1476/1475. Oracle = reproduce count 35 and smallest 1476/147
 Final answer = the largest of these 35, as a reduced fraction u/v.
 
 ## Completion criteria
-- code/brute.py (naive oracle) reproduces 1476/1475 and the count 35.
-- code/solution.py (derived method, exact arithmetic) agrees with brute.py and
-  finds the largest m at full size, verified by an independent route.
-- Answer reported as reduced fraction u/v.
+- [x] code/brute.py (naive oracle) reproduces 1476/1475 and the count 35.
+- [x] code/solution.py (derived method, exact arithmetic) agrees with brute.py and
+      finds the largest m at full size, verified by an independent route.
+      EXECUTED: asserts pass (35, 1476/1475, 123/59) + literal six-equality check.
+- [x] Answer reported as reduced fraction u/v = **123/59**.
