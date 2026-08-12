@@ -877,7 +877,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 ),
         )?;
     }
-    for definition in support_agents(research_enabled, document_tools) {
+    for definition in support_agents(research_enabled, document_tools, memory_tools) {
         registry.register(definition)?;
     }
     Ok(registry)
@@ -891,6 +891,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
 fn support_agents(
     research_enabled: bool,
     document_tools: [&'static str; 11],
+    memory_tools: [&'static str; 2],
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
@@ -956,7 +957,7 @@ fn support_agents(
         ),
     ]
     .into_iter()
-    .chain(library_agents(research_enabled, document_tools))
+    .chain(library_agents(research_enabled, document_tools, memory_tools))
     .collect()
 }
 
@@ -968,6 +969,7 @@ fn support_agents(
 fn library_agents(
     research_enabled: bool,
     document_tools: [&'static str; 11],
+    memory_tools: [&'static str; 2],
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
