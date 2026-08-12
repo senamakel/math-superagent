@@ -134,13 +134,12 @@ Whatever else a narrowed budget bounds, the graceful cap must be the one that
 trips.
 
 Frequency is gated separately, on the workspace having changed, and the gate is
-shared.
-Filing is cheap to *do* and expensive to *decide*: an organizer asked to notice
-that nothing has changed must walk the workspace and spend a model call to
-discover it, which is most of what a cycle costs. Two live runs spent 49% and
-38% of every model call they made on the organizer, against 11% and 4% on the
-agent actually solving the problem — and the indexes still carried undescribed
-rows, so the budget did not even buy the filing. `filing_unchanged` fingerprints
+shared. Filing is cheap to *do* and expensive to *decide*: an organizer asked to
+notice that nothing has changed must walk the workspace and spend a model call to
+discover it, which is most of what a cycle costs. Two live runs spent 49% and 38%
+of every model call they made on the organizer, against 11% and 4% on the agent
+actually solving the problem — and the indexes still carried undescribed rows, so
+the budget did not even buy the filing. `filing_unchanged` fingerprints
 the tree, `INDEX.md` excluded, and both the standing `background` team and the
 follow-up consult the *same* fingerprint: two separate gates would each read the
 other's filing as new work and wake each other indefinitely. Excluding
