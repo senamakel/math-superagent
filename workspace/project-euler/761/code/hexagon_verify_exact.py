@@ -93,5 +93,5 @@ f3 = f(3)
 print("(5) f(2) =", f2, "  <0 ? ", bool(sp.N(f2) < 0))
 print("    f(3) =", f3, "  >0 ? ", bool(sp.N(f3) > 0))
 # exact signs
-print("    f(2) exact value =", f2, " (=-1/8)")
+print("    f(2) exact value =", f2, "  (approx", sp.N(f2), ")")
 print("    f(3) exact value =", sp.radsimp(f3))

@@ -49,7 +49,7 @@ mod test;
 
 use std::fmt::Write as _;
 use std::io::Write as _;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use serde_json::{Value, json};

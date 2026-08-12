@@ -376,6 +376,77 @@ fn an_unknown_role_receives_no_working_files() {
     assert!(role_context("nonexistent").is_empty());
 }
 
+/// A directive is asserted, not established. The role that acts on one is kept
+/// away from the evidence ledger so that an instruction cannot be filed beside
+/// the things the run actually proved.
+#[test]
+fn the_director_reads_the_plan_but_not_the_claim_ledger() {
+    let context = role_context("director");
+    assert!(context.contains(&"TASKS.md"), "it rewrites the plan");
+    assert!(context.contains(&"GOAL.md"), "a directive is read against it");
+    assert!(
+        context.contains(&"research/THREADS.md"),
+        "opening and closing directions is most of the job"
+    );
+    assert!(!context.contains(&"research/CLAIMS.md"));
+    assert!(!context.contains(&"config/config.toml"), "it never executes");
+}
+
+/// The director directs; it does not compute. A role that could both
+/// reinterpret the goal and run programs against it would be a second
+/// investigation answering to nobody.
+#[test]
+fn the_director_cannot_execute_or_delegate() -> agent::Result<()> {
+    let registry = default_registry(false)?;
+    let director = registry
+        .get("director")
+        .expect("the director is registered");
+    for withheld in [
+        "execute_command",
+        "write_tool_file",
+        "apply_patch",
+        "spawn_agent",
+        "exa_search",
+    ] {
+        assert!(
+            !director.tools.iter().any(|tool| tool == withheld),
+            "`{withheld}` would make the director a solver"
+        );
+    }
+    assert!(
+        director.tools.iter().any(|tool| tool == "write_document"),
+        "it has to be able to rewrite the plan"
+    );
+    Ok(())
+}
+
+/// The four standing teams, and the one whose allowance is shaped by waiting
+/// rather than by working.
+#[test]
+fn the_director_team_is_budgeted_to_outlast_a_run_of_idling() {
+    let teams = super::standing_teams();
+    let (name, agent, completion, budget, _) = teams
+        .into_iter()
+        .find(|(name, ..)| *name == "director")
+        .expect("the director stands beside the solve");
+    assert_eq!(agent, "director");
+    // Direction can arrive at any moment, so the team never retires itself.
+    assert_eq!(completion, super::teams::Completion::Standing);
+    // Every cycle counts, idle ones included. At the twenty-second idle
+    // backoff a custodial forty-cycle allowance would retire this team
+    // thirteen minutes into an eight-hour run, and nothing would say that
+    // direction had stopped being read.
+    assert!(
+        budget.max_cycles >= 2000,
+        "an idling team must outlive the solve, got {}",
+        budget.max_cycles
+    );
+    // And no rate floor: a floor is a delay between a person typing and the
+    // run noticing. What bounds the spending is the queue check in front of
+    // the model call.
+    assert_eq!(budget.min_interval, std::time::Duration::ZERO);
+}
+
 #[test]
 fn every_built_in_prompt_is_present_and_bounded() {
     use super::{

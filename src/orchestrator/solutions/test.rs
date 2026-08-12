@@ -221,7 +221,7 @@ fn an_attempt_is_told_what_the_pattern_team_found() {
 
     let observations = observations_briefing(&mailbox);
     let state = SolutionState::new("find the cycle lengths");
-    let prompt = attempt_prompt(&state, "", &observations);
+    let prompt = attempt_prompt(&state, "", &observations, "");
 
     assert!(prompt.contains("pattern team"), "{prompt}");
     assert!(prompt.contains("has an 8-cycle"), "{prompt}");
@@ -238,8 +238,75 @@ fn an_attempt_with_nothing_from_the_pattern_team_says_nothing_about_it() {
     assert_eq!(observations, "");
 
     let state = SolutionState::new("find the cycle lengths");
-    let prompt = attempt_prompt(&state, "", &observations);
+    let prompt = attempt_prompt(&state, "", &observations, "");
     assert!(!prompt.contains("pattern team"), "{prompt}");
+}
+
+/// The whole point of the channel is that the attempt is told a person asked
+/// for this, and that it outranks what the run inferred on its own.
+#[test]
+fn an_attempt_carries_operator_direction_above_the_judge() {
+    use super::{attempt_prompt, direction_briefing};
+
+    let mailbox = Mailbox::default();
+    mailbox.post("check the n=14 bound against a sieve".to_string());
+    let direction = direction_briefing(&mailbox);
+
+    let mut state = SolutionState::new("find the cycle lengths");
+    state.steer = "tighten the enumeration".to_string();
+    let prompt = attempt_prompt(&state, "", "", &direction);
+
+    assert!(prompt.contains("check the n=14 bound"), "{prompt}");
+    assert!(prompt.contains("Direction from the operator"), "{prompt}");
+    // Both are present, and the one a person wrote comes first — a prompt that
+    // buried it under the judge's steer would have the attempt reading it as
+    // one more piece of automated advice.
+    let operator = prompt.find("Direction from the operator");
+    let judge = prompt.find("The judge reviewed");
+    assert!(operator < judge, "operator direction must lead: {prompt}");
+}
+
+/// A directive is asserted, never established. Presenting it as something the
+/// run knows is how an instruction becomes a false premise the attempt builds
+/// on.
+#[test]
+fn operator_direction_is_labelled_as_an_instruction_not_a_finding() {
+    use super::direction_briefing;
+
+    let mailbox = Mailbox::default();
+    mailbox.post("the recurrence is order three".to_string());
+    let direction = direction_briefing(&mailbox);
+
+    assert!(direction.contains("operator"), "{direction}");
+    assert!(direction.contains("takes precedence"), "{direction}");
+    // And it says what to do when the operator is wrong, because they can be.
+    assert!(direction.contains("say so plainly"), "{direction}");
+}
+
+/// An empty mailbox renders nothing at all, the same as the pattern team's.
+/// A heading saying nobody said anything spends context to report a non-event.
+#[test]
+fn an_attempt_with_no_direction_says_nothing_about_it() {
+    use super::{attempt_prompt, direction_briefing};
+
+    let direction = direction_briefing(&Mailbox::default());
+    assert_eq!(direction, "");
+
+    let state = SolutionState::new("find the cycle lengths");
+    let prompt = attempt_prompt(&state, "", "", &direction);
+    assert!(!prompt.contains("operator"), "{prompt}");
+}
+
+/// Delivered once. The mailbox is drained by the attempt, so a directive must
+/// not reappear in every later prompt for the rest of the run.
+#[test]
+fn a_directive_reaches_one_attempt_rather_than_every_later_one() {
+    use super::direction_briefing;
+
+    let mailbox = Mailbox::default();
+    mailbox.post("stop enumerating and prove the bound".to_string());
+    assert!(direction_briefing(&mailbox).contains("prove the bound"));
+    assert_eq!(direction_briefing(&mailbox), "");
 }
 
 #[test]

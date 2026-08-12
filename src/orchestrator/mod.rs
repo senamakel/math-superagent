@@ -50,6 +50,8 @@ use crate::agent::{
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
 use documents::WorkspaceDocuments;
+
+use crate::directives;
 use exec::ExecuteCommand;
 use paths::strip_workspace_prefix;
 use paths::{WriteToolFile, checked_workspace_path};
@@ -341,6 +343,7 @@ impl OrchestratorAgent {
                 librarian: prompts.librarian,
                 scholar: prompts.scholar,
                 curator: prompts.curator,
+                director: prompts.director,
             },
         )?;
 
@@ -1676,6 +1679,7 @@ struct SupportPrompts {
     librarian: String,
     scholar: String,
     curator: String,
+    director: String,
 }
 
 /// Registers the pattern agent, which is the tool-richest of the support roles.
