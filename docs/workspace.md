@@ -1,8 +1,6 @@
 # The workspace: layout, library, and what is derived from it
 
-Everything under `/workspace` — where a file goes, what the research tree means, which files are written by code rather than by an agent, and how the whole thing is checkpointed.
-
-The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
+Everything under `/workspace` — where a file goes, what the research tree means, which files are written by code rather than by an agent, and how the whole thing is checkpointed. The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
 ## Workspace layout
 
@@ -277,10 +275,10 @@ The librarian receives the root as context so it does not download the same
 paper twice. Toolkits keep the older flat shape: a folder, an `INDEX.md`, and
 one small file per helper.
 
-## The four derived ledgers
+## The five derived ledgers
 
-Four files beside the library are written by code, never by an agent, and
-re-derived from disk on every relevant write. All four follow the rule
+Five files beside the library are written by code, never by an agent, and
+re-derived from disk on every relevant write. All five follow the rule
 `INDEX.md` already established: what a source establishes is a judgement and
 stays with the agent that made it; whether the summary agrees with the files is
 not a judgement, so it is measured. Each is described through
@@ -315,6 +313,20 @@ a known dead end is a result, and the reason is what stops the next attempt
 paying for it again. A thread resting on a claim id that is not on disk is
 reported, and so is a blocked thread with no blocker stated, because a blocker
 stated precisely is the next research request and one left blank is a mood.
+
+`research/APPROACHES.md` (`approaches.rs`) is what the run has tried to
+*think* of, beside what it has tried to compute. A thread is already anchored
+to the library, so nothing held the step before it: a candidate reformulation.
+That went into one prose field on the solution state and was gone by the next
+attempt, so an idea proposed at attempt three could be proposed again at
+attempt six and the literature check that would have killed it never happened.
+An approach is `research/approaches/<slug>.md` with a fenced `approach` block
+— `idea`, `mechanism`, `status`, `precedent`, `first-step`, `killed-by` —
+whose stances are a life cycle rather than a flag: `proposed`, `grounded`,
+`refuted`, `adopted`, `spent`. Empty `precedent` means nobody checked, kept
+distinct from nothing having been found because those license different next
+moves; refuted and spent approaches are kept with their reasons, on the
+dead-thread argument.
 
 `research/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
 to throw away. `readable.rs` has always parsed every anchor into a reference
@@ -395,22 +407,22 @@ an empty placeholder. The listing hides `.workspace-history`,
 `.python-packages`, `__pycache__`, the document index, the frontier ledger, and
 `trace.jsonl`, and truncates rather than dumping an unbounded tree.
 
-Every reflection is archived to `reflections/L0.<n>/<epoch_ms>_<outcome>.md`, where the
-outcome is `nothing` or `<n>_learnings`, and indexed in `reflections/INDEX.md`
-in the same step. The folder carries an index for the same reason `research/`
-and `code/lib/` do: a directory of epoch-stamped filenames says when each
-attempt was judged and nothing about what any of them found. Each row records
-the attempt number, the verdict, and the lesson, so the planners and the
-inventor can see which attempt is worth continuing without opening any of them.
-The loop writes both the file and the row itself — no agent is in that path —
-which is why `refresh_index` and `describe_file` refuse the folder outright
-(`folder_index::loop_owned`): a hand refresh would replace verdicts and lessons
-with `_(undescribed)_`. The organizer's prompt said to leave it alone and a
-live organizer refreshed it anyway, which is the usual lesson — a prompt
-instruction is not a control. The name carries the result so a
-directory listing alone shows which attempts taught the run something. Writing
-the log is best effort: the lesson is already in the loop state, and losing the
-archive copy must not cost the run the lesson.
+Every reflection is archived to `reflections/L0.<n>/<epoch_ms>_<outcome>.md`,
+where the outcome is `nothing` or `<n>_learnings` — so a directory listing
+alone shows which attempts taught the run something — and indexed in
+`reflections/INDEX.md` in the same step. The folder carries an index for the
+same reason `research/` and `code/lib/` do: a directory of epoch-stamped
+filenames says when each attempt was judged and nothing about what any of them
+found. Each row records the attempt number, the verdict, and the lesson, so
+the planners and the inventor can see which attempt is worth continuing
+without opening any of them. The loop writes both the file and the row itself
+— no agent is in that path — which is why `refresh_index` and `describe_file`
+refuse the folder outright (`folder_index::loop_owned`): a hand refresh would
+replace verdicts and lessons with `_(undescribed)_`. The organizer's prompt
+said to leave it alone and a live organizer refreshed it anyway, which is the
+usual lesson — a prompt instruction is not a control. Writing the log is best
+effort: the lesson is already in the loop state, and losing the archive copy
+must not cost the run the lesson.
 
 ## The directive queue
 
