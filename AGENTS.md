@@ -20,7 +20,7 @@ The design rationale behind them — every threshold that a live run has already
 met, and what it cost — is one level down, so that a rule stays readable and the
 evidence for it stays available.
 
-- [`docs/roles.md`](docs/roles.md) — the fourteen roles, the source adapters,
+- [`docs/roles.md`](docs/roles.md) — the fifteen roles, the source adapters,
   the two recall paths, and which workspace files reach which role's prompt.
 - [`docs/solution-loop.md`](docs/solution-loop.md) — the attempt/judge/reflect
   graph, its thresholds, and how a tool or provider failure is absorbed.
@@ -220,7 +220,7 @@ Also run the checks that match the changed surface:
 
 ```sh
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
-sh -n agent euler langfuse-turns langfuse-review scripts/run-agent \
+sh -n agent euler steer langfuse-turns langfuse-review scripts/run-agent \
   scripts/solve-euler scripts/langfuse-turns scripts/langfuse-review
 ./agent build
 docker compose config --quiet
