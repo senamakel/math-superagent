@@ -262,6 +262,7 @@ async fn invention_arm(
         ),
     )
     .await;
+    let candidates = ensure_approaches_written(subagents, workspace, &before, candidates).await;
     let grounding = delegate(
         subagents,
         "research",
