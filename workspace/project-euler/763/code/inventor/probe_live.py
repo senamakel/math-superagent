@@ -6,10 +6,7 @@ the candidate parents (empty cells at M-1 whose children lie in the top).
 This shows exactly how A2 fails (top 3 are not a single triangle of one
 empty parent).  Fixed BFS: levels advance correctly.
 """
-from lib.amoeba import forward_level, children
-
-def lvl(p):
-    return sum(p)
+from lib.amoeba import forward_level, children, lvl
 
 def show(S):
     Sset = set(S)

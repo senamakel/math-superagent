@@ -15,13 +15,9 @@ For each reachable config we print:
 Declared infrastructure cost: exact BFS + per-config inspection, exponential
 state set, bounded to N<=6 (oracle only).
 """
-from lib.amoeba import forward_level, children
+from lib.amoeba import forward_level, children, lvl
 
 DIM = 3
-
-
-def lvl(p):
-    return sum(p)
 
 
 def inspect(S):

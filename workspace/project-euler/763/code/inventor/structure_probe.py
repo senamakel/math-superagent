@@ -24,11 +24,7 @@ Complexity: exact forward BFS over distinct configs -- exponential state set
 import sys
 from collections import defaultdict
 
-from lib.amoeba import forward_level, children, config_features
-
-
-def lvl(p):
-    return sum(p)
+from lib.amoeba import forward_level, children, config_features, lvl
 
 
 def f_of(S):
