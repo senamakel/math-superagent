@@ -56,8 +56,9 @@ Load-bearing consequences for this run:
 id: alekseyev-tree-search-complete
 statement: The tree T_U over prime powers (node m's children m·p^e, spf(p^e)>lpf(m)) with prime-wheel pruning solves a*sigma(n)=b*n+c for all n<=U; Theorem 3.3 proves the wheel reaches every solution (pruning never skips one), so the complete enumeration cost scales with the visited-node count, not with U. The c=0 case (multiperfect/hemiperfect) admits additional optimization = the forced-denominator lemma.
 hypotheses: gcd(a,b,c)=1, a>0; the paper's focus is general c (c=0 noted special, extra optimization not developed)
-holds-here: yes — tree-search+pruning completeness is proved for the general a*sigma(n)=bn+c family; the run's c=0 forced-denominator DFS is the specialized instance of the same complete scheme (inference beyond the paper's text)
+holds-here: yes
 status: proved (Alekseyev 2026, Thms 3.2, 3.3; arXiv preprint)
+bearing: turns "the 22 values must be reproduced by a complete traversal" from an assumption into a claim backed by the standard complete method; directly answers request theory-numbers-with-88d5. Note holds-here=yes for the method family: completeness is proved for general a*sigma(n)=bn+c; the run's c=0 forced-denominator DFS is the specialized instance of the same complete scheme (this specialization is inference, not the paper's text)
 bearing: turns the "22 values must be reproduced by a complete traversal" from an assumption into a claim backed by the standard complete method; directly answers request theory-numbers-with-88d5 (a finitary, complete recursion over the divisor-sum equation exists, cost in the description)
 anchor: research/sources/alekseyev_diophantine_sigma_html.full.md
 answers: theory-numbers-with-88d5

@@ -23,8 +23,9 @@ for the digest and the one claim block `alekseyev-tree-search-complete` for this
 id: alekseyev-theorem31-shortcut
 statement: For integers d and ell>0, if 2^ell - d - 1 is prime then n = 2^(ell-1)(2^ell-d-1) solves sigma(n)=2n+d; the shortcut n'=p^k forces p | (a'-c').
 hypotheses: 2^ell - d - 1 prime
-holds-here: no — PE241's equation is 2*sigma(n)=(2k+1)n (c=0 form, a=2), not sigma(n)=2n+d; the shortcut is the same-paper illustration of the method, not the run's equation
+holds-here: no
 status: proved (Alekseyev 2026, Thm 3.1)
+bearing: PE241's equation is 2*sigma(n)=(2k+1)n (c=0 form, a=2), not sigma(n)=2n+d; the shortcut is the same-paper illustration of the method, not the run's equation. Not load-bearing for the hemiperfect sum.
 bearing: illustrates the shortcut machinery behind the complete tree-search; not load-bearing for the hemiperfect sum
 anchor: research/sources/alekseyev2601_pdf.full.md
 ```
