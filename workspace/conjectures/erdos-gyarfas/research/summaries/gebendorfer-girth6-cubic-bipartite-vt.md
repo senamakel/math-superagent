@@ -1,74 +1,46 @@
-<!-- source: https://doi.org/10.5281/zenodo.18526153 | converted from HTML -->
+# Gebendorfer 2026 — Power-of-Two Cycles in Cubic Bipartite Vertex-Transitive Graphs of Girth Six
 
-Power-of-Two Cycles in Cubic Bipartite Vertex-Transitive Graphs of Girth Six | Zenodo Skip to main
+Source: https://doi.org/10.5281/zenodo.18526153 (Zenodo, v3, published 2026-02-08).
+NOT peer-reviewed — self-published Zenodo preprint (indices 0 citations). Treat as
+**asserted-by-source**, not established, unless independently checked.
 
-You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.
+## Claim
 
-Published February 8, 2026 | Version v3
+Every **cubic bipartite vertex-transitive graph of girth six** contains a simple cycle
+whose length is a power of two — specifically one of **8, 16, or 32** (sharp bound
+kmin ≤ 5). Confirms the Erdős–Gyárfás conjecture for this class.
 
-[Publication][2]**Open
+## Method (as described)
 
-# Power-of-Two Cycles in Cubic Bipartite Vertex-Transitive Graphs of Girth Six
+- Uses the **Potočnik–Vidali classification** of cubic vertex-transitive graphs of girth
+  6, which partitions them into four families (Desargues graph exception + toroidal
+  hexagonal skeletons / hyperbolic triangulation truncations / dihedral-scheme truncations).
+- Novel **port voltage framework** encoding the interaction between ring structures and
+  matching edges.
+  - **Toroidal family**: local hexagon combinatorics gives cycles of length 8 or 16.
+  - **Hyperbolic and dihedral truncation families**: two obstructions — a local
+    corner-cost bound from antipodal port geometry excluding 8-cycles, and a global
+    Z2-holonomy obstruction excluding 16-cycles. Despite these, a canonical ground-state
+    walk in the quotient graph lifts to a simple **32-cycle**.
+- Computational verification over the complete census of cubic vertex-transitive graphs
+  up to **1280 vertices** confirms the theorem and identifies exactly **14 extremal graphs**
+  attaining kmin = 5.
 
-### Authors/Creators
+## Place in the run's picture
 
-- [Gebendorfer, Jonas Jakob][3][image: ORCID icon] [4]
+This is the first time the previously-unobtainable "Gebendorfer girth-6 cubic bipartite
+vertex-transitive" paper (a REQUESTS open row) is on disk — closing that row. It sits
+adjacent to (agent) the cubic-bipartite frontier (Tranquilli ≥60) and the Potočnik–Vidali
+classification. The result, if correct, settles the conjecture for a further symmetric
+restricted class.
 
-## Description
+## Caveats / falsifiers
 
-We prove that every cubic bipartite vertex-transitive graph of girth six contains a simple
-cycle whose length is a power of two, specifically one of 8, 16, or 32. This confirms the
-Erdos-Gy&aacute;rf&aacute;s conjecture for this highly symmetric class with the sharp bound kmin ≤ 5.
-Our proof combines the structural classification of Poto&pound;nik and Vidali, which partitions
-these graphs into four families, with a novel port voltage framework that encodes the interaction
-between ring structures and matching edges. For the toroidal family, local hexagon
-combinatorics yields cycles of length 8 or 16. For the hyperbolic and dihedral truncation
-families, we establish two independent obstructions: a local corner-cost bound arising from
-antipodal port geometry that excludes 8-cycles, and a global Z2-holonomy obstruction that
-excludes 16-cycles. Despite these barriers, we prove that a canonical ground-state walk in
-the quotient graph lifts to a simple 32-cycle.
-Computational verification over the complete census of cubic vertex-transitive graphs up
-to 1280 vertices confirms the theorem and identifies exactly 14 extremal graphs attaining
-kmin = 5.
-
-## Files
-
-###
-
-EGC_CVTG6_full_paper_rev2.pdf**
-
-###
-
-Files (498.8 kB)**
-
-Name | Size | **[Download all][5] |
-
-[EGC_CVTG6_full_paper_rev2.pdf][6]
-
-md5:d3a9c8205e280612e650f4ac0f26463b
-
-**
-
- | 498.8 kB | **[Preview][7]**[Download][6] |
-
-**Jump up
-
-**
-
-**
-
-This site uses cookies. Find out more on [how we use cookies][8]
-
-Accept all cookies Accept only essential cookies
-
-
-## Links
-
-[1]: http://browsehappy.com/
-[2]: /search?q=&amp;f=resource_type%3Apublication
-[3]: /search?q=metadata.creators.person_or_org.name:%22Gebendorfer,+Jonas+Jakob%22
-[4]: https://orcid.org/0009-0008-2991-5198
-[5]: https://zenodo.org/api/records/18526153/files-archive
-[6]: /records/18526153/files/EGC_CVTG6_full_paper_rev2.pdf?download=1
-[7]: /records/18526153/preview/EGC_CVTG6_full_paper_rev2.pdf?include_deleted=0
-[8]: https://about.zenodo.org/cookie-policy
+- Not peer-reviewed; single-author preprint with 0 citations. The girth-6 girth-12
+  companion papers are also self-published Zenodo.
+- The 32-cycle conclusion for the excluded families is the load-bearing step; it should
+  be checked against the actual graph census on disk before being reported as established.
+- The claimed **full proof** of the EG conjecture by the same author
+  (zenodo.18232846, "A Proof of the Erdos-Gyárfás Conjecture", 2026-01-13) is **withdrawn**:
+  the record now returns HTTP 410 GONE. Do NOT cite the full proof as established — it
+  contradicts the field's standing open status and has been removed.
