@@ -7,7 +7,6 @@ use super::*;
 fn the_root_keeps_the_runs_prose_and_its_configuration() {
     for name in [
         "GOAL.md",
-        "MEMORY.md",
         "SCRATCHPAD.md",
         "solution.md",
         "CONTEXT.md",

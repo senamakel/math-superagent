@@ -36,18 +36,6 @@ pub(super) const INDEX_FILE: &str = "INDEX.md";
 /// Placeholder for a file nobody has described yet.
 const UNDESCRIBED: &str = "_(undescribed)_";
 
-/// Opens a synthesis an older index carries above its table.
-///
-/// The tree's synthesis now lives in its own `ROOT.md`, because holding it and
-/// the derived table in one file put an agent and a tool in contention over
-/// that file and cost three separate rounds of lost descriptions. These
-/// markers stay so an index written before the split keeps what it was
-/// carrying rather than having it dropped on the next refresh.
-const BRIEF_OPEN: &str = "<!-- brief -->";
-
-/// Closes the synthesis an index may carry above its table.
-const BRIEF_CLOSE: &str = "<!-- /brief -->";
-
 /// Normalises a folder a model named, to the form the rest of this module uses.
 ///
 /// The mount point is stripped here rather than left to the path checker
@@ -69,60 +57,26 @@ fn folder_name(requested: &str) -> String {
     normalised.to_string()
 }
 
-/// Whether a folder segment names a level of a summary tree.
-pub(super) fn is_level(segment: &str) -> bool {
-    super::context_tree::batch_of(segment).is_some()
-}
-
 /// Splits a path into the folder whose index describes it, and the name that
 /// index calls it.
-///
-/// A batch folder has no index of its own: the tree carries one index covering
-/// every batch, so `research/L1.0/paper.md` is described in
-/// `research/INDEX.md` under the name `L1.0/paper.md`. Giving each batch its
-/// own index would scatter the library's descriptions across as many files as
-/// the tree has batches, and the one file a reader is meant to open first
-/// would describe none of them.
 fn split(relative: &str) -> (String, String) {
     let trimmed = folder_name(relative);
     let Some((folder, name)) = trimmed.rsplit_once('/') else {
         return (String::new(), trimmed);
     };
-    match folder.rsplit_once('/') {
-        Some((root, level)) if is_level(level) => (root.to_string(), format!("{level}/{name}")),
-        None if is_level(folder) => (String::new(), format!("{folder}/{name}")),
-        _ => (folder.to_string(), name.to_string()),
-    }
+    (folder.to_string(), name.to_string())
 }
 
-/// Returns the index path for the folder holding `relative`.
-/// The tree whose index the solution loop maintains itself.
-pub(super) const REFLECTIONS_DIR: &str = "reflections";
-
-/// Refuses an index call on a folder no agent belongs in.
-///
-/// The loop writes each reflection *and* its row in one step, and the row
-/// carries the attempt number, the verdict, and the lesson — none of which is
-/// recoverable from the file list. A refresh keeps existing descriptions, so
-/// this is not always destructive, but it is never useful and it is one key
-/// mismatch away from replacing every verdict with `_(undescribed)_`; that
-/// exact loss has happened three times on the research tree, each time from a
-/// row spelled a way the refresh could not match.
-///
-/// The organizer's prompt already says to leave the folder alone, and a live
-/// organizer refreshed it anyway. A prompt instruction is not a control.
+/// Refuses index calls for knowledge folders backed by Cognee.
 ///
 /// # Errors
 ///
-/// Returns a validation error when `folder` is the reflections tree.
-fn loop_owned(folder: &str) -> Result<()> {
+/// Returns a validation error when `folder` is research or legacy reflections.
+fn index_allowed(folder: &str) -> Result<()> {
     let root = folder.split('/').next().unwrap_or(folder);
-    if root == REFLECTIONS_DIR {
+    if root == "research" || root == "reflections" || root == "learning" {
         return Err(tinyagents::TinyAgentsError::Validation(format!(
-            "`{REFLECTIONS_DIR}/` is maintained by the solution loop, which writes each \
-             reflection and its row together — the row carries the attempt number, the verdict, \
-             and the lesson, and nothing here can recover those from a file listing. Leave it \
-             alone; every other folder is yours"
+            "`{root}/` uses Cognee for durable cataloguing and recall; do not create an INDEX.md there"
         )));
     }
     Ok(())
@@ -138,7 +92,7 @@ fn index_for(folder: &str) -> String {
 
 /// Recovers the file a row names, however the row spells it.
 ///
-/// An agent maintaining a summary tree is told to link its notes as
+/// An agent maintaining a folder index is told to link its notes as
 /// `[[wikilinks]]`, and it applies that to the index table too: a live
 /// research index came back with every row keyed `L2/[[rank_lehmer]]` instead
 /// of `` `L2/rank_lehmer.md` ``. Every row then matched no file on disk, so the
@@ -192,32 +146,14 @@ pub(super) fn parse(existing: &str) -> BTreeMap<String, String> {
     entries
 }
 
-/// Reads the synthesis an index carries above its table, if it has one.
-///
-/// Returns the marked text without its markers, so a caller that has nothing
-/// to preserve and a caller preserving an empty synthesis are the same caller.
-pub(super) fn brief(existing: &str) -> String {
-    let Some((_, rest)) = existing.split_once(BRIEF_OPEN) else {
-        return String::new();
-    };
-    let Some((marked, _)) = rest.split_once(BRIEF_CLOSE) else {
-        return String::new();
-    };
-    marked.trim().to_string()
-}
-
-/// Renders an index for `folder` from its entries, keeping its synthesis.
-pub(super) fn render(folder: &str, entries: &BTreeMap<String, String>, brief: &str) -> String {
+/// Renders an artifact index for `folder` from its entries.
+pub(super) fn render(folder: &str, entries: &BTreeMap<String, String>) -> String {
     let title = if folder.is_empty() {
         "workspace"
     } else {
         folder
     };
     let mut out = format!("# Index — {title}\n\n");
-    let brief = brief.trim();
-    if !brief.is_empty() {
-        let _ = writeln!(out, "{BRIEF_OPEN}\n{brief}\n{BRIEF_CLOSE}\n");
-    }
     out.push_str(
         "What each file in this folder is for. Keep it current: describe a file when you create \
          it, and refresh this index after adding, renaming, or deleting files.\n\n\
@@ -274,7 +210,13 @@ pub(super) async fn record_description(
     description: &str,
 ) {
     let (folder, name) = split(relative);
-    if name.is_empty() || name == INDEX_FILE {
+    if name.is_empty()
+        || name == INDEX_FILE
+        || matches!(
+            folder.split('/').next(),
+            Some("research" | "reflections" | "learning")
+        )
+    {
         return;
     }
     let existing = documents
@@ -284,10 +226,7 @@ pub(super) async fn record_description(
     let mut entries = parse(&existing);
     entries.insert(name, description.trim().replace('\n', " "));
     let _ = documents
-        .write_document(
-            &index_for(&folder),
-            &render(&folder, &entries, &brief(&existing)),
-        )
+        .write_document(&index_for(&folder), &render(&folder, &entries))
         .await;
 }
 
@@ -319,9 +258,8 @@ impl FolderIndexTool {
     }
 
     async fn write(&self, folder: &str, entries: &BTreeMap<String, String>) -> Result<()> {
-        let brief = brief(&self.existing(folder).await);
         self.documents
-            .write_document(&index_for(folder), &render(folder, entries, &brief))
+            .write_document(&index_for(folder), &render(folder, entries))
             .await
     }
 
@@ -329,7 +267,7 @@ impl FolderIndexTool {
         let path = required(&call.arguments, "path")?;
         let purpose = required(&call.arguments, "purpose")?;
         let (folder, name) = split(&path);
-        loop_owned(&folder)?;
+        index_allowed(&folder)?;
         if name.is_empty() {
             return Err(tinyagents::TinyAgentsError::Validation(
                 "`path` must name a file, not a folder".into(),
@@ -341,14 +279,14 @@ impl FolderIndexTool {
             ));
         }
         // A full text is never a row, so describing one is a call whose result
-        // the next refresh throws away. One live organizer spent seventeen of
+        // the next refresh throws away. One live filing pass spent seventeen of
         // them in a single run. Naming the digest turns the wasted call into
         // the useful one.
         if name.ends_with(super::documents::FULL_TEXT_SUFFIX) {
             // Name where the digest actually is, not where it would be if the
             // tree were flat. Deriving it by suffix alone put it in the
             // original's own batch — `L0.0/paper.md` — and no such file exists,
-            // because a digest lives at the level above. A live organizer took
+            // because a digest lives at the level above. A live filing pass took
             // that hint ten times in one turn and failed every time.
             let stem = name.replace(super::documents::FULL_TEXT_SUFFIX, ".md");
             let probe = if folder.is_empty() {
@@ -382,7 +320,7 @@ impl FolderIndexTool {
                 .and_then(Value::as_str)
                 .unwrap_or_default(),
         );
-        loop_owned(&folder)?;
+        index_allowed(&folder)?;
         let described = self.entries(&folder).await;
         let present = self.documents.file_names(&folder).await?;
 
@@ -402,7 +340,7 @@ impl FolderIndexTool {
                 originals += 1;
                 continue;
             }
-            if file == INDEX_FILE || file == super::context_tree::ROOT_FILE {
+            if file == INDEX_FILE {
                 continue;
             }
             let description = described.get(name).cloned().unwrap_or_default();
@@ -419,7 +357,7 @@ impl FolderIndexTool {
         self.write(&folder, &entries).await?;
         // Say how many originals were passed over. Without it the caller sees
         // a folder holding ten files and an index listing none of them, and
-        // its next move is to describe each one in turn — a live organizer
+        // its next move is to describe each one in turn — a live filing pass
         // spent ten refused calls doing exactly that, twice.
         let skipped = if originals == 0 {
             String::new()

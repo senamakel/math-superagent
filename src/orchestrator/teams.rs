@@ -242,7 +242,7 @@ pub(super) fn fingerprint(workspace: &Path) -> u64 {
 ///
 /// A team that writes into the folders it watches would otherwise wake itself
 /// forever on its own output — the reason the pattern team's `SCRATCHPAD.md` is
-/// kept out of its fingerprint. The organizer has the same problem one folder
+/// kept out of its fingerprint. Filing has the same problem one folder
 /// wider: it rewrites `INDEX.md`, so an unfiltered fingerprint of the tree it
 /// files changes every time it files, and every cycle looks like fresh work.
 pub(super) fn fingerprint_excluding(workspace: &Path, excluded: &[&str]) -> u64 {

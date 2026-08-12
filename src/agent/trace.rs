@@ -500,7 +500,7 @@ impl EventListener for RunTracer {
             }
             // A run that dies is the loudest thing that can happen to a child,
             // and it was the one thing the console did not say. A live
-            // `organizer` retried the same call six times over two and a half
+            // a background agent retried the same call six times over two and a half
             // minutes and then died on `openai response contained no
             // choices` — the retry ladder was visible, its outcome was not, so
             // the run simply stopped appearing and nothing said why. The error

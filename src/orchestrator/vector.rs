@@ -1,92 +1,165 @@
-//! Qdrant-backed research notes with deterministic local embeddings.
+//! Cognee-backed durable brain and project-scoped session memory.
 
 use async_trait::async_trait;
 use serde_json::{Value, json};
+use std::time::Duration;
 
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
-const COLLECTION: &str = "math_agent_research";
-const VECTOR_SIZE: usize = 256;
+const BRAIN_DATASET: &str = "math_agent_brain";
+const SESSION_DATASET_PREFIX: &str = "math_agent_sessions__";
 
 #[derive(Clone, Debug)]
 pub(super) struct VectorStore {
     client: reqwest::Client,
     base_url: String,
+    project: String,
+    session: String,
+    session_dataset: String,
 }
 
 impl VectorStore {
     pub(super) fn from_env() -> Result<Self> {
-        let base_url = std::env::var("QDRANT_URL").map_err(|_| {
-            tinyagents::TinyAgentsError::Validation("QDRANT_URL is required".into())
+        let base_url = std::env::var("COGNEE_API_URL").map_err(|_| {
+            tinyagents::TinyAgentsError::Validation("COGNEE_API_URL is required".into())
         })?;
         let base_url = base_url.trim_end_matches('/').to_string();
         if base_url.is_empty() {
             return Err(tinyagents::TinyAgentsError::Validation(
-                "QDRANT_URL cannot be empty".into(),
+                "COGNEE_API_URL cannot be empty".into(),
             ));
         }
+        let project =
+            slug(&std::env::var("MATH_AGENT_WORKSPACE_LABEL").unwrap_or_else(|_| "default".into()));
+        let nanos = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_nanos();
+        let session = format!("s{nanos:x}-{}", std::process::id());
+        let session_dataset = format!("{SESSION_DATASET_PREFIX}{project}__{session}");
         Ok(Self {
             client: reqwest::Client::new(),
             base_url,
+            project,
+            session,
+            session_dataset,
         })
     }
 
-    async fn ensure_collection(&self) -> Result<()> {
-        let url = format!("{}/collections/{COLLECTION}", self.base_url);
-        let status = self
-            .client
-            .get(&url)
-            .send()
-            .await
-            .map_err(|error| qdrant_transport_error(&error))?
-            .status();
-        if status.is_success() {
-            return Ok(());
-        }
-        if status != reqwest::StatusCode::NOT_FOUND {
-            return Err(tinyagents::TinyAgentsError::Tool(format!(
-                "Qdrant collection check returned {status}"
-            )));
-        }
+    /// Adds one durable Markdown memory and waits until Cognee has indexed it.
+    pub(super) async fn remember(&self, text: &str, source: &str) -> Result<u64> {
+        let id = point_id(&format!("{source}\n{text}"));
+        let document = format!("# Durable memory\n\n{text}\n\nSource: {source}\n");
+        self.ingest(
+            document,
+            format!("memory-{id}.md"),
+            BRAIN_DATASET,
+            "math_agent_brain",
+            false,
+        )
+        .await?;
+        Ok(id)
+    }
 
+    /// Queues one completed agent session in the current project/run dataset.
+    pub(super) async fn remember_session(
+        &self,
+        agent: &str,
+        run_id: &str,
+        input: &str,
+        output: &str,
+    ) -> Result<()> {
+        let document = format!(
+            "# Agent session\n\nProject: {}\nSession: {}\nAgent: {agent}\nRun: {run_id}\n\n## Input\n\n{input}\n\n## Final output\n\n{output}\n",
+            self.project, self.session
+        );
+        tokio::time::timeout(
+            Duration::from_secs(30),
+            self.ingest(
+                document,
+                format!("session-{}-{}.md", slug(agent), slug(run_id)),
+                &self.session_dataset,
+                &format!("project:{}", self.project),
+                true,
+            ),
+        )
+        .await
+        .map_err(|_| {
+            tinyagents::TinyAgentsError::Tool(
+                "Cognee session-memory enqueue timed out after 30 seconds".into(),
+            )
+        })?
+    }
+
+    async fn ingest(
+        &self,
+        document: String,
+        filename: String,
+        dataset: &str,
+        node_set: &str,
+        background: bool,
+    ) -> Result<()> {
+        let part = reqwest::multipart::Part::bytes(document.into_bytes())
+            .file_name(filename)
+            .mime_str("text/markdown")
+            .map_err(|error| tinyagents::TinyAgentsError::Tool(error.to_string()))?;
         let response = self
             .client
-            .put(url)
-            .json(&json!({
-                "vectors": {
-                    "size": VECTOR_SIZE,
-                    "distance": "Cosine"
-                }
-            }))
+            .post(format!("{}/api/v1/remember", self.base_url))
+            .multipart(
+                reqwest::multipart::Form::new()
+                    .text("datasetName", dataset.to_string())
+                    .text("node_set", node_set.to_string())
+                    .text("run_in_background", background.to_string())
+                    .part("data", part),
+            )
             .send()
             .await
-            .map_err(|error| qdrant_transport_error(&error))?;
-        if collection_now_exists(response.status()) {
-            return Ok(());
+            .map_err(|error| cognee_transport_error(&error))?;
+        if !response.status().is_success() {
+            return Err(cognee_response_error("remember", response).await);
         }
-        Err(qdrant_response_error("collection creation", response).await)
+        Ok(())
+    }
+
+    /// Returns shared brain/research datasets plus this project/run's session
+    /// dataset, excluding every other session dataset.
+    async fn recall_datasets(&self) -> Result<Vec<String>> {
+        let response = self
+            .client
+            .get(format!("{}/api/v1/datasets", self.base_url))
+            .send()
+            .await
+            .map_err(|error| cognee_transport_error(&error))?;
+        if !response.status().is_success() {
+            return Err(cognee_response_error("list datasets", response).await);
+        }
+        let datasets: Value = response.json().await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("Cognee returned invalid JSON: {error}"))
+        })?;
+        Ok(visible_datasets(&datasets, &self.session_dataset))
     }
 }
 
 #[derive(Debug)]
-pub(super) struct RememberResearchTool {
+pub(super) struct RememberMemoryTool {
     store: VectorStore,
 }
 
-impl RememberResearchTool {
+impl RememberMemoryTool {
     pub(super) fn new(store: VectorStore) -> Self {
         Self { store }
     }
 }
 
 #[async_trait]
-impl Tool<()> for RememberResearchTool {
+impl Tool<()> for RememberMemoryTool {
     fn name(&self) -> &'static str {
-        "remember_research"
+        "remember_memory"
     }
 
     fn description(&self) -> &'static str {
-        "Stores a concise research finding and its source URL in the local vector database."
+        "Stores a concise durable finding, lesson, decision, or failed approach in Cognee."
     }
 
     fn schema(&self) -> ToolSchema {
@@ -98,11 +171,11 @@ impl Tool<()> for RememberResearchTool {
                 "properties": {
                     "text": {
                         "type": "string",
-                        "description": "A self-contained finding worth reusing."
+                        "description": "A self-contained memory worth reusing across agents and runs."
                     },
                     "source": {
                         "type": "string",
-                        "description": "The source URL or a short provenance label."
+                        "description": "A source URL, agent name, or short provenance label."
                     }
                 },
                 "required": ["text", "source"],
@@ -114,31 +187,7 @@ impl Tool<()> for RememberResearchTool {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let text = string_argument(&call, "text")?;
         let source = string_argument(&call, "source")?;
-        self.store.ensure_collection().await?;
-        let id = point_id(&format!("{source}\n{text}"));
-        let response = self
-            .store
-            .client
-            .put(format!(
-                "{}/collections/{COLLECTION}/points?wait=true",
-                self.store.base_url
-            ))
-            .json(&json!({
-                "points": [{
-                    "id": id,
-                    "vector": embed(&text),
-                    "payload": {
-                        "text": text,
-                        "source": source
-                    }
-                }]
-            }))
-            .send()
-            .await
-            .map_err(|error| qdrant_transport_error(&error))?;
-        if !response.status().is_success() {
-            return Err(qdrant_response_error("point upsert", response).await);
-        }
+        let id = self.store.remember(&text, &source).await?;
         Ok(ToolResult::text(
             call.id,
             self.name(),
@@ -148,24 +197,24 @@ impl Tool<()> for RememberResearchTool {
 }
 
 #[derive(Debug)]
-pub(super) struct RecallResearchTool {
+pub(super) struct RecallMemoryTool {
     store: VectorStore,
 }
 
-impl RecallResearchTool {
+impl RecallMemoryTool {
     pub(super) fn new(store: VectorStore) -> Self {
         Self { store }
     }
 }
 
 #[async_trait]
-impl Tool<()> for RecallResearchTool {
+impl Tool<()> for RecallMemoryTool {
     fn name(&self) -> &'static str {
-        "recall_research"
+        "recall_memory"
     }
 
     fn description(&self) -> &'static str {
-        "Finds related prior research notes in the local vector database."
+        "Recalls shared durable findings and research plus session memory from this project/run only."
     }
 
     fn schema(&self) -> ToolSchema {
@@ -197,57 +246,54 @@ impl Tool<()> for RecallResearchTool {
             .and_then(Value::as_u64)
             .unwrap_or(5)
             .clamp(1, 10);
-        self.store.ensure_collection().await?;
+        let datasets = self.store.recall_datasets().await?;
+        if datasets.is_empty() {
+            return Ok(ToolResult::text(
+                call.id,
+                self.name(),
+                "no durable memory datasets exist yet",
+            ));
+        }
         let response = self
             .store
             .client
-            .post(format!(
-                "{}/collections/{COLLECTION}/points/query",
-                self.store.base_url
-            ))
+            .post(format!("{}/api/v1/recall", self.store.base_url))
             .json(&json!({
-                "query": embed(&query),
-                "limit": limit,
-                "with_payload": true
+                "query": query,
+                "datasets": datasets,
+                "search_type": "CHUNKS",
+                "only_context": true,
+                "include_references": true,
+                "top_k": limit
             }))
             .send()
             .await
-            .map_err(|error| qdrant_transport_error(&error))?;
+            .map_err(|error| cognee_transport_error(&error))?;
         if !response.status().is_success() {
-            return Err(qdrant_response_error("vector query", response).await);
+            return Err(cognee_response_error("recall", response).await);
         }
         let body: Value = response.json().await.map_err(|error| {
-            tinyagents::TinyAgentsError::Tool(format!("Qdrant returned invalid JSON: {error}"))
+            tinyagents::TinyAgentsError::Tool(format!("Cognee returned invalid JSON: {error}"))
         })?;
-        let points = body
-            .pointer("/result/points")
-            .and_then(Value::as_array)
-            .ok_or_else(|| {
-                tinyagents::TinyAgentsError::Tool(
-                    "Qdrant query response contained no points array".into(),
-                )
-            })?;
-        if points.is_empty() {
+        let results = body.as_array().ok_or_else(|| {
+            tinyagents::TinyAgentsError::Tool("Cognee recall response was not an array".into())
+        })?;
+        if results.is_empty() {
             return Ok(ToolResult::text(
                 call.id,
                 self.name(),
                 "no related research notes found",
             ));
         }
-        let rendered = points
+        let rendered = results
             .iter()
             .enumerate()
-            .map(|(index, point)| {
-                let score = point.get("score").and_then(Value::as_f64).unwrap_or(0.0);
-                let text = point
-                    .pointer("/payload/text")
-                    .and_then(Value::as_str)
-                    .unwrap_or("missing text");
-                let source = point
-                    .pointer("/payload/source")
-                    .and_then(Value::as_str)
-                    .unwrap_or("missing source");
-                format!("{}. score {score:.3}\n{text}\nsource: {source}", index + 1)
+            .map(|(index, result)| {
+                format!(
+                    "{}. {}",
+                    index + 1,
+                    truncate_chars(&render_result(result), 4_000)
+                )
             })
             .collect::<Vec<_>>()
             .join("\n\n");
@@ -266,28 +312,38 @@ fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
         })
 }
 
-pub(super) fn embed(text: &str) -> Vec<f32> {
-    let mut vector = vec![0.0_f32; VECTOR_SIZE];
-    for token in text
-        .split(|character: char| !character.is_alphanumeric())
-        .filter(|token| !token.is_empty())
-    {
-        let hash = fnv1a(token.to_ascii_lowercase().as_bytes());
-        let index = usize::from(hash.to_le_bytes()[0]);
-        let sign = if hash & (1 << 63) == 0 { 1.0 } else { -1.0 };
-        vector[index] += sign;
-    }
-    let magnitude = vector.iter().map(|value| value * value).sum::<f32>().sqrt();
-    if magnitude > 0.0 {
-        for value in &mut vector {
-            *value /= magnitude;
-        }
-    }
-    vector
-}
-
 fn point_id(text: &str) -> u64 {
     fnv1a(text.as_bytes())
+}
+
+fn slug(value: &str) -> String {
+    let slug = value
+        .chars()
+        .map(|character| {
+            if character.is_ascii_alphanumeric() {
+                character.to_ascii_lowercase()
+            } else {
+                '_'
+            }
+        })
+        .collect::<String>();
+    let slug = slug.trim_matches('_');
+    if slug.is_empty() {
+        "default".into()
+    } else {
+        slug.to_string()
+    }
+}
+
+fn visible_datasets(datasets: &Value, current_session: &str) -> Vec<String> {
+    datasets
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|dataset| dataset.get("name").and_then(Value::as_str))
+        .filter(|name| !name.starts_with(SESSION_DATASET_PREFIX) || *name == current_session)
+        .map(ToOwned::to_owned)
+        .collect()
 }
 
 fn fnv1a(bytes: &[u8]) -> u64 {
@@ -296,23 +352,19 @@ fn fnv1a(bytes: &[u8]) -> u64 {
     })
 }
 
-/// Returns whether a collection-creation response leaves the collection in
-/// place.
-///
-/// A 409 means another caller created it between our existence check and our
-/// `PUT`. The postcondition is "the collection exists", and it does, so that is
-/// success rather than a conflict. Check-then-create is inherently racy and
-/// specialists run in parallel, so losing the race is routine: treating it as an
-/// error fails `recall_research` for whichever agent arrives second.
-fn collection_now_exists(status: reqwest::StatusCode) -> bool {
-    status.is_success() || status == reqwest::StatusCode::CONFLICT
+/// Renders both Cognee's plain chunk results and richer result objects.
+fn render_result(value: &Value) -> String {
+    match value {
+        Value::String(text) => text.clone(),
+        _ => serde_json::to_string_pretty(value).unwrap_or_else(|_| value.to_string()),
+    }
 }
 
-fn qdrant_transport_error(error: &reqwest::Error) -> tinyagents::TinyAgentsError {
-    tinyagents::TinyAgentsError::Tool(format!("Qdrant request failed: {error}"))
+fn cognee_transport_error(error: &reqwest::Error) -> tinyagents::TinyAgentsError {
+    tinyagents::TinyAgentsError::Tool(format!("Cognee request failed: {error}"))
 }
 
-async fn qdrant_response_error(
+async fn cognee_response_error(
     operation: &str,
     response: reqwest::Response,
 ) -> tinyagents::TinyAgentsError {
@@ -322,7 +374,7 @@ async fn qdrant_response_error(
         .await
         .unwrap_or_else(|_| "unreadable response".into());
     tinyagents::TinyAgentsError::Tool(format!(
-        "Qdrant {operation} returned {status}: {}",
+        "Cognee {operation} returned {status}: {}",
         truncate_chars(&body, 2_000)
     ))
 }
@@ -339,15 +391,9 @@ fn truncate_chars(text: &str, limit: usize) -> String {
 
 #[cfg(test)]
 mod test {
-    use super::{VECTOR_SIZE, collection_now_exists, embed, point_id};
+    use serde_json::json;
 
-    #[test]
-    fn local_embedding_has_fixed_size_and_unit_length() {
-        let vector = embed("prime number theorem asymptotic primes");
-        let magnitude = vector.iter().map(|value| value * value).sum::<f32>().sqrt();
-        assert_eq!(vector.len(), VECTOR_SIZE);
-        assert!((magnitude - 1.0).abs() < 0.000_01);
-    }
+    use super::{point_id, render_result, slug, visible_datasets};
 
     #[test]
     fn point_ids_are_deterministic() {
@@ -356,12 +402,30 @@ mod test {
     }
 
     #[test]
-    fn losing_the_collection_creation_race_counts_as_success() {
-        assert!(collection_now_exists(reqwest::StatusCode::OK));
-        assert!(collection_now_exists(reqwest::StatusCode::CONFLICT));
-        assert!(!collection_now_exists(
-            reqwest::StatusCode::INTERNAL_SERVER_ERROR
-        ));
-        assert!(!collection_now_exists(reqwest::StatusCode::UNAUTHORIZED));
+    fn cognee_results_render_strings_and_structured_context() {
+        assert_eq!(render_result(&json!("plain context")), "plain context");
+        let rendered = render_result(&json!({"text": "context", "score": 0.9}));
+        assert!(rendered.contains("context"));
+        assert!(rendered.contains("0.9"));
+    }
+
+    #[test]
+    fn session_recall_is_limited_to_the_current_project_run() {
+        let datasets = json!([
+            {"name": "math_agent_brain"},
+            {"name": "project_euler_903_L0"},
+            {"name": "math_agent_sessions__project_euler_903__current"},
+            {"name": "math_agent_sessions__project_euler_904__other"}
+        ]);
+        assert_eq!(
+            visible_datasets(&datasets, "math_agent_sessions__project_euler_903__current"),
+            vec![
+                "math_agent_brain",
+                "project_euler_903_L0",
+                "math_agent_sessions__project_euler_903__current"
+            ]
+        );
+        assert_eq!(slug("project-euler/903"), "project_euler_903");
+        assert_eq!(slug("---"), "default");
     }
 }

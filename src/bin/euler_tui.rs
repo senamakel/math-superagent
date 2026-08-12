@@ -3,7 +3,7 @@
 //! The runtime prints a single interleaved stream: eleven roles, several
 //! concurrent child runs each, one line per model call, tool call, and tool
 //! result. That is the right shape for a trace and the wrong one for watching
-//! — in one live run the organizer alone produced 232 of the first 400 lines,
+//! — in one live run a background agent alone produced 232 of the first 400 lines,
 //! so the solve's own progress scrolled past between two index refreshes.
 //!
 //! This splits the stream by role without changing it. Every byte still lands
