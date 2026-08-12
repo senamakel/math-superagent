@@ -48,16 +48,17 @@ def hist_from_d(d):
     a.append(3*d[-1])          # a_M = 3*d_{M-1}
     return tuple(a)
 
-def d_seqs(N):
-    """all d-sequences with d_0=1, d_{M-1}=1, 0<=d_k<=3d_{k-1}, sum d = N."""
+def feasible_d(N):
+    """d-sequences with d_0=1, d_{M-1}=1, sum=N, all interior levels nonempty
+    (a_k>=1), and a_k <= 7 (observed bound on level values)."""
     res = []
     def rec(d, s):
-        # d completed so far; s = sum so far
         if s > N: return
-        if len(d) > N + 1: return
-        # a trailing 0 can never close (would give a_M=0), so prune it
+        if len(d) > N+1: return
         if d[-1] == 0: return
-        # close: current last part must be 1 (d_{M-1}=1), sum==N
+        if len(d) >= 2:
+            a_prev = 3*d[-2] - d[-1]
+            if a_prev < 1 or a_prev > 7: return
         if d[-1] == 1 and s == N:
             res.append(tuple(d)); return
         lst = d[-1]
@@ -71,7 +72,7 @@ print("N | observed histograms | d-seq histograms | set equal?")
 ok_all = True
 for n in sorted(obs):
     hs = obs[n]
-    dhs = set(hist_from_d(d) for d in d_seqs(n))
+    dhs = set(hist_from_d(d) for d in feasible_d(n))
     eq = (dhs == hs)
     if not eq:
         ok_all = False

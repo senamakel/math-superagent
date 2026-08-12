@@ -30,3 +30,16 @@ n=14: no4cycle_mindeg3=6059
 === survivor_girth5_n14.py ===
 n=12: C4free_mindeg3=57  girth>=5_survivors=2
 n=13: C4free_mindeg3=503  girth>=5_survivors=4
+n=14: C4free_mindeg3=6059  girth>=5_survivors=23
+=== survivor_girth5_n11.py ===
+n=10: C4free_mindeg3=5  girth>=5_survivors=1
+n=11: C4free_mindeg3=9  girth>=5_survivors=0
+=== check_no8_survivors.py ===
+n=10: no4_survivors=5, missing_8cycle=0
+n=11: no4_survivors=9, missing_8cycle=0
+=== check_no8_n14.py ===
+n=12: no4_survivors=57, missing_8cycle=0
+n=13: no4_survivors=503, missing_8cycle=0
+n=14: no4_survivors=6059, missing_8cycle=0
+=== check_no8_n16.py ===
+n=15: no4_survivors=91433, missing_8cycle=0, 10s
