@@ -186,16 +186,16 @@ next `attempt` or `reflect`, whichever reaches it first. Nothing waits on it: a
 structural observation is worth as much an attempt later, and an earlier version
 that gated the loop on one cost a live run half an hour of stalled solve.
 
-Reflection was the only collector, and that made the team's findings reachable
-exactly once per *completed* attempt — so a run whose first attempt is long
-never saw them at all. A live Erdős–Gyárfás run spent forty minutes in attempt 1
-while its pattern team computed the C₄-free survivor counts, matched the
-sequence against OEIS and pushed it past the terms that suggested it; none of it
-reached the `goals` agent directing the work, which re-commissioned the same
-`nauty-geng` enumeration from `tool_builder`. Draining at the attempt costs
-nothing when reflection has already run — the mailbox is empty and the section
-is omitted rather than rendered as a heading announcing that no analysis arrived
-— and it is the only path that exists on the first attempt of every run.
+Reflection was the only collector, making the team's findings reachable exactly
+once per *completed* attempt — so a run whose first attempt is long never saw
+them. A live Erdős–Gyárfás run spent forty minutes in attempt 1 while its pattern
+team computed the C₄-free survivor counts, matched the sequence against OEIS and
+pushed it past the terms that suggested it; none of it reached the `goals` agent
+directing the work, which re-commissioned the same `nauty-geng` enumeration from
+`tool_builder`. Draining at the attempt costs nothing when reflection has already
+run — the mailbox is empty and the section omitted rather than rendered as a
+heading announcing that no analysis arrived — and it is the only path that exists
+on the first attempt of every run.
 `attempt_prompt` is a plain function of the state for the same reason `route` is:
 what an attempt is actually told must be testable without a provider. An invented
 pattern costs the run more than no pattern, so it idles readily — and idleness is
