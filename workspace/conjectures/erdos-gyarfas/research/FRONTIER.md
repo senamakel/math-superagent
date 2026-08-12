@@ -6,6 +6,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
+| 3 | https://oeis.org/A123545 | A123545 | cross-referenced from A007112 |
 | 2 | https://arxiv.org/search/advanced | Advanced search | [0707.2117] Cycle lengths in sparse graphs Skip to main content Press Enter to search &middot; [Advanced search][1] --> # Mathematics > Combinatorics **arXiv:0707.2117**(math) [Submitted on 14 Jul… |
 | 2 | https://core.ac.uk/services/recommender | What is CORE? | Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][35])* Core recommender toggle CORE Recommender*( [What is CORE?][36])* - Author - Venue - Institution - Topic About… |
 | 2 | https://info.arxiv.org/help/mathjax.html | What is MathJax? | value for arXiv's community? ****[Learn more about arXivLabs][37]. [Which authors of this paper are endorsers?][38] \| Disable MathJax ( [What is MathJax?][39]) |
@@ -20,7 +21,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://huggingface.co/docs/hub/spaces | What is Spaces? | is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][33])* Spaces Toggle TXYZ.AI*( [What is… |
 | 2 | https://huggingface.co/huggingface | What is Huggingface? | Toggle DagsHub*( [What is DagsHub?][28])* GotitPub Toggle Gotit.pub*( [What is GotitPub?][29])* Huggingface Toggle Hugging Face*( [What is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What… |
 | 2 | https://influencemap.cmlab.dev/ | What are Influence Flowers? | Toggle TXYZ.AI*( [What is TXYZ.AI?][34])* Related Papers # Recommenders and Search Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][35])* Core recommender toggle CORE… |
-| 2 | https://oeis.org/A123545 | A123545 | cross-referenced from A007112 |
 | 2 | https://replicate.com/docs/arxiv/about | What is Replicate? | is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is… |
 | 2 | https://sciencecast.org/welcome | What is ScienceCast? | [What is GotitPub?][29])* Huggingface Toggle Hugging Face*( [What is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What… |
 | 2 | https://txyz.ai | What is TXYZ.AI? | Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][33])* Spaces Toggle TXYZ.AI*( [What is TXYZ.AI?][34])* Related Papers # Recommenders and Search… |

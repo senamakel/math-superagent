@@ -1,0 +1,7 @@
+n = 5
+Matrix Sum = 3315
+chosen column permutation = (4, 1, 2, 3, 0)
+chosen elements          = [863, 383, 343, 959, 767]
+sum of chosen elements   = 3315
+expected from statement  = 3315
+WORKED EXAMPLE MATCHED

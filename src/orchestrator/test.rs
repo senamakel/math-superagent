@@ -2,10 +2,10 @@
 #![allow(clippy::expect_used)]
 
 use super::{
-    AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, DELEGATES, LEAN_PROVER_PROMPT,
-    SAT_SOLVER_PROMPT, SMT_SOLVER_PROMPT, SPECIALISTS, SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT,
-    checked_workspace_path, compression_policy, default_registry, role_context,
-    validate_complexity, workspace_prompt,
+    AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, DELEGATES, GOALS_PROMPT,
+    LEAN_PROVER_PROMPT, ORCHESTRATOR_PROMPT, SAT_SOLVER_PROMPT, SMT_SOLVER_PROMPT, SPECIALISTS,
+    SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT, checked_workspace_path, compression_policy,
+    default_registry, role_context, validate_complexity, workspace_prompt,
 };
 use crate::agent;
 
@@ -737,4 +737,100 @@ fn every_agent_can_write_durable_memory() -> agent::Result<()> {
         );
     }
     Ok(())
+}
+
+#[test]
+fn a_planner_names_every_specialist_it_can_delegate_to() {
+    // A role can be registered, tool-equipped, prompt-written, and provisioned
+    // in the image, and still never run: the agent holding its delegation tool
+    // has to know it exists. Both prompts enumerate a bench, and an enumeration
+    // reads as complete, so a name missing from it is a role switched off.
+    //
+    // This is not hypothetical. `sat_solver`, `smt_solver`, `theorem_prover`,
+    // `symbolic_math`, and `lean_prover` were all absent from the goals prompt,
+    // and a live run on a closed-form probability problem — exactly what
+    // `symbolic_math` exists for — spawned none of them and had `tool_builder`
+    // do the exact arithmetic instead.
+    // Two roles are exempt, because delegation is not the only way they run.
+    // The runtime spawns an organizer itself — after every code-writing run
+    // through `FOLLOW_UPS`, and on its own cadence as the standing `background`
+    // team — and runs `pattern_finder` as a standing team beside the solve. A
+    // planner that never names either still gets both. Every other role on
+    // these benches runs if and only if it is delegated to.
+    let self_starting = ["organizer", "pattern_finder"];
+    for (role, prompt, bench) in [
+        ("goals", GOALS_PROMPT, SPECIALISTS.as_slice()),
+        ("orchestrator", ORCHESTRATOR_PROMPT, DELEGATES.as_slice()),
+    ] {
+        for specialist in bench.iter().filter(|name| !self_starting.contains(*name)) {
+            assert!(
+                prompt.contains(specialist),
+                "the {role} prompt must name `{specialist}`, or the role never runs"
+            );
+        }
+    }
+}
+
+#[test]
+fn a_search_strategy_is_not_a_complexity() {
+    // The exact declaration a live Project Euler 185 run was allowed through
+    // with: a method name, no bound, on ten quadrillion candidates, against a
+    // `sat_solver` the run never spawned.
+    let refused = validate_complexity("backtracking with pruning", "polynomial", None)
+        .expect_err("a search strategy declared as a complexity must be refused");
+    let message = refused.to_string();
+    assert!(
+        message.contains("sat_solver"),
+        "the refusal must name the role that does this properly: {message}"
+    );
+    assert!(
+        message.contains("oracle_bound"),
+        "and how to declare it honestly if it is the oracle: {message}"
+    );
+
+    for prose in [
+        "brute force over all assignments",
+        "brute-force search",
+        "exhaustive search of the state space",
+        "branch and bound over candidates",
+    ] {
+        assert!(
+            validate_complexity(prose, "polynomial", None).is_err(),
+            "`{prose}` states no cost and must be refused"
+        );
+    }
+}
+
+#[test]
+fn a_bounded_oracle_may_search_however_it_likes() {
+    // Rule 8 requires the naive program and requires keeping it. A gate that
+    // refused an honestly-bounded backtracking oracle would block the method
+    // policy's own first step — which is the failure this function was
+    // rewritten once already to stop committing.
+    validate_complexity(
+        "backtracking over all fillings",
+        "polynomial",
+        Some("n <= 7"),
+    )
+    .expect("a bounded oracle is legitimate however it searches");
+    validate_complexity("exhaustive, O(n!)", "factorial", Some("n <= 8"))
+        .expect("a declared factorial oracle with a bound stays legitimate");
+}
+
+#[test]
+fn an_honest_polynomial_cost_still_passes() {
+    // The list must not punish accuracy. "Enumerate the divisors" is a truthful
+    // description of an O(sqrt n) method, and `enumerate` is deliberately not a
+    // matched term for that reason.
+    for prose in [
+        "O(n log n) sort then a linear scan",
+        "enumerate the divisors of n, O(sqrt(n))",
+        "binary search over the answer, O(log n) probes",
+        "O(n^3) Hungarian algorithm via scipy",
+    ] {
+        assert!(
+            validate_complexity(prose, "polynomial", None).is_ok(),
+            "`{prose}` is an honest cost and must be allowed"
+        );
+    }
 }

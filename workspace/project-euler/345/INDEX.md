@@ -1,0 +1,15 @@
+# Index — workspace
+
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+
+| File | Purpose |
+| --- | --- |
+| `AGENTS.md` | _(undescribed)_ |
+| `CONTEXT.md` | _(undescribed)_ |
+| `GOAL.md` | _(undescribed)_ |
+| `MEMORY.md` | _(undescribed)_ |
+| `README.md` | _(undescribed)_ |
+| `SCRATCHPAD.md` | _(undescribed)_ |
+| `TASKS.md` | Run task checklist (currently the placeholder first step). |
+| `problem.md` | _(undescribed)_ |
+| `solution.md` | _(undescribed)_ |

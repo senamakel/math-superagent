@@ -1,0 +1,5 @@
+{
+  "env": {
+    "AUTO_COMMIT_EVERY": "25"
+  }
+}
