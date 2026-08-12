@@ -43,7 +43,8 @@ An empty (or warning-only) output means the file elaborated successfully.
 | --- | --- |
 | `c4_lemma.lean` | Defines `ErdosGyarfas.IsEGConclusion G` (the conjecture's conclusion: a simple cycle of length `2^k`) and proves **`c4_implies_conclusion`**: a 4-cycle already implies the conclusion. This lemma is **kernel-checked — no `sorryAx`** — its only axiom is `propext`. |
 | `erdos_gyarfas.lean` | States the conjecture itself as `ErdosGyarfas.erdos_gyarfas`: for a finite type `V` with `DecidableEq`, any `SimpleGraph G` with `3 ≤ G.minDegree` satisfies `IsEGConclusion G`. The body is `by sorry` — there is no proof to formalise yet. |
-| `axioms_check.lean` | Reports `#print axioms` for both theorems (see below). |
+| `cut_vertex.lean` | **Kernel-checked, no `sorry`.** Formalises the geometric heart of the run's cut-vertex structure lemma: for a simple cycle `p : G.Walk v v` through `v`, its two `v`-neighbours `p.snd` and `p.penultimate` are connected by a walk inside `G - v` (modelled as `G.induce {x | x ≠ v}`), so all non-`v` vertices of the cycle lie in a single connected component of `G - v`. Axioms: `propext, Classical.choice, Quot.sound` — no `sorryAx`. See `cut_vertex_axioms.lean`. |
+| `axioms_check.lean` | Reports `#print axioms` for the c4 and conjecture theorems. |
 
 ## What the statement means, and its conventions
 
