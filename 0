@@ -1,6 +1,7 @@
-    librarian            47  124.0%
+    tool_builder         31  124.0%
     pattern_finder       28  124.0%
-    context_curator      21  124.0%
-    goals                14  124.0%
-    tool_builder         11  124.0%
-    symbolic_math         3  124.0%
+    research             21  124.0%
+    scholar              14  124.0%
+    context_curator      13  124.0%
+    goals                 8  124.0%
+    librarian             7  124.0%

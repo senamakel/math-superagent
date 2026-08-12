@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Wu,+J | Jianqiu Wu | over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6], [Gregory Pinto][7], [Jianqiu Wu][8] View a PDF of the paper titled Software for Exact… |
 | 1 | https://en.wikipedia.org/wiki/Incidence_algebra | incidence algebra | inversion formula][46] for [square-free][47] [natural numbers][48]. Therefore, (**2**) is seen as the Möbius inversion formula for the [incidence algebra][49] of the [partially ordered set][50] of… |
 
-_403 further candidates not shown; they are cited once each._
+_507 further candidates not shown; they are cited once each._
