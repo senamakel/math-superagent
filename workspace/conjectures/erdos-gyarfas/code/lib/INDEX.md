@@ -1,22 +1,8 @@
 # Index — code/lib
 
-What other programs import. One subject per module, so reading the part you
-need costs almost nothing.
-
-`/workspace/code` is on `PYTHONPATH`, so a module here is importable by name
-from any working directory and any invocation:
-
-```python
-from lib.perms import lex_ranks
-```
-
-Never write `sys.path.insert`. If an import fails, the file is in the wrong
-place and moving it is the fix.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
 | `cycle_oracle.py` | Exact oracle for the Erdős–Gyárfás conjecture. `minimum_degree(G)->int`, `distinct_cycle_lengths(G)->frozenset[int]`, `all_simple_cycles(G)->list`, `has_cycle_of_length(G,L)->bool`, `oracle(G)->(min_deg, sorted tuple of lengths)`. Small-instance cycle oracle: min degree by counting neighbours; cycle lengths by brute-force enumeration of every simple cycle with a canonical-start DFS (a cycle basis is NOT enough — see module docstring). **Verified**: reproduces K4 {3,4}, K3,3 {4,6}, cube {4,6,8}, Petersen {5,6,8,9}; `has_cycle_of_length` cross-checked against exhaustive `distinct_cycle_lengths` on a spread of small graphs (complete, bipartite, cycles, hypercubes, Petersen, Markström graph, wheels, random) for every length 3..n — all MATCH; also cross-checked against networkx `simple_cycles` in `__main__`. |
-| `k4expansion.py` | Membership test for the K4-triangle-expansion (cubic Apollonian dual) family. `in_k4_expansion_family(G)->bool` via recursion over clean-triangle contractions with memoisation on nauty canonical form; `clean_triangles(G)`, `contract_triangle(G,tri)` helpers. Family = start from K4, repeatedly replace a degree-3 vertex by a triangle; every member is cubic, and the reverse test (G in family iff G==K4 or some clean-triangle contraction of G is in family) is exact with no false positives. Used for the Apollonian-family census against A027610. |
-
-_This index was rewritten by tool_builder to reflect the two library modules
-already on disk; a prior version wrongly said "No library modules yet."_
+| `k4expansion.py` | Membership test for the K4-triangle-expansion (cubic Apollonian dual) family, via recursion over clean-triangle contractions with memoisation; used for the Apollonian-family census against A027610. |
