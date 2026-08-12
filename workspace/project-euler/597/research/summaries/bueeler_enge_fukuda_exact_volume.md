@@ -1,64 +1,23 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/bueeler_enge_fukuda_exact_volume.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Büeler–Enge–Fukuda: Exact Volume Computation for Polytopes — A Practical Study
 
-<!-- source: https://inria.hal.science/hal-03029034 | converted from HTML -->
+Büeler, Enge, Fukuda, in *Polytopes — Combinatorics and Computation*, Birkhäuser, pp. 131–154 (2000). Book chapter, hal-03029034. [[bueeler_enge_fukuda_exact_volume.full]]
 
-## What is in it
+## What it establishes
 
-  - Exact Volume Computation for Polytopes: A Practical Study
-      - Mots clés
-      - Domaines
-    - Dates et versions
-    - Identifiants
-    - Citer
-    - Exporter
-    - Altmetric
-    - Partager
+A practical comparative study of exact polytope-volume algorithms, centred on the **triangulation method**: triangulate the polytope (e.g. by reverse-search, Motzkin-style signed decomposition, or recursive schemes) and sum the exact simplex volumes. Reports on which method beats which on which polytope classes (Delaunay triangulation vs. signed-decomposition vs. recursive schemes; the Lasserre-style recursive evaluation of the characteristic function).
 
+## Hypotheses and whether they hold here
 
-## What it claims
+Hypotheses: the input is a single convex polytope given by facet inequalities; the task is its Euclidean volume. PE 597 needs the measure of a **union** of parity cells over a hyperplane arrangement; the number of cells (the genuine cost) grows super-exponentially with n and is not supplied by this source. The source itself notes that triangulation-based exact volume is expensive and best on polytopes of moderate dimension/facet count.
 
-- [Consulter les derniers dépôts][2]
-  - [Par équipe de recherche][3]
-  - [Par auteur][4]
-  - [Par collection (sélection)][5]
-  - [Rapports de recherche et techniques][6]
-  - [Livres blancs][7]
-  - [Rapports d'activité des équipes][8]
-  - [Statistiques][9]
+## What it lets this run compute / rule out
 
-- Boite à Outils
+Corroborates that exact-volume machinery exists and is standard, but — like Latte — it operates **after** the cells are known. It neither enumerates arrangement chambers nor scales anything past the n≈5 barrier. The run's blocker (arrangement enumeration) is untouched by this tier.
 
-- [X2Hal : importer par lots][10]
-  - [Logiciels : créer le Codemeta.json][11]
-  - [Créer mon IDHal][12]
-  - [Créer mon CVHal][13]
-  - [Haltools : créer ma page de publications][14]
-  - [Haltools : extraire des données (réservé Inria)][15]
-  - Les bonnes pratiques
+## Does not settle
 
-- [Comment bien s’affilier ?][16]
-    - [Quelle version puis-je déposer ?][17]
-    - [Choisir le bon « type de document »][18]
-    - [Mettre en valeur ses publications][19]
-    - [Déposer vos codes sources][20]
+Any coefficient or value of p(n,L); the arrangement size; n=13. Read as confirmation that exact rational volume of a single polytope is feasible in principle, not that the union-of-cells route is tractable at n=13.
 
-- Les tutos IES Inria
+## Why it does not help at n=13
 
-- [Umbrhal Inria pour l'accessibilité][21]
-    - [5 astuces pour optimiser vos dépôts][22]
-    - [Personnaliser son CVHAL][23]
-    - [Créer et Personnaliser sa collection][24]
-
-- Documentation
-
-- [Actualités Inria][25]
-  - [Aide en ligne HAL][26]
-  - [Aide en ligne Haltools][27]
-  - [Aide en ligne X2hal][28]
-  -…
-
--…
-
--…
-
-*[digest of a 7847 character source; every section, statement, and proof in full at `research/sources/bueeler_enge_fukuda_exact_volume.full.md`]*
+The cost of every method in this study is dominated by the polytope's combinatorial complexity (faces/triangles), which is exactly what explodes here. Dead end as a solver for the target.

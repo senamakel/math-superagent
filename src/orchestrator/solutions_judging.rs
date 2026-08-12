@@ -10,6 +10,17 @@
 /// It runs before the reflection rather than after, so a restart costs the run
 /// a judge call rather than a judge call plus a reflection it is about to
 /// discard.
+///
+/// It is given the workspace as well as the report, and the reason is that the
+/// report is the first thing lost. `RunBudget` caps an agent run, and a `goals`
+/// run pursuing an open goal does not stop on its own, so the ordinary way an
+/// attempt ends is the cap killing it — which destroys its context and its
+/// report while leaving every file it wrote on disk. One evening, all three live
+/// Euler attempts were killed at exactly 30:00 and every verdict that followed
+/// was 1/5 or 2/5 with "progress no". One of those runs had reproduced both
+/// check values its problem supplied, to all ten digits, and had 38 exact points
+/// cross-validated by two independent enumerators. The judge could not see any
+/// of it: it was scoring silence and calling it no progress.
 async fn judge_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,

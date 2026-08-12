@@ -1,44 +1,21 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/latte_integrale_exact_integration.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Latte: Software for Exact Integration of Polynomials over Polyhedra
 
-<!-- source: https://arxiv.org/abs/1108.0117 | converted from HTML -->
+De Loera, Dutra, Koeppe, Moreinis, Pinto, Wu, arXiv:1108.0117 (Comput. Geom. 46, 232–252). [[latte_integrale_exact_integration.full]]
 
-## What is in it
+## What it establishes
 
-- Mathematics > Metric Geometry
-- Title: Software for Exact Integration of Polynomials over Polyhedra
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+- Provides software for the **exact (rational) integration of polynomial functions over convex rational polyhedra**, by triangulating the polyhedron into simplexes and integrating each simplex exactly (Baran/signed-decomposition style algorithms), with speedups over earlier work.
+- The integrand can be any polynomial; the result on a rational polytope is an exact rational.
+- Benchmarked on a combinatorial-voting-theory challenge (approval-voting polytopes).
 
+## Hypotheses and whether they hold here
 
-## What it claims
+Hypotheses: the integration region must be **one convex rational polytope**, and the polynomial integrand is given. In PE 597 the parity region is a **finite union** of simplex sections (each cell of the bump/finish arrangement), not one polytope, and each cell must be *enumerated* first. So Latte computes the exact volume of a given polytope but does **not** find the cells: the arrangement enumeration (the run's actual blocker, ~13,750 cells already at n=5, super-exponential at n=13) is upstream of anything Latte can do.
 
-Abstract: We are interested in the fast computation of the exact value of integrals of polynomial functions over convex polyhedra. We present speed ups and extensions of the algorithms presented in previous work. We present the new software implementation and provide benchmark computations. The computation of integrals of polynomials over polyhedral regions has many applications; here we demonstrate our algorithmic tools solving a challenge from combinatorial voting theory.
+## What it lets this run compute / rule out
 
-Comments: | Major update |
+Confirms the "exact rational value in principle" part of the run's positive route (a cell's measure is an exact rational), but as a tool it is downstream of the blocker. It does **not** remove the need to enumerate or to find a structural reduction. Useful only if the run ever has the n=13 cell list (it does not), or as a cross-check on the small-n exact values already produced by `code/cell_exact.py`.
 
-Subjects: | Metric Geometry (math.MG) |
+## Does not settle
 
-Cite as: | [arXiv:1108.0117][11] [math.MG] |
-
-| (or [arXiv:1108.0117v3][12] [math.MG] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.1108.0117][13]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-Journal reference: | Comput. Geom., 46, 232-252 |
-
-*[digest of a 6606 character source; every section, statement, and proof in full at `research/sources/latte_integrale_exact_integration.full.md`]*
+The finite-finish parity, the arrangement size, or any coefficient of p(n,L). Pointer, not a solver.
