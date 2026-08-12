@@ -288,6 +288,11 @@ impl OrchestratorAgent {
         // the first retry.
         let model: Arc<dyn ChatModel<()>> =
             Arc::new(BoundedTimeoutModel::new(openrouter_model_from_env()?));
+        // The one role that is not on the run's default model. It gets the same
+        // timeout bound, because a stalled connection is a property of the
+        // transport rather than of the model behind it.
+        let reasoning: Arc<dyn ChatModel<()>> =
+            Arc::new(BoundedTimeoutModel::new(openrouter_reasoning_model()?));
         let budget = RunBudget::from_env();
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
@@ -345,6 +350,7 @@ impl OrchestratorAgent {
             &async_subagents,
             &SupportAgents {
                 model: &model,
+                reasoning: &reasoning,
                 budget,
                 tracer: &tracer,
                 documents: &documents,
@@ -1701,6 +1707,9 @@ fn build_tool_builder_harness(
 /// The shared pieces every support agent's harness is assembled from.
 struct SupportAgents<'a> {
     model: &'a Arc<dyn ChatModel<()>>,
+    /// The stronger model, for the one support agent whose output is a
+    /// judgement rather than a report. See [`crate::agent`]'s reasoning model.
+    reasoning: &'a Arc<dyn ChatModel<()>>,
     budget: RunBudget,
     tracer: &'a Arc<RunTracer>,
     documents: &'a WorkspaceDocuments,
@@ -1829,8 +1838,15 @@ fn register_support_agents(
 
     register_pattern_agent(subagents, parts, prompts.pattern)?;
 
-    let mut inventor =
-        specialist_harness(parts.model.clone(), parts.budget, "inventor", parts.tracer);
+    // The one specialist built on the reasoning model rather than the run's
+    // default. Everything else about its harness is the same, so the swap is
+    // one argument and is visible here rather than buried in a config table.
+    let mut inventor = specialist_harness(
+        parts.reasoning.clone(),
+        parts.budget,
+        "inventor",
+        parts.tracer,
+    );
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut inventor, exa);
     }
