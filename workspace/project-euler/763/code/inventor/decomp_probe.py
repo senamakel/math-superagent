@@ -22,16 +22,7 @@ oracle), bounded here at N=12 (~514k states).
 import time
 from collections import defaultdict
 
-from lib.amoeba import next_level_bits, decode_bits, children, lvl, dividable_count
-
-
-def f_of(S):
-    """#dividable cells of S == lib.amoeba.dividable_count(S, 3).
-
-    Local wrapper kept for call sites; delegates to the canonical
-    lib/amoeba function (was a duplicated local definition).
-    """
-    return dividable_count(S, 3)
+from lib.amoeba import next_level_bits, decode_bits, children, lvl, f_of
 
 
 def hist_key(S):
