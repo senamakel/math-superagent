@@ -105,15 +105,15 @@ lemma cycle_middle_avoids_v {G : SimpleGraph V} [DecidableEq V]
     rw [Walk.support_dropLast htnil]
   intro hv
   have hv' : v ∈ (p.tail.support).dropLast := by rwa [hsupp] at hv
-  -- tail.support = dropLast ++ [v]
-  have hlast : (p.tail.support).getLast (by simp [List.ne_nil_of_mem hmem]) = v := by
-    -- last element of the support of a walk is its endpoint, which is v
+  -- tail.support = dropLast ++ [v]  (v is the last element of the support)
+  have hne : (p.tail.support) ≠ [] := List.ne_nil_of_mem hmem
+  have hlast' : (p.tail.support).getLast hne = v := by
     simpa using (p.tail.getLast_support)
-  have hsplit : (p.tail.support) = (p.tail.support).dropLast ++ [v] := by
-    rw [← List.dropLast_append_getLast (by simp [List.ne_nil_of_mem hmem])]
-    simp [hlast]
+  have hsplit : (p.tail.support).dropLast ++ [v] = (p.tail.support) := by
+    rw [show [(p.tail.support).getLast hne] = [v] by simp [hlast']]
+    exact List.dropLast_append_getLast hne
   have hcount2 : 2 ≤ (p.tail.support).count v := by
-    rw [hsplit]
+    rw [← hsplit]
     rw [List.count_append, List.count_cons_self]
     have : 1 ≤ (p.tail.support).dropLast.count v := List.count_pos_iff.mpr hv'
     omega

@@ -140,7 +140,7 @@ const MAX_COUNTED: usize = 500;
 /// run established from what it read somewhere; approaches say whether the
 /// inventor's proposals survived to disk.
 fn evidence_briefing(workspace: &Path) -> String {
-    let outputs = count_entries(&workspace.join(super::layout::OUTPUT_DIR));
+    let outputs = count_outputs(&workspace.join(super::layout::OUTPUT_DIR));
     let ledger = super::claims::collect(workspace);
     let approaches = count_entries(&workspace.join("research/approaches"));
     let threads = count_entries(&workspace.join("research/threads"));
