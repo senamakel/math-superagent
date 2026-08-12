@@ -4,10 +4,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `AGENTS.md` | _(undescribed)_ |
-| `CONTEXT.md` | _(undescribed)_ |
+| `AGENTS.md` | Method and evidence rules all roles follow for this run: restate the problem, small cases as the oracle, governing theory before full-size code, no answer-space search, sourced facts kept separate from deductions. |
+| `CONTEXT.md` | Shared context (research team writes it): what the run's reference library establishes, contradictions, and gaps, compressed under 1000 tokens and linked down to research/ files. |
 | `GOAL.md` | Run objective and completion criteria, restating Project Euler 185 precisely: symbols defined (L, n, g_i, c_i), the exact-match semantics, the N=5 worked example (unique 39542) and the inline 1234/2036 check as the test oracle, and the 16-digit/22-guess target. |
-| `MEMORY.md` | _(undescribed)_ |
+| `MEMORY.md` | Durable working memory: exact problem statement, established results (the two-sided pruning bounds governing the search), failed approaches, open questions. Solution-phase record of the run's reasoning. |
 | `README.md` | Entry point for navigating this problem workspace: statement (problem.md), derivation, sources, programs, and check commands; start with AGENTS.md and use the prompts/ files for role guidance. |
 | `SCRATCHPAD.md` | Provisional calculations and partial derivations not yet established enough for MEMORY.md; durable results are promoted out of here. |
 | `TASKS.md` | Run task checklist: write/run brute.py (done), identify governing theory, write and run solution.py verifying against brute.py, run at N=16, write solution.md. |
