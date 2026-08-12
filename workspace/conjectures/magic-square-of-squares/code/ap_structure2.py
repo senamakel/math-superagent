@@ -103,6 +103,8 @@ def verify(N=3000):
             continue
         u, v = rng.sample(s, 2)
         entries = grid_from(e, u, v)
+        if any(x <= 0 for x in entries):
+            continue
         nsq = n_squares_isqrt(entries)
         pred = 5 + 2 * (1 if (u - v) in S[e] else 0) + 2 * (1 if (u + v) in S[e] else 0)
         if nsq != pred:
