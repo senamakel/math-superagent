@@ -13,8 +13,7 @@ Verbose per-N report; used as the tool_builder's oracle we intend to confirm.
 Declared infrastructure cost: exact BFS + reverse cap-merge, exponential in
 config size, bounded to N<=6 (configs of <=13 cells).  Oracle only.
 """
-from itertools import product
-from lib.amoeba import children, forward_level
+from lib.amoeba import children, forward_level, top_caps
 
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
 DIM = 3
@@ -22,22 +21,6 @@ DIM = 3
 
 def level(p):
     return sum(p)
-
-
-def top_caps(S):
-    """Parent cells p at level M-1 whose full child-triangle fills the top
-    level of S (the only cells at level M=max)."""
-    maxlvl = max(level(pt) for pt in S)
-    Sset = set(S)
-    top_cells = [pt for pt in S if level(pt) == maxlvl]
-    caps = []
-    for p in product(range(maxlvl), repeat=3):
-        if level(p) != maxlvl - 1:
-            continue
-        ch = children(p, DIM)
-        if p not in Sset and set(ch) == set(top_cells):
-            caps.append(p)
-    return caps
 
 
 def collapse_to_origin(S):
