@@ -107,6 +107,7 @@ pub(super) async fn run(
     let reflect_tracer = tracer.clone();
     let attempt_workspace = workspace.clone();
     let reflect_workspace = workspace.clone();
+    let judge_workspace = workspace.clone();
     let diversify_workspace = workspace;
     let reflect_memory = memory;
     let diversify_agents = subagents.clone();
