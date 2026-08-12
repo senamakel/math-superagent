@@ -27,26 +27,7 @@ lib/amoeba: children, f_of(=dividable_count), decode_bits, next_level_bits.
 import time
 import sys
 
-from lib.amoeba import next_level_bits, decode_bits, children, f_of
-
-
-def lvl(p):
-    """Level of a cell = sum of coordinates (max-x+y+z generation)."""
-    return sum(p)
-
-
-def triangle_parent(top):
-    """If the 3 cells `top` == {p+e1,p+e2,p+e3} for a single parent p, return
-    p; else return None.  Derived from the triangle identity: since
-    sum of the three child coords = 3p + (1,1,1), p = (sum(top)-(1,1,1))/3."""
-    a, b, c = sorted(top)
-    s = (a[0]+b[0]+c[0]-1, a[1]+b[1]+c[1]-1, a[2]+b[2]+c[2]-1)
-    if s[0] % 3 or s[1] % 3 or s[2] % 3:
-        return None
-    p = (s[0]//3, s[1]//3, s[2]//3)
-    if set(children(p, 3)) == set(top):
-        return p
-    return None
+from lib.amoeba import next_level_bits, decode_bits, children, f_of, lvl, triangle_parent
 
 
 def invert_bits(bits, S):
