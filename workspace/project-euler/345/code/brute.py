@@ -12,7 +12,7 @@ solution.py is checked against.
 
 Usage:
     python brute.py            # run the hard-coded 5x5 worked example
-    python brute.py < file     # read an n x n matrix from stdin
+    python brute.py "-" < file # read an n x n matrix from stdin
     python brute.py file       # read an n x n matrix from a file
 
 It handles n up to ~8 (8! = 40320 permutations, fast). Beyond that the n!
@@ -62,9 +62,11 @@ EXAMPLE = [
 
 
 def main(argv):
-    if len(argv) > 1:
+    if len(argv) > 1 and argv[1] != "-":
         with open(argv[1]) as f:
             matrix = read_matrix(f)
+    elif len(argv) > 1 and argv[1] == "-":
+        matrix = read_matrix(sys.stdin)
     else:
         matrix = EXAMPLE
 
