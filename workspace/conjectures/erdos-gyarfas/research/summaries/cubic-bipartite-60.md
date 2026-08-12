@@ -1,71 +1,87 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/cubic-bipartite-60.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# 60-Vertex lower bound for cubic bipartite counterexamples (Tranquilli 2026)
 
-<!-- source: https://arxiv.org/html/2608.02675v1 | converted from HTML -->
+**Source:** J. Tranquilli, arXiv:2608.02675v1 (2 Aug 2026), DOI 10.5281/zenodo.21695513.
+Full text: [[cubic-bipartite-60.full]]. Preprint (not peer-reviewed) but a *certified*
+computation (two independent searches + third streaming certificate checker + nauty
+overlap through v=13 + code/artifacts archived on GitHub `floor-licker/erdos-gyarfas-cubic-bipartite`).
 
-## What is in it
+## What it establishes
 
-- A 60-Vertex Lower Bound for Cubic Bipartite
-Counterexamples to the Erdős–Gyárfás…
-        - Abstract
-  - 1 Introduction
-        - Theorem 1 (Finite cubic-bipartite frontier).
-        - Corollary 2.
-        - Proof.
-    - 1.1 Comparison with previous bounds
-    - 1.2 Proof outline
-  - 2 Incidence configurations and cycle translations
-        - Proposition 3 (Incidence translation).
-        - Proof.
-        - Definition 4.
-        - Lemma 5 ( C 4 C_{4}).
-        - Proof.
-      - Worked example.
-        - Lemma 6 ( C 8 C_{8}).
-        - Proof.
-        - Lemma 7 (Incremental C 16 C_{16} oracle).
-        - Proof.
-  - 3 Triangle-rooted proof
-    - 3.1 Moore reduction and two normalized roots
-        - Lemma 8 (Edge-rooted Moore reduction).
-- …
+**Theorem 1 (finite cubic-bipartite frontier):** every simple cubic bipartite graph
+$G$ with $|V(G)| \le 58$ contains a simple cycle of length 4, 8, or 16.
 
+**Corollary 2:** any simple cubic bipartite counterexample to Erdős–Gyárfás has at
+least **60 vertices**. (Cubicity forces $|L|=|R|$, so the order is even; Theorem 1
+excludes all orders through 58, next possible is 60.) The computation does **not**
+examine side size 30 and so does **not** exclude an order-60 counterexample — the bound
+is exact, not 61+.
 
-## What it claims
+**Forced length:** Corollary 2 also shows one of the *first three* power-of-two
+lengths (4, 8, 16) is always forced in this class below 60 — no 32-cycle is needed.
 
-A certified exhaustive computation shows that every simple cubic bipartite graph on at most 58 58 vertices contains a cycle of length 4 4, 8 8, or 16 16. Consequently, any cubic bipartite counterexample to the Erdős–Gyárfás conjecture has at least 60 60 vertices, improving the established published lower bound of 30 30.
+## Method (structural, new for this run)
 
-The proof begins with a Moore-bound observation: below 62 62 vertices, a cubic bipartite graph avoiding 4 4 - and 8 8 -cycles must contain a 6 6 -cycle. Viewing the graph as the Levi graph of a linear symmetric v 3 v_{3} -configuration turns this 6 6 -cycle into a Berge triangle. Up to symmetry, only two rooted extensions are possible. A complete restricted-growth search on at most 29 29 points closes both search trees. The computation is checked by two separately implemented searches using different C 16 C_{16} oracles and by a static witness certificate. Source code, certificates, and reproduction instructions are archived with the paper.
+1. **Incidence translation (Prop 3):** cubic bipartite graphs biject (up to relabel)
+   with connected 3-uniform, 3-regular incidence structures (symmetric $v_3$
+   configurations) whose Levi graph is the original.
+2. **Moore reduction (Lemma 8):** below 62 vertices a cubic bipartite graph with no
+   C4 and no C8 has girth exactly 6 — contains a C6 (edge-rooted nonbacktracking tree
+   through depth 4 gives level sizes 1,2,4,8,16; two exposures of 31 each = 62 vertices
+   would be needed to avoid a short cycle). C6 = Berge triangle in the configuration.
+3. **Two orbits only (Lemma 9):** a Berge triangle, after normalization, extends in
+   exactly two rooted ways — a genuine symmetry reduction (runs two search trees, not
+   an enumeration).
+4. **Certified restricted-growth search (Props 10–11):** complete search on ≤29
+   points (35 vertices? no — 29 points = 58 vertices via $|V|=2v$) closes both trees;
+   two implementations with different C16 oracles agree on transcript hashes; a third
+   streaming checker accepts both certificates with **zero completions**.
 
-Keywords. Erdős–Gyárfás conjecture; cubic bipartite graphs; prescribed cycle lengths; exhaustive generation; symmetric…
+Cycle translations used as *oracles*: C4 ⟺ two blocks sharing a point-pair (Lemma 5);
+C8 ⟺ a Berge quadrilateral (Lemma 6); incremental C16 ⟺ old simple 14-edge path
+between two members of a new block (Lemma 7).
 
-2020…
+## Implications for this run
 
-## Statements it makes
+- **Raises the best verified lower bound inside a restricted class.** Cubic bipartite
+  is a class, not the general conjecture, but it tops both Markström's cubic bound
+  (≥30) and the SMS general bound (≥32) *for this class* (≥60). The comparison is a
+  table in §1.1 of the paper.
+- **Confirms the run's bipartite/near-miss picture.** The Method rules (Berge-cycle
+  oracles, incremental C16 test) are the same kind of cycle machinery the run's oracle
+  (`code/lib/cycle_oracle.py`) and Markström near-miss census use; nothing here
+  contradicts them.
+- **A new structural lead for the run:** the Levi-graph / incidence-configuration and
+  the Moore-bound-⟹-C6 reduction are a *different* route than SMS. A minimal
+  counterexample being predominantly cubic, the incidence view may transfer.
 
-###### Theorem 1 (Finite cubic-bipartite frontier).
+## What it does NOT settle / caveats
 
-###### Corollary 2.
+- Restricted to **cubic AND bipartite**; non-bipartite or non-regular min-degree-3 is
+  untouched. Not the general conjecture.
+- Preprint, computer-assisted, not peer-reviewed — though its certificate is
+  machine-checkable-adjacent (a genuine LRAT/certified pipeline is still the SMS
+  repo's future-work item; here the third checker accepts the stream).
+- **Provenance nuance flagged (not a hard contradiction):** the paper reads the 2011
+  Nowbandegani–Esfandiari bipartite abstract as stating **30**, while the run's CLAIMS
+  ledger (`EG-bipartite-30`) and Hegde et al. attribute **32** to that 2011 work. The
+  paper says "later sources sometimes attribute 32". Recorded both; the new Theorem 1
+  supersedes whichever figure as the current bipartite frontier anyway.
 
-Theorem 1 also shows that one of the first three relevant power-of-two cycle lengths is forced; no 32 32 -cycle is needed.
+## Sources it confirms
 
-###### Proposition 3 (Incidence translation).
+- Confirms Carr's "predominantly cubic" structure reference and the P10/P13-free and
+  3-connected-cubic-planar partial classes as the surrounding literature (no conflict).
+- Confirms the SMS n≤31 claim exists and is cited as the newest public *general*
+  computation (bound ≥32) — consistent with this run's audit (`asserted-by-source`).
 
-###### Definition 4.
-
-###### Lemma 5 ( C 4 C_{4}).
-
-###### Lemma 6 ( C 8 C_{8}).
-
-###### Lemma 7 (Incremental C 16 C_{16} oracle).
-
-###### Lemma 8 (Edge-rooted Moore reduction).
-
-###### Lemma 9 (Triangle-root orbits).
-
-###### Proposition 10 (Triangle-rooted coverage).
-
-###### Proposition 11 (Certified universal triangle search).
-
-###### Proposition 12 (Six deepest kernels).
-
-*[digest of a 29175 character source; every section, statement, and proof in full at `research/sources/cubic-bipartite-60.full.md`]*
+```claim
+id: EG-cubic-bipartite-60
+statement: Every simple cubic bipartite graph on at most 58 vertices contains a cycle of length 4, 8, or 16; hence any simple cubic bipartite counterexample to the Erdős–Gyárfás conjecture has at least 60 vertices. The bound is exact (an order-60 counterexample is not excluded).
+hypotheses: G simple, cubic (3-regular), bipartite, |V(G)| ≤ 58; the power-of-two lengths relevant here are 4,8,16 (32 first fits at an even order ≥ 32).
+holds-here: yes — cubic bipartite is a restricted class inside the run's target (⊂ min-degree-3); this is the strongest verified bound for it.
+status: asserted-by-source (certified computer-assisted proof, arXiv:2608.02675v1; two independent searches + third checker; preprint not peer-reviewed)
+bearing: Raises the verified lower bound for the cubic-bipartite class from ≥30 (Markström) / ≥32 (SMS general) to ≥60 — a class-level frontier the run can cite; its incidence/Moore-reduction method is a fresh structural route for the run's Phase-4 loop.
+anchor: research/summaries/cubic-bipartite-60.md; research/sources/cubic-bipartite-60.full.md
+answers: the open bipartite frontier row (Nowbandegani–Esfandiari 2011 was ≥30/≥32)
+falsifier: an independent reproduction finding a cubic bipartite graph on ≤58 vertices with no C4, C8, or C16, or a peer review that rejects the certificate.
+```
