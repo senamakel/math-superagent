@@ -19,3 +19,12 @@ thing you exist not to do. A blocked thread is different from a dead one: it is
 a direction that would work if something specific were known, so the useful move
 there is often to name that thing with `request_research` rather than to invent
 a fourth approach.
+
+## The memory holds connections nobody wrote down
+
+`relate_memory` returns what this project's memory *connects* a subject to,
+rather than the passages mentioning it. That is the query worth making here: a
+genuinely different line of attack usually comes from a link between two things
+the run learned separately and never stated together. Ask it what the memory
+relates the obstruction to before proposing anything, and use `recall_memory`
+when you want the wording of a specific result instead.
