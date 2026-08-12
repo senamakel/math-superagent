@@ -1688,14 +1688,34 @@ fn register_support_agents(
 
 /// Grants a role similarity search over everything the run has written down.
 ///
-/// Every reasoning role gets it and the organizer does not: the organizer
-/// describes work rather than doing it, and each tool it lacks is a way a
-/// filing job cannot turn into an investigation.
+/// Every reasoning role gets it. Two do not, and both exclusions are the same
+/// argument rather than an oversight. The organizer describes work rather than
+/// doing it, and each tool it lacks is a way a filing job cannot turn into an
+/// investigation. The judge answers four lines on twelve model calls against an
+/// attempt that took the better part of an hour, and a search over the whole
+/// workspace is precisely the invitation to spend them reading instead — a live
+/// judge already did that with the document tools alone.
 fn register_recall(harness: &mut AgentHarness<()>, workspace: &Path) {
     register_resilient(
         harness,
         recall::RecallWorkspaceTool::registered(workspace.to_path_buf()),
     );
+}
+
+/// Grants a role read access to the run's saved research notes.
+///
+/// [`register_recall`] searches this workspace; this searches the note store,
+/// which outlives it. The two answer different questions — what did *this* run
+/// write down, against what has been established before — and a role holding
+/// only the first re-derives what a previous run already paid for.
+///
+/// Recall travels widely and `remember_research` does not. Reading a note costs
+/// a lookup; writing one puts a statement into a store every later run reads, so
+/// that stays with the three roles whose output is durable knowledge — research,
+/// the scholar, and the inventor — rather than with every role that happens to
+/// learn something mid-task.
+fn register_note_recall(harness: &mut AgentHarness<()>, store: &VectorStore) {
+    register_resilient(harness, Arc::new(RecallResearchTool::new(store.clone())));
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
