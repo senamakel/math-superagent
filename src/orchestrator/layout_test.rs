@@ -145,3 +145,48 @@ async fn a_sweep_never_overwrites_a_file_already_filed() {
     );
     let _ = std::fs::remove_dir_all(&root);
 }
+
+/// A workspace whose programs have produced nothing has no results, however
+/// many programs and notes are in it.
+///
+/// The check this replaces asked whether `code/` existed, and the template
+/// creates it before the run starts — so the "no results at all" guard could
+/// never fire, and PE620's `pattern_finder` became the run's largest consumer
+/// at 35.4% of model calls, waking on every source edit to re-derive a
+/// conclusion the run had already written down.
+#[test]
+fn programs_and_notes_alone_are_not_results() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-has-results");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join("code/lib"))?;
+
+    // Exactly what `workspace/template` seeds, plus programs the run wrote.
+    std::fs::write(root.join("code/AGENTS.md"), "the method policy")?;
+    std::fs::write(root.join("code/INDEX.md"), "what each file is")?;
+    std::fs::write(root.join("code/out/README.md"), "what goes here")?;
+    std::fs::write(root.join("code/lib/gears.py"), "# a module\n")?;
+    std::fs::write(root.join("code/brute.py"), "# the oracle\n")?;
+    assert!(
+        !super::has_results(&root),
+        "programs and notes are not results"
+    );
+
+    // The run's own note explaining that nothing computed is still not a result
+    // — which is the trap: writing it down must not wake the analyst.
+    std::fs::write(root.join("code/out/oracle-model-broken.md"), "it returns 0")?;
+    assert!(!super::has_results(&root));
+
+    // One captured output, wherever it landed, is.
+    std::fs::write(root.join("code/brute_OUTPUT.txt"), "g(16,5,5,6) = 9\n")?;
+    assert!(super::has_results(&root), "a program produced something");
+    Ok(())
+}
+
+/// A missing `code/` is the same answer as an empty one, and must not panic.
+#[test]
+fn a_workspace_with_no_code_folder_has_no_results() {
+    let root = std::env::temp_dir().join("math-agent-has-results-missing");
+    let _ = std::fs::remove_dir_all(&root);
+    assert!(!super::has_results(&root));
+}
