@@ -313,15 +313,7 @@ impl OrchestratorAgent {
                 documents: &documents,
                 checkpoint: &checkpoint,
             },
-            [
-                ("tool_builder", prompts.tool_builder),
-                ("coder", prompts.coder),
-                ("sat_solver", prompts.sat_solver),
-                ("smt_solver", prompts.smt_solver),
-                ("theorem_prover", prompts.theorem_prover),
-                ("symbolic_math", prompts.symbolic_math),
-                ("lean_prover", prompts.lean_prover),
-            ],
+            prompts.code_writers(),
         )?;
 
         register_support_agents(
@@ -1076,6 +1068,20 @@ pub fn prompt_report(workspace: &Path) -> Result<String> {
 }
 
 impl RolePrompts {
+    /// The roles carrying shell and file-write authority, paired with their
+    /// prompts, in the order they are registered.
+    fn code_writers(self) -> [(&'static str, String); 7] {
+        [
+            ("tool_builder", self.tool_builder),
+            ("coder", self.coder),
+            ("sat_solver", self.sat_solver),
+            ("smt_solver", self.smt_solver),
+            ("theorem_prover", self.theorem_prover),
+            ("symbolic_math", self.symbolic_math),
+            ("lean_prover", self.lean_prover),
+        ]
+    }
+
     /// Returns each role's name paired with its assembled prompt.
     fn by_role(&self) -> Vec<(&'static str, &str)> {
         vec![

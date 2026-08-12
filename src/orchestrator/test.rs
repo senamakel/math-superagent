@@ -696,7 +696,7 @@ fn every_reasoning_specialist_is_registered_and_reachable() -> agent::Result<()>
         "lean_prover",
     ] {
         let agent = registry.get(role).ok_or_else(|| {
-            tinyagents::TinyAgentsError::Validation(format!("{role} is registered").into())
+            tinyagents::TinyAgentsError::Validation(format!("{role} is registered"))
         })?;
         for needed in ["write_tool_file", "execute_command"] {
             assert!(
