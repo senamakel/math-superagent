@@ -324,6 +324,7 @@ impl OrchestratorAgent {
                 inventor: prompts.inventor,
                 librarian: prompts.librarian,
                 scholar: prompts.scholar,
+                organizer: prompts.organizer,
             },
         )?;
 
@@ -1332,6 +1333,7 @@ struct SupportPrompts {
     inventor: String,
     librarian: String,
     scholar: String,
+    organizer: String,
 }
 
 /// Registers the pattern agent, which is the tool-richest of the support roles.
