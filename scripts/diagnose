@@ -195,7 +195,13 @@ PY
     # things, and collapsing them is how a library looks like progress.
     if [ -f "$workspace/research/CLAIMS.md" ]; then
         printf "    claim evidence:"
-        grep -oE '\| (asserted|proved|verified|computed|refuted) \|' "$workspace/research/CLAIMS.md" 2>/dev/null \
+        # Every label `Status::label` can emit. `checked` and `catalogued` were
+        # missing, so a run's own verified computations and its catalogue
+        # lookups were both invisible here: PE620 checked that its oracle model
+        # returned 0 against a stated 9, wrote the claim, and this line still
+        # reported `asserted=5` and nothing else. A babysit counter that
+        # disagrees with the ledger it summarises is worse than no counter.
+        grep -oE '\| (asserted|proved|checked|heuristic|catalogued|verified|computed|refuted) \|' "$workspace/research/CLAIMS.md" 2>/dev/null \
             | tr -d '| ' | sort | uniq -c | awk '{printf " %s=%s", $2, $1}' || true
         echo ""
     fi
