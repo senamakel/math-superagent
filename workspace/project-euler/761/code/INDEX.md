@@ -13,6 +13,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `k_sequence_exact.py` | _(undescribed)_ |
 | `pattern_break.py` | _(undescribed)_ |
 | `pattern_clean.py` | _(undescribed)_ |
+| `pattern_findings.md` | Pattern-finder deliverable: asymptotic slope c of K(n) (root of tan(cπ)=π(c+1)), proof that floor(3n/7) is asymptotically wrong, K(n)~floor(c·n) robustness, and that K-deviations don't affect the hexagon answer. |
 | `pattern_hexagon.py` | _(undescribed)_ |
 | `pattern_k_check.py` | Exact sympy check that K(n) != floor(3n/7) (first fails n=86) and != floor(n*sqrt(3)/4) Beatty (first fails n=37). Confirm exact K(n) values. |
 | `polygon_critical.py` | Computes the exact regular n-gon critical runner speed V(n) via the stewbasic formula. Validation: matches Abel et al. exact triangle/square values and the statement oracle 5.78859314. Yields V_hexagon=5.05505046. |
@@ -21,4 +22,3 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_circle_constant.py` | Verifies the exact governing equation/constant for the circular swimmer-runner critical speed (Ponder This T = 4.60333885) via sympy, and the naive pi+1 bound. |
 | `verify_hexagon.py` | High-precision sympy verification of V_hexagon=5.0550504633 (-> 5.05505046) and cross-checks against triangle/square closed forms and the circle limit. |
 | `verify_polygon_formula.py` | Numerically evaluates stewbasic's general-n critical-speed formula (given alpha from root of tan(rθ)=(r+n)tanθ) for regular n-gons, checks the square against V_square oracle (5.78859314), the large-n limit against the circle oracle (4.60333885), and David K's independent square closed form sqrt(5/2(7+sqrt41)). |
-7+sqrt41)). |
