@@ -1658,9 +1658,22 @@ fn register_support_agents(
     // memory and this run's results, which is durable and which nothing else
     // is placed to notice, and not its own synthesis, which would be the run
     // citing itself.
+    // Narrowed for the same reason housekeeping was, and on the evidence of
+    // the same failure. Curating is bounded work — read what changed, rewrite
+    // one file — and a role left with an investigation's budget investigates.
+    // A live Erdős–Gyárfás run had the curator as its largest consumer at 55
+    // model calls against `tool_builder`'s 38, growing five times faster than
+    // the role actually doing the mathematics, and spending 69 `read_document`
+    // calls walking `code/` and `research/` file by file.
+    //
+    // Rate was already bounded and was not enough. `TeamBudget::paced` floors
+    // the interval between cycle *starts*, so throttling it to fifteen minutes
+    // left one cycle in three minutes — still the top consumer, because that
+    // single cycle cost eleven model calls. Frequency and length are separate
+    // axes and both need a bound; this is the second one.
     let mut curator = specialist_harness(
         parts.model.clone(),
-        parts.budget,
+        parts.budget.for_housekeeping(),
         "context_curator",
         parts.tracer,
     );

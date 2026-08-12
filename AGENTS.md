@@ -312,9 +312,18 @@ Keep `README.md`, this file, rustdoc, examples, and runtime behavior consistent.
 Write for a reader who has not seen the code. Prefer a concrete command or
 example over broad claims.
 
-Keep every Markdown file at 500 lines or fewer. Put durable operational guidance
-in this file and user-facing instructions in `README.md` instead of creating a
-separate documentation tree.
+Keep every Markdown file at 500 lines or fewer, this one included. It was 1,734
+lines for long enough that the rule read as advice: `CLAUDE.md` symlinks here, so
+every session and every review paid for a hundred kilobytes to find one rule, and
+nothing measured what that cost.
+
+The split is by *kind*, not by size. A rule to follow and a check to run stay
+here. The evidence behind a rule — the live run that met a ceiling, the number
+that turned out to be wrong, the failure a control was written to stop — goes to
+the file in `docs/` that owns that subject, listed under *Where the rest of this
+lives*. User-facing instructions stay in `README.md`. Do not grow a third tree
+beside those two: `docs/` holds the rationale for what is in this file, and a
+document with no rule above it is a document nobody has a reason to open.
 
 ## Working agreement for coding agents
 
