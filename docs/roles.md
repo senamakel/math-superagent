@@ -348,6 +348,43 @@ attempting, so it needs all three — and `recall_scratch` besides, because a
 half-finished derivation is exactly the kind of thing a paper resolves. It gets
 the read half only: it judges provisional work rather than producing any.
 
+## The standing teams run on a custodial budget
+
+`CONTEXT.md` has an owner, which it did not. It was written by whichever role
+happened to think of it, so it drifted behind the run that reads it on every
+model call, and nothing measured what it cost. The `context` team owns it now:
+one standing team running `context_curator` every `MATH_AGENT_CONTEXT_MINUTES` —
+fifteen by default — whose whole job is keeping that one file current and within
+budget. It reads widely and writes once. Most of what it brings across is
+Cognee's: `recall_memory` and `relate_memory` hold what earlier runs on this
+problem, and on problems of its shape, established, and that is invisible to this
+run until somebody carries it into the file every role already reads. It holds no
+shell, no web search, and no delegation, because each of those is a way for
+curating what the run knows to turn into a second investigation beside the solve.
+
+Frequency and cycle length are separate axes, and bounding one is not enough. A
+live Erdős–Gyárfás run had the curator as its largest consumer — 55 model calls
+against `tool_builder`'s 38, growing five times faster than the role actually
+doing the mathematics, and spending 69 `read_document` calls walking `code/` and
+`research/` file by file. Throttling `MATH_AGENT_CONTEXT_MINUTES` to fifteen left
+it one cycle in three minutes and it was *still* the top consumer, because that
+single cycle cost eleven model calls. So the curator is registered with
+`RunBudget::for_housekeeping()` as well: curating is bounded work — read what
+changed, rewrite one file — and a role left with an investigation's budget
+investigates, which is the organizer's lesson exactly. Reaching the cap is safe,
+because `StopWithPartial` keeps the brief already written.
+
+Its cadence is configuration rather than a constant for one reason: it decides
+how stale the brief every role reads may be. Everything else about its allowance
+is the custodial one — the file keeps changing underneath it, so "nothing to add"
+means come back later rather than stop. Idleness is decided before the agent
+runs, by fingerprinting the workspace with `CONTEXT.md` excluded: counting its
+own output would have the team waking itself forever on the brief it just wrote,
+the pattern team's `SCRATCHPAD.md` lesson again. And the standing — what the file
+costs against its budget — is computed per cycle and written into the brief,
+because it is the fact that decides what the cycle is *for*: adding, or
+compressing.
+
 ## Prompts
 
 The built-in prompts live in `src/prompts/*.md` and are pulled in with
