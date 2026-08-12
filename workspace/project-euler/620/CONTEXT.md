@@ -59,10 +59,12 @@ so summing s+p+q≤500 is the adversarial scale.
 
 ## Recalled
 
-Durable memory (Cognee) for this problem is empty — recall returned nothing and
-then began failing with HTTP 409 (three attempts, differing queries). Treat as
-infrastructure failure, not a finding. No earlier-run results to import; any
-result this run produces must stand on its own computation or a fetched source.
+Durable memory (Cognee) for this problem is empty — recall and relate now
+return clean "nothing found" responses (earlier HTTP 409s were transient), and
+they hold no earlier-run results on gears/circle packing. This is an absence,
+not a failure: re-query if the run produces results, but there is nothing to
+import now; this run's output must stand on its own computation or a fetched
+source.
 
 ## Contradictions
 
@@ -74,5 +76,4 @@ None yet — one source (the statement) only.
   combinatorially (tooth-count/modular constraints coming from meshing, likely
   a finiteness/recurrence), so the sum over s+p+q≤500 is not enumerated.
 - No brute-force oracle exists yet.
-- Durable memory unreachable (recall failing); if it recovers, re-query for
-  Project Euler 620 / gear-meshing circle problems.
+- Durable memory unreachable — treat as absence, not failure (see Recalled).
