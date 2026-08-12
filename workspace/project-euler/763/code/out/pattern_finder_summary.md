@@ -10,36 +10,59 @@ cross-checked by a frozenset oracle). Asymptotic D_2 ~ 0.1227 * 2.3216^N
 (G(k,m)). This is the model for what to expect in 3D: no closed form, a real
 transfer procedure needed. Filed at research/L1.0/oeis_a007902.md.
 
-### CONFIRMED (exact, survived out-of-sample) — max-level decomposition
-N(N,M) = # distinct reachable configs after N divisions with max level M.
-For offset k=N-M: N(N,N-k) = Q_k(N) * 3^(N-2k-1), Q_k a degree-k polynomial.
-Closed forms Q_0=1, Q_1=N-3, Q_2=(N-5)(N+2)/2, Q_3=(N^3-73N+168)/6,
-Q_4=N^4/24+N^3/4-205N^2/24+97N/4+27. Verified at FRESH N=13,14 (not in the
-fit data), so it survives the break attempt; still a conjecture past N=14.
-D(N) = sum_{k=0}^{N-2} Q_k(N) 3^(N-2k-1).
+### NEW SOURCED MATCH — distinct HISTOGRAM count == OEIS A186085 (sandpiles)
+The count H(N) of distinct level-histograms over reachable N-configs,
+N=2..14 = 1,1,2,3,5,8,13,22,36,60,100,166,277, is EXACTLY OEIS A186085
+("1-dimensional sandpiles with n grains" = smooth compositions with first/last
+part 1, |consecutive difference|<=1). Verified H(N)==A186085(N) on N=2..14
+against the published table (code/pattern/check_a186085_recurrence.py) and by
+oeis_lookup. This is a genuine structural link: the reachable 3D configurations
+cluster by level-histogram, and the histograms are in bijection with smooth
+compositions. It does NOT give D(N) (H(N)≠D(N); D counts configurations, not
+histograms), but it tells the run the histogram-indexing family — the
+"shape space" of the amoeba — is the sandpile family, worth deriving how many
+configs realize each histogram.
 
-### NEGATIVE results (dead ends, recorded so nobody repeats them)
-- Order-7 constant-coefficient linear recurrence over D(0..14): OVERFIT,
-  fails integrality at n=18, can't hit the statement's D(20). 
-- D(0..14) not in OEIS.
-- D(N) not small-order holonomic (P-recursive): all order/degree fits either
-  pole or go non-integer immediately.
+### CORRECTION (NEGATIVE, breaks a prior claim): Q_k decomposition is FALSE for even N
+The repeated claim "D(N)=sum_k Q_k(N) 3^(N-2k-1) reproduces D(N)", where
+Q_k(N)=R(N,N-k)/3^(N-2k-1) (R = count of max-level-M configs, k=N-M), holds
+ONLY for odd N (and N<=11). It FAILS at even N: N=12 misses 30, N=14 misses 267
+(code/pattern/qdecomp_falsify.py). Cause: for even N the column with max level
+M=N/2 (offset k=N/2) has exponent 2M-N-1 = -1, is excluded by the e>=0 gate,
+yet such configs exist (R(12,6)=30, R(14,7)=267). So:
+- The Q_k polynomial closed forms ARE exact for each column in the region
+  M>(N+1)/2 (verified OOS at N=13,14 for those columns).
+- But D(N) is NOT that closed-form sum as a full identity. First falsifier of
+  the summed formula is N=12, NOT N=15 as previously guessed.
+
+### CONFIRMED (no change)
+- Diagonal R(N,N)=3^(N-1) exact for all N=2..14.
+- Order-7 const-coeff recurrence on D(0..14) is an overfit (not reproducible).
+
+### OVERFIT CAUTION (reproduced)
+find_linear_recurrence handed back an order-6 constant-coeff recurrence for H
+that fits H(2..14) perfectly but DIVERGES from published A186085 at n=6. Direct
+proof that perfect finite-window fits carry no predictive power. Reinforces the
+holonomic-negative conclusion. Any recurrence used to reach D(10000) must be
+derived, not fitted.
 
 ## Where this leaves the solver
-No closed form. The forward/BFS enumeration is memory-capped well below D(15).
-The path forward is a transfer/DP on the structure that produced the
-max-level columns — the 3D generalization of the d=2 A007902 G(k,m) DP. That
-is the seam between these structural facts and the efficient method the run
-needs; handed to inventor/orchestrator.
+Still no closed form for D(N), and now a corrected understanding: the max-level
+decomposition is exact per-column but the summed formula needs the M=N/2
+(empty-least-offset) terms at even N. The A186085 (sandpile) match is the
+strongest NEW structural lead to hand the inventor: the histogram/shape space
+is the smooth-composition family, and the run needs to count configs per
+histogram.
 
 ## First falsifiers (to break each claim)
-- Q_k columns / D(N)=sum: N=15 (needs M histogram at N=15, not BFS-computable
-  here). Compute D(15) some other way and compare.
-- 3^(N-1) diagonal: N=15.
+- Q_k column polynomials: extend a column to a fresh N and compare.
+- D(N)=Q-sum formula: ANY even N>11 (already broken at N=12,14).
+- H(N)==A186085: H(15) vs A186085(15)=461 (needs histogram count at N=15).
 - D_2 == A007902: D_2(22) vs A007902(23)=31775756.
 
 ## Files
 - Analysis: code/pattern/*.py (see code/pattern/INDEX.md)
-- SCRATCHPAD_pattern.md (this run's notes)
-- data/level_N.txt (N=2..12 config features), code/out/mhist_13_14.txt
-  (fresh M-histograms), research/L1.0/oeis_a007902.md (sourced d=2).
+- code/pattern/check_a186085_recurrence.py, qdecomp_falsify.py, mdist2.py,
+  full_triangle_dump.py, pn_poly.py (this run's new probes)
+- SCRATCHPAD.md (findings recorded)
+- research/L1.1/oeis_a186085.md (sourced d=2 sandpile match)
