@@ -10,8 +10,7 @@ method implemented ✔, answer **known and sourced** ✔. Remaining open items: 
 `code/hemiperfect_dfs.py` at 10^18 so the run's own method reproduces the 22
 sourced values (DFS has never executed in this environment — no shell), cross-check
 DFS vs brute at a reachable bound, and write `solution.md` + final `code/solution.py`
-(GOAL.md is written; solution.md is still an empty stub). The PE241 answer is already
-fixed by an independent route (OEIS b-files) — see below.
+(the PE241 answer is already fixed by an independent route, OEIS b-files).
 
 ## The answer (established, sourced — NOT this run's own execution)
 
