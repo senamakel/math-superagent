@@ -1,0 +1,48 @@
+=== K4 ===
+  min_degree      expected 3  got 3  MATCH
+  cycle_lengths   expected [3, 4]  got [3, 4]  MATCH
+
+=== K3,3 ===
+  min_degree      expected 3  got 3  MATCH
+  cycle_lengths   expected [4, 6]  got [4, 6]  MATCH
+
+=== cube Q3 ===
+  min_degree      expected 3  got 3  MATCH
+  cycle_lengths   expected [4, 6, 8]  got [4, 6, 8]  MATCH
+
+=== Petersen ===
+  min_degree      expected 3  got 3  MATCH
+  cycle_lengths   expected [5, 6, 8, 9]  got [5, 6, 8, 9]  MATCH
+
+ALL CHECKS PASSED
+=== survivor_no4_n14.py ===
+n=4: no4cycle_mindeg3=0
+n=5: no4cycle_mindeg3=0
+n=6: no4cycle_mindeg3=0
+n=7: no4cycle_mindeg3=0
+n=8: no4cycle_mindeg3=0
+n=9: no4cycle_mindeg3=0
+n=10: no4cycle_mindeg3=5
+n=11: no4cycle_mindeg3=9
+n=12: no4cycle_mindeg3=57
+n=13: no4cycle_mindeg3=503
+n=14: no4cycle_mindeg3=6059
+=== survivor_girth5_n14.py ===
+n=12: C4free_mindeg3=57  girth>=5_survivors=2
+n=13: C4free_mindeg3=503  girth>=5_survivors=4
+n=14: C4free_mindeg3=6059  girth>=5_survivors=23
+=== survivor_girth5_n11.py ===
+n=10: C4free_mindeg3=5  girth>=5_survivors=1
+n=11: C4free_mindeg3=9  girth>=5_survivors=0
+=== check_no8_survivors.py ===
+n=10: no4_survivors=5, missing_8cycle=0
+n=11: no4_survivors=9, missing_8cycle=0
+=== check_no8_n14.py ===
+n=12: no4_survivors=57, missing_8cycle=0
+n=13: no4_survivors=503, missing_8cycle=0
+n=14: no4_survivors=6059, missing_8cycle=0
+=== check_no8_n16.py ===
+n=15: no4_survivors=91433, missing_8cycle=0, 10s
+n=16: no4_survivors=1655659, missing_8cycle=0, 145s
+=== survivor_nopow2.py ===
+=== verify_bound.py ===

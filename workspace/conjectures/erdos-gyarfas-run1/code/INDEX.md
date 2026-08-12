@@ -1,0 +1,11 @@
+# Index — code
+
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+
+| File | Purpose |
+| --- | --- |
+| `AGENTS.md` | Working instructions for the code/ tree: the package layout (lib/ for imports, question folders, out/ for outputs), the rule that /workspace/code is on PYTHONPATH (never sys.path.insert), naming and complexity conventions, one-job-per-file, keeping the naive program as the oracle, exact arithmetic, and never deleting a program that carries a result. Guidance for agents writing code in this run — describes the tree, not mathematics. |
+| `_smoke_check.md` | Transient scratch marker for the brute.py import consolidation. RESOLVED (tool_builder, this cycle): `cd code && python brute.py` executes to exit 0 and reproduces every worked example (K4 δ=3 {3,4} pow2 {4}; K3,3 {4,6} {4}; Petersen {5,6,8,9} {8}; cube Q3 {4,6,8} {4,8}; graph6 K4 "C~" agrees). Independent cross-check `python verify_cycles.py` prints ALL CHECKS PASSED. The build-import-and-run path is confirmed, not a result in itself. |
+| `brute.py` | Naive-oracle demo and worked-example harness: hand-builds K4, K3,3, Petersen, cube Q3 and prints min_degree and the exact cycle-length set via the shelved oracle (lib.oracle -> lib.cycles). has_power_of_two_cycle is imported from lib.oracle (its local def was an identical copy of the shelved length-set predicate and was removed in this cycle's consolidation). Verification demo and worked-example check, not a separate compute core. |
+| `count_mindeg3.py` | Oracle counting harness (nauty-geng -c -d3): counts connected min-degree-3 graphs by order n and girth>=5 survivors, printing exact counts per n to compare with OEIS A007112 — the Phase 3 anchor for where exhaustive generation stops being the method. Mirrors eg/bruteforce_bound.py and eg/girth_survivors.py so numbers match what tool_builder runs. Depends on lib.cycles (_geng_graph6, min_degree, girth). |
+| `verify_cycles.py` | Verification harness for the shelved lib/cycles.py: checks min_degree and cycle_lengths on K4, K3,3, cube Q3 and Petersen against hand-known answers. Run: cd code && python verify_cycles.py. A non-importing duplicate of the oracle itself; depends on lib.cycles being right. |
