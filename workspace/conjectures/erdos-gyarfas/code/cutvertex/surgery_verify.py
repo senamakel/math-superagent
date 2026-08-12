@@ -217,9 +217,6 @@ def case_c(base):
     cross_cycles = 0
     g_cycles = 0
     for c in all_simple_cycles(H1):
-        uses_cross = any({a, b} <= {x1, y1} or {a, b} <= {x2, y2} or
-                         {a, b} == {x1, y1} or {a, b} == {x2, y2}
-                         for a, b in zip(c, c[1:] + c[:1]))
         # proper cross-edge detection: an H1 cycle edge is a cross edge iff
         # one endpoint in copy1 and the other in copy2
         def is_cross_edge(a, b):
