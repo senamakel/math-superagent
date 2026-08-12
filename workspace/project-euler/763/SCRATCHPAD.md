@@ -175,6 +175,43 @@ to pin down the definition, which the two reachable examples do. Root
 code/brute.py and code/amoeba/brute.py are now identical except a trailing
 blank line and both import the same canonical D.
 
+## NEW (this run): EXACT closed form for the histogram-refinement of D(N)
+
+The open refinement question — "how many configurations realize each distinct
+level-histogram" — is now answered EXACTLY over the whole computable range.
+
+For a reachable config's level-histogram h = (a_0=0, a_1, ..., a_M=3) counting
+cells per level k=x+y+z (M = max level), let n_k = #{interior levels with
+exactly k cells}.  Then the number of configs realizing h is
+
+    mult(h) = 2^(2 n_4) * 3^(n_1 + n_2 + n_3 - 1)        if no level has 6 cells
+           = 10 * 2^(2 n_4) * 3^(n_1 + n_2 + n_3 - 2)    if some level has 6 cells
+
+Verified EXACTLY on all 694 histograms, in-sample N=2..12 (data dumps) AND
+out-of-sample N=13,14 (computed fresh via bitmask BFS, D(13)=1749267,
+D(14)=5949063, 443 histograms): zero exceptions.
+- code/pattern/final_mult_verify.py (rule), oos_mult_closedform2.py (OOS),
+  verify_mult_closedform.py, check_4power.py, mult_structure.py, scan_6_7.py.
+- Fresh N=13,14 mult data: code/out/per_hist_mult_13_14.txt.
+
+Consequences:
+- D(N) = sum over smooth compositions (OEIS A186085) of the above weight.
+  This answers the inventor's open "count configs per histogram" refinement:
+  the multiplicity is a closed product depending only on the multiset of the
+  histogram's interior level-counts (not their arrangement), times 3^(n1+n2+n3-1).
+- The 2-power ties to n_4 (levels with 4 cells): a level with 4 cells forces
+  2^(2)=4 configs per...; multiplicities are 3-smooth (2^a·3^b) EXCEPT the
+  single family containing a 6-level together with a 7-level, where a factor
+  of 10 appears: 30 (N=12), 90 (N=13), 120/270 (N=14). All other 8
+  six-containing histograms have a 7 but NO 6 immediately preceding... actually
+  the 6-level ALWAYS immediately precedes the 7-level (substring "6 7"), so
+  the no-six rule misses them only when a 6-level is present. Characterized:
+  first exception at the "0 1 3 6 7 5 3" histogram (N=12), pred 9 vs 30.
+- NOTE this still does NOT reach D(10000): the number of histograms H(N)=A186085
+  grows ~x1.67^N (huge at N=10000), so the weighted-sum still enumerates an
+  enormous space. But it collapses the configuration refinement to a closed
+  product, which is the piece the 2D-G(k,m)-style DP would need.
+
 ## Pattern-finder (PE763) — max-level decomposition, OOS strength
 
 Fresh sympy-exact re-confirmation (code/pattern/q_columns_fresh.py,
