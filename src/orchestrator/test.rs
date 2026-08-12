@@ -734,3 +734,89 @@ fn each_solver_prompt_names_the_verdict_that_is_not_an_answer() {
     assert!(SYMBOLIC_MATH_PROMPT.contains("simplify(A - B)"));
     assert!(SYMBOLIC_MATH_PROMPT.contains("unverified"));
 }
+
+#[test]
+fn every_reasoning_role_can_reach_what_the_run_already_knows() -> agent::Result<()> {
+    // The two ways back into what is established: this workspace's own record,
+    // and the note store that outlives it. A role holding neither re-derives
+    // what is on disk, which is the most expensive way to learn it was known.
+    let registry = default_registry(true)?;
+    for role in [
+        "goals",
+        "research",
+        "coder",
+        "sat_solver",
+        "smt_solver",
+        "theorem_prover",
+        "symbolic_math",
+        "lean_prover",
+        "reflection",
+        "pattern_finder",
+        "inventor",
+        "librarian",
+        "scholar",
+    ] {
+        let definition = registry
+            .get(role)
+            .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
+        for expected in ["search_workspace", "recall_research"] {
+            assert!(
+                definition.tools.iter().any(|tool| tool == expected),
+                "`{role}` must be able to reach `{expected}`"
+            );
+        }
+    }
+
+    // The tool-builder writes probes and throwaway experiments, so a similarity
+    // search over its own output would mostly return them. It keeps the note
+    // store, which is the half that is not its own scratch.
+    let builder = registry.get("tool_builder").ok_or_else(|| {
+        tinyagents::TinyAgentsError::Validation("tool_builder is registered".into())
+    })?;
+    assert!(
+        !builder.tools.iter().any(|tool| tool == "search_workspace"),
+        "the tool-builder must not recall its own scratch"
+    );
+    assert!(builder.tools.iter().any(|tool| tool == "recall_research"));
+    Ok(())
+}
+
+#[test]
+fn the_judge_and_the_organizer_stay_tool_poor() -> agent::Result<()> {
+    // Both exclusions are the same argument. The judge answers four lines on
+    // twelve model calls, and a search over the whole workspace is exactly the
+    // invitation to spend them reading instead. The organizer describes work
+    // rather than doing it, and each tool it lacks is a way a filing job cannot
+    // turn into an investigation.
+    let registry = default_registry(true)?;
+    for role in ["judge", "organizer"] {
+        let definition = registry
+            .get(role)
+            .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
+        for forbidden in ["search_workspace", "recall_research", "remember_research"] {
+            assert!(
+                !definition.tools.iter().any(|tool| tool == forbidden),
+                "`{role}` must not have `{forbidden}`"
+            );
+        }
+    }
+    Ok(())
+}
+
+#[test]
+fn writing_a_note_stays_with_the_roles_whose_output_is_durable() -> agent::Result<()> {
+    // Reading a note costs a lookup; writing one puts a statement into a store
+    // every later run reads. Recall travels widely and this does not.
+    let registry = default_registry(true)?;
+    for role in registry.definitions() {
+        let writes = role.tools.iter().any(|tool| tool == "remember_research");
+        let expected = matches!(role.id.as_str(), "research" | "scholar" | "inventor");
+        assert_eq!(
+            writes, expected,
+            "`{}` must{} hold `remember_research`",
+            role.id,
+            if expected { "" } else { " not" }
+        );
+    }
+    Ok(())
+}
