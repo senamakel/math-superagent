@@ -359,11 +359,10 @@ a minute of grace. The grace matters: the wait must be the thing that ends, as
 it ends by *returning* the child's state, where a deadline replaces that with an
 error.
 
-Each model turn is capped at 12000 output tokens
-(`MATH_AGENT_TURN_OUTPUT_TOKENS`). Generation time is linear in output length,
-so an uncapped turn is an uncapped wall clock: a measured turn ran to 9,361
-tokens and 2.9 minutes, longer ones exceeded seven. It is a safety ceiling, not a way
-to make the model concise: set to 4000 it bound an ordinary turn exactly,
+Each model turn is capped at 12000 output tokens (`MATH_AGENT_TURN_OUTPUT_TOKENS`).
+Generation time is linear in output length, so an uncapped turn is an uncapped wall clock: a
+measured turn ran to 9,361 tokens and 2.9 minutes, longer ones exceeded seven. It is a safety
+ceiling, not a way to make the model concise: set to 4000 it bound an ordinary turn exactly,
 truncating mid-generation into a retry, 66 seconds to accomplish nothing.
 
 The inventor is the exception at 32000 (`RunBudget::for_invention`), the one

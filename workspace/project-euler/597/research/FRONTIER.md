@@ -6,45 +6,45 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
+| 2 | https://arxiv.org/search/advanced | Advanced search | [1108.0117] Software for Exact Integration of Polynomials over Polyhedra Skip to main content Press Enter to search &middot; [Advanced search][1] --> # Mathematics > Metric Geometry… |
+| 2 | https://info.arxiv.org/labs/index.html | Learn more about arXivLabs | these values and only works with partners that adhere to them. Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][45]. [Which authors of this paper… |
+| 2 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | of Polynomials over Polyhedra, by Jesus De Loera and 5 other authors - [View PDF][9] - [HTML (experimental)][10] - [TeX Source][17] [view license][18] ### Current browse context: math.MG [< prev][19]… |
+| 2 | https://core.ac.uk/services/recommender | What is CORE? | Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][43])* Core recommender toggle CORE Recommender*( [What is CORE?][44])* - Author - Venue - Institution - Topic About… |
+| 2 | https://influencemap.cmlab.dev/ | What are Influence Flowers? | Toggle TXYZ.AI*( [What is TXYZ.AI?][42])* Related Papers # Recommenders and Search Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][43])* Core recommender toggle CORE… |
+| 2 | https://info.arxiv.org/help/mathjax.html | What is MathJax? | value for arXiv's community? ****[Learn more about arXivLabs][45]. [Which authors of this paper are endorsers?][46] \| Disable MathJax ( [What is MathJax?][47]) |
+| 2 | http://gotit.pub/faq | What is GotitPub? | Code Finder for Papers*( [What is CatalyzeX?][35])* DagsHub Toggle DagsHub*( [What is DagsHub?][36])* GotitPub Toggle Gotit.pub*( [What is GotitPub?][37])* Huggingface Toggle Hugging Face*( [What is… |
+| 2 | https://alphaxiv.org/ | What is alphaXiv? | [What are Smart Citations?][33])* Code, Data, Media # Code, Data and Media Associated with this Article alphaXiv Toggle alphaXiv*( [What is alphaXiv?][34])* Links to Code Toggle CatalyzeX Code Finder… |
+| 2 | https://dagshub.com/ | What is DagsHub? | [What is alphaXiv?][34])* Links to Code Toggle CatalyzeX Code Finder for Papers*( [What is CatalyzeX?][35])* DagsHub Toggle DagsHub*( [What is DagsHub?][36])* GotitPub Toggle Gotit.pub*( [What is… |
+| 2 | https://huggingface.co/docs/hub/spaces | What is Spaces? | is ScienceCast?][39])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][40])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][41])* Spaces Toggle TXYZ.AI*( [What is… |
+| 2 | https://huggingface.co/huggingface | What is Huggingface? | Toggle DagsHub*( [What is DagsHub?][36])* GotitPub Toggle Gotit.pub*( [What is GotitPub?][37])* Huggingface Toggle Hugging Face*( [What is Huggingface?][38])* ScienceCast Toggle ScienceCast*( [What… |
+| 2 | https://info.arxiv.org/labs/showcase.html#arxiv-bibliographic-explorer | What is the Explorer? | Reddit] [29] Bibliographic Tools # Bibliographic and Citation Tools Bibliographic Explorer Toggle Bibliographic Explorer*( [What is the Explorer?][30])* Connected Papers Toggle Connected Papers*(… |
+| 2 | https://replicate.com/docs/arxiv/about | What is Replicate? | is Huggingface?][38])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][39])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][40])* Spaces Toggle Hugging Face Spaces*( [What is… |
+| 2 | https://sciencecast.org/welcome | What is ScienceCast? | [What is GotitPub?][37])* Huggingface Toggle Hugging Face*( [What is Huggingface?][38])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][39])* Demos # Demos Replicate Toggle Replicate*( [What… |
+| 2 | https://txyz.ai | What is TXYZ.AI? | Toggle Replicate*( [What is Replicate?][40])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][41])* Spaces Toggle TXYZ.AI*( [What is TXYZ.AI?][42])* Related Papers # Recommenders and Search… |
+| 2 | https://www.catalyzex.com | What is CatalyzeX? | with this Article alphaXiv Toggle alphaXiv*( [What is alphaXiv?][34])* Links to Code Toggle CatalyzeX Code Finder for Papers*( [What is CatalyzeX?][35])* DagsHub Toggle DagsHub*( [What is… |
+| 2 | https://www.connectedpapers.com/about | What is Connected Papers? | Tools Bibliographic Explorer Toggle Bibliographic Explorer*( [What is the Explorer?][30])* Connected Papers Toggle Connected Papers*( [What is Connected Papers?][31])* Litmaps Toggle Litmaps*( [What… |
+| 2 | https://www.litmaps.co/ | What is Litmaps? | [What is the Explorer?][30])* Connected Papers Toggle Connected Papers*( [What is Connected Papers?][31])* Litmaps Toggle Litmaps*( [What is Litmaps?][32])* scite.ai Toggle scite Smart Citations*(… |
+| 2 | https://www.scite.ai/ | What are Smart Citations? | Papers*( [What is Connected Papers?][31])* Litmaps Toggle Litmaps*( [What is Litmaps?][32])* scite.ai Toggle scite Smart Citations*( [What are Smart Citations?][33])* Code, Data, Media # Code, Data… |
 | 1 | https://arxiv.org/html/1108.0117v3 | HTML (experimental) | of the paper titled Software for Exact Integration of Polynomials over Polyhedra, by Jesus De Loera and 5 other authors [View PDF][9] [HTML (experimental)][10] Abstract: We are interested in the fast… |
-| 1 | https://arxiv.org/search/advanced | Advanced search | [1108.0117] Software for Exact Integration of Polynomials over Polyhedra Skip to main content Press Enter to search &middot; [Advanced search][1] --> # Mathematics > Metric Geometry… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=De+Loera,+J | Jesus De Loera | ( [v1][2]), last revised 2 Apr 2012 (this version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5],… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Dutra,+B | Brandon Dutra | 2 Apr 2012 (this version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6],… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Koeppe,+M | Matthias Koeppe | version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6], [Gregory… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Moreinis,+S | Stanislav Moreinis | Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6], [Gregory Pinto][7], [Jianqiu Wu][8] View… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Wu,+J | Jianqiu Wu | over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6], [Gregory Pinto][7], [Jianqiu Wu][8] View a PDF of the paper titled Software for Exact… |
-| 1 | https://info.arxiv.org/labs/index.html | Learn more about arXivLabs | these values and only works with partners that adhere to them. Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][45]. [Which authors of this paper… |
 | 1 | http://www2.macaulay2.com | — | 43 (2016). [doi]. [28] D. R. Grayson and M. E. Stillman, Macaulay2, a software system for research in algebraic geometry. Available at http://www2.macaulay2.com. [29] B. Gr¨unbaum, Convex polytopes.… |
 | 1 | https://arxiv.org/abs/2003.w13548 | — | Text Editions, Springer, Berlin, 2001. [doi]. [35] L. Kastner and M. Panizzut, Hyperplane arrangements in polymake, tech. report, 2020. [arXiv:2003.w13548]. [36] L. K¨uhne, The universality of the… |
 | 1 | https://oeis.org/A000290 | A000290 | cross-referenced from A003215 |
 | 1 | https://oeis.org/A000295 | A000295 | cross-referenced from A126277 |
 | 1 | https://www.oscar-system.org | — | der mathematischen Wis- senschaften, Springer, 1992. [40] Oscar, Open source computer algebra research system, version 0.15.0-dev, 2024. https://www.oscar-system.org. [41] J. Oxley, Matroid theory… |
-| 1 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | of Polynomials over Polyhedra, by Jesus De Loera and 5 other authors - [View PDF][9] - [HTML (experimental)][10] - [TeX Source][17] [view license][18] ### Current browse context: math.MG [< prev][19]… |
 | 1 | http://www.zib.de/PaperWeb/abstracts/ZR-02-17 | — | of point conﬁgurations and oriented matroids, in Proceedings of the Interna- tional Congress of Mathematical Software, 2002. http://www.zib.de/PaperWeb/abstracts/ZR-02-17. 38 J.-P. DUSSAULT, J.CH.… |
-| 1 | https://core.ac.uk/services/recommender | What is CORE? | Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][43])* Core recommender toggle CORE Recommender*( [What is CORE?][44])* - Author - Venue - Institution - Topic About… |
-| 1 | https://influencemap.cmlab.dev/ | What are Influence Flowers? | Toggle TXYZ.AI*( [What is TXYZ.AI?][42])* Related Papers # Recommenders and Search Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][43])* Core recommender toggle CORE… |
-| 1 | https://info.arxiv.org/help/mathjax.html | What is MathJax? | value for arXiv's community? ****[Learn more about arXivLabs][45]. [Which authors of this paper are endorsers?][46] \| Disable MathJax ( [What is MathJax?][47]) |
+| 1 | https://arxiv.org/abs/1811.03329v3 | arXiv:1811.03329v3 | Washington DC area illustrates the methods. Subjects: \| Econometrics (econ.EM) \| Cite as: \| [arXiv:1811.03329][7] [econ.EM] \| \| (or [arXiv:1811.03329v3][8] [econ.EM] for this version) \| \|… |
+| 1 | https://arxiv.org/html/1811.03329v3 | HTML (experimental) | maximum likelihood methods for binary response models with random coefficients, by Jiaying Gu and Roger Koenker [View PDF][5] [HTML (experimental)][6] Abstract: Single index linear models for binary… |
+| 1 | https://arxiv.org/search/econ?searchtype=author&amp;query=Gu,+J | Jiaying Gu | 2020 (this version, v3)] # Title: Nonparametric maximum likelihood methods for binary response models with random coefficients Authors: [Jiaying Gu][3], [Roger Koenker][4] View a PDF of the paper… |
+| 1 | https://arxiv.org/search/econ?searchtype=author&amp;query=Koenker,+R | Roger Koenker | v3)] # Title: Nonparametric maximum likelihood methods for binary response models with random coefficients Authors: [Jiaying Gu][3], [Roger Koenker][4] View a PDF of the paper titled Nonparametric… |
 | 1 | https://oeis.org/A000012 | A000012 | cross-referenced from A113743 |
 | 1 | https://oeis.org/A000124 | A000124 | cross-referenced from A003215 |
 | 1 | https://oeis.org/A000166 | A000166 | cross-referenced from A003215 |
 | 1 | https://oeis.org/A000217 | A000217 | cross-referenced from A003215 |
 | 1 | https://oeis.org/A000384 | A000384 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A000578 | A000578 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A000960 | A000960 | cross-referenced from A113743 |
-| 1 | https://oeis.org/A001263 | A001263 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A001399 | A001399 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A001498 | A001498 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A001651 | A001651 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A001844 | A001844 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A002024 | A002024 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A002061 | A002061 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A002378 | A002378 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A002407 | A002407 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A002491 | A002491 | cross-referenced from A113743 |
-| 1 | https://oeis.org/A003514 | A003514 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A005408 | A005408 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A005448 | A005448 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A005449 | A005449 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A005891 | A005891 | cross-referenced from A003215 |
 
-_73 further candidates not shown; they are cited once each._
+_109 further candidates not shown; they are cited once each._
