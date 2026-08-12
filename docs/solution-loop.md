@@ -249,15 +249,15 @@ the cycle is *for*: adding, or compressing.
 scholar, the pattern agent, and the invention exchange — and it is the step that
 breaks a loop reflection alone cannot.
 
-The invention exchange also runs at the end of *every* completed cycle, not
-only a stuck one. That gate was reachable in principle and was not reached in
-practice: `diversify` needs two consecutive unproductive attempts, which needs
-two completed attempt/judge/reflect cycles, and a run whose attempts take the
-better part of an hour spends its whole wall clock inside the first one. Across
-a day of live runs on three workspaces the inventor was spawned once, and
+The invention exchange also runs at the end of *every* completed cycle, not only
+a stuck one. That gate was reachable in principle and not in practice:
+`diversify` needs two consecutive unproductive attempts, which needs two
+completed attempt/judge/reflect cycles, and a run whose attempts take the better
+part of an hour spends its whole wall clock inside the first one. Across a day of
+live runs on three workspaces the inventor was spawned once, and
 `research/approaches/` — the ledger it writes — never existed on disk. The
-cheapest question in the runtime, "is there a different line of attack", was
-the one never asked.
+cheapest question in the runtime, "is there a different line of attack", was the
+one never asked.
 
 `open_invention` is the pattern agent's argument one role wider. A proposal is
 worth as much an attempt later, so nothing waits on it: the arm is detached at
