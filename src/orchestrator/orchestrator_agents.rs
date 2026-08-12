@@ -277,6 +277,55 @@ fn register_pattern_agent(
     subagents.register("pattern_finder", Arc::new(pattern), prompt)
 }
 
+/// Registers the inventor, the one role that is neither the run's model nor the
+/// run's turn cap.
+///
+/// Split out of [`register_support_agents`] for the reason the pattern agent
+/// was: it differs from its neighbours in three ways at once — the reasoning
+/// model, a widened turn budget, and a delegation bench — and inlining the
+/// argument for each buried the registrations either side of it.
+///
+/// The turn cap is the recent one. A reasoning model asked for three lines of
+/// attack with the mathematics named in each was being cut off at the run's
+/// 12,000-token cap with no tool call to show for it, so the widened budget has
+/// to reach both [`specialist_harness`], which sets how far a cut-off turn may
+/// be re-issued, and the registration, which sets what the first attempt asks
+/// for. See [`RunBudget::for_invention`].
+fn register_inventor(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let budget = parts.budget.for_invention();
+    let mut inventor = specialist_harness(
+        parts.model_for("inventor"),
+        budget,
+        "inventor",
+        parts.tracer,
+    );
+    if let Some(exa) = parts.exa.clone() {
+        register_resilient(&mut inventor, exa);
+    }
+    for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut inventor, tool);
+    }
+    for tool in parts.documents.tools() {
+        register_resilient(&mut inventor, tool);
+    }
+    // The one delegation bench outside the two planners. See [`INVENTION_BENCH`]
+    // for why the inventor has one and why it holds exactly one role.
+    for tool in subagents.tools(INVENTION_BENCH) {
+        register_resilient(&mut inventor, tool);
+    }
+    register_memory(&mut inventor, &parts.vector_store);
+    subagents.register_with_turn_cap(
+        "inventor",
+        Arc::new(inventor),
+        prompt,
+        budget.max_turn_output_tokens,
+    )
+}
+
 /// Registers the reflection, pattern, inventor, and librarian agents.
 ///
 /// Each gets only the tools its role needs: reflection has no research or
