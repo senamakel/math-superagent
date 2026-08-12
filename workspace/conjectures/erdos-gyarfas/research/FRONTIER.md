@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://link.springer.com/10.1007/s00493-021-4743-y?fromPaywallRec=true | Packing Directed Cycles Quarter- and Half-Integrally | Similar content being viewed by others ### [Erdős–Gyárfás conjecture for \(P_8\) -free graphs][9] Article 10 October 2022 ### [Packing Directed Cycles Quarter- and Half-Integrally][10] Article 21… |
 | 1 | https://dx.doi.org/10.5614/ejgta.2022.10.1.24 | http://dx.doi.org/10.5614/ejgta.2022.10.1.24 | Erdos-Gyárfás conjecture. #### Keywords cycle, cubic graph, Erdos-Gyarfas conjecture, distance #### Full Text: [PDF][38] DOI: [http://dx.doi.org/10.5614/ejgta.2022.10.1.24][39] #### References J.… |
 
-_290 further candidates not shown; they are cited once each._
+_292 further candidates not shown; they are cited once each._
