@@ -133,6 +133,35 @@ find_linear_recurrence returned an order-6 const-coeff recurrence fitting H(2..1
 perfectly, but it diverges from published A186085 at n=6. Direct proof that a
 finite-window recurrence fit is not predictive even when it fits exactly.
 
+## NEW PER-HISTOGRAM MULTIPLICITY DATA (this tool-builder task)
+
+Program code/amoeba/per_hist_mult_13_14.py drives the fixed-width bitmask BFS
+(lib.amoeba.next_level_bits) and, at N=13 and N=14, computes the FULL
+(level-histogram -> multiplicity) mapping: for each config, histogram a_k =
+#cubes at level k=x+y+z, accumulated into a Counter. The complete mapping is
+written to code/out/per_hist_mult_13_14.txt.
+
+Verified (both in-program and by an independent re-parse of the output file):
+- N=13: sum of multiplicities = 1749267 = D(13); distinct histograms = 166.
+- N=14: sum of multiplicities = 5949063 = D(14); distinct histograms = 277.
+The 166,277 distinct-histogram counts match the A186085 extension already
+recorded (H(13)=166, H(14)=277), an independent cross-check.
+
+Timings: BFS steps N=13 8.34s, N=14 32.48s; histogram passes N=13 11.46s,
+N=14 45.93s; total run 101.6s. Kept under the 2 GiB cap by holding only the
+frontier + the small Counter (<=277 keys) and gc.collect() between levels.
+
+Observations from the data: every histogram's nonzero levels form a smooth
+composition (|Δ|<=1 between adjacent nonzero a_k, first and last part 1) —
+consistent with the A186085 shape-family identification. The N=14 all-smooth
+histogram 0 2 2 2 2 2 2 2 2 2 2 2 2 2 3 (max level M=N, all diagonal-ish)
+has multiplicity 1594323 = 3^13, exactly the R(14,14)=3^13 diagonal count;
+multiplicities are frequently powers of 3 (e.g. 3^11, 3^12) with some
+composite factors (90=2·3^2·5, etc.) — the per-histogram multiplicity
+structure is the open refinement toward D(N)=sum_hist mult(hist). This new
+file gives the N=13,14 multiplicity data that the pattern-finder's per-hist DP
+must reproduce.
+
 ## Files
 - code/inventor/check_recurrence.py — tool_builder target verifying CLAIM A
   (top-cap deterministic collapse) and CLAIM B (D(N+1)=sum f(C)) on BFS

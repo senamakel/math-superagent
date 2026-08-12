@@ -4,12 +4,7 @@ mult = 2^(2 n4) * 3^b.  Then print each distinct multiset with its b, so we
 can hunt a closed form for b as a function of the multiset."""
 import glob, collections
 from lib.datafiles import sorted_key
-
-def f23(v):
-    a=b=0
-    while v%2==0: v//=2; a+=1
-    while v%3==0: v//=3; b+=1
-    return a,b,v
+from lib.valuations import f23
 
 seen=collections.OrderedDict()   # multiset -> (n4,b) (should be well-defined)
 for path in sorted(glob.glob('data/level_*.txt'), key=sorted_key):

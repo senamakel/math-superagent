@@ -4,12 +4,7 @@ hunt a closed form for b (3-exponent). Features: n4, n5, n3, n6, n7 counts,
 nslots (#levels), and the histogram vector itself."""
 import glob, collections
 from lib.datafiles import sorted_key
-
-def f23(v):
-    a=b=0
-    while v%2==0: v//=2; a+=1
-    while v%3==0: v//=3; b+=1
-    return a,b,v
+from lib.valuations import f23
 
 rows=[]
 for path in sorted(glob.glob('data/level_*.txt'), key=sorted_key):

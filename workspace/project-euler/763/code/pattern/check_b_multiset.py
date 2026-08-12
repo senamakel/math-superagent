@@ -5,12 +5,7 @@
 Print all (valuecounts -> set of b) where the set has size>1, i.e. arrangement matters."""
 import glob, collections
 from lib.datafiles import sorted_key
-
-def f23(v):
-    a=b=0
-    while v%2==0: v//=2; a+=1
-    while v%3==0: v//=3; b+=1
-    return a,b,v
+from lib.valuations import f23
 
 groups=collections.defaultdict(set)
 examples=collections.defaultdict(list)
