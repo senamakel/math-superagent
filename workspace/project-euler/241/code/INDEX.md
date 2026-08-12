@@ -5,6 +5,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `AGENTS.md` | _(undescribed)_ |
-| `brute.py` | Naive brute force for Project Euler 241: finds all n<=N with perfection quotient p(n)=sigma(n)/n equal to k+1/2 for integer k, i.e. 2*sigma(n)/n an odd integer. Sieves smallest-prime-factor up to N, computes sigma(n) from spf factorisation via the multiplicative formula, prints n with 2*sigma % n == 0 and odd (2*sigma//n). CLI arg = max N (default 1e6). Verified: sigma(6)=12; sigma values agree with independent trial-division sigma over 1..200000; the qualifying set {2,24,4320,4680,26208} (k = 1,2,3,3,3) reproduced by a direct trial-division oracle up to 1e6. |
-| `out.md` | Output directory for program artifacts. |
+| `brute.py` | Oracle brute force for PE241: sieve spf up to N, recover sigma(n), keep n with 2*sigma(n)/n an odd integer, print n, sigma, p(n) reduced, k=(2p-1)/2. Confirmed sigma(6)=12. For N=10^7 (5.52s) finds n: 2(k=1), 24(k=2), 4320, 4680, 26208 (k=3), 8910720 (k=4); reconfirms 2,24,4320,4680,26208 for the smaller range; sum <= 10^7 = 8945954. |
+| `check_structure.py` | _(undescribed)_ |
+| `check_structure_fast.py` | _(undescribed)_ |
+| `classify_terms.py` | _(undescribed)_ |
+| `hemiperfect_dfs.py` | Reference implementation of the forced-denominator cancellation DFS for hemiperfect numbers <= 10^18 (template; not executed in this environment — no shell available). Validates the recursion described in the report. |
+| `maxab.py` | _(undescribed)_ |
+| `quotients.py` | _(undescribed)_ |
 | `seqgen.py` | _(undescribed)_ |
+| `seqsieve.py` | _(undescribed)_ |
+| `verify_2adic.py` | _(undescribed)_ |

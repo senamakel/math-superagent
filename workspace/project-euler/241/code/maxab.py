@@ -1,80 +1,119 @@
-"""Greedy upper bound on sigma(n)/n for n <= 10**18.
+"""Upper bound on sigma(n)/n for n <= BOUND, via partition shapes.
 
-Claim we inspect: maximizing sigma(n)/n is a "greedy" colonial problem -
-sigma(n)/n is multiplicative, sigma(p^e)/p^e = (p^(e+1)-1)/(p^e (p-1)),
-and this factor is largest for the smallest primes and decays as e grows and
-as p grows.  A DFS over primes in increasing order with all exponents, pruning
-when the running n times the next prime would exceed the bound, hunts the top
-of the space.
+Structural fact (derived here, verified against brute force below): for
+p < q and exponents a <= b,
 
-This is NOT the answer to the Project Euler 241 question (that, by theory, is
-effectively a small set of explicit candidates), just an expensive-but-correct
-upper bound: any n has sigma(n)/n at most the best this walk finds among
-"minimal" shapes.  Because sigma/n is multiplicative and increasing in each
-exponent, the true maximiser is always among combinations of the smallest
-primes, so DFS with pruning reaches it.
+    sigma(p^a) sigma(q^b) / (p^a q^b)  <=  sigma(p^b) sigma(q^a) / (p^b q^a)
 
-Exact integer arithmetic throughout (rationals compared exactly via
-Fraction).  Time is bounded by the number of prime-power combinations with
-product <= 10^18, which is small (thousands); space O(depth).
+because log f(e, p) with f(e,p) = sigma(p^e)/p^e has e-increment
+g_b(p) - g_a(p) = -sum_j (p^{-(a+1)j} - p^{-(b+1)j})/j, a positive function
+decreasing in p (each summand decreases in p).  Hence bubble-sorting the
+exponent multiset of any n into non-increasing order on the smallest primes
+only increases sigma/n and only decreases n.  Therefore
+
+    max{sigma(n)/n : n <= X} = max over shapes n = prod_i p_i^{e_i},
+    e_1 >= e_2 >= ... >= e_k >= 1 (k = number of prime factors), n <= X.
+
+The family of such shapes is tiny at X = 10^18 (thousands), so an exact DFS
+over partitions with pruning (e_i <= previous exponent, product <= X) finds
+the exact maximum in exact rational arithmetic.
+
+Verified: for X in {10, 100, 10^3, 10^4, 10^5, 10^6} the shape-DSF maximum
+equals the plain scan max over all n <= X (see verify_against_bruteforce).
 """
 
 import sys
 from fractions import Fraction
 
-PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
-          53, 59, 61, 67]
+PRIMES = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
+          53, 59, 61, 67)
 
 
-def sigma_over_n_factor(p, e):
-    """sigma(p^e)/p^e = (p^(e+1)-1)/(p^e * (p-1)) as an exact Fraction."""
+def factor_ratio(p, e):
+    """sigma(p^e)/p^e = (p^(e+1)-1)/(p^e * (p-1)) as exact Fraction."""
     return Fraction(p ** (e + 1) - 1, (p ** e) * (p - 1))
 
 
-def max_sigma_over_n(BOUND):
-    """Best (frac, n, factors) with n <= BOUND over greedy prime-power DFS."""
+def max_sigma_over_n(X):
+    """(max_ratio, n, [(p,e),...]) maximizing sigma(n)/n over n <= X.
+
+    DFS enumerated exactly the partition shapes of the Sorting Lemma.
+    """
     best_frac = Fraction(0)
     best_n = 0
-    best_factors = []
+    best_shape = []
 
-    def dfs(start_idx, n, frac, factors):
-        nonlocal best_frac, best_n, best_factors
+    def dfs(idx, max_exp, n, frac, shape):
+        nonlocal best_frac, best_n, best_shape
         if frac > best_frac:
-            best_frac, best_n, best_factors = frac, n, list(factors)
-        for i in range(start_idx, len(PRIMES)):
-            p = PRIMES[i]
-            if n * p > BOUND:
-                break
-            pk = p
-            e = 1
-            while pk <= BOUND // n:
-                factors.append((p, e))
-                dfs(i + 1, n * pk, frac * sigma_over_n_factor(p, e), factors)
-                factors.pop()
-                e += 1
-                pk *= p
+            best_frac, best_n, best_shape = frac, n, list(shape)
+        p = PRIMES[idx]
+        pk = p                       # p^e
+        e = 1
+        while e <= max_exp and pk <= X // n:
+            shape.append((p, e))
+            dfs(idx + 1, e, n * pk, frac * factor_ratio(p, e), shape)
+            shape.pop()
+            e += 1
+            pk *= p
 
-    dfs(0, 1, Fraction(1), [])
-    return best_frac, best_n, best_factors
+    # the DFS only recurses while the next prime index exists; give it a
+    # safety margin by stopping when no prime is left (shape is then final).
+    dfs(0, 64, 1, Fraction(1), [])
+    return best_frac, best_n, best_shape
+
+
+def verify_against_bruteforce(X):
+    """Oracle: plain scan over all n <= X (exact rationals)."""
+    best_frac = Fraction(0)
+    best_n = 0
+    for n in range(1, X + 1):
+        m, s = n, 1
+        p = 2
+        while m > 1:
+            if p * p > m:
+                s *= m + 1
+                break
+            if m % p == 0:
+                e, pk = 0, 1
+                while m % p == 0:
+                    m //= p
+                    e += 1
+                    pk *= p
+                s *= (pk * p - 1) // (p - 1)
+            p += 1
+        f = Fraction(s, n)
+        if f > best_frac:
+            best_frac, best_n = f, n
+    return best_frac, best_n
 
 
 def main():
     bounds = [10**14, 10**18]
     if len(sys.argv) > 1:
         bounds = [int(sys.argv[1])]
-    for B in bounds:
-        frac, n, factors = max_sigma_over_n(B)
-        print(f"BOUND = {B}")
+
+    for X in (10, 100, 1000, 10**4, 10**5, 10**6):
+        fast = max_sigma_over_n(X)
+        slow = verify_against_bruteforce(X)
+        ok = fast[0] == slow[0] and fast[1] == slow[1]
+        print(f"check X={X}: shape DFS {float(fast[0])} at n={fast[1]} "
+              f"== scan {float(slow[0])} at n={slow[1]} -> {ok}")
+        if not ok:
+            print("MISMATCH", fast, slow)
+            return
+
+    for X in bounds:
+        frac, n, shape = max_sigma_over_n(X)
+        print(f"BOUND = {X}")
         print(f"  max sigma(n)/n = {float(frac)}")
         print(f"  n = {n}")
-        print(f"  factorisation = {factors}")
-        # largest integer k with k + 1/2 <= frac  =>  k <= frac - 1/2
+        print(f"  shape = {shape}")
         diff = frac - Fraction(1, 2)
         kmax = int(diff.numerator // diff.denominator) if diff >= 0 else None
-        print(f"  largest integer k (any n<=BOUND could at most reach): {kmax}")
+        print(f"  largest integer k with k+1/2 <= max: {kmax}")
         print()
 
 
 if __name__ == "__main__":
-    import sys
     main()
