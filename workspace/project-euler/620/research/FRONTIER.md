@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://www.tec-science.com/optics/ | Optics | of gases][29] - [Heat][30] - [Thermodynamic processes in closed systems][31] - [Thermodynamic processes in open systems][32] - **[Optics][33] - [Geometrical optics][34] ** Sign in Welcome! Log into… |
 | 1 | https://drivetrainhub.com/gears | Gears App | geartrain clearly demonstrates its unique geometric characteristics. [image: Spur planetary geartrain] Planetary geartrain modeled in [Gears App][3] Most commonly, planetary geartrains have a sun… |
 
-_154 further candidates not shown; they are cited once each._
+_167 further candidates not shown; they are cited once each._
