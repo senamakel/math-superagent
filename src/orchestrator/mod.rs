@@ -2523,8 +2523,55 @@ fn validate_complexity(
                 .into(),
         ));
     }
+    if SEARCH_METHODS
+        .iter()
+        .any(|method| normalized.contains(method))
+    {
+        return Err(tinyagents::TinyAgentsError::Validation(
+            "this names a search strategy rather than a cost, and a search over candidate \
+             solutions is what the method policy prohibits. If it is the bounded oracle of rule \
+             8, set oracle_bound to the input bound that keeps it small. If it is the real \
+             method, state what a solution *is* and hand the search to an engine: delegate to \
+             sat_solver, which encodes a finite decision or optimisation problem for CP-SAT, \
+             SAT, or MILP. Otherwise give the actual complexity of a polynomial formulation"
+                .into(),
+        ));
+    }
     Ok(())
 }
+
+/// Search strategies over candidate solutions, matched in the declared prose.
+///
+/// The gate asked for a cost and never checked it was one. A live run on
+/// Project Euler 185 — sixteen digits, so ten quadrillion candidates, and the
+/// one problem in the archive where CP-SAT is the canonical method — declared
+/// `complexity: "backtracking with pruning"` against `complexity_class:
+/// "polynomial"` and was allowed through. That string names a method and
+/// states no bound at all, so neither the class check nor the notation check
+/// had anything to catch: the forbidden list looks for `2^n` and `n!`, and
+/// prose that mentions no quantity contains neither.
+///
+/// This is the third form of the same evasion the rest of this function
+/// documents, and it is caught the same way: mechanically, at the point of
+/// execution, rather than by asking a prompt to be believed. The role that
+/// exists for exactly this is `sat_solver`, and the refusal names it, because
+/// a gate that blocks the wrong method without pointing at the right one costs
+/// the run a turn to rediscover.
+///
+/// The list is deliberately four unambiguous terms. `enumerate` is not among
+/// them: "enumerate the divisors of n" is an honest description of an
+/// `O(√n)` method, and a gate that refused it would punish accuracy, which is
+/// the failure this function was rewritten once already to stop doing. Each
+/// term here essentially never describes a polynomial method that is not a
+/// bounded oracle — and a bounded oracle declares `oracle_bound` and never
+/// reaches this check.
+const SEARCH_METHODS: [&str; 5] = [
+    "backtrack",
+    "bruteforce",
+    "brute-force",
+    "branchandbound",
+    "exhaustive",
+];
 
 fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
     call.arguments
