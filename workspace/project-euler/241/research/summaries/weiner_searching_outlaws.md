@@ -21,7 +21,7 @@ Re-statement of the parity/denominator-divides fact (any I(n)=r/s in lowest term
 id: weiner-outlaw-no-bound
 statement: The abundancy-outlaw search techniques (odd-perfect equivalence, t-bounds for (sigma(N)+t)/N) classify rationals that fail to be abundancy indices; they do not enumerate n attaining a given k+1/2.
 hypotheses: none needed beyond the classification direction
-holds-here: n/a (classified as not operative for PE 241)
+holds-here: no
 status: sourced
 bearing: not usable for the run's enumeration; parity corroboration only
 anchor: research/sources/weiner_searching_outlaws.full.md
