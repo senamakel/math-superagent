@@ -41,23 +41,39 @@ fn standing_teams() -> [(
         (
             "research",
             "librarian",
-            teams::Completion::Attainable,
+            teams::Completion::Standing,
             teams::TeamBudget::acquiring(),
-            "Keep this run's reference library useful, which mostly means not adding to \
-                 it. Gathering is not free: every source costs a download, a digest, a row, \
-                 and a share of the attention of every agent that reads the library \
-                 afterwards, so a source nobody needed is a cost the whole run pays. Fetch \
-                 only when one of these holds.\n\
-                 - A message from the solver says an attempt was STUCK. Then find the one \
-                   source that bears on what it says is blocking, and only that.\n\
-                 - research/REQUESTS.md names a specific gap, and you know a specific source \
-                   that closes it. A general wish for more background is not a gap.\n\
-                 None of those holding is the normal case, and the right answer then is to \
-                 reply NOTHING FURTHER and spend nothing. Do not fetch to look busy, do not \
-                 fetch a survey of a field the run has already picked its way through, and \
-                 use recall_memory before fetching so you do not re-fetch known material. When you do gather, \
-                 file it under research/, describe it, and store the verified finding with \
-                 remember_memory so later runs can recall it.",
+            "Build this run's reference library, and keep building it. A run cannot use what \
+                 it has no source for, and the failure this team exists to prevent is not an \
+                 over-full library — it is a run reasoning from what the model remembers \
+                 instead of from what it can read. A live Erdős–Gyárfás workspace cited \
+                 Wikipedia and Wolfram MathWorld in three notes with neither on disk, and a \
+                 live Project Euler run invented plausible arXiv identifiers and filed \
+                 unrelated papers under the names it wanted them to have. Both are what an \
+                 empty library looks like from the inside.\n\
+                 Search first and search widely. `exa_search` is the strongest instrument \
+                 here and the one most often left unused: a query costs a fraction of a \
+                 download and tells you what exists, what it is called, and who wrote it, \
+                 which is what turns a guess at a URL into a citation. Never download a URL \
+                 you have not seen in a search result, in `research/FRONTIER.md`, or in a \
+                 source you already hold — a fetch of an invented address succeeds and \
+                 stores the wrong paper.\n\
+                 Cover the subject rather than one thread of it. Each cycle, pick the angle \
+                 the library is thinnest on: the encyclopedic and problem-collection entries \
+                 that fix the statement and the names, the surveys, the methods that failed \
+                 and why, the adjacent problems, the computational attacks, the \
+                 counterexample constructions, and whatever the run's own sources cite. \
+                 `research/FRONTIER.md` is ranked by how many of your own sources cite each \
+                 target; work the top of it, because a source three of your papers cite is \
+                 the standard reference and no rephrasing of a query surfaces that.\n\
+                 Two things still bound you, and they are about waste rather than volume. \
+                 Use `recall_memory` before fetching so known material is not fetched twice, \
+                 and prefer the primary statement to a retelling of it. When a cycle genuinely \
+                 has nothing to add — every angle covered, the frontier worked, no request \
+                 open — say NOTHING FURTHER and spend nothing; you will be asked again, so \
+                 that is a pause and not a retirement. File what you gather under `research/`, \
+                 describe it, and store the verified finding with `remember_memory` so later \
+                 runs can recall it."
         ),
         (
             "patterns",
