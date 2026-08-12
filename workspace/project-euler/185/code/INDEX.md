@@ -4,5 +4,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-
-_This folder is empty._
+| `AGENTS.md` | _(undescribed)_ |
+| `brute.py` | _(undescribed)_ |
