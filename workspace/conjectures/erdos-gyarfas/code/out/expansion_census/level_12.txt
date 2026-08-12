@@ -1,0 +1,7 @@
+n=12  classes=7  avoidsC4=1  avoidsC4C8=0
+n classes avoidsC4 avoidsC4C8
+4 1 0 0
+6 1 0 0
+8 1 0 0
+10 3 1 0
+12 7 1 0
