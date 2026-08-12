@@ -26,7 +26,7 @@ cubes are all empty. The dividing amoeba disappears.
 
 ## Completion criteria
 
-- brute.py reproduces D(2)=3 and D(10)=44499 (done: both matched).
+- brute.py reproduces D(2)=3 and D(10)=44499 (done: both matched; this tool-builder run re-ran `python code/brute.py`, output `D(2) = 3`, `D(10) = 44499`, both matched).
 - brute.py at D(20) times out at 50s (state space ~9.2e9) — out of reach for
   the oracle, as expected; it is a definition-checker, not a solver.
 - solution.py agrees with brute.py on every case brute.py can reach and
