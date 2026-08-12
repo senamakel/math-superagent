@@ -9,7 +9,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `hist_counts_12.txt` | _(undescribed)_ |
 | `hist_counts_2.txt` | _(undescribed)_ |
 | `hist_counts_3.txt` | _(undescribed)_ |
-| `hist_counts_4.txt` | _(undescribed)_ |
+| `hist_counts_4.txt` | Output data: the histogram->count table for N=4, one row per distinct level-histogram with its config count; written by code/pattern/hist_tables.py. Sum of counts = D(4)=30. |
 | `hist_counts_5.txt` | _(undescribed)_ |
 | `hist_counts_6.txt` | _(undescribed)_ |
 | `hist_counts_7.txt` | _(undescribed)_ |
@@ -26,3 +26,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `level_7.txt` | Output data: one line per reachable PE763 config at N=7, format level-hist then max-level M then bbox extents dx dy dz. All 1134 configs (D(7)=1134), written by code/amoeba_extend.py. |
 | `level_8.txt` | Output data: one line per reachable PE763 config at N=8, format level-hist then max-level M then bbox extents dx dy dz. All 3855 configs (D(8)=3855), written by code/amoeba_extend.py. |
 | `level_9.txt` | Output data: one line per reachable PE763 config at N=9, format level-hist then max-level M then bbox extents dx dy dz. All 13086 configs (D(9)=13086), written by code/amoeba_extend.py. |
+py. |
