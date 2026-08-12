@@ -1,12 +1,12 @@
 # Go-wide literature — surveys, failed methods, adjacent problems, and constructions
 
-Opened by directive: the library's 23 sources are concentrated on one method
+Opened by directive: the library's 28 sources are concentrated on one method
 (structural minimal-counterexample / Carr-Markström). Cover what is missing.
 
 ## Why
 
-The run has deep coverage of the Carr-Markström structural approach but almost
-nothing on:
+The run has deep coverage of the Carr-Markström structural approach and the
+SAT/CEGAR computational thread but almost nothing on:
 - **Surveys** — what surveys exist of the conjecture or cycle-length problems?
 - **Failed methods** — which approaches have been tried and rejected, and why?
 - **Adjacent problems** — cycle spectra, girth-vs-degree, Ramsey-type cycle
@@ -15,50 +15,91 @@ nothing on:
   attempts beyond the two that are already here (Royle-Markström and
   ArjunBalaji79).
 - **Counterexample constructions** — Exoo's G78/G420 are here; what else has
-  been built? What near-misses (like the Markström 24-graphs) exist for higher
-  powers of two?
+  been built?
 
-## Canonical reference tier — landed
+## Priorities from directive (2025-07-14)
 
-These were downloaded on directive and are now on disk:
+These are ordered. The directive says to work the top of FRONTIER.md first,
+then widen deliberately.
 
-- `research/sources/wikipedia-erdos-gyarfas.full.md` — the Wikipedia article, with references and external links
-- `research/summaries/markstrom-graph-mathworld.md` — already here; MathWorld on the Markström graph
-- `research/sources/ucsd-erdos-problems-64.md` — the Erdős Problems page #64 (via Wayback Machine; live page is down)
-- `research/sources/bibliotekanauki-30148697.full.md` — Salehi, Esfandiari, Shirdareh, Bibak: "On the Erdős–Gyárfás conjecture in claw-free graphs" (Theorems 1–9, cubic claw-free bound ≥114 vertices)
+### 1. FRONTIER.md top tier — download now
 
-## Wikipedia-cited papers — partially landed
+From the frontier table (ranked by citation count within the library):
 
-- `research/sources/sudakov-verstraete-2008.full.md` — Sudakov & Verstraëte 2008 (arXiv:0707.2117) — downloaded
-- `research/sources/verstraete-2005.md` — Verstraëte 2005 (doi:10.1002/jgt.20072) — downloaded
-- `research/sources/daniel-shauger-2001.full.md` — **Google Scholar search results, NOT the actual paper** — paper still missing
-- `research/sources/shauger-1998.full.md` — **Google Scholar search results, NOT the actual paper** — paper still missing
+- `download_document` on every URL in the top two tiers (cited-by ≥2) that
+  is not already on disk as a full source
+- The Erdos-problems entry #64: the summary exists
+  (`research/summaries/ucsd-erdos-problems-64.md`) but the source download
+  does not — fetch it now
+- Litmaps (cited-by 7) is a tool link, not a source — skip
+- OEIS cross-references (cited-by 3, 17 entries) are sequence pages — useful
+  but low priority vs surveys; download only when a specific sequence is
+  needed for a claim
+- Avery Carr author search (cited-by 2) — already in library; only download if
+  a new Carr preprint has appeared since the last fetch
+- Modal (cited-by 2) — tool link, skip
 
-## Wikipedia-cited papers — not yet attempted
+### 2. Widen — surveys and adjacent theory
 
-- Nowbandegani & Esfandiari 2011 (14th Workshop, Szklarska Poręba — bipartite counterexample ≥30 vertices)
+The directive names these specifically:
 
-## Wikipedia external links — both unreachable
+- **Cycle spectra of graphs with given minimum degree** — the general theory
+  the conjecture sits inside. What is known about the set of cycle lengths in
+  a graph with δ≥k?
+- **Bondy–Vince** on cycle lengths — a classical result about the number of
+  distinct cycle lengths in a graph with minimum degree constraints
+- **Erdős–Faudree–Rousseau–Schelp** on cycle lengths — the foundational paper
+  on how many distinct cycle lengths a graph of given order/degree must have
+- **Sudakov–Verstraëte 2008** — already downloaded; now get what cites it
+  (Google Scholar forward citations, Semantic Scholar "cited by")
+- **Markström's original computational notes** — the actual writeup of the
+  n<29 cubic search, not just the extremal-graphs paper digest
+- **Royle's original computational notes** — the n<16 general search; the
+  run has a summary (`research/summaries/royle-2n-conjecture.md`) but no
+  primary source
+- **Gould's cycle survey** — "Cycles and Paths in Graphs" or equivalent; the
+  standard survey reference on cycle-length problems
+- **Girth/degree extremal literature** — what is the smallest graph with δ≥3
+  and girth g? What is known about unavoidable cycle lengths at given girth?
 
-- Exoo catalog (`cs.indstate.edu/ge/CYCLES`) — 404, not in Wayback Machine
-- West open-problems (`math.uiuc.edu/~west/openp/2powcyc.html`) — connection failed
+### 3. Wikipedia-cited papers — fill the gaps
 
-## Markström full PDF — already in library
+- **Daniel–Shauger 2001**: on disk as Google Scholar search results only
+  (NOT the actual paper)
+- **Shauger 1998**: same — search results, not the paper
+- **Nowbandegani–Esfandiari 2011**: not yet attempted
+- **Verstraëte 2005**: downloaded (`research/sources/verstraete-2005.md`) —
+  check it is the full paper, not a stub
 
-Deduped against `research/summaries/markstrom-extremal-graphs.md`; §4 content already digested.
+### 4. External links — retry or replace
+
+- Exoo catalog (`cs.indstate.edu/ge/CYCLES`) — 404; try Wayback Machine
+  explicitly, and try Exoo's personal page / arXiv page as fallback
+- West open-problems (`math.uiuc.edu/~west/openp/2powcyc.html`) — connection
+  failed; try again, try Wayback, try West's current page at a different host
+
+## Method
+
+Every download lands in `research/sources/` with the URL in the file header.
+After each batch, the scholar writes summaries to `research/summaries/` and
+the librarian updates `research/FRONTIER.md` (which rewrites itself on each
+download). A downloaded source that is only search results must be marked as
+such and re-attempted.
 
 ## Status
 
-- [x] Canonical four downloaded (Wikipedia, MathWorld, UCSD #64, bibliotekanauki 30148697)
-- [x] Sudakov–Verstraëte 2008 downloaded
-- [x] Verstraëte 2005 downloaded
-- [ ] Daniel–Shauger 2001 — only Google Scholar results; actual paper needed
-- [ ] Shauger 1998 — only Google Scholar results; actual paper needed
-- [ ] Nowbandegani–Esfandiari 2011 — not yet attempted
-- [ ] Exoo catalog — unreachable (404, no Wayback copy)
-- [ ] West open-problems — unreachable (connection failed)
-- [ ] Surveys identified and downloaded
-- [ ] Failed methods documented
-- [ ] Adjacent problems covered
-- [ ] Computational attack landscape mapped
-- [ ] Counterexample constructions catalogued
+- [ ] FRONTIER.md top-tier downloads
+- [ ] Erdos-problems #64 source download
+- [ ] Bondy–Vince located and downloaded
+- [ ] Erdős–Faudree–Rousseau–Schelp located and downloaded
+- [ ] Sudakov–Verstraëte forward citations mapped
+- [ ] Markström original computational notes downloaded
+- [ ] Royle original computational notes downloaded
+- [ ] Gould's cycle survey located and downloaded
+- [ ] Girth/degree extremal literature surveyed
+- [ ] Daniel–Shauger 2001 actual paper downloaded
+- [ ] Shauger 1998 actual paper downloaded
+- [ ] Nowbandegani–Esfandiari 2011 downloaded
+- [ ] Verstraëte 2005 verified as full paper
+- [ ] Exoo catalog retried (Wayback)
+- [ ] West open-problems retried (Wayback)
