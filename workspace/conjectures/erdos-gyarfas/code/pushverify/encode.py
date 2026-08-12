@@ -23,125 +23,111 @@ G would be a model of the final CNF.  Hence UNSAT of the final CNF = no graph
 on n vertices avoids 4, 8, and 16 simultaneously.  The C4 part is direct, not
 lazy, so it is never left to the loop.
 
-Symmetry breaking: we run without a lex-leader break (correctness over speed;
-see driver), and instead validate every returned model independently.
+All functions take n explicitly; no module-level state.
+
+Exports:
+    edge_id(i, j, n)        -> 1-based variable of edge {i,j}, a bijection
+    arg_edge_id(eid, n)     -> (i,j) with i<j  (inverse of edge_id)
+    build_base(n)           -> (CNF with degree>=3 + no-C4, top_var)
+    blocking_clause(cycle, n) -> [neg vars] forbidding that specific cycle
+    find_bad_cycles(G, n)   -> set of vertex-tuples of all C4/C8/C16 in G
 """
+from itertools import combinations
+
 from pysat.formula import CNF
 from pysat.card import CardEnc, EncType
-from pysat.solvers import Cadical153
 
-from lib.cycle_oracle import oracle
 import networkx as nx
 
 
-def edge_id(i, j):
-    """Return variable number for undirected edge (i,j), 1-based for pysat."""
+# ---------------------------------------------------------------------------
+# edge variable bijections
+# ---------------------------------------------------------------------------
+
+def edge_id(i, j, n):
+    """1-based variable for undirected edge (i,j), 0<=i<j<n.
+
+    Bijection: pairs (0,1..n-1), (1,2..n-1), ... map to 1..C(n,2).
+    Offset before row i: i*(n-1) - i*(i-1)/2 (that many pairs with first
+    index < i), then position j-i within row i.
+    """
     if i > j:
         i, j = j, i
-    # bijection: (i,j), 0<=i<j<n  ->  1 .. C(n,2)
-    # use the standard row index
-    return (i * (2 * n - i - 1)) // 2 + (j - i) + 1
+    return i * (n - 1) - i * (i - 1) // 2 + (j - i)
 
 
-n = None  # module-level n for edge_id; set by build_base
+def arg_edge_id(eid, n):
+    """Inverse of edge_id: given 1-based variable, return (i, j), i<j."""
+    for i in range(n):
+        lo = i * (n - 1) - i * (i - 1) // 2 + 1
+        hi = i * (n - 1) - i * (i - 1) // 2 + (n - 1 - i)
+        if lo <= eid <= hi:
+            return i, i + (eid - lo) + 1
+    raise ValueError(f"edge id {eid} out of range for n={n}")
 
 
-def _set_n(nn):
-    global n
-    n = nn
+# ---------------------------------------------------------------------------
+# the CNF
+# ---------------------------------------------------------------------------
 
-
-def build_base(nn):
-    """CNF with degree>=3 and no-C4 constraints. Returns (cnf, var_count)."""
-    global n
-    _set_n(nn)
+def build_base(n):
+    """CNF: degree(u)>=3 for all u, and no 4-cycle.  Returns (cnf, top_var)."""
     cnf = CNF()
-    top = n * (n - 1) // 2
+    top = n * (n - 1) // 2  # highest edge variable
 
-    def eid(i, j):
-        if i > j:
-            i, j = j, i
-        return (i * (2 * n - i - 1)) // 2 + (j - i) + 1
-
-    # degree(u) >= 3 for every vertex u
+    # degree(u) >= 3: sequential-counter cardinality, incremental nv
     for u in range(n):
-        lits = [eid(u, v) for v in range(n) if v != u]
+        lits = [edge_id(u, v, n) for v in range(n) if v != u]
         enc = CardEnc.atleast(lits=lits, bound=3, top_id=top,
                               encoding=EncType.seqcounter)
         top = enc.nv
         cnf.extend(enc.clauses)
 
-    # no 4-cycle: for each 4-subset, forbid each of the 3 distinct cycles
-    from itertools import combinations
+    # no 4-cycle: for each 4-subset, forbid each of the 3 distinct cycles on
+    # those vertices (the 3 cycles use 4 of the 6 edges each; every C4 of G is
+    # one of these, so the clauses forbid exactly the C4s).
     for (a, b, c, d) in combinations(range(n), 4):
-        verts = [a, b, c, d]
-        # 3 pairings of perfect matchings' complements: the three 4-cycles are
-        # a-b-c-d-a, a-b-d-c-a, a-c-b-d-a  (each uses 4 of the 6 edges)
+        e = lambda i, j: edge_id(i, j, n)  # noqa: E731
         cycles = [
-            [eid(a, b), eid(b, c), eid(c, d), eid(d, a)],
-            [eid(a, b), eid(b, d), eid(d, c), eid(c, a)],
-            [eid(a, c), eid(c, b), eid(b, d), eid(d, a)],
+            (e(a, b), e(b, c), e(c, d), e(d, a)),
+            (e(a, b), e(b, d), e(d, c), e(c, a)),
+            (e(a, c), e(c, b), e(b, d), e(d, a)),
         ]
         for cyc in cycles:
             cnf.append([-lit for lit in cyc])
-    # fix local n
     return cnf, top
 
 
-def model_to_graph(model):
-    """Extract the graph from a solver model (list of ints)."""
-    G = nx.Graph()
-    G.add_nodes_from(range(n))
-    for lit in model:
-        if lit > 0:
-            # decode edge id to (i,j)
-            eid = lit
-            # find i: smallest such that i*(2n-i-1)/2 >= eid - 1... we stored
-            # id = (i*(2n-i-1))//2 + (j-i) + 1 with 0<=i<j<n
-            found = None
-            for i in range(n):
-                lo = (i * (2 * n - i - 1)) // 2 + 1          # j = i+1 -> id min
-                hi = (i * (2 * n - i - 1)) // 2 + (n - 1 - i) + 1  # j=n-1 -> id max
-                if lo <= eid <= hi:
-                    j = i + (eid - lo) + 1
-                    found = (i, j)
-                    break
-            if found is not None:
-                G.add_edge(*found)
-            else:
-                raise ValueError(f"bad edge id {eid}")
-    return G
+# ---------------------------------------------------------------------------
+# lazy blocking helpers
+# ---------------------------------------------------------------------------
 
+def find_bad_cycles(G, n):
+    """All distinct simple cycles of length 4, 8, or 16 in G (canonical keys).
 
-def find_cycles_to_block(G, n):
-    """Return list of C8 and C16 vertex-cycles in G (dedup)."""
-    # use networkx simple_cycles to be independent of the oracle
-    cycles = [c for c in nx.simple_cycles(G.to_directed()) if len(c) >= 3]
-    blocks = []
-    seen = set()
-    for c in cycles:
+    Every simple cycle is enumerated (networkx.simple_cycles on the bidirected
+    graph, length >= 3), and each of length in {4,8,16} is stored under a
+    canonical key (rotated so the minimum vertex is first, direction chosen so
+    the second vertex is the smaller of the two neighbours of the minimum).
+    """
+    out = set()
+    for c in nx.simple_cycles(G.to_directed()):
         L = len(c)
-        if L in (8, 16):
-            # canonical key: rotate so min vertex first, then fix direction
-            m = min(c)
-            idx = c.index(m)
-            rot = tuple(c[idx:] + c[:idx])
-            rev = tuple([rot[0]] + list(reversed(rot[1:])))
-            key = min(rot, rev)
-            if key not in seen:
-                seen.add(key)
-                blocks.append(list(c))
-    return blocks
+        if L < 3 or L not in (4, 8, 16):
+            continue
+        m = min(c)
+        k = c.index(m)
+        rot = tuple(c[k:] + c[:k])
+        rev = tuple([rot[0]] + list(reversed(rot[1:])))
+        out.add(min(rot, rev))
+    return out
 
 
 def blocking_clause(cycle, n):
-    """Negative clause forbidding the given cycle (list of vertex ids)."""
+    """Negative clause forbidding the given cycle (iterable of vertex ids)."""
     lits = set()
     k = len(cycle)
     for t in range(k):
         i, j = cycle[t], cycle[(t + 1) % k]
-        if i < j:
-            lits.add(edge_id(i, j))
-        else:
-            lits.add(edge_id(j, i))
+        lits.add(edge_id(i, j, n))
     return [-lit for lit in sorted(lits)]
