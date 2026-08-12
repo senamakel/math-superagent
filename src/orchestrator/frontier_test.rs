@@ -240,3 +240,53 @@ fn a_host_with_no_dot_is_not_on_the_public_internet() {
     assert!(!super::worth_offering("http://localhost:3000/graphs"));
     assert!(super::worth_offering("https://houseofgraphs.org/graphs/51419"));
 }
+
+#[test]
+fn a_reference_work_indexing_itself_is_not_a_citation() {
+    // Taken from a live Project Euler 241 frontier: 69 Wikipedia rows and 30
+    // OEIS rows out of 151, seventeen of them explaining themselves only as
+    // "cross-referenced from A159907". An OEIS page lists every related
+    // sequence and a Wikipedia article links hundreds; both are indexes, and an
+    // index is exhaustive by design rather than selective.
+    assert!(super::indexes_itself(
+        "https://oeis.org/A159907",
+        "https://oeis.org/A000203"
+    ));
+    assert!(super::indexes_itself(
+        "https://en.wikipedia.org/wiki/Perfect_number",
+        "https://en.wikipedia.org/wiki/Semiperfect_number"
+    ));
+    // Across language editions it is still the same work.
+    assert!(super::indexes_itself(
+        "https://en.wikipedia.org/wiki/Perfect_number",
+        "https://de.wikipedia.org/wiki/Vollkommene_Zahl"
+    ));
+}
+
+#[test]
+fn a_reference_work_pointing_outward_is_kept() {
+    // Outbound is the valuable half. A Wikipedia article's reference list is
+    // papers and DOIs, which is exactly what the run cannot reach on its own.
+    assert!(!super::indexes_itself(
+        "https://en.wikipedia.org/wiki/Perfect_number",
+        "https://arxiv.org/abs/2010.15802"
+    ));
+    assert!(!super::indexes_itself(
+        "https://oeis.org/A159907",
+        "https://doi.org/10.1007/BF01305234"
+    ));
+}
+
+#[test]
+fn a_paper_citing_a_paper_on_the_same_host_survives() {
+    // The rule is not "same host is never a citation". An arXiv paper citing
+    // another arXiv paper is the ordinary case and the frontier's whole point.
+    assert!(!super::indexes_itself(
+        "https://arxiv.org/abs/1508.07912",
+        "https://arxiv.org/abs/2010.15802"
+    ));
+    assert!(!super::indexes_itself(
+        "https://www.renyi.hu/~p_erdos/1988-06.pdf",
+        "https://www.renyi.hu/~p_erdos/1975-05.pdf"
+    ));
+}

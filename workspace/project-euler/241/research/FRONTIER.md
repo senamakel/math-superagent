@@ -6,22 +6,22 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
+| 3 | https://oeis.org/A000203 | A000203 | cross-referenced from A159907 |
+| 3 | https://oeis.org/A000396 | A000396 | cross-referenced from A159907 |
+| 3 | https://oeis.org/A007691 | A007691 | cross-referenced from A159907 |
+| 3 | https://oeis.org/A024816 | A024816 | cross-referenced from A159907 |
+| 3 | https://oeis.org/A055153 | A055153 | cross-referenced from A159907 |
+| 3 | https://oeis.org/A141643 | A141643 | cross-referenced from A159907 |
+| 3 | https://oeis.org/A141645 | A141645 | cross-referenced from A159907 |
+| 3 | https://oeis.org/A159271 | A159271 | cross-referenced from A159907 |
+| 3 | https://oeis.org/A229110 | A229110 | cross-referenced from A242484 |
+| 3 | https://oeis.org/A242480 | A242480 | cross-referenced from A242484 |
+| 3 | https://oeis.org/A242481 | A242481 | cross-referenced from A242484 |
+| 3 | https://oeis.org/A242482 | A242482 | cross-referenced from A242484 |
+| 3 | https://oeis.org/A242483 | A242483 | cross-referenced from A242484 |
+| 3 | https://oeis.org/A242485 | A242485 | cross-referenced from A242484 |
+| 3 | https://oeis.org/A242486 | A242486 | cross-referenced from A242484 |
 | 2 | http://www.numericana.com/answer/numbers.htm#multiperfect | "Number Theory" | [[edit][13]] - [Semiperfect number][14] - [Perfect number][15] - [Multiply perfect number][16] ## References [[edit][17]] 1. 1 2 3 ["Number Theory"][18]. Numericana.com. Retrieved 2012-08-21. -… |
-| 2 | https://oeis.org/A000203 | A000203 | cross-referenced from A159907 |
-| 2 | https://oeis.org/A000396 | A000396 | cross-referenced from A159907 |
-| 2 | https://oeis.org/A007691 | A007691 | cross-referenced from A159907 |
-| 2 | https://oeis.org/A024816 | A024816 | cross-referenced from A159907 |
-| 2 | https://oeis.org/A055153 | A055153 | cross-referenced from A159907 |
-| 2 | https://oeis.org/A141643 | A141643 | cross-referenced from A159907 |
-| 2 | https://oeis.org/A141645 | A141645 | cross-referenced from A159907 |
-| 2 | https://oeis.org/A159271 | A159271 | cross-referenced from A159907 |
-| 2 | https://oeis.org/A229110 | A229110 | cross-referenced from A242484 |
-| 2 | https://oeis.org/A242480 | A242480 | cross-referenced from A242484 |
-| 2 | https://oeis.org/A242481 | A242481 | cross-referenced from A242484 |
-| 2 | https://oeis.org/A242482 | A242482 | cross-referenced from A242484 |
-| 2 | https://oeis.org/A242483 | A242483 | cross-referenced from A242484 |
-| 2 | https://oeis.org/A242485 | A242485 | cross-referenced from A242484 |
-| 2 | https://oeis.org/A242486 | A242486 | cross-referenced from A242484 |
 | 1 | http://www.sgdl.org/ | La soci&eacute;t&eacute; des gens de lettres | means of support, Jeanne Andr&eacute;e Aurifeuille, living 26 place Mage (a nice part of Toulouse)... He joined a French writers guild: [La soci&eacute;t&eacute; des gens de lettres][148] (founded in… |
 | 1 | http://bancroft.berkeley.edu/Exhibits/Math/dnla.html | D.N. Lehmer | would cripple Mathematical discourse with dubious "special cases".) Historically, some number theorists did list "1" as a prime (e.g., [D.N. Lehmer][113], the father of D.H. Lehmer, in 1914). Some… |
 | 1 | http://bibli.polytechnique.fr/F/?func=file&amp;file_name=find-b&amp;local_base=BCXC2 | Polytechnique | He once lived in [Turkey][146] where he became editor-in-chief of the *Revue de Constantinople*in 1875-1876. According to the records at [Polytechnique][147] (which he entered in 1841) Antoine… |
