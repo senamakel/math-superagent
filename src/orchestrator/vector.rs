@@ -28,6 +28,30 @@ const SESSION_DATASET_PREFIX: &str = "math_agent_sessions__";
 /// a scratch that vanished on restart would be worse than the file it replaces.
 const SCRATCH_DATASET_PREFIX: &str = "math_agent_scratch__";
 
+/// The prefix of the per-project dataset holding the downloaded library.
+///
+/// Scoped to the project because a source is fetched to answer *this* problem:
+/// another run's library is a different subject, and reading it is how a run
+/// meets a paper nobody here asked for. The brain stays shared; the sources do
+/// not.
+const LIBRARY_DATASET_PREFIX: &str = "math_agent_library__";
+
+/// The most of a source that is handed to Cognee.
+///
+/// A converted reference page reaches 91,190 characters and a paper more, and
+/// what recall returns is a chunk either way. The cap bounds one multipart
+/// request rather than what the library may hold, and the whole text stays on
+/// disk beside the digest, which is where a reader who needs all of it goes.
+const MAX_SOURCE_CHARS: usize = 200_000;
+
+/// How long a write may spend enqueueing before the caller is told it failed.
+///
+/// Every ingest here is backgrounded, so this bounds the *enqueue* and not the
+/// indexing. It exists because a hung Cognee must not become a hung agent: a
+/// live `remember_memory` ran into the ten-minute tool ceiling and the finding
+/// it carried — a falsified conjecture — was lost with it.
+const ENQUEUE_TIMEOUT: Duration = Duration::from_secs(30);
+
 #[derive(Clone, Debug)]
 pub(super) struct VectorStore {
     client: reqwest::Client,
@@ -36,6 +60,7 @@ pub(super) struct VectorStore {
     session: String,
     session_dataset: String,
     scratch_dataset: String,
+    library_dataset: String,
 }
 
 impl VectorStore {
@@ -154,6 +179,7 @@ impl VectorStore {
         let session = format!("s{nanos:x}-{}", std::process::id());
         let session_dataset = format!("{SESSION_DATASET_PREFIX}{project}");
         let scratch_dataset = format!("{SCRATCH_DATASET_PREFIX}{project}");
+        let library_dataset = format!("{LIBRARY_DATASET_PREFIX}{project}");
         Ok(Self {
             client: reqwest::Client::new(),
             base_url,
@@ -161,6 +187,7 @@ impl VectorStore {
             session,
             session_dataset,
             scratch_dataset,
+            library_dataset,
         })
     }
 
@@ -175,12 +202,11 @@ impl VectorStore {
             "# Provisional note\n\nProject: {}\nSession: {}\nTopic: {topic}\n\n{text}\n",
             self.project, self.session
         );
-        self.ingest(
+        self.enqueue(
             document,
             format!("scratch-{}-{id}.md", slug(topic)),
             &self.scratch_dataset,
             &format!("scratch:{}", self.project),
-            true,
         )
         .await?;
         Ok(id)
@@ -196,19 +222,59 @@ impl VectorStore {
             .await
     }
 
-    /// Adds one durable Markdown memory and waits until Cognee has indexed it.
+    /// Queues one durable Markdown memory in the shared brain.
+    ///
+    /// Queued rather than awaited, and that is the correction of a measured
+    /// failure. Waiting for Cognee to finish indexing meant waiting on its
+    /// entity extraction: four live `remember_memory` calls took 66, 114 and
+    /// 177 seconds, and the fourth hit the ten-minute tool ceiling and was
+    /// killed, losing the falsified conjecture it was storing. A store the
+    /// run is charged minutes to write is a store the run stops writing to,
+    /// which is the opposite of what a durable memory is for.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when Cognee is unreachable, refuses the document, or
+    /// does not accept it within [`ENQUEUE_TIMEOUT`].
     pub(super) async fn remember(&self, text: &str, source: &str) -> Result<u64> {
         let id = point_id(&format!("{source}\n{text}"));
         let document = format!("# Durable memory\n\n{text}\n\nSource: {source}\n");
-        self.ingest(
+        self.enqueue(
             document,
             format!("memory-{id}.md"),
             BRAIN_DATASET,
             "math_agent_brain",
-            false,
         )
         .await?;
         Ok(id)
+    }
+
+    /// Files one downloaded source in this project's library dataset.
+    ///
+    /// The library was on disk and nowhere else: `download_document` wrote
+    /// `research/…` and `index_document` wrote a local literal-term index, so
+    /// nothing a run gathered was reachable through `recall_memory` at all —
+    /// while the prompts told every role that Cognee was the durable catalogue.
+    /// A source is stored under the path it was written to and the URL it came
+    /// from, so a hit names a file the reader can open.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when Cognee is unreachable, refuses the document, or
+    /// does not accept it within [`ENQUEUE_TIMEOUT`].
+    pub(super) async fn remember_source(&self, path: &str, url: &str, text: &str) -> Result<()> {
+        let document = format!(
+            "# Source\n\nProject: {}\nPath: {path}\nURL: {url}\n\n{}\n",
+            self.project,
+            truncate_chars(text, MAX_SOURCE_CHARS)
+        );
+        self.enqueue(
+            document,
+            format!("source-{}.md", slug(path)),
+            &self.library_dataset,
+            &format!("library:{}", self.project),
+        )
+        .await
     }
 
     /// Queues one completed agent session in the current project/run dataset.
@@ -223,21 +289,37 @@ impl VectorStore {
             "# Agent session\n\nProject: {}\nSession: {}\nAgent: {agent}\nRun: {run_id}\n\n## Input\n\n{input}\n\n## Final output\n\n{output}\n",
             self.project, self.session
         );
+        self.enqueue(
+            document,
+            format!("session-{}-{}.md", slug(agent), slug(run_id)),
+            &self.session_dataset,
+            &format!("project:{}", self.project),
+        )
+        .await
+    }
+
+    /// Hands one document to Cognee for background indexing.
+    ///
+    /// Every store here goes through this, so the bound on how long a write may
+    /// block is one number rather than one per caller. Indexing continues after
+    /// this returns; what is bounded is the enqueue.
+    async fn enqueue(
+        &self,
+        document: String,
+        filename: String,
+        dataset: &str,
+        node_set: &str,
+    ) -> Result<()> {
         tokio::time::timeout(
-            Duration::from_secs(30),
-            self.ingest(
-                document,
-                format!("session-{}-{}.md", slug(agent), slug(run_id)),
-                &self.session_dataset,
-                &format!("project:{}", self.project),
-                true,
-            ),
+            ENQUEUE_TIMEOUT,
+            self.ingest(document, filename, dataset, node_set),
         )
         .await
         .map_err(|_| {
-            tinyagents::TinyAgentsError::Tool(
-                "Cognee session-memory enqueue timed out after 30 seconds".into(),
-            )
+            tinyagents::TinyAgentsError::Tool(format!(
+                "Cognee did not accept the document for `{dataset}` within {} seconds",
+                ENQUEUE_TIMEOUT.as_secs()
+            ))
         })?
     }
 
@@ -247,7 +329,6 @@ impl VectorStore {
         filename: String,
         dataset: &str,
         node_set: &str,
-        background: bool,
     ) -> Result<()> {
         let part = reqwest::multipart::Part::bytes(document.into_bytes())
             .file_name(filename)
@@ -260,7 +341,7 @@ impl VectorStore {
                 reqwest::multipart::Form::new()
                     .text("datasetName", dataset.to_string())
                     .text("node_set", node_set.to_string())
-                    .text("run_in_background", background.to_string())
+                    .text("run_in_background", "true")
                     .part("data", part),
             )
             .send()
@@ -287,7 +368,11 @@ impl VectorStore {
         let datasets: Value = response.json().await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!("Cognee returned invalid JSON: {error}"))
         })?;
-        Ok(visible_datasets(&datasets, &self.session_dataset))
+        Ok(visible_datasets(
+            &datasets,
+            &self.session_dataset,
+            &self.library_dataset,
+        ))
     }
 }
 
@@ -636,8 +721,17 @@ fn slug(value: &str) -> String {
     }
 }
 
-/// Picks the datasets one run may read: everything shared, plus this project's
-/// own session memory and no other project's.
+/// Picks the datasets one run may read: the shared brain, plus this project's
+/// own session memory and library, and nothing else.
+///
+/// An allowlist rather than a denylist, and that is the correction of a
+/// measured leak. The rule used to be "everything except another project's
+/// sessions and any scratch", which passes anything a name does not classify —
+/// so a live server carrying `project_euler_903_L0`, thirty-six sources an
+/// earlier build had ingested, was searched by every run on the box. For a
+/// Project Euler problem that is another problem's literature arriving
+/// unasked, and at worst its answer. A dataset this runtime does not recognise
+/// belongs to another project or an older build, and neither is this run's.
 ///
 /// A session dataset belongs to this project when it *is* this project's
 /// dataset, or when it is one of the per-run datasets an older build created
@@ -654,18 +748,18 @@ fn slug(value: &str) -> String {
 /// recall returning it would restate the mistake `role_context` was built to
 /// avoid: provisional work read as evidence of progress. `recall_scratch` is
 /// the only way in, and only the roles doing provisional work hold it.
-fn visible_datasets(datasets: &Value, current_session: &str) -> Vec<String> {
-    let owned_prefix = format!("{current_session}__");
+fn visible_datasets(datasets: &Value, current_session: &str, library: &str) -> Vec<String> {
+    let owned_session = format!("{current_session}__");
     datasets
         .as_array()
         .into_iter()
         .flatten()
         .filter_map(|dataset| dataset.get("name").and_then(Value::as_str))
-        .filter(|name| !name.starts_with(SCRATCH_DATASET_PREFIX))
         .filter(|name| {
-            !name.starts_with(SESSION_DATASET_PREFIX)
+            *name == BRAIN_DATASET
+                || *name == library
                 || *name == current_session
-                || name.starts_with(&owned_prefix)
+                || name.starts_with(&owned_session)
         })
         .map(ToOwned::to_owned)
         .collect()
@@ -734,24 +828,59 @@ mod test {
         assert!(rendered.contains("0.9"));
     }
 
+    /// This project's library, named the way `VectorStore::from_env` names it.
+    const LIBRARY: &str = "math_agent_library__project_euler_903";
+
     #[test]
     fn session_recall_is_limited_to_the_current_project_run() {
         let datasets = json!([
             {"name": "math_agent_brain"},
-            {"name": "project_euler_903_L0"},
+            {"name": LIBRARY},
             {"name": "math_agent_sessions__project_euler_903__current"},
             {"name": "math_agent_sessions__project_euler_904__other"}
         ]);
         assert_eq!(
-            visible_datasets(&datasets, "math_agent_sessions__project_euler_903__current"),
+            visible_datasets(
+                &datasets,
+                "math_agent_sessions__project_euler_903__current",
+                LIBRARY
+            ),
             vec![
                 "math_agent_brain",
-                "project_euler_903_L0",
+                LIBRARY,
                 "math_agent_sessions__project_euler_903__current"
             ]
         );
         assert_eq!(slug("project-euler/903"), "project_euler_903");
         assert_eq!(slug("---"), "default");
+    }
+
+    #[test]
+    fn an_unrecognised_dataset_is_not_this_run_s_to_read() {
+        // A live server carried `project_euler_903_L0` — thirty-six sources an
+        // earlier build ingested — and the old denylist passed it, so every
+        // run on the box searched another problem's literature. Anything this
+        // runtime does not name belongs to another project or an older build.
+        let datasets = json!([
+            {"name": "math_agent_brain"},
+            {"name": "project_euler_903_L0"},
+            {"name": "math_agent_library__project_euler_763"},
+            {"name": "something_a_person_uploaded"},
+            {"name": "math_agent_library__project_euler_185"},
+            {"name": "math_agent_sessions__project_euler_185"}
+        ]);
+        assert_eq!(
+            visible_datasets(
+                &datasets,
+                "math_agent_sessions__project_euler_185",
+                "math_agent_library__project_euler_185"
+            ),
+            vec![
+                "math_agent_brain",
+                "math_agent_library__project_euler_185",
+                "math_agent_sessions__project_euler_185"
+            ]
+        );
     }
 
     #[test]
@@ -764,13 +893,12 @@ mod test {
         let ours = "math_agent_sessions__project_euler_185";
         let datasets = json!([
             {"name": "math_agent_brain"},
-            {"name": "project_euler_185_L0"},
             {"name": "math_agent_sessions__project_euler_185"},
             {"name": "math_agent_sessions__project_euler_185__s18cb030630d9e2be-1"},
             {"name": "math_agent_sessions__project_euler_185__s18cb0306ffffffff-9"},
             {"name": "math_agent_sessions__project_euler_763"}
         ]);
-        let visible = visible_datasets(&datasets, ours);
+        let visible = visible_datasets(&datasets, ours, "math_agent_library__project_euler_185");
         assert!(visible.contains(&ours.to_string()));
         assert!(visible.contains(&"math_agent_brain".to_string()));
         assert!(
@@ -797,7 +925,7 @@ mod test {
             {"name": "math_agent_scratch__project_euler_185"},
             {"name": "math_agent_scratch__project_euler_763"}
         ]);
-        let visible = visible_datasets(&datasets, ours);
+        let visible = visible_datasets(&datasets, ours, "math_agent_library__project_euler_185");
         assert_eq!(
             visible,
             vec!["math_agent_brain", "math_agent_sessions__project_euler_185"]
@@ -813,7 +941,11 @@ mod test {
             {"name": "math_agent_sessions__euler_185"},
             {"name": "math_agent_sessions__euler_18__s1-2"}
         ]);
-        let visible = visible_datasets(&datasets, "math_agent_sessions__euler_18");
+        let visible = visible_datasets(
+            &datasets,
+            "math_agent_sessions__euler_18",
+            "math_agent_library__euler_18",
+        );
         assert!(visible.contains(&"math_agent_sessions__euler_18".to_string()));
         assert!(visible.contains(&"math_agent_sessions__euler_18__s1-2".to_string()));
         assert!(
