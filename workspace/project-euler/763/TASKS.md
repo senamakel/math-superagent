@@ -10,6 +10,13 @@
       DISPROVEN both: C1 counts = directed-animal counts, not D(N). Program
       code/test_c1.py, independent oracle code/out/verify_c1_subsets.py, writeup
       code/out/c1_test_results.md.
+- [x] Pure naive frozenset BFS oracle (code/brute.py) as definition check:
+      reproduces the worked examples D(2)=3 and D(10)=44499, reaches
+      D(0..13)=1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267
+      (all match), and stops before the D(14) step which OOMs the 2 GiB cgroup
+      cap (~5.9M-config frontier). Confirms D(20)=9204559704 unreachable by
+      exact BFS (level-20 state space ~9.2e9, ~5-9 TB). Output
+      code/out/brute_fs_oracle_run.txt.
 - [x] Re-confirm exact-BFS D(N) for N=0..14 with D(2)=3, D(10)=44499 (brute.py).
 - [x] Verify top-cap claims over the WHOLE computable range (check_recurrence.py
       N<=7, definitive_check.py N<=12, new check_a1a2_bitmask.py N=14,
