@@ -47,10 +47,18 @@ __pycache__/
 # Runtime event logs. Several megabytes per run, and the derivation and notes
 # already carry the reasoning worth keeping. Read them locally or in Langfuse.
 # `config/` holds the run's plumbing; `config.toml` and `problem.url` in it are
-# small and worth keeping, so the two bulky entries are named rather than the
+# small and worth keeping, so the bulky entries are named rather than the
 # folder.
 /workspace/**/config/trace.jsonl
-/workspace/**/config/.document-index.json
+# The run's hidden derived state: `.document-index.json`, `.frontier.json`,
+# `.requests.json`. Each is a machine-readable cache the runtime rewrites on
+# nearly every tool call, and each already has a committed human-readable
+# counterpart beside it — `research/FRONTIER.md`, `research/REQUESTS.md` — which
+# is what the derivation cites and what a reader opens. Committing the cache too
+# adds nothing readable and a great deal of churn: a live run rewrites
+# `.frontier.json` faster than the checkpoint interval, so it appears in almost
+# every batch as a diff nobody can review.
+/workspace/**/config/.*.json
 # What `euler-tui` teed from the console. It is the same events `trace.jsonl`
 # already carries, formatted for a reader rather than a parser.
 /workspace/**/config/console.log
