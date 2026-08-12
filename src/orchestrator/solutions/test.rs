@@ -2,8 +2,8 @@
 #![allow(clippy::expect_used)]
 
 use super::{
-    BLOCKED_THRESHOLD, MAX_ATTEMPTS, Mailbox, Route, STUCK_THRESHOLD, SolutionState,
-    extract_lesson, provider_blocked, route,
+    BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, Mailbox, Progress, Route,
+    STUCK_THRESHOLD, SolutionState, extract_lesson, kind_of, provider_blocked, route,
 };
 
 fn state() -> SolutionState {
@@ -31,6 +31,70 @@ fn repeated_unproductive_attempts_diversify_instead_of_retrying() {
     current.attempts = 3;
     current.unproductive = STUCK_THRESHOLD;
     assert_eq!(route(&current), Route::Diversify);
+}
+
+/// The regression the whole change exists to prevent. A run that pushes the
+/// same computation to a larger size every attempt reports PROGRESS: YES every
+/// time, so `unproductive` never accumulates and the stuck rule never fires.
+/// Before the kind was counted, such a run could spend its entire budget
+/// scaling one method and never once reach the inventor.
+#[test]
+fn scaling_the_same_method_diversifies_even_while_reporting_progress() {
+    let mut current = state();
+    current.attempts = 3;
+    // Every attempt progressed, so the stuck rule is dormant by construction.
+    current.unproductive = 0;
+    current.computational = COMPUTATIONAL_THRESHOLD;
+    assert_eq!(route(&current), Route::Diversify);
+}
+
+/// One scale-up is what an attempt looks like, not a pattern. The loop only
+/// intervenes on the second.
+#[test]
+fn a_single_scale_up_still_retries() {
+    let mut current = state();
+    current.attempts = 2;
+    current.computational = COMPUTATIONAL_THRESHOLD - 1;
+    assert_eq!(route(&current), Route::Retry);
+}
+
+/// An attempt that established something standing on its own has changed what
+/// the run is doing, so the scaling count starts again.
+#[test]
+fn mathematical_progress_clears_the_scaling_count() {
+    let mut current = state();
+    current.computational = COMPUTATIONAL_THRESHOLD;
+    // What `reflect_step` does with each verdict.
+    match kind_of("KIND: MATHEMATICAL") {
+        Progress::Mathematical => current.computational = 0,
+        Progress::Computational => current.computational += 1,
+        Progress::Unstated => {}
+    }
+    assert_eq!(current.computational, 0);
+    assert_eq!(route(&current), Route::Retry);
+}
+
+/// A reply the parser cannot read must not move the loop. Treating silence as
+/// "scaling again" would divert a working run on two malformed replies.
+#[test]
+fn an_unreadable_kind_moves_nothing() {
+    assert_eq!(kind_of("VERDICT: UNSOLVED\nPROGRESS: YES"), Progress::Unstated);
+    assert_eq!(kind_of("KIND: SOMETHING ELSE"), Progress::Unstated);
+    // Both spacings the reflection actually produces are read.
+    assert_eq!(kind_of("KIND:COMPUTATIONAL"), Progress::Computational);
+    assert_eq!(kind_of("KIND: COMPUTATIONAL"), Progress::Computational);
+    assert_eq!(kind_of("KIND:MATHEMATICAL"), Progress::Mathematical);
+}
+
+/// A provider outage is not evidence about the mathematics, so it outranks the
+/// scaling rule as it outranks every other one: diversifying into the same wall
+/// is three more child runs into it.
+#[test]
+fn a_provider_wall_outranks_the_scaling_rule() {
+    let mut current = state();
+    current.computational = COMPUTATIONAL_THRESHOLD * 2;
+    current.blocked = BLOCKED_THRESHOLD;
+    assert_eq!(route(&current), Route::Blocked);
 }
 
 #[test]
