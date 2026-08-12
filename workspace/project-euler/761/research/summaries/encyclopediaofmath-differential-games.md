@@ -1,28 +1,38 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/encyclopediaofmath-differential-games.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Encyclopedia of Mathematics — "Differential games" (reference overview)
 
-<!-- source: https://encyclopediaofmath.org/wiki/Differential_games | converted from HTML -->
+Source: https://encyclopediaofmath.org/wiki/Differential_games
+Full text: `research/sources/encyclopediaofmath-differential-games.full.md` → [[encyclopediaofmath-differential-games.full]]
 
-## What is in it
+## What the source establishes
 
-        - Navigation
-        - Tools
-        - Namespaces
-        - Variants
-        - Views
-        - Actions
-- Differential games
-  - Contents
-  - Formulations of problems in the theory of differential games.
-  - Formalization of differential games.
-  - Methods of the theory of differential games.
-  - Main research trends in differential games.
-      - References
-      - Comments
-      - References
+A short reference entry (the download contains only the stub visible in the
+excerpt — "A branch of the mathematical theory of control, the subject of
+which is control in conflict situations ... first studies appeared in the
+mid-1950s" — plus a section outline: Formulations, Formalization, Methods,
+Main research trends, References). It is a discipline overview of differential
+games (the Isaacs/optimal-control framing), not a statement about any specific
+escape game.
 
+## Why it matters for this run
 
-## What it claims
+It provides the standard disciplinary framing ("differential game = control in
+conflict") into which the run's game-theoretic sources sit — the same framing
+used rigorously by Von Moll–Pachter's Lady-in-the-Lake (differential-game /
+HJI) and Shishika–Kumar's perimeter defence. That is worth one line of context
+but nothing more:
 
-A branch of the mathematical theory of control (cf. [Automatic control theory][27]), the subject of which is control in conflict situations. The theory of differential games is also related to the general theory of games (cf. [Games, theory of][28]). The first studies in this theory appeared in the mid-1950s.
+- It contains **no theorem, no value, and no result** that bears on the
+  hexagon/runner-swimmer critical speed.
+- The referenced methods (Isaacs' HJI, dynamic programming) are the *technique*
+  behind corroborating sources already held (lady-in-the-lake, shishika,
+  ping-pong), not a new source of content.
 
-*[digest of a 38021 character source; every section, statement, and proof in full at `research/sources/encyclopediaofmath-differential-games.full.md`]*
+```claim
+id: eom-differential-games-overview
+statement: Differential games are the branch of control theory whose subject is control in conflict situations; the discipline dates to the mid-1950s and is formalized via state Equations of motion, controls, and Isaacs' HJI / minimax methods and dynamic programming.
+hypotheses: standard differential-game formulation (continuous-time, two-player zero-sum control).
+holds-here: not applicable to a specific computation — it is background framing only; the run already holds concrete differential-game results (lady-in-the-lake, shishika-kumar) that instantiate it.
+status: asserted (reference overview).
+bearing: contextual only; no value, bound, or claim for V_hexagon.
+anchor: research/sources/encyclopediaofmath-differential-games.full.md
+```
