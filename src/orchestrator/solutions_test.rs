@@ -562,3 +562,56 @@ fn a_rewritten_approach_does_not_count_as_a_proposal() {
     std::fs::write(dir.join("girth-expansion.md"), "new").expect("a second approach");
     assert_ne!(approach_slugs(Some(&root)), before);
 }
+
+/// The judge must be able to see work the attempt could not report.
+///
+/// `RunBudget` caps an agent run, and a `goals` run pursuing an open goal does
+/// not stop on its own — so the ordinary way an attempt ends is the cap killing
+/// it, which destroys its report and leaves every file it wrote. One evening all
+/// three live Euler attempts died at exactly 30:00 and every verdict that
+/// followed was 1/5 or 2/5 with "progress no", against workspaces holding
+/// verified exact values and exhaustive enumerations. The judge was scoring
+/// silence.
+#[test]
+fn the_judge_is_shown_what_the_attempt_wrote_even_when_it_reported_nothing()
+-> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-judge-evidence");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join("research/approaches"))?;
+    std::fs::write(root.join("code/out/exact_pn.json"), "{}")?;
+    std::fs::write(root.join("code/out/verification_run.txt"), "ALL CHECKS PASS")?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        "```claim\nid: p4-400\nstatement: p(4,400) = 521/1020.\nholds-here: yes\n\
+         status: checked\n```\n",
+    )?;
+    std::fs::write(root.join("research/approaches/dp.md"), "an idea")?;
+
+    let brief = evidence_briefing(&root);
+    assert!(
+        brief.contains("2 file(s) a program produced"),
+        "the output count must reach the judge: {brief}"
+    );
+    assert!(
+        brief.contains("1 established here"),
+        "a computed claim must count as established: {brief}"
+    );
+    assert!(brief.contains("approaches proposed: 1"));
+    // The instruction matters as much as the counts: a judge given numbers and
+    // no reading of them scores the silent report it can see.
+    assert!(brief.contains("reported nothing and left work here"));
+    Ok(())
+}
+
+/// A workspace with nothing in it must not read as evidence of work.
+#[test]
+fn an_empty_workspace_offers_the_judge_no_comfort() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-judge-evidence-empty");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root)?;
+    let brief = evidence_briefing(&root);
+    assert!(brief.contains("0 file(s) a program produced"));
+    assert!(brief.contains("0 established here"));
+    Ok(())
+}

@@ -40,11 +40,11 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://discovery.ucl.ac.uk/view/UCL/UCL/ | UCL | author accepted manuscript. For information on re-use, please refer to the publisher’s terms and conditions. \| UCL classification: \| [UCL][30] [UCL][30] > [Provost and Vice Provost Offices][31] >… |
 | 1 | https://portal.mardi4nfdi.de/w/index.php?title=Publication:1677333&amp;oldid=13992404 | https://portal.mardi4nfdi.de/w/index.php?title=Publication:1677333&oldid=13992404 | Report a bug (only for logged in users!) [Click here to report a bug for this page (MaRDI item Q1677333)][48] Retrieved from "… |
 | 1 | https://arxiv.org/abs/1010.5309v1 | — | — |
+| 1 | https://arxiv.org/abs/1403.5636v1 | — | — |
 | 1 | https://discovery.ucl.ac.uk/view/UCL/C06/ | Faculty of Maths and Physical Sciences | > [Provost and Vice Provost Offices][31] > [UCL BEAMS][32] [UCL][30] > [Provost and Vice Provost Offices][31] > [UCL BEAMS][32] > [Faculty of Maths and Physical Sciences][33] [UCL][30] > [Provost and… |
 | 1 | https://discovery.ucl.ac.uk/view/UCL/F59/ | Dept of Mathematics | Sciences][33] [UCL][30] > [Provost and Vice Provost Offices][31] > [UCL BEAMS][32] > [Faculty of Maths and Physical Sciences][33] > [Dept of Mathematics][34] \| URI: \|… |
 | 1 | https://search.brave.com/search?q=Scientific+Journal+Advances+in+Mathematics.+Scientific+Journal | Search for Journal in Brave | [M. H. Gulzar][7] **[Publication date][8] 20 November 2017 **[Published in][9] [Advances in Mathematics. Scientific Journal][10] (**[Search for Journal in Brave][11]) [zbMATH Keywords][12] [connected… |
 | 1 | https://search2.ucl.ac.uk/s/search.html?query=UCL+Discovery&amp;collection=website-meta&amp;profile=_website&amp;tab=websites&amp;sumbit=Go | Advanced Search | Only [image: View Item] [36] \| View Item \| - [Disclaimer][37] - [Freedom of Information][38] - [Accessibility][39] - [Privacy][40] - [Advanced Search][41] - [Contact Us][42] - [image: UCL Admin] [43]… |
 | 1 | https://www.ucl.ac.uk/accessibility/ | Accessibility | - last 12 months ### Archive Staff Only [image: View Item] [36] \| View Item \| - [Disclaimer][37] - [Freedom of Information][38] - [Accessibility][39] - [Privacy][40] - [Advanced Search][41] -… |
-| 1 | https://www.ucl.ac.uk/contact-list/ | Contact Us | [36] \| View Item \| - [Disclaimer][37] - [Freedom of Information][38] - [Accessibility][39] - [Privacy][40] - [Advanced Search][41] - [Contact Us][42] - [image: UCL Admin] [43] University College… |
 
-_7 further candidates not shown; they are cited once each._
+_8 further candidates not shown; they are cited once each._
