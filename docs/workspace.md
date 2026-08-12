@@ -96,12 +96,11 @@ to say which was current.
 
 What the write path cannot catch is a shell redirect or a heredoc:
 `cat > solve.py <<'EOF'` and `python solve.py > out.txt` reach the filesystem
-directly, and the tool sees only a command and an exit code. Asking the
-organizer to sweep was not enough — one live workspace collected six root
-programs in nineteen minutes, written entirely through the shell while its
-organizer was running. So `layout::sweep` runs at the end of every
-`execute_command`, where the files appear, and the organizer's sweep is the
-backstop rather than the defence.
+directly, and the tool sees only a command and an exit code. Asking the organizer
+to sweep was not enough — one live workspace collected six root programs in
+nineteen minutes, written entirely through the shell while its organizer ran. So
+`layout::sweep` runs at the end of every `execute_command`, where the files
+appear, and the organizer's sweep is the backstop rather than the defence.
 
 Three rules keep a sweep that frequent safe. A destination that already exists
 is left alone, because a file carrying a result must never be overwritten by
