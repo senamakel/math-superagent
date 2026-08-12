@@ -1,5 +1,27 @@
 # Scratchpad
 
+## tool_builder oracle verification (this run)
+
+Ran the EXISTING naive oracle rather than writing a second one, per instructions.
+Compute core is `code/lib/cycles.py` (networkx-based exact cycle-length set +
+min_degree), exercised through `code/brute.py` and independently through
+`code/verify_cycles.py`.
+
+Command: `cd /workspace && PYTHONPATH=/workspace/code python code/brute.py`
+Output — every worked example MATCHED its hand-stated answer:
+- K4:           min degree 3, lengths {3,4}, powers {4}
+- K3,3:         min degree 3, lengths {4,6}, powers {4}
+- Petersen:     min degree 3, lengths {5,6,8,9}, powers {8}
+- cube Q3:      min degree 3, lengths {4,6,8}, powers {4,8}
+- graph6 K4:    agrees with hand-built K4 (cross-check of from_graph6 path)
+
+Command: `cd /workspace && PYTHONPATH=/workspace/code python code/verify_cycles.py`
+Output: ALL CHECKS PASSED (expected vs got identical for all four graphs).
+
+The oracle is verified at the exact size the statement's worked examples use
+(n <= 10, cycle enumeration exponential but trivial here). Not pointed at any
+larger bound — that is deliberately out of scope for this task.
+
 ## pattern_finder note (this run)
 
 At the time of this check the run has produced **no computed integers**:

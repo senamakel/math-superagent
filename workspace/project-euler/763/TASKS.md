@@ -1,5 +1,6 @@
 # Tasks
 
+- [x] Oracle definition check: run `python code/brute.py` at the statement's reachable worked examples; D(2)=3 and D(10)=44499 both matched (tool-builder re-ran this run: exit 0, ~seconds).
 - [x] Reproduce D(12)=514419 and D(13)=1749267 via the bitmask oracle (matches frozenset values).
 - [x] Extend BFS as far as feasible under cap=5,000,000: reached D(14)=5949063, stopped cleanly (frontier 5.95M > cap).
 - [x] Verify D(14) by a second independent implementation (amoeba_verify.py) — both give 5949063.
