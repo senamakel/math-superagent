@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/html/1508.07912v1 | HTML (experimental) | Ma][3] View a PDF of the paper titled Cycle lengths and minimum degree of graphs, by Chun-Hung Liu and 1 other authors [View PDF][4] [HTML (experimental)][5] Abstract: There has been extensive… |
 | 1 | https://en.wikipedia.org/wiki/Graph_theory | graph theory | \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6 \| [Girth][7] \| 3 \| [Automorphisms][8] \| 3 \| [Table of graphs and parameters][9] \| In [graph theory][10], the unproven **Erdős–Gyárfás conjecture**, made in… |
 
-_359 further candidates not shown; they are cited once each._
+_363 further candidates not shown; they are cited once each._

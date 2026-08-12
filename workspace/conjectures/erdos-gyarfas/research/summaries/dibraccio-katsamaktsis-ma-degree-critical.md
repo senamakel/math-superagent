@@ -1,92 +1,79 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/dibraccio-katsamaktsis-ma-degree-critical.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Di Braccio–Katsamaktsis–Ma–Malekshahian–Zhao, "Leaf-to-leaf paths and cycles in degree-critical graphs"
 
-<!-- source: https://arxiv.org/html/2504.11656v2 | converted from HTML -->
+**Source:** Francesco Di Braccio, Kyriakos Katsamaktsis, Jie Ma, Alexandru Malekshahian, Ziyuan Zhao, *Leaf-to-leaf paths and cycles in degree-critical graphs*, arXiv:2504.11656v2 (also published in Combinatorica 46 (2026) art. 11, open access). Full text on disk: `research/sources/dibraccio-katsamaktsis-ma-degree-critical.full.md` (from the arXiv HTML).
 
-## What is in it
+## What the source establishes
 
-- Leaf-to-leaf paths and cycles in degree-critical graphs
-        - Abstract
-  - 1 Introduction
-        - Conjecture A (​​ [18, Conjecture 6.2]).
-        - Theorem 1.
-        - Conjecture B (​​ [18, Conjecture 6.3], corrected version).
-        - Theorem 2.
-        - Conjecture C (​​ [18, Conjecture 6.4]).
-        - Theorem 3.
-        - Theorem 4.
-        - Theorem 5.
-    - 1.1 Notation
-    - 1.2 Organization
-  - 2 Finding many leaf-to-leaf path lengths
-    - 2.1 Paths of unrestricted length
-        - Lemma 6.
-        - Proof.
-        - Lemma 7.
-        - Proof of Theorem 2.
-    - 2.2 Paths of restricted length
-        - Theorem 8 (Erdős-Szekeres [11]).
-        - Lemma 9.
-        - Proof.
-        - Proof of Theorem 5 (i).
-- …
+Follow-up to Narins–Pokrovskiy–Szabó (NPS). Degree-3-critical = $n$ vertices,
+$2n-2$ edges, no proper induced subgraph with minimum degree 3. NPS's tree
+correspondence reduced cycle-length questions in the graphs $G(T)$ (built from
+even 1-3 trees $T$) to leaf-to-leaf path lengths in $T$; they posed
+Conjectures 6.2–6.4 about how many distinct leaf-to-leaf path lengths a 1-3
+tree must have. This paper resolves those conjectures up to constant factors:
 
+**Theorem 1.** Every $n$-vertex degree-3-critical graph has $\Omega(\log n)$
+distinct cycle lengths. (Resolves NPS Conjecture 6.2 up to constant factor —
+NPS's Bollobás–Brightwell construction gives $O(\log n)$, so the bound is
+tight in order of magnitude.)
 
-## What it claims
+**Theorem 2.** Every tree with maximum degree $\Delta \ge 3$ and $\ell$ leaves
+has at least $\log_{\Delta-1}((\Delta-2)\ell)$ distinct leaf-to-leaf path
+lengths. For $\Delta = 3$ and a 1-3 tree with $n$ vertices ($\ell =
+(n+2)/2$ leaves): at least $\log_2(n/2)$ distinct path lengths — resolves NPS
+Conjecture 6.3 in order of magnitude.
 
-An n n -vertex graph is *degree 3-critical*if it has 2 ​ n − 2 2n-2 edges and no proper induced subgraph with minimum degree at least 3. In 1988, Erdős, Faudree, Gyárfás, and Schelp asked whether one can always find cycles of all short lengths in these graphs, which was disproven by Narins, Pokrovskiy, and Szabó through a construction based on leaf-to-leaf paths in trees whose vertices have degree either 1 or 3. They went on to suggest several weaker conjectures about cycle lengths in degree 3-critical graphs and leaf-to-leaf path lengths in these so-called 1-3 trees. We resolve three of their questions either fully or up to a constant factor. Our main results are the following:
+**Theorem 3/4.** There exist arbitrarily large 1-3 trees with only
+$O(N^{0.91})$ distinct leaf-to-leaf path lengths below $N$, and conversely
+every 1-3 tree with at least $2^N$ vertices has $\Omega(N^{2/3})$ distinct
+leaf-to-leaf path lengths below $N$. (Resolves NPS Conjecture 6.4 in both
+directions up to constants.)
 
-- •
+**Theorem 5.** Generalizes Theorem 1 to $k$-critical graphs ($m = (1 +
+\tfrac1{k-1})n - O(1)$-ish edge counts; the $k=3$ case is Theorem 1).
 
-every n n -vertex degree 3-critical graph has Ω ⁡ ( log ⁡ n) \Omega(\log n) distinct cycle lengths;
+## Why it matters for this problem
 
-- •
+- The power-of-two question over the $G(T)$ family is exactly a question
+  about *short* leaf-to-leaf path lengths: cycles of length $2^k$ in $G(T)$
+  correspond to leaf-to-leaf paths of length $2^k - 2$ (odd $2^k$) or two
+  disjoint paths summing to $2^k - 4$ (even $2^k$). In 1-3 trees the *small*
+  leaf-to-leaf lengths are what determines whether small 2-power cycles
+  (4, 8, 16) exist. This paper pins the frontier of what is known about how
+  many distinct *small* leaf-to-leaf lengths a 1-3 tree must have:
+  - below $N$: $O(N^{0.91})$ achievable, and every large 1-3 tree has many
+    small ones ($\Omega(N^{2/3})$ up to $2^N$ vertices). These are
+    order-of-magnitude statements; the *specific* lengths (is 4, 8, 16, 32
+    present?) are not decided by them.
+- Theorems 1–2 give the state of the art for "how many cycle lengths" in the
+  degree-3-critical class; the EG conjecture's obstruction (a *specific* sparse
+  length) is one step past what any of these results pin down.
+- The methods (additive structure, Erdős–Szekeres, Dilworth) are the modern
+  toolkit for the leaf-to-leaf path question that any 1-3-tree-based
+  construction of an EG near-counterexample must go through.
 
-every tree with maximum degree Δ ≥ 3 \Delta\geq 3 and ℓ \ell leaves has at least log Δ − 1 ⁡ ( ( Δ − 2) ​ ℓ) \log_{\Delta-1}\,((\Delta-2)\ell) distinct leaf-to-leaf path lengths;
+## Caveats
 
-- •
+- Same as NPS: the class is "no proper induced δ≥3 subgraph with exactly
+  $2n-2$ edges"; a minimal EG counterexample is not known to have $2n-2$
+  edges. All four theorems are about the degree-3-critical class, not about
+  the EG-minimal-counterexample class directly.
 
-for every integer N ≥ 1 N\geq 1, there exist arbitrarily large 1–3 trees which have O ⁡ ( N 0.91) O(N^{0.91})…
+```claim
+id: EG-DKMZ-critical-log-distinct-lengths
+statement: Every n-vertex degree-3-critical graph has Ω(log n) distinct cycle lengths (best possible in order: Bollobás–Brightwell's construction has O(log n)); and every tree with max degree Δ≥3 and ℓ leaves has at least log_{Δ−1}((Δ−2)ℓ) distinct leaf-to-leaf path lengths.
+hypotheses: degree-3-critical = n vertices, 2n−2 edges, no proper induced δ≥3 subgraph; trees with Δ≥3, ℓ leaves
+holds-here: no — class mismatch (edge count 2n−2 not implied for a minimal EG counterexample); the leaf-to-leaf tree theorems hold for all such trees and would apply to any 1-3-tree-based construction
+status: proved
+bearing: sets the current quantitative frontier for "many cycle lengths" in the near-minimal class; the EG obstruction (a specific sparse length) is strictly finer than a count lower bound
+anchor: research/summaries/dibraccio-katsamaktsis-ma-degree-critical.md
+```
 
-Sev…
-
-## Statements it makes
-
-###### Theorem 1.
-
-###### Theorem 2.
-
-Theorem 2 for Δ = 3 \Delta=3 implies B since any 1–3 tree on n n vertices has precisely n + 2 2 \frac{n+2}{2} leaves. More generally, our result is tight whenever ℓ = Δ ​ ( Δ − 1) d − 1 \ell=\Delta(\Delta-1)^{d-1} for some d ≥ 2 d\geq 2, as demonstrated by the tree T T in which each vertex has degree 1 or Δ \Delta and each leaf is at distance precisely d d from some root r ∈ V ⁡ ( T) r\in V(T) (whose leaf-to-leaf path lengths are 0, 2, …, 2 ​ d 0,2,\dots,2d). In fact, noticing that T T ’s leaves can be grouped into ( Δ − 1) (\Delta-1) -tuples of sister leaves that share a neighbour, and that deleting at most ( Δ − 2) (\Delta-2) leaves in each tuple does not affect the path lengths of the…
-
-###### Theorem 3.
-
-###### Theorem 4.
-
-###### Theorem 5.
-
-###### Lemma 6.
-
-###### Lemma 7.
-
-###### Theorem 8 (Erdős-Szekeres [11]).
-
-###### Lemma 9.
-
-###### Proposition 10.
-
-###### Lemma 11.
-
-###### Theorem 12.
-
-###### Lemma 13.
-
-###### Theorem 14 (Dilworth [8]).
-
-###### Lemma 15.
-
-###### Lemma 16.
-
-###### Lemma 17.
-
-Theorem 1 promptly follows by setting k = 3 k=3 and combining Lemma 11 with Theorem 12.
-
-*[digest of a 89735 character source; every section, statement, and proof in full at `research/sources/dibraccio-katsamaktsis-ma-degree-critical.full.md`]*
+```claim
+id: EG-DKMZ-short-leaf-lengths
+statement: There exist arbitrarily large 1-3 trees with O(N^{0.91}) distinct leaf-to-leaf path lengths below N, and every 1-3 tree on at least 2^N vertices has Ω(N^{2/3}) distinct leaf-to-leaf path lengths below N (NPS Conjecture 6.4 resolved both directions).
+hypotheses: 1-3 trees (degrees 1 and 3 only)
+holds-here: yes — any tree-based EG construction lives in this class; the bounds quantify what "few short leaf-to-leaf lengths" can mean
+status: proved
+bearing: a would-be EG counterexample built as G(T) with T a 1-3 tree must have T avoid the specific leaf-to-leaf lengths 2^k−2; these results say the *number* of short lengths is large in every sufficiently big tree, but do not decide individual lengths — that is the open core the run would attack
+anchor: research/summaries/dibraccio-katsamaktsis-ma-degree-critical.md
+```
