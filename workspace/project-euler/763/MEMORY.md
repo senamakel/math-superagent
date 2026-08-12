@@ -13,6 +13,41 @@ D(14)=5949063 verified by THREE independent implementations. D(2)=3, D(10)=44499
 match the statement's worked examples. Hard ceiling: 2 GiB cgroup cap, exact BFS
 stops at N=14 (~5.9M states); D(15) unreachable by any exact BFS here.
 
+## Claim verification sweep (this run: full computable range)
+
+Re-ran check_recurrence.py (N<=7), definitive_check.py (N0..12), and two new
+lean bitmask probes (check_a1a2_bitmask.py -> N=14, check_a12_lean_large.py ->
+N=13) to settle the top-cap structural claims over the WHOLE computable range.
+
+- A1 (max level holds EXACTLY 3 cells): HOLDS for every reachable config,
+  N=1..14 (A1bad=0 at every N).
+- A2_tri (those 3 = {p+e1,p+e2,p+e3} of a single parent p at M-1): HOLDS,
+  N=1..14 (A2tri_bad=0 at every N).  Verified directly on the 5.9M-config
+  N=14 frontier.
+- A2_empty (that parent p is absent from the config): FAILS from N=4.
+  A2empty_bad = 3,9,39,126,453,1521,5241,17766,60630,206010,701262 for
+  N=4..14.  The empty-parent triangle requirement is too strong: the top-3 IS
+  a full child-triangle, but the parent cell is sometimes re-occupied.
+- A3 (deterministic empty-parent cap-collapse to origin in N steps): FAILS
+  from N=5 (3,18,93,405,1668,6525,24816,92214,337272 bad for N=5..12).  Only
+  checked to N=12 (the per-config iterative collapse is too heavy on the
+  N=13/14 frontier for the 600 s budget).
+- B (D(N+1) == sum_C f(C), f=#dividable cells): FAILS from N=3.  The forward
+  map (C,p)->child is NOT injective (diagnose_B finds collisions), so summing
+  f over all configs overcounts distinct children.  sum_f vs D(N+1): N=3
+  33 vs 30, N=4 126 vs 99, N=5 483 vs 336, N=6 1836 vs 1134, N=7 6924 vs 3855,
+  N=8 25875 vs 13086, N=9 95994 vs 44499, N=10 353691 vs 151263, N=11 1295751
+  vs 514419, N=12 4722687 vs 1749267, N=13 17137029 vs 5949063.
+
+NET: A1 and A2_tri (top-3 is always the full child-triangle of ONE parent,
+equivalently the same-if-stronger "every top triad has a unique parent") hold
+over the whole computable range; the REFINED collapse/pivot must allow a
+PRESENT parent, not require an empty one.  The determinism that makes
+"configs <-> reverse-collapse sequences <-> ternary trees" a bijection is the
+weak spot: B's collision count shows distinct children are produced from
+multiple (C,p).  This is the seam a two-index voidance/folded-polyominoid DP
+(2D G(k,m) lift) must repair; a plain D(N+1)=sum f(C) step is refuted.
+
 ## Sourced structural backbone (Eriksson "Pebblings", EJC 2 (1995) #R7)
 - The 3D PE763 amoeba is exactly Eriksson/Vaderlind's n=3 pebbling game
   (a cell -> 3 children one unit out along +e1,+e2,+e3, all targets empty).
