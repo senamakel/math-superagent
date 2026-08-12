@@ -102,6 +102,19 @@ The runtime has fifteen roles plus an explicit solution loop.
   not delete anything carrying a result, a derivation, or a source, and may not
   change what a file says; an obsolete file is labelled obsolete in the index
   rather than removed.
+- The director is the only role a person talks to directly. It receives one
+  operator directive from `config/directives.jsonl` and carries it into the
+  files that decide what happens next — reordering `TASKS.md`, opening or
+  killing a thread, amending `CONTEXT.md`, filing a research request. It exists
+  because the next attempt already gets the directive verbatim, and a directive
+  that does not change the plan on disk changes nothing once that attempt is
+  over. It has the document tools and nothing that computes: no shell, no tool
+  writing, no delegation. It is also the one reasoning role denied
+  `research/CLAIMS.md`, because a directive is asserted rather than established
+  and a role acting on an unevidenced instruction should not be holding the
+  evidence ledger while it does. Its reply is written to
+  `config/DIRECTIVES.md`, which is what the operator reads, so a directive it
+  declines has to say why there rather than be silently dropped.
 
 ## Source adapters
 
