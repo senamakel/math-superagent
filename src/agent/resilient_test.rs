@@ -140,15 +140,9 @@ fn a_turn_granted_a_bigger_output_budget_is_given_time_to_produce_it() {
         .timeout_ms
         .expect("a timeout is applied when unset");
 
-    // The bound has to be producible at the slowest rate actually observed —
-    // 12.2 tokens per second, from a live tool_builder turn — because the
-    // slow turns are the ones carrying the most work, and cutting them off
-    // discards it entirely.
-    assert!(
-        doubled > 24_000 * 1_000 / 13,
-        "a 24,000-token turn needs longer than {doubled}ms to be producible"
-    );
-    assert!(clamped > doubled, "{clamped}ms must exceed {doubled}ms");
+    // The bound scales with the output budget, so a doubled turn gets more
+    // wall clock than an ordinary one.
+    assert!(doubled > ordinary, "{doubled}ms must exceed {ordinary}ms");
     // An ordinary full-cap turn is no longer held to the flat floor: at the
     // observed tail rate it cannot produce 12,000 tokens inside seven
     // minutes, so the floor was cutting off exactly the turns worth keeping.
@@ -157,6 +151,20 @@ fn a_turn_granted_a_bigger_output_budget_is_given_time_to_produce_it() {
         "a full-cap turn needs longer than {ordinary}ms to be producible"
     );
     assert!(ordinary >= 420_000, "the flat bound is still a floor");
+
+    // And it stops scaling before it outlives the run. This is the half of
+    // the rule that was missing: `RunBudget` now caps a run at thirty minutes
+    // and its turn output at 48,000 tokens, and 48,000 at the pessimistic rate
+    // is sixty-seven minutes — so the request bound quietly became longer than
+    // the run containing it, and a wedged call could no longer fail in time
+    // for the retry ladder to do anything about it. A live sat_solver held one
+    // outstanding call for over ten minutes with nothing that would ever cut
+    // it off.
+    assert!(
+        clamped <= 900_000,
+        "a request bound of {clamped}ms outlives half the run it belongs to"
+    );
+    assert_eq!(clamped, doubled, "both are held at the same ceiling");
 }
 
 #[test]
