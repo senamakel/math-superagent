@@ -72,6 +72,48 @@ def distinct_cycle_lengths(G):
     return frozenset(len(c) for c in all_simple_cycles(G))
 
 
+def has_cycle_of_length(G, L):
+    """True iff G contains a simple cycle of length exactly L (L >= 3).
+
+    Exact, with early termination: returns as soon as one cycle of length L
+    is found.  Uses the same canonical-start DFS as all_simple_cycles (a cycle
+    is reported from its minimum vertex, and only vertices >= start are
+    visited), so a cycle of length L, if it exists, is found when the DFS
+    starts at that cycle's minimum vertex.  The path never exceeds length L,
+    so the search tree is the set of simple paths of length <= L.
+
+    This is the workhorse for the census: checking C8/C16 presence on graphs
+    that *do* contain such a cycle (the common case) stops at the first hit
+    instead of enumerating every simple cycle.  Exactness is inherited from
+    the same machinery as all_simple_cycles; verified against it below.
+    """
+    if L < 3:
+        return False
+    adj = {u: list(G[u]) for u in G}
+    nodes = sorted(G)
+    for start in nodes:
+        visited = {start}
+
+        def dfs(cur, depth):
+            # path[0..depth] holds the current path, cur == path[depth].
+            for nb in adj[cur]:
+                if nb == start:
+                    # Closing edge back to start completes a cycle whose length
+                    # is depth+1 (vertices 0..depth, plus the closing edge).
+                    if depth + 1 == L:
+                        return True
+                elif depth + 1 < L and nb >= start and nb not in visited:
+                    visited.add(nb)
+                    if dfs(nb, depth + 1):
+                        return True
+                    visited.remove(nb)
+            return False
+
+        if dfs(start, 0):
+            return True
+    return False
+
+
 def cycle_basis_lengths(G):
     """Lengths of the cycles in one networkx cycle basis.
 

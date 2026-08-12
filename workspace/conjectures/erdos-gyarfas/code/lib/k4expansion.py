@@ -79,6 +79,8 @@ def canon(g6):
 
 def in_k4_expansion_family(G, _memo=None):
     """True iff cubic G is in the K4-triangle-expansion family (recursive test)."""
+    # relabel to 0..n-1 ints so ordering/`<` comparisons are well-defined
+    G = nx.convert_node_labels_to_integers(G)
     n = G.number_of_nodes()
     degs = {d for _, d in G.degree()}
     if degs != {3}:

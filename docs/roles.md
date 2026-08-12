@@ -83,8 +83,17 @@ The runtime has fifteen roles plus an explicit solution loop.
   run and the note store already hold, since a regularity the library already
   explains is not a conjecture worth chasing.
 - The inventor proposes a different line of attack when the current one has
-  stalled, backed by research. It is told what failed so it does not re-propose
-  it.
+  stalled, and does it *with* research rather than beside it. At a diversify the
+  loop runs it twice: it proposes three divergent candidates and writes each to
+  `research/approaches/<slug>.md`, research grounds or refutes each against the
+  literature, and it then adopts one or synthesises a better one from what came
+  back — that combination being where a new line of attack usually comes from.
+  It also holds a one-role delegation bench (`INVENTION_BENCH`) so a single
+  literature check need not wait for the next diversify; recursion is bounded at
+  one level because research has no delegation tools. It is handed a dossier
+  assembled from disk at delegation time rather than the workspace as it stood
+  when the container started, which on a twelve-hour run is the difference
+  between seeing the work and seeing an empty workspace.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
@@ -190,16 +199,16 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
 | tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files, minus the threads, plus `code/AGENTS.md` and `code/INDEX.md` |
 | judge | `GOAL.md`, `INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` |
 | pattern_finder | `GOAL.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
-| librarian, research | `GOAL.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/FRONTIER.md`, `CONTEXT.md` |
-| inventor | `GOAL.md`, `research/THREADS.md`, `research/CLAIMS.md`, `CONTEXT.md` |
+| librarian, research | `GOAL.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/FRONTIER.md`, `CONTEXT.md` |
+| inventor | `GOAL.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
 | scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
-| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
-| director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
+| director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
 | organizer | none — it falls through to the empty default |
 
 That table is what `role_context` returns today, and it is narrower than what
@@ -222,7 +231,8 @@ The launchers' phase-2 text points at `CONTEXT.md` and the claim ledger for the
 same reason.
 
 The inventor's failed-approaches need is met by `CONTEXT.md`'s `Ruled out`
-section, which it is routed. The organizer having no arm is not a gap either —
+section and, more directly, by `research/APPROACHES.md`, where a closed line of
+attack keeps the reason it closed. The organizer having no arm is not a gap either —
 the role was removed; see `docs/runtime.md` if its name still appears in the
 registry list there.
 

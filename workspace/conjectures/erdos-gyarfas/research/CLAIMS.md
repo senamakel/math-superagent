@@ -7,13 +7,16 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `EG-3conn-cubic-planar` | Every 3-connected cubic planar graph contains a cycle of length 2^m for some m≥0 (the conjecture holds for this class). | **unchecked** | proved | `research/ROOT.md` |
+| `EG-C4-free-induced-cycle` | Every graph with δ≥3 and no C4 as a subgraph contains an induced cycle Ck for some k≥5 (chordless cycle of length at least 5). | **unchecked** | proved | `research/summaries/gao-shan-P8-free-html.md` |
 | `EG-P12-free-C4C8` | Every P12-free graph with δ≥3 contains a C4 or a C8. | yes | proved | `research/summaries/hegde-real.md` |
 | `EG-P13-free` | Every P13-free graph with δ(G)≥3 contains a cycle of length a power of two (conjecture holds). | **unchecked** | proved | `research/ROOT.md` |
 | `EG-P13-free` | Every P13-free graph with δ≥3 contains a cycle of length a power of two. | **unchecked** | proved | `research/summaries/hegde-real.md` |
 | `EG-bipartite-30` | Any bipartite counterexample to the conjecture has at least 30 vertices. | yes | asserted | `research/summaries/hegde-real.md` |
+| `EG-clawfree-triangle-exits-distinct` | In a cubic claw-free C4-free graph, every vertex lies in a unique triangle, the other neighbours of the three triangle vertices are distinct, and the graph is vertex-disjoint triangles joined by a perfect matching… | **unchecked** | proved | `research/summaries/nowbandegani-clawfree-html.md` |
 | `EG-cubic-dominates` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3. | **unchecked** | proved | `research/ROOT.md` |
 | `EG-cubic-dominates` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3. | yes | proved | `research/summaries/carr-real.md` |
 | `EG-cubic-has-cubic-neighbor` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3; in particular every degree-3 vertex v has a degree-3 neighbor. (Applying Lemma 0.1 to H=G−v: the degree-≤2 vertex of G−v must be a… | yes | proved | `research/summaries/carr-real.md` |
+| `EG-exoo-G78-C16-free` | It is FALSE that every C4- and C8-free cubic graph on ≥24 vertices contains a C16. Exoo (arXiv:1403.5636) constructs G78, a cubic graph of order 78 with no 4-, 8-, or 16-cycles, and G420, a 3-connected cubic planar… | **unchecked** | proved | `research/summaries/exoo-three-graphs-html.md` |
 | `EG-exoo-G78-C16-free` | It is FALSE that every C4- and C8-free cubic graph on ≥24 vertices contains a C16. Exoo (arXiv:1403.5636) constructs G78, a cubic graph of order 78 with no 4-, 8-, or 16-cycles (from the Petersen graph by replacing 11… | **unchecked** | proved | `research/summaries/novelty-check-connectivity-triangles.md` |
 | `EG-markstrom-24-graphs` | The smallest cubic graphs with no C4 and no C8 have 24 vertices; there are four, all contain a C16, and exactly one is planar. | **unchecked** | asserted | `research/ROOT.md` |
 | `EG-markstrom-24-graphs` | Exactly four cubic graphs on 24 vertices have no C4 and no C8, each containing a C16; exactly one is planar (the Markström graph). | **unchecked** | asserted | `research/summaries/markstrom-extremal-graphs.md` |

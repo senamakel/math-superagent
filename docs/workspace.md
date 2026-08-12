@@ -14,6 +14,7 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | what a program produced | `code/out/` |
 | downloaded sources | `research/L0.<n>/`, digested into `research/L1.<n>/` |
 | directions of attack | `research/threads/` |
+| candidate reformulations | `research/approaches/` |
 | reflections | `reflections/L0.<n>/` |
 | what other programs import | `code/lib/<subject>.py` |
 | programs attacking one question | `code/<question>/` |
@@ -186,8 +187,7 @@ one kind of file that arrives from outside the run, and separating them from the
 run's own derivations is what lets an agent tell at a glance what it gathered
 from what it worked out.
 
-`research/` and `reflections/` are summary trees, not flat folders
-(`src/orchestrator/context_tree.rs`):
+`research/` and `reflections/` are summary trees, not flat folders (`src/orchestrator/context_tree.rs`):
 
 ```text
 research/
@@ -323,10 +323,9 @@ attempt six and the literature check that would have killed it never happened.
 An approach is `research/approaches/<slug>.md` with a fenced `approach` block
 — `idea`, `mechanism`, `status`, `precedent`, `first-step`, `killed-by` —
 whose stances are a life cycle rather than a flag: `proposed`, `grounded`,
-`refuted`, `adopted`, `spent`. Empty `precedent` means nobody checked, kept
-distinct from nothing having been found because those license different next
-moves; refuted and spent approaches are kept with their reasons, on the
-dead-thread argument.
+`refuted`, `adopted`, `spent`. Empty `precedent` means nobody checked, which
+is not the same as nothing having been found; refuted and spent approaches are
+kept with their reasons, on the dead-thread argument.
 
 `research/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
 to throw away. `readable.rs` has always parsed every anchor into a reference
@@ -359,8 +358,8 @@ closes when a note carries a claim with `answers: <id>`, so whether the gap was
 filled is read off the library rather than asserted by whoever went looking.
 
 `search_claims` and `request_research` travel with the document tools, for the
-same reason the index tools do: the role that needs to know what the run
-establishes, or that walks into a gap, is whichever one is working.
+same reason the index tools do: whichever role is working is the one that needs
+to know what the run establishes, or that walks into a gap.
 
 ## The scratch
 
@@ -372,16 +371,15 @@ whole. `note_scratch` and `recall_scratch` (`vector.rs`) make it the same trade
 `remember_memory` and `recall_memory` already make: written once, read back by
 wording.
 
-It is a third store rather than a flag on the durable one, and the separation is
-the point. `visible_datasets` excludes `math_agent_scratch__*` outright and
+It is a third store rather than a flag on the durable one, and the separation
+is the point. `visible_datasets` excludes `math_agent_scratch__*` outright and
 `durable_node_sets` omits `scratch:<project>`, the second being the one the
 server actually honours, so neither `recall_memory` nor `relate_memory` can
-return provisional work: a
-half-finished calculation cannot come back looking like something the run
-established, which is the distinction the method policy rests on. It is also
-not the knowledge graph: `relate_memory` answers what the run's entities are
-connected to, and no amount of traversal recovers what a solve was in the
-middle of.
+return provisional work: a half-finished calculation cannot come back looking
+like something the run established, which is the distinction the method policy
+rests on. It is also not the knowledge graph: `relate_memory` answers what the
+run's entities are connected to, and no amount of traversal recovers what a
+solve was in the middle of.
 
 Access is a tool boundary rather than a routing decision, since the file is
 gone. `register_scratch` grants both halves to the roles that do provisional
@@ -470,11 +468,11 @@ an embedded repository and refuse to track through it. Only writing tools
 trigger a commit, an unchanged tree is a no-op rather than an error, and a
 failed checkpoint never fails the tool that succeeded.
 
-When a workspace is first used, the helper copies
-the template into it without replacing existing files. The runtime appends
-`AGENTS.md`, `config.toml`, `MEMORY.md`, and the relevant role prompt to each
-agent's built-in system policy. `GOAL.md` and `TASKS.md` are also loaded. Workspace context must never replace built-in tool or container
-restrictions.
+When a workspace is first used, the helper copies the template into it without
+replacing existing files. The runtime appends `AGENTS.md`, `config.toml`,
+`MEMORY.md`, and the relevant role prompt to each agent's built-in system
+policy. `GOAL.md` and `TASKS.md` are also loaded. Workspace context must never
+replace built-in tool or container restrictions.
 
 The tool-builder also gets `apply_patch` (`src/orchestrator/patch.rs`), which
 applies a Codex-format envelope — `*** Begin Patch`, `*** Add File:` /
@@ -495,9 +493,8 @@ may already have seen beats a private dialect it has to learn from a schema.
 
 Every runtime agent receives the workspace document tools: bounded download,
 read, write, exact edit, index, and search. The index is
-`/workspace/config/.document-index.json` and contains only relative paths in the
-selected workspace. Keep the 5 MiB per-document limit and reject non-HTTP
-downloads, traversal, symlink escapes, non-UTF-8 content, and missing exact-edit
-targets.
-Do not move generated artifacts into source directories unless the user asks
-to promote a specific artifact into the product.
+`/workspace/config/.document-index.json` and contains only relative paths in
+the selected workspace. Keep the 5 MiB per-document limit and reject non-HTTP
+downloads, traversal, symlink escapes, non-UTF-8 content, and missing
+exact-edit targets. Do not move generated artifacts into source directories
+unless the user asks to promote a specific artifact into the product.
