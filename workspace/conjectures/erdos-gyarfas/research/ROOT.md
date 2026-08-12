@@ -23,11 +23,11 @@ vertex. → [[L2.0/L1.0]]
 ## What the run can rely on (sourced, sealed)
 
 - **Verification bound / oracle anchor:** any counterexample has ≥ 17 vertices; any cubic
-  one ≥ 30. Markström found four 24-vertex graphs whose only 2-power cycle has length 16,
-  one planar — the closest known near-counterexamples. → [[L2.0/L1.0]]
+  one ≥ 30. Markström's exhaustive search found four 24-vertex graphs whose only 2-power
+  cycle is length 16, one planar — the closest known near-counterexamples. → [[L2.0/L1.0]]
 - **Restricted classes closed (never re-derive):** P13/P10/P8-free, 3-connected cubic
-  planar, claw-free planar, K_{1,m}-free (with stated degree constraints), diameter-2,
-  large average degree. → [[L2.0/L1.0]]
+  planar, diameter-2, claw-free planar, K_{1,m}-free, Cayley families (quaternion,
+  dihedral, semidihedral, order-p^3; abstract only), large average degree. → [[L2.0/L1.1]]
 - **Density bound:** a counterexample is *sparse* — avg degree ≤ exp(O(log* n)) (powers
   of two are an exponentially-bounded even sequence; Sudakov–Verstraëte). With δ≥3,
   density sits between 3 and exp(O(log* n)). → [[L2.0/L1.0]]
@@ -36,17 +36,21 @@ vertex. → [[L2.0/L1.0]]
 
 An interval of cycle lengths forces a power of two only when the interval spans a factor of
 two (b ≥ 2a). Liu–Montgomery's large even-length interval settles only large-average-degree
-for exactly this reason. → [[L2.0/L1.0]]
+for exactly this reason — the guaranteed even interval [log⁸ℓ, ℓ] is wide only at enormous
+average degree. → [[L2.0/L1.0|L1.0]] [[L2.0/L1.1|L1.1]]
 
-## Neighbouring machinery (arriving next)
+## The only unconditional guarantee at δ=3 (sealed)
 
-The admissible-cycle / mod-k / consecutive-length toolkit from Dean, Gao–Huo–Liu–Ma, and
-the trigonal–tetragonal framework (batch `L1.1`, not yet sealed). These are the tools that
-could turn the sparse, predominantly-cubic structure above into a power-of-two cycle.
+Every δ≥3 graph has **two admissible cycles** — lengths 1 or 2 apart (min degree k+1 ⇒ k
+admissible cycles at k=2, Gao–Huo–Liu–Ma) and **two cycles of consecutive length** (Gao–Ma
+Bondy–Vince k=0 case). This is the *only* non-density length guarantee at the conjecture's
+degree; it is a gap, still between consecutive 2-powers, so it does not close EG on its own.
+The regimes that do close classes (diameter-2, P10-free) do so by forcing C4/C8 outright.
+→ [[L2.0/L1.1]]
 
 ## Originals and seals
 
 - `L0.0/` ↔ `L0.1/` are the full texts.
 - `L1.0/` digest batch, sealed by `[[L2.0/L1.0]]`.
-- `L1.1/` digest batch, not yet sealed.
+- `L1.1/` digest batch, sealed by `[[L2.0/L1.1]]`.
 - `L1.2/` holds the seal of `L0.0` and a single OEIS note.
