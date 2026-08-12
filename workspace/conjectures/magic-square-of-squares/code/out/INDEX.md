@@ -4,4 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `oracle_note.md` | Claim block for the oracle baseline, with evidence class (checked, exact exhaustive scan), hypotheses, holds-here, and falsifier; states explicitly that the literature's Parker-type 7-square near-misses are NOT yet reproduced, so no witness-check is attached to any impossibility claim yet (GOAL.md requirement). |
+| `README.md` | _(undescribed)_ |
+| `near_misses.json` | The run's witness set (GOAL.md contract): Sallows LS1 and Bremner's magic square, each with grid (printed orientation), square/non-square entries, the eight line sums, and provenance pointing at Bremner 1999 (local copy) / Sallows 1997. Written by code/check_near_misses.py. |
+| `oracle_note.md` | Claim block for the oracle baseline: structural worked examples rerun fresh; the incidence-algebra results (rank 7 over Q, kernel dim 2, affine magic space dim 3, correcting the "dimension 4" misstatement); correction of the outdated "near-misses not yet reproduced" note; the (c,u,v) extraction table and the two realized Pythagorean relations; witness-set note directing every impossibility lemma at both near-misses (GOAL.md). |
+| `oracle_output.txt` | _(undescribed)_ |
