@@ -398,7 +398,7 @@ fn observations_briefing(patterns: &Mailbox) -> String {
     if observations.is_empty() {
         return String::new();
     }
-    format!("Structural observations from the pattern team:\n{observations}\n\n")
+    format!("Reported beside the loop since the last attempt:\n{observations}\n\n")
 }
 
 /// Renders what an operator has asked for, or nothing when they have asked for
