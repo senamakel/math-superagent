@@ -151,11 +151,27 @@ the notes and programs override it authoritatively.
 
 ## Gaps
 
-**Directive 1 (steer): librarian is fetching primary pursuit-evasion literature into
-`research/sources/` — lion-and-man, Besicovitch, optimal escape trajectories,
-involutes/chase curves, swimmer-in-pool origin. symbolic_math is deriving
-V_hexagon from first-principles geometry independently of the stewbasic
-K-index. Both are in-flight. See TASKS.md for the order of work.**
+**Directive 1 status — librarian's primary-source pass COMPLETE; symbolic_math's
+`hexagon-first-principles` derivation is the one remaining in-flight item.**
+`research/sources/` holds 8 full texts: lion-and-man (Bollobás–Leader–Walters
+arXiv:0909.2524; Alexander–Bishop–Ghrist capture-unbounded), Tao's square-pool 6×
+boy/teacher (Math.SE q.1555855 — the problem's ancestry, plus a numeric anchor:
+6 > V_square ⇒ capture), the circle two-phase staging-dash (Math Factor "Princess
+and Beast": staged semicircular arc of radius R/2v keeping opposite, then tangent
+dash; ODE dr=√(v′²−r²)dt — an independent confirmation of the circle mechanism),
+and Abel et al. "Escaping a Polygon" (arXiv v3 + Hesterberg MIT thesis 2018). New
+claim blocks from these are in `research/CLAIMS.md` (lion-man-metric-space-both-win,
+tao-square-pool-6x-capture, princess-beast-stage-arc-dash-ode, abg-capture-
+unbounded). What they establish for THIS run: (a) the pool is locally rectifiable,
+so Abel et al.'s unique-critical-speed well-posedness applies and the lion-man
+both-win pathologies are ruled out; (b) the homothetic scaled safe-region +
+boundary-time equalization mechanism is confirmed by Tao's inner-square and the
+princess-beast staged arc; (c) **none gives a hexagon exact value** — the paper's
+exact list is disk/triangle/square only. `research/notes/` has only the circle and
+polygon-generalization notes, so `hexagon-first-principles.md` is still missing;
+when it lands it is the missing independent route, until then the value stays
+single-route (see Validation). The thread's "Next" (librarian downloads) is
+superseded.
 
 The value is computed and exact-closed-form-confirmed; formula-route only. The
 one independent game-encoding solver that was actually built (`code/indep_game_encoding.py`)

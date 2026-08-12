@@ -5,6 +5,30 @@ The fifteen roles the runtime registers, the sources they read through, and the 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
 
+
+## The frontier ranks citations, not indexes
+
+Two link classes flooded it, and each needed a different rule.
+
+Publisher furniture came first: an arXiv abstract page carries a toolbar of
+third-party services, and because it appears on *every* abstract page it
+accumulates citers faster than any reference can. A live Erdős–Gyárfás frontier
+had its top seventeen rows tied at six citers, all of them Connected Papers,
+alphaXiv, DagsHub, Hugging Face and the rest, above every paper. Named hosts and
+path fragments handle that, plus a rule that a host with no dot is not on the
+public internet — 64 candidates were on `backend:8080`, a container name reachable
+only from the page that rendered it.
+
+Reference works needed the other rule. An OEIS page lists every cross-referenced
+sequence and a Wikipedia article links hundreds of articles; both are indexes,
+exhaustive by design, and a live Project Euler 241 frontier was two thirds
+Wikipedia and OEIS with seventeen rows whose whole stated reason was
+`cross-referenced from A159907`. So a reference work linking *itself* is dropped
+and a reference work linking *outward* is kept — a Wikipedia article's reference
+list is papers and DOIs, which is what the run cannot reach on its own. The rule
+is deliberately not "same host is never a citation": an arXiv paper citing
+another arXiv paper is the ordinary case and the frontier's whole point.
+
 ## The research team gathers by default
 
 It did not, and that is why four live runs made zero `exa_search` calls between
