@@ -26,7 +26,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L2.0/pebbling_eriksson_eljc.md` | Hand-shaped summary of Eriksson 1995, 'Pebblings', EJC 2(1) #R7 (DOI 10.37236/1201): strengthens/generalizes Chung-Graham-Morrison-Odlyzko chessboard pebbling to higher dimension and arbitrary posets — the closest source to the 3D amoeba. Has no L0.0 companion (full text is the external PDF). |
 | `L2.0/pebbling_knessl_pdf.md` | Complete structural digest of the Zhen-Knessl PDF (arXiv:1009.5731): the G(k,m) recurrence (eqs 2.1-2.3, CGMO's), Theorem 2.1 exact contour formula, Corollary 2.1 (G(k)), Theorem 2.2/Corollary 2.2 asymptotics with z_*≈0.430729593137930 and growth 1/z_*≈2.321642; corrections to [7]'s constants. Verified against research/L0.0/pebbling_knessl_pdf.full.md. The 2D solution set — no 3D version here. |
 | `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
-| `amoeba2d_pebbling_a007902.md` | _(undescribed)_ |
+| `amoeba2d_pebbling_a007902.md` | Sourced identification + structural model: the 2D amoeba === OEIS A007902 chessboard-pebbling sequence (D_2D(N)=A007902(N+1)), with the exact G(k,m) recurrence (CGMO eqs 2.1-2.3 / Alois P. Heinz), the d=2.3216, c=0.1227 asymptotics, and the polyominoid/voidance-set structure; explains why in n>=3 no cell is played twice so positions=voidance sets=folded polyominoids (the regime of PE763). Key note for the 2D=pebbling claim. |
 | `amoeba_seq_oeis.md` | _(undescribed)_ |
 | `inventor_confirm_checklist.md` | _(undescribed)_ |
 | `inventor_proposal_collapse.md` | _(undescribed)_ |
