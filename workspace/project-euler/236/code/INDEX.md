@@ -4,5 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-
-_This folder is empty._
+| `brute.py` | Naive brute-force oracle for PE236. Base set of achievable reduced m from the smallest (s,t)-pair product, then tests every m>1 against all six exact equalities via per-product minimal pair (c_i,d_i), bound K_i, and subset-sum on the overall constraint. Reproduces the statement's oracle: count 35 and smallest 1476/1475. |

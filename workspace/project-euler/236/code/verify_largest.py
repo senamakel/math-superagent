@@ -31,19 +31,16 @@ for p,q in [(1476,1475),(123,59)]:
     neg = [i for i in range(5) if w[i]<0]
     print("pos:",[(i,w[i]) for i in pos],"neg:",[(i,w[i]) for i in neg])
     # brute small search
-    from itertools import product
-    found=False
-    def rec(idx, cur):
-        nonlocal found
-        if found: return
+    found=[False]
+    def rec(idx, cur, ks):
+        if found[0]: return
         if idx==5:
             if cur==0:
-                found=True
-                print("  FOUND k:", ks)
+                found[0]=True
+                print("  FOUND k:", ks[:])
             return
         for k in range(1,K[idx]+1):
             ks[idx]=k
-            rec(idx+1,cur+k*w[idx])
-    ks=[0]*5
-    rec(0,0)
-    if not found: print("  no k found in full search")
+            rec(idx+1,cur+k*w[idx],ks)
+    rec(0,0,[0]*5)
+    if not found[0]: print("  no k found in full search")
