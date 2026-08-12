@@ -5,11 +5,11 @@ structure of a minimal counterexample, the verification bound, the settled
 restricted classes and the obstruction; 53 notes are on disk. Further gathering
 happens only against a stated gap in `research/REQUESTS.md`.
 
-- [ ] Find the conjecture stated in a primary source, not a secondary summary.
-- [ ] Collect every partial result, each with its exact hypotheses and its exact
+- [x] Find the conjecture stated in a primary source, not a secondary summary.
+- [x] Collect every partial result, each with its exact hypotheses and its exact
       conclusion. Restricted classes: planar, cubic, claw-free, bounded degree,
       girth conditions.
-- [ ] Find the computational verification work: how far it has been checked, by
+- [x] Find the computational verification work: how far it has been checked, by
       what method, and what that leaves open.
 - [ ] Collect the adjacent machinery on cycle lengths in graphs of given minimum
       degree — cycle spectra, prescribed lengths, lengths modulo $k$.
