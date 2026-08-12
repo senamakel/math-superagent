@@ -378,6 +378,35 @@ fn every_agent_but_the_judge_can_write_durable_memory() -> agent::Result<()> {
 }
 
 #[test]
+fn the_goals_prompt_says_a_turn_without_a_tool_call_produced_nothing() {
+    // The failure this guards. `goals` reached the 12,000-token output ceiling
+    // with no tool call four times across recent builds — once after eight
+    // minutes of generation — leaving its run exactly where it started. The
+    // prompt told it what to spawn and never told it that the text of a turn is
+    // discarded, so a long deliberation read as work.
+    //
+    // Asserted rather than trusted because this is the one instruction whose
+    // absence is invisible: a prompt that has lost it still reads complete, and
+    // the cost shows up as a wall clock nobody attributes to a missing sentence.
+    let lower = GOALS_PROMPT.to_ascii_lowercase();
+    assert!(
+        lower.contains("without a tool call"),
+        "the goals prompt must say what an empty turn costs"
+    );
+    assert!(
+        lower.contains("discarded"),
+        "it must say the turn's text is not kept, which is why an empty turn is empty"
+    );
+    // The evidence has to travel with the rule. A bare instruction to be brief
+    // is the kind a model weighs against the analysis it wants to write; the
+    // measured eight minutes is what makes it a cost rather than a preference.
+    assert!(
+        lower.contains("eight minutes"),
+        "it must carry the measurement, not just the instruction"
+    );
+}
+
+#[test]
 fn a_planner_names_every_specialist_it_can_delegate_to() {
     // A role can be registered, tool-equipped, prompt-written, and provisioned
     // in the image, and still never run: the agent holding its delegation tool
