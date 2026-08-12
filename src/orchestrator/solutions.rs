@@ -346,6 +346,61 @@ async fn attempt_step(
     state
 }
 
+/// Renders what the pattern team has posted, or nothing when it has posted
+/// nothing.
+///
+/// Draining here is what makes the team reach the work at all on a long first
+/// attempt. Reflection stays a collector too: whichever gets there first
+/// delivers, and an empty mailbox renders an empty section rather than a
+/// heading announcing that no analysis arrived.
+fn observations_briefing(patterns: &PatternMailbox) -> String {
+    let observations = patterns.collect();
+    if observations.is_empty() {
+        return String::new();
+    }
+    format!("Structural observations from the pattern team:\n{observations}\n\n")
+}
+
+/// Builds the task one attempt is given, as a plain function of the state.
+///
+/// Kept separate from `attempt_step` so what an attempt is actually told is
+/// testable without a provider — the same argument `route` makes.
+fn attempt_prompt(state: &SolutionState, continuation: &str, observations: &str) -> String {
+    let fresh = if state.fresh_context.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "New material gathered since the last attempt:\n{}",
+            state.fresh_context
+        )
+    };
+    let steer = if state.steer.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "The judge reviewed the last attempt and says: {}\n\n",
+            state.steer
+        )
+    };
+    format!(
+        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{steer}{}\n\
+         {observations}{fresh}\n\n\
+         Requirements for this attempt, all of them:\n\
+         - You must end this attempt with at least one program written to the workspace and \
+           executed. An attempt that produces only notes, plans, or restatements has failed, \
+           however well written they are.\n\
+         - Reproduce every worked example in the statement with that program before running \
+           anything at full size.\n\
+         - Delegate the writing and running to tool_builder; it is the only role that can \
+           execute.\n\
+         - Then report the answer, the method, and how you verified it by a second independent \
+           route; or state precisely where you are blocked, what you executed, and what its \
+           output was.",
+        state.problem,
+        state.lesson_briefing()
+    )
+}
+
 /// Starts the first execution itself, beside the attempt rather than inside it.
 ///
 /// The method policy's first step is to write a naive oracle and run it against

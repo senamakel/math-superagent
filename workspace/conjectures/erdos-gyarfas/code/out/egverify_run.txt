@@ -44,3 +44,5 @@ n=14: no4_survivors=6059, missing_8cycle=0
 === check_no8_n16.py ===
 n=15: no4_survivors=91433, missing_8cycle=0, 10s
 n=16: no4_survivors=1655659, missing_8cycle=0, 145s
+=== survivor_nopow2.py ===
+=== verify_bound.py ===
