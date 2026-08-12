@@ -189,6 +189,19 @@ already reads. It holds no shell, no web search, and no delegation, because each
 of those is a way for curating what the run knows to turn into a second
 investigation beside the solve.
 
+Frequency and cycle length are separate axes, and bounding one is not enough.
+A live Erdős–Gyárfás run had the curator as its largest consumer — 55 model
+calls against `tool_builder`'s 38, growing five times faster than the role
+actually doing the mathematics, and spending 69 `read_document` calls walking
+`code/` and `research/` file by file. Throttling `MATH_AGENT_CONTEXT_MINUTES`
+to fifteen left it one cycle in three minutes and it was *still* the top
+consumer, because that single cycle cost eleven model calls. So the curator is
+registered with `RunBudget::for_housekeeping()` as well: curating is bounded
+work — read what changed, rewrite one file — and a role left with an
+investigation's budget investigates, which is the organizer's lesson exactly.
+Reaching the cap is safe, because `StopWithPartial` keeps the brief already
+written.
+
 Its cadence is configuration rather than a constant for one reason: it decides
 how stale the brief every role reads may be. Everything else about its
 allowance is the custodial one — the file keeps changing underneath it, so

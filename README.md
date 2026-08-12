@@ -476,33 +476,30 @@ and symlinks that leave the repository's `workspace/` root are rejected.
 The orchestrator decides which specialist handles each part of the problem.
 Open-ended objectives go to the goals agent, which spawns other specialists and
 tracks evidence against explicit completion criteria; research questions go to
-the Exa-backed research agent, which recalls related notes from Cognee and saves
-sourced findings; computations and executable checks go to the tool-builder, and
-the implementation the answer rests on to the coder. The orchestrator then
-writes one answer separating cited facts from its own reasoning.
+the Exa-backed research agent; computations and executable checks go to the
+tool-builder, a reduction already stated as a finite decision problem to the
+`sat_solver`, and so on across the fourteen roles. The orchestrator then writes
+one answer separating cited facts from its own reasoning.
 
-Subagent work runs asynchronously through TinyAgents graphs. `spawn_agent`
-returns a run ID immediately, so independent research and computation run in
-parallel; `peek_agent` inspects status, `steer_agent` redirects live work, and
-`await_agent` retrieves the response. `spawn_agents` and `await_agents` do the
-same for a batch in one turn, which is the shape most delegation takes —
-awaiting one run at a time serialises work that already ran in parallel. The
-orchestrator and goals agent share this surface; there is no blocking call.
+Subagent work runs asynchronously. `spawn_agent` returns a run ID immediately,
+so independent research and computation run in parallel; `peek_agent` inspects
+status, `steer_agent` redirects live work, and `await_agent` retrieves the
+response, with `spawn_agents` and `await_agents` doing the same for a batch in
+one turn. There is no blocking call. Up to fifty runs execute concurrently and
+further spawns queue for a slot without blocking the caller.
 
-Up to fifty runs execute concurrently; further spawns queue for a slot without
-blocking the caller (`MATH_AGENT_MAX_CONCURRENT_AGENTS`). Each agent develops an
-affinity for whichever OpenRouter provider served its last turn, so its large
-fixed prompt prefix keeps hitting that provider's cache; fallbacks stay enabled,
-so a busy provider moves the affinity rather than stalling the run.
-
-Context compression starts at an estimated 300,000 tokens. A model-backed
+Context compression starts at an estimated 300,000 tokens; a model-backed
 summary keeps the decisions, assumptions, formulas, source URLs, command
-results, and unresolved work; recent messages remain verbatim. If the summary
-call fails, TinyAgents trims old context instead of losing the whole run.
+results, and unresolved work, and recent messages remain verbatim.
+
+[`docs/roles.md`](docs/roles.md) says what each role may reach and what it is
+told; [`docs/runtime.md`](docs/runtime.md) covers the budget, the provider
+affinity, and the tracing.
 
 This is a research and computation assistant, not a formal proof checker;
 important results should still be checked against primary sources or a proof
 assistant when the stakes justify it.
+
 
 ## Docker Compose stack
 
