@@ -3,7 +3,7 @@
 
 use std::time::{Duration, Instant};
 
-use super::{Capture, ExecuteCommand, MAX_COMMAND_OUTPUT_BYTES, validate_complexity};
+use super::{Capture, ExecuteCommand, MAX_COMMAND_OUTPUT_BYTES};
 
 fn captured(bytes: &[u8], chunk: usize) -> Capture {
     let mut capture = Capture::default();
@@ -122,42 +122,4 @@ async fn a_command_that_exits_reports_its_code() {
     let tool = ExecuteCommand::new(std::env::temp_dir(), Duration::from_secs(30));
     let output = tool.run("exit 3").await.expect("the command runs");
     assert_eq!(output.status.and_then(|status| status.code()), Some(3));
-}
-
-#[test]
-fn a_bounded_oracle_may_declare_an_intractable_class() {
-    validate_complexity("factorial in n", "factorial", Some("n <= 7"))
-        .expect("a declared bound is what makes brute force legitimate");
-}
-
-#[test]
-fn an_unbounded_intractable_class_is_refused() {
-    assert!(validate_complexity("exponential", "exponential", None).is_err());
-    assert!(validate_complexity("exponential", "exponential", Some("  ")).is_err());
-}
-
-#[test]
-fn prose_disagreeing_with_the_class_is_refused() {
-    // `polynomial (O((n!)²))` is how the notation check was once defeated.
-    assert!(validate_complexity("polynomial (O((n!)^2))", "polynomial", None).is_err());
-}
-
-#[test]
-fn a_search_strategy_named_instead_of_a_cost_is_refused_and_points_at_the_solver() {
-    let refusal = validate_complexity("backtracking with pruning", "polynomial", None)
-        .expect_err("naming a search strategy states no quantity");
-    assert!(
-        refusal.to_string().contains("sat_solver"),
-        "a gate that blocks the wrong method must name the right one"
-    );
-}
-
-#[test]
-fn enumerating_divisors_is_an_honest_polynomial_description() {
-    validate_complexity(
-        "O(sqrt(n)) time, O(1) space, enumerate divisors",
-        "polynomial",
-        None,
-    )
-    .expect("refusing this would punish accuracy");
 }

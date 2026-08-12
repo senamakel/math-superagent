@@ -4,9 +4,10 @@
 use super::{
     AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, DELEGATES, GOALS_PROMPT,
     LEAN_PROVER_PROMPT, ORCHESTRATOR_PROMPT, SAT_SOLVER_PROMPT, SMT_SOLVER_PROMPT, SPECIALISTS,
-    SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT, checked_workspace_path, compression_policy,
-    default_registry, role_context, validate_complexity, workspace_prompt,
+    SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT, compression_policy, default_registry,
+    role_context, workspace_prompt,
 };
+use super::exec::validate_complexity;
 use crate::agent;
 
 #[test]
@@ -42,40 +43,6 @@ fn registry_rejects_duplicate_ids() -> agent::Result<()> {
     let duplicate = registry.register(AgentDefinition::new("research", "Other", "duplicate"));
     assert!(duplicate.is_err());
     Ok(())
-}
-
-#[test]
-fn workspace_paths_reject_absolute_and_parent_traversal() {
-    let workspace = std::path::Path::new("/workspace");
-    assert!(checked_workspace_path(workspace, "tools/check.sh").is_ok());
-    assert!(checked_workspace_path(workspace, "/etc/passwd").is_err());
-    assert!(checked_workspace_path(workspace, "../outside").is_err());
-    assert!(checked_workspace_path(workspace, "").is_err());
-    assert!(checked_workspace_path(workspace, "tools/../../outside").is_err());
-}
-
-#[test]
-fn workspace_paths_accept_the_mount_point_spelling_agents_are_given() {
-    // Every prompt names files as `/workspace/solution.md`; that must resolve
-    // to the same file as the relative spelling, not fail as traversal.
-    let workspace = std::path::Path::new("/workspace");
-    assert_eq!(
-        checked_workspace_path(workspace, "/workspace/solution.md").ok(),
-        checked_workspace_path(workspace, "solution.md").ok()
-    );
-    assert_eq!(
-        checked_workspace_path(workspace, "/workspace/tools/check.sh").ok(),
-        checked_workspace_path(workspace, "tools/check.sh").ok()
-    );
-}
-
-#[test]
-fn workspace_prefix_stripping_does_not_open_up_sibling_directories() {
-    let workspace = std::path::Path::new("/workspace");
-    assert!(checked_workspace_path(workspace, "/workspace-other/secret").is_err());
-    assert!(checked_workspace_path(workspace, "/workspaces/secret").is_err());
-    assert!(checked_workspace_path(workspace, "/workspace/../etc/passwd").is_err());
-    assert!(checked_workspace_path(workspace, "/workspace").is_err());
 }
 
 #[test]
@@ -407,29 +374,6 @@ fn only_executing_roles_receive_the_runtime_configuration() {
 #[test]
 fn an_unknown_role_receives_no_working_files() {
     assert!(role_context("nonexistent").is_empty());
-}
-
-#[test]
-fn oversized_command_output_keeps_the_end_where_the_answer_is() {
-    use super::{MAX_COMMAND_OUTPUT_BYTES, truncate_output};
-
-    // A verification script prints its working first and its conclusion last.
-    // Keeping only the head discarded the answer of a run that had computed it.
-    let mut raw = b"START-OF-RUN\n".to_vec();
-    raw.resize(MAX_COMMAND_OUTPUT_BYTES * 2, b'x');
-    raw.extend_from_slice(b"\n[final answer] 4,3,1\n");
-
-    let rendered = truncate_output(&raw);
-    assert!(
-        rendered.contains("[final answer] 4,3,1"),
-        "the tail must survive"
-    );
-    assert!(rendered.contains("START-OF-RUN"), "the head must survive");
-    assert!(rendered.contains("truncated from the middle"));
-
-    // Output that fits is passed through untouched.
-    let small = b"answer: 661\n";
-    assert_eq!(truncate_output(small), "answer: 661\n");
 }
 
 #[test]

@@ -58,7 +58,7 @@ pub(super) fn checked_workspace_path(workspace: &Path, requested: &str) -> Resul
 /// absent. Nothing is lost by refusing the literal reading: a folder actually
 /// named `workspace` inside the workspace would be `/workspace/workspace`,
 /// which no part of the runtime or template creates.
-fn strip_workspace_prefix(requested: &str) -> &str {
+pub(super) fn strip_workspace_prefix(requested: &str) -> &str {
     let trimmed = requested.trim();
     for prefix in ["/workspace/", "/workspace", "workspace/", "workspace"] {
         if let Some(rest) = trimmed.strip_prefix(prefix)

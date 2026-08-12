@@ -23,12 +23,10 @@ mod threads;
 mod vector;
 
 use std::fmt::Write as _;
-use std::path::{Component, Path, PathBuf};
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
-use std::time::Duration;
 
 use async_trait::async_trait;
-use serde_json::json;
 use tinyagents::harness::message::estimate_slice_tokens;
 use tinyagents::harness::middleware::ContextCompressionMiddleware;
 use tinyagents::harness::model::{ChatModel, ModelRequest};
@@ -46,13 +44,14 @@ use crate::agent::sticky::StickyProviderModel;
 use crate::agent::trace::RunTracer;
 use crate::agent::untruncated::UntruncatedModel;
 use crate::agent::{
-    AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
-    configure_run_budget, openrouter_model_from_env,
+    AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, configure_run_budget,
+    openrouter_model_from_env,
 };
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
 use documents::WorkspaceDocuments;
-use exec::{ExecuteCommand, validate_complexity};
+use exec::ExecuteCommand;
+use paths::strip_workspace_prefix;
 use paths::{WriteToolFile, checked_workspace_path};
 use patterns::PatternTool;
 use vector::{
