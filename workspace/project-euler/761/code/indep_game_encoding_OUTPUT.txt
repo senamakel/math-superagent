@@ -1,0 +1,26 @@
+==========================================================================
+PE 761 — independent geometric game-encoding solver (staging + dash)
+==========================================================================
+
+[toward runner start (delta=0)]
+  V_circle = 2.14159265   oracle 4.60333885   agree? False
+
+[opposite runner (delta=pi)]
+  V_circle = 4.14159265   oracle 4.60333885   agree? False
+
+--------------------------------------------------------------------------
+Final model: stage diametrically opposite the runner (delta=pi)
+unless the delta=0 trial matched the oracle better.
+==========================================================================
+
+CIRCLE    staging model V* = 4.14159265
+          oracle              = 4.60333885  agreement to 1 dp
+          r=0 control (naive) = 3.14159265   (must be < oracle, confirming staging matters)
+
+SQUARE    staging model V* = 4.09372236
+          oracle              = 5.78859314  agreement to 0 dp
+          r=0 control (naive) = 3.16227766   (must be < oracle, confirming staging matters)
+
+HEXAGON   staging model V* = 3.98230929
+          oracle              = 5.05505046  agreement to 0 dp
+          r=0 control (naive) = 3.05505046   (must be < oracle, confirming staging matters)
