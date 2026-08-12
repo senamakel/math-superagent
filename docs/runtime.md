@@ -362,10 +362,9 @@ error.
 Each model turn is capped at 12000 output tokens
 (`MATH_AGENT_TURN_OUTPUT_TOKENS`). Generation time is linear in output length,
 so an uncapped turn is an uncapped wall clock: a measured turn ran to 9,361
-tokens and 2.9 minutes, and longer ones exceeded seven. Treat it as a safety
-ceiling, not a way to make the model concise: set to 4000 it bound an ordinary
-turn exactly, truncating mid-generation so no usable tool call was emitted and
-the loop retried — 66 seconds to accomplish nothing. Buy brevity in the prompt.
+tokens and 2.9 minutes, longer ones exceeded seven. It is a safety ceiling, not
+a way to make the model concise: set to 4000 it bound an ordinary turn exactly,
+truncating mid-generation into a retry — 66 seconds to accomplish nothing.
 
 The inventor is the exception at 32000 (`RunBudget::for_invention`), the one
 role whose product *is* the long turn: a live 597 inventor was cut off with no
@@ -387,8 +386,7 @@ from the run's *configured* turn cap, passed in with `with_turn_cap`, not from
 whatever cap the request carries: read as an original, a turn upstream had
 already doubled doubled again, and a live `goals` agent reached a 48,000-token
 re-issue — four times the ceiling, against a wrapper documented to allow twice.
-The inventor's 32000 tops out at 64000, which is its wall clock as much as its
-size.
+The inventor's 32000 tops out at 64000, its wall clock as much as its size.
 
 A timeout is a safety ceiling, not permission to run an intractable approach.
 Before substantial execution the tool-builder must state both time and space
