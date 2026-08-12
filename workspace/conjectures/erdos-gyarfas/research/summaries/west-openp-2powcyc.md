@@ -1,4 +1,4 @@
-<!-- source: https://dwest.web.illinois.edu/openp/2powcyc.html | converted from HTML -->
+<!-- source: https://web.archive.org/web/2021/http://www.math.uiuc.edu/~west/openp/2powcyc.html | converted from HTML -->
 
 "Erd�s-Gy�rf�s Conjecture on 2-power Cycle Lengths"
 
