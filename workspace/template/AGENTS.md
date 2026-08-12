@@ -66,9 +66,11 @@
 - Externally sourced material lives in `research/`; the run's own derivations
   and programs do not.
 - Record the objective and its completion criteria in `GOAL.md`.
-- Keep provisional work in `SCRATCHPAD.md`. Recall durable knowledge with
-  `recall_memory` and store verified results, sourced findings, and concrete
-  failed approaches with `remember_memory`.
+- Keep provisional work in the scratch: `note_scratch` records it and
+  `recall_scratch` reads it back. Recall durable knowledge with `recall_memory`
+  and store verified results, sourced findings, and concrete failed approaches
+  with `remember_memory`. Durable recall never returns scratch, so promote a
+  finding once it survives a check.
 - Never write credentials or environment values to workspace files.
 - `trace.jsonl` is the runtime's own event log, and the tools refuse it. It is
   a verbatim replay of what you have already seen, so reading it would spend a

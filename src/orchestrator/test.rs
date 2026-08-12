@@ -334,7 +334,13 @@ fn only_the_roles_doing_provisional_work_can_reach_the_scratch() -> agent::Resul
             .tools
             .clone())
     };
-    for role in ["tool_builder", "coder", "lean_prover", "pattern_finder", "goals"] {
+    for role in [
+        "tool_builder",
+        "coder",
+        "lean_prover",
+        "pattern_finder",
+        "goals",
+    ] {
         let held = tools(role)?;
         for tool in super::SCRATCH_TOOLS {
             assert!(
