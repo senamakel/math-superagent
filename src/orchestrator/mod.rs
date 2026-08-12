@@ -1595,6 +1595,10 @@ fn register_pattern_agent(
         register_resilient(&mut pattern, tool);
     }
     register_recall(&mut pattern, &parts.workspace);
+    // A regularity the library already explains is not a conjecture worth
+    // chasing, and this is the cheapest way to find that out — cheaper than the
+    // program it would otherwise commission to test one.
+    register_note_recall(&mut pattern, &parts.vector_store);
     subagents.register("pattern_finder", Arc::new(pattern), prompt)
 }
 
