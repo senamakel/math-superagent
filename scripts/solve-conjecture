@@ -47,19 +47,27 @@ case "$slug" in
         ;;
 esac
 
-# The wall clock is the one budget that is not safe to reach. A run that hits
-# the model-call cap stops with partial results and keeps what it derived; a run
-# that hits the wall clock raises a hard Timeout, and the attempt's work product
-# is lost. So the ceiling has to be set high enough that the graceful cap is
-# always the one that trips — the same argument the tool-call cap already makes.
+# A conjecture takes the same wall clock as anything else, and the twelve hours
+# that used to be set here is the reason to say so explicitly.
 #
-# Two hours is the default because a Project Euler problem is a two-hour
-# problem. An open conjecture is not: the library phase alone can spend that,
-# and the `goals` run driving an attempt starts with the run and ages with it,
-# so it is the one run that can actually reach the ceiling. A live Euler run
-# spent seventy-five minutes inside attempt 1 and was on course to meet it.
-MATH_AGENT_RUN_MINUTES=${MATH_AGENT_RUN_MINUTES:-720}
-export MATH_AGENT_RUN_MINUTES
+# That override was written to protect the attempt: the wall clock raises a hard
+# Timeout, so reaching it loses the `goals` run's own context and report, and
+# twelve hours put it out of reach. `RunBudget` has since made the opposite
+# argument, and it is the better one — the attempt only becomes judgeable *by*
+# returning, and on an open conjecture, where `goals` is told to pursue the goal
+# until it is met, it never returns on its own. The cap is what ends it.
+#
+# The two are not a matter of taste, because a live run settled it. On one
+# evening 241 and 761 were both killed at exactly 30:00, and both had a judge
+# verdict, a reflection and an inventor spawn within ten minutes. Erdős–Gyárfás,
+# carrying this override, ran fifty-six minutes inside attempt 1 with zero
+# verdicts, zero reflections and zero inventor spawns — the precise failure the
+# thirty-minute default was written to stop, on the one run type its reasoning
+# names. What is lost at the cap is the run's context and its report; what is on
+# disk survives, and `continuation_briefing` is what lets the next attempt pick
+# it up. That is a far smaller loss than never being judged at all.
+#
+# Set `MATH_AGENT_RUN_MINUTES` to override for a specific investigation.
 
 workspace_subdir=conjectures/$slug
 workspace_path=$repository_root/workspace/$workspace_subdir
