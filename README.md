@@ -46,8 +46,8 @@ verifying the result before presenting it.
 │  │ librarian      │ scholar        │ reflection     │ judge          │   │
 │  │ downloads      │ digests them   │ learns         │ checks conduct │   │
 │  ├────────────────┼────────────────┼────────────────┼────────────────┤   │
-│  │ inventor       │ pattern_finder │                │                │   │
-│  │ a new angle    │ exact sequences│                │                │   │
+│  │ inventor       │ pattern_finder │ context_curator│                │   │
+│  │ a new angle    │ exact sequences│ the brief      │                │   │
 │  └────────────────┴────────────────┴────────────────┴────────────────┘   │
 │     on finish: research ──> scholar                                      │
 │          │                                                               │
@@ -88,6 +88,15 @@ The runtime uses a small registry of specialist agents:
   conjecture past the data that suggested it, and looks them up in the OEIS,
   where a match usually carries the closed form.
 - `inventor` proposes a different line of attack when the current one stalls.
+- `context_curator` owns `CONTEXT.md`, the brief nearly every other role is sent
+  on every model call. It runs as a standing team every
+  `MATH_AGENT_CONTEXT_MINUTES` (five by default) and keeps that one file current
+  and within `MATH_AGENT_CONTEXT_TOKENS` (ten thousand): the established results
+  and their basis, the approaches that died and why, what the numbers look like,
+  and what Cognee holds from earlier runs on this problem — which is invisible to
+  this one until somebody carries it into the file everyone already reads. It has
+  no shell, no web search, and no delegation, so curating what the run knows
+  cannot become a second investigation beside the solve.
 - `librarian` downloads primary material into the reference library, following
   what its own sources cite before searching afresh.
 - `scholar` reads that library. It judges each source against the run's goal and
@@ -363,7 +372,7 @@ beside the solution:
 workspace/project-euler/66/
 ├── problem.md          # the statement, converted from the fetched HTML
 ├── GOAL.md             # system files are upper-case; the run's own prose
-├── CONTEXT.md
+├── CONTEXT.md         # the shared brief, curated and token-budgeted
 ├── solution.md
 ├── INDEX.md            # what each file beside it is for
 ├── code/               # every program, with its own AGENTS.md and INDEX.md

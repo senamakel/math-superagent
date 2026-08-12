@@ -270,6 +270,30 @@ writes those itself, and including them would have the team waking itself up
 forever on its own notes. That is now free rather than arranged: its scratch
 went to `note_scratch` and is no longer a file in the workspace at all.
 
+`CONTEXT.md` has an owner, which it did not. It was written by whichever role
+happened to think of it, so it drifted behind the run that reads it on every
+model call, and nothing measured what it cost. The `context` team owns it now:
+one standing team running `context_curator` every
+`MATH_AGENT_CONTEXT_MINUTES` — five by default — whose whole job is to keep that
+one file current and within budget. It reads widely and writes once. Most of
+what it brings across is Cognee's: `recall_memory` and `relate_memory` hold what
+earlier runs on this problem, and on problems of its shape, established, and
+that is invisible to this run until somebody carries it into the file every role
+already reads. It holds no shell, no web search, and no delegation, because each
+of those is a way for curating what the run knows to turn into a second
+investigation beside the solve.
+
+Its cadence is configuration rather than a constant for one reason: it decides
+how stale the brief every role reads may be. Everything else about its
+allowance is the custodial one — the file keeps changing underneath it, so
+"nothing to add" means come back later rather than stop. Idleness is decided
+before the agent runs, by fingerprinting the workspace with `CONTEXT.md`
+excluded: counting its own output would have the team waking itself forever on
+the brief it just wrote, which is the pattern team's `SCRATCHPAD.md` lesson
+again. And the standing — what the file costs against its budget — is computed
+per cycle and written into the brief, because it is the fact that decides what
+the cycle is *for*: adding, or compressing.
+
 `diversify` runs three arms concurrently — the librarian followed by the
 scholar, the pattern agent, and the inventor — and only when repeated attempts stop making progress; it is the
 step that breaks a loop reflection alone cannot.
@@ -614,7 +638,7 @@ workspace/              # selectable writable agent workspaces
 The executable registry contains `goals`, `research`, `tool_builder`, `coder`,
 `sat_solver`, `smt_solver`, `theorem_prover`, `symbolic_math`, `lean_prover`,
 `reflection`, `judge`, `pattern_finder`, `inventor`, `librarian`, `scholar`,
-and `organizer`.
+`context_curator`, and `organizer`.
 
 Seven of those — `tool_builder`, `coder`, `sat_solver`, `smt_solver`,
 `theorem_prover`, `symbolic_math`, `lean_prover` — carry
@@ -1066,8 +1090,24 @@ line per source. That is a catalogue, and `INDEX.md` already is one. A seal is
 what a reader opens *instead of* the ten notes below it, so it carries every
 distinct result with its hypotheses, not their titles. Sealing once is the point: a flat level
 is re-summarised every time anything is added, so the same sources are
-re-compressed indefinitely and the summary drifts. `CONTEXT.md` is a root in
-its own right under the same cap.
+re-compressed indefinitely and the summary drifts.
+
+`CONTEXT.md` is a root in its own right, and it is the one with a budget of its
+own: `MATH_AGENT_CONTEXT_TOKENS`, ten thousand by default. It used to sit under
+the thousand-token cap with the tree roots, and that was the wrong size for what
+it is. A thousand tokens buys a list of what the library established, which is
+close to what `research/INDEX.md` already says. Ten thousand buys the thing an
+agent otherwise spends a quarter of an hour rebuilding from disk: what the run
+believes and on what basis, which approaches are dead and why, what the computed
+numbers look like, what durable memory relates the problem to. That is worth
+re-sending on every model call; a catalogue is not. The budget is read by
+`shared_context::budget_tokens`, measured against the file by
+`shared_context::standing`, and enforced where it is *spent* —
+`load_workspace_files` cuts a brief that exceeds it on the way into a prompt and
+says in the file's place that it was cut. Enforcing it in the write path was the
+alternative and is worse: refusing a write costs the run whatever the agent was
+about to record, where cutting the prompt copy keeps the material and turns the
+overrun into the curator's next cycle.
 
 `ROOT.md` is deliberately not `INDEX.md`. The index says what each file *is*
 and is derived from the directory by the index tools; the root says what the
@@ -1325,6 +1365,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | librarian, research | `GOAL.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/FRONTIER.md`, `CONTEXT.md` |
 | inventor | the planners' research files plus `research/THREADS.md` and both reflection files |
 | scholar | `GOAL.md`, `TASKS.md`, `MEMORY.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `SCRATCHPAD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
 | organizer | `GOAL.md`, `TASKS.md`, `INDEX.md`, `code/INDEX.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md` |
 
 The tool-builder accumulates what a second program would repeat under

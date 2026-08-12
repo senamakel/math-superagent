@@ -23,9 +23,14 @@ def is_3connected(G):
     for u in nodes:
         H = G.copy()
         H.remove_node(u)
-        if len(H) and (not nx.is_connected(H) or nx.articulation_points(H)):
+        art = list(nx.articulation_points(H))
+        if len(H) and (not nx.is_connected(H) or art):
             return False
     return True
+
+
+def is_2connected(G):
+    return nx.is_connected(G) and not list(nx.articulation_points(G))
 
 
 if __name__ == "__main__":
