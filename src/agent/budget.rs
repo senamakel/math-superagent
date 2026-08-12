@@ -246,6 +246,28 @@ impl RunBudget {
         }
     }
 
+    /// Widens this budget to what proposing a line of attack needs.
+    ///
+    /// The one place a budget widens rather than narrows, and the exception is
+    /// deliberate. [`Self::for_judging`] and [`Self::for_housekeeping`] bound
+    /// *authority* — how far a role may wander from its job — and an operator
+    /// who lowered the defaults meant to lower them. The turn cap bounds
+    /// nothing of the sort: it is a safety ceiling on one generation, and on
+    /// this role it was cutting the work off rather than bounding a
+    /// pathological turn. See [`INVENTION_TURN_OUTPUT_TOKENS`].
+    ///
+    /// `max` rather than assignment, so an operator who raised
+    /// `MATH_AGENT_TURN_OUTPUT_TOKENS` above this keeps their value.
+    #[must_use]
+    pub fn for_invention(self) -> Self {
+        Self {
+            max_turn_output_tokens: self
+                .max_turn_output_tokens
+                .max(INVENTION_TURN_OUTPUT_TOKENS),
+            ..self
+        }
+    }
+
     /// Returns the tool timeout in milliseconds, saturating at `u64::MAX`.
     #[must_use]
     pub fn tool_timeout_ms(&self) -> u64 {
