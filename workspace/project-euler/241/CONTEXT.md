@@ -1,54 +1,49 @@
 # Shared context
 
-What this run knows, in its own words. The context curator writes this file and
-is the only role that writes it; nearly every other role is sent it on every
-model call. So what is here is what the run knows without going to look, and
-what is missing is what each agent rediscovers separately.
-
-It carries what an agent would otherwise rebuild from disk, from the note store,
-or from a session it was not present for: established results with their basis,
-approaches that died and why, what the computed numbers look like, what durable
-memory relates this problem to, and where two accounts disagree. It is not a
-catalogue of files — `research/INDEX.md` is that — and not a narration of what
-agents did.
-
-**It has a token budget** (`MATH_AGENT_CONTEXT_TOKENS`, 10,000 by default). The
-file is re-sent on every model call in every role that reads it, so length here
-is a bill the whole run pays many times over; a brief past its budget is cut
-where it exceeds it on the way into a prompt, with a notice saying so. Link the
-file that still holds any detail compressed away — source notes under
-`research/summaries/`, untouched full texts under `research/sources/`,
-reflections, threads. Durable findings belong in Cognee. A statement nobody can
-trace to a source is worth less than no statement.
+Token budget 10,000; currently ~430 tokens. This file is re-sent on every model
+call in every reading role, so keep it to what an agent would otherwise rebuild
+from disk (established results with basis, dead ends, computed numbers, recalled
+memory, contradictions, gaps). Link the file holding compressed detail. Durable
+findings go to Cognee, not here.
 
 ## Established
 
-What this run may treat as known, each marked proved, computed and checked,
-sourced, or conjectured, with a link to what establishes it.
+- **Problem (sourced, `[[problem.md]]`).** PE 241. For positive integer n let
+  σ(n) = sum of all divisors of n. Perfection quotient p(n) = σ(n)/n. Find the
+  sum of all positive integers n ≤ 10^18 with p(n) = k + 1/2, k integer. Equivalently
+  2σ(n) = (2k+1)·n. Worked example: σ(6)=12. (Perfect numbers are the k=1 case σ(n)=2n.)
+- **Governing structure (conjectured direction, not yet executed).** p(n) is
+  multiplicative: if n = ∏ p_i^{a_i} then σ(n)/n = ∏ (p^{a+1}−1)/(p^a(p−1)).
+  The half-integer condition is the 2-adic equation 2σ(n)=m·n with m=2k+1 odd.
+  NaN constraint: if a = v2(n), u = n/2^a odd, then v2(σ(u)) = a−1 forces the
+  2-adic structure of σ(n). Effective algorithm expected to be a finite DFS over
+  prime factors (each added p^e maps the quotient p(n) geometrically), NOT a scan
+  up to 10^18. Nothing at full size computed yet.
 
 ## Ruled out
 
-Approaches that failed, and the reason each failed. A known dead end is a
-result, and this section is what stops the run paying for one twice.
+- None yet. (This is cycle one; no approach has failed and none validated.)
 
 ## Numbers
 
-Computed terms, the range over which the oracle and the method agree, the size
-of the object at the bound in the statement.
+- Oracle: σ(6)=12 (from statement). No computed terms yet — brute.py, the
+  obvious naive program that reproduces the statement's example, is the next
+  required artifact and is not yet written.
 
 ## Recalled
 
-What durable memory holds about this problem or problems of its shape, marked as
-recalled rather than as this run's own finding, with hypotheses checked against
-this problem before being relied on.
+- No durable memory bears on this problem or on abundancy/multiply-perfect
+  theory. Durable brain holds only unrelated Erdős–Gyárfás cubic-bipartite
+  findings. Do not import those; hypotheses are unchecked here.
 
 ## Contradictions
 
-Where sources disagree, where a source contradicts recalled memory, or where a
-computation contradicts a conjecture. The most valuable rows here: record them
-rather than silently picking a side.
+- None yet.
 
 ## Gaps
 
-What the run still needs and has not found. State a gap precisely enough to be a
-research request rather than a mood.
+- The governing theory request is open: `research/REQUESTS.md` id
+  theory-numbers-with-88d5 (bounding/recursion over 2σ(n)=m·n, m odd, for
+  n≤10^18). It closes when a note records a claim block with
+  `answers: theory-numbers-with-88d5`. The efficient method in step 3 depends on
+  this being filled.
