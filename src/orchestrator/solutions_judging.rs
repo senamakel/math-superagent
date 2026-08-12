@@ -333,11 +333,11 @@ const ORACLE_FILE: &str = "brute.py";
 /// so nothing anywhere disagreed with anything.
 ///
 /// The check is a substring, deliberately. Whether two methods agree *on the
-/// mathematics* is a judgement and stays with the agent; whether anything in
-/// `code/out/` so much as mentions the oracle is a count, so it is counted. A
-/// run that has executed the oracle and captured the result clears this
+/// mathematics* is a judgement and stays with the agent; whether any captured
+/// output so much as mentions the oracle is a count, so it is counted. A run
+/// that has executed the oracle and captured the result clears this
 /// immediately; a run that has never run it cannot.
-fn oracle_unchecked(workspace: &Path) -> bool {
+fn oracle_unchecked(workspace: &Path, captured: &[PathBuf]) -> bool {
     let code = workspace.join(super::layout::CODE_DIR);
     if !code.join(ORACLE_FILE).is_file() {
         // No oracle to disagree with. That is a different fault, and
@@ -359,52 +359,26 @@ fn oracle_unchecked(workspace: &Path) -> bool {
         // Only the oracle exists, so there is no faster method to check.
         return false;
     }
-    !mentions_oracle(&workspace.join(super::layout::OUTPUT_DIR))
+    !mentions_oracle(captured)
 }
 
-/// Whether any captured output names the oracle, searched one level down.
-fn mentions_oracle(folder: &Path) -> bool {
+/// Whether any captured output names the oracle, by filename or in its text.
+fn mentions_oracle(captured: &[PathBuf]) -> bool {
     let stem = ORACLE_FILE.trim_end_matches(".py");
-    let Ok(entries) = std::fs::read_dir(folder) else {
-        return false;
-    };
-    entries.flatten().take(MAX_COUNTED).any(|entry| {
-        let path = entry.path();
-        if path.is_dir() {
-            return mentions_oracle(&path);
-        }
-        if entry.file_name().to_string_lossy().contains(stem) {
+    captured.iter().any(|path| {
+        if path
+            .file_name()
+            .is_some_and(|name| name.to_string_lossy().contains(stem))
+        {
             return true;
         }
-        std::fs::read_to_string(&path).is_ok_and(|text| text.contains(stem))
+        std::fs::read_to_string(path).is_ok_and(|text| text.contains(stem))
     })
 }
 
 /// Counts a folder's entries, bounded, and answers zero for a missing folder.
 fn count_entries(folder: &Path) -> usize {
     std::fs::read_dir(folder).map_or(0, |entries| entries.flatten().take(MAX_COUNTED).count())
-}
-
-/// Counts what a program actually produced, ignoring notes written beside it.
-///
-/// A Markdown note in `code/out/` is the run's commentary on an output, and it
-/// is already counted — it is where a computed `claim` block lives. Counting it
-/// here too would report one artifact twice, on two lines that a judge reads as
-/// independent evidence.
-fn count_outputs(folder: &Path) -> usize {
-    std::fs::read_dir(folder).map_or(0, |entries| {
-        entries
-            .flatten()
-            .take(MAX_COUNTED)
-            .filter(|entry| {
-                !entry
-                    .file_name()
-                    .to_string_lossy()
-                    .to_ascii_lowercase()
-                    .ends_with(".md")
-            })
-            .count()
-    })
 }
 
 /// Returns whether the workspace holds a program the run could have executed.
