@@ -34,7 +34,7 @@ are tractable; not load-bearing for the sum.
 id: alekseyev-inverting-multiplicative
 statement: Preimages of a multiplicative function (n with f(n)=v) and their power sums/cardinality are computable in polynomial time (using a Z^>=0-semiring over prime powers) when the preimage set is finite; e.g. the count of x with sigma_1(x)=10^1000 is known without listing them.
 hypotheses: f multiplicative; the preimage set is finite
-holds-here: partial — the multiplicative decomposition matches the run's; but PE241 fixes a *ratio* sigma(n)/n=k+1/2 below a *bound* 10^18, not a fixed sigma value, so the inverse-machine does not directly enumerate the answer set
+holds-here: no — theorem concerns fixed sigma-value preimages; PE241 fixes a *ratio* sigma(n)/n=k+1/2 below a *bound* 10^18, not a fixed sigma value, so the inverse machine does not directly enumerate the answer set (multiplicative decomposition matches but is not the enumeration route)
 status: proved (Alekseyev, JIS 16.5.2, 2016)
 bearing: structural confirmation that sigma-preimage enumeration is polynomially tractable; not the enumeration route for the hemiperfect sum
 anchor: research/sources/alekseyev_inverting_multiplicative_functions.full.md

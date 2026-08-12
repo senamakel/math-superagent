@@ -104,7 +104,7 @@ theorem cycle_in_one_component {G : SimpleGraph V} [DecidableEq V]
   have hpen : p.tail.penultimate = p.penultimate := tail_penultimate hp
   let q : (G.induce (notVSet v)).Walk
       ⟨p.snd, cycle_snd_induce hp⟩ ⟨p.penultimate, cycle_penultimate_induce hp⟩ :=
-    (p.tail.dropLast).induce (notVSet v) habit
+    ((p.tail.dropLast).induce (notVSet v) habit).copy rfl hpen
   refine ⟨q⟩
 
 end ErdosGyarfas
