@@ -44,14 +44,15 @@ Keeping the naive oracle was enforced; agreeing with it was not, and PE241's
 the cancelling prime, when σ(13) = 14) and found 5 of 9 terms below 10⁸.
 
 The judge runs on a narrowed budget (`RunBudget::for_judging`): twelve model
-calls and five minutes, against an attempt that takes the better part of an
-hour. It reads a report and answers in four lines, so an investigation's budget
-is the wrong size for it — and left with one, it investigates. A live judge
-spent four minutes, fifteen model calls, and a 6,906-token turn reading
-`CONTEXT.md` and the programs the attempt had written, while the finished
-attempt waited on it. The tight cap is safe by construction rather than by
-luck: the run stops with partial results, a judge cut off before its verdict
-returns something unparsable, and an unparsable verdict is PROCEED.
+calls and five minutes, against an attempt that takes the better part of an hour.
+It reads a report and answers in four lines, so an investigation's budget is the
+wrong size for it — and left with one, it investigates. A live judge spent four
+minutes, fifteen model calls, and a 6,906-token turn reading `CONTEXT.md` and the
+programs the attempt had written, while the finished attempt waited on it. This
+is also why the evidence above is counted for it rather than left to it to go and
+find. The tight cap is safe by construction: the run stops with partial results,
+a judge cut off before its verdict returns something unparsable, and an
+unparsable verdict is PROCEED.
 
 Three rules in it are load-bearing. An unreadable reply is PROCEED, in the same
 spirit as an unparsable verdict not counting as solved: a judge the loop cannot

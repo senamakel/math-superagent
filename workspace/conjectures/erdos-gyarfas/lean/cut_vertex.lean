@@ -72,7 +72,7 @@ lemma tail_penultimate {G : SimpleGraph V} {v : V} {p : G.Walk v v}
   have hsub : p.length - 1 - 1 + 1 = p.length - 1 := by
     rw [Nat.sub_add_cancel hl]
     omega
-  exact congrArg (p.getVert) hsub
+  rw [show p.length - 1 - 1 + 1 = p.length - 1 by exact hsub]
 /-! ## The interior of the cycle avoids `v` -/
 
 /-- The strict interior of the cycle (vertices strictly between `snd` and
