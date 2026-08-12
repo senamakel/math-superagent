@@ -6,6 +6,7 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `abel-open-ngon-ngt4` | The exact critical speed ratio for a regular n-gon pursuit-escape game with n>4 (including the hexagon) is left OPEN by Abel et al. arXiv:2007.08965: the paper's strategies for triangle and square generalize but… | **unchecked** | asserted | `research/notes/hexagon-provenance-literature-open.md` |
 | `abg-capture-unbounded-boundedness-condition` | In a convex unbounded Euclidean domain, discrete-time equal-speed capture of a single evader by pursuers is possible if and only if the initial configuration satisfies the Boundedness Condition (a recession-set… | **unchecked** | proved | `research/summaries/alexander-bishop-ghrist-capture-unbounded.md` |
 | `circle-critical-speed-identity-e375` | The critical runner speed for escape from a circular pool (swimmer at center, speed 1; runner on boundary at speed factor v) is V_circle = sqrt(1+x^2) ≈ 4.60333885 where x ≈ 4.493409458 is the smallest positive root of… | **unchecked** | asserted | `research/notes/circle-critical-speed-identity.md` |
 | `davidk-square-closed-form` | V_square = sqrt(5/2(7+sqrt(41))) = 5.78859314..., reproduced by an independent geometric construction (David K) and by stewbasic's general-n formula. | **unchecked** | asserted | `research/summaries/mathse-boy-escape-teacher-regular-ngon.md` |

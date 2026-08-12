@@ -79,6 +79,21 @@ build option-(a) numeric check) are superseded — do not re-run
 `code/indep_game_encoding.py` (dead end, output captured) or re-derive the
 closed form. CONTEXT.md is authoritative over the thread.
 
+**Two more solver scripts exist on disk but were NEVER run — no captured
+output, not in `code/INDEX.md`, no scratch/memory record of results.** Scratch's
+last entry ("direct-game solver agent-run-15 still running") matches these; the
+session ended before any output. `code/hexagon_first_principles_explore.py` is
+the *correct-framework* attempt: stage on the scale-1/v homothetic hexagon
+boundary keeping the runner opposite, committed-CCW perimeter distance, bisect
+on v, with built-in circle self-validation (must reproduce 4.60333885 before any
+hexagon number is trusted). `code/hexagon_independent_solver.py` is another
+straight-dash variant (stage at rho=P/2v then a chord) — the same red-herring
+family as `indep_game_encoding.py`, NOT the circle-validated two-phase
+mechanism. So the missing independent route is still missing as *verified
+evidence*: whoever continues it may run `hexagon_first_principles_explore.py`
+(its circle gate is the acceptance test), but nothing on disk now counts as
+verification.
+
 ### Circle case (established, sourced, CLOSED — do not re-derive)
 V_circle from cos B=1/V, sin B=(π+B)/V, i.e. tan B=π+B, V=1/cos B ≈ 4.60333885.
 Source: IBM Ponder This May 2001, `research/summaries/ponder-this-goblin-pool-circle.md`.
@@ -136,6 +151,24 @@ Validation/Gaps. Treat the stewbasic n-gon formula as a sourced result with
 strong numeric agreement (square + circle limit reproduced two ways, and
 self-consistent exact closed form for n=6), not a peer-reviewed theorem.
 
+## Provenance of V_hexagon — literature leaves n>4 OPEN (librarian finding)
+
+**Source-backed caveat, added by the librarian after reading the Abel et al.
+full text in full:** the paper's own **Open Problems** (item 4) states the
+exact critical speed ratio for regular n-gons with **n>4 is an open
+problem** — "Our pursuer strategies for equilateral triangle and square
+generalize naturally, but we have been unable to find matching escaper
+strategies, suggesting these may not be tight." So **no held primary source
+independently derives V_hexagon**; Abel et al. and Hesterberg give exact
+values only for disk (4.603), triangle (7.405) and square (5.789). **V_hexagon
+= 2+2√21/3 ≈ 5.0550504633 rests solely on the stewbasic Math.SE formula
+(n=6)**, whose n=3/4/∞ anchors reproduce the paper-oracle values and whose n=6
+value reduces to an exact quadratic-surd closed form. When reporting the
+answer, state it as **formula-derived + exact-closed-form-confirmed,
+single-route**, with the note that the peer-adjacent literature explicitly
+flags n>4 as open. Note: `research/notes/hexagon-provenance-literature-open.md`,
+claim `abel-open-ngon-ngt4`.
+
 ## Contradictions
 
 No open contradiction on the value (5.05505046). Two caveats to record, not
@@ -145,7 +178,10 @@ three "oracles" agree the *formula* is right** (n=3/4/∞ anchors + exact closed
 form), but the **only independent game-encoding solver built does NOT reproduce
 the oracles** — it caps each shape at a lower straight-dash bound. That is not a
 contradiction of the answer (the solver's model is the known-wrong red herring)
-but it means "independently verified" is NOT yet true. The research/CLAIMS.md
+but it means "independently verified" is NOT yet true. (3) **The published
+literature leaves regular n-gons with n>4 open** (Abel et al. Open Problems
+item 4), so the hexagon value is not confirmed by any peer-adjacent source —
+see the provenance note above. The research/CLAIMS.md
 mirror lists the circle identity claim as "unchecked" in its one `claim` block;
 the notes and programs override it authoritatively.
 
@@ -189,4 +225,8 @@ game-encoded. Files: `code/solution.py` (exact formula), `code/hexagon_closed_fo
 (analytic proof that failure = the π+1 naive bound), `code/brute.py circle`
 (reproduces circle oracle), `solution_hexagon_pattern.md` (the run's derivation
 write-up — stands in for the `/workspace/solution.md` the brief calls for),
-`GOAL.md`, `research/threads/hexagon-critical-speed.md`.
+`GOAL.md`, `research/threads/hexagon-critical-speed.md`. **Un-run on disk**:
+`code/hexagon_first_principles_explore.py` (correct-framework solver, circle
+self-validation built in — the natural completion of the missing route) and
+`code/hexagon_independent_solver.py` (straight-dash variant, red-herring
+family).
