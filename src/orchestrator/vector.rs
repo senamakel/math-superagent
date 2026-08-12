@@ -19,6 +19,73 @@ pub(super) struct VectorStore {
 }
 
 impl VectorStore {
+    /// Runs one search against this project's datasets and renders the hits.
+    ///
+    /// `search_type` is Cognee's: `CHUNKS` for passages, `INSIGHTS` for the
+    /// relationships between entities. Both tools share this because the only
+    /// thing that differs between them is that string, and a second copy of the
+    /// request would drift from the first the moment either is corrected.
+    ///
+    /// Returns `Ok(None)` when the memory has nothing, so each caller can say
+    /// so in its own words rather than returning an empty result the model has
+    /// to interpret.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when Cognee is unreachable, refuses the request, or
+    /// answers with something other than a JSON array.
+    pub(super) async fn search(
+        &self,
+        query: &str,
+        search_type: &str,
+        limit: u64,
+    ) -> Result<Option<String>> {
+        let datasets = self.recall_datasets().await?;
+        if datasets.is_empty() {
+            return Ok(None);
+        }
+        let response = self
+            .client
+            .post(format!("{}/api/v1/recall", self.base_url))
+            .json(&json!({
+                "query": query,
+                "datasets": datasets,
+                "search_type": search_type,
+                "only_context": true,
+                "include_references": true,
+                "top_k": limit
+            }))
+            .send()
+            .await
+            .map_err(|error| cognee_transport_error(&error))?;
+        if !response.status().is_success() {
+            return Err(cognee_response_error("recall", response).await);
+        }
+        let body: Value = response.json().await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("Cognee returned invalid JSON: {error}"))
+        })?;
+        let results = body.as_array().ok_or_else(|| {
+            tinyagents::TinyAgentsError::Tool("Cognee recall response was not an array".into())
+        })?;
+        if results.is_empty() {
+            return Ok(None);
+        }
+        Ok(Some(
+            results
+                .iter()
+                .enumerate()
+                .map(|(index, result)| {
+                    format!(
+                        "{}. {}",
+                        index + 1,
+                        truncate_chars(&render_result(result), 4_000)
+                    )
+                })
+                .collect::<Vec<_>>()
+                .join("\n\n"),
+        ))
+    }
+
     pub(super) fn from_env() -> Result<Self> {
         let base_url = std::env::var("COGNEE_API_URL").map_err(|_| {
             tinyagents::TinyAgentsError::Validation("COGNEE_API_URL is required".into())
@@ -240,65 +307,90 @@ impl Tool<()> for RecallMemoryTool {
 
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let query = string_argument(&call, "query")?;
-        let limit = call
-            .arguments
-            .get("limit")
-            .and_then(Value::as_u64)
-            .unwrap_or(5)
-            .clamp(1, 10);
-        let datasets = self.store.recall_datasets().await?;
-        if datasets.is_empty() {
-            return Ok(ToolResult::text(
-                call.id,
-                self.name(),
-                "no durable memory datasets exist yet",
-            ));
-        }
-        let response = self
-            .store
-            .client
-            .post(format!("{}/api/v1/recall", self.store.base_url))
-            .json(&json!({
-                "query": query,
-                "datasets": datasets,
-                "search_type": "CHUNKS",
-                "only_context": true,
-                "include_references": true,
-                "top_k": limit
-            }))
-            .send()
-            .await
-            .map_err(|error| cognee_transport_error(&error))?;
-        if !response.status().is_success() {
-            return Err(cognee_response_error("recall", response).await);
-        }
-        let body: Value = response.json().await.map_err(|error| {
-            tinyagents::TinyAgentsError::Tool(format!("Cognee returned invalid JSON: {error}"))
-        })?;
-        let results = body.as_array().ok_or_else(|| {
-            tinyagents::TinyAgentsError::Tool("Cognee recall response was not an array".into())
-        })?;
-        if results.is_empty() {
-            return Ok(ToolResult::text(
-                call.id,
-                self.name(),
-                "no related research notes found",
-            ));
-        }
-        let rendered = results
-            .iter()
-            .enumerate()
-            .map(|(index, result)| {
-                format!(
-                    "{}. {}",
-                    index + 1,
-                    truncate_chars(&render_result(result), 4_000)
-                )
-            })
-            .collect::<Vec<_>>()
-            .join("\n\n");
-        Ok(ToolResult::text(call.id, self.name(), rendered))
+        let limit = limit_argument(&call);
+        let rendered = self.store.search(&query, "CHUNKS", limit).await?;
+        Ok(ToolResult::text(
+            call.id,
+            self.name(),
+            rendered.unwrap_or_else(|| "no related research notes found".to_string()),
+        ))
     }
+}
+
+/// Asks the memory what its entities are connected to, rather than which
+/// passages mention them.
+///
+/// This is the one thing a graph memory can answer that a vector store cannot.
+/// `recall_memory` returns the chunks most similar to a phrase, which is a
+/// better index than a filename and no more; `relate_memory` returns the edges
+/// the graph actually holds, so "what does this run connect the Moore bound to"
+/// has an answer that nobody wrote down in those words. A run that only ever
+/// recalls chunks is paying for a graph store and using it as a search box.
+#[derive(Debug)]
+pub(super) struct RelateMemoryTool {
+    store: VectorStore,
+}
+
+impl RelateMemoryTool {
+    pub(super) fn new(store: VectorStore) -> Self {
+        Self { store }
+    }
+}
+
+#[async_trait]
+impl Tool<()> for RelateMemoryTool {
+    fn name(&self) -> &'static str {
+        "relate_memory"
+    }
+
+    fn description(&self) -> &'static str {
+        "Returns what this project's memory connects a subject to — the relationships between \
+         entities rather than the passages mentioning them. Use it to find a link the run \
+         established but never stated in one place; use recall_memory when you want the text."
+    }
+
+    fn schema(&self) -> ToolSchema {
+        ToolSchema::new(
+            self.name(),
+            self.description(),
+            json!({
+                "type": "object",
+                "properties": {
+                    "query": { "type": "string" },
+                    "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10,
+                        "default": 5
+                    }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+            }),
+        )
+    }
+
+    async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
+        let query = string_argument(&call, "query")?;
+        let limit = limit_argument(&call);
+        let rendered = self.store.search(&query, "INSIGHTS", limit).await?;
+        Ok(ToolResult::text(
+            call.id,
+            self.name(),
+            rendered.unwrap_or_else(|| {
+                "the memory holds no connections for that subject yet".to_string()
+            }),
+        ))
+    }
+}
+
+/// Reads the shared `limit` argument, clamped to what a prompt can afford.
+fn limit_argument(call: &ToolCall) -> u64 {
+    call.arguments
+        .get("limit")
+        .and_then(Value::as_u64)
+        .unwrap_or(5)
+        .clamp(1, 10)
 }
 
 fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
