@@ -130,6 +130,20 @@ impl Status {
             Self::Checked
         } else if lowered.starts_with("heuristic") || lowered.starts_with("conject") {
             Self::Heuristic
+        } else if lowered.starts_with("catalogue")
+            || lowered.starts_with("cataloged")
+            || lowered.starts_with("catalog")
+            || lowered.starts_with("looked up")
+            || lowered.starts_with("lookup")
+            || lowered.starts_with("b-file")
+            || lowered.starts_with("bfile")
+            || lowered.starts_with("table")
+        {
+            // Spelled several ways on purpose. A role that writes `looked up`
+            // or `b-file` means exactly this and should not silently fall
+            // through to `asserted`, where it would be indistinguishable from
+            // a theorem somebody stated without proof.
+            Self::Catalogued
         } else {
             Self::Asserted
         }
@@ -141,6 +155,7 @@ impl Status {
             Self::Checked => "checked",
             Self::Asserted => "asserted",
             Self::Heuristic => "heuristic",
+            Self::Catalogued => "catalogued",
         }
     }
 }
