@@ -430,10 +430,10 @@ that cannot be regenerated.
 
 The director's `TeamBudget::attentive()` is the one allowance shaped by waiting
 rather than working: every cycle counts including idle ones, so a custodial
-forty-cycle budget would have retired the team thirteen minutes into an
-eight-hour run with nothing saying direction had stopped being read. What bounds
-its spending instead is `directives_waiting`, a file read in front of the model
-call — the same shape as the fingerprint gates beside it.
+forty-cycle budget would have retired the team thirteen minutes into an eight-hour
+run with nothing saying direction had stopped being read. What bounds its
+spending instead is `directives_waiting`, a file read in front of the model call —
+the same shape as the fingerprint gates beside it.
 
 `config/DIRECTIVES.md` records every directive and what became of it, including
 a cycle that failed. On a channel that never blocks that receipt is not
