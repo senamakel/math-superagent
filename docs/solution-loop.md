@@ -206,9 +206,9 @@ a working cycle costs: a live team spent thirty `read_document` calls in two
 minutes doing exactly that on runs that had computed almost nothing. A workspace with no results at
 all reads as unchanged, so an early cycle idles rather than analysing an empty
 folder. Its own notes are deliberately not part of the fingerprint — the team
-writes those itself, and including them would have the team waking itself up
-forever on its own notes. That is now free rather than arranged: its scratch
-went to `note_scratch` and is no longer a file in the workspace at all.
+writes those itself, and including them would have it waking itself forever on
+its own notes. That is now free rather than arranged: its scratch went to
+`note_scratch` and is no longer a file in the workspace at all.
 
 `CONTEXT.md` has an owner, which it did not. It was written by whichever role
 happened to think of it, so it drifted behind the run that reads it on every
