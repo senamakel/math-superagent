@@ -203,9 +203,19 @@ PY
     # --- Executed output ------------------------------------------------
     echo ""
     echo "  ARTIFACTS"
-    printf "    code files %s  code/out entries %s\n" \
+    # Captured output is counted the way the runtime counts it for the judge:
+    # every non-source, non-note file under `code/`, not `code/out/` alone. PE761
+    # writes `code/<program>_OUTPUT.txt` beside each program and left one empty
+    # `Untitled` in `code/out/`, so counting the tidy location alone reported a
+    # run with six captured outputs as having produced nothing — and a babysit
+    # counter that disagrees with the counter the judge is shown is worse than no
+    # counter, because both are believed.
+    printf "    code files %s  captured output %s\n" \
         "$(find "$workspace/code" -name '*.py' 2>/dev/null | wc -l | tr -d ' ')" \
-        "$(ls "$workspace/code/out" 2>/dev/null | wc -l | tr -d ' ')"
+        "$(find "$workspace/code" -maxdepth 3 -type f \
+            -not -path '*__pycache__*' -not -name '.*' \
+            -not -name '*.py' -not -name '*.sh' -not -name '*.md' \
+            2>/dev/null | wc -l | tr -d ' ')"
     echo "    written in the last 10 minutes:"
     # The run's hidden derived state is rewritten on nearly every tool call, so
     # listing it says only that the run is alive — which the elapsed clock above
