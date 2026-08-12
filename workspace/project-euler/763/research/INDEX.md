@@ -13,14 +13,14 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/oeis_a074171.md` | OEIS A074171 (a(1)=1,a(2)=3 then n(n+7)/2, 'essentially A055999') lookup note. Matched only as a sibling of A055999, which gives the run's Q_2(N)=(N-5)(N+2)/2 max-level-column closed form on N=6..14. Source https://oeis.org/A074171. |
 | `L1.0/oeis_a086246.md` | Motzkin-variant lookup note ((1+x-sqrt(1-2x-3x^2))/2 sequ). Not D(N); a ruled-out closed-form family candidate. |
 | `L1.0/oeis_a134227.md` | OEIS A134227 ((n-1)(n+6)/2 + [n=1], 'essentially A055999', row sums of A134226) lookup note. Sibling of A055999/A074171 in the n(n+7)/2 family; the run's Q_2(N)=(N-5)(N+2)/2 identification uses A055999. Source https://oeis.org/A134227. |
-| `L1.0/oeis_a168049.md` | _(undescribed)_ |
-| `L1.0/oeis_direct.md` | _(undescribed)_ |
-| `L1.0/oeis_partial.md` | _(undescribed)_ |
-| `L1.1/oeis_a186085.md` | _(undescribed)_ |
-| `L1.1/oeis_a383891.md` | _(undescribed)_ |
-| `L1.1/oeis_a392317.md` | _(undescribed)_ |
-| `L2.0/L1.0.md` | _(undescribed)_ |
-| `L2.0/cgmo_opening_dijkstra.md` | _(undescribed)_ |
+| `L1.0/oeis_a168049.md` | Motzkin-variant lookup note ((3-x-sqrt(1-2x-3x^2))/2 sequ; 'essentially A086246'). Not D(N); a ruled-out closed-form family candidate. |
+| `L1.0/oeis_direct.md` | Direct OEIS search of the full 15-term 3D D(N): 'No results'. Authoritative negative — D(N) not catalogued, no closed form to look up. |
+| `L1.0/oeis_partial.md` | Direct OEIS search of offset-1 11 terms of 3D D(N): 'No results'. Confirms absence regardless of offset. |
+| `L1.1/oeis_a186085.md` | OEIS A186085 (1D sandpiles / smooth compositions, exact b(n,i) recurrence) lookup note. Relevant to the run's distinct-level-histogram-count sequence (1,1,2,3,5,8,13,22,36,60,100,166,277 for N=2..14); code/pattern/a186085.py checks those counts against A186085. Source https://oeis.org/A186085. |
+| `L1.1/oeis_a383891.md` | OEIS A383891 (chunk length of prime-reciprocal partial sums) lookup note. Filed during the OEIS hunt; terms 1,1,2,3,5,8,13,22,36,60,100,168... diverge from the run's 100,166,277 at the 13th term, so not that sequence. Dead end. Source https://oeis.org/A383891. |
+| `L1.1/oeis_a392317.md` | OEIS A392317 (partial sums of A393434) lookup note. Filed during the OEIS hunt; terms 0,1,0,-2,... (negative) cannot match a positive count sequence, ruled out immediately. Dead end. Source https://oeis.org/A392317. |
+| `L2.0/L1.0.md` | Seal/synthesis note for the L1.0 OEIS-lookup batch (the ten notes it seals): the two 'No results' negatives (dN-not-in-oeis, dN-offset-also-not-in-oeis), the four ruled-out Motzkin/Fibonacci families, and the constructive yields — A007902=2D amoeba with exact G(k,m) recurrence + Knessl asymptotics as the template to lift to 3D, and A055999 confirming Q_2(N)=(N-5)(N+2)/2 on N=6..14. Read this before the batch below it. |
+| `L2.0/cgmo_opening_dijkstra.md` | Complete structural digest of the CGMO/Dijkstra source (AMM 102.2 Feb 1995): Lemma 1 (Kontsevich weight invariant 2^-(i+j), L(1)∪L(2)∪L(3) unavoidable), Lemma 2 (Khodulev L(1)∪L(2) unavoidable), Lemma 3 (stacking⇔non-stacking), Theorem 1 (X unavoidable iff after M(X) some cell holds >=3 pebbles). Verified verbatim against companion full text research/L0.0/cgmo_opening_dijkstra.full.md. Foundation for the 2D pebbling=amoeba reading. |
 | `L2.0/pebbling_amz.md` | _(undescribed)_ |
 | `L2.0/pebbling_ejc_survey.md` | Complete structural digest of the EJC chessboard-pebbling survey (Eriksson, EJC 2 (1995) #R7) — the pivotal source: n-dim weight, voidance bijection (Prop 20), polyominoids + Catalan, 2D crossing subtlety & GFs, n>=3 folded-polyominoid four-way bijection (Thm 9), minimal-unavoidable structure, Fig.3 table. Verified against the full text research/L0.0/pebbling_ejc_survey.full.md incl. Fig.3 (col n=2 = Catalan, row k=2 = n(3n-1)/2) re-checked by hand. |
 | `L2.0/pebbling_eriksson_eljc.md` | _(undescribed)_ |
