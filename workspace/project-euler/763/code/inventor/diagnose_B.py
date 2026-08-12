@@ -18,15 +18,7 @@ and report multiplicity distribution, i.e. how many C' have 2+ parents
 (the collisions that break B).
 """
 from collections import defaultdict
-from lib.amoeba import forward_level, children, lvl, dividable_count
-
-def f_of(C):
-    """#dividable cells of C == lib.amoeba.dividable_count(C, 3).
-
-    Local wrapper kept for call sites; delegates to the canonical
-    lib/amoeba function (was a duplicated local definition).
-    """
-    return dividable_count(C, 3)
+from lib.amoeba import forward_level, children, lvl, f_of
 
 def recovery_mult(Cp):
     """#cells p with p notin Cp and p+e_i in Cp for all i (preimage parents)."""

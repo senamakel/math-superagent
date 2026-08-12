@@ -24,16 +24,7 @@ Complexity: exact forward BFS over distinct configs -- exponential state set
 import sys
 from collections import defaultdict
 
-from lib.amoeba import forward_level, children, config_features, lvl, dividable_count
-
-
-def f_of(S):
-    """#dividable cells of S == lib.amoeba.dividable_count(S, 3).
-
-    Local wrapper kept for call sites; delegates to the canonical
-    lib/amoeba function (was a duplicated local definition).
-    """
-    return dividable_count(S, 3)
+from lib.amoeba import forward_level, children, config_features, lvl, f_of
 
 
 def top_analysis(S):
