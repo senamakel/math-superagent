@@ -46,9 +46,11 @@ def witness(p, q):
         if K[i] < 1:
             return None
     w = [q * SB * c[i] - p * SA * d[i] for i in range(5)]
-    # subset sum with parent tracking over pairs (index, value)
-    # state: value -> (k used at this index, previous value)
+    # subset-sum DP with parent tracking, keeping the states dict of each stage.
+    # stages[i] = states after products 0..i-1 have been added.
+    stages = []
     states = {0: None}
+    stages.append(states)
     for i in range(5):
         nxt = {}
         for val, prev in states.items():
@@ -57,18 +59,15 @@ def witness(p, q):
                 if v2 not in nxt:
                     nxt[v2] = (k, val)
         states = nxt
+        stages.append(states)
     if 0 not in states:
         return None
     ks = [0] * 5
     val = 0
     for i in reversed(range(5)):
-        if states[val] is None:
-            prev = None
-            k = 0
-        else:
-            k, prev = states[val]
+        k, prev = stages[i + 1][val]  # stages[i+1] includes product i
         ks[i] = k
-        val = prev if prev is not None else val
+        val = prev
     return ks
 
 

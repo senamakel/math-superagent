@@ -21,10 +21,14 @@
 //! re-issue is bounded and routed on its own terms rather than inheriting the
 //! cut-off attempt's, and is recorded as the separate paid call it is.
 //!
-//! It cannot fix a turn that has genuinely run out of things to say within any
-//! budget, so growth is clamped exactly as upstream clamps it and the last
-//! response is returned rather than an error: degrading to today's behaviour
-//! is right, because a truncated answer still beats no answer.
+//! It does not enlarge the cap to do so, and measuring the reasoning channel is
+//! why. A turn that reaches the ceiling is spending it on hidden reasoning —
+//! `out=24000` against `reasoning_tokens=23999` on every observed case — so it
+//! is not short of room, it is failing to emerge, and more room buys a longer
+//! silence. The room belongs in the cap itself (`RunBudget`, 48,000 on the same
+//! measurement); the re-issue spends its one attempt telling the model that its
+//! last turn was discarded. If that fails too, the last response is returned
+//! rather than an error, because a truncated answer still beats no answer.
 
 use std::sync::Arc;
 
@@ -93,8 +97,6 @@ pub struct UntruncatedModel<S: Send + Sync> {
     inner: Arc<dyn ChatModel<S>>,
     tracer: Option<Arc<RunTracer>>,
     agent: String,
-    /// The run's configured per-turn output cap, when it is known.
-    configured: Option<u32>,
 }
 
 impl<S: Send + Sync> std::fmt::Debug for UntruncatedModel<S> {
@@ -113,21 +115,7 @@ impl<S: Send + Sync> UntruncatedModel<S> {
             inner,
             tracer: None,
             agent: String::new(),
-            configured: None,
         }
-    }
-
-    /// Tells the wrapper the run's configured per-turn output cap.
-    ///
-    /// Growth is measured from this rather than from the request's own cap, so
-    /// a turn the vendored loop has already doubled is recognised as such and
-    /// not doubled a second time. Left unset, growth falls back to the
-    /// request's cap, which is the old behaviour and the right degradation:
-    /// re-issuing once too generously still beats never re-issuing.
-    #[must_use]
-    pub fn with_turn_cap(mut self, tokens: u32) -> Self {
-        self.configured = Some(tokens);
-        self
     }
 
     /// Announces each re-issue on the operator console.
