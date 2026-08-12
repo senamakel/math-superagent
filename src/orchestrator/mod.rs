@@ -1618,6 +1618,11 @@ fn register_support_agents(
         register_resilient(&mut reflection, tool);
     }
     register_recall(&mut reflection, &parts.workspace);
+    // Recall, not search. Reflection has no way to gather and must not acquire
+    // one; reading what the run has already written down is the opposite move —
+    // it is how a lesson gets checked against what was established rather than
+    // asserted fresh every attempt.
+    register_note_recall(&mut reflection, &parts.vector_store);
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
     // The judge is as tool-poor as reflection, and for the same reason: a
