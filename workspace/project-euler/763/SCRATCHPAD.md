@@ -74,6 +74,19 @@ m=11 in 3D (~6.4M sets) OOM-killed in this container (2 GiB cap).  Generator
 verified by subset oracle (verify_c1_subsets.py).  Details in
 code/out/c1_test_results.md.
 
+## Naive-oracle confirmation (this tool-builder task)
+
+Run `code/brute.py` (canonical `D` from lib/amoeba, naive frozenset BFS, d=3)
+at N=2 and N=10:
+    D(2) = 3
+    D(10) = 44499
+Both match the statement's worked examples. D(20)=9204559704 and the D(100)
+last-nine example are out of reach for the naive oracle (state space ~9.2e9 /
+exponential), so by instruction they were not attempted — the oracle's job is
+to pin down the definition, which the two reachable examples do. Root
+code/brute.py and code/amoeba/brute.py are now identical except a trailing
+blank line and both import the same canonical D.
+
 ## Pattern-finder (PE763) — max-level decomposition, OOS strength
 
 Fresh sympy-exact re-confirmation (code/pattern/q_columns_fresh.py,

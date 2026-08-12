@@ -55,3 +55,4 @@ worktrees/*
 .idea/
 .vscode/
 *.swp
+*.log

@@ -3,6 +3,20 @@
 Top of the tree. Batches of originals in `L0.<n>/`; seal a level up. What the
 whole library lets this run treat as known, each claim wikilinked to its note.
 
+## Sealed: [[L2.0/L1.0]] — the OEIS lookup batch
+
+The 10-note `L1.0/` batch (all the OEIS lookups) is sealed at
+[[L2.0/L1.0]]. Its net: the direct-search negatives (`dN-not-in-oeis`,
+`dN-offset-also-not-in-oeis`) close the OEIS route for 3D D(N); the four
+Motzkin/Fibonacci closed-form candidates are all ruled out by term comparison
+(`dN-not-motzkin`, `dN-not-fibonacci-f2n1`, `dN-not-a086246`,
+`dN-not-a168049`); and the constructive yields are [[L1.0/oeis_a007902]]
+(the 2D governing G(k,m) recurrence + ~0.1227·2.3216^n asymptotics to lift to
+3D, thread [[lift_gkm_to_3d]]) and [[L1.0/oeis_a055999]]
+(Q_2(N)=(N-5)(N+2)/2 confirmed on N=6..14). No catalogued closed form for 3D
+D(N) exists; the run's own folded-polyominoid / level-structure DP is the road
+to D(10000).
+
 ## The 2D chessboard-pebbling problem is fully characterised (and is the 2D amoeba)
 
 The 2D amoeba sequence IS OEIS A007902 (pebbling configurations), and the
