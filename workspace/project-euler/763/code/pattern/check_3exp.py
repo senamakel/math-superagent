@@ -5,12 +5,7 @@ Find the (single) exception, and test whether 3-exponent equals some function
 of (n5, or positions of 5s).  Report first the exceptions, then samples."""
 import glob, collections
 from lib.datafiles import sorted_key
-
-def f23(v):
-    a=b=0
-    while v%2==0: v//=2; a+=1
-    while v%3==0: v//=3; b+=1
-    return a,b,v
+from lib.valuations import f23
 
 excepts=[]
 rows=[]
