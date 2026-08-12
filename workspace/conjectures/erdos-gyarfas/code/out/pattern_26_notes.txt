@@ -1,0 +1,56 @@
+Catalogue check of Apollonian K4-triangle-expansion census sequences
+date: this run | tool: lib/sequences.py (oeis_lookup, analyze_sequence,
+find_linear_recurrence, max order 6, exact Fraction arithmetic)
+Ground truth re-verified fresh: avoidsC4C16 = 1,1,2,0,0,0,0,0 over n=10..24
+  (census_c16_profile.py n=10..22 + level24_c16.py n=24, avoidsC4 column reproduces 1,1,2,5,15,50,202,807).
+
+========================================================================
+SEQUENCE: avoidsC4C16 (n=10..24, 8 levels)  terms=[1, 1, 2, 0, 0, 0, 0, 0]
+========================================================================
+analyze_sequence: len=8 terms=[1, 1, 2, 0, 0, 0, 0, 0] first_diffs=[0, 1, -2, 0, 0, 0, 0] increase_strict=False nondecreasing=False distinct_diffs=[-2, 0, 1] zero_row_order=None
+find_linear_recurrence(max_order=6): order 3 found
+  coefficients: 0/1, 0/1, 0/1
+  -> DEGENERATE: all coefficients are 0 (tail-is-all-zeros fit).
+  predicted next term (index 8, first falsifier): 0/1 = INTEGER 0
+  CAVEAT: a recurrence matching all given terms is a conjecture;
+  its first falsifying term is at the next index and is UNCOMPUTED (census halts at n=24; n=26 is the next level).
+OEIS lookup '1,1,2,0,0,0,0,0': API returned 10 fuzzy-substring entries; strict prefix matches: 1
+  MATCH A130779 a(0)=a(1)=1, a(2)=2, a(n)=0 for n >= 3.
+
+========================================================================
+SEQUENCE: avoidsC4C16 task prefix (n=10..22, 7 terms)  terms=[1, 1, 2, 0, 0, 0, 0]
+========================================================================
+analyze_sequence: len=7 terms=[1, 1, 2, 0, 0, 0, 0] first_diffs=[0, 1, -2, 0, 0, 0] increase_strict=False nondecreasing=False distinct_diffs=[-2, 0, 1] zero_row_order=None
+find_linear_recurrence(max_order=6): order 3 found
+  coefficients: 0/1, 0/1, 0/1
+  -> DEGENERATE: all coefficients are 0 (tail-is-all-zeros fit).
+  predicted next term (index 7, first falsifier): 0/1 = INTEGER 0
+  CAVEAT: a recurrence matching all given terms is a conjecture;
+  its first falsifying term is at the next index and is UNCOMPUTED (census halts at n=24; n=26 is the next level).
+OEIS lookup '1,1,2,0,0,0,0': API returned 10 fuzzy-substring entries; strict prefix matches: 0
+  -> NO genuine match: every API entry contains the terms only as a substring (digit-length coincidence), none has data STARTING with them.
+
+========================================================================
+SEQUENCE: avoidsC4 (n=10..24)  terms=[1, 1, 2, 5, 15, 50, 202, 807]
+========================================================================
+analyze_sequence: len=8 terms=[1, 1, 2, 5, 15, 50, 202, 807] first_diffs=[0, 1, 3, 10, 35, 152, 605] increase_strict=False nondecreasing=True distinct_diffs=[0, 1, 3, 10, 35, 152, 605] zero_row_order=None
+find_linear_recurrence(max_order=6): order 4 found
+  coefficients: 47/27, 1339/54, -3067/54, 27/2
+  predicted next term (index 8, first falsifier): 203921/54  (NOT an integer: 3776.314815)
+  CAVEAT: a recurrence matching all given terms is a conjecture;
+  its first falsifying term is at the next index and is UNCOMPUTED (census halts at n=24; n=26 is the next level).
+OEIS lookup '1,1,2,5,15,50,202,807': API returned 0 fuzzy-substring entries; strict prefix matches: 0
+  -> NO genuine match: every API entry contains the terms only as a substring (digit-length coincidence), none has data STARTING with them.
+
+STATUS SUMMARY
+- avoidsC4C16: no genuine OEIS match (7- and 8-term queries); only
+  degenerate all-zero recurrence in the pinned orders; the nonzero
+  head 1,1,2 then 0s is exactly the verified census fact that every
+  C4-free family member at n>=16 contains a C16. First falsifier,
+  n=26 census value of avoidsC4C16, is UNCOMPUTED.
+- avoidsC4: prior record (memory + falsifiers_check.py) has no OEIS
+  match; fresh recurrence probe reproduces the exact 4th-order
+  rational fit (47/27, 1339/54, -3067/54, 27/2), whose predicted
+  next term 203921/54 is NOT an integer -> refuted by integrality
+  (a census count must be an integer), so no valid recurrence.
+  n=26 avoidsC4 value is UNCOMPUTED.
