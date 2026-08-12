@@ -46,6 +46,31 @@ impl AsyncSubagentManager {
         harness: Arc<AgentHarness<()>>,
         system_prompt: impl Into<String>,
     ) -> Result<()> {
+        self.register_with_turn_cap(
+            name,
+            harness,
+            system_prompt,
+            self.budget.max_turn_output_tokens,
+        )
+    }
+
+    /// Registers a specialist whose turns are capped differently to the run's.
+    ///
+    /// The cap reaches the provider through `RunConfig`, which is built here
+    /// rather than in the harness, so passing a widened [`RunBudget`] to
+    /// `specialist_harness` alone is not enough: that sets the ceiling the
+    /// re-issue wrapper may grow *to*, while this sets what the first attempt
+    /// asks for. Both have to move together or the role is cut off at the run's
+    /// cap and then re-issued into the wider one, paying for the turn twice.
+    ///
+    /// Only the inventor uses it. See [`RunBudget::for_invention`].
+    pub(crate) fn register_with_turn_cap(
+        &self,
+        name: impl Into<String>,
+        harness: Arc<AgentHarness<()>>,
+        system_prompt: impl Into<String>,
+        max_turn_output_tokens: u32,
+    ) -> Result<()> {
         let name = name.into();
         let role = name.clone();
         self.register_executor(
@@ -54,7 +79,7 @@ impl AsyncSubagentManager {
                 harness,
                 system_prompt: system_prompt.into(),
                 langfuse: self.langfuse.clone(),
-                max_turn_output_tokens: self.budget.max_turn_output_tokens,
+                max_turn_output_tokens,
                 role,
                 session: self.session.clone(),
             }),
