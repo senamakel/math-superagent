@@ -124,7 +124,9 @@ def main():
         p, q = num, den  # base_set returns reduced pairs, so g=1
         if witness(p, q) is not None:
             results.append((p, q))
-    results = sorted(set(results))
+    # Sort by fraction VALUE (p/q), not by tuple (p,q): tuple order is
+    # lexicographic and would misreport the extremes in Check C.
+    results = sorted(set(results), key=lambda pq: Fraction(pq[0], pq[1]))
     reported_set = set(reported)
     independent_set = set(results)
     print(f"Check B: independent base-0 count = {len(results)} "

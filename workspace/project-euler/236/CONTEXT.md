@@ -35,8 +35,8 @@ What this run knows and on what basis. Nearly every role is sent this file on ev
 
 ## Gaps
 
-- **`code/solution.py` (derived, exact, full-size method) does not exist yet; TASKS.md is still a stub.** The oracle routes enumerate all (s,t) pairs of one base product (Christmas Cake: 2,477,056 pairs) — correct as oracle, wrong at scale per method policy. A method whose cost grows with a_i·b_i is prohibited; the intended crux is a structural characterization of the valid m using the gcd-threshold form g_i ≥ max(p,q) (a divisibility filter on candidates), not pair enumeration.
-- Completion criteria unmet only at the last step: brute.py reproduces the oracle; solution.py must agree with it and produce the largest at full size. **Largest = 123/59 so far rests on the two oracle routes only** (brute.py; verify_oracle.py checks A–C); solution.py agreement is the required third route before reporting.
+- **`code/solution.py` now exists on disk as the derived, exact full-size method** (see `code/lib/pe236.py` for the shared machinery: base_set over a fixed product, per-product gcd-threshold feasibility g_i ≥ max(p,q), and the bounded subset-sum Σ k_i·w_i = 0 via reachable-sum sets). It contains asserts for count 35, smallest 1476/1475, largest 123/59, plus a literal six-equality Fraction witness check on the largest. **Status: written, and it is the required third route, but this cycle has not recorded tool_builder actually executing it and seeing those asserts pass** — do not claim solution.py agreement until a run confirms it. `TASKS.md` is still a stub.
+- The oracle routes (`brute.py` base Christmas Cake; `verify_oracle.py` checks A–C) remain the two established routes to the 35 values / 1476/1475 / 123/59. **Largest = 123/59 rests on those two routes only until solution.py is run.**
 - `research/CLAIMS.md` is empty: the structural theorem is a verified result but no claim block has been written into a research note yet.
 
 ## Contradictions

@@ -6,7 +6,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 6 | https://www.litmaps.co/ | What is Litmaps? | [What is the Explorer?][22])* Connected Papers Toggle Connected Papers*( [What is Connected Papers?][23])* Litmaps Toggle Litmaps*( [What is Litmaps?][24])* scite.ai Toggle scite Smart Citations*(… |
+| 7 | https://www.litmaps.co/ | What is Litmaps? | [What is the Explorer?][22])* Connected Papers Toggle Connected Papers*( [What is Connected Papers?][23])* Litmaps Toggle Litmaps*( [What is Litmaps?][24])* scite.ai Toggle scite Smart Citations*(… |
 | 3 | https://oeis.org/A000207 | A000207 | cross-referenced from A027610 |
 | 3 | https://oeis.org/A001764 | A001764 | cross-referenced from A027610 |
 | 3 | https://oeis.org/A007173 | A007173 | cross-referenced from A027610 |
@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/András_Gyárfás | András Gyárfás | [graph theory][10], the unproven **Erdős–Gyárfás conjecture**, made in 1995 by mathematician [Paul Erdős][11] and his collaborator [András Gyárfás][12], states that every [graph][13] with minimum… |
 | 1 | https://en.wikipedia.org/wiki/File:Markström-Graph.svg | — | every cubic graph contain a simple cycle of length a power of two? [More unsolved problems in mathematics][1] Markström's graph \| [2] Markström's 24-vertex cubic planar graph with no 4- or 8-cycles,… |
 
-_232 further candidates not shown; they are cited once each._
+_253 further candidates not shown; they are cited once each._

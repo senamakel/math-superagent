@@ -7,3 +7,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
 | [[push-verification]] | Can the documented verification bound (n≤15 general, n≤29 cubic) be raised by exploiting the independent-set + ≥4/7-cubic structure as a SAT/SMS propagator,… | open | EG-markstrom-dichotomy, EG-predominantly-cubic, EG-verification-bound, EG-markstrom-24-graphs, EG-P12-free-C4C8, EG-cubic-bipartite-60 | add Carr's ≥4/7-cubic + degree-≥4-independent-set propagators as base CNF constraints (not merely cycle-blocking), then re-run n=10 as a test; the… |
+
+## Threads that could not be read
+
+- `go-wide-literature` has no thread block, so nothing can say what it is chasing or what it rests on
