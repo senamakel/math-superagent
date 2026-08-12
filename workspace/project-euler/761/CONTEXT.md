@@ -9,8 +9,9 @@ statement: `/workspace/problem.md`.
 
 ## The answer
 
-**V_hexagon = 5.05505046330389… → 5.05505046** (8 dp). For n=6: K=2,
-α = ½(π/3 + arccos(−1/8)) ≈ 1.3716609546, V = 1/cos(α).
+**V_hexagon = 5.05505046330389333772536479582… → 5.05505046** (8 dp;
+full-precision value printed by `code/verify_hexagon.py`, mpmath/sympy default).
+For n=6: K=2, α = ½(π/3 + arccos(−1/8)) ≈ 1.37166085458, V = 1/cos(α).
 
 **Exact closed form (established, exact algebra):** V_hexagon = **2 + 2√21/3
 = (40+8√21)/3 under the radical** (²/³·√21 ≈ 3.05505046, +2 = 5.05505046).
