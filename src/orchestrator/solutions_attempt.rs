@@ -195,6 +195,9 @@ impl SolutionState {
 enum Route {
     /// Reflection judged the work complete and verified.
     Solved,
+    /// An answer was reached that only one route supports, and no second route
+    /// is available to build. The loop stops and says so.
+    Reported,
     /// Try again with the lesson just learned.
     Retry,
     /// Repeated attempts are not advancing; gather new angles first.
