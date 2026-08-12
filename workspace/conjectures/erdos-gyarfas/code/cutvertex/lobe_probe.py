@@ -374,12 +374,10 @@ def main(max_nH=None):
                 f.write(f"{order} {g1} {g2} {gg6} {1 if agree else 0} "
                         f"{' '.join(map(str, cs))}\n")
 
-    # ---- write the full log ---------------------------------------------
-    log.close()
-    say("")
     say(f"done.  log: {log_path}")
     say(f"pow2-free lobe list: {os.path.join(OUTDIR, 'pow2free_lobes.txt')}")
     say(f"glued pair list:     {os.path.join(OUTDIR, 'glued_pairs.txt')}")
+    log.close()
 
 
 if __name__ == "__main__":
