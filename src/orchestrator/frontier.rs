@@ -65,7 +65,18 @@ const MAX_CONTEXT: usize = 200;
 /// A publisher's page links its own login, its subject index, and its social
 /// accounts from every article. None of it is a lead, all of it outnumbers the
 /// references, and the run has no use for any of it.
-const IGNORED_HOSTS: [&str; 14] = [
+///
+/// The second group is the one that mattered. An arXiv abstract page carries a
+/// toolbar of third-party services — Connected Papers, alphaXiv, DagsHub,
+/// Hugging Face, Replicate, ScienceCast, Influence Flower — and every one of
+/// them appears on *every* abstract page. So they accumulate citers faster than
+/// any real reference can, and the ranking that was written to surface "the
+/// source three of your own papers cite" surfaces the toolbar instead. On a
+/// live Erdős–Gyárfás library the top **seventeen** rows of `FRONTIER.md` were
+/// all of this kind, tied at six citers, above every paper. The librarian is
+/// told to work that file before searching, so the mechanism meant to build the
+/// bibliography was pointing it at site furniture.
+const IGNORED_HOSTS: [&str; 28] = [
     "facebook.com",
     "twitter.com",
     "x.com",
@@ -80,10 +91,31 @@ const IGNORED_HOSTS: [&str; 14] = [
     "adobe.com",
     "apple.com",
     "google.com",
+    // The scholarly-tooling toolbar, in the order it appears on an arXiv page.
+    "info.arxiv.org",
+    "connectedpapers.com",
+    "alphaxiv.org",
+    "dagshub.com",
+    "huggingface.co",
+    "replicate.com",
+    "sciencecast.org",
+    "txyz.ai",
+    "gotit.pub",
+    "influencemap.cmlab.dev",
+    "catalyzex.com",
+    "litmaps.com",
+    "scite.ai",
+    "paperswithcode.com",
 ];
 
 /// Path fragments that mark a publisher's plumbing rather than a document.
-const IGNORED_FRAGMENTS: [&str; 10] = [
+///
+/// Used where a host cannot be banned outright because it serves both: CORE
+/// hosts papers at `/download/...` and its recommender pitch at
+/// `/services/recommender`, and arXiv hosts papers at `/abs/...` and its search
+/// form at `/search/advanced`. Both were sitting in a live frontier at six
+/// citers.
+const IGNORED_FRAGMENTS: [&str; 17] = [
     "/login",
     "/signin",
     "/register",
@@ -94,6 +126,13 @@ const IGNORED_FRAGMENTS: [&str; 10] = [
     "/cookie",
     "/rss",
     "/feed",
+    "/services/",
+    "/search/advanced",
+    "/help/",
+    "/labs/",
+    "/licenses/",
+    "/license/",
+    "/about",
 ];
 
 /// One candidate source, as the ledger holds it.
