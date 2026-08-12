@@ -11,10 +11,7 @@ the cap parent is present.
 Also verifies the refined A2 (top 3 is always a single parent's triangle).
 Runs live BFS N<=7 (frozenset oracle).
 """
-from lib.amoeba import forward_level, children
-
-def lvl(p):
-    return sum(p)
+from lib.amoeba import forward_level, children, lvl
 
 def triangle_parent(top):
     a, b, c = top
