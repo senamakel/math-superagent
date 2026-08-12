@@ -1318,6 +1318,11 @@ fn build_planner_harness<const N: usize>(
         register_resilient(&mut harness, tool);
     }
     register_memory(&mut harness, parts.vector_store);
+    // The goals agent drives an attempt and carries its half-finished
+    // arithmetic between turns; the orchestrator delegates and has none.
+    if role == "goals" {
+        register_scratch(&mut harness, parts.vector_store, true);
+    }
     harness
 }
 
@@ -1387,6 +1392,7 @@ fn register_code_writing_agents(
         );
         harness.push_middleware(parts.checkpoint.clone());
         register_memory(&mut harness, parts.vector_store);
+        register_scratch(&mut harness, parts.vector_store, true);
         subagents.register(name, Arc::new(harness), prompt)?;
     }
     Ok(())
@@ -1510,6 +1516,7 @@ fn register_pattern_agent(
         register_resilient(&mut pattern, tool);
     }
     register_memory(&mut pattern, &parts.vector_store);
+    register_scratch(&mut pattern, &parts.vector_store, true);
     subagents.register("pattern_finder", Arc::new(pattern), prompt)
 }
 
@@ -1589,14 +1596,21 @@ fn register_support_agents(
         register_resilient(&mut scholar, tool);
     }
     register_memory(&mut scholar, &parts.vector_store);
+    // Reads what the solve is in the middle of, so a paper can be judged
+    // against the derivation it might settle. It produces no provisional work
+    // of its own.
+    register_scratch(&mut scholar, &parts.vector_store, false);
     subagents.register("scholar", Arc::new(scholar), prompts.scholar)?;
 
-    // The curator gets the two *reading* halves of memory and not the writing
-    // one. Its whole job is to bring what is already established into the file
-    // every role is sent, so `remember_memory` would let it feed its own
-    // synthesis back into the store the next cycle recalls from — a run
-    // citing itself, with nothing between the guess and the durable record.
-    // Writing durable knowledge stays with the roles that verify it.
+    // The curator reads far more of memory than it writes: `recall_memory` and
+    // `relate_memory` are most of its job, because what an earlier run
+    // established about this problem is invisible to this one until somebody
+    // carries it into the file every role is sent. It keeps the write half on
+    // the same boundary as every other role, and its prompt is what keeps that
+    // honest — what it has to record is a contradiction between recalled
+    // memory and this run's results, which is durable and which nothing else
+    // is placed to notice, and not its own synthesis, which would be the run
+    // citing itself.
     let mut curator = specialist_harness(
         parts.model.clone(),
         parts.budget,
@@ -1606,14 +1620,8 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut curator, tool);
     }
-    register_resilient(
-        &mut curator,
-        Arc::new(RecallMemoryTool::new(parts.vector_store.clone())),
-    );
-    register_resilient(
-        &mut curator,
-        Arc::new(RelateMemoryTool::new(parts.vector_store.clone())),
-    );
+    register_memory(&mut curator, &parts.vector_store);
+    register_scratch(&mut curator, &parts.vector_store, false);
     subagents.register("context_curator", Arc::new(curator), prompts.curator)?;
 
     Ok(())
@@ -1629,11 +1637,25 @@ fn register_memory(harness: &mut AgentHarness<()>, store: &VectorStore) {
     // edges the graph holds — so a connection the run established across two
     // sources, and never wrote down in one place, is retrievable.
     register_resilient(harness, Arc::new(RelateMemoryTool::new(store.clone())));
-    // The provisional half, kept apart from both of the above: neither the
-    // chunk search nor the graph reaches the scratch, so a half-finished
-    // calculation cannot come back as something the run established.
-    register_resilient(harness, Arc::new(NoteScratchTool::new(store.clone())));
+}
+
+/// Gives one role the provisional scratch that replaced `SCRATCHPAD.md`.
+///
+/// Deliberately not part of [`register_memory`]. Durable memory is every
+/// role's, because reading what the run established is how a role avoids
+/// re-establishing it; the scratch is not, because unsettled arithmetic read as
+/// progress is what keeps a loop retrying — the reason the file it replaces was
+/// withheld from reflection and the judge. Neither the chunk search nor the
+/// graph reaches the scratch either, so a half-finished calculation cannot come
+/// back looking like something the run established.
+///
+/// `write` is false for a role that reads what a solve is in the middle of but
+/// produces no provisional work of its own.
+fn register_scratch(harness: &mut AgentHarness<()>, store: &VectorStore, write: bool) {
     register_resilient(harness, Arc::new(RecallScratchTool::new(store.clone())));
+    if write {
+        register_resilient(harness, Arc::new(NoteScratchTool::new(store.clone())));
+    }
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
