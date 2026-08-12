@@ -102,6 +102,9 @@ pub(super) struct SolutionState {
     /// Consecutive attempts whose only gain was a larger instance of something
     /// an earlier attempt already computed.
     computational: usize,
+    /// Consecutive attempts that reached a specific final answer supported by
+    /// exactly one route, with no second route available to build.
+    unverified: usize,
 }
 
 impl SolutionState {
