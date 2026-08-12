@@ -1,47 +1,30 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/alekseyev2601_pdf.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Alekseyev 2026, PDF version — same paper as the HTML
 
-<!-- source: https://arxiv.org/pdf/2601.17832 | converted from PDF -->
+**Source:** arXiv:2601.17832 [math.NT] PDF. Full text: `[[alekseyev2601_pdf.full]]`.
+This is the PDF rendering of the same paper digested in `[[alekseyev_diophantine_sigma_html]]`
+— do not re-summarise; the two differ only in rendering (this PDF preserves the raw
+Theorem statements the HTML mangles).
 
-## What it claims
+## What this rendering adds (Theorem 3.1, the explicit shortcut used for abundance)
 
-Abstract. We propose an efficient computational method for finding all so-
-lutions n ≤ U to the Diophantine equation aσ(n) = bn + c, where integer
-coefficient a, b, c and an upper bound U are given. Our method is implemented
-in SageMath computer algebra system within the framework of recursively
-enumerated sets and natively benefits from MapReduce parallelization. We
-used it to discover new solutions to many published equations and close gaps in
-between the known large solutions, including but not limited to hyperperfect
-and f -perfect numbers, as well as to significantly lift the existence bounds in
-open questions about quasiperfect and almost-perfect numbers.
+**Theorem 3.1 (OEIS).** For integers d and ℓ > 0, if 2^ℓ − d − 1 is prime then
+n = 2^{ℓ−1}(2^ℓ − d − 1) satisfies σ(n) = 2n + d. (The m=2^{ℓ−1} shortcut: a′−c′ =
+2^ℓ−1−d must be prime.)
 
-1. Introduction
+- This is the abundance-eq shortcut (perfect: σ(n)=2n, d=0; near-perfect d=±1).
+- Not needed for hemiperfects (which are 2σ=(2k+1)n, i.e. a=2, c=0 — not of the
+  σ=2n+d form). Keep as the source's own worked instance of the §3.1 shortcut.
 
-The sum of divisors function, commonly denoted by σ, has fascinated people for
-centuries. In particular, it provides elegant characterizations for several important
-classes of integers, such as the prime numbers, which are precisely the solutions to
-σ(n) = n + 1, and the perfect numbers, defined by the equation σ(n) = 2n, among
-others discussed later in the present paper. While the solutions to the former…
+Theorems 3.2 and 3.3 (prime-wheel pruning and completeness) are stated in full and
+proved — same content as the HTML rendering. See `[[alekseyev_diophantine_sigma_html]]`
+for the digest and the one claim block `alekseyev-tree-search-complete` for this problem.
 
-(…
-
-## Statements it makes
-
-Theorem 3.1 (OEIS [14]). For integers d and ℓ > 0, the number n = 2ℓ−1(2ℓ −
-d − 1) is a solution to σ(n) = 2n + d whenever 2
-ℓ − d − 1 is prime.
-
-Theorem 3.2. Let n, U , and S be positive integers such that n ≤ U , σ(n) ≥ S,
-and spf(n) = pk for some index k. Then for a positive integer ℓ:
-
-Theorem 3.3. Let a
-′, b
-′, c
-′, U ′ be defined as above. Suppose n′ ≤ U ′ is a solution
-to a′σ(n
-′) = b
-′n′ + c′ with ω(n′) ≥ 2 and spf(n
-′) = pt > lpf(m) for some index
-t. Then at a certain point the prime wheel reaches the state with |W | ≤ ω(n′) and
-W1 = pt.
-
-*[digest of a 34593 character source; every section, statement, and proof in full at `research/sources/alekseyev2601_pdf.full.md`]*
+```claim
+id: alekseyev-theorem31-shortcut
+statement: For integers d and ell>0, if 2^ell - d - 1 is prime then n = 2^(ell-1)(2^ell-d-1) solves sigma(n)=2n+d; the shortcut n'=p^k forces p | (a'-c').
+hypotheses: 2^ell - d - 1 prime
+holds-here: no — PE241's equation is 2*sigma(n)=(2k+1)n (c=0 form, a=2), not sigma(n)=2n+d; the shortcut is the same-paper illustration of the method, not the run's equation
+status: proved (Alekseyev 2026, Thm 3.1)
+bearing: illustrates the shortcut machinery behind the complete tree-search; not load-bearing for the hemiperfect sum
+anchor: research/sources/alekseyev2601_pdf.full.md
+```
