@@ -99,9 +99,10 @@ def part_a():
         # float engine must agree
         above_f = simulate_order(n, L, [float(x) for x in speeds])
         par_f, order_f = parity_of_new_order(n, above_f)
-        ok = (got_edges == exp_edges and names(order) == exp_order
+        exp_order_s = "".join(exp_order)
+        ok = (got_edges == exp_edges and names(order) == exp_order_s
               and ("even" if par == 0 else "odd") == exp_par
-              and names(order_f) == exp_order and par_f == par)
+              and names(order_f) == exp_order_s and par_f == par)
         ok_all &= ok
         print(f"  {name:28s} edges={sorted(got_edges)!s:16s} "
               f"new={names(order):5s} parity={'even' if par==0 else 'odd':4s}  "

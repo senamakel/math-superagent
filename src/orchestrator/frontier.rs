@@ -227,6 +227,15 @@ fn worth_offering(url: &str) -> bool {
     let host = lowered
         .split_once("//")
         .map_or("", |(_, rest)| rest.split('/').next().unwrap_or(""));
+    // A host with no dot is not on the public internet: it is a container name
+    // on some page's own network, reachable only from where that page was
+    // rendered. A live library had 64 candidates on `backend:8080`, the House
+    // of Graphs internal API, harvested from its own pages — a fifth of the
+    // whole frontier, and not one of them fetchable from here.
+    let name = host.split_once(':').map_or(host, |(name, _)| name);
+    if !name.contains('.') {
+        return false;
+    }
     if IGNORED_HOSTS
         .iter()
         .any(|ignored| host == *ignored || host.ends_with(&format!(".{ignored}")))
