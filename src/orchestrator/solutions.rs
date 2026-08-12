@@ -325,20 +325,7 @@ async fn attempt_step(
     // Collecting here as well costs nothing when reflection has already run —
     // the mailbox is empty and the section is omitted — and it is the only
     // path that exists on the first attempt of every run.
-    let observations = patterns.collect();
-    let observations = if observations.is_empty() {
-        String::new()
-    } else {
-        format!("Structural observations from the pattern team:\n{observations}\n\n")
-    };
-    let fresh = if state.fresh_context.is_empty() {
-        String::new()
-    } else {
-        format!(
-            "New material gathered since the last attempt:\n{}",
-            state.fresh_context
-        )
-    };
+    let observations = observations_briefing(patterns);
     // Every attempt after the first continues work already on disk. Without
     // saying so, each one restarts at "read the statement and write it down",
     // and a run can spend its whole budget re-documenting the problem without
@@ -349,31 +336,7 @@ async fn attempt_step(
         state.attempts,
         workspace.is_some_and(has_executable_artifact),
     );
-    let steer = if state.steer.is_empty() {
-        String::new()
-    } else {
-        format!(
-            "The judge reviewed the last attempt and says: {}\n\n",
-            state.steer
-        )
-    };
-    let prompt = format!(
-        "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n{steer}{}\n\
-         {observations}{fresh}\n\n\
-         Requirements for this attempt, all of them:\n\
-         - You must end this attempt with at least one program written to the workspace and \
-           executed. An attempt that produces only notes, plans, or restatements has failed, \
-           however well written they are.\n\
-         - Reproduce every worked example in the statement with that program before running \
-           anything at full size.\n\
-         - Delegate the writing and running to tool_builder; it is the only role that can \
-           execute.\n\
-         - Then report the answer, the method, and how you verified it by a second independent \
-           route; or state precisely where you are blocked, what you executed, and what its \
-           output was.",
-        state.problem,
-        state.lesson_briefing()
-    );
+    let prompt = attempt_prompt(&state, &continuation, &observations);
     if state.attempts == 1 {
         open_with_execution(subagents, tracer, &state.problem);
     }
