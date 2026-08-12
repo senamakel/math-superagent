@@ -167,7 +167,7 @@ USER agent
 WORKDIR /workspace
 ENV MATH_AGENT_CONTAINER=1
 ENV AGENT_WORKSPACE=/workspace
-ENV QDRANT_URL=http://qdrant:6333
+ENV COGNEE_API_URL=http://cognee:8000
 ENV PIP_TARGET=/workspace/.python-packages
 # Pip installs first, then the run's own code. `/workspace/code` on the path is
 # what makes reuse work at all: every agent's working directory is /workspace,

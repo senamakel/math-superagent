@@ -153,43 +153,6 @@ fn the_attempt_ceiling_outranks_a_restart() {
 }
 
 #[test]
-fn reflection_filenames_encode_the_outcome() {
-    use super::reflection_filename;
-    // A directory listing alone should show which attempts taught anything.
-    assert_eq!(
-        reflection_filename(None, 1700, 0),
-        "reflections/L0.0/1700_nothing.md"
-    );
-    assert_eq!(
-        reflection_filename(None, 1700, 1),
-        "reflections/L0.0/1700_01_learnings.md"
-    );
-    assert_eq!(
-        reflection_filename(None, 1700, 12),
-        "reflections/L0.0/1700_12_learnings.md"
-    );
-}
-
-#[test]
-fn learnings_are_counted_from_the_lesson_block() {
-    use super::count_learnings;
-
-    assert_eq!(
-        count_learnings("VERDICT: UNSOLVED\nPROGRESS: NO\nLESSON: use Pell theory."),
-        1
-    );
-    // Bullets under LESSON are separate actionable points.
-    let multi = "VERDICT: UNSOLVED\nLESSON:\n- stop enumerating x\n- use the convergents\n";
-    assert_eq!(count_learnings(multi), 2);
-    // An empty lesson teaches nothing.
-    assert_eq!(
-        count_learnings("VERDICT: SOLVED\nPROGRESS: YES\nLESSON:"),
-        0
-    );
-    assert_eq!(count_learnings("no structure at all"), 0);
-}
-
-#[test]
 fn a_claimed_solution_with_no_program_is_not_accepted() {
     use super::has_executable_artifact;
 
@@ -210,47 +173,6 @@ fn a_claimed_solution_with_no_program_is_not_accepted() {
     assert!(has_executable_artifact(&dir));
 
     let _ = std::fs::remove_dir_all(&dir);
-}
-
-#[tokio::test]
-async fn a_reflection_is_indexed_with_its_verdict_and_lesson() {
-    let workspace = std::env::temp_dir().join("math-agent-reflection-index");
-    let _ = std::fs::remove_dir_all(&workspace);
-    std::fs::create_dir_all(&workspace).expect("create test workspace");
-
-    super::log_reflection(
-        Some(&workspace),
-        3,
-        "VERDICT: UNSOLVED\nPROGRESS: YES\nLESSON: the frame enumeration recomputes primitive \
-         frames for every n; cache them across calls.",
-        None,
-    )
-    .await;
-
-    let index = std::fs::read_to_string(workspace.join("reflections").join("INDEX.md"))
-        .expect("reflections index was written");
-    // The row has to carry what a reader needs without opening the file:
-    // which attempt, how it was judged, and what it taught.
-    assert!(index.contains("Attempt 3"), "{index}");
-    assert!(index.contains("unsolved"), "{index}");
-    assert!(index.contains("cache them across calls"), "{index}");
-    // And it must name the file it describes.
-    assert!(index.contains("_learnings.md"), "{index}");
-
-    // A second reflection joins the table rather than replacing it.
-    super::log_reflection(
-        Some(&workspace),
-        4,
-        "VERDICT: SOLVED\nPROGRESS: YES\n",
-        None,
-    )
-    .await;
-    let index = std::fs::read_to_string(workspace.join("reflections").join("INDEX.md"))
-        .expect("reflections index still there");
-    assert!(index.contains("Attempt 3"), "{index}");
-    assert!(index.contains("Attempt 4"), "{index}");
-    assert!(index.contains("solved"), "{index}");
-    let _ = std::fs::remove_dir_all(&workspace);
 }
 
 #[test]
@@ -306,7 +228,7 @@ fn a_restarted_run_is_told_it_is_continuing_even_on_its_first_attempt() {
     // thirty-one programs already on disk.
     let resumed = continuation_briefing(1, true);
     assert!(resumed.contains("CONTINUE"), "{resumed}");
-    assert!(resumed.contains("MEMORY.md"), "{resumed}");
+    assert!(resumed.contains("recall_memory"), "{resumed}");
     assert!(
         !resumed.contains("first attempt"),
         "a resumed run must not be told to start fresh: {resumed}"
