@@ -208,6 +208,41 @@ fn several_pattern_runs_outliving_their_attempts_are_all_delivered() {
 }
 
 #[test]
+fn an_attempt_is_told_what_the_pattern_team_found() {
+    use super::{attempt_prompt, observations_briefing};
+
+    // Reflection was the only collector, so the team reached the work exactly
+    // once per *completed* attempt — never on a first attempt that runs long.
+    // A live Erdős–Gyárfás run spent forty minutes in attempt 1 while its
+    // pattern team computed the survivor counts and identified the sequence,
+    // and the agent directing the work re-commissioned the same enumeration.
+    let mailbox = PatternMailbox::default();
+    mailbox.post("every no-4 survivor for n<=16 has an 8-cycle".to_string());
+
+    let observations = observations_briefing(&mailbox);
+    let state = SolutionState::new("find the cycle lengths");
+    let prompt = attempt_prompt(&state, "", &observations);
+
+    assert!(prompt.contains("pattern team"), "{prompt}");
+    assert!(prompt.contains("has an 8-cycle"), "{prompt}");
+}
+
+#[test]
+fn an_attempt_with_nothing_from_the_pattern_team_says_nothing_about_it() {
+    use super::{attempt_prompt, observations_briefing};
+
+    // A heading announcing that no analysis arrived is worse than silence: it
+    // spends context to tell the attempt something it cannot act on.
+    let mailbox = PatternMailbox::default();
+    let observations = observations_briefing(&mailbox);
+    assert_eq!(observations, "");
+
+    let state = SolutionState::new("find the cycle lengths");
+    let prompt = attempt_prompt(&state, "", &observations);
+    assert!(!prompt.contains("pattern team"), "{prompt}");
+}
+
+#[test]
 fn an_empty_pattern_report_is_not_posted_as_context() {
     // A failed or silent pattern run must not present itself to the next
     // attempt as an analysis that found nothing to report.
