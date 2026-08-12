@@ -245,17 +245,13 @@ from another terminal:
 ./steer --workspace conjectures/erdos-gyarfas "stop enumerating and prove it"
 ```
 
-The run never waits for you. A directive is queued in the workspace and picked
-up at the next boundary — seconds to minutes — and what the run did about it is
-written to that workspace's `config/DIRECTIVES.md`. It reaches the next attempt
-word for word, above anything the run concluded on its own, and a `director`
-role reads it and updates the files that decide what happens next: the task
-order, the live directions of attack, the shared brief. It cannot override the
-loop's own control flow: a directive will not force a restart, end the run, or
-make an unverified answer count as solved.
-
-Sending is refused under `--replay`, where the run has already finished, and is
-unavailable under `--plain`, which exists for scripting.
+The run never waits for you: a directive is queued in the workspace, reaches the
+next attempt word for word above anything the run concluded on its own, and a
+`director` role updates the files that decide what happens next. It cannot force
+a restart, end the run, or make an unverified answer count as solved. What
+happened to it is written to `config/DIRECTIVES.md`. Sending is refused under
+`--replay` and unavailable under `--plain`. See
+[`docs/solution-loop.md`](docs/solution-loop.md#direction-from-a-human).
 
 It is a `ratatui` binary, built behind the optional `tui` feature so the
 runtime image — which has no terminal — does not carry a terminal library. The

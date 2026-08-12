@@ -27,7 +27,7 @@
 //!
 //! - [`QUEUE`] is written only by the host, by appending one JSON object per
 //!   line, and only read by the runtime.
-//! - [`CURSOR`] is written only by the runtime, and holds how many lines it has
+//! - `config/.directives-cursor` is written only by the runtime, and holds how many lines it has
 //!   consumed.
 //!
 //! Splitting the roles that way is what removes the race rather than managing
@@ -100,7 +100,7 @@ const MAX_FROM: usize = 64;
 /// # Errors
 ///
 /// Returns [`Error::DirectiveEmpty`] when the text is blank,
-/// [`Error::DirectiveTooLong`] when it exceeds [`MAX_TEXT`] characters, and
+/// [`Error::DirectiveTooLong`] when it is longer than the queue accepts, and
 /// [`Error::DirectiveQueue`] when the queue cannot be written.
 pub fn enqueue(workspace: &Path, from: &str, text: &str) -> Result<Directive> {
     let text = text.trim();
