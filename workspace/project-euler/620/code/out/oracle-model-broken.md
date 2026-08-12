@@ -35,7 +35,7 @@ statement: The continuous centre-distance model in code/lib/gears.py returns
 hypotheses: g is parametrized by a single continuous centre-offset d, and the
   meshing condition is the 8 phase congruences on that d.
 holds-here: false — contradicts the worked oracle value 9.
-bearing: The intended model is NOT a continuous-d one. Per least-mesh-angle
+status: checked Per least-mesh-angle
   theory (beta = 2*pi/(s+c)) the arrangements are a discrete combinatorial
   count over planet angular positions that are multiples of beta; the run has
   not yet implemented that model, so no genuine g/G sequence exists yet.
