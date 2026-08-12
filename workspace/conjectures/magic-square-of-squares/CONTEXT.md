@@ -136,10 +136,10 @@ a named theorem is the cheapest next move):
 `c=100,u=96,v=21` → rows `[25,196,79],[154,100,46],[121,4,175]`); same in the
 near-miss box `c=e², e≤80, |u|,|v|≤120` (4,052,328 grids). The `{6:964, 7:4,
 9:92}` distribution is of *total* square entries over all-positive grids, repeats
-allowed; the 9-square grids are trivial repeats (all-`k²` and the `{1,25,49}`
-family). NOTE: durable memory also says 4 *distinct* 7-square non-magic grids
-exist in that box (corner-all-distinct-squares pattern) — see Contradictions;
-the outputs disagree.
+allowed; the `7:4` are repeated-entry near-misses, not four distinct 7-square
+grids (durable memory's "4 distinct 7-square grids" is the resolved
+Contradiction below); the 9-square grids are trivial repeats (all-`k²` and the
+`{1,25,49}` family).
 
 **The literature's actual computational bound — sourced** (Morgenstern 2013,
 `research/summaries/morgenstern-extended-searches-2013.md`): 3809 instances of
@@ -159,27 +159,23 @@ constant 541875, centre 425², non-squares {360721, 222121}, realised AP diffs
 Durable memory returns Bremner 1999 extension-field material (odd-degree family
 over `Q(u)` degree 27; smallest example degree 4) — consistent with this run's
 own reading of the same source. Also recalled: "4 **distinct** 7-square non-magic
-grids in the near-miss box" (see Contradictions). No other prior-run findings
-disagree with the Established section.
+grids in the near-miss box" — see Contradictions; the computed oracle settles
+this in the negative. No other prior-run findings disagree with the Established
+section.
 
 ## Contradictions
 
-- **`code/out/near_misses.json` `all_checks_passed` is `false`** while its
-  per-grid entries carry the expected verified values (Sallows 7/8 at 21609 /
-  failing 38307, all squares; Bremner all-8 = 541875, 7 squares, non-squares
-  {360721,222121}). The witness grids' *values* are internally consistent with
-  their prose, but the `check_near_misses.py` suite did not report an all-PASS —
-  one of the auxiliary checks (magic-graph rank, c-u-v extraction, Pythagorean
-  pairs) likely failed. Until a fresh run reports `ALL CHECKS PASSED`, treat the
-  structural extraction (Established) as `computed-but-suite-flag-false`, not
-  fully confirmed. Reproduce the full run and reconcile before relying on it.
-- **Durable memory vs. `oracle_output.txt` on 7-square distinct grids in the
-  near-miss box**: recalled memory says 4 *distinct* 7-square grids exist there
-  (not magic); the raw output's "best distinct = 5" and the claim block say no
-  grid has six or more distinct square entries. `code/out/oracle_note.md` prose
-  also says "4 distinct 7-square grids… NOT magic". Who extends `code/brute.py`
-  should settle which: the prose and recalled memory against the claim block and
-  raw output. (Both agree the 9-square magic grids repeat entries.)
+- **Durable memory vs. `oracle_output.txt` on 7-square distinct grids**: resolved
+  in favour of the computed oracle. The scratch note (["4 distinct 7-square
+  grids"] provisional) is self-contradictory — the raw scan `{6:964, 7:4, 9:92}`
+  counts *total* square entries with repeats allowed, and separately reports no
+  grid with six or more *distinct* square entries (best distinct k=5) in the box
+  `c=e², e≤80, |u|,|v|≤120` (4,052,328 grids). The `7:4` are the repeated-entry
+  near-misses, **not** four distinct seven-square grids. The corner-all-distinct
+  seven-square grids claimed by memory would require centres far above this box
+  (cf. Bremner's centre `425²`); the oracle's "best distinct = 5" stands until a
+  fresh run extending the box shows otherwise. The claim block
+  (`oracle_note.md`) and raw output are the authority.
 - **Cycle brief's graph-theory method vs. the actual problem**: the graph /
   minimal-counterexample framing does not apply; method is arithmetic geometry
   (`GOAL.md`). No source states a graph reduction.
@@ -195,9 +191,11 @@ disagree with the Established section.
   *proved* vs. suggested is not yet a claim block. Blocks any descent. All three
   `research/approaches/` are `proposed`/`unchecked`, not yet grounded against a
   named theorem — grounding one is the cheapest next move.
-- **Reconcile the `all_checks_passed: false` flag** on `near_misses.json` and
-  the 7-square-distinct contradiction above — by running `code/check_near_misses.py`
-  and `code/brute.py` fresh and reading their actual output.
+- **Reconcile the 7-square-distinct contradiction above** — by extending
+  `code/brute.py`'s near-miss box beyond `e≤80, |u|,|v|≤120` and confirming
+  whether distinct 6-/7-square grids appear at larger centres. (The
+  `all_checks_passed: false` gap is **closed**: `check_near_misses.py` now exits
+  ALL CHECKS PASSED and `near_misses.json` reports `all_checks_passed: true`.)
 - Whether the four-AP condition (differences `u,v,u+v,u−v`) maps onto a known
   concordant-forms/congruent-numbers problem. Morgenstern's exhaustive search
   to `d ≈ 10¹⁵–10¹⁹` found **no** three *primitive* equal-`d` APs beyond
@@ -207,3 +205,10 @@ disagree with the Established section.
   statement of "what an 8-square grid would force" is a plausible partial result.
   Bremner's 7-square witness has exactly two half-realised endpoints; going from
   7 to 8 means realising one more — a precise target for an impossibility lemma.
+- **k3_surface_checks.py exists but its claim is unverified** (`code/out/`):
+  its docstring asserts Bremner II's Category III square (6 square entries)
+  yields a `Q`-rational point on the K3 `S`, so `S(Q)` nonempty and no
+  Brauer–Manin obstruction could prove `S(Q)=empty`. If true this closes the
+  `brauer-manin-k3-surface` approach outright (it would prove *nothing to
+  obstruct*). No output file or claim block records it — run it and decide
+  before spending budget on that approach.
