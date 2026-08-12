@@ -42,7 +42,7 @@ def deg_pslq(n, dmax=30, res_tol=mp.mpf('1e-40')):
     c = cos2a_val(n)
     for d in range(1, dmax + 1):
         vec = [c ** k for k in range(d + 1)]
-        rel = mp.pslq(vec, maxcoeff=10**9, maxsteps=10000, tol=mp.mpf(10) ** (-(mp.mp.dps - 60)))
+        rel = mp.pslq(vec, maxcoeff=10**6, maxsteps=3000, tol=mp.mpf(10) ** (-(mp.mp.dps - 60)))
         if rel:
             res = abs(mp.fsum(mp.mpf(a) * c ** k for k, a in enumerate(rel)))
             if res < res_tol:

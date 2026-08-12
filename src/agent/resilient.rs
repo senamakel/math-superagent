@@ -57,13 +57,18 @@ const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_mins(7);
 /// while its run's clock ran out around it. The role simply stopped existing
 /// as far as the console was concerned.
 ///
-/// Fifteen minutes keeps the scaling useful — it is more than twice the flat
-/// floor, so a genuinely large generation still gets the room the measurement
-/// says it needs — while guaranteeing a wedged request fails with time left for
-/// the ladder to retry inside the same run. It is deliberately derived from the
-/// run cap rather than the token cap: what makes a timeout the right length is
-/// how much run is left to use the answer, not how many tokens were asked for.
-const MAX_REQUEST_TIMEOUT: Duration = Duration::from_mins(15);
+/// Twenty minutes is two thirds of the run cap, and both halves of that matter.
+/// It is above the 16.7 minutes a full 12,000-token turn needs at the
+/// pessimistic rate, so the scaling stays live rather than being clamped flat
+/// at every realistic budget — a ceiling that binds on the ordinary case has
+/// silently replaced the rate rule instead of bounding it. And it leaves ten
+/// minutes of run for the ladder to retry in, so a wedged request fails while
+/// there is still a run to answer.
+///
+/// It is deliberately derived from the run cap rather than the token cap: what
+/// makes a timeout the right length is how much run is left to use the answer,
+/// not how many tokens were asked for.
+const MAX_REQUEST_TIMEOUT: Duration = Duration::from_mins(20);
 
 /// Slowest generation rate, in output tokens per second, a request is given
 /// time for.
