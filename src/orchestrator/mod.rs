@@ -5,6 +5,7 @@ mod checkpoint;
 mod claims;
 mod digest;
 mod documents;
+mod exec;
 mod folder_index;
 mod frontier;
 mod layout;
@@ -12,7 +13,6 @@ mod oeis;
 mod patch;
 mod paths;
 mod patterns;
-mod exec;
 mod readable;
 mod requests;
 mod shared_context;
@@ -52,6 +52,8 @@ use crate::agent::{
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
 use documents::WorkspaceDocuments;
+use exec::{ExecuteCommand, validate_complexity};
+use paths::{WriteToolFile, checked_workspace_path};
 use patterns::PatternTool;
 use vector::{
     NoteScratchTool, RecallMemoryTool, RecallScratchTool, RelateMemoryTool, RememberMemoryTool,
@@ -1976,7 +1978,7 @@ fn workspace_from_env() -> Result<PathBuf> {
     Ok(workspace)
 }
 
-fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
+pub(super) fn string_argument(call: &ToolCall, name: &str) -> Result<String> {
     call.arguments
         .get(name)
         .and_then(serde_json::Value::as_str)

@@ -66,7 +66,11 @@ fn the_boundary_between_the_two_kept_ends_is_exact() {
     // One byte more, and the notice appears with a count of one.
     let mut raw = raw;
     raw.push(b'z');
-    assert!(captured(&raw, 1_000).render().contains("[1 bytes truncated"));
+    assert!(
+        captured(&raw, 1_000)
+            .render()
+            .contains("[1 bytes truncated")
+    );
 }
 
 #[test]
@@ -150,6 +154,10 @@ fn a_search_strategy_named_instead_of_a_cost_is_refused_and_points_at_the_solver
 
 #[test]
 fn enumerating_divisors_is_an_honest_polynomial_description() {
-    validate_complexity("O(sqrt(n)) time, O(1) space, enumerate divisors", "polynomial", None)
-        .expect("refusing this would punish accuracy");
+    validate_complexity(
+        "O(sqrt(n)) time, O(1) space, enumerate divisors",
+        "polynomial",
+        None,
+    )
+    .expect("refusing this would punish accuracy");
 }
