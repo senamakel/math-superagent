@@ -6,6 +6,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `gears_model_fails_oracle` | The continuous-d phase-elimination meshing model in lib/gears.py (planet centre forced to circle(O,R-rho) ∩ circle(S,r+rho), arrangement parameterised by centre distance d, valid iff 2Fp, 2Fq, H are integers mod 1)… | **unchecked** | checked | `code/out/oracle_test.md` |
 | `least_mesh_angle` | In a sun–ring–planet geartrain with sun tooth count z1 and ring tooth count z3 (taken negative for an internal gear), the smallest allowable relative angular step between planet positions that keeps every planet meshed… | **unchecked** | asserted | `research/summaries/planetary-gears-geometry-drivetrainhub.md` |
 | `least_mesh_angle_handbook` | In planetary gears, the least mesh angle (smallest legal angular step between planet positions) is 360 degrees/(sun teeth + ring teeth); planets must be placed at multiples of it; equal spacing additionally requires… | **unchecked** | asserted | `research/summaries/epicyclic-gearing-handbook-gearsolutions.md` |
 | `least_mesh_angle_uts` | Planets in a sun–ring epicyclic gear set (ring internal, N_ring teeth; sun N_sun teeth) can only be placed at angular positions that are integer multiples of the least mesh angle beta = 360/(N_ring + N_sun). Perfect… | **unchecked** | asserted | `research/summaries/simple-epicyclic-gear-design-uts.md` |

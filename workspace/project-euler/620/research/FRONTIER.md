@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://gearsolutions.com/jobs/ | Jobs | - [Industry News][14] - [Product Showcase][15] - [Archives][16] - [Community][17] - [Media Portal][18] - [Events][19] - [Jobs][20] - [Subscribe][21] ** Sign in ** Welcome! Log into your account your… |
 | 2 | https://www.tec-science.com/category/optics/geometrical-optics/ | Geometrical optics | [Heat][30] - [Thermodynamic processes in closed systems][31] - [Thermodynamic processes in open systems][32] - **[Optics][33] - [Geometrical optics][34] ** Sign in Welcome! Log into your account… |
 
-_178 further candidates not shown; they are cited once each._
+_206 further candidates not shown; they are cited once each._
