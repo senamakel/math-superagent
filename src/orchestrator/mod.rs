@@ -1423,6 +1423,9 @@ struct CodeWriters<'a> {
     workspace: &'a Path,
     documents: &'a WorkspaceDocuments,
     checkpoint: &'a Arc<dyn tinyagents::harness::middleware::Middleware<()>>,
+    /// The saved note store, so a role about to implement a result can check
+    /// whether the run already established it.
+    vector_store: &'a VectorStore,
 }
 
 /// Registers the roles carrying shell and file-write authority.
