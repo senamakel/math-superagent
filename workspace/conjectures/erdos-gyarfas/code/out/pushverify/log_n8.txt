@@ -1,0 +1,3 @@
+=== n=8 start Wed Aug 12 13:37:30 2026 base_clauses=394
+n=8 iter=1 UNSAT  solve=0.0s total=0.0s blocked=0
+=== n=8 UNSAT Wed Aug 12 13:37:30 2026

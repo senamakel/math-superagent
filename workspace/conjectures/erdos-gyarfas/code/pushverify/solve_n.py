@@ -36,7 +36,7 @@ def decode_model(model, n):
     return G
 
 
-def solve_n(n, timeout_per_solve=900, max_iter=200000, outdir="code/out/pushverify"):
+def solve_n(n, timeout_per_solve=900, max_iter=200000, outdir="/workspace/code/out/pushverify"):
     import os
     os.makedirs(outdir, exist_ok=True)
     base, _top = build_base(n)
