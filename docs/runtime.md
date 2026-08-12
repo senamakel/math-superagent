@@ -365,11 +365,10 @@ measured turn ran to 9,361 tokens and 2.9 minutes, longer ones exceeded seven. I
 ceiling, not a way to make the model concise: set to 4000 it bound an ordinary turn exactly,
 truncating mid-generation into a retry, 66 seconds to accomplish nothing.
 
-The inventor is the exception at 32000 (`RunBudget::for_invention`), the one
-role whose product *is* the long turn: a live 597 inventor was cut off with no
-tool call, re-issued, and reached the same place. The cap must reach both
-`specialist_harness` and `register_with_turn_cap`: the ceiling a cut-off turn
-grows to, and what the first attempt asks for.
+The inventor is the exception at 32000 (`RunBudget::for_invention`), the one role whose
+product *is* the long turn: a live 597 inventor was cut off with no tool call, re-issued, and
+reached the same place. The cap must reach both `specialist_harness` and
+`register_with_turn_cap` — the ceiling a cut-off turn grows to, and what the first asks for.
 
 The retry is upstream `truncated_empty` recovery in `agent_loop/run_loop.rs`:
 when a turn ends with `finish_reason == "length"`, no text, and no tool calls —
