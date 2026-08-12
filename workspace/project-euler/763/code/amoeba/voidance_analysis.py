@@ -1,4 +1,5 @@
 import sys
+sys.path.insert(0, '/workspace/code')
 from lib.amoeba import next_level_fs, triangle_parent
 
 

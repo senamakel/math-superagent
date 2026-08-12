@@ -6,7 +6,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | --- | --- |
 | `a186085.py` | _(undescribed)_ |
 | `aggregate_triangle.py` | _(undescribed)_ |
-| `bottom_probe.py` | _(undescribed)_ |
+| `bottom_probe.py` | Probes the bottom of the (N,M) max-level triangle: reports the min-M per N (and whether it stays near N/2) from data/level_N.txt + code/out/mhist_13_14.txt, and prints the full Q_k = count/3^(N-2k-1) array including negative-exponent (large k) rows as exact Fractions, testing whether the Q_k-polynomial column model extends into large k. Structural probe of the max-level decomposition. |
 | `check_a186085_recurrence.py` | _(undescribed)_ |
 | `columns.py` | _(undescribed)_ |
 | `d2_oeis.py` | _(undescribed)_ |
