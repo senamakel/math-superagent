@@ -829,7 +829,58 @@ async fn reflect_step(
     let lesson = extract_lesson(&reflection);
     tell_teams(teams, &state, progressed, &lesson);
     state.lessons.push(lesson);
+    // Every completed cycle opens a line-of-attack search, not only a stuck
+    // one. Spawned last, once the verdict and the lesson are in the state, so
+    // the inventor is told what this attempt actually established.
+    open_invention(subagents, tracer, workspace, outbox, &state);
     state
+}
+
+/// Opens a line-of-attack search beside the loop at the end of a full cycle.
+///
+/// The inventor used to run only inside `diversify`, on two consecutive
+/// unproductive attempts. That gate is reachable in principle and was not
+/// reached in practice: it needs two completed attempt/judge/reflect cycles,
+/// and a run whose attempts take the better part of an hour spends its whole
+/// wall clock inside the first one. Across a day of live runs on three
+/// workspaces the inventor was spawned once, and the approach ledger it writes
+/// to never existed on disk — so the cheapest question in the runtime, "is
+/// there a different line of attack", was the one never asked.
+///
+/// This is the pattern agent's argument one role wider. A proposal is worth as
+/// much an attempt later, so nothing waits on it: the arm is detached and its
+/// report is posted to the same mailbox the next attempt drains. Diversify
+/// still runs its own arm and still *awaits* it, because there the whole point
+/// is to change direction before trying again.
+///
+/// It runs only on `Retry`. `Diversify` runs the same arm one step later and
+/// would make it twice; `Solved` and `Blocked` end the loop, and proposing new
+/// mathematics to a run that has stopped is spending a child run on nobody.
+fn open_invention(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
+    outbox: &Mailbox,
+    state: &SolutionState,
+) {
+    if route(state) != Route::Retry {
+        return;
+    }
+    if let Some(tracer) = tracer {
+        tracer.note("solution loop: opening a line-of-attack search beside the next attempt");
+    }
+    let subagents = subagents.clone();
+    let workspace = workspace.map(Path::to_path_buf);
+    let outbox = outbox.clone();
+    let state = state.clone();
+    tokio::spawn(async move {
+        let (candidates, grounding) = invention_arm(&subagents, workspace.as_deref(), &state).await;
+        let report = merge_context(&[
+            ("Proposed lines of attack", &candidates),
+            ("What the literature says about them", &grounding),
+        ]);
+        outbox.post(report);
+    });
 }
 
 /// Reads the reflection's verdict into the state, and returns whether the
