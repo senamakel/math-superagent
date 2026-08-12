@@ -1,16 +1,12 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wikipedia-chases-and-escapes-nahin.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wikipedia — "Chases and Escapes" (Nahin's book)
 
-<!-- source: https://en.wikipedia.org/wiki/Chases_and_Escapes | converted from HTML -->
+Source: https://en.wikipedia.org/wiki/Chases_and_Escapes
+Full text: `research/sources/wikipedia-chases-and-escapes-nahin.full.md` → [[wikipedia-chases-and-escapes-nahin.full]]
 
-## What is in it
+Book page for Paul Nahin's *Chases and Escapes* (Princeton UP, 2007/2012;
+MAA-rated essential). Describes the book's topic (continuous pursuit–evasion)
+and reception; contains no mathematical statement usable here.
 
-  - Topics
-  - Audience and reception
-  - References
-
-
-## What it claims
-
-***Chases and Escapes: The Mathematics of Pursuit and Evasion***is a mathematics book on continuous [pursuit–evasion][3] problems. It was written by [Paul J. Nahin][2], and published by the [Princeton University Press][4] in 2007. It was reissued as a paperback reprint in 2012. [1] The Basic Library List Committee of the [Mathematical Association of America][7] has rated this book as essential for inclusion in undergraduate mathematics libraries. [2]
-
-*[digest of a 14410 character source; every section, statement, and proof in full at `research/sources/wikipedia-chases-and-escapes-nahin.full.md`]*
+**Does not help for PE 761** — see the combined note
+`research/summaries/reference-pages-do-not-help.md` (claim
+`reference-pages-do-not-help`). Do not re-read.

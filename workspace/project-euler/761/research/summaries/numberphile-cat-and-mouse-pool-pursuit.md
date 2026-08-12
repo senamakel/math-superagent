@@ -1,64 +1,12 @@
-<!-- source: https://www.numberphile.com/videos/cat-and-mouse | converted from HTML -->
+# Numberphile — "Cat and Mouse" (video page)
 
-Cat and Mouse — Numberphile
+Source: https://www.numberphile.com/videos/cat-and-mouse
+Full text: `research/sources/numberphile-cat-and-mouse-pool-pursuit.full.md` → [[numberphile-cat-and-mouse-pool-pursuit.full]]
 
-[image: pi_circle.png]
+Video/merchandise listing for a Ben Sparks video on the circular cat-and-mouse
+puzzle; no mathematical content beyond the topic name.
 
-## Hello there.
-
-This is Numberphile. We mainly post videos about mathematics and just numbers in general.
-
-[image: Cat and Mouse]
-
-May 28
-
-## May 28 Cat and Mouse
-
-[Brady Haran][1]
-
-[Ben Sparks][2], [Pi][3], [Circles][4]
-
-Additional information
-
-Ben Sparks discusses the math behind a curious problem.... Check out Brilliant (get 20% off their premium service): [https://brilliant.org/numberphile][5] (sponsor)
-
-Worst Mouse Ever merch (including T-Shirt): [https://teespring.com/worst-mouse-ever-numberphile][6]
-
-Circling Tactic merch: [https://teespring.com/circling-tactic][7]
-
-More videos with Ben Sparks: [http://bit.ly/Sparks_Playlist][8]
-
-Ben's own website: [https://www.bensparks.co.uk][9]
-
-Animation with GeoGebra: [https://www.geogebra.org][10]
-
-[image: Tribonacci Numbers (and the Rauzy Fractal)]
-
-##
-
-[Jun 3 Tribonacci Numbers (and the Rauzy Fractal)][11]
-
-[image: PODCAST: The Singing Banana - with James Grime]
-
-##
-
-[May 20 PODCAST: The Singing Banana - with James Grime][12]
-
-[13]
-
-
-## Links
-
-[1]: /?author=548b5b6de4b02bdc07cf9ef5
-[2]: /videos/category/Ben+Sparks
-[3]: /videos/category/Pi
-[4]: /videos/category/Circles
-[5]: https://brilliant.org/numberphile
-[6]: https://teespring.com/worst-mouse-ever-numberphile
-[7]: https://teespring.com/circling-tactic
-[8]: http://bit.ly/Sparks_Playlist
-[9]: https://www.bensparks.co.uk
-[10]: https://www.geogebra.org
-[11]: /videos/tribonacci-numbers-rauzy-fractal
-[12]: /videos/podcast-james-grime
-[13]: /search
+**Does not help for PE 761** — see `research/summaries/reference-pages-do-not-help.md`
+(claim `reference-pages-do-not-help`). Do not re-read. (The circle mechanism it
+would illustrate is properly sourced in Quanta / Ponder-This / Hesterberg /
+lady-in-the-lake notes.)
