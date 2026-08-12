@@ -78,36 +78,46 @@ lemma tail_penultimate {G : SimpleGraph V} {v : V} {p : G.Walk v v}
 /-- The strict interior of the cycle (vertices strictly between `snd` and
 `penultimate` in traversal order — i.e. `p.tail.dropLast`) never visits `v`.
 
-Proof: the only positions where a simple cycle `p : G.Walk v v` returns to `v`
-are the two ends, `0` and `p.length` (`IsCycle.getVert_endpoint_iff`). The
-interior `p.tail.dropLast` runs over exactly the positions `1, …, p.length-1`,
-none of which is `0` or `p.length`, so `v` cannot occur there. -/
+Proof: `p.tail` is a path (`IsCycle.isPath_tail`), whose vertices are all
+distinct and whose last vertex is `v`. Hence `v` occurs exactly once in
+`p.tail.support`, namely as the last element, so it is absent from
+`p.tail.support.dropLast = (p.tail.dropLast).support`. -/
 lemma cycle_middle_avoids_v {G : SimpleGraph V} [DecidableEq V]
     {v : V} {p : G.Walk v v} (hp : p.IsCycle) :
     v ∉ (p.tail.dropLast).support := by
   classical
-  intro hmem
-  -- the interior positions of the walk are 1 .. p.length-1
-  have hpos : ∃ i, i < (p.tail.dropLast).support.length ∧
-      (p.tail.dropLast).support[i] = v := by
-    exact List.mem_iff_getElem.mp hmem
-  rcases hpos with ⟨i, hi, hvi⟩
-  -- map back to a position along p
-  have htail : (p.tail.dropLast).support = p.support.dropLast.tail := by
-    rw [Walk.support_dropLast hp.not_nil, Walk.support_tail_of_not_nil hp.not_nil]
-    simp
-  rw [htail] at hvi
-  obtain ⟨k, hk, hvk⟩ := List.mem_iff_getElem.mp (List.mem_tail_iff.mp (by
-    -- (p.support.dropLast).tail[i] = v with i < length(tail)
-    refine ⟨i, hi, hvi⟩))
-  -- p.support.dropLast[k+1] = v, and 0 ≤ k+1, k+1 < p.length
-  have : p.support.dropLast[k + 1] = v := by simpa using hvk
-  -- dropLast[k+1] = support[k+1]
-  have hsupp : p.support[k + 1] = v := by
-    have hklt : k + 1 < p.dropLast.length := by
-      rw [Walk.support_dropLast hp.not_nil]
-      ...
-      sorry
+  -- p.tail is a path: distinct vertices, ending at v
+  have hpath : p.tail.IsPath := hp.isPath_tail
+  have hnd : (p.tail.support).Nodup := hpath.support_nodup
+  have hmem : v ∈ (p.tail).support := (p.tail.end_mem_support : v ∈ p.tail.support)
+  have hcount : (p.tail.support).count v = 1 := List.count_eq_one_of_mem hnd hmem
+  -- p.tail is nonempty (its length is p.length - 1 ≥ 2)
+  have htnil : ¬ (p.tail).Nil := by
+    intro hnil
+    have : (p.tail).length = 0 := hnil.length_eq_zero
+    have : p.length = 1 := by
+      rw [Walk.length_tail] at this
+      omega
+    have h3 : 3 ≤ p.length := hp.three_le_length
+    omega
+  -- support of the interior = tail.support.dropLast ; last element of tail.support is v
+  have hsupp : (p.tail.dropLast).support = (p.tail.support).dropLast := by
+    rw [Walk.support_dropLast htnil]
+  intro hv
+  have hv' : v ∈ (p.tail.support).dropLast := by rwa [hsupp] at hv
+  -- tail.support = dropLast ++ [v]
+  have hlast : (p.tail.support).getLast (by simp [List.ne_nil_of_mem hmem]) = v := by
+    -- last element of the support of a walk is its endpoint, which is v
+    simpa using (p.tail.getLast_support)
+  have hsplit : (p.tail.support) = (p.tail.support).dropLast ++ [v] := by
+    rw [← List.dropLast_append_getLast (by simp [List.ne_nil_of_mem hmem])]
+    simp [hlast]
+  have hcount2 : 2 ≤ (p.tail.support).count v := by
+    rw [hsplit]
+    rw [List.count_append, List.count_cons_self]
+    have : 1 ≤ (p.tail.support).dropLast.count v := List.count_pos_iff.mpr hv'
+    omega
+  omega
 
 /-! ## Main theorem -/
 
