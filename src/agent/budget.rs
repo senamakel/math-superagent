@@ -109,6 +109,31 @@ const HOUSEKEEPING_MODEL_CALLS: usize = 25;
 /// fails a run outright rather than stopping with partial results.
 const HOUSEKEEPING_TOOL_CALLS: usize = 300;
 
+/// Output tokens the inventor may spend in one turn.
+///
+/// The one role whose product *is* the long turn. Everywhere else a turn that
+/// reaches [`DEFAULT_TURN_OUTPUT_TOKENS`] is a model writing an essay where a
+/// decision was wanted, which is the failure that cap exists to bound. The
+/// inventor is asked for three genuinely different lines of attack with the
+/// actual mathematics named in each — a transform, a bijection, an invariant —
+/// and that is legitimately several thousand tokens before it has written
+/// anything to disk.
+///
+/// Twelve thousand was binding on it in practice. A live Project Euler 597 run
+/// cut the inventor off mid-answer with no tool call at all, and the re-issue
+/// that followed spent a second full turn reaching the same place: five model
+/// calls, nine tool calls, every one a read, and the three candidates left in
+/// prose that never reached `research/approaches/`. A cap that trips routinely
+/// does not make a model concise — the note on [`DEFAULT_TURN_OUTPUT_TOKENS`]
+/// already says so, and this is that argument applied to the role it binds.
+///
+/// Thirty-two thousand, and it stays a safety ceiling rather than an
+/// allowance: generation is linear in output length, so this is also the
+/// inventor's wall clock. It is paired with a control that checks the files
+/// were actually written, because a larger cap buys room to comply and does
+/// not make complying more likely.
+const INVENTION_TURN_OUTPUT_TOKENS: u32 = 32_000;
+
 // There is deliberately no housekeeping wall-clock ceiling. Narrowing one to
 // ten minutes was tried and was a mistake: 25 model calls at the turn lengths
 // this runtime actually sees do not fit in ten minutes, so the organizer
