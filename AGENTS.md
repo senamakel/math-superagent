@@ -1091,6 +1091,45 @@ on terms that role has already computed cannot become one. It is also the role
 holding the terms, so delegating the lookup would spend a child run to pass a
 list of integers along.
 
+## Recall: the two ways back into what is known
+
+A run accumulates faster than any one agent can hold, and four tools answer
+four different questions about it. `search_documents` matches literal terms
+against documents someone called `index_document` on, so it finds a downloaded
+source and nothing else. `search_claims` retrieves one statement with its
+hypotheses out of the claim ledger. Those two cover the library. The run's own
+thinking was covered by neither.
+
+`search_workspace` (`recall.rs`) closes that. It walks the workspace rather
+than an index and ranks by cosine similarity over the same deterministic
+feature-hashing encoder the notes use, so `MEMORY.md`, `reflections/`,
+`SCRATCHPAD.md`, and `code/lib/` are reachable by wording rather than by a path
+an agent already knew. Before it, the inventor re-proposed approaches whose
+failure was recorded three files away and the pattern agent rebuilt helpers
+that already existed. It hides exactly what `list_workspace` hides: an agent
+must not reach the event log through a search when it cannot reach it through a
+path.
+
+`recall_research` is the other half and a different question — not what did
+*this* run write down, but what has been established before. The notes are in
+Qdrant and outlive the workspace.
+
+Both travel to every reasoning role, and `remember_research` does not. Reading
+a note costs a lookup; writing one puts a statement into a store every later
+run reads, so it stays with the three roles whose output is durable knowledge:
+research, the scholar, and the inventor. A test asserts that split, because it
+is the kind of boundary that erodes one convenient grant at a time.
+
+Three exclusions, each the same argument the rest of this document makes about
+tools being authority. The **judge** gets neither: it answers four lines on
+twelve model calls against an attempt that took the better part of an hour, and
+a search over the whole workspace is precisely the invitation to spend them
+reading — a live judge already did that with the document tools alone. The
+**organizer** gets neither, because every tool it lacks is a way a filing job
+cannot turn into an investigation. The **tool-builder** gets `recall_research`
+but not `search_workspace`: it writes probes and throwaway experiments, so a
+similarity search over its own output would mostly return them.
+
 ## Workspace discovery and the reflection log
 
 `list_workspace` renders a bounded tree with file sizes. Agents previously knew
