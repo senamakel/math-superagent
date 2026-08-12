@@ -1,6 +1,6 @@
 PE 597 (Torpids) -- worked-example verification run
-run at: 2026-08-12 15:53:57 UTC
-host: 37628070d50f
+run at: 2026-08-12 18:18:57 UTC
+host: bddce18fc07f
 
 Engines: brute.py (naive float oracle), exact_race.py (exact Fraction dynamics),
          cell_exact.py + toolkits/arr_enum.py + toolkits/arr_polytope.py (exact
@@ -61,8 +61,8 @@ C) Exact p(n,L) from cell_exact.p_exact (arrangement-cell
 ==============================================================================
   p(3,160)     n=3 L=160   cells=32    even_cells=17     got=56/135 = 0.4148148148  expected=56/135  [OK]  (0.1s)
   p(3,1800)    n=3 L=1800  cells=32    even_cells=17     got=2237/5742 = 0.3895855103  expected=2237/5742  [OK]  (0.1s)
-  p(4,400)     n=4 L=400   cells=1202  even_cells=595    got=521/1020 = 0.5107843137  expected=521/1020  [OK]  (111.4s)
-  p(4,1800)    n=4 L=1800  cells=1202  even_cells=595    got=166802/317985 = 0.5245593346  expected=166802/317985  [OK]  (119.9s)
+  p(4,400)     n=4 L=400   cells=1202  even_cells=595    got=521/1020 = 0.5107843137  expected=521/1020  [OK]  (104.7s)
+  p(4,1800)    n=4 L=1800  cells=1202  even_cells=595    got=166802/317985 = 0.5245593346  expected=166802/317985  [OK]  (106.3s)
   => ALL 4 EXACT VALUES MATCH
 
 ==============================================================================

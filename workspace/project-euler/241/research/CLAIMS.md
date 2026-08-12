@@ -8,11 +8,12 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | --- | --- | --- | --- | --- |
 | `a067698-robin-not-hemiperfect` | A067698 (sigma(n) >= e^gamma n log log n) concerns Robin's inequality and RH; its members are not hemiperfect and it does not bound or enumerate n with sigma(n)/n = k+1/2. | no | asserted | `research/summaries/oeis_a067698.md` |
 | `a088912-abundancy-threshold` | The smallest m with sigma(m)=(k+1/2)m is 2,24,4320,8910720,17116004505600 for k=1..5 (all < 1e18) and ~1.7e44 for k=6, so no number <= 1e18 realizes any half-integer abundancy k+1/2 with k >= 6. | yes | asserted | `research/summaries/oeis_A088912.md` |
-| `a159907-sequence-even` | Every hemiperfect number is even (sigma(n)/n = k/2, k odd, implies n even). | yes | asserted | `research/summaries/oeis_a159907.md` |
+| `a160678-reachability-13over2` | The smallest n with sigma(n)/n = 13/2 is 170974031122008628879954060917200710847692800 ~ 1.71e44, so no n <= 10^18 has half-integer abundancy 13/2 and the k=6 target contributes zero solutions below 1e18. | yes | asserted | `research/summaries/oeis_A160678.md` |
 | `a242484-equivalence` | For even n, sigma(n)/n is a half-integer iff antisigma(n)/n is an integer (since (sigma(n)+antisigma(n))/n=(n+1)/2), so the hemiperfects from 24 on sit inside A242484 unless an odd multiply-perfect number exists. | yes | asserted | `research/summaries/oeis_a242484.md` |
 | `hemi-abundance-bound` | No positive integer n <= 10^18 has half-integer abundancy k/2 with k >= 13, because the smallest such number a(6) ~ 1.7e44 exceeds 10^18; hence only abundancies 3/2..11/2 are reachable. | yes | asserted | `research/summaries/hemiperfect_wikipedia.md` |
 | `laatsch-multiplicativity-density` | I(N)=sigma(N)/N is multiplicative with I(N)=prod_p (p^{a+1}-1)/(p^a(p-1)); the set of abundancy indices is dense in (1,inf) and I is unbounded above; I(kN)>=I(N). | **unchecked** | proved | `research/summaries/laatsch_measuring_abundancy.md` |
 | `property22-denominator-divides` | If I(n)=sigma(n)/n = r/s in lowest terms, then s \| n (gcd(r,s)=1 implies s\|n since s \| n and gcd(k,m)=1). | yes | proved | `research/summaries/holdener_stanton_outlaws.md` |
+| `robin-inequality-RH` | (Robin 1984) RH is true iff sigma(n)/n < e^gamma log log n for all n > 5040; therefore a half-integer-abundancy n with sigma(n)/n = k+1/2 satisfies e^gamma log log n > k+1/2, a hypothesis-conditional lower bound on the… | **unchecked** | asserted | `research/summaries/nicolas_divisor_function_RH.md` |
 | `weiner-outlaw-no-bound` | The abundancy-outlaw search techniques (odd-perfect equivalence, t-bounds for (sigma(N)+t)/N) classify rationals that fail to be abundancy indices; they do not enumerate n attaining a given k+1/2. | no | asserted | `research/summaries/weiner_searching_outlaws.md` |
 
 ## Load-bearing but unverified
@@ -20,6 +21,6 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `a088912-abundancy-threshold` (research/summaries/oeis_A088912.md) — asserted by the source, not proved there and not checked here
-- `a159907-sequence-even` (research/summaries/oeis_a159907.md) — asserted by the source, not proved there and not checked here
+- `a160678-reachability-13over2` (research/summaries/oeis_A160678.md) — asserted by the source, not proved there and not checked here
 - `a242484-equivalence` (research/summaries/oeis_a242484.md) — asserted by the source, not proved there and not checked here
 - `hemi-abundance-bound` (research/summaries/hemiperfect_wikipedia.md) — asserted by the source, not proved there and not checked here
