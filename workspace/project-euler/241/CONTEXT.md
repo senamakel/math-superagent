@@ -18,10 +18,11 @@ GOAL.md and solution.md are still empty stubs.
   (only one given; no qualifying n is listed by the statement).
 - **Qualifying set (computed & checked, two independent routes).** A159907 prefix:
   ≤10^6 → {2,24,4320,4680,26208}, k=1,2,3,3,3, sum 35234 (code/brute.py spf-sieve,
-  cross-checked vs trial-division over 1..2e5 and 1e6). ≤10^7 adds 8910720. ≤3e7 adds
-  17428320, 20427264 → {2,24,4320,4680,26208,8910720,17428320,20427264}, the first 8
-  A159907 terms (code/verify_2adic.py; per scratch, up to 1e7 all beyond 24 have
-  abundancy 7/2; the 3e7 additions' k not separately verified).
+  cross-checked vs trial-division over 1..2e5 and 1e6). ≤10^7 adds 8910720, which has
+  k=4 (abundancy 9/2; A088912 a(4)=8910720 and brute output both confirm — not k=3).
+  ≤3e7 adds 17428320, 20427264 → {2,24,4320,4680,26208,8910720,17428320,20427264}, the
+  first 8 A159907 terms (code/verify_2adic.py). 20427264 has k=3 (4th term of A055153,
+  the 7/2 series); 17428320 is in A159907 but not the 7/2 series — its k is unverified.
 - **2-adic structure (computed & checked, code/verify_2adic.py).** For n=2^a·u (u odd),
   the half-integer condition forces v2(σ(u))=a−1 and the exact identity
   σ(u)/u = (2k+1)2^(a−1)/(2^(a+1)−1). Verified for all 8 known qualifying n.
