@@ -385,13 +385,13 @@ reroute returns to the harness ladder, which prints `model RETRY attempt N` and 
 `pattern_finder` retried six times over three minutes with the cause in neither the console
 nor `trace.jsonl`. It now notes cause and agent on the way past.
 
-`UntruncatedModel` is a second ladder beside that one, covering the shape
-upstream excludes — a turn with text but no tool call. The two share a ceiling
-rather than compose, so `MAX_CAP_GROWTH` is measured from the run's *configured*
-turn cap, passed with `with_turn_cap`, not the cap the request carries: read as
-an original, a turn upstream had already doubled doubled again and a live
-`goals` reached a 48,000-token re-issue — four times the ceiling, against a
-wrapper documented to allow twice. The inventor's 32000 tops out at 64000.
+`UntruncatedModel` is a second ladder beside that one, covering the shape upstream excludes
+— a turn with text but no tool call. The two share a ceiling rather than compose, so
+`MAX_CAP_GROWTH` is measured from the run's *configured* turn cap, passed with
+`with_turn_cap`, not the cap the request carries: read as an original, a turn upstream had
+already doubled doubled again and a live `goals` reached a 48,000-token re-issue — four
+times the ceiling, against a wrapper documented to allow twice. The inventor's 32000 tops
+out at 64000.
 
 A timeout is a safety ceiling, not permission to run an intractable approach.
 Before substantial execution the tool-builder must state both time and space
