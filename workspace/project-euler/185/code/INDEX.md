@@ -4,5 +4,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `AGENTS.md` | _(undescribed)_ |
-| `brute.py` | Naive exhaustive oracle for Project Euler 185: enumerates all 10^length candidates and returns those matching every (guess, exact-position-count) constraint. Verified by reproducing the statement's 5-digit worked example (unique answer 39542). Intentionally not optimised; the 16-digit instance (10^16 candidates) is out of its reach. |
+| `AGENTS.md` | Working guidance for the code/ tree: package-tree conventions — one job per file, programs live here with their outputs in code/out/, shared imports in code/lib/, the naive program stays as oracle, exact arithmetic, no exponential time/space, never delete a program carrying a result. |
+| `brute.py` | Naive brute-force oracle for Project Euler 185. Enumerates all 10^L digit strings and keeps those matching every (guess, c_i) constraint exactly. Verified: on the L=5 example it reports the unique string 39542 (checked against 100000 candidates). Deliberately does not run the 10^16-candidate L=16 instance. |
