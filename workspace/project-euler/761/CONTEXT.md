@@ -54,23 +54,23 @@ not a circle.
 These anchors make the *formula* trustworthy, but on their own they do not
 verify the *n=6 value* by a second route.
 
-**Hexagon: the independent route EXISTS on disk but is NOT yet confirmed.**
-`solution.py` (mpmath), `verify_hexagon.py` (sympy), `hex_check.py` (math) all
-implement the SAME stewbasic formula at different precisions — one route; do
-NOT call that independent verification. The genuinely independent geometry-first
-solver exists at **`code/indep_game_encoding.py`** (bisects on v solving
-g(v)=v, g = max over boundary point Q of runner-perimeter-dist(Q)/swim-dist(Q)
-at stage radius 1/v, decoding the circle/square/hexagon oracles itself WITHOUT
-the K/α formula). **Its run output is not captured anywhere — scratch stops at
-"agent-run-15 still running"; no final value in memory or docs; not in
-code/INDEX.md unless refreshed.** What tool_builder should do, and the only
-thing that closes the gap: run `python code/indep_game_encoding.py` and confirm
-it reproduces 4.60333885 (circle), 5.78859314 (square), and 5.05505046
-(hexagon). What IS already independent of the decimal arithmetic is the exact
-closed form V=2+2√21/3 above (full-precision confirmation), but that still
-subsumes the formula's correctness. Honest status: **value = single (formula)
-route, numerically + exact-closed-form confirmed; independent game-encoding
-solver present but its result unconfirmed.** Thread
+**Hexagon: the independent route WAS run and CAPTURED, and it FAILS to
+reproduce the oracles — it encodes the documented straight-dash red herring.**
+`code/indep_game_encoding_OUTPUT.txt` (captured, 1254 bytes):
+circle 4.14159265 (= π+1, the red herring, NOT 4.60333885), square 4.09372236,
+hexagon 3.98230929; r=0 never-staging controls 3.1416/3.1623/3.0551 all sit
+below the staged values, confirming the model does measure a staging gain. The
+solver is genuinely independent of the K/α formula (no K/alpha/arctan anywhere;
+bisects on v solving g(v)=v, g = max over boundary Q of runner-perim-dist(Q)/
+swim-dist(Q) at stage radius 1/v), BUT it models the dash as a straight ray from
+a diametrically-opposite staging point — exactly the dead-end that caps the
+circle at π+1 (see Ruled out). So it is an independent *attempt* whose model is
+wrong, not the missing verification. Honest status: **value = single (formula)
+route, numerically + exact-closed-form confirmed; NO independent model has yet
+reproduced any oracle, because the only independent game-encoding built encodes
+the red-herring staging.** A correct independent route needs the tangent-chord
+staging (circle's sin B=(π+B)/v, or a David-K-style n=6 construction), not a
+straight radial dash. Thread
 `research/threads/hexagon-critical-speed.md` and reflection memory flag this.
 
 ### Circle case (established, sourced, CLOSED — do not re-derive)
@@ -138,17 +138,17 @@ its one `claim` block; the notes and programs override it authoritatively.
 
 ## Gaps
 
-The value is computed and exact-closed-form-confirmed. The one honest gap: the
-**independent game-encoding solver's result is not captured** — `code/indep_game_encoding.py`
-exists (bisection fixed-point g(v)=v, decodes all three oracles, no K/α
-formula) but the scratch record stops at "agent-run-15 still running" and no
-output is in memory, docs, or a file. Next step: run it, record
-circle/square/hexagon agreement, then mark the value independently verified.
-If a final report is due before that, it should state 5.05505046, cite the
-stewbasic formula + arXiv paper, give the exact closed form 2+2√21/3, and
-report the hexagon as formula-derived + exact-closed-form-confirmed but NOT
-yet cross-checked by the captured independent game-encoding run. Files:
-`code/solution.py` (exact formula), `code/hexagon_closed_form.py` &
-`code/confirm_hexagon_closedform.py` (exact closed form), `code/indep_game_encoding.py`
-(independent solver, unrun), `code/brute.py circle` (reproduces circle oracle),
-`GOAL.md`, `research/threads/hexagon-critical-speed.md`.
+The value is computed and exact-closed-form-confirmed; formula-route only. The
+one independent game-encoding solver that was actually built (`code/indep_game_encoding.py`)
+has now been RUN and its output captured — and it FAILS (encodes the
+straight-dash red herring: circle π+1, square 4.09, hexagon 3.98), so it must
+NOT be cited as verification. What is missing: an independent route that does
+the tangent-chord staging (circle's sin B=(π+B)/v) or a David-K-style n=6
+construction reproducing at least the square and hexagon oracles. Until such a
+route exists and its output is captured, report the hexagon answer 5.05505046
+as formula-derived + exact-closed-form-confirmed but NOT independently
+game-encoded. Files: `code/solution.py` (exact formula), `code/hexagon_closed_form.py`
+& `code/confirm_hexagon_closedform.py` (exact closed form),
+`code/indep_game_encoding.py` + `code/indep_game_encoding_OUTPUT.txt`
+(independent solver, RUN — fails, dead end), `code/brute.py circle` (reproduces
+circle oracle), `GOAL.md`, `research/threads/hexagon-critical-speed.md`.
