@@ -972,12 +972,13 @@ fn tell_teams(teams: &[TeamHandle], state: &SolutionState, progressed: bool, les
     }
 }
 
-/// Gathers three independent angles concurrently to break a stalled loop.
+/// Runs three arms concurrently to break a stalled loop.
 ///
-/// Two of the three are gathering: the library arm fetches and reads, the
-/// pattern arm looks at the numbers already computed. The third is invention,
-/// and unlike the other two it is a conversation rather than an errand — see
-/// [`invention_arm`].
+/// Two are gathering: the library arm fetches and reads, the pattern arm looks
+/// at the numbers already computed. The third is invention, and unlike the
+/// other two it is a conversation rather than an errand — see
+/// [`invention_arm`]. The three do not read each other, which is what lets them
+/// run at once.
 async fn diversify_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
