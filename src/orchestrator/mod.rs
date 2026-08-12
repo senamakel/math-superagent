@@ -2523,9 +2523,15 @@ fn validate_complexity(
                 .into(),
         ));
     }
-    if SEARCH_METHODS
-        .iter()
-        .any(|method| normalized.contains(method))
+    // A bounded oracle is legitimate however it searches, and says so with
+    // `oracle_bound`. Only an unbounded search reaches the refusal.
+    let bounded = oracle_bound
+        .map(str::trim)
+        .is_some_and(|bound| !bound.is_empty());
+    if !bounded
+        && SEARCH_METHODS
+            .iter()
+            .any(|method| normalized.contains(method))
     {
         return Err(tinyagents::TinyAgentsError::Validation(
             "this names a search strategy rather than a cost, and a search over candidate \
