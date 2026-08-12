@@ -6,25 +6,30 @@ specific hyperelliptic curves that Bremner's 2001 classification produces when
 demanding a seventh or eighth square entry. Chabauty (1941): if C/Q is a curve
 of genus g ≥ 2 and rk J(Q) < g, then C(Q) is finite. Coleman (1985): under the
 same hypothesis the rational points are effectively computable via p-adic
-integration. Bremner II shows that for each of the 16 six-square configurations,
-demanding a seventh square reduces to rational points on a hyperelliptic curve
-f(t) = square, generally of high genus. If the relevant curve has rk J(Q) < g,
-Chabauty–Coleman either finds all rational points or proves none exist beyond the
-known 7-square witness (1). Covering all 16 configurations would settle the
-8-square sub-question.
-status: grounded
+integration. Bremner II §2 (Category VII) gives the explicit quartics:
+equation (12) is the condition that already gave the 7-square witness at λ=13,
+p=9, q=2; equations (13) are the three remaining entries' square conditions.
+The 8th square means realising one of (13) as a square simultaneously with
+(12). This defines a curve; if its genus g ≥ 2 and its Jacobian rank r < g,
+Chabauty–Coleman either finds all rational points or proves none exist beyond
+the known witness. Covering all 16 configurations would settle the 8-square
+sub-question.
+status: adopted
 precedent: A. Bremner, "On squares of squares II", Acta Arith. 99 (2001) 289-308
-  (library: research/summaries/bremner-on-squares-of-squares-II-2001.md) gives the
-  six-square -> hyperelliptic reduction f(t)=square but NO explicit f(t) for the
-  7->8 transition and no genus/rank; C. Chabauty, CRAS 212 (1941); R. Coleman,
-  Duke Math J 52 (1985); Coleman integration for even-degree hyperelliptic curves,
-  LMS J Comput Math 18 (2015),
-  https://www.cambridge.org/core/journals/lms-journal-of-computation-and-mathematics/article/coleman-integration-for-evendegree-models-of-hyperelliptic-curves/AF72EF6830BFCDB0BBB14B996A5BE733 ;
-  On the Coleman-Chabauty bound (method fails when r >= g),
-  https://www.sciencedirect.com/science/article/abs/pii/S0764444200800415
-first-step: Extract from Bremner II Category VII the explicit polynomial f(t) whose
-  square condition gives the 8th square entry on top of the 7-square witness; compute
-  its genus and the Jacobian rank; only if r < g proceed to Coleman integration.
+  (library: research/sources/bremner-on-squares-of-squares-II-2001.full.md) gives
+  the explicit quartics (12)-(13) for Category VII, the 7-square witness, and the
+  bounded search; C. Chabauty, CRAS 212 (1941); R. Coleman, Duke Math J 52 (1985);
+  Coleman integration for even-degree hyperelliptic curves, LMS J Comput Math 18 (2015).
+  The decisive hypothesis r < g is unverified for every magic-square curve;
+  this approach is adopted on the strength of the explicit first-step being
+  computable, not on a guarantee that r < g holds.
+first-step: From Bremner II §2 eq. (12)-(13), write a SageMath/Sympy script that
+  (a) substitutes λ=13 and the known 7-square witness (p=9,q=2) to verify eq.(12)
+  is indeed a perfect square; (b) for each of the three quartics in (13) with λ=13,
+  treats "quartic(p,q) = Y²" as a curve over Q, computes its genus; (c) if genus ≥ 2,
+  performs a 2-descent to bound the Jacobian rank; (d) reports whether r < g for
+  any of the three. If r ≥ g for all three, Chabauty–Coleman does not apply and
+  the approach is closed with that as a result.
 ```
 
 ## What this reformulation is actually called

@@ -1,10 +1,50 @@
-# Approach: inversion-coaxial
-
 ```approach
-idea: Use circle inversion about a limiting point of the C–S coaxal system to map the off-centre nested circles C (internal ring, radius R=c/2π) and S (sun, radius r=s/2π, centre at distance d) to concentric circles C′, S′. Inversion is conformal — it preserves angles and tangency — so the four planets map to four circles each tangent to both C′ and S′. In the concentric picture, Guo's least-mesh-angle rule β = 2π/(c+s) applies directly to the angular positions of the planets about the common centre, without the off-centre caveat that has defeated every model so far. The cost is that tooth counts are not preserved by inversion: the inverted circumferences c′, s′, p′, q′ differ from the original c, s, p, q. The condition that the original tooth counts are integers becomes an algebraic equation in the angular slot index k ∈ Z/(c+s)Z that selects the discrete planet positions. g(c,s,p,q) then counts the assignments of two p-slots and two q-slots solving that equation.
-
-mechanism: The coaxal system determined by two nested non-concentric circles C and S has two limiting points L₁, L₂ on the line of centres — these are the unique points from which C and S subtend the same angle, or equivalently the points whose power with respect to both circles is equal. Inversion in a circle centred at either limiting point maps both C and S to concentric circles. The standard derivation (see e.g. Coxeter, "Introduction to Geometry", §6.5; or the Steiner-chain literature) gives the explicit transformation. In the inverted coaxial picture, every planet — regardless of its original tooth count p or q — maps to a circle of radius ρ′ = (R′ − r′)/2 (the unique radius tangent to both concentric circles) whose centre lies on the mid-circle of radius (R′ + r′)/2. The planets differ only in their angular positions. The angular slot spacing is β′ = 2π/(c′ + s′) where c′ = 2πR′, s′ = 2πr′ are the inverted circumferences. The constraint that a planet at slot index k inverts back to one with original tooth count t becomes: f_t(k; c,s,d) = t, where f_t is the inverse-radius function determined by the inversion geometry. Since k is an integer mod (c′+s′) and the equation is algebraic, g(c,s,p,q) is the number of 4-tuples (k₁,k₂,k₃,k₄) with two equal to some value k_p and two to k_q satisfying both f_p(k) = p and f_q(k) = q, modulo symmetries.
-
-status: proposed
-first-step: Derive the explicit Möbius transformation w = (z − α)/(z − β) that maps C and S to concentric circles. Compute the inverted radii R′, r′ and the angular slot spacing β′ = 2π/(c′+s′). Then express the inverse mapping from a planet at angular position ψ in the concentric picture back to its original radius ρ = t/(2π). The condition ρ = t/(2π) for integer t gives the algebraic constraint on ψ.
+idea: Coaxial reduction by circle inversion about a limiting point
+mechanism: For any two non-intersecting nested circles C (radius R) and S (radius r, centre at distance d from O), the coaxal system they determine has two limiting points L₁, L₂ on the line of centres — the unique points whose power with respect to both circles is equal. Inversion in a circle centred at either limiting point maps C and S to concentric circles C′, S′. Because circle inversion preserves tangency (and the angle between curves), the off-centre PE620 configuration maps to a coaxial planetary gear train where the standard Guo least-mesh-angle theorem applies without caveat: legal planet positions are at multiples of β = 2π/(c+s) in the inverted angular coordinate. Inverting back gives a discrete set of planet centre positions on the original ellipse — one per valid lattice slot. The p and q planets, which have different radii in the original picture, map to circles of the same radius (R′−r′)/2 in the inverted picture (all circles tangent to both concentric circles are congruent), but they occupy different angular slots. The counting problem g(c,s,p,q) becomes: in Z/(c+s)Z, select two positions for type p and two for type q such that, when the inversion is undone, the original planet circumferences are p and q — the inversion radius-transformation formula ρ_original = k²ρ′ / |d_LP² − ρ′²| provides the constraint that picks out which slots are valid for each type. This turns a transcendental root-finding problem into a combinatorial assignment on a cyclic group of order c+s, with the constraint expressed as an algebraic equation in the slot index.
+status: refuted
+killed-by: inversion_does_not_preserve_tooth_mesh
+precedent: https://en.wikipedia.org/wiki/Limiting_point_(geometry) ; https://mathworld.wolfram.com/LimitingPoint.html ; https://mathworld.wolfram.com/Inversion.html ; https://en.wikipedia.org/wiki/Steiner_chain ; https://www.cut-the-knot.org/Curriculum/Geometry/SteinerChain.shtml ; claim `tangent_circle_center_ellipse`, `pappus_center_ellipse_params` (ellipse locus, geometry only)
+first-step: (not pursued — refuted at the tooth-count half) Compute the limiting points for C=(0,0,R=c/2π) and S=(d,0,r=s/2π); derive the inversion radius k and the image radii R′, r′ explicitly in terms of c, s, d.
 ```
+
+## Research verdict (why this is refuted as a *counting* route)
+
+**The geometric half is real and well-sourced.** Constants of classical
+inversive geometry confirm every claim the candidate makes about the shapes:
+two non-intersecting circles invert to concentric circles under an inversion
+about either limiting point (Wikipedia "Limiting point"; MathWorld "Limiting
+Point", citing Coxeter 1969), inversion maps circles to circles and preserves
+tangency and angles (MathWorld "Inversion", citing Casey 1888), and the
+Steiner-chain/porism literature uses exactly this inversion-to-concentric
+device, in which chain circles become congruent and equally spaced by 2π/n. So
+the transformation of the *geometry* is sound.
+
+**What kills it as a way to count g.** Inversion is conformal, **not an
+isometry** — it does not preserve arc length or tooth pitch. The premise of the
+approach is that the inverted coaxial train's meshing condition is the standard
+Guo least-mesh-angle rule (planet positions at multiples of 2π/(c+s)). But that
+rule is a *tooth-count, pitch-1cm metric* statement about the original gears:
+1cm of tooth pitch on C maps to a non-uniform pitch on the inverted circle C′,
+and the integer tooth totals c, s of the original have no clean integer
+commensurability in the inverted frame. The inverted picture gives you the
+*continuous* positions (an ellipse before, concentric annulus after) but the
+*which-slot-meshes* criterion — the very thing that makes g finite — is
+expressed in metre/arc-length/teeth units that do not pass through the
+inversion. So the counting problem is NOT reduced to a combinatorial assignment
+on Z/(c+s)Z; that group's step does not correspond to the original tooth phases.
+
+Concretely: the candidate's own step "the constraint that recovers the original
+planet sizes becomes an algebraic equation in the slot index k ∈ Z/(c+s)Z" is
+the crux, and nothing in the inversive literature supplies that equation —
+because the inversive geometry that maps the picture cannot carry the metric
+teeth data. This is a *structural* objection (conformality ≠ isometry), not a
+search-failure. Recorded as claim `inversion_does_not_preserve_tooth_mesh`.
+
+**Separately**, the candidate inherits the coaxial-assumption caveat: even
+before inversion, the source rule β=2π/(c+s) is a coaxial-train statement (Guo
+eq. 5.21, valid where planets share the axis); its off-centre transfer was the
+unchecked step. The inversion was meant to cure that, and it does not, because
+the metric tooth condition is not inversive-invariant.
+
+Status: **refuted** (killed-by `inversion_does_not_preserve_tooth_mesh`).
+Not a search-failure — the objection is a theorem-level fact about the map.

@@ -1,0 +1,54 @@
+Winner-model high-precision check  (c,s,p,q)=(16,5,5,6)
+n_t=[(c-t)beta+(s+t)mu]/pi; valid iff n_p,n_q in Z, parity p-q;
+d_min=0.159154943092 d_max=0.750704374011
+============================================================================
+n_p range over d-grid: 0.0000 .. 9.0369  (integers 0..10)
+integer-level roots of n_p (before degenerate exclusion): 9
+  n_p level k= 1  d=0.160956806640484589854267483133
+      n_p=1.0
+      n_q=20.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=1.49e-59  y_p=2.49e-01 y_q=2.49e-01  valid=True
+  n_p level k= 2  d=0.166572504216769057272529153124
+      n_p=2.0
+      n_q=19.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=0.00e+00  y_p=4.93e-01 y_q=4.93e-01  valid=True
+  n_p level k= 3  d=0.176695240251810770093499058930
+      n_p=3.0
+      n_q=18.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=2.49e-60  y_p=7.25e-01 y_q=7.25e-01  valid=True
+  n_p level k= 4  d=0.192727712176866877724634719016
+      n_p=4.0
+      n_q=17.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=2.49e-60  y_p=9.41e-01 y_q=9.41e-01  valid=True
+  n_p level k= 5  d=0.217325658416087530433458141488
+      n_p=5.0
+      n_q=16.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=2.49e-60  y_p=1.14e+00 y_q=1.14e+00  valid=True
+  n_p level k= 6  d=0.255722601859553477776643148900
+      n_p=6.0
+      n_q=15.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=1.24e-60  y_p=1.30e+00 y_q=1.30e+00  valid=True
+  n_p level k= 7  d=0.319403132340530027111213939861
+      n_p=7.0
+      n_q=14.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=3.73e-60  y_p=1.44e+00 y_q=1.44e+00  valid=True
+  n_p level k= 8  d=0.438900259139217707726743356034
+      n_p=8.0
+      n_q=13.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=1.24e-60  y_p=1.54e+00 y_q=1.54e+00  valid=True
+  n_p level k= 9  d=0.731624148729415724190516812087
+      n_p=9.0
+      n_q=12.0
+      n_p+n_q=21.0  (target s+c=21)  |n_q-round|=0.00e+00  y_p=1.59e+00 y_q=1.59e+00  valid=True
+
+g(16,5,5,6) after degenerate+maxgap filter = 9  (oracle 9)  AGREE
+
+Identity n_p+n_q == s+c (= 21) at every valid root:
+  sums: 21.0, 21.0, 21.0, 21.0, 21.0, 21.0, 21.0, 21.0, 21.0
+
+Probe: at arbitrary d, is n_p(d)+n_q(d) = s+c trivially?
+  d=0.405844072654  n_p+n_q=21.00000000000000000000   (s+c=21, difference 0.00e+00)
+  d=0.585262487265  n_p+n_q=21.00000000000000000000   (s+c=21, difference 2.49e-60)
+  d=0.159222601450  n_p+n_q=21.00000000000000000000   (s+c=21, difference 0.00e+00)
+  d=0.337999604381  n_p+n_q=21.00000000000000000000   (s+c=21, difference 0.00e+00)
+  d=0.245968306789  n_p+n_q=21.00000000000000000000   (s+c=21, difference 0.00e+00)

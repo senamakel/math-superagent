@@ -5,6 +5,10 @@
 - [x] Discrete least-mesh-angle lattice model — FAILED (g=0 vs 9).
 - [x] Phase-model probe (`phase_model_probe.py`, eps=±1): 2 of 4 chi/gamma sign
   variants tested — both return g(16,5,5,6)=0.
+- [x] W-invariant off-centre model probe (`code/pattern/w_invariant_test.py`,
+  sets A/B/C/D): none reproduces 9/9/205 — g(16,5,5,6) A=0, B=5, C=0, D=0; C is
+  NOT identically satisfied (contradicts thread suspicion). B stable at 5 across
+  N=1e6/4e6/12e6, independent coverage OK. `code/out/w_invariant_test.txt/.md`.
 - [x] Tangency enumeration (`code/pattern/tangency_enum.py`, residue model with
   independent sigma/eta/theta signs): **g(16,5,5,6)=9 for variant (sigma=-1,
   eta=-1, theta=-1)** — matches oracle. See `code/out/tangency_enum.txt`.

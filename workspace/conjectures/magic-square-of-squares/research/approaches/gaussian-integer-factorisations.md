@@ -6,30 +6,25 @@ c = e² = m²+n², d = 2mn, to express the problem as: find one integer c that
 admits four representations c = m_i² + n_i² (i=1..4) linked by the additive
 constraints m₁n₁ + m₂n₂ = m₃n₃ and m₁n₁ − m₂n₂ = m₄n₄. In Z[i], each
 representation is a factorisation c = π_i π̄_i with N(π_i) = c, and the additive
-constraints become linear conditions on Im(π_i²). The hope: the four-
-representation requirement forces c to have ≥ 3 distinct prime factors ≡ 1 mod 4,
-and the additive constraints impose multiplicative restrictions that no integer
-can satisfy simultaneously — a combinatorial contradiction in the distribution of
-Gaussian prime factors.
-status: grounded
+constraints become linear conditions on Im(π_i²).
+status: refuted
+killed-by: The approach does not differ from what Onno Cain (arXiv:1908.03236)
+  already published as a search method, and no prime-distribution contradiction
+  is in reach. The Chabauty–Coleman candidate attacks the explicit quartics that
+  Bremner II already wrote down (eq. 12-13); this candidate reduces to a search
+  family that Bremner and Cain both explored without closing. Moreover the
+  representation-count necessary condition (centre ≥ 5 representations: Brown's
+  Prop. 1) is a single number-theoretic filter rather than a structural argument,
+  and Bremner's 7-square witness already realises two of the four factorisations,
+  so any contradiction must survive that witness while forbidding a fourth —
+  exactly the delicacy that has resisted decades of work. Adopted instead:
+  Chabauty–Coleman on the explicit Bremner II quartics, which has a concrete
+  computable first step (genus + rank of the eq. 13 curves at λ=13).
 precedent: Onno Cain, "Gaussian Integers, Rings, Finite Fields, and the Magic
-  Square of Squares", arXiv:1908.03236 (2019),
-  https://arxiv.org/abs/1908.03236 and library:
-  research/summaries/cain-gaussian-integers-magic-square-of-squares-2019.md (the
-  problem is equivalent to quartic factorisation constraints over an abelian
-  extension of Q; the Gaussian case is a new SEARCH method only, not a proof);
-  A. Bremner, "On squares of squares II", Acta Arith. 99 (2001) (the c=m^2+n^2,
-  d=2mn parametrisation; the 7-square witness realises TWO of the four
-  factorisations; the Q(sqrt3) 8-square families); Bremner 1999 (extension-field
-  MSS exist, the hinge). Causes for the additive constraints: they are satisfiable
-  (Bremner's witness realises two factorisations), so any contradiction must be
-  delicate enough to allow that witness while forbidding the fourth. Necessary
-  condition (>= 3 primes ≡ 1 mod 4 for four representations) is standard Fermat
-  two-squares and holds here.
-first-step: Follow Cain's quartic/abelian-extension formulation rather than
-  re-deriving it; treat the ">= 3 primes ≡ 1 mod 4" condition as a check, and test
-  any prospective contradiction against Bremner's witness (which realises two of
-  the four factorisations, so the constraint system is genuinely non-empty).
+  Square of Squares", arXiv:1908.03236 (2019); Bremner II §2 eq. (12)-(13).
+first-step: none — this candidate is a search reformulation that does not advance
+  beyond what Cain and Bremner already attempted, and Chabauty–Coleman on the
+  explicit quartics is the stronger line.
 ```
 
 ## What this reformulation is actually called
