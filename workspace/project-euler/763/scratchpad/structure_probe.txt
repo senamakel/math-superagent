@@ -358,3 +358,5 @@ N=12 D=514419 A1bad=0 A2tri_bad=0 A2empty_bad=60630 A3bad=337272 B_match=False s
     (0, 2, 2, 2, 2, 2, 2, 2, 2, 1, 5, 3): 19683
     (0, 2, 1, 5, 2, 2, 2, 2, 2, 2, 2, 3): 19683
 
+N=13 D=1749267 A1bad=0 A2tri_bad=0 A2empty_bad=206010 A3bad=1217826 B_match=False sum_f=17137029 Dplus1=5949063
+N=14 D=5949063 A1bad=0 A2tri_bad=0 A2empty_bad=701262 A3bad=4354740 B_match=None sum_f=61939701 Dplus1=None
