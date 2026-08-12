@@ -480,9 +480,15 @@ impl AsyncSubagentManager {
             .is_ok_and(|agents| agents.contains_key(agent))
     }
 
-    fn spawn(&self, agent_name: &str, input: String) -> Result<TaskId> {
-        let executor = self
-            .agents
+    /// Looks up a registered agent by name.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the registry lock is poisoned or the name is not
+    /// registered — the second being how a typo in a delegation reaches the
+    /// caller as a message rather than as a run that silently never happens.
+    fn executor_for(&self, agent_name: &str) -> Result<Arc<dyn AgentExecutor>> {
+        self.agents
             .read()
             .map_err(|_| {
                 tinyagents::TinyAgentsError::Tool("async subagent registry lock is poisoned".into())
@@ -493,7 +499,11 @@ impl AsyncSubagentManager {
                 tinyagents::TinyAgentsError::Validation(format!(
                     "unknown async subagent `{agent_name}`"
                 ))
-            })?;
+            })
+    }
+
+    fn spawn(&self, agent_name: &str, input: String) -> Result<TaskId> {
+        let executor = self.executor_for(agent_name)?;
         let sequence = NEXT_RUN_ID.fetch_add(1, Ordering::Relaxed);
         let task_id = TaskId::new(format!("agent-run-{sequence}"));
         let spec = OrchestrationTaskSpec::new(
