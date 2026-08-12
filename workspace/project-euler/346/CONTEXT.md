@@ -36,6 +36,13 @@ Every `n>=3` is `11` in base `n-1`; `1` is a single-digit repunit in every base.
 - The sorted strong-repunit list (with `1` prepended) is **OEIS A053696**
   (sourced, `research/summaries/oeis_a053696.md`), confirmed by enumeration
   matching the exhaustive program — consistent, not an independent check.
+- **Duplicate structure (computed & checked, `code/pe346/check_reduction.py`):**
+  the dedup correction is exactly **2** for every N in [10^4, 10^12] — the only
+  two values representable as length>=3 repunits in two distinct bases are
+  **31** (=11111_2 = 111_5) and **8191** (=1111111111111_2 = 111_90). So
+  `strong_sum(N) = 1 - 31 - 8191 + Σ_{b,k>=3}(b^k-1)/(b-1)` for N>=8191;
+  reproduces the 10^12 sum exactly. Why the pair-count is 2 above the
+  set-count. Fails trivially for N<=8191.
 
 ## Ruled out
 

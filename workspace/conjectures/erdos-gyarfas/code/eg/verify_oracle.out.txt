@@ -1,0 +1,18 @@
+=== worked examples through lib.cycles ===
+K4        min_degree=3 girth=3 cycle_lengths=[3, 4] has_power_of_two_cycle=True MATCH
+K3,3      min_degree=3 girth=4 cycle_lengths=[4, 6] has_power_of_two_cycle=True MATCH
+Petersen  min_degree=3 girth=5 cycle_lengths=[5, 6, 8, 9] has_power_of_two_cycle=True MATCH
+cube Q3   min_degree=3 girth=4 cycle_lengths=[4, 6, 8] has_power_of_two_cycle=True MATCH
+worked examples: ALL MATCH
+
+=== survivor computation: connected min-degree>=3, C4-free, n=10..16 ===
+n=10: C4free_min_deg3_survivors=5 missing_exact_8cycle=0
+n=11: C4free_min_deg3_survivors=9 missing_exact_8cycle=0
+n=12: C4free_min_deg3_survivors=57 missing_exact_8cycle=0
+n=13: C4free_min_deg3_survivors=503 missing_exact_8cycle=0
+n=14: C4free_min_deg3_survivors=6059 missing_exact_8cycle=0
+n=15: C4free_min_deg3_survivors=91433 missing_exact_8cycle=0
+n=16: C4free_min_deg3_survivors=1655659 missing_exact_8cycle=0
+total: survivors=1753725 missing_exact_8cycle=0
+
+conclusion: no counterexample on n<=16  (every C4-free min-degree>=3 graph on n=10..16 contains an exact 8-cycle, so none avoids all power-of-two lengths)
