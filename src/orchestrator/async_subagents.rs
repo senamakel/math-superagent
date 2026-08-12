@@ -62,7 +62,7 @@ const MAX_BATCH_SPAWNS: usize = 16;
 
 /// Everything one finished run needs to record itself.
 struct Recording<'a> {
-    memory: Option<&'a Arc<VectorStore>>,
+    memory: Option<&'a VectorStore>,
     agent: &'a str,
     run_id: &'a str,
     input: &'a str,
