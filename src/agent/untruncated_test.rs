@@ -175,3 +175,38 @@ async fn a_turn_the_loop_already_doubled_is_not_doubled_again() {
         "the turn is already at the shared ceiling, so it is not re-issued"
     );
 }
+
+#[test]
+fn a_reissued_turn_is_told_its_last_one_was_discarded() {
+    // More room alone is not the fix. `cut_off` already requires no tool call
+    // at all, and a turn doing genuine long work emits tool calls — so what
+    // reaches this wrapper is a model writing an essay, and doubling its budget
+    // buys a longer essay. PE236's `tool_builder` truncated at 12,000, was
+    // re-issued at 24,000, and had produced nothing five minutes later.
+    let request = ModelRequest::new(vec![Message::user("solve it")]).with_max_tokens(12_000);
+    let retry = super::reissued(&request, 24_000);
+
+    assert_eq!(retry.max_tokens, Some(24_000), "the room is still given");
+    assert_eq!(
+        retry.messages.len(),
+        request.messages.len() + 1,
+        "exactly one message is added"
+    );
+
+    // Appended, not prepended: it must be the most recent thing said rather
+    // than one more line of standing policy at the top of a long prompt.
+    let last = retry.messages.last().expect("the appended instruction");
+    let rendered = format!("{last:?}").to_ascii_lowercase();
+    assert!(
+        rendered.contains("produced nothing"),
+        "the model must be told the turn was discarded: {rendered}"
+    );
+    assert!(
+        rendered.contains("call a tool"),
+        "and what to do instead: {rendered}"
+    );
+    // The original request must not be mutated — it is re-used on the
+    // non-truncated path and by the caller's own retry ladder.
+    assert_eq!(request.messages.len(), 1);
+    assert_eq!(request.max_tokens, Some(12_000));
+}
