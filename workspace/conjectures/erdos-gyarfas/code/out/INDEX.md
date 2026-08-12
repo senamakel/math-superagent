@@ -4,5 +4,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `Z` | Zero-byte stray capture lost in code/out (empty on read). Not a result and carries no content — an artifact of a program that redirected output and left nothing. Flagged so nobody mistakes it for a real output file. Pending cleanup by a deletion-capable step. |
+| `Z` | Zero-byte stray capture at the code/out root (empty on read). Carries no run result and should be ignored; not part of any cycle-length or verification output. Its twin at the workspace root was already deleted. Pending removal by a deletion-capable step — this role has no delete tool. |
 | `Z.md` | _(undescribed)_ |

@@ -646,8 +646,19 @@ its slot while it waits in `await_agent` for children it spawned itself, so a
 pool that could fill entirely with parents waiting on queued children would
 deadlock; the headroom is what makes that unreachable.
 The research agent has Exa plus `recall_research` and `remember_research` tools.
-Qdrant persists the notes in a named Compose volume. The vector tools use a
-small deterministic feature-hashing encoder, not an external embedding model.
+Cognee persists the notes, and the server is **shared rather than per-checkout**:
+it scopes its graph by project, so one instance serves every checkout on the box
+with the datasets kept apart. `compose.yaml` therefore joins an external network
+named by `COGNEE_NETWORK` (default `cognee-local_default`) and reaches the
+server as `cognee:8000`, with no `depends_on` — the memory server outlives any
+one run, and a run must never be able to take it down.
+
+The self-hosted stack is still defined but parked behind `--profile own-memory`,
+so `docker compose config --services` yields `agent` alone. Starting a second
+copy alongside the shared one is not a preference, it is a failure: both bind
+`127.0.0.1:8000` and `127.0.0.1:3000`, so the second simply does not come up,
+and running two graph stores against one project splits the run's memory in
+half.
 
 The parent and both children use context-compression middleware with an
 estimated 300,000-token trigger. The summary should retain mathematical
