@@ -65,6 +65,15 @@ pub(super) struct WorkspaceDocuments {
     /// way to act on, because the corruption was in runtime bookkeeping it
     /// cannot see or repair.
     index_lock: Arc<tokio::sync::Mutex<()>>,
+    /// Where a downloaded source is filed in durable memory, when there is one.
+    ///
+    /// Optional because a document tool set is useful without a memory server
+    /// — the tests build one — and because a library that cannot be filed must
+    /// still be downloaded. Filing is best effort at the call site for the same
+    /// reason the frontier and the index row are: the bytes are already on
+    /// disk, and a memory that refused the document must not turn a stored
+    /// source into a failed tool call.
+    library: Option<super::vector::VectorStore>,
 }
 
 impl WorkspaceDocuments {
@@ -89,7 +98,22 @@ impl WorkspaceDocuments {
             workspace,
             client,
             index_lock: Arc::new(tokio::sync::Mutex::new(())),
+            library: None,
         })
+    }
+
+    /// Files every later download in durable memory as well as on disk.
+    ///
+    /// Downloading and remembering used to be unrelated: the library lived in
+    /// `research/` and in a local literal-term index, so nothing a run gathered
+    /// was reachable through `recall_memory` — while every role's prompt said
+    /// Cognee was the durable catalogue. The hook belongs here rather than in a
+    /// separate tool because the moment the text is in hand is the only moment
+    /// it is free to file.
+    #[must_use]
+    pub(super) fn with_library(mut self, library: super::vector::VectorStore) -> Self {
+        self.library = Some(library);
+        self
     }
 
     pub(super) fn tools(&self) -> Vec<Arc<dyn Tool<()>>> {
@@ -1030,6 +1054,19 @@ impl DocumentTool {
                 &self.documents.goal().await,
             )
             .await;
+            // File the source in durable memory too, so `recall_memory`
+            // reaches what the run gathered and not only what it concluded.
+            // Best effort and reported: a memory that refused the document
+            // must not fail a download that succeeded, but a library the run
+            // believes is searchable and is not is worse than one it knows is
+            // not.
+            let remembered = match self.documents.library.as_ref() {
+                None => String::new(),
+                Some(library) => match library.remember_source(&path, &url, &content).await {
+                    Ok(()) => " and filed in durable memory".to_string(),
+                    Err(error) => format!(" (not filed in durable memory: {error})"),
+                },
+            };
             // Say what this is while the answer is still known. The scholar
             // replaces this with what the source establishes; until it does,
             // the row names the origin and the title rather than nothing.
@@ -1040,7 +1077,7 @@ impl DocumentTool {
             )
             .await;
             format!(
-                "downloaded {} bytes from {url}, converted to {} bytes of Markdown{}. {}",
+                "downloaded {} bytes from {url}, converted to {} bytes of Markdown{}{remembered}. {}",
                 bytes.len(),
                 content.len(),
                 if archived {
