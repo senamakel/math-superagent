@@ -1060,8 +1060,7 @@ pub(super) async fn run(
         .add_node(
             "done",
             |state: SolutionState, _ctx: NodeContext| async move { Ok(NodeResult::Update(state)) },
-        )
-        ;
+        );
     let graph = wire_routes(graph).compile()?;
 
     Ok(graph.run(state).await?.state)
