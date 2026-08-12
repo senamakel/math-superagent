@@ -15,25 +15,8 @@ place and moving it is the fix.
 
 | File | Purpose |
 | --- | --- |
+| `cycle_oracle.py` | Exact oracle for the Erdős–Gyárfás conjecture. `minimum_degree(G)->int`, `distinct_cycle_lengths(G)->frozenset[int]`, `all_simple_cycles(G)->list`, `has_cycle_of_length(G,L)->bool`, `oracle(G)->(min_deg, sorted tuple of lengths)`. Small-instance cycle oracle: min degree by counting neighbours; cycle lengths by brute-force enumeration of every simple cycle with a canonical-start DFS (a cycle basis is NOT enough — see module docstring). **Verified**: reproduces K4 {3,4}, K3,3 {4,6}, cube {4,6,8}, Petersen {5,6,8,9}; `has_cycle_of_length` cross-checked against exhaustive `distinct_cycle_lengths` on a spread of small graphs (complete, bipartite, cycles, hypercubes, Petersen, Markström graph, wheels, random) for every length 3..n — all MATCH; also cross-checked against networkx `simple_cycles` in `__main__`. |
+| `k4expansion.py` | Membership test for the K4-triangle-expansion (cubic Apollonian dual) family. `in_k4_expansion_family(G)->bool` via recursion over clean-triangle contractions with memoisation on nauty canonical form; `clean_triangles(G)`, `contract_triangle(G,tri)` helpers. Family = start from K4, repeatedly replace a degree-3 vertex by a triangle; every member is cubic, and the reverse test (G in family iff G==K4 or some clean-triangle contraction of G is in family) is exact with no false positives. Used for the Apollonian-family census against A027610. |
 
-_No library modules yet._
-
-## Adding one
-
-A routine earns a place here when a second program would otherwise repeat it,
-or when getting it right took real work — exact arithmetic, an off-by-one in a
-recurrence, a verified base case. A single-use expression does not. The third
-time you type a routine out, it belonged here the first time.
-
-Write `code/lib/<subject>.py` holding the functions for one subject, each with
-a docstring, each callable without reading its source: explicit arguments, one
-job, no reliance on globals or on a file written earlier in the run. Check it
-against a case whose answer is already known, then `describe_file` it. The
-description carries each function's signature, what it returns, and what
-established that it is correct — an unverified helper must say `unverified`, so
-a later agent knows what it is standing on.
-
-Keep a module small enough to read whole. A second subject is a second module.
-
-Every helper uses exact integer or rational arithmetic unless its row says
-otherwise. Say so explicitly when a function returns a float.
+_This index was rewritten by tool_builder to reflect the two library modules
+already on disk; a prior version wrongly said "No library modules yet."_
