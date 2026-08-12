@@ -911,7 +911,9 @@ fn an_honest_polynomial_cost_still_passes() {
         "binary search over the answer, O(log n) probes",
         "O(n^3) Hungarian algorithm via scipy",
     ] {
-        validate_complexity(prose, "polynomial", None)
-            .unwrap_or_else(|error| panic!("`{prose}` is an honest cost but was refused: {error}"));
+        assert!(
+            validate_complexity(prose, "polynomial", None).is_ok(),
+            "`{prose}` is an honest cost and must be allowed"
+        );
     }
 }
