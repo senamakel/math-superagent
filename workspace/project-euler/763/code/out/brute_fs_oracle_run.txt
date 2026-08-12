@@ -20,3 +20,26 @@ container mem cgroup check: peak RSS so far 9.03 MB
  11         151,263       151,263       3.36
  12         514,419       514,419      13.09
  13       1,749,267     1,749,267     207.42
+------------------------------------------------------------
+exact BFS stopped at D(13) after 207.42s, peak RSS 2141 MB
+cap reason: frontier 1,749,267 > cap 1,000,000 at level 13
+
+Computed D(0..Nmax):
+  1, 1, 3, 9, 30, 99, 336, 1134, 3855, 13086, 44499, 151263, 514419, 1749267
+  (Nmax = 13)
+
+Reference check against D(0..13) = [1, 1, 3, 9, 30, 99, 336, 1134, 3855, 13086, 44499, 151263, 514419, 1749267]:
+  MATCH
+      first 14 reference values (up to D(13)) all reproduced; the run stopped before reaching the rest.
+
+Task (3) — D(20)=9204559704 unreachable by exact BFS:
+  The frontier (distinct configs at one level) is what matters:
+      N=13 frontier: 1,749,267 configs
+      N=14 frontier: 5,949,063 configs  (~> FRONTIER_CAP, stop)
+  Level N=20 has ~9.2e9 distinct configs (state space ~9.2e9).
+  Storing one frozenset config (~2N+1 tuples, ~0.5-1 KB) gives
+  ~4-6 GB for the 5.9M-config N=14 frontier alone, already past
+  this container's 2 GiB cgroup memory.max.  A 9.2e9-config set
+  would need ~5-9 TB of RAM, and enumerating it would take far
+  longer than any feasible time budget.
+  => D(20) is not reachable by this exact BFS in this container.
