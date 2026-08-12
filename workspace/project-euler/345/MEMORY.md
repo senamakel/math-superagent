@@ -2,29 +2,25 @@
 
 ## Problem
 
-The "Matrix Sum" of an n x n matrix is the maximum possible sum of elements
-such that no two chosen elements share a row or column — i.e. the maximum
-weight of a perfect matching in K_{n,n} (this is Project Euler 345). Given a
-5x5 worked example (Matrix Sum = 3315) and a 15x15 matrix, find the 15x15
-Matrix Sum. Do not search online for the published answer.
+Matrix Sum of an n×n matrix = max sum of elements, one per row and one per
+column. This is maximum-weight perfect matching in K_{n,n} (assignment
+problem). Solve PE 345's 15×15 matrix.
 
 ## Established results
 
-- 5x5 worked example: Matrix Sum = 3315 (chosen: 863, 383, 343, 959, 767 =
-  columns 4,1,2,3,0). Confirmed by both brute enumeration (code/brute.py) and
-  the Hungarian solver (code/solution.py).
-- 15x15 Matrix Sum = 13938 (chosen columns per row 1..15:
-  9,10,7,4,3,0,13,2,14,11,6,5,12,8,1; chosen elements 973,957,993,853,962,
-  870,992,972,848,976,969,901,823,966,883). Confirmed by two independent
-  routes: scipy linear_sum_assignment and a separately written O(n^3) Hungarian
-  implementation, which returned identical matchings (sum 13938).
-- brute.py (n! enumeration) and solution.py (Hungarian) agree on 300 random
-  small matrices and on three 8x8 matrices.
+- 5×5 worked example → 3315 (verified by brute enumeration and Hungarian).
+- 15×15 Matrix Sum = **13938**, from two independent Hungarian
+  implementations (scipy.optimize.linear_sum_assignment and a hand-written
+  O(n³) version) that returned the identical assignment.
+- Chosen column permutation (rows→cols): [9,10,7,4,3,0,13,2,14,11,6,5,12,8,1];
+  elements sum directly to 13938.
+- Hungarian agrees with brute on 300 random small matrices.
 
 ## Failed approaches
 
-- None for this problem; the assignment/Hungarian method solved it directly.
+None. Brute force at n=15 (15! matchings) is the wrong method and was not run
+at full size; it is used only as the n≤8 oracle.
 
 ## Open questions
 
-- None.
+None — answer verified by two independent implementation routes.
