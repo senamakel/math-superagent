@@ -183,6 +183,16 @@ impl FollowUp {
             if !self.manager.knows(step.agent) {
                 continue;
             }
+            // Decided before the run is spawned, for the same reason the
+            // pattern team's idleness is: asking the agent to notice that
+            // nothing changed costs a model call and a walk of the workspace,
+            // which is most of what a cycle costs.
+            if step.rewrites_shared_index
+                && let Some(gate) = &self.manager.filing
+                && !gate()
+            {
+                continue;
+            }
             let guard = if step.rewrites_shared_index {
                 Some(self.manager.housekeeping.lock().await)
             } else {
@@ -402,7 +412,18 @@ pub(crate) struct AsyncSubagentManager {
     housekeeping: Arc<tokio::sync::Mutex<()>>,
     /// Distinguishes this process's Langfuse traces from every other process's.
     session: Arc<str>,
+    /// Decides whether a housekeeping follow-up has anything to file.
+    ///
+    /// Shared with the standing organizer team rather than duplicated: both
+    /// file the same tree, so two separate gates would each read the other's
+    /// filing as new work and wake each other indefinitely. `None` leaves the
+    /// follow-up ungated, which is what a manager built without a workspace —
+    /// every test — gets.
+    filing: Option<FilingGate>,
 }
+
+/// Whether the workspace has changed since the organizer last filed it.
+type FilingGate = Arc<dyn Fn() -> bool + Send + Sync>;
 
 impl std::fmt::Debug for AsyncSubagentManager {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -442,7 +463,19 @@ impl AsyncSubagentManager {
             slots: Arc::new(Semaphore::new(concurrency)),
             housekeeping: Arc::new(tokio::sync::Mutex::new(())),
             session: session_id(),
+            filing: None,
         }
+    }
+
+    /// Gates housekeeping follow-ups on the workspace having actually changed.
+    ///
+    /// The predicate returns true when there is something new to file. Without
+    /// it every finished code-writing run spawns an organizer, and most of them
+    /// find a workspace they already filed: a live run spent half its model
+    /// calls that way.
+    pub(crate) fn with_filing_gate(mut self, gate: FilingGate) -> Self {
+        self.filing = Some(gate);
+        self
     }
 
     /// Longest an `await_agent` call may block, in seconds.

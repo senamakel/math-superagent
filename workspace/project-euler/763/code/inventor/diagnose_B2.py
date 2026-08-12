@@ -11,7 +11,7 @@ for each child C' and tabulate the preimage-multiplicity distribution.
 which equals sum over children of (mult-1).
 """
 from collections import defaultdict
-from lib.amoeba import forward_level, children
+from lib.amoeba import forward_level, children, lvl
 
 def f_of(C):
     Sset = set(C)
@@ -20,7 +20,7 @@ def f_of(C):
 def preimage_parents(Cp):
     """Empty points p whose full child triangle lies inside Cp."""
     Sset = set(Cp)
-    M = max(sum(p) for p in Sset)
+    M = max(lvl(p) for p in Sset)
     found = []
     for x in range(M+1):
         for y in range(M+1):
@@ -28,7 +28,7 @@ def preimage_parents(Cp):
                 p = (x, y, z)
                 if p in Sset:
                     continue
-                if sum(p) + 1 <= M and set(children(p, 3)).issubset(Sset):
+                if lvl(p) + 1 <= M and set(children(p, 3)).issubset(Sset):
                     found.append(p)
     return found
 
