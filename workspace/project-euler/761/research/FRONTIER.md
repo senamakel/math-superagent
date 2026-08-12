@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/cs?searchtype=author&amp;query=Demaine,+E+D | Erik D. Demaine | ( [v1][2]), last revised 20 Oct 2025 (this version, v3)] # Title: Escaping a Polygon Authors: [Zachary Abel][3], [Hugo Akitaya][4], [Erik D. Demaine][5], [Martin L. Demaine][6], [Adam Hesterberg][7],… |
 | 1 | https://arxiv.org/search/cs?searchtype=author&amp;query=Demaine,+M+L | Martin L. Demaine | 20 Oct 2025 (this version, v3)] # Title: Escaping a Polygon Authors: [Zachary Abel][3], [Hugo Akitaya][4], [Erik D. Demaine][5], [Martin L. Demaine][6], [Adam Hesterberg][7], [Jason S. Ku][8],… |
 
-_86 further candidates not shown; they are cited once each._
+_95 further candidates not shown; they are cited once each._
