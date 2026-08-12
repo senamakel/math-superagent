@@ -207,8 +207,9 @@ impl<S: Send + Sync + 'static> ChatModel<S> for UntruncatedModel<S> {
             if let Some(tracer) = self.tracer.as_ref() {
                 tracer.note(&format!(
                     "{} model TRUNCATED at {cap} output tokens with no tool call; re-issuing with \
-                     the reason",
-                    self.agent
+                     the reason at {}",
+                    self.agent,
+                    cap.min(REISSUE_OUTPUT_TOKENS)
                 ));
             }
             response = self.inner.invoke(state, reissued(&request, cap)).await?;
