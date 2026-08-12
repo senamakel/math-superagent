@@ -63,8 +63,8 @@ def overall_feasible(p, q):
             return False  # not even feasible per product i
     # overall: sum_i k_i * w_i = 0,  w_i = q*SB*c_i - p*SA*d_i
     w = [q * SB * c[i] - p * SA * d[i] for i in range(5)]
-    pos = [(wi, K[i]) for i in range(5) if w[i] > 0]
-    neg = [(-wi, K[i]) for i in range(5) if w[i] < 0]
+    pos = [(w[i], K[i]) for i in range(5) if w[i] > 0]
+    neg = [(-w[i], K[i]) for i in range(5) if w[i] < 0]
     if not pos and not neg:
         return True  # all w_i == 0 -> every k works
     if not pos or not neg:
