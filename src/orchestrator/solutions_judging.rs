@@ -448,7 +448,12 @@ async fn reflect_step(
          Attempt report:\n{}\n\n{}\n\n\
          Answer exactly these four things:\n\
          VERDICT: SOLVED if the attempt reached a specific final answer AND verified it by a \
-         second independent route; otherwise UNSOLVED. An unverified answer is UNSOLVED.\n\
+         second independent route. UNVERIFIED if it reached a specific final answer, exactly \
+         one route supports it, and you can say concretely why no second route is available — \
+         the literature leaves this case open, or every independent construction the run built \
+         fails to reproduce values that are already known. Name the answer and the missing \
+         route in LESSON when you say UNVERIFIED; it ends the run, so do not use it while a \
+         second route is merely unbuilt. Otherwise UNSOLVED.\n\
          PROGRESS: YES if this attempt established something the previous ones had not; \
          otherwise NO.\n\
          KIND: MATHEMATICAL if what it established is a fact, bound, structure, or refutation \
