@@ -78,7 +78,7 @@ between two members of a new block (Lemma 7).
 id: EG-cubic-bipartite-60
 statement: Every simple cubic bipartite graph on at most 58 vertices contains a cycle of length 4, 8, or 16; hence any simple cubic bipartite counterexample to the Erdős–Gyárfás conjecture has at least 60 vertices. The bound is exact (an order-60 counterexample is not excluded).
 hypotheses: G simple, cubic (3-regular), bipartite, |V(G)| ≤ 58; the power-of-two lengths relevant here are 4,8,16 (32 first fits at an even order ≥ 32).
-holds-here: yes — cubic bipartite is a restricted class inside the run's target (⊂ min-degree-3); this is the strongest verified bound for it.
+holds-here: yes
 status: asserted-by-source (certified computer-assisted proof, arXiv:2608.02675v1; two independent searches + third checker; preprint not peer-reviewed)
 bearing: Raises the verified lower bound for the cubic-bipartite class from ≥30 (Markström) / ≥32 (SMS general) to ≥60 — a class-level frontier the run can cite; its incidence/Moore-reduction method is a fresh structural route for the run's Phase-4 loop.
 anchor: research/summaries/cubic-bipartite-60.md; research/sources/cubic-bipartite-60.full.md

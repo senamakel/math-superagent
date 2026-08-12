@@ -13,7 +13,7 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | `EG-P13-free` | Every P13-free graph with δ≥3 contains a cycle of length a power of two. | **unchecked** | proved | `research/summaries/hegde-real.md` |
 | `EG-bipartite-30` | Any bipartite counterexample to the conjecture has at least 30 vertices. | yes | asserted | `research/summaries/hegde-real.md` |
 | `EG-clawfree-triangle-exits-distinct` | In a cubic claw-free C4-free graph, every vertex lies in a unique triangle, the other neighbours of the three triangle vertices are distinct, and the graph is vertex-disjoint triangles joined by a perfect matching… | **unchecked** | proved | `research/summaries/nowbandegani-clawfree-html.md` |
-| `EG-cubic-bipartite-60` | Every simple cubic bipartite graph on at most 58 vertices contains a cycle of length 4, 8, or 16; hence any simple cubic bipartite counterexample to the Erdős–Gyárfás conjecture has at least 60 vertices. The bound is… | **unchecked** | asserted | `research/summaries/cubic-bipartite-60.md` |
+| `EG-cubic-bipartite-60` | Every simple cubic bipartite graph on at most 58 vertices contains a cycle of length 4, 8, or 16; hence any simple cubic bipartite counterexample to the Erdős–Gyárfás conjecture has at least 60 vertices. The bound is… | yes | asserted | `research/summaries/cubic-bipartite-60.md` |
 | `EG-cubic-dominates` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3. | **unchecked** | proved | `research/ROOT.md` |
 | `EG-cubic-dominates` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3. | yes | proved | `research/summaries/carr-real.md` |
 | `EG-cubic-has-cubic-neighbor` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3; in particular every degree-3 vertex v has a degree-3 neighbor. (Applying Lemma 0.1 to H=G−v: the degree-≤2 vertex of G−v must be a… | yes | proved | `research/summaries/carr-real.md` |
@@ -44,4 +44,5 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `EG-bipartite-30` (research/summaries/hegde-real.md) — asserted by the source, not proved there and not checked here
+- `EG-cubic-bipartite-60` (research/summaries/cubic-bipartite-60.md) — asserted by the source, not proved there and not checked here
 - `EG-verification-bound` (research/summaries/markstrom-extremal-graphs.md) — asserted by the source, not proved there and not checked here

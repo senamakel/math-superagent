@@ -29,6 +29,7 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
+use tinyagents::harness::message::Message;
 use tinyagents::harness::model::{
     ChatModel, ModelProfile, ModelRequest, ModelResponse, ModelStream,
 };
@@ -71,6 +72,26 @@ const MAX_REISSUES: u32 = 1;
 /// Measuring growth from the configured cap makes the two ladders share one
 /// ceiling instead of composing into it.
 const MAX_CAP_GROWTH: u32 = 2;
+
+/// What a re-issued turn is told, beside being given more room.
+///
+/// More room alone is not the fix, and four live runs say so. `cut_off`
+/// already requires *no tool call at all*, and a turn doing genuine long work
+/// emits tool calls — so what reaches this wrapper is almost always a model
+/// writing an essay, and doubling its budget buys a longer essay. Project
+/// Euler 236's `tool_builder` truncated at 12,000, was re-issued at 24,000, and
+/// had still produced nothing five minutes later, with the workspace's `code/`
+/// directory empty fifteen minutes into the run.
+///
+/// So the re-issue carries the one fact the model does not have: that its last
+/// turn was discarded. It is phrased as a report of what happened rather than
+/// as an instruction to be brief, because brevity is not the goal — a tool call
+/// is, and a turn may legitimately be long on the way to one.
+const REISSUE_INSTRUCTION: &str = "Your previous turn ran to the output limit without calling \
+     a tool, so it produced nothing: the text of a turn is discarded, and only a tool call \
+     advances the run. Do not write that analysis again. Call a tool now — the most useful one \
+     you can name from what you already know. An imperfect call you can correct next turn is \
+     worth more than another turn of reasoning about which call to make.";
 
 /// Wraps a chat model so a turn cut off at the cap is asked for again.
 pub struct UntruncatedModel<S: Send + Sync> {
@@ -136,6 +157,18 @@ impl<S: Send + Sync> UntruncatedModel<S> {
     }
 }
 
+/// Builds the re-issued request: more room, and the reason it is being asked again.
+///
+/// The instruction is appended as a system message rather than folded into the
+/// existing one, so it arrives *after* the conversation the model was cut off
+/// in the middle of. Prepended, it is one more line of standing policy at the
+/// top of a long prompt; appended, it is the most recent thing said.
+fn reissued(request: &ModelRequest, cap: u32) -> ModelRequest {
+    let mut retry = request.clone().with_max_tokens(cap);
+    retry.messages.push(Message::system(REISSUE_INSTRUCTION));
+    retry
+}
+
 /// Returns whether a response was cut off with no tool call to act on.
 ///
 /// A response carrying tool calls is not truncated in any way that matters:
@@ -177,7 +210,7 @@ impl<S: Send + Sync + 'static> ChatModel<S> for UntruncatedModel<S> {
             }
             response = self
                 .inner
-                .invoke(state, request.clone().with_max_tokens(cap))
+                .invoke(state, reissued(&request, cap))
                 .await?;
         }
         Ok(response)
