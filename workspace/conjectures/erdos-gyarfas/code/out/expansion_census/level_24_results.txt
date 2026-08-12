@@ -1,0 +1,1 @@
+n=24  classes=58713  avoidsC4=807  avoidsC4C8=1

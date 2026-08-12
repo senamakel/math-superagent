@@ -34,6 +34,37 @@ const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
 /// Overridable with `MATH_AGENT_PROVIDER` when a route is degraded.
 const PREFERRED_PROVIDER: &str = "deepinfra";
 
+/// The model for roles whose work is thinking rather than doing.
+///
+/// The run's default is a flash model, chosen for speed because most roles
+/// spend their turns writing programs, reading files, and reporting what
+/// happened — work where the model's job is to be quick and to not confabulate,
+/// and where the method policy's mechanical checks catch it when it does. The
+/// inventor is the one role whose entire output is a judgement no tool can
+/// check: whether a reformulation is genuinely different, whether a theorem's
+/// hypotheses hold here, whether the literature's actual content suggests
+/// something better than what was proposed. That is what a stronger model buys,
+/// and it is wasted everywhere else.
+///
+/// It is also what makes the dossier worth assembling. Sixteen thousand tokens
+/// of record only pays off if the model reading it can hold the whole thing
+/// against a new idea.
+const REASONING_MODEL: &str = "deepseek/deepseek-v4-pro";
+
+/// Preferred route for [`REASONING_MODEL`], verified against the endpoint list.
+///
+/// DeepSeek's own endpoint rather than the run's usual `deepinfra`, and the
+/// choice is not a trade: at the time of writing it is both the cheapest route
+/// for this model — $0.43/$0.87 per million against DeepInfra's $1.30/$2.60 —
+/// and the only one of the two that is not quantized, DeepInfra serving it at
+/// fp4. Paying three times as much for a lower-precision copy of a model chosen
+/// for its judgement would defeat the point of choosing it.
+///
+/// The usual argument for one pinned provider — prompt caching across a large
+/// fixed prefix — barely applies here, because this role's prompt carries a
+/// dossier rebuilt from disk on every call and so has no stable prefix to cache.
+const REASONING_PROVIDER: &str = "deepseek";
+
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
 pub use tinyagents::harness::providers::MockModel;
@@ -155,6 +186,41 @@ pub(crate) fn configure_run_budget(harness: &mut SlimAgent, budget: RunBudget) {
 }
 
 pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
+    let model = openrouter_model(DEFAULT_OPENROUTER_MODEL, PREFERRED_PROVIDER)?;
+    Ok(model)
+}
+
+/// Builds the reasoning model one role runs on, when that role is not on the
+/// run's default.
+///
+/// `MATH_AGENT_REASONING_MODEL` overrides the model and
+/// `MATH_AGENT_REASONING_PROVIDER` the route, under the same rule as every
+/// other override here: blank or missing keeps the default.
+///
+/// # Errors
+///
+/// Returns an error when `OPENROUTER_API_KEY` is missing.
+pub(crate) fn openrouter_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
+    let model = env_override("MATH_AGENT_REASONING_MODEL")
+        .unwrap_or_else(|| REASONING_MODEL.to_string());
+    let provider = env_override("MATH_AGENT_REASONING_PROVIDER")
+        .unwrap_or_else(|| REASONING_PROVIDER.to_string());
+    openrouter_model(&model, &provider)
+}
+
+/// Reads a non-blank environment override, or `None`.
+fn env_override(name: &str) -> Option<String> {
+    std::env::var(name)
+        .ok()
+        .map(|value| value.trim().to_string())
+        .filter(|value| !value.is_empty())
+}
+
+/// Builds an `OpenRouter`-backed model on `model_name`, preferring `provider`.
+///
+/// `OPENROUTER_MODEL` and `MATH_AGENT_PROVIDER` still override both, so the
+/// operator's global escape hatch keeps working for every role.
+fn openrouter_model(model_name: &str, provider: &str) -> Result<Arc<dyn ChatModel<()>>> {
     let _ = dotenvy::dotenv();
     let api_key = std::env::var("OPENROUTER_API_KEY")
         .map_err(|_| TinyAgentsError::Validation("OPENROUTER_API_KEY is required".to_string()))?;
@@ -174,20 +240,16 @@ pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
     // list and silently matched nothing, so the documented preference had no
     // effect at all.
     let mut model = OpenAiModel::openrouter(api_key)
-        .with_model(DEFAULT_OPENROUTER_MODEL)
+        .with_model(model_name)
         .with_default_provider_options(serde_json::json!({
-            "provider": { "order": [PREFERRED_PROVIDER], "allow_fallbacks": true }
+            "provider": { "order": [provider], "allow_fallbacks": true }
         }));
-    if let Ok(provider) = std::env::var("MATH_AGENT_PROVIDER")
-        && !provider.trim().is_empty()
-    {
+    if let Some(provider) = env_override("MATH_AGENT_PROVIDER") {
         model = model.with_default_provider_options(serde_json::json!({
-            "provider": { "order": [provider.trim()], "allow_fallbacks": true }
+            "provider": { "order": [provider], "allow_fallbacks": true }
         }));
     }
-    if let Ok(model_name) = std::env::var("OPENROUTER_MODEL")
-        && !model_name.trim().is_empty()
-    {
+    if let Some(model_name) = env_override("OPENROUTER_MODEL") {
         model = model.with_model(model_name);
     }
     Ok(Arc::new(model))

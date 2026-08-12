@@ -47,7 +47,7 @@ use crate::agent::trace::RunTracer;
 use crate::agent::untruncated::UntruncatedModel;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, configure_run_budget,
-    openrouter_model_from_env,
+    openrouter_model_from_env, openrouter_reasoning_model,
 };
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
