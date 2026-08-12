@@ -522,6 +522,12 @@ fn slug(value: &str) -> String {
 ///
 /// The `__` in the prefix test is load-bearing: without it, project `euler_18`
 /// would read `euler_185`'s memory.
+///
+/// No scratch dataset is ever visible here, not even this project's own. The
+/// scratch holds arithmetic that has not survived anything yet, and durable
+/// recall returning it would restate the mistake `role_context` was built to
+/// avoid: provisional work read as evidence of progress. `recall_scratch` is
+/// the only way in, and only the roles doing provisional work hold it.
 fn visible_datasets(datasets: &Value, current_session: &str) -> Vec<String> {
     let owned_prefix = format!("{current_session}__");
     datasets
@@ -529,6 +535,7 @@ fn visible_datasets(datasets: &Value, current_session: &str) -> Vec<String> {
         .into_iter()
         .flatten()
         .filter_map(|dataset| dataset.get("name").and_then(Value::as_str))
+        .filter(|name| !name.starts_with(SCRATCH_DATASET_PREFIX))
         .filter(|name| {
             !name.starts_with(SESSION_DATASET_PREFIX)
                 || *name == current_session
