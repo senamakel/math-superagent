@@ -99,6 +99,24 @@ phase-elimination congruences, never reproducing 9. The W-model differs in
 that the per-type condition is a signed-π statement (mirror pair), which the
 unoriented implementations above could not even formulate.
 
+## Proposed, unprobed (not failures — untried alternatives)
+
+Three theoretical routes are sketched in `research/approaches/` but NOT yet
+implemented or tested against the oracle (status: proposed). Do not re-derive
+them from scratch — read the file.
+
+- **Inversion-to-coaxial** (`inversion-coaxial.md`): invert about a coaxal
+  limiting point of C and S → both become concentric, where the least-mesh-angle
+  rule applies without the off-centre caveat; reverse-map gives a discrete
+  slot-count. Most promising apart from the W-model; would convert the
+  transcendental root-finding into a mod-(c+s) combinatorial count.
+- **CRT / tooth-labelling** (`number-theoretic-crt.md`): counting d values via
+  linear congruences among ring/sun/planet tooth indices; g as a function of
+  gcd/lcm structures.
+- **Tangent half-angle / Sturm** (`tangent-half-angle.md`): make W(E) a
+  polynomial in tan(E/2) and count real roots by Sturm — exact but likely slow
+  per case.
+
 ## Numbers
 
 Oracle values — still reproduced by **no** program: g(16,5,5,6)=9, G(16)=9,
