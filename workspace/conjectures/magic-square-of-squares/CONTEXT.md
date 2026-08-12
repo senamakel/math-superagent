@@ -86,11 +86,26 @@ degree 8, 16, 20 in the parameter.
 
 ## Numbers
 
-No computation source yet this run: the checker and `(c,u,v)` generator do not
-exist; `code/out/near_misses.json` is empty. The witness values above (21609 /
-38307 for LS1; 541875 for Bremner's 7-square) are from sources and were
-hand-verified; they are the seed for `near_misses.json`, to be reproduced by the
-run's own generator before structural claims are trusted.
+**Oracle exists and has run** — `code/brute.py`, output `code/out/oracle_output.txt`,
+claim `oracle-based-verification-baseline` (`status: checked`, exact integer
+arithmetic). The verifier `is_magic_square_of_squares` matches every structural
+worked example in `problem.md`: parametrisation identity (585,640 grids),
+centre-line AP structure (65,025), parametrisation completeness (3,001). Results:
+- **No 3×3 magic grid with entries ≤ 100 having six or more distinct square
+  entries exists**; best distinct count = 5 (e.g. c=100,u=96,v=21 →
+  rows [25,196,79],[154,100,46],[121,4,175]).
+- Near-miss box `c=e², e≤80, |u|,|v|≤120` (4,052,328 grids): **no grid with six
+  or more distinct square entries** (best distinct count = 5). The {6:964, 7:4,
+  9:92} counts in that box all **repeat entries** (the 9-square ones are all-k²
+  and the {1,25,49} family). The run's own generator has not yet produced a
+  *distinct* 7-square near-miss at these caps.
+
+**Witness-set gap (the mandatory oracle of GOAL.md).** The run's own generator
+has *not yet reproduced* Sallows' and Bremner's 7-square near-misses — their
+entries are far above the oracle box caps, so `code/out/near_misses.json` is
+still empty. Every impossibility lemma must be run against those two grids
+(values above) once they are reproduced; until then no impossibility claim
+carries a witness-check (the oracle note says exactly this).
 
 ## Recalled
 
@@ -111,6 +126,13 @@ exist over extensions as sourced and checked. No other prior-run findings.
 - `problem.md` frames non-existence as primary while several experts treat
   existence as open both ways; keep one thread on existence. A run that dies
   proving a false statement produces nothing.
+- **`code/out/oracle_note.md` prose vs. its own claim block and output** — the
+  note's running text says "4 **distinct** 7-square grids exist" in the near-miss
+  box, but `oracle_output.txt` (best distinct = 5; `{6:964, 7:4, 9:92}`) and the
+  claim block itself ("no grid... with six or more **distinct** square entries")
+  agree there is **no** distinct 7-square grid at those caps — the 6/7/9-square
+  grids repeat entries. The note's prose is wrong; the claim block and raw output
+  are right. Whoever extends `code/brute.py` should correct the note.
 
 ## Gaps
 
@@ -119,8 +141,7 @@ exist over extensions as sourced and checked. No other prior-run findings.
   curve and the K3, but the exact correspondence "rational point ⇒ distinct
   positive integer square solution" and what is *proved* (vs. suggested) about
   each is not yet written as a claim block. This blocks any descent.
-- **`code/out/near_misses.json` and the generator do not exist** — build next;
-  the oracle must reproduce LS1 and Bremner's 7-square independently.
+- **`code/out/near_misses.json` does not exist** — the generator (`code/brute.py`) exists and runs, but has not yet reproduced the literature's 7-square near-misses (Sallows, Bremner) because their entries exceed the current small-box caps. Build that reproduction next; it is the mandatory witness set for every impossibility lemma (GOAL.md).
 - Whether the four-AP condition maps onto a known concordant-forms/congruent
   numbers problem, and the real exhaustive-search bound (reported past ~10²⁵,
   whose search, what was searched), remain open.

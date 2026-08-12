@@ -1,16 +1,19 @@
-PE 620 discrete-lattice brute oracle (least-mesh-angle model)
-beta = 2*pi/(s+c); candidates from closed-form roots of the slot
-equations f_p(d)=cos(m_p*beta), f_q(d)=cos(m_q*beta), same d.
+PE620 discrete-lattice brute oracle (least-mesh-angle model)
+beta = 2*pi/(s+c), N = s+c slots; candidate d = closed-form roots
+of f_p(d)=cos(2*pi*m_p/N); each candidate needs a valid q slot.
+Each valid d = exactly one arrangement (2 p-planets + 2 q-planets
+at the mirror slot pairs).  tol = 1e-09.
 ========================================================================
-[1] g(16,5,5,6) = 0   (oracle 9)  DISAGREE   [0.00s]
-    0 distinct candidate d values:
 
-[2] G(16) = 0   (oracle 9)  DISAGREE   [0.00s]
+[1] g(16,5,5,6) = 0   (oracle 9)   DISAGREE   [0.00s]
+    0 distinct valid d values:
+
+[2] G(16) = 0   (oracle 9)   DISAGREE   [0.00s]
       g(16,5,5,6) = 0
 
-[3] G(20) = 0   (oracle 205)  DISAGREE   [0.01s]
-    per-pair g values:
-      c  s  p  q   g
+[3] G(20) = 0   (oracle 205)   DISAGREE   [0.00s]
+    per-pair g values (22 pairs, s+p+q<=20):
+      c  s  p  q    g
      16  5  5  6    0
      17  5  5  7    0
      18  5  5  8    0
