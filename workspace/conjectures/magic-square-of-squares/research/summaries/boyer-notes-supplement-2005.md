@@ -1,103 +1,24 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/boyer-notes-supplement-2005.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Boyer, "Supplement: Some Notes on the Magic Squares of Squares Problem" (2005) — [[boyer-notes-supplement-2005.full]]
 
-<!-- source: http://multimagie.com/Supplement.pdf | converted from PDF -->
+Boyer's supplement to his Mathematical Intelligencer survey. Content is almost entirely about **larger order** and **other** problems, not the 3×3 target:
+- Lucas's 3×3 **semi-magic** squares of squares (rows and columns equal, diagonals not): parametrisation with (p,q,r,s), magic sum S2 = (p²+q²+r²+s²)². Lists all (p,q,r,s) giving 6 magic lines with sum ≤100², and 7 magic lines with sum ≤2000² (e.g. (1,3,4,11) → 147² = the LS1 near-miss; (3,5,8,14) → 294²; …). These are **near-misses of variant (A)** (7 of 8 line sums), not magic squares.
+- Euler's 4×4 magic squares of squares (rows, columns and diagonals equal): parametrisation with (a,b,c,d,p,q,r,s), magic sum S2 = (a²+b²+c²+d²)(p²+q²+r²+s²)², two extra conditions for the diagonals. Lists the family ≤10000 (CB1, CB15…).
+- Prime-number magic squares of order 4 and 5 (CB16, CB17, CB18) and bimagic/cube-of-primes open problems.
 
-Supplement to the article
-“Some Notes on the Magic Squares of Squares Problem”
-published in
-The Mathematical Intelligencer,
-Vol. 27, N. 2, 2005, pages 52-64
+**Bearing on the 3×3 problem: marginal.** Confirms only the existence of the LS1 near-miss (7 of its 8 line sums equal), already in the witness set, and provides Lucas's family from which LS1 comes. The 4×4 and 5×5 material does not bear on the 3×3 hard case. The 3×3 semi-magic family is nonetheless useful context: it shows the difficulty is specifically making the *two diagonals* also equal, i.e. the diagonal/centre-line constraint, not the row/column constraint.
 
-by Christian Boyer
-www.multimagie.com
+**Does not help** the primary question beyond confirming what the 3×3 problem reduces to (lines versus diagonals). Useful as a source for the Lucas family that produces LS1 and for the historical Euler 4×4.
 
-Summary
-A) Lucas’s 3×3 semi-magic squares of squares
-
-  (p² + q² - r² - s²)²  [2(qr + ps)]²  [2(qs – pr)]²
-[2(qr – ps)]²  (p² - q² + r² - s²)²  [2(rs + pq)]²
-[2(qs + pr)]²  [2(rs - pq)]²  (p² - q² - r² + s²)²
-EL1 from The Mathematical Intelligencer article
-
-The 3 rows and 3 columns have the same magic sum:
-•  S2 = (p² + q² + r² + s²)².
-
-B) Euler’s 4×4 magic squares of squares
-  (+ap+bq+cr+ds)²  (+ar–bs–cp+dq)²  (–as–br+cq+dp)²  (+aq–bp+cs–dr)²
-(–aq+bp+cs–dr)²  (+as+br+cq+dp)²  (+ar–bs+cp–dq)²  (+ap+bq–cr–ds)²
-(+ar+bs–cp–dq)²  (–ap+bq–cr+ds)²  (+aq+bp+cs+dr)²  (+as–br–cq+dp)²
-(–as+br–cq+dp)²  (–aq–bp+cs+dr)²  (–ap+bq+cr–ds)²  (+ar+bs+cp+dq)²
-LE3 from The Mathematical Intelligencer article
-
-The 4 rows and 4 columns have the same magic sum:
-•  S2 = (a² + b² + c² + d²)(p² + q² + r² + s²).
-Two supplemental conditions are given to get the two magic diagonals:
-•  pr + qs = 0,
-•  a / c = [– d(pq + rs) – b(ps + qr)] / [b(pq + rs) + d(ps + qr)].
-
-C) Using prime numbers
-
-- Some notes on the magic squares of squares problem, SUPPLEMENT, by Christian Boyer, © 2004-2005, page 2/4 -
-
-A) Lucas’s 3×3 semi-magic squares of squares
-
-A1) The full list of examples of Lucas’s family, producing distinct numbers, six magic lines,
-and a magic sum ≤100²:
-
-    (p, q, r, s)  Magic sum
-    (1, 2, 4, 6)*  57² (the LE1cb square)
-    (1, 2, 3, 7)*  63²
-    (2, 3, 4, 6)  65² (the AB2 square)
-    (1, 3, 5, 6)*  71²
-    (1, 2, 5, 7)  79²
-    (2, 4, 5, 6)**  81² (the EL2 square)
-    (1, 2, 4, 8)  85²
-    (1, 4, 5, 7)  91²
-    (2, 3, 4, 8)  93²
-    (1, 3, 6, 7)  95²
-    (1, 3, 5, 8)*  99²
-    (3, 4, 5, 7)  99² (a different square with the same sum)
-and of course all the possible permutations of positions and signs of p, q, r, s.
-* : The four examples published by Euler in 1770. They were presented slightly differently,
-Euler  using  rational  numbers:  the  nine  numbers  were  signed,  not  squared,  and  they  were
-divided by p²+q²+r²+s².
-** : The example published by Lucas in 1876.
-A2)  The  full  list  of  examples  of  Lucas’s  family,  producing  distinct
-  numbers,  seven  magic
-lines, and a magic sum ≤ 2000² are:
-
-    (p, q, r, s)  Magic sum
-    (1, 3, 4, 11)  147² (the MS1 square)
-    (3, 5, 8, 14) (A)  294² (the MS2 square)
-    (4, 9, 11, 17)  507²
-    (2, 6, 8, 22)  588² (three identical permuted squares)
-    (3, 11, 13, 17)   588² (three identical permuted squares)
-    (5, 9, 11, 19)  588² (three identical permuted squares)
-    (7, 8, 15, 26) (B)  1014²
-    (8, 11, 13, 27)  1083²
-    (6, 10, 16, 28) (C) 1176²
-    (3, 9, 12, 33)  1323²
-and of course all the possible permutations of positions and signs of p, q, r, s.
-None of these examples were published by Lucas or Euler.
-Some other (p, q, r, s) produce only 6 magic lines, but their cells can easily be permuted to get
-some of the above squares with 7 magic lines:
-    Squares generated by (1, 7, 10, 12) and (2, 4, 7, 15) can be permuted
-      to get the square generated by (A)
-    Squares generated by (2, 13, 20, 21) and (5, 6, 13, 28) can be permuted
-      to get the square generated by (B)
-    Squares generated by (2, 14, 20, 24) and (4, 8, 14, 30) can be permuted
-      to get the square generated by (C)
-
- - Some notes on the magic squares of squares problem, SUPPLEMENT, by Christian Boyer, © 2004-2005, page 3/4 -
-
-B) Euler’s 4×4 magic squares of squares
-
-The full list of examples of Euler’s family, producing distinct numbers, ten  magic lines (by
-definition of Euler’s family), and a magic sum ≤ 10000 are:
-
-  (a, b, c, d, p, q, r, s)  Magic sum
-  (2, 3, 5, 0, 1, 2, 8, –4) (D)  3230 (the CB1 magic square)
-  (1, 2, 3, 4, 2, 5, 10, –4)  4350
-  (1, 4, 6, 1, 1, 2, 8, –4)  4590
-
-*[excerpt ends; 3454 characters not shown — see `research/sources/boyer-notes-supplement-2005.full.md`]*
+```claim
+id: lucas-family-lines
+statement: Lucas's (p,q,r,s) family gives 3×3 semi-magic squares of distinct squares with
+  all 3 rows and 3 columns equal (sum (p²+q²+r²+s²)²); it produces examples with 6 or 7 lines
+  equal, e.g. (1,3,4,11)→147² (the Sallows LS1 near-miss). The diagonals are the obstruction:
+  making them also equal is what the hard 3×3 problem demands.
+hypotheses: semi-magic (rows+columns) 3×3; distinct entries
+holds-here: yes
+status: catalogued (term lists in-source)
+bearing: places LS1 in Lucas's family; isolates that the open problem is forcing the two
+  diagonals to also match, i.e. the through-centre AP differences to be additive-coupled
+anchor: research/sources/boyer-notes-supplement-2005.full.md
+```

@@ -1,18 +1,16 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/open-problem-garden-magic-square-of-squares.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Open Problem Garden, "Magic square of squares" — [[open-problem-garden-magic-square-of-squares.full]]
 
-<!-- source: https://www.openproblemgarden.org/op/magic_square_of_squares | converted from HTML -->
+Minimal stub page. States: question asked by LaBar 1984, popularised by Gardner 1996 ($100); Boyer offered €1000 + champagne in 2005 for a *somewhat easier* problem; pointers to the literature (Boyer, Bremner, Morgenstern). **Does not help**: no statement, theorem, or bound beyond what the primary sources already establish, and less detail than this run's other sources.
 
-## What is in it
+**Conclusion:** do not cite; no claims to extract. Filed for completeness so nobody refetches it.
 
-- [Open Problem Garden][1]
-- Magic square of squares
-  - Bibliography
-  - Navigate
-  - Recent Activity
-
-
-## What it claims
-
-This question was first asked in 1984 by Martin LaBar and popularized in 1996 by Martin Gardner, who offered $100 to the first person to construct such a square. In 2005 Christian Boyer offered €1,000 and a bottle of champagne for a solution to a somewhat easier problem [Bc]. For a review of the history of research, see [Ba, Bb, Bc]. For basic facts about the anticipated [image: $ 3\times 3 $] magic square of squares, see [Br, Mo].
-
-*[digest of a 4541 character source; every section, statement, and proof in full at `research/sources/open-problem-garden-magic-square-of-squares.full.md`]*
+```claim
+id: opg-status
+statement: The 3×3 magic square of squares is open; Boyer (2005) offered a prize for a
+  somewhat easier subproblem.
+hypotheses: —
+holds-here: —
+status: asserted (stub page)
+bearing: none (no new structural content)
+anchor: research/sources/open-problem-garden-magic-square-of-squares.full.md
+```
