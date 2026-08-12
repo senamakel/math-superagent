@@ -5,9 +5,7 @@ where nk = number of entries equal to k in the level-histogram.
 Check against ALL data N=2..12. Report every exception.
 """
 import glob, collections
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 exceptions=[]
 tot=0
