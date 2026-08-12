@@ -275,6 +275,41 @@ fn several_pattern_runs_outliving_their_attempts_are_all_delivered() {
 }
 
 #[test]
+fn a_finished_cycle_opens_an_invention_only_when_the_loop_will_try_again() {
+    use super::{Route, route};
+
+    // The inventor used to run only inside `diversify`, which needs two
+    // completed attempt/judge/reflect cycles. A run whose attempts take the
+    // better part of an hour never gets there: across a day of live runs on
+    // three workspaces it was spawned once, and the approach ledger it writes
+    // never existed on disk. Opening it at the end of every cycle is the
+    // pattern agent's argument one role wider.
+    //
+    // The gate is `route`, so this asserts the four cases without a provider.
+    let mut retry = state();
+    retry.attempts = 1;
+    retry.unproductive = 0;
+    assert_eq!(route(&retry), Route::Retry, "the cycle that opens one");
+
+    // Diversify runs the same arm one step later and awaits it; opening one
+    // here too would spend two inventor runs on a single cycle.
+    let mut stuck = state();
+    stuck.attempts = 3;
+    stuck.unproductive = STUCK_THRESHOLD;
+    assert_eq!(route(&stuck), Route::Diversify);
+
+    // A run that has stopped has nobody to hand a new line of attack to.
+    let mut solved = state();
+    solved.solved = true;
+    assert_eq!(route(&solved), Route::Solved);
+
+    let mut blocked = state();
+    blocked.attempts = 2;
+    blocked.blocked = BLOCKED_THRESHOLD;
+    assert_eq!(route(&blocked), Route::Blocked);
+}
+
+#[test]
 fn an_attempt_is_told_what_the_pattern_team_found() {
     use super::{attempt_prompt, observations_briefing};
 
