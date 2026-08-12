@@ -7,7 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `CLAIMS.md` | Derived: every claim block in the notes, one row each, with whether its hypotheses hold here and what evidence stands behind it. Rewritten on every research write; do not edit. |
 | `FRONTIER.md` | Derived: sources this library's own documents cite but the run has not read, ranked by how many of them cite each. Rewritten on every download; do not edit. |
 | `L1.0/carr-minimal-counterexample-cubic-pdf.md` | _(undescribed)_ |
-| `L1.0/carr-minimal-counterexample-cubic.md` | _(undescribed)_ |
+| `L1.0/carr-minimal-counterexample-cubic.md` | Digest of Carr, "Every Minimal Counterexample to the Erdős–Gyárfás Conjecture is Predominantly Cubic" (arXiv:2605.22844, abs/HTML conversion). The run's central structural anchor: about any minimal counterexample G (min order and size, delta>=3, no 2-power cycle), Carr proves Lemma 0.1 (delta(H)<=2 for every proper subgraph), Cor 0.2 (regular => cubic), Theorem 0.1 (>=4/7 of vertices have degree exactly 3), and that every vertex is adjacent to a degree-3 vertex. Fragment digests Lemma/Cor/Theorem statements. Non-PDF twin of carr-minimal-counterexample-cubic-pdf.md. Full text at research/L0.0/carr-minimal-counterexample-cubic.full.md. |
 | `L1.0/erdosproblems-open-Er96.md` | _(undescribed)_ |
 | `L1.0/gao-shan-p8-free.md` | _(undescribed)_ |
 | `L1.0/heckman-krakovski-cubic-planar.md` | _(undescribed)_ |
