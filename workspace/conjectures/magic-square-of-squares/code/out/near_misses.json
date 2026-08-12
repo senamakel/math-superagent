@@ -1,0 +1,83 @@
+{
+  "generated_by": "code/check_near_misses.py (direct construction from the printed grids, exact integer arithmetic)",
+  "run_time_utc": "2026-08-12T22:20:17Z",
+  "provenance": {
+    "sallows_ls1": "Sallows, \"The Lost Theorem\", Math. Intelligencer 19.4 (1997); printed as (1) in A. Bremner, \"On squares of squares\", Acta Arithmetica 88 (1999) p. 290 \u2014 local copy research/sources/bremner-on-squares-of-squares-1999.full.md; user brief calls this grid LS1 and orients it as [127,46,58; 2,113,94; 74,82,97] \u2014 the transpose of the printed orientation used here; squares identical.",
+    "bremner_magic": "A. Bremner, \"On squares of squares\", Acta Arithmetica 88 (1999) p. 290 \u2014 local copy research/sources/bremner-on-squares-of-squares-1999.full.md; said in the same paragraph to have seven square entries and that an example with eight distinct square entries is unknown."
+  },
+  "verified_by": {
+    "all_checks_passed": false,
+    "verifier_used": "is_magic_square_of_squares from code/lib/mss.py (exact math.isqrt)"
+  },
+  "near_misses": {
+    "sallows_ls1": {
+      "description": "7-square near-miss: 7 of 8 line sums equal 147^2 = 21609; fails at the non-principal diagonal (sum 38307)",
+      "orientation_note": "user's orientation [127,46,58; 2,113,94; 74,82,97] is the transpose of Bremner's printed orientation [58,46,127; 94,113,2; 97,82,74]",
+      "grid": [
+        [
+          3364,
+          2116,
+          16129
+        ],
+        [
+          8836,
+          12769,
+          4
+        ],
+        [
+          9409,
+          6724,
+          5476
+        ]
+      ],
+      "all_entries_squares": true,
+      "non_squares": [],
+      "line_sums": [
+        21609,
+        21609,
+        21609,
+        21609,
+        21609,
+        21609,
+        21609,
+        38307
+      ]
+    },
+    "bremner_magic": {
+      "description": "true 3x3 magic square with exactly 7 square entries: all 8 line sums equal 541875; non-squares are 360721 and 222121",
+      "grid": [
+        [
+          139129,
+          83521,
+          319225
+        ],
+        [
+          360721,
+          180625,
+          529
+        ],
+        [
+          42025,
+          277729,
+          222121
+        ]
+      ],
+      "all_entries_squares": false,
+      "non_squares": [
+        360721,
+        222121
+      ],
+      "line_sums": [
+        541875,
+        541875,
+        541875,
+        541875,
+        541875,
+        541875,
+        541875,
+        541875
+      ]
+    }
+  },
+  "falsifier_note": "GOAL.md: every impossibility lemma this run produces must be run against BOTH entries of this witness set."
+}
