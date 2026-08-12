@@ -62,6 +62,18 @@ as a full identity. First falsified at N=12, not N=15 as previously guessed.
 
 ## This tool-builder task's runs
 
+### Oracle re-run (definition check, matches worked examples)
+Ran the existing naive oracle `code/brute.py` (canonical `D` from lib/amoeba,
+naive frozenset BFS over distinct occupied-cube sets, d=3) at the two sizes
+the oracle can reach among the statement's examples:
+    D(2) = 3        matches D(2)=3
+    D(10) = 44499   matches D(10)=44499
+Command: `timeout 60 python code/brute.py` (exit 0, ran in seconds).
+D(20)=9204559704 and D(100) last-nine=780166455 are exponentially out of the
+naive oracle's reach (state space ~9.2e9), so per the task's instruction the
+oracle was not pointed at them — they are definition checks the oracle's job
+is not to reach. Reading of the definition is confirmed by both examples.
+
 ### Holonomic extrapolation probe (negative)
 scratchpad/holonomic_probe.py -> scratchpad/holonomic_probe.txt.  Confirmed
 D(2)=3, D(10)=44499 via lib.amoeba.D.  Swept lib.holonomic.fit over
