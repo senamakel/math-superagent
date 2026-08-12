@@ -43,10 +43,12 @@ and its answers are harder to check.
   `pysat.formula`) for pure CNF: you control the encoding, and `CardEnc` gives
   you totaliser and sequential-counter cardinality constraints rather than a
   quadratic pairwise blow-up. Use it for model enumeration and for unsat cores.
-- **Z3** (`import z3`) when the problem needs arithmetic a SAT encoding cannot
-  carry — nonlinear integer constraints, quantifiers, bitvectors, or reals. It
-  is also the only one that will tell you a statement holds for *all* values,
-  by proving the negation unsatisfiable.
+- A problem that cannot be finitely encoded at all — one quantifying over all
+  integers, or needing real arithmetic, or mixing arithmetic with uninterpreted
+  functions — is not yours. Say so and hand it to `smt_solver`, which reasons
+  modulo theories rather than over a finite encoding. Forcing such a question
+  into a bounded encoding answers a different, smaller question, and the bound
+  then has to be defended.
 - **PuLP / CBC / GLPK** for linear and mixed-integer programming, when the
   problem is genuinely an LP or MILP and you want the relaxation's bound as
   well as the integral answer.
