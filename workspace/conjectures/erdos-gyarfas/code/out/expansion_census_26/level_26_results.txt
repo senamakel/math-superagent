@@ -1,0 +1,1 @@
+n=26  classes=321776  avoidsC4=3408  avoidsC4C8=0  avoidsC4C16=0  avoidsC4C8C16=0  c4free_hasC8_notC16=0

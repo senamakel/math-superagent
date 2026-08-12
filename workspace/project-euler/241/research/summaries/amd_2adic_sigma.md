@@ -1,42 +1,47 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/amd_2adic_sigma.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Arithmetic properties of the sum of divisors
 
-<!-- source: https://arxiv.org/abs/2007.03088 | converted from HTML -->
+**Source:** Tewodros Amdeberhan, Victor H. Moll, Vaishavi Sharma, Diego Villamizar,
+"Arithmetic properties of the sum of divisors", arXiv:2007.03088 [math.NT],
+submitted 6 Jul 2020; published as J. Number Theory 223 (2021) 325–349,
+doi:10.1016/j.jnt.2020.11.014.
+Full text: `research/sources/amd_2adic_sigma.full.md`.
 
-## What is in it
+## What it establishes
 
-- Mathematics > Number Theory
-- Title: Arithmetic properties of the sum of divisors
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+For σ(n) = sum of divisors of n and ν_p(m) the exponent of the prime p in m:
 
+- **Theorem 1.1 (2-adic formula).** ν₂(σ(n)) depends only on the *odd part* of n.
+  Writing n = ∏ p_i^{α_i} with p_i odd and α_i = ν_{p_i}(n), the sum-of-divisors
+  function over the prime power factors satisfies
+  ν₂(σ(n)) = Σ_i ν₂(σ(p_i^{α_i})), where for odd p and α ≥ 1:
+  - if α is even, σ(p^α) is odd, so ν₂(σ(p^α)) = 0;
+  - if α is odd, ν₂(σ(p^α)) = ν₂(p + 1) + ν₂(α + 1) − 1.
+- **Theorem 1.3 (sharp bound).** ν₂(σ(n)) ≤ ⌈log₂ n⌉ for all n, with equality
+  if and only if n is a product of distinct Mersenne primes.
+- **Theorem 1.4 (odd primes).** For an odd prime p, ν_p(σ(n)) ≤ ⌈log_p n⌉ under
+  stated conditions, with equality related to solutions of the Ljunggren–Nagell
+  Diophantine equation (q^{k+1}−1)/(q−1) = p^s.
 
-## What it claims
+## Why it matters for PE 241
 
-Abstract: The divisor function $\sigma(n)$ denotes the sum of the divisors of the positive integer $n$. For a prime $p$ and $m \in \mathbb{N}$, the $p$-adic valuation of $m$ is the highest power of $p$ which divides $m$. Formulas for $\nu_{p}(\sigma(n))$ are established. For $p=2$, these involve only the odd primes dividing $n$. These expressions are used to establish the bound $\nu_{2}(\sigma(n)) \leq \lceil\log_{2}(n) \rceil$, with equality if and only if $n$ is the product of distinct Mersenne primes, and for an odd prime $p$, the bound is $\nu_{p}(\sigma(n)) \leq \lceil \log_{p}(n) \rceil$, with equality related to solutions of the Ljunggren-Nagell diophantine equation.
+The governing 2-adic structure used by the solver is exactly the content of
+Theorem 1.1. For n = 2^a·u with u odd, half-integer abundancy
+2σ(n) = (2k+1)n forces 1 + ν₂(σ(n)) = a, i.e. ν₂(σ(n)) = a − 1
+(verified computationally for the 8 known small hemiperfects in
+`code/verify_2adic.py`). That ν₂(σ(n)) is a function of the odd part u alone —
+with each odd prime power contributing ν₂(σ(p^α)) = ν₂(p+1)+ν₂(α+1)−1 when α is
+odd and 0 when α is even — is precisely what makes the exponent of 2 in n
+determined by the odd part, and is what the denominator-cancellation DFS uses to
+fix the 2-power in each target search. This source is the named theorem behind
+the 2-adic reduction; it does not by itself enumerate the solutions (that is the
+role of Alekseyev's aσ(n)=bn+c machinery).
 
-Subjects: | Number Theory (math.NT) |
-
-MSC classes: | 11A25, 11D61, 11A41 |
-
-Cite as: | [arXiv:2007.03088][8] [math.NT] |
-
-| (or [arXiv:2007.03088v1][9] [math.NT] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.2007.03088][10]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 6278 character source; every section, statement, and proof in full at `research/sources/amd_2adic_sigma.full.md`]*
+```claim
+id: ams-2adic-sigma-formula
+statement: For n = 2^a·u with u odd, v2(sigma(2^a·u)) = v2(sigma(u)), and for odd primes p with alpha = v_p(u), v2(sigma(p^alpha)) = 0 if alpha even, and = v2(p+1)+v2(alpha+1)-1 if alpha odd; hence v2(sigma(n)) depends only on the odd part of n. Sharp bound v2(sigma(n)) <= ceil(log2 n), equality iff n is a product of distinct Mersenne primes.
+hypotheses: sigma multiplicative; p odd prime; alpha >= 1
+holds-here: yes — PE 241's half-integer condition 2sigma(n)=(2k+1)n forces v2(sigma(n)) = v2(n)-1, and the formula decomposes that constraint over the odd prime powers of n
+status: proved in Amdeberhan–Moll–Sharma–Villamizar (Thms 1.1, 1.3); journal-verified article J. Number Theory 223 (2021) 325–349
+bearing: grounds the 2-adic reduction the DFS solver relies on (v2(sigma(u))=a-1); confirms code/verify_2adic.py's computed pattern in the literature
+anchor: research/summaries/amd_2adic_sigma.md
+```

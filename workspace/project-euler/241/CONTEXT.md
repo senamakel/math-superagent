@@ -38,7 +38,11 @@ are still unwritten stubs and the run's own DFS→b-file agreement at 10^18 is u
   k=6→~1.7e44. So below 10^18 only abundancies 3/2,5/2,7/2,9/2,11/2 occur (k=1..5). This
   is claim `a088912-abundancy-threshold` in research/CLAIMS.md. **Hypotheses checked:**
   these are catalogued minimal values; the "k≥6 unreachable below 1e18" consequence holds
-  because a(6)>1e18 by ~9 orders of magnitude.
+  because a(6)>1e18 by ~9 orders of magnitude. **Now confirmed by two further sources:**
+  Numericana hpn13's first term = A160678 a(1) = 170974031122008628879954060917200710847692800
+  ≈ 1.71e44 (claims `hpn13-first-term-1e44`, `a160678-reachability-13over2`), so 13/2
+  contributes zero; and hpn11's table holds exactly the two 11/2 members below 1e18
+  (claim `hpn11-two-below-1e18`).
 
 ## The final answer (sourced — OEIS A159907 b-file, independent route)
 
@@ -66,7 +70,11 @@ bound), reusing a used prime, and start exponent ≥ the exponent of d in den. C
 with the description (6 targets × tiny forced branches), never with 10^18. This is the
 standard technique for near-perfect / hemiperfect enumeration and is what makes the
 bound in the statement irrelevant to the method. `maxab.py` gives the greedy
-σ(n)/n upper bound used for sanity (largest k reachable ≤ 10^18).
+σ(n)/n upper bound used for sanity (largest k reachable ≤ 10^18). **Completeness precedent
+is sourced, not ad hoc:** Flammenkamp's exhaustive tree search enumerated all multiply-perfect
+numbers < e^350 (claim `flammenkamps-tree-search-method`); Goto–Shibata proved the monotone
+multiplicative structure such searches rest on (claim `goto-shibata-multiplicative-monotone-method`);
+Alekseyev (arXiv 2601.17832) solves bounded aσ(n)=bn+c by exactly this forced-cancellation recursion.
 
 ## Recalled (durable memory)
 
@@ -102,5 +110,7 @@ the target set contributes zero values (a(6)>1e18), consistent with the A088912 
   482316491800641154. Requires a shell, which this environment lacks — a tool_builder
   run with an executor is the unblock. Also still open: solution.md + code/solution.py
   (write the derivation and the report-ready solver). Research request
-  `theory-numbers-with-88d5` was the bounding/recursion ask; the A088912 claim largely
-  fills it (reachable-abundancy bound), but the request row still shows open.
+  `theory-numbers-with-88d5` (bounding/recursion ask) is ANSWERED: the A088912
+  claim gives the reachable-abundancy bound, and the claim block in
+  research/summaries/hemiperfect_below_1e18_oracle.md carries `answers: theory-numbers-with-88d5` —
+  REQUESTS.md's still-open row is stale until its next rewrite; do not re-search this.
