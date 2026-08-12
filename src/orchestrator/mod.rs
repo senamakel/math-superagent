@@ -301,7 +301,11 @@ impl OrchestratorAgent {
         );
         research_harness.push_middleware(checkpoint.clone());
         register_recall(&mut research_harness, &workspace);
-        async_subagents.register("research", Arc::new(research_harness), prompts.research)?;
+        async_subagents.register(
+            "research",
+            Arc::new(research_harness),
+            std::mem::take(&mut prompts.research),
+        )?;
 
         register_code_writing_agents(
             &async_subagents,
