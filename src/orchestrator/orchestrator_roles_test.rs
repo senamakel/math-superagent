@@ -523,3 +523,40 @@ fn an_honest_polynomial_cost_still_passes() {
         );
     }
 }
+
+#[test]
+fn the_research_team_gathers_by_default_and_never_retires() {
+    // The failure this closes. The team's brief opened "Keep this run's
+    // reference library useful, which mostly means not adding to it", and made
+    // fetching conditional on an attempt reporting STUCK or REQUESTS.md naming
+    // a gap. Neither can hold at t=0 — attempt 1 has just started and a fresh
+    // workspace has no REQUESTS.md — so it replied NOTHING FURTHER, and being
+    // `Attainable` that retired it permanently. All four live runs lost their
+    // research team inside ninety seconds and ran for hours with zero
+    // `exa_search` calls.
+    let research = super::teams::definitions()
+        .into_iter()
+        .find(|team| team.name == "research")
+        .expect("the research team is registered");
+
+    assert_eq!(
+        research.completion,
+        super::teams::Completion::Standing,
+        "one quiet cycle must pause the team, not end it"
+    );
+    let brief = research.brief.to_ascii_lowercase();
+    assert!(
+        brief.contains("exa_search"),
+        "the strongest search instrument must be named, or it stays unused"
+    );
+    assert!(
+        !brief.contains("mostly means not adding to it"),
+        "the brief must not open by discouraging the team's own job"
+    );
+    // The guard against inventing URLs, which is what a role without search
+    // does when told to fetch.
+    assert!(
+        brief.contains("never download a url you have not seen"),
+        "a fetch of an invented address succeeds and stores the wrong paper"
+    );
+}
