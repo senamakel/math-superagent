@@ -1855,6 +1855,26 @@ fn register_support_agents(
     register_scratch(&mut curator, &parts.vector_store, false);
     subagents.register("context_curator", Arc::new(curator), prompts.curator)?;
 
+    // Housekeeping's budget, for the same reason the curator has it: acting on
+    // a directive is bounded work — read what the run is doing, rewrite the
+    // files that say so — and a role left with an investigation's allowance
+    // investigates. The bound matters more here than there, because this role
+    // is woken by a person rather than by a schedule, and a directive that
+    // turned into eleven model calls of its own would make asking for
+    // something the most expensive thing an operator can do.
+    let mut director = specialist_harness(
+        parts.model.clone(),
+        parts.budget.for_housekeeping(),
+        "director",
+        parts.tracer,
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut director, tool);
+    }
+    register_memory(&mut director, &parts.vector_store);
+    register_scratch(&mut director, &parts.vector_store, false);
+    subagents.register("director", Arc::new(director), prompts.director)?;
+
     Ok(())
 }
 
