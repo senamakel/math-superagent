@@ -1,38 +1,40 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/epicyclic-gearing-handbook-gearsolutions.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Epicyclic Gearing: A Handbook (Gear Solutions)
 
-<!-- source: https://gearsolutions.com/features/epicyclic-gearing-a-handbook/ | converted from HTML -->
+[[research/sources/epicyclic-gearing-handbook-gearsolutions.full.md]] · source:
+https://gearsolutions.com/features/epicyclic-gearing-a-handbook/
 
-## What is in it
+A practical design handbook for planetary (epicyclic) gear trains. (No claim blocks
+here — this is corroborating qualitative background, not a distinct theorem source.)
 
-    - [Tungsten Carbide][24]
-    - [Conversation with Greg Maisch][25]
-    - [Driving into the future][26]
-    - [Empirical Methods of Determining Hardenability][27]
-      - [Machines][28]
-      - [Services][29]
-      - [Tooling][30]
-      - [Marketplace][31]
-    - Types and Arrangements
-    - Why Epicyclic Gearing?
-    - Relative Speeds
-    - Torque Splits
-    - Multiple Mesh Considerations
-    - Additional Considerations
-    - Dos and Don’ts
-    - Design Tips and Pitfalls
-    - Methodology
-    - LEAVE A REPLY [Cancel reply][38]
-    - RELATED ARTICLES
-    - [The advantages of pulse plasma nitriding][39]
-    - [A Study on Contact Fatigue Performance of Nitrided and TiN Coated Gears][40]
-    - [Predicting Hypoidcontact Conditions][41]
-- …
+## Content
+- Types and arrangements (planetary 3:1–12:1, star, solar), relative speeds of sun/
+  planet/ring/carrier, torque splits, multiple-mesh considerations, assembly constraints.
+- **Assembly**: planet placement creates fixed angular relationships; the **least mesh
+  angle equals 360° divided by (sun teeth + ring teeth)**; additional planets must sit
+  at multiples of this angle; equal spacing needs (sun teeth + ring teeth) divisible by
+  the number of planets.
+- Relative speeds: with the carrier as reference, sun/planet/ring speeds relate via
+  tooth counts (Willis-type relations).
+- Design notes: planets act as idlers (do not set the sun-to-ring ratio); tweaking the
+  planet tooth count can improve meshing; avoid extreme center distances.
 
+## Implication for PE620
+Corroborates the least-mesh-angle = 360°/(sun + ring) rule (with ring= C, sun= S,
+i.e. 360°/(c+s)) from an independent authoritative gear-design source, consistent with
+the Drivetrain Hub "tick angle" 2π/(z1 − z3) and the UTS least-mesh-angle formula.
+Treats ~60 planet sizing as a free adjustable choice, consistent with the idler freedom.
 
-## What it claims
-
-Recent articles in Gear Solutions have discussed epicyclic gearing, but often in the context of experienced engineers. As more and more of these engineers reach retirement age younger engineers must pick up where they left off, and for many epicyclic gearing is an area where they lack experience. Epicyclic gearing requires a step-by-step process to make it work, and some of the steps are not necessarily intuitive. As such, this article aims to provide assistance and guidelines for people designing epicyclic gear trains for the first time—and perhaps, if you will, ease their degree of suffering. We will begin by defining types and arrangements and then discuss why epicyclic gear sets are used. Next we’ll look at what’s unique to epicyclic gears, including relative speeds, torque splits, and multiple mesh considerations. Finally we’ll discuss “dos and don’ts” and share some design tips and pitfalls associated with epicyclic gears.
-
-Fig. 1: Planetary, with ratios between 3:1 and 12:1
-
-*[digest of a 27570 character source; every section, statement, and proof in full at `research/sources/epicyclic-gearing-handbook-gearsolutions.full.md`]*
+```claim
+id: least_mesh_angle_handbook
+statement: In planetary gears, the least mesh angle (smallest legal angular step
+between planet positions) is 360 degrees/(sun teeth + ring teeth); planets must be
+placed at multiples of it; equal spacing additionally requires (sun+ring)/n_planets
+an integer.
+hypotheses: integer tooth counts; epicyclic (sun-ring-planet) gear train; perfect
+meshing.
+holds-here: true — PE620 with sun=S (s teeth) and ring=C (c teeth) gives least mesh
+angle 360/(s+c).
+status: sourced (Gear Solutions handbook; corroborated by Drivetrain Hub, UTS).
+bearing: independent third confirmation of the discreteness step.
+anchor: research/summaries/epicyclic-gearing-handbook-gearsolutions.md
+```
