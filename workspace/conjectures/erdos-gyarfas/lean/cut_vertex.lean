@@ -61,6 +61,17 @@ lemma cycle_snd_induce {G : SimpleGraph V} {v : V} {p : G.Walk v v}
 lemma cycle_penultimate_induce {G : SimpleGraph V} {v : V} {p : G.Walk v v}
     (hp : p.IsCycle) : p.penultimate ∈ notVSet v := cycle_penultimate_ne_v hp
 
+/-- The penultimate of a closed walk's tail is the penultimate of the walk
+itself. -/
+lemma tail_penultimate {G : SimpleGraph V} {v : V} {p : G.Walk v v}
+    (hp : p.IsCycle) : p.tail.penultimate = p.penultimate := by
+  -- p.tail.getVert (p.tail.length - 1) = p.getVert (p.length - 2 + 1)
+  -- tail drops one dart: p.tail.getVert n = p.getVert (1 + n), length_tail
+  unfold Walk.penultimate
+  rw [Walk.length_tail, ← Walk.getVert_tail]
+  congr 1
+  omega
+
 /-! ## The interior of the cycle avoids `v` -/
 
 /-- The strict interior of the cycle (vertices strictly between `snd` and

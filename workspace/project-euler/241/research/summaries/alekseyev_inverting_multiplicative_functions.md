@@ -1,57 +1,41 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/alekseyev_inverting_multiplicative_functions.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Alekseyev — Computing inverses of multiplicative functions (JIS 2016)
 
-<!-- source: https://cs.uwaterloo.ca/journals/JIS/VOL19/Alekseyev/alek5.pdf | converted from PDF -->
+**Source:** Max A. Alekseyev, "Computing the inverses, their power sums, and extrema for
+Euler's totient and other multiplicative functions", J. Integer Sequences 19 (2016),
+Article 16.5.2. Full text: `[[alekseyev_inverting_multiplicative_functions.full]]`.
 
-## What it claims
+## What it establishes
 
-We propose a generic algorithm for computing the inverses of a multiplicative func-
-tion under the assumption that the set of inverses is ﬁnite. More generally, our algo-
-rithm can compute certain functions of the inverses, such as their power sums (e.g.,
-cardinality) or extrema, without direct enumeration of the inverses. We illustrate
-our algorithm with Euler’s totient function ϕ(⋅) and the k-th power sum of divisors
-σk(⋅). For example, we can establish that the number of solutions to σ1(x) = 10
-1000 is
-15, 512, 215, 160, 488, 452, 125, 793, 724, 066, 873, 737, 608, 071, 476, while it is intractable
-to iterate over the actual solutions.
+A generic algorithm for computing inverses of a multiplicative function f (the n with
+f(n) = value) *when the inverse set is finite*, and for computing functions of the
+inverses (power sums, cardinality, extrema) without enumerating them.
 
-1 Introduction
+- **Theorem 1:** identity for formal Dirichlet series over the semiring (P_fin, +, ×).
+- **Theorem 3:** given ℓ atomic series for C(f^{−1}(n)), their product over the divisor
+  set D has complexity O(ℓ·τ(n)²) in the semiring.
+- **Theorem 5:** for C(σ_k^{−1}(n)), computable in O(τ(n)·log n·(log^{6+ε}n +
+  TC(log n))) — polynomial, not exponential, in the inverse-set description.
+- Illustrates with φ and σ_k: e.g. the *count* of solutions to σ_1(x) = 10^1000 is
+  15,512,215,160,488,452,125,793,724,066,873,737,608,071,476, computable without listing
+  the solutions.
 
-A value of a multiplicative function f on a positive integer n equals the product of its values
-on the prime powers in the prime factorization of n. That is, if n = pe1
-1 ⋅ pe2
-2 ⋯pem
-m , where
-p1 < p2 < ⋅ ⋅ ⋅ < pm are primes and e1, e2, . . . , em are positive integers, then
+## What it means for PE 241
 
-f (n) =
- m
-M
-i=1 f (pei
-i ).
+This addresses the *inverse-function* direction (fix the σ-value, find n), which is a
+different question from enumerating σ(n)/n = k+1/2 below 10^18. Here the ratio, not the
+σ value, is fixed, and the bound is 10^18 (not a fixed σ). The combinatorial/complexity
+technique (ℤ^+ ring structure over prime powers, divisor-set factorisation) is the
+algebraic sibling of the run's multiplicative decomposition, and it confirms cost can
+grow with the description rather than the value — but it does not enumerate the
+hemiperfects or give the sum. Keep only as structural confirmation that σ-ratio preimages
+are tractable; not load-bearing for the sum.
 
-1
-
-In particular, f (1) = 1. Famous examples of multiplicative functions include τ (n), the
-number of divisors of n (with τ…
-
-Tσ…
-
-## Statements it makes
-
-Theorem 1. We have the following identity for formal Dirichlet series of variable s over
-the semiring (Pﬁn(Z>0), +, ×):
-
-Theorem 2. Let (X, ⊕, ⊗) be a commutative semiring and C ∶ (Pﬁn(Z>0), +, ×) → (X, ⊕, ⊗)
-be a weak homomorphism, then
-
-Theorem 3. Let n be an integer and D be the set of divisors of n. Given ℓ atomic series
-for C(f −1(n)), their ⊗D-product can be computed with O(ℓ ⋅ τ (n)2) operations in (X, ⊕, ⊗).
-
-Theorem 4. Given an integer n and the set of its divisors D, the atomic series for C(ϕ−1(n))
-can be computed in time O(τ (n) ⋅ log n ⋅ (log5+ǫ n + TC(2 log n))) for any ǫ > 0.
-
-Theorem 5. Given an integer n and the set of its divisors D, the atomic series for C(σ−1
-k (n))
-can be computed in time O(τ (n) ⋅ log n ⋅ (log6+ǫ n + TC(log n))) for any ǫ > 0.
-
-*[digest of a 20889 character source; every section, statement, and proof in full at `research/sources/alekseyev_inverting_multiplicative_functions.full.md`]*
+```claim
+id: alekseyev-inverting-multiplicative
+statement: Preimages of a multiplicative function (n with f(n)=v) and their power sums/cardinality are computable in polynomial time (using a Z^>=0-semiring over prime powers) when the preimage set is finite; e.g. the count of x with sigma_1(x)=10^1000 is known without listing them.
+hypotheses: f multiplicative; the preimage set is finite
+holds-here: partial — the multiplicative decomposition matches the run's; but PE241 fixes a *ratio* sigma(n)/n=k+1/2 below a *bound* 10^18, not a fixed sigma value, so the inverse-machine does not directly enumerate the answer set
+status: proved (Alekseyev, JIS 16.5.2, 2016)
+bearing: structural confirmation that sigma-preimage enumeration is polynomially tractable; not the enumeration route for the hemiperfect sum
+anchor: research/sources/alekseyev_inverting_multiplicative_functions.full.md
+```

@@ -1,53 +1,30 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/alekseyev_sigma_linear_eq_sage.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Alekseyev sigma_linear_eq.sage — the runnable solver for aσ(n)=bn+c
 
-<!-- source: https://raw.githubusercontent.com/maxale/multiplicative_functions/main/sigma_linear_eq.sage | converted from plain text -->
+**Source:** `https://raw.githubusercontent.com/maxale/multiplicative_functions/main/sigma_linear_eq.sage`
+— `[[alekseyev_sigma_linear_eq_sage.full]]`.
 
-## What is in it
+## What it is
 
-- to support case b=0;…
-        - Reference sequences
-        - Main function res_solve_sigma_abc()
-- print('Current:', (a,b,c,M), g)
-- g must divide n
-            if gcd(M,g)>1:
-                return None
-            f =…
-- for prime p, a*sigma(p) - b*p - c = (a-b)*p + (a-c)
-        if a==b==c:
-            if…
-- for n >= 2 and a>=b,  c = a*sigma(n) - b*n >= a*(n+1) - b*n = (a-b)*n + a >= 3*a - 2*b…
-- lower and upper bounds for omega and bigomega
-        omg_lb, omg_ub = aux.get('omega',…
-- print('succ Omega:', Omg_lb, Omg_ub)
-- reduce_abc guarantees that gcd(b,g)==1, gcd(g,M) == 1, and min(prime_factors(g)) >=…
-- Note that p is not necessarily spf(n)
-        - Prime Wheel ADDED: 20251013
-- we have sigma(n)/n <= n/phi(n) = prod_{p|n} p/(p-1).
-- …
+The SageMath implementation of Alekseyev's paper (arXiv:2601.17832), function
+`res_solve_sigma_abc(a, b, c, U)` — solves aσ(n)=bn+c for all n ≤ U. Uses the RES
+(recursively enumerated set) framework, prime-wheel pruning, shortcuts, and the
+`reduce_abc` configuration reduction (cancels gcd of coefficients; handles g=gcd(a′,c′)
+forced factors; recognises a′=b′=c′ infinite series).
 
+The `sigma_over_n_bound.sage` dependency uses the Robin bound σ(n)/n ≤ n/φ(n) to prune.
+Implements Theorem 3.2's wheel and §3.1 shortcuts; optional constraints: squarefree,
+even_only, coprime_to, omega/bigomega bounds, fixed tau(n), and `refs` to OEIS core
+equations.
 
-## What it claims
+## What it means for PE 241
 
-Implementation of the algorithm proposed in the paper:
-* M. A. Alekseyev. "Computing bounded solutions to linear Diophantine equations with the sum of divisors", 2026.
-  arXiv:2601.17832 [math.NT] https://arxiv.org/abs/2601.17832
+This is a *runnable, complete* reference solver for the exact general equation family
+the run's DFS is the specialised c=0 instance of. It is **not** run in this environment
+(no shell), and it would solve 2σ(n)=(2k+1)n (a=2, b=odd, c=0) directly. It corroborates
+(1) that the DFS parameters the run uses are implementable and complete, and (2) the
+method's cost in the visited-tree not the bound. It does not provide the 22 values or sum
+itself. If the run's own DFS cannot be executed, this is the alternative complete route —
+but it needs SageMath, also absent. Keep as the canonical code reference; not load-bearing.
 
-Brief history:
-* 20260127: Minor bugfix; OEIS A391615, A391617 included in the references
-* 20260124: First public release
-'''
-
-print(f'sigma_linear_eq.sage ver. {__version__}\n\tSage ver. {sage.version.version}')
-
-load('par_setup.sage')
-# for robin_bound()
-load('sigma_over_n_bound.sage')
-
-import itertools
-import functools
-import time
-from collections import deque
-
-proof.arithmetic(False)
-
-*[digest of a 25323 character source; every section, statement, and proof in full at `research/sources/alekseyev_sigma_linear_eq_sage.full.md`]*
+No separate claim — covered by `alekseyev-tree-search-complete`. Do not re-read for the
+solver.
