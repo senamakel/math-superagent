@@ -392,14 +392,14 @@ second attempt because a support agent had been made a gate — and a human is
 slower than any support agent, so a loop that blocked on one would be that
 failure with no ceiling at all.
 
-**Verbatim, to the next attempt.** The `director` team drains the queue and
-posts the text, unchanged, to a second `Mailbox`. `attempt_step` collects it and
+**Verbatim, to the next attempt.** The `director` team drains the queue and posts
+the text, unchanged, to a second `Mailbox`. `attempt_step` collects it and
 `direction_briefing` renders it above the judge's steer, labelled as coming from
 the operator and as taking precedence. The attempt is the only collector, unlike
-the pattern mailbox that reflection drains as well: reflection folds what it
-collects into `fresh_context`, which reaches the next attempt as *material
-gathered* rather than as an instruction, and losing that distinction would lose
-the only thing this channel exists to carry.
+the pattern mailbox reflection drains as well: reflection folds what it collects
+into `fresh_context`, which reaches the next attempt as *material gathered*
+rather than as an instruction, and losing that distinction would lose the only
+thing this channel exists to carry.
 
 **Interpreted, to the workspace.** The same drain then runs the `director`
 agent, which reads the workspace and changes the files that decide what happens
