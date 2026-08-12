@@ -221,6 +221,12 @@ pub struct OrchestratorAgent {
     subagents: AsyncSubagentManager,
     tracer: Arc<RunTracer>,
     workspace: PathBuf,
+    /// What the workspace looked like when the organizer last filed it.
+    ///
+    /// Shared with the housekeeping follow-up inside the subagent manager, so
+    /// the standing team and the follow-up cannot wake each other on filing the
+    /// other just did.
+    filed: Arc<std::sync::Mutex<Option<u64>>>,
 }
 
 impl std::fmt::Debug for OrchestratorAgent {
@@ -473,6 +479,7 @@ impl OrchestratorAgent {
             }
             let subagents = self.subagents.clone();
             let workspace = self.workspace.clone();
+            let filed = self.filed.clone();
             let outbox = patterns.clone();
             // What the pattern team has already looked at. Idleness has to be
             // decided *before* the agent runs: asking it to notice that
