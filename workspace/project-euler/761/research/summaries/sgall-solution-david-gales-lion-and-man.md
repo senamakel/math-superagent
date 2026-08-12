@@ -1,69 +1,80 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/sgall-solution-david-gales-lion-and-man.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Sgall — "Solution of David Gale's Lion and Man Problem"
 
-<!-- source: https://iuuk.mff.cuni.cz/~sgall/ps/lion.ps | converted from plain text -->
+Source: author's homepage, https://iuuk.mff.cuni.cz/~sgall/ps/lion.ps
+(PostScript of the Dec 5, 2000 preprint). Published as J. Sgall,
+*Theoretical Computer Science* 259(1-2):663–670, 2001,
+DOI 10.1016/S0304-3975(00)00411-4. Full text:
+`research/sources/sgall-solution-david-gales-lion-and-man.full.md`
+(the .ps is raw PostScript; the paper's text is embedded and readable —
+headers/font bitmaps dominate the byte count, not the prose).
 
-%!PS-Adobe-2.0
-%%Creator: dvips(k) 5.86 Copyright 1999 Radical Eye Software
-%%Title: lion.dvi
-%%Pages: 9
-%%PageOrder: Ascend
-%%BoundingBox: 0 0 612 792
-%%EndComments
-%DVIPSWebPage: (www.radicaleye.com)
-%DVIPSCommandLine: /opt/tetex/teTeX-1.0/bin/i386-linux/dvips lion -o
-%+ lion.ps
-%DVIPSParameters: dpi=600, compressed
-%DVIPSSource:  TeX output 2000.12.05:1054
-%%BeginProcSet: texc.pro
-%!
-/TeXDict 300 dict def TeXDict begin/N{def}def/B{bind def}N/S{exch}N/X{S
-N}B/A{dup}B/TR{translate}N/isls false N/vsize 11 72 mul N/hsize 8.5 72
-mul N/landplus90{false}def/@rigin{isls{[0 landplus90{1 -1}{-1 1}ifelse 0
-0 0]concat}if 72 Resolution div 72 VResolution div neg scale isls{
-landplus90{VResolution 72 div vsize mul 0 exch}{Resolution -72 div hsize
-mul 0}ifelse TR}if Resolution VResolution vsize -72 div 1 add mul TR[
-matrix currentmatrix{A A round sub abs 0.00001 lt{round}if}forall round
-exch round exch]setmatrix}N/@landscape{/isls true N}B/@manualfeed{
-statusdict/manualfeed true put}B/@copies{/#copies X}B/FMat[1 0 0 -1 0 0]
-N/FBB[0 0 0 0]N/nn 0 N/IEn 0 N/ctr 0 N/df-tail{/nn 8 dict N nn begin
-/FontType 3 N/FontMatrix fntrx N/FontBBox FBB N string/base X array
-/BitMaps X/BuildChar{CharBuilder}N/Encoding IEn N end A{/foo setfont}2
-array copy cvx N load 0 nn put/ctr 0 N[}B/sf 0 N/df{/sf 1 N/fntrx FMat N
-df-tail}B/dfs{div/sf X/fntrx[sf 0 0 sf neg 0 0]N df-tail}B/E{pop nn A
-definefont setfont}B/Cw{Cd A length 5 sub get}B/Ch{Cd A length 4 sub get
-}B/Cx{128 Cd A length 3 sub get sub}B/Cy{Cd A length 2 sub get 127 sub}
-B/Cdx{Cd A length 1 sub get}B/Ci{Cd A type/stringtype ne{ctr get/ctr ctr
-1 add N}if}B/id 0 N/rw 0 N/rc 0 N/gp 0 N/cp 0 N/G 0 N/CharBuilder{save 3
-1 roll S A/base get 2 index get S/BitMaps get S get/Cd X pop/ctr 0 N Cdx
-0 Cx Cy Ch sub Cx Cw add Cy setcachedevice Cw Ch true[1 0 0 -1 -.1 Cx
-sub Cy .1 sub]/id Ci N/rw Cw 7 add 8 idiv string N/rc 0 N/gp 0 N/cp 0 N{
-rc 0 ne{rc 1 sub/rc X rw}{G}ifelse}imagemask restore}B/G{{id gp get/gp
-gp 1 add N A 18 mod S 18 idiv pl S get exec}loop}B/adv{cp add/cp X}B
-/chg{rw cp id gp 4 index getinterval putinterval A gp add/gp X adv}B/nd{
-/cp 0 N rw exit}B/lsh{rw cp 2 copy get A 0 eq{pop 1}{A 255 eq{pop 254}{
-A A add 255 and S 1 and or}ifelse}ifelse put 1 adv}B/rsh{rw cp 2 copy
-get A 0 eq{pop 128}{A 255 eq{pop 127}{A 2 idiv S 128 and or}ifelse}
-ifelse put 1 adv}B/clr{rw cp 2 index string putinterval adv}B/set{rw cp
-fillstr 0 4 index getinterval putinterval adv}B/fillstr 18 string 0 1 17
-{2 copy 255 put pop}for N/pl[{adv 1 chg}{adv 1 chg nd}{1 add chg}{1 add
-chg nd}{adv lsh}{adv lsh nd}{adv rsh}{adv rsh nd}{1 add adv}{/rc X nd}{
-1 add set}{1 add clr}{adv 2 chg}{adv 2 chg nd}{pop nd}]A{bind pop}
-forall N/D{/cc X A type/stringtype ne{]}if nn/base get cc ctr put nn
-/BitMaps get S ctr S sf 1 ne{A A length 1 sub A 2 index S get sf div put
-}if put/ctr ctr 1 add N}B/I{cc 1 add D}B/bop{userdict/bop-hook known{
-bop-hook}if/SI save N @rigin 0 0 moveto/V matrix currentmatrix A 1 get A
-mul exch 0 get A mul add .99 lt{/QV}{/RV}ifelse load def pop pop}N/eop{
-SI restore userdict/eop-hook known{eop-hook}if showpage}N/@start{
-userdict/start-hook known{start-hook}if pop/VResolution X/Resolution X
-1000 div/DVImag X/IEn 256 array N 2 string 0 1 255{IEn S A 360 add 36 4
-index cvrs cvn put}for pop 65781.76 div/vsize X 65781.76 div/hsize X}N
-/p{show}N/RMat[1 0 0 -1 0 0]N/BDot 260 string N/Rx 0 N/Ry 0 N/V{}B/RV/v{
-/Ry X/Rx X V}B statusdict begin/product where{pop false[(Display)(NeXT)
-(LaserWriter 16/600)]{A length product length le{A length product exch 0
-exch getinterval eq{pop true exit}if}{pop}ifelse}forall}{false}ifelse
-end{{gsave TR -.1 .1 TR 1 1 scale Rx Ry false RMat{BDot}imagemask
-grestore}}{{gsave TR -.1 .1 TR Rx Ry scale 1 1 false RMat{BDot}
-imagemask grestore}}ifelse B/QV{gsave newpath transform round exch round
-exch itransform moveto Rx 0 rlineto 0 Ry neg rlineto Rx neg 0 rlineto
+## What the paper establishes (the discrete-time lion-and-man game)
 
-*[excerpt ends; 136010 characters not shown — see `research/sources/sgall-solution-david-gales-lion-and-man.full.md`]*
+**Setup (Gale's version, Problem 31 in Guy's "Unsolved problems in
+combinatorial games", AMS Proc. Symp. Appl. Math. 43, 1991).** Time is
+*discrete*, space continuous: man and lion move in the non-negative quadrant
+of the plane. Each round the man moves ≤ 1 (Euclidean), then the lion moves
+≤ 1. Lion wins if he moves to the man's current position; man wins if he can
+keep escaping forever. If initially x'_0 ≥ x_0 or y'_0 ≥ y_0 (man coordinate
+not strictly below lion's in both axes), the man escapes trivially by moving
+away from the origin.
+
+**Main theorem.** If x'_0 < x_0 and y'_0 < y_0 (both the man's coordinates
+strictly smaller), then the lion **catches the man in a finite number of
+moves**, bounded by
+
+max{ (x_0 + y_0(α₀ + √(1+α₀²)))², (y_0 + x_0(α₀⁻¹ + √(1+α₀⁻²)))² } = O(x₀² + y₀² + x₀²α₀⁻² + y₀²α₀²),
+
+where α₀ = (y₀ − y'_0)/(x₀ − x'_0) is the initial slope of the lion–man line.
+
+**Lion's strategy (Fixed Center Lion Strategy, FCLS).** Choose once, at the
+start, a point C on the line M₀L₀ beyond L₀ such that the circle centred at
+C through L₀ intersects both coordinate axes (choose the closest such point
+to the origin). Invariants per move: (i) M has both coordinates < L's;
+(ii) L lies on segment MC; (iii) |CL|² grows by ≥ 1 each move (Lemma 1:
+r'² ≥ r² + 1 unless the lion catches immediately). Since |CL|² grows by ≥ 1
+per move and |CL₀|² is bounded by the initial data, the number of moves is
+bounded (Theorem 2). Proof: with Y = foot of perpendicular from L to M'C
+(and X chosen so |L'Y| = |XY|), triangle inequalities + Pythagoras give
+r'² ≥ |XC|² = |XL|² + |LC|² ≥ r² + 1.
+
+**Man's strategy / tightness.** The man keeps the product x'y' (area under
+his position) large by moving perpendicular to the lion–man line; this gives
+a survival time ≥ 2x'_0y'_0 for the naive strategy (loss ≤ α/(1+α²) ≤ 1/2 per
+move), i.e. Θ(x²) on the diagonal. A refined multi-phase strategy (move to a
+slope-α point x = αy, then the simple strategy, restarting phases as α
+decays) shows the man can survive for Ω((x₀² + y₀² + x₀²α₀⁻² + y₀²α₀²)/α₀^ε)
+moves for any ε > 0 — so the lion's upper bound is **almost optimal**
+(Theorem 6). On the diagonal the gap is < 3+2√2 < 6; in the extreme case
+(man at origin, lion at (x₀,1)) the capture time is Θ(x₀⁴) — matching
+bounds. The exact optimal strategy remains open.
+
+**Generalizations.** The strategy works in any wedge (angle < π) and in
+higher dimensions (any convex cone): lion wins iff the halfplane of points
+closer to M₀ than to L₀ has bounded intersection with the playing area;
+otherwise the man escapes. Exponent of the capture bound does not increase
+with dimension.
+
+## Relation to this run
+
+This is the **discrete-time** lion-and-man game, the primary source that the
+run's other documents cite for "Sgall's solution to Gale's problem" (cited
+by Klein–Suri AAai'11, Casini–Garulli, Bollobás–Leader–Walters, the MaRDI
+entry). It does **not** bear on the continuous-time *critical speed* of the
+runner/swimmer pool (PE 761): different model (equal speeds, alternating
+turns, quadrant) and different question (number of moves to capture, not
+speed threshold). It is background coverage of the subject's canon: it fixes
+the exact statement and technique of a named result several of our sources
+reference, and its "wedge/convex cone" generalization is the same
+halfplane/geodesic comparison idea that underlies the boundary-time
+equalization in the Abel et al. escape model.
+
+```claim
+id: sgall-discrete-lion-man-fixed-center-capture
+statement: In Gale's discrete-time lion-and-man game on the non-negative quadrant (man and lion alternate moves of distance at most 1), if both coordinates of the man are strictly smaller than the lion's initially, the lion catches the man in finitely many moves by the Fixed Center strategy: fix C on line M0L0 beyond L0 with the circle through L0 centred at C intersecting both axes, maintain L on segment MC and |CL|^2 increasing by >= 1 per move; the capture time is O(x0^2 + y0^2 + x0^2/alpha0^2 + y0^2*alpha0^2) with alpha0 the initial slope, and this is almost optimal (man survives Omega(time/alpha0^eps) for any eps>0). The same strategy works in any wedge (< pi) and in any convex cone in higher dimensions.
+hypotheses: discrete time, space continuous, equal maximum speed 1, man moves first, quadrant (or wedge/convex cone) playing area, lion captures by moving to the man's position.
+holds-here: no - this is the discrete equal-speed game, not the continuous runner-with-speed-v vs swimmer-speed-1 boundary-escape game PE 761 models (Abel et al. well-posedness is the relevant result there). It fixes a named result our sources cite.
+status: proved (peer-reviewed TCS 2001; author's preprint on disk).
+bearing: canonical background; identifies the FCLS strategy later improved by Casini-Garulli's Moving Center Lion Strategy; not a route to V_hexagon.
+anchor: research/sources/sgall-solution-david-gales-lion-and-man.full.md
+```
