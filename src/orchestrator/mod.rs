@@ -1387,6 +1387,54 @@ impl RolePrompts {
 
 /// Assembles the research agent's harness: search the web, and remember what
 /// it found.
+/// What the two planning roles' harnesses are built from.
+struct Planners<'a> {
+    model: &'a Arc<dyn ChatModel<()>>,
+    budget: RunBudget,
+    tracer: &'a Arc<RunTracer>,
+    workspace: &'a Path,
+    documents: &'a WorkspaceDocuments,
+    vector_store: &'a VectorStore,
+}
+
+/// Registers the goals agent and returns the orchestrator's harness.
+///
+/// They are built together because they are the same role at two depths: both
+/// decompose a problem and delegate it, and both need the same way back into
+/// what the run already knows. Splitting them meant the orchestrator quietly
+/// had neither recall tool — it could read a path it already knew and nothing
+/// else, and a planner that cannot find what has already been tried delegates
+/// it again.
+///
+/// The difference between them is the bench. The goals agent sees the
+/// specialists; the orchestrator additionally sees the roles the solution loop
+/// drives, so a single-turn run can reach them.
+///
+/// # Errors
+///
+/// Returns an error when `goals` is already registered.
+fn register_planners(
+    subagents: &AsyncSubagentManager,
+    parts: &Planners<'_>,
+    goals_prompt: String,
+) -> Result<AgentHarness<()>> {
+    let mut build = |role: &'static str, bench: &[&str]| {
+        let mut harness =
+            specialist_harness(parts.model.clone(), parts.budget, role, parts.tracer);
+        for tool in subagents.tools(bench.iter().copied()) {
+            register_resilient(&mut harness, tool);
+        }
+        for tool in parts.documents.tools() {
+            register_resilient(&mut harness, tool);
+        }
+        register_recall(&mut harness, parts.workspace);
+        register_note_recall(&mut harness, parts.vector_store);
+        harness
+    };
+    subagents.register("goals", Arc::new(build("goals", &SPECIALISTS)), goals_prompt)?;
+    Ok(build("orchestrator", &DELEGATES))
+}
+
 fn build_research_harness(
     model: &Arc<dyn ChatModel<()>>,
     budget: RunBudget,
