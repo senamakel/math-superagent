@@ -356,6 +356,8 @@ Two changes make the loop turn over. The run wall clock is thirty minutes rather
 
 The review is the judge rather than a second solver, so it inherits `RunBudget::for_judging` — twelve model calls and a five-minute ceiling — and an unchanged workspace is skipped before the agent runs rather than by asking a model to notice. The wall-clock change is the one with a cost: it bounds every agent run, not only the attempt, and a live `tool_builder` spent 1,362 seconds inside a single model call. That path does not honour `StopWithPartial`, so a child that meets it loses its context and its report — but not its files, and `continuation_briefing` is what lets the next attempt resume from them.
 
+That cost is also why the judge is handed `evidence_briefing`. The cap makes a lost report the *normal* ending rather than an edge case, so a judge reading only the report is normally reading nothing — which is what produced three 1/5-and-2/5 verdicts in one evening against workspaces holding verified exact values and exhaustive enumerations.
+
 ## Direction from a human
 
 Until this existed a run was closed once it started. It was launched with argv,
