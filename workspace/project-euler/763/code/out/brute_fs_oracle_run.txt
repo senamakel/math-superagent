@@ -16,3 +16,6 @@ container mem cgroup check: peak RSS so far 9.03 MB
   8           3,855         3,855       0.05
   9          13,086        13,086       0.21
  10          44,499        44,499       0.82
+      -> D(10) == 44499  MATCHES worked example
+ 11         151,263       151,263       3.36
+ 12         514,419       514,419      13.09
