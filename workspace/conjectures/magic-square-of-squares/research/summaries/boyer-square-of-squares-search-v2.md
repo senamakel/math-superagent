@@ -1,84 +1,50 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/boyer-square-of-squares-search-v2.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Boyer, "A search for 3×3 magic squares having more than six square integers" (2004) — [[boyer-square-of-squares-search-v2.full]]
 
-<!-- source: http://multimagie.com/Search.pdf | converted from PDF -->
+Computational search paper by Christian Boyer that fixes the actual verification bound and the provenance of the near-misses. Restates the two known near-misses:
+- **LS1** (Sallows & Schweitzer, found independently): `[127²,46²,58²; 2²,113²,94²; 74²,82²,97²]`, 7 of 8 sums = 21609, one diagonal = 38307.
+- **7-square magic square** (Sallows and Bremner, independently): `[373²,289²,565²; 360721,425²,23²; 205²,527²,222121]`, configuration 7.IV, centre 425² = 180625. This is "the only known example having seven square integers, excluding symmetries, rotations and k² multiples".
 
-A search for 3x3 magic squares having more than six
-square integers among their nine distinct integers.
-Draft v2, By Christian Boyer, France, September 16th 2004
-cboyer@club-internet.fr
-www.multimagie.com/indexengl.htm
-  “Martin  LaBar,  in  The  College  Mathematics  Journal
-[January 1984, p.69], asked if a 3x3 magic square exists with
-nine distinct square numbers. (…) Neither such a square nor
-a proof of impossibility has been found. (…) I here offer $100
-to  the  first  person  to  construct  such  a  square.  If  it  exists,  its
-numbers are sure to be monstrously large.”
-Martin Gardner, 1996
+## Sums-of-two-squares structure of the four centre lines (D1/D2)
+A line through centre C with two square endpoints satisfies x²+y²=2C. Since 4k+3 primes cannot be sums of two squares, only central cells that are products of 4k+1 primes are studied.
+- **D1** — C = c² a square with n distinct 4k+1 prime factors: `(3ⁿ−1)/2` solutions of x²+y²=2c², x<y.
+- **D2** — C not a square with n distinct 4k+1 prime factors: `2^(n−1)` solutions of x²+y²=2C, x<y.
+- A 4k+1 prime is a sum of two squares in one way; (a²+b²)(c²+d²) gives two ways: (ad+bc)²+(ac−bd)² and (ad−bc)²+(ac+bd)²; and 2(a²+b²)=(a+b)²+(a−b)².
 
-Today,  eight  years  after  this  quotation,  nobody  has  succeeded  in  winning  the  $100  of  this
-Gardner’s challenge.
-However, it is possible to construct a 3x3 square with nine square integers and only one bad
-magic sum. The smallest example is the following square, first found independently by Lee
-Sallows  and  Michael  Schweitzer.  All  the  rows  and  columns,  but  only  one  of  the  two
-diagonals, have the same magic sum.
+## The exhaustive search bounds (with square centre C=c²)
+Central cell restricted to types `(main 5^i · product of 4k+1 primes)²`, various prime ranges; **Fig. 6 is the ONLY magic square with more than six square entries** (up to symmetry/k²) among all central cells of these types. Largest square-centre bound covered:
+- (5^i·p1·…·p8)² with pj ≤ 29 → central cell < 1.56×10²⁶; and type l) (5^i0·p1^i1·p2^i2·p3^i3)² up to central cell < 2.14×10³⁰.
+Because multiplying all cells by the same square factor preserves square-count, results for (5²·...) cover submultiples (5·...)² and (...)² automatically.
 
-127²  46²  58²
-2²  113²  94²
-74²  82²  97²
-(fig. 1)
+## With non-square centre
+Types (5^i·p1·…·p7) up to central cell < 3.35×10¹⁷; no magic square with >6 square entries.
 
-Our problem, here, is to get the maximum number of square integers in a fully magic square:
-the eight lines of the squares of our study will always have the same magic sum.
+## Verdict / implication
+Even one more 7-square example resisted a very wide and varied central-cell search. Boyer's stated feeling is that a full square of squares "cannot exist", but **no proof exists** — it is explicit that this is a feeling.
 
-Six square integers
-Andrew  Bremner,  Department  of  Mathematics,  Arizona  State  University,  demonstrated  in
-2001  that  all  the  sixteen  possible  configurations  of  magic  squares  including  six  square
-integers are possible.
+```claim
+id: boyer-search-bound
+statement: Among all magic squares whose central cell is a square of the listed types (products
+  of 4k+1 primes with ranges covering up to 2×10³⁰ for square centres) — or a non-square of the
+  listed types (up to 3×10¹⁷) — there is no 3×3 magic square with more than six square entries
+  except the single known 7-square example (up to symmetry and k² multiples).
+hypotheses: centre of the listed product-of-4k+1-primes types; search exhaustive over the
+  stated prime ranges
+holds-here: yes
+status: asserted (computed by Boyer, not independently reproduced here)
+bearing: the true computational frontier; a 7-square (hence any 9-square) solution must have a
+  centre outside every listed range, i.e. beyond ~10²⁶–10³⁰
+anchor: research/sources/boyer-square-of-squares-search-v2.full.md
+contradicts: any claim that a 7- or 9-square magic square appears with a small central cell
+```
 
-x  x  x       x  x    x  x  x       x                     x             x       x  x
-x  x       x     x               x  x  x    x  x  x    x  x  x    x  x  x       x  x
-x          x  x       x  x  x    x     x    x  x  x    x  x       x     x    x     x
-6.I    6.II    6.III    6.IV    6.V    6.VI    6.VII    6.VIII
-
-      x          x          x       x          x  x    x     x       x  x    x     x
-x     x    x  x  x    x  x  x    x     x    x  x          x  x    x                x
-x  x  x       x  x    x  x       x  x  x    x     x    x     x    x  x  x    x  x  x
-6.IX    6.X    6.XI    6.XII    6.XIII    6.XIV    6.XV    6.XVI
- (fig. 2)
-
- - A search for 3x3 magic squares having more than six square integers, by Christian Boyer, © 2004, page 2/5 -
-
-Numerous  examples  with  six  square  integers  are  easy  to  find,  for  each  configuration.  For
-example,  here  is  the  “smallest”  possible  magic  square  with  six  square  integers,  “smallest”
-meaning  that  it  is  using  the  smallest  magic  sum.  This  example  belongs  to  the  Bremner’s
-configuration 6.XV. The central cell is equal to 145 = 5·29
-  265  1²  13²
-7²  145  241
-11²  17²  5²
-(fig. 3)
-
-Here are the two smallest examples using a square integer in the central cell. These examples
-belong  to  the  configurations  6.VII  and  6.XIV.  There  is  an  easy  correspondence  between
-squares of these two configurations, as mentioned by Bremner: that’s why these two different
-squares are in fact very similar, using the same square integers, having one identical diagonal.
-  889  697  17²    5²  1561  17²
-5²  25²  35²    889  25²  19²
-31²  553  19²    31²  -311  35²
-(fig. 4)
-
-And when two magic squares 3x3 have the same central cell, then they have the same magic
-sum. The magic sum of a magic square 3x3 always equals three times the central cell.
-
-Seven square integers
-Up to symmetry (rotation and reflection), there are eight ways of selecting seven entries from
-a 3x3 square. These are as follows:
-
-x  x  x    x  x  x    x  x  x    x  x  x    x  x  x    x  x       x  x  x    x  x  x
-   x       x  x       x  x  x       x  x    x  x  x    x  x  x    x     x    x     x
-x  x  x    x     x    x          x  x          x          x  x    x     x    x  x
-7.I    7.II    7.III    7.IV    7.V    7.VI    7.VII    7.VIII
-(fig. 5)
-
-Two results are already known about these configurations:
-
-*[excerpt ends; 8889 characters not shown — see `research/sources/boyer-square-of-squares-search-v2.full.md`]*
+```claim
+id: sum-two-squares-counts
+statement: For C=c² with n distinct 4k+1 prime factors there are (3ⁿ−1)/2 solutions of
+  x²+y²=2c² (x<y); for non-square C there are 2^(n−1).
+hypotheses: C squarefree part only has 4k+1 primes; count of solutions with 0<x<y
+holds-here: yes (applies to centre-line structure of any candidate grid)
+status: proved (derivation given in source, from the two-squares identity)
+bearing: bounds how many distinct centre-lines a candidate can realise, a combinatorics
+  constraint on any 7/8/9-square grid
+anchor: research/sources/boyer-square-of-squares-search-v2.full.md
+```

@@ -7,6 +7,9 @@ mechanism: For each difference d ∈ {u, v, u+v, u-v}, the condition that e² ±
 
 This is distinct from Bremner's approach on E: y² = x(x² − c²). Instead of seeking three points in 2E(Q) in arithmetic progression, we study the simultaneous membership of four numbers in the congruent-number set, linked by their additive relations. The four-curve approach turns the problem into a question about the intersection of Selmer conditions, which can be computed via 2-descent on the relevant twist of the associated elliptic surface.
 
-status: proposed
+status: refuted
+precedent: The approach decomposes the same descent that Bremner's single-curve formulation E: y² = x(x²−c²) and Bremner II's K3 surface already handle more systematically. The four-curve Selmer data is exactly the geometric data encoded in the singular fibres and the Néron-Severi group of Bremner II's K3 surface S — the elliptic fibration E_λ already captures all four AP differences through its singular fibres at λ = ±1, ±i, ±√3, ±1/√3. The "common étale algebra" that would link the four Sel₂ groups is the function field Q(λ) of the base of the elliptic fibration, and the relations the approach seeks are exactly the torsion and rank data Bremner II already computed: E_λ(C(λ)) ≅ Z×Z×Z/4Z×Z/2Z with explicit generators. A separate 2-Selmer computation would recover a subset of the information Bremner already has — it does not add new leverage over what the K3 already encodes.
+
+killed-by: Subsumed by Bremner II — the four-curve 2-Selmer data is embedded in the Néron-Severi group and singular-fibre structure of the K3 surface S, which Bremner already computed completely. The approach offers no computational or theoretical advantage over working directly with the K3.
 first-step: Write the explicit 2-descent map for each E_d (d = u, v, u+v, u-v) with the same scaling e², derive the linear relations among Sel₂(E_d) classes induced by u + v = (u+v) and u − v = (u−v), and check whether the system has any rational solution compatible with local solubility at all primes.
 ```

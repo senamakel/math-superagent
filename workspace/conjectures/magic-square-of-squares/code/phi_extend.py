@@ -72,8 +72,11 @@ def preimage(A, B, M):
 
 def search(M, budget):
     t0 = time.time()
-    pairs = sorted(phi_pairs(M))
-    Phi = set(pairs)
+    raw = phi_pairs(M)
+    # sort by VALUE (reduced positive fractions); (num,den) tuple order is
+    # not value order
+    pairs = sorted(raw, key=lambda nd: nd[0] / nd[1])
+    Phi = set(raw)
     N = len(pairs)
     triples = []
     n_test = 0
@@ -112,7 +115,7 @@ def main():
     sizes = sys.argv[1:] or ["200", "300"]
     for Ms in sizes:
         M = int(Ms)
-        budget = float(sys.argv[1 + sizes.index(Ms) + 1]) if False else 600.0
+        budget = 600.0
         res = search(M, budget)
         if res is None:
             print(f"  M={M}: incomplete (budget); extending M further "

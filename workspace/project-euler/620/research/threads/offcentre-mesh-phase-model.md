@@ -70,7 +70,7 @@ holds-here: unchecked (oracle pending: g(16,5,5,6)=9, G(16)=9, G(20)=205)
 status: asserted (derived from tooth-phase congruences in this note; not yet numerically verified)
 bearing: the correct discreteness for the off-centre problem; makes g a count of d-solutions of three explicit congruences — no position enumeration, no beta-lattice.
 anchor: research/threads/offcentre-mesh-phase-model.md
-contradicts: (refines) least_mesh_angle, least_mesh_angle_handbook, least_mesh_angle_uts, assembly_condition_simple_planetary_guo — those hold only in the coaxial limit; the ledger's earlier 'holds-here: yes' transfer was unchecked.
+contradicts: least_mesh_angle, least_mesh_angle_handbook, least_mesh_angle_uts, assembly_condition_simple_planetary_guo
 ```
 
 ```claim

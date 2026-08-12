@@ -1,68 +1,46 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/morgenstern-properties-3x3-square-of-squares-2007.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Morgenstern, "3×3 Magic Square of Squares Properties" (2015) — [[morgenstern-properties-3x3-square-of-squares-2007.full]]
 
-<!-- source: http://www.multimagie.com/MorgensternMssProperties.pdf | converted from PDF -->
+Elementary number-theory proofs of structural restrictions on a primitive MSS (all entries distinct squares, gcd of entries = 1). The parametrisation used is x,y,z (centre x, steps y,z):
+```
+x+y    x-y-z   x+z
+x-y+z    x      x+y-z
+x-z    x+y+z   x-y
+```
+(equivalent to problem.md's c,u,v). The eight APs are: four through centre (steps y, z, y+z, y−z) and four on the pandiagonals (steps y, y, z, z) — Lemma 9. Note: **all nine entries are covered by the four through-centre APs.**
 
-1 / 1 1
+## AP structure (audit of classical facts)
+- AP of squares: A²+B²=2C². Primitive APs (gcd(A,B,C)=1) parametrised (Lemma 7): `A=2mn−m²+n², B=2mn+m²−n², C=m²+n²` with m,n coprime, one odd one even. Middle term C=m²+n².
+- Theorem 1 (parity): in an AP, A²,B²,C² are all odd or all even.
+- Theorem 2: middle term of a primitive AP consists only of 1 (mod 4) primes.
+- Theorem 3: an outer term 2r²−s² (of a primitive AP) consists only of 1 and 7 (mod 8) primes.
 
-      3 x 3   M a g i c   S q u a r e   o f   S q u a r e s   P r o p e r t i e s
+## MSS restrictions (proved)
+- **Theorem 4:** in a primitive MSS, all entries are odd.
+- **Theorem 5:** the central entry consists only of 1 (mod 4) primes.
+- **Theorem 6:** no entry can have a 3 (mod 8) prime factor.
+- **Theorem 7:** no middle-side entry can have a 5 (mod 8) prime factor.
+- Theorems 8–9: corner-entry 3 (mod 4) / 5 (mod 8) factors propagate to a couple of other entries (scaling argument).
+- **Theorem 10:** in a primitive MSS all entries are 1 (mod 3).
+- **Theorem 12:** in the x,y,z formulation, duplicated entries occur exactly when yz=0 (and the y=2z, y=z cases collapse because they'd force 5 or 7 squares in AP, impossible). For yz=0 the only non-trivial possibility is z=0 giving a grid built from one AP (e.g. {49,25,1} family).
 
-                                                      L e e   M o r g e n s t e r n
+## Step-value prime restrictions (Theorems 13–20, infinite-descent proofs)
+Put z = p·y, p integer. Then **p ∉ {0,1,2,3,4, any 4k+3 prime, q−1, q+1 for q a 4k+3 prime}**. Proofs are elementary (parity, primitive Pythagorean-triangle descent). p=4 would give six squares in an AP (impossible), p=3 gives nine squares in an AP (impossible), p a 4k+3 prime gives an infinite descent on y.
 
-                                                              J u l y ,   2 0 1 5
+**Bearing:** These are the strongest sieve/structural facts in the library. They constrain any candidate grid sharply: all entries odd, ≡1 mod 3, centre only-1-mod-4 primes, no 3-mod-8 prime factor anywhere, and the AP step ratio z/y avoids that forbidden set. Any impossibility proof built on the step-value arithmetic must respect (survive) the known 7-square witnesses — and the run's generator can test the forbidden-p set cheaply.
 
-                                                    A b s t r a c t
-
-          O l d   p r o p e r t i e s   n e w l y   p r o v e d   u s i n g   o n l y   e l e m e n t a r y   n u m b e r   t h e o r y .
-          P r o o f s   o f   n e w   p r o p e r t i e s   n o t   c o v e r e d   e l s e w h e r e .
-          U n d e r s t a n d i n g   t h e   p r o o f s   r e q u i r e s   k n o w l e d g e   o f   o n l y   m o d u l a r   a r i t h m e t i c
-          a n d   q u a d r a t i c   r e s i d u e s .
-
-I n t r o d u c t i o n
-T h i s   p a p e r   w a s   i n s p i r e d   b y   L a n d o n   W .   R a b e r n ' s   " P r o p e r t i e s   o f   m a g i c   s q u a r e s
-o f   s q u a r e s "   w h i c h   u s e s   a l g e b r a i c   n u m b e r   t h e o r y   t o   p r o v e   s e v e r a l   p r o p e r t i e s
-o f   t h e   e n t r i e s   i n   a   3 x 3   m a g i c   s q u a r e   o f   d i s t i n c t   s q u a r e s .     A l l   o f   R a b e r n ' s
-p r o p e r t i e s   c a n   b e   d e r i v e d   f r o m   t h e   p r o p e r t i e s   o f   t h r e e ‐ s q u a r e   a r i t h m e t i c
-p r o g r e s s i o n s   w h i c h   r e q u i r e   o n l y   e l e m e n t a r y   n u m b e r   t h e o r y .
-
-T h i s   p a p e r   e x p l a i n s   t h e s e   o l d   p r o p e r t i e s   i n   a   n e w   w a y   m a k i n g   t h e   p r o o f s
-m o r e   u n d e r s t a n d a b l e   t o   a   w i d e r   a u d i e n c e   a n d   g i v i n g   g r e a t e r   i n s i g h t   i n t o
-w h y   t h e s e   p r o p e r t i e s   a r e   t r u e .
-
-T h i s   p a p e r   a l s o   c o n t a i n s   p r o o f s   o f   p r o p e r t i e s   n o t   c o v e r e d   i n   R a b e r n ' s   p a p e r .
-
-L e m m a s   t h a t   a r e   u s e d   i n   t h e   p r o o f s
-T h e s e   a r e   a l l   p r o v a b l e   u s i n g   e l e m e n t a r y   n u m b e r   t h e o r y .
-
-L e m m a   1   T h e   s q u a r e   o f   a n   e v e n   n u m b e r   i s   0   ( m o d   4 ) .
-( 2 n ) 2   =   4 n 2 ,   w h i c h   i s   a   m u l t i p l e   o f   4 .
-
-L e m m a   2   T h e   s q u a r e   o f   a n   o d d   n u m b e r   i s   1   ( m o d   4 ) .
-( 2 n + 1 ) 2   =   4 n 2   +   4 n   +   1   =   4 n ( n + 1 )   +   1 .
-
-L e m m a   3   ‐ 1   i s   a   q u a d r a t i c   r e s i d u e   o f   a l l   1   ( m o d   4 )   p r i m e s ,
-b u t   a   q u a d r a t i c   n o n ‐ r e s i d u e   o f   a l l   3   ( m o d   4 )   p r i m e s .
-
-L e m m a   4   2   i s   a   q u a d r a t i c   r e s i d u e   o f   a l l   1   a n d   7   ( m o d   8 )   p r i m e s
-b u t   a   q u a d r a t i c   n o n ‐ r e s i d u e   o f   a l l   3   a n d   5   ( m o d   8 )   p r i m e s .
-
-L e m m a   5   I f   x   a n d   p   h a v e   n o   c o m m o n   f a c t o r ,   t h e n   t h e r e   e x i s t s   y
-s u c h   t h a t   x y   =   1   ( m o d   p ) .
-
-2 / 1 1
-
-A P   L e m m a s
-
-D e f i n i t i o n
-A n   A P ,   A r i t h m e t i c   P r o g r e s s i o n   o f   t h r e e   s q u a r e s ,   A 2   < =   C 2   < =   B 2 ,
-i s   s u c h   t h a t   B 2   ‐   C 2   =   C 2   ‐   A 2 ,   w h i c h   c a n   a l s o   b e   w r i t t e n
-A 2   +   B 2   =   2 C 2 .
-
-L e m m a   6   A l l   A P s   a r e   s c a l e d   v e r s i o n s   o f   p r i m i t i v e   A P s .
-I f   d   =   g c d ( A , B , C ) ,   t h e n   t h e r e   e x i s t s   a , b , c   s u c h   t h a t
-A   =   a d ,   B   =   b d ,   C   =   c d ,   a n d
-a 2   +   b 2   =   2 c 2
-w i t h   a , b , c   p a i r w i s e   c o p r i m e .
-
-L e m m a   7   A   p r i m i t i v e   A P   h a s   t h e   f o r m u l a
-
-*[excerpt ends; 23185 characters not shown — see `research/sources/morgenstern-properties-3x3-square-of-squares-2007.full.md`]*
+```claim
+id: morgenstern-primitive-restrictions
+statement: In a primitive 3×3 magic square of distinct squares: all entries are odd and
+  ≡1 (mod 3); the central entry has only 1 (mod 4) prime factors; no entry has a 3 (mod 8)
+  prime factor; no middle-side entry has a 5 (mod 8) prime factor; and with z=p·y the step
+  ratio p avoids {0,1,2,3,4, 4k+3 primes, q±1 (q a 4k+3 prime)}.
+hypotheses: primitive (gcd of entries = 1); all entries distinct positive squares
+holds-here: yes (these are exactly the objects of the problem, after removing a common
+  square factor)
+status: proved (elementary number theory, in-source, with full proofs)
+bearing: the sharpest sieve constraints available; any candidate grid and any descent must
+  satisfy them; the forbidden-p set is trivially testable on the generator output
+anchor: research/sources/morgenstern-properties-3x3-square-of-squares-2007.full.md
+contradicts: (none; consistent with Bremner's 7-square witness which has all-odd, ≡1 mod 3
+  entries)
+```

@@ -8,6 +8,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | --- | --- | --- | --- | --- |
 | `assembly_condition_simple_planetary_guo` | In a simple planetary stage (one planet per planet train), the assembly condition is (Z_ring + Z_sun)*psi_hat = 2*pi*n for an integer n; equivalently a planet meshing both the internal ring and the sun can occupy only… | yes | asserted | `research/summaries/compound-planetary-dynamics-mesh-phases-guo-2011.md` |
 | `coaxial_limit_reproduces_lattice` | As d -> 0 (realisable only when t=(c-s)/2 for every planet) the invariants reduce to W=(s+c)*psi - t*pi and pairwise congruence gives psi in (2pi/(s+c))*Z, reproducing the least-mesh-angle rule of all three design… | no | asserted | `research/threads/offcentre-mesh-phase-model.md` |
+| `compound_assembly_condition_uts_1162` | For a compound epicyclic train with identical planets (each planet a two-gear cluster: Npl-sun teeth on the sun-facing gear, Npl-ring teeth on the ring-facing gear), np planets assemble equally spaced iff… | no | asserted | `research/summaries/uts-igs-60-1162-compound-epicyclic-uts.md` |
 | `fitting_condition_2kh_sun2017` | For a single-pin 2KH-NGW planetary gear train the condition for fitting (evenly placing q planets between the two central gears) is (Z_a + Z_b)/q = n with n integer, where Z_a and Z_b are the central gear tooth counts;… | yes | asserted | `research/summaries/2kh-tooth-number-matching-sun-2017.md` |
 | `gears_model_fails_oracle` | The continuous-d phase-elimination meshing model in lib/gears.py (planet centre forced to circle(O,R-rho) ∩ circle(S,r+rho), arrangement parameterised by centre distance d, valid iff 2Fp, 2Fq, H are integers mod 1)… | yes | checked | `code/out/oracle_test.md` |
 | `homogeneity_condition_zou` | For evenly spaced identical planets in a single-pin planetary mechanism, the assembly condition is (Z_R + Z_S)/n_b = N with N integer; it is derived by fixing the ring gear, rotating the carrier by the inter-planet… | **unchecked** | asserted | `research/summaries/single-planetary-teeth-matching-zou-2015.md` |
@@ -28,27 +29,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Resolve these before building on either side.
 
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `(refines)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle`
 - `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle_handbook`
 - `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle_uts`
 - `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `assembly_condition_simple_planetary_guo`
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `—` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `those` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `hold` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `only` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `in` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `coaxial` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `limit;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `ledger's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `earlier` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `'holds-here:` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `yes'` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `transfer` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `was` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `unchecked.` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 

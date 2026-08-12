@@ -1,49 +1,72 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/bremner-on-squares-of-squares-II-2001.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Bremner, "On squares of squares II", Acta Arith. 99 (2001) 289–308 — [[bremner-on-squares-of-squares-II-2001.full]]
 
-<!-- source: http://www.multimagie.com/Bremner2.pdf | converted from PDF -->
+Companion to Bremner 1999; addresses problem (B) (magic square, maximise square entries). **Six square entries:** equivalent to the intersection of three quadrics in P⁵, one per symmetry class of the 16 ways to choose 6 of 9 entries; for each of the sixteen configurations there are infinitely many magic squares with those six entries square, via one-variable parametrisations. **Seventh square entry** then means rational points on a hyperelliptic curve f(t)=□ (generally high genus).
 
-## What it claims
+## The K3 surface S (Category III)
+Category III (squares at ±a+c, ±b+c, ±(a+b)+c) leads, with `a=2TU, b=2VW, a+b=−2XY, c=T²+U²=V²+W²=X²+Y²`, to
+```
+S:  T²+U² = V²+W² = X²+Y²,   TU+VW+XY = 0,
+```
+three quadrics in P⁵, non-singular, hence **K3**. Symmetry group of order 384; 24 conics and 32 lines on S.
 
-0. The problem of determining whether there can exist a 3 × 3 magic
-square whose entries are perfect squares is an intriguing one, and has been
-discussed by several authors, including Bremner [3], Gardner [6], Guy &
-Nowakowski [7], LaBar [9], Robertson [10], Sallows [11]. There are two un-
-derlying problems. First, to ﬁnd 3×3 squares all of whose entries are square,
-and with as many row, column, and diagonal sums as possible being equal.
-Second, to ﬁnd 3 × 3 magic squares with as many entries as possible being
-perfect squares. The ﬁrst problem was discussed in some detail in Brem-
-ner [3], and it is the intention of this current writing to address the second
-problem. A 3 × 3 square is said to be trivial if it contains repeated entries;
-there apparently is known just one non-trivial magic square (together with
-its symmetries) with seven square entries:
-
- 3732 2892 5652
+Each of the sixteen configurations admits an elliptic fibration; for Category III the pencil E_λ given by U−Y = λ(X+T) restricts to an elliptic curve over C(λ) of rank 2:
+> **Lemma.** E_λ(C(λ)) ≅ Z×Z×Z/4Z×Z/2Z, generators P1, P2, T4, T2. Canonical-height pairing matrix H = [[1,−1/2],[−1/2,1/2]], det = 1/4.
+> **Theorem.** NS(S,C) generated over Z by twenty divisors Γ1,…,Γ14 (conics) plus six lines Γ15…Γ20.
+> **Corollary.** NS(S,Q) generated over Z by the twelve divisors Γ1,…,Γ12.
+> **Corollary.** Any rational curve on S has **even degree**.
 
-360721 4252 232
+For a curve Γ on S, deg and self-intersection link to the integer divisors m1..m12 by the big identity (eq. 25) — a sum of squares of linear forms in the mi — suited to machine tabulation. Results for Category III rational curves:
+- degree 2: only the known conics (trivial squares);
+- degree 4: **none**;
+- degree 6: exactly the sextic Γ4+Γ5+Γ8+Γ9−Γ12 (+96 symmetries), parametrised (eq. 26);
+- degree 8: **none**;
+- degree 10: just one irreducible curve (eq. 27);
+- degree 12: none; degree 14: six, up to symmetry.
 
-2052 5272 222121
- (1) no examples known of non-trivial squares with eight square entries,
-unless one extends the ground ﬁeld when there are examples such as:
-
- (22 + 4√
+## Seven-square / eight-square status
+Only one non-trivial magic square with **seven** square entries is known (Bremner's (1), the same 7-square witness), and **no** 8-square non-trivial example is known. Searching Category VII (eq. 12) for a seventh square, the only solution found was the known (1) at λ=13, (p,q)=(9,2), region p+q+|n(λ)|+|d(λ)| ≤ 1000. Eight-square MSS exist over Q(√3) (eq. (2): `[(22+4√3)²,(17−9√3)²,(5+13√3)²; (23−√3)², 22·7·19, (23+√3)²; (5−13√3)²,(17+9√3)²,(22−4√3)²]`), built by an infinite family via the curve Y²=X(X²+8X+4) of rank 1 over Q(√3) (generator (−1,√3)).
 
-3 )2 (17 − 9√
-3 )2 (5 + 13√…
+## The computational upper bound — Buell
+"Citing Duncan Buell [5]: a careful search shows **no seven-square magic square with the hourglass configuration and central element < 25·10²⁴**." Hence any full MSS has central element > 25·10²⁴.
 
-## Statements it makes
+## Square-of-squares as intersection of six quadrics in P⁸
+The full demand (all nine entries squares) eliminates to six quadrics in P⁸ — "a surface" of high degree, hard to analyse (contrast: cuboid problem is four quadrics in P⁶). The reduction uses ideas of Swinnerton-Dyer on K3 surfaces.
 
-Lemma. Eλ(C(λ)) ≃ Z × Z × Z/4Z × Z/2Z, with respective generators
-P1, P2, T4, T2.
+```claim
+id: k3-category-III
+statement: Six-square magic squares reduce to three quadrics in P⁵; Category III gives the
+  non-singular K3 surface S: T²+U²=V²+W²=X²+Y², TU+VW+XY=0 with NS(S,Q) generated by
+  12 divisors; any rational curve on S has even degree; irreducible rational curves on S
+  occur only at degrees 6,10,14+ (none at degrees 4,8,12).
+hypotheses: Category III six-square configuration; S non-singular; ground field ⊇ Q
+holds-here: yes
+status: proved (in-source)
+bearing: exact K3 structure for one attack; even-degree/no-low-degree rational curves are
+  structural facts the Brauer–Manin / descent approaches must respect
+anchor: research/sources/bremner-on-squares-of-squares-II-2001.full.md
+```
 
-Theorem. The following 20 divisors generate NS(S, C) over Z: CT V X ,
-CU W X , CT W X, CU V X , CT V Y , CV XT , CW Y T , CW XT , CV XU , CU XV , CT Y V ,
-CT XV , C+++, L2 (which we denote by Γ1, . . . , Γ14, respectively), and the 6
-lines:
+```claim
+id: buoy-eight-open
+statement: Exactly one non-trivial 7-square magic square is known (Bremner's); no non-trivial
+  8-square or 9-square example is known over Q; 8-square examples exist over Q(√3).
+hypotheses: distinct entries, over Q unless noted
+holds-here: yes
+status: asserted (claimed in-source; the 8-square-over-Q non-existence is open, not proved)
+bearing: fixes the frontier: making the 7→8 step (realising one more of the half-realised
+  endpoints) is the precise open target; a 9-square proof must account for the extension-field
+  examples
+anchor: research/sources/bremner-on-squares-of-squares-II-2001.full.md
+```
 
-Corollary. Denote by NS(S, Q) that subgroup of NS(S, C) which is
-deﬁned over Q. Then NS(S, Q) is generated over Z by the twelve divisors
-Γ1, . . . , Γ12.
-
-Corollary. Any rational curve on S has even degree.
-
-*[digest of a 35238 character source; every section, statement, and proof in full at `research/sources/bremner-on-squares-of-squares-II-2001.full.md`]*
+```claim
+id: buell-central-bound
+statement: No seven-square magic square in the hourglass configuration has central element
+  < 25·10²⁴, so any 3×3 magic square of squares must have central element > 25·10²⁴.
+hypotheses: hourglass configuration (7 of the grids squares); search is exhaustive on central
+  element range
+holds-here: yes
+status: asserted (Bremner cites Buell's preprint; not reproduced here)
+bearing: the computational bound; the centre of any solution exceeds 25×10²⁴
+anchor: research/sources/bremner-on-squares-of-squares-II-2001.full.md
+```

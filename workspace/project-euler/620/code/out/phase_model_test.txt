@@ -1,0 +1,8 @@
+PE620 idler-phase model probe (no position lattice; phase roots in d)
+B_k = (r+eps*rho_k)*gamma_k + eps*(R-rho_k)*beta_k; conditions
+2B_p, 2B_q, B_p-B_q in Z (mod 1).  d in (DL, R-r-1].
+========================================================================
+
+[+1] g(16,5,5,6) = 0   (oracle 9)   DISAGREE   [0.09s]
+
+[-1] g(16,5,5,6) = 0   (oracle 9)   DISAGREE   [0.06s]

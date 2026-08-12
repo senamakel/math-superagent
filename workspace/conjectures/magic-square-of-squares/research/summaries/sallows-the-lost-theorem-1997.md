@@ -1,37 +1,27 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/sallows-the-lost-theorem-1997.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Sallows, "The Lost Theorem", Math. Intelligencer 19(4) 1997, 51–54 — [[sallows-the-lost-theorem-1997.full]]
 
-<!-- source: http://www.multimagie.com/Sallows.pdf | converted from PDF -->
+Presents the LS1 near-miss and a structural reinterpretation of 3×3 magic squares.
 
-## What it claims
+## The lost theorem
+> **Theorem.** To every parallelogram on the plane there corresponds a unique equivalence class of 8 complex 3×3 magic squares, and to every equivalence class of 8 complex 3×3 magic squares there corresponds a unique parallelogram on the plane (rotations/reflections disregarded).
 
-A magic square, as all the world knows, is a square array of numbers whose sum in any row,
-column, or main diagonal is the same. So-called "normal" squares are ones in which the numbers
-used are 1,2,3, and so on, but other numbers may be used. Squares using repeated entries are
-deemed trivial. We say that a square of  size N × N is of order N. Clearly, magic squares of order-
-1 lack glamour, while a moment's thought shows that a square of order 2 cannot be realized using
-distinct entries. The smallest magic squares of any interest are thus of order-3.
+Mechanics: the corner points, edge midpoints and centre of a parallelogram centred at M=c with half-side vectors a,b are P=c+a−b, Q=c+a+b, R=c−a+b, S=c−a−b, U=c+b, V=c−a, W=c−b. Entering P,Q,R,S,U,V,W,c in the Lucas positions reproduces the standard magic-square formula. The eight 3-term arithmetic progressions found in every 3×3 magic square correspond to the eight collinear triples along the four edges and four bisectors of the parallelogram.
 
-Writing in Quantum recently [2], Martin Gardner offered $100 to anyone able to produce a 3×3
-magic square composed of any nine distinct square numbers. So far nobody has produced a
-solution, or proof of its impossibility, although a near miss I discovered is the following:
+## Implication for this problem
+Integer/real magic squares correspond to **degenerate (zero-area) parallelograms** on the real line — this is why the correspondence went unnoticed for centuries. The nine entries c±a, c±b, c±(a±b), lying along a collapsed parallelogram, are exactly the parametrised grid. The four "through-centre" progressions are the bisectors; the four outer ones are the edges — a reminder that the through-centre four are not the whole story (the outer rows/cols are also APs) and any argument must respect all eight APs.
 
-222
- 222
- 222
- 978274
- 941132
- 5846127
+This source is **mildly relevant**: it re-frames the structure without changing the number-theoretic obstruction. It establishes the near-miss LS1 (the run's Sallows witness), but the existence question is untouched.
 
-a specimen whose rows, columns, and just one of the two main diagonals sum to the same
-number, itself a square: 1472. It was while tinkering in connection with this problem that I was
-startled to discover an elementary…
-
-Magic…
-
-## Statements it makes
-
-Theorem . To every parallelogram drawn on the plane  there corresponds a unique equivalence
-class of 8 complex 3 ×3 magic squares, and for every equivalence class of 8 complex 3 ×3 magic
-squares there corresponds a unique parallellogram on the plane .
-
-*[digest of a 14275 character source; every section, statement, and proof in full at `research/sources/sallows-the-lost-theorem-1997.full.md`]*
+```claim
+id: sallows-parallelogram
+statement: 3×3 magic squares (complex entries) biject with parallelograms: entries at corners,
+  edge-midpoints and centre; integer squares are the degenerate (collinear) case; the 8 APs in
+  any 3×3 magic square are the 4 edges and 4 bisectors of the parallelogram.
+hypotheses: 3×3 magic squares, complex entries
+holds-here: yes (classical geometry of the parametrisation)
+status: proved (in-source)
+bearing: structural view only; does not touch the squareness obstruction. The four outer
+  rows/cols are also APs — a complete analysis must handle all eight, not just the four
+  through-centre ones.
+anchor: research/sources/sallows-the-lost-theorem-1997.full.md
+```
