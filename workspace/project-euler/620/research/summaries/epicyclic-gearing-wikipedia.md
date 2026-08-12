@@ -1,42 +1,52 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/epicyclic-gearing-wikipedia.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Epicyclic Gearing — Wikipedia (encyclopedic tier)
 
-<!-- source: https://en.wikipedia.org/wiki/Epicyclic_gearing | converted from HTML -->
+[[research/sources/epicyclic-gearing-wikipedia.full.md]] · source:
+https://en.wikipedia.org/wiki/Epicyclic_gearing
 
-## What is in it
+## What it establishes
 
-  - Kinematic equations
-  - Overview
-  - History
-  - Requirements for non-interference
-  - Gear speed ratios of conventional epicyclic gearing
-  - Accelerations of standard epicyclic gearing
-  - Torque ratios of standard epicyclic gearing
-  - Fixed carrier train ratio
-    - Spur gear differential
-  - Gear ratio of reversed epicyclic gearing
-  - Compound planetary gears
-  - Power splitting
-  - Advantages
-  - 3D printing
-  - Gallery
-  - See also
-  - References
-  - External links
+Fixes the standard terminology and kinematic equations for epicyclic (planetary) gear
+trains:
 
+- Structure: sun gear (central), planets in a carrier, ring (annulus). Pitch circles
+  roll without slip. A planet meshes with both sun and ring.
+- **Fixed-carrier train ratio**: with the carrier held fixed the train acts as an
+  idler gear train; the sun-to-ring speed ratio is
+  `ω_r/ω_s = −N_s/N_r` (sign from the internal-ring convention), i.e.
+  `ω_s·N_s = −ω_r·N_r` (eq. in "Gear speed ratios" / "Fixed carrier train ratio").
+- **Gear-speed ratios**: for a conventional epicyclic set with carrier speed n_c,
+  sun speed n_s, ring speed n_r: `n_c = (n_r·N_r + n_s·N_s)/(N_r + N_s)` — the
+  **sum `N_r + N_s` appears as the denominator of the carrier speed formula**, the
+  same sum that appears in the planet-position quantization step 2π/(N_r+N_s).
+- Torque ratios and accelerations: static torque balance; input/output/reaction
+  element conventions.
+- Non-interference: planets' outer diameters and adjacent spacing constraints.
 
-## What it claims
+## Implication for PE620
 
-This article **needs [more citations][2]**. Please help [improve this article][3] by [adding citations to reliable sources][4]. Unsourced material may be challenged and [removed][5].
-*Find sources:*["Epicyclic gearing"][6] – [news][7]**·**[newspapers][8]**·**[books][9]**·**[scholar][10]**·**[JSTOR][11]*( July 2026)**( [Learn how and when to remove this message][12])*
+- The ring is an *internal* gear: its tooth count contributes positively to the
+  carrier speed denominator, consistent with the least-mesh-angle step
+  2π/(Z_ring + Z_sun) (ring teeth count positively, sun teeth positively).
+- PE620's condition "perfectly meshing = constant angular-velocity ratio + teeth
+  align with grooves" is exactly the rolling-without-slip of pitch circles in this
+  entry plus the tooth-perfect alignment that the assembly condition
+  (Guo 5.21) converts to quantization.
+- The `(N_r + N_s)` denominator is a second, independent place (besides Guo's
+  assembly-condition derivation) where the run's magic sum appears in the standard
+  kinematic equations.
 
-|
-
-For the ring gear used in starter motors, see [Starter ring gear][13].
-
-[14] This planetary gear train consists of a sun gear (yellow), planet gears (blue), and a carrier (green) inside a ring gear (red).
-
-An **epicyclic gear train**(also known as a **planetary gearset**) is a [gear reduction][15] assembly consisting of two [gears][16] mounted so that the center of one gear (the "planet") revolves around the center of the other (the "sun"). A carrier connects the centers of the two gears and rotates to carry the planet gear(s) around the sun gear. The planet and sun gears mesh so that their [pitch circles][17] roll without slip. If the sun gear is held fixed, then a point on the pitch circle of the planet gear…
-
-An…
-
-*[digest of a 66650 character source; every section, statement, and proof in full at `research/sources/epicyclic-gearing-wikipedia.full.md`]*
+```claim
+id: wiktionary_epicyclic_carrier_speed_denominator
+statement: In a conventional epicyclic gear set the carrier speed is
+  n_c = (n_r*N_r + n_s*N_s)/(N_r + N_s); the sum of ring and sun tooth counts is the
+  denominator of the carrier-speed formula. Ring (internal) tooth count enters
+  positively, sun positively.
+hypotheses: conventional epicyclic set; rolling without slip; internal ring gear.
+holds-here: true — PE620's C (ring, c teeth) and S (sun, s teeth); the same
+  denominator c+s appears in the planet-position quantization 2*pi/(c+s).
+status: sourced (Wikipedia "Epicyclic gearing", encyclopedic tier; consistent with
+  tec-science Willis equation and MIT OCW 2.000 notes).
+bearing: fixes terminology; corroborates that the sum c+s is the system's fundamental
+  tooth-count scale.
+anchor: research/sources/epicyclic-gearing-wikipedia.full.md
+```
