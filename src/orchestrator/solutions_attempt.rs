@@ -123,6 +123,7 @@ impl SolutionState {
             judged: Verdict::Proceed,
             blocked: 0,
             computational: 0,
+            unverified: 0,
         }
     }
 
