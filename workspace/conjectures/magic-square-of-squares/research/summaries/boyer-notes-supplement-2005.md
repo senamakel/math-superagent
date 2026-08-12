@@ -1,24 +1,45 @@
-# Boyer, "Supplement: Some Notes on the Magic Squares of Squares Problem" (2005) — [[boyer-notes-supplement-2005.full]]
+# Boyer, "Supplement to Some Notes on the Magic Squares of Squares", 2005
 
-Boyer's supplement to his Mathematical Intelligencer survey. Content is almost entirely about **larger order** and **other** problems, not the 3×3 target:
-- Lucas's 3×3 **semi-magic** squares of squares (rows and columns equal, diagonals not): parametrisation with (p,q,r,s), magic sum S2 = (p²+q²+r²+s²)². Lists all (p,q,r,s) giving 6 magic lines with sum ≤100², and 7 magic lines with sum ≤2000² (e.g. (1,3,4,11) → 147² = the LS1 near-miss; (3,5,8,14) → 294²; …). These are **near-misses of variant (A)** (7 of 8 line sums), not magic squares.
-- Euler's 4×4 magic squares of squares (rows, columns and diagonals equal): parametrisation with (a,b,c,d,p,q,r,s), magic sum S2 = (a²+b²+c²+d²)(p²+q²+r²+s²)², two extra conditions for the diagonals. Lists the family ≤10000 (CB1, CB15…).
-- Prime-number magic squares of order 4 and 5 (CB16, CB17, CB18) and bimagic/cube-of-primes open problems.
+[[boyer-notes-supplement-2005]]
 
-**Bearing on the 3×3 problem: marginal.** Confirms only the existence of the LS1 near-miss (7 of its 8 line sums equal), already in the witness set, and provides Lucas's family from which LS1 comes. The 4×4 and 5×5 material does not bear on the 3×3 hard case. The 3×3 semi-magic family is nonetheless useful context: it shows the difficulty is specifically making the *two diagonals* also equal, i.e. the diagonal/centre-line constraint, not the row/column constraint.
+Supplement listing Lucas's 3×3 semi-magic squares-of-squares family (6 or 7 magic lines) and
+Euler's 4×4 magic squares of squares, with complete small listings.
 
-**Does not help** the primary question beyond confirming what the 3×3 problem reduces to (lines versus diagonals). Useful as a source for the Lucas family that produces LS1 and for the historical Euler 4×4.
+## Established statements
+- **Lucas 3×3 semi-magic family** (rows and columns sum to `S²=(p²+q²+r²+s²)²`):
+  ```
+  (p²+q²−r²−s²)²  [2(qr+ps)]²   [2(qs−pr)]²
+  [2(qr−ps)]²     (p²−q²+r²−s²)²  [2(rs+pq)]²
+  [2(qs+pr)]²     [2(rs−pq)]²   (p²−q²−r²+s²)²
+  ```
+  Complete list with distinct entries and magic sum ≤ 100²: (1,2,4,6) 57², (1,2,3,7) 63²,
+  (2,3,4,6) 65², (1,3,5,6) 71², (1,2,5,7) 79², (2,4,5,6) 81², (1,2,4,8) 85², (1,4,5,7) 91²,
+  (2,3,4,8) 93², (1,3,6,7) 95², (1,3,5,8) 99², (3,4,5,7) 99².
+  With 7 magic lines and sum ≤ 2000²: (1,3,4,11) 147² (=**MS1**, which is the LS1 square!),
+  (3,5,8,14) 294², (4,9,11,17) 507², (2,6,8,22) 588², etc.
+- **Key fact:** LS1 belongs to this Lucas family ((1,3,4,11) → 147²). So the Parker/LS1
+  near-miss is not *ad hoc* but a low member of Euler/Lucas's 3×3 semi-magic parametrisation.
+- **Euler 4×4** family with both diagonals, sum `(a²+b²+c²+d²)(p²+q²+r²+s²)` under two extra
+  conditions; small examples listed (CB1 = 3230, etc.).
+
+## Implications for this run
+- The LS1 witness is a member of the Lucas family: this ties problem (A)'s best near-miss to
+  a 4-parameter construction. Useful context but does not bear on the 9-square-over-Q
+  impossibility.
+- The 7-line (hence 7-of-8-sums) members of the family are exactly the "squared square"
+  near-misses; no 8/9-of-8-sums member appears in the small listings.
+
+## Assessment
+- Valuable as the source placing LS1 in the Lucas family and giving the complete small census
+  of the semi-magic family. No impossibility content.
 
 ```claim
-id: lucas-family-lines
-statement: Lucas's (p,q,r,s) family gives 3×3 semi-magic squares of distinct squares with
-  all 3 rows and 3 columns equal (sum (p²+q²+r²+s²)²); it produces examples with 6 or 7 lines
-  equal, e.g. (1,3,4,11)→147² (the Sallows LS1 near-miss). The diagonals are the obstruction:
-  making them also equal is what the hard 3×3 problem demands.
-hypotheses: semi-magic (rows+columns) 3×3; distinct entries
-holds-here: yes
-status: catalogued (term lists in-source)
-bearing: places LS1 in Lucas's family; isolates that the open problem is forcing the two
-  diagonals to also match, i.e. the through-centre AP differences to be additive-coupled
+id: ls1-in-lucas-family
+statement: Sallows' LS1 (7 of 8 sums = 147²) is the (p,q,r,s)=(1,3,4,11) member of Lucas's 3x3
+  semi-magic family, magic sum 147².
+hypotheses: the Lucas parametrisation; (1,3,4,11) square
+holds-here: yes (checked: 147²=21609)
+status: catalogued
+bearing: ties the Parker witness to a structured parametrisation; no bearing on full impossibility
 anchor: research/sources/boyer-notes-supplement-2005.full.md
 ```
