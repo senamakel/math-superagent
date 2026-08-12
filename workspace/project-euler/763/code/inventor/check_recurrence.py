@@ -87,6 +87,7 @@ def main():
             b_match = (s == len(nxt))
             print(f"N={N}: D={len(level)} A1bad={a1} A2bad={a2} A3bad={a3} "
                   f"B: sum f(C)={s} vs D({N+1})={len(nxt)} match={b_match}")
+            level = nxt
         else:
             print(f"N={N}: D={len(level)} A1bad={a1} A2bad={a2} A3bad={a3}")
     print("\nD(0..7):", D)
