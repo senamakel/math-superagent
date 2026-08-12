@@ -49,7 +49,7 @@ use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
 use documents::WorkspaceDocuments;
 use patterns::PatternTool;
-use vector::{RecallMemoryTool, RememberMemoryTool, VectorStore};
+use vector::{RecallMemoryTool, RelateMemoryTool, RememberMemoryTool, VectorStore};
 
 pub use tinyagents::harness::host::AgentDefinition;
 
@@ -702,7 +702,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     // workspace's own record, and the note store that outlives it. They are
     // listed together because a caller deciding who to delegate to is asking
     // one question — can this role find out what the run already has.
-    let memory_tools = ["recall_memory", "remember_memory"];
+    let memory_tools = ["recall_memory", "remember_memory", "relate_memory"];
     let mut registry = AgentRegistry::new();
     registry.register(
         AgentDefinition::new(
@@ -1476,6 +1476,12 @@ fn register_support_agents(
 fn register_memory(harness: &mut AgentHarness<()>, store: &VectorStore) {
     register_resilient(harness, Arc::new(RecallMemoryTool::new(store.clone())));
     register_resilient(harness, Arc::new(RememberMemoryTool::new(store.clone())));
+    // The graph half. Without it every role treats a knowledge graph as a
+    // search box: `recall_memory` returns the passages nearest a phrase, which
+    // is what a vector store already did, while `relate_memory` returns the
+    // edges the graph holds — so a connection the run established across two
+    // sources, and never wrote down in one place, is retrievable.
+    register_resilient(harness, Arc::new(RelateMemoryTool::new(store.clone())));
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
