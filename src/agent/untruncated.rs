@@ -55,23 +55,18 @@ use crate::agent::trace::RunTracer;
 /// recovery, which still has its ladder.
 const MAX_REISSUES: u32 = 1;
 
-/// Ceiling on cap growth, as a multiple of the run's configured turn cap.
-///
-/// Twice, so the single re-issue above can double once and no further. Kept as
-/// its own bound rather than folded into the count, because they answer
-/// different questions: how many extra calls a turn may cost, and how large
-/// any one of them may get.
-///
-/// A multiple of the *configured* cap rather than of whatever this request
-/// happens to carry, because this is not the only thing that doubles. The
-/// vendored loop recovers its own shape of truncation the same way, so a turn
-/// it has already re-issued arrives here at twice the cap — and read as an
-/// original, that doubles again. A live `goals` agent reached a 48,000-token
-/// re-issue exactly this way, four times the configured ceiling and some
-/// twelve minutes of generation, against a wrapper documented to allow twice.
-/// Measuring growth from the configured cap makes the two ladders share one
-/// ceiling instead of composing into it.
-const MAX_CAP_GROWTH: u32 = 2;
+// There is deliberately no cap growth here any more, and measuring the hidden
+// reasoning channel is what removed it. Every turn that reached the old doubled
+// ceiling reported `out=24000` with `reasoning_tokens=23999`: one visible token
+// against twenty-four thousand spent thinking. A turn in that state is not short
+// of room — it is not emerging — so doubling bought a longer silence and a
+// second full generation to pay for it. PE236's `tool_builder` truncated at
+// 12,000, was re-issued at 24,000, and had still written nothing five minutes
+// later.
+//
+// The room now lives in the cap itself, which `RunBudget` raised to 48,000 on
+// the same evidence, and the re-issue spends its one attempt on telling the
+// model what happened instead. See `REISSUE_INSTRUCTION`.
 
 /// What a re-issued turn is told, beside being given more room.
 ///
@@ -157,7 +152,7 @@ impl<S: Send + Sync> UntruncatedModel<S> {
     }
 }
 
-/// Builds the re-issued request: more room, and the reason it is being asked again.
+/// Builds the re-issued request: the same room, and the reason it is being asked again.
 ///
 /// The instruction is appended as a system message rather than folded into the
 /// existing one, so it arrives *after* the conversation the model was cut off

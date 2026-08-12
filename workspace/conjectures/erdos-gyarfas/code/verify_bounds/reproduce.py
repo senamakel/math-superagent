@@ -141,11 +141,14 @@ def part3(out, max_n=None, time_budget_seconds=540):
     print("          (every connected cubic graph, up to isomorphism)", file=out)
     print("=" * 76, file=out)
     start_wall = time.time()
-    if max_n is None:
-        max_n = 4
-        # find the largest even n that completes within the time budget
     reached = []
+    last_check_time = None
     for n in range(4, 42, 2):  # cubic needs even n
+        # Extrapolate: generation grows ~15x per +2 vertices (A000421 growth).
+        # If even the fastest previous step took longer than the remaining
+        # budget scaled, stop before attempting this n.
+        if last_check_time is not None and time.time() - start_wall > time_budget_seconds:
+            break
         t0 = time.time()
         g6 = connected_cubic_graph6(n)
         t_gen = time.time() - t0
@@ -157,11 +160,14 @@ def part3(out, max_n=None, time_budget_seconds=540):
                 n_free += 1
         t_check = time.time() - t0
         reached.append((n, len(g6), n_free, t_gen, t_check))
+        last_check_time = t_check
         marker = "  <-- no-C4&C8 cubic graph here" if n_free else ""
         print(f"    n={n:3d}  connected-cubic={len(g6):9d}"
               f"  no-C4&C8-free={n_free:3d}{marker}"
               f"  (gen {t_gen:5.1f}s, check {t_check:6.1f}s)", file=out, flush=True)
-        if time.time() - start_wall > time_budget_seconds:
+        # cost of the next n would be ~15x this n's generation; only attempt it
+        # if the whole run still fits the budget (generous 20x extrapolation).
+        if time.time() - start_wall + 20 * t_gen > time_budget_seconds:
             break
     print(file=out)
     n_reached = max(n for n, *_ in reached)
