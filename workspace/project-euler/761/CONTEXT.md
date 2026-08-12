@@ -240,7 +240,9 @@ is the genuinely independent geometric attempt: homothetic scale-1/v staging,
 CCW committed perimeter, max over (psi,s_Q) of perim−v·|P−Q|, bisected on v, inradius-1 hexagon with runner at edge midpoint. It has a **circle self-validation
 gate** (Stage 1 must reproduce V_circle=4.60333885 before Stage 2's hexagon
 number is trusted), which makes it the correct framework (unlike the two plain
-straight-dash variants). It was never executed — no `_OUTPUT.txt`, no code/INDEX.md entry.
+straight-dash variants). It was never successfully run — the only artifact is an
+**empty 0-byte `hexagon_first_principles_explore_OUTPUT.txt`** (placeholder, no
+content), and no code/INDEX.md entry.
 **Action: run `python code/hexagon_first_principles_explore.py`, capture output,
 and check its hexagon critical v against 2+2√21/3 = 5.05505046.** (By contrast
 `code/hexagon_independent_solver.py`, also never run, is another straight-dash
