@@ -117,75 +117,70 @@ dataset, so session traces do not leak across projects.
 
 ## The solution loop
 
-Every run is driven by an explicit attempt, reflect, diversify cycle. There is
-no single-turn mode: a hard problem's first approach is usually wrong, and the
-single-turn path differed only in throwing that information away.
+Every run is driven by an explicit attempt, judge, reflect, diversify cycle.
+There is no single-turn mode: a hard problem's first approach is usually wrong,
+and the single-turn path differed only in throwing that information away.
 
 ```text
-  attempt ──> reflect ──┬─ solved ──────────────────────────> done
-     ▲                  ├─ retry ─────────────────> attempt
-     │                  └─ stuck ──> diversify ────┘
-     └────────────────────────────────────────────────┘
+  attempt ──> judge ──┬─ restart ──────────────────> attempt
+     ▲                └─ reflect ──┬─ solved ──────> done
+     │                             ├─ retry ───────> attempt
+     │                             └─ stuck ──> diversify ──┐
+     └──────────────────────────────────────────────────────┘
 ```
 
-Reflection runs after every attempt, not only after failures, and an answer
-that was not verified by a second independent route counts as unsolved. A
-`SOLVED` verdict is also rejected unless the workspace actually contains a
-program: a confident final report with nothing that ever ran is the signature
-failure of a small fast model, and ending the loop on it presents a guess as a
-result.
+The judge and the reflection answer different questions. Reflection asks whether
+the answer is right, and it alone can end the loop; an answer that was not
+verified by a second independent route counts as unsolved, and so does a
+confident final report with no program behind it. The judge asks whether the
+attempt was *conducted* in a way the next one should inherit, and returns
+PROCEED, STEER, or RESTART.
 
-The pattern agent runs concurrently with reflection on the same attempt, because
-the exploitable regularity in a sequence is usually visible in the first terms a
-run computes and waiting for the loop to stall means spending the budget it
-would have saved. Past five attempts without a verified answer, each reflection
-also re-opens the literature. By then the run knows what it tried and what the
-numbers look like, which makes a far better query than the statement alone. The
-loop stops after eight attempts and returns what it has.
+Reflection runs after every attempt, not only after failures, because the lesson
+from a partial success is what stops the next attempt repeating it. The pattern
+agent runs beside the solve on its own cadence, because the exploitable
+regularity in a sequence is usually visible in the first terms a run computes.
+Past five attempts without a verified answer, each reflection also re-opens the
+literature: by then the run knows what it tried and what the numbers look like,
+which makes a far better query than the statement alone. Diversification triggers
+on *consecutive* unproductive attempts, so a run making thin but genuine progress
+never reaches it. The loop stops after eight attempts and returns what it has.
 
-Diversification triggers on *consecutive* unproductive attempts, so a run making
-thin but genuine progress never reaches it. When it does, `diversify` runs three
-arms concurrently: the librarian followed by the scholar, the pattern agent, and
-the inventor. Between them they bring in material, structure, and a different
-approach before the next attempt.
-
-A completed `research` run starts a `scholar`, which reads the new sources and
-stores durable, source-backed findings in Cognee. The follow-up is
-fire-and-forget, so `await_agent` returns as soon as research itself is done.
+Every threshold above is a number a live run has already met, and the reasoning
+for each one is in [`docs/solution-loop.md`](docs/solution-loop.md).
 
 The container includes `python`, `python3`, `pip`, and `pip3`, with `sympy`,
-`numpy`, `scipy`, `gmpy2`, and `networkx` baked into the image. A run that has
-to install `sympy` before it can factor anything spends minutes of its budget on
-setup. Packages installed with pip are placed in the selected workspace under
-`.python-packages`, so the read-only container filesystem stays intact and
-dependencies persist with the problem artifacts.
+`numpy`, `scipy`, `gmpy2`, and `networkx` baked into the image, alongside the
+constraint stack (`z3`, `cvc5`, CP-SAT, PySAT, `nauty`) and Lean 4 with a
+pre-built Mathlib. A run that has to install `sympy` before it can factor
+anything spends minutes of its budget on setup. Packages installed with pip are
+placed in the selected workspace under `.python-packages`, so the read-only
+container filesystem stays intact and dependencies persist with the problem
+artifacts.
 
 A recoverable tool failure never ends a run. Every tool is registered through a
 resilient wrapper that turns an error into a result the model can read and
 correct, and middleware appends advice and escalates when the same tool keeps
-failing. A Cognee request failure, a bad path, or a non-UTF-8 download costs a turn
-rather than the run's accumulated work.
+failing. A Cognee request failure, a bad path, or a non-UTF-8 download costs a
+turn rather than the run's accumulated work.
 
 A single tool call may run for ten minutes and a whole agent run for two hours.
 Within that, an agent gets 250 model calls and 4000 tool calls; a run that
-reaches the model-call cap stops and returns what it has rather than
-discarding the work. Each model turn is capped at 12000 output tokens, which is
-a safety ceiling against an unbounded wall clock rather than a way to make the
-model concise. Set low enough to bind an ordinary turn, it truncates the model
-mid-generation and buys a retry. Every limit is overridable through the
-`MATH_AGENT_*` variables documented in `.env.example`.
+reaches the model-call cap stops and returns what it has rather than discarding
+the work. Every limit is overridable through the `MATH_AGENT_*` variables
+documented in `.env.example`, and [`docs/runtime.md`](docs/runtime.md) says what
+each one is protecting against.
 
 The runtime is built to find the structure in a problem rather than to search
 its answer space. The tool-builder must state time and space complexity before
-substantial execution, and the runtime rejects commands declared as
-exponential. A method whose cost grows with the bound in the problem statement
-is treated as the wrong method, not as a slow one, and brute force is reserved
-for checking the real method on small cases.
+substantial execution. An intractable declaration is refused unless it carries a
+concrete `oracle_bound` — brute force validating the real method on small
+instances is legitimate, an unbounded search is not — and so is a declaration
+that names a search strategy instead of a cost.
 
 Cognee is the sole durable memory service. Every role can recall prior results,
-lessons, sources, and failed approaches, and can store concise reusable
-findings. Cognee uses a local FastEmbed model while its graph extraction uses
-DeepSeek V4 through OpenRouter. Pass `--no-research` to withhold web search;
+lessons, sources, and failed approaches, and the three roles whose output is
+durable knowledge can store them. Pass `--no-research` to withhold web search;
 Cognee recall remains available.
 
 All model calls use DeepSeek V4 Flash through OpenRouter, preferring the
@@ -193,6 +188,7 @@ DeepInfra route by default so the large fixed prompt prefix keeps hitting one
 provider's cache. Fallbacks stay enabled, so a busy provider never halts the
 runtime. Set `OPENROUTER_MODEL` or `MATH_AGENT_PROVIDER` to change either.
 TinyAgents provides the model loop, tools, delegation, and middleware.
+
 
 ## Watching a run
 
