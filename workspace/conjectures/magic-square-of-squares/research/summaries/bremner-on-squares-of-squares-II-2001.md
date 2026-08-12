@@ -40,9 +40,11 @@ elliptic curve F over `Q(λ)`, rank 2; remaining entries square become quartic c
   degree 10 one, degree 14 six (impracticable beyond).
 
 **Q(√3) family.** Over `Q(√3)` there is an **infinite family of 8-square magic squares**
-(e.g. `(22+4√3)², (17−9√3)², …`, middle `22·7·19`), via curves `Y²=X(X²+8X+4)` (rank 1)
-and `Y²=X(X²+2X−2)` (rank 2). So 8-square MSS exist over the quadratic field, matching
-"no rational 8-square example known".
+(e.g. `(22+4√3)², (17−9√3)², …`, middle `2²·7·19 = 532`, i.e. the degree-4 grid of
+Bremner 1999 transposed; note its centre is 532 = 133·2², NOT "133·22" — Bremner 1999's
+OCR shows 2926, but exact row-sum arithmetic forces 532), via curves `Y²=X(X²+8X+4)`
+(rank 1) and `Y²=X(X²+2X−2)` (rank 2). So 8-square MSS exist over the quadratic field,
+matching "no rational 8-square example known".
 
 ## Implications for this run
 

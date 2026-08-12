@@ -35,10 +35,16 @@ gives a MSS with entries in `Q(θ)`. A linear factor would give a *rational* MSS
 arises. Smallest-degree genuine MSS: **degree 4** over `Q(√3,√133)`:
 ```
 (5−13√3)²  (17+9√3)²  (22−4√3)²
-(23−√3)²   133·22     (23+√3)²
+(23−√3)²   532        (23+√3)²
 (22+4√3)²  (17−9√3)²  (5+13√3)²
 ```
-also a one-parameter family over `Q(i,√(µ³−µ))`, and one MSS over `Q(u)` of degree 27.
+with magic constant 3·532 = 1596.
+(**Correction of the OCR'd "133·22"**: exact row-sum arithmetic in `Q(√3)`
+forces the centre to 532 = 133·2² = 2²·7·19 = (2√133)², not 2926 = 133·22;
+Bremner II 2001's independently printed transposed grid carries the centre
+`2²·7·19` = 532 and the same eight square entries over `Q(√3)`, so the two
+sources agree. Verified: `code/bremner_deg4_check.py`, exact arithmetic.)
+Also a one-parameter family over `Q(i,√(µ³−µ))`, and one MSS over `Q(u)` of degree 27.
 
 **Witness.** The 7-square true magic square:
 ```

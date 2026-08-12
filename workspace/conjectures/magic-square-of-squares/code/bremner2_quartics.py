@@ -4,7 +4,7 @@ Extract the exact quartics, verify the lambda=13,p=9,q=2 square for (12),
 factor the three quartics of (13) and compute the genus of quartic(p,q)=Y^2.
 """
 import sympy as sp
-from sympy.ntheory import isqrt
+import math
 
 lam, p, q = sp.symbols('lam p q', real=True)
 
@@ -32,7 +32,7 @@ print()
 print("=== TASK 1: eq (12) at lam=13, p=9, q=2 ===")
 val = C12.subs({lam: 13, p: 9, q: 2})
 print("value          =", val)
-r = sp.isqrt(val)
+r = math.isqrt(val)
 print("isqrt          =", r, " squared =", r**2, " is a perfect square:", r*r == val)
 print("12682/34       =", sp.Rational(12682, 34))
 print("373*34         =", 373*34)
