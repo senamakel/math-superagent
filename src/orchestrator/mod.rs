@@ -345,34 +345,20 @@ impl OrchestratorAgent {
             },
         )?;
 
-        // goals: the worker the solution loop drives, with the full specialist
-        // bench beneath it.
-        let mut goals_harness = specialist_harness(model.clone(), budget, "goals", &tracer);
-        for tool in async_subagents.tools(SPECIALISTS) {
-            register_resilient(&mut goals_harness, tool);
-        }
-        for tool in documents.tools() {
-            register_resilient(&mut goals_harness, tool);
-        }
-        register_recall(&mut goals_harness, &workspace);
-        register_note_recall(&mut goals_harness, &vector_store);
-        async_subagents.register("goals", Arc::new(goals_harness), prompts.goals)?;
+        let orchestrator_harness = register_planners(
+            &async_subagents,
+            &Planners {
+                model: &model,
+                budget,
+                tracer: &tracer,
+                workspace: &workspace,
+                documents: &documents,
+                vector_store: &vector_store,
+            },
+            std::mem::take(&mut prompts.goals),
+        )?;
 
         let registry = Arc::new(default_registry(research_enabled)?);
-
-        let mut orchestrator_harness = specialist_harness(model, budget, "orchestrator", &tracer);
-        for tool in async_subagents.tools(DELEGATES) {
-            register_resilient(&mut orchestrator_harness, tool);
-        }
-        for tool in documents.tools() {
-            register_resilient(&mut orchestrator_harness, tool);
-        }
-        // The orchestrator plans against the same record the goals agent does,
-        // and had neither way into it: it could read a path it already knew and
-        // nothing else. A planner that cannot find what the run has already
-        // tried delegates it again.
-        register_recall(&mut orchestrator_harness, &workspace);
-        register_note_recall(&mut orchestrator_harness, &vector_store);
 
         Ok(Self {
             inner: ObservedAgent::from_harness(orchestrator_harness)?.with_tracer(tracer.clone()),
