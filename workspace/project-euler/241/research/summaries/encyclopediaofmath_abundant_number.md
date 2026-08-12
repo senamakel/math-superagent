@@ -1,26 +1,38 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/encyclopediaofmath_abundant_number.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Encyclopedia of Mathematics — Abundant number
 
-<!-- source: https://encyclopediaofmath.org/wiki/Abundant_number | converted from HTML -->
+Source: https://encyclopediaofmath.org/wiki/Abundant_number — `[[encyclopediaofmath_abundant_number.full]]`
 
-## What is in it
+## What it establishes
 
-        - Navigation
-        - Tools
-        - Namespaces
-        - Variants
-        - Views
-        - Actions
-- Abundant number
-  - Miscellaneous results.
-      - References
+Standard definitions and classical history of the abundancy trichotomy:
 
+- n is **abundant** if σ(n) > 2n, **deficient** if σ(n) < 2n, **perfect** if
+  σ(n) = 2n (some authors use σ(n) ≥ 2n for "abundant", including perfects).
+- History: Nicomachus (~100) classified even numbers; Boethius (~500) repeated
+  it; Jordanus (~1236) proved (correctly) that **every multiple of a perfect or
+  abundant number is abundant** — this is the monotonicity I(kn) ≥ I(n) in its
+  earliest specific form (only the "abundant" side, not the full index
+  monotonicity of Laatsch).
 
-## What it claims
+## Relation to PE 241
 
-Let $\sigma ( n )$ denote the sum of the distinct divisors of an integer $n$ (cf. [Divisor][23]; [Number of divisors][24]). The integer $n$ is called abundant if $\sigma ( n ) > 2 n$; deficient if $\sigma ( n ) < 2 n$; and perfect if $\sigma ( n ) = 2 n$ (cf. also [Perfect number][25]). Note that some authors call a number $n$ abundant if $\sigma ( n ) \geq 2 n$. Clearly, these numbers are in fact perfect or abundant (i.e. "non-deficient") numbers.
+- The hemiperfect condition σ(n)/n = k + 1/2 sits strictly between perfect
+  (σ/n = 2) and abundant (σ/n > 2) for k ≥ 2 (7/2, 9/2, 11/2 all exceed 2, so
+  every such hemiperfect n is abundant; 3/2 and 5/2 are deficient).
+- The Jordanus result is a remote ancestor of the run's monotonicity pruning
+  (a completion n' of a partial n with I(n) ≥ T is impossible if I(n) > T, and
+  I(kn) ≥ I(n)), but the EoM article proves nothing the run uses that Laatsch
+  (claim `laatsch-multiplicativity-density`) does not establish exactly.
+- No enumeration technique, no bound, no half-integer-abundancy content.
 
-In [a5], L.E. Dickson gives details on the early history of abundant numbers. G. Nicomachus (about 100) separated the even numbers into abundant, deficient and perfect, and dwelled on the ethical importance of the three types. A.M.S. Boethius (around 500), in a Latin exposition of the arithmetic of Nicomachus, stated that perfect numbers are rare, while abundant ( "superfluous" ) and deficient ( "diminutos" ) numbers are found to an unlimited extent. N. Jordanus (around 1236) stated that every multiple of a perfect or abundant number is abundant. He attempted to prove the erroneous statement that all abundant numbers are even. C.…
+## Verdict
 
-Dickso…
+**Does not help the solver** beyond background: it is the classical history of
+abundance, all of which is subsumed by sourced claims already on disk
+(`property22-denominator-divides`, `laatsch-multiplicativity-density`).
+Nobody needs to re-read it for the DFS method or the answer sum.
 
-*[digest of a 15518 character source; every section, statement, and proof in full at `research/sources/encyclopediaofmath_abundant_number.full.md`]*
+Does not contradict anything in the library (agrees with the evenness lemma:
+Jordanus's "all abundant numbers are even" conjecture was false — odd abundant
+numbers exist, e.g. 945, which is why hemiperfect evenness must use parity of
+σ(n)/n, not abundance).

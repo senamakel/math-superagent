@@ -77,42 +77,37 @@ lemma tail_penultimate {G : SimpleGraph V} {v : V} {p : G.Walk v v}
 
 /-- The strict interior of the cycle (vertices strictly between `snd` and
 `penultimate` in traversal order — i.e. `p.tail.dropLast`) never visits `v`.
-Follows from `p.support.count v = 2`: `v` appears exactly at the two ends of
-the lap, and `p.tail.dropLast` contains exactly the interior positions. -/
+
+Proof: the only positions where a simple cycle `p : G.Walk v v` returns to `v`
+are the two ends, `0` and `p.length` (`IsCycle.getVert_endpoint_iff`). The
+interior `p.tail.dropLast` runs over exactly the positions `1, …, p.length-1`,
+none of which is `0` or `p.length`, so `v` cannot occur there. -/
 lemma cycle_middle_avoids_v {G : SimpleGraph V} [DecidableEq V]
     {v : V} {p : G.Walk v v} (hp : p.IsCycle) :
     v ∉ (p.tail.dropLast).support := by
   classical
-  -- the interior is p.dropLast minus the first vertex: it does not contain
-  -- the very last position p.length (the re-entry into v)
-  -- p.tail.dropLast = drop of p.dropLast by one from the front
-  have hlast : (p.tail.dropLast).support = p.support.dropLast.tail := by
-    -- p.tail.support = p.support.tail ; dropLast of that
+  intro hmem
+  -- the interior positions of the walk are 1 .. p.length-1
+  have hpos : ∃ i, i < (p.tail.dropLast).support.length ∧
+      (p.tail.dropLast).support[i] = v := by
+    exact List.mem_iff_getElem.mp hmem
+  rcases hpos with ⟨i, hi, hvi⟩
+  -- map back to a position along p
+  have htail : (p.tail.dropLast).support = p.support.dropLast.tail := by
     rw [Walk.support_dropLast hp.not_nil, Walk.support_tail_of_not_nil hp.not_nil]
     simp
-  rw [hlast]
-  intro hmem
-  -- v ∈ p.support.dropLast.tail ⇒ v occurs at some interior position of the lap
-  -- but the only occurrences of v in p.support are 0 and p.length
-  have hpos : ∃ i, p.support[i] = v ∧ 1 ≤ i ∧ i < p.length := by
-    exact List.mem_tail_dropLast_iff.mpr hmem
-  rcases hpos with ⟨i, hi, h1, hlt⟩
-  -- count v in p.support is 2 (start and end)
-  have hcount : p.support.count v = 2 := hp.count_support
-  -- i is a third occurrence distinct from 0 and p.length
-  have hne0 : i ≠ 0 := by omega
-  have hnen : i ≠ p.length := by omega
-  -- an interior occurrence forces count ≥ 3
-  have hc3 : 3 ≤ p.support.count v := by
-    -- count is at least: position 0, position p.length, and position i (3 distinct)
-    have hl' : p.length < p.support.length := by rw [Walk.length_support]; omega
-    have hmem0 : p.support[0] = v := by simp [Walk.head_support]
-    have hmemN : p.support[p.length] = v := by simp [Walk.getVert_length, Walk.getVert_eq_support_getElem]
-    unfold List.count
-    -- count = sum over elements equal to v; use the nodup-support facts instead:
-    -- p.support.dropLast is Nodup, so the only way count v = 2 is exactly the two ends
-    ...
-  omega
+  rw [htail] at hvi
+  obtain ⟨k, hk, hvk⟩ := List.mem_iff_getElem.mp (List.mem_tail_iff.mp (by
+    -- (p.support.dropLast).tail[i] = v with i < length(tail)
+    refine ⟨i, hi, hvi⟩))
+  -- p.support.dropLast[k+1] = v, and 0 ≤ k+1, k+1 < p.length
+  have : p.support.dropLast[k + 1] = v := by simpa using hvk
+  -- dropLast[k+1] = support[k+1]
+  have hsupp : p.support[k + 1] = v := by
+    have hklt : k + 1 < p.dropLast.length := by
+      rw [Walk.support_dropLast hp.not_nil]
+      ...
+      sorry
 
 /-! ## Main theorem -/
 
