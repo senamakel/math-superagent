@@ -222,13 +222,14 @@ impl<S: Send + Sync> BoundedTimeoutModel<S> {
     /// The configured timeout is a floor, so an ordinary turn is bounded
     /// exactly as before and only a request granted an unusually large output
     /// budget — which upstream only does to recover a truncated turn — is
-    /// given longer.
+    /// given longer. `MAX_REQUEST_TIMEOUT` is the ceiling on that, so the
+    /// scaling cannot hand out more wall clock than the run has to spend.
     fn allowance(&self, max_tokens: Option<u32>) -> Duration {
         let Some(tokens) = max_tokens else {
             return self.timeout;
         };
         let needed = Duration::from_secs(u64::from(tokens) / MIN_OUTPUT_TOKENS_PER_SECOND);
-        needed.max(self.timeout)
+        needed.clamp(self.timeout, MAX_REQUEST_TIMEOUT.max(self.timeout))
     }
 }
 

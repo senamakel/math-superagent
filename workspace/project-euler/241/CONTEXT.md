@@ -1,6 +1,6 @@
 # Shared context
 
-Token budget 10,000; currently ~1,300 tokens, well under. Re-sent on every model
+Token budget 10,000; currently roughly 1,700 tokens, well under. Re-sent on every model
 call in every reading role, so keep it to what an agent would otherwise rebuild
 from disk. Link the file that still holds compressed detail. Durable findings go
 to Cognee, never here.
