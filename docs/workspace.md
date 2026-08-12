@@ -207,11 +207,11 @@ prompts, so every model call in every role pays for them. A seal is held to
 four thousand, because nothing carries it in a prompt — it is read on demand by
 whoever follows a link down. Applying the tighter cap to both was the wrong
 reading of why the cap exists, and it showed: a live seal covering four sources
-came to 1,417 bytes against 7,800 bytes of notes, and what survived was one
-line per source. That is a catalogue, and `INDEX.md` already is one. A seal is
-what a reader opens *instead of* the ten notes below it, so it carries every
-distinct result with its hypotheses, not their titles. Sealing once is the point: a flat level
-is re-summarised every time anything is added, so the same sources are
+came to 1,417 bytes against 7,800 bytes of notes, and what survived was one line
+per source. That is a catalogue, and `INDEX.md` already is one. A seal is what a
+reader opens *instead of* the ten notes below it, so it carries every distinct
+result with its hypotheses, not their titles. Sealing once is the point: a flat
+level is re-summarised whenever anything is added, so the same sources are
 re-compressed indefinitely and the summary drifts.
 
 `CONTEXT.md` is a root in its own right, and it is the one with a budget of its
