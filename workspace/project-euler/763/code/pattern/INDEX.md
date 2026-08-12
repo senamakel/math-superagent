@@ -27,31 +27,25 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pn_poly.py` | _(undescribed)_ |
 | `poly_test.py` | _(undescribed)_ |
 | `q45.py` | _(undescribed)_ |
-| `q_array.py` | _(undescribed)_ |
+| `q_array.py` | Extracts the full triangular array Q_k(N) = N(N,N-k)/3^(N-2k-1) from the data/level_N.txt feature dumps and prints each offset column k as a sequence of exact rationals, for OEIS-style closed-form hunting on the N(N,M) table. |
 | `q_bivariate.py` | _(undescribed)_ |
 | `q_coeff_pattern.py` | _(undescribed)_ |
-| `q_columns_fresh.py` | _(undescribed)_ |
+| `q_columns_fresh.py` | Rebuilds the full Q_k(N)=R(N,N-k)/3^(N-2k-1) table from data/level_N.txt + code/out/mhist_13_14.txt and does exact finite-difference tests proving each Q_k (k=0..4) is a degree-k polynomial, with fresh N=13,14 as out-of-sample. Backs the re-confirmed max-level decomposition. |
 | `q_decomp_verify.py` | _(undescribed)_ |
 | `q_fresh_test.py` | _(undescribed)_ |
-| `q_fresh_verify.py` | _(undescribed)_ |
+| `q_fresh_verify.py` | Sympy-exact verification of the Q_k closed forms (Q_0..Q_4) and leading coefficients (==1/k!) at every measured point incl the fresh OOS N=13,14; also confirms the Q_2 column == OEIS A055999. |
 | `q_verify.py` | _(undescribed)_ |
 | `qdecomp_falsify.py` | _(undescribed)_ |
-| `recur.py` | _(undescribed)_ |
+| `recur.py` | Recurrence search over D(0..14): constant-coefficient orders 1..7, holonomic forms, and asymptotic ratio fit. Found the order-7 constant-coeff recurrence that is later shown (recur_deadend.py) to be an overfit. |
 | `recur2.py` | _(undescribed)_ |
 | `recur3.py` | _(undescribed)_ |
-| `recur_deadend.py` | _(undescribed)_ |
+| `recur_deadend.py` | Characterizes the order-7 constant-coefficient recurrence (3D[n]=9D[n-1]+12D[n-2]-17D[n-3]-30D[n-4]-31D[n-5]+63D[n-6]) fitted over D(0..14): shows its first extrapolated term is non-integer (fails at n=18), so the recurrence can never reproduce D(20)/D(100). Records this as a dead end. |
 | `recur_integral.py` | _(undescribed)_ |
 | `recur_test.py` | _(undescribed)_ |
-| `transfer_hunt.py` | _(undescribed)_ |
+| `transfer_hunt.py` | Hunt for a row-to-row transfer recurrence in R(N,M) (configs by max level M) like R(N,M)=c0 R(N-1,M)+c1 R(N-1,M-1)+c2 R(N-1,M-2) or a fixed transfer matrix — the 3D analog of the 2D A007902 G(k,m) recurrence that would compute D(10000) without BFS. Uses exact least-squares on data/level_N.txt + mhist_13_14.txt and inspects neighbor ratios; companion to transfer_search.py/transfer_search2.py in the dead transfer-recurrence hunt. |
 | `transfer_search.py` | _(undescribed)_ |
 | `transfer_search2.py` | _(undescribed)_ |
-| `triangle_build.py` | _(undescribed)_ |
-| `verify_a186085.py` | _(undescribed)_ |
-| `verify_columns.py` | _(undescribed)_ |
-| `verify_forms.py` | _(undescribed)_ |
-| `verify_mhist.py` | _(undescribed)_ |
-| `verify_reconstruct.py` | _(undescribed)_ |
-ribed)_ |
+| `triangle_build.py` | Builds the max-level triangle R(N,M)=#distinct reachable configs after N divisions with max level M (from data/level_N.txt N=2..12 and mhist_13_14.txt N=13,14), prints the raw triangle, the M=N diagonal, and each offset column R(N,N-k) raw and normalized to Q_k(N)=R(N,N-k)/3^(N-2k-1) as exact Fractions. Backs the Q_k/column closed-form and diagonal study. |
 | `verify_a186085.py` | _(undescribed)_ |
 | `verify_columns.py` | _(undescribed)_ |
 | `verify_forms.py` | _(undescribed)_ |
