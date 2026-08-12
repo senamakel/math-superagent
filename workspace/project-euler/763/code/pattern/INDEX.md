@@ -24,7 +24,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `mdist2.py` | _(undescribed)_ |
 | `offsets.py` | _(undescribed)_ |
 | `oos_predict.py` | Decisive out-of-sample test of the column-polynomial model: fits Q_0..Q_5 polynomials using ONLY N=2..12 data, then predicts N(N,M)=Q_k(N)*3^(N-2k-1) at fresh N=13,14 (from code/out/mhist_13_14.txt) and reconstructs D(N). Checks the N(N,M)=Q_k(N)*3^(N-2k-1) submodel holds on points never used in the fit. |
-| `pn_poly.py` | _(undescribed)_ |
+| `pn_poly.py` | Computes P_N(x)=sum_k Q_k(N)x^k and checks D(N)=3^(N-1)P_N(1/9); detects the even-N discrepancy in the Q-decomposition. |
 | `poly_test.py` | _(undescribed)_ |
 | `q45.py` | _(undescribed)_ |
 | `q_array.py` | Extracts the full triangular array Q_k(N) = N(N,N-k)/3^(N-2k-1) from the data/level_N.txt feature dumps and prints each offset column k as a sequence of exact rationals, for OEIS-style closed-form hunting on the N(N,M) table. |
@@ -51,3 +51,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_forms.py` | _(undescribed)_ |
 | `verify_mhist.py` | _(undescribed)_ |
 | `verify_reconstruct.py` | _(undescribed)_ |
+described)_ |
