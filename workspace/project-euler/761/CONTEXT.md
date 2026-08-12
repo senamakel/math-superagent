@@ -73,6 +73,11 @@ the red-herring staging.** A correct independent route needs the tangent-chord
 staging (circle's sin B=(π+B)/v, or a David-K-style n=6 construction), not a
 straight radial dash. Thread
 `research/threads/hexagon-critical-speed.md` and reflection memory flag this.
+**Thread staleness:** that thread predates the exact closed form and the
+independent-solver run; its status/"Next" lines (re-derive the exact value;
+build option-(a) numeric check) are superseded — do not re-run
+`code/indep_game_encoding.py` (dead end, output captured) or re-derive the
+closed form. CONTEXT.md is authoritative over the thread.
 
 ### Circle case (established, sourced, CLOSED — do not re-derive)
 V_circle from cos B=1/V, sin B=(π+B)/V, i.e. tan B=π+B, V=1/cos B ≈ 4.60333885.

@@ -76,7 +76,7 @@ const MAX_CONTEXT: usize = 200;
 /// all of this kind, tied at six citers, above every paper. The librarian is
 /// told to work that file before searching, so the mechanism meant to build the
 /// bibliography was pointing it at site furniture.
-const IGNORED_HOSTS: [&str; 28] = [
+const IGNORED_HOSTS: [&str; 29] = [
     "facebook.com",
     "twitter.com",
     "x.com",
@@ -104,6 +104,9 @@ const IGNORED_HOSTS: [&str; 28] = [
     "influencemap.cmlab.dev",
     "catalyzex.com",
     "litmaps.com",
+    // The site is .co, not .com. The first version of this list said .com and a
+    // live frontier promptly put `litmaps.co` back at the top with 7 citers.
+    "litmaps.co",
     "scite.ai",
     "paperswithcode.com",
 ];

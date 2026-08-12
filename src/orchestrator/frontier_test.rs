@@ -206,6 +206,7 @@ fn the_scholarly_tooling_toolbar_is_not_a_citation() {
         "https://sciencecast.org/welcome",
         "https://txyz.ai",
         "https://influencemap.cmlab.dev/",
+        "https://www.litmaps.co/",
         "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
     ] {
         assert!(!super::worth_offering(url), "{url} is site furniture");
