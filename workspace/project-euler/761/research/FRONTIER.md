@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://web.archive.org/web/20240304035301/https://codereview.stackexchange.com/questions/290842/leetcode-3sum-problem-solution | Leetcode 3sum problem solution | a window in my house yellow? [image processing with Mathematica]][53] - [Reading tips on longitudinal mixed models and mediation][54] - [Leetcode 3sum problem solution][55] - [Why did so many Ks… |
 | 1 | https://web.archive.org/web/20240304035301/https://music.stackexchange.com/questions/135093/is-all-this-modal-theory-for-guitarists-truly-necessary | Is all this modal theory for guitarists truly necessary? | the counterfeit coin is heavier or lighter in two weighings on a standard balance][63] - [Proof of the put-call parity formula][64] - [Is all this modal theory for guitarists truly necessary?][65] -… |
 
-_276 further candidates not shown; they are cited once each._
+_282 further candidates not shown; they are cited once each._
