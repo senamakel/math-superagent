@@ -342,13 +342,12 @@ its subject is named — as arXiv identifiers and DOIs, which are now read too.
 Ranking is mechanical and costs no model call: in-degree first, then how well
 the citing sentence overlaps `GOAL.md`. In-degree is the signal no search can
 provide — a URL three of the library's own sources cite is the standard
-reference for the subject, and rephrasing a query will not surface that. The
-citing *sentence* is stored with each row, because it says why the source
-thought the target mattered, which is the difference between a reading list and
-a list of URLs. It doubles as the fetch ledger: a second download of a URL
-already in the library is refused with the path of the file that holds it. One
-live workspace holds two notes derived from the same arXiv abstract for want of
-that check.
+reference for the subject, and rephrasing a query will not surface that. The citing
+*sentence* is stored with each row, because it says why the source thought the
+target mattered — the difference between a reading list and a list of URLs. It
+doubles as the fetch ledger: a second download of a URL already in the library is
+refused with the path of the file holding it. One live workspace holds two notes
+derived from the same arXiv abstract for want of that check.
 
 `research/REQUESTS.md` (`requests.rs`) is the demand side. Gathering was
 triggered by inference — a `STUCK` verdict, a gap named in `ROOT.md`, an
