@@ -7,18 +7,48 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `assembly_condition_simple_planetary_guo` | In a simple planetary stage (one planet per planet train), the assembly condition is (Z_ring + Z_sun)*psi_hat = 2*pi*n for an integer n; equivalently a planet meshing both the internal ring and the sun can occupy only… | yes | asserted | `research/summaries/compound-planetary-dynamics-mesh-phases-guo-2011.md` |
+| `coaxial_limit_reproduces_lattice` | As d -> 0 (realisable only when t=(c-s)/2 for every planet) the invariants reduce to W=(s+c)*psi - t*pi and pairwise congruence gives psi in (2pi/(s+c))*Z, reproducing the least-mesh-angle rule of all three design… | no | asserted | `research/threads/offcentre-mesh-phase-model.md` |
 | `fitting_condition_2kh_sun2017` | For a single-pin 2KH-NGW planetary gear train the condition for fitting (evenly placing q planets between the two central gears) is (Z_a + Z_b)/q = n with n integer, where Z_a and Z_b are the central gear tooth counts;… | yes | asserted | `research/summaries/2kh-tooth-number-matching-sun-2017.md` |
 | `gears_model_fails_oracle` | The continuous-d phase-elimination meshing model in lib/gears.py (planet centre forced to circle(O,R-rho) ∩ circle(S,r+rho), arrangement parameterised by centre distance d, valid iff 2Fp, 2Fq, H are integers mod 1)… | yes | checked | `code/out/oracle_test.md` |
 | `homogeneity_condition_zou` | For evenly spaced identical planets in a single-pin planetary mechanism, the assembly condition is (Z_R + Z_S)/n_b = N with N integer; it is derived by fixing the ring gear, rotating the carrier by the inter-planet… | **unchecked** | asserted | `research/summaries/single-planetary-teeth-matching-zou-2015.md` |
 | `least_mesh_angle` | In a sun–ring–planet geartrain with sun tooth count z1 and ring tooth count z3 (taken negative for an internal gear), the smallest allowable relative angular step between planet positions that keeps every planet meshed… | yes | asserted | `research/summaries/planetary-gears-geometry-drivetrainhub.md` |
 | `least_mesh_angle_handbook` | In planetary gears, the least mesh angle (smallest legal angular step between planet positions) is 360 degrees/(sun teeth + ring teeth); planets must be placed at multiples of it; equal spacing additionally requires… | yes | asserted | `research/summaries/epicyclic-gearing-handbook-gearsolutions.md` |
 | `least_mesh_angle_uts` | Planets in a sun–ring epicyclic gear set (ring internal, N_ring teeth; sun N_sun teeth) can only be placed at angular positions that are integer multiples of the least mesh angle beta = 360/(N_ring + N_sun). Perfect… | yes | asserted | `research/summaries/simple-epicyclic-gear-design-uts.md` |
+| `least_mesh_angle_uts_1165` | For a simple epicyclic gear set (sun Nsun, internal ring Nring, np planets on a carrier about the common centre), np identical planets assemble equally spaced iff (Nring+Nsun)/np is an integer; planets need not be… | **unchecked** | asserted | `research/summaries/uts-igs-60-1165-epicyclic-units-uts.md` |
 | `mesh_phase_parker_lin_formalism_isma2016` | The relative positions of transmission components in a planetary stage are completely described by three mesh-phase quantities gamma_sn, gamma_rn, gamma_rs (= gamma_rs same for all planets), normalized to the gear's… | yes | asserted | `research/summaries/mesh-phasing-investigation-isma-2016.md` |
+| `offcentre_dual_mesh_phase_invariant` | With a=(s+t)/(2pi), b=(c-t)/(2pi) and the triangle angles at S, C, P from the law of cosines, simultaneous meshing of every planet tangent to both gears is equivalent to the per-planet invariants W_j = s*phi_j + c*chi_j… | **unchecked** | asserted | `research/threads/offcentre-mesh-phase-model.md` |
+| `offcentre_two_positions_per_type` | For fixed centre separation d and planet tooth count t, tangency to both sun (\|SP\|=(s+t)/(2pi)) and ring (\|CP\|=(c-t)/(2pi)) permits exactly two planet centres, mirror images across the line of centres; a valid PE620… | yes | asserted | `research/threads/offcentre-mesh-phase-model.md` |
 | `oracle_model_reproduces_zero` | The continuous centre-distance model in code/lib/gears.py returns g(16,5,5,6)=0, contradicting the stated value 9; no non-degenerate valid d exists under that model. | no | checked | `code/out/oracle-model-broken.md` |
 | `pappus_center_ellipse_params` | The centers of circles tangent externally to an inner circle (radius r_U) and internally to an outer circle (radius r_V) lie on the ellipse with foci at the two given centers and sum of focal distances r_U + r_V; the… | yes | asserted | `research/summaries/pappus-chain-wikipedia.md` |
 | `planet_idler_freedom` | In a standard sun–planet–ring epicyclic train the planet acts as an idler: it does not affect the sun-to-ring transmission ratio, and multiple values of the planet tooth count are compatible with a given sun/ring ratio.… | yes | asserted | `research/summaries/willis-equation-tec-science.md` |
 | `tangent_circle_center_ellipse` | The center of a circle tangent to two fixed circles (one contained in the other, crescent region) traces an ellipse whose foci are the two fixed centers and whose sum of focal distances equals the sum of the two fixed… | yes | asserted | `research/summaries/ellipse-arbelos-cut-the-knot.md` |
 | `wiktionary_epicyclic_carrier_speed_denominator` | In a conventional epicyclic gear set the carrier speed is n_c = (n_r*N_r + n_s*N_s)/(N_r + N_s); the sum of ring and sun tooth counts is the denominator of the carrier-speed formula. Ring (internal) tooth count enters… | yes | asserted | `research/summaries/epicyclic-gearing-wikipedia.md` |
+
+## Contradictions
+
+Resolve these before building on either side.
+
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `(refines)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle`
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle_handbook`
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle_uts`
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `assembly_condition_simple_planetary_guo`
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `—` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `those` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `hold` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `only` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `in` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `coaxial` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `limit;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `ledger's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `earlier` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `'holds-here:` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `yes'` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `transfer` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `was` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `unchecked.` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -30,6 +60,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `least_mesh_angle_handbook` (research/summaries/epicyclic-gearing-handbook-gearsolutions.md) — asserted by the source, not proved there and not checked here
 - `least_mesh_angle_uts` (research/summaries/simple-epicyclic-gear-design-uts.md) — asserted by the source, not proved there and not checked here
 - `mesh_phase_parker_lin_formalism_isma2016` (research/summaries/mesh-phasing-investigation-isma-2016.md) — asserted by the source, not proved there and not checked here
+- `offcentre_two_positions_per_type` (research/threads/offcentre-mesh-phase-model.md) — asserted by the source, not proved there and not checked here
 - `pappus_center_ellipse_params` (research/summaries/pappus-chain-wikipedia.md) — asserted by the source, not proved there and not checked here
 - `planet_idler_freedom` (research/summaries/willis-equation-tec-science.md) — asserted by the source, not proved there and not checked here
 - `tangent_circle_center_ellipse` (research/summaries/ellipse-arbelos-cut-the-knot.md) — asserted by the source, not proved there and not checked here

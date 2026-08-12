@@ -6,7 +6,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `extension-field-mss-exist` | 3×3 magic squares of squares (all 9 entries squares, distinct) exist over proper algebraic number fields — a degree-4 example over Q(√3,√133) and a one-parameter family over Q(i,√(μ³−μ)), plus a family over Q(u) of… | **unchecked** | proved | `research/summaries/bremner-on-squares-of-squares-1999.md` |
 | `near-miss-baseline-and-incidence` | the parametrisation identity and completeness hold on the rerun; Sallows LS1 has 7 of 8 line sums 21609 failing the non-principal diagonal 38307; Bremner's grid is a true magic square (all 8 sums 541875, centre 425² =… | yes | asserted | `code/out/oracle_note.md` |
+| `robertson-elliptic-reduction` | A 3×3 magic square of squares exists iff there is c with three points of 2E(Q) (E: y²=x(x²−c²)) whose x-coordinates are in arithmetic progression; equivalently iff {X, X±c} are all rational squares for three X's in AP.… | yes | proved | `research/summaries/bremner-on-squares-of-squares-1999.md` |
 
 ## Load-bearing but unverified
 
