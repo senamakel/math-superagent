@@ -645,6 +645,19 @@ every run. Keep it far above the fan-out the registry can produce. A run holds
 its slot while it waits in `await_agent` for children it spawned itself, so a
 pool that could fill entirely with parents waiting on queued children would
 deadlock; the headroom is what makes that unreachable.
+Every role with memory gets three tools, not two: `remember_memory` writes,
+`recall_memory` returns the passages nearest a phrase, and `relate_memory`
+returns the *edges* the graph holds around a subject. The third is the one that
+justifies a graph store at all — chunk search is what the vector store already
+did, so a runtime that only ever recalls chunks is paying for a knowledge graph
+and using it as a search box. The distinction is worth stating in each prompt
+that needs it: the inventor asks what the memory relates the obstruction to
+before proposing a new line, the scholar asks what is already connected to a new
+source's central object so its digest can say where the source agrees or
+conflicts, and the pattern agent asks before calling a regularity new. Both
+searches share one request path on `VectorStore::search`, differing only in
+Cognee's `search_type`, so a correction to one cannot drift from the other.
+
 The research agent has Exa plus `recall_research` and `remember_research` tools.
 Cognee persists the notes, and the server is **shared rather than per-checkout**:
 it scopes its graph by project, so one instance serves every checkout on the box
