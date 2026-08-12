@@ -69,11 +69,39 @@ pub(super) enum Holds {
 }
 
 impl Holds {
+    /// Reads the field, tolerating the reason written after the answer.
+    ///
+    /// This required the whole value to be exactly `yes`, `no`, or `unchecked`
+    /// while [`Status::parse`] beside it matched on a prefix, and the
+    /// inconsistency cost a live run its own best finding. PE620 established
+    /// that its oracle model was wrong — `g(16,5,5,6) = 0` against a stated
+    /// `9` — and wrote `holds-here: false — contradicts the worked oracle
+    /// value 9.` The trailing clause is exactly what a role is asked for
+    /// everywhere else in this workspace, and it turned a refutation the run
+    /// had *checked* into `**unchecked**` in the ledger every planning role
+    /// reads. Silently downgrading a negative result is the worst direction for
+    /// this to fail in: a claim that does not hold is the one thing the ledger
+    /// exists to stop the run building on.
+    ///
+    /// Prefix-matching rather than exact, for the same reason `Status` does:
+    /// what follows the answer is prose, and an unrecognised value still falls
+    /// through to `Unchecked`, so a hedge is never read as a decision.
     fn parse(value: &str) -> Self {
-        match value.trim().to_ascii_lowercase().as_str() {
-            "yes" | "true" | "holds" => Self::Yes,
-            "no" | "false" => Self::No,
-            _ => Self::Unchecked,
+        let lowered = value.trim().to_ascii_lowercase();
+        // `no` before `not checked`: the shorter word is a prefix of nothing
+        // else here, but the order is what makes that safe to keep true.
+        if ["yes", "true", "holds"]
+            .iter()
+            .any(|answer| starts_with_word(&lowered, answer))
+        {
+            Self::Yes
+        } else if ["no", "false", "fails"]
+            .iter()
+            .any(|answer| starts_with_word(&lowered, answer))
+        {
+            Self::No
+        } else {
+            Self::Unchecked
         }
     }
 
