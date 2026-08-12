@@ -1,0 +1,2 @@
+> **Superseded — see [[carr-real]] for the real note.**
+> This digest was generated from the arXiv abstract page only (no mathematical content). The authoritative summary of A. Carr, "Every Minimal Counterexample to the Erdős–Gyárfás Conjecture is Predominantly Cubic" (arXiv:2605.22844v1, 2026) is at `research/summaries/carr-real.md`, whose full text is `research/sources/carr-real.full.md`. Delete or ignore this stub.

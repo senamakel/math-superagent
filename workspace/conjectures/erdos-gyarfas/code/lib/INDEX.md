@@ -1,9 +1,39 @@
 # Index — code/lib
 
-What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+What other programs import. One subject per module, so reading the part you
+need costs almost nothing.
+
+`/workspace/code` is on `PYTHONPATH`, so a module here is importable by name
+from any working directory and any invocation:
+
+```python
+from lib.perms import lex_ranks
+```
+
+Never write `sys.path.insert`. If an import fails, the file is in the wrong
+place and moving it is the fix.
 
 | File | Purpose |
 | --- | --- |
-| `cycles.py` | THE shelved exact oracle for the run (networkx-based): min_degree, girth, cycle_lengths (exact set via networkx.simple_cycles, exponential so small-graphs-only), has_power_of_two_cycle, power_of_two_cycle_lengths, and nauty-geng-driven exists_delta3_no_power2_cycle/report_delta3_no_power2. Single compute core that brute.py and lib/oracle.py now delegate to. Verified by code/verify_cycles.py and code/eg/hand_dfs_check.py on K4, K3,3, Petersen, cube Q3. |
-| `egcheck.py` | Fast targeted power-of-two cycle existence checks, used to push the EG verification bound without full cycle-length enumeration. has_cycle_of_length(G,L) does a bounded-depth simple-path DFS (fixed depth L, so polynomial, never exponential in n) to test for a cycle of length exactly L; has_power_of_two_cycle checks the smallest powers first (C4 most common); mindeg3_no_power2_from_geng scans nauty-geng output (typically -f = C4-free native generation, valid since a C4 is itself a 2-power cycle so no counterexample is lost) for a min-degree-3 connected graph with no 2-power cycle. Correctness independent of lib.cycles, cross-checked against it on K4/K3,3/Petersen/cube Q3 by code/eg/verify_bound.py. Depends on lib.cycles (min_degree). |
-| `oracle.py` | Adjacency-list convenience layer over the shelved oracle lib.cycles. Converts an adjacency-list graph (list of lists, vertices 0..n-1) to a networkx.Graph and delegates min degree and the exact cycle-length set to lib.cycles (single compute core). NOTE the local has_power_of_two_cycle(lengths, min_k=2) has a DIFFERENT signature from lib/cycles.py and lib/egcheck.py: it takes a cycle-length SET (not a graph) and tests whether any length is 2^k, k>=min_k. powers_of_two_cycle_lengths / has_power_of_two_cycle here are set-operating conveniences, not duplicates of the shelved graph predicate; the three same-named functions are deliberately different and must not be force-merged. Also has from_graph6/from_networkx input helpers. The correctness of the compute core rests on lib/cycles.py. |
+
+_No library modules yet._
+
+## Adding one
+
+A routine earns a place here when a second program would otherwise repeat it,
+or when getting it right took real work — exact arithmetic, an off-by-one in a
+recurrence, a verified base case. A single-use expression does not. The third
+time you type a routine out, it belonged here the first time.
+
+Write `code/lib/<subject>.py` holding the functions for one subject, each with
+a docstring, each callable without reading its source: explicit arguments, one
+job, no reliance on globals or on a file written earlier in the run. Check it
+against a case whose answer is already known, then `describe_file` it. The
+description carries each function's signature, what it returns, and what
+established that it is correct — an unverified helper must say `unverified`, so
+a later agent knows what it is standing on.
+
+Keep a module small enough to read whole. A second subject is a second module.
+
+Every helper uses exact integer or rational arithmetic unless its row says
+otherwise. Say so explicitly when a function returns a float.

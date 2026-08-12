@@ -49,7 +49,10 @@ workspace/              # selectable writable agent workspaces
 The executable registry contains `goals`, `research`, `tool_builder`, `coder`,
 `sat_solver`, `smt_solver`, `theorem_prover`, `symbolic_math`, `lean_prover`,
 `reflection`, `judge`, `pattern_finder`, `inventor`, `librarian`, `scholar`,
-`context_curator`, and `organizer`.
+and `context_curator`. The `organizer` was removed: its filing job is covered by
+the index tools travelling with the document tools, so every role that creates a
+file can describe it, rather than by a role whose every cycle competed with the
+mathematics and won.
 
 Seven of those — `tool_builder`, `coder`, `sat_solver`, `smt_solver`,
 `theorem_prover`, `symbolic_math`, `lean_prover` — carry

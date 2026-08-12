@@ -1,6 +1,0 @@
-K4: min degree = 3, cycle lengths = [3, 4], power-of-two cycle lengths = [4]
-K3,3: min degree = 3, cycle lengths = [4, 6], power-of-two cycle lengths = [4]
-Petersen: min degree = 3, cycle lengths = [5, 6, 8, 9], power-of-two cycle lengths = [8]
-cube Q3: min degree = 3, cycle lengths = [4, 6, 8], power-of-two cycle lengths = [4, 8]
-K4[g6]: min degree = 3, cycle lengths = [3, 4], power-of-two cycle lengths = [4]
-graph6 K4: (3, {3, 4}, frozenset({4}))

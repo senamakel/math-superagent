@@ -180,7 +180,7 @@ went to `note_scratch` and is no longer a file in the workspace at all.
 happened to think of it, so it drifted behind the run that reads it on every
 model call, and nothing measured what it cost. The `context` team owns it now:
 one standing team running `context_curator` every
-`MATH_AGENT_CONTEXT_MINUTES` — five by default — whose whole job is to keep that
+`MATH_AGENT_CONTEXT_MINUTES` — fifteen by default — whose whole job is to keep that
 one file current and within budget. It reads widely and writes once. Most of
 what it brings across is Cognee's: `recall_memory` and `relate_memory` hold what
 earlier runs on this problem, and on problems of its shape, established, and

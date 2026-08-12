@@ -6,14 +6,27 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
-| `eg-counterexample-bound` | Any counterexample to EG has at least 17 vertices, and any cubic counterexample has at least 30 vertices. | yes | asserted | `research/L1.0/wikipedia-erdos-gyarfas.md` |
-| `eg-markstrom-24` | Markström's exhaustive search found four min-degree-3 graphs on 24 vertices whose only 2-power cycle has length 16; one of the four is planar. | yes | asserted | `research/L1.0/wikipedia-erdos-gyarfas.md` |
-| `eg-primary-statement` | Every finite simple graph with minimum degree at least 3 contains a simple cycle whose length is a power of 2 (equivalently 2^k for some k >= 2, i.e. length in {4,8,16,...}). | **unchecked** | asserted | `research/L1.0/erdosproblems-open-Er96.md` |
-| `eg-stronger-disproved` | The stronger conjecture (for every r a min-degree-r graph with no 2-power cycle) is false: every graph of sufficiently large average degree contains 2-power cycles, by Liu and Montgomery. | **unchecked** | proved | `research/L1.0/erdosproblems-open-Er96.md` |
+| `EG-3conn-cubic-planar` | Every 3-connected cubic planar graph contains a cycle of length 2^m for some m≥0 (the conjecture holds for this class). | **unchecked** | proved | `research/ROOT.md` |
+| `EG-P12-free-C4C8` | Every P12-free graph with δ≥3 contains a C4 or a C8. | yes | proved | `research/summaries/hegde-real.md` |
+| `EG-P13-free` | Every P13-free graph with δ(G)≥3 contains a cycle of length a power of two (conjecture holds). | **unchecked** | proved | `research/ROOT.md` |
+| `EG-P13-free` | Every P13-free graph with δ≥3 contains a cycle of length a power of two. | **unchecked** | proved | `research/summaries/hegde-real.md` |
+| `EG-bipartite-30` | Any bipartite counterexample to the conjecture has at least 30 vertices. | yes | asserted | `research/summaries/hegde-real.md` |
+| `EG-cubic-dominates` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3. | **unchecked** | proved | `research/ROOT.md` |
+| `EG-cubic-dominates` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3. | yes | proved | `research/summaries/carr-real.md` |
+| `EG-markstrom-24-graphs` | The smallest cubic graphs with no C4 and no C8 have 24 vertices; there are four, all contain a C16, and exactly one is planar. | **unchecked** | asserted | `research/ROOT.md` |
+| `EG-markstrom-24-graphs` | Exactly four cubic graphs on 24 vertices have no C4 and no C8, each containing a C16; exactly one is planar (the Markström graph). | **unchecked** | asserted | `research/summaries/markstrom-extremal-graphs.md` |
+| `EG-markstrom-dichotomy` | A minimal counterexample G to the Erdős–Gyárfás conjecture splits into an independent set V1 of vertices of degree ≥4 and a nonempty set V2 = V\V1 of vertices of degree exactly 3. | **unchecked** | proved | `research/ROOT.md` |
+| `EG-markstrom-dichotomy` | A minimal counterexample G splits into an independent set V1 of degree≥4 vertices and a nonempty set V2 of degree-3 vertices. | yes | proved | `research/summaries/markstrom-extremal-graphs.md` |
+| `EG-predominantly-cubic` | At least 4/7 of the vertices of any minimal counterexample G have degree exactly 3. | **unchecked** | proved | `research/ROOT.md` |
+| `EG-predominantly-cubic` | At least 4/7 of the vertices of a minimal counterexample have degree exactly 3. | yes | proved | `research/summaries/carr-real.md` |
+| `EG-proper-subgraph-delta-le-2` | Every proper subgraph H ⊊ G of a minimal counterexample G has δ(H) ≤ 2. | **unchecked** | proved | `research/ROOT.md` |
+| `EG-regular-is-cubic` | Every regular minimal counterexample to the Erdős–Gyárfás conjecture is cubic (3-regular). | **unchecked** | proved | `research/ROOT.md` |
+| `EG-verification-bound` | No counterexample to the Erdős–Gyárfás conjecture exists on n ≤ 15 vertices in general, and no cubic counterexample exists on n ≤ 29 vertices. | **unchecked** | asserted | `research/ROOT.md` |
+| `EG-verification-bound` | No counterexample exists on n≤15 vertices generally and no cubic counterexample on n≤29 vertices; smallest C4,C8-free cubic graphs have 24 vertices. | yes | asserted | `research/summaries/markstrom-extremal-graphs.md` |
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
-- `eg-counterexample-bound` (research/L1.0/wikipedia-erdos-gyarfas.md) — asserted by the source, not proved there and not checked here
-- `eg-markstrom-24` (research/L1.0/wikipedia-erdos-gyarfas.md) — asserted by the source, not proved there and not checked here
+- `EG-bipartite-30` (research/summaries/hegde-real.md) — asserted by the source, not proved there and not checked here
+- `EG-verification-bound` (research/summaries/markstrom-extremal-graphs.md) — asserted by the source, not proved there and not checked here

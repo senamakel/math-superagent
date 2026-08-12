@@ -29,7 +29,11 @@ fn the_brief_starts_with_a_ten_thousand_token_allowance() {
     // The number is the product decision this module exists to carry: a
     // thousand tokens buys a catalogue, which `research/INDEX.md` already is.
     assert_eq!(DEFAULT_CONTEXT_TOKENS, 10_000);
-    assert_eq!(DEFAULT_CYCLE_MINUTES, 5);
+    // Fifteen rather than five: at five the curator was the largest consumer
+    // on three live runs, once at 28 model calls against `tool_builder`'s 7.
+    // Narrowing its per-run budget bounds one cycle; only the rate bounds how
+    // many cycles it buys.
+    assert_eq!(DEFAULT_CYCLE_MINUTES, 15);
     assert!(cycle_interval().as_secs() >= 60);
 }
 

@@ -13,6 +13,4 @@ forbid_exponential_space = true
 [artifacts]
 goal = "goal.md"
 tasks = "tasks.md"
-memory = "memory.md"
-scratchpad = "scratchpad.md"
 solution = "solution.md"

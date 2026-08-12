@@ -191,11 +191,31 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 That table is what `role_context` returns today, and it is narrower than what
 this document described for a long time. `MEMORY.md`, `research/ROOT.md`,
 `research/INDEX.md`, `reflections/ROOT.md`, and `reflections/INDEX.md` appear in
-no arm of the match, and the organizer has no arm at all. Whether the code or
-the older table is the mistake is **unresolved** — see the note below on the
-inventor, which is the case where it matters most — and it is recorded here
-rather than quietly reconciled, because a routing table that flatters the code
-is how a role comes to be missing the one file its prompt is written around.
+no arm of the match, and the organizer has no arm at all.
+
+**The code is right, and `MEMORY.md` is retired.** It was a file every role was
+told to append to and none owned, which is how it drifted: a live conjecture run
+reached a kernel-checked Lean lemma, a verified graph reconstruction and
+seventeen claims without writing a line of it, because it was being asked to
+maintain a file no prompt would ever show it. What it did is now done by three
+things that are each owned and each measured. `CONTEXT.md` carries the beliefs —
+the curator owns it, it is routed to every reasoning role, it is held to a token
+budget, and it separates `Established` from `Recalled (durable memory — not this
+run's own findings)`, which `MEMORY.md` never did. `research/CLAIMS.md` carries
+the statements one at a time with hypotheses, `holds-here` and `status`, derived
+from the notes rather than asserted. Cognee carries what outlives the workspace.
+The launchers' phase-2 text points at `CONTEXT.md` and the claim ledger for the
+same reason.
+
+The inventor's failed-approaches need is met by `CONTEXT.md`'s `Ruled out`
+section, which it is routed. The organizer having no arm is not a gap either —
+the role was removed; see `docs/runtime.md` if its name still appears in the
+registry list there.
+
+`research/ROOT.md`, `research/INDEX.md` and the two reflection files remain
+genuinely unrouted, and that one is **unresolved**. It is recorded here rather
+than quietly reconciled, because a routing table that flatters the code is how a
+role comes to be missing the one file its prompt is written around.
 
 The tool-builder accumulates what a second program would repeat under
 `code/lib/`, one subject per module, described through `describe_file` so

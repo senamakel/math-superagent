@@ -28,12 +28,3 @@ Return the arXiv abstract page only when you cannot reach the paper itself; an
 abstract establishes almost nothing and costs the same as a real source to
 file. Prefer the published version, then the arXiv full text, then anything
 else.
-
-**This library is now built.** `research/ROOT.md` already states the structure
-of a minimal counterexample, the verification bound, the settled restricted
-classes and the obstruction. Fifty-three notes are on disk. The standing rule
-therefore applies from here: fetch only against a stated gap in
-`research/REQUESTS.md` or a `STUCK` verdict, and reply NOTHING FURTHER
-otherwise. Gathering more at this point costs the run attention it needs for the
-mathematics, and a fifty-fourth source nobody has acted on is worth less than
-one belief written down.

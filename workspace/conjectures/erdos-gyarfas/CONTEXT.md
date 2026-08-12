@@ -1,123 +1,60 @@
 # Shared context
 
-What the run's reference library and its own work establish, in the run's own
-words. Research team writes; everyone reads. **~1000 tokens is the working
-target.** Link down to the file holding the cut detail; full claim-by-claim
-ledger is `research/CLAIMS.md`, sealed digests `research/L2.0/`, structure
-`research/ROOT.md`.
+What this run knows, in its own words. The context curator writes this file and is the only role that writes it, and it is re-sent to nearly every role on every model call, so what is here is what the run knows without going to look. It is not a file catalogue (research/INDEX.md is that) and not a narration; it carries what an agent would otherwise rebuild from disk or from a session it was not present for: established results with their basis, dead ends and why, computed numbers, durable memory, and disagreements. Detail compressed away lives in the linked file.
 
-Task: Erdős–Gyárfás — every finite simple graph with δ≥3 has a simple cycle of
-length 2^k, k≥2 (so in {4,8,16,…}). Open. Deliverable is a partial result,
-never a claim of the whole.
+**Token budget** 10,000; this brief is a fraction of it (~2.5k). Keep it lean.
 
-## Established (all in MEMORY.md unless noted)
+## Problem
 
-- **Conjecture open** as of the library. Primary source Er96: "…min degree ≥3
-  contains a cycle of length 2^k, k≥2." [[L1.0/erdosproblems-open-Er96]]
-- **δ=2 insufficient** (a long non-2-power cycle has δ=2). Trivial.
-- **A minimal counterexample is predominantly cubic**: every proper subgraph
-  has a min-degree-2 vertex; regular ⇒ cubic; ≥4/7 of vertices have degree
-  exactly 3; every vertex adjacent to a degree-3 vertex. [[L2.0/L1.0]]
-  (Carr; asserted, not this run's oracle).
-- **Sparse**: avg deg ≤ exp(O(log* n)) (Sudakov–Verstraëte; powers of two are
-  an exponentially-bounded even sequence). With δ≥3, density ∈ [3, that].
-- **Verification bound**: any counterexample needs ≥17 vertices, any cubic one
-  ≥30. Markström found four 24-vertex graphs whose only 2-power cycle is
-  length 16, one planar — closest known near-counterexamples. **Computed this
-  run**: by the run's own oracle + nauty-geng, NO4-survivor counts (connected
-  min-degree≥3, C4-free: 5,9,57,503,6059,91433,1655659 for n=10..16) — each and
-  every C4-free δ≥3 graph on n≤16 contains an exact 8-cycle, so **no
-  counterexample exists on n≤16**, computationally re-verifying the ≥17 floor.
-  [[code/eg/survivor_sequences.md]]
-- **Restricted classes closed** (never re-derive): P13/P10/P8-free,
-  3-connected cubic planar, diameter-2, claw-free planar, K_{1,m}-free, Cayley
-  families, large average degree. [[L1.1 digests]]
-- **Only unconditional δ≥3 length guarantee**: two cycles of length 1-or-2
-  apart (Gao–Huo–Liu–Ma, k=2) and two of consecutive length (Gao–Ma
-  Bondy–Vince k=0). Non-density; still lands between consecutive 2-powers.
-- **Moore-bound girth barrier (this run, proof-level)**: n_min to avoid all
-  2-powers up to 2^m is 3·2^(2^(m-1))−2 → no 4 needs n=10, no 8 needs 46, no 16
-  needs 766. Girth alone unusable as obstruction at accessible n. [[code/eg/moore_barrier_threshold.py]]
-- **Oracle verified**: min_degree + exact cycle-length set via lib/cycles.py
-  (networkx), cross-checked by two independent paths (verify_cycles.py, hand
-  DFS in hand_dfs_check.py) on K4, K3,3, Petersen, cube Q3. Exact enumeration is
-  exponential → small graphs only; egcheck.py is the polynomial bounded-DFS
-  predicate that pushes the bound. [[code/lib/INDEX.md]]
+Erdős–Gyárfás (1995): every finite simple graph with minimum degree ≥3 has a cycle of length a power of two ($2^k$, $k≥2$ → 4, 8, 16, …). **Open.** The obstruction to beat: cycle-length theorems usually give an *interval* or *progression*, but powers of two are sparse (gap $2^k$), so any win must produce a cycle of a *prescribed* length, not somewhere in a range. Full statement in `problem.md`. The run's one outright failure is claiming the conjecture on an un-attacked argument; the deliverable is a genuine partial result stated exactly.
 
-## The obstruction every attack must beat
+## Established
 
-An interval [a,b] of guaranteed cycle lengths forces a 2-power only when b≥2a;
-below 2^(k+1) the gap is 2^k. Liu–Montgomery's large-average-degree result
-settles only enormous density for exactly this reason. So: the δ≥3 length
-machinery gives at most consecutive cycles, which never spans a 2-power by
-itself. The structural fight is in **low-girth predominantly-cubic graphs**,
-where C4/C8 already appear — not in the girth regime.
+Each marked with basis. Detail lives in the linked note.
 
-## Failed approaches (dead ends; record, don't re-propose)
+- **Minimal-counterexample degree structure** (sourced, Carr arXiv:2605.22844 building on Markström): in a minimal counterexample (min order+size, δ≥3, no power-of-two cycle), the degree-≥4 vertices form an independent set, plus a **nonempty** set of degree-3 vertices. Consequence: every *regular* minimal counterexample is cubic. Carr adds: every vertex is adjacent to a degree-3 vertex, and **≥4/7 of vertices have degree exactly 3**; every proper subgraph has δ≤2. → a minimal counterexample is "predominantly cubic". Anchors: `research/summaries/carr-minimal-counterexample.md`. This is the structural backbone the run's arguments target.
+- **Restricted classes settled** (sourced; full list in `research/ROOT.md`): **3-connected cubic planar** (Heckman–Krakovski 2013, E-JC #P7, discharging + computer); induced-path-free **P8-free** (Gao–Shan 2022), **P10-free** (Hu–Shen 2024), **P13-free** (Hegde–Sandeep–Shashank 2024, arXiv:2410.22842, computer-assisted; sharper **P12-free ⇒ has a C4 or C8**); λ-claw-free / $K_{1,m}$-free (Shauger 1998; Daniel–Shauger 2001 planar); **diameter-2** (Carr 2025, arXiv:2508.19302 — always a C4 or C8); Cayley on some groups (Ghaffari–Mostaghim 2018); dense regime (Sudakov–Verstraëte 2008, avg degree in iterated-log of n; Liu–Montgomery, avg degree ≥ large C). The latter **disproved Erdős's own later belief** that the conjecture fails for every δ≥3. These meet GOAL's "≥3 settled classes" test.
+- **Verification bounds** (sourced, Royle + Markström): Royle checked all min-degree-3 graphs without C4 on n<16, no counterexample; Markström checked **all cubic graphs on n<29** for C4,C8,C16, no counterexample; smallest cubic graphs with **no C4 and no C8** occur at **n=24** (four; lower-right is planar — the "Markström graph" — built by expanding K4 vertices into triangles); no-C4&C8 cubic counts 24→4, 26→23, 28→251. → the oracle reproduces: no C4/C8 in any cubic graph below 29 vertices, first at 24. **Provenance nuance** (in ROOT.md): raw primary sources give **n≤15 general / n≤29 cubic**; the wide-cited consolidated "**≥17 total / ≥30 cubic**" (UCSD Erdős page, Wikipedia, MathWorld, EJGTA Pirzada 2022) is the accepted summary, but exactly how "17" comes from Royle's "15" is not documented in the original page. Treat 15/29 as raw, 17/30 as the published figures; state both.
+- **Oracle** (computed+checked): `code/lib/cycle_oracle.py` (exact int arithmetic) is the cycle-length oracle (`code/brute.py` harness). Verified on K4 {3,4}, K3,3 {4,6}, cube Q3 {4,6,8}, Petersen {5,6,8,9}, against hand-DFS and networkx, plus a second independent from-scratch DFS — **all MATCH** (verification records in Cognee; the second-check scripts were session artifacts and are not on disk). A cycle *basis* is NOT enough (basis lengths miss non-basic cycles); must enumerate all simple cycles.
+- **Lean kernel-checked** (computed+checked, `lean/` on disk): the conjecture is formalised as `ErdosGyarfas.erdos_gyarfas` (SimpleGraph V, `3 ≤ G.minDegree` ⇒ ∃ k,u,p with `p.IsCycle ∧ p.length = 2^k`), body `sorry` by design — axioms `[propext, sorryAx, Classical.choice, Quot.sound]`. The one real proof is `c4_implies_conclusion` in `lean/c4_lemma.lean`: **a 4-cycle already satisfies the EG conclusion** (k=2), kernel-checked, **no `sorryAx`** — the only axiom is `propext`. This kernel-checks the run's C4-free search reduction. Build/logistics in `lean/README.md`. Remaining `sorry`: exactly one (the open conjecture body).
 
-- **Interval-of-lengths**: gap below 2^(k+1) is 2^k; δ≥3 buys only consecutive
-  / 1-or-2-apart cycles. THE obstruction.
-- **Liu–Montgomery large avg deg**: guaranteed even interval [log^8 ℓ, ℓ] is
-  wide only at enormous average degree; at δ=3 (sparse) gives nothing.
-- **Girth/Moore-barrier** route: real counterexample hits the ≥17/≥30 floor
-  long before high girth rules anything out (no-8 needs n=46).
+## Numbers
 
-## Lean
+- Cubic graphs on n<29: no power-of-two-cycle counterexamples; smallest cubic graphs lacking both C4,C8 at n=24 (4 graphs); no-C4&C8 cubic counts 24→4, 26→23, 28→251 (sourced, small cases verified).
+- S5(n) = #connected min-deg-3 girth-5 graphs: equals A366224 (**3-connected** girth-5 count) for every n≤17, first breaks at n=18 where S5(18)=422197 = A366224(18)+3. The 3 extras are 2-connected-not-3, 2-vertex-sums (2-sum) of two 8-vertex girth-5 lobes; the cut-vertex (1-sum) survivor needs n≥19 (Petersen n=10 + 9). Sequence 1,0,2,4,23,149,1670,23882,422197 not in OEIS, no low-order linear recurrence. **Numerical, not proof.** (pattern_finder.)
+- NO4(n) = #degree≥3 graphs with no C4 (Markström's near-counterexample family): 5,9,57,503,6059,91433,1655659 for n=10..16, grows ≈ K·3ⁿ·(n-10)! (super-exponential), not in OEIS, no low-order recurrence. (pattern_finder.)
+- **Markström graph captured** (computed+checked): the planar cubic C4,C8-free graph on 24 vertices is HoG id **51419**, graph6 `Ws??W?@@?P?aA_?O?GG?a?@_?gA??a?@CO?CG?A@???a??D` (in `research/sources/markstrom-graph-graph6.md`; edge list in `code/out/markstrom_reconstruction/`). Oracle on it: cycle-length set **{3,5,6,7,9,10,…,24}: NO C4, NO C8, YES C16, NO C32**, girth 3, planar, 3-connected — matches MathWorld. Test oracle for the SAT/SMS thread, and the only one of the four 24-graphs with an explicit edge list in the sources.
 
-`lean/erdos_gyarfas.lean` elaborates the formal statement (SimpleGraph V,
-minDegree≥3 ⇒ ∃ cycle p with p.length = 2^k ∧ 2≤k). No lemmas proved in it;
-body is one intentional `sorry`; the file ends with `#print axioms
-erdos_gyarfas`. Axioms on a compiled copy: [propext, sorryAx,
-Classical.choice, Quot.sound] — sorryAx the only non-standard axiom.
-`lean/c4_lemma.lean` PROVES the first real lemma `c4_gives_eg_conclusion` (a
-4-cycle satisfies the EG conclusion, witness k=2) — **kernel-checked,
-sorry-free**, `#print axioms` = [propext, Classical.choice, Quot.sound], no
-sorryAx (re-verified this session, lean/STATUS.md). This kernel-checks the
-"a counterexample must be C4-free" direction, justifying the nauty-geng -f
-reduction. [[lean/STATUS.md]]
+## Ruled out
 
-## Durable memory / reflections
+- **Cycle-basis-only length check is wrong**: a basis spans the cycle space but its cycle lengths can miss lengths present only as non-basic (symmetric-difference) cycles. Oracle must enumerate all simple cycles. Closed in `cycle_oracle.py` docstring.
+- **"No edge between two degree-≥3 vertices"** (Markström's raw wording) reads impossibly (would leave no edges); the true content is the degree-≥4 independent set. Treat Markström's raw phrasing as unreliable; use Carr's formulation. (See Contradictions.)
+- **Identifying girth-5 min-deg-3 with 3-connected**: true to n=17, **false from n=18** (2-sum breaks it; and all extras contain an 8-cycle, so are not EG near-counterexamples anyway).
+- **P_k-free backtracking cannot reach the full conjecture** (Hegde et al. explicitly): the method is P_k-specific; for H-free with cyclic H it runs forever (an infinite min-deg-3 tree is H-free with no power-of-two cycle), and for non-path trees the clique-substitution claw-free example fails too. It only certifies the P_k-free class — do not extend it to the general case. (in push-verification thread + memory.)
 
-- `reflections/` holds NO findings: 8 attempts returned "judged unsolved" and
-  reflection died on OpenRouter HTTP 403. No self-critique trail exists; trust
-  none of those notes. Re-run reflection if the service recovers.
-- Scratch (recall_scratch) on this run: no survivor-count / cycle-length
-  sequences beyond the ones listed; the Moore closed form is the only exact
-  sequence structure the pattern-finder found. OEIS A007112 (count of connected
-  δ≥3 graphs per order) has no exploitable low-order recurrence.
-- `research/THREADS.md`: no threads open yet; `FRONTIER.md` holds cited leads.
+## Recalled (durable memory — not this run's own findings)
 
-## Gaps / next
+- The degree-4-independent-set and 4/7-cubic structure, the restricted classes, the n<29 cubic / n<16 Royle bounds, and the n=24 first C4&C8-free cubics are all in Cognee from the librarian/research summaries (sourced).
+- S5/A366224 3-connectivity break at n=18, and NO4 growth law, are in Cognee from a pattern_finder run (numerical).
+- Prize (sourced): Erdős offered **$100 proof / $50 counterexample** — a fact about standing, not mathematics.
 
-Phase 3 (oracle) essentially complete and bound re-verified on n≤16. Open Phase
-2/4 items: keep MEMORY.md's structural facts honest; pursue one precise
-structural claim about a minimal counterexample (the predominant-cubic /
-sparse structure is the lever); formalise a lemma in Lean as one stabilises.
-NOTHING from this run has established a new attack on the interval obstruction
-itself — that is the open core.
+## Contradictions
 
-## Live (this run, partly settled)
+- Markström raw text vs Carr abstract on what is forbidden in a minimal counterexample (edge between two degree-≥3-vertices): the raw text is a mis-statement; Carr's degree-≥4-independence is the correct content. Recorded rather than silently picking either wording.
+- (Former "Memory vs disk (Lean)" item — **RESOLVED**): the Lean files are now on disk; see Lean bullet under Established.
 
-- **S5 vs A366224 RESOLVED** (S5 = connected min-degree≥3 girth≥5; A366224 =
-  3-connected girth≥5, McKay; source: [[research/summaries/A366224_offset.md]]).
-  S5 **equals** A366224 through **n=17** (1,0,2,4,23,149,1670,23882 — every S5
-  graph 3-connected), **breaks at n=18**: S5(18)=422197 = A366224(18)+3. The 3
-  extras are 2-connected but not 3-connected, each split by a **2-vertex
-  separator** (a 2-sum) into two 8-vertex girth-5 lobes — the first
-  non-3-connected girth-5 δ≥3 graph is at n=18, not the n=19 cut-vertex
-  Petersen-amalgam (which is 3-sum-free but has a 1-sep). All 3 extras contain
-  an exact 8-cycle → **NOT EG near-counterexamples**. Full S5 sequence
-  1,0,2,4,23,149,1670,23882,422197 not in OEIS, no order-≤6 linear recurrence.
-  Recorded evidence: `code/out/s5_identification.txt` (full table + all 3
-  extras' g6 codes + Petersen-amalgam certificate). Verified-numerical, not
-  proof. The interesting structure is the **2-sum of two Petersen-like
-  8-vertex girth-5 lobes** — how far such sums can go before an EG survivor
-  hides. [[code/eg/index: s5_*.py, survivor_sequences.md]]
-- **NO4(17) sanity range** (prediction, unconfirmed): pattern_finder's law
-  `NO4(n)≈K·3^n·(n−10)!` (locked from n=12) predicts NO4(17) ∈ 30–41M,
-  nominal ≈35M. Outside 25–45M flags an enumeration bug. Detail:
-  [[code/eg/survivor_sequences.md]].
-- Scratch/durable memory hold nothing further on this problem's mathematics
-  (earlier `recall_memory` surface hit an unrelated PE346 repunit chunk).
-  Durable memory now stores the S5/A366224 RESOLVED break-at-n=18 finding and
-  the Lean c4_lemma kernel-check — queriable via `recall_memory`.
+## Gaps
+
+- **Phase 1 complete**: `research/ROOT.md` (minimal-counterexample structure + verification bound + ≥3 settled classes) and `research/CLAIMS.md` (ledger) now exist. Further gathering only against a stated gap in `research/REQUESTS.md`.
+- **Phase 4 (the loop) has NO run-owned structural lemma yet** beyond the S5/NO4 probes; it needs one precise claim about a minimal counterexample to attack. Candidate next computation: turn the degree-≥4-independent-set structure into a SAT/SMS propagator to push the mixed (non-cubic) case past n=15 — a concrete, machine-checkable strengthening.
+- **Verification beyond 15/29 is unvetted**: unpublished GitHub (`ArjunBalaji79/erdos-gyarfas-min-degree-3`) claims SMS verification of all min-deg-3 graphs on n≤31 (UNSAT for n=17–31 vs C4,C8,C16), cross-checked with CEGA-SAT at n≤19. Not peer-reviewed, not audited here; a lead for the computational agent, not an established bound.
+- **Lean**: the formal statement + C4 lemma are done and kernel-checked (see Established). What remains for the Lean deliverable is formalising each *new* structural lemma as it stabilises.
+
+## Pointers
+
+- `research/ROOT.md` — the full literature map (structure, classes, bounds, claims). `research/CLAIMS.md` — the claim ledger.
+- Structural backbone: `research/summaries/carr-minimal-counterexample.md` (+ `.full.md`).
+- Bounds & cubic no-C4/C8: `research/summaries/markstrom-extremal-graphs.md` (+ `.full.md`, has n=24 graphs, counts, Royle/Markström bound).
+- P13-free: `research/summaries/hegde-P13-free.md` (+ `.full.md`). Cubic planar: `research/summaries/heckman-krakovski-cubic-planar.md`.
+- Pointers to Lean: `lean/README.md` (build, conventions, axioms), `lean/c4_lemma.lean` (kernel-checked C4 lemma).
+- Markström graph: `research/sources/markstrom-graph-graph6.md` (graph6 + HoG id + invariants), `code/out/markstrom_reconstruction/` (edge list).

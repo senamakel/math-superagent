@@ -81,7 +81,7 @@ Work in this order. Steps 1 and 2 together should take a small part of the run; 
 
 1. Understand by executing. Read the statement, restate it precisely in /workspace/GOAL.md with every symbol defined, and record the worked examples it gives — those are your test oracle. Then immediately have tool_builder write /workspace/code/brute.py, a naive but obviously-correct program, and run it to reproduce every one of those examples. If it cannot reproduce them, your reading of the definition is wrong and nothing else matters until it is fixed.
 
-2. Identify the governing theory: the mathematical objects involved and the named theorem, algorithm, or identity that controls them. Record it in /workspace/MEMORY.md with the precise statement and hypotheses. $research_clause
+2. Identify the governing theory: the mathematical objects involved and the named theorem, algorithm, or identity that controls them. Record it under Established in /workspace/CONTEXT.md with the precise statement and hypotheses, and as a claim block in the note if it came from a source, so it reaches research/CLAIMS.md. $research_clause
 
 3. Derive the efficient method and write the derivation to /workspace/solution.md: the result it rests on, why it applies, and what it reduces the work to. A method whose cost grows with the bound in the statement is the wrong method.
 

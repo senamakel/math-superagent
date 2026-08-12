@@ -4,4 +4,9 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `cm-composition-distribution` | For a random walk S_j = sum_{i<=j} X_i with iid continuous increments, the greatest convex minorant on [0,n] has F_n faces with P(F_n = k) = S1(n,k)/n! (unsigned Stirling first kind), equivalently F_n = 1 + sum_{r=2}^n… | **unchecked** | asserted | `research/torpids_parity_ballistic_aggregation_survey.md` |
+| `finish-line-breaks-exponential-clock-machinery` | In the finite-finish torpids race, finish times (L-p_j)/v_j with v_j~Exp(1) are inverse-exponential with non-constant hazard; relative speeds v_j-v_i are Laplace. Hence the Plackett–Luce / competing-exponential /… | **unchecked** | asserted | `research/torpids_parity_ballistic_aggregation_survey.md` |
+| `torpids-bump-graph-forest` | The torpids bump graph is always a directed forest with edges to strictly higher indices (out-degree ≤ 1, no cycles); parity of the new order equals the number of chain-pairs mod 2; within a connected component not… | **unchecked** | asserted | `research/torpids_parity_ballistic_aggregation_survey.md` |
+| `torpids-parity-not-gcm-functional` | The torpids final-order parity (parity = #(chain pairs) mod 2) is not a function of the convex-minorant composition of the speed vector: there exist speed vectors with equal GCM composition but different torpids parity… | **unchecked** | asserted | `research/torpids_parity_ballistic_aggregation_survey.md` |

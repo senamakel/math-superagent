@@ -50,11 +50,22 @@ const DEFAULT_CONTEXT_TOKENS: u64 = 10_000;
 /// How long the curator waits between cycles when nothing says otherwise.
 ///
 /// Enrichment is custodial work over a workspace that changes underneath it, so
-/// it is paced by rate rather than by having run out of things to say. Five
-/// minutes is short enough that an attempt started ten minutes in reads a brief
-/// that knows about the last one, and long enough that the curator is a rounding
-/// error against the solve.
-const DEFAULT_CYCLE_MINUTES: u64 = 5;
+/// it is paced by rate rather than by having run out of things to say.
+///
+/// Five minutes was the first value and it was not a rounding error against the
+/// solve: on three live runs the curator was the largest consumer in the run,
+/// once at 28 model calls against `pattern_finder`'s 9 and `tool_builder`'s 7.
+/// Narrowing its per-run budget was necessary and not sufficient — that bounds
+/// what one cycle may spend, and at five minutes it simply bought more cycles.
+/// Fifteen is what a fourth run measured at, one cycle costing six calls, and
+/// the cost of the trade is staleness: an attempt now reads a brief that may
+/// not know about the last fifteen minutes rather than the last five.
+///
+/// It stays overridable because staleness is the one property here an operator
+/// may reasonably want to buy back, and it stays a *default* rather than a
+/// per-launch environment variable because a bound only one workspace's
+/// launcher sets is a bound the other workspaces do not have.
+const DEFAULT_CYCLE_MINUTES: u64 = 15;
 
 /// Characters per token used when clamping.
 ///

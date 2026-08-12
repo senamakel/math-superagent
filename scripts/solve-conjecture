@@ -9,7 +9,8 @@
 # phase 1 sequential and its exit condition "the literature is exhausted", which
 # is not checkable: a live run spent twenty-seven uninterrupted minutes there,
 # reached fifty-three sources and a rich ROOT.md, and never wrote a single
-# belief into MEMORY.md — it had read everything and concluded nothing.
+# belief into the brief every role reads — it had read everything and
+# concluded nothing.
 set -eu
 
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
@@ -78,7 +79,7 @@ Work in these phases. They overlap: 1 and 2 run together, and 3 starts as soon a
 
 1. BUILD THE LIBRARY, AND STOP WHEN IT IS ENOUGH. Spawn librarian and research immediately. This phase is finished the moment research/ROOT.md states the structure of a minimal counterexample, the current verification bound, and at least three restricted classes already settled with their hypotheses — not when the literature is exhausted, which is a condition nobody can check and which will hold your run in this phase forever. Have scholar digest each source into claim blocks as it lands. Follow research/FRONTIER.md rather than inventing queries. When ROOT.md meets that test, say so and move on; further gathering from then on happens only against a stated gap in research/REQUESTS.md.
 
-2. EXTRACT AS YOU GO, NOT AFTERWARDS. Do not wait for phase 1 to finish. Every time a source lands and the scholar says what it establishes, add a row to MEMORY.md: the belief, its evidence class (proved / verified-numerically / conjectured / asserted-by-source), and what would falsify it. Record every closed direction under failed approaches with the obstruction that closed it. You are behind if research/ROOT.md has content and MEMORY.md still says nothing yet — that means the run has read things and believes nothing, which is the failure this phase exists to prevent. State plainly which obstruction defeated each previous attempt, because your approach has to beat that same obstruction.
+2. EXTRACT AS YOU GO, NOT AFTERWARDS. Do not wait for phase 1 to finish. Every time a source lands and the scholar says what it establishes, record it where the run will actually read it: a fenced claim block in the note, so it reaches research/CLAIMS.md with its hypotheses, its holds-here and its status; and a line under Established in CONTEXT.md, which is the brief every role is sent on every model call. Each belief states its evidence class (proved / verified-numerically / conjectured / asserted-by-source) and what would falsify it — a belief with no falsifier cannot be attacked, and attacking it is the next step. Record every closed direction under Ruled out with the obstruction that closed it. You are behind if research/ has content and CONTEXT.md's Established section is empty — that means the run has read things and believes nothing, which is the failure this phase exists to prevent. State plainly which obstruction defeated each previous attempt, because your approach has to beat that same obstruction.
 
 3. BUILD THE ORACLE. Have tool_builder write an exact, obviously-correct checker: given a graph, its minimum degree and the set of its cycle lengths. Verify it against small cases by hand. Then use it to reproduce the literature's verification bound before trusting anything you compute past it. A computational claim built on an unchecked checker is worth nothing.
 

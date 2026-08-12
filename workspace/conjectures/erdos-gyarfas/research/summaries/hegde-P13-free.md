@@ -1,0 +1,2 @@
+> **Superseded — see [[hegde-real]] for the real note.**
+> This digest was generated from the arXiv abstract page only (no mathematical content). The authoritative summary of Hegde, Sandeep & Shashank, "Erdős-Gyárfás conjecture on graphs without long induced paths" (arXiv:2410.22842v2, 2025) is at `research/summaries/hegde-real.md`, whose full text is `research/sources/hegde-real.full.md`. Delete or ignore this stub.

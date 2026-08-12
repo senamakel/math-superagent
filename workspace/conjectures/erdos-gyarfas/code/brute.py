@@ -1,86 +1,65 @@
-"""Naive oracle demo and worked-example harness for Erdos-Gyarfas.
+"""Naive oracle for the Erdos-Gyarfas conjecture.
 
-This file uses to be a third, independent copy of the DFS cycle-length oracle
-(alongside lib/oracle.py and lib/cycles.py) plus the hand-built worked examples.
-Under consolidation the compute-cores now import from the single shelved
-definition `lib.cycles` (via the adjacency-list convenience layer lib/oracle),
-so every answer on this run comes from one code path. This file keeps its
-other job: building the hand-worked graphs (K4, K3,3, Petersen, cube Q3) and
-printing the oracle's answer for each, the verification demo of the run.
+Given a finite simple graph, return its minimum degree and the exact set of
+its cycle lengths.  Obviously correct rather than fast: minimum degree by
+counting neighbours, cycle lengths by brute-force enumeration of all simple
+cycles.  Exact integer arithmetic throughout.
 
-The graphs are built by hand so the answers can be stated independently of any
-library; the values match what lib/cycles.py returns (see also
-code/verify_cycles.py and code/eg/hand_dfs_check.py).
+Exports:
+    minimum_degree(G) -> int
+    cycle_lengths(G)  -> frozenset[int]   (set of lengths of all simple cycles)
+    oracle(G)         -> (min_degree, cycle_lengths)
 
-Exact integer arithmetic; no floating point anywhere. The cycle-length
-enumeration (inside lib/cycles) is exponential in the worst case, so this is
-only for the small worked examples, not the verification bound.
+Validation (hand-checkable answers, reproduced by __main__):
+    K4      min degree 3, cycles {3, 4}
+    K3,3    min degree 3, cycles {4, 6}
+    cube    min degree 3, cycles {4, 6, 8}
+    Petersen min degree 3, cycles {5, 6, 8, 9}
 """
-
-from __future__ import annotations
-
-from lib.oracle import (
-    minimum_degree,
-    cycle_lengths,
-    powers_of_two_cycle_lengths,
-    has_power_of_two_cycle,
-    from_graph6,
-)
+import networkx as nx
 
 
-def report(adj, name):
-    """Print the oracle's answer for one graph and return (deg, lengths)."""
-    deg = minimum_degree(adj)
-    lens = cycle_lengths(adj)
-    powlens = powers_of_two_cycle_lengths(lens)
-    print(f"{name}: min degree = {deg}, cycle lengths = {sorted(lens)}, "
-          f"power-of-two cycle lengths = {sorted(powlens)}")
-    return deg, lens, powlens
+def minimum_degree(G):
+    """Minimum degree of graph G, exact integer."""
+    return min(d for _, d in G.degree())
 
 
-# ---------------------------------------------------------------------------
-# The worked examples, built by hand so the answers can be stated independently
-# of any library.
-# ---------------------------------------------------------------------------
-def run_here():
-    import networkx as nx
+def cycle_lengths(G):
+    """Exact set of cycle lengths present in G.
 
-    # K4: complete graph on {0,1,2,3}.
-    K4 = [[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]]
-    report(K4, "K4")
+    Enumerates every simple cycle by brute force (networkx.simple_cycles),
+    so this is O(sum of all simple cycles) — fine for a hand-check oracle on
+    tiny graphs, never the method at full size.
+    """
+    # simple_cycles on the bidirected graph yields length-2 "cycles" (one edge
+    # forward and back); a genuine cycle in a simple graph has length >= 3.
+    lengths = {len(c) for c in nx.simple_cycles(G.to_directed()) if len(c) >= 3}
+    return frozenset(lengths)
 
-    # K3,3: complete bipartite parts {0,1,2} and {3,4,5}.
-    K33 = [[3, 4, 5], [3, 4, 5], [3, 4, 5], [0, 1, 2], [0, 1, 2], [0, 1, 2]]
-    report(K33, "K3,3")
 
-    # Petersen graph: outer 5-cycle 0-1-2-3-4-0, inner 5-cycle 5-6-7-8-9-5,
-    # spokes i-(i+5).
-    P = [[] for _ in range(10)]
-    for i in range(5):
-        P[i].append((i + 1) % 5)
-        P[(i + 1) % 5].append(i)
-    for i in range(5):
-        j = 5 + ((i + 2) % 5)   # pentagram step: inner 5,7,9,6,8
-        P[5 + i].append(j)
-        P[j].append(5 + i)
-    for i in range(5):
-        P[i].append(i + 5)
-        P[i + 5].append(i)
-    report(P, "Petersen")
+def oracle(G):
+    """Return (min_degree, sorted tuple of cycle lengths)."""
+    return minimum_degree(G), tuple(sorted(cycle_lengths(G)))
 
-    # Cube Q3: binary strings of length 3, adjacent if Hamming distance 1.
-    Q = [[] for _ in range(8)]
-    for a in range(8):
-        for b in range(a + 1, 8):
-            if (a ^ b).bit_count() == 1:
-                Q[a].append(b)
-                Q[b].append(a)
-    report(Q, "cube Q3")
 
-    # Also exercise the graph6 path: K4 in graph6 is "C~" (from nauty). Check
-    # it agrees with the hand-built K4 above.
-    print("graph6 K4:", report(from_graph6("C~"), "K4[g6]"))
+def _builtins():
+    """The hand-checkable graphs from the brief."""
+    return {
+        "K4": (nx.complete_graph(4), (3, (3, 4))),
+        "K3,3": (nx.complete_bipartite_graph(3, 3), (3, (4, 6))),
+        "cube": (nx.hypercube_graph(3), (3, (4, 6, 8))),
+        "Petersen": (nx.petersen_graph(), (3, (5, 6, 8, 9))),
+    }
 
 
 if __name__ == "__main__":
-    run_here()
+    print("brute.py oracle — minimum degree and exact cycle-length set")
+    ok = True
+    for name, (G, expected) in _builtins().items():
+        got = oracle(G)
+        match = "MATCH" if got == expected else "MISMATCH"
+        if got != expected:
+            ok = False
+        print(f"  {name:10s} min_deg={got[0]:2d} cycles={got[1]}  "
+              f"expected={expected}  -> {match}")
+    print("ALL MATCH" if ok else "MISMATCHES PRESENT")
