@@ -151,6 +151,12 @@ the notes and programs override it authoritatively.
 
 ## Gaps
 
+**Directive 1 (steer): librarian is fetching primary pursuit-evasion literature into
+`research/sources/` — lion-and-man, Besicovitch, optimal escape trajectories,
+involutes/chase curves, swimmer-in-pool origin. symbolic_math is deriving
+V_hexagon from first-principles geometry independently of the stewbasic
+K-index. Both are in-flight. See TASKS.md for the order of work.**
+
 The value is computed and exact-closed-form-confirmed; formula-route only. The
 one independent game-encoding solver that was actually built (`code/indep_game_encoding.py`)
 has now been RUN and its output captured — and it FAILS (encodes the
