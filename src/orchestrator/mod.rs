@@ -1679,6 +1679,13 @@ fn register_support_agents(
         register_resilient(&mut librarian, tool);
     }
     register_recall(&mut librarian, &parts.workspace);
+    // The role that decides what to download is the one that most needs to know
+    // what is already known. It is told to be reluctant, and reluctance without
+    // a way to check is just a slower search: a note from an earlier run saying
+    // the question is settled is the cheapest possible reason not to fetch.
+    // Recall only — the librarian acquires sources, and what they establish is
+    // the scholar's to record.
+    register_note_recall(&mut librarian, &parts.vector_store);
     subagents.register("librarian", Arc::new(librarian), prompts.librarian)?;
 
     // The scholar reads; it does not fetch. Withholding `exa_search` is what
