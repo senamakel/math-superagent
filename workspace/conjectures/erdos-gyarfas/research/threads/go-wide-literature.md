@@ -1,7 +1,12 @@
 # Go-wide literature — surveys, failed methods, adjacent problems, and constructions
 
-Opened by directive: the library's 28 sources are concentrated on one method
-(structural minimal-counterexample / Carr-Markström). Cover what is missing.
+```thread
+question: What do the surveys, failed methods, adjacent cycle-length theory, computational-attack landscape beyond Royle–Markström/ArjunBalaji79, and counterexample constructions say about the Erdős–Gyárfás conjecture?
+status: open; directive-ordered internet research pass — FRONTIER.md has 326 unvisited URLs, the library is 28 sources concentrated on one structural thread, and the CEGAR non-convergence at n=10 shows the SAT line needs structural facts it does not yet have
+rests-on: FRONTIER.md (326 ranked candidates from within-library citations), EG-go-wide-literature-gaps (missing surveys, missing original computational notes, missing adjacent theory)
+blocked-by: nothing — the directive explicitly orders this pass now
+next: download from the top of FRONTIER.md (cited-by ≥2, anything not already on disk as a full source); fetch Erdos-problems #64 source; then widen to Bondy–Vince, Erdős–Faudree–Rousseau–Schelp, Sudakov–Verstraëte forward citations, Markström/Royle original notes, Gould's cycle survey, girth/degree extremal literature; fill Daniel–Shauger 2001, Shauger 1998, Nowbandegani–Esfandiari 2011 gaps; retry Exoo/West via Wayback
+```
 
 ## Why
 

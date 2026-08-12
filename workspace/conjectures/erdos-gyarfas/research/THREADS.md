@@ -6,8 +6,11 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
+| [[go-wide-literature]] | What do the surveys, failed methods, adjacent cycle-length theory, computational-attack landscape beyond Royle–Markström/ArjunBalaji79, and counterexample… | open | FRONTIER.md, (326, ranked, candidates, from, within-library, citations), EG-go-wide-literature-gaps, (missing, surveys, missing, original, computational, notes, missing, adjacent, theory) | download from the top of FRONTIER.md (cited-by ≥2, anything not already on disk as a full source); fetch Erdos-problems #64 source; then widen to Bondy–Vince,… |
 | [[push-verification]] | Can the documented verification bound (n≤15 general, n≤29 cubic) be raised by exploiting the independent-set + ≥4/7-cubic structure as a SAT/SMS propagator,… | open | EG-markstrom-dichotomy, EG-predominantly-cubic, EG-verification-bound, EG-markstrom-24-graphs, EG-P12-free-C4C8, EG-cubic-bipartite-60 | add Carr's ≥4/7-cubic + degree-≥4-independent-set propagators as base CNF constraints (not merely cycle-blocking), then re-run n=10 as a test; the… |
 
-## Threads that could not be read
+## Resting on nothing recorded
 
-- `go-wide-literature` has no thread block, so nothing can say what it is chasing or what it rests on
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[go-wide-literature]] rests on `FRONTIER.md`, `(326`, `ranked`, `candidates`, `from`, `within-library`, `citations)`, `EG-go-wide-literature-gaps`, `(missing`, `surveys`, `missing`, `original`, `computational`, `notes`, `missing`, `adjacent`, `theory)`, which no claim block on disk establishes
