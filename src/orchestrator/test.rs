@@ -821,3 +821,28 @@ fn writing_a_note_stays_with_the_roles_whose_output_is_durable() -> agent::Resul
     }
     Ok(())
 }
+
+#[test]
+fn a_planner_names_every_specialist_it_can_delegate_to() {
+    // A role can be registered, tool-equipped, prompt-written, and provisioned
+    // in the image, and still never run: the agent holding its delegation tool
+    // has to know it exists. Both prompts enumerate a bench, and an enumeration
+    // reads as complete, so a name missing from it is a role switched off.
+    //
+    // This is not hypothetical. `sat_solver`, `smt_solver`, `theorem_prover`,
+    // `symbolic_math`, and `lean_prover` were all absent from the goals prompt,
+    // and a live run on a closed-form probability problem — exactly what
+    // `symbolic_math` exists for — spawned none of them and had `tool_builder`
+    // do the exact arithmetic instead.
+    for (role, prompt, bench) in [
+        ("goals", GOALS_PROMPT, SPECIALISTS.as_slice()),
+        ("orchestrator", ORCHESTRATOR_PROMPT, DELEGATES.as_slice()),
+    ] {
+        for specialist in bench {
+            assert!(
+                prompt.contains(specialist),
+                "the {role} prompt must name `{specialist}`, or the role never runs"
+            );
+        }
+    }
+}
