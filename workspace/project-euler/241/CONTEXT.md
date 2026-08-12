@@ -68,15 +68,15 @@ standard technique for near-perfect / hemiperfect enumeration and is what makes 
 bound in the statement irrelevant to the method. `maxab.py` gives the greedy
 σ(n)/n upper bound used for sanity (largest k reachable ≤ 10^18).
 
-## Recalled (durable memory — NOT this run's verification)
+## Recalled (durable memory)
 
 A prior derivation (Cognee note "Project Euler 241 Solution - Perfection Quotients")
 describes exactly the split-by-target DFS over T∈{3/2,5/2,7/2,9/2,11/2,13/2} and states
-the six searches yield **22 valid n ≤ 10^18**, "whose sum is printed". **The 22 figure is
-recalled, not computed here, and the sum itself is not recorded in memory** — it must be
-re-derived and verified (missing: the actual 22 values and their sum). Note: including
-13/2 in the target set is harmless since a(6)>1e18, so it contributes zero values; no
-contradiction with the A088912 bound. Treat "22" as a strong conjecture awaiting the run.
+the six searches yield **22 valid n ≤ 10^18**, "whose sum is printed". **CONFIRMED by the
+b-file route above** (22 terms, sum 482316491800641154) — the recalled figure and the
+sourced data now agree; what no longer exists anywhere is a local computation of that sum
+(the memory did not record the sum itself, so it remains sourced-not-computed). 13/2 in
+the target set contributes zero values (a(6)>1e18), consistent with the A088912 bound.
 
 ## Ruled out / dead ends (so nobody re-pays)
 
@@ -89,13 +89,18 @@ contradiction with the A088912 bound. Treat "22" as a strong conjecture awaiting
 ## Contradictions
 
 - None among established results. The recalled "22 values incl. 13/2" is consistent with
-  the A088912 reachability bound (13/2 contributes 0), so not a real contradiction — but
-  the 22-figure itself is unverified until the DFS runs.
+  the A088912 reachability bound (13/2 contributes 0) and now CONFIRMED by the A159907
+  b-file. One residual inconsistency: code/hemiperfect_dfs.py scans r∈{3,5,…,39} and
+  hard-codes PRIMES up to 2e6 while the report (report_hemiperfect_enumeration.md) and
+  remembered technique scan r∈{3,5,7,9,11,13}; harmless for the count (r>11 impossible
+  below 1e18) but a sign the DFS is untested, not verified.
 
 ## Gaps
 
-- **The verified final answer** (sum of all 22 n ≤ 10^18) does not exist in memory or
-  disk. Steps: run/verify code/hemiperfect_dfs.py at 10^18 against the oracle prefix
-  (≤3e7) and A159907, then write solution.md + solution.py + the reported sum. Research
-  request `theory-numbers-with-88d5` was the bounding/recursion ask; the A088912
-  claim largely fills it (reachable-abundancy bound), but the request row still shows open.
+- **Independent verification of the sum by this run's own computation** (not by OEIS):
+  code/hemiperfect_dfs.py at 10^18 → compare against the b-file's 22 terms and
+  482316491800641154. Requires a shell, which this environment lacks — a tool_builder
+  run with an executor is the unblock. Also still open: solution.md + code/solution.py
+  (write the derivation and the report-ready solver). Research request
+  `theory-numbers-with-88d5` was the bounding/recursion ask; the A088912 claim largely
+  fills it (reachable-abundancy bound), but the request row still shows open.

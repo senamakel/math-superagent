@@ -41,6 +41,30 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 /// truncating good calls is the more expensive mistake.
 const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_mins(7);
 
+/// The longest wall clock any single request may be granted.
+///
+/// The rate-derived allowance below scales with `max_tokens`, and that was
+/// written when the cap was 12,000: a truncation recovery asked for 24,000 and
+/// needed proportionally longer, which is exactly what the scaling is for.
+/// Raising `RunBudget`'s cap to 48,000 then scaled it somewhere nobody
+/// intended — 48,000 / 12 is 4,000 seconds, **sixty-seven minutes**, against a
+/// run that is now capped at thirty. A bound longer than the run it lives
+/// inside is not a bound: the retry ladder can never run, because the run dies
+/// first.
+///
+/// A live Erdős–Gyárfás `sat_solver` sat on one outstanding call for over ten
+/// minutes with nothing that would ever cut it off, having executed no solver,
+/// while its run's clock ran out around it. The role simply stopped existing
+/// as far as the console was concerned.
+///
+/// Fifteen minutes keeps the scaling useful — it is more than twice the flat
+/// floor, so a genuinely large generation still gets the room the measurement
+/// says it needs — while guaranteeing a wedged request fails with time left for
+/// the ladder to retry inside the same run. It is deliberately derived from the
+/// run cap rather than the token cap: what makes a timeout the right length is
+/// how much run is left to use the answer, not how many tokens were asked for.
+const MAX_REQUEST_TIMEOUT: Duration = Duration::from_mins(15);
+
 /// Slowest generation rate, in output tokens per second, a request is given
 /// time for.
 ///
