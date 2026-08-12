@@ -867,11 +867,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                         // the workspace half: it writes probes and throwaway
                         // experiments, so a similarity search over its own
                         // output would mostly return them.
-                        .chain(
-                            (name != "tool_builder")
-                                .then_some(memory_tools[0])
-                                .into_iter(),
-                        )
+                        .chain((name != "tool_builder").then_some(memory_tools[0]))
                         .chain([memory_tools[1]])
                         .chain(document_tools),
                 ),
