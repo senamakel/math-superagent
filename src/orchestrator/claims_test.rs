@@ -292,7 +292,16 @@ fn only_a_research_note_triggers_a_rederivation() {
     // The originals carry no claims, and the ledger must not re-derive itself.
     assert!(!is_note("research/sources/siegel.full.md"));
     assert!(!is_note("research/CLAIMS.md"));
-    // Nor does work outside the library.
+    // A note beside a program's output is a note: what the run computed is
+    // evidence on the same terms as what it read, and the trigger has to match
+    // what `collect` walks or a recorded claim never reaches the table.
+    assert!(is_note("code/out/NOTES.md"));
+    assert!(is_note("code/out/cutvertex/findings.md"));
+    assert!(!is_note("code/out/INDEX.md"));
+    // Programs and their raw captures are not notes, and neither is work
+    // outside the library.
     assert!(!is_note("code/solve.py"));
+    assert!(!is_note("code/out/run26.log"));
+    assert!(!is_note("code/lib/hemisum.py"));
     assert!(!is_note("SCRATCHPAD.md"));
 }
