@@ -161,6 +161,15 @@ fn evidence_briefing(workspace: &Path) -> String {
         ledger.asserted(),
         ledger.catalogued(),
         disagreement_warning(workspace, &captured),
+        if unclaimed_results(&captured, &ledger) {
+            "\n\nOne thing to weigh against the score: programs here have produced output and \
+             the claim ledger records nothing this run established — every claim in it is \
+             somebody else's word. A result that stays in a captured file reaches nobody: the \
+             ledger is what the planning roles read, and work absent from it will be done \
+             again. Name the established result and say it belongs in a claim block."
+        } else {
+            ""
+        },
         if oracle_unchecked(workspace, &captured) {
             "\n\nOne thing to weigh against the score: `code/` holds the naive oracle and at \
              least one faster program, and no captured output records the oracle having been \
