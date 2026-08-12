@@ -11,13 +11,18 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_structure.py` | _(undescribed)_ |
 | `check_structure_fast.py` | _(undescribed)_ |
 | `classify_terms.py` | _(undescribed)_ |
+| `count_signatures.py` | Counts exponent signatures (integer partitions, nonincreasing exponents) whose minimal prime assignment stays under a bound; tests feasibility of the signature-first approach. |
 | `crosscheck_oeis.py` | _(undescribed)_ |
 | `dbg_dfs.py` | _(undescribed)_ |
 | `dfs_corrected.py` | _(undescribed)_ |
+| `diag_26208.py` | _(undescribed)_ |
 | `factors22.py` | _(undescribed)_ |
 | `hemiperfect_dfs.py` | Reference implementation of the forced-denominator cancellation DFS for hemiperfect numbers <= 10^18 (template; not executed in this environment — no shell available). Validates the recursion described in the report. |
 | `maxab.py` | _(undescribed)_ |
+| `pattern_relations.py` | _(undescribed)_ |
+| `perk_seqs.py` | _(undescribed)_ |
 | `quotients.py` | _(undescribed)_ |
+| `run_count_signatures.py` | _(undescribed)_ |
 | `seqgen.py` | _(undescribed)_ |
 | `seqsieve.py` | _(undescribed)_ |
 | `solution.py` | _(undescribed)_ |

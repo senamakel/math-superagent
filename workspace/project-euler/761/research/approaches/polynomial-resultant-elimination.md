@@ -1,0 +1,14 @@
+```approach
+idea: Polynomial resultant elimination — derive the exact minimal polynomial of V_hexagon² directly from the coordinate geometry of the hexagon boundary-time equalization condition, using computational algebraic elimination (resultants / Gröbner bases) in place of trigonometric machinery. No K-index, no acos, no trigonometric inequality — pure algebraic elimination via polynomial ideals.
+
+mechanism: The hexagon (inradius 1, flat-top) has vertex coordinates and edge equations involving only √3, so every geometric quantity is algebraic of degree at most 2 over Q. Parameterize the exit point Q on one edge by a single rational parameter t ∈ [0,1] (or by coordinate x along the edge). The swimmer's staging point P is on the 1/v-scaled homothetic inner hexagon, centrally opposite the runner at R′ on the outer boundary. The chord distance |PQ|² is a quadratic polynomial in t with coefficients involving v and √3. The runner's perimeter distance from R′ to Q along the hexagon boundary is piecewise-linear in the edge index and linear in t. The critical-speed condition is:
+
+  max_{edge e, t∈[0,1]} [perim(R′ → Q_e(t))] / |P − Q_e(t)| = v
+
+At the maximizing t (interior to the edge), the derivative of the ratio with respect to t vanishes, giving the first-order condition d/dt [perim/|PQ|] = 0. After clearing denominators, this is a polynomial equation in t and v² (and √3). Isolate √3 by squaring, then use resultants to eliminate t, yielding the minimal polynomial for v². For n=6 the result should be the known quadratic 9v⁴ − 240v² + 256 = 0, recovered by a route that never references K, α, arccos, or tan(xθ) = (x+n)tanθ.
+
+The key structural advantage: the hexagon's critical exit point lies on an edge adjacent to the edge opposite the runner's position (established pattern from the square case and the known K=2 result). So only a small number of edge candidates need to be checked, and the elimination can be done edge-by-edge with sympy's resultant or groebner.
+
+status: proposed
+first-step: Parameterize the hexagon in coordinates (inradius 1, vertices at angles 30°, 90°, ...). For the runner at vertex V₀ = (0, 1) (worst case by symmetry), the opposite point on the inner 1/v-scaled hexagon is P = (0, −1/v). Parameterize Q on the right-adjacent edge from (√3/2, 1/2) to (√3/2, −1/2) — or whichever edge turns out to be critical. Compute |PQ|² and perim(R′ → Q) as rational functions of the parameter, set up d/dt(perim/|PQ|) = 0, rationalize √3, eliminate the parameter with sympy.resultant, and extract the minimal polynomial. Validate by checking that one root matches 5.05505046.
+```
