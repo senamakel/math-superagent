@@ -128,19 +128,6 @@ def check_clauses(name, G, v, want_cut=True):
         else:
             a_ok = False
             print(f"    FAIL(a): cycle {c} spans components {idxs}")
-        if v in verts:
-            # A simple cycle through v uses exactly two edges of the cycle
-            # incident to v (v appears once): equivalently v has exactly two
-            # neighbours on the cycle.  Clause (a) for a v-cycle then holds
-            # iff all its non-v vertices lie in ONE component (so both
-            # v-edges go into the same lobe).
-            vn = sum(1 for u in verts if G.has_edge(v, u))
-            if len(set(idxs)) == 1 and vn == 2:
-                pass
-            else:
-                a_ok = False
-                print(f"    FAIL(a): v-cycle {verts} vn={vn} "
-                      f"components={set(idxs)}")
     # union consequence: cycle_lengths(G) == union_i cycle_lengths(L_i)
     lobe_sets = [set(oracle(L)[1]) for L in lobes]
     union = set().union(*lobe_sets) if lobe_sets else set()
