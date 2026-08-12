@@ -660,3 +660,141 @@ fn an_oracle_with_no_rival_and_a_rival_with_no_oracle_are_both_quiet() -> std::i
     assert!(!super::oracle_unchecked(&root, &super::captured_outputs(&root)));
     Ok(())
 }
+
+/// Output captured beside its program must count as output.
+///
+/// The check read `code/out/` alone, which is where the layout says captured
+/// output belongs. Project Euler 761 writes `code/<program>_OUTPUT.txt` instead,
+/// and its `code/out/` held one empty file named `Untitled` — so the briefing
+/// would have reported a run with a dozen captured outputs as having produced
+/// nothing, and then accused it of never running its oracle, on a run whose
+/// `brute.py` output reproduces the published circle value to eight digits.
+#[test]
+fn output_captured_beside_its_program_counts_as_output() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-output-beside-program");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join("code/__pycache__"))?;
+    std::fs::write(root.join("code/brute.py"), "# the oracle\n")?;
+    std::fs::write(root.join("code/solution.py"), "# fast\n")?;
+    std::fs::write(root.join("code/brute_OUTPUT.txt"), "V = 4.60333885\n")?;
+    std::fs::write(root.join("code/solution_OUTPUT.txt"), "V = 4.60333885\n")?;
+    // Neither of these is a thing a program produced.
+    std::fs::write(root.join("code/__pycache__/brute.pyc"), "bytecode")?;
+    std::fs::write(root.join("code/lib.md"), "notes")?;
+
+    let captured = super::captured_outputs(&root);
+    assert_eq!(captured.len(), 2, "captured: {captured:?}");
+    let brief = evidence_briefing(&root);
+    assert!(brief.contains("2 file(s) a program produced"), "{brief}");
+    // And the oracle fault must stay quiet: its run is recorded, one level up
+    // from where the layout would have put it.
+    assert!(!super::oracle_unchecked(&root, &captured));
+    assert!(!brief.contains("no captured output records the oracle"), "{brief}");
+    Ok(())
+}
+
+/// An oracle that ran and disagreed is the failure after the one already
+/// caught, and Project Euler 761 is what it costs.
+///
+/// Its `code/indep_game_encoding_OUTPUT.txt` says `agree? False` on every line —
+/// the run's only independent solver returns 4.14159265 for the circle against a
+/// published 4.60333885 — and nothing in the runtime read a word of it. The run
+/// went on holding an answer supported by one route while the file that would
+/// have said so sat unread beside it.
+#[test]
+fn an_output_that_records_a_failed_check_reaches_the_judge() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-disagreement");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code"))?;
+    std::fs::write(root.join("code/indep.py"), "# an independent route\n")?;
+    std::fs::write(
+        root.join("code/indep_OUTPUT.txt"),
+        "CIRCLE  V* = 4.14159265   oracle 4.60333885   agree?  False\n",
+    )?;
+
+    let brief = evidence_briefing(&root);
+    assert!(brief.contains("1 captured output(s) record a check"), "{brief}");
+    assert!(brief.contains("code/indep_OUTPUT.txt"), "{brief}");
+    assert!(brief.contains("supported by one route, not two"), "{brief}");
+    Ok(())
+}
+
+/// A row of an enumeration reading FAIL is a result, not a broken check.
+///
+/// Project Euler 761's `patseq_deg_phi_extend_OUTPUT.txt` has
+/// `20  -  FAIL  -  -  NotAlgebraic` among twenty-three passing rows, because
+/// n=20 genuinely is not algebraic there. Reading a bare FAIL as a failed
+/// comparison would raise the alarm on every run that enumerates cases
+/// honestly, which is the fastest way to have the alarm ignored.
+#[test]
+fn a_classification_row_reading_fail_is_not_a_disagreement() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-disagreement-quiet");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code"))?;
+    std::fs::write(root.join("code/patseq.py"), "# enumerate\n")?;
+    std::fs::write(
+        root.join("code/patseq_OUTPUT.txt"),
+        "19  8  18  18  True   exact\n20  -  FAIL  -  -  NotAlgebraic\n21  9  12  12  True  exact\n",
+    )?;
+    let brief = evidence_briefing(&root);
+    assert!(!brief.contains("record a check that came out wrong"), "{brief}");
+    Ok(())
+}
+
+/// The verdict the loop did not have. An answer nobody can second-source is a
+/// result to report, not a run to keep retrying.
+///
+/// Project Euler 761 reached `V_hexagon = 5.05505046`, reduced it to
+/// `2 + 2*sqrt(21)/3`, reproduced the formula's published anchors at n=3, n=4 and
+/// n→∞, and could not close because the value rests on one Math.SE answer while
+/// Abel et al. list regular n-gons with n>4 as open. With only SOLVED and
+/// UNSOLVED available it was sent back to retry a derivation it had already
+/// finished.
+#[test]
+fn an_answer_with_one_route_and_no_second_available_ends_the_run() {
+    let mut current = state();
+    current.attempts = 3;
+    current.unverified = UNVERIFIED_THRESHOLD;
+    // The unproductive count is what an UNVERIFIED run accumulates by
+    // construction — it keeps reaching the answer it already had — so the
+    // arm has to win against a state that would otherwise diversify.
+    current.unproductive = STUCK_THRESHOLD;
+    assert_eq!(route(&current), Route::Reported);
+    assert!(current.outcome().contains("not independently verified"));
+}
+
+/// Said once it is an attempt reporting what it could not find; the run gets
+/// another go with that as the lesson before it becomes the finding.
+#[test]
+fn a_single_unverified_verdict_still_retries() {
+    let mut current = state();
+    current.attempts = 2;
+    current.unverified = UNVERIFIED_THRESHOLD - 1;
+    assert_eq!(route(&current), Route::Retry);
+}
+
+/// UNVERIFIED carries SOLVED's evidence bar and clears the moment a reflection
+/// stops saying it, so one hedged reply in the middle of a run cannot
+/// accumulate toward ending it.
+#[test]
+fn the_unverified_count_needs_a_program_and_resets() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-unverified-evidence");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root)?;
+
+    let mut current = state();
+    // No program on disk: an answer nothing computed is not an answer, however
+    // it was qualified.
+    record_verdict("VERDICT: UNVERIFIED\nPROGRESS: NO", None, Some(&root), &mut current);
+    assert_eq!(current.unverified, 0);
+
+    std::fs::write(root.join("solution.py"), "print(5.05505046)\n")?;
+    record_verdict("VERDICT: UNVERIFIED\nPROGRESS: NO", None, Some(&root), &mut current);
+    assert_eq!(current.unverified, 1);
+    assert!(!current.solved, "a qualified close is not a verified one");
+
+    record_verdict("VERDICT: UNSOLVED\nPROGRESS: YES", None, Some(&root), &mut current);
+    assert_eq!(current.unverified, 0, "a different verdict clears the count");
+    Ok(())
+}
