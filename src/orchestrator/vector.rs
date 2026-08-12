@@ -546,4 +546,51 @@ mod test {
         assert_eq!(slug("project-euler/903"), "project_euler_903");
         assert_eq!(slug("---"), "default");
     }
+
+    #[test]
+    fn a_rerun_of_the_same_problem_reuses_its_dataset_and_reaches_earlier_runs() {
+        // The dataset used to carry the run id — nanoseconds and a pid — so
+        // every restart opened a new one and could see only itself. One problem
+        // restarted eight times left eight datasets, seven unreachable. The
+        // name is now the project, and the per-run datasets an older build
+        // stranded underneath it are readable again.
+        let ours = "math_agent_sessions__project_euler_185";
+        let datasets = json!([
+            {"name": "math_agent_brain"},
+            {"name": "project_euler_185_L0"},
+            {"name": "math_agent_sessions__project_euler_185"},
+            {"name": "math_agent_sessions__project_euler_185__s18cb030630d9e2be-1"},
+            {"name": "math_agent_sessions__project_euler_185__s18cb0306ffffffff-9"},
+            {"name": "math_agent_sessions__project_euler_763"}
+        ]);
+        let visible = visible_datasets(&datasets, ours);
+        assert!(visible.contains(&ours.to_string()));
+        assert!(visible.contains(&"math_agent_brain".to_string()));
+        assert!(
+            visible.contains(&format!("{ours}__s18cb030630d9e2be-1")),
+            "a run must reach the session memory of earlier runs on the same problem"
+        );
+        assert!(
+            !visible.contains(&"math_agent_sessions__project_euler_763".to_string()),
+            "another problem's session memory must stay out"
+        );
+    }
+
+    #[test]
+    fn a_shorter_project_name_does_not_swallow_a_longer_one() {
+        // `euler_18` is a prefix of `euler_185`, so the ownership test has to
+        // require the `__` separator or one problem reads another's memory.
+        let datasets = json!([
+            {"name": "math_agent_sessions__euler_18"},
+            {"name": "math_agent_sessions__euler_185"},
+            {"name": "math_agent_sessions__euler_18__s1-2"}
+        ]);
+        let visible = visible_datasets(&datasets, "math_agent_sessions__euler_18");
+        assert!(visible.contains(&"math_agent_sessions__euler_18".to_string()));
+        assert!(visible.contains(&"math_agent_sessions__euler_18__s1-2".to_string()));
+        assert!(
+            !visible.contains(&"math_agent_sessions__euler_185".to_string()),
+            "euler_18 must not read euler_185's memory"
+        );
+    }
 }
