@@ -42,6 +42,10 @@ program output.
 claims the flag is `false` — that is stale; the witness values are consistent and
 program-verified. Flagged in memory as `Reconciliation: code/out/near_misses.json`.
 
+*(This record is also stored in Cognee as `Scholar digest session (librarian batch)`; this
+file exists so a reader of `research/` sees the session's own summary without a memory
+lookup.)*
+
 ## Sources that do not help (with reasons)
 
 - **Robertson 1996** — duplicate of Bremner 1999 (same PDF).

@@ -1,0 +1,12 @@
+```approach
+idea: Rational parametrization of the phase congruences via eccentric anomaly and tangent half-angle substitution
+mechanism: The planet-centre ellipse (foci at O and S, major semiaxis a = (c+s)/(4π), focal half-distance c_f = d/2) is parametrized by eccentric anomaly E:
+  P(E) = (a cos E, a√(1−e²) sin E) in coordinates with origin at ellipse centre (midpoint of OS).
+Equivalently, in the coordinate system with origin at S (sun centre), the distance to S is r_S(E) = a(1−e²)/(1+e cos E) (the polar equation with pole at S).
+For a planet of type t, the tangency conditions fix |SP| = (s+t)/(2π) and |CP| = (c−t)/(2π); both are already satisfied for every E on the ellipse, so E is the single free arrangement parameter. The interior angles of triangle CPS are explicit functions of E:
+  cos φ(E) = (|SP|² + d² − |CP|²)/(2|SP|·d), etc.
+The phase invariant W(E) = s·φ(E) + c·χ(E) − t·γ(E) is a linear combination of arccos of rational functions of cos E and sin E.
+Now substitute t = tan(E/2): cos E = (1−t²)/(1+t²), sin E = 2t/(1+t²). Every trigonometric expression becomes a rational function of t. The key step: tan(W(E)) = 0 (mod π) means that tan(s·φ + c·χ − t·γ) = 0. Using the tangent addition formula iterated, tan(n·θ) = P_n(tan θ)/Q_n(tan θ) where P_n, Q_n are related to Chebyshev polynomials. Since tan(φ) = √((1−cos φ)/(1+cos φ)) and cos φ is rational in t, tan φ = √(rational(t)), and similarly for tan χ, tan γ. After clearing square roots, the condition tan(W) = 0 becomes a polynomial equation in t. The degree of this polynomial is bounded by a function of c and s (specifically, by 2(c+s) after squaring twice). The number of valid centre distances d — hence g(c,s,p,q) — is the number of real roots t ∈ ℝ whose corresponding d(t) = 2c_f = 2·|OS| falls in the admissible interval [d_min, d_max], and which also satisfy the cross-type congruence. The root count can be obtained without numerical scanning via Sturm sequences or by computing the polynomial explicitly (using sympy to build it from the rational expressions) and solving exactly.
+status: proposed
+first-step: Derive the explicit rational expressions for cos φ, cos χ, cos γ in terms of E for a planet of type t, then substitute t = tan(E/2). Write a sympy script that builds the polynomial P(t) = numerator of tan(s·φ(t) + c·χ(t) − t·γ(t)), counts its real roots in the relevant t-interval via Sturm's theorem, and checks whether each root also satisfies the cross-type congruence — reproducing g(16,5,5,6)=9.
+```
