@@ -5,7 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `AGENTS.md` | _(undescribed)_ |
-| `bound_tightness.py` | _(undescribed)_ |
+| `bound_tightness.py` | Pattern work: checks whether 123/59 (largest m) is a per-product box bound or is set by the overall subset-sum. Result: per-product alone permits 596 reduced m>123/59, so the answer is bound by the OVERALL condition, not per-product boxes. |
 | `brute.py` | Naive brute-force oracle for PE236. Base set of achievable reduced m from the smallest (s,t)-pair product, then tests every m>1 against all six exact equalities via per-product minimal pair (c_i,d_i), bound K_i, and subset-sum on the overall constraint. Reproduces the statement's oracle: count 35 and smallest 1476/1475. |
 | `brute_m.py` | _(undescribed)_ |
 | `extra_prime_analysis.py` | _(undescribed)_ |
