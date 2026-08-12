@@ -64,7 +64,63 @@ The comment also flags the intended divergence from the loose informal claim:
 asking `2 ≤ k` makes the statement *stronger* than "a power of two" (which
 would permit `2^0 = 1`), matching the run's formulation of the problem.
 
-## Compile result
+## (e) `#print axioms erdos_gyarfas` — appended and recompiled
+
+`#print axioms erdos_gyarfas` is now the last line of the file. Recompiled:
+
+```
+$ cd /workspace && lean lean/erdos_gyarfas.lean
+lean/erdos_gyarfas.lean:40:8: warning: declaration uses `sorry`
+'erdos_gyarfas' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+```
+
+Exit status 0. Exact axiom list: `[propext, sorryAx, Classical.choice, Quot.sound]`
+— exactly the four reported before, the only non-standard one being
+`sorryAx`, which correctly marks the open conjecture.
+
+## (f) `lean/c4_lemma.lean` — a sorry-free proved lemma
+
+New file `lean/c4_lemma.lean` carries and **proves** the contentful lemma:
+
+```lean
+theorem c4_gives_eg_conclusion {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h : ∃ (v : V) (p : G.Walk v v), p.IsCycle ∧ p.length = 4) :
+    ∃ (k : ℕ) (v : V) (p : G.Walk v v),
+      p.IsCycle ∧ p.length = 2 ^ k ∧ 2 ≤ k := by
+  rcases h with ⟨v, p, hpcycle, hplen⟩
+  refine ⟨2, v, p, hpcycle, ?_, ?_⟩
+  · rw [hplen]
+    norm_num
+  · norm_num
+
+#print axioms c4_gives_eg_conclusion
+```
+
+This is the **"a counterexample must be C4-free"** direction: since `4 = 2²`
+is itself a power of two, any graph containing a 4-cycle already satisfies the
+EG conclusion, so a search for a counterexample may restrict to C4-free graphs
+(the run's `nauty-geng -f` reduction). Proof shape: witness `k = 2`, then the
+two arithmetic facts (`4 = 2^2` and `2 ≤ 2`) close with `norm_num`.
+
+Imports: the four SimpleGraph modules plus `Mathlib.Tactic.NormNum` for the
+arithmetic (`norm_num` is not pulled in automatically by the graph modules).
+The proof uses only `rcases`, `refine`, `rw`, and `norm_num`.
+
+### Compile + axioms
+
+```
+$ cd /workspace && lean lean/c4_lemma.lean
+'c4_gives_eg_conclusion' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
+Exit status 0, **no `sorry` warning**. `#print axioms` shows exactly
+`[propext, Classical.choice, Quot.sound]` — **no `sorryAx`** — so the lemma is
+kernel-checked: the success test passes. Grep confirms the only occurrence of
+`sorry` in the file is in a prose comment; no `sorry`/`admit`/`native_decide`/
+`@[implemented_by]` is used as a tactic.
+
+## Compile result (original file, before edits)
 
 ```
 $ cd /workspace && lean lean/erdos_gyarfas.lean
@@ -74,15 +130,16 @@ lean/erdos_gyarfas.lean:40:8: warning: declaration uses `sorry`
 Exit status 0. The file **elaborates**. The only diagnostic is the expected
 `sorry` warning on line 40. All names resolve (`SimpleGraph`, `minDegree`,
 `Walk`, `IsCycle`, `length`, `2 ^ k`), so the statement is well-typed against
-Mathlib's API. (A `time` prefix initially failed with "not found" in the
-shell; the bare `lean` invocation, above, is the real result.)
+Mathlib's API.
 
 ## Bottom line
 
 - Statement elaborates: **yes**.
 - Conventions (`k ≥ 2`, edge-length count) stated: **yes**, both in the
   statement and in prose.
-- Proofs present: **none**; the single theorem is an intentional `sorry`.
-- `#print axioms`: `[propext, sorryAx, Classical.choice, Quot.sound]` —
-  `sorryAx` is the only non-standard axiom, correctly marking the open
-  conjecture. Add `#print axioms erdos_gyarfas` to the file per the suggestion.
+- Proofs present: `erdos_gyarfas` is an intentional `sorry` (open conjecture);
+  `c4_gives_eg_conclusion` (in `lean/c4_lemma.lean`) is **proved, sorry-free**.
+- `#print axioms erdos_gyarfas`: `[propext, sorryAx, Classical.choice, Quot.sound]`
+  — `sorryAx` the only non-standard axiom, correctly marking the open conjecture.
+- `#print axioms c4_gives_eg_conclusion`: `[propext, Classical.choice, Quot.sound]`
+  — **no `sorryAx`**; the lemma is kernel-checked.

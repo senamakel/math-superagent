@@ -2,6 +2,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Walk.Basic
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Combinatorics.SimpleGraph.Paths
+import Mathlib.Tactic.NormNum
 
 /-!
 # A 4-cycle satisfies the Erdős–Gyárfás conclusion
