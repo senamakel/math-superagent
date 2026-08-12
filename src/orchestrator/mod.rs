@@ -267,12 +267,7 @@ impl OrchestratorAgent {
         // the housekeeping follow-up. Two separate ones would each read the
         // other's filing as new work and wake each other indefinitely.
         let filed: Arc<std::sync::Mutex<Option<u64>>> = Arc::default();
-        let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()))
-            .with_filing_gate({
-                let workspace = workspace.clone();
-                let filed = filed.clone();
-                Arc::new(move || filing_unchanged(&workspace, &filed).is_none())
-            });
+        let async_subagents = gated_subagents(budget, &tracer, &workspace, &filed);
         let documents = WorkspaceDocuments::new(workspace.clone())?;
         // Commits the workspace after every successful write, so a rewritten
         // solution or an edited belief is recoverable rather than lost.
@@ -432,49 +427,7 @@ impl OrchestratorAgent {
         patterns: &solutions::PatternMailbox,
     ) -> Vec<teams::TeamHandle> {
         let mut handles = Vec::new();
-        for (name, agent, completion, budget, brief) in [
-            (
-                "research",
-                "librarian",
-                teams::Completion::Attainable,
-                teams::TeamBudget::acquiring(),
-                "Keep this run's reference library useful, which mostly means not adding to \
-                 it. Gathering is not free: every source costs a download, a digest, a row, \
-                 and a share of the attention of every agent that reads the library \
-                 afterwards, so a source nobody needed is a cost the whole run pays. Fetch \
-                 only when one of these holds.\n\
-                 - You are told below that the summary tree needs work. Do that instead, and \
-                   gather nothing this cycle.\n\
-                 - A message from the solver says an attempt was STUCK. Then find the one \
-                   source that bears on what it says is blocking, and only that.\n\
-                 - research/ROOT.md names a specific gap, and you know a specific source \
-                   that closes it. A general wish for more background is not a gap.\n\
-                 None of those holding is the normal case, and the right answer then is to \
-                 reply NOTHING FURTHER and spend nothing. Do not fetch to look busy, do not \
-                 fetch a survey of a field the run has already picked its way through, and \
-                 do not re-fetch what research/INDEX.md already lists. When you do gather, \
-                 file it under research/, describe it, and say in research/ROOT.md what the \
-                 library now establishes that it did not before.",
-            ),
-            (
-                "patterns",
-                "pattern_finder",
-                teams::Completion::Standing,
-                teams::TeamBudget::custodial(),
-                "Look for exploitable structure in the results this run has already computed.                  Read what is on disk, extract the integer sequences in it, and run the                  sequence tools over them. Where a check needs terms the run has not                  computed, write and run the program yourself or commission it — a                  conjecture tested only on the data that suggested it is untested. Report                  only regularities that hold exactly over every term supplied, say plainly                  that they are conjectures, and give the first term that would falsify                  each. An invented pattern costs the run more than no pattern, so when the                  results have not changed since you last looked, or hold too few terms to                  say anything exact, reply NOTHING FURTHER rather than reaching. Record                  what you do find in SCRATCHPAD.md, and promote it to MEMORY.md only once                  it has survived an attempt to break it.",
-            ),
-            (
-                "background",
-                "organizer",
-                teams::Completion::Standing,
-                teams::TeamBudget::custodial(),
-                "Keep the workspace navigable. Refresh the folder indexes so they match what is \
-                 on disk, describe any file that has no description, and leave reflections/ \
-                 alone — the loop writes that itself. Change nothing a result or derivation \
-                 depends on. Reply with NOTHING FURTHER when there is nothing to tidy right \
-                 now; you will be asked again once the run has produced more.",
-            ),
-        ] {
+        for (name, agent, completion, budget, brief) in standing_teams() {
             if !self.subagents.knows(agent) {
                 continue;
             }
@@ -594,6 +547,78 @@ impl OrchestratorAgent {
             .await?;
         Ok(run.text().unwrap_or_default())
     }
+}
+
+/// The teams that run beside the solve, each with the brief it wakes up to.
+///
+/// Lifted out of [`OrchestratorAgent::spawn_support_teams`] so the briefs — the
+/// longest text in this file and the part most often edited — are not wedged
+/// inside the spawning logic that reads them.
+fn standing_teams() -> [(
+    &'static str,
+    &'static str,
+    teams::Completion,
+    teams::TeamBudget,
+    &'static str,
+); 3] {
+    [
+        (
+            "research",
+            "librarian",
+            teams::Completion::Attainable,
+            teams::TeamBudget::acquiring(),
+            "Keep this run's reference library useful, which mostly means not adding to \
+                 it. Gathering is not free: every source costs a download, a digest, a row, \
+                 and a share of the attention of every agent that reads the library \
+                 afterwards, so a source nobody needed is a cost the whole run pays. Fetch \
+                 only when one of these holds.\n\
+                 - You are told below that the summary tree needs work. Do that instead, and \
+                   gather nothing this cycle.\n\
+                 - A message from the solver says an attempt was STUCK. Then find the one \
+                   source that bears on what it says is blocking, and only that.\n\
+                 - research/ROOT.md names a specific gap, and you know a specific source \
+                   that closes it. A general wish for more background is not a gap.\n\
+                 None of those holding is the normal case, and the right answer then is to \
+                 reply NOTHING FURTHER and spend nothing. Do not fetch to look busy, do not \
+                 fetch a survey of a field the run has already picked its way through, and \
+                 do not re-fetch what research/INDEX.md already lists. When you do gather, \
+                 file it under research/, describe it, and say in research/ROOT.md what the \
+                 library now establishes that it did not before.",
+        ),
+        (
+            "patterns",
+            "pattern_finder",
+            teams::Completion::Standing,
+            teams::TeamBudget::custodial(),
+            "Look for exploitable structure in the results this run has already computed.                  Read what is on disk, extract the integer sequences in it, and run the                  sequence tools over them. Where a check needs terms the run has not                  computed, write and run the program yourself or commission it — a                  conjecture tested only on the data that suggested it is untested. Report                  only regularities that hold exactly over every term supplied, say plainly                  that they are conjectures, and give the first term that would falsify                  each. An invented pattern costs the run more than no pattern, so when the                  results have not changed since you last looked, or hold too few terms to                  say anything exact, reply NOTHING FURTHER rather than reaching. Record                  what you do find in SCRATCHPAD.md, and promote it to MEMORY.md only once                  it has survived an attempt to break it.",
+        ),
+        (
+            "background",
+            "organizer",
+            teams::Completion::Standing,
+            teams::TeamBudget::custodial(),
+            "Keep the workspace navigable. Refresh the folder indexes so they match what is \
+                 on disk, describe any file that has no description, and leave reflections/ \
+                 alone — the loop writes that itself. Change nothing a result or derivation \
+                 depends on. Reply with NOTHING FURTHER when there is nothing to tidy right \
+                 now; you will be asked again once the run has produced more.",
+        ),
+    ]
+}
+
+/// Builds the subagent manager with housekeeping gated on the workspace having
+/// changed since the organizer last filed it.
+fn gated_subagents(
+    budget: RunBudget,
+    tracer: &Arc<RunTracer>,
+    workspace: &Path,
+    filed: &Arc<std::sync::Mutex<Option<u64>>>,
+) -> AsyncSubagentManager {
+    let workspace = workspace.to_path_buf();
+    let filed = filed.clone();
+    AsyncSubagentManager::new(budget, Some(tracer.clone())).with_filing_gate(Arc::new(move || {
+        filing_unchanged(&workspace, &filed).is_none()
+    }))
 }
 
 /// Folders holding what a program produced, which is what the pattern agent

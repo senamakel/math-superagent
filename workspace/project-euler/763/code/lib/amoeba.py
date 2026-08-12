@@ -114,6 +114,25 @@ def forward_level(level, d):
     return nxt
 
 
+def dividable_count(S, d=3):
+    """#cells p in config S (an iterable of d-tuples) with none of its
+    children p+e_i (i=0..d-1) in S — the 'dividable' cells, i.e. those that
+    could be divided next.
+
+    Called f_of(C) in the inventor probe programs.  This is the single
+    CANONICAL definition, consolidated from five identical copies formerly in
+    inventor/check_recurrence.py, inventor/decomp_probe.py,
+    inventor/diagnose_B.py, inventor/diagnose_B2.py and
+    inventor/structure_probe.py.  The five copies had NOT diverged — each was
+    `sum(1 for p in S if all(c not in S for c in children(p,3)))` — so no
+    definition was chosen over another.  Correctness established by those
+    programs reproducing D(2)=3 and D(10)=44499 and by their per-config
+    structural reports.
+    """
+    Sset = set(S)
+    return sum(1 for p in Sset if all(c not in Sset for c in children(p, d)))
+
+
 # --- naive BFS driver -----------------------------------------------------
 
 
