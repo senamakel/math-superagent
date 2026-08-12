@@ -370,6 +370,28 @@ it emitted no usable tool call and the loop retried — 66 seconds spent to
 accomplish nothing. A cap that trips routinely is worse than the long turns it
 prevents. Buy brevity in the prompt instead.
 
+The inventor is the exception, at 32000 (`RunBudget::for_invention`). It is the
+one role whose product *is* the long turn — three genuinely different lines of
+attack with the actual mathematics named in each — and 12000 was binding on it
+rather than bounding it. A live Project Euler 597 run cut the inventor off with
+no tool call, re-issued, and reached the same place: five model calls, nine tool
+calls, every one a read, and the three candidates left in prose that never
+reached `research/approaches/`. Across three concurrent runs the directory had
+never been created at all.
+
+The widened cap has to reach two places or the role pays for its turn twice.
+`specialist_harness` sets the ceiling `UntruncatedModel` may grow a cut-off turn
+*to*; `AsyncSubagentManager::register_with_turn_cap` sets what the first attempt
+asks for. Only the inventor uses the second, and every other role registers
+through `register`, which passes the run's own cap.
+
+Every other budget method narrows. This one widens, and the distinction is what
+it bounds: `for_judging` and `for_housekeeping` bound *authority* — how far a
+role may wander from its job, where an operator who lowered the defaults meant
+to lower them — while the turn cap bounds one generation. So `for_invention`
+uses `max` rather than assignment, and an operator who raised
+`MATH_AGENT_TURN_OUTPUT_TOKENS` past 32000 keeps their value.
+
 The retry is upstream `truncated_empty` recovery in `agent_loop/run_loop.rs`:
 when a turn ends with `finish_reason == "length"`, no text, and no tool calls —
 the model spent the whole budget on its hidden reasoning channel — the loop
