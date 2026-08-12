@@ -11,5 +11,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | Entry-point orientation to the workspace: how the directory is organised, where to start (AGENTS.md, prompts/), and where outputs land (code/out/). |
 | `SCRATCHPAD.md` | Provisional working notes not yet established enough for MEMORY.md. Currently holds one pattern_finder note: PE 185 is a constraint-satisfaction problem with no integer sequence to analyze, so pattern-matching should wait until a solver produces output. |
 | `TASKS.md` | Task checklist tracking progress toward the goal. Stub template at present. |
-| `problem.md` | Official Project Euler 185 (Number Mind) statement, converted from projecteuler.net/minimal=185. The canonical statement this run solves. |
-t/minimal=185. The canonical statement this run solves. |
+| `problem.md` | Official Project Euler 185 (Number Mind) statement, converted from projecteuler.net/minimal=185. The canonical statement this run solves.
