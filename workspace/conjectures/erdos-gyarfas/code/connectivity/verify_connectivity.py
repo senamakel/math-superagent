@@ -164,9 +164,16 @@ def main():
         pow2 = power_of_two_cycles(lens)
         print(f"  delta(G) >= 3            : {min(d for _, d in G.degree()) >= 3}")
         print(f"  has power-of-two cycle   : {bool(pow2)}  -> lengths {pow2}")
-        # structural claim: no cycle passes through v => union of lobe cycle sets
-        union = frozenset().union(*[frozenset(
-            len(c) for c in all_simple_cycles(lobe))]) if False else None
+        # structural claim: v has exactly one edge into each lobe, so no
+        # simple cycle passes through v; the glued cycle set must be exactly
+        # the union of the three lobe cycle sets.
+        lobe_lens = frozenset(oracle(lobe)[1])
+        union = frozenset().union(*[lobe_lens] * 3)
+        union_holds = lens == union
+        print(f"  cycle set == union of 3 x lobe cycle sets: {union_holds}")
+        if not union_holds:
+            print("    glued-only:", sorted(lens - union))
+            print("    lobe-only :", sorted(union - lens))
         print()
     return
 
