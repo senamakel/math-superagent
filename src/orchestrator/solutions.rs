@@ -1061,6 +1061,20 @@ pub(super) async fn run(
             "done",
             |state: SolutionState, _ctx: NodeContext| async move { Ok(NodeResult::Update(state)) },
         )
+        ;
+    let graph = wire_routes(graph).compile()?;
+
+    Ok(graph.run(state).await?.state)
+}
+
+/// Connects the loop's nodes, separately from building them.
+///
+/// The routing is the part of this design most likely to be wrong, so it is
+/// worth reading in one piece rather than at the tail of the wiring.
+fn wire_routes(
+    builder: GraphBuilder<SolutionState, SolutionState>,
+) -> GraphBuilder<SolutionState, SolutionState> {
+    builder
         .set_entry("attempt")
         .add_edge("attempt", "judge")
         .add_conditional_edges(
@@ -1083,9 +1097,6 @@ pub(super) async fn run(
         )
         .add_edge("diversify", "attempt")
         .set_finish("done")
-        .compile()?;
-
-    Ok(graph.run(state).await?.state)
 }
 
 /// Pulls the `LESSON:` line out of a reflection, falling back to the whole text.
