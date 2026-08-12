@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/András_Gyárfás | András Gyárfás | [graph theory][10], the unproven **Erdős–Gyárfás conjecture**, made in 1995 by mathematician [Paul Erdős][11] and his collaborator [András Gyárfás][12], states that every [graph][13] with minimum… |
 | 1 | https://en.wikipedia.org/wiki/File:Markström-Graph.svg | — | every cubic graph contain a simple cycle of length a power of two? [More unsolved problems in mathematics][1] Markström's graph \| [2] Markström's 24-vertex cubic planar graph with no 4- or 8-cycles,… |
 
-_253 further candidates not shown; they are cited once each._
+_264 further candidates not shown; they are cited once each._
