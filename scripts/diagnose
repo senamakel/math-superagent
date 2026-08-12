@@ -1,0 +1,239 @@
+#!/bin/sh
+# Reports the KPIs that decide whether a run is working.
+#
+# Watching a run means asking the same dozen questions every few minutes, and
+# asking them by hand invites the two mistakes this script exists to prevent.
+# The first is measuring the wrong thing: counting a role's *log lines* rather
+# than its model calls once read as an organizer consuming half a run, and
+# counting background team *cycles* rather than the calls they spend once read
+# as a runaway director when the cycles were free. The second is a silent
+# miss: `docker logs` needs `2>&1` because the runtime writes to stderr, and a
+# reader who forgets it sees an empty log and calls a working run dead.
+#
+# So every number here is defined once, in one place, and the definition is
+# what the comment beside it says. Nothing is inferred and nothing is judged —
+# a KPI that needs a verdict gets the evidence printed beside it instead.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$repository_root"
+
+usage() {
+    echo "usage: ./diagnose [<problem>|--workspace relative/path|--all]" >&2
+    echo "" >&2
+    echo "Reports the KPIs for a run that is going: role spend, solution-loop" >&2
+    echo "progress, library growth, failure signals, turn shape, and whether" >&2
+    echo "any solver produced something checkable. Reads only; changes nothing." >&2
+    echo "" >&2
+    echo "  ./diagnose 761                          one Project Euler run" >&2
+    echo "  ./diagnose --workspace conjectures/erdos-gyarfas" >&2
+    echo "  ./diagnose --all                        every live run" >&2
+}
+
+# Resolves the container whose /workspace mount is this workspace.
+#
+# By mount rather than by name: the container name carries a compose slug
+# nobody can predict, and mapping a name back to a workspace by hand is what
+# produced a report of a cross-project memory leak that did not exist.
+container_for() {
+    for id in $(docker ps -q --filter name=riemann-agent-run); do
+        mount=$(docker inspect "$id" --format '{{range .Mounts}}{{.Source}}{{end}}' 2>/dev/null || true)
+        case "$mount" in
+            */"$1") echo "$id"; return 0 ;;
+        esac
+    done
+    return 1
+}
+
+count() { grep -c "$1" "$2" 2>/dev/null || echo 0; }
+
+report() {
+    workspace_subdir=$1
+    workspace=workspace/$workspace_subdir
+
+    if [ ! -d "$workspace" ]; then
+        echo "no workspace at $workspace" >&2
+        return 1
+    fi
+
+    container=$(container_for "$workspace_subdir" || true)
+    echo "=============================================================="
+    echo "  $workspace_subdir"
+    echo "=============================================================="
+
+    if [ -z "$container" ]; then
+        echo "  container    not running"
+    else
+        log=$(mktemp)
+        # 2>&1 is load-bearing: the runtime's console is stderr, and a live
+        # container had 643 lines there and none on stdout.
+        docker logs "$container" >"$log" 2>&1
+
+        elapsed=$(grep -oE '^\[[0-9:]+\]' "$log" | tail -1)
+        image=$(docker inspect "$container" --format '{{.Image}}' | cut -c8-19)
+        stats=$(docker stats --no-stream --format '{{.CPUPerc}} {{.MemUsage}}' "$container" 2>/dev/null || true)
+        echo "  container    ${container} image ${image}"
+        echo "  elapsed      ${elapsed:-?}   ${stats}"
+
+        # --- Role spend -------------------------------------------------
+        # Model calls, not log lines. A role that reads twenty files in one
+        # turn writes twenty lines and spends one call, and the two numbers
+        # answer different questions.
+        total=$(grep -c 'model call #' "$log" || echo 0)
+        echo ""
+        echo "  ROLE SPEND   $total model calls"
+        grep 'model call #' "$log" \
+            | grep -oE '^\[[0-9:]+\] [a-z_]+' \
+            | awk '{print $2}' \
+            | sort | uniq -c | sort -rn \
+            | awk -v t="$total" '{printf "    %-18s %4d  %5.1f%%\n", $2, $1, t>0?100*$1/t:0}'
+
+        # --- Solution loop ----------------------------------------------
+        # The loop has to reach a judge before a reflection, and a reflection
+        # before the inventor. Reporting all of them together is what shows
+        # a run that is busy but has not advanced past attempt 1.
+        echo ""
+        echo "  LOOP"
+        printf "    attempts %s  judge %s  reflection %s  diversify %s  inventor %s\n" \
+            "$(count 'solution loop: attempt' "$log")" \
+            "$(count 'judge/agent-run-[0-9]* spawned' "$log")" \
+            "$(count 'reflection/agent-run-[0-9]* spawned' "$log")" \
+            "$(count 'diversify' "$log")" \
+            "$(count 'inventor/agent-run-[0-9]* spawned' "$log")"
+        grep -E 'solution loop: (verdict|judge)' "$log" | tail -2 | sed 's/^/    /' || true
+
+        # --- Research ---------------------------------------------------
+        echo ""
+        echo "  RESEARCH"
+        printf "    exa_search %s  downloads %s  research-team-retired %s\n" \
+            "$(grep exa_search "$log" | grep -c done || echo 0)" \
+            "$(grep download_document "$log" | grep -c done || echo 0)" \
+            "$(count 'team research.*stopped' "$log")"
+
+        # --- Failure signals --------------------------------------------
+        # Each of these is a documented stall shape. `model call failed`
+        # carries the provider's own reason, which is the line that turns a
+        # repeated RETRY from a mystery into a diagnosis.
+        echo ""
+        echo "  FAILURES"
+        printf "    truncated %s  retry %s  run-failed %s  402 %s  403 %s  429 %s\n" \
+            "$(count TRUNCATED "$log")" \
+            "$(count 'model RETRY' "$log")" \
+            "$(count 'run   FAILED' "$log")" \
+            "$(count 'HTTP 402' "$log")" \
+            "$(count 'HTTP 403' "$log")" \
+            "$(count 'HTTP 429' "$log")"
+        grep 'model call failed' "$log" | grep -oE '\(.*\)' | sort | uniq -c \
+            | sed 's/^/    cause /' || true
+        # An OOM kill writes nothing to the console — the kernel stops the
+        # process — so a vanished container reads as a hung child unless this
+        # is checked separately.
+        oom=$(docker events --filter event=oom --since 2h --until 0s 2>/dev/null | grep -c "$container" || echo 0)
+        [ "$oom" -gt 0 ] && echo "    OOM KILLS $oom"
+
+        # --- Turn shape -------------------------------------------------
+        # `out=` is total generated tokens, most of which are the hidden
+        # reasoning channel: 77.8% of 5.2M tokens on a measured run. A cap
+        # set from the visible answer is therefore set several times too low.
+        echo ""
+        echo "  TURN SHAPE (out= tokens, total generation incl. reasoning)"
+        grep -oE 'out=[0-9]+' "$log" | cut -d= -f2 | sort -n \
+            | awk '{a[NR]=$1} END {if(NR)printf "    n=%d  p50=%d  p90=%d  max=%d\n", NR, a[int(NR*0.5)], a[int(NR*0.9)], a[NR]; else print "    no completed turns"}'
+
+        # --- Solver reality ---------------------------------------------
+        # The cron's bar: a solver that ran must show something checkable.
+        # A spawn count alone is the thing this section exists not to report.
+        echo ""
+        echo "  SOLVERS"
+        for role in sat_solver smt_solver theorem_prover symbolic_math lean_prover; do
+            n=$(count "$role/agent-run-[0-9]* spawned" "$log")
+            [ "$n" -gt 0 ] && printf "    %-16s %s spawn(s)\n" "$role" "$n"
+        done
+        printf "    non-answers reported: %s\n" \
+            "$(grep -cE 'ResourceOut|GaveUp|SZS status Unknown' "$log" || echo 0)"
+
+        rm -f "$log"
+    fi
+
+    # --- Library on disk ------------------------------------------------
+    # Read from the workspace rather than the log, because it survives a
+    # restart and the log does not.
+    echo ""
+    echo "  LIBRARY"
+    printf "    sources %s  summaries %s  claims %s  approaches %s\n" \
+        "$(ls "$workspace/research/sources" 2>/dev/null | wc -l | tr -d ' ')" \
+        "$(ls "$workspace/research/summaries" 2>/dev/null | wc -l | tr -d ' ')" \
+        "$(grep -c '^| ' "$workspace/research/CLAIMS.md" 2>/dev/null || echo 0)" \
+        "$(ls "$workspace/research/approaches" 2>/dev/null | wc -l | tr -d ' ')"
+    if [ -f "$workspace/config/.frontier.json" ]; then
+        python3 - "$workspace/config/.frontier.json" <<'PY' 2>/dev/null || true
+import json, sys
+d = json.load(open(sys.argv[1]))
+fetched = sum(1 for v in d.values() if v.get("path"))
+print(f"    frontier {len(d)} candidates, {fetched} fetched, {len(d)-fetched} unworked")
+PY
+    fi
+    # A claim the run established and one a paper asserted are different
+    # things, and collapsing them is how a library looks like progress.
+    if [ -f "$workspace/research/CLAIMS.md" ]; then
+        printf "    claim evidence:"
+        grep -oE '\| (asserted|proved|verified|computed|refuted) \|' "$workspace/research/CLAIMS.md" 2>/dev/null \
+            | tr -d '| ' | sort | uniq -c | awk '{printf " %s=%s", $2, $1}' || true
+        echo ""
+    fi
+
+    # --- Executed output ------------------------------------------------
+    echo ""
+    echo "  ARTIFACTS"
+    printf "    code files %s  code/out entries %s\n" \
+        "$(find "$workspace/code" -name '*.py' 2>/dev/null | wc -l | tr -d ' ')" \
+        "$(ls "$workspace/code/out" 2>/dev/null | wc -l | tr -d ' ')"
+    echo "    written in the last 10 minutes:"
+    find "$workspace" -type f -mmin -10 \
+        -not -path '*/.workspace-history/*' \
+        -not -path '*/.python-packages/*' \
+        -not -path '*__pycache__*' \
+        -not -name 'trace.jsonl' \
+        2>/dev/null | head -8 | sed 's|^|      |' || true
+    echo ""
+}
+
+workspace_subdir=${MATH_AGENT_WORKSPACE:-}
+case "${1-}" in
+    -h|--help|help)
+        usage
+        exit 0
+        ;;
+    --all)
+        found=0
+        for id in $(docker ps -q --filter name=riemann-agent-run); do
+            mount=$(docker inspect "$id" --format '{{range .Mounts}}{{.Source}}{{end}}' 2>/dev/null || true)
+            case "$mount" in
+                */workspace/*)
+                    report "${mount##*/workspace/}"
+                    found=1
+                    ;;
+            esac
+        done
+        [ "$found" -eq 1 ] || echo "no runs are going" >&2
+        exit 0
+        ;;
+    --workspace)
+        [ "$#" -ge 2 ] || { usage; exit 2; }
+        workspace_subdir=$2
+        ;;
+    '')
+        [ -n "$workspace_subdir" ] || { usage; exit 2; }
+        ;;
+    *)
+        case "$1" in
+            ''|*[!0-9]*)
+                echo "problem must be a positive integer, or use --workspace" >&2
+                exit 2
+                ;;
+        esac
+        workspace_subdir=project-euler/$1
+        ;;
+esac
+
+report "$workspace_subdir"

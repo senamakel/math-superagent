@@ -1,41 +1,20 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/numericana_multiperfect.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Numericana — multiply perfect and hemiperfect integers (Michon)
 
-<!-- source: http://www.numericana.com/answer/numbers.htm | converted from HTML -->
+Source: http://www.numericana.com/answer/numbers.htm — `[[numericana_multiperfect.full]]`
 
-## What is in it
+## What is in it / what it is
 
-- Final Answers
-**&copy; 2000-2023 [G&eacute;rard P. Michon][17], Ph.D.**
-- Number Theory
-    - Articles previously on this page:
-    - See also:
-    - Related Links (Outside this Site)
-  - Arithmetic and Number Theory
-    - Time is defined so that motion looks simple.
-    - "Rectangular Number" is a deprectaed term :
-    - Subtractive Version of Euclid's Algorithm ( [anthyphairesis][165]) :
-    - B&eacute;zout Coefficients and B&eacute;zout Function : bezout(x,y)
-    - B&eacute;zout's Lemma in the Language of [Rings and Ideals][171]:
-    - Are there any *odd*perfect numbers?
-    - Abundancies 15/2, 17/2, 19/2 and beyond...
-    - First way: Use a table of logarithms.
-    - Second way: Use repeated squaring.
-- …
+A large reference page (153k chars) on number theory, including the multiply-perfect and hemiperfect sections cited by Wikipedia and OEIS (abundancy 11/2, 13/2, 15/2, 17/2 tables by G. P. Michon and M. Marcus). Its main value to the library is as the source behind the A088912 / Wikipedia smallest-abundancy tables and as the citation anchor for the Marcus upper bounds on 15/2 and 17/2 hemiperfects.
 
+## What it establishes for this run
 
-## What it claims
+- Confirms the hemiperfect abundance-value data already captured from A088912 / Wikipedia (smallest of abundancy k/2; Marcus's bounds for 15/2 and 17/2 ≈ 1.27e88 and ≈ 2.72e190).
+- The recurrences/sections about multiplicativity of σ, abundancy, and the multiply-perfect/hemiperfect classification are background, not a bound for n ≤ 10^18.
 
-[home][1] | [index][2] | [units][3] | [counting][4] | [geometry][5] | [algebra][6] | [trigonometry][7] | [calculus][8] | [functions][9]
-[analysis][10] | [sets & logic][11] | [number theory][12] | [recreational][13] | [misc][14] | [nomenclature & history][15] | [physics][16] |
+## Does not help directly (why)
 
-| [image:  border ] |
+It is an encyclopedia-style reference and does not provide a proof that its tabulated "smallest" numbers are the true minima (the A088912 comment carries Robin's-theorem lower bounds, which are the load-bearing completeness argument). No computational shortcut for the run's sum. Read for the numbers, rely on A088912 for the bounds; do not treat it as an independent proof.
 
-[image:  border ] |
+## Contradiction check
 
-## Statements it makes
-
-### Lemma(s) :
-
-### Theorem :
-
-*[digest of a 153291 character source; every section, statement, and proof in full at `research/sources/numericana_multiperfect.full.md`]*
+No contradiction with memory or with A088912: the numericana numbers agree with A088912 threshold values. (Status: corroboration, not independent proof.)
