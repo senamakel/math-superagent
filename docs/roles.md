@@ -93,7 +93,10 @@ The runtime has fifteen roles plus an explicit solution loop.
   one level because research has no delegation tools. It is handed a dossier
   assembled from disk at delegation time rather than the workspace as it stood
   when the container started, which on a twelve-hour run is the difference
-  between seeing the work and seeing an empty workspace.
+  between seeing the work and seeing an empty workspace. It is one of the four
+  roles on the stronger reasoning model — see `REASONING_ROLES` and
+  [`docs/runtime.md`](runtime.md) — because its whole output is a judgement
+  nothing mechanical can check.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,

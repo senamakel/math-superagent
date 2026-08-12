@@ -1,8 +1,6 @@
 # Runtime architecture, budget, and observability
 
-What the crate is made of, what one run may spend, and how to see what a run actually did. Every number here is a ceiling that a live run has met at least once.
-
-The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
+What the crate is made of, what one run may spend, and how to see what a run actually did. Every number here is a ceiling that a live run has met at least once. The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
 ## Runtime architecture
 
@@ -57,25 +55,24 @@ file can describe it, rather than by a role whose every cycle competed with the
 mathematics and won.
 
 Seven of those — `tool_builder`, `coder`, `sat_solver`, `smt_solver`,
-`theorem_prover`, `symbolic_math`, `lean_prover` — carry
-exactly the same authority: shell, file write, `apply_patch`, and the document
-tools. They are separate roles because they differ in *mandate*, and because
-their failure modes have nothing in common: a program that ran but computes the
-wrong thing, an `UNKNOWN` reported as solved, an `unsat` from hypotheses that
-were already contradictory, a `Theorem` proved from axioms nobody checked, an
-identity confirmed by sampling, a `sorry` left undeclared. One prompt hedging
-between seven of those is strict about none of them. They are
-built from one list in `register_code_writing_agents`, so the shared authority
-boundary is visible rather than buried in four near-identical blocks — a tool
-granted there reaches all four.
-Agents are exposed to the orchestrator as TinyAgents `SubAgentTool` instances.
-The goals agent also receives the research and tool-builder delegation tools,
-so it can pursue a goal through nested, focused work.
-All model-visible delegation uses the graph-backed asynchronous controls:
-`spawn_agent`, `peek_agent`, `steer_agent`, and `await_agent`. A spawn returns a
-run ID immediately. Callers may launch independent work in parallel, inspect
-or redirect live runs, and must await every result needed for their final
-answer. Do not reintroduce blocking `SubAgentTool` calls.
+`theorem_prover`, `symbolic_math`, `lean_prover` — carry exactly the same
+authority: shell, file write, `apply_patch`, and the document tools. They are
+separate roles because they differ in *mandate*, and because their failure
+modes have nothing in common: a program that ran but computes the wrong thing,
+an `UNKNOWN` reported as solved, an `unsat` from hypotheses that were already
+contradictory, a `Theorem` proved from axioms nobody checked, an identity
+confirmed by sampling, a `sorry` left undeclared. One prompt hedging between
+seven of those is strict about none of them. They are built from one list in
+`register_code_writing_agents`, so the shared authority boundary is visible
+rather than buried in four near-identical blocks — a tool granted there
+reaches all four. Agents are exposed to the orchestrator as TinyAgents
+`SubAgentTool` instances. The goals agent also receives the research and
+tool-builder delegation tools, so it can pursue a goal through nested, focused
+work. All model-visible delegation uses the graph-backed asynchronous
+controls: `spawn_agent`, `peek_agent`, `steer_agent`, and `await_agent`. A
+spawn returns a run ID immediately. Callers may launch independent work in
+parallel, inspect or redirect live runs, and must await every result needed
+for their final answer. Do not reintroduce blocking `SubAgentTool` calls.
 
 Fifty runs may execute at once (`MATH_AGENT_MAX_CONCURRENT_AGENTS`); the rest
 queue for a slot, and spawning stays non-blocking either way, so a caller gets
@@ -231,8 +228,8 @@ assumptions, intermediate results, source URLs, tool output, and unfinished
 work.
 
 OpenRouter uses `deepseek/deepseek-v4-flash-0731` unless `OPENROUTER_MODEL`
-overrides the model. `DeepInfra` is preferred through `provider.order`, overridable with
-`MATH_AGENT_PROVIDER`, and `allow_fallbacks` is enabled.
+overrides the model. `DeepInfra` is preferred through `provider.order`,
+overridable with `MATH_AGENT_PROVIDER`, and `allow_fallbacks` is enabled.
 
 Preferring one provider is what makes prompt caching pay: the cache is
 per-provider, and these agents carry a large fixed prefix, so bouncing between
@@ -242,6 +239,32 @@ fallbacks is what stops a busy provider halting the runtime. Do not restore
 rate limit on one route stalls everything while providers serving the same
 model sit idle. Verify any slug before relying on it — `streamlake` sat here
 and silently matched nothing.
+
+Four roles run on a stronger model instead: `inventor`, `judge`, `reflection`,
+and `director`, listed in `REASONING_ROLES` and resolved in one place by
+`SupportAgents::model_for`. Membership is two questions and a role has to pass
+both. Is its output a judgement nothing mechanical can check — as against a
+report of what a program did, which the method policy already routes through
+something that checks it? And is it cheap: short output, few calls, not on a
+schedule? Reflection is the clearest case: one of its three fields now decides
+whether a run reporting progress every attempt is diverted anyway, and telling
+a new bound from a new fact is exactly the call a fast model gets wrong.
+
+`context_curator` is excluded although it judges, because it fails the second
+question outright — a run's measured top consumer at 28 model calls, on a
+schedule. `scholar` and `research` read whole documents; the pattern agent and
+the code writers execute rather than judge; the planners drive every turn.
+Three tests assert the split in both directions, because the mistake is
+silent: adding a role costs money on every run and nothing fails to say so.
+
+The model is `deepseek/deepseek-v4-pro`, routed to DeepSeek's own endpoint
+rather than the run's usual `deepinfra`, which is not a trade: it is both the
+cheapest route for this model — $0.43/$0.87 per million against DeepInfra's
+$1.30/$2.60 — and the only one of the two that is not quantized, DeepInfra
+serving it at fp4. The caching argument barely applies to the inventor anyway,
+whose prompt carries a dossier rebuilt from disk on every call.
+`MATH_AGENT_REASONING_MODEL` and `MATH_AGENT_REASONING_PROVIDER` override
+both; `OPENROUTER_MODEL` still overrides every role at once.
 
 Preference alone is not enough, because every fallback costs twice: once for
 the cold call on the new provider, and again next turn when routing swings back

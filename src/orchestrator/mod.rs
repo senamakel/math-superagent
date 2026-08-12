@@ -1908,8 +1908,12 @@ fn register_support_agents(
     register_memory(&mut inventor, &parts.vector_store);
     subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
 
-    let mut librarian =
-        specialist_harness(parts.model_for("librarian"), parts.budget, "librarian", parts.tracer);
+    let mut librarian = specialist_harness(
+        parts.model_for("librarian"),
+        parts.budget,
+        "librarian",
+        parts.tracer,
+    );
     if let Some(exa) = parts.exa.clone() {
         register_resilient(&mut librarian, exa);
     }
@@ -1925,8 +1929,12 @@ fn register_support_agents(
     // The scholar reads; it does not fetch. Withholding `exa_search` is what
     // keeps it digesting the library the run already has instead of drifting
     // into another search, which is the librarian's job and already done.
-    let mut scholar =
-        specialist_harness(parts.model_for("scholar"), parts.budget, "scholar", parts.tracer);
+    let mut scholar = specialist_harness(
+        parts.model_for("scholar"),
+        parts.budget,
+        "scholar",
+        parts.tracer,
+    );
     for tool in parts.documents.tools() {
         register_resilient(&mut scholar, tool);
     }

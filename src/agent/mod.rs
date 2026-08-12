@@ -34,35 +34,37 @@ const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
 /// Overridable with `MATH_AGENT_PROVIDER` when a route is degraded.
 const PREFERRED_PROVIDER: &str = "deepinfra";
 
-/// The model for roles whose work is thinking rather than doing.
+/// The model for roles whose work is judging rather than doing.
 ///
 /// The run's default is a flash model, chosen for speed because most roles
 /// spend their turns writing programs, reading files, and reporting what
 /// happened — work where the model's job is to be quick and to not confabulate,
-/// and where the method policy's mechanical checks catch it when it does. The
-/// inventor is the one role whose entire output is a judgement no tool can
-/// check: whether a reformulation is genuinely different, whether a theorem's
-/// hypotheses hold here, whether the literature's actual content suggests
-/// something better than what was proposed. That is what a stronger model buys,
-/// and it is wasted everywhere else.
+/// and where the method policy's mechanical checks catch it when it does. A
+/// handful of roles produce something no tool can check: whether a
+/// reformulation is genuinely different, whether an attempt was conducted well,
+/// whether what an attempt established is a new fact or the same method at a
+/// larger size. That is what a stronger model buys, and it is wasted everywhere
+/// else. `orchestrator::REASONING_ROLES` is the list, and carries the test for
+/// membership.
 ///
-/// It is also what makes the dossier worth assembling. Sixteen thousand tokens
-/// of record only pays off if the model reading it can hold the whole thing
-/// against a new idea.
+/// It is also what makes the inventor's dossier worth assembling. Sixteen
+/// thousand tokens of record only pays off if the model reading it can hold the
+/// whole thing against a new idea.
 const REASONING_MODEL: &str = "deepseek/deepseek-v4-pro";
 
 /// Preferred route for [`REASONING_MODEL`], verified against the endpoint list.
 ///
-/// DeepSeek's own endpoint rather than the run's usual `deepinfra`, and the
+/// `DeepSeek`'s own endpoint rather than the run's usual `deepinfra`, and the
 /// choice is not a trade: at the time of writing it is both the cheapest route
-/// for this model — $0.43/$0.87 per million against DeepInfra's $1.30/$2.60 —
-/// and the only one of the two that is not quantized, DeepInfra serving it at
+/// for this model — $0.43/$0.87 per million against `DeepInfra`'s $1.30/$2.60 —
+/// and the only one of the two that is not quantized, `DeepInfra` serving it at
 /// fp4. Paying three times as much for a lower-precision copy of a model chosen
 /// for its judgement would defeat the point of choosing it.
 ///
 /// The usual argument for one pinned provider — prompt caching across a large
-/// fixed prefix — barely applies here, because this role's prompt carries a
-/// dossier rebuilt from disk on every call and so has no stable prefix to cache.
+/// fixed prefix — is weak for these roles: the inventor's prompt carries a
+/// dossier rebuilt from disk on every call, and the judge and reflection are
+/// handed a different attempt report each time.
 const REASONING_PROVIDER: &str = "deepseek";
 
 pub use tinyagents::harness::message::Message;
@@ -201,8 +203,8 @@ pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
 ///
 /// Returns an error when `OPENROUTER_API_KEY` is missing.
 pub(crate) fn openrouter_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
-    let model = env_override("MATH_AGENT_REASONING_MODEL")
-        .unwrap_or_else(|| REASONING_MODEL.to_string());
+    let model =
+        env_override("MATH_AGENT_REASONING_MODEL").unwrap_or_else(|| REASONING_MODEL.to_string());
     let provider = env_override("MATH_AGENT_REASONING_PROVIDER")
         .unwrap_or_else(|| REASONING_PROVIDER.to_string());
     openrouter_model(&model, &provider)
