@@ -32,6 +32,23 @@ Conclusion: the L=16 secret is arbitrary-looking constraint data. No polynomial,
 no linear recurrence (order ≤ 6), no OEIS catalogue. The only exact regularities
 are identities forced by the problem definition, not leads for a derivation.
 
+## Falsified structural hypotheses (this run, code/pat_structure.py)
+
+Attacked the L=16 secret with two concrete, falsifiable structural guesses:
+
+- **H1 (column-majority rule): secret[p] is the modal digit of the guess
+  column at position p.** FALSIFIED: equal at only 1 of 16 positions
+  (position 2). If the rule held, all 16; a random guess digit agrees with the
+  mode with probability ≈ 1/3+, so 1/16 is below even the chance baseline.
+  First counterexample: position 0 (column mode 2, secret 4).
+- **H2 (match-position pair design): the 31 within-guess pairs of match
+  positions form a regular design over position pairs.** FALSIFIED: 31 pairs
+  cover only 30 distinct position-pairs of 120, coverage histogram
+  {once: 29 pairs, twice: 1 pair} — no near-uniformity, consistent with
+  random pair spread. Nothing to exploit.
+- Multiset digit-overlap between guesses and secret (8..13, consistent with
+  random expectation ≈9) carries no signal either.
+
 ## Solver cross-check status (context for the run)
 - code/solution2.py (MILP) L=16 → 4640261571849533, all counts + uniqueness
   confirmed (solution2_run.log).
