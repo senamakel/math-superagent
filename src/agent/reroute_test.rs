@@ -159,14 +159,8 @@ async fn any_other_failure_is_returned_immediately() {
 }
 
 #[tokio::test]
-async fn a_pass_through_failure_says_why_before_the_harness_retries_it() {
-    // The gap this closes. Everything not worth rerouting is handed back, and
-    // the harness's own ladder re-issues it announcing only `model RETRY
-    // attempt N` — upstream's `AgentEvent::RetryScheduled` carries a call id
-    // and an attempt number and nothing else. A live `pattern_finder` retried
-    // one call six times over three and a half minutes with the cause recorded
-    // in neither the console nor `trace.jsonl`, which is a documented stall
-    // signal arriving with nothing to diagnose from.
+async fn a_pass_through_failure_does_not_cost_a_reroute() {
+    // Noting the cause must not change what the wrapper does with it.
     let journal = std::env::temp_dir().join("math-agent-reroute-passthrough/trace.jsonl");
     let _ = std::fs::remove_dir_all(journal.parent().expect("a parent directory"));
     let tracer = crate::agent::trace::RunTracer::new("test", Some(&journal));
@@ -179,16 +173,27 @@ async fn a_pass_through_failure_says_why_before_the_harness_retries_it() {
         .await
         .expect_err("an unrelated failure is still not swallowed");
 
-    // Control flow is untouched: noting the error must not cost a reroute.
     assert_eq!(inner.calls(), 1, "no reroute is spent on it");
+}
 
-    let recorded = std::fs::read_to_string(&journal).expect("the journal was written");
-    assert!(
-        recorded.contains("connection reset"),
-        "the cause must reach the journal, not only the failure count: {recorded}"
+#[test]
+fn a_pass_through_note_names_the_cause_and_the_agent() {
+    // The gap this closes. Everything not worth rerouting is handed back, and
+    // the harness's own ladder re-issues it announcing only `model RETRY
+    // attempt N` — upstream's `AgentEvent::RetryScheduled` carries a call id
+    // and an attempt number and nothing else. A live `pattern_finder` retried
+    // one call six times over three and a half minutes with the cause recorded
+    // in neither the console nor `trace.jsonl`: a documented stall signal
+    // arriving with nothing to diagnose from.
+    let note = super::passthrough_note(
+        "pattern_finder",
+        &TinyAgentsError::Model("connection reset".into()),
     );
+    assert!(note.contains("connection reset"), "the cause: {note}");
     assert!(
-        recorded.contains("pattern_finder"),
-        "several specialists fail concurrently, so an unattributed cause says whose turn died"
+        note.contains("pattern_finder"),
+        "several specialists fail concurrently, so the line must say whose turn died: {note}"
     );
+    // The reader has to know a retry is coming, or the line looks terminal.
+    assert!(note.contains("retry"), "what happens next: {note}");
 }

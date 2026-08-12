@@ -132,12 +132,25 @@ impl<S: Send + Sync> ReroutingModel<S> {
     /// one line per *failed* call, not per call.
     fn note_passthrough(&self, error: &TinyAgentsError) {
         if let Some(tracer) = self.tracer.as_ref() {
-            tracer.note(&format!(
-                "{} model call failed ({error}); the harness retry ladder decides what happens next",
-                self.agent
-            ));
+            tracer.note(&passthrough_note(&self.agent, error));
         }
     }
+}
+
+/// The line a pass-through failure prints.
+///
+/// Built here rather than inline so the wording can be asserted on. `note`
+/// reaches the console and not `trace.jsonl`, so there is no journal to read
+/// this back from — and the console is the right target, because
+/// `docker logs` is where a stalled run is actually diagnosed.
+///
+/// Naming the agent is the load-bearing half. Several specialists fail
+/// concurrently, so an unattributed cause says a call failed without saying
+/// whose turn is about to be retried, which is most of what the reader needs.
+fn passthrough_note(agent: &str, error: &TinyAgentsError) -> String {
+    format!(
+        "{agent} model call failed ({error}); the harness retry ladder decides what happens next"
+    )
 }
 
 /// Returns whether an error is `OpenRouter` reporting an upstream failure.
