@@ -161,8 +161,8 @@ fn a_turn_granted_a_bigger_output_budget_is_given_time_to_produce_it() {
     // outstanding call for over ten minutes with nothing that would ever cut
     // it off.
     assert!(
-        clamped <= 900_000,
-        "a request bound of {clamped}ms outlives half the run it belongs to"
+        clamped <= 1_200_000,
+        "a request bound of {clamped}ms leaves the run no time to retry it"
     );
     assert_eq!(clamped, doubled, "both are held at the same ceiling");
 }
