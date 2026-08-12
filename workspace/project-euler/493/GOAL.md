@@ -1,36 +1,25 @@
 # Goal
 
-## Problem (Project Euler 493, "70 coloured balls")
+## Problem statement (Project Euler 493, restated)
 
-70 coloured balls are placed in an urn, 10 for each of the seven rainbow colours.
+An urn contains **70 labelled balls**: **c = 7 colours**, with **m = 10** balls
+of each colour. We draw **k = 20** balls uniformly at random *without
+replacement*. Let X = number of *distinct colours* present among the drawn
+balls. Find **E[X]**, the expected value, to nine digits after the decimal
+point (`a.bcdefghij`).
 
-**Question:** What is the expected number of distinct colours among 20 randomly
-picked balls (sampled without replacement, uniformly over all C(70,20) subsets)?
+### Symbols
+- c : number of colours = 7
+- m : balls per colour = 10  → total  N = c·m = 70
+- k : balls drawn without replacement = 20
+- X : distinct colours among the chosen k balls
 
-**Answer format:** nine digits after the decimal point (a.bcdefghij).
+### Worked example / test oracle
+The statement gives *no* separate worked example beyond the answer itself.
+The naive oracle (code/brute.py) therefore pins the definition on small
+instances (c,m,k) by exhaustive enumeration of every k-subset, and cross-checks
+a closed form against them. It then evaluates the real problem:
+`E = 763700091/112000148 = 6.818741802...` → **6.818741802**.
 
-## Symbols
-
-- N = 70 total balls.
-- m = 7 rainbow colours.
-- k = 10 balls per colour (so m·k = 70).
-- n = 20 balls drawn.
-- X = number of distinct colours appearing among the n drawn balls (a random
-  variable taking integer values 1..7).
-- E[X] = expected value to compute.
-
-## Worked examples in the statement
-
-The statement gives no numeric worked example — it is itself the single
-question. Our test oracle is therefore an independent exact brute-force
-computation of E[X] (see brute.py), which we check against the closed-form
-solution (see solution.py).
-
-## Completion criteria
-
-1. brute.py: naive but obviously-correct exact computation of E[X] for this
-   input, run to completion.
-2. solution.py: efficient exact-rational closed-form computation of E[X],
-   agreeing with brute.py exactly.
-3. Final answer reported to 9 decimal places.
-4. Verified by a second independent route.
+Completion criterion: produce the decimal with nine digits after the point and
+verify by a second independent route.
