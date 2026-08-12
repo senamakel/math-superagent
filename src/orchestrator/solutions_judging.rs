@@ -24,12 +24,13 @@
 async fn judge_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
     mut state: SolutionState,
 ) -> SolutionState {
     let prompt = format!(
         "Judge how this attempt was conducted.\n\nProblem:\n{}\n\n\
          This is attempt {} of at most {MAX_ATTEMPTS}. {}\n\n\
-         The attempt reported:\n{}",
+         The attempt reported:\n{}\n{}",
         state.problem,
         state.attempts,
         if state.restarts >= MAX_RESTARTS {
@@ -39,7 +40,8 @@ async fn judge_step(
             "RESTART is available but expensive; it discards this direction and spends a \
              fresh attempt."
         },
-        state.last_attempt
+        state.last_attempt,
+        workspace.map_or_else(String::new, evidence_briefing)
     );
     let reply = delegate(subagents, "judge", prompt).await;
     let score = judge_score(&reply);

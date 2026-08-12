@@ -1,57 +1,56 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/couch-daniel-wright-integer-power-lengths.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Couch–Daniel–Wright — Classes of cubic graphs containing cycles of integer-power lengths
 
-<!-- source: http://ajc.maths.uq.edu.au/pdf/79/ajc_v79_p100.pdf | converted from PDF -->
+Source: http://ajc.maths.uq.edu.au/pdf/79/ajc_v79_p100.pdf
+Published: Australasian J. Combinatorics 79(1) (2021) 100–105 (open access)
+Full text: `research/sources/couch-daniel-wright-integer-power-lengths.full.md`
 
-## What it claims
+## What it is
 
-Erd˝os and Gy´arf´as conjectured in 1995 that every graph with minimum
-degree three has a cycle of length 2k for some integer k> 1. Y. Caro
-has asked the related question of whether every such graph has a cycle
-whose length is a non-trivial power of some natural number. There have
-been numerous related questions and conjectures, including questions by
-various authors. We address a special case of the question of Caro, as
-well as others, by showing that every graph G of minimum degree 3, such
-that the set of centers of induced claws of G is independent, contains a
-cycle of length a
-k for some integers a ≥ 2and k ≥ 2.
+A short open-access paper (P. J. Couch, B. D. Daniel, W. Paul Wright, Lamar University)
+attacking **Caro's weaker question**: does every graph with δ≥3 contain a cycle whose
+length is an integer power `a^k` (a≥2, k≥2) — a relaxation of the power-of-two
+conjecture. It does NOT settle the power-of-two conjecture; it settles Caro's question
+for several restricted classes.
 
-1 Introduction
+## Key established results
 
-Erd˝os and Gy´arf´as conjectured ([5], [8]) that every graph with minimum degree three
-has a cycle of length 2k for some integer k> 1.
-Debose, Erd˝os, and Hobbs [4] narrowed the question by asking if each claw-free
-graph with minimum degree two, maximum degree three, and at most two vertices
-of degree 2 contains a cycle of length 2k for some non-negative integer k.In [3],
-Shauger and the second-named author proved the result for planar claw-free graphs.…
+1. **Theorem 1 / The main interval trick.** Using a number-theoretic lemma of Paz
+   (Lemma 1): for n beyond ~286, there is an integer power `a^m` in `[n, 3n/2)`. So a
+   cycle of length `n` whose neighborhood produces all lengths `[2n,3n]` yields a cycle
+   of integer-power length. Combined with a triangle-contraction reduction, this shows:
+2. **Corollary 1**: every **claw-free graph with δ≥3 contains a cycle of length a^k**
+   (integer power, a≥2, k≥2).
+3. **Corollary 2**: every claw-free graph with δ≥2, Δ=3, and at most two degree-2
+   vertices contains such a cycle.
+4. **Corollary 3 / Theorem 2 / Theorem 3**: extending to graphs where the set of
+   centers of induced claws is independent, and to **almost claw-free** graphs with δ≥3.
 
-## Statements it makes
+## Direct relevance to the run
 
-Lemma 1. If m is a positive integer then for every positive integer n such that
-n> 14.4
-| m√1.5−1|m thereis atleast onepositiveinteger a such that n< a
-m < 3
-2n.
+- **Confirms the power-of-two conjecture does NOT follow from Caro's integer-power
+  question** — the integer-power result for claw-free graphs is strictly weaker than
+  the power-of-two conjecture for claw-free graphs. The claw-free power-of-two case
+  (Nowbandegani et al.) is a separate, still-open restriction.
+- Cites and locates **Shauger's other paper [11]**: "Claw-free, cubic graphs of low
+  genus have a cycle whose length is a power of two", Congr. Numer. 159 (2002) 119–126.
+  This is an additional primary result in the run's family that is NOT yet in the
+  library (conference proceedings, no open PDF found yet). Listed for a future request.
+- Confirms the standard references: Daniel–Shauger 2001 (planar claw-free), Shauger
+  1998 (K1,m-free), Heckman–Krakovski (3-connected cubic planar), Bensmail (q-power
+  constructions), Verstraëte (unavoidable cycle lengths).
 
-Theorem 1. Suppose that G is a graph containing a cycle D such that:
+## Status
 
-Corollary 1. Suppose that G is a claw-free graph with δ ≥ 3. Then G has a cycle
-of length a
-k for some positive integers a ≥ 2 and k ≥ 2.
+Peer-reviewed, open access (AJC, CC BY-ND 4.0). Read in full here. It is an *adjacent*
+result (Caro's integer-power question), not a step toward the power-of-two conjecture;
+record for completeness and because it pins down the claw-free integer-power class.
 
-Corollary 2. Suppose that G is a claw-free graph with minimum degree δ ≥ 2,
-maximum degree Δ=3,and thecollection V2(G)= {v ∈ V (G): d(v)= 2} has two
-or fewer elements. Then G has a cycle of length a
-k for some positive integer a ≥ 2
-and some integer k ≥ 2.
-
-Corollary 3. Suppose that G is a graph containing a cycle D such that:
-
-Theorem 2. Suppose that a graph G has minimum degree 3 and that the set of
-centers of induced claws of G is independent. Then G contains a cycle of length a
-k
-
-Theorem 3. Suppose that G is an almost claw-free graph with minimum degree 3.
-Then G has a cycle of length a
-k for some integers a ≥ 2 and k ≥ 2.
-
-*[digest of a 14219 character source; every section, statement, and proof in full at `research/sources/couch-daniel-wright-integer-power-lengths.full.md`]*
+```claim
+id: EG-clawfree-integer-power-cycle
+statement: Every claw-free graph with δ≥3 contains a cycle whose length is a^k for some integers a≥2, k≥2 (Caro's integer-power question, not the power-of-two conjecture).
+hypotheses: claw-free, δ≥3.
+holds-here: yes — a settled adjacent class; weaker than the power-of-two conjecture for claw-free graphs, which remains open.
+status: proved (Australas. J. Combin. 79 (2021) 100–105)
+bearing: Separates Caro's weaker question from the EG power-of-two conjecture; a run looking for a claw-free power-of-two result must not cite this as settling it.
+anchor: research/sources/couch-daniel-wright-integer-power-lengths.full.md
+```
