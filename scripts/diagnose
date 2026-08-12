@@ -199,11 +199,19 @@ PY
         "$(find "$workspace/code" -name '*.py' 2>/dev/null | wc -l | tr -d ' ')" \
         "$(ls "$workspace/code/out" 2>/dev/null | wc -l | tr -d ' ')"
     echo "    written in the last 10 minutes:"
+    # The run's hidden derived state is rewritten on nearly every tool call, so
+    # listing it says only that the run is alive — which the elapsed clock above
+    # already says. Left in, `.frontier.json` and `config/start.log` took four of
+    # the eight slots on every run in one sweep and pushed the actual writes off
+    # the list.
     find "$workspace" -type f -mmin -10 \
         -not -path '*/.workspace-history/*' \
         -not -path '*/.python-packages/*' \
         -not -path '*__pycache__*' \
         -not -name 'trace.jsonl' \
+        -not -name '.*.json' \
+        -not -path '*/config/start.log' \
+        -not -path '*/config/problem.url' \
         2>/dev/null | head -8 | sed 's|^|      |' || true
     echo ""
 }
