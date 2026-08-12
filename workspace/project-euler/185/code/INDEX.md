@@ -10,5 +10,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `dbg2.py` | _(undescribed)_ |
 | `dbg3.py` | Debug scratch: checks milp runs with and without time_limit on the L=5 model, printing success/status and reconstructed secret per option. Kept as a record that solver options did not change the L=5 result. |
 | `dbg4.py` | _(undescribed)_ |
+| `dbg5.py` | _(undescribed)_ |
 | `solution.py` | _(undescribed)_ |
 | `solution2.py` | _(undescribed)_ |
