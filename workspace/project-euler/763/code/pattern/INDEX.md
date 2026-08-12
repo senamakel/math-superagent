@@ -47,8 +47,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `transfer_search2.py` | _(undescribed)_ |
 | `triangle_build.py` | Builds the max-level triangle R(N,M)=#distinct reachable configs after N divisions with max level M (from data/level_N.txt N=2..12 and mhist_13_14.txt N=13,14), prints the raw triangle, the M=N diagonal, and each offset column R(N,N-k) raw and normalized to Q_k(N)=R(N,N-k)/3^(N-2k-1) as exact Fractions. Backs the Q_k/column closed-form and diagonal study. |
 | `verify_a186085.py` | _(undescribed)_ |
-| `verify_columns.py` | _(undescribed)_ |
+| `verify_columns.py` | For each offset k, collects R(N,N-k)/3^(N-2k-1) over N and determines each Q_k's polynomial degree by exact finite differences, verifying the Q_k-column closed-form model on the (N,M) table. |
 | `verify_forms.py` | sympy-exact check of Q_0..Q_3 closed forms on every measured point including fresh N=13,14; fits Q_4 (degree 4) on N=9..13 and predicts N=14=979 (OOS pass). |
 | `verify_mhist.py` | _(undescribed)_ |
 | `verify_reconstruct.py` | Reconstructs D(N) from the max-level column model: verifies the M=N diagonal count equals 3^(N-1) for all N=2..14, then sums the modeled columns N(N,M)=Q_k(N)*3^(N-2k-1) for k=0..4 (closed forms Q_0..Q_4) and checks the sum reproduces the true D(N) where those columns cover every M row (N=8,9 exactly; reports which rows exceed k=4 for larger N). Independent confirmation that the Q_k closed forms re-assemble into D(N). Companion to q_verify.py/verify_forms.py. |
-|
