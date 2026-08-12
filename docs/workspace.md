@@ -160,13 +160,12 @@ Every folder carries an `INDEX.md` saying what each file is for
 (`src/orchestrator/folder_index.rs`). `list_workspace` answers what exists and
 cannot answer what anything is *for*, and after a long run nothing on disk
 distinguishes the oracle from the answer, or a superseded experiment from the
-file the result came out of. `describe_file` records a purpose;
-`refresh_index` re-derives the file list from disk, keeps existing
-descriptions, marks new files undescribed, and drops rows for files that are
-gone. Descriptions are left to explicit tool calls because only the agent that
-wrote a file knows why; agreement between the index and the directory is not,
-so a forgotten description shows as a visible gap rather than as an index that
-quietly disagrees with its folder.
+file the result came out of. `describe_file` records a purpose; `refresh_index` re-derives the file list from
+disk, keeps existing descriptions, marks new files undescribed, and drops rows
+for files that are gone. Descriptions are left to explicit tool calls because
+only the agent that wrote a file knows why; agreement between index and directory
+is not, so a forgotten description shows as a visible gap rather than as an index
+that quietly disagrees with its folder.
 
 Links are compressed. Anchors become reference-style `[text][n]` with one
 `## Links` list at the end, so a URL repeated a dozen times on a page is
