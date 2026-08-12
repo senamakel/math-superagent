@@ -67,6 +67,71 @@ const PROGRAM: [&str; 10] = [
     "py", "sh", "bash", "c", "cpp", "rs", "js", "ts", "sql", "ipynb",
 ];
 
+/// How deep under `code/` to look for a result, and how many entries to read.
+const RESULT_DEPTH: usize = 3;
+const RESULT_SCAN: usize = 500;
+
+/// Whether any program in this workspace has produced something.
+///
+/// A *result* is a file under `code/` that a program wrote: not a program, and
+/// not a note. Both exclusions are load-bearing. `code/` is seeded from
+/// `workspace/template`, so it holds `AGENTS.md` and `INDEX.md` from the first
+/// second of every run, and `code/out/` holds a `README.md`; a check for
+/// "results exist" that counts those answers yes on an empty run forever.
+///
+/// This exists because the check it replaces asked whether the *folder* existed.
+/// `RESULT_FOLDERS` lists `code/out` and `code`, and the template has always
+/// created `code/`, so the "a workspace with no results at all reads as
+/// unchanged" guard in `results_unchanged` could never fire on a real
+/// workspace — it was answering a question nobody was asking. PE620 is what
+/// that cost: its `pattern_finder` was the run's largest consumer at 34 model
+/// calls and 35.4% of spend, waking on every churn of `code/`, walking the
+/// tree, and concluding each time that there was nothing to analyse — a
+/// conclusion the run had already written down itself, in
+/// `code/out/oracle-model-broken.md`, saying its sequence tools "were therefore
+/// not run: there are no program-produced terms to feed them".
+pub(super) fn has_results(workspace: &Path) -> bool {
+    fn walk(folder: &Path, depth: usize, budget: &mut usize) -> bool {
+        if depth == 0 || *budget == 0 {
+            return false;
+        }
+        let Ok(entries) = std::fs::read_dir(folder) else {
+            return false;
+        };
+        for entry in entries.flatten() {
+            if *budget == 0 {
+                return false;
+            }
+            *budget -= 1;
+            let name = entry.file_name();
+            let name = name.to_string_lossy();
+            if name.starts_with('.') || name == "__pycache__" {
+                continue;
+            }
+            let path = entry.path();
+            if path.is_dir() {
+                if walk(&path, depth - 1, budget) {
+                    return true;
+                }
+            } else if !is_authored(&name) {
+                return true;
+            }
+        }
+        false
+    }
+    let mut budget = RESULT_SCAN;
+    walk(&workspace.join(CODE_DIR), RESULT_DEPTH, &mut budget)
+}
+
+/// Whether a file under `code/` was written by a person rather than a program.
+pub(super) fn is_authored(name: &str) -> bool {
+    let lower = name.to_ascii_lowercase();
+    lower.ends_with(".md")
+        || PROGRAM
+            .iter()
+            .any(|extension| lower.ends_with(&format!(".{extension}")))
+}
+
 /// Files allowed at the workspace root, by exact name.
 ///
 /// The run's prose and the problem statement it was given. Configuration, the
