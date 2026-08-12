@@ -377,12 +377,12 @@ exactly one directory, and it would buy nothing a file does not already give.
 
 The queue has one writer on each side. The host only ever appends to
 `directives.jsonl`; the runtime only ever writes `config/.directives-cursor`,
-which counts the lines it has consumed. Neither side needs a lock because
-neither writes what the other writes, and the one number they share is owned by
-the side that advances it. A directive's identifier is its line number rather
-than a stored field, so a line the reader cannot parse is skipped *and still
-counted* — a torn append, which a checkpoint commit landing mid-write could
-produce, costs one directive rather than the alignment of every later one.
+which counts the lines it has consumed. Neither side needs a lock because neither
+writes what the other writes, and the one number they share is owned by the side
+that advances it. A directive's identifier is its line number rather than a
+stored field, so a line the reader cannot parse is skipped *and still counted* —
+a torn append, which a checkpoint commit landing mid-write could produce, costs
+one directive rather than the alignment of every later one.
 
 ### Two deliveries, deliberately unequal
 
