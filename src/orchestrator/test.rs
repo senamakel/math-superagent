@@ -318,8 +318,53 @@ fn reflection_sees_the_criteria_it_judges_against_but_not_scratch_work() {
     // Judging "solved" against criteria it cannot see is guesswork, and a
     // wrong SOLVED ends the whole investigation.
     assert!(context.contains(&"GOAL.md"));
-    // Unsettled scratch work is not evidence of progress.
+    // Unsettled scratch work is not evidence of progress. It is no longer a
+    // file, so the boundary is now the tool: reflection must not be able to
+    // reach the scratch at all.
     assert!(!context.contains(&"SCRATCHPAD.md"));
+}
+
+#[test]
+fn only_the_roles_doing_provisional_work_can_reach_the_scratch() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let tools = |role: &str| -> agent::Result<Vec<String>> {
+        Ok(registry
+            .get(role)
+            .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?
+            .tools
+            .clone())
+    };
+    for role in ["tool_builder", "coder", "lean_prover", "pattern_finder", "goals"] {
+        let held = tools(role)?;
+        for tool in super::SCRATCH_TOOLS {
+            assert!(
+                held.iter().any(|name| name == tool),
+                "`{role}` does provisional work and needs `{tool}`"
+            );
+        }
+    }
+    // Reads what a solve is in the middle of; produces none of its own.
+    for role in ["scholar", "context_curator"] {
+        let held = tools(role)?;
+        assert!(held.iter().any(|name| name == super::SCRATCH_READ_TOOL));
+        assert!(
+            !held.iter().any(|name| name == "note_scratch"),
+            "`{role}` has no provisional work of its own to record"
+        );
+    }
+    // The judge answers four lines on twelve model calls, and reflection must
+    // not read unsettled arithmetic as progress — the reason SCRATCHPAD.md was
+    // withheld from both when it was still a file.
+    for role in ["reflection", "judge"] {
+        let held = tools(role)?;
+        for tool in super::SCRATCH_TOOLS {
+            assert!(
+                !held.iter().any(|name| name == tool),
+                "`{role}` must not reach the scratch"
+            );
+        }
+    }
+    Ok(())
 }
 
 #[test]
@@ -330,8 +375,11 @@ fn the_inventor_sees_what_already_failed() {
 #[test]
 fn the_pattern_agent_sees_the_raw_data_it_analyses() {
     let context = role_context("pattern_finder");
-    assert!(context.contains(&"SCRATCHPAD.md"));
+    assert!(context.contains(&"code/lib/INDEX.md"));
     assert!(super::PATTERN_PROMPT.contains("recall_memory"));
+    // Its provisional work is recalled rather than routed into every call.
+    assert!(!context.contains(&"SCRATCHPAD.md"));
+    assert!(super::PATTERN_PROMPT.contains("note_scratch"));
 }
 
 #[test]

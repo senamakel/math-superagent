@@ -6,6 +6,7 @@
 //! its neighbours measure. The assertions are therefore written against
 //! [`budget_tokens`] rather than against the literal default, and the default
 //! itself is checked as a constant.
+#![allow(clippy::expect_used)]
 
 use std::path::PathBuf;
 
@@ -16,10 +17,8 @@ use super::{
 
 /// Creates an empty workspace under the temporary directory.
 fn workspace(name: &str) -> PathBuf {
-    let root = std::env::temp_dir().join(format!(
-        "math-agent-context-{name}-{}",
-        std::process::id()
-    ));
+    let root =
+        std::env::temp_dir().join(format!("math-agent-context-{name}-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&root);
     std::fs::create_dir_all(&root).expect("the workspace is creatable");
     root
@@ -58,9 +57,8 @@ fn a_brief_within_budget_is_passed_through_untouched() {
 
 #[test]
 fn a_brief_over_budget_is_cut_and_says_so() {
-    let oversized = "believed: the pass rule is idempotent. ".repeat(
-        usize::try_from(budget_tokens()).expect("the budget fits in a usize"),
-    );
+    let oversized = "believed: the pass rule is idempotent. "
+        .repeat(usize::try_from(budget_tokens()).expect("the budget fits in a usize"));
     let fitted = fit(&oversized).expect("an oversized brief is cut");
     assert!(fitted.len() < oversized.len());
     // Silence is the failure mode: an agent not told the brief was cut
@@ -76,9 +74,8 @@ fn a_brief_over_budget_is_cut_and_says_so() {
 fn the_cut_lands_on_a_character_boundary() {
     // A multi-byte brief must not panic the slice. The budget is large, so the
     // string has to be too.
-    let oversized = "π approximates the pass density. ".repeat(
-        usize::try_from(budget_tokens()).expect("the budget fits in a usize"),
-    );
+    let oversized = "π approximates the pass density. "
+        .repeat(usize::try_from(budget_tokens()).expect("the budget fits in a usize"));
     let fitted = fit(&oversized).expect("an oversized brief is cut");
     assert!(!fitted.is_empty());
 }
@@ -86,9 +83,8 @@ fn the_cut_lands_on_a_character_boundary() {
 #[test]
 fn an_over_budget_brief_is_briefed_to_compress_rather_than_to_add() {
     let root = workspace("over");
-    let oversized = "the run believes the recurrence closes. ".repeat(
-        usize::try_from(budget_tokens()).expect("the budget fits in a usize"),
-    );
+    let oversized = "the run believes the recurrence closes. "
+        .repeat(usize::try_from(budget_tokens()).expect("the budget fits in a usize"));
     std::fs::write(root.join(CONTEXT_FILE), oversized).expect("the brief is writable");
     let brief = briefing(&root);
     assert!(brief.contains("compression, not an addition"));

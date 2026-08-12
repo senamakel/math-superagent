@@ -35,6 +35,7 @@ for line in open('code/out/per_hist_mult_13_14.txt'):
     vals = [int(x) for x in hist_str.split()]
     while vals and vals[-1] == 0: vals.pop()
     M = len(vals) - 1
+    mval = int(line[m_i+5:])   # multiplicity = configs realizing this histogram
     # each file line is ONE distinct histogram with mult=configs realizing it
     R[n][M] = R[n].get(M, 0) + mval
 

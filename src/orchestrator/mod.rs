@@ -467,9 +467,26 @@ impl OrchestratorAgent {
                     // it has already seen can only repeat itself or invent
                     // something. Decided before the agent runs, so an idle
                     // cycle costs a directory walk rather than a model call.
-                    let skip = (name == "patterns")
-                        .then(|| results_unchanged(&workspace, &analysed))
-                        .flatten();
+                    let skip = match name {
+                        "patterns" => results_unchanged(&workspace, &analysed),
+                        // The curator writes `CONTEXT.md`, so its own file is
+                        // excluded from what it watches: counting it would
+                        // have the team waking itself forever on the brief it
+                        // just wrote.
+                        "context" => workspace_unchanged(
+                            &workspace,
+                            &analysed,
+                            &[shared_context::CONTEXT_FILE],
+                        ),
+                        _ => None,
+                    };
+                    // The standing is the one fact that changes between
+                    // cycles and the one that decides what a cycle is for, so
+                    // it is computed per cycle rather than baked into the
+                    // brief at spawn.
+                    if name == "context" {
+                        let _ = write!(prompt, "\n\n{}", shared_context::briefing(&workspace));
+                    }
                     for message in &inbox {
                         let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);
                     }
@@ -567,7 +584,7 @@ fn standing_teams() -> [(
     teams::Completion,
     teams::TeamBudget,
     &'static str,
-); 2] {
+); 3] {
     [
         (
             "research",
@@ -595,7 +612,25 @@ fn standing_teams() -> [(
             "pattern_finder",
             teams::Completion::Standing,
             teams::TeamBudget::custodial(),
-            "Look for exploitable structure in the results this run has already computed.                  Read what is on disk, extract the integer sequences in it, and run the                  sequence tools over them. Where a check needs terms the run has not                  computed, write and run the program yourself or commission it — a                  conjecture tested only on the data that suggested it is untested. Report                  only regularities that hold exactly over every term supplied, say plainly                  that they are conjectures, and give the first term that would falsify                  each. An invented pattern costs the run more than no pattern, so when the                  results have not changed since you last looked, or hold too few terms to                  say anything exact, reply NOTHING FURTHER rather than reaching. Record                  provisional work in SCRATCHPAD.md; after it survives an attempt to break                  it, store the verified finding with remember_memory.",
+            "Look for exploitable structure in the results this run has already computed.                  Read what is on disk, extract the integer sequences in it, and run the                  sequence tools over them. Where a check needs terms the run has not                  computed, write and run the program yourself or commission it — a                  conjecture tested only on the data that suggested it is untested. Report                  only regularities that hold exactly over every term supplied, say plainly                  that they are conjectures, and give the first term that would falsify                  each. An invented pattern costs the run more than no pattern, so when the                  results have not changed since you last looked, or hold too few terms to                  say anything exact, reply NOTHING FURTHER rather than reaching. Record                  provisional work with note_scratch; after it survives an attempt to break                  it, store the verified finding with remember_memory.",
+        ),
+        (
+            "context",
+            "context_curator",
+            teams::Completion::Standing,
+            teams::TeamBudget::paced(shared_context::cycle_interval()),
+            "Keep CONTEXT.md current with what this run and durable memory now establish. \
+             It is sent to nearly every role on every model call, so it is the cheapest way \
+             for the run to know something and the most expensive place to be wrong or \
+             verbose. Carry what an agent would otherwise rebuild from disk: the established \
+             results with their basis, the approaches that failed and why, what the computed \
+             numbers look like, and what recall_memory and relate_memory hold about this \
+             problem from earlier runs. Cut what the run has since disproved, and link the \
+             file that still holds any detail you compress away. Your brief below states what \
+             the file currently costs against its budget; when it is over, this cycle is a \
+             compression and nothing else. When nothing has changed that would change what an \
+             agent should know, reply NOTHING FURTHER — a brief that says the same thing in \
+             more words has made every role in the run pay more for the same knowledge.",
         ),
     ]
 }
@@ -603,10 +638,11 @@ fn standing_teams() -> [(
 /// Folders holding what a program produced, which is what the pattern agent
 /// analyses.
 ///
-/// Its own scratch is deliberately not among them: the pattern team writes
-/// `SCRATCHPAD.md` itself, so treating that as new input would make every
-/// cycle look like it had something fresh to read — the team would wake itself
-/// up forever on its own notes.
+/// Only what programs produced, and never the team's own notes: it writes
+/// those itself, so treating them as new input would make every cycle look
+/// like it had something fresh to read — the team would wake itself up forever
+/// on its own notes. That is now free rather than arranged, because its scratch
+/// went to `note_scratch` and is no longer a file in the workspace at all.
 const RESULT_FOLDERS: [&str; 2] = ["code/out", "code"];
 
 /// Whether the run's computed results are the same as last time this looked.
@@ -636,6 +672,28 @@ fn results_unchanged(
         return Some(teams::Cycle::Idle);
     }
     let current = std::hash::Hasher::finish(&hasher);
+    let mut seen = analysed.lock().ok()?;
+    if *seen == Some(current) {
+        return Some(teams::Cycle::Idle);
+    }
+    *seen = Some(current);
+    None
+}
+
+/// Whether the workspace is the same as last time this team looked, ignoring
+/// the files the team writes itself.
+///
+/// The same argument as [`results_unchanged`] one folder wider: deciding to
+/// idle has to cost a directory walk rather than a model call, or the cheap
+/// case — nothing has changed — costs most of what a working cycle costs. The
+/// exclusions are what stop a team that writes into the tree it watches waking
+/// itself forever on its own output.
+fn workspace_unchanged(
+    workspace: &Path,
+    analysed: &Arc<std::sync::Mutex<Option<u64>>>,
+    excluded: &[&str],
+) -> Option<teams::Cycle> {
+    let current = teams::fingerprint_excluding(workspace, excluded);
     let mut seen = analysed.lock().ok()?;
     if *seen == Some(current) {
         return Some(teams::Cycle::Idle);
@@ -1547,8 +1605,14 @@ fn register_support_agents(
     for tool in parts.documents.tools() {
         register_resilient(&mut curator, tool);
     }
-    register_resilient(&mut curator, Arc::new(RecallMemoryTool::new(parts.vector_store.clone())));
-    register_resilient(&mut curator, Arc::new(RelateMemoryTool::new(parts.vector_store.clone())));
+    register_resilient(
+        &mut curator,
+        Arc::new(RecallMemoryTool::new(parts.vector_store.clone())),
+    );
+    register_resilient(
+        &mut curator,
+        Arc::new(RelateMemoryTool::new(parts.vector_store.clone())),
+    );
     subagents.register("context_curator", Arc::new(curator), prompts.curator)?;
 
     Ok(())
@@ -1759,6 +1823,15 @@ fn load_workspace_files(workspace: &Path, relative_paths: &[&str]) -> Result<Str
                 "workspace context `{relative}` is not UTF-8: {error}"
             ))
         })?;
+        // The shared brief is the one context file with a budget of its own,
+        // and it is written by an agent rather than derived, so the budget has
+        // to be enforced where it is *spent* — here, on the way into a system
+        // prompt — and not only asked for in the curator's instructions.
+        let content = if *relative == shared_context::CONTEXT_FILE {
+            shared_context::fit(&content).unwrap_or(content)
+        } else {
+            content
+        };
         if !content.trim().is_empty() {
             let _ = write!(combined, "\n\n## {relative}\n{}", content.trim());
         }
