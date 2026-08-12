@@ -57,11 +57,14 @@ use vector::{RecallResearchTool, RememberResearchTool, VectorStore};
 pub use tinyagents::harness::host::AgentDefinition;
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 10] = [
+const SPECIALISTS: [&str; 13] = [
     "research",
     "tool_builder",
     "coder",
     "sat_solver",
+    "smt_solver",
+    "theorem_prover",
+    "symbolic_math",
     "lean_prover",
     "pattern_finder",
     "inventor",
@@ -80,11 +83,14 @@ const SPECIALISTS: [&str; 10] = [
 const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 12] = [
+const DELEGATES: [&str; 15] = [
     "research",
     "tool_builder",
     "coder",
     "sat_solver",
+    "smt_solver",
+    "theorem_prover",
+    "symbolic_math",
     "lean_prover",
     "goals",
     "reflection",
@@ -117,6 +123,9 @@ const RESEARCH_PROMPT: &str = include_str!("../prompts/research.md");
 const TOOL_BUILDER_PROMPT: &str = include_str!("../prompts/tool_builder.md");
 const CODER_PROMPT: &str = include_str!("../prompts/coder.md");
 const SAT_SOLVER_PROMPT: &str = include_str!("../prompts/sat_solver.md");
+const SMT_SOLVER_PROMPT: &str = include_str!("../prompts/smt_solver.md");
+const THEOREM_PROVER_PROMPT: &str = include_str!("../prompts/theorem_prover.md");
+const SYMBOLIC_MATH_PROMPT: &str = include_str!("../prompts/symbolic_math.md");
 const LEAN_PROVER_PROMPT: &str = include_str!("../prompts/lean_prover.md");
 
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
@@ -308,6 +317,9 @@ impl OrchestratorAgent {
                 ("tool_builder", prompts.tool_builder),
                 ("coder", prompts.coder),
                 ("sat_solver", prompts.sat_solver),
+                ("smt_solver", prompts.smt_solver),
+                ("theorem_prover", prompts.theorem_prover),
+                ("symbolic_math", prompts.symbolic_math),
                 ("lean_prover", prompts.lean_prover),
             ],
         )?;
@@ -819,6 +831,24 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
              and validates the model it gets back.",
         ),
         (
+            "smt_solver",
+            "SMT Solving Agent",
+            "Settles statements over arithmetic, arrays, and uninterpreted functions with Z3 \
+             and cvc5, proving a universal claim by refuting its negation.",
+        ),
+        (
+            "theorem_prover",
+            "Automated Theorem Proving Agent",
+            "Proves first-order statements from stated axioms with a saturation prover, and \
+             reports which axioms the proof actually used.",
+        ),
+        (
+            "symbolic_math",
+            "Symbolic Mathematics Agent",
+            "Derives and verifies closed forms, summations, recurrences, and exact algebra \
+             with sympy, PARI/GP, and Singular.",
+        ),
+        (
             "lean_prover",
             "Lean Formalisation Agent",
             "Writes Lean 4 statements and proofs against Mathlib, and reports what the kernel \
@@ -984,6 +1014,9 @@ struct RolePrompts {
     tool_builder: String,
     coder: String,
     sat_solver: String,
+    smt_solver: String,
+    theorem_prover: String,
+    symbolic_math: String,
     lean_prover: String,
     goals: String,
     reflection: String,
@@ -1052,6 +1085,9 @@ impl RolePrompts {
             ("tool_builder", self.tool_builder.as_str()),
             ("coder", self.coder.as_str()),
             ("sat_solver", self.sat_solver.as_str()),
+            ("smt_solver", self.smt_solver.as_str()),
+            ("theorem_prover", self.theorem_prover.as_str()),
+            ("symbolic_math", self.symbolic_math.as_str()),
             ("lean_prover", self.lean_prover.as_str()),
             ("reflection", self.reflection.as_str()),
             ("judge", self.judge.as_str()),
@@ -1145,7 +1181,13 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // the run believes about the objects being encoded, and `CLAIMS.md` is
         // where a closed form or a bound that removes half the constraints is
         // recorded.
-        "tool_builder" | "coder" | "sat_solver" | "lean_prover" => &[
+        "tool_builder"
+        | "coder"
+        | "sat_solver"
+        | "smt_solver"
+        | "theorem_prover"
+        | "symbolic_math"
+        | "lean_prover" => &[
             "config/config.toml",
             "GOAL.md",
             "TASKS.md",
@@ -1316,6 +1358,9 @@ impl RolePrompts {
             tool_builder: role("tool_builder", TOOL_BUILDER_PROMPT)?,
             coder: role("coder", CODER_PROMPT)?,
             sat_solver: role("sat_solver", SAT_SOLVER_PROMPT)?,
+            smt_solver: role("smt_solver", SMT_SOLVER_PROMPT)?,
+            theorem_prover: role("theorem_prover", THEOREM_PROVER_PROMPT)?,
+            symbolic_math: role("symbolic_math", SYMBOLIC_MATH_PROMPT)?,
             lean_prover: role("lean_prover", LEAN_PROVER_PROMPT)?,
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
@@ -1389,7 +1434,7 @@ struct CodeWriters<'a> {
 fn register_code_writing_agents(
     subagents: &AsyncSubagentManager,
     parts: &CodeWriters<'_>,
-    roles: [(&str, String); 4],
+    roles: [(&str, String); 7],
 ) -> Result<()> {
     for (name, prompt) in roles {
         let mut harness = build_tool_builder_harness(
