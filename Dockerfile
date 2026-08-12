@@ -149,6 +149,16 @@ RUN apt-get update \
     && printf '%s\n' 'ring r=0,(x,y),dp; ideal I=x2+y2-1,x-y; std(I); quit;' > /tmp/smoke.sing \
     && chmod 0644 /tmp/smoke.sing \
     && su agent -s /bin/sh -c 'Singular -q /tmp/smoke.sing' \
+    # SageMath is installed several layers above, and this is where it is
+    # checked: a smoke test beside its own `apt-get` would put the slowest
+    # verification in the image behind the most expensive layer to rebuild.
+    # It is verified at all for the reason Lean is — `symbolic_math` is told to
+    # reach for `sage`, and a tool named in a prompt that does not run costs
+    # the run a turn to discover, which is exactly why `maxima` and `gap` were
+    # dropped. It runs as the unprivileged user because Sage writes a dot-
+    # directory on first start, and a check that passes only as root says
+    # nothing about the run.
+    && su agent -s /bin/sh -c 'sage -c "print(factor(2^67-1))" | grep -q 193707721' \
     && rm /tmp/smoke.p /tmp/smoke.sing
 
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
