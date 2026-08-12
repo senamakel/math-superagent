@@ -21,30 +21,30 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://huggingface.co/docs/hub/spaces | What is Spaces? | is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][33])* Spaces Toggle TXYZ.AI*( [What is… |
 | 2 | https://huggingface.co/huggingface | What is Huggingface? | Toggle DagsHub*( [What is DagsHub?][28])* GotitPub Toggle Gotit.pub*( [What is GotitPub?][29])* Huggingface Toggle Hugging Face*( [What is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What… |
 | 2 | https://influencemap.cmlab.dev/ | What are Influence Flowers? | Toggle TXYZ.AI*( [What is TXYZ.AI?][34])* Related Papers # Recommenders and Search Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][35])* Core recommender toggle CORE… |
+| 2 | https://oeis.org/A000207 | A000207 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A001764 | A001764 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A007173 | A007173 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047751 | A047751 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047752 | A047752 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047753 | A047753 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047754 | A047754 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047758 | A047758 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047760 | A047760 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047762 | A047762 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047764 | A047764 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047765 | A047765 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047766 | A047766 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047769 | A047769 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047771 | A047771 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047773 | A047773 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047774 | A047774 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047775 | A047775 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A047776 | A047776 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A182322 | A182322 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A371350 | A371350 | cross-referenced from A027610 |
+| 2 | https://oeis.org/A371351 | A371351 | cross-referenced from A027610 |
 | 2 | https://replicate.com/docs/arxiv/about | What is Replicate? | is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is… |
 | 2 | https://sciencecast.org/welcome | What is ScienceCast? | [What is GotitPub?][29])* Huggingface Toggle Hugging Face*( [What is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What… |
 | 2 | https://txyz.ai | What is TXYZ.AI? | Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][33])* Spaces Toggle TXYZ.AI*( [What is TXYZ.AI?][34])* Related Papers # Recommenders and Search… |
-| 2 | https://www.catalyzex.com | What is CatalyzeX? | with this Article alphaXiv Toggle alphaXiv*( [What is alphaXiv?][26])* Links to Code Toggle CatalyzeX Code Finder for Papers*( [What is CatalyzeX?][27])* DagsHub Toggle DagsHub*( [What is… |
-| 2 | https://www.litmaps.co/ | What is Litmaps? | [What is the Explorer?][22])* Connected Papers Toggle Connected Papers*( [What is Connected Papers?][23])* Litmaps Toggle Litmaps*( [What is Litmaps?][24])* scite.ai Toggle scite Smart Citations*(… |
-| 2 | https://www.scite.ai/ | What are Smart Citations? | Papers*( [What is Connected Papers?][23])* Litmaps Toggle Litmaps*( [What is Litmaps?][24])* scite.ai Toggle scite Smart Citations*( [What are Smart Citations?][25])* Code, Data, Media # Code, Data… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Carr,+A | Avery Carr | [Submitted on 13 May 2026] # Title: Every Minimal Counterexample to the Erdős-Gyárfás Conjecture is Predominantly Cubic Authors: [Avery Carr][2] View a PDF of the paper titled Every Minimal… |
-| 1 | http://reference.wolfram.com/language/ref/GraphData.html | GraphData | particular, it contains cycles of lengths 3, 5, 6, 7, and 9-24.) The Markstr&ouml;m graph is implemented in the [Wolfram Language][4] as [GraphData][5] ["MarkstroemGraph"]. This graph is related to… |
-| 1 | http://www.wolfram.com/language/ | Wolfram Language | cycles of length 16. (In particular, it contains cycles of lengths 3, 5, 6, 7, and 9-24.) The Markstr&ouml;m graph is implemented in the [Wolfram Language][4] as [GraphData][5] ["MarkstroemGraph"].… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Hegde,+A+S | Anand Shripad Hegde | last revised 11 Feb 2025 (this version, v2)] # Title: Erdős-Gyárfás conjecture on graphs without long induced paths Authors: [Anand Shripad Hegde][3], [R. B. Sandeep][4], [P. Shashank][5] View a PDF… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Sandeep,+R+B | R. B. Sandeep | 2025 (this version, v2)] # Title: Erdős-Gyárfás conjecture on graphs without long induced paths Authors: [Anand Shripad Hegde][3], [R. B. Sandeep][4], [P. Shashank][5] View a PDF of the paper titled… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Shashank,+P | P. Shashank | v2)] # Title: Erdős-Gyárfás conjecture on graphs without long induced paths Authors: [Anand Shripad Hegde][3], [R. B. Sandeep][4], [P. Shashank][5] View a PDF of the paper titled… |
-| 1 | https://doi.org/10.37236/3252 | https://doi.org/10.37236/3252 | menu Skip to site footer # Erdös-Gyárfás Conjecture for Cubic Planar Graphs - Christopher Carl Heckman - Roi Krakovski DOI: [https://doi.org/10.37236/3252][1] Keywords: Erdös-Gyárfás Conjecture,… |
-| 1 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | the Erd\H{o}s-Gy\'arf\'as Conjecture is Predominantly Cubic, by Avery Carr - [View PDF][3] - [HTML (experimental)][4] - [TeX Source][9] [view license][10] ### Current browse context: math.CO [<… |
-| 1 | https://www.combinatorics.org/ojs/index.php/eljc/article/view/v20i2p7/pdf | PDF | for 3-connected cubic planar graphs. The proof is long, computer-based in parts, and employs the Discharging Method in a novel way. - [PDF][2] Published 2013-04-09 How to Cite Heckman, C. C., &… |
-| 1 | https://www.wolframalpha.com/input/?i=.333... | .333... | group graph][6]. --- ## See also [Graph Cycle][7] ## Explore with Wolfram\|Alpha [image: WolframAlpha] More things to try: - [.333...][8] - [fixed necklaces with 6 beads and 3 colors][9] - [logic… |
-| 1 | https://www.wolframalpha.com/input/?i=fixed+necklaces+with+6+beads+and+3+colors | fixed necklaces with 6 beads and 3 colors | --- ## See also [Graph Cycle][7] ## Explore with Wolfram\|Alpha [image: WolframAlpha] More things to try: - [.333...][8] - [fixed necklaces with 6 beads and 3 colors][9] - [logic circuit (p or ~q) and… |
-| 1 | http://www.cs.uwa.edu.au/˜gordon/remote/erdosconj.html | — | The program geng is available from Brendan McKays home page at http://cs.anu.edu.au/people/bdm. [Roy] Gordon Royle, The 2ˆn conjecture, http://www.cs.uwa.edu.au/˜gordon/remote/erdosconj.html. [Sha98]… |
-| 1 | http://backend:8080/api/graph_invariants/51419/1 | — | {"_embedded":{"graphInvariantModelList":[{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/1"},"associatedGraph":{"href":"http://backend:8080/api/graphs/51419"},"associatedInva… |
-| 1 | http://backend:8080/api/graph_invariants/51419/11 | — | nts/8"}},"entity":{"graphId":51419,"invariantId":8,"invariantStatus":2,"invariantValue":3.0,"ofInterest":false}},{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/11"},"associa… |
-| 1 | http://backend:8080/api/graph_invariants/51419/12 | — | /11"}},"entity":{"graphId":51419,"invariantId":11,"invariantStatus":2,"invariantValue":12.0,"ofInterest":false}},{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/12"},"associa… |
-| 1 | http://backend:8080/api/graph_invariants/51419/14 | — | entity":{"graphId":51419,"invariantId":22,"invariantStatus":2,"invariantValue":5.1986912435,"ofInterest":false}},{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/14"},"associa… |
-| 1 | http://backend:8080/api/graph_invariants/51419/15 | — | s/38"}},"entity":{"graphId":51419,"invariantId":38,"invariantStatus":2,"invariantValue":8.0,"ofInterest":false}},{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/15"},"associa… |
-| 1 | http://backend:8080/api/graph_invariants/51419/16 | — | s/12"}},"entity":{"graphId":51419,"invariantId":12,"invariantStatus":2,"invariantValue":3.0,"ofInterest":false}},{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/16"},"associa… |
-| 1 | http://backend:8080/api/graph_invariants/51419/17 | — | s/16"}},"entity":{"graphId":51419,"invariantId":16,"invariantStatus":2,"invariantValue":5.0,"ofInterest":false}},{"_links":{"self":{"href":"http://backend:8080/api/graph_invariants/51419/17"},"associa… |
 
 _140 further candidates not shown; they are cited once each._

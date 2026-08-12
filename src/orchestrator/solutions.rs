@@ -1020,6 +1020,20 @@ impl Mailbox {
     }
 }
 
+/// What the loop is handed by the work running beside it.
+///
+/// Grouped rather than passed as two more parameters, because they are one
+/// idea: everything that reaches an attempt without the loop having asked for
+/// it arrives through a mailbox, and a third one — a second kind of team, an
+/// operator channel that is not text — belongs in here rather than in `run`'s
+/// signature.
+pub(super) struct Mailboxes {
+    /// What the pattern team found, drained by the attempt and the reflection.
+    pub(super) patterns: Mailbox,
+    /// What a person asked for, drained by the attempt alone.
+    pub(super) directives: Mailbox,
+}
+
 /// Builds and runs the solution loop over the registered specialists.
 ///
 /// # Errors
@@ -1032,10 +1046,13 @@ pub(super) async fn run(
     workspace: Option<PathBuf>,
     memory: VectorStore,
     teams: Vec<TeamHandle>,
-    patterns: Mailbox,
-    directives: Mailbox,
+    mailboxes: Mailboxes,
     state: SolutionState,
 ) -> Result<SolutionState> {
+    let Mailboxes {
+        patterns,
+        directives,
+    } = mailboxes;
     let attempt_agents = subagents.clone();
     let attempt_tracer = tracer.clone();
     let judge_agents = subagents.clone();

@@ -54,12 +54,22 @@ services:
     # simply stopped appearing, which is why the first check after it read as a
     # hung specialist rather than a dead container.
     #
-    # Eight gigabytes still leaves the host comfortable with three runs at once
-    # (30 GiB total, 21 available with three running). Read
-    # `docker events --filter event=oom` whenever a container vanishes without
-    # an error, and treat the answer as a sandbox limit rather than a
-    # mathematical ceiling — problem 763 recorded the old cap in its own notes
-    # as "exact BFS stops at N=14", which was never true of the mathematics.
+    # Eight gigabytes is the ceiling and it does not move again. The cap was
+    # raised twice — 2g to 4g, then 4g to 8g — each time because a run met it,
+    # and that is a rule with no fixed point: enumeration will always expand to
+    # whatever it is given. Eight gigabytes is enough to hold a real
+    # computation, and a method that needs more than that on a 30 GiB box is
+    # the wrong method rather than an under-resourced one. So an OOM from here
+    # is a finding about the approach, not a request for more memory: stream
+    # instead of materialising, count with `geng -u` instead of collecting,
+    # bound the degree, or reduce the question to one a solver can answer.
+    #
+    # Read `docker events --filter event=oom` whenever a container vanishes
+    # without an error — the kernel writes nothing to the console, so the run
+    # just stops appearing and reads as a hung child. But record the result as
+    # a sandbox limit, never as a mathematical ceiling: problem 763 wrote the
+    # old cap into its own notes as "exact BFS stops at N=14", which was never
+    # true of the mathematics.
     mem_limit: 8g
     volumes:
       - type: bind

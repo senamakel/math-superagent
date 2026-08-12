@@ -230,13 +230,32 @@ watched by naming it:
 ./euler-tui --workspace conjectures/erdos-gyarfas
 ```
 
-`euler-tui` **only watches**. It finds the container that has the workspace
-mounted and follows it, and cannot start, stop, or restart a run. That is the
-design rather than a gap: when starting was part of the same command, opening a
-second view started a second run on the same workspace — both writing the same
-files and both making checkpoint commits over each other. `docker logs` replays
-a container from its start, so attaching an hour in still populates every tab
+`euler-tui` **cannot start, stop, or restart a run**. That is the design rather
+than a gap: when starting was part of the same command, opening a second view
+started a second run on the same workspace — both writing the same files and
+both making checkpoint commits over each other. `docker logs` replays a
+container from its start, so attaching an hour in still populates every tab
 before the first frame.
+
+It can direct a run that already exists. Press `i`, type, and press Enter; or
+from another terminal:
+
+```sh
+./steer 763 check the n=14 bound against a sieve
+./steer --workspace conjectures/erdos-gyarfas "stop enumerating and prove it"
+```
+
+The run never waits for you. A directive is queued in the workspace and picked
+up at the next boundary — seconds to minutes — and what the run did about it is
+written to that workspace's `config/DIRECTIVES.md`. It reaches the next attempt
+word for word, above anything the run concluded on its own, and a `director`
+role reads it and updates the files that decide what happens next: the task
+order, the live directions of attack, the shared brief. It cannot override the
+loop's own control flow: a directive will not force a restart, end the run, or
+make an unverified answer count as solved.
+
+Sending is refused under `--replay`, where the run has already finished, and is
+unavailable under `--plain`, which exists for scripting.
 
 It is a `ratatui` binary, built behind the optional `tui` feature so the
 runtime image — which has no terminal — does not carry a terminal library. The
@@ -244,8 +263,8 @@ runtime image — which has no terminal — does not carry a terminal library. T
 
 `Tab`, `n`, or the right arrow move to the next team and `Shift-Tab`, `p`, or
 the left arrow to the previous; the digits jump straight to one; the arrows and
-page keys scroll back, `g` returns to live, and `q` detaches without stopping
-the run. Input is polled every 15ms and every event waiting is consumed before
+page keys scroll back, `g` returns to live, `i` opens a line to direct the run,
+and `q` detaches without stopping it. Input is polled every 15ms and every event waiting is consumed before
 the next repaint, so a keypress lands immediately and a held arrow scrolls by
 its whole run rather than one line per frame.
 

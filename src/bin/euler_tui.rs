@@ -822,6 +822,7 @@ fn main() -> std::process::ExitCode {
 }
 
 #[cfg(test)]
+#[allow(clippy::expect_used)]
 mod test {
     use super::{View, compose_key};
     use crossterm::event::KeyCode;

@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 use super::{CURSOR, Directive, LEDGER, QUEUE, drain, enqueue, pending, record};
 use crate::Error;
 
@@ -13,8 +15,12 @@ fn workspace(name: &str) -> std::io::Result<std::path::PathBuf> {
 #[test]
 fn a_queued_directive_comes_back_whole() -> std::io::Result<()> {
     let root = workspace("roundtrip")?;
-    let sent = enqueue(&root, "euler-tui", "  check the n=14 bound against a sieve  ")
-        .expect("a non-empty directive queues");
+    let sent = enqueue(
+        &root,
+        "euler-tui",
+        "  check the n=14 bound against a sieve  ",
+    )
+    .expect("a non-empty directive queues");
     assert_eq!(sent.id, 1);
     assert_eq!(sent.from, "euler-tui");
     assert_eq!(sent.text, "check the n=14 bound against a sieve");
@@ -147,14 +153,15 @@ fn the_ledger_records_what_became_of_a_directive() -> std::io::Result<()> {
         from: "euler-tui".to_string(),
         text: "check the n=14 bound".to_string(),
     };
-    record(&root, &directive, "Rewrote TASKS.md to lead with the sieve check.")
-        .expect("the ledger writes");
     record(
         &root,
-        &Directive {
-            id: 2,
-            ..directive
-        },
+        &directive,
+        "Rewrote TASKS.md to lead with the sieve check.",
+    )
+    .expect("the ledger writes");
+    record(
+        &root,
+        &Directive { id: 2, ..directive },
         "No change: the run had already dropped that approach.",
     )
     .expect("the ledger appends");

@@ -383,13 +383,19 @@ fn an_unknown_role_receives_no_working_files() {
 fn the_director_reads_the_plan_but_not_the_claim_ledger() {
     let context = role_context("director");
     assert!(context.contains(&"TASKS.md"), "it rewrites the plan");
-    assert!(context.contains(&"GOAL.md"), "a directive is read against it");
+    assert!(
+        context.contains(&"GOAL.md"),
+        "a directive is read against it"
+    );
     assert!(
         context.contains(&"research/THREADS.md"),
         "opening and closing directions is most of the job"
     );
     assert!(!context.contains(&"research/CLAIMS.md"));
-    assert!(!context.contains(&"config/config.toml"), "it never executes");
+    assert!(
+        !context.contains(&"config/config.toml"),
+        "it never executes"
+    );
 }
 
 /// The director directs; it does not compute. A role that could both
