@@ -62,6 +62,22 @@ as a full identity. First falsified at N=12, not N=15 as previously guessed.
 
 ## This tool-builder task's runs
 
+### Pure naive frozenset BFS oracle (definition check + capacity report)
+Program code/brute.py, naive level-by-level frozenset BFS via
+lib.amoeba.forward_level, one step per division, stopping when the CURRENT
+frontier exceeds 1,000,000 configs (or 500s).
+  D(2) = 3        match
+  D(10) = 44499   match
+  D(0..13) = 1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267
+    (all 14 match the reference list; stopped at D(13): frontier 1,749,267 >
+    cap, 223 s, peak RSS 2139 MB).
+Capacity ceiling in this container: the naive frozenset oracle OOMs (exit 137)
+while building the D(14) frontier (~5.9M configs > 2 GiB cgroup cap).  It is
+cleanest run with the cap on the current level so it stops BEFORE the huge
+step.  D(20)=9204559704 is unreachable by exact BFS: ~9.2e9 configs at level
+20 ~ 5-9 TB of RAM, exponentially past this box.  Output:
+code/out/brute_fs_oracle_run.txt.
+
 ### Oracle re-run (definition check, matches worked examples)
 Ran the existing naive oracle `code/brute.py` (canonical `D` from lib/amoeba,
 naive frozenset BFS over distinct occupied-cube sets, d=3) at the two sizes
