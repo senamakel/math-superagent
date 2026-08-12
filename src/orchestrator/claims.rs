@@ -336,16 +336,28 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
 /// Full texts are skipped: they are the untouched original, nothing may edit
 /// them, and reading megabytes of converted paper to find blocks that cannot
 /// be there is the one way this walk could become expensive.
+/// `code/out/` is walked beside `research/`, and the asymmetry it removes is
+/// the point. A claim could previously originate only in a note about a
+/// *source*, so the run ledgered what it had read and forgot what it had
+/// computed. Project Euler 597 sat at `proved=0` for a fourteen-check stretch
+/// while holding `p(4,400) = 521/1020` — the value its problem statement
+/// supplies, reproduced to all ten digits — and 38 exact points cross-validated
+/// by two independent enumerators and Monte Carlo. Its own strongest evidence
+/// was invisible to every role that reads the ledger, including the judge that
+/// scored it 1/5.
+///
+/// The `Checked` status already meant "this run checked it numerically" and had
+/// no way in. Now a program's output folder may carry `claim` blocks in a
+/// Markdown note beside the data, on the same terms as any research note.
 pub(super) fn collect(workspace: &Path) -> Ledger {
     let mut ledger = Ledger::default();
     let mut budget = MAX_FILES;
-    walk(
-        workspace,
-        &workspace.join(super::documents::RESEARCH_DIR),
-        MAX_DEPTH,
-        &mut budget,
-        &mut ledger,
-    );
+    for root in [
+        workspace.join(super::documents::RESEARCH_DIR),
+        workspace.join(super::layout::OUTPUT_DIR),
+    ] {
+        walk(workspace, &root, MAX_DEPTH, &mut budget, &mut ledger);
+    }
     ledger.claims.sort_by(|left, right| left.id.cmp(&right.id));
     ledger
 }
