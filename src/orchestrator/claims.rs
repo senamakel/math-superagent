@@ -435,6 +435,7 @@ impl Ledger {
         }
         self.append_contradictions(&mut out);
         self.append_unverified(&mut out);
+        self.append_catalogued(&mut out);
         self.append_faults(&mut out);
         out
     }
