@@ -1,5 +1,6 @@
 //! Registry-backed orchestrator with research and tool-building specialists.
 
+mod approaches;
 pub(crate) mod async_subagents;
 mod checkpoint;
 mod claims;

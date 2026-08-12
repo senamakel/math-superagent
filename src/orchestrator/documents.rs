@@ -1006,6 +1006,14 @@ impl DocumentTool {
             super::threads::refresh(&self.documents).await;
             return format!(" and re-derived {}", super::threads::THREADS_PATH);
         }
+        // An approach carries no claim ids, so unlike a thread it cannot be
+        // stranded by a note that changes what the library establishes. Its
+        // table is therefore re-derived only when an approach itself is
+        // written.
+        if super::approaches::is_approach(path) {
+            super::approaches::refresh(&self.documents).await;
+            return format!(" and re-derived {}", super::approaches::APPROACHES_PATH);
+        }
         if !super::claims::is_note(path) {
             return String::new();
         }
