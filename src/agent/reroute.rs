@@ -114,6 +114,30 @@ impl<S: Send + Sync> ReroutingModel<S> {
             ));
         }
     }
+
+    /// Reports an error this wrapper is passing straight through.
+    ///
+    /// Everything not worth rerouting is handed back to the harness, whose own
+    /// retry ladder then re-issues it. That ladder announces itself as
+    /// `model RETRY attempt N` and says nothing about *why*, because upstream's
+    /// `AgentEvent::RetryScheduled` carries only a call id and an attempt
+    /// number — so a live `pattern_finder` retried one call six times over
+    /// three and a half minutes with the cause recorded in neither the console
+    /// nor `trace.jsonl`. A repeated retry is a documented stall signal, and it
+    /// was the one signal that arrived with nothing to diagnose from.
+    ///
+    /// This wrapper is outermost, so every provider failure passes through it
+    /// exactly once before the ladder sees it. Noting it here is what makes the
+    /// retry that follows readable, and it stays cheap for the same reason:
+    /// one line per *failed* call, not per call.
+    fn note_passthrough(&self, error: &TinyAgentsError) {
+        if let Some(tracer) = self.tracer.as_ref() {
+            tracer.note(&format!(
+                "{} model call failed ({error}); the harness retry ladder decides what happens next",
+                self.agent
+            ));
+        }
+    }
 }
 
 /// Returns whether an error is `OpenRouter` reporting an upstream failure.
@@ -149,7 +173,10 @@ impl<S: Send + Sync + 'static> ChatModel<S> for ReroutingModel<S> {
                     tokio::time::sleep(backoff).await;
                     backoff = backoff.saturating_mul(2);
                 }
-                Err(error) => return Err(error),
+                Err(error) => {
+                    self.note_passthrough(&error);
+                    return Err(error);
+                }
             }
         }
         // The last attempt is made outside the loop so its error is returned
@@ -168,7 +195,10 @@ impl<S: Send + Sync + 'static> ChatModel<S> for ReroutingModel<S> {
                     tokio::time::sleep(backoff).await;
                     backoff = backoff.saturating_mul(2);
                 }
-                Err(error) => return Err(error),
+                Err(error) => {
+                    self.note_passthrough(&error);
+                    return Err(error);
+                }
             }
         }
         self.inner.stream(state, request).await
