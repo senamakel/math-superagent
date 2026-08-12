@@ -208,10 +208,7 @@ impl<S: Send + Sync + 'static> ChatModel<S> for UntruncatedModel<S> {
                     cap / 2
                 ));
             }
-            response = self
-                .inner
-                .invoke(state, reissued(&request, cap))
-                .await?;
+            response = self.inner.invoke(state, reissued(&request, cap)).await?;
         }
         Ok(response)
     }

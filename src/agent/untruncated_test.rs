@@ -5,6 +5,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use async_trait::async_trait;
+use tinyagents::harness::message::Message;
 use tinyagents::harness::model::{ChatModel, ModelRequest, ModelResponse, ModelStream};
 
 use crate::agent::Result as ModelResult;
