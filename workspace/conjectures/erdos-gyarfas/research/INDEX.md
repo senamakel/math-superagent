@@ -13,7 +13,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.0/heckman-krakovski-cubic-planar.md` | _(undescribed)_ |
 | `L1.0/hegde-sandeep-shashank-p13-free.md` | _(undescribed)_ |
 | `L1.0/sudakov-verstraete-sparse-pdf.md` | _(undescribed)_ |
-| `L1.0/sudakov-verstraete-sparse.md` | _(undescribed)_ |
+| `L1.0/sudakov-verstraete-sparse.md` | Digest of Sudakov & Verstraëte, "Cycle lengths in sparse graphs" (arXiv:0707.2117, abs/HTML conversion). Part 1 proves Erdős's conjecture that the set C(G) of cycle lengths has size Omega(d^floor((g-1)/2)) for average degree d and girth g (tight via d-regular Moore graphs), plus odd-cycle and H-free versions. Part 2 is the EG-bearing result: any infinite exponentially-bounded even sequence sigma (the powers of two qualify) forces an n-vertex graph with no sigma-cycle to have average degree exp(O(log* n)) — pinning a counterexample's density between 3 and exp(O(log* n)). Non-PDF twin of sudakov-verstraete-sparse-pdf.md. Full text at research/L0.0/sudakov-verstraete-sparse.full.md. |
 | `L1.0/west-openproblems-2powcyc.md` | _(undescribed)_ |
 | `L1.0/wikipedia-erdos-gyarfas.md` | _(undescribed)_ |
 | `L1.1/carr-diameter2.md` | _(undescribed)_ |
