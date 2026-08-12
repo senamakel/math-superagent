@@ -242,7 +242,7 @@ def main(max_nH=None):
     t0 = time.time()
     for n_H in range(4, max_nH + 1, 2):
         cubic, t_gen = connected_cubic_graph6(n_H)
-        SAMPLE_AT_LARGE_NH = 3000
+        SAMPLE_AT_LARGE_NH = 600
         step_count = max(1, len(cubic) // SAMPLE_AT_LARGE_NH) if n_H >= 16 else 1
         for idx, g6 in enumerate(cubic):
             # for n_H >= 16, check at most ~SAMPLE_AT_LARGE_NH graphs by
