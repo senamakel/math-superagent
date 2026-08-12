@@ -337,7 +337,7 @@ fn an_attempt_is_told_what_arrived_beside_the_loop() {
 }
 
 #[test]
-fn an_attempt_with_nothing_from_the_pattern_team_says_nothing_about_it() {
+fn an_attempt_with_an_empty_mailbox_says_nothing_about_it() {
     use super::{attempt_prompt, observations_briefing};
 
     // A heading announcing that no analysis arrived is worse than silence: it
@@ -348,7 +348,7 @@ fn an_attempt_with_nothing_from_the_pattern_team_says_nothing_about_it() {
 
     let state = SolutionState::new("find the cycle lengths");
     let prompt = attempt_prompt(&state, "", &observations, "");
-    assert!(!prompt.contains("pattern team"), "{prompt}");
+    assert!(!prompt.contains("beside the loop"), "{prompt}");
 }
 
 /// The whole point of the channel is that the attempt is told a person asked
