@@ -131,10 +131,16 @@ theorem.
 
 ## Contradictions
 
-None on the value. But note: the run's earlier GOAL.md claims "verified by a
-second independent route" — that is an **overclaim** (see Validation). The
-mirror in research/CLAIMS.md lists the circle identity claim as "unchecked" in
-its one `claim` block; the notes and programs override it authoritatively.
+No open contradiction on the value (5.05505046). Two caveats to record, not
+reconcile: (1) the run's earlier GOAL.md claims "verified by a second
+independent route" — that is an **overclaim** (see Validation/Gaps). (2) **All
+three "oracles" agree the *formula* is right** (n=3/4/∞ anchors + exact closed
+form), but the **only independent game-encoding solver built does NOT reproduce
+the oracles** — it caps each shape at a lower straight-dash bound. That is not a
+contradiction of the answer (the solver's model is the known-wrong red herring)
+but it means "independently verified" is NOT yet true. The research/CLAIMS.md
+mirror lists the circle identity claim as "unchecked" in its one `claim` block;
+the notes and programs override it authoritatively.
 
 ## Gaps
 
