@@ -99,8 +99,11 @@ theorem cycle_in_one_component {G : SimpleGraph V} [DecidableEq V]
   have habit : ∀ x ∈ (p.tail.dropLast).support, x ∈ (notVSet v : Set V) := by
     intro x hx hxv
     exact hmiddle (by simpa [hxv] using hx)
-  -- the interior endpoints are penultimate (of p.tail) and snd
-  -- p.tail goes snd -> v, so p.tail.dropLast goes snd -> penultimate
-  refine ⟨(p.tail.dropLast).induce (notVSet v) habit⟩
+  -- p.tail goes snd -> v, so p.tail.dropLast goes snd -> penultimate of p
+  have hpen : p.tail.penultimate = p.penultimate := tail_penultimate hp
+  let q : (G.induce (notVSet v)).Walk
+      ⟨p.snd, cycle_snd_induce hp⟩ ⟨p.penultimate, cycle_penultimate_induce hp⟩ :=
+    (p.tail.dropLast).induce (notVSet v) habit
+  refine ⟨q⟩
 
 end ErdosGyarfas

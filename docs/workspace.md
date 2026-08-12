@@ -439,8 +439,7 @@ Splitting the writers removes the race rather than managing it. Neither side
 writes what the other writes, so neither needs a lock, and the one number they
 share — how far through the file the run has got — belongs to the side that
 advances it. The cursor is staged and renamed rather than written in place: a
-half-written cursor reads as zero, which would redeliver every directive the run
-had already acted on.
+half-written cursor reads as zero, redelivering every directive already acted on.
 
 A directive's identifier is its line number, not a stored field. That is what
 makes delivery exactly-once without a counter anyone could disagree about, and it
