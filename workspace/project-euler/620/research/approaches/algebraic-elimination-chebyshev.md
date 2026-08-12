@@ -5,6 +5,69 @@ idea: Convert the transcendental phase congruences of the W-model (research/thre
 
 mechanism: The dead models all fail because they evaluate transcendental congruences numerically on a grid, missing the discrete solutions. Algebraic elimination converts "d such that congruence holds" into "roots of a polynomial" — an exact, non-probabilistic computation. Chebyshev polynomials T_n and U_n express cos(n·θ) and sin(n·θ)/sin θ as degree-n polynomials in cos θ with integer coefficients, so cos(s·arccos(u)) = T_s(u) is polynomial in u. The square roots √(1−u²) from sin φ can be cleared by squaring (after isolating them on one side of the equation), which doubles the degree. The final polynomial has integer coefficients (clearing the rational-function denominators from u, v) and degree bounded by about 2(c+s). For the oracle case (16,5,5,6) this is degree ~42 — easily handled exactly. For the full problem (c up to ~500) degree may reach ~1000, but Sturm sequences remain exact (rational arithmetic), and factorisation structure from the problem's symmetries likely reduces the effective degree.
 
-status: proposed
-first-step: Derive the closed-form expressions for cos φ, cos χ, cos γ in terms of cos E for fixed c,s,t,d. Eliminate d using the relationship d = (c−s−2t)/(2π cos E). Substitute t_param = tan(E/2), express cos φ = u(t_param), cos χ = v(t_param) as rational functions. Then form the numerator of tan(T_s(u)/U_{s−1}(u)√(1−u²) + …) — actually, use the identity tan(s·φ + c·χ) = 0 ⇔ sin(s·φ + c·χ) = 0, and use sin(A+B) = sin A cos B + cos A sin B with Chebyshev expansions for sin/cos of integer multiples of arccos. Clear radicals to get the polynomial P(t_param).
+status: grounded
+precedent: https://www.cecm.sfu.ca/personal/monaganm/papers/trigpoly.pdf (Mulholland & Monagan: tangent half-angle substitution, trig polynomial → rational of degree ≤2d) ; https://en.wikipedia.org/wiki/Sturm%27s_theorem ; https://encyclopediaofmath.org/wiki/Sturm_theorem ; https://www-sop.inria.fr/hephaistos/logiciels/ALIAS/ALIAS-C++/node4.html ; https://link.springer.com/article/10.1007/BF02238233 (Chebyshev + Sturm exact root-location) ; https://hal.science/hal-00451221/document (exact real-root isolation of Chebyshev-composite polynomials) ; https://www.sciencedirect.com/science/article/abs/pii/002001909190020I (trig polynomials with simple roots) ; thread `offcentre-mesh-phase-model` (claim `offcentre_dual_mesh_phase_invariant`) ; sibling [[tangent-half-angle]] (grounded)
+first-step: Derive the closed-form expressions for cos φ, cos χ, cos γ in terms of cos E for fixed c,s,t,d. Eliminate d using the relationship d = (c−s−2t)/(2π cos E). Substitute t_param = tan(E/2), express cos φ = u(t_param), cos χ = v(t_param) as rational functions. Then form the numerator of tan(s·φ + c·χ) = 0 via sin(s·φ+c·χ) = 0 using Chebyshev expansions, clear radicals, and count real roots via Sturm sequences.
 ```
+
+## Research verdict — the machinery is grounded; the guarantee is upstream
+
+This candidate is the same pipeline as the sibling `tangent-half-angle` (already
+grounded in this run) with Chebyshev polynomials replacing the tangent
+addition-formula route to the polynomial, plus Sturm sequences replacing naive
+root counting. Every ingredient is standard exact computer algebra with a
+source:
+
+- **Tangent half-angle substitution θ→t=tan(θ/2)** is a ring morphism
+  Q[sin,cos]→Q(t) with kernel ⟨s²+c²−1⟩; a trig polynomial of trigonometric
+  degree d maps to a rational polynomial of degree ≤ 2d (Mulholland & Monagan,
+  Lemma 3–4, invertible on the right class, Theorem 1). This *confirms* the
+  candidate's degree bound (~2(c+s)) and that the result is rational in t.
+- **Chebyshev identity** T_n(cos θ)=cos(nθ), U_{n−1}(cos θ)·sin θ=sin(nθ): lets
+  cos(s·φ) and sin(s·φ) be written as T_s(u) and U_{s−1}(u)·√(1−u²) with u a
+  rational function of t (hal.science/hal-00451221 uses exactly these
+  identities for exact root work on Chebyshev-composite polynomials).
+- **Sturm's theorem** counts real roots of a square-free real polynomial
+  exactly in rational arithmetic (Wikipedia; Encyclopedia of Mathematics), and
+  is the mechanism used by the INRIA ALIAS system ("Analyzing trigonometric
+  equations"). A Chebyshev-plus-Sturm exact root-location algorithm is given in
+  Computing 54 (1995) (link.springer.com/article/10.1007/BF02238233).
+
+So the *technique* is a bona fide exact, non-scanning route to "count d-values
+satisfying a phase congruence". It grounds the candidate as *machinery*.
+
+**The guarantee for THIS problem is upstream, not in the technique.** The
+polynomial is built from the W-model phase congruences of the thread
+`offcentre-mesh-phase-model` (claim `offcentre_dual_mesh_phase_invariant`:
+s·φ+c·χ−t·γ pairwise congruent, mirror-pair s·φ+c·χ ∈ πℤ). That model is
+**oracle-unverified** — it has not reproduced g(16,5,5,6)=9, G(16)=9, G(20)=205.
+If the W-model is right, this is the exact route to g; if wrong, the polynomial
+root-counts a wrong condition. The substitution/Sturm machinery does not by
+itself validate the discreteness.
+
+Two technical caveats: (a) clearing the square roots √(1−u²), √(1−v²) by
+squaring can inject spurious roots and blow the degree well past 2(c+s) — each
+root must be re-checked against the original congruence (and against the
+cross-type condition for the two planet sizes); (b) as `tangent-half-angle`
+notes, the per-type position set is still forced by tangency (two mirror points
+per type, thread claim `offcentre_two_positions_per_type`), which this
+parametrisation respects only through the d-range.
+
+Status: **grounded** as an exact root-counting route *conditional on*
+`offcentre_dual_mesh_phase_invariant` holding. Refuted with it if that invariant
+is ever refuted.
+
+## Grounded — what the literature actually says vs. the candidate's claim
+
+The candidate's central factual claims were confirmed by search:
+
+1. Chebyshev's identity and the tangent-half-angle degree bound (≤2× trig
+   degree) — confirmed (Mulholland & Monagan; hal-00451221).
+2. Sturm's theorem for exact real-root counting — confirmed (Sources above).
+3. That trig/polynomial exact root-counting is a practised, published pipeline
+   — confirmed (Computing 54, 1995; INRIA ALIAS; about trig polynomials with
+   simple roots, sciencedirect.com/article/abs/pii/002001909190020I).
+
+Nothing in the literature contradicts the candidate; its dependency is entirely
+upstream (the oracle-unverified W-model). This is why it is marked **grounded**
+(conditional), not refuted.

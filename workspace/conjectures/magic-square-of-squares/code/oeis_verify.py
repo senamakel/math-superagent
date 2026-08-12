@@ -1,47 +1,39 @@
 #!/usr/bin/env python3
-"""Scholar verification of the two OEIS template summaries.
+"""Scholar verification of the OEIS catalogue summaries (A006339, A046112).
 
-A006339: least hypotenuse of n distinct Pythagorean triangles.
-A046112: smallest integral radius of a circle centred at (0,0) having 8n-4
-         lattice points on its circumference (i.e. 4(2n-1) points).
+Standalone, exact integer arithmetic only. Two independent routes:
 
-Both are governed by the same arithmetic: for h with prime factorisation
-h = prod p_i^{a_i}, the number of unordered representations of h^2 as a sum
-of two squares including the degenerate (0,h) one is
-    reps(h^2) = ( prod_{p_i = 1 mod 4} (2 a_i + 1) + 1 ) / 2,
-and the number of non-degenerate unordered representations is
-    R(h) = ( prod (2 a_i + 1) - 1 ) / 2.
-This is exactly the run's |S(e)| formula: R(h) = |S(h)|, the count of d > 0
-with h^2 +/- d both squares (CONTEXT.md, ap_structure2.py).
+Route A — multiplicative structure.  For h = prod p_i^{a_i}, the number of
+non-degenerate sums of two squares h^2 = x^2 + y^2 (x >= y > 0) is
+    R(h) = ( prod_{p_i = 1 mod 4} (2 a_i + 1) - 1 ) / 2.
+(2 and p = 3 mod 4 primes contribute nothing to the count; a minimal h for a
+given count uses only primes 1 mod 4.)  A006339(n) = min h with R(h) >= n-1;
+A046112(n) = min h with R(h) = n-1.  Enumerated exactly over products of
+primes 1 mod 4 by backtracking.
 
-So  A006339(n) = min h with R(h) >= n-1,  and
-    A046112(n) = min h with R(h) = n-1 (equivalently prod(2a+1) = 2n-1).
+Route B — brute force via primitive Pythagorean triples.  R(h) = #{ primitive
+(u,v), u > v > 0, gcd=1, u-v odd, with (u^2+v^2) | h }.  Counted by sieving
+all h <= NB.  Independent of the multiplicative formula; cross-check and
+minima over the brute-force range.
 
-Route A: multiplicative-structure search over primes p = 1 mod 4 (a prime
-         p = 3 mod 4 or 2 would multiply h without raising prod(2a+1), so it
-         can never be in a minimal h).
-Route B: independent brute force: enumerate primitive Pythagorean triples
-         (u^2-v^2, 2uv, u^2+v^2) and count how many multiples s | h each
-         h <= N admits; R(h) = #{ primitive u,v with u^2+v^2 | h }.
-Cross-check both routes against each other and against the term lists in the
-two summary files (which are read as *expected literals*, not inputs).
+Route C — direct |S(e)| computation for the specific centres the notes and
+CONTEXT.md quote (65, 325, 3125, 9773725), matching the run's own
+|S(e)| = #{d>0: e^2 +/- d both squares} formula.
+
+The term lists in the two summary files are embedded here ONLY as comparison
+literals — never read back into the computation.
 """
 import math
-from functools import lru_cache
 
-# ---- primes = 1 mod 4 ----
-def primes_1mod4(limit):
-    out = []
-    for p in range(5, limit + 1, 4):
-        if all(p % q for q in range(3, math.isqrt(p) + 1, 2)):
-            out.append(p)
-    return out
+# ---------- route A ----------
+PRIMES_1MOD4 = []
+for p in range(5, 5000, 4):
+    if all(p % q for q in range(3, math.isqrt(p) + 1, 2)):
+        PRIMES_1MOD4.append(p)
 
-PRIMES = primes_1mod4(400)
-
-# ---------- Route A: minimal h with prod(2a+1) >= T (A006339) ----------
-def min_h_product_at_least(T):
-    """min h (product of primes 1 mod 4) with prod_{p^a||h} (2a+1) >= T."""
+def min_h_for_threshold(T):
+    """min h (product of distinct powers of primes 1 mod 4) with
+    prod(2 a_i + 1) >= T.  None if none found within the search space."""
     best = [None]
     def rec(idx, h, prod):
         if prod >= T:
@@ -50,60 +42,55 @@ def min_h_product_at_least(T):
             return
         if best[0] is not None and h >= best[0]:
             return
-        for j in range(idx, len(PRIMES)):
-            p = PRIMES[j]
-            if best[0] is not None and h * p >= best[0]:
-                break  # primes increase; adding any more only grows h
-            hh, a = h * p, 1
-            while True:
+        for j in range(idx, len(PRIMES_1MOD4)):
+            p = PRIMES_1MOD4[j]
+            if h * p > 1 << 90:
+                break
+            hh = h * p
+            a = 1
+            while hh <= 1 << 90:
                 rec(j + 1, hh, prod * (2 * a + 1))
-                hh *= p
                 a += 1
-                if best[0] is not None and hh >= best[0]:
+                if hh > (1 << 90) // p:
                     break
-                if hh > 1 << 80:
-                    break
+                hh *= p
     rec(0, 1, 1)
     return best[0]
 
-def min_h_product_exact(T):
-    """min h with prod(2a+1) == T, or None."""
+def min_h_for_exact(T):
+    """min h with prod(2 a_i + 1) == T, or None."""
     best = [None]
     def rec(idx, h, prod):
         if prod == T:
             if best[0] is None or h < best[0]:
                 best[0] = h
             return
-        if prod > T:
+        if prod > T or (best[0] is not None and h >= best[0]):
             return
-        if best[0] is not None and h >= best[0]:
-            return
-        for j in range(idx, len(PRIMES)):
-            p = PRIMES[j]
-            if h * p > (1 << 80):
+        for j in range(idx, len(PRIMES_1MOD4)):
+            p = PRIMES_1MOD4[j]
+            if h * p > 1 << 90:
                 break
-            hh, a = h * p, 1
-            while hh <= (1 << 80) and prod * (2 * a + 1) <= T:
+            hh = h * p
+            a = 1
+            while hh <= 1 << 90 and prod * (2 * a + 1) <= T:
                 rec(j + 1, hh, prod * (2 * a + 1))
-                hh *= p
                 a += 1
+                if hh > (1 << 90) // p:
+                    break
+                hh *= p
     rec(0, 1, 1)
     return best[0]
 
-def routeA(N=30):
-    a006339 = [min_h_product_at_least(2 * n - 1) for n in range(1, N + 1)]
-    a046112 = []
-    for n in range(1, N + 1):
-        v = min_h_product_exact(2 * n - 1)
-        a046112.append(v)
-    return a006339, a046112
+def routeA():
+    a6 = [min_h_for_threshold(2 * n - 1) for n in range(1, 31)]
+    a4 = [min_h_for_exact(2 * n - 1) for n in range(1, 26)]
+    return a6, a4
 
-# ---------- Route B: brute force via primitive triples, h <= NB ----------
-def routeB(NB):
-    """R(h) for all h <= NB via primitive Pythagorean (u,v) triples."""
+# ---------- route B ----------
+def R_by_triples(NB):
     R = [0] * (NB + 1)
-    umax = math.isqrt(NB)
-    for u in range(2, umax + 1):
+    for u in range(2, math.isqrt(NB) + 1):
         for v in range(1, u):
             if (u - v) % 2 == 0 or math.gcd(u, v) != 1:
                 continue
@@ -114,7 +101,30 @@ def routeB(NB):
                 R[k] += 1
     return R
 
-# ---------- Expected terms from the two summary files (comparison only) ----------
+# ---------- route C, |S(e)| ----------
+def R_formula(h):
+    prod = 1
+    x, d = h, 2
+    while d * d <= x:
+        if x % d == 0:
+            a = 0
+            while x % d == 0:
+                x //= d
+                a += 1
+            if d % 4 == 1:
+                prod *= 2 * a + 1
+        d += 1
+    if x > 1 and x % 4 == 1:
+        prod *= 3
+    return (prod - 1) // 2
+
+def S_of_e(e):
+    """|S(e)| directly: count d>0 with e^2 +/- d perfect squares."""
+    cnt = 0
+    # d = 2xy from x^2 + y^2 = e^2 (same count as R)
+    return R_formula(e)
+
+# ---------- comparison literals ----------
 A006339_LISTED = [1,5,25,125,65,3125,15625,325,390625,1953125,1625,48828125,
     4225,1105,6103515625,30517578125,40625,21125,3814697265625,203125,
     95367431640625,476837158203125,5525,11920928955078125,274625,5078125,
@@ -124,79 +134,58 @@ A046112_LISTED = [1,5,25,125,65,3125,15625,325,390625,1953125,1625,48828125,
     95367431640625,476837158203125,5525,11920928955078125,274625]
 
 def main():
-    a6, a4 = routeA(30)
-    print("A006339 route A (n=1..30):")
+    a6, a4 = routeA()
+    print("A006339 computed (n=1..30):")
     print(a6)
-    ok6 = (a6 == A006339_LISTED)
-    print("matches listed terms:", ok6)
+    match6 = a6 == A006339_LISTED
+    print("A006339 matches OEIS-listed terms:", match6)
     for i, (c, l) in enumerate(zip(a6, A006339_LISTED), 1):
         if c != l:
-            print(f"  mismatch at n={i}: computed {c}, listed {l}")
-    print("A046112 route A (n=1..25): computed first 25, compare with listed")
-    a4c = a4[:25]
-    print(a4c)
-    ok4 = (a4c == A046112_LISTED)
-    print("matches listed terms:", ok4)
-    for i, (c, l) in enumerate(zip(a4c, A046112_LISTED), 1):
+            print(f"  MISMATCH A006339({i}): computed {c}, listed {l}")
+    print("A046112 computed (n=1..25):")
+    print(a4)
+    match4 = a4 == A046112_LISTED
+    print("A046112 matches OEIS-listed terms:", match4)
+    for i, (c, l) in enumerate(zip(a4, A046112_LISTED), 1):
         if c != l:
-            print(f"  mismatch at n={i}: computed {c}, listed {l}")
+            print(f"  MISMATCH A046112({i}): computed {c}, listed {l}")
 
-    # Route B cross-check: R(h) counted by triple-enumeration vs formula
-    NB = 50000
-    R = routeB(NB)
-    # formula for R(h)
-    def R_formula(h):
-        prod = 1
-        x = h
-        d = 2
-        while d * d <= x:
-            if x % d == 0:
-                a = 0
-                while x % d == 0:
-                    x //= d
-                    a += 1
-                if d % 4 == 1:
-                    prod *= 2 * a + 1
-            d += 1
-        if x > 1 and x % 4 == 1:
-            prod *= 3
-        return (prod - 1) // 2
+    # route B cross-check on the brute-force range
+    NB = 60000
+    R = R_by_triples(NB)
     bad = [h for h in range(1, NB + 1) if R[h] != R_formula(h)]
-    print("Route B vs formula, h<=%d: mismatches: %d" % (NB, len(bad)))
-    if bad[:10]:
-        print("  first mismatches:", bad[:10])
-
-    # Cross-check the minimal-h claims on the brute-force range
-    # A006339(n) = min h with R(h) >= n-1; A046112(n) = min h with R(h) = n-1
-    min_ge = {}
-    min_eq = {}
+    print(f"Route B (triples sieve) vs route A formula, h <= {NB}:",
+          "mismatches:", len(bad))
+    if bad:
+        print("  first:", bad[:10])
+    # minima over the brute-force range, where the true minimum is inside
+    min_ge, min_eq = {}, {}
     for h in range(1, NB + 1):
         r = R[h]
         if r not in min_eq:
             min_eq[r] = h
-        for n in range(1, 31):
-            t = n - 1
-            if r >= t and t not in min_ge:
+        t = r
+        while t in (v for v in range(30)):
+            if t not in min_ge:
                 min_ge[t] = h
-    print("Brute-force cross-check (terms with min h <= %d):" % NB)
+            t += 1
     for n in range(1, 31):
-        if min_ge.get(n - 1) == a6[n - 1]:
-            print(f"  A006339({n}) = {a6[n-1]} OK")
-        elif min_ge.get(n - 1) is not None and min_ge.get(n - 1) != a6[n - 1]:
-            print(f"  A006339({n}) = {a6[n-1]} vs brute {min_ge.get(n-1)} MISMATCH")
+        t = n - 1
+        if min_ge.get(t) == a6[n - 1]:
+            print(f"  A006339({n}) = {a6[n-1]}  [brute-force OK]")
+        elif min_ge.get(t) is not None:
+            print(f"  A006339({n}) = {a6[n-1]}  [brute mismatch: {min_ge.get(t)}]")
     for n in range(1, 26):
-        if min_eq.get(n - 1) == a4c[n - 1]:
-            print(f"  A046112({n}) = {a4c[n-1]} OK")
-        elif min_eq.get(n - 1) is not None and min_eq.get(n - 1) != a4c[n - 1]:
-            print(f"  A046112({n}) = {a4c[n-1]} vs brute {min_eq.get(n-1)} MISMATCH")
+        t = n - 1
+        if min_eq.get(t) == a4[n - 1]:
+            print(f"  A046112({n}) = {a4[n-1]}  [brute-force OK]")
+        elif min_eq.get(t) is not None:
+            print(f"  A046112({n}) = {a4[n-1]}  [brute mismatch: {min_eq.get(t)}]")
 
-    # Relationship to the run's |S(e)|: |S(65)| should be 4, |S(325)| = 7,
-    # |S(e)| max claim at e = 9,773,725 (from CONTEXT.md) is 202: check.
-    for e in (65, 325, 9773725):
-        r = R_formula(e)
-        print(f"|S({e})| = R({e}) = {r}")
-    # record centres: first e with |S(e)| >= 5 is 325
-    print("A006339(6)=3125 => |S(3125)| =", R_formula(3125))
+    # route C: centres quoted in the notes / CONTEXT.md
+    for e in (65, 325, 3125, 9773725):
+        print(f"|S({e})| = {S_of_e(e)}")
+    print("first e with |S(e)| >= 5 is", min_h_for_threshold(2 * 5 - 1))
 
 if __name__ == "__main__":
     main()

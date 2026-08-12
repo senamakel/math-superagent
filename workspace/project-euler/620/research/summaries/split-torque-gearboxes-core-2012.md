@@ -1,98 +1,67 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/split-torque-gearboxes-core-2012.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Split Torque Gearboxes — Segade-Robleda, Vilán-Vilán, López-Lago, Casarejos-Ruiz (IntechOpen 2012)
 
-<!-- source: https://core.ac.uk/download/322413681.pdf | converted from PDF -->
+[[split-torque-gearboxes-core-2012.full]] · source:
+https://core.ac.uk/download/322413681.pdf (chapter DOI 10.5772/37258, open access CC-BY)
 
-Selection of our books indexed in the Book Citation Index
-in Web of Science™ Core Collection (BKCI)
+## What it establishes (the four-gear simultaneous-meshing condition)
 
-Interested in publishing with us?
-Contact book.department@intechopen.com
+Treats exactly the PE620 structure: a driving pinion meshes two idler pinions which
+both act on a fourth gear ("four-gear meshing" = two planets meshing two central
+gears). The **simultaneous-meshing discreteness** is expressed as a *curvilinear
+quadrilateral* formed by portions of the pitch circles, and:
 
-Numbers displayed above are based on latest data collected.
-For more information visit www.intechopen.com
+> **Meshing condition**: for perfect simultaneous engagement of the four gears the
+> **pitch difference** — the sum of pitches in the input and output gears minus the
+> sum of pitches in the idler gears at the curvilinear quadrilateral — must be a
+> **whole number of pitches**.
 
-Open access books available
+Eq. (1), four-outside case: `r1·α + r2·β − r3·γ − r4·δ = n·π·m`, `n ∈ ℤ`
+(pitch radius × centre-angle, signed by mesh type, = integer × π × module). This
+is the *same structural object* as the PE620 thread's W-invariant
+`s·φ + c·χ − t·γ ≡ 0 (mod π/2π)` — a signed sum of (angle × tooth-count/pitch)
+equated to an integer multiple of π. Case 2 (three outside + one ring) gives the
+ring-mesh variants with the ring terms signed differently,
+`z1·α + z2·β + z3·γ − z4·δ = π·...·(z3+z4)` (crossed) and the − variant
+(non-crossed).
 
-Countries delivered to Contributors from top 500 universities
+Building the rectilinear quadrilateral of the four centres closes the system; one
+angle (α) is solved from a single transcendental equation by arccos-of-cosines in
+tooth counts, then β, γ, δ follow. Worked example (z1,z2,z3,z4)=(30,50,20,12):
+valid `n` ∈ {−12,−11,−3,−2,−1,0,1,2,3,4,7,29,30} — **a discrete set of n-levels
+crossed by the monotone transcendental**, exactly the structure the PE620 thread
+expects for g (crossing of a monotone residue by integer levels).
 
-International  authors and editors
+## Implication for PE620
 
-Our authors are among the
+This is an independent derivation-level confirmation (a journal/book source, not a
+design guide) that *simultaneous multi-gear meshing through idlers is counted by a
+signed angle×tooth-count sum equalling an integer multiple of π*. It directly
+corroborates `offcentre_dual_mesh_phase_invariant` in shape and in mechanism
+(transcendental root-finding over integer levels), and confirms the counting is a
+root-count over isolated `n`, not a lattice enumeration. The sign of the ring terms
+matching the internal/external mesh is precisely the "-c·χ" and "+t·γ" sign freedom
+the thread had to pin by the oracle.
 
-most cited scientists
- Downloads
+**What it does NOT give**: a closed form or gcd-only formula for g; no guide to the
+mirror-pair/Möbius structure; works with module-cm not x-zero pitch-1cm teeth (same
+counting either way for ideal involutes). No sub-cubic algorithm for G(500).
 
-We are IntechOpen,
-the world’s leading publisher of
-Open Access books
-Built by scientists, for scientists
+```claim
+id: split_torque_curvilinear_quadrilateral_condition
+statement: In a coplanar simultaneous four-gear mesh (input pinion + two idler pinions acting on one output gear), the perfect-simultaneous-meshing condition is that the pitch difference around the curvilinear quadrilateral joining the pitch circles be a whole number of pitches; written r1*alpha + r2*beta - r3*gamma - r4*delta = n*pi*m for a whole n, with signs depending on internal/external mesh type.
+hypotheses: coplanar spur gears; ideal involutes; module m; the four gear centres form a (rectilinear) quadrilateral.
+holds-here: yes in structure — PE620 is the ring/sun/two-planets special case (two central gears instead of two idlers); the signed angle*tooth-count sum = integer*pi is the thread W-invariant form.
+status: sourced (Segade-Robleda et al. 2012, IntechOpen, eq. (1)-(7); worked n-set for 30/50/20/12)
+bearing: corroborates the off-centre phase-congruence discreteness at source level; confirms g is a count of integer-level crossings of a monotone transcendental in d, not a search.
+anchor: research/sources/split-torque-gearboxes-core-2012.full.md
+answers: off-centre-mesh-phase-model (structure corroboration)
+```
 
-12.2%
+## Cross-references
 
-122,000 135M
-
-TOP 1%154
-
-4,800
- 3
-
-Split Torque Gearboxes: Requirements,
-Performance and Applications
-
-Abraham Segade-Robleda, José-Antonio Vilán-Vilán,
- Marcos López-Lago and Enrique Casarejos-Ruiz
-University of Vigo,
-Spain
-
-1. Introduction
-
-Although the simplest gear systems are those with just one gear engagement area between a
-pair of gears,  alternatives are available for  applications where it is necessary to transmit a
-very high torque in a very small space. One option to increase power density is to use the
-split torque systems that were mainly developed for the aviation industry. These gear
-systems are based on a very simple idea: division of  the transmission of force between
-several contact areas, thereby increasing the contact ratio.  This gives  rise, however, to the
-problem of meshing four gears (Fig. 1).
-
-(a) (b)
-
-Fig. 1. (a) Standard gearbox assembly; (b) Split torque gearbox assembly
-
-Split torque gearboxes are configurations where a driving pinion (1) meshes with two
-intermediate idler pinions (2, 3), which  simultaneously act on another gear (4). From  now
-on, this assembly will be called four-gear meshing. In this case, the torque split is from gear
-(1) to gears (2) and (3) which engage gear (4). This gear assembly results in the reduction in
-gear speed causing an increase in available  torque; hence, the split torque transmission
-means we can use smaller gears.
-
-www.intechopen.com
-
-Mechanical Engineering 56
-
-The greater the number of gears that engage the same crown, the lower the torque exercised
-by each pinion. Gear assembles can have up to 14 gears engaging a single crown, as
-happens, for example, in tunnel boring machines.
-
-This chapter explores four-gear meshing in a gear assembly that ensures a 50%torque split
-for each meshing area. Split torque gears are studied from two perspectives: first, the most
-common applications of split torque  gearboxes  in the aeronautical sector and second, the
-two most restrictive aspects of their application, namely:   The geometric limitation of the four-gear assembly that requires  simultaneous
-engagement for all four gears. Note that the four gears do not mesh correctly in just any
-position, although they may seem to do so initially. We will describe the conditions for
-simultaneous meshing of the four gears in general terms below.
-  Torque split between the two gearbox paths must be as balanced as possible to ensure
-that neither of the paths is overloaded. The technology available to  ensure proper
-torque split between two paths will be discussed below.
-
-2. Applications
-
-Gear transmission requirements for aircraft are very demanding, with a standard gear ratio
-between engine and rotor of 60:1 (Krantz,  1996). Moreover, the gear transmission system
-should be  safe, reliable,  lightweight and vibration-free. One of the most limiting factors is
-weight and there are three fundamental transmission parameters that  greatly affect this
-factor:    The number of transmission stages. The greater the number of stages used to achieve
-the final gear ratio, the heavier the transmission, given that more common elements
-such as shafts and bearings are necessary.
-2.  The number of transmission paths, the basis for split torque gearboxes. Torque is
-
-*[excerpt ends; 35255 characters not shown — see `research/sources/split-torque-gearboxes-core-2012.full.md`]*
+- Zhao & Li 2018 (torque-split idler, JSME JAMDSM): the universal design method
+  that *derives* the same meshing condition for the duplex-idler case, with the
+  transcendental equation and Newton solution — more general proof.
+- Kurasov 2020 (gear eccentric systems): the off-centre case as integer congruence
+  of angle×tooth-count.
+- Thread `offcentre-mesh-phase-model`: the PE620 W-invariant this corroborates.

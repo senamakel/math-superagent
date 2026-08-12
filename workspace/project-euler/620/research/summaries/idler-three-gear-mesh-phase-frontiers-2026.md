@@ -1,29 +1,40 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/idler-three-gear-mesh-phase-frontiers-2026.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Contact dynamics of a three-gear system and idler vibration — You, Luo, Xu (Frontiers Mech. Eng. 2026)
 
-<!-- source: https://www.frontiersin.org/journals/mechanical-engineering/articles/10.3389/fmech.2026.1721474/full | converted from HTML -->
+[[idler-three-gear-mesh-phase-frontiers-2026.full]] · source:
+https://www.frontiersin.org/articles/10.3389/fmech.2026.1721474/full (DOI 10.3389/fmech.2026.1721474, open access CC-BY)
 
-## What is in it
+## What it establishes
 
-  - ORIGINAL RESEARCH article
-- Contact dynamics modeling of a three-gear system and vibration characteristics analysis…
-  - Abstract
-  - 1 Introduction
-  - 2 Mathematical modeling of tooth profiles for a three-gear system
-  - 3 Construction of contact dynamics model for three-gear system
-  - 4 Results and discussion
-    - 4.1 Dynamic response of two-gear and three-gear systems under different input speeds
-    - 4.2 Dynamic response of two-gear and three-gear systems under different load torques
-    - 4.3 Dynamic response of the three-gear system under different installation angles and…
-  - 5 Conclusion
-  - Statements
-    - Data availability statement
-    - Author contributions
-    - Funding
-- …
+A contact-dynamics model of a three-gear (input-idler-output) system: involute tooth
+profiles, a 9-DoF dynamical model, and a contact-judgment method (meshing-line ×
+profile intersections → penetration → normal/friction forces). The three gears mesh
+through the idler, which meshes both others. Key kinematic observation for assembly:
 
+- To assemble the input-idler pair the idler must be rotated by an angle that depends
+  on whether it has an **odd or even number of teeth** (the "even-teeth extra rotation"
+  in Sec. 2) — the parity dependence of the assembly phase, which the PE620 thread also
+  flagged (its cross-type congruence shifts by π in the coaxial limit when p, q have
+  opposite parity).
+- The idler simultaneously meshes two gears; its acceleration/times are dominated by
+  the mesh-in/out of both meshes (four transient events per cycle).
 
-## What it claims
+## Implication for PE620
 
-The idler gear is a transitional component in a gear transmission system. By meshing with two non-contacting gears, it changes the rotation direction of the driven gear while maintaining the original transmission ratio. Based on the theories of contact dynamics and multibody dynamics, this paper establishes a contact dynamics model for a three-gear system, which consists of two components: a tooth profile mathematical model and a contact dynamics model. In the tooth profile mathematical model, the meshing phase angle must be calculated to satisfy the initial assembly relationships. In the contact dynamics model, a 9DoF dynamic differential equation for the three-gear system needs to be established, and a contact model for the three-gear system should be constructed based on the mathematical contact judgment method derived from previous research. Based on the established model, this paper investigates the dynamic responses of two-gear and three-gear systems under varying input speeds and load torques. By comparing these results, the influence of the idler gear on the vibration…
+Marginal. The paper is a dynamics/FEM treatment, not a kinematic *counting* source,
+and its meshing-phase content is limited to: assembly rotation angles for involute
+profiles, and the odd/even-teeth parity effect at the assembly phase. It confirms at
+the application level that a gear meshing two others has a tooth-parity-dependent
+assembly phase, corroborating the parity term `p·γ_p − q·γ_q` in the thread's
+cross-type congruence; it does NOT add a new assembly-counting statement beyond
+what Zhao-Li 2018 and the idler double-mesh sources already give. **Not load-bearing
+for the count**; recorded so it is not re-read.
 
-*[digest of a 68488 character source; every section, statement, and proof in full at `research/sources/idler-three-gear-mesh-phase-frontiers-2026.full.md`]*
+```claim
+id: idler_three_gear_parity_effect
+statement: In a three-gear (input-idler-output) system the idler's initial assembly rotation angle differs depending on whether the idler has an odd or even number of teeth; the parity of the meshing gear enters the assembly phase.
+hypotheses: involute spur gears; ideal geometry.
+holds-here: yes as a parity remark — PE620's cross-type congruence shows a pi shift for opposite-parity planet sizes; corroborates that parity survives in the off-centre phase model.
+status: sourced (You, Luo, Xu 2026, Sec. 2)
+bearing: minor; corroborates the parity term in the W-model's cross-type congruence.
+anchor: research/sources/idler-three-gear-mesh-phase-frontiers-2026.full.md
+```

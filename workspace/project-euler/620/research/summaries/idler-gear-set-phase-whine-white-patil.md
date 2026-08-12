@@ -1,74 +1,64 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/idler-gear-set-phase-whine-white-patil.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Phase Management to Reduce Gear Whine in Idler Gear Sets — White & Patil (Power Transmission Engineering, 2020)
 
-<!-- source: https://ik.imagekit.io/agmamedia/issues/0420/gear-whine.pdf | converted from PDF -->
+[[idler-gear-set-phase-whine-white-patil.full]] · source:
+https://ik.imagekit.io/agmamedia/issues/0420/gear-whine.pdf (AGMA, open distribution)
 
-Introduction
-Gear whine is caused by transmission error, shuttling, friction,
-impacts, lubricant entrainment and air entrapment (Ref. 1).
-While the list of gear noise factors is fairly long, it should be
-recognized that the typical gear noise problem is not a result
-of lubricant entrainment or air entrapment. Impacts are due
-to corner contacts that might occur when the teeth just come
-into contact or due to interference at the root. Both are usu-
-ally avoided by good gear design. Corner contact is avoided
-by applying appropriate relief to the teeth. Interference is
-avoided either by undercutting the flanks of the pinion teeth,
-by using long addendum pinion and short addendum gear
-teeth, or by increasing the pressure angle (Ref. 2). That leaves
-transmission error and other mesh forces.
-The mesh forces are usually described as line of action
-(LOA) and off line of action (OLOA) forces, otherwise known
-as normal and tangential forces. The greatest line of action
-forces are from transmission error, which is a line of action
-displacement, and is the focus of this paper. Shuttling forces
-of helical gears also act along the line of action. The position
-of the force vector representing the mesh force shuttles ax-
-ially  as  the  gears  rotate  through  one  tooth  mesh  sequence.
-The bearings must react to the axial change in load position
-and therefore see a change of force that varies at tooth mesh
-frequency. Tooth friction forces are off line of action forces
-(Ref. 3). Shuttling and friction forces are generally regarded to
-be of lesser importance to gear noise but become important
-when the transmission error is very small.
-Transmission error is the driven gear’s deviation from per-
-fect conjugate action and is the result of manufacturing ge-
-ometry errors; gear tooth, shaft and housing deflections;
-mesh stiffness variation; and dynamics (Refs. 4–6). The dy-
-namic forces generated within the gear mesh because of im-
-perfect conjugate action are reacted at the bearings support-
-ing the gears in the housing. These dynamic forces on the
-housing excite the housing causing it to vibrate. The housing
-surface vibration couples with the air causing pressure fluc-
-tuations that travel as sound pressure waves to our ears; we
-hear them as sound. Reducing transmission error is the pre-
-ferred approach to reducing gear whine.
-The forces acting in the gear mesh are made up of DC and
-AC forces. The DC mesh force is the necessary static force re-
-quired for the gears to transmit power. This force is present by
-design. Static forces cause certain design challenges such as
-bearing life and shaft and housing deflection, but they don’t
-cause gear noise. Gear noise is the result of the AC forces
- from transmission error, shuttling, and friction, and are un-
-intentional. These dynamic forces are tiny in comparison to
-the static forces. In the example to be discussed later, the DC
-mesh forces are in the magnitude of the weight of a pickup
-truck while the AC forces are less than a bag of dog food
-(Fig. 1). It is only these small AC forces that we are interested
-in from a noise perspective. Because all the bearing forces are
-resolved within the gearbox, summing all bearing reaction
-forces on the housing results in zero, yet there is noise. That
-is because the forces act on various locations of the gearbox.
+## What it establishes (the idler double-mesh tooth-phase condition, first-principles)
 
-Phase Management as a Strategy to
-Reduce Gear Whine in Idler Gear Sets
+An idler gear meshes two non-contacting gears; its two meshes must be phase-consistent.
+Though written for vibration, Appendix A derives the purely kinematic phase condition —
+the *same* object as PE620's planet satisfying two meshes (one to each central gear).
 
-Robert White and Pravin Patil
+Appendix A (nomenclature: gear 1 = driving, 2 = idler, 3 = driven; r = base radius,
+η = working pressure angle, z2 = idler teeth):
 
-Printed with permission of the copyright holder, the American Gear Manufacturers Association, 1001 N. Fairfax Street, Fifth Floor,
-Alexandria, VA 22314-1587. Statements presented in this paper are those of the author(s) and may not represent the position or opinion
-of the American Gear Manufacturers Association.
- Figure 1    AC forces due to dynamics such as transmission error are
-very small in comparison to the DC mesh forces.
+- λ1, λ3 = mean roll angles between LPSTC and HPSTC for the two idler meshes
+  (eqs. A.3, A.5), functions of centre distances C1, C3, pressure angles η1, η3,
+  addendum radii r_Ai, base radii r_i.
+- (A.7): `σ2^R = σ2^L_…`: the tooth thickness term `2·tan φ_t − 2·φ_t + t_w·cos φ_t)/r2`
+  is the angle subtended by the tooth thickness at the base circle.
+- **The key index condition** (A.8): the number of idler teeth indexed in rotating
+  from the left-flank origin `σ2^L` to the right-flank origin `σ2^R` is
+  `N = z2·(σ2^L − σ2^R)/(2π)`. **When N is an integer, both meshes occur
+  simultaneously and are perfectly in phase**; the phase shift in degrees is the
+  mantissa of N × 360.
 
+So: **an idler gear meshing two central gears is simultaneously/perfectly meshed iff
+`z2·(σ2^L − σ2^R)/(2π)` is an integer** — the discrete tooth-phase condition that makes
+the two meshes compatible. The appendix states the two meshes are perfectly in phase
+exactly when N ∈ ℤ, and derives N as an explicit function of the three centre-line
+geometries and the idler tooth count.
 
-*[excerpt ends; 40328 characters not shown — see `research/sources/idler-gear-set-phase-whine-white-patil.full.md`]*
+## Implication for PE620
+
+This is the *only source on disk that derives, from tooth geometry, the exact
+discreteness of a gear satisfying two simultaneous meshes through its own tooth count*
+— exactly one planet's situation. It confirms that the double-mesh compatibility is a
+**modulo-integer condition on a function of the planet's tooth count and its two contact
+geometries** (here z2×angular-span/2π), matching the thread's
+`offcentre_dual_mesh_phase_invariant` (each planet's W invariant in ℤ-equivalence).
+It independently corroborates that the discreteness is set by the *planet's own teeth*,
+not only the two central tooth counts — supporting the W-model's `t·γ` planet term.
+
+**What it does NOT give**: the A.8 index is for a straight external-external idler
+chain between two fixed centre distances, with fixed positions — not PE620's
+ellipse/off-centre positions or the extra freedom of sliding d; it is a whine paper so
+the phase is used to size a force ellipse, not to count configurations. It establishes
+the *kind* of congruence (integer N on a tooth-count×angle product), not the closed
+form for g.
+
+```claim
+id: idler_double_mesh_integer_index_condition
+statement: An idler gear of z2 teeth meshing two non-contacting gears is perfectly/ simultaneously in phase when N = z2*(sigma2^L - sigma2^R)/(2*pi) is an integer, where sigma2^L, sigma2^R are the origins of involute of the two tooth flanks in contact, functions of the two centre distances, working pressure angles, addendum and base radii.
+hypotheses: standard spur gears; involute flank origins at pitch point; two fixed centre distances; X-zero ideal teeth.
+holds-here: yes in structure — a PE620 planet is exactly such a gear meshing two central gears; the double-mesh compatibility is an integer condition on the planet's tooth count times the angular span between its two meshes.
+status: sourced (White & Patil 2020, App. A eqs. A.3-A.8)
+bearing: corroborates that the planet's own tooth count enters the discreteness (W-model's t*gamma term), and that the double-mesh condition is an integer-on-product congruence.
+anchor: research/sources/idler-gear-set-phase-whine-white-patil.full.md
+```
+
+## Also (why this paper was downloaded)
+
+Main body: idler gear whine from transmission-error force ellipse; phasing (relative
+mesh phase) of the two idler meshes controls the ellipse; odd harmonics minimised at 180°
+phase, even at 90°. Not relevant to the count — recorded so it is not re-read for PE620.

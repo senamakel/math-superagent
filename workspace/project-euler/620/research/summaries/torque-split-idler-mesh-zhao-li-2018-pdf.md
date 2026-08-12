@@ -1,50 +1,78 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/torque-split-idler-mesh-zhao-li-2018-pdf.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# A general mathematical design method of the torque-split gear transmission with idler pinion — Zhao & Li (JSME JAMDSM 2018)
 
-<!-- source: https://www.jstage.jst.go.jp/article/jamdsm/12/7/12_2018jamdsm0127/_pdf/-char/en | converted from PDF -->
+[[torque-split-idler-mesh-zhao-li-2018-pdf.full]] · source:
+https://www.jstage.jst.go.jp/article/jamdsm/12/7/12_2018jamdsm0127/_pdf/-char/en
+(DOI 10.1299/jamdsm.2018jamdsm0127, open access)
 
-Bulletin of the JSME
-Journal of Advanced Mechanical Design, Systems, and Manufacturing
+## What it establishes (the most explicit published analogue of PE620's count)
 
-Vol.12, No.7, 2018
+A *universal* method for the **simultaneous meshing design** of a torque-split
+transmission: input pinion (1) meshes two idler gears (2,4) that drive an output
+gear (6) through two more idlers (3,5) — the duplex-idler chain, i.e. planets
+meshing central gears. Redundant constraints make simultaneous meshing non-trivial;
+the paper derives the meshing condition from first principles.
 
-Paper No.18-00320 © 2018 The Japan Society of Mechanical Engineers[DOI: 10.1299/jamdsm.2018jamdsm0127]
+## The meshing condition (Sec. 3)
 
-A general  mathematical  design method of the  torque - split  gear
-transmission with idler pinion
+Work along the duplex shaft: mark the same-phase teeth on the two gears of the
+duplex idler (location phase = 0 by interchangeability). Under the naming of
+Fig. 5, measure the **pitch numbers** of gear 6, gear 3, gear 5 contained in the
+angles θ1, θ3, the green segment; the **meshing condition is that the pitch number
+between the two contact points F and H along gear 6's pitch circle is a whole number**:
 
-Abstract
-The  torque - split  gear  transmission  has  been  used  in  the  transmission  system  of  the  rotorcraft,  which
-undertaking  high  torque  loads  and  requiring  low  weight.  A  u niversal  mathematical  design  method  of  the
-torque - split gear transmission is proposed in this work. The teeth with the same phase of the two gears on the
-duplex  idler  are  marked.  And  the  meshing  condition  is  defined  by  the  whole  pitch  number  between  the  tw o
-points  along  the  pitch  circle  of  the  output  gear.  Then  the  relationship  between  the  tooth  number  and  gear
-positions  is  established  by  using  this  meshing  condition.  Unlike  other  existing  design  method,  this  method
-involves  the idlers, input gear  and output gear  that engaged directly, and it is suitable for the design of multiple
-types  of  torque - split  gear  transmission.  This  method  is  validated  through  numerical  examples  of  the
-torque - split  transmission  with  symmetrical  duplex  idler.  Moreover,  practical  applicatio ns  of  the  torque - split
-transmission  with  planetary  duplex  idler,  coplanar  gear  and  concentric  face  gear  are  also  studied  with  this
-method. A large number of discrete gear position solutions are observed under the same tooth number design.
-And different gea r positions correspond to different dynamic and load sharing characteristics of the torque - split
-gear transmission.
+    NUM6 − NUM5 − NUM3 = Z ∈ ℤ     (eq. 4)
 
-Keywords  : Torque - split, Design, Transmission, Duplex idler, Meshing condition
+Substituting the pitch-number definitions and the quadrilateral angle relation
+θ1+θ2+θ3+θ4 = 2π gives the reduced form (eq. 6):
 
-1. Introduction
-The  torque - split  gear  transmission  is  mainly  used  in  the  transmission  system  of  the  rotorcraft  ( Filler  et  al.  and
-Heath et al. , 20 02 , 201 1 ) , which uses turbines that rotate at a high speed to drive the main rotor that rotates at a lower
-speed.  The  unique  characteristic  of  this  application  area  is  transmitting  high  torque  through  the  lowest  weight.  The
-torque - split gear transmission divides the input torque into several paths, resulting in the reduction of the contact force
-on  gear  teeth,  which  means  smalle r  gears  can  be  used.  The  torque - split  gear  transmission  has  the  advantages  of
-compact structure, high power density and large reduction ratio, which are the main demands of the rotorcraft.
-Various  types  of  the  torque - split  gear  transmission  are  patented  ( Y uriy,  Todd  et  al.  and  Xiaolan  Ai  et  al.,  2016,
-2014a, 2014b) . And  extensive researches  have  focused on the  studies of design, dynamic a nd load  sharing behavior.
-White   (1989)   is  one  of  the  first  persons  to  have  studied  the  torque - split  gear  transmission,  an d  he  has  explored  the
-advantages of the torque - split gear transmission over the traditional design. The studied topics on the dynamics of the
-torque - split  transmission  include  dynamic  model,  natural  frequencies  and  dynamic  response  (Reszuta  et  al.  and
-Aydo ğan et al., 2015, 2017). Moreover, because of the asymmetry of the machining and installation errors of each path
-of the torque - split gear transmission, the torque of each path is uneven. Gmirya  (2011)  developed an elastic component
-load sharing method. An d the dynamic load sharing characteristic studies include the works in  ( Filler  et al. , Mo et al.
-and Fu  Ai et al., 2002, 2015a, 2015b) . Its application on the rotorcraft has also received attention  ( Gmirya  and Jose et
-al., 2018, 2010) .
+    z4·θ2 + z6·θ1 + z1·θ1 + z5·θ2 − z3·θ4 − z4·θ4 + (…) = 2π·N,   N ∈ ℤ
 
-*[excerpt ends; 32433 characters not shown — see `research/sources/torque-split-idler-mesh-zhao-li-2018-pdf.full.md`]*
+Then cosine-law on the quadrilateral diagonals gives two more relations (eq. 11-12),
+all four reduce to a **single transcendental equation in θ1** (eq. 13),
+`θ1 = arccos[(c−a·cos β)/(d·sin β)] + …`, solved by Newton iteration; θ2, θ3, θ4 then
+follow linearly (eqs. 28-30). **For each integer N the transcendental may have 0, 1,
+or 2 solutions** (the curve has a turning point, e.g. N=402 gives two θ1 values);
+each valid (N, θ1) is a distinct simultaneous-meshing configuration — and in
+general **numerous discrete solutions coexist for one tooth-number design**.
+
+Internal-mesh duplex idler (Sec. 3.2) — the ring/sun/planet sign case — has its own
+starting equation (eq. 39: `z4·θ2 + z6·θ1 − z1·θ1 − z5·θ2 − z3·θ4 − z4·θ4 = 2π·N`)
+and the same transcendental machinery. Planetary duplex idler (Sec. 4.1, q planets
+on a carrier) reduces to `z1 − z3·(z2+z6)/z2 = q·N` (eq. 75): **the
+(Z_sun+Z_ring) divisibility-type condition**, matching Guo (5.21).
+
+## Implication for PE620
+
+This is the strongest available precedent: a *derived*, source-level statement that
+simultaneous multi-planet meshing is counted by (i) signing the angle×tooth-count
+sums by mesh type (internal vs external — the ring terms carry the opposite sign),
+(ii) requiring the sum to equal an integer multiple of 2π, and (iii) counting the
+discrete θ1-solutions of the resulting transcendental over integer N levels — with
+multiple N, and multiple solutions per N. Every element matches the thread
+`offcentre-mesh-phase-model` (W-invariant, discrete d, count over crossings).
+It validates the sign convention (ring teeth negative on internal mesh) that the
+oracle had to pin.
+
+**What it does not settle**: a closed form for g (the transcendental is solved
+numerically per N; the paper never aggregates counts); no guidance on the
+upper/lower bound of the N range beyond the curve's limit positions; no
+multiplicativity/gcd structure.
+
+```claim
+id: zhao_li_2018_duplex_idler_meshing_condition
+statement: For a torque-split transmission through two duplex idlers meshing input and output gears, the simultaneous-meshing condition is that the pitch number between the two contact points on the output gear is a whole number; after substitution this becomes a signed sum of (central-angle × gear tooth-count), signed + for external mesh and - for internal mesh, equal to an integer multiple of 2*pi; the geometric closure gives a single transcendental in one centre-angle whose roots over integer N are the (discrete, possibly two-per-N) simultaneous-meshing configurations.
+hypotheses: standard spur gears; ideal involute; location phase of duplex idlers set to zero (interchangeability); module m.
+holds-here: yes in structure — PE620's planets are the idlers, its sun and ring the input/output gears; the signed angle*tooth-count = integer*2pi sum is the thread W-invariant; the per-N two-solution structure matches the interior-vs-boundary multiplicity the run must count.
+status: sourced (Zhao & Li 2018, JSME, Section 3 eqs. 4,6,13 & Sec. 3.2 eq. 39; Newton solutions for the 21/30/30/17/17/100 example)
+bearing: strongest independent derivation that PE620's g is a count of discrete roots of a signed angle*tooth-count transcendental over integer levels — i.e. the W-model, not a lattice, is the right discreteness.
+anchor: research/sources/torque-split-idler-mesh-zhao-li-2018-pdf.full.md
+answers: off-centre-mesh-phase-model (sign convention + counting mechanism)
+```
+
+## Cross-references
+
+- Segade-Robleda 2012 (IntechOpen) — same condition for the coplanar four-gear
+  case, less general derivation; Zhao-Li cites and generalises it.
+- Kurasov 2020 — off-centre eccentric case as integer angle×tooth-count congruence.
+- Guo 2011 eq. 5.21-5.25 — the coaxial assembly lattice; this paper's planetary
+  duplex-idler case reduces to the same (Z_s+Z_r)/q form.

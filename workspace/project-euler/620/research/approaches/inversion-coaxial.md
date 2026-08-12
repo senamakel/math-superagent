@@ -48,3 +48,14 @@ the metric tooth condition is not inversive-invariant.
 
 Status: **refuted** (killed-by `inversion_does_not_preserve_tooth_mesh`).
 Not a search-failure — the objection is a theorem-level fact about the map.
+
+```claim
+id: inversion_does_not_preserve_tooth_mesh
+statement: Circle inversion preserves tangency and angles (conformality) but NOT arc length, tooth pitch, rolling contact, or integer tooth counts, so the inverted-coaxial picture of two nested non-concentric circles (which is real: inversion about a limiting point does map them to concentric circles) cannot carry the tooth-phase data that makes the PE620 meshing count g finite. The least-mesh-angle step beta=2pi/(c+s) is a metric tooth-count statement and does not pass through the inversion; hence inversion-coaxial does not reduce g to a combinatorial assignment on Z/(c+s)Z.
+hypotheses: circle inversion in the plane; conformal (angle/tangency preserving) but not an isometry; gear meshing depends on pitch (1cm) and integer tooth counts.
+holds-here: yes — PE620's gear meshing is a metric/tooth-count condition, exactly what inversion does not preserve.
+status: refuted (structural: conformality != isometry).
+bearing: closes the inversion-coaxial approach; counting g must stay in the original metric where tooth pitch/teeth are meaningful (or be done in a transform that preserves rolling/tooth structure, which none of the sources supplies).
+anchor: research/approaches/inversion-coaxial.md
+```
+
