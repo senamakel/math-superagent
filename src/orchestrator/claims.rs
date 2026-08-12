@@ -57,6 +57,15 @@ const MAX_RESULTS: usize = 8;
 ///
 /// The distinction the field exists for: a true theorem whose hypotheses fail
 /// here is worse than no theorem, because it looks like progress.
+/// Whether `text` opens with `word` as a whole word rather than as a fragment.
+///
+/// `starts_with` alone would read `notation` as `no`, which is the one way a
+/// prefix match can invent an answer nobody gave.
+fn starts_with_word(text: &str, word: &str) -> bool {
+    text.strip_prefix(word)
+        .is_some_and(|rest| rest.chars().next().is_none_or(|next| !next.is_alphanumeric()))
+}
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub(super) enum Holds {
     /// The hypotheses were checked against this problem and hold.
