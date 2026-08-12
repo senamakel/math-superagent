@@ -3,8 +3,10 @@
 ```thread
 question: Can the documented verification bound (n≤15 general, n≤29 cubic) be raised by exploiting the independent-set + ≥4/7-cubic structure as a SAT/SMS propagator, and can the P12-free ⇒ C4-or-C8 computer proof be reproduced/beaten?
 status: open; n=6-9 UNSAT (base clauses alone unsatisfiable below n=10); n=10 CEGAR NOT converging — needs structural propagators
-rests-on: EG-markstrom-dichotomy, EG-predominantly-cubic, EG-verification-bound, EG-markstrom-24-graphs, EG-P12-free-C4C8
+rests-on: EG-markstrom-dichotomy, EG-predominantly-cubic, EG-verification-bound, EG-markstrom-24-graphs, EG-P12-free-C4C8, EG-cubic-bipartite-60
 blocked-by: the mixed (V1≠∅) case has only the ≤15 general bound; the ≤29 cubic bound is unconditional but not structural; the raw CEGAR loop (solve/block cycles/repeat) does not converge on n=10 — 2865 iterations, 36,459 clauses, 138s, every model has C8 as the sole power-of-two cycle with cycle set {3,5,6,7,8,9,10}
+
+class-frontier-note: Tranquilli arXiv:2608.02675 raises the cubic-BIPARTITE class bound to ≥60 (every cubic bipartite graph on ≤58 vertices has a C4/C8/C16; certified two-search + checker). This is per-class, does not touch the cubic non-bipartite or the mixed general case. Its Levi-graph/Moore-reduction-to-C6 method is a fresh structural route distinct from SMS/CEGAR.
 
 candidate-lemma: 2-connectivity of a minimal counterexample is OPEN and genuinely new — no source states/proves it (Carr degree-only; Markström §4 degree-only; Royle relief-note 1-connected construction is a degree-relaxed non-minimal glued graph, not a refutation). A cut-vertex-minimality argument (a component of G−v is a smaller counterexample) would be a new structural lemma and could also serve as a SAT propagator (block cut vertices). Finding + sources in research/summaries/connectivity-minimal-counterexample.md.
 next: add Carr's ≥4/7-cubic + degree-≥4-independent-set propagators as base CNF constraints (not merely cycle-blocking), then re-run n=10 as a test; the 2865-iteration stall is quantitative evidence that pure cycle-blocking enumerates models without structural guidance
