@@ -16,6 +16,7 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | `dN-offset-also-not-in-oeis` | The offset-1 partial sequence 1,3,9,30,...,44499 also returns "No results" from OEIS, confirming D(N) is absent regardless of offset. | yes | asserted | `research/L1.0/oeis_partial.md` |
 | `histogram-count-equals-a186085` | The count H(N) of distinct level-histograms over reachable 3D N-configs equals OEIS A186085 (1D sandpiles / smooth compositions) exactly for N=2..14; H grows ~1.67/step while D(N) grows ~3.4/step, so H is the shape… | yes | asserted | `research/L1.1/oeis_a186085.md` |
 | `n3-folded-polyominoid-voidance` | For pebbling in Z^n with n>=3, reachable positions, voidance sets of cardinality k+1, folded polyominoids with boundary-path length k, and labelled vector-pair (u,v) positions all correspond bijectively (Eriksson… | yes | asserted | `research/pebbling_structure_3d_ladder.md` |
+| `q2-column-equals-nn7-2-family` | The 3D max-level column Q_2(N)=R(N,N-2)/3^(N-5)= (N-5)(N+2)/2 equals the A055999/A074171/A134227 quadratic family (n(n+7)/2 up to offset) exactly for N=6..14; no higher k-column (Q_3,Q_4,Q_5) matches a catalogued… | yes | asserted | `research/L1.0/oeis_a055999.md` |
 | `q2-column-equals-nn7-2-family` | The 3D max-level column Q_2(N)=R(N,N-2)/3^(N-5)= (N-5)(N+2)/2 equals the A055999/A074171/A134227 quadratic family (n(n+7)/2 up to offset) exactly for N=6..14. | yes | asserted | `research/L1.0/oeis_a074171.md` |
 
 ## Load-bearing but unverified
@@ -28,4 +29,5 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `dN-offset-also-not-in-oeis` (research/L1.0/oeis_partial.md) — asserted by the source, not proved there and not checked here
 - `histogram-count-equals-a186085` (research/L1.1/oeis_a186085.md) — asserted by the source, not proved there and not checked here
 - `n3-folded-polyominoid-voidance` (research/pebbling_structure_3d_ladder.md) — asserted by the source, not proved there and not checked here
+- `q2-column-equals-nn7-2-family` (research/L1.0/oeis_a055999.md) — asserted by the source, not proved there and not checked here
 - `q2-column-equals-nn7-2-family` (research/L1.0/oeis_a074171.md) — asserted by the source, not proved there and not checked here
