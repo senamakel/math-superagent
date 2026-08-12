@@ -41,7 +41,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `recur3.py` | _(undescribed)_ |
 | `recur_deadend.py` | Characterizes the order-7 constant-coefficient recurrence (3D[n]=9D[n-1]+12D[n-2]-17D[n-3]-30D[n-4]-31D[n-5]+63D[n-6]) fitted over D(0..14): shows its first extrapolated term is non-integer (fails at n=18), so the recurrence can never reproduce D(20)/D(100). Records this as a dead end. |
 | `recur_integral.py` | _(undescribed)_ |
-| `recur_test.py` | _(undescribed)_ |
+| `recur_test.py` | Tests the order-7 constant-coefficient recurrence against the held-out statement values: extends D to 200, checks D(20)==9204559704 and D(100)%1e9==780166455, and prints D(10000)%1e9. Companion to recur.py/recur2.py/recur3.py/recur_deadend.py (overfit characterization). |
 | `transfer_hunt.py` | Hunt for a row-to-row transfer recurrence in R(N,M) (configs by max level M) like R(N,M)=c0 R(N-1,M)+c1 R(N-1,M-1)+c2 R(N-1,M-2) or a fixed transfer matrix — the 3D analog of the 2D A007902 G(k,m) recurrence that would compute D(10000) without BFS. Uses exact least-squares on data/level_N.txt + mhist_13_14.txt and inspects neighbor ratios; companion to transfer_search.py/transfer_search2.py in the dead transfer-recurrence hunt. |
 | `transfer_search.py` | _(undescribed)_ |
 | `transfer_search2.py` | _(undescribed)_ |
@@ -51,3 +51,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_forms.py` | sympy-exact check of Q_0..Q_3 closed forms on every measured point including fresh N=13,14; fits Q_4 (degree 4) on N=9..13 and predicts N=14=979 (OOS pass). |
 | `verify_mhist.py` | _(undescribed)_ |
 | `verify_reconstruct.py` | Reconstructs D(N) from the max-level column model: verifies the M=N diagonal count equals 3^(N-1) for all N=2..14, then sums the modeled columns N(N,M)=Q_k(N)*3^(N-2k-1) for k=0..4 (closed forms Q_0..Q_4) and checks the sum reproduces the true D(N) where those columns cover every M row (N=8,9 exactly; reports which rows exceed k=4 for larger N). Independent confirmation that the Q_k closed forms re-assemble into D(N). Companion to q_verify.py/verify_forms.py. |
+|
