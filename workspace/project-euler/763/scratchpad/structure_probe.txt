@@ -1,0 +1,138 @@
+N=0 D=1 start
+N=1 D=1 A1bad=0 A2tri_bad=0 A2empty_bad=0 A3bad=0 B_match=True sum_f=3 Dplus1=3
+N=2 D=3 A1bad=0 A2tri_bad=0 A2empty_bad=0 A3bad=0 B_match=True sum_f=9 Dplus1=9
+  by M: {2: 3}
+  by f: {3: 3}
+  joint (M,f):
+    M=2 f=3: 3
+  #distinct histograms=1
+  most frequent histograms:
+    (0, 2, 3): 3
+
+N=3 D=9 A1bad=0 A2tri_bad=0 A2empty_bad=0 A3bad=0 B_match=False sum_f=33 Dplus1=30
+  by M: {3: 9}
+  by f: {3: 3, 4: 6}
+  joint (M,f):
+    M=3 f=3: 3
+    M=3 f=4: 6
+  #distinct histograms=1
+  most frequent histograms:
+    (0, 2, 2, 3): 9
+
+N=4 D=30 A1bad=0 A2tri_bad=0 A2empty_bad=3 A3bad=3 B_match=False sum_f=126 Dplus1=99
+  by M: {3: 3, 4: 27}
+  by f: {3: 6, 4: 12, 5: 12}
+  joint (M,f):
+    M=3 f=3: 3
+    M=4 f=3: 3
+    M=4 f=4: 12
+    M=4 f=5: 12
+  #distinct histograms=2
+  most frequent histograms:
+    (0, 2, 2, 2, 3): 27
+    (0, 1, 5, 3): 3
+
+N=5 D=99 A1bad=0 A2tri_bad=0 A2empty_bad=9 A3bad=18 B_match=False sum_f=483 Dplus1=336
+  by M: {4: 18, 5: 81}
+  by f: {3: 3, 4: 30, 5: 42, 6: 24}
+  joint (M,f):
+    M=4 f=4: 12
+    M=4 f=5: 6
+    M=5 f=3: 3
+    M=5 f=4: 18
+    M=5 f=5: 36
+    M=5 f=6: 24
+  #distinct histograms=3
+  most frequent histograms:
+    (0, 2, 2, 2, 2, 3): 81
+    (0, 1, 5, 2, 3): 9
+    (0, 2, 1, 5, 3): 9
+
+N=6 D=336 A1bad=0 A2tri_bad=0 A2empty_bad=39 A3bad=93 B_match=False sum_f=1836 Dplus1=1134
+  by M: {4: 12, 5: 81, 6: 243}
+  by f: {3: 15, 4: 36, 5: 114, 6: 120, 7: 51}
+  joint (M,f):
+    M=4 f=3: 12
+    M=5 f=4: 12
+    M=5 f=5: 42
+    M=5 f=6: 24
+    M=5 f=7: 3
+    M=6 f=3: 3
+    M=6 f=4: 24
+    M=6 f=5: 72
+    M=6 f=6: 96
+    M=6 f=7: 48
+  #distinct histograms=5
+  most frequent histograms:
+    (0, 2, 2, 2, 2, 2, 3): 243
+    (0, 2, 1, 5, 2, 3): 27
+    (0, 1, 5, 2, 2, 3): 27
+    (0, 2, 2, 1, 5, 3): 27
+    (0, 1, 4, 5, 3): 12
+
+N=7 D=1134 A1bad=0 A2tri_bad=0 A2empty_bad=126 A3bad=405 B_match=False sum_f=6924 Dplus1=3855
+  by M: {5: 81, 6: 324, 7: 729}
+  by f: {3: 3, 4: 90, 5: 225, 6: 390, 7: 318, 8: 108}
+  joint (M,f):
+    M=5 f=4: 48
+    M=5 f=5: 27
+    M=5 f=6: 6
+    M=6 f=4: 12
+    M=6 f=5: 78
+    M=6 f=6: 144
+    M=6 f=7: 78
+    M=6 f=8: 12
+    M=7 f=3: 3
+    M=7 f=4: 30
+    M=7 f=5: 120
+    M=7 f=6: 240
+    M=7 f=7: 240
+    M=7 f=8: 96
+  #distinct histograms=8
+  most frequent histograms:
+    (0, 2, 2, 2, 2, 2, 2, 3): 729
+    (0, 2, 2, 1, 5, 2, 3): 81
+    (0, 2, 1, 5, 2, 2, 3): 81
+    (0, 2, 2, 2, 1, 5, 3): 81
+    (0, 1, 5, 2, 2, 2, 3): 81
+    (0, 1, 4, 5, 2, 3): 36
+    (0, 2, 1, 4, 5, 3): 36
+    (0, 1, 5, 1, 5, 3): 9
+
+N=8 D=3855 A1bad=0 A2tri_bad=0 A2empty_bad=453 A3bad=1668 B_match=None sum_f=25875 Dplus1=None
+  by M: {5: 48, 6: 405, 7: 1215, 8: 2187}
+  by f: {3: 33, 4: 114, 5: 474, 6: 960, 7: 1230, 8: 816, 9: 228}
+  joint (M,f):
+    M=5 f=3: 30
+    M=5 f=4: 18
+    M=6 f=4: 48
+    M=6 f=5: 180
+    M=6 f=6: 120
+    M=6 f=7: 45
+    M=6 f=8: 12
+    M=7 f=4: 12
+    M=7 f=5: 114
+    M=7 f=6: 360
+    M=7 f=7: 465
+    M=7 f=8: 228
+    M=7 f=9: 36
+    M=8 f=3: 3
+    M=8 f=4: 36
+    M=8 f=5: 180
+    M=8 f=6: 480
+    M=8 f=7: 720
+    M=8 f=8: 576
+    M=8 f=9: 192
+  #distinct histograms=13
+  most frequent histograms:
+    (0, 2, 2, 2, 2, 2, 2, 2, 3): 2187
+    (0, 2, 2, 2, 1, 5, 2, 3): 243
+    (0, 2, 2, 1, 5, 2, 2, 3): 243
+    (0, 2, 2, 2, 2, 1, 5, 3): 243
+    (0, 1, 5, 2, 2, 2, 2, 3): 243
+    (0, 2, 1, 5, 2, 2, 2, 3): 243
+    (0, 2, 2, 1, 4, 5, 3): 108
+    (0, 1, 4, 5, 2, 2, 3): 108
+    (0, 2, 1, 4, 5, 2, 3): 108
+    (0, 1, 4, 4, 5, 3): 48
+

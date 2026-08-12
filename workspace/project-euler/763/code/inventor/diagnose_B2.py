@@ -11,11 +11,15 @@ for each child C' and tabulate the preimage-multiplicity distribution.
 which equals sum over children of (mult-1).
 """
 from collections import defaultdict
-from lib.amoeba import forward_level, children, lvl
+from lib.amoeba import forward_level, children, lvl, dividable_count
 
 def f_of(C):
-    Sset = set(C)
-    return sum(1 for p in Sset if all(c not in Sset for c in children(p, 3)))
+    """#dividable cells of C == lib.amoeba.dividable_count(C, 3).
+
+    Local wrapper kept for call sites; delegates to the canonical
+    lib/amoeba function (was a duplicated local definition).
+    """
+    return dividable_count(C, 3)
 
 def preimage_parents(Cp):
     """Empty points p whose full child triangle lies inside Cp."""
