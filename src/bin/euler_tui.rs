@@ -416,6 +416,36 @@ fn render(frame: &mut ratatui::Frame<'_>, runs: &Runs, view: &View, waiting: &st
         areas[1],
     );
 
+    render_status(frame, runs, view, waiting, areas[2]);
+}
+
+/// Paints the bottom row: the run's health, or the line being typed.
+///
+/// Split out of [`render`] when composing was added. The row now has two
+/// states rather than one, and they share nothing but their position.
+fn render_status(
+    frame: &mut ratatui::Frame<'_>,
+    runs: &Runs,
+    view: &View,
+    waiting: &str,
+    area: ratatui::layout::Rect,
+) {
+    // Composing takes the whole row. The alternative is a separate input line
+    // that appears and disappears, which moves the body under the reader's
+    // eyes at the moment they have started typing.
+    if let Some(typed) = &view.composing {
+        frame.render_widget(
+            Paragraph::new(Line::from(Span::styled(
+                format!(" direct the run> {typed}▏  [enter send · esc cancel] "),
+                Style::default()
+                    .fg(Color::Yellow)
+                    .add_modifier(Modifier::REVERSED),
+            ))),
+            area,
+        );
+        return;
+    }
+
     let faults: Vec<String> = COUNTED
         .iter()
         .filter_map(|(name, _)| {
@@ -444,21 +474,6 @@ fn render(frame: &mut ratatui::Frame<'_>, runs: &Runs, view: &View, waiting: &st
     } else {
         format!("-{}", view.offset)
     };
-    // Composing takes the whole status row. The alternative is a separate
-    // input line that appears and disappears, which moves the body under the
-    // reader's eyes at the moment they have started typing.
-    if let Some(typed) = &view.composing {
-        frame.render_widget(
-            Paragraph::new(Line::from(Span::styled(
-                format!(" direct the run> {typed}▏  [enter send · esc cancel] "),
-                Style::default()
-                    .fg(Color::Yellow)
-                    .add_modifier(Modifier::REVERSED),
-            ))),
-            areas[2],
-        );
-        return;
-    }
     let sent = view
         .sent
         .as_ref()
@@ -479,7 +494,7 @@ fn render(frame: &mut ratatui::Frame<'_>, runs: &Runs, view: &View, waiting: &st
             status,
             bar.add_modifier(Modifier::REVERSED),
         ))),
-        areas[2],
+        area,
     );
 }
 
