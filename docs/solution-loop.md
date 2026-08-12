@@ -307,15 +307,14 @@ turn is not going to write, and the prose it did report is still worth carrying
 into the attempt, so the re-issue's reply is appended to it rather than
 replacing it.
 
-`COMPUTATIONAL_THRESHOLD` is the second way into this step, and it exists
-because "did the attempt establish something new" and "is the run getting
-anywhere" turned out to be different questions and `route` only asked the first.
-Pushing an exhaustive search from n=14 to n=16 honestly establishes something
-the run did not have, so reflection answers `PROGRESS: YES`, which resets
-`unproductive` — and since `unproductive >= STUCK_THRESHOLD` was the only route
-to `diversify`, a run scaling one method never reached the inventor at all. It
-could spend its whole budget that way, every attempt genuinely progressing and
-the method never changing. Reflection now also answers `KIND: MATHEMATICAL |
+`COMPUTATIONAL_THRESHOLD` is the second way into this step, and it exists because
+"did the attempt establish something new" and "is the run getting anywhere"
+turned out to be different questions and `route` only asked the first. Pushing an
+exhaustive search from n=14 to n=16 honestly establishes something the run did
+not have, so reflection answers `PROGRESS: YES`, which resets `unproductive` —
+and since `unproductive >= STUCK_THRESHOLD` was the only route to `diversify`, a
+run scaling one method never reached the inventor at all. It could spend its
+whole budget that way, every attempt progressing and the method never changing. Reflection now also answers `KIND: MATHEMATICAL |
 COMPUTATIONAL | NONE`, and two consecutive COMPUTATIONAL answers route here. The
 parse is conservative: only an explicit, recognised answer moves the counter, so
 a reflection the loop cannot read never drives it — treating silence as "scaling
