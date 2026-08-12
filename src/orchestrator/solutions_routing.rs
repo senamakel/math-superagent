@@ -163,6 +163,73 @@ async fn diversify_step(
 /// Three sequential children rather than one. The arm still runs beside the
 /// library arm's two, so a diversify costs roughly one extra child run, not
 /// three.
+/// The approach files on disk, by name.
+///
+/// Used to check that a proposing turn wrote something, not to read what it
+/// wrote — [`super::approaches::collect`] does that. A missing directory is an
+/// empty set rather than an error, which is the ordinary state of a workspace
+/// that has never reached a diversify.
+fn approach_slugs(workspace: Option<&Path>) -> BTreeSet<OsString> {
+    let Some(workspace) = workspace else {
+        return BTreeSet::new();
+    };
+    let Ok(entries) = std::fs::read_dir(workspace.join(super::approaches::APPROACHES_DIR)) else {
+        return BTreeSet::new();
+    };
+    entries
+        .flatten()
+        .filter(|entry| entry.path().is_file())
+        .map(|entry| entry.file_name())
+        .collect()
+}
+
+/// Re-issues the proposing turn once when it reported without writing.
+///
+/// The inventor's system prompt asks it to write each candidate to
+/// `research/approaches/<slug>.md` *before* reporting, and the loop's prompt
+/// asks again. A live Project Euler 597 run ignored both: five model calls and
+/// nine tool calls, every one a read, and the three candidates left in a turn
+/// that hit the output cap. Across three concurrent runs the directory had
+/// never been created at all. A prompt instruction is not a control, which is
+/// this repository's own rule; this is the control.
+///
+/// The comparison is by *name added*, not by count or mtime. Proposing means
+/// new slugs, so a turn that rewrote an existing file without adding one has
+/// not done what was asked, and mtime would call that a success.
+///
+/// Once, not until it complies. A second refusal means this turn is not going
+/// to write, and the prose it did report is still worth carrying into the
+/// attempt — losing that to a retry loop costs more than the missing files. So
+/// the re-issue's reply is appended rather than substituted, and the caller
+/// gets what the inventor said either way.
+async fn ensure_approaches_written(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    before: &BTreeSet<OsString>,
+    reported: String,
+) -> String {
+    if approach_slugs(workspace) != *before {
+        return reported;
+    }
+    let retry = delegate(
+        subagents,
+        "inventor",
+        format!(
+            "You reported these candidates without writing them. Nothing was added to \
+             `research/approaches/`, so nothing survives this turn: the next round has no record \
+             of them and will spend itself proposing them again. Write each one now with \
+             `write_document` to `research/approaches/<slug>.md`, as a fenced `approach` block \
+             with `idea`, `mechanism`, `status: proposed`, and `first-step` lines. Do not revise \
+             the mathematics, do not reconsider, and do not propose anything new — write down \
+             what you already have, one file per candidate, then report the slugs you \
+             wrote.\n\n\
+             What you reported:\n{reported}"
+        ),
+    )
+    .await;
+    format!("{reported}\n\n{retry}")
+}
+
 async fn invention_arm(
     subagents: &AsyncSubagentManager,
     workspace: Option<&Path>,
@@ -172,6 +239,10 @@ async fn invention_arm(
     // twelve-hour conjecture run this is the difference between the inventor
     // seeing the work and seeing the empty workspace it began with.
     let dossier = workspace.map(super::dossier::inventor).unwrap_or_default();
+    // Sampled before the delegation, so what the turn added is what is
+    // compared. Reading it afterwards would compare against a directory the
+    // turn had already changed.
+    let before = approach_slugs(workspace);
     let candidates = delegate(
         subagents,
         "inventor",
