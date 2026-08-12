@@ -45,7 +45,10 @@ container_for() {
     return 1
 }
 
-count() { grep -c "$1" "$2" 2>/dev/null || echo 0; }
+# `grep -c` already prints 0 when nothing matches — it just exits 1 while
+# doing it. An `|| echo 0` on top of that prints a second zero, and every
+# counter in the first version of this script reported "0\n0".
+count() { grep -c "$1" "$2" 2>/dev/null || true; }
 
 report() {
     workspace_subdir=$1
@@ -86,7 +89,7 @@ report() {
             | grep -oE '^\[[0-9:]+\] [a-z_]+' \
             | awk '{print $2}' \
             | sort | uniq -c | sort -rn \
-            | awk -v t="$total" '{printf "    %-18s %4d  %5.1f%%\n", $2, $1, t>0?100*$1/t:0}'
+            | awk -v t="$total" '{printf "    %-18s %4d  %5.1f%%\n", $2, $1, (t>0?100*$1/t:0)}'
 
         # --- Solution loop ----------------------------------------------
         # The loop has to reach a judge before a reflection, and a reflection
@@ -106,8 +109,8 @@ report() {
         echo ""
         echo "  RESEARCH"
         printf "    exa_search %s  downloads %s  research-team-retired %s\n" \
-            "$(grep exa_search "$log" | grep -c done || echo 0)" \
-            "$(grep download_document "$log" | grep -c done || echo 0)" \
+            "$(grep exa_search "$log" | grep -c done || true)" \
+            "$(grep download_document "$log" | grep -c done || true)" \
             "$(count 'team research.*stopped' "$log")"
 
         # --- Failure signals --------------------------------------------
@@ -128,8 +131,8 @@ report() {
         # An OOM kill writes nothing to the console — the kernel stops the
         # process — so a vanished container reads as a hung child unless this
         # is checked separately.
-        oom=$(docker events --filter event=oom --since 2h --until 0s 2>/dev/null | grep -c "$container" || echo 0)
-        [ "$oom" -gt 0 ] && echo "    OOM KILLS $oom"
+        oom=$(docker events --filter event=oom --since 2h --until 0s 2>/dev/null | grep -c "$container" || true)
+        [ "${oom:-0}" -gt 0 ] && echo "    OOM KILLS $oom"
 
         # --- Turn shape -------------------------------------------------
         # `out=` is total generated tokens, most of which are the hidden
@@ -147,10 +150,10 @@ report() {
         echo "  SOLVERS"
         for role in sat_solver smt_solver theorem_prover symbolic_math lean_prover; do
             n=$(count "$role/agent-run-[0-9]* spawned" "$log")
-            [ "$n" -gt 0 ] && printf "    %-16s %s spawn(s)\n" "$role" "$n"
+            [ "${n:-0}" -gt 0 ] && printf "    %-16s %s spawn(s)\n" "$role" "$n"
         done
         printf "    non-answers reported: %s\n" \
-            "$(grep -cE 'ResourceOut|GaveUp|SZS status Unknown' "$log" || echo 0)"
+            "$(grep -cE 'ResourceOut|GaveUp|SZS status Unknown' "$log" || true)"
 
         rm -f "$log"
     fi
@@ -163,7 +166,7 @@ report() {
     printf "    sources %s  summaries %s  claims %s  approaches %s\n" \
         "$(ls "$workspace/research/sources" 2>/dev/null | wc -l | tr -d ' ')" \
         "$(ls "$workspace/research/summaries" 2>/dev/null | wc -l | tr -d ' ')" \
-        "$(grep -c '^| ' "$workspace/research/CLAIMS.md" 2>/dev/null || echo 0)" \
+        "$(grep -c '^| ' "$workspace/research/CLAIMS.md" 2>/dev/null || true)" \
         "$(ls "$workspace/research/approaches" 2>/dev/null | wc -l | tr -d ' ')"
     if [ -f "$workspace/config/.frontier.json" ]; then
         python3 - "$workspace/config/.frontier.json" <<'PY' 2>/dev/null || true
