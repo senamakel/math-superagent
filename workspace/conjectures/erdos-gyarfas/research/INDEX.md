@@ -23,11 +23,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `L1.1/ghaffari-mostaghim-cayley.md` | _(undescribed)_ |
 | `L1.1/hu-shen-p10-free.md` | _(undescribed)_ |
 | `L1.1/liu-montgomery-odd-cycle.md` | _(undescribed)_ |
-| `L1.1/luo-ma-zhao-dean.md` | _(undescribed)_ |
+| `L1.1/luo-ma-zhao-dean.md` | Digest of Luo, Ma & Zhao, Dean's conjecture paper (arXiv:2601.13552, PDF conversion). Resolves Dean's conjecture for k>=6: every graph with min degree >=k contains cycles of length r (mod k) for every even r, unless every end-block is in {K_{k+1}, K_{k,k}} union H_k (which fail only for length =2 mod k); also k admissible cycles for k>=7. Introduces the trigonal and tetragonal sparse outer-planar graph framework for path/cycle lengths — transferable machinery for the EG attack, though the k>=6 regime is above delta=3. Full text at research/L0.0/luo-ma-zhao-dean.full.md. |
 | `L1.1/markstrom-extremal-cycles.md` | _(undescribed)_ |
 | `L1.1/pirzada-2power-unicyclic-cubic.md` | _(undescribed)_ |
 | `L1.2/L0.0.md` | _(undescribed)_ |
-| `L1.2/oeis_a007112.md` | _(undescribed)_ |
+| `L1.2/oeis_a007112.md` | OEIS A007112 note: the number of connected unlabeled graphs with n nodes and degree >=3, with its terms (0,0,0,1,3,19,150,2589,84242,...), references (Robinson) and the A123545 cross-reference. Filed as a placeholder lookup, not yet read into the run: the note itself flags that it should be replaced with what the sequence establishes for the oracle (which formula is exact and whether its hypotheses hold for the nauty-generated counts). |
 | `L2.0/L1.0.md` | _(undescribed)_ |
 | `L2.0/L1.1.md` | _(undescribed)_ |
+| `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
+o ignore. Do not revisit. |
 | `THREADS.md` | Derived: every direction of attack under research/threads/, what each rests on, and why the dead ones died. Rewritten on every research write; do not edit. |
