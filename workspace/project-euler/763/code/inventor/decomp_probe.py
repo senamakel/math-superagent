@@ -22,11 +22,7 @@ oracle), bounded here at N=12 (~514k states).
 import time
 from collections import defaultdict
 
-from lib.amoeba import next_level_bits, decode_bits, children
-
-
-def lvl(p):
-    return sum(p)
+from lib.amoeba import next_level_bits, decode_bits, children, lvl
 
 
 def f_of(S):

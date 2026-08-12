@@ -18,10 +18,7 @@ and report multiplicity distribution, i.e. how many C' have 2+ parents
 (the collisions that break B).
 """
 from collections import defaultdict
-from lib.amoeba import forward_level, children
-
-def lvl(p):
-    return sum(p)
+from lib.amoeba import forward_level, children, lvl
 
 def f_of(C):
     Sset = set(C)
