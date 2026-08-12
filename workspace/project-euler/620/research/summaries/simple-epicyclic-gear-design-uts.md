@@ -1,86 +1,45 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/simple-epicyclic-gear-design-uts.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Simple Epicyclic Gear Design (UTS Program 60-1161)
 
-<!-- source: https://www.uts.com/resources/IGS/IGS60-1161.pdf | converted from PDF -->
+[[research/sources/simple-epicyclic-gear-design-uts.full.md]] · source:
+https://www.uts.com/resources/IGS/IGS60-1161.pdf
 
-Program 60-1161—Simple Epicyclic Gear Design
-(Parallel Axis)
-Introduction
+Simple epicyclic unit: central external sun gear meshing with external planet gears,
+which mesh with an enclosing internal ring gear. Types: planetary (ring fixed), star
+(carrier fixed), solar (sun fixed).
 
-The simple epicyclic gear unit consists of acentral external gear (sun gear) meshed
-with one or more external gears (planet gears).  The planet gears are then meshed
-with an internal gear (ring gear) which encloses the system.  The planet gears and
-planet gear support bearings are usually held in a carrier which rotates about the
-geometric center of the unit.  The term “epicyclic” comes from the path of a point on a
-planet gear which traces out an epicycloid in space.  There are three basic types of
-simple epicyclic gear units.
+## Assembly / meshing condition
+For planets to assemble between sun and ring:
+- **Equal spacing**: (N_ring + N_sun)/n_p must be an integer (n_p = number of planets).
+- **Unequal spacing (always needed if equal fails)**: planets must be spaced at
+  multiples of the **Least Mesh Angle**
+  **β = 360°/(N_ring + N_sun)**;
+  i.e. ep/β = integer where ep = angle between adjacent planet gears.
+- Worked example: N_ring = 68, N_sun = 18 → β = 360/86 = 4.186°. Cannot place 4
+  planets 90° apart ((68+18)/4 = 21.5 not integer), but 2 planets 180° apart works
+  ((68+18)/2 = 43). Legal off-equal positions are integer multiples of 4.186°.
 
-When the ring gear is fixed or grounded and the sun and carrier are input/output
-members the unit is called a “planetary gear”.
+## Implication for PE620
+This is the authoritative statement of the least-mesh-angle constraint: planet
+angular positions must be multiples of β = 360°/(N_ring + N_sun) = 2π/(c + s) in our
+notation (ring = C with c teeth, sun = S with s teeth). The finite count g comes from
+intersecting the ellipse locus (tangency) with these quantized positions; overlap among
+planets is allowed, so no additional spacing constraint among the four planets beyond
+mesh alignment. (The PE620 problem has two equal small planets p and two equal large q,
+so positions are not the rigid-carrier equal-spacing case; each planet is an independent
+multiple of β.)
 
-When the carrier is fixed and the sun and ring are input/output members the unit is
-a “star” gear.  The star gear is not an epicyclic gear as the planet gear centers do not
-rotate about the unit central axis but since the construction is basically the same it is
-included in the family.  For high speed units the star gear is often used in cases
-where planetary gears are not practical because of the high centripetal acceleration
-loads on the planet gears.
-
-When the sun is fixed and the carrier and ring are input/output members the unit is
-a “solar” gear.
-
-The range of speed reduction ratios for which these units can be designed with
-reasonable proportions is as follows:
-
-  Planetary Gear:  3:1 to 12:1
-  Star Gear:  2:1 to 11:1
-  Solar Gear:  1.2:1 to 1.7:1
-
-Below these ranges the planet gears become quite small and it becomes difficult to
-design the gears and planet bearings for reasonable life.  Above these ranges the sun
-gear becomes small and the number of planets that can be used without interference
-is limited.  This, again, makes the design of the bearings difficult.  Ratios between
-1.7:1 and 2:1 are difficult to design successfully with simple epicyclic gearing,
-although it can be done with compound epicyclic units.  (See UTS model 60-1162 for
-Compound Epicyclic Gearing.)
-
-Epicyclic units are often used as differentials.  UTS model 60-1161 is restricted to
-systems in which one element is fixed and does not consider use as a differential.
-UTS models 60-1163 and 60-1164 treat simple and compound epicyclic units used as
-differentials.
-
-UTS Integrated Gear Software
- 2
-
-If more than one planet gear is used the number of planets that will assemble
-between the sun and ring is limited by the numbers of teeth in the sun and ring and
-by the possibility of interference between the tips of the planet gear teeth.  For a
-number of planets to assemble equally spaced around the center, the sum of the tooth
-numbers in the ring and sun divided by the number of planets used must be an
-integer:
-
-  (Nring+Nsun)/np = integer
-
-  where: Nring =  Number of teeth in ring gear
-   Nsun =  Number of teeth in sun gear
-     np =  Number of planet gears
-
-The distance between the planet gear centers in the carrier must, of course, be
-greater than the outside diameter of the planet gears or tooth tip interference will
-result (assuming the planet gears are in the same plane).
-
-It is not necessary that the planets be equally spaced.  However, to make assembly
-possible, they must be spaced at multiples of the “Least mesh angle”.
-
- ep/β = integer
-
-  β = 360º/(Nring+Nsun)
-
- where:  ep  =  Angle between adjacent planet gears, deg
-β  =  Least mesh angle, deg
-
-For example, suppose we have an epicyclic set with Nring = 68 teeth and Nsun = 18 teeth
-and we wish to use 4 planets arranged 90 degrees apart.  (Nring+Nsun)/4 = 21.5, which
-is not an integer so we cannot arrange 4 planets 90 degrees apart.(Nring+Nsun)/2 = 43
-which is an integer so we can arrange 2 planets 180 degrees apart.  The least mesh
-angle, β =360 degrees/(Nring+Nsun) = 4.186 degrees.  When we attempt to place a planet
-
-*[excerpt ends; 11155 characters not shown — see `research/sources/simple-epicyclic-gear-design-uts.full.md`]*
+```claim
+id: least_mesh_angle_uts
+statement: Planets in a sun–ring epicyclic gear set (ring internal, N_ring teeth; sun
+N_sun teeth) can only be placed at angular positions that are integer multiples of the
+least mesh angle beta = 360/(N_ring + N_sun). Perfect meshing requires each planet be
+such a multiple; equal spacing additionally needs (N_ring + N_sun)/n_p integer.
+hypotheses: integer tooth counts; ring is internal gear; perfect meshing (teeth align
+with grooves, constant angular-velocity ratio).
+holds-here: true — PE620's S (sun, s teeth) and C (ring, c teeth) with N_ring + N_sun =
+c + s, giving beta = 2*pi/(c + s).
+status: sourced (UTS Integrated Gear Software 60-1161; corroborated by Drivetrain Hub
+tick angle and Gear Solutions handbook).
+bearing: the discreteness step of the problem; makes g(c,s,p,q) finite.
+anchor: research/summaries/simple-epicyclic-gear-design-uts.md
+```
