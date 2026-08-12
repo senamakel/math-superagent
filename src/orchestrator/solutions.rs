@@ -748,7 +748,7 @@ async fn reflect_step(
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
     memory: &VectorStore,
-    patterns: &Mailbox,
+    mailbox: &Mailbox,
     teams: &[TeamHandle],
     mut state: SolutionState,
 ) -> SolutionState {
