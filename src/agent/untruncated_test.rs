@@ -67,7 +67,7 @@ fn finished(text: &str) -> ModelResponse {
 }
 
 #[tokio::test]
-async fn a_turn_cut_off_mid_answer_is_asked_for_again_with_a_bigger_cap() {
+async fn a_turn_cut_off_mid_answer_is_asked_for_again_with_the_reason() {
     // The gap upstream leaves: its recovery requires the text to be empty, so
     // a turn that produced half an answer and hit the cap is accepted as the
     // final answer. A live root agent ended its run on exactly that fragment,
@@ -129,7 +129,7 @@ async fn a_turn_that_truncates_again_is_not_escalated_a_second_time() {
     assert_eq!(
         caps.as_slice(),
         &[Some(10_000), Some(20_000)],
-        "one re-issue at twice the cap, and no more"
+        "one re-issue at the same cap, and no more"
     );
     // Still truncated after the single re-issue: the fragment is returned
     // rather than an error, because a truncated answer beats no answer, and
