@@ -180,7 +180,20 @@ a far better query than anything available at the start. `MAX_ATTEMPTS` is
 eight so the rescue has attempts left to pay off in; a ceiling that tripped
 first would buy a fresh literature search and then stop.
 
-Housekeeping is gated on the workspace having changed, and the gate is shared.
+Housekeeping runs on a narrowed budget, `RunBudget::for_housekeeping` — 25
+model calls, 300 tool calls, ten minutes — for the same reason the judge does.
+Filing is bounded work, read a listing and write a row per file, and a role left
+with an investigation's budget investigates. The measurement that forced this is
+worth keeping: two live runs spent 60% and 64% of every model call they made
+inside the organizer, and the cause was *not* frequency — it ran nine and ten
+times. It ran long. One organizer run spent 62 model calls tidying, another 56,
+against a solve that had spent 14 on the mathematics. Reaching the cap is safe:
+`StopWithPartial` keeps the rows already written, and a file left undescribed
+shows as a visible gap rather than as an index quietly disagreeing with its
+folder, which is what the index tools were designed around anyway.
+
+Frequency is gated separately, on the workspace having changed, and the gate is
+shared.
 Filing is cheap to *do* and expensive to *decide*: an organizer asked to notice
 that nothing has changed must walk the workspace and spend a model call to
 discover it, which is most of what a cycle costs. Two live runs spent 49% and
