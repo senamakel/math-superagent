@@ -1,49 +1,83 @@
 # Shared context
 
-Token budget 10,000; currently ~430 tokens. This file is re-sent on every model
+Token budget 10,000; currently ~430 tokens, well under. Re-sent on every model
 call in every reading role, so keep it to what an agent would otherwise rebuild
-from disk (established results with basis, dead ends, computed numbers, recalled
-memory, contradictions, gaps). Link the file holding compressed detail. Durable
-findings go to Cognee, not here.
+from disk. Link the file that still holds compressed detail. Durable findings go
+to Cognee, never here.
 
-## Established
+**Current state of the solve.** Oracle ✔, governing theory identified ✔, efficient
+method implemented but NOT yet run to a verified final sum. The open item is to
+execute and verify code/hemiperfect_dfs.py at 10^18 and write solution.md/solution.py.
+GOAL.md and solution.md are still empty stubs.
 
-- **Problem (sourced, `[[problem.md]]`).** PE 241. For positive integer n let
-  σ(n) = sum of all divisors of n. Perfection quotient p(n) = σ(n)/n. Find the
-  sum of all positive integers n ≤ 10^18 with p(n) = k + 1/2, k integer. Equivalently
-  2σ(n) = (2k+1)·n. Worked example: σ(6)=12. (Perfect numbers are the k=1 case σ(n)=2n.)
-- **Governing structure (conjectured direction, not yet executed).** p(n) is
-  multiplicative: if n = ∏ p_i^{a_i} then σ(n)/n = ∏ (p^{a+1}−1)/(p^a(p−1)).
-  The half-integer condition is the 2-adic equation 2σ(n)=m·n with m=2k+1 odd.
-  NaN constraint: if a = v2(n), u = n/2^a odd, then v2(σ(u)) = a−1 forces the
-  2-adic structure of σ(n). Effective algorithm expected to be a finite DFS over
-  prime factors (each added p^e maps the quotient p(n) geometrically), NOT a scan
-  up to 10^18. Nothing at full size computed yet.
+## Established — each with its basis
 
-## Ruled out
+- **Problem (sourced, `[[problem.md]]`).** PE 241. σ(n)=sum of divisors of n;
+  perfection quotient p(n)=σ(n)/n. Sum all n ≤ 10^18 with p(n)=k+1/2, k integer.
+  Equivalent: 2σ(n)/n is an odd integer. Worked example given by statement: σ(6)=12
+  (only one given; no qualifying n is listed by the statement).
+- **Qualifying set (computed & checked, two independent routes).** A159907 prefix:
+  ≤10^6 → {2,24,4320,4680,26208}, k=1,2,3,3,3, sum 35234 (code/brute.py spf-sieve,
+  cross-checked vs trial-division over 1..2e5 and 1e6). ≤10^7 adds 8910720. ≤3e7 adds
+  17428320, 20427264 → {2,24,4320,4680,26208,8910720,17428320,20427264}, the first 8
+  A159907 terms (code/verify_2adic.py; all beyond 24 have abundancy 7/2).
+- **2-adic structure (computed & checked, code/verify_2adic.py).** For n=2^a·u (u odd),
+  the half-integer condition forces v2(σ(u))=a−1 and the exact identity
+  σ(u)/u = (2k+1)2^(a−1)/(2^(a+1)−1). Verified for all 8 known qualifying n.
+- **Abundancy multiplicativity (sourced).** σ(n)/n = ∏_p (p^(e+1)−1)/(p^e(p−1)).
+- **Hemiperfect = this problem (sourced, `[[research/summaries/oeis_a159907]]`).**
+  Hemiperfect numbers are exactly {n : 2σ(n)/n = odd integer}; all even;
+  equivalently antisigma(n)≡0 (mod n).
+- **Reachable abundancies under 10^18 (sourced, `[[research/summaries/oeis_A088912]]`).**
+  Smallest n with abundancy (k+1/2): k=1→2, k=2→24, k=3→4320, k=4→8910720, k=5→17116004505600,
+  k=6→~1.7e44. So below 10^18 only abundancies 3/2,5/2,7/2,9/2,11/2 occur (k=1..5). This
+  is claim `a088912-abundancy-threshold` in research/CLAIMS.md. **Hypotheses checked:**
+  these are catalogued minimal values; the "k≥6 unreachable below 1e18" consequence holds
+  because a(6)>1e18 by ~9 orders of magnitude.
 
-- None yet. (This is cycle one; no approach has failed and none validated.)
+## The method (theoretical core)
 
-## Numbers
+**Denominator-cancellation DFS** (code/hemiperfect_dfs.py implements it). For a fixed
+target T=r/2 (r odd), track reduced residual Q(n)=T·n/σ(n)=num/den; answer needs Q=1.
+Extending by prime power p^e multiplies Q by p^e/σ(p^e). **Forcing:** the smallest prime
+factor d of the denominator (T fixed, primes added in nondecreasing order) can only be
+cleared by introducing p=d next, since the numerator gains a p only from a p^e factor
+(property `property22-denominator-divides`: I(n)=r/s lowest terms ⟹ s|n). **Prunes:**
+Q<1 (adding prime powers only lowers Q), n·den>LIMIT (completion impossible below
+bound), reusing a used prime, and start exponent ≥ the exponent of d in den. Cost grows
+with the description (6 targets × tiny forced branches), never with 10^18. This is the
+standard technique for near-perfect / hemiperfect enumeration and is what makes the
+bound in the statement irrelevant to the method. `maxab.py` gives the greedy
+σ(n)/n upper bound used for sanity (largest k reachable ≤ 10^18).
 
-- Oracle: σ(6)=12 (from statement). No computed terms yet — brute.py, the
-  obvious naive program that reproduces the statement's example, is the next
-  required artifact and is not yet written.
+## Recalled (durable memory — NOT this run's verification)
 
-## Recalled
+A prior derivation (Cognee note "Project Euler 241 Solution - Perfection Quotients")
+describes exactly the split-by-target DFS over T∈{3/2,5/2,7/2,9/2,11/2,13/2} and states
+the six searches yield **22 valid n ≤ 10^18**, "whose sum is printed". **The 22 figure is
+recalled, not computed here, and the sum itself is not recorded in memory** — it must be
+re-derived and verified (missing: the actual 22 values and their sum). Note: including
+13/2 in the target set is harmless since a(6)>1e18, so it contributes zero values; no
+contradiction with the A088912 bound. Treat "22" as a strong conjecture awaiting the run.
 
-- No durable memory bears on this problem or on abundancy/multiply-perfect
-  theory. Durable brain holds only unrelated Erdős–Gyárfás cubic-bipartite
-  findings. Do not import those; hypotheses are unchecked here.
+## Ruled out / dead ends (so nobody re-pays)
+
+- **Abundancy-outlaw theory** (Weiner & Holdener poster; Holdener–Stanton JIS paper,
+  Numericana) classifies rationals that FAIL to be abundancy indices; it does not
+  enumerate attained k+1/2. `weiner-outlaw-no-bound` claim, bearing=no for the method.
+  Confirms only the parity/denominator-divides fact. Do not re-read for the solver.
+- **Scanning up to 10^18** is wrong (bound chosen to defeat it). Affirmed by the class.
 
 ## Contradictions
 
-- None yet.
+- None among established results. The recalled "22 values incl. 13/2" is consistent with
+  the A088912 reachability bound (13/2 contributes 0), so not a real contradiction — but
+  the 22-figure itself is unverified until the DFS runs.
 
 ## Gaps
 
-- The governing theory request is open: `research/REQUESTS.md` id
-  theory-numbers-with-88d5 (bounding/recursion over 2σ(n)=m·n, m odd, for
-  n≤10^18). It closes when a note records a claim block with
-  `answers: theory-numbers-with-88d5`. The efficient method in step 3 depends on
-  this being filled.
+- **The verified final answer** (sum of all 22 n ≤ 10^18) does not exist in memory or
+  disk. Steps: run/verify code/hemiperfect_dfs.py at 10^18 against the oracle prefix
+  (≤3e7) and A159907, then write solution.md + solution.py + the reported sum. Research
+  request `theory-numbers-with-88d5` was the bounding/recursion ask; the A088912
+  claim largely fills it (reachable-abundancy bound), but the request row still shows open.

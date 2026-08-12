@@ -431,6 +431,39 @@ fn the_librarian_is_told_a_cited_source_must_be_in_the_library() {
 }
 
 #[test]
+fn a_review_team_judges_the_work_before_the_attempt_returns() {
+    // The gap this closes. The loop's attempt is one `goals` run and the judge
+    // only scores it once it returns; on an open conjecture `goals` is told to
+    // pursue the goal until it is met, so it does not. Four live runs sat in
+    // attempt 1 for thirty-six minutes with zero judge verdicts, zero
+    // reflections and zero inventor spawns between them.
+    let (_, agent, completion, _, brief) = super::standing_teams()
+        .into_iter()
+        .find(|(name, ..)| *name == "review")
+        .expect("the review team is registered");
+
+    // The judge, not a second solver: it is the tool-poorest reasoning role and
+    // the one whose budget is already narrowed for scoring rather than solving.
+    assert_eq!(agent, "judge");
+    assert_eq!(completion, super::teams::Completion::Standing);
+    let brief = brief.to_ascii_lowercase();
+    assert!(
+        brief.contains("in flight"),
+        "it must judge work in progress, not wait for a finished attempt"
+    );
+    // The failure worth catching early is a method that cannot settle the
+    // question, which is what E-G's own CEGAR verdict turned out to be.
+    assert!(
+        brief.contains("already failed at a smaller size"),
+        "the method question is the one worth asking mid-attempt"
+    );
+    assert!(
+        brief.contains("nothing further"),
+        "an unchanged workspace must cost nothing"
+    );
+}
+
+#[test]
 fn a_planner_names_every_specialist_it_can_delegate_to() {
     // A role can be registered, tool-equipped, prompt-written, and provisioned
     // in the image, and still never run: the agent holding its delegation tool
