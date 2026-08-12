@@ -1,27 +1,37 @@
 # Goal
 
-**Problem (Project Euler 346, strong repunits):**
+**Problem: Project Euler 346 — Strong Repunits**
 
-A *repunit* in base b>1 is a number whose base-b representation is all 1's:
-R_b(k) = 1 + b + b^2 + ... + b^(k-1) = (b^k − 1)/(b − 1), a string of k ones, k ≥ 1.
+## Precise restatement
 
-A positive integer n is a *strong repunit* if it is a repunit in **at least two**
-distinct bases b > 1.
+A **repunit** in base `b` is a positive integer whose base-`b` representation
+is a string of only `1`'s:
 
-Worked examples (the test oracle):
-- Strong repunits below 50: {1, 7, 13, 15, 21, 31, 40, 43}  (8 of them)
-- Sum of strong repunits below 1000 = 15864
-- **Task**: sum of all strong repunits below 10^12.
+```
+R_k(b) = 1 + b + b^2 + ... + b^(k-1) = (b^k - 1)/(b - 1),   k >= 1, b > 1
+```
 
-Symbols:
-- b: base, integer > 1.
-- k: number of digits (all ones), k ≥ 1.
-- R_b(k) = (b^k − 1)/(b − 1).
+- `k = 1` gives `R_1(b) = 1`: the single-datum "1", a repunit in *every* base.
+- `k = 2` gives `R_2(b) = 1 + b = b + 1`: every `n >= 3` is the two-digit
+  repunit `11` in base `b = n - 1`.
 
-Completion criteria:
-1. /workspace/brute.py reproduces {1,7,13,15,21,31,40,43} and 15864, and 1.
-2. A structural characterization is established (see solution.md).
-3. /workspace/solution.py uses an efficient method (cost independent of the 10^12 bound
-   aside from ~10^6 length-3 bases), agrees with brute.py on every reachable case,
-   and reproduces all examples.
-4. Final sum below 10^12 reported and verified by a second independent route.
+A **strong repunit** is a positive integer `n` that is a repunit in **at least
+two** distinct bases `b > 1`.
+
+## Worked examples (the test oracle)
+
+- There are **8** strong repunits below 50:
+  `{1, 7, 13, 15, 21, 31, 40, 43}`.
+- The sum of all strong repunits below 1000 equals **15864**.
+
+## Target
+
+Compute the sum of all strong repunits `n < 10^12`.
+
+## Completion criteria
+
+1. `code/brute.py` reproduces both worked examples (done: matched).
+2. `solution.py` agrees with `code/brute.py` on every case brute can reach and
+   reproduces both examples.
+3. `solution.py` returns the sum for the `10^12` bound, verified by an
+   independent route.
