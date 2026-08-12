@@ -40,6 +40,19 @@ are still unwritten stubs and the run's own DFS→b-file agreement at 10^18 is u
   these are catalogued minimal values; the "k≥6 unreachable below 1e18" consequence holds
   because a(6)>1e18 by ~9 orders of magnitude.
 
+## The final answer (sourced — OEIS A159907 b-file, independent route)
+
+Exactly **22** A159907 terms are ≤ 10^18 (term 23 = 6219051710415667200 > 1e18 cuts off).
+Their **sum = 482316491800641154.** The 22 values and per-abundancy split are listed in
+code/sum_answer.py and code/factors22.py (terms hard-coded from the b-file). Per-k
+(abundancy k+1/2): k=1:{2}; k=2:{24,91963648,10200236032}; k=3:{4320,4680,26208,20427264,
+197064960,21857648640,57575890944,88898072401645056,301183421949935616}; k=4:{8910720,
+17428320,8583644160,57629644800,206166804480,1416963251404800,15338300494970880};
+k=5:{17116004505600,75462255348480000}. Cross-validated in code/crosscheck_oeis.py
+(per-k vs A141643/A055153/A141645/A159271). **Status: sourced & arithmetic-checked, not
+independently recomputed by this run's own DFS.** This matches the recalled "22 values"
+figure.
+
 ## The method (theoretical core)
 
 **Denominator-cancellation DFS** (code/hemiperfect_dfs.py implements it). For a fixed
