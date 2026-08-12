@@ -97,12 +97,19 @@ report() {
         # a run that is busy but has not advanced past attempt 1.
         echo ""
         echo "  LOOP"
-        printf "    attempts %s  judge %s  reflection %s  diversify %s  inventor %s\n" \
+        # A *verdict* is the loop scoring a returned attempt, and it is the
+        # number that says the loop turned over. Counting `judge` spawns
+        # instead conflates it with the review team, which spawns the same role
+        # every twenty minutes against work still in flight — so a run that has
+        # judged nothing reads as one that has judged four times.
+        printf "    attempts %s  verdicts %s  reflection %s  diversify %s  inventor %s\n" \
             "$(count 'solution loop: attempt' "$log")" \
-            "$(count 'judge/agent-run-[0-9]* spawned' "$log")" \
+            "$(count 'solution loop: judge scored' "$log")" \
             "$(count 'reflection/agent-run-[0-9]* spawned' "$log")" \
             "$(count 'diversify' "$log")" \
             "$(count 'inventor/agent-run-[0-9]* spawned' "$log")"
+        printf "    review-team judge spawns %s\n" \
+            "$(count 'judge/agent-run-[0-9]* spawned' "$log")"
         grep -E 'solution loop: (verdict|judge)' "$log" | tail -2 | sed 's/^/    /' || true
 
         # --- Research ---------------------------------------------------
