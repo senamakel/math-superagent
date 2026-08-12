@@ -96,25 +96,21 @@ itself — that is the open core.
 
 ## Live (this run, partly settled)
 
-- **S5 vs A366224** (S5 = connected min-degree≥3 girth≥5; A366224 =
+- **S5 vs A366224 RESOLVED** (S5 = connected min-degree≥3 girth≥5; A366224 =
   3-connected girth≥5, McKay; source: [[research/summaries/A366224_offset.md]]).
-  **Computed equal through n=14** (1,0,2,4,23 — matches A366224; every
-  3-connected girth≥5 graph is in S5 (3-connectivity with girth-5 ≥ δ≥3), so
-  S5 < A366224 is impossible and equality means **every S5 graph is
-  3-connected** on n≤14). The identity is **provably NOT a
-  theorem**: Petersen-amalgam (two copies glued at one vertex, n=19) is
-  connected min-degree≥3 girth-5 with a cut vertex ⇒ S5(19) > A366224(19).
-  Open question: **at what first n does S5 grow past A366224** — that n is the
-  smallest non-3-connected girth≥5 δ≥3 graph, structural (a 1-/2-separator in
-  a sparse low-girth graph; all 2-separators are single edges or K2,3 — no
-  decorations fit d=3), and exactly where a non-3-connected EG survivor could
-  hide. **Unresolved status of n≥15 checks**: scripts s5_n17_count/check and
-  s5_n18_check count S5 against predictions 23882@17 / 422194@18 but no result
-  file was found on disk (n18_extra.txt is corrupted binary garbage — likely
-  truncated mid-write) — n=15,16,17,18 counts and 3-conn checks have **no
-  recorded output** and must be re-run before any claim past n=14. Re-run:
-  `s5_identification.py` (full table), `s5_equals_a366224.py`,
-  `s5_3conn_check.py`, `s5_n18_find_extra2.py`. [[code/eg/INDEX.md]]
+  S5 **equals** A366224 through **n=17** (1,0,2,4,23,149,1670,23882 — every S5
+  graph 3-connected), **breaks at n=18**: S5(18)=422197 = A366224(18)+3. The 3
+  extras are 2-connected but not 3-connected, each split by a **2-vertex
+  separator** (a 2-sum) into two 8-vertex girth-5 lobes — the first
+  non-3-connected girth-5 δ≥3 graph is at n=18, not the n=19 cut-vertex
+  Petersen-amalgam (which is 3-sum-free but has a 1-sep). All 3 extras contain
+  an exact 8-cycle → **NOT EG near-counterexamples**. Full S5 sequence
+  1,0,2,4,23,149,1670,23882,422197 not in OEIS, no order-≤6 linear recurrence.
+  Recorded evidence: `code/out/s5_identification.txt` (full table + all 3
+  extras' g6 codes + Petersen-amalgam certificate). Verified-numerical, not
+  proof. The interesting structure is the **2-sum of two Petersen-like
+  8-vertex girth-5 lobes** — how far such sums can go before an EG survivor
+  hides. [[code/eg/index: s5_*.py, survivor_sequences.md]]
 - **NO4(17) sanity range** (prediction, unconfirmed): pattern_finder's law
   `NO4(n)≈K·3^n·(n−10)!` (locked from n=12) predicts NO4(17) ∈ 30–41M,
   nominal ≈35M. Outside 25–45M flags an enumeration bug. Detail:
