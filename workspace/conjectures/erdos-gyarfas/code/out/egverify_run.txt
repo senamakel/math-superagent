@@ -1,0 +1,29 @@
+=== K4 ===
+  min_degree      expected 3  got 3  MATCH
+  cycle_lengths   expected [3, 4]  got [3, 4]  MATCH
+
+=== K3,3 ===
+  min_degree      expected 3  got 3  MATCH
+  cycle_lengths   expected [4, 6]  got [4, 6]  MATCH
+
+=== cube Q3 ===
+  min_degree      expected 3  got 3  MATCH
+  cycle_lengths   expected [4, 6, 8]  got [4, 6, 8]  MATCH
+
+=== Petersen ===
+  min_degree      expected 3  got 3  MATCH
+  cycle_lengths   expected [5, 6, 8, 9]  got [5, 6, 8, 9]  MATCH
+
+ALL CHECKS PASSED
+=== survivor_no4_n14.py ===
+n=4: no4cycle_mindeg3=0
+n=5: no4cycle_mindeg3=0
+n=6: no4cycle_mindeg3=0
+n=7: no4cycle_mindeg3=0
+n=8: no4cycle_mindeg3=0
+n=9: no4cycle_mindeg3=0
+n=10: no4cycle_mindeg3=5
+n=11: no4cycle_mindeg3=9
+n=12: no4cycle_mindeg3=57
+n=13: no4cycle_mindeg3=503
+n=14: no4cycle_mindeg3=6059
