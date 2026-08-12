@@ -21,6 +21,9 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://huggingface.co/docs/hub/spaces | What is Spaces? | is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][33])* Spaces Toggle TXYZ.AI*( [What is… |
 | 2 | https://huggingface.co/huggingface | What is Huggingface? | Toggle DagsHub*( [What is DagsHub?][28])* GotitPub Toggle Gotit.pub*( [What is GotitPub?][29])* Huggingface Toggle Hugging Face*( [What is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What… |
 | 2 | https://influencemap.cmlab.dev/ | What are Influence Flowers? | Toggle TXYZ.AI*( [What is TXYZ.AI?][34])* Related Papers # Recommenders and Search Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][35])* Core recommender toggle CORE… |
+| 2 | https://oeis.org/A006290 | A006290 | cross-referenced from A366224 |
+| 2 | https://oeis.org/A140440 | A140440 | cross-referenced from A366224 |
+| 2 | https://oeis.org/A366225 | A366225 | cross-referenced from A366224 |
 | 2 | https://replicate.com/docs/arxiv/about | What is Replicate? | is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is… |
 | 2 | https://sciencecast.org/welcome | What is ScienceCast? | [What is GotitPub?][29])* Huggingface Toggle Hugging Face*( [What is Huggingface?][30])* ScienceCast Toggle ScienceCast*( [What is ScienceCast?][31])* Demos # Demos Replicate Toggle Replicate*( [What… |
 | 2 | https://txyz.ai | What is TXYZ.AI? | Toggle Replicate*( [What is Replicate?][32])* Spaces Toggle Hugging Face Spaces*( [What is Spaces?][33])* Spaces Toggle TXYZ.AI*( [What is TXYZ.AI?][34])* Related Papers # Recommenders and Search… |
@@ -43,8 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/András_Gyárfás | András Gyárfás | [graph theory][10], the unproven **Erdős–Gyárfás conjecture**, made in 1995 by mathematician [Paul Erdős][11] and his collaborator [András Gyárfás][12], states that every [graph][13] with minimum… |
 | 1 | https://en.wikipedia.org/wiki/File:Markström-Graph.svg | — | every cubic graph contain a simple cycle of length a power of two? [More unsolved problems in mathematics][1] Markström's graph \| [2] Markström's 24-vertex cubic planar graph with no 4- or 8-cycles,… |
 | 1 | https://arxiv.org/abs/1904.08126 | — | Theory Ser. B 84 (2002), 187–202. [5] J. Gao, Q. Huo, C. Liu and J. Ma, A uniﬁed proof of conjectures on cycle lengths in graphs, arXiv:1904.08126. [6] R. H¨aggkvist and A. Scott, Arithmetic… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Carr,+A | Avery Carr | [Submitted on 13 May 2026] # Title: Every Minimal Counterexample to the Erdős-Gyárfás Conjecture is Predominantly Cubic Authors: [Avery Carr][2] View a PDF of the paper titled Every Minimal… |
-| 1 | https://en.wikipedia.org/wiki/Vertex_(graph_theory) | Vertices | found in a computer search for counterexamples to the Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6… |
-| 1 | https://en.wikipedia.org/wiki/Diameter_(graph_theory) | Diameter | Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6 \| [Girth][7] \| 3 \| [Automorphisms][8] \| 3 \| [Table of… |
 
 _134 further candidates not shown; they are cited once each._

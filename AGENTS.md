@@ -707,6 +707,36 @@ problem that is another problem's literature arriving unasked, and at worst its
 answer. A dataset this runtime does not name belongs to another project or an
 older build, and neither of those is this run's.
 
+That allowlist was scoping a field the server does not apply, which is why the
+isolation now rests on `node_name` instead. A live probe settled it: asking
+`/api/v1/recall` for one project's session dataset, then another's, then a
+third's by UUID, returned the *same* chunk from a fourth project every time —
+the only request that changed the answer was a name matching no dataset at all,
+which came back `No datasets found`. So the dataset list is validated and then
+ignored, and every run on the box was reading every other project's sessions.
+`node_name` filters on the `node_set` each document was ingested under, and the
+same probe showed it applied exactly: `project:<a>` returned only `<a>`'s
+documents, `project:<b>` only `<b>`'s. Every store already wrote a node set —
+`math_agent_brain`, `project:<p>`, `library:<p>`, `scratch:<p>` — so the scopes
+existed and nothing read them. `durable_node_sets` names the first three and
+never the fourth, which is where the scratch separation now lives; the dataset
+list is still sent, because it costs nothing and a server that honours it would
+be narrowing the same way. Writers and readers build every node set through one
+set of helpers, since a writer and a reader spelling a scope apart is the one
+leak nothing would report — the documents would be filed where recall never
+looks and the store would simply read as empty.
+
+`relate_memory` was dead for the same reason nothing caught the leak: the
+runtime asked for `INSIGHTS`, and this Cognee build's search-type enum has no
+such member, so every call ever made returned a 422 listing the eighteen types
+it does accept. The graph half of the memory — the half that justifies a graph
+store rather than a search box — had never answered anything. `GRAPH_COMPLETION`
+is the surviving name for that question, and with `only_context` set it returns
+the nodes and edges around the query rather than a model's prose about them.
+Both lessons are the same one: a store this runtime cannot see itself failing to
+read is indistinguishable from a store with nothing in it, and neither the tests
+nor the console said which it was.
+
 The library is the third per-project dataset, `math_agent_library__<project>`,
 and it closes the gap between what a run gathered and what it could recall.
 `download_document` wrote `research/…` and `index_document` wrote a local
@@ -1349,8 +1379,10 @@ whole. `note_scratch` and `recall_scratch` (`vector.rs`) make it the same trade
 wording.
 
 It is a third store rather than a flag on the durable one, and the separation is
-the point. `visible_datasets` excludes `math_agent_scratch__*` outright, so
-neither `recall_memory` nor `relate_memory` can return provisional work — a
+the point. `visible_datasets` excludes `math_agent_scratch__*` outright and
+`durable_node_sets` omits `scratch:<project>`, the second being the one the
+server actually honours, so neither `recall_memory` nor `relate_memory` can
+return provisional work: a
 half-finished calculation cannot come back looking like something the run
 established, which is the distinction the method policy rests on. It is also
 not the knowledge graph: `relate_memory` answers what the run's entities are
