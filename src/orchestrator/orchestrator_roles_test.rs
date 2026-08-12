@@ -407,6 +407,30 @@ fn the_goals_prompt_says_a_turn_without_a_tool_call_produced_nothing() {
 }
 
 #[test]
+fn the_librarian_is_told_a_cited_source_must_be_in_the_library() {
+    // A source named in a note but absent from `research/sources/` is recall,
+    // not evidence — and recall is what this role exists to replace. A live
+    // Erdős–Gyárfás run cited Wikipedia and Wolfram MathWorld in `ROOT.md` and
+    // two summaries with neither downloaded: nothing in the workspace, nothing
+    // in the 342-entry frontier, and no way to check what those pages said.
+    let lower = LIBRARIAN_PROMPT.to_ascii_lowercase();
+    assert!(
+        lower.contains("cited"),
+        "the rule about citing what is not held must survive edits"
+    );
+    assert!(
+        lower.contains("encyclopedic entry"),
+        "the canonical reference tier must be named, or it stays a search away"
+    );
+    // Breadth is the other half. A library of six papers on one method cannot
+    // show the run the method it has no source for.
+    assert!(
+        lower.contains("wide before deep"),
+        "the librarian must be told to cover the subject, not one thread of it"
+    );
+}
+
+#[test]
 fn a_planner_names_every_specialist_it_can_delegate_to() {
     // A role can be registered, tool-equipped, prompt-written, and provisioned
     // in the image, and still never run: the agent holding its delegation tool
