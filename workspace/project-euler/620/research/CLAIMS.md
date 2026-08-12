@@ -12,6 +12,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `fitting_condition_2kh_sun2017` | For a single-pin 2KH-NGW planetary gear train the condition for fitting (evenly placing q planets between the two central gears) is (Z_a + Z_b)/q = n with n integer, where Z_a and Z_b are the central gear tooth counts;… | yes | asserted | `research/summaries/2kh-tooth-number-matching-sun-2017.md` |
 | `gears_model_fails_oracle` | The continuous-d phase-elimination meshing model in lib/gears.py (planet centre forced to circle(O,R-rho) ∩ circle(S,r+rho), arrangement parameterised by centre distance d, valid iff 2Fp, 2Fq, H are integers mod 1)… | yes | checked | `code/out/oracle_test.md` |
 | `homogeneity_condition_zou` | For evenly spaced identical planets in a single-pin planetary mechanism, the assembly condition is (Z_R + Z_S)/n_b = N with N integer; it is derived by fixing the ring gear, rotating the carrier by the inter-planet… | **unchecked** | asserted | `research/summaries/single-planetary-teeth-matching-zou-2015.md` |
+| `inversion_does_not_preserve_tooth_mesh` | Circle inversion about a limiting point maps the off-centre gears C (ring) and S (sun) to concentric circles C', S', preserving tangencies and angles; but the tooth-mesh validity of a PE620 arrangement is NOT invariant… | yes | asserted | `research/summaries/limiting-point-wikipedia.md` |
 | `least_mesh_angle` | In a sun–ring–planet geartrain with sun tooth count z1 and ring tooth count z3 (taken negative for an internal gear), the smallest allowable relative angular step between planet positions that keeps every planet meshed… | yes | asserted | `research/summaries/planetary-gears-geometry-drivetrainhub.md` |
 | `least_mesh_angle_handbook` | In planetary gears, the least mesh angle (smallest legal angular step between planet positions) is 360 degrees/(sun teeth + ring teeth); planets must be placed at multiples of it; equal spacing additionally requires… | yes | asserted | `research/summaries/epicyclic-gearing-handbook-gearsolutions.md` |
 | `least_mesh_angle_uts` | Planets in a sun–ring epicyclic gear set (ring internal, N_ring teeth; sun N_sun teeth) can only be placed at angular positions that are integer multiples of the least mesh angle beta = 360/(N_ring + N_sun). Perfect… | yes | asserted | `research/summaries/simple-epicyclic-gear-design-uts.md` |
@@ -22,6 +23,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `oracle_model_reproduces_zero` | The continuous centre-distance model in code/lib/gears.py returns g(16,5,5,6)=0, contradicting the stated value 9; no non-degenerate valid d exists under that model. | no | checked | `code/out/oracle-model-broken.md` |
 | `pappus_center_ellipse_params` | The centers of circles tangent externally to an inner circle (radius r_U) and internally to an outer circle (radius r_V) lie on the ellipse with foci at the two given centers and sum of focal distances r_U + r_V; the… | yes | asserted | `research/summaries/pappus-chain-wikipedia.md` |
 | `planet_idler_freedom` | In a standard sun–planet–ring epicyclic train the planet acts as an idler: it does not affect the sun-to-ring transmission ratio, and multiple values of the planet tooth count are compatible with a given sun/ring ratio.… | yes | asserted | `research/summaries/willis-equation-tec-science.md` |
+| `tangency_enum_oracle_match` | Direct tangency enumeration of the residue Q = sigma*rho*(beta-gamma) - eta*R*beta + theta*r*gamma (mod 1) with sign variant (sigma=-1, eta=-1, theta=-1), where beta=angle of planet centre about ring centre O,… | yes | checked | `code/out/tangency_enum_claim.md` |
 | `tangent_circle_center_ellipse` | The center of a circle tangent to two fixed circles (one contained in the other, crescent region) traces an ellipse whose foci are the two fixed centers and whose sum of focal distances equals the sum of the two fixed… | yes | asserted | `research/summaries/ellipse-arbelos-cut-the-knot.md` |
 | `wiktionary_epicyclic_carrier_speed_denominator` | In a conventional epicyclic gear set the carrier speed is n_c = (n_r*N_r + n_s*N_s)/(N_r + N_s); the sum of ring and sun tooth counts is the denominator of the carrier-speed formula. Ring (internal) tooth count enters… | yes | asserted | `research/summaries/epicyclic-gearing-wikipedia.md` |
 
@@ -29,6 +31,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Resolve these before building on either side.
 
+- `inversion_does_not_preserve_tooth_mesh` (research/summaries/limiting-point-wikipedia.md) contradicts `inversion-coaxial` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `inversion_does_not_preserve_tooth_mesh` (research/summaries/limiting-point-wikipedia.md) contradicts `(approach` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `inversion_does_not_preserve_tooth_mesh` (research/summaries/limiting-point-wikipedia.md) contradicts `file)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle`
 - `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle_handbook`
 - `offcentre_dual_mesh_phase_invariant` (research/threads/offcentre-mesh-phase-model.md) contradicts `least_mesh_angle_uts`
@@ -40,6 +45,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `assembly_condition_simple_planetary_guo` (research/summaries/compound-planetary-dynamics-mesh-phases-guo-2011.md) — asserted by the source, not proved there and not checked here
 - `fitting_condition_2kh_sun2017` (research/summaries/2kh-tooth-number-matching-sun-2017.md) — asserted by the source, not proved there and not checked here
+- `inversion_does_not_preserve_tooth_mesh` (research/summaries/limiting-point-wikipedia.md) — asserted by the source, not proved there and not checked here
 - `least_mesh_angle` (research/summaries/planetary-gears-geometry-drivetrainhub.md) — asserted by the source, not proved there and not checked here
 - `least_mesh_angle_handbook` (research/summaries/epicyclic-gearing-handbook-gearsolutions.md) — asserted by the source, not proved there and not checked here
 - `least_mesh_angle_uts` (research/summaries/simple-epicyclic-gear-design-uts.md) — asserted by the source, not proved there and not checked here

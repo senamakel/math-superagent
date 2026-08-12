@@ -51,9 +51,10 @@ COARSE_TOL=1e-4 (grid clustering), TIGHT_TOL=1e-9 (mpmath refinement).
    → `code/out/lattice_test.txt`: planets at slots k·2π/(s+c) about O or about S
    (all four sharing one d), valid iff 2F_p, 2F_q, F_p−F_q ∈ ℤ (mpmath-60, all
    four {O,S}² anchor variants). Result: g(16,5,5,6)=0, G(16)=0, G(20)=0. Killed
-   by the geometry fact above — the search space did not contain the tangency
-   positions. Does NOT kill the least-mesh-angle theorem itself. No claim note
-   yet documents this failure (raw output only).
+   by the tangency fact (each planet's centre is one of exactly two mirror-image
+   points, not a free lattice slot) — the search space did not contain the
+   tangency positions. Does NOT kill the least-mesh-angle theorem itself. No
+   claim note yet documents this failure (raw output only).
 3. **Idler-phase model — DEAD (third checked failure).** `code/pattern/phase_model_probe.py`
    → `code/out/phase_model_test.txt`: planet treated as free idler, its spin
    eliminated per planet, conditions 2B_p, 2B_q, B_p−B_q ∈ ℤ with

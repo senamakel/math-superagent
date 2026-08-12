@@ -1,0 +1,48 @@
+PE620  off-centre W-invariant meshing model test
+Source model: research/threads/offcentre-mesh-phase-model.md
+mpmath dps = 40, SCAN_TOL = 0.0003, VERIFY_TOL = 1e-9, N flagships = 1e7
+Geometry: S=(0,0), C=(d,0); a_t=(s+t)/2pi, b_t=(c-t)/2pi;
+  phi, chi, gamma interior angles at S, C, P (phi+chi+gamma=pi);
+  W_t = s*phi + c*chi - t*gamma, W'_t = s*phi - c*chi + t*gamma.
+Oracle: g(16,5,5,6)=9, G(16)=9, G(20)=205.
+==============================================================================
+
+=== case oracle: (c,s,p,q) = (16,5,5,6),  N=10000000 ===
+    DL = 0.159154943092   DU = 0.750704374011   (open interval, length 0.591549430919)
+    scan: 45 anchors (per-key near-integer points), max residues:
+        max |resid.Ap| over grid = 5.000e-01
+        max |resid.Aq| over grid = 5.000e-01
+        max |resid.cross| over grid = 5.000e-01
+        max |resid.Ep| over grid = 5.000e-01
+        max |resid.Eq| over grid = 5.000e-01
+        max |resid.crossD| over grid = 5.000e-01
+    [scan 3.51s]
+    refined unique roots: 36   [refine 0.22s]
+
+  set (A)  s*phi_t+c*chi_t in pi*Z (t=p,q) AND W_p-W_q in 2pi*Z
+      valid d count = 0
+
+  set (B)  W_p-W_q in 2pi*Z
+      valid d count = 5
+      d = 0.160773540771899102182128315044   residues: Ap=4.5e-01, Aq=4.6e-01, cross=1.8e-29, Ep=3.3e-01, Eq=2.2e-01, crossD=4.5e-01
+      d = 0.174768759604313972184003470029   residues: Ap=3.5e-01, Aq=3.6e-01, cross=9.2e-30, Ep=7.2e-03, Eq=3.6e-01, crossD=3.6e-01
+      d = 0.209741004591453356061339184651   residues: Ap=2.1e-01, Aq=2.4e-01, cross=4.5e-30, Ep=2.8e-01, Eq=1.8e-02, crossD=2.6e-01
+      d = 0.290609799109312885748439439365   residues: Ap=1.0e-02, Aq=3.6e-02, cross=2.2e-30, Ep=4.5e-01, Eq=2.9e-01, crossD=1.6e-01
+      d = 0.533113950108955155074179163576   residues: Ap=4.3e-01, Aq=4.7e-01, cross=6.5e-31, Ep=2.1e-01, Eq=1.6e-01, crossD=4.7e-02
+
+  set (C)  t*gamma_t-c*chi_t in pi*Z (t=p,q) AND W_p-W_q in 2pi*Z  [suspected identically satisfied at all d]
+      valid d count = 0
+
+  set (D)  s*phi_t+c*chi_t in pi*Z AND W'_p-W'_q in 2pi*Z, W'_t = s*phi_t-c*chi_t+t*gamma_t
+      valid d count = 0
+
+    coverage check (conjoined-residue clusters vs found valid d's):
+        A: no near-integer grid points (no candidates)
+        B: 5 clusters, all matched by a valid d (OK)
+        C: no near-integer grid points (no candidates)
+        D: no near-integer grid points (no candidates)
+    coverage OK
+
+Sets reproducing g(16,5,5,6)=9: NONE
+
+VERDICT: no set (A/B/C/D) reproduces 9/9/205; best g(16,5,5,6) counts: (A)=0, (B)=5, (C)=0, (D)=0
