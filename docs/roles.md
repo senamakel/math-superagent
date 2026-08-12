@@ -4,6 +4,27 @@ The fifteen roles the runtime registers, the sources they read through, and the 
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
+
+## The research team gathers by default
+
+It did not, and that is why four live runs made zero `exa_search` calls between
+them. The team's brief opened *"Keep this run's reference library useful, which
+mostly means not adding to it"* and made fetching conditional on an attempt
+reporting STUCK or `research/REQUESTS.md` naming a gap. Neither can hold at t=0:
+attempt 1 has only just started and a fresh workspace has no `REQUESTS.md`. So
+it replied NOTHING FURTHER, and because it was `Completion::Attainable` that
+reply retired it permanently — inside ninety seconds on every run, leaving hours
+with no research beside the solve.
+
+A goal reached before the work starts was never attainable; it was abstention
+with a completion flag on it. The team is now `Standing`, so a quiet cycle is a
+pause, and its brief leads with searching widely, names `exa_search` as the
+instrument most often left unused, and forbids downloading a URL that did not
+come from a search result, `FRONTIER.md`, or a held source — because a fetch of
+an invented address *succeeds* and files the wrong paper under the name the
+model wanted. A live Project Euler run did exactly that, storing *Graded Lie
+Algebras of Maximal Class II* as `pitman_ballot_theorem.md`.
+
 ## Expected problem-solving behavior
 
 The runtime has fifteen roles plus an explicit solution loop.
