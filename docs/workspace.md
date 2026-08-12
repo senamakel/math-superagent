@@ -300,17 +300,16 @@ requires and the one a long run forgets it made. A block missing its `id` or
 `statement` is reported rather than dropped: a claim silently discarded leaves
 the note reading as though it recorded something.
 
-`status: catalogued` is the fifth value and it renders its own section, *Taken
-from a catalogue*, rather than joining the unverified list. The two debts differ:
-an asserted claim is settled by a proof or a second source, a catalogued one only
-by a program that reproduces the terms without reading the catalogue. Project
-Euler 241 is why the distinction is in the code rather than in a prompt. Its
-reported answer, 482,316,491,800,641,154, came from twenty lines summing a
+`status: catalogued` renders its own section, *Taken from a catalogue*, rather
+than joining the unverified list, because the two debts differ: an asserted claim
+is settled by a proof or a second source, a catalogued one only by a program that
+reproduces the terms without reading the catalogue. Project Euler 241 is why this
+is code rather than a prompt. Its answer came from twenty lines summing a
 hardcoded copy of OEIS A159907's b-file — a sequence whose definition is the
-problem's own condition restated — while the run's actual enumeration found 5 of
-the 9 terms below 10^8. Both files sat in `code/` with equal standing. A
-catalogue lookup is good evidence that a result is right and no evidence about
-why, so it may confirm a final answer and may never be the reason for one.
+problem's condition restated — while the run's own enumeration found 5 of the 9
+terms below 10^8, and both files sat in `code/` with equal standing. A lookup is
+good evidence that a result is right and none about why, so it may confirm a
+final answer and never be the reason for one.
 
 `research/THREADS.md` (`threads.rs`) is the topic axis. `L0`/`L1`/`L2` fold by
 *arrival* and are sealed once, which keeps provenance honest and scatters a
