@@ -67,17 +67,17 @@ def check_atleast_equisat():
 
 def check_running_top():
     print("== running top_id handoff (decode cannot collide with helpers) ==")
-    # mimic build_base: consecutive atleast with a shared rising top_id
-    top = 0
-    peaks = []
-    for k, b in ((4, 3), (5, 3), (6, 3)):
-        enc = CardEnc.atleast(lits=list(range(1, k + 1)), bound=b,
-                              top_id=top, encoding=EncType.seqcounter)
-        peaks.append(enc.nv)
-        top = enc.nv
-    # helper vars must be strictly above the sentinel C(6,2)=15
-    assert all(p >= 15 for p in peaks), f"helper vars collided: {peaks}"
-    print(f"  nv peaks across three atleast calls: {peaks} (all >= C(6,2)=15) OK")
+    # Mirror build_base exactly: for each u, atleast over the incident edge
+    # vars (1..C(n,2)) with top_id = C(n,2) at the start, then running top.
+    # The decode step only reads edge vars 1..C(n,2); helper vars from the
+    # cardinality encodings must all sit strictly above that.
+    from encode import build_base
+    for n in (4, 6, 8, 10):
+        _, top = build_base(n)
+        C = n * (n - 1) // 2
+        print(f"  n={n}: C(n,2)={C}, base top_var={top} "
+              f"({top - C} helper slots above edge vars)")
+        assert top > C, f"helpers collided with edge vars for n={n}"
     return True
 
 
