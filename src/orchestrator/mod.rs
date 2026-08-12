@@ -354,6 +354,7 @@ impl OrchestratorAgent {
             register_resilient(&mut goals_harness, tool);
         }
         register_recall(&mut goals_harness, &workspace);
+        register_note_recall(&mut goals_harness, &vector_store);
         async_subagents.register("goals", Arc::new(goals_harness), prompts.goals)?;
 
         let registry = Arc::new(default_registry(research_enabled)?);
