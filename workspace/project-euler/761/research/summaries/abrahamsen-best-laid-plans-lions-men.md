@@ -1,83 +1,56 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/abrahamsen-best-laid-plans-lions-men.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Abrahamsen–Holm–Rotenberg–Wulff-Nilsen, "Best Laid Plans of Lions and Men" (SoCG 2017)
 
-<!-- source: http://dagstuhl.sunsite.rwth-aachen.de/volltexte/2017/7205/pdf/LIPIcs-SoCG-2017-6.pdf | converted from PDF -->
+Source: LIPIcs-SoCG-2017, article 6, DOI 10.4230/LIPIcs.SoCG.2017.6 (also arXiv:1703.03687).
+Full text: `research/sources/abrahamsen-best-laid-plans-lions-men.full.md` → [[abrahamsen-best-laid-plans-lions-men.full]]
 
-Best Laid Plans of Lions and Men
+## What the paper establishes
 
-Mikkel Abrahamsen
-∗1, Jacob Holm
-2, Eva Rotenberg
-3, and
-Christian Wulﬀ-Nilsen4
+A peer-reviewed (SoCG 2017, LIPIcs) contribution to the *lion and man* pursuit
+family — the equal-speed, multiple-lion capture game, not the
+runner-swimmer *critical speed* game PE 761 models.
 
-1 Department of Computer Science, University of Copenhagen, Copenhagen,
-Denmark
-miab@di.ku.dk
-2 Department of Computer Science, University of Copenhagen, Copenhagen,
-Denmark
-jaho@di.ku.dk
-3 Department of Computer Science, University of Copenhagen, Copenhagen,
-Denmark
-roden@di.ku.dk
-4 Department of Computer Science, University of Copenhagen, Copenhagen,
-Denmark
-koolooz@di.ku.dk
+- **Definitions (following Bollobás et al.).** Man/lion paths are Lipschitz
+  functions into the region R with the given speed bound. A *strategy* for the
+  man is causal (depends only on the lion's position up to the current time); a
+  winning man strategy must avoid equality with every lion at all t; a winning
+  lion strategy must force equality at some t. A *locally finite* man strategy
+  commits for a positive time depending only on the current state. Key
+  fact (Bollobás et al.): if the man has a locally finite winning strategy the
+  lion has no winning strategy — so the two-can-both-win pathologies of
+  Bollobás–Leader–Walters are excluded for these strategies.
+- **Theorem 6 (main two-lion result).** There exists a *polygonal region in the
+  plane with holes* (11 lakes; exterior and all interior boundaries pairwise
+  disjoint simple polygons, hence rectifiable) in which **two unit-speed lions
+  cannot catch a unit-speed man**: the man has a locally finite winning strategy
+  (runs quarter-to-quarter on a thickened dodecahedron, keeping a constant
+  safety distance to each lion).
+- **Theorem 8 (fast man).** In the whole plane, a man of speed 1+ε (any ε>0)
+  has a locally finite strategy to escape the convex hull of *any* finite
+  number of unit-speed lions, provided he does not start on a lion, keeping a
+  minimum safety distance.
 
-Abstract
+## Why it matters for this run
 
-We answer the following question dating back to J. E. Littlewood (1885–1977): Can two lions
-catch a man in a bounded area with rectiﬁable lakes? The lions and the man are all assumed
-to be points moving with at most unit speed. That the lakes are rectiﬁable means that their
-boundaries are ﬁnitely long. This requirement is to avoid pathological examples where the man
-survives forever because any path to the lions is inﬁnitely long. We show that the answer to
-the question is not always “yes” by giving an example of a region R in the plane where the
-man has a strategy to survive forever. R is a polygonal region with holes and the exterior and
-interior boundaries are pairwise disjoint, simple polygons. Our construction is the ﬁrst truly
-two-dimensional example where the man can survive.
-Next, we consider the following game played on the entire plane instead of a bounded area:
-There is any ﬁnite number of unit speed lions and one fast man who can run with speed 1 + ε
-for some value ε > 0. Can the man always survive? We answer the question in the aﬃrmative
-for any constant ε > 0.
+It is the modern computational-geometry resolution of the *unbounded /
+many-lion / catches-or-not* side of the lion-man canon, and it supplies the
+formal locally-finite/winning-strategy definitions that several of this run's
+other sources (ABG, Bollobás–Leader–Walters) cite. But it does **not** bear on
+PE 761's question:
 
-1998 ACM Subject Classiﬁcation I.3.5 Computational Geometry and Object Modeling
+- PE 761, and the Abel et al. model the run relies on, are about a *single*
+  runner on the *boundary* whose *speed ratio* vs a speed-1 swimmer is the
+  unknown threshold. Abrahamsen et al. study *catch-or-survive-forever* (not a
+  critical speed ratio) with *equal speeds* and a man in the *interior* being
+  approached by lions — a different game with a different quantity.
+- The man in their Theorem 8 is strictly *faster* (1+ε); PE 761's swimmer is
+  speed 1 against a faster runner. Opposite regime.
 
-Keywords and phrases Lion and man game, Pursuit evasion game, Winning strategy
-
-Digital Object Identiﬁer 10.4230/LIPIcs.SoCG.2017.6
-
-1 Introduction
-
-‘A lion and a man in a closed circular arena have equal maximum speeds. What tactics should
-the lion employ to be sure of his meal?’
-1 These words (including the footnote) introduce the
-now famous lion and man problem, invented by R. Rado in the late thirties, in Littlewood’s
-Miscellany [15]. It was for a long time believed that in order to avoid the lion, it was optimal
-for the man to run on the boundary of the arena. A simple argument then shows that the
-
-∗ Research partly supported by Mikkel Thorup’s Advanced Grant from the Danish Council for Independent
-Research under the Sapere Aude research career programme.
-1 The curve of pursuit (L running always straight at M ) takes inﬁnite time, so the wording has its point.
-
-© Mikkel Abrahamsen, Jacob Holm, Eva Rotenberg, and Christian Wulﬀ-Nilsen;
-licensed under Creative Commons License CC-BY
-33rd International Symposium on Computational Geometry (SoCG 2017).
-Editors: Boris Aronov and Matthew J. Katz; Article No. 6; pp. 6:1–6:16
-Leibniz International Proceedings in Informatics
-Schloss Dagstuhl – Leibniz-Zentrum für Informatik, Dagstuhl Publishing, Germany
-
-6:2 Best Laid Plans of Lions and Men
-
-lion could always catch the man by staying on the radius OM deﬁned by the man while
-approaching him as much as possible. However, A.S. Besicovitch proved in 1952 that the man
-has a very simple strategy (following which he will approach but not reach the boundary)
-that enables him to avoid capture forever no matter what the lion does. See [15] for details.
-
-Throughout this paper, all men, lions, and other animals are assumed to be points. One
-can prove that two lions are enough to catch the man in a circular arena, and Croft [8]
-proves that in general a necessary and suﬃcient number of birds to catch a ﬂy inside an
-n-dimensional spherical cage is just n (again, we assume that the ﬂy and the birds have
-equal maximum speeds).
-
-A well-known related discrete game is the cop and robber game: Let G be a ﬁnite connected
-
-*[excerpt ends; 45014 characters not shown — see `research/sources/abrahamsen-best-laid-plans-lions-men.full.md`]*
+```claim
+id: abrahamsen-two-lions-region-man-survives
+statement: There is a polygonal region with holes, all boundaries pairwise-disjoint simple polygons (hence rectifiable), in which two unit-speed lions cannot catch a unit-speed man — the man has a locally finite winning strategy; and in the whole plane a man of speed 1+eps for any eps>0 can escape the convex hull of any finite number of unit-speed lions, given he does not start on a lion.
+hypotheses: lion-and-man game on a rectifiable planar region (Thm 6) or the whole plane (Thm 8), equal speeds for the lions, man speed 1 (Thm 6) or 1+eps (Thm 8), causal (locally finite) strategies, unit-speed bound.
+holds-here: no — this is the equal-speed (or faster-man) multi-lion capture game, not PE 761's single-boundary-runner critical-speed-ratio game; the pool is convex with no holes, whereas their survival region requires holes.
+status: proved (peer-reviewed SoCG 2017, LIPIcs).
+bearing: canonical background & formal strategy definitions; confirms the rectifiability/well-posedness framing in which Abel et al. (the run's governing model) sits; no hexagon value and it does not constrain the run's V_hexagon.
+anchor: research/sources/abrahamsen-best-laid-plans-lions-men.full.md
+```

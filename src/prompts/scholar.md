@@ -52,6 +52,13 @@ Say `unchecked` when you have not checked rather than `yes` when you hope.
 `status` separates what the source proves from what it asserts — a claim marked
 `holds-here: yes` and `status: asserted` is listed as load-bearing but
 unverified, which is what you want when the run is leaning on somebody's word.
+Use `status: catalogued` when the evidence is a term list, a table, or an OEIS
+b-file rather than an argument. That is not a lesser `asserted`, it is a
+different question: an asserted claim needs a proof or a second source, a
+catalogued one needs a program that reproduces the terms without reading the
+catalogue. A run once reported a correct sum of twenty-two terms it had copied
+from a b-file while its own enumeration was missing four of nine, and nothing on
+disk said which file the answer came from.
 Use `contradicts` when a source disagrees with a claim already on disk or with
 recalled memory; that is the most valuable thing you can find and
 it is the one thing nothing else detects. Use `answers` to close an open row in
