@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/html/2007.08965v3 | HTML (experimental) | S. Ku][8], [Jayson Lynch][9] View a PDF of the paper titled Escaping a Polygon, by Zachary Abel and 6 other authors [View PDF][10] [HTML (experimental)][11] Abstract: Suppose an escaping player… |
 | 1 | https://arxiv.org/search/cs?searchtype=author&amp;query=Abel,+Z | Zachary Abel | [Submitted on 17 Jul 2020 ( [v1][2]), last revised 20 Oct 2025 (this version, v3)] # Title: Escaping a Polygon Authors: [Zachary Abel][3], [Hugo Akitaya][4], [Erik D. Demaine][5], [Martin L.… |
 
-_177 further candidates not shown; they are cited once each._
+_178 further candidates not shown; they are cited once each._

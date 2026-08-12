@@ -7,6 +7,7 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `EG-3conn-cubic-planar` | Every 3-connected cubic planar graph contains a cycle of length 2^m for some m≥0 (the conjecture holds for this class). | **unchecked** | proved | `research/ROOT.md` |
+| `EG-BondyVince-two-cycles` | Every simple graph with at most two vertices of degree less than three (except K1 and K2) contains two cycles whose lengths differ by one or two. Every nonbipartite 3-connected graph has two cycles whose lengths differ… | **unchecked** | proved | `research/summaries/bondy-vince-cycles-lengths-differ-one-two.md` |
 | `EG-C4-free-induced-cycle` | Every graph with δ≥3 and no C4 as a subgraph contains an induced cycle Ck for some k≥5 (chordless cycle of length at least 5). | **unchecked** | proved | `research/summaries/gao-shan-P8-free-html.md` |
 | `EG-P12-free-C4C8` | Every P12-free graph with δ≥3 contains a C4 or a C8. | yes | proved | `research/summaries/hegde-real.md` |
 | `EG-P13-free` | Every P13-free graph with δ(G)≥3 contains a cycle of length a power of two (conjecture holds). | **unchecked** | proved | `research/ROOT.md` |
