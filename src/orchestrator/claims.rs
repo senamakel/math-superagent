@@ -497,6 +497,39 @@ impl Ledger {
         out.push_str(&rows);
     }
 
+    /// Lists what the run read out of a catalogue rather than derived.
+    ///
+    /// Separate from *Load-bearing but unverified* because the two ask for
+    /// different work. An asserted claim wants a second source or a proof; a
+    /// catalogued one wants a program that reproduces the terms without reading
+    /// the catalogue. Collapsing them loses that, and the distinction is the
+    /// whole lesson of a run that reported a correct sum it had not computed.
+    fn append_catalogued(&self, out: &mut String) {
+        let mut rows = String::new();
+        for claim in self
+            .claims
+            .iter()
+            .filter(|claim| claim.status == Status::Catalogued)
+        {
+            let _ = writeln!(
+                rows,
+                "- `{}` ({}) — read from a catalogue; no derivation here reproduces it",
+                claim.id, claim.source
+            );
+        }
+        if rows.is_empty() {
+            return;
+        }
+        out.push_str(
+            "\n## Taken from a catalogue\n\nThese are lookups, not derivations. A catalogue is \
+             good evidence that a result is right and no evidence at all about why, so one of \
+             these may confirm a final answer and may never be the reason for it. Reproduce the \
+             terms with a program that does not read the catalogue, then say so; until then, \
+             report the result as looked up.\n\n",
+        );
+        out.push_str(&rows);
+    }
+
     /// Reports blocks that could not be read, rather than dropping them.
     ///
     /// A claim silently discarded for a missing `id` is worse than a visible
