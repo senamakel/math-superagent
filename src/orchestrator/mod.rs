@@ -268,7 +268,11 @@ impl OrchestratorAgent {
         let vector_store = VectorStore::from_env()?;
         let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()))
             .with_session_memory(vector_store.clone());
-        let documents = WorkspaceDocuments::new(workspace.clone())?;
+        // Every download is filed in this project's library dataset as well as
+        // under `research/`, so what the run gathered is reachable by wording
+        // rather than only by a path someone remembers.
+        let documents =
+            WorkspaceDocuments::new(workspace.clone())?.with_library(vector_store.clone());
         // Commits the workspace after every successful write, so a rewritten
         // solution or an edited belief is recoverable rather than lost.
         let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> = Arc::new(
