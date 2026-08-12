@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > This is my workspace to focus on solving complicated math problems based on
-> three fundamental insights I've derived from building harnesses and agents.
+> four fundamental insights I've derived from building harnesses and agents.
 > 
 > 1. Cost of tokens/intelligence has dropped significantly (Deepseek V4 flash) making it incredibly efficient to burn large amount of tokens for intelligence
 > 2. Context rot can be reduced with tiering of agents (subagents)
@@ -111,10 +111,10 @@ no single-turn mode: a hard problem's first approach is usually wrong, and the
 single-turn path differed only in throwing that information away.
 
 ```text
-  attempt ──> reflect ──┬─ solved ────────────────> done
+  attempt ──> reflect ──┬─ solved ──────────────────────────> done
      ▲                  ├─ retry ─────────────────> attempt
      │                  └─ stuck ──> diversify ────┘
-     └────────────────────────────────────────────┘
+     └────────────────────────────────────────────────┘
 ```
 
 Reflection runs after every attempt, not only after failures, and an answer
