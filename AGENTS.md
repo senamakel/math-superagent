@@ -645,6 +645,19 @@ every run. Keep it far above the fan-out the registry can produce. A run holds
 its slot while it waits in `await_agent` for children it spawned itself, so a
 pool that could fill entirely with parents waiting on queued children would
 deadlock; the headroom is what makes that unreachable.
+The session dataset is named for the *project*, not the run:
+`math_agent_sessions__project_euler_185`. It briefly carried the run id too —
+`…__s18cb030630d9e2be-1`, nanoseconds and a pid — which made the name unique per
+process, so every restart opened a fresh dataset, and because a run is shown
+only its own session dataset, every restart silently *discarded* the session
+memory of every earlier run on that problem. One problem restarted eight times
+in a day left eight datasets, seven of them unreachable. The run id belongs
+inside the document, where `remember_session` already writes it as a `Session:`
+line; the dataset is the scope, and the scope is the problem. `visible_datasets`
+also accepts `<project>__<anything>`, so the per-run datasets the old naming
+stranded are readable again — with the `__` separator required, because without
+it project `euler_18` would read `euler_185`'s memory.
+
 Every role with memory gets three tools, not two: `remember_memory` writes,
 `recall_memory` returns the passages nearest a phrase, and `relate_memory`
 returns the *edges* the graph holds around a subject. The third is the one that
