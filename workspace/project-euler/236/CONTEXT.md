@@ -4,7 +4,7 @@ What this run knows and on what basis. Nearly every role is sent this file on ev
 
 ## Established
 
-**PE236 — Luxury Hampers (sourced: `problem.md`, official Project Euler statement).** Let a_i = count supplied by A of product i, b_i = count for B, s_i/t_i = respective spoiled counts. The single ratio m satisfies, for all five products i: s_i/a_i = m·(t_i/b_i), and overall: (Σs_i)/(Σa_i) = m·(Σt_i)/(Σb_i), with m > 1 rational. All counts are integers; m determined by the smallest positive integers (s_i, t_i) consistent with the first five equalities. Supply data (computed, hand-checked):
+**PE236 — Luxury Hampers (sourced: `problem.md`, official Project Euler statement).** Let a_i = count supplied by A of product i, b_i = count for B, s_i/t_i = respective spoiled counts. The single ratio m satisfies, for all five products i: t_i/b_i = m·(s_i/a_i) (B's per-product rate worse by m), and overall: (Σs_i)/(Σa_i) = m·(Σt_i)/(Σb_i) (A's overall rate worse by m), with m > 1 rational. All counts are integers; m determined by the smallest positive integers (s_i, t_i) consistent with the first five equalities. Supply data (computed, hand-checked):
 
 | i | product | a_i | b_i |
 |---|---------|-----|-----|
