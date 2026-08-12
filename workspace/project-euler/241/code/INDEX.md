@@ -20,7 +20,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `hemiperfect_dfs.py` | Reference implementation of the forced-denominator cancellation DFS for hemiperfect numbers <= 10^18 (template; not executed in this environment — no shell available). Validates the recursion described in the report. |
 | `maxab.py` | _(undescribed)_ |
 | `pattern_relations.py` | _(undescribed)_ |
-| `perk_seqs.py` | _(undescribed)_ |
+| `perk_seqs.py` | Stores the per-abundancy-k subsequences of the 22 known hemiperfects (K2,K3,K4,K5) for the sequence tools. All show no polynomial/recurrence structure. |
 | `quotients.py` | _(undescribed)_ |
 | `run_count_signatures.py` | _(undescribed)_ |
 | `seqgen.py` | _(undescribed)_ |
