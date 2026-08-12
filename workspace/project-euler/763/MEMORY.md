@@ -128,6 +128,23 @@ shapes, D counts configurations — but it identifies the "shape space" of the
 3D amoeba as the smooth-composition family. Strongest new structural lead;
 deriving how many configs realize each histogram is the open refinement.
 
+## RESOLVED REFINEMENT (this run): EXACT per-histogram multiplicity closed form
+The open refinement "how many configs realize each histogram" is solved
+EXACTLY over N=2..14 (in-sample + OOS, 694 histograms, zero exceptions,
+code/pattern/final_mult_verify.py). For histogram h=(0,a_1..a_M=3), M=max
+level, n_k=#interior levels with exactly k cells:
+    mult(h) = 2^(2·n_4)·3^(n_1+n_2+n_3−1)       if no level has 6 cells
+           = 10·2^(2·n_4)·3^(n_1+n_2+n_3−2)     if some level has 6 cells
+Summing over all histograms reproduces D(N) for all N=2..14 (partition check,
+code/pattern/check_d_via_histform.py). The 2-power = 2·(n_4); 3-exponent =
+n1+n2+n3−1; only exceptional family contains a 6-level (with 7-level, ×10).
+SURVIVED out-of-sample test at N=13,14 (fresh BFS data
+code/out/per_hist_mult_13_14.txt, 443 histograms). NOT yet derived from
+Eriksson's folded-polyominoid bijection — that derivation is the open step.
+NOTE: does NOT by itself reach D(10000) — H(N)=A186085 ~1.67^N is still huge;
+the next step is a transfer/DP over the smooth-composition histogram space
+using this closed weight (3D analog of the 2D G(k,m) kernel).
+
 ### OVERFIT CONFIRMED AGAIN
 find_linear_recurrence returned an order-6 const-coeff recurrence fitting H(2..14)
 perfectly, but it diverges from published A186085 at n=6. Direct proof that a
