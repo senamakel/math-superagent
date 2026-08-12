@@ -204,8 +204,10 @@ both-win pathologies are ruled out; (b) the homothetic scaled safe-region +
 boundary-time equalization mechanism is confirmed by Tao's inner-square and the
 princess-beast staged arc; (c) **none gives a hexagon exact value** — the paper's
 exact list is disk/triangle/square only. `research/notes/` has only the circle and
-polygon-generalization notes, so `hexagon-first-principles.md` is still missing;
-when it lands it is the missing independent route, until then the value stays
+polygon-generalization notes, so `hexagon-first-principles.md` is still missing
+(`code/hexagon_first_principles_explore.py` is an un-run first-principles
+*implementation* — see Validation); when it lands it is the missing independent
+route, until then the value stays
 single-route (see Validation). The thread's "Next" (librarian downloads) is
 superseded.
 
