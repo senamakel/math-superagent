@@ -140,14 +140,39 @@ impl<S: Send + Sync> UntruncatedModel<S> {
     }
 }
 
-/// Builds the re-issued request: the same room, and the reason it is being asked again.
+/// The room a re-issue gets, and it is deliberately far less than the first
+/// attempt had.
+///
+/// The comment on [`MAX_REISSUES`] settled that the cap must not *grow* — a turn
+/// reporting `out=24000` with `reasoning_tokens=23999` is not short of room, so
+/// doubling bought a longer silence. It stopped there, and the case it did not
+/// consider is the one PE620 hit: re-issuing at the *same* 48,000 tokens invites
+/// exactly the turn that just failed. Its `tool_builder` truncated at 48,000
+/// with no tool call, was asked again with 48,000, and had emitted nothing six
+/// and a half minutes later — while the run's own pattern agent wrote in its
+/// scratch that `code/` was empty and it was blocked. Across eighteen minutes
+/// that run made zero `write_tool_file` and zero `execute_command` calls.
+///
+/// So the re-issue is given a ceiling low enough that committing to a tool call
+/// is the only way to finish inside it. That bounds the wait as well as the
+/// behaviour: the request allowance is derived from the cap, so 48,000 tokens
+/// can legitimately sit for the full twenty-minute ceiling before anything gives
+/// up, and 6,000 cannot.
+const REISSUE_OUTPUT_TOKENS: u32 = 6_000;
+
+/// Builds the re-issued request: less room than last time, and the reason it is
+/// being asked again.
 ///
 /// The instruction is appended as a system message rather than folded into the
 /// existing one, so it arrives *after* the conversation the model was cut off
 /// in the middle of. Prepended, it is one more line of standing policy at the
 /// top of a long prompt; appended, it is the most recent thing said.
+///
+/// `min` rather than a flat constant, because a role already running on a small
+/// cap must not have its room silently *raised* by being cut off — that would
+/// make truncation a way to buy tokens.
 fn reissued(request: &ModelRequest, cap: u32) -> ModelRequest {
-    let mut retry = request.clone().with_max_tokens(cap);
+    let mut retry = request.clone().with_max_tokens(cap.min(REISSUE_OUTPUT_TOKENS));
     retry.messages.push(Message::system(REISSUE_INSTRUCTION));
     retry
 }
