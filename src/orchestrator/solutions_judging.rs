@@ -602,8 +602,18 @@ fn record_verdict(
     // the workspace is the signature failure: a confident final report,
     // plausible numbers, and nothing that ever ran. Ending the loop on that
     // is worse than not finishing, because it presents a guess as a result.
+    // The qualified close. It carries the same evidence requirement as SOLVED —
+    // an answer nothing computed is not an answer, whether or not the reflection
+    // hedged about how many routes reached it — and, unlike SOLVED, it has to be
+    // said twice before it ends anything.
+    let unverified = upper.contains("VERDICT: UNVERIFIED") || upper.contains("VERDICT:UNVERIFIED");
     let evidenced = workspace.is_none_or(has_executable_artifact);
     state.solved = claimed && evidenced;
+    if unverified && evidenced {
+        state.unverified += 1;
+    } else {
+        state.unverified = 0;
+    }
     if claimed && !evidenced {
         state.lessons.push(
             "Reported SOLVED but the workspace contains no program. An answer that was never \
