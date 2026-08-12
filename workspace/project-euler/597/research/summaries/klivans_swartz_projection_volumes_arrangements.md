@@ -1,40 +1,37 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/klivans_swartz_projection_volumes_arrangements.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Klivans & Swartz, "Projection volumes of hyperplane arrangements" (arXiv:1001.5095, 2010)
 
-<!-- source: https://arxiv.org/abs/1001.5095 | converted from HTML -->
+Source URL: https://arxiv.org/abs/1001.5095 (full text at `research/sources/klivans_swartz_projection_volumes_arrangements.full.md`).
 
-## What is in it
+## What it establishes
 
-- Mathematics > Combinatorics
-- Title: Projection volumes of hyperplane arrangements
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+For any finite real hyperplane arrangement A in R^d, the **average projection volumes of the maximal cones (regions)** are exactly the coefficients of the characteristic polynomial of A. Specifically (settling the Drton–Klivans conjecture): for each k, the sum over regions C of the spherical volume of points projecting into the interior of a k-dimensional face of C equals a multiple of |coef of t^(r−d+k)| in χ_A(t). Consequence: the angle sums of a zonotope are given by the characteristic polynomial of the order dual of the intersection lattice of the arrangement.
 
+## Bearing on PE597
 
-## What it claims
+This is the standard reference for the *aggregate* statement "the collection of regions, weighted by projection/volume data, is encoded by the characteristic polynomial without enumerating the regions themselves." Shape-wise that is what the run's parity needs — p(n,L) is a signed sum of region (simplex-section) volumes on the torpids parity arrangement — and a charpoly-level formula would beat region enumeration. **But the hypotheses and the statistic do not transfer directly:** Klivans–Swartz aggregates unweighted (±1) projection volumes, whereas the torpids parity sum requires a sign weight −1 per odd-parity cell, which is not what the average-projection-volume statistic carries. So this is a named, citable model for "region statistics from the intersection lattice / characteristic polynomial," not a solver of the finite-finish parity. Pointer + adjacent machinery, with no region-by-region enumeration needed for the *average* case; the run's signed case is not covered.
 
-Abstract: We prove that for any finite real hyperplane arrangement the average projection volumes of the maximal cones is given by the coefficients of the characteristic polynomial of the arrangement. This settles the conjecture of Drton and Klivans that this held for all finite real reflection arrangements. The methods used are geometric and combinatorial. As a consequence we determine that the angle sums of a zonotope are given by the characteristic polynomial of the order dual of the intersection lattice of the arrangement.
+## Cross-references
 
-Subjects: | Combinatorics (math.CO) |
+- Kabluchko 2020 (arXiv:2008.06719) gives the affine counterpart (chamber-projection identities from the charpoly).
+- Stanley IAS/PCMI notes carry Zaslavsky's theorem (region counts from χ_A) — same "arrangement statistic from lattice" theme.
+- Postnikov–Stanley / Bernardi / Fishel: braid-deformation region counts; the run established the torpids arrangement is none of these.
 
-Cite as: | [arXiv:1001.5095][6] [math.CO] |
+```claim
+id: arrangement-projection-volume-charpoly
+statement: For any finite real hyperplane arrangement A in R^d, the average projection volumes of its maximal cones (regions) are given by the coefficients of the characteristic polynomial of A (settling the Drton–Klivans conjecture); equivalently the region-collection, weighted by projection-volume data, is encoded by χ_A without enumerating regions.
+hypotheses: finite real hyperplane arrangement; (unweighted) average projection volumes over regions.
+holds-here: unchecked — the torpids parity sum needs a SIGN weight (−1 per odd-parity cell) over simplex-section volumes, which this average-projection-volume statistic does not carry.
+status: sourced (arXiv:1001.5095)
+bearing: named, primary evidence that "an aggregate of cell data is a characteristic-polynomial statistic, no region enumeration"; a model for any charpoly-based route to the parity sum, not the parity answer.
+anchor: Klivans & Swartz, arXiv:1001.5095
+```
 
-| (or [arXiv:1001.5095v1][7] [math.CO] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.1001.5095][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 5873 character source; every section, statement, and proof in full at `research/sources/klivans_swartz_projection_volumes_arrangements.full.md`]*
+```claim
+id: affine-chamber-projection-profile-charpoly
+statement: For a finite collection of affine hyperplanes in R^d, for each k the number of chambers P with metric-projection dimension dim(x,P)=k is independent of x (off a Lebesgue null set) and equals |k-th coefficient of the characteristic polynomial| of the arrangement.
+hypotheses: finite affine arrangement in R^d; Lebesgue-generic x.
+holds-here: unchecked — the torpids arrangement is affine (hyperplanes (L−p_j)/v_j and 40(j−i)/(v_i−v_j) cut into the simplex) but the statistic counted (projection dimension) is not the parity/sign weight and the relevant measure is simplex-section volume, not spherical projection measure.
+status: sourced (arXiv:2008.06719)
+bearing: the affine-chamber analogue of Klivans–Swartz; supports "chamber-aggregate statistics from the characteristic polynomial" as a route principle, not the parity itself.
+anchor: Kabluchko, arXiv:2008.06719
+```

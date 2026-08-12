@@ -1,26 +1,18 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/brandenburg_de_loera_meroni_slices_slabs_2026.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Brandenburg, De Loera & Meroni, "Critical moments of slices and slabs of the cube (and other polyhedral norms)" (arXiv:2603.25643, 2026)
 
-<!-- source: https://arxiv.org/abs/2603.25643 | converted from HTML -->
+Source URL: https://arxiv.org/abs/2603.25643 (full text at `research/sources/brandenburg_de_loera_meroni_slices_slabs_2026.full.md`). Sequel to the same authors' "The Best Ways to Slice a Polytope" (arXiv:2304.14239, already in the library).
 
-## What is in it
+## What it establishes
 
-- Mathematics > Combinatorics
-- Title: Critical moments of slices and slabs of the cube (and other polyhedral norms)
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+A unified algebraic-combinatorial framework for **explicit, piecewise-rational, combinatorially indexed parametric formulas for volumes and higher moments of slices and slabs of polyhedral norm balls** (extending the slice framework to slabs). The parameter space of all slices is decomposed into slicing chambers governed by hyperplane arrangements; within each chamber the volume/moment is a rational function of the (a,t) slicing parameters. This yields a polynomial-time algorithm (fixed dimension) for slice/slab moments of arbitrary order, plus an algebraic analysis of their critical points. Experimentally: for the 4-d unit cube, the volumes of slices and slabs are represented by exactly fourteen distinct rational functions across maximal slicing chambers (modulo signed coordinate permutations).
 
+## Bearing on PE597
 
-## What it claims
+This is the strongest current statement that "a parametric family of polytope-section volumes is piecewise rational, chamber by chamber, and each chamber's formula can be obtained without visiting the polytope cells." It is direct support for the run's verified conjecture that **p(n,L) is a single rational function of m=L/40 on the physical range** (an analogue of the Brandenburg–De Loera–Meroni slicing-chamber theorem already in the library as `brandenburg_de_loera_meroni_best_ways_slice_polytope`). **Caveat:** the objects treated are slices/slabs of a fixed polytope by a *single* sweeping hyperplane family, whereas the torpids parity arrangement is an *arrangement cut into the simplex* (a union of simplex-section cells, summed with parity signs) — so this confirms the "rational-on-a-chamber" principle the run already relies on, but does not hand over the n=13 coefficients; the chamber decomposition of the parity arrangement itself is still the hard object.
 
-Abstract: In this article, we present a unified algebraic-combinatorial framework for computing explicit, piecewise rational, and combinatorially indexed parametric formulas for volumes and higher moments of slices and slabs of polyhedral norm balls. Our main method builds on prior work concerning a combinatorial decomposition of the parameter space of all slices of a polytope. We extend this framework to slabs, and find a polynomial-time algorithm in fixed dimension. We also exhibit computational methods to obtain moments of arbitrary order for all slices or slabs of any polyhedral norm ball, and an algebraic framework for analyzing their critical points. In addition, we present an experimental study of the $d$-dimensional unit cube. Our analysis recovers and reinterprets the known volume formulas for slabs and slices of the two- and three-dimensional cubes, first obtained by König and Koldobsky. Moreover, our method identifies a new complete family of fourteen rational functions giving the volumes of slices and slabs of the four-dimensional cube. We further compute explicit higher…
+## Cross-references
 
-*[digest of a 7659 character source; every section, statement, and proof in full at `research/sources/brandenburg_de_loera_meroni_slices_slabs_2026.full.md`]*
+- Brandenburg–De Loera–Meroni 2023 (arXiv:2304.14239): same authors' slice-paper; Thm 1.1 rational-on-chamber.
+- Lasserre "Volume of slices and sections of the simplex" (hal-01095071): closed-form simplex-section volumes.
+- Latte / Büeler–Enge–Fukuda: exact integration over polytopes.
+- König–Koldobsky: classical cube-slice volume formulas recovered by this framework.

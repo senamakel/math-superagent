@@ -1,30 +1,17 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/kabluchko_characteristic_polynomial_affine_chambers.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Kabluchko, "An identity for the coefficients of characteristic polynomials of hyperplane arrangements" (arXiv:2008.06719, 2020)
 
-<!-- source: https://arxiv.org/abs/2008.06719 | converted from HTML -->
+Source URL: https://arxiv.org/abs/2008.06719 (full text at `research/sources/kabluchko_characteristic_polynomial_affine_chambers.full.md`).
 
-## What is in it
+## What it establishes
 
-- Mathematics > Metric Geometry
-- Title: An identity for the coefficients of characteristic polynomials of hyperplane…
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+For a finite collection of **affine** hyperplanes in R^d dissecting R^d into polyhedral chambers: for each k ∈ {0,…,d}, the number of chambers P for which the metric projection of a point x lands in the relative interior of a k-dimensional face of P — denoted dim(x,P) = k — is **independent of x** (except on a Lebesgue null set), and equals the absolute value of the k-th coefficient of the characteristic polynomial of the arrangement. In the special case of reflection arrangements this proves the Drton–Klivans conjecture.
 
+## Bearing on PE597
 
-## What it claims
+This is the affine-chamber analogue of Klivans–Swartz (the run's parity arrangement is affine: hyperplanes (L−p_j)/v_j and 40(j−i)/(v_i−v_j), assigned to the simplex). It shows that an aggregate "profile" of the chambers — here the distribution of projection-face dimensions — is a charpoly coefficient and does not require enumerating the chambers. **Caveat identical to Klivans–Swartz:** the statistic counted (projection dimension) is not the torpids sign/parity weight, and the volume is not the simplex-section volume the run needs; it is surface (spherical) projection measure. So it is the standard result that "chamber-aggregate statistics come from the characteristic polynomial," a named lead for any charpoly-based route to the parity sum, not itself the parity answer. No region enumeration is needed to get the *counts* it describes.
 
-Abstract: Consider a finite collection of affine hyperplanes in $\mathbb R^d$. The hyperplanes dissect $\mathbb R^d$ into finitely many polyhedral chambers. For a point $x\in \mathbb R^d$ and a chamber $P$ the metric projection of $x$ onto $P$ is the unique point $y\in P$ minimizing the Euclidean distance to $x$. The metric projection is contained in the relative interior of a uniquely defined face of $P$ whose dimension is denoted by $\text{dim}(x,P)$. We prove that for every given $k\in \{0,\ldots, d\}$, the number of chambers $P$ for which $\text{dim}(x,P) = k$ does not depend on the choice of $x$, with an exception of some Lebesgue null set. Moreover, this number is equal to the absolute value of the $k$-th coefficient of the characteristic polynomial of the hyperplane arrangement. In a special case of reflection arrangements, this proves a conjecture of Drton and Klivans [A geometric interpretation of the characteristic polynomial of reflection arrangements, Proc. Amer. Math. Soc., 138(8): 2873-2887, 2010].
+## Cross-references
 
-Comments: | 18 pages, no figures. Compared to the previous version,…
-
-S…
-
-*[digest of a 7127 character source; every section, statement, and proof in full at `research/sources/kabluchko_characteristic_polynomial_affine_chambers.full.md`]*
+- Klivans–Swartz arXiv:1001.5095 (central-arrangement projection volumes).
+- Cites Lofano–Paolini arXiv:1809.02476 and Drton–Klivans PAMS 138(8) 2010.
+- Stanley notes (Zaslavsky) for the region-count theme.

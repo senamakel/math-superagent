@@ -22,6 +22,16 @@ The Hesterberg thesis (the primary source behind Abel et al.) likewise proves
 circle and wedge only; its exact list is circle + wedge, with general-polygon
 bounds (9.2504) too coarse for an 8-decimal answer.
 
+## Sourcing tier check (this cycle, 2026)
+
+"Escaping a Polygon" has NOT appeared in the SoCG 2021 proceedings: a search
+of the SoCG 2021 table of contents (drops.dagstuhl.de LIPIcs-volume-189) for
+that title finds nothing, and the dblp entry for arXiv:2007.08965 lists no
+venue (Informal/Other Publication). So as of this cycle it is the **arXiv v3
+preprint (2025-10-20)** plus Hesterberg's MIT thesis (2018), not a
+peer-reviewed conference/journal item. Cite it accordingly — rigorous preprint,
+with exact values proven only for disk/triangle/square.
+
 ## Consequence for the run's answer
 
 V_hexagon = 2 + 2√21/3 ≈ **5.0550504633** rests **solely on the stewbasic

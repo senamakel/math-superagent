@@ -102,7 +102,7 @@ such and re-attempted.
 - [x] Ghaffari–Mostaghim 2018 Cayley downloaded (preview; `research/sources/ghaffari-mostaghim-cayley-erdos-gyarfas.full.md`): EG holds for Cayley on generalized quaternion/dihedral/semidihedral/p^3 groups
 - [x] Hu–Shen P10-free downloaded (`research/sources/hu-shen-P10-free-erdos-gyarfas.full.md`): every P10-free graph with δ≥3 has a C4 or C8
 - [x] Markström original computational notes — already on disk (`research/sources/markstrom-extremal-graphs.full.md`); confirmed while cross-checking
-- [x] Royle original computational notes — already on disk (`research/sources/royle-2n-conjecture.md`)
+- [x] Royle original computational notes — already on disk (`research/sources/royle-2n-conjecture.md`): UWA archive of the 2^n conjecture page — n≤15 check with makeg (min deg 3, no edge between two degree->3 vertices, no C4, then check C8), the "at most one vertex of degree two" relaxation, and the three-copies-joined-to-a-central-vertex 1-connected construction; counts table n=9..15
 - [ ] Gould's cycle survey — not located as an open PDF; the adjacent-theory gap is instead covered by Bondy–Vince + Gao–Huo–Liu–Ma unified + Liu–Ma cycle-lengths-min-degree (all on disk) + Marczyk 2008 survey (Disc. Math. 454) identified, not downloaded
 - [x] Girth/degree extremal literature — EFRS 1999 statement captured; Sudakov–Verstraëte 2008 (on disk) proves Erdős's |C(G)|=Ω(d^⌊(g-1)/2⌋) conjecture
 - [ ] Daniel–Shauger 2001 actual paper — only search results on disk, not the paper (conference proceedings, no free PDF found)
@@ -124,3 +124,39 @@ Daniel–Shauger 2001 and Shauger 1998 (conference proceedings, no free PDF),
 Verstraëte 2005 full text (paywalled), and a dedicated EG survey (Shah–
 Purohit–Gulzar 2017 "A survey and strengthening..." identified but not
 downloaded).
+
+## What this cycle added (librarian run 2)
+
+- **Ghasemi–Varmazyar 2021** (Matematički Vesnik 73(1) 37–42, open-access PDF)
+  now on disk: settles the conjecture for **connected Cayley graphs on groups of
+  order 2p² and 4p** (p odd prime), all via explicit 4-/8-/16-cycles. Also the
+  **primary Erdős–Gyárfás founding quote** ("we are convinced now that this is
+  false... but we never found a counterexample even for r=3") quoted verbatim.
+  `research/sources/ghasemi-varmazyar-erdos-gyarfas-cayley-2p2.full.md` +
+  summary. This closes the Phase-1 "original statement in a primary source"
+  priority.
+- **Potočnik–Vidali 2022** (Discrete Math 345:112734, arXiv:2005.01635, open
+  HTML) now on disk: complete **classification of cubic vertex-transitive graphs
+  of girth 6** (except the Desargues graph: toroidal hexagonal skeletons /
+  hyperbolic triangulation truncations / dihedral-scheme truncations). The
+  structural census behind the cubic-bipartite and cubic-vertex-transitive
+  restrictions of the conjecture, and behind Gebendorfer's girth-6 paper.
+  `research/sources/potocnik-vidali-cubic-vertex-transitive-girth6-html.full.md`
+  + summary.
+- **EFRS 1999 full text confirmed on disk** (the thread had it as 403-blocked;
+  reopened with Wayback: `research/sources/efrs-cycle-lengths-degree-girth.full.md`
+  has the full theorems/proofs). Thread item ticked.
+- **Royle 2^n primary note confirmed on disk** (`research/sources/royle-2n-conjecture.md`).
+  Thread item ticked.
+
+### Still NOT on disk (genuine gaps)
+- **Gebendorfer girth-12 paper** ("...Cubic Vertex-Transitive Graphs of Girth
+  Twelve Without Sixteen-Cycles...", 2026): no open copy — ResearchGate 403,
+  no arXiv. Only title/existence recorded. NOT an established result.
+- **Gebendorfer girth-6 paper** ("Power-of-Two Cycles in Cubic Bipartite
+  Vertex-Transitive Graphs of Girth Six"): title only on the author's Scholar
+  profile; no SSRN/arXiv open text found this cycle. Same caveat.
+- **Shauger 1998 / Daniel–Shauger 2001**: remain Google-Scholar search stubs,
+  not the papers (conference proceedings, no free PDF). The two claw-free /
+  K1,m-free settled classes still rest on citation, unverified primary text.
+- **Shah–Purohit–Gulzar 2017 survey**: MaRDI/zbMATH only, no PDF located.
