@@ -139,11 +139,44 @@ and it closes the gap between what a run gathered and what it could recall.
 `download_document` wrote `research/…` and `index_document` wrote a local
 literal-term index; nothing reached Cognee, while every prompt told the roles
 that Cognee was the durable catalogue. Filing happens in the download path,
-where the converted text is already in hand and free to file, bounded at
-`MAX_SOURCE_CHARS` — recall returns a chunk either way and the whole text stays
-on disk beside the digest. It is best effort and *reported*: a memory that
-refused the document must not fail a download that succeeded, but a library the
-run believes is searchable and is not is worse than one it knows is not.
+where the bytes are already in hand and free to file. It is best effort and
+*reported*: a memory that refused the document must not fail a download that
+succeeded, but a library the run believes is searchable and is not is worse
+than one it knows is not.
+
+What is filed is the **original bytes**, not the runtime's conversion of them.
+Sending `readable::convert`'s Markdown — capped at 200,000 characters — made
+the library a copy of one converter's opinion: a PDF whose text layer would not
+extract reached Cognee as an error rather than as a paper, a long reference page
+arrived with its tail missing, and every structural cue the original carried was
+flattened before the graph ever saw it. Cognee runs its own extraction, and it
+is better than the runtime's at the one job the runtime does worst — a probe
+uploading a PDF got back `Page 1: Theorem 1. …`, with page structure
+`pdf-extract` does not produce. The declared content type is passed through, but
+magic bytes beat it, on the same evidence the download path records: a PDF
+served as `text/html` is still a PDF, and uploading it as text spends the
+extraction on the wrong parser.
+
+Two files go up in one request, because `data` is a list on Cognee's side: the
+source itself, and a card carrying the project, the workspace path, and the URL.
+The card is what keeps a recalled chunk traceable to a file on disk — without
+it a passage surfaces naming no source, and a claim nobody can trace is worth
+less than no claim. One request rather than two, so a card can never describe a
+document whose upload failed.
+
+No character cap applies to the upload, and it does not need one: the size is
+bounded where the bytes arrive, by `documents::MAX_DOCUMENT_BYTES`, which
+abandons a transfer over 5 MiB mid-stream. Truncating raw bytes would be worse
+than truncating text — half a PDF is not a shorter PDF, it is a file the
+extractor cannot open.
+
+`ALLOW_HTTP_REQUESTS` is enabled on the memory server, so `/add` and `/remember`
+also accept a URL in place of an uploaded file. The download path does not use
+it: the runtime has the bytes already, and handing over a URL would mean a
+second fetch that skips the 5 MiB bound, the frontier's fetch ledger, and the
+`raw/` archive. Note what the flag grants — the *server* performs the fetch,
+from inside the Docker network, where the runtime container's egress rules do
+not apply. The API stays bound to `127.0.0.1` for that reason.
 
 Every write to Cognee is queued rather than awaited, and one number —
 `ENQUEUE_TIMEOUT` — bounds the enqueue for all of them. `remember` used to wait

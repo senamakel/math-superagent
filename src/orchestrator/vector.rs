@@ -62,13 +62,13 @@ const CHUNK_SEARCH: &str = "CHUNKS";
 /// than a model's prose about it.
 const GRAPH_SEARCH: &str = "GRAPH_COMPLETION";
 
-/// The most of a source that is handed to Cognee.
-///
-/// A converted reference page reaches 91,190 characters and a paper more, and
-/// what recall returns is a chunk either way. The cap bounds one multipart
-/// request rather than what the library may hold, and the whole text stays on
-/// disk beside the digest, which is where a reader who needs all of it goes.
-const MAX_SOURCE_CHARS: usize = 200_000;
+// A source is uploaded whole rather than capped. The old 200,000-character
+// bound existed because the runtime sent its own conversion, which it could
+// truncate freely — the full text was on disk beside the digest either way.
+// Raw bytes have no such spare copy in Cognee, and truncating them would hand
+// the extractor half a PDF. The size is already bounded where it arrives:
+// `documents::MAX_DOCUMENT_BYTES` refuses anything over 5 MiB mid-stream, so
+// nothing larger than that can reach this path.
 
 /// How long a write may spend enqueueing before the caller is told it failed.
 ///
@@ -327,19 +327,71 @@ impl VectorStore {
     ///
     /// Returns an error when Cognee is unreachable, refuses the document, or
     /// does not accept it within [`ENQUEUE_TIMEOUT`].
-    pub(super) async fn remember_source(&self, path: &str, url: &str, text: &str) -> Result<()> {
-        let document = format!(
-            "# Source\n\nProject: {}\nPath: {path}\nURL: {url}\n\n{}\n",
+    /// Files one downloaded source in this project's library as the bytes that
+    /// arrived, not as the runtime's rendering of them.
+    ///
+    /// This used to send `readable::convert`'s Markdown, capped at 200,000
+    /// characters. That made the library a copy of one converter's opinion:
+    /// a PDF whose text layer would not extract reached Cognee as an error
+    /// rather than as a paper, a long reference page arrived with its tail
+    /// missing, and every structural cue the original carried — headings,
+    /// tables, the reference list — was already flattened before the graph saw
+    /// it. Cognee does its own extraction, so handing it the original bytes
+    /// gives it more to work with than the runtime can, and costs the runtime
+    /// nothing: the bytes are already in hand from the download.
+    ///
+    /// Two files go in one request. The source keeps its real name and content
+    /// type; the card beside it carries the project, the workspace path, and
+    /// the URL, because a chunk recalled from the graph has to be traceable to
+    /// a file on disk. Without the card a recalled passage names no source, and
+    /// a claim nobody can trace is worth less than no claim.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when Cognee is unreachable or refuses the upload.
+    pub(super) async fn remember_source(
+        &self,
+        path: &str,
+        url: &str,
+        bytes: &[u8],
+        content_type: Option<&str>,
+    ) -> Result<()> {
+        let card = format!(
+            "# Source\n\nProject: {}\nPath: {path}\nURL: {url}\n\nThe document itself was \
+             filed alongside this card as `{}`. Read `{path}` in the workspace for the \
+             converted text.\n",
             self.project,
-            truncate_chars(text, MAX_SOURCE_CHARS)
+            source_file_name(path, content_type)
         );
-        self.enqueue(
-            document,
-            format!("source-{}.md", slug(path)),
-            &self.library_dataset,
-            &library_node_set(&self.project),
+        let card_part = reqwest::multipart::Part::bytes(card.into_bytes())
+            .file_name(format!("source-{}.md", slug(path)))
+            .mime_str("text/markdown")
+            .map_err(|error| tinyagents::TinyAgentsError::Tool(error.to_string()))?;
+        // The declared type is passed through when it is one Cognee can act
+        // on, and sniffed otherwise. Servers mislabel routinely — the download
+        // path already prefers magic bytes over the header for that reason —
+        // so a mislabelled PDF must still arrive as a PDF.
+        let mime = source_mime(bytes, content_type);
+        let source_part = reqwest::multipart::Part::bytes(bytes.to_vec())
+            .file_name(source_file_name(path, content_type))
+            .mime_str(&mime)
+            .map_err(|error| tinyagents::TinyAgentsError::Tool(error.to_string()))?;
+        tokio::time::timeout(
+            ENQUEUE_TIMEOUT,
+            self.post_parts(
+                vec![source_part, card_part],
+                &self.library_dataset,
+                &library_node_set(&self.project),
+            ),
         )
         .await
+        .map_err(|_| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "Cognee did not accept the source for `{}` within {} seconds",
+                self.library_dataset,
+                ENQUEUE_TIMEOUT.as_secs()
+            ))
+        })?
     }
 
     /// Queues one completed agent session in the current project/run dataset.
@@ -399,16 +451,33 @@ impl VectorStore {
             .file_name(filename)
             .mime_str("text/markdown")
             .map_err(|error| tinyagents::TinyAgentsError::Tool(error.to_string()))?;
+        self.post_parts(vec![part], dataset, node_set).await
+    }
+
+    /// Posts one or more files to Cognee under one dataset and node set.
+    ///
+    /// `data` is a list on Cognee's side, and a source uses both slots: the
+    /// original bytes, and a small card naming where they came from. Sending
+    /// them in one request is what keeps the two from arriving separately —
+    /// a card whose companion failed to upload would describe a document the
+    /// library does not hold.
+    async fn post_parts(
+        &self,
+        parts: Vec<reqwest::multipart::Part>,
+        dataset: &str,
+        node_set: &str,
+    ) -> Result<()> {
+        let mut form = reqwest::multipart::Form::new()
+            .text("datasetName", dataset.to_string())
+            .text("node_set", node_set.to_string())
+            .text("run_in_background", "true");
+        for part in parts {
+            form = form.part("data", part);
+        }
         let response = self
             .client
             .post(format!("{}/api/v1/remember", self.base_url))
-            .multipart(
-                reqwest::multipart::Form::new()
-                    .text("datasetName", dataset.to_string())
-                    .text("node_set", node_set.to_string())
-                    .text("run_in_background", "true")
-                    .part("data", part),
-            )
+            .multipart(form)
             .send()
             .await
             .map_err(|error| cognee_transport_error(&error))?;
@@ -783,6 +852,43 @@ fn point_id(text: &str) -> u64 {
     fnv1a(text.as_bytes())
 }
 
+/// Names the uploaded source for the extension its bytes actually carry.
+///
+/// The workspace path always ends `.md` — the runtime stores the *conversion*
+/// under that name — so passing it through would upload a PDF called `.md` and
+/// invite Cognee to read it as text. The extension is taken from the content
+/// type when it names one, and from the bytes when it does not.
+fn source_file_name(path: &str, content_type: Option<&str>) -> String {
+    let stem = slug(path.strip_suffix(".md").unwrap_or(path));
+    format!("source-{stem}.{}", source_extension(content_type))
+}
+
+/// The file extension matching a declared content type.
+fn source_extension(content_type: Option<&str>) -> &'static str {
+    match content_type.map(|value| value.split(';').next().unwrap_or(value).trim()) {
+        Some("application/pdf") => "pdf",
+        Some("text/html" | "application/xhtml+xml") => "html",
+        Some("text/markdown") => "md",
+        _ => "txt",
+    }
+}
+
+/// The MIME type to upload one source under.
+///
+/// Magic bytes beat the declared type, on the same evidence the download path
+/// records: servers mislabel routinely, and a PDF served as `text/html` is
+/// still a PDF. Getting this wrong costs the extraction — Cognee would chunk
+/// the binary as text — so the cheap check is worth making twice.
+fn source_mime(bytes: &[u8], content_type: Option<&str>) -> String {
+    if bytes.starts_with(b"%PDF-") {
+        return "application/pdf".to_string();
+    }
+    match content_type.map(|value| value.split(';').next().unwrap_or(value).trim()) {
+        Some(declared) if !declared.is_empty() => declared.to_string(),
+        _ => "application/octet-stream".to_string(),
+    }
+}
+
 fn slug(value: &str) -> String {
     let slug = value
         .chars()
@@ -932,8 +1038,49 @@ mod test {
 
     use super::{
         durable_node_sets, library_node_set, point_id, render_result, scratch_node_set,
-        session_node_set, slug, visible_datasets,
+        session_node_set, slug, source_file_name, source_mime, visible_datasets,
     };
+
+    #[test]
+    fn an_uploaded_source_is_named_for_the_bytes_rather_than_the_workspace_path() {
+        // The workspace path is always `.md` — it names the *conversion*. A PDF
+        // uploaded under that name invites Cognee to chunk a binary as text.
+        assert_eq!(
+            source_file_name("research/summaries/pell.md", Some("application/pdf")),
+            "source-research_summaries_pell.pdf"
+        );
+        assert_eq!(
+            source_file_name(
+                "research/summaries/pell.md",
+                Some("text/html; charset=utf-8")
+            ),
+            "source-research_summaries_pell.html"
+        );
+        // An unknown or absent type is text rather than a guess.
+        assert_eq!(
+            source_file_name("research/summaries/pell.md", None),
+            "source-research_summaries_pell.txt"
+        );
+    }
+
+    #[test]
+    fn a_mislabelled_pdf_is_still_uploaded_as_a_pdf() {
+        // Servers mislabel routinely; the download path already prefers magic
+        // bytes for that reason, and the upload has to make the same choice or
+        // the extraction is spent on the wrong parser.
+        assert_eq!(
+            source_mime(b"%PDF-1.7\n1 0 obj", Some("text/html")),
+            "application/pdf"
+        );
+        assert_eq!(source_mime(b"<html>", Some("text/html")), "text/html");
+        // Parameters are dropped, so the type is one Cognee can match on.
+        assert_eq!(
+            source_mime(b"# note", Some("text/markdown; charset=utf-8")),
+            "text/markdown"
+        );
+        // Nothing declared and nothing recognisable stays deliberately opaque.
+        assert_eq!(source_mime(b"\x00\x01", None), "application/octet-stream");
+    }
 
     #[test]
     fn point_ids_are_deterministic() {

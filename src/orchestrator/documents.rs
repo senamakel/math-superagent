@@ -1091,7 +1091,10 @@ impl DocumentTool {
             // not.
             let remembered = match self.documents.library.as_ref() {
                 None => String::new(),
-                Some(library) => match library.remember_source(&path, &url, &content).await {
+                Some(library) => match library
+                    .remember_source(&path, &url, &bytes, content_type.as_deref())
+                    .await
+                {
                     Ok(()) => " and filed in durable memory".to_string(),
                     Err(error) => format!(" (not filed in durable memory: {error})"),
                 },
