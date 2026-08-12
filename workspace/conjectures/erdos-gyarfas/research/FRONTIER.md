@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 3 | https://oeis.org/A047775 | A047775 | cross-referenced from A027610 |
 | 3 | https://oeis.org/A047776 | A047776 | cross-referenced from A027610 |
 
-_211 further candidates not shown; they are cited once each._
+_217 further candidates not shown; they are cited once each._
