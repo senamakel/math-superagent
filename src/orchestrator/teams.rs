@@ -163,14 +163,21 @@ impl TeamBudget {
 /// met and stopped — for the remaining two hours, while files accumulated and
 /// nobody indexed them.
 ///
-/// A team whose work is *acquisitive* genuinely finishes: once further sources
-/// stop changing the shared brief, fetching more is waste. A team whose work is
-/// *custodial* never does, because the thing it maintains keeps changing
-/// underneath it. For that team an empty cycle means come back later, not stop.
+/// Every team is now [`Standing`](Self::Standing), and the acquisitive variant
+/// is gone rather than kept unused. Research was the last holder of it, on the
+/// argument that gathering genuinely finishes: once further sources stop
+/// changing the brief, fetching more is waste. That argument was sound and its
+/// implementation was not — the team's own brief made "nothing further" the
+/// *expected* answer, so on all four live runs it retired inside ninety seconds
+/// and the run went hours with no research beside it. A goal that is reached
+/// before the work starts was never attainable; it was abstention with a
+/// completion flag on it.
+///
+/// So an empty cycle now always means come back later. A team that should truly
+/// stop can be given a variant again, with the evidence that it stops for the
+/// right reason.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum Completion {
-    /// The goal can be reached; "nothing further" ends the team.
-    Attainable,
     /// The goal is standing; "nothing further" only means idle for now.
     Standing,
 }
@@ -179,7 +186,6 @@ impl Completion {
     /// Maps a cycle that reported nothing further to do.
     pub(super) const fn nothing_further(self) -> Cycle {
         match self {
-            Self::Attainable => Cycle::Finished,
             Self::Standing => Cycle::Idle,
         }
     }
