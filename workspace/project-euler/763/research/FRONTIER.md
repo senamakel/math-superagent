@@ -12,6 +12,15 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://arxiv.org/abs/1009.5731v1 | arXiv:1009.5731v1 | \| Subjects: \| Combinatorics (math.CO); Classical Analysis and ODEs (math.CA) \| Cite as: \| [arXiv:1009.5731][6] [math.CO] \| \| (or [arXiv:1009.5731v1][7] [math.CO] for this version) \| \|… |
 | 2 | https://oeis.org/A000045 | A000045 | cross-referenced from A005207 |
 | 2 | https://oeis.org/A000108 | A000108 | cross-referenced from A001006 |
+| 2 | https://oeis.org/A001522 | A001522 | cross-referenced from A186085 |
+| 2 | https://oeis.org/A001523 | A001523 | cross-referenced from A186085 |
+| 2 | https://oeis.org/A001524 | A001524 | cross-referenced from A186085 |
+| 2 | https://oeis.org/A005169 | A005169 | cross-referenced from A186085 |
+| 2 | https://oeis.org/A034296 | A034296 | cross-referenced from A186085 |
+| 2 | https://oeis.org/A034297 | A034297 | cross-referenced from A186085 |
+| 2 | https://oeis.org/A129181 | A129181 | cross-referenced from A186085 |
+| 2 | https://oeis.org/A186084 | A186084 | cross-referenced from A186085 |
+| 2 | https://oeis.org/A186505 | A186505 | cross-referenced from A186085 |
 | 1 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | titled An Explicit Solution to the Chessboard Pebbling Problem, by Qiang Zhen and Charles Knessl - [View PDF][5] - [TeX Source][10] [view license][11] ### Current browse context: math.CO [< prev][12]… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Knessl,+C | Charles Knessl | [Submitted on 29 Sep 2010] # Title: An Explicit Solution to the Chessboard Pebbling Problem Authors: [Qiang Zhen][3], [Charles Knessl][4] View a PDF of the paper titled An Explicit Solution to the… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Zhen,+Q | Qiang Zhen | **arXiv:1009.5731**(math) [Submitted on 29 Sep 2010] # Title: An Explicit Solution to the Chessboard Pebbling Problem Authors: [Qiang Zhen][3], [Charles Knessl][4] View a PDF of the paper titled An… |
@@ -37,14 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://oeis.org/A000012 | A000012 | cross-referenced from A001006 |
 | 1 | https://oeis.org/A000040 | A000040 | cross-referenced from A383891 |
 | 1 | https://oeis.org/A000096 | A000096 | cross-referenced from A055999 |
-| 1 | https://oeis.org/A000217 | A000217 | cross-referenced from A055999 |
-| 1 | https://oeis.org/A000290 | A000290 | cross-referenced from A055999 |
-| 1 | https://oeis.org/A001405 | A001405 | cross-referenced from A001006 |
-| 1 | https://oeis.org/A001477 | A001477 | cross-referenced from A055999 |
-| 1 | https://oeis.org/A001519 | A001519 | cross-referenced from A005207 |
-| 1 | https://oeis.org/A001522 | A001522 | cross-referenced from A186085 |
-| 1 | https://oeis.org/A001523 | A001523 | cross-referenced from A186085 |
-| 1 | https://oeis.org/A001524 | A001524 | cross-referenced from A186085 |
-| 1 | https://oeis.org/A001850 | A001850 | cross-referenced from A001006 |
 
 _93 further candidates not shown; they are cited once each._
