@@ -46,7 +46,7 @@ the dense regime — there is a uniform $d_0$ that works for *all* graphs.
 id: EG-dense-average-degree-pow2-survey
 statement: There is a constant d0 such that every finite simple graph with average degree at least d0 contains a cycle whose length is a power of 2 (Theorem 2.1 of Montgomery's 2026 survey; the theorem is due to Liu–Montgomery 2020).
 hypotheses: finite simple graph, average degree ≥ d0 (d0 large, absolute, unspecified in the survey)
-holds-here: yes — a fortiori true under δ≥3? NO: average degree ≥ d0 is a different, denser hypothesis than δ≥3; the survey result does NOT resolve the conjecture
+holds-here: no for the EG conjecture — average degree ≥ d0 is a denser hypothesis than δ≥3, so the theorem does not resolve the conjecture; yes as a true theorem about the dense regime
 status: proved (in Liu–Montgomery; survey restates it)
 bearing: fixes the dense-regime state of the art: the obstruction to the full conjecture is exactly the sparse/min-degree-3 regime
 anchor: research/summaries/montgomery-cycles-expansion-survey.md
