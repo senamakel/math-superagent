@@ -504,3 +504,55 @@ fn a_blocked_attempt_is_recognised_only_from_a_failed_delegation() {
     ));
     assert!(!provider_blocked(""));
 }
+
+#[test]
+fn approach_slugs_reads_the_directory_and_treats_a_missing_one_as_empty() {
+    // The discriminator behind the write-verification control. A workspace
+    // that has never reached a diversify has no `research/approaches/` at all
+    // — that was true of all three concurrent live runs — so a missing
+    // directory has to measure as empty rather than as an error.
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let root = workspace.path();
+    assert!(approach_slugs(Some(root)).is_empty());
+    assert!(approach_slugs(None).is_empty());
+
+    let dir = root.join(super::approaches::APPROACHES_DIR);
+    std::fs::create_dir_all(&dir).expect("the approaches directory");
+    assert!(
+        approach_slugs(Some(root)).is_empty(),
+        "an empty directory is the same as no directory"
+    );
+
+    std::fs::write(dir.join("cycle-space-basis.md"), "x").expect("an approach file");
+    let after = approach_slugs(Some(root));
+    assert_eq!(after.len(), 1);
+    assert!(after.contains(&std::ffi::OsString::from("cycle-space-basis.md")));
+
+    // Directories under it are not approaches. The comparison must move only
+    // when a proposal lands, and a subfolder is not one.
+    std::fs::create_dir(dir.join("scratch")).expect("a subdirectory");
+    assert_eq!(approach_slugs(Some(root)).len(), 1);
+}
+
+#[test]
+fn a_rewritten_file_does_not_count_as_a_proposal() {
+    // The comparison is by name added, not by count or mtime. A turn that
+    // rewrote an existing approach has not proposed anything, and mtime would
+    // call that a success.
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let root = workspace.path();
+    let dir = root.join(super::approaches::APPROACHES_DIR);
+    std::fs::create_dir_all(&dir).expect("the approaches directory");
+    std::fs::write(dir.join("cycle-space-basis.md"), "before").expect("an approach file");
+
+    let before = approach_slugs(Some(root));
+    std::fs::write(dir.join("cycle-space-basis.md"), "after, and longer").expect("a rewrite");
+    assert_eq!(
+        approach_slugs(Some(root)),
+        before,
+        "rewriting one file is not proposing a new line of attack"
+    );
+
+    std::fs::write(dir.join("girth-expansion.md"), "new").expect("a second approach");
+    assert_ne!(approach_slugs(Some(root)), before);
+}
