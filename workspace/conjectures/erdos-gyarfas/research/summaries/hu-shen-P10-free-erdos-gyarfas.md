@@ -1,42 +1,25 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hu-shen-P10-free-erdos-gyarfas.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hu & Shen, "Erdős-Gyárfás Conjecture for P_{10}-free Graphs", Discrete Math. 347 (2024) (arXiv:2308.05675)
 
-<!-- source: https://doi.org/10.48550/arxiv.2308.05675 | converted from HTML -->
+[[research/sources/hu-shen-P10-free-erdos-gyarfas.full.md]] · source URL: https://doi.org/10.48550/arxiv.2308.05675
 
-## What is in it
+## What it establishes
 
-- Mathematics > Combinatorics
-- Title: Erdős-Gyárfás Conjecture for $P_{10}$-free Graphs
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+Every **P10-free graph with minimum degree at least 3 contains a cycle of length 4 or 8**. Since 4 and 8 are powers of two, the Erdős–Gyárfás conjecture holds for the class of P10-free graphs.
 
+## Why it matters
 
-## What it claims
+This is one of the settled restricted classes (between Gao–Shan's P8-free and Hegde–Sandeep–Shashank's P13-free). It fills the chain: P8-free (Gao–Shan 2022) → P10-free (Hu–Shen 2023/2024) → P12-free (stronger C4-or-C8, Hegde et al.) → P13-free (Hegde et al. 2024). The library previously cited this class only via abstracts; now the primary arXiv full text is on disk.
 
-Abstract: Let $P_{10}$ be a path on $10$ vertices. A graph is said to be $P_{10}$-free if it does not contain $P_{10}$ as an induced subgraph. The well-known Erdős-Gyárfás Conjecture states that every graph with minimum degree at least three has a cycle whose length is a power of $2$. In this paper, we show that every $P_{10}$-free graph with minimum degree at least three contains a cycle of length $4$ or $8$. This implies that the conjecture is true for $P_{10}$-free graphs.
+Method note: the proof is structural (longest induced paths/cycles, θ-graph and hole-length analysis), NOT computer-assisted — unlike the P13-free result. Worth distinguishing in ROOT.md: P8, P10, P12 are structural proofs; P13 is computer-assisted.
 
-Subjects: | Combinatorics (math.CO) |
+**Claim block** (fenced for CLAIMS.md):
 
-MSC classes: | 05C38, 05C75 |
-
-Cite as: | [arXiv:2308.05675][7] [math.CO] |
-
-| (or [arXiv:2308.05675v2][8] [math.CO] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.2308.05675][9]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 6112 character source; every section, statement, and proof in full at `research/sources/hu-shen-P10-free-erdos-gyarfas.full.md`]*
+```claim
+id: EG-P10-free-C4C8
+statement: Every P10-free graph G with δ(G)≥3 contains a cycle of length 4 or 8; hence the Erdős–Gyárfás conjecture holds for P10-free graphs.
+hypotheses: G simple, P10-free (no induced path on 10 vertices), δ≥3.
+holds-here: yes — this is a settled restricted class; a candidate minimal counterexample cannot be P10-free.
+status: proved (source; primary arXiv full text on disk)
+bearing: one of the chain P8/P10/P12/P13-free settled classes bounding where a counterexample can live.
+anchor: research/summaries/hu-shen-P10-free-erdos-gyarfas.md
+```
