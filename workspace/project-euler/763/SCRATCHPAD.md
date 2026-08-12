@@ -21,6 +21,45 @@ cap.
 Earlier D(N) values: D(0..12) reproduced by both frozenset and bitmask; D(13)
 by both frozenset (~200s, MEMORY) and bitmask (6.4s).
 
+## Pattern-finder (this run)
+
+### NEW SOURCED MATCH: histogram-count sequence == OEIS A186085
+The sequence of DISTINCT level-histogram counts H(N), N=2..14 =
+  1,1,2,3,5,8,13,22,36,60,100,166,277
+is EXACTLY OEIS A186085 ("number of 1-dimensional sandpiles with n grains" =
+smooth compositions with first/last part 1, |Δparts|<=1).
+- oeis_lookup matched it (research/L1.1/oeis_a186085.md).
+- Verified H(N)==A186085(N) for N=2..14 against the published table exactly
+  (code/pattern/check_a186085_recurrence.py).
+- Interpretation: each reachable 3D config's level-histogram (count of cells
+  on each level) corresponds bijectively to a smooth composition — the count
+  of distinct histograms alone is NOT D(N), but the refinement D(N)=
+  sum_histogram (#configs sharing that histogram) is the object; A186085
+  counts the histograms, not the weighted D(N). Recorded as a real structural
+  link worth deriving.
+
+### OVERFIT CAUTION (reproduced): fitted recurrences on small windows are junk
+find_linear_recurrence returned an order-6 constant-coeff recurrence for H,
+a(n)=a(n-1)+a(n-2)+a(n-3)-a(n-4)-a(n-6), matching H(2..14) exactly — but it
+DIVERGES from published A186085 at n=6 (rec=4 vs 5). Direct confirmation that
+a recurrence fit over a finite window carries no predictive power even when it
+fits perfectly. Matches the recorded holonomic-negative conclusion. Do NOT
+trust any finitely-fitted recurrence to reach D(10000).
+
+### NEGATIVE: Q_k max-level decomposition is INCOMPLETE at even N
+The repeated claim "D(N)=sum_k Q_k(N)3^(N-2k-1) reproduces D(N)"
+holds only for ODD N (and N<=11). At N=12 it misses 30 configs, at N=14 it
+misses 267 (code/pattern/qdecomp_falsify.py). Cause: for even N the column
+with max level M=N/2 (offset k=N/2, exponent 2M-N-1 = -1) is excluded by the
+"only e>=0" gate, yet those configs exist. The missing count exactly equals
+R(N,N/2) for even N (30=R(12,6), 267=R(14,7)). So the Q-column closed forms
+are real for the M>(N+1)/2 region, but the summed formula does NOT equal D(N)
+as a full identity. First falsified at N=12, not N=15 as previously guessed.
+
+### Confirmations (no change)
+- Diagonal R(N,N)=3^(N-1) exact for all N=2..14 (re-verified).
+- H(N) growth ~ x1.67/step (A186085's actual growth), distinct from D(N) ~ x3.4.
+
 ## This tool-builder task's runs
 
 ### Holonomic extrapolation probe (negative)
