@@ -35,6 +35,16 @@ anchor: research/summaries/carr-real.md
 ```
 
 ```claim
+id: EG-cubic-has-cubic-neighbor
+statement: Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3; in particular every degree-3 vertex v has a degree-3 neighbor. (Applying Lemma 0.1 to H=G−v: the degree-≤2 vertex of G−v must be a neighbor of v of G-degree exactly 3. No connectivity hypothesis is required.)
+hypotheses: G minimal counterexample.
+holds-here: yes
+status: proved (Carr Cor 0.1(1), from Lemma 0.1)
+bearing: cubic vertices form a dominating set; a cubic vertex cannot be surrounded only by degree-≥4 vertices
+anchor: research/summaries/carr-real.md
+```
+
+```claim
 id: EG-predominantly-cubic
 statement: At least 4/7 of the vertices of a minimal counterexample have degree exactly 3.
 hypotheses: G minimal counterexample.

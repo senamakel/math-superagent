@@ -13,6 +13,7 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | `EG-bipartite-30` | Any bipartite counterexample to the conjecture has at least 30 vertices. | yes | asserted | `research/summaries/hegde-real.md` |
 | `EG-cubic-dominates` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3. | **unchecked** | proved | `research/ROOT.md` |
 | `EG-cubic-dominates` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3. | yes | proved | `research/summaries/carr-real.md` |
+| `EG-cubic-has-cubic-neighbor` | Every vertex of a minimal counterexample G is adjacent to a vertex of degree exactly 3; in particular every degree-3 vertex v has a degree-3 neighbor. (Applying Lemma 0.1 to H=G−v: the degree-≤2 vertex of G−v must be a… | yes | proved | `research/summaries/carr-real.md` |
 | `EG-markstrom-24-graphs` | The smallest cubic graphs with no C4 and no C8 have 24 vertices; there are four, all contain a C16, and exactly one is planar. | **unchecked** | asserted | `research/ROOT.md` |
 | `EG-markstrom-24-graphs` | Exactly four cubic graphs on 24 vertices have no C4 and no C8, each containing a C16; exactly one is planar (the Markström graph). | **unchecked** | asserted | `research/summaries/markstrom-extremal-graphs.md` |
 | `EG-markstrom-dichotomy` | A minimal counterexample G to the Erdős–Gyárfás conjecture splits into an independent set V1 of vertices of degree ≥4 and a nonempty set V2 = V\V1 of vertices of degree exactly 3. | **unchecked** | proved | `research/ROOT.md` |
