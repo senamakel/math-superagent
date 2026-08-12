@@ -273,10 +273,10 @@ function of the state, so all four cases are asserted without a provider.
 
 Two of those arms are errands and finish in one delegation. The third is a
 conversation, because what it produces exists in neither agent alone: the
-inventor knows what this run has tried and what shape the problem has, research
+inventor knows what this run has tried and the shape of the problem, research
 knows what is already named, proved, and attempted elsewhere, and a line of
-attack worth adopting has to be both new to this run and not something the
-literature already closed. So `invention_arm` runs three children in sequence —
+attack worth adopting must be both new here and not something the literature
+already closed. So `invention_arm` runs three children in sequence —
 the inventor proposes three divergent candidates and writes each to
 `research/approaches/<slug>.md`, research grounds or refutes each and fills in
 its `precedent`, and the inventor adopts one or synthesises a better one from
