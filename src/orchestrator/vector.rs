@@ -102,8 +102,17 @@ impl VectorStore {
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap_or_default()
             .as_nanos();
+        // The run id identifies a run, and it belongs *inside* the document —
+        // `remember_session` writes it as a `Session:` line. It used to be part
+        // of the dataset name as well, which made the name unique per process:
+        // `math_agent_sessions__project_euler_185__s18cb030630d9e2be-1`. Every
+        // restart therefore opened a fresh dataset, and because `recall` shows
+        // a run only its own session dataset, every restart also *lost* the
+        // session memory of every earlier run on that problem. One problem
+        // restarted eight times in a day left eight datasets, seven of them
+        // unreachable. The dataset is the project; the run is a field.
         let session = format!("s{nanos:x}-{}", std::process::id());
-        let session_dataset = format!("{SESSION_DATASET_PREFIX}{project}__{session}");
+        let session_dataset = format!("{SESSION_DATASET_PREFIX}{project}");
         Ok(Self {
             client: reqwest::Client::new(),
             base_url,
@@ -189,8 +198,8 @@ impl VectorStore {
         Ok(())
     }
 
-    /// Returns shared brain/research datasets plus this project/run's session
-    /// dataset, excluding every other session dataset.
+    /// Returns shared brain/research datasets plus this project's session
+    /// dataset, excluding every other project's.
     async fn recall_datasets(&self) -> Result<Vec<String>> {
         let response = self
             .client
@@ -427,13 +436,30 @@ fn slug(value: &str) -> String {
     }
 }
 
+/// Picks the datasets one run may read: everything shared, plus this project's
+/// own session memory and no other project's.
+///
+/// A session dataset belongs to this project when it *is* this project's
+/// dataset, or when it is one of the per-run datasets an older build created
+/// underneath it — `<project>__s<nanos>-<pid>`. Matching those too is what lets
+/// a run reach the session memory of every earlier run on the same problem
+/// instead of only its own, and it recovers the datasets already stranded by
+/// the old naming.
+///
+/// The `__` in the prefix test is load-bearing: without it, project `euler_18`
+/// would read `euler_185`'s memory.
 fn visible_datasets(datasets: &Value, current_session: &str) -> Vec<String> {
+    let owned_prefix = format!("{current_session}__");
     datasets
         .as_array()
         .into_iter()
         .flatten()
         .filter_map(|dataset| dataset.get("name").and_then(Value::as_str))
-        .filter(|name| !name.starts_with(SESSION_DATASET_PREFIX) || *name == current_session)
+        .filter(|name| {
+            !name.starts_with(SESSION_DATASET_PREFIX)
+                || *name == current_session
+                || name.starts_with(&owned_prefix)
+        })
         .map(ToOwned::to_owned)
         .collect()
 }
