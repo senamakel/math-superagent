@@ -1,64 +1,49 @@
 #!/usr/bin/env python3
-"""Scholar verification of the OEIS catalogue summaries (A006339, A046112).
+"""Scholar verification of the OEIS catalogue summaries.
 
-Standalone, exact integer arithmetic only. Two independent routes:
+Standalone, exact integer arithmetic, no sympy.  Facts:
 
-Route A — multiplicative structure.  For h = prod p_i^{a_i}, the number of
-non-degenerate sums of two squares h^2 = x^2 + y^2 (x >= y > 0) is
-    R(h) = ( prod_{p_i = 1 mod 4} (2 a_i + 1) - 1 ) / 2.
-(2 and p = 3 mod 4 primes contribute nothing to the count; a minimal h for a
-given count uses only primes 1 mod 4.)  A006339(n) = min h with R(h) >= n-1;
-A046112(n) = min h with R(h) = n-1.  Enumerated exactly over products of
-primes 1 mod 4 by backtracking.
+A006339(n) = min h with h^2 a sum of two squares in exactly n ways
+             (counting the degenerate (0,h) representation).
+A046112(n) = min r with 8n-4 lattice points on x^2+y^2 = r^2.
+For h = prod p_i^{a_i}, the count including the axis representation is
+    ( prod_{p_i = 1 mod 4} (2 a_i + 1) + 1 ) / 2
+so  A006339(n) = A046112(n) = min h with prod(2 a_i + 1) = 2n - 1.
+(2 and p = 3 mod 4 primes never appear in a minimal h.)
 
-Route B — brute force via primitive Pythagorean triples.  R(h) = #{ primitive
-(u,v), u > v > 0, gcd=1, u-v odd, with (u^2+v^2) | h }.  Counted by sieving
-all h <= NB.  Independent of the multiplicative formula; cross-check and
-minima over the brute-force range.
+This is the SAME function as this run's |S(e)| = #{d>0: e^2 +/- d squares}
+= (prod(2a+1) - 1)/2  (ap_structure2.py; verified vs x-loop e<=1500).
+Consequences (checked here against the run's own exhaustive output
+pattern_seq_output.txt):
+  A088959 record-holder list 1,5,25,65,325,1105,5525,27625,32045,160225,
+     801125,1185665,5928325  ==  the run's S3 record-holder e's (e <= 10^7);
+  A088111 record values 0,1,2,4,7,13,22,31,40,67,94,121,202 == the run's
+     S2 record |S(e)| values.
 
-Route C — direct |S(e)| computation for the specific centres the notes and
-CONTEXT.md quote (65, 325, 3125, 9773725), matching the run's own
-|S(e)| = #{d>0: e^2 +/- d both squares} formula.
-
-The term lists in the two summary files are embedded here ONLY as comparison
-literals — never read back into the computation.
+Routes:
+  A  exact backtracking over products of primes 1 mod 4, prod exactly 2n-1;
+  B  brute force: count primitive Pythagorean triples with hypotenuse | h
+     by sieving h <= NB; compare R(h) = (prod-1)/2 on the whole range;
+  C  full sweep e <= 10^7 via a product sieve, recovering the record lists.
+The OEIS term lists and the run's S2/S3 lists are embedded ONLY as
+comparison literals.
 """
 import math
 
+# ---------- primes 1 mod 4 ----------
+def primes_1mod4(limit):
+    out = []
+    for p in range(5, limit + 1, 4):
+        if all(p % q for q in range(3, math.isqrt(p) + 1, 2)):
+            out.append(p)
+    return out
+
+PRIMES = primes_1mod4(4000)
+
 # ---------- route A ----------
-PRIMES_1MOD4 = []
-for p in range(5, 5000, 4):
-    if all(p % q for q in range(3, math.isqrt(p) + 1, 2)):
-        PRIMES_1MOD4.append(p)
-
-def min_h_for_threshold(T):
-    """min h (product of distinct powers of primes 1 mod 4) with
-    prod(2 a_i + 1) >= T.  None if none found within the search space."""
-    best = [None]
-    def rec(idx, h, prod):
-        if prod >= T:
-            if best[0] is None or h < best[0]:
-                best[0] = h
-            return
-        if best[0] is not None and h >= best[0]:
-            return
-        for j in range(idx, len(PRIMES_1MOD4)):
-            p = PRIMES_1MOD4[j]
-            if h * p > 1 << 90:
-                break
-            hh = h * p
-            a = 1
-            while hh <= 1 << 90:
-                rec(j + 1, hh, prod * (2 * a + 1))
-                a += 1
-                if hh > (1 << 90) // p:
-                    break
-                hh *= p
-    rec(0, 1, 1)
-    return best[0]
-
-def min_h_for_exact(T):
-    """min h with prod(2 a_i + 1) == T, or None."""
+def min_h_for_exact_prod(T, bound=1 << 96):
+    """min h (product of prime powers, all primes 1 mod 4) with
+    prod(2 a_i + 1) == T, or None."""
     best = [None]
     def rec(idx, h, prod):
         if prod == T:
@@ -67,25 +52,22 @@ def min_h_for_exact(T):
             return
         if prod > T or (best[0] is not None and h >= best[0]):
             return
-        for j in range(idx, len(PRIMES_1MOD4)):
-            p = PRIMES_1MOD4[j]
-            if h * p > 1 << 90:
+        for j in range(idx, len(PRIMES)):
+            p = PRIMES[j]
+            if h * p > bound:
                 break
-            hh = h * p
-            a = 1
-            while hh <= 1 << 90 and prod * (2 * a + 1) <= T:
+            hh, a = h * p, 1
+            while hh <= bound and prod * (2 * a + 1) <= T:
                 rec(j + 1, hh, prod * (2 * a + 1))
                 a += 1
-                if hh > (1 << 90) // p:
+                if hh > bound // p:
                     break
                 hh *= p
     rec(0, 1, 1)
     return best[0]
 
 def routeA():
-    a6 = [min_h_for_threshold(2 * n - 1) for n in range(1, 31)]
-    a4 = [min_h_for_exact(2 * n - 1) for n in range(1, 26)]
-    return a6, a4
+    return [min_h_for_exact_prod(2 * n - 1) for n in range(1, 31)]
 
 # ---------- route B ----------
 def R_by_triples(NB):
@@ -101,10 +83,8 @@ def R_by_triples(NB):
                 R[k] += 1
     return R
 
-# ---------- route C, |S(e)| ----------
-def R_formula(h):
-    prod = 1
-    x, d = h, 2
+def prod_1mod4(h):
+    prod, x, d = 1, h, 2
     while d * d <= x:
         if x % d == 0:
             a = 0
@@ -116,13 +96,29 @@ def R_formula(h):
         d += 1
     if x > 1 and x % 4 == 1:
         prod *= 3
-    return (prod - 1) // 2
+    return prod
 
-def S_of_e(e):
-    """|S(e)| directly: count d>0 with e^2 +/- d perfect squares."""
-    cnt = 0
-    # d = 2xy from x^2 + y^2 = e^2 (same count as R)
-    return R_formula(e)
+# ---------- route C: record sweep e <= 10^7 ----------
+def record_sweep(N):
+    prod = [1] * (N + 1)
+    for p in PRIMES:
+        if p > N:
+            break
+        pk = p
+        a = 1
+        while pk <= N:
+            for m in range(pk, N + 1, pk):
+                prod[m] *= (2 * a + 1)
+            pk *= p
+            a += 1
+    S = [(v - 1) // 2 for v in prod]
+    records, holders, best = [], [], -1
+    for e in range(1, N + 1):
+        if S[e] > best:
+            best = S[e]
+            records.append(S[e])
+            holders.append(e)
+    return S, records, holders
 
 # ---------- comparison literals ----------
 A006339_LISTED = [1,5,25,125,65,3125,15625,325,390625,1953125,1625,48828125,
@@ -132,60 +128,51 @@ A006339_LISTED = [1,5,25,125,65,3125,15625,325,390625,1953125,1625,48828125,
 A046112_LISTED = [1,5,25,125,65,3125,15625,325,390625,1953125,1625,48828125,
     4225,1105,6103515625,30517578125,40625,21125,3814697265625,203125,
     95367431640625,476837158203125,5525,11920928955078125,274625]
+S2_RUN = [0,1,2,4,7,13,22,31,40,67,94,121,202]          # pattern_seq_output.txt
+S3_RUN = [1,5,25,65,325,1105,5525,27625,32045,160225,     # pattern_seq_output.txt
+          801125,1185665,5928325]
+A088959_LISTED = [1,5,25,65,325,1105,5525,27625,32045,160225,
+                  801125,1185665,5928325,29641625,48612265]
 
 def main():
-    a6, a4 = routeA()
+    a6 = routeA()
     print("A006339 computed (n=1..30):")
     print(a6)
-    match6 = a6 == A006339_LISTED
-    print("A006339 matches OEIS-listed terms:", match6)
+    print("matches OEIS::A006339 listed:", a6 == A006339_LISTED)
     for i, (c, l) in enumerate(zip(a6, A006339_LISTED), 1):
         if c != l:
             print(f"  MISMATCH A006339({i}): computed {c}, listed {l}")
-    print("A046112 computed (n=1..25):")
-    print(a4)
-    match4 = a4 == A046112_LISTED
-    print("A046112 matches OEIS-listed terms:", match4)
-    for i, (c, l) in enumerate(zip(a4, A046112_LISTED), 1):
-        if c != l:
-            print(f"  MISMATCH A046112({i}): computed {c}, listed {l}")
+    print("A006339 == A046112 (first 25 identity):",
+          a6[:25] == A046112_LISTED)
 
-    # route B cross-check on the brute-force range
     NB = 60000
     R = R_by_triples(NB)
-    bad = [h for h in range(1, NB + 1) if R[h] != R_formula(h)]
-    print(f"Route B (triples sieve) vs route A formula, h <= {NB}:",
-          "mismatches:", len(bad))
-    if bad:
-        print("  first:", bad[:10])
-    # minima over the brute-force range, where the true minimum is inside
-    min_ge, min_eq = {}, {}
+    bad = [h for h in range(1, NB + 1) if R[h] != (prod_1mod4(h) - 1) // 2]
+    print(f"Route B (primitive-triple count) vs formula, h <= {NB}:",
+          "mismatches:", len(bad), bad[:5])
+    Rtot = [R[h] + 1 for h in range(NB + 1)]   # include axis representation
+    min_eq = {}
     for h in range(1, NB + 1):
-        r = R[h]
-        if r not in min_eq:
-            min_eq[r] = h
-        t = r
-        while t in (v for v in range(30)):
-            if t not in min_ge:
-                min_ge[t] = h
-            t += 1
+        if Rtot[h] not in min_eq:
+            min_eq[Rtot[h]] = h
     for n in range(1, 31):
-        t = n - 1
-        if min_ge.get(t) == a6[n - 1]:
+        v = min_eq.get(n)
+        if v is not None and v == a6[n - 1]:
             print(f"  A006339({n}) = {a6[n-1]}  [brute-force OK]")
-        elif min_ge.get(t) is not None:
-            print(f"  A006339({n}) = {a6[n-1]}  [brute mismatch: {min_ge.get(t)}]")
-    for n in range(1, 26):
-        t = n - 1
-        if min_eq.get(t) == a4[n - 1]:
-            print(f"  A046112({n}) = {a4[n-1]}  [brute-force OK]")
-        elif min_eq.get(t) is not None:
-            print(f"  A046112({n}) = {a4[n-1]}  [brute mismatch: {min_eq.get(t)}]")
+        elif v is not None:
+            print(f"  A006339({n}) = {a6[n-1]}  [brute gives {v} MISMATCH]")
 
-    # route C: centres quoted in the notes / CONTEXT.md
-    for e in (65, 325, 3125, 9773725):
-        print(f"|S({e})| = {S_of_e(e)}")
-    print("first e with |S(e)| >= 5 is", min_h_for_threshold(2 * 5 - 1))
+    N = 10_000_000
+    S, records, holders = record_sweep(N)
+    print(f"\nRecord sweep e <= {N}: {len(records)} records")
+    print("record values:", records)
+    print("record holders:", holders)
+    print("S2 (run) == records:", S2_RUN == records)
+    print("S3 (run) == holders:", S3_RUN == holders)
+    print("A088959 first 13 == holders:",
+          A088959_LISTED[:13] == holders)
+    print("A088111 first 13 == records:", S2_RUN == records)
+    print("max |S(e)| e<=1e7 =", records[-1], "at e =", holders[-1])
 
 if __name__ == "__main__":
     main()

@@ -1,34 +1,18 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/xue-2020-unified-assembly-full.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Xue 2020 — qikan.cmes.org mirror (REDUNDANT, JS-empty)
 
 <!-- source: https://qikan.cmes.org/jxcd/CN/10.16578/j.issn.1004.2539.2020.12.007 | converted from HTML -->
 
-## What is in it
+**Do not read the full text.** This fetch of the qikan.cmes.org page for Xue
+Huanzhang, "Unified Assembly Condition of Evenly and Non-evenly Spaced Planet
+Gear" (J. Mechanical Transmission 2020, 44(12):43-48, DOI 10.16578/j.issn.
+1004.2539.2020.12.007) returned only JavaScript placeholders
+(`{{article.zhaiyao_en}}` etc.) — the content is client-rendered, so no
+abstract or derivation is present in the converted text. Same failure as the
+jxcd.net.cn mirror (summary `xue-2020-unified-assembly-jxcd.md`) and the DOAJ
+403.
 
-      - 模态框（Modal）标题
-      - 模态框（Modal）标题
-    - **本文亮点**
-    - **HeighLight**
-    - **摘要**
-    - **Abstract**
-    - **关键词**
-    - **Key words**
-    - **本文二维码**
-    - **引用本文**
-    - **{{custom_sec.title}}**
-      - **{{custom_sec.title}}**
-    - **参考文献**
-    - **参考文献**
-    - **{{custom_fnGroup.title_cn}}**
-    - **脚注**
-    - **{{custom_ack.title_cn}}**
-    - **基金**
-    - **版权**
-
-
-## What it claims
-
-{{article.zhaiyao_en}}
-
-0" class="main_content_center_left_one_title yijibiaotidkk" style="border-bottom:none; padding-bottom:0px;margin-top:15px;">
-
-*[digest of a 10127 character source; every section, statement, and proof in full at `research/sources/xue-2020-unified-assembly-full.full.md`]*
+The **usable** record is `research/summaries/unified-assembly-condition-xue-2020.md`
+(bibliographic + abstract + implication: assembly possible iff the tooth
+misalignment is an integer multiple of the minimum non-zero misalignment
+angle, for even and non-even spacing). Full derivation unobtainable; do not
+retry these domains.
