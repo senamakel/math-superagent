@@ -20,11 +20,7 @@ Exact BFS; configs decoded transiently.  Writes the full report to
 import time
 from collections import defaultdict
 
-from lib.amoeba import next_level_bits, decode_bits, children, f_of
-
-
-def lvl(p):
-    return sum(p)
+from lib.amoeba import next_level_bits, decode_bits, children, f_of, lvl
 
 
 def top_parent_present(cells, M, top):
