@@ -832,3 +832,39 @@ fn an_honest_polynomial_cost_still_passes() {
         );
     }
 }
+
+#[test]
+fn every_role_with_memory_can_query_the_graph_and_not_only_the_chunks() -> agent::Result<()> {
+    // A knowledge graph used only through `recall_memory` is a search box with
+    // extra infrastructure: chunk search returns the passages nearest a phrase,
+    // which is what the vector store already did. `relate_memory` returns the
+    // edges, so a connection the run established across two sources and never
+    // stated in one place is retrievable. A role that has one and not the other
+    // cannot ask the question the graph exists to answer.
+    let registry = default_registry(true)?;
+    for role in [
+        "research",
+        "librarian",
+        "scholar",
+        "inventor",
+        "reflection",
+        "pattern_finder",
+    ] {
+        let Some(agent) = registry.get(role) else {
+            continue;
+        };
+        let has = |tool: &str| agent.tools.iter().any(|held| held == tool);
+        if !has("recall_memory") {
+            continue;
+        }
+        assert!(
+            has("relate_memory"),
+            "{role} can recall chunks but cannot query the graph"
+        );
+        assert!(
+            has("remember_memory"),
+            "{role} can read memory but never write it"
+        );
+    }
+    Ok(())
+}
