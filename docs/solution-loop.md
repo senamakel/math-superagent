@@ -148,11 +148,11 @@ counting it would have the team waking itself forever on the filing it just did,
 which is the pattern team's `SCRATCHPAD.md` lesson one folder wider.
 
 A finished `tool_builder` run automatically triggers an `organizer` run, and a
-finished `research` run triggers a `scholar` then an `organizer`
-(`FOLLOW_UPS` in `src/orchestrator/async_subagents.rs`). That moment is when
-the workspace is least tidy and most legible — the files are new and their
-purpose is settled — and leaving the tidying to whoever runs next means it
-competes with mathematics and loses. The follow-up is fire-and-forget, so
+finished `research` run triggers a `scholar` then an `organizer` (`FOLLOW_UPS` in
+`src/orchestrator/async_subagents.rs`). That moment is when the workspace is
+least tidy and most legible — the files are new and their purpose is settled —
+and leaving the tidying to whoever runs next means it competes with mathematics
+and loses. The follow-up is fire-and-forget, so
 `await_agent` returns as soon as the tool-builder itself is done and
 housekeeping never sits on the critical path; it is spawned separately so the
 tool-builder's concurrency slot is released first; and follow-ups are
