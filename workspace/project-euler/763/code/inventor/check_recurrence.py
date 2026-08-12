@@ -12,9 +12,7 @@ Exact forward BFS over distinct configs for N=0..7.
 Infrastructure cost declared: exponential state set (the BFS oracle itself),
 bounded to N<=7 (<=15 cells, frontier 3855 at N=8 start).  Verification only.
 """
-from itertools import product
-
-from lib.amoeba import lvl, f_of
+from lib.amoeba import lvl, f_of, top_caps
 
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
 
@@ -32,15 +30,6 @@ def forward_level(level):
             if all(c not in Sset for c in ch):
                 nxt.add(frozenset((Sset - {p}) | set(ch)))
     return nxt
-
-
-def top_caps(S):
-    M = max(lvl(pt) for pt in S)
-    Sset = set(S)
-    top = [pt for pt in S if lvl(pt) == M]
-    caps = [p for p in product(range(M), repeat=3)
-            if lvl(p) == M - 1 and p not in Sset and set(children(p)) == set(top)]
-    return caps
 
 
 def collapse(S):

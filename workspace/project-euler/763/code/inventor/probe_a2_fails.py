@@ -10,16 +10,12 @@ Prints, for N=1..5, the configs whose top set is not a unique single cap, with
 their top set and all near-miss parents, so we can see the actual geometry of
 the failure.
 """
-from lib.amoeba import forward_level, children, lvl
-from itertools import product
+from lib.amoeba import forward_level, children, lvl, top_caps
 
-def top_caps(S):
+def top_caps_packed(S):
     M = max(lvl(p) for p in S)
-    Sset = set(S)
-    top = [p for p in Sset if lvl(p) == M]
-    caps = [p for p in product(range(max(1, M)), repeat=3)
-            if lvl(p) == M - 1 and p not in Sset and set(children(p, 3)) == set(top)]
-    return M, sorted(top), caps
+    top = sorted(p for p in S if lvl(p) == M)
+    return M, top, top_caps(S)
 
 def main():
     level = {frozenset([(0, 0, 0)])}
@@ -27,7 +23,7 @@ def main():
         a1bad = a2bad = a3bad = 0
         fails = []
         for S in level:
-            M, top, caps = top_caps(S)
+            M, top, caps = top_caps_packed(S)
             if len(top) != 3:
                 a1bad += 1
             cap_ok = (len(caps) == 1)

@@ -1,3 +1,5 @@
+from itertools import product
+
 """Reusable routines for the Project Euler 763 3D amoeba problem.
 
 Reachability: an amoeba at p=(x,y,z) may divide into three amoebas at the
@@ -181,6 +183,38 @@ def triangle_parent(top):
     if set(children(p, 3)) == set(top):
         return p
     return None
+
+
+def top_caps(S):
+    """Parent cells p at level M-1 whose full forward child-triangle fills the
+    top level of a 3D config S.
+
+    S is an iterable of (x,y,z) occupied cubes.  Let M = max over S of
+    lvl(cell) = x+y+z, and top = the cells of S at level M.  Returned: the
+    list of candidate 'cap' parents p in the box [0,M)^3  with  lvl(p)=M-1,
+    p not in S, and  set(children(p,3)) == set(top) — i.e. the empty points
+    whose forward children are exactly the top-3 cells of S.
+
+    This is the single CANONICAL definition of `top_caps`, consolidated from
+    three copies formerly in inventor/check_recurrence.py,
+    inventor/probe_topcap.py and inventor/probe_a2_fails.py.  The two former
+    returned exactly this list; probe_a2_fails returned the 3-tuple
+    (M, sorted(top), caps).  The computation was identical in all three —
+    same box product(range(M),repeat=3), same lvl==M-1 filter, same
+    `p not in Sset and set(children)==set(top)` check — so only the return
+    interface differed, and probe_a2_fails was changed to compute M and top
+    itself rather than have this return them.  No definition was silently
+    chosen over another.  Correctness established by probe_topcap.py (T2:
+    unique cap on N<=6) and verify_topcap_full.py (A2) reproducing the
+    structural-check counts, and by those programs' D(2)=3 / D(10)=44499
+    agreement.
+    """
+    Sset = set(S)
+    M = max(lvl(pt) for pt in Sset)
+    top = [pt for pt in Sset if lvl(pt) == M]
+    caps = [p for p in product(range(max(1, M)), repeat=3)
+            if lvl(p) == M - 1 and p not in Sset and set(children(p, 3)) == set(top)]
+    return caps
 
 
 # --- naive BFS driver -----------------------------------------------------
