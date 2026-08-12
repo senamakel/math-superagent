@@ -370,6 +370,7 @@ impl OrchestratorAgent {
             subagents: async_subagents,
             tracer,
             workspace,
+            filed,
         })
     }
 
