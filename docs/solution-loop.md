@@ -111,15 +111,15 @@ literature search and then stop.
 Housekeeping runs on a narrowed budget, `RunBudget::for_housekeeping` — 25
 model calls and 300 tool calls, and deliberately *no* wall-clock ceiling — for
 the same reason the judge does.
-Filing is bounded work, read a listing and write a row per file, and a role left
+Filing is bounded work — read a listing, write a row per file — and a role left
 with an investigation's budget investigates. The measurement that forced this is
 worth keeping: two live runs spent 60% and 64% of every model call they made
-inside the organizer, and the cause was *not* frequency — it ran nine and ten
-times. It ran long. One organizer run spent 62 model calls tidying, another 56,
-against a solve that had spent 14 on the mathematics. Reaching the cap is safe:
-`StopWithPartial` keeps the rows already written, and a file left undescribed
-shows as a visible gap rather than as an index quietly disagreeing with its
-folder, which is what the index tools were designed around anyway.
+inside the organizer, and the cause was *not* frequency, since it ran nine and
+ten times. It ran long: one organizer run spent 62 model calls tidying, another
+56, against a solve that had spent 14 on the mathematics. Reaching the cap is
+safe — `StopWithPartial` keeps the rows already written, and a file left
+undescribed shows as a visible gap rather than an index quietly disagreeing with
+its folder, which the index tools were designed around anyway.
 
 The wall clock is left alone on purpose, and the attempt to narrow it is worth
 recording because it made things worse. A ten-minute housekeeping ceiling looked
