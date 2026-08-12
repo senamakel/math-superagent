@@ -253,23 +253,29 @@ fn take_directives(
 /// which is the whole point: a team that has to *ask* whether anything changed
 /// has already spent most of what a working cycle costs.
 ///
-/// A workspace with no results at all reads as unchanged, so an early cycle on
-/// a run that has computed nothing idles instead of analysing an empty folder.
+/// A workspace with no results at all reads as unchanged, so a cycle on a run
+/// that has computed nothing idles instead of analysing programs and notes.
+///
+/// "No results" is `layout::has_results` — is there a file under `code/` that a
+/// *program* wrote — and it used to be `is_dir` on the folders themselves. That
+/// was never the same question: the template creates `code/` before the run
+/// starts, so the guard could not fire on any real workspace, and a run whose
+/// programs had produced nothing still woke this team on every edit to a source
+/// file. PE620 spent 35.4% of its model calls here, re-deriving a conclusion it
+/// had already written down, while the mathematics went elsewhere.
 fn results_unchanged(
     workspace: &Path,
     analysed: &Arc<std::sync::Mutex<Option<u64>>>,
 ) -> Option<teams::Cycle> {
+    if !super::layout::has_results(workspace) {
+        return Some(teams::Cycle::Idle);
+    }
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
-    let mut any = false;
     for folder in RESULT_FOLDERS {
         let path = workspace.join(folder);
         if path.is_dir() {
-            any = true;
             std::hash::Hash::hash(&teams::fingerprint(&path), &mut hasher);
         }
-    }
-    if !any {
-        return Some(teams::Cycle::Idle);
     }
     let current = std::hash::Hasher::finish(&hasher);
     let mut seen = last_seen(analysed);
