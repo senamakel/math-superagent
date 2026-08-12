@@ -1,41 +1,28 @@
-<!-- source: https://cs.uwaterloo.ca/journals/JIS/VOL10/Holdener/holdener7.html | converted from HTML -->
+# Abundancy outlaws of the form (σ(N)+t)/N — Holdener & Stanton, JIS 2007
 
-Abundancy "Outlaws" of the Form (sigma(N) + t)/N
+Source: https://cs.uwaterloo.ca/journals/JIS/VOL10/Holdener/holdener7.pdf — `[[holdener_stanton_outlaws.full]]`
 
- | [Journal of Integer Sequences,][1] [Vol. 10][2] (2007), Article 07.9.6 |
+## What it establishes (useful here)
 
-## **Abundancy "Outlaws" of the Form (&sigma;(*N*) + *t*)/*N***
+- **Abundancy index** I(n) = σ(n)/n; **abundancy outlaw** = rational > 1 not in the image of I.
+- **Property 2.2.** If I(n) = r/s in lowest terms then **s | n**. This is the key leverage for PE 241: p(n) = k+1/2 = (2k+1)/2 with gcd(2k+1,2)=1, so **2 | n** — every hemiperfect is even. Independent of the parity argument in the A159907 note; two routes to the same fact.
+- **Erdős-type Property 2.3.** If m < k < σ(m) and gcd(k,m)=1 then k/m is an outlaw. This is *not* a PE 241 tool: PE 241's k+1/2 are *indices*, not outlaws.
+- Theorems 3.2/4.2 and Corollaries 5.2–5.7: if (σ(N)+t)/N is in lowest terms and certain divisor conditions hold, it is an outlaw. These are about showing a candidate rational is *not* any abundancy — the opposite direction from the run's need, which is identifying which n *satisfy* k+1/2.
 
-### William G. Stanton and Judy A. Holdener
-Department of Mathematics
-Kenyon College
-Gambier, Ohio 43022
-USA
+## What it lets this run do
 
-**Abstract:**
+Property 2.2 gives a **proof-grade** derivation of evenness for candidates (s=2|n), confirming the parity half of the 2-adic reduction, and is the cleanest theoretical justification for starting the candidate DFS from an even 2-adic part. Nothing in the paper bears on the step of the method beyond that: it classifies rationals that FAIL to be abundancies, whereas we need the ones that succeed.
 
-The abundancy index of a positive integer [image: $n$] is defined to be the rational number [image: $I(n)=\sigma(n)/n$], where [image: $\sigma$] is the sum of divisors function [image: $\sigma(n)=\sum_{d\vert n}d$]. An abundancy outlaw is a rational number greater than 1 that fails to be in the image of of the map [image: $I$]. In this paper, we consider rational numbers of the form [image: $(\sigma(N)+t)/N$] and prove that under certain conditions such rationals are abundancy outlaws.
+## Does not help (why)
 
----
+The outlaw constructions are the "are these rationals ruled out" direction; the run needs "which n give these rationals". They do not bound or enumerate solutions. So most of the paper is not operative for PE 241; Property 2.2 is the transferable piece.
 
-**Full version: [pdf][3], [dvi][4], [ps][5], [latex][6]**
-
----
-
-Received October 25 2006; revised version received August 31 2007; September 25 2007. Published in *Journal of Integer Sequences*, September 25 2007.
-
----
-
-Return to ****[Journal of Integer Sequences home page][1]
-
----
-
-
-## Links
-
-[1]: ../..
-[2]: ../../vol10.html
-[3]: holdener7.pdf
-[4]: holdener7.dvi
-[5]: holdener7.ps
-[6]: holdener7.tex
+```claim
+id: property22-denominator-divides
+statement: If I(n)=sigma(n)/n = r/s in lowest terms, then s | n (gcd(r,s)=1 implies s|n since s | n and gcd(k,m)=1).
+hypotheses: n>=2, r/s in lowest terms
+holds-here: yes (r=2k+1 odd, s=2)
+status: proved
+bearing: proves every candidate is even; sets the 2-adic base of the DFS
+anchor: research/sources/holdener_stanton_outlaws.full.md
+```
