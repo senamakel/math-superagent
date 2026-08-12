@@ -67,7 +67,7 @@ for ppname in PSIDES:
         COMBO_NAMES.append((ppname[2], qqname[2]))
 
 
-def residue_at(sigma, eta, c, s, m, d, side):
+def residue_at(sigma, eta, theta, c, s, m, d, side):
     """mpmath residue Q for one planet (side=+1 upper, -1 lower)."""
     R = mpf(c) / (2 * pi)
     r = mpf(s) / (2 * pi)
@@ -173,27 +173,30 @@ def main():
         gamma = np.arctan2(y, x - dv)
         geom[name] = dict(beta=beta, gamma=gamma, rho=rhom)
 
-    variants = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+    variants = [(sg, et, th) for sg in (-1, 1) for et in (-1, 1)
+                for th in (-1, 1)]
 
     # residue upper-award per variant and type
     Qu = {}
-    for (sig, eta) in variants:
-        Qu[(sig, eta)] = {}
+    for (sig, eta, theta) in variants:
+        Qu[(sig, eta, theta)] = {}
         for name, g in geom.items():
             rho = g['rho']
             Q = sig * rho * (g['beta'] - g['gamma']) - eta * R * g['beta'] \
-                + r * g['gamma']
-            Qu[(sig, eta)][name] = np.mod(Q, 1.0)
+                + theta * r * g['gamma']
+            Qu[(sig, eta, theta)][name] = np.mod(Q, 1.0)
 
     # curve dump every 256th point
     curves = []
     curves.append("# d  " + "  ".join(
-        "Qp[%+d,%+d] Qq[%+d,%+d]" % (sg, et, sg, et) for (sg, et) in variants))
+        "Qp[%+d,%+d,%+d] Qq[%+d,%+d,%+d]" % (sg, et, th, sg, et, th)
+        for (sg, et, th) in variants))
     for k in range(0, N, 256):
         dk = dv[k]
         row = "%.12g" % dk
-        for (sig, eta) in variants:
-            row += "  %.9f %.9f" % (Qu[(sig, eta)]['p'][k], Qu[(sig, eta)]['q'][k])
+        for (sig, eta, theta) in variants:
+            row += "  %.9f %.9f" % (Qu[(sig, eta, theta)]['p'][k],
+                                    Qu[(sig, eta, theta)]['q'][k])
         curves.append(row)
     with open(CURVES, "w") as f:
         f.write("\n".join(curves) + "\n")
@@ -208,9 +211,9 @@ def main():
     per_combo = {}          # (sig,eta) -> {combo: scaled count}
     survivors = []          # detailed records of refined configurations
 
-    for (sig, eta) in variants:
-        vp = Qu[(sig, eta)]['p']
-        vq = Qu[(sig, eta)]['q']
+    for (sig, eta, theta) in variants:
+        vp = Qu[(sig, eta, theta)]['p']
+        vq = Qu[(sig, eta, theta)]['q']
         # upper and lower residues
         up_p, lo_p = vp, np.mod(-vp, 1.0)
         up_q, lo_q = vq, np.mod(-vq, 1.0)
@@ -252,33 +255,34 @@ def main():
                     d0 = float(dv[best_idx])
                     # refine
                     window = 5 * delta
-                    bd, bo = refine(sig, eta, c, s, p, q, d0, window,
+                    bd, bo = refine(sig, eta, theta, c, s, p, q, d0, window,
                                     psides, qsides)
                     if bo < TIGHT_TOL:
                         g_count += 1
-                        survivors.append((sig, eta, key, bd, bo))
+                        survivors.append((sig, eta, theta, key, bd, bo))
                 combo_counts[key] = g_count
                 if g_count > 0:
                     # add the refined d's to variant total
-                    for (sg, et, ky, bd, bo) in survivors:
-                        if (sg, et) == (sig, eta) and ky == key:
+                    for (sg, et, th, ky, bd, bo) in survivors:
+                        if (sg, et, th) == (sig, eta, theta) and ky == key:
                             vt.add(mpf(bd))
-        per_combo[(sig, eta)] = combo_counts
-        variant_total[(sig, eta)] = vt
+        per_combo[(sig, eta, theta)] = combo_counts
+        variant_total[(sig, eta, theta)] = vt
 
     emit("")
     emit("COARSE_TOL=%.0e  TIGHT_TOL=%.0e" % (COARSE_TOL, float(TIGHT_TOL)))
     emit("")
     emit("g(16,5,5,6) per variant (distinct valid d over all combos):")
-    for (sig, eta) in variants:
-        emit("  variant (sigma=%+d, eta=%+d): g = %d" % (sig, eta,
-                                                          len(variant_total[(sig, eta)])))
+    for (sig, eta, theta) in variants:
+        emit("  variant (sigma=%+d, eta=%+d, theta=%+d): g = %d"
+             % (sig, eta, theta, len(variant_total[(sig, eta, theta)])))
     emit("")
     emit("per (variant, combo) counts (g_combo = distinct refined valid d):")
     emit("  combos pp x qq = [UU,LL,UL] x [UU,LL,UL]")
-    for (sig, eta) in variants:
-        emit("  --- variant (sigma=%+d, eta=%+d) ---" % (sig, eta))
-        cc = per_combo[(sig, eta)]
+    for (sig, eta, theta) in variants:
+        emit("  --- variant (sigma=%+d, eta=%+d, theta=%+d) ---"
+             % (sig, eta, theta))
+        cc = per_combo[(sig, eta, theta)]
         for (pname, qname) in COMBO_NAMES:
             n_ = cc[(pname, qname)]
             emit("     pp=%-2s qq=%-2s : %d" % (pname, qname, n_))
@@ -287,8 +291,9 @@ def main():
     emit("SURVIVING CONFIGURATIONS (refined, objective < 1e-9):")
     # group survivors and print detail
     seen = set()
-    for (sig, eta, key, bd, bo) in sorted(survivors, key=lambda t: float(t[3])):
-        ident = (sig, eta, key, mpf(bd))
+    for (sig, eta, theta, key, bd, bo) in sorted(survivors,
+                                                 key=lambda t: float(t[3])):
+        ident = (sig, eta, theta, key, mpf(bd))
         if ident in seen:
             continue
         seen.add(ident)
@@ -296,18 +301,18 @@ def main():
                                                 else (1, -1))
         qsides = (1, 1) if key[1] == 'UU' else ((-1, -1) if key[1] == 'LL'
                                                 else (1, -1))
-        emit("  variant(sig=%+d,eta=%+d) combo p=%s q=%s  d=%.25g  obj=%.2e"
-             % (sig, eta, key[0], key[1], float(mpf(bd)), float(bo)))
+        emit("  variant(sig=%+d,eta=%+d,th=%+d) combo p=%s q=%s  d=%.25g  obj=%.2e"
+             % (sig, eta, theta, key[0], key[1], float(mpf(bd)), float(bo)))
         deg = 180.0 / math.pi
         for m_, sides, nm_ in ((p, psides, 'p'), (q, qsides, 'q')):
             for sd in sides:
-                Q, b, g_ = residue_at(sig, eta, c, s, m_, bd, sd)
+                Q, b, g_ = residue_at(sig, eta, theta, c, s, m_, bd, sd)
                 emit("     %s-planet side=%+d : beta=%+12.8f deg gamma=%+12.8f "
                      "deg  Q=%+10.8f mod 1" % (nm_, sd, b * deg, g_ * deg,
                                                 float(Q)))
         # residue identities
-        Qu0, _, _ = residue_at(sig, eta, c, s, p, bd, 1)
-        Ql0, _, _ = residue_at(sig, eta, c, s, p, bd, -1)
+        Qu0, _, _ = residue_at(sig, eta, theta, c, s, p, bd, 1)
+        Ql0, _, _ = residue_at(sig, eta, theta, c, s, p, bd, -1)
         emit("     (identity check: Q_p(U)=%+.8f, Q_p(L)=%+.8f, "
              "2*Q_p(U)=%+.6f, Q_p==Q_q? see residues)"
              % (float(Qu0), float(Ql0), float((2 * Qu0) % 1)))

@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://gearsolutions.com/departments/hot-seat/empirical-methods-of-determining-hardenability/ | — | [Q&A][12] [24] ### [Tungsten Carbide][24] [25] ### [Conversation with Greg Maisch][25] [26] ### [Driving into the future][26] [27] ### [Empirical Methods of Determining Hardenability][27] **** -… |
 | 2 | https://gearsolutions.com/departments/tooth-tips/driving-into-the-future/ | — | Matter][9] [Tooth Tips][10] [Hot Seat][11] [Q&A][12] [24] ### [Tungsten Carbide][24] [25] ### [Conversation with Greg Maisch][25] [26] ### [Driving into the future][26] [27] ### [Empirical Methods of… |
 
-_368 further candidates not shown; they are cited once each._
+_369 further candidates not shown; they are cited once each._
