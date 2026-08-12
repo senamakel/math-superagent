@@ -3,10 +3,11 @@
 Problem: Project Euler **761** — runner/swimmer pursuit-evasion on a regular
 n-gon pool (swimmer at center speed ≤1, runner on boundary at edge-midpoint
 speed ≤v). State of the run: **hexagon value computed to 8 dp via a validated
-formula and reduced to an exact closed form; the independent game-encoding
-solver is written (`code/indep_game_encoding.py`) but its run output is NOT
-captured — do not report as independently verified.** Full
-statement: `/workspace/problem.md`.
+formula and reduced to an exact closed form; the one independent game-encoding
+solver (`code/indep_game_encoding.py`) has been run and its output captured
+(`code/indep_game_encoding_OUTPUT.txt`) — it FAILS to reproduce the oracles,
+because it encodes the straight-dash red herring, so do NOT report the value as
+independently verified.** Full statement: `/workspace/problem.md`.
 
 ## The answer
 
@@ -123,11 +124,12 @@ warns: sympy-vs-mpmath is not an independent route; report the hexagon value as
 single-route unless a game-encoding solver (max over dash-landing point P of
 runner-perimeter-dist(P)/swim-dist(P) at stage 1/V, or a David-K-style n=6
 construction) is actually built and **its output captured**. That solver now
-exists on disk (`code/indep_game_encoding.py`) but the run output is not
-captured — see Validation/Gaps. Treat the stewbasic n-gon formula as a
-sourced result with strong numeric agreement (square + circle limit reproduced
-two ways, and self-consistent exact closed form for n=6), not a peer-reviewed
-theorem.
+exists on disk and its output IS captured (`code/indep_game_encoding.py` +
+`code/indep_game_encoding_OUTPUT.txt`) — but the run **failed** to reproduce the
+oracles (it encodes the straight-dash red herring), so it closes nothing; see
+Validation/Gaps. Treat the stewbasic n-gon formula as a sourced result with
+strong numeric agreement (square + circle limit reproduced two ways, and
+self-consistent exact closed form for n=6), not a peer-reviewed theorem.
 
 ## Contradictions
 
