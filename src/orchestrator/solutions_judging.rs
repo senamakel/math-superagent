@@ -162,6 +162,70 @@ fn evidence_briefing(workspace: &Path) -> String {
     )
 }
 
+/// The naive oracle's path, as [`oracle_prompt`] names it.
+const ORACLE_FILE: &str = "brute.py";
+
+/// Reports a fast method that has never been checked against the oracle.
+///
+/// `code/AGENTS.md` already requires keeping the naive oracle, and keeping it is
+/// enforced. *Agreeing* with it was not, and Project Euler 241 is what that
+/// costs. Its `solution.py` carries a confident justification for its central
+/// pruning rule — "e > a leaves surplus d in the numerator that no later sigma
+/// factor can cancel (all coprime to d)" — which is false: σ(13) = 14, so a
+/// larger prime can contribute the very factor the argument says cannot appear.
+/// The program finds 5 of the 9 terms below 10^8. `brute.py` sat in the same
+/// folder, correct by construction, and the two were never run against each
+/// other. The run then reported a correct answer it had taken from a catalogue,
+/// so nothing anywhere disagreed with anything.
+///
+/// The check is a substring, deliberately. Whether two methods agree *on the
+/// mathematics* is a judgement and stays with the agent; whether anything in
+/// `code/out/` so much as mentions the oracle is a count, so it is counted. A
+/// run that has executed the oracle and captured the result clears this
+/// immediately; a run that has never run it cannot.
+fn oracle_unchecked(workspace: &Path) -> bool {
+    let code = workspace.join(super::layout::CODE_DIR);
+    if !code.join(ORACLE_FILE).is_file() {
+        // No oracle to disagree with. That is a different fault, and
+        // `oracle_prompt` is what addresses it.
+        return false;
+    }
+    let others = std::fs::read_dir(&code).map_or(0, |entries| {
+        entries
+            .flatten()
+            .take(MAX_COUNTED)
+            .filter(|entry| {
+                let name = entry.file_name();
+                let name = name.to_string_lossy();
+                name.ends_with(".py") && name != ORACLE_FILE
+            })
+            .count()
+    });
+    if others == 0 {
+        // Only the oracle exists, so there is no faster method to check.
+        return false;
+    }
+    !mentions_oracle(&workspace.join(super::layout::OUTPUT_DIR))
+}
+
+/// Whether any captured output names the oracle, searched one level down.
+fn mentions_oracle(folder: &Path) -> bool {
+    let stem = ORACLE_FILE.trim_end_matches(".py");
+    let Ok(entries) = std::fs::read_dir(folder) else {
+        return false;
+    };
+    entries.flatten().take(MAX_COUNTED).any(|entry| {
+        let path = entry.path();
+        if path.is_dir() {
+            return mentions_oracle(&path);
+        }
+        if entry.file_name().to_string_lossy().contains(stem) {
+            return true;
+        }
+        std::fs::read_to_string(&path).is_ok_and(|text| text.contains(stem))
+    })
+}
+
 /// Counts a folder's entries, bounded, and answers zero for a missing folder.
 fn count_entries(folder: &Path) -> usize {
     std::fs::read_dir(folder).map_or(0, |entries| entries.flatten().take(MAX_COUNTED).count())
