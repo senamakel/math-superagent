@@ -4,4 +4,6 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `least_mesh_angle` | In a sun–ring–planet geartrain with sun tooth count z1 and ring tooth count z3 (taken negative for an internal gear), the smallest allowable relative angular step between planet positions that keeps every planet meshed… | **unchecked** | asserted | `research/summaries/planetary-gears-geometry-drivetrainhub.md` |

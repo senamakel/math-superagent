@@ -1,57 +1,47 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/planetary-gears-geometry-drivetrainhub.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Planetary Gears — Geometry (Drivetrain Hub)
 
-<!-- source: https://drivetrainhub.com/notebooks/gears/geometry/Chapter%204%20-%20Planetary%20Gears.html | converted from HTML -->
+[[research/sources/planetary-gears-geometry-drivetrainhub.full.md]] · source:
+https://drivetrainhub.com/notebooks/gears/geometry/Chapter%204%20-%20Planetary%20Gears.html
 
-## What is in it
+Standard-planetary geartrain: sun gear (z1) + planet gears (z2) + ring gear (z3,
+signed *negative* for internal gear). Carrier V. All non-zero angular velocities possible.
 
-- Geometry / Planetary Gears ¶
-  - Table of Contents ¶
-  - Introduction ¶
-  - Standard Planetary ¶
-    - Nomenclature ¶
-    - Ratios ¶
-    - Constraints ¶
-      - Center Distance ¶
-      - Planet Interference ¶
-      - Meshing Teeth ¶
-        - Equal Spacing ¶
-        - Unequal Spacing ¶
-    - Mesh Phasing ¶
-      - Phase Angles ¶
-        - Planet-Ring ¶
-        - Sun-Planet ¶
-      - Phasing Types ¶
-        - In-Phase ¶
-        - Sequential-Phase ¶
-        - Counter-Phase ¶
-        - Mixed-Phase ¶
-    - Helical Gears ¶
-      - Phasing ¶
-    - Example | Standard Planetary
-      - GIVEN
-      - FIND
-      - SOLUTION
-- | z1 | z2 | z3 | ratio | beta | N | space | phase | fx | fy | trq | mn | CD |
-- …
+## Constraints
+- **Center distance**: sun–planet and planet–ring working center distances equal:
+  |a12| = |a23|, i.e. |d_w1 + d_w2| = |d_w2' + d_w3|. Ring teeth are taken negative.
+- **Planet interference**: planet center distance l = 2a·sin(π/N) must exceed planet
+  tip diameter d_a2.
+- **Meshing teeth**: integer tooth counts required; each planet must mesh with both
+  sun and ring. Assembly: position sun, add first planet, position ring, then a second
+  planet fits only at certain carrier angles.
+  - *Equal spacing*: k = (z1 − z3)/N must be an integer.
+  - *Unequal spacing*: the **tick angle** (== least mesh angle) is
+    **θ̂ = 2π/(z1 − z3)**. Legal planet positions are multiples of θ̂. Since z3 < 0,
+    z1 − z3 = z_sun + z_ring. For our problem that is **2π/(s+c)** where s = sun
+    tooth count and c = ring tooth count (both positive; ring contributes additively).
+- **Mesh phasing**: ring tooth pitch ψ_t3 = 2π/z3; phase angle of planet i from
+  q_3i = θ_i/ψ_t3 mod 1. Phasing type from k_φ = |z3| mod N.
 
+## Implication for PE620
+The discreteness that makes g finite is exactly this: each planet's angular position
+around the sun (S) must be a multiple of the least mesh angle 2π/(s+c). This is the
+quantization constraint. (The source treats planets on a rigid carrier; the problem
+generalizes to four planets of two sizes p,p,q,q allowed to overlap, so positions are
+independent multiples of the least mesh angle, subject to tangency l(center) conditions.)
 
-## What it claims
-
-The geometry of planetary geartrain layouts is reviewed here. Planetary geartrains can be configured in several ways, with the most common architectures reviewed here. Attractive characteristics of planetary geartrains include:
-
-- Mechanical power is transferred between concentric bodies (ring, sun, carrier)
-- Power density is high, providing great mechanical power in a small package
-- Multiple gear meshes act on central bodies, with self-centering tendencies
-- Planet gears may precess with the carrier reference frame
-- Cylindrical involute gears are used to transmit motion
-- Multiple power inputs or outputs can be defined
-
-The visualization of a planetary geartrain clearly demonstrates its unique geometric characteristics.
-
-[image: Spur planetary geartrain]
-
-Planetary geartrain modeled in [Gears App][3]
-
-Most commonly, planetary geartrains have a sun gear (yellow), ring gear (blue), and multiple planet gears (orange) on a carrier (gray). Spur or helical gears are used for a planetary gearset, with each type having advantages. This notebook reviews the unique geometric attributes of…
-
-*[digest of a 19527 character source; every section, statement, and proof in full at `research/sources/planetary-gears-geometry-drivetrainhub.full.md`]*
+```claim
+id: least_mesh_angle
+statement: In a sun–ring–planet geartrain with sun tooth count z1 and ring tooth
+count z3 (taken negative for an internal gear), the smallest allowable relative
+angular step between planet positions that keeps every planet meshed with both sun
+and ring is the tick angle theta_hat = 2*pi/(z1 - z3) = 2*pi/(z_sun + z_ring); legal
+planet angular positions are integer multiples of it.
+hypotheses: perfect meshing (constant angular-velocity ratio, teeth align with
+grooves); internal ring gear (negative z3); integer tooth counts.
+holds-here: true — this is exactly the PE620 "perfectly meshing" condition applied
+to the C/S coaxal pair with tooth counts c and s.
+status: sourced (Drivetrain Hub planetary notebook; corroborated by UTS and Gear
+Solutions handbook).
+bearing: gives the quantization step 2*pi/(s+c) that makes g finite and countable.
+anchor: research/summaries/planetary-gears-geometry-drivetrainhub.md
+```
