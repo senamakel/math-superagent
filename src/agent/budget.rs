@@ -254,7 +254,7 @@ impl RunBudget {
     /// who lowered the defaults meant to lower them. The turn cap bounds
     /// nothing of the sort: it is a safety ceiling on one generation, and on
     /// this role it was cutting the work off rather than bounding a
-    /// pathological turn. See [`INVENTION_TURN_OUTPUT_TOKENS`].
+    /// pathological turn. See `INVENTION_TURN_OUTPUT_TOKENS` for the evidence.
     ///
     /// `max` rather than assignment, so an operator who raised
     /// `MATH_AGENT_TURN_OUTPUT_TOKENS` above this keeps their value.
