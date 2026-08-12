@@ -22,6 +22,24 @@ The oracle is verified at the exact size the statement's worked examples use
 (n <= 10, cycle enumeration exponential but trivial here). Not pointed at any
 larger bound — that is deliberately out of scope for this task.
 
+## tool_builder oracle re-run (this session, confirming previous)
+
+Re-ran the EXISTING harness rather than writing a second oracle, per instruction
+"if the workspace already holds such a program, run that instead."
+
+Command: `cd /workspace && PYTHONPATH=/workspace/code python code/brute.py` → exit 0:
+- K4:           min degree 3, lengths {3,4}, powers {4}
+- K3,3:         min degree 3, lengths {4,6}, powers {4}
+- Petersen:     min degree 3, lengths {5,6,8,9}, powers {8}
+- cube Q3:      min degree 3, lengths {4,6,8}, powers {4,8}
+- graph6 K4 ("C~"): agrees with hand-built K4 (cross-check of from_graph6 path)
+
+All match hand-stated answers. Independent second check:
+`cd /workspace && PYTHONPATH=/workspace/code python code/verify_cycles.py` →
+ALL CHECKS PASSED (expected vs got identical on K4, K3,3, Q3, Petersen).
+
+Verified at the sizes the statement uses (n <= 10); not pointed at any larger bound.
+
 ## pattern_finder note (this run)
 
 At the time of this check the run has produced **no computed integers**:
