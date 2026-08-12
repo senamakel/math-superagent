@@ -155,10 +155,18 @@ fn evidence_briefing(workspace: &Path) -> String {
          - approaches proposed: {approaches}\n\
          - threads open: {threads}\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
-         nothing and left work here is not — score what is here.",
+         nothing and left work here is not — score what is here.{}",
         ledger.established(),
         ledger.asserted(),
         ledger.catalogued(),
+        if oracle_unchecked(workspace) {
+            "\n\nOne thing to weigh against the score: `code/` holds the naive oracle and at \
+             least one faster program, and nothing in `code/out/` records the oracle having \
+             been run. A fast method nobody has checked against the oracle is not a result \
+             yet, however confident its comments are — say so in your steer."
+        } else {
+            ""
+        }
     )
 }
 
