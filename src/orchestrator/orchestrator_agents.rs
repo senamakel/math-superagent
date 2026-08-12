@@ -318,44 +318,7 @@ fn register_support_agents(
 
     register_pattern_agent(subagents, parts, prompts.pattern)?;
 
-    // The one specialist built on the reasoning model rather than the run's
-    // default. Everything else about its harness is the same, so the swap is
-    // one argument and is visible here rather than buried in a config table.
-    //
-    // And the one whose turns are allowed to be long. A reasoning model asked
-    // for three lines of attack with the mathematics named in each was being
-    // cut off at the run's 12,000-token cap with no tool call — see
-    // `RunBudget::for_invention`. The widened budget has to reach both the
-    // harness, which sets how far a cut-off turn may be re-issued, and the
-    // registration, which sets what the first attempt asks for.
-    let invention_budget = parts.budget.for_invention();
-    let mut inventor = specialist_harness(
-        parts.model_for("inventor"),
-        invention_budget,
-        "inventor",
-        parts.tracer,
-    );
-    if let Some(exa) = parts.exa.clone() {
-        register_resilient(&mut inventor, exa);
-    }
-    for tool in parts.oeis.iter().cloned() {
-        register_resilient(&mut inventor, tool);
-    }
-    for tool in parts.documents.tools() {
-        register_resilient(&mut inventor, tool);
-    }
-    // The one delegation bench outside the two planners. See [`INVENTION_BENCH`]
-    // for why the inventor has one and why it holds exactly one role.
-    for tool in subagents.tools(INVENTION_BENCH) {
-        register_resilient(&mut inventor, tool);
-    }
-    register_memory(&mut inventor, &parts.vector_store);
-    subagents.register_with_turn_cap(
-        "inventor",
-        Arc::new(inventor),
-        prompts.inventor,
-        invention_budget.max_turn_output_tokens,
-    )?;
+    register_inventor(subagents, parts, prompts.inventor)?;
 
     let mut librarian = specialist_harness(
         parts.model_for("librarian"),
