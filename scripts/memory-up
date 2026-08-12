@@ -1,0 +1,110 @@
+#!/bin/sh
+# Brings up this problem's own memory server and prints the network to join.
+#
+# One Cognee and one Neo4j per problem, from `compose.memory.yaml`. The compose
+# *project name* is what separates them: `-p cognee-<slug>` gives that problem
+# its own containers, its own volumes, and its own network, and nothing here
+# publishes a host port, so any number can run at once. See the header of
+# `compose.memory.yaml` for why a shared server was not enough.
+#
+# Usage: scripts/memory-up <workspace-label>   e.g. project-euler/620
+#        scripts/memory-up --down <workspace-label>
+#        scripts/memory-up --list
+#
+# Prints the compose network name on stdout and nothing else, so a caller can
+# read it directly:
+#
+#     COGNEE_NETWORK=$(scripts/memory-up project-euler/620)
+#
+# Progress goes to stderr for exactly that reason.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+cd "$repository_root"
+
+compose_file=compose.memory.yaml
+prefix=cognee-
+
+usage() {
+    echo "usage: scripts/memory-up [--down] <workspace-label>" >&2
+    echo "       scripts/memory-up --list" >&2
+}
+
+# Compose project names accept lowercase letters, digits, dashes and
+# underscores only, so `project-euler/620` has to become `project-euler-620`.
+# Every other character folds to a dash rather than being dropped: dropping
+# would let `a/b` and `ab` name the same server, which is the one mistake this
+# script must not make.
+slug_of() {
+    printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_-]/-/g; s/^-*//; s/-*$//'
+}
+
+action=up
+case "${1:-}" in
+    --list)
+        docker compose ls --all --format json 2>/dev/null \
+            | tr ',' '\n' | grep -o "\"${prefix}[a-z0-9_-]*\"" | tr -d '"' | sort -u
+        exit 0
+        ;;
+    --down)
+        action=down
+        shift
+        ;;
+    -h|--help|help)
+        usage
+        exit 0
+        ;;
+esac
+
+label=${1:-}
+if [ -z "$label" ]; then
+    usage
+    exit 2
+fi
+
+slug=$(slug_of "$label")
+if [ -z "$slug" ]; then
+    echo "workspace label '$label' has no usable characters" >&2
+    exit 2
+fi
+project=$prefix$slug
+
+if [ "$action" = down ]; then
+    # Volumes go with it. A memory server kept for a problem nobody is running
+    # is the shared server's storage problem back again, one directory lower.
+    docker compose -p "$project" -f "$compose_file" down -v >&2
+    exit 0
+fi
+
+if [ ! -f .env ]; then
+    echo "missing .env; copy .env.example and provide credentials" >&2
+    exit 1
+fi
+
+echo "memory: bringing up $project for $label" >&2
+# `up -d` on a stack that is already up is a no-op that returns immediately, so
+# a second run against the same problem costs nothing and starts nothing twice.
+docker compose -p "$project" -f "$compose_file" up -d >&2
+
+# Wait for the API rather than assuming it. `depends_on: service_healthy` binds
+# cognee to neo4j inside the stack, but nothing binds *this script* to cognee,
+# and an agent that starts against an unhealthy server spends its first minutes
+# failing recall calls it will never retry.
+waited=0
+while [ "$waited" -lt 180 ]; do
+    state=$(docker compose -p "$project" -f "$compose_file" ps \
+        --format '{{.Service}} {{.Health}}' 2>/dev/null | grep '^cognee ' || true)
+    case "$state" in
+        *healthy*)
+            echo "memory: $project ready after ${waited}s" >&2
+            printf '%s_default\n' "$project"
+            exit 0
+            ;;
+    esac
+    sleep 5
+    waited=$((waited + 5))
+done
+
+echo "memory: $project did not become healthy within ${waited}s" >&2
+docker compose -p "$project" -f "$compose_file" ps >&2
+exit 1
