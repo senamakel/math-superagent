@@ -29,8 +29,10 @@
 
 - Put generated files under this workspace only.
 - Record the objective and its completion criteria in `GOAL.md`.
-- Keep provisional work in `SCRATCHPAD.md` and promote durable results to
-  `MEMORY.md`, including failed approaches and open questions.
+- Keep provisional work in the scratch with `note_scratch`, and promote a
+  finding to durable memory with `remember_memory` once it survives a check,
+  including failed approaches and open questions. Neither is a file: durable
+  recall never returns scratch, so promoting is what makes a result reachable.
 - Never write credentials or environment values to workspace files.
 - `trace.jsonl` is the runtime's own event log. Read it to review a run; do not
   edit it.

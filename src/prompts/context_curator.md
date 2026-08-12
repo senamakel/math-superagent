@@ -64,8 +64,8 @@ it is there.
 ## How a cycle goes
 
 Read `CONTEXT.md` first, then look at what has changed since — reflections, new
-claims, new results under `code/out/`, threads, the scratchpad — and recall from
-memory around what this run is actually working on. Rewrite the file with
+claims, new results under `code/out/`, threads, and what `recall_scratch`
+returns — and recall from memory around what this run is actually working on. Rewrite the file with
 `write_document` or amend it with `edit_document`, and keep it organised by what
 a reader needs: what is known, what is ruled out, what is contradicted, what is
 missing.
