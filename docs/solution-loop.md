@@ -55,12 +55,11 @@ returns something unparsable, and an unparsable verdict is PROCEED.
 
 Three rules in it are load-bearing. An unreadable reply is PROCEED, in the same
 spirit as an unparsable verdict not counting as solved: a judge the loop cannot
-read must not throw work away by accident. `MAX_RESTARTS` is two, because a
-judge that dislikes the run's whole approach would otherwise reset it until the
-attempt ceiling stopped the loop, and the run would end having explored nothing
-to its conclusion. And the attempt ceiling outranks a restart — a run on its
-last attempt reflects on what it has rather than discarding it and stopping
-with nothing.
+read must not throw work away by accident. `MAX_RESTARTS` is two, because a judge
+that dislikes the run's whole approach would otherwise reset it until the attempt
+ceiling stopped the loop, and the run would end having explored nothing to its
+conclusion. And the attempt ceiling outranks a restart — a run on its last
+attempt reflects on what it has rather than stopping with nothing.
 
 The prompt makes the judge reluctant rather than exacting. It is told to assume
 the attempt was reasonable, that most are, and that a run which computed the
