@@ -1,3 +1,8 @@
+networks:
+  memory:
+    external: true
+    name: ${COGNEE_NETWORK:-cognee-local_default}
+
 services:
   agent:
     build:
@@ -46,9 +51,20 @@ services:
       - type: bind
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
         target: /workspace
-    depends_on:
-      cognee:
-        condition: service_healthy
+    # The memory backend is shared rather than per-checkout. Cognee scopes its
+    # graph by project, so one server serves every checkout on the box with the
+    # datasets kept apart, and standing this stack up twice would mean two graph
+    # stores, two Neo4j instances, and a fight over ports 8000 and 3000 — the
+    # second copy simply fails to bind.
+    #
+    # `COGNEE_NETWORK` names the compose network that stack is on, so the agent
+    # joins it and reaches the server as `cognee:8000`. It is external because
+    # this file does not own it: the lifetime of the memory server is longer
+    # than any one run, and a run must never be able to take it down. There is
+    # no `depends_on` for the same reason — the server is expected to be up
+    # already, and `./agent` says so plainly when it is not.
+    networks:
+      - memory
 
   cognee:
     image: cognee/cognee:1.4.2
