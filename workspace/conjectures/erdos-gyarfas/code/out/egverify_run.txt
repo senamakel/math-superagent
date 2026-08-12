@@ -29,3 +29,4 @@ n=13: no4cycle_mindeg3=503
 n=14: no4cycle_mindeg3=6059
 === survivor_girth5_n14.py ===
 n=12: C4free_mindeg3=57  girth>=5_survivors=2
+n=13: C4free_mindeg3=503  girth>=5_survivors=4
