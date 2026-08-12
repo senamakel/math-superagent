@@ -14,15 +14,13 @@ bounded to N<=7 (<=15 cells, frontier 3855 at N=8 start).  Verification only.
 """
 from itertools import product
 
+from lib.amoeba import lvl
+
 E = [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
 
 
 def children(p):
     return tuple(tuple(p[i] + e[i] for i in range(3)) for e in E)
-
-
-def lvl(p):
-    return sum(p)
 
 
 def forward_level(level):
