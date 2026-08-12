@@ -27,7 +27,26 @@ const DEFAULT_MAX_MODEL_CALLS: usize = 250;
 /// model cap: one model turn can request several tool calls at once.
 const DEFAULT_MAX_TOOL_CALLS: usize = 4_000;
 /// Wall-clock ceiling for one agent run, in minutes.
-const DEFAULT_RUN_MINUTES: u64 = 120;
+///
+/// Thirty, and the number is about the *solution loop* rather than about any
+/// single agent. The loop's attempt is one `goals` run, and the judge only
+/// scores an attempt once it returns — so on an open conjecture, where `goals`
+/// is told to pursue the goal until it is met, the attempt never concludes and
+/// nothing is ever judged. Four live runs sat inside attempt 1 for thirty-six
+/// minutes with zero judge verdicts, zero reflections and zero inventor spawns
+/// between them, while all the work happened in children the attempt had
+/// spawned. At two hours a run would have been judged once; at thirty minutes
+/// it is judged four times, and `STUCK_THRESHOLD` and `open_invention` become
+/// reachable within a session instead of within a day.
+///
+/// The cost is real and falls on the children. This bounds *every* agent run,
+/// not only the attempt, and a live `tool_builder` spent 1,362 seconds inside a
+/// single model call — twenty-three minutes of one turn — which leaves very
+/// little of a thirty-minute run. Unlike the model-call cap this path does not
+/// honour `StopWithPartial`, so what is lost is the run's own context and its
+/// report; what is on disk survives, and `continuation_briefing` is what lets
+/// the next attempt pick the work up from there rather than starting over.
+const DEFAULT_RUN_MINUTES: u64 = 30;
 /// Wall-clock ceiling for a single tool call, in minutes.
 const DEFAULT_TOOL_MINUTES: u64 = 10;
 /// Output tokens allowed in one model turn.
