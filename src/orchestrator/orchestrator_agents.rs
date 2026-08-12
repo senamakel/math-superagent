@@ -350,7 +350,12 @@ fn register_support_agents(
         register_resilient(&mut inventor, tool);
     }
     register_memory(&mut inventor, &parts.vector_store);
-    subagents.register("inventor", Arc::new(inventor), prompts.inventor)?;
+    subagents.register_with_turn_cap(
+        "inventor",
+        Arc::new(inventor),
+        prompts.inventor,
+        invention_budget.max_turn_output_tokens,
+    )?;
 
     let mut librarian = specialist_harness(
         parts.model_for("librarian"),
