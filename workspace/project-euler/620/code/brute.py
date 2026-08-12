@@ -1,228 +1,245 @@
-#!/usr/bin/env python3
-"""Naive oracle for Project Euler 620 (Planet Gears).
+"""PE620 discrete-lattice brute oracle (least-mesh-angle model).
 
-Obvious-correctness over speed.  Reproduces the statement's worked examples
-g(16,5,5,6)=9, G(16)=9, G(20)=205 before anything else is attempted.
+MODEL (least-mesh-angle lattice, positions as multiples of beta=2*pi/(s+c)):
+  C at origin, radius R = c/(2*pi).  S at (d,0), radius r = s/(2*pi).
+  d is the off-centre distance, a free (real) parameter.
+  A planet of size k (radius rho = k/(2*pi)) tangent internally to C and
+  externally to S has centre at distance a = R-rho from O and b = r+rho from
+  S.  A planet centred on the ray from S at angle m*beta meshes with both
+  gears iff, by the law of cosines,
+      d^2 + b^2 - 2*d*b*cos(m*beta) = a^2
+  i.e.  f_k(d) := (d^2 + b^2 - a^2) / (2*d*b)  equals cos(m*beta).
+  Slots m in {0,...,N-1}, N = s+c.  A slot m and its mirror N-m give the two
+  tangency points of the *same* pair of positions; when m=0 or 2*m=N the two
+  positions coincide (degenerate) and are excluded.  Because cos(x)=cos(y)
+  forces y = +/-x mod 2*pi, each size has at most ONE non-degenerate slot
+  pair per d, hence exactly one placement of its two planets per d: the
+  arrangement for a valid d (p-slot pair + q-slot pair) is unique, and
+  g = number of distinct valid d values.
 
-Physical model
---------------
-Ring C (internal gear), circumference c, radius R = c/(2pi), centred at O=(0,0).
-Sun  S, circumference s, radius r = s/(2pi), centred at (d,0), off-centre by d.
-A planet of circumference k (radius rho = k/(2pi)) is tangent internally to C
-and externally to S, so its centre P satisfies
-      |P - O| = R - rho   (= a),    |P - S| = r + rho   (= b).
-For fixed d this is 0, 1 or 2 points.
+  The two sizes p, q must work with the SAME d.  So g = number of valid
+  candidate d values, where a candidate d is a root of f_p(d)=cos(m_p*beta)
+  for some integer slot m_p that ALSO satisfies f_q(d)=cos(m_q*beta) for
+  some integer slot m_q.
 
-Meshing (teeth at pitch 1 cm; "1/2" is tooth-to-groove alignment):
-For each of the four planets, simultaneously:
-    C-planet mesh:  t_C(Xc) - phi_C - (t_k(Xc) - phi_k) = 1/2   (mod 1)
-    S-planet mesh:  t_S(Xs) - phi_S - (t_k(Xs) - phi_k) = 1/2   (mod 1)
-in the six gear phases phi.  Algebraically eliminating the phases leaves,
-for each planet type k, a doubled condition plus a cross condition:
-      2*F_k in Z,   H in Z,   (mod 1)
-where (with upper "+" planet of each type)
-      F_k = R*beta_k - r*gamma_k + T_k
-      H   = F_p - F_q
-      beta_k = angle of P about O,  gamma_k = angle of P about S,
-      T_k    = rho_k * (signed CCW arc on planet from C-contact to S-contact).
+  Closed form: f_k(d)=cos(m*beta)  <=>  d^2 - 2*b*cos(m*beta)*d + (b^2-a^2)=0
+  with roots d = b*cos(m*beta) +/- sqrt(b^2*cos^2(m*beta) - (b^2-a^2)).
+  (Real roots automatically have |a-b| <= d <= a+b, i.e. the two-circle
+  intersection exists.)
 
-Each valid centre-distance d (the four forced planet positions) is ONE
-arrangement, so g(c,s,p,q) = number of valid d in the allowed interval.
+  Physical constraints on d:
+    * d > 0;
+    * closest gap between the S and C boundaries >= 1cm:  R - r - d >= 1;
+    * both sizes have a valid two-circle intersection (implied by real roots,
+      kept as an explicit interval check on the candidates).
 
-This is written explicitly so every symbol can be traced back to the
-statement.  Uses mpmath (high precision) + scipy (isolate/refine zeros of the
-residual).  Each found solution is re-verified by an independent direct
-phase solve (see verify_solution).
+  Algorithm per (c,s,p,q):
+    valid_d_interval: DL..DU with DL = max(|a_k-b_k|), DU = min(a_k+b_k,
+    R-r-1), k in {p,q}.
+    For each non-degenerate slot m_p (0 < m_p < N/2): solve the quadratic in
+    d, keep roots in [DL,DU].  For each candidate d (deduped), check size q:
+    does some non-degenerate slot m_q satisfy |f_q(d)-cos(m_q*beta)| < TOL?
+    If yes, d is valid and contributes exactly one arrangement.
+    g = number of distinct such d.
+
+  Complexity: O(N) quadratics + O(N) slot checks per candidate => well below
+  O(N^2) per pair; this is the brute oracle and is only run for tiny
+  s+p+q <= ~40.  Floating point is used (radii are irrational 1/(2*pi)
+  multiples), but every claim is re-verified against its defining equation
+  with TOL=1e-9, and d values are printed at 17 significant digits.
+
+  Oracle values to reproduce:
+      g(16,5,5,6) = 9
+      G(16)       = 9      (only pair: g(16,5,5,6))
+      G(20)       = 205    (22 pairs, s+p+q <= 20)
 """
-from mpmath import mp, mpf, sqrt, atan2, pi, sin, cos, fabs
+
+import math
+import time
+
+OUTFILE = "/workspace/code/out/lattice_test.txt"
+TOL = 1e-9
 
 
-def R_of(c):
-    return mpf(c) / (2 * pi)
-
-
-def planet_geometry(k, d, R, r):
-    """Centre P, angles and arc for one type-k planet (upper, y>=0)."""
-    rho = mpf(k) / (2 * pi)
+def f_k(d, k, R, r):
+    """cos of the angle at S between the centre line and a size-k planet at
+    centre offset d:  f = (d^2 + b^2 - a^2)/(2db) with a=R-rho, b=r+rho."""
+    rho = k / (2.0 * math.pi)
     a = R - rho
     b = r + rho
-    x = (a * a - b * b + d * d) / (2 * d)
-    rad = a * a - x * x
-    if rad < 0:                      # floating error at interval endpoints
-        rad = mpf(0)
-    y = sqrt(rad)
-    beta = atan2(y, x)               # angle of P about O  (C-contact ray too)
-    gamma = atan2(y, x - d)          # angle of P about S
-    lamC = beta                      # P -> C-contact ray
-    lamS = gamma + pi                # P -> S-contact ray
-    psi = (lamS - lamC) % (2 * pi)   # CCW arc angle C-contact -> S-contact
-    T = rho * psi
-    return dict(rho=rho, a=a, b=b, x=x, y=y, beta=beta, gamma=gamma, psi=psi, T=T)
+    return (d * d + b * b - a * a) / (2.0 * d * b)
 
 
-def d_interval(c, s, p, q):
-    """Valid centre-distance interval (closed) or None."""
-    R = R_of(c)
-    r = R_of(s)
+def quadratic_roots(m, k, R, r):
+    """Roots d of f_k(d)=cos(2*pi*m/N), N=s+c given by R,r. Returns (list,
+    exactness-hint): the two closed-form roots (possibly one) of
+    d^2 - 2*b*cos(m*beta)*d + (b^2-a^2) = 0."""
+    rho = k / (2.0 * math.pi)
+    a = R - rho
+    b = r + rho
+    c = math.cos(2.0 * math.pi * m / (2.0 * math.pi * (R + r)))
+    disc = b * b * c * c - (b * b - a * a)
+    if disc < 0:
+        return []
+    roots = []
+    sd = math.sqrt(disc)
+    for d in (b * c + sd, b * c - sd):
+        if d > 1e-12:
+            roots.append(d)
+    return roots
+
+
+def valid_slot_exists(d, k, N, R, r, tol=TOL):
+    """True iff size k at offset d has a non-degenerate valid slot:
+    some m in {0..N-1} with 0 < m, 2*m != N, |f_k(d)-cos(2*pi*m/N)| < tol."""
+    for m in range(1, N):
+        if 2 * m == N:
+            continue
+        target = math.cos(2.0 * math.pi * m / N)
+        if abs(f_k(d, k, R, r) - target) <= tol:
+            return True
+    return False
+
+
+def p_slots(d, N, R, r, k, tol=TOL):
+    """All non-degenerate valid slots (0 < m < N/2, mirrors deduped) for size
+    k at offset d.  Used for reporting."""
+    out = []
+    for m in range(1, N // 2 + 1):
+        if 2 * m == N:
+            continue
+        target = math.cos(2.0 * math.pi * m / N)
+        if abs(f_k(d, k, R, r) - target) <= tol:
+            out.append(m)
+    return out
+
+
+def g_count(c, s, p, q, verbose=False):
+    """g(c,s,p,q) per the discrete lattice model.
+
+    Returns (g, details) where details is a list of dicts
+      {d: float, m_p: non-degenerate p-slot(s), m_q: q-slot(s)}.
+    Each valid d contributes exactly one arrangement.
+    """
+    R = c / (2.0 * math.pi)
+    r = s / (2.0 * math.pi)
+    N = s + c
+
+    # valid d interval from the geometry of both sizes plus the 1cm gap
     bounds = []
     for k in (p, q):
-        rho = mpf(k) / (2 * pi)
+        rho = k / (2.0 * math.pi)
         a = R - rho
         b = r + rho
-        bounds.append((fabs(a - b), a + b))
+        bounds.append((abs(a - b), a + b))
     DL = max(lo for lo, _ in bounds)
     DU = min(hi for _, hi in bounds)
-    DU = min(DU, R - r - 1)          # closest gap between S and C >= 1 cm
-    if DL > DU:
-        return None
-    return DL, DU
+    DU = min(DU, R - r - 1.0)
+    if DL > DU or DU <= 0:
+        return 0, []
 
+    # candidate d's: roots of the p-equation over non-degenerate slots in range
+    candidates = set()          # rounded key -> exact d
+    for mp in range(1, N // 2 + 1):
+        if 2 * mp == N:
+            continue
+        for d in quadratic_roots(mp, p, R, r):
+            if DL - 1e-9 <= d <= DU + 1e-9:
+                candidates[round(d, 9)] = d
 
-def F_and_H(c, s, p, q, d, T_sign=1):
-    """(Fp, Fq) with H = Fp - Fq.  T_sign=+1 is the corrected sign."""
-    R = R_of(c)
-    r = R_of(s)
-    gp = planet_geometry(p, d, R, r)
-    gq = planet_geometry(q, d, R, r)
-    def Fk(g):
-        return g['beta'] * R - g['gamma'] * r + T_sign * g['T']
-    return Fk(gp), Fk(gq)
+    # each candidate must also give q a valid non-degenerate slot
+    details = []
+    for key in sorted(candidates):
+        d = candidates[key]
+        if not valid_slot_exists(d, q, N, R, r):
+            continue
+        mps = p_slots(d, N, R, r, p)
+        mqs = p_slots(d, N, R, r, q)
+        if not mps or not mqs:
+            continue
+        details.append(dict(d=d, m_p=mps, m_q=mqs))
 
-
-def residual(c, s, p, q, d):
-    """Non-negative; ~0 exactly at valid d (corrected +T sign)."""
-    Fp, Fq = F_and_H(c, s, p, q, d, T_sign=1)
-    H = Fp - Fq
-    return fabs(sin(4 * pi * Fp)) + fabs(sin(4 * pi * Fq)) + fabs(sin(2 * pi * H))
-
-
-def verify_solution(c, s, p, q, d, tol=mpf('1e-20')):
-    """Independent check: directly solve the 8 phase equations and confirm all
-    hold mod 1.  Returns True iff the 8 congruences are simultaneously
-    consistent."""
-    R = R_of(c)
-    r = R_of(s)
-    gp = planet_geometry(p, d, R, r)
-    gq = planet_geometry(q, d, R, r)
-
-    def tc(beta):
-        return beta * R
-    def ts(gamma):
-        return gamma * r
-
-    bP, gP, TP = gp['beta'], gp['gamma'], gp['T']
-    bQ, gQ, TQ = gq['beta'], gq['gamma'], gq['T']
-    # lower planets: mirror, T lower = k - T
-    def m1(z):
-        return z % 1
-
-    # pick 5 phase unknowns from the 8 equations, solve, check the rest.
-    # choose unknowns phi_C, phi_S, phi_{q+}, phi_{q-}, phi_{p-}; solve from
-    # C,p+ ; S,p+ ; then derive the others and check the p-/q equations
-    phiC = m1(tc(bP) - 0 - mpf(1) / 2)                       # C,p+
-    phiS = m1(ts(gP) - TP - mpf(1) / 2)                      # S,p+
-    phi_qp = m1(tc(bQ) - phiC + mpf(1) / 2)                  # C,q+
-    phi_qm = m1(-tc(bQ) - phiC + mpf(1) / 2)                 # C,q-
-    phi_pm = m1(-tc(bP) - phiC + mpf(1) / 2)                 # C,p-
-
-    checks = [
-        (-tc(bQ), mpf(q) - TQ, phiS, phi_qm, 'S,q-'),       # S,q- = 1/2
-        (-tc(bP), mpf(p) - TP, phiS, phi_pm, 'S,p-'),       # S,p- = 1/2
-        (ts(gQ), TQ, phiS, phi_qp, 'S,q+'),                 # S,q+ = 1/2
-    ]
-    for tS, Tk, phiS_, phik, lab in checks:
-        # t_S - phi_S - (t_k - phi_k) =? 1/2
-        lhs = (tS - phiS_ - (Tk - phik) - mpf(1) / 2) % 1
-        if min(lhs, 1 - lhs) > tol:
-            return False
-    return True
-
-
-def g_brute(c, s, p, q, grid_points=40000, verbose=True):
-    """Number of valid centre distances (arrangements) for (c,s,p,q)."""
-    mp.prec = 80
-    R = R_of(c)
-    r = R_of(s)
-    dr = d_interval(c, s, p, q)
-    if dr is None:
-        return 0
-    DL, DU = dr
     if verbose:
-        print(f"  c={c} s={s} p={p} q={q}: d in "
-              f"[{mp.nstr(DL, 12)}, {mp.nstr(DU, 12)}]")
-    if DL <= 0:
-        return 0
-    from scipy.optimize import minimize_scalar
-    N = grid_points
-    step = (DU - DL) / N
-    dv = [DL + step * mpf(i) for i in range(N + 1)]
-    ev = [residual(c, s, p, q, x) for x in dv]
-    TH = mpf('1e-3')
-    runs = []
-    lo = None
-    for i, e in enumerate(ev):
-        if e < TH:
-            if lo is None:
-                lo = i
-        else:
-            if lo is not None:
-                runs.append((lo, i - 1)); lo = None
-    if lo is not None:
-        runs.append((lo, len(dv) - 1))
-
-    sols = []
-    for l, h in runs:
-        a, b = dv[l], dv[h]
-        if b - a < step:
-            a = max(DL, a - 3 * step)
-            b = min(DU, b + 3 * step)
-        res = minimize_scalar(lambda x: float(residual(c, s, p, q, x)),
-                              bounds=(float(a), float(b)), method='bounded',
-                              options={'xatol': 1e-20})
-        dst = mpf(res.x)
-        if residual(c, s, p, q, dst) > mpf('1e-12'):
-            continue
-        # near-integer test on the corrected conditions
-        def ni(x):
-            return min(x % 1, 1 - (x % 1))
-        Fp, Fq = F_and_H(c, s, p, q, dst, T_sign=1)
-        if max(ni(2 * Fp), ni(2 * Fq), ni(Fp - Fq)) > mpf('1e-8'):
-            continue
-        if not verify_solution(c, s, p, q, dst):
-            continue
-        # reject degenerate d (coinciding planet positions)
-        bad = False
-        for k in (p, q):
-            rho = mpf(k) / (2 * pi)
-            a = R - rho
-            b = r + rho
-            if fabs(dst - fabs(a - b)) < mpf('1e-13') or \
-               fabs(dst - (a + b)) < mpf('1e-13'):
-                bad = True
-        if bad:
-            continue
-        if not any(fabs(dst - s0) < mpf('1e-9') for s0 in sols):
-            sols.append(dst)
-    sols.sort(key=float)
-    if verbose:
-        for s0 in sols:
-            print(f"    d* = {mp.nstr(s0, 22)}")
-    return len(sols)
+        for v in details:
+            print("  d = %.17g   p-slots %s   q-slots %s"
+                  % (v['d'], v['m_p'], v['m_q']))
+    return len(details), details
 
 
-def G_brute(n, verbose=False):
-    """G(n) = sum_{s+p+q<=n, s>=5, p>=5, p<q} g(s+p+q,s,p,q)."""
+def G_sum(n, verbose=False):
+    """G(n) = sum over s>=5, p>=5, p<q, s+p+q<=n of g(s+p+q, s, p, q)."""
     total = 0
-    for s in range(5, n - 10):
-        for p in range(5, n - s - 5):
+    rows = []
+    for s in range(5, n - 10 + 1):
+        for p in range(5, n - s - 5 + 1):
             for q in range(p + 1, n - s - p + 1):
                 c = s + p + q
-                g = g_brute(c, s, p, q, verbose=verbose)
+                g, _ = g_count(c, s, p, q, verbose=verbose)
+                rows.append((c, s, p, q, g))
                 total += g
-    return total
+    return total, rows
+
+
+def main():
+    out = []
+    def emit(s=""):
+        print(s, flush=True)
+        out.append(s)
+
+    emit("PE620 discrete-lattice brute oracle (least-mesh-angle model)")
+    emit("beta = 2*pi/(s+c); candidate d from closed-form roots of")
+    emit("f_p(d)=cos(m_p*beta); each candidate checked for a valid q slot.")
+    emit("Each valid d gives exactly one arrangement "
+         "(2 p-planets at slot-pair {m,N-m}, same for q).")
+    emit("=" * 72)
+
+    # [1] g(16,5,5,6) must be 9
+    t0 = time.perf_counter()
+    g, dvals = g_count(16, 5, 5, 6, verbose=True)
+    dt = time.perf_counter() - t0
+    emit("[1] g(16,5,5,6) = %d   (oracle 9)   %s   [%.2fs]"
+         % (g, "AGREE" if g == 9 else "DISAGREE", dt))
+    emit("    %d distinct candidate d values:" % len(dvals))
+    for v in dvals:
+        emit("      d = %.17g   p-slots %s   q-slots %s"
+             % (v['d'], v['m_p'], v['m_q']))
+    emit("")
+
+    # [2] G(16) must be 9
+    t0 = time.perf_counter()
+    g16, rows16 = G_sum(16)
+    dt = time.perf_counter() - t0
+    emit("[2] G(16) = %d   (oracle 9)   %s   [%.2fs]"
+         % (g16, "AGREE" if g16 == 9 else "DISAGREE", dt))
+    for c, s, p, q, gv in rows16:
+        emit("      g(%d,%d,%d,%d) = %d" % (c, s, p, q, gv))
+    emit("")
+
+    # [3] G(20) must be 205
+    t0 = time.perf_counter()
+    g20, rows20 = G_sum(20)
+    dt = time.perf_counter() - t0
+    emit("[3] G(20) = %d   (oracle 205)   %s   [%.2fs]"
+         % (g20, "AGREE" if g20 == 205 else "DISAGREE", dt))
+    emit("    per-pair g values:")
+    emit("      c  s  p  q    g")
+    for c, s, p, q, gv in rows20:
+        emit("     %2d %2d %2d %2d  %3d" % (c, s, p, q, gv))
+    emit("")
+
+    v1 = "AGREE" if g == 9 else "DISAGREE"
+    v2 = "AGREE" if g16 == 9 else "DISAGREE"
+    v3 = "AGREE" if g20 == 205 else "DISAGREE"
+    emit("Verdicts: g(16,5,5,6)=9 -> %s | G(16)=9 -> %s | G(20)=205 -> %s"
+         % (v1, v2, v3))
+    emit("MODEL %s the oracle on all three values."
+         % ("MATCHES" if v1 == v2 == v3 == "AGREE" else "DOES NOT MATCH"))
+    emit("")
+    emit("Output saved to %s" % OUTFILE)
+
+    with open(OUTFILE, "w") as f:
+        f.write("\n".join(out) + "\n")
 
 
 if __name__ == "__main__":
-    print("g(16,5,5,6) =", g_brute(16, 5, 5, 6))
-    print("G(16) =", G_brute(16))
-    print("G(20) =", G_brute(20))
+    main()
