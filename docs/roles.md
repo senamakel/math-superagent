@@ -217,7 +217,13 @@ Four of these are load-bearing rather than tidy-minded:
   the investigation.
 - The inventor must see `MEMORY.md` for its failed-approaches section. Without
   it, it re-proposes what already failed, which is the one thing it exists not
-  to do.
+  to do. **It does not currently receive it**: no arm of `role_context` names
+  `MEMORY.md` for any role. The inventor can still reach the same material with
+  `recall_memory` and `search_workspace`, so this is a rule the code stopped
+  guaranteeing rather than one it contradicts — but the whole argument for
+  routing a file into a prompt is that the role should not have to think to go
+  and look. Either route it again or strike the rule; leaving both is what makes
+  a document stop being evidence about the runtime.
 - Reflection must not reach the scratch. Provisional arithmetic is not
   evidence of progress, and treating it as such keeps the loop retrying. That
   was a routing decision while the scratch was `SCRATCHPAD.md`; now that it is
