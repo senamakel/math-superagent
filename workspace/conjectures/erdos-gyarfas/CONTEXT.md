@@ -2,7 +2,7 @@
 
 What this run knows, in its own words. The context curator writes this file and is the only role that writes it, and it is re-sent to nearly every role on every model call, so what is here is what the run knows without going to look. It is not a file catalogue (research/INDEX.md is that) and not a narration; it carries what an agent would otherwise rebuild from disk or from a session it was not present for: established results with their basis, dead ends and why, computed numbers, durable memory, and disagreements. Detail compressed away lives in the linked file.
 
-**Token budget** 10,000; this brief is a fraction of it (~2.5k). Keep it lean.
+**Token budget** 10,000; this brief is a fraction of it (~4.3k). Keep it lean.
 
 ## Problem
 

@@ -68,7 +68,7 @@ const MAX_CONTEXT: usize = 200;
 ///
 /// The second group is the one that mattered. An arXiv abstract page carries a
 /// toolbar of third-party services — Connected Papers, alphaXiv, DagsHub,
-/// Hugging Face, Replicate, ScienceCast, Influence Flower — and every one of
+/// Hugging Face, Replicate, ScienceCast, Influence Flower — and each one of
 /// them appears on *every* abstract page. So they accumulate citers faster than
 /// any real reference can, and the ranking that was written to surface "the
 /// source three of your own papers cite" surfaces the toolbar instead. On a
