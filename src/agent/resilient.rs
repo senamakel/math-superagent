@@ -236,4 +236,5 @@ fn request_timeout_from_env() -> Duration {
 }
 
 #[cfg(test)]
+#[path = "resilient_test.rs"]
 mod test;

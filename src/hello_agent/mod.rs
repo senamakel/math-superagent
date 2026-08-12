@@ -385,4 +385,5 @@ impl Tool<()> for ExaSearchTool {
 }
 
 #[cfg(test)]
+#[path = "hello_agent_test.rs"]
 mod test;

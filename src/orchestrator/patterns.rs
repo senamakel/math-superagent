@@ -483,4 +483,5 @@ fn preview_terms(terms: &[i128]) -> Vec<i128> {
 }
 
 #[cfg(test)]
+#[path = "patterns_test.rs"]
 mod test;

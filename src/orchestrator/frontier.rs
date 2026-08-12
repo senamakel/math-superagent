@@ -352,4 +352,5 @@ async fn store(documents: &WorkspaceDocuments, ledger: &BTreeMap<String, Candida
 }
 
 #[cfg(test)]
+#[path = "frontier_test.rs"]
 mod test;

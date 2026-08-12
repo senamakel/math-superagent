@@ -212,4 +212,5 @@ fn build(workspace: &Path, tokens: u64) -> String {
 }
 
 #[cfg(test)]
+#[path = "dossier_test.rs"]
 mod test;

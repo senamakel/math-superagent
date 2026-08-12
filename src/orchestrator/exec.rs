@@ -467,4 +467,5 @@ const SEARCH_METHODS: [&str; 5] = [
 ];
 
 #[cfg(test)]
+#[path = "exec_test.rs"]
 mod test;

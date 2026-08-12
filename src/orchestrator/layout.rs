@@ -261,4 +261,5 @@ pub(super) fn swept_note(swept: &Swept) -> String {
 }
 
 #[cfg(test)]
+#[path = "layout_test.rs"]
 mod test;

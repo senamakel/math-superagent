@@ -268,4 +268,5 @@ pub fn mock(text: impl Into<String>) -> SlimAgent {
 }
 
 #[cfg(test)]
+#[path = "agent_test.rs"]
 mod test;

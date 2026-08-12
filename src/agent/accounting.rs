@@ -123,4 +123,5 @@ impl<S: Send + Sync + 'static> ChatModel<S> for AccountingModel<S> {
 }
 
 #[cfg(test)]
+#[path = "accounting_test.rs"]
 mod test;

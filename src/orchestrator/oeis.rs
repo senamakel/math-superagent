@@ -310,4 +310,5 @@ impl Tool<()> for OeisTool {
 }
 
 #[cfg(test)]
+#[path = "oeis_test.rs"]
 mod test;

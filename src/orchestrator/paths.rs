@@ -151,4 +151,5 @@ impl Tool<()> for WriteToolFile {
 }
 
 #[cfg(test)]
+#[path = "paths_test.rs"]
 mod test;

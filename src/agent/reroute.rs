@@ -176,4 +176,5 @@ impl<S: Send + Sync + 'static> ChatModel<S> for ReroutingModel<S> {
 }
 
 #[cfg(test)]
+#[path = "reroute_test.rs"]
 mod test;

@@ -459,4 +459,5 @@ where
 }
 
 #[cfg(test)]
+#[path = "teams_test.rs"]
 mod test;

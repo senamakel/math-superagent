@@ -445,4 +445,5 @@ impl Tool<()> for FolderIndexTool {
 }
 
 #[cfg(test)]
+#[path = "folder_index_test.rs"]
 mod test;

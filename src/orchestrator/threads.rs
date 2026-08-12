@@ -338,4 +338,5 @@ fn cell(text: &str) -> String {
 }
 
 #[cfg(test)]
+#[path = "threads_test.rs"]
 mod test;

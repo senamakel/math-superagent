@@ -1,0 +1,353 @@
+impl AsyncSubagentManager {
+    pub(crate) fn new(budget: RunBudget, tracer: Option<Arc<RunTracer>>) -> Self {
+        Self::with_concurrency(budget, tracer, max_concurrent_agents())
+    }
+
+    /// Builds a manager with an explicit concurrent-run cap.
+    ///
+    /// Separate from [`Self::new`] so the cap can be exercised without setting
+    /// a process-wide environment variable from a test.
+    fn with_concurrency(
+        budget: RunBudget,
+        tracer: Option<Arc<RunTracer>>,
+        concurrency: usize,
+    ) -> Self {
+        Self {
+            agents: Arc::default(),
+            store: Arc::new(InMemoryTaskStore::new()),
+            steering: SteeringRegistry::new(),
+            budget,
+            tracer,
+            langfuse: LangfuseClient::from_env().ok().map(Arc::new),
+            slots: Arc::new(Semaphore::new(concurrency)),
+            session: session_id(),
+            memory: None,
+        }
+    }
+
+    /// Ingests every completed child session into Cognee.
+    pub(super) fn with_session_memory(mut self, memory: VectorStore) -> Self {
+        self.memory = Some(memory);
+        self
+    }
+
+    /// Longest an `await_agent` call may block, in seconds.
+    ///
+    /// A caller must be able to wait out a child that is using its full run
+    /// budget, otherwise the orchestrator is structurally unable to collect
+    /// the result of the deepest work it delegated.
+    fn max_await_seconds(&self) -> u64 {
+        self.budget.run_timeout.as_secs().max(60)
+    }
+
+    pub(crate) fn register(
+        &self,
+        name: impl Into<String>,
+        harness: Arc<AgentHarness<()>>,
+        system_prompt: impl Into<String>,
+    ) -> Result<()> {
+        let name = name.into();
+        let role = name.clone();
+        self.register_executor(
+            name,
+            Arc::new(HarnessExecutor {
+                harness,
+                system_prompt: system_prompt.into(),
+                langfuse: self.langfuse.clone(),
+                max_turn_output_tokens: self.budget.max_turn_output_tokens,
+                role,
+                session: self.session.clone(),
+            }),
+        )
+    }
+
+    fn register_executor(
+        &self,
+        name: impl Into<String>,
+        executor: Arc<dyn AgentExecutor>,
+    ) -> Result<()> {
+        let name = name.into();
+        let mut agents = self.agents.write().map_err(|_| {
+            tinyagents::TinyAgentsError::Tool("async subagent registry lock is poisoned".into())
+        })?;
+        if agents.insert(name.clone(), executor).is_some() {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "async subagent `{name}` is already registered"
+            )));
+        }
+        Ok(())
+    }
+
+    /// Reports whether an agent is registered under this name.
+    pub(super) fn knows(&self, agent: &str) -> bool {
+        self.agents
+            .read()
+            .is_ok_and(|agents| agents.contains_key(agent))
+    }
+
+    /// Looks up a registered agent by name.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the registry lock is poisoned or the name is not
+    /// registered — the second being how a typo in a delegation reaches the
+    /// caller as a message rather than as a run that silently never happens.
+    fn executor_for(&self, agent_name: &str) -> Result<Arc<dyn AgentExecutor>> {
+        self.agents
+            .read()
+            .map_err(|_| {
+                tinyagents::TinyAgentsError::Tool("async subagent registry lock is poisoned".into())
+            })?
+            .get(agent_name)
+            .cloned()
+            .ok_or_else(|| {
+                tinyagents::TinyAgentsError::Validation(format!(
+                    "unknown async subagent `{agent_name}`"
+                ))
+            })
+    }
+
+    fn spawn(&self, agent_name: &str, input: String) -> Result<TaskId> {
+        let executor = self.executor_for(agent_name)?;
+        let sequence = NEXT_RUN_ID.fetch_add(1, Ordering::Relaxed);
+        let task_id = TaskId::new(format!("agent-run-{sequence}"));
+        let spec = OrchestrationTaskSpec::new(
+            task_id.clone(),
+            OrchestrationTaskKind::SubAgent {
+                agent: agent_name.to_string(),
+            },
+        )
+        .with_timeout_ms(self.budget.run_timeout_ms())
+        .with_input(json!({ "prompt": input }));
+        self.store.insert(spec)?;
+
+        let store = self.store.clone();
+        let steering_registry = self.steering.clone();
+        let spawned_task_id = task_id.clone();
+        let run_id = task_id.as_str().to_string();
+        let steering = SteeringHandle::allow_all();
+        steering_registry.register(task_id.clone(), steering.clone());
+        let run_timeout = self.budget.run_timeout;
+        let tracer = self
+            .tracer
+            .as_ref()
+            .map(|tracer| tracer.child(format!("{agent_name}/{run_id}")));
+        if let Some(tracer) = tracer.as_ref() {
+            tracer.note(&format!("spawned: {}", preview_input(&input)));
+        }
+        // The run's own tracer is moved into the graph node; recording happens
+        // after that node has finished, so it needs its own handle.
+        let record_tracer = tracer.clone();
+        let slots = self.slots.clone();
+        let session_memory = self.memory.clone();
+        let session_agent = agent_name.to_string();
+        let session_input = input.clone();
+        let session_run_id = run_id.clone();
+        let follow_up = FOLLOW_UPS
+            .iter()
+            .find(|(after, _)| *after == agent_name)
+            .map(|(_, steps)| FollowUp {
+                manager: self.clone(),
+                steps,
+            });
+        tokio::spawn(async move {
+            // Queue for a slot before doing anything else. Acquiring here
+            // rather than in `spawn` is what keeps a spawn cheap and
+            // non-blocking: the caller gets its run id immediately and the
+            // queue drains behind it. The run deadline starts after the wait,
+            // so a queued run is not charged for time it spent waiting.
+            let _permit = slots.acquire().await;
+            let _ = store.mark_running(&spawned_task_id);
+            let graph = GraphBuilder::<RunState, RunState>::overwrite()
+                .add_node(
+                    "subagent",
+                    move |mut state: RunState, _context: NodeContext| {
+                        let executor = executor.clone();
+                        let steering = steering.clone();
+                        let tracer = tracer.clone();
+                        async move {
+                            let response = executor
+                                .execute(&state.run_id, state.input.clone(), steering, tracer)
+                                .await?;
+                            state.response = Some(response);
+                            Ok(NodeResult::Update(state))
+                        }
+                    },
+                )
+                .set_entry("subagent")
+                .set_finish("subagent")
+                .compile()
+                .map(|graph| graph.with_run_deadline(run_timeout));
+
+            let outcome = match graph {
+                Ok(graph) => tokio::time::timeout(
+                    run_timeout,
+                    graph.run(RunState {
+                        run_id,
+                        input,
+                        response: None,
+                    }),
+                )
+                .await
+                .map_err(|_| tinyagents::TinyAgentsError::Timeout("subagent run timed out".into()))
+                .and_then(|result| result),
+                Err(error) => Err(error),
+            };
+            let succeeded = record_outcome(
+                outcome,
+                &Recording {
+                    memory: session_memory.as_ref(),
+                    agent: &session_agent,
+                    run_id: &session_run_id,
+                    input: &session_input,
+                    store: &store,
+                    task_id: &spawned_task_id,
+                    tracer: record_tracer.as_ref(),
+                },
+            )
+            .await;
+            steering_registry.deregister(&spawned_task_id);
+            if succeeded && let Some(follow_up) = follow_up {
+                // Spawned separately so this run's slot is released first.
+                // Chaining inline would make every in-flight tool-builder hold
+                // two slots, one of them doing nothing but waiting.
+                tokio::spawn(async move { follow_up.run().await });
+            }
+        });
+        Ok(task_id)
+    }
+
+    /// Spawns `agent` and waits for its final text.
+    ///
+    /// The graph-backed solution loop needs a plain call-and-wait, unlike the
+    /// model-visible tools where spawning and awaiting are deliberately
+    /// separate so a model can run work in parallel.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the agent is unknown or the run failed or timed
+    /// out without producing a response.
+    pub(crate) async fn run_to_completion(&self, agent: &str, input: String) -> Result<String> {
+        let task_id = self.spawn(agent, input)?;
+        let record = self
+            .await_record(task_id.as_str(), self.max_await_seconds())
+            .await?;
+        if let Some(error) = record.error {
+            return Err(tinyagents::TinyAgentsError::Tool(format!(
+                "agent `{agent}` failed: {error}"
+            )));
+        }
+        record.result.and_then(|result| result.text).ok_or_else(|| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "agent `{agent}` produced no response before its deadline"
+            ))
+        })
+    }
+
+    fn record(&self, task_id: &str) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
+        let task_id = TaskId::new(task_id);
+        self.store.get(&task_id).ok_or_else(|| {
+            tinyagents::TinyAgentsError::Validation(format!("unknown agent run `{task_id}`"))
+        })
+    }
+
+    /// Lists runs that have been started and have not yet finished.
+    ///
+    /// Lets `await_agents` be called with no arguments, which is the shape a
+    /// caller actually wants after a batch spawn: it knows it is waiting for
+    /// "everything I just started" and should not have to copy run ids back
+    /// out of a previous tool result to say so.
+    fn outstanding_runs(&self) -> Vec<String> {
+        self.store
+            .list(tinyagents::graph::OrchestrationTaskFilter::default())
+            .into_iter()
+            .filter(|record| {
+                matches!(
+                    record.status,
+                    tinyagents::graph::OrchestrationTaskStatus::Pending
+                        | tinyagents::graph::OrchestrationTaskStatus::Running
+                )
+            })
+            .map(|record| record.task_id().to_string())
+            .collect()
+    }
+
+    fn steer(&self, task_id: &str, instruction: String) -> Result<()> {
+        let task_id = TaskId::new(task_id);
+        let record = self.store.get(&task_id).ok_or_else(|| {
+            tinyagents::TinyAgentsError::Validation(format!("unknown agent run `{task_id}`"))
+        })?;
+        if !record.status.is_live() {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "agent run `{task_id}` is already terminal"
+            )));
+        }
+        let handle = self.steering.get(&task_id).ok_or_else(|| {
+            tinyagents::TinyAgentsError::Tool(format!(
+                "agent run `{task_id}` has no steering handle"
+            ))
+        })?;
+        handle.send(SteeringCommand::Redirect { instruction });
+        Ok(())
+    }
+
+    async fn await_record(
+        &self,
+        task_id: &str,
+        wait_seconds: u64,
+    ) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
+        let deadline = tokio::time::Instant::now()
+            + Duration::from_secs(wait_seconds.min(self.max_await_seconds()));
+        loop {
+            let record = self.record(task_id)?;
+            if record.status.is_terminal() || tokio::time::Instant::now() >= deadline {
+                return Ok(record);
+            }
+            tokio::time::sleep(Duration::from_millis(200)).await;
+        }
+    }
+
+    pub(crate) fn tools(
+        &self,
+        allowed_agents: impl IntoIterator<Item = &'static str>,
+    ) -> Vec<Arc<dyn Tool<()>>> {
+        let allowed = Arc::new(
+            allowed_agents
+                .into_iter()
+                .map(str::to_string)
+                .collect::<Vec<_>>(),
+        );
+        vec![
+            Arc::new(AsyncSubagentTool::new(
+                AsyncToolKind::Spawn,
+                self.clone(),
+                allowed.clone(),
+            )),
+            Arc::new(AsyncSubagentTool::new(
+                AsyncToolKind::Peek,
+                self.clone(),
+                allowed.clone(),
+            )),
+            Arc::new(AsyncSubagentTool::new(
+                AsyncToolKind::Steer,
+                self.clone(),
+                allowed.clone(),
+            )),
+            Arc::new(AsyncSubagentTool::new(
+                AsyncToolKind::Await,
+                self.clone(),
+                allowed.clone(),
+            )),
+            Arc::new(AsyncSubagentTool::new(
+                AsyncToolKind::SpawnMany,
+                self.clone(),
+                allowed.clone(),
+            )),
+            Arc::new(AsyncSubagentTool::new(
+                AsyncToolKind::AwaitMany,
+                self.clone(),
+                allowed,
+            )),
+        ]
+    }
+}

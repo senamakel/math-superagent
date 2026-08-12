@@ -135,4 +135,5 @@ impl<State: Send + Sync + 'static> Middleware<State> for ReflectionMiddleware {
 }
 
 #[cfg(test)]
+#[path = "reflection_test.rs"]
 mod test;

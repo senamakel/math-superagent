@@ -563,4 +563,5 @@ fn attribution(wall: u64, model: u64, tool: u64) -> String {
 }
 
 #[cfg(test)]
+#[path = "trace_test.rs"]
 mod test;

@@ -191,4 +191,5 @@ fn history_directory(workspace: &Path) -> PathBuf {
 }
 
 #[cfg(test)]
+#[path = "checkpoint_test.rs"]
 mod test;

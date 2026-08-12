@@ -272,4 +272,5 @@ fn positive_env(name: &str) -> Option<u64> {
 }
 
 #[cfg(test)]
+#[path = "budget_test.rs"]
 mod test;

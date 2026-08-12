@@ -464,4 +464,5 @@ pub(super) fn tool(documents: WorkspaceDocuments) -> Arc<dyn Tool<()>> {
 }
 
 #[cfg(test)]
+#[path = "patch_test.rs"]
 mod test;

@@ -45,6 +45,7 @@
 mod types;
 
 #[cfg(test)]
+#[path = "directives_test.rs"]
 mod test;
 
 use std::fmt::Write as _;

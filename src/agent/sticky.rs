@@ -194,4 +194,5 @@ impl<S: Send + Sync + 'static> ChatModel<S> for StickyProviderModel<S> {
 }
 
 #[cfg(test)]
+#[path = "sticky_test.rs"]
 mod test;

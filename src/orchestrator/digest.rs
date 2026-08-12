@@ -315,4 +315,5 @@ fn strip_emphasis(text: &str) -> &str {
 }
 
 #[cfg(test)]
+#[path = "digest_test.rs"]
 mod test;

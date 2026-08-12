@@ -36,4 +36,5 @@ pub(super) fn truncate(text: &str, limit: usize) -> String {
 }
 
 #[cfg(test)]
+#[path = "text_test.rs"]
 mod test;

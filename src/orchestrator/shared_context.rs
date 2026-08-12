@@ -202,4 +202,5 @@ pub(super) fn positive_env(name: &str) -> Option<u64> {
 }
 
 #[cfg(test)]
+#[path = "shared_context_test.rs"]
 mod test;

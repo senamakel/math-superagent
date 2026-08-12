@@ -298,4 +298,5 @@ mod tool;
 pub(super) use tool::RequestTool;
 
 #[cfg(test)]
+#[path = "requests_test.rs"]
 mod test;

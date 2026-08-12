@@ -191,4 +191,5 @@ impl<S: Send + Sync + 'static> ChatModel<S> for UntruncatedModel<S> {
 }
 
 #[cfg(test)]
+#[path = "untruncated_test.rs"]
 mod test;

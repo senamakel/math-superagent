@@ -35,4 +35,5 @@ pub fn greet(name: &str) -> Result<String> {
 }
 
 #[cfg(test)]
+#[path = "greeting_test.rs"]
 mod test;

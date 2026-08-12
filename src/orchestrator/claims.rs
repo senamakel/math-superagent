@@ -610,4 +610,5 @@ mod tool;
 pub(super) use tool::ClaimsTool;
 
 #[cfg(test)]
+#[path = "claims_test.rs"]
 mod test;
