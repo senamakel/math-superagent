@@ -179,6 +179,11 @@ fn runtime_bookkeeping_cannot_be_read_into_an_agents_context() {
         ".document-index.json",
         "raw/papers/lagrange.md",
         ".workspace-history/HEAD",
+        // The console stream, the same replay under a different name. A live
+        // `context_curator` read 37,609 bytes of one into a model call.
+        "config/start.log",
+        "start.log",
+        "/workspace/config/start.log",
     ] {
         assert!(
             ensure_visible(hidden).is_err(),
