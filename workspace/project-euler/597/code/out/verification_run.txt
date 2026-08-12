@@ -1,0 +1,75 @@
+PE 597 (Torpids) -- worked-example verification run
+run at: 2026-08-12 15:53:57 UTC
+host: 37628070d50f
+
+Engines: brute.py (naive float oracle), exact_race.py (exact Fraction dynamics),
+         cell_exact.py + toolkits/arr_enum.py + toolkits/arr_polytope.py (exact
+         arrangement-cell integration, p = (n-1)! * sum of even-cell volumes)
+==============================================================================
+A) The five n=3, L=160 rows -- brute.py + exact_race.py
+   (exact Fraction replay; edges, new order, parity)
+==============================================================================
+  row 'none':
+    speeds (exact)          = (1/2, 1, 2)
+    realised bump edges     = []  (table: [])
+    new order (exact)       = ('A', 'B', 'C') (table: ('A', 'B', 'C'))
+    parity (exact/float)    = even / even (table: even)
+    => OK
+  row 'B bumps C':
+    speeds (exact)          = (3/10, 2, 1)
+    realised bump edges     = [(1, 2)]  (table: [(1, 2)])
+    new order (exact)       = ('A', 'C', 'B') (table: ('A', 'C', 'B'))
+    parity (exact/float)    = odd / odd (table: odd)
+    => OK
+  row 'A bumps B':
+    speeds (exact)          = (2, 1, 3/2)
+    realised bump edges     = [(0, 1)]  (table: [(0, 1)])
+    new order (exact)       = ('B', 'A', 'C') (table: ('B', 'A', 'C'))
+    parity (exact/float)    = odd / odd (table: odd)
+    => OK
+  row 'B bumps C then A bumps C':
+    speeds (exact)          = (3/2, 2, 1/2)
+    realised bump edges     = [(0, 2), (1, 2)]  (table: [(0, 2), (1, 2)])
+    new order (exact)       = ('C', 'A', 'B') (table: ('C', 'A', 'B'))
+    parity (exact/float)    = even / even (table: even)
+    => OK
+  row 'A bumps B then B bumps C':
+    speeds (exact)          = (3, 8/5, 1)
+    realised bump edges     = [(0, 1), (1, 2)]  (table: [(0, 1), (1, 2)])
+    new order (exact)       = ('C', 'B', 'A') (table: ('C', 'B', 'A'))
+    parity (exact/float)    = odd / odd (table: odd)
+    => OK
+  => ALL 5 ROWS MATCH
+
+==============================================================================
+B) Row probabilities exactly from the n=3, L=160 arrangement
+   (32 open cells; each classified by its COMPLETE new order)
+==============================================================================
+  new order ('A', 'B', 'C'):  p = 4/15 = 0.266666667  (table 4/15)  cells=11  [OK]
+  new order ('A', 'C', 'B'):  p = 8/45 = 0.177777778  (table 8/45)  cells=3  [OK]
+  new order ('B', 'A', 'C'):  p = 1/3 = 0.333333333  (table 1/3)  cells=10  [OK]
+  new order ('C', 'A', 'B'):  p = 4/27 = 0.148148148  (table 4/27)  cells=6  [OK]
+  new order ('C', 'B', 'A'):  p = 2/27 = 0.074074074  (table 2/27)  cells=2  [OK]
+  sum of the five row probabilities               = 1  [OK, = 1]
+  P(even) = 4/15 + 4/27                          = 56/135  [OK, = 56/135]
+  cells: 32 total, 17 even  (planes: 13)
+  => ALL 5 ROW PROBABILITIES EXACT, SUM = 1, EVEN = 56/135
+
+==============================================================================
+C) Exact p(n,L) from cell_exact.p_exact (arrangement-cell
+   integration, exact rational arithmetic)
+==============================================================================
+  p(3,160)     n=3 L=160   cells=32    even_cells=17     got=56/135 = 0.4148148148  expected=56/135  [OK]  (0.1s)
+  p(3,1800)    n=3 L=1800  cells=32    even_cells=17     got=2237/5742 = 0.3895855103  expected=2237/5742  [OK]  (0.1s)
+  p(4,400)     n=4 L=400   cells=1202  even_cells=595    got=521/1020 = 0.5107843137  expected=521/1020  [OK]  (111.4s)
+  p(4,1800)    n=4 L=1800  cells=1202  even_cells=595    got=166802/317985 = 0.5245593346  expected=166802/317985  [OK]  (119.9s)
+  => ALL 4 EXACT VALUES MATCH
+
+==============================================================================
+SUMMARY
+==============================================================================
+  A) five n=3,L=160 rows (edges, order, parity): ALL MATCH
+  B) row probabilities 4/15, 8/45, 1/3, 4/27, 2/27 (sum 1, even 56/135): ALL MATCH
+  C) exact p values: p(3,160)=56/135, p(3,1800)=2237/5742, p(4,400)=521/1020=0.5107843137...,
+     p(4,1800)=166802/317985: ALL MATCH
+  OVERALL: ALL CHECKS PASS
