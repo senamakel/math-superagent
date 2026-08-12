@@ -94,10 +94,8 @@ lemma cycle_middle_avoids_v {G : SimpleGraph V} [DecidableEq V]
   -- p.tail is nonempty (its length is p.length - 1 ≥ 2)
   have htnil : ¬ (p.tail).Nil := by
     intro hnil
-    have : (p.tail).length = 0 := hnil.length_eq_zero
-    have : p.length = 1 := by
-      rw [Walk.length_tail] at this
-      omega
+    have hlen0 : (p.tail).length = 0 := hnil.length_eq_zero
+    rw [Walk.length_tail] at hlen0
     have h3 : 3 ≤ p.length := hp.three_le_length
     omega
   -- support of the interior = tail.support.dropLast ; last element of tail.support is v
