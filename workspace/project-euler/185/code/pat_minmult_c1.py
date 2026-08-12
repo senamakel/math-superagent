@@ -43,10 +43,10 @@ print("A. min-multiplicity: s[p] is a least-frequent digit of column p in",
 # --- B. c=1 distinctness ---
 c1 = [(i, matchpos[i]) for i, c in enumerate(C) if c == 1]
 assert all(len(pos) == 1 for _, pos in c1)
-c1pos = sorted(p for _, (pos,) in c1 for p in pos)
+c1pos = sorted(pos[0] for _, pos in c1)
 evens = [p for p in range(L) if p % 2 == 0]
 print("B. c=1 guesses (index, matched position, digit):",
-      [(i, pos[0], SECRET[pos[0]]) for i, (pos,) in c1])
+      [(i, pos[0], SECRET[pos[0]]) for i, pos in c1])
 print("B. c=1 match positions sorted:", c1pos)
 print("B. all distinct:", len(set(c1pos)) == len(c1pos))
 print("B. == even positions 0..8 plus 15:", c1pos == evens[:5] + [15])
