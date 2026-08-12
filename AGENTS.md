@@ -70,14 +70,34 @@ exist and reads `GOAL.md` beside it. The statement, what counts as a result,
 and the leads into the literature are the workspace's, not the script's: a
 launcher that carried the mathematics would need editing for every problem.
 
-`./euler-tui` **only watches**. It finds the container that has the workspace
-mounted and follows it, and it cannot start, stop, or restart anything. That is
-the design, not a gap: when starting was part of the same command, opening a
-second view started a second run on the same workspace — both writing the same
-files and both making checkpoint commits over each other. That happened three
-times in one evening, twice unnoticed for minutes. A viewer that cannot launch
-cannot do it, and one start command means "is something already running for
-this problem" has a single answer rather than one per terminal.
+`./euler-tui` **cannot start, stop, or restart anything**. That is the design,
+not a gap: when starting was part of the same command, opening a second view
+started a second run on the same workspace — both writing the same files and
+both making checkpoint commits over each other. That happened three times in one
+evening, twice unnoticed for minutes. A viewer that cannot launch cannot do it,
+and one start command means "is something already running for this problem" has
+a single answer rather than one per terminal.
+
+It *can* direct a run that already exists, which narrows that rule without
+touching what the rule prevents — a directive appends a line to a file and
+creates no container.
+
+```sh
+./steer 763 check the n=14 bound against a sieve   # or press i in ./euler-tui
+./steer --workspace conjectures/erdos-gyarfas "stop enumerating and prove it"
+```
+
+Direction never blocks the run. It is queued in the workspace and picked up at
+the next boundary, so a directive reaches the work in seconds to minutes rather
+than immediately, and the run keeps going whether or not anyone is watching.
+What became of one is written to that workspace's `config/DIRECTIVES.md`; the
+queue itself is `config/directives.jsonl`, appended to by the host and never by
+the run. See [`docs/solution-loop.md`](docs/solution-loop.md#direction-from-a-human)
+for what a directive reaches and what it deliberately cannot.
+
+A directive is asserted, not established. It is routed into the next attempt as
+an instruction and must never be filed as a claim — the `director` role that
+acts on one is not given `research/CLAIMS.md` for exactly that reason.
 
 Start a run detached so it outlives the terminal, then watch it:
 
