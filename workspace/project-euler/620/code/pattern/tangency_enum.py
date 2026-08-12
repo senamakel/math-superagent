@@ -9,8 +9,13 @@ i.e. at most TWO points: the upper U=(x,+y) and its mirror L=(x,-y) across
 the line of centres.  beta = angle of P about O, gamma = angle of P about S.
 
 For one planet the tooth-mesh residue (one of the 4 sign variants:
-sigma,eta in {+1,-1}) is
-    Q = sigma*rho*(beta - gamma) - eta*R*beta + r*gamma   (mod 1).
+sigma,eta in {+1,-1}; extended here to all 8 independent sign variants of the
+three terms, since the thread invariant W = s*phi + c*chi - t*gamma_t equals
+(c+t)*beta - (s+t)*gamma over 2pi = A + B - C with A=rho*(beta-gamma),
+B=R*beta, C=r*gamma, i.e. the sign pattern (+,+,-) NOT among the 4 (sigma,eta)
+variants of the original task) is
+    Q = sigma*rho*(beta - gamma) - eta*R*beta + theta*r*gamma   (mod 1),
+theta in {+1,-1} the third independent sign.
 
 Exact identity exploited (mirror symmetry): Q(L) = -Q(U) (mod 1).
 
@@ -79,20 +84,20 @@ def residue_at(sigma, eta, c, s, m, d, side):
     if side == -1:
         beta = -beta
         gamma = -gamma
-    Q = sigma * rho * (beta - gamma) - eta * R * beta + r * gamma
+    Q = sigma * rho * (beta - gamma) - eta * R * beta + theta * r * gamma
     return (Q % 1), float(beta), float(gamma)
 
 
-def objective_mp(sigma, eta, c, s, p, q, d, psides, qsides):
+def objective_mp(sigma, eta, theta, c, s, p, q, d, psides, qsides):
     """mpmath max pairwise residue distance for a combo at d."""
     res = []
     for side in psides:
-        Q, _, _ = residue_at(sigma, eta, c, s, p, d, side)
+        Q, _, _ = residue_at(sigma, eta, theta, c, s, p, d, side)
         if Q is None:
             return mpf(1)
         res.append(Q)
     for side in qsides:
-        Q, _, _ = residue_at(sigma, eta, c, s, q, d, side)
+        Q, _, _ = residue_at(sigma, eta, theta, c, s, q, d, side)
         if Q is None:
             return mpf(1)
         res.append(Q)
@@ -104,14 +109,14 @@ def objective_mp(sigma, eta, c, s, p, q, d, psides, qsides):
     return m
 
 
-def refine(sigma, eta, c, s, p, q, d0, window, psides, qsides):
+def refine(sigma, eta, theta, c, s, p, q, d0, window, psides, qsides):
     """mpmath local minimisation of objective near d0 by iterative zooming.
     Each zoom scans `n` points over the current window and shrinks the window
     by 1e-3, so after 3 zooms resolution ~1e-15; the objective is a smooth
     transcendent of the residue differences, so the argmin converges to the
     true zero.  Returns (best_d, best_obj)."""
     n = 1000
-    best = (mpf(d0), objective_mp(sigma, eta, c, s, p, q, mpf(d0),
+    best = (mpf(d0), objective_mp(sigma, eta, theta, c, s, p, q, mpf(d0),
                                   psides, qsides))
     lo = mpf(d0) - mpf(window)
     hi = mpf(d0) + mpf(window)
@@ -119,7 +124,7 @@ def refine(sigma, eta, c, s, p, q, d0, window, psides, qsides):
         step = (hi - lo) / n
         d = lo
         for i in range(n + 1):
-            o = objective_mp(sigma, eta, c, s, p, q, d, psides, qsides)
+            o = objective_mp(sigma, eta, theta, c, s, p, q, d, psides, qsides)
             if o < best[1]:
                 best = (d, o)
             d += step
