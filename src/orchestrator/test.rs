@@ -612,11 +612,18 @@ fn the_shared_brief_reaches_the_roles_that_reason_and_not_the_ones_that_file() {
         "orchestrator",
         "tool_builder",
         "coder",
+        "sat_solver",
+        "smt_solver",
+        "theorem_prover",
+        "symbolic_math",
+        "lean_prover",
         "pattern_finder",
         "scholar",
         "librarian",
         "research",
         "inventor",
+        // The role that writes it has to see what it is amending.
+        "context_curator",
     ] {
         assert!(
             role_context(role).contains(&"CONTEXT.md"),
@@ -627,6 +634,56 @@ fn the_shared_brief_reaches_the_roles_that_reason_and_not_the_ones_that_file() {
     // standing brief of what sources assert is exactly the material it must
     // not mistake for verification.
     assert!(!role_context("reflection").contains(&"CONTEXT.md"));
+}
+
+#[test]
+fn the_curator_maintains_the_brief_and_cannot_investigate() -> agent::Result<()> {
+    // Every tool it lacks is a way that curating what the run knows cannot
+    // turn into a second investigation running beside the solve. It reads
+    // widely — the workspace and both halves of durable memory — and the only
+    // thing it produces is one file.
+    let registry = default_registry(true)?;
+    let definition = registry.get("context_curator").ok_or_else(|| {
+        tinyagents::TinyAgentsError::Validation("context_curator is registered".into())
+    })?;
+    for expected in ["recall_memory", "relate_memory", "write_document"] {
+        assert!(
+            definition.tools.iter().any(|tool| tool == expected),
+            "the curator needs {expected}"
+        );
+    }
+    for forbidden in [
+        "exa_search",
+        "execute_command",
+        "write_tool_file",
+        "apply_patch",
+        "spawn_agent",
+    ] {
+        assert!(
+            !definition.tools.iter().any(|tool| tool == forbidden),
+            "the curator must not hold {forbidden}"
+        );
+    }
+    Ok(())
+}
+
+#[test]
+fn the_brief_is_curated_by_a_standing_team_at_the_configured_rate() {
+    // A brief nobody maintains is the state this team exists to end: the file
+    // was written by whichever role happened to think of it, so it drifted
+    // behind the run that reads it on every model call.
+    let (name, agent, completion, budget, brief) = super::standing_teams()
+        .into_iter()
+        .find(|(name, ..)| *name == "context")
+        .expect("the curator runs as a standing team");
+    assert_eq!(agent, "context_curator");
+    // Its file keeps changing underneath it, so "nothing to add right now" is
+    // come back later rather than stop — the distinction that cost an earlier
+    // background team its whole allowance on cycle one.
+    assert_eq!(completion, super::teams::Completion::Standing);
+    assert_eq!(budget.min_interval, shared_context::cycle_interval());
+    assert!(brief.contains("NOTHING FURTHER"));
+    assert_eq!(name, "context");
 }
 
 #[tokio::test]
