@@ -1,0 +1,18 @@
+N: M_min, (N+1)/2, M_max, full-M coverage of Q-decomp?
+N= 2: M_min= 2 M_max= 2 (N+1)/2= 1.5 all-M>=threshold=True cov_sum=3 tot=3 missing=0
+N= 3: M_min= 3 M_max= 3 (N+1)/2= 2.0 all-M>=threshold=True cov_sum=9 tot=9 missing=0
+N= 4: M_min= 3 M_max= 4 (N+1)/2= 2.5 all-M>=threshold=True cov_sum=30 tot=30 missing=0
+N= 5: M_min= 4 M_max= 5 (N+1)/2= 3.0 all-M>=threshold=True cov_sum=99 tot=99 missing=0
+N= 6: M_min= 4 M_max= 6 (N+1)/2= 3.5 all-M>=threshold=True cov_sum=336 tot=336 missing=0
+N= 7: M_min= 5 M_max= 7 (N+1)/2= 4.0 all-M>=threshold=True cov_sum=1134 tot=1134 missing=0
+N= 8: M_min= 5 M_max= 8 (N+1)/2= 4.5 all-M>=threshold=True cov_sum=3855 tot=3855 missing=0
+N= 9: M_min= 5 M_max= 9 (N+1)/2= 5.0 all-M>=threshold=True cov_sum=13086 tot=13086 missing=0
+N=10: M_min= 6 M_max=10 (N+1)/2= 5.5 all-M>=threshold=True cov_sum=44499 tot=44499 missing=0
+N=11: M_min= 6 M_max=11 (N+1)/2= 6.0 all-M>=threshold=True cov_sum=151263 tot=151263 missing=0
+N=12: M_min= 6 M_max=12 (N+1)/2= 6.5 all-M>=threshold=False cov_sum=514389 tot=514419 missing=30
+N=13: M_min= 7 M_max=13 (N+1)/2= 7.0 all-M>=threshold=True cov_sum=1749267 tot=1749267 missing=0
+N=14: M_min= 7 M_max=14 (N+1)/2= 7.5 all-M>=threshold=False cov_sum=5948796 tot=5949063 missing=267
+
+M_min over N: [2, 3, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7]
+M_min sequence: [2, 3, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7]
+N-M_min sequence: [0, 0, 1, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7]
