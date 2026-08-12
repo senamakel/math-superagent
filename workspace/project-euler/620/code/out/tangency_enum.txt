@@ -1,0 +1,452 @@
+PE620 tangency enumeration  (c,s,p,q)=(16,5,5,6)
+R=2.546479 r=0.795775 rp=0.795775 rq=0.954930
+d_min=0.159154943  d_max=0.750704374   (width 0.591549431)
+residue Q = sigma*rho*(beta-gamma) - eta*R*beta + r*gamma (mod 1);
+mirror identity Q(L) = -Q(U) mod 1 enforced exactly.
+==============================================================================
+grid: 1048577 points, spacing ~5.641e-07
+residue curves dumped (every 256-th of 1048577 points) to /workspace/code/out/tangency_residue_curves.txt
+
+COARSE_TOL=1e-04  TIGHT_TOL=1e-09
+
+g(16,5,5,6) per variant (distinct valid d over all combos):
+  variant (sigma=-1, eta=-1): g = 9
+  variant (sigma=-1, eta=+1): g = 7
+  variant (sigma=+1, eta=-1): g = 10
+  variant (sigma=+1, eta=+1): g = 6
+
+per (variant, combo) counts (g_combo = distinct refined valid d):
+  combos pp x qq = [UU,LL,UL] x [UU,LL,UL]
+  --- variant (sigma=-1, eta=-1) ---
+     pp=UU qq=UU : 9
+     pp=UU qq=LL : 0
+     pp=UU qq=UL : 0
+     pp=LL qq=UU : 0
+     pp=LL qq=LL : 9
+     pp=LL qq=UL : 0
+     pp=UL qq=UU : 0
+     pp=UL qq=LL : 0
+     pp=UL qq=UL : 0
+  --- variant (sigma=-1, eta=+1) ---
+     pp=UU qq=UU : 5
+     pp=UU qq=LL : 2
+     pp=UU qq=UL : 0
+     pp=LL qq=UU : 2
+     pp=LL qq=LL : 5
+     pp=LL qq=UL : 0
+     pp=UL qq=UU : 0
+     pp=UL qq=LL : 0
+     pp=UL qq=UL : 0
+  --- variant (sigma=+1, eta=-1) ---
+     pp=UU qq=UU : 8
+     pp=UU qq=LL : 2
+     pp=UU qq=UL : 0
+     pp=LL qq=UU : 2
+     pp=LL qq=LL : 8
+     pp=LL qq=UL : 0
+     pp=UL qq=UU : 0
+     pp=UL qq=LL : 0
+     pp=UL qq=UL : 0
+  --- variant (sigma=+1, eta=+1) ---
+     pp=UU qq=UU : 5
+     pp=UU qq=LL : 1
+     pp=UU qq=UL : 0
+     pp=LL qq=UU : 1
+     pp=LL qq=LL : 5
+     pp=LL qq=UL : 0
+     pp=UL qq=UU : 0
+     pp=UL qq=LL : 0
+     pp=UL qq=UL : 0
+
+SURVIVING CONFIGURATIONS (refined, objective < 1e-9):
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.1596022390254104583728889  obj=3.06e-12
+     p-planet side=+1 : beta= +4.09054330 deg gamma= +4.50040237 deg  Q=+0.25000000 mod 1
+     p-planet side=+1 : beta= +4.09054330 deg gamma= +4.50040237 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+175.49959763 deg gamma=+175.90945670 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+175.49959763 deg gamma=+175.90945670 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.1596022390254104583728889  obj=3.06e-12
+     p-planet side=-1 : beta= -4.09054330 deg gamma= -4.50040237 deg  Q=+0.75000000 mod 1
+     p-planet side=-1 : beta= -4.09054330 deg gamma= -4.50040237 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-175.49959763 deg gamma=-175.90945670 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-175.49959763 deg gamma=-175.90945670 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=UU q=UU  d=0.1607735407718889897310532  obj=1.55e-12
+     p-planet side=+1 : beta= +7.75576482 deg gamma= +8.53686265 deg  Q=+0.78471546 mod 1
+     p-planet side=+1 : beta= +7.75576482 deg gamma= +8.53686265 deg  Q=+0.78471546 mod 1
+     q-planet side=+1 : beta=+171.46313735 deg gamma=+172.24423518 deg  Q=+0.78471546 mod 1
+     q-planet side=+1 : beta=+171.46313735 deg gamma=+172.24423518 deg  Q=+0.78471546 mod 1
+     (identity check: Q_p(U)=+0.78471546, Q_p(L)=+0.21528454, 2*Q_p(U)=+0.569431, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=LL q=LL  d=0.1607735407718889897310532  obj=1.55e-12
+     p-planet side=-1 : beta= -7.75576482 deg gamma= -8.53686265 deg  Q=+0.21528454 mod 1
+     p-planet side=-1 : beta= -7.75576482 deg gamma= -8.53686265 deg  Q=+0.21528454 mod 1
+     q-planet side=-1 : beta=-171.46313735 deg gamma=-172.24423518 deg  Q=+0.21528454 mod 1
+     q-planet side=-1 : beta=-171.46313735 deg gamma=-172.24423518 deg  Q=+0.21528454 mod 1
+     (identity check: Q_p(U)=+0.78471546, Q_p(L)=+0.21528454, 2*Q_p(U)=+0.569431, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=UU q=UU  d=0.1608022526861881962290113  obj=9.06e-13
+     p-planet side=+1 : beta= +7.82362241 deg gamma= +8.61165311 deg  Q=+0.76094487 mod 1
+     p-planet side=+1 : beta= +7.82362241 deg gamma= +8.61165311 deg  Q=+0.76094487 mod 1
+     q-planet side=+1 : beta=+171.38834689 deg gamma=+172.17637759 deg  Q=+0.76094487 mod 1
+     q-planet side=+1 : beta=+171.38834689 deg gamma=+172.17637759 deg  Q=+0.76094487 mod 1
+     (identity check: Q_p(U)=+0.76094487, Q_p(L)=+0.23905513, 2*Q_p(U)=+0.521890, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=LL q=LL  d=0.1608022526861881962290113  obj=9.06e-13
+     p-planet side=-1 : beta= -7.82362241 deg gamma= -8.61165311 deg  Q=+0.23905513 mod 1
+     p-planet side=-1 : beta= -7.82362241 deg gamma= -8.61165311 deg  Q=+0.23905513 mod 1
+     q-planet side=-1 : beta=-171.38834689 deg gamma=-172.17637759 deg  Q=+0.23905513 mod 1
+     q-planet side=-1 : beta=-171.38834689 deg gamma=-172.17637759 deg  Q=+0.23905513 mod 1
+     (identity check: Q_p(U)=+0.76094487, Q_p(L)=+0.23905513, 2*Q_p(U)=+0.521890, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=UU  d=0.1632191009023635508423666  obj=1.17e-12
+     p-planet side=+1 : beta=+12.20633412 deg gamma=+13.44878716 deg  Q=+0.71203616 mod 1
+     p-planet side=+1 : beta=+12.20633412 deg gamma=+13.44878716 deg  Q=+0.71203616 mod 1
+     q-planet side=+1 : beta=+166.55121284 deg gamma=+167.79366588 deg  Q=+0.71203616 mod 1
+     q-planet side=+1 : beta=+166.55121284 deg gamma=+167.79366588 deg  Q=+0.71203616 mod 1
+     (identity check: Q_p(U)=+0.71203616, Q_p(L)=+0.28796384, 2*Q_p(U)=+0.424072, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=LL  d=0.1632191009023635508423666  obj=1.17e-12
+     p-planet side=-1 : beta=-12.20633412 deg gamma=-13.44878716 deg  Q=+0.28796384 mod 1
+     p-planet side=-1 : beta=-12.20633412 deg gamma=-13.44878716 deg  Q=+0.28796384 mod 1
+     q-planet side=-1 : beta=-166.55121284 deg gamma=-167.79366588 deg  Q=+0.28796384 mod 1
+     q-planet side=-1 : beta=-166.55121284 deg gamma=-167.79366588 deg  Q=+0.28796384 mod 1
+     (identity check: Q_p(U)=+0.71203616, Q_p(L)=+0.28796384, 2*Q_p(U)=+0.424072, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.1632575743493988873478173  obj=1.91e-12
+     p-planet side=+1 : beta=+12.26266916 deg gamma=+13.51106392 deg  Q=+0.75000000 mod 1
+     p-planet side=+1 : beta=+12.26266916 deg gamma=+13.51106392 deg  Q=+0.75000000 mod 1
+     q-planet side=+1 : beta=+166.48893608 deg gamma=+167.73733084 deg  Q=+0.75000000 mod 1
+     q-planet side=+1 : beta=+166.48893608 deg gamma=+167.73733084 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.75000000, Q_p(L)=+0.25000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.1632575743493988873478173  obj=1.91e-12
+     p-planet side=-1 : beta=-12.26266916 deg gamma=-13.51106392 deg  Q=+0.25000000 mod 1
+     p-planet side=-1 : beta=-12.26266916 deg gamma=-13.51106392 deg  Q=+0.25000000 mod 1
+     q-planet side=-1 : beta=-166.48893608 deg gamma=-167.73733084 deg  Q=+0.25000000 mod 1
+     q-planet side=-1 : beta=-166.48893608 deg gamma=-167.73733084 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.75000000, Q_p(L)=+0.25000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=UU  d=0.1708845623135168967365871  obj=1.07e-12
+     p-planet side=+1 : beta=+20.30983028 deg gamma=+22.44560884 deg  Q=+0.18474010 mod 1
+     p-planet side=+1 : beta=+20.30983028 deg gamma=+22.44560884 deg  Q=+0.18474010 mod 1
+     q-planet side=+1 : beta=+157.55439116 deg gamma=+159.69016972 deg  Q=+0.18474010 mod 1
+     q-planet side=+1 : beta=+157.55439116 deg gamma=+159.69016972 deg  Q=+0.18474010 mod 1
+     (identity check: Q_p(U)=+0.18474010, Q_p(L)=+0.81525990, 2*Q_p(U)=+0.369480, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=LL  d=0.1708845623135168967365871  obj=1.07e-12
+     p-planet side=-1 : beta=-20.30983028 deg gamma=-22.44560884 deg  Q=+0.81525990 mod 1
+     p-planet side=-1 : beta=-20.30983028 deg gamma=-22.44560884 deg  Q=+0.81525990 mod 1
+     q-planet side=-1 : beta=-157.55439116 deg gamma=-159.69016972 deg  Q=+0.81525990 mod 1
+     q-planet side=-1 : beta=-157.55439116 deg gamma=-159.69016972 deg  Q=+0.81525990 mod 1
+     (identity check: Q_p(U)=+0.18474010, Q_p(L)=+0.81525990, 2*Q_p(U)=+0.369480, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.1710036533782917922419387  obj=2.73e-14
+     p-planet side=+1 : beta=+20.40619903 deg gamma=+22.55318107 deg  Q=+0.25000000 mod 1
+     p-planet side=+1 : beta=+20.40619903 deg gamma=+22.55318107 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+157.44681893 deg gamma=+159.59380097 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+157.44681893 deg gamma=+159.59380097 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.1710036533782917922419387  obj=2.73e-14
+     p-planet side=-1 : beta=-20.40619903 deg gamma=-22.55318107 deg  Q=+0.75000000 mod 1
+     p-planet side=-1 : beta=-20.40619903 deg gamma=-22.55318107 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-157.44681893 deg gamma=-159.59380097 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-157.44681893 deg gamma=-159.59380097 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=UU q=UU  d=0.1747687596043142055357578  obj=1.07e-14
+     p-planet side=+1 : beta=+23.19345437 deg gamma=+25.67212136 deg  Q=+0.36016298 mod 1
+     p-planet side=+1 : beta=+23.19345437 deg gamma=+25.67212136 deg  Q=+0.36016298 mod 1
+     q-planet side=+1 : beta=+154.32787864 deg gamma=+156.80654563 deg  Q=+0.36016298 mod 1
+     q-planet side=+1 : beta=+154.32787864 deg gamma=+156.80654563 deg  Q=+0.36016298 mod 1
+     (identity check: Q_p(U)=+0.36016298, Q_p(L)=+0.63983702, 2*Q_p(U)=+0.720326, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=LL q=LL  d=0.1747687596043142055357578  obj=1.07e-14
+     p-planet side=-1 : beta=-23.19345437 deg gamma=-25.67212136 deg  Q=+0.63983702 mod 1
+     p-planet side=-1 : beta=-23.19345437 deg gamma=-25.67212136 deg  Q=+0.63983702 mod 1
+     q-planet side=-1 : beta=-154.32787864 deg gamma=-156.80654563 deg  Q=+0.63983702 mod 1
+     q-planet side=-1 : beta=-154.32787864 deg gamma=-156.80654563 deg  Q=+0.63983702 mod 1
+     (identity check: Q_p(U)=+0.36016298, Q_p(L)=+0.63983702, 2*Q_p(U)=+0.720326, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=UU q=UU  d=0.1750837320473881408844363  obj=2.51e-14
+     p-planet side=+1 : beta=+23.40694208 deg gamma=+25.91166950 deg  Q=+0.28478788 mod 1
+     p-planet side=+1 : beta=+23.40694208 deg gamma=+25.91166950 deg  Q=+0.28478788 mod 1
+     q-planet side=+1 : beta=+154.08833050 deg gamma=+156.59305792 deg  Q=+0.28478788 mod 1
+     q-planet side=+1 : beta=+154.08833050 deg gamma=+156.59305792 deg  Q=+0.28478788 mod 1
+     (identity check: Q_p(U)=+0.28478788, Q_p(L)=+0.71521212, 2*Q_p(U)=+0.569576, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=LL q=LL  d=0.1750837320473881408844363  obj=2.51e-14
+     p-planet side=-1 : beta=-23.40694208 deg gamma=-25.91166950 deg  Q=+0.71521212 mod 1
+     p-planet side=-1 : beta=-23.40694208 deg gamma=-25.91166950 deg  Q=+0.71521212 mod 1
+     q-planet side=-1 : beta=-154.08833050 deg gamma=-156.59305792 deg  Q=+0.71521212 mod 1
+     q-planet side=-1 : beta=-154.08833050 deg gamma=-156.59305792 deg  Q=+0.71521212 mod 1
+     (identity check: Q_p(U)=+0.28478788, Q_p(L)=+0.71521212, 2*Q_p(U)=+0.569576, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=UU  d=0.1835691572208967559109993  obj=6.60e-13
+     p-planet side=+1 : beta=+28.35514507 deg gamma=+31.49532267 deg  Q=+0.65405013 mod 1
+     p-planet side=+1 : beta=+28.35514507 deg gamma=+31.49532267 deg  Q=+0.65405013 mod 1
+     q-planet side=+1 : beta=+148.50467733 deg gamma=+151.64485493 deg  Q=+0.65405013 mod 1
+     q-planet side=+1 : beta=+148.50467733 deg gamma=+151.64485493 deg  Q=+0.65405013 mod 1
+     (identity check: Q_p(U)=+0.65405013, Q_p(L)=+0.34594987, 2*Q_p(U)=+0.308100, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=LL  d=0.1835691572208967559109993  obj=6.60e-13
+     p-planet side=-1 : beta=-28.35514507 deg gamma=-31.49532267 deg  Q=+0.34594987 mod 1
+     p-planet side=-1 : beta=-28.35514507 deg gamma=-31.49532267 deg  Q=+0.34594987 mod 1
+     q-planet side=-1 : beta=-148.50467733 deg gamma=-151.64485493 deg  Q=+0.34594987 mod 1
+     q-planet side=-1 : beta=-148.50467733 deg gamma=-151.64485493 deg  Q=+0.34594987 mod 1
+     (identity check: Q_p(U)=+0.65405013, Q_p(L)=+0.34594987, 2*Q_p(U)=+0.308100, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.1838459679405179958422423  obj=4.21e-13
+     p-planet side=+1 : beta=+28.49561472 deg gamma=+31.65482381 deg  Q=+0.75000000 mod 1
+     p-planet side=+1 : beta=+28.49561472 deg gamma=+31.65482381 deg  Q=+0.75000000 mod 1
+     q-planet side=+1 : beta=+148.34517619 deg gamma=+151.50438528 deg  Q=+0.75000000 mod 1
+     q-planet side=+1 : beta=+148.34517619 deg gamma=+151.50438528 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.75000000, Q_p(L)=+0.25000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.1838459679405179958422423  obj=4.21e-13
+     p-planet side=-1 : beta=-28.49561472 deg gamma=-31.65482381 deg  Q=+0.25000000 mod 1
+     p-planet side=-1 : beta=-28.49561472 deg gamma=-31.65482381 deg  Q=+0.25000000 mod 1
+     q-planet side=-1 : beta=-148.34517619 deg gamma=-151.50438528 deg  Q=+0.25000000 mod 1
+     q-planet side=-1 : beta=-148.34517619 deg gamma=-151.50438528 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.75000000, Q_p(L)=+0.25000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=UU  d=0.2031298854438411127798503  obj=3.42e-13
+     p-planet side=+1 : beta=+36.30150737 deg gamma=+40.63499330 deg  Q=+0.11758793 mod 1
+     p-planet side=+1 : beta=+36.30150737 deg gamma=+40.63499330 deg  Q=+0.11758793 mod 1
+     q-planet side=+1 : beta=+139.36500670 deg gamma=+143.69849263 deg  Q=+0.11758793 mod 1
+     q-planet side=+1 : beta=+139.36500670 deg gamma=+143.69849263 deg  Q=+0.11758793 mod 1
+     (identity check: Q_p(U)=+0.11758793, Q_p(L)=+0.88241207, 2*Q_p(U)=+0.235176, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=LL  d=0.2031298854438411127798503  obj=3.42e-13
+     p-planet side=-1 : beta=-36.30150737 deg gamma=-40.63499330 deg  Q=+0.88241207 mod 1
+     p-planet side=-1 : beta=-36.30150737 deg gamma=-40.63499330 deg  Q=+0.88241207 mod 1
+     q-planet side=-1 : beta=-139.36500670 deg gamma=-143.69849263 deg  Q=+0.88241207 mod 1
+     q-planet side=-1 : beta=-139.36500670 deg gamma=-143.69849263 deg  Q=+0.88241207 mod 1
+     (identity check: Q_p(U)=+0.11758793, Q_p(L)=+0.88241207, 2*Q_p(U)=+0.235176, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.2037141587777208939780138  obj=3.21e-13
+     p-planet side=+1 : beta=+36.49251855 deg gamma=+40.85822959 deg  Q=+0.25000000 mod 1
+     p-planet side=+1 : beta=+36.49251855 deg gamma=+40.85822959 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+139.14177041 deg gamma=+143.50748145 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+139.14177041 deg gamma=+143.50748145 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.2037141587777208939780138  obj=3.21e-13
+     p-planet side=-1 : beta=-36.49251855 deg gamma=-40.85822959 deg  Q=+0.75000000 mod 1
+     p-planet side=-1 : beta=-36.49251855 deg gamma=-40.85822959 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-139.14177041 deg gamma=-143.50748145 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-139.14177041 deg gamma=-143.50748145 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=UU q=UU  d=0.2097410045914495646535158  obj=7.43e-14
+     p-planet side=+1 : beta=+38.35077974 deg gamma=+43.04101688 deg  Q=+0.95845498 mod 1
+     p-planet side=+1 : beta=+38.35077974 deg gamma=+43.04101688 deg  Q=+0.95845498 mod 1
+     q-planet side=+1 : beta=+136.95898312 deg gamma=+141.64922026 deg  Q=+0.95845498 mod 1
+     q-planet side=+1 : beta=+136.95898312 deg gamma=+141.64922026 deg  Q=+0.95845498 mod 1
+     (identity check: Q_p(U)=+0.95845498, Q_p(L)=+0.04154502, 2*Q_p(U)=+0.916910, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=LL q=LL  d=0.2097410045914495646535158  obj=7.43e-14
+     p-planet side=-1 : beta=-38.35077974 deg gamma=-43.04101688 deg  Q=+0.04154502 mod 1
+     p-planet side=-1 : beta=-38.35077974 deg gamma=-43.04101688 deg  Q=+0.04154502 mod 1
+     q-planet side=-1 : beta=-136.95898312 deg gamma=-141.64922026 deg  Q=+0.04154502 mod 1
+     q-planet side=-1 : beta=-136.95898312 deg gamma=-141.64922026 deg  Q=+0.04154502 mod 1
+     (identity check: Q_p(U)=+0.95845498, Q_p(L)=+0.04154502, 2*Q_p(U)=+0.916910, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=UU q=UU  d=0.2111028959171491747870419  obj=1.65e-13
+     p-planet side=+1 : beta=+38.74465455 deg gamma=+43.50641454 deg  Q=+0.81613556 mod 1
+     p-planet side=+1 : beta=+38.74465455 deg gamma=+43.50641454 deg  Q=+0.81613556 mod 1
+     q-planet side=+1 : beta=+136.49358546 deg gamma=+141.25534545 deg  Q=+0.81613556 mod 1
+     q-planet side=+1 : beta=+136.49358546 deg gamma=+141.25534545 deg  Q=+0.81613556 mod 1
+     (identity check: Q_p(U)=+0.81613556, Q_p(L)=+0.18386444, 2*Q_p(U)=+0.632271, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=LL q=LL  d=0.2111028959171491747870419  obj=1.65e-13
+     p-planet side=-1 : beta=-38.74465455 deg gamma=-43.50641454 deg  Q=+0.18386444 mod 1
+     p-planet side=-1 : beta=-38.74465455 deg gamma=-43.50641454 deg  Q=+0.18386444 mod 1
+     q-planet side=-1 : beta=-136.49358546 deg gamma=-141.25534545 deg  Q=+0.18386444 mod 1
+     q-planet side=-1 : beta=-136.49358546 deg gamma=-141.25534545 deg  Q=+0.18386444 mod 1
+     (identity check: Q_p(U)=+0.81613556, Q_p(L)=+0.18386444, 2*Q_p(U)=+0.632271, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=UU q=LL  d=0.22839483692276668636012  obj=1.20e-14
+     p-planet side=+1 : beta=+43.08039270 deg gamma=+48.70539270 deg  Q=+0.83990467 mod 1
+     p-planet side=+1 : beta=+43.08039270 deg gamma=+48.70539270 deg  Q=+0.83990467 mod 1
+     q-planet side=-1 : beta=-131.29460730 deg gamma=-136.91960730 deg  Q=+0.83990467 mod 1
+     q-planet side=-1 : beta=-131.29460730 deg gamma=-136.91960730 deg  Q=+0.83990467 mod 1
+     (identity check: Q_p(U)=+0.83990467, Q_p(L)=+0.16009533, 2*Q_p(U)=+0.679809, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=LL q=UU  d=0.22839483692276668636012  obj=1.20e-14
+     p-planet side=-1 : beta=-43.08039270 deg gamma=-48.70539270 deg  Q=+0.16009533 mod 1
+     p-planet side=-1 : beta=-43.08039270 deg gamma=-48.70539270 deg  Q=+0.16009533 mod 1
+     q-planet side=+1 : beta=+131.29460730 deg gamma=+136.91960730 deg  Q=+0.16009533 mod 1
+     q-planet side=+1 : beta=+131.29460730 deg gamma=+136.91960730 deg  Q=+0.16009533 mod 1
+     (identity check: Q_p(U)=+0.83990467, Q_p(L)=+0.16009533, 2*Q_p(U)=+0.679809, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=UU  d=0.2330776894036172552926445  obj=2.13e-13
+     p-planet side=+1 : beta=+44.07998448 deg gamma=+49.92728683 deg  Q=+0.57133243 mod 1
+     p-planet side=+1 : beta=+44.07998448 deg gamma=+49.92728683 deg  Q=+0.57133243 mod 1
+     q-planet side=+1 : beta=+130.07271317 deg gamma=+135.92001552 deg  Q=+0.57133243 mod 1
+     q-planet side=+1 : beta=+130.07271317 deg gamma=+135.92001552 deg  Q=+0.57133243 mod 1
+     (identity check: Q_p(U)=+0.57133243, Q_p(L)=+0.42866757, 2*Q_p(U)=+0.142665, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=LL  d=0.2330776894036172552926445  obj=2.13e-13
+     p-planet side=-1 : beta=-44.07998448 deg gamma=-49.92728683 deg  Q=+0.42866757 mod 1
+     p-planet side=-1 : beta=-44.07998448 deg gamma=-49.92728683 deg  Q=+0.42866757 mod 1
+     q-planet side=-1 : beta=-130.07271317 deg gamma=-135.92001552 deg  Q=+0.42866757 mod 1
+     q-planet side=-1 : beta=-130.07271317 deg gamma=-135.92001552 deg  Q=+0.42866757 mod 1
+     (identity check: Q_p(U)=+0.57133243, Q_p(L)=+0.42866757, 2*Q_p(U)=+0.142665, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.2343016851536968980784792  obj=1.14e-13
+     p-planet side=+1 : beta=+44.33106908 deg gamma=+50.23582401 deg  Q=+0.75000000 mod 1
+     p-planet side=+1 : beta=+44.33106908 deg gamma=+50.23582401 deg  Q=+0.75000000 mod 1
+     q-planet side=+1 : beta=+129.76417599 deg gamma=+135.66893092 deg  Q=+0.75000000 mod 1
+     q-planet side=+1 : beta=+129.76417599 deg gamma=+135.66893092 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.75000000, Q_p(L)=+0.25000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.2343016851536968980784792  obj=1.14e-13
+     p-planet side=-1 : beta=-44.33106908 deg gamma=-50.23582401 deg  Q=+0.25000000 mod 1
+     p-planet side=-1 : beta=-44.33106908 deg gamma=-50.23582401 deg  Q=+0.25000000 mod 1
+     q-planet side=-1 : beta=-129.76417599 deg gamma=-135.66893092 deg  Q=+0.25000000 mod 1
+     q-planet side=-1 : beta=-129.76417599 deg gamma=-135.66893092 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.75000000, Q_p(L)=+0.25000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=UU  d=0.2804982372006743496228864  obj=7.35e-14
+     p-planet side=+1 : beta=+51.55815088 deg gamma=+59.49259011 deg  Q=+0.00755880 mod 1
+     p-planet side=+1 : beta=+51.55815088 deg gamma=+59.49259011 deg  Q=+0.00755880 mod 1
+     q-planet side=+1 : beta=+120.50740989 deg gamma=+128.44184912 deg  Q=+0.00755880 mod 1
+     q-planet side=+1 : beta=+120.50740989 deg gamma=+128.44184912 deg  Q=+0.00755880 mod 1
+     (identity check: Q_p(U)=+0.00755880, Q_p(L)=+0.99244120, 2*Q_p(U)=+0.015118, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=LL  d=0.2804982372006743496228864  obj=7.35e-14
+     p-planet side=-1 : beta=-51.55815088 deg gamma=-59.49259011 deg  Q=+0.99244120 mod 1
+     p-planet side=-1 : beta=-51.55815088 deg gamma=-59.49259011 deg  Q=+0.99244120 mod 1
+     q-planet side=-1 : beta=-120.50740989 deg gamma=-128.44184912 deg  Q=+0.99244120 mod 1
+     q-planet side=-1 : beta=-120.50740989 deg gamma=-128.44184912 deg  Q=+0.99244120 mod 1
+     (identity check: Q_p(U)=+0.00755880, Q_p(L)=+0.99244120, 2*Q_p(U)=+0.015118, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.2832246016662747223335828  obj=4.66e-14
+     p-planet side=+1 : beta=+51.88185535 deg gamma=+59.92995912 deg  Q=+0.25000000 mod 1
+     p-planet side=+1 : beta=+51.88185535 deg gamma=+59.92995912 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+120.07004088 deg gamma=+128.11814465 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+120.07004088 deg gamma=+128.11814465 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.2832246016662747223335828  obj=4.66e-14
+     p-planet side=-1 : beta=-51.88185535 deg gamma=-59.92995912 deg  Q=+0.75000000 mod 1
+     p-planet side=-1 : beta=-51.88185535 deg gamma=-59.92995912 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-120.07004088 deg gamma=-128.11814465 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-120.07004088 deg gamma=-128.11814465 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=LL  d=0.286447187998721986001982  obj=6.74e-15
+     p-planet side=+1 : beta=+52.25336365 deg gamma=+60.43518183 deg  Q=+0.04811288 mod 1
+     p-planet side=+1 : beta=+52.25336365 deg gamma=+60.43518183 deg  Q=+0.04811288 mod 1
+     q-planet side=-1 : beta=-119.56481817 deg gamma=-127.74663635 deg  Q=+0.04811288 mod 1
+     q-planet side=-1 : beta=-119.56481817 deg gamma=-127.74663635 deg  Q=+0.04811288 mod 1
+     (identity check: Q_p(U)=+0.04811288, Q_p(L)=+0.95188712, 2*Q_p(U)=+0.096226, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=UU  d=0.286447187998721986001982  obj=6.74e-15
+     p-planet side=-1 : beta=-52.25336365 deg gamma=-60.43518183 deg  Q=+0.95188712 mod 1
+     p-planet side=-1 : beta=-52.25336365 deg gamma=-60.43518183 deg  Q=+0.95188712 mod 1
+     q-planet side=+1 : beta=+119.56481817 deg gamma=+127.74663635 deg  Q=+0.95188712 mod 1
+     q-planet side=+1 : beta=+119.56481817 deg gamma=+127.74663635 deg  Q=+0.95188712 mod 1
+     (identity check: Q_p(U)=+0.04811288, Q_p(L)=+0.95188712, 2*Q_p(U)=+0.096226, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=UU q=UU  d=0.2906097991093168353415876  obj=3.18e-14
+     p-planet side=+1 : beta=+52.71623679 deg gamma=+61.06980267 deg  Q=+0.62126959 mod 1
+     p-planet side=+1 : beta=+52.71623679 deg gamma=+61.06980267 deg  Q=+0.62126959 mod 1
+     q-planet side=+1 : beta=+118.93019733 deg gamma=+127.28376321 deg  Q=+0.62126959 mod 1
+     q-planet side=+1 : beta=+118.93019733 deg gamma=+127.28376321 deg  Q=+0.62126959 mod 1
+     (identity check: Q_p(U)=+0.62126959, Q_p(L)=+0.37873041, 2*Q_p(U)=+0.242539, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=LL q=LL  d=0.2906097991093168353415876  obj=3.18e-14
+     p-planet side=-1 : beta=-52.71623679 deg gamma=-61.06980267 deg  Q=+0.37873041 mod 1
+     p-planet side=-1 : beta=-52.71623679 deg gamma=-61.06980267 deg  Q=+0.37873041 mod 1
+     q-planet side=-1 : beta=-118.93019733 deg gamma=-127.28376321 deg  Q=+0.37873041 mod 1
+     q-planet side=-1 : beta=-118.93019733 deg gamma=-127.28376321 deg  Q=+0.37873041 mod 1
+     (identity check: Q_p(U)=+0.62126959, Q_p(L)=+0.37873041, 2*Q_p(U)=+0.242539, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=UU q=UU  d=0.2967108286446694109805833  obj=9.11e-15
+     p-planet side=+1 : beta=+53.36207099 deg gamma=+61.96551481 deg  Q=+0.36949228 mod 1
+     p-planet side=+1 : beta=+53.36207099 deg gamma=+61.96551481 deg  Q=+0.36949228 mod 1
+     q-planet side=+1 : beta=+118.03448519 deg gamma=+126.63792901 deg  Q=+0.36949228 mod 1
+     q-planet side=+1 : beta=+118.03448519 deg gamma=+126.63792901 deg  Q=+0.36949228 mod 1
+     (identity check: Q_p(U)=+0.36949228, Q_p(L)=+0.63050772, 2*Q_p(U)=+0.738985, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=LL q=LL  d=0.2967108286446694109805833  obj=9.11e-15
+     p-planet side=-1 : beta=-53.36207099 deg gamma=-61.96551481 deg  Q=+0.63050772 mod 1
+     p-planet side=-1 : beta=-53.36207099 deg gamma=-61.96551481 deg  Q=+0.63050772 mod 1
+     q-planet side=-1 : beta=-118.03448519 deg gamma=-126.63792901 deg  Q=+0.63050772 mod 1
+     q-planet side=-1 : beta=-118.03448519 deg gamma=-126.63792901 deg  Q=+0.63050772 mod 1
+     (identity check: Q_p(U)=+0.36949228, Q_p(L)=+0.63050772, 2*Q_p(U)=+0.738985, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=UU  d=0.3615967288683716862607298  obj=6.06e-14
+     p-planet side=+1 : beta=+58.43872894 deg gamma=+69.60115551 deg  Q=+0.40892585 mod 1
+     p-planet side=+1 : beta=+58.43872894 deg gamma=+69.60115551 deg  Q=+0.40892585 mod 1
+     q-planet side=+1 : beta=+110.39884449 deg gamma=+121.56127106 deg  Q=+0.40892585 mod 1
+     q-planet side=+1 : beta=+110.39884449 deg gamma=+121.56127106 deg  Q=+0.40892585 mod 1
+     (identity check: Q_p(U)=+0.40892585, Q_p(L)=+0.59107415, 2*Q_p(U)=+0.817852, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=LL  d=0.3615967288683716862607298  obj=6.06e-14
+     p-planet side=-1 : beta=-58.43872894 deg gamma=-69.60115551 deg  Q=+0.59107415 mod 1
+     p-planet side=-1 : beta=-58.43872894 deg gamma=-69.60115551 deg  Q=+0.59107415 mod 1
+     q-planet side=-1 : beta=-110.39884449 deg gamma=-121.56127106 deg  Q=+0.59107415 mod 1
+     q-planet side=-1 : beta=-110.39884449 deg gamma=-121.56127106 deg  Q=+0.59107415 mod 1
+     (identity check: Q_p(U)=+0.40892585, Q_p(L)=+0.59107415, 2*Q_p(U)=+0.817852, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.3686314525339052794450367  obj=9.42e-15
+     p-planet side=+1 : beta=+58.84188792 deg gamma=+70.27392329 deg  Q=+0.75000000 mod 1
+     p-planet side=+1 : beta=+58.84188792 deg gamma=+70.27392329 deg  Q=+0.75000000 mod 1
+     q-planet side=+1 : beta=+109.72607671 deg gamma=+121.15811208 deg  Q=+0.75000000 mod 1
+     q-planet side=+1 : beta=+109.72607671 deg gamma=+121.15811208 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.75000000, Q_p(L)=+0.25000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.3686314525339052794450367  obj=9.42e-15
+     p-planet side=-1 : beta=-58.84188792 deg gamma=-70.27392329 deg  Q=+0.25000000 mod 1
+     p-planet side=-1 : beta=-58.84188792 deg gamma=-70.27392329 deg  Q=+0.25000000 mod 1
+     q-planet side=-1 : beta=-109.72607671 deg gamma=-121.15811208 deg  Q=+0.25000000 mod 1
+     q-planet side=-1 : beta=-109.72607671 deg gamma=-121.15811208 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.75000000, Q_p(L)=+0.25000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=UU q=LL  d=0.5150605636307065138268513  obj=3.62e-14
+     p-planet side=+1 : beta=+63.76475078 deg gamma=+80.63975078 deg  Q=+0.52038262 mod 1
+     p-planet side=+1 : beta=+63.76475078 deg gamma=+80.63975078 deg  Q=+0.52038262 mod 1
+     q-planet side=-1 : beta=-99.36024922 deg gamma=-116.23524922 deg  Q=+0.52038262 mod 1
+     q-planet side=-1 : beta=-99.36024922 deg gamma=-116.23524922 deg  Q=+0.52038262 mod 1
+     (identity check: Q_p(U)=+0.52038262, Q_p(L)=+0.47961738, 2*Q_p(U)=+0.040765, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=LL q=UU  d=0.5150605636307065138268513  obj=3.62e-14
+     p-planet side=-1 : beta=-63.76475078 deg gamma=-80.63975078 deg  Q=+0.47961738 mod 1
+     p-planet side=-1 : beta=-63.76475078 deg gamma=-80.63975078 deg  Q=+0.47961738 mod 1
+     q-planet side=+1 : beta=+99.36024922 deg gamma=+116.23524922 deg  Q=+0.47961738 mod 1
+     q-planet side=+1 : beta=+99.36024922 deg gamma=+116.23524922 deg  Q=+0.47961738 mod 1
+     (identity check: Q_p(U)=+0.52038262, Q_p(L)=+0.47961738, 2*Q_p(U)=+0.040765, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=UU  d=0.5219108060458728104435977  obj=4.09e-15
+     p-planet side=+1 : beta=+63.88700730 deg gamma=+81.01181155 deg  Q=+0.72674209 mod 1
+     p-planet side=+1 : beta=+63.88700730 deg gamma=+81.01181155 deg  Q=+0.72674209 mod 1
+     q-planet side=+1 : beta=+98.98818845 deg gamma=+116.11299270 deg  Q=+0.72674209 mod 1
+     q-planet side=+1 : beta=+98.98818845 deg gamma=+116.11299270 deg  Q=+0.72674209 mod 1
+     (identity check: Q_p(U)=+0.72674209, Q_p(L)=+0.27325791, 2*Q_p(U)=+0.453484, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=LL  d=0.5219108060458728104435977  obj=4.09e-15
+     p-planet side=-1 : beta=-63.88700730 deg gamma=-81.01181155 deg  Q=+0.27325791 mod 1
+     p-planet side=-1 : beta=-63.88700730 deg gamma=-81.01181155 deg  Q=+0.27325791 mod 1
+     q-planet side=-1 : beta=-98.98818845 deg gamma=-116.11299270 deg  Q=+0.27325791 mod 1
+     q-planet side=-1 : beta=-98.98818845 deg gamma=-116.11299270 deg  Q=+0.27325791 mod 1
+     (identity check: Q_p(U)=+0.72674209, Q_p(L)=+0.27325791, 2*Q_p(U)=+0.453484, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=UU q=UU  d=0.5331139501089474652673061  obj=1.67e-14
+     p-planet side=+1 : beta=+64.07301668 deg gamma=+81.60581943 deg  Q=+0.52923568 mod 1
+     p-planet side=+1 : beta=+64.07301668 deg gamma=+81.60581943 deg  Q=+0.52923568 mod 1
+     q-planet side=+1 : beta=+98.39418057 deg gamma=+115.92698332 deg  Q=+0.52923568 mod 1
+     q-planet side=+1 : beta=+98.39418057 deg gamma=+115.92698332 deg  Q=+0.52923568 mod 1
+     (identity check: Q_p(U)=+0.52923568, Q_p(L)=+0.47076432, 2*Q_p(U)=+0.058471, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=+1) combo p=LL q=LL  d=0.5331139501089474652673061  obj=1.67e-14
+     p-planet side=-1 : beta=-64.07301668 deg gamma=-81.60581943 deg  Q=+0.47076432 mod 1
+     p-planet side=-1 : beta=-64.07301668 deg gamma=-81.60581943 deg  Q=+0.47076432 mod 1
+     q-planet side=-1 : beta=-98.39418057 deg gamma=-115.92698332 deg  Q=+0.47076432 mod 1
+     q-planet side=-1 : beta=-98.39418057 deg gamma=-115.92698332 deg  Q=+0.47076432 mod 1
+     (identity check: Q_p(U)=+0.52923568, Q_p(L)=+0.47076432, 2*Q_p(U)=+0.058471, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=UU q=LL  d=0.5459633132739678540445993  obj=5.73e-15
+     p-planet side=+1 : beta=+64.26634066 deg gamma=+82.26634066 deg  Q=+0.03630626 mod 1
+     p-planet side=+1 : beta=+64.26634066 deg gamma=+82.26634066 deg  Q=+0.03630626 mod 1
+     q-planet side=-1 : beta=-97.73365934 deg gamma=-115.73365934 deg  Q=+0.03630626 mod 1
+     q-planet side=-1 : beta=-97.73365934 deg gamma=-115.73365934 deg  Q=+0.03630626 mod 1
+     (identity check: Q_p(U)=+0.03630626, Q_p(L)=+0.96369374, 2*Q_p(U)=+0.072613, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=LL q=UU  d=0.5459633132739678540445993  obj=5.73e-15
+     p-planet side=-1 : beta=-64.26634066 deg gamma=-82.26634066 deg  Q=+0.96369374 mod 1
+     p-planet side=-1 : beta=-64.26634066 deg gamma=-82.26634066 deg  Q=+0.96369374 mod 1
+     q-planet side=+1 : beta=+97.73365934 deg gamma=+115.73365934 deg  Q=+0.96369374 mod 1
+     q-planet side=+1 : beta=+97.73365934 deg gamma=+115.73365934 deg  Q=+0.96369374 mod 1
+     (identity check: Q_p(U)=+0.03630626, Q_p(L)=+0.96369374, 2*Q_p(U)=+0.072613, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=UU q=UU  d=0.5465780675574626323864891  obj=2.29e-14
+     p-planet side=+1 : beta=+64.27507930 deg gamma=+82.29741277 deg  Q=+0.25000000 mod 1
+     p-planet side=+1 : beta=+64.27507930 deg gamma=+82.29741277 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+97.70258723 deg gamma=+115.72492070 deg  Q=+0.25000000 mod 1
+     q-planet side=+1 : beta=+97.70258723 deg gamma=+115.72492070 deg  Q=+0.25000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=-1,eta=-1) combo p=LL q=LL  d=0.5465780675574626323864891  obj=2.29e-14
+     p-planet side=-1 : beta=-64.27507930 deg gamma=-82.29741277 deg  Q=+0.75000000 mod 1
+     p-planet side=-1 : beta=-64.27507930 deg gamma=-82.29741277 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-97.70258723 deg gamma=-115.72492070 deg  Q=+0.75000000 mod 1
+     q-planet side=-1 : beta=-97.70258723 deg gamma=-115.72492070 deg  Q=+0.75000000 mod 1
+     (identity check: Q_p(U)=+0.25000000, Q_p(L)=+0.75000000, 2*Q_p(U)=+0.500000, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=UU q=UU  d=0.5878063496299289480973016  obj=4.69e-15
+     p-planet side=+1 : beta=+64.76508273 deg gamma=+84.28190073 deg  Q=+0.02106692 mod 1
+     p-planet side=+1 : beta=+64.76508273 deg gamma=+84.28190073 deg  Q=+0.02106692 mod 1
+     q-planet side=+1 : beta=+95.71809927 deg gamma=+115.23491727 deg  Q=+0.02106692 mod 1
+     q-planet side=+1 : beta=+95.71809927 deg gamma=+115.23491727 deg  Q=+0.02106692 mod 1
+     (identity check: Q_p(U)=+0.02106692, Q_p(L)=+0.97893308, 2*Q_p(U)=+0.042134, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=+1) combo p=LL q=LL  d=0.5878063496299289480973016  obj=4.69e-15
+     p-planet side=-1 : beta=-64.76508273 deg gamma=-84.28190073 deg  Q=+0.97893308 mod 1
+     p-planet side=-1 : beta=-64.76508273 deg gamma=-84.28190073 deg  Q=+0.97893308 mod 1
+     q-planet side=-1 : beta=-95.71809927 deg gamma=-115.23491727 deg  Q=+0.97893308 mod 1
+     q-planet side=-1 : beta=-95.71809927 deg gamma=-115.23491727 deg  Q=+0.97893308 mod 1
+     (identity check: Q_p(U)=+0.02106692, Q_p(L)=+0.97893308, 2*Q_p(U)=+0.042134, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=UU q=LL  d=0.7272694972187381257100469  obj=8.19e-15
+     p-planet side=+1 : beta=+65.37991661 deg gamma=+89.92537116 deg  Q=+0.81382847 mod 1
+     p-planet side=+1 : beta=+65.37991661 deg gamma=+89.92537116 deg  Q=+0.81382847 mod 1
+     q-planet side=-1 : beta=-90.07462884 deg gamma=-114.62008339 deg  Q=+0.81382847 mod 1
+     q-planet side=-1 : beta=-90.07462884 deg gamma=-114.62008339 deg  Q=+0.81382847 mod 1
+     (identity check: Q_p(U)=+0.81382847, Q_p(L)=+0.18617153, 2*Q_p(U)=+0.627657, Q_p==Q_q? see residues)
+  variant(sig=+1,eta=-1) combo p=LL q=UU  d=0.7272694972187381257100469  obj=8.19e-15
+     p-planet side=-1 : beta=-65.37991661 deg gamma=-89.92537116 deg  Q=+0.18617153 mod 1
+     p-planet side=-1 : beta=-65.37991661 deg gamma=-89.92537116 deg  Q=+0.18617153 mod 1
+     q-planet side=+1 : beta=+90.07462884 deg gamma=+114.62008339 deg  Q=+0.18617153 mod 1
+     q-planet side=+1 : beta=+90.07462884 deg gamma=+114.62008339 deg  Q=+0.18617153 mod 1
+     (identity check: Q_p(U)=+0.81382847, Q_p(L)=+0.18617153, 2*Q_p(U)=+0.627657, Q_p==Q_q? see residues)
+
+RESIDUE STRUCTURE SUMMARY:
+  - Q(L) = -Q(U) mod 1 exactly (mirror symmetry across line of centres).
+  - 'one-each-side' combos (UL) demand 2*Q(U) in {0,1/2} mod 1.
+  - 'both-same-side' combos (UU/LL) demand Q_p(U) == Q_q(U) mod 1.
+  => g is finite because these are isolated d-solutions of the transcendental congruences;
+     a BOUND-INDEPENDENT method would count those algebraically.

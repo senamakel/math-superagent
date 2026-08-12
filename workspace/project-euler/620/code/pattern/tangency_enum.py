@@ -28,7 +28,7 @@ Output: code/out/tangency_enum.txt (+ curve dump tangency_residue_curves.txt).
 import math
 import os
 import numpy as np
-from mpmath import mp, mpf, pi, atan2, sqrt
+from mpmath import mp, mpf, pi, atan2, sqrt, fabs
 
 mp.dps = 60
 
@@ -105,17 +105,26 @@ def objective_mp(sigma, eta, c, s, p, q, d, psides, qsides):
 
 
 def refine(sigma, eta, c, s, p, q, d0, window, psides, qsides):
-    """mpmath local minimisation of objective near d0.  Returns
-    (best_d, best_obj)."""
-    lo = d0 - window
-    hi = d0 + window
-    n = 4000
-    best = (None, mpf(1))
-    for i in range(n + 1):
-        d = mpf(lo) + (mpf(hi) - mpf(lo)) * mpf(i) / n
-        o = objective_mp(sigma, eta, c, s, p, q, d, psides, qsides)
-        if o < best[1]:
-            best = (d, o)
+    """mpmath local minimisation of objective near d0 by iterative zooming.
+    Each zoom scans `n` points over the current window and shrinks the window
+    by 1e-3, so after 3 zooms resolution ~1e-15; the objective is a smooth
+    transcendent of the residue differences, so the argmin converges to the
+    true zero.  Returns (best_d, best_obj)."""
+    n = 1000
+    best = (mpf(d0), objective_mp(sigma, eta, c, s, p, q, mpf(d0),
+                                  psides, qsides))
+    lo = mpf(d0) - mpf(window)
+    hi = mpf(d0) + mpf(window)
+    for _ in range(3):
+        step = (hi - lo) / n
+        d = lo
+        for i in range(n + 1):
+            o = objective_mp(sigma, eta, c, s, p, q, d, psides, qsides)
+            if o < best[1]:
+                best = (d, o)
+            d += step
+        lo = best[0] - step
+        hi = best[0] + step
     return best
 
 
@@ -202,8 +211,8 @@ def main():
         up_q, lo_q = vq, np.mod(-vq, 1.0)
         vt = set()
         combo_counts = {}
-        for (psides, pname) in [(x[0], x[2]) for x in PSIDES]:
-            for (qsides, qname) in [(x[0], x[2]) for x in PSIDES]:
+        for (psides, pname) in [(x[:2], x[2]) for x in PSIDES]:
+            for (qsides, qname) in [(x[:2], x[2]) for x in PSIDES]:
                 # build the four residue arrays for this combo
                 arrs = []
                 for sd in psides:
