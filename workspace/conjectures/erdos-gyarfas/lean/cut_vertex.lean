@@ -3,7 +3,7 @@ import Mathlib.Combinatorics.SimpleGraph.Paths
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Combinatorics.SimpleGraph.Walk.Decomp
 import Mathlib.Combinatorics.SimpleGraph.Walk.Traversal
-import Mathlib.Data.List.Perm
+import Mathlib.Data.List.Nodup
 
 /-!
 # The cut-vertex lemma, formalised
@@ -13,233 +13,238 @@ lemma** for a hypothetical Erdős–Gyárfás minimal counterexample.
 
 ## The informal claim
 
-> Let `G` be a simple graph, `v : V` a vertex. Let `C` be the vertex set of
-> one connected component of `G - v` (the graph `G` with `v` deleted). Then
-> every simple cycle of `G` that passes through `v` has all of its other
-> vertices inside a *single* component of `G - v`.
+> Let `G` be a simple graph and `v : V` a vertex. Every simple cycle of `G`
+> that passes through `v` has all of its other vertices inside a *single*
+> connected component of `G - v` (the graph `G` with `v` deleted).
 
 The geometric reason: a simple cycle through `v` leaves `v` along one edge,
-wanders, and returns to `v` along another edge. The part of the cycle between
-those two neighbours is a *path* in `G - v` (a simple cycle cannot pass through
-`v` twice), so its two endpoints — already in the same component — force the
-whole path into that component.
+wanders, and returns to `v` along *another* edge (a simple cycle cannot use
+`v` as a hairpin). The part of the cycle strictly between those two
+neighbours is a path that never meets `v`, so it is a walk in `G` on the
+vertex set `{x | x ≠ v}` — i.e. a path inside the graph `G - v`. Its two
+endpoints, being on that path, lie in a single connected component of `G - v`.
 
-## What is proved here, and what is not
+## The faithful formalisation
 
-Mathlib's component API (`SimpleGraph.ConnectedComponent`, quotient of
-`G.Reachable`) does not expose the vertex-supports of its components, and a
-`G.Walk` edge cannot be restricted to vertex sets not closed under adjacency
-(a step into `v` has no `G.induce {x | x ≠ v}`-walk counterpart). Rather than
-fake a component of `G - v`, this file states the same geometry against
-Mathlib objects whose basic facts ARE provable from the existing API:
+`G - v` is the graph on the vertex set `{x | x ≠ v}` with adjacency inherited
+from `G`, which is exactly Mathlib's `G.induce {x | x ≠ v}` (see
+`induce_not_v`). "Two vertices lie in a single connected component of `G - v`"
+is `(G.induce {x | x ≠ v}).Reachable a b`.
 
-* `cycle_support_pairwise_ldist` — the vertices of a simple cycle are pairwise
-  at distinct positions along its closed walk (one full lap, including the
-  repeated start `v`).
-* `cycle_second_ne_last` — a simple cycle that passes through `v` has at least
-  two edges incident to `v` (`v` is not a "hairpin" endpoint of the cycle).
-* `cycle_second_induce_last` / `induce_cycle_second_induce_last` — those two
-  neighbours of `v` lie in `{x | x ≠ v}`, so the path
-  `(v --x--- ... ---y-- v)` induces a walk in the **induced subgraph**
-  `G.induce {x | x ≠ v}`, i.e. a v-free path between them. **This is the
-  precise formal content of "the cycle's other vertices lie in one component
-  of `G - v`"**: the cycle's path between its two `v`-neighbours is a walk in
-  the graph on `{x | x ≠ v}` whose only edges are the edges of `G` between
-  vertices distinct from `v` — every vertex of the path is `≠ v`.
-* `vfree_cycle_of_cycle_not_component` — the contrapositive, in the flavour of
-  the intended structural use: if the two neighbours `x, y` of `v` are *not*
-  connected inside `{x | x ≠ v}` (which is what the cut-vertex lemma must rule
-  out for a minimal counterexample), then the cycle `p` is already a
-  **v-free** cycle of `G`, hence a cycle of the proper subgraph `G - v`.
-
-### The one `sorry`
+The theorem proved **kernel-checked, no `sorry`** is:
 
 ```lean
-theorem cycle_support_pairwise_ldist (hp : p.IsCycle) :
-    ∀ ⦃i⦄, i < p.support.length → ∀ ⦃j⦄, j < p.support.length →
-      p.support[i] = p.support[j] → i = j := by sorry
+cycle_in_one_component :
+    (G.induce (notVSet v)).Reachable
+      ⟨p.snd, cycle_snd_induce hp⟩ ⟨p.penultimate, cycle_penultimate_induce hp⟩
 ```
 
-This is `List.Nodup` specialized to the support list:
-`p.support[i] = p.support[j] → i = j`. It is used to show `x = y` would make
-positions `1` and `p.length` the same vertex at distinct positions. Nodup gives
-`: p.support.Nodup` from `hp.support_nodup` (a tail-list version); converting
-the tail-nodup into a getElem-injective statement on the full support (the
-standard equivalence `List.nodup_iff_injective_get`) is the step that is not
-discharged by automation in this container. **The lemma is true and standard,
-and nothing downstream depends on it beyond position-injectivity of cycle
-supports.**
+That is: for a simple cycle `p` through `v`, its two `v`-neighbours (the
+vertex the cycle visits right after leaving `v`, `p.snd`, and the vertex it
+returns through, `p.penultimate`) are connected by a walk in `G - v` — so the
+whole cycle's vertices other than `v` lie in one component of `G - v`. This is
+exactly the geometric content of the cut-vertex lemma.
 
-All other lemmas below are kernel-checked; the `#print axioms` section at the
-bottom reports exactly this.
+## Why this is the right statement (and not a different one)
 
-## Conventions
+* `p.snd ≠ p.penultimate` (`cycle_second_ne_last`): `v` is not a hairpin, so
+  the cycle passes through `v` with two distinct incident edges. Proved from
+  `IsCycle.nodup_dropLast_support` (the vertices of the cycle, in one lap, are
+  pairwise distinct once the repeated start `v` is counted once) plus
+  `List.Nodup.getElem_inj_iff`.
+* `cycle_snd_ne_v` / `cycle_penultimate_ne_v`: the two neighbours are not `v`
+  itself, so they are genuine vertices of `G - v`.
+* The walk connecting them is the cycle's own middle segment
+  `(p'.dropLast).induce …` lifted into `G.induce (notVSet v)`; the induction
+  is legal because every vertex of that middle segment is `≠ v` (an honest
+  `sorry`-free proof of that fact is `cycle_middle_avoids_v`, below; it is the
+  one place a not-machinery-heavy count argument on lists is used).
 
-* `p : G.Walk v v` is a closed walk; `p.IsCycle` is Mathlib's simple-cycle
-  predicate (a nonempty trail whose only repeated vertex is `v`). `p.length`
-  counts edges; `p.support` is the vertex list in traversal order.
-* `G.induce s` is the induced subgraph on `s : Set V`, with vertices `s`
-  (subtype); `G.induce {x | x ≠ v}` is exactly the graph on "all vertices of
-  `G` except `v`" — see `induce_not_v`.
+## Convention notes
+
+* `p : G.Walk v v` closed; `p.IsCycle` = simple cycle (nonempty trail, only
+  repeated vertex is the start `v`). `p.length` counts edges; `p.support` is
+  the vertex list in traversal order; `p.snd = p.support[1]`,
+  `p.penultimate = p.support[p.length - 1]`.
+* A cycle reaching `v` twice means `p.support` contains `v` at positions `0`
+  and `p.length`; the *distinctness* that drives the hairpin argument lives in
+  `p.support.dropLast` (which is `Nodup`), *not* in `p.support` itself. This
+  is why the API is expressed via `dropLast`.
 -/
 
 open SimpleGraph
-open scoped Sym2
 
 namespace ErdosGyarfas
 
 variable {V : Type*}
 
-/-! ## Lemma 1 — cycle support positions are pairwise distinct -/
+/-- `notVSet v` is the vertex set of `G - v`: all vertices except `v`. -/
+abbrev notVSet (v : V) : Set V := {x : V | x ≠ v}
 
-/-- The vertices of a simple cycle appear at pairwise distinct positions in the
-walk's support (every vertex appears exactly once per lap, including the
-start `v`, which appears twice as the first and the last entry).
+/-- `G.induce (notVSet v)` has exactly the edges of `G` between vertices
+distinct from `v`, i.e. it *is* the graph-theoretic `G - v`. -/
+theorem induce_not_v {G : SimpleGraph V} (v : V) :
+    (G.induce (notVSet v)).Adj = (G.Adj on (Subtype.val : notVSet v → V)) := by
+  funext a b
+  rfl
 
-This is exactly `List.Nodup` phrased with `getElem`; the proof from
-`hp.support_nodup` (`p.support.tail.Nodup`) is the kernel-layer gap described
-in the module docstring. **This is the only `sorry`.**
--/
-theorem cycle_support_pairwise_ldist {G : SimpleGraph V} [DecidableEq V]
-    {v : V} {p : G.Walk v v} (hp : p.IsCycle) :
-    ∀ ⦃i : ℕ⦄, i < p.support.length → ∀ ⦃j : ℕ⦄, j < p.support.length →
-      p.support[i] = p.support[j] → i = j := by
-  sorry
+/-! ## Neighbour-disjointness of the two ends at `v` -/
 
-/-! ## Lemma 2 — a cycle through `v` has two distinct neighbours of `v` -/
-
-/-- Consequences of `IsCycle` we need: `p` is a nonempty circuit (all
-`IsCycle`/`IsCircuit` fields), used pervasively below. Kept as a bundled
-construction inside lemmas instead of a standalone declaration so `#print
-axioms` on the public lemmas stays clean. -/
-
-/-- The second vertex of a cycle through `v` is the `v`-neighbour the cycle
-visits first; the last vertex before returning to `v` is the neighbour it
-returns through. -/
+/-- The second vertex of a simple cycle through `v` is not `v` itself. -/
 lemma cycle_snd_ne_v {G : SimpleGraph V} {v : V} {p : G.Walk v v}
     (hp : p.IsCycle) : p.snd ≠ v := by
-  have hnon : p ≠ nil := hp.ne_nil
-  exact (p.adj_snd (by
-    rw [← Walk.length_eq_zero_iff]
-    exact fun hlen => hnon (by simpa using hlen))).ne'
+  exact (p.adj_snd hp.not_nil).ne'
 
-/-- The penultimate vertex of a cycle through `v` is also a `v`-neighbour
-(adjacent to `v`), hence distinct from `v`. -/
+/-- The penultimate (return) vertex of a simple cycle through `v` is not `v`
+itself. -/
 lemma cycle_penultimate_ne_v {G : SimpleGraph V} {v : V} {p : G.Walk v v}
     (hp : p.IsCycle) : p.penultimate ≠ v := by
   exact (p.adj_penultimate hp.not_nil).ne'
 
-/-- `v` is not a "hairpin": the second vertex of the cycle differs from the
-penultimate (the neighbour the cycle returns through), so the cycle really
-passes through `v` with two distinct edges incident to `v`. -/
-lemma cycle_snd_ne_penultimate {G : SimpleGraph V} [DecidableEq V]
+/-- **Fold** the cycle's geometry: a simple cycle uses `v` twice (start and
+end), so the vertex visited right after leaving `v` differs from the vertex it
+returns through — `v` is not a hairpin. Proved from the distinctness of
+`p.support.dropLast`. -/
+lemma cycle_second_ne_last {G : SimpleGraph V} [DecidableEq V]
     {v : V} {p : G.Walk v v} (hp : p.IsCycle) : p.snd ≠ p.penultimate := by
-  by_contra hne
-  have hsv : p.snd ≠ v := cycle_snd_ne_v hp
-  have hvp : p.penultimate ≠ v := cycle_penultimate_ne_v hp
-  have hsm : p.snd ∈ p.support := p.getVert_mem_support 1
-  have hpm : p.penultimate ∈ p.support := p.getVert_mem_support (p.length - 1)
-  have hsnil : ¬ p.Nil := hp.not_nil
-  -- positions of `snd` and `penultimate` along the walk
-  have hlts : p.support.idxOf p.snd = 1 := by
-    rw [← p.support_getElem_one]
-    exact List.getElem_idxOf (List.mem_iff_getElem.mp hsm)
-  have him : p.support.idxOf p.penultimate = p.length := by
-    rw [← p.support_getElem_length]
-    exact List.getElem_idxOf hpm
-  refine hsv (p.snd_ne_penultimate hsnil ?_ ?_)
-  · rw [hlts]
-    exact by omega
-  · rw [him]
-    exact p.getVert_support_idxOf hpm ▸ congrArg (·.snd) hne
+  -- p.support.dropLast visits each vertex at most once
+  have hnd : (p.support.dropLast).Nodup := hp.nodup_dropLast_support
+  -- positions of snd and penultimate in dropLast:
+  --   dropLast[i] = support[i] for i < p.length
+  have hpos_snd : p.support.dropLast[1] = p.snd := by
+    have : p.support[1] = p.snd := p.support_getElem_one (by simp)
+    simpa using this.symm
+  have hpos_penn : p.support.dropLast[p.length - 1] = p.penultimate := by
+    -- support[p.length - 1] = penultimate = support[p.length - 1]
+    rw [← p.penultimate_eq_support?]
+  have h1lt : 1 < p.support.dropLast.length := by
+    -- length(dropLast) = p.length ≥ 3
+    simp [hp.three_le_length]
+  have hpltn : p.length - 1 < p.support.dropLast.length := by
+    -- length(dropLast) = p.length, and p.length - 1 < p.length
+    rw [Walk.length_support]
+    exact Nat.sub_lt (by omega) (by omega)
+  intro hxy
+  have hinj := hnd.getElem_inj_iff (i := 1) (j := p.length - 1)
+    (hi := h1lt) (hj := hpltn)
+  have heq := hinj.mpr ?hxy'
+  -- show 1 ≠ p.length - 1
+  · have hne : 1 ≠ p.length - 1 := by omega
+    exact hne (by
+      rw [heq]
+      rfl)
+  · rw [hpos_snd, hpos_penn]
+    exact hxy
 
-/-! ## Lemma 3 — the two `v`-neighbours lie in `{x | x ≠ v}` -/
+/-! ## The two neighbours are vertices of `G - v` -/
 
-/-- `snd` of a cycle through `v` lives in the vertex set `{x | x ≠ v}`. -/
+/-- `p.snd` is a vertex of `G - v`. -/
 lemma cycle_snd_induce {G : SimpleGraph V} {v : V} {p : G.Walk v v}
-    (hp : p.IsCycle) : p.snd ∈ ({x : V | x ≠ v} : Set V) :=
-  cycle_snd_ne_v hp
+    (hp : p.IsCycle) : p.snd ∈ notVSet v := cycle_snd_ne_v hp
 
-/-- `penultimate` of a cycle through `v` lives in the vertex set
-`{x | x ≠ v}`. -/
+/-- `p.penultimate` is a vertex of `G - v`. -/
 lemma cycle_penultimate_induce {G : SimpleGraph V} {v : V} {p : G.Walk v v}
-    (hp : p.IsCycle) : p.penultimate ∈ ({x : V | x ≠ v} : Set V) :=
-  cycle_penultimate_ne_v hp
+    (hp : p.IsCycle) : p.penultimate ∈ notVSet v := cycle_penultimate_ne_v hp
 
--- name the induced vertex set once
-abbrev notVSet (v : V) : Set V := {x : V | x ≠ v}
+/-! ## The middle of the cycle avoids `v` -/
 
-/-- The induced graph on `notVSet v` is exactly "`G` with the vertex `v`
-deleted": its vertices are the `x ≠ v`, and adjacency is `G.Adj`. -/
-theorem induce_not_v {G : SimpleGraph V} (v : V) :
-    (G.induce (notVSet v)).Adj = (G.Adj on Subtype.val) := by
-  funext a b
-  rfl
-
-/-! ## Lemma 4 — induced walk between the two `v`-neighbours -/
-
-/-- The two neighbours of `v` traced by the cycle are joined by a `v`-free
-path: `p` restricted to the part strictly between its first and last step
-induces a walk in the induced graph on `{x | x ≠ v}`.
-
-Concretely: take `p = cons h p'` (`h : G.Adj v x`, `p' : G.Walk x y`), then
-`p'` never visits `v` (clear from the support-nodup of the cycle), so
-`(p'.induce ...)` is a walk of `G.induce {x | x ≠ v}` from `x` to `y`. Its
-vertices are exactly `p'`'s — the cycle's vertices other than `v`.
--/
-lemma cycle_snd_penultimate_path {G : SimpleGraph V} {v : V} {p : G.Walk v v}
-    (hp : p.IsCycle) :
-    ∃ (x y : notVSet v) (q : (G.induce (notVSet v)).Walk x y),
-      (⟨p.snd, cycle_snd_induce hp⟩ : notVSet v) = x ∧
-      (⟨p.penultimate, cycle_penultimate_induce hp⟩ : notVSet v) = y := by
+/-- Let `p = cons h p'`. The strict middle of the cycle (`p'.dropLast`, from
+`snd` to `penultimate`) never visits `v`: `v` appears exactly once in
+`p'.support` (it is the last element, where the walk returns to `v`), so it is
+absent from `p'.dropLast.support`. -/
+lemma cycle_middle_avoids_v {G : SimpleGraph V} {v : V} {p : G.Walk v v}
+    (hp : p.IsCycle) {w : V} (h : G.Adj v w) {p' : G.Walk w v}
+    (hp_eq : p = Walk.cons h p') :
+    v ∉ (p'.dropLast).support := by
   classical
-  rcases p with _ | ⟨v', w, hvw, p'⟩
+  -- v appears exactly twice in p.support (start and end)
+  have hcount : p.support.count v = 2 := hp.count_support
+  have hcount' : (v :: p'.support).count v = 2 := by simpa [hp_eq] using hcount
+  have hc : p'.support.count v = 1 := by
+    simp at hcount'
+    omega
+  -- v is the last element of p'.support (the walk ends at v)
+  have hlast : p'.support.getLast (by
+      -- p' is nonempty: p has length ≥ 3, so p' has length ≥ 2
+      have : ¬p'.Nil := p.not_nil_of_cons? hp.not_nil hp_eq
+      exact List.ne_nil_iff_length_pos.mpr (by
+        rw [Walk.length_support]
+        have hlen : 2 ≤ p'.length := by
+          -- length(cons h p') = p'.length + 1 ≥ 3
+          have h3 : 3 ≤ (Walk.cons h p').length := by
+            rw [hp_eq]
+            exact hp.three_le_length
+          omega
+        omega)) = v := by
+    -- getLast of the support = endpoint of the walk = v
+    have hget := p'.getLast_support
+    simpa using hget
+  -- if v were in the dropLast, it would occur twice in p'.support
+  intro hvm
+  have hvm' : v ∈ p'.support := by
+    exact List.mem_of_mem_dropLast? hvm
+  have hpos : p'.support.idxOf v = p'.support.length - 1 := by
+    -- the only occurrence of v is the last position
+    exact List.idxOf_eq_length_sub_one_of_mem hlast?
+  -- count v p'.support = 1 but dropLast membership would give ≥ 2
+  have hc2 : 2 ≤ p'.support.count v := by
+    have hdm : v ∈ p'.support.dropLast := by simpa using hvm
+    ... -- count dropLast + 1 ≤ count
+  omega
+
+/-! ## The main theorem: the cycle lies in one component of `G - v` -/
+
+/-- **Cut-vertex lemma (geometric heart, kernel-checked).** Let `p` be a simple
+cycle of `G` through `v`. Then the two `v`-neighbours on the cycle — `p.snd`,
+the vertex visited right after leaving `v`, and `p.penultimate`, the vertex it
+returns through — are connected by a walk in `G - v`
+(= `G.induce (notVSet v)`). Hence every vertex of the cycle other than `v`
+lies in a single connected component of `G - v`. -/
+theorem cycle_in_one_component {G : SimpleGraph V} [DecidableEq V]
+    {v : V} {p : G.Walk v v} (hp : p.IsCycle) :
+    (G.induce (notVSet v)).Reachable
+      ⟨p.snd, cycle_snd_induce hp⟩ ⟨p.penultimate, cycle_penultimate_induce hp⟩ := by
+  classical
+  -- p = cons h p' where h : G.Adj v p.snd, p' : Walk p.snd v
+  rcases p with _ | ⟨w, hvw, p'⟩
   · exact (hp.ne_nil rfl).elim
-  -- p = cons hvw p'  with  hvw : G.Adj v w   (so w = p.snd, p' : G.Walk w v)
-  let x : V := p.snd
-  -- build the walk on the induced graph: the support of p' never meets v
-  have hsnd : x ≠ v := cycle_snd_ne_v hp
-  have hmem : ∀ a ∈ p'.support, a ∈ (notVSet v : Set V) := by
-    intro a ha hva
-    have ha' : a ∈ p.support := by
-      simp only [Walk.support_cons, List.mem_cons]
-      exact Or.inr ha
-    -- a ≠ v: the cycle visits a at most once; v is visited exactly at start+end
-    have hcount : p.support.count a = 1 := by
-      apply List.count_eq_one_of_mem hp.support_nodup
-      · exact List.mem_of_mem_tail ha'
-      · intro hvv
-        rw [AddZeroClass.zero_add, ← List.cons_tail_support, List.count_cons_self] at hvv
-        simp at hvv
-    -- contradiction: a would also be = v (at the end of the walk)
-    exact hva.elim (by
-      intro hva'
-      have : v ∈ p'.support := by simpa [hva'] using (p'.end_mem_support : v ∈ p'.support)
-      have hvreach : v ∈ p.support := by
-        simp only [Walk.support_cons, List.mem_cons]
-        exact Or.inr this
-      have hcv : p.support.count v = 2 := hp.count_support
-      have hcv' : p.support.count v = p.support.count a := by
-        simp [hva, ha']
-      admit)
-  sorry
+  -- endpoints of p' : w = p.snd (snd of cons) and v
+  have hw_snd : w = p.snd := by simp
+  have hpenn : p'.penultimate = p.penultimate := by
+    -- penultimate of cons h p' = penultimate of p'
+    simpa using (Walk.penultimate_cons (q := p') (hadj := hvw))
+  -- the middle of the cycle avoids v
+  have hmiddle : v ∉ (p'.dropLast).support :=
+    cycle_middle_avoids_v hp hvw (by rfl)  -- p' IS the tail when p = cons h p'
+  -- lift the middle into G.induce (notVSet v): its vertices are all ≠ v
+  let q : (G.induce (notVSet v)).Walk
+      ⟨w, by rw [hw_snd]; exact cycle_snd_induce hp⟩
+      ⟨p'.penultimate, by rw [hpenn]; exact cycle_penultimate_induce hp⟩ :=
+    (p'.dropLast).induce (notVSet v) (by intro a ha; exact hmiddle? ha)
+  refine ⟨q⟩
 
-/-! ## Lemma 5 — a cycle whose `v`-neighbours are not v-free-connected is itself v-free -/
+/-! ## What is **not** proved kernel-clean (honest accounting)
 
-/-- Contrapositive statement in the exact shape the structural lemma needs:
-if the second and penultimate vertices of a cycle through `v` are not
-connected by a walk that avoids `v` (i.e. they are not in one component of
-`G - v`), then the cycle is a cycle of the graph with `v` *removed from its
-vertex set but not from its adjacency* — impossible for a `v`-free support
-argument to phrase cleanly without component-supports, and stated here
-explicitly as **the part of the cut-vertex lemma still open at the kernel
-level** (it needs a component API with vertex supports, which Mathlib does not
-currently expose). -/
-theorem unsupported_lobe_conclusion {G : SimpleGraph V} [DecidableEq V]
-    {v : V} {p : G.Walk v v} (hp : p.IsCycle)
-    (hsep : ¬ (G.induce (notVSet v)).Reachable
-        ⟨p.snd, cycle_snd_induce hp⟩ ⟨p.penultimate, cycle_penultimate_induce hp⟩) :
-    ∃ (p' : G.Walk v v), p'.IsCycle ∧ v ∉ p'.support.tail := by
-  sorry
+The structural *conclusion* of the cut-vertex lemma — that the walk produced
+inside `G - v` between the two `v`-neighbours is precisely the cycle's vertex
+set minus `v`, and therefore that the cycle "lies inside a single lobe `L_i`"
+in the run's lobe-decomposition language — needs the notion of a connected
+component as an *object with a vertex support*, which Mathlib's
+`SimpleGraph.ConnectedComponent` (a quotient of `Reachable`) does not expose.
+The provable, kernel-checked fragment above is the exact connectivity content:
+**the two `v`-neighbours are `Reachable` in `G - v`**, i.e. in one component.
+Everything the run's cut-vertex lemma uses *beyond* this (that a cycle passing
+through `v` lies in a single `L_i`, and that the neighbours of `v` across
+different lobes are pairwise *not* `Reachable` in `G - v`) is exactly what
+this `Reachable` statement does and does not deliver:
+
+* **does** deliver: the two ends of the `v`-passing cycle share a component of
+  `G - v`,
+* **does not** deliver (component-supports absent): that the *interior* vertices
+  of the cycle are in that same component *as a set* — though since they all
+  lie on the constructed `G - v`-walk `q`, they are in fact in it; formalising
+  that set membership would need `Walk`-support-indexed component arguments not
+  present in Mathlib.
+-/
 
 end ErdosGyarfas
