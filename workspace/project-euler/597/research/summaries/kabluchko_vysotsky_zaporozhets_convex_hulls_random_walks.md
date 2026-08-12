@@ -1,0 +1,8 @@
+# Kabluchko, Vysotsky & Zaporozhets, "Convex hulls of random walks" — summary
+
+- Source: Zakhar Kabluchko, Vysotsky & Zaporozhets, *Convex hulls of random walks: expected number of faces and face probabilities*, Adv. Math. 320 (2017), arXiv:1612.00249. URL: https://arxiv.org/pdf/1612.00249 (full text: research/sources/kabluchko_vysotsky_zaporozhets_convex_hulls_random_walks.full.md)
+- Content: For the partial-sum walk S_i = ξ_1+…+ξ_i in R^d (d ≤ n) with exchangeable increments and a general-position condition, the expected number of k-dimensional faces of the convex hull C_n = Conv(S_0,…,S_n) is
+    E[f_k(C_n)] = 2·k!/n! · Σ_{l≥0} [n+1 choose d−2l] {d−2l choose k+1}  (Stirling numbers, first and second kind),
+  and the probability that a given index set {i_1,…,i_{k+1}} spans a face is computed explicitly — generalizing the 1-D discrete arc-sine law of Sparre Andersen. These are exact distribution-free (increment-law-invariant) statements about the convex minorant/hull combinatorics of an exchangeable walk.
+- Bearing on PE597: for d=1, f_0(C_n) is the number of GCM faces / clusters of the pure no-finish ballistic-aggregation walk; the formula recovers the Stirling-number face-count statistics (P(F_n=k)=S1(n,k)/n!) that the survey cites. This is a **primary source** for the `cm-composition-distribution` claim (the run's library already carried MMS 2009, Suidan 2001, APRU 2011, Alsmeyer et al. 2020, Goldie 2022). It does NOT give the torpids parity: the torpids rear-removal rule and the finite finish line are outside its hypotheses, and the run's own `torpids-parity-not-gcm-functional` claim (verified) shows parity is not a functional of the composition anyway.
+- URL: https://arxiv.org/pdf/1612.00249
