@@ -853,3 +853,65 @@ fn a_planner_names_every_specialist_it_can_delegate_to() {
         }
     }
 }
+
+#[test]
+fn a_search_strategy_is_not_a_complexity() {
+    // The exact declaration a live Project Euler 185 run was allowed through
+    // with: a method name, no bound, on ten quadrillion candidates, against a
+    // `sat_solver` the run never spawned.
+    let refused = validate_complexity("backtracking with pruning", "polynomial", None)
+        .expect_err("a search strategy declared as a complexity must be refused");
+    let message = refused.to_string();
+    assert!(
+        message.contains("sat_solver"),
+        "the refusal must name the role that does this properly: {message}"
+    );
+    assert!(
+        message.contains("oracle_bound"),
+        "and how to declare it honestly if it is the oracle: {message}"
+    );
+
+    for prose in [
+        "brute force over all assignments",
+        "brute-force search",
+        "exhaustive search of the state space",
+        "branch and bound over candidates",
+    ] {
+        assert!(
+            validate_complexity(prose, "polynomial", None).is_err(),
+            "`{prose}` states no cost and must be refused"
+        );
+    }
+}
+
+#[test]
+fn a_bounded_oracle_may_search_however_it_likes() {
+    // Rule 8 requires the naive program and requires keeping it. A gate that
+    // refused an honestly-bounded backtracking oracle would block the method
+    // policy's own first step — which is the failure this function was
+    // rewritten once already to stop committing.
+    validate_complexity(
+        "backtracking over all fillings",
+        "polynomial",
+        Some("n <= 7"),
+    )
+    .expect("a bounded oracle is legitimate however it searches");
+    validate_complexity("exhaustive, O(n!)", "factorial", Some("n <= 8"))
+        .expect("a declared factorial oracle with a bound stays legitimate");
+}
+
+#[test]
+fn an_honest_polynomial_cost_still_passes() {
+    // The list must not punish accuracy. "Enumerate the divisors" is a truthful
+    // description of an O(sqrt n) method, and `enumerate` is deliberately not a
+    // matched term for that reason.
+    for prose in [
+        "O(n log n) sort then a linear scan",
+        "enumerate the divisors of n, O(sqrt(n))",
+        "binary search over the answer, O(log n) probes",
+        "O(n^3) Hungarian algorithm via scipy",
+    ] {
+        validate_complexity(prose, "polynomial", None)
+            .unwrap_or_else(|error| panic!("`{prose}` is an honest cost but was refused: {error}"));
+    }
+}
