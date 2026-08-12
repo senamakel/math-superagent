@@ -155,7 +155,7 @@ fn evidence_briefing(workspace: &Path) -> String {
          - approaches proposed: {approaches}\n\
          - threads open: {threads}\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
-         nothing and left work here is not — score what is here.{}{}",
+         nothing and left work here is not — score what is here.{}{}{}",
         captured.len(),
         ledger.established(),
         ledger.asserted(),
@@ -318,6 +318,27 @@ fn collect_outputs(folder: &Path, depth: usize, found: &mut Vec<PathBuf>) {
 }
 
 
+
+/// Reports a run whose programs have produced output that reached no claim.
+///
+/// The claim ledger is what every planning role reads; a result that stays in a
+/// captured file reaches nobody, and the next attempt does the work again. The
+/// magic-square-of-squares run is what that costs. Across seventy minutes it
+/// proved its parametrisation complete by an exact rank computation over Q
+/// (8x9 incidence matrix, rank 7, kernel dimension 2), verified both of the
+/// literature's seven-square near-misses digit by digit against Bremner 1999
+/// with provenance, and established that its own four-million-grid scan reaches
+/// only five square entries among distinct ones — and `research/CLAIMS.md` held
+/// three rows, exactly one of them with a readable status, none of them the
+/// run's own. It survived a judge verdict and a reflection unchanged.
+///
+/// Deliberately the crudest form of the question: are there captured outputs at
+/// all, and has the run established *anything*. A file-by-file "is this one
+/// claimed" would need to know what a claim is about, which is a judgement and
+/// belongs to the agent. Whether the established column is empty is a count.
+fn unclaimed_results(captured: &[PathBuf], ledger: &super::claims::Ledger) -> bool {
+    !captured.is_empty() && ledger.established() == 0
+}
 
 /// The naive oracle's path, as [`oracle_prompt`] names it.
 const ORACLE_FILE: &str = "brute.py";
