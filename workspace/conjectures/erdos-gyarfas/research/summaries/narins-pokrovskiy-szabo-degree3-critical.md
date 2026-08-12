@@ -107,7 +107,7 @@ counterexample belongs to:
 id: EG-NPS-degree3critical-no-23
 statement: There exists an infinite family of degree-3-critical graphs (n vertices, 2n−2 edges, no proper induced subgraph with minimum degree 3) containing no cycle of length 23; hence cycles 3,4,5,…,C(n) for C(n)→∞ are NOT forced in this class (disproof of EFGS 1988 Conjecture 1.1).
 hypotheses: degree-3-critical = n vertices, exactly 2n−2 edges, no proper induced δ≥3 subgraph
-holds-here: partial — a minimal EG counterexample satisfies only the "no proper subgraph with δ≥3" part (Carr Lemma 0.1), with no control on edge count; so the class is a relaxation of the EG-minimal-counterexample hypothesis, not a match
+holds-here: no — a minimal EG counterexample satisfies only the "no proper subgraph with δ≥3" part (Carr Lemma 0.1), with no control on edge count; the degree-3-critical class is a relaxation/complement, not a match
 status: proved
 bearing: shows interval-of-short-cycle-length statements fail for the edge-minimal δ≥3 class; the prescribed-length difficulty (missing a specific sparse length) is real even at 2n−2 edges.
 anchor: research/summaries/narins-pokrovskiy-szabo-degree3-critical.md

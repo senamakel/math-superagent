@@ -62,7 +62,7 @@ directions up to constants.)
 id: EG-DKMZ-critical-log-distinct-lengths
 statement: Every n-vertex degree-3-critical graph has Ω(log n) distinct cycle lengths (best possible in order: Bollobás–Brightwell's construction has O(log n)); and every tree with max degree Δ≥3 and ℓ leaves has at least log_{Δ−1}((Δ−2)ℓ) distinct leaf-to-leaf path lengths.
 hypotheses: degree-3-critical = n vertices, 2n−2 edges, no proper induced δ≥3 subgraph; trees with Δ≥3, ℓ leaves
-holds-here: no — class mismatch (edge count 2n−2 not implied for a minimal EG counterexample); the leaf-to-leaf tree theorems hold for all such trees and would apply to any 1-3-tree-based construction
+holds-here: no — class mismatch (edge count 2n−2 not implied for a minimal EG counterexample)
 status: proved
 bearing: sets the current quantitative frontier for "many cycle lengths" in the near-minimal class; the EG obstruction (a specific sparse length) is strictly finer than a count lower bound
 anchor: research/summaries/dibraccio-katsamaktsis-ma-degree-critical.md
