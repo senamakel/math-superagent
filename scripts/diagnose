@@ -175,12 +175,20 @@ report() {
         "$(ls "$workspace/research/summaries" 2>/dev/null | wc -l | tr -d ' ')" \
         "$(grep -c '^| ' "$workspace/research/CLAIMS.md" 2>/dev/null || true)" \
         "$(ls "$workspace/research/approaches" 2>/dev/null | wc -l | tr -d ' ')"
+    # The frontier snapshot is read live, so a read can land mid-write and the
+    # JSON parse fails. Say so rather than printing nothing: a silently absent
+    # line reads as "this run has no frontier", and a live Erdős–Gyárfás run
+    # with a 136 KB frontier reported exactly that for one sweep.
     if [ -f "$workspace/config/.frontier.json" ]; then
-        python3 - "$workspace/config/.frontier.json" <<'PY' 2>/dev/null || true
+        python3 - "$workspace/config/.frontier.json" <<'PY' || true
 import json, sys
-d = json.load(open(sys.argv[1]))
-fetched = sum(1 for v in d.values() if v.get("path"))
-print(f"    frontier {len(d)} candidates, {fetched} fetched, {len(d)-fetched} unworked")
+try:
+    d = json.load(open(sys.argv[1]))
+except (ValueError, OSError) as error:
+    print(f"    frontier unreadable this sweep ({type(error).__name__}); the run is rewriting it")
+else:
+    fetched = sum(1 for v in d.values() if v.get("path"))
+    print(f"    frontier {len(d)} candidates, {fetched} fetched, {len(d)-fetched} unworked")
 PY
     fi
     # A claim the run established and one a paper asserted are different
