@@ -172,7 +172,9 @@ const REISSUE_OUTPUT_TOKENS: u32 = 6_000;
 /// cap must not have its room silently *raised* by being cut off — that would
 /// make truncation a way to buy tokens.
 fn reissued(request: &ModelRequest, cap: u32) -> ModelRequest {
-    let mut retry = request.clone().with_max_tokens(cap.min(REISSUE_OUTPUT_TOKENS));
+    let mut retry = request
+        .clone()
+        .with_max_tokens(cap.min(REISSUE_OUTPUT_TOKENS));
     retry.messages.push(Message::system(REISSUE_INSTRUCTION));
     retry
 }
