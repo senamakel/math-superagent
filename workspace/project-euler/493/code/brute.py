@@ -1,91 +1,61 @@
-#!/usr/bin/env python3
-"""Naive oracle for Project Euler 493.
+"""Naive exact computation of expected number of distinct colours.
 
-Problem: 70 balls in an urn, 10 of each of the 7 rainbow colours.
-We draw 20 balls uniformly without replacement.  What is the expected
-number of *distinct colours* among the drawn balls?
+70 balls, 7 colours labelled 0..6, 10 balls per colour (k=10). Draw 20
+without replacement uniformly over all C(70,20) subsets. Compute E[#distinct
+colours] exactly with fractions.
 
-The statement gives no smaller worked example, so this oracle does two
-things:
-
-  1. PINS DOWN THE DEFINITION on small instances.  For (c colours, m
-     balls each, k drawn) it exhaustively enumerates every k-subset of
-     the c*m labelled balls, counts the distinct colours in each, and
-     averages.  This is the obviously-correct reading of the problem.
-
-  2. CROSS-CHECKS the exact linearity-of-expectation formula
-         E = c * (1 - C((c-1)*m, k) / C(c*m, k))
-     against that exhaustive average on the small instances.  When they
-     agree on a range of (c,m,k), the formula is pinned as correct and
-     is then evaluated exactly on the real problem (7,10,20).
-
-Exact integer/rational arithmetic throughout (Python fractions).
+Route (a): closed form E = 7*(1 - C(60,20)/C(70,20)).
+Route (b): independent algebraic / inclusion-exclusion route over colour
+subsets (only 2^7 = 128 subsets, no blowup): for each |S|=d the number of
+20-subsets whose colour-set is exactly S is
+    sum_{j=0}^{d} (-1)^{d-j} C(d,j) C(k*j, 20),
+valid since k*|S| >= 20 for d>=2 and handled separately for d=1.
+E = [sum_d d * C(7,d) * (exact count for d)] / C(70,20).
 """
-
-import itertools
-import math
 from fractions import Fraction
+from math import comb
 
-import sys
+K = 10      # balls per colour
+N_COL = 7   # number of colours
+TOTAL = 70  # balls
+N = 20      # balls drawn
 
-def exhaustive_expected(c, m, k):
-    """Average number of distinct colours over all C(c*m, k) draws.
+def closed_form():
+    return N_COL * (1 - Fraction(comb(60, N), comb(70, N)))
 
-    Trivially correct: enumerate every possible set of labelled balls.
-    Only usable when C(c*m, k) is small.
-    """
-    colour_of = [i // m for i in range(c * m)]  # ball i has colour i//m
+def count_exact_d(d):
+    """# of 20-subsets whose colour set is exactly S for a fixed |S|=d."""
+    # Inclusion-exclusion: sum_{j=0}^{d} (-1)^{d-j} C(d,j) C(k*j, 20)
+    # C(k*j,20) is 0 when k*j < 20, so that term contributes nothing.
     total = 0
-    count = 0
-    for subset in itertools.combinations(range(c * m), k):
-        distinct_colours = len({colour_of[i] for i in subset})
-        total += distinct_colours
-        count += 1
-    return Fraction(total, count)
+    for j in range(0, d + 1):
+        term = comb(d, j) * comb(K * j, N)
+        if (d - j) % 2 == 1:
+            total -= term
+        else:
+            total += term
+    return total
 
-def linearity_expected(c, m, k):
-    """E = c * P(one given colour is drawn)
-             = c * (1 - C((c-1)m, k) / C(c*m, k)).
-    """
-    absent = math.comb((c - 1) * m, k)
-    present_all = math.comb(c * m, k)
-    p_colour = Fraction(1) - Fraction(absent, present_all)
-    return c * p_colour
+def brute_route():
+    total_draws = comb(TOTAL, N)
+    # expected value = sum over d of d * (#draws with exactly d colours) / total
+    numerator = 0
+    for d in range(1, N_COL + 1):
+        per_subset = count_exact_d(d)
+        num_subsets = comb(N_COL, d)
+        numerator += d * num_subsets * per_subset
+    return Fraction(numerator, total_draws)
 
 def main():
-    print("=== Part 1: pin down the definition on small instances ===")
-    small = [
-        (1, 10, 5),        # one colour: every non-empty draw has 1 distinct colour
-        (2, 2, 2),         # two colours, two balls each, draw 2
-        (2, 3, 3),
-        (3, 2, 2),
-        (3, 2, 3),
-        (3, 3, 3),
-        (2, 10, 10),       # draw every ball cap (2*10 choose 10 = 184756 ok)
-        (3, 2, 4),         # draw all four of six? no: k=4 of 6
-    ]
-    all_ok = True
-    for (c, m, k) in small:
-        comb = math.comb(c * m, k)
-        print(f"\nc={c} m={m} k={k}  (C({c*m},{k}) = {comb} subsets)")
-        if comb > 2_000_000:
-            print("  too large to enumerate; skipping exhaustive check")
-            continue
-        e_exh = exhaustive_expected(c, m, k)
-        e_lin = linearity_expected(c, m, k)
-        match = (e_exh == e_lin)
-        all_ok = all_ok and match
-        print(f"  exhaustive = {float(e_exh):.8f}  ({e_exh})")
-        print(f"  linearity  = {float(e_lin):.8f}  ({e_lin})")
-        print(f"  MATCH: {match}")
-
-    print("\n=== Part 2: real problem (7,10,20) by the cross-checked formula ===")
-    c, m, k = 7, 10, 20
-    E = linearity_expected(c, m, k)
-    print(f"E = {E}")
-    print(f"E as float = {float(E):.12f}")
-    print(f"nine digits after decimal point: {float(E):.9f}")
-    print("\nexhaustive matches formula on all small cases:", all_ok)
+    a = closed_form()
+    b = brute_route()
+    print("brute.py")
+    print("  closed form                 =", a)
+    print("  closed form decimal         =", float(a))
+    print("  brute-force exact           =", b)
+    print("  brute-force decimal         =", float(b))
+    print("  routes equal                =", a == b)
+    print("  exact Fraction (brute)      =", b)
 
 if __name__ == "__main__":
     main()
