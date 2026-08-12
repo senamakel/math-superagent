@@ -137,6 +137,33 @@ finite-window recurrence fit is not predictive even when it fits exactly.
 - code/inventor/check_recurrence.py — tool_builder target verifying CLAIM A
   (top-cap deterministic collapse) and CLAIM B (D(N+1)=sum f(C)) on BFS
   configs N<=7.
+- code/brute.py — this run's pure naive frozenset BFS oracle for PE763
+  (level-by-level via lib.amoeba.forward_level, prints D(N)/elapsed/frontier
+  each level, stops at a frontier cap of 1,000,000 or 500s). Output in
+  code/out/brute_fs_oracle_run.txt.
+
+## Naive frozenset oracle run (this tool-builder task)
+
+Ran the pure exact BFS (code/brute.py) to pin down the definition against the
+statement's examples and report how far naive BFS reaches in THIS container:
+- D(2)=3 and D(10)=44499 both asserted in-run and matched (same oracle gold
+  values as the whole run's D(0..14)).
+- Exhaustive frozenset BFS reaches D(0..13)=
+  1,1,3,9,30,99,336,1134,3855,13086,44499,151263,514419,1749267; all fourteen
+  values match the reference list exactly. Run then stops gracefully (cap
+  reason: frontier 1,749,267 > 1,000,000 at level 13, elapsed 223 s, peak RSS
+  2139 MB).
+- The OOM ceiling: the frozenset oracle cannot even build the D(14) frontier
+  (5,949,063 configs) here — a single forward step that big exceeds the 2 GiB
+  cgroup memory.max (killed with exit 137 when the cap was left at 5e6; the
+  fix is to cap the CURRENT level, i.e. stop before the huge step).  D(14) is
+  reachable only via the compact bitmask oracle (code/amoeba/bfs_more.py ->
+  d_values_more.txt), which is NOT this brute.py.
+- Task (3) confirmed: D(20)=9204559704 is unreachable by exact BFS.  Level
+  20 holds ~9.2e9 distinct configs (state space ~9.2e9); at ~0.5-1 KB per
+  frozenset that is ~5-9 TB of RAM, and the 5.9M-config N=14 frontier (the
+  nearest one strictly less than that) already needs ~4-6 GB here.  Far past
+  any feasible time (exponential) or memory budget in this container.
 - code/inventor/probe_topcap.py, probe_reachable.py — empirical probes.
 - code/pattern/check_a186085_recurrence.py, qdecomp_falsify.py, mdist2.py,
   full_triangle_dump.py, pn_poly.py — this run's pattern-finder probes
