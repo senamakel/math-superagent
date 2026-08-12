@@ -6,8 +6,10 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `a055153-nine-7over2` | The 7/2-abundancy hemiperfects below 1e18 are exactly 4320, 4680, 26208, 20427264, 197064960, 21857648640, 57575890944, 88898072401645056, 301183421949935616 (A055153 terms 1..9; term 10 exceeds 1e18). | yes | asserted | `research/summaries/A055153_bterm.md` |
 | `a067698-robin-not-hemiperfect` | A067698 (sigma(n) >= e^gamma n log log n) concerns Robin's inequality and RH; its members are not hemiperfect and it does not bound or enumerate n with sigma(n)/n = k+1/2. | no | asserted | `research/summaries/oeis_a067698.md` |
 | `a088912-abundancy-threshold` | The smallest m with sigma(m)=(k+1/2)m is 2,24,4320,8910720,17116004505600 for k=1..5 (all < 1e18) and ~1.7e44 for k=6, so no number <= 1e18 realizes any half-integer abundancy k+1/2 with k >= 6. | yes | asserted | `research/summaries/oeis_A088912.md` |
+| `a141643-three-5over2` | The 5/2-abundancy hemiperfects below 1e18 are exactly 24, 91963648, 10200236032 (A141643, class b-file); no other 5/2 number is known (a(4) > 1e100 if it exists). | yes | asserted | `research/summaries/oeis_A141643_bfile.md` |
 | `a160678-reachability-13over2` | The smallest n with sigma(n)/n = 13/2 is 170974031122008628879954060917200710847692800 ~ 1.71e44, so no n <= 10^18 has half-integer abundancy 13/2 and the k=6 target contributes zero solutions below 1e18. | yes | asserted | `research/summaries/oeis_A160678.md` |
 | `abundancy-index-multiples-monotone` | The abundancy index I(n)=sigma(n)/n is the perfection quotient of PE241; every multiple of an abundant number is abundant (if 6\|n then sigma(n) >= n+1), and the set of abundant numbers has natural density ~0.2476.… | **unchecked** | asserted | `research/summaries/wikipedia_abundancy_index.md` |
 | `alekseyev-inverting-multiplicative` | Preimages of a multiplicative function (n with f(n)=v) and their power sums/cardinality are computable in polynomial time (using a Z^>=0-semiring over prime powers) when the preimage set is finite; e.g. the count of x… | no | proved | `research/summaries/alekseyev_inverting_multiplicative_functions.md` |
@@ -30,7 +32,9 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `a055153-nine-7over2` (research/summaries/A055153_bterm.md) — asserted by the source, not proved there and not checked here
 - `a088912-abundancy-threshold` (research/summaries/oeis_A088912.md) — asserted by the source, not proved there and not checked here
+- `a141643-three-5over2` (research/summaries/oeis_A141643_bfile.md) — asserted by the source, not proved there and not checked here
 - `a160678-reachability-13over2` (research/summaries/oeis_A160678.md) — asserted by the source, not proved there and not checked here
 - `flammenkamps-tree-search-method` (research/summaries/flammenkamp_multiply_perfect.md) — asserted by the source, not proved there and not checked here
 - `goto-shibata-multiplicative-monotone-method` (research/summaries/goto_shibata_harmonic_mean.md) — asserted by the source, not proved there and not checked here
