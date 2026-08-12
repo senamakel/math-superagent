@@ -5932,3 +5932,12 @@ n=13 iter=5930 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] 
 n=13 iter=5931 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=36 (C4=0) new_clauses=36 cumulative=129407 solve=0.1s total=866.6s
 n=13 iter=5932 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=33 (C4=0) new_clauses=33 cumulative=129440 solve=0.1s total=866.9s
 n=13 iter=5933 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=33 (C4=0) new_clauses=33 cumulative=129473 solve=0.1s total=867.3s
+n=13 iter=5934 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=44 (C4=0) new_clauses=44 cumulative=129517 solve=0.1s total=867.6s
+n=13 iter=5935 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=37 (C4=0) new_clauses=37 cumulative=129554 solve=0.1s total=868.0s
+n=13 iter=5936 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=28 (C4=0) new_clauses=28 cumulative=129582 solve=0.2s total=868.4s
+n=13 iter=5937 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=22 (C4=0) new_clauses=22 cumulative=129604 solve=0.1s total=868.9s
+n=13 iter=5938 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=35 (C4=0) new_clauses=35 cumulative=129639 solve=0.1s total=869.2s
+n=13 iter=5939 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=33 (C4=0) new_clauses=33 cumulative=129672 solve=0.1s total=869.5s
+n=13 iter=5940 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=41 (C4=0) new_clauses=41 cumulative=129713 solve=0.1s total=869.9s
+n=13 iter=5941 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=42 (C4=0) new_clauses=42 cumulative=129755 solve=0.1s total=870.2s
+n=13 iter=5942 model md=3 cycle_set=[3, 5, 6, 7, 8, 9, 10, 11, 12, 13] pow2=[8] bad_cycles=37 (C4=0) new_clauses=37 cumulative=129792 solve=0.1s total=870.6s
