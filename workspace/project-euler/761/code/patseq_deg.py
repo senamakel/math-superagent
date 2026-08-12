@@ -38,14 +38,16 @@ def v2_degree(n):
 
 
 def main():
-    print("n   K  deg_Q(V^2)  phi(n)  match")
+    import time
+    print("n   K  deg_Q(V^2)  phi(n)  match  time")
     for n in range(3, 31):
+        t0 = time.time()
         try:
             K, d = v2_degree(n)
             ph = sp.totient(n)
-            print(f"{n:2d}  {K}       {d:2d}       {ph:2d}    {d == ph}")
+            print(f"{n:2d}  {K}       {d:2d}       {ph:2d}    {d == ph}     {time.time()-t0:6.1f}")
         except Exception as e:
-            print(f"{n:2d}  FAIL {type(e).__name__}: {str(e)[:60]}")
+            print(f"{n:2d}  FAIL {type(e).__name__}: {str(e)[:60]}   {time.time()-t0:6.1f}")
 
 
 if __name__ == "__main__":
