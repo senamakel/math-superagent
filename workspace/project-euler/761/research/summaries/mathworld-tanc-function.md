@@ -1,50 +1,44 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mathworld-tanc-function.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# MathWorld — Tanc Function
 
-<!-- source: https://mathworld.wolfram.com/TancFunction.html | converted from HTML -->
+Source: https://mathworld.wolfram.com/TancFunction.html | converted from HTML.
+Full text: `research/sources/mathworld-tanc-function.full.md`.
 
-## What is in it
+## Relevance
+Directly relevant to the circle case of this run. The circle critical speed
+solves a transcendental equation of exactly the `tan x = x` family (for a
+circle of radius R, the critical condition is `sin B = (π+B)/V` with
+`cos B = 1/V`, i.e. `tan B = π+B`; equivalently `tan x = x` at
+`x = B+π ≈ 4.493409458`). Tanc is the named function whose roots are these
+values.
 
-- Tanc Function
-  - See also
-  - Explore with Wolfram|Alpha
-  - References
-  - Referenced on Wolfram|Alpha
-  - Cite this as:
-  - Subject classifications
+## What it establishes
+- Defines `tanc(z) = tan(z)/z` (Weisstein's coinage; no prior name exists).
+- The first positive root of `tanc(x) = 1`, i.e. of **`tan x = x`**,
+  is `x ≈ 4.4934094579090641753…` — this is the smallest positive root used by
+  this run (circle constant `V_circle = sqrt(1+x^2) ≈ 4.60333885`). This root
+  is catalogued in OEIS **A115365** (already held in this library as a
+  summary).
+- Derivative `dtanc/dz = sec²z/z − tanz/z²`; the indefinite integral has no
+  closed form in conventional functions.
+- Roots table: n=2 → 7.72525…, n=3 → 10.90412…, n=4 → 14.06619…, n=5 →
+  17.22076… (successive solutions of `tan x = x`, approaching (n+½)π).
 
+## What it implies for this problem
+- It names and fixes the transcendental object behind V_circle: the root of
+  `tan x = x` at `x≈4.493409458`, matching A115365 (held). This corroborates
+  `research/notes/circle-critical-speed-identity.md` and the OEIS A115365
+  summary already in the library.
+- It does NOT give the polygon (square/hexagon) general-n formula; that remains
+  sourced from Math.SE stewbasic + Abel et al. "Escaping a Polygon" (both
+  held). Tanc is circle-specific corroboration, not an independent hexagon
+  route.
 
-## What it claims
-
-Since [image: tanz/z] is not a [cardinal function][3], the "analogy" with the [sinc function][2] is one of functional structure, not mathematical properties. It is quite possible that a better term than [image: tanc(z)], as introduced here, could be coined, although there appears to be no name previously assigned to this function.
-
-The [derivative][4] is given by
-
-[image:  (dtanc(z))/(dz)=(sec^2z)/z-(tanz)/(z^2). ] |
-
-(2)
-
-|
-
-The [indefinite integral][5] can apparently not be done in [closed form][6] in terms of conventionally defined functions.
-
-[image: TancRoots]
-
-This function commonly arises in problems in physics, where it is desired to determine values of [image: x] for which [image: tanx=x], i.e., [image: tanc(x)=1]. This is a transcendental equation whose first few solutions are given in the following table and illustrated above.
-
-[image: n] | OEIS | root |
-
-0 | 0 |
-
-1 | [A115365][7] | 4.4934094579090641753... |
-
-2 | 7.7252518369377071642... |
-
-3 | 10.904121659428899827... |
-
-4 | 14.066193912831473480... |
-
-5 | 17.220755271930768739... |
-
-The first of these solutions can be…
-
-*[digest of a 6142 character source; every section, statement, and proof in full at `research/sources/mathworld-tanc-function.full.md`]*
+```claim
+id: tanc-root-tan-x-equals-x-a115365
+statement: The smallest positive solution of tan(x)=x is x≈4.4934094579090641753, catalogued in OEIS A115365; this is the root the circle critical speed V_circle=sqrt(1+x^2)≈4.60333885 is built on. MathWorld's tanc(z)=tan(z)/z is the named function whose value 1 gives these roots.
+hypotheses: tan(x)=x transcendental equation; x positive with (n+1/2)π < x < (n+1)π.
+holds-here: yes — the circle case (V_circle=4.60333885) is exactly this.
+status: sourced (MathWorld + OEIS A115365, both held).
+bearing: corroborates the circle identity already established; no bearing on the hexagon value itself.
+anchor: research/sources/mathworld-tanc-function.full.md
+```
