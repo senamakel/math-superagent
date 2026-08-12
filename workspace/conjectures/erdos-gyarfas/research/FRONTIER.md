@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/List_of_conjectures_by_Paul_Erdős | conjectures of Erdős | length is a [power of two][16]. Erdős offered a prize of $100 for proving the conjecture, or $50 for a counterexample; it is one of many [conjectures of Erdős][17]. If the conjecture is false, a… |
 | 1 | https://link.springer.com/10.1007/s00493-021-4743-y?fromPaywallRec=true | Packing Directed Cycles Quarter- and Half-Integrally | Similar content being viewed by others ### [Erdős–Gyárfás conjecture for \(P_8\) -free graphs][9] Article 10 October 2022 ### [Packing Directed Cycles Quarter- and Half-Integrally][10] Article 21… |
 
-_299 further candidates not shown; they are cited once each._
+_317 further candidates not shown; they are cited once each._
