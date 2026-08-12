@@ -6,8 +6,24 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
+| 1 | https://arxiv.org/html/1108.0117v3 | HTML (experimental) | of the paper titled Software for Exact Integration of Polynomials over Polyhedra, by Jesus De Loera and 5 other authors [View PDF][9] [HTML (experimental)][10] Abstract: We are interested in the fast… |
+| 1 | https://arxiv.org/search/advanced | Advanced search | [1108.0117] Software for Exact Integration of Polynomials over Polyhedra Skip to main content Press Enter to search &middot; [Advanced search][1] --> # Mathematics > Metric Geometry… |
+| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=De+Loera,+J | Jesus De Loera | ( [v1][2]), last revised 2 Apr 2012 (this version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5],… |
+| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Dutra,+B | Brandon Dutra | 2 Apr 2012 (this version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6],… |
+| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Koeppe,+M | Matthias Koeppe | version, v3)] # Title: Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6], [Gregory… |
+| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Moreinis,+S | Stanislav Moreinis | Software for Exact Integration of Polynomials over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6], [Gregory Pinto][7], [Jianqiu Wu][8] View… |
+| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Wu,+J | Jianqiu Wu | over Polyhedra Authors: [Jesus De Loera][3], [Brandon Dutra][4], [Matthias Koeppe][5], [Stanislav Moreinis][6], [Gregory Pinto][7], [Jianqiu Wu][8] View a PDF of the paper titled Software for Exact… |
+| 1 | https://info.arxiv.org/labs/index.html | Learn more about arXivLabs | these values and only works with partners that adhere to them. Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][45]. [Which authors of this paper… |
+| 1 | http://www2.macaulay2.com | — | 43 (2016). [doi]. [28] D. R. Grayson and M. E. Stillman, Macaulay2, a software system for research in algebraic geometry. Available at http://www2.macaulay2.com. [29] B. Gr¨unbaum, Convex polytopes.… |
+| 1 | https://arxiv.org/abs/2003.w13548 | — | Text Editions, Springer, Berlin, 2001. [doi]. [35] L. Kastner and M. Panizzut, Hyperplane arrangements in polymake, tech. report, 2020. [arXiv:2003.w13548]. [36] L. K¨uhne, The universality of the… |
 | 1 | https://oeis.org/A000290 | A000290 | cross-referenced from A003215 |
 | 1 | https://oeis.org/A000295 | A000295 | cross-referenced from A126277 |
+| 1 | https://www.oscar-system.org | — | der mathematischen Wis- senschaften, Springer, 1992. [40] Oscar, Open source computer algebra research system, version 0.15.0-dev, 2024. https://www.oscar-system.org. [41] J. Oxley, Matroid theory… |
+| 1 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | of Polynomials over Polyhedra, by Jesus De Loera and 5 other authors - [View PDF][9] - [HTML (experimental)][10] - [TeX Source][17] [view license][18] ### Current browse context: math.MG [< prev][19]… |
+| 1 | http://www.zib.de/PaperWeb/abstracts/ZR-02-17 | — | of point conﬁgurations and oriented matroids, in Proceedings of the Interna- tional Congress of Mathematical Software, 2002. http://www.zib.de/PaperWeb/abstracts/ZR-02-17. 38 J.-P. DUSSAULT, J.CH.… |
+| 1 | https://core.ac.uk/services/recommender | What is CORE? | Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][43])* Core recommender toggle CORE Recommender*( [What is CORE?][44])* - Author - Venue - Institution - Topic About… |
+| 1 | https://influencemap.cmlab.dev/ | What are Influence Flowers? | Toggle TXYZ.AI*( [What is TXYZ.AI?][42])* Related Papers # Recommenders and Search Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][43])* Core recommender toggle CORE… |
+| 1 | https://info.arxiv.org/help/mathjax.html | What is MathJax? | value for arXiv's community? ****[Learn more about arXivLabs][45]. [Which authors of this paper are endorsers?][46] \| Disable MathJax ( [What is MathJax?][47]) |
 | 1 | https://oeis.org/A000012 | A000012 | cross-referenced from A113743 |
 | 1 | https://oeis.org/A000124 | A000124 | cross-referenced from A003215 |
 | 1 | https://oeis.org/A000166 | A000166 | cross-referenced from A003215 |
@@ -30,21 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://oeis.org/A005448 | A005448 | cross-referenced from A003215 |
 | 1 | https://oeis.org/A005449 | A005449 | cross-referenced from A003215 |
 | 1 | https://oeis.org/A005891 | A005891 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A008292 | A008292 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A028896 | A028896 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A032528 | A032528 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A042968 | A042968 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A045943 | A045943 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A047969 | A047969 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A048766 | A048766 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A056105 | A056105 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A056106 | A056106 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A056107 | A056107 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A056108 | A056108 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A056109 | A056109 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A056220 | A056220 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A060544 | A060544 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A063496 | A063496 | cross-referenced from A003215 |
-| 1 | https://oeis.org/A073934 | A073934 | cross-referenced from A333792 |
 
-_34 further candidates not shown; they are cited once each._
+_73 further candidates not shown; they are cited once each._
