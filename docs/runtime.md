@@ -18,11 +18,13 @@ src/
 │   ├── resilient.rs    # tool-error and request-timeout wrappers
 │   └── trace.rs        # live console and trace.jsonl event listener
 ├── orchestrator/       # registry, specialists, compression, workspace tools
+│   ├── approaches.rs   # candidate lines of attack and why the closed ones closed
 │   ├── async_subagents.rs # graph-backed asynchronous child-run controls
 │   ├── claims.rs       # claim blocks, the derived ledger, and search_claims
 │   ├── code_layout.rs  # measures duplication and grouping in code/
 │   ├── digest.rs       # structural digest of a downloaded source
 │   ├── documents.rs    # bounded workspace documents and local search index
+│   ├── dossier.rs      # the inventor's workspace record, built per delegation
 │   ├── frontier.rs     # citation graph of the library, ranked and deduped
 │   ├── oeis.rs         # sequence lookup adapter, filed and cross-referenced
 │   ├── patterns.rs     # exact sequence analysis and recurrence search
@@ -261,6 +263,24 @@ errors, status messages, and missing outputs as improvement candidates. The
 helpers load the ignored local `.env`, query Observations API v2, and pass Basic
 Auth through curl configuration on standard input so credentials never appear
 in process arguments or output. Treat returned inputs and outputs as sensitive.
+
+Every role's workspace context is assembled once, by `RolePrompts::load`, when
+the container starts, and for most roles that is right: their job is stated up
+front and does not depend on what the run later discovers. The inventor is the
+exception, and `dossier.rs` is it. A conjecture launcher defaults to twelve
+hours and the inventor is first delegated to hours in, so the `GOAL.md`,
+`THREADS.md` and `CLAIMS.md` in its system prompt were the versions that existed
+before any of the work it is asked to invent past — the role that most needs to
+know what has already been tried was the one least equipped to know it. The
+dossier is therefore read from disk at the moment the inventor is spawned, and
+delivered in the spawn message rather than the system prompt: the shared method
+policy has to lead every prompt so the provider can cache the common prefix, and
+a harness's prompt is fixed when it is registered, so a per-invocation system
+prompt would mean re-registering the harness on every call. It is packed in
+priority order — the goal, then what has been closed, then what is established —
+against a token budget (`MATH_AGENT_DOSSIER_TOKENS`, default 16,000), and every
+cut is announced, because an inventor silently handed half a ledger re-proposes
+what was in the other half.
 
 Do not add memory domains, channels, Web3, SQLite persistence, REPL, or RLM
 features unless the user explicitly expands the product scope.

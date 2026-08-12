@@ -1,3 +1,7 @@
+//! Unit tests for the inventor's dossier: what it includes, in what order, and
+//! what it does when it does not fit.
+#![allow(clippy::expect_used)]
+
 use super::{DEFAULT_DOSSIER_TOKENS, build};
 
 /// The dossier at the budget a run actually uses.
@@ -23,14 +27,26 @@ fn write(root: &std::path::Path, relative: &str, content: &str) -> std::io::Resu
 #[test]
 fn sections_arrive_in_priority_order() -> std::io::Result<()> {
     let root = workspace("order")?;
-    write(&root, "GOAL.md", "Prove every graph of girth 5 is 4-colourable.")?;
+    write(
+        &root,
+        "GOAL.md",
+        "Prove every graph of girth 5 is 4-colourable.",
+    )?;
     write(
         &root,
         "research/APPROACHES.md",
         "# Approaches\n\nA table of approaches.",
     )?;
-    write(&root, "research/THREADS.md", "# Threads\n\nA table of threads.")?;
-    write(&root, "research/CLAIMS.md", "# Claims\n\nA table of claims.")?;
+    write(
+        &root,
+        "research/THREADS.md",
+        "# Threads\n\nA table of threads.",
+    )?;
+    write(
+        &root,
+        "research/CLAIMS.md",
+        "# Claims\n\nA table of claims.",
+    )?;
     write(&root, "TASKS.md", "Some tasks.")?;
 
     let dossier = inventor(&root);

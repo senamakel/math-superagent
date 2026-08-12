@@ -1,33 +1,26 @@
-"""Verify connectivity/girth statements about minimal counterexamples
+"""[STATUS: UNRUN — written by the librarian, who has no code-execution tool.
+Handed to coder / tool_builder to execute. Nothing below is a verified
+number; it is a proposed check.]
+
+Verify connectivity/girth statements about minimal counterexamples
 to the Erdős–Gyárfás conjecture.
 
-What is checked here (library-librarian):
-  1. Fact: (min degree >= 3) => no cut vertex of degree that would isolate
-     a component leaf: with d(v) >= 3 and v a cut vertex, every component
-     of G-v has >= 2 vertices (each component must contain at least one
-     neighbor of v, but that alone doesn't force size >= 2 — the real
-     content is that NO vertex-degree argument proves 2-connectedness).
-     We check the GLOBAL structural consequence: a min-degree-3 graph
-     CAN be 1-connected (bridges possible), so 2-connectedness of a
-     minimal counterexample is NOT a degree consequence.
-  2. The degree-4-independent-set consequence: in a graph where every
-     vertex has degree >= 3 and no two degree-4+ vertices are adjacent,
-     it is still possible to be 1-connected (cut vertices can be cubic).
-     So the dichotomy does NOT force 2-connectedness.
-  3. No source asserts girth >= 4: we confirm the Markström graph (the
-     archetypal near-counterexample, cubic planar 24v) HAS a triangle,
-     so girth 3 is achievable in the extremal family; nothing forces
-     triangle-freeness.
+Purpose (librarian extraction, see research/summaries/connectivity-girth-minimal-ce.md):
+  1. Refute the naive claim "min-degree-3 implies 2-connected": two K4s
+     joined by a bridge edge has min degree 3 and both bridge endpoints
+     are cut vertices (node connectivity 1). If this prints
+     node_connectivity == 1, the naive claim is dead and a 2-connectivity
+     lemma for minimal counterexamples (if true) needs a real argument.
+  2. Refute "independent degree-4 set forces 2-connectivity": the same
+     graph is entirely cubic, so the independent-set condition is vacuous
+     and the graph is still 1-connected.
+  3. Check the Markström graph (HoG 51419, from the adjacency list in
+     research/sources/markstrom-houseofgraphs-api.full.md) has girth 3
+     (triangle), i.e. triangles are compatible with the closest known
+     near-counterexamples; nothing in the sources forces girth >= 4.
 
-All checks are small-example constructions (oracle-style), not exhaustive
-searches; they refute the naive conjectures:
-  naive1: "min-degree-3 => 2-connected"            FALSE (pentagon with
-          triangles, or two K4s joined by a bridge)
-  naive2: "independent degree-4 set => 2-connected"  FALSE (two K4s with a
-          bridge: all degree 3, K4s have degree-3 vertices, no degree>=4
-          vertices, 1-connected)
-  naive3: "minimal counterexample must be triangle-free"  -- not claimed by
-          any source; Markström 24-graph has girth 3 (computed).
+Note: this is hand-verifiable elementary material; the output is a check,
+not the source of the finding.
 """
 import networkx as nx
 

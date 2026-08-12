@@ -61,6 +61,13 @@ const REMAINDER: [&str; 4] = [
     "code/lib/INDEX.md",
 ];
 
+/// Characters below which a section is dropped rather than included.
+///
+/// A heading with two lines under it costs more attention than it returns, and
+/// reads as "this file holds almost nothing" rather than "this file did not
+/// fit".
+const USABLE_SECTION: usize = 400;
+
 /// A dossier under construction, with what is left of its budget.
 struct Packed {
     body: String,
@@ -97,11 +104,7 @@ impl Packed {
         if content.is_empty() {
             return;
         }
-        // A heading with two lines under it costs more attention than it
-        // returns, so a section that cannot be given a usable amount of room
-        // is left out entirely and named at the end instead.
-        const USABLE: usize = 400;
-        if self.remaining < USABLE {
+        if self.remaining < USABLE_SECTION {
             return;
         }
         let (rendered, cut) = clamp(content, self.remaining);

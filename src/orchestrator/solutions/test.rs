@@ -78,7 +78,10 @@ fn mathematical_progress_clears_the_scaling_count() {
 /// "scaling again" would divert a working run on two malformed replies.
 #[test]
 fn an_unreadable_kind_moves_nothing() {
-    assert_eq!(kind_of("VERDICT: UNSOLVED\nPROGRESS: YES"), Progress::Unstated);
+    assert_eq!(
+        kind_of("VERDICT: UNSOLVED\nPROGRESS: YES"),
+        Progress::Unstated
+    );
     assert_eq!(kind_of("KIND: SOMETHING ELSE"), Progress::Unstated);
     // Both spacings the reflection actually produces are read.
     assert_eq!(kind_of("KIND:COMPUTATIONAL"), Progress::Computational);

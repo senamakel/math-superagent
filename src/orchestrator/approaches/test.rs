@@ -187,7 +187,11 @@ fn the_full_rendering_keeps_an_idea_a_row_would_cut() -> std::io::Result<()> {
     assert!(full.contains("local exchange argument on the girth"));
     assert!(full.contains("odd cycle at every order above 11"));
     // The table truncates the same idea in its row, which is why `full` exists.
-    assert!(!approaches.render().contains("local exchange argument on the girth"));
+    assert!(
+        !approaches
+            .render()
+            .contains("local exchange argument on the girth")
+    );
     Ok(())
 }
 

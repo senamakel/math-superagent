@@ -68,7 +68,9 @@ pub(super) enum Stance {
 impl Stance {
     fn parse(value: &str) -> Self {
         let lowered = value.trim().to_ascii_lowercase();
-        if lowered.starts_with("refut") || lowered.starts_with("dead") || lowered.starts_with("ruled")
+        if lowered.starts_with("refut")
+            || lowered.starts_with("dead")
+            || lowered.starts_with("ruled")
         {
             Self::Refuted
         } else if lowered.starts_with("adopt") || lowered.starts_with("chosen") {
@@ -163,8 +165,9 @@ pub(super) fn collect(workspace: &Path) -> Approaches {
         let slug = name.trim_end_matches(".md").to_string();
         let (blocks, unclosed) = fenced(&text, "approach");
         if unclosed {
-            out.faults
-                .push(format!("`{slug}` has an approach block that was never closed"));
+            out.faults.push(format!(
+                "`{slug}` has an approach block that was never closed"
+            ));
         }
         let Some(block) = blocks.first() else {
             out.faults.push(format!(

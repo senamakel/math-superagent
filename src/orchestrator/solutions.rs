@@ -825,6 +825,25 @@ async fn reflect_step(
     log_reflection(memory, state.attempts, &reflection, tracer).await;
     state.fresh_context = merge_context(&[("Pattern analysis", &patterns), ("Research", &rescue)]);
 
+    let progressed = record_verdict(&reflection, tracer, workspace, &mut state);
+    let lesson = extract_lesson(&reflection);
+    tell_teams(teams, &state, progressed, &lesson);
+    state.lessons.push(lesson);
+    state
+}
+
+/// Reads the reflection's verdict into the state, and returns whether the
+/// attempt progressed.
+///
+/// Split out of [`reflect_step`] because it is where every counter the loop
+/// routes on is moved, and those rules are worth reading in one piece rather
+/// than interleaved with the delegation that produced the reply.
+fn record_verdict(
+    reflection: &str,
+    tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
+    state: &mut SolutionState,
+) -> bool {
     let upper = reflection.to_uppercase();
     // Require the explicit positive verdict: anything unparsable or hedged
     // leaves the loop running rather than declaring success.
@@ -869,7 +888,8 @@ async fn reflect_step(
     // and treating silence as "scaling again" would send a run diversifying on
     // the strength of two malformed replies. MATHEMATICAL clears it, because
     // the run has changed what it is doing.
-    match kind_of(&upper) {
+    let kind = kind_of(&upper);
+    match kind {
         Progress::Computational => state.computational += 1,
         Progress::Mathematical => state.computational = 0,
         Progress::Unstated => {}
@@ -883,19 +903,16 @@ async fn reflect_step(
             "solution loop: verdict {}, progress {} ({}, {} consecutive scaling), next {}",
             if state.solved { "solved" } else { "unsolved" },
             if progressed { "yes" } else { "no" },
-            match kind_of(&upper) {
+            match kind {
                 Progress::Mathematical => "mathematical",
                 Progress::Computational => "computational",
                 Progress::Unstated => "kind unstated",
             },
             state.computational,
-            route(&state)
+            route(state)
         ));
     }
-    let lesson = extract_lesson(&reflection);
-    tell_teams(teams, &state, progressed, &lesson);
-    state.lessons.push(lesson);
-    state
+    progressed
 }
 
 /// What kind of gain an attempt reported.
