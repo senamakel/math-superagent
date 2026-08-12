@@ -1,37 +1,54 @@
 # Goal
 
-Solve Project Euler 185 (Number Mind).
+Solve Project Euler problem 185: **Number Mind**.
 
-**Statement.** A secret sequence of N digits is hidden. We are given M guesses,
-each a string of N digits together with an integer c = number of positions in
-which the guess agrees with the secret (exactly those positions; wrong-place
-digits convey nothing).
+## Precise restatement
 
-Find the unique secret sequence that is consistent with every guess.
+A secret sequence is a string of decimal digits. A *guess* is a digit string of
+the same length as the secret, together with an integer reported as the number
+of positions at which the guess agrees exactly with the secret (a digit that
+appears in the secret but in a different position **does not count** — that is
+the difference from Master Mind).
 
-**Symbols.**
-- N: length of the secret sequence.
-- M: number of guesses.
-- guesses[i]: the i-th guess string, length N.
-- counts[i]: c for guess i, i.e. |{ j : guesses[i][j] == secret[j] }|.
+Let:
 
-**Test oracle (worked example in statement).**
-N=5, M=6:
-  90342 ;2
-  70794 ;0
-  39458 ;2
-  34109 ;1
-  51545 ;2
-  12531 ;1
-The stated answer is `39542`. brute.py must return this.
+- `L` = length of the secret sequence (number of digits).
+- `n` = number of guesses.
+- `g_i` = the i-th guess, a string of `L` digits.
+- `c_i` = the reported "correct" count for guess `i`: the number of positions
+  `j` such that `secret[j] == g_i[j]`.
 
-**Full-size instance.** N=16, M=22 guesses given in the statement. Find the
-unique 16-digit secret.
+A candidate secret `s` satisfies the constraints iff
+  `|{ j : s[j] == g_i[j] }| == c_i` for every guess `i`.
 
-**Completion criteria.**
-1. brute.py (naive enumeration of all 10^N candidates) reproduces 39542 on the
-   N=5 example.
-2. solution.py reproduces 39542 on the N=5 example (agreement with brute.py).
-3. solution.py finds the unique 16-digit secret in reasonable time using a
-   structural method (not full enumeration), and that answer is verified by a
-   second independent route.
+The task: find the unique secret `s` (given it is unique) satisfying all
+constraints.
+
+## Worked examples (test oracle)
+
+Inline semantics check: sequence `1234`, guess `2036` → 1 correct
+(only `3` at position 1 matches; the other three differ).
+
+Main worked example: `L = 5`, six guesses:
+
+```
+90342 ;2
+70794 ;0
+39458 ;2
+34109 ;1
+51545 ;2
+12531 ;1
+```
+
+The statement claims the unique satisfying secret is `39542`.
+
+Main problem: `L = 16`, 22 guesses (listed in problem.md) → find the unique
+16-digit secret.
+
+## Completion criteria
+
+- `code/brute.py` reproduces the 5-digit worked example (unique `39542`) and
+  the inline `1234/2036` check. ✔ (confirmed 2025, `python code/brute.py`)
+- A fast method is derived (`solution.md`), implemented (`solution.py`),
+  agrees with brute.py on every case brute reaches, and produces the answer to
+  the 16-digit case.
