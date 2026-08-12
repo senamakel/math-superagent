@@ -314,8 +314,9 @@ def check_magic_graph():
     print(f"    affine magic space: rank(differences L2-L1..L8-L1) = "
           f"{diff_rank} over 9 cells -> dimension {affine_dim} = "
           f"1 (constant) + 2 (u,v), matching grid_from_params(c,u,v)")
-    print(f"    -> {'PASS: kernel dim 2 = u,v vectors; affine dim 3 = "
-          f"c,u,v basis' if ok else 'FAIL'}")
+    msg = ("PASS: kernel dim 2 = u,v vectors; affine dim 3 = c,u,v basis"
+           if ok else "FAIL")
+    print(f"    -> {msg}")
     return {"incidence_rank": rank,
             "kernel_dimension": 9 - rank,
             "kernel_basis_vectors": len(kernel),

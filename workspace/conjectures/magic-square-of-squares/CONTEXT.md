@@ -111,13 +111,15 @@ centre-line AP structure (65,025), parametrisation completeness (3,001). Results
 - **No 3×3 magic grid with entries ≤ 100 having six or more distinct square
   entries exists**; best distinct count = 5 (e.g. c=100,u=96,v=21 →
   rows [25,196,79],[154,100,46],[121,4,175]).
-- Near-miss box `c=e², e≤80, |u|,|v|≤120` (4,052,328 grids): **no grid with six
-  or more distinct square entries** (best distinct count = 5). The `{6:964, 7:4,
-  9:92}` counts in that box all **repeat entries** (the 9-square ones are all-k²
-  and the `{1,25,49}` family); the 4 seven-square grids in the box have distinct
-  entries but are **not magic** — all four corners are distinct squares (the
-  Parker-square corner pattern). The run's own generator has not yet produced a
-  *distinct* 7-square near-miss that is magic at these caps.
+- Near-miss box `c=e², e≤80, |u|,|v|≤120` (4,052,328 grids): **no grid whose
+  nine entries are all distinct has six or more square entries** (best such grid
+  = 5, e.g. rows `[25,196,79],[154,100,46],[121,4,175]`, c=100,u=96,v=21). The
+  distribution `{6:964, 7:4, 9:92}` is of *total square entries over all-positive
+  grids*, repeats allowed; the 9-square grids are explicit repeats (all-k² and the
+  `{1,25,49}` family). Whether the 4 seven-square grids have distinct entries is
+  disputed between the note's prose and the raw output — see Contradictions; the
+  output's "best distinct = 5" says they do not. The run's own generator has not
+  produced a *distinct magic* 7-square near-miss at these caps.
 
 **The literature's actual computational bound — sourced** (Morgenstern 2013,
 `research/summaries/morgenstern-extended-searches-2013.md`): the real numbers are

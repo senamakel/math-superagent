@@ -6,10 +6,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
-| `oracle-based-verification-baseline` | the verifier is_magic_square_of_squares agrees with the statement's structural worked examples; no 3x3 magic grid having entries 1..100 and six or more distinct square entries exists; no grid in the box c=e^2, e<=80,… | yes | asserted | `code/out/oracle_note.md` |
+| `near-miss-baseline-and-incidence` | the parametrisation identity and completeness hold on the rerun; Sallows LS1 has 7 of 8 line sums 21609 failing the non-principal diagonal 38307; Bremner's grid is a true magic square (all 8 sums 541875, centre 425² =… | yes | asserted | `code/out/oracle_note.md` |
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
-- `oracle-based-verification-baseline` (code/out/oracle_note.md) — asserted by the source, not proved there and not checked here
+- `near-miss-baseline-and-incidence` (code/out/oracle_note.md) — asserted by the source, not proved there and not checked here
