@@ -34,6 +34,10 @@ def is_repunit(n, b):
 
 def base_count(n):
     """Number of bases b in [2, n] in which n is a repunit."""
+    if n == 1:
+        # R_1(b) = 1 for every base b > 1, so 1 is a repunit in all bases
+        # and hence a strong repunit.
+        return 2
     return sum(1 for b in range(2, n + 1) if is_repunit(n, b))
 
 
