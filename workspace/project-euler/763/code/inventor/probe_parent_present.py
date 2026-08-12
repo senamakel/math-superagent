@@ -9,7 +9,7 @@ A2_refined (conjecture): the top 3 cells {a,b,c} always satisfy
     {a,b,c} = {p+e1,p+e2,p+e3}.
 Report how often this holds, and whether p is present/absent in S.
 """
-from lib.amoeba import forward_level, children, lvl, triangle_parent
+from lib.amoeba import forward_level, lvl, triangle_parent
 
 def main():
     level = {frozenset([(0, 0, 0)])}

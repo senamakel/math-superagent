@@ -27,7 +27,7 @@ lib/amoeba: children, f_of(=dividable_count), decode_bits, next_level_bits.
 import time
 import sys
 
-from lib.amoeba import next_level_bits, decode_bits, children, f_of, lvl, triangle_parent
+from lib.amoeba import next_level_bits, decode_bits, f_of, lvl, triangle_parent
 
 
 def invert_bits(bits, S):
