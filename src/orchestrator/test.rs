@@ -751,13 +751,11 @@ fn a_planner_names_every_specialist_it_can_delegate_to() {
     // and a live run on a closed-form probability problem — exactly what
     // `symbolic_math` exists for — spawned none of them and had `tool_builder`
     // do the exact arithmetic instead.
-    // Two roles are exempt, because delegation is not the only way they run.
-    // The runtime spawns an organizer itself — after every code-writing run
-    // through `FOLLOW_UPS`, and on its own cadence as the standing `background`
-    // team — and runs `pattern_finder` as a standing team beside the solve. A
-    // planner that never names either still gets both. Every other role on
-    // these benches runs if and only if it is delegated to.
-    let self_starting = ["organizer", "pattern_finder"];
+    // One role is exempt, because delegation is not the only way it runs: the
+    // runtime runs `pattern_finder` as a standing team beside the solve, so a
+    // planner that never names it still gets it. Every other role on these
+    // benches runs if and only if it is delegated to.
+    let self_starting = ["pattern_finder"];
     for (role, prompt, bench) in [
         ("goals", GOALS_PROMPT, SPECIALISTS.as_slice()),
         ("orchestrator", ORCHESTRATOR_PROMPT, DELEGATES.as_slice()),

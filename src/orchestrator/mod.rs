@@ -324,7 +324,6 @@ impl OrchestratorAgent {
                 inventor: prompts.inventor,
                 librarian: prompts.librarian,
                 scholar: prompts.scholar,
-                organizer: prompts.organizer,
             },
         )?;
 
@@ -1333,7 +1332,6 @@ struct SupportPrompts {
     inventor: String,
     librarian: String,
     scholar: String,
-    organizer: String,
 }
 
 /// Registers the pattern agent, which is the tool-richest of the support roles.
@@ -1471,21 +1469,7 @@ fn register_support_agents(
     register_memory(&mut scholar, &parts.vector_store);
     subagents.register("scholar", Arc::new(scholar), prompts.scholar)?;
 
-    // Files and indexes only. No search, no shell, no note memory: the
-    // organizer describes the work rather than doing it, and every tool it
-    // does not have is a way it cannot start.
-    let mut organizer = specialist_harness(
-        parts.model.clone(),
-        // Filing is bounded work. Left with an investigation's budget it
-        // investigates: one live organizer run spent 62 model calls.
-        parts.budget.for_housekeeping(),
-        "organizer",
-        parts.tracer,
-    );
-    for tool in parts.documents.tools() {
-        register_resilient(&mut organizer, tool);
-    }
-    subagents.register("organizer", Arc::new(organizer), prompts.organizer)
+    Ok(())
 }
 
 /// Gives every agent the same durable Cognee read/write memory boundary.
