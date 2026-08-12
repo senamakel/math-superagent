@@ -4,9 +4,7 @@
 Find the (single) exception, and test whether 3-exponent equals some function
 of (n5, or positions of 5s).  Report first the exceptions, then samples."""
 import glob, collections
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 def f23(v):
     a=b=0

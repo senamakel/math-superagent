@@ -3,9 +3,7 @@
 (#configs realizing it), and factor the multiplicity to expose structure."""
 import glob, collections
 from math import gcd
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 def prime_power_parts(v):
     # return 2^a * 3^b * rest

@@ -3,9 +3,7 @@
 mult = 2^(2 n4) * 3^b.  Then print each distinct multiset with its b, so we
 can hunt a closed form for b as a function of the multiset."""
 import glob, collections
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 def f23(v):
     a=b=0

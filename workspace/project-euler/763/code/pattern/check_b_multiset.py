@@ -4,9 +4,7 @@
 2) If two histograms share the same value-counts but differ in b, arrangement matters.
 Print all (valuecounts -> set of b) where the set has size>1, i.e. arrangement matters."""
 import glob, collections
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 def f23(v):
     a=b=0
