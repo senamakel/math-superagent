@@ -316,6 +316,7 @@ impl OrchestratorAgent {
                 workspace: &workspace,
                 documents: &documents,
                 checkpoint: &checkpoint,
+                vector_store: &vector_store,
             },
             prompts.code_writers(),
         )?;
