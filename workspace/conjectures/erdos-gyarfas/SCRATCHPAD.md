@@ -1,5 +1,31 @@
 # Scratchpad
 
+## tool_builder oracle re-run (this session, fourth confirmation — current)
+
+Re-ran the EXISTING `code/brute.py` (no second oracle written, per instruction).
+
+Command: `cd /workspace && PYTHONPATH=/workspace/code python code/brute.py` → exit 0, exact stdout:
+```
+K4: min degree = 3, cycle lengths = [3, 4], power-of-two cycle lengths = [4]
+K3,3: min degree = 3, cycle lengths = [4, 6], power-of-two cycle lengths = [4]
+Petersen: min degree = 3, cycle lengths = [5, 6, 8, 9], power-of-two cycle lengths = [8]
+cube Q3: min degree = 3, cycle lengths = [4, 6, 8], power-of-two cycle lengths = [4, 8]
+K4[g6]: min degree = 3, cycle lengths = [3, 4], power-of-two cycle lengths = [4]
+graph6 K4: (3, {3, 4}, frozenset({4}))
+```
+Every worked example MATCHED its hand-stated answer:
+- K4 (n=4):   min deg 3, lengths {3,4}, powers {4} ✓
+- K3,3 (n=6): min deg 3, lengths {4,6}, powers {4} ✓
+- Petersen (n=10): min deg 3, lengths {5,6,8,9}, powers {8} ✓
+- cube Q3 (n=8): min deg 3, lengths {4,6,8}, powers {4,8} ✓
+- graph6 K4 "C~": agrees with hand-built K4 (independent from_graph6 path) ✓
+
+All-nonnegative examples are consistent with the conjecture (each has a 2-power
+cycle, k>=2). Nothing here disproves δ≥3 ⇒ some 2-power cycle; the Petersen graph
+is just the first graph clearing the "no 4-cycle" barrier but still has an 8-cycle.
+Runs in well under a minute at n<=10; not pointed at any larger bound (that would
+defeat the method — deliberate).
+
 ## tool_builder oracle verification (this run)
 
 Ran the EXISTING naive oracle rather than writing a second one, per instructions.
