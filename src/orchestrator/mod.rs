@@ -957,7 +957,11 @@ fn support_agents(
         ),
     ]
     .into_iter()
-    .chain(library_agents(research_enabled, document_tools, memory_tools))
+    .chain(library_agents(
+        research_enabled,
+        document_tools,
+        memory_tools,
+    ))
     .collect()
 }
 
