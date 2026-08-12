@@ -9,17 +9,7 @@ A2_refined (conjecture): the top 3 cells {a,b,c} always satisfy
     {a,b,c} = {p+e1,p+e2,p+e3}.
 Report how often this holds, and whether p is present/absent in S.
 """
-from lib.amoeba import forward_level, children, lvl
-
-def triangle_parent(a, b, c):
-    """Return p if {a,b,c}={p+e1,p+e2,p+e3}, else None."""
-    s = (a[0]+b[0]+c[0]-1, a[1]+b[1]+c[1]-1, a[2]+b[2]+c[2]-1)
-    if s[0] % 3 or s[1] % 3 or s[2] % 3:
-        return None
-    p = (s[0]//3, s[1]//3, s[2]//3)
-    if set(children(p, 3)) == {a, b, c}:
-        return p
-    return None
+from lib.amoeba import forward_level, children, lvl, triangle_parent
 
 def main():
     level = {frozenset([(0, 0, 0)])}
@@ -36,7 +26,7 @@ def main():
             if len(top) != 3:
                 a1bad += 1
                 continue
-            p = triangle_parent(*sorted(top))
+            p = triangle_parent(sorted(top))
             if p is None:
                 not_triangle += 1
                 examples.append(('NOTRI', sorted(S), M, sorted(top)))

@@ -151,6 +151,38 @@ def f_of(C):
     return dividable_count(C, 3)
 
 
+def triangle_parent(top):
+    """Return p if the three cells in `top` == {p+e1,p+e2,p+e3}, else None.
+
+    `top` is an iterable of three (x,y,z) tuples, order irrelevant.
+
+    Derivation (the triangle identity): sum of the three child coordinates =
+    3p + (1,1,1), so p = (sum(top)-(1,1,1))/3, which is a valid lattice point
+    only if each coordinate of that sum-minus-one is divisible by 3; then it
+    is the parent iff its three forward children equal the three given cells.
+
+    This is the single CANONICAL definition of the top-cap triangle parent,
+    consolidated from four copies formerly in
+    inventor/probe_parent_present.py (which took three separate args a,b,c),
+    inventor/probe_refined_collapse.py, inventor/trace_collapse.py and
+    inventor/verify_topcap_full.py (which each took an iterable `top`).  The
+    copies were semantically identical — same derivation, same children(p,3)
+    set comparison — differing only in argument interface, so the iterable
+    form was kept and no definition had to be chosen over another.  The
+    `set(children(p,3)) == set(top)` check is the author of the identity's
+    correctness; it is exercised by those programs' structural checks
+    reproducing D(2)=3 and D(10)=44499.
+    """
+    a, b, c = sorted(top)
+    s = (a[0] + b[0] + c[0] - 1, a[1] + b[1] + c[1] - 1, a[2] + b[2] + c[2] - 1)
+    if s[0] % 3 or s[1] % 3 or s[2] % 3:
+        return None
+    p = (s[0] // 3, s[1] // 3, s[2] // 3)
+    if set(children(p, 3)) == set(top):
+        return p
+    return None
+
+
 # --- naive BFS driver -----------------------------------------------------
 
 
