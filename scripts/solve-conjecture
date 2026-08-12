@@ -4,8 +4,12 @@
 # The Euler wrapper fetches a statement and hands over a task that fits on a
 # page, because a Project Euler problem has one number as its answer and a
 # ceiling on how long it can reasonably take. An open conjecture has neither.
-# The task here is phased instead: build the library, then work the loop, and
-# never claim the conjecture.
+# The task here is phased instead: build the library, work the loop, and never
+# claim the conjecture. The phases overlap on purpose. A first version made
+# phase 1 sequential and its exit condition "the literature is exhausted", which
+# is not checkable: a live run spent twenty-seven uninterrupted minutes there,
+# reached fifty-three sources and a rich ROOT.md, and never wrote a single
+# belief into MEMORY.md — it had read everything and concluded nothing.
 set -eu
 
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
@@ -80,7 +84,7 @@ Work in these phases. They overlap: 1 and 2 run together, and 3 starts as soon a
 
 4. THEN LOOP. Each attempt states one precise structural claim about a minimal counterexample, attacks it before trusting it — hunt the counterexample as seriously as the proof — and either establishes it, refutes it, or leaves it open with the gap named exactly. Use sat_solver for the finite questions the argument throws off: whether a graph with a given order, degree bound, girth and forbidden cycle lengths exists at all is a satisfiability question, and UNSAT on it is a theorem. Use lean_prover to formalise the statement early and each lemma as it stabilises; report #print axioms output and every remaining sorry. Use coder for anything the run's conclusions rest on.
 
-Delegate: tool_builder and coder run programs, sat_solver encodes finite questions for CP-SAT/SAT/SMT, lean_prover writes Lean 4 against a pre-built Mathlib, research and librarian and scholar own the library, pattern_finder reads the numbers you compute, inventor proposes a different line when one stalls. Spawn asynchronously, keep every run ID, await every result you rely on.
+Delegate: tool_builder and coder run programs, sat_solver encodes a finite question for CP-SAT or a SAT solver, smt_solver settles one over a theory with Z3 and cvc5 and can prove a universal claim by refuting its negation, theorem_prover hands first-order statements to eprover, symbolic_math derives and checks closed forms with sympy/PARI/Singular, lean_prover writes Lean 4 against a pre-built Mathlib, research and librarian and scholar own the library, pattern_finder reads the numbers you compute, inventor proposes a different line when one stalls. Spawn asynchronously, keep every run ID, await every result you rely on.
 
 Never state a theorem, citation, bound, or computation result you did not obtain. Distinguish a proof from a numerical check from a heuristic from a sourced claim, every time, in every file you write."
 

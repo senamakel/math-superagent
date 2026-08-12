@@ -1,7 +1,9 @@
 # Tasks
 
-Phase 1 — the library. Nothing below it starts until `research/ROOT.md` can
-answer what is known.
+Phase 1 — the library. **Substantially done.** `research/ROOT.md` states the
+structure of a minimal counterexample, the verification bound, the settled
+restricted classes and the obstruction; 53 notes are on disk. Further gathering
+happens only against a stated gap in `research/REQUESTS.md`.
 
 - [ ] Find the conjecture stated in a primary source, not a secondary summary.
 - [ ] Collect every partial result, each with its exact hypotheses and its exact
@@ -14,7 +16,10 @@ answer what is known.
 - [ ] Have the scholar turn each source into claim blocks, so a statement is
       retrievable one statement at a time rather than one paper at a time.
 
-Phase 2 — what is known.
+Phase 2 — what is known. **This is where the run is.** `MEMORY.md` still says
+"Nothing yet" under both headings while `ROOT.md` is full, which means the run
+has read a great deal and written down no belief it can be held to. Fix that
+first, before any further reading.
 
 - [ ] `MEMORY.md`: every structural fact about a minimal counterexample the
       library establishes, each marked proved / verified-numerically /
