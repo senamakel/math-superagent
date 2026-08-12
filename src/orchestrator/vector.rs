@@ -153,13 +153,47 @@ impl VectorStore {
         // unreachable. The dataset is the project; the run is a field.
         let session = format!("s{nanos:x}-{}", std::process::id());
         let session_dataset = format!("{SESSION_DATASET_PREFIX}{project}");
+        let scratch_dataset = format!("{SCRATCH_DATASET_PREFIX}{project}");
         Ok(Self {
             client: reqwest::Client::new(),
             base_url,
             project,
             session,
             session_dataset,
+            scratch_dataset,
         })
+    }
+
+    /// Records one provisional note in this project's scratch.
+    ///
+    /// Ingested in the background: a scratch note is written mid-derivation and
+    /// waiting on an index would put the memory on the critical path of the
+    /// arithmetic it is describing, which is exactly what a file did not do.
+    pub(super) async fn note_scratch(&self, text: &str, topic: &str) -> Result<u64> {
+        let id = point_id(&format!("{topic}\n{text}"));
+        let document = format!(
+            "# Provisional note\n\nProject: {}\nSession: {}\nTopic: {topic}\n\n{text}\n",
+            self.project, self.session
+        );
+        self.ingest(
+            document,
+            format!("scratch-{}-{id}.md", slug(topic)),
+            &self.scratch_dataset,
+            &format!("scratch:{}", self.project),
+            true,
+        )
+        .await?;
+        Ok(id)
+    }
+
+    /// Returns the provisional notes nearest a phrase, and nothing durable.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when Cognee is unreachable or refuses the request.
+    pub(super) async fn recall_scratch(&self, query: &str, limit: u64) -> Result<Option<String>> {
+        self.search_in(vec![self.scratch_dataset.clone()], query, "CHUNKS", limit)
+            .await
     }
 
     /// Adds one durable Markdown memory and waits until Cognee has indexed it.
