@@ -924,8 +924,23 @@ impl DocumentTool {
     /// Retrieves a URL's bytes and its declared content type.
     ///
     /// Bounded twice — once on the declared length and once on what actually
-    /// arrived — because a server may understate the first and the second is
+    /// arrives — because a server may understate the first and the second is
     /// the only one that has to be true.
+    ///
+    /// The second bound is applied *as the body streams*, which is the part
+    /// that was missing. `Response::bytes` reads the whole response into memory
+    /// and only then can its length be compared, so the limit described a
+    /// document the runtime had already paid for: a chunked response carries no
+    /// `Content-Length` to check beforehand, and one that lies is exactly the
+    /// case the second check exists for. The container has a hard `mem_limit`
+    /// and an OOM kill loses everything in flight, so a 5 MiB ceiling that
+    /// requires buffering an arbitrary body to enforce is not a ceiling.
+    ///
+    /// The transfer is abandoned at the limit rather than truncated. A half a
+    /// paper is not a shorter paper — its text layer will not parse, its
+    /// reference list is gone, and the digest built from it would misrepresent
+    /// what the source says. Refusing names the size so the caller can look for
+    /// another copy.
     async fn fetch(&self, url: &str) -> Result<(Vec<u8>, Option<String>)> {
         let parsed = reqwest::Url::parse(url).map_err(|error| {
             tinyagents::TinyAgentsError::Validation(format!("invalid document URL: {error}"))
@@ -961,17 +976,22 @@ impl DocumentTool {
             .get(reqwest::header::CONTENT_TYPE)
             .and_then(|value| value.to_str().ok())
             .map(ToOwned::to_owned);
-        let bytes = response.bytes().await.map_err(|error| {
+        let mut response = response;
+        let mut bytes: Vec<u8> = Vec::new();
+        while let Some(chunk) = response.chunk().await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!(
                 "failed to read downloaded document: {error}"
             ))
-        })?;
-        if bytes.len() > MAX_DOCUMENT_BYTES {
-            return Err(tinyagents::TinyAgentsError::Validation(
-                "downloaded document is too large".into(),
-            ));
+        })? {
+            if bytes.len() + chunk.len() > MAX_DOCUMENT_BYTES {
+                return Err(tinyagents::TinyAgentsError::Validation(format!(
+                    "downloaded document exceeds {MAX_DOCUMENT_BYTES} bytes and the transfer was \
+                     abandoned; find a smaller source, or one page of this one"
+                )));
+            }
+            bytes.extend_from_slice(&chunk);
         }
-        Ok((bytes.to_vec(), content_type))
+        Ok((bytes, content_type))
     }
 
     /// Re-derives the claim ledger when the written file is a research note.
