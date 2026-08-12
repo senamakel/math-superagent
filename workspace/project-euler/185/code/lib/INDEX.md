@@ -4,4 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `pe185data.py` | Data module for PE 185: holds the 22 L=16 guess strings and their required counts (COUNTS), asserting uniform length L=16. Also derives and prints per-column digit sequences, per-guess/per-column digit sums for the sequence-analysis tools. Pure data + structural reporting; no solving. |
+| `pe185data.py` | Extracts the sequences derivable from the PE 185 constraint data (c_i counts, per-column digit sequences, row/column digit sums) and prints them for the exact sequence tools. Result: no exploitable integer-sequence structure exists in this constraint data; used by the pattern finder. |
