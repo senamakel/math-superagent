@@ -147,3 +147,36 @@ fn a_housekeeping_budget_is_narrowed_but_never_widened() {
     assert_eq!(narrowed.max_tool_calls, 4);
     assert_eq!(narrowed.run_timeout, std::time::Duration::from_secs(30));
 }
+
+#[test]
+fn an_invention_budget_widens_the_turn_cap_and_nothing_else() {
+    // The one budget that widens. A live Project Euler 597 run cut the
+    // inventor off at the default cap with no tool call, re-issued, and
+    // reached the same place: three lines of attack left in prose that never
+    // reached `research/approaches/`.
+    let full = RunBudget::default();
+    let invention = full.for_invention();
+
+    assert!(invention.max_turn_output_tokens > full.max_turn_output_tokens);
+    // Authority is untouched. Widening the turn cap says a long *answer* is
+    // legitimate here, not that the inventor may wander further than any other
+    // role.
+    assert_eq!(invention.max_model_calls, full.max_model_calls);
+    assert_eq!(invention.max_tool_calls, full.max_tool_calls);
+    assert_eq!(invention.run_timeout, full.run_timeout);
+    assert_eq!(invention.tool_timeout, full.tool_timeout);
+    // The observed truncation must fit inside the new cap, or it does not fix
+    // the run it was written for.
+    assert!(invention.max_turn_output_tokens > 12_000);
+}
+
+#[test]
+fn an_operator_who_raised_the_turn_cap_keeps_their_value() {
+    // `max`, not assignment: unlike the narrowing budgets, an override above
+    // this one is not a mistake to be corrected.
+    let generous = RunBudget {
+        max_turn_output_tokens: 64_000,
+        ..RunBudget::default()
+    };
+    assert_eq!(generous.for_invention().max_turn_output_tokens, 64_000);
+}
