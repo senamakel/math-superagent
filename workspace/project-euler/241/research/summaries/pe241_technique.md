@@ -1,0 +1,43 @@
+<!-- source: https://raw.githubusercontent.com/cirosantilli/project-euler-solutions/master/solvers/241.md | converted from plain text -->
+
+# Project Euler 241 Solution - Perfection Quotients
+
+<https://projecteuler.net/problem=241>:
+
+* [241.py](241.py)
+
+We need all `n <= 10^18` such that `sigma(n) / n` is a half-integer.  For this
+bound the search is split across the targets
+
+\[
+\frac32,\frac52,\frac72,\frac92,\frac{11}2,\frac{13}2.
+\]
+
+For a fixed target `T`, the solver tracks the reduced residual quotient
+
+\[
+Q(n)=T\frac{n}{\sigma(n)}=\frac{u}{v}.
+\]
+
+The target is reached exactly when `Q(n) = 1`.  Extending a partial
+factorization by `p^e` updates the residual by
+
+\[
+Q(np^e)=Q(n)\frac{p^e}{\sigma(p^e)}.
+\]
+
+The main pruning invariant is that any completion must have its remaining
+cofactor divisible by the current denominator `v`.  Therefore the smallest
+prime factor of `v` is forced as the next prime in the search.  If `p^a`
+divides `v`, the exponent loop starts at `a`, because the numerator contribution
+`p^e` must be large enough to cancel that denominator power.
+
+Branches are discarded when:
+
+* the residual quotient falls below `1`;
+* the lower bound `n * v > 10^18` makes completion impossible;
+* the denominator forces a prime that has already been used.
+
+Denominators are factored with deterministic Miller-Rabin and Pollard-Rho, with
+cached factorization results.  The six target searches produce the 22 valid
+values below the limit, whose sum is printed.

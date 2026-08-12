@@ -7,32 +7,14 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
 | 7 | https://www.litmaps.co/ | What is Litmaps? | [What is the Explorer?][22])* Connected Papers Toggle Connected Papers*( [What is Connected Papers?][23])* Litmaps Toggle Litmaps*( [What is Litmaps?][24])* scite.ai Toggle scite Smart Citations*(… |
-| 3 | https://oeis.org/A000207 | A000207 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A001764 | A001764 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A007173 | A007173 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047751 | A047751 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047752 | A047752 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047753 | A047753 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047754 | A047754 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047758 | A047758 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047760 | A047760 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047762 | A047762 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047764 | A047764 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047765 | A047765 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047766 | A047766 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047769 | A047769 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047771 | A047771 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047773 | A047773 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047774 | A047774 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047775 | A047775 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A047776 | A047776 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A182322 | A182322 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A371350 | A371350 | cross-referenced from A027610 |
-| 3 | https://oeis.org/A371351 | A371351 | cross-referenced from A027610 |
 | 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Carr,+A | Avery Carr | [Submitted on 13 May 2026] # Title: Every Minimal Counterexample to the Erdős-Gyárfás Conjecture is Predominantly Cubic Authors: [Avery Carr][2] View a PDF of the paper titled Every Minimal… |
 | 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Liu,+C | Chun-Hung Liu | Jan 2021 (this version, v3)] # Title: A unified proof of conjectures on cycle lengths in graphs Authors: [Jun Gao][3], [Qingyi Huo][4], [Chun-Hung Liu][5], [Jie Ma][6] View a PDF of the paper titled… |
 | 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Ma,+J | Jie Ma | v3)] # Title: A unified proof of conjectures on cycle lengths in graphs Authors: [Jun Gao][3], [Qingyi Huo][4], [Chun-Hung Liu][5], [Jie Ma][6] View a PDF of the paper titled A unified proof of… |
+| 2 | https://doi.org/10.7151/dmgt.1732 | — | Discussiones Mathematicae Graph Theory 34 (2014) 635–640 doi:10.7151/dmgt.1732 Note ON THE ERD ˝OS-GY ´ARF ´AS CONJECTURE IN CLAW-FREE GRAPHS Pouria Salehi Nowbandegani1, Hossein Esfandiari2 Mohammad… |
+| 2 | https://doi.org/10.1016/S0012-365X(96)00173-2 | — | 129–140. [4] P. Erd˝os, Some old and new problems in various branches of combinatorics, Discrete Math. 165/166 (1997) 227–231. doi:10.1016/S0012-365X(96)00173-2 [5] K. Markstr¨om, Extremal graphs for… |
 | 2 | https://modal.com | Modal | 0 (counter), 1 (vs geng), 3 (n=10 cross-check), 4 (n≤16), 5 (certificates) ``` ### SMS frontier (the main result) Requires a [Modal](https://modal.com) account (`pip install modal`). The container… |
+| 2 | https://arxiv.org/abs/0707.2117v1 | arXiv:0707.2117v1 | applied to n to get a number which is at most Subjects: \| Combinatorics (math.CO) \| Cite as: \| [arXiv:0707.2117][6] [math.CO] \| \| (or [arXiv:0707.2117v1][7] [math.CO] for this version) \| \|… |
+| 2 | https://oeis.org/A007814 | A007814 | cross-referenced from A050602 |
 | 1 | https://en.wikipedia.org/wiki/Graph_(discrete_mathematics) | graph | conjecture**, made in 1995 by mathematician [Paul Erdős][11] and his collaborator [András Gyárfás][12], states that every [graph][13] with minimum [degree][14] 3 contains a [simple cycle][15] whose… |
 | 1 | https://en.wikipedia.org/wiki/Power_of_two | power of two | [András Gyárfás][12], states that every [graph][13] with minimum [degree][14] 3 contains a [simple cycle][15] whose length is a [power of two][16]. Erdős offered a prize of $100 for proving the… |
 | 1 | https://en.wikipedia.org/wiki/Cycle_(graph_theory) | simple cycle | [Paul Erdős][11] and his collaborator [András Gyárfás][12], states that every [graph][13] with minimum [degree][14] 3 contains a [simple cycle][15] whose length is a [power of two][16]. Erdős offered… |
@@ -45,6 +27,24 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/Edge_(graph_theory) | Edges | search for counterexamples to the Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6 \| [Girth][7] \| 3 \|… |
 | 1 | https://en.wikipedia.org/wiki/Gordon_Royle | Gordon Royle | would take the form of a graph with minimum degree three having no power-of-two cycles. It is known through computer searches of [Gordon Royle][18] and Klas Markström that any counterexample must… |
 | 1 | https://en.wikipedia.org/wiki/Planar_graph | planar | searches found four graphs on 24 vertices in which the only power-of-two cycles have 16 vertices. One of these four graphs is [planar][20]; however, the Erdős–Gyárfás conjecture is now known to be… |
+| 1 | http://www.math.illinois.edu/∼dwest/openp/2powcyc.html | — | (1998) 61–65. [7] D. West, Erd˝os-Gy´arf´as conjecture on 2-power cycle lengths, Open Problems— Graph Theory and Combinatorics. http://www.math.illinois.edu/∼dwest/openp/2powcyc.html Received 3… |
 | 1 | http://www.math.uiuc.edu/~west/openp/2powcyc.html | Erdős Gyárfás Conjecture on 2-power Cycle Lengths | [247671371][38]. ## External links [[edit][39]] - Exoo, Geoffrey, [Graphs Without Cycles of Specified Lengths][40] - West, Douglas B., [Erdős Gyárfás Conjecture on 2-power Cycle Lengths][41], *[Open… |
+| 1 | https://en.wikipedia.org/wiki/András_Gyárfás | András Gyárfás | [graph theory][10], the unproven **Erdős–Gyárfás conjecture**, made in 1995 by mathematician [Paul Erdős][11] and his collaborator [András Gyárfás][12], states that every [graph][13] with minimum… |
+| 1 | https://en.wikipedia.org/wiki/File:Markström-Graph.svg | — | every cubic graph contain a simple cycle of length a power of two? [More unsolved problems in mathematics][1] Markström's graph \| [2] Markström's 24-vertex cubic planar graph with no 4- or 8-cycles,… |
+| 1 | https://en.wikipedia.org/wiki/Vertex_(graph_theory) | Vertices | found in a computer search for counterexamples to the Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6… |
+| 1 | https://arxiv.org/html/1904.08126v3 | HTML (experimental) | View a PDF of the paper titled A unified proof of conjectures on cycle lengths in graphs, by Jun Gao and 2 other authors [View PDF][7] [HTML (experimental)][8] Abstract: In this paper, we prove a… |
+| 1 | https://arxiv.org/html/2508.19302v4 | HTML (experimental) | a PDF of the paper titled Cycles of Length 4 or 8 in Graphs with Diameter 2 and Minimum Degree at Least 3, by Avery Carr [View PDF][4] [HTML (experimental)][5] Abstract: In this short note it is… |
+| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Gao,+J | Jun Gao | ( [v1][2]), last revised 26 Jan 2021 (this version, v3)] # Title: A unified proof of conjectures on cycle lengths in graphs Authors: [Jun Gao][3], [Qingyi Huo][4], [Chun-Hung Liu][5], [Jie Ma][6]… |
+| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Huo,+Q | Qingyi Huo | last revised 26 Jan 2021 (this version, v3)] # Title: A unified proof of conjectures on cycle lengths in graphs Authors: [Jun Gao][3], [Qingyi Huo][4], [Chun-Hung Liu][5], [Jie Ma][6] View a PDF of… |
+| 1 | https://en.wikipedia.org/wiki/Diameter_(graph_theory) | Diameter | Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6 \| [Girth][7] \| 3 \| [Automorphisms][8] \| 3 \| [Table of… |
+| 1 | https://en.wikipedia.org/wiki/Distance_(graph_theory) | Radius | to the Erdős–Gyárfás conjecture. It has, however, cycles with 16 vertices. \| [Vertices][3] \| 24 \| [Edges][4] \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6 \| [Girth][7] \| 3 \| [Automorphisms][8] \| 3 \|… |
+| 1 | https://en.wikipedia.org/wiki/Star_(graph_theory) | stars | conjecture is also known to be true for planar [claw-free graphs][23] ( Daniel & Shauger 2001) and for graphs that avoid large induced [stars][24] and satisfy additional constraints on their degrees… |
+| 1 | https://arxiv.org/html/1508.07912v1 | HTML (experimental) | Ma][3] View a PDF of the paper titled Cycle lengths and minimum degree of graphs, by Chun-Hung Liu and 1 other authors [View PDF][4] [HTML (experimental)][5] Abstract: There has been extensive… |
+| 1 | https://en.wikipedia.org/wiki/Graph_theory | graph theory | \| 36 \| [Radius][5] \| 5 \| [Diameter][6] \| 6 \| [Girth][7] \| 3 \| [Automorphisms][8] \| 3 \| [Table of graphs and parameters][9] \| In [graph theory][10], the unproven **Erdős–Gyárfás conjecture**, made in… |
+| 1 | https://en.wikipedia.org/wiki/List_of_conjectures_by_Paul_Erdős | conjectures of Erdős | length is a [power of two][16]. Erdős offered a prize of $100 for proving the conjecture, or $50 for a counterexample; it is one of many [conjectures of Erdős][17]. If the conjecture is false, a… |
+| 1 | https://link.springer.com/10.1007/s00493-021-4743-y?fromPaywallRec=true | Packing Directed Cycles Quarter- and Half-Integrally | Similar content being viewed by others ### [Erdős–Gyárfás conjecture for \(P_8\) -free graphs][9] Article 10 October 2022 ### [Packing Directed Cycles Quarter- and Half-Integrally][10] Article 21… |
+| 1 | https://dx.doi.org/10.5614/ejgta.2022.10.1.24 | http://dx.doi.org/10.5614/ejgta.2022.10.1.24 | Erdos-Gyárfás conjecture. #### Keywords cycle, cubic graph, Erdos-Gyarfas conjecture, distance #### Full Text: [PDF][38] DOI: [http://dx.doi.org/10.5614/ejgta.2022.10.1.24][39] #### References J.… |
+| 1 | https://en.wikipedia.org/wiki/Bipartite_graph | bipartite | known to be true for the special case of 3-connected cubic planar graphs ( Heckman & Krakovski 2013). The conjecture remains open for [bipartite][21] cubic graphs. This case has been approached… |
+| 1 | https://www.ejgta.org/index.php/ejgta/article/view/1312/pdf_224 | PDF | example for Erdos-Gyárfás conjecture. #### Keywords cycle, cubic graph, Erdos-Gyarfas conjecture, distance #### Full Text: [PDF][38] DOI: [http://dx.doi.org/10.5614/ejgta.2022.10.1.24][39] ####… |
 
-_300 further candidates not shown; they are cited once each._
+_277 further candidates not shown; they are cited once each._
