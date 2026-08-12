@@ -408,8 +408,10 @@ impl OrchestratorAgent {
             Some(self.workspace.clone()),
             self.memory.clone(),
             support.clone(),
-            patterns,
-            directives,
+            solutions::Mailboxes {
+                patterns,
+                directives,
+            },
             state,
         )
         .await;
