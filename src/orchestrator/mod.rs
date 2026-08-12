@@ -1415,6 +1415,13 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/CLAIMS.md",
             "CONTEXT.md",
         ],
+        // Not sent `research/APPROACHES.md`, though the judge now scores an
+        // attempt partly on whether it opened a line of attack and closed an
+        // alternative. That is the reason to withhold it rather than to send
+        // it: the judge scores the *report*, and a judge holding the ledger
+        // would credit an attempt for approaches it can see on disk but that
+        // the report never mentions. The evidence has to be in the report, or
+        // the score is not about the attempt.
         "judge" => &["GOAL.md", "INDEX.md"],
         "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md"],
         "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", "CONTEXT.md"],
@@ -1433,6 +1440,11 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/FRONTIER.md",
             "CONTEXT.md",
         ],
+        // The inventor is also handed a dossier assembled from disk at the
+        // moment it is delegated to, which is what it actually reasons from —
+        // see [`dossier`] for why a prompt loaded at startup is the wrong
+        // record for this role. These files remain because a run may reach the
+        // inventor by a path that does not build one.
         "inventor" => &[
             "GOAL.md",
             "research/THREADS.md",
