@@ -179,13 +179,12 @@ the oracle itself — fire-and-forget, first attempt only, never blocking. If th
 goals agent does delegate promptly the two simply agree: a duplicate oracle
 costs one child run, where no oracle at all costs the whole attempt.
 
-The pattern agent is a *team*, not a step. It runs its own async loop beside
-the solve — like research and background — cycling on its own cadence over
-whatever results are on disk, and posts what it finds to a mailbox the loop
-drains at the next `attempt` or `reflect`, whichever reaches it first. Nothing
-waits on it: a structural observation is worth as much an attempt later, and an
-earlier version that gated the loop on one cost a live run half an hour of
-stalled solve.
+The pattern agent is a *team*, not a step. It runs its own async loop beside the
+solve — like research and background — cycling on its own cadence over whatever
+results are on disk, and posts what it finds to a mailbox the loop drains at the
+next `attempt` or `reflect`, whichever reaches it first. Nothing waits on it: a
+structural observation is worth as much an attempt later, and an earlier version
+that gated the loop on one cost a live run half an hour of stalled solve.
 
 Reflection was the only collector, and that made the team's findings reachable
 exactly once per *completed* attempt — so a run whose first attempt is long
