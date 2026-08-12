@@ -25,90 +25,29 @@ use crate::agent::budget::RunBudget;
 use crate::agent::trace::RunTracer;
 use crate::agent::{AgentHarness, Message, Result, Tool, ToolCall, ToolResult, ToolSchema};
 
+use super::vector::VectorStore;
+
 static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 
-/// Runs that automatically trigger a follow-up run when they succeed.
-///
-/// The code-writing roles are the ones that create files, and the moment one
-/// finishes is when the workspace is least tidy and most legible: the files are new,
-/// their purpose is settled, and nothing else has happened since. Leaving the
-/// tidying to whoever happens to run next means it competes with mathematics
-/// for attention and reliably loses, so the index drifts out of step with the
-/// directory exactly when it is most needed.
-///
-/// The research agent is the other role that leaves the workspace changed, and
-/// it leaves it changed in the way that decays fastest. A download is raw
-/// material: until someone reads it, it has cost the run context and taught it
-/// nothing, and the moment it lands is the only moment anybody knows why it was
-/// fetched. So research hands off to the scholar to say what each new source
-/// actually establishes, and only then to the organizer, which files what the
-/// scholar has just written. That order is the point — an organizer running
-/// first would index excerpts nobody had read yet.
-///
-/// The follow-up is fire-and-forget. The caller's `await_agent` returns as soon
-/// as the triggering run itself is done, because housekeeping must not sit on
-/// the critical path of an investigation waiting for its result.
-const FOLLOW_UPS: [(&str, &[FollowUpStep]); 8] = [
-    ("tool_builder", &[ORGANIZE_AFTER_TOOLS]),
-    // The coder and the SAT solver write into the same tree and leave it in
-    // the same state; a program filed under `code/` with no row describing it
-    // is undescribed whichever role wrote it.
-    ("coder", &[ORGANIZE_AFTER_TOOLS]),
-    ("sat_solver", &[ORGANIZE_AFTER_TOOLS]),
-    ("smt_solver", &[ORGANIZE_AFTER_TOOLS]),
-    ("theorem_prover", &[ORGANIZE_AFTER_TOOLS]),
-    ("symbolic_math", &[ORGANIZE_AFTER_TOOLS]),
-    ("lean_prover", &[ORGANIZE_AFTER_TOOLS]),
-    (
-        "research",
-        &[DIGEST_AFTER_RESEARCH, ORGANIZE_AFTER_RESEARCH],
-    ),
-];
+/// A completed research run hands its new sources to the scholar. The scholar
+/// stores durable findings in Cognee, so no filing follow-up is needed.
+const FOLLOW_UPS: [(&str, &[FollowUpStep]); 1] = [("research", &[DIGEST_AFTER_RESEARCH])];
 
 /// One queued run in a trigger's follow-up sequence.
 #[derive(Clone, Copy, Debug)]
 struct FollowUpStep {
     agent: &'static str,
     brief: &'static str,
-    /// Whether this step rewrites an `INDEX.md` other follow-ups also rewrite.
-    ///
-    /// Two organizers refreshing one index at once would each write the list it
-    /// read, and the later write would silently drop the other's descriptions,
-    /// so those steps take a lock. A step that only reads and edits the sources
-    /// it was pointed at — the scholar — collides with nothing and must not
-    /// wait, because it is the slowest step in any sequence and everything
-    /// queued behind it is work that could already have finished.
-    rewrites_shared_index: bool,
 }
-
-const ORGANIZE_AFTER_TOOLS: FollowUpStep = FollowUpStep {
-    agent: "organizer",
-    brief: "A run that writes programs just finished. Bring the workspace back into order: refresh \
-            each \
-            folder's INDEX.md so it matches what is on disk, describe every file that is now \
-            undescribed, and correct any row whose description no longer matches its file. Keep \
-            code/lib/INDEX.md in step with the files beside it. Do not change what any file \
-            says.",
-    rewrites_shared_index: true,
-};
 
 const DIGEST_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
     agent: "scholar",
     brief: "The research agent just finished and the reference library has new material in it. \
             Read what is now in research/ against this investigation's goal, tasks, and current \
-            beliefs. For each new source, replace its placeholder excerpt with what it actually \
-            establishes and what that implies here, under a thousand tokens. Say which sources do \
-            not help and why, and flag anything that contradicts what MEMORY.md asserts.",
-    rewrites_shared_index: false,
-};
-
-const ORGANIZE_AFTER_RESEARCH: FollowUpStep = FollowUpStep {
-    agent: "organizer",
-    brief: "Research and reading have just finished. File what arrived: give each new source a \
-            name that says what it is about, refresh research/INDEX.md so it is the way in and \
-            reflects what the scholar wrote, and describe every file still undescribed. Do not \
-            change what any file says.",
-    rewrites_shared_index: true,
+            beliefs. For each new source, record what it actually establishes and what that \
+            implies here, under a thousand tokens. Store durable verified findings with \
+            remember_memory, say which sources do not help and why, and flag anything that \
+            contradicts recalled memory.",
 };
 
 /// Runs one `spawn_agents` call may launch.
@@ -153,29 +92,14 @@ fn max_concurrent_agents() -> usize {
         .unwrap_or(DEFAULT_MAX_CONCURRENT_AGENTS)
 }
 
-/// A housekeeping sequence queued behind another run's completion.
+/// A follow-up sequence queued behind another run's completion.
 struct FollowUp {
     manager: AsyncSubagentManager,
     steps: &'static [FollowUpStep],
 }
 
 impl FollowUp {
-    /// Runs the sequence in order, taking the housekeeping lock per step.
-    ///
-    /// Only a step that rewrites a shared `INDEX.md` needs excluding, and the
-    /// organizer is the one that does. Holding the lock across a whole sequence
-    /// instead made every follow-up wait for every other: a scholar reading a
-    /// new library for six minutes blocked the organizer that a tool-builder
-    /// had finished with long before, and the filing that is supposed to happen
-    /// while the files are new and their purpose settled arrived after the run
-    /// had moved on. Locking per step lets the reading proceed concurrently
-    /// with anything else and serialises only the writes that would collide.
-    ///
-    /// The steps still run in order within a sequence, and are still a sequence
-    /// rather than a chain: chaining would make every follow-up agent a
-    /// potential trigger, and the invariant that keeps this terminating is
-    /// precisely that none of them is. Order matters here because the scholar
-    /// has to finish before the organizer files what it wrote.
+    /// Runs the sequence in order.
     ///
     /// Every failure is swallowed, and a failed step does not cancel the rest.
     /// A run that tidies the workspace must never be able to fail the
@@ -186,26 +110,10 @@ impl FollowUp {
             if !self.manager.knows(step.agent) {
                 continue;
             }
-            // Decided before the run is spawned, for the same reason the
-            // pattern team's idleness is: asking the agent to notice that
-            // nothing changed costs a model call and a walk of the workspace,
-            // which is most of what a cycle costs.
-            if step.rewrites_shared_index
-                && let Some(gate) = &self.manager.filing
-                && !gate()
-            {
-                continue;
-            }
-            let guard = if step.rewrites_shared_index {
-                Some(self.manager.housekeeping.lock().await)
-            } else {
-                None
-            };
             let _ = self
                 .manager
                 .run_to_completion(step.agent, step.brief.to_string())
                 .await;
-            drop(guard);
         }
     }
 }
@@ -411,22 +319,11 @@ pub(crate) struct AsyncSubagentManager {
     langfuse: Option<Arc<LangfuseClient>>,
     /// Bounds how many spawned runs execute at once. See [`max_concurrent_agents`].
     slots: Arc<Semaphore>,
-    /// Serialises follow-up runs so two never rewrite one index at once.
-    housekeeping: Arc<tokio::sync::Mutex<()>>,
     /// Distinguishes this process's Langfuse traces from every other process's.
     session: Arc<str>,
-    /// Decides whether a housekeeping follow-up has anything to file.
-    ///
-    /// Shared with the standing organizer team rather than duplicated: both
-    /// file the same tree, so two separate gates would each read the other's
-    /// filing as new work and wake each other indefinitely. `None` leaves the
-    /// follow-up ungated, which is what a manager built without a workspace —
-    /// every test — gets.
-    filing: Option<FilingGate>,
+    /// Best-effort sink for completed project/run-scoped agent sessions.
+    memory: Option<VectorStore>,
 }
-
-/// Whether the workspace has changed since the organizer last filed it.
-type FilingGate = Arc<dyn Fn() -> bool + Send + Sync>;
 
 impl std::fmt::Debug for AsyncSubagentManager {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -464,20 +361,14 @@ impl AsyncSubagentManager {
             tracer,
             langfuse: LangfuseClient::from_env().ok().map(Arc::new),
             slots: Arc::new(Semaphore::new(concurrency)),
-            housekeeping: Arc::new(tokio::sync::Mutex::new(())),
             session: session_id(),
-            filing: None,
+            memory: None,
         }
     }
 
-    /// Gates housekeeping follow-ups on the workspace having actually changed.
-    ///
-    /// The predicate returns true when there is something new to file. Without
-    /// it every finished code-writing run spawns an organizer, and most of them
-    /// find a workspace they already filed: a live run spent half its model
-    /// calls that way.
-    pub(crate) fn with_filing_gate(mut self, gate: FilingGate) -> Self {
-        self.filing = Some(gate);
+    /// Ingests every completed child session into Cognee.
+    pub(super) fn with_session_memory(mut self, memory: VectorStore) -> Self {
+        self.memory = Some(memory);
         self
     }
 
@@ -576,6 +467,10 @@ impl AsyncSubagentManager {
             tracer.note(&format!("spawned: {}", preview_input(&input)));
         }
         let slots = self.slots.clone();
+        let session_memory = self.memory.clone();
+        let session_agent = agent_name.to_string();
+        let session_input = input.clone();
+        let session_run_id = run_id.clone();
         let follow_up = FOLLOW_UPS
             .iter()
             .find(|(after, _)| *after == agent_name)
@@ -630,11 +525,32 @@ impl AsyncSubagentManager {
             match outcome {
                 Ok(execution) => {
                     let response = execution.state.response.unwrap_or_default();
+                    if let Some(memory) = session_memory.as_ref() {
+                        let _ = memory
+                            .remember_session(
+                                &session_agent,
+                                &session_run_id,
+                                &session_input,
+                                &response,
+                            )
+                            .await;
+                    }
                     let _ =
                         store.complete(&spawned_task_id, OrchestrationTaskResult::text(response));
                 }
                 Err(error) => {
-                    let _ = store.fail(&spawned_task_id, error.to_string());
+                    let error = error.to_string();
+                    if let Some(memory) = session_memory.as_ref() {
+                        let _ = memory
+                            .remember_session(
+                                &session_agent,
+                                &session_run_id,
+                                &session_input,
+                                &format!("SESSION FAILED: {error}"),
+                            )
+                            .await;
+                    }
+                    let _ = store.fail(&spawned_task_id, error);
                 }
             }
             steering_registry.deregister(&spawned_task_id);

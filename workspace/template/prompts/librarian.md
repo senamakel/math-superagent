@@ -4,8 +4,8 @@ Build a reference library under `research/` that the rest of the run can read
 locally. Downloads are filed there automatically; keep the rest tidy to match.
 
 - Save each document with a descriptive name, not the source's filename.
-- Keep `research/INDEX.md` current: one line per document with its title, its
-  source URL, and the question it answers.
+- Save full texts under `research/sources/`; the scholar records durable
+  findings in Cognee.
 - Index each document so `search_documents` can reach it.
 
 Prefer original papers, official documentation, standards bodies, encyclopedic

@@ -226,7 +226,7 @@ fn disabling_research_removes_exa_from_the_advertised_tools() -> agent::Result<(
         .get("research")
         .ok_or_else(|| tinyagents::TinyAgentsError::Validation("research is registered".into()))?;
     assert!(!research.tools.iter().any(|tool| tool == "exa_search"));
-    assert!(research.tools.iter().any(|tool| tool == "recall_research"));
+    assert!(research.tools.iter().any(|tool| tool == "recall_memory"));
     Ok(())
 }
 
@@ -318,23 +318,20 @@ fn reflection_sees_the_criteria_it_judges_against_but_not_scratch_work() {
     // Judging "solved" against criteria it cannot see is guesswork, and a
     // wrong SOLVED ends the whole investigation.
     assert!(context.contains(&"GOAL.md"));
-    assert!(context.contains(&"MEMORY.md"));
     // Unsettled scratch work is not evidence of progress.
     assert!(!context.contains(&"SCRATCHPAD.md"));
 }
 
 #[test]
 fn the_inventor_sees_what_already_failed() {
-    // MEMORY.md carries the failed-approaches section. Without it the inventor
-    // re-proposes exactly what it exists to avoid.
-    assert!(role_context("inventor").contains(&"MEMORY.md"));
+    assert!(super::INVENTOR_PROMPT.contains("recall_memory"));
 }
 
 #[test]
 fn the_pattern_agent_sees_the_raw_data_it_analyses() {
     let context = role_context("pattern_finder");
     assert!(context.contains(&"SCRATCHPAD.md"));
-    assert!(context.contains(&"MEMORY.md"));
+    assert!(super::PATTERN_PROMPT.contains("recall_memory"));
 }
 
 #[test]
@@ -384,8 +381,8 @@ fn oversized_command_output_keeps_the_end_where_the_answer_is() {
 #[test]
 fn every_built_in_prompt_is_present_and_bounded() {
     use super::{
-        GOALS_PROMPT, INVENTOR_PROMPT, LIBRARIAN_PROMPT, ORCHESTRATOR_PROMPT, ORGANIZER_PROMPT,
-        PATTERN_PROMPT, REFLECTION_PROMPT, RESEARCH_PROMPT, SCHOLAR_PROMPT, SHARED_METHOD_POLICY,
+        GOALS_PROMPT, INVENTOR_PROMPT, LIBRARIAN_PROMPT, ORCHESTRATOR_PROMPT, PATTERN_PROMPT,
+        REFLECTION_PROMPT, RESEARCH_PROMPT, SCHOLAR_PROMPT, SHARED_METHOD_POLICY,
         TOOL_BUILDER_PROMPT,
     };
 
@@ -401,7 +398,6 @@ fn every_built_in_prompt_is_present_and_bounded() {
         ("inventor", INVENTOR_PROMPT),
         ("librarian", LIBRARIAN_PROMPT),
         ("scholar", SCHOLAR_PROMPT),
-        ("organizer", ORGANIZER_PROMPT),
         ("goals", GOALS_PROMPT),
     ] {
         assert!(
@@ -543,25 +539,11 @@ fn the_formalisation_agent_must_report_what_the_kernel_checked() -> agent::Resul
 }
 
 #[test]
-fn the_reflections_index_reaches_the_roles_that_must_not_repeat_an_attempt() {
-    // An index nobody reads is not a flow. These three each make a decision
-    // that depends on what earlier attempts established.
-    for role in ["orchestrator", "goals", "reflection", "inventor"] {
-        assert!(
-            role_context(role).contains(&"reflections/INDEX.md"),
-            "{role} must see the reflections index"
-        );
+fn learning_and_research_indexes_are_not_prompt_context() {
+    for role in SPECIALISTS.into_iter().chain(DELEGATES) {
+        assert!(!role_context(role).contains(&"reflections/INDEX.md"));
+        assert!(!role_context(role).contains(&"research/INDEX.md"));
     }
-    // It is not given to everyone: a role that neither plans nor judges gains
-    // nothing from the attempt-by-attempt record and pays for it in context.
-    for role in ["tool_builder", "coder", "scholar", "librarian", "organizer"] {
-        assert!(
-            !role_context(role).contains(&"reflections/INDEX.md"),
-            "{role} does not need the reflections index"
-        );
-    }
-    // Reflection still never sees provisional work.
-    assert!(!role_context("reflection").contains(&"SCRATCHPAD.md"));
 }
 
 #[test]
@@ -586,9 +568,6 @@ fn the_shared_brief_reaches_the_roles_that_reason_and_not_the_ones_that_file() {
             "{role} reasons about the mathematics and needs the shared brief"
         );
     }
-    // The organiser files rather than reasons; giving it opinions about the
-    // mathematics is how a filing job turns into an editing one.
-    assert!(!role_context("organizer").contains(&"CONTEXT.md"));
     // Reflection judges an attempt against the criteria and the record. A
     // standing brief of what sources assert is exactly the material it must
     // not mistake for verification.
@@ -635,49 +614,6 @@ async fn a_command_that_hits_the_ceiling_still_returns_what_it_printed() {
         "the ceiling is reported: {}",
         result.content
     );
-    let _ = std::fs::remove_dir_all(&root);
-}
-
-#[test]
-fn the_organizer_skips_a_cycle_over_a_workspace_it_has_already_filed() {
-    // Filing is cheap to do and expensive to decide: an organizer asked to
-    // notice nothing changed must walk the workspace and spend a model call to
-    // find out. Two live runs spent 49% and 38% of every model call they made
-    // on the organizer, against 11% and 4% on the agent solving the problem.
-    let root = std::env::temp_dir().join(format!("math-agent-filing-{}", std::process::id()));
-    let _ = std::fs::remove_dir_all(&root);
-    let filed = std::sync::Arc::new(std::sync::Mutex::new(None));
-
-    // Nothing on disk at all: idle rather than indexing empty folders.
-    assert_eq!(
-        super::filing_unchanged(&root, &filed),
-        Some(super::teams::Cycle::Idle)
-    );
-
-    let _ = std::fs::create_dir_all(root.join("code"));
-    let _ = std::fs::write(root.join("code/solve.py"), "print(1)");
-    // A new program: the cycle runs.
-    assert_eq!(super::filing_unchanged(&root, &filed), None);
-    // Nothing further has happened: it does not run again.
-    assert_eq!(
-        super::filing_unchanged(&root, &filed),
-        Some(super::teams::Cycle::Idle)
-    );
-
-    // The trap this gate exists to avoid. The organizer's own output is an
-    // INDEX.md, so counting one as a change would have the team waking itself
-    // forever on the filing it just did — the pattern team's SCRATCHPAD.md
-    // lesson, one folder wider.
-    let _ = std::fs::write(root.join("code/INDEX.md"), "| solve.py | prints one |");
-    assert_eq!(
-        super::filing_unchanged(&root, &filed),
-        Some(super::teams::Cycle::Idle),
-        "an INDEX.md write must not wake the organizer that wrote it"
-    );
-
-    // Real new work still wakes it.
-    let _ = std::fs::write(root.join("code/second.py"), "print(2)");
-    assert_eq!(super::filing_unchanged(&root, &filed), None);
     let _ = std::fs::remove_dir_all(&root);
 }
 
@@ -759,7 +695,7 @@ fn every_reasoning_role_can_reach_what_the_run_already_knows() -> agent::Result<
         let definition = registry
             .get(role)
             .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
-        for expected in ["search_workspace", "recall_research"] {
+        for expected in ["recall_memory", "remember_memory"] {
             assert!(
                 definition.tools.iter().any(|tool| tool == expected),
                 "`{role}` must be able to reach `{expected}`"
@@ -767,56 +703,37 @@ fn every_reasoning_role_can_reach_what_the_run_already_knows() -> agent::Result<
         }
     }
 
-    // The tool-builder writes probes and throwaway experiments, so a similarity
-    // search over its own output would mostly return them. It keeps the note
-    // store, which is the half that is not its own scratch.
     let builder = registry.get("tool_builder").ok_or_else(|| {
         tinyagents::TinyAgentsError::Validation("tool_builder is registered".into())
     })?;
-    assert!(
-        !builder.tools.iter().any(|tool| tool == "search_workspace"),
-        "the tool-builder must not recall its own scratch"
-    );
-    assert!(builder.tools.iter().any(|tool| tool == "recall_research"));
+    assert!(builder.tools.iter().any(|tool| tool == "recall_memory"));
+    assert!(builder.tools.iter().any(|tool| tool == "remember_memory"));
     Ok(())
 }
 
 #[test]
-fn the_judge_and_the_organizer_stay_tool_poor() -> agent::Result<()> {
-    // Both exclusions are the same argument. The judge answers four lines on
-    // twelve model calls, and a search over the whole workspace is exactly the
-    // invitation to spend them reading instead. The organizer describes work
-    // rather than doing it, and each tool it lacks is a way a filing job cannot
-    // turn into an investigation.
+fn the_judge_has_memory_but_no_execution_or_web_search() -> agent::Result<()> {
     let registry = default_registry(true)?;
-    for role in ["judge", "organizer"] {
-        let definition = registry
-            .get(role)
-            .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
-        for forbidden in ["search_workspace", "recall_research", "remember_research"] {
-            assert!(
-                !definition.tools.iter().any(|tool| tool == forbidden),
-                "`{role}` must not have `{forbidden}`"
-            );
-        }
+    let definition = registry
+        .get("judge")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("judge registered".into()))?;
+    for expected in ["recall_memory", "remember_memory"] {
+        assert!(definition.tools.iter().any(|tool| tool == expected));
+    }
+    for forbidden in ["exa_search", "execute_command", "write_tool_file"] {
+        assert!(!definition.tools.iter().any(|tool| tool == forbidden));
     }
     Ok(())
 }
 
 #[test]
-fn writing_a_note_stays_with_the_roles_whose_output_is_durable() -> agent::Result<()> {
-    // Reading a note costs a lookup; writing one puts a statement into a store
-    // every later run reads. Recall travels widely and this does not.
+fn every_agent_can_write_durable_memory() -> agent::Result<()> {
     let registry = default_registry(true)?;
     for role in registry.definitions() {
-        let writes = role.tools.iter().any(|tool| tool == "remember_research");
-        let expected = matches!(role.id.as_str(), "research" | "scholar" | "inventor");
-        assert_eq!(
-            writes,
-            expected,
-            "`{}` must{} hold `remember_research`",
-            role.id,
-            if expected { "" } else { " not" }
+        assert!(
+            role.tools.iter().any(|tool| tool == "remember_memory"),
+            "{}",
+            role.id
         );
     }
     Ok(())

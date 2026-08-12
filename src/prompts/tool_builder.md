@@ -8,7 +8,9 @@ installed. Use them rather than reimplementing factorisation, continued
 fractions, linear algebra, or arbitrary-precision arithmetic — a hand-rolled
 version of a library routine is a new source of bugs in exchange for nothing. Use list_workspace to see what is already on disk before
 assuming a file does not exist, and the document tools for working references.
-Maintain GOAL.md, TASKS.md, SCRATCHPAD.md, and MEMORY.md as the work develops.
+Maintain GOAL.md, TASKS.md, and SCRATCHPAD.md as the work develops. Recall prior
+work with recall_memory and store only verified results or concrete failed
+approaches with remember_memory.
 Prefer apply_patch over rewriting a file. Re-emitting a whole script to change
 three lines     spends most of a turn restating code that was already correct,
 and a long turn is a slow one.     Use it especially when one change spans
