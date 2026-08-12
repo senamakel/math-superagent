@@ -80,12 +80,22 @@ the fourth.
 
 ## Verdict
 
-**status: grounded** — the reformulation is real, named (Cain's quartic/abelian-
-extension + Gaussian search reduction), and the necessary-condition part (four
-representations force ≥ 3 primes ≡ 1 mod 4) is standard and holds here. But the
-proof goal (a global contradiction in the prime distribution) is **open**; the
-only literature attempt (Cain) produced a search method, and it must survive
-Bremner's witness. Grounded as a reformulation; not grounded as a proof.
+**status: refuted.** While the reformulation is real (Cain 2019), it does not
+advance beyond what Cain and Bremner already attempted. The Chabauty–Coleman
+candidate attacks the explicit quartics Bremner II already wrote down (eq.
+12–13), which is a stronger and more concrete line. This candidate reduces to
+a search family without a structural closing argument, and the
+representation-count necessary condition (centre ≥ 5 representations, Brown's
+Prop. 1) is a single numerical filter rather than a structural obstruction.
+Bremner's 7-square witness already realises two of the four factorisations, so
+any contradiction must survive that witness while forbidding a fourth — exactly
+the delicacy that has resisted decades of work.
+
+**Why Chabauty–Coleman beats it.** Bremner II §2 eq. (12)–(13) are the
+**explicit quartics** — they are written down and searched. The first step is
+a concrete, finite computation (substitute λ=13, p=9, q=2, compute genus of
+each quartic=Y² curve, 2-descent for Jacobian rank, test r < g). A Gaussian-
+integer factorisation search has no comparable bound or closing argument.
 
 ## Precedent
 
