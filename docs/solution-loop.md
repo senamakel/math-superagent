@@ -467,13 +467,13 @@ The runtime image must expose both `python` and `python3`, plus `pip` and
 `pip3`. Pip installs belong under `/workspace/.python-packages`; do not make the
 container root filesystem writable for package installation.
 
-The scientific stack — `sympy`, `numpy`, `scipy`, `gmpy2`, `networkx` — is
-baked into the image from apt rather than installed per run. A run that has to
-install `sympy` before it can factor anything spends minutes of its budget on
-setup, fails outright when the index is slow, and every workspace pays again.
-They come from apt rather than pip because the container root filesystem is
-read-only at runtime, so system packages are the only ones importable without
-writing to `/workspace` first.
+The scientific stack — `sympy`, `numpy`, `scipy`, `gmpy2`, `networkx` — is baked
+into the image from apt rather than installed per run. A run that has to install
+`sympy` before it can factor anything spends minutes of its budget on setup,
+fails outright when the index is slow, and every workspace pays again. They come
+from apt rather than pip because the container root filesystem is read-only at
+runtime, so system packages are the only ones importable without writing to
+`/workspace` first.
 
 The constraint stack sits beside it for the same reason and pays for the
 `sat_solver` role: `python3-z3`, `python3-pulp`, `python3-pycosat`,
