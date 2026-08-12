@@ -54,15 +54,14 @@ committed workspaces carry three separate `sys.path.insert` dialects from
 agents working that out the hard way, and an agent burned once inlines the
 routine instead. Reuse has to be the cheap path or it does not happen.
 
-`code/lib/` holds what other programs import, one subject per module; every
-other program is grouped by the question it attacks, one folder per question,
-each with its own `INDEX.md`, and what those programs produced under
-`code/out/`. `layout::placed` deliberately does not decide which question a
-program belongs to. That is a judgement about the mathematics, and a rule
-guessing at it would file by extension, which sorts a folder by the one fact
-nobody cares about. So the default sink stays `code/`, a caller that names a
-folder is trusted, and whether the sink has grown into a pile is measured after
-the fact.
+`code/lib/` holds what other programs import, one subject per module; every other
+program is grouped by the question it attacks, one folder per question, each with
+its own `INDEX.md`, and what those programs produced under `code/out/`.
+`layout::placed` deliberately does not decide which question a program belongs
+to. That is a judgement about the mathematics, and a rule guessing at it would
+file by extension, sorting a folder by the one fact nobody cares about. So the
+default sink stays `code/`, a caller that names a folder is trusted, and whether
+the sink has grown into a pile is measured after the fact.
 
 `code_layout::plan` is that measurement, and it is built like
 `context_tree::plan`: it walks `code/`, reports one fault at a time, writes
