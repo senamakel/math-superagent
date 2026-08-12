@@ -144,6 +144,9 @@ const SCHOLAR_PROMPT: &str = include_str!("../prompts/scholar.md");
 
 const CONTEXT_CURATOR_PROMPT: &str = include_str!("../prompts/context_curator.md");
 
+/// The role that turns one operator directive into changes across the workspace.
+const DIRECTOR_PROMPT: &str = include_str!("../prompts/director.md");
+
 const GOALS_PROMPT: &str = include_str!("../prompts/goals.md");
 
 /// A small in-memory catalogue of named, executable child agents.
@@ -390,7 +393,12 @@ impl OrchestratorAgent {
         // loop drains it at the next attempt or reflection, whichever reaches
         // it first. Nothing waits on it.
         let patterns = solutions::Mailbox::default();
-        let support = self.spawn_support_teams(state.problem(), &patterns);
+        // The second mailbox carries what a person asked for while the run was
+        // going. It is filled by the director team rather than by the loop, so
+        // that reading the queue costs a file read on a team's own cycle rather
+        // than a stat on the critical path of every attempt.
+        let directives = solutions::Mailbox::default();
+        let support = self.spawn_support_teams(state.problem(), &patterns, &directives);
         let finished = solutions::run(
             self.subagents.clone(),
             Some(self.tracer.clone()),
@@ -398,6 +406,7 @@ impl OrchestratorAgent {
             self.memory.clone(),
             support.clone(),
             patterns,
+            directives,
             state,
         )
         .await;
@@ -439,6 +448,7 @@ impl OrchestratorAgent {
         &self,
         problem: &str,
         patterns: &solutions::Mailbox,
+        directives: &solutions::Mailbox,
     ) -> Vec<teams::TeamHandle> {
         let mut handles = Vec::new();
         for (name, agent, completion, budget, brief) in standing_teams() {
@@ -448,6 +458,8 @@ impl OrchestratorAgent {
             let subagents = self.subagents.clone();
             let workspace = self.workspace.clone();
             let outbox = patterns.clone();
+            let direction = directives.clone();
+            let tracer = self.tracer.clone();
             // What the pattern team has already looked at. Idleness has to be
             // decided *before* the agent runs: asking it to notice that
             // nothing changed costs a model call and a read of the workspace
@@ -464,6 +476,9 @@ impl OrchestratorAgent {
                 move |inbox: Vec<teams::TeamMessage>| {
                     let subagents = subagents.clone();
                     let outbox = outbox.clone();
+                    let direction = direction.clone();
+                    let tracer = tracer.clone();
+                    let ledger_workspace = workspace.clone();
                     let analysed = analysed.clone();
                     let mut prompt = prompt.clone();
                     // The pattern agent reads results, so a cycle over results
@@ -472,6 +487,13 @@ impl OrchestratorAgent {
                     // cycle costs a directory walk rather than a model call.
                     let skip = match name {
                         "patterns" => results_unchanged(&workspace, &analysed),
+                        // Nothing queued is the normal case for this team —
+                        // it wakes every twenty seconds and a person types
+                        // rarely — so the check has to be the cheap one, and
+                        // it has to happen here rather than in the brief. A
+                        // model asked to notice its own queue is empty has
+                        // already been paid for the call that discovers it.
+                        "director" => directives_waiting(&workspace),
                         // The curator writes `CONTEXT.md`, so its own file is
                         // excluded from what it watches: counting it would
                         // have the team waking itself forever on the brief it
@@ -490,6 +512,25 @@ impl OrchestratorAgent {
                     if name == "context" {
                         let _ = write!(prompt, "\n\n{}", shared_context::briefing(&workspace));
                     }
+                    // Taken here, before the agent runs, and posted to the
+                    // loop's mailbox on the way past. That ordering is what
+                    // makes the verbatim delivery independent of this team
+                    // succeeding: the next attempt gets what the operator
+                    // typed even if the director's own model call fails, which
+                    // is the failure most worth surviving — a directive is the
+                    // one input to a run that cannot be regenerated.
+                    let taken = if name == "director" && skip.is_none() {
+                        take_directives(&workspace, &direction, &tracer)
+                    } else {
+                        Vec::new()
+                    };
+                    for directive in &taken {
+                        let _ = write!(
+                            prompt,
+                            "\n\nDirective {} from {}:\n{}",
+                            directive.id, directive.from, directive.text
+                        );
+                    }
                     for message in &inbox {
                         let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);
                     }
@@ -497,7 +538,29 @@ impl OrchestratorAgent {
                         if let Some(skip) = skip {
                             return skip;
                         }
-                        match subagents.run_to_completion(agent, prompt).await {
+                        let result = subagents.run_to_completion(agent, prompt).await;
+                        // The receipt is written whatever happened, a failed
+                        // cycle included. On a channel that never blocks, an
+                        // operator who sees nothing cannot tell a directive
+                        // still queued from one that was picked up and lost,
+                        // and the second is the one they need to know about.
+                        if !taken.is_empty() {
+                            let outcome = match &result {
+                                Ok(reply) => reply.trim().to_string(),
+                                Err(error) => format!(
+                                    "The director could not act on this: {error}. The next \
+                                     attempt was still given it verbatim."
+                                ),
+                            };
+                            for directive in &taken {
+                                if let Err(error) =
+                                    directives::record(&ledger_workspace, directive, &outcome)
+                                {
+                                    tracer.note(&format!("directive receipt failed: {error}"));
+                                }
+                            }
+                        }
+                        match result {
                             // A team whose goal is open-ended needs a way to
                             // say it has run out of useful work, or it spends
                             // its whole allowance re-tidying a tidy workspace.
@@ -598,8 +661,35 @@ fn standing_teams() -> [(
     teams::Completion,
     teams::TeamBudget,
     &'static str,
-); 3] {
+); 4] {
     [
+        (
+            "director",
+            "director",
+            teams::Completion::Standing,
+            teams::TeamBudget::attentive(),
+            "Carry out what the operator running this investigation has just asked for. Their \
+             directive is below, and it is the one input this run gets that nothing else can \
+             reconstruct: everything else you could read is the run's own account of its own \
+             work, while this is a person who can see the whole run saying where it should go. \
+             Treat it as an instruction, not as evidence — it is asserted rather than \
+             established, so do not file it as a claim.\n\
+             The next attempt is already given the directive verbatim, so do not simply restate \
+             it. Your job is the part that reaches everything the prompt does not: read the \
+             workspace, work out what the directive means for the work in flight, and change the \
+             files that carry it. Rewrite TASKS.md so the order of work reflects what was asked. \
+             Amend CONTEXT.md when the directive changes what every role should know, staying \
+             inside its budget. Open a thread under research/threads/ for a direction it starts, \
+             mark one dead that it abandons, and file a request_research for a gap it names. \
+             Prefer editing what is already there to adding beside it.\n\
+             Do not compute, do not write or run programs, and do not answer the mathematics \
+             yourself — the roles that can execute are already doing that, and a second opinion \
+             from you would arrive as an instruction rather than a result. If a directive asks \
+             for something the run has already established is wrong, say so in your reply rather \
+             than quietly obeying or quietly ignoring it; your reply is written to the ledger the \
+             operator reads. Report in two or three sentences what you changed and why. Change \
+             nothing you cannot justify from the directive itself.",
+        ),
         (
             "research",
             "librarian",
@@ -681,6 +771,54 @@ fn last_seen(
     analysed
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner)
+}
+
+/// Whether an operator has queued anything for the run to act on.
+///
+/// Returns the cycle outcome to report when they have not, and `None` when they
+/// have — the same shape as the fingerprint gates beside it, and for the same
+/// reason. This is the check that keeps a team which wakes every twenty seconds
+/// from costing anything: an empty queue is one file read, and no model is
+/// asked whether it has been given work.
+///
+/// A queue that cannot be read is treated as empty. The alternative is a run
+/// that starts a model call every twenty seconds because a file is unreadable,
+/// and the operator would see a run spending its budget on nothing rather than
+/// a run quietly not being directed.
+fn directives_waiting(workspace: &Path) -> Option<teams::Cycle> {
+    match directives::pending(workspace) {
+        Ok(waiting) if waiting.is_empty() => Some(teams::Cycle::Idle),
+        Ok(_) => None,
+        Err(_) => Some(teams::Cycle::Idle),
+    }
+}
+
+/// Consumes what the operator has queued and hands it to the loop verbatim.
+///
+/// Two deliveries come out of one read, and they are deliberately unequal. The
+/// text goes to the mailbox exactly as typed, which is what the next attempt is
+/// briefed with; the director agent gets the same text to act on, and may fail
+/// without costing the first delivery anything.
+fn take_directives(
+    workspace: &Path,
+    mailbox: &solutions::Mailbox,
+    tracer: &Arc<RunTracer>,
+) -> Vec<crate::Directive> {
+    let taken = match directives::drain(workspace) {
+        Ok(taken) => taken,
+        Err(error) => {
+            tracer.note(&format!("directive queue unreadable: {error}"));
+            return Vec::new();
+        }
+    };
+    for directive in &taken {
+        tracer.note(&format!(
+            "directive {} from {}: {}",
+            directive.id, directive.from, directive.text
+        ));
+        mailbox.post(directive.text.clone());
+    }
+    taken
 }
 
 /// Whether the run's computed results are the same as last time this looked.
@@ -973,6 +1111,26 @@ fn support_agents(
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
+        // Turns one sentence from a person into changes to the files that say
+        // what the run is doing. It has the document tools and nothing that
+        // computes: no shell, no tool writing, no delegation. A directive is
+        // already the most powerful input the run takes — it outranks the
+        // judge in the next attempt's prompt — and a role that could both
+        // reinterpret the goal and run programs against it would be a second
+        // investigation answering to nobody.
+        AgentDefinition::new(
+            "director",
+            "Director Agent",
+            "Carries an operator's directive into the workspace: what the run is doing next, \
+             which directions are open, and what the shared brief says.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            [SCRATCH_READ_TOOL]
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
         AgentDefinition::new(
             "inventor",
             "Inventor Agent",
@@ -1087,6 +1245,7 @@ struct RolePrompts {
     librarian: String,
     scholar: String,
     curator: String,
+    director: String,
 }
 
 /// Every role's assembled system prompt, for inspection.
@@ -1171,6 +1330,7 @@ impl RolePrompts {
             ("librarian", self.librarian.as_str()),
             ("scholar", self.scholar.as_str()),
             ("context_curator", self.curator.as_str()),
+            ("director", self.director.as_str()),
         ]
     }
 }
@@ -1263,6 +1423,16 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/THREADS.md",
             "CONTEXT.md",
         ],
+        // The director rewrites the files that say what the run is doing, so
+        // it is sent those and only those. It gets `GOAL.md` and `TASKS.md`
+        // because a directive is read against what the run was already for,
+        // and `THREADS.md` because opening or closing a direction of attack is
+        // most of what acting on a directive amounts to. It is not sent
+        // `CLAIMS.md`: a directive is asserted rather than established, and a
+        // role holding the evidence ledger while acting on an unevidenced
+        // instruction is one prompt away from filing the instruction as a
+        // finding.
+        "director" => &["GOAL.md", "TASKS.md", "research/THREADS.md", "CONTEXT.md"],
         _ => &[],
     }
 }
@@ -1301,6 +1471,7 @@ impl RolePrompts {
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
             scholar: role("scholar", SCHOLAR_PROMPT)?,
             curator: role("context_curator", CONTEXT_CURATOR_PROMPT)?,
+            director: role("director", DIRECTOR_PROMPT)?,
         })
     }
 }

@@ -116,6 +116,30 @@ impl TeamBudget {
         }
     }
 
+    /// An allowance for a team that mostly waits.
+    ///
+    /// The director exists to notice that a person has said something, so its
+    /// cost profile is the opposite of every other team's: a cycle with an
+    /// empty queue costs one file read and returns before any model call, and
+    /// what bounds its spending is how often a human types rather than how
+    /// often it wakes. The custodial allowance is wrong for it twice over — a
+    /// three-minute floor makes a directive wait three minutes to be noticed,
+    /// and forty cycles at the twenty-second idle backoff would retire the team
+    /// after thirteen minutes of an eight-hour run, with nothing to show that
+    /// direction was no longer being read.
+    ///
+    /// So the cycle count is raised until it is the wall clock that stops the
+    /// team, and the rate floor is dropped. Neither is a licence to spend: the
+    /// queue check in front of the model call is the real bound, and it is
+    /// enforced before the agent runs rather than asked for in its brief.
+    pub(super) const fn attentive() -> Self {
+        Self {
+            max_cycles: 4000,
+            wall_clock: Duration::from_hours(24),
+            min_interval: Duration::ZERO,
+        }
+    }
+
     /// A custodial allowance whose rate the operator sets.
     ///
     /// The curator's cadence is the one pacing decision with a visible effect
