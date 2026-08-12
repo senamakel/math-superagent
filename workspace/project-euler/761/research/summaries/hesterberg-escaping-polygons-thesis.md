@@ -1,86 +1,33 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hesterberg-escaping-polygons-thesis.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hesterberg, Adam Classen — "Closed quasigeodesics, escaping from polygons, and conflict-free graph coloring" (MIT Ph.D. thesis, 2018)
 
-<!-- source: https://erikdemaine.org/theses/ahesterberg.pdf | converted from PDF -->
+Source: https://erikdemaine.org/theses/ahesterberg.pdf (also hdl.handle.net/1721.1/117875).
+Full text: `research/sources/hesterberg-escaping-polygons-thesis.full.md`.
+This is the **primary original source** behind Abel et al., "Escaping a Polygon" (arXiv:2007.08965); Chapter 2 of the thesis is that paper's ancestor. The thesis is under copyright (MIT); local copy is for this run's reading only.
 
-## What it claims
+## What the source establishes — the part relevant to PE 761 (Chapter 2, "Escaping from Polygons")
 
-Closed quasigeodesics
+Setup as in PE 761 / Abel et al.: a human (escaper) moves continuously at speed 1 inside a polygon P trying to reach the boundary; a zombie (pursuer) moves at speed r outside P trying to be at the boundary when the human arrives. For what r can the human escape vs. the zombie catch?
 
-A closed quasigeodesic on the surface of a polyhedron is a loop which can everywhere locally be
-unfolded to a straight line: thus, it’s straight on faces, uniquely determined on edges, and has as
-much ﬂexibility at a vertex as that vertex’s curvature. On any polyhedron, at least three closed
-quasigeodesics are known to exist, by a nonconstructive topological proof. We present an algorithm
-to ﬁnd one on any convex polyhedron in time O(n2ε−2Lℓ−1), where ε is the minimum curvature of
-a vertex, L is the length of the longest side, and ℓ is the smallest distance within a face between a
-vertex and an edge not containing it.
+- **Theorem 2.2.1 (circle).** Let φ ≈ 0.43π be the angle with tan φ = π + φ. Then the critical speed ratio for a **circle** is r\* = sec φ ≈ 4.60 (≈ 4.60333885). While the human is within distance cos φ of the center they can keep diametrically opposite the zombie; then they dash on a tangent chord. **This is exactly the PE 761 circle oracle V_circle** and an independent primary derivation of it (the same tan φ = π + φ identity as the Ponder-This / stewbasic circle limit).
+- **Theorem 2.2.2 (wedge).** If P is an unbounded intersection of halfplanes with extreme angle 2θ ∈ (0, π], the critical ratio is r\* = csc θ.
+- **Theorem 2.3.1 (lower bound).** For any polygon P, r\* ≥ max_{p,q ∈ ∂P} dz(p,q)/dh(p,q), where dz, dh are geodesic distances in the zombie and human play areas.
+- **Theorem 2.3.2 (upper bound).** r\* ≤ 9.2504 · max_{p,q ∈ ∂P} dz(p,q)/dh(p,q) (the thesis's constant; the later Abel et al. paper tightens to 2(3+√6) ≈ 10.89898 in a slightly different model). For a center-started human / edge-midpoint runner, the boundary-time equalization at the optimal exit pair reduces exactly to the stewbasic n-gon formula's max-over-boundary-points structure.
+- **Theorem 2.3.3 + (PTAS).** A pseudopolynomial-time approximation scheme exists (r\* to within 1+ε).
 
-Escaping from polygons
+## Why it matters for this run
 
-You move continuously at speed 1 in the interior of a polygon P , trying to reach the boundary.
-A zombie moves continuously at speed r outside P , trying to be at the boundary when you reach
-it. For what r can you escape and for what r can the zombie catch you? We give exact results
-for some P . For general P , we give a simple approximation to within a factor of roughly 9.2504.
-We also give a pseudopolynomial-time…
+It is a **third independent, primary derivation of the circle constant** (tan φ = π + φ, r\* = sec φ), standing alongside IBM Ponder This May 2001 and stewbasic's n-∞ limit. It confirms the two-phase mechanism rigorously (keep-opposite stage radius cos φ of center, then tangent chord) — the same template the n-gon formula generalizes. It does **not** give a regular n-gon (hexagon) exact value: the thesis's exact list is circle and wedge only, and its 9.2504 bound is far too coarse for an 8-decimal answer. So like Abel et al., this source **supports the model and the circle/square anchors but is not a route to V_hexagon**.
 
-Conﬂi…
+```claim
+id: hesterberg-circle-critical-speed-primary
+statement: The critical speed ratio for escape from a circle (human speed 1 inside, zombie speed r outside) is r* = sec φ ≈ 4.60333885 where φ satisfies tan φ = π + φ (φ ≈ 1.3518168 rad); the human stages within radius cos φ keeping diametrically opposite the zombie, then dashes on a tangent chord.
+hypotheses: circular lake of radius 1, human starts at center, zombie on boundary, continuous play, optimal strategies, escape = reach boundary before the zombie; re-derivation in the (P, ε, z, h) continuous-game model.
+holds-here: yes - this is precisely the PE 761 circle case and reproduces V_circle = 4.60333885 from a primary thesis derivation.
+status: proved (MIT Ph.D. thesis Theorem 2.2.1).
+bearing: independently corroborates the circle anchor and the keep-opposite-then-dash mechanism; does not give V_hexagon.
+anchor: research/sources/hesterberg-escaping-polygons-thesis.full.md
+```
 
-## Statements it makes
-
-Lemma 1.2.1. If R1 = R(X, ϕ1, ∞) and R2 = R(X, ϕ2, ∞) are two geodesic rays from a common
-starting point X with an angle between them of θ ∈ (0, π), the face sequences F (R1) and F (R2) are
-distinct, and the ﬁrst diﬀerence between them occurs at most one face after a geodesic distance of
-O(θ−1L).
-
-Lemma 1.2.2. Let R = (X, ϕ, d) be a geodesic segment with d < ℓ. In O(n) time, we can calculate
-F (R), expressed as a sequence S1 of O(n) faces, followed by another sequence S2 of O(n) faces and
-a distance over which R visits the faces of S2 periodically2. Also, we can calculate the face, location
-in the face, and direction of R at its endpoint other than X.
-
-Corollary 1.2.3. In O(ndℓ−1) time, we can calculate R(X, ϕ, d).
-
-Theorem 1.2.4. Let P be a convex polyhedron with n vertices all of curvature at least ε, let L be
-the length of the longest side, and let ℓ be the least distance between points on edges sharing a face
-but not a vertex. Then in O(n2ε−2Lℓ−1) time, we can ﬁnd a closed quasigeodesic on P . We can
-express such a closed quasigeodesic as a sequence of O(n3ε−2Lℓ−1) subsequences of faces, where for
-each subsequence we give a distance for which the closed quasigeodesic visits that subsequence of
-faces periodically.
-
-Theorem 2.2.1. Let ϕ ≈ 0.43π be the angle such that tan ϕ = π + ϕ. Then the critical speed ratio
-r∗ for a circle is sec ϕ ≈ 4.60.
-
-Theorem 2.2.2. If P is an unbounded intersection of halfplanes and the angle between the two
-extreme halfplanes is 2θ ∈ (0, π], then the critical speed ratio r∗ is csc θ.
-
-Theorem 2.3.1. Let P be any polygon. Then the critical speed ratio r∗ is at least maxp,q∈δP dz(p,q)
-dh(p,q)
-(where dz and dh are the geodesic distances in the zombie and human play areas, respectively).
-
-Theorem 2.3.2. Let P be any polygon. Then the critical speed ratio r∗ is at most 9.2504 maxp,q∈δP dz(p,q)
-dh(p,q)
-(where dz and dh are the geodesic distances in the zombie and human play areas, respectively).
-
-Theorem 2.3.3. For every polygon P there exists an ε0 > 0, such that ε−1
-0 is polynomial in the
-coordinates of P and if r∗ is the critical speed ratio for P , then for all ε ∈ (0, ε0) and for all integers
-z, h ∈ (0, ε−1), the human wins the (P, ε5, z, h) game if z/h ∈ [1, r∗ 1
-(1+ε)3 ) and the zombie wins if
-z/h > r∗(1 + ε)3.
-
-Lemma 2.3.4. If the human wins the continuous game, then there exists ε > 0 (not necessarily
-bounded by a function of ε0) such that the zombie is at distance at least ε when the human wins.
-
-Lemma 2.3.5. If the human wins the continuous game at a speed ratio r, then there exists ε > 0
-(not necessarily bounded by a function of ε0) such that the human can commit to moving in a
-straight line for the last ε of their movement, and still win.
-
-Lemma 2.3.6. If the zombie has a winning strategy that leaves the convex hull of P , then it has a
-winning strategy that doesn’t.
-
-Lemma 2.3.7. If P is a polygon, then…
-
-Lem…
-
-
-*[further statements in the full text]*
-
-*[digest of a 147661 character source; every section, statement, and proof in full at `research/sources/hesterberg-escaping-polygons-thesis.full.md`]*
+## What it does not settle
+- No hexagon (or general regular n-gon) exact value — the exact-list is circle + wedge; regular n-gon and hexagon come from the stewbasic formula (n=6), which neither the thesis nor Abel et al. independently covers.
+- The 9.2504 approximation is unusable for an 8-decimal answer.
