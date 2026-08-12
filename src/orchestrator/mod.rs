@@ -13,6 +13,7 @@ mod patch;
 mod patterns;
 mod readable;
 mod requests;
+mod shared_context;
 mod solutions;
 mod teams;
 mod threads;
@@ -49,7 +50,10 @@ use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
 use documents::WorkspaceDocuments;
 use patterns::PatternTool;
-use vector::{RecallMemoryTool, RelateMemoryTool, RememberMemoryTool, VectorStore};
+use vector::{
+    NoteScratchTool, RecallMemoryTool, RecallScratchTool, RelateMemoryTool, RememberMemoryTool,
+    VectorStore,
+};
 
 pub use tinyagents::harness::host::AgentDefinition;
 
@@ -134,6 +138,8 @@ const INVENTOR_PROMPT: &str = include_str!("../prompts/inventor.md");
 const LIBRARIAN_PROMPT: &str = include_str!("../prompts/librarian.md");
 
 const SCHOLAR_PROMPT: &str = include_str!("../prompts/scholar.md");
+
+const CONTEXT_CURATOR_PROMPT: &str = include_str!("../prompts/context_curator.md");
 
 const GOALS_PROMPT: &str = include_str!("../prompts/goals.md");
 
@@ -324,6 +330,7 @@ impl OrchestratorAgent {
                 inventor: prompts.inventor,
                 librarian: prompts.librarian,
                 scholar: prompts.scholar,
+                curator: prompts.curator,
             },
         )?;
 
@@ -779,6 +786,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                     ["write_tool_file", "execute_command", "apply_patch"]
                         .into_iter()
                         .chain(memory_tools)
+                        .chain(SCRATCH_TOOLS)
                         .chain(document_tools),
                 ),
         )?;
@@ -841,7 +849,25 @@ fn support_agents(
             ]
             .into_iter()
             .chain(memory_tools)
+            .chain(SCRATCH_TOOLS)
             .chain(document_tools),
+        ),
+        // Reads widely and writes one file. It has no shell, no web search,
+        // and no delegation on purpose: every one of those is a way for
+        // curating what the run knows to turn into another investigation
+        // beside it, and the brief it maintains is read by every role that
+        // could do the investigating properly.
+        AgentDefinition::new(
+            "context_curator",
+            "Context Curator Agent",
+            "Keeps CONTEXT.md, the brief every reasoning role is sent, within its token budget \
+             and current with what the run and durable memory now establish.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["recall_memory", "relate_memory", SCRATCH_READ_TOOL]
+                .into_iter()
+                .chain(document_tools),
         ),
         AgentDefinition::new(
             "inventor",
@@ -904,7 +930,12 @@ fn library_agents(
              records what each source establishes, and maintains a navigable digest of it.",
         )
         .with_model("openrouter")
-        .with_tools(memory_tools.into_iter().chain(document_tools)),
+        .with_tools(
+            memory_tools
+                .into_iter()
+                .chain([SCRATCH_READ_TOOL])
+                .chain(document_tools),
+        ),
         AgentDefinition::new(
             "goals",
             "Goals Agent",
@@ -926,6 +957,7 @@ fn library_agents(
             ]
             .into_iter()
             .chain(memory_tools)
+            .chain(SCRATCH_TOOLS)
             .chain(document_tools),
         ),
     ]
@@ -950,6 +982,7 @@ struct RolePrompts {
     inventor: String,
     librarian: String,
     scholar: String,
+    curator: String,
 }
 
 /// Every role's assembled system prompt, for inspection.
@@ -1033,9 +1066,29 @@ impl RolePrompts {
             ("inventor", self.inventor.as_str()),
             ("librarian", self.librarian.as_str()),
             ("scholar", self.scholar.as_str()),
+            ("context_curator", self.curator.as_str()),
         ]
     }
 }
+
+/// Where provisional work goes now that `SCRATCHPAD.md` is not routed into any
+/// system prompt.
+///
+/// A file cost every model call in every role holding it, whether or not the
+/// turn was about the numbers in it, and had to be read whole to append a line.
+/// These are the same trade `remember_memory` and `recall_memory` make, over a
+/// store no durable recall reaches — see [`vector::visible_datasets`].
+///
+/// They are granted to exactly the roles the file was routed to, and withheld
+/// from the rest for the reason it was withheld from reflection: unsettled
+/// arithmetic must not read as progress. `note_scratch` is narrower still — a
+/// role that only *reads* what a solve is in the middle of has no provisional
+/// work of its own to record.
+const SCRATCH_TOOLS: [&str; 2] = ["note_scratch", "recall_scratch"];
+
+/// The read half of [`SCRATCH_TOOLS`], for a role that judges provisional work
+/// rather than producing it.
+const SCRATCH_READ_TOOL: &str = "recall_scratch";
 
 /// The workspace context every role receives.
 ///
@@ -1062,7 +1115,6 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "config/config.toml",
             "GOAL.md",
             "TASKS.md",
-            "SCRATCHPAD.md",
             "code/AGENTS.md",
             "code/INDEX.md",
             "code/lib/INDEX.md",
@@ -1071,16 +1123,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
         ],
         "judge" => &["GOAL.md", "INDEX.md"],
         "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md"],
-        "pattern_finder" => &[
-            "GOAL.md",
-            "SCRATCHPAD.md",
-            "code/lib/INDEX.md",
-            "CONTEXT.md",
-        ],
+        "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", "CONTEXT.md"],
         "scholar" => &[
             "GOAL.md",
             "TASKS.md",
-            "SCRATCHPAD.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
             "CONTEXT.md",
@@ -1096,6 +1142,21 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "GOAL.md",
             "research/THREADS.md",
             "research/CLAIMS.md",
+            "CONTEXT.md",
+        ],
+        // The curator writes the shared brief, so it is the one role that
+        // needs to see the brief *and* the material it is written from: what
+        // the run is for, what it is attempting, what the library establishes,
+        // and the provisional work that has not earned a place in the brief
+        // yet — which it reads with `recall_scratch` rather than from a file.
+        // It reads the rest — reflections, results, the note store — with its
+        // tools too, because those are large and change constantly.
+        "context_curator" => &[
+            "GOAL.md",
+            "TASKS.md",
+            "INDEX.md",
+            "research/CLAIMS.md",
+            "research/THREADS.md",
             "CONTEXT.md",
         ],
         _ => &[],
@@ -1135,6 +1196,7 @@ impl RolePrompts {
             inventor: role("inventor", INVENTOR_PROMPT)?,
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
             scholar: role("scholar", SCHOLAR_PROMPT)?,
+            curator: role("context_curator", CONTEXT_CURATOR_PROMPT)?,
         })
     }
 }
@@ -1332,6 +1394,7 @@ struct SupportPrompts {
     inventor: String,
     librarian: String,
     scholar: String,
+    curator: String,
 }
 
 /// Registers the pattern agent, which is the tool-richest of the support roles.
@@ -1469,6 +1532,25 @@ fn register_support_agents(
     register_memory(&mut scholar, &parts.vector_store);
     subagents.register("scholar", Arc::new(scholar), prompts.scholar)?;
 
+    // The curator gets the two *reading* halves of memory and not the writing
+    // one. Its whole job is to bring what is already established into the file
+    // every role is sent, so `remember_memory` would let it feed its own
+    // synthesis back into the store the next cycle recalls from — a run
+    // citing itself, with nothing between the guess and the durable record.
+    // Writing durable knowledge stays with the roles that verify it.
+    let mut curator = specialist_harness(
+        parts.model.clone(),
+        parts.budget,
+        "context_curator",
+        parts.tracer,
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut curator, tool);
+    }
+    register_resilient(&mut curator, Arc::new(RecallMemoryTool::new(parts.vector_store.clone())));
+    register_resilient(&mut curator, Arc::new(RelateMemoryTool::new(parts.vector_store.clone())));
+    subagents.register("context_curator", Arc::new(curator), prompts.curator)?;
+
     Ok(())
 }
 
@@ -1482,6 +1564,11 @@ fn register_memory(harness: &mut AgentHarness<()>, store: &VectorStore) {
     // edges the graph holds — so a connection the run established across two
     // sources, and never wrote down in one place, is retrievable.
     register_resilient(harness, Arc::new(RelateMemoryTool::new(store.clone())));
+    // The provisional half, kept apart from both of the above: neither the
+    // chunk search nor the graph reaches the scratch, so a half-finished
+    // calculation cannot come back as something the run established.
+    register_resilient(harness, Arc::new(NoteScratchTool::new(store.clone())));
+    register_resilient(harness, Arc::new(RecallScratchTool::new(store.clone())));
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
