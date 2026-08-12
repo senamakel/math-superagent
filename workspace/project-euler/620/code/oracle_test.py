@@ -41,7 +41,7 @@ def main():
     emit("=" * 60)
 
     # ---- 1. g(16,5,5,6) must be 9 ------------------------------------
-    g, dt = wallclock(g_count, 16, 5, 5, 6)
+    g, dt = wallclock(g_count, 16, 5, 5, 6, grid_points=400000)
     emit(f"[1] g_count(16,5,5,6) = {g}   (oracle 9)   "
          f"{'AGREE' if g == 9 else 'DISAGREE'}   [{dt:.2f}s]")
 
