@@ -71,6 +71,23 @@ the "smallest-magic-sum" six-square example is (centre 145) `265 1² 13² / 7²
 145 241 / 11² 17² 5²`. The smallest entries-degree squared-square families have
 degree 8, 16, 20 in the parameter.
 
+**Three concrete reformulations are now on the table** (`research/APPROACHES.md`,
+all `proposed`, none yet checked against the literature — grounding one against
+a named theorem is the cheapest next move):
+- **Brauer–Manin on the K3** — Bremner II's `S` over `Q(λ)`. The hinge is that MSS
+  exist over `Q(√3,√133)` degree 4 but conjecturally not over `Q`; the BM
+  obstruction is exactly the tool that separates `Q` from its extensions. First
+  step: explicit equations of `S`, compute its geometric Brauer group.
+- **S-unit equations over the parametrisation** — with `c=e²`, `α=u/e²`, `β=v/e²`,
+  the eight conditions `(1±α)…` all rational squares become a finite system of
+  S-unit equations (Mahler/Evertse–Schlickewei finiteness) → finite but large
+  classification.
+- **Simultaneous congruent-number / 2-Selmer** — the four AP-differences
+  `u,v,u+v,u-v` each give a congruent-number curve `E_d`; their additive
+  relations induce linear relations among `Sel₂(E_d)` classes. Distinct from
+  Bremner's single-curve `2E(Q)`-in-AP approach. First step: explicit 2-descent
+  map for each `E_d`.
+
 ## Ruled out
 
 - **Pure modular/congruence sieves cannot prove non-existence** — system is
@@ -95,17 +112,31 @@ centre-line AP structure (65,025), parametrisation completeness (3,001). Results
   entries exists**; best distinct count = 5 (e.g. c=100,u=96,v=21 →
   rows [25,196,79],[154,100,46],[121,4,175]).
 - Near-miss box `c=e², e≤80, |u|,|v|≤120` (4,052,328 grids): **no grid with six
-  or more distinct square entries** (best distinct count = 5). The {6:964, 7:4,
-  9:92} counts in that box all **repeat entries** (the 9-square ones are all-k²
-  and the {1,25,49} family). The run's own generator has not yet produced a
-  *distinct* 7-square near-miss at these caps.
+  or more distinct square entries** (best distinct count = 5). The `{6:964, 7:4,
+  9:92}` counts in that box all **repeat entries** (the 9-square ones are all-k²
+  and the `{1,25,49}` family); the 4 seven-square grids in the box have distinct
+  entries but are **not magic** — all four corners are distinct squares (the
+  Parker-square corner pattern). The run's own generator has not yet produced a
+  *distinct* 7-square near-miss that is magic at these caps.
+
+**The literature's actual computational bound — sourced** (Morgenstern 2013,
+`research/summaries/morgenstern-extended-searches-2013.md`): the real numbers are
+far past this run's tiny boxes. Notable near-miss families: 3809 instances of
+**three** APs of squares with equal difference `d` (all odd entries) found by
+complete enumeration of APs to `d ≤ 2.4×10¹⁹`; only **5 instances** of three
+*primitive* APs with equal `d`, none beyond `d ≈ 3.31×10¹⁵`; the surviving cases
+all reduced to one `d = 71831760` (two grids) plus two huge `d` grids. A true
+MSS needs **four** APs through the centre with differences `u,v,u+v,u-v` — three
+equal-`d` APs is the closest settled multi-family. A search is not a proof; these
+bound where arguments must look, at a scale (10¹⁹–10²²) this run's generator
+cannot reach.
 
 **Witness-set gap (the mandatory oracle of GOAL.md).** The run's own generator
 has *not yet reproduced* Sallows' and Bremner's 7-square near-misses — their
 entries are far above the oracle box caps, so `code/out/near_misses.json` is
 still empty. Every impossibility lemma must be run against those two grids
-(values above) once they are reproduced; until then no impossibility claim
-carries a witness-check (the oracle note says exactly this).
+(values in Established above) once they are reproduced; until then no
+impossibility claim carries a witness-check (the oracle note says exactly this).
 
 ## Recalled
 
@@ -140,10 +171,19 @@ exist over extensions as sourced and checked. No other prior-run findings.
 - **Exact reduction still unanchored end-to-end**: Bremner's paper gives the
   curve and the K3, but the exact correspondence "rational point ⇒ distinct
   positive integer square solution" and what is *proved* (vs. suggested) about
-  each is not yet written as a claim block. This blocks any descent.
-- **`code/out/near_misses.json` does not exist** — the generator (`code/brute.py`) exists and runs, but has not yet reproduced the literature's 7-square near-misses (Sallows, Bremner) because their entries exceed the current small-box caps. Build that reproduction next; it is the mandatory witness set for every impossibility lemma (GOAL.md).
-- Whether the four-AP condition maps onto a known concordant-forms/congruent
-  numbers problem, and the real exhaustive-search bound (reported past ~10²⁵,
-  whose search, what was searched), remain open.
+  each is not yet written as a claim block. This blocks any descent (request
+  `exact-reduction-magic-507c`). Dead-end candidates with the reason each dies
+  live in `research/approaches/` — all three are `proposed`/`unchecked`, not yet
+  grounded against a named theorem.
+- **`code/out/near_misses.json` does not exist** — the generator (`code/brute.py`)
+  exists and runs, but has not yet reproduced the literature's 7-square
+  near-misses (Sallows, Bremner) because their entries exceed the current
+  small-box caps. Build that reproduction next; it is the mandatory witness set
+  for every impossibility lemma (GOAL.md).
+- Whether the four-AP condition (differences `u,v,u+v,u-v`) maps onto a known
+  concordant-forms/congruent-numbers problem. Morgenstern's exhaustive search
+  (to `d ≈ 10¹⁵–10¹⁹`) found **no** instance of three primitive equal-`d` APs
+  beyond `3.31×10¹⁵` — settling the three-AP family up to that bound; four linked
+  differences remain open.
 - The eight-square sub-question: no example known, no proof — an exact statement
   of "what an 8-square grid would force" is a plausible partial result.

@@ -281,9 +281,21 @@ def check_magic_graph():
     kernel, witness = magic_params_basis()
     print(f"[4] magic graph: 8 lines x 9 cells incidence matrix over Q, "
           f"rank = {rank}, so dim kernel = {9 - rank}")
-    print(f"    kernel basis (3 vectors, exact Fractions):")
+    print(f"    kernel basis (exact Fractions):")
     for vec in kernel:
         print("      " + ", ".join(str(x) for x in vec))
+    # the single Q-relation among the eight line equations (computed by
+    # an independent Fraction LDU in nullspace_fraction_matrix on the
+    # transpose; cross-checked with sympy in the scratch probe)
+    from lib.mss import nullspace_fraction_matrix
+    transposed = [[inc[r][c] for r in range(8)] for c in range(9)]
+    row_rel = nullspace_fraction_matrix(transposed)
+    rel = [int(x) for x in row_rel[0]] if row_rel else None
+    if rel:
+        print(f"    single Q-relation among the 8 line vectors: {rel} "
+              f"i.e. col sums 1+2+3 == row sums 1+2+3 (diagonals free)")
+    else:
+        print("    no row relation found")
     # structure of the two parametric grids
     u_g = entries_of(grid_from_params(0, 1, 0))
     v_g = entries_of(grid_from_params(0, 0, 1))
@@ -293,10 +305,23 @@ def check_magic_graph():
     ws = line_sums(grid_from_params(1, 3, -5))
     print(f"    witness grid_from_params(1,3,-5) line sums all equal: "
           f"{len(set(ws)) == 1} (sums {ws})")
-    ok = (rank == 5 and 9 - rank == 4 and len(kernel) == 3)
-    print(f"    -> {'PASS: dimension 4 = 1 (constant) + 2 (u,v)' if ok else 'FAIL'}")
-    return {"incidence_rank": rank, "kernel_dimension": 9 - rank,
-            "kernel_basis_vectors": len(kernel), "pass": ok}
+    # affine dimension: rank of the 7x9 matrix of differences L2-L1..L8-L1
+    diff_rows = [[inc[i][j] - inc[0][j] for j in range(9)]
+                 for i in range(1, 8)]
+    diff_rank = rank_fraction_matrix(diff_rows)
+    affine_dim = 9 - diff_rank
+    ok = (rank == 7 and len(kernel) == 2 and affine_dim == 3)
+    print(f"    affine magic space: rank(differences L2-L1..L8-L1) = "
+          f"{diff_rank} over 9 cells -> dimension {affine_dim} = "
+          f"1 (constant) + 2 (u,v), matching grid_from_params(c,u,v)")
+    print(f"    -> {'PASS: kernel dim 2 = u,v vectors; affine dim 3 = "
+          f"c,u,v basis' if ok else 'FAIL'}")
+    return {"incidence_rank": rank,
+            "kernel_dimension": 9 - rank,
+            "kernel_basis_vectors": len(kernel),
+            "line_relation": rel,
+            "affine_magic_dimension": affine_dim,
+            "pass": ok}
 
 
 # ---------------------------------------------------------------------------

@@ -27,18 +27,24 @@ s,p,q)`, p<q, p,s ≥5. Worked: g(16,5,5,6)=9, G(16)=9, G(20)=205; target G(500)
 
 **Governing structure — sourced, but holds-here UNVERIFIED:**
 
-1. **Least-mesh-angle discretization (sourced; holds-here unproved).** Legal
-   planet angular positions are integer multiples of β = 2π/(s+c) — stated by
-   three independent gear sources (Drivetrain Hub, UTS IGS 60-1161, Gear
-   Solutions handbook; claims `least_mesh_angle*` in `research/CLAIMS.md`), and
-   corroborated in structure by the Xue 2020 unified-assembly abstract
-   (assembly possible iff the tooth misalignment is an integer multiple of the
-   minimum non-zero misalignment angle; `research/summaries/unified-assembly-condition-xue-2020.md`).
-   **Caveat every solver must hear**: all four sources derive/state the rule for
-   a COAXIAL train (planet centres on a circle about the shared axis). PE620 has
-   S OFF-CENTRE — planet centres lie on an ellipse, and the angle about S is not
-   the angle about C. Applying a single-center β-lattice is therefore a
-   conjecture, and it is exactly the part both failed models bet on.
+1. **Least-mesh-angle discretization (DERIVED, not merely asserted).** Legal
+   planet angular positions are integer multiples of β = 2π/(s+c). Now backed
+   by a derived assembly condition, not just three design guides: Guo 2011 OSU
+   thesis (Ch.5 eq. 5.21) — (Z_ring+Z_sun)·ψ̂ = 2πn, i.e. a planet meshing both
+   internal ring and sun sits only at multiples of 2π/(Z_ring+Z_sun), where the
+   sun–planet and ring–planet mesh phases coincide; Z_ring taken negative for
+   internal gears, hence the (+). Corroborated by Zou 2015 homogeneity
+   condition (Z_R+Z_S)/n_b = N and the Xue 2020 unified-assembly abstract.
+   **Structural fact**: PE620's four planets are independent single-planet
+   trains (d_i=1), so the step stays 2π/(c+s) and the planet tooth counts p,q
+   do NOT enter the step (Guo eq. 5.25). Less-mesh-angle claims in
+   `research/CLAIMS.md`; source
+   `research/sources/compound-planetary-dynamics-mesh-phases-guo-2011.full.md`.
+   **Caveat every solver must hear**: Guo (like the design guides) derives the
+   rule for a COAXIAL train; PE620 has S OFF-CENTRE — planet centres lie on an
+   ellipse, and the angle about S is not the angle about C. A single-center
+   β-lattice is therefore a conjecture, and it is exactly the part both failed
+   models bet on.
 2. **Ellipse locus (sourced).** The centre of a planet tangent internally to C
    and externally to S lies on the ellipse with foci at the centres O and S and
    sum of focal distances (R−ρ)+(r+ρ) = (c+s)/2π — the planet size **cancels**,

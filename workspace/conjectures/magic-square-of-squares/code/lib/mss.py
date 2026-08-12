@@ -248,13 +248,30 @@ def nullspace_fraction_matrix(mat):
 
 
 def magic_params_basis():
-    """The (c, u, v) basis of the space of magic assignments.  Returns
-    (kernel_basis, witness): kernel_basis is a list of three exact Fraction
-    vectors of length 9 spanning {assignments with all 8 line sums 0};
-    witness is one non-zero magic assignment with all 8 line sums equal
-    (grid_from_params(1, 3, -5) flattened).  The claim of the task: the
-    whole space has dimension exactly 4, spanned by the constant grid, the
-    u-grid and the v-grid."""
+    """The (c, u, v) basis of the space of magic assignments.
+
+    Returns (kernel_basis, witness): kernel_basis is a list of two exact
+    Fraction vectors of length 9 spanning {assignments with all 8 line
+    sums 0}; witness is one non-zero magic assignment with all 8 line sums
+    equal (grid_from_params(1, 3, -5) flattened).
+
+    Facts established by exact computation in
+    code/check_near_misses.py (and re-derived with sympy in the scratch
+    probe): the 8x9 line-incidence matrix over Q has rank 7, so the
+    zero-sum kernel has dimension 2, spanned exactly by the u-grid and
+    the v-grid.  The vectors are each another's reflection of the same
+    two-parameter family, and there is one Q-relation among the eight
+    line equations, L1+L2+L3 = L4+L5+L6 (rows vs columns; the diagonals
+    are not involved).  Consequently the AFFINE space of magic
+    assignments (all eight line sums equal, no zero constraint) has
+    dimension 9 - rank(L2-L1,...,L8-L1) = 9 - 6 = 3, spanned by the
+    constant grid, the u-grid and the v-grid — matching the (c, u, v)
+    parametrisation.  NOTE: the wording "the space of magic assignments
+    has dimension 4" (task brief) is not what the incidence algebra gives;
+    the dimension over the line-sum equations is 3.  The user-facing
+    parametrisation itself is untouched: every 3x3 magic grid is exactly
+    grid_from_params(centre, a00-centre, a02-centre), verified in both
+    directions by the completeness test."""
     one = grid_from_params(1, 0, 0)   # all entries equal to 1
     u_g = grid_from_params(0, 1, 0)   # (1,-1,0; 1,0,1; 0,1,-1) pattern
     v_g = grid_from_params(0, 0, 1)   # (0,-1,1; 1,0,-1; -1,1,0) pattern
