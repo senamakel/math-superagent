@@ -32,7 +32,12 @@ D_EXPECTED = [1, 1, 3, 9, 30, 99, 336, 1134, 3855, 13086,
 # the current level) is the driver of both time and memory: each frozenset of
 # 2N+1 tuples costs ~0.5-1 KB, so a frontier of ~6M configs is ~4-6 GB, well
 # past this container's 2 GiB cgroup cap.
-FRONTIER_CAP = 5_000_000          # stop growing when one level exceeds this
+# A forward step must be finished before its size can be checked, so cap the
+# CURRENT level *before* stepping.  The frozenset BFS (0.5-1 KB/config) OOMs
+# under the 2 GiB cgroup cap while building the ~5.9M-config N=14 frontier,
+# so stopping before that step — at the 1.75M N=13 frontier — is the farthest
+# this naive oracle reaches cleanly in this container.
+FRONTIER_CAP = 1_000_000          # stop when current frontier exceeds this
 TIME_BUDGET_S = 500                # stop gracefully when wall-time exceeds this
 
 
@@ -59,7 +64,7 @@ def main():
         d = len(level)
         values.append(d)
         elapsed = time.time() - t0
-        print(f"{N:3d}  {d:>14,}  {len(level):>12,}   {elapsed:8.2f}")
+        print(f"{N:3d}  {d:>14,}  {len(level):>12,}   {elapsed:8.2f}", flush=True)
 
         # Confirm the worked examples while we are at it.
         if N == 2:
