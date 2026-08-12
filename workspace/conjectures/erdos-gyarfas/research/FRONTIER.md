@@ -6,7 +6,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 3 | https://oeis.org/A123545 | A123545 | cross-referenced from A007112 |
+| 4 | https://oeis.org/A123545 | A123545 | cross-referenced from A007112 |
 | 2 | https://arxiv.org/search/advanced | Advanced search | [0707.2117] Cycle lengths in sparse graphs Skip to main content Press Enter to search &middot; [Advanced search][1] --> # Mathematics > Combinatorics **arXiv:0707.2117**(math) [Submitted on 14 Jul… |
 | 2 | https://core.ac.uk/services/recommender | What is CORE? | Tools Link to Influence Flower Influence Flower*( [What are Influence Flowers?][35])* Core recommender toggle CORE Recommender*( [What is CORE?][36])* - Author - Venue - Institution - Topic About… |
 | 2 | https://info.arxiv.org/help/mathjax.html | What is MathJax? | value for arXiv's community? ****[Learn more about arXivLabs][37]. [Which authors of this paper are endorsers?][38] \| Disable MathJax ( [What is MathJax?][39]) |
