@@ -320,14 +320,14 @@ parse is conservative: only an explicit, recognised answer moves the counter, so
 a reflection the loop cannot read never drives it — treating silence as "scaling
 again" would divert a working run on two malformed replies.
 
-A provider wall is not a failed attempt, and the loop must not spend the
-attempt ceiling discovering that. `delegate` turns a child's failure into text
-so the loop survives it, which is right, but it makes an outage
-indistinguishable from a poor attempt unless something reads the text. Two live
-runs met `HTTP 403: Key limit exceeded` and burned all eight attempts in
-seconds — each recording the same quota error as the lesson learned, each
-reflection failing the same way — and ended reporting "not solved within 8
-attempts", which reads as a mathematical failure and was not one.
+A provider wall is not a failed attempt, and the loop must not spend the attempt
+ceiling discovering that. `delegate` turns a child's failure into text so the
+loop survives it, which is right, but it makes an outage indistinguishable from a
+poor attempt unless something reads the text. Two live runs met `HTTP 403: Key
+limit exceeded` and burned all eight attempts in seconds — each recording the
+same quota error as the lesson, each reflection failing the same way — and ended
+reporting "not solved within 8 attempts", which reads as a mathematical failure
+and was not one.
 `provider_blocked` recognises the shape `delegate` writes, `route` checks it
 before anything else including the ceiling, and `BLOCKED_THRESHOLD` is two
 rather than one because a single upstream blip is precisely what the retry
