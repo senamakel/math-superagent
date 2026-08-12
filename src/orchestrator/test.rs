@@ -812,7 +812,8 @@ fn writing_a_note_stays_with_the_roles_whose_output_is_durable() -> agent::Resul
         let writes = role.tools.iter().any(|tool| tool == "remember_research");
         let expected = matches!(role.id.as_str(), "research" | "scholar" | "inventor");
         assert_eq!(
-            writes, expected,
+            writes,
+            expected,
             "`{}` must{} hold `remember_research`",
             role.id,
             if expected { "" } else { " not" }
