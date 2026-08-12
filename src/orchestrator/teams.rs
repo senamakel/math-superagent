@@ -185,10 +185,9 @@ pub(super) enum Completion {
     ///
     /// No team uses this. Research was the last, and retired inside ninety
     /// seconds on every live run.
-    #[expect(
-        dead_code,
-        reason = "kept as an available mode; see the type documentation for why no team holds it"
-    )]
+    // Constructed only by the unit tests, which keep the retirement path honest.
+    // See the type documentation for why no team holds it.
+    #[allow(dead_code, reason = "an available mode no team currently uses")]
     Attainable,
     /// The goal is standing; "nothing further" only means idle for now.
     Standing,
