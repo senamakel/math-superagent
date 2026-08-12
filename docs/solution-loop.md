@@ -82,9 +82,12 @@ reformulation now reaches 4 when it is checkable — named in mathematics, with
 cited precedent, a reason it fits, a first step, and an alternative closed with
 its reason — and 3 when nobody took it to the literature or weighed it against
 anything. A suggestion to think differently still scores 1. The judge is
-deliberately not routed `research/APPROACHES.md`, so the evidence has to be in
-the report: a judge holding the ledger would credit an attempt for approaches
-the report never mentions.
+deliberately not routed `research/APPROACHES.md`: a judge holding the ledger
+would credit an attempt for the *content* of approaches the report never
+mentions. It is given their number, which is a narrower thing and answers a
+question the report cannot when the run cap has destroyed it — whether the
+attempt left anything behind at all. The original rule assumed a report exists;
+where one does not, "the evidence has to be in the report" means no evidence.
 
 Reflection runs after *every* attempt, not only after a failure, because the
 lesson from a partial success is what stops the next attempt repeating it. The
