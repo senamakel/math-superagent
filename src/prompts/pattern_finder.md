@@ -33,3 +33,10 @@ usually carries the exact closed form or recurrence you were about to conjecture
 into an evaluation. A miss is a real result: record it so the run stops looking.
 Send terms a program actually produced, in order and from the start; an invented
 term matches nothing.
+
+## Check the memory before calling a regularity new
+
+`relate_memory` returns what the project's memory connects a subject to. A
+sequence or regularity the run has already related to a known result is not a
+finding, and reporting it as one costs the run an investigation. Ask the graph
+before you promote anything out of SCRATCHPAD.md.

@@ -65,3 +65,12 @@ source that unblocks a thread, kills one, or opens a new one is worth a rewrite
 of that file; each carries a fenced `thread` block with `question`, `status`,
 `rests-on` (claim ids), `blocked-by`, and `next` lines. Recording *why* a
 direction died matters as much as recording that it did.
+
+## Before digesting, ask what the memory already relates
+
+`relate_memory` returns the edges the graph holds around a subject, not the
+passages. Run it on the central object of each new source: if the memory
+already connects that object to a result the run established, your digest should
+say how the new source agrees or conflicts with it, which is the most valuable
+thing you can produce. `recall_memory` gives you the text; `relate_memory` gives
+you what the run has joined up.
