@@ -1,0 +1,2 @@
+# canonical graph6 of every pow2-free lobe L = H-e+v, H connected cubic
+# n_H range: 4..14; columns: n_H | order | graph6 | cycle-length-set
