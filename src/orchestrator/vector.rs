@@ -1,4 +1,16 @@
-//! Cognee-backed durable brain and project-scoped session memory.
+//! Cognee-backed durable brain, project-scoped session memory, and the run's
+//! provisional scratch.
+//!
+//! Three stores, and the separation between them is the point. The brain holds
+//! what survived checking and every project reads it. The session dataset holds
+//! this project's completed agent runs. The *scratch* holds the half-finished
+//! arithmetic a run produces on the way to a result — what `SCRATCHPAD.md` used
+//! to be — and it is deliberately not reachable from `recall_memory` or
+//! `relate_memory`: provisional work is not durable knowledge, and a
+//! half-finished calculation surfacing as one is how a run comes to believe
+//! something nobody verified. It is also not the knowledge graph. The graph
+//! answers what the run's entities are connected to; the scratch answers what
+//! this run was in the middle of, which no amount of graph traversal recovers.
 
 use async_trait::async_trait;
 use serde_json::{Value, json};
@@ -9,6 +21,13 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 const BRAIN_DATASET: &str = "math_agent_brain";
 const SESSION_DATASET_PREFIX: &str = "math_agent_sessions__";
 
+/// The prefix of the per-project dataset holding provisional work.
+///
+/// Scoped to the *project* rather than the run, for the reason recorded on
+/// [`VectorStore::from_env`]: `./euler 763` continues from what is on disk, and
+/// a scratch that vanished on restart would be worse than the file it replaces.
+const SCRATCH_DATASET_PREFIX: &str = "math_agent_scratch__";
+
 #[derive(Clone, Debug)]
 pub(super) struct VectorStore {
     client: reqwest::Client,
@@ -16,6 +35,7 @@ pub(super) struct VectorStore {
     project: String,
     session: String,
     session_dataset: String,
+    scratch_dataset: String,
 }
 
 impl VectorStore {
@@ -41,6 +61,26 @@ impl VectorStore {
         limit: u64,
     ) -> Result<Option<String>> {
         let datasets = self.recall_datasets().await?;
+        self.search_in(datasets, query, search_type, limit).await
+    }
+
+    /// Runs one search against exactly the datasets named.
+    ///
+    /// Split from [`VectorStore::search`] so the scratch can be read without
+    /// being listed among the datasets durable recall reaches. Sharing the
+    /// request is what keeps a correction to one from drifting from the other.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when Cognee is unreachable, refuses the request, or
+    /// answers with something other than a JSON array.
+    async fn search_in(
+        &self,
+        datasets: Vec<String>,
+        query: &str,
+        search_type: &str,
+        limit: u64,
+    ) -> Result<Option<String>> {
         if datasets.is_empty() {
             return Ok(None);
         }
