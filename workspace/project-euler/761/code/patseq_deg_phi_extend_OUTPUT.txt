@@ -1,12 +1,10 @@
 n   K  deg  phi(n)  match    method   poly(cos 2a)
 ----------------------------------------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/workspace/code/patseq_deg_phi_extend.py", line 100, in <module>
-    main()
-  File "/workspace/code/patseq_deg_phi_extend.py", line 94, in main
-    print(f"{n:2d}  {K}  {d:3d}  {phi:5d}  {str(d == phi):>5}  "
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 394, in __format__
-    return super().__format__(format_spec)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: unsupported format string passed to Integer.__format__
+ 3  1    2      2   True    exact   16*x**2 + 4*x - 11   [0s]
+ 4  1    2      2   True    exact   25*x**2 + 15*x - 8   [0s]
+ 5  2    4      4   True    exact   9604*x**4 + 13034*x**3 - 5341*x**2 - 12236*x - 3461   [1s]
+ 6  2    2      2   True    exact   64*x**2 + 8*x - 47   [0s]
+ 7  3    6      6   True    exact   1000000*x**6 + 2400000*x**5 + 650000*x**4 - 2332000*x**3 - 1829400*x**2 - 63860*x + 183541   [1s]
+ 8  3    4      4   True    exact   29282*x**4 + 47916*x**3 - 6655*x**2 - 41646*x - 16353   [0s]
+ 9  3    6      6   True    exact   331776*x**6 + 414720*x**5 - 373248*x**4 - 462528*x**3 + 158688*x**2 + 126612*x - 38411   [0s]
+10  4    4      4   True    exact   38416*x**4 + 43904*x**3 - 29204*x**2 - 42056*x - 7339   [1s]

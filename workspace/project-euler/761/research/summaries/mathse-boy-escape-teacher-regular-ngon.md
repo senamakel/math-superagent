@@ -46,7 +46,7 @@ Safe-region choices give lower bounds on v (not the true value):
 
 ```claim
 id: stewbasic-regular-ngon-cutoff
-statement: For a regular n-gon pool, the critical speed ratio is lambda = 1/cos(alpha) with theta=pi/n, K = largest integer with sin(K*theta) - (K+n)tan(theta)cos(K*theta) < 0, alpha = 1/2(K*theta + arccos(2 sin(K*theta)/((K+n)tan(theta)) - cos(K*theta))). For n=4 this gives 5.7886; n=6 gives lambda = 1/cos(1/2(pi/3 + arccos(-1/8))) ~ 5.0549 (hexagon, the PE 761 answer).
+statement: For a regular n-gon pool, the critical speed ratio is lambda = 1/cos(alpha) with theta=pi/n, K = largest integer with sin(K*theta) - (K+n)tan(theta)cos(K*theta) < 0, alpha = 1/2(K*theta + arccos(2 sin(K*theta)/((K+n)tan(theta)) - cos(K*theta))). For n=4 this gives 5.7886; n=6 gives lambda = 1/cos(1/2(pi/3 + arccos(-1/8))) = 2 + 2*sqrt21/3 ~ 5.05505046 (hexagon, the PE 761 answer) [earlier draft wrote 5.0549; that digit was a slip — the exact V^2 = (40+8sqrt21)/3, V = 5.0550504633].
 hypotheses: regular n-gon, boy at centre, teacher constrained to boundary moving at speed v; escape = reach a boundary point the teacher is not at; theta=pi/n.
 holds-here: yes — identical structure to PE 761 (swimmer centre, runner boundary); hexagon is n=6.
 status: asserted (Math.SE answer, not peer-reviewed) but strong numeric agreement: reproduces square oracle 5.78859314 two independent ways, recovers circle limit 4.6033.
