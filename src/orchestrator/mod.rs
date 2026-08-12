@@ -283,7 +283,7 @@ impl OrchestratorAgent {
         let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> = Arc::new(
             checkpoint::WorkspaceCheckpoint::new(workspace.clone(), Some(tracer.clone())),
         );
-        let prompts = RolePrompts::load(&workspace)?;
+        let mut prompts = RolePrompts::load(&workspace)?;
 
         let vector_store = VectorStore::from_env()?;
         let SearchTools { exa, oeis } = search_tools(research_enabled, &documents)?;
@@ -1070,15 +1070,15 @@ pub fn prompt_report(workspace: &Path) -> Result<String> {
 impl RolePrompts {
     /// The roles carrying shell and file-write authority, paired with their
     /// prompts, in the order they are registered.
-    fn code_writers(self) -> [(&'static str, String); 7] {
+    fn code_writers(&mut self) -> [(&'static str, String); 7] {
         [
-            ("tool_builder", self.tool_builder),
-            ("coder", self.coder),
-            ("sat_solver", self.sat_solver),
-            ("smt_solver", self.smt_solver),
-            ("theorem_prover", self.theorem_prover),
-            ("symbolic_math", self.symbolic_math),
-            ("lean_prover", self.lean_prover),
+            ("tool_builder", std::mem::take(&mut self.tool_builder)),
+            ("coder", std::mem::take(&mut self.coder)),
+            ("sat_solver", std::mem::take(&mut self.sat_solver)),
+            ("smt_solver", std::mem::take(&mut self.smt_solver)),
+            ("theorem_prover", std::mem::take(&mut self.theorem_prover)),
+            ("symbolic_math", std::mem::take(&mut self.symbolic_math)),
+            ("lean_prover", std::mem::take(&mut self.lean_prover)),
         ]
     }
 

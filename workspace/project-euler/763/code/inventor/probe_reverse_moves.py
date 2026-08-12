@@ -4,10 +4,7 @@ legitimate reverse moves: empty p (p not in C) with children(p) all in C, and
 their level.  This shows whether the true reverse structure is a clean top-cap
 collapse or a lower-level balancing move (voidance/folded-polyominoid picture).
 """
-from lib.amoeba import forward_level, children
-
-def lvl(p):
-    return sum(p)
+from lib.amoeba import forward_level, children, lvl
 
 def reverse_moves(S):
     Sset = set(S)
