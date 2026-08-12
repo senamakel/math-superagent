@@ -196,4 +196,6 @@ def main(maxn, outdir, resume_from=None, resume_n=0):
 if __name__ == "__main__":
     maxn = int(sys.argv[1]) if len(sys.argv) > 1 else 24
     outdir = sys.argv[2] if len(sys.argv) > 2 else "/workspace/code/out/expansion_census"
-    main(maxn, outdir)
+    resume_from = sys.argv[3] if len(sys.argv) > 3 else None
+    resume_n = int(sys.argv[4]) if len(sys.argv) > 4 else 0
+    main(maxn, outdir, resume_from=resume_from, resume_n=resume_n)
