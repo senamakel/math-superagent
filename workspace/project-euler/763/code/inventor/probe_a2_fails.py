@@ -10,7 +10,7 @@ Prints, for N=1..5, the configs whose top set is not a unique single cap, with
 their top set and all near-miss parents, so we can see the actual geometry of
 the failure.
 """
-from lib.amoeba import forward_level, children, lvl, top_caps
+from lib.amoeba import forward_level, lvl, top_caps
 
 def top_caps_packed(S):
     M = max(lvl(p) for p in S)
