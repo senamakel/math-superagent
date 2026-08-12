@@ -246,6 +246,88 @@ The loop is the only execution path. Do not add a single-turn mode back: it
 differed only in discarding the reflection, and a switch between them is one
 more thing to get wrong.
 
+## Direction from a human
+
+Until this existed a run was closed once it started. It was launched with argv,
+nothing read standard input or watched a control file, the budget variables were
+read at launch, and every role's system prompt was assembled once — so editing
+`GOAL.md` on the host mid-run changed nothing, because the file had already been
+read into every system message that would ever be sent. Someone watching a run
+take a wrong turn could only keep watching.
+
+A directive is the input that was missing. `./steer` and the `i` key in
+`./euler-tui` both call `math_agent::directives::enqueue`, which appends one
+JSON object to `config/directives.jsonl` in the workspace the container has
+mounted. That mount is the only thing crossing the sandbox boundary, and it is
+worth keeping that way: an inbound port would be the first hole in a container
+that drops every capability, runs a read-only root filesystem, and mounts
+exactly one directory, and it would buy nothing a file does not already give.
+
+The queue has one writer on each side. The host only ever appends to
+`directives.jsonl`; the runtime only ever writes `config/.directives-cursor`,
+which counts the lines it has consumed. Neither side needs a lock because
+neither writes what the other writes, and the one number they share is owned by
+the side that advances it. A directive's identifier is its line number rather
+than a stored field, so a line the reader cannot parse is skipped *and still
+counted* — a torn append, which a checkpoint commit landing mid-write could
+produce, costs one directive rather than the alignment of every later one.
+
+### Two deliveries, deliberately unequal
+
+Nothing waits for a person. That is the same decision the `Mailbox` records for
+the pattern team — a live run spent 56 of its 74 minutes unable to start its
+second attempt because a support agent had been made a gate — and a human is
+slower than any support agent, so a loop that blocked on one would be that
+failure with no ceiling at all.
+
+**Verbatim, to the next attempt.** The `director` team drains the queue and
+posts the text, unchanged, to a second `Mailbox`. `attempt_step` collects it and
+`direction_briefing` renders it above the judge's steer, labelled as coming from
+the operator and as taking precedence. The attempt is the only collector, unlike
+the pattern mailbox that reflection drains as well: reflection folds what it
+collects into `fresh_context`, which reaches the next attempt as *material
+gathered* rather than as an instruction, and losing that distinction would lose
+the only thing this channel exists to carry.
+
+**Interpreted, to the workspace.** The same drain then runs the `director`
+agent, which reads the workspace and changes the files that decide what happens
+next — `TASKS.md`, a thread under `research/threads/`, `CONTEXT.md`, a
+`request_research`. Those edits reach the other standing teams for free, because
+they already gate on workspace fingerprints. The ordering matters: the mailbox
+is posted *before* the agent runs, so the next attempt gets what was typed even
+when the director's own model call fails. A directive is the one input to a run
+that cannot be regenerated.
+
+### What it deliberately cannot do
+
+- **Change routing.** `route` stays a pure function of state, and the
+  `SOLVED`-needs-a-program evidence gate is untouched. A human cannot force
+  diversification, reject a verdict, or end the run through this channel.
+- **Become a claim.** A directive is asserted, never established. The `director`
+  is not given `research/CLAIMS.md`, so the role acting on an unevidenced
+  instruction is not also holding the evidence ledger.
+- **Compute.** No shell, no `write_tool_file`, no delegation. A role that could
+  both reinterpret the goal and run programs against it would be a second
+  investigation answering to nobody.
+- **Redirect an attempt already in flight.** Delivery is at the attempt
+  boundary, and a live attempt has run forty minutes. The director's file edits
+  are the mitigation — they land within a team cycle and are visible to any role
+  that reads the workspace. Reaching further would mean driving
+  `AsyncSubagentManager::steer` from outside the run, which holds no handle for
+  it today.
+
+The director's `TeamBudget::attentive()` is the one allowance shaped by waiting
+rather than working: every cycle counts including idle ones, so a custodial
+forty-cycle budget would have retired the team thirteen minutes into an
+eight-hour run with nothing saying direction had stopped being read. What bounds
+its spending instead is `directives_waiting`, a file read in front of the model
+call — the same shape as the fingerprint gates beside it.
+
+`config/DIRECTIVES.md` records every directive and what became of it, including
+a cycle that failed. On a channel that never blocks that receipt is not
+decoration: without it an operator cannot tell "not picked up yet" from
+"silently dropped", and only one of those needs acting on.
+
 ## Failure handling
 
 A recoverable tool failure must never end a run. Tools are registered through

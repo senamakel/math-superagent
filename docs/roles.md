@@ -1,12 +1,12 @@
 # Roles, adapters, and what each one can reach
 
-The fourteen roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+The fifteen roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
 ## Expected problem-solving behavior
 
-The runtime has fourteen roles plus an explicit solution loop.
+The runtime has fifteen roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -186,6 +186,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | inventor | `GOAL.md`, `research/THREADS.md`, `research/CLAIMS.md`, `CONTEXT.md` |
 | scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
 | context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `CONTEXT.md` |
 | organizer | none — it falls through to the empty default |
 
 That table is what `role_context` returns today, and it is narrower than what
