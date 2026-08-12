@@ -784,6 +784,11 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "search_claims",
         "request_research",
     ];
+    // Every reasoning role's two ways back into what is already known: this
+    // workspace's own record, and the note store that outlives it. They are
+    // listed together because a caller deciding who to delegate to is asking
+    // one question — can this role find out what the run already has.
+    let memory_tools = ["search_workspace", "recall_research"];
     let mut registry = AgentRegistry::new();
     registry.register(
         AgentDefinition::new(
