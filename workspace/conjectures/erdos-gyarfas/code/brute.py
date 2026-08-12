@@ -1,85 +1,35 @@
-"""Naive oracle for the Erdos-Gyarfas conjecture.
+"""Naive oracle demo and worked-example harness for Erdos-Gyarfas.
 
-Given a graph, return:
-  * its minimum degree, and
-  * the exact set of its simple-cycle lengths.
+This file uses to be a third, independent copy of the DFS cycle-length oracle
+(alongside lib/oracle.py and lib/cycles.py) plus the hand-built worked examples.
+Under consolidation the compute-cores now import from the single shelved
+definition `lib.cycles` (via the adjacency-list convenience layer lib/oracle),
+so every answer on this run comes from one code path. This file keeps its
+other job: building the hand-worked graphs (K4, K3,3, Petersen, cube Q3) and
+printing the oracle's answer for each, the verification demo of the run.
 
-The cycle-length enumeration is the naive, obviously-correct method: walk every
-simple cycle by DFS and dedupe on the set of vertices on the cycle (which
-determines the cycle uniquely in a simple graph). It is exponential in the
-worst case, so it is only meant for the small sizes of the worked examples --
-not for anything near the verification bound. Exact integer arithmetic; no
-floating point anywhere.
+The graphs are built by hand so the answers can be stated independently of any
+library; the values match what lib/cycles.py returns (see also
+code/verify_cycles.py and code/eg/hand_dfs_check.py).
 
-Inputs accepted:
-  * an adjacency list (list of lists of ints), or
-  * a networkx Graph, or
-  * a graph6 byte string (as produced by nauty-geng).
-
-Checks by hand against the worked examples:
-  * K4       : min degree 3, cycle lengths {3, 4}
-  * K3,3     : min degree 3, cycle lengths {4, 6}
-  * Petersen : min degree 3, girth 5, cycle lengths {5, 6, 8, 9}
-  * cube Q3  : min degree 3, cycle lengths {4, 6, 8}
+Exact integer arithmetic; no floating point anywhere. The cycle-length
+enumeration (inside lib/cycles) is exponential in the worst case, so this is
+only for the small worked examples, not the verification bound.
 """
 
 from __future__ import annotations
 
-
-def minimum_degree(adj):
-    """Minimum vertex degree of the adjacency-list graph."""
-    return min(len(neigh) for neigh in adj)
-
-
-def cycle_lengths(adj):
-    """The exact set of simple-cycle lengths, by naive DFS enumeration."""
-    n = len(adj)
-    lengths = set()           # lengths discovered so far
-    seen_cycles = set()       # frozenset of vertices on each simple cycle
-
-    for start in range(n):
-        # stack holds (current node, path from start to current)
-        stack = [(start, [start])]
-        while stack:
-            node, path = stack.pop()
-            for w in adj[node]:
-                if w == start and len(path) >= 3:
-                    # path from start back to start is a simple cycle
-                    seen_cycles.add(frozenset(path))
-                elif w not in path:
-                    stack.append((w, path + [w]))
-
-    return {len(c) for c in seen_cycles}
-
-
-def powers_of_two_cycle_lengths(cycle_lengths_set, min_k=2):
-    """Which cycle lengths are powers of two (2^k, k >= min_k)."""
-    k = min_k
-    p = 1 << k
-    out = set()
-    while p <= max(cycle_lengths_set, default=0):
-        if p in cycle_lengths_set:
-            out.add(p)
-        k += 1
-        p = 1 << k
-    return out
+from lib.oracle import (
+    minimum_degree,
+    cycle_lengths,
+    powers_of_two_cycle_lengths,
+    from_graph6,
+)
 
 
 def has_power_of_two_cycle(cycle_lengths_set, min_k=2):
     """Whether any cycle length is a power of two (2^k, k >= min_k)."""
     return bool(powers_of_two_cycle_lengths(cycle_lengths_set, min_k))
-
-
-def from_graph6(g6):
-    """Adjacency list from a graph6 byte string (single graph)."""
-    import networkx as nx
-    G = nx.from_graph6_bytes(g6 if isinstance(g6, bytes) else g6.encode("ascii"))
-    return [sorted(G.neighbors(v)) for v in range(G.number_of_nodes())]
-
-
-def from_networkx(G):
-    """Adjacency list from a networkx Graph (vertices 0..n-1)."""
-    return [sorted(int(w) for w in G.neighbors(v)) for v in range(G.number_of_nodes())]
 
 
 def report(adj, name):
