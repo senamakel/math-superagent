@@ -629,8 +629,8 @@ fn an_oracle_that_was_never_run_is_reported_to_the_judge() -> std::io::Result<()
     std::fs::create_dir_all(root.join("code/out"))?;
     std::fs::write(root.join("code/brute.py"), "# obviously correct\n")?;
     std::fs::write(root.join("code/solution.py"), "# fast and unchecked\n")?;
-    assert!(super::oracle_unchecked(&root));
-    assert!(evidence_briefing(&root).contains("nothing in `code/out/` records the oracle"));
+    assert!(super::oracle_unchecked(&root, &super::captured_outputs(&root)));
+    assert!(evidence_briefing(&root).contains("no captured output records the oracle"));
 
     // Capturing a run of it clears the fault: the check asks whether anything
     // records the oracle, which is a count, not a judgement about agreement.
@@ -638,7 +638,7 @@ fn an_oracle_that_was_never_run_is_reported_to_the_judge() -> std::io::Result<()
         root.join("code/out/brute_n8.txt"),
         "brute.py -> 9 terms below 1e8\n",
     )?;
-    assert!(!super::oracle_unchecked(&root));
+    assert!(!super::oracle_unchecked(&root, &super::captured_outputs(&root)));
     Ok(())
 }
 
@@ -651,12 +651,12 @@ fn an_oracle_with_no_rival_and_a_rival_with_no_oracle_are_both_quiet() -> std::i
 
     // Only the oracle: nothing faster exists to be wrong.
     std::fs::write(root.join("code/brute.py"), "# the oracle\n")?;
-    assert!(!super::oracle_unchecked(&root));
+    assert!(!super::oracle_unchecked(&root, &super::captured_outputs(&root)));
 
     // Only a fast program: a missing oracle is a different fault, and
     // `oracle_prompt` is what addresses it.
     std::fs::remove_file(root.join("code/brute.py"))?;
     std::fs::write(root.join("code/solution.py"), "# fast\n")?;
-    assert!(!super::oracle_unchecked(&root));
+    assert!(!super::oracle_unchecked(&root, &super::captured_outputs(&root)));
     Ok(())
 }
