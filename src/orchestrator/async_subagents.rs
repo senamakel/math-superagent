@@ -48,13 +48,16 @@ static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 /// The follow-up is fire-and-forget. The caller's `await_agent` returns as soon
 /// as the triggering run itself is done, because housekeeping must not sit on
 /// the critical path of an investigation waiting for its result.
-const FOLLOW_UPS: [(&str, &[FollowUpStep]); 5] = [
+const FOLLOW_UPS: [(&str, &[FollowUpStep]); 8] = [
     ("tool_builder", &[ORGANIZE_AFTER_TOOLS]),
     // The coder and the SAT solver write into the same tree and leave it in
     // the same state; a program filed under `code/` with no row describing it
     // is undescribed whichever role wrote it.
     ("coder", &[ORGANIZE_AFTER_TOOLS]),
     ("sat_solver", &[ORGANIZE_AFTER_TOOLS]),
+    ("smt_solver", &[ORGANIZE_AFTER_TOOLS]),
+    ("theorem_prover", &[ORGANIZE_AFTER_TOOLS]),
+    ("symbolic_math", &[ORGANIZE_AFTER_TOOLS]),
     ("lean_prover", &[ORGANIZE_AFTER_TOOLS]),
     (
         "research",
