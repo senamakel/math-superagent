@@ -93,18 +93,34 @@ such and re-attempted.
 
 ## Status
 
-- [ ] FRONTIER.md top-tier downloads
-- [ ] Erdos-problems #64 source download
-- [ ] Bondy–Vince located and downloaded
-- [ ] Erdős–Faudree–Rousseau–Schelp located and downloaded
-- [ ] Sudakov–Verstraëte forward citations mapped
-- [ ] Markström original computational notes downloaded
-- [ ] Royle original computational notes downloaded
-- [ ] Gould's cycle survey located and downloaded
-- [ ] Girth/degree extremal literature surveyed
-- [ ] Daniel–Shauger 2001 actual paper downloaded
-- [ ] Shauger 1998 actual paper downloaded
-- [ ] Nowbandegani–Esfandiari 2011 downloaded
-- [ ] Verstraëte 2005 verified as full paper
-- [ ] Exoo catalog retried (Wayback)
-- [ ] West open-problems retried (Wayback)
+- [x] FRONTIER.md top-tier downloads (worked; Litmaps/Modal/OEIS refs are tool/sequence pages, not sources)
+- [x] Erdos-problems #64 / #751 source download (`research/sources/erdosproblems-64-source.md`; the UCSD PowerOfTwoCycles original statement was already on disk via Wayback, read)
+- [x] Bondy–Vince located and downloaded (`research/sources/bondy-vince-cycles-lengths-differ-one-two.full.md` + summary) — Thm 1: every graph with ≤2 vertices of degree <3 (except K1,K2) has two cycles differing by 1 or 2; Thm 2: nonbipartite 3-connected has two differing by 1
+- [ ] Erdős–Faudree–Rousseau–Schelp (1999) — located (Discrete Math 200:55-60, lower bound c·k·g/8 on # cycle lengths); Memphis PDF returned 403, no full text on disk; secondary sources hold the statement
+- [x] q-power construction landscape — Bensmail 2017 downloaded (`research/sources/bensmail-q-power-cycles-cubic.full.md`): arbitrarily large planar cubic graphs with no q-power cycle for every q≥3; for q=2 only length-4-only or 8-only constructions exist
+- [x] Pirzada–Shah–Baskoro 2022 downloaded (`research/sources/pirzada-shah-baskoro-2-power-unicyclic-cubic.full.md`): infinite family of cubic graphs with exactly one 2-power cycle
+- [x] Ghaffari–Mostaghim 2018 Cayley downloaded (preview; `research/sources/ghaffari-mostaghim-cayley-erdos-gyarfas.full.md`): EG holds for Cayley on generalized quaternion/dihedral/semidihedral/p^3 groups
+- [x] Hu–Shen P10-free downloaded (`research/sources/hu-shen-P10-free-erdos-gyarfas.full.md`): every P10-free graph with δ≥3 has a C4 or C8
+- [x] Markström original computational notes — already on disk (`research/sources/markstrom-extremal-graphs.full.md`); confirmed while cross-checking
+- [x] Royle original computational notes — already on disk (`research/sources/royle-2n-conjecture.md`)
+- [ ] Gould's cycle survey — not located as an open PDF; the adjacent-theory gap is instead covered by Bondy–Vince + Gao–Huo–Liu–Ma unified + Liu–Ma cycle-lengths-min-degree (all on disk) + Marczyk 2008 survey (Disc. Math. 454) identified, not downloaded
+- [x] Girth/degree extremal literature — EFRS 1999 statement captured; Sudakov–Verstraëte 2008 (on disk) proves Erdős's |C(G)|=Ω(d^⌊(g-1)/2⌋) conjecture
+- [ ] Daniel–Shauger 2001 actual paper — only search results on disk, not the paper (conference proceedings, no free PDF found)
+- [ ] Shauger 1998 actual paper — only search results on disk
+- [x] Nowbandegani–Esfandiari claw-free — already on disk (`research/sources/nowbandegani-clawfree.full.md`)
+- [ ] Verstraëte 2005 — only summary on disk (`research/summaries/verstraete-2005.md`); full JGT paper paywalled
+- [ ] Exoo catalog retried (Wayback) — not retried this cycle
+- [ ] West open-problems retried (Wayback) — not retried this cycle
+
+## What this cycle added (librarian run)
+
+Full primary texts now on disk for six new sources covering the adjacent
+machinery (Bondy–Vince), the original statement context (Erdős problems #751),
+the counterexample-construction landscape (Bensmail q-power, Pirzada 2-power
+unicyclic), and two more settled restricted classes (Cayley graphs, P10-free).
+All summarized with claim blocks; CLAIMS.md and THREADS.md re-derived.
+Remaining thinnest spots for a later cycle: EFRS 1999 full text (403-blocked),
+Daniel–Shauger 2001 and Shauger 1998 (conference proceedings, no free PDF),
+Verstraëte 2005 full text (paywalled), and a dedicated EG survey (Shah–
+Purohit–Gulzar 2017 "A survey and strengthening..." identified but not
+downloaded).
