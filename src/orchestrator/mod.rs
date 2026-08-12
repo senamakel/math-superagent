@@ -582,6 +582,48 @@ impl OrchestratorAgent {
 /// up forever on its own notes.
 const RESULT_FOLDERS: [&str; 2] = ["code/out", "code"];
 
+/// What the organizer writes, and therefore what its own idleness check must
+/// ignore.
+///
+/// The organizer rewrites `INDEX.md` in every folder it files. Fingerprinting
+/// the tree without excluding them means every cycle sees a changed workspace —
+/// the one it just changed — so the team wakes itself forever on its own
+/// filing. It is the `SCRATCHPAD.md` lesson from the pattern team, one folder
+/// wider.
+const FILED_EXCLUDED: [&str; 1] = ["INDEX.md"];
+
+/// Whether the workspace has changed since the organizer last filed it.
+///
+/// Same argument as [`results_unchanged`], and the same evidence. Filing is
+/// cheap to *do* and expensive to *decide*: an organizer asked to notice that
+/// nothing has changed must walk the workspace and spend a model call to
+/// discover it, which is most of what a working cycle costs. Two live runs spent
+/// 49% and 38% of every model call they made on the organizer, against 11% and
+/// 4% on the agent actually solving the problem — and the indexes still carried
+/// undescribed rows, so the budget did not even buy the filing.
+///
+/// The gate is shared between the standing team and the follow-up that fires
+/// after a code-writing run, because they file the same tree: two separate
+/// fingerprints would each see the other's work as new and wake each other.
+///
+/// An empty workspace reads as unchanged, so a run that has produced nothing
+/// idles rather than indexing empty folders.
+fn filing_unchanged(
+    workspace: &Path,
+    filed: &Arc<std::sync::Mutex<Option<u64>>>,
+) -> Option<teams::Cycle> {
+    if !workspace.is_dir() {
+        return Some(teams::Cycle::Idle);
+    }
+    let current = teams::fingerprint_excluding(workspace, &FILED_EXCLUDED);
+    let mut seen = filed.lock().ok()?;
+    if *seen == Some(current) {
+        return Some(teams::Cycle::Idle);
+    }
+    *seen = Some(current);
+    None
+}
+
 /// Whether the run's computed results are the same as last time this looked.
 ///
 /// Returns the cycle outcome to report when there is nothing new, and `None`
