@@ -92,6 +92,18 @@ services:
       GRAPH_DATABASE_PASSWORD: cognee-local
       REQUIRE_AUTHENTICATION: "false"
       ENABLE_BACKEND_ACCESS_CONTROL: "false"
+      # Lets `/api/v1/add` and `/api/v1/remember` take a URL as well as an
+      # uploaded file, so a source can be handed over by reference rather than
+      # by bytes. The download path does not use it — the runtime has the bytes
+      # already, and a URL would skip the 5 MiB bound, the frontier's fetch
+      # ledger, and the `raw/` archive — but the memory server is shared, and
+      # this stack must match the one actually serving the box.
+      #
+      # Note what it grants: the *server* performs the fetch, from inside the
+      # Docker network, where the runtime container's egress rules do not
+      # apply. Keep the API bound to 127.0.0.1, as the port mapping below does;
+      # that binding is what stops the fetch being reachable from off-box.
+      ALLOW_HTTP_REQUESTS: "true"
       UI_APP_URL: http://localhost:3000
     ports:
       - "127.0.0.1:8000:8000"
