@@ -534,17 +534,17 @@ fn the_research_team_gathers_by_default_and_never_retires() {
     // `Attainable` that retired it permanently. All four live runs lost their
     // research team inside ninety seconds and ran for hours with zero
     // `exa_search` calls.
-    let research = super::teams::definitions()
+    let (_, _, completion, _, brief) = super::standing_teams()
         .into_iter()
-        .find(|team| team.name == "research")
+        .find(|(name, ..)| *name == "research")
         .expect("the research team is registered");
 
     assert_eq!(
-        research.completion,
+        completion,
         super::teams::Completion::Standing,
         "one quiet cycle must pause the team, not end it"
     );
-    let brief = research.brief.to_ascii_lowercase();
+    let brief = brief.to_ascii_lowercase();
     assert!(
         brief.contains("exa_search"),
         "the strongest search instrument must be named, or it stays unused"
@@ -553,8 +553,8 @@ fn the_research_team_gathers_by_default_and_never_retires() {
         !brief.contains("mostly means not adding to it"),
         "the brief must not open by discouraging the team's own job"
     );
-    // The guard against inventing URLs, which is what a role without search
-    // does when told to fetch.
+    // The guard against inventing URLs, which is what a role told to fetch does
+    // when it cannot search.
     assert!(
         brief.contains("never download a url you have not seen"),
         "a fetch of an invented address succeeds and stores the wrong paper"
