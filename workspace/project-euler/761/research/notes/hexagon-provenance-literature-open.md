@@ -57,6 +57,23 @@ value is reported, its provenance must be stated as formula-derived +
 closed-form-confirmed, single-route, with the note that the peer-adjacent
 literature flags n>4 as open.
 
+## Confirmed again on the librarian pass (this run)
+
+A fresh web/arXiv search (research papers, 2020–2025) for an exact regular-n /
+hexagon critical speed found **no** source that settles the hexagon beyond the
+stewbasic Math.SE formula: the only hits were Escaping a Polygon
+(arXiv:2007.08965v3, Oct 2025), the Hesterberg thesis, and unrelated
+microswimmer/pursuit-robotics work. The value stays **single-route**.
+
+An `oeis_lookup` on the hexagon constant's leading digits
+[5,0,5,5,0,5,0,4,6] returns **no matching catalogued sequence**, consistent
+with the earlier decimal search (`oeis-search-hexagon-critical-speed.md`).
+The hexagon constant 2+2√21/3 ≈ 5.05505046 is **not** in OEIS (nor is the
+square 5.78859314); only the circle constant is catalogued (A328227, A115365).
+So no OEIS closed form exists to look up; the run's own exact closed form
+2+2√21/3 (code/hexagon_closed_form.py, hexagon_verify_exact.py) is the
+authoritative expression.
+
 ```claim
 id: abel-open-ngon-ngt4
 statement: The exact critical speed ratio for a regular n-gon pursuit-escape game with n>4 (including the hexagon) is left OPEN by Abel et al. arXiv:2007.08965: the paper's strategies for triangle and square generalize but matching escaper strategies were not found, "suggesting these may not be tight"; exact values are given only for disk (4.603), triangle ((3+sqrt5)sqrt2=7.405) and square (sqrt(5/2(7+sqrt41))=5.789).
