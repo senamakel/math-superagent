@@ -46,6 +46,12 @@ n boats, starting positions p_j = 40(j−1) (j=1 lowest, downstream), finish lin
 - `recall_memory` / `relate_memory` / `search_claims` return **no PE597 entries** — durable memory holds only other problems (PE185, PE346). Agents must not expect cross-run memory to answer PE597 questions; this run's durable store is `MEMORY.md` (full record of every refutation + all exact values), with `GOAL.md` (full model restatement + oracle table) and `TASKS.md` (status) beside it. Provisional work lives in `SCRATCHPAD.md`; `recall_scratch` empty.
 - Pitfall recorded: uniform-grid sampling v~U(0,1] is NOT the Exp(1) measure and its parity counts converge to 0.5, not to p(n,L) — matching MC to exact values requires true Exp(1) draws.
 
+## Research synthesis of the gap (L2.0 seal + `research/torpids_exact_combinatorics_report.md`)
+
+- A literature survey found **no known polynomial closed recursion** for the finite-finish-line final-order parity — the finish event (inverse-exponential, non-constant hazard) is the entire obstruction, and no standard theory (order statistics, Plackett–Luce, platoon, ballistic aggregation) covers it fully.
+- **Pure race (no finish line)** IS classical 1D ballistic aggregation: final bump clusters = segments of the convex minorant of the walk (steps (1,v_j)); cluster-size distribution = cycles of a uniform random permutation (Majumdar–Mallick–Sabhapandit PRE 79 021109, arXiv:0811.0908; convoy leaders = right-to-left record minima, Haghighi-Talab & Wright 1973). This identifies the no-finish object but "local" variant: the convex-minorant block parity does not hand over the finish-line case; it is a warm-up, not the answer.
+- **Disagreement (theory vs. run data):** the combinatorics report argues the separating hyperplane set is O(n²) with O(n⁴) arrangement regions, hence "polynomial in principle"; the run's own enumeration shows n=4→1202 cells, n=5→85 hyperplanes/~13,750 cells, i.e. the practical constant explodes and n=13 via naive exact enumeration is dead. Treat the polynomial bound as a ceiling on faces, not a license to enumerate.
+
 ## Open
 
 Exact p(13,1800) remains **unsolved**. n≤4 is settled exactly; n=5 exceeds the naive arrangement solver; treap/rank reductions are dead. Required: a reduction whose cost scales with n, not with the arrangement (which grows super-exponentially), handling the bump/finish chronology directly. Never search for published answers/forums (invalidates the run).
