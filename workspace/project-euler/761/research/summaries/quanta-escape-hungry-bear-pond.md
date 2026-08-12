@@ -45,5 +45,4 @@ holds-here: yes — this is the run's circle anchor V_circle = 4.60333885, the n
 status: asserted (popular Quanta exposition; the identities match the held Ponder-This/Hesterberg/lady-in-the-lake/OEIS-A328227 derivations).
 bearing: popular-source independent corroboration of the circle mechanism, the red-herring bound, and V_circle; does not give a hexagon value.
 anchor: research/sources/quanta-escape-hungry-bear-pond.full.md
-contradicts: nothing held (agrees with the run's circle model and red-herring note)
 ```

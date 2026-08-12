@@ -28,19 +28,3 @@ Derived from the `claim` blocks in the notes under `research/`, and rewritten wh
 | `spirograph-circle-constant-a328227` | The constant p ≈ 4.60333884875 (the PE 761 circle critical speed V_circle) is the solution of (arccos(1/p)+pi)^2 + 1 = p^2, equivalently p = sqrt(1+x^2) with x the smallest positive root of tan x = x (OEIS A115365); it… | **unchecked** | asserted | `research/summaries/rian-hunter-spirograph-petal-numbers.md` |
 | `stewbasic-regular-ngon-cutoff` | For a regular n-gon pool, the critical speed ratio is lambda = 1/cos(alpha) with theta=pi/n, K = largest integer with sin(K*theta) - (K+n)tan(theta)cos(K*theta) < 0, alpha = 1/2(K*theta + arccos(2… | **unchecked** | asserted | `research/summaries/mathse-boy-escape-teacher-regular-ngon.md` |
 | `tao-square-pool-6x-capture` | In the square pool with the boy at the centre and teacher at a corner, a 6x speed teacher can prevent escape using an inner-square argument; the same setup with a 3x teacher admits escape. The inner square of side 1/6… | **unchecked** | asserted | `research/summaries/mathse-boy-cannot-escape-teacher-tao-square.md` |
-
-## Contradictions
-
-Resolve these before building on either side.
-
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `held` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `(agrees` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `with` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `run's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `circle` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `model` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `and` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `red-herring` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `quanta-circle-two-phase-red-herring` (research/summaries/quanta-escape-hungry-bear-pond.md) contradicts `note)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
