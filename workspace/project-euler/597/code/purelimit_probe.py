@@ -50,6 +50,10 @@ def pure_race_parity(n, speeds):
                     t = (pos[k] - pos[j]) / (vj - vk)
                     if best is None or t < best[0] - 1e-15:
                         best = (t, j, k)
+        if best is None:
+            break   # no rowing boat can catch the next rowing boat ahead:
+                    # speeds along the remaining rowing list are non-decreasing,
+                    # so no bump will ever occur -> no further chain pairs
         t, j, k = best
         state[j] = 1
         pos[j] = pos[k]

@@ -138,6 +138,52 @@ const IGNORED_FRAGMENTS: [&str; 17] = [
     "/about",
 ];
 
+/// Reference works whose own pages link mostly to themselves.
+///
+/// The frontier means "what the sources this run trusts thought worth pointing
+/// at". A paper citing a paper is that. A reference work linking its own
+/// siblings is not: it is an index, and indexes are exhaustive by design.
+///
+/// One OEIS sequence page lists every cross-referenced sequence in its `xref`
+/// field, and a Wikipedia article links hundreds of articles from its body and
+/// navboxes. On a live Project Euler 241 frontier that produced 69 Wikipedia
+/// rows and 30 OEIS rows out of 151 — two thirds of the table — with seventeen
+/// whose entire stated reason was `cross-referenced from A159907`. They tie at
+/// the same citer count and crowd out everything a search would have found.
+///
+/// So for these hosts a link back to the same host is dropped, and a link
+/// *out* is kept. Outbound is the valuable half: a Wikipedia article's
+/// references are papers and DOIs, and those are exactly what the run cannot
+/// reach on its own. The rule is deliberately not "same host is never a
+/// citation" — an arXiv paper citing another arXiv paper is the ordinary case
+/// and must survive.
+const REFERENCE_WORKS: [&str; 4] = [
+    "oeis.org",
+    "wikipedia.org",
+    "mathworld.wolfram.com",
+    "en.wiktionary.org",
+];
+
+/// Returns whether a link is a reference work pointing at itself.
+///
+/// `source` is the page the link was found on. Both are compared by host, so a
+/// language subdomain (`de.wikipedia.org`) counts as the same work as
+/// `en.wikipedia.org`.
+fn indexes_itself(source: &str, target: &str) -> bool {
+    let host = |url: &str| {
+        url.to_ascii_lowercase()
+            .split_once("//")
+            .map_or(String::new(), |(_, rest)| {
+                rest.split('/').next().unwrap_or("").to_string()
+            })
+    };
+    let (from, to) = (host(source), host(target));
+    REFERENCE_WORKS.iter().any(|work| {
+        let is_work = |h: &str| h == *work || h.ends_with(&format!(".{work}"));
+        is_work(&from) && is_work(&to)
+    })
+}
+
 /// One candidate source, as the ledger holds it.
 #[derive(Clone, Debug, Default)]
 struct Candidate {
@@ -181,7 +227,11 @@ pub(super) async fn record(
         .entry(super::readable::clean_url(source_url))
         .or_default()
         .path = stored_path.to_string();
-    for link in links.iter().filter(|link| worth_offering(&link.url)).take(
+    for link in links
+        .iter()
+        .filter(|link| worth_offering(&link.url))
+        .filter(|link| !indexes_itself(source_url, &link.url))
+        .take(
         // Bounded per download rather than globally, so one link-heavy page
         // cannot crowd out the references of every paper beside it.
         MAX_PER_SOURCE,

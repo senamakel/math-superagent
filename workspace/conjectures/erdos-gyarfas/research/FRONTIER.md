@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/Planar_graph | planar | searches found four graphs on 24 vertices in which the only power-of-two cycles have 16 vertices. One of these four graphs is [planar][20]; however, the Erdős–Gyárfás conjecture is now known to be… |
 | 1 | http://www.math.uiuc.edu/~west/openp/2powcyc.html | Erdős Gyárfás Conjecture on 2-power Cycle Lengths | [247671371][38]. ## External links [[edit][39]] - Exoo, Geoffrey, [Graphs Without Cycles of Specified Lengths][40] - West, Douglas B., [Erdős Gyárfás Conjecture on 2-power Cycle Lengths][41], *[Open… |
 
-_280 further candidates not shown; they are cited once each._
+_283 further candidates not shown; they are cited once each._
