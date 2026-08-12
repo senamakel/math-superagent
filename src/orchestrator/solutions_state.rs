@@ -213,6 +213,10 @@ fn wire_routes(
             route,
             [
                 (Route::Solved, "done"),
+                // Terminal too. The run has an answer and has twice said it
+                // cannot build a second route to it; further attempts re-derive
+                // what is already on disk.
+                (Route::Reported, "done"),
                 (Route::Retry, "attempt"),
                 (Route::Diversify, "diversify"),
                 // Same terminal node as a finished run. The loop stops rather
