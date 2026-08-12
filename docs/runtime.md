@@ -359,38 +359,34 @@ a minute of grace. The grace matters: the wait must be the thing that ends, as
 it ends by *returning* the child's state, where a deadline replaces that with an
 error.
 
-Each model turn is capped at 12000 output tokens (`MATH_AGENT_TURN_OUTPUT_TOKENS`).
-Generation time is linear in output length, so an uncapped turn is an uncapped wall clock: a
-measured turn ran to 9,361 tokens and 2.9 minutes, longer ones exceeded seven. It is a safety
-ceiling, not a way to make the model concise: set to 4000 it bound an ordinary turn exactly,
-truncating mid-generation into a retry, 66 seconds to accomplish nothing.
+Each model turn is capped at 48000 output tokens (`MATH_AGENT_TURN_OUTPUT_TOKENS`). Generation
+is linear in output length, so this is also the wall clock for one turn. It was 12000, and that
+number measured the wrong thing: the cap bounds *generated* tokens, and on a reasoning model most
+are never visible. Across 4,180 accounted calls on a live Erdős–Gyárfás run, 77.8% of output
+tokens went to the hidden reasoning channel, and every turn that hit the ceiling read `out=24000`
+with `reasoning_tokens=23999` — one visible token. A 12000 cap was budgeting about 2,600 tokens of
+answer and cutting the model off mid-thought.
 
-The inventor is the exception at 32000 (`RunBudget::for_invention`), the one role whose
-product *is* the long turn: a live 597 inventor was cut off with no tool call, re-issued, and
-reached the same place. The cap must reach both `specialist_harness` and
-`register_with_turn_cap` — the ceiling a cut-off turn grows to, and what the first asks for.
+Raising it costs nothing on the common path, because a cap is not an allowance: over 152 measured
+turns the median was 461 tokens and the 90th percentile 5,352, with 3 turns in 152 reaching the
+cap. Read the share with `reasoning_tokens` in `trace.jsonl`; the console `out=` figure is the
+total and does not separate them.
 
-The retry is upstream `truncated_empty` recovery in `agent_loop/run_loop.rs`:
-when a turn ends with `finish_reason == "length"`, no text, and no tool calls —
-the model spent the whole budget on its hidden reasoning channel — the loop
-re-issues with the cap doubled, clamped at 4x. So a bound turn shows as
-`out=<cap>`, a `model RETRY`, then `out=<2x cap>`. Read that pair as one
-truncation, not as evidence the cap is larger than it is.
+The inventor keeps a 32000 floor (`RunBudget::for_invention`) even though the default now exceeds
+it, so an operator who narrows the cap for a cheap run does not silently reintroduce the
+truncation it was written for. `for_invention` is the one budget method that widens; the rest
+bound authority, which only narrows.
 
-`ReroutingModel` is outermost, so every provider failure passes it once, and it now notes the
-cause and agent on the way past: `AgentEvent::RetryScheduled` carries a call id and an attempt
-but no error, so a live `pattern_finder` retried six times over three minutes with the reason
-recorded nowhere.
+`ReroutingModel` is outermost, so every provider failure passes it once, and it now notes the cause
+and agent on the way past: `AgentEvent::RetryScheduled` carries a call id and an attempt but no
+error, so a live `pattern_finder` retried six times over three minutes with the reason recorded
+nowhere.
 
-`UntruncatedModel` is a second ladder beside that one, covering the shape upstream excludes —
-a turn with text but no tool call. The two share a ceiling rather than compose, so
-`MAX_CAP_GROWTH` is measured from the run's *configured* turn cap, passed with `with_turn_cap`,
-not the cap the request carries: read as an original, a turn upstream had already doubled
-doubled again and a live `goals` reached a 48,000-token re-issue — four times the ceiling,
-against a wrapper documented to allow twice. The inventor's 32000 tops out at 64000. The re-issue also *says why*, appended as a system message
-so it is the most recent thing said: room alone is not the fix, since `cut_off` needs no tool call
-at all and real work emits tool calls, so what arrives is usually an essay and a doubled budget buys a
-longer one — PE236 truncated at 12,000, re-issued at 24,000, wrote nothing for five minutes.
+`UntruncatedModel` covers the shape upstream excludes — a turn with text but no tool call. It
+re-issues once at the *same* cap, carrying a system message saying the last turn produced nothing
+and to call a tool. It used to double the cap instead; the reasoning-channel measurement removed
+that, since a turn spending 23,999 of 24,000 tokens thinking is not short of room, and PE236's
+`tool_builder` truncated at 12,000, was re-issued at 24,000, and wrote nothing for five minutes.
 
 A timeout is a safety ceiling, not permission to run an intractable approach. Before
 substantial execution the tool-builder must state both time and space complexity;
