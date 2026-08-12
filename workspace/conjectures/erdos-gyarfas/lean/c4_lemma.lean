@@ -27,8 +27,9 @@ theorem c4_gives_eg_conclusion {V : Type*} [Fintype V] [DecidableEq V]
     ∃ (k : ℕ) (v : V) (p : G.Walk v v),
       p.IsCycle ∧ p.length = 2 ^ k ∧ 2 ≤ k := by
   rcases h with ⟨v, p, hpcycle, hplen⟩
-  refine ⟨2, v, p, hpcycle, ?_, by norm_num⟩
-  rw [hplen]
-  norm_num
+  refine ⟨2, v, p, hpcycle, ?_, ?_⟩
+  · rw [hplen]
+    norm_num
+  · norm_num
 
 #print axioms c4_gives_eg_conclusion
