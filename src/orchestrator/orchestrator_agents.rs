@@ -321,9 +321,17 @@ fn register_support_agents(
     // The one specialist built on the reasoning model rather than the run's
     // default. Everything else about its harness is the same, so the swap is
     // one argument and is visible here rather than buried in a config table.
+    //
+    // And the one whose turns are allowed to be long. A reasoning model asked
+    // for three lines of attack with the mathematics named in each was being
+    // cut off at the run's 12,000-token cap with no tool call — see
+    // `RunBudget::for_invention`. The widened budget has to reach both the
+    // harness, which sets how far a cut-off turn may be re-issued, and the
+    // registration, which sets what the first attempt asks for.
+    let invention_budget = parts.budget.for_invention();
     let mut inventor = specialist_harness(
         parts.model_for("inventor"),
-        parts.budget,
+        invention_budget,
         "inventor",
         parts.tracer,
     );
