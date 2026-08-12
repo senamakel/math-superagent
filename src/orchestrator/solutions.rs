@@ -982,9 +982,17 @@ pub(super) async fn run(
             let subagents = attempt_agents.clone();
             let tracer = attempt_tracer.clone();
             let workspace = attempt_workspace.clone();
+            let mailbox = attempt_mailbox.clone();
             async move {
                 Ok(NodeResult::Update(
-                    attempt_step(&subagents, tracer.as_ref(), workspace.as_deref(), state).await,
+                    attempt_step(
+                        &subagents,
+                        tracer.as_ref(),
+                        workspace.as_deref(),
+                        &mailbox,
+                        state,
+                    )
+                    .await,
                 ))
             }
         })
