@@ -3,8 +3,9 @@
 Problem: Project Euler **761** — runner/swimmer pursuit-evasion on a regular
 n-gon pool (swimmer at center speed ≤1, runner on boundary at edge-midpoint
 speed ≤v). State of the run: **hexagon value computed to 8 dp via a validated
-formula and reduced to an exact closed form; an independent game-encoding check
-is still NOT built — do not report it as independently verified.** Full
+formula and reduced to an exact closed form; the independent game-encoding
+solver is written (`code/indep_game_encoding.py`) but its run output is NOT
+captured — do not report as independently verified.** Full
 statement: `/workspace/problem.md`.
 
 ## The answer
@@ -135,12 +136,17 @@ its one `claim` block; the notes and programs override it authoritatively.
 
 ## Gaps
 
-The value is computed and exact-closed-form-confirmed. The one honest gap: an
-**independent game-encoding solver** for the hexagon (the thread's listed
-"blocked by"). If a final report is still due it should state 5.05505046, cite
-the stewbasic formula + arXiv paper, give the exact closed form 2+2√21/3, and
+The value is computed and exact-closed-form-confirmed. The one honest gap: the
+**independent game-encoding solver's result is not captured** — `code/indep_game_encoding.py`
+exists (bisection fixed-point g(v)=v, decodes all three oracles, no K/α
+formula) but the scratch record stops at "agent-run-15 still running" and no
+output is in memory, docs, or a file. Next step: run it, record
+circle/square/hexagon agreement, then mark the value independently verified.
+If a final report is due before that, it should state 5.05505046, cite the
+stewbasic formula + arXiv paper, give the exact closed form 2+2√21/3, and
 report the hexagon as formula-derived + exact-closed-form-confirmed but NOT
-yet cross-checked by an independent game-encoding route. Files: `code/solution.py`
-(exact formula), `code/hexagon_closed_form.py` & `code/confirm_hexagon_closedform.py`
-(exact closed form), `code/brute.py circle` (reproduces circle oracle),
+yet cross-checked by the captured independent game-encoding run. Files:
+`code/solution.py` (exact formula), `code/hexagon_closed_form.py` &
+`code/confirm_hexagon_closedform.py` (exact closed form), `code/indep_game_encoding.py`
+(independent solver, unrun), `code/brute.py circle` (reproduces circle oracle),
 `GOAL.md`, `research/threads/hexagon-critical-speed.md`.
