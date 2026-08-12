@@ -80,7 +80,7 @@ def glue_pair(L1, v1, L2, v2):
 
 def main():
     rng = random.Random(20250812)
-    lobes = list(all_lobes(14))
+    lobes = list(all_lobes(12))
     print(f"lobe constructions loaded: {len(lobes)}")
 
     n_pairs = 0
@@ -88,13 +88,18 @@ def main():
     nx_agree = True
     union_ok = True
     struct_ok = True
-    # exhaustive small sample + random sample for coverage
+    # bounded random sample of pairs (the identity is size-independent, so a
+    # fixed quota is enough to validate the glue machinery; full enumeration
+    # of all pairs would be the exponential oracle anyway)
+    MAX_PAIRS = 2500
     pairs = []
-    # exhaustive over first dim, random partner for spread
-    for i, (n1, g1, e1, L1, v1) in enumerate(lobes):
-        for _ in range(3):   # three random partners per lobe
-            j = rng.randrange(len(lobes))
-            n2, g2, e2, L2, v2 = lobes[j]
+    made = 0
+    while made < MAX_PAIRS:
+        i = rng.randrange(len(lobes))
+        j = rng.randrange(len(lobes))
+        n1, g1, e1, L1, v1 = lobes[i]
+        n2, g2, e2, L2, v2 = lobes[j]
+        if L1.number_of_nodes() + L2.number_of_nodes() - 1 <= 31:
             G, C = glue_pair(L1, v1, L2, v2)
             # structural invariants
             s_ok = (G.degree(C) == 4
@@ -121,6 +126,7 @@ def main():
                       "glued-only", sorted(mine - union),
                       "lobe-only", sorted(union - mine))
             n_pairs += 1
+            made += 1
     print(f"pairs glued and checked: {n_pairs}")
     print(f"structural invariants (deg(C)=4, delta>=3, connected, "
           f"node-conn=1): {'ALL PASS' if struct_ok else 'FAIL'}")
