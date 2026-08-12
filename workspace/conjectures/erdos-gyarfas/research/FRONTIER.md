@@ -27,24 +27,24 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 5 | https://info.arxiv.org/about | Learn more | Every Minimal Counterexample to the Erdős–Gyárfás Conjecture is Predominantly Cubic arXiv is now an independent nonprofit! [Learn more][1] × [License: arXiv.org perpetual non-exclusive license][2]… |
 | 5 | https://info.arxiv.org/help/license/index.html#licenses-available | License: arXiv.org perpetual non-exclusive license | Counterexample to the Erdős–Gyárfás Conjecture is Predominantly Cubic arXiv is now an independent nonprofit! [Learn more][1] × [License: arXiv.org perpetual non-exclusive license][2]… |
 | 4 | http://arxiv.org/licenses/nonexclusive-distrib/1.0/ | view license | the Erd\H{o}s-Gy\'arf\'as Conjecture is Predominantly Cubic, by Avery Carr - [View PDF][3] - [HTML (experimental)][4] - [TeX Source][9] [view license][10] ### Current browse context: math.CO [<… |
-| 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Carr,+A | Avery Carr | [Submitted on 13 May 2026] # Title: Every Minimal Counterexample to the Erdős-Gyárfás Conjecture is Predominantly Cubic Authors: [Avery Carr][2] View a PDF of the paper titled Every Minimal… |
-| 2 | http://backend:8080/api/graphs/51419 | — | {"_links":{"self":{"href":"http://backend:8080/api/graphs/51419"},"graphOwner":{"href":"http://backend:8080/api/users/public/944"},"graphComments":{"href":"http://backend:8080/api/graphs/ |
-| 2 | https://oeis.org/A000207 | A000207 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A001764 | A001764 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A007173 | A007173 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047751 | A047751 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047752 | A047752 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047753 | A047753 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047754 | A047754 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047758 | A047758 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047760 | A047760 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047762 | A047762 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047764 | A047764 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047765 | A047765 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047766 | A047766 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047769 | A047769 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047771 | A047771 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047773 | A047773 | cross-referenced from A027610 |
-| 2 | https://oeis.org/A047774 | A047774 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A000207 | A000207 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A001764 | A001764 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A007173 | A007173 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047751 | A047751 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047752 | A047752 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047753 | A047753 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047754 | A047754 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047758 | A047758 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047760 | A047760 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047762 | A047762 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047764 | A047764 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047765 | A047765 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047766 | A047766 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047769 | A047769 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047771 | A047771 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047773 | A047773 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047774 | A047774 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047775 | A047775 | cross-referenced from A027610 |
+| 3 | https://oeis.org/A047776 | A047776 | cross-referenced from A027610 |
 
 _173 further candidates not shown; they are cited once each._
