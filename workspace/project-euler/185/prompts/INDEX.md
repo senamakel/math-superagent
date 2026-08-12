@@ -4,5 +4,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `goals.md` | _(undescribed)_ |
+| `inventor.md` | _(undescribed)_ |
+| `librarian.md` | _(undescribed)_ |
+| `orchestrator.md` | _(undescribed)_ |
+| `organizer.md` | _(undescribed)_ |
+| `pattern_finder.md` | _(undescribed)_ |
+| `reflection.md` | _(undescribed)_ |
 | `research.md` | Role guidance for the research agent (fetching and summarizing sourced material). |
-ograms, validates against brute force, produces outputs). |
+| `scholar.md` | _(undescribed)_ |
+| `tool_builder.md` | _(undescribed)_ |
