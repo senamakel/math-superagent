@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/abs/1908.03236v2 | arXiv:1908.03236v2 | \| 15 pages \| Subjects: \| Rings and Algebras (math.RA); Number Theory (math.NT) \| Cite as: \| [arXiv:1908.03236][6] [math.RA] \| \| (or [arXiv:1908.03236v2][7] [math.RA] for this version) \| \|… |
 | 1 | http://www.primepuzzles.net/puzzles/puzz_079.htm | www.primepuzzles.net/puzzles/puzz_079.ht | (now [https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3/][58]) [50] Carlos Rivera, [www.primepuzzles.net][59] [www.primepuzzles.net/puzzles/puzz_079.ht][60] [m][60] ( Puzzle 79 � The Chebrakov�s… |
 
-_16 further candidates not shown; they are cited once each._
+_17 further candidates not shown; they are cited once each._
