@@ -1,38 +1,38 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mathworld_multiperfect_number.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# MathWorld — Multiperfect Number
 
-<!-- source: https://mathworld.wolfram.com/MultiperfectNumber.html | converted from HTML -->
+Source: https://mathworld.wolfram.com/MultiperfectNumber.html — `[[mathworld_multiperfect_number.full]]`
 
-## What is in it
+## What it establishes
 
-- Multiperfect Number
-  - See also
-  - Explore with Wolfram|Alpha
-  - References
-  - Referenced on Wolfram|Alpha
-  - Cite this as:
-  - Subject classifications
+n is **P_k-multiperfect** if σ(n) = k·n for integer k>2 (k=2 is the perfect
+numbers). Tables of first few P_k for k=2..6 (e.g. P_3: 120, 672, 523776,
+459818240, 1476304896, 51001180160; P_4: 30240, 32760, 2178540, 23569920; ...).
 
+- **Lehmer (1900–1901) lower bounds:** P_3 has ≥ 3 distinct prime factors,
+  P_4 ≥ 4, P_5 ≥ 6, P_6 ≥ 9, P_7 ≥ 14, etc. (a structural result on the
+  integer-abundancy side; has no direct half-integer analogue used by the run).
+- 251 pluperfect (multiperfect) numbers were known by 1911 (Carmichael &
+  Mason).
 
-## What it claims
+## Relation to PE 241
 
-for some [integer][1][image: k>2], where [image: sigma(n)] is the [divisor function][2]. The value of [image: k] is called the [class][3]. The special case [image: k=2] corresponds to [perfect numbers][4][image: P_2], which are intimately connected with [Mersenne primes][5] (OEIS [A000396][6]). The number 120 was long known to be 3-multiply perfect ([image: P_3]) since
+- Integer-abundancy theory is the twin of this run's half-integer-abundancy
+  problem; the run already covers it via A007691, OEIS-wiki,
+  Numericana, Flammenkamp (claims `flammenkamps-tree-search-method`).
+- Lehmer's prime-factor bounds do **not** transfer: the run's DFS force-cancels
+  denominators and never needs to bound the number of distinct primes of the
+  *completion*, only that the cofactor's smallest prime factor is forced.
+- No half-integer-abundancy content; no bound ≤ 1e18; no member of the answer
+  set (integer abundancy ≥ 1 is disjoint from half-integer).
 
-[image:  sigma(120)=3·120. ] |
+## Verdict
 
-The following table gives the first few [image: P_n] for [image: n=2], 3, ..., 6.
+**Background only; does not help the solver.** It corroborates the
+multiperfect landscape the library already documents and adds Lehmer's
+prime-factor-count bounds for integer abundance, which this run does not use
+(the hemiperfect DFS's completeness argument is Alekseyev's
+`alekseyev-tree-search-complete`, not Lehmer's bounds). No contradiction with
+anything on disk.
 
-2 | [A000396][6] | 6, 28, 496, 8128, ... |
-
-3 | [A005820][7] | 120, 672, 523776, 459818240, 1476304896, 51001180160 |
-
-4 | [A027687][8] | 30240, 32760, 2178540, 23569920, ... |
-
-5 | [A046060][9] | 14182439040, 31998395520, 518666803200, ... |
-
-6 | [A046061][10] | 154345556085770649600, 9186050031556349952000, ... |
-
-Lehmer (1900-1901) proved that [image: P_3] has at least three distinct [prime factors][11], [image: P_4] has at least four, [image: P_5] at least six, [image: P_6] at least nine, and [image: P_7] at least 14, etc.
-
-As of 1911, 251 pluperfect numbers were known (Carmichael and Mason 1911). As…
-
-*[digest of a 7355 character source; every section, statement, and proof in full at `research/sources/mathworld_multiperfect_number.full.md`]*
+Keep one line: MathWorld P_k tables corroborate A007691's multiply-perfect
+side. Do not re-read for the DFS.
