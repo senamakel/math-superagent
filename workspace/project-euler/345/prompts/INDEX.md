@@ -7,10 +7,11 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `goals.md` | _(undescribed)_ |
 | `inventor.md` | _(undescribed)_ |
 | `librarian.md` | _(undescribed)_ |
-| `orchestrator.md` | _(undescribed)_ |
+| `orchestrator.md` | Role guidance for the orchestrator: sequence understand/research/derive/implement/verify, spawn parallel agents, reject answer-space searching. |
 | `organizer.md` | Role guidance for the organizer (this role): keep indexes accurate and files navigable, never rewrite indexes by hand (use describe_file/refresh_index), leave reflections/ alone. |
 | `pattern_finder.md` | _(undescribed)_ |
 | `reflection.md` | _(undescribed)_ |
 | `research.md` | _(undescribed)_ |
 | `scholar.md` | _(undescribed)_ |
 | `tool_builder.md` | _(undescribed)_ |
+(undescribed)_ |
