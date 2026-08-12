@@ -1418,24 +1418,34 @@ fn register_planners(
     parts: &Planners<'_>,
     goals_prompt: String,
 ) -> Result<AgentHarness<()>> {
-    let mut build = |role: &'static str, bench: &[&str]| {
-        let mut harness = specialist_harness(parts.model.clone(), parts.budget, role, parts.tracer);
-        for tool in subagents.tools(bench.iter().copied()) {
-            register_resilient(&mut harness, tool);
-        }
-        for tool in parts.documents.tools() {
-            register_resilient(&mut harness, tool);
-        }
-        register_recall(&mut harness, parts.workspace);
-        register_note_recall(&mut harness, parts.vector_store);
-        harness
-    };
-    subagents.register(
-        "goals",
-        Arc::new(build("goals", &SPECIALISTS)),
-        goals_prompt,
-    )?;
-    Ok(build("orchestrator", &DELEGATES))
+    let goals = build_planner_harness(subagents, parts, "goals", SPECIALISTS);
+    subagents.register("goals", Arc::new(goals), goals_prompt)?;
+    Ok(build_planner_harness(
+        subagents,
+        parts,
+        "orchestrator",
+        DELEGATES,
+    ))
+}
+
+/// Assembles one planner's harness: its delegation bench, the document tools,
+/// and both ways back into what the run already knows.
+fn build_planner_harness<const N: usize>(
+    subagents: &AsyncSubagentManager,
+    parts: &Planners<'_>,
+    role: &'static str,
+    bench: [&'static str; N],
+) -> AgentHarness<()> {
+    let mut harness = specialist_harness(parts.model.clone(), parts.budget, role, parts.tracer);
+    for tool in subagents.tools(bench) {
+        register_resilient(&mut harness, tool);
+    }
+    for tool in parts.documents.tools() {
+        register_resilient(&mut harness, tool);
+    }
+    register_recall(&mut harness, parts.workspace);
+    register_note_recall(&mut harness, parts.vector_store);
+    harness
 }
 
 fn build_research_harness(
