@@ -121,6 +121,21 @@ Corroborations in the claims ledger (`research/CLAIMS.md`; read via `search_clai
   two-phase staging-arc + tangent-chord. Falsifying check kept in
   `code/explore_general_dash.py`. **A naive straight-dash polygon model is only
   a lower bound; do not trust it as a hexagon check.**
+- **Schwarz–Christoffel conformal mapping REFUTED as an independent route**
+  (audit `research/notes/approach-audit-three-candidates.md`,
+  `research/approaches/schwarz-christoffel-conformal-mapping.md`): the critical
+  speed is NOT conformally invariant — disk and hexagon are conformally
+  equivalent yet give V=4.6033 vs 5.0550, and the run's two oracle values are
+  the direct counterexample. The game's data are Euclidean chord + boundary arc
+  length, which the map preserves neither.
+- **Angular-speed safe region REFUTED as an independent route**
+  (`research/approaches/angular-speed-safe-region.md`): for a regular polygon
+  the angular-speed-matching region IS the 1/v homothetic scaled pool (a
+  restatement, not a test); every genuinely different safe region is a strict
+  lower bound (square: inner-square 5.00, diamond 5.25, circle 5.27, octagon
+  5.38 < 5.7886) and so can never falsify the value upward. **Only a
+  David-K-style tangent-chord n=6 construction is a genuine second route.**
+  (`research/approaches/david-k-hexagon-construction.md`, grounded, unexecuted.)
 - **K(n) = floor(3n/7) for all n** is FALSE beyond n=85 (first deviation n=86,
   off by +1); the period-7 recurrence also breaks. Asymptotic truth:
   K(n)/n → c ≈ 0.4302966531 solving tan(cπ)=π(c+1), so K≈floor(c·n); c≠3/7.

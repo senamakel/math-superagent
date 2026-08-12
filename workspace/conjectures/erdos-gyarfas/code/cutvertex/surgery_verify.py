@@ -243,22 +243,49 @@ def case_c(base):
             continue
         i, j = pos
         # between edge i (c[i]->c[i+1]) and edge j (c[j]->c[j+1]): path1 from
-        # c[i+1]..c[j], path2 from c[j+1]..c[i] (following order, mod m)
+        # c[i+1]..c[j], path2 from c[j+1]..c[i] (following the cycle order,
+        # mod m).  Each of these two segments is a path lying wholly inside a
+        # single copy (the cross edges alternate copies), and together they
+        # must cover one B1 path (an x1-x2 path) and one B2 path (a y1-y2
+        # path).  The length identity is |cycle| = len(P1) + len(P2) + 2 in
+        # EDGES, i.e. m = (len(path1)-1) + (len(path2)-1) + 2 = len(path1)
+        # + len(path2), which the segmentation satisfies automatically; the
+        # substantive checks are: each path stays in one copy, the copies are
+        # the two different ones (so the two cross edges really join them),
+        # and the path in B ends at the correspondingly touched vertices.
         path1 = [c[(i + 1 + t) % m] for t in range((j - i) % m)]
         path2 = [c[(j + 1 + t) % m] for t in range((i - j) % m)]
-        P1_edges = (len(path1) - 1) if len(path1) else 0
-        P2_edges = (len(path2) - 1) if len(path2) else 0
         if len(path1) == 0 or len(path2) == 0:
             cross_formula_ok = False
             continue
-        if m != P1_edges + P2_edges + 2:
+        # determine which copy contains each path
+        p1_copy = None
+        if all(in_range(t, off1, n) for t in path1):
+            p1_copy = 1
+        elif all(in_range(t, off2, n) for t in path1):
+            p1_copy = 2
+        p2_copy = None
+        if all(in_range(t, off1, n) for t in path2):
+            p2_copy = 1
+        elif all(in_range(t, off2, n) for t in path2):
+            p2_copy = 2
+        # the two paths must lie in the two DIFFERENT copies (one B1, one B2)
+        if not (p1_copy and p2_copy and p1_copy != p2_copy):
             cross_formula_ok = False
             continue
-        # sanity: path1 all in one copy, path2 all in the other
-        all1 = all(in_range(t, off1, n) for t in path1)
-        all2 = all(in_range(t, off2, n) for t in path2)
-        if not ((all1 and all2) or (all2 and all1)):
-            cross_formula_ok = False
+        # verify the path in B1 is an x1-x2 path and the one in B2 is a
+        # y1-y2 path, i.e. its endpoints are the two touched vertices.
+        # Every cross edge has one endpoint in each copy; the endpoint of the
+        # path in the B1 copy must be x1 or x2, and in the B2 copy y1 or y2.
+        for seg, copy in ((path1, p1_copy), (path2, p2_copy)):
+            if copy == 1:
+                ends = {seg[0], seg[-1]}
+                if not ends <= {x1, x2}:
+                    cross_formula_ok = False
+            else:
+                ends = {seg[0], seg[-1]}
+                if not ends <= {y1, y2}:
+                    cross_formula_ok = False
 
     res["every H1-cycle is G-cycle or cross-cycle with |P1|+|P2|+2"] = (
         cross_formula_ok and len(all_simple_cycles(H1)) > 0)

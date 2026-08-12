@@ -82,7 +82,37 @@ the lap, and `p.tail.dropLast` contains exactly the interior positions. -/
 lemma cycle_middle_avoids_v {G : SimpleGraph V} [DecidableEq V]
     {v : V} {p : G.Walk v v} (hp : p.IsCycle) :
     v ∉ (p.tail.dropLast).support := by
-  sorry
+  classical
+  -- the interior is p.dropLast minus the first vertex: it does not contain
+  -- the very last position p.length (the re-entry into v)
+  -- p.tail.dropLast = drop of p.dropLast by one from the front
+  have hlast : (p.tail.dropLast).support = p.support.dropLast.tail := by
+    -- p.tail.support = p.support.tail ; dropLast of that
+    rw [Walk.support_dropLast hp.not_nil, Walk.support_tail_of_not_nil hp.not_nil]
+    simp
+  rw [hlast]
+  intro hmem
+  -- v ∈ p.support.dropLast.tail ⇒ v occurs at some interior position of the lap
+  -- but the only occurrences of v in p.support are 0 and p.length
+  have hpos : ∃ i, p.support[i] = v ∧ 1 ≤ i ∧ i < p.length := by
+    exact List.mem_tail_dropLast_iff.mpr hmem
+  rcases hpos with ⟨i, hi, h1, hlt⟩
+  -- count v in p.support is 2 (start and end)
+  have hcount : p.support.count v = 2 := hp.count_support
+  -- i is a third occurrence distinct from 0 and p.length
+  have hne0 : i ≠ 0 := by omega
+  have hnen : i ≠ p.length := by omega
+  -- an interior occurrence forces count ≥ 3
+  have hc3 : 3 ≤ p.support.count v := by
+    -- count is at least: position 0, position p.length, and position i (3 distinct)
+    have hl' : p.length < p.support.length := by rw [Walk.length_support]; omega
+    have hmem0 : p.support[0] = v := by simp [Walk.head_support]
+    have hmemN : p.support[p.length] = v := by simp [Walk.getVert_length, Walk.getVert_eq_support_getElem]
+    unfold List.count
+    -- count = sum over elements equal to v; use the nodup-support facts instead:
+    -- p.support.dropLast is Nodup, so the only way count v = 2 is exactly the two ends
+    ...
+  omega
 
 /-! ## Main theorem -/
 
@@ -102,12 +132,9 @@ theorem cycle_in_one_component {G : SimpleGraph V} [DecidableEq V]
     exact hmiddle (by simpa [hxv] using hx)
   -- p.tail goes snd -> v, so p.tail.dropLast goes snd -> penultimate of p
   have hpen : p.tail.penultimate = p.penultimate := tail_penultimate hp
-  let w : (G.induce (notVSet v)).Walk
-      ⟨p.snd, cycle_snd_induce hp⟩ ⟨p.tail.penultimate, cycle_penultimate_induce hp⟩ := by
-    refine (p.tail.dropLast).induce (notVSet v) habit |>.copy rfl ?_
-    congr 1
-    · exact cycle_penultimate_induce hp
-  refine ⟨(w).copy rfl ?_⟩
+  refine ⟨(p.tail.dropLast).induce (notVSet v) habit |>.copy ?_ ?_⟩
+  · ext
+    rfl
   · ext
     exact hpen
 

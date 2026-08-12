@@ -9,6 +9,35 @@ At the maximizing t (interior to the edge), the derivative of the ratio with res
 
 The key structural advantage: the hexagon's critical exit point lies on an edge adjacent to the edge opposite the runner's position (established pattern from the square case and the known K=2 result). So only a small number of edge candidates need to be checked, and the elimination can be done edge-by-edge with sympy's resultant or groebner.
 
-status: proposed
-first-step: Parameterize the hexagon in coordinates (inradius 1, vertices at angles 30°, 90°, ...). For the runner at vertex V₀ = (0, 1) (worst case by symmetry), the opposite point on the inner 1/v-scaled hexagon is P = (0, −1/v). Parameterize Q on the right-adjacent edge from (√3/2, 1/2) to (√3/2, −1/2) — or whichever edge turns out to be critical. Compute |PQ|² and perim(R′ → Q) as rational functions of the parameter, set up d/dt(perim/|PQ|) = 0, rationalize √3, eliminate the parameter with sympy.resultant, and extract the minimal polynomial. Validate by checking that one root matches 5.05505046.
+status: adopted
+first-step: | Write `code/hexagon_resultant.py`.  Define the hexagon in coordinates:
+| - inradius 1, flat-top orientation.
+| - Runner R′ starts at right-edge midpoint: (cos 30°, 0) = (√3/2, 0) in
+|   the (x along edge, y perpendicular) frame, or equivalently at boundary
+|   arc-length s=0.
+| - The 1/v-scaled inner hexagon has vertices at (1/v)·(outer vertices).
+|   The point opposite R′ on the inner hexagon is P = (√3/(2v), 0) scaled
+|   from the outer midpoint's opposite point, or more carefully the point
+|   on the inner hexagon that is centrally opposite the runner — this is
+|   the homothetic image of the runner's position under scaling by 1/v
+|   about the center.
+| - Parameterize the candidate exit edge (the one adjacent to the opposite
+|   edge, following the K=2 / square pattern) by a rational parameter t:
+|   Q(t) = (1−t)·V_i + t·V_{i+1} for the edge from vertex i to i+1.
+| - Write |PQ|² as a polynomial in t with coefficients in ℚ[√3][v].
+| - Write the runner's perimeter distance from R′ (s=0) to Q(t) as a
+|   piecewise-linear function of t: on each edge, it is a_0 + a_1·t.
+| - At the critical speed, the maximizing t is interior to the edge, so
+|   d/dt (perim / |PQ|) = 0.  Write this as numerator = 0 after clearing
+|   denominators, producing a polynomial in t, v, √3.
+| - Isolate √3 by moving terms: express as A + B√3 = 0, square to get
+|   A² − 3B² = 0, a polynomial in t and v with rational coefficients.
+| - Use `sympy.resultant(poly_t, poly_deriv, t)` to eliminate t, yielding
+|   the minimal polynomial of v (or v²).  Expect 9v⁴ − 240v² + 256 = 0.
+| - Extract the positive root > 1, confirm it matches 5.05505046, and
+|   reduce to the closed form 2 + 2√21/3.
+|
+| This is an independent algebraic derivation: no K-index, no acos, no
+| trigonometric inequality — pure polynomial elimination over ℚ[√3].
+| It confirms the closed form by a completely different computational path.
 ```

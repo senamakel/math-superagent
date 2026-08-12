@@ -121,6 +121,10 @@ machine (`[[research/approaches/alekseyev-res-tree]]`).
   task: run `code/hemiperfect_dfs.py`/`code/solution.py` at 10^18, confirm it
   reproduces the 22 sourced values and sum 482316491800641154, cross-check DFS vs
   brute at a reachable bound (10^6/3e7), write `solution.md` + standalone
-  `code/solution.py`. Research request `theory-numbers-with-88d5` is largely
-  satisfied by the A088912/A160678/Laatsch/Alekseyev claims but its row still
-  shows open.
+  `code/solution.py`. **Completeness is now literature-backed** (claims
+  `alekseyev-tree-search-complete`, `flammenkamps-tree-search-method`) and the
+  research request `theory-numbers-with-88d5` is **closed** (answered by
+  `alekseyev-tree-search-complete`, `cheng-zhang-2adic-sigmak`,
+  `hpn13-first-term-1e44`, `a160678-reachability-13over2`); the run's own execution
+  is the remaining verification route, not a missing theory. Thread:
+  `research/threads/hemiperfect-completeness.md`.
