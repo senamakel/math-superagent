@@ -42,7 +42,7 @@ def planet_geometry(k, d, R, r):
     b = r + rho          # |delta P| from S
     x = (a * a - b * b + d * d) / (2 * d)
     rad = a * a - x * x
-    if rad < 0 and rad > mpf('-1e-20'):
+    if rad < 0 and -rad < mpf('1e-12') * a * a:   # degenerate endpoint rounding
         rad = mpf(0)
     y = sqrt(rad)                    # upper position (y >= 0)
     beta = atan2(y, x)               # angle of P (and of C-contact point) around O
