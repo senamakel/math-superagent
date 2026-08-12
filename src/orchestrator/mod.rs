@@ -815,8 +815,9 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         (
             "sat_solver",
             "Constraint Solving Agent",
-            "Encodes a finite decision or optimisation problem for CP-SAT, SAT, SMT, or MILP, \
-             and validates the model it gets back.",
+            "Encodes a finite decision or optimisation problem for CP-SAT, SAT, or MILP, and \
+             validates the model it gets back. A statement over a theory rather than a finite \
+             encoding belongs to smt_solver.",
         ),
         (
             "smt_solver",
@@ -1000,10 +1001,21 @@ fn library_agents(
         )
         .with_model("openrouter")
         .with_tools(
-            ["spawn_agent", "peek_agent", "steer_agent", "await_agent"]
-                .into_iter()
-                .chain(memory_tools)
-                .chain(document_tools),
+            [
+                "spawn_agent",
+                // The prompt tells this role to fan out in one call rather than
+                // one spawn per turn, and these are the tools that do it.
+                // Advertising only the singular pair described a role that
+                // could not follow its own instructions.
+                "spawn_agents",
+                "peek_agent",
+                "steer_agent",
+                "await_agent",
+                "await_agents",
+            ]
+            .into_iter()
+            .chain(memory_tools)
+            .chain(document_tools),
         ),
     ]
 }
