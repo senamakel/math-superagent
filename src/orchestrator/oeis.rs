@@ -33,6 +33,7 @@ use serde_json::{Value, json};
 
 use super::documents::WorkspaceDocuments;
 use super::readable::LinkRecord;
+use super::text::truncate;
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
 /// Where a lookup sends its query.
@@ -185,14 +186,6 @@ fn cross_references(entry: &Value, from: &str) -> Vec<LinkRecord> {
         });
     }
     out
-}
-
-fn truncate(text: &str, limit: usize) -> String {
-    if text.chars().count() <= limit {
-        return text.to_string();
-    }
-    let head: String = text.chars().take(limit).collect();
-    format!("{}…", head.trim_end())
 }
 
 #[async_trait]

@@ -33,6 +33,7 @@ use std::fmt::Write as _;
 use std::path::Path;
 
 use super::claims::{Ledger, fenced, fields, identifiers};
+use super::text::truncate;
 
 /// Folder holding one file per direction of attack.
 pub(super) const THREADS_DIR: &str = "research/threads";
@@ -334,18 +335,6 @@ fn cell(text: &str) -> String {
         return "—".to_string();
     }
     text.replace('|', "\\|").replace('\n', " ")
-}
-
-fn truncate(text: &str, limit: usize) -> String {
-    let text = text.trim();
-    if text.chars().count() <= limit {
-        return text.to_string();
-    }
-    let head: String = text.chars().take(limit).collect();
-    let head = head
-        .rsplit_once(char::is_whitespace)
-        .map_or(head.as_str(), |(body, _)| body);
-    format!("{}…", head.trim_end())
 }
 
 #[cfg(test)]

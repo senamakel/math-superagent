@@ -16,6 +16,7 @@ mod requests;
 mod shared_context;
 mod solutions;
 mod teams;
+mod text;
 mod threads;
 mod vector;
 

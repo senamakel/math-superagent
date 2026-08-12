@@ -31,6 +31,7 @@ use serde_json::{Value, json};
 
 use super::claims::Ledger;
 use super::documents::WorkspaceDocuments;
+use super::text::truncate;
 
 /// Where the queue's machine-readable form lives.
 const LEDGER_PATH: &str = "config/.requests.json";
@@ -242,18 +243,6 @@ fn cell(text: &str) -> String {
         return "—".to_string();
     }
     text.replace('|', "\\|").replace('\n', " ")
-}
-
-fn truncate(text: &str, limit: usize) -> String {
-    let text = text.trim();
-    if text.chars().count() <= limit {
-        return text.to_string();
-    }
-    let head: String = text.chars().take(limit).collect();
-    let head = head
-        .rsplit_once(char::is_whitespace)
-        .map_or(head.as_str(), |(body, _)| body);
-    format!("{}…", head.trim_end())
 }
 
 async fn load(documents: &WorkspaceDocuments) -> BTreeMap<String, Request> {

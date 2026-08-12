@@ -29,6 +29,8 @@ use std::collections::BTreeSet;
 use std::fmt::Write as _;
 use std::path::Path;
 
+use super::text::truncate;
+
 /// The derived table, filed with the library it describes.
 pub(super) const CLAIMS_PATH: &str = "research/CLAIMS.md";
 
@@ -601,18 +603,6 @@ fn cell(text: &str) -> String {
         return "—".to_string();
     }
     text.replace('|', "\\|").replace('\n', " ")
-}
-
-fn truncate(text: &str, limit: usize) -> String {
-    let text = text.trim();
-    if text.chars().count() <= limit {
-        return text.to_string();
-    }
-    let head: String = text.chars().take(limit).collect();
-    let head = head
-        .rsplit_once(char::is_whitespace)
-        .map_or(head.as_str(), |(body, _)| body);
-    format!("{}…", head.trim_end())
 }
 
 mod tool;

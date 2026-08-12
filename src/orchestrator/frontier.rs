@@ -31,6 +31,7 @@ use serde_json::{Value, json};
 
 use super::documents::WorkspaceDocuments;
 use super::readable::LinkRecord;
+use super::text::truncate;
 
 /// Where the frontier's machine-readable form lives.
 ///
@@ -289,18 +290,6 @@ fn overlap(terms: &[String], text: &str) -> usize {
         .iter()
         .filter(|term| lowered.contains(term.as_str()))
         .count()
-}
-
-fn truncate(text: &str, limit: usize) -> String {
-    let text = text.trim();
-    if text.chars().count() <= limit {
-        return text.to_string();
-    }
-    let head: String = text.chars().take(limit).collect();
-    let head = head
-        .rsplit_once(char::is_whitespace)
-        .map_or(head.as_str(), |(body, _)| body);
-    format!("{}…", head.trim_end())
 }
 
 /// Reads the ledger, treating any failure as an empty frontier.

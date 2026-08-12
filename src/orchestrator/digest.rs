@@ -25,6 +25,8 @@
 
 use std::fmt::Write as _;
 
+use super::text::truncate;
+
 /// Characters the whole digest is held to.
 ///
 /// About a thousand tokens: enough to tell whether the full text is worth
@@ -310,18 +312,6 @@ fn is_statement(block: &str) -> bool {
 /// Removes the emphasis and quote markers a label is commonly wrapped in.
 fn strip_emphasis(text: &str) -> &str {
     text.trim_start_matches(['*', '_', '`', '"', '\'', ' '])
-}
-
-/// Cuts `text` to `limit` characters at a word boundary where it can.
-fn truncate(text: &str, limit: usize) -> String {
-    if text.chars().count() <= limit {
-        return text.to_string();
-    }
-    let head: String = text.chars().take(limit).collect();
-    let cut = head
-        .rsplit_once(char::is_whitespace)
-        .map_or(head.as_str(), |(body, _)| body);
-    format!("{}…", cut.trim_end())
 }
 
 #[cfg(test)]

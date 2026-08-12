@@ -18,11 +18,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `moore_bound.py` | Verifies the Moore-bound lower bound on vertices for a min-degree-d, girth>=g graph: n >= 1 + d*sum_{i=0}^{r-1}(d-1)^i with r = floor((g-1)/2). Prints the smallest n a min-degree-3 graph can have at girth>=5,9,17,... (5->10 realized by Petersen, 9->46, 17->...). The structural floor behind the girth-survivor barriers; standalone no imports. |
 | `s5_3conn_check.py` | _(undescribed)_ |
 | `s5_equals_a366224.py` | _(undescribed)_ |
+| `s5_identification.py` | _(undescribed)_ |
 | `s5_n17_check.py` | _(undescribed)_ |
 | `s5_n17_count.py` | _(undescribed)_ |
 | `s5_n18_check.py` | _(undescribed)_ |
 | `s5_n18_find_extra.py` | _(undescribed)_ |
 | `s5_n18_find_extra2.py` | _(undescribed)_ |
+| `s5_n18_inspect_extras.py` | _(undescribed)_ |
+| `s5_n18_lobes.py` | _(undescribed)_ |
+| `s5_n18_pow2check.py` | Checks whether the 3 extra S5(18) survivors have an exact 8-cycle / any power-of-two cycle (bounded DFS via lib.egcheck). Result: all three have 8-cycles, so they are NOT EG near-counterexamples. |
 | `survivor_girth5_n11.py` | _(undescribed)_ |
 | `survivor_girth5_n14.py` | _(undescribed)_ |
 | `survivor_no4_n14.py` | _(undescribed)_ |

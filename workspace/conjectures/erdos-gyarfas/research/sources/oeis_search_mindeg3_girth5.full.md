@@ -1,0 +1,67 @@
+<!-- source: https://oeis.org/search?q=minimum+degree+3+girth+at+least+5&fmt=text | converted from plain text -->
+
+# Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/
+
+Search: minimum degree 3 girth at least 5
+Showing 1-1 of 1
+
+%I A008483 #170 Aug 10 2026 12:11:59
+%S A008483 1,0,0,1,1,1,2,2,3,4,5,6,9,10,13,17,21,25,33,39,49,60,73,88,110,130,
+%T A008483 158,191,230,273,331,391,468,556,660,779,927,1087,1284,1510,1775,2075,
+%U A008483 2438,2842,3323,3872,4510
+%N A008483 Number of partitions of n into parts >= 3.
+%C A008483 a(0) = 1 because the empty partition vacuously has each part >= 3. - _Jason Kimberley_, Jan 11 2011
+%C A008483 Number of partitions where the largest part occurs at least three times. - _Joerg Arndt_, Apr 17 2011
+%C A008483 By removing a single part of size 3, an A026796 partition of n becomes an A008483 partition of n - 3.
+%C A008483 For n >= 3 the sequence counts the isomorphism classes of authentication codes AC(2,n,n) with perfect secrecy and with largest probability 0.5 that an interceptor could deceive with a substituted message. - E. Keith Lloyd (ekl(AT)soton.ac.uk).
+%C A008483 For n >= 1, also the number of regular graphs of degree 2. - _Mitch Harris_, Jun 22 2005
+%C A008483 (1 + 0*x + 0*x^2 + x^3 + x^4 + x^5 + 2*x^6 + ...) = (1 + x + 2*x^2 + 3*x^3 + 5*x^4 + ...) * 1 / (1 + x + 2*x^2 + 2*x^3 + 3*x^4 + 3*x^5 + 4*x^6 + 4*x^7 + ...). - _Gary W. Adamson_, Jun 30 2009
+%C A008483 Because the triangle A051031 is symmetric, a(n) is also the number of (n-3)-regular graphs on n vertices. Since the disconnected (n-3)-regular graph with minimum order is 2K_{n-2}, then for n > 4 there are no disconnected (n-3)-regular graphs on n vertices. Therefore for n > 4, a(n) is also the number of connected (n-3)-regular graphs on n vertices. - _Jason Kimberley_, Oct 05 2009
+%C A008483 Number of partitions of n+2 such that 2*(number of parts) is a part. - _Clark Kimberling_, Feb 27 2014
+%C A008483 For n >= 1, a(n) is the number of (1,1)-separable partitions of n, as defined at A239482. For example, the (1,1)-separable partitions of 11 are [10,1], [7,1,2,1], [6,1,3,1], [5,1,4,1], [4,1,2,1,2,1], [3,1,3,1,2,1], so that a(11) = 6. - _Clark Kimberling_, Mar 21 2014
+%C A008483 Let P(3, n) denote the set of partitions of n into parts k >= 3. Then A000041(n) = (1/2) * Sum_{parts k in all partitions in P(3, n+3)} phi(k), where phi(k) is the Euler totient function (see A000010). For example, with n = 5, there are 3 partitions of n + 3 = 8 into parts greater than 3, namely, 8, 5 + 3 and 4 + 4, and (1/2)*(phi(8) + phi(5) + phi(3) + 2*phi(4)) = 7 = A000041(5). - _Peter Bala_, Dec 01 2024
+%H A008483 Andrew van den Hoeven, <a href="/A008483/b008483.txt">Table of n, a(n) for n = 0..10000</a> (first 301 terms from Vincenzo Librandi)
+%H A008483 Peter Adams, Saad I. El-Zanati, Peter Florido, and William Turner, <a href="https://doi.org/10.1007/978-3-031-52969-6_28">On 2-Factorizations of the Complete 3-Uniform Hypergraph of Order 12 Minus a 1-Factor</a>, Combinatorics, Graph Theory and Computing (SEICCGTC 2021) Springer Proc. Math. Stat., Vol 448, pp. 383-392. See p. 326.
+%H A008483 Roland Bacher and P. De La Harpe, <a href="https://hal.archives-ouvertes.fr/hal-01285685/document">Conjugacy growth series of some infinitely generated groups</a>, hal-01285685v2, 2016.
+%H A008483 Kevin Beanland and Hung Viet Chu, <a href="https://arxiv.org/abs/2311.01926">On Schreier-type Sets, Partitions, and Compositions</a>, arXiv:2311.01926 [math.CO], 2023.
+%H A008483 R.-Q. Feng, J. H. Kwak and E. K. Lloyd, <a href="https://doi.org/10.1017/S0004972700035942">Isomorphism classes of authentication codes</a>, Bull. Austral. Math. Soc. 69 (2004), no. 2, 203-215.
+%H A008483 Elisabeth Gaar and Daniel Krenn, <a href="https://arxiv.org/abs/2005.14121">Metamour-regular Polyamorous Relationships and Graphs</a>, arXiv:2005.14121 [math.CO], 2020.
+%H A008483 INRIA Algorithms Project, <a href="http://ecs.inria.fr/services/structure?nbr=446">Encyclopedia of Combinatorial Structures 446</a>
+%H A008483 F. Jouneau-Sion and O. Torres, <a href="https://www.researchgate.net/publication/265161885_In_Fisher&#39;s_net_exact_F-tests_in_semi-parametric_models_with_exchangeable_errors">In Fisher's net: exact F-tests in semi-parametric models with exchangeable errors</a>, August 2014, preprint on ResearchGate.
+%H A008483 Jason Kimberley, <a href="/wiki/User:Jason_Kimberley/E_k-reg_girth_ge_g_index">Index of sequences counting not necessarily connected k-regular simple graphs with girth at least g</a>.
+%H A008483 Johan Kok, <a href="https://pisrt.org/psr-press/journals/odam-vol-3-issue-3-2020/degree-affinity-number-of-certain-2-regular-graphs/">Degree affinity number of certain 2-regular graphs</a>, Open J. of Disc. Appl. Math. (2020) Vol. 3, No. 3, 77-84.
+%H A008483 Eric Weisstein's World of Mathematics, <a href="https://mathworld.wolfram.com/Two-RegularGraph.html">Two-Regular Graph</a>.
+%F A008483 a(n) = p(n) - p(n - 1) - p(n - 2) + p(n - 3) where p(n) is the number of unrestricted partitions of n into positive parts (A000041).
+%F A008483 G.f.: Product_{m>=3} 1/(1-x^m).
+%F A008483 G.f.: (Sum_{n>=0} x^(3*n)) / (Product_{k=1..n} (1 - x^k)). - _Joerg Arndt_, Apr 17 2011
+%F A008483 a(n) = A121081(n+3) - A121659(n+3). - _Reinhard Zumkeller_, Aug 14 2006
+%F A008483 Euler transformation of A179184. a(n) = A179184(n) + A165652(n). - _Jason Kimberley_, Jan 05 2011
+%F A008483 a(n) ~ Pi^2 * exp(Pi*sqrt(2*n/3)) / (12*sqrt(3)*n^2). - _Vaclav Kotesovec_, Feb 26 2015
+%F A008483 G.f.: exp(Sum_{k>=1} x^(3*k)/(k*(1 - x^k))). - _Ilya Gutkovskiy_, Aug 21 2018
+%F A008483 a(n) = Sum_{j=0..floor(n/2)} A008284(n-2*j,j). - _Gregory L. Simay_, Apr 27 2023
+%F A008483 G.f.: 1 + Sum_{n >= 1} x^(n+2)/Product_{k = 0..n-1} (1 - x^(k+3)). - _Peter Bala_, Dec 01 2024
+%p A008483 series(1/product((1-x^i),i=3..50),x,51);
+%p A008483 ZL := [ B,{B=Set(Set(Z, card>=3))}, unlabeled ]: seq(combstruct[count](ZL, size=n), n=0..46); # _Zerinvary Lajos_, Mar 13 2007
+%p A008483 with(combstruct):ZL2:=[S,{S=Set(Cycle(Z,card>2))}, unlabeled]:seq(count(ZL2,size=n),n=0..46); # _Zerinvary Lajos_, Sep 24 2007
+%p A008483 with(combstruct):a:=proc(m) [A,{A=Set(Cycle(Z,card>m))},unlabeled]; end: A008483:=a(2):seq(count(A008483,size=n),n=0..46); # _Zerinvary Lajos_, Oct 02 2007
+%t A008483 f[1, 1] = 1; f[n_, k_] := f[n, k] = If[n < 0, 0, If[k > n, 0, If[k == n, 1, f[n, k + 1] + f[n - k, k]]]]; Table[ f[n, 3], {n, 49}] (* _Robert G. Wilson v_, Jan 31 2011 *)
+%t A008483 (* Alternative: *)
+%t A008483 Rest[Table[Count[IntegerPartitions[n], p_ /; MemberQ[p, 2*Length[p]]], {n, 50}]] (* _Clark Kimberling_, Feb 27 2014 *)
+%o A008483 (Magma) p := NumberOfPartitions; A008483 := func< n | n eq 0 select 1 else n le 2 select 0 else p(n) - p(n-1) - p(n-2) + p(n-3)>; // _Jason Kimberley_, Jan 11 2011
+%o A008483 (PARI) a(n) = numbpart(n)-numbpart(n-1)-numbpart(n-2)+numbpart(n-3) \\ _Charles R Greathouse IV_, Jul 19 2011
+%o A008483 (Python)
+%o A008483 from sympy import partition
+%o A008483 def A008483(n): return partition(n)-partition(n-1)-partition(n-2)+partition(n-3) # _Chai Wah Wu_, Jun 10 2025
+%Y A008483 Essentially the same sequence as A026796 and A281356.
+%Y A008483 From _Jason Kimberley_, Nov 07 2009 and Jan 05 2011 and Feb 03 2011: (Start)
+%Y A008483 Not necessarily connected simple regular graphs: A005176 (any degree), A051031 (triangular array), specified degree k: A000012 (k=0), A059841 (k=1), this sequence (k=2), A005638 (k=3), A033301 (k=4), A165626 (k=5), A165627 (k=6), A165628 (k=7).
+%Y A008483 2-regular simple graphs: A179184 (connected), A165652 (disconnected), this sequence (not necessarily connected).
+%Y A008483 2-regular not necessarily connected graphs without multiple edges [partitions without 2 as a part]: this sequence (no loops allowed [without 1 as a part]), A027336 (loops allowed [parts may be 1]).
+%Y A008483 Not necessarily connected 2-regular graphs with girth at least g [partitions into parts >= g]: A026807 (triangle); chosen g: A000041 (g=1 -- multigraphs with loops allowed), A002865 (g=2 -- multigraphs with loops forbidden), this sequence (g=3), A008484 (g=4), A185325 (g=5), A185326 (g=6), A185327 (g=7), A185328 (g=8), A185329 (g=9).
+%Y A008483 Not necessarily connected 2-regular graphs with girth exactly g [partitions with smallest part g]: A026794 (triangle); chosen g: A002865 (g=2), A026796 (g=3), A026797 (g=4), A026798 (g=5), A026799 (g=6), A026800(g=7), A026801 (g=8), A026802 (g=9), A026803 (g=10), ... (End)
+%Y A008483 Cf. A008284.
+%K A008483 nonn,easy,changed
+%O A008483 0,7
+%A A008483 T. Forbes (anthony.d.forbes(AT)googlemail.com)
+
+# Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE
