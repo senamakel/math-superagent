@@ -1,72 +1,58 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/2kh-tooth-number-matching-sun-2017.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Tooth Number Matching and Its Software Development for 2KH Planetary Gear Mechanism — Sun et al., MME 2016 (Atlantis Press)
 
-<!-- source: https://www.atlantis-press.com/article/25871492.pdf | converted from PDF -->
+[[research/sources/2kh-tooth-number-matching-sun-2017.full.md]] · source:
+https://www.atlantis-press.com/article/25871492.pdf
 
-Tooth Number Matching and Its Software Development for 2KH Planetary
-Gear Mechanism
+## What it establishes
 
-Jin-Feng SUN, Jun WANG*, Yun-Duan HONG, Hong-Xiu HE, Quan WANG,
-Jun REN, Sheng-Lan MAO, Shu-Ting LI, Zheng-Zheng QIN, Xing HONG
+A primary, openly-licensed derivation of the four restrictive conditions for tooth
+number matching in 2K-H planetary gear mechanisms (four types: NGW, WW, NW, NN;
+N = internal gear, W = external gear, G = compound):
 
-School of Mechanical Engineering, Hubei University of Technology, Wuhan, hubei, 430068, China
+- **Transmission ratio condition**: Z_a, Z_b ratio fixed by the required ratio
+  (from `i = 1 − Z_b/Z_a` for NGW-type; `±` variant for dual-gear types).
+- **Concentricity condition**: the two meshing centre distances are equal; for
+  X-zero gears this reduces to `2·Z_g = Z_b − Z_a` (single-pin NGW case) — the
+  pitch-radius relation.
+- **Condition for Fitting** (the assembly condition — the paper's own term):
+  - *Dual-gear (2KH-NW/WW/NN) case*: `(Z_a ± Z_f ∓ Z_g − Z_b)/q = n` an integer
+    (the ± signs encode the internal/external mesh signs), where Z_f, Z_g are the
+    two planet-gear tooth counts divided by their common divisor m.
+  - *Single-pin (2KH-NGW) case (Z_f = Z_g)**: `(Z_a + Z_b)/q = n` — an integer —
+    "the condition for fitting" (their eq. 3-7). Here Z_a is the sun (or a-ring)
+    tooth count, Z_b the other central gear, q the number of planets.
+  - This is exactly the equal-spacing homogeneity condition: evenly distributing
+    q planets requires (Z_sun + Z_ring)/q ∈ ℤ.
+- **Adjacency condition**: centre distance of neighbouring planets > planet tip
+  diameter (L > d_ag) — the collision-avoidance bound (PE620 *permits* planet
+  overlap, so this is explicitly relaxed in the problem).
+- Implements tooth-matching in VC2008 software; worked NGW example: ratio 4.55,
+  q=4 planets, Z_b=78 (ring), planet 28, Z_a=22 (sun) — 22+78=100 = 4·25 ✓.
 
-*junwang@mail.hbut.edu.cn
+## Implication for PE620
 
-Keywords: 2K-H, Planetary gear, Tooth number matching, Computation.
+Fourth independent derivation-level confirmation of the assembly condition:
+`(Z_sun + Z_ring)/n_planets ∈ ℤ` for equal spacing. Consistent with Guo
+eq. (5.21) (positions at multiples of 2π/(Z_r+Z_s), of which equal spacing is the
+n-planet-restricted case) and with Zou 2015's homogeneity condition. The adjacency
+condition is explicitly *not* applied by PE620 (planets may overlap).
 
-Abstract. 2K-H planetary gear is a commonly seen gear structure, but it has proven troublesome to
-match its tooth numbers through hand computation. This paper introduces a calculation method for
-the  2K-H  planetary  gear  and  develops  a  software  written  with  the  use  of  computer  software
-technology for matching gear units, thus greatly reducing the workload in matching tooth numbers.
-In addition, they can be applied to tooth number matching for all kinds of 2K-H planetary gears.
-
-Introduction
-
-In calculating the tooth numbers for the 2K-H planetary gear, due to its many limitations, we often
-need  to  resort  to  hand  computation,  thus  making  the  tooth  number  matching  extremely  complex.
-Moreover,  hand  computation  is  time-consuming,  because  the  2K-H  planetary  gear  involves  four
-different  kinds  of  gear  mechanisms.  At  present,  a  growing  number  of  designing  personnel  have
-begun  to  complete  this  task  through  computers  since  they  came  out.  This  paper  introduces  the
-experience  of  realizing  the  tooth  number  matching  for  2K-H  planetary  gear  through  computer
-programs.
-
-2K-H Planetary Gear Mechanism
-
-2K-H planetary gear mechanism is featured by small size, high self-weight transmission efficiency,
-light weight, large transmission ratio, low noise and high reliability, etc. With the development of
-science and technology, planetary gearing has been widely applied into the machinery of such fields
-as metallurgy, mining, lifting, chemical engineering, electrics, textile and oil production. However,
-planetary  gearing  is  a  highly  advanced  system,  especially  all  kinds  of  large-scale  reducers.  To
-satisfy the work needs and ensure relatively high operating reliability and longer service life of the
-mechanical  system,  we  can  not  willfully  choose  the  tooth  number  for  each  gear  in  designing  the
-planetary  gear  mechanism;  but  instead,  we  have  to  work  out  the  correct  tooth  number  for  the
-planetary gears according to the schematic diagrams and satisfy certain conditions according to the
-characteristics of planetary transmission, with a view to guaranteeing normal operation. By virtue of
-our  needs,  we  divide  the  planetary  gear  into  four  kinds  as  evidenced  by  the  following  figures,
-namely 2KH-NGW, 2KH-WW, 2KH-NW and 2KH-NN, among which N stands for internal gear, W
-for external gear and G for composite gear.
-
-Fig1. 2KH-NGW planetary gear mechanism           Fig 2. 2KH-WW planetary gear mechanism
-
-446Advances in Engineering Research (AER), volume 1053rd Annual International Conference on Mechanics and Mechanical Engineering (MME 2016)Copyright © 2017, the Authors.  Published by Atlantis Press.
-This is an open access article under the CC BY-NC license (http://creativecommons.org/licenses/by-nc/4.0/).
-
-Fig 3. 2KH -NW planetary gear mechanism             Fig 4. 2KH -NN planetary gear mechanism
-
-Restrictive  Conditions for Tooth Number Matching
-
-In designing the 2KH planetary gear mechanism, the tooth number matching of gears must satisfy
-the following conditions under normal circumstances:
-
-Condition for  Transmission Ratio
-
-It refers to a condition which must  be satisfied for the  tooth numbers of each  gear to  achieve the
-given transmission ratio. And the transmission ratio for 2K-H planetary gear train is:
-
-1
-b
-aH abii
-
-According  to  the  above  formula,  the  tooth  number  ratio  of  the  two  central  gears  of  the
-
-*[excerpt ends; 7908 characters not shown — see `research/sources/2kh-tooth-number-matching-sun-2017.full.md`]*
+```claim
+id: fitting_condition_2kh_sun2017
+statement: For a single-pin 2KH-NGW planetary gear train the condition for fitting
+  (evenly placing q planets between the two central gears) is (Z_a + Z_b)/q = n with
+  n integer, where Z_a and Z_b are the central gear tooth counts; concentricity for
+  X-zero gears is 2*Z_g = Z_b - Z_a. For dual-gear (NW/WW/NN) types the fitting
+  condition generalizes to (Z_a ± Z_f ∓ Z_g - Z_b)/q = n.
+hypotheses: 2K-H planetary gear mechanism; equal spacing; ideal (X-zero) geometry;
+  integer tooth counts.
+holds-here: true-directly — PE620's S (s teeth) and C (c teeth) are the two central
+  gears; equal spacing is the sub-case of the general quantization 2*pi/(c+s) from
+  Guo (5.21) where several planets coincide in phase. PE620 relaxes the adjacency
+  condition (planets may overlap).
+status: sourced (Sun et al., MME 2016, Atlantis Press, open access CC BY-NC).
+bearing: independent derivation-level corroboration of the (Z_sun+Z_ring) divisibility
+  condition; part of the four-condition teeth-matching toolkit (ratio, concentricity,
+  fitting, adjacency).
+anchor: research/sources/2kh-tooth-number-matching-sun-2017.full.md
+```
