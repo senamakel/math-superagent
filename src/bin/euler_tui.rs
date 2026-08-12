@@ -355,6 +355,17 @@ struct View {
     tab: usize,
     /// Lines back from the live end; zero follows the tail.
     offset: usize,
+    /// What is being typed, when the reader is composing a directive.
+    ///
+    /// `None` is the normal state, and it is what makes every other key mean
+    /// what it always meant: with a composing buffer open, `q` is a letter
+    /// rather than a way out, so the two states have to be distinguishable
+    /// rather than inferred from whether the buffer is empty.
+    composing: Option<String>,
+    /// What the last send did, shown until the next one.
+    sent: Option<String>,
+    /// Directives sent from this viewer.
+    count: usize,
 }
 
 /// Paints one frame.
@@ -433,8 +444,28 @@ fn render(frame: &mut ratatui::Frame<'_>, runs: &Runs, view: &View, waiting: &st
     } else {
         format!("-{}", view.offset)
     };
+    // Composing takes the whole status row. The alternative is a separate
+    // input line that appears and disappears, which moves the body under the
+    // reader's eyes at the moment they have started typing.
+    if let Some(typed) = &view.composing {
+        frame.render_widget(
+            Paragraph::new(Line::from(Span::styled(
+                format!(" direct the run> {typed}▏  [enter send · esc cancel] "),
+                Style::default()
+                    .fg(Color::Yellow)
+                    .add_modifier(Modifier::REVERSED),
+            ))),
+            areas[2],
+        );
+        return;
+    }
+    let sent = view
+        .sent
+        .as_ref()
+        .map_or_else(String::new, |sent| format!(" {sent} "));
     let status = format!(
-        " {clock} {state} {live} {} {}  [tab/shift-tab team · arrows scroll · g live · q detach] ",
+        " {clock} {state} {live} {} {}{sent} \
+         [tab/shift-tab team · arrows scroll · g live · i direct · q detach] ",
         runs.cost,
         faults.join(" ")
     );
