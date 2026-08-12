@@ -4,7 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `a186085.py` | _(undescribed)_ |
+| `a186085.py` | Computes OEIS A186085 (1D sandpiles / smooth compositions) via Alois P. Heinz's memoized b(n,i) recurrence, printing a(0..15). Tests whether the run's distinct-level-histogram counts (N=12->100, N=13->166, N=14->277) match the A186085 terms (a 12..14 = 100,166,277), the catalogued-sequence-identification check for the histogram-count sequence. |
 | `bottom_probe.py` | _(undescribed)_ |
 | `columns.py` | Verifies the column conjectures for the N(N,M) table (configs by max level M): tests whether N(N,M) = Q_k(N)*3^(2M-N-1) with Q_k a polynomial of degree k=N-M, computing v*3^(N-2M+1) as exact rationals and checking its finite differences. Extends the diagonal/sub-diagonal/offset study of diagonal.py and offsets.py. |
 | `d2_oeis.py` | Verifies the run's 2D amoeba sequence D2(N) (N=0..21) against the published OEIS A007902 pebbling-configurations terms, confirming D2(N)=A007902(N+1) on every term and printing the last few growth ratios against Knessl's asymptotic d=2.3216. The program backing the d2d-equals-a007902 identification claim. |
