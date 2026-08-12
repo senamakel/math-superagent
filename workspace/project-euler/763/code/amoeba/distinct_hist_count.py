@@ -57,24 +57,25 @@ def level_histogram_of(S, W):
 def main(max_n=14):
     W = max_n + 1  # coords stay in [0, max_n] after max_n divisions
     level = {1}  # single amoeba at (0,0,0) = bit 0
-    distinct = {1: 1}  # N=0 and N=1 both have a single config/histogram
+    distinct = {}
+    d_vals = {}
     timings = {}
     total_start = time.time()
+    # N=0: single config at the origin; its histogram is (1,).
+    distinct[0] = 1
     print(f"N=0 distinct_histograms=1  (D=1)")
-    print(f"N=1 distinct_histograms=1  (D=1)")
     for n in range(1, max_n + 1):
         t0 = time.time()
-        level = next_level_bits(level, W)
+        level = next_level_bits(level, W)   # level == configs reachable in n divisions
+        d_vals[n] = len(level)
         tb = time.time() - t0
         timings[n] = tb
         h0 = time.time()
-        hs = set()
-        for S in level:
-            hs.add(level_histogram_of(S, W))
+        hs = {level_histogram_of(S, W) for S in level}
         th = time.time() - h0
-        distinct[n + 1] = len(hs)
+        distinct[n] = len(hs)   # histograms of level-n configs, labelled N=n
         ela = time.time() - total_start
-        print(f"N={n+1}: distinct_histograms={len(hs):>4d}  "
+        print(f"N={n}: distinct_histograms={len(hs):>4d}  "
               f"D={len(level):>12d}  bfs={tb:.2f}s hist={th:.2f}s "
               f"cum={ela:.1f}s", flush=True)
         gc.collect()
@@ -90,10 +91,15 @@ def main(max_n=14):
             ok = False
         print(f"check N={n}: distinct_histograms={got} expected={exp} {status}")
 
-    # D(N) verify for 13 and 14
+    # D(N) verify for 13 and 14 (frontier size == number of distinct configs)
     expected_D = {13: 1749267, 14: 5949063}
     for n in (13, 14):
-        pass  # we don't store D; recompute from level at end? level is N=14 only
+        if n <= max_n:
+            got = d_vals[n]
+            status = "OK" if got == expected_D[n] else "MISMATCH"
+            print(f"check D({n})= len(level)={got} expected={expected_D[n]} {status}")
+            if got != expected_D[n]:
+                ok = False
 
     print(f"\nFinal distinct-histogram counts:")
     for n in range(2, max_n + 1):
