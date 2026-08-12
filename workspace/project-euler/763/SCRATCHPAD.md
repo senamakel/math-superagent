@@ -108,3 +108,29 @@ q_fresh_verify.py) rebuilt the full Q_k table from data + mhist_13_14.txt:
   form. Q_3,Q_4,Q_5 columns not in OEIS (misses recorded).
 - D(N)=sum_k Q_k(N)3^(N-2k-1) reproduces D(N) exactly N=2..10; k>=5 columns
   contribute from N=11. First falsifier for k>=5: N=15 (unreachable by BFS).
+
+## Organizer pass (this run)
+
+Reconciled every folder's INDEX.md with what is on disk after the writing run:
+- Described previously-undescribed files in code/inventor (check_eriksson_fig3,
+  _run_all, _run_fig3, probe_failures, probe_live, probe_a2_fails,
+  probe_parent_present, probe_refined_collapse, probe_reverse_moves,
+  trace_collapse, diagnose_B, diagnose_B2, decomp_probe, structure_probe,
+  definitive_check), code/pattern (a186085, bottom_probe, triangle_build,
+  transfer_hunt, transfer_search2), code/amoeba (amoeba_extend,
+  distinct_hist_count).
+- Filled the missing research/ rows for L1.1 (a186085, a383891, a392317),
+  L1.0 (a055999, a074171, a134227) and L2.0 (L1.0.md) in their LEAF indexes.
+  Note: describe_file routes research descriptions to the top-level
+  research/INDEX.md, which the researcher role continuously regenerates; the
+  persistent home for these rows is the leaf index, so write there.
+- Research top-level INDEX.md is owned/rewritten by the researcher role (it was
+  observed shrinking to only CLAIMS/THREADS during this pass) — not touched,
+  as it is being actively maintained by that role.
+- The code/inventor folder is being actively written by the run's inventor role
+  (new probe programs appeared mid-pass: probe_a2_fails, diagnosis, traces).
+  All current files are described; a refresh at the very end may show more.
+- The `.full.md` source texts under research/L0.0/ are intentionally never
+  indexed (their digests in L2.0 are the index rows) — refresh confirms this.
+- No file's content was changed; only index rows were added/corrected.
+
