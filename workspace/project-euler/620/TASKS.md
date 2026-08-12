@@ -1,39 +1,34 @@
 # Tasks
 
-- [x] Run the oracle test of the lib/gears.py meshing model against PE620 values
-  — FAILED (g=0 vs 9).
-- [x] Discrete least-mesh-angle lattice model — FAILED (g=0 vs 9).
-- [x] Phase-model probe (`phase_model_probe.py`, eps=±1): 2 of 4 chi/gamma sign
-  variants tested — both return g(16,5,5,6)=0.
-- [x] W-invariant off-centre model probe (`code/pattern/w_invariant_test.py`,
-  sets A/B/C/D): none reproduces 9/9/205 — g(16,5,5,6) A=0, B=5, C=0, D=0; C is
-  NOT identically satisfied (contradicts thread suspicion). B stable at 5 across
-  N=1e6/4e6/12e6, independent coverage OK. `code/out/w_invariant_test.txt/.md`.
-- [x] Tangency enumeration (`code/pattern/tangency_enum.py`, residue model with
-  independent sigma/eta/theta signs): **g(16,5,5,6)=9 for variant (sigma=-1,
-  eta=-1, theta=-1)** — matches oracle. See `code/out/tangency_enum.txt`.
-- [ ] **STEP 1 — G(20) verification.** Generalize `code/pattern/tangency_enum.py`
-  to accept (c,s,p,q) as arguments and run the (sigma=-1, eta=-1, theta=-1)
-  variant over all 22 tuples with s+p+q <= 20 (s>=5, p>=5, p<q). Sum g values
-  and check against the oracle G(20)=205. Write per-tuple results to
-  `code/out/tangency_G20.txt`. If any tuple disagrees, report which ones.
-  **This is the single most urgent task** — one matched value is a coincidence;
-  22 independent matches are a method.
-- [ ] **STEP 2 — Write the claim.** Add a fenced `claim` block alongside the
-  output in `code/out/` documenting: status=checked, holds-here, the exact sign
-  convention (sigma=-1, eta=-1, theta=-1), grid resolution (1<<20+1 points),
-  both tolerances (COARSE_TOL=1e-4, TIGHT_TOL=1e-9), and anchor it to
-  `tangency_enum.txt` (and `tangency_G20.txt` once that exists). Record what the
-  residue Q is: Q = sigma*rho*(beta-gamma) - eta*R*beta + theta*r*gamma (mod 1).
-  Note the mirror structure: only UU/LL combos survive; UL cross-combos all give
-  zero. This claim must appear in research/CLAIMS.md after the next derivation.
-- [ ] **STEP 3 — Derive the closed form.** The residue curves dumped in
-  `tangency_residue_curves.txt` show Q(d) is monotonic on the valid d-interval.
-  The meshing condition Q_p(U) == Q_q(U) mod 1 reduces to finding d where two
-  smooth functions cross integer levels. Derive the algebraic equation that
-  replaces the 1M-point grid scan — this is the bound-independent method.
-- [ ] solution.md: governing theory + efficient method whose cost does not grow
-  with 500.
-- [ ] code/solution.py: exact arithmetic G(500), agree with brute on all
-  reachable cases.
-- [ ] Verify G(500) by a second independent route.
+- [ ] **Diagnose the overcount.** Run `code/pattern/fast_g.py`'s `G_sum(20)`
+  (already implemented, just execute it) with verbose per-tuple output and
+  for each of the 22 tuples print: g(c,s,p,q), the oracle-per-tuple g if
+  available (see below), and for any tuple where the model disagrees with
+  the grid-enumeration oracle, print each offending d value and the four
+  planet positions (centre coordinates). The oracle per-tuple values come
+  from running `code/pattern/tangency_enum.py` generalized to arbitrary
+  (c,s,p,q) — or, simpler, from a small brute-force grid enumeration of the
+  winning residue form at high resolution on each tuple. Save output to
+  `code/out/G20_diagnostic.txt`.
+- [ ] **Identify the spurious arrangements.** From the diagnostic output,
+  determine which kind of degeneracy each overcount corresponds to:
+  d=d_min (1/(2π), p-planets coincide), d at f(DL) or f(DU) (endpoint
+  crossing), planets landing on top of each other, or some other spurious
+  geometry.
+- [ ] **Fix the admissibility rule.** Modify `g_fast()` in
+  `code/pattern/fast_g.py` to exclude the spurious arrangements, keeping
+  the sign convention (sigma=-1, eta=-1, theta=-1) and the f-crossing
+  structure unchanged. The fix is in the counting rule — which integer
+  crossings are admissible — not in the residue.
+- [ ] **Validate.** Confirm the fixed model gives G(16)=9, G(20)=205, and
+  per-tuple agreement with the grid oracle on every G(20) tuple.
+- [ ] **G(500).** Once validated, compute G(500) with the fixed model.
+
+## Do NOT do
+
+- Write new approaches or new models. Six exist; three were added in the
+  last ten minutes; zero are tested beyond the one being diagnosed.
+- Re-derive the sign convention. (sigma, eta, theta) = (-1, -1, -1) is
+  settled and correct — it gives g(16,5,5,6)=9.
+- Re-derive the residue formula or the f-crossing monotonicity.
+- Compute G(500) with the unfixed model — it is wrong by construction.

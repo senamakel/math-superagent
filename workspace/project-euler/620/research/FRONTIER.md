@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://www.tec-science.com/mechanical-power-transmission/planetary-gear/epicyclic-planetary-gear/ | stationary transmissions | gear). ## Superposition of motions The change in speed of planetary gearboxes are no longer as easy to understand as those of [stationary transmissions][37]. This is due to the fact that the motion… |
 | 2 | https://www.tec-science.com/mechanical-power-transmission/planetary-gear/how-does-a-three-speed-gear-hub-work/ | — | bending stresses] [48] [Planetary gear][24] ### [How does a differential gear work?][48] [image: Carrier of a three-speed gear hub] [49] [Planetary gear][24] ### [How does a three-speed gear hub… |
 
-_426 further candidates not shown; they are cited once each._
+_451 further candidates not shown; they are cited once each._

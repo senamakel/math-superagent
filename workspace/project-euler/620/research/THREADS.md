@@ -4,16 +4,9 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-| Thread | Question | Status | Rests on | Next |
-| --- | --- | --- | --- | --- |
-| [[offcentre-mesh-phase-model]] | What exactly are the tooth-phase congruences that make four planets (2x p, 2x q), each tangent to an off-centre sun S (s teeth, radius s/2pi) and an internal… | open | assembly_condition_simple_planetary_guo, (Guo, 5.21-5.22), least_mesh_angle*, (design-guide, lattice), tangent_circle_center_ellipse, offcentre_two_positions_per_type | (1) Generalize tangency_enum.py to accept (c,s,p,q) and run the (sigma=-1, eta=-1, theta=-1) variant over all 22 G(20) tuples, summing against 205 (TASKS.md… |
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[offcentre-mesh-phase-model]] rests on `(Guo`, `5.21-5.22)`, `least_mesh_angle*`, `(design-guide`, `lattice)`, which no claim block on disk establishes
+_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+- `offcentre-mesh-phase-model` has no thread block, so nothing can say what it is chasing or what it rests on

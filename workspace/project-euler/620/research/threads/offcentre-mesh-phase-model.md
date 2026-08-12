@@ -1,144 +1,57 @@
-# Thread: off-centre dual-mesh phase model (PE620)
+---
+thread:
+  question: >
+    Which crossings of f(d)=Q_p-Q_q on (DL,DU) correspond to physically
+    distinct, admissible gear arrangements, and which are spurious — so that
+    g(c,s,p,q) correctly counts the PE620 "perfectly meshing" arrangements?
+  status: open — sign convention settled; admissibility rule being diagnosed
+  rests-on:
+    - tangency_enum_oracle_match          # (sigma,eta,theta)=(-1,-1,-1) gives 9
+    - g20_overcount_by_eight              # fast_g.py gives G(20)=213 vs 205
+  blocked-by: []
+  next:
+    - Run G_sum(20) verbose per-tuple, compare against grid-enumeration oracle
+      per tuple, save to code/out/G20_diagnostic.txt (TASKS.md item 1)
+    - Identify which tuples differ and inspect the spurious d values
+    - Fix the admissibility rule in fast_g.py's g_fast()
+    - Validate G(16)=9, G(20)=205
+---
 
-```thread
-question: What exactly are the tooth-phase congruences that make four planets (2x p, 2x q), each tangent to an off-centre sun S (s teeth, radius s/2pi) and an internal ring C (c teeth, radius c/2pi) with centre separation d, all mesh simultaneously — and does the resulting discrete count g(c,s,p,q) reproduce 9, 9, 205?
-status: FIRST ORACLE MATCH — direct tangency enumeration (code/pattern/tangency_enum.py) reproduces g(16,5,5,6)=9 under the residue Q = sigma*rho*(beta-gamma) - eta*R*beta + theta*r*gamma (mod 1) with sign variant (sigma=-1, eta=-1, theta=-1); grid 2^20+1 points, COARSE_TOL=1e-4, TIGHT_TOL=1e-9. G(20)=205 pending.
-rests-on: assembly_condition_simple_planetary_guo (Guo 5.21-5.22), least_mesh_angle* (design-guide lattice), tangent_circle_center_ellipse, offcentre_two_positions_per_type
-blocked-by: (none hard) — the remaining work is G(20) verification of the winning variant and the closed-form reduction, not new sign-variant probes.
-next: (1) Generalize tangency_enum.py to accept (c,s,p,q) and run the (sigma=-1, eta=-1, theta=-1) variant over all 22 G(20) tuples, summing against 205 (TASKS.md STEP 1); (2) write the checked claim in code/out/ anchored to tangency_enum.txt (TASKS.md STEP 2); (3) derive the algebraic equation for Q_p(d) == Q_q(d) (mod 1) that replaces the 1M-point grid scan.
-```
+# Off-centre mesh phase model — admissibility fix
 
-## Independent corroboration of the counting structure (2026 scholar pass)
+The residue form is settled. The sign convention `(sigma, eta, theta) = (-1,
+-1, -1)` is the only one of eight that reproduces g(16,5,5,6)=9 (claim
+`tangency_enum_oracle_match`, anchor `code/out/tangency_enum.txt`).
 
-Three new sources establish, at derivation level, that PE620's g is a count of
-integer-level crossings of a signed angle×tooth-count sum — the W-invariant form —
-and NOT a position lattice:
+The monotone f-crossing model (`code/pattern/fast_g.py`) implements this
+correctly and gives g(16,5,5,6)=9. It counts integer levels `m` of
+`f(d) = Q_p(d) - Q_q(d)` strictly between f(DL) and f(DU), with each m
+crossed once (monotonicity verified per case).
 
-- **Segade-Robleda et al. 2012 (IntechOpen, four-gear simultaneous meshing):**
-  curvilinear-quadrilateral "pitch difference" = whole number of pitches;
-  `r1·α + r2·β − r3·γ − r4·δ = n·π·m`, signs by internal/external mesh
-  (claim `split_torque_curvilinear_quadrilateral_condition`). Worked 30/50/20/12 →
-  n ∈ {−12,…,30}, a discrete set of levels crossed by a monotone transcendental.
-- **Zhao & Li 2018 (JSME JAMDSM, duplex-idler torque split):** the universal design
-  method — meshing condition `#pitch between the two contact points on the output
-  gear = whole number`, reducing to a signed angle×tooth-count = integer·2π sum, one
-  transcendental in a centre-angle, with 0/1/2 discrete configurations per integer N.
-  Internal-mesh (ring) variant has its own sign (claim `zhao_li_2018_duplex_idler_meshing_condition`).
-  This is the strongest published analogue of PE620's count.
-- **White & Patil 2020 (AGMA/PTE, idler double mesh):** a gear meshing two central
-  gears is perfectly/ simultaneously meshed iff `N = z2(σ2^L−σ2^R)/2π ∈ ℤ` — an integer
-  condition on the planet's own tooth count × angular span (claim `idler_double_mesh_integer_index_condition`).
-  Corroborates the `t·γ` planet term in W.
-- **You/Luo/Xu 2026 (Frontiers):** minor; confirms the odd/even-teeth parity effect
-  at the assembly phase (corroborates `p·γ_p − q·γ_q` parity). Not load-bearing.
-- **Mulholland & Monagan:** the tangent half-angle + Sturm pipeline is now a viable
-  *exact* replacement for grid scans, since the sign convention is oracle-pinned
-  (claim `tangent_half_angle_exact_root_count`).
+The problem: G(20) sums to 213 against oracle 205, an overcount of 8 across
+22 tuples (claim `g20_overcount_by_eight`, anchor
+`code/out/G20_overcount.md`).
 
-**Status correction (important).** Scratch text from an earlier pass overstates the
-result: it says the tangency model "reproduces g(16,5,5,6)=9 = ORACLE" and implies
-G(16)/G(20) are done. The checked claim `tangency_enum_oracle_match` and its run note
-`code/out/tangency_enum_claim.md` show **only g(16,5,5,6)=9 is verified**; G(16)=9 and
-G(20)=205 are still NOT RUN (the enumerator is hardwired to (16,5,5,6)). TASKS.md
-STEP 1 remains open.
+## Candidates for the 8 spurious crossings
 
-## Winning variant (2025 run, checked g=9)
+1. **d = d_min ≅ 1/(2π).** The two p-planets coincide here (degenerate
+   endpoint of the valid d interval). Excluded in the original
+   `oracle-model-broken.md` diagnosis; crossing count may re-admit it via
+   an integer m at f(DL) or just above.
+2. **Endpoint crossings.** `#{m: f(DL) < m < f(DU)}` is strict at both ends.
+   A crossing exactly at f(DL) or f(DU) is excluded by the current rule.
+   But numerical f(DL), f(DU) are mpmath-approximate; the floor/ceil may
+   include a boundary m that should be excluded.
+3. **Planet coincidence.** Within a tuple, the two p-planets or two q-planets
+   can coincide at particular d (not just at d_min). These are distinct
+   arrangements geometrically but may not be "valid" under some reading.
+4. **Same-size planet overlap at the same position.** The statement permits
+   planets to overlap but two same-size planets at the same d (mirror pair
+   U/L) may be double-counted.
 
-Direct enumeration `code/pattern/tangency_enum.py` (output `code/out/tangency_enum.txt`)
-confirms the model's core prediction — arrangements are determined by d alone and
-the count is over isolated d-solutions of a residue congruence — and pins the
-sign convention. Residue per planet: `Q = sigma*rho*(beta-gamma) - eta*R*beta +
-theta*r*gamma` (mod 1), where `beta` = angle of planet centre about O (ring
-centre), `gamma` = angle about S (sun centre), `rho` = planet radius. The mirror
-identity `Q(L) = -Q(U)` holds exactly. Of the 8 independent (sigma, eta, theta)
-sign variants, **(sigma=-1, eta=-1, theta=-1) is the only one giving exactly
-g=9**, matching the oracle; the other seven give 6–10. All 9 valid d come from
-`pp=UU qq=UU` and `pp=LL qq=LL` (the two mirror representations of the same 9 d
-values); all six mixed UL combos give zero. This is the direct-enumeration
-fallback the thread prescribed, and it succeeded — see `code/out/tangency_enum.txt`
-and the claim note beside it.
+## What is NOT wrong
 
-## Why the coaxial lattice cannot transfer to PE620
-
-**1. Tangency forces positions; there is no free angular choice.** For planet type t, radius rho_t = t/2pi: exact tangency to both gears forces |SP| = a_t := (s+t)/2pi and |CP| = b_t := (c-t)/2pi simultaneously. With the two centres at distance d, the centre P is the intersection of two circles -> exactly TWO points per type, mirror images across the line SC. A valid arrangement therefore occupies both p-positions and both q-positions and is determined by d alone. (This is why both dead models — scanning a beta-lattice about O or about S in code/lib/gears.py and code/pattern/discrete_model_probe.py — returned 0: the search space they scanned does not contain the geometry.)
-
-**2. Phase congruence per planet.** Convention (Guo Table 5.1, eq. 5.22): phases counted at the pitch point; the sun mesh phase accrues +s*(contact angle) and the internal ring mesh phase accrues -c*(contact angle) — Guo's (5.22) is exactly dec(Z_s psi/2pi) = dec(-Z_r psi/2pi). Write the triangle angles at S, C, P as phi = angle PSC, chi = angle PCS, gamma = angle SPC (gamma = angle between the two contact rays at the planet; gamma = pi only coaxially). Each planet's spin theta_pj, the sun orientation theta_s0 and the ring orientation theta_c0 are free. The two mesh constraints per planet (external sun mesh, internal ring mesh) eliminate the spin and leave, per planet j:
-
-E1: s(phi_j-th_s0) - t(phi_j+pi-th_pj+tau_p) = 2pi eps_s
-E2: -c(chi_j-th_c0) - t(phi_j+pi-gamma_j-th_pj+tau_p) = 2pi eps_c   (mod 2pi)
-E1-E2:  s*phi_j + c*chi_j - t_j*gamma_j = s*th_s0 + c*th_c0 + 2pi(eps_s-eps_c)   (mod 2pi).
-
-The right-hand side is ONE common constant, so: all four per-planet invariants W_j := s*phi_j + c*chi_j - t_j*gamma_j must be pairwise congruent mod 2pi.
-
-## Testable model (hand to the programmer)
-
-Inputs c, s, p, q integers >= 5, p < q; variable d = |CS|.
-
-- a_t = (s+t)/(2pi),  b_t = (c-t)/(2pi)  (t in {p,q})
-- d_min = max(|a_p-b_p|, |a_q-b_q|)  (strict triangle inequality: positions non-degenerate)
-- d_max = (c-s)/(2pi) - 1   (the 1 cm gap: R - r - d >= 1; NOTE d=0 coaxial excluded: it is only realisable when t=(c-s)/2)
-- Triangle angles (law of cosines, all in (0,pi), phi+chi+gamma=pi):
-  cos phi_t = (a_t^2 + d^2 - b_t^2)/(2 a_t d)
-  cos chi_t = (b_t^2 + d^2 - a_t^2)/(2 b_t d)
-  cos gamma_t = (a_t^2 + b_t^2 - d^2)/(2 a_t b_t)
-- Positions: p-planets at sun-frame angles +phi_p and -phi_p (ring-frame +chi_p, -chi_p; gamma_p shared by the pair), q-planets at +-phi_q.
-
-Congruences (radians, mod 2pi):
-1. W_p+ = W_p-  <=>  s*phi_p + c*chi_p ≡ 0 (mod pi)        [mirror pair of type p]
-2. W_q+ = W_q-  <=>  s*phi_q + c*chi_q ≡ 0 (mod pi)        [mirror pair of type q]
-3. W_p+ = W_q+  <=>  s(phi_p-phi_q) + c(chi_p-chi_q) - p*gamma_p + q*gamma_q ≡ 0 (mod 2pi)  [cross-type]
-
-g(c,s,p,q) = #{d in (d_min,d_max): 1,2,3 hold} x kappa, with kappa = mirror-identification factor in {1,2} to be fixed by the oracle (also decide whether endpoints/degenerate single-contact d count).
-
-No exponential cost: each condition is a one-variable transcendental congruence; bracket the half-integer (for 1,2) or integer (for 3) levels of the left-hand side over the d interval and bisect the monotone branches. Cost per g is O(#solutions) — independent of any bound.
-
-## Roles of the variables
-
-- c (ring teeth): coefficient of chi in W; defines b_t and d_max.
-- s (sun teeth): coefficient of phi; defines a_t and d_max.
-- t = p, q (planet teeth): fixes the contact distances a_t, b_t — hence the ONLY two points each planet can occupy — and enters the phase congruence explicitly through t*gamma_t. In the coaxial limit t drops out except for tooth parity (t mod 2), matching the idler freedom.
-- d: the single continuous arrangement parameter; the congruences quantise it to a finite set, which is exactly the statement's "only discrete positions mesh".
-- gamma_t(d): survives off-centre because the two contact rays at the planet enclose gamma_t ≠ pi; t*gamma_t is the new coupling of planet tooth count to the meshing condition.
-
-## Hypotheses; what the off-centre geometry invalidates
-
-Holds: integer tooth counts; ideal X-zero involute teeth; pitch-point phase convention; planets independent (d_i = 1 trains); planet overlap permitted (no adjacency condition).
-
-Invalidated off-centre: (i) "planet positions are multiples of beta = 2pi/(s+c) about the common centre" — there is no common centre, and positions are forced by tangency anyway; (ii) the plain sum rule (Z_s+Z_c)psi = 2pi n survives only as the coaxial limit d -> 0 (which additionally requires t = (c-s)/2). The three design guides and Guo state only the coaxial case; the run's earlier "holds-here: yes" on least_mesh_angle* and assembly_condition_simple_planetary_guo was an unchecked transfer. This thread is the check.
-
-Sign conventions to pin by the oracle: W = s*phi + c*chi - t*gamma follows Guo (5.22)'s dec(Z_s psi) = dec(-Z_c psi). The 4 variants (independent signs of the chi and gamma terms) are the first probe; the model is correct iff exactly one variant reproduces g(16,5,5,6)=9, G(16)=9, G(20)=205.
-
-## The coaxial limit is the sourced rule (consistency)
-
-d -> 0 requires a_t = b_t, i.e. t = (c-s)/2 (the standard coaxial planet size). Then phi = chi = psi, gamma = pi, W = (s+c)psi - t*pi, and pairwise congruence gives psi in (2pi/(s+c))*Z, the least-mesh-angle lattice of all three design guides and Guo (5.21)-(5.22). The new model contains the sourced rule as its special case, with one new off-centre feature: for mixed planet sizes of opposite parity, p*gamma_p - q*gamma_q shifts the cross-type congruence by pi in the coaxial limit (parity effect), which never arises in the single-size trains the sources treat.
-
-```claim
-id: offcentre_dual_mesh_phase_invariant
-statement: With a=(s+t)/(2pi), b=(c-t)/(2pi) and the triangle angles at S, C, P from the law of cosines, simultaneous meshing of every planet tangent to both gears is equivalent to the per-planet invariants W_j = s*phi_j + c*chi_j - t_j*gamma_j being pairwise congruent mod 2pi; for the two mirror positions of one type this reduces to s*phi_t + c*chi_t in pi*Z, and across types to s*(phi_p-phi_q) + c*(chi_p-chi_q) - p*gamma_p + q*gamma_q in 2pi*Z.
-hypotheses: ideal X-zero involute gears; integer tooth counts; Guo pitch-point phase convention (internal ring phase -c*contact angle); sun and ring orientations and each planet spin free.
-holds-here: unchecked (oracle pending: g(16,5,5,6)=9, G(16)=9, G(20)=205)
-status: asserted (derived from tooth-phase congruences in this note; not yet numerically verified)
-bearing: the correct discreteness for the off-centre problem; makes g a count of d-solutions of three explicit congruences — no position enumeration, no beta-lattice.
-anchor: research/threads/offcentre-mesh-phase-model.md
-contradicts: least_mesh_angle, least_mesh_angle_handbook, least_mesh_angle_uts, assembly_condition_simple_planetary_guo
-```
-
-```claim
-id: offcentre_two_positions_per_type
-statement: For fixed centre separation d and planet tooth count t, tangency to both sun (|SP|=(s+t)/(2pi)) and ring (|CP|=(c-t)/(2pi)) permits exactly two planet centres, mirror images across the line of centres; a valid PE620 arrangement therefore occupies both p-positions and both q-positions and is determined by d alone.
-hypotheses: exact tangency; S strictly inside C; d in the open triangle-inequality range.
-holds-here: yes (pure geometry)
-status: asserted
-bearing: explains why both single-centre lattice models (gears.py and discrete_model_probe.py, checked g=0) searched the wrong space; the count is over d, not over positions.
-anchor: research/threads/offcentre-mesh-phase-model.md
-```
-
-```claim
-id: coaxial_limit_reproduces_lattice
-statement: As d -> 0 (realisable only when t=(c-s)/2 for every planet) the invariants reduce to W=(s+c)*psi - t*pi and pairwise congruence gives psi in (2pi/(s+c))*Z, reproducing the least-mesh-angle rule of all three design guides and Guo (5.21)-(5.22).
-hypotheses: coaxial sun and ring; one planet per train.
-holds-here: no (limit case; PE620 is off-centre)
-status: asserted (closed-form reduction, consistent with Guo eq. 5.21-5.22 on disk)
-bearing: proves the new model contains the sourced rule as its coaxial special case; the sources and this derivation are the same theory.
-anchor: research/threads/offcentre-mesh-phase-model.md
-```
+- The sign convention. All eight variants tested; only (-1,-1,-1) gives 9.
+- The f-crossing monotonicity. Verified numerically per case.
+- The residue formula Q_t(d) = (c-t)*B_t + (s+t)*G_t.
+- The DL/DU bounds (tangency existence + 1cm gap).
