@@ -87,8 +87,10 @@ The runtime has fourteen roles plus an explicit solution loop.
   the tool-builder: its own tools describe the terms handed to them and cannot
   extend a sequence, so without a way to generate more terms it could neither
   test a conjecture past the data that suggested it nor find the first term
-  that breaks one. It has no search tool, because a bounded structural question
-  must not turn into a second investigation.
+  that breaks one. It has no *web* search, because a bounded structural
+  question must not turn into a second investigation — but it recalls what the
+  run and the note store already hold, since a regularity the library already
+  explains is not a conjecture worth chasing.
 - The inventor proposes a different line of attack when the current one has
   stalled, backed by research. It is told what failed so it does not re-propose
   it.
@@ -1091,6 +1093,45 @@ on terms that role has already computed cannot become one. It is also the role
 holding the terms, so delegating the lookup would spend a child run to pass a
 list of integers along.
 
+## Recall: the two ways back into what is known
+
+A run accumulates faster than any one agent can hold, and four tools answer
+four different questions about it. `search_documents` matches literal terms
+against documents someone called `index_document` on, so it finds a downloaded
+source and nothing else. `search_claims` retrieves one statement with its
+hypotheses out of the claim ledger. Those two cover the library. The run's own
+thinking was covered by neither.
+
+`search_workspace` (`recall.rs`) closes that. It walks the workspace rather
+than an index and ranks by cosine similarity over the same deterministic
+feature-hashing encoder the notes use, so `MEMORY.md`, `reflections/`,
+`SCRATCHPAD.md`, and `code/lib/` are reachable by wording rather than by a path
+an agent already knew. Before it, the inventor re-proposed approaches whose
+failure was recorded three files away and the pattern agent rebuilt helpers
+that already existed. It hides exactly what `list_workspace` hides: an agent
+must not reach the event log through a search when it cannot reach it through a
+path.
+
+`recall_research` is the other half and a different question — not what did
+*this* run write down, but what has been established before. The notes are in
+Qdrant and outlive the workspace.
+
+Both travel to every reasoning role, and `remember_research` does not. Reading
+a note costs a lookup; writing one puts a statement into a store every later
+run reads, so it stays with the three roles whose output is durable knowledge:
+research, the scholar, and the inventor. A test asserts that split, because it
+is the kind of boundary that erodes one convenient grant at a time.
+
+Three exclusions, each the same argument the rest of this document makes about
+tools being authority. The **judge** gets neither: it answers four lines on
+twelve model calls against an attempt that took the better part of an hour, and
+a search over the whole workspace is precisely the invitation to spend them
+reading — a live judge already did that with the document tools alone. The
+**organizer** gets neither, because every tool it lacks is a way a filing job
+cannot turn into an investigation. The **tool-builder** gets `recall_research`
+but not `search_workspace`: it writes probes and throwaway experiments, so a
+similarity search over its own output would mostly return them.
+
 ## Workspace discovery and the reflection log
 
 `list_workspace` renders a bounded tree with file sizes. Agents previously knew
@@ -1312,9 +1353,12 @@ and omit trailing punctuation.
 ## Tools and research changes
 
 Tools are authority boundaries. Give each specialist only the tools it needs.
-The research agent gets Exa and the Qdrant note tools. The tool-builder gets
+The research agent gets Exa and both Qdrant note tools. The tool-builder gets
 workspace file and command tools. The orchestrator gets specialist delegation
-tools, not direct shell access.
+tools, not direct shell access. Recall is the one thing granted broadly rather
+than narrowly, and the argument for it is the same one: reading what the run
+already established is how a role avoids re-establishing it. See *Recall: the
+two ways back into what is known* for who is excluded and why.
 
 For a new tool:
 

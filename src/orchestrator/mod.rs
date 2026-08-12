@@ -316,6 +316,7 @@ impl OrchestratorAgent {
                 workspace: &workspace,
                 documents: &documents,
                 checkpoint: &checkpoint,
+                vector_store: &vector_store,
             },
             prompts.code_writers(),
         )?;
@@ -344,27 +345,20 @@ impl OrchestratorAgent {
             },
         )?;
 
-        // goals: the worker the solution loop drives, with the full specialist
-        // bench beneath it.
-        let mut goals_harness = specialist_harness(model.clone(), budget, "goals", &tracer);
-        for tool in async_subagents.tools(SPECIALISTS) {
-            register_resilient(&mut goals_harness, tool);
-        }
-        for tool in documents.tools() {
-            register_resilient(&mut goals_harness, tool);
-        }
-        register_recall(&mut goals_harness, &workspace);
-        async_subagents.register("goals", Arc::new(goals_harness), prompts.goals)?;
+        let orchestrator_harness = register_planners(
+            &async_subagents,
+            &Planners {
+                model: &model,
+                budget,
+                tracer: &tracer,
+                workspace: &workspace,
+                documents: &documents,
+                vector_store: &vector_store,
+            },
+            std::mem::take(&mut prompts.goals),
+        )?;
 
         let registry = Arc::new(default_registry(research_enabled)?);
-
-        let mut orchestrator_harness = specialist_harness(model, budget, "orchestrator", &tracer);
-        for tool in async_subagents.tools(DELEGATES) {
-            register_resilient(&mut orchestrator_harness, tool);
-        }
-        for tool in documents.tools() {
-            register_resilient(&mut orchestrator_harness, tool);
-        }
 
         Ok(Self {
             inner: ObservedAgent::from_harness(orchestrator_harness)?.with_tracer(tracer.clone()),
@@ -776,6 +770,11 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "search_claims",
         "request_research",
     ];
+    // Every reasoning role's two ways back into what is already known: this
+    // workspace's own record, and the note store that outlives it. They are
+    // listed together because a caller deciding who to delegate to is asking
+    // one question — can this role find out what the run already has.
+    let memory_tools = ["search_workspace", "recall_research"];
     let mut registry = AgentRegistry::new();
     registry.register(
         AgentDefinition::new(
@@ -793,15 +792,8 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
-                .chain([
-                    "recall_research",
-                    "remember_research",
-                    document_tools[0],
-                    document_tools[1],
-                    document_tools[4],
-                    document_tools[5],
-                    document_tools[6],
-                ]),
+                .chain(["recall_research", "remember_research", "search_workspace"])
+                .chain(document_tools),
         ),
     )?;
     // The four roles carrying shell and file-write authority. They differ in
@@ -855,13 +847,19 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
             AgentDefinition::new(name, title, description)
                 .with_model("openrouter")
                 .with_tools(
-                    ["write_tool_file", "execute_command"]
+                    ["write_tool_file", "execute_command", "apply_patch"]
                         .into_iter()
+                        // The tool-builder is the one exclusion, and only from
+                        // the workspace half: it writes probes and throwaway
+                        // experiments, so a similarity search over its own
+                        // output would mostly return them.
+                        .chain((name != "tool_builder").then_some(memory_tools[0]))
+                        .chain([memory_tools[1]])
                         .chain(document_tools),
                 ),
         )?;
     }
-    for definition in support_agents(research_enabled, document_tools) {
+    for definition in support_agents(research_enabled, document_tools, memory_tools) {
         registry.register(definition)?;
     }
     Ok(registry)
@@ -875,6 +873,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
 fn support_agents(
     research_enabled: bool,
     document_tools: [&'static str; 11],
+    memory_tools: [&'static str; 2],
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
@@ -890,12 +889,7 @@ fn support_agents(
             "Judges one attempt, extracts the lesson, and decides whether it is really done.",
         )
         .with_model("openrouter")
-        .with_tools([
-            document_tools[1],
-            document_tools[2],
-            document_tools[3],
-            document_tools[6],
-        ]),
+        .with_tools(memory_tools.into_iter().chain(document_tools)),
         AgentDefinition::new(
             "pattern_finder",
             "Pattern Recognition Agent",
@@ -916,8 +910,13 @@ fn support_agents(
                 // write and run a program like any other worker.
                 "write_tool_file",
                 "execute_command",
+                // A check too large to run inline becomes a commissioned
+                // program rather than an abandoned question.
+                "spawn_agent",
+                "await_agent",
             ]
             .into_iter()
+            .chain(memory_tools)
             .chain(document_tools),
         ),
         AgentDefinition::new(
@@ -935,12 +934,16 @@ fn support_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
-                .chain(["recall_research", "remember_research"])
+                .chain(["recall_research", "remember_research", memory_tools[0]])
                 .chain(document_tools),
         ),
     ]
     .into_iter()
-    .chain(library_agents(research_enabled, document_tools))
+    .chain(library_agents(
+        research_enabled,
+        document_tools,
+        memory_tools,
+    ))
     .collect()
 }
 
@@ -952,6 +955,7 @@ fn support_agents(
 fn library_agents(
     research_enabled: bool,
     document_tools: [&'static str; 11],
+    memory_tools: [&'static str; 2],
 ) -> Vec<AgentDefinition> {
     vec![
         AgentDefinition::new(
@@ -966,6 +970,7 @@ fn library_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
+                .chain(memory_tools)
                 .chain(document_tools),
         ),
         AgentDefinition::new(
@@ -976,7 +981,7 @@ fn library_agents(
         )
         .with_model("openrouter")
         .with_tools(
-            ["recall_research", "remember_research"]
+            ["recall_research", "remember_research", memory_tools[0]]
                 .into_iter()
                 .chain(document_tools),
         ),
@@ -997,6 +1002,7 @@ fn library_agents(
         .with_tools(
             ["spawn_agent", "peek_agent", "steer_agent", "await_agent"]
                 .into_iter()
+                .chain(memory_tools)
                 .chain(document_tools),
         ),
     ]
@@ -1381,6 +1387,67 @@ impl RolePrompts {
 
 /// Assembles the research agent's harness: search the web, and remember what
 /// it found.
+/// What the two planning roles' harnesses are built from.
+struct Planners<'a> {
+    model: &'a Arc<dyn ChatModel<()>>,
+    budget: RunBudget,
+    tracer: &'a Arc<RunTracer>,
+    workspace: &'a Path,
+    documents: &'a WorkspaceDocuments,
+    vector_store: &'a VectorStore,
+}
+
+/// Registers the goals agent and returns the orchestrator's harness.
+///
+/// They are built together because they are the same role at two depths: both
+/// decompose a problem and delegate it, and both need the same way back into
+/// what the run already knows. Splitting them meant the orchestrator quietly
+/// had neither recall tool — it could read a path it already knew and nothing
+/// else, and a planner that cannot find what has already been tried delegates
+/// it again.
+///
+/// The difference between them is the bench. The goals agent sees the
+/// specialists; the orchestrator additionally sees the roles the solution loop
+/// drives, so a single-turn run can reach them.
+///
+/// # Errors
+///
+/// Returns an error when `goals` is already registered.
+fn register_planners(
+    subagents: &AsyncSubagentManager,
+    parts: &Planners<'_>,
+    goals_prompt: String,
+) -> Result<AgentHarness<()>> {
+    let goals = build_planner_harness(subagents, parts, "goals", SPECIALISTS);
+    subagents.register("goals", Arc::new(goals), goals_prompt)?;
+    Ok(build_planner_harness(
+        subagents,
+        parts,
+        "orchestrator",
+        DELEGATES,
+    ))
+}
+
+/// Assembles one planner's harness: its delegation bench, the document tools,
+/// and both ways back into what the run already knows.
+fn build_planner_harness<const N: usize>(
+    subagents: &AsyncSubagentManager,
+    parts: &Planners<'_>,
+    role: &'static str,
+    bench: [&'static str; N],
+) -> AgentHarness<()> {
+    let mut harness = specialist_harness(parts.model.clone(), parts.budget, role, parts.tracer);
+    for tool in subagents.tools(bench) {
+        register_resilient(&mut harness, tool);
+    }
+    for tool in parts.documents.tools() {
+        register_resilient(&mut harness, tool);
+    }
+    register_recall(&mut harness, parts.workspace);
+    register_note_recall(&mut harness, parts.vector_store);
+    harness
+}
+
 fn build_research_harness(
     model: &Arc<dyn ChatModel<()>>,
     budget: RunBudget,
@@ -1416,6 +1483,9 @@ struct CodeWriters<'a> {
     workspace: &'a Path,
     documents: &'a WorkspaceDocuments,
     checkpoint: &'a Arc<dyn tinyagents::harness::middleware::Middleware<()>>,
+    /// The saved note store, so a role about to implement a result can check
+    /// whether the run already established it.
+    vector_store: &'a VectorStore,
 }
 
 /// Registers the roles carrying shell and file-write authority.
@@ -1456,6 +1526,11 @@ fn register_code_writing_agents(
         if name != "tool_builder" {
             register_recall(&mut harness, parts.workspace);
         }
+        // The note store is a different question and every one of them has it:
+        // a closed form or a bound a previous run established changes what this
+        // one implements, and re-deriving it is the most expensive way to find
+        // out it was already known.
+        register_note_recall(&mut harness, parts.vector_store);
         subagents.register(name, Arc::new(harness), prompt)?;
     }
     Ok(())
@@ -1579,6 +1654,10 @@ fn register_pattern_agent(
         register_resilient(&mut pattern, tool);
     }
     register_recall(&mut pattern, &parts.workspace);
+    // A regularity the library already explains is not a conjecture worth
+    // chasing, and this is the cheapest way to find that out — cheaper than the
+    // program it would otherwise commission to test one.
+    register_note_recall(&mut pattern, &parts.vector_store);
     subagents.register("pattern_finder", Arc::new(pattern), prompt)
 }
 
@@ -1602,6 +1681,11 @@ fn register_support_agents(
         register_resilient(&mut reflection, tool);
     }
     register_recall(&mut reflection, &parts.workspace);
+    // Recall, not search. Reflection has no way to gather and must not acquire
+    // one; reading what the run has already written down is the opposite move —
+    // it is how a lesson gets checked against what was established rather than
+    // asserted fresh every attempt.
+    register_note_recall(&mut reflection, &parts.vector_store);
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
     // The judge is as tool-poor as reflection, and for the same reason: a
@@ -1654,6 +1738,13 @@ fn register_support_agents(
         register_resilient(&mut librarian, tool);
     }
     register_recall(&mut librarian, &parts.workspace);
+    // The role that decides what to download is the one that most needs to know
+    // what is already known. It is told to be reluctant, and reluctance without
+    // a way to check is just a slower search: a note from an earlier run saying
+    // the question is settled is the cheapest possible reason not to fetch.
+    // Recall only — the librarian acquires sources, and what they establish is
+    // the scholar's to record.
+    register_note_recall(&mut librarian, &parts.vector_store);
     subagents.register("librarian", Arc::new(librarian), prompts.librarian)?;
 
     // The scholar reads; it does not fetch. Withholding `exa_search` is what
@@ -1688,14 +1779,34 @@ fn register_support_agents(
 
 /// Grants a role similarity search over everything the run has written down.
 ///
-/// Every reasoning role gets it and the organizer does not: the organizer
-/// describes work rather than doing it, and each tool it lacks is a way a
-/// filing job cannot turn into an investigation.
+/// Every reasoning role gets it. Two do not, and both exclusions are the same
+/// argument rather than an oversight. The organizer describes work rather than
+/// doing it, and each tool it lacks is a way a filing job cannot turn into an
+/// investigation. The judge answers four lines on twelve model calls against an
+/// attempt that took the better part of an hour, and a search over the whole
+/// workspace is precisely the invitation to spend them reading instead — a live
+/// judge already did that with the document tools alone.
 fn register_recall(harness: &mut AgentHarness<()>, workspace: &Path) {
     register_resilient(
         harness,
         recall::RecallWorkspaceTool::registered(workspace.to_path_buf()),
     );
+}
+
+/// Grants a role read access to the run's saved research notes.
+///
+/// [`register_recall`] searches this workspace; this searches the note store,
+/// which outlives it. The two answer different questions — what did *this* run
+/// write down, against what has been established before — and a role holding
+/// only the first re-derives what a previous run already paid for.
+///
+/// Recall travels widely and `remember_research` does not. Reading a note costs
+/// a lookup; writing one puts a statement into a store every later run reads, so
+/// that stays with the three roles whose output is durable knowledge — research,
+/// the scholar, and the inventor — rather than with every role that happens to
+/// learn something mid-task.
+fn register_note_recall(harness: &mut AgentHarness<()>, store: &VectorStore) {
+    register_resilient(harness, Arc::new(RecallResearchTool::new(store.clone())));
 }
 
 /// Registers a tool so its recoverable failures answer the model rather than
