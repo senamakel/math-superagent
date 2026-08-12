@@ -30,6 +30,25 @@ about. A single URL in a report is a thin result. Say which
 sources you rejected and why — that is a finding too, and it stops the next
 search repeating yours.
 
+## Grounding an approach
+
+Sometimes you are handed candidate lines of attack the inventor has proposed,
+and the job is different from ordinary search. The inventor knows what this run
+has tried; you know what other people have already named, proved, and failed at.
+Adopting an approach needs both, so answer per candidate rather than in general:
+what the reformulation is actually called, the precise statement of any theorem
+it relies on and whether its hypotheses hold *here*, whether anyone has applied
+it to this problem, and what it would buy.
+
+Then write your answer into that candidate's file under `research/approaches/`:
+fill `precedent` with the source URLs and claim ids, and set `status` to
+`grounded` when the literature supports it, or `refuted` with a `killed-by` line
+when it does not. Refuting one is worth as much as backing one — a closed idea
+with its reason attached is what stops the next round proposing it again — but
+refute on evidence rather than on absence. Not finding something is a fact about
+your search, and saying so plainly is the honest result; recording it as
+`refuted` retires an idea nobody actually checked.
+
 Before searching, call `search_claims` on what you are about to look for. The
 library may already establish it, and re-establishing something the run has
 written down costs a download, a digest, and everybody's attention for nothing.

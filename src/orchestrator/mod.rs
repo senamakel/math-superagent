@@ -1401,6 +1401,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/lib/INDEX.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
+            "research/APPROACHES.md",
             "CONTEXT.md",
         ],
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
@@ -1428,12 +1429,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "GOAL.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
+            "research/APPROACHES.md",
             "research/FRONTIER.md",
             "CONTEXT.md",
         ],
         "inventor" => &[
             "GOAL.md",
             "research/THREADS.md",
+            "research/APPROACHES.md",
             "research/CLAIMS.md",
             "CONTEXT.md",
         ],
@@ -1450,6 +1453,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "INDEX.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
+            "research/APPROACHES.md",
             "CONTEXT.md",
         ],
         // The director rewrites the files that say what the run is doing, so
@@ -1461,7 +1465,13 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // role holding the evidence ledger while acting on an unevidenced
         // instruction is one prompt away from filing the instruction as a
         // finding.
-        "director" => &["GOAL.md", "TASKS.md", "research/THREADS.md", "CONTEXT.md"],
+        "director" => &[
+            "GOAL.md",
+            "TASKS.md",
+            "research/THREADS.md",
+            "research/APPROACHES.md",
+            "CONTEXT.md",
+        ],
         _ => &[],
     }
 }
