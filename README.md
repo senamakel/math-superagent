@@ -1,5 +1,15 @@
 # Math Research Agent
 
+> [!NOTE]
+> This is my workspace to focus on solving complicated math problems based on
+> three fundamental insights I've derived from building harnesses and agents.
+> 
+> 1. Cost of tokens/intelligence has dropped significantly (Deepseek V4 flash) making it incredibly efficient to burn large amount of tokens for intelligence
+> 2. Context rot can be reduced with tiering of agents (subagents)
+> 3. Running agents at scale, concurrently and parallelly is where the efficiency lies (Rust and using OpenHuman)
+>
+> In this repo you'll find the exact architecture I've used to solve problems and conjectures. It is run entirely on DeepSeek v4 for less than 100$ in tokens 
+
 This is a Dockerized agent for solving mathematical problems through careful
 derivation, computation, and source-backed research. It is meant for problems
 where a good answer may require several kinds of work: understanding the
