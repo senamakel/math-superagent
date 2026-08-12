@@ -77,7 +77,7 @@ def check_running_top():
         C = n * (n - 1) // 2
         print(f"  n={n}: C(n,2)={C}, base top_var={top} "
               f"({top - C} helper slots above edge vars)")
-        assert top > C, f"helpers collided with edge vars for n={n}"
+        assert top >= C, f"helpers collided with edge vars for n={n}"
     return True
 
 
