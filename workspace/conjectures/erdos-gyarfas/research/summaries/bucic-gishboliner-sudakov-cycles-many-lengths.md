@@ -1,80 +1,59 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/bucic-gishboliner-sudakov-cycles-many-lengths.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Bucić–Gishboliner–Sudakov, "Cycles of many lengths in Hamiltonian graphs" (2021)
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/2104.07633 | converted from HTML -->
+**Source:** Matija Bucić, Lior Gishboliner, Benny Sudakov, *Cycles of many lengths in Hamiltonian graphs*, J. London Math. Soc. (or Combinatorics in the 2022 arXiv version); arXiv:2104.07633. Full text on disk: `research/sources/bucic-gishboliner-sudakov-cycles-many-lengths.full.md`.
 
-## What is in it
+## What the source establishes
 
-- Cycles of many lengths in Hamiltonian graphs
-        - Abstract
-  - 1 Introduction
-        - Conjecture 1.
-        - Theorem 2.
-  - 2 A sketch and main ideas
-  - 3 Setting up the stage
-        - Lemma 3.
-        - Lemma 4.
-        - Proof.
-        - Lemma 5.
-        - Proof.
-  - 4 Finding cycles of many different lengths
-    - 4.1 Main lemmas
-        - Lemma 6.
-        - Proof.
-        - Lemma 7.
-        - Proof.
-        - Lemma 8.
-        - Proof.
-        - Lemma 9.
-        - Proof.
-        - Lemma 10.
-        - Proof.
-        - Lemma 11.
-        - Proof.
-        - Lemma 12.
-        - Proof.
-    - 4.2 Putting it all together
-        - Lemma 13.
-- …
+**Theorem.** Every $n$-vertex Hamiltonian graph with minimum degree at least 3
+has at least $n^{1-o(1)}$ distinct cycle lengths.
 
+This resolves asymptotically, in the minimum-degree-3 Hamiltonian setting:
 
-## What it claims
+- **Jacobson–Lehel conjecture (1999):** every $k$-regular ($k \ge 3$)
+  Hamiltonian graph has at least linearly many distinct cycle lengths.
+- **Verstraëte's strengthening (2016):** replace regularity by minimum degree
+  at least 3 — the same linear-ish conclusion holds.
 
-In 1999, Jacobson and Lehel conjectured that for k ≥ 3 k\geq 3, every k k -regular Hamiltonian graph has cycles of at least linearly many different lengths. This was further strengthened by Verstraëte, who asked whether the regularity can be replaced with the weaker condition that the minimum degree is at least 3 3. Despite attention from various researchers, until now, the best partial result towards both of these conjectures was a n \sqrt{n} lower bound on the number of cycle lengths. We resolve these conjectures asymptotically, by showing that the number of cycle lengths is at least n 1 − o ⁡ ( 1) n^{1-o(1)}.
+Previous best was $\Omega(\sqrt{n})$ cycle lengths; the paper pushes this to
+$n^{1-o(1)}$ (essentially linear).
 
-## Statements it makes
+## Why it matters for this problem
 
-###### Conjecture 1.
+This is the *count* of cycle lengths in the exact degree class the EG
+conjecture targets ($\delta \ge 3$) — but with the extra Hamiltonian
+hypothesis. It says: in a cubic-or-higher *Hamiltonian* graph, almost every
+length up to $n$ occurs. That immediately implies the EG conclusion in the
+Hamiltonian case (an interval of length $\gg 2^j$ contains a power of two).
+So the conjecture is trivially true (and its degree-3 obstacle is entirely) in
+Hamiltonian graphs; the difficulty is entirely for **non-Hamiltonian** graphs
+with $\delta \ge 3$.
 
-###### Theorem 2.
+But note the careful statement: it is $n^{1-o(1)}$ distinct lengths *among an
+interval*, i.e., the cycle spectrum is dense among possible lengths — and
+dense near $n$ means a power of two in range. For a minimal counterexample
+(which must be non-Hamiltonian and has no 2-power cycle), this theorem cannot
+contradict minimality, because a Hamiltonian graph is never a counterexample;
+the theorem shows any counterexample must be as far from Hamiltonian as
+possible in the cycle-spectrum sense.
 
-###### Lemma 3.
+It also frames the obstruction sharply: the conjecture's target is not
+"many lengths" but "a *specific* sparse length" — Bucić et al. deliver many
+lengths under an extra (Hamiltonian) hypothesis that a counterexample lacks.
 
-###### Lemma 4.
+## Caveats
 
-###### Lemma 5.
+- The theorem needs *Hamiltonian*; a minimal EG counterexample is not
+  Hamiltonian (if it were, the theorem would already give it a 2-power cycle,
+  since $n^{1-o(1)}$ cycle lengths in an interval of length $n$ contains a
+  power of two for $n$ large). So the theorem is evidence *against* a
+  counterexample being Hamiltonian, not a counterexample obstruction.
 
-###### Lemma 6.
-
-###### Lemma 7.
-
-###### Lemma 8.
-
-###### Lemma 9.
-
-###### Lemma 10.
-
-###### Lemma 11.
-
-###### Lemma 12.
-
-###### Lemma 13.
-
-###### Claim 1.
-
-###### Claim 2.
-
-###### Theorem 14.
-
-###### Conjecture 15.
-
-*[digest of a 104724 character source; every section, statement, and proof in full at `research/sources/bucic-gishboliner-sudakov-cycles-many-lengths.full.md`]*
+```claim
+id: EG-bucic-many-cycle-lengths-d3-ham
+statement: Every n-vertex Hamiltonian graph with minimum degree at least 3 has at least n^{1−o(1)} distinct cycle lengths (asymptotically resolves Jacobson–Lehel and Verstraëte's δ≥3 strengthening).
+hypotheses: Hamiltonian; δ≥3; n-vertex
+holds-here: yes as a true theorem; but a minimal EG counterexample is NOT Hamiltonian (else it would already have a 2-power cycle: n^{1−o(1)} lengths in an interval of length n contains a power of two for large n), so the theorem applies to graphs other than counterexamples
+status: proved
+bearing: isolates the obstruction: the EG conjecture is easy under any hypothesis that yields an interval of cycle lengths of length exceeding the gaps between powers of two; a counterexample must evade every such interval result, so it must be very far from Hamiltonian
+anchor: research/summaries/bucic-gishboliner-sudakov-cycles-many-lengths.md
+```

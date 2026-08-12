@@ -55,11 +55,17 @@ Without a proof of that range, the method's pruning is heuristic, whereas Alekse
 has a proved-completeness theorem (Theorem 3.3). That is the concrete reason the standard
 wheel is preferred over this ordering.
 
-Verdict: **not refuted, but not independently grounded** — its named ingredients (Lemma 2.1
-monotonicity, Cohen finiteness, the p^k/pq shortcuts) are all real and hold here, yet the
-distinct "signature-first" ordering has no direct published precedent I could find, and its
-central range-bounding assertion is unproved (heuristic). Record that silence explicitly;
-the approach is subsumed by [alekseyev-res-tree.md] and [two-adic-split-odd-search.md].
+Verdict: **grounded through its named ingredients, with an honest caveat.** The named
+theorems the approach rests on — Goto–Shibata Lemma 2.1 monotonicity, Cohen's finiteness,
+and Alekseyev's p^k / pq shortcuts — are all real, published results whose hypotheses hold
+here (verified above). What is *not* in the literature is the distinct "choose the global
+exponent signature first, then fit primes" ordering itself: I found no direct published
+instance of it, and its central range-bounding assertion (few prime assignments realise a
+fixed abundancy for a fixed signature) is a conjecture, not a theorem — that part is
+heuristic. So the approach is grounded insofar as its components are standard, but the
+unique repackaging is unproved and is subsumed by [alekseyev-res-tree.md] and
+[two-adic-split-odd-search.md], which carry proved-completeness (wheel Theorem 3.3) or a
+proved exact 2-adic restatement. Record the silence about the ordering itself explicitly.
 
 ## Precedent / claim ids
 - Goto & Shibata, Math. Comp. 73(245) (2004): Lemma 2.1 monotonicity, Cohen finiteness.
