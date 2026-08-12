@@ -15,7 +15,7 @@ tools, examples, tests, and documentation.
 
 ## Expected problem-solving behavior
 
-The runtime has eleven roles plus an explicit solution loop.
+The runtime has fourteen roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -45,6 +45,32 @@ The runtime has eleven roles plus an explicit solution loop.
   `FEASIBLE` as an answer, weakening a constraint until a model appears, and an
   unsound symmetry break that silently loses solutions. `UNSAT` is a result and
   is never to be relaxed away.
+- The SMT solver settles a statement *modulo theories* rather than over a
+  finite encoding, with Z3 and cvc5. Its one irreplaceable move is proving a
+  universal claim by asserting the negation and getting `unsat` — the only tool
+  here besides Lean that establishes something for all values rather than
+  checking it on many. It is held to naming the logic it used, because
+  `QF_LIA` is decidable and nonlinear integer arithmetic is not, and `unknown`
+  is a statement about the solver rather than about the mathematics. It must
+  check the hypotheses are satisfiable *alone* before believing any `unsat`:
+  from contradictory hypotheses everything follows, and that is how a bad
+  encoding looks like a proof.
+- The theorem prover hands first-order statements to a saturation prover
+  (`eprover`, TPTP). It sits between the SMT solver, which is weak once
+  quantifier reasoning dominates, and Lean, which costs a human-scale effort
+  per theorem. The axiomatisation is the whole job and the whole risk: a prover
+  proves what was written down, not what was meant, so it reports the axioms in
+  prose, checks them for consistency, and says "proved from these axioms"
+  rather than "proved". `CounterSatisfiable` is a real result — the axioms are
+  too weak, and the missing hypothesis is what to go find.
+- The symbolic mathematician works with expressions rather than numbers:
+  closed forms, summations, recurrences, generating functions, exact algebra,
+  through sympy, mpmath, PARI/GP, Singular, and SageMath. It exists because the
+  run's most common error is arithmetic that looks right — a float agreeing to
+  twelve digits with something false, a closed form fitting six terms. It may
+  not report an identity because both sides agree at sample points; the
+  difference has to simplify to zero, and a residual that will not close is the
+  finding.
 - The Lean prover writes Lean 4 against a pre-built Mathlib. It is the only
   role whose output is not evidence: everything else here — a program's output,
   a numerical check, an argument that reads well — is a reason to believe
@@ -527,15 +553,19 @@ workspace/              # selectable writable agent workspaces
 ```
 
 The executable registry contains `goals`, `research`, `tool_builder`, `coder`,
-`sat_solver`, `lean_prover`, `reflection`, `judge`, `pattern_finder`,
-`inventor`, `librarian`, `scholar`, and `organizer`.
+`sat_solver`, `smt_solver`, `theorem_prover`, `symbolic_math`, `lean_prover`,
+`reflection`, `judge`, `pattern_finder`, `inventor`, `librarian`, `scholar`,
+and `organizer`.
 
-Four of those — `tool_builder`, `coder`, `sat_solver`, `lean_prover` — carry
+Seven of those — `tool_builder`, `coder`, `sat_solver`, `smt_solver`,
+`theorem_prover`, `symbolic_math`, `lean_prover` — carry
 exactly the same authority: shell, file write, `apply_patch`, and the document
 tools. They are separate roles because they differ in *mandate*, and because
 their failure modes have nothing in common: a program that ran but computes the
-wrong thing, an `UNKNOWN` reported as solved, a `sorry` left undeclared. One
-prompt hedging between four of those is strict about none of them. They are
+wrong thing, an `UNKNOWN` reported as solved, an `unsat` from hypotheses that
+were already contradictory, a `Theorem` proved from axioms nobody checked, an
+identity confirmed by sampling, a `sorry` left undeclared. One prompt hedging
+between seven of those is strict about none of them. They are
 built from one list in `register_code_writing_agents`, so the shared authority
 boundary is visible rather than buried in four near-identical blocks — a tool
 granted there reaches all four.
@@ -1096,7 +1126,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | Role | Additional files |
 | --- | --- |
 | orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `MEMORY.md`, `code/lib/INDEX.md`, `research/ROOT.md`, `research/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, `reflections/ROOT.md`, `reflections/INDEX.md` |
-| tool_builder, coder, sat_solver, lean_prover | the planners' files plus `SCRATCHPAD.md` and `code/`, minus the threads and the reflection files |
+| tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files plus `SCRATCHPAD.md` and `code/`, minus the threads and the reflection files |
 | judge | `GOAL.md`, `MEMORY.md`, `INDEX.md`, `reflections/INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` and `reflections/ROOT.md` |
 | pattern_finder | `GOAL.md`, `MEMORY.md`, `SCRATCHPAD.md`, `code/lib/INDEX.md`, `CONTEXT.md` |

@@ -23,13 +23,9 @@ from lib.oracle import (
     minimum_degree,
     cycle_lengths,
     powers_of_two_cycle_lengths,
+    has_power_of_two_cycle,
     from_graph6,
 )
-
-
-def has_power_of_two_cycle(cycle_lengths_set, min_k=2):
-    """Whether any cycle length is a power of two (2^k, k >= min_k)."""
-    return bool(powers_of_two_cycle_lengths(cycle_lengths_set, min_k))
 
 
 def report(adj, name):
