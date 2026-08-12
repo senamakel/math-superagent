@@ -5,108 +5,124 @@ is the only role that writes it; nearly every other role is sent it on every
 model call. So what is here is what the run knows without going to look, and
 what is missing is what each agent rediscovers separately.
 
-The problem is the **3×3 magic square of squares** (open conjecture). Full
-statement, the parametrisation, the leads, and the obstruction are in
-`problem.md`, which every role is required to read; `GOAL.md` fixes the
-deliverable. This file distils the parts no agent should have to re-derive and
-records what the run has *so far* established — which, at this writing, is
-almost nothing beyond the parametrisation itself.
-
-**It has a token budget** (`MATH_AGENT_CONTEXT_TOKENS`, 10,000 by default).
+Problem: the **3×3 magic square of squares** (open). Statement, parametrisation,
+leads in `problem.md` (required reading); deliverable in `GOAL.md`. Token budget
+`MATH_AGENT_CONTEXT_TOKENS`, 10,000 by default.
 
 ## Established
 
-**The reduction every attack starts from — derived, standard, checkable** (from
-`problem.md`; recompute before building on anything downstream):
+**The parametrisation — derived, standard, checkable** (from `problem.md`; recompute
+before building on it): any 3×3 magic square has centre `c` (= `M/3`) and is
+determined by `c,u,v`:
+```
+  c+u     c-u-v   c+v
+  c-u+v   c       c+u-v
+  c-v     c+u+v   c-u
+```
+Need all nine positive distinct squares; centre is itself a square `c=e²`. The
+four lines through the centre are four three-term APs of squares sharing middle
+term `e²`, differences `u, v, u+v, u-v`. The obstruction is the additive
+dependence among those four differences — not mere existence of APs of squares.
 
-- Any 3×3 magic square is determined by centre `c` and two parameters `u, v`
-  (grid in problem.md); centre `M/3`. The problem is to make all nine entries
-  positive distinct perfect squares.
-- The centre is itself a square: `c = e²`.
-- The four lines through the centre — two diagonals, middle row, middle column
-  — are four **three-term APs of squares** all sharing middle term `e²`, with
-  common differences `u, v, u+v, u-v`. The dependence among these four
-  differences is the actual obstruction, not the existence of APs of squares
-  (which is fully understood). A square `e²` lying in *four* such APs with
-  differences in that additive relation is what nobody can rule out or produce.
+**Two distinct problems are routinely conflated; keep them apart** (Bremner 1999
+π0, Bremner II 2001 §0):
+- **(A) "Squared square"** — all nine entries squares, maximize how many of the 8
+  line-sums are equal. Best known: 7 of 8 (Sallows/Schweitzer, "Sallows square",
+  also called the Parker square).
+- **(B) True magic square** — all 8 sums equal, maximize how many of the 9 entries
+  are perfect squares. Best known: **seven** (Bremner's square, below). **No
+  8-square-entry example is known**; eight is an open sub-question (Bremner II
+  2001: "no examples known… unless one extends the ground field").
 
-**Leads from `problem.md` — all UNVERIFIED, `asserted-by-source` until a primary
-source is anchored.** Do not build on any until CLAIMS.md settles it:
+**The witness set — sourced, this is the mandatory oracle for every impossibility
+lemma** (GOAL.md: a lemma that `refutes` a witness is false):
+- **Sallows' square (LS1)**, 7 of 8 sums equal at 147² = 21609; the failing
+  non-principal diagonal sums 38307:
+  `127² 46² 58² / 2² 113² 94² / 74² 82² 97²`. (Boyer multi; Sallows 1997.)
+- **Bremner's 7-square true magic square**, all eight lines sum to 541875 (verified
+  by arithmetic above):
+  `373² 289² 565² / 360721 425² 23² / 205² 527² 222121`, non-squares 360721, 222121.
+  (Bremner 1999 eq.(1)-adjacent; Bremner II 2001 eq.(1).)
 
-- **Near-misses with seven square entries exist**; the famous one is the
-  "Parker square" (fails as a magic square). Bremner and Sallows are the search
-  names. This is the single most load-bearing lead: it is the witness set every
-  impossibility lemma must survive (see Ruled out / oracle).
-- **Eight-square** attainability is a distinct open sub-question from seven.
-- **Elliptic-reformulation**: widely reported to reduce to rational points on an
-  elliptic surface / K3; Bremner, *On squares of squares* (Acta Arithmetica) is
-  the primary paper. The exact variety and what is actually proved are unknown
-  until fetched — "it's an elliptic curve" is worthless here.
-- **Congruent numbers / concordant forms**: three-term APs of squares with
-  common difference `d` are the congruent-number setup; whether the four-diff
-  condition maps onto a known concordant-forms problem should be settled early.
-- **Computational bound** reported past `10²⁵`: whose search, what exactly was
-  searched (centre? constant? entries?), and by what method — all unverified.
-  A bound is a fact about a range, not evidence about the answer.
+**Elliptic reformulation — sourced** (Bremner 1999; attributed to Robertson): a
+MSS of squares ⇔ there is `e` with three points of `2E(Q)` (x-coords in
+arithmetic progression) on `E: y² = x(x²−c²)`; a point is in `2E(Q)` iff
+`X, X±c` are all rational squares. Bremner searched points of `E(Q)` in AP and
+found essentially none; the condition is understood to be very restrictive when
+`rank E(Q)` is small.
+
+**Magic squares of squares exist over extension fields — sourced, and this is the
+hinge.** Bremner 1999 constructs genuine MSS over algebraic number fields: a
+family over `Q(i,√(u³−u))`, an explicit example over `Q(√3,√133)` (the smallest
+degree, 4), and one over `Q`-extension of degree 27 (odd-degree case). So
+non-existence over `Q` **cannot** be a purely structural/geometric impossibility —
+any proof must use rationalness/integrality essentially. A blank impossibility
+argument that would also kill these extension-field examples is false.
+
+**K3 surface (Bremner II 2001)**: problem (B) is studied via a K3 surface `S`
+over `Q(λ)`; `NS(S,Q)` generated by twelve divisors `Γ1…Γ12`; **every rational
+curve on `S` has even degree**; the relevant elliptic fibration has
+`E_λ(C(λ)) ≅ Z×Z×Z/4Z×Z/2Z`. Deep, sourced; how it bears on `Q`-integrality not
+yet cashed out.
+
+**Six-square configurations** (Boyer search, citing Bremner 2001): all sixteen
+possible six-square-entry configurations of a magic square are attainable;
+the "smallest-magic-sum" six-square example is (centre 145) `265 1² 13² / 7²
+145 241 / 11² 17² 5²`. The smallest entries-degree squared-square families have
+degree 8, 16, 20 in the parameter.
 
 ## Ruled out
 
-Only the known dead ends recorded in `problem.md` (marked as known-obstruction,
-to be re-verified, not yet witnessed by this run):
-
-- **Congruences alone cannot prove non-existence** — the system is *locally
-  solvable modulo every prime power*, so any argument that works purely
-  modularly has a hidden error. Way to find the error: run it against the known
-  near-misses.
-- **Descent needs the exact reduction first** — do the geometry before any
-  infinite-descent / Fermat-style step.
-- **A search is not a proof and never becomes one**; extending a bound is only
-  worth doing to falsify a structural claim, and must be stated as such.
-
-**The witness-oracle rule (from GOAL.md, binding):** every impossibility lemma
-must be checked against the known 7/8-square near-misses. A lemma that refutes a
-known near-miss (`refutes(witness)==True`) is false, full stop, and must be
-recorded as a fault in `research/CLAIMS.md`, not dropped. A claim of
-impossibility with no witness-check beside it is `asserted`, whatever it reads
-like.
+- **Pure modular/congruence sieves cannot prove non-existence** — system is
+  locally solvable mod every prime power. Marked `asserted-by-source` (from
+  `problem.md`, not yet re-derived from a primary source this run). The
+  falsification route is fixed: run any modular lemma against the witness set above.
+- **Descent needs the exact variety first** — must finish the elliptic/K3 cashed-out
+  reduction before any Fermat-style descent.
+- **A search is not a proof**; extending a bound only to falsify a structural claim.
+- **A blanket "structural impossibility" argument is dead on arrival** because MSS
+  exist over proper extension fields (see Established). Any argument that cannot
+  separate `Q` from `Q(√3,√133)` proves too much.
 
 ## Numbers
 
-Nothing computed yet this run. The checker (`is_magic_square_of_squares`) and
-the `(c,u,v)` generator do not yet exist; `code/out/near_misses.json` must hold
-the independently reproduced Parker-square-class near-misses before any
-structural claim is trusted. Until then no numerical claim exists.
+No computation source yet this run: the checker and `(c,u,v)` generator do not
+exist; `code/out/near_misses.json` is empty. The witness values above (21609 /
+38307 for LS1; 541875 for Bremner's 7-square) are from sources and were
+hand-verified; they are the seed for `near_misses.json`, to be reproduced by the
+run's own generator before structural claims are trusted.
 
 ## Recalled
 
-Durable memory (`recall_memory` / `relate_memory`) currently returns **nothing**
-about this problem or earlier runs on it. There is no prior-run finding to carry
-forward. Treat everything here as this run's own, to be established.
+Durable memory now returns Bremner 1999 extension-field material (odd-degree
+family over `Q(u)` of degree 27; smallest example degree 4). These are recalled
+together with this run's own reading of the same source — treat the fact that MSS
+exist over extensions as sourced and checked. No other prior-run findings.
 
 ## Contradictions
 
-- **Cycle brief's suggested method vs. the actual problem.** This cycle's brief
-  says "solve by structural graph theory — minimal counterexample, girth,
-  expansion…". That does **not** apply to the magic square of squares, an
-  arithmetic-geometry problem with no graph structure and no meaningful
-  "minimal counterexample" of the connectivity/girth kind. Treat the graph-theory
-  language as stale boilerplate; the real method is arithmetic geometry
-  (parametrisation, elliptic surfaces, exact reductions), per `GOAL.md`. Do not
-  let a planner chase a phantom graph argument and burn the budget.
-- `problem.md` frames this as non-existence; it also says several experts treat
-  existence as open in both directions. Keep one thread on existence rather than
-  committing the whole run to a proof that may be false.
+- **The cycle brief's method vs. the actual problem**: the brief presses
+  "structural graph theory — minimal counterexample, girth, expansion". That does
+  not apply to an arithmetic-geometry problem: there is no graph and no
+  connectivity/girth minimal counterexample. Treat the graph language as stale
+  boilerplate; the method is arithmetic geometry (`GOAL.md`). (Unexamined caveat:
+  if a genuinely graph-theoretic reduction exists, no source in the library states
+  it.)
+- `problem.md` frames non-existence as primary while several experts treat
+  existence as open both ways; keep one thread on existence. A run that dies
+  proving a false statement produces nothing.
 
 ## Gaps
 
-(These double as research requests.)
-
-- **Primary sources unanchored**: need Bremner (Acta Arithmetica), the Parker
-  square's exact values and provenance, the actual exhaustive-search bound, and
-  whether 8 squares is attained anywhere. Each needs a `claim` block with exact
-  hypotheses and a `status` when it lands.
-- **The exact elliptic/K3 reduction** (which variety, which points correspond
-  to solutions, what is actually proved) is unknown and must be stated precisely
-  before descent is attempted.
-- Whether the four-AP condition reduces to a known concordant-forms / congruent
-  numbers problem is open.
+(These double as research requests; see `research/REQUESTS.md`.)
+- **Exact reduction still unanchored end-to-end**: Bremner's paper gives the
+  curve and the K3, but the exact correspondence "rational point ⇒ distinct
+  positive integer square solution" and what is *proved* (vs. suggested) about
+  each is not yet written as a claim block. This blocks any descent.
+- **`code/out/near_misses.json` and the generator do not exist** — build next;
+  the oracle must reproduce LS1 and Bremner's 7-square independently.
+- Whether the four-AP condition maps onto a known concordant-forms/congruent
+  numbers problem, and the real exhaustive-search bound (reported past ~10²⁵,
+  whose search, what was searched), remain open.
+- The eight-square sub-question: no example known, no proof — an exact statement
+  of "what an 8-square grid would force" is a plausible partial result.
