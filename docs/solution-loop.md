@@ -33,15 +33,35 @@ all three live Euler attempts died at exactly 30:00 and every verdict that
 followed was 1/5 or 2/5 with "progress no" — one against a workspace holding both
 check values its problem supplied, reproduced to ten digits, and 38 points
 cross-validated two ways. The judge was scoring silence. `evidence_briefing`
-counts what is on disk — `code/out/` entries, claims split by whether the run
+counts what is on disk — captured output, claims split by whether the run
 established or read them, approaches, threads — and says which to believe when
 the two disagree. It counts and never reads: what a file *means* is the
 judgement the judge is about to make; whether the attempt executed, established,
-or proposed anything is not. It also carries one fault — `code/` holding
-`brute.py` and a faster program while nothing under `code/out/` names the oracle.
-Keeping the naive oracle was enforced; agreeing with it was not, and PE241's
-`solution.py` justified its pruning with a falsehood (no later σ factor supplies
-the cancelling prime, when σ(13) = 14) and found 5 of 9 terms below 10⁸.
+or proposed anything is not.
+
+Captured output is every non-source, non-note file under `code/`, not `code/out/`
+alone. The layout says outputs belong in `code/out/`; PE761 writes
+`code/<program>_OUTPUT.txt` beside each program and left one empty `Untitled` in
+`code/out/`, so a check reading only the tidy location reported a run with six
+captured outputs as having produced nothing. A check that only sees the tidy
+layout reports the untidy run as idle, which is the opposite of the truth.
+
+Two faults ride along with the counts. The first is `code/` holding `brute.py`
+and a faster program while no captured output names the oracle: keeping the naive
+oracle was enforced, agreeing with it was not, and PE241's `solution.py`
+justified its pruning with a falsehood (no later σ factor supplies the cancelling
+prime, when σ(13) = 14) and found 5 of 9 terms below 10⁸. The second is the
+question after it — the oracle *was* run and disagreed. PE761's
+`indep_game_encoding_OUTPUT.txt` reads `agree? False` on every line, its only
+independent solver returning 4.14159265 for the circle against a published
+4.60333885, and nothing in the runtime read a word of it while the loop's
+verdicts were decided by a report that never mentioned the file. Markers pair a
+comparison word with a negative (`agree? false`, `mismatch`, `does not match`)
+rather than standing on one: a bare `FAIL` is what an honest classification row
+says — PE761's own `20 - FAIL - - NotAlgebraic` — and reading that as a broken
+check would cry wolf on every run that enumerates cases properly. Whether the
+disagreement is fatal stays the judge's call; a deliberately falsified model
+*should* print that it disagrees. What is counted is that the words are there.
 
 The judge runs on a narrowed budget (`RunBudget::for_judging`): twelve model
 calls and five minutes, against an attempt that takes the better part of an hour.
