@@ -158,5 +158,8 @@ as formula-derived + exact-closed-form-confirmed but NOT independently
 game-encoded. Files: `code/solution.py` (exact formula), `code/hexagon_closed_form.py`
 & `code/confirm_hexagon_closedform.py` (exact closed form),
 `code/indep_game_encoding.py` + `code/indep_game_encoding_OUTPUT.txt`
-(independent solver, RUN — fails, dead end), `code/brute.py circle` (reproduces
-circle oracle), `GOAL.md`, `research/threads/hexagon-critical-speed.md`.
+(independent solver, RUN — fails, dead end), `code/indep_sanity_circle.py`
+(analytic proof that failure = the π+1 naive bound), `code/brute.py circle`
+(reproduces circle oracle), `solution_hexagon_pattern.md` (the run's derivation
+write-up — stands in for the `/workspace/solution.md` the brief calls for),
+`GOAL.md`, `research/threads/hexagon-critical-speed.md`.
