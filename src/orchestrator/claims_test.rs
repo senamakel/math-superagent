@@ -169,6 +169,55 @@ fn load_bearing_but_unverified_claims_are_listed() -> std::io::Result<()> {
     Ok(())
 }
 
+/// A lookup and somebody's unproved word are different debts.
+///
+/// Project Euler 241 is the case. Its answer came from a hardcoded copy of an
+/// OEIS b-file while its own enumeration was missing four of nine terms, and
+/// nothing on disk said which file the number came from. `catalogued` exists so
+/// that a lookup asks for the one thing that would settle it — a program that
+/// reproduces the terms — rather than being filed beside an unproved theorem,
+/// which asks for a proof instead.
+#[test]
+fn a_catalogued_claim_is_separated_from_an_asserted_one() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-catalogued");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.0"))?;
+    std::fs::write(
+        root.join("research/L1.0/looked-up.md"),
+        note(
+            "id: hemiperfect-terms\nstatement: The terms below 1e18 are the 22 A159907 \
+             entries.\nholds-here: yes\nstatus: catalogued",
+        ),
+    )?;
+    std::fs::write(
+        root.join("research/L1.0/asserted.md"),
+        note("id: taken-on-trust\nstatement: The bound is tight.\nholds-here: yes\nstatus: asserted"),
+    )?;
+    let rendered = collect(&root).render();
+
+    assert!(rendered.contains("## Taken from a catalogue"));
+    assert!(rendered.contains("`hemiperfect-terms`"));
+    // The row itself has to carry the status, because the section is derived
+    // and a reader who scrolls the table never reaches it.
+    assert!(
+        rendered.contains("catalogued"),
+        "the status must appear on the row: {rendered}"
+    );
+    // Separation is the whole point: a lookup filed under "unverified" asks
+    // for a proof, which is not what would settle it.
+    let unverified = rendered
+        .split("## Load-bearing but unverified")
+        .nth(1)
+        .unwrap_or_default();
+    let unverified = unverified.split("## ").next().unwrap_or_default();
+    assert!(
+        !unverified.contains("hemiperfect-terms"),
+        "a catalogued claim must not be filed as merely unverified: {rendered}"
+    );
+    assert!(unverified.contains("taken-on-trust"));
+    Ok(())
+}
+
 /// Retrieval is the point: a query naming an object finds the claims about it.
 #[test]
 fn search_ranks_by_how_much_of_the_query_a_claim_carries() -> std::io::Result<()> {
