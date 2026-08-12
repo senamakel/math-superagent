@@ -23,6 +23,14 @@ by both frozenset (~200s, MEMORY) and bitmask (6.4s).
 
 ## This tool-builder task's runs
 
+### Holonomic extrapolation probe (negative)
+scratchpad/holonomic_probe.py -> scratchpad/holonomic_probe.txt.  Confirmed
+D(2)=3, D(10)=44499 via lib.amoeba.D.  Swept lib.holonomic.fit over
+(m=1..5, d=1..3) x (K=11..14), exact rational, checking whether ANY nullspace
+solution reproduces ALL held-out points D(K..14).  Result: no recurrence passes;
+every fit overfits and breaks on the first out-of-sample term.  P-recursive
+extrapolation cannot reach D(10000) — do not re-search.
+
 - Dumped actual configs for N=3 (9 states) and N=4 (30 states), sorted, to
   code/out/configs_n3_n4.txt and stdout (code/amoeba/configs_n3_n4.py); counts
   asserted against D(3)=9, D(4)=30.

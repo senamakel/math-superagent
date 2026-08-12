@@ -54,6 +54,21 @@ a two-index DP (3D analogue of the 2D G(k,m)) as the concrete next target;
 falsifier: must reproduce D(14) and then D(20)=9204559704, D(100) last
 nine=780166455.  NOT yet derived; this is the open seam.
 
+## NEW NEGATIVE (this run): P-recursive extrapolation is dead
+
+Benchmarked lib.holonomic.fit over every (m=1..5, d=1..3) and K=11..14, exact
+rational arithmetic, and checked whether ANY nullspace solution reproduces ALL
+held-out points D(K..14) (scratchpad/holonomic_probe.py ->
+scratchpad/holonomic_probe.txt).  RESULT: ZERO recurrences out of the whole
+sweep reproduce every held-out point.  Each fitted recurrence (e.g. extrapolating
+from K=14 does hit D(13)=1749267 trivially since it is in-sample) breaks on the
+very next out-of-sample term.  These are overfits: any finite initial window of
+an arbitrary sequence admits a P-recursive interpolation of high enough order,
+so a low-order fit that matches D(0..13) or D(0..14) carries no predictive
+power.  Conclusion recorded: D(N) is NOT P-recursive of low order on the
+observed window, and no recurrence fit here is a viable route to D(10000).
+Do NOT re-run this search.
+
 ## Files
 - code/inventor/check_recurrence.py — tool_builder target verifying CLAIM A
   (top-cap deterministic collapse) and CLAIM B (D(N+1)=sum f(C)) on BFS
