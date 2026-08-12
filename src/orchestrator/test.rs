@@ -2,10 +2,10 @@
 #![allow(clippy::expect_used)]
 
 use super::{
-    AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, DELEGATES, LEAN_PROVER_PROMPT,
-    SAT_SOLVER_PROMPT, SMT_SOLVER_PROMPT, SPECIALISTS, SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT,
-    checked_workspace_path, compression_policy, default_registry, role_context,
-    validate_complexity, workspace_prompt,
+    AgentDefinition, AgentRegistry, COMPRESSION_TRIGGER_TOKENS, DELEGATES, GOALS_PROMPT,
+    LEAN_PROVER_PROMPT, ORCHESTRATOR_PROMPT, SAT_SOLVER_PROMPT, SMT_SOLVER_PROMPT, SPECIALISTS,
+    SYMBOLIC_MATH_PROMPT, THEOREM_PROVER_PROMPT, checked_workspace_path, compression_policy,
+    default_registry, role_context, validate_complexity, workspace_prompt,
 };
 use crate::agent;
 
