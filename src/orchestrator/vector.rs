@@ -467,6 +467,132 @@ impl Tool<()> for RelateMemoryTool {
     }
 }
 
+/// Writes one provisional note where `SCRATCHPAD.md` used to be written.
+///
+/// The file was in three roles' system prompts, so every model call in each of
+/// them paid for every number anyone had jotted down, whether or not the turn
+/// was about it — and it was re-read whole to add a line. A note is written
+/// once and read back by wording, which is the same trade `remember_memory`
+/// makes for durable findings.
+///
+/// It is a separate tool rather than a flag on `remember_memory` because the
+/// distinction is the one the method policy rests on. A durable memory is
+/// something the run checked; a scratch note is something it has not. Sharing a
+/// tool between them would leave which store a statement landed in decided by
+/// an argument, mid-derivation, by the role least able to judge it.
+#[derive(Debug)]
+pub(super) struct NoteScratchTool {
+    store: VectorStore,
+}
+
+impl NoteScratchTool {
+    pub(super) fn new(store: VectorStore) -> Self {
+        Self { store }
+    }
+}
+
+#[async_trait]
+impl Tool<()> for NoteScratchTool {
+    fn name(&self) -> &'static str {
+        "note_scratch"
+    }
+
+    fn description(&self) -> &'static str {
+        "Records provisional work — a partial derivation, an intermediate number, a hypothesis \
+         not yet checked — in this project's scratch. Nothing here is evidence: once a finding \
+         survives a check, store it with remember_memory instead."
+    }
+
+    fn schema(&self) -> ToolSchema {
+        ToolSchema::new(
+            self.name(),
+            self.description(),
+            json!({
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "type": "string",
+                        "description": "The provisional work, self-contained enough to be read back later."
+                    },
+                    "topic": {
+                        "type": "string",
+                        "description": "A few words naming what the note is about, so it can be recalled."
+                    }
+                },
+                "required": ["text", "topic"],
+                "additionalProperties": false
+            }),
+        )
+    }
+
+    async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
+        let text = string_argument(&call, "text")?;
+        let topic = string_argument(&call, "topic")?;
+        let id = self.store.note_scratch(&text, &topic).await?;
+        Ok(ToolResult::text(
+            call.id,
+            self.name(),
+            format!("noted provisional work {id} on {topic}"),
+        ))
+    }
+}
+
+/// Reads the run's provisional work back, and nothing else.
+#[derive(Debug)]
+pub(super) struct RecallScratchTool {
+    store: VectorStore,
+}
+
+impl RecallScratchTool {
+    pub(super) fn new(store: VectorStore) -> Self {
+        Self { store }
+    }
+}
+
+#[async_trait]
+impl Tool<()> for RecallScratchTool {
+    fn name(&self) -> &'static str {
+        "recall_scratch"
+    }
+
+    fn description(&self) -> &'static str {
+        "Returns this project's provisional notes nearest a phrase — unfinished work, not \
+         established results. Use recall_memory for what the run has actually checked."
+    }
+
+    fn schema(&self) -> ToolSchema {
+        ToolSchema::new(
+            self.name(),
+            self.description(),
+            json!({
+                "type": "object",
+                "properties": {
+                    "query": { "type": "string" },
+                    "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10,
+                        "default": 5
+                    }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+            }),
+        )
+    }
+
+    async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
+        let query = string_argument(&call, "query")?;
+        let limit = limit_argument(&call);
+        let rendered = self.store.recall_scratch(&query, limit).await?;
+        Ok(ToolResult::text(
+            call.id,
+            self.name(),
+            rendered.unwrap_or_else(|| "no provisional notes on that yet".to_string()),
+        ))
+    }
+}
+
 /// Reads the shared `limit` argument, clamped to what a prompt can afford.
 fn limit_argument(call: &ToolCall) -> u64 {
     call.arguments
@@ -654,6 +780,27 @@ mod test {
         assert!(
             !visible.contains(&"math_agent_sessions__project_euler_763".to_string()),
             "another problem's session memory must stay out"
+        );
+    }
+
+    #[test]
+    fn provisional_work_never_reaches_durable_recall() {
+        // The scratch replaces SCRATCHPAD.md, and the file was withheld from
+        // reflection on purpose: unsettled arithmetic is not evidence of
+        // progress, and a loop that reads it as such keeps retrying. Durable
+        // recall must therefore not reach the scratch even for this project —
+        // `recall_scratch` is the only way in.
+        let ours = "math_agent_sessions__project_euler_185";
+        let datasets = json!([
+            {"name": "math_agent_brain"},
+            {"name": "math_agent_sessions__project_euler_185"},
+            {"name": "math_agent_scratch__project_euler_185"},
+            {"name": "math_agent_scratch__project_euler_763"}
+        ]);
+        let visible = visible_datasets(&datasets, ours);
+        assert_eq!(
+            visible,
+            vec!["math_agent_brain", "math_agent_sessions__project_euler_185"]
         );
     }
 
