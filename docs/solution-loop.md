@@ -12,8 +12,8 @@ The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of i
   attempt ──> judge ──┬─ restart ──────────────────> attempt
      ▲                └─ reflect ──┬─ solved ──────> done
      │                             ├─ retry ───────> attempt
-     │                             └─ stuck ──> diversify ──┐
-     └──────────────────────────────────────────────────────┘
+     │                             └─ stuck / scaling ──> diversify ──┐
+     └────────────────────────────────────────────────────────────────┘
 ```
 
 The judge and the reflection answer different questions. Reflection asks
