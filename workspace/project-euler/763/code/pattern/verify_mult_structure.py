@@ -9,9 +9,7 @@ List every exception (should be exactly 1: the (0,1,3,6,7,5,3) histogram
 whose mult=30=2*3*5 carries a 5-factor).
 """
 import glob, collections
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 def count_3s_maybe(v):
     # is v a power of 3? return (is_pow3, exponent)

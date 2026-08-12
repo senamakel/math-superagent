@@ -4,9 +4,7 @@ bboxes.  Hypothesis to test: does the config-count-per-histogram equal the
 count of distinct side-length tuples (i.e. is the shape's multiplicity the
 number of realized bounding boxes)? Also tabulate the bbox multiset per hist."""
 import glob, collections
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 for path in sorted(glob.glob('data/level_*.txt'), key=sorted_key):
     n = sorted_key(path)

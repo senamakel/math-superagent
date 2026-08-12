@@ -4,9 +4,7 @@ the histogram. Check across all data: for every histogram, factor mult, and
 test whether power-of-2 == 2*(count of '4' in hist). Report the residual 3^e
 and how e relates to the histogram. Also identify any non-2,3 exceptions."""
 import glob, collections, re
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 def factor2(v):
     a=0

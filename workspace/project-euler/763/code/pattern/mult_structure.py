@@ -7,9 +7,7 @@
 """
 import glob, collections
 from math import gcd
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 def plist(v):
     d=2; f=collections.Counter()

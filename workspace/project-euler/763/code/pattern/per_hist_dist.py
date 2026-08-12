@@ -4,9 +4,7 @@ distinct level-histogram. Print the multiset of 'configs per histogram'
 values, so we can look for structure in how D(N) refines into histograms
 (histogram count = A186085 = H(N), sum_of_counts-per-hist = D(N))."""
 import glob, collections
-
-def sorted_key(p):
-    return int(p.split('level_')[1].split('.')[0])
+from lib.datafiles import sorted_key
 
 for path in sorted(glob.glob('data/level_*.txt'), key=sorted_key):
     n = sorted_key(path)
