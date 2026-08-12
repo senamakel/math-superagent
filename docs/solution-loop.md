@@ -273,6 +273,24 @@ again at attempt six, and the literature check that would have killed it never
 happened. Writing to the approach ledger is what makes the next round start from
 what this one closed.
 
+Asking for that write is not the same as getting it. The inventor's system
+prompt asks it to write each candidate before reporting, the arm's own prompt
+asks again, and a live Project Euler 597 inventor ignored both — nine tool
+calls, every one a read, and the candidates left in a turn that hit the output
+cap. Across three concurrent runs `research/approaches/` had never been created.
+A prompt instruction is not a control, so `ensure_approaches_written` is the
+control: the arm samples the directory before delegating, and if the proposing
+turn added no file it re-issues once, telling the inventor plainly that nothing
+survived and to write down what it already has without revising it.
+
+Two details decide whether that control is honest. It compares *names added*,
+not a count or an mtime — proposing means new slugs, so a turn that rewrote an
+existing file has not done what was asked, and mtime would score that a success.
+And it re-issues once rather than until compliance: a second refusal means this
+turn is not going to write, and the prose it did report is still worth carrying
+into the attempt, so the re-issue's reply is appended to it rather than
+replacing it.
+
 `COMPUTATIONAL_THRESHOLD` is the second way into this step, and it exists
 because "did the attempt establish something new" and "is the run getting
 anywhere" turned out to be different questions and `route` only asked the first.
