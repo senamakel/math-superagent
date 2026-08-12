@@ -33,6 +33,35 @@ objective; all binary. Result:
 Log: code/out/solution2_run.log. Shared data moved to code/lib/pe185.py so the
 two solvers cannot drift on inputs.
 
+## Pattern analysis of the actual L=16 secret (this run, after MILP output)
+
+The run has finally produced the sequence that matters: the L=16 secret
+`4640261571849533`, computed by `code/solution2.py` (scipy MILP, HiGHS status
+Optimal, 0.152 s), with every one of the 22 per-guess counts verified and
+uniqueness confirmed by a no-good cut re-solve (see `code/out/solution2_run.log`).
+`code/solution.py` (backtracking) had NOT finished in 550 s (`solution_run.log`
+0 bytes), so the two recorded routes do not yet agree on L=16; that is a solver
+state, not a pattern fact. I sourced the secret digits from the MILP run only.
+
+Sequences extracted (code/lib/pe185secret.py) and exact tools run:
+
+- secret_digits [4,6,4,0,2,6,1,5,7,1,8,4,9,5,3,3]:
+  - not a low-degree polynomial (differences never constant);
+  - NO constant-coefficient linear recurrence of order ≤ 6 fits all 16 terms;
+  - OEIS lookup: NO catalogue entry (recorded; do not look again).
+- hitcounts per position [3,4,6,2,4,2,3,2,4,2,1,3,0,3,1,4]: likewise no
+  polynomial / no CC recurrence of order ≤ 6. Structural check: sum(hitcounts)
+  = 44 == sum(c_i) = 44 exactly — this is a theorem of the definition (each
+  match is counted at exactly one position), so it is a consistency fact, not a
+  conjecture, and it holds.
+- Match-position sets per guess have sizes exactly equal to c_i (all 22 OK),
+  including guess 14 (c=0) matching nowhere.
+
+Conclusion: the secret is arbitrary-looking constraint data; no exploitable
+sequence structure exists in it (no recurrence, no polynomial, unpublished in
+OEIS). The only exact regularities are identities forced by the problem
+definition (hitcount sum, per-guess counts), not leads for a derivation.
+
 ## Pattern re-check (this run, after solver files existed)
 
 The workspace now holds code/solution.py (backtracking) and code/solution2.py (MILP), but neither has recorded numeric output in any out file; INDEX.md lists only brute.py. The one concrete output is the L=5 brute oracle: unique answer `39542`. I could not run the backtracking solver (execute_command validator refused to run a candidate-search strategy). The L=16 secret is therefore NOT yet a computed sequence for me to analyze.
