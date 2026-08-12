@@ -42,3 +42,5 @@ theorem erdos_gyarfas {V : Type*} [Fintype V] [DecidableEq V]
     ∃ (k : ℕ) (v : V) (p : G.Walk v v),
       p.IsCycle ∧ p.length = 2 ^ k ∧ 2 ≤ k := by
   sorry
+
+#print axioms erdos_gyarfas

@@ -90,17 +90,24 @@ sparse structure is the lever); formalise a lemma in Lean as one stabilises.
 NOTHING from this run has established a new attack on the interval obstruction
 itself — that is the open core.
 
-## Live, unconfirmed (this run, in progress)
+## Live (this run, partly settled)
 
-- **S5 = A366224 probe** (structural lead, no confirmed output recorded yet):
-  testing whether the S5 survivor count (connected min-degree≥3 girth≥5 graphs
-  by order: 1@10, 0@11, 2@12, 4@13, 23@14) equals OEIS A366224 (3-connected
-  girth≥5, predicted 149@15/1670@16/23882@17/422194@18) — which would imply
-  every girth≥5 min-degree≥3 connected graph is 3-connected. If it breaks down,
-  the extra non-3-connected survivors at n≥15 are exactly what to inspect.
-  Scripts: `code/eg/s5_*.py`; no result file in `code/out/` yet. Treat the
-  identification as conjecture until a count is recorded, not as established.
-  [[code/eg/INDEX.md]]
+- **S5 vs A366224** (S5 = connected min-degree≥3 girth≥5 graphs; A366224 =
+  3-connected girth≥5). **Verified equal through n=14** (S5 = A366224 =
+  1,0,2,4,23). But the identity is **provably NOT a theorem**: joining two
+  girth≥5 min-degree≥3 graphs at a cut vertex (e.g. Petersen+Petersen at one
+  vertex, n=19) gives a connected min-degree≥3 girth-5 graph with a cut vertex
+  that is not 3-connected ⇒ S5(n) > A366224(n) at n=19. So the question the
+  probe answers is **at what first n it breaks** — finding the smallest
+  non-3-connected girth≥5 min-degree≥3 graph. That breakdown n is structural
+  (a 1-/2-separator in a low-girth cubic graph) and is exactly where a
+  non-3-connected survivor could hide. No confirmed count beyond n=14 recorded
+  yet (`code/out/` has none; scripts `code/eg/s5_*.py` stop at the un-run
+  frontier). [[code/eg/INDEX.md]]
+- **NO4(17) sanity range** (prediction, unconfirmed): pattern_finder's law
+  `NO4(n)≈K·3^n·(n−10)!` (locked from n=12) predicts NO4(17) ∈ 30–41M,
+  nominal ≈35M. Outside 25–45M flags an enumeration bug. Detail:
+  [[code/eg/survivor_sequences.md]].
 - Scratch/durable memory hold nothing further on this problem (earlier
   `recall_memory` surface hit an unrelated permutations paper; the graph has no
   other EG entries).
