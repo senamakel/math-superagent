@@ -1,0 +1,93 @@
+Candidates: 17; already covered by prior runs: 0; out-of-sample: 17
+  NEW  {2,13}  gcd=1  predict g=6
+  NEW  {3,25}  gcd=1  predict g=24
+  NEW  {5,25}  gcd=5  predict g=46
+  NEW  {10,20}  gcd=10  predict g=81
+  NEW  {13,17}  gcd=1  predict g=96
+  NEW  {13,19}  gcd=1  predict g=108
+  NEW  {13,26}  gcd=13  predict g=144
+  NEW  {14,18}  gcd=2  predict g=110
+  NEW  {14,23}  gcd=1  predict g=143
+  NEW  {14,28}  gcd=14  predict g=169
+  NEW  {15,19}  gcd=1  predict g=126
+  NEW  {15,20}  gcd=5  predict g=131
+  NEW  {15,26}  gcd=1  predict g=175
+  NEW  {16,19}  gcd=1  predict g=135
+  NEW  {16,21}  gcd=1  predict g=150
+  NEW  {16,24}  gcd=8  predict g=169
+  NEW  {16,26}  gcd=2  predict g=187
+
+--- Singular stdout ---
+PAIR {2,13} genus= 6
+// ** redefining F (poly F = CB(x,3) - CB(y,25);)
+// ** redefining I (ideal I = F;)
+PAIR {3,25} genus= 24
+// ** redefining F (poly F = CB(x,5) - CB(y,25);)
+// ** redefining I (ideal I = F;)
+PAIR {5,25} genus= 46
+// ** redefining F (poly F = CB(x,10) - CB(y,20);)
+// ** redefining I (ideal I = F;)
+PAIR {10,20} genus= 81
+// ** redefining F (poly F = CB(x,13) - CB(y,17);)
+// ** redefining I (ideal I = F;)
+PAIR {13,17} genus= 96
+// ** redefining F (poly F = CB(x,13) - CB(y,19);)
+// ** redefining I (ideal I = F;)
+PAIR {13,19} genus= 108
+// ** redefining F (poly F = CB(x,13) - CB(y,26);)
+// ** redefining I (ideal I = F;)
+PAIR {13,26} genus= 144
+// ** redefining F (poly F = CB(x,14) - CB(y,18);)
+// ** redefining I (ideal I = F;)
+PAIR {14,18} genus= 110
+// ** redefining F (poly F = CB(x,14) - CB(y,23);)
+// ** redefining I (ideal I = F;)
+PAIR {14,23} genus= 143
+// ** redefining F (poly F = CB(x,14) - CB(y,28);)
+// ** redefining I (ideal I = F;)
+PAIR {14,28} genus= 169
+// ** redefining F (poly F = CB(x,15) - CB(y,19);)
+// ** redefining I (ideal I = F;)
+PAIR {15,19} genus= 126
+// ** redefining F (poly F = CB(x,15) - CB(y,20);)
+// ** redefining I (ideal I = F;)
+PAIR {15,20} genus= 131
+// ** redefining F (poly F = CB(x,15) - CB(y,26);)
+// ** redefining I (ideal I = F;)
+PAIR {15,26} genus= 175
+// ** redefining F (poly F = CB(x,16) - CB(y,19);)
+// ** redefining I (ideal I = F;)
+PAIR {16,19} genus= 135
+// ** redefining F (poly F = CB(x,16) - CB(y,21);)
+// ** redefining I (ideal I = F;)
+PAIR {16,21} genus= 150
+// ** redefining F (poly F = CB(x,16) - CB(y,24);)
+// ** redefining I (ideal I = F;)
+PAIR {16,24} genus= 169
+// ** redefining F (poly F = CB(x,16) - CB(y,26);)
+// ** redefining I (ideal I = F;)
+PAIR {16,26} genus= 187
+
+
+--- Comparison ---
+  {2,13}: predicted    6  Singular 6  MATCH
+  {3,25}: predicted   24  Singular 24  MATCH
+  {5,25}: predicted   46  Singular 46  MATCH
+  {10,20}: predicted   81  Singular 81  MATCH
+  {13,17}: predicted   96  Singular 96  MATCH
+  {13,19}: predicted  108  Singular 108  MATCH
+  {13,26}: predicted  144  Singular 144  MATCH
+  {14,18}: predicted  110  Singular 110  MATCH
+  {14,23}: predicted  143  Singular 143  MATCH
+  {14,28}: predicted  169  Singular 169  MATCH
+  {15,19}: predicted  126  Singular 126  MATCH
+  {15,20}: predicted  131  Singular 131  MATCH
+  {15,26}: predicted  175  Singular 175  MATCH
+  {16,19}: predicted  135  Singular 135  MATCH
+  {16,21}: predicted  150  Singular 150  MATCH
+  {16,24}: predicted  169  Singular 169  MATCH
+  {16,26}: predicted  187  Singular 187  MATCH
+
+Singular returned 17 of 17 pairs
+MISMATCHES: 0
+VERDICT: formula survives out-of-sample Singular recomputation
