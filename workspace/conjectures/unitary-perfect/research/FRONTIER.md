@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://portal.mardi4nfdi.de/wiki/Talk:On_unitary_perfect_numbers?action=edit&amp;redlink=1&amp;preload=Template:ReportABugPreload | Click here to report a bug for this page (MaRDI item Q1247995) | Quadratic Rings][21] This page was built for publication: On unitary perfect numbers Report a bug (only for logged in users!) [Click here to report a bug for this page (MaRDI item Q1247995)][22]… |
 | 1 | http://www.ams.org/mathscinet-getitem?mr=2018092 | MathSciNet | Scholar][56] 18. A. Bege, *On multiplicatively bi-unitary perfect numbers*, Notes Number Th. Discr. Math. **8**(2002), 28–36. [MathSciNet][57] [Google Scholar][58] 19. M. Bencze, *On perfect… |
 
-_220 further candidates not shown; they are cited once each._
+_237 further candidates not shown; they are cited once each._
