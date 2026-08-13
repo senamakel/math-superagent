@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/Archimedean_property | Archimedean | threshold could be lowered if we had stronger bounds on exponential sums. To try to control solutions to (1) we use a combination of “ [Archimedean][27] ” and “non-Archimedean” approaches. In the… |
 | 1 | http://www.warwick.ac.uk/∼maseap/progs/intpoint/bounds.m | — | TENGELY, AND N ´ORA VARGA get a large upper bound for log \|X\|. A MAGMA code were written to obtain such bounds, it can be found at http://www.warwick.ac.uk/∼maseap/progs/intpoint/bounds.m. In our… |
 
-_514 further candidates not shown; they are cited once each._
+_535 further candidates not shown; they are cited once each._
