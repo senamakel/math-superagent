@@ -74,6 +74,17 @@ recording:
 ## Claims
 
 ```claim
+id: square-class-obstruction-answered
+statement: The exact obstruction keeping the six open classes n ≡ 1, 121, 169, 289, 361, 529 (mod 840) out of reach of the standard type I/II polynomial identity families is established with primary citations in research/notes/es-structure.md section (d): (1) Schinzel's non-residue criterion (Salez arXiv:1406.6307 Prop 2): a polynomial identity 4/(at+b) = 1/F1+1/F2+1/F3 requires b a quadratic non-residue mod a, and the six r are quadratic residues at every relevant modulus 3,4,5,7,8; (2) Elsholtz–Tao Prop. 1.6 (+§4 proof): f_I(n)=f_II(n)=0 for odd perfect squares, and each of the six classes contains infinitely many odd squares (s+840k)^2 with s ∈ {1,11,13,17,19,23}; (3) hence no single polynomial type-I/II identity covers any open class; only new shapes (Salez: "a still unknown new type") or sub-progression splittings can. The claim block mordell-six-open-classes-840 in es-structure.md also carries answers: exact-statement-from-b7df.
+hypotheses: none beyond the sourced theorems.
+holds-here: yes.
+status: sourced (Elsholtz–Tao arXiv:1107.1010 Prop 1.6/§4/§10; Salez arXiv:1406.6307 Prop 2; Mordell 1969 via Wikipedia and erdosproblems #242).
+bearing: every ansatz search must engage this obstruction; the falsifier column of the request (an explicit type-I/II identity covering n ≡ 1 mod 840) would contradict Prop. 1.6 on the square members of the class.
+anchor: research/notes/es-structure.md (d)
+answers: exact-statement-from-b7df
+```
+
+```claim
 id: esc-formal-lean-statement-distinct
 statement: The google-deepmind formal-conjectures repo states Erdős Problem #242 in Lean as: for every n > 2 there exist 1 ≤ x < y < z (strictly increasing, hence distinct) with 4/n = 1/x + 1/y + 1/z; the theorem body is `sorry` (open), and a Schinzel-generalisation variant (a/n for fixed a, n sufficiently large) is also stated with `sorry`.
 hypotheses: n : ℕ, 2 < n; statement is the distinct-denominator variant of ESC.
