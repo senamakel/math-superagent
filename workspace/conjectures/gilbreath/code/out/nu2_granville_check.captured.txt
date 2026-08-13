@@ -1,0 +1,10 @@
+n      nu2      n^0.525    n/2     nu2/n    last  ok
+50     26       7.8        25.0     0.520    2     True  gstar=14 cyclen=41
+100    42       11.2       50.0     0.420    2     True  gstar=18 cyclen=95
+200    98       16.1       100.0    0.490    0     True  gstar=22 cyclen=194
+400    203      23.2       200.0    0.507    2     True  gstar=34 cyclen=394
+800    389      33.4       400.0    0.486    0     True  gstar=34 cyclen=794
+1600   785      48.1       800.0    0.491    2     True  gstar=36 cyclen=1597
+3200   1604     69.2       1600.0   0.501    0     True  gstar=52 cyclen=3196
+3999   2048     77.8       1999.5   0.512    0     True  gstar=72 cyclen=3983
+lemma5.4 hypothesis g* <= 2*nu2+2 failed at: 0 of the sampled n

@@ -118,35 +118,33 @@ source: operator-computation
 
 ```claim
 id: giant-parity-even-pre-jump-rows
-statement: Among the 15 giant events of the wider-width run, 14 fire at even
-  pre-jump rows (13/14 genuine, sole exception i=161 which is genuine at 3e8
-  with jump 4,323,712). Exact hypergeometric P(>= observed even giants | event
-  even base 37/51) = 0.030 (0.043 excluding the capped row-238); the event set
-  is itself even-biased (even frac 0.725), so the giants' 0.933 even fraction
-  is ~3% beyond base. No mod-4/mod-8 refinement; no mechanism; one real
-  exception. CONJECTURE (numerical regularity), falsifier = any giant with a
-  second odd pre-jump row.
-hypotheses: same run as wider-width-giant-record-3e8.
+statement: Among the 15 genuine giant events of the 6e8 run, 14 fire at even
+  pre-jump rows (13/14 excluding row 161 which is the sole odd). One-sided
+  p = 16/2^15 = 4.9×10⁻⁴ (exact, plain 1/2 null). At 3e8 the event base
+  even fraction was 0.725, so the giants' 0.933 even fraction is beyond
+  base bias. No mod-4/mod-8 refinement; no mechanism; one real exception
+  (row 161, genuine with jump 4,323,712). CONJECTURE (numerical regularity),
+  falsifier = any giant with a second odd pre-jump row other than 161.
+hypotheses: 6e8 run, 31,324,703 primes, depth 400; giants = step-law
+  (2,4)-events with j > 1000.
 holds-here: yes
-status: checked numerically — suggestive, not established (p ~ 0.03, one
-  real exception, no mechanism)
+status: checked numerically — suggestive, not established (p = 4.9×10⁻⁴,
+  one real exception, no mechanism)
 bearing: if a mechanism is found it would sit in the parity strata of the
   {0,2}-block dynamics; currently not load-bearing.
-anchor: code/out/pattern_finder_giant_significance.captured.txt,
-  code/out/pattern_finder_giant_parity2.captured.txt
+anchor: code/out/pattern_finder_6e8_giants.captured.txt
 source: operator-computation
 ```
 
 ```claim
-id: giant-landing-geometric-fit-14
-statement: Over the 14 genuine giant landings of the 3e8 run, exact LS fit:
-  geometric log b = 8.4388 + 0.55990 x with R2 = 0.9607 (factor 1.7505/event)
-  vs linear R2 = 0.4317. Geometric description holds on 14 points; ratios
-  include 4.951 (13th) so it is a fit, not a law; directive25 reconciliation
-  caveat stands.
-hypotheses: as above.
+id: giant-landing-geometric-fit-15
+statement: Over the 15 genuine giant landings of the 6e8 run, exact LS fit:
+  geometric log b = a + m·x with R² = 0.968, factor 1.765/event; linear
+  R² = 0.432. Geometric description holds on 15 points; it is a fit, not a law;
+  not load-bearing (the ratio bound gap_i ≤ j_i+1 is what matters).
+hypotheses: 6e8 run, 31,324,703 primes, 15 genuine giants.
 holds-here: yes
 status: numerical description only
-anchor: code/out/pattern_finder_giant_corrected.captured.txt
+anchor: code/out/pattern_finder_6e8_giants.captured.txt
 source: operator-computation
 ```

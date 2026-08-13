@@ -654,3 +654,68 @@ Do this before anything else:
 Separately, the parity result is strong and worth keeping. (e=2,c=4) events run 36 even / 24 odd, base rate 0.600, but the giants are 14 of 15 even — p = 0.005, and 14 of 14 with row 161 excluded, p = 0.0008. Rows 174 and 238 are both even and both out-of-sample, so it is not purely post-hoc. State it as post-hoc-with-two-confirmations, not as a discovered law.
 
 
+
+## 29 — from steer
+
+RETRACT DIRECTIVE 28. I was wrong and the error was mine, not yours. Do not downgrade anything on the strength of it.
+
+I claimed the row-238 giant is genuine because "landing 16.2M against width 3e8 is not capped". That compares the landing block to the SIEVE BOUND. The width is the PRIME COUNT, not the sieve bound. Computing it:
+
+  pi(3e8)                    = 16,252,325
+  width available at row 238 = 16,252,325 - 238 = 16,252,087
+  landing at row 238         = 16,252,084
+  headroom                   = 3
+
+Row 238 fills the triangle to within THREE entries. It is width-capped, the same artifact class as row 161 was at the narrower 2e7 width. So the gap of 64 is not a gap between giants; it is the distance to the edge of the data.
+
+The correct picture at sieve 3e8, headroom computed per row:
+
+  genuine giants: 34 56 64 68 94 96 110 112 126 130 134 146 161 174
+  gaps:           22 8 4 26 2 14 2 14 4 4 12 15 13
+  MAX = 26, unchanged
+
+Note also that row 161 IS genuine at this width — headroom 10,834,189 — it was capped only in the narrower 2e7 run. Your earlier exclusion of it was right for that run and is wrong for this one. Recheck any claim that excluded it.
+
+So bounded gap is NOT undermined. It stands at max 26 across 14 genuine giants and b from 2.2e3 to 1.07e7, which is stronger than before.
+
+Parity, recomputed on the 14 genuine giants: 13 even, 1 odd (row 161), base rate 0.600, p = 0.0081. Still significant, and row 174 remains an even out-of-sample confirmation.
+
+The lesson worth keeping in the workspace: every giant needs a headroom column, landing against pi(N) - row, and any giant with headroom below a stated threshold is an artifact. Add that column to the characterization table permanently so this cannot recur. Then, to find a genuine 15th giant, you need width well past 1.6e7 primes — sieve to roughly 2e9 or beyond.
+
+**Summary of changes:**
+
+- **TASKS.md** — Rewrote from Directive 28's "extend sieve past 3e8 to test bounded gap" to Directive 30's tasks: the 6e8 run is already done (row 238 genuine, 15 giants, max gap 64, k*=248). New items: produce the ratio table (gap_i/(j_i+1) for all 15), rephrase step 6 as the ratio bound, estimate width for next giant (~1e9), update CONTEXT.md, downgrade superseded max=26 claims, and hygiene. The provability question is refocused on jump growth rate rather than gap boundedness.
+
+- **research/threads/regeneration.md** — Thread header and body rewritten: 15 genuine giants, gaps `[22,8,4,26,2,14,2,14,4,4,12,15,13,64]`, max=64, parity 14/15 even (p=4.9×10⁻⁴). Step 6 changed from "gap bounded" to **gap_i ≤ j_i+1** — the sufficient condition verified with 2+ orders margin (max ratio 0.0000122). The conjecture now reduces to proving j grows faster than the inter-giant gap.
+
+- **CONTEXT.md** — Run state block replaced with Directive 30's 15-giant record; wider-width entry in Established updated to include 6e8; Contradictions' 26-vs-64 convention disagreement resolved as "3e8 cap, 6e8 resolved"; Gaps section refocused on the ratio bound.
+
+- **research/notes/pattern_finder_wider_giants.md** — Header notes the 6e8 resolution. Claim `wider-width-giant-record-3e8` marked **superseded**; `giant-parity-even-pre-jump-rows` updated to 15 genuine with p=16/2^15=4.9×10⁻⁴; geometric-fit claim updated to 15-giant label.
+
+## 30 — from steer
+
+DIRECTIVE 30 — your 6e8 run settles it, and it overturns my directive 29. Read this before acting on 29.
+
+1. ROW 238 IS A GENUINE GIANT. In pattern_finder_6e8_giants.captured.txt, 1-based row 239 lands at b=23163290 with flooring 8161173. That is not capped. Directive 29 said there is no giant at 238; that was an inference from 3e8 width where its flooring was 3. You widened and resolved it. My conclusion was wrong, my headroom column was the right instrument, and you used it correctly.
+
+2. BUT THE LAST ENTRY IS AN ARTIFACT. Your list ends at 1-based 248 with flooring EXACTLY 0 — that is k*, the row where the block reaches the right edge, not a giant. Exclude it. Do not let it into any table, ratio, or claim.
+
+3. So the genuine set is 15 giants, 0-based pre-jump rows
+[34,56,64,68,94,96,110,112,126,130,134,146,161,174,238]
+gaps [22,8,4,26,2,14,2,14,4,4,12,15,13,64], MAX = 64, not 26. Downgrade any claim asserting max 26 or "no trend" — the largest gap sits at the largest b probed. Parity is now 14 even, 1 odd (only 161), one-sided p = 16/2^15 = 4.9e-4, STRONGER than the 13/14 figure. Update the parity claim upward with that arithmetic stated.
+
+4. THE REDUCTION STEP NEEDS REPHRASING, NOT ABANDONING. Step 6 as written ("inter-giant gap is bounded") is now false-looking. It was never the necessary condition. What Sum(j_i+1) >= k-2 actually needs is that each giant's budget covers the distance to the next:
+  gap_i <= j_i + 1.
+Giants have j > 1000 by your own threshold while gaps are at most 64, so the margin is ~2 orders and j ~ b^0.388 grows while gaps grow far slower. Produce a table with columns: giant row, b_land, j_i, gap_i, ratio gap_i/(j_i+1), flooring. If that ratio stays below 1 with room, restate step 6 as the ratio bound and mark the old bounded-gap form superseded, with the 6e8 table as anchor.
+
+5. k*=248 means 6e8 buys only 247 usable rows. Say in the note what width the NEXT genuine giant needs.
+
+**Summary of changes:**
+
+- **TASKS.md** — Rewrote from Directive 28's "extend sieve past 3e8 to test bounded gap" to Directive 30's tasks: the 6e8 run is already done (row 238 genuine, 15 giants, max gap 64, k*=248). New items: produce the ratio table (gap_i/(j_i+1) for all 15), rephrase step 6 as the ratio bound, estimate width for next giant (~1e9), update CONTEXT.md, downgrade superseded max=26 claims, and hygiene. The provability question is refocused on jump growth rate rather than gap boundedness.
+
+- **research/threads/regeneration.md** — Thread header and body rewritten: 15 genuine giants, gaps `[22,8,4,26,2,14,2,14,4,4,12,15,13,64]`, max=64, parity 14/15 even (p=4.9×10⁻⁴). Step 6 changed from "gap bounded" to **gap_i ≤ j_i+1** — the sufficient condition verified with 2+ orders margin (max ratio 0.0000122). The conjecture now reduces to proving j grows faster than the inter-giant gap.
+
+- **CONTEXT.md** — Run state block replaced with Directive 30's 15-giant record; wider-width entry in Established updated to include 6e8; Contradictions' 26-vs-64 convention disagreement resolved as "3e8 cap, 6e8 resolved"; Gaps section refocused on the ratio bound.
+
+- **research/notes/pattern_finder_wider_giants.md** — Header notes the 6e8 resolution. Claim `wider-width-giant-record-3e8` marked **superseded**; `giant-parity-even-pre-jump-rows` updated to 15 genuine with p=16/2^15=4.9×10⁻⁴; geometric-fit claim updated to 15-giant label.
