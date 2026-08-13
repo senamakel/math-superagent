@@ -23,6 +23,10 @@ only** — title, author, and shelf data — and **not the article body**:
   Wall 1988 intro (all held full texts) eliminated `a = 8, 9, 10` for a sixth
   unitary perfect number — remains unverified against the primary. The claim
   `subbarao1970-a-ge-11` stays `asserted`.
+- **The entire downloaded content is this file.** The download tool stored the
+  cover-page conversion under `summaries/`; no `sources/*.full.md` exists for
+  this item (~1.5 KB, negligible). Any future reader should open this file, not
+  a `.full.md` path.
 
 ## Do not
 
