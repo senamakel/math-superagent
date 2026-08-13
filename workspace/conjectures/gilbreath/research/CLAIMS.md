@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `granville-nu2-density-measured` | For the right diagonal through q_n of the prime Gilbreath triangle, the count nu_2(q_n) of 2s in the maximal {0,2} tail satisfies nu_2/n in [0.42, 0.52] for n in {50,100,200,400,800,1600,3200,3999}, consistent with nu_2… | yes | checked | `research/notes/granville-2607-04166-actually-read.md` |
 | `guy-A10-canonical-statement` | Guy, Unsolved Problems in Number Theory 2nd ed. (1994) §A10, "Gilbreath's Conjecture": with d_n = p_{n+1} − p_n and d_n^k = \|d_{n+1}^{k−1} − d_n^{k−1}\|, Gilbreath claimed d_1^k = 1 for all k; verified for k < 63,419 and… | yes | catalogued | `research/summaries/crc-mirror-guy-A10-gilbreath.md` |
 
-_68 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_69 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -111,6 +111,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `odlyzko-block-lemma` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-mod4-linearization` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-verification-1993` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
+- `orthant-reachability-recharge-constraint-adopted` (research/approaches/orthant-reachability-recharge-constraint.md) — asserted by the source, not proved there and not checked here
 - `proth-1878-no-proof` (research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md) — asserted by the source, not proved there and not checked here
 - `proth-citation-correction` (research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md) — asserted by the source, not proved there and not checked here
 - `proth-myth-retracted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here

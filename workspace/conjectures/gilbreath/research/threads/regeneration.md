@@ -1,18 +1,21 @@
 ```thread
-question: Which of the three routes to GC has the weakest demand side? Route B (Granville ν_2) selected as primary; Route A (ratio bound) kept as fallback.
-status: live — THREE-ROUTE (Directive 35). Route B (Granville ν_2 > n^0.525) has the weakest demand side: BHP is unconditional, ν_2/n ≈ 0.49–0.52 measured above threshold, Lemma 5.4 to re-derive here. Route A (ratio bound gap_i ≤ j_i+1) holds with 2+ orders slack on 15 giants at 6e8; needs geometric growth of b. Route C (CHT deterministic) needs Cramér (open, stronger than BHP); authors' own assessment: "look difficult to establish rigorously." Primary target: prove Lemma 5.4, then lower-bound ν_2.
+question: Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones.
+status: live — PIVOTED (Directive 36). Empirical route at ceiling. Route B (Granville ν_2) primary; Route A (ratio bound) empirical fallback; Route C (CHT) calibrated by authors' assessment.
 rests-on: |
   - IFF reduction (Lean, sorry-free): GC ⇔ A_k(1) ∈ {0,2}.
   - Recharge identity (PROVED, universal): b_k = b_1 + Σ_{i<k}(j_i+1) − (k−1).
-  - 6e8 giant record: 15 genuine giants, max gap 64, ratio bound gap_i/(j_i+1) ≤ 0.0000122.
+  - 1e9 run: 15 genuine giants, max gap 64, ratio bound holds everywhere (max 1.26e-02), row-248 STILL capped.
   - Geometric growth: b ~ 1.765× per giant event (R²=0.968 over 15); j ~ b^0.388.
   - Granville Lemma 5.4/Theorem 5.5: GC reduces to ν_2 > n^β, β > 0.525; α=0.525 unconditional (BHP).
-  - CHT Theorem 1.6 column restriction (Directive 35): j ≥ N′ = right half only; leading block at j=1 does NOT violate (iii). Right-half {0,d}-block scan queued.
-blocked-by: CHT right-half {0,d} scan (Directive 35 item 1). Lemma 5.4 re-derivation (Directive 32/33 item 11).
+  - CHT Theorem 1.6: {0,d}-block obstruction in right half (j ≥ N′); needs Cramér (open, >BHP).
+  - Empirical route ceiling: each giant costs 1.5×–8× the width of the last; next two giants need 1e10–1e11 sieve → >8 GiB.
+blocked-by: Lemma 5.4 re-derivation (published proof discards delta=0 case).
 next: |
-  1. Scan right-half {0,d} blocks with d≥2 in 6e8 data; compare against CHT threshold R_m − 3R_{m−1}. → code/out/cht_right_half_0d_scan.captured.txt
-  2. Re-derive Granville Lemma 5.4 with delta=0 case handled.
-  3. Write three-route comparison section below.
+  1. Read Granville 2026 FULLPDF → summary with Lemma 5.4/5.5 verbatim. → research/notes/granville-2026-summary.md
+  2. Read CHT 2026 FULLPDF → summary with Theorem 1.6 verbatim + column restriction. → research/notes/cht-2026-summary.md
+  3. Re-derive Granville Lemma 5.4 with delta=0 case handled. → research/notes/lemma54-re-derived.md
+  4. Reproduce ν_2 numbers in-container. → code/out/nu2_granville_check.captured.txt
+  5. Parity correction: 15 genuine giants, 1 odd (161), base-rate p=0.0052.
 ```
 
 # Regeneration thread — the ratio bound is the whole conjecture

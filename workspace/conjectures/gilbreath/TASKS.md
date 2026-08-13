@@ -1,136 +1,108 @@
 # Tasks
 
-## Directive 35 (steer): CHT column restriction + three-route comparison
+## Directive 36 (steer): empirical route at ceiling — pivot to theoretical
+
+The 1e9 run doubled the width from 6e8 and row-248 is STILL capped (floor=0, genuine=False,
+b_land = W−248−1 exactly). The geometric fit says b_land doubles every 14.16 rows while gaps
+are 9 to 64 rows, so each giant costs 1.5× to 8× the width of the last. At 1e9 (1.37 GiB, 185s),
+two more giants would need 1e10–1e11 — exceeds the 8 GiB cap. **Do not queue a 2e9 or 4e9
+run.** The remaining work is theoretical: Granville's ν_2 lower bound (Directives 32, 33) and
+CHT Theorem 1.6 (Directive 35). Both are in `research/sources/` as `*-FULLPDF.full.md` and
+have not yet been read.
 
 ### Immediate (in order)
 
-- [ ] **1. Measure right-half {0,d} blocks (Directive 35 item 1).**
-  CHT Theorem 1.6(iii) restricts the {0,d}-block obstruction to columns j ≥ N′
-  (= ⌊N/2⌋) — the RIGHT HALF only. The run's leading {0,2} block sits at j=1
-  (far left), so it does NOT violate (iii). The question is whether long {0,d}
-  blocks with d ≥ 2 exist in the RIGHT HALF of the prime array. Scan the 6e8
-  data (or the depth-1000 data) for {0,d} blocks with d ≥ 2 in the right half,
-  record the longest at each depth, and compare against CHT's threshold
-  R_m − 3R_{m−1}. If long right-half shallow blocks exist, Theorem 1.6 does not
-  apply to primes and we've located precisely why. If not, (iii) is empirically
-  supported and the obstruction is elsewhere. Both answers are worth having.
-  Produce: `code/out/cht_right_half_0d_scan.captured.txt`,
+- [ ] **1. Parity correction (Directive 36).** The 1e9 capture's parity p-value counted all 16
+  giants including row 247 (genuine=False). Recompute on the 15 genuine giants only: 1 odd
+  (161) of 15. Under uniform parity: p = (C(15,1)+C(15,0))/2^15 = 16/32768 = 4.883e-04.
+  Against the measured (2,4)-event base rate 0.600: p = 0.0052. Quote the base-rate figure,
+  not the fair-coin one. Update `research/threads/regeneration.md` and any stale captures.
+
+- [ ] **2. Record the 1e9 settlement.** The run's real findings, worth having:
+  - max gap is still 64. The 239→248 gap of 9 is noise; 64 at 175→239 stands.
+  - ratio bound gap_i/(j_i+1) holds everywhere, max 1.2644e-02, none above 0.1.
+  - rows 1..247 reproduce 6e8, rows 1..161 reproduce 2e7 — oracle passed.
+  - row-248 is STILL capped: b_land = 50,847,285 = W−248−1, floor=0, jump ≥ 27,684,003.
+  Write `code/out/1e9_settlement.md` with these four findings and the ceiling rationale.
+
+- [ ] **3. Read Granville 2026 — Lemma 5.4 and Theorem 5.5.**
+  `research/sources/granville-2026-piercing-gilbreath-FULLPDF.full.md` (175 KB). Produce a
+  summary: Lemma 5.4 statement verbatim (the ν_2 criterion), Theorem 5.5 statement, the
+  demand side (α=0.525 unconditional from BHP), what the published proof of Lemma 5.4
+  discards (the delta=0 case), and whether the reduction to ν_2 > n^β with β > 0.525 is
+  valid. Anchor: `research/notes/granville-2026-summary.md`.
+
+- [ ] **4. Read CHT 2026 — Theorem 1.6 and the column restriction.**
+  `research/sources/chase-hunter-tao-2026-cramer-random-model-gilbreath-FULLPDF.full.md`
+  (98 KB). Produce a summary: Theorem 1.6 statement verbatim, the column restriction
+  j ≥ N′ (= ⌊N/2⌋), the hypotheses (i)–(iii), the R_m − 3R_{m−1} threshold, and the
+  authors' own difficulty assessment on p. 8. Anchor:
+  `research/notes/cht-2026-summary.md`.
+
+- [ ] **5. Re-derive Granville Lemma 5.4 with the delta=0 case handled.**
+  The operator's notes document the gap: `lemma54-discarded-case-is-universal` — the published
+  proof discards a case occurring in 100% of columns. Re-derive from scratch, prove it, and
+  Lemma 5.4 becomes `proved` here. Anchor: `research/notes/lemma54-re-derived.md`.
+
+- [ ] **6. Reproduce ν_2 numbers in-container.**
+  `code/nu2_granville_check.py` → `code/out/nu2_granville_check.captured.txt`. Verify
+  ν_2/n ≈ 0.49–0.52 measured above threshold.
+
+- [ ] **7. Three-route comparison in `research/threads/regeneration.md`.**
+  With the empirical route at ceiling, the theoretical routes are now the only live ones.
+  Route B (Granville ν_2) has weakest demand side: BHP unconditional, ν_2 measured above
+  threshold, Lemma 5.4 to re-derive. Route C (CHT deterministic) needs Cramér (open,
+  stronger than BHP); authors' own assessment: "look difficult to establish rigorously."
+  Route A (ratio bound) is the empirical fallback — holds with enormous slack to 15 giants
+  but cannot be extended computationally. State the run is on Route B as primary.
+
+### Directive 35 items (continue, lower priority than the pivot)
+
+- [ ] **8. Measure right-half {0,d} blocks (Directive 35 item 1).**
+  CHT Theorem 1.6(iii) restricts the {0,d}-block obstruction to columns j ≥ N′. Scan the
+  6e8 data for {0,d} blocks with d ≥ 2 in the right half. Produce:
+  `code/out/cht_right_half_0d_scan.captured.txt`,
   `research/notes/cht-right-half-scan.md`.
 
-- [ ] **2. Three-route comparison in regeneration.md (Directive 35 item 2).**
-  The three routes to GC and their demand sides:
-  - **Route A (run's ratio bound):** needs bounded inter-giant gaps (6e8 data:
-    gap ≤ 64 and holding, max gap across 15 giants is 64). Demand: geometric
-    growth of b, or at minimum gap_i ≤ j_i+1 for all i.
-  - **Route B (Granville ν_2):** needs ν_2 > n^0.525 with BHP unconditional
-    alongside. Demand side α=0.525 is unconditional (Baker-Harman-Pintz);
-    supply side ν_2/n ≈ 0.49–0.52 measured, exceeds threshold. Lemma 5.4 must
-    be re-derived here (published proof broken).
-  - **Route C (CHT deterministic):** needs Cramér (a_n ≪ log^10 N), open and
-    strictly stronger than BHP; plus no zero-blocks of length ~log^10 N; plus
-    no right-half {0,d} blocks above threshold. CHT state (ii) and (iii) "look
-    difficult to establish rigorously, even if one assumes strong conjectures
-    on the primes such as the Hardy–Littlewood prime tuples conjecture."
-  **Granville's (Route B) has the weakest demand side** — BHP is unconditional,
-  ν_2 is measured above threshold, and the only outstanding piece is Lemma 5.4
-  re-derivation. The CHT authors' own difficulty assessment ("look difficult
-  to establish rigorously") calibrates Route C. Add the three-route comparison
-  to `research/threads/regeneration.md`; state the run is on **Route B**
-  (Granville ν_2) as primary, with Route A (ratio bound) as the fallback
-  empirical target. Record Tao's assessment as calibration, not discouragement:
-  it is the best evidence available on how hard Route C is.
+### Directive 34 items (continue, lower priority)
 
-- [ ] **3. Update CONTEXT.md Run state to Directive 35.**
-  Add: CHT column-restriction clarification (right half only; leading block at
-  j=1 does not violate (iii)); three-route comparison summary; Tao difficulty
-  assessment. Keep within budget — compress older material if needed.
+- [ ] **9. Read Arias de Reyna.** Anchor: `research/notes/arias-de-reyna-summary.md`.
+- [ ] **10. Read Muney 2026.** Anchor: `research/notes/muney-2026-summary.md`.
+- [ ] **11. Read BCZ 2023 filtered-rays + quasi-periodicity.**
+- [ ] **12. Re-judge `granville-2026-piercing-gilbreath-not-load-bearing`.**
 
-## Directive 34 (steer): read the six papers you never read
+### Directive 31 items (continue, lowest priority)
 
-### (continue — Directive 35 items take priority, then return here)
+- [ ] **13. Clear the unrun `.py` pile in `code/out/`.**
+- [ ] **14. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
 
-- [ ] **4. Read CHT 2026 first.**
-  `research/sources/chase-hunter-tao-2026-cramer-random-model-gilbreath-FULLPDF.full.md`
-  (98 KB, 137 theorem/lemma/proof hits). Produce a summary: main theorem
-  verbatim, hypotheses, effective and uniform or not. Anchor:
-  `research/notes/cht-2026-summary.md`. **The full text is now read by
-  Directive 35 — the summary should note the column restriction j ≥ N′ in
-  Theorem 1.6(iii), noted by Directive 35.**
+### Do not do
 
-- [ ] **5. Read Arias de Reyna.**
-  Anchor: `research/notes/arias-de-reyna-summary.md`.
-
-- [ ] **6. Read Muney 2026.**
-  Anchor: `research/notes/muney-2026-summary.md`.
-
-- [ ] **7. Read the remaining three.**
-  BCZ 2023 filtered-rays, BCZ quasi-periodicity, Granville 2026 — in that
-  order.
-
-- [ ] **8. Re-judge `granville-2026-piercing-gilbreath-not-load-bearing`.**
-  Re-grade based on full PDF. Lemma 5.4 and Theorem 5.5 are real; the paper
-  contains a genuinely useful reduction. Status depends on Lemma 5.4
-  re-derivation.
-
-- [ ] **9. Revisit all nine claims anchored to `/abs/` landing pages.**
-
-## Directive 32/33 (steer): Granville's Lemma 5.4
-
-- [ ] **10. Reproduce the operator's nu_2 numbers in-container.**
-  `code/nu2_granville_check.py` → `code/out/nu2_granville_check.captured.txt`.
-
-- [ ] **11. Re-derive Lemma 5.4 from scratch.**
-  Handle the `delta_{k-1}(q_n)=0` case explicitly — it occurs in 100% of
-  columns. Prove it and Lemma 5.4 becomes `proved` here.
-
-- [ ] **12. Test Lemma 5.4 from the FAILING side.**
-  Find sequences with v_n straddling 2·nu_2+2 and check success flips exactly
-  at the threshold.
-
-- [ ] **13. Adopt nothing else from Granville.**
-  Theorem 2.5's proof is not a proof. Theorem 5.5's β = 0.99 comes from the
-  author's own Conjecture 5.1.
-
-## Directive 31 (steer): keystone auditable + unrun pile
-
-### (lower priority)
-
-- [ ] **14. Re-emit `lean_reduction.captured.txt`.**
-- [ ] **15. `lean_shape.captured.txt` check — skip (non-empty).**
-- [ ] **16. Clear the unrun `.py` pile in `code/out/`.**
-- [ ] **17. `edge_map_invertibility` already in CLAIMS.md — confirm and close.**
-
-## Directive 30 tasks (keep, lower priority)
-
-- [ ] **18. Ratio table (Directive 30 item 4).**
-- [ ] **19. Rephrase step 6 in `research/threads/regeneration.md`.**
-- [ ] **20. Width estimate for next genuine giant.**
-- [ ] **21. Update CONTEXT.md Run state and Established.**
-- [ ] **22. Downgrade superseded claims.**
-- [ ] **23. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
+- **Do not queue a 2e9 or 4e9 sieve run.** The empirical route is at ceiling (Directive 36).
+  State what width giant 16 would need and stop buying giants with sieve.
+- **Do not re-run the CHT hypothesis check.** `holds-here: no` is final (Directive 35).
 
 ## Background (established, do not redo)
 
-- **Reduction:** A_k(1) ∈ {0,2} ⇔ conjecture. Proved, checked, Lean 4 IFF
-  sorry-free.
+- **Reduction:** A_k(1) ∈ {0,2} ⇔ conjecture. Proved, checked, Lean 4 IFF sorry-free.
 - **Block lemma:** constant = 1 (n+1 rows per length-n block). Proved.
 - **Rule 90 interior (PROVED).**
 - **Step law + recharge identity — PROVED, universal.**
-- **6e8 giant record:** 15 genuine giants, max gap 64.
+- **1e9 giant record:** 15 genuine giants, max gap 64, ratio bound holds everywhere.
+- **Row-248 STILL capped at 1e9:** b_land = 50,847,285 = W−248−1, floor=0, jump ≥ 27,684,003.
+  Empirical route at ceiling — geometric doubling means next giant needs 1e10–1e11.
 - **Edge-map invertibility — PROVED.**
-- **CHT Theorem 1.6 hypothesis check — DONE:** `holds-here: no`. **Directive 35
-  adds:** the column restriction j ≥ N′ means the leading {0,2} block at j=1
-  does NOT violate (iii); the right half is unscanned.
+- **CHT Theorem 1.6 hypothesis check — DONE:** `holds-here: no`. Column restriction
+  j ≥ N′ means leading block at j=1 does not violate (iii).
 - **Rule 90 depth prediction — CLOSED** (null computed).
-- **Oracle:** `witnesses.json`, `blocks_depth1000.json`, `wider_width_b.json`,
-  `giants_6e8.json`.
+- **Oracle:** `witnesses.json`, `blocks_depth1000.json`, `giants_6e8.json`,
+  `giants_1e9.json`.
 - **Library:** downloads halted. FRONTIER.md restored.
 
 ### Threads
 
-- `research/threads/regeneration.md` — LIVE (Directive 35): **three-route
-  comparison added.** Primary route = Route B (Granville ν_2, weakest demand
-  side: BHP unconditional, ν_2 measured above threshold, Lemma 5.4 to
-  re-derive). Route A (ratio bound) kept as fallback empirical target. Route C
-  (CHT deterministic) calibrated by CHT authors' own difficulty assessment.
+- `research/threads/regeneration.md` — LIVE, PIVOTED (Directive 36): empirical route at
+  ceiling. Primary target = Route B (Granville ν_2). Lemma 5.4 re-derivation is the next
+  theoretical step. Route A (ratio bound) is empirical fallback. Route C (CHT) calibrated
+  by authors' own difficulty assessment.
 - `research/threads/rule90-regeneration.md` — CLOSED (null computed).
