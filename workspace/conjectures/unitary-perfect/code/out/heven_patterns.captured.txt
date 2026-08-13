@@ -323,3 +323,106 @@ SEQUENCE_HIGGS3=2,3,5,7,11,13,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89
   m=1118 k=559 PARTIAL, witness [500177, 830182081] -> excluded (rigorous)
   m=1122 k=561 PARTIAL, witness [137, 409, 953, 2113, 3061, 5237, 13669, 26317, 56101, 4327489, 312709, 365773, 10118197, 1326700741] -> excluded (rigorous)
   m=1126 k=563 PARTIAL, witness [133489553] -> excluded (rigorous)
+  m=1130 k=565 PARTIAL, witness [58309, 2362153, 527323541] -> excluded (rigorous)
+  m=1134 k=567 PARTIAL, witness [113, 1429, 2269, 14449, 246241, 3618757, 279073, 13088629, 20783953, 106979941] -> excluded (rigorous)
+  m=1138 k=569 PARTIAL, witness [257189, 37690561] -> excluded (rigorous)
+  m=1142 k=571 PARTIAL, witness [2384497, 5536417, 94600997] -> excluded (rigorous)
+  m=1146 k=573 PARTIAL, witness [2392849, 25212001] -> excluded (rigorous)
+  m=1150 k=575 PARTIAL, witness [8101, 13220401, 385231601] -> excluded (rigorous)
+  m=1154 k=577 PARTIAL, witness [2309, 92936237] -> excluded (rigorous)
+  m=1158 k=579 PARTIAL, witness [773, 3089, 148997, 349717, 222337] -> excluded (rigorous)
+  m=1162 k=581 PARTIAL, witness [113, 39509, 12902849, 13063537, 6804804469] -> excluded (rigorous)
+  m=1166 k=583 PARTIAL, witness [2113, 15358129, 586477649] -> excluded (rigorous)
+  m=1170 k=585 PARTIAL, witness [1249, 3121, 7489, 21061, 21841, 54001] -> excluded (rigorous)
+  m=1174 k=587 PARTIAL, leftover 342 digits, unres. locally
+  m=1178 k=589 PARTIAL, witness [525313, 4813309] -> excluded (rigorous)
+  m=1182 k=591 PARTIAL, witness [1079423677] -> excluded (rigorous)
+  m=1186 k=593 PARTIAL, leftover 357 digits, unres. locally
+  m=1190 k=595 PARTIAL, witness [113, 137, 953, 1021, 2381, 4421, 9521, 14281, 26317, 42841, 550801, 823481, 7416361, 23650061, 47392381] -> excluded (rigorous)
+  m=1194 k=597 PARTIAL, witness [121789, 1162957, 120424453] -> excluded (rigorous)
+  m=1198 k=599 PARTIAL, witness [86257, 306689] -> excluded (rigorous)
+  verified through 1200: [2, 6, 10, 18, 26, 30, 46, 62, 82]
+  matches paper [2, 6, 10, 18, 26, 30, 46, 62, 82, 122]: False
+  paper count: H_even cap [2,1200] = the 10 above
+  Higgs-cubefree odd k in [1,600]: 246 (paper Theorem 8 says 246 of 300)  match: True
+
+== frontier structure: 10 verified + candidates ==
+  |verified| + |candidates| = 272 (paper bound 272: True)
+  every m == 2 mod 4 (paper: H_even subset True): True
+  every k = m/2 Higgs-cubefree: True
+  candidate set closed under odd divisors (Prop 4(3) necessity): True
+  candidates with composite k: 5
+    m=27978 k=13989 = {3: 1, 4663: 1}; each prime inherits from a candidate (2p in set): True
+    m=30354 k=15177 = {3: 1, 5059: 1}; each prime inherits from a candidate (2p in set): True
+    m=31538 k=15769 = {13: 1, 1213: 1}; each prime inherits from a candidate (2p in set): True
+    m=41898 k=20949 = {3: 1, 6983: 1}; each prime inherits from a candidate (2p in set): True
+    m=46630 k=23315 = {5: 1, 4663: 1}; each prime inherits from a candidate (2p in set): True
+  prime candidate k's: 264 of 272
+  prime k: min 3, max 24989
+    residue dist of prime k mod 3: {0: 1, 1: 150, 2: 113}
+    residue dist of prime k mod 4: {1: 117, 3: 147}
+    residue dist of prime k mod 8: {1: 37, 3: 85, 5: 80, 7: 62}
+    residue dist of prime k mod 16: {3: 47, 5: 34, 7: 32, 9: 37, 11: 38, 13: 46, 15: 30}
+    residue dist of prime k mod 24: {1: 19, 3: 1, 5: 34, 7: 36, 11: 35, 13: 46, 17: 18, 19: 49, 23: 26}
+
+  SEQUENCE_CANDM=2426,2602,3398,3518,4166,4502,4622,5114,5774,7846,8966,9326,10118,10454,11062,11794,11878,12778,13382,13966,14642,14698,15122,15182,15206,15214,15754,15758,16358,16574,16778,16838,16922,17086,17126,17162,17338,17726,18134,18418,18934,18958,19078,19226,19322,19718,19802,19846,19862,20138,20338,20506,20662,20926,20974,21118,21302,21334,21466,21818,21958,22054,22234,22262,22394,22486,22642,22706,23194,23402,23578,23878,23942,24082,24298,24914,25022,25082,25106,25294,25486,25526,25646,25778,25786,25822,26066,26098,26198,26302,26342,26438,26482,26534,26618,26654,26662,26678,26798,26902,27374,27446,27526,27662,27806,27926,27978,27998,28058,28102,28174,28214,28318,28442,28586,28654,28862,29098,29114,29126,29558,29642,29662,29914,30354,30386,30542,30878,30994,31162,31258,31454,31466,31538,31634,31802,31918,31942,31982,32126,32174,32534,32762,32902,33134,33214,33382,33386,33574,33778,33806,33974,34058,34246,34834,34934,35038,35194,35366,35654,35678,35818,35858,35878,35942,35978,36094,36122,36298,36458,36574,36602,36682,36794,36986,37234,37322,37358,37382,38174,38282,38518,38954,39014,39062,39154,39502,39706,39826,39926,39958,40234,40466,40538,40574,40822,40886,41126,41326,41386,41714,41758,41878,41898,42134,42314,42358,42646,42766,43058,43154,43322,43402,43574,43634,43642,43678,43786,44054,44186,44294,44378,44518,44582,45142,45286,45394,45434,45478,45566,45622,45706,45842,46022,46042,46058,46394,46454,46630,46714,46862,47206,47246,47342,47378,47438,47506,47858,47962,47986,48086,48218,48338,48362,48838,49354,49466,49694,49834,49906,49958,49978
+  SEQUENCE_PRIMEK=3,5,13,23,31,41,61,1213,1301,1699,1759,2083,2251,2311,2557,2887,3923,4483,4663,5059,5227,5531,5897,5939,6389,6691,6983,7321,7349,7561,7591,7603,7607,7877,7879,8179,8287,8389,8419,8461,8543,8563,8581,8669,8863,9067,9209,9467,9479,9539,9613,9661,9859,9901,9923,9931,10069,10169,10253,10331,10463,10487,10559,10651,10667,10733,10909,10979,11027,11117,11131,11197,11243,11321,11353,11597,11701,11789,11939,11971,12041,12149,12457,12511,12541,12553,12647,12743,12763,12823,12889,12893,12911,13033,13049,13099,13151,13171,13219,13241,13267,13309,13327,13331,13339,13399,13451,13687,13723,13763,13831,13903,13963,13999,14029,14051,14087,14107,14159,14221,14293,14327,14431,14549,14557,14563,14779,14821,14831,14957,15193,15271,15439,15497,15581,15629,15727,15733,15817,15901,15959,15971,15991,16063,16087,16267,16381,16451,16567,16607,16691,16693,16787,16889,16903,16987,17029,17123,17417,17467,17519,17597,17683,17827,17839,17909,17929,17939,17971,17989,18047,18061,18149,18229,18287,18301,18341,18397,18493,18617,18661,18679,18691,19087,19141,19259,19477,19507,19531,19577,19751,19853,19913,19963,19979,20117,20233,20269,20287,20411,20443,20563,20663,20693,20857,20879,20939,21067,21157,21179,21323,21383,21529,21577,21661,21701,21787,21817,21821,21839,21893,22027,22093,22147,22189,22259,22291,22571,22643,22697,22717,22739,22783,22811,22853,22921,23011,23021,23029,23197,23227,23357,23431,23603,23623,23671,23689,23719,23753,23929,23981,23993,24043,24109,24169,24181,24419,24677,24733,24847,24917,24953,24979,24989
+
+== order structure: q | 2^{2k}+1 => ord_q(2) = 4d, d | k ==
+   (then q = 1 + 4dt; 3-Higgs requires v2(q-1) <= 3, i.e. v2(t) <= 1)
+  k=  1 m=2: factors [5]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k=  3 m=6: factors [5, 13]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=13: ord=12 d=3 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k=  5 m=10: factors [5, 41]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=41: ord=20 d=5 (d|k: True) q-1=4dt t=2 v2(q-1)=3 v2(t)=1 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k=  9 m=18: factors [5, 13, 37, 109]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=13: ord=12 d=3 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=37: ord=36 d=9 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=109: ord=36 d=9 (d|k: True) q-1=4dt t=3 v2(q-1)=2 v2(t)=0 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k= 13 m=26: factors [5, 53, 157, 1613]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=53: ord=52 d=13 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=157: ord=52 d=13 (d|k: True) q-1=4dt t=3 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1613: ord=52 d=13 (d|k: True) q-1=4dt t=31 v2(q-1)=2 v2(t)=0 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k= 15 m=30: factors [5, 13, 41, 61, 1321]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=13: ord=12 d=3 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=41: ord=20 d=5 (d|k: True) q-1=4dt t=2 v2(q-1)=3 v2(t)=1 3-Higgs=True
+      q=61: ord=60 d=15 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1321: ord=60 d=15 (d|k: True) q-1=4dt t=22 v2(q-1)=3 v2(t)=1 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k= 23 m=46: factors [5, 277, 1013, 1657, 30269]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=277: ord=92 d=23 (d|k: True) q-1=4dt t=3 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1013: ord=92 d=23 (d|k: True) q-1=4dt t=11 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1657: ord=92 d=23 (d|k: True) q-1=4dt t=18 v2(q-1)=3 v2(t)=1 3-Higgs=True
+      q=30269: ord=92 d=23 (d|k: True) q-1=4dt t=329 v2(q-1)=2 v2(t)=0 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k= 31 m=62: factors [5, 5581, 8681, 49477, 384773]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=5581: ord=124 d=31 (d|k: True) q-1=4dt t=45 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=8681: ord=124 d=31 (d|k: True) q-1=4dt t=70 v2(q-1)=3 v2(t)=1 3-Higgs=True
+      q=49477: ord=124 d=31 (d|k: True) q-1=4dt t=399 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=384773: ord=124 d=31 (d|k: True) q-1=4dt t=3103 v2(q-1)=2 v2(t)=0 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k= 41 m=82: factors [5, 10169, 181549, 12112549, 43249589]
+      q=5: ord=4 d=1 (d|k: True) q-1=4dt t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=10169: ord=164 d=41 (d|k: True) q-1=4dt t=62 v2(q-1)=3 v2(t)=1 3-Higgs=True
+      q=181549: ord=164 d=41 (d|k: True) q-1=4dt t=1107 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=12112549: ord=164 d=41 (d|k: True) q-1=4dt t=73857 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=43249589: ord=164 d=41 (d|k: True) q-1=4dt t=263717 v2(q-1)=2 v2(t)=0 3-Higgs=True
+     ord=4d with d|k holds: True; v2(t)<=1 for every factor: True
+  k=61: UNFACTORED (leftover 24 digits) -- skipped
+
+SEQUENCE_M=2,6,10,18,26,30,46,62,82,122
+SEQUENCE_K=1,3,5,9,13,15,23,31,41,61
+DONE
