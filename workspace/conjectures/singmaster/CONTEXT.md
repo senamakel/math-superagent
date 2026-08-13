@@ -365,10 +365,15 @@ Each carries the obstruction that closed it; do not re-propose.
 - **Directive 25 — Fibonacci family boundary proof and per-a count.**
   `fibonacci-family-is-boundary` filed as proved (structural, k/n→1/φ²,
   log-ratio `log(cut)/log(k)` ∼ (log n)^{1/6} → ∞ at ε=1/2; verified
-  j=1..12). **Next:**
+  j=1..12). **Directive 26 adds the binding-case analysis:** the
+  `eps > 1/3` threshold with `j0(eps)` computable makes the theorem
+  complete rather than a numerical observation. The consequence for
+  G-boundary-uniform-count: the binding case is eps → 1 (larger eps,
+  more boundary reps), and the family is boundary throughout (1/3, 1),
+  so it cannot be excluded from the count. **Decisive next computation:**
   count ALL nontrivial boundary reps per Fibonacci a_j for j=1..12.
-  If always 2, C≥3 stands; if the count grows, G-boundary-uniform-count
-  is FALSE — a genuine result either way.
+  If always 2 (the construction's two), C≥3 stands; if the count grows,
+  G-boundary-uniform-count is FALSE — a genuine result either way.
 - **The other live partial-result target:** an effective height bound with a
   **computed** constant for a specific (k1,k2) inequality or near-miss family
   (Matveev Thm 2.3, K=Q, constants held, (2,3) template computed and its
