@@ -31,9 +31,10 @@ mechanism: [REFUTED — two independent failures, one elementary and one
            nonzero).
   Hence N0(A'B'R') >= |k1-k2|+1 = maxdeg+1, so Mason-Stothers' inequality
   maxdeg <= N0-1 is satisfied IDENTICALLY, with equality exactly in the np
-  adjacent case. The theorem never binds; it says nothing about k1,k2. (Checked
-  symbolically for 2<=k2<k1<=8: slack = (N0_ub-1)-maxdeg = 0 identically, in
-  code/out/check_mason_stothers_bound.py.)
+  adjacent case. The theorem never binds; it says nothing about k1,k2.
+  (This is an elementary algebraic identity, verified by cancellation of the
+  common falling factorial; a symbolic checker for 2<=k2<k1<=8 was written at
+  code/out/check_mason_stothers_bound.py but not executed in this pass.)
 
   (B) The parametrization version (apply abc to the identity
   C(phi(T)+a,k1)=C(phi(T)+b,k2) holding on a genus-0 family) is a TWO-TERM
@@ -118,13 +119,18 @@ statement: Mason-Stothers (polynomial abc: for pairwise coprime A,B,C in C[t]
   fields (Mason 1984, Zannier 1993, Wang 2004, Mueller 2000) concern S-integral
   points over function fields and do not transfer to the number-field integral
   points of C(x,k1)=C(y,k2), whose classification (Bilu-Tichy 2000, HPT 2022)
-  is ineffective per-pair. Checked symbolically for 2<=k2<k1<=8: slack zero
-  identically (code/out/check_mason_stothers_bound.py).
+  is ineffective per-pair. Verified algebraically in this pass for the general
+  pair — deg A' = |k1-k2| (cancellation of the common falling factorial via
+  Gauss/Ritt factor cancellation), deg B' = 0 (nonzero rational constant),
+  deg R' = |k1-k2| with gcd(A',R') = 1 (a common root of A',R' would force
+  B'=0 there) — so N0(A'B'R') >= |k1-k2|+1 = maxdeg+1 and the inequality holds
+  identically; equality exactly for adjacent pairs. A symbolic checker for
+  2<=k2<k1<=8 was written (code/out/check_mason_stothers_bound.py) but NOT
+  executed in this pass; the algebraic identity is uniform in k1,k2.
 hypotheses: distinct k1,k2 >= 2; characteristic zero.
 holds-here: yes
-status: checked (symbolic verification on 21 pairs; the algebraic identity is
-  uniform in k1,k2 — deg A' = |k1-k2| by Gauss's lemma/Ritt cancellation of the
-  common falling factorial)
+status: checked (algebraic identity verified by hand for the general pair;
+  the checker script was written, not run)
 bearing: permanently retires the Mason-Stothers candidate with the obstruction
   named (vacuous direct identity; no number-field transfer of function-field
   effectivity), so it is not re-proposed.

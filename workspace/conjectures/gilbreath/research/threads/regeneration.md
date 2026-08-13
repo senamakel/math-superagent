@@ -1,8 +1,8 @@
 ```thread
 question: Can we bound the (2,4)-event rate from below, and does that bound suffice to keep b_k ≥ 1 for all k?
-status: open — step law and recharge identity are exact (verified depth 800, zero failures); the conjecture is now the event-rate inequality
+status: open — step law and recharge identity are PROVED general theorems (step-law-theorem-proved, research/notes/step_law_proved.md); the conjecture is now the event-rate inequality
 rests-on: |
-  - Step law: b_{k+1} ≥ b_k ⟺ (x,y) = (2,4), else b_{k+1} = b_k − 1. Verified independently to depth 800 (0 failures). Also holds on random non-prime arrays (3,521 rows, 610 events, zero failures) — combinatorial, not arithmetic. code/out/step_law_and_recharge_verified.md.
+  - Step law (PROVED): b_{k+1} ≥ b_k ⟺ (x,y) = (2,4), else b_{k+1} = b_k − 1. Theorems of the absolute-difference operator for ANY array (no parity, no primes), proof in research/notes/step_law_proved.md; verified on real primes depth 1000 (0 failures) and 400 random arrays (3,521 rows, 610 events, 0 failures).
   - Recharge identity: b_k = b_1 + Σ_{events i<k} (j_i + 1) − (k−1). Verified independently to depth 800 (0 failures). The conjecture holds iff Σ (j_i + 1) ≥ k−1−b_1 for all k.
   - Drain law: during erosion, y_{k+1} = y_k − 2·[x_k = 2]. Verified 101/101. code/out/regeneration_analysis.captured.txt.
   - Block lemma (proved): constant = 1, n+1 rows per length-n block. research/notes/block_lemma.md.
