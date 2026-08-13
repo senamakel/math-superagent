@@ -6,9 +6,6 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
+| [[README]] | Index of the run's live attack directions (each file below carries its own question, status, rests-on claim ids, and next steps). | open | — | four-ap-additive-triple (open: does any additive triple q1,q2,q1+q2 in the universal set Phi exist?); uniformity-bremner-ap-bound (open: does the… |
 | [[four-ap-additive-triple]] | Does any additive triple q1, q2, q1+q2 in the universal rational set Φ exist? (A quadruple q1,q2,q1+q2,q1−q2 all in Φ would be a full MSS.) | open | phi-universal-set, phi-no-triple-m400, robertson-elliptic-reduction, three-primitive-equal-d-bound, k3-ns-rank-12-not-maximal | express the additive triple as a single polynomial variety and search its factorisation; correlate with Morgenstern's (a,b,a+b) equal-start census and Bremner… |
 | [[uniformity-bremner-ap-bound]] | Does the Garcia-Fritz–Pasten theorem (Theorem 1.8: AP length ≤ C^(r+1) on elliptic curves) combine with the Robertson reduction to give a finiteness result for… | open | robertson-elliptic-reduction, bremner-conjecture-proved, hms-2026-bremner-effective-constant, patterns-bremner-2026-no-mismatch-for-2E-Q | scholar to claim-block the GFP paper with exact theorem statements; symbolic_math to write the Robertson curve and AP condition as exact polynomial equations;… |
-
-## Threads that could not be read
-
-- `README` has no thread block, so nothing can say what it is chasing or what it rests on

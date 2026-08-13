@@ -30,6 +30,8 @@ DH-1 (Dimitrov & Howe): any counterexample n ∉ {0,2,8} has a digit 2 **OR** at
 least 26 digits equal to 1. This is a real constraint on the shape of a
 counterexample and it is where new work starts.
 
+Thread: `research/threads/dh1-gap.md`.
+
 - [ ] State precisely what DH-1 leaves open: if a counterexample exists, its ternary expansion either contains a 2 (trivial — then it's not digit-2-free) OR has ≥ 26 ones. So a digit-2-free counterexample must have ≥ 26 ones. The gap: can we improve 26? What structural fact about the orbit limits how many ones can appear without a 2?
 - [ ] What would improve the 26: a better bound on the number of ones in a digit-2-free power of 2, leveraging the 3-adic orbit structure. The DH method uses nested moduli; the question is whether the sieve dynamics (2-to-1 lifting, SIEVE-EXACT) can sharpen it.
 - [ ] Connect DH-1 to the dense-orbit / Cantor-set formulation: the 26-ones constraint is a finite-combinatorics consequence of the orbit structure; making it grow with n would be a genuine partial result.

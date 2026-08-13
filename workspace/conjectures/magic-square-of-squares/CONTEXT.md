@@ -180,11 +180,18 @@ additive-chain clip `q1+q2 < 1` is real and is what kills Bremner's near-miss.
 four AP-differences**; scarcity of differences is not the obstruction, the
 additive relation among `u,v,u+v,u−v` is.
 
-**Elliptic reformulation — sourced** (Bremner 1999; attributed to Robertson): a
-MSS of squares ⇔ there is `e` with three points of `2E(Q)` (x-coords in
-arithmetic progression) on `E: y² = x(x²−c²)`; a point is in `2E(Q)` iff
-`X, X±c` are all rational squares. Bremner searched points of `E(Q)` in AP and
-found essentially none; very restrictive when `rank E(Q)` is small.
+**Elliptic reformulation — sourced, and its `c` disambiguated from the centre** 
+(Bremner 1999; attributed to Robertson; grounded exactly this cycle in the
+thread `curve-form-and-rank`): a MSS of squares ⇔ there is an AP of
+x-coordinates of three points `2E(Q)` on `E: y² = x(x²−c²)`; a point is in
+`2E(Q)` iff `X, X±c` are all rational squares. **Here `c` is the AP common
+difference (one of `u,v,u+v,u−v`), NOT the centre `e²`** — do not conflate the
+two namespaces. For Bremner's witness the anti-diagonal `{205²,425²,565²}` gives
+`c = 138600`, and `E: y² = x³−138600²x` has rank 2, torsion order 4; exactly 2 of
+the 3 doubled points are realised (`x(565²)` fails: `X−c` square but `X+c` not),
+matching the 7-square near-miss. A full MSS needs a length-3 AP, i.e. all three
+doubled points realised. Bremner searched points of `E(Q)` in AP and found
+essentially none; very restrictive when `rank E(Q)` is small.
 
 **Existence for n×n, n ≥ 4 — sourced but does not touch 3×3** (Rome–Yamagishi
 2024, arXiv:2406.09364, `research/summaries/rome-yamagishi-magic-squares-of-powers-2024.md`):
@@ -350,9 +357,10 @@ the Established section.
   record precisely which ingredient's constant is uncomputed.
 - **Conditional reduction to a finite computation** — the run's best structural
   output, not yet written as a claim block. See TASKS.md blocking item 1.
-- **Rank of the Robertson curve** `E_e: y² = x(x²−c²)` for candidate c:
-  Bremner's witness c=138600 gives rank 2; a putative MSS would need rank ≥ ?
-  Can we bound rank(E_c) in terms of sum-of-two-squares representations?
+- **Rank of the Robertson curve** `E_c: y² = x(x²−c²)` for candidate AP-difference c
+  (c ∈ {u,v,u+v,u−v} — not the centre e²): for Bremner's witness c=138600,
+  rank(E_c)=2, torsion order 4. A putative MSS needs a length-3 AP of doubled
+  points (all three realised); can we bound rank(E_c) for such c?
 - **Φ-triple beyond m,n ≤ 400** — absence is verified-numerical, not a proof;
   natural falsifier is a Φ-triple found beyond the range.
 - **Exact reduction unanchored end-to-end**: the curve/K3 correspondence

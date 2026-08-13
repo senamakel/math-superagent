@@ -1,108 +1,72 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/dimitrov-gao-habegger-uniform-mordell-lang-2021.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Dimitrov–Gao–Habegger, "Uniformity in Mordell–Lang for curves" (Ann. Math. 194 (2021), 237–298)
 
-<!-- source: https://arxiv.org/pdf/2001.10276 | converted from PDF -->
+Full text: `research/sources/dimitrov-gao-habegger-uniform-mordell-lang-2021.full.md`
+(arXiv:2001.10276v3, 31 Mar 2021 — the published Annals version).
 
-## What is in it
+## What it establishes
 
-- (C(Q) − P0) ∩ Γ ≤ c1+ρ
-2 .
-- (C(Q) − P0) ∩ Jac(C)(Q)tors ≤ c2.
-- (C(Q) − P0) ∩ Jac(C)(Q)tors ≤ c.
-- {P ∈ C(Q) : (C − P )M ⊆ Z} ≤ 84(g − 1).
-- (Cs(Q) − P0) ∩ Γ ≤ c1+ρ
-2 .
-- (C(Q) − P0) ∩ Jac(C)(Q)tors ≤ c2
+**Theorem 1.1.** Let g ≥ 2, d ≥ 1 be integers. There exists a constant c = c(g, d) ≥ 1
+such that: if C is a smooth curve of genus g over a number field F with [F : Q] ≤ d,
+then #C(F) ≤ c^(1+ρ), where ρ is the Mordell–Weil rank of the Jacobian Jac(C)(F).
+(Answers Mazur's question affirmatively.)
 
+**Theorem 1.2 / Corollary 1.3 (curve-in-Jacobian, height threshold).** Let g ≥ 2.
+There exist c1 = c1(g, ι) ≥ 0 and c2 = c2(g, ι) ≥ 1 such that for a smooth genus-g
+curve C over Q, P0 ∈ C(Q), and Γ ⊆ Jac(C)(Q) of finite rank ρ: if the modular height
+h(ι([Jac(C)])) ≥ c1, then #(C(Q) − P0) ∩ Γ ≤ c2^(1+ρ). The torsion analogue
+#(C(Q) − P0) ∩ Jac(C)(Q)_tors ≤ c2 holds uniformly in C.
 
-## What it claims
+**Theorem 1.6 (height inequality).** For a non-degenerate closed irreducible X ⊆ A
+dominating S, ĥ_A(P) ≥ c1 h(π(P)) − c2 for all P in a Zariski-open dense U ⊆ X.
+This is the key new ingredient (also DGH Thm 1.6 / B.1, cited by GGK as the height
+inequality used in the uniform Mordell–Lang proof).
 
-Abstract. Consider a smooth, geometrically irreducible, projective curve of genus
-g ≥ 2 deﬁned over a number ﬁeld of degree d ≥ 1. It has at most ﬁnitely many rational
-points by the Mordell Conjecture, a theorem of Faltings. We show that the number
-of rational points is bounded only in terms of g, d, and the Mordell–Weil rank of the
-curve’s Jacobian, thereby answering in the aﬃrmative a question of Mazur. In addition
-we obtain uniform bounds, in g and d, for the number of geometric torsion points of the
-Jacobian which lie in the image of an Abel–Jacobi map. Both estimates generalize our
-previous work for 1-parameter families. Our proof uses Vojta’s approach to the Mordell
-Conjecture, and the key new ingredient is the generalization of a height inequality due
-to the second- and third-named authors.
+**Constants.** As in GGK, the c(g, d) are existential via Vojta's approach (counting
+arguments, Betti map, height inequality); no explicit dependence on g, d is stated.
+The paper does not compute any of its constants.
 
-Contents
+## Bearing on the magic-square-of-squares problem
 
-1. Introduction 1
-2. Betti map and Betti form 7
-3. Setup and notation for the height inequality 13
-4. Intersection theory and height inequality on the total space 16
-5. Proof of the height inequality Theorem 1.6 22
-6. Preparation for counting points 23
-7. N´eron–Tate distance…
+DGH Theorem 1.2/Corollary 1.3 is the curve-in-Jacobian uniform Mordell–Lang statement
+that both Kühne's equidistribution paper and GGK's higher-dimensional version build on,
+and it is what Garcia-Fritz–Pasten Theorem 1.2/1.8 uses as the "height-uniform Mordell"
+input. For the MSS: the four doubled points 2Q_i live in E_c(Q) (an elliptic curve,
+genus 1), so DGH's genus-g ≥ 2 theorem does **not** apply directly — the relevant
+curve-in-Jacobian statement for genus 1 is the classical Rémond/DP07 quantitative one
+(for self-products of an elliptic curve) or the elliptic-curve case of GGK. This
+distinction matters for the `uniform-height-bound-elliptic-ap` thread: it is exactly
+why the DP07 explicit-constant route (see GGK summary) is the only lane to an
+effective bound that could reach C^(1+r) < 3.
 
-1…
+```claim
+id: dgh-uniform-mordell-lang-curves
+statement: "Dimitrov–Gao–Habegger, Thm 1.1: for g ≥ 2, d ≥ 1 there is c = c(g,d) ≥ 1
+such that any smooth genus-g curve C over a number field F with [F:Q] ≤ d satisfies
+#C(F) ≤ c^(1+ρ) with ρ = rk Jac(C)(F). Thm 1.2: if the modular height of Jac(C) is
+≥ c1(g,ι), then #(C(Q)−P0) ∩ Γ ≤ c2^(1+ρ) for any finite-rank Γ ⊆ Jac(C)(Q). Both
+constants existential."
+hypotheses: genus ≥ 2; smooth proper; number field of degree ≤ d; Γ finite rank
+holds-here: no — the MSS points lie on an elliptic curve (genus 1), so DGH Thm 1.1
+does not apply directly; the genus-1 case is handled by GGK/DP07/Rémond quantitative
+theory instead
+evidence: proved
+bearing: anchors the 'height-uniform Mordell' input at the primary source and pins
+down exactly why it does not apply to E_c; forces the effective lane through DP07
+(genus 1 / E^n) rather than through DGH
+anchor: research/summaries/dimitrov-gao-habegger-uniform-mordell-lang-2021.md
+```
 
-## Statements it makes
-
-Theorem 1.1. Let g ≥ 2 and d ≥ 1 be integers. Then there exists a constant c =
-c(g, d) ≥ 1 with the following property. If C is a smooth curve of genus g deﬁned over a
-
-Theorem 1.2. Let g ≥ 2 and let ι be as above. Then there exist two constants c1 =
-c1(g, ι) ≥ 0 and c2 = c2(g, ι) ≥ 1 with the following property. Let C be a smooth curve
-of genus g deﬁned over Q, let P0 ∈ C(Q), and let Γ be a subgroup of Jac(C)(Q) of ﬁnite
-rank ρ ≥ 0. If h(ι([Jac(C)])) ≥ c1, then
-
-Corollary 1.3. Let g ≥ 2 and let ι be as above. Then there exist two constants c1 =
-c1(g, ι) ≥ 0 and c2 = c2(g, ι) ≥ 1 with the following property. Let C be a smooth curve
-of genus g deﬁned over Q and let P0 ∈ C(Q). If h(ι([Jac(C)])) ≥ c1, then
-
-Theorem 1.4. Let g ≥ 2 and d ≥ 1 be integers. Then there exists a constant c =
-c(g, d) ≥ 1 with the following property. Let C be a smooth curve of genus g deﬁned over
-a number ﬁeld F ⊆ Q with [F : Q] ≤ d and let P0 ∈ C(Q), then
-
-Theorem 1.6. Suppose that A and S are as above with k = Q; in particular, A satisﬁes
-(Hyp). Let X be a closed irreducible subvariety of A deﬁned over Q that dominates S.
-Suppose X is non-degenerate, as deﬁned in Deﬁnition 1.5. Then there exist constants
-c1 > 0 and c2 ≥ 0 and a Zariski open dense subset U of X with
-ˆhA(P ) ≥ c1h(π(P )) − c2 for all P ∈ U(Q).
-
-Proposition 2.1. Let s0 ∈ S(C). Then there exist an open neighborhood ∆ of s0 in San,
-and a map b∆ : A∆ := π−1(∆) → T
-2g, called the Betti map, with the following properties.
-(i) For each s ∈ ∆ the restriction b∆|As(C) : As(C) → T
-2g is a group isomorphism.
-(ii) For each ξ ∈ T
-2g the preimage b
-−1
-∆ (ξ) is a complex analytic subset of A∆.
-(iii) The product (b∆, π) : A∆ → T
-2g × ∆ is a real analytic isomorphism.
-
-Proposition 2.2. There exists a closed (1, 1)-form ω on Aan, called the Betti form, such
-that the following properties hold.
-(i) The (1, 1)-form ω is semi-positive, i.e., at each point the associated Hermitian
-form is positive semi-deﬁnite.
-(ii) For all N ∈ Z we have [N]∗ω = N 2ω.
-(iii) If X is an irreducible subvariety of A of dimension d and ∆ ⊆ San is open with
-X sm,an ∩ A∆ ̸= ∅, then
-
-Lemma 2.3. Deﬁne
- ˆωuniv := √−1∂∂ (2(Imw)
-⊺(ImZ)−1(Imw)) .
-
-Lemma 2.4. Let ˆωuniv be as in Lemma 2.3. Then under the change of coordinates (2.2),
-we have ˆωuniv = 2(da)
-⊺ ∧ db.
-
-Corollary 2.5. Let ˆC be an irreducible, 1-dimensional, complex analytic subset of an
-open subset of X2g,a = R2g × Hg and ˆC sm its smooth locus. Then ˆωuniv restricted to ˆC sm
-
-Lemma 2.6. Let ˆωuniv be as in Lemma 2.3. Then ˆωuniv descends to a semi-positive
-(1, 1)-form ωuniv on Ag. Moreover, for N ∈ Z we have [N]
-∗ωuniv = N 2ωuniv.
-
-Proposition 2.7. Assume A → S is Ag → Ag. Let X be an…
-
-Proposit…
-
-
-*[further statements in the full text]*
-
-*[digest of a 141158 character source; every section, statement, and proof in full at `research/sources/dimitrov-gao-habegger-uniform-mordell-lang-2021.full.md`]*
+```claim
+id: dgh-height-inequality-nondegenerate
+statement: "DGH Thm 1.6: for a non-degenerate closed irreducible X ⊆ A dominating S
+(with A → S satisfying their hypothesis), ĥ_A(P) ≥ c1 h(π(P)) − c2 for all P in a
+Zariski-open dense U ⊆ X. This is the height inequality GGK cite ([DGH21, Thm 1.6
+and B.1]) to control large points in the uniform Mordell–Lang proof."
+hypotheses: non-degenerate subvariety of an abelian scheme; base S; heights as in
+the paper
+holds-here: yes (technical ingredient, no direct MSS statement)
+evidence: proved
+bearing: the structural heart of the uniformity results; its constant is also
+existential, so nothing explicit flows from it for the MSS
+anchor: research/summaries/dimitrov-gao-habegger-uniform-mordell-lang-2021.md
+```

@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://www.sagemath.org | — | Math. Debrecen 47 (1995), 411–415. [13] SageMath, the Sage Mathematics Software System (Version 7.5.1), The Sage Developers, 2017, http://www.sagemath.org. INTEGERS: 17 (2017) 8 [14] D. Singmaster,… |
 | 1 | https://doi.org/10.2307%2F2319526 | 10.2307/2319526 | number of times an integer occurs as a binomial coefficient", *[American Mathematical Monthly][30]*, **81**(3): 256– 261, [doi][31]: [10.2307/2319526][41], [JSTOR][33] [2319526][42], [MR][35]… |
 
-_44 further candidates not shown; they are cited once each._
+_51 further candidates not shown; they are cited once each._
