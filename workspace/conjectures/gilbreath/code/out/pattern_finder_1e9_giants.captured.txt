@@ -294,3 +294,8 @@ row 291: b=50847242 floor=0 intruder=None
 row 292: b=50847241 floor=0 intruder=None
 row 293: b=50847240 floor=0 intruder=None
 row 294: b=50847239 floor=0 intruder=None
+row 295: b=50847238 floor=0 intruder=None
+row 296: b=50847237 floor=0 intruder=None
+row 297: b=50847236 floor=0 intruder=None
+row 298: b=50847235 floor=0 intruder=None
+row 299: b=50847234 floor=0 intruder=None
