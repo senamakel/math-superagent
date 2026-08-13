@@ -2,8 +2,7 @@
 
 # Subbarao 1970, *Are There an Infinity of Unitary Perfect Numbers?* — COVER PAGE ONLY
 
-Full text attempted: `research/sources/subbarao-1970-infinity-unitary-perfect.full.md`
-(also cover-only).
+This file holds the whole of the downloaded document (a 1547-byte PDF conversion): the JSTOR cover page of the note, and nothing else. There is no separate `sources/*.full.md` for this item — the entire content is here.
 
 ## What this is
 
