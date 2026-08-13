@@ -1,18 +1,3 @@
 {"type": "chunk", "M": 400, "lo": 0, "hi": 312, "pairs": 48516, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
 {"type": "chunk", "M": 400, "lo": 312, "hi": 624, "pairs": 145860, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
 {"type": "chunk", "M": 400, "lo": 624, "hi": 936, "pairs": 243204, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 936, "hi": 1248, "pairs": 340548, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 1248, "hi": 1560, "pairs": 437892, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 1560, "hi": 1872, "pairs": 535236, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 1872, "hi": 2184, "pairs": 632580, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 2184, "hi": 2496, "pairs": 729924, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 2496, "hi": 2808, "pairs": 827268, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 2808, "hi": 3120, "pairs": 924612, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 3120, "hi": 3432, "pairs": 1021956, "minus": 1, "plus": 1, "both": 0, "witnesses": [{"kind": "plus", "q1": [2258256, 17181025], "q2": [6571656, 193905625]}, {"kind": "minus", "q1": [13998480, 99062209], "q2": [2205144, 45225625]}]}
-{"type": "chunk", "M": 400, "lo": 3432, "hi": 3744, "pairs": 1119300, "minus": 0, "plus": 2, "both": 0, "witnesses": [{"kind": "plus", "q1": [1476984, 9765625], "q2": [1257456, 21390625]}, {"kind": "plus", "q1": [10226040, 65237929], "q2": [70160160, 534950641]}]}
-{"type": "chunk", "M": 400, "lo": 3744, "hi": 4056, "pairs": 1216644, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 4056, "hi": 4368, "pairs": 1313988, "minus": 0, "plus": 1, "both": 0, "witnesses": [{"kind": "plus", "q1": [3765840, 21464689], "q2": [7600940424, 73856215225]}]}
-{"type": "chunk", "M": 400, "lo": 4368, "hi": 4680, "pairs": 1411332, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 4680, "hi": 4992, "pairs": 1508676, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
-{"type": "chunk", "M": 400, "lo": 4992, "hi": 5304, "pairs": 1606020, "minus": 1, "plus": 0, "both": 0, "witnesses": [{"kind": "minus", "q1": [331872240, 1567605649], "q2": [91080, 1026169]}]}
-{"type": "chunk", "M": 400, "lo": 5304, "hi": 5616, "pairs": 1703364, "minus": 0, "plus": 1, "both": 0, "witnesses": [{"kind": "plus", "q1": [920457384, 3909375625], "q2": [10175119584, 45192382225]}]}
