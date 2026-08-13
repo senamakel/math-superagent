@@ -45,6 +45,37 @@ Everything about *growth* — the `(2,4)`-event being the sole increase mechanis
 - Open REQUESTS row (regeneration rate / `(2,4)`-event lower bound) remains genuinely open and is the right target: "no source in existence proves or refutes a `(2,4)`-event rate lower bound" (research/REQUESTS.md). The geometric-growth claim downgrades the required bound to "giants arrive infinitely often" but does not remove the need for a structural source of the giants.
 - If a future run wants a literature anchor for the renewal treatment, the technical machinery (mod-2 Pascal sums governing the edge XOR) is a named technique (Northshield 2010, Malyshev 2021 — cited in `renewal-process-edge-flip-hitting-time` precedent), but **not** the block-length renewal process itself.
 
+## Prime-gap bounds angle (addendum, 2026): does any gap bound or decay bound force b_k growth?
+
+**Question (inventor).** Does any known prime-gap result — Baker–Harman–Pintz (exponent 0.525), Cramér/$\log^2 x$ models, Zhang/Maynard-type bounded gaps — or any iterated-difference result (Odlyzko 1993 block lemma, CHT 2026 decay bounds, random analogues) imply that the leading {0,2} block length b_k grows faster than any plausible inter-event gap, or imply that the (2,4)-events keep arriving?
+
+**Answer: no; and the reason is structural, not an absence.** Every held prime-gap result is an UPPER bound on the magnitude of the input gaps:
+- Baker–Harman–Pintz (2001): p_{n+1} − p_n ≪ p_n^{0.525} (unconditional, all large n). Held only as an aside in `granville-nu2-density-measured`; the paper itself is not in the library.
+- Torelli 2006 Thm 2 (`torelli-prime-gap-bound`): p_{n+1} ≤ p_n + n.
+- Cramér / Granville / Banks–Ford–Tao 2023 (`bft2023-cramer-model-canonical`): largest gap ~ ξ log²x a.s. (ξ = 2e^{−γ} for Granville).
+- Maynard/Polymath bounded gaps (≤ 246 i.o.): NOT held; and it is again a statement about input gap sizes (small gaps recur at unbounded positions), not about the iterated triangle.
+
+An upper bound on the input cannot force a lower bound on the output block length: the row maximum is non-increasing under |a−b| (|a−b| ≤ max(a,b), elementary), so bounded gaps give bounded entries, and entry bounds say nothing about how long the leading {0,2} run is. A lower bound on b_k is a statement about the ARRANGEMENT of the gaps (non-concentration), not their size — exactly why CHT Thm 1.6 (`cht-inverse-theorem-library`) needs its no-long-{0,d}-block hypothesis, and why Chase 2024 Thm 1 / CHT Thm 1.3 need independence / 2-separated non-concentration.
+
+The only held statements that the events keep arriving are the RANDOM analogues:
+- `chase-2024-theorem1`: f(M) ≤ (1/100)loglogM/logloglogM random gaps ⟹ a.s. eventually Gilbreath.
+- `cht-random-analogue` (Thm 1.3): independent a_n ≤ δn, no 2-separated concentration ⟹ a.s. left diagonal eventually {0,1}.
+Both hypotheses are **unchecked for the primes** (independence is not proved for primes); the geometric Cramér model satisfies them. So the closest positive "events keep arriving" statement is conditional on unproved randomness.
+
+The CHT $\log(n+e)$ bound (`cht-decay-lower-bound-logn`) is the opposite direction and a different object: it lower-bounds the summed EXPECTED ENTRY decay Σc_i in the i.i.d.-exponential continuous model. It says nothing about b_k (which is an increase statement) and does not transfer to the discrete primes.
+
+Negative class-level witnesses for "gap bounds force regeneration": Eppstein 2011 (`anti-gilbreath-construction`) builds bounded-gap 2-then-odds sequences whose right edge escapes and re-enters 1 infinitely often; Colonna's deletion footnote (`colonna-deletion-left-edge-failure`) gives gaps ≤ 4 with left-edge failure at rows 2–3. In the 2-then-odds class a gap bound alone NEVER suffices; the primes would need exactly the special non-concentration the random analogues hypothesise. For the primes themselves, no held source shows arbitrarily long stretches of decay of b_k (the block minima grow: [13,24,96,97,175,2762,5939,…]), but nothing proves that either — the demand is recorded in REQUESTS.md.
+
+```claim
+id: gap-bounds-cannot-force-block-growth
+statement: No held prime-gap result bounds the leading {0,2} block length b_k or the (2,4)-event jump sum from below for a 2-then-odds exactly-even-gap sequence: Baker–Harman–Pintz (p_{n+1}−p_n ≪ p_n^{0.525}), Torelli (p_{n+1} ≤ p_n + n) and the Cramér/Granville/BFT log² models are all UPPER bounds on input gap magnitudes, and the row maximum is non-increasing under |a−b|, so input upper bounds cannot force output block-length lower bounds. The only "events keep arriving" statements held are the random analogues (Chase 2024 Thm 1, CHT 2026 Thm 1.3) whose independence/non-concentration hypotheses are unchecked for the primes; CHT's Σc_i ≥ log(n+e) is an expected-entry-decay bound in the continuous model, the opposite direction.
+hypotheses: 2-then-odds start with all gaps after the first even (the primes' shape); iterated absolute differences; leading {0,2} block length b_k.
+holds-here: yes — the class is exactly the class the conjecture lives in; the structural argument (max non-increasing) is elementary and unconditional.
+status: checked (library search over all held prime-gap and iterated-difference sources; BHP held only as an aside, Maynard not held)
+bearing: closes the inventor's question with a structural reason, not an absence: any future lower bound on b_k must come from the ARRANGEMENT of the gaps (non-concentration), not from gap-size theorems; the demand is in REQUESTS.md.
+anchor: research/notes/block-growth-literature.md (this addendum); claims granville-nu2-density-measured, torelli-prime-gap-bound, bft2023-cramer-model-canonical, chase-2024-theorem1, cht-random-analogue, cht-decay-lower-bound-logn, colonna-deletion-left-edge-failure, anti-gilbreath-construction
+```
+
 ## Claim
 
 ```claim
