@@ -105,8 +105,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lean_shape.captured.txt` | `lean` compile of the repaired self-contained shape-preservation file (EXIT=0), axioms = standard base set. |
 | `lemma54_iff_check.captured.txt` | Reproduced in-container this session (timeout 540, EXIT_CODE=0): tested n=2480, all successful (2480), iff violations=0, suff violations=0, discarded delta=0 rows=2480 (100.0%) — identical to the operator's host capture. Anchor for claim `lemma54-discarded-case-universal` (research/notes/lemma54-discarded-case-is-universal.md). |
 | `nu2_granville_check.captured.txt` | Reproduced in-container this session (timeout 540, EXIT_CODE=0): nu2=2048 at n=3999, n^0.525=77.8, nu2/n in 0.420..0.520, Lemma 5.4 hypothesis holds at all sampled n — identical to the operator's host capture. Anchor for claim `granville-nu2-density-measured` (research/notes/granville-2607-04166-actually-read.md). |
-| `verify_granville_nu2_independent.captured.txt` | Independent in-container verifier output (code/verify_granville_nu2_independent.py, timeout 540, EXIT_CODE=0): reproduces both notes' numbers via lib.gilbreath + prefix-max g*; adds entry-level stat — 1,546,291 of 3,095,143 gray-block entries are 0 (50.0%, avg 623.5 zeros/block), so the discarded delta=0 case dominates entrywise, not just per-row. |
-| `verify_nu2_claim.captured.txt` | Independent operator-written re-verification executed in-container (timeout 540, EXIT_CODE=0): reproduces nu2_granville_check.py exactly (nu2=2048 at n=3999, 0 hypothesis failures). |
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
 | `pattern_finder_1e9_giants.captured.txt` | _(undescribed)_ |
@@ -155,6 +153,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_c1.py` | _(undescribed)_ |
 | `verify_candidates.py` | _(undescribed)_ |
 | `verify_giants_6e8.captured.txt` | _(undescribed)_ |
+| `verify_granville_nu2_independent.captured.txt` | Independent in-container verifier output (code/verify_granville_nu2_independent.py, timeout 540, EXIT_CODE=0): reproduces both notes' numbers via lib.gilbreath + prefix-max g*; adds entry-level stat — 1,546,291 of 3,095,143 gray-block entries are 0 (50.0%, avg 623.5 zeros/block), so the discarded delta=0 case dominates entrywise, not just per-row. |
+| `verify_nu2_claim.captured.txt` | Independent operator-written re-verification executed in-container (timeout 540, EXIT_CODE=0): reproduces nu2_granville_check.py exactly (nu2=2048 at n=3999, 0 hypothesis failures). |
 | `verify_rule90_against_sources.captured.txt` | _(undescribed)_ |
 | `verify_rule90_against_sources.py` | Independently re-derives the Rule-90 interior XOR identification ( |
 | `verify_step_law_transition.captured.txt` | _(undescribed)_ |
