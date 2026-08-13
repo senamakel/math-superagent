@@ -223,6 +223,18 @@ disk), or asserted-by-source.
   classes (r=1: n=2521; r=121: n=1801; r=169: n=1009; r=289: n=1129;
   r=361: n=1201; r=529: n=3049). Any impossibility claim contradicted by
   these is false as stated.
+- **Prime positions in the 3.887% gap** (checked, new): all 158 primes
+  n = 840k+1 with k ≤ 450 are covered by ≥1 of the 1451 families; the
+  smallest prime escaping every family is **n = 386401 = 840·460+1**
+  (t=460, beyond the sweep) — the gap genuinely contains primes, first at
+  t=460. Residual t ≤ 2000 prime list in `commands.log`. So the family set
+  buys 96.11% of the class at positive density, not a prime-free residual.
+- **Coverage vs minimal-excess are disjoint lenses** (checked): residual t
+  (uncovered by families, ≤450) k∈{0,1,2,6,23,34,39,…} overlap with e=0 rows
+  — most residual n are composite squares such as 841,1681,5041 that are
+  already solved by the n≡3 mod 4 / n≡5 mod 8 identities (Schinzel-legal per
+  `square_obstruction.py`: only perfect squares m²≡1 mod 840 are
+  un-coverable by ANY single polynomial family, density 0).
 - AP subfamilies: many full residue classes k≡a (mod M≤60) sit inside
   {k : e(k)=0} per class (whole list in `code/out/extended_verify.captured.txt`).
   These fire through n acquiring a prime ≡2 (mod 3) divisor; for prime n that
@@ -318,13 +330,22 @@ yields an already-covered sub-progression of an open class. Ventas
   sampled k). Every `subprogression.captured.txt` block is identity-checked at
   its claimed (a,b). The `M=37` resid count is 10 (CONTEXT's earlier "9" was
   from a truncated capture).
-- **Failing command** (operator directive 4). Retry count 6, run-failed 5 in
-  `code/out/commands.log`. Read and fix before writing new programs.
-- **prime-reduction still sourced, not checked** (directive 1 priority, still
-  the exit-blocker of `research/threads/elementary-reductions.md`): write the
-  scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
-  exact arithmetic, capture it, and flip the claim to checked; then
-  `reduction-mod24` once the mod-3/mod-8 identities are checked.till sourced, not checked** (directive 1 priority, still
+- **Failing command** (operator directive 4; DIAGNOSED, cosmetic): retry
+  count 6 / run-failed 5 in `code/out/commands.log` are all
+  `echo EXIT_CODE=${PIPESTATUS[0]}` under `/bin/sh` ("Bad substitution",
+  exit 2) — the piped programs themselves printed correct output. Use
+  `python3 prog > out 2>&1; echo EXIT_CODE=$?` (no tee / no PIPESTATUS) as
+  the house style. The one genuinely missing file is the operator's priority-1
+  capture: `code/out/verify_current_coverage.captured.txt` was never written
+  (runs went through `| tail`); re-run `verify_current_coverage.py`
+  redirecting to that path so the directive's artifact exists on disk.
+- **prime-reduction still sourced, not checked** — now CHECKED in oracle main
+  (see Established); only the CLAIMS row awaits the thread's program if the
+  thread wants a standalone capture. `reduction-mod24` remains after the
+  mod-3/mod-8 identities are identity-checked (they are: the eight classical
+  families are all is_identity PASS — Established, "all eight classical
+  covering identities"; so the mod-24 reduction chain is effectively closed,
+  and `elementary-reductions.md` may be closed).till sourced, not checked** (directive 1 priority, still
   the exit-blocker of `research/threads/elementary-reductions.md`): write the
   scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
   exact arithmetic, capture it, and flip the claim to checked; then
