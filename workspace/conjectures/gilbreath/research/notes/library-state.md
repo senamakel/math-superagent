@@ -191,7 +191,27 @@ hypotheses: exact integer computation; G(π(x)) = row index whose row begins 1 a
 holds-here: yes.
 status: sourced (Wikipedia en rev 1348550815; Plouffe arXiv abstract; Colonna CNRS record page; all three downloaded this run)
 bearing: the run must report 1.5×10^15 as the current record, strictly separate from its own depth-1000; the block criterion G is the same quantity the run's oracle computes as block_profile.
-anchor: research/sources/wikipedia-gilbreaths-conjecture.full.md; research/sources/plouffe-2025-verification-10e14.full.md; research/sources/colonna-proth-gilbreath-record.full.md
+anchor: research/sources/wikipedia-gilbreaths-conjecture.full.md; research/sources/plouffe-2025-verification-10e14.full.md; research/sources/colonna-proth-gilbreath-record-2026-08.full.md (refresh 2026-08; supersedes the earlier 1.5e15/800 record page)
+```
+
+```claim
+id: colonna-deletion-left-edge-failure
+statement: (Colonna 2025-26, record-page footnote) Removing one prime (7, 5, or 11) from the prime list gives a 2-then-odds sequence with gaps ≤ 6 (≤ 4 for delete-5) whose left edge fails: for (2,3,5,11,13,17,19) (gaps 1,2,6,2,4,2), A1=(1,2,6,2,4,2), A2=(1,4,4,2,2) — second entry 4 — A3=(3,0,2,0) — leading 3 at row 3 — A4=(3,2,2), A5=(1,0); for (2,3,7,11,...) (gaps ≤ 4) A2=(3,0,2,2,...), leading 3 already at row 2. So the deterministic class "2 followed by odds with gaps ≤ g" has a counterexample for every g ≥ 4 (g = 4 suffices); only g = 2 (consecutive odds) is proved.
+hypotheses: 2-then-odds start; finite initial segments with those gap bounds.
+holds-here: yes — this is exactly the class GOAL.md's general-class theorem would need to beat Eppstein AND the open left-side second-entry question; it shows the "gaps ≤ g" carve-down fails already at g = 4 (second entry 4 → leading 3).
+status: sourced (Colonna record page footnote [04]; triangle arithmetic hand-checked against the source's own display, verified independently)
+bearing: sharpens the REQUESTS open row "deterministic bounded-gap class": gaps ≤ 3 is the only possibly-open window below the counterexample; any general-class theorem needs a further restriction (CHT's 2-separated non-concentration) — no bounded-gap statement can hold at g ≥ 4.
+anchor: research/sources/colonna-proth-gilbreath-record-2026-08.full.md
+```
+
+```claim
+id: deepmind-formal-conjectures-gilbreath-lean
+statement: Google DeepMind's formal-conjectures repo (commit ed75a6dd) contains FormalConjectures/Wikipedia/Gilbreath.lean: it defines the difference operator d 0 = p_n (via n.nth Nat.Prime), d^{k+1}(n) = Int.natAbs (d k (n+1) − d k n), and states the conjecture as theorem gilbreath_conjecture (k : ℕ+) : d k 0 = 1 with a single `sorry` placeholder — no proof of the parity/shape reduction or of the conjecture is formalised there. mathlib4's Nat.dist (Mathlib/Data/Nat/Dist.lean) provides the concrete absolute-difference primitive (comm, self=0, dist_eq_sub_of_le) that this run's own Lean formalisation should build on.
+hypotheses: Lean 4 / mathlib4 formalisation environment.
+holds-here: yes — confirms the open REQUESTS row "Lean 4 formalisation status" is still open (no prior proof artifact in the repository), and gives the run a ready-made statement file to reuse; nothing to cite for the mathematics itself.
+status: sourced (downloaded file, 41 lines, Apache 2.0)
+bearing: GOAL.md's Lean 4 deliverable (define operator, prove (odd,even,even,...) preserved, reduce to the {0,2} second-entry claim, report #print axioms and sorrys) remains this run's to produce; Nat.dist is the right primitive; the DeepMind file shows the standard statement shape.
+anchor: research/sources/deepmind-formal-conjectures-Gilbreath-lean.full.md
 ```
 
 ```claim

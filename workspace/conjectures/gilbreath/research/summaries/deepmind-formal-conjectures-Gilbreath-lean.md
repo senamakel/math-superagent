@@ -1,47 +1,32 @@
-<!-- source: https://raw.githubusercontent.com/google-deepmind/formal-conjectures/ed75a6dd/FormalConjectures/Wikipedia/Gilbreath.lean | converted from plain text -->
+# Google DeepMind formal-conjectures: Gilbreath.lean
 
-/-
-Copyright 2025 The Formal Conjectures Authors.
+<!-- source: https://raw.githubusercontent.com/google-deepmind/formal-conjectures/ed75a6dd/FormalConjectures/Wikipedia/Gilbreath.lean | full text: sources/deepmind-formal-conjectures-Gilbreath-lean.full.md -->
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+A 41-line Lean 4 file from the FormalConjectures project (Google DeepMind;
+commit ed75a6dd, Apache 2.0).
 
-    https://www.apache.org/licenses/LICENSE-2.0
+## What it contains
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--/
+- `d : ℕ → (ℕ → ℕ)` — the iterated absolute-difference operator on the primes:
+  `d 0 = fun n ↦ n.nth Nat.Prime` (n-th prime via mathlib), `d (k+1) n = Int.natAbs (d k (n+1) − d k n)`.
+- `theorem gilbreath_conjecture (k : ℕ+) : d k 0 = 1 := by sorry` — the
+  conjecture stated, with a **single `sorry` placeholder**. No proof of the
+  parity/shape reduction, no block lemma, no partial result is formalised
+  anywhere in the repo's Gilbreath file.
 
-import FormalConjectures.Util.ProblemImports
+## Bearing
 
-/-!
-# Gilbreath's conjecture
+- Closes part of the open REQUESTS row "Lean 4 formalisation status": the
+  answer is that nobody has formalised a proof — the DeepMind file is a
+  statement-only placeholder.
+- GOAL.md's Lean deliverable stays this run's to produce. The right primitive
+  is mathlib4's `Nat.dist` (Mathlib/Data/Nat/Dist.lean: `dist n m = n - m +
+  (m - n)`, with `dist_comm`, `dist_self`, `dist_eq_sub_of_le`), not a new
+  absolute-difference definition.
+- Useful as a reference shape for the statement; nothing here is a theorem to
+  cite.
 
-*Reference:* [Wikipedia](https://en.wikipedia.org/wiki/Gilbreath%27s_conjecture)
--/
+## Source status
 
-namespace Gilbreath
-
-/--
-**Gilbreath's nth difference**, $d^n$
-Let $d^0(n) = p_n$ and $d^k(n) = |d^{k-1}(n+1) - d^{k-1}(n)|
--/
-noncomputable def d : ℕ → (ℕ → ℕ)
-  | 0 => fun n ↦ n.nth Nat.Prime
-  | k + 1 => fun n ↦ Int.natAbs (d k (n + 1) - d k n)
-
-open Gilbreath
-
-/--
-**Gilbreath's conjecture**
-Gilbreath's conjecture states that every term in the sequence $d^k_0$ for $k > 0$ is equal to 1.
--/
-@[category research open, AMS 11]
-theorem gilbreath_conjecture (k : ℕ+) : d k 0 = 1 := by
-  sorry
-
-end Gilbreath
+Downloaded raw file from the pinned commit (the search-result URL). Apache-2.0.
+The file's only citation is to Wikipedia's Gilbreath entry (already held).

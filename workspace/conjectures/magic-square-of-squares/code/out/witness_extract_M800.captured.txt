@@ -13,3 +13,16 @@
 [M=800] chunk 13728-14976: pairs 17910672 minus 0 plus 3 both 0 | cumulative pairs 112132800 minus 2 plus 7 both 0 | 101s
 [M=800] chunk 14976-16224: pairs 19468176 minus 0 plus 0 both 0 | cumulative pairs 131600976 minus 2 plus 7 both 0 | 108s
 [M=800] chunk 16224-17472: pairs 21025680 minus 0 plus 1 both 0 | cumulative pairs 152626656 minus 2 plus 8 both 0 | 123s
+[M=800] chunk 17472-18720: pairs 22583184 minus 1 plus 2 both 0 | cumulative pairs 175209840 minus 3 plus 10 both 0 | 147s
+[M=800] chunk 18720-19968: pairs 24140688 minus 0 plus 0 both 0 | cumulative pairs 199350528 minus 3 plus 10 both 0 | 147s
+[M=800] chunk 19968-21216: pairs 25698192 minus 3 plus 0 both 0 | cumulative pairs 225048720 minus 6 plus 10 both 0 | 147s
+[M=800] chunk 21216-22464: pairs 27255696 minus 0 plus 1 both 0 | cumulative pairs 252304416 minus 6 plus 11 both 0 | 156s
+[M=800] chunk 22464-23712: pairs 28813200 minus 3 plus 1 both 0 | cumulative pairs 281117616 minus 9 plus 12 both 0 | 191s
+[M=800] chunk 23712-24960: pairs 30370704 minus 3 plus 2 both 0 | cumulative pairs 311488320 minus 12 plus 14 both 0 | 191s
+[M=800] chunk 24960-26208: pairs 31928208 minus 0 plus 2 both 0 | cumulative pairs 343416528 minus 12 plus 16 both 0 | 212s
+[M=800] chunk 26208-27456: pairs 33485712 minus 2 plus 2 both 0 | cumulative pairs 376902240 minus 14 plus 18 both 0 | 212s
+[M=800] chunk 27456-28704: pairs 35043216 minus 1 plus 2 both 0 | cumulative pairs 411945456 minus 15 plus 20 both 0 | 239s
+[M=800] chunk 28704-29952: pairs 36600720 minus 2 plus 0 both 0 | cumulative pairs 448546176 minus 17 plus 20 both 0 | 239s
+[M=800] chunk 29952-31200: pairs 38158224 minus 3 plus 0 both 0 | cumulative pairs 486704400 minus 20 plus 20 both 0 | 239s
+[M=800] chunk 31200-32448: pairs 39715728 minus 6 plus 2 both 0 | cumulative pairs 526420128 minus 26 plus 22 both 0 | 240s
+[M=800] chunk 32448-33696: pairs 41273232 minus 5 plus 0 both 0 | cumulative pairs 567693360 minus 31 plus 22 both 0 | 278s

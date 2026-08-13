@@ -15,6 +15,22 @@ of 8 here is 4 half-triangle. `computed`, matches `code/out/witnesses.json`.
 
 Each marked with evidence class and a link.
 
+- **Lane Clark 2010 (INTEGERS 10 #A14) — the normal-array template that produces every log bound. `sourced`** (full text now held at
+  `research/sources/lane-clark-array-multiplicity.full.md`, summary +
+  claim `lane-clark-normal-array-bound`). A general theorem on "normal"
+  triangular arrays gives `N_a(t) < r(g⁻¹(t)+Δ)` (Theorem 2); for binomials
+  (`d=n`, `f=⌊n/2⌋`, `g=2^x`, `r=2` mirrors, `Δ=1`) this exactly reproduces
+  Singmaster's `N(a) < 2 log₂ a + 2`. The paper's own Examples 5,6 construct
+  normal arrays achieving `Θ(t^{1/s})` and `Θ(log_s t)` infinitely often, so
+  the `O(log t)` shape is **provably best-possible within the template** —
+  a constant bound must come from binomial-specific structure beyond the
+  normal-array axioms. This is the same message as Kane/MRSTT/effective-curves
+  (uniformity needs structure), now stated as a theorem about the general
+  framework. Corroborates `best-unconditional-bound`,
+  `singmaster-bounds-history`, and the uniformity argument of `effective-methods-wall`.
+  Status: sourced; verification against witnesses left for the tool region (the
+  librarian role does not run programs).
+
 - **Witness set / the falsifier. `computed`, 3 independent routes.**
   `3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6)` (+4 mirrors), so `N(3003)=8`.
   Verified by `code/out/witnesses.json`, the naive oracle `code/brute.py`, and a

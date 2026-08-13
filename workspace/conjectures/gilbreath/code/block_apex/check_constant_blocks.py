@@ -33,6 +33,17 @@ SIEVE = 20_000_000
 LIVE = 161  # last live row (before width exhaustion) per regeneration_data.md
 
 
+def _longest_run(mask):
+    """Length of the longest run of True in a boolean numpy array."""
+    if mask.size == 0 or not mask.any():
+        return 0
+    edges = np.flatnonzero(
+        np.diff(np.concatenate(([False], mask, [False])).astype(np.int8))
+    )
+    spans = edges[1::2] - edges[0::2]
+    return int(spans.max())
+
+
 def main():
     t0 = time.time()
     primes = primes_up_to(SIEVE)
@@ -65,28 +76,12 @@ def main():
             if np.any(block != first):
                 whole = "mixed"
             # terminal constant run length
-            tail = 1
-            for j in range(b - 2, -1, -1):
-                if block[j] == block[b - 1]:
-                    tail += 1
-                else:
-                    break
+            last = int(block[b - 1])
+            diffpos = np.flatnonzero(block != last)
+            tail = int(b - 1 - diffpos[-1]) if diffpos.size else b
             # longest run of 0s / 2s
-            r0 = r2 = 0
-            run = 1
-            for j in range(1, b):
-                if block[j] == block[j - 1]:
-                    run += 1
-                else:
-                    if block[j - 1] == 0:
-                        r0 = max(r0, run)
-                    else:
-                        r2 = max(r2, run)
-                    run = 1
-            if block[b - 1] == 0:
-                r0 = max(r0, run)
-            else:
-                r2 = max(r2, run)
+            r0 = _longest_run(block == 0)
+            r2 = _longest_run(block == 2)
         rec["rows"].append({
             "k": k, "b": b, "s": s, "y": y,
             "whole": whole, "tail": tail, "r0": r0, "r2": r2,
@@ -99,6 +94,8 @@ def main():
             print(f"row {k}: b={b} whole={whole} tail={tail} "
                   f"({time.time()-t0:.1f}s)", flush=True)
 
+    live = [{"k": r["k"], "b": r["b"], "whole": r["whole"], "tail": r["tail"],
+             "r0": r["r0"], "r2": r["r2"]} for r in rec["rows"]]
     stats = {
         "const_rows": [r["k"] for r in rec["rows"] if r["whole"] == "const0"],
         "const_rows_2": [r["k"] for r in rec["rows"] if r["whole"] == "const2"],
@@ -111,12 +108,7 @@ def main():
         "live": LIVE,
     }
     rec["stats"] = stats
-    rec.pop("rows")  # keep the JSON small; rows are printed below instead
-
-    # live-regime verdict lines
-    live = [r for r in rec["rows"]]  # rows were popped; recompute from local
-    live = [{"k": r["k"], "b": r["b"], "whole": r["whole"], "tail": r["tail"],
-             "r0": r["r0"], "r2": r["r2"]} for r in live]
+    rec.pop("rows")  # keep the JSON small; full rows are in live_rows + capture
     out_path = "code/out/block_constancy.json"
     with open(out_path, "w") as f:
         json.dump({"stats": stats, "live_rows": live}, f)
