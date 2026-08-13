@@ -90,3 +90,5 @@ A 21 190
 A 22 210
 // ** redefining F (  poly F = CB(x,n-1) - CB(y,n);) code/genus/diag_families.sing:18
 // ** redefining I (  ideal I = F;) code/genus/diag_families.sing:19
+
+halt 1

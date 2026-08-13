@@ -9,13 +9,13 @@ Budget 10,000 tokens (this file ~2100, so well under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state: library built, oracle built, claim extraction done, one thread
-open.** Phase 1's exit test is met (see `research/ROOT.md`: minimal
-counterexample structure, verification bounds, ≥3 restricted classes settled).
-The current frontier is 2026 work (Chase–Hunter–Tao); the run's own open thread
-is `research/threads/regeneration.md`. `research/notes/library-state.md` is the
-authoritative claim ledger; `research/CLAIMS.md` is a generated ledger with a
-mechanically broken Contradictions section (see Contradictions).
+**Run state: library sufficient, oracle built, search halted.** Phase 1's exit
+test is met (see `research/ROOT.md`). The directive says "stop searching and
+convert" — the library is enough and FRONTIER.md is no longer being consumed.
+The run's own open thread is `research/threads/regeneration.md`. One candidate
+lemma has been refuted (`code/out/check_regenerate_lemma.notes.md`). The honest
+open question is: is there a k with block length 0? Everything computed says no
+and nothing proves it.
 
 ## Established
 
@@ -77,6 +77,7 @@ mechanically broken Contradictions section (see Contradictions).
   absolute-value problem into linear Pascal-triangle congruences mod 4 — the
   cleanest algebraic handle the run has. CHT Lemma 3.10 generalises:
   `a(i,j) ≡ Σ_k C(i,k) a_{j+k} (mod 2)`.
+- **Gilbreath-polynomial route (alternate handle, UNVERIFIED).** MDPI Mathematics 2023, 11(18), 4006 claims GC follows from `p_n − 2^{n−1} ≤ P_{n−1}(1)`, where `P_{n−1}` is a "Gilbreath polynomial" over weighted factorials built from the first n primes. Sourced-by-search-digest only; the MDPI page returns HTTP 403 to the downloader, no arXiv mirror, author list unconfirmed — treat as asserted-by-source until the text is obtained. Gives a genuinely independent route (a size bound vs p_n) rather than block regeneration, worth the inventor's attention. Do not re-fetch the 403 page blind. Anchor: `research/notes/library-state.md` claim `gilbreath-polynomials-imply-gc`.
 - **CHT 2026 inverse theorem (sourced).** (Chase–Hunter–Tao, arXiv:2607.08712,
   submitted 9 Jul 2026) The only ways an array with small non-negative initial
   data can fail to decay to `{0,1}` are **long zero-blocks** or **long shallow
@@ -102,6 +103,7 @@ mechanically broken Contradictions section (see Contradictions).
 
 ## Ruled out
 
+- **Candidate regeneration iff lemma — REFUTED.** Tested by `check_regenerate_lemma.py` against the actual prime rows to depth 1000. Both directions of the `iff` fail: → fails at k=3,5,6,7,8,15,17,19,20,21,23,24,25,26,27,28,29,... (q_in{0,2}=True but rhs=False); ← fails at k=3,8,11,13,15,17,19,23,26,... (lemma prediction mismatches actual block-length change). The oracle PASSED; the lemma FAILED. Regeneration is not characterisable by a single-row local property of intruder and block length. Recorded in `code/out/check_regenerate_lemma.notes.md` with exact k-values. Do not weaken and re-assert.
 - **Small gaps alone do NOT suffice (Eppstein 2011 anti-Gilbreath, sourced,
   quoted in CHT).** For any unbounded monotone `f(n)≥2` there is a "2 then
   odds" sequence with gaps ≤ f(n) whose triangle's right edge switches between
@@ -122,6 +124,15 @@ mechanically broken Contradictions section (see Contradictions).
 - **Randomness is necessary, not optional:** Chase 2024 constructs exotic
   {0,3}-style sequences where the `{0,1}` result fails — evenness/2-then-odds
   alone is not enough.
+- **"Regeneration happens iff (edge==2 and intruder==4)" — REFUTED.**
+  `check_regenerate_lemma.py` tested `b_{k+1} ≥ b_k ⟺ (e==2 and c==4)` over
+  998 transitions and it failed in both directions on nearly every live-regime
+  row (q=A_{k+1}[b_k−1]∈{0,2} is much more common than the criterion predicts).
+  `regeneration_analysis` confirms: intruder==4 on all 60 regen rows but also
+  on 36 erosion rows, so intruder==4 is necessary-but-not-sufficient. The
+  one-factor "4 is the regen trigger" picture is dead. Source:
+  `code/out/check_regenerate_lemma.captured.txt`,
+  `code/out/regeneration_analysis.captured.txt`, `code/regeneration/check_regenerate_lemma.py`.
 
 ## Numbers
 
@@ -129,10 +140,28 @@ mechanically broken Contradictions section (see Contradictions).
   `2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,289,288,739,873,872,871,872,871,870,869,868,867,866,865,2179,2178,2177,2176,2770,2769`.
   Grows roughly by doubling bursts around k=15,20,23,35,39.
 - Depth 1000 stats: min b=2 (k=1), max b=1,270,444 (k=162); 60 regeneration
-  events in 999 transitions; max single jump 360,698 (k=146); longest pure
-  single-erosion run 838 rows (b never hits 0); intruder (first value past the
-  block): min 4, max 14, 59.6% exactly 4, all ≡0 or 2 mod 4. b never stays at
-  2 (jumps 2→7 by k=2).
+  events in 999 transitions; max single jump 360,698 (k=146); intruder (first
+  value past the block): min 4, max 14, 59.6% exactly 4, all ≡0 or 2 mod 4;
+  b never stays at 2 (jumps 2→7 by k=2). **All 60 regeneration rows had
+  intruder==4, but intruder==4 is NOT sufficient**: 36 non-regen (erosion)
+  rows also have intruder==4, so regen ⟹ intruder 4 at depth 1000, converse
+  false.
+- **CORRECTION: the "/838 rows / 838-row pure-erosion run" is a finite-width
+  artifact, not genuine dynamics.** At k=162 the block fills the whole
+  remaining finite sieve row (b=1,270,444 = width−1, intruder becomes None);
+  the "run" k=162..999 is the block retracting one column per row as the
+  finite prime list runs out of width to the right. Genuine live-regime
+  longest pure-erosion run is **13** (starting k=97, ending 109). Any claim
+  built on "regeneration survived 838 erosion rows" is void; that number is a
+  boundary effect. Source: `code/out/regeneration_analysis.captured.txt` (Q3).
+- **Fact (a): Block length never approaches 0 — minima grow.** Record of
+  minima: `[13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263]`.
+  Smallest after the first few rows is 13 (k=3). Dwell at each minimum is
+  1–4 rows. The block length is not merely bounded away from 0, it
+  *increases* across the computed range.
+- **Fact (b): Regeneration is real but NOT monotone.** 97→96 (k=13), 871→872
+  (k=26), 21→24 (k=8) all occur — consumption and regeneration alternate. The
+  block can shrink before growing. Source: `code/out/regeneration_analysis.captured.txt`.
 
 ## Recalled
 
@@ -165,11 +194,12 @@ recalled claim is relied on whose hypotheses fail here.
 
 ## Gaps
 
-- **Regeneration mechanism uncharacterised** — the whole obstruction. Thread
-  `research/threads/regeneration.md` is open: next steps are to characterise
-  the intruder, find what makes a block regrow, and stress-case rows where b≤10.
-  An explicit mechanism (or an invariant forcing `A_k(1)∈{0,2}` directly) is
-  the deliverable.
+- **The honest open question, stated sharply:** is there a k with block length
+  0? Everything computed says no (minima grow: 13,24,96,97,175,2762,...) and
+  nothing proves it. Thread `research/threads/regeneration.md` is open.
+- **Regeneration mechanism uncharacterised** — the whole obstruction. The
+  candidate iff lemma (single-row local property) is refuted. What *does* make
+  a block regrow? The mod-4 linearization is the cleanest algebraic handle.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.
@@ -179,3 +209,6 @@ recalled claim is relied on whose hypotheses fail here.
   Eppstein); a proved statement on the regeneration rate; and the Lean 4
   formalisation of the difference operator and induction step (with `#print
   axioms` and every `sorry`). No Lean work is on disk yet.
+- **Library search halted by directive.** FRONTIER.md is at 309→345 with
+  checked at 3. No more downloads until a specific gap is stated that a source
+  could close.

@@ -1,145 +1,64 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/dubickas-novikas-special-linear-form.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Dubickas & Novikas, "On integers expressible by some special linear form"
 
-<!-- source: https://epublications.vu.lt/object/elaba:2089125/2089125.pdf | converted from PDF -->
+Source: Acta Math. Univ. Comenianae 81:2 (2012) 203–209; obtained via Vilnius
+University e-publications repository, https://epublications.vu.lt/object/elaba:2089125/2089125.pdf
+Full text: `research/sources/dubickas-novikas-special-linear-form.full.md`
 
-## Statements it makes
+## What it establishes (sourced, primary)
 
-Theorem 1.1. Let ξ > 0 be a real number and let a ∈ {2, 3, 4, 6, 3/2, 4/3, 5/4}.
+**Definition.** E(4) = { n ∈ Z⁺ : n = 4M − d, where (a b) | M and d | (a+b)
+for some positive integers a, b }.
 
-Lemma 1.7 with the main result of [14].
+**Main results.**
+1. **E(4) contains no perfect squares.**
+2. **Exactly three exceptional integers** are not in E(4) among all positive
+   integers up to 2·10⁹: **288, 336, 4545**. (Computational; "verifier que
+   E(4) contient tous les autres entiers jusqu'à 2·10⁹".)
+3. **Conjecture**: there are no other exceptions. **The conjecture implies
+   the Erdős–Straus conjecture.**
+4. Extensions: the same form `tM − d` for t ≥ 3; E(5) relates to
+   Sierpiński's conjecture (5/n), E(t) to Schinzel's generalisation.
 
-Proposition 1.2. Let a be a positive integer of the form 4k + 1, where k ∈ N,
+## Relation to the rest of the library
 
-theorem.
+- OEIS **A287116** (filed in library) carries exactly this: "Nonsquare
+  integers that cannot be represented in the form 4M−d ... If there are no
+  more terms, the Erdős-Straus conjecture would follow"; terms 288, 336,
+  4545; no other terms below 2·10⁹ (Max Alekseyev, 2017).
+- The linear form `4M − d` with (ab)|M and d | (a+b) is the Type-I-friendly
+  parametrisation: with x = ab, y = 4M − d = n... (the same arithmetic
+  family that appears in Mordell's identity and in the Bloom–Elsholtz
+  Theorem 1 proof as `4abcd = a + b + cp`).
 
-Theorem 1.3. Let ξ > 0 be a real number. If ξ ̸= (4k + 3)/(2 · 5
-r), where
+## Consequence for this run
 
-Theorem 1.4. Let ξ > 0 be a real number. Then each of the sets [ξ(5/2)
-n] − 1
+The E(4) reformulation gives a **second, independent statement of what a
+covering would look like**: ESC would follow if every nonsquare n were of the
+form 4M − d (with the divisibility conditions). Since the six open classes
+contain infinitely many odd squares (Elsholtz–Tao Prop 1.6: squares have no
+Type-I/II solutions), and E(4) contains no squares, the obstruction is
+exactly that the open classes' *square members* are beyond every E(4) shape.
+The verified bound "no exceptions below 2·10⁹" is a computational anchor
+below which no exceptional n exists at all (this is a different, stronger
+statement than the ESC verification bound 10^18, because it says *every*
+n < 2·10⁹, square or not, is in E(4) — except 288, 336, 4545).
 
-Theorem 1.5. Let ξ > 0 be a real number. Then
+```claim
+id: dubickas-novikas-e4-no-squares
+statement: E(4) = {4M−d : (ab)|M, d|(a+b)} contains no perfect squares.
+hypotheses: none.
+holds-here: true — squares in the six open classes (e.g. 841=29² in class 1) are therefore unreachable by the E(4) shape, consistent with Prop 1.6 (no Type-I/II at odd squares).
+status: sourced (Dubickas–Novikas 2012; in full text).
+bearing: any 4M−d-style family cannot be complete on the open classes because those classes contain infinitely many squares.
+anchor: research/sources/dubickas-novikas-special-linear-form.full.md
+```
 
-Lemma 1.2 which holds only for non-integer rational numbers (as in the case
-
-Theorem 2.1. Let (a, b) ∈ Z
-2 and let (xn)∞
-n=1 be a sequence given by some
-
-Theorem 2.1 has been formulated and proved for non-degenerate sequences in
-
-Definition 2.2. A sequence of rational integers (vn)∞
-n=1 is called a divisibility
-
-Definition 2.3. A collection of residue classes
-
-Conjecture 3.5 given below implies that there is an integer C(t) such that each
-
-Theorem 3.1. The set E(4) does not contain perfect squares and the numbers
-
-Lemma 3.2. The equation above has no solutions in positive integers u, v, a, b, k.
-
-Lemma 3.2 implies that −d is a quadratic nonresidue modulo 4ab if d|(a + b).
-
-Corollary 3.3. For each positive integer n the 2n − 1 consecutive integers
-
-Corollary 3.3 gives the example of at least (2 − ε) log m/ log log m consecutive
-
-Corollary 3.4. The set E(t), where 4|t, does not contain the numbers of the
-
-Conjecture 3.5. There exists an integer C(t) ∈ N ∪ {0} such that the set
-
-Proposition 3.6. For any integer t ⩾ 3 almost all positive integers can be
-
-Theorem 1.1. Let ξ > 0 be a real number and let a ∈ {2, 3, 4, 6, 3/2, 4/3, 5/4}.
-
-Lemma 1.7 with the main result of [14].
-
-Proposition 1.2. Let a be a positive integer of the form 4k + 1, where k ∈ N,
-
-theorem.
-
-Theorem 1.3. Let ξ > 0 be a real number. If ξ ̸= (4k + 3)/(2 · 5
-r), where
-
-Theorem 1.4. Let ξ > 0 be a real number. Then each of the sets [ξ(5/2)n] − 1
-
-Theorem 1.5. Let ξ > 0 be a real number. Then
-
-Lemma 1.2 which holds only for non-integer rational numbers (as in the case
-
-Lemma 1.6. Suppose that ξ > 0 and ν are real numbers. If a > 1 is a rational
-
-Lemma 1.7. Suppose that a > 1 is a rational noninteger number. Then the
-
-Lemma 1.8. The patterns AD, DA, D2, B2, BC kB, where k ∈ N, BC 4,
-
-Lemma 1.9. Suppose that the set of integer parts contains only ﬁnitely many
-
-Lemma 1.10. Suppose that the set of integer parts contains only ﬁnitely many
-
-claim.
-
-Lemma 1.11. Suppose that the set of integer parts contains only ﬁnitely many
-
-Lemma 1.8, (DB)
-2C should be followed by C which gives 3DBC(DB)
-2C 24. This
-
-Lemma 1.8, this cannot be followed by DB or by CDB. So it must be followed
-
-Lemma 1.8, the patterns HE and HF cannot occur. H with u ⩾ 2 can end with
-
-Theorem 2.1. Let (a, b) ∈ Z
-2 and let (xn)
-∞
-n=1 be a sequence given by some
-
-Definition 2.2. A sequence of rational integers (vn)
-∞
-n=1 is called a divisibility
-
-Definition 2.3. A collection of residue classes
-
-Lemma 2.4. Let d and ℓ be two positive integers. Then there is a positive
-
-theorem, there is a positive integer c such that c ≡ c1 (mod p), c ≡ c2 (mod q),
-
-Lemma 2.5. Let ui, vi, i = 1, 2, . . . , p − 1, and s be the elements of the ﬁeld
-
-Lemma 2.6. Let c > 0, D < 0 and a be three integers. Suppose that p is an odd
-
-Lemma 2.8. Let (xn)∞
-n=1 be a sequence of integers given by (1), where a ̸= 0 and
-
-Lemma 2.9. Let a1 ⩾ 0 and b1, b2 ⩾ 1 be integers such that no prime number p
-
-Lemma 2.5 applied to the pairs (s1, 2
-−1s2), (s22
-−1, s32
-−2), . . . , (sq−12
-−(q−2), sq2
-−(q−1)) ∈
-
-Theorem 2.1 in case |b| ⩾ 2.
-
-Lemma 2.10. If b = −1 and |a| ⩾ 4 then there exist ﬁve distinct prime numbers
-
-Lemma 2.11. If b = 1 and |a| ⩾ 2 then there exist ﬁve distinct prime numbers
-
-Lemma 2.12. Let ri (mod mi), i = 1, . . . , t, be a covering system, and let
-
-Lemma 2.8 and Lemma 2.9, where a1 := l, b1 := P, b2 := x1, because no prime
-
-Lemma 2.12 applied to the covering system (18). Similarly, if b = 1 and |a| ⩾ 2
-
-Lemma 2.12, we may directly search for a pair of relatively prime positive integers
-
-Theorem 3.1. The set E(4) does not…
-
-Lemm…
-
-
-*[further statements in the full text]*
-
-*[digest of a 121594 character source; every section, statement, and proof in full at `research/sources/dubickas-novikas-special-linear-form.full.md`]*
+```claim
+id: dubickas-novikas-exceptions-2e9
+statement: The only positive integers not in E(4) below 2·10⁹ are 288, 336, 4545; conjecturally no other exceptions exist, and that conjecture implies the Erdős–Straus conjecture.
+hypotheses: none (computational verification up to 2·10⁹).
+holds-here: true — the E(4)-exceptions verif. bound (2·10⁹) is a distinct anchor from the ESC bound (10^18); records exactly which n are beyond the linear-form parametrisation below 2·10⁹.
+status: sourced (Dubickas–Novikas 2012, main result + conjecture; OEIS A287116 confirms, no more terms ferrari 2·10⁹).
+bearing: the run's witness set should include 288, 336, 4545 as the only E(4)-exceptional small integers, so a claimed "E(4)-type family covering everything" is testable.
+anchor: research/sources/dubickas-novikas-special-linear-form.full.md
+```

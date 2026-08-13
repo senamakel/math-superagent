@@ -1,0 +1,20 @@
+Row k: A_k = (1, a1, a2, ..., a_b, c, ...) with a1..a_b in {0,2}, c = intruder = a_{b+1}.
+Next row A_{k+1}[j] = |A_k[j] - A_k[j+1]|.
+
+Block positions 1..b-1: |x-y| with x,y in {0,2} is 0 or 2 -> always in {0,2}.
+So block length on next row is AT LEAST b-1.
+
+Next-row position b: A_{k+1}[b] = |a_b - c| where a_b in {0,2}.
+  c=4: A_[k+1][b] in [2, 4]; in {0,2}? True
+  c=6: A_[k+1][b] in [4, 6]; in {0,2}? False
+  c=8: A_[k+1][b] in [6, 8]; in {0,2}? False
+  c=10: A_[k+1][b] in [8, 10]; in {0,2}? False
+  c=12: A_[k+1][b] in [10, 12]; in {0,2}? False
+  c=14: A_[k+1][b] in [12, 14]; in {0,2}? False
+
+=> c>=6 (even c != 4) forces A_[k+1][b] in {c-2,c} all >=4 : block length EXACTLY b-1.
+=> b_{k+1} = b_k - 1 FORCED whenever c_k >= 6.  This is a theorem, not an observation.
+
+For c_k=4: A_[k+1][b] in {2,4}.  If a_b=2 -> value 2 (block holds length OR EXTENDS).
+            If a_b=0 -> value 4 (block shrinks to b-1, diff = -1).
+=> regeneration onset (b_{k+1}>=b_k) requires c_k=4 AND a_b=2.

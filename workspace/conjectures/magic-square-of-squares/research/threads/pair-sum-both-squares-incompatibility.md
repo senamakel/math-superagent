@@ -43,26 +43,21 @@ The question is whether this structure forces s into a form that is
 incompatible with the concordant condition.
 
 **Next steps.**
-1. **Re-run side_census at larger M** (directive 15): `PYTHONPATH=code timeout
-   540 python3 code/phi_triple_variety/side_census.py 800 500`. See if both=0
-   survives. This is the immediate task in TASKS.md.
-2. **Run the remaining six phi_triple_variety programs** — never been executed.
-   The independent verifiers must agree with the side_census finding.
-3. **Name the invariant.** If both=0 is provable, what invariant separates
-   the 66 pairs where 1+s is square from the 325 where 1−s is square? A
-   congruence obstruction modulo some modulus, or a descent on the elliptic
-   curve `y² = (1−s)(1+s)` (which is an elliptic curve in the variable s)?
-4. **Frame as a concordant-forms question.** The simultaneous conditions
-   `1−s = t²`, `1+s = u²` are equivalent to the elliptic curve
-   `E_s: v² = (1−s)(1+s)` having a rational point with v ≠ 0. The sum
-   `s = q1+q2` is a rational with a specific structure (sum of two sin(4θ)
-   values). Can the Mordell–Weil group of the associated curve be controlled?
-5. **Correlate with the known 7-square witness.** Bremner's grid has
-   `q_v + q_{u+v} > 1`, so the clip condition already kills it — but both=0
-   is about sums < 1. Find or construct a pair with sum < 1 from the witness
-   or from a known near-miss, and test whether both 1±s are square — the
-   expected answer is no (both=0 survives), and a yes would refute the
-   incompatibility.
+1. ~~Re-run side_census at larger M~~ — now at M=800 (directive 16), in TASKS.md.
+2. ~~Run the remaining phi_triple_variety programs~~ — five unrun programs in TASKS.md.
+3. **Name the curve for both=0 (directive 16).** The condition "both 1−s and 1+s
+   are rational squares" is equivalent to s = 2t/(1+t²) for some rational t
+   (parametrisation of the circle x²+y²=2). Write the explicit curve: if
+   s = q1+q2 with q1,q2 ∈ Φ, then s is a sum of two sin(4θ) values. The
+   condition that 1±s are both squares is that s is on the image of the
+   rational map t ↦ 2t/(1+t²). Intersect with the set S = {q1+q2 : q1,q2 ∈ Φ,
+   q1+q2 < 1}. Ask: does Φ-membership of the summands force a local
+   obstruction mod p that prevents s from being of the form 2t/(1+t²)?
+4. **Run the obstruction against the witnesses (directive 16).** If an
+   obstruction is found, it MUST be checked against the 66 plus-witnesses
+   and 325 minus-witnesses in `code/out/side_census.captured.txt` — both sets
+   have exactly one side square, so the obstruction must permit one and block
+   the other, or it is false.
 
 ```thread
 question: For q1,q2 in Phi with q1>q2 and q1+q2<1, can 1-(q1+q2) and

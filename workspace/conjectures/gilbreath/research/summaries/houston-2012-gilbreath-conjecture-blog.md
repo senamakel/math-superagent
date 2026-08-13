@@ -1,39 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/houston-2012-gilbreath-conjecture-blog.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Houston 2012 — Gilbreath Conjecture (blog post, quotes Gilbreath 2011)
 
-<!-- source: https://www.kevinhouston.net/blog/2012/01/gilbreath-conjecture/ | converted from HTML -->
+**Full text:** `research/sources/houston-2012-gilbreath-conjecture-blog.full.md`
+**Source URL:** https://www.kevinhouston.net/blog/2012/01/gilbreath-conjecture/
+**Complete text on disk.** Kevin Houston (Univ. of Leeds), Jan 2012. A blog post
+written after emailing Norman Gilbreath, reproducing the **introduction of
+Gilbreath 2011 verbatim** from an author offprint.
 
-## What is in it
+## What it establishes
 
-    - Related Posts
-      - [Glassified – Reinventing the ruler?][9]
-  - 4 Comments on &ldquo; Gilbreath Conjecture &rdquo;
-    - Leave a Reply [Cancel reply][15]
+1. **The content of Gilbreath's own paper** — *Processing process: The Gilbreath
+   conjecture*, J. Number Theory 131 (2011) 2436–2441, DOI 10.1016/j.jnt.2011.06.008.
+   The post quotes its introduction directly:
+   - Gilbreath developed the conjecture around 1958;
+   - "the great number theorist Erdős believed it was true, he also believed it
+     would take about 200 years to prove";
+   - the paper explains "why and how I came up with this conjecture" and "some
+     observations suggested by this process".
+   So Gilbreath's only substantive journal paper is **autobiographical and
+   expository — not a proof attempt and not a source of theorems** about the
+   `{0,2}` regime. The library should not expect a proof there.
+2. **The correct ScienceDirect PII** for the paper is `S0022314X11001740`
+   (given in the blog's comment thread; an earlier blind guess of
+   `S0022314X11001460` in this run's download attempts was wrong).
+3. The blog's worked triangle reproduces `A_1..A_10` exactly as the run's oracle
+   computes them (2/3/5/7/11 row → 1,2,2,4,2,4,2,4,6,2 → 1,0,2,2,2,2,2,2,4,4 → ...).
 
+## Bearing on this run
 
-## What it claims
+- Sourced color for the history: **Erdős's "200 years" estimate** is now quoted
+  from Gilbreath's own introduction via a held source.
+- The gap in "what could not be obtained" for Gilbreath 2011 is partially
+  closed: the full text is paywalled at ScienceDirect (403 to the downloader,
+  both PDF and HTML endpoints) but its substance (expository; Erdős quote;
+  process story) is now pinned down by Houston's post.
 
-Within the card magic community the Gilbreath Principle is a well-known but much misunderstood mathematical principle. Few magicians know much about its creator, Norman Gilbreath, and in particular they are unaware of his other mathematical work. Following a recent email conversation with him about the principle (always go to the source!) he kindly sent me an offprint of a recent paper on the Gilbreath *Conjecture*.
+## Status
 
-The Gilbreath Conjecture is a conjecture about primes and is fairly easy to state. Consider the sequence of primes
-2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, …
-Now work out the (absolute) difference between neighbouring terms
-1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, …
-Work out the absolute difference between terms for this sequence and keep doing this:
-1, 0, 2, 2, 2, 2, 2, 2, 4, 4, …
-1, 2, 0, 0, 0, 0, 0, 2, 0, …
-1, 2, 0, 0, 0, 0, 2, 2, …
-1, 2, 0, 0, 0, 2, 0, …
-1, 2, 0, 0, 2, 2, …
-1, 2, 0, 2, 0, …
-1, 2, 2, 2, …
-1, 0, 0, …
-1, 0, …
-1, …
-
-The conjecture is that the first term on a line, after the first line, is always a 1.
-
-Gilbreath’s paper, *Processing process: The Gilbreath…
-
-Th…
-
-*[digest of a 4575 character source; every section, statement, and proof in full at `research/sources/houston-2012-gilbreath-conjecture-blog.full.md`]*
+Blog-level source, but the crucial content is a **verbatim quotation of the
+paper's introduction** from the author's offprint. Use it to report what
+Gilbreath 2011 says; for the paper's full argument, the paywalled full text is
+still the only primary copy.

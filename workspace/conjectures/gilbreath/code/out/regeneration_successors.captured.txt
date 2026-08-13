@@ -1,0 +1,45 @@
+jump-0 stalls: 17; k+1 also regen: True
+  stall rows: [3, 16, 17, 18, 47, 48, 49, 62, 63, 75, 79, 111, 129, 135, 141, 142, 160]
+after-regen (intruder(k+1), event at k+1): [(('10', 'erosion'), 1), (('12', 'erosion'), 1), (('14', 'erosion'), 2), (('4', 'erosion'), 10), (('4', 'regen'), 33), (('6', 'erosion'), 8), (('8', 'erosion'), 4), (('None', 'erosion'), 1)]
+max consecutive non-regen rows with intruder=4 (x=0 runs): 6
+  regen at k=   4 -> y(k+1)=8, next y=4 at k=8 (after 3 rows), drain: [8, 8, 6, 4]
+  regen at k=  19 -> y(k+1)=6, next y=4 at k=22 (after 2 rows), drain: [6, 6, 4]
+  regen at k=  23 -> y(k+1)=6, next y=4 at k=26 (after 2 rows), drain: [6, 6, 4]
+  regen at k=  26 -> y(k+1)=6, next y=4 at k=28 (after 1 rows), drain: [6, 4]
+  regen at k=  38 -> y(k+1)=10, next y=4 at k=46 (after 7 rows), drain: [10, 8, 8, 8, 8, 6, 6, 4]
+  regen at k=  57 -> y(k+1)=6, next y=4 at k=59 (after 1 rows), drain: [6, 4]
+  regen at k=  64 -> y(k+1)=6, next y=4 at k=66 (after 1 rows), drain: [6, 4]
+  regen at k=  68 -> y(k+1)=6, next y=4 at k=71 (after 2 rows), drain: [6, 6, 4]
+  regen at k=  72 -> y(k+1)=6, next y=4 at k=74 (after 1 rows), drain: [6, 4]
+  regen at k=  80 -> y(k+1)=8, next y=4 at k=84 (after 3 rows), drain: [8, 6, 6, 4]
+  regen at k=  86 -> y(k+1)=8, next y=4 at k=91 (after 4 rows), drain: [8, 8, 8, 6, 4]
+  regen at k=  91 -> y(k+1)=6, next y=4 at k=93 (after 1 rows), drain: [6, 4]
+  regen at k=  96 -> y(k+1)=14, next y=4 at k=109 (after 12 rows), drain: [14, 14, 14, 14, 12, 10, 10, 8, 8, 8, 6, 6, 4]
+  regen at k= 112 -> y(k+1)=14, next y=4 at k=124 (after 11 rows), drain: [14, 14, 12, 12, 10, 10, 8, 6, 6, 6, 6, 4]
+  regen at k= 138 -> y(k+1)=8, next y=4 at k=141 (after 2 rows), drain: [8, 6, 4]
+  regen at k= 146 -> y(k+1)=12, next y=4 at k=159 (after 12 rows), drain: [12, 12, 12, 12, 12, 10, 8, 6, 6, 6, 6, 6, 4]
+b>=2 for all k: True | b==2 exactly at k=1: [1]
+all regen k <= 161: True
+all y(k) for k<=161 in {4,6,8,10,12,14}: {4, 6, 8, 10, 12, 14}
+y monotone non-increasing over live erosion stretches: check every pair
+  monotone: True
+
+jump histogram (60 events):
+          0: ################# (17)
+          1: ###### (6)
+        2-9: ############ (12)
+      10-99: ###### (6)
+    100-999: ###### (6)
+  1000-9999: ### (3)
+  10^4-10^5: ##### (5)
+     >=10^5: ##### (5)
+gap histogram (59 gaps):
+          1: ################################# (33)
+          2: ###### (6)
+          3: ####### (7)
+          4: #### (4)
+          5: ### (3)
+        6-9: ### (3)
+      10-14: ### (3)
+
+consecutive regen pairs (k, k+1 both regen): 33 of 60 events (=33/59 of event adjacencies)

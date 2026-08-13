@@ -1,0 +1,16 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+int n;
+for(n=23; n<=24; n=n+1)
+{
+  poly F = CB(x,n-1) - CB(y,n);
+  ideal I = F;
+  "A " + string(n) + " " + string(genus(I));
+}

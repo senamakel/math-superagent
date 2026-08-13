@@ -1,8 +1,28 @@
 # Tasks
 
-- [ ] **SOURCE INTEGRITY**: Demote the `singmaster-1971-original` claim. `research/sources/singmaster-1971.full.md` is the Fermat's Library comments page, not Singmaster's paper. Write a tombstone in `research/summaries/singmaster-1971.md` and in CONTEXT.md saying the real 1971 paper (AMM 78 (1971) 385-386) has NOT been obtained. Re-anchor the O(log a) bound to secondary attestation (MRSTT intro, AEH 1974) rather than to a fake primary. Do not quote a constant or an exponent from the truncated Fermat's comments.
-- [ ] **PRIORITY — MRSTT EXACT STATEMENT**: Write the literal MRSTT theorem statement in `research/approaches/mrstt-exact-statement.md` as its own claim block with `effective: yes/no` and `uniform-in-k: yes/no` on separate lines. State: the range of k covered as function of n, the bound it gives, whether the constant is effective, and precisely which region of the triangle is left open. This single exact statement is worth more than everything else queued.
-- [ ] **LEDGER**: Run every asserted bound against the witness oracle (`code/out/witnesses.json`). asserted=15, checked=4, proved=0. Any lemma implying B<8 is refuted by 3003 (8 occurrences). Record refuted, not weakened. State counting convention on every one.
-- [ ] **FRONTIER FREEZE**: No new `exa_search` until the MRSTT statement is written. Frontier is 117 with 100 unworked — stop widening it. All research effort from here on targets stated gaps in CLAIMS.md and the MRSTT boundary.
-- [ ] Build on genuine sources: bugeaud-hyperelliptic-2008.full.md (54KB, 97 hits) and shorey-tijdeman-survey.full.md (40KB, 23 hits) are where effective methods actually live. Extract their effective bounds with exact constants where available.
-- [ ] Mark every claim with counting convention, effective: yes/no, uniform-in-k: yes/no.
+Current goal: produce a genuine partial result on Singmaster's conjecture, stated
+exactly with its bound and evidence class, OR name precisely what blocks the
+argument.
+
+## Priority deliverables (operator's steer, attempt 2)
+
+- [x] **Exact MRSTT statement** written as its own claim with effective and
+      uniform-in-k on separate lines →
+      `research/approaches/mrstt-exact-statement.md`. (Verbose theorem 1.3,
+      Remark 1.5 gap, loose end.) This is done and is the main deliverable.
+- [x] Demote `singmaster-1971-original` / `best-unconditional-bound` claims that
+      were anchored to the Fermat's-Library page; tombstone recorded in
+      CONTEXT.md. The real 1971 paper (AMM 78) is NOT held — do not quote a
+      constant or exponent from the truncated Fermat's comments.
+- [x] Reproduce every worked example with an executed program
+      (`code/verify_mrstt_witnesses.py`, EXIT_CODE=0): 3003 eight-fold,
+      six N=6 witnesses, infinite Fibonacci family j=1..12, k<=log2(a) bound.
+- [x] Run the faithful-bounds ledger against the witnesses
+      (`code/check_witnesses_vs_mrstt.py`): all high-multiplicity witnesses are
+      in the MRSTT-OPEN boundary, so the interior bound of 4 is not contradicted;
+      no asserted lemma implying B<8 survives (record refuted not weakened).
+
+## Ledger discipline
+- asserted=15, checked=4, proved=0. Any lemma implying B<8 is refuted by 3003;
+  state the counting convention on every claim. Do not record a bound as
+  checked unless `code/out/witnesses.json` has been run against it.

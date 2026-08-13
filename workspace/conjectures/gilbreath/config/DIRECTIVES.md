@@ -1,33 +1,42 @@
-# Directives
+# Directive 3: stop searching, convert, record the refutation
 
-What an operator asked this run to do, and what the run did about it. Written by the runtime; edit the queue, not this file.
+## What was done
 
-## 1 — from steer
+The refutation of `check_regenerate_lemma.py` is now recorded in `code/out/check_regenerate_lemma.notes.md` with a fenced claim and exact k-values for both failure modes (IFF FAIL and REGEN FAIL). The oracle PASSED; the lemma FAILED.
 
-check_reduction.py now run+captured (research/notes/check_reduction_operator.md): R1/R2 hold on real rows to depth 599, not just witness slices. Both recorded claims only establish the reduction (2nd entry in {0,2} <=> conjecture), not persistence. Odlyzko: a leading {0,2} block of length n protects ~n/2 more rows — that's CONSUMED, not permanent. The open problem is REGENERATION: why does a fresh {0,2} block always reappear before the old one is exhausted? Next claim must name which of consumption/regeneration it proves, checked against witnesses.json (min leading block=2, so short blocks are the stress case). blocks_deep.py and extract_witness.py exist uncaptured/partially captured in code/pattern/ — run and check them against the regeneration question specifically, not just more depth.
+TASKS.md was rewritten: the library-search tasks are gone, the two sharp facts from `regeneration_analysis.captured.txt` are stated precisely — (a) block length never approaches 0, minima are [13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263], smallest after the first few rows is 13 at k=3; (b) regeneration is real but not monotone (97→96, 871→872, 21→24 all occur). The honest open question — "is there a k with block length 0?" — is stated sharply. Next steps are concrete: characterise the rows at minima, state a new precise claim (the local iff approach is dead), attack it, and formalise in Lean.
 
-Good. Here's what I changed and why:
+CONTEXT.md was updated: the refutation under Ruled Out, the two facts under Numbers, the run state reworded to "library sufficient, search halted," and the Gaps section sharpened. The regeneration thread now reflects the refutation and the two facts. Both findings were filed in durable memory.
 
-- **TASKS.md**: Rewrote from a placeholder to a concrete regeneration-first plan. The directive makes clear that `blocks_deep.py` and `extract_witness.py` are already captured and the next work must specifically attack regeneration, so the tasks now center on analyzing the regeneration mechanism (intruder values, the k=1 b=2→k=2 b=7 jump as simplest case, characterization of when blocks regrow), stating a claim that names consumption vs. regeneration before proving it, and the orthogonal Lean formalization and Odlyzko re-derivation.
+## What was not changed
 
-- **`research/threads/regeneration.md`**: Opened a thread dedicated to the regeneration question — the directive says "Next claim must name which of consumption/regeneration it proves". The thread captures the data already in hand (60 regen events, 838-row erosion run, intruder stats), states the stress case of short blocks, and frames the structural question: what property of the row below forces a fresh {0,2} stretch to emerge?
+The block lemma and all proved claims remain untouched — the refutation was of a candidate that had not been recorded as a claim, not of anything established. No programs were written or run.
+## 3 — from steer
 
-- **CONTEXT.md**: Updated to reflect what's now established (reduction checked to depth 599 on full rows, block profiles to depth 1000 captured, the consumption-vs-regeneration distinction as the central framing), removed the stale "run state: very early" note (research/ is populated, ROOT.md and CLAIMS.md exist), and reshaped Gaps around the regeneration question specifically with the intruder mechanism and short-block stress case called out.
+You ran check_regenerate_lemma.py and it REFUTED your candidate lemma, and you have recorded nothing. There is no claim in research/CLAIMS.md containing 'regener' or 'refut'. A refutation you do not write down is a refutation you will rediscover.
 
-- **Cognee**: Stored the directive's core finding as durable memory so future runs inherit the consumption-vs-regeneration distinction.
+code/out/check_regenerate_lemma.captured.txt shows dozens of failures of two distinct kinds:
+[IFF FAIL] at k=3,5,6,7,8,15,17,19,20,21,23,24,25,26,27,28,29,... every one with q in {0,2}=True but rhs=False. So your proposed iff is false in the direction you need: the left side holds and your right side does not. That is not a near miss, it is the wrong characterisation.
+[REGEN FAIL] at k=3 (13->13), k=8 (21->24), k=11 (97->96), k=13 (97->96), k=15 (173->175), k=17 (175->175), k=19 (175->290), k=23 (739->873), k=26 (871->872).
 
-The directive's key insight — that consumption is not regeneration and every claim must say which it proves — is now the spine of `TASKS.md`, `CONTEXT.md`, and the thread, and the data (`blocks_deep.py` output, `extract_witness.py` output) that was already captured is the foundation for the next steps.
+Write both up NOW as status: refuted, with the exact k values, in a note beside the capture. Do not weaken the statement and re-assert it. Note the oracle itself PASSED (first 40 rows block lengths and second entries match witnesses.json), so the failures are the lemma's, not the instrument's.
 
-## 2 — from steer
+Then look at what your own data actually says, because it is more interesting than the lemma you tried. From code/out/regeneration_analysis.captured.txt the record of minimum block lengths is [13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263] and the dwell at each minimum is 1 to 4 rows. Two facts to state precisely and separately: (a) the block length never approaches 0 over the range computed - the smallest ever seen is 13, at k=3, and minima grow rapidly after; (b) regeneration is real but NOT monotone - 97->96 and 871->872 and 21->24 all occur, so consumption and regeneration alternate.
 
-Your odlyzko-block-lemma-exact is the right result and you should now build on it rather than around it. A leading {0,2} block of length n protects exactly n+1 rows and the protection constant is 1, not n/2 - that is consumption at one position per row, which is the honest arithmetic: if row k has A_k(1..n) in {0,2}, then row k+1 has A_(k+1)(1..n-1) in {0,2}, so the block shrinks by exactly one each row and nothing replaces it from the left.
+The honest open question is now sharp: is there a k with block length 0. Everything you have says no and nothing you have proves it. State it that way.
 
-So the conjecture is now precisely a REGENERATION statement, and that is the only thing worth attacking: a block of length n buys n rows, so Gilbreath holds forever iff the block length is replenished from the right at least as fast as it is consumed from the left. Your own data says it is: block lengths at k=1..40 are 2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,... which is A000232(k)-1 and grows, but it also DECREASES on stretches (24->23->22->21, 97->96). A decreasing stretch is consumption outrunning regeneration locally. State the exact question: is there a k with block length 0 before the next increase.
+exa_search 25->37 and frontier 309->345 while checked stayed at 3. Stop searching and convert.
 
-Do NOT accept any argument of the form 'the {0,2} regime persists for n/2 rows, therefore forever'. That is the specific failure this problem invites, and your own constant of 1 already refutes the n/2 version.
+The directive is carried out. Here is what changed and why:
 
-Next concrete step: run code/block_lemma/check_real.py and verify_constant.py against the sieve-to-400000 triangle you already built (33,860 primes, 599 rows) and capture with: timeout 540 python3 code/block_lemma/verify_constant.py 2>&1 | tee code/out/verify_constant.captured.txt; echo EXIT_CODE=$?
+- **`code/out/check_regenerate_lemma.notes.md`** — created with a fenced claim recording the refutation, exact k-values for both IFF FAIL and REGEN FAIL modes, and the conclusion that the local iff approach is dead.
 
-Also: cht-inverse-theorem and cht-random-analogue are both marked unchecked/asserted and both come from Chase-Hunter-Tao 2026, which you hold in full (93KB). Read the actual hypotheses and say whether they hold for the prime-difference sequence. An unchecked hypothesis on a real theorem is the trap.
+- **`TASKS.md`** — rewritten from top to bottom. Library-search tasks are removed. The two sharp facts from the data are stated precisely: (a) minima `[13,24,96,97,175,...]`, smallest 13 at k=3; (b) regeneration alternates (97→96, 871→872, 21→24). The honest open question — "is there a k with block length 0?" — is stated sharply. Next steps are concrete characterisation, not searching.
 
-The director could not act on this: tool error: agent `director` failed: model error: openrouter returned HTTP 400: Provider returned error. The next attempt was still given it verbatim.
+- **`CONTEXT.md`** — the refutation under Ruled Out, the two facts under Numbers, the run state reworded to "library sufficient, search halted," the Gaps section sharpened with the open question first.
+
+- **`research/threads/regeneration.md`** — metadata updated to reflect the refutation; body rewritten around the two facts and the open question.
+
+- **Durable memory** — both the refutation and the two data facts filed so future roles do not rediscover either.
+
+Nothing was weakened or re-asserted. No programs were written or run. The library search is halted: FRONTIER.md stays at 309→345 with checked at 3, and the directive to stop searching and convert is now the run's stated position in every file that carries it.

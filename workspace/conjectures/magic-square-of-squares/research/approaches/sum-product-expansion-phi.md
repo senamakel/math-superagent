@@ -28,6 +28,30 @@ first-step: Download arXiv:2603.06483 and extract its main theorem verbatim (exa
        x(2E(Q)) containing an AP of length ≥ 3 on E: y² = x(x²−c²), and whether the same
        argument transfers to the Φ-set formulation f(Q) ∩ (f(Q)+f(Q)).
 
+status: refuted
+killed-by: (1) HMS Theorem 1.1 (arXiv:2603.06483) bounds the LENGTH of an AP inside a
+       single coordinate set {x(P):P in E(Q)} of an elliptic curve — the Robertson-curve
+       formulation, i.e. the adopted uniform-height thread, NOT the Φ-value-set additive
+       coincidence alpha+beta=gamma. No theorem in the library transfers to the Φ-set form.
+       (2) Elekes-Szabo / PFR / sum-product are finite-population COUNTING statements
+       (bound |Z(F) ∩ A×B×C| for large finite A,B,C); they cannot rule out a SINGLE
+       coincidence q1+q2=q3 of two specific values. (3) The "effective PFR beats ineffective
+       uniform-height-C" premise is false: HMS Theorem 1.1 already states an effectively
+       computable C that is never exhibited and is built from David-Philippon uniform-ML
+       constants one cannot size; the weak-PFR constants (140,110) feed the sum-product
+       lemmas but NOT the §7 proof of the AP-length theorem. The candidate renames the
+       adopted uniform-height thread, then asks for a Φ-transfer no source provides.
+precedent:
+       - https://arxiv.org/abs/2603.06483 (Harrison, Mudgal, Schmidt, "Uniform sum-product
+         phenomenon for algebraic groups and Bremner's conjecture", 2026) — Theorem 1.1
+         AP-length bound effective-in-principle but uncomputed; does NOT cover Φ value-set.
+       - https://doi.org/10.19086/77361 (Bays, Dobrowolski, Zou, "Elekes-Szabo for groups",
+         Discrete Analysis 2023:6) — ES expansion is population-counting.
+       - claim hms-2026-bremner-effective-constant (this run, research/summaries/...html.md)
+         — C effective-in-principle, no explicit value; PFR constant not in §7 proof.
+       - this run's phi-no-triple-m400 (m,n <= 400 exhaustive, zero triples) — a finite
+         check, not a transferable theorem.
+
 speculation-vs-established: ESTABLISHED (this run, checked) — the Φ reduction
        (phi-universal-set): d ∈ S(e) ⟺ d/e² ∈ Φ, and a Φ-quadruple ⟺ full MSS;
        f(m,n) = sin(4 arctan(n/m)). ESTABLISHED (sourced) — Robertson/Bremner reduction.

@@ -31,15 +31,13 @@ Recorded so nobody repeats a fetch or mis-files a source.
 
 ## Mis-files corrected / known
 
-- `research/summaries/ionascu-wilson-erdos-straus.md` is **misnamed**: the
-  document behind it is arXiv:1001.1100, which is *Bello-Hernández, Benito &
-  Fernández, "On Egyptian fractions"* (Rev. Roumaine Math. Pures Appl. 56 (2011)
-  21–30), the same trio who wrote the divisor-parametrisation paper already in
-  the library — not Ionascu & Wilson. The URL in the file is correct
-  (arXiv:1001.1100); only the author attribution in the name is wrong. Do not
-  re-download: `download_document` refuses it as already in the library.
-  Renaming the file would break the claim anchors, so the mis-name is recorded
-  here rather than fixed by hand.
+- **Correction to an earlier note**: `research/sources/ionascu-wilson-erdos-straus.full.md`
+  (arXiv:1001.1100) is **Ionascu & Wilson, "On the Erdos-Straus conjecture"** —
+  the earlier note claiming "the document behind it is arXiv:1001.1100, which
+  is Bello-Hernández, Benito & Fernández" was *itself* wrong about the content
+  of 1001.1100. Do NOT re-download: the file name `ionascu-wilson` is correct.
+  (Bello–Hernández/Benito/Fernández is a *different* paper, arXiv:1010.2035,
+  now in the library as `bello-benito-fernandez-2012-egyptian-fractions`.)
 - `research/sources/pomerance-erdos-straus.full.md` is misnamed: it is the
   ar5iv HTML of the Elsholtz–Tao paper (1107.1010), not Pomerance's survey.
   Do NOT cite it as Pomerance.
@@ -48,6 +46,11 @@ Recorded so nobody repeats a fetch or mis-files a source.
 
 ## Download attempts that failed / were not repeated
 
+- **Vaughan 1970 (Mathematika 17, 193–198)**: paywalled. DOI direct fetch →
+  403 (Wiley); Cambridge abstract page fetched but is abstract-only ("Get
+  access to the full version"). The paper's result (exception bound
+  ≤ N exp(−c (log N)^{2/3})) is fully sourced from the Bloom–Elsholtz survey
+  (self-contained proof sketch) and erdosproblems #242. Do not re-attempt.
 - Schinzel AMU PDF: connection error (obtained via Project Euclid).
 - Swett original URL: 404 (obtained via Wayback).
 - Yamamoto 1965 PDF: scanned, no text layer (citation obtained; text rests on

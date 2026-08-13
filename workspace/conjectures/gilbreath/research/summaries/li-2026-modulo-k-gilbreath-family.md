@@ -1,51 +1,74 @@
-# The Modulo-k Gilbreath Family — Li, Zenodo preprint, March 2026
+<!-- source: https://zenodo.org/records/19522976 | converted from HTML -->
 
-<!-- source: https://doi.org/10.5281/zenodo.19522976 | full text: sources/li-2026-modulo-k-gilbreath-family.full.md -->
+The Modulo-k Gilbreath Family: A Unified Generalization of the Gilbreath Conjecture | Zenodo Skip to main
 
-The strongest generalisation in the library. For odd k, take the sequence of all primes of
-the form `kn + 2` and iterate absolute differences; the claim is that the leading entry
-eventually stabilises to **k**, with the classical conjecture (k=1, all primes) as the
-degenerate case.
+You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.
 
-## What it claims
+Published March 9, 2026 | Version v2
 
-- For any odd k, the primes of the form `kn + 2` produce a difference triangle whose
-  leading entry stabilises to k from the second row onward (modulo-k Gilbreath family;
-  classical case k=1).
-- Mechanism offered: **modular invariance** — the parity argument that the run's reduction
-  uses (2 is the only even prime) generalises: for primes `p ≡ 2 (mod k)`, differences of
-  consecutive such primes are `0 mod k`, so rows have the shape
-  `(k, 0 mod k, 0 mod k, ...)` and `|k - m| = k` iff `m ∈ {0, 2k}`... (the exact residue
-  closure needs the paper's own statement; the abstract only guarantees stabilisation).
-- Computational verification: all odd k < 100,000.
-- Studies inadmissible residue classes causing localised collapses, and fault tolerance in
-  higher-order entries.
+[Preprint][2]**Open
 
-## How to read it
+# The Modulo-k Gilbreath Family: A Unified Generalization of the Gilbreath Conjecture
 
-This is the **general-class direction the run's ROOT.md commits to**, taken an order of
-magnitude further: the structural fact is not "leading entry is 1" but "leading entry
-stabilises to the modulus k". If the modulo-k stabilisation ever gets a proof for the
-general class, the k=1 case is the corollary. As it stands it is a **preprint with
-computational verification** (odd k < 100,000), not a peer-reviewed theorem; its modular
-invariance discussion is the part worth mining for the k=1 argument.
+### Authors/Creators
 
-## Bearing on this run
+- [Li, Dong 1][3][image: ORCID icon] [4]
 
-- Strengthens the "not about primes" framing with a second independent generalisation
-  family (alongside Chase's random model).
-- The k-generalisation is a natural falsifier/consistency check: any invariant that proves
-  the k=1 case via "2 is the only even prime" must be examined to see whether it would
-  wrongly also force the k>1 stabilisation (which is only verified, not proved) — if a
-  proposed invariant proves too much too cheaply, that is evidence it is vacuous.
-- A concrete oracle extension: compute the modulo-k triangles **for small odd k and small
-  depths** and check the k-stabilisation numerically; record as a checked claim. (Not yet
-  done — a natural small task for the run's own oracle, since it is computable here and
-  needs no outside source.)
+Show affiliations
 
-## Source status
+- 1. TH Fire Test Company
 
-Zenodo preprint v2 (9 Mar 2026), single author (Dong Li, TH Fire Test Company — h-index 0,
-0 citations). Not peer-reviewed. Treat all theorem-level claims as **asserted-by-source,
-unverified**; the verification data (odd k < 100,000) is computational and could be
-spot-checked by this run's oracle.
+## Description
+
+This paper introduces and systematically studies a new family of Gilbreath-type iterated difference phenomena. For any odd integer \(k \geq 1\), we consider the sequence of all primes of the form \(kn + 2\). Repeatedly taking absolute differences of adjacent entries yields a difference triangle in which, from the second row onward, the leading entry eventually stabilizes to \(k\). This phenomenon constitutes an infinite family of structures parallel to the classical Gilbreath conjecture, termed the ``modulo-\(k\) Gilbreath family.'' The classical conjecture is recovered as the degenerate case when \(k=1\). Computational verification is provided for all odd \(k<100{,}000\). We discuss the modular invariance responsible for this stability, investigate the inadmissible residue classes that cause localized collapses, and explore the resulting fault tolerance in higher-order entries.
+
+## Files
+
+###
+
+kn+2.pdf**
+
+###
+
+Files (250.4 kB)**
+
+Name | Size | **[Download all][5] |
+
+[kn+2.pdf][6]
+
+md5:dde085599f3d8ef8ac823df05866b29c
+
+**
+
+ | 240.8 kB | **[Preview][7]**[Download][6] |
+
+[kn+2.tex][8]
+
+md5:4de527f529fb56eb170f96e9c0150319
+
+**
+
+ | 9.7 kB | **[Download][8] |
+
+**Jump up
+
+**
+
+**
+
+This site uses cookies. Find out more on [how we use cookies][9]
+
+Accept all cookies Accept only essential cookies
+
+
+## Links
+
+[1]: http://browsehappy.com/
+[2]: /search?q=&amp;f=resource_type%3Apublication%2Binner%3Apublication-preprint
+[3]: /search?q=metadata.creators.person_or_org.name:%22Li,+Dong%22
+[4]: https://orcid.org/0009-0004-3905-6789
+[5]: https://zenodo.org/api/records/19522976/files-archive
+[6]: /records/19522976/files/kn+2.pdf?download=1
+[7]: /records/19522976/preview/kn+2.pdf?include_deleted=0
+[8]: /records/19522976/files/kn+2.tex?download=1
+[9]: https://about.zenodo.org/cookie-policy

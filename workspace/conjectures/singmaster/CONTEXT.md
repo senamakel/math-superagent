@@ -67,6 +67,8 @@ Each marked with evidence class and a link.
   `2<=m<=exp(log^{2/3+eps} n)`, i.e. `m<=log t/log_2^{3/2-eps} t` — that is
   **exactly what they leave open**. Constants effective but far too large to use.
   Interior multiplicity is 0,1,2,4 — never 3 (Remark 1.11).
+  **Exact statement with effective/yes, uniform-in-k/yes (over interior) now
+  in `research/approaches/mrstt-exact-statement.md`.**
 
 - **Small-(k1,k2) curves solved effectively. `sourced`.** (2,3) Avanesov;
   (2,4) de Weger/Pintér (Gelfond–Baker); (3,4) de Weger genus-3 double cover of
@@ -169,6 +171,9 @@ not re-derived here.
 
 ## Gaps
 
+- **LEDGER STATUS: asserted=15, checked=4, proved=0.** Every asserted bound must
+  be run against `code/out/witnesses.json`. Any lemma implying B<8 is refuted by
+  3003 (8 occurrences). State counting convention on every claim. See TASKS.md.
 - Effective height bound with a **computed** constant for a specific (k1,k2)
   family (Baker / linear forms in logarithms) — the realistic partial-result
   target. Sources say it is triple-exponential and too large to use; nobody has

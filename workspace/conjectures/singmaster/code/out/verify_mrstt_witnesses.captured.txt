@@ -1,0 +1,61 @@
+==============================================================================
+Part 1: the 3003 witness -- four pairs, one value, N(3003)=8
+  convention: (n,k) and (n,n-k) are two distinct pairs; C(a,1), C(a,a-1) counted
+    C(3003,1 ) = 3003
+    C(  78,2 ) = 3003
+    C(  15,5 ) = 3003
+    C(  14,6 ) = 3003
+  -> all four pairs give exactly 3003
+  direct triangle scan, n<=3003, k<=n//2 with early-exit (exhaustive: C(n,k)>3003 cannot be 3003):
+    upper-half hits: [(14, 6), (15, 5), (78, 2), (3003, 1)]
+    all pairs counting mirrors: C(14,6), C(14,8), C(15,5), C(15,10), C(78,2), C(78,76), C(3003,1), C(3003,3002)
+  -> exactly 8 pairs (n,k) in the triangle with C(n,k)=3003: N(3003) = 8
+     (matches code/out/witnesses.json: N=8)
+==============================================================================
+Part 2: direct-enumeration check of code/out/witnesses.json
+  a=120: C(10,3), C(10,7), C(16,2), C(16,14), C(120,1), C(120,119)
+      nontrivial pairs [(10, 3), (16, 2)] match JSON; N=6 = 2 + 2*2 matches JSON N=6
+  a=210: C(10,4), C(10,6), C(21,2), C(21,19), C(210,1), C(210,209)
+      nontrivial pairs [(10, 4), (21, 2)] match JSON; N=6 = 2 + 2*2 matches JSON N=6
+  a=1540: C(22,3), C(22,19), C(56,2), C(56,54), C(1540,1), C(1540,1539)
+      nontrivial pairs [(22, 3), (56, 2)] match JSON; N=6 = 2 + 2*2 matches JSON N=6
+  a=3003: C(14,6), C(14,8), C(15,5), C(15,10), C(78,2), C(78,76), C(3003,1), C(3003,3002)
+      nontrivial pairs [(14, 6), (15, 5), (78, 2)] match JSON; N=8 = 2 + 2*3 matches JSON N=8
+  a=7140: C(36,3), C(36,33), C(120,2), C(120,118), C(7140,1), C(7140,7139)
+      nontrivial pairs [(36, 3), (120, 2)] match JSON; N=6 = 2 + 2*2 matches JSON N=6
+  a=11628: C(19,5), C(19,14), C(153,2), C(153,151), C(11628,1), C(11628,11627)
+      nontrivial pairs [(19, 5), (153, 2)] match JSON; N=6 = 2 + 2*2 matches JSON N=6
+  a=24310: C(17,8), C(17,9), C(221,2), C(221,219), C(24310,1), C(24310,24309)
+      nontrivial pairs [(17, 8), (221, 2)] match JSON; N=6 = 2 + 2*2 matches JSON N=6
+  -> all witnesses.json entries reproduced by direct enumeration
+==============================================================================
+Part 3: infinite Fibonacci family  C(n+1,m+1) == C(n,m+2)
+  n = F(2j+2)*F(2j+3)-1,  m = F(2j)*F(2j+3)-1,  j = 1..12
+  [for the huge members the binomial equality is checked through the
+   exactly equivalent identity (n+1)(m+2) == (n-m)(n-m-1), since
+   C(n+1,m+1)/C(n,m+2) = (n+1)(m+2)/((n-m)(n-m-1)) is exact;
+   direct math.comb of both sides is used when k = m+2 is small]
+  j= 1: n=14, m=4 | (n+1)(m+2)=90, (n-m)(n-m-1)=90 | holds=True | direct comb: OK (3003)
+  j= 2: n=103, m=38 | (n+1)(m+2)=4160, (n-m)(n-m-1)=4160 | holds=True | direct comb: OK (61218182743304701891431482520)
+  j= 3: n=713, m=271 | (n+1)(m+2)=194922, (n-m)(n-m-1)=194922 | holds=True | direct comb: OK (<205 digits>)
+  j= 4: n=4894, m=1868 | (n+1)(m+2)=9153650, (n-m)(n-m-1)=9153650 | holds=True | direct comb: OK (<1412 digits>)
+  j= 5: n=33551, m=12814 | (n+1)(m+2)=430002432, (n-m)(n-m-1)=430002432 | holds=True | direct comb: OK (<9689 digits>)
+  j= 6: n=229969, m=87839 | (n+1)(m+2)=20200794770, (n-m)(n-m-1)=20200794770 | holds=True | direct comb: OK (<66416 digits>)
+  j= 7: n=1576238, m=602068 | (n+1)(m+2)=949006214730, (n-m)(n-m-1)=949006214730 | holds=True | direct comb skipped (k too large); exact identity used
+  j= 8: n=10803703, m=4126646 | (n+1)(m+2)=44583083504192, (n-m)(n-m-1)=44583083504192 | holds=True | direct comb skipped (k too large); exact identity used
+  j= 9: n=74049689, m=28284463 | (n+1)(m+2)=2094455865065850, (n-m)(n-m-1)=2094455865065850 | holds=True | direct comb skipped (k too large); exact identity used
+  j=10: n=507544126, m=193864604 | (n+1)(m+2)=98394842208468962, (n-m)(n-m-1)=98394842208468962 | holds=True | direct comb skipped (k too large); exact identity used
+  j=11: n=3478759199, m=1328767774 | (n+1)(m+2)=4622463125423539200, (n-m)(n-m-1)=4622463125423539200 | holds=True | direct comb skipped (k too large); exact identity used
+  j=12: n=23843770273, m=9107509823 | (n+1)(m+2)=217157372035497942050, (n-m)(n-m-1)=217157372035497942050 | holds=True | direct comb skipped (k too large); exact identity used
+  -> all 12 members hold: C(n+1,m+1) == C(n,m+2) exactly
+     (j=1 is n=14,m=4, the 3003 witness: C(15,5) = C(14,6) = 3003)
+==============================================================================
+Part 4: candidate k values for a <= 10^12 (the k <= log2(a) bound)
+  C(n,k) >= C(2k,k) >= 2^k  ==>  C(n,k)=a implies k <= log2(a)
+  log2(10^12) = 39.863137  -> floor = 39
+  candidate k per a: 1..39  -> 39 values
+  per-a inversion cost: 39 candidate k x ~40 binary-search steps ~= 1560 comb evaluations
+  vs naive triangle scan: ~a^2/2 = 500000000000000000000000 pairs for a=10^12
+  -> the inversion count is ~1560 exact comb() calls per a, not a^2/2
+==============================================================================
+ALL CHECKS PASSED in 1.51 s (exact integer arithmetic throughout)

@@ -92,8 +92,31 @@ disk), or asserted-by-source.
   the Mordell type, not new covering families by themselves.)
 - **Extended open-class sweep** (checked): all n=840k+r ≤ 378529 (k≤450, six
   classes, 2705 values) have a minimal solution with excess ≤14; x values are
-  (n+4e+3)/4 so 4x−n ∈ {3,7,11,15,19,23,27,31,39,59}. (`code/out/extended_minimal_x.json`,
+  (n+4e+3)/4 so 4x−n ∈ {3,7,11,15,19,23,27,31,39,59}. Since x ≥ (n+3)/4 in
+  n ≡ 1 mod 4, any polynomial family whose x(k) = (n(k)+4E+3)/4 has FIXED
+  excess E covers only n with e ≤ E — never a whole class, by the maximal
+  rows — so a degree-1 family for an open class must be a sub-progression
+  family (next bullet), not an in-class one. (`code/out/extended_minimal_x.json`,
   `code/out/extended_verify.captured.txt`.)
+- **Sub-class identity families for r=1: a batch exists, but the capture is
+  NOT yet trustworthy** (construction + poly-positivity only; attribution
+  bug found). `code/search_subprogression.py` runs Salez's seven converse
+  equations (Prop 3) over n = 840M·k + b with b ≡ 1 mod 840, gcd(b,M)=1,
+  b a QNR mod 840M — the only b Schinzel-legal for a polynomial family (b is
+  a QR mod 840, so M must supply a prime q ∤ 840 with b a QNR mod q).
+  Capture `code/out/subprogression.captured.txt` prints poly-positive x,y,z
+  for M ∈ {11,13,17,19,22,23,26,29,31} (visual extent; the run hit the 540s
+  timeout BEFORE printing its summary — no count, no residue breakdown; the
+  extended capture is empty). Hand-verified here (exact arithmetic): for
+  p=9240k+4201, A=(p+1)/11 solves via (3p, 3Ap, 3A); A=(p+23)/88 solves via
+  (22Ap, Ap, 22A); for p=9240k+5881, A=(3p+1)/11 solves via (3p, 3Ap, A).
+  **Trap:** the script's `verify_and_emit` never runs `is_identity`, and the
+  printed (a,b) header is unreliable — the (22Ap, Ap, 22A) triple valid for
+  n ≡ 4201 mod 9240 reappears under b=5881, where it fails (1/z > 4/n at
+  k=0). Do not cite any family from this capture by its header; re-run each
+  through `is_identity` at its claimed (a,b) first. Shapes are instances of
+  the seven known linear forms (Salez: no new degree-1 shape exists), so the
+  open question is the covering assembly, not the shape.
 - **Verification bounds** (sourced): 10¹⁴ Swett 1999; 10¹⁷ Salez 2014; 10¹⁸
   Mihnea–Dumitru 2025 (arXiv:2509.00128, S₂₉ filter). None reproduced here.
 - **Bradford two-variable reduction** (sourced): for prime p the conjecture is
@@ -113,8 +136,25 @@ disk), or asserted-by-source.
   PDF has no text layer and is TOMBSTONED — Yamamoto 1965 is not a source this
   run has read, and its Type I/II attribution rests on Elsholtz–Tao's
   restatement alone. `mathworld-egyptian-fraction.full.md` is an encyclopedia
-  entry: orientation-only, never a load-bearing anchor. **Stop adding claims;
-  the next work converts existing asserted identity families to checked.**
+  entry: orientation-only, never a load-bearing anchor.
+
+- **Subprogression families** (checked, operator directive 3): 554 parametric
+  identity families for n ≡ 1 (mod 840), each n = a·k + b with b ≡ 1 (mod 840)
+  and a = 840m for m ∈ {11,13,17,19,22,23,26,29,31,33,34,37}. Every family is
+  an exact polynomial identity in ℤ[k]: 4xyz − n(yz+xz+xy) ≡ 0, verified
+  554/554 in exact integer polynomial arithmetic (operator). Under n = 840t+1
+  this gives 83 residue classes of t, covering 132295465/139671337 = 94.72% of
+  the class, leaving positive density 5.28%. The other five open classes are
+  untouched. Novelty against Elsholtz–Tao Prop 1.9 is unchecked — that is the
+  next work. **Capture-generation caveat (checked by curator against disk):
+  `subprogression.captured.txt` has since been overwritten by a longer
+  `search_subprogression.py` run that also emits families at a = 840m for
+  m ∈ {38, 39, 41, 43} and ends with NO summary line** — the 554/83-classes/
+  94.72% numbers apply to the capture state the operator parsed, not to the
+  file now on disk; the current capture's counts are unreported and must be
+  re-parsed before citing. (`code/out/subprogression_coverage.md` holds the
+  checked computation for its generation; `code/out/subprogression.captured.txt`
+  is the later, unsuffixed one.)
 
 ## Ruled out
 
@@ -165,6 +205,10 @@ disk), or asserted-by-source.
   sub-covering attack.
 - d=3 and d=7 criteria: 2705/2705 both; minimality exact 2705/2705;
   divisor criterion holds at minimal e and fails at all e′<e, 2705/2705.
+- Subprogression coverage (operator directive 3): 554 families, moduli
+  {11,13,17,19,22,23,26,29,31,33,34,37}, 83 residue classes of t, covering
+  132295465/139671337 = 94.72% of n ≡ 1 (mod 840). Uncovered: 7375872/139671337
+  = 5.28%. As fraction of all n: ≈ 0.1128%. Other five classes: 0 families.
 
 ## Recalled
 
@@ -190,6 +234,12 @@ yields an already-covered sub-progression of an open class. Ventas
 ## Contradictions
 
 - Brief's n≡3 (mod 4) identity vs computation (settled: brief wrong).
+- **Bloem–Elsholtz survey lists the mod-840 unsolved classes as {1, 49, 121,
+  169, 289, 361}** (full text, §2.2) vs this run's verified list
+  {1, 121, 169, 289, 361, 529} (`code/verify_library_claims.py` Claim 2).
+  49 is non-primitive (gcd(49,840)=7) and 529=23² is a primitive square, so
+  the survey's list reads as a typo dropping 529 and adding 49. Cite the
+  verified list, never the survey's.
 - Elsholtz–Tao Prop 1.6 asserted "no Type I/II at odd squares" vs
   verify_library_claims.py Claim 3's noise (detector broken — it counts
   denominators divisible by n among triples found by a bounded search, which
@@ -200,27 +250,33 @@ yields an already-covered sub-progression of an open class. Ventas
 - Subgroup-only characterization vs exact divisor-residue criterion (settled:
   56 counterexamples).
 
-- **Subprogression families: novelty unchecked** (operator directive 3). The
-  554 families are 554/554 exact ℤ[k] polynomial identities, but whether they
-  are new or rediscoveries of Elsholtz–Tao Prop 1.9 / Salez seven-equation
+## Gaps
+
+- **Subprogression novelty unchecked** (operator directive 3). The 554
+  families are 554/554 exact ℤ[k] polynomial identities, but whether they are
+  new or rediscoveries of Elsholtz–Tao Prop 1.9 / Salez seven-equation
   families in different coordinates has not been checked. That check is the
   next work, against `elsholtz-sums-of-k-unit-fractions.full.md` and
   `elsholtz-tao-counting.full.md`. A rediscovery honestly labelled is fine;
   a rediscovery announced as new is the failure.
-- **Positive-density gap in n ≡ 1 mod 840** (operator directive 3). The 554
-  families cover 94.72% of the class, leaving 5.28% (7375872/139671337) with
-  positive density. The complement is a union of full residue classes of t
-  under the 12 moduli {11,13,17,19,22,23,26,29,31,33,34,37}, so no further
-  family of those moduli closes it. Closing it needs new moduli coprime to
-  the existing set or a different mechanism (rational-function families,
-  per-prime shapes).
-- **The other five open classes are untouched** by the subprogression sweep:
-  n ≡ 121, 169, 289, 361, 529 (mod 840) have zero families. As a fraction of
-  all n, what is settled is ≈ 0.1128%. Do not report progress on the open
-  classes plural.
-- **The AP→subfamily lift** is now proven in principle by Mballa's
-  construction (every b≡3 mod 4 gives a k sub-progression); the gap is
-  whether a finite union of such — or of e=0/E-T family sub-progressions —
-  covers all of some open class, and the density of the union.
+- **Does Chamberland's Type-II iff give a covering sieve for n ≡ 1 (mod 840)?**
+  For p = 840k+1 to have a Type-II solution it is necessary and sufficient
+  that 840k+1 = q·r − 4s₁s₂ with q ≡ 3 (mod 4), s₁,s₂ | (q+1)/4. For FIXED
+  q and s₁,s₂ this is a linear congruence in k — exactly the sub-progression
+  covering mechanism — and varying q,s₁,s₂ over a finite set gives a finite
+  sieve. Gap: what fraction of k does the union over q ≤ Q cover, and does
+  adding q ≫ Q (with s₁,s₂ | (q+1)/4) close the density gap? This is a
+  concrete, computable question the run can attack with the 554-family
+  infrastructure. Check the smallest primes requiring s₁,s₂ ≥ 3 (1009, in
+  class 169) against the q≤23 Table 2 to bound where the q-grid must start.
+- **Positive-density gap in n ≡ 1 mod 840**: the 554 families cover 94.72%,
+  leaving 5.28% (7375872/139671337) with positive density. The complement is
+  a union of full residue classes of t under the 12 moduli; no further family
+  of those moduli closes it. Needs new moduli coprime to the existing set or a
+  different mechanism (rational-function families, per-prime shapes).
+- **The other five open classes untouched**: n ≡ 121, 169, 289, 361, 529
+  (mod 840) have zero families from the sweep. ≈ 0.1128% of all n settled.
+- **AP→subfamily lift**: proven in principle by Mballa; gap is whether a
+  finite union covers all of some open class, and the density of the union.
 - **Verification-bound reproduction**: any slice of the 10¹⁸ bound on Salez's
   residual set R₂ ∪ R₇ remains unreproduced.

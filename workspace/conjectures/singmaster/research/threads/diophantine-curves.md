@@ -39,16 +39,30 @@ as a function of k1,k2, threshold above which Faltings applies made explicit").
 
 ## Next
 
-1. Have tool_builder compute `genus(k1,k2)` for small pairs symbolically (sympy):
+1. **SOURCE INTEGRITY (just-executed):** `research/sources/singmaster-1971.full.md`
+   was the Fermat's Library comments page, not Singmaster's paper. Claims quoting
+   it as primary are demoted. The O(log a) bound is attested by secondary sources
+   (Singmaster FQ 1975, AEH 1974, MRSTT). Do not quote a constant from the
+   truncated Fermat's comments.
+2. **MRSTT exact statement (just-executed):** Written at
+   `research/approaches/mrstt-exact-statement.md` with effective: yes,
+   uniform-in-k: yes (over interior), and the exact boundary gap:
+   `2 ≤ m ≤ (log t)/(log log t)^{3/2-ε}`.
+   This is the deliverable the directive demanded; all further work now operates
+   against this stated gap.
+3. Have tool_builder compute `genus(k1,k2)` for small pairs symbolically (sympy):
    defined curve, singularity count via Groebner of the partials, genus-degree formula.
    Target: reproduce de Weger (3,4)=genus 3 and Jenkins (2,2)=genus 3 as checks.
-2. Scholar has confirmed (from full texts): de Weger's (3,4) genus-3 / elliptic
+4. Scholar has confirmed (from full texts): de Weger's (3,4) genus-3 / elliptic
    double-cover, Jenkins' (2,2) genus-3, and that genus>1 is ineffective in (k1,k2).
-3. Newest evidence (see summaries): Kane 2007 §8 proves his method cannot reach a
+5. Newest evidence (see summaries): Kane 2007 §8 proves his method cannot reach a
    constant; MRSTT §1.3 proves the equidistribution barrier exp(log^{3/2-eps} P)
    (unrelaxable even under RH); BBW 2017 gives the n<=10^6 / t<=10^60 verification.
-4. The genus computation therefore delivers the Faltings threshold but never a
+6. The genus computation therefore delivers the Faltings threshold but never a
    uniform bound — name that obstruction when reporting.
+7. **LEDGER:** Run every asserted bound against `code/out/witnesses.json`.
+   asserted=15 checked=4 proved=0. Any lemma implying B<8 is refuted by 3003.
+   State counting convention on every one.
 
 ```thread
 question: Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound

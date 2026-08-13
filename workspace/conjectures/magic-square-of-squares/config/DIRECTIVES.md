@@ -187,3 +187,27 @@ The run's workspace is now realigned. Here is what changed and why directive 15 
 - **`research/REQUESTS.md`** — added `dp07-explicit-constant-for-e3-ap` because the HMS effective-C lane bottoms out at David–Philippon 2007 Théorème 1.13, and the library claims record that DP07 is the reference but do not record the constant itself. That is the one open lane to turn the uniform AP bound into a numerical contradiction.
 
 The six unrun `phi_triple_variety/` programs, the M=800 re-run, and the stop-searching order are all queued in TASKS.md as the immediate blocking work.
+
+## 16 — from steer
+
+Good pass: you ran side_census, no_triple_fast and prefilter_census, and your ledger moved the right way - proved 19->20, checked 14->15, asserted 21->19. exa_search held at 100. Keep that shape.
+
+Three corrections.
+
+1. side_census was re-run at M=200, which is SMALLER than the operator's M=400. That is a reproduction, not a strengthening, and it is worth saying it reproduced: both=0 again, with 132 minus-squares and 24 plus-squares out of 9,856,010 pairs, and the same first three plus-witnesses. Now go UP: PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt; echo EXIT_CODE=$?
+
+2. Two of your sweeps are PARTIAL and must never be quoted as complete. no_triple_fast_M700 stopped at i=40143/99407 - it says 'complete-through-i=40143' which is honest, keep that wording. prefilter_census_M1000 stopped at i=38006/202861 with 'survivors 0'. 'Survivors 0' over 19% of the index is not 'no survivors at M=1000'. Any claim from either must carry the fraction of the index actually covered, or it is asserted, not checked.
+
+3. The both=0 observation is now reproduced at M=200 and M=400 and is the most promising impossibility lemma you have, because it is about PAIRS not triples. The shape to look for is classical: 1-s and 1+s simultaneously rational squares is the concordant forms problem, equivalent to a rational point on a curve. Identify that curve for s = q1+q2 with q1,q2 in Phi, and ask whether Phi-membership forces a local obstruction. If you get an obstruction, it must be run against the pairs in code/out/side_census.captured.txt or it is asserted.
+
+Still unrun: benchmark.py, ratio_search.py, verify_prefilter.py, verify_triple_square.py, verify_two_side_equiv.py. Run or delete.
+
+Three changes made, all in response to directive 16's three corrections:
+
+1. **TASKS.md BLOCKING section rewritten.** The M=200 side_census run is now explicitly labelled a reproduction (not a strengthening), the push to M=800 is the sole authorised larger-M search, and the unrun list dropped from six to five files: `no_triple_fast.py` and `prefilter_census.py` are already run (partial, and now flagged with their fractions — 40.4% and 18.7% respectively), so they are not in the "still unrun" list. `benchmark.py`, `ratio_search.py`, `verify_prefilter.py`, `verify_triple_square.py`, `verify_two_side_equiv.py` are the five that have genuinely never executed. A new task itemises the concordant-forms curve identification: `s = 2t/(1+t²)` from the genus-0 circle `x²+y² = 2`, to be intersected with the Φ-sum-set, with the witness-check requirement if an obstruction is found.
+
+2. **CONTEXT.md** updated with the M=200 reproduction note, the partial-sweep fractions, and the curve-identification step.
+
+3. **`research/threads/pair-sum-both-squares-incompatibility.md`** next-steps rewritten to name the curve (`s = 2t/(1+t²)`) and the witness-check requirement.
+
+The `request_research` for the explicit genus-0 derivation bounced — the library already carries concordant-forms and side_census claims and refuses to queue another on the same subject. The derivation is elementary enough that the next attempt can do it directly; the thread and TASKS.md now direct it there.

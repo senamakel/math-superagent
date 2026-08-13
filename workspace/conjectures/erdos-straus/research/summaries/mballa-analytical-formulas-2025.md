@@ -1,73 +1,63 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mballa-analytical-formulas-2025.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Mballa, "Partial Resolution of the Erdős–Straus, Sierpiński, and Generalized Erdős–Straus Conjectures Using New Analytical Formulas" (2025)
 
-<!-- source: https://arxiv.org/pdf/2502.20935 | converted from PDF -->
+Source: https://arxiv.org/abs/2502.20935 (arXiv:2502.20935, 28 Feb 2025),
+Philemon Urbain Mballa.
+Full text: `research/sources/mballa-analytical-formulas-2025.full.md`
 
-## What it claims
+## What it establishes (sourced, preprint)
 
-This article proposes a unified analytical approach leading to a partial resolution
-of the Erdős–Straus, Sierpiński conjectures, and their generalization. We introduce
-an equivalent reformulation of these conjectures while constructing two new explicit
-analytical formulas. The first formula, which is a special case of the second, is based
-on a divisibility condition, whereas the second, more general formula, relies on the
-existence of a perfect square, which we conjecture to always hold. Under these
-conditions, the formulas verify the conjectures even for very large numerical val-
-ues. Moreover, our method reduces the problem to the search for a suitable perfect
-square, thereby opening the way to a complete proof of these conjectures. In con-
-clusion, we present open questions and conjectures to the mathematical community
-regarding the generalization of these formulas.
+An equivalent reformulation of the ESC as a **perfect-square condition**:
 
-1 Introduction
+The equation `4/n = 1/x + 1/y + 1/z` is equivalent (with `t` parametrising
+the two-denominator part) to the existence of `(x, t)` such that
 
-The Erdős–Straus conjecture, formulated in 1948 by Paul Erdős and Ernst G. Strauss,
-states that for every natural number n ≥ 2, there exist x, y, z ∈ N∗ such that
+```
+q² = t²(4x − n)² − 2nxt         (a perfect square)
+```
 
-4
-n = 1
-x + 1
-y + 1
-z . (1)
+with `q ∈ N`. When such a square exists, the formulas give explicit y, z
+(roots of the quadratic `V² − (4x−n)(2t)V + 2nxt = 0`).
 
-Louis…
+**Theorems 1–3** give the reduction in three forms (divisibility condition →
+square condition → Vieta-roots), and **Theorem 4** generalises to any
+`a ≥ 4` (the generalised Erdős–Straus/Sierpiński/Schinzel setting):
+the conjecture holds for all n ≥ N₀ iff such (x, t) and square exist.
 
-## Statements it makes
+**Conjectures 1–4** (strong: integer t; weak: rational t; generalised):
+Conjecture 1 is *equivalent* to the classical ESC. So the whole problem is
+reduced to: *for every n ≥ 2, find x, t with t²(4x−n)² − 2nxt a perfect
+square.*
 
-Theorem 1. Let n ≥ 2 be an integer. Suppose there exists x0 ∈ N
-∗ with
+## Relation to the library
 
-Theorem 2. For any n ∈ N with n ≥ 2, if there exists (x0, t0) ∈ (N∗)
-2 such that
+- The same author's later work (`mballa-unified-parametric.full.md`, in
+  library) is the stronger/parametric version: introduces the function
+  F⁽ᵏ⁾_{x,t}(n) = t²(kx−n)² − 2nxt, whose perfect-square values are exactly
+  the solutions; Zero Lemma: a zero of F in the admissible domain occurs at
+  the domain's upper bound and gives symmetric solutions (y = z).
+  That paper proves symmetric solutions for all n ≡ 0,2,3 (mod 4) and, for
+  n ≡ 1 (mod 4), for all n having a divisor b ≡ 3 (mod 4) — a density-1
+  subset of n ≡ 1 (mod 4).
+- So both Mballa papers share the "reduce ESC to a square search" shape.
 
-Theorem 3. For any integer n ≥ 2, if there exists (x0, t0) ∈ N∗2 such that
+## Consequences for this run
 
-Theorem 4. Let a ≥ 4 be a fixed integer. There exists an integer N0 ∈ N with N0 ≥ 2
-such that, for all n ≥ N0, the generalized Erdős–Straus and Sierpiński conjecture holds if
-and only if there exist x ∈ N∗ and t ∈ Q∗
-+ such that y and z are solutions of the quadratic
-equation in V : V 2 − (ax − n)(2t)V + 2nxt = 0.
+Reformulating the target as a perfect-square condition `q² = t²(4x−n)²−2nxt`
+is one of the *equivalent* settings the run could adopt as its fixed
+parametrisation (GOAL.md asks to fix one). The evaluation is elementary: for
+n = 840k+1, a candidate polynomial family `x(k), t(k)` makes the RHS a
+polynomial in k; asking it to be a square for all k is a strong Diophantine
+constraint that can be checked symbolically (a polynomial that is a square
+for infinitely many integers must be a perfect square of a polynomial).
+Status: preprint; Theorem 1–4 are exact algebraic equivalences (verifiable
+directly), the conjectures are open.
 
-Proposition 1 (Vieta’s Formulas). Let X1 and X2 be two real (or complex) numbers,
-and consider the quadratic equation
-
-Conjecture 1 (strong version, integer t). For every integer n ≥ 2, there exists
-(x, t) ∈ N∗2 such that t
-2(4x − n)2 − 2nxt = q2, q ∈ N.
-
-Conjecture 2 (weak version, rational t, not necessarily integer). For every integer
-n ≥ 2, there exists (x, t) ∈ N
-∗ × Q∗
-+ such that
-
-Conjecture 3 (weak version, rational t, not necessarily integer). For every fixed
-integer a ≥ 5, there exists N0 ≥ 2 in N∗ (with N0 not strictly smaller than a/3) such that
-for all n ≥ N0, there exists
-
-Conjecture 4 (strong version, integer t). For every fixed integer a ≥ 5, there exists
-N1 ≥ N0 (N0 is the one given in Conjecture 3), with N1 not strictly smaller than a/3,
-such that for all n ≥ N1, there exists
-
-Conjecture 1 is equivalent to the classical Erdős–Straus conjecture. Indeed, under Con-
-jecture 1, the integer q satisfies
- q2 = t
-2(4x − n)2 − 2nxt,
-
-*[digest of a 74380 character source; every section, statement, and proof in full at `research/sources/mballa-analytical-formulas-2025.full.md`]*
+```claim
+id: mballa-square-reformulation
+statement: 4/n = 1/x+1/y+1/z has a solution iff there exist x, t ∈ N with t²(4x−n)² − 2nxt a perfect square; the y, z are then the roots of V² − (4x−n)(2t)V + 2nxt = 0. (Equivalent to ESC by Conjecture 1 of the paper.)
+hypotheses: n ≥ 2.
+holds-here: true — an exact algebraic reformulation; generalises to a ≥ 4.
+status: asserted (preprint Theorems 1–4 with proofs in full text; algebra verifiable).
+bearing: a second fixed-parametrisation candidate; the square condition for n = 840k+1 is a polynomial-square constraint when x,t are polynomials.
+anchor: research/sources/mballa-analytical-formulas-2025.full.md
+```

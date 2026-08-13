@@ -1,0 +1,10 @@
+[A) literal b_k-1] checked=161 skipped(row-end, no intruder)=838
+[A) literal b_k-1] q==|e-c| mismatches = 141
+[A) literal b_k-1] IFF failures (q in {0,2} iff e==2&c==4) = 109
+[A) literal b_k-1] REGEN failures (b_next>=b iff e==2&c==4) = 48
+[A) literal b_k-1] k where both q in {0,2} AND e==2&c==4 = 52
+[B) true end b_k ] checked=161 skipped(row-end, no intruder)=838
+[B) true end b_k ] q==|e-c| mismatches = 0
+[B) true end b_k ] IFF failures (q in {0,2} iff e==2&c==4) = 0
+[B) true end b_k ] REGEN failures (b_next>=b iff e==2&c==4) = 0
+[B) true end b_k ] k where both q in {0,2} AND e==2&c==4 = 60

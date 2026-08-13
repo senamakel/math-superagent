@@ -8,7 +8,7 @@ consumption (=-1, pure erosion) vs regeneration (>= 0).
 """
 import json
 
-with open('code/out/witnesses.json') as f:
+with open('/workspace/code/out/witnesses.json') as f:
     w = json.load(f)
 
 prof = w['block_profile_first_40']

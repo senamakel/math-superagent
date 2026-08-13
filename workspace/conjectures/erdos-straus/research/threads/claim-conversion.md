@@ -14,14 +14,13 @@ question: Is every asserted identity-family claim converted to `checked` with
   4/n(k) − 1/x − 1/y − 1/z ≡ 0, (iii) a proof of positivity and integrality
   for all k in the stated class, and (iv) a new-vs-rediscovery label against
   elsholtz-sums-of-k-unit-fractions?
-status: open
+status: superseded-by-directive-3
 rests-on: n-even-trivial, n-3mod4-covering-corrected, mordell-covering-840,
   mordell-six-open-classes-840, schinzel-thm1-polynomial-obstruction
 blocked-by: none — the eight classical identities are already is_identity-checked
   (last block of code/out/commands.log) but still `asserted` in the ledger.
-next: (1) TOMBSTONE Yamamoto 1965 (J-STAGE PDF has no text layer; done — do not
-  re-fetch) and demote its claim; (2) for each asserted identity family, write
-  the exact identity, prove it symbolically in k, and prove
-  positivity+integrality for all k; (3) label each family new vs rediscovery
-  against research/sources/elsholtz-sums-of-k-unit-fractions.full.md.
+note: The operator directive 3 makes the 554 subprogression families the
+  priority. The eight classical identities promotion from asserted→checked is
+  lower priority than the novelty check on the 554. This thread reopens when
+  the novelty check is done.
 ```

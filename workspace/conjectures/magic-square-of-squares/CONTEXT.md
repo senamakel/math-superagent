@@ -140,20 +140,24 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   `m,n ≤ 200`). Status: verified-numerically on a finite range, conjectural as
   a theorem — **not a proof of non-existence**. Any claim beyond the range is
   `conjectured` until attacked.
-- **Hypothesis under test — REFUTED and REPLACED (directive 15):** The
+- **Hypothesis under test — REFUTED and REPLACED (directives 15–16):** The
   `side_census.py` docstring claim "1+(q1+q2) is NEVER a rational square" is
   **false**: at M=400 it is square 66 times (three witnesses re-verified in
-  exact Fraction arithmetic with in_phi). **What survived:** over all
-  156,988,030 pairs, 1−(q1+q2) is a rational square 325 times, 1+(q1+q2) is
-  66 times, and **BOTH = 0** — no pair has both 1−s and 1+s rational squares.
-  This is the sharper finding to work on: are the two conditions provably
-  incompatible for q1,q2 ∈ Φ? If yes, that is an impossibility lemma on
-  *pairs* (concordant-forms shape: 1±s both squares), cheaper than anything
-  on triples. Claim `phi-pair-sides-never-both-square` in CLAIMS.md, status:
-  checked for M=400. New thread:
-  `research/threads/pair-sum-both-squares-incompatibility.md`. Push to M=800
-  next (TASKS.md blocking). The refuted docstring hypothesis must not be
-  used as a prefilter justification anywhere.
+  exact Fraction arithmetic with in_phi). **Reproduced** at M=200: both=0
+  again, 132 minus-squares, 24 plus-squares (same first three witnesses).
+  **What survived:** over all 156,988,030 pairs (M=400), 1−(q1+q2) is a
+  rational square 325 times, 1+(q1+q2) is 66 times, and **BOTH = 0** — no
+  pair has both 1−s and 1+s rational squares. This is an impossibility lemma
+  on *pairs*, not triples. **The curve to identify (directive 16):** the
+  condition "both 1−s and 1+s are rational squares" is equivalent to
+  s = 2t/(1+t²) for some rational t — the parametrisation of the genus-0
+  curve x²+y² = 2. Intersect this with the set S = {q1+q2 : q1,q2 ∈ Φ,
+  q1+q2 < 1} and ask whether Φ-membership forces a local obstruction. Any
+  obstruction found must be checked against the 66 plus-witnesses and 325
+  minus-witnesses in `code/out/side_census.captured.txt` or it is asserted.
+  Push to M=800 next. Claim `phi-pair-sides-never-both-square` in CLAIMS.md,
+  status: checked for M=400. Thread:
+  `research/threads/pair-sum-both-squares-incompatibility.md`.
 - **The Faltings-fibre attack on the Φ-triple is dead — confirmed by execution**
   (`phi_fibre_genus_run.py`, `phi_fibre_genus_check.py`, both captured in
   `code/out/`). f is homogeneous degree 0, so f(m,n) depends only on the ratio
@@ -332,6 +336,13 @@ enumeration to `d ≤ 2.4×10¹⁹`; only **5** of three *primitive* APs, none b
 `d ≈ 3.31×10¹⁵`; surviving cases reduce to one `d = 71831760` (two grids) plus
 two huge `d`. A true MSS needs **four** APs through the centre with differences
 `u,v,u+v,u−v`. Bound on where arguments must look (10¹⁹–10²²).
+
+**Two partial sweeps carry their fraction of index covered (directive 16):**
+`no_triple_fast_M700`: complete-through-i=40143/99407 (40.4%), prefilter
+survivors 0, exact 0. `prefilter_census_M1000`: i=38006/202861 (18.7%),
+survivors 0. "Survivors 0" over 19% of the index is not "no survivors at
+M=1000" — any claim from either must carry the fraction, or it is asserted
+not checked.
 
 **Witness set values** (exact): Sallows failing diagonal 38307; Bremner magic
 constant 541875, centre 425², non-squares {360721, 222121}, realised AP diffs

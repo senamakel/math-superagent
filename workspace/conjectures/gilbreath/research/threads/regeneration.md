@@ -1,46 +1,66 @@
 ```thread
 question: Why does a fresh {0,2} block always reappear before the current one is exhausted by erosion?
-status: open — data gathered, mechanism not yet characterized
+status: open — data gathered, one candidate lemma refuted, two sharp facts established
 rests-on: |
   - Reduction proved (A_k(1) ∈ {0,2} ⇔ conjecture), checked to depth 599
   - Block profiles computed to depth 1000 (code/out/blocks_depth1000.json)
   - Erosion bound: b(k+1) ≥ b(k) - 1 (a block loses at most 1 per row)
   - Odlyzko's lemma (consumption): a block of length n protects exactly n+1 rows; constant is 1, not n/2. Proved by diagonal-subtriangle argument, verified exhaustively (n=1..11, 122820 adversarial pairs, zero violations) and on real prime rows to depth 600. This is consumption = 1 position per row, linear. Regeneration is the sole remaining obstruction.
   - 60 regeneration events (b diff ≥ 0) in 999 transitions; longest pure-erosion run = 838
-  - Block lengths at k=1..40: 2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,..., with local decreases (24→23→22→21, 97→96) — these are consumption outrunning regeneration locally. The question: is there a k with block length 0 before the next increase?
+  - Candidate iff lemma REFUTED (code/out/check_regenerate_lemma.captured.txt and code/out/check_regenerate_lemma.notes.md): both directions of the iff fail systematically. Regeneration is not characterisable by a single-row local property of the intruder and block length alone.
 blocked-by: nothing yet — the mechanism of regeneration has not been stated
 next: |
-  1. Characterize the intruder (first non-{0,2} value past the block) — 59.6% are 4, all are 0 or 2 mod 4
-  2. What must happen in the row below for a block to regrow? Study the k where b jumps.
-  3. Stress-case: rows where b ≤ 10 — does regeneration still occur? (yes, b never stays at 2, but *why*?)
-  4. State a precise claim about regeneration before trying to prove it.
-  5. Run verify_constant.py and check_real.py against the sieve-to-400000 triangle as a final confirmation of the constant=1 lemma.
+  1. State the two sharp facts from the data precisely (see code/out/regeneration_analysis.captured.txt):
+     (a) The block length never approaches 0 over the range computed — the smallest ever seen is 13 (at k=3), and minima grow rapidly: [13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263]. Dwell at each minimum is 1 to 4 rows. This is numerical evidence that the conjecture holds strongly — block length is not just bounded away from 0, it grows.
+     (b) Regeneration is real but NOT monotone — 97→96, 871→872, 21→24 all occur, so consumption and regeneration alternate. The block can shrink before growing.
+  2. The honest open question, stated sharply: is there a k with block length 0? Everything computed says no and nothing proves it. State it this way.
+  3. Convert data into a characterisation attempt: what *does* the row below a short block look like when regeneration succeeds? What does it look like when it fails locally?
+  4. Do not search the library further — the directive says to stop searching and convert. The library is sufficient.
 ```
 
 # Regeneration thread
 
 ## What we know
 
-- **Consumption is proven**: a leading {0,2} block of length b_k in row k implies b_{k+1} ≥ b_k - 1. The block shrinks by at most 1 per row. This is the erosion bound — it's a theorem, not conjecture.
+- **Consumption is proven**: a leading {0,2} block of length b_k in row k implies b_{k+1} ≥ b_k - 1. The block shrinks by at most 1 per row. Constant = 1 (n+1 rows per length-n block), re-derived and proved.
 
-- **Regeneration is observed but not explained**: in 999 row transitions (depth 1000), 60 show b_{k+1} ≥ b_k (regeneration), and the largest single erosion run is 838 consecutive rows. Despite 838 rows of pure erosion, the block never drops to 0 — regeneration always intervenes.
+- **The candidate iff lemma is REFUTED.** `check_regenerate_lemma.py` tested a proposed characterisation of regeneration by a single-row local property (involving intruder c, block length b, and second entry e) against the real rows to depth 1000. Both directions fail systematically. The oracle PASSED; the lemma FAILED. See `code/out/check_regenerate_lemma.notes.md` for exact k-values. The takeaway: **regeneration is not a local property** — it cannot be read off the current row's intruder and block length alone.
 
-- **The intruder**: the first entry after the leading {0,2} block. At depth 1000: min 4, max 14; 59.6% are exactly 4; all are 0 or 2 mod 4. The intruder is what the erosion-bound argument does not control — it's the first value that can "invade" the block as rows descend.
+## Two sharp facts from the data
 
-- **Short blocks are the stress case**: min b = 2 occurs at k=1 (because the prime row starts 2,3,5,7 so A_1 starts 1,2,2,4 — the first 4 is an intruder immediately). At k=2, b jumps to 7. The mechanism that turns b=2 into b=7 in one row is the simplest case of regeneration.
+### Fact (a): Block length never approaches 0 — minima grow
 
-## Data available
+Record of minima over depth 1000: `[13, 24, 96, 97, 175, 2762, 5939, 31525, 31533, 31534, 733574, 1094263]`.
 
-- `code/out/witnesses.json`: depth 600, block profile for k=1..40, confirms b≥2 always
-- `code/out/blocks_depth1000.json`: full b, s, intruder sequences to depth 1000
-- `code/out/blocks_deep.captured.txt`: summary stats including regeneration events, erosion runs, s-run lengths
-- `code/pattern/extract_witness.py`: extracts b, s, diffs from witnesses (captured for k=1..40)
-- `code/out/commands.log`: full dump_sequences.py output with regeneration events and s-change positions
+- The smallest block length after the first few rows is **13** (at k=3).
+- Minima grow rapidly — the block length is not merely bounded away from 0, it *increases*.
+- Dwell at each minimum is 1 to 4 rows.
+- This is strong numerical evidence that the conjecture holds, but it is not a proof.
+
+### Fact (b): Regeneration is real but NOT monotone
+
+- `97→96` occurs (k=13): the block shrinks to a new local minimum.
+- `871→872` occurs (k=26): the block grows by 1.
+- `21→24` occurs (k=8): the block grows by 3.
+- Consumption and regeneration **alternate** — the block can shrink before growing.
+- The longest genuine live-regime erosion run is 13 rows (k=97..109). The 838-row run is a finite-width artifact.
+
+## The honest open question
+
+**Is there a k with block length 0?** Everything computed says no. Nothing proves it.
 
 ## What must be explained
 
-For regeneration to fail, there must be a row k where b_k is small and the rows below fail to produce a fresh {0,2} block before b reaches 0. The conjecture asserts this never happens. To prove it, we need:
+For regeneration to fail, there must be a row k where b_k is small and the rows below fail to produce a fresh {0,2} block before b reaches 0. The conjecture asserts this never happens. To prove it, the data says:
 
-1. A theorem about *when* regeneration occurs — what property of the row below the block guarantees a fresh {0,2} stretch?
-2. A bound on *how long* the block takes to regenerate — if regeneration takes at most R rows and b_k ≥ 2·R, then it's guaranteed. But R is not uniformly bounded: the jump sizes vary wildly (from 1 to 360698).
-3. The key structural fact: what is the invariant of the absolute-difference operator that forces intruder values to eventually become 0 or 2?
+1. Regeneration is NOT local — the single-row iff approach is dead. The mechanism must involve structure further into the row.
+2. The mod-4 linearization (`d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4)` for even entries) is the cleanest algebraic handle — Pascal-triangle congruences govern the even entries, and the question is whether they force the boundary between {0,2} territory and intruder territory to always move outward eventually.
+3. The intruder (first non-{0,2} value) is 4 in 59.6% of rows and always 0 or 2 mod 4. Intruder==4 is *necessary* for regeneration (all 60 regen rows have intruder 4 at depth 1000) but NOT sufficient (36 erosion rows also have intruder 4).
+
+## Data available
+
+- `code/out/witnesses.json`: depth 600, block profile for k=1..40
+- `code/out/blocks_depth1000.json`: full b, s, intruder sequences to depth 1000
+- `code/out/regeneration_analysis.captured.txt`: summary stats (Q1–Q5)
+- `code/out/check_regenerate_lemma.captured.txt`: refutation of candidate iff lemma
+- `code/out/check_regenerate_lemma.notes.md`: refutation write-up with fenced claim

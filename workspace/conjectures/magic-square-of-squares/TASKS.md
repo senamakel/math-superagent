@@ -79,10 +79,26 @@
 
 ## BLOCKING — must complete before any new approach
 
-- [ ] **RUN THE REMAINING SIX PHI_TRIPLE_VARIETY PROGRAMS (directive 15).**
-      `side_census.py` has been run by the operator (M=400) and the hypothesis
-      it tests is refuted — but the run must independently verify rather than
-      adopt. The remaining six have never been run. Run them all in this order:
+**Correction (directive 16):** the M=200 side_census run is a *reproduction* of the
+operator's M=400 finding (both=0 at both sizes), not a strengthening. The push
+to M=800 below is the actual extension. Two partial sweeps must carry their
+fraction of index covered: `no_triple_fast_M700` is "complete-through-i=40143/99407"
+(40.4%) and `prefilter_census_M1000` is at i=38006/202861 (18.7%). Any claim from
+either must include the fraction, or it is asserted rather than checked.
+
+- [ ] **PUSH side_census TO M=800 (directive 16).** The operator ran M=400;
+      the run reproduced it at M=200. Both=0 survived both. Now go UP:
+      ```
+      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt; echo EXIT_CODE=$?
+      ```
+      This is the sole search the directive authorises at larger M. It is
+      stdlib-only and needs no sympy or Sage.
+
+- [ ] **RUN THE FIVE UNRUN PHI_TRIPLE_VARIETY PROGRAMS (directive 16).**
+      `benchmark.py`, `ratio_search.py`, `verify_prefilter.py`,
+      `verify_triple_square.py`, `verify_two_side_equiv.py` exist and have
+      never been executed. Run them all in this order; the verifiers must
+      agree with the side_census finding:
       ```
       # 1. Verify the two_side equivalence independently
       PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_two_side_equiv.py 300 2>&1 | tee code/out/verify_two_side_equiv.captured.txt; echo EXIT_CODE=$?
@@ -92,36 +108,24 @@
       PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_prefilter.py 80 2>&1 | tee code/out/verify_prefilter.captured.txt; echo EXIT_CODE=$?
       # 4. Benchmark phi_pairs and membership test rates
       PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/benchmark.py 2>&1 | tee code/out/benchmark.captured.txt; echo EXIT_CODE=$?
-      # 5. Fast no-triple search with closed-form test
-      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/no_triple_fast.py 700 2>&1 | tee code/out/no_triple_fast.captured.txt; echo EXIT_CODE=$?
-      # 6. Ratio search with closed-form test
+      # 5. Ratio search with closed-form test
       PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/ratio_search.py 700 2>&1 | tee code/out/ratio_search.captured.txt; echo EXIT_CODE=$?
-      # 7. Prefilter census at M=700 (checkpointable)
-      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/prefilter_census.py 700 2>&1 | tee code/out/prefilter_census.captured.txt; echo EXIT_CODE=$?
       ```
-      Capture all seven. Then compare: the independent verifiers (1-3) must
-      agree with the side_census finding; the searches (5-7) must confirm
-      both=0 at larger M.
 
-- [ ] **RE-RUN side_census AT M=800 (directive 15).** The operator ran M=400.
-      The run must push to larger M to see if both=0 survives:
-      ```
-      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt; echo EXIT_CODE=$?
-      ```
-      It is stdlib-only and needs no sympy or Sage.
-
-- [ ] **OPEN THREAD `pair-sum-both-squares-incompatibility` (directive 15).**
-      The finding: over all 156,988,030 pairs at M=400, 1−(q1+q2) is a rational
-      square 325 times, 1+(q1+q2) is 66 times, and BOTH = 0. The question:
-      are the two conditions provably incompatible for q1,q2 ∈ Φ? If yes, name
-      the invariant — a congruence obstruction, or a descent on the curve
-      attached to 1−s and 1+s simultaneously square, which is the classical
-      concordant-forms shape. This would be an impossibility lemma on **pairs**,
-      cheaper than anything on triples. Write
+- [ ] **IDENTIFY THE CONCORDANT-FORMS CURVE FOR both=0 (directive 16).**
+      The finding — 1−(q1+q2) and 1+(q1+q2) are never simultaneously rational
+      squares for q1,q2 ∈ Φ(M=400) — is the run's most promising impossibility
+      lemma because it is about PAIRS not triples. The shape is classical:
+      1−s and 1+s simultaneously rational squares ⇔ rational point on the curve
+      `x²+y² = 2` (genus 0), parametrised by slope. Derive the explicit
+      parametrisation of s for which both 1±s are rational squares, intersect
+      with the set of sums s = q1+q2 (q1,q2 ∈ Φ), and ask: does Φ-membership of
+      the summands force a local obstruction mod p that prevents both 1±s being
+      squares? If an obstruction is found it must be run against the 66
+      plus-witnesses and 325 minus-witnesses in `code/out/side_census.captured.txt`
+      or it is asserted. Update
       `research/threads/pair-sum-both-squares-incompatibility.md` with the
-      question, the evidence (M=400, both=0), the concordant-forms framing,
-      and the first step: determine whether s = q1+q2 with both 1±s square
-      forces s into a form incompatible with being a sum of two Φ-values.
+      curve's equation and the obstruction hypothesis.
 
 - [ ] **WRITE THE CONDITIONAL RESULT AS A CLAIM** (directive 12, item 1):
       The run's best structural output: assuming uniform boundedness of ranks

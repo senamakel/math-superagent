@@ -6,8 +6,9 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[claim-conversion]] | Is every asserted identity-family claim converted to `checked` with (i) the exact identity in k, (ii) a symbolic proof that 4/n(k) − 1/x − 1/y − 1/z ≡ 0, (iii)… | open | n-even-trivial, n-3mod4-covering-corrected, mordell-covering-840, mordell-six-open-classes-840, schinzel-thm1-polynomial-obstruction | (1) TOMBSTONE Yamamoto 1965 (J-STAGE PDF has no text layer; done — do not re-fetch) and demote its claim; (2) for each asserted identity family, write the… |
+| [[claim-conversion]] | Is every asserted identity-family claim converted to `checked` with (i) the exact identity in k, (ii) a symbolic proof that 4/n(k) − 1/x − 1/y − 1/z ≡ 0, (iii)… | open | n-even-trivial, n-3mod4-covering-corrected, mordell-covering-840, mordell-six-open-classes-840, schinzel-thm1-polynomial-obstruction | — |
 | [[elementary-reductions]] | Is the chain "any counterexample ⇒ some odd prime p ≡ 1 (mod 24)" verified here by computation, with every ingredient `checked` rather than `sourced`? | open | n-even-trivial, n-3mod4-covering-corrected, naive-3mod4-identity-is-wrong, prime-reduction, reduction-mod24 | write a program proving the scaling lift `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in exact arithmetic, capture it, and flip `prime-reduction` to… |
+| [[novelty-check]] | Are the 554 subprogression families new, or are they rediscoveries of known Elsholtz–Tao Prop 1.9 / Salez seven-equation families in different coordinates? For… | open | subprogression-families-verified-and-coverage, elsholtz-k-unit-fractions-bound, elt-prop16-vanishing-odd-squares, seven-equations-complete | (1) Parse the 554 families from code/out/subprogression.captured.txt into a structured form (m, t-residue, x(k), y(k), z(k)). (2) For each family, classify… |
 
 ## Threads that could not be read
 
