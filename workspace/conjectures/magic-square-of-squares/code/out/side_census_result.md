@@ -53,13 +53,11 @@ hypotheses: M <= 800; q1, q2 in Phi(M); q1 > q2; q1 + q2 < 1; exact integer
 holds-here: yes for M <= 800 only; a computation, not a theorem for all M
 status: checked
 bearing: extends phi-pair-sides-never-both-square to a complete 2.5e9-pair
-  census and so keeps alive the strongest unbroken side statement: the two
-  square conditions 1+s and 1-s are never simultaneously satisfied for a
-  pair-sum s realisable from Phi. A proof of that incompatibility would be an
-  impossibility lemma on pair sums (s = 2t/(1+t^2) parametrisation of
-  x^2+y^2=2 intersected with Phi-pair-sums), and it would not forbid the
-  known near-miss witnesses, which are not pair sums of Phi elements in
-  (0,1) with both sides square
+  census and **supersedes** it — the M=400 claim (156988030 pairs, 325 minus,
+  66 plus) is a complete census at that size and is not wrong, but the M=800
+  census is the current ceiling and the one every future claim must be checked
+  against. A completed census is a different object from a partial sweep and
+  must not be filed beside one.
 anchor: code/out/side_census_M800_complete.captured.txt;
   code/out/side_census_stages_M800.jsonl;
   code/phi_triple_variety/side_census_par.py;

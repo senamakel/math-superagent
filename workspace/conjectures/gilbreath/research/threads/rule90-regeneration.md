@@ -4,21 +4,15 @@
 question: Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2}
           interior force block-length regeneration at specific relative depths,
           and does the null distribution show separation from chance?
-status: CLOSED (null computed, 2026-08) — see the null-test section below.
-        The absolute- and jump-timing forms of the depth prediction are
-        refuted. The relative-depth measure (depth from each regime start)
-        gives 21/27 near a power of 2 at tol=1; against the honest binomial
-        null X ~ Binomial(27, 9/16) (uniform over the observed range
-        [0,15], program's own depth>0 guard) the one-sided p-value is
-        0.0173 — significant at 5%, not at 1%. The signal lives entirely in
-        the tol=1 tolerance: at tol=0 (exact powers of two) only 10/27 hit,
-        p = 0.113, and conditioning on the observed concentrated range
-        [2,9] post hoc gives p = 0.68. The permutation null is degenerate
-        (the predicate tests values, not positions — every shuffle has the
-        same count). Net: a mild, tolerance-dependent concentration at
-        ±1 of powers of two, too weak to support a structural mechanism;
-        thread REGENERATION (research/threads/regeneration.md) remains the
-        honest open question.
+status: CLOSED (Directive 9) — the null test is done. At tol=1, 21/27 regime
+        depths land near a power of 2 with p = 0.0173 (Binomial(27, 9/16)),
+        significant at 5% but not 1%. At tol=0 (exact powers), only 10/27
+        hit, p = 0.113. The signal is tolerance-dependent and too weak to
+        support a structural regeneration mechanism. The proved Rule 90
+        interior identification (rule90-interior-xor) is unaffected and is
+        the claim to check next: its edge-flip predictions against the
+        actual record, not its depth-corollary. No further tolerances,
+        depths, or null variants.
 rests-on: |
   - Block lemma (proved): the {0,2} interior evolves under the halved operator
     as XOR = Rule 90 = Pascal mod 2. The apex A_{k+n-1}(1) = 2 · XOR_j

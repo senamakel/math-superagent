@@ -59,17 +59,23 @@ anchor: research/summaries/erdos-problem-849.md
 
 ```claim
 id: half-triangle-convention-consistency
-statement: This run's both-mirrors-plus-trivial convention N(a) equals 2 times
-  the half-triangle solution count ((n,k) with 1<=k<=n/2). Checked on the
-  canonical exemplars: N(120)=6 <-> {(120,1),(16,2),(10,3)}, N(3003)=8 <->
-  {(3003,1),(78,2),(15,5),(14,6)}. Hence "no known t>=5" (Erdős 849) is the
-  same fact as "no known N(a)>=10" in this run's convention.
-hypotheses: k <= n/2 strict count; all four witness pairs have k < n/2 so no
-  centre-column ambiguity.
-holds-here: yes — 120 and 3003 verified in code/out/witnesses.json.
+statement: Let t(a) be the number of solutions of C(n,k)=a with 1<=k<=n/2
+  (half-triangle count; the strong-form 't' of Erdős 849). Then under this
+  run's both-mirrors-plus-trivial convention: N(a) = 2*t(a) if a is not a
+  central-column entry C(2r,r), and N(a) = 2*t(a) - 1 if a is central (its
+  own mirror). Checked on the canonical exemplars: N(120)=6 <-> t=3
+  {(120,1),(16,2),(10,3)}, N(3003)=8 <-> t=4 {(3003,1),(78,2),(15,5),(14,6)},
+  N(6)=3 <-> t=2 {(6,1),(4,2)} (central). Hence "no known t>=5" (Erdős 849)
+  means no known N(a)>=9 (10 for non-central a, 9 for central a) in this
+  run's convention.
+hypotheses: 1<=k<=n/2; a>1 integer; a's central entry, if any, is C(2r,r).
+holds-here: yes — exemplars verified against code/out/witnesses.json and
+  brute.captured.txt (3003: 8 entries; 6: 3 entries).
 status: checked (exemplar pairs match code/out/witnesses.json exactly;
-  formula row-count = ceiling(N/2) per OEIS A059233)
+  central-column rule from A059233 = ceil(N/2): N=2t for t=ceil(N/2) with
+  N even, N=2t-1 for t=(N+1)/2 odd-N; verified by hand on 6, 20, 70, 3432)
 bearing: pins the convention translation so a read of the source cannot be
-  mis-counted; a B>=10 finding would contradict the source's "no known t>=5".
+  mis-counted; "no known t>=5" is "no known N(a)>=9", and a B<9 claim is
+  refuted by 3003 (N=8) at the boundary.
 anchor: research/summaries/erdos-problem-849.md
 ```

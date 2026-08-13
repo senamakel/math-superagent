@@ -128,3 +128,21 @@ Two changes, both exactly what the directive asked for:
 - **CHT holds-here set to `no` on both copies** (`research/notes/library-state.md` and `research/summaries/chase-hunter-tao-2026-full-html.md`), with the numbers from `cht_hyp_check.captured.txt`: M=7, L=2, R_0=419,430,400 ≫ 1000. The gap entry in CONTEXT.md now carries the same determination rather than "unchecked."
 
 - **Rule 90 thread reopened pending the null test.** The absolute-depth and jump-timing forms stay refuted. The relative-depth measure (21/27 near power of 2 at tolerance 1) is not a result until the null is computed, and the directive's caveat about depths clustering in 2..9 is written into TASKS item 1, the thread status, and the CONTEXT.md run-state line. TASKS item 1 is now the shuffle test with explicit binomial-null formulation; item 2 is the event-rate bound (Route A first), which the directive says is still the conjecture. The CHT check and rule90 timing test are marked done/open in the supporting list with correct statuses.
+
+## 9 — from steer
+
+The null model is exactly right and rule90-relative-depth-null is the best claim in this workspace. It reports the permutation null as degenerate with the reason (a value-only predicate carries no positional information, so every shuffle gives the same count), uses the exact binomial instead, gives P(X>=21)=0.017299 verified three independent ways, and then kills its own headline by reporting that at tol=0 the same data gives 10/27 with p=0.113. A result that states the tolerance its significance depends on is worth more than one that does not. Both cht-inverse-theorem entries now carry holds-here=no. Nothing to fix.
+
+So stop working the depth pattern. Its own bearing line says it: too weak at tol=1 to support a structural regeneration mechanism, dead at tol=0. Further tolerances, depths, or a third null spend the run on a side quest that has answered.
+
+The conjecture is that the second entry of every row is 0 or 2, and the open question you named is regeneration, in research/threads/regeneration.md. Consumption is not regeneration: gc-block-lemma-odlyzko gives a leading {0,2} block of length N protecting N rows, so showing the regime survives some number of rows proportional to n shows the block is CONSUMED at a rate, not replenished. Every candidate mechanism must say where new block length comes from, and be run against code/out/blocks_depth1000.json before it is anything but asserted.
+
+Two ledger notes. asserted 35 against proved 14 and checked 4 - three of the four rule90 claims are asserted from library-state.md rather than checked here, so pick the one that most constrains regeneration and run it against the record. And your container touched 6.46 GiB of the 8 GiB cap during the 26-worker null run before falling to 2.6 GiB; the cap is fixed and an OOM kill writes nothing to the console, so bound worker counts on anything that materialises the depth-1000 triangle per worker.
+
+**Done.** Three changes:
+
+1. **TASKS.md** rewritten: the depth-pattern null test is moved to Completed, and item 1 is now "Check `rule90-interior-xor` against `blocks_depth1000.json`" — that is the one rule90 claim that constrains regeneration directly (the d-step XOR formula governs edge-flip timing), and it's the one of the four that was proved rather than asserted-from-source. Single-threaded, one pass, no triangle materialisation. Event-rate bound stays at item 2. Lean and ledger hygiene moved to Supporting.
+
+2. **`research/threads/rule90-regeneration.md`** thread header marked CLOSED (Directive 9) with the reason — weak and tolerance-dependent — and the closing directive noted so no one reopens it. `THREADS.md` re-derived automatically.
+
+3. **CONTEXT.md** got the memory-cap observation (6.46 GiB touched during the 26-worker null run) in the Gaps section and the run-state header updated to reflect "depth pattern closed, next is rule90-interior-xor check then event-rate bound."

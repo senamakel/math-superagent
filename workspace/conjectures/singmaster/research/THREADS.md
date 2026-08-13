@@ -6,13 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[diophantine-curves]] | Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound on N(a), or only per-pair finiteness (ineffective)? | open | jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree, hpt-bilu-tichy-exceptional-classification, bilu-tichy-method-ineffective-uniformity-wall, kummer-lucas-class-not-logarithmic, bst-fixed-kl-ineffective-primary, bst-genus-classification-matches-grid, matveev-2000-explicit-constants | promote genus_table to standalone claim marked proved-by-two-CAS; compute a Matveev-2000-based explicit constant for one small (k1,k2) family; run or delete… |
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[diophantine-curves]] rests on `matveev-2000-explicit-constants`, which no claim block on disk establishes
+| [[diophantine-curves]] | Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound on N(a), or only per-pair finiteness (ineffective)? | open | jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree, hpt-bilu-tichy-exceptional-classification, bilu-tichy-method-ineffective-uniformity-wall, bilu-tichy-classification-primary, kummer-lucas-class-not-logarithmic, bst-fixed-kl-ineffective-primary, bst-genus-classification-matches-grid, matveev-2000-explicit-constants-primary, sdw-elliptic-logarithms-eight-pairs, yamada-boundary-necessary-condition, lind-1968-fibonacci-family-primary | promote genus_table to standalone claim marked proved-by-two-CAS; compute a Matveev-2000-based explicit constant for one small (k1,k2) family; run or delete… |
 
 ## Threads that could not be read
 

@@ -109,11 +109,13 @@ status: live
 rests-on: phi-universal-set, phi-pair-sides-both-square-zero-through-M800,
   concordant-forms-iff-ell-torsion-order-2,
   hilbert-symbol-of-two-squares-trivially-split
-blocked-by: both=0 verified at M=100,200,400 and COMPLETE at M=800; the 150
-  plus-witnesses and 718 minus-witnesses need their concordant curves; an
-  incompatibility proof is still missing
+blocked-by: both=0 verified at complete censuses M=100,200,400,800; the 150
+  plus-witnesses and 718 minus-witnesses from the complete M=800 census need
+  their concordant curves; an incompatibility proof is still missing
 next: form E_{M,N} for the 150 plus-witnesses and 718 minus-witnesses from
-  side_census_M800_complete.captured.txt; compute rank+torsion for each;
-  check whether the two sets split cleanly by rank or torsion; state any
-  split found as a claim with the witnesses as falsifier
+  side_census_M800_complete.captured.txt; compute rank+torsion for each
+  using Pari/GP (ellrank+elltors) or mwrank — Sage is NOT available; state
+  the tool and version in the capture; check whether the two sets split
+  cleanly by rank or torsion; state any split found as a claim with the
+  witnesses as falsifier
 ```

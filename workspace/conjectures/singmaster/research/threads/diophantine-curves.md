@@ -108,6 +108,23 @@ status: live — genus deliverable DONE (two-parameter grid via Singular+Sage,
 rests-on: jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling,
   mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree,
   hpt-bilu-tichy-exceptional-classification,
+  bilu-tichy-method-ineffective-uniformity-wall, bilu-tichy-classification-primary,
+  kummer-lucas-class-not-logarithmic, bst-fixed-kl-ineffective-primary,
+  bst-genus-classification-matches-grid, matveev-2000-explicit-constants-primary,
+  sdw-elliptic-logarithms-eight-pairs, yamada-boundary-necessary-condition,
+  lind-1968-fibonacci-family-primary
+deliverables:
+  - genus-table-two-cas: two-parameter grid, genus=1 iff {2,3}/{2,4}, proved-by-two-CAS
+  - genus-k2-5-closed: 2n-2 except 2n-4 when 5|n, operator-checked
+  - genus-slope-conjecture: mean=(m-1)/2 over whole periods, operator-checked
+blocked-by: uniform bound needs effective Siegel or effective Schmidt subspace
+  theorem (out of reach); Kane's method provably capped; MRSTT's interior method
+  capped at exp(log^{3/2-eps} P); BST finiteness ineffective (primary).
+next: promote genus_table to standalone claim marked proved-by-two-CAS; compute
+  a Matveev-2000-based explicit constant for one small (k1,k2) family; run or
+  delete the five uncaptured programs.
+```mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree,
+  hpt-bilu-tichy-exceptional-classification,
   bilu-tichy-method-ineffective-uniformity-wall,
   kummer-lucas-class-not-logarithmic, bst-fixed-kl-ineffective-primary,
   bst-genus-classification-matches-grid, matveev-2000-explicit-constants

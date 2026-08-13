@@ -94,7 +94,4 @@ bearing: grounds the run's bilu-tichy approach file and the HPT application at
   the primary level; confirms the ineffective-uniformity wall; the genus formula
   is an available independent check for the run's genus grid.
 anchor: research/sources/bilu-tichy-2000-fxgy.full.md
-contradicts: nothing (it is the source the run's bilu-tichy-grounding note cites)
-answers: none (the classification was already in the ledger via HPT 2022; this
-  adds the original primary)
 ```

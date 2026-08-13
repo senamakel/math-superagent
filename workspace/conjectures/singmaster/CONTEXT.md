@@ -34,8 +34,12 @@ Each marked with evidence class and a link.
   is refuted.
 
 - **Genus grid — the complete two-parameter Faltings threshold. `computed`, two
-  independent CAS engines agree (Singular `normal.lib::genus` and Sage
-  `Curve.genus`), `proved-by-two-CAS`.** `genus(k1,k2)` of `C(x,k1)=C(y,k2)`
+  independent CAS engines agree on the original 8x11 grid and the k2=3,4,5
+  extended rows (Singular `normal.lib::genus` and Sage `Curve.genus` output
+  identical). The 23 rows added since (k2=6 n=13..18, k2=7..10 n=13..19) rest
+  on Singular alone — the Sage check errored (`NameError: name 'PolynomialRing'
+  is not defined`) and never ran. Do not describe the new rows as independently
+  verified.** `genus(k1,k2)` of `C(x,k1)=C(y,k2)`
   computed for 2<=k1,k2<=12, extended to k1=24 for k2=3,4,5; outputs identical.
   This **supersedes** the operator's three-diagonal salvage
   (`code/out/genus_closed_forms.md`, now corroboration only).
@@ -321,14 +325,12 @@ Pintér–Tengely 2023) and the OEIS row-count convention `oeis-a003016-row-coun
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
   shape-of-the-boundary, not as a claim about large-t behavior.
-- **LEDGER STATUS: 42 claims — 33 asserted, 6 checked
-  (best-unconditional-bound, convention-n3003-eight,
-  genus-closed-forms-three-diagonals, infinite-family-6,
-  mrstt-interior-excludes-all-known-witnesses, witness-3003), 2 proved
-  (erdos-selfridge-no-perfect-power, kummer-lucas-class-not-logarithmic),
-  1 unchecked (`chan-divisibility-gap`).** Every asserted bound must
+- **LEDGER STATUS: 43 claims — 41 asserted, 7 checked, 2 proved.** Every asserted bound must
   be run against `code/out/witnesses.json`. Any lemma implying B<8 is refuted by
-  3003 (8 occurrences). State counting convention on every claim. See TASKS.md.
+  3003 (8 occurrences). State counting convention on every claim. Every new
+  claim must say whether its bound is effective and whether it is uniform in k.
+  The genus formula is neither and its claim block says so; keep that discipline.
+  See TASKS.md.
 - **PROCESS: Five uncaptured programs (directive 7).** `test_slope_across_rows.py`,
   `test_slope_hypothesis.py`, `effectivegenus/rep_pairs.py`,
   `genus/verify_k2_5_row.py`, `pattern/print_family.py` — all have zero captured

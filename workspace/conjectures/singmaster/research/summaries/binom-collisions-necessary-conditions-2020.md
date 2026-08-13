@@ -88,8 +88,4 @@ bearing: gives the only held quantitative necessary condition inside the
   MRSTT-open boundary regime; confirms the boundary is where the difficulty lies
   (even C(2n,n)=C(y,2) is out of reach); still per-configuration, not uniform.
 anchor: research/sources/binom-collisions-necessary-conditions-2020.full.md
-contradicts: nothing in the ledger (it does not contradict the interior-bounds
-  claims: both can hold since they concern different regimes)
-answers: none open in REQUESTS.md (the boundary-regime structural fact was not an
-  open row)
 ```

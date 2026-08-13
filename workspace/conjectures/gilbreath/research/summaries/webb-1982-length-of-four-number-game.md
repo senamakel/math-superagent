@@ -32,14 +32,27 @@ initial maximum.
 ## Relation to this run
 
 Webb's "no uniform bound" fact (lengths arbitrarily large for large inputs)
-is the cyclic-case limit the run already knows is superseded for the
-half-infinite object by Eppstein's anti-Gilbreath construction. What survives
-as a **template** is the proof architecture: max is a Lyapunov function, and
-the *run-shape* (monotonicity) of the tuple classifies which dynamics are
-possible. Webb shows that in the cyclic world non-monotone inputs die in ≤ 6
-steps; the Gilbreath obstruction is precisely that the half-infinite analog of
-"≤ 6" does not hold, so the run needs the prime gaps' structure to play the
-role Webb's monotonicity plays here.
+is the cyclic-case limit superseded for the half-infinite object by
+Eppstein's anti-Gilbreath construction — this run already knows the general
+2-then-odds class escapes. What survives is the **proof template**: max is a
+Lyapunov function, and the *run-shape* (monotonicity) of the tuple classifies
+which dynamics are possible; non-monotone inputs die in ≤ 6 steps in the
+cyclic world.
+
+**Caveat — do not read this as support for the run's raw run-count
+potential.** The run's own machine refutation
+(`code/out/check_runcount_lemma.py`, `check_runcount_lemma.captured.txt` +
+`check_runcount_lemma_class.captured.txt`, exhaustive over 6,725,600 strings
+and over the halved {0,1} class the triangle actually lives in) refutes
+`r(T(x)) ≤ r(x)` and `t(T(x)) ≤ t(x)` for the half-infinite operator
+T(x)_i = |x_i − x_{i+1}|: first counterexample (6,6,6,6,6,6,5,5) (2 runs → 3),
+and inside the {0,2} regime (0,0,2,2) → (0,2,0) (2 runs → 3). Webb's
+monotonicity theorem is a cyclic-4-tuple statement about the *initial tuple's
+shape* controlling *game length* — a different, weaker claim than a per-step
+monotone potential, and it does not survive transfer to the nonlinear
+half-infinite operator. The corrected-direction template (factored-max/weighted
+run count à la Chamberland's Ducci proof) is what survives from this family;
+the approach file records the status as refuted.
 
 ```claim
 id: webb-four-number-game-length-tribonacci

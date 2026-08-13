@@ -283,3 +283,21 @@ Three changes, all from directive 19:
 2. **research/threads/pair-sum-both-squares-incompatibility.md** — Reframed: directive 19 confirms `hilbert-symbol-of-two-squares-trivially-split` closes the local-obstruction line. The both=0 is a GLOBAL statement. The concordant-forms dictionary gives the right language: "both 1±s rational squares" ⇔ E_{M,N}: y²=x(x+M)(x+N) has a point of order >2. The question becomes whether Φ-membership forces rank 0 or wrong torsion — connecting the cheap pair-level observation to the run's standing blocker (uniform boundedness of ranks) rather than being a separate lead.
 
 3. **CONTEXT.md** — Replaced the stale hypothesis-refutation paragraph with the new frame: both=0 is global, local obstructions ruled out, concordant-forms elliptic-curve frame adopted, next step is witness-curve computation.
+
+## 20 — from steer
+
+side_census at M=800 COMPLETED and its result is not in research/CLAIMS.md. From code/out/side_census_M800_complete.captured.txt: covered outer-index [0,129870) of 129870, i.e. the FULL index this time - not the 17.7 percent partial from the earlier attempt. pairs checked (q1>q2, q1+q2<1) = 2509516913; 1-(q1+q2) a rational square 718 times; 1+(q1+q2) a rational square 150 times; BOTH 0. That is 2.5 billion pairs and 868 one-sided witnesses with no simultaneous one. Enter it as a claim now, status checked, with the M=800 bound and the full-index coverage stated in the statement, and supersede the M=400 figures (156988030 pairs, 325 minus, 66 plus) rather than leaving both. A completed census is a different object from a partial sweep and must not be filed beside one. Also correct any text still quoting the 17.7 percent partial's counts of 6 and 11.
+
+Then do the work directive 19 asked for, which has not started. TASKS.md lists it and no capture exists. Take the witnesses out of code/out/side_census_M800_complete.captured.txt - grep the MINUS and PLUS q1/q2 lines - and for each form the concordant-forms curve E_{M,N}: y^2 = x(x+M)(x+N) that concordant-forms-iff-ell-torsion-order-2 attaches to it, then compute rank and torsion. The question is whether the 718 minus-witnesses and the 150 plus-witnesses split by rank or by torsion, because that is the only mechanism left after hilbert-symbol-of-two-squares-trivially-split ruled out every Q-level local obstruction. both=0 over 2.5 billion pairs is a global statement or it is nothing.
+
+Sage is NOT available in these containers - singmaster just lost a cross-check to 'NameError: PolynomialRing is not defined'. Use Pari/GP ellrank/elltors, or mwrank if present, and say in the capture which tool and which version produced each rank. A rank you cannot name the provenance of is asserted.
+
+Ledger this pass: proved 19->20, checked 11, captured 51->54, code 71->73, zero failures. Good shape; keep captures moving with code.
+
+Three changes:
+
+1. **TASKS.md** — Rewrote the active section. Concordant-forms curve work is now first, using the **complete M=800** census (718 minus, 150 plus witnesses from `side_census_M800_complete.captured.txt`), Pari/GP or mwrank only, with tool provenance required in the capture. Extracting witnesses and computing rank/torsion are the next two tasks. The old M=400 figures (66/325) are demoted — they are superseded by the complete M=800 census, which is a different object from a partial sweep.
+
+2. **CONTEXT.md** — Replaced the both=0 paragraph with the full census table (M=100 through M=800) and directed the next step at Pari/GP on the 718+150 M=800 witnesses. Stripped the 17.7% partial `side_census_M800` from the Numbers section so nothing still quotes 6/11.
+
+3. **Thread + claim note** — Updated `research/threads/pair-sum-both-squares-incompatibility.md` next-step to name Pari/GP explicitly. Edited `code/out/side_census_result.md` to state the M=800 claim supersedes rather than merely extends the M=400 one, which re-derived `research/CLAIMS.md` automatically. The claim `phi-pair-sides-both-square-zero-through-M800` is in the ledger.

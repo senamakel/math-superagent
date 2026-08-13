@@ -1,0 +1,42 @@
+=== Family parameters i = 1..12 : recurrences and Lucas identities ===
+ i                  n_i                  k_i  okRec okLucas
+ 1                   14                    4   True   True
+ 2                  103                   38   True   True
+ 3                  713                  271   True   True
+ 4                 4894                 1868   True   True
+ 5                33551                12814   True   True
+ 6               229969                87839   True   True
+ 7              1576238               602068   True   True
+ 8             10803703              4126646   True   True
+ 9             74049689             28284463   True   True
+10            507544126            193864604   True   True
+11           3478759199           1328767774   True   True
+12          23843770273           9107509823   True   True
+recurrences n_i=7n_{i-1}-n_{i-2}+6, k_i=7k_{i-1}-k_{i-2}+9 and Lucas identities hold for i=1..12.
+
+=== Identity C(n+1,k+1)=C(n,k+2), i = 1..7 (direct comb) ===
+i=1: n=14 k=4  C(n+1,k+1)==C(n,k+2): True  a_i digits=4  (0.0s)
+i=2: n=103 k=38  C(n+1,k+1)==C(n,k+2): True  a_i digits=29  (0.0s)
+i=3: n=713 k=271  C(n+1,k+1)==C(n,k+2): True  a_i digits=205  (0.0s)
+i=4: n=4894 k=1868  C(n+1,k+1)==C(n,k+2): True  a_i digits=1412  (0.0s)
+i=5: n=33551 k=12814  C(n+1,k+1)==C(n,k+2): True  a_i digits=9688  (0.0s)
+i=6: n=229969 k=87839  C(n+1,k+1)==C(n,k+2): True  a_i digits=66416  (0.6s)
+i=7: n=1576238 k=602068  C(n+1,k+1)==C(n,k+2): True  a_i digits=455237  (19.8s)
+identity holds i=1..7.
+
+=== Exact N(a_i), i = 1..4 (both-mirrors + trivial convention) ===
+i=1: a_i digits=4  N(a_i)=8  half-solutions=[(mpz(78), 2), (mpz(15), 5), (mpz(14), 6)]  (0.0s, k<=12 scanned)
+i=2: a_i digits=29  N(a_i)=6  half-solutions=[(mpz(104), 39), (mpz(103), 40)]  (0.0s, k<=96 scanned)
+i=3: a_i digits=205  N(a_i)=6  half-solutions=[(mpz(714), 272), (mpz(713), 273)]  (0.0s, k<=680 scanned)
+i=4: a_i digits=1412  N(a_i)=6  half-solutions=[(mpz(4895), 1869), (mpz(4894), 1870)]  (7.4s, k<=4690 scanned)
+
+Sanity: exact N(3003) via same oracle (expect 8, matches witnesses.json).
+N(3003)=8 OK.
+
+RESULT: infinite-family members i=1..4 each have N(a_i)>=6 (both-mirrors + trivial convention). Exact multiplicities:
+   i=1: N(a_i)=8
+   i=2: N(a_i)=6
+   i=3: N(a_i)=6
+   i=4: N(a_i)=6
+
+All done.

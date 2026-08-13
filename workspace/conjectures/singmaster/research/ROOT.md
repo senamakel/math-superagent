@@ -83,8 +83,15 @@ near-collisions, arXiv:1904.11369 held), Hajdu–Pintér–Tengely–Varga 2014
 anchor, author PDF held), Bazsó–Mező–Pintér–Tengely 2023 (Stirling
 Singmaster-type, IJNT 21 257-269), Sutherland 2020 (superelliptic genus
 formula), Tao blog, Wikipedia (Singmaster + Superelliptic curve), OEIS
-A003015/A003016/A098565, Theorem of the Day (O(log k) proof exposition).
+A003015/A003016/A098565, Theorem of the Day (O(log k) proof exposition),
+Erdős Problem #849 (erdosproblems.com/849, Bloom — canonical problem-database
+entry, strong form, attribution, t=3/4 exemplars), Kane 2004 *Integers* 4
+#A07 primary (N(t) = O(log t·log₃t/(log₂t)²), A/B/C decomposition),
+OEIS A059233/A090162/A180058/A182237 (row-count conversion, the infinite
+family's catalogue record, t=1..4 achievers, multiplicity-2 class).
 Singmaster 1971 (AMM 78) NOT held — the downloaded file is the Fermat's Library
 comments page (see `research/summaries/singmaster-1971.md`); its bound and
 witness frame are attested by the held 1975 FQ primary, AEH 1974, GRKTU 2020,
-and the Stirling 2023 paper.
+and the Stirling 2023 paper. Shirshov, "On the equation C(n,m)=C(n+1,m-1)"
+(Kvant Selecta I, AMS 1999, ch. 10) NOT held — AMS paywalled; expository
+corroboration of the family equation already solved in held primaries.

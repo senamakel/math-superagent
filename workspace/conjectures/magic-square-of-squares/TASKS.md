@@ -61,11 +61,15 @@
       `magic-variety-is-surface-no-lines` REFUTED for the linear variety (P² is
       saturated with lines); the no-lines/256-singular-points claim refers to the
       quadric-cut variety, a different object.
-- [x] **side_census M=800 RUN.** Captured at code/out/side_census_M800.captured.txt.
-      Budget-exhausted at i=22988/129870 (17.7%). Raw counts: 6 minus, 11 plus,
-      both=0. **These are NOT comparable to M=400's 325 and 66** — the run covers
-      only 17.7% of the index — and must never be quoted as a decline. Operator
-      is running a longer-budget M=800 on the host.
+- [x] **side_census M=800 COMPLETE RUN.** Parallel `side_census_par.py` over 26
+      workers finished the full outer index; captured at
+      code/out/side_census_M800_complete.captured.txt, checkpoint
+      code/out/side_census_stages_M800.jsonl. **COMPLETE**: 2,509,516,913 pairs,
+      minus=718 plus=150 both=0. The earlier 17.7%-partial capture
+      (6/11/0) is superseded and must not be quoted. Claim
+      `phi-pair-sides-both-square-zero-through-M800`, status: checked, in
+      CLAIMS.md. Serial-vs-parallel agreement verified at M=100 and M=200;
+      example witnesses independently re-verified via lib.phi.in_phi.
 - [x] **ratio_search M=700 RUN.** Budget-exhausted at i=27861/99407 (28.0%).
       Captured; no triple through the covered range.
 
@@ -96,34 +100,39 @@ Proved 17→19, captured 49→51, code flat at 71, zero failures. Keep that shap
 
 ---
 
-## NEW — directive 19 priority
+## ACTIVE — directive 20 (M=800 complete census now in CLAIMS.md)
 
-### Concordant-forms elliptic curve on the both=0 witnesses
+### Concordant-forms elliptic curve on the M=800 both=0 witnesses (directive 19 + 20)
 
-The both=0 finding is a GLOBAL statement (directive 19 confirms: no Q-level
-local or congruence obstruction can explain it — `hilbert-symbol-of-two-squares-trivially-split`
-is correct and operator-verified). The right frame is the concordant-forms
-dictionary: `concordant-forms-iff-ell-torsion-order-2` says the condition
-"both 1−s and 1+s are rational squares" is equivalent to the elliptic curve
-E_{M,N}: y² = x(x+M)(x+N) having a rational point of order > 2.
+Sage is NOT available. Use Pari/GP (`ellrank`/`elltors`), or `mwrank` if present,
+and say in the capture which tool and which version produced each rank.
 
-- [ ] **Form E_{M,N} for each of the 66 plus-witnesses and the 325 minus-witnesses**
-      from `code/out/side_census.captured.txt` (M=400). Each witness is a pair
-      (q1, q2) with s = q1+q2. The concordant condition "both 1−s and 1+s are
-      rational squares" is equivalent to a point on E_{M,N}: y² = x(x+M)(x+N)
-      where M, N derive from s. Compute rank and torsion for each curve.
-      **If the minus-witnesses and plus-witnesses split cleanly by rank or
-      torsion, that is the mechanism behind both=0 and it is checkable now.**
-      Write to `code/out/concordant_witness_curves.captured.txt`. Any lemma
-      proposed from this must be run against these witnesses or it is asserted,
-      never checked.
+Grep the MINUS and PLUS lines from `code/out/side_census_M800_complete.captured.txt`
+to extract the 718 minus-witness (q1, q2) pairs and the 150 plus-witness (q1, q2)
+pairs. For each pair, s = q1+q2. The concordant condition "both 1−s and 1+s are
+rational squares" ⇔ E_{M,N}: y² = x(x+M)(x+N) has a point of order > 2, where
+M,N derive from s via the dictionary in `concordant-forms-iff-ell-torsion-order-2`.
 
-- [ ] **State the both=0 incompatibility in the concordant-forms language**
-      in `research/threads/pair-sum-both-squares-incompatibility.md`. The
-      question becomes: does Φ-membership of the summands force E_{M,N} to have
-      rank 0 or the wrong torsion? This connects the cheap pair-level observation
-      to the workspace's standing blocker — uniform boundedness of ranks — rather
-      than being a separate lead.
+- [ ] **Extract witnesses.** Write a script that parses the capture, extracts
+      every MINUS and PLUS line as (q1, q2), deduplicates if needed, and writes
+      `code/out/concordant_witnesses_M800.json`.
+- [ ] **Form E_{M,N} for each of the 150 plus-witnesses and the 718 minus-witnesses.**
+      Compute rank and torsion for each curve using Pari/GP (`ellrank` + `elltors`)
+      or `mwrank`. The question: do the minus-witnesses and plus-witnesses split
+      cleanly by rank or by torsion? That is the only mechanism left after
+      `hilbert-symbol-of-two-squares-trivially-split` ruled out every Q-level
+      local obstruction. both=0 over 2.5 billion pairs is a global statement or
+      it is nothing.
+      Write to `code/out/concordant_witness_curves_M800.captured.txt`.
+- [ ] **State any split found as a claim.** A rank you cannot name the provenance
+      of is asserted.
+
+### Both=0 claim — already in CLAIMS.md, verify
+
+- [x] Claim `phi-pair-sides-both-square-zero-through-M800` entered, status: checked.
+      **Supersedes the M=400 `phi-pair-sides-never-both-square`** (156988030 pairs,
+      325 minus, 66 plus) which is now obsolete. A completed census is a different
+      object from a partial sweep and must not be filed beside one.
 
 ### Structural work — the run's deliverable
 

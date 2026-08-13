@@ -63,5 +63,7 @@ curve; affine smoothness assumed at derived singularities removed by normal.lib.
 Diagonal pairs excluded (reducible due to the factor x-y).
 ======================================================================
 Generators: /workspace/code/genus/test_range.sing, full_grid.sing,
-extend3_4.sing (Singular); /tmp/sage_grid.py (Sage). Two-method agreement is
-the independent verification for every table entry.
+extend3_4.sing (Singular); /tmp/sage_grid.py (Sage). Two-method agreement
+covers the original 8x11 grid and the k2=3,4,5 extended rows. The 23 rows
+from extend_k2_6.sing and extend_7_10.sing are Singular-only — Sage is not
+installed and the check errored.

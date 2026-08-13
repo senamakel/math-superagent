@@ -90,8 +90,6 @@ bearing: fixes which (k1,k2) pairs are completely solved (all eight); names the
   algorithm (elliptic logarithms + David + LLL) that achieves it; leaves every
   other pair at ineffective Faltings finiteness — the uniform-in-k wall stands.
 anchor: research/sources/stroeker-deweger-1999-elliptic-binomial.full.md
-contradicts: (nothing — extends `deweger-smallk-effective`, which lists only
-  (2,3),(2,4),(3,4) plus (2,5))
-answers: none (the solved-pairs list was already partially recorded; this gives
-  the primary and the full eight-pair list)
+extends: deweger-smallk-effective (which lists only (2,3),(2,4),(3,4),(2,5);
+  this primary adds (2,6),(2,8),(3,6),(4,6),(4,8) and the method that solved them)
 ```

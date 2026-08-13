@@ -91,6 +91,23 @@ precedent: |
   boundedness conclusion must be proved for the windowed half-infinite
   object, not imported.
 
+  CONFIRMED NEGATIVE (librarian cycle, searches over the p-adic-Ducci and
+  carry literature): the named p-adic Ducci analogue in the primary sources
+  — Caragiu–Baxter 2007 "A note on p-adic Ducci games", JP J. Algebra Number
+  Theory Appl. 8.1 (2007) 115–120 (paywalled; content quoted in
+  caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.full.md §1) — replaces
+  the map by MULTIPLICATION by a p-adic polynomial f(x) ∈ Z_p[x]/(x^d − 1)
+  on the cyclic ring, and asks for p-adic convergence to zero of that linear
+  map. That is a different object from v_2(|a−b|) on the half-infinite line:
+  it is cyclic, linear, and polynomial-multiplication, so it does not bear
+  on the carry cascade into position 1. Searches for a v_2(|a−b|) valuation
+  law / 2-adic carry treatment of the iterated absolute-difference map return
+  only Collatz/Kaprekar/p-adic precision-tracking material (Caruso–Roe–Vaccon,
+  Dyachenko, p-adic valuation trees), none of which is the difference map.
+  The valuation law remains genuinely un-sourced for THIS map; the approach
+  stands as proposed (not grounded, not refuted), with the negative search
+  recorded so nobody re-searches the same three angles.
+
   What would falsify the approach: a single row k ≤ 1000 with v2(A_k(1)) ≥ 2
   (i.e. A_k(1) a multiple of 4) — the oracle says none exists (depth 1000,
   A_k(1) ∈ {0,2}); or a counterexample valuation cascade in a 2-then-odds

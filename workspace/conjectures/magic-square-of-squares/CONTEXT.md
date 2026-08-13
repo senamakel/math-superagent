@@ -151,18 +151,29 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   (directive 19, `hilbert-symbol-of-two-squares-trivially-split`, operator-verified):
   if 1−s=t² and 1+s=u² then t²+u²=2 is everywhere locally soluble, and Hilbert
   symbols (t²,u²)_p=1 at every prime. No Q-level local or congruence obstruction
-  can explain both=0. This line is closed, not a partial result. The right frame
-  is `concordant-forms-iff-ell-torsion-order-2`: "both 1±s rational squares" ⇔
-  E_{M,N}: y²=x(x+M)(x+N) has a point of order >2. The question becomes: does
-  Φ-membership force rank 0 or wrong torsion for every pair? **Next:** form
-  E_{M,N} for the 66 plus-witnesses and 325 minus-witnesses from
-  `code/out/side_census.captured.txt`, compute rank+torsion, and check whether
-  the two sets split cleanly — this connects the pair-level observation to the
-  run's standing blocker (uniform boundedness of ranks). The undocumented
-  `side_census.py` docstring hypothesis ("1+(q1+q2) NEVER a rational square")
-  was refuted at M=400 (66 counterexamples). Claim
-  `phi-pair-sides-never-both-square` in CLAIMS.md, status: checked for M=400.
-  Thread: `research/threads/pair-sum-both-squares-incompatibility.md`.
+  can explain both=0. The right frame is `concordant-forms-iff-ell-torsion-order-2`:
+  "both 1±s rational squares" ⇔ E_{M,N}: y²=x(x+M)(x+N) has a point of order >2.
+  **Complete censuses, each over the whole outer index** (exact, integer arithmetic):
+
+  | M | |Φ(M)| | pairs (`q1>q2`, `q1+q2<1`) | `1−(q1+q2)` square | `1+(q1+q2)` square | BOTH |
+  | --- | --- | --- | --- | --- | --- |
+  | 100 | 2040 | 614,165 | 46 | 5 | 0 |
+  | 200 | 8156 | 9,856,010 | 132 | 24 | 0 |
+  | 400 | 32495 | 156,988,030 | 325 | 66 | 0 |
+  | 800 | 129870 | 2,509,516,913 | 718 | 150 | 0 |
+
+  The M=800 row is the **complete** census (parallel, 26 workers, full outer index
+  [0,129870); `code/out/side_census_M800_complete.captured.txt`). Each side alone
+  is satisfiable at every M, so both=0 is not an artefact of emptiness. The
+  undocumented `side_census.py` docstring hypothesis ("1+(q1+q2) NEVER a rational
+  square") was refuted at M=400 (66 counterexamples). **Next:** form E_{M,N} for
+  the 150 plus-witnesses and 718 minus-witnesses from M=800, compute rank+torsion
+  via Pari/GP or mwrank, and check whether the two sets split cleanly — this connects
+  the pair-level observation to the run's standing blocker (uniform boundedness of
+  ranks). Claim `phi-pair-sides-both-square-zero-through-M800` (supersedes M=400
+  `phi-pair-sides-never-both-square`; a completed census is a different object from
+  a partial sweep). Thread:
+  `research/threads/pair-sum-both-squares-incompatibility.md`.
 - **The Faltings-fibre attack on the Φ-triple is dead — confirmed by execution**
   (`phi_fibre_genus_run.py`, `phi_fibre_genus_check.py`, both captured in
   `code/out/`). f is homogeneous degree 0, so f(m,n) depends only on the ratio
@@ -253,19 +264,30 @@ six-square-entry configurations are attainable; smallest-magic-sum six-square
 example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 
 **Approach statuses** (`research/APPROACHES.md`):
-- **resolve-magic-surface-birational** — the **adopted** line: determine κ of the
-  resolved 3×3 MSS variety X̃ (X⊂P⁸ is a surface with 256 singular points and no
-  lines — `magic-variety-is-surface-no-lines`, currently **asserted**; the direct
-  dimension/no-lines check is first in TASKS.md blocking and has NOT been run).
+- **resolve-magic-surface-birational** — the blocking check is DONE and refutes
+  the premise as stated (`code/out/magic_variety_check.captured.txt`, exit 0):
+  the linear magic variety X⊂P⁸ (entries as coordinates, 7 line-sum equations)
+  is **exactly the P² of the (c,u,v) parametrisation** — rank(I8)=7, rank(M7)=6
+  (trace identity forces rank 6, not 7), kernel spanned by (C,U,V) = constant,
+  u-grid, v-grid, dim 3 → X ≅ P², smooth, saturated with lines. So
+  `magic-variety-is-surface-no-lines` **as stated is FALSE for the linear
+  variety**: the "no lines / 256 singular points" of the Michaud–Rodgers talk
+  must refer to the **quadric-cut square variety** (Σ_line r_ij² equal, six
+  quadrics), a different object whose singular locus is unverified here.
+  Inside X the MSS problem is nine quadratic conditions on (c,u,v); best known
+  point of X: Bremner (7 of 9 squares); Sallows LS1 is NOT in X (only 7 of 8
+  sums). Resolution work must re-base on the quadric-cut object or close.
 - **uniform-height-bound-elliptic-ap** — folded into that as the effectiveness
   partner for the κ=2 case: GFP (ineffective) + HMS (effective-in-principle);
   doubled-point question settled; the C-bound blocking task is closed
   **negatively** (`hms-constant-nonextractable-on-disk`, checked — no value
   reachable on disk; DP07 primary text paywalled). Conditional reduction is
   claim `conditional-mss-finite-computation` (status: conditional, not proved).
-- **PARKED behind the blocking section** (directives 10/11/13): `hecke-character-product-l`,
-  `kodaira-dimension-general-type`, `modular-jacobian-torsion-x0-32`. No work until
-  the magic-variety check is done (the C-bound is closed negatively).
+- **PARKED** (directives 10/11/13): `hecke-character-product-l`,
+  `kodaira-dimension-general-type`, `modular-jacobian-torsion-x0-32`. The
+  blocking magic-variety check is done and refuted the linear-variety premise;
+  the C-bound is closed negatively. Re-opening any of these requires re-basing
+  on the quadric-cut square variety.
 - **root-number-parity-four-curves** — **refuted**.
 - **Brauer–Manin on the K3** — **refuted** (S(Q) nonempty).
 - **freys-curve-four-q-isogenies**, **integral-brauer-manin-nine-square**,
@@ -351,13 +373,12 @@ none beyond `d ≈ 3.31×10¹⁵`; surviving cases reduce to one `d = 71831760` 
 grids) plus two huge `d`. A true MSS needs **four** APs through the centre with
 differences `u,v,u+v,u−v`. Bound on where arguments must look (10¹⁹–10²²).
 
-**Three partial sweeps carry their fraction of index covered:**
+**Two partial sweeps carry their fraction of index covered:**
 `no_triple_fast_M700`: complete-through-i=40143/99407 (40.4%), prefilter
 survivors 0, exact 0. `prefilter_census_M1000`: i=38006/202861 (18.7%),
-survivors 0. `side_census_M800`: i=22988/129870 (17.7%), both=0 in the
-covered prefix (11 plus-square, 6 minus-square witnesses there). "Survivors 0"
-over a prefix is not "no survivors at M" — any claim must carry its fraction,
-or it is asserted not checked.
+survivors 0. "Survivors 0" over a prefix is not "no survivors at M" — any
+claim must carry its fraction, or it is asserted not checked. (`side_census`
+M=800 is COMPLETE — table in Established.)
 
 **Witness set values** (exact): Sallows failing diagonal 38307; Bremner magic
 constant 541875, centre 425², non-squares {360721, 222121}, realised AP diffs
@@ -371,8 +392,9 @@ disk): `verify_two_side_equiv` and `verify_triple_square` (N=300, exact): the
 mismatches; `verify_prefilter` (M=80): both=0 over 252,818 pairs, no
 survivors; `benchmark`: |Φ(800)|=129870, |Φ(1500)|=456137 in 0.69s,
 `in_phi` ~229k/s; `verify_pell_symbolic`: exact, 4 checks PASS. **`ratio_search`
-(M=700): inconclusive — only the startup line was captured, no result within
-budget; do not cite an outcome.**
+(M=700): its own capture is inconclusive (startup line only, in budget)** — but
+the salvage run completed through outer-i=27861/99407 (28.0%) with no triple;
+cite the salvage capture, not the primary one.
 
 ## Recalled
 
@@ -429,6 +451,4 @@ finding disagrees with the Established section.
 - **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
   paper is now 78KB; the auto-generated summary still needs proper scholar
   digestion.
-- **`ratio_search` (M=700) inconclusive** — captured only the startup line
-  within budget; a rerun with a larger budget, or a statement that it is not
-  worth one, is still owed if that line is cited anywhere.
+- **`ratio_search` (M=700)** — the primary run captured only the startup line, but the salvage run completed through outer-i=27861/99407 (28.0%) with no triple (partial sweep; fraction recorded in Numbers).

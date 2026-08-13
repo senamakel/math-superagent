@@ -9,21 +9,19 @@ Budget 10,000 tokens (this file ~6000, so ~4000 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state: erosion settled, step law exact, focus is event-rate lower bound.**
-The conjecture reduces to: do (2,4)-events keep arriving fast enough that
-`Σ (j_i + 1)` never falls `k−1` behind? A lower bound on the event rate, even
-under a stated hypothesis on prime gaps, is a real result. Erosion verification
+**Run state: depth pattern closed (Directive 9); focus is rule90-interior-xor check then event-rate lower bound.**
+The regeneration thread (`research/threads/regeneration.md`) holds the **established** criterion: block
+regeneration ⟺ `(edge==2, intruder==4)`, zero failures over all 998
+transitions. The old "candidate iff lemma refuted" record was an off-by-one and
+is **withdrawn** (see `code/out/check_regenerate_lemma.notes.md`) — do not keep
+it. The conjecture reduces to: do (2,4)-events arrive fast enough that
+`Σ (j_i + 1)` never falls `k−1` behind? A lower bound on the event rate,
+even under a stated hypothesis, is a real result. Erosion verification
 is no longer useful; the step law is exact and needs no re-derivation.
-`research/threads/rule90-regeneration.md` — the absolute-depth and jump-timing
-forms are refuted; the relative-depth measure (depth from regime start) gives
-21/27 near a power of 2 at tolerance 1; the null is COMPUTED (see the
-Rule-90-relative-depth bullet under Established): p = 0.0173 against the exact
-binomial Binomial(27, 9/16), but the signal is tolerance-dependent — dead at
-tol=0 (p = 0.113) and erased by conditioning on the observed [2,9] range
-(p = 0.68). Verdict: a mild concentration, not a structural mechanism. The
-Rule 90 interior identification is proved and unaffected.
-Anchor: `code/out/rule90_depth_test.captured.txt`, `code/out/rule90_depth_results.json`.
-Live thread: `research/threads/regeneration.md` (event-rate bound).
+`research/threads/rule90-regeneration.md` is CLOSED (Directive 9): the null test
+is done, the signal is tolerance-dependent and too weak; do not reopen.
+Next: check `rule90-interior-xor` edge-flip predictions against
+`blocks_depth1000.json`, then bound the event rate (Route A: combinatorial).
 
 ## Established
 
@@ -31,26 +29,6 @@ Live thread: `research/threads/regeneration.md` (event-rate bound).
   Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna
   2025–26 to 1.5×10^15 (G(2.8e14)=788, G(6.15e14)=800, G(1.5e15)=800). Run's own: depth
   1000 (1.27M primes), depth 600 (33860 primes). Do not conflate.
-- **Run-count potential monotonicity — REFUTED by machine, in the actual
-  regime.** The candidate Lyapunov function r(T(x)) ≤ r(x) (number of maximal
-  constant runs) is false even for the strings the triangle lives in. The
-  on-disk verifier `code/out/check_runcount_lemma.py` (written, never run)
-  was executed: exhaustively over 6,725,600 strings (len ≤ 8, values
-  0..6) the first counterexample is (6,6,6,6,6,6,5,5): r 2 → 3. A second,
-  class-restricted exhaustive run (`check_runcount_lemma_class.captured.txt`)
-  enumerates the classes the rows actually occupy — all-even {0,2,4,6}
-  strings, halved {0,1,2,3} strings, halved {0,1} strings — and the lemma
-  fails in each, with the minimal counterexample (0,0,1,1) → (0,1,0) (2 runs
-  → 3), the halved form of the {0,2}-block interior string (0,0,2,2). So the
-  failure occurs inside the very leading-{0,2} regime the conjecture
-  targets. Claim `runcount-lemma-refuted` upgraded from hand-counterexample
-  (which used odd-valued (5,5,0,0), technically outside the class) to
-  machine-checked, and the approach
-  `research/approaches/total-variation-oscillation-potential.md` updated:
-  raw r/t potentials are dead; only a corrected weighted/max-factored
-  potential (Chamberland's Ducci template) survives, untested. Captures:
-  `code/out/check_runcount_lemma.captured.txt` (exit 1),
-  `code/out/check_runcount_lemma_class.captured.txt` (exit 0).
 - **Parity wave (proved, Ross 2026):** any (2, odd, odd, ...) sequence has every row's
   leading term odd — but odd is NOT 1. Witnesses: 2,3,13 → leading 9; every-sixth-prime
   pyramid leading column 2,15,9,7,5,3,1,1,1,1,1,7,3. The conjecture lives strictly
@@ -113,23 +91,12 @@ Live thread: `research/threads/regeneration.md` (event-rate bound).
   and Eppstein 2011). The proved Rule 90 core stands alone: at d = 2^j,
   binom(2^j, m) ≡ 1 (mod 2) ∀m, so the halved entry is the XOR of the whole
   width-(2^j+1) window (Sierpinski kernel all-1). **The regeneration-TIMING
-  corollary is CLOSED by the null test** (claim `rule90-relative-depth-null`,
-  `code/rule90_test/null_rule90_depth.py`, capture
-  `code/out/null_rule90_depth.captured.txt`): the absolute-depth and
-  jump-timing forms are refuted by the depth-1000 record; the relative-depth
-  measure gives 21/27 within tol=1 of a power of 2, which against the exact
-  binomial null Binomial(27, 9/16) (uniform over the observed [0,15], with
-  the program's depth>0 guard) is p = 0.0173 — significant at 5%, not at
-  1% — and the signal lives entirely in the tol=1 tolerance: at tol=0 only
-  10/27 hit (p = 0.113), and conditioning on the observed concentrated range
-  [2,9] post hoc gives p = 0.68. The permutation null is degenerate (the
-  predicate tests depth values, not positions). Net: a mild,
-  tolerance-dependent concentration, not a structural regeneration
-  mechanism. The interior-XOR identification is about values inside the
-  block; it says nothing about when the boundary regenerates.
-  Thread: `research/threads/rule90-regeneration.md` (CLOSED).
-  Anchor: `research/notes/block_lemma.md` (apex) and
-  `research/approaches/rule90-absorbing-boundary.md` (the absorption dead end).
+  corollary is CLOSED (refuted)** — see Ruled out; do not re-assert it. The
+  interior identification is about values inside the block; it says nothing
+  about when the boundary regenerates. Anchor:
+  `research/notes/block_lemma.md` (apex),
+  `research/approaches/rule90-absorbing-boundary.md` (the absorption dead end),
+  thread `research/threads/rule90-regeneration.md` (CLOSED).
 - **Regeneration criterion — ESTABLISHED (depth 1000, exact, oracle-checked).**
   Block occupies 0-based cols `1..b_k`; intruder `c_k = A_k[b_k+1]` (first value
   past block), edge `e_k = A_k[b_k]` (the last `{0,2}` value — index `b_k`, not
@@ -400,6 +367,11 @@ recalled claim is relied on whose hypotheses fail here.
 - **Library search halted by directive.** FRONTIER.md is at 309→345 with
   checked at 3. No more downloads until a specific gap is stated that a source
   could close.
+- **Memory cap observed.** The container touched 6.46 GiB of 8 GiB during the
+  26-worker null run before falling to 2.6 GiB. Bound worker counts on anything
+  that materialises the depth-1000 triangle per worker; single-row streaming
+  (one row at a time, O(width) memory) is safe. An OOM kill writes nothing to
+  the console.
 - **CHT Theorem 1.6 hypothesis check — DONE, holds-here = no.** Computed on
   sieve 2e7 (1,270,607 primes): max normalized gap a_n = 89 → M = 7, longest
   0-run L = 2, so R_0 = 100·L·8^M = 419,430,400 ≈ 4.2e8 ≫ 1000. The
