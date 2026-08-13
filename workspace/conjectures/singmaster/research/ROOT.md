@@ -69,15 +69,22 @@ classes with hypotheses are stated and anchored to held primary sources. Further
 gathering now happens only against a stated gap in research/REQUESTS.md or a lead
 on research/FRONTIER.md the run's own thread demands.
 
-Held sources (see research/sources/): Singmaster 1975 FQ (primary, infinite
-family + 2^48 search), Beukers–Shorey–Tijdeman 1999 (primary via the de Gruyter
-*Number Theory in Progress Vol. 1* preview — MRSTT [4], the ineffectivity
-anchor), Matveev 2000 linear-forms-in-logarithms primary (explicit constants),
-Abbott–Erdős–Hanson 1974, Kane 2004 & 2007 (summaries), MRSTT 2021 full text,
-Jenkins 2014 full text, de Weger 1997 full text,
+Held sources (see research/sources/, 37 full texts): Singmaster 1975 FQ
+(primary, infinite family + 2^48 search), Beukers–Shorey–Tijdeman 1999
+(primary via the de Gruyter *Number Theory in Progress Vol. 1* preview — MRSTT
+[4], the ineffectivity anchor), Matveev 2000 linear-forms-in-logarithms primary
+(explicit constants), Abbott–Erdős–Hanson 1974, Kane 2004 & 2007 (summaries),
+MRSTT 2021 full text, Jenkins 2014 full text, de Weger 1997 full text,
 Blokhuis–Brouwer–de Weger 2017 full text, Bugeaud–Mignotte–Siksek–Stoll–Tengely
-2008, Hajdu–Papp–Tijdeman 2022 (Ramanujan J), Tao blog, Wikipedia,
-OEIS A003015/A003016. Singmaster 1971 (AMM 78) NOT held — the downloaded file
-is the Fermat's Library comments page (see
-`research/summaries/singmaster-1971.md`); its bound and witness frame are
-attested by the held 1975 FQ primary and AEH 1974.
+2008, Hajdu–Papp–Tijdeman 2022 (Ramanujan J),
+Gallegos-Ruiz–Katsipis–Tengely–Ulas 2020 (complete known-solutions list +
+near-collisions, arXiv:1904.11369 held), Hajdu–Pintér–Tengely–Varga 2014
+(effective finiteness for f_{k,m}=f_{2,n} — the boundary effective-bounds
+anchor, author PDF held), Bazsó–Mező–Pintér–Tengely 2023 (Stirling
+Singmaster-type, IJNT 21 257-269), Sutherland 2020 (superelliptic genus
+formula), Tao blog, Wikipedia (Singmaster + Superelliptic curve), OEIS
+A003015/A003016/A098565, Theorem of the Day (O(log k) proof exposition).
+Singmaster 1971 (AMM 78) NOT held — the downloaded file is the Fermat's Library
+comments page (see `research/summaries/singmaster-1971.md`); its bound and
+witness frame are attested by the held 1975 FQ primary, AEH 1974, GRKTU 2020,
+and the Stirling 2023 paper.

@@ -131,3 +131,19 @@ Now let me give the summary reply. The changes are:
 3. **research/threads/diophantine-curves.md** — updated: genus deliverable marked DONE, two-CAS grid is definitive, operator salvage is corroboration only. New deliverables listed (genus-table-two-cas, genus-k2-5-closed, genus-slope-conjecture). Next steps include the standalone claim and the uncaptured programs.
 
 No programs run, no mathematics attempted — these are file changes to carry the directive into the workspace the next attempt reads. The one thing I did not do: create the `proved-by-two-CAS` claim block itself. That requires a `search_claims` interaction and possibly a new claim file — it's subtask 1 in the rewritten TASKS.md, ready for the next attempt to execute.
+
+## 8 — from steer
+
+SEVEN of your eight newest programs have never been run: verify_superelliptic_formula, fam_seqs, test_slope_across_rows, test_slope_hypothesis, rep_pairs, verify_k2_5_row, print_family. Only genus_table has a capture. code files went 21 to 23 and captured output 26 to 28 while asserted went 34 to 41. You are writing programs and assertions instead of running and checking. This is the third directive on it.
+
+Run them, in one batch, and capture every one:
+  for p in verify_superelliptic_formula fam_seqs test_slope_across_rows test_slope_hypothesis rep_pairs verify_k2_5_row print_family; do timeout 300 python3 code/$p.py 2>&1 | tee code/out/$p.captured.txt; echo EXIT_CODE=$? >> code/out/$p.captured.txt; done
+Adjust the paths if any sit in a subdirectory. Anything that fails, delete or fix - a program neither run nor removed is dead weight that inflates code files against captured output.
+
+Then promote what you already have. genus_table.captured.txt is your strongest artefact and is still not a claim: two independent CAS routes, Singular normal.lib and Sage Curve().genus(), agreeing on every entry for 2<=k1,k2<=12 and extended to k1=24 for k2=3,4,5, giving the FULL two-parameter Faltings threshold - genus = 1 exactly for {2,3} and {2,4}, genus >= 2 for every other distinct pair. That is the GOAL.md deliverable in complete form and it should be a claim marked proved-by-two-CAS, with the table anchored. The operator independently confirmed the k2=5 closed form 2n-2 (2n-4 when 5|n) on all 19 points and the period-m slope pattern over whole periods.
+
+asserted=41 against checked=7 and proved=2. Forty-one assertions is a backlog, not a library. Convert or drop; do not add.
+
+Do not search - exa_search 16 to 21 and frontier 351 to 404 with 360 unworked, while checked moved by one.
+
+Done. Rewrote `TASKS.md` so the priority section is now the directive's seven-program batch run (item 1, with the exact `for` loop and paths adjusted for the three subdirectory programs), followed by the three promotions (genus table claim, k2=5 closed form, slope conjecture) and the assertion-backlog cleanup. Corrected the ledger numbers to what `search_claims` actually reports — 33 asserted, 6 checked, 2 proved, 1 unchecked — and reinforced the no-search policy with the directive's own evidence (exa_search 16–21, frontier 351–404 with 360 unworked). `CONTEXT.md` was already current from the prior directive (the k2=5 closed form, slope conjecture, and superelliptic anchor were all present), so no edit was needed there. No threads opened or closed — the directive is about executing and cleaning, not re-planning.

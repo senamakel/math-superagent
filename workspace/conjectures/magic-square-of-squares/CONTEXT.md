@@ -147,27 +147,22 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   `m,n ≤ 200`). Status: verified-numerically on a finite range, conjectural as
   a theorem — **not a proof of non-existence**. Any claim beyond the range is
   `conjectured` until attacked.
-- **Hypothesis under test — REFUTED and REPLACED (directives 15–16):** The
-  `side_census.py` docstring claim "1+(q1+q2) is NEVER a rational square" is
-  **false**: at M=400 it is square 66 times (three witnesses re-verified in
-  exact Fraction arithmetic with in_phi). **Reproduced** at M=200: both=0
-  again, 132 minus-squares, 24 plus-squares (same first three witnesses).
-  **What survived:** over all 156,988,030 pairs (M=400), 1−(q1+q2) is a
-  rational square 325 times, 1+(q1+q2) is 66 times, and **BOTH = 0** — no
-  pair has both 1−s and 1+s rational squares. This is an impossibility lemma
-  on *pairs*, not triples. **The curve to identify (directive 16):** the
-  condition "both 1−s and 1+s are rational squares" is equivalent to
-  s = 2t/(1+t²) for some rational t — the parametrisation of the genus-0
-  curve x²+y² = 2. Intersect this with the set S = {q1+q2 : q1,q2 ∈ Φ,
-  q1+q2 < 1} and ask whether Φ-membership forces a local obstruction. Any
-  obstruction found must be checked against the 66 plus-witnesses and 325
-  minus-witnesses in `code/out/side_census.captured.txt` or it is asserted.
-  **M=800 run: budget stopped at i=22988/129870 (17.7% of the index)** —
-  both=0 again in the covered prefix, 11 plus-square / 6 minus-square
-  witnesses there (`code/out/side_census_M800.captured.txt`); consistent but
-  partial, and must carry that fraction. Claim
-  `phi-pair-sides-never-both-square` in CLAIMS.md, status: checked for M=400
-  only. Thread: `research/threads/pair-sum-both-squares-incompatibility.md`.
+- **The both=0 finding is a GLOBAL statement — local obstructions ruled out**
+  (directive 19, `hilbert-symbol-of-two-squares-trivially-split`, operator-verified):
+  if 1−s=t² and 1+s=u² then t²+u²=2 is everywhere locally soluble, and Hilbert
+  symbols (t²,u²)_p=1 at every prime. No Q-level local or congruence obstruction
+  can explain both=0. This line is closed, not a partial result. The right frame
+  is `concordant-forms-iff-ell-torsion-order-2`: "both 1±s rational squares" ⇔
+  E_{M,N}: y²=x(x+M)(x+N) has a point of order >2. The question becomes: does
+  Φ-membership force rank 0 or wrong torsion for every pair? **Next:** form
+  E_{M,N} for the 66 plus-witnesses and 325 minus-witnesses from
+  `code/out/side_census.captured.txt`, compute rank+torsion, and check whether
+  the two sets split cleanly — this connects the pair-level observation to the
+  run's standing blocker (uniform boundedness of ranks). The undocumented
+  `side_census.py` docstring hypothesis ("1+(q1+q2) NEVER a rational square")
+  was refuted at M=400 (66 counterexamples). Claim
+  `phi-pair-sides-never-both-square` in CLAIMS.md, status: checked for M=400.
+  Thread: `research/threads/pair-sum-both-squares-incompatibility.md`.
 - **The Faltings-fibre attack on the Φ-triple is dead — confirmed by execution**
   (`phi_fibre_genus_run.py`, `phi_fibre_genus_check.py`, both captured in
   `code/out/`). f is homogeneous degree 0, so f(m,n) depends only on the ratio
@@ -421,11 +416,7 @@ finding disagrees with the Established section.
 - **Conditional reduction to a finite computation** — written: claim
   `conditional-mss-finite-computation`, status conditional (unproved
   rank-uniform-boundedness premise), `code/out/conditional_reduction_claim.md`.
-- **`magic-variety-is-surface-no-lines` still asserted** — the direct
-  computation (X⊂P⁸ cut by 7 homogeneous line-sum equations: dim=2, 256
-  singular points, no lines) is TASKS.md's first blocking item and has NOT been
-  run; the claim may move to `checked` only after that output exists. The
-  adopted `resolve-magic-surface-birational` line waits on it.
+- **`magic-variety-is-surface-no-lines`** — dimension 2 CONFIRMED (exact ranks rank(I8)=7, rank(M7)=6; `code/out/magic_variety_check.captured.txt`), but the check script crashes on a nullspace-normalisation assertion (expects relation (1,1,-1,-1,0,0,-3), computed (1,1,-1,-1,-1,0,0)) before computing the 256 singular points and no-lines; claim still `asserted` and the adopted `resolve-magic-surface-birational` line waits on a completed run.
 - **Rank of the Robertson curve** `E_c: y² = x(x²−c²)` for candidate AP-difference c
   (c ∈ {u,v,u+v,u−v} — not the centre e²): for Bremner's witness c=138600,
   rank(E_c)=2, torsion order 4. A putative MSS needs a length-3 AP of doubled

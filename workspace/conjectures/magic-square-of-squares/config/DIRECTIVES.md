@@ -263,3 +263,23 @@ Three changes, all driven by directive 18's priorities:
 3. **TASKS.md unrun-programs section** — added the partial-sweeps caveat the directive insisted on: `no_triple_fast_M700` at 40.4% and `prefilter_census_M1000` at 18.7%; any claim from either must carry that fraction.
 
 CONTEXT.md needed no change — the partial-sweeps fraction, the HMS constant gap, and the both=0 finding are all already there. The directive's content is reflected in the files that control what gets done next.
+
+## 19 — from steer
+
+You closed the route the operator suggested, and you are right. hilbert-symbol-of-two-squares-trivially-split is correct and the operator verified it independently: if c+d = A^2 and c-d = B^2 then (A^2,B^2)_p = 1 at every prime, since a square is a norm from any quadratic extension, and X^2+Y^2=2c is everywhere locally soluble so Hasse-Minkowski gives nothing. So NO Q-level local or congruence obstruction can explain the both=0 observation. The operator steered you twice toward looking for a local obstruction; that was wrong and this claim settles it. Record it as closing that line, not as a partial result.
+
+That makes the both=0 finding a GLOBAL statement, and concordant-forms-iff-ell-torsion-order-2 gives the right frame: concordance is equivalent to a condition on the elliptic curve E_{M,N}: y^2 = x(x+M)(x+N). So the question becomes whether Phi-membership forces that curve to have rank 0 or the wrong torsion, for every pair. State it that way in research/threads/, because it connects the cheap pair-level observation to the workspace's standing blocker - uniform boundedness of ranks - rather than being a separate lead.
+
+Then test it where it is cheap. Take the 66 plus-witnesses and the 325 minus-witnesses in code/out/side_census.captured.txt, form E_{M,N} for each, and compute rank and torsion. If the minus-witnesses and plus-witnesses split cleanly by rank or torsion, that is the mechanism behind both=0 and it is checkable now. Any lemma you propose must be run against those witnesses or it is asserted, never checked.
+
+The operator is running side_census at M=800 to a longer budget on the host; your own M=800 stopped at i=22988/129870, which is 17.7 percent of the index, so its raw counts of 6 and 11 are NOT comparable to M=400's 325 and 66 and must never be quoted as a decline.
+
+Ledger moved the right way: proved 17 to 19, captured 49 to 51, code flat at 71, zero failures. Keep that shape.
+
+Three changes, all from directive 19:
+
+1. **TASKS.md** — Marked the five previously-unrun phi_triple_variety programs, magic_variety_check, side_census M=800, and ratio_search as done (all ran, exits captured). Added the directive's priority block: form E_{M,N} for the 66 plus-witnesses and the 325 minus-witnesses from `side_census.captured.txt`, compute rank and torsion, and check whether the two sets split cleanly. Any lemma from this must be run against those witnesses or it is asserted, never checked. The stale concordant-form local-obstruction task is removed.
+
+2. **research/threads/pair-sum-both-squares-incompatibility.md** — Reframed: directive 19 confirms `hilbert-symbol-of-two-squares-trivially-split` closes the local-obstruction line. The both=0 is a GLOBAL statement. The concordant-forms dictionary gives the right language: "both 1±s rational squares" ⇔ E_{M,N}: y²=x(x+M)(x+N) has a point of order >2. The question becomes whether Φ-membership forces rank 0 or wrong torsion — connecting the cheap pair-level observation to the run's standing blocker (uniform boundedness of ranks) rather than being a separate lead.
+
+3. **CONTEXT.md** — Replaced the stale hypothesis-refutation paragraph with the new frame: both=0 is global, local obstructions ruled out, concordant-forms elliptic-curve frame adopted, next step is witness-curve computation.

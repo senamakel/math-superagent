@@ -1,0 +1,40 @@
+[parallel] rule90-depth null: 10000 permutations of 27 depths across 26 worker(s) of 28 CPUs
+[parallel] rule90-null-perm: 10000 permutations across 26 worker(s) of 28 CPUs
+regime depths (27, k=1000 tail dropped): [0, 7, 4, 2, 8, 4, 8, 4, 9, 9, 6, 6, 4, 3, 4, 7, 5, 3, 2, 14, 15, 3, 6, 4, 3, 5, 13]
+hit predicate: depth>=1 and |depth-2^j|<=1 for some j (tol=1)
+hit values in 0..15: {1,2,3,4,5,7,8,9,15}  -> p = 9/16 per trial
+observed hit count: 21/27
+
+=== NULL 1: permutation (shuffle the 27 observed depths) ===
+  10000 shuffles: hit-count distribution = {21: 10000}
+  all counts identical (21): the permutation null is DEGENERATE
+  why: the hit predicate tests the depth VALUE only, not its
+  position, so every rearrangement of the same multiset of
+  depths has the same hit count.  A permutation test has zero
+  power for a value-only predicate; it cannot test this claim.
+  permutation p-value = 10000/10000 = 1.000  (meaningless; reported for completeness)
+
+=== NULL 2: exact binomial, X ~ Binomial(27, 9/16) ===
+  per-trial hit probability p = 9/16 (uniform over [0,15],
+  program's own guard: depth 0 is not a hit)
+  mean = 27*9/16 = 243/16 = 15.188
+  sd   = sqrt(27*9/16*7/16) = 2.578
+  observed 21 hits -> z = (21 - 15.19)/2.58 = 2.25
+  P(X >= 21) = 2806914706123478630963182067907/162259276829213363391578010288128 = 0.017299
+  VERDICT (binomial null): the 21/27 hit rate is significant at 5% (two-sided ~ 0.0346)
+
+=== sensitivity (anti-conservative, NOT the primary null) ===
+  depths concentrated in [2,9]: 23/27 there
+  within [2,9] the hit rate is 20/23 (87%), vs the [2,9] near-value fraction 7/8 = 87.5%
+  Binomial(23, 7/8): P(X >= 20) = 0.6775 — conditioning on the observed range post hoc erases the signal; the honest range is [0,15] as in null 2
+  TASKS's own good-set {1,2,3,4,7,8,9,15,16} also gives 9/16 in [0,15] (16 outside, 5 a hit under the program's predicate): same null 2 p-value.
+
+  robustness tol=0 (exact powers of two, p=1/4): 10/27 hits, P(X >= 10) = 0.1133 (NOT significant)
+  => the signal lives entirely in the tol=1 tolerance; at tol=0 it is not significant
+
+  cross-check: scipy P(X >= 21) = 0.017299 (agrees with the Fraction exact value 0.017299)
+=== the 6 far regime lengths (the evidence AGAINST the signal) ===
+  [0, 6, 6, 6, 13, 14]  (three 6s: 3; and 0, 13, 14)
+  expected far under binomial null: 11.8 of 27; observed 6
+
+wrote code/out/rule90_depth_null.json

@@ -2,70 +2,85 @@
 
 **Question.** For `q1, q2 ∈ Φ` with `q1 > q2` and `q1 + q2 < 1`, can
 `1 − (q1+q2)` and `1 + (q1+q2)` be simultaneously rational squares?
-If not — if the two square conditions are provably incompatible — that
-would be an impossibility lemma on **pairs**, which is cheaper than anything
-on triples. A Φ-triple `q3 = q1 + q2 ∈ Φ` needs both `1 − q3` and `1 + q3`
-to be rational squares (every member of Φ has that property), so proving
-that no sum `s = q1+q2` of two Φ-values can have both `1 ± s` square would
-rule out Φ-triples *without* testing membership of the sum.
 
-**Status.** live — opened by directive 15.
+**Status.** live — opened by directive 15; reframed by directive 19.
 
-**Evidence.** At M=400 (|Φ| = 32495, 156,988,030 pairs with `q1>q2` and
-`q1+q2<1`):
+## Evidence
+
+At M=400 (|Φ| = 32495, 156,988,030 pairs with `q1>q2` and `q1+q2<1`):
 - 1−(q1+q2) is a rational square: **325** times
 - 1+(q1+q2) is a rational square: **66** times
 - **BOTH**: **0** times
 
-Neither condition is empty, so the both=0 is not an artefact of either being
-rare. Every one of the 66 plus-witnesses inspected has 1−(q1+q2) a non-square,
-and vice versa. Three witnesses were re-verified in exact Fraction arithmetic
-with `in_phi` confirming both members lie in Φ:
+At M=800 (|Φ| = 129870, budget-exhausted at i=22988/129870 = 17.7%):
+- 1−(q1+q2) a rational square: 6 (partial — 17.7% of index; NOT comparable to M=400's 325)
+- 1+(q1+q2) a rational square: 11 (partial; NOT comparable)
+- **BOTH**: 0
 
-| q1 | q2 |
-| --- | --- |
-| 1476984/9765625 | 1257456/21390625 |
-| 2258256/17181025 | 6571656/193905625 |
-| 10226040/65237929 | 70160160/534950641 |
+Neither condition is empty, so both=0 is not an artefact of either being rare.
+The partial M=800 numbers must never be quoted as a decline from M=400 — they
+cover only 17.7% of the index. Operator is running a longer-budget M=800 on the
+host.
 
-**The prior hypothesis is refuted.** The docstring of `side_census.py` claimed
-"1+(q1+q2) is NEVER a rational square." That is false — it happens 66 times
-at M=400. Do not use the docstring hypothesis as a prefilter justification
-anywhere. The both=0 finding is what survived and is the thing to work on.
+## The prior hypothesis is refuted
 
-**Why this is promising.** The condition "both 1−s and 1+s are rational
-squares" is the classical **concordant-forms** shape: two numbers differing
-by a rational square are simultaneously squares. Specifically, if 1−s = t²
-and 1+s = u² with t,u ∈ Q, then t² + u² = 2, and the point (t,u) lies on
-the circle x² + y² = 2. But s = q1+q2 is not an arbitrary rational — it is
-a sum of two Φ-values, each itself of the form f(m,n) = sin(4 arctan(n/m)).
-The question is whether this structure forces s into a form that is
-incompatible with the concordant condition.
+The docstring of `side_census.py` claimed "1+(q1+q2) is NEVER a rational
+square." That is false — it happens 66 times at M=400. Do not use the docstring
+hypothesis as a prefilter justification anywhere. The both=0 finding is what
+survived.
 
-**Next steps.**
-1. **Identify the curve (directive 18 priority 1).** The condition "both 1−s and 1+s
-   are rational squares" is the classical concordant-forms problem, equivalent to
-   a rational point on the circle x²+y²=2. Write the explicit curve for
-   s = q1+q2 with q1,q2 ∈ Φ: 1−s = t², 1+s = u² ⇒ t²+u² = 2 ⇒ s = 2w/(1+w²)
-   for some rational w. Intersect {s = q1+q2 : q1,q2 ∈ Φ, s < 1} with the
-   image of w ↦ 2w/(1+w²). Ask whether Φ-membership of the summands forces a
-   local obstruction. Any obstruction found must be run against the 66
-   plus-witnesses and 325 minus-witnesses in `code/out/side_census.captured.txt`.
-2. **Re-run side_census at M=800 (directive 18 priority 2).**
-   `PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt`
-3. **Run the remaining phi_triple_variety programs** — five unrun programs in TASKS.md.
+## Why this is a GLOBAL statement, not a local one
+
+Directive 19 confirms what `hilbert-symbol-of-two-squares-trivially-split`
+already established: if 1−s = t² and 1+s = u² then t²+u² = 2, a conic everywhere
+locally soluble, and Hasse-Minkowski gives nothing. The Hilbert symbols
+(t², u²)_p = 1 at every prime. **No Q-level local or congruence obstruction can
+explain both=0.** The earlier steer toward local obstructions was wrong; this
+claim settles it. The both=0 finding is a GLOBAL statement.
+
+## The concordant-forms elliptic-curve frame
+
+`concordant-forms-iff-ell-torsion-order-2` gives the right language: the
+condition "both 1−s and 1+s are rational squares" is equivalent to the elliptic
+curve
+
+> E_{M,N}: y² = x(x+M)(x+N)
+
+having a rational point of order greater than 2 (finite or infinite), where
+M, N derive from s = q1+q2.
+
+**So the both=0 question becomes:** does Φ-membership of the summands force
+E_{M,N} to have rank 0 or the wrong torsion, for every pair? This connects the
+cheap pair-level observation to the workspace's standing blocker — uniform
+boundedness of ranks — rather than being a separate lead.
+
+## Next step: test on the witnesses
+
+Take the 66 plus-witnesses and the 325 minus-witnesses from
+`code/out/side_census.captured.txt`, form E_{M,N} for each, and compute rank
+and torsion. If the minus-witnesses and plus-witnesses split cleanly by rank or
+torsion, that is the mechanism behind both=0 and it is checkable now.
+
+**Any lemma proposed from this must be run against these witnesses or it is
+asserted, never checked.**
 
 ```thread
 question: For q1,q2 in Phi with q1>q2 and q1+q2<1, can 1-(q1+q2) and
   1+(q1+q2) be simultaneously rational squares? At M=400: 325 minus-square
-  pairs, 66 plus-square pairs, and BOTH=0. If both=0 is provable, that is
-  an impossibility lemma on pairs, which rules out Φ-triples without testing
-  membership of the sum.
+  pairs, 66 plus-square pairs, and BOTH=0. This is a GLOBAL statement: no
+  Q-level local or congruence obstruction can explain it. The concordant-
+  forms dictionary (concordant-forms-iff-ell-torsion-order-2) reframes it as:
+  does Phi-membership force E_{M,N}: y²=x(x+M)(x+N) to have rank 0 or wrong
+  torsion, for every pair? This connects the cheap pair-level observation to
+  the run's standing blocker — uniform boundedness of ranks.
 status: live
 rests-on: phi-universal-set, phi-pair-sides-never-both-square,
-  concordant-forms-iff-ell-torsion-order-2
-blocked-by: both=0 only verified at M=400; need M=800 and then a proof
-next: re-run side_census at M=800; run the six unrun phi_triple_variety
-  programs; name the invariant separating the plus and minus pairs; frame
-  as a concordant-forms question on the associated elliptic curve
+  concordant-forms-iff-ell-torsion-order-2,
+  hilbert-symbol-of-two-squares-trivially-split
+blocked-by: both=0 only verified at M=400; M=800 partial (17.7% of index);
+  need the concordant witness curves computed
+next: form E_{M,N} for the 66 plus-witnesses and 325 minus-witnesses from
+  side_census.captured.txt; compute rank+torsion for each; check whether
+  the two sets split cleanly by rank or torsion; state any split found as
+  a claim with the witnesses as falsifier
 ```

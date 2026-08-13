@@ -1,0 +1,39 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+int n;
+// Family {7,n}: extend row (have n=8..12). Predict under R_7(r)=-(m-1)=-6 for
+// r=1..6 and R_7(0)=-2(m-1)=-12:  n=13 -> (6*13-6)/2=36, n=14 -> (6*14-12)/2=36
+for(n=13; n<=15; n=n+1)
+{
+  poly F = CB(x,7) - CB(y,n);
+  ideal I = F;
+  "F7 n=", n, ": ", genus(I);
+}
+// Family {8,n}: have n=9..12 (R: -7,-8,-7,-10). Extend to r=5,6,7,0
+for(n=13; n<=16; n=n+1)
+{
+  poly F = CB(x,8) - CB(y,n);
+  ideal I = F;
+  "F8 n=", n, ": ", genus(I);
+}
+// Family {9,n}: have n=10..12 (R: -8,-8,-10). Extend to r=4..8,0
+for(n=13; n<=17; n=n+1)
+{
+  poly F = CB(x,9) - CB(y,n);
+  ideal I = F;
+  "F9 n=", n, ": ", genus(I);
+}
+// Family {10,n}: have n=11..12 (R: -9,-10). Extend to r=3..9,0
+for(n=13; n<=19; n=n+1)
+{
+  poly F = CB(x,10) - CB(y,n);
+  ideal I = F;
+  "F10 n=", n, ": ", genus(I);
+}

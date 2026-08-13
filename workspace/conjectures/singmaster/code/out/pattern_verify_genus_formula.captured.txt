@@ -1,0 +1,22 @@
+TABLE: 91 points, 0 mismatches
+EXTENSIONS: 25 points, 0 mismatches
+diagonal 1 (pair {n-1, n}): formula = n*(n - 2)/2 - n/2 + 1
+diagonal 2 (pair {n-2, n}): formula = n*(n - 3)/2 - n/2 + 3/2
+diagonal 3 (pair {n-3, n}): formula = n*(n - 4)/2 - n/2 + 2
+  (compare: a=1 -> (n-1)(n-2)/2; a=2 -> (n-1)(n-3)/2 odd, (n^2-4n+2)/2 even; a=3 -> ?)
+formula symmetric over all table pairs: True
+formula integral over m=2..29, n=m+1..59: True
+
+Next uncomputed term per row (prediction):
+  m=2: next n=13 -> g=6   (had n<= 12)
+  m=3: next n=25 -> g=24   (had n<= 24)
+  m=4: next n=25 -> g=36   (had n<= 24)
+  m=5: next n=25 -> g=46   (had n<= 24)
+  m=6: next n=19 -> g=45   (had n<= 18)
+  m=7: next n=16 -> g=45   (had n<= 15)
+  m=8: next n=17 -> g=56   (had n<= 16)
+  m=9: next n=18 -> g=64   (had n<= 17)
+  m=10: next n=20 -> g=81   (had n<= 19)
+  m=11: next n=13 -> g=60   (had n<= 12)
+
+All checks done.  Formula: g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2

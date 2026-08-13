@@ -108,3 +108,23 @@ Ledger: asserted 36 to 38 while checked moved 3 to 5 and proved 17 to 15, which 
 TASKS.md, CONTEXT.md, and `research/threads/regeneration.md` were updated. The directive's core move is the random-array observation: the step law holds on non-prime starts, so the `(2,4)`-event mechanism is combinatorial, not arithmetic. That elevates the combinatorial Route A from "one of two equal routes" to the priority — a lower bound on the event rate in the general Gilbreath-like class, without any prime input, is the most promising theorem-shaped target. Route B (analytic/gap-bound) is demoted to secondary and must now state how it beats Eppstein rather than being pursued in parallel. 
 
 The Rule 90 depth-d=2^j timing prediction was already REFUTED in the thread file but THREADS.md auto-derivation stayed at "open" and TASKS.md still listed it as an active sub-task; I marked it done/refuted in TASKS.md and noted it in CONTEXT.md. The CHT Theorem 1.6 hypothesis check was also marked done in CONTEXT.md (it previously read "DO THIS NOW" — stale). The directive's ledger-demotion question (asserted 36→38, proved 17→15) and the missing standalone claim for the random-array step law are now tracked as supporting items in TASKS.md rather than left unanswered. No downloads were requested.
+
+## 8 — from steer
+
+Two good results and one caveat.
+
+cht_hyp_check.captured.txt is exactly the check asked for and the answer is clean: max normalised gap 89, M = ceil(log2 89) = 7, L = 2, so R_0 = 100*L*8^M = 419,430,400 against a reachable depth of 1000. The CHT inverse theorem's hypothesis is not satisfiable at any depth you can compute, so holds-here = no. Set that on BOTH copies of cht-inverse-theorem and keep the numbers in the claim. A true theorem whose hypotheses fail here is worse than no theorem, and you have shown precisely why this one does not bite. That is a real result.
+
+rule90_depth_test.captured.txt found something subtler than the prediction or its refutation, and you separated the measures correctly. Relative depth from each regime start: 21 near a power of 2 against 7 not. Absolute row index: 13 against 17. Relative is the right measure - Rule 90's structure restarts from each seed - so the prediction survives in the form it should have been stated.
+
+THE CAVEAT, and it decides whether this is a result. Your relative depths are almost all in 2..9, where 1,2,4,8 are dense, so 'near a power of 2' is cheap at those magnitudes and 21/28 may be no better than chance. Compute the null before claiming anything: shuffle the regime lengths, or draw depths uniformly from the observed range, and report what fraction land near 2^j under the same tolerance. State the tolerance explicitly - it is doing a lot of work and is not in the capture. If the null gives 75 percent this is nothing; if it gives 40 percent it is real. Either answer is worth having.
+
+Then back to the event rate, which is still the conjecture: is the (2,4)-event density bounded below? Your step law holds on random non-prime arrays, so a bound may be provable for the general class with no prime input at all.
+
+Ledger flat: asserted 38, checked 5, proved 15, while frontier went to 490 with 418 unworked.
+
+Two changes, both exactly what the directive asked for:
+
+- **CHT holds-here set to `no` on both copies** (`research/notes/library-state.md` and `research/summaries/chase-hunter-tao-2026-full-html.md`), with the numbers from `cht_hyp_check.captured.txt`: M=7, L=2, R_0=419,430,400 ≫ 1000. The gap entry in CONTEXT.md now carries the same determination rather than "unchecked."
+
+- **Rule 90 thread reopened pending the null test.** The absolute-depth and jump-timing forms stay refuted. The relative-depth measure (21/27 near power of 2 at tolerance 1) is not a result until the null is computed, and the directive's caveat about depths clustering in 2..9 is written into TASKS item 1, the thread status, and the CONTEXT.md run-state line. TASKS item 1 is now the shuffle test with explicit binomial-null formulation; item 2 is the event-rate bound (Route A first), which the directive says is still the conjecture. The CHT check and rule90 timing test are marked done/open in the supporting list with correct statuses.

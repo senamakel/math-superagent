@@ -48,6 +48,10 @@ Each marked with evidence class and a link.
   **Closed forms verified against every computed entry (k1<=24).**
   `{2,n}`: `y(y-1)=2C(x,n)` hyperelliptic, `genus=floor((n-1)/2)`.
   `{3,n}`: `Y^3-Y=6C(x,n)` (Y=y-1) cyclic-trigonal, `genus=n-1` if 3∤n else `n-2`.
+  Both rows now have a primary anchor: the superelliptic Riemann–Hurwitz formula
+  `g=((d−2)(m−1)+m−gcd(m,d))/2` (m=2,3; Sutherland 2020 eq. (1),
+  Shorey–Tijdeman) — claim `superelliptic-genus-formula`, `checked` — so the
+  {2,n}/{3,n} closed forms are explained, not merely fitted.
   `{4,n}`: 2:1 cover of `w^2=1+24C(x,n)` via `w=y^2-3y+1`, `genus=3(n-1)/2`
   (n odd), `3(n-2)/2+1` (n≡2 mod 4), `3(n-2)/2` (n≡0 mod 4).
   **`{5,n}` now established:** `genus = 2n-2 except 2n-4 when 5|n` — exact on
@@ -190,6 +194,26 @@ Each marked with evidence class and a link.
   Closing uniformity needs effective Siegel or effective Schmidt subspace
   theorem — out of reach. Recorded so the inventor does not re-propose it.
 
+- **Effective curve methods cannot give uniformity — the completed
+  impossibility result. `sourced` (grounded; claim `effective-methods-wall`,
+  four held primaries).** The effective integral-point toolbox (David's
+  elliptic logarithms at genus 1; BMSST Baker/Matveev + Mordell–Weil sieve at
+  genus 2) is per-curve: it requires a rational point, an explicit Jacobian
+  MW basis, and canonical-height-difference bounds that are **provably
+  unavailable for genus ≥ 3** (BMSST 2008 p. 2 verbatim) — and the family
+  leaves genus ≤ 2 immediately (`genus{2,n}=floor((n−1)/2)`; (3,4) is already
+  genus 3). Where it applies, every constant grows with the curve's
+  rank/regulator/heights (David c4 has exponent r+2; Matveev
+  `−112·2ⁿ·C₂·C′₀·D²·Ω·ln(2eB)` grows in n, D, Ω=∏A_j) — i.e. with the column
+  index — so no k-independent constant emerges; and a uniform B would have to
+  sum per-pair bounds over ~log2(a) pairs down to the MRSTT-open boundary,
+  which they cannot do. **This is GOAL.md's "approach cannot give a bound
+  uniform in k, obstruction named" deliverable.** The surviving honest
+  per-pair task is an explicit Matveev/David constant for one small pair,
+  stated with its k-dependence. Full statement:
+  `research/approaches/effective-methods-wall.md`. Do not re-propose curve
+  methods as a route to uniformity.
+
 - **Kane's lattice-point method cannot beat inverse density.** `sourced`
   (Kane 2007 §8): a randomized construction proves his method cannot give
   better than `O(log_2 t)`; one cannot exclude low-density t with his
@@ -235,6 +259,13 @@ here and live in the sections above. Treat all library claims as
 `sourced`/`computed` per the marking above, and MRSTT/Kane/internal results as
 taken on their word (`asserted`) where not re-derived here.
 
+The durable graph (`relate_memory`) connects the central objects exactly as
+the sections above do: `uniform-in-k obstruction --blocks--> singmaster's
+conjecture`, `effective uniform bound --would_resolve--> singmaster's
+conjecture`, `genus computation approach --targets--> singmaster's conjecture`.
+No additional node changes the picture; the obstruction node is the same wall
+the library marks ineffective.
+
 One independent prior durable node bears on the problem (recalled, not this
 run's finding): **multinomial generalization** (De Koninck–Doyon–Verreault 2021,
 arXiv:2107.09107). For fixed k, `N_k(a)` (k-term multinomial = a) has average and
@@ -244,6 +275,11 @@ binomial case. It also corroborates the verification list (N(a)>=6 up to 10^60,
 k=2 restriction is exactly Singmaster, and its conclusion — small columns, not
 typical values, are where a uniform bound is hard — matches the run's scratching.
 Carry it as corroboration only, not as a bound.
+
+Two further adjacent bounds exist in the library (asserted, secondary; carry as
+context, not as Singmaster results): Stirling-number analogue `M_i(a) <=
+2 + 2 log_a / W((1/2) log a)` (`stirling-2023-bound-and-record`, Bazsó–Mező–
+Pintér–Tengely 2023) and the OEIS row-count convention `oeis-a003016-row-count`.
 
 ## Contradictions
 
@@ -311,22 +347,22 @@ Carry it as corroboration only, not as a bound.
   αⱼ are rationals/primes, D=ρ=1) to a chosen small-(k1,k2) family and
   numerically evaluating the resulting explicit bound — a GOAL-eligible
   partial result.
-- Effective height bound with a **computed** constant for a specific (k1,k2)
+- The **only remaining live direction** toward a partial result: an effective
+  height bound with a **computed** constant for a specific (k1,k2)
   family (Baker / linear forms in logarithms) — the realistic partial-result
-  target. The constant-supplier is now primary: **Matveev 2000** (Izv. Math. 62:4,
-  held) gives the explicit constants `ln|Λ| > −112·2ⁿC₂C′₀D²ωln(2eB)` (Thm 2.2)
-  and the rational/integer case with 2ⁿ improvement (Thm 2.3, K=Q — applies to
-  binomial products since αⱼ are rationals/primes, D=ρ=1). Claim
-  `matveev-2000-explicit-constants`. Binding constraints: the bound grows with
-  heights (hence with k), so it is a per-pair constant, not uniform; the run's
-  own CONTEXT gap "nobody has made a constant explicit" is now a *computation to
-  do* (apply Matveev Thm 2.3 to one small-(k1,k2) family), not a missing source.
-- The exact uniform-in-k obstruction: what precisely a general effective Siegel
-  or effective Schmidt subspace theorem would need, and why it is out of reach —
-  stating this cleanly is itself a deliverable (GOAL.md allows a proof that a
-  stated approach cannot give uniformity, with the obstruction named).
-- Source-gathering continued (frontier 121→170) without new claims checked;
-  further gathering happens only against a stated gap in research/REQUESTS.md.
+  target, and now a computation rather than a missing source: **Matveev 2000**
+  (Izv. Math. 62:4, held) gives the explicit constants
+  `ln|Λ| > −112·2ⁿC₂C′₀D²ωln(2eB)` (Thm 2.2) and the rational/integer case
+  with 2ⁿ improvement (Thm 2.3, K=Q — applies to binomial products since αⱼ
+  are rationals/primes, D=ρ=1). Claim `matveev-2000-explicit-constants`.
+  Binding constraints: the bound grows with heights (hence with k), so it is a
+  per-pair constant, not uniform (`effective-methods-wall`); GOAL.md accepts a
+  per-pair effective constant stated with its k-dependence. Apply Matveev
+  Thm 2.3 to one small-(k1,k2) family (e.g. (2,3) or a fixed row) and evaluate
+  the bound numerically. Same shape as HPTV's effective k2=2-column result:
+  per-parameter, not uniform.
 - Compute policy is in place (never build the triangle; invert per small k by
   binary search; k<=log2(a); 28 CPUs; parallelise over a or (k1,k2); `timeout
+  540`; state workers+range). Follow it.
+meout
   540`; state workers+range). Follow it.

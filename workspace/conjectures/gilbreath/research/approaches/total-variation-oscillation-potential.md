@@ -77,15 +77,31 @@ precedent: |
   variation-diminishing literature — it is an elementary false conjecture,
   now refuted here). A corrected potential must handle the (a,a,c,c)-type
   equality cases explicitly.
+  MACHINE-VERIFIED (this run, code/out/check_runcount_lemma.py + capture):
+  the refutation is not confined to exotic odd-valued strings. Exhaustive
+  search over all 6,725,600 strings of length 1..8 with values 0..6 found the
+  first counterexample (6,6,6,6,6,6,5,5) (runs 2 -> 3), worst run-count
+  increase 3 at (0,0,1,1,0,0,1,1). The class-restricted run
+  (check_runcount_lemma_class.captured.txt) enumerates the classes the
+  triangle actually lives in: all all-even strings with values {0,2,4,6}
+  (len <= 8, 87,380), all halved {0,1,2,3} strings, and all halved {0,1}
+  strings (len <= 10). In every one of them the lemma fails, with the minimal
+  counterexample (0,0,1,1) -> (0,1,0) (2 runs -> 3) — the halved form of the
+  {0,2}-block string (0,0,2,2). So the monotone-run potential is dead INSIDE
+  the very {0,2} interior regime the conjecture targets (the bit-level run
+  count there is governed by Rule 90, which grows runs), not merely on
+  far-away strings. No weighted-run variant has been tested; that is the only
+  surviving direction (Ducci factored-max template).
 status: refuted
 first-step: |
-  Write a checker that computes r(A_k) (number of maximal constant runs) and
-  t(A_k) (number of strict local extrema) for every prime row to depth 1000,
-  and tests the two candidate monotonicities r(A_{k+1}) <= r(A_k) and
-  t(A_{k+1}) <= t(A_k) row by row. Report every counterexample with its row
-  index and the exact run sequence, and separately run the same check on
-  adversarial 2-then-odds rows (including Eppstein's right-edge injection) to
-  find the equality/failure cases. This produces the precise statement (with
-  its equality classification) that research then sources against the
-  variation-diminishing and Ducci-oscillation literature.
+  DONE: exhaustive machine refutation (code/out/check_runcount_lemma.py,
+  check_runcount_lemma.captured.txt) + class-restricted refutation in the
+  {0,1}-halved regime (check_runcount_lemma_class.captured.txt). The raw r
+  and t potentials are dead everywhere in the triangle — no real-row check is
+  needed to confirm a false lemma. The surviving direction is the CORRECTED
+  potential: weighted run count or max-factored run count à la Chamberland's
+  Ducci proof (ducci-max-factoring-potential-template), with the (a,a,c,c)
+  equality class handled explicitly. Test candidate corrected potentials
+  exhaustively on {0,1}-halved strings first (the {0,2} regime), where the
+  {0,1}-class enumeration is the cheapest falsifier.
 ```

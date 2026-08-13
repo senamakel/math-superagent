@@ -4,37 +4,49 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Priority work (directive 7)
+## Priority work (directive 8)
 
-- [ ] **1. Promote genus_table.captured.txt to a standalone claim.** Two
+- [ ] **1. Run the seven uncaptured programs in one batch.** The only one with a
+      capture is `genus_table`. Run the rest, adjusting paths for the three that
+      sit in subdirectories:
+      ```sh
+      for p in genus/verify_superelliptic_formula pattern/fam_seqs genus/test_slope_across_rows genus/test_slope_hypothesis effectivegenus/rep_pairs genus/verify_k2_5_row pattern/print_family; do
+        timeout 300 python3 code/$p.py 2>&1 | tee code/out/$(basename $p .py).captured.txt
+        echo EXIT_CODE=$? >> code/out/$(basename $p .py).captured.txt
+      done
+      ```
+      Anything that fails, delete or fix — a program neither run nor removed is
+      dead weight that inflates code files against captured output.
+
+- [ ] **2. Promote genus_table.captured.txt to a standalone claim.** Two
       independent CAS routes (Singular normal.lib and Sage Curve.genus())
       agreeing on every entry for 2<=k1,k2<=12, extended to k1=24 for
       k2=3,4,5, is the definitive two-parameter Faltings threshold. Genus = 1
       exactly for {2,3} and {2,4}; genus >= 2 for every other distinct pair.
       This IS the GOAL.md deliverable and it should be its own claim, marked
-      `proved-by-two-CAS`, not left in a capture. It **supersedes** the
-      operator's three-diagonal salvage (`code/out/genus_closed_forms.md`), which
-      is now corroboration only.
-- [ ] **2. Register the k2=5 closed form as established.** `genus[{5},n] = 2n-2
+      `proved-by-two-CAS`, not left in a capture. Write the claim note in
+      `code/out/` beside the capture and anchor the table. The operator's
+      three-diagonal salvage (`code/out/genus_closed_forms.md`) is now
+      corroboration only.
+
+- [ ] **3. Register the k2=5 closed form as established.** `genus[{5},n] = 2n-2
       except 2n-4 when 5|n` — exact on all 19 points n=6..24, zero mismatches,
-      operator-checked. The old CONTEXT.md entry "k2=5 row has no verified
-      closed form yet" is stale.
-- [ ] **3. Register the slope conjecture as established.** Mean first-difference
+      operator-confirmed. The old CONTEXT.md entry "k2=5 row has no verified
+      closed form yet" has been updated (this directive). Write the claim.
+
+- [ ] **4. Register the slope conjecture as established.** Mean first-difference
       over WHOLE periods is exactly (m-1)/2 for m=2,3,4,5, with period-m diff
-      patterns: [0,1], [1,0,2], [1,2,0,3], [2,2,2,0,4]. Operator-checked, zero
-      mismatches. **Trap for whoever writes this up:** a truncated window (not
-      a whole number of periods) gives a mean BELOW (m-1)/2 and looks like a
-      refutation — state periodicity first, mean second.
-- [ ] **4. Run or delete the five uncaptured programs.** `test_slope_across_rows.py`,
-      `test_slope_hypothesis.py`, `effectivegenus/rep_pairs.py`,
-      `genus/verify_k2_5_row.py`, `pattern/print_family.py` — all have ZERO
-      captures. A program never executed is not evidence. The operator says run
-      them or delete them. `verify_k2_5_row.py` and the slope tests already
-      have their conclusions confirmed by independent operator check, so they
-      can be captured as verification; `rep_pairs.py` confirms the geometric
-      type of (2,3) and (2,5). `print_family.py` prints the infinite family.
-      Capture all five or tombstone the ones superseded by the operator's
-      check.
+      patterns: [0,1], [1,0,2], [1,2,0,3], [2,2,2,0,4]. Operator-confirmed,
+      zero mismatches. **Trap for whoever writes this up:** a truncated window
+      (not a whole number of periods) gives a mean BELOW (m-1)/2 and looks like
+      a refutation — state periodicity first, mean second.
+
+- [ ] **5. Assertion backlog: 33 asserted, 6 checked, 2 proved, 1 unchecked.** Convert or
+      drop; do not add. Every asserted claim that cannot be checked or sourced
+      should be demoted. Thirty-three assertions is a backlog, not a library.
+
+- [ ] **6. Delete or tombstone any of the seven programs that fail to run.**
+      A program in the tree that has never produced a capture is not an asset.
 
 ## Done (directive 3)
 
@@ -49,7 +61,9 @@ argument.
 
 - [x] **Stop searching.** Literature search covered exa_search 66–76 and frontier
       170–220. The library is sufficient; further gathering happens only against a
-      stated gap in `research/REQUESTS.md`.
+      stated gap in `research/REQUESTS.md`. Do not continue browsing the frontier
+      (directive 8: exa_search 16–21 and frontier 351–404 with 360 unworked —
+      stop).
 
 ## Completed deliverables (attempt 2)
 
@@ -62,6 +76,7 @@ argument.
 - [x] Singmaster-1971 tombstone written
 
 ## Ledger discipline
-- asserted=15, checked=4, proved=0. Any lemma implying B<8 is refuted by 3003;
+- 42 claims: 33 asserted, 6 checked, 2 proved, 1 unchecked. Any lemma implying B<8 is refuted by 3003;
   state the counting convention on every claim. Do not record a bound as
   checked unless `code/out/witnesses.json` has been run against it.
+  The 33 asserted is a backlog — directive 8: convert or drop, do not add.

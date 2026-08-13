@@ -84,7 +84,7 @@ Fenced claim:
 
 ```claim
 id: valid-extension-backward-nonlocal-refuted
-statement: The valid-extension set of a finite Gilbreath sequence is not determined by any bounded window of recent rows: Alkan et al. 2023 give the criterion min K(s_1..s_m) <= s_{m+1} <= max K(s_1..s_m) for all m, with max K_S = s_1·(n−1)! + ... + s_n·0! + 1 (factorial weights over the whole prefix); Muney 2026 give an order-sensitive analogue of Brown's subset-sum completeness criterion. Hence the finite-state Markov automaton of the backward-extension approach has no finite state space. The trap-state hope also fails in general: Eppstein 2011 builds 2-then-odds sequences with gaps <= f(n) whose right edge leaves and re-enters 1 infinitely often.
+statement: The valid-extension set of a finite Gilbreath sequence is not determined by any bounded window of recent rows: Gatti 2023 (author: Riccardo Gatti alone — not "Alkan et al.") give the criterion min K(s_1..s_m) <= s_{m+1} <= max K(s_1..s_m) for all m, with max K_S = s_1·(n−1)! + ... + s_n·0! + 1 (factorial weights over the whole prefix); Muney 2026 give an order-sensitive analogue of Brown's subset-sum completeness criterion. Hence the finite-state Markov automaton of the backward-extension approach has no finite state space. The trap-state hope also fails in general: Eppstein 2011 builds 2-then-odds sequences with gaps <= f(n) whose right edge leaves and re-enters 1 infinitely often.
 hypotheses: finite Gilbreath sequences; primes as special case.
 holds-here: yes
 status: sourced (exact criteria asserted by the papers; not independently reproduced here, consistent with each other and with Eppstein's construction)

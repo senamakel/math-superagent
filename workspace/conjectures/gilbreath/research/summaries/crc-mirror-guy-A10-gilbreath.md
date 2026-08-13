@@ -1,46 +1,38 @@
-<!-- source: https://sanweb.lib.msu.edu/crcmath/math/math/g/g167.htm | converted from HTML -->
+# Guy, Unsolved Problems in Number Theory §A10 — "Gilbreath's Conjecture" (CRC MathWorld mirror)
 
-Gilbreath's Conjecture
+<!-- source: https://sanweb.lib.msu.edu/crcmath/math/math/g/g167.htm (CRC Concise Encyclopedia of Mathematics mirror of the Guy A10 entry); full text: sources/crc-mirror-guy-A10-gilbreath.full.md (small; summary holds the whole document) -->
 
----
+## What it establishes
 
-[image: info] [1][image: prev] [2][image: up] [3][image: next] [4] | [image: book] [5][image: cdrom] [6][image: email] [7][image: home] [8] |
+This is the **canonical problem-collection entry** — the CRC MathWorld mirror of
+R. K. Guy's *Unsolved Problems in Number Theory* 2nd ed. (1994), §A10
+(pp. 25–26), which MathWorld, Caldwell, A089582, A036262 and the Muney 2026
+paper all cite as the standard reference for the conjecture's statement.
 
----
+- **Statement (Guy's notation):** Let the difference of successive primes be
+  `d_n = p_{n+1} − p_n`, and iterate
+  `d_n^k = |d_{n+1}^{k−1} − d_n^{k−1}|` for k > 1.
+  "N. L. Gilbreath claimed that d_1^k = 1 for all k" (Guy 1994).
+- **Verification bounds (as of the 1994 edition):** verified for `k < 63,419`
+  and all primes up to `π(10^13)`.
+- This is a *statement-tier* source: it fixes the canonical statement, the A10
+  numbering, and the two classic verification bounds. No theorem content beyond
+  that — it is the record of the problem's status.
 
-## Gilbreath's Conjecture
+## Bearing / status
 
-Let the [Difference][9] of successive [Primes][10] be defined by [image: $d_n\equiv p_{n+1}-p_n$], and [image: $d_n^k$] by
+**Encyclopedic/problem-collection tier (status: catalogued/asserted).** The
+library now holds the canonical A10 reference (via this CRC mirror, which
+faithfully reproduces the Guy entry) alongside Odlyzko 1993, Killgrove–Ralston
+1959, MathWorld, Caldwell, and the OEIS catalogue. Any citation of "Guy A10"
+for the statement now has a local anchor.
 
-1$.\cr} \end{displaymath} --> [image: \begin{displaymath}
-d_n^k\equiv\cases{
-d_n & for $k=1$\cr
-\vert d_{n+1}^{k-1}-d_n^{k-1}\vert & for $k>1$.\cr}
-\end{displaymath}]
-
-N. L. Gilbreath claimed that [image: $d_1^k=1$] for all [image: $k$] (Guy 1994). It has been verified for [image: $k<63419$] and all [Primes][10] up to [image: $\pi(10^{13})$], where [image: $\pi$] is the [Prime Counting Function][11].
-
-**References**
-
-Guy, R. K. ``Gilbreath's Conjecture.'' §A10 in **[Unsolved Problems in Number Theory, 2nd ed.][12] New York: Springer-Verlag, pp. 25-26, 1994.
-
----
-
-&copy; 1996-9 *Eric W. Weisstein
-1999-05-25*
-
-
-## Links
-
-[1]: ../../math0.htm
-[2]: g166.htm
-[3]: g.htm
-[4]: g168.htm
-[5]: http://www.treasure-troves.com/math/
-[6]: http://www.treasure-troves.com/math/cdrom/
-[7]: mailto:comments@treasure-troves.com
-[8]: http://www.treasure-troves.com/
-[9]: ../d/d179.htm
-[10]: ../p/p592.htm
-[11]: ../p/p574.htm
-[12]: http://www.amazon.com/exec/obidos/ISBN%3D0387942890/ericstreasuretroA/
+```claim
+id: guy-A10-canonical-statement
+statement: Guy, Unsolved Problems in Number Theory 2nd ed. (1994) §A10, "Gilbreath's Conjecture": with d_n = p_{n+1} − p_n and d_n^k = |d_{n+1}^{k−1} − d_n^{k−1}|, Gilbreath claimed d_1^k = 1 for all k; verified for k < 63,419 and primes up to π(10^13) as of the 2nd edition.
+hypotheses: the standard prime-difference iteration.
+holds-here: yes — canonical statement, matched by all other library sources.
+status: catalogued (CRC MathWorld mirror of the Guy entry, 1999 fetch of the 1994 book text)
+bearing: fixes the canonical reference for the problem statement; corroborates the two classic verification bounds.
+anchor: research/sources/crc-mirror-guy-A10-gilbreath.full.md
+```

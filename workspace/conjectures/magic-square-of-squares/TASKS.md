@@ -53,24 +53,25 @@
       `value-computed: no` and `what-would-compute-it` listing the three
       ingredients (DP07, BZ, JS). The paper's proof IS effective — following it
       yields a number — but the paper does not carry out the computation.
+- [x] **Five phi_triple_variety programs now run.** verify_two_side_equiv (exit 0),
+      verify_triple_square (exit 0), verify_prefilter (exit 0), benchmark (exit 0),
+      verify_pell_symbolic (exit 0). All captured in code/out/.
+- [x] **magic_variety_check.py RUN.** Exit 0, captured. X = P² ⊂ P⁸, rank 7
+      incidence / rank 6 differences, kernel dim 3. Claim
+      `magic-variety-is-surface-no-lines` REFUTED for the linear variety (P² is
+      saturated with lines); the no-lines/256-singular-points claim refers to the
+      quadric-cut variety, a different object.
+- [x] **side_census M=800 RUN.** Captured at code/out/side_census_M800.captured.txt.
+      Budget-exhausted at i=22988/129870 (17.7%). Raw counts: 6 minus, 11 plus,
+      both=0. **These are NOT comparable to M=400's 325 and 66** — the run covers
+      only 17.7% of the index — and must never be quoted as a decline. Operator
+      is running a longer-budget M=800 on the host.
+- [x] **ratio_search M=700 RUN.** Budget-exhausted at i=27861/99407 (28.0%).
+      Captured; no triple through the covered range.
 
 ---
 
 ## BLOCKING — must complete before any new approach
-
-### Proved-count drift (directive 17)
-
-Proved went 20→17 while checked went 15→17 and asserted 19→20. The
-`search_claims` re-derivation changed three claims from `proved` to `asserted`
-when they were re-classified as resting on source statements without independent
-verification. This is a deliberate re-classification (not lost claims, not an
-accounting glitch): `bremner-conjecture-proved`, `n-by-n-mss-exist-for-n-ge-4`,
-and `dgh-uniform-mordell-lang-curves` were demoted because their `holds-here`
-is `no`, so `proved` was misleading — they are true theorems, proved by their
-authors, but they do not apply to THIS problem. The re-derivation correctly
-moved them to `asserted` (source-established but not applicable here).
-**NOT a bug; a correction.** The shift 20→17 is a tightening of the
-holds-here/proved intersection.
 
 ### EXA_SEARCH — STOPPED (directive 17)
 
@@ -80,49 +81,51 @@ search, not about the literature: further downloads will not change a claim.
 **No more exa_search calls.** No new sources fetched without a stated gap in
 REQUESTS.md.
 
-### COMMANDS.LOG — DOES NOT EXIST (directive 17)
+### Proved-count drift (directive 17)
 
-`code/out/commands.log` is not on disk. The run-failed count went 6→8 but the
-file was never created. The five unrun programs below are the likely culprits.
-Route all executions through `2>&1 | tee code/out/<name>.captured.txt; echo EXIT_CODE=$?`
-to capture failure to disk.
+Proved went 20→17 while checked went 15→17 and asserted 19→20. This was a
+deliberate re-classification (not lost claims): `bremner-conjecture-proved`,
+`n-by-n-mss-exist-for-n-ge-4`, and `dgh-uniform-mordell-lang-curves` were
+demoted because `holds-here: no` — they are true theorems proved by their
+authors, but do not apply to THIS problem. The shift 20→17 is a tightening
+of the holds-here/proved intersection. **NOT a bug; a correction.**
 
-### Five still-unrun programs + side_census M=800 (directives 16 & 17)
+### Ledger (directive 19)
 
-These have been unrun for two directives. Run them. Order: verifiers first
-(they check claims the run relies on); benchmark and ratio_search last.
+Proved 17→19, captured 49→51, code flat at 71, zero failures. Keep that shape.
 
-- [ ] **`verify_two_side_equiv.py`** — independent two-side equivalence check.
-      `PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_two_side_equiv.py 300 2>&1 | tee code/out/verify_two_side_equiv.captured.txt; echo EXIT_CODE=$?`
-- [ ] **`verify_triple_square.py`** — independent triple equivalence check.
-      `PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_triple_square.py 300 2>&1 | tee code/out/verify_triple_square.captured.txt; echo EXIT_CODE=$?`
-- [ ] **`verify_prefilter.py`** — independent prefilter verification.
-      `PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_prefilter.py 80 2>&1 | tee code/out/verify_prefilter.captured.txt; echo EXIT_CODE=$?`
-- [ ] **`benchmark.py`** — phi_pairs and membership test benchmarking.
-      `PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/benchmark.py 2>&1 | tee code/out/benchmark.captured.txt; echo EXIT_CODE=$?`
-- [ ] **`ratio_search.py`** — ratio search with closed-form test.
-      `PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/ratio_search.py 700 2>&1 | tee code/out/ratio_search.captured.txt; echo EXIT_CODE=$?`
-- [ ] **`side_census.py M=800`** — both=0 survived M=200 and M=400; push to 800.
-      `PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt; echo EXIT_CODE=$?`
+---
 
-**Partial-sweeps caveat (directive 18):** `no_triple_fast_M700` stopped at
-i=40143/99407 (40.4%); `prefilter_census_M1000` at i=38006/202861 (18.7%).
-"Survivors 0" over a fraction is not "none at full M". Any claim from a
-partial sweep must carry the fraction covered, or it is asserted not checked.`
+## NEW — directive 19 priority
+
+### Concordant-forms elliptic curve on the both=0 witnesses
+
+The both=0 finding is a GLOBAL statement (directive 19 confirms: no Q-level
+local or congruence obstruction can explain it — `hilbert-symbol-of-two-squares-trivially-split`
+is correct and operator-verified). The right frame is the concordant-forms
+dictionary: `concordant-forms-iff-ell-torsion-order-2` says the condition
+"both 1−s and 1+s are rational squares" is equivalent to the elliptic curve
+E_{M,N}: y² = x(x+M)(x+N) having a rational point of order > 2.
+
+- [ ] **Form E_{M,N} for each of the 66 plus-witnesses and the 325 minus-witnesses**
+      from `code/out/side_census.captured.txt` (M=400). Each witness is a pair
+      (q1, q2) with s = q1+q2. The concordant condition "both 1−s and 1+s are
+      rational squares" is equivalent to a point on E_{M,N}: y² = x(x+M)(x+N)
+      where M, N derive from s. Compute rank and torsion for each curve.
+      **If the minus-witnesses and plus-witnesses split cleanly by rank or
+      torsion, that is the mechanism behind both=0 and it is checkable now.**
+      Write to `code/out/concordant_witness_curves.captured.txt`. Any lemma
+      proposed from this must be run against these witnesses or it is asserted,
+      never checked.
+
+- [ ] **State the both=0 incompatibility in the concordant-forms language**
+      in `research/threads/pair-sum-both-squares-incompatibility.md`. The
+      question becomes: does Φ-membership of the summands force E_{M,N} to have
+      rank 0 or the wrong torsion? This connects the cheap pair-level observation
+      to the workspace's standing blocker — uniform boundedness of ranks — rather
+      than being a separate lead.
 
 ### Structural work — the run's deliverable
-
-- [ ] **IDENTIFY THE CONCORDANT-FORMS CURVE FOR both=0 (directive 18 priority 1).**
-      1−s and 1+s simultaneously rational squares is the classical concordant-forms
-      problem, equivalent to a rational point on the circle x²+y²=2 (genus 0).
-      Write the explicit curve for s = q1+q2 with q1,q2 ∈ Φ. The condition that
-      1±s are both squares is s = 2t/(1+t²) for some rational t. Intersect this
-      with the set S = {q1+q2 : q1,q2 ∈ Φ, q1+q2 < 1}. Ask whether Φ-membership
-      of the summands forces a local obstruction mod p that prevents s from being
-      of the form 2t/(1+t²). Any obstruction found must be run against the 66
-      plus-witnesses and 325 minus-witnesses in `code/out/side_census.captured.txt`
-      — both sets have exactly one side square, so the obstruction must permit one
-      and block the other, or it is false.
 
 - [ ] **WRITE THE CONDITIONAL RESULT AS A CLAIM.**
       Assumption: uniform boundedness of ranks of E/Q → 3×3 MSS existence reduces
@@ -134,14 +137,6 @@ partial sweep must carry the fraction covered, or it is asserted not checked.`
       Check each source for an explicit value. If none extractable, record the
       dependency chain and why each constant is not computed. Write to
       `code/out/hms_constant_bound.md`.
-
-- [ ] **RUN `verify_pell_symbolic.py`.**
-      `timeout 540 python3 code/out/verify_pell_symbolic.py 2>&1 | tee code/out/verify_pell_symbolic.captured.txt; echo EXIT_CODE=$?`
-
-- [ ] **CHECK `magic-variety-is-surface-no-lines`.** Compute directly: X in P⁸
-      cut by 7 line-sum equations, verify dim=2 and no lines. Write to
-      `code/out/magic_variety_check.captured.txt`. Update claim from `asserted`
-      to `checked`.
 
 ## After the blocking section is cleared
 

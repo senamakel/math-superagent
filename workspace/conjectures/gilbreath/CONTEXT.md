@@ -14,14 +14,15 @@ The conjecture reduces to: do (2,4)-events keep arriving fast enough that
 `Σ (j_i + 1)` never falls `k−1` behind? A lower bound on the event rate, even
 under a stated hypothesis on prime gaps, is a real result. Erosion verification
 is no longer useful; the step law is exact and needs no re-derivation.
-`research/threads/rule90-regeneration.md` — the depth-d=2^j timing prediction
-was tested against the depth-1000 record and is **REFUTED** in every concrete
-form tested (gaps between regen rows, big-jump offsets, absolute k, minima row
-indices — 48 variants × D=1000, 26 workers; see the variant table).
-Anchor: `code/out/rule90_depth_test.captured.txt`, `code/out/rule90_depth_results.json`
-(the thread's status line is the verdict summary). The proved Rule-90 interior
-identification stands independently. Live thread:
-`research/threads/regeneration.md` (event-rate bound).
+`research/threads/rule90-regeneration.md` — the absolute-depth and jump-timing
+forms are refuted; the relative-depth measure (depth from regime start) gives
+21/27 near a power of 2 at tolerance 1, but the null is not yet computed
+(observed baseline: uniform over [0,15] gives 9/16 = 56% at tol=1, and
+observed depths cluster in 2..9 where powers of 2 are dense). Do not claim
+this is a result until the null is computed — a shuffle test is queued as
+TASKS item 1. The Rule 90 interior identification is proved and unaffected.
+Anchor: `code/out/rule90_depth_test.captured.txt`, `code/out/rule90_depth_results.json`.
+Live thread: `research/threads/regeneration.md` (event-rate bound).
 
 ## Established
 
@@ -29,6 +30,26 @@ identification stands independently. Live thread:
   Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna
   2025–26 to 1.5×10^15 (G(2.8e14)=788, G(6.15e14)=800, G(1.5e15)=800). Run's own: depth
   1000 (1.27M primes), depth 600 (33860 primes). Do not conflate.
+- **Run-count potential monotonicity — REFUTED by machine, in the actual
+  regime.** The candidate Lyapunov function r(T(x)) ≤ r(x) (number of maximal
+  constant runs) is false even for the strings the triangle lives in. The
+  on-disk verifier `code/out/check_runcount_lemma.py` (written, never run)
+  was executed: exhaustively over 6,725,600 strings (len ≤ 8, values
+  0..6) the first counterexample is (6,6,6,6,6,6,5,5): r 2 → 3. A second,
+  class-restricted exhaustive run (`check_runcount_lemma_class.captured.txt`)
+  enumerates the classes the rows actually occupy — all-even {0,2,4,6}
+  strings, halved {0,1,2,3} strings, halved {0,1} strings — and the lemma
+  fails in each, with the minimal counterexample (0,0,1,1) → (0,1,0) (2 runs
+  → 3), the halved form of the {0,2}-block interior string (0,0,2,2). So the
+  failure occurs inside the very leading-{0,2} regime the conjecture
+  targets. Claim `runcount-lemma-refuted` upgraded from hand-counterexample
+  (which used odd-valued (5,5,0,0), technically outside the class) to
+  machine-checked, and the approach
+  `research/approaches/total-variation-oscillation-potential.md` updated:
+  raw r/t potentials are dead; only a corrected weighted/max-factored
+  potential (Chamberland's Ducci template) survives, untested. Captures:
+  `code/out/check_runcount_lemma.captured.txt` (exit 1),
+  `code/out/check_runcount_lemma_class.captured.txt` (exit 0).
 - **Parity wave (proved, Ross 2026):** any (2, odd, odd, ...) sequence has every row's
   leading term odd — but odd is NOT 1. Witnesses: 2,3,13 → leading 9; every-sixth-prime
   pyramid leading column 2,15,9,7,5,3,1,1,1,1,1,7,3. The conjecture lives strictly
@@ -90,11 +111,14 @@ identification stands independently. Live thread:
   claimed a uniform boundary-absorption bound — refuted by CHT Lemma 3.7(iii)
   and Eppstein 2011). The proved Rule 90 core stands alone: at d = 2^j,
   binom(2^j, m) ≡ 1 (mod 2) ∀m, so the halved entry is the XOR of the whole
-  width-(2^j+1) window (Sierpinski kernel all-1). **But the regeneration-TIMING
-  corollary of this fact ("regeneration should occur at depths 2^j / 2^j−1
-  from a regime start") is REFUTED by the depth-1000 record — see the run
-  state line; do not re-assert it.** The interior-XOR identification is about
-  values inside the block; it says nothing about when the boundary regenerates.
+  width-(2^j+1) window (Sierpinski kernel all-1). **The regeneration-TIMING
+  corollary of this fact is open pending a null test**: the absolute-depth and
+  jump-timing forms are refuted by the depth-1000 record; the relative-depth
+  measure (depth from each regime start) gives 21/27 near a power of 2 at
+  tolerance 1, but depths cluster in 2..9 where powers of 2 are dense and the
+  null has not been computed. Do not re-assert the timing prediction until
+  the null settles it. The interior-XOR identification is about values inside
+  the block; it says nothing about when the boundary regenerates.
   Thread: `research/threads/rule90-regeneration.md`.
   Anchor: `research/notes/block_lemma.md` (apex) and
   `research/approaches/rule90-absorbing-boundary.md` (the absorption dead end).

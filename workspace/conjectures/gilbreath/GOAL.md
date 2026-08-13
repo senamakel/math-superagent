@@ -11,6 +11,18 @@ A partial result that would count:
 
 - a **proved invariant** of the absolute-difference operator forcing
   `A_k(1) ∈ {0, 2}`, under stated hypotheses;
+
+**Closed this run (not a goal deliverable, but a closed dead end):** the raw
+run-count potential r(T(x)) ≤ r(x) of the total-variation-oscillation
+approach (`research/approaches/total-variation-oscillation-potential.md`) is
+**machine-refuted** — exhaustively over 6,725,600 strings, and in each class
+the triangle lives in (all-even, halved {0,1,2,3}, halved {0,1}) with the
+minimal counterexample (0,0,1,1) → (0,1,0), the halved form of (0,0,2,2)
+inside the leading {0,2} regime itself. The on-disk verifier
+`code/out/check_runcount_lemma.py` was written but never executed; this run
+executed it and the class-restricted companion. The approach's only surviving
+direction is a corrected weighted/max-factored potential à la Chamberland's
+Ducci proof (`ducci-max-factoring-potential-template`), untested.
 - a proof of the conjecture for a **general class of sequences** — since the
   problem is probably not about primes, a theorem covering "2 followed by odd
   numbers with gaps bounded by `g`" would settle the prime case as a corollary

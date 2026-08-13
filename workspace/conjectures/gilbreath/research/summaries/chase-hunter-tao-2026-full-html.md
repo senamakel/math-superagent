@@ -30,7 +30,7 @@ The Cramér-geometric and general-model theorems are statements about random ini
 id: cht-inverse-theorem
 statement: If a_n≤2^M, no length-L 0-block, and no {0,d}-block (2^{M−m}<d≤2^{M−m+1}) of length ≥ R_m−3R_{m−1} at depth ≤2R_{m−1} (R_m≥4R_{m−1}, R_0≥100L·8^M), then a(N−1,1)∈{0,1}; long zero-blocks and long shallow {0,d}-blocks are the only obstructions.
 hypotheses: nonneg-integer initial data with a_n≤2^M; R-tower hierarchy as stated.
-holds-here: for the primes (i) needs Cramér's conjecture; (ii)/(iii) unproved though plausible.
+holds-here: no — checked against depth-1000 prime data (code/out/cht_hyp_check.captured.txt): max normalised gap 89 → M=7, longest 0-run L=2, R_0=100·L·8^M=419,430,400 ≫ 1000. The theorem does not bite at reachable depths.
 status: proved in source (elementary contrapositive), not checked here
 bearing: directs the obstruction hunt at zero-blocks and shallow {0,d}-blocks.
 anchor: research/sources/chase-hunter-tao-2026-full-html.full.md

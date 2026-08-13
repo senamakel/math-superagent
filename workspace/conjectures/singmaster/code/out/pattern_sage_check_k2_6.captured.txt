@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/code/genus/sage_check_k2_6.py", line 23, in <module>
+    R = PolynomialRing(QQ, 'x,y')
+        ^^^^^^^^^^^^^^
+NameError: name 'PolynomialRing' is not defined
