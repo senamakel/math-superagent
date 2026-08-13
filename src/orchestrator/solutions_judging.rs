@@ -711,7 +711,7 @@ impl ReductionGate {
 /// same evidence. The gate bounds collision. A tick that fails the fingerprint
 /// test deliberately does *not* reset the counter, so the next cycle tries
 /// again rather than waiting another full interval.
-pub(super) fn open_reduction(
+fn open_reduction(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
