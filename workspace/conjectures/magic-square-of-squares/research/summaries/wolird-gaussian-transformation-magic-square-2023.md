@@ -1,149 +1,43 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wolird-gaussian-transformation-magic-square-2023.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wolird, "A New Transformation of the Magic Square of Squares" (arXiv:2310.12164)
 
-<!-- source: https://arxiv.org/pdf/2310.12164 | converted from PDF -->
+[[wolird-gaussian-transformation-magic-square-2023]]
+Full text: `research/sources/wolird-gaussian-transformation-magic-square-2023.full.md` (arXiv:2310.12164v1, 1 Oct 2023, math.HO, 11 pp).
 
-A New Transformation of the Magic Square of
-Squares
+## What it establishes
 
-Christian Wolird
-chris.wolird@email.ucr.edu
+An expository/observational note (no theorem stated as a formal result with proof). Core content is a **3-to-1 correspondence between Gaussian arithmetic triplets and Gaussian Pythagorean triples**, unfolding Fibonacci's integer arithmetic-triplet/Pythagorean-triple correspondence into ℤ[i]:
 
-July 2023
+- Over integers: every Pythagorean triple A²+B²=C² yields an AP of squares (A−B)², C², (A+B)² /2-type relations; the correspondence is 1-to-1.
+- Over the Gaussian integers, the analogous identity α²+β²+γ²=0 yields **three** APs of squares from one Pythagorean triple (treating each of α,β,γ as the "hypotenuse" in turn), hence 3-to-1. The author calls the three resulting APs "siblings" of a common Pythagorean triple.
 
-Abstract
-We show arithmetic triplets of Gaussian squares are in 3-to-1 corre-
-spondence with Pythagorean triples thereof. This correspondence would
-transform a solution to the Magic Square of Squares puzzle into a larger
-structure of perfect Gaussian squares. In particular, we obtain the back-
-wards result that a puzzle solution would generate non-trivial near-miss
-solutions in the Gaussian integers. Results are applied to popular near-
-misses.
+**Application to the MSS.** A magic square of squares in ℤ[i] is a "slant 3×3 grid" in the complex plane containing 8 arithmetic triplets (one per centre line — 4 through the centre + 4 sides). From these 8, the 3-to-1 correspondence generates **16 more Gaussian arithmetic triplets** (8 "older" siblings centred at sums, 8 "younger" at differences) — so an MSS forces 24 Gaussian arithmetic triplets. §4 observes that a true MSS would generate near-misses among these siblings; §5 shows the Bremner square fixes the sums (perfect APs) but has non-square entries, while the Parker square fixes the entries (perfect Gaussian squares) but has mismatched sums — i.e. the two near-misses' "personality" carries to their siblings.
 
-1 Triples and Triplets
+## Bearing on the 3×3 MSS
 
-Sometimes three perfect squares form an evenly spaced triplet.
+**Provably a dead end for the proof goal; only rephrases the puzzle.** The author's own conclusion (§5): "do these siblings tell us anything about the existence of the Magic Square of Squares? Not that the author sees directly." The note establishes no new bound, no impossibility, and no reduction to a solvable object. The Gaussian reformulation it gives is **distinct from** Onno Cain's arXiv:1908.03236 quartic/abelian-extension reformulation (the run's `gaussian-factorisation-is-cains-reformulation` claim) — Wolird gives a triangular/geometric correspondence, not a quartic factorisation constraint, and does not connect to the additive Φ condition.
 
-Figure 1: Arithmetic triplets.
+**holds-here: no** — no hypothesis or statement transfers to the Q-rational MSS problem; it neither corroborates nor contradicts any run claim.
 
-For brevity, we call such a creature an arithmetic triplet (of squares unless
-specified otherwise). In 1225 Fibonacci published The Book of Squares describ-
-ing, among other things, a connection between these arithmetic triplets and
-their more popular relative, the Pythagorean triple.
-Specifically, there’s a 1-to-1 correspondence where the hypotenuse-square of
-any Pythagorean triple is also the middle-square of an arithmetic triplet (and
-the other way round).
+```claim
+id: wolird-gaussian-sibling-3-to-1
+statement: Over the Gaussian integers, arithmetic triplets of squares are in 3-to-1
+  correspondence with Gaussian Pythagorean triples (solutions of alpha^2+beta^2+gamma^2=0);
+  a magic square of Gaussian squares contains 8 arithmetic triplets and generates 16 more
+  (older/younger siblings). This gives no statement about existence over Z or Q.
+hypotheses: configuration over Z[i]; arithmetic triplet = AP of Gaussian squares
+holds-here: no (it is a Z[i] observational correspondence; no Q-rational MSS constraint,
+  no bound, no reduction to a solvable object)
+status: asserted (expository note, no formal theorem/proof)
+bearing: dead end for non-existence: it only geometrically rephrases the puzzle in Z[i]
+  and the author concludes it gives no existence information. Distinct from Cain's
+  Gaussian quartic-factorisation reformulation (which is itself asserted/unverified).
+anchor: research/sources/wolird-gaussian-transformation-magic-square-2023.full.md
+```
 
-A2 + B2 = C 2 ⇒ (A + B)2 − C 2 = C 2 − (A − B)
-2
+## Does this source help?
 
-( L+R
-2 )2 + ( L−R
-2 )2 = C 2 ⇐ L
-2 − C 2 = C 2 − R2
+**No.** It is a recreational/math.HO exposition. It establishes no theorem usable here, contradicts nothing, and its author explicitly disclaims any bearing on existence. Recorded so nobody re-reads it; the `wolird-gaussian-transformation-magic-square-2023` summary now replaces the template digest in place.
 
-1arXiv:2310.12164v1  [math.HO]  1 Oct 2023
-Figure 2: Arithmetic triplet and Pythagorean triple correspondence examples.
+## Source
 
-Because we’re concerning ourselves with integer solutions here, notice that
-L±R
-2 must be an integer since L
-2 + R2 = 2C 2 means that L and R are both odd
-or both even.
-
-Figure 3: The general arithmetic-Pythagorean correspondence.
-
-2 Unfolding
-
-Over the integers, this correspondence is like a lawn chair folded flat. To see its
-real shape, we can unfold in the complex plane.
-
-Figure 4: The arithmetic-Pythagorean correspondence “unfolded” into Z[i].
-
-2
-
-With Pythagorean triples of integers, one square, C 2, is doomed to be the
-hypotenuse and remain forever alone. But with Pythagorean triples of Gaussian
-integers1, the squares can be collected all together.
-
-(8 − 4i)
-2 + (4 + 7i)
-2 = (4 − i)
-2
-
-⇓
-
-(4 − i)
-2 + (4 + 8i)
-2 + (7 − 4i)
-2 = 0
-
-Whereas before, an integer Pythagorean triple (A, B, C) meant a solution
-to A2 + B2 = C 2, we now think of a Gaussian Pythagorean triple (α, β, γ)
-as a solution to α2 + β2 + γ2 = 0, acknowledging no one square doomed to
-hypotenusity. Thus we create three Gaussian arithmetic triplets from any one
-Gaussian Pythagorean triple by treating each of α, β, and γ as the “hypotenuse”
-in turn. (4 − i)
-2 + (4 + 8i)
-2 + (7 − 4i)
-2 = 0
-
-⇓
-
-(4 − i)
-2 = (8 − 4i)
-2 + (4 + 7i)
-2
-
-(4 + 8i)2 = (1 + 4i)2 + (4 + 7i)2
-
-(7 + 4i)2 = (1 + 4i)2 + (8 − 4i)2
-
-⇓
-
-(12 + 3i)
-2 − (4 − i)2 = (4 − i)
-2 − (4 − 11i)2
-
-(5 + 12i)
-2 − (4 + 8i)
-2 = (4 + 8i)
-2 − (3 + 3i)
-2
-
-(9)
-2 − (7 + 4i)2 = (7 + 4i)2 − (7 + 8i)2
-
-The arithmetic-Pythagorean correspondence is thus 3 -to-1 in the Gaussians.
-Any two arithmetic triplets resulting from the same Pythagorean triple, we call
-siblings. The general correspondence can there be visualized (see Figure 4) as
-a triangle in the complex plane having
-
-1. its centroid at zero,
-
-2. its vertices at perfect integer squares,
-
-3. and vertices which are themselves the midpoints of three line segments
-having perfect integer squares for endpoints.
-
-As far as the author could find, the existing treatments of Pythagorean
-Triples over the Gaussians (such as in [1]) make no mention of these arithmetic
-triplets.
-
-1Complex numbers with integer parts: 2 + i, −17 + 5i, 83i, etc.
-
-3
-
-For an instance in the wild, we plot the prior algebraic example:
-
-Figure 5: Plot of (4 − i)2 + (4 + 8i)2 + (7 − 4i)
-2 = 0 and the arithmetic triplets
-it generates.
-
-3 The Magic Square of (Gaussian) Squares
-
-Figure 6: The Lo Shu magic square (left) and the general Magic Square of
-Squares template (right).
-
-The ever-loved and ever-frustrating “Magic Square of Squares” puzzle is the
-
-*[excerpt ends; 7272 characters not shown — see `research/sources/wolird-gaussian-transformation-magic-square-2023.full.md`]*
+Wolird, Christian. "A New Transformation of the Magic Square of Squares." arXiv:2310.12164v1 [math.HO]. https://arxiv.org/abs/2310.12164

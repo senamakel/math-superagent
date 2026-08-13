@@ -1,112 +1,49 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hulse-kuan-lowryduda-aps-of-squares-dirichlet-2024.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hulse–Kuan–Lowryduda–Walker, "Arithmetic Progressions of Squares and Multiple Dirichlet Series" (arXiv:2007.14324)
 
-<!-- source: https://arxiv.org/pdf/2007.14324 | converted from PDF -->
+[[hulse-kuan-lowryduda-aps-of-squares-dirichlet-2024]]
+Full text: `research/sources/hulse-kuan-lowryduda-aps-of-squares-dirichlet-2024.full.md` (arXiv:2007.14324v4, 11 Oct 2023; authors Hulse, Kuan, Lowry-Duda, Walker).
 
-## What it claims
+## What it establishes
 
-Abstract. We study a Dirichlet series in two variables which counts
-primitive three-term arithmetic progressions of squares. We show that
-this multiple Dirichlet series has meromorphic continuation to C2 and
-use Tauberian methods to obtain counts for arithmetic progressions of
-squares and rational points on x2 + y2 = 2.
+An analytic number theory paper counting **primitive three-term arithmetic progressions of integer squares** {h, m, 2m−h} (i.e. h, m, 2m−h all squares, with (m,h)=1; there is no primitive AP of squares with more than 3 terms — Fermat, proved by Euler, restated in §1).
 
-1. Introduction
+**Method.** The multiple Dirichlet series D(s,w) = Σ_{(m,h)=1} r₁(h)r₁(m)r₁(2m−h)/(m^s h^w) (r₁ = square-indicator), shown to have **meromorphic continuation to C²** (Theorem 5.1) via spectral expansion against dihedral Maass forms on Γ₀(8) with character χ = (2/·). Tauberian techniques then give exact asymptotic counts for constrained families of APs of squares:
 
-In this paper, we produce estimates for the number of primitive three-
-term arithmetic progressions of integer squares, {a2, b2, c2} with c2 − b2 =
-b2−a2, whose terms are constrained to lie in certain regions. As no nontrivial
-arithmetic progression of integer squares has more than three terms — stated
-by Fermat and proved by Euler (among others) — we refer to three-term
-arithmetic progressions more succinctly as just arithmetic progressions, or
-APs. (See [Dic13, Vol II, Ch. XIV] for a description of the early history of
-this problem).
-To study primitive APs of squares, we study the multiple Dirichlet series
+- **Theorem 7.1**: # primitive APs with m ≤ X and (a/b)² ≤ δ is (2/π²)·arcsin(√δ/2)·X^{1/2} + O_ε(X^{3/8+ε}).
+- **Theorem 8.1**: # primitive APs with largest term ≤ X is (√2/π²)·log(1+√2)·X^{1/2} + O_ε(X^{3/8+ε}).
+- **Theorem 8.3**: # with first term ≤ Y and centre ≤ X (Y ≤ X) is (1/(√2π²))Y^{1/2}log(X/Y) + cY^{1/2} + O_ε(X^ε Y^{3/8+ε}).
+- **Theorem 8.4**: # with hm ≤ X is (2√2/π²)·₂F₁(¼,½,⁵⁄₄,½)·X^{1/2} + O_ε(X^{3/8+ε}).
 
-D(s, w) := ∑
+**Correspondences (§2).** (i) Each primitive AP of squares {a,b,c} ↔ rational point (a/b, c/b) on the circle x²+y²=2, so the counts equidistribute rational points on that circle. (ii) Each AP of squares with common difference t ↔ a right triangle with area t (standard congruent-number link): {a,b,c}, b²−a²=c²−b²=t, ↔ triangle with legs c−a, c+a and hypotenuse 2b, area t.
 
-m,h≥1
-(m,h)=1
- r1(h)r1(m)r1(2m − h)
-mshw ,
+## Bearing on the 3×3 MSS
 
-where rℓ(n) denotes the number of ways to represent n as a sum of ℓ squares.
-Thus…
+**Corroborates the abundance picture, does not advance the proof.** It confirms (a) APs of squares exist only up to length 3, so each of the four centre APs (differences u, v, u+v, u−v) is individually a length-3 AP and no longer; and (b) such APs are **numerous** — Θ(X^{1/2}) with largest term ≤ X. This independently agrees with the run's computed structural finding that |S(e)| grows and millions of centres admit four AP-differences: **scarcity of APs of squares is not the obstruction**; the additive dependence among u, v, u+v, u−v is. No statement here bears on forcing four such APs to share the middle square with pairwise additive relations, so it gives no leverage toward non-existence (or existence).
 
-2…
+**What it does not settle:** anything about a *fourth* linked AP, the additive relation, or rationalness/integrality separation on the magic square — all open as before.
 
-## Statements it makes
+```claim
+id: aps-of-squares-count-asymptotics
+statement: The number of primitive three-term arithmetic progressions of integer
+  squares with largest term <= X is asymptotic to (sqrt(2)/pi^2) log(1+sqrt(2)) X^{1/2}
+  + O_eps(X^{3/8+eps}); a primitive AP of squares has at most 3 terms; each primitive
+  AP {a,b,c} corresponds to a rational point (a/b,c/b) on x^2+y^2=2 and to a right
+  triangle with area equal to the common difference.
+hypotheses: primitive 3-term APs of squares (m,h coprime); X the size bound
+holds-here: yes (each of the four MSS centre APs is such a primitive/3-term object;
+  the count bound applies to candidate APs)
+status: proved (Theorems 5.1, 7.1, 8.1, 8.3, 8.4; length-3 cap is Fermat/Euler, sourced)
+bearing: corroborates the run's S(e)/Phi structural finding that APs of squares are
+  abundant (Theta(X^{1/2}) of them), so scarcity of APs is not the MSS obstruction;
+  the additive relation among the four centre differences is. No direct bearing on
+  non-existence/existence of the 3x3 MSS.
+anchor: research/sources/hulse-kuan-lowryduda-aps-of-squares-dirichlet-2024.full.md
+```
 
-Theorem (Theorem 7.1). Fix δ ∈ [0, 1]. For any ǫ > 0, the number of
-primitive APs of squares {a2, b2, c2} with b2 ≤ X and (a/b)2 ≤ δ is
+## Does this source help?
 
-Theorem (Theorem 8.1). For any ǫ > 0, the number of primitive APs of
-squares {a2, b2, c2} with c2 ≤ X is
-√2
-π2 log(1 + √2)X 1
-2 + Oǫ(
-X 3
-8 +ǫ)
-.
+**Marginally.** It is a neighbouring analytic result, not a 3×3 input. Its value is confirming the abundance-of-APs picture and the length-3 cap already central to the run's parametrisation, and its circle/rational-point link is a restatement of structures the run has from Bremner and its own Φ work. No theorem here constrains the four-linked-AP additive condition.
 
-Theorem (Theorem 8.3). Suppose that Y ≤ X. For any ǫ > 0, the number
-of primitive APs of squares {a2, b2, c2} for which a2 ≤ Y and b2 ≤ X is
+## Source
 
-Theorem (Theorem 8.4). For any ǫ > 0, the number of primitive APs of
-squares {a2, b2, c2} for which ab ≤ X is
-
-Proposition 3.1. The function V (z) lies in L2(Γ0(8)\H; χ).
-
-Lemma 3.2. The Fourier expansion of E(z, s; χ) is
-
-Proposition 3.3. For h ≥ 1 and Re s ≫ 1, we have that
-
-Theorem 4.1. For h ≥ 1 and Re s ≫ 1, we have that
-
-Lemma 4.2. We have that ⟨V, Ea(·, s; χ)⟩ = 0 for the cusps 0 and ∞.
-
-Lemma 4.3. For h ≥ 1 and Re s ≫ 1,
-
-Lemma 4.4. We have ⟨V, µj⟩ ̸= 0 if and only if µj = ⟨fm, fm⟩−1/2fm for
-some m ∈ N as in (4.3), in which case
-
-Theorem 5.1. The double Dirichlet series D(s, w) has meromorphic con-
-tinuation to C2. For Re s and Re w suﬃciently large, we have
-
-Theorem 7.1. Fix δ ∈ [0, 1]. Then for any ǫ > 0, the number of primitive
-APs of squares {h, m, 2m − h} with m ≤ X and (h/m) ≤ δ is
-
-Lemma 7.2. Fix ǫ > 0 and a meromorphic function F (w) satisfying F (w) ≪
-| Im w|−ǫ on Re w = σw. Deﬁne H(z) = 1
-2πi ∫
-(σw) F (w) zw
-w dw. Then H(z) is
-meromorphic and for z ≥ 0, we have
-
-Lemma 7.3. With the notation as above, we have that
-
-Proposition 7.4. For any ﬁxed ǫ > 0 and δ ∈ [0, 1], we have
-
-Lemma 7.5. On the lines Re z = x ∈ (0, 1
-2 ) and Re s = 1
-2 + ǫ, we have
-∑
-
-Proposition 7.6. For any ǫ > 0 and δ ∈ [0, 1], we have
-
-Theorem 8.1. The number of primitive APs of squares with largest term
-at most X is
- 1
-8 T (X) =
- √
-2
-π2 log(1 + √2)X 1
-2 + Oǫ(X 3
-8 +ǫ)
-
-Theorem 8.3. Suppose that Y ≤ X. Then, for any ǫ > 0, the number of
-primitive APs of squares {h, m, 2m − h} with h ≤ Y and m ≤ X is
-
-Theorem 8.4. For any ǫ > 0, the number of primitive APs of squares
-{h, m, 2m − h} with hm ≤ X is
-
-*[digest of a 64397 character source; every section, statement, and proof in full at `research/sources/hulse-kuan-lowryduda-aps-of-squares-dirichlet-2024.full.md`]*
+Hulse, Kuan, Lowry-Duda, Walker. "Arithmetic Progressions of Squares and Multiple Dirichlet Series." arXiv:2007.14324v4 [math.NT]. https://arxiv.org/abs/2007.14324
