@@ -46,6 +46,27 @@ Each marked with evidence class and a link.
   framework. Corroborates `best-unconditional-bound`,
   `singmaster-bounds-history`, and the uniformity argument of `effective-methods-wall`.
 
+- **Riemann–Hurwitz derivation of the genus closed form now executed over the full range. `checked` (EXIT_CODE=0), captures both held.**
+  `code/genus/verify_riemann_hurwitz.py` now runs the `2<=m<n<=20` grid (all six
+  distinct pairs have `{2,3},{2,4}` genus 1, rest >=2), ALL CHECKS PASSED,
+  capture `code/out/verify_riemann_hurwitz_full.captured.txt` (185 KiB; the
+  smaller `verify_riemann_hurwitz.captured.txt` covers 2<=m<=9,m<n<=10 plus
+  (3,25),(4,25),(6,9)). The four RH ingredients: (a) degree in y = n; (b) finite
+  ramification = m(n-1) points index 2 — critical points found by bisection for
+  n<=15 (Rolle structural for n>15), smoothness checked explicitly (scaled
+  critical-value sets disjoint); (c) exact integer RH identity
+  `2g-2 = -2n + m(n-1) + (n-gcd)`; (inf) fibre at x=infinity COMPUTED via the
+  Puiseux chart u=1/x giving I_inf = n-gcd (confirmed numerically), no finite-y
+  point over infinity; (d) m=2 edge `g=floor((n-1)/2)`. **What this does and does not
+  establish:** (a),(c),(inf) are exact/structural in m,n, so the closed form
+  `g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2` is now derived by the intended mechanism, not
+  just fitted to grids; but ingredient (b)'s smoothness/count is numerically
+  verified per pair (bisection for n<=15), so call it `checked` over this grid, not
+  a fully general proof until (b) is argued for all m,n. The `m=n` diagonal stays
+  degenerate (excluded). This is the RH deliverable of TASKS.md item 1; the
+  singularity delta-invariant cross-check (promote-to-proved route) is still not
+  separately done.
+
 - **Witness set / the falsifier. `computed`, 3 independent routes.**
   `3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6)` (+4 mirrors), so `N(3003)=8`.
   Verified by `code/out/witnesses.json`, the naive oracle `code/brute.py`, and a
@@ -114,8 +135,10 @@ Each marked with evidence class and a link.
   `code/out/genus_out_of_sample_verified.md`; anchor
   `code/out/genus_falsify.captured.txt`. Effective: yes (finite exact CAS
   recomputation); **uniform in k: no** (17 specific pairs). This confirms the
-  formula past the fitted grid but does not prove it — the uniform derivation
-  (Riemann–Hurwitz + singularity delta-invariant) is still open (TASKS.md item 5).
+  formula past the fitted grid but does not prove it — the Riemann–Hurwitz half
+  of the uniform derivation is now executed over 2<=m<n<=20 (see the
+  Riemann–Hurwitz bullet above); only the singularity delta-invariant
+  cross-check remains a separate route.
 
 - **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`
   from primary where noted; Singmaster 1971 Monthly still NOT held.**
