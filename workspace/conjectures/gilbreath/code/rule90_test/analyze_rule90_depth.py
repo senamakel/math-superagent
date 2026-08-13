@@ -213,7 +213,7 @@ def main():
           f"{'jumpMag^2':>10} {'jumpAtAbs^2':>12}")
     for r in results:
         mag = r["jumps_magnitude_near_pow2"]
-        atabs = sum(1 for (k, d, near) in r["jumps_abs_near"] if near is not None)
+        atabs = sum(1 for (k, d, near) in r["jumps_at_abs_near_pow2"] if near is not None)
         print(f"{r['origin']:>9} {r['threshold']:>5} {r['tol']:>3} "
               f"{r['min_hits']}/{r['min_total']:>6} {mag:>10} {atabs:>12}")
 

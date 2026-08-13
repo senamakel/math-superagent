@@ -22,7 +22,7 @@ def check_identity(a, b, xstr, ystr, zstr):
         return f'poly-error {e}'
     # 4XYZ - n(YZ + XZ + XY) in Z[k]
     lhs = 4 * X * Y * Z
-    rhs = n.expand() * (Y * Z + X * Z + X * Y)
+    rhs = n * (Y * Z + X * Z + X * Y)
     diff = lhs - rhs
     c = diff.all_coeffs()
     return all(coef == 0 for coef in c)

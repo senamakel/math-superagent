@@ -276,14 +276,10 @@ Carry it as corroboration only, not as a bound.
 
 ## Gaps
 
-- **RESOLVED: MRSTT effectiveness CONFIRMED from full text.** Remark 1.7 states
-  verbatim: "The implied quantitative bounds in the hypothesis 't is sufficiently
-  large depending on ε' are effective; however, we have made no attempt whatsoever
-  to optimize them in this paper, and will likely be too large to be of use in
-  numerical verification of Singmaster's conjecture in their current form." So the
-  interior theorem IS effective (a computable threshold exists) but with an
-  unoptimized, likely astronomically large constant. Full statement in
-  `research/approaches/mrstt-exact-statement.md`.
+- **RESOLVED: MRSTT effectiveness CONFIRMED from full text** (Remark 1.7:
+  thresholds effective, unoptimized, likely too large for numerical use; verbatim
+  quote and analysis live in the Established MRSTT bullet; full statement in
+  `research/approaches/mrstt-exact-statement.md`).
 - **RESOLVED: Witness double-failure stated.** `mrstt_leaves_witnesses_open.md`
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
