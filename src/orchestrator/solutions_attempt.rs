@@ -461,6 +461,12 @@ async fn attempt_step(
     // failure that matters here: the whole point of the channel is that a human
     // asked for this, and it outranks what the run inferred.
     let direction = direction_briefing(directives);
+    // Drained by the attempt alone, like the direction above and unlike the
+    // pattern mailbox. Reflection folds what it collects into `fresh_context`,
+    // which reaches the next attempt as *material gathered*; an open gap is not
+    // material, it is a target, and rendering it under the wrong heading is how
+    // a ready-made task reads as background reading.
+    let gaps = gap_briefing(skeletons);
     // Every attempt after the first continues work already on disk. Without
     // saying so, each one restarts at "read the statement and write it down",
     // and a run can spend its whole budget re-documenting the problem without
@@ -471,7 +477,7 @@ async fn attempt_step(
         state.attempts,
         workspace.is_some_and(has_executable_artifact),
     );
-    let prompt = attempt_prompt(&state, &continuation, &observations, &direction);
+    let prompt = attempt_prompt(&state, &continuation, &observations, &direction, &gaps);
     if !direction.is_empty()
         && let Some(tracer) = tracer
     {
@@ -528,6 +534,29 @@ fn direction_briefing(directives: &Mailbox) -> String {
     )
 }
 
+/// Renders the lemmas the run has decided would suffice, or nothing when it has
+/// not decided any yet.
+///
+/// What travels is the *gap*, not the reducer's prose about it: the reduction
+/// arm reads the open gaps back off disk after the delegation and posts those.
+/// A role summarising its own work is not the record, which is the argument the
+/// dossier is built on.
+///
+/// An empty mailbox renders nothing at all rather than a heading with nothing
+/// under it — an attempt told "Lemmas that would suffice:\n\n" reasonably
+/// concludes the run decided there were none.
+fn gap_briefing(skeletons: &Mailbox) -> String {
+    let gaps = skeletons.collect();
+    if gaps.is_empty() {
+        return String::new();
+    }
+    format!(
+        "Lemmas that would suffice to prove the goal, and which of them are still open. Each open \
+         one is a task with a first move already named — attacking one is worth more than another \
+         instance of a computation the run has already done:\n{gaps}\n\n"
+    )
+}
+
 /// Builds the task one attempt is given, as a plain function of the state.
 ///
 /// Kept separate from `attempt_step` so what an attempt is actually told is
@@ -537,6 +566,7 @@ fn attempt_prompt(
     continuation: &str,
     observations: &str,
     direction: &str,
+    gaps: &str,
 ) -> String {
     let fresh = if state.fresh_context.is_empty() {
         String::new()
@@ -557,7 +587,7 @@ fn attempt_prompt(
     format!(
         "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n\
          {direction}{steer}{}\n\
-         {observations}{fresh}\n\n\
+         {gaps}{observations}{fresh}\n\n\
          Requirements for this attempt, all of them:\n\
          - You must end this attempt with at least one program written to the workspace and \
            executed. An attempt that produces only notes, plans, or restatements has failed, \
