@@ -111,7 +111,16 @@ width-limited, quote j ≥ 5,596,824).
 
 ## Recalled
 
-Durable memory holds the reduction, the oracle generator (`code/lib/gilbreath.py`), the Odlyzko 1993 full text, the step-law/recharge proof, the Ducci primary sources, BFT 2023 canonical gap models, and `block-growth-literature-not-covered` (no source studies block-length growth, jumps, or renewal structure — the geometric-growth/renewal direction is original to this run and unclaimed). These agree with what the run has independently computed; no recalled claim is relied on whose hypotheses fail here. `relate_memory` was unavailable this cycle (Cognee 409 service errors); claims ledger via `search_claims` worked normally.
+Durable memory holds the reduction, the oracle generator
+(`code/lib/gilbreath.py`), the Odlyzko 1993 full text, the step-law/recharge
+proof, the Ducci primary sources, BFT 2023 canonical gap models, the just-stored
+CORRECTION that the inter-giant max gap is now 64 (not 26, after the 15th giant
+at row 239), and `block-growth-literature-not-covered` (no source studies
+block-length growth, jumps, or renewal structure — the geometric-growth/renewal
+direction is original to this run and unclaimed). These agree with what the run
+has independently computed; no recalled claim is relied on whose hypotheses
+fail here. `relate_memory` was unavailable this cycle (Cognee 409 service
+errors); claims ledger via `search_claims` worked normally.
 
 ## Contradictions
 
