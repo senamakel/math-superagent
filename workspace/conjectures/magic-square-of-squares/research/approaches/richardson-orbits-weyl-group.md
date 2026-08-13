@@ -12,58 +12,39 @@ idea: Recast the MSS as a problem about nilpotent orbits of SL₃ under
   corresponding isomonodromic deformation (the Schlesinger equations)
   gives a period map whose image lies in a ball quotient; the
   non-existence follows from the transcendence of the period ratio.
-mechanism: The entries of a 3×3 magic square are linear combinations of
-  (c, u, v).  Write them as the nine matrix entries mᵢⱼ = Lᵢⱼ(c,u,v).
-  The magic-line condition is exactly that the matrix M(c,u,v) commutes
-  with the all-ones matrix J₃, i.e. M ∈ Z(J₃) (the centraliser).  The
-  square condition is mᵢⱼ = sᵢⱼ².  Now consider the characteristic
-  polynomial det(tI − M).  For a magic square, the row/column/diagonal
-  sums are all 3c, which is an eigenvalue; the other eigenvalues
-  satisfy λ₁+λ₂ = 0 (trace = 3c ⇒ λ₁+λ₂+3c = 3c ⇒ λ₁+λ₂ = 0) so
-  the other two eigenvalues are ±r for some r.  The discriminant
-  λ₁λ₂ = −r² is minus a square.  The nine entries being squares forces
-  the elementary symmetric functions of the matrix entries to satisfy
-  specific square conditions.  In the language of prehomogeneous vector
-  spaces: the pair (SL₃ × SL₃, M₃) is a PVS, and the magic subspace
-  Z(J₃) is a regular nilpotent orbit closure.  The nine-square
-  conditions are the condition that the nine basis coefficients on this
-  orbit are squares.  Via the Chevalley restriction theorem, the
-  invariants of M are polynomials in c; the square conditions force c
-  to lie on a modular curve.
-status: parked-behind-blocking-question
-first-step: Compute the centraliser Z(J₃) explicitly: the space of 3×3
-  matrices commuting with the all-ones matrix has dimension 3 (it is
-  spanned by I, J₃, and the circulant matrix).  Write the nine entries
-  of a generic element as explicit linear forms in (c,u,v) — recovering
-  the standard parametrisation.  Then compute the discriminant of the
-  characteristic polynomial: Δ = (λ₁−λ₂)² = 4r² must be a square
-  (trivially true since r = something).  The non-trivial condition is
-  that each of the nine entries is a square.  Express this as:
-  there exists a point on the SL₃-orbit of the standard magic matrix
-  whose coordinates are all squares.  Translate to: the moment-map
-  fibre over a square centre is a torus bundle over the elliptic curve
-  from the Robertson reduction; the nine-square condition is a section
-  of this bundle.  Compute the genus of the total space.
-precedent: Prehomogeneous vector spaces — Sato–Kimura (1977) classify all
-  PVS; (SL₃×SL₃, M₃) is type (A₂×A₂, regular).  The centraliser Z(J₃)
-  is the centraliser of a semisimple element with eigenvalues
-  (3,0,0); its centraliser is GL₂ × GL₁.  Richardson (1979) classified
-  nilpotent orbits; the magic subspace corresponds to the regular
-  nilpotent orbit of sl₂ inside the centraliser.  Springer–
-  Steinberg: the invariant-theoretic quotient Z(J₃)//SL₃ is A¹
-  parametrised by c; fibres are rational surfaces.  Never applied to
-  the MSS problem.  Distinguished from the refuted K3 approach because
-  the PVS structure replaces the surface S with the total space of the
-  adjoint quotient, giving a different birational model.
-speculation: The period map for the isomonodromic deformation of the
-  regular nilpotent connection on P¹\{0,1,∞} with the MSS data as
-  monodromy gives a map to the moduli of genus-2 curves.  The image
-  is a thin set in the moduli space (by the transcendence of the
-  uniformisation), implying finiteness of rational points on the MSS
-  variety — conditional on the André–Oort conjecture, which is proved
-  for this case (Pila–Tsimerman 2017).  This is speculative because the
-  explicit connection between the PVS (SL₃, M₃) and the Hilbert modular
-  variety for Q(√5) needs to be established, but the structure is the
-  standard one for the icosahedral uniformisation of the Bring curve,
-  and the MSS triples correspond to Bring-curve torsion points.
+status: refuted
+killed-by: The PVS premise is correct — (SL3 × SL3, M3) with the two-sided
+  action (A,B)·M = A·M·B⁻¹ IS a prehomogeneous vector space, relative
+  invariant det, open orbit = invertible matrices (Sato–Shintani;
+  Sato–Kimura, Nagoya Math. J. 65 (1977) 1–155). But the MSS conditions
+  are NOT expressed by PVS relative invariants (the relative invariants are
+  powers of det, whereas 'each of nine entries is a square' is a coordinate
+  condition with no PVS reading), and the magic subspace — the centraliser
+  of the all-ones matrix J₃ — is the centraliser of a SEMISIMPLE element
+  (J₃ has eigenvalues 3,0,0), hence a reductive centraliser of dimension 3,
+  NOT a Richardson/nilpotent orbit (Richardson orbits parametrise nilpotent
+  conjugacy classes). The period-map → ball quotient → André–Oort → Bring
+  curve → Q(√5) chain is ungrounded in any source and would, if valid,
+  overprove (cannot separate Q from Q(√3,√133)/Q over which MSS provably
+  exist, this run's extension-field-mss-exist). André–Oort for curves in
+  Hilbert modular varieties is real (Yafaev; effective Binyamini–Masser)
+  but unrelated to the MSS.
+precedent:
+  - "Sato–Kimura, A classification of irreducible prehomogeneous vector
+    spaces and their relative invariants, Nagoya Math. J. 65 (1977) 1–155",
+    url: https://www.cambridge.org/core/journals/nagoya-mathematical-journal/article/89C47A4810A6F02971D393FD1FE44653
+  - "Binyamini–Masser, Effective André–Oort for non-compact curves in
+    Hilbert modular varieties, arXiv:2101.06412 / CRAS 2021"
+  - "Yafaev, The André–Oort conjecture for Hilbert modular surfaces"
+  - "Claim: richardson-pvs-valid-but-mss-not-pvs-invariant (research/notes/
+    literature-check-3-new-approaches.md)"
+first-step: NONE. The orbit/nilpotent/Richardson identification of the magic
+  subspace fails (semisimple centraliser), and the nine-square condition is
+  not a PVS invariant, so the PVS machinery cannot express the MSS. The
+  transcendence/André–Oort conclusion would overprove.
+speculation: (as originally written) "the link between the SL₃-orbit
+  structure and the Hilbert modular variety for Q(√5) needs establishment."
+  It could not be established; it does not exist in the literature and the
+  MSS does not map to a Q(√5) Hilbert modular variety through any
+  established construction.
 ```
