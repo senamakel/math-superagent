@@ -4,6 +4,10 @@ pub(crate) mod async_subagents;
 mod backward;
 mod checkpoint;
 mod claims;
+// The renderer writes files and pulls in raster encoders, so it is compiled
+// only when somebody asks to draw the loop.
+#[cfg(feature = "graph-debug")]
+mod diagram;
 mod digest;
 mod documents;
 mod dossier;
@@ -65,6 +69,8 @@ use vector::{
 };
 
 pub use tinyagents::harness::host::AgentDefinition;
+#[cfg(feature = "graph-debug")]
+pub use diagram::render_solution_loop;
 
 /// Specialists the goals agent may delegate to.
 const SPECIALISTS: [&str; 13] = [

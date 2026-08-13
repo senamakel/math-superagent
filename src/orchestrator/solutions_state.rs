@@ -234,40 +234,53 @@ fn open_initial_reduction(
     open_reduction(subagents, tracer, workspace, reduction, state);
 }
 
+/// The node the loop starts at.
+pub(super) const ENTRY: &str = "attempt";
+
+/// The node the loop ends at.
+pub(super) const FINISH: &str = "done";
+
+/// The edges that always fire, as `(from, to)`.
+pub(super) const DIRECT_EDGES: [(&str, &str); 2] = [("attempt", "judge"), ("diversify", "attempt")];
+
+/// Where the judge sends the run, as `(verdict, node)`.
+pub(super) const JUDGE_ROUTES: [(Judged, &str); 2] =
+    [(Judged::Reflect, "reflect"), (Judged::Restart, "attempt")];
+
+/// Where the reflection sends the run, as `(verdict, node)`.
+pub(super) const REFLECT_ROUTES: [(Route, &str); 5] = [
+    (Route::Solved, "done"),
+    // Terminal too. The run has an answer and has twice said it cannot build a
+    // second route to it; further attempts re-derive what is already on disk.
+    (Route::Reported, "done"),
+    (Route::Retry, "attempt"),
+    (Route::Diversify, "diversify"),
+    // Same terminal node as a finished run. The loop stops rather than
+    // diversifying, because diversification is three more child runs into the
+    // same refusal.
+    (Route::Blocked, "done"),
+];
+
 /// Connects the loop's nodes, separately from building them.
 ///
 /// The routing is the part of this design most likely to be wrong, so it is
 /// worth reading in one piece rather than at the tail of the wiring.
+///
+/// The edges are the constants above rather than literals here, because
+/// `super::diagram` renders the same loop and a diagram that describes the
+/// wiring separately is a diagram that goes quietly out of date. Reading both
+/// from one table means a rendered picture cannot disagree with what runs.
 fn wire_routes(
     builder: GraphBuilder<SolutionState, SolutionState>,
 ) -> GraphBuilder<SolutionState, SolutionState> {
-    builder
-        .set_entry("attempt")
-        .add_edge("attempt", "judge")
-        .add_conditional_edges(
-            "judge",
-            judged_route,
-            [(Judged::Reflect, "reflect"), (Judged::Restart, "attempt")],
-        )
-        .add_conditional_edges(
-            "reflect",
-            route,
-            [
-                (Route::Solved, "done"),
-                // Terminal too. The run has an answer and has twice said it
-                // cannot build a second route to it; further attempts re-derive
-                // what is already on disk.
-                (Route::Reported, "done"),
-                (Route::Retry, "attempt"),
-                (Route::Diversify, "diversify"),
-                // Same terminal node as a finished run. The loop stops rather
-                // than diversifying, because diversification is three more
-                // child runs into the same refusal.
-                (Route::Blocked, "done"),
-            ],
-        )
-        .add_edge("diversify", "attempt")
-        .set_finish("done")
+    let mut builder = builder
+        .set_entry(ENTRY)
+        .add_conditional_edges("judge", judged_route, JUDGE_ROUTES)
+        .add_conditional_edges("reflect", route, REFLECT_ROUTES);
+    for (from, to) in DIRECT_EDGES {
+        builder = builder.add_edge(from, to);
+    }
+    builder.set_finish(FINISH)
 }
 
 /// Pulls the `LESSON:` line out of a reflection, falling back to the whole text.

@@ -228,7 +228,7 @@ impl SolutionState {
 
 /// Routes taken out of the reflection node.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Route {
+pub(in crate::orchestrator) enum Route {
     /// Reflection judged the work complete and verified.
     Solved,
     /// An answer was reached that only one route supports, and no second route
@@ -297,7 +297,7 @@ fn route(state: &SolutionState) -> Route {
 
 /// Where the loop goes after the judge has spoken.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Judged {
+pub(in crate::orchestrator) enum Judged {
     /// Carry on to the reflection, which decides whether the run is done.
     Reflect,
     /// Discard this direction and attempt again.

@@ -70,6 +70,15 @@ default = []
 # `--all-features`, so the code is linted and compiled in CI like everything
 # else.
 tui = ["dep:ratatui", "dep:crossterm"]
+# Builds the `graph-render` binary, which draws the solution loop with
+# TinyFlows' own renderer. Off by default so the runtime image does not carry
+# raster encoders it can never use; a run renders nothing.
+graph-debug = ["tinyflows/graph-debug"]
+
+[[bin]]
+name = "graph-render"
+path = "src/bin/graph_render.rs"
+required-features = ["graph-debug"]
 
 [[bin]]
 name = "euler-tui"
