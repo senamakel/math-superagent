@@ -8,3 +8,8 @@
 [M=800] chunk 7488-8736: pairs 10123152 minus 0 plus 0 both 0 | cumulative pairs 38154480 minus 1 plus 1 both 0 | 58s
 [M=800] chunk 8736-9984: pairs 11680656 minus 0 plus 0 both 0 | cumulative pairs 49835136 minus 1 plus 1 both 0 | 70s
 [M=800] chunk 9984-11232: pairs 13238160 minus 0 plus 0 both 0 | cumulative pairs 63073296 minus 1 plus 1 both 0 | 70s
+[M=800] chunk 11232-12480: pairs 14795664 minus 0 plus 1 both 0 | cumulative pairs 77868960 minus 1 plus 2 both 0 | 81s
+[M=800] chunk 12480-13728: pairs 16353168 minus 1 plus 2 both 0 | cumulative pairs 94222128 minus 2 plus 4 both 0 | 101s
+[M=800] chunk 13728-14976: pairs 17910672 minus 0 plus 3 both 0 | cumulative pairs 112132800 minus 2 plus 7 both 0 | 101s
+[M=800] chunk 14976-16224: pairs 19468176 minus 0 plus 0 both 0 | cumulative pairs 131600976 minus 2 plus 7 both 0 | 108s
+[M=800] chunk 16224-17472: pairs 21025680 minus 0 plus 1 both 0 | cumulative pairs 152626656 minus 2 plus 8 both 0 | 123s

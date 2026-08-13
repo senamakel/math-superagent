@@ -186,7 +186,7 @@ anchor: research/sources/chase-hunter-tao-2026-full-html.full.md; research/sourc
 
 ```claim
 id: verification-record-2026
-statement: Current literature verification record: Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna 2025-2026 to 1.5×10^15 with G(π(2.8e14))=788, G(π(6.15e14))=800, G(π(1.5e15))=800. Still open.
+statement: Current literature verification record: Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14, independent confirmation of G(π(10^14))=693 (arXiv:2510.06688); Colonna/Delahaye 2025-2026 to all primes < 1.5×10^15 (completed 03/18/2026; 57,600 G(π(x)) values), current absolute record G(π(x))=811 at x≈1.2125×10^15 (02/15/26) — prior absolute records G(π(2.8×10^14))=788 (11/08/25), G(π(6.15×10^14))=800 (12/13/25), G(π(10^15))=800 (01/23/26), G(π(1.0025×10^15))=806 (01/24/26), G(π(1.2075×10^15))=809 (02/15/26). Relative (vicinity-only) records reach G=1935 near 6.02×10^27 (exploratory 128-bit, NOT a verification bound). Still open.
 hypotheses: exact integer computation; G(π(x)) = row index whose row begins 1 and is followed only by 0s and 2s.
 holds-here: yes.
 status: sourced (Wikipedia en rev 1348550815; Plouffe arXiv abstract; Colonna CNRS record page; all three downloaded this run)

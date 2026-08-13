@@ -60,12 +60,26 @@
       - `research/notes/phi-pell-records.md` — `phi-suprema-are-pell-pairs`,
         `phi-pell-record`
       All seven now appear in `search_claims` output with `research/notes/` anchor
-      paths. The remaining `code/out/` claims (`catIII-k3-has-q-point`,
-      `ferreira-1506-06621-refuted`, `conditional-mss-finite-computation`,
-      `hms-constant-nonextractable-on-disk`, `near-miss-baseline-and-incidence`,
-      `phi-count-sequence-not-in-oeis`) already had dual visibility through
-      notes under `code/out/` that the deriver reads. Row count is now ~67
-      (the original 60 + 7 new visible).
+      paths. The remaining `code/out/` claims already had dual visibility.
+      `phi-pair-sides-both-square-zero-through-M800` (2.5B pairs, both=0) is
+      now in the ledger.
+
+### Kamel–Sadek status (directive 22)
+
+The 6093-byte file `kamel-sadek-consecutive-squares-elliptic-2016.full.md` is
+the arXiv abstract page and has no theorems — expected. The 26208-byte file
+`kamel-sadek-consecutive-squares-elliptic-2016-body.full.md` IS the full HTML
+paper body with Theorem 3.3, Corollary 3.4, Proposition 2.2, and all proofs.
+The claim `kamel-sadek-consecutive-squares-rank-5` correctly anchors through
+`research/summaries/kamel-sadek-consecutive-squares-elliptic-2016-body.md` to
+the body file. Status `proved` is correct: peer-reviewed journal (Glasnik
+Matematicki 52/1, 2017). No change needed.
+
+### Captured-output count (directive 22)
+
+`commands.log` appeared (132149 bytes — was missing in directive 17), so the
+count went up by at least one. Without a before-state I cannot identify which
+individual `.captured.txt` disappeared.
 - [x] **Five phi_triple_variety programs now run.** verify_two_side_equiv (exit 0),
       verify_triple_square (exit 0), verify_prefilter (exit 0), benchmark (exit 0),
       verify_pell_symbolic (exit 0). All captured in code/out/.

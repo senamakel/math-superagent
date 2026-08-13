@@ -277,7 +277,7 @@ Carry it as corroboration only, not as a bound.
 Two further adjacent bounds exist in the library (asserted, secondary; carry as
 context, not as Singmaster results): Stirling-number analogue `M_i(a) <=
 2 + 2 log_a / W((1/2) log a)` (`stirling-2023-bound-and-record`, Bazsó–Mező–
-Pintér–Tengely 2023) and the OEIS row-count convention `oeis-a003016-row-count`.
+Pintér–Tengely 2023) and the OEIS row-count convention `a059233-rowcount-half-triangle-conversion`.
 
 ## Contradictions
 
@@ -330,11 +330,17 @@ Pintér–Tengely 2023) and the OEIS row-count convention `oeis-a003016-row-coun
   occurrences); state the counting convention on every claim; and every new
   claim must say whether its bound is effective and whether it is uniform in k
   (the genus formula is neither and its claim block says so). See TASKS.md.
-- **PROCESS: Five uncaptured programs (directive 7).** `test_slope_across_rows.py`,
-  `test_slope_hypothesis.py`, `effectivegenus/rep_pairs.py`,
-  `genus/verify_k2_5_row.py`, `pattern/print_family.py` — all have zero captured
-  output. Their conclusions are already operator-checked (k2=5 closed form, slope
-  conjecture) but a program never executed is not evidence. Run or tombstone them.
+- **PROCESS (resolved): the five formerly-uncaptured programs now have captures.**
+  `test_slope_across_rows.py` (EXIT_CODE=0), `test_slope_hypothesis.py` (0),
+  `effectivegenus/rep_pairs.py` (0), `genus/verify_k2_5_row.py` (0) all run
+  clean; `pattern/print_family.py` is captured but dies at i=5 on Python's
+  4300-digit int-str limit (family members i=1..4 printed first). The k2=5
+  closed form `2n-2 / 2n-4 at 5|n` and the whole-period slope/period-diff
+  structure rest on executed programs now, not on operator check alone.
+  Attempt-1 process lesson: sub-delegation to `goals`/`tool_builder` timed out
+  contributing nothing — the three deliverables (genus closed form, MRSTT gap
+  statement, effective-methods-wall) came from direct execution. Compute
+  directly; do not re-spawn the agent hierarchy.
 - **RESOLVED: genus Faltings-threshold is now a claim, not a pending item.**
   The single two-parameter formula `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2` is claim
   `genus-single-closed-form-all-pairs` (`checked`, 111 values) in
