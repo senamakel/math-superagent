@@ -247,9 +247,19 @@ Qdrant and outlive the workspace.
 
 Both travel to every reasoning role, and `remember_research` does not. Reading
 a note costs a lookup; writing one puts a statement into a store every later
-run reads, so it stays with the three roles whose output is durable knowledge:
-research, the scholar, and the inventor. A test asserts that split, because it
-is the kind of boundary that erodes one convenient grant at a time.
+run reads, so it stays with the roles whose output is durable knowledge:
+research, the scholar, the inventor, and the reducer. A test asserts that split,
+because it is the kind of boundary that erodes one convenient grant at a time.
+
+The reducer is on that list for the strongest version of the argument. A
+conjecture reduced to lemmas, with the claim that closed each one named beside
+it, is the most durable thing this runtime can produce about a problem — it
+survives the workspace, it survives the approach that produced it, and a later
+run re-deriving it is the most expensive way to find out it was already known.
+It is also why the reducer holds all three memory tools rather than the reading
+pair: `relate_memory` is the query a decomposition actually wants, since a
+reduction usually comes from a link between two things the run learned
+separately and never stated together.
 
 Three exclusions, each the same argument the rest of this document makes about
 tools being authority. The **judge** gets neither: it answers four lines on
@@ -269,15 +279,16 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
 | tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files, minus the threads, plus `code/AGENTS.md` and `code/INDEX.md` |
 | judge | `GOAL.md`, `INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` |
 | pattern_finder | `GOAL.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
 | librarian, research | `GOAL.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/FRONTIER.md`, `CONTEXT.md` |
 | inventor | `GOAL.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
+| reducer | `GOAL.md`, `research/BACKWARD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md` |
 | scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
-| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
+| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
 | director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
 | organizer | none — it falls through to the empty default |
 
