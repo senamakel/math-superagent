@@ -72,8 +72,120 @@ regeneration events: k | b(k) -> b(k+1) | jump | intruder(k) | intruder(k+1)
 rows with intruder==4: 96; of these regen rows: 60; non-regen (x=0) rows: 36
 non-regen intruder==4 rows: [11, 13, 28, 29, 30, 31, 32, 33, 35, 36, 37, 46, 52, 53, 54, 55, 59, 60, 61, 66, 67, 71, 74, 77, 78, 84, 85, 93, 95, 109, 124, 127, 133, 137, 144, 145]
 intruder(k+1) after non-regen intruder==4 rows: [(4, 36)]
-Traceback (most recent call last):
-  File "/workspace/code/pattern/regeneration_analysis.py", line 69, in <module>
-    print("intruder(k+1) after regen rows:", sorted(nxt.items()))
-                                             ^^^^^^^^^^^^^^^^^^^
-TypeError: '<' not supported between instances of 'NoneType' and 'int'
+intruder(k+1) after regen rows (visible only): [(4, 43), (6, 8), (8, 4), (10, 1), (12, 1), (14, 2)]
+P(regen) marginal = 0.0601; P(regen at k+1 | regen at k) = 0.5500 (over all 999 transitions; tail dilutes both)
+
+=== Q2 ===
+live regime transitions k=1..161: 161; regen 60, erosion 101
+b(k) at regen rows : n=60 min=2 max=1094263 mean=204799.6 median=27379
+b(k) at erosion rows: n=101 min=22 max=1094273 mean=228306.4 median=31534
+regen rate by b(k) bucket (live regime):
+  b in [0,10): transitions    2, regen   2, rate 1.000
+  b in [10,100): transitions   12, regen   7, rate 0.583
+  b in [100,1000): transitions   20, regen   9, rate 0.450
+  b in [1000,10000): transitions   30, regen  11, rate 0.367
+  b in [10000,100000): transitions   32, regen  10, rate 0.312
+  b in [100000,1000000): transitions   50, regen  18, rate 0.360
+  b in [1000000,1000000000): transitions   15, regen   3, rate 0.200
+
+jump sizes at regen: min 0 max 360698 median 4.5 mean 21175.7
+jump-size histogram: [('0', 17), ('1-9', 18), ('10-99', 6), ('100-999', 6), ('1000-9999', 3), ('10000-99999', 5), ('>=100000', 5)]
+corr(jump, b at regen row): pearson=0.771
+
+=== Q3 ===
+erosion runs (start, length), top 8: [(162, 838), (97, 13), (113, 12), (147, 12), (39, 8), (27, 7), (81, 5), (52, 4)]
+longest: starts at k=162, ends at k=999, length 838
+record boundary: D-1 = 999; start + length - 1 = 999
+run ends at the last transition of the record: True
+b(161)=1094263 b(162)=1270444 b(163)=1270443
+intruder(161)=4 intruder(162)=None
+width(162) = W-162 = 1270445; b(162) = 1270444 = width-1: True
+tail check: b(k) == W-k-1 and diff==-1 for all k=162..1000: True
+intruder null from k=162: True
+b month by month near run start:
+  k= 158 b= 1094262 diff=-1 intruder=6
+  k= 159 b= 1094261 diff=2 intruder=4
+  k= 160 b= 1094263 diff=0 intruder=4
+  k= 161 b= 1094263 diff=176181 intruder=4
+  k= 162 b= 1270444 diff=-1 intruder=None
+  k= 163 b= 1270443 diff=-1 intruder=None
+  k= 164 b= 1270442 diff=-1 intruder=None
+  k= 165 b= 1270441 diff=-1 intruder=None
+  k= 166 b= 1270440 diff=-1 intruder=None
+  k= 167 b= 1270439 diff=-1 intruder=None
+  k= 168 b= 1270438 diff=-1 intruder=None
+  k= 169 b= 1270437 diff=-1 intruder=None
+  k= 170 b= 1270436 diff=-1 intruder=None
+  k= 171 b= 1270435 diff=-1 intruder=None
+b at run end (k=995..1000):
+  k= 995 b= 1269611
+  k= 996 b= 1269610
+  k= 997 b= 1269609
+  k= 998 b= 1269608
+  k= 999 b= 1269607
+  k=1000 b= 1269606
+longest erosion run fully inside live regime k<=161: (97, 13)
+live-regime erosion run lengths: [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 7, 8, 12, 12, 13]
+
+=== Q4 ===
+regen rows in live regime (k=1..161): [1, 2, 3, 4, 8, 9, 10, 12, 14, 15, 16, 17, 18, 19, 22, 23, 26, 34, 38, 47, 48, 49, 50, 51, 56, 57, 62, 63, 64, 68, 72, 75, 76, 79, 80, 86, 91, 94, 96, 110, 111, 112, 125, 126, 128, 129, 130, 131, 132, 134, 135, 136, 138, 141, 142, 143, 146, 159, 160, 161]
+internal gaps between consecutive regen rows: [1, 1, 1, 4, 1, 1, 2, 2, 1, 1, 1, 1, 1, 3, 1, 3, 8, 4, 9, 1, 1, 1, 1, 5, 1, 5, 1, 1, 4, 4, 3, 1, 3, 1, 6, 5, 3, 2, 14, 1, 1, 13, 1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 3, 1, 1, 3, 13, 1, 1]
+gap stats: n=59 min=1 max=14 mean=2.71 median=1
+stdev=3.03 (mean of geometric p=0.373 is 2.68 for iid Bernoulli)
+uniformity k=1..161 in 7 buckets of 23: obs=[16, 3, 11, 7, 5, 11, 7] exp=8.57 chi2=13.50 (df=6, 95% crit 12.59)
+runs test (live): n1=60 n0=101 runs=53 expected=76.28 sd=5.91 z=-3.94
+
+=== Q5 ===
+global min b = 2 at k = [1]
+min b over k=2..1000 = 7 at k = [2]
+count of rows with b == 2: 1
+running min stays 2 forever (first row is global min): True
+rows after k=1 at running min: 0
+local minima of b (k, value), n=43:
+  k=   4 b=      13 (dwell 1 rows)
+  k=   8 b=      21 (dwell 1 rows)
+  k=  12 b=      96 (dwell 1 rows)
+  k=  14 b=      96 (dwell 1 rows)
+  k=  17 b=     175 (dwell 3 rows)
+  k=  18 b=     175 (dwell 2 rows)
+  k=  19 b=     175 (dwell 1 rows)
+  k=  22 b=     288 (dwell 1 rows)
+  k=  26 b=     871 (dwell 1 rows)
+  k=  34 b=     865 (dwell 1 rows)
+  k=  38 b=    2176 (dwell 1 rows)
+  k=  47 b=    2762 (dwell 4 rows)
+  k=  48 b=    2762 (dwell 3 rows)
+  k=  49 b=    2762 (dwell 2 rows)
+  k=  50 b=    2762 (dwell 1 rows)
+  k=  56 b=    4203 (dwell 1 rows)
+  k=  62 b=    5939 (dwell 3 rows)
+  k=  63 b=    5939 (dwell 2 rows)
+  k=  64 b=    5939 (dwell 1 rows)
+  k=  68 b=   23262 (dwell 1 rows)
+  k=  72 b=   31496 (dwell 1 rows)
+  k=  75 b=   31525 (dwell 2 rows)
+  k=  76 b=   31525 (dwell 1 rows)
+  k=  79 b=   31525 (dwell 2 rows)
+  k=  80 b=   31525 (dwell 1 rows)
+  k=  86 b=   31530 (dwell 1 rows)
+  k=  91 b=   31533 (dwell 1 rows)
+  k=  94 b=   31532 (dwell 1 rows)
+  k=  96 b=   92619 (dwell 1 rows)
+  k= 110 b=  103960 (dwell 1 rows)
+  k= 112 b=  141706 (dwell 1 rows)
+  k= 125 b=  271617 (dwell 1 rows)
+  k= 128 b=  325089 (dwell 1 rows)
+  k= 130 b=  325096 (dwell 1 rows)
+  k= 134 b=  515907 (dwell 1 rows)
+  k= 136 b=  733564 (dwell 1 rows)
+  k= 138 b=  733567 (dwell 1 rows)
+  k= 141 b=  733574 (dwell 3 rows)
+  k= 142 b=  733574 (dwell 2 rows)
+  k= 143 b=  733574 (dwell 1 rows)
+  k= 146 b=  733575 (dwell 1 rows)
+  k= 159 b= 1094261 (dwell 1 rows)
+  k= 161 b= 1094263 (dwell 1 rows)
+distinct small b values with counts (whole record): [(13, 2), (24, 2), (96, 2), (97, 2), (175, 4), (2762, 4), (5939, 3), (31525, 4), (31533, 3), (31534, 3), (733574, 3), (1094263, 3)]
+
+s: 520 zeros, 480 twos
+longest s runs: [(2, 11), (0, 8), (0, 7), (2, 7), (2, 7), (2, 7), (2, 7), (0, 7)]
