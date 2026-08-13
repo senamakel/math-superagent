@@ -345,38 +345,23 @@ the Established section.
 ## Gaps
 
 (Double as research requests; see `research/REQUESTS.md`.)
-- **Garcia-Fritz–Pasten constant C is ineffective, HMS constant C is effectively
-  computable but astronomically large** — C^(r+1) < 3 fails for any plausible
-  rank. The approach `uniform-height-bound-elliptic-ap` is sound on definitions
-  (doubled points covered), blocked by constant size. The conditional
-  reduction to a finite computation (Theorem 1.2, assuming uniform rank
-  boundedness) is the best available structural result from this line.
+- **`hms-constant-bound`** (open request, directive 12): What is the smallest
+  explicit upper bound for C in HMS Theorem 1.1? Extracted from David–Philippon
+  quantitative Schneider–Lang constants, PFR constants (Gowers–Green–Manners–Tao),
+  and the genus-2 curve degree in Dimitrov–Gao–Habegger. If none can be extracted,
+  record precisely which ingredient's constant is uncomputed.
+- **Conditional reduction to a finite computation** — the run's best structural
+  output, not yet written as a claim block. See TASKS.md blocking item 1.
 - **Rank of the Robertson curve** `E_e: y² = x(x²−c²)` for candidate c:
   Bremner's witness c=138600 gives rank 2; a putative MSS would need rank ≥ ?
-  Can we bound rank(E_c) in terms of the number of sum-of-two-squares
-  representations of the parameters?
-- **Φ-triple beyond m,n ≤ 400** — the absence of a Φ-triple through m,n ≤ 400 is
-  the current structural frontier, but it is verified-numerical only, not a proof;
-  its natural falsifier is a Φ-triple found beyond the range (a true hit would
-  *construct* a 7-square magic grid). The φ-universal-set and φ-no-triple-m400
-  claims are now claim blocks in `research/CLAIMS.md` (via `code/out/phi_claim_blocks.md`,
-  status checked-as-recorded). The two remaining open thread steps: write the
-  additive-triple condition as a polynomial variety and correlate with Morgenstern's
-  (a,b,a+b) equal-start census.
+  Can we bound rank(E_c) in terms of sum-of-two-squares representations?
+- **Φ-triple beyond m,n ≤ 400** — absence is verified-numerical, not a proof;
+  natural falsifier is a Φ-triple found beyond the range.
 - **Exact reduction unanchored end-to-end**: the curve/K3 correspondence
-  "rational point ⇒ distinct positive integer square solution" is not a claim
-  block. Blocks any descent.
-- Whether the four-AP condition (differences `u,v,u+v,u−v`) maps onto a known
-  concordant-forms/congruent-numbers problem. Morgenstern's exhaustive search
-  found no three *primitive* equal-`d` APs beyond `3.31×10¹⁵`; four linked
-  differences remain open.
+  "rational point ⇒ distinct positive integer square solution" is not a claim block.
 - **The eight-square sub-question**: no example known, no proof. Bremner's
   7-square witness has exactly two half-realised endpoints; going 7 → 8 means
-  realising one more — a precise target for an impossibility lemma.
+  realising one more.
 - **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
-  paper is now 78KB of real content (previously 6.6KB abstract wrapper). The
-  auto-generated digest in `research/summaries/wu-non-invariance-brauer-manin.md`
-  still needs the scholar to replace it with a proper summary. The claim
-  `wu-bm-noninvariance-under-base-change` now has a real source behind it
-  (conditional on Stoll's conjecture, with unconditional special cases for
-  Q/Q(i)).
+  paper is now 78KB; the auto-generated summary still needs proper scholar
+  digestion.
