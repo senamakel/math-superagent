@@ -818,6 +818,12 @@ fn open_invention(
 /// Split out of [`reflect_step`] because it is where every counter the loop
 /// routes on is moved, and those rules are worth reading in one piece rather
 /// than interleaved with the delegation that produced the reply.
+///
+/// Ending the run is the one decision here that cannot be walked back, so
+/// `state.solved` carries three independent conditions rather than one: the
+/// explicit positive verdict, an executable artifact on disk, and a reflection
+/// that does not contradict itself by reporting no progress. Each was added
+/// after a live run ended on the case it rules out.
 fn record_verdict(
     reflection: &str,
     tracer: Option<&Arc<RunTracer>>,
