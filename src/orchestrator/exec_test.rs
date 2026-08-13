@@ -134,3 +134,91 @@ async fn a_command_that_exits_reports_its_code() {
     let output = tool.run("exit 3").await.expect("the command runs");
     assert_eq!(output.status.and_then(|status| status.code()), Some(3));
 }
+
+/// Running a program has to leave something behind. Output that reached only
+/// the model died with the attempt at `DEFAULT_RUN_MINUTES`, and a live run
+/// executed two programs for 2 KB of results while `code/out/` stayed empty.
+#[tokio::test]
+async fn what_a_command_printed_is_written_to_the_workspace() {
+    let workspace = workspace_named("records-output");
+    let tool = ExecuteCommand::new(workspace.clone(), Duration::from_secs(30));
+    let output = tool
+        .run("echo 'genus is 0'")
+        .await
+        .expect("the command runs");
+    tool.record(
+        "echo 'genus is 0'",
+        "0",
+        &output.stdout.render(),
+        &output.stderr.render(),
+    )
+    .await;
+
+    let log = std::fs::read_to_string(workspace.join(COMMAND_LOG)).expect("the log is written");
+    assert!(log.contains("echo 'genus is 0'"), "the command is recorded");
+    assert!(log.contains("genus is 0"), "what it printed is recorded");
+    assert!(log.contains("exit: 0"), "how it ended is recorded");
+}
+
+/// A killed command is evidence about the method, so its partial output is
+/// recorded with the timeout rather than dropped.
+#[tokio::test]
+async fn a_killed_command_still_leaves_its_partial_output() {
+    let workspace = workspace_named("records-a-kill");
+    let tool = ExecuteCommand::new(workspace.clone(), Duration::from_millis(300));
+    let output = tool
+        .run("echo 'reached M=200'; sleep 30")
+        .await
+        .expect("the command runs");
+    assert!(output.status.is_none());
+    tool.record(
+        "python3 search.py",
+        "timed out after 540 seconds, killed",
+        &output.stdout.render(),
+        &output.stderr.render(),
+    )
+    .await;
+
+    let log = std::fs::read_to_string(workspace.join(COMMAND_LOG)).expect("the log is written");
+    assert!(log.contains("reached M=200"), "how far it got must survive");
+    assert!(log.contains("timed out"), "and that it was killed");
+}
+
+/// Workspace contents are committed, so the log has a ceiling. It is enforced
+/// by dropping whole entries from the front: the newest run is the one the next
+/// attempt needs.
+#[test]
+fn the_log_drops_whole_entries_from_the_front_once_it_is_full() {
+    let filler = "x".repeat(COMMAND_LOG_MAX_BYTES);
+    let log = format!("{COMMAND_LOG_MARK}$ old\n{filler}{COMMAND_LOG_MARK}$ newest\nexit: 0\n");
+    let kept = trimmed(log);
+
+    assert!(kept.len() <= COMMAND_LOG_MAX_BYTES, "the ceiling is enforced");
+    assert!(kept.contains("$ newest"), "the most recent entry is kept");
+    assert!(!kept.contains("$ old"), "the oldest entry is dropped");
+    assert!(
+        kept.starts_with(COMMAND_LOG_MARK),
+        "a trim cuts at an entry boundary, not mid-entry"
+    );
+}
+
+/// One entry over the whole ceiling is kept rather than cut mid-character;
+/// the next append trims it. A statement full of `x₂P` would not survive a
+/// byte-offset cut.
+#[test]
+fn a_single_oversized_entry_is_not_cut_mid_character() {
+    let log = format!("{COMMAND_LOG_MARK}$ one\n{}", "π".repeat(COMMAND_LOG_MAX_BYTES));
+    assert!(trimmed(log.clone()) == log);
+}
+
+/// A clipped stream keeps its end, for the same reason the model's rendering
+/// does: a program prints its conclusion last.
+#[test]
+fn a_clipped_stream_keeps_the_conclusion() {
+    let text = format!("{}\n[final] rank <= 3\n", "y".repeat(COMMAND_LOG_ENTRY_BYTES * 2));
+    let short = clipped(&text);
+
+    assert!(short.len() <= COMMAND_LOG_ENTRY_BYTES + 64);
+    assert!(short.contains("[final] rank <= 3"), "the conclusion survives");
+    assert!(short.starts_with("[earlier output dropped]"), "and the cut is stated");
+}
