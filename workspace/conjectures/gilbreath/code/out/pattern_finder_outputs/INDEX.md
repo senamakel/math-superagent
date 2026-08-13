@@ -11,6 +11,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `c.txt` | Intruder c_k = first value past the block, k=1..161; identical to intruder.txt. |
 | `diffs.txt` | b_{k+1} − b_k for k=1..160 (genuine transitions). |
 | `e_bits.txt` | Halved block edge (e_k/2), k=1..161, from boundary_state.py. |
+| `giants_6e8.json` | _(undescribed)_ |
 | `i_bits.txt` | Halved next-to-edge entry (i_k/2), k=1..161, from boundary_state.py. |
 | `intruder.txt` | First value past the block, k=1..161; None → empty line. |
 | `jumps.txt` | Jump sizes b_{k+1} − b_k at regeneration rows (b_{k+1} ≥ b_k), k=1..161. |
@@ -23,3 +24,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `s_runs2.txt` | Run lengths of consecutive s=2 values (k=1..1000). |
 | `t_bits.txt` | Halved A_k(2)/2, k=1..161, from boundary_state.py. |
 | `w_bits.txt` | Halved third-from-edge block entry (w_k/2), k=1..161, from boundary_state.py. |
+| `wider_giants.json` | _(undescribed)_ |

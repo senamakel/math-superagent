@@ -1,115 +1,203 @@
 # Tasks
 
-## Directive 31 (steer): make the keystone auditable, and clear the unrun pile
+## Directive 34 (steer): read the six papers you never read
+
+The nine arXiv `/abs/` landing pages have been replaced by full PDFs. Six are
+directly on the problem. Read them before any further mathematics.
 
 ### Immediate (in order)
 
-- [ ] **1. Re-emit `lean_reduction.captured.txt` so it proves something on its own.**
-  `code/out/lean_reduction.captured.txt` is **zero bytes** — identical to a command
-  that never ran, yet INDEX.md calls it "lean compile of the repaired reduction
-  lemma file (EXIT=0, clean)." After compiling `code/lean/reduction.lean`, add
-  `#print axioms <theorem name>` for every theorem in that file, capture stdout,
-  and also echo `lean --version` and `sha256sum` of the source file so the
-  artifact identifies what was compiled. If `lean` is unavailable in the
-  container, say so and downgrade any claim that rests on this file to
-  `asserted`.
+- [ ] **1. Read CHT 2026 first.**
+  `research/sources/chase-hunter-tao-2026-cramer-random-model-gilbreath-FULLPDF.full.md`
+  (98 KB, 137 theorem/lemma/proof hits). Chase proved the random-integer
+  analogue of Gilbreath — the closest thing to a theorem anyone has. Read what
+  hypothesis on the gap distribution his argument needs, and whether prime gaps
+  satisfy or fail it. That settles whether the regeneration route and his are
+  the same argument. Produce a summary: main theorem verbatim, hypotheses,
+  effective and uniform or not. Anchor: `research/notes/cht-2026-summary.md`.
 
-  **Note:** the main claim `gilbreath-second-entry-equivalence` correctly anchors
-  to `lean_gilbreath_reduction.captured.txt` (1028 bytes, full `#print axioms`
-  ledger with all 9 theorems, non-empty). The empty `lean_reduction.captured.txt`
-  is the separate compilation of just `code/lean/reduction.lean` — it is a broken
-  artifact regardless, and INDEX.md must not call it evidence of anything.
+- [ ] **2. Read Arias de Reyna.**
+  `research/sources/arias-de-reyna-list-manipulation-conjecture-FULLPDF.full.md`
+  (52 KB, 91 hits). The list-manipulation framing is the standard one.
+  Summary: main theorem verbatim, hypotheses. Anchor:
+  `research/notes/arias-de-reyna-summary.md`.
 
-- [ ] **2. `lean_shape.captured.txt` check.**
-  It is 147 bytes (non-empty, shows `shape_theorem` and `shape_iter` axioms).
-  The directive says "Same for `lean_shape.captured.txt` if it is empty too" —
-  it is not empty, so skip. Confirm in the task note.
+- [ ] **3. Read Muney 2026.**
+  `research/sources/muney-2026-holes-valid-extension-sets-FULLPDF.full.md`
+  (95 KB, 110 hits). Bears directly on the
+  `valid-extension-backward-nonlocal-refuted` claim. Summary: main theorem
+  verbatim, hypotheses. Anchor: `research/notes/muney-2026-summary.md`.
 
-- [ ] **3. Clear the unrun `.py` pile in `code/out/`.**
-  The directive lists 12 `.py` files with no matching `.captured.txt`.
-  Cross-check against the actual directory (some now have captures:
-  `runner1.py` → `runner1.captured.txt` 176B, `verify_c1.py` →
-  `verify_c1.captured.txt` 54B, `check_window_range_empirical.py` →
-  `check_window_range_empirical.captured.txt` 116B). The genuinely uncaptured
-  set is: `check_three_candidates.py`, `check_three_candidates2.py`,
-  `check_window_range_allcells.py`, `check_window_range_empirical2.py`,
-  `final_run.py`, `final_run2.py`, `_run_edge.py`, `runner2.py`, `runner3.py`
-  — 9 files. `exec.sh` covers only `final_run.py` and `final_run2.py`.
-  
-  **Do:** extend `exec.sh` with `timeout 540 python3 ... 2>&1 | tee` for all 9,
-  run it, capture every output in `code/out/`. Then delete any file that is
-  superseded rather than leaving it looking like pending work.
-  `refresh_index code/out/` after.
+- [ ] **4. Read the remaining three.**
+  BCZ 2023 filtered-rays, BCZ quasi-periodicity, Granville 2026 — in that
+  order. One summary per paper. Anchors:
+  `research/notes/bcz-2023-filtered-rays-summary.md`,
+  `research/notes/bcz-quasi-periodicity-summary.md`,
+  `research/notes/granville-2026-summary.md`.
 
-- [ ] **4. `edge_map_invertibility` already in CLAIMS.md — confirm and close.**
-  Claim `edge-interior-invertibility-sharpened` is already in the ledger at
-  `proved` with the unitriangular F₂ argument, three-route machine check to
-  n=18, and Rule-90 anchor. The directive's item 3 ("carry the sharpened
-  edge-zero-run statement into CLAIMS.md") is already satisfied. Confirm the
-  claim block in `code/out/edge_map_invertibility.notes.md` matches the ledger
-  entry and mark this item done.
+- [ ] **5. Re-judge `granville-2026-piercing-gilbreath-not-load-bearing`.**
+  The claim was made off the 6.8 KB `/abs/` landing page. The FULL PDF
+  (175 KB, 70 theorem/lemma/proof hits) and the operator's notes
+  (`research/notes/granville-2607-04166-actually-read.md`,
+  `research/notes/lemma54-discarded-case-is-universal.md`) show Lemma 5.4
+  and Theorem 5.5 are real — Lemma 5.4 is a supply-vs-demand budget
+  inequality equivalent to the run's own recharge identity in different
+  coordinates; Theorem 5.5 reduces GC to a lower bound on nu_2 alone (demand
+  side α=0.525 unconditional by Baker-Harman-Pintz). The paper is cs.CR,
+  not peer reviewed, proofs are uneven (Theorem 2.5: "Take κ₀=0 and the
+  theorem is proved!"; Lemma 5.4 discards delta=0 case occurring in 100% of
+  columns). **Re-grade**: not "not-load-bearing" — it contains a genuinely
+  useful reduction. Status depends on Lemma 5.4 re-derivation (Directive 32/33):
+  if it survives re-derivation here, upgrade to `checked` with the caveat
+  that the proof is this run's, not the author's.
 
-### Directive 30 tasks (mathematical direction — keep, do after hygiene)
+- [ ] **6. Revisit all nine claims anchored to `/abs/` landing pages.**
+  For each claim whose `check it at` field points at a <7 KB source, verify
+  that the matching `-FULLPDF.full.md` file supports or contradicts it.
+  Update the claim's evidence, bearing, and status. The nine are the six
+  above plus: bhat-cobeli-zaharescu-filtered-rays (identical to the 2023
+  version), colonna-proth-gilbreath-record (already had full content), and
+  plouffe-2025-verification-10e14 (already had its own full PDF).
 
-- [ ] **5. Produce the ratio table (Directive 30 item 4).**
-  Columns: 0-based giant pre-jump row, 1-based landing row, b_land, j_i,
-  gap_i (to next giant), ratio gap_i/(j_i+1), flooring. 15 genuine giants
-  from the 6e8 run (exclude row 248). Source:
-  `code/out/pattern_finder_6e8_giants.captured.txt`. If every ratio < 1 with
-  room, restate step 6 as the ratio bound and mark the old bounded-gap form
-  superseded. Anchor: `code/out/directive30_ratio_table.md`.
+## Directive 32/33 (steer): Granville's Lemma 5.4
 
-- [ ] **6. Rephrase step 6 in `research/threads/regeneration.md`.**
-  The conjecture needs Σ(j_i+1) ≥ k−2. This holds if each giant covers
-  the distance to the next: gap_i ≤ j_i + 1. The 6e8 data shows max ratio
-  0.0167 — two orders of slack.
+### (start after item 1 — CHT must be read first)
 
-- [ ] **7. Compute the width needed for the next genuine giant.**
-  k*=248 at 6e8 (W=31,324,703 primes). Geometric growth factor ~1.75×
-  puts next landing block at ~55M. Width needed ≈ landing + row + headroom
-  → sieve roughly 9e8–1e9. Report in `research/threads/regeneration.md`.
+- [ ] **7. Reproduce the operator's nu_2 numbers in-container.**
+  `code/nu2_granville_check.py` already written; run it, capture to
+  `code/out/nu2_granville_check.captured.txt`. Verify: nu_2/n ∈ [0.42, 0.52]
+  for n ∈ {50,100,200,400,800,1600,3200,3999}, Lemma 5.4 hypothesis
+  g*_n ≤ 2·nu_2(q_{n-1})+2 holds at every sampled n. Mark the operator claim
+  `granville-nu2-density-measured` as run-reproduced.
 
-- [ ] **8. Update CONTEXT.md Run state and Established.**
-  Replace Directive 28 run-state block with 6e8 record: 15 genuine giants,
-  max gap 64, row 238 genuine, k*=248, parity 14/15, step 6 rephrased as
-  ratio bound.
+- [ ] **8. Re-derive Lemma 5.4 from scratch.**
+  Handle the `delta_{k-1}(q_n)=0` case explicitly — it occurs in 100% of
+  columns (operator-computation, `lemma54-discarded-case-is-universal`).
+  The published proof sets it aside as an exception; the repair is showing
+  a zero inside the block guarantees success in general. **Prove it and
+  Lemma 5.4 becomes `proved` here.** If it survives, it is the strongest item
+  in the ledger.
 
-- [ ] **9. Downgrade superseded claims.**
+- [ ] **9. Test Lemma 5.4 from the FAILING side.**
+  Use Granville's "closest failing sister" construction (his section 5.1)
+  or synthetic Poisson-gap sequences (his section 4). Find sequences with v_n
+  straddling 2·nu_2+2 and check success flips exactly at the threshold.
+  If it flips elsewhere, the constant is wrong and Theorem 5.5 needs
+  restating. **The prime-only test is vacuous** (every column succeeds, both
+  sides always true — Directive 33 warning).
+
+- [ ] **10. Compare routes in `research/threads/regeneration.md`.**
+  Current route (step 6): ratio bound gap_i ≤ j_i+1, needs geometric growth
+  of b. Granville's route: Lemma 5.4 → Theorem 5.5 → nu_2 > n^β with β >
+  0.525. His demand is nu_2 > n^0.525, met by 26× and rising (operator
+  measurement: nu_2 = 2048 at n = 3999 vs threshold 78). If Granville's
+  route is provably weaker, **SWITCH** the thread target: mark the ratio-bound
+  route superseded, make "lower-bound nu_2" the live target. If the routes
+  are equivalent (both reduce to proving the block never dies), record that.
+
+- [ ] **11. Adopt nothing else from Granville.**
+  Theorem 2.5's proof is not a proof. Theorem 5.5's β = 0.99 comes from the
+  author's own Conjecture 5.1. The only pieces worth having are Lemma 5.4
+  and the Baker-Harman-Pintz α = 0.525 on the demand side.
+
+## Directive 31 (steer): keystone auditable + unrun pile
+
+### (lower priority; do these when blocked on thinking)
+
+- [ ] **12. Re-emit `lean_reduction.captured.txt`.**
+  Currently zero bytes. Re-compile `code/lean/reduction.lean`, add
+  `#print axioms <theorem name>` for every theorem, capture stdout,
+  echo `lean --version` and `sha256sum`. If `lean` unavailable, say so
+  and downgrade claims resting on this file. The main claim
+  `gilbreath-second-entry-equivalence` correctly anchors to the non-empty
+  `lean_gilbreath_reduction.captured.txt` — this is about the separate
+  `reduction.lean` compilation artifact. INDEX.md must not call a zero-byte
+  file evidence of anything.
+
+- [ ] **13. `lean_shape.captured.txt` check.**
+  It is 147 bytes, non-empty — skip.
+
+- [ ] **14. Clear the unrun `.py` pile in `code/out/`.**
+  9 files genuinely uncaptured: `check_three_candidates.py`,
+  `check_three_candidates2.py`, `check_window_range_allcells.py`,
+  `check_window_range_empirical2.py`, `final_run.py`, `final_run2.py`,
+  `_run_edge.py`, `runner2.py`, `runner3.py`. Extend `exec.sh` with
+  `timeout 540 python3 ... 2>&1 | tee` for all 9, run, capture. Delete
+  superseded files. `refresh_index code/out/`.
+
+- [ ] **15. `edge_map_invertibility` already in CLAIMS.md — confirm and close.**
+  Claim `edge-interior-invertibility-sharpened` already at `proved`. Confirm
+  the claim block in `code/out/edge_map_invertibility.notes.md` matches the
+  ledger entry and mark this item done.
+
+## Directive 30 tasks (mathematical — keep, lower priority)
+
+- [ ] **16. Ratio table (Directive 30 item 4).**
+  15 genuine giants, 6e8 run. Columns: 0-based pre-jump row, 1-based
+  landing row, b_land, j_i, gap_i, ratio gap_i/(j_i+1), flooring.
+  Exclude row 248 (cap). Anchor: `code/out/directive30_ratio_table.md`.
+
+- [ ] **17. Rephrase step 6 in `research/threads/regeneration.md`.**
+  Ratio bound gap_i ≤ j_i+1 holds with 2+ orders margin (max ratio 0.0000122).
+  **But hold: the Granville comparison (item 10) may supersede this.**
+
+- [ ] **18. Width estimate for next genuine giant.**
+  k*=248 at 6e8 (W=31.3M primes). Geometric projection ~55M block →
+  sieve ~1e9. Report in `research/threads/regeneration.md`.
+
+- [ ] **19. Update CONTEXT.md Run state and Established.**
+  Replace Directive 30 run-state block with 6e8 record. **Do after
+  Directive 34 completion — the run state is now under Directive 34.**
+
+- [ ] **20. Downgrade superseded claims.**
   `wider-width-giant-record-3e8` → superseded. `directive25-gap-trend-and-reconciliation`
   gap max → 64, not 26. `giant-parity-even-pre-jump-rows` count unchanged
   (14/15) but row 238 now proven genuine.
 
-- [ ] **10. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
+- [ ] **21. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
   `b.txt, bits.txt, diffs.txt, intruder.txt, jumps.txt, minima_b.txt,
   minima_rows.txt, regen_rows.txt, s.txt, s_runs0.txt, s_runs2.txt,
   b_genuine.txt` — 12 files. Canonical copies in
   `code/out/pattern_finder_outputs/`. `rm` the duplicates. `refresh_index`
   both folders.
 
-- [ ] **11. Provability question (Directive 26 core, still open).**
-  Ratio bound gap_i/(j_i+1) ≤ 0.017 changes the question: proving the gap
-  grows slower than the jump. Is geometric growth of b a consequence of
-  anything known about primes, or new?
-
-### Background (established, do not redo)
+## Background (established, do not redo)
 
 - **Reduction:** A_k(1) ∈ {0,2} ⇔ conjecture. Proved, checked to depth 599.
-- **Block lemma:** constant = 1 (n+1 rows per length-n block). Proved. `research/notes/block_lemma.md`.
-- **Rule 90 interior (PROVED):** halved entries evolve under XOR = Rule 90 = Pascal mod 2. `research/notes/rule90-interior.md`.
-- **Step law + recharge identity — PROVED, universal.** `research/notes/step_law_proved.md`.
+  Lean 4 IFF, sorry-free. Claim `gilbreath-second-entry-equivalence`.
+- **Block lemma:** constant = 1 (n+1 rows per length-n block). Proved.
+  `research/notes/block_lemma.md`.
+- **Rule 90 interior (PROVED):** halved entries evolve under XOR = Rule 90 =
+  Pascal mod 2. `research/notes/rule90-interior.md`.
+- **Step law + recharge identity — PROVED, universal.**
+  `research/notes/step_law_proved.md`.
 - **Drain law:** y_{k+1} = y_k − 2·[x_k=2]. Verified; combinatorial.
-- **Recharge surplus (depth 1000):** S_1000 = 1,270,603 vs required 998. `code/out/surplus_renewal_structure.md`.
-- **6e8 giant record (DONE, Directive 30):** 15 genuine giants, max gap 64, row 238 genuine, k*=248, parity 14/15, geometric growth ×1.765/event. `code/out/pattern_finder_6e8_giants.captured.txt`.
+- **Recharge surplus (depth 1000):** S_1000 = 1,270,603 vs required 998.
+  `code/out/surplus_renewal_structure.md`.
+- **6e8 giant record (DONE, Directive 30):** 15 genuine giants, max gap 64,
+  row 238 genuine, k*=248, parity 14/15, geometric growth ×1.765/event.
+  `code/out/pattern_finder_6e8_giants.captured.txt`.
 - **Width-degradation caveat (DONE):** k*=162 (2e7), k*=239 (3e8), k*=248 (6e8).
-- **Lean 4 formalisation — COMPLETE** (Directive 17). Nine theorems, zero sorry, axiom footprint [propext, Classical.choice, Quot.sound]; IFF reformulation. Claim `gilbreath-second-entry-equivalence`. Anchored to `code/out/lean_gilbreath_reduction.captured.txt` (1028B, non-empty, full `#print axioms`).
-- **Edge-map invertibility — PROVED.** Claim `edge-interior-invertibility-sharpened`: every nonzero {0,2} block shows edge 2 at least once during its n erosion reads; worst zero-run ≤ n−1 (sharp). F₂-unitriangular argument + three-route machine check. `code/out/edge_map_invertibility.notes.md`.
-- **Conditional-rate experiment — DONE** (Directive 19). Mean rate superseded (heavy tail).
+- **Edge-map invertibility — PROVED.** Claim `edge-interior-invertibility-sharpened`.
+  `code/out/edge_map_invertibility.notes.md`.
+- **Conditional-rate experiment — DONE** (Directive 19). Mean rate superseded
+  (heavy tail). `code/out/conditional_rate_experiment.notes.md`.
 - **CHT Theorem 1.6 hypothesis check — DONE:** `holds-here: no`.
 - **Rule 90 depth prediction — CLOSED** (null computed).
-- **Oracle:** `witnesses.json` (depth 600), `blocks_depth1000.json` (depth 1000, sieve 2e7), `wider_width_b.json` (depth 240, sieve 3e8), `giants_6e8.json` (depth 400, sieve 6e8).
+- **Oracle:** `witnesses.json` (depth 600), `blocks_depth1000.json` (depth 1000,
+  sieve 2e7), `wider_width_b.json` (depth 240, sieve 3e8), `giants_6e8.json`
+  (depth 400, sieve 6e8).
 - **Library:** downloads halted; FRONTIER.md restored from commit db36fc23.
+  Six FULL-PDF papers now in `research/sources/` awaiting reading (Directive 34).
+- **Granville notes (operator-computation, not yet run-reproduced):**
+  `research/notes/granville-2607-04166-actually-read.md` — Lemma 5.4/Theorem 5.5
+  reduction, nu_2 ~ n/2 measurement. `research/notes/lemma54-discarded-case-is-universal.md` —
+  delta=0 case occurs in 100% of columns; published proof does not establish the lemma.
 
 ### Threads
 
-- `research/threads/regeneration.md` — LIVE (Directive 30): 15 genuine giants, max gap 64, step 6 rephrased as ratio bound gap_i ≤ j_i+1 (holds with 2+ orders margin). Next: ratio table + provability question refocused on jump growth rate.
+- `research/threads/regeneration.md` — LIVE (Directive 30/34): 15 genuine giants,
+  max gap 64, step 6 rephrased as ratio bound. **Directive 34 adds a new fork:**
+  Granville's Lemma 5.4/Theorem 5.5 route (lower-bound nu_2) vs current
+  ratio-bound route (geometric growth of b). Comparison queued (item 10).
 - `research/threads/rule90-regeneration.md` — CLOSED (null computed).
