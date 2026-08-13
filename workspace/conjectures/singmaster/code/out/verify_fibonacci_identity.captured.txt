@@ -2,16 +2,41 @@ COUNTING CONVENTION: N(a) counts BOTH mirrored occurrences (C(n,k) and C(n,n-k) 
 
 === Cross-check fast_multiplicity vs lib oracle (both conventions equal) ===
   a=     6: fast N=3  lib N=3  OK
-  a=    10: fast N=2  lib N=4  MISMATCH
-  a=    36: fast N=2  lib N=4  MISMATCH
+  a=    10: fast N=4  lib N=4  OK
+  a=    36: fast N=4  lib N=4  OK
   a=   120: fast N=6  lib N=6  OK
-  a=   210: fast N=4  lib N=6  MISMATCH
-  a=  1540: fast N=4  lib N=6  MISMATCH
-  a=  7140: fast N=4  lib N=6  MISMATCH
-  a= 11628: fast N=4  lib N=6  MISMATCH
-  a= 24310: fast N=4  lib N=6  MISMATCH
-  a=  3003: fast N=6  lib N=8  MISMATCH
+  a=   210: fast N=6  lib N=6  OK
+  a=  1540: fast N=6  lib N=6  OK
+  a=  7140: fast N=6  lib N=6  OK
+  a= 11628: fast N=6  lib N=6  OK
+  a= 24310: fast N=6  lib N=6  OK
+  a=  3003: fast N=8  lib N=8  OK
+
+=== Singmaster 1975 infinite family C(n+1,m+1)=C(n,m+2), j=1..6 ===
+j=1: C(15,5) == C(14,6)  (identity: True);  a has 4 digits
+     interior pairs (15,5) and (14,6) canonical & non-central; their mirrors and the trivial pair C(a,1)=C(a,a-1) are distinct
+     -> six distinct occurrences, so N(a) >= 6
+j=2: C(104,39) == C(103,40)  (identity: True);  a has 29 digits
+     interior pairs (104,39) and (103,40) canonical & non-central; their mirrors and the trivial pair C(a,1)=C(a,a-1) are distinct
+     -> six distinct occurrences, so N(a) >= 6
+j=3: C(714,272) == C(713,273)  (identity: True);  a has 205 digits
+     interior pairs (714,272) and (713,273) canonical & non-central; their mirrors and the trivial pair C(a,1)=C(a,a-1) are distinct
+     -> six distinct occurrences, so N(a) >= 6
+j=4: C(4895,1869) == C(4894,1870)  (identity: True);  a has 1412 digits
+     interior pairs (4895,1869) and (4894,1870) canonical & non-central; their mirrors and the trivial pair C(a,1)=C(a,a-1) are distinct
+     -> six distinct occurrences, so N(a) >= 6
+j=5: C(33552,12815) == C(33551,12816)  (identity: True);  a has 9688 digits
+     interior pairs (33552,12815) and (33551,12816) canonical & non-central; their mirrors and the trivial pair C(a,1)=C(a,a-1) are distinct
+     -> six distinct occurrences, so N(a) >= 6
+j=6: C(229970,87840) == C(229969,87841)  (identity: True);  a has 66416 digits
+     interior pairs (229970,87840) and (229969,87841) canonical & non-central; their mirrors and the trivial pair C(a,1)=C(a,a-1) are distinct
+     -> six distinct occurrences, so N(a) >= 6
+
+=== Exact N(a) for the first three family members (fast inversion) ===
+j=1: a has 4 digits;  N(a) = 8 = 2 (trivial) + 6 from canonical reps [(78, 2), (15, 5), (14, 6)]
+j=2: a has 29 digits;  N(a) = 4 = 2 (trivial) + 2 from canonical reps [(104, 40)]
 Traceback (most recent call last):
-  File "/workspace/code/verify_fibonacci_identity.py", line 99, in <module>
-    assert ok, "fast_multiplicity disagrees with the lib oracle"
-AssertionError: fast_multiplicity disagrees with the lib oracle
+  File "/workspace/code/verify_fibonacci_identity.py", line 126, in <module>
+    assert total >= 6
+           ^^^^^^^^^^
+AssertionError
