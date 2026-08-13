@@ -176,26 +176,31 @@ report("3,7 are 3 (mod 4) i.e. not admissible; 9=3^2, 49=7^2 are 1 (mod 4) i.e. 
        ok3, f"first 31 admissible sizes all ≡1 mod4, distinct: {sizes30[:12]} ...")
 
 # ----------------------------------------------------------------------
-# Point 4: table a = 2..30, assert M(a) < T(a) for 2 <= a <= 28 and
-# M(29) >= T(29).
+# Point 4: table a = 2..30.  The boundary is EXACTLY: M(a) < T(a) for every
+# 2 <= a <= 28 (equality case impossible there) and M(29) > T(29) strictly
+# (so a = 29 is NOT excluded — the bound stops at 28; nothing beyond is
+# claimed by this program).
 # ----------------------------------------------------------------------
 print()
 print("=" * 78)
 print("Point 4: table  a = 2..30,  M(a) vs T(a) in exact arithmetic")
 print("=" * 78)
-print(f"{'a':>3} {'k=a+1':>6} {'T(a)':>12} {'M(a)':>30} {'M(a) < T(a)':>12}")
+print(f"{'a':>3} {'k=a+1':>6} {'T(a)':>12} {'M(a)':>30} {'M(a) < T(a)':>12} "
+      f"{'M(a) > T(a)':>12}")
 all_lt = True
 for a in range(2, 31):
     ta, ma = T(a), M(a)
     lt = ma < ta
     if 2 <= a <= 28 and not lt:
         all_lt = False
-    print(f"{a:>3} {a + 1:>6} {float(ta):>12.9f} {float(ma):>30.18f} {str(lt):>12}")
+    print(f"{a:>3} {a + 1:>6} {float(ta):>12.9f} {float(ma):>30.18f} "
+          f"{str(lt):>12} {str(ma > ta):>12}")
 print()
 print(f"  M(a) < T(a) for every a in 2..28? {all_lt}")
-print(f"  M(29) >= T(29)? {M(29) >= T(29)}   (M(29)={M(29)}, T(29)={T(29)})")
+print(f"  M(29) > T(29)? {M(29) > T(29)}   (M(29)={M(29)}, T(29)={T(29)})")
 report("M(a) < T(a) for all 2 <= a <= 28", all_lt)
-report("M(29) >= T(29)", M(29) >= T(29), f"M(29)={M(29)}, T(29)={T(29)}")
+report("M(29) > T(29) strictly; a=29 NOT excluded (bound stops at 28)",
+       M(29) > T(29), f"M(29)={M(29)}, T(29)={T(29)}")
 
 print()
 print("=" * 78)
@@ -203,7 +208,7 @@ point_ok = [
     all(results[0:3]),   # point 1: a = 1, T(1) = max product = 4/3, {5,9} odd part of 90
     all(results[3:5]),   # point 2: 257 prime, forced component, a=8 bound < T(8)
     results[5],          # point 3: mod-4 admissibility
-    all(results[6:8]),   # point 4: table 2..30, M < T for 2..28 and M(29) >= T(29)
+    all(results[6:8]),   # point 4: table 2..30, M < T for 2..28, M(29) > T(29)
 ]
 print(f"VERDICTS: {sum(point_ok)}/4 points PASS  ->  {'ALL FOUR POINTS PASS' if all(point_ok) else 'SOME POINT FAILED'}")
 print("=" * 78)

@@ -1,6 +1,7 @@
 
 mod approaches;
 pub(crate) mod async_subagents;
+mod backward;
 mod checkpoint;
 mod claims;
 mod digest;
@@ -65,7 +66,7 @@ use vector::{
 pub use tinyagents::harness::host::AgentDefinition;
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 12] = [
+const SPECIALISTS: [&str; 13] = [
     "research",
     "tool_builder",
     "coder",
@@ -76,6 +77,7 @@ const SPECIALISTS: [&str; 12] = [
     "lean_prover",
     "pattern_finder",
     "inventor",
+    "reducer",
     "librarian",
     "scholar",
 ];
@@ -117,6 +119,10 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 /// - `inventor` — whether a reformulation is genuinely different, whether a
 ///   theorem's hypotheses hold here, whether the literature suggests something
 ///   better than what was proposed. Runs only at a diversify.
+/// - `reducer` — whether a set of lemmas actually implies the goal. That is the
+///   definition of a judgement no tool can check: a decomposition into three
+///   attractive statements that do not recombine reads exactly like one that
+///   does. It writes one file and is opened at most a handful of times in a run.
 /// - `judge` — scores how an attempt was conducted and rarely stops the run.
 ///   Capped at twelve calls and five minutes, and answers in four lines.
 /// - `reflection` — solved, progressed, and now what *kind* of progress. That
@@ -133,10 +139,10 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 /// `scholar` and `research` read whole documents, so their turns are large.
 /// `pattern_finder` and the code writers execute rather than judge, and the
 /// planners drive every turn of the run.
-const REASONING_ROLES: [&str; 4] = ["inventor", "judge", "reflection", "director"];
+const REASONING_ROLES: [&str; 5] = ["inventor", "reducer", "judge", "reflection", "director"];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 14] = [
+const DELEGATES: [&str; 15] = [
     "research",
     "tool_builder",
     "coder",
@@ -149,6 +155,7 @@ const DELEGATES: [&str; 14] = [
     "reflection",
     "pattern_finder",
     "inventor",
+    "reducer",
     "librarian",
     "scholar",
 ];
@@ -186,6 +193,10 @@ const JUDGE_PROMPT: &str = include_str!("../prompts/judge.md");
 const PATTERN_PROMPT: &str = include_str!("../prompts/pattern_finder.md");
 
 const INVENTOR_PROMPT: &str = include_str!("../prompts/inventor.md");
+
+/// The role that works backward from the goal rather than forward from what the
+/// run holds.
+const REDUCER_PROMPT: &str = include_str!("../prompts/reducer.md");
 
 const LIBRARIAN_PROMPT: &str = include_str!("../prompts/librarian.md");
 

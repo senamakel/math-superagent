@@ -100,7 +100,8 @@ def phase_a2():
     print("literal rule (p-1) | P^3 vs working form: agree on ALL primes "
           "<= 1000: %s" % equiv)
     print("literal-Higgs primes <= 1000: %d of %d"
-          % (sum(lit_lists.values()), len(sympy.primerange(2, 1000 + 1))))
+          % (sum(lit_lists.values()),
+             len(list(sympy.primerange(2, 1000 + 1)))))
     ok = ok17 and ok31 and equiv
     print("A2 %s" % ("PASS" if ok else "FAIL"))
     return ok
@@ -118,7 +119,7 @@ def phase_a3():
     for p in sympy.primerange(3, 10**6):
         if cnt == 30:
             break
-        ph = int(sympy.cyclotomic_poly(4 * p).subs(x, 2))   # exact int, no floats
+        ph = int(sympy.cyclotomic_poly(4 * p, x).subs(x, 2)) # exact int, no floats
         if 2 ** (2 * p) + 1 != 5 * ph:
             print("    FAIL Phi_{4p}(2) identity at p=%d" % p)
             ok = False

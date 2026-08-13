@@ -1,0 +1,53 @@
+==============================================================================
+A1. sigma_star oracle + 2-adic budget identity
+==============================================================================
+n = 6
+    = 2 * 3
+    sigma_star = 12, 2n = 12, unitary perfect: True
+    a = 1, omega(odd) = 1, sum v2(p^e+1) = 2, a+1 = 2, identity: True
+n = 60
+    = 2^2 * 3 * 5
+    sigma_star = 120, 2n = 120, unitary perfect: True
+    a = 2, omega(odd) = 2, sum v2(p^e+1) = 3, a+1 = 3, identity: True
+n = 90
+    = 2 * 3^2 * 5
+    sigma_star = 180, 2n = 180, unitary perfect: True
+    a = 1, omega(odd) = 2, sum v2(p^e+1) = 2, a+1 = 2, identity: True
+n = 87360
+    = 2^6 * 3 * 5 * 7 * 13
+    sigma_star = 174720, 2n = 174720, unitary perfect: True
+    a = 6, omega(odd) = 4, sum v2(p^e+1) = 7, a+1 = 7, identity: True
+n = 146361946186458562560000
+    = 2^18 * 3 * 5^4 * 7 * 11 * 13 * 19 * 37 * 79 * 109 * 157 * 313
+    sigma_star = 292723892372917125120000, 2n = 292723892372917125120000, unitary perfect: True
+    a = 18, omega(odd) = 11, sum v2(p^e+1) = 19, a+1 = 19, identity: True
+n = 12
+    = 2^2 * 3
+    sigma_star = 20, 2n = 24, unitary perfect: False
+    a = 2, omega(odd) = 1, sum v2(p^e+1) = 2, a+1 = 3, identity: False
+A1 PASS: five UPNs verified, 12 negative control verified, budget identity exact on all five
+==============================================================================
+A2. 3-Higgs predicate
+==============================================================================
+257 decision: 257-1 = 256 = 2^8, v2 = 8 > 3, so 257 is NOT 3-Higgs and consequently m = 8 is NOT in H_even (2^8+1 = 257 is a non-Higgs prime divisor): is_3_higgs(257) = False
+prime <= 31: 2:H 3:H 5:H 7:H 11:H 13:H 17:n 19:H 23:H 29:H 31:H
+17 non-Higgs (17-1 = 2^4, v2 = 4 > 3): True
+31 Higgs (31-1 = 2*3*5): True
+literal rule (p-1) | P^3 vs working form: agree on ALL primes <= 1000: True
+literal-Higgs primes <= 1000: 127 of 168
+A2 PASS
+==============================================================================
+A3. Cyclotomic / Aurifeuillean identities
+==============================================================================
+Traceback (most recent call last):
+  File "/workspace/code/heven_classify.py", line 289, in <module>
+    main()
+  File "/workspace/code/heven_classify.py", line 275, in main
+    a3 = phase_a3()
+         ^^^^^^^^^^
+  File "/workspace/code/heven_classify.py", line 122, in phase_a3
+    ph = int(sympy.cyclotomic_poly(4 * p).subs(x, 2))   # exact int, no floats
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 320, in __int__
+    raise TypeError("Cannot convert symbols to int")
+TypeError: Cannot convert symbols to int

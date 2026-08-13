@@ -1,0 +1,130 @@
+====================================================================================================
+PART 0  ORACLE: prime rows A_1..A_5 vs problem.md table
+====================================================================================================
+  A_1 = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2]  match=True
+  A_2 = [1, 0, 2, 2, 2, 2, 2, 2, 4, 4]  match=False
+  A_3 = [1, 2, 0, 0, 0, 0, 0, 2, 0, 2]  match=False
+  A_4 = [1, 2, 0, 0, 0, 0, 2, 2, 2, 2]  match=True
+  A_5 = [1, 2, 0, 0, 0, 2, 0, 0, 0, 2]  match=True
+  FAIL
+====================================================================================================
+PART 1  SNIFF code/out/event_rate_stats.jsonl keys
+====================================================================================================
+  keys: ['D', 'W', 'b0_hits', 'b1', 'b_min', 'batch', 'eligible', 'events', 'family', 'first_b0', 'live_rows', 'mean_jump', 'recharge_fail', 'rho_live', 'rho_rows', 'seed', 'step_fail', 'sum_j1', 'trunc_k']
+  per-row event positions present: none
+  stored aggregates not conditionable on k>10
+  stored survivor rates (unconditional, all rows):
+    f2-geo05           441 events /    896 eligible = 0.4922
+    f2-rand24           62 events /     62 eligible = 1.0000
+    f2-skew246         923 events /   1622 eligible = 0.5691
+    f2-skew24810       546 events /   1098 eligible = 0.4973
+    f2-uniform3        444 events /    633 eligible = 0.7014
+    f2-uniform5        130 events /    217 eligible = 0.5991
+    geo05              206 events /    395 eligible = 0.5215
+    rand24              18 events /     18 eligible = 1.0000
+    skew246            352 events /    617 eligible = 0.5705
+    skew24810          249 events /    491 eligible = 0.5071
+    uniform3            57 events /     78 eligible = 0.7308
+    uniform5            34 events /     52 eligible = 0.6538
+  (1154 stored sequences total)
+====================================================================================================
+PART 2  FRESH RUN: families with >=5 stored survivors, 20 seeds each, D=40, W=20000
+====================================================================================================
+  families used (stored survivor counts):
+    consecutive       62
+    f2-geo05          20
+    f2-rand24         62
+    f2-skew246        42
+    f2-skew24810      25
+    f2-uniform3       23
+    f2-uniform5        8
+    geo05              9
+    rand24            18
+    skew246           17
+    skew24810         11
+  seeds: 10000..10019  (seed = 10000 + i)
+  220 sequences, 26 workers, ~7 s/seq single-core -> ~59 s wall (2 min budget)
+[parallel] conditional-rate: families x seeds across 26 worker(s) of 28 CPUs
+  run finished in 0.1s
+----------------------------------------------------------------------------------------------------
+PART 2 REPORT  (conditioned on survival past row 10: first_b0 is None or first_b0 > 10)
+----------------------------------------------------------------------------------------------------
+  total seeds: 220 | survived row 10: 118 | died k<=10: 102 | died k>10: 0 | survived full D=40: 118
+  startup deaths (k<=10) per family: {'f2-geo05': 12, 'f2-skew246': 4, 'f2-skew24810': 11, 'f2-uniform3': 7, 'f2-uniform5': 17, 'geo05': 19, 'rand24': 10, 'skew246': 8, 'skew24810': 14}
+
+  family             n ev_post elig_post rho_post10  mean per-seq       min-max
+  consecutive       20       0         0         -           n/a           n/a
+  f2-geo05           8     102       200  0.510000 0.5099 +/- 0.1088 0.3462..0.6667
+  f2-rand24         20       0         0         -           n/a           n/a
+  f2-skew246        16     181       325  0.556923 0.5732 +/- 0.1538 0.3000..0.9286
+  f2-skew24810       9     123       226  0.544248 0.5349 +/- 0.1435 0.2609..0.8000
+  f2-uniform3       13      97       159  0.610063 0.6124 +/- 0.1302 0.3125..0.8182
+  f2-uniform5        3      18        30  0.600000 0.6296 +/- 0.2095 0.3333..0.7778
+  geo05              1      20        30  0.666667 0.6667 +/- 0.0000 0.6667..0.6667
+  rand24            10       0         0         -           n/a           n/a
+  skew246           12     137       255  0.537255 0.5550 +/- 0.1648 0.3000..0.9286
+  skew24810          6      95       161  0.590062 0.5842 +/- 0.1135 0.4815..0.8000
+
+  POOLED lambda_hat = 773 / 1386 = 0.557720  (families with elig_post>0: 8)
+    f2-geo05         observed    102  expected   111.54  contrib     0.82
+    f2-skew246       observed    181  expected   181.26  contrib     0.00
+    f2-skew24810     observed    123  expected   126.04  contrib     0.07
+    f2-uniform3      observed     97  expected    88.68  contrib     0.78
+    f2-uniform5      observed     18  expected    16.73  contrib     0.10
+    geo05            observed     20  expected    16.73  contrib     0.64
+    skew246          observed    137  expected   142.22  contrib     0.19
+    skew24810        observed     95  expected    89.79  contrib     0.30
+  Pearson X^2 = 2.900, df = 7, p = 8.941e-01  (scipy chi2 survival)
+  overdispersion check: per-sequence events_post var/mean = 1.80 (~1 under one Poisson law)
+
+  inter-event row-gap distribution at k>=11 (pooled + per family):
+    pooled           n= 705 mean=    1.78 median=   1 max=   14
+    consecutive      n/a (fewer than 2 post-10 events)
+    f2-geo05         n=  94 mean=    1.90 median=   1 max=   10
+    f2-rand24        n/a (fewer than 2 post-10 events)
+    f2-skew246       n= 165 mean=    1.81 median=   1 max=   11
+    f2-skew24810     n= 114 mean=    1.82 median=   1 max=   14
+    f2-uniform3      n=  84 mean=    1.69 median=   1 max=    6
+    f2-uniform5      n=  15 mean=    1.40 median=   1 max=    3
+    geo05            n=  19 mean=    1.37 median=   1 max=    3
+    rand24           n/a (fewer than 2 post-10 events)
+    skew246          n= 125 mean=    1.89 median=   1 max=   11
+    skew24810        n=  89 mean=    1.65 median=   1 max=    7
+
+  verdict: p = 8.941e-01 -> family-independent (Route A, combinatorial)
+====================================================================================================
+PART 3  ORACLE CROSS-CHECK (numpy vs pure-Python, 2 pairs, D=40, W=20000)
+====================================================================================================
+  f2-skew246   seed=10007: events_post 12 vs 12 | elig_post 20 vs 20 | first_b0 None vs None | pos [1, 4, 8, 12, 16, 17, 19, 20, 21, 22, 23, 24, 27, 29, 30] vs [1, 4, 8, 12, 16, 17, 19, 20, 21, 22, 23, 24, 27, 29, 30] | MATCH: True
+  geo05        seed=10003: events_post 5 vs 5 | elig_post 18 vs 18 | first_b0 1 vs 1 | pos [22, 23, 30, 33, 34] vs [22, 23, 30, 33, 34] | MATCH: True
+  ALL MATCH: PASS
+====================================================================================================
+PRIME REFERENCE  (same machinery, the actual primes)
+====================================================================================================
+  sieve    2000000: 148933 primes, D=161, live rows=113 (trunc_k=113), events=42, overall rate=0.3717 (42/113), rho_post10(k>=11)=0.343137 [0.1s]
+    event rows: [1, 2, 3, 4, 8, 9, 10, 12, 14, 15, 16, 17, 18, 19, 22, 23, 26, 34, 38, 47, 48, 49, 50, 51, 56, 57, 62, 63, 64, 68, 72, 75, 76, 79, 80, 86, 91, 94, 96, 110, 111, 112]
+  sieve   20000000: 1270607 primes, D=161, live rows=161 (trunc_k=None), events=60, overall rate=0.3727 (60/161), rho_post10(k>=11)=0.350993 [0.6s]
+    event rows: [1, 2, 3, 4, 8, 9, 10, 12, 14, 15, 16, 17, 18, 19, 22, 23, 26, 34, 38, 47, 48, 49, 50, 51, 56, 57, 62, 63, 64, 68, 72, 75, 76, 79, 80, 86, 91, 94, 96, 110, 111, 112, 125, 126, 128, 129, 130, 131, 132, 134, 135, 136, 138, 141, 142, 143, 146, 159, 160, 161]
+  recorded reference (block data depth 1000): 60 events / 161 live rows = 0.3727; the 2e7 line above checks it directly
+====================================================================================================
+SUMMARY  (families used, n_workers, D, W, table, p, verdict, prime comparison)
+====================================================================================================
+  families used: ['consecutive', 'f2-geo05', 'f2-rand24', 'f2-skew246', 'f2-skew24810', 'f2-uniform3', 'f2-uniform5', 'geo05', 'rand24', 'skew246', 'skew24810']
+  n_workers=26  D=40  W=20000  seeds 10000..10019
+  per-family table (conditioned on row-10 survival):
+    family             n ev_post elig_post rho_post10
+    consecutive       20       0         0         -
+    f2-geo05           8     102       200  0.510000
+    f2-rand24         20       0         0         -
+    f2-skew246        16     181       325  0.556923
+    f2-skew24810       9     123       226  0.544248
+    f2-uniform3       13      97       159  0.610063
+    f2-uniform5        3      18        30  0.600000
+    geo05              1      20        30  0.666667
+    rand24            10       0         0         -
+    skew246           12     137       255  0.537255
+    skew24810          6      95       161  0.590062
+    pooled lambda_hat = 0.557720 (773/1386)
+  Pearson X^2 p-value = 8.941e-01
+  cross-check numpy vs pure-Python: PASS
+  wall time 0.8s

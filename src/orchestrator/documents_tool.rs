@@ -98,6 +98,10 @@ impl DocumentTool {
             super::approaches::refresh(&self.documents).await;
             return format!(" and re-derived {}", super::approaches::APPROACHES_PATH);
         }
+        if super::backward::is_backward(path) {
+            super::backward::refresh(&self.documents).await;
+            return format!(" and re-derived {}", super::backward::BACKWARD_PATH);
+        }
         if !super::claims::is_note(path) {
             return String::new();
         }
@@ -105,10 +109,15 @@ impl DocumentTool {
         // A thread rests on claim ids, so a note that changes what the library
         // establishes can strand a thread on a claim that is no longer there.
         super::threads::refresh(&self.documents).await;
+        // A gap is discharged *by* a claim, so the same note can close a gap or
+        // strand one — which is why the skeleton ledger follows a note write
+        // and the approach ledger does not.
+        super::backward::refresh(&self.documents).await;
         format!(
-            " and re-derived {} and {}",
+            " and re-derived {}, {} and {}",
             super::claims::CLAIMS_PATH,
-            super::threads::THREADS_PATH
+            super::threads::THREADS_PATH,
+            super::backward::BACKWARD_PATH
         )
     }
 
