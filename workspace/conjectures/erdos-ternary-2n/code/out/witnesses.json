@@ -1,0 +1,23 @@
+{
+ "generated_by": "operator, exact integer arithmetic, ternary(2**n) for n=0..2000",
+ "conjecture": "for all n>8, base-3 expansion of 2^n contains a digit 2 (Erdos 1979)",
+ "witnesses": {
+  "0": {
+   "value": "1",
+   "ternary": "1"
+  },
+  "2": {
+   "value": "4",
+   "ternary": "11"
+  },
+  "8": {
+   "value": "256",
+   "ternary": "100111"
+  }
+ },
+ "verified": {
+  "search_range": "n = 0..2000 exhaustive",
+  "method": "exact big-int base-3 expansion",
+  "no_others_found": true
+ }
+}
