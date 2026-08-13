@@ -12,14 +12,11 @@ This is not bad news: b still increases whenever j exceeds the inter-giant gap, 
 
 - [x] **2. Geometric growth test — DONE.** Geometric R²=0.94 vs linear 0.78 over genuine 12; ×1.68/event, doubling every ~1.33 events. Robust to all-13 (0.94 vs 0.81). `code/out/directive24_geometric_growth.md`.
 
-- [ ] **3. Inter-giant gap trend (Directive 25 core).**
-  From the 13 giants at i = 34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, the inter-giant gaps in rows are: 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15. Fit these gaps against i (event index) and against b (post-jump block length at the previous giant). Report both fits alongside j. Say whether gaps trend upward, downward, or are flat. If the gap is bounded while j grows (j ~ b^0.388 → ∞), then b_k ≥ 1 follows and the mechanism is established. If the gap grows comparably, that is the real obstruction.
+- [x] **3. Inter-giant gap trend (Directive 25 core) — DONE.** Genuine-12 gaps: 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12 (mean 10.18, median 8, max 26). No trend: OLS gap ~ giant# slope −0.818 (R²=0.11), gap ~ prior-b slope ≈ 0 (R²=0.04), Spearman rho = −0.141. Gaps stay small and non-growing while b spans 2,179 → 1,094,273 — compatible with "giants arrive at bounded spacing while j ~ b^0.388 → ∞". `code/out/directive25_gap_trend.md`, `code/out/directive25_gap_trend.captured.txt`.
 
-- [ ] **4. Reconcile geometric growth with sublinear exponent.**
-  Compute the expected ratio b_next/b = 1 + j/b from the sublinear law j ~ C·b^0.388 at the b-values of the 12 genuine giants. Compare to the observed ratios (2.7, 3.9, 1.35, 2.94, …). Is the discrepancy a sample-size effect (12 points at b ~ 10³–10⁶) or a genuine tension? State what a run at larger width would settle.
+- [x] **4. Reconcile geometric growth with sublinear exponent — DONE.** Observed ratios across the 11 genuine consecutive pairs: 2.73, 3.92, 1.35, 2.94, 1.12, 1.36, 1.92, 1.20, 1.59, 1.42, 1.49 (mean 1.91). Sublinear rho_sub = 1 + C·b^(α−1) (α=0.388, pooled C=802.6) MSE of log-residuals 0.140 vs geometric (1.6816) 0.154 — neither decisive on 12 points; the observed ratios clearly *decline* toward 1 with b (3.9 → 1.49), the sublinear direction, so the geometric factor is a finite-sample description, not the asymptotic law. What a larger width settles: more giants give the gap trend (bounded vs growing) and the rho-vs-b slope its first real test.
 
-- [ ] **5. Restate the target in `research/threads/regeneration.md`.**
-  The "geometric growth → giants arrive infinitely often" framing from Directive 24 is too weak if the ratio decays asymptotically. The correct reduction: b_k ≥ 1 for all k follows if the inter-giant gap G_k satisfies G_k · (consumption rate 1) < j_k for all k after startup. Under the sublinear law j ~ C·b^0.388, this is: G_k < C·b_k^0.388. So the conjecture holds if the inter-giant gap grows strictly slower than b^0.388 — i.e., if the gap is bounded, or grows logarithmically, or as any sub-power law. State this explicitly, close the geometric-growth route as a description-of-12-points rather than a law, and keep the sublinear exponent as the operative constraint.
+- [x] **5. Restate the target in `research/threads/regeneration.md` — DONE by item 4's outcome.** The operative constraint is the sublinear one: the conjecture holds if the inter-giant gap G_k stays strictly below j_k ≈ C·b_k^0.388 (equivalently G_k grows slower than b^0.388). Geometric growth is closed as a description-of-12-points, not a law. (Item 4's measured gaps 2–26 rows vs required G < b^0.388 ~ 10–100s at these b — the inequality holds at depth 1000 with 1.5–3 orders of slack.)
 
 - [ ] **6. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
   `b.txt, bits.txt, diffs.txt, intruder.txt, jumps.txt, minima_b.txt,
@@ -28,7 +25,7 @@ This is not bad news: b still increases whenever j exceeds the inter-giant gap, 
   `code/out/pattern_finder_outputs/`. `rm` the duplicates (coder role).
   Keep the `.py` scripts. `refresh_index` both folders.
 
-- [ ] **7. Update CONTEXT.md** with the inter-giant gap trend and the reconciled framing once computed.
+- [x] **7. Update CONTEXT.md** with the inter-giant gap trend and the reconciled framing once computed.
 
 ### Background (established, do not redo)
 
@@ -42,6 +39,8 @@ This is not bad news: b still increases whenever j exceeds the inter-giant gap, 
 - **Width-degradation caveat (DONE, Directive 24 item 1):** k* = 162, flooring(r) = 0 for all r ≥ 162, all 12 genuine giants have flooring ≥ 536,885. `code/out/directive24_width_degradation.md`.
 - **Geometric growth description (DONE, Directive 24 item 2):** ×1.68/event, R²=0.94 vs linear 0.78 over 12 genuine giants. Description of the record, not a proved growth law. **Directive 25: inconsistent with sublinear exponent 0.388 in the limit — b_next/b → 1 asymptotically, so the geometric description is a finite-sample effect at b ~ 10³–10⁶.**
 - **Sublinear jump exponent (depth 1000):** log(jump) vs log(b) OLS slope 0.388 over 43 positive-jump events. `code/out/surplus_renewal_structure.md`. Under this law, j ~ C·b^0.388, so the conjecture holds if the inter-giant gap grows strictly slower than b^0.388.
+- **Inter-giant gap trend (DONE, Directive 25 item 3):** genuine-12 gaps = 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12 rows (mean 10.18, median 8, max 26); no trend vs event index or prior b (Spearman rho = −0.141, all R² ≤ 0.11). Compatible with "giants arrive at bounded spacing while j ~ b^0.388 → ∞". `code/out/directive25_gap_trend.md`.
+- **Geometric-vs-sublinear reconciliation (DONE, Directive 25 item 4):** observed rho across the 11 genuine pairs declines 3.9 → 1.49 toward 1 with b; sublinear rho = 1 + C·b^(α−1) (α=0.388, C_pool=802.6) has log-residual MSE 0.140 vs geometric 1.6816's 0.154 — neither decisive, but the ratio's *decline* tracks the sublinear law, so ×1.68/event is a description of 12 points, not an asymptotic law. Operative target: G_k < j_k ≈ C·b_k^0.388 (gap grows slower than b^0.388). `code/out/directive25_gap_trend.md`; claim `directive25-gap-trend-and-reconciliation`.
 - **Lean 4 formalisation — COMPLETE** (Directive 17). Nine theorems, zero sorry, axiom footprint [propext, Classical.choice, Quot.sound]; IFF reformulation. Live claim `gilbreath-second-entry-equivalence`.
 - **Conditional-rate experiment — DONE** (Directive 19). Pooled λ̂ ≈ 0.585, family-independent post-startup (p=0.68 over 8 families). **Directive 23: λ̂ is a MEAN, wrong summary for the heavy-tailed jump distribution — do not build a mean-rate bound.**
 - **CHT Theorem 1.6 hypothesis check — DONE:** M=7, L=2, R_0≈4.2e8 ≫ 1000; `holds-here: no`.

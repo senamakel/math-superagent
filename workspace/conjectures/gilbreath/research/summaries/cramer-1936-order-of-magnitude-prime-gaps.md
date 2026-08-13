@@ -1,72 +1,178 @@
-<!-- source: https://www.impan.pl/en/publishing-house/journals-and-series/acta-arithmetica/all/2/1/93277/on-the-order-of-magnitude-of-the-difference-between-consecutive-prime-numbers | converted from HTML -->
+<!-- source: https://eudml.org/doc/205441 | converted from HTML -->
 
-On the order of magnitude of the difference between consecutive prime numbersAll
+EUDML | On the order of magnitude of the difference between consecutive prime numbers EuDML | On the order of magnitude of the difference between consecutive prime numbers
 
-You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.
+Skip to main content (access key 's'), Skip to navigation (access key 'n'), [Accessibility information (access key '0')][1]
 
-# [Instytut Matematyczny Polskiej Akademii Nauk][2] / [Institute of Mathematics][3] / [Publishing house][4] / [Journals and Serials][5] / [Acta Arithmetica][6] / [All issues][7]
+[image: icon representing file type: icon-html.png] [Access to full text][2]
 
-## Acta Arithmetica**
+[image: icon representing file type: icon-pdf.png] [Full (PDF)][3]
 
-Search for IMPAN publications **
+- MLA
+- BibTeX
+- RIS
 
--->
+Cramér, Harald. "On the order of magnitude of the difference between consecutive prime numbers." Acta Arithmetica 2.1 (1936): 23-46. <http://eudml.org/doc/205441>.
 
-## On the order of magnitude of the difference between consecutive prime numbers
+@article{Cramér1936,
+author = {Cramér, Harald},
+journal = {Acta Arithmetica},
+language = {eng},
+number = {1},
+pages = {23-46},
+title = {On the order of magnitude of the difference between consecutive prime numbers},
+url = {http://eudml.org/doc/205441},
+volume = {2},
+year = {1936},
+}
 
-### [Volume 2 / 1936][8]
+TY - JOUR
+AU - Cramér, Harald
+TI - On the order of magnitude of the difference between consecutive prime numbers
+JO - Acta Arithmetica
+PY - 1936
+VL - 2
+IS - 1
+SP - 23
+EP - 46
+LA - eng
+UR - http://eudml.org/doc/205441
+ER -
 
-Harald Cramér Acta Arithmetica 2 (1936), 23-46 DOI: 10.4064/aa-2-1-23-46
+1. [Paul Erdös, Méthodes probabilistes en théorie des nombres][4]
+2. [Florian Luca, Ravindranathan Thangadurai, On an arithmetic function considered by Pillai][5]
+3. [Enrico Bombieri, Un collegamento tra un teorema di K. Prachar e un teorema di G. Ricci sulle differenze di numeri primi consecutivi.][6]
+4. [William J. Ellison, Differences between prime numbers][7]
+5. [Tanguy Rivoal, On the distribution of Hawkins’ random “primes”][8]
+6. [Chaohua Jia, Almost all short intervals containing prime numbers][9]
+7. [Marc Deléglise, Jean-Louis Nicolas, Paul Zimmermann, Landau’s function for one million billions][10]
+8. [Michel Langevin, Sur la fonction plus grand facteur premier][11]
+9. [János Pintz, Landau’s problems on primes][12]
 
-#### Authors
+You must be logged in to post comments.
 
-- Harald Cramér
-
-[Free download under CC-BY license][9]
-
-Search for IMPAN publications **
-
-- [10]
-- [11]
-- [12]
-- [13]
-- [14]
-- [15]
--
-- [16]
-- [17]
-
--->
-
-## Search for IMPAN publications
-
-Query phrase too short. Type at least 4 characters.
-
-## Rewrite code from the image
-
-Reload image
-
-Reload image
-
-Exit
+To embed these notes on your page include the following JavaScript code on your page where you want the notes to appear.
 
 
 ## Links
 
-[1]: http://browsehappy.com/
-[2]: /
-[3]: https://www.impan.pl/en
-[4]: https://www.impan.pl/en/publishing-house
-[5]: https://www.impan.pl/en/publishing-house/journals-and-series
-[6]: https://www.impan.pl/en/publishing-house/journals-and-series/acta-arithmetica
-[7]: https://www.impan.pl/en/publishing-house/journals-and-series/acta-arithmetica/all
-[8]: en/publishing-house/journals-and-series/acta-arithmetica/all/2
-[9]: /shop/en/publication/transaction/download/product/93277
-[10]: https://www.impan.pl/pl/instytut/dofinansowane-projekty
-[11]: http://bip.impan.pl/index.php
-[12]: /pl/instytut/o-nas/gazeta
-[13]: https://www.impan.pl/en/insitute/a-plus
-[14]: https://www.impan.pl/en/insitute/hr-strategy
-[15]: https://www.impan.pl/en/mathematical-world/organisations/wcnm
-[16]: https://www.impan.pl/pl/dzialalnosc/biblioteka/ozwrcin
-[17]: http://rcin.org.pl/impan/dlibra?action=ChangeLanguageAction&language=en
+[1]: /about/accessibility/
+[2]: http://pldml.icm.edu.pl/pldml/element/bwmeta1.element.bwnjournal-article-aav2i1p23bwm
+[3]: http://matwbn.icm.edu.pl/ksiazki/aa/aa2/aa212.pdf
+[4]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/110854
+[5]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/10905
+[6]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/195758
+[7]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/110848
+[8]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/10861
+[9]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/206887
+[10]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/10854
+[11]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/110899
+[12]: 
+
+
+
+
+
+
+
+
+
+
+
+/doc/10886

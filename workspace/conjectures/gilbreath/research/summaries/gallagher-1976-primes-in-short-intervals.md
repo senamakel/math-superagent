@@ -1,35 +1,73 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gallagher-1976-primes-in-short-intervals.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Gallagher 1976 — "On the distribution of primes in short intervals"
 
-<!-- source: https://www.cambridge.org/core/services/aop-cambridge-core/content/view/DCE557AC8750333E68426FCEEC11858C/S0025579300016442a.pdf/div-class-title-on-the-distribution-of-primes-in-short-intervals-div.pdf | converted from PDF -->
+**Full text:** `research/sources/gallagher-1976-primes-in-short-intervals.full.md` [[gallagher-1976-primes-in-short-intervals.full]]
+**Source:** P. X. Gallagher, *Mathematika* 23 (1976) 4–9, doi 10.1112/S0025579300016442 (Columbia).
 
-## What it claims
+## What it establishes
 
-One of the formulations of the prime number theorem is the statement that the
-number of primes in an interval (n, n + ft], averaged over n ^ JV, tends to the limit A,
-when JV and h tend to infinity in such a way that h ~ AlogJV, with A a positive
-constant.
-In this note we study the distribution of values of n(n + h) — n(n), for n < N
-and h ~ A log JV. We show that, assuming a certain uniform version of the (unproved)
-prime r-tuple conjecture of Hardy and Littlewood [3], the distribution tends to the
-Poisson distribution with parameter A as N -* oo. Using a sieve upper bound for the
-r-tuple problem, we also get an unconditional exponential upper bound for the tail
-of the distribution.
-Our method has many features in common with the argument by which Hooley [4]
-has studied the distribution of values of the differences between consecutive integers
-prime to n, for «/$(«) large. An analogous result for primes has been announced by
-Hooley in [5].
-Explicitly, the r-tuple conjecture is an asymptotic formula for the number 7rd(JV)
-of positive integers n < JV for which n + du ..., n + dr are…
+**Theorem 1.** Let `P_k(h, N)` = number of integers `n < N` whose interval
+`(n, n+h]` contains exactly `k` primes. Then, as `N→∞` with `h ~ λ·log N`,
 
-## Statements it makes
+```
+P_k(h, N) / N  →  e^(−λ) · λ^k / k!    (Poisson with parameter λ),
+```
 
-THEOREM 1. Denote by Pk(h, N) the number of integers n < JV for which the
-interval (n, n + h] contains exactly k primes. Then
- (2)
+**provided** the prime `r`-tuple conjecture (Hardy–Littlewood singular-series
+asymptotic, formula (1)) holds uniformly for each `r` over distinct
+`1 ≤ d_1,…,d_r ≤ h`. The proof goes through the moments of
+`π(n+h) − π(n)` via the `r`-tuple formula, using that the singular series
+`𝒮_d` averages to 1 over cubes (3).
 
-THEOREM  2. For positive constants \i > X >  I, the number of n < N for which
-n(n + XlogN) — n(n) >  n is <, Ne~
-c>t'
-x, where C is an absolute constant.
+**Theorem 2 (unconditional).** For positive constants `μ > λ`, the number of
+`n < N` with `π(n + λ log N) − π(n) > μ` is `< N·e^{−cμ}` for an absolute
+constant `c` — an **exponential upper bound on the tail**, obtained by
+Selberg-sieve bounds (Klimov / Halberstam–Richert Thm 5.7) in place of the
+unproved `r`-tuple conjecture.
 
-*[digest of a 9805 character source; every section, statement, and proof in full at `research/sources/gallagher-1976-primes-in-short-intervals.full.md`]*
+## Hypotheses and whether they hold here
+
+- Theorem 1 is **conditional** on the unproved Hardy–Littlewood prime
+  `r`-tuple conjecture — it does not hold unconditionally for the primes.
+- Theorem 2 is unconditional but a tail upper bound only; it controls large
+  deviations of prime counts in short intervals, not the gap distribution
+  feeding the Gilbreath triangle.
+
+## Bearing on this run
+
+This is the **primes-in-short-intervals / Poisson model** root that justifies
+why the Cramér random model (Chase 2024, CHT 2026) treats normalized prime
+gaps as roughly i.i.d. geometric/independent: under the `r`-tuple conjecture
+the short-interval prime count is Poisson, which is the model those papers
+instantiate. It is therefore a *justification-for-the-model* source, not a
+result usable directly on the Gilbreath operator:
+
+- **Does not help compute or bound anything in the run's {0,2} machinery.**
+  It says nothing about iterated absolute differences, block regeneration,
+  or the leading-entry reduction. The downward evidence it supplies for the
+  random analogue (that prime gaps behave like i.i.d. draws) is already held
+  in stronger, Gilbreath-specific form from Chase 2024 and CHT 2026.
+- **Cannot certify a (2,4)-event rate bound:** the Poisson law is a mean/
+  distribution statement conditional on an unproved conjecture, and even
+  unconditionally it is a count bound, not a regeneration-rate bound.
+
+## Claim
+
+```claim
+id: gallagher-1976-poisson-short-interval-model
+statement: Under the (unproved) Hardy–Littlewood prime r-tuple conjecture, the
+  number of primes in (n, n+h] for h ~ λ log N is Poisson(λ)-distributed in
+  n < N (Theorem 1); unconditionally the count has an exponential upper bound
+  on its upper tail (Theorem 2).
+hypotheses: r-tuple conjecture uniform over cubes (Thm 1); none for the tail bound (Thm 2)
+holds-here: unchecked (Thm 1 conditional on unproved conjecture; irrelevant to the iterated-difference operator)
+status: proved
+bearing: justifies the Cramér/Poisson random model used by Chase 2024 and CHT 2026;
+  no direct use on the {0,2} block-regeneration machinery
+anchor: research/sources/gallagher-1976-primes-in-short-intervals.full.md
+```
+
+## Why it was filed
+
+Background source supporting the randomness assumption behind the random-analogue
+literature already held. Not load-bearing for the run's combinatorial target; recorded so
+nobody re-fetches it expecting a gap bound usable on the Gilbreath operator.

@@ -1,0 +1,48 @@
+depth 1000, events total: 60
+genuine events (k<=161): 60 (incl. j=0 stalls: 17)
+
+max gap between consecutive events (genuine): 14 rows
+
+== threshold table T(J): max gap between consecutive events with jump > J ==
+J=    100: rows [19, 22, 23, 34, 38, 50, 51, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161]
+          count 19  gaps [3, 1, 11, 4, 12, 1, 5, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15]  max-gap 26
+J=    300: rows [22, 34, 38, 50, 51, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161]
+          count 17  gaps [12, 4, 12, 1, 5, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15]  max-gap 26
+J=   1000: rows [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161]
+          count 13  gaps [22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15]  max-gap 26
+J=   3000: rows [64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161]
+          count 11  gaps [4, 26, 2, 14, 2, 14, 4, 4, 12, 15]  max-gap 26
+J=  10000: rows [64, 94, 96, 110, 112, 126, 130, 134, 146, 161]
+          count 10  gaps [30, 2, 14, 2, 14, 4, 4, 12, 15]  max-gap 30
+J=  30000: rows [94, 110, 112, 126, 130, 134, 146, 161]
+          count  8  gaps [16, 2, 14, 4, 4, 12, 15]  max-gap 16
+J= 100000: rows [112, 130, 134, 146, 161]
+          count  5  gaps [18, 4, 12, 15]  max-gap 18
+J= 200000: rows [134, 146]
+          count  2  gaps [12]  max-gap 12
+
+== all 13 giants (jump > 1000), with cap flag ==
+  row  34: jump     1314  b_k=     865
+  row  56: jump     1739  b_k=    4203
+  row  64: jump    17326  b_k=    5939
+  row  68: jump     8237  b_k=   23262
+  row  94: jump    61088  b_k=   31532
+  row  96: jump    11354  b_k=   92619
+  row 110: jump    37746  b_k=  103960
+  row 112: jump   129923  b_k=  141706
+  row 126: jump    53470  b_k=  271620
+  row 130: jump   190810  b_k=  325096
+  row 134: jump   217657  b_k=  515907
+  row 146: jump   360698  b_k=  733575
+  row 161: jump   176181  b_k= 1094263
+
+== record maximum of b at each event (genuine) ==
+events setting a new all-time max: 36 of 60
+events NOT setting a record: [(3, 0), (8, 3), (12, 1), (16, 0), (17, 0), (18, 0), (26, 1), (47, 0), (48, 0), (49, 0), (62, 0), (63, 0), (75, 0), (76, 2), (79, 0), (91, 1), (111, 0), (125, 3), (129, 0), (135, 0), (141, 0), (142, 0), (159, 2), (160, 0)]
+all 13 giants set a new all-time max: True
+
+== boundary-bit restatement: event <=> e_bits==1 and c==4 (rows 1..161) ==
+  mismatches: 0
+
+== left-boundary halved law: s_{k+1} = s_k XOR t_k for k=1..160 ==
+  mismatches over k=1..160: 0

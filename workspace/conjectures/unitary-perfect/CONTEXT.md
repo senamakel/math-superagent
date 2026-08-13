@@ -375,7 +375,10 @@ Durable Cognee memory from earlier runs; consistent with Established here
    witnesses.
 4. Open structural directions, any result: (a) divisor-level problem for
    `Φ_{4p}(2)` — the paper's named analytic target (thread
-   `divisor-level-phi4p`); (b) lower bound on `a` beyond 11, or impossibility
+   `divisor-level-phi4p`; feasible full-factorization window is now p ≤ ~300
+   per `heven_extend_probe.captured.txt` — 12 primes 61..307 fully factored,
+   the natural range for the C29 empirics / head-count-vs-ω measurement);
+   (b) lower bound on `a` beyond 11, or impossibility
    of a residue class of `a`; (c) is `3 | n` forced for a sixth? (all five
    have it; open in both directions). Directive-14 is CLOSED by argument
    plus a captured computation: `code/out/directive14_quartic_closed_form.captured.txt`
@@ -389,5 +392,4 @@ Durable Cognee memory from earlier runs; consistent with Established here
    is resolved for q_supplement only.
 5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
    2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
-   no OCR; Guy UPNT §B3 paywalled). 10^102 anchor (Wall–Hagis 1972 letter scanned with
    no OCR; Guy UPNT §B3 paywalled).

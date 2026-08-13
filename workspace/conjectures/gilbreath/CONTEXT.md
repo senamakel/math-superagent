@@ -310,6 +310,22 @@ away.
   still the run's best algebraic handle (see Established). Anchor:
   `research/approaches/mod4-pascal-invariant.md`,
   `code/research_mod_check/check_mod_lift.py`.
+- **Sign-coherence / forward-difference linearization — REFUTED at its base
+  step (executed this run; `code/out/check_fwd_diff_identity.captured.txt`).**
+  The proposed approach (research/approaches/sign-coherence-forward-differences.md)
+  reduces GC to a signed linear recurrence via `A_k(i) = |Δ_k(i)|`,
+  Δ_k(i) = Σ_j (−1)^{k−j} C(k,j) A_0(i+j). The identity is **false on the
+  primes themselves**: first violation at k=3,i=2 — |Δ_3(2)| = 4 but the
+  actual A_3(2) = 0, *inside* the leading {0,2} block; first violation at
+  position 1 at k=4 (|Δ_4(1)| = 6 vs A_4(1) = 2), failing in 17/20 rows.
+  Mechanism: `|u−v| = ||u|−|v||` iff `u·v ≥ 0`; the signed triangle oscillates
+  `[4, −4, 4, −4]` exactly where the actual rows are constant 0 (first
+  opposite-sign pair (D_3(2), D_3(3)) = (2, −2)). Independent sampler (60
+  random 2-then-odds, even gaps in [2,500], 1839 triples) fails **all 60
+  within 3 rows**, first failures at (k=3, i=0..3) — generic to the class:
+  D_1(i) = −gap_i, D_2(i) = gap_{i+1} − gap_i, so any local extremum of the
+  gap sequence (the primes have one at i=2: gaps 2,4) kills it. Do not
+  re-propose; any linearization must survive the k=3,i=2 cell.
 - **Backward-extension automaton and minimal-counterexample geometry —
   REFUTED (the valid-extension criterion is global, not local).** Alkan et al.
   2023 (factorial-weighted K-criterion) and Muney 2026 (valid-extension set =

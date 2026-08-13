@@ -1,42 +1,25 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/beard-bullock-harbin-1977-unitary-perfect-polynomials.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
-
 <!-- source: https://geodesic.mathdoc.fr/item/RLINA_1977_8_63_5_a2/ | converted from HTML -->
 
-## What is in it
+# Beard, Bullock & Harbin 1977 — bibliographic record (mathdoc)
 
-  - Parcourir par
+**This file is the mathdoc bibliographic record only** (abstract in Italian,
+metadata, citation formats). All mathematical content is in the fetched PDF:
+`research/sources/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.full.md`,
+read in full; scholarly summary at
+`research/summaries/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.md`.
 
+Beard, Bullock, Harbin, *Infinitely many perfect and unitary perfect
+polynomials*, Atti Accad. Naz. Lincei Rend. Cl. Sci. Fis. Mat. Natur. Ser. 8,
+63(5):294–303 (1977). Zbl 0422.12013, MR 0548590. Original PDF:
+`http://www.bdim.eu/item?fmt=pdf&id=RLINA_1977_8_63_5_294_0`.
 
-## What it claims
+Abstract (Italian, verbatim): "Dopo avere ottenuto vari casi per q = p^d in
+cui su GF(q) esistono infiniti polinomi irriducibili che sono unitari e
+perfetti, si studia il numero di tali polinomi in altri casi e si fa per esso
+una congettura."
 
-Dopo avere ottenuto vari casi per $q = p^{d}$ in cui su $GF(q)$ esistono infiniti polinomi irriducibili che sono unitari e perfetti, si studia il numero di tali polinomi in altri casi e si fa per esso una congettura.
-
-- Détail
-- **Citer cet article
-
-2025-12-01
--->
-
-[Zbl][16] [MR][17]
-
-```
-Beard, Jacob T.B.jun.; Bullock, Alice T.; Harbin, Mickie Sue. Infinitely many perfect and unitary perfect polynomials. Atti della Accademia nazionale dei Lincei. Rendiconti della Classe di scienze fisiche, matematiche e naturali, Série 8, Tome 63 (1977) no. 5, pp. 294-303. http://geodesic.mathdoc.fr/item/RLINA_1977_8_63_5_a2/
-```
-
-- BibTeX
-- RIS
-- EndNote
-
-```
-@article{RLINA_1977_8_63_5_a2,
-     author = {Beard, Jacob T.B.jun. and Bullock, Alice T. and Harbin, Mickie Sue},
-     title = {Infinitely many perfect and unitary perfect polynomials},
-     journal = {Atti della Accademia nazionale dei Lincei. Rendiconti della Classe di scienze fisiche, matematiche e naturali},
-     pages = {294--303},
-     year = {1977},
-     volume = {Ser. 8, 63},
-     number = {5},
-     zbl = {0422.12013},
-     mrnumber…
-
-*[digest of a 5545 character source; every section, statement, and proof in full at `research/sources/beard-bullock-harbin-1977-unitary-perfect-polynomials.full.md`]*
+References of interest: Beard 1977 (*Unitary perfect polynomials over GF(q)*,
+Rend. Accad. Lincei 62, 417–422); Beard–O'Connell–West 1977 (*Perfect
+polynomials over GF(q)*, Rend. Accad. Lincei 62, 283–291); Canaday 1941
+(Duke Math. J. 7, 721–737). Citation formats and MR/Zbl links in the
+original mathdoc HTML (see the source URL).

@@ -4,7 +4,7 @@
 question: Is H_even = { even m : every prime factor of 2^m+1 is 3-Higgs }
   finite? (Equiv by arXiv:2605.20475 Thm 7 to the prime branch {2p : 2p∈H_even}.)
 status: open
-rests-on: hb-prop4-structural (Higgs-cubefree structure), heven-prime-case-reduction,
+rests-on: hb-prop4-structural, heven-prime-case-reduction,
   heven-thinness-not-finiteness, hb-thm30-conditional, heven-two-mod-four
 blocked-by: the divisor-level gap on Phi_{4p}(2) — primitive divisors r of
   Phi_{4p}(2) need ord_r(2)=4p, r≡1 mod 4p, (r-1)/4p∈S_3^{(≤3)}; log-mass forces

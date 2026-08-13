@@ -21,10 +21,41 @@ Date: 2026-08-13. Librarian cycle.
 ## Status of open REQUESTS rows
 
 - Frei 1978: unchanged OPEN (captcha-walled; e-periodica Heft 4).
-- Goto 2007: unchanged OPEN (paywalled at Project Euclid; MaRDI record held).
+- Goto 2007: **ownership correction — co-author is K. Okeya** (confirmed by
+  Sandor's bi-unitary-harmonic paper: "Goto and K. Okeya have extended the
+  study to H(n) ≤ 1200"). Still OPEN (paywalled at Project Euclid; MaRDI
+  record held).
 - Subbarao–Cook–Newberry–Weber 1972: confirmed OBSTRUCTED (textless scan).
-- **NEW ROW: Subbarao 1970 note body** (JSTOR stable/2316150; ualberta PDF is cover-only): the single falsifier for `a ≥ 11` beyond the three Wall attributions.
+- **NEW ROW: Subbarao 1970 note body** (JSTOR stable/2316150; ualberta PDF is
+  cover-only): the single falsifier for `a ≥ 11` beyond the three Wall
+  attributions.
+
+## The find of the cycle: polynomial analogue is INFINITE
+
+While probing the Frei row with the German search "unitar perfekte Zahlen"
+(off-target on Frei, on-target elsewhere), surfaced the **polynomial analogue**:
+Beard, Bullock & Harbin, *Infinitely many perfect and unitary perfect
+polynomials*, Atti Accad. Naz. Lincei Ser. 8, 63(5):294–303 (1977) — full PDF
+held. Exact analogue definition `σ*(Π P_i^{a_i}) = Π(P_i^{a_i}+1)`, `σ*(A)=A`
+over `GF[q,x]`, and **provably infinitely many solutions**: `SUP(p^d) = ∞`
+for `d ≥ 2` (Thm 3), `NSUP(2^d)=∞` for d odd or d≢0 mod 3, `NSUP(3^d)=NSUP(5^d)=∞`
+for d odd (Thm 5), via the Frobenius map `A ↦ A^{p^n}` (Thm 1). Table of ≥33
+(GF(2)), ≥16 (GF(3)), ≥6 (GF(5)) non-splitting classes.
+
+**Consequence for this run (recorded as claim `beard1977-unitary-perfect-polynomials-infinite`):
+the integer finiteness conjecture cannot follow from formal multiplicative
+properties of unitary divisor sums alone — the same formal identities have
+infinitely many solutions in a ring where the analogue equation is decidable.**
+A working finiteness proof must use integer-specific arithmetic (order, size,
+p-adic valuations of integers, cyclotomic structure) — exactly the register
+the run's adopted `second-moment-character-mod16` and the `hb-*` routes work
+in. This is a *negative discriminator*: it rules out a whole class of
+arguments before they are tried.
 
 ## Library shape
 
-Unchanged from cycle 6 plus the four items above. The canonical site's own pages are now fully held (problem page, discussion forum, proof-claims thread — all three; forum pages empty). The Subbarao primary bibliography is anchored. The core tier, branch target, analytic machinery, and reciprocity stack were already complete.
+Unchanged from cycle 6 plus: canonical-site forum pages (both empty, recorded
+not to re-fetch), Subbarao primary bibliography, Subbarao 1970 cover-page
+verdict, polynomial analogue (Beard–Bullock–Harbin full text), McDaniel 1974
+paywall record, Higgs-origin search closure. The `a ≥ 11` claim gains the
+author's own bibliography as an anchor but stays `asserted`.

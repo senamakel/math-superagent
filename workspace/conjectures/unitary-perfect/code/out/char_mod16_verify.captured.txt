@@ -1,0 +1,29 @@
+Q1 Parseval (work p=3, N13=1):
+   sum_a N_a^2 = 1
+   sum_chi |S_chi|^2 = 4
+   /4 = 1.0  PASS
+   /8 = 0.5  FAIL
+
+Q2 mod-4 product identity:
+  p= 3 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p= 5 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p= 7 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=11 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=13 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=17 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=19 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=23 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=29 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=31 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=37 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=41 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=43 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=47 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=53 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=59 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+  p=61 full_e=0 (want 0, product=1) script_e=3 diff=1 2*e(pi_5)=2 MISMATCH
+
+Q2 all consistent with 5-factor being the only gap: NO
+
+Q1 Parseval divisor is 4 (script's 8 is a bug): CONFIRMED
+Q2 true closed form (full_e==0) holds for all p<=61: CONFIRMED

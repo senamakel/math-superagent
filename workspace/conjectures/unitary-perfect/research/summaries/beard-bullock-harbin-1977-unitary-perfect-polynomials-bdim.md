@@ -1,62 +1,103 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
-
 <!-- source: http://www.bdim.eu/item?fmt=pdf&id=RLINA_1977_8_63_5_294_0 | converted from PDF -->
 
-## What is in it
+# Beard, Bullock & Harbin, *Infinitely many perfect and unitary perfect polynomials* (1977)
 
-- (1  +  x ) 2 (1  +   +  x 2)  ,  x 3 (1  +  x ) 6 (1  +  #  +  x 3)  (1  +  x 2 +  x 3);
+Full text: `research/sources/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.full.md`
+(bdim PDF, 26 KB, read in full). Companion bibliographic record:
+`research/summaries/beard-bullock-harbin-1977-unitary-perfect-polynomials.md`
+(mathdoc record only, abstract).
 
+Atti Accad. Naz. Lincei Rend. Cl. Sci. Fis. Mat. Natur. Ser. 8, 63(5):294–303,
+1977. Zbl 0422.12013, MR 0548590.
 
-## What it claims
+## Setting and exact definitions
 
-L’utilizzo e la stampa di questo documento digitale è consentito liberamente per motivi di
-ricerca e studio. Non è consentito l’utilizzo dello stesso per motivi commerciali. Tutte le
-copie di questo documento devono riportare questo avvertimento.
+Everything takes place in the polynomial ring `GF[q,x]`, `q = p^d`, `d ≥ 1`,
+with monic polynomials. For `A = Π_i P_i^{a(i)}` (the `P_i` distinct
+irreducibles):
 
-Articolo digitalizzato nel quadro del programma
-bdim (Biblioteca Digitale Italiana di Matematica)
-SIMAI & UMI
-http://www.bdim.eu/
+- `σ(A) = Σ_{D | A} D` (sum of distinct monic divisors);
+- a **unitary divisor** `B | A` iff `(B, A/B) = 1`, and
+  `σ*(A) = Π_i (P_i^{a(i)} + 1)` — **the exact polynomial analogue of the
+  integer unitary sigma** `σ*(p^a) = p^a + 1`.
+- `A` is **unitary perfect over GF(q)** iff `σ*(A) = A`.
 
-294 Lincei  -   Rend.  Se.  fis.  mat.  e  nat.  -   Vol.  LXIII  -   novembre  1977
+## The theorems
 
-Algebra.  —■  Infinitely  m any  perfect  and  unitary  perfect  p o ly ­
-n o m ials<*>.  N ota  di  J acob  T .  B.  B eard  Jr.,  A l ic e  T .  B ullock  e
+1. **Theorem 1 (Frobenius trick).** `A` is unitary perfect over `GF(q)` iff
+   `A^{p^n}` is, for every `n ≥ 0` (`σ*(A^{p^n}) = (σ*(A))^{p^n}` by
+   multiplicativity + Freshman's dream).
+2. **Theorem 2.** The `p`-equivalence classes `A ~ B` iff `A = B^{p^i}` for
+   some integer `i`: every member of a class is simultaneously unitary
+   perfect (splitting or non-splitting together).
+3. **Theorem 3 (splitting counts, exact).** `SUP(2) = 1`;
+   `SUP(p) = τ_e(p−1)` (# even divisors) for odd prime `p`; and
+   `SUP(p^d) = ∞` whenever `d ≥ 2`. So **infinitely many** splitting unitary
+   perfect polynomials exist over every non-prime field `GF(p^d)`.
+4. **Theorem 4 + 5 (non-splitting infinitude).** If one non-splitting unitary
+   perfect polynomial exists over `GF(q)` (coprime to a splitting one), there
+   are infinitely many `p`-classes: `NSUP(2^d) = ∞` for odd `d ≥ 1` and for
+   `d ≢ 0 (mod 3)`; `NSUP(3^d) = ∞ = NSUP(5^d)` for each odd `d ≥ 1`.
+   Explicit table (Table I): ≥ 33 non-splitting classes over GF(2), ≥ 16 over
+   GF(3), ≥ 6 over GF(5), e.g. `x²(1+x)³(1+x+x²)` over GF(2).
+5. **Theorem 6.** Same infinitude for ordinary perfect polynomials
+   (`NSP`), via Canada y 1941 + the same Frobenius machinery.
+6. **Theorem 7.** Translation: `A(x)` unitary perfect ⟹ `A(x+b)` unitary
+   perfect for every `b ∈ GF(q)`.
+7. **Open in this paper:** whether a non-splitting unitary perfect polynomial
+   exists over `GF(q)` for *every* `q` (existence per field); conjectures
+   (i)–(iv) on which primes divide some unitary perfect polynomial.
 
-M ickie  S ue  H a r b in ,  p re sen ta ta <**>  dal  Socio  E .  Martinelli  a  nome
-del  compianto  Socio  B.  S e g r e.
+## Bearing on the integer problem
 
-R iassunto.  —  Dopo  avere  ottenuto  vari  casi  per  q  =  p d  in  cui  su  GF (q)  esistono
-infiniti  polinomi  irriducibili  che  sono  unitari  e  perfetti,  si  studia  il  numero  di  tali  polinomi
-in  altri  casi  e  si  fa  per  esso  una  congettura.
+This is the sharpest available **contrast** to the integer finiteness
+conjecture. The identical formal identity — `σ*(Π P_i^{a_i}) =
+Π(P_i^{a_i}+1)`, unitary divisors, `σ*(A) = A` — has **provably infinitely
+many solutions** over `GF[p^d, x]` (`d ≥ 2`), including non-splitting ones
+over GF(2), GF(3), GF(5) towers. The infinitude engine is the Frobenius map
+`A ↦ A^{p^n}`, which has no integer analogue (the 2-adic budget identity
+`Σ v2(p_i^{e_i}+1) = a+1` is the nearest integer cousin and bounds `ω` above
+rather than generating new solutions).
 
-i.  Introduction  and  notation
+**Consequence:** any would-be finiteness proof for the INTEGER case that
+derives a contradiction from purely formal/multiplicative properties of
+unitary divisor sums is refuted by this analogue before it starts — the same
+formal properties are satisfiable (infinitely) in a ring where the analogous
+perfect-object equation is decidable. A working proof must use genuinely
+arithmetic input special to ℤ: ordering, size, p-adic valuations of integers
+(rather than of polynomials under Frobenius), or the special structure of
+`2^a+1` / cyclotomic values — exactly the ingredients the run's
+`second-moment-character-mod16` and `hb-*` routes use.
 
-The  language  of  this  paper  is  th at  of…
+```claim
+id: beard1977-unitary-perfect-polynomials-infinite
+statement: In the ring GF[q,x] (q = p^d, d >= 1) with the polynomial analogue
+  of unitary sigma, sigma*(A) = prod_i (P_i^{a(i)} + 1) over irreducible
+  factors, there are infinitely many unitary perfect polynomials (sigma*(A) =
+  A): SUP(p^d) = infinity for every d >= 2 (Theorem 3), NSUP(2^d) = infinity
+  for d odd or d not = 0 mod 3, NSUP(3^d) = NSUP(5^d) = infinity for d odd
+  (Theorem 5), generated by the Frobenius map A -> A^{p^n} (Theorem 1). The
+  integer finiteness conjecture therefore cannot follow from formal
+  multiplicative properties of unitary divisor sums alone.
+hypotheses: polynomial ring over a finite field; the exact analogue
+  definitions of Section 1 of the paper; sigma*(P^a) = P^a + 1
+holds-here: yes - the contrast is exactly the discriminator the run needs:
+  the integer case obeys the same formal identities and is conjectured finite,
+  so a proof must use integer-specific arithmetic (order, size, p-adic
+  valuations, cyclotomic structure), which is what the adopted routes do
+status: sourced (full text held); theorems proved in the paper
+bearing: refutes by analogue any "purely formal" finiteness argument;
+  supports the run's choice of arithmetic (2-adic budget, quartic
+  reciprocity, cyclotomic divisor structure) as the only viable register
+anchor: research/sources/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.full.md;
+  research/summaries/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.md
+answers: polynomial-analogue-infinitude, is-finiteness-formal
+```
 
-(O…
+## Recorded
 
-## Statements it makes
-
-Theorem  2.  Let  A , C G  G F  [q , x]  , q  — p d, d  >   1.  I f   A q C ,   then
-A   and Q,  are  simultaneously  (splitting)  ((non-splitting))  unitary  perfect  poly­
-nomials  over  G F (q).
-
-Theorem   3.  The  number  SUP  (q)  of distinct  q-classes  of  splitting  u n i­
-tary  perfect  polynomials  over  G F (q)  is  given  by
-
-Theorem  4.  Let A  ,  B g  G F  [q , x]  be unitary perfect over  G F (q)  ,q   — p d,
-d  >   I.  I f  (A ,  B)  =   I  and B  does  not split in  GF  [q , x],  then  NSUP (q)  =   00.
-
-Theorem   5.  NSUP  (2d)  =   00 fo r   each  odd  integer  d   >   1  and fo r   each
-(even)  integer  d   o  (mod  3).  NSU P  (3d)  =   00  =   NSUP  (5d)  fo r   each  odd
-integer  d   >   1.
-
-THEOREM 6.  NSP  (2d)  —  oo fo r  each  odd integer d  >   I  and fo r  each  (even)
-integer d  ^   o  (mod  3).  NSP  (3d)  —  00  =   NSP  ( f l) fo r   each  odd integer d   >   1.
-
-Theorem   7.  Let  A (x) e  GF  [q , x]  , q  =  p d , d   >   1.  I f  A (x)  is  perfect
-(unitary  perfect}  over  G F (cf)  and  b e GF (y),  then  B  (x)  =  A   (x  -fi  fi)  is  perfect
-(unitary  perfect)  over  G F (y).
-
-*[digest of a 26546 character source; every section, statement, and proof in full at `research/sources/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.full.md`]*
+- The mathdoc record (`research/summaries/beard-bullock-harbin-1977-unitary-perfect-polynomials.md`)
+  is the bibliographic page only; all mathematical content is here.
+- Discovered while probing the open Frei row with the German search term
+  "unitar perfekte Zahlen" — an example of an adjacent-class find paying off
+  a re-search that looked off-target.

@@ -23,8 +23,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_A089582_crosscheck.py` | Cross-checks the run's own second-entry sequence A_k(1) against the OEIS catalogue A089582 (105 terms). Verifies the oracle generator against an independent catalogue source. |
 | `check_edge_zero_run.py` | _(undescribed)_ |
 | `check_fwd_diff_identity.captured.txt` | _(undescribed)_ |
-| `check_fwd_diff_identity.py` | _(undescribed)_ |
-| `check_fwd_diff_identity_sampled.captured.txt` | _(undescribed)_ |
+| `check_fwd_diff_identity.py` | Checks the identity A_k(i) = |
+| `check_fwd_diff_identity_sampled.captured.txt` | Independent second route (a fresh sampler, uniform even gaps in [2,500]): 60 random 2-then-odds sequences, 1839 (seq,k,i) triples checked, all 60 trials fail the identity A_k(i)=|Δ_k(i)| within the first 3 rows — first failures at (k=3, i=0..3). Shows the refutation is generic to the 2-then-odds class (a local extremum of the gap sequence kills it), not a prime-distribution artifact. |
 | `check_reduction.captured.txt` | Output of `check_reduction.py`: reduction facts hold for k=1..599. |
 | `check_reduction.py` | Per-row check of the reduction facts. |
 | `check_regenerate_lemma.captured.txt` | Output of `regeneration/check_regenerate_lemma.py` (sieve 20M, depth 1000): the regeneration criterion `A_{k+1}[b_k] ∈ {0,2} ⟺ (e_k==2 and c_k==4)` and `b_{k+1}≥b_k ⟺ (e_k==2 and c_k==4)` holds with ZERO failures over all 998 transitions; 60 regeneration events. Supersedes/corrects the earlier refutation note (which had an off-by-one in the edge index). |
@@ -97,3 +97,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `surplus_structure_independent.captured.txt` | _(undescribed)_ |
 | `survivor_analysis.captured.txt` | _(undescribed)_ |
 | `witnesses.json` | Oracle: row data and block profile for depth 600 (sieve to 400000, 33860 primes); `A_1..A_5` first 12, `block_profile_first_40`. Everything else is checked against it. |
+; `A_1..A_5` first 12, `block_profile_first_40`. Everything else is checked against it. |

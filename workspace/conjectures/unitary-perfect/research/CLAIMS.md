@@ -8,6 +8,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | --- | --- | --- | --- | --- |
 | `aurifeuillean-existence` | Φ_d(a) has an Aurifeuillean factorization iff, with a* the squarefree part of a (a*\|d and one of:) a*≡1 mod 4 & d odd; a*≡3 mod 4 & v2(d)=1; or a* even & v2(d)=2. For Φ_{4p}(2) with a=2: a*=2 even, v2(4p)=2, so the… | yes | asserted | `research/summaries/allombert-belabas-aurifeuillian-2008.md` |
 | `aurifeuillean-split` | For odd prime p, 2^(2p)+1 = L_p · M_p with L_p = 2^p - 2^((p+1)/2) + 1, M_p = 2^p + 2^((p+1)/2) + 1; both are integer-coefficient quartics in a power of 2, each ≈ half the bit length. | yes | checked | `research/notes/heven-and-3-higgs-structure.md` |
+| `beard1977-unitary-perfect-polynomials-infinite` | In the ring GF[q,x] (q = p^d, d >= 1) with the polynomial analogue of unitary sigma, sigma*(A) = prod_i (P_i^{a(i)} + 1) over irreducible factors, there are infinitely many unitary perfect polynomials (sigma*(A) = A):… | yes | asserted | `research/summaries/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.md` |
 | `bgh2022-explicit-stewart-prime-factor` | For gamma a rational != ±1 with n >= exp(10^6), some prime p \| gamma^n - 1 has p >= n exp(0.0005 log n / log log n); for gamma quadratic norm ±1 with n >= exp exp(max{10^9, 3\|D_K\|}), some prime below gamma^n - 1 has p… | yes | asserted | `research/summaries/bilu-gun-hong-uniform-explicit-stewart.md` |
 | `bhv-primitive-divisor-theorem` | For Lucas/Lehmer sequences, u_n has a primitive prime divisor for all sufficiently large n (all n > some bound; n = 30 and a catalogue of small exceptions). Applied to 2^n + 1, every cyclotomic value Phi_n(2) has a… | yes | asserted | `research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md` |
 | `budget-equality-case-impossible` | Let n = 2^a * prod_i p_i^{e_i} be unitary perfect with p_i odd and distinct. In the equality case omega(odd part) = a + 1 of the 2-adic budget corollary - equivalently, every odd unitary component is 1 mod 4 - the odd… | yes | checked | `research/notes/equality-case-eliminated.md` |
@@ -65,9 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `unitary-perfect-2-adic-budget` | Every unitary perfect number is even (Subbarao-Warren 1966), and for n = 2^a * prod_i p_i^{e_i} unitary perfect with p_i odd and distinct, a >= 1, the identity sum_i v2(p_i^{e_i} + 1) = a + 1 holds exactly. Consequently… | yes | proved | `research/notes/parity-and-2-adic-budget.md` |
 | `unitary-perfect-lower-bound-on-a` | Any unitary perfect number other than the five known ones satisfies a >= omega(odd part) - 1 >= 8, where 2^a \|\| n. Equivalently 2^8 = 256 divides any sixth unitary perfect number. This follows by combining Wall (1988),… | yes | checked | `research/notes/lower-bound-on-a.md` |
 | `wall1972-biunitary-perfect-classified` | The bi-unitary perfect numbers are exactly 6, 60 and 90. A bi-unitary divisor d of n is one whose greatest common *unitary* divisor with n/d is 1. Theorem 1: no odd bi-unitary perfect numbers. Theorem 2: the only even… | yes | asserted | `research/notes/adjacent-divisor-classes-classified.md` |
-| `wall1975-bound-is-1e23-not-1e102` | Wall 1975 (the fifth unitary perfect number paper) proves W is the next unitary perfect number after 87360 by eliminating all N < W, where W = 146361946186458562560000 ~ 1.46e23. The paper's seed cap is a < 38 (for N <… | yes | asserted | `research/notes/wall-1975-bounds-and-102-claim.md` |
 
-_7 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_8 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -192,6 +192,7 @@ Resolve these before building on either side.
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `aurifeuillean-existence` (research/summaries/allombert-belabas-aurifeuillian-2008.md) — asserted by the source, not proved there and not checked here
+- `beard1977-unitary-perfect-polynomials-infinite` (research/summaries/beard-bullock-harbin-1977-unitary-perfect-polynomials-bdim.md) — asserted by the source, not proved there and not checked here
 - `bgh2022-explicit-stewart-prime-factor` (research/summaries/bilu-gun-hong-uniform-explicit-stewart.md) — asserted by the source, not proved there and not checked here
 - `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) — asserted by the source, not proved there and not checked here
 - `burris-yeats-higgs-prime-origin` (research/summaries/burris-yeats-saga-high-school-identities.md) — asserted by the source, not proved there and not checked here

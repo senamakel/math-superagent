@@ -302,7 +302,20 @@ Each carries the obstruction that closed it; do not re-propose.
   k against the interior cut exp((log n)^{2/3+1/2}) for the Fibonacci family
   j=1..6 and the witness set, pinning the exact lower bound on C. `G-interior-
   bounded` and `G-small-a-bounded` are catalogued (read from MRSTT primary,
-  not re-derived). `effective-bound-hyperelliptic-k25` is broken (Lambda=0
+  not re-derived). **The gap is now decomposed** in
+  `research/backward/boundary-finite-collisions.md`: `G-column-injectivity`
+  (discharged — C(n,k) strictly increasing in n for n>=k, so one rep per
+  column); `G-fibonacci-boundary-finite` (open, computation-ready: for eps=1/2
+  find largest j with k_j+1 < exp((log(n_j+1))^{2/3+1/2}) for j=1..100, since
+  log k_j ∝ j but (log n_j)^{2/3+eps} ∝ j^{2/3+eps} — **this program has NOT
+  been run: `code/out/boundary_cut_tabulation.captured.txt` is 0 bytes**);
+  `G-nonfibonacci-pairs-are-bounded` (open — the core structural gap: minimal
+  k2 = k1+1 for the Fibonacci family; needs a bound on non-Fibonacci boundary
+  pairs, the actual heart of the conjecture); `G-boundary-collision-a-finite`
+  (open — synthesis of the previous two). The agent attacking the boundary
+  should start with the j=1..100 Fibonacci cut table — it is cheap (no
+  triangle, closed-form n_j,k_j via φ^4 growth), exact, and its 0-byte
+  capture means it is still open. `effective-bound-hyperelliptic-k25` is broken (Lambda=0
   vacuity); `genus-closed-form-proof` discharged by the proved genus formula.
 - **The other live partial-result target:** an effective height bound with a
   **computed** constant for a specific (k1,k2) inequality or near-miss family
