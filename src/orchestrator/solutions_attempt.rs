@@ -149,6 +149,15 @@ impl SolutionState {
             blocked: 0,
             computational: 0,
             unverified: 0,
+            // At the threshold, not at zero, so the *first* completed cycle
+            // opens a reduction. This is `open_invention`'s own recorded
+            // evidence one role wider: a gate needing several completed cycles
+            // is a gate a long conjecture run never reaches, and across a day
+            // of live runs the inventor was spawned once for exactly that
+            // reason. A skeleton is also worth most before the run has
+            // committed to a direction, which is the opposite of when
+            // diversify is worth most.
+            since_reduction: REDUCTION_INTERVAL,
         }
     }
 
@@ -423,6 +432,7 @@ async fn attempt_step(
     workspace: Option<&Path>,
     patterns: &Mailbox,
     directives: &Mailbox,
+    skeletons: &Mailbox,
     mut state: SolutionState,
 ) -> SolutionState {
     state.attempts += 1;
