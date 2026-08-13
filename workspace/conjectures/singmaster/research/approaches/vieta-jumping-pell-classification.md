@@ -111,3 +111,31 @@ first-step: none — the working kernel (Pell-family classification, shift-famil
   nontrivial collisions beyond the known list + infinite family), which is
   open and is attacked by the effective-methods wall, not by descent.
 ```
+
+```claim
+id: vieta-jumping-quadratic-only
+statement: Vieta jumping cannot classify binomial equalities: the descent
+  mechanism requires the equation to be quadratic in at least one variable (the
+  conjugate root is an integral polynomial in the others — Markov x^2+y^2+z^2=
+  3xyz, IMO 1988 P6, Pell x^2-Dy^2=m), and C(x,k1)=C(y,k2) is a curve of degree
+  k1/k2 >= 3 (genus >= 2 for all fixed distinct pairs except (2,3),(2,4), per
+  BST 1999 Thm 2.2 and the run's genus formula), so no Vieta-type conjugate
+  exists. The claim that large N(a) forces membership in a genus-0/Pell family
+  is contradicted by the witnesses: 3003=C(15,5)=C(14,6) sits on the (1,1)-
+  shift quadratic, but its representation C(78,2) and the six N=6 values (each
+  one nontrivial pair on a fixed genus>=1 curve: (2,3)->120,1540,7140;
+  (2,4)->210; (2,5)->11628) show high multiplicity is NOT confined to genus-0
+  diagonals; the honest statement is de Weger's open Conjecture A. The complete
+  infinite-family classification (Lind 1968 via units of Q(sqrt5)/Pell u^2-5v^2=
+  -4, exactly n=F_{2i+2}F_{2i+3}-1, k=F_{2i}F_{2i+3}-1; Jenkins a!=b finiteness)
+  is already library content (lind-1968-fibonacci-family-primary,
+  jenkins-ab-finite).
+hypotheses: N(a) counting both mirrors and the trivial pair; k<=log2(a).
+holds-here: yes
+status: grounded (deduction from held primaries — Lind 1968, Jenkins 2015,
+  GRKTU 2020, BST 1999 boundary result — plus the computed witness set)
+bearing: permanently retires the Vieta-jumping candidate; its surviving kernel
+  (Pell classification, shift-family genus-0 locus) is already established
+  library content, and the open part is Conjecture A / effective per-pair walls.
+anchor: research/approaches/vieta-jumping-pell-classification.md
+```
