@@ -59,16 +59,15 @@ def fast_multiplicity(a):
             break
         if comb(2 * k, k) > a:      # k <= log2(a) bound: no n >= 2k can work
             break
-        # exponential search for an upper bound n_hi = first power-of-2-doubling
-        # with C(n,k) >= a (capped at n_max: no solution if we exceed it)
-        lo, hi = 2 * k, 2 * k
-        while comb(hi, k) < a and hi <= n_max:
-            hi = 2 * hi
-        if hi > n_max:
-            # between 2k and n_max every C(n,k) < a: no solution for this k
+        if comb(n_max, k) < a:      # no n <= n_max reaches a for this k
             k += 1
             continue
-        # binary search in [lo, hi] for first n with C(n,k) >= a
+        # C(2k-1,k) < comb(2k,k) <= a <= C(n_max,k), so by strict
+        # monotonicity of C(n,k) in n (n >= k), the first n in [2k, n_max]
+        # with C(n,k) >= a is the unique solution n if one exists.
+        # (An earlier doubling version skipped this range when the doubling
+        # upper bound overshot n_max -- fixed: search [2k, n_max] directly.)
+        lo, hi = 2 * k, n_max
         while lo < hi:
             mid = (lo + hi) // 2
             if comb(mid, k) >= a:
