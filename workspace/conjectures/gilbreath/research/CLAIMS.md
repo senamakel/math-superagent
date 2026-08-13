@@ -43,6 +43,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `second-entry-4-kills` | If A_k(1) = 4 (or any even value >= 4) for some k>=1, then A_{k+1}(0) = \|1 - A_k(1)\| >= 3 and Gilbreath's conjecture fails at that row. | yes | proved | `research/notes/reduction.md` |
 | `two-separation-hypothesis` | The operative general-class hypothesis is not "gaps grow slowly" but that gaps do not concentrate in an arithmetically rigid (2-separated) set — a set with no two consecutive integers (e.g. evens, multiples of 3). If… | yes | asserted | `research/notes/library-state.md` |
 | `valid-extension-nonlocal` | The valid-extension set of a finite Gilbreath sequence is not determined by any bounded window of recent rows: Alkan et al. 2023 give the criterion min K(s_1..s_m) <= s_{m+1} <= max K(s_1..s_m) for all m, with max K_S =… | yes | asserted | `research/approaches/backward-extension-automaton.md` |
+| `valid-extension-nonlocal` | The valid-extension set K_S and the interval-completeness condition K_S=C_S are governed by the whole ordered right anti-diagonal via the folding map F_S: k∈K_S ⟺ F_S(\|k−s_n\|)=1, and K_S=C_S ⟺ e_i≤1+Σ_{j>i}e_j (1≤i≤n−2)… | yes | proved | `research/summaries/muney-2026-holes-valid-extension-html.md` |
 | `verification-bounds` | Gilbreath's conjecture verified for the first 63,419 primes (Killgrove–Ralston 1959, SWAC, primes < 792,722) and for all primes < 10^13 (Odlyzko 1993, k ≤ π(10^13) ≈ 3.4×10^11). | yes | asserted | `research/notes/library-state.md` |
 | `verification-record-2026` | Current literature verification record: Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna 2025-2026 to 1.5×10^15 with G(π(2.8e14))=788, G(π(6.15e14))=800, G(π(1.5e15))=800. Still open. | yes | asserted | `research/notes/library-state.md` |
 
@@ -70,6 +71,13 @@ Resolve these before building on either side.
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `re-derivation` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `give` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `n+1.` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `valid-extension-nonlocal` (research/summaries/muney-2026-holes-valid-extension-html.md) contradicts `nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `valid-extension-nonlocal` (research/summaries/muney-2026-holes-valid-extension-html.md) contradicts `on` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `valid-extension-nonlocal` (research/summaries/muney-2026-holes-valid-extension-html.md) contradicts `disk;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `valid-extension-nonlocal` (research/summaries/muney-2026-holes-valid-extension-html.md) contradicts `supports` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `valid-extension-nonlocal` (research/summaries/muney-2026-holes-valid-extension-html.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `valid-extension-nonlocal` (research/summaries/muney-2026-holes-valid-extension-html.md) contradicts `thread's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `valid-extension-nonlocal` (research/summaries/muney-2026-holes-valid-extension-html.md) contradicts `local-iff-refutation` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 

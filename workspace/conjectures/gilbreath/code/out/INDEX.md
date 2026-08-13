@@ -14,8 +14,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check-block-protection.py` | Boundary protection lemma verifier. |
 | `check_reduction.captured.txt` | Output of `check_reduction.py`: reduction facts hold for k=1..599. |
 | `check_reduction.py` | Per-row check of the reduction facts. |
-| `check_regenerate_lemma.captured.txt` | Output of the candidate regeneration-lemma refutation (iff fails; see notes). |
-| `check_regenerate_lemma.notes.md` | Refutation of a candidate regeneration iff lemma with exact k-values; the lemma FAILED — do not weaken and re-assert. |
+| `check_regenerate_lemma.captured.txt` | Output of `regeneration/check_regenerate_lemma.py` (sieve 20M, depth 1000): the regeneration criterion `A_{k+1}[b_k] ∈ {0,2} ⟺ (e_k==2 and c_k==4)` and `b_{k+1}≥b_k ⟺ (e_k==2 and c_k==4)` holds with ZERO failures over all 998 transitions; 60 regeneration events. Supersedes/corrects the earlier refutation note (which had an off-by-one in the edge index). |
 | `commands.log` | Full command log of the run. |
 | `erosion_dynamics.captured.txt` | Output of `pattern/erosion_dynamics.py`: erosion-step predictions 101/101 and the regen trigger (x,y)=(2,4) verified 60/60. |
 | `extract_witness.captured.txt` | Output of `pattern/extract_witness.py` (b, s, diffs for k=1..40). |

@@ -162,6 +162,26 @@ and nothing proves it.
 - **Fact (b): Regeneration is real but NOT monotone.** 97→96 (k=13), 871→872
   (k=26), 21→24 (k=8) all occur — consumption and regeneration alternate. The
   block can shrink before growing. Source: `code/out/regeneration_analysis.captured.txt`.
+- **Regeneration mechanism, characterised at boundary level (computed, not
+  proved).** Over the live regime k=1..161 (the only rows where the intruder
+  exists), ALL 60 regenerations fire at rows with intruder y=4 and obey
+  exactly `(x,y)=(2,4)` for x=last block entry (verified 60/60 by
+  erosion_dynamics). Rows with y∈{6,8,10,12,14} NEVER regenerate (0 of 65).
+  During erosion, y drains monotonically (drops 2 per x==2 step: 33 drops,
+  68 stays; never up), reaching 4 and sticking; regeneration is the event
+  (x==2, y==4). After a regeneration the new intruder is 4 in 43/59 visible
+  cases (next event regen); when ≥6 it drains to 4 within ≤12 rows and then
+  regenerates. Jump-0 stalls (17) are always followed by regeneration;
+  33/60 events are adjacent to another regen (self-exciting; runs test
+  z=−3.94 over k=1..161, n1=60). 4-runs: 17 maximal runs of consecutive
+  y=4 rows, lengths {1,2,3,3,4,4,6,7,11,12,12,15}, every run ends in a
+  regeneration (x flips 0↔2 inside a run, explaining the 36 non-regen y=4
+  rows; max consecutive non-regen y=4 rows is 6). Regen rate by b-bucket
+  decreases with b (1.00 at b<10, 0.58, 0.45, 0.37, 0.31, 0.36, 0.20 at
+  b≥10⁶). Jump sizes: median 4.5, 35/60 ≤ 1, 5 jumps ≥10⁵ (max 360,698 at
+  k=146); big jumps correlate with big b (r=0.771) and recover ~1.2–2× the
+  block. Full table + the 5 structural facts a theorem must explain:
+  `research/notes/regeneration_data.md`.
 
 ## Recalled
 
@@ -198,8 +218,10 @@ recalled claim is relied on whose hypotheses fail here.
   0? Everything computed says no (minima grow: 13,24,96,97,175,2762,...) and
   nothing proves it. Thread `research/threads/regeneration.md` is open.
 - **Regeneration mechanism uncharacterised** — the whole obstruction. The
-  candidate iff lemma (single-row local property) is refuted. What *does* make
-  a block regrow? The mod-4 linearization is the cleanest algebraic handle.
+  candidate iff lemma (single-row local property) is refuted. Characterised
+  at boundary level (`research/notes/regeneration_data.md`): regeneration =
+  (x,y)=(2,4); the open content is why that boundary pair recurs. The mod-4
+  linearization is the cleanest algebraic handle.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.
