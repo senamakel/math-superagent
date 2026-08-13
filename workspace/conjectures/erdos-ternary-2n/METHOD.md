@@ -1,0 +1,11 @@
+Solve by 3-adic and modular dynamics. Treat `2^n mod 3^k` as an orbit in `Z_3` under multiplication by 2, and the digit-avoidance condition as a shrinking target `S_k` — the residues whose low `k` ternary digits lie in `{0,1}`. The question is whether the orbit can stay in the target, so reason about the orbit's structure: the order of 2 modulo `3^k` is `2·3^(k-1)`, the lifting-the-exponent behaviour as `k` increases by one, how a class in `A_k` splits or dies in `A_{k+1}`, and whether the splitting admits a recursion or a transfer operator whose spectral radius settles the count. Use every other capability in service of that argument rather than instead of it.
+
+Three cautions this problem has already earned:
+
+A density statement about all integers whose ternary expansion avoids 2 does not reach the thin sequence `2^n`. Neither does the independent-uniform-digits heuristic, which gives `(2/3)^k` and explains only why the conjecture is believed. Both are true and irrelevant; record them as heuristics and never as proof.
+
+The naive count predicts the sieve set grows, not shrinks: `|A_k| ≈ 2·3^(k-1)·(2/3)^k ≈ 2^k/3`. Any approach must say how it beats that estimate or why the estimate is wrong. State this in `research/ROOT.md` before proposing an approach.
+
+The deliverable is non-existence for `n > 8`, so the failure mode is an argument that proves too much. Every claimed obstruction must be run against the witnesses `n = 0, 2, 8` using `digit_free` from the oracle. A lemma that forbids `2^8 = 100111_3` is false and is recorded as refuted, not weakened. A lemma not run against the witnesses is `asserted`, never `checked`.
+
+On compute: work modulo `3^k` and never materialise `2^n` for large `n` — that is the trap this problem sets, since `2^n` has about `0.63·n` ternary digits. Sieve residue classes rather than integers, so one discarded class removes a whole arithmetic progression. The box has 28 CPUs and the container has no CPU quota; `code/lib/parallel.py` with `code/lib/PARALLEL.md` is in this workspace, and splitting the classes across `parallel_union` or `parallel_any` is exactly its shape. Say in every captured output how many workers ran and what range was covered — a result without its bound is not a result.
