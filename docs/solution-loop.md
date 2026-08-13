@@ -324,8 +324,9 @@ replacing it.
 
 ## The reduction runs beside the loop too
 
-`open_reduction` sits next to `open_invention` at the tail of `reflect` and
-answers the question the loop never asks by itself. Every cycle asks how the
+`open_reduction` sits next to `open_invention` at the tail of `reflect`, and is
+called once more from `run` before the graph starts. It answers the question the
+loop never asks by itself. Every cycle asks how the
 last attempt went. None of them asks what a proof of the goal would *consist
 of*, and the two have different answers: a run can report genuine progress every
 single attempt — a bound pushed further, more cases verified — and spend its
