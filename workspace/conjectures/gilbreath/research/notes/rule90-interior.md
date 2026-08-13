@@ -44,7 +44,7 @@ Verification: exhaustive check over all 2^n block patterns for n = 1..13
 confirms the closed form matches the actual halved subtriangle entries in
 every case.
 
-## Structural consequence: Sierpinski regeneration at powers of 2
+## Structural consequence: Sierpinski windows at powers of 2 (timing corollary REFUTED)
 
 At depth d = 2^j, binom(2^j, m) ≡ 1 (mod 2) for all 0 ≤ m ≤ 2^j (Lucas: every
 m is a submask of 2^j). So:
@@ -53,14 +53,22 @@ m is a submask of 2^j). So:
 A_{K+2^j}(p+1) / 2 = XOR_{m=0}^{2^j} h_{p+1+m}
 ```
 
-Every halved entry in rows whose depth offset is a power of 2 is the XOR of a
-width-(2^j+1) window of the initial bit pattern. If that XOR = 1 for a stretch
-of positions p, then the original row A_{K+2^j} has a stretch of 2s — a clean
-{0,2} block that has regenerated at a predictable depth.
+Every halved entry in rows whose depth offset from the block start is a power
+of 2 is the XOR of a width-(2^j+1) window of the initial bit pattern. If that
+XOR = 1 for a stretch of positions p, then the row at that depth has a stretch
+of 2s — a candidate regenerated block.
 
-This is a structural (not merely empirical) mechanism for regeneration.
-Testing it against the computed block-length record is the next step
-(`research/threads/rule90-regeneration.md`).
+**The timing corollary ("block-length regeneration should occur at depths that
+are powers of 2") is REFUTED by the depth-1000 record.** Every concrete form
+fails: gaps between consecutive regen rows include 13 non-powers of 2; only
+9/13 big-jump rows (jump ≥ 1000) have next-regen at a 2^j-ish offset against a
+0.81 null; no big-jump row and no local-minima row index is a power of 2. The
+relative-depth concentration is mild and tolerance-dependent (21/27 at tol=1,
+p = 0.0173; dead at tol=0, p = 0.113) — not strong enough to support a
+structural regeneration mechanism. See claim `rule90-relative-depth-null`
+(checked), thread `research/threads/rule90-regeneration.md` (CLOSED). The XOR
+evolution of the *values* inside the block is unaffected; only the *timing*
+corollary is dead.
 
 ## Relationship to the refuted absorption wrapper
 
