@@ -4,9 +4,16 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[offcentre-mesh-phase-model]] | > Which crossings of f(d)=Q_p−Q_q on (DL,DU) correspond to physically distinct, admissible gear arrangements, and which are spurious — so that g(c,s,p,q)… | open | -, tangency_enum_oracle_match, -, g20_overcount_by_eight, -, n_t_model_oracle_summary, (added, this, review) | - Run code/pattern/scholar_verify.py; record output beside research/notes/n-t-model-on-disk-state.md - Retire the count_formula_test2.txt (2^17/1e-4) and… |
+
+## Resting on nothing recorded
+
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[offcentre-mesh-phase-model]] rests on `-`, `-`, `-`, `(added`, `this`, `review)`, which no claim block on disk establishes
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
-- `offcentre-mesh-phase-model` has no thread block, so nothing can say what it is chasing or what it rests on

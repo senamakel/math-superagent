@@ -46,6 +46,15 @@ phi-triple-curve-genus-faltings approach (which attacks the Φ additive triple
 directly, without passing through Bremner's hyperelliptic reduction).
 
 status: proposed
+speculation-vs-established: ESTABLISHED — the quadratic Chabauty (Chabauty–Kim)
+  theorem and its Balakrishnan–Dogra et al. algorithmic pipeline are published,
+  and the Bremner II eq. (12)-(13) quartics are explicit. SPECULATION — (a) the
+  decisive condition r < g + ρ(J) − 1 holds for any of the three 7→8 curves;
+  (b) the curves' Jacobians carry enough extra structure (ρ(J) > 1) for
+  quadratic Chabauty to apply where classical Chabauty fails. Both are
+  verifiable by a finite computation (genus, 2-Selmer rank, Jacobian
+  splitting); if r ≥ g + ρ(J) − 1 for all three, the approach is closed with
+  that negative result.
 first-step: Compute the genus and the 2-Selmer rank for the three Bremner II
   eq. (13) quartics at λ = 13 (the 7-square witness parameters). If for any
   of those curves r ≥ g, determine whether ρ(J) > 1 by computing the

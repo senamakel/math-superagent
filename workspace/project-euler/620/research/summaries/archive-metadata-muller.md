@@ -1,6 +1,14 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/archive-metadata-muller.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Archive.org metadata JSON for Müller 1982 — no content
 
-<!-- source: https://archive.org/metadata/epicyclicdrivetr0000mull | converted from plain text -->
+[[research/sources/archive-metadata-muller.full.md]] · source:
+https://archive.org/metadata/epicyclicdrivetr0000mull
 
+Raw `archive.org/metadata` JSON for the same item as the Müller 1982 record
+(`research/summaries/muller-epicyclic-drive-trains-1982.md`). Contains only
+administrative metadata: 31 files (scans, OCR text `_djvu.txt`,
+hOCR derivatives, LCP-encrypted PDF/EPUB, all `private: true` except tiles and
+logs), identifiers, hashes. **No bibliographic content, no prose, no derivation.**
 
-*[excerpt ends; 13122 characters not shown — see `research/sources/archive-metadata-muller.full.md`]*
+Redundant with the item-page record. Nothing here establishes anything for
+PE620. Kept only so nobody re-fetches the metadata endpoint; the concise,
+usable record is the Müller summary (archive access-restricted, no text).
