@@ -56,5 +56,5 @@ DECISIVE STATUS
    honed version of its question is the SDW/David computation, already
    complete in the held primary.
 ==============================================================================
-CHECK FAILURE
+ALL CHECKS PASSED
 ==============================================================================
