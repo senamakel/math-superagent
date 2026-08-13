@@ -6,6 +6,22 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `aurifeuillean-split` | For odd prime p, 2^(2p)+1 = L_p · M_p with L_p = 2^p - 2^((p+1)/2) + 1, M_p = 2^p + 2^((p+1)/2) + 1; both are integer-coefficient quartics in a power of 2, each ≈ half the bit length. | yes | checked | `research/notes/heven-and-3-higgs-structure.md` |
+| `heven-frontier-50000` | \|H_even ∩ [2,40000]\| ≤ 201 and \|H_even ∩ [2,50000]\| ≤ 272, rigorous. No verified element in (122, 50000]. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
+| `heven-prime-case-reduction` | H_even is finite iff the set {m = 2p : p odd prime, 2p ∈ H_even} is finite, and \|H_even\| <= 4^\|H_even^prime\|. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
+| `heven-thinness-not-finiteness` | #{m ≤ X : m ∈ H} << X^(1-η) for an absolute η > 0, and Σ_{m∈H} 1/m < ∞. This is power-saving thinness but does NOT imply finiteness; on the prime branch the relevant bound is exponential at the primitive-divisor height… | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
+| `heven-two-mod-four` | H_even ⊆ {m ≡ 2 (mod 4)}. Every even m in H is 2 mod 4, i.e. v2(m) = 1. In particular m = 2k with k odd. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
+| `heven-verified-members` | H_even ∩ [2,1200] = {2, 6, 10, 18, 26, 30, 46, 62, 82, 122}, so H_even has exactly these ten verified elements through 1200 and no verified element in (122, 1200]. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `structural-search-cannot-reach` | The backtracking search over the product form prod (q_i+1)/q_i = 2, with q_i prime powers of distinct primes and the denominator rule forcing the next prime whenever the remaining target is not an integer, recovers… | yes | checked | `research/notes/why-the-search-is-closed.md` |
 | `unitary-perfect-2-adic-budget` | Every unitary perfect number is even (Subbarao-Warren 1966), and for n = 2^a * prod_i p_i^{e_i} unitary perfect with p_i odd and distinct, a >= 1, the identity sum_i v2(p_i^{e_i} + 1) = a + 1 holds exactly. Consequently… | yes | proved | `research/notes/parity-and-2-adic-budget.md` |
 | `unitary-perfect-lower-bound-on-a` | Any unitary perfect number other than the five known ones satisfies a >= omega(odd part) - 1 >= 8, where 2^a \|\| n. Equivalently 2^8 = 256 divides any sixth unitary perfect number. This follows by combining Wall (1988),… | yes | checked | `research/notes/lower-bound-on-a.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `heven-frontier-50000` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
+- `heven-prime-case-reduction` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
+- `heven-thinness-not-finiteness` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
+- `heven-two-mod-four` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
+- `heven-verified-members` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
