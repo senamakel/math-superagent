@@ -1,5 +1,3 @@
-<!-- source: https://www.e-periodica.ch/cntmng?pid=edm-001:1978:33::216 | converted from HTML -->
+# Frei 1978 — captcha wall (pointer)
 
-Verification required
-
-# Bestätigung erforderlich
+Fetching E-periodica's Direct-PDF endpoint for the Heft-4 "Kleine Mitteilungen" block (`cntmng?pid=edm-001:1978:33::216`, pp. 90–96, which contains Frei's note on pp. 95–96) returned **"Verification required / Bestätigung erforderlich"** — a bot wall, no content. See `research/summaries/frei-1978-unitar-perfekte-zahlen.md` for the canonical failure record. Do not re-fetch this endpoint with the same tool.
