@@ -1,0 +1,4 @@
+OK: |a-b|/2 == (a/2) XOR (b/2) for all a,b in {0,2}
+OK: repeated over 2^8 halved {0,2} block patterns, next-row interior halved entries == Rule 90 of the block, leading entry |1 - b0|.
+
+Interior identification re-derived independently (matches Wikipedia/MathWorld Rule 90 + OEIS A396593 statements).

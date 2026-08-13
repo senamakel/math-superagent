@@ -1,0 +1,41 @@
+two routes: R1 = Pascal-mod-2 convolution, R2 = literal |a-b| erosion
+n=1: nonzero patterns=1  worst zero-run=0  (< n: True)  achieving pattern h=None  count=1
+n=2: nonzero patterns=3  worst zero-run=1  (< n: True)  achieving pattern h=[1, 0]  count=2
+n=3: nonzero patterns=7  worst zero-run=2  (< n: True)  achieving pattern h=[1, 0, 0]  count=2
+n=4: nonzero patterns=15  worst zero-run=3  (< n: True)  achieving pattern h=[1, 0, 0, 0]  count=2
+n=5: nonzero patterns=31  worst zero-run=4  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0]  count=2
+n=6: nonzero patterns=63  worst zero-run=5  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0]  count=2
+n=7: nonzero patterns=127  worst zero-run=6  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0]  count=2
+n=8: nonzero patterns=255  worst zero-run=7  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=9: nonzero patterns=511  worst zero-run=8  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=10: nonzero patterns=1023  worst zero-run=9  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=11: nonzero patterns=2047  worst zero-run=10  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=12: nonzero patterns=4095  worst zero-run=11  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=13: nonzero patterns=8191  worst zero-run=12  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=14: nonzero patterns=16383  worst zero-run=13  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=15: nonzero patterns=32767  worst zero-run=14  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=16: nonzero patterns=65535  worst zero-run=15  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=17: nonzero patterns=131071  worst zero-run=16  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+n=18: nonzero patterns=262143  worst zero-run=17  (< n: True)  achieving pattern h=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  count=2
+
+routes agree on every pattern: True
+
+Summary (nonzero blocks only): worst zero-run vs n vs 2n
+  n=1: worst=0  2n=2  is it the all-1 block? False
+  n=2: worst=1  2n=4  is it the all-1 block? False
+  n=3: worst=2  2n=6  is it the all-1 block? False
+  n=4: worst=3  2n=8  is it the all-1 block? False
+  n=5: worst=4  2n=10  is it the all-1 block? False
+  n=6: worst=5  2n=12  is it the all-1 block? False
+  n=7: worst=6  2n=14  is it the all-1 block? False
+  n=8: worst=7  2n=16  is it the all-1 block? False
+  n=9: worst=8  2n=18  is it the all-1 block? False
+  n=10: worst=9  2n=20  is it the all-1 block? False
+  n=11: worst=10  2n=22  is it the all-1 block? False
+  n=12: worst=11  2n=24  is it the all-1 block? False
+  n=13: worst=12  2n=26  is it the all-1 block? False
+  n=14: worst=13  2n=28  is it the all-1 block? False
+  n=15: worst=14  2n=30  is it the all-1 block? False
+  n=16: worst=15  2n=32  is it the all-1 block? False
+  n=17: worst=16  2n=34  is it the all-1 block? False
+  n=18: worst=17  2n=36  is it the all-1 block? False

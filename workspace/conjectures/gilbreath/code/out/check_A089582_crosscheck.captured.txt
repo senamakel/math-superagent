@@ -1,0 +1,5 @@
+checked 105 terms of A_k(1) against OEIS A089582
+mismatches: 0
+MATCH: the run's A_k(1) sequence agrees with the OEIS catalogue A089582 for k=1..105.
+first 10: [2, 0, 2, 2, 2, 2, 2, 2, 0, 0]
+first-10 matches problem.md A_1..A_5 second entries: True

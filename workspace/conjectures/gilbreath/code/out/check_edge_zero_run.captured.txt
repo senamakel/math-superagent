@@ -1,0 +1,38 @@
+n=1: worst zero-run=1  (2n=2)  allzero_edge_count=1  pattern=[0]
+n=2: worst zero-run=2  (2n=4)  allzero_edge_count=1  pattern=[0, 0]
+n=3: worst zero-run=3  (2n=6)  allzero_edge_count=1  pattern=[0, 0, 0]
+n=4: worst zero-run=4  (2n=8)  allzero_edge_count=1  pattern=[0, 0, 0, 0]
+n=5: worst zero-run=5  (2n=10)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0]
+n=6: worst zero-run=6  (2n=12)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0]
+n=7: worst zero-run=7  (2n=14)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0]
+n=8: worst zero-run=8  (2n=16)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0]
+n=9: worst zero-run=9  (2n=18)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=10: worst zero-run=10  (2n=20)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=11: worst zero-run=11  (2n=22)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=12: worst zero-run=12  (2n=24)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=13: worst zero-run=13  (2n=26)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=14: worst zero-run=14  (2n=28)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=15: worst zero-run=15  (2n=30)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=16: worst zero-run=16  (2n=32)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=17: worst zero-run=17  (2n=34)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+n=18: worst zero-run=18  (2n=36)  allzero_edge_count=1  pattern=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+Summary: does worst zero-run stay <= n, <= 2n?
+  n=1: worst=1  n=1 2n=2  '<=n':True '<=2n':True
+  n=2: worst=2  n=2 2n=4  '<=n':True '<=2n':True
+  n=3: worst=3  n=3 2n=6  '<=n':True '<=2n':True
+  n=4: worst=4  n=4 2n=8  '<=n':True '<=2n':True
+  n=5: worst=5  n=5 2n=10  '<=n':True '<=2n':True
+  n=6: worst=6  n=6 2n=12  '<=n':True '<=2n':True
+  n=7: worst=7  n=7 2n=14  '<=n':True '<=2n':True
+  n=8: worst=8  n=8 2n=16  '<=n':True '<=2n':True
+  n=9: worst=9  n=9 2n=18  '<=n':True '<=2n':True
+  n=10: worst=10  n=10 2n=20  '<=n':True '<=2n':True
+  n=11: worst=11  n=11 2n=22  '<=n':True '<=2n':True
+  n=12: worst=12  n=12 2n=24  '<=n':True '<=2n':True
+  n=13: worst=13  n=13 2n=26  '<=n':True '<=2n':True
+  n=14: worst=14  n=14 2n=28  '<=n':True '<=2n':True
+  n=15: worst=15  n=15 2n=30  '<=n':True '<=2n':True
+  n=16: worst=16  n=16 2n=32  '<=n':True '<=2n':True
+  n=17: worst=17  n=17 2n=34  '<=n':True '<=2n':True
+  n=18: worst=18  n=18 2n=36  '<=n':True '<=2n':True
