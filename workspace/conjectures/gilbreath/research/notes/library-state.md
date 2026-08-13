@@ -208,6 +208,18 @@ bearing: converts GC into a statement about an increasing quantity (partial sums
 anchor: research/sources/agama-2021-gap-sequence-gilbreath.full.md
 ```
 
+## New holdings this cycle (librarian, this build)
+
+```claim
+id: ross-2026-decay-constants
+statement: (Ross, Zenodo 10.5281/zenodo.21326026, July 2026) In the CHT continuous Gilbert model (top row i.i.d. standard exponentials, c_i = E a(i,j)), exact sign-cone computations give c_4 = 778959731701/1447295850000 = 0.5382173463..., c_5 = 0.5532582996..., c_6 = 0.448388672133... (reduced fractions deposited, partition-of-unity certificates, reproduces CHT's c_2=7/9, c_3=227/288, Monte Carlo agreement at 2e8-5e8 samples). Monte Carlo to depth 8192 (768 pyramids): digit-sum law c_i ≈ C·λ^{s_2(i)}/i, λ≈1.14-1.20 drifting; conditioned on digit-sum class the decay is consistent with 1/i; pooled dyadic sawtooth with exponent ≈ −0.90…−0.86. Transient: full-row grind-down τ(G) ≍ G^β, β≈0.63-0.66; spike survival distance d*(G)/G→1 (observed 0.79,0.85,0.93,0.96,0.98,0.99). Author's open target: prove (14) c_i ≤ A·B^{s_2(i)}/i; and the light-cone distance d*(G)≈G+O(1).
+hypotheses: continuous i.i.d. exponential model; the exact values are rational-certified, the laws are Monte Carlo (author explicitly: "identify theorem-shaped targets, not substitute for proofs").
+holds-here: yes as a model statement — the digit-sum/Pascal structure is the same Rule-90/Sierpinski structure as the run's mod-4 linearization; the decay-rate question is the averaged shadow of the regeneration obstruction. It does NOT prove anything about the primes (author's close: "That remains a separate arithmetic problem").
+status: sourced (full PDF landed in sources/ross-gilbreath-decay-constants-zenodo-2026.full.md; c_4 hand-checked to ~7 digits by this run; c_5, c_6 asserted-by-source with deposited certificates, not re-derived); empirical laws empirically-claimed only.
+bearing: theorem-shaped targets for the inventor (digit-sensitive comparison (14); slope-one propagation); consistency constraint on any claimed regeneration mechanism; corroborates the Rule-90 microscope.
+anchor: research/sources/ross-gilbreath-decay-constants-zenodo-2026.full.md; research/summaries/ross-gilbreath-decay-constants-zenodo-2026.md
+```
+
 ## Angled coverage summary
 
 - Statement/names/history: Odlyzko 1993, Killgrove–Ralston 1959, Encyc. of Math, MathWorld, Caldwell glossary, Arias de Reyna 2020, Chase 2024 §7, Wikipedia (retrieved this run).

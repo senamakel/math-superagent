@@ -1,67 +1,37 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/ross-gilbreath-github.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Ross, "Empirical Structure of the Gilbreath Decay Constants" — companion code (GitHub)
 
-<!-- source: https://github.com/michaelmross/Gilbreath | converted from HTML -->
+<!-- source: https://github.com/michaelmross/Gilbreath | full text: sources/ross-gilbreath-github.full.md -->
 
-## What is in it
+Companion repository for the Zenodo note of the same name (zenodo.21326025/6, July 2026) on the
+CHT stationary continuous Gilbreath model (top row i.i.d. Exp(1), `c_i = E a(i,j)` at depth i).
 
-  - Folders and files
-  - Latest commit
-  - History
-  - Repository files navigation
-- Empirical Structure of the Gilbreath Decay Constants
-  - Findings
-  - Layout
-    - Source files
-  - Reproducing
-- smoke tests (exact pipeline must reproduce CHT's values)
-python3 src/exact_ci.py 2…
-- new exact constants
-python3 src/exact_ci.py 4
-python3 src/exact_ci.py 5
-python3…
-- analyses and figures from the shipped data
-python3 src/lambda_analysis.py           # run…
-- regenerate raw experiments (stochastic; seeds fixed in-script)
-python3…
-  - Related
-  - License
-  - About
-    - Resources
-    - Stars
-    - Watchers
-    - Forks
-  - Releases
-  - Packages
-  - Contributors
-  - Languages
+## What it establishes
 
+- The repo is reproducible infrastructure, not a new theorem: exact rational `c_i` via
+  sign-cone decomposition (`src/exact_ci.py`, needs pycddlib built with GMP) extends CHT's
+  exact `c_0=1, c_1=7/9, c_2=?, c_3=227/288` — CHT's smoke-test values are
+  `exact_ci.py 2 -> 7/9`, `exact_ci.py 3 -> 227/288`, and the new values are `c_4`,
+  `c_5`, `c_6` (about 2M sign patterns for `c_6`), each certified by a partition-of-unity
+  identity ("volume check: 1").
+- Empirical laws (Monte Carlo, depth 8192): `c_i ≈ C·λ^{s_2(i)}/i` with λ drifting
+  1.14–1.20; digit-sum classes reveal the 1/i envelope; dyadic sawtooth in pooled data;
+  sublinear full-row grind-down `τ(G) ≈ G^{0.63–0.66}`; a spike of amplitude G survives to
+  distance ≈ G.
+- Cross-links: companion parity note "Is Gilbreath's conjecture garden-variety
+  numerology?" (michaelmross.github.io), OEIS A397880 / A395556, arXiv:2607.08712.
+- **Corrected Zenodo path:** the record's own API (sources/ross-gilbreath-decay-constants-zenodo-api.full.md)
+  gives concept DOI 10.5281/zenodo.21326025 (parent) and version 10.5281/zenodo.21326026; the PDF
+  is fetched at sources/ross-gilbreath-decay-constants-pdf.full.md.
 
-## What it claims
+## Bearing on this run
 
-You signed in with another tab or window. [Reload][1] to refresh your session. You signed out in another tab or window. [Reload][1] to refresh your session. You switched accounts on another tab or window. [Reload][1] to refresh your session. Dismiss alert
+The digit-sum (A000120) modulation is the continuous-model mirror of the Pascal/mod-2
+structure the run's mod-4 linearization uses on the discrete prime rows — independent
+confirmation that the {0,2}/Rule-90 microscope is the right one. The still-open question
+"is (c_i) bounded?" is the averaged shadow of the run's regeneration obstruction.
 
-{{ message }}
+## Source status
 
-[michaelmross][2] /**[Gilbreath][3]**Public
-
-- [Notifications][4] You must be signed in to change notification settings
-- [Fork 0][4]
--
-
-[Star 0][4]
-
-[3]
-
-main
-
-[Branches][5] [Tags][6]
-
-[5] [6]
-
-Go to file
-
-Code
-
-Open more actions menu
-
-*[digest of a 6058 character source; every section, statement, and proof in full at `research/sources/ross-gilbreath-github.full.md`]*
+Code repo, MIT licence, 21 commits, 0 stars; note author Michael M. Ross
+(ORCID 0009-0001-3428-5337). Claims are empirical except the exact low-depth values and
+their certificates. Not a proof about primes.
