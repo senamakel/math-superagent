@@ -20,5 +20,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `regeneration_detail.py` | Follow-up detail for the regeneration note: s at events, gap histogram, big-jump ratios, intruder traces across the three longest genuine erosion runs. Captured in out/regeneration_detail.captured.txt. |
 | `regeneration_lastfacts.py` | Last facts for the note: every 4-run's last row is a regeneration row; erosion-run start intruders; tall-intruder rows; y monotonicity check; min-b by row window. |
 | `regeneration_successors.py` | Verification of successor patterns: every jump-0 stall followed by regeneration; after-regen successor counts; the y-drain staircases to 4; ASCII histograms. |
+| `rule90_depth_test.py` | _(undescribed)_ |
+| `rule90_depth_test2.py` | _(undescribed)_ |
 | `sequence_extract.py` | _(undescribed)_ |
 | `surplus_structure.py` | Confirms the recharge surplus S_k = b_k - b_1 + (k-1) is monotone nondecreasing over k=1..1000 (a corollary of the proved erosion bound d >= -1), strictly increasing exactly at the 60 regeneration rows. Also computes OLS slope of log(jump) vs log(b) = 0.388 over 43 positive-jump events (jump grows sublinearly with b). |
+| `verify_intruder_law.py` | _(undescribed)_ |

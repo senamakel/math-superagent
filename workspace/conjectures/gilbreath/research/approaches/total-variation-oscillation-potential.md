@@ -54,7 +54,30 @@ mechanism: |
   {0,d}-block rigidity that CHT isolate, then the potential gives a direct
   non-block proof that the rigidity cannot persist under the prime gaps'
   oscillation structure.
-status: proposed
+precedent: |
+  (grounded/refuted, librarian cycle) REFUTED as stated — the elementary
+  lemma r(T(x)) <= r(x) is FALSE. Hand counterexample: x = (5,5,0,0) has two
+  runs but T(x) = (0,5,0) has three. The turning-point analogue t(T(x)) <=
+  t(x) is also FALSE: t(5,5,0,0) = 0, t(0,5,0) = 1. Both fixes are
+  immediate from the structure of T: T collapses equal adjacent pairs to 0
+  and maps unequal pairs to positive values, so a constant run of length m
+  becomes (m-1 zeros) + one boundary value — a run of length >= 3 can
+  CREATE a new run (two boundaries) instead of just one. The
+  counterexample (a,a,c,c) is exactly Chamberland's rigid borderline class
+  (Ducci Lemma 3.1, held: chamberland-unbounded-ducci-sequences, the class
+  where the max-factoring potential does NOT decrease), so the borderline
+  classification from the Ducci potential proof is the right place to look
+  for a CORRECTED potential (e.g. weighted run count, or run count after
+  factoring maxima), not the raw r and t. The classical variation-diminishing
+  theory (Schoenberg, Polya frequency, total positivity, sign-variation of
+  LINEAR operators) is a deep named literature but concerns LINEAR operators
+  and SIGN-CHANGES; the absolute-difference map T is nonlinear, so the PF/TP
+  machinery does not transfer as-is. No source states r(T(x)) <= r(x) or
+  t(T(x)) <= t(x) (searched; the claim does not appear in the Ducci or
+  variation-diminishing literature — it is an elementary false conjecture,
+  now refuted here). A corrected potential must handle the (a,a,c,c)-type
+  equality cases explicitly.
+status: refuted
 first-step: |
   Write a checker that computes r(A_k) (number of maximal constant runs) and
   t(A_k) (number of strict local extrema) for every prime row to depth 1000,
