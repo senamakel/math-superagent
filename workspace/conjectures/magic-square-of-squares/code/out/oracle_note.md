@@ -100,13 +100,6 @@ the witness set above is for structural impossibility claims).
 
 ```claim
 id: near-miss-baseline-and-incidence
-status: checked
-evidence: code/check_near_misses.py and code/lib/mss.py, exact integer /
-  Fraction arithmetic, sympy cross-check in code/scratch_rank_probe.py (deleted
-  after cross-check); near-misses constructed from the printed grids in the
-  local Bremner source.
-hypotheses: the two grids as printed in Bremner 1999 are what they say.
-holds-here: yes
 statement: the parametrisation identity and completeness hold on the rerun;
   Sallows LS1 has 7 of 8 line sums 21609 failing the non-principal diagonal
   38307; Bremner's grid is a true magic square (all 8 sums 541875, centre
@@ -114,8 +107,14 @@ statement: the parametrisation identity and completeness hold on the rerun;
   the incidence matrix has rank 7 over Q (kernel dim 2, line-relation
   col-sums == row-sums) and the affine magic space has dimension 3 = (c,u,v);
   the four differenced booleans in step (5) are [F, T, T, F].
+hypotheses: the two grids as printed in Bremner 1999 are what they say.
+holds-here: yes
+status: checked
+bearing: the parametrisation baseline, the incidence-algebra dimensions, and
+  the two mandatory near-miss witnesses every impossibility lemma must survive
 falsifier: any of the verified identities found false; a 4-dimensional magic
   assignment space over Q; a distinct 6-square magic grid in either scanned box.
 witness-check: these two grids ARE the witness set; every impossibility lemma
   the run produces must be refuted or confirmed against both (GOAL.md).
+anchor: code/check_near_misses.py, code/out/near_misses.json
 ```

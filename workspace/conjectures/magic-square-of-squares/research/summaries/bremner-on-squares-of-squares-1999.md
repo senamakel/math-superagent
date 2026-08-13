@@ -103,8 +103,9 @@ statement: 3×3 MSS (all nine entries squares, distinct) exist over proper algeb
   fields: degree-4 example over Q(√3,√133), a family over Q(i,√(µ³−µ)), and a degree-27
   family over Q(u).
 hypotheses: none (explicit constructions given)
-holds-here: yes (constructions explicit, entries distinct)
+holds-here: yes
 status: proved
-bearing: rules out any blanket structural impossibility; a proof must separate Q from extensions
+bearing: rules out any blanket structural impossibility; a proof must separate
+  Q from extensions; the constructions are explicit and the entries distinct
 anchor: research/sources/bremner-on-squares-of-squares-1999.full.md
 ```

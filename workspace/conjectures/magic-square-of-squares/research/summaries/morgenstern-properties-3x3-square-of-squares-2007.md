@@ -55,8 +55,9 @@ statement: In a primitive 3x3 MSS all nine entries are odd and ≡1 mod 3; no en
   prime factor; no middle-side entry has a 5 mod 8 factor; central entry ≡1 mod 4 only; and the
   step ratio z=py excludes p ∈ {0,1,2,3,4} ∪ {4k+3 prime or ±1}.
 hypotheses: primitive (gcd of all entries = 1); entries distinct squares
-holds-here: yes (the run's target MSS is primitive after removing a common square factor)
+holds-here: yes
 status: proved
-bearing: exact sieve restrictions for search; must be survived by every near-miss witness
+bearing: exact sieve restrictions for search; must be survived by every near-miss
+  witness; the run's target MSS is primitive after removing a common square factor
 anchor: research/sources/morgenstern-properties-3x3-square-of-squares-2007.full.md
 ```

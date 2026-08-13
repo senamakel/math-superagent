@@ -73,7 +73,7 @@ of 2 and odd primes. A finite computation checks all residue class
 configurations mod, say, 2⁶·3²·5², and verifies that none can satisfy the
 four simultaneous 2E(Q) conditions.
 
-status: proposed
+status: refuted
 speculation-vs-established: ESTABLISHED — E_d: y²=x³−d²x is the CM curve j=1728,
   its L-function is a Hecke L-function over Q(i), and its global root number is
   a product of local root numbers computable by the Dokchitser–Dokchitser
@@ -93,6 +93,76 @@ first-step: Derive the exact formula for the global root number w(E_d) where
   ≥ 2) can occur. If no residue class survives, the proof is complete
   (unconditional, via 2-descent). If some classes survive, they give explicit
   congruence constraints on any counterexample — a strong partial result.
+## Verdict (literature check): refuted
+
+**What the reformulation actually is.** The four curves E_d: y² = x³ − d²x are
+the congruent-number curves, i.e. the quadratic twists of E_1: y² = x³ − x
+(j = 1728, CM by Z[i]) by the character attached to d. The candidate's first
+claim is established and classical: the analytic rank/order of vanishing
+R(n) = ord_{s=1} L(E_n, s) has parity determined by n mod 8. Precisely
+(Birch–Stephens, "Calculation of Tate–Shafarevich groups", Topology 1966;
+repeated in e.g. "A necessary condition for p and 2p to be congruent for a
+prime p ≡ 1 (mod 8)", J. Number Theory, 2023):
+
+    R(n) ≡ 1 (mod 2)  iff  n ≡ 5, 6, 7 (mod 8),
+    R(n) ≡ 0 (mod 2)  iff  n ≡ 1, 2, 3 (mod 8).
+
+So for each of the four differences d = u, v, u+v, u−v the root number (≡
+parity of R(d)) is fixed by d mod 8. The global root number of a CM curve is
+indeed a product of local root numbers, computable by the Dokchitser brothers'
+algorithm (J. Reine Angew. Math., 2010) and Rizzo's tables — that part of the
+candidate is real.
+
+**Why it does not close the problem.** The parity formula is a *necessary
+condition*, not an obstruction, and it is compatible with everything the run
+already knows:
+
+1. A point in 2E_d(Q) forces rk E_d(Q) ≥ 1, but an even root number (rank ≥ 1
+   with even parity → rank ≥ 2, or rank 0) and an odd root number (rank odd ≥ 1)
+   are both perfectly consistent with rk ≥ 1. There is no configuration of the
+   four parities that rules out four curves each of rank ≥ 1. The candidate's
+   hoped-for "multiplicative relation among the four root numbers forced by
+   u+v, u−v that is incompatible with four rank-≥1 curves" is exactly the step
+   the file itself flags as speculation (b), and no published result supplies it.
+2. The parity of R(n) is inherently a **Q-level, mod-2** phenomenon. The run's
+   established hinge (`extension-field-mss-exist`) is that genuine MSS exist over
+   Q(√3,√133) and Q(√3). Any argument that relies only on Q-ranks, Q-root numbers
+   and Q-2-Selmer parity cannot distinguish Q from these extensions, so it cannot
+   be the whole obstruction. A parity contradiction is therefore dead on the same
+   grounds as every other Q-level local/descent argument.
+3. The 2-Selmer/descent level of exactly this four-curve family was already
+   refuted as `simultaneous-congruent-numbers-2selmer` (subsumed by Bremner II's
+   K3 NS and singular-fibre data). Root-number parity is the analytic shadow of
+   that same descent; it carries the same rank information at mod 2 without the
+   geometric structure Bremner already extracted. It adds no new leverage.
+
+**killed-by**: the known root-number parity law (Birch–Stephens: R(n) mod 2
+determined by n mod 8) is a necessary condition compatible with the witness and
+forces no incompatibility among four rank-≥1 curves; the decisive
+additive-relation→root-number relation is unestablished speculation; and the
+Q-level mod-2 framework cannot separate Q from the extension fields over which
+MSS provably exist (the run's own `extension-field-mss-exist` hinge).
+
+## Precedent for the verdict
+
+- Birch & Stephens, "Calculation of Tate–Shafarevich groups", Topology 5 (1966)
+  295–316 — the R(n) mod 2 by n mod 8 parity law for E_n: y²=x³−n²x.
+- "A necessary condition for p and 2p to be congruent for a prime p ≡ 1 (mod 8)",
+  J. Number Theory (2023), https://www.sciencedirect.com/science/article/pii/S002240492300018X
+  — restates the parity law and its use as a necessary (not sufficient) condition.
+- T. & V. Dokchitser, "Root numbers and parity of ranks of elliptic curves",
+  J. Reine Angew. Math. (2010), arXiv:0906.1815 — local root numbers computable.
+- `simultaneous-congruent-numbers-2selmer` (this library, refuted) — the same
+  four-curve descent at the 2-Selmer level, subsumed by Bremner II's K3.
+- `extension-field-mss-exist` (this library) — MSS exist over Q(√3,√133); a
+  Q-parity-only argument cannot be the obstruction.
+
+## First step (none — refuted, do not pursue)
+
+The first-step's finite residue-class check mod 2⁶·3²·5² was never a route to a
+contradiction: the parity configuration of the four curves is determined by four
+independent mod-8 classes and admits four compatible rank-≥1 assignments.
+
 precedent:
   - The congruent-number curve E_d: y² = x³ − d²x is the CM curve with
     j=1728; its L-function and root numbers are classical

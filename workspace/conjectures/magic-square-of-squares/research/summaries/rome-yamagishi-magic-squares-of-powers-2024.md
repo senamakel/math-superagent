@@ -1,33 +1,25 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/rome-yamagishi-magic-squares-of-powers-2024.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Rome & Yamagishi, "On the existence of magic squares of powers", arXiv:2406.09364 (2024)
 
-<!-- source: https://arxiv.org/abs/2406.09364 | converted from HTML -->
+[[rome-yamagishi-magic-squares-of-powers-2024]]
 
-## What is in it
+**Status: abstract page only on disk** — the `.full.md` is the arXiv landing page (title, abstract, MSC); the paper body was never downloaded. Everything below is at abstract level.
 
-- Mathematics > Number Theory
-- Title: On the existence of magic squares of powers
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+## What it establishes (abstract-level)
 
+- **Theorem (d-th powers, all large n):** for every `d ≥ 2` there is an integer `n₀(d)` such that an `n × n` magic square of distinct `d`-th powers exists for **all `n ≥ n₀(d)`**.
+- **Corollary (squares):** an `n × n` magic square of squares exists for **all `n ≥ 4`**. This **settles a conjecture of Várilly-Alvarado**.
+- **Method:** Hardy–Littlewood circle method; the problem reduces to a sufficient number of disjoint linearly independent subsets of the columns of the magic-square equations' coefficient matrix; an optimal (up to constant) lower bound is proved. The v2 note says a revised algorithm makes computer search unnecessary, with proper credit to prior work of Flores.
 
-## What it claims
+## What it does NOT say
 
-Abstract: For any $d \geq 2$, we prove that there exists an integer $n_0(d)$ such that there exists an $n \times n$ magic square of $d^\text{th}$ powers for all $n \geq n_0(d)$. In particular, we establish the existence of an $n \times n$ magic square of squares for all $n \geq 4$, which settles a conjecture of Várilly-Alvarado.
-All previous approaches had been based on constructive methods and the existence of $n \times n$ magic squares of $d^\text{th}$ powers had only been known for sparse values of $n$. We prove our result by the Hardy-Littlewood circle method, which in this setting essentially reduces the problem to finding a sufficient number of disjoint linearly independent subsets of the columns of the coefficient matrix of the equations defining magic squares. We prove an optimal (up to a constant) lower bound for this quantity.
+- **Nothing about n = 3** — the 3×3 case is precisely the open one (LaBar 1984 / Gardner $100). The `n ≥ 4` existence does not bear on `n = 3` either way: it is not a construction that specialises, and it gives no obstruction. The 3×3 case remains open as before (the paper's own abstract is silent on it).
 
-Comments: | Updated version features revised algorithm making computer search unnecessary as well as proper credit for the work of Flores |
+## Implications for this run
 
-Subjects: | Number Theory (math.NT); Combinatorics (math.CO) |
+- **Context only.** Confirms that the *obstruction is dimension-specific*: squares-of-squares magic arrays are plentiful once `n ≥ 4` but (conjecturally, and by decades of search) absent at `n = 3`. This sharpens the statement of the open problem: the 3×3 case is not an instance of a general scarcity, it is an isolated small-n phenomenon.
+- No claim block for the ledger: the abstract-level theorem is about `n ≥ 4` and `holds-here: no` for the 3×3 problem; there is nothing here that constrains or constructs a 3×3 MSS. Recorded so nobody re-fetches this for a 3×3 statement that is not there.
+- If the run ever wants the proof method (or the Flores prior work, or the Várilly-Alvarado conjecture statement), the PDF must be fetched; the abstract cannot support it.
 
-MSC classes: | 11D45, 05B15, 11D72, 11G35,…
+## Does not help
 
-*[digest of a 6631 character source; every section, statement, and proof in full at `research/sources/rome-yamagishi-magic-squares-of-powers-2024.full.md`]*
+For the 3×3 non-existence goal: no theorem, bound, or construction applies to n=3. The only durable value is the negative framing above (scarcity is small-n-specific), which this run already holds from Bremner (the 4×4 Euler MSS and the n≥4 families).

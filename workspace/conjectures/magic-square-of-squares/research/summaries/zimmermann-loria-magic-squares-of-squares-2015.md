@@ -54,9 +54,10 @@ statement: Every non-trivial 3-square AP x²,A²,y² (A odd positive) is given u
   square-free p|A with p≡1 mod 4, A=pA′=(m²+n²) (m even, n odd), b=4mn(m²−n²),
   x²=A²−p²b, y²=A²+p²b.
 hypotheses: A>0 odd, x²,A²,y² an AP of squares, primitive after removing common factors
-holds-here: yes (every centre line of a MSS is such an AP)
+holds-here: yes
 status: proved
-bearing: indexes each centre AP by (p,m,n); basis for expressing the four-AP additive relations
+bearing: indexes each centre AP by (p,m,n); basis for expressing the four-AP additive
+  relations; every centre line of a MSS is such an AP
 anchor: research/sources/zimmermann-loria-magic-squares-of-squares-2015.full.md
 ```
 

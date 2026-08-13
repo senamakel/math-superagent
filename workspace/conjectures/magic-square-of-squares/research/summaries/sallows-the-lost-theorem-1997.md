@@ -51,8 +51,9 @@ id: ls1-witness
 statement: Sallows LS1: rows, columns and one diagonal all sum to 147²=21609; the other
   diagonal sums to 38307; all nine entries are distinct squares.
 hypotheses: none (explicit grid)
-holds-here: yes (reproduced exactly by this run, code/out/near_misses.json)
+holds-here: yes
 status: checked
-bearing: mandatory near-miss witness; the falsifier for every impossibility lemma
+bearing: mandatory near-miss witness; the falsifier for every impossibility lemma;
+  grid reproduced exactly by this run (code/out/near_misses.json)
 anchor: research/sources/sallows-the-lost-theorem-1997.full.md
 ```

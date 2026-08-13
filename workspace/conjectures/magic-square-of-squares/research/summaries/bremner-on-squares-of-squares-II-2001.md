@@ -76,9 +76,9 @@ id: seven-square-category-vii-unique
 statement: In Category VII the only 7-square magic square (up to symmetry) in the search region
   p+q+n(λ)+d(λ) ≤ 1000 is λ=13, (p,q)=(9,2), namely Bremner's witness.
 hypotheses: that search region
-holds-here: yes (search is bounded and exact)
+holds-here: yes
 status: proved
-bearing: the 7-square witness is essentially unique here; going to 8 squares means realising one
-  more quartic condition
+bearing: the 7-square witness is essentially unique here; going to 8 squares means
+  realising one more quartic condition; the search is bounded and exact
 anchor: research/sources/bremner-on-squares-of-squares-II-2001.full.md
 ```
