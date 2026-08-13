@@ -7,6 +7,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `aeh-average-normal-order-2` | Abbott-Erdos-Hanson 1974 (Thm 1): the average and normal order of N(t) is 2; explicitly #{t<=x : N(t)>2} = O(sqrt(x)). | yes | asserted | `research/summaries/abbott-erdos-hanson-1974.md` |
+| `bazso-stirling-singmaster-analogue` | Bazso-Mezo-Pinter-Tengely 2023 (arXiv:2311.06080): for Stirling numbers of both kinds, Mi(a) <= 2 + 2 log a / W((1/2)log a) (a>=2; W = Lambert W), hence O(log a/(log log a - log log log a)). For a <= 100000, M2(a)<=2… | **unchecked** | asserted | `research/summaries/singmaster-type-stirling-2023.md` |
 | `bbw-verification-bound` | Blokhuis-Brouwer-de Weger 2017 (INTEGERS 17 #A64, Thm 1): no binomial collisions beyond the known list (3003 + six sporadic + Lind/Singmaster/Tovey infinite family + trivial relations) for (k,l) in a list, for (m,l) in… | yes | asserted | `research/summaries/blokhuis-brouwer-deweger-collisions.md` |
 | `best-unconditional-bound` | Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical: Singmaster 1971 O(log a) (primary NOT held; attested by AEH 1974, MRSTT, Wikipedia);… | yes | checked | `research/notes/established-review.md` |
 | `bilu-tichy-classification-primary` | Bilu-Tichy 2000 (Acta Arith. 95, 261-288, Thm 1.1/10.5): f(x)=g(y) (f,g in Q[x]) has infinitely many rational solutions with bounded denominator iff f = phi∘f1∘lambda, g = phi∘g1∘mu with linear lambda,mu and (f1,g1) one… | yes | asserted | `research/summaries/bilu-tichy-2000-fxgy.md` |
@@ -65,7 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `tijdeman-preprints-host` | Tijdeman's Leiden page hosts the author preprint "best.ps" of Beukers-Shorey-Tijdeman 1999 (Zakopane proceedings pp. 11-26; MRSTT [4]). The downloaded .ps is raw PostScript (not readable); the readable copy is the de… | yes | asserted | `research/summaries/tijdeman-preprints-page.md` |
 | `totd-ologk-proof-and-history` | Theorem of the Day (Whitty) exposition: Singmaster's proof that N(k) <= 2 + 2 log_2 k = O(log k) (least s with k < C(2s,s); monotonicity of the binomial in each parameter; N(k) <= 2s; s <= 1 + log_2 k). Construction… | yes | asserted | `research/summaries/theorem-of-the-day-singmaster.md` |
 | `witness-3003` | 3003 appears 8 times in Pascal's triangle under the convention that counts both (n,k) and (n,n-k) and includes the trivial pair C(a,1)=C(a,a-1). Explicitly 3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6) with four mirrors.… | yes | checked | `research/notes/established-review.md` |
-| `yamada-boundary-necessary-condition` | Yamada 2020 (arXiv:2002.07043, Thm 1.1): if C(2n+delta,n-m) = C(2n+l,n-k) with delta in {0,1}, 0 <= m < k < n/2, m <= 0.735k, then l > n(1.3132 log_2(2n) - 2.00271), and for n large, l > (cn/log n)^{40/21} for every c <… | yes | asserted | `research/summaries/binom-collisions-necessary-conditions-2020.md` |
+
+_1 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 

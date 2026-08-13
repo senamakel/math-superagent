@@ -4,13 +4,7 @@
 
 ### Immediate (in order — do not parallelise these away from each other)
 
-- [ ] **1. Compute the null distribution for the rule90 relative-depth result.** The relative-depth measure (depth from each regime start) gives 21/27 near a power of 2 at tolerance 1. The observed baseline (uniform over [0,15]) gives 9/16 = 56% at tol=1 — already computed in `rule90_depth_test.captured.txt` and `rule90_depth_results.json`. The caveat: observed depths are concentrated in 2..9, not uniform.
-
-  **Do this:** shuffle the 27 regime lengths (the depths themselves: [0,7,4,2,8,4,8,4,9,9,6,6,4,3,4,7,5,3,2,14,15,3,6,4,3,5,13]), draw 10,000 random permutations, and for each compute the count of elements within tol=1 of a power of 2. Report the empirical null distribution: mean, standard deviation, the percentile of the observed 21, and the exact p-value. Also report the exact binomial null: if each depth d has its own independent probability p_d = (number of integers in 0..15 within tol of a power of 2) / 16 = 9/16 (tol=1), what is the probability of ≥21 successes in 27 trials? This is the fair null because it respects the observed depth range without assuming uniformity.
-
-  If the null gives ~75% chance of ≥21 hits this is nothing; if it gives ~5% the signal is real. Either answer is worth having. State the tolerance explicitly (tol=1: hits at {1,2,3,4,7,8,9,15,16}) and say whether it is doing too much work.
-
-  **Data already on disk:** `code/out/rule90_depth_results.json` has the 27 regime depths (excluding k=1, depth=0, and k=1000, depth=841). Write the program, parallelise the shuffle, report the p-value.
+- [x] **1. Compute the null distribution for the rule90 relative-depth result — DONE.** Program `code/rule90_test/null_rule90_depth.py`, capture `code/out/null_rule90_depth.captured.txt`, JSON `code/out/rule90_depth_null.json` (26 workers, 10,000 permutations). **The permutation null is degenerate**: the hit predicate tests depth *values* only, so all 10,000 shuffles of the 27 regime lengths gave the same count — a permutation test has zero power for a value-only predicate. **The honest null is the exact binomial** X ~ Binomial(27, 9/16) (uniform over the observed [0,15], hit values {1,2,3,4,5,7,8,9,15}, program's depth>0 guard): mean 15.19, sd 2.58, z = 2.25, **P(X ≥ 21) = 0.017299** — significant at 5%, not at 1%. Three independent routes agree to 8 digits (exact Fraction tail, scipy.stats.binom.sf, direct float sum). **The signal lives entirely in the tol=1 tolerance**: at tol=0 (exact powers {1,2,4,8,16}) only 10/27 hit, p = 0.113 (not significant); conditioning on the observed concentrated range [2,9] post hoc gives p = 0.68. Verdict: the 21/27 relative-depth result is a mild, tolerance-dependent concentration, not a structural regeneration mechanism.
 
 - [ ] **2. Bound the (2,4)-event rate from below — combinatorial Route A.**
 
@@ -26,7 +20,7 @@
 
 - [x] **3. CHT Theorem 1.6 hypothesis check — DONE, holds-here = no.** M=7, L=2, R_0=419,430,400 ≫ 1000. Set on BOTH copies (`research/notes/library-state.md`, `research/summaries/chase-hunter-tao-2026-full-html.md`). `code/out/cht_hyp_check.captured.txt`.
 
-- [ ] **4. Rule 90 depth prediction — OPEN (pending null test).** The absolute-depth and jump-timing forms are refuted. The relative-depth measure (depth from regime start) gives 21/27 near a power of 2 at tol=1, but the null is not yet computed. Do not claim this is a result until item 1 settles it. The thread status is now OPEN, not REFUTED. Thread: `research/threads/rule90-regeneration.md`.
+- [x] **4. Rule 90 depth prediction — CLOSED (null computed, item 1).** The absolute-depth and jump-timing forms are refuted. The relative-depth measure (depth from regime start) gives 21/27 within tol=1 of a power of 2, which against the exact binomial Binomial(27, 9/16) is p = 0.0173 (significant at 5%, not 1%) but is dead at tol=0 (p = 0.113) and erased by conditioning on the observed [2,9] range (p = 0.68). Verdict: mild, tolerance-dependent concentration, not a structural mechanism. Claim `rule90-relative-depth-null` recorded; thread `research/threads/rule90-regeneration.md` status CLOSED. Do not re-assert the timing prediction.
 
 - [ ] **5. Lean 4 formalisation.** Define the difference operator, prove shape preservation, reduce to {0,2} second-entry claim. Report `#print axioms` and every `sorry`. Independent of items 1–2.
 
