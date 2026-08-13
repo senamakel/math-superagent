@@ -601,3 +601,23 @@ Verify by recomputing the cut at n=103 and n=229969 both ways before trusting an
 The bug was the exponent grouping: `exp((log n)**(2/3) + 0.5)` instead of `exp((log n)**(2/3+0.5))`. The corrected computation (already on disk at `code/boundary_cut_corrected.py`, capture `code/out/boundary_cut_corrected.captured.txt`, EXIT_CODE=0) proves the Fibonacci family stays boundary for all eps > 1/3 — with MRSTT's admissible eps=1/2 the family never crosses to interior. The asymptotic is a power comparison: `log k_j ∝ 4j log φ` (linear) vs `(log n_j)^(2/3+eps) ∝ (4j log φ)^(2/3+eps)` (sublinear when 2/3+eps < 1, superlinear when > 1). The crossing threshold is eps=1/3, not "all eps>0" as the skeleton originally claimed.
 
 This does not break the uniform-bound program. Each Fibonacci `a` is a distinct integer, and each has at most 2 boundary left-half reps (the `(k,k+1)` collision plus possibly a k=2 collision). The per-`a` count stays bounded — what's refuted is the claim that `A_fib` is finite, which the skeleton's step (5) used to conclude `A_all` finite. That route is closed, but per-`a` boundedness survives: `G-fibonacci-boundary-finite` → refuted, `G-boundary-collision-a-finite` → revised, the synthesis no longer needs finiteness of the set of `a`'s. The core structural gap `G-nonfibonacci-pairs-are-bounded` is unchanged.
+
+## 25 — from steer
+
+boundary_family_always_boundary confirms the correction and extends it to j=1..12, and it surfaces the fact that makes the result provable rather than tabulated: k/n is CONSTANT at 0.3820 across the whole family. That is 1/phi^2 = 0.381966, the Fibonacci ratio limit, so k ~ n/phi^2 exactly.
+
+With that, boundary for all large j is a two-line argument, not a table:
+
+  log k = log(n/phi^2) = log n - 2 log phi  ~  log n
+  log cut = (log n)^(7/6)
+  ratio   = (log n)^(7/6) / log n = (log n)^(1/6) -> infinity
+
+so cut/k -> infinity and every sufficiently large family member is boundary. Your j=13 line already shows cut/n = 2.75e7, and cut only pulls further ahead. Combined with the direct check for j<=12, that is a proof for the whole family, not evidence for twelve of them.
+
+Record it that way: claim id fibonacci-family-is-boundary, status proved, anchored to boundary_family_always_boundary.captured.txt, with the k/n = 1/phi^2 identity and the (log n)^(1/6) divergence written out. State both attributes — effective and uniform in j.
+
+Then the question this actually opens for G-boundary-uniform-count. Your output lists TWO rows per j: for j=7, (1576239, 602069) and (1576238, 602070). So each family member carries at least two boundary representatives. The gap asks for a constant C bounding the boundary count PER a. The family gives infinitely many a, each with >= 2 — consistent with C = 3, which 3003 already forces from below.
+
+So count them exactly. For j = 1..12, how many nontrivial boundary representatives does a_j have in total, not just how many the family construction names? If it is exactly 2 for every j, you have the family fully accounted for and C >= 3 stays the live lower bound. If it grows with j, C is unbounded and G-boundary-uniform-count is FALSE — which would be a genuine result and would refute the skeleton rather than advance it. Either answer is worth having.
+
+
