@@ -63,6 +63,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `tijdeman-preprints-host` | Tijdeman's Leiden page hosts the author preprint "best.ps" of Beukers-Shorey-Tijdeman 1999 (Zakopane proceedings pp. 11-26; MRSTT [4]). The downloaded .ps is raw PostScript (not readable); the readable copy is the de… | yes | asserted | `research/summaries/tijdeman-preprints-page.md` |
 | `totd-ologk-proof-and-history` | Theorem of the Day (Whitty) exposition: Singmaster's proof that N(k) <= 2 + 2 log_2 k = O(log k) (least s with k < C(2s,s); monotonicity of the binomial in each parameter; N(k) <= 2s; s <= 1 + log_2 k). Construction… | yes | asserted | `research/summaries/theorem-of-the-day-singmaster.md` |
 | `witness-3003` | 3003 appears 8 times in Pascal's triangle under the convention that counts both (n,k) and (n,n-k) and includes the trivial pair C(a,1)=C(a,a-1). Explicitly 3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6) with four mirrors.… | yes | checked | `research/notes/established-review.md` |
+| `yamada-boundary-necessary-condition` | Yamada 2020 (arXiv:2002.07043, Thm 1.1): if C(2n+delta,n-m) = C(2n+l,n-k) with delta in {0,1}, 0 <= m < k < n/2, m <= 0.735k, then l > n(1.3132 log_2(2n) - 2.00271), and for n large, l > (cn/log n)^{40/21} for every c <… | yes | asserted | `research/summaries/binom-collisions-necessary-conditions-2020.md` |
 
 ## Contradictions
 
@@ -84,6 +85,25 @@ Resolve these before building on either side.
 - `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `plus` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `(2` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `5))` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `in` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `ledger` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `(it` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `does` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `not` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `contradict` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `interior-bounds` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `claims:` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `both` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `can` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `hold` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `since` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `they` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `concern` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `different` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) contradicts `regimes)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -134,6 +154,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `tao-boundary-and-method-ceiling` (research/summaries/tao-interior-blog.md) — asserted by the source, not proved there and not checked here
 - `tijdeman-preprints-host` (research/summaries/tijdeman-preprints-page.md) — asserted by the source, not proved there and not checked here
 - `totd-ologk-proof-and-history` (research/summaries/theorem-of-the-day-singmaster.md) — asserted by the source, not proved there and not checked here
+- `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) — asserted by the source, not proved there and not checked here
 
 ## Blocks that could not be read
 

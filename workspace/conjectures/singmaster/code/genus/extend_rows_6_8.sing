@@ -1,0 +1,16 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+int m, n;
+// Complete row m=6 to three full periods: n=19..24
+m=6; for(n=19; n<=24; n=n+1){ poly F = CB(x,m)-CB(y,n); ideal I = F; "F(m=6,n=",n,"): ", genus(I); }
+// Row m=7: complete n=16..21
+m=7; for(n=16; n<=21; n=n+1){ poly F = CB(x,m)-CB(y,n); ideal I = F; "F(m=7,n=",n,"): ", genus(I); }
+// Row m=8: n=17..24
+m=8; for(n=17; n<=24; n=n+1){ poly F = CB(x,m)-CB(y,n); ideal I = F; "F(m=8,n=",n,"): ", genus(I); }

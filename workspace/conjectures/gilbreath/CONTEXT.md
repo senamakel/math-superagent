@@ -16,11 +16,12 @@ under a stated hypothesis on prime gaps, is a real result. Erosion verification
 is no longer useful; the step law is exact and needs no re-derivation.
 `research/threads/rule90-regeneration.md` — the absolute-depth and jump-timing
 forms are refuted; the relative-depth measure (depth from regime start) gives
-21/27 near a power of 2 at tolerance 1, but the null is not yet computed
-(observed baseline: uniform over [0,15] gives 9/16 = 56% at tol=1, and
-observed depths cluster in 2..9 where powers of 2 are dense). Do not claim
-this is a result until the null is computed — a shuffle test is queued as
-TASKS item 1. The Rule 90 interior identification is proved and unaffected.
+21/27 near a power of 2 at tolerance 1; the null is COMPUTED (see the
+Rule-90-relative-depth bullet under Established): p = 0.0173 against the exact
+binomial Binomial(27, 9/16), but the signal is tolerance-dependent — dead at
+tol=0 (p = 0.113) and erased by conditioning on the observed [2,9] range
+(p = 0.68). Verdict: a mild concentration, not a structural mechanism. The
+Rule 90 interior identification is proved and unaffected.
 Anchor: `code/out/rule90_depth_test.captured.txt`, `code/out/rule90_depth_results.json`.
 Live thread: `research/threads/regeneration.md` (event-rate bound).
 
@@ -112,14 +113,21 @@ Live thread: `research/threads/regeneration.md` (event-rate bound).
   and Eppstein 2011). The proved Rule 90 core stands alone: at d = 2^j,
   binom(2^j, m) ≡ 1 (mod 2) ∀m, so the halved entry is the XOR of the whole
   width-(2^j+1) window (Sierpinski kernel all-1). **The regeneration-TIMING
-  corollary of this fact is open pending a null test**: the absolute-depth and
+  corollary is CLOSED by the null test** (claim `rule90-relative-depth-null`,
+  `code/rule90_test/null_rule90_depth.py`, capture
+  `code/out/null_rule90_depth.captured.txt`): the absolute-depth and
   jump-timing forms are refuted by the depth-1000 record; the relative-depth
-  measure (depth from each regime start) gives 21/27 near a power of 2 at
-  tolerance 1, but depths cluster in 2..9 where powers of 2 are dense and the
-  null has not been computed. Do not re-assert the timing prediction until
-  the null settles it. The interior-XOR identification is about values inside
-  the block; it says nothing about when the boundary regenerates.
-  Thread: `research/threads/rule90-regeneration.md`.
+  measure gives 21/27 within tol=1 of a power of 2, which against the exact
+  binomial null Binomial(27, 9/16) (uniform over the observed [0,15], with
+  the program's depth>0 guard) is p = 0.0173 — significant at 5%, not at
+  1% — and the signal lives entirely in the tol=1 tolerance: at tol=0 only
+  10/27 hit (p = 0.113), and conditioning on the observed concentrated range
+  [2,9] post hoc gives p = 0.68. The permutation null is degenerate (the
+  predicate tests depth values, not positions). Net: a mild,
+  tolerance-dependent concentration, not a structural regeneration
+  mechanism. The interior-XOR identification is about values inside the
+  block; it says nothing about when the boundary regenerates.
+  Thread: `research/threads/rule90-regeneration.md` (CLOSED).
   Anchor: `research/notes/block_lemma.md` (apex) and
   `research/approaches/rule90-absorbing-boundary.md` (the absorption dead end).
 - **Regeneration criterion — ESTABLISHED (depth 1000, exact, oracle-checked).**
