@@ -9,21 +9,14 @@ Budget 10,000 tokens (this file ~2100, so well under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state: library sufficient, oracle built, search halted per directive.**
-`research/threads/rule90-regeneration.md` (test the depth-d=2^j prediction
-against `blocks_depth1000.json`). The regeneration thread
-(`research/threads/regeneration.md`) holds the **established** criterion: block
-regeneration ⟺ `(edge==2, intruder==4)`, zero failures over all 998
-transitions. The old "candidate iff lemma refuted" record was an off-by-one and
-is **withdrawn** (see `code/out/check_regenerate_lemma.notes.md`) — do not keep
-it. Two proposed (unchecked) lines on the inventor's desk, both built on the
-established criterion and distinct from the refuted handles:
-`research/approaches/block-apex-parity-forcing.md` (constant `{0,0,...}` /
-`{2,2,...}` blocks may be unrealisable from the prime gaps — regeneration of the
-last-entry parity via the apex formula) and
-`research/approaches/prime-gap-mod6-structure.md` (work mod 3 on the halved
-triangle, using the ±1 mod 6 prime-residue constraint). The honest open
-question remains: is there a k with block length 0?
+**Run state: erosion settled, step law exact, focus is event-rate lower bound.**
+The conjecture reduces to: do (2,4)-events keep arriving fast enough that
+`Σ (j_i + 1)` never falls `k−1` behind? A lower bound on the event rate, even
+under a stated hypothesis on prime gaps, is a real result. Erosion verification
+is no longer useful; the step law is exact and needs no re-derivation.
+`research/threads/rule90-regeneration.md` (test depth-d=2^j prediction as
+candidate event-timing mechanism) and `research/threads/regeneration.md`
+(event-rate bound).
 
 ## Established
 
