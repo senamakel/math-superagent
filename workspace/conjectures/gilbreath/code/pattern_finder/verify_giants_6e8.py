@@ -172,9 +172,11 @@ for i in range(nG - 1):
     req_rhs = g_bland[i] - gap + g_jumps[i + 1]
     req_ok = (g_bland[i + 1] == req_rhs)
     n_req_ok += req_ok
-    # events = pre-jump rows k in [r0, r1-1] with b[k+1] > b[k]
+    # events = pre-jump rows k in [r0, r1-1] with b[k+1] >= b[k]
+    # (step-law theorem: b_{k+1} >= b_k  <=>  (2,4)-event at row k, including
+    #  j=0 stalls, which still contribute +1 to the recharge sum)
     ev = [(k, b[k + 1] - b[k]) for k in range(r0, r1)
-          if b[k + 1] > b[k]]
+          if b[k + 1] >= b[k]]
     sum_j1 = sum(je + 1 for _, je in ev)
     own = ev[-1] if ev else None
     others = ev[:-1]
