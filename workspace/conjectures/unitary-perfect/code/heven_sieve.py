@@ -70,9 +70,13 @@ def worker(start, end, wid, ord_path, wit_path, stats):
             ordr = ord_of_2_mod(r)       # exact; r-1 <= 1e9 factored by trial div
             rows_ord.append((r, ordr))
             if ordr % 2 == 0 and ordr <= MOD:
+                # m runs over the arithmetic progression m ≡ ord/2 (mod ord).
+                # For even ord, ord/2 ≡ {2,0,2,0,...}: the parity of generated
+                # m alternates by the parity of ord/2; H_even requires m even,
+                # so keep only the even elements of the progression and verify
+                # each against the direct pow(2, m, r) check.
                 for m in range(ordr // 2, MAX_M + 1, ordr):
-                    # m odd?  (if m even then this r cannot divide 2^m+1)
-                    if m % 2 == 0:
+                    if m % 2 == 1:
                         continue
                     if pow(2, m, r) != r - 1:
                         raise AssertionError(
