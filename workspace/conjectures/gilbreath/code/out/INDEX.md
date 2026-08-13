@@ -46,6 +46,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `intruder_runs.captured.txt` | Output of `pattern/intruder_runs.py`: the 17 maximal y=4 runs, drain table, after-regen intruders. |
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
+| `pattern_finder_outputs/` | Bare .txt probe outputs formerly living in `pattern_finder/` (moved 2026 housekeeping): 19 files (b.txt, b_genuine*.txt, bits.txt, s_runs*.txt, t_bits.txt, ...), regenerable by `pattern_finder/*.py`, kept for the record. |
 | `regen_c4_check.captured.txt` | Earlier regeneration-trigger check (superseded by erosion_dynamics and regeneration_* outputs). |
 | `regen_mechanism.captured.txt` | Earlier regeneration-mechanism probe (superseded). |
 | `regeneration_analysis.captured.txt` | Output of `pattern/regeneration_analysis.py`: the 60-event table, rate buckets, histograms, runs test, minima. |
