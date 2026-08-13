@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Garcia-Fritz,+N | Natalia Garcia-Fritz | on 6 Apr 2026 ( [v1][2]), last revised 18 May 2026 (this version, v2)] # Title: A note on Bremner's conjecture and uniformity Authors: [Natalia Garcia-Fritz][3], [Hector Pasten][4] View a PDF of the… |
 | 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Pasten,+H | Hector Pasten | last revised 18 May 2026 (this version, v2)] # Title: A note on Bremner's conjecture and uniformity Authors: [Natalia Garcia-Fritz][3], [Hector Pasten][4] View a PDF of the paper titled A note on… |
 
-_359 further candidates not shown; they are cited once each._
+_360 further candidates not shown; they are cited once each._
