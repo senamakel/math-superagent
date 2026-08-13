@@ -1,0 +1,3 @@
+[M=800] |Phi|=129870  exact-sorted index  resume_i=1  nproc=26  budget=560.0s
+[M=800] chunk 1-1249: pairs 779376 minus 0 plus 0 both 0 | cumulative pairs 779376 minus 0 plus 0 both 0 | 2s
+[M=800] chunk 1249-2497: pairs 2336880 minus 0 plus 0 both 0 | cumulative pairs 3116256 minus 0 plus 0 both 0 | 6s

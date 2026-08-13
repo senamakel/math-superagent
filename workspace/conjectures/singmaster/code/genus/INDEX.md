@@ -22,3 +22,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_closed.py` | Checks closed forms vs the computed table (k2=2,3,4 all match). |
 | `verify_closed2.py` | Attempts a k2=5 pattern; the obvious 2*floor and 2k1-a guesses FAIL — k2=5 has periodic stalls at multiples of 5. |
 | `verify_k2_5_row.py` | _(undescribed)_ |
+| `verify_superelliptic_formula.py` | Cross-checks the run's computed genus rows for C(x,k1)=C(y,k2) against the literature superelliptic genus formula g=((d-2)(m-1)+m-gcd(m,d))/2 (Sutherland 2020, Wikipedia Superelliptic curve). Checks {2,n} hyperelliptic (10 values) and {3,n} trigonal (21 values) against the recorded table; reports {4,n} as a 2:1 cover where the plain formula does not apply. Written by the librarian pass; NOT yet executed — run with timeout 540 and tee to code/out/ to make the hand-verified reproduction machine-checked. |

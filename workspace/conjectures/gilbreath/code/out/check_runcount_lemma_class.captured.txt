@@ -1,0 +1,14 @@
+[A even-valued halved-dynamics] tested 87380 strings (len 1..8, values (0, 2, 4, 6))
+[A even-valued halved-dynamics] r(T)<=r(x) counterexample: ((0, 0, 2, 2), 2, 3, [0, 2, 0])
+[A even-valued halved-dynamics] worst run-count increase: 3 at (0, 0, 2, 2, 0, 0, 2, 2)
+[B halved {0,1,2,3}] tested 87380 strings (len 1..8, values (0, 1, 2, 3))
+[B halved {0,1,2,3}] r(T)<=r(x) counterexample: ((0, 0, 1, 1), 2, 3, [0, 1, 0])
+[B halved {0,1,2,3}] worst run-count increase: 3 at (0, 0, 1, 1, 0, 0, 1, 1)
+[C {0,1} (the {0,2} regime halved)] tested 2046 strings (len 1..10, values (0, 1))
+[C {0,1} (the {0,2} regime halved)] r(T)<=r(x) counterexample: ((0, 0, 1, 1), 2, 3, [0, 1, 0])
+[C {0,1} (the {0,2} regime halved)] worst run-count increase: 4 at (0, 0, 1, 1, 0, 0, 1, 1, 0, 0)
+
+r(T)<=r  holds in class A (all-even rows): False
+r(T)<=r  holds in class B (halved interior): False
+r(T)<=r  holds in class C ((0, 1) regime): False
+VERDICT: potential function r is NOT monotone even in a relevant class

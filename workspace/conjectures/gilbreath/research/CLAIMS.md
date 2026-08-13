@@ -45,6 +45,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `odlyzko-block-lemma-exact` | If row A_k has a leading {0,2} block of length n (positions 1..n), then exactly n+1 rows A_k..A_{k+n} are guaranteed to begin with 1; the leading-entry protection constant is 1 (not n/2). Equivalently A_{k+d}(1) in… | yes | proved | `research/notes/block_lemma.md` |
 | `odlyzko-mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4) because d_k(n) is even there; the absolute-value triangle obeys Pascal's rule mod 4 (mod 2 after halving). | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
 | `odlyzko-verification-1993` | Gilbreath's conjecture verified for d_k(1), 1 ≤ k ≤ π(10^13) ≈ 3.4×10^11 (all primes < 10^13); G(π(10^13)) = 635; max g(n) = 635 at n ≈ π(7.17716×10^12) from prime gap 674. | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
+| `oeis-A036277-first-term-position` | A036277(n) is the position of the first term > 2 in row n of the Gilbreath array, equals A000232(n)+1; Hasler: GC ⟺ A036277(n) > A213014(n) + 2 for all n > 0. The row-to-row movement of A036277 shows the same… | yes | catalogued | `research/summaries/oeis-A036277-first-term-greater-than-one.md` |
+| `oeis-A089582-second-entry-catalogue` | The second-entry sequence A_k(1) (k≥1) of the prime Gilbreath triangle is the OEIS catalogue sequence A089582, and GC ⟺ A089582 ⊆ {0,2}. The run's exact generator reproduces all 105 catalogued terms with zero mismatches. | yes | catalogued | `research/summaries/oeis-A089582-second-entry-sequence.md` |
+| `oeis-A213014-zero-run-of-block` | A213014(n) counts the zeros following the initial 1 in row n of the Gilbreath array; Hasler: GC would be violated if the initial 1 were not always followed by ≥0 zeros and then a 2 as the first term > 1. The sequence… | yes | catalogued | `research/summaries/oeis-A213014-zeros-before-first-term.md` |
 | `oeis-hasler-propagation` | Every row's non-first terms are even; the first term >1 in a row must be 2 (else ≥4 and the next row's first term is ≥3); a ≥4 value preceded by zeros propagates unchanged toward the row start in later rows; and GC ⟺… | yes | catalogued | `research/summaries/oeis-A036262-iterated-prime-differences.md` |
 | `oeis-miss-A000232-minus-1` | The run's leading-{0,2}-block lengths at row k (k=1..40: 2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,...) equal OEIS A000232(k) − 1 exactly (A000232 is "one less than the position of the first number… | yes | checked | `research/notes/library-state.md` |
 | `parity-wave-theorem` | For any sequence beginning (2, odd, odd, ...), the leading term of every row of iterated absolute differences is odd. The shape (odd, even, even, ...) is preserved by the operator. | yes | proved | `research/notes/library-state.md` |
@@ -63,11 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `second-entry-4-kills` | If A_k(1) = 4 (or any even value >= 4) for some k>=1, then A_{k+1}(0) = \|1 - A_k(1)\| >= 3 and Gilbreath's conjecture fails at that row. | yes | proved | `research/notes/reduction.md` |
 | `step-law-and-recharge-identity` | Let b_k be the leading {0,2} block length of Gilbreath row k, and at a row with b_k >= 1 let (x,y) be the intruder pair row[b_k], row[b_k+1]. Then b_{k+1} >= b_k when (x,y) = (2,4) and b_{k+1} = b_k - 1 otherwise (step… | yes | checked | `code/out/step_law_and_recharge_verified.md` |
 | `tao-2sep-exact-geometric` | For a geometric X with P(X=k)=pq^k, the maximal probability over 2-separated sets is Λ_2(X)=1/(2−p), uniquely attained at the even integers 2ℤ; with cutoff at D the law is Λ_2(X_D)=1/(2−p)(1+(−1)^D p q^{D+1}/2).… | **unchecked** | asserted | `research/summaries/tao-blog-2026-gilbreath-cramer-model.md` |
-| `tao-cramer-blog-frame` | GC is the absolute-difference (nonlinear 1+1 wave-equation) dynamics on the primes; its only generic obstructions to decay are long zero-blocks and very long shallow {0,d}-blocks; the 2-separated-avoidance iterate… | yes | asserted | `research/summaries/tao-blog-2026-gilbreath-cramer-model.md` |
-| `torelli-prime-gap-bound` | (Torelli 2006, Thm 2) For all n >= 1, p_{n+1} <= p_n + n — the n-th prime gap never exceeds the prime index. Equivalently every prefix of the primoids a_n = (p_{n+2} − 1)/2 is a sub-permutation: a_n <= a_{n−1} +… | yes | asserted | `research/notes/library-state.md` |
-| `two-separation-hypothesis` | The operative general-class hypothesis is not "gaps grow slowly" but that gaps do not concentrate in an arithmetically rigid (2-separated) set — a set with no two consecutive integers (e.g. evens, multiples of 3). If… | yes | asserted | `research/notes/library-state.md` |
 
-_4 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_7 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -139,6 +139,9 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 These are lookups, not derivations. A catalogue is good evidence that a result is right and no evidence at all about why, so one of these may confirm a final answer and may never be the reason for it. Reproduce the terms with a program that does not read the catalogue, then say so; until then, report the result as looked up.
 
 - `block-profile-equals-a000232-minus-1` (research/ROOT.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-A036277-first-term-position` (research/summaries/oeis-A036277-first-term-greater-than-one.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-A089582-second-entry-catalogue` (research/summaries/oeis-A089582-second-entry-sequence.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-A213014-zero-run-of-block` (research/summaries/oeis-A213014-zeros-before-first-term.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-hasler-propagation` (research/summaries/oeis-A036262-iterated-prime-differences.md) — read from a catalogue; no derivation here reproduces it
 
 ## Blocks that could not be read

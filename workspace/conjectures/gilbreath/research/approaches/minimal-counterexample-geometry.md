@@ -96,8 +96,9 @@ precedent: >
   - https://doi.org/10.48550/arXiv.2606.23721 (Muney 2026: reverse-tree,
     valid-extension sets, global Brown-completeness-analogue criterion,
     Prop. 2/12/18, Cor. 3)
-  - https://www.mdpi.com/2227-7390/11/18/4006 (Alkan et al. 2023: Gilbreath
-    polynomials, factorial-weighted min/max K criterion, GC-implies bound)
+  - https://www.mdpi.com/2227-7390/11/18/4006 (Gatti 2023 — author is Riccardo
+    Gatti alone, not "Alkan et al.": Gilbreath polynomials, factorial-weighted
+    min/max K criterion, GC-implies bound)
   - https://11011110.github.io/blog/2011/02/20/anti-gilbreath-sequences.html
     (Eppstein 2011: backward construction, no-regeneration runs of arbitrary
     length in the small-gap 2-then-odds class)

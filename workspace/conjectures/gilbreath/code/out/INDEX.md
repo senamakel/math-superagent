@@ -12,6 +12,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `boundary_check.json` | Stored boundary-check facts. |
 | `brute.captured.txt` | Small brute-force oracle output. |
 | `check-block-protection.py` | Boundary protection lemma verifier. |
+| `check_A089582_crosscheck.py` | Cross-checks the run's own second-entry sequence A_k(1) against the OEIS catalogue A089582 (105 terms). Verifies the oracle generator against an independent catalogue source. |
 | `check_reduction.captured.txt` | Output of `check_reduction.py`: reduction facts hold for k=1..599. |
 | `check_reduction.py` | Per-row check of the reduction facts. |
 | `check_regenerate_lemma.captured.txt` | Output of `regeneration/check_regenerate_lemma.py` (sieve 20M, depth 1000): the regeneration criterion `A_{k+1}[b_k] ∈ {0,2} ⟺ (e_k==2 and c_k==4)` and `b_{k+1}≥b_k ⟺ (e_k==2 and c_k==4)` holds with ZERO failures over all 998 transitions; 60 regeneration events. Supersedes/corrects the earlier refutation note (which had an off-by-one in the edge index). |

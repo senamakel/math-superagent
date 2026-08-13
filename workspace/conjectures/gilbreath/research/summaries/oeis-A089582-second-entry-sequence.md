@@ -1,22 +1,38 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/oeis-A089582-second-entry-sequence.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# A089582 — the second-entry sequence of the Gilbreath triangle (the run's core object)
 
-<!-- source: https://oeis.org/A089582 | converted from HTML -->
+<!-- source: https://oeis.org/A089582 | full text: sources/oeis-A089582-second-entry-sequence.full.md -->
 
-A089582 - OEIS
+## What it establishes
 
-[login][1]
+**A089582 is literally the sequence the whole conjecture is about**: `d_k(2)` for `k > 1` in the iterated prime-difference triangle — i.e. the run's `A_k(1)`, the second entry of row `k`. The OEIS comment states the reduction exactly:
 
-The OEIS is supported by [the many generous donors to the OEIS Foundation][2].
+> "This sequence gives d_k(2) for all k>1 and for the conjecture to be true, this sequence must contain only 0's and 2's."
 
-[image: A089582 - OEIS] [3]
+This is the catalogue's independent statement of the run's proved reduction
+(`gilbreath-reduces-to-second-in-02`): GC ⟺ A089582 ⊆ {0,2}. It also notes
+"Although not necessary to the conjecture's validity, the 0's and 2's are of
+roughly equal count" — a statistical observation matching this run's depth-1000
+data (59.6% of intruders are 4, block interiors roughly balanced).
 
-A089582
+- **Sequence as catalogued** (first 105 terms): `2,0,2,2,2,2,2,2,0,0,0,0,0,0,2,2,0,2,2,0,0,2,2,2,0,0,0,2,2,0,2,0,0,0,2,2,0,0,0,0,0,0,2,2,0,2,2,0,2,0,0,2,0,2,2,2,2,0,0,0,0,0,0,2,0,0,2,2,0,0,2,2,0,2,0,0,0,0,0,2,0,2,2,2,2,2,0,0,2,2,0,0,2,2,0,0,0,0,2,2,2,2,0,0,0`
+- **Zero counts in first 10^n terms**: 3, 53, 520, 4995, 49737, 500177 (Robert G. Wilson v, 2014) — trends toward 50%, matching "roughly equal".
+- **Cross-checked this run**: `code/out/check_A089582_crosscheck.py` recomputes A_k(1) from the primes with the run's exact generator and compares all 105 terms against the catalogue — **zero mismatches**. The oracle is independently confirmed against a catalogue source.
+- The OEIS references give the canonical citation chain: Guy A10, Pickover 2009 (p. 410), Ribenboim 1995, Odlyzko 1993.
+- Authors: Robert G. Wilson v and R. K. Guy, Nov 2003. Related: A036262 (array), A036277 (position of first term > 2), A213014 (zeros before first term > 1), A000232.
 
-From Gilbreath's conjecture.
+## Bearing / status
 
-4
+**Catalogue source (status: catalogued).** This is the cleanest numerical home of the run's central object: the conjecture's truth is exactly "A089582 ⊆ {0,2}". It independently corroborates (a) the reduction, (b) the run's row data, (c) the ~50/50 zero/two balance. A claim phrased as "A_k(1) ∈ {0,2}" is a claim about this catalogue sequence.
 
-2, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 0, 2, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 2, 0, 0, 2, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 2, 0, 0, 2, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 2, 2, 2, 2, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0
+```claim
+id: oeis-A089582-second-entry-catalogue
+statement: The second-entry sequence A_k(1) (k≥1) of the prime Gilbreath triangle is the OEIS catalogue sequence A089582, and GC ⟺ A089582 ⊆ {0,2}. The run's exact generator reproduces all 105 catalogued terms with zero mismatches.
+hypotheses: primes triangle; A_k(1) = second entry of row k.
+holds-here: yes — this IS the run's central object; independent catalogue confirmation of the reduction and the data.
+status: catalogued + checked (run's generator matches all 105 catalogue terms)
+bearing: gives the run's core quantity a catalogue home and an independent data cross-check; the ~50/50 zero/two balance is a statistical observation on this sequence.
+anchor: research/sources/oeis-A089582-second-entry-sequence.full.md, code/out/check_A089582_crosscheck.py
+```
 
 ( [list][4]; [graph][5]; [refs][6]; [listen][7]; [history][8]; [text][9]; [internal format][10])
 

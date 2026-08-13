@@ -15,10 +15,12 @@ The conjecture reduces to: do (2,4)-events keep arriving fast enough that
 under a stated hypothesis on prime gaps, is a real result. Erosion verification
 is no longer useful; the step law is exact and needs no re-derivation.
 `research/threads/rule90-regeneration.md` — the depth-d=2^j timing prediction
-was tested against the depth-1000 record and is **REFUTED** (thread status;
-the raw test output was never captured to `code/out/`, so the refutation
-record is the thread's status line — do not re-open that prediction). The
-proved Rule-90 interior identification stands independently. Live thread:
+was tested against the depth-1000 record and is **REFUTED** in every concrete
+form tested (gaps between regen rows, big-jump offsets, absolute k, minima row
+indices — 48 variants × D=1000, 26 workers; see the variant table).
+Anchor: `code/out/rule90_depth_test.captured.txt`, `code/out/rule90_depth_results.json`
+(the thread's status line is the verdict summary). The proved Rule-90 interior
+identification stands independently. Live thread:
 `research/threads/regeneration.md` (event-rate bound).
 
 ## Established
@@ -86,11 +88,14 @@ proved Rule-90 interior identification stands independently. Live thread:
   confirmation of the microscope).
   **This structure is now split from the refuted absorption wrapper** (which
   claimed a uniform boundary-absorption bound — refuted by CHT Lemma 3.7(iii)
-  and Eppstein 2011). The proved Rule 90 core stands alone. It predicts
-  regeneration at depths that are powers of 2: at d = 2^j, binom(2^j, m) ≡ 1
-  (mod 2) ∀m, so the halved entry is the XOR of the whole width-(2^j+1) window;
-  if that XOR is 1 for a stretch, the original row is all-2 — a clean
-  regenerated block. Thread: `research/threads/rule90-regeneration.md`.
+  and Eppstein 2011). The proved Rule 90 core stands alone: at d = 2^j,
+  binom(2^j, m) ≡ 1 (mod 2) ∀m, so the halved entry is the XOR of the whole
+  width-(2^j+1) window (Sierpinski kernel all-1). **But the regeneration-TIMING
+  corollary of this fact ("regeneration should occur at depths 2^j / 2^j−1
+  from a regime start") is REFUTED by the depth-1000 record — see the run
+  state line; do not re-assert it.** The interior-XOR identification is about
+  values inside the block; it says nothing about when the boundary regenerates.
+  Thread: `research/threads/rule90-regeneration.md`.
   Anchor: `research/notes/block_lemma.md` (apex) and
   `research/approaches/rule90-absorbing-boundary.md` (the absorption dead end).
 - **Regeneration criterion — ESTABLISHED (depth 1000, exact, oracle-checked).**
@@ -321,6 +326,13 @@ recalled claim is relied on whose hypotheses fail here.
   real partial result. Two routes: combinatorial (bound max erosion between
   events from Rule 90 + drain law) and analytic (bound event density from prime
   gap hypotheses). Measure inter-event gap distribution first.
+  **Census (computed, negative): the boundary-data sequences — block profile
+  b(k), second entries s(k), regen jumps, regen gaps — show NO low-degree
+  polynomial, NO constant-coefficient linear recurrence of order ≤8, and NO
+  OEIS match. Do not re-search for recurrence structure.** Event record is
+  small: 60 events, live regime k=1..161 (beyond that is the finite-width
+  artifact). A wider record (sieve ~1e8, ~5.7M primes, ~1–2 min) is cheap but
+  pointless without a specific rate claim to test.
   Threads `research/threads/regeneration.md` and
   `research/threads/rule90-regeneration.md`.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule

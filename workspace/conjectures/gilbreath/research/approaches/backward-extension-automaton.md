@@ -57,7 +57,8 @@ killed-by: >
 precedent: >
   - https://doi.org/10.48550/arXiv.2606.23721 (Muney 2026, exact global criterion,
     holes, Brown-completeness analogue, enumeration through length 11)
-  - https://www.mdpi.com/2227-7390/11/18/4006 (Alkan et al. 2023, Gilbreath
+  - https://www.mdpi.com/2227-7390/11/18/4006 (Gatti 2023 — author is Riccardo
+    Gatti alone, not "Alkan et al.", per RePEc and preprints.org: Gilbreath
     polynomials, factorial-weighted min/max K criterion)
   - https://11011110.github.io/blog/2011/02/20/anti-gilbreath-sequences.html
     (Eppstein 2011, backward construction, infinite escape/re-entry)

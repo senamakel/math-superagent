@@ -1,0 +1,22 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+int n;
+// Family {6,n}: extend the computed row (which currently ends at n=12).
+// Observed diffs up to 12: 7->8:2, 8->9:2, 9->10:3, 10->11:3, 11->12:0.
+// Period-6 pattern under test: diffs [2,2,3,3,0,2] cycling,
+// i.e. g(6,n) = 2n-4 except 2n-6 at n=0 mod 6.
+// Falsifier prediction: n=13 -> 22, n=14 -> 24, n=15 -> 27, n=16 -> 30,
+// n=17 -> 33, n=18 -> 30 (the dip at 6|n).
+for(n=13; n<=18; n=n+1)
+{
+  poly F = CB(x,6) - CB(y,n);
+  ideal I = F;
+  "F6 n=", n, ": ", genus(I);
+}

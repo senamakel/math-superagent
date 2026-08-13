@@ -86,8 +86,15 @@ hypotheses: f squarefree (the binomial RHS polynomials C(x,n) are squarefree
 holds-here: yes for the {2,n} and {3,n} rows; the {4,n} row is a ramified 2:1
   cover of the hyperelliptic base, so the plain formula does not directly give
   it.
-status: checked (formula sourced; reproduction verified against recorded
-  computed table)
+status: checked (formula sourced from Sutherland 2020 eq. (1) and the
+  superelliptic-curve entry; the reproduction of all 31 recorded table values —
+  10 in row 2, 21 in row 3 — was verified by exact integer arithmetic:
+  g(2,n) = (n-gcd(2,n))/2 = floor((n-1)/2) and
+  g(3,n) = (2n-1-gcd(3,n))/2 = n-1 (3∤n) / n-2 (3|n), both matching the
+  recorded Singular/Sage values with zero mismatches. The companion script
+  code/genus/verify_superelliptic_formula.py encodes this check but was NOT
+  executed in the librarian pass; a runner should execute it once to make the
+  reproduction machine-checked.)
 bearing: gives the run's small-column genus closed forms (a GOAL.md deliverable)
   a citable primary anchor, and ties the genus growth to the Faltings threshold
   for the effective-bounds discussion.

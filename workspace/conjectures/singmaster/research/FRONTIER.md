@@ -6,8 +6,10 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
+| 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Tengely,+S | Szabolcs Tengely | for Stirling numbers and some related diophantine equations Authors: [András Bazsó][2], [István Mező][3], [{Á}kos Pintér][4], [Szabolcs Tengely][5] View a PDF of the paper titled Singmaster-type… |
 | 2 | https://mathscinet.ams.org/mathscinet-getitem?mr=2373115 | work of Kane | use a combination of “ [Archimedean][27] ” and “non-Archimedean” approaches. In the “Archimedean” approach (following earlier [work of Kane][28] on this problem) we view [image: {n,m}] primarily as… |
 | 2 | https://www.jstor.org/stable/2316907 | 2316907 | as a binomial coefficient?", *[American Mathematical Monthly][30]*, **78**(4): 385– 386, [doi][31]: [10.2307/2316907][32], [JSTOR][33] [2316907][34], [MR][35] [1536288][36]. - [Singmaster, D.][4]… |
+| 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Katsipis,+N | Nikos Katsipis | ( [v1][2]), last revised 25 Feb 2019 (this version, v2)] # Title: Diophantine equations coming from binomial near-collisions Authors: [Nikos Katsipis][3] View a PDF of the paper titled Diophantine… |
 | 2 | https://www.jstor.org/stable/2319526 | 2319526 | as a binomial coefficient", *[American Mathematical Monthly][30]*, **81**(3): 256– 261, [doi][31]: [10.2307/2319526][41], [JSTOR][33] [2319526][42], [MR][35] [0335283][43]. - [Kane, Daniel M.][13]… |
 | 1 | https://mathscinet.ams.org/mathscinet-getitem?mr=1689495 | by Beukers, Shorey, and Tildeman | be more than eight solutions to (1) for sufficiently large [image: {t}]. This is latter claim known for bounded values of [image: {m,m'}] [by Beukers, Shorey, and Tildeman][25], with the main tool… |
 | 1 | http://www.emis.de/journals/INTEGERS/papers/h53/h53.pdf | "Improved bounds on the number of ways of expressing t as a binomial coefficient" | 256– 261, [doi][31]: [10.2307/2319526][41], [JSTOR][33] [2319526][42], [MR][35] [0335283][43]. - [Kane, Daniel M.][13] (2007), **["Improved bounds on the number of ways of expressing t as a binomial… |
@@ -44,7 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://terrytao.wordpress.com/2026/08/06/a-partial-digestion-of-the-hrt-counterexample/comment-page-1/#comment-693872 | A partial digestion of the HRT… | avatar] [43] \| [Terence Tao][43] on [246A, Notes 5: conformal …][52] \| [image: Tim Ktitarev's avatar] [53] \| [Tim Ktitarev][53] on [A partial digestion of the HRT…][54] \| [image: Unknown's avatar] \|… |
 | 1 | https://terrytao.wordpress.com/books/analysis-i/ | Analysis I | of the HRT counterexample][58] - [Career advice][3] - [Third SAIR competition: inverse Galois challenge][59] - [Work hard][60] - [Analysis I][61] - [About][2] - [On writing][4] - [The… |
 | 1 | https://web.archive.org/web/20170116155532/mailto:velucchi@bigfoot.com | velucchi@bigfoot.com | Web Index][2] \| [image: counter] visitors since Dec. 22, 1998 \| --- Web page processed by Web Master - **Mario Velucchi**-- ****[velucchi@bigfoot.com][3] --- **Mario Velucchi**/ Via Emilia, 106 /… |
-| 1 | https://arxiv.org/abs/1911.02071 | 1911.02071 | in Arithmetic Geometry, Cryptography, and Coding Theory, Contemp. Math. 770 (2021), 103–129 (MathSciNet: [MR4280389][35], arXiv: [1911.02071][36]) - [14] Cécile Gonçalves, [A point counting algorithm… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Tao,+T | Terence Tao | conjecture in the interior of Pascal's triangle Authors: [Kaisa Matomäki][2], [Maksym Radziwiłł][3], [Xuancheng Shao][4], [Terence Tao][5], [Joni Teräväinen][6] View a PDF of the paper titled… |
 
-_330 further candidates not shown; they are cited once each._
+_346 further candidates not shown; they are cited once each._
