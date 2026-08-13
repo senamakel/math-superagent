@@ -1,0 +1,81 @@
+Robertson reduction check on Bremner's 7-square witness
+grid =
+    [139129, 83521, 319225]
+    [360721, 180625, 529]
+    [42025, 277729, 222121]
+
+========================================================================
+(1) The two diagonals and the eight line sums
+========================================================================
+main diagonal    : (373^2, 425^2, 222121) = (139129, 180625, 222121)
+  sum = 541875
+anti-diagonal    : (565^2, 425^2, 205^2) = (319225, 180625, 42025)
+  sum = 541875
+both diagonals sum to the magic constant 541875: OK
+  row 1     [139129, 83521, 319225]              sum = 541875   OK
+  row 2     [360721, 180625, 529]                sum = 541875   OK
+  row 3     [42025, 277729, 222121]              sum = 541875   OK
+  col 1     [139129, 360721, 42025]              sum = 541875   OK
+  col 2     [83521, 180625, 277729]              sum = 541875   OK
+  col 3     [319225, 529, 222121]                sum = 541875   OK
+  main diag [139129, 180625, 222121]             sum = 541875   OK
+  anti diag [319225, 180625, 42025]              sum = 541875   OK
+all 8 lines equal 541875: OK
+
+========================================================================
+(2) Reduction parameters: a = 425^2, b = 41496, c = 138600
+========================================================================
+centre a = 425^2 = 180625
+main diagonal  = (a-b, a, a+b) with b = a - 373^2 = 41496
+   a-b = a - 41496 = 139129 = 373^2 = 139129
+   a+b = a + 41496 = 222121 = 222121 (not a square; isqrt = 471)
+   b = 41496 = 41496
+   verified: main diag = (a-b, a, a+b) = (139129, 180625, 222121)
+anti-diagonal  = (a-c, a, a+c) with c = a - 205^2 = 138600
+   a-c = a - 138600 = 42025 = 205^2 = 42025
+   a+c = a + 138600 = 319225 = 565^2 = 319225
+   c = 138600 = 138600
+205^2  = 42025  = a - c : True
+565^2  = 319225 = a + c : True
+verified: anti diag = (a-c, a, a+c) = (205^2, 425^2, 565^2)
+
+========================================================================
+(3) 2E(Q) membership test on E: y^2 = x(x^2 - c^2), c = 138600
+========================================================================
+criterion (Bremner 1999, eq. (3)): a point (X,Y) in E(Q) lies in 2E(Q)
+  if and only if X, X-c, X+c are all perfect squares.
+
+X = a-b = 139129:
+  X   = 139129  : 373^2
+  X-c = 529     : 23^2
+  X+c = 277729  : 527^2
+  in 2E(Q): True
+
+X = a   = 180625:
+  X   = 180625  : 425^2
+  X-c = 42025   : 205^2
+  X+c = 319225  : 565^2
+  in 2E(Q): True
+
+X = a+b = 222121:
+  X   = 222121  : NOT square (isqrt 471)
+  X-c = 83521   : 289^2
+  X+c = 360721  : NOT square (isqrt 600)
+  in 2E(Q): False
+
+in 2E(Q): [139129, 180625]  -> 2 of the 3 main-diagonal x-coordinates
+  X=139129: X=373^2, X-c=529=23^2, X+c=277729=527^2 : YES
+  X=180625: X=425^2, X-c=42025=205^2, X+c=319225=565^2 : YES
+  X=222121: X itself NOT a square, X-c=83521=289^2 square, but X+c=360721 NOT a square : NO
+
+========================================================================
+(4) Doubling x-coordinate formula:  x(2Q) = (ux^2 + c^2)^2/(4*uy^2)
+========================================================================
+standard duplication on y^2 = x^3 - c^2 x :
+   x(2P) = (3x^2 - c^2)^2/(4y^2) - 2x
+claimed form:  x(2P) = (x^2 + c^2)^2/(4y^2)
+symbolic difference with y^2 = x(x^2 - c^2) substituted: 0
+=> the two expressions are identical on the curve (symbolic, exact).
+
+sample rational point Q = (139129, 4521133) on E:
+   y^2 = 20440643603689  ==  x(x-c)(x+c) = 20440643603689   : on curve

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/code/robertson_reduction_check.sage.py", line 181, in <module>
+    xf = Fraction((X0q * X0q + C * C)**_sage_const_2 , _sage_const_4  * y0q * y0q)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/fractions.py", line 149, in __new__
+    numerator.numerator * denominator.denominator,
+    ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'builtin_function_or_method' and 'builtin_function_or_method'
