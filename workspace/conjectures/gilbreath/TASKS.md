@@ -4,11 +4,7 @@
 
 ### Immediate (in order)
 
-- [ ] **1. Rerun the event-rate sweep with the fixed code.** The format-string crash (`NoneType.__format__`) is patched, and stats are now persisted to `code/out/event_rate_stats.jsonl` before `report()` is called. Run:
-  ```
-  timeout 540 python3 code/event_rate/event_rate_sweep.py 2>&1 | tee code/out/event_rate_sweep.captured.txt; echo EXIT_CODE=$?
-  ```
-  On the mathematics: `rho_live` and `rho_rows` measured on rows 1..161 are statements about rows 1..161. To argue the {0,2} regime persists, say explicitly what makes the rate a lower bound for all k rather than an observed frequency. Consumption is not regeneration.
+- [x] **1. Rerun the event-rate sweep with the fixed code — DONE (this run).** `code/out/event_rate_sweep.captured.txt` (EXIT 0, 26 workers, 278.4 s): 1154 sequences, step law + recharge identity 0 failures on all of them (46,528 eligible rows, 20,013 events). **852/1154 (73.8%) reach b=0, all deaths within first 10 rows (89.7% within 3) — regeneration is NOT generic in the random class; the failure is the startup transient.** First-gap-2 makes {2,4}-support families 100%-survive (3 batches incl. D=4000). Analysis: `code/out/event_rate_sweep_analysis.captured.txt`; notes+claims: `code/out/event_rate_sweep.notes.md` (claims land once each in CLAIMS.md). The `rho_live`-is-a-statement-about-rows-1..161 caveat applies as before: the sweep bounds are the batch depths, nothing extends to all k.
 
 - [ ] **2. Deduplicate the two doubled claims.** `cht-inverse-theorem` appeared twice in CLAIMS.md — both copies now have `holds-here: no` with computed R_0 = 419,430,400 ≫ 1000. Verify once that CLAIMS.md reports it once. `valid-extension-nonlocal` appeared twice — verify the new names appear once each.
 

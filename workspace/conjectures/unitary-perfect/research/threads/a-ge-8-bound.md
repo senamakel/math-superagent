@@ -1,12 +1,11 @@
 ```thread
 question: Does the combined bound a ≥ 8 survive independent verification, and can the equality case a = 8 be eliminated?
-status: open
-rests-on: unitary-perfect-2-adic-budget, unitary-perfect-lower-bound-on-a, heven-two-mod-four
-blocked-by: none yet
-next:
-  1. Independent verification: recompute a, ω(odd) from brute.py oracle for all five; confirm Wall 1988 theorem from the scanned PDF is stated for new examples
-  2. Kill a = 8: Maciejewski Proposition 5 says H_even ⊆ {m ≡ 2 (mod 4)}. The paper's reduction maps a UPN's seed exponent a into H_even, so a ≡ 2 (mod 4). But a = 8 ≡ 0 (mod 4) — verify this is a valid elimination (check the reduction step: does a ∈ H_even follow, or something weaker?). If confirmed, the effective lower bound becomes a ≥ 10, not a ≥ 8
-  3. Also check: 257 = 2^8+1 = F_3. v_2(257-1) = 8 > 3, so if the 3-Higgs exponent cap on p-1 applies, 257 is not 3-Higgs — another route to kill a = 8, but needs checking which exact constraint applies to the seed factor's prime divisors
+status: closed — equality case eliminated for 2 ≤ a ≤ 28 by budget-equality-case-impossible
+resolution: The equality case ω(odd) = a + 1 is impossible for every a in [2,28] by an extremal-product bound (claim budget-equality-case-impossible, filed in this workspace). In particular a = 8 is dead: 257 = 2^8+1 is prime and forced as a component, and the maximum possible Π(1+1/q) over nine components all 1 mod 4 falls short of the required T(8) = 512/257 by 0.297 in exact arithmetic. The bound is attained with equality at a = 1 (n = 90, the one known number in the equality case). Undecided for a ≥ 29. The result was adopted from operator computation; independent verification is now the top TASKS.md item.
+rests-on: unitary-perfect-2-adic-budget, unitary-perfect-lower-bound-on-a, budget-equality-case-impossible
+blocked-by: none
+next: independent verification (see TASKS.md item 1); the next structural step is whether the inequality case ω(odd) ≤ a can be sharpened, or whether a ≥ 29 can be pushed.
+closed-by: directive
 ```
 
 ## What is claimed

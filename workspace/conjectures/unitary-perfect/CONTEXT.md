@@ -140,10 +140,28 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 
 ## Recalled
 
-Durable Cognee memory holds **nothing** on this problem yet — `recall_memory`
-and `relate_memory` for "unitary perfect number / Subbarao / H_even / 3-Higgs"
-both returned empty. Do not re-call expecting prior-run findings. The established
-content above is this run's own, from its notes and oracle.
+Durable Cognee memory now holds this problem's own accumulated findings, marked
+as recalled rather than as fresh results; verify their hypotheses against this
+problem before building on them (all checked here and consistent with the
+Established section above).
+
+- **ROOT construction** (recalled): any sixth UPN `n = 2^a·m` is even, has
+  non-squarefree odd part (Graham), ≥9 odd components (Wall 1988), every prime
+  divisor of the seed factor `2^a+1` is 3-Higgs, and its seed branch is
+  controlled by `H_even`. Verification bound `|H_even ∩ [2,50000]| ≤ 272`
+  rigorous with ~262 undecided candidates, all `m = 2p` with `p` odd Higgs,
+  blocked by unfactored 355–6000 digit cofactors.
+- **Settled restricted classes, with hypotheses** (recalled): no odd UPN
+  (Subbarao–Warren), squarefree odd part `{6,60,87360}` (Graham), five impostor
+  kernels eliminated for `1 ≤ a ≤ 10000` within the bounded box (Maciejewski
+  Thm 2, three-filter certificate: Zsigmondy/Higgs-exponent, seed-divisor
+  non-3-Higgs witness, 2-adic budget overshoot).
+- **3-divisibility, Lemma 2** (recalled, from Subbarao–Warren): the structure
+  of first-γ/3-divisibility underlies the seed description.
+- **Library inventory** (recalled): 16 full texts held; the library is
+  complete (phase-1 exit satisfied). Open gaps recorded in memory: Frei 1978
+  primary, Wall 1975 primary, Goto 2007 primary, Wall's 10^102 search bound
+  statement (also listed in Gaps below).
 
 ## Contradictions
 
