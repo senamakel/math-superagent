@@ -1,0 +1,25 @@
+row sums [472323, 472323, 472323] col sums [472323, 472323, 472323] diag sums [472323, 472323]
+magic constant = 472323
+a = 135240  b = -155040  c = 157441
+reproduced grid matches: True
+
+Category III square conditions:
+         a+c =   292681  square? True (541)
+        -a+c =    22201  square? True (149)
+         b+c =     2401  square? True (49)
+        -b+c =   312481  square? True (559)
+     (a+b)+c =   137641  square? True (371)
+    -(a+b)+c =   177241  square? True (421)
+
+sqrt values: 541 149 49 559 371 421
+
+Rational points on S (T,U,V,W,X,Y): []
+
+Four centre lines and their third-difference d:
+  diff u (main diag): ['c+u', 'c', 'c-u']
+  diff v (anti diag): ['c+v', 'c', 'c-v']
+  diff u+v (mid col): ['c-u-v', 'c', 'c+u+v']
+  diff u-v (mid row): ['c-u+v', 'c', 'c+u-v']
+distinct entries covered by the four APs: {'c-u+v', 'c+v', 'c', 'c+u-v', 'c+u+v', 'c-u-v', 'c-u', 'c+u', 'c-v'}
+all nine grid entries: {'c-u+v', 'c+v', 'c', 'c+u-v', 'c+u+v', 'c-u-v', 'c-u', 'c+u', 'c-v'}
+four APs cover all nine entries (centre counted once): True

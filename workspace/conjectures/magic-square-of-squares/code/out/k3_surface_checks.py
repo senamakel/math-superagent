@@ -13,9 +13,7 @@ Facts checked (exact integer arithmetic, no floats):
 """
 
 def is_sq(n):
-    if n < 0:
-        return False, None
-    r = int(n ** 0.5)
+    r = int(round(n ** 0.5))
     while (r+1)*(r+1) <= n: r += 1
     while r*r > n: r -= 1
     return r*r == n, (r if r*r == n else None)
@@ -59,7 +57,9 @@ for k, v in conds.items():
 
 # --- rational point on S ---
 # a = 2TU, b = 2VW, a+b = -2XY, c = T^2+U^2 = V^2+W^2 = X^2+Y^2
+import itertools
 def try_pt():
+    # candidates from (+-sqrt(a+c) +- sqrt(c-a))/2 etc.
     sqa_c, ra_c = is_sq(a+c)      # (T+U)^2
     sqc_a, rc_a = is_sq(c-a)      # (T-U)^2
     sqb_c, rb_c = is_sq(b+c)      # (V+W)^2
@@ -68,24 +68,30 @@ def try_pt():
     sqcab, rcab = is_sq(c-(a+b))  # (X-Y)^2
     print("\nsqrt values:", ra_c, rc_a, rb_c, rc_b, rab_c, rcab)
     found = []
-    for T0 in range(-600, 601):
-        for U0 in range(-600, 601):
-            if 2*T0*U0 != a: continue
-            for V0 in range(-600, 601):
-                for W0 in range(-600, 601):
-                    if 2*V0*W0 != b: continue
-                    TT = T0*T0+U0*U0
-                    if TT != V0*V0+W0*W0: continue
-                    for X0 in range(-600, 601):
-                        for Y0 in range(-600, 601):
-                            if 2*X0*Y0 != -(a+b): continue
-                            if X0*X0+Y0*Y0 != TT: continue
-                            if T0*U0 + V0*W0 + X0*Y0 == 0:
-                                found.append((T0,U0,V0,W0,X0,Y0))
+    for s1 in (1, -1):
+        for s2 in (1, -1):
+            T = (ra_c + s1*rc_a) / 2.0
+            U = (ra_c - s1*rc_a) / 2.0
+            if T != int(T) or U != int(U): continue
+            for s3 in (1, -1):
+                for s4 in (1, -1):
+                    V = (rb_c + s3*rc_b) / 2.0
+                    W = (rb_c - s3*rc_b) / 2.0
+                    if V != int(V) or W != int(W): continue
+                    for s5 in (1, -1):
+                        for s6 in (1, -1):
+                            X = (rab_c + s5*rcab) / 2.0
+                            Y = (rab_c - s5*rcab) / 2.0
+                            if X != int(X) or Y != int(Y): continue
+                            T,U,V,W,X,Y = int(T),int(U),int(V),int(W),int(X),int(Y)
+                            if T*U + V*W + X*Y == 0 and \
+                               T*T+U*U == V*V+W*W == X*X+Y*Y and \
+                               2*T*U == a and 2*V*W == b and -2*X*Y == a+b:
+                                found.append((T,U,V,W,X,Y))
     return found
 
 pts = try_pt()
-print("\nRational points on S (T,U,V,W,X,Y):", pts[:10], "count:", len(pts))
+print("\nRational points on S (T,U,V,W,X,Y):", pts)
 
 # --- four-AP coverage check ---
 # grid in (c,u,v) parametrisation, entries covered by the four centre lines
@@ -103,8 +109,7 @@ print("\nFour centre lines and their third-difference d:")
 for name, L in lines.items():
     print(f"  {name}: {L}")
 covered = set(c for L in lines.values() for c in L)
-all9 = set(c for row in g for c in row)
 print("distinct entries covered by the four APs:", covered)
-print("all nine grid entries:", all9)
-print("four APs cover all nine entries (centre counted once):", covered == all9)
-print("extra entries beyond the four APs:", all9 - covered)
+print("all nine grid entries:", set(c for row in g for c in row))
+print("four APs cover all nine entries (centre counted once):",
+      covered == set(c for row in g for c in row))

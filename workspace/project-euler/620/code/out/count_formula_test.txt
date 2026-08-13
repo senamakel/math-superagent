@@ -1,0 +1,6 @@
+tuples to check (s+p+q<=30): 372
+total g over scan = 4538, over formula = 4538
+mismatches: 0
+G(16)[formula]=9 (oracle 9)
+G(20)[formula]=205 (oracle 205)
+G(30)[formula]=4538

@@ -1,6 +1,6 @@
 {
   "generated_by": "code/check_near_misses.py (direct construction from the printed grids, exact integer arithmetic)",
-  "run_time_utc": "2026-08-12T22:29:20Z",
+  "run_time_utc": "2026-08-13T00:01:16Z",
   "provenance": {
     "sallows_ls1": "Sallows, \"The Lost Theorem\", Math. Intelligencer 19.4 (1997); printed as (1) in A. Bremner, \"On squares of squares\", Acta Arithmetica 88 (1999) p. 290 \u2014 local copy research/sources/bremner-on-squares-of-squares-1999.full.md; user brief calls this grid LS1 and orients it as [127,46,58; 2,113,94; 74,82,97] \u2014 the transpose of the printed orientation used here; squares identical.",
     "bremner_magic": "A. Bremner, \"On squares of squares\", Acta Arithmetica 88 (1999) p. 290 \u2014 local copy research/sources/bremner-on-squares-of-squares-1999.full.md; said in the same paragraph to have seven square entries and that an example with eight distinct square entries is unknown."
