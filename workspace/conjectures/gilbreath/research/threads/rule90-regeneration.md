@@ -4,14 +4,21 @@
 question: Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2}
           interior force block-length regeneration at specific relative depths,
           and does the null distribution show separation from chance?
-status: OPEN (pending null test) — the absolute-depth prediction is refuted
-        (see below); the relative-depth measure (depth from each regime start)
-        gives 21/28 near a power of 2 with tolerance 1, but the observed
-        depths are mostly in 2..9 where powers of 2 are dense. The null must
-        be computed before claiming anything: shuffle the regime lengths or
-        draw depths uniformly from the observed range, report what fraction
-        land near 2^j under the same tolerance. If the null gives ~75% this
-        is nothing; if ~40% the signal is real.
+status: CLOSED (null computed, 2026-08) — see the null-test section below.
+        The absolute- and jump-timing forms of the depth prediction are
+        refuted. The relative-depth measure (depth from each regime start)
+        gives 21/27 near a power of 2 at tol=1; against the honest binomial
+        null X ~ Binomial(27, 9/16) (uniform over the observed range
+        [0,15], program's own depth>0 guard) the one-sided p-value is
+        0.0173 — significant at 5%, not at 1%. The signal lives entirely in
+        the tol=1 tolerance: at tol=0 (exact powers of two) only 10/27 hit,
+        p = 0.113, and conditioning on the observed concentrated range
+        [2,9] post hoc gives p = 0.68. The permutation null is degenerate
+        (the predicate tests values, not positions — every shuffle has the
+        same count). Net: a mild, tolerance-dependent concentration at
+        ±1 of powers of two, too weak to support a structural mechanism;
+        thread REGENERATION (research/threads/regeneration.md) remains the
+        honest open question.
 rests-on: |
   - Block lemma (proved): the {0,2} interior evolves under the halved operator
     as XOR = Rule 90 = Pascal mod 2. The apex A_{k+n-1}(1) = 2 · XOR_j
@@ -160,3 +167,41 @@ identification itself (proved, `rule90-interior-xor`), which concerns the
 prediction should not be re-asserted. The open regeneration content is
 unchanged: why the boundary pair (x,y) = (2,4) recurs — see
 `research/threads/regeneration.md`.
+
+## Null distribution for the relative-depth hit rate (this run, settled)
+
+Program: `code/rule90_test/null_rule90_depth.py`, capture
+`code/out/null_rule90_depth.captured.txt`, JSON `code/out/rule90_depth_null.json`.
+26 parallel workers, 10,000 permutations.
+
+Data: the 27 genuine regime lengths (k=1000 tail depth 841 dropped):
+`[0,7,4,2,8,4,8,4,9,9,6,6,4,3,4,7,5,3,2,14,15,3,6,4,3,5,13]`.
+
+- **The permutation null is degenerate.** The hit predicate
+  (`depth>=1 and |depth−2^j|≤1`) tests the depth *value* only, so every
+  rearrangement of the same multiset has the same hit count: all 10,000
+  shuffles gave 21. A permutation test has zero power for a value-only
+  predicate and cannot test this claim.
+- **The honest null is the exact binomial** `X ~ Binomial(27, p)` with
+  `p = (near-2^j values in [0,15])/16 = 9/16` (the hit values are
+  {1,2,3,4,5,7,8,9,15}; the program's own depth>0 guard excludes 0).
+  Mean 15.19, sd 2.58, z = 2.25, `P(X ≥ 21) = 2806914706123478630963182067907 /
+  162259276829213363391578010288128 = 0.017299`. Three independent routes
+  agree to 8 digits: exact Fraction summation, scipy.stats.binom.sf
+  (0.017298947), and a direct float sum (0.017298947). Significant at 5%,
+  not at 1%.
+- **The signal lives entirely in the tol=1 tolerance.** At tol=0 (exact
+  powers of two {1,2,4,8,16}) only 10/27 are hits, `p = 0.113` (not
+  significant). Within the observed concentrated range [2,9], 20/23 are hits
+  against the range-fraction 7/8 — `p = 0.68`. So conditioning on the
+  observed range post hoc erases the effect entirely; the honest [0,15]
+  range is what the 0.0173 figure uses.
+
+**Net verdict:** the relative-depth concentration at ±1 of powers of two is
+real but mild and tolerance-dependent: p ≈ 0.017 at tol=1, dead at tol=0.
+It does not survive the stricter standard a structural mechanism would need,
+and cannot be claimed as a regeneration mechanism by itself. The proved Rule
+90 interior identification (`rule90-interior-xor`) is unaffected — this
+null-test closes the *timing-corollary* question that this thread existed
+for. The honest open question remains regeneration: is there a k with block
+length 0, i.e. why does the boundary pair (2,4) recur?
