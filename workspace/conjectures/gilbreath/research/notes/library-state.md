@@ -161,7 +161,7 @@ hypotheses: primes in one residue class mod k, k odd; iteration of absolute diff
 holds-here: yes (it is a generalisation; k=1 is this run's object).
 status: asserted-by-source (Zenodo preprint v2, 9 Mar 2026, single author, 0 citations; not peer-reviewed; verification data not independently checked here)
 bearing: an extra generalisation family supporting the "not about primes" framing; the k>1 stabilisation is a consistency check — any k=1 invariant that too-cheaply proves the k>1 stabilisation too is likely vacuous. Spot-checking the k-stabilisation with the run's oracle is a natural small task.
-anchor: research/sources/li-2026-modulo-k-gilbreath-family.full.md
+anchor: research/sources/li-2026-modulo-k-gilbreath-family-kn2-pdf.full.md (full PDF, 240.8 kB, landed this cycle) + research/summaries/li-2026-modulo-k-gilbreath-family-kn2-pdf.md
 ```
 
 ```claim

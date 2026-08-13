@@ -18,7 +18,9 @@ explained: **every one of the 60 regenerations occurs at a row with intruder
 y = 4, and the event is exactly `x(k) = 2` with `y(k) = 4`** (x = last block
 entry). The open content is *why the boundary pair (x,y)=(2,4) recurs
 unboundedly often* — during erosion, x flips {0,2} by a feed from inside the
-block, while y is drained toward 4 by each x=2 step.
+block, while y is drained toward 4 by each x=2 step. (An earlier independent
+extraction of the same 161 live rows is `code/out/genuine_sequences.json` with
+`code/pattern/analyze_genuine.py`; its erosion-run list agrees with this note.)
 
 ---
 
