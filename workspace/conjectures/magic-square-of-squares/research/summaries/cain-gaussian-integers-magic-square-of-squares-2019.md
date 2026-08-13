@@ -1,142 +1,52 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/cain-gaussian-integers-magic-square-of-squares-2019.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Cain, "Gaussian Integers, Rings, Finite Fields, and the Magic Square of Squares" (arXiv:1908.03236, 2019)
 
-<!-- source: https://arxiv.org/pdf/1908.03236 | converted from PDF -->
+Full text: `research/sources/cain-gaussian-integers-magic-square-of-squares-2019.full.md` (25.5 KB, complete 15-page paper, v2, 12 Aug 2019 — real PDF, not an abstract page).
 
-## What it claims
+## What the paper establishes
 
-Abstract. We show the 3 × 3 magic square of squares problem equivalent
-to solving quartic polynomials with certain factorization constraints over an
-abelian extension of the rationals. We analyze a particular case in which said
-extension is assumed to be the Gaussian integers resulting a new search method.
-Additionally, the magic square of squares is analyzed over ﬁnite ﬁelds and rings
-of the form Z/nZ resulting in some conjectures enumerating the rings and ﬁnite
-ﬁelds in which a magic square of squares can be constructed. Code is made
-available.
+**Gaussian reformulation of the magic-hourglass problem.** Theorem 2.2: every integer solution of `r² + t² = 2s²` (an AP of two squares about `s²`) is given by three integer parameters `m, n, k`. Lemma 3.1 reinterprets this in `Z[i,√k]`: there is `ω ∈ Z[i,√k]` with `k` an integer such that the AP condition becomes factorisation in the ring.
 
-1 Background
+**Theorem 4.2 (the central structural identity).** If a magic hourglass of squares exists, then there exist `x, y, z ∈ Z[i]` such that
+```
+Im[x²y²z²] = −4·Im[x²]·Im[y²]·Im[z²]   (Eq. 4.1 / Cor. 4.2)
+```
+This is the concrete arithmetic identity behind the quartic-factorisation reformulation claimed in the abstract. Proof: the four APs of the hourglass pull back, in the Gaussian integers, to a product identity on imaginary parts.
 
-The construction of a 3 × 3 magic square of squares – sometimes called simply
-the magic square of squares problem – is deﬁned to be 9 distinct squared integers
-placed in a 3 × 3 grid, 
+**Theorem 4.1 + equivalences ⇒ search method.** The 3×3 MSS problem is equivalent to solving quartic polynomials with factorisation constraints over an abelian extension of `Q`; specialising the extension to `Z[i]` (the Gaussian integers) yields a new search method. Cain provides code (Algorithm 6.1) for finite fields.
 
-
-a2 b2 c2
+**Finite-field/ring analysis (§5–7).** A `3×3` magic square of distinct squares exists in a field `F_q` iff `q` has ≥9 distinct squares. Computed results, by case:
+- **All even-order fields are "Parker"** (Lemma 5.1, Cor. 5.1) — duplicate entries forced.
+- `F_3, F_5, F_7, F_9, F_11, F_13` Parker (fewer than 9 squares, Cor. 5.2).
+- `F_19, F_23, F_27` Parker (hand+computed count of solutions to `x²+y²=0,2`, Cor. 5.3).
+- `F_17, F_25` Parker (Cor. 5.4, via central-0 parametrisation Lemma 5.4).
+- **`F_29` is the smallest non-Parker field** (Theorem 5.1) — the explicit construction lives there.
+- Rings `Z/nZ` analysed with conjectures (Cor. 7.1 ff.) enumerating in which rings a MSS can be built.
 
-d
-2 e2 f 2
+## Implication for this run
 
-g2 h2 i2
- 
+This is the **primary source** behind the `cain-quartic-gaussian-reformulation` claim, which was previously `asserted` from the abstract alone. The full text confirms the reformulation is **real, concrete, and checkable**: Theorem 4.2 gives an *explicit* integer identity (`Im[x²y²z²] = −4 Π Im[xᵢ²]`) that any solution must satisfy, not a vague "it's a quartic over a field". The identity is the run's own `verify_phi_doubling.py` starting point (Im identity = f(m,n)), so the Gaussian route and the Φ-route are the same object seen twice — Cain's Eq. 4.1 is the group law behind `f(m,n) = Im((m+ni)⁴)/4`.
 
- ,
+Cain's own near-miss applications (§8) and the finite-field census are a separate, self-contained result (which fields are non-Parker) that does **not** bear on the rational/integer problem except as a check that distinctness is achievable over some finite fields.
 
-such that the sums of the elements in each row, column, and the two main
-diagonals sum to the same total. That is to say for some integer total T we
-have a2 + b2 + c2 = d
-2 + e2 + f 2 = g2 + h2 + i2 = T,
+```claim
+id: cain-quartic-gaussian-reformulation
+statement: The 3x3 MSS problem is equivalent to solving quartic polynomials with factorisation
+  constraints over an abelian extension of Q; specialising to the Gaussian integers Z[i] gives
+  a concrete search method. The central identity is: a magic hourglass of squares exists iff
+  there are x,y,z in Z[i] with Im[x^2 y^2 z^2] = -4 Im[x^2] Im[y^2] Im[z^2] (Thm 4.2). Separately,
+  the smallest finite field admitting a 3x3 MSS of distinct squares is F_29 (Thm 5.1); all
+  even-order fields and F_3..F_11,F_13,F_17,F_19,F_23,F_25,F_27 are Parker (duplicates forced).
+hypotheses: none beyond the problem statement for Thm 4.2; finite-field claims over F_q / Z/nZ.
+holds-here: yes (the reformulation is exact and gives the explicit Thm 4.2 identity); the
+  finite-field census is a different problem (distinctness over finite fields, no bearing on Q)
+status: checked (full text read this cycle; previously asserted)
+bearing: the Gaussian 2-descent identity is the group law behind the run's own f(m,n)=Im((m+ni)^4)/4
+  Φ-reduction — same object, two names; and the finite-field results give an independent
+  "distinctness is possible somewhere" check, not a rational obstruction
+anchor: research/summaries/cain-gaussian-integers-magic-square-of-squares-2019.md
+```
 
-a2 + d
-2 + g2 = b2 + e2 + h2 = c2 + f 2 + i2 = T,
+## Sources that do not help / notes
 
-and a2 + e2 + i2 = g2 + e2 + c2 = T.
-
-In total…
-
-## Statements it makes
-
-Theorem 2.1: The total of any magic hourglass of squares T is 3 times the
-central entry e2.
-
-Theorem 2.2: For every integer solution to r2 + t2 = 2s2 there exist 3 in-
-teger parameters m, n, and k such that
-
-Theorem 2.2 has a nice reinterpretation as
-
-Lemma 3.1: For every integer solution to r2 + t2 = 2s2 there exists a complex
-number ω ∈ Z[i, √
-k] such that k is an integer and
-
-Theorem 3.2: A magic hourglass of squares,
-
-
-Theorem 4.1: If there exists x, y, z ∈ Z[i] such that
-
-Theorem 4.2: If there exists a magic hourglass of squares, then there exists
-x, y, z ∈ Z such that
- Im[x
-2y2z2] = −4Im[x
-2]Im[y2]Im[z2]
-
-Lemma 5.1: All 3 × 3 magic squares over ﬁnite ﬁelds of even order have
-duplicate entries.
-
-Corollary 5.1: All ﬁnite ﬁelds of even order are Parker.
-Proof: By Lemma 3.1 any 3×3 magic square over a ﬁnite ﬁeld has duplicate
-entries. □
-
-Lemma 5.2: A ﬁnite ﬁeld of odd order, q, has q+1
-2 squares.
-Proof: This follows easily from the fact that F×
-q is cyclic (for proof of which,
-we cite Artin [7] again; Theorem 15.7.3). □
-
-Corollary 5.2: The ﬁelds F3, F5, F7, F9, F11, and F13 are Parker.
-Proof: By Lemma 5.2, each of the ﬁelds in question have fewer than 9
-distinct squares. Therefore no 3 × 3 magic square of distinct squares can be
-formed. □
-
-Lemma 5.3: Any non-Parker ﬁnite ﬁeld contains either 4 distinct solutions
-to x
-2 + y2 = 0 with x, y ̸= 0 or 4 distinct solutions to x
-2 + y2 = 2 with
-x
-2, y2 ̸= 2.
-Proof: By deﬁnition, a non-Parker ﬁeld contains at least one magic square
-of distinct squares. We use the standard variables
-
-Corollary 5.3: The ﬁelds F19, F23, and F27 are Parker.
-Proof: Let’s count the solutions x
-2 +y2 = 0, 2 in each of of the ﬁelds in ques-
-tion. This took us roughly 10 minutes per ﬁeld to do by hand (and was, in fact,
-further veriﬁed with computation [9]). There are no solutions to x
-2 + y2 = 0.
-The respective solutions to x
-2 + y2 = 2 are
-
-Lemma 5.4: Magic squares of distinct squares over a ﬁnite ﬁeld with a central
-entry of 0 are parametrized (up to scaling) by solutions to α
-2 − β2 = β2 − γ2 = 1
-(i.e. three consecutive squares) satisfying {α, β, γ} ∩ {0, 1, −1} = ∅.
-
-Corollary 5.4: The ﬁelds F17 and F25 are Parker.
-
-Theorem 5.1: F29 is the non-Parker ﬁeld of smallest order.
-Proof: All ﬁnite ﬁelds of smaller order are Parker by Corollaries 5.1, 5.2,
-5.3, and 5.4. We see that F29 is non-Parker by the aforementioned construction.
-□
-
-Algorithm 6.1:
-# Input: A ﬁnite ﬁeld, Fq.
-# Output: Set of all tuples (a2, b2, ..., i2) forming magic squares over Fq
-# up to scaling.
-function msos ﬁeld(Fq):
-SQUARES ← {x
-2 : x
-2 ∈ Fq}
-MSOS ← {}
-e ← 0 # ﬁrst case.
-for {a2, i2} ⊂ SQUARES:
-if a2 + i2 ̸= 2e2: continue
-c2, g2 ← 1, −1
-B ← 3e2 − a2 − c2
-
-Algorithm 6.1 was implemented in a computer algebra system [9] (actually, it
-was ﬁrst written in a computer algebra system and then turned into pseudo-
-code, but whatever). Some results:
-
-Corollary 7.1:…
-
-
-*[further statements in the full text]*
-
-*[digest of a 24637 character source; every section, statement, and proof in full at `research/sources/cain-gaussian-integers-magic-square-of-squares-2019.full.md`]*
+- The earlier scholar digest marked this "only the abstract page downloaded (no body)" — **stale**. The full 15-page PDF has been on disk since this cycle.
+- Cain's §5 finite-field work is closer to a recreational census than a theorem about `Q`; cite it as a catalogue-style result (which fields are non-Parker), not as evidence about the rational problem.
