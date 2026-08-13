@@ -114,6 +114,8 @@ pub(super) async fn run(
     let attempt_workspace = workspace.clone();
     let reflect_workspace = workspace.clone();
     let judge_workspace = workspace.clone();
+    let workspace_for_reduction = workspace.clone();
+    let tracer_for_reduction = tracer.clone();
     let diversify_workspace = workspace;
     let reflect_memory = memory;
     let diversify_agents = subagents.clone();
