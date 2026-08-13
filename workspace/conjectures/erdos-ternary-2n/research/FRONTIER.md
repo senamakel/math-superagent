@@ -1,50 +1,63 @@
-# Frontier — what this library's own sources cite
+# Frontier: where new work must start
 
-Derived from the citations inside every document this run has downloaded, and rewritten on each download. Nothing here has been judged: a row is a lead, not a recommendation.
+What is left open after this run's established results, stated precisely enough
+that the next attempt can aim at it rather than re-derive.
 
-Ranked by how many of the library's sources cite it, then by how closely the citing sentence matches the goal. A **cited by** count above one means independent sources agree it is the reference for the subject, which is worth more than any single search ranking. A ~~struck-through~~ row is already in the library — do not download it again.
+## The run's main negative result (proved)
 
-| Cited by | Source | Called | Why it was cited |
-| --- | --- | --- | --- |
-| 3 | https://arxiv.org/search/math?searchtype=author&amp;query=Lagarias,+J+C | Jeffrey C. Lagarias | [Submitted on 1 Dec 2005 ( [v1][2]), last revised 11 Jul 2008 (this version, v4)] # Title: Ternary expansions of powers of 2 Authors: [Jeffrey C. Lagarias][3] View a PDF of the paper titled Ternary… |
-| 2 | https://doi.org/10.1112/jlms/jdn080 | https://doi.org/10.1112/jlms/jdn080 | 602–633 (1978), pp. 151–158. - [4] J. C. Lagarias, Ternary expansions of powers of 2, J. Lond. Math. Soc., 79 (2009), pp. 562–588, [https://doi.org/10.1112/jlms/jdn080][4]. - [5] N. J. A. Sloane, The… |
-| 2 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A351928 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A351928 - OEIS] [3] A351928 Smallest positive integer k such that 2^k has no '2' in… |
-| 2 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][41] [Format][42] [Style Sheet][43] [Transforms][44] [Superseeker][45] [Recents][46] [The OEIS Community][47] Maintained by [The OEIS Foundation Inc.][48] Last modified August 13 02:49… |
-| 1 | https://arxiv.org/html/2202.13256v2 | HTML (experimental) | View a PDF of the paper titled On two conjectures concerning the ternary digits of powers of two, by Robert I. Saye [View PDF][4] [HTML (experimental)][5] Abstract: Erdős conjectured that 1, 4, and… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Saye,+R+I | Robert I. Saye | last revised 23 Mar 2022 (this version, v2)] # Title: On two conjectures concerning the ternary digits of powers of two Authors: [Robert I. Saye][3] View a PDF of the paper titled On two conjectures… |
-| 1 | http://dx.doi.org/10.1017/S0305004112000345 | Perfect powers with few binary digits and related Diophantine problems, II | Diophantine problems][12], Ann. Sc. Norm. Super. Pisa Cl. Sci. (5) 12 (2013), no. 4, 941–953. [MR 3184574][13] - [6] by same author, **[Perfect powers with few binary digits and related Diophantine… |
-| 1 | http://www.ams.org/mathscinet-getitem?mr=2990629 | MR 2990629 | powers with few binary digits and related Diophantine problems, II][14], Math. Proc. Cambridge Philos. Soc. 153 (2012), no. 3, 525–540. [MR 2990629][15] - [7] Csanád Bertók and Lajos Hajdu, **[A… |
-| 1 | http://www.ams.org/mathscinet-getitem?mr=3184574 | MR 3184574 | powers with few binary digits and related Diophantine problems][12], Ann. Sc. Norm. Super. Pisa Cl. Sci. (5) 12 (2013), no. 4, 941–953. [MR 3184574][13] - [6] by same author, **[Perfect powers with… |
-| 1 | http://www.numdam.org/item/ASNSP_2013_5_12_4_941_0/ | Perfect powers with few binary digits and related Diophantine problems | de France, Département des manuscrits, Latin 7378A, pp. 55v–57r. - [5] Michael A. Bennett, Yann Bugeaud, and Maurice Mignotte, **[Perfect powers with few binary digits and related Diophantine… |
-| 1 | https://arxiv.org/abs/1308.3133v1 | arXiv:1308.3133v1 | Systems (math.DS); Metric Geometry (math.MG) \| MSC classes: \| 11A63, 11K55, 37B10 \| Cite as: \| [arXiv:1308.3133][6] [math.NT] \| \| (or [arXiv:1308.3133v1][7] [math.NT] for this version) \| \|… |
-| 1 | https://arxiv.org/abs/1508.05967v2 | arXiv:1508.05967v2 | (math.DS); Metric Geometry (math.MG) \| MSC classes: \| 11A63, 11K55, 37B10 \| Cite as: \| [arXiv:1508.05967][8] [math.NT] \| \| (or [arXiv:1508.05967v2][9] [math.NT] for this version) \| \|… |
-| 1 | https://arxiv.org/abs/2105.06440v4 | arXiv:2105.06440v4 | (math.NT) \| MSC classes: \| 11D61 (Primary) 11A63, 11D72, 11D79 (Secondary) \| Cite as: \| [arXiv:2105.06440][7] [math.NT] \| \| (or [arXiv:2105.06440v4][8] [math.NT] for this version) \| \|… |
-| 1 | https://arxiv.org/abs/2202.13256v2 | arXiv:2202.13256v2 | (math.NT) \| MSC classes: \| 11A63 (primary), 11Y55, 11D61, 11Y50 (secondary) \| Cite as: \| [arXiv:2202.13256][6] [math.NT] \| \| (or [arXiv:2202.13256v2][7] [math.NT] for this version) \| \|… |
-| 1 | https://arxiv.org/abs/math/0512006v4 | arXiv:math/0512006v4 | \| MSC classes: \| 11A63 (Primary) 11K16, 11K41, 26A18, 37A45 (Secondary) \| Cite as: \| [arXiv:math/0512006][6] [math.DS] \| \| (or [arXiv:math/0512006v4][7] [math.DS] for this version) \| \|… |
-| 1 | https://www.jstor.org/stable/2689842 | Some unconventional problems in number theory | the only powers of two whose ternary expansion consists solely of 0's and 1's. LINKS [Table of n, a(n) for n=1..43.][11] Paul Erdős, [Some unconventional problems in number theory][12], Mathematics… |
-| 1 | https://math.stackexchange.com/questions/ | — | together looks extraordinarily unlikely, and heuristics like those in Section 2The proof by Wiles has p ≥ 5 for technical reasons: see https://math.stackexchange.com/questions/ 4464666/. The case p =… |
-| 1 | http://dx.doi.org/10.2307/2689842 | Some unconventional problems in number theory | binary, Wieferich primes and a conjecture of Erdős][30], J. Number Theory 158 (2016), 268–280. [MR 3393551][31] - [15] Paul Erdős, **[Some unconventional problems in number theory][32], Math. Mag. 52… |
-| 1 | http://www.ams.org/mathscinet-getitem?mr=3393551 | MR 3393551 | E. Weirich, **[Bits of 3 n 3^{n} in binary, Wieferich primes and a conjecture of Erdős][30], J. Number Theory 158 (2016), 268–280. [MR 3393551][31] - [15] Paul Erdős, **[Some unconventional problems… |
-| 1 | http://dx.doi.org/10.1080/00927877608822095 | Diophantine equations related to finite groups | integers as linear combinations of S S -units][5], Acta Arith. 138 (2009), no. 2, 101–107. [MR 2520130][6] - [2] Leo J. Alex, **[Diophantine equations related to finite groups][7], Comm. Algebra 4… |
-| 1 | http://dx.doi.org/10.1090/S0002-9939-2011-10764-0 | Lower bounds on the lengths of double-base representations | d’Histoire des Sciences, vol. 36, E. J. Brill, Leiden, 1992, pp. 149–191. - [12] Vassil S. Dimitrov and Everett W. Howe, **[Lower bounds on the lengths of double-base representations][26], Proc.… |
-| 1 | http://dx.doi.org/10.4064/aa138-2-1 | Representing integers as linear combinations of S S -units | 24 24 \| 8 8 \| 140036 140036 \| 14 14 \| 8 8 \| 3.44 3.44 \| \| \| \| \| ## References - [1] Zsolt Ádám, Lajos Hajdu, and Florian Luca, **[Representing integers as linear combinations of S S -units][5], Acta… |
-| 1 | http://www.ams.org/mathscinet-getitem?mr=2506687 | MR 2506687 | 1121092][35] - [17] Jeffrey C. Lagarias, **[Ternary expansions of powers of 2][36], J. Lond. Math. Soc. (2) 79 (2009), no. 3, 562–588. [MR 2506687][37] - [18] Władysław Narkiewicz, **[A note on a… |
-| 1 | http://www.ams.org/mathscinet-getitem?mr=2520130 | MR 2520130 | Hajdu, and Florian Luca, **[Representing integers as linear combinations of S S -units][5], Acta Arith. 138 (2009), no. 2, 101–107. [MR 2520130][6] - [2] Leo J. Alex, **[Diophantine equations related… |
-| 1 | http://www.ams.org/mathscinet-getitem?mr=2813374 | MR 2813374 | W. Howe, **[Lower bounds on the lengths of double-base representations][26], Proc. Amer. Math. Soc. 139 (2011), no. 10, 3423–3430. [MR 2813374][27] - [13] by same author, **[Powers of 3 with few… |
-| 1 | https://arxiv.org/abs/1401.7233v1 | v1 | [Advanced search][1] --> # Computer Science > Social and Information Networks **arXiv:1401.7233**(cs) [Submitted on 28 Jan 2014 ( [v1][2]), last revised 13 Feb 2014 (this version, v2)] # Title:… |
-| 1 | https://www.jstor.org/stable/43667894 | A note on a paper of H. Gupta concerning powers of two and three | expansions of powers of 2][36], J. Lond. Math. Soc. (2) 79 (2009), no. 3, 562–588. [MR 2506687][37] - [18] Władysław Narkiewicz, **[A note on a paper of H. Gupta concerning powers of two and… |
-| 1 | http://dx.doi.org/10.1112/jlms/jdn080 | Ternary expansions of powers of 2 | Schmutz, **[Carmichael’s lambda function][34], Acta Arith. 58 (1991), no. 4, 363–385. [MR 1121092][35] - [17] Jeffrey C. Lagarias, **[Ternary expansions of powers of 2][36], J. Lond. Math. Soc. (2)… |
-| 1 | http://www.ams.org/mathscinet-getitem?mr=1121092 | MR 1121092 | - [16] Paul Erdős, Carl Pomerance, and Eric Schmutz, **[Carmichael’s lambda function][34], Acta Arith. 58 (1991), no. 4, 363–385. [MR 1121092][35] - [17] Jeffrey C. Lagarias, **[Ternary expansions of… |
-| 1 | https://arxiv.org/html/2105.06440v4 | HTML (experimental) | paper titled Powers of 3 with few nonzero bits and a conjecture of Erd\H{o}s, by Vassil S. Dimitrov and Everett W. Howe [View PDF][5] [HTML (experimental)][6] Abstract: Using completely elementary… |
-| 1 | https://arxiv.org/html/math/0512006v4 | HTML (experimental) | [Jeffrey C. Lagarias][3] View a PDF of the paper titled Ternary expansions of powers of 2, by Jeffrey C. Lagarias [View PDF][4] [HTML (experimental)][5] Abstract: Paul Erdos asked how frequently the… |
-| 1 | https://cs.uwaterloo.ca/ | — | on Mersenne Numbers and Generalizations of Skula’s Theo- rem,” J. Integer Sequences 26 (2023), Article 23.3.8 (21 pages). URL https://cs.uwaterloo.ca/ journals/JIS/VOL26/Klaska/klaska6.pdf. [4] J.… |
-| 1 | http://arxiv.org/abs/2105.06440 | arXiv:2105.06440 [math.NT] | no. 10, 3423–3430. [MR 2813374][27] - [13] by same author, **[Powers of 3 with few nonzero bits and a conjecture of Erdős][28], 2021. [arXiv:2105.06440 [math.NT]][29] - [14] Taylor Dupuy and David E.… |
-| 1 | http://dx.doi.org/10.1016/j.jnt.2015.05.022 | Bits of 3 n 3^{n} in binary, Wieferich primes and a conjecture of Erdős | with few nonzero bits and a conjecture of Erdős][28], 2021. [arXiv:2105.06440 [math.NT]][29] - [14] Taylor Dupuy and David E. Weirich, **[Bits of 3 n 3^{n} in binary, Wieferich primes and a… |
-| 1 | http://dx.doi.org/10.1515/crll.1980.319.63 | On the representation of an integer in two different bases | {\rm PV} -numbers and sets of multiplicity][42], Period. Math. Hungar. 3 (1973), 93–100. [MR 340185][43] - [21] Cameron L. Stewart, **[On the representation of an integer in two different bases][44],… |
-| 1 | http://dx.doi.org/10.48550/arXiv.2105.06440 | Powers of 3 with few nonzero bits and a conjecture of Erdős | of double-base representations][26], Proc. Amer. Math. Soc. 139 (2011), no. 10, 3423–3430. [MR 2813374][27] - [13] by same author, **[Powers of 3 with few nonzero bits and a conjecture of Erdős][28],… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Dimitrov,+V+S | Vassil S. Dimitrov | ( [v1][2]), last revised 3 Jul 2023 (this version, v4)] # Title: Powers of 3 with few nonzero bits and a conjecture of Erdős Authors: [Vassil S. Dimitrov][3], [Everett W. Howe][4] View a PDF of the… |
-| 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Howe,+E+W | Everett W. Howe | 3 Jul 2023 (this version, v4)] # Title: Powers of 3 with few nonzero bits and a conjecture of Erdős Authors: [Vassil S. Dimitrov][3], [Everett W. Howe][4] View a PDF of the paper titled Powers of 3… |
-| 1 | https://eudml.org/doc/259515 | — | depourves de diviseurs carres et sur les nombres naturels n, tels que n 2 \| (2 n − 2),” Matemati˘cki Vesnik 2 (1965), 78–80. URL https://eudml.org/doc/259515. [10] R. Schoof, Catalan’s Conjecture,… |
-| 1 | http://dx.doi.org/10.1016/S0019-3577(02)90011-X | The equations 2 n ± 2 m ± 2 l = z 2 2^{n}\pm 2^{m}\pm 2^{l}=z^{2} | of an integer in two different bases][44], J. Reine Angew. Math. 319 (1980), 63–72. [MR 586115][45] - [22] László Szalay, **[The equations 2 n ± 2 m ± 2 l = z 2 2^{n}\pm 2^{m}\pm 2^{l}=z^{2}][46],… |
+**No obstruction modulo any finite power of 3 can prove the Erdős ternary
+conjecture.** Reason: `|A_k| = 2^(k-1)` exactly for every k (bijection proof,
+verified to k=40), so the modular sieve never empties — the count doubles at
+every level. Pattern-level survivors form a full infinite binary tree (each
+`{0,1}`-string of length k with low digit 1 is realised by a unique exponent).
+This matches Narkiewicz's bound `N(x) ≤ 1.62 x^(log_3 2)` (LAG-1 / STOLL-1): the
+count-of-survivors grows, it never decays.
 
-_91 further candidates not shown; they are cited once each._
+So a proof of the conjecture **cannot** be "the sieve kills the residue class of
+n": every class with digit-free pattern survives. It must be that no *actual
+digit-free exponent string* (a path consistent across all k that is a genuine
+`2^n`) exists beyond n=8.
+
+## What the sieve cannot see (the honest reformulation)
+
+The orbit `{2^n : n ∈ Z}` is dense in `(Z_3)^×` (ord(4 mod 3^k) = 3^(k-1) by LTE,
+2 ≡ −1 mod 3 gives both cosets — DENSE-ORBIT). The conjecture is:
+
+> the dense orbit `{2^n}` meets the 3-adic Cantor set `Σ_{0,1} ∩ (Z_3)^×`
+> (elements with all digits in {0,1}) at exactly the three integer points
+> 1, 4, 256.
+
+Closure/dimension arguments cannot decide orbit visits (closure is everything).
+Only the arithmetic of the map `n ↦ 2^n` can.
+
+## The actual frontier (Dimitrov–Howe, DH-1, proved)
+
+For `x ∉ {0,2,8}`, the ternary expansion of `2^x` contains a digit 2 **or** at
+least 26 digits equal to 1. Equivalently: the only powers of 2 that are sums of
+≤25 distinct powers of 3 are {1, 4, 256}.
+
+**Therefore any counterexample to Erdős is `2^x` with ≥26 ones and zero 2s.**
+The residual open case is exactly that. Improving the 26 (handling ≥26 distinct
+powers of 3) is the concrete unproved step; DH-1's method (nested moduli with
+determinate-power lifting, Lemmas 3.1 / Table 3) is the template.
+
+## The gap DH-1 leaves open, precisely
+
+- DH-1 controls the **low** (3-adic) digit side: it forces a 2 or many 1s among
+  the low digits. The run's `|A_k| = 2^(k-1)` shows the low-digit no-2 sieve
+  survives everything, so low digits alone cannot kill the case ≥26 ones & no 2.
+- What is missing is the **coupling of the top (real, ~log_3 X) digits to the
+  bottom (3-adic, ~log_3 X) digits** — the middle digits that neither the real
+  truncated method nor the 3-adic method exploit. LAG-4 states combining them is
+  open. A counterexample with ≥26 ones and no 2s must be ruled out by this
+  middle-digit coupling, which the sieve provably does not capture.
+
+## Concrete partial targets ranked
+
+1. **Formalise SIEVE-EXACT** (`|A_k| = 2^(k-1)` + bijection + 2-to-1 extension)
+   in Lean — kills the count picture permanently, cheap, done-by-bijection.
+2. **Reproduce the DH-1 bound (26) directly** from the archive's stated method,
+   as an independent recomputation, so the frontier number is independently held.
+3. **Improve DH-1's 26** for the restricted shape (no 2s) — e.g. rule out ≥26
+   ones with no 2s for small x-sizes by nested-modulus lifting; any increase in
+   the ones-threshold is the named unproved step.
