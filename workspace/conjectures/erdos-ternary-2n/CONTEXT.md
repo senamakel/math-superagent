@@ -95,6 +95,13 @@ existing method stalls.
 
 ## Gaps
 
+- **Two live directions now** (per directive): (1) **Lean 4 formalisation** of
+  the three-lemma lifting theorem — a machine-checked artifact; report
+  `#print axioms` and every `sorry`. (2) **Go where the sieve cannot see:**
+  DH-1 says any exception has a digit 2 or ≥ 26 ones. State precisely what
+  DH-1 leaves open, what improving the 26 would take, and whether **Lagarias's
+  density bound and DH-1 can be combined** — the DH shape constraint plus the
+  `O(X^{log_3 2})` count constraint may force more than either alone.
 - **The real open question:** which of the `2^(k-1)` infinite survival paths
   are actually realised as `2^n` for an integer n? The constructor
   (order/digit-splitting) proves every path exists at every finite level
@@ -104,5 +111,3 @@ existing method stalls.
 - Narkiewicz (1980) primary source not in library (constant and original method
   unverified). Dupuy–Weirich, Gupta 1978, Abram–Lagarias also absent. See
   `research/REQUESTS.md`.
-- The LTE lifting proof of the 2-to-1 map has a carry step not automatic; the
-  bijection proof supersedes it, so the LTE route is kept only as a check.

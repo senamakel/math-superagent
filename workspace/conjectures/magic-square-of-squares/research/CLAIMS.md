@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `primitive-mss-modular-124-72` | A primitive 3x3 MSS has all nine entries ≡1 mod 24 and magic sum ≡3 mod 72. | yes | proved | `research/summaries/zimmermann-loria-magic-squares-of-squares-2015.md` |
 | `rabern-fulltext-not-on-disk` | The full text of Rabern's 2003 RHUMJ paper is not in the library; the index/abstract page and secondary accounts are. Its entry-prime restrictions (all odd; centre 1-mod-4-only; no 3-mod-8 anywhere; no 5-mod-8 on… | yes | asserted | `research/summaries/rabern-properties-magic-squares-of-squares-2003.md` |
 
-_13 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_14 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
