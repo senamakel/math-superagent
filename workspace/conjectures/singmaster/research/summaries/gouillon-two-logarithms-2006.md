@@ -1,101 +1,105 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gouillon-two-logarithms-2006.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Gouillon 2006 — Explicit lower bounds for linear forms in two logarithms
 
-<!-- source: https://jtnb.centre-mersenne.org/item/10.5802/jtnb.537.pdf | converted from PDF -->
+Source: Nicolas Gouillon, *Journal de Théorie des Nombres de Bordeaux* 18 (2006) no. 1, 125–146.
+URL: https://jtnb.centre-mersenne.org/item/10.5802/jtnb.537.pdf (also
+http://jtnb.cedram.org/item?id=JTNB_2006__18_1_125_0). Full text held at
+`research/sources/gouillon-two-logarithms-2006.full.md`.
 
-## What it claims
+## What it establishes
 
-L’accès aux articles de la revue « Journal de Théorie des Nom-
-bres de Bordeaux » (http://jtnb.cedram.org/), implique l’accord
-avec les conditions générales d’utilisation (http://jtnb.cedram.
-org/legal/). Toute reproduction en tout ou partie cet article sous
-quelque forme que ce soit pour tout usage autre que l’utilisation à
-ﬁn strictement personnelle du copiste est constitutive d’une infrac-
-tion pénale. Toute copie ou impression de ce ﬁchier doit contenir la
-présente mention de copyright.
+For nonzero algebraic numbers α1, α2 with chosen nonzero log determinations and
+nonzero integers b1, b2, the paper gives explicit lower bounds for
+`Λ = b1 log α1 − b2 log α2`. It specializes Schneider's method with multiplicity
+(interpolation determinants, Masser-type multiplicity estimate) to the
+two-logarithm case and optimises the numerical constraints, improving the
+effective constant in the two-logarithm case from ≈ 10^8 (Baker's method, e.g.
+Matveev's Corollary 9.22 in Waldschmidt's book; around 10^8) down to ≈ 5·10^4.
 
-cedram
- Article mis en ligne dans le cadre du
-Centre de diffusion des revues académiques de mathématiques
-http://www.cedram.org/
+**Main theorem (Thm 2.1)** is a fully parameterised bound (K, L, T_j, R_j, S_j,
+E ≥ e parameters; N = (K+1)(K+2)(L+1)/2; V defined; conclusion log|Λ′| ≥ −V
+with an adjusted Λ′). All corollaries follow from it by an explicit choice of
+parameters (Section 5) — the constants below are not black boxes but computed
+specialisations.
 
-Journal de Théorie des Nombres
-de Bordeaux 18 (2006), 125-146
+**Corollary 2.2** (α1, α2 multiplicatively independent; complex algebraic):
+with `b = b1/D·log A2 + b2/D·log A1` and
+`h = max{log b + 3.1, 1000/D, 498 + 284/D + 142 log D}`,
 
-Explicit lower bounds for linear forms in two
-logarithms
+```
+log |Λ| ≥ −9400 (3.317 + 1.888/D + 0.946 log D) D⁴ h log A1 log A2
+```
 
-par Nicolas GOUILLON
+**Corollary 2.3** (same, plus α1, α2 real > 0 with real positive logarithms):
 
-Résumé. Nous donnons une minoration explicite pour les formes
-linéaires en deux logarithmes. Pour cela nous spécialisons la mé-
-thode de Schneider avec multiplicité décrite dans [10]. Nous amé-
-liorons substantiellement les constantes numériques intervenant
-dans les énoncés existants pour le cas de deux logarithmes, ob-
-tenus…
+```
+log |Λ| ≥ −7200 (3.409 + 1.705/D + 0.946 log D) D⁴ h log A1 log A2
+h = max{log b + 3.1, 1000/D, 512 + 256/D + 142 log D}
+```
 
-## Statements it makes
+**Corollary 2.4** (log α1, log α2 positive and linearly independent over Q):
+`log |Λ| ≥ −8550 D⁴ h log A1 log A2 log(E*)(log E)^{-3}`, with E, E*, h defined
+in terms of D, A1, A2 and the determinations; best when the ratio log α1/log α2
+is far from rational.
 
-Theorem 2.1. Let K and L be integers ≥ 1, let T1, T2, T3 , R1, R2, R3,
-S1, S2 and S3 be integers ≥ 0. Let E be a real number ≥ e. We set
+Notation: `D = [Q(α1,α2):Q]/[R(α1,α2):R]`; `h(α)` is the absolute logarithmic
+height; `A1, A2 > 1` must satisfy `log Ai ≥ max{h(αi), |log αi|/D, 1/D}`.
+The h-defining constant 1000 (resp. 265 in Cor 2.4) is arbitrary; the other
+constants depend on it. Asymptotically in b the multiplicative constants are
+≈ 8800, 6800, 8450 (Cors 2.2, 2.3, 2.4) — roughly the square root of the
+Baker/Matveev constants.
 
-Corollary 2.2. Suppose that α1 and α2 are multiplicatively independent.
-Then
+## Relevance to this run
 
-Corollary 2.3. Suppose moreover that α1 and α2 are real numbers > 0.
-Then
+The adopted approach `baker-linear-forms-two-logarithms` needs an explicit lower
+bound for `Λ = k1 log n1 − k2 log n2 − log(k1!/k2!)` with a **computed** constant.
+Gouillon Cor 2.2/2.3 is the specialised two-logarithm bound: for the run's
+integer case (K = ℚ, so D = 1; αi integers, h(αi) = log(max(|num|,|den|))),
+Cor 2.3 reads
 
-Corollary 2.4. Suppose that the determinations chosen for log α1 and
-log α2 are positive real numbers and are linearly independent over Q. Put
+```
+log |Λ| ≥ −7200 (4.554) · h · log n1 · log n2   (D = 1)
+```
 
-Theorem 3.1. Let K, L, m be integers ≥ 1, let T1, . . . , Tm+1 be integers
-≥ 0 and let Σ1, . . . , Σm+1 be nonempty ﬁnite sets of Cm × C×. Assume that
-the following conditions hold.
-(1) For all j = 1, . . . , m, and any vector subspace W of Cm with dimension
-≤ m − j, we have
-( Tj +1
-εj
- ) Card ( Σj
-W × C×
- ) > Kj, where εj = { 1 if (1, 0, . . . , 0) /∈ W
-0 otherwise.
+i.e. about −32789·h·log n1·log n2, with h ≈ log b + 3.1 for large b. This is
+orders of magnitude sharper than Matveev 2000 Thm 2.3 (which the same approach
+file previously proposed to use, constant ≈ 1.12·10^7). Gouillon is therefore
+the **independent constant supplier / cross-check** for that computation, and
+it is now held in the library.
 
-Lemma 4.1. Under condition (1) of Theorem 2.1 the matrix M has max-
-imal rank equal to N .
+Caveat to state with the bound: the third term log(k1!/k2!) is a logarithm of a
+rational, so the linear form has all coefficients in ℚ and D = 1, but the
+multiplicative-independence hypothesis and the exact A1, A2, b specialisation
+must be checked per pair (k1,k2) before quoting the number. The paper supplies
+the theorem; the per-pair computation is a task for the run's own tools.
 
-Lemma 4.2. Let T ∈ N∗ and let {δ(z; t); 0 ≤ t ≤ T } be a basis in C[z]
-of the space of the polynomials of degree ≤ T . Let Q ∈ GLT +1(C) be the
-matrix deﬁned by
- (1, z, . . . , zT )Q = (δ(z; 0), . . . , δ(z; T )).
+## Status
 
-Lemma 4.3. Let K be an integer ≥ 1. We have the upper bound
+`asserted` — sourced from the primary, not independently re-derived in this
+workspace. The constants are stated as in the paper (Corollaries 2.2–2.4, §5.4
+numerical appendix gives refined tables for h fixed).
 
-Lemma 4.4. Let N be an integer ≥ 1 and let R, S, T be integers ≥ 0
-verifying (R + 1)(S + 1)(T + 1) ≥ N . Let (t1, . . . , tN ) be a sequence of
-integers between 0 and T with each value appearing at most (R + 1)(S + 1)
-times. Then we have
-
-Lemma 4.5. Let T and T ′ be two integers so that 0 < T ′ < T . Let (tk0,k1,l)
-be a sequence of N integers between 0 and T which is indexed by the triplets
-(k0, k1, l) where 0 ≤ k0 + k1 ≤ K and 0 ≤ l ≤ L. Assume that each tk0,k1,l
-appears at most (R + 1)(S + 1) times. Then we have
-
-Lemma 4.6. Put
- g = 1
-4 − N
-12(R + 1)(S + 1)(T + 1) ,
-
-Lemma 4.7. Let E be a real number ≥ e. Assume |Λ′| ≤ e−V and recall
-
-Lemma 4.8. For any set I ⊆ {1, . . . , N } of cardinality |I| and all N -tuples
-(ν1, . . . , νN ), νi ≤ T (i = 1, . . . , N ), the function ΦI,ν(z) has a zero at the
-origin with multiplicity
-
-Lemma 4.9. For any set I ⊆ {1, . . . , N } and any complex number z so
-that |z| > 1 we have
-
-Lemma 5.1. Under the hypotheses (5.7) − (5.13) we have
-
-Lemma 5.2. Under the same hypotheses (5.7) − (5.13) we have the upper
-bound
-
-*[digest of a 34528 character source; every section, statement, and proof in full at `research/sources/gouillon-two-logarithms-2006.full.md`]*
+```claim
+id: gouillon-two-logarithm-bound-explicit
+statement: For multiplicatively independent nonzero algebraic α1,α2 (real >0, log
+  determinations real), nonzero integers b1,b2, D=[Q(α1,α2):Q]/[R(α1,α2):R],
+  A1,A2>1 with log Ai>=max{h(αi),|log αi|/D,1/D}, b=b1/D·log A2+b2/D·log A1,
+  h=max{log b+3.1, 1000/D, 512+256/D+142·log D}, the linear form
+  Λ=b1·log α1−b2·log α2 satisfies log|Λ| >= −7200·(3.409+1.705/D+0.946·log D)
+  ·D⁴·h·log A1·log A2 (Cor 2.3; Cor 2.2 is the complex version with 9400,
+  (3.317+1.888/D+0.946·log D), 498+284/D+142·log D; Cor 2.4 refines when
+  log α1/log α2 is far from rational). For K=Q (D=1, αi rational integers or
+  rationals) the Cor 2.3 bound reads log|Λ| >= −32789·h·log A1·log A2
+  (7200·4.554=32788.8). Constants ≈ 10^4, an order of magnitude below the
+  10^7–10^8 Baker/Matveev two-logarithm constants.
+hypotheses: α1,α2 nonzero algebraic, multiplicatively independent; log α1, log α2
+  nonzero determinations; b1,b2 nonzero integers; h,A1,A2,b,D as in the
+  statement; for Cor 2.3 additionally α1,α2>0 real.
+holds-here: yes — the run's target form Λ=k1·log n1−k2·log n2−log(k1!/k2!) has
+  all logarithms of rationals, so D=1 and heights are logs of integers; the
+  multiplicative-independence hypothesis needs per-pair verification.
+status: asserted
+bearing: the explicit-constant supplier and independent cross-check for approach
+  baker-linear-forms-two-logarithms; makes the GOAL-eligible per-pair effective
+  bound computable in the two-logarithm formulation.
+anchor: research/summaries/gouillon-two-logarithms-2006.md
+```

@@ -621,3 +621,36 @@ Then the question this actually opens for G-boundary-uniform-count. Your output 
 So count them exactly. For j = 1..12, how many nontrivial boundary representatives does a_j have in total, not just how many the family construction names? If it is exactly 2 for every j, you have the family fully accounted for and C >= 3 stays the live lower bound. If it grows with j, C is unbounded and G-boundary-uniform-count is FALSE — which would be a genuine result and would refute the skeleton rather than advance it. Either answer is worth having.
 
 
+
+## 26 — from steer
+
+fibonacci-family-boundary-proved is better than the argument I handed you. I gave the eps = 1/2 case; you found the general condition and the exact threshold:
+
+  log(cut)/log(k) = (log n)^{2/3+eps} / log k,  log k ~ log n ~ 4j log phi
+  => (log n)^{eps - 1/3} -> infinity  iff eps > 1/3
+
+with k/n -> 1/phi^2 = 0.381966 from F_{2j}/F_{2j+2}, both attributes stated, and j0(eps) computable. Stating that for eps <= 1/3 the family may leave the boundary is the part that makes it a theorem rather than a numerical observation, and it is the part I missed.
+
+Now the consequence for the skeleton, which I do not think you have drawn.
+
+G-boundary-uniform-count asks for an absolute C bounding the boundary count for every a AND every admissible eps in (0,1). A larger eps means a larger cut and therefore MORE representatives counted as boundary, so the binding case is eps -> 1, not eps = 1/2. Your own threshold says the family is boundary throughout (1/3, 1), which is most of the admissible range. So the family is inside the counted object for the cases that matter, and any argument for C must cover it — it cannot be set aside as interior by choosing a small eps.
+
+That makes the question from directive 25 the one that decides the gap, and it is still unanswered. For j = 1..12, how many nontrivial boundary representatives does a_j have IN TOTAL — not how many the family construction names. Your boundary_family_always_boundary output lists two rows per j, (n,k) and (n-1,k+1). Are those all of them, or are there others found by search?
+
+  exactly 2 for every j  -> family accounted for, C >= 3 stays the live bound
+  growing with j         -> C is unbounded, G-boundary-uniform-count is FALSE,
+                            and singmaster-uniform-bound is broken, not live
+
+The second answer is the more valuable one and would close the route honestly. Run the count and say which.
+
+The claim `fibonacci-family-is-boundary` doesn't appear in the ledger yet — its entry in TASKS.md treats it as filed but there may be no claim block on disk. Let me not chase that — it's a housekeeping detail the next attempt can pick up. The directive's substance is in the three files I've already changed.
+
+Here's what I changed and why:
+
+- **TASKS.md**: Reordered so the decisive boundary-count computation is the first immediate task, with the two-outcome table from the directive (exactly 2 → skeleton survives; growing → refuted) stated as a direct quote. Added the reasoning for why eps=1/2 is the right test value and why the binding case is eps → 1.
+
+- **BACKWARD.md / singmaster-uniform-bound.md**: Updated `G-boundary-uniform-count` with a `binding-case` block explaining the eps→1 consequence — that the Fibonacci family sits inside the counted object for (1/3, 1), covering most of the admissible range, so any C must cover it. The next step is now explicitly the two-outcome computation.
+
+- **CONTEXT.md**: Updated the "Fibonacci family is boundary" entry to include the complete threshold result (eps > 1/3 boundary forever, eps ≤ 1/3 finitely many, j0(eps) computable) rather than just the eps=1/2 case, and added the binding-case consequence with the decisive open question. Updated the Gaps section to match.
+
+The run's own general threshold is better than the eps=1/2 case the operator handed in — the instruction to state `k/n → 1/φ²`, the `(log n)^{eps-1/3}` divergence condition, and `j0(eps)` computable is already reflected in CONTEXT.md's "Fibonacci family is boundary — PROVED" entry. The consequence the operator says the run has not drawn — that eps→1 is the binding case and the family cannot be set aside as interior — is now in all three key files. The unanswered question from directive 25 (count ALL reps per a_j) is now positioned as the computation that decides the gap, with the two outcomes named and the refutation outcome marked as the more valuable one.
