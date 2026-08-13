@@ -1,11 +1,64 @@
 P=16252325, D=300, rows 1..238 agree between the two runs
-live giants (jump>1000, rows<239): 15
-rows: [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174, 238]
-gaps: [22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13, 64] max 64
-landing blocks: [2179, 5942, 23265, 31499, 92620, 103973, 141706, 271629, 325090, 515906, 733564, 1094273, 5417975, 10655286, 16252085]
-jumps: [1314, 1739, 17326, 8237, 61088, 11354, 37746, 129923, 53470, 190810, 217657, 360698, 4323712, 5237310, 5596825]
-Traceback (most recent call last):
-  File "/workspace/code/pattern_finder/wider_giants_update.py", line 52, in <module>
-    assert fl > 1000, f"giant row {r} not genuine: flooring {fl}"
-           ^^^^^^^^^
-AssertionError: giant row 238 not genuine: flooring 0
+
+genume genuine giants (source rows 1..237): 14
+source rows: [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174]
+gaps (source rows): [22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13] max 26
+landing blocks: [2179, 5942, 23265, 31499, 92620, 103973, 141706, 271629, 325090, 515906, 733564, 1094273, 5417975, 10655286]
+jumps: [1314, 1739, 17326, 8237, 61088, 11354, 37746, 129923, 53470, 190810, 217657, 360698, 4323712, 5237310]
+  src  34 -> land  35: b        865 ->       2179  jump      1314  flooring(land)   16250110
+  src  56 -> land  57: b       4203 ->       5942  jump      1739  flooring(land)   16246325
+  src  64 -> land  65: b       5939 ->      23265  jump     17326  flooring(land)   16228994
+  src  68 -> land  69: b      23262 ->      31499  jump      8237  flooring(land)   16220756
+  src  94 -> land  95: b      31532 ->      92620  jump     61088  flooring(land)   16159609
+  src  96 -> land  97: b      92619 ->     103973  jump     11354  flooring(land)   16148254
+  src 110 -> land 111: b     103960 ->     141706  jump     37746  flooring(land)   16110507
+  src 112 -> land 113: b     141706 ->     271629  jump    129923  flooring(land)   15980582
+  src 126 -> land 127: b     271620 ->     325090  jump     53470  flooring(land)   15927107
+  src 130 -> land 131: b     325096 ->     515906  jump    190810  flooring(land)   15736287
+  src 134 -> land 135: b     515907 ->     733564  jump    217657  flooring(land)   15518625
+  src 146 -> land 147: b     733575 ->    1094273  jump    360698  flooring(land)   15157904
+  src 161 -> land 162: b    1094263 ->    5417975  jump   4323712  flooring(land)   10834187
+  src 174 -> land 175: b    5417976 ->   10655286  jump   5237310  flooring(land)    5596863
+capped src238 A: b238=10655260 -> b239=16252085 jump 5596825
+capped src238 B: b238=10655260 -> b239=16252084 jump 5596824
+genuine giants setting new all-time max: 14/14
+
+min b over rows 162..238: 5417975 at rows [162, 164]
+new minima below 1094263 in rows 162..238: []
+
+GEOMETRIC fit log(land)=a+m*idx over 14: m=0.559902 factor=1.7505/event R2=0.960673
+LINEAR   fit land=a+m*idx: m=473595.6 R2=0.431742
+log-log jump vs b: alpha=0.951551 R2=0.840172
+
+ratios rho_k: [2.7269, 3.9153, 1.3539, 2.9404, 1.1226, 1.3629, 1.9168, 1.1968, 1.587, 1.4219, 1.4917, 4.9512, 1.9667]
+min/max ratio: 1.122576117469229 4.95120961588196
+
+old directive25 sublinear model rho=1+802.6*b^-0.612 vs actual:
+  b=      2179 pred   8.269 actual   2.727 MISS
+  b=      5942 pred   4.934 actual   3.915 MISS
+  b=     23265 pred   2.706 actual   1.354 MISS
+  b=     31499 pred   2.418 actual   2.940 MISS
+  b=     92620 pred   1.733 actual   1.123 MISS
+  b=    103973 pred   1.683 actual   1.363 MISS
+  b=    141706 pred   1.565 actual   1.917 MISS
+  b=    271629 pred   1.379 actual   1.197 MISS
+  b=    325090 pred   1.340 actual   1.587 MISS
+  b=    515906 pred   1.256 actual   1.422 MISS
+  b=    733564 pred   1.206 actual   1.492 MISS
+  b=   1094273 pred   1.162 actual   4.951 MISS
+  b=   5417975 pred   1.061 actual   1.967 MISS
+
+jump/b_k: [1.519, 0.414, 2.917, 0.354, 1.937, 0.123, 0.363, 0.917, 0.197, 0.587, 0.422, 0.492, 3.951, 0.967]
+
+threshold T(J) max-gap over live regime rows 1..237:
+  J=      100: count 14 max-gap   26 rows [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174]
+  J=      300: count 14 max-gap   26 rows [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174]
+  J=     1000: count 14 max-gap   26 rows [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174]
+  J=     3000: count 12 max-gap   26 rows [64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174]
+  J=    10000: count 11 max-gap   30 rows [64, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174]
+  J=    30000: count  9 max-gap   16 rows [94, 110, 112, 126, 130, 134, 146, 161, 174]
+  J=   100000: count  6 max-gap   18 rows [112, 130, 134, 146, 161, 174]
+  J=   200000: count  4 max-gap   15 rows [134, 146, 161, 174]
+  J=  1000000: count  2 max-gap   13 rows [161, 174]
+
+min flooring over genuine giants' landing rows: 5596863
