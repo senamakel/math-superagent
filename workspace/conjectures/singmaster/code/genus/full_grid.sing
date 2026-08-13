@@ -1,0 +1,25 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+int k1, k2;
+for(k2=2; k2<=9; k2=k2+1)
+{
+  string line = "k2=" + string(k2) + ":";
+  for(k1=2; k1<=12; k1=k1+1)
+  {
+     if(k1==k2){ line = line + " -"; }
+     else {
+        poly F = CB(x,k1) - CB(y,k2);
+        ideal I = F;
+        int g = genus(I);
+        line = line + " " + string(k1)+":" + string(g);
+     }
+  }
+  line;
+}

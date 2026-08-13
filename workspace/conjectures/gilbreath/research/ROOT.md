@@ -33,6 +33,10 @@ vs regeneration is the whole obstruction.
   sieve to 400000 (33860 primes), `depth_verified = 600`, with
   `leading_entry_is_1 = true`, `second_entry_always_0_or_2 = true`,
   `min_leading_02_block = 2`. Checked against problem.md's rows `A_1..A_5`.
+  `code/pattern/blocks_deep.py` pushed to **depth 1000** (sieve to 20,000,000,
+  1,270,607 primes): `first_bad = None`, agrees on k=1..40, longest pure
+  erosion run 838 rows, regeneration still occurring (max jump 360698 at
+  k=146); see `code/out/blocks_depth1000.json`.
 - **Cross-checked against the OEIS catalogue:** `block_profile(k) = A000232(k) − 1`
   for k=1..16 (independent source agreement on the data).
 - **Reported in the literature:** Odlyzko verified the conjecture for primes

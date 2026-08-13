@@ -27,14 +27,29 @@ The reduction that does most of the work:
   primes are open, and the composite case follows.
 - `n` even is trivial: `4/(2m) = 2/m = 1/m + 1/m`, so `4/n = 1/m + 1/(2m) + 1/(2m)`
   with `m = n/2`. Verify this before using it.
-- `n ≡ 3 (mod 4)` is covered by the identity in the task brief:
+- `n ≡ 3 (mod 4)` is covered, but **not** by the identity commonly quoted for
+  it. This file previously carried
 
 ```
-4/n = 1/n + 1/((n+1)/2) + 1/(n(n+1)/2)
+4/n = 1/n + 1/((n+1)/2) + 1/(n(n+1)/2)          <-- WRONG, do not use
 ```
 
-  **Check it symbolically before relying on it.** It is stated here as a lead,
-  not as an established fact of this workspace.
+  which sums to `3/n`, not `4/n`. With `m = (n+1)/2` the numerator is
+  `m + n + 1 = 3(n+1)/2 = 3m`, so the sum is `3m/(nm) = 3/n` identically. It
+  fails for every `n ≡ 3 (mod 4)` tested (`k = 0..19`, exact `Fraction`
+  arithmetic). The correct covering identity for `n = 4k + 3` is
+
+```
+x = k + 1,   y = n(k+1) + 1,   z = y(y - 1)
+```
+
+  verified exactly, with `x, y, z` positive integers, for `k = 0..4999`. Note
+  `(n+1)/4 = k+1` is always an integer when `n ≡ 3 (mod 4)`, so this covers the
+  whole class.
+
+  This is why the file says *verify before relying on it*: the wrong version is
+  widely repeated, and it was carried here from the task brief without being
+  checked. Treat every identity below the same way.
 
 Iterating identities of this shape over small moduli kills every residue class
 except a handful. The standard statement is that only
