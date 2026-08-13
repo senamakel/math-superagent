@@ -12,7 +12,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `checker_selftest_output.txt` | Task C deliverable: verbatim output of code/checker_selftest.py — checker-soundness self-test of is_magic_square_of_squares: relaxed True on genuine magic squares of squares with repeats ({1,25,49} family: all sums 75), rejection on the all-square-repeated non-magic control, Lo Shu, Sallows LS1 near-miss and Bremner 7-square; ALL CASES AS EXPECTED. |
 | `ferreira_proof_refuted.md` | _(undescribed)_ |
 | `k3_surface_check2.py` | Independent verification script for the Bremner II Category III six-square/K3 facts via lib/mss.py; superseded as primary evidence by reconciliation_2026-08-12.txt Task D (machine execution with exact construction + sympy). Kept as the independent second route; its brute-force point finder needs the parity-free (T±U) construction to avoid the [] parity artifact. |
-| `k3_surface_check_note.md` | _(undescribed)_ |
+| `k3_surface_check_note.md` | Claim note (id catIII-k3-has-q-point) recording the exact-arithmetic resolution that S(Q) is nonempty. Rewritten k3_surface_checks.py (exact) and independent k3_surface_check2.py agree on 64 S-points including P=(345,196,-304,255,-396,-25); the old float [] output is explained as a parity/half-integer artifact. Consequence: no Brauer-Manin obstruction can prove S(Q)=empty, closing the brauer-manin-k3-surface approach as formulated. |
 | `k3_surface_checks.py` | _(undescribed)_ |
 | `k3_surface_checks_exact.captured.txt` | _(undescribed)_ |
 | `k3_surface_checks_output.txt` | _(undescribed)_ |
