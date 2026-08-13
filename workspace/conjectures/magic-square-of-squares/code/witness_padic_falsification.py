@@ -129,14 +129,23 @@ def main():
             # fully-realised if c+d and c-d both squares
             both = is_perfect_square(c + d) and is_perfect_square(c - d) and c - d > 0
             qp = q_in_phi(d, e) if e * e == c else None
-            vio = phi_check(qp) if qp else ["e not integer"]
+            # Phi contains only POSITIVE values (4mn(m^2-n^2), m>n>0).
+            # Only a positive q is a candidate element of Phi, so the p-adic
+            # facts (v2>=3, v3>=1, res=0 mod 3/5) apply verbatim only when
+            # q>0 AND the difference is fully-realised (both endpoints
+            # squares). Negative/non-fully-realised d never inject into Phi.
+            in_phi = qp is not None and qp[0] > 0 and both
+            vio = phi_check(qp) if in_phi else None
             status = "fully-realised" if both else "not fully-realised"
+            note = ("q in Phi (positive, fully-realised); p-adic facts apply"
+                    if in_phi else
+                    "not a positive fully-realised Phi element; p-adic facts do not apply")
             print(f"      d={label}={d}: {status}; "
                   f"q=d/e^2={qp[0]}/{qp[1] if qp else '?'}; "
-                  f"p-adic-property-violations={vio if vio else 'none'}")
+                  f"{note}; violations={vio if vio else 'none'}")
             if vio:
                 # A violation would mean the p-adic facts forbid this witness's
-                # difference - that would be a real falsification to flag.
+                # realised difference - that would be a real falsification.
                 print(f"      *** p-adic violation on witness element: {vio} ***")
                 ok = False
 
