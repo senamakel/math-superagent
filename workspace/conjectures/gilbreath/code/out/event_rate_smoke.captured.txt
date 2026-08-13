@@ -1,2 +1,17 @@
 [event-rate] 1138 sequences across 26 workers, expected single-core ~12518s
 [parallel] event-rate: families x seeds across 26 worker(s) of 28 CPUs
+[event-rate] sweep finished in 135.2s
+====================================================================================================
+EVENT-RATE SWEEP (2-then-odds class)
+====================================================================================================
+batch  family               n events     elig rho_live rho_rows  min_b  b0 first_b0 stepF rechF
+Traceback (most recent call last):
+  File "/workspace/code/event_rate/event_rate_sweep.py", line 490, in <module>
+    main()
+  File "/workspace/code/event_rate/event_rate_sweep.py", line 409, in main
+    rows = report(stats_list, batches, "EVENT-RATE SWEEP (2-then-odds class)")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/event_rate/event_rate_sweep.py", line 390, in report
+    print(f"{batch:<6} {fam:<18} {len(sel):>3} {ev:>6} {elig:>8} "
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported format string passed to NoneType.__format__
