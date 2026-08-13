@@ -2,19 +2,19 @@
 question: Can we bound the (2,4)-event rate from below, and does that bound suffice to keep b_k ≥ 1 for all k?
 status: open — step law and recharge identity are exact (verified depth 800, zero failures); the conjecture is now the event-rate inequality
 rests-on: |
-  - Step law: b_{k+1} ≥ b_k ⟺ (x,y) = (2,4), else b_{k+1} = b_k − 1. Verified independently to depth 800 (0 failures). code/out/step_law_and_recharge_verified.md.
+  - Step law: b_{k+1} ≥ b_k ⟺ (x,y) = (2,4), else b_{k+1} = b_k − 1. Verified independently to depth 800 (0 failures). Also holds on random non-prime arrays (3,521 rows, 610 events, zero failures) — combinatorial, not arithmetic. code/out/step_law_and_recharge_verified.md.
   - Recharge identity: b_k = b_1 + Σ_{events i<k} (j_i + 1) − (k−1). Verified independently to depth 800 (0 failures). The conjecture holds iff Σ (j_i + 1) ≥ k−1−b_1 for all k.
   - Drain law: during erosion, y_{k+1} = y_k − 2·[x_k = 2]. Verified 101/101. code/out/regeneration_analysis.captured.txt.
   - Block lemma (proved): constant = 1, n+1 rows per length-n block. research/notes/block_lemma.md.
-  - Rule 90 interior (proved): halved entries evolve under XOR. research/notes/rule90-interior.md.
-  - CHT 2026 Theorem 1.6: only obstructions to decay are long zero-blocks or long shallow {0,d}-blocks.
-  - Eppstein 2011: gap bounds alone do not suffice; must add non-concentration or restrict to primes.
+  - Rule 90 interior (proved): halved entries evolve under XOR. research/notes/rule90-interior.md. The depth-d=2^j timing corollary is REFUTED (see rule90-regeneration thread); the interior identification stands as the edge-flip mechanism for Route A.
+  - CHT 2026 Theorem 1.6: only obstructions to decay are long zero-blocks or long shallow {0,d}-blocks. hypotheses checked, R_0=4.2e8 ≫ 1000, does not bite at reachable depths.
+  - Eppstein 2011: gap bounds alone do not suffice; must add non-concentration or restrict to primes. Route A sidesteps this by being combinatorial, not about gaps.
 blocked-by: nothing — the step law and recharge identity are exact; what remains is bounding the event rate
 next: |
   1. Extract inter-event gap distribution and jump-size distribution from blocks_depth1000.json. Measure cumulative recharge vs consumption at each event, worst-case inter-event gap, and whether the surplus trend is growing or shrinking.
-  2. Route A (combinatorial): prove a worst-case bound on erosion between events from the Rule 90 edge-flip dynamics + drain law. If the edge must flip to 2 within at most F(b) rows, then the max inter-event gap is bounded.
-  3. Route B (analytic): assume a prime-gap hypothesis, derive a lower bound on event density. Must state how it beats Eppstein.
-  4. Deliverable: a theorem of the form "under hypothesis H, the event rate ≥ r, and r suffices."
+  2. Route A (combinatorial, priority): prove a worst-case bound on erosion between events from the Rule 90 edge-flip dynamics + drain law. This is a combinatorial lemma about {0,2} rows under XOR, fed by the random-array evidence that the mechanism needs no primes.
+  3. Route B (analytic, secondary): assume a prime-gap hypothesis, derive a lower bound on event density. Must state how it beats Eppstein.
+  4. Deliverable: a theorem of the form "under hypothesis H, the event rate ≥ r, and r suffices." For Route A, H is about the {0,2} interior + even intruder — no prime input.
 ```
 
 # Regeneration thread — event-rate lower bound
