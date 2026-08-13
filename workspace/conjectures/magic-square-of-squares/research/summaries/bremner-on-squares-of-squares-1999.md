@@ -98,9 +98,11 @@ statement: A 3×3 magic square of squares exists iff there exist P₀, P₁, P�
   iff {X, X+c, X−c} are all rational squares.  E has rational torsion = {2-torsion}
   only; replacing Pᵢ by Pᵢ+T (T torsion) leaves the square unchanged.  The
   corresponding grid (entries as rational squares) is eq. (4) of Bremner 1999 p. 291,
-  with centre a = x(2P₁) = c·(λ₂P₁-side) and magic constant a.
-hypotheses: c ∈ Q (c = e² for integer MSS, with c the common difference of the
-  anti-diagonal AP {a−c, a, a+c}); distinct entries; centre a = x(2P₁)
+  with centre a = x(2P₁) and magic constant 3a.
+hypotheses: centre a ∈ Q with a = e² for an integer MSS (the centre is a square,
+  e.g. a = 425² for the witness); c is the common difference of the anti-diagonal
+  AP {a−c, a, a+c}, NOT the centre (c = 138600 for the witness, unrelated to e =
+  425); distinct entries; centre a = x(2P₁)
 holds-here: yes
 status: proved
 bearing: the run's single-curve reformulation; the standard starting point for any

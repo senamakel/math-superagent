@@ -1,51 +1,24 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# WRONG FETCH — do not cite. Not the Garcia-Fritz–Pasten IMRN 2021 paper.
 
-<!-- source: https://arxiv.org/abs/1807.06084 | converted from HTML -->
+[[garcia-fritz-pasten-ellip-long-ap-large-rank-2021]]
+**This summary and its `.full.md` companion were created by a mistaken guess of
+an arXiv ID.** The URL fetched was `https://arxiv.org/abs/1807.06084`, which is
+a Computer Science survey on smart-buildings predictive control, **not** the
+paper titled "Elliptic curves with long arithmetic progressions have large rank"
+(Garcia-Fritz & Pasten, *Int. Math. Res. Not.* IMRN 2021(10):7394–7432, doi
+10.1093/imrn/rnaa061).
 
-## What is in it
+The real IMRN 2021 paper is **not on disk**. Its central theorem — Bremner's
+conjecture proved: an AP of length n of x-coordinates of rational points of a
+rank-r elliptic curve over Q has n ≤ c(2)^(1+r) — IS established in the library
+through the 2026 preprints, which restate it:
 
-- Computer Science > Computers and Society
-- Title: Smart buildings as Cyber-Physical Systems: Data-driven predictive control…
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-    - [DBLP][22] - CS Bibliography
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+- `research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md` (Theorem 1.8)
+- `research/summaries/garcia-fritz-pasten-patterns-elliptic-2026.html.md` (Theorem 1.1, as "Proof of Bremner's conjecture")
 
-
-## What it claims
-
-Abstract: Due to its significant contribution to global energy usage and the associated greenhouse gas emissions, existing building stock's energy efficiency must improve. Predictive building control promises to contribute to that by increasing the efficiency of building operations. Predictive control complements other means to increase performance such as refurbishments as well as modernizations of systems. This survey reviews recent works and contextualizes these with the current state of the art of interrelated topics in data handling, building automation, distributed control, and semantics. The comprehensive overview leads to seven research questions guiding future research directions.
-
-Comments: | 45 pages |
-
-Subjects: | Computers and Society (cs.CY) |
-
-Cite as: | [arXiv:1807.06084][6] [cs.CY] |
-
-| (or [arXiv:1807.06084v1][7] [cs.CY] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.1807.06084][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-Journal reference: | Renewable and Sustainable Energy Reviews Volume 90, July 2018 |
-
-Related DOI:  |…
-
-Focus to learn…
-
-D…
-
-*[digest of a 7144 character source; every section, statement, and proof in full at `research/sources/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.full.md`]*
+Do not cite this file as the IMRN paper. The summary and `.full.md` companion
+were auto-filed from the wrong fetch and hold no mathematical content about the
+magic-square-of-squares problem. The correct arXiv ID for the IMRN paper was not
+located in this cycle (the DOI 10.1093/imrn/rnaa061 points at OUP's IMRN; the
+arXiv preprint number is unconfirmed). Recording the failed ID so nobody refetches
+1807.06084 for this purpose.
