@@ -14,7 +14,9 @@ The 8th square means realising one of (13) as a square simultaneously with
 Chabauty–Coleman either finds all rational points or proves none exist beyond
 the known witness. Covering all 16 configurations would settle the 8-square
 sub-question.
-status: adopted
+status: refuted (for Category VII — genus 1 blocks Chabauty–Coleman; other configurations unknown but no witness exists)
+killed-by: This run computed genus of the three eq. (13) quartics at λ=13 (Category VII) using two independent routes (Sage HyperellipticCurve and sympy discriminant) — all three are genus 1 (elliptic curves), not genus ≥ 2. Chabauty–Coleman's decisive hypothesis g ≥ 2 fails. The first-step was executed (code/out/bremner2_quartics.txt) and returned: GENUS 1 for (13a),(13b),(13c). The correct tool for genus-1 curves is elliptic 2-descent/Selmer on E: y²=F(x), which is the subject of the root-number-parity-four-curves approach. Whether any other 7→8 configuration in Bremner's 16 yields a curve of genus ≥ 2 with r < g is unverified, but no 7-square witness is known in any configuration other than Category VII, so there is no explicit curve to apply Chabauty–Coleman to.
+first-step-result: genus 1 for all three eq. (13) quartics at λ=13 (code/out/bremner2_quartics.txt). Chabauty–Coleman does not engage — the genus-≥2 hypothesis fails. The computation verified eq. (12) at the witness (p=9,q=2) → square = 373²·34², confirming the Bremner witness reconstruction. The approach's own first-step criterion "if r ≥ g for all three, Chabauty–Coleman does not apply and the approach is closed" is satisfied, but it's worse than r ≥ g — the genus itself is 1, so neither r<g nor r≥g is a meaningful question.
 precedent: A. Bremner, "On squares of squares II", Acta Arith. 99 (2001) 289-308
   (library: research/sources/bremner-on-squares-of-squares-II-2001.full.md) gives
   the explicit quartics (12)-(13) for Category VII, the 7-square witness, and the
