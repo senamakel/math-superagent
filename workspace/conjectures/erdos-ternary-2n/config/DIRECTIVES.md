@@ -23,3 +23,21 @@ Everything is in order. Here's what I changed and why.
 **`research/threads/dh1-gap.md`**: New thread — states precisely what DH-1 leaves open (any digit-2-free counterexample needs ≥26 ones), what would improve it (coupling via Cantor-set formulation, transfer-operator spectral gap, growth argument), and concrete next steps connecting DH-1 to SIEVE-EXACT.
 
 No threads were closed — all three remain live. No research request filed — DH-1 is already in the claim ledger and the Narkiewicz primary source is not the priority the directive sets.
+
+## 3 — from steer
+
+The lifting is now PROVED, unconditionally, in code/out/lifting_theorem.md with claim id ternary-lifting-theorem, status proved. It supersedes ternary-sieve-count-doubles, which only asserted the count for k<=22. Three lemmas. (1) 2^(2*3^(k-2)) has order 3 mod 3^k, so it equals 1 + c*3^(k-1) with 3 not dividing c; checked c=1 for k=2..15. (2) The three lifts r + j*2*3^(k-2) of a residue all agree mod 3^(k-1), because 2*3^(k-2) is the order of 2 mod 3^(k-1) — so they share their low k-1 ternary digits and can differ only in the k-th. (3) That k-th digit is d + v*j*c mod 3 where v = 2^r; since 3 divides neither v (a power of 2) nor c, the map j -> d + v*c*j is an affine bijection of Z/3, so the three top digits are 0,1,2 in some order. Exactly one lift has top digit 2 and dies; exactly two survive. Hence |A_k| = 2|A_{k-1}|, |A_1|=1, so |A_k| = 2^(k-1) for ALL k. Verified: zero violations over k=3..13 with 200 random r each. Consequence, and this is the run's main result: the sieve set doubles at every level and never empties, so NO congruence modulo any power of 3 can prove this conjecture at any finite precision. Stop sieving — sieve_structure.py enumerating A_k explicitly is data you no longer need, and the answer to how |A_k| behaves is now a theorem rather than a table. Two things instead. (1) Formalise this in Lean 4 — it is three short lemmas about orders in (Z/3^k)* and an affine bijection of Z/3, which is well within reach, and a machine-checked version would be a real artifact. Report #print axioms and every sorry. (2) Go where the sieve cannot see: DH-1 says any exception has a digit 2 or at least 26 digits equal to 1. State precisely what DH-1 leaves open, what improving 26 would take, and whether Lagarias's density bound and DH-1 can be combined.
+
+All changes are in place and consistent. Here's my report.
+
+**What I changed and why:**
+
+The directive states the lifting theorem is now **proved unconditionally** (`ternary-lifting-theorem` in `code/out/lifting_theorem.md`) and directs two new lines of work — Lean formalisation and the DH-1 × Lagarias combination — while stopping sieving. I made these changes:
+
+1. **`TASKS.md`** — rewritten so task 1 is now the Lean 4 formalisation (was: proving the lifting, which the directive says is done), task 2 is the DH-1 × Lagarias combination, and sieving is explicitly stopped. The lifting-proof work is removed from the active plan.
+2. **`research/threads/lifting-proof.md`** — marked **dead** (proved, superseded) rather than live, so no role re-opens it.
+3. **`research/threads/lean-formalization.md`** — new live thread for the three-lemma Lean formalisation.
+4. **`research/threads/dh1-gap.md`** — question widened to the Lagarias combination, matching the directive's second item.
+5. **`CONTEXT.md`** — the "Established" entry now records the lifting as an unconditional three-lemma proof (with the supersession of `ternary-sieve-count-doubles` and the stop-sieving instruction), and "Gaps" names the two new live directions.
+
+I attempted to file a `request_research` for the DH-1 × Lagarias composition question, but the tool declined to queue it — the library already carries the individual claims (DH-1, LAG-2, LAG-4). The composition gap is nonetheless captured as a live task in `TASKS.md` and the dh1-gap thread, which is where it should direct work.
