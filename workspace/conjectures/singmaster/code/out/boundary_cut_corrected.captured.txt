@@ -1,0 +1,47 @@
+==========================================================================
+Witness set: every nontrivial representative, against BOTH cuts
+==========================================================================
+      a       n    k   cut(correct)   verdict  cut(as coded)   verdict
+    120      16    2          26.74  boundary          11.86  boundary
+    120      10    3           14.1  boundary          9.428  boundary
+    210      21    2          39.07  boundary          13.47  boundary
+    210      10    4           14.1  boundary          9.428  boundary
+   1540      56    2          160.3  boundary          20.71  boundary
+   1540      22    3          41.71  boundary          13.76  boundary
+   3003      78    2          261.9  boundary          23.75  boundary
+   3003      15    5          24.46  boundary          11.51  boundary
+   3003      14    6          22.25  boundary          11.13  boundary
+   7140     120    2          500.3  boundary          28.24  boundary
+   7140      36    3          84.18  boundary          17.15  boundary
+  11628     153    2            724  boundary          31.06  boundary
+  11628      19    5          33.96  boundary          12.86  boundary
+  24310     221    2           1274  boundary          35.78  boundary
+  24310      17    8          29.09  boundary          12.21  boundary
+
+boundary-representative count per a, under the CORRECT cut:
+  a=120    boundary reps = 2
+  a=210    boundary reps = 2
+  a=1540   boundary reps = 2
+  a=3003   boundary reps = 3
+  a=7140   boundary reps = 2
+  a=11628  boundary reps = 2
+  a=24310  boundary reps = 2
+  max over the witness set = 3
+  (counting left-half reps only; both mirrors doubles it)
+
+==========================================================================
+Fibonacci family: (n,k) known by construction, no search
+==========================================================================
+ j        n        k   cut(correct)   verdict  cut(as coded)   verdict
+ 1       14        4          22.25  boundary          11.13  boundary
+ 2      103       38          397.2  boundary          26.57  interior
+ 3      713      271           8027  boundary          55.02  interior
+ 4     4894     1868      1.864e+05  boundary            106  interior
+ 5    33551    12814      4.882e+06  boundary          194.6  interior
+ 6   229969    87839      1.416e+08  boundary          344.4  interior
+
+The family sits INTERIOR under the correct cut for every j: k grows like
+0.38*n while the cut grows subpolynomially, so the family contributes to
+the MRSTT interior count, not to the boundary count G-boundary-uniform-count
+is about. Under the mis-coded cut it would also read interior, but for the
+wrong reason and with the wrong margin.

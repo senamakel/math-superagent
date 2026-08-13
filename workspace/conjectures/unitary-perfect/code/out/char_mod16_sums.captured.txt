@@ -1,0 +1,119 @@
+p=  3 omega=  1 N1=  0 N5=  0 N9=  0 N13=  1 heads=  0 S2=   -1 S4=-I S4bar=I sum_e=3(want 3) OK Parseval FAIL
+    r=                                    13  class=13 mod16  e=3  
+p=  5 omega=  2 N1=  0 N5=  1 N9=  1 N13=  0 heads=  0 S2=    0 S4=-1 + I S4bar=-1 - I sum_e=3(want 2) FAIL Parseval FAIL
+    r=                                     5  class= 5 mod16  e=1  
+    r=                                    41  class= 9 mod16  e=2  
+p=  7 omega=  2 N1=  1 N5=  0 N9=  0 N13=  1 heads=  1 S2=    0 S4=1 - I S4bar=1 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                    29  class=13 mod16  e=3  
+    r=                                   113  class= 1 mod16  e=0  HEAD
+p= 11 omega=  2 N1=  1 N5=  0 N9=  0 N13=  1 heads=  1 S2=    0 S4=1 - I S4bar=1 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   397  class=13 mod16  e=3  
+    r=                                  2113  class= 1 mod16  e=0  HEAD
+p= 13 omega=  3 N1=  0 N5=  1 N9=  0 N13=  2 heads=  0 S2=   -3 S4=-I S4bar=I sum_e=3(want 3) OK Parseval FAIL
+    r=                                    53  class= 5 mod16  e=1  
+    r=                                   157  class=13 mod16  e=3  
+    r=                                  1613  class=13 mod16  e=3  
+p= 17 omega=  3 N1=  0 N5=  0 N9=  2 N13=  1 heads=  0 S2=    1 S4=-2 - I S4bar=-2 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   137  class= 9 mod16  e=2  
+    r=                                   953  class= 9 mod16  e=2  
+    r=                                 26317  class=13 mod16  e=3  
+p= 19 omega=  3 N1=  1 N5=  1 N9=  1 N13=  0 heads=  1 S2=    1 S4=I S4bar=-I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   229  class= 5 mod16  e=1  
+    r=                                   457  class= 9 mod16  e=2  
+    r=                                525313  class= 1 mod16  e=0  HEAD
+p= 23 omega=  4 N1=  0 N5=  2 N9=  1 N13=  1 heads=  0 S2=   -2 S4=-1 + I S4bar=-1 - I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   277  class= 5 mod16  e=1  
+    r=                                  1013  class= 5 mod16  e=1  
+    r=                                  1657  class= 9 mod16  e=2  
+    r=                                 30269  class=13 mod16  e=3  
+p= 29 omega=  2 N1=  1 N5=  0 N9=  0 N13=  1 heads=  1 S2=    0 S4=1 - I S4bar=1 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                             107367629  class=13 mod16  e=3  
+    r=                             536903681  class= 1 mod16  e=0  HEAD
+p= 31 omega=  4 N1=  0 N5=  2 N9=  1 N13=  1 heads=  0 S2=   -2 S4=-1 + I S4bar=-1 - I sum_e=3(want 3) OK Parseval FAIL
+    r=                                  5581  class=13 mod16  e=3  
+    r=                                  8681  class= 9 mod16  e=2  
+    r=                                 49477  class= 5 mod16  e=1  
+    r=                                384773  class= 5 mod16  e=1  
+p= 37 omega=  4 N1=  2 N5=  1 N9=  1 N13=  0 heads=  2 S2=    2 S4=1 + I S4bar=1 - I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   149  class= 5 mod16  e=1  
+    r=                                   593  class= 1 mod16  e=0  HEAD
+    r=                             184481113  class= 9 mod16  e=2  
+    r=                             231769777  class= 1 mod16  e=0  HEAD
+p= 41 omega=  4 N1=  0 N5=  2 N9=  1 N13=  1 heads=  0 S2=   -2 S4=-1 + I S4bar=-1 - I sum_e=3(want 3) OK Parseval FAIL
+    r=                                 10169  class= 9 mod16  e=2  
+    r=                                181549  class=13 mod16  e=3  
+    r=                              12112549  class= 5 mod16  e=1  
+    r=                              43249589  class= 5 mod16  e=1  
+p= 43 omega=  4 N1=  1 N5=  1 N9=  0 N13=  2 heads=  1 S2=   -2 S4=1 - I S4bar=1 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   173  class=13 mod16  e=3  
+    r=                                101653  class= 5 mod16  e=1  
+    r=                                500177  class= 1 mod16  e=0  HEAD
+    r=                         1759217765581  class=13 mod16  e=3  
+p= 47 omega=  3 N1=  2 N5=  0 N9=  0 N13=  1 heads=  2 S2=    1 S4=2 - I S4bar=2 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                  3761  class= 1 mod16  e=0  HEAD
+    r=                            7484047069  class=13 mod16  e=3  
+    r=                       140737471578113  class= 1 mod16  e=0  HEAD
+p= 53 omega=  3 N1=  2 N5=  0 N9=  0 N13=  1 heads=  2 S2=    1 S4=2 - I S4bar=2 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                              15358129  class= 1 mod16  e=0  HEAD
+    r=                             586477649  class= 1 mod16  e=0  HEAD
+    r=                      1801439824104653  class=13 mod16  e=3  
+p= 59 omega=  6 N1=  1 N5=  2 N9=  0 N13=  3 heads=  1 S2=   -4 S4=1 - I S4bar=1 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                  1181  class=13 mod16  e=3  
+    r=                                  3541  class= 5 mod16  e=1  
+    r=                                157649  class= 1 mod16  e=0  HEAD
+    r=                                174877  class=13 mod16  e=3  
+    r=                               5521693  class=13 mod16  e=3  
+    r=                          104399276341  class= 5 mod16  e=1  
+p= 61 omega=  5 N1=  0 N5=  2 N9=  0 N13=  3 heads=  0 S2=   -5 S4=-I S4bar=I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   733  class=13 mod16  e=3  
+    r=                                  1709  class=13 mod16  e=3  
+    r=                               3456749  class=13 mod16  e=3  
+    r=                          368140581013  class= 5 mod16  e=1  
+    r=                          667055378149  class= 5 mod16  e=1  
+p= 67 omega=  5 N1=  0 N5=  1 N9=  2 N13=  2 heads=  0 S2=   -1 S4=-2 - I S4bar=-2 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   269  class=13 mod16  e=3  
+    r=                              15152453  class= 5 mod16  e=1  
+    r=                              42875177  class= 9 mod16  e=2  
+    r=                            2559066073  class= 9 mod16  e=2  
+    r=                         9739278030221  class=13 mod16  e=3  
+p= 71 omega=  5 N1=  0 N5=  1 N9=  2 N13=  2 heads=  0 S2=   -1 S4=-2 - I S4bar=-2 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   569  class= 9 mod16  e=2  
+    r=                             148587949  class=13 mod16  e=3  
+    r=                            4999465853  class=13 mod16  e=3  
+    r=                            5585522857  class= 9 mod16  e=2  
+    r=                          472287102421  class= 5 mod16  e=1  
+p= 73 omega=  4 N1=  2 N5=  1 N9=  1 N13=  0 heads=  2 S2=    2 S4=1 + I S4bar=1 - I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   293  class= 5 mod16  e=1  
+    r=                                  9929  class= 9 mod16  e=2  
+    r=                       649301712182209  class= 1 mod16  e=0  HEAD
+    r=                9444732965601851473921  class= 1 mod16  e=0  HEAD
+p= 79 omega=  3 N1=  2 N5=  0 N9=  0 N13=  1 heads=  2 S2=    1 S4=2 - I S4bar=2 + I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   317  class=13 mod16  e=3  
+    r=                 381364611866507317969  class= 1 mod16  e=0  HEAD
+    r=              604462909806215075725313  class= 1 mod16  e=0  HEAD
+p= 83 omega=  5 N1=  1 N5=  2 N9=  1 N13=  1 heads=  1 S2=   -1 S4=I S4bar=-I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   997  class= 5 mod16  e=1  
+    r=                              13063537  class= 1 mod16  e=0  HEAD
+    r=                           46202197673  class= 9 mod16  e=2  
+    r=                          209957719973  class= 5 mod16  e=1  
+    r=                    148067197374074653  class=13 mod16  e=3  
+p= 89 omega=  3 N1=  0 N5=  1 N9=  0 N13=  2 heads=  0 S2=   -3 S4=-I S4bar=I sum_e=3(want 3) OK Parseval FAIL
+    r=                                  1069  class=13 mod16  e=3  
+    r=              579017791994999956106149  class= 5 mod16  e=1  
+    r=           123794003928545064364330189  class=13 mod16  e=3  
+p= 97 omega=  8 N1=  2 N5=  3 N9=  1 N13=  2 heads=  2 S2=   -2 S4=1 + I S4bar=1 - I sum_e=3(want 3) OK Parseval FAIL
+    r=                                   389  class= 5 mod16  e=1  
+    r=                                  3881  class= 9 mod16  e=2  
+    r=                                  4657  class= 1 mod16  e=0  HEAD
+    r=                                  5821  class=13 mod16  e=3  
+    r=                            3555339061  class= 5 mod16  e=1  
+    r=                            4959325597  class=13 mod16  e=3  
+    r=                          394563864677  class= 5 mod16  e=1  
+    r=                        17637260034881  class= 1 mod16  e=0  HEAD
+
+MIN heads/omega: p=3  heads/omega = 0 = 0.000000
+CHECK p=3: Phi=13, omega=1, class=13, heads=0
+CHECK p=5: Phi=5021681388309344611068631538566133132881884355571227610317, omega=2, class=5, heads=0
+
+ALL identity checks: FAIL
+rows completed: 24/24, elapsed 291.4s
