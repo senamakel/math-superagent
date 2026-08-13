@@ -36,3 +36,4 @@ Nobody has checked whether these are known theory. Grounding one is cheaper than
 ## Approaches that could not be read
 
 - `README` has no approach block, so nothing can say what the idea is or whether anyone has checked it
+- `arc-closure-cs-polynomial.verdict` has no approach block, so nothing can say what the idea is or whether anyone has checked it
