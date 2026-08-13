@@ -50,16 +50,15 @@ class `n ≡ −c` or `n ≡ −1/c (mod 4ab)` with `(a,b)=1`, `c | a+b` odd, is
 polynomially solvable — this is the system of modular identities in §2/§11,
 recovering Mordell's identities as the case `a = b = 1` (gives `n ≡ 3 mod 4`).)
 
-**Structural characterisations used in the count.** Prop 2.2 / 2.6 / 2.11 +
-Lemma 11.2 give complete parametrisations of Type-I and Type-II solutions: for
-prime `p`,
-- Type I: `x = d a b`, `y = d a (p k a b − 1)`, `z = d p k b (p k a b − 1)` (or
-  symmetric form, `a,b,k,d ≥ 1`), matching the classical "one denominator
-  divisible by p" parameter family;
-- Type II: denominators have `p²` factor; parameterised analogously.
+**Structural characterisations used in the count.** Props 2.2 and 2.6 give,
+respectively, "Description of Type I solutions" and "Description of Type II
+solutions" (with the companion Lemmas 2.8, 2.11 and Lemma 11.2 "Generation of
+Type II solutions"). The precise parameter formulas are in the paper (§2); the
+section heading list in the ar5iv copy gives the exact proposition titles.
 These parametrisations are exactly what the symbolic ansatz search should test
 shapes against — any ansatz that specialises to Type I/II at squares is
-impossible by Prop 1.6.
+impossible by Prop 1.6. (This run has not transcribed the parameter formulas from
+memory; read §2 of the full text for the exact shapes.)
 
 ```claim
 id: prime-reduction
