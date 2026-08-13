@@ -483,3 +483,30 @@ The mathematics is unaffected and still the priority. Outstanding from directive
 3. Directive 18 is "build-check probe", an operator artifact. Discard it.
 
 All three outstanding items from directives 19 and 20 are already done. The duplicate Lean claims are collapsed (`lean-reduction-machine-checked` no longer appears in `search_claims`; only the verbatim `gilbreath-second-entry-equivalence` with `Evidence: proved` remains). `TASKS.md` already explains the proved-count downgrade (`|...|` paraphrase ambiguous between `Nat.dist` and `Nat.sub` → claim misstated the definition → cannot be `proved`). No "build-check probe" artifact exists in the workspace — it doesn't appear in any file or claim on disk. The checkpointing information is noted but requires no workspace changes. Nothing to edit.
+
+## 22 — from steer
+
+Good: checked went 6 -> 9 with asserted 38 -> 35, so three claims converted rather than accumulated. The duplicate Lean claim is resolved - one row now. And conditional_rate_experiment.notes.md is written. That is the only real ledger conversion on any of the three runs this cycle.
+
+Two ledger defects to fix, both small.
+
+1. A NEW duplicate. research/CLAIMS.md carries gatti-2020-valid-extension-global-formula TWICE with different statements:
+
+   "...iff k solves the nested-a..."
+   "...iff the nested-absolute G..."
+
+   Same id, two rows, two wordings. Collapse to one, quoting whichever source note is authoritative, and delete the other. You just fixed exactly this for the Lean pair - the deriver is emitting a row per note rather than per id, so any claim written up in two notes will double. Worth checking whether other ids are doubled too.
+
+2. ledger-scan-probe is filed as status checked with statement "probe of the claim-block regeneration path". That is a test artifact, not a mathematical claim. It inflates checked and it will mislead any later reader counting evidence. Delete it, or if you need the probe, keep it in a note without a claim block.
+
+The mathematics is in good shape and the route is clear. Priority stays: lambda_hat = 0.5853 is MEASURED. The conjecture needs Sigma (j_i + 1) >= k - 2, so what closes it is a LOWER bound on the event rate valid for all k, not an estimate at D=400. Say in the thread what would have to be proved to turn the measurement into a bound.
+
+Budget warning, affects planning: the shared API key is at 7.13 of 50 remaining and all three runs draw on it. When it hits zero every run stops mid-attempt. Prefer finishing and recording what you have over opening anything new.
+
+Both fixes are done, and the re-derivation of CLAIMS.md confirmed them. Specifically:
+
+1. **`gatti-2020-valid-extension-global-formula`** — collapsed to the single copy in `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` (the authoritative source). Three other Gatti ids were also doubled for the same reason (`theorem4-proof-invalid`, `lemma4-interval-completeness-refuted`, `anti-gilbreath-construction`) — all live only in their summaries now; the claim blocks were removed from `library-state.md`, which now notes that the summaries are authoritative and points readers there.
+
+2. **`ledger-scan-probe`** — deleted. Its claim block is gone from `code/out/check_regenerate_lemma.notes.md`; nothing remains of it in CLAIMS.md.
+
+No other doubled ids found in the re-derived ledger. The root cause was library-state.md carrying its own instances of claims already written into summaries — the deriver emitted one row per note, so any id present in both files doubled.

@@ -83,15 +83,7 @@ anchor: research/sources/chase-hunter-tao-2026-full-html.full.md
 
 ## The negative result: small gaps alone do not suffice
 
-```claim
-id: anti-gilbreath-construction
-statement: (Eppstein 2011) For any unbounded monotone f(n) ≥ 2, however slowly growing, there is a sequence X whose n-th gap is ≤ f(n) but whose triangle's right edge switches between 1 and other values infinitely often.
-hypotheses: none beyond f unbounded monotone; construction is explicit and builds backwards from partial triangles.
-holds-here: yes — this refutes the blanket Croft claim (also noted by Odlyzko and by CHT paper's reference [3]) and is quoted in the CHT paper. Small gaps plus the 2-then-odds parity are NOT sufficient; non-concentration/randomness is essential.
-status: sourced (Eppstein blog, 2011-02-20, also cited by CHT 2026)
-bearing: any invariant argument must use more than the first row's gap bounds. It says nothing against the primes specifically, but kills any "gap bound alone" proof strategy.
-anchor: research/sources/eppstein-anti-gilbreath-sequences.full.md
-```
+(The Eppstein anti-Gilbreath construction is recorded in the authoritative source summary at `research/summaries/eppstein-anti-gilbreath-sequences.md` — see claim `anti-gilbreath-construction` there.)
 
 ## History correction: the Proth "failed proof" is a retracted myth
 
@@ -348,35 +340,16 @@ possible to check what that framework actually proves. Verdict: its Theorem 4
 does not prove the prime case, and its Lemma 4 (interval completeness of the
 valid-extension set) is false in general.
 
-```claim
-id: gatti-2020-theorem4-proof-invalid
-statement: Gatti's Theorem 4 (min K ≤ p_n ≤ max K for every prime, claimed as a core bound toward Gilbreath) has an invalid proof. In the right-inequality step he writes "If p_n ≤ max K, then subtracting 2p_{n−1} from both sides…" — i.e. he assumes the conclusion — and then uses Bertrand's postulate only to obtain "min K ≤ α for some α > 0", a trivially true statement that never establishes p_n ≤ max K. The left inequality (min K ≤ p_n) is sound via Corollary 2 (appending k = s_n is always a valid extension).
-hypotheses: Bertrand's postulate plus the min/max-K machinery of his Eq. (2).
-holds-here: yes — the flawed step is precisely in the prime case whose status is open.
-status: refuted (located flaw: conclusion assumed in the induction step)
-bearing: Gatti 2020 proves NO deterministic bounded-gap or prime-class result; nothing here overturns Eppstein's anti-Gilbreath refutation; the REQUESTS row "deterministic class theorem" stays open.
-anchor: research/sources/gatti-2020-preprints-gilbreath-conditions.full.md
-```
-
-```claim
-id: gatti-2020-lemma4-interval-completeness-refuted
-statement: Gatti's Lemma 4 / Theorem 3 assert the valid-extension set K_S fills the whole parity class in ]min K, max K[. This interval-completeness is FALSE in general: Muney 2026 exhibits the first hole at length 5 for (2,3,5,9,15); and even the count dim K_S = 2^{n−1} fails on S = {2,3,5}: |K_S| = 5, not 4. Hand check (verified by hand arithmetic; script code/research_mod_check/verify_gatti_kset.py queued for the coder): the Gilbreath equation for {2,3,5} is |1 − |2 − |5−k||| = 1, solved by k ∈ {1,3,5,7,9}; Gatti's own Eq. (2) signed sums ±1 ± 2 + 5 ± 1 collapse to exactly that set.
-hypotheses: none beyond S ∈ G_n; verified on S = {2,3,5}.
-holds-here: yes — the false lemma is the claimed engine of the bound-sequence theory.
-status: refuted (by Muney 2026, held; and by the direct example)
-bearing: interval-completeness of valid-extension sets must not be assumed anywhere downstream; the run's approaches already treat valid extension as global and hole-prone; the CROSS-CHECK that the primes' own prefixes avoid holes is the conjecture in this language and remains open.
-anchor: research/summaries/gatti-2020-preprints-gilbreath-conditions.md
-```
-
-```claim
-id: gatti-2020-valid-extension-global-formula
-statement: For S ∈ G_n, appending k preserves Gilbreath-ness iff k solves the nested-absolute Gilbreath equation; the solutions are k = ±s^{n−1}_1 ± s^{n−2}_2 ± … ± s^1_{n−1} + s_n ± 1 — a signed sum over the WHOLE right anti-diagonal plus s_n ± 1 — with max K_S = Σ_i s^{n−i}_i + s_n + 1 and min K_S = 2s_n − max K_S (reflection symmetry). Same global criterion as Alkan 2023 / Muney 2026, now sourced independently in primary form.
-hypotheses: finite integer sequence S ∈ G_n.
-holds-here: yes — reinforces the refutation of any bounded-window backward-extension automaton.
-status: checked (hand arithmetic; independent duplicate of the held global-valid-extension result)
-bearing: the valid-extension set is determined by the whole prefix, never a bounded window, so backward-extension cannot be a finite-state induction.
-anchor: research/sources/gatti-2020-preprints-gilbreath-conditions.full.md
-```
+The claim blocks for `gatti-2020-theorem4-proof-invalid`,
+`gatti-2020-lemma4-interval-completeness-refuted`,
+`gatti-2020-valid-extension-global-formula`, and
+`gatti-2020-parity-alternation-independent` live in the authoritative source
+file `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` (the
+summary that digested the full text); the duplicates formerly here have been
+collapsed to that single source. The earlier note in this file was the source's
+own summary, not an independent claim — the deriver was emitting one row per
+note per id, so any claim written up in both the summary and this ledger
+appeared twice.
 
 Also obtained this cycle: the missing full text of
 `research/sources/caldwell-gilbreaths-conjecture-glossary.full.md` (Wayback

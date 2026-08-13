@@ -1,0 +1,17 @@
+(2,3) [W23 Y^2+Y=X^3-9X+20]: remainder==0 -> True
+(2,4) [Q24 V^2=3U^4+6U^3-3U^2-6U+9]: remainder==0 -> True
+(2,6) [W26 Y^2+Y=X^3+X^2-58X+1294]: remainder==0 -> True
+(2,8) [Q28 V^2=35U^4-350U^3+945U^2-630U+11025]: remainder==0 -> True
+(3,4) [W34 Y^2+Y=X^3-X]: remainder==0 -> True
+(3,6) [C36 15U^3-15U=V^3-4V^2+3V]: remainder==0 -> True
+(4,6) [W46 Y^2+Y=X^3-525X+10156]: remainder==0 -> True
+(4,8) [Q48 V^2=105U^4+210U^3-945U^2-1890U+11025]: remainder==0 -> True
+
+all 8 transformation identities exact: True
+
+MW-basis checks (points on curve):
+  W23 (0,4): True
+  W23 (3,4): True
+  W26 (-7,37): True  (8,37): True
+  W34 (0,0): True
+  W46 (25,112): True  (-20,112): True  (70,562): True

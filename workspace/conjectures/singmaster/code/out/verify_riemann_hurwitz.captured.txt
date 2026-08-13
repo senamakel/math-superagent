@@ -1,0 +1,72 @@
+==============================================================================
+Verified Riemann-Hurwitz accounting for C(x,m)=C(y,n).
+Formula g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2 (normalized genus).
+==============================================================================
+------------------------------------------------------------------------------
+(m,n)=(2,3)   gcd=1   predicted g=1
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 3 == n
+   [OK ] (b) Q' has 2 real simple critical points in (0,2)
+   [OK ] (b) critical VALUES of Q pairwise distinct
+   [OK ] (b) finite ramification = 4 points = m(n-1) = 4 (each index 2 via simple critical points)
+   [OK ] (c) RH: 2g-2=0  ==  -2n+m(n-1)+(n-gcd) = 0   (n-d = 2)
+   [OK ] (c) closed-form g=1 matches RH-forced g=1
+   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 1
+   [OK ] (inf) each of 1 points index n/d=3, total 1*(3)=3=deg
+   [OK ] (d) m=2: g(2,n)=1 == floor((n-1)/2)=1
+------------------------------------------------------------------------------
+(m,n)=(2,4)   gcd=2   predicted g=1
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 4 == n
+   [OK ] (b) Q' has 3 real simple critical points in (0,3)
+   [OK ] (b) critical VALUES of Q pairwise distinct
+   [OK ] (b) finite ramification = 6 points = m(n-1) = 6 (each index 2 via simple critical points)
+   [OK ] (c) RH: 2g-2=0  ==  -2n+m(n-1)+(n-gcd) = 0   (n-d = 2)
+   [OK ] (c) closed-form g=1 matches RH-forced g=1
+   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 2
+   [OK ] (inf) each of 2 points index n/d=2, total 2*(2)=4=deg
+   [OK ] (d) m=2: g(2,n)=1 == floor((n-1)/2)=1
+------------------------------------------------------------------------------
+(m,n)=(2,5)   gcd=1   predicted g=2
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 5 == n
+   [OK ] (b) Q' has 4 real simple critical points in (0,4)
+   [OK ] (b) critical VALUES of Q pairwise distinct
+   [OK ] (b) finite ramification = 8 points = m(n-1) = 8 (each index 2 via simple critical points)
+   [OK ] (c) RH: 2g-2=2  ==  -2n+m(n-1)+(n-gcd) = 2   (n-d = 4)
+   [OK ] (c) closed-form g=2 matches RH-forced g=2
+   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 1
+   [OK ] (inf) each of 1 points index n/d=5, total 1*(5)=5=deg
+   [OK ] (d) m=2: g(2,n)=2 == floor((n-1)/2)=2
+------------------------------------------------------------------------------
+(m,n)=(2,6)   gcd=2   predicted g=2
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 6 == n
+   [OK ] (b) Q' has 5 real simple critical points in (0,5)
+   [FAIL] (b) critical VALUES of Q pairwise distinct
+   [OK ] (b) finite ramification = 10 points = m(n-1) = 10 (each index 2 via simple critical points)
+   [OK ] (c) RH: 2g-2=2  ==  -2n+m(n-1)+(n-gcd) = 2   (n-d = 4)
+   [OK ] (c) closed-form g=2 matches RH-forced g=2
+   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 2
+   [OK ] (inf) each of 2 points index n/d=3, total 2*(3)=6=deg
+   [OK ] (d) m=2: g(2,n)=2 == floor((n-1)/2)=2
+------------------------------------------------------------------------------
+(m,n)=(2,7)   gcd=1   predicted g=3
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 7 == n
+   [OK ] (b) Q' has 6 real simple critical points in (0,6)
+   [OK ] (b) critical VALUES of Q pairwise distinct
+   [OK ] (b) finite ramification = 12 points = m(n-1) = 12 (each index 2 via simple critical points)
+   [OK ] (c) RH: 2g-2=4  ==  -2n+m(n-1)+(n-gcd) = 4   (n-d = 6)
+   [OK ] (c) closed-form g=3 matches RH-forced g=3
+   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 1
+   [OK ] (inf) each of 1 points index n/d=7, total 1*(7)=7=deg
+   [OK ] (d) m=2: g(2,n)=3 == floor((n-1)/2)=3
+------------------------------------------------------------------------------
+(m,n)=(2,8)   gcd=2   predicted g=3
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 8 == n
+Traceback (most recent call last):
+  File "/workspace/code/genus/verify_riemann_hurwitz.py", line 123, in <module>
+    crit = critical_points_of_q(n)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/genus/verify_riemann_hurwitz.py", line 72, in critical_points_of_q
+    roots = polyroots([complex(c) for c in coeffs])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/mpmath/calculus/polynomials.py", line 196, in polyroots
+    raise ctx.NoConvergence("Didn't converge in maxsteps=%d steps." \
+mpmath.libmp.libhyper.NoConvergence: Didn't converge in maxsteps=50 steps.

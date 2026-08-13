@@ -1,0 +1,20 @@
+=== 1. Erdos-Selfridge k=2 exponent-1 prime ===
+n in [1,200) with (n+1)(n+2) having NO prime > 2 to exponent 1: 2
+  n=7: (n+1)(n+2)=72 = {2: 3, 3: 2}
+  n=48: (n+1)(n+2)=2450 = {2: 1, 5: 2, 7: 2}
+First such: n=7 gives 8*9=72=2^3*3^2 -- no prime > 2 with exponent 1.
+
+=== 2. Bombieri-Pila vs trivial bound ===
+a=        3003: trivial N(a)<=O((log a)^2) ~       68, BP-degree3 term ~      4.625e+03 (worse by 6.80e+01x)
+a=     1000000: trivial N(a)<=O((log a)^2) ~      192, BP-degree3 term ~      9.543e+04 (worse by 4.97e+02x)
+a=1000000000000: trivial N(a)<=O((log a)^2) ~      782, BP-degree3 term ~      3.817e+07 (worse by 4.88e+04x)
+a=1000000000000000000: trivial N(a)<=O((log a)^2) ~     1772, BP-degree3 term ~      8.589e+09 (worse by 4.85e+06x)
+a=1000000000000000000000000000000: trivial N(a)<=O((log a)^2) ~     4952, BP-degree3 term ~      2.386e+14 (worse by 4.82e+10x)
+
+=== 3. Witness 3003 equal-products alignment ===
+C(15,5) = 3003, C(14,6) = 3003
+A=360360, B=2162160, A*6!=259459200, B*5!=259459200, equal: True
+factor A: {2: 3, 3: 2, 5: 1, 7: 1, 11: 1, 13: 1}
+factor B: {2: 4, 3: 3, 5: 1, 7: 1, 11: 1, 13: 1}
+primes > 6 in A: {p for p,e in factorint(A).items() if p>6} = {11, 13, 7}
+prime-exponents > 6 in B: {7: 1, 11: 1, 13: 1}
