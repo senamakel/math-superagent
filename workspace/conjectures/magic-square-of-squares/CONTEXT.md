@@ -266,13 +266,16 @@ the Established section.
 ## Gaps
 
 (Double as research requests; see `research/REQUESTS.md`.)
-- **The `robertson-elliptic-reduction` claim is truncated** — it ends mid-sentence
-  at "iff there is c with three points of 2E(Q)," and does not state which three
-  points, their x-coordinates, or how they form an AP. The Garcia-Fritz–Pasten
-  theorem bounds AP length on E, but we need the complete Robertson reduction to
-  confirm (a) that an MSS gives an AP of x-coordinates on E_e, and (b) the
-  length of that AP. Scholar must re-read Bremner 1999 §2 and complete the claim
-  block with the full statement.
+- **The `robertson-elliptic-reduction` claim was truncated but is now completed** —
+  the statement names E: y² = x(x²−c²), the three points P₀,P₁,P₂ ∈ E(Q) with
+  x-coordinates in 2E(Q) as a−b, a, a+b, and the AP condition x₂P₂−x₂P₁ =
+  x₂P₁−x₂P₀. Traced through Bremner 1999 eqs. (2)–(4).  **Still needed**: scholar
+  to verify the Garcia-Fritz–Pasten theorem's non-degeneracy hypotheses hold for
+  x-coordinates of *doubled* points (x₂P) on E_e, as opposed to x(P) itself.
+  The GFP theorem bounds AP-length of x(P_i) on E, but the MSS AP is of x₂P_i,
+  which are rational functions of the x(P_i).  If there is a mismatch, the
+  reduction statement must be downgraded from `proved` to `asserted` with the
+  gap named.
 - **Rank of the Robertson curve** `E_e: y² = x(x²−e⁴)` for candidate e:
   Bremner's e=425 gives a specific curve — what is its rank? Can we bound
   rank(E_e) in terms of e for e that admit many representations as a sum of two
