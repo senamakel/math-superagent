@@ -20,6 +20,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `oracle_note.md` | Claim block for the oracle baseline: structural worked examples rerun fresh; the incidence-algebra results (rank 7 over Q, kernel dim 2, affine magic space dim 3, correcting the "dimension 4" misstatement); correction of the outdated "near-misses not yet reproduced" note; the (c,u,v) extraction table and the two realized Pythagorean relations; witness-set note directing every impossibility lemma at both near-misses (GOAL.md). |
 | `oracle_output.txt` | _(undescribed)_ |
 | `pattern_seq_output.txt` | _(undescribed)_ |
+| `pell_record_seq.py` | Prints the record-denominator sequence P_{2k-1} (OEIS A001653), numerators, record f-decimals, and the growth ratio tending to 3+2sqrt2. |
 | `phi_2adic.captured.txt` | _(undescribed)_ |
 | `phi_3adic_closure.captured.txt` | _(undescribed)_ |
 | `phi_asymptotic_check.py` | _(undescribed)_ |
@@ -37,12 +38,17 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `phi_padic_closure_exact.captured.txt` | _(undescribed)_ |
 | `phi_padic_valuation.captured.txt` | _(undescribed)_ |
 | `phi_pattern_findings.md` | _(undescribed)_ |
+| `phi_pell_record.md` | _(undescribed)_ |
 | `phi_program_runs.txt` | Capture of fresh execution of the four never-run phi programs (phi_fibre_genus_run.py, verify_phi_doubling.py, phi_canonical_check.py, phi_identity_verify.py): commands, exit codes, full stdout, and per-program key conclusions. Fibre genus confirmed 0 (Faltings attack dead); two benign display artifacts; one program bug (phi_canonical_check orbit oracle, result independently confirmed); one genuinely false bound (phi_identity [5b]). |
 | `phi_two_thirds_check.py` | Confirms |
+| `prove_pell_record.py` | _(undescribed)_ |
 | `reconciliation_2026-08-12.txt` | _(undescribed)_ |
 | `run_k3_checks.sh` | _(undescribed)_ |
 | `scholar_verify.py` | Scholar verification of the witness grids and source-reported numeric claims by exact integer arithmetic, so notes carry only program-checked numbers. |
 | `seven_square_grids_audit.txt` | _(undescribed)_ |
+| `verify_pell_argmax_unique.py` | _(undescribed)_ |
+| `verify_pell_records.py` | _(undescribed)_ |
+| `verify_pell_symbolic.py` | _(undescribed)_ |
 | `verify_phi_doubling.py` | _(undescribed)_ |
 | `verify_phi_doubling.py.captured.txt` | _(undescribed)_ |
 | `witness_padic_falsification.captured.txt` | Captured stdout of code/witness_padic_falsification.py: both near-misses verified with exact verifier (neither is a full MSS), every positive fully-realised Phi element from a witness satisfies the proved p-adic facts (v2>=3, v3>=1, res=0 mod 3); RESULT ALL CONSISTENT — no residue/closure argument forbids either witness. |
