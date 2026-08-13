@@ -221,7 +221,7 @@ def main():
     print("\n=== expansion-jump rows and jump magnitudes (threshold 5, tol=4) ===")
     for r in results:
         if r["origin"] == "regime" and r["threshold"] == 5 and r["tol"] == 4:
-            for (k, d, near) in r["jumps_abs_near"]:
+            for (k, d, near) in r["jumps_at_abs_near_pow2"]:
                 print(f"  jump to row k={k}: magnitude {d}, "
                       f"absolute depth k-1={k-1} "
                       f"{'near 2^j' if near is not None else 'NOT near'}")

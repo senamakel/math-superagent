@@ -4,44 +4,52 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Priority work (directive 3)
+## Priority work (directive 7)
 
-- [x] **1. Nail down MRSTT effectiveness — RESOLVED.** Confirmed directly from the
-      full text (`research/sources/mrstt-fulltext.full.md`, Remark 1.7): "The implied
-      quantitative bounds in the hypothesis 't is sufficiently large depending on ε'
-      are effective; however, we have made no attempt whatsoever to optimize them ...
-      will likely be too large to be of use in numerical verification". So the
-      threshold IS a computable (astronomically large) function of ε — NOT
-      non-constructive. The interior theorem therefore yields a numerical B in
-      principle. Uniform-in-k: yes over the interior; no over the boundary. The
-      boundary `2 ≤ m ≤ (log t)/(log₂t)^{3/2−ε}` remains the whole open gap.
-      (Updated in `research/approaches/mrstt-exact-statement.md` and
-      `code/out/mrstt_leaves_witnesses_open.md`.)
-      **Standalone claim `mrstt-threshold-effective` now in
-      `code/out/mrstt_leaves_witnesses_open.md` with effective:yes and
-      uniform-in-k:yes on separate lines.** The analysis at the bottom of that
-      file answers the directive's question: an effective-but-astronomical
-      interior threshold plus the boundary result yields nothing for Singmaster
-      — the witnesses are all in the edge, the interior method cannot reach the
-      edge (Prop 1.12 barrier), and the MRSTT route has delivered its partial
-      result and can go no further.
-- [x] **2. State the double failure of witnesses honestly.** Every witness has
-      t ≤ 24310, so they fail MRSTT's "t sufficiently large" hypothesis. They also
-      all lie below the interior cut (small m). **Both are now said** in
-      `code/out/mrstt_leaves_witnesses_open.md`: the region comparison is a
-      shape-of-the-region statement, not a proof that a large-t witness would also
-      escape the interior. The PENDING item about effectiveness is resolved.
-- [x] **Tombstone the dead source files.** Done.
-      `research/sources/singmaster-1971.full.md` → tombstone (was Fermat's Library
-      comments, 8538B, zero original paper content).
-      `research/sources/mrstt-interior-singmaster.full.md` → tombstone (was arXiv
-      abstract page, 6954B, zero theorem/lemma/proof hits).
+- [ ] **1. Promote genus_table.captured.txt to a standalone claim.** Two
+      independent CAS routes (Singular normal.lib and Sage Curve.genus())
+      agreeing on every entry for 2<=k1,k2<=12, extended to k1=24 for
+      k2=3,4,5, is the definitive two-parameter Faltings threshold. Genus = 1
+      exactly for {2,3} and {2,4}; genus >= 2 for every other distinct pair.
+      This IS the GOAL.md deliverable and it should be its own claim, marked
+      `proved-by-two-CAS`, not left in a capture. It **supersedes** the
+      operator's three-diagonal salvage (`code/out/genus_closed_forms.md`), which
+      is now corroboration only.
+- [ ] **2. Register the k2=5 closed form as established.** `genus[{5},n] = 2n-2
+      except 2n-4 when 5|n` — exact on all 19 points n=6..24, zero mismatches,
+      operator-checked. The old CONTEXT.md entry "k2=5 row has no verified
+      closed form yet" is stale.
+- [ ] **3. Register the slope conjecture as established.** Mean first-difference
+      over WHOLE periods is exactly (m-1)/2 for m=2,3,4,5, with period-m diff
+      patterns: [0,1], [1,0,2], [1,2,0,3], [2,2,2,0,4]. Operator-checked, zero
+      mismatches. **Trap for whoever writes this up:** a truncated window (not
+      a whole number of periods) gives a mean BELOW (m-1)/2 and looks like a
+      refutation — state periodicity first, mean second.
+- [ ] **4. Run or delete the five uncaptured programs.** `test_slope_across_rows.py`,
+      `test_slope_hypothesis.py`, `effectivegenus/rep_pairs.py`,
+      `genus/verify_k2_5_row.py`, `pattern/print_family.py` — all have ZERO
+      captures. A program never executed is not evidence. The operator says run
+      them or delete them. `verify_k2_5_row.py` and the slope tests already
+      have their conclusions confirmed by independent operator check, so they
+      can be captured as verification; `rep_pairs.py` confirms the geometric
+      type of (2,3) and (2,5). `print_family.py` prints the infinite family.
+      Capture all five or tombstone the ones superseded by the operator's
+      check.
+
+## Done (directive 3)
+
+- [x] MRSTT effectiveness — confirmed effective from full text (Remark 1.7),
+      with an astronomically large but computable threshold. Uniform-in-k: yes
+      over interior; no over boundary. Boundary remains the whole open gap.
+- [x] Witness double-failure stated honestly in `mrstt_leaves_witnesses_open.md`.
+- [x] Dead source files tombstoned (singmaster-1971, mrstt-interior-singmaster).
+- [x] MRSTT PENDING contradiction resolved — credit to the run.
 
 ## Search policy (directive 4)
 
 - [x] **Stop searching.** Literature search covered exa_search 66–76 and frontier
       170–220. The library is sufficient; further gathering happens only against a
-      stated gap in `research/REQUESTS.md`. Do not continue browsing the frontier.
+      stated gap in `research/REQUESTS.md`.
 
 ## Completed deliverables (attempt 2)
 

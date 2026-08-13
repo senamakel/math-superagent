@@ -1,62 +1,52 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/ternary-egyptian-prime-denominator.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Mond & Portier, "Ternary Egyptian fractions with prime denominator"
 
-<!-- source: https://link.springer.com/article/10.1007/s40993-022-00339-4 | converted from HTML -->
+Source: A. Mond, J. Portier, Res. Number Theory 8 (2022) #41. https://doi.org/10.1007/s40993-022-00339-4 (open access, CC-BY)
+Full text: `research/sources/ternary-egyptian-prime-denominator.full.md`
 
-## What is in it
+## What it is
 
-- Ternary Egyptian fractions with prime denominator
-  - Abstract
-    - Similar content being viewed by others
-    - [Egyptian fractions of bounded length][8]
-    - [On sum of prime factors of composite positive integers][9]
-    - [A quantitative bound on Furstenberg–Sárközy patterns with shifted prime power common…
-    - Explore related subjects
-  - 1 Introduction
-    - Theorem 1.1
-    - Theorem 1.2
-  - 2 Proof idea
-    - Lemma 2.1
-    - Lemma 2.2
-    - Lemma 2.3
-  - 3 Proof of Lemma [2.3][21]
-    - Theorem 3.1
-    - Theorem 3.2
-    - Proposition 3.3
-    - Proposition 3.4
-    - Proof
-    - Proof of Lemma 2.3
-  - 4 Concluding remarks
-  - Data availability
-  - References
-  - Acknowledgements
-  - Author information
-- …
+A counting paper about m/p (m fixed-index, p prime) as a sum of three unit
+fractions — i.e. the general "ternary Egyptian fraction with prime
+denominator" problem whose m = 4 case is the Erdős–Straus conjecture.
 
+## The result
 
-## What it claims
+For A_3(p) = #{ m ∈ ℕ : m/p = 1/m₁ + 1/m₂ + 1/m₃ } over primes p ≤ x:
+- Luca–Pappalardi 2019: x(log x)³ ≪ Σ A_3(p) ≪ x(log x)⁵.
+- **Theorem 1.2 (this paper): Σ_{p≤x} A_3(p) ≪ x(log x)³(log log x)²**, closing
+  the upper/lower gap up to a polyloglog factor. Proof follows Elsholtz–Tao's
+  divisor-counting method, with a Burgess-bound refinement of their
+  Proposition 1.4 (here Prop 3.4: Σ_{a≤A,b≤B} τ(kab²+1) ≪ AB log(A+B) for
+  k ≤ A^p, p < 5/3).
 
-For a prime number *p*, let \(A_3(p)= | \{ m \in \mathbb {N}: \exists m_1,m_2,m_3 \in \mathbb {N}, \frac{m}{p}=\frac{1}{m_1}+\frac{1}{m_2}+\frac{1}{m_3} \} |\). In 2019 Luca and Pappalardi proved that \(x (\log x)^3 \ll \sum _{p \le x} A_{3}(p) \ll x (\log x)^5\). We improve the upper bound, showing \(\sum _{p \le x} A_{3}(p) \ll x (\log x)^3 (\log \log x)^2\).
+## The claim that matters for this run — Lemma 2.1 (Mordell's classification)
 
-## Statements it makes
+If m/p = 1/m₁+1/m₂+1/m₃ with gcd(m,p)=1, then either m ∈ {1,2,3} or there
+exist positive integers a,b,c,u with gcd(a,b)=1, c | a+b, and either
 
-### Theorem 1.1
+- **Type I**:  m = (p + (a+b)/c) / (abu)  ⟺  p = 4abu − (a+b)/c  (m=4),
+- **Type II**: m = (1 + p(a+b)/c) / (abu)  ⟺  p = (4abu − 1) c/(a+b)  (m=4).
 
-### Theorem 1.2
+Source is Mordell's *Diophantine Equations* (1969), per Lemma 2.1's citation.
 
-### Lemma 2.1
+## Why it is in this library
 
-### Lemma 2.2
+It is an independent, primary restatement of the **two-family Type I/II
+parametrisation** for the prime case of 4/p = 1/x+1/y+1/z that the problem's
+phase-2 instruction says to "establish, verify against a known solution, and
+build on." For m = 4:
 
-### Lemma 2.3
+- Type I: p = 4abu − (a+b)/c, gcd(a,b)=1, c | a+b.
+- Type II: p = (4abu − 1)·c/(a+b), gcd(a,b)=1, c | a+b.
 
-Theorem [1.2][28] then follows immediately from Lemma [2.3][21]. The rest of the paper is dedicated to proving Lemma [2.3][21].
+These match the Bloom–Elsholtz survey's two congruence families
+(claim `bell-esc-equivalence-congruence-classes`) and Elsholtz–Tao Prop 2.1/2.5
+(p = 4abcd − f with f | 4a²d + 1, etc.). It is a *second* source for that
+completeness, so the parametrisation is no longer resting on one paper's word.
 
-### Theorem 3.1
+## Verification status
 
-### Theorem 3.2
-
-### Proposition 3.3
-
-### Proposition 3.4
-
-*[digest of a 24298 character source; every section, statement, and proof in full at `research/sources/ternary-egyptian-prime-denominator.full.md`]*
+Sourced (full text read). The specialisation to m = 4 above is an algebra
+substitution (p = ma bu − ... with m = 4), not yet re-checked by the run's
+oracle; treat the m = 4 forms as asserted-until-verified against
+`code/out/witnesses.json`.
