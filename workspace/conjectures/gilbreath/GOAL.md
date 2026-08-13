@@ -55,9 +55,19 @@ There is no value to recompute — the answer is a proof. So the oracle is:
 
 Note the asymmetry: the conjecture asserts a positive (`A_k(0) = 1` always), so
 the dangerous failure here is a **proof that proves too little but looks like
-enough** — an argument that establishes the `{0,2}` regime persists for `n/2`
-rows and quietly treats that as persistence forever. Consumption is not
-regeneration. Every claim must say which it establishes.
+enough** — an argument that establishes the `{0,2}` regime persists for a
+computable number of rows and quietly treats that as persistence forever.
+Consumption is not regeneration. Every claim must say which it establishes.
+
+Erosion is settled and regeneration is not, so the target has narrowed. A block
+of length `n` protects exactly `n+1` rows — the constant is `1`, and the `n/2`
+figure this run started with has been refuted (`odlyzko-block-lemma-exact`, and
+the step law in `code/out/step_law_and_recharge_verified.md`). What remains is
+the recharge side: `(2,4)`-events are the only mechanism that grows the block,
+and the conjecture is exactly the claim that they keep arriving fast enough that
+`Σ (j_i + 1)` never falls `k−1` behind. A partial result that bounds the event
+rate from below, even under a stated hypothesis on prime gaps, would be a real
+contribution; another verification of erosion would not.
 
 ## Compute policy — light, parallel, bounded
 
