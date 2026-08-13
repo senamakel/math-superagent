@@ -7,6 +7,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
 | 2 | http://www.multimagie.com | — | J. Birch, Forms in many variables. Proc. Roy. Soc. London Ser. A 265 (1961/62), 245–263. [Boy] C. Boyer, The multimagic squares site, http://www.multimagie.com. [Boy05] , Some notes on the magic… |
+| 2 | https://arxiv.org/abs/2103.01784v3 | arXiv:2103.01784v3 | \| Subjects: \| Number Theory (math.NT); Algebraic Geometry (math.AG) \| Cite as: \| [arXiv:2103.01784][7] [math.NT] \| \| (or [arXiv:2103.01784v3][8] [math.NT] for this version) \| \|… |
 | 2 | https://arxiv.org/abs/2604.04850v2 | arXiv:2604.04850v2 | Number Theory (math.NT) \| MSC classes: \| Primary: 11G05, Secondary: 11B25, 14G05 \| Cite as: \| [arXiv:2604.04850][7] [math.NT] \| \| (or [arXiv:2604.04850v2][8] [math.NT] for this version) \| \|… |
 | 2 | https://arxiv.org/abs/2406.09364v2 | arXiv:2406.09364v2 | Combinatorics (math.CO) \| MSC classes: \| 11D45, 05B15, 11D72, 11G35, 11P55 \| Cite as: \| [arXiv:2406.09364][7] [math.NT] \| \| (or [arXiv:2406.09364v2][8] [math.NT] for this version) \| \|… |
 | 1 | http://www.mathpages.com/HOME/kmath417.htm | Magic Square of Squares | Christian Boyer. [Latest research on the "3x3 magic square of squares" problem][16], "Multimagic Squares" website. [Br] Kevin Brown. [Magic Square of Squares][17], "Math Pages" website. [Mo] Lee… |
@@ -45,6 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://www.primepuzzles.net/puzzles/puzz_288.htm | www.primepuzzles.net/puzzles/puzz_288.ht | The Chebrakov�s Challenge �) [www.primepuzzles.net/puzzles/puzz_287.ht][61] [m][61] ( Puzzle 287 � Multimagic prime squares �) [www.primepuzzles.net/puzzles/puzz_288.ht][62] [m][62] ( Puzzle 288 �… |
 | 1 | https://doi.org/10.5948/upo9780883859476 | Riddles of the Sphinx | (2015). ["Magic Squares of Squares"][58] (PDF). [Inria][59] / [LORIA][60]. Retrieved April 30, 2026. 11. ↑ Gardner, Martin (1987). **[Riddles of the Sphinx][61]. Anneli Lax New Mathematical Library.… |
 | 1 | https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3 | "Properties of Magic Squares of Squares" | **[Magic Squares of Squares (are PROBABLY impossible) - Numberphile][56] – via YouTube. 9. 1 2 3 4 5 6 Rabern, Landon (2017-01-15). ["Properties of Magic Squares of Squares"][57]. *Rose-Hulman… |
-| 1 | https://doi.org/10.1080%2F0025570X.1996.11996457 | 10.1080/0025570X.1996.11996457 | via JSTOR. 2. 1 2 Robertson, John P. (1996-10-01). "Magic Squares of Squares". *Mathematics Magazine*. **69**(4): 289– 293. [doi][42]: [10.1080/0025570X.1996.11996457][46]. [ISSN][44]… |
 
-_106 further candidates not shown; they are cited once each._
+_109 further candidates not shown; they are cited once each._
