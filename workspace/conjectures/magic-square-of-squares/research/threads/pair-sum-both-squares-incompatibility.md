@@ -66,21 +66,24 @@ asserted, never checked.**
 
 ```thread
 question: For q1,q2 in Phi with q1>q2 and q1+q2<1, can 1-(q1+q2) and
-  1+(q1+q2) be simultaneously rational squares? At M=400: 325 minus-square
-  pairs, 66 plus-square pairs, and BOTH=0. This is a GLOBAL statement: no
-  Q-level local or congruence obstruction can explain it. The concordant-
-  forms dictionary (concordant-forms-iff-ell-torsion-order-2) reframes it as:
-  does Phi-membership force E_{M,N}: y²=x(x+M)(x+N) to have rank 0 or wrong
-  torsion, for every pair? This connects the cheap pair-level observation to
-  the run's standing blocker — uniform boundedness of ranks.
+  1+(q1+q2) be simultaneously rational squares? Complete censuses: M=100:
+  46 minus / 5 plus; M=200: 132/24; M=400: 325/66; M=800 (COMPLETE over the
+  whole outer index of 129870 values, 2509516913 pairs): 718 minus / 150
+  plus, BOTH=0 at every size. This is a GLOBAL statement: no Q-level local
+  or congruence obstruction can explain it. The concordant-forms dictionary
+  (concordant-forms-iff-ell-torsion-order-2) reframes it as: does Phi-
+  membership force E_{M,N}: y²=x(x+M)(x+N) to have rank 0 or wrong torsion,
+  for every pair? This connects the cheap pair-level observation to the
+  run's standing blocker — uniform boundedness of ranks.
 status: live
-rests-on: phi-universal-set, phi-pair-sides-never-both-square,
+rests-on: phi-universal-set, phi-pair-sides-both-square-zero-through-M800,
   concordant-forms-iff-ell-torsion-order-2,
   hilbert-symbol-of-two-squares-trivially-split
-blocked-by: both=0 only verified at M=400; M=800 partial (17.7% of index);
-  need the concordant witness curves computed
-next: form E_{M,N} for the 66 plus-witnesses and 325 minus-witnesses from
-  side_census.captured.txt; compute rank+torsion for each; check whether
-  the two sets split cleanly by rank or torsion; state any split found as
-  a claim with the witnesses as falsifier
+blocked-by: both=0 verified at M=100,200,400 and COMPLETE at M=800; the 150
+  plus-witnesses and 718 minus-witnesses need their concordant curves; an
+  incompatibility proof is still missing
+next: form E_{M,N} for the 150 plus-witnesses and 718 minus-witnesses from
+  side_census_M800_complete.captured.txt; compute rank+torsion for each;
+  check whether the two sets split cleanly by rank or torsion; state any
+  split found as a claim with the witnesses as falsifier
 ```
