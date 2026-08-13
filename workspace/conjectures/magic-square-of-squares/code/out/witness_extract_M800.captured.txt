@@ -41,3 +41,4 @@
 [FAIL] minus total: got 105, expected 718
 [FAIL] plus total: got 46, expected 150
 [FAIL] totals disagree with the recorded complete census (side_census_M800_complete.captured.txt); witness file NOT written (stale checkpoint data would corrupt it). Delete the checkpoint and re-run for a cold scan.
+[M=800] |Phi|=129870  exact-sorted index  resume_i=44928  nproc=26  budget=540.0s
