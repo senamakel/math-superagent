@@ -39,13 +39,23 @@ why the Cramér random model (Chase 2024, CHT 2026) treats normalized prime
 gaps as roughly i.i.d. geometric/independent: under the `r`-tuple conjecture
 the short-interval prime count is Poisson, which is the model those papers
 instantiate. It is therefore a *justification-for-the-model* source, not a
-result usable directly on the Gilbreath operator:
+result usable directly on the Gilbreath operator.
+
+**Cited basis, not free background.** Odlyzko 1993 (held, LaTeX source §on
+independence) cites Gallagher for exactly this: "There is a proof by Gallagher
+that a form of the Poisson law for prime gaps follows from a quantitative form
+of the Hardy–Littlewood prime k-tuple conjecture, and one can apply
+Gallagher's arguments directly to conclude that the d_1(n)/2 reduced modulo 2
+are independent for nearby values of n." CHT 2026 (held, §intro, ref [4]) use
+"the Cramér model (or the calculation of Gallagher)" to predict the expected
+value of the normalized-gap Gilbreath array grows like (c_j/2)·log n. So
+Gallagher is the cited foundation of the independence/randomness assumption
+the run's random-analogue sources rely on — worth recording as the link, even
+though it contributes no Gilbreath-specific result.
 
 - **Does not help compute or bound anything in the run's {0,2} machinery.**
   It says nothing about iterated absolute differences, block regeneration,
-  or the leading-entry reduction. The downward evidence it supplies for the
-  random analogue (that prime gaps behave like i.i.d. draws) is already held
-  in stronger, Gilbreath-specific form from Chase 2024 and CHT 2026.
+  or the leading-entry reduction.
 - **Cannot certify a (2,4)-event rate bound:** the Poisson law is a mean/
   distribution statement conditional on an unproved conjecture, and even
   unconditionally it is a count bound, not a regeneration-rate bound.
