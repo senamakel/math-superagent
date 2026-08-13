@@ -7,15 +7,15 @@ rests-on: |
   - 1e9 run: 15 genuine giants, max gap 64, ratio bound holds everywhere (max 1.26e-02), row-248 STILL capped.
   - Geometric growth: b ~ 1.765× per giant event (R²=0.968 over 15); j ~ b^0.388.
   - Granville Lemma 5.4/Theorem 5.5: GC reduces to ν_2 > n^β, β > 0.525; α=0.525 unconditional (BHP).
+  - BCZ 2023: left-edge map is an F2 involution (T²=id); Table 1 (|#0−#2| ≤ 431 of 78,496 per ray) independently corroborates ν_2 ~ n/2.
   - CHT Theorem 1.6: {0,d}-block obstruction in right half (j ≥ N′); needs Cramér (open, >BHP).
   - Empirical route ceiling: each giant costs 1.5×–8× the width of the last; next two giants need 1e10–1e11 sieve → >8 GiB.
-blocked-by: Lemma 5.4 re-derivation (published proof discards delta=0 case).
+blocked-by: Lemma 5.4 re-derivation (published proof discards delta=0 case, which occurs in 2480/2480 columns = the generic case). Validation of the re-derived lemma needs FAILING-side test sequences (Granville's closest-failing-sister construction / synthetic Poisson-gap failures): the current 0-violations check runs only on all-successful prime columns and cannot exercise the failure direction.
 next: |
-  1. Read Granville 2026 FULLPDF → summary with Lemma 5.4/5.5 verbatim. → research/notes/granville-2026-summary.md
+  1. Re-derive Granville Lemma 5.4 with delta=0 case handled as the main case; validate on sequences that FAIL, not only the all-successful primes. → research/notes/lemma54-re-derived.md
   2. Read CHT 2026 FULLPDF → summary with Theorem 1.6 verbatim + column restriction. → research/notes/cht-2026-summary.md
-  3. Re-derive Granville Lemma 5.4 with delta=0 case handled. → research/notes/lemma54-re-derived.md
-  4. Reproduce ν_2 numbers in-container. → code/out/nu2_granville_check.captured.txt
-  5. Parity correction: 15 genuine giants, 1 odd (161), base-rate p=0.0052.
+  3. DONE — right-half {0,d}-block scan (Directive 35 item 1) at 6e8/depth 400: longest d≥2 block = 25 vs smallest CHT threshold T_1 = 5.63e16 (2.25e15x gap); obstruction absent at every threatening scale; claim cht-right-half-0d-scan-6e8, anchor research/notes/cht-right-half-scan.md. Optionally extend to 1e9 data later (same verdict expected; thresholds are width-independent at this M).
+  4. Promote the 1e9 block-lemma verification bound (A_k(0)=1 proved for rows 1..50,847,533 via the proved block lemma, from row 248's all-{0,2} block of length 50,847,285) to a claim — currently only in code/out/pattern_finder_1e9_verify.captured.txt.
 ```
 
 # Regeneration thread — the ratio bound is the whole conjecture

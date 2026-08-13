@@ -26,6 +26,21 @@ in `research/sources/`, not yet read. Route B (Granville ν_2) primary;
 Route A (ratio bound) empirical fallback; Route C (CHT) calibrated by
 authors' difficulty assessment.
 
+**Directive 35 item 1 DONE (this run): right-half {0,d}-block scan.**
+`code/cht/scan_right_half_0d.py` at 6e8/depth 400 (196 s, one row live,
+exact int64, 3 oracles passed incl. zero b-profile mismatches over 400
+rows): the longest {0,d}-block with d ≥ 2 in the right half (columns
+j ≥ N′ = ⌊N/2⌋) is **25** (row 14, d=2); d ≥ 4 max is 24 (row 37, d=14);
+247/401 rows contain some d ≥ 2 block. Smallest CHT length threshold
+T_1 = R_1 − 3R_0 = 5.63e16 (M=8, L=2, R_0=3.36e9) exceeds every observed
+block by ≥ 2.25e15×. The leading {0,2} block (d=1, category C, outside
+(iii)) reaches 15.66M at row 247 but sits at j < N′ — the column
+restriction is confirmed as trivially satisfied. **The {0,d}-block
+obstruction family is absent at every scale Theorem 1.6 controls, in the
+half where it matters; the theorem does not bite at reachable depths.**
+Claim `cht-right-half-0d-scan-6e8`; anchor `research/notes/cht-right-half-scan.md`,
+`code/out/cht_right_half_0d_scan.captured.txt`, `_6e8.json`.
+
 ## Established
 
 - **Gatti 2020's claimed class-level/prime proof is invalid — located flaw (full text in library).** Gatti, *Gilbreath's Sequences and Proof of Conditions for Gilbreath's Conjecture* (Preprints 202003.0145.v1, 2020; the earlier downloadable form of the MDPI-403 "Gilbreath polynomials" paper) proves the valid-extension machinery (Eq. 2: `k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`, global anti-diagonal criterion; parity alternation Lemmas 1–3 — the general-class half of the run's parity wave) but **Theorem 4's proof of `min K ≤ p_n ≤ max K` for the primes is invalid**: the right-inequality step assumes its own conclusion ("If p_n ≤ max K, then subtracting 2p_{n−1}…") and derives only a trivial `min K ≤ α` via Bertrand. Also his Lemma 4 (valid-extension set = whole parity interval) is **false in general** — Muney 2026's length-5 hole; even `dim K_S = 2^{n−1}` fails on `{2,3,5}`: `|K_S|=5` (solutions `{1,3,5,7,9}`, machine-checked this run). **No published deterministic bounded-gap/prime-class theorem exists.** Claims: `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`.

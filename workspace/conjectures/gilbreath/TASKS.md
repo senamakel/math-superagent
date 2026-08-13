@@ -58,11 +58,19 @@ have not yet been read.
 
 ### Directive 35 items (continue, lower priority than the pivot)
 
-- [ ] **8. Measure right-half {0,d} blocks (Directive 35 item 1).**
-  CHT Theorem 1.6(iii) restricts the {0,d}-block obstruction to columns j ≥ N′. Scan the
-  6e8 data for {0,d} blocks with d ≥ 2 in the right half. Produce:
-  `code/out/cht_right_half_0d_scan.captured.txt`,
-  `research/notes/cht-right-half-scan.md`.
+- [x] **8. Measure right-half {0,d} blocks (Directive 35 item 1).**
+  DONE this run at 6e8/depth 400 (196 s, one row live, exact int64): longest
+  right-half {0,d}-block with d ≥ 2 is **25** (row 14, d=2); d ≥ 4 max is 24
+  (row 37, d=14); 247 of 401 rows contain some d ≥ 2 block. Smallest CHT
+  length threshold T_1 = R_1 − 3R_0 = 5.63e16 (M=8, L=2, R_0=3.36e9) exceeds
+  every observed block by ≥ 2.25e15× — the obstruction is absent at every
+  scale the theorem controls, in the half where it matters. Column
+  restriction confirmed: the leading {0,2} block (d=1, category C) reaches
+  15.66M at row 247 but sits at j < N′. Verdict: Theorem 1.6 does not bite at
+  reachable depths; Route C stays calibrated by the CHT authors' assessment,
+  Route B (Granville ν_2) remains primary.
+  Produce: `code/out/cht_right_half_0d_scan.captured.txt`,
+  `research/notes/cht-right-half-scan.md` (claim `cht-right-half-0d-scan-6e8`).
 
 ### Directive 34 items (continue, lower priority)
 
