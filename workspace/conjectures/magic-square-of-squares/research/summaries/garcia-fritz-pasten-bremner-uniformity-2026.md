@@ -40,7 +40,7 @@ holds-here: yes for the structure (the MSS condition is three AP x-coordinates o
 status: asserted (abstract level; body not on disk)
 bearing: frames the four-AP obstruction as a rank-scarcity phenomenon; supports the
   adopted Chabauty-Coleman direction (rk J < g is the same resource comparison);
-  does not provide an explicit bound or a proof for the 3-point case
+  does not provide an explicit bound or a proof for the 3-point case;
+  consistent with Bremner 1999's empirical rank-3 AP observation
 anchor: research/sources/garcia-fritz-pasten-bremner-uniformity-2026.full.md
-contradicts: nothing on disk; consistent with Bremner 1999's empirical rank-3 observation
 ```

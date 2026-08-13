@@ -8,7 +8,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | --- | --- | --- | --- | --- |
 | `ap-three-squares-unique-param` | Every non-trivial 3-square AP x²,A²,y² (A odd positive) is given uniquely by a square-free p\|A with p≡1 mod 4, A=pA′=(m²+n²) (m even, n odd), b=4mn(m²−n²), x²=A²−p²b, y²=A²+p²b. | yes | proved | `research/summaries/zimmermann-loria-magic-squares-of-squares-2015.md` |
 | `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` | (García-Fritz–Pasten, abstract) If the Mordell-Weil ranks of elliptic curves over Q are uniformly bounded, then the length of any sequence of distinct rational points on a single elliptic curve whose x-coordinates are… | **unchecked** | asserted | `research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md` |
-| `bremner-deg4-centre-532` | The degree-4 MSS over Q(√3,√133) printed in Bremner 1999 has centre 532 = 133·2² = 2²·7·19 and magic constant 1596, not 2926 = "133·22" as the OCR'd text reads. All eight r-terms of the printed entries cancel exactly;… | **unchecked** | checked | `research/summaries/bremner-on-squares-of-squares-1999.md` |
+| `bremner-deg4-centre-532` | The degree-4 MSS over Q(√3,√133) printed in Bremner 1999 has centre 532 = 133·2² = 2²·7·19 and magic constant 1596, not 2926 = "133·22" as the OCR'd text reads. All eight r-terms of the printed entries cancel exactly;… | yes | checked | `research/summaries/bremner-on-squares-of-squares-1999.md` |
 | `buell-hourglass-25e24-coprime` | Buell's search shows no 7-square magic hourglass with centre < 25×10²⁴, under a coprimality assumption on the diagonal/column triples; Zimmermann-Loria relax that assumption and find much smaller (10-digit) hourglass… | **unchecked** | asserted | `research/summaries/buell-search-for-magic-hourglass-1999.md` |
 | `cain-quartic-gaussian-reformulation` | The 3x3 MSS problem is equivalent (per the authors) to solving quartic polynomials with factorization constraints over an abelian extension of Q; a Gaussian-integer case gives a new search method. | **unchecked** | asserted | `research/summaries/cain-gaussian-integers-magic-square-of-squares-2019.md` |
 | `catIII-k3-has-q-point` | The Category III K3 S: T²+U²=V²+W²=X²+Y², TU+VW+XY=0 from Bremner II (2001) has the integral point (345,196,-304,255,-396,-25): all three sum-of-two-squares values equal 157441 (=c), 2TU=135240 (=u), 2VW=-155040 (=v),… | yes | checked | `code/out/k3_surface_check_note.md` |
@@ -42,21 +42,6 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `three-primitive-equal-d-bound` | Up to d = 6.4×10²² there are only five configurations of three primitive 3-square APs all with the same difference d, the largest at d = 3.31×10¹⁵. | **unchecked** | catalogued | `research/summaries/morgenstern-extended-searches-2013.md` |
 | `van-luijk-algebraic-br-not-sufficient-on-k3s` | If a smooth diagonal plane cubic a x^3 + b y^3 + c z^3 = 0 over a number field has local points everywhere, has no k-cubic points (three collinear points over a Galois Z/3Z extension), and abc is not a cube, then the K3… | no | proved | `research/summaries/van-luijk-cubic-points-brauer-manin-k3.md` |
 | `wu-bm-noninvariance-under-base-change` | Assuming a conjecture of Stoll, for any nontrivial extension L/K of number fields there exist smooth projective geometrically connected surfaces over K whose Brauer-Manin obstruction behaviour (weak approximation off… | **unchecked** | asserted | `research/summaries/wu-non-invariance-brauer-manin.md` |
-
-## Contradictions
-
-Resolve these before building on either side.
-
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `on` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `disk;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `consistent` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `with` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `Bremner` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `1999's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `empirical` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `rank-3` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-conjecture-uniform-bounded-rank-implies-bounded-ap` (research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md) contradicts `observation` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
