@@ -74,6 +74,17 @@ configurations mod, say, 2⁶·3²·5², and verifies that none can satisfy the
 four simultaneous 2E(Q) conditions.
 
 status: proposed
+speculation-vs-established: ESTABLISHED — E_d: y²=x³−d²x is the CM curve j=1728,
+  its L-function is a Hecke L-function over Q(i), and its global root number is
+  a product of local root numbers computable by the Dokchitser–Dokchitser
+  algorithm; the "point in 2E_d(Q) forces rk ≥ 1" step is classical 2-descent.
+  SPECULATION — (a) that d = 2mn(m²−n²) is Im((m+ni)⁴)/4 up to squares and
+  that this gives a clean quartic-residue description of the local root
+  numbers; (b) that the additive relations u+v, u−v induce a usable
+  multiplicative relation among the four root numbers strong enough to force a
+  parity/Selmer contradiction; (c) that a finite residue-class computation
+  mod 2⁶·3²·5² can close the case. All three are exactly what the first-step
+  must check, and any of them failing would close the approach.
 first-step: Derive the exact formula for the global root number w(E_d) where
   d = 2k²mn(m²−n²) with primitive m>n. Use the Dokchitser–Dokchitser
   algorithm or the Rizzo tables for twists of y² = x³ − x. Then, for a grid
