@@ -55,3 +55,13 @@ Witness set check: the bound must not kill any known number
   n=90: a=1 omega=2 equality=True all components 1 mod 4=True   <- in scope
   n=87360: a=6 omega=4 equality=False all components 1 mod 4=False   (not in the equality case, untouched)
   n=146361946186458562560000: a=18 omega=11 equality=False all components 1 mod 4=False   (not in the equality case, untouched)
+
+====================================================================
+Exact threshold, and sharpness at n = 90
+====================================================================
+  a=1: T(1) = 4/3, max product = 4/3, EQUAL: True
+       attained by components [5, 9] = 9 and 5, i.e. n = 2 * 3^2 * 5 = 90
+       the bound is sharp exactly at the one known number in the class
+  first a >= 2 not excluded: a = 29  (T = 1.999999996275, max = 2.004964963785)
+  RESULT: the equality case omega(odd) = a+1 is IMPOSSIBLE for 2 <= a <= 28
+          undecided by this bound for a >= 29; a = 1 is realised by n = 90
