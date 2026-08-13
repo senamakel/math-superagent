@@ -1,0 +1,6 @@
+primes: 16252325 (3.0s)
+Traceback (most recent call last):
+  File "/workspace/code/pattern_finder/wider_width_clean.py", line 52, in <module>
+    pred = (bb >= prev_b) == (ebits[-2] == 1 and intr[-2] == 4)
+                              ~~~~~^^^^
+IndexError: list index out of range
