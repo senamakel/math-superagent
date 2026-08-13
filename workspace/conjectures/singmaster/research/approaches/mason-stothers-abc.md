@@ -12,63 +12,94 @@ idea: Polynomial abc theorem (Mason-Stothers) applied to the binomial-coefficien
   (the Bilu-Tichy exceptional pairs), and for the non-exceptional pairs the
   abc theorem forces the degree — hence k1,k2 — to be bounded.
 
-mechanism: The Mason-Stothers theorem (1983; also Stothers 1981, Silverman 1984)
-  states: If A,B,C ∈ ℂ[t] are relatively prime polynomials, not all constant,
-  with A+B+C = 0, then max(deg A, deg B, deg C) ≤ N₀(ABC) - 1, where N₀(P)
-  is the number of distinct roots of P.
+mechanism: [REFUTED — two independent failures, one elementary and one
+  methodological.]
 
-  Apply this to the binomial equation. For C(x,k1) = C(y,k2), let:
-    A(T) = (T)_{k1} · k2! = T(T-1)...(T-k1+1) · k2!
-    B(T) = -(T)_{k2} · k1! = -T(T-1)...(T-k2+1) · k1!
-    C(T) = A(T) + B(T)
-  Then A(x)+B(y) = 0, but x and y are different variables. The Mason-Stothers
-  theorem applies to a polynomial identity in ONE variable.
+  (A) The direct one-variable application has NO Mason-Stothers content.
+  Mason-Stothers (Mason 1981; Stothers 1981): if A,B,C in C[t] are pairwise
+  coprime, not all constant, with A+B+C = 0, then
+      max(deg A, deg B, deg C) <= N0(ABC) - 1,
+  where N0 is the number of DISTINCT roots. Applied to the binomial difference:
+      A(T) = C(T,k1)·k2!,  B(T) = -C(T,k2)·k1!,  R(T) = A(T)+B(T),
+  divide all three by D = gcd(A,B) = (T)_{min(k1,k2)} to make them coprime.
+  Then:
+      A' = (T)_{max}/(T)_{min} has degree |k1-k2| and has EXACTLY |k1-k2|
+           distinct roots (the integers min,...,max-1);
+      B' = (-1)^{min}·(constants) is a NONZERO CONSTANT (degree 0);
+      R' = (A+B)/D has degree |k1-k2| and is coprime to A' (else a common root
+           t would satisfy A'(t)=R'(t)=0 => B'(t)=0, contradicting B' constant
+           nonzero).
+  Hence N0(A'B'R') >= |k1-k2|+1 = maxdeg+1, so Mason-Stothers' inequality
+  maxdeg <= N0-1 is satisfied IDENTICALLY, with equality exactly in the np
+  adjacent case. The theorem never binds; it says nothing about k1,k2. (Checked
+  symbolically for 2<=k2<k1<=8: slack = (N0_ub-1)-maxdeg = 0 identically, in
+  code/out/check_mason_stothers_bound.py.)
 
-  The one-variable reformulation: if the equation C(x,k1) = C(y,k2) has
-  infinitely many integer solutions (x,y), then by Siegel's theorem on curves,
-  the curve must have genus 0 or 1, AND there must be a rational parametrization.
-  In that case, there's a rational function φ(T) and integers a,b such that
-  x = φ(T) + a, y = φ(T) + b on a dense set of T values, giving C(φ(T)+a, k1) =
-  C(φ(T)+b, k2) as an identity in T. Apply Mason-Stothers to this identity to
-  bound the degree of φ and hence k1,k2.
+  (B) The parametrization version (apply abc to the identity
+  C(phi(T)+a,k1)=C(phi(T)+b,k2) holding on a genus-0 family) is a TWO-TERM
+  equality A-B = 0, which has no Mason-Stothers content (the theorem needs three
+  terms). The claim that "Zannier 1993/2009 shows Mason-Stothers can replace
+  Siegel and make the Bilu-Tichy classification effective" conflates the
+  FUNCTION-FIELD Siegel analogue with the number-field statement. In function
+  fields the analogue IS effective: Mason 1984 (Diophantine Equations over
+  Function Fields, CUP), Zannier 1993 (Acta Arith. 64, 87-98: "Some remarks on
+  the S-unit equation in function fields"; download only returns the metadata
+  page, so the exact theorem is taken on the secondary-citation record),
+  Wang 2004 (Math. Z. 246, 811-844: an effective Schmidt subspace theorem over
+  function fields), Mueller 2000 (BLMS 32: S-unit equations in function fields
+  via the abc-theorem). None transfers to integral points over Q of
+  C(x,k1)=C(y,k2): the function-field geometry (genus, points at infinity)
+  does not control the arithmetic integrality over a NUMBER field. The
+  number-field theory is Bilu-Tichy (ineffective; claim
+  bilu-tichy-classification-primary) and HPT 2022 Thm 2.3 (ineffective;
+  claim hpt-bilu-tichy-exceptional-classification), with no Mason-Stothers
+  shortcut documented in the literature (searched f(x)=g(y) + Mason-Stothers +
+  Zannier + effective: all hits are function-field statements).
 
-  This is essentially re-deriving the Bilu-Tichy classification via the abc
-  theorem for polynomials. Zannier (1993, 2009) has shown that the polynomial
-  abc theorem can replace Siegel's theorem in classifying polynomial pairs
-  F(x)=G(y) with infinitely many integral points. The advantage: Mason-Stothers
-  is elementary and gives EXPLICIT degree bounds, unlike Siegel's theorem.
+  (C) What the approach points at but cannot reach: the effective classification
+  of which pairs f(x)=g(y) admit infinitely many S-integral solutions is a real
+  subject (Bilu-Tichy 2000; the separated-variables survey Fuchs-Heintze /
+  PMC8550583 / PMH 2017; Zannier-Avanzi f(X)=f(Y) in rational functions,
+  Compositio 139 (2003)). But those results concern the FAMILY of one fixed
+  pair (k1,k2) — per-pair finiteness, which BST 1999 already gives
+  (ineffectively) — and carry no uniform-in-(k1,k2) constant. The special
+  two-variable separated structure (Diophantine equations in separated
+  variables, PMH 2017 Theorem 1.1) gives finiteness conditions under
+  critical-value hypotheses that the binomial polynomials C(x,k) do satisfy,
+  but again per-pair only.
 
-  The concrete new claim: for non-exceptional pairs (k1,k2), the number of
-  integer solutions to C(x,k1)=C(y,k2) is bounded by an explicit function of
-  k1,k2. Combined with the genus result that all but (2,3),(2,4) have genus ≥2
-  (Faltings gives finiteness but not a bound), the Mason-Stothers approach
-  could give an EFFECTIVE bound per pair — not uniform, but computable.
-
-  Actually, the deeper use: apply Mason-Stothers NOT to the equal-products
-  equation but to the factorization of C(x,k) itself. C(x,k) = (x)_k/k! can
-  be written as a product of k linear factors over ℂ. If C(x,k1)=C(y,k2)=a,
-  then (x)_{k1}·k2! = (y)_{k2}·k1! = a·k1!k2!. So both sides factor completely
-  into linear terms. Write each factorization and compare. The distinct roots of
-  the combined product are at most k1 + k2 + (number of prime factors of a).
-
-  The speculative leap: if a has r representations with column indices
-  k_1,...,k_r, then for each pair of representations we have:
-    (x_i)_{k_i}·k_j! = (x_j)_{k_j}·k_i!
-  Taking the product over all pairs and applying Mason-Stothers-like degree
-  comparisons might force r to be bounded in terms of the number of distinct
-  linear factors involved — which is at most something like (max k_i)·r + ω(a).
-
-status: proposed (speculative)
-first-step: Verify that the Mason-Stothers theorem applies to the one-variable
-  reduction of C(x,k1)=C(y,k2). Specifically: write the algebraic curve
-  X(k1,k2): C(x,k1) = C(y,k2) as a polynomial equation in variables u=x,
-  v=y. Compute its genus using the run's established formula
-  g = ((k1-1)(k2-1)+1-gcd(k1,k2))/2. For genus 0 cases, find the rational
-  parametrization and verify that Mason-Stothers bounds the degree. For
-  genus ≥2, the Faltings finiteness is known (but ineffective); the question is
-  whether Mason-Stothers can be applied to the function-field version
-  (interpreting (x,y) as elements of the function field of the curve) to get
-  an effective bound on the number of integral points. Check Zannier's "Some
-  applications of Diophantine approximation to the study of polynomial
-  equations" and the literature on effective Mordell via abc.
+status: refuted
+killed-by: (i) elementary: the direct binomial three-term identity makes
+  Mason-Stothers hold with equality, hence vacuously, for every distinct pair —
+  verified symbolically for 2<=k2<k1<=8 (code/out/check_mason_stothers_bound.py);
+  the parametrized version is a two-term equality with no Mason-Stothers
+  content; (ii) methodological: the effective function-field abc/Siegel/Schmidt
+  analogues (Mason 1984, Zannier 1993, Wang 2004, Mueller 2000) are statements
+  about S-integral points over function fields and do not transfer to the
+  number-field integral points of C(x,k1)=C(y,k2); the number-field
+  classification (Bilu-Tichy 2000, HPT 2022) is ineffective per-pair. No source
+  applies Mason-Stothers to this problem.
+precedent:
+  https://doi.org/10.4064/aa-64-1-87-98 (Zannier 1993, Acta Arith. 64,
+    87-98 — function-field S-unit equation via the polynomial abc method;
+    metadata-level only, exact statement unverified)
+  https://doi.org/10.1007/s00209-003-0618-8 (Wang 2004, Math. Z. 246,
+    811-844 — effective Schmidt subspace theorem over function fields)
+  https://doi.org/10.1112/S002460939900675X (Mueller 2000, BLMS 32 — S-unit
+    equations in function fields via the abc-theorem)
+  https://licensing.jstor.org/stable/3597240 (Bilu–Tichy 2000, Acta Arith.
+    95, 261-288 — the number-field classification; held primary)
+  https://doi.org/10.1007/s11139-022-00555-7 (Hajdu–Papp–Tijdeman 2022,
+    Ramanujan J 58 — applied, ineffective)
+  https://doi.org/10.1007/s10998-017-0195-y (separated variables survey,
+    PMH 2017 — per-pair finiteness conditions)
+  claims: bilu-tichy-classification-primary,
+    hpt-bilu-tichy-exceptional-classification,
+    bilu-tichy-method-ineffective-uniformity-wall,
+    bst-fixed-kl-ineffective-primary
+first-step: none — the direct identity is vacuously covered by Mason-Stothers
+  and the effective function-field analogues do not transfer to the number
+  field. The working content of the idea (which pairs have infinitely many
+  integral solutions) is already classified, ineffectively, by Bilu-Tichy/HPT
+  and BST 1999. Do not re-propose Mason-Stothers for this problem.
 ```

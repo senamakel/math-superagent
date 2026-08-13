@@ -15,193 +15,195 @@ can trace to a source is worth less than no statement.
 
 Every claim marked with its evidence class; all anchors are in this workspace.
 
-- **(proved) No odd unitary perfect number.** Every UP `n = 2^a·m`, `a ≥ 1`.
-  Proof is three lines (v2 argument) in `research/notes/parity-and-2-adic-budget.md`.
-  Subbarao–Warren 1966.
-- **(proved, checked against all five) 2-adic budget identity**:
-  `Σ_i v2(p_i^{e_i}+1) = a + 1`, exactly, for `n = 2^a Π p_i^{e_i}` UP with `p_i`
-  odd distinct. Corollary `ω(odd part) ≤ a + 1`, with equality iff every odd
-  component `≡ 1 (mod 4)`. This is the elementary form of the paper's
-  "2-adic budget overshoot" filter. It bounds `ω` *above*; the open useful
-  direction is a **lower** bound on `a` in terms of `ω`, or impossibility of a
-  residue class of `a`. `research/notes/parity-and-2-adic-budget.md`.
 - **(computed/checked) Witness set = the five known numbers**, verified by the
   exact-integer oracle `σ*(n) == 2n` with negative controls (12, 28 false):
   `6, 60, 90, 87360, 146361946186458562560000` (last = `2^18·3·5^4·7·11·13·19·37·79·109·157·313`).
-  `code/out/known_five_verified.captured.txt`.
-- **(computed) All five are divisible by 3.** Whether a sixth must be is open.
-  **Sharpest edge of the witness set:** the two non-squarefree kernels are
-  `3^2` (in 90) and `5^4` (in the fifth). Any lemma killing repeated odd prime
-  powers kills two of the five and is **false** — run every candidate lemma
-  against all five before recording it as anything but `asserted`.
-- **(sourced) Graham 1989:** unitary perfect numbers with squarefree odd part
-  are exactly `6, 60, 87360`. So any sixth example has a **repeated odd prime
-  power**.
-- **(sourced, full text held)** Maciejewski arXiv:2605.20475 (May 2026):
-  `research/sources/maciejewski-bounded-box-subbarao-warren.full.md` (93 KB,
-  the definition of 3-Higgs confirmed at §1.1). Key proven statements, all
-  with this paper as anchor: (1) Every prime divisor of a UPN is **3-Higgs**:
-  `p-1` divides the cube of the product of smaller 3-Higgs primes, exponent
-  cap 3 (OEIS A057447). (2) The odd dependency graph: edges `p → r` when
-  `r | p^e + 1` for admissible e; source SCCs; within the box
-  `B = {p ≤ 2000, e ≤ 6, p^e ≤ 10^9, |SCC| ≤ 6, cycle ≤ 6}` the only admissible
-  source kernels are `3^2`, `5^4` and five impostors. (3) Proposition 5:
-  `H_even ⊆ {m ≡ 2 (mod 4)}`. Finiteness *reduces* to the prime case
-  `m = 2p` (Theorem 7); composite members exist (k=9, k=15 are verified
-  members of H_even per `heven_complete_verify`) and are inherited from
-  unresolved prime divisors via Proposition 4(3).
-  `m = 2k ∈ H_even`, `k` odd, every prime factor of `k` is 3-Higgs with
-  `v_q(k) ≤ 3`, and `2d ∈ H_even` for every odd `d | k`. (5) Theorem 7
-  (prime-case reduction): `|H_even| < ∞` iff `|{m = 2p : p odd prime,
-  2p ∈ H_even}| < ∞`, with `|H_even| ≤ 4^|H_even^prime|`. (6) Theorem 8:
-  `H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}`. (7) Theorem 21:
-  `#{m ≤ X : m ∈ H} << X^(1-η)` and `Σ 1/m < ∞` — **thinness, not
-  finiteness**; the gap is exponential at the primitive-divisor height.
-  (8) Frontier: `|H_even ∩ [2,40000]| ≤ 201`, `|H_even ∩ [2,50000]| ≤ 272`,
-  rigorous, with explicit candidate lists (Theorems 9–19 + Lemma 20 APR-CL
-  closures). Analytic target: divisor-level problem for `Φ_{4p}(2)`, the
-  Aurifeuillean split `2^(2p)+1 = L_p·M_p` with `L_p = 2^p − 2^((p+1)/2) + 1`,
-  `M_p = 2^p + 2^((p+1)/2) + 1`. All details in
-  `research/notes/heven-and-3-higgs-structure.md`.
-- **(sourced, unverified) Frei 1978 (via OEIS A002827 comment only):** a UPN not
-  divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 distinct odd prime
-  factors, and `n > 10^440`. The two bogus TOC-page files previously filed
-  under Frei's name were deleted per directive 5. Primary
-  text not yet in the library; the OEIS-sourced theorem is unverified.
-- **(computed/checked) Lower bound on `a`:** any sixth UPN has
-  `a ≥ ω(odd) − 1 ≥ 8`, so `2^8 | n`. Wall (1988) (≥ 9 odd components for a
-  new example) + budget corollary. Equality `a = 8` forces 9 odd components,
-  all `≡ 1 (mod 4)` — a rigid candidate class.
-  `research/notes/lower-bound-on-a.md`, `code/out/wall1988_budget_lower_bound.captured.txt`.
-- **Equality case `a = 8` was eliminated** (`research/notes/equality-case-eliminated.md`,
-  `code/out/equality_case_elimination.captured.txt`). The equality case
-  `ω(odd) = a + 1` requires `Π(1+1/q_i) = 2^{a+1}/(2^a+1)`, maximised over
-  smallest admissible sizes. For `2 ≤ a ≤ 28` the maximum falls short; `a = 8`
-  is dead (257 prime forces 257 as component, deficit 0.297). The bound is
-  attained with equality at `a = 1` (n = 90). Undecided beyond `a = 28`. So any
-  sixth example in the equality case has `a ≥ 29`. **Over-read correctly:** this
-  does NOT give any sixth with exactly 9 odd components `a ≥ 29` — with `ω(odd)
-  = 9` and `a ≥ 9` the example is not in the equality case (needs `a+1 = ω`),
-  so only `a = 8` is excluded there; correct bound for `ω = 9` is `a ≥ 9`. The
-  fifth example shows `ω < a+1` is normal (ω=11, a+1=19); the lemma bites only
-  at the exact extremum. Thread `a-ge-8-bound` superseded by this result.
-- **(OEIS finding)** The verified H_even members `2,6,10,18,26,30,46,62,82,122`
-  match **no** OEIS sequence — no catalogued closed form; structure comes from
-  the problem.
-- **(computed/checked, independent reproduction)** The ten members of
-  `H_even ∩ [2,1200]` are each verified IN by **complete factorisation** of
-  `2^m+1` with every prime 3-Higgs:
-  `code/out/heven_complete_verify.captured.txt` — 2^122+1 factored completely into
-  `5·733·1709·3456749·368140581013·667055378149`, all 3-Higgs. So the ten
-  members are independently confirmed (not merely taken from the paper).
-- **(computed) 257 = 2^8+1 is non-3-Higgs** (`v2(256)=8 > 3`), confirmed by the
-  witness check in `code/out/heven_patterns.captured.txt`. This underpins
-  Route B to kill the `a=8` equality case in the thread. NB the pattern script's
-  hard-coded "want" table had `257:True`; the computed (correct) value is False —
-  that table row is a script bug, and the genuine value is non-Higgs.
+  `code/out/known_five_verified.captured.txt`. All five divisible by 3;
+  whether a sixth must be is open. **Sharpest edge of the witness set:** the
+  two non-squarefree odd kernels are `3^2` (in 90) and `5^4` (fifth). Any
+  lemma killing all repeated odd prime powers is **false** — run every
+  candidate lemma against all five before recording it as anything but
+  `asserted`.
+- **(proved) No odd unitary perfect number.** Every UPN `n = 2^a·m`, `a ≥ 1`.
+  `research/notes/parity-and-2-adic-budget.md` (Subbarao–Warren 1966).
+- **(proved, checked against all five) 2-adic budget identity**:
+  `Σ_i v2(p_i^{e_i}+1) = a + 1`, exactly; corollary `ω(odd part) ≤ a + 1`,
+  equality iff every odd component `≡ 1 (mod 4)`. Bounds `ω` *above*; the
+  open useful direction is a **lower** bound on `a`. Same note.
+- **(sourced, three primary Wall texts) Subbarao 1970: any sixth UPN has
+  `a ≥ 11`** — i.e. `2^11 | n`; `a = 0,3,4,5,7,8,9,10` impossible,
+  `a=1 → {6,90}`, `a=2 → {60}`, `a=6 → {87360}`. The 2-page AMM note is
+  paywalled; the attribution is via Wall 1975 §2, Wall 1987 §2, Wall 1988
+  (all held full texts). **This subsumes the run's own `a ≥ 8`
+  (Wall 1988 + budget, `research/notes/lower-bound-on-a.md`)**, which is a
+  correct self-contained proof but not the frontier; the equality-case `a = 8`
+  elimination (`research/notes/equality-case-eliminated.md`, claim
+  `budget-equality-case-impossible`, checked: max product of the a+1 smallest
+  admissible components falls short for 2 ≤ a ≤ 28, 257 forced at a=8, a=1
+  attained by {5,9}=odd part of 90) is true but **redundant** — thread
+  `a-ge-8-bound` is closed as redundant, not open. Wall 1975 already works in
+  `11 ≤ a ≤ 38` for N < W. Open: bound beyond 11, or impossibility of a
+  residue class of a. Falsifier: the 1970 note containing only the 1966 list
+  would drop the claim to `a ≥ 8`. `research/notes/subbarao-1970-a-ge-11.md`.
+- **(sourced) Graham 1989:** UPNs with squarefree odd part are exactly
+  `6, 60, 87360` — so any sixth example has a **repeated odd prime power**.
+- **(sourced) Subbarao–Warren 1966:** for each fixed `ω`, at most finitely
+  many UPNs.
+- **(sourced, full text held) Maciejewski arXiv:2605.20475** (May 2026; 3-Higgs
+  definition confirmed §1.1; OEIS A057447). Cardinal facts, anchor
+  `research/notes/heven-and-3-higgs-structure.md`:
+  - Every prime divisor of a UPN is **3-Higgs**: `p−1 | (product of smaller
+    3-Higgs primes)^3`, exponent cap 3 (17 first non-Higgs, `v2(16)=4`).
+  - Odd dependency graph, edges `p → r` when `r | p^e + 1`; inside the bounded
+    box `B = {p ≤ 2000, e ≤ 6, p^e ≤ 10^9, |SCC| ≤ 6, cycle ≤ 6}` the only
+    admissible source kernels are `3^2`, `5^4` and five impostor kernels,
+    eliminated for `1 ≤ a ≤ 10000` (Thm 2; three filters: Zsigmondy/Higgs-
+    exponent, seed-divisor non-3-Higgs witness, 2-adic-budget overshoot).
+  - Prop 5: `H_even ⊆ {m ≡ 2 (mod 4)}`. Prop 4(3): for `m = 2k ∈ H_even`,
+    k odd, every `q | k` is 3-Higgs with `v_q(k) ≤ 3` (k Higgs-cubefree, 246
+    such k ≤ 600) and `2d ∈ H_even` for every odd `d | k`; composite members
+    exist (m = 18 = 2·9, m = 30 = 2·15, confirmed by this run).
+  - Thm 7 (prime-case reduction): `|H_even| < ∞` iff
+    `{2p : p odd prime, 2p ∈ H_even}` is finite; `|H_even| ≤ 4^{|prime branch|}`.
+  - Thm 8: `H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}`.
+  - Thm 21: `#{m ≤ X : m ∈ H} ≪ X^{1−η}`, `Σ_{m∈H} 1/m < ∞` — **thinness,
+    NOT finiteness**; on the prime branch the gap is exponential at the
+    primitive-divisor height (Hong–Stewart lower bound).
+  - Frontier (counting bounds): `|H_even ∩ [2,40000]| ≤ 201`,
+    `|H_even ∩ [2,50000]| ≤ 272`; 262 undecided candidates, all `m = 2p` with
+    p an odd Higgs prime, blocked by **unfactored 355–6000 digit cofactors** of
+    `2^{2p}+1`.
+  - Closures: `hb-no-v2ge4-witness-1e11` (catalogued, paper's computation):
+    no prime `r ≡ 1 (mod 16p)`, `r ≤ 10^11`, divides `L_p` or `M_p` for the
+    162 open candidates (m = 2426 extended to 6×10^11). `hb-lemma20-closures`
+    (asserted): candidates 2446, 10294, 10958, 17398, 19066, 20282 closed by
+    APR-CL-verified large prime divisors with non-3-Higgs Pratt witnesses;
+    30882 via a further route. `research/notes/paper-extraction.md`.
+  - Analytic target (live thread `research/threads/divisor-level-phi4p.md`):
+    divisor-level problem for `Φ_{4p}(2)`; Aurifeuillean split
+    `2^{2p}+1 = L_p·M_p`, `L_p = 2^p − 2^((p+1)/2) + 1`,
+    `M_p = 2^p + 2^((p+1)/2) + 1`. §5.3: the missing theorem is
+    divisor-transference / equidistribution of prime divisors of `Φ_{4p}(2)`
+    (the paper states no such theorem exists); GRH and Artin/Hooley density
+    are explicitly the wrong target.
+- **(computed) The ten `H_even` members are independently confirmed IN** by
+  **complete factorisation** of `2^m + 1` with every prime 3-Higgs —
+  `code/out/heven_complete_verify.captured.txt` (e.g. `2^122+1 =
+  5·733·1709·3456749·368140581013·667055378149`, all Higgs). Independent of
+  the paper; **but it only proves membership of the ten, not emptiness of
+  (122, 1200]** — that still rests on the paper (see Gaps).
+- **(computed) 257 = 2^8+1 is non-3-Higgs** (`v2(256)=8 > 3`) in
+  `code/out/heven_patterns.captured.txt`; the pattern script's hard-coded
+  "want" table row `257:True` is a script bug, the computed False is correct.
+- **(sourced, unverified) Frei 1978 via OEIS A002827 comment only:** a UPN not
+  divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 odd components,
+  `n > 10^440`. Primary text not in the library. Load-bearing for the
+  "is 3 | n forced?" question.
 
 ## Ruled out
 
-- **The structural backtracking search is CLOSED.** The product form
-  `Π (q_i+1)/q_i = 2` with the denominator rule forcing the next prime whenever
-  the remaining target is not an integer recovers exactly the five known numbers
-  within any bound this container reaches and produces no information at any
-  such bound — Wall (1975) cleared past `10^102`. Do not rerun it. The one thing
-  worth keeping is the denominator rule as a **divisibility constraint** (if the
-  remaining target is `A/B`, every prime dividing `B` divides `n`) — the
-  structural content the odd dependency graph is built from; use it forwards, do
-  not execute it. `research/notes/why-the-search-is-closed.md`,
-  `code/structural_search_CLOSED.py`.
-- **Rarity is not finiteness.** A density-zero / `o(x)` / `O(x^ε)` statement
-  about UP numbers is almost certainly already known and does not touch the
-  question. Say which one you have.
-- **The B2 witness sieve's `pow(2,2400,r)==1` prefilter is buggy** — it must not
-  be trusted for the H_even verification. A prime `r | 2^m+1` (m even ≤1200,
-  m=2k) only needs `ord_r(2) = 2d` with `d | k` (i.e. `ord = 4d` with `d|k`),
-  NOT `ord | 2400`. The oracle cross-check is decisive: direct witness pairs
-  `(r≤1000, m even≤1200)` with `r|2^m+1` = **1346**, but the sieve's table
-  (after the fix attempt) holds only 836, missing the `(29,14),(29,42),…` class:
-  `ord_29(2)=28∤2400` yet `29 | 2^14+1`. So the filter wrongly discards valid
-  witnesses and **under-kills** (it can only err toward claiming an m is IN when
-  it is not — the dangerous direction). A corrected sieve must iterate odd
-  divisors `d | m` / `d | 600` and test `pow(2, m, r)` directly for `r ≡ 1
-  mod 2d`, not filter on `ord | 2400`. NOT CERTIFIED. See the D_COMP (576 odd-norm
-  divisors) analysis in the commands log.
+- **The structural backtracking search is CLOSED — with the correct Wall-1975
+  statement.** Wall 1975 proves the fifth UPN `W ≈ 1.46e23` is next after
+  87360 by eliminating all `N < W` (seed cap `a < 38`). **The figure "10^102"
+  is unattested in any held source** (verified absence; the Wall–Hagis 1972
+  letter and Guy §B3 are the likely carriers, both inaccessible so far —
+  REQUESTS.md row open). State `10^23`, not `10^102`, when citing Wall.
+  Compute-policy consequence unchanged: `10^23` alone is beyond any reachable
+  region. Do not rerun the product-form search; keep only the denominator rule
+  as a **forwards** divisibility constraint.
+  `research/notes/wall-1975-bounds-and-102-claim.md`, `code/structural_search_CLOSED.py`.
+- **Rarity is not finiteness.** Density-zero / `o(x)` / `O(x^ε)` statements
+  about UPNs are almost certainly known and do not touch the question. Say
+  which one you have.
+- **The `a ≥ 8` line and the `a = 8` equality-case thread are closed as
+  redundant** — Subbarao 1970 already eliminates `a = 8, 9, 10`
+  unconditionally, without any H_even machinery. See Established.
+- **The old sieve `pow(2,2400,r)==1` prefilter is FIXED; do not reintroduce
+  it.** It dropped valid witnesses with `ord ∤ 2400` (e.g. `29 | 2^14+1`,
+  ord 28). Current `code/heven_sieve.py` adds a complement sweep over orders
+  `d ≤ 2400, v2(d) ≥ 2, d ∤ 2400`; the (29,14) class is recovered (m=14 in
+  the 10^4 killed list).
 
 ## Numbers
 
 - Oracle: `σ*(n) = Π_{p^a||n}(p^a+1)`, exact integers; `n` UP iff `σ*(n) == 2n`.
   Verified by hand on 6 and on non-UP controls.
-- Witness table (a, ω(odd), Σv2, a+1): 6→(1,1,2,2); 60→(2,2,3,3); 90→(1,2,2,2,
+- Budget table `(a, ω(odd), Σv2, a+1)`: 6→(1,1,2,2); 60→(2,2,3,3); 90→(1,2,2,2,
   equality); 87360→(6,4,7,7); fifth→(18,11,19,19). Identity exact in all five;
   equality in `ω ≤ a+1` holds only for 90.
-- Paper's open branch (abstract): `|H_even ∩ [2,40000]| ≤ 201`,
-  `|H_even ∩ [2,50000]| ≤ 272`, where `H_even = { even m : every prime divisor
-  of 2^m+1 is 3-Higgs }`. Analytic target named in the paper: a divisor-level
-  problem for the cyclotomic values `Φ_{4p}(2)`.
+- **Verify harness `code/heven_classify.py` Phase A is RED — current code
+  fails its own self-tests** (`code/out/classify_test_10000.captured.txt`):
+  (a) A2 prints "definitional mismatch" at every prime ≥ 3: `lib/higgs.py`
+  `_higgs_status_bulk` has the literal-OEIS check backwards — it tests
+  `product-of-q^{3e} | (p−1)` instead of `(p−1) | product-of-q^{3e}`; the
+  classify-side literal loop is trivially identical to the working form so it
+  cannot detect anything. The predicate itself is fine (17 non-Higgs, 31
+  Higgs printed correctly). (b) A3 crashes at line ~113:
+  `sympy.cyclotomic_poly(4*p).eval(2)` — the function returns an Expr with no
+  `.eval`; use `.subs(x, 2)` or the Möbius product formula
+  `Φ_n(2) = Π_{d|n}(2^d−1)^{μ(n/d)}`. Nothing built on classify's Phase A/B
+  output is certified until these are fixed; the ten-member verification above
+  does not depend on classify.
+- **Sieve**: `sieve_test_1000` (old filter) and `sieve_test_10000` (complement
+  sweep: 1859 witness pairs, 401 killed, incl. m=14) are small-range tests
+  only. **The full passes to 10^8 and 10^9 have no completed capture**
+  (`sieve_pass_1e8.captured.txt`, `sieve_timing_1e6.captured.txt` empty). The
+  1346-direct-pairs oracle equality quoted in earlier context was against the
+  old buggy sieve — stale; re-run it against the fixed sieve.
+- **Claim ledger warning:** the Contradictions table of `research/CLAIMS.md`
+  is corrupted (word-token garbage rows, from the derive script misreading the
+  free-text `contradicts:` fields in the wall-1975 and subbarao-1970 notes).
+  Read the notes themselves, not that table, until the parser is fixed.
 
 ## Recalled
 
-Durable Cognee memory now holds this problem's own accumulated findings, marked
-as recalled rather than as fresh results; verify their hypotheses against this
-problem before building on them (all checked here and consistent with the
-Established section above).
+Durable Cognee memory from earlier runs; consistent with Established here
+(hypotheses checked against this problem).
 
-- **ROOT construction** (recalled): any sixth UPN `n = 2^a·m` is even, has
-  non-squarefree odd part (Graham), ≥9 odd components (Wall 1988), every prime
-  divisor of the seed factor `2^a+1` is 3-Higgs, and its seed branch is
-  controlled by `H_even`. Verification bound `|H_even ∩ [2,50000]| ≤ 272`
-  rigorous with ~262 undecided candidates, all `m = 2p` with `p` odd Higgs,
-  blocked by unfactored 355–6000 digit cofactors.
-- **Settled restricted classes, with hypotheses** (recalled): no odd UPN
-  (Subbarao–Warren), squarefree odd part `{6,60,87360}` (Graham), five impostor
-  kernels eliminated for `1 ≤ a ≤ 10000` within the bounded box (Maciejewski
-  Thm 2, three-filter certificate: Zsigmondy/Higgs-exponent, seed-divisor
-  non-3-Higgs witness, 2-adic budget overshoot).
-- **3-divisibility, Lemma 2** (recalled, from Subbarao–Warren): the structure
-  of first-γ/3-divisibility underlies the seed description.
-- **Library inventory** (recalled): 16 full texts held; the library is
-  complete (phase-1 exit satisfied). Open gaps recorded in memory: Frei 1978
-  primary, Wall 1975 primary, Goto 2007 primary, Wall's 10^102 search bound
-  statement (also listed in Gaps below).
+- ROOT: any sixth UPN is even, has non-squarefree odd part (Graham), ≥ 9 odd
+  components (Wall 1988), every prime divisor 3-Higgs, seed branch controlled
+  by H_even; verification `|H_even ∩ [2,50000]| ≤ 272` with ~262 undecided
+  candidates, blocked by unfactored cofactor digits.
+- Settled restricted classes: no odd UPN (Subbarao–Warren), squarefree odd
+  part exactly {6,60,87360} (Graham), impostor kernels eliminated for
+  `1 ≤ a ≤ 10000` in the bounded box (Thm 2, three-filter certificate).
+- 3-divisibility / Lemma 2 of Subbarao–Warren: first-γ / 3-divisibility
+  structure underlies the seed description.
+- Library inventory: 16 full texts held, library phase closed. Wall 1975
+  *is* held (fifth-UPN paper); what is missing is the 10^102 anchor, Frei
+  1978 primary, Goto 2007 primary.
 
 ## Contradictions
 
-- **Encyclopedia of Mathematics "Unitary divisor"** (fetched
-  `research/sources/encyclopedia-of-math-unitary-divisor.full.md`) writes
-  `90 = 2·3^3·5`. That is wrong: `90 = 2·3^2·5`, as in Subbarao–Warren 1966,
-  OEIS A002827, Wikipedia, and the workspace oracle. The EoM entry has a
-  typo in the exponent of 3. Do not cite EoM for the factorization of 90.
+- **Encyclopedia of Mathematics "Unitary divisor"** writes `90 = 2·3^3·5`;
+  correct is `2·3^2·5` (Subbarao–Warren, OEIS A002827, Wikipedia, workspace
+  oracle). EoM typo; do not cite EoM for the factorization of 90.
+- **"10^102 search bound": GOAL.md and ROOT.md state it as literature fact;
+  the held Wall 1975 primary text contains no such figure** — its bound is
+  `N < W ≈ 1.46e23`. Orphan claim (note `wall-1975-bounds-and-102-claim.md`);
+  compute policy unaffected.
+- **Verify harness vs expectation:** current `heven_classify` Phase A fails
+  its self-tests while earlier CONTEXT described the pipeline as passing;
+  nothing built on classify's Phase A/B output is certified until green.
 
 ## Gaps
 
-- **The full H_even ∩ [2,1200] exact classification (`code/H_EVEN_VERIFY_SPEC.md`,
-  Phase B) is NOT complete.** The ten IN-members are independently confirmed by
-  complete factorisation (`heven_complete_verify.captured.txt`), and the
-  survivor/undecided split (how many even m ≤1200 are killed vs undecided) needs
-  the **B2 witness sieve**, which is currently **buggy and not certified** (see
-  Ruled out: the `ord | 2400` prefilter drops valid witnesses like 29|2^14+1).
-  Until a corrected sieve passes the 1346-direct-pairs oracle equality and is
-  wrapped in `timeout 540 … | tee`, the classification is not verified and the
-  `H_even ∩ (122,1200] = ∅` claim rests on the paper alone, not on this run.
-  The spec is the yardstick; Phase A (A1 sigma+budget, A2 Higgs primes, A3
-  cyclotomic/Aurifeuillean/m=2426/Filter-N) must pass before Phase B, and only
-  the ten IN-members have been reproduced so far.
-- **Frei 1978 full text** (Über unitar perfekte Zahlen, Elem. Math. 33 (1978)
-  95–96). Previous fetches resolved to a volume table-of-contents page (about
-  plane sections of convex bodies, not Frei) — deleted per directive 5.
-  Correct e-periodica
-  URL for Heft 4: `https://www.e-periodica.ch/digbib/view?pid=edm-001:1978:33#105`.
-  The OEIS-recorded theorem (UPN not divisible by 3 has m ≥ 144, ω ≥ 144,
-  n > 10^440) is load-bearing for the "is 3 | n forced?" question and is
-  unverified against the primary text. Either refetch from the correct URL or
-  find an alternate source.
-- **Wall 1975 full text** (The fifth unitary perfect number, CMB 18 (1975)
-  115–122) is paywalled at Cambridge. The fifth UPN's construction is carried
-  by OEIS/Wikipedia/Wall 1987/1988/Maciejewski, but the primary proof of
-  "W is the next after 87360" is not in the library.
-- **Goto 2007** (Upper Bounds for UPNs, RMJM 37 (2007) 1557–1576) is
-  paywalled at Project Euclid; the OEIS-recorded bound `m < 2^(2^k)` for
-  `ω(m) = k` is carried but not verified against the primary text.
-- Open structural question: is `3 | n` forced for a sixth example? (all five
-  have it; open.) Both directions are a result.
+1. **Verify harness Phase A is RED** — exact bugs in Numbers; fix (A2 literal
+   direction, A3 exact cyclotomic value) and rerun
+   `timeout 540 … | tee` before any Phase A/B claim from `heven_classify.py`
+   is trusted. Immediate blocker for the independent `H_even ∩ [2,1200]`
+   classification (TASKS.md item 2, spec `code/H_EVEN_VERIFY_SPEC.md`).
+2. **Full sieve passes to 10^8 / 10^9 are not captured** — only small-range
+   tests; run, capture with `timeout 540`, and restate the 1346-pairs oracle
+   equality against the fixed sieve.
+3. **`H_even ∩ (122,1200] = ∅` rests on the paper alone** until the B2 witness
+   sieve + B3 complete-factor classification are green with certified
+   witnesses.
+4. Open structural directions, any result: (a) divisor-level problem for
+   `Φ_{4p}(2)` — the paper's named analytic target (thread
+   `divisor-level-phi4p`); (b) lower bound on `a` beyond 11, or impossibility
+   of a residue class of `a`; (c) is `3 | n` forced for a sixth? (all five
+   have it; open in both directions).
+5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
+   2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
+   no OCR; Guy UPNT §B3 paywalled).

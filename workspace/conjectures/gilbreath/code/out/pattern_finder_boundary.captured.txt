@@ -1,0 +1,13 @@
+numpy int64 oracle: rows A_1..A_5 first 12 match problem.md exactly
+primes: 1270607
+b mismatches vs record: none
+c mismatches vs record: none
+regen rows: 59, erosion rows: 101
+L1 failures: none
+L2 (c drain) failures: none
+L3a (e shove) failures: none
+L3b (i shove) failures: none
+rows with (i,e)=(0,0): [28, 29, 30, 31, 32, 35, 36, 40, 41, 52, 53, 54, 59, 60, 66, 77, 84, 87, 97, 98, 104, 120, 121, 144, 147, 148, 149, 154, 155, 156]
+erosion runs: [3, 1, 1, 2, 2, 7, 3, 8, 4, 4, 3, 3, 2, 2, 5, 4, 2, 1, 13, 12, 1, 1, 1, 2, 2, 12] max: 13
+erosion run starts (k, c_at_start, b_at_start): [(1, 4, 2), (5, 8, 24), (7, 6, 22), (9, 4, 24), (12, 4, 96), (15, 4, 173), (23, 4, 739), (27, 6, 872), (36, 4, 2178), (41, 8, 2768), (46, 4, 2763), (50, 4, 2762), (54, 4, 4205), (57, 4, 5942), (60, 4, 5941), (66, 4, 23264), (71, 4, 31497), (74, 4, 31526), (76, 4, 31525), (90, 6, 31534), (103, 10, 103967), (105, 8, 103965), (107, 6, 103963), (109, 4, 103961), (112, 4, 141706), (115, 12, 271627)]
+wrote sequences

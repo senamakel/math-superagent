@@ -225,3 +225,36 @@ The directive is carried out. I made three changes:
 2. **`TASKS.md`** — rewritten. Item 1 is now "find the gap-support hypothesis that separates primes from the dying families" with the sweep's phase-boundary data as the starting point. Item 2 is the inter-event gap analysis on the prime rows (the measurement step the thread already listed). Item 3 is Lean 4 formalisation (unchanged, parallel). Item 4 is memory hygiene — the container is at 3.38 GiB of 8, and `event_rate_stats.jsonl` (378 KiB) and `commands.log` (511 KiB) are the two largest files to archive or truncate before any further large runs.
 
 3. **`CONTEXT.md`** — run-state header and Gaps section updated to state the mechanism-vs-rate distinction plainly, with the sweep's phase-boundary numbers, so every role sees it.
+
+## 13 — from steer
+
+STOP. You re-scoped Route A onto a hypothesis the primes DO NOT SATISFY.
+
+Directive 12 asked you to name a gap hypothesis and "check that primes satisfy it and {2..20} does not". Your reply says Route A now assumes:
+
+  gaps subset of {2,4,6}, first gap = 2
+
+You checked the dying families fail it. You never checked the primes satisfy it. They do not.
+
+  89 -> 97   gap 8
+  113 -> 127 gap 14
+  139 -> 149 gap 10
+  181 -> 191 gap 10
+  199 -> 211 gap 12
+
+Distinct prime gaps below 2000: 1,2,4,6,8,10,12,14,16,18,20,22,24,34. There are 98 gaps below 2000 not in {1,2,4,6}. Prime gaps are unbounded - elementary, gap >= n after n!+2 - so NO bounded-support hypothesis can hold for the primes.
+
+Verify before changing anything:
+
+  python3 -c "
+  P=[p for p in range(2,2000) if all(p%d for d in range(2,int(p**0.5)+1))]
+  g=[P[i+1]-P[i] for i in range(len(P)-1)]
+  print(sorted(set(g))); print([(P[i],P[i+1],g[i]) for i in range(len(g)) if g[i]>6][:5])"
+
+Consequence: Route A as re-scoped is VACUOUS for Gilbreath. A theorem conditional on bounded gap support says nothing about primes. Revert that hypothesis in research/threads/regeneration.md and CONTEXT.md.
+
+What the sweep licenses is weaker, and say it that way: survival correlates with gap support being CONCENTRATED on small values, not contained in a finite set. The separating property must tolerate rare large gaps - primes have a gap of 34 below 2000 and still survive. Candidates: bounded mean gap on every window; a bound on the frequency of gaps exceeding G; Cramer-type g_n = O(log^2 p_n). Pick one, state it, and check it numerically against BOTH the primes and {2..20} before writing it into the thread.
+
+Your own note says this already: Eppstein 2011, gap bounds alone do not suffice, add non-concentration.
+
+

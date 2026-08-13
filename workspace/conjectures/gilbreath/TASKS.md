@@ -1,52 +1,46 @@
 # Tasks
 
-## Directive 12 (steer): Re-scope Route A — mechanism is combinatorial, rate is not
+## Directive 13 (steer): Revert the bounded-gap-support re-scope — the primes do NOT satisfy it; Route A needs a concentration hypothesis
 
-The event-rate sweep (1154 sequences, 852 deaths, 73.8%) contradicts the
-regeneration thread's claim that Route A is "combinatorial, not about gaps"
-with "no prime input." Both are true and about different things: the step law
-and recharge identity hold universally (0 failures across all families) — the
-mechanism IS combinatorial. But whether `Σ (j_i + 1) ≥ k−2` holds depends on
-the event RATE, and the sweep shows the rate depends sharply on gap support:
-{2..20} and Geom(p=.25) die 100%. A purely combinatorial bound on the event
-rate would prove something false for those families.
+Directive 12 re-scoped Route A to a hypothesis "gaps ⊆ {2,4,6}, first gap = 2", claimed to be satisfied by the primes and violated by the dying sweep families. **That hypothesis is VACUOUS for Gilbreath: the primes do not satisfy it.** Counterexamples (directive): 89→97 gap 8, 113→127 gap 14, 139→149 gap 10, 181→191 gap 10, 199→211 gap 12. Distinct prime gaps below 2000: {1,2,4,6,8,10,12,14,16,18,20,22,24,34}; 98 gaps below 2000 lie outside {1,2,4,6}. Prime gaps are unbounded (elementary: gap ≥ n after n!+2). So NO bounded-support hypothesis holds for the primes, and a theorem conditional on finite support says nothing about Gilbreath.
 
-**Resolution applied to `research/threads/regeneration.md`:** Route A re-scoped
-to include a gap-support hypothesis (e.g. gaps ⊆ {2,4,6}, first gap = 2) that
-the primes satisfy and the dying sweep families fail. The mechanism (step law,
-drain law, edge-flip) is combinatorial; the rate hypothesis is about the input.
+**What the sweep licenses is weaker, and must be stated that way:** survival correlates with gap support being CONCENTRATED on small values, not contained in a finite set. The separating property must tolerate rare large gaps — the primes have a gap of 34 below 2000 and still survive.
 
 ### Immediate (in order)
 
-- [ ] **1. Find the gap-support hypothesis that separates primes from the dying families.** The sweep says it's not just "first gap = 2" — that helps {2,4} but {2..20} and Geom(p=.25) still die 100% with first gap forced to 2. Narrow support is the phase boundary: {2}, {2,4}, {2,4,6} survive (especially with f2); {2..20} and wider die. Extract the exact gap distribution from the sweep survivors vs dead — what property of the gap sequence makes the (2,4)-event rate sufficient? Check whether the primes' gap distribution (concentrated in {2,4,6} with ~72% at 2) falls definitively in the surviving regime. This is the content Eppstein 2011 already flags as necessary: gap bounds alone don't suffice, must add non-concentration. The sweep localises "non-concentration" to "gap support ⊆ {2,4,6} and skewed toward 2."
+- [ ] **1. Revert the bounded-support hypothesis.** Remove/replace "gaps ⊆ {2,4,6}, first gap = 2" as a prime-satisfied hypothesis in `research/threads/regeneration.md` and `CONTEXT.md`. Record it refuted for vacuity, not weakened, with the directive's counterexamples.
 
-- [ ] **2. Run the inter-event gap analysis on the prime rows.** Extract from `blocks_depth1000.json`: inter-event gap distribution, jump-size distribution, cumulative recharge vs consumption at each event, worst-case inter-event gap, and whether the surplus trend is growing or shrinking. The data already exists — one program, run it, report the numbers. This is the measurement step the regeneration thread already lists as its first step.
+- [ ] **2. Verify the directive's gap facts mechanically.** Run the primes-below-2000 one-liner to reproduce the distinct-gap set and the first gaps > 6. This is an oracle check on the claim that the bounded-support hypothesis fails — do not take it on the directive's word.
 
-- [ ] **3. Formalise the difference operator in Lean 4.** Define the operator, prove (odd, even, even, ...) shape preservation, reduce to {0,2} second-entry claim as a machine-checked lemma. Report `#print axioms` and every remaining `sorry`. Independent of items 1–2; can run in parallel.
+- [ ] **3. Pick ONE concentration hypothesis, state it, check it numerically against BOTH the primes and {2..20}, THEN write it into the thread.** Candidates (the directive's list):
+  - (a) bounded mean gap on every window;
+  - (b) a bound on the frequency of gaps exceeding G;
+  - (c) Cramér-type g_n = O(log² p_n).
+  Acceptance criterion: the primes satisfy it (it must tolerate rare large gaps — gap 34 below 2000), and {2..20} (the sweep family that dies 100%) fails it. No bounded-support hypothesis may be re-asserted.
 
-- [ ] **4. Memory hygiene.** The container is at 3.38 GiB of 8 GiB. An OOM kill is silent. Before any large run, delete stale captures or compress the bigger output files. `code/out/event_rate_stats.jsonl` (378 KiB) and `code/out/commands.log` (511 KiB) are the largest — archive or truncate.
+- [ ] **4. Route A under the chosen hypothesis.** Re-scope Route A: mechanism (step law, drain law, edge-flip) combinatorial; rate hypothesis = the concentration condition. State how it beats Eppstein 2011 (gap bounds alone do not suffice; add non-concentration).
+
+- [ ] **5. Lean 4 formalisation (unchanged, runs in parallel).** Define the operator, prove (odd, even, even, ...) shape preservation, reduce to the {0,2} second-entry claim. Report `#print axioms` and every `sorry`.
 
 ### Background (established, do not redo)
 
-- **Reduction:** A_k(1) ∈ {0,2} ⇔ conjecture. Proved and checked to depth 599.
-- **Block lemma:** constant = 1 (n+1 rows per length-n block). Proved, verified exhaustively. `research/notes/block_lemma.md`.
-- **Rule 90 interior (PROVED):** `research/notes/rule90-interior.md`. Halved entries evolve under XOR = Rule 90 = Pascal mod 2.
-- **Regeneration criterion:** b_{k+1} ≥ b_k ⟺ (A_k[b_k]==2 AND A_k[b_k+1]==4). Zero failures to depth 1000, 60/60 events.
-- **Step law and recharge identity — PROVED (this run):** `b_{k+1} ≥ b_k ⟺ (x,y)=(2,4)`, else `b_{k+1}=b_k−1`. Recharge: `b_k = 2 + Σ (j_i+1) − (k−1)`. Universal — holds on all 1154 sweep sequences (zero failures) and on the primes. `code/out/step_law_and_recharge_verified.md`.
-- **Drain law:** y_{k+1} = y_k − 2·[x_k = 2]. Verified 101/101 on primes; also combinatorial.
-- **Event-rate sweep (this run, 1154 sequences, 3 batch depths):** step law + recharge identity universal (0 failures). 852/1154 (73.8%) reach b_k = 0, all within 10 rows. Phase boundary: {2}, {2,4}, {2,4,6} survive with first-gap-2; {2..20}, {2..100}, Geom(p=.25) die 100%. The mechanism is combinatorial; the event rate is not. `code/out/event_rate_sweep_analysis.captured.txt`, `code/out/event_rate_sweep.notes.md`.
-- **CHT Theorem 1.6 hypothesis check — DONE.** M=7, L=2, R_0=419,430,400 ≫ 1000. `holds-here: no`. `code/out/cht_hyp_check.captured.txt`.
-- **Rule 90 depth prediction — CLOSED.** tol=1 signal marginal (p=0.017), tol=0 dead. Thread `research/threads/rule90-regeneration.md` closed.
+- **Reduction:** A_k(1) ∈ {0,2} ⇔ conjecture. Proved, checked to depth 599.
+- **Block lemma:** constant = 1 (n+1 rows per length-n block). Proved. `research/notes/block_lemma.md`.
+- **Rule 90 interior (PROVED):** halved entries evolve under XOR = Rule 90 = Pascal mod 2. `research/notes/rule90-interior.md`.
+- **Step law + recharge identity — PROVED, universal:** `b_{k+1} ≥ b_k ⟺ (x,y)=(2,4)`, else `b_{k+1}=b_k−1`; `b_k = 2 + Σ(j_i+1) − (k−1)`. Zero failures on all 1,154 sweep sequences AND primes. `code/out/step_law_and_recharge_verified.md`.
+- **Drain law:** y_{k+1} = y_k − 2·[x_k=2]. Verified 101/101; combinatorial.
+- **Event-rate sweep (this run, 1,154 sequences):** step law + recharge identity universal (0 failures); 852/1,154 (73.8%) reach b_k=0 within 10 rows. Mechanism combinatorial, rate not. Narrow finite support + first-gap-2 survives; {2..20}, {2..100}, Geom(p=.25) die 100%. **But "narrow finite support" is NOT a property of the primes (Directive 13).** `code/out/event_rate_sweep_analysis.captured.txt`, `code/out/event_rate_sweep.notes.md`.
+- **CHT Theorem 1.6 hypothesis check — DONE.** M=7, L=2, R_0=419,430,400 ≫ 1000; `holds-here: no`. `code/out/cht_hyp_check.captured.txt`.
+- **Rule 90 depth prediction — CLOSED** (null computed; tol=1 p=0.017, tol=0 dead). Thread `research/threads/rule90-regeneration.md`.
 - **Oracle:** `witnesses.json` (depth 600), `blocks_depth1000.json` (depth 1000).
-- **Library state:** 92 sources on disk, downloads halted. No more downloads until a specific gap is stated.
-- **Lean 4 and Mathlib:** not yet started. Blocking: none.
+- **Library:** 92 sources on disk, downloads halted; no downloads until a specific gap is stated.
+- **Lean 4 + Mathlib:** not yet started. Blocking: none.
 
 ### Threads
 
-Two live threads:
-- `research/threads/regeneration.md` — Route A re-scoped per Directive 12: mechanism is combinatorial, rate hypothesis must include gap-support condition. Route B (analytic, prime-gap hypothesis) unchanged.
-- `research/threads/rule90-regeneration.md` — CLOSED per Directive 9. Null test done, tol=0 dead. The proved Rule 90 interior identification stands; the depth-timing corollary is refuted.
+- `research/threads/regeneration.md` — LIVE. Route A re-scoped per Directive 13: mechanism combinatorial, rate hypothesis must be a CONCENTRATION condition tolerating rare large gaps (bounded-support form vacuous for primes). Route B (analytic, prime-gap hypothesis) unchanged.
+- `research/threads/rule90-regeneration.md` — CLOSED (Directive 9). Depth-timing corollary refuted; the proved Rule 90 interior identification stands.
 
-### Dead threads (do not reopen)
+### Refuted this cycle (do not re-assert)
 
-- `research/threads/event_rate_lower_bound.md` — sweep fix landed (Directive 11). Absorbed into regeneration thread.
+- **Bounded-support re-scope "gaps ⊆ {2,4,6}, first gap = 2" — REFUTED as vacuous (Directive 13).** The primes violate every finite gap-support condition (gaps 8,10,12,14,34 below 2000; unbounded in general). A theorem conditional on finite support says nothing about Gilbreath.

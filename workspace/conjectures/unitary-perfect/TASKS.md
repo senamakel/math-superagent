@@ -37,6 +37,15 @@ end of this set is the concrete first step.
       `code/lib/higgs.py`. This is checking structure, never searching for a
       sixth unitary perfect number.
 
+**Capture hygiene (standing rule):** never leave a zero-byte `.captured.txt`
+in `code/out`. The capture pattern's `tee` creates the file the instant it
+starts, so a command that dies before printing leaves an empty file the judge
+reads as a failed experiment. Check every capture is non-empty before moving
+on; a run that printed nothing gets one line in the file saying what happened
+(e.g. `not run: superseded by the --lo/--hi interface`). This pass repaired
+`sieve_pass_1e8` and `sieve_timing_1e6` this way — both were superseded by the
+`--lo/--hi` interface, not failed experiments.
+
 ## What this run is doing
 
 Not searching for a sixth unitary perfect number — Wall cleared past `10^102`

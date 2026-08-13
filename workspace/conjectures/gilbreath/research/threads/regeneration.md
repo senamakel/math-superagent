@@ -9,13 +9,13 @@ rests-on: |
   - Rule 90 interior (proved): halved entries evolve under XOR. research/notes/rule90-interior.md. The depth-d=2^j timing corollary is REFUTED (see rule90-regeneration thread); the interior identification stands as the edge-flip mechanism for Route A.
   - CHT 2026 Theorem 1.6: only obstructions to decay are long zero-blocks or long shallow {0,d}-blocks. hypotheses checked, R_0=4.2e8 ≫ 1000, does not bite at reachable depths.
   - Eppstein 2011: gap bounds alone do not suffice; must add non-concentration or restrict to primes.
-  - **Event-rate sweep (Directive 12, this run, 1154 sequences):** the step law and recharge identity hold on ALL sequences (zero failures, 46,528 rows, 20,013 events) — the mechanism IS combinatorial. But the event RATE is not: 852/1154 (73.8%) reach b_k = 0, all deaths within first 10 rows; wide-support families ({2..20}, {2..100}, Geom(p=.25)) die 100%. The phase boundary is gap support: narrow support + first gap = 2 survives; wide support dies regardless of first gap. Route A as a purely combinatorial lemma is therefore REFUTED — any proof that bounds the event rate from {0,2}-interior + drain-law alone would contradict the sweep data. Route A must now assume a gap-support hypothesis the dying families fail. code/out/event_rate_sweep_analysis.captured.txt.
-blocked-by: nothing — the step law and recharge identity are exact and universal; Route A has been re-scoped to include a gap-support hypothesis
+  - **Event-rate sweep (Directive 12, this run, 1154 sequences):** the step law and recharge identity hold on ALL sequences (zero failures, 46,528 rows, 20,013 events) — the mechanism IS combinatorial. But the event RATE is not: 852/1154 (73.8%) reach b_k = 0, all deaths within first 10 rows; wide-support families ({2..20}, {2..100}, Geom(p=.25)) die 100%. The phase boundary is gap support: narrow support + first gap = 2 survives; wide support dies regardless of first gap. Route A as a purely combinatorial lemma is therefore REFUTED — any proof that bounds the event rate from {0,2}-interior + drain-law alone would contradict the sweep data. Route A must now assume an input hypothesis the dying families fail. **Directive 13: the bounded-support re-scope (gaps ⊆ {2,4,6}, first gap 2) is VACUOUS for Gilbreath — the primes do NOT satisfy it (gaps 8,10,12,14,34 occur below 2000; prime gaps are unbounded), so no finite-support hypothesis holds; the separating property must be a concentration condition tolerating rare large gaps.** code/out/event_rate_sweep_analysis.captured.txt.
+blocked-by: nothing — the step law and recharge identity are exact and universal; Route A needs a concentration hypothesis (the bounded-support re-scope is vacuous for primes — Directive 13)
 next: |
   1. Extract inter-event gap distribution and jump-size distribution from blocks_depth1000.json. Measure cumulative recharge vs consumption at each event, worst-case inter-event gap, and whether the surplus trend is growing or shrinking.
   2. Route A (combinatorial + gap-support hypothesis, re-scoped per Directive 12): prove a worst-case bound on erosion between events from the Rule 90 edge-flip dynamics + drain law, UNDER the hypothesis that the gap support is narrow (e.g. ⊆ {2,4,6} with first gap 2). The primes satisfy this; {2..20} and Geom(p=.25) do not. The mechanism (step law, drain law, edge-flip) is combinatorial; the rate hypothesis is about the input sequence, not the operator. State the hypothesis explicitly and check that the primes satisfy it and the dying sweep families fail it.
   3. Route B (analytic, secondary): assume a prime-gap hypothesis, derive a lower bound on event density. Must state how it beats Eppstein.
-  4. Deliverable: a theorem of the form "under hypothesis H, the event rate ≥ r, and r suffices." H must include a gap-support condition that separates the primes from the dying sweep families.
+  4. Deliverable: a theorem of the form "under hypothesis H, the event rate ≥ r, and r suffices." H must include a concentration condition (tolerating rare large gaps) that separates the primes from the dying sweep families.
 ```
 
 # Regeneration thread — event-rate lower bound
@@ -52,8 +52,7 @@ alone would have to hold for `{2..20}` and Geom(p=.25) — but those die 100% of
 time. So Route A cannot be "no prime input." It MUST include a gap-support hypothesis
 that the dying families violate. Route A is re-scoped accordingly: the mechanism
 (step law, drain law, edge-flip) is combinatorial; the rate hypothesis is about the
-input sequence's gap profile, and the primes satisfy it (gaps concentrated in
-`{2,4,6}` with first gap 2).
+input sequence's gap profile. **Directive 13: the bounded-support form (gaps ⊆ {2,4,6}, first gap 2) is VACUOUS for Gilbreath — the primes do NOT satisfy it (gaps 8,10,12,14,34 occur below 2000; prime gaps are unbounded), so no finite-support hypothesis holds.** The separating property must be a CONCENTRATION condition that tolerates rare large gaps; pick one (bounded mean gap per window / frequency of gaps > G / Cramér g_n = O(log² p_n)) and check it against both the primes and {2..20} before writing it in.
 
 ## What we know
 
@@ -67,19 +66,15 @@ input sequence's gap profile, and the primes satisfy it (gaps concentrated in
 
 ## Two routes to the event-rate bound
 
-### Route A — Combinatorial + gap-support hypothesis: bound max erosion between events
+### Route A — Combinatorial + concentration hypothesis: bound max erosion between events
 
 Between two (2,4)-events, the block erodes by exactly 1 per row. The intruder starts at some value ≥ 4 and drains to 4 (drop rate: 2 per row with edge=2, 0 per row with edge=0). The edge flips between 0 and 2 under the Rule 90 interior dynamics.
 
 A lemma bounding the longest possible run of (edge=0, intruder=4) before the edge flips to 2 would give a worst-case inter-event gap. This is a combinatorial claim: within a {0,2} block of length b, evolving under XOR, with an intruder y draining by the drain law, what is the maximum number of consecutive rows with edge=0?
 
-**Re-scoped per Directive 12:** the event-rate sweep refutes a purely combinatorial
-bound. Any such lemma must additionally assume a hypothesis on the input sequence's
-gap support (e.g. gaps ⊆ {2,4,6} with first gap = 2) that the primes satisfy and
-the dying sweep families ({2..20}, Geom(p=.25)) violate. Without this hypothesis,
-the lemma would prove a bound false for the dying families — a contradiction.
+**Re-scoped per Directive 12, corrected per Directive 13:** the event-rate sweep refutes a purely combinatorial bound. Any such lemma must additionally assume a hypothesis on the input sequence's gaps that the dying sweep families ({2..20}, Geom(p=.25)) violate. **The bounded-support form (gaps ⊆ {2,4,6}, first gap = 2) is VACUOUS for the primes** — gaps 8,10,12,14,34 occur below 2000 and prime gaps are unbounded, so no finite-support hypothesis holds. The hypothesis must be a CONCENTRATION condition that tolerates rare large gaps (bounded mean gap per window / frequency of gaps > G / Cramér g_n = O(log² p_n)); pick one and check it against BOTH primes and {2..20}. Without a separating hypothesis, the lemma would prove a bound false for the dying families — a contradiction.
 
-If this maximum is G(b) under the gap-support hypothesis, then events are at most G(b) rows apart, and the recharge inequality can be checked.
+If this maximum is G(b) under the concentration hypothesis, then events are at most G(b) rows apart, and the recharge inequality can be checked.
 
 ### Route B — Analytic: bound event density from prime gaps
 

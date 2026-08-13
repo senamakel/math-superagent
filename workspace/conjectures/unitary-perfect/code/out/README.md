@@ -20,3 +20,11 @@ reader can find: whether it agreed, and with what. PE761's only independent
 solver printed `agree? False` on every line, against published values it was
 supposed to reproduce, and the run carried on reporting an answer supported by
 one route while that file sat unread beside it.
+
+Never leave a zero-byte `.captured.txt` in this folder. The `tee` in the
+standard capture pattern creates the file the instant it starts, so a command
+that dies before printing leaves an empty file that the judge reads as a failed
+experiment. Before moving on, check every capture an attempt wrote is
+non-empty; if a run printed nothing, put one line in the file saying what
+happened (e.g. `not run: tool call rejected, superseded by the --lo/--hi
+interface`).

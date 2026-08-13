@@ -126,4 +126,56 @@ Neither is the Frei paper. Both are the same E-Periodica table of contents for a
 
 Then back to the mathematics: directive 4 asked you to independently reproduce the equality-case elimination, in particular that the a=1 maximum equals 4/3 exactly and that the extremal multiset {5,9} is the odd part of 90. That check is the one that shows the estimate is not lossy. Do it before building on the result.
 
+## 6 — from steer
 
+Frei is handled — both files are now 180-byte tombstones naming what they were. Closed.
+
+Now the thing that cost you a cycle. Two captures in code/out are ZERO BYTES:
+
+  code/out/sieve_pass_1e8.captured.txt
+  code/out/sieve_timing_1e6.captured.txt
+
+At [62:04] the judge read sieve_timing_1e6.captured.txt, got 0 bytes, and at [62:25] the loop returned "judge scored 4/5, steer", "verdict unsolved, progress no, kind unstated". An empty capture is indistinguishable from a failed experiment, so the judge could not credit the sieve work you did. A whole attempt spent on file hygiene.
+
+Fix: delete both, or write one line into each saying what happened - "1e8 pass not run: tool call rejected, superseded by the --lo/--hi interface". Never leave a zero-byte .captured.txt in code/out. The pattern
+
+  timeout 540 python3 <prog> 2>&1 | tee code/out/<name>.captured.txt; echo EXIT_CODE=$?
+
+creates the file the instant tee starts, so a command that dies before printing leaves exactly this. Check every capture is non-empty before moving on.
+
+That same cycle recorded "progress no". Since the previous verdict this workspace gained the equality-case elimination (a=8 through a=28 killed, sharp at n=90), the a>=8 lower bound, the 3-Higgs predicate reproducing all 26 paper witness statuses including 10 negatives, and ten H_even members with complete factorisations. For the judge to see that as no progress means it could not read it - and two of your four newest captures are empty.
+
+Priority: directive 4. Independently reproduce the equality-case result, especially that at a=1 the maximum equals 4/3 EXACTLY in Fraction arithmetic and the extremal multiset {5,9} is the odd part of 90. That check is the difference between checked and asserted.
+
+**What changed:**
+
+- **Two zero-byte captures repaired.** `code/out/sieve_pass_1e8.captured.txt` now reads `1e8 pass not run: tool call rejected, superseded by the --lo/--hi interface` and `code/out/sieve_timing_1e6.captured.txt` reads `1e6 timing not run: positional-interface call rejected, superseded by the --lo/--hi interface`. Neither was a failed experiment — both were superseded by the `--lo/--hi` interface rewrite that happened between the command being queued and running.
+
+- **Standing rule added** to both `TASKS.md` and `code/out/README.md`: never leave a zero-byte `.captured.txt` in `code/out`. Check every capture an attempt wrote is non-empty before moving on; a run that printed nothing gets one line in the file saying what happened.
+
+- **TASKS.md priority unchanged.** The equality-case independent reproduction (directive 4) was already the first unchecked task; the two H_even verification tasks follow. No reordering needed — the directive's priority was already in place.
+
+
+
+## 6 — from steer
+
+Frei is handled - both files are now 180-byte tombstones naming what they were. Closed.
+
+Now the thing that cost you a cycle. Two captures in code/out are ZERO BYTES:
+
+  code/out/sieve_pass_1e8.captured.txt
+  code/out/sieve_timing_1e6.captured.txt
+
+At [62:04] the judge read sieve_timing_1e6.captured.txt, got 0 bytes, and at [62:25] the loop returned "judge scored 4/5, steer", "verdict unsolved, progress no, kind unstated". An empty capture is indistinguishable from a failed experiment, so the judge could not credit the sieve work you did. A whole attempt spent on file hygiene.
+
+Fix: delete both, or write one line into each saying what happened - "1e8 pass not run: tool call rejected, superseded by the --lo/--hi interface". Never leave a zero-byte .captured.txt in code/out. The pattern
+
+  timeout 540 python3 <prog> 2>&1 | tee code/out/<name>.captured.txt; echo EXIT_CODE=$?
+
+creates the file the instant tee starts, so a command that dies before printing leaves exactly this. Check every capture is non-empty before moving on.
+
+That same cycle recorded "progress no". Since the previous verdict this workspace gained the equality-case elimination (a=8 through a=28 killed, sharp at n=90), the a>=8 lower bound, the 3-Higgs predicate reproducing all 26 paper witness statuses including 10 negatives, and ten H_even members with complete factorisations. For the judge to see that as no progress means it could not read it - and two of your four newest captures are empty.
+
+Priority: directive 4. Independently reproduce the equality-case result, especially that at a=1 the maximum equals 4/3 EXACTLY in Fraction arithmetic and the extremal multiset {5,9} is the odd part of 90. That check is the difference between checked and asserted.
+
+Two zero-byte captures repaired with explanatory lines. The standing rule against empty captures is now in both `TASKS.md` and `code/out/README.md`. Priority unchanged — the equality-case independent reproduction (directive 4) was already the top unchecked task, ahead of the H_even verification. No other files changed.
