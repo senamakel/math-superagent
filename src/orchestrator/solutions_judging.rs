@@ -892,7 +892,6 @@ fn record_verdict(
     } else {
         state.blocked = 0;
     }
-    let progressed = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
     if progressed {
         state.unproductive = 0;
     } else {
