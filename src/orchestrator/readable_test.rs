@@ -269,8 +269,9 @@ fn a_pdf_reference_list_yields_arxiv_and_doi_citations() {
         .iter()
         .map(|link| link.url.as_str())
         .collect();
+    // A bare arXiv identifier resolves to the paper, not to its abstract page.
     assert!(
-        urls.contains(&"https://arxiv.org/abs/1505.01907"),
+        urls.contains(&"https://arxiv.org/pdf/1505.01907"),
         "{urls:?}"
     );
     assert!(
