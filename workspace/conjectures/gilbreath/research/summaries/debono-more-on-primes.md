@@ -1,6 +1,6 @@
 # More on Primes (Debono, "Numbers and Computers" 11) — pedagogical; confirms A000232 origin
 
-<!-- source: http://web.archive.org/web/20060215084642/http://www.eng.um.edu.mt/~andebo/numbers/numcom11.htm | full text: sources/debono-more-on-primes.full.md -->
+<!-- source: http://web.archive.org/web/20060215084642/http://www.eng.um.edu.mt/~andebo/numbers/numcom11.htm | NOTE: this summary IS the complete document — the archive fetch stored the full page text here; no separate sources/debono-more-on-primes.full.md exists on disk (a re-download is refused as a duplicate). -->
 
 A didactic "Numbers and Computers" column cited by MathWorld, Caldwell and the OEIS.
 

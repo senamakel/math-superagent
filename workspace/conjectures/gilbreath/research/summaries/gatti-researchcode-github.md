@@ -1,155 +1,29 @@
-<!-- source: https://github.com/gttrcr/ResearchCode | converted from HTML -->
+# Gatti, rescode GitHub repository (OEIS A347924 / A347925 generator home)
 
-GitHub - gttrcr/rescode · GitHub
+<!-- source: https://github.com/gttrcr/ResearchCode | full text: sources/gatti-researchcode-github.full.md -->
 
-Skip to content
+Riccardo Gatti's research-code repository. Structure: `OEIS/` (the sequence generators,
+including A347924.cs and A347925.cs held at
+`research/sources/gatti-researchcode-A347924-cs.full.md`), `astro/`, `mathematica/`;
+45 commits, 0 stars, 1 watcher. No README describing the Gilbreath work.
 
-You signed in with another tab or window. [Reload][1] to refresh your session. You signed out in another tab or window. [Reload][1] to refresh your session. You switched accounts on another tab or window. [Reload][1] to refresh your session. Dismiss alert
+## What it establishes
 
-{{ message }}
+Bibliographically: the repo is the canonical location of Gatti's generator programs cited
+by OEIS A347924/A347925 ("Program for the generation of the m-th Gilbreath polynomial"). It
+confirms the author handles his own OEIS submissions (user gttrcr). No new mathematics is
+stated in the repo root; the algorithms live in the OEIS/ files (see the A347924.cs
+summary, which documents the exact `MaxK` upper-bound-extension + `FindSequenceFunction`
+interpolation construction of P_m).
 
-[gttrcr][2] /**[rescode][3]**Public
+## Bearing on this run
 
-- [Notifications][4] You must be signed in to change notification settings
-- [Fork 0][4]
--
+Together with the two OEIS records, this fully pins down the Gilbreath-polynomial object so
+it can be independently implemented (sympy/PARI) and the paper's claimed implication
+`p_n − 2^{n−1} ≤ P_{n−1}(1) ⟹ GC(n)` can be tested as a checkable finite statement — the
+closest the library can get to the 403-unavailable MDPI text.
 
-[Star 0][4]
+## Source status
 
-[3]
-
-main
-
-[Branches][5] [Tags][6]
-
-[5] [6]
-
-Go to file
-
-Code
-
-Open more actions menu
-
-## Folders and files
-
-Name | Name |
-
-Last commit message
-
- |
-
-Last commit date
-
- |
-
-## Latest commit
-
-## History
-
-[45 Commits][7]
-
-[7] 45 Commits
-
- |
-
-[OEIS][8]
-
- |
-
-[OEIS][8]
-
- |
-
- |
-
- |
-
-[astro][9]
-
- |
-
-[astro][9]
-
- |
-
- |
-
- |
-
-[mathematica][10]
-
- |
-
-[mathematica][10]
-
- |
-
- |
-
- |
-
-[.gitignore][11]
-
- |
-
-[.gitignore][11]
-
- |
-
- |
-
- |
-
-View all files
-
- |
-
-## About
-
-No description, website, or topics provided.
-
-[Activity][12]
-
-### Stars
-
-**0**stars
-
-### Watchers
-
-**1**watching
-
-### Forks
-
-****[0 forks][13]
-
-[Report repository][14]
-
-## Releases
-
-## Packages
-
-## Used by
-
-## Contributors
-
-## Languages
-
-You can’t perform that action at this time.
-
-
-## Links
-
-[1]: 
-[2]: /gttrcr
-[3]: /gttrcr/rescode
-[4]: /login?return_to=%2Fgttrcr%2Frescode
-[5]: /gttrcr/rescode/branches
-[6]: /gttrcr/rescode/tags
-[7]: /gttrcr/rescode/commits/main/
-[8]: /gttrcr/rescode/tree/main/OEIS
-[9]: /gttrcr/rescode/tree/main/astro
-[10]: /gttrcr/rescode/tree/main/mathematica
-[11]: /gttrcr/rescode/blob/main/.gitignore
-[12]: /gttrcr/rescode/activity
-[13]: /gttrcr/rescode/forks
-[14]: /contact/report-content?content_url=https%3A%2F%2Fgithub.com%2Fgttrcr%2Frescode&amp;report=gttrcr+%28user%29
+Public GitHub repo, no licence file; author confirmed. Not peer-reviewed; the OEIS records
+(also Gatti's) are the archival half.
