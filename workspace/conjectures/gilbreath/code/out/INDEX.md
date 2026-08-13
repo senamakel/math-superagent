@@ -20,10 +20,14 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `brute.captured.txt` | Small brute-force oracle output. |
 | `check-block-protection.captured.txt` | _(undescribed)_ |
 | `check-block-protection.py` | Boundary protection lemma verifier. |
+| `check_A089582_crosscheck.captured.txt` | _(undescribed)_ |
 | `check_A089582_crosscheck.py` | Cross-checks the run's own second-entry sequence A_k(1) against the OEIS catalogue A089582 (105 terms). Verifies the oracle generator against an independent catalogue source. |
+| `check_edge_zero_run.captured.txt` | _(undescribed)_ |
 | `check_edge_zero_run.py` | _(undescribed)_ |
-| `check_edge_zero_run_nonzero.py` | Sharpening of the vacuous check_edge_zero_run.py: among NONZERO halved {0,2} blocks, what is the worst zero-run of the Rule-90 edge sequence under pure erosion. Two independent routes (Pascal-mod-2 convolution vs literal |a-b| row simulation) agree over all 2^n-1 nonzero patterns, n<=18: worst zero-run = n-1, achieved by the [1,0,...,0]-type pattern. Feeds the superseeded-by proof-check edge_map_invertibility.py. |
+| `check_edge_zero_run_nonzero.captured.txt` | _(undescribed)_ |
+| `check_edge_zero_run_nonzero.py` | Sharpening of the vacuous check_edge_zero_run.py: among NONZERO halved {0,2} blocks, what is the worst zero-run of the Rule-90 edge sequence under pure erosion. Two independent routes (Pascal-mod-2 convolution vs literal |
 | `check_fwd_diff_identity.captured.txt` | Executed output of code/out/check_fwd_diff_identity.py: the identity A_k(i)= |
+| `check_fwd_diff_identity.notes.md` | _(undescribed)_ |
 | `check_fwd_diff_identity.py` | Checks the identity A_k(i) = |
 | `check_fwd_diff_identity_sampled.captured.txt` | Independent second route for fwd-diff-identity-refuted: a fresh sampler (uniform even gaps in [2,500]) over 60 random 2-then-odds sequences, 1839 (seq,k,i) triples — all 60 trials fail A_k(i)= |
 | `check_reduction.captured.txt` | Output of `check_reduction.py`: reduction facts hold for k=1..599. |
@@ -33,6 +37,11 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_runcount_lemma.captured.txt` | _(undescribed)_ |
 | `check_runcount_lemma.py` | _(undescribed)_ |
 | `check_runcount_lemma_class.captured.txt` | _(undescribed)_ |
+| `check_three_candidates.py` | _(undescribed)_ |
+| `check_three_candidates2.py` | _(undescribed)_ |
+| `check_window_range_allcells.py` | _(undescribed)_ |
+| `check_window_range_empirical.py` | _(undescribed)_ |
+| `check_window_range_empirical2.py` | _(undescribed)_ |
 | `cht_hyp_check.captured.txt` | _(undescribed)_ |
 | `cht_hyp_check.notes.md` | _(undescribed)_ |
 | `cht_hypotheses.captured.txt` | _(undescribed)_ |
@@ -48,6 +57,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `directive24_width_degradation.md` | Markdown finding (a): width-degradation caveat. k*=162; all measurements at rows ≥162 are LOWER BOUNDS (block glued to finite right edge from row 162); the 12 genuine giants all have event-row flooring ≥ 536,885 — none width-limited; first row past each giant with flooring<1000 is row 162 for all 13; table of 13 event rows with exact b_i, b_{i+1}, floors. |
 | `directive25_gap_trend.captured.txt` | Executed output of code/directive25/gap_trend_reconciliation.py: Part A inter-giant gaps (genuine 12) = 22,8,4,26,2,14,2,14,4,4,12 rows, mean 10.18, median 8, max 26, no trend (OLS R2 <= 0.11 both fits, Spearman rho = -0.141 exact); Part B observed ratios across the 11 genuine consecutive pairs (2.73..1.49, mean 1.91), sublinear rho_sub = 1 + C*b^(alpha-1) with alpha=0.388, C_pool=802.6, MSE 0.140 vs geometric 1.6816 MSE 0.154 - no decisive law on 12 points; ratios decline toward 1 with b (sublinear direction). Independent re-derivation reproduces gaps and all 11 ratios to 4 decimals. |
 | `directive25_gap_trend.md` | Finding note for Directive 25 items 3–4 (computed this cycle): inter-giant gap trend (flat, no growth with b or index — genuine-12 gaps 22,8,4,26,2,14,2,14,4,4,12) and the geometric-vs-sublinear reconciliation (observed rho declines toward 1 with b, tracking the sublinear law rho=1+C·b^(α−1), so ×1.68/event is a finite-sample description, not an asymptotic law). States the operative target: conjecture follows if the inter-giant gap G_k grows strictly slower than b^0.388. Carries claim directive25-gap-trend-and-reconciliation (checked, depth 1000, numerical evidence only). Anchors the captured output and the program. |
+| `edge_map_invertibility.captured.txt` | _(undescribed)_ |
+| `edge_map_invertibility.notes.md` | _(undescribed)_ |
 | `edge_map_invertibility.py` | Proof-check of the sharpened edge-zero-run lemma: the halved-edge map h -> e of a {0,2} block under pure erosion is F2-linear and unitriangular (hence invertible), so every NONZERO block shows edge 2 within its n erosion reads (worst zero-run <= n-1, sharp, achieved by [1,0,..,0]-type patterns). Checks: unitriangular structure n=3..1024, three independent routes (Pascal convolution, literal |
 | `edge_sliding_independent.captured.txt` | _(undescribed)_ |
 | `edge_sliding_timing.captured.txt` | _(undescribed)_ |
@@ -60,7 +71,11 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `event_rate_sweep.captured.txt` | _(undescribed)_ |
 | `event_rate_sweep.notes.md` | _(undescribed)_ |
 | `event_rate_sweep_analysis.captured.txt` | _(undescribed)_ |
+| `exec.sh` | _(undescribed)_ |
 | `extract_witness.captured.txt` | Output of `pattern/extract_witness.py` (b, s, diffs for k=1..40). |
+| `final_run.py` | _(undescribed)_ |
+| `final_run2.py` | _(undescribed)_ |
+| `finalexec.sh` | _(undescribed)_ |
 | `fresh_window.captured.txt` | Earlier fresh-window probe (superseded). |
 | `fresh_window.json` | _(undescribed)_ |
 | `gap_hypothesis_separation.captured.txt` | _(undescribed)_ |
@@ -68,6 +83,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `gatti_kset_check.notes.md` | Note recording what the two machine checks settle: the S={2,3,5} half of claim `gatti-2020-lemma4-interval-completeness-refuted` upgraded from hand-verified to machine-checked (three routes), with the dim-vs-completeness distinction and bounds. |
 | `gatti_kset_independent.captured.txt` | Output of `research_mod_check/verify_gatti_kset_independent.py`: independent second route — direct nested-absolute evaluation over k in [-200,200], full-triangle left-edge semantics, and Eq.2 formula all agree on {1,3,5,7,9}. Cross-check of gatti_kset_check.captured.txt. |
 | `genuine_sequences.json` | Stored genuine (non-artifact) sequence data. |
+| `giant_stretches.captured.txt` | _(undescribed)_ |
+| `giant_stretches.md` | _(undescribed)_ |
+| `giant_stretches_snapshot.json` | _(undescribed)_ |
+| `giant_stretches_verify.captured.txt` | _(undescribed)_ |
 | `intruder_runs.captured.txt` | Output of `pattern/intruder_runs.py`: the 17 maximal y=4 runs, drain table, after-regen intruders. |
 | `jump_closure_law.captured.txt` | _(undescribed)_ |
 | `jump_smooth_run_law.captured.txt` | _(undescribed)_ |
@@ -77,9 +96,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lean_shape.captured.txt` | `lean` compile of the repaired self-contained shape-preservation file (EXIT=0), axioms = standard base set. |
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
+| `pattern_finder_6e8_giants.captured.txt` | _(undescribed)_ |
 | `pattern_finder_boundary.captured.txt` | _(undescribed)_ |
 | `pattern_finder_cycle_floor.captured.txt` | _(undescribed)_ |
+| `pattern_finder_giant_corrected.captured.txt` | _(undescribed)_ |
+| `pattern_finder_giant_parity.captured.txt` | _(undescribed)_ |
+| `pattern_finder_giant_parity2.captured.txt` | _(undescribed)_ |
+| `pattern_finder_giant_significance.captured.txt` | _(undescribed)_ |
 | `pattern_finder_threshold_gaps.captured.txt` | _(undescribed)_ |
+| `pattern_finder_wider_giants.captured.txt` | _(undescribed)_ |
 | `regen_c4_check.captured.txt` | Earlier regeneration-trigger check (superseded by erosion_dynamics and regeneration_* outputs). |
 | `regen_mechanism.captured.txt` | Earlier regeneration-mechanism probe (superseded). |
 | `regeneration_analysis.captured.txt` | Output of `pattern/regeneration_analysis.py`: the 60-event table, rate buckets, histograms, runs test, minima. |
@@ -90,6 +115,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `rule90_depth_results.json` | _(undescribed)_ |
 | `rule90_depth_test.captured.txt` | _(undescribed)_ |
 | `rule90_depth_test.notes.md` | _(undescribed)_ |
+| `run_all.sh` | _(undescribed)_ |
+| `run_verify.sh` | _(undescribed)_ |
+| `runall.sh` | _(undescribed)_ |
+| `runner1.py` | _(undescribed)_ |
+| `runner2.py` | _(undescribed)_ |
+| `runner3.py` | _(undescribed)_ |
 | `sequence_dump.txt` | _(undescribed)_ |
 | `sequence_extract.captured.txt` | _(undescribed)_ |
 | `step_law_and_recharge_verified.md` | _(undescribed)_ |
@@ -101,5 +132,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `surplus_structure.captured.txt` | _(undescribed)_ |
 | `surplus_structure_independent.captured.txt` | _(undescribed)_ |
 | `survivor_analysis.captured.txt` | _(undescribed)_ |
+| `verify_c1.py` | _(undescribed)_ |
+| `verify_rule90_against_sources.captured.txt` | _(undescribed)_ |
 | `verify_rule90_against_sources.py` | Independently re-derives the Rule-90 interior XOR identification ( |
+| `verify_step_law_transition.captured.txt` | _(undescribed)_ |
+| `verify_three.py` | _(undescribed)_ |
+| `verify_three_b.py` | _(undescribed)_ |
+| `wider_giants_update.captured.txt` | _(undescribed)_ |
+| `wider_width_b.json` | _(undescribed)_ |
+| `wider_width_b_clean.json` | _(undescribed)_ |
+| `wider_width_clean.captured.txt` | _(undescribed)_ |
+| `wider_width_extend.captured.txt` | _(undescribed)_ |
 | `witnesses.json` | Oracle: row data and block profile for depth 600 (sieve to 400000, 33860 primes); `A_1..A_5` first 12, `block_profile_first_40`. Everything else is checked against it. |
