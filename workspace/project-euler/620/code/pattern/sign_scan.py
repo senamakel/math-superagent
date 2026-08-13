@@ -36,7 +36,7 @@ def main():
                 ds = sorted(float(d) for d in all_d)
                 results.append((sig, eta, theta, len(all_d), ds, el))
     for (sig, eta, theta, g_, ds, el) in results:
-        print("%3+d %3+d %3+d : %3d   %s   (%.1f s)"
+        print("%+3d %+3d %+3d : %3d   %s   (%.1f s)"
               % (sig, eta, theta, g_,
                  " ".join("%.12f" % d for d in ds), el))
     winners = [r for r in results if r[3] == 9]
