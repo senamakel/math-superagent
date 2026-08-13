@@ -208,7 +208,8 @@ fn prefer_arxiv_pdf(url: &str) -> String {
 
 /// Removes tracking parameters and a redundant trailing slash from a URL.
 pub(super) fn clean_url(url: &str) -> String {
-    let url = &prefer_arxiv_pdf(url);
+    let rewritten = prefer_arxiv_pdf(url);
+    let url = rewritten.as_str();
     let (base, query) = match url.split_once('?') {
         Some((base, query)) => (base, Some(query)),
         None => (url, None),
