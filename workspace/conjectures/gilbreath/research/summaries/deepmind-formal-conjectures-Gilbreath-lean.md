@@ -1,6 +1,6 @@
 # Google DeepMind formal-conjectures: Gilbreath.lean
 
-<!-- source: https://raw.githubusercontent.com/google-deepmind/formal-conjectures/ed75a6dd/FormalConjectures/Wikipedia/Gilbreath.lean | full text: sources/deepmind-formal-conjectures-Gilbreath-lean.full.md -->
+<!-- source: https://raw.githubusercontent.com/google-deepmind/formal-conjectures/ed75a6dd/FormalConjectures/Wikipedia/Gilbreath.lean | the file is 1433 bytes, so the full text IS stored in this summary — no separate .full.md exists -->
 
 A 41-line Lean 4 file from the FormalConjectures project (Google DeepMind;
 commit ed75a6dd, Apache 2.0).

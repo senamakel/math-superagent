@@ -96,7 +96,8 @@ def main():
             print(f"row {k}: b={b} whole={whole} tail={tail} "
                   f"({time.time()-t0:.1f}s)", flush=True)
 
-    live = [{"k": r["k"], "b": r["b"], "whole": r["whole"], "tail": r["tail"],
+    live = [{"k": r["k"], "b": r["b"], "s": r["s"], "y": r["y"],
+             "whole": r["whole"], "tail": r["tail"],
              "r0": r["r0"], "r2": r["r2"]} for r in rec["rows"]]
     stats = {
         "const_rows": [r["k"] for r in rec["rows"] if r["whole"] == "const0"],
