@@ -213,6 +213,19 @@ def main():
         check_counts["C1"] += 1
 
         Phi = N // 5
+        v5 = 0
+        c5 = N
+        while c5 % 5 == 0:
+            c5 //= 5
+            v5 += 1
+        # LTE: v_5(2^{2p}+1) = 1 + v_5(p) for odd prime p; hence
+        # v_5(Phi_{4p}(2)) = v_5(2^{2p}+1) - 1 (the factor 5 in the
+        # identity 2^{2p}+1 = 5*Phi is consumed by p itself).
+        v5_phi = v5 - 1
+        if p == 5:
+            assert v5 == 2 and v5_phi == 1
+        else:
+            assert v5 == 1 and v5_phi == 0
         prod_phi = 1
         print("\np=%d  (3-Higgs %s)  bits(Phi_{4p}(2))=%d  L_p*M_p check ok"
               % (p, "yes" if p3(p) else "no", (2 * p + 1).bit_length()))
@@ -243,8 +256,13 @@ def main():
                       % (p, q, fmt_char(char), (q - 1) % 16))
                 sys.exit(1)
             check_counts["C5"] += 1
-            if q != 5:
-                prod_phi *= q ** e
+            # C6 bookkeeping: 5 divides Phi_{4p}(2) only for p = 5, where
+            # v_5(Phi) = 1 (5^e with e = 2 in 2^{2p}+1, one power consumed
+            # by the identity 2^{2p}+1 = 5*Phi).  The 5^1 part is added
+            # after the loop; for all other primes 5 !| Phi and the 5-power
+            # is skipped here, matching "prime divisors of Phi".
+            if q != 5 or v5_phi == 1:
+                prod_phi *= q ** (e if q != 5 else 1)
             if q - 1 <= 10 ** 12:
                 hq = higgs_exact(q)
                 hidx = "P3" if hq else "non-3H"
