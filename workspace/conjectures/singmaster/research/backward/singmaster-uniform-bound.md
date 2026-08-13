@@ -15,13 +15,13 @@ next: (structural target) reduce to de Weger's Conjecture A — a complete list 
 ```gap
 id: G-interior-bounded
 lemma: For each admissible eps in (0,1) there is an effective threshold a_0(eps) such that for every a > a_0, at most 2 left-half representatives (n,k) of C(n,k)=a satisfy exp((log n)^{2/3+eps}) <= k <= n/2 (at most 4 in the full symmetric interior).
-status: discharged
-discharged-by: mrstt-interior-theorem (and mrstt-threshold-effective for the effectivity of a_0)
+status: conditional
+conditioned-on: mrstt-interior-theorem (asserted — read from primary, not re-derived here), mrstt-threshold-effective (asserted — read from MRSTT Remark 1.7, not re-derived here)
 ```
 
 ```gap
 id: G-small-a-bounded
 lemma: For a <= a_0(eps), N(a) <= 2*log2(a_0) + 2. The constant is structural — a_0 is a computable function of eps — but not numerically evaluated here, since the MRSTT threshold is astronomically large.
-status: discharged
-discharged-by: lane-clark-normal-array-bound (N(a) < 2*log2(a) + 2 for all a), mrstt-threshold-effective (a_0 effective)
+status: conditional
+conditioned-on: lane-clark-normal-array-bound (checked — verified by this run, capture at code/out/verify_lane_clark_bound.captured.txt), mrstt-threshold-effective (asserted — read from MRSTT Remark 1.7, not re-derived here)
 ```

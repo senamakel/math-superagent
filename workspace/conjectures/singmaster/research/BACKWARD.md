@@ -10,7 +10,7 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 | --- | --- | --- | --- | --- |
 | [[effective-bound-hyperelliptic-k25]] | An explicit effective bound with a computed constant on the integral solutions of C(x,2)=C(y,k) for a fixed hyperelliptic pair, stated with its k-dependence… | The pair {2,k} has genus floor((k-1)/2) (superelliptic-genus-formula), so the curve is hyperelliptic with RHS C(y,k) of degree k. For k=5 the genus is 2, where… | live | 2 |
 | [[genus-closed-form-proof]] | Prove (not merely check) that for distinct m,n >= 2 the geometric genus of the projective closure of C(x,m)=C(y,n) equals g(m,n) = ((m-1)n - (m-2) -… | View the curve in P^1 x P^1, where C(x,m)=C(y,n) has bidegree (m,n) and arithmetic genus p_a = (m-1)(n-1) (G-bidegree-pa). The geometric genus is p_a - delta,… | live | 1 |
-| [[singmaster-uniform-bound]] | N(a) is bounded by an absolute constant B, for every a > 1, under the both-mirrors-plus-trivial convention (N(3003)=8). | Fix an admissible eps in (0,1) and let a_0(eps) be the effective MRSTT threshold. For a <= a_0, Lane-Clark gives N(a) <= 2*log2(a_0) + 2, an absolute constant… | live | 1 |
+| [[singmaster-uniform-bound]] | N(a) is bounded by an absolute constant B, for every a > 1, under the both-mirrors-plus-trivial convention (N(3003)=8). | Fix an admissible eps in (0,1) and let a_0(eps) be the effective MRSTT threshold. For a <= a_0, Lane-Clark gives N(a) <= 2*log2(a_0) + 2, an absolute constant… | live | 3 |
 
 ## The open gaps — each one is a task
 
@@ -28,14 +28,18 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 - [[singmaster-uniform-bound]] `G-boundary-uniform-count` — There is an absolute constant C such that for every a > 1 and every admissible eps in (0,1), the number of nontrivial left-half representatives (n,k) with C(n,k)=a and 2 <= k < exp((log n)^{2/3+eps}) is at most C. (Equivalently, counting both mirrors, at most 2C boundary occurrences.) The witness set forces C >= 3: 3003 has boundary representatives (78,2), (15,5), (14,6).
   - next: (structural target) reduce to de Weger's Conjecture A — a complete list of nontrivial collisions C(x,k1)=C(y,k2), k1<k2 — by showing every boundary representative outside the Fibonacci family has max(k1,k2) <= K for a computable K, so the boundary count becomes a finite per-pair sum; the K<=8 slice is already solved (deweger-smallk-effective covers (2,3),(2,4),(2,6),(2,8),(3,4),(3,6),(4,6),(4,8)). (computation, today) tabulate, for the Fibonacci family j=1..6 and the witness set, each nontrivial occurrence's column k against the cut exp((log n)^{2/3+1/2}), producing the exact boundary-multiplicity table that pins the lower bound on C.
   - _no thread — nothing is attacking this_
+- [[singmaster-uniform-bound]] `G-interior-bounded` — For each admissible eps in (0,1) there is an effective threshold a_0(eps) such that for every a > a_0, at most 2 left-half representatives (n,k) of C(n,k)=a satisfy exp((log n)^{2/3+eps}) <= k <= n/2 (at most 4 in the full symmetric interior).
+  - next: _no first step — a gap nobody can begin is a research request, not a task_
+  - _no thread — nothing is attacking this_
+- [[singmaster-uniform-bound]] `G-small-a-bounded` — For a <= a_0(eps), N(a) <= 2*log2(a_0) + 2. The constant is structural — a_0 is a computable function of eps — but not numerically evaluated here, since the MRSTT threshold is astronomically large.
+  - next: _no first step — a gap nobody can begin is a research request, not a task_
+  - _no thread — nothing is attacking this_
 
 ## Gaps already discharged
 
 Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
 
 - [[genus-closed-form-proof]] `G-bidegree-pa` — The projective closure of C(x,m)=C(y,n) in P^1 x P^1 has bidegree (m,n) and arithmetic genus p_a = (m-1)(n-1), with the diagonal m=n reducible and therefore excluded. (closed by genus-symmetric-form-and-delta-prediction (records the bidegree-(m,n) and p_a = (m-1)(n-1) identification; elementary for the degree-m and degree-n binomial polynomials))
-- [[singmaster-uniform-bound]] `G-interior-bounded` — For each admissible eps in (0,1) there is an effective threshold a_0(eps) such that for every a > a_0, at most 2 left-half representatives (n,k) of C(n,k)=a satisfy exp((log n)^{2/3+eps}) <= k <= n/2 (at most 4 in the full symmetric interior). (closed by mrstt-interior-theorem (and mrstt-threshold-effective for the effectivity of a_0))
-- [[singmaster-uniform-bound]] `G-small-a-bounded` — For a <= a_0(eps), N(a) <= 2*log2(a_0) + 2. The constant is structural — a_0 is a computable function of eps — but not numerically evaluated here, since the MRSTT threshold is astronomically large. (closed by lane-clark-normal-array-bound (N(a) < 2*log2(a) + 2 for all a), mrstt-threshold-effective (a_0 effective))
 
 ## Skeletons that could not be read
 
