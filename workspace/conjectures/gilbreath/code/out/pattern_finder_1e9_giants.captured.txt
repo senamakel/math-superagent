@@ -8,3 +8,11 @@ row 6: b=23 floor=50847504 intruder=8
 row 7: b=22 floor=50847504 intruder=6
 row 8: b=21 floor=50847504 intruder=4
 row 9: b=24 floor=50847500 intruder=4
+row 10: b=58 floor=50847465 intruder=4
+row 11: b=97 floor=50847425 intruder=4
+row 12: b=96 floor=50847425 intruder=4
+row 13: b=97 floor=50847423 intruder=4
+row 14: b=96 floor=50847423 intruder=4
+row 15: b=173 floor=50847345 intruder=4
+row 16: b=175 floor=50847342 intruder=4
+row 17: b=175 floor=50847341 intruder=4
