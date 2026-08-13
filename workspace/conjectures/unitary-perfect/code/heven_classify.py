@@ -267,7 +267,8 @@ def phase_b3_b4(tables_dir):
 
 
 def main():
-    tables_dir = "code/out"
+    tables_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              "out")
     if "--tables" in sys.argv:
         tables_dir = sys.argv[sys.argv.index("--tables") + 1]
     a1 = phase_a1()

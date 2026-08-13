@@ -231,6 +231,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/CLAIMS.md",
             "research/THREADS.md",
             "research/APPROACHES.md",
+            "research/BACKWARD.md",
             "CONTEXT.md",
         ],
         // The director rewrites the files that say what the run is doing, so

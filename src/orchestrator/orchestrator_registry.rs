@@ -151,8 +151,8 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     Ok(registry)
 }
 
-/// Returns the reflection, pattern, inventor, librarian, and scholar
-/// definitions.
+/// Returns the judge, reflection, pattern, curator, director, inventor, and
+/// reducer definitions, plus the library roles.
 ///
 /// Split out of [`default_registry`] to keep each function readable; these are
 /// the agents the solution loop adds on top of the original three.
@@ -274,6 +274,27 @@ fn support_agents(
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
+        // The document tools and the memory tools, and nothing else — the same
+        // grant reflection has, and not by coincidence: both read the whole
+        // workspace, write prose about it, and must not start solving.
+        //
+        // No `exa_search` or `oeis_lookup`: a role that can search turns "what
+        // would suffice" into another literature survey, which is the
+        // librarian's errand and is already commissioned at every diversify.
+        // Nothing that computes, because a gap is discharged by a proof or a
+        // claim, never by a program this role wrote. No delegation bench,
+        // because a skeleton is checked by the forward loop attacking its gaps
+        // — a bench here would be a second investigation beside the first. No
+        // scratch, because a gap opened on arithmetic nobody has settled is a
+        // task the forward loop cannot close.
+        AgentDefinition::new(
+            "reducer",
+            "Reduction Agent",
+            "Works backward from the goal: states the lemmas that would suffice to prove it, and \
+             names the gaps between them and what the run has established.",
+        )
+        .with_model("openrouter")
+        .with_tools(memory_tools.into_iter().chain(document_tools)),
     ]
     .into_iter()
     .chain(library_agents(
