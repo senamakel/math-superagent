@@ -77,11 +77,12 @@ statement: The degree-4 MSS over Q(√3,√133) printed in Bremner 1999 has cent
   Bremner II 2001 prints the same grid transposed with centre "2²·7·19" = 532,
   an independent agreement. 532 = (2√133)² is a square in Q(√133).
 hypotheses: the printed nine entries; exact arithmetic in Q(√3)
-holds-here: yes (verified by hand row/col/diagonal sum in Q(√3); script
-  code/bremner_deg4_check.py records the field arithmetic)
+holds-here: yes
 status: checked
 bearing: the extension-field MSS hinge (non-existence cannot be purely
-  structural) stands unchanged; only the literal centre value is corrected
+  structural) stands unchanged; only the literal centre value is corrected;
+  verified by exact row/column/diagonal arithmetic in Q(√3); script
+  code/bremner_deg4_check.py records the field arithmetic
 anchor: research/summaries/bremner-on-squares-of-squares-1999.md
 ```
 
