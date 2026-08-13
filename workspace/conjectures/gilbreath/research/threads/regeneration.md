@@ -85,12 +85,28 @@ testable: the ratio column tells the story at any width.
    holds for the infinite sequence of primes is not settled by any finite
    computation.
 
-## The next question (Directive 26 refocused)
+## The next question — NOW FORKED (Directive 34)
 
-The ratio bound reduces the conjecture to a **comparison of growth rates**:
-prove that the jump size j_i grows faster than the inter-giant gap. The
-geometric description gives j ~ 1.765× per event (b-doubling-ish); gaps
-are ≤ 64 over 15 giants and at most slowly growing. The question is now:
+**Route A (current):** prove that the jump size j_i grows faster than the
+inter-giant gap. The geometric description gives j ~ 1.765× per event
+(b-doubling-ish); gaps are ≤ 64 over 15 giants and at most slowly growing.
+
+**Route B (Granville, newly live):** Lemma 5.4 → Theorem 5.5 reduces GC to
+proving ν_2 > n^β with β > 0.525, where ν_2 counts 2s in the right diagonal's
+0-2 cycle and α = 0.525 (demand side) is unconditional by
+Baker-Harman-Pintz. Operator measurement: ν_2/n ≈ 0.49–0.52 on primes below
+3e6 — exceeds threshold by 26× at n = 3999 and rising. Lemma 5.4 is the
+granville-nu2-density-measured claim re-stated as a supply-vs-demand budget in
+different coordinates. Its published proof discards a case occurring in 100%
+of columns (Directive 33: `lemma54-discarded-case-is-universal`) and must be
+re-derived here. Once proved (this run), the "lower-bound ν_2" target becomes
+the live question.
+
+**Comparison queued (TASKS item 10):** if Route B's demand is provably weaker
+than Route A's requirement, switch. If equivalent, record that. Do not pursue
+Route B mathematics before re-deriving Lemma 5.4.
+
+The ratio formulation remains the current target:
 
 - **Can the geometric growth of b (and hence j) be proved from known
   prime-gap theory?** Prime gaps are O(p^θ) with θ ≈ 0.525 (Baker–Harman–
