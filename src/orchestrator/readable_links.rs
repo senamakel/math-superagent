@@ -181,8 +181,34 @@ fn ceil_boundary(text: &str, mut index: usize) -> usize {
     index
 }
 
+/// Rewrites an arXiv abstract URL to the PDF that abstract describes.
+///
+/// An arXiv `/abs/` page is metadata: title, authors, subject classes, and the
+/// site's navigation. It fetches cleanly and converts to perfectly readable
+/// Markdown, so nothing downstream can tell it apart from a paper — and it
+/// contains no mathematics at all. One live run held nine sources ingested this
+/// way, among them the Chase-Hunter-Tao paper proving the random-model analogue
+/// of the conjecture it was working on, and correctly concluded from each that
+/// there was no usable result in it. Reading `/pdf/` instead costs one
+/// substitution and is the difference between a library of abstracts and a
+/// library of papers; the PDF text layer is already extracted by [`super::readable`].
+fn prefer_arxiv_pdf(url: &str) -> String {
+    let Some(rest) = url
+        .strip_prefix("https://arxiv.org/abs/")
+        .or_else(|| url.strip_prefix("http://arxiv.org/abs/"))
+        .or_else(|| url.strip_prefix("https://www.arxiv.org/abs/"))
+    else {
+        return url.to_string();
+    };
+    if rest.is_empty() {
+        return url.to_string();
+    }
+    format!("https://arxiv.org/pdf/{rest}")
+}
+
 /// Removes tracking parameters and a redundant trailing slash from a URL.
 pub(super) fn clean_url(url: &str) -> String {
+    let url = &prefer_arxiv_pdf(url);
     let (base, query) = match url.split_once('?') {
         Some((base, query)) => (base, Some(query)),
         None => (url, None),
