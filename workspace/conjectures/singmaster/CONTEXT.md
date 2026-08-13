@@ -198,20 +198,18 @@ not re-derived here.
 
 ## Gaps
 
-- **RESOLVED: MRSTT effectiveness CONFIRMED from full text.** The run read
-  mrstt-fulltext.full.md line-by-line; Remark 1.7 states verbatim: "The implied
-  quantitative bounds in the hypothesis 't is sufficiently large depending on ε'
-  are effective; however, we have made no attempt whatsoever to optimize them in
-  this paper, and will likely be too large to be of use in numerical
-  verification of Singmaster's conjecture in their current form." So the interior
-  theorem IS effective (a computable threshold exists) but with an unoptimized,
-  likely astronomically large constant. Full statement in
+- **RESOLVED: MRSTT effectiveness CONFIRMED from full text.** Remark 1.7 states
+  verbatim: "The implied quantitative bounds in the hypothesis 't is sufficiently
+  large depending on ε' are effective; however, we have made no attempt whatsoever
+  to optimize them in this paper, and will likely be too large to be of use in
+  numerical verification of Singmaster's conjecture in their current form." So the
+  interior theorem IS effective (a computable threshold exists) but with an
+  unoptimized, likely astronomically large constant. Full statement in
   `research/approaches/mrstt-exact-statement.md`.
-- **PRIORITY: Witness double-failure not stated.** `mrstt_leaves_witnesses_open.md`
-  compares witness (n,m) against the interior threshold but does not also flag that
-  every witness has t ≤ 24310, independently failing the "t sufficiently large"
-  hypothesis. The region comparison must be presented as shape-of-the-boundary,
-  not as a claim about large-t behavior. See TASKS.md task 2.
+- **RESOLVED: Witness double-failure stated.** `mrstt_leaves_witnesses_open.md`
+  says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
+  below the interior cut (small m). The region comparison is presented as
+  shape-of-the-boundary, not as a claim about large-t behavior.
 - **LEDGER STATUS: asserted=15, checked=4, proved=0.** Every asserted bound must
   be run against `code/out/witnesses.json`. Any lemma implying B<8 is refuted by
   3003 (8 occurrences). State counting convention on every claim. See TASKS.md.

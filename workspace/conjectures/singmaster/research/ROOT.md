@@ -67,7 +67,11 @@ classes with hypotheses are stated and anchored to held primary sources. Further
 gathering now happens only against a stated gap in research/REQUESTS.md or a lead
 on research/FRONTIER.md the run's own thread demands.
 
-Held sources (see research/sources/): Singmaster 1971 + 1975, Abbott–Erdős–Hanson
+Held sources (see research/sources/): Singmaster 1975 FQ (primary), Abbott–Erdős–Hanson
 1974, Kane 2004 & 2007 (summaries), MRSTT 2021 full text, Jenkins 2014 full text,
-de Weger 1997 full text, Blokhuis–Brouwer–de Weger 2017 full text, Tao blog,
+de Weger 1997 full text, Blokhuis–Brouwer–de Weger 2017 full text, Bugeaud–Mignotte–
+Siksek–Stoll–Tengely 2008, Hajdu–Papp–Tijdeman 2022 (Ramanujan J), Tao blog,
+Wikipedia, OEIS A003015/A003016. Singmaster 1971 (AMM 78) NOT held — the downloaded
+file is the Fermat's Library comments page (see `research/summaries/singmaster-1971.md`).
+blog,
 Wikipedia, OEIS A003015/A003016.
