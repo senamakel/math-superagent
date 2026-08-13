@@ -33,6 +33,10 @@ The step law also holds on **random non-prime arrays** (3,521 rows, 610 events, 
 
 - [ ] **4. Lean 4 formalisation.** Define the difference operator, prove shape preservation, reduce to {0,2} second-entry claim. Machine-checked lemma. Report `#print axioms` and every `sorry`. Independent of items 1–3, run in parallel.
 
+- [ ] **5. Ledger hygiene (directive asks explicitly).** The ledger counts moved asserted 36→38, checked 3→5, proved 17→15 — this reads as two deliberate demotions (proved→asserted). Librarian: name which claims were demoted and say in the notes whether it was deliberate, or correct the statuses. Do not let a silent demotion stand.
+
+- [ ] **6. Record the random-array step law as its own claim.** The step law holding on random non-prime arrays (3,521 rows, 610 events, zero failures) is load-bearing for Route A. It is currently only a sentence inside `step-law-and-recharge-identity`'s bearing. Librarian: split it into a distinct claim (e.g. `step-law-combinatorial-general-class`) with its own hypotheses (non-prime 2-then-odds starts) and evidence (checked). This is what the "general Gilbreath-like class, no prime input" theorem will rest on.
+
 ### Background (established — do not re-derive or re-verify)
 
 - **Reduction:** A_k(1) ∈ {0,2} ⇔ conjecture. Proved.
