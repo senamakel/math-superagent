@@ -21,7 +21,7 @@ mechanism: The nine entries are squares ⇔ each entry is a norm N_{Q(i)/Q}(·).
   the explicit norm-torus description.  Crucially, this obstruction
   CAN separate Z from Z[√3,√133]: an integral adelic point that survives
   over the ring of integers of Q(√3,√133) can fail over Z.
-status: proposed
+status: parked-behind-blocking-question
 first-step: Express the nine-square variety V as an explicit affine scheme
   over Z: variables (x_ij)_{1≤i,j≤3} and (s_ij) with equations
   x_ij = s_ij² and the 7 magic-sum equations.  Eliminate the s_ij to

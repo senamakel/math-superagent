@@ -30,7 +30,7 @@ mechanism: The entries of a 3×3 magic square are linear combinations of
   orbit are squares.  Via the Chevalley restriction theorem, the
   invariants of M are polynomials in c; the square conditions force c
   to lie on a modular curve.
-status: proposed
+status: parked-behind-blocking-question
 first-step: Compute the centraliser Z(J₃) explicitly: the space of 3×3
   matrices commuting with the all-ones matrix has dimension 3 (it is
   spanned by I, J₃, and the circulant matrix).  Write the nine entries

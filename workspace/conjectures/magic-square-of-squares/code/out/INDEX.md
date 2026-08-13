@@ -47,7 +47,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `prove_pell_record.captured.txt` | _(undescribed)_ |
 | `prove_pell_record.py` | _(undescribed)_ |
 | `reconciliation_2026-08-12.txt` | _(undescribed)_ |
-| `robertson_reduction_check.py` | _(undescribed)_ |
+| `robertson_reduction_check.py` | Verifies the Robertson/Bremner elliptic reduction (E: y²=x(x²−c²), 2E-membership, doubling x-formula, AP of doubled x-coords) on Bremner's 7-square witness with exact integer arithmetic; confirms 2 of the 3 main-diagonal doubled x-coords lie in 2E (a near-miss, one short of an MSS). |
 | `run_k3_checks.sh` | _(undescribed)_ |
 | `scholar_verify.py` | Scholar verification of the witness grids and source-reported numeric claims by exact integer arithmetic, so notes carry only program-checked numbers. |
 | `seven_square_grids_audit.txt` | _(undescribed)_ |

@@ -18,142 +18,90 @@
       (47). Verified by sympy (`code/out/check_ferreira_proof.py`) and by
       construction with witness m=5,n=3,w=1. Claim `ferreira-15060621-proof-invalid`
       in CLAIMS.md, status: checked. The paper establishes nothing.
-- [ ] **DIRECTIVE 7.1 — Run check_ferreira_proof.py and reconcile with hand
-      algebra.** The operator's refutation is at `code/out/ferreira_proof_refuted.md`
-      (status checked), but the script `code/out/check_ferreira_proof.py` was never
-      executed. Run under `timeout 540 python3 code/out/check_ferreira_proof.py 2>&1 |
-      tee code/out/check_ferreira_proof.captured.txt; echo EXIT_CODE=$?`. If sympy
-      disagrees with the operator, sympy wins — report it. The claim blocks
-      `ferreira-1506-06621-refuted` and `ferreira-15060621-proof-invalid` already
-      exist in CLAIMS.md (status: checked), so directive 7.2 is satisfied.
-- [ ] **DIRECTIVE 7.3 — Audit for the Ferreira failure mode in the run's own
-      code.** The error is substituting a solved root back into the equation it
-      solved, manufacturing a vacuous identity that reads like a constraint.
-      Check `phi_canonical_check.py`, `phi_identity_verify.py`, and any descent
-      or p-adic code for this anti-pattern. Add to CONTEXT.md Ruled Out.
+- [x] **DIRECTIVE 7.1 — Run check_ferreira_proof.py.** Executed; capture at
+      `code/out/check_ferreira_proof.captured.txt`, EXIT_CODE=0, sympy agrees
+      with the operator — the substitution yields 0=0. Ferreira refuted.
+- [x] **DIRECTIVE 7.3 — Audited this run's own code for the Ferreira
+      anti-pattern.** `phi_canonical_check.py`, `phi_identity_verify.py`,
+      descent and p-adic code checked; no substitution-of-solved-root-back
+      pattern found. Recorded in CONTEXT.md Ruled Out.
 - [x] **DIRECTIVE 8: Re-download Hulse et al. and Wolird from arXiv PDF endpoints.**
-      Hulse–Kuan–Lowry-Duda–Walker "Arithmetic Progressions of Squares and
-      Multiple Dirichlet Series" was a 19KB Springer paywall page — fetched
-      arXiv:2007.14324 (68KB, real paper with theorems). Wolird "A New
-      Transformation of the Magic Square of Squares" was a 5.8KB arXiv abstract
-      page (the fourth time a wrapper was fetched) — re-fetched from
-      arxiv.org/pdf/2310.12164 (11KB, real paper). Both now on disk.
-- [x] **DIRECTIVE 8: Record the witness_padic_falsification result with exact bounds.**
-      The p-adic claims `phi-padic-no-obstruction` (p ∈ {2,3,5,7,11,13}, p^a ≤ 2000)
-      and `phi-padic-consistent-with-witnesses` are already `status: checked` in
-      CLAIMS.md with the exact primes and prime-power bounds stated — not the
-      stronger unbounded claim. `phi-padic-residue-closure` had `status: asserted`
-      despite its programs having run; upgraded to `status: checked`. The "mod 3
-      and mod 5 collapse to {0}" fact is explicit in the dead-end note
-      `research/approaches/padic-modular-obstruction-dead-end.md`. No drift.
-- [ ] **DIRECTIVE 8: Scholar must now digest the two re-downloaded papers.**
-      Hulse et al. counts primitive three-term APs of squares via a double
-      Dirichlet series with meromorphic continuation to C² — bears on the
-      uniformity-bremner-ap-bound thread because it gives asymptotic counts for
-      the building blocks (3-square APs) that a full MSS would chain together.
-      Wolird shows arithmetic triplets of Gaussian squares are in 3-to-1
-      correspondence with Pythagorean triples and that an MSS solution would
-      generate non-trivial near-misses in the Gaussian integers — bears on the
-      extension-field-mss-exist line and the Gaussian-integer reformulation.
-      Have scholar claim-block both, then file a research request if either
-      opens a new line of attack.
-- [x] **STEP 1: Verify the parallel library.** `timeout 120 python3 code/lib/parallel.py`
-      printed `self-check PASS: 2000 values, 26 workers`. Done.
-- [x] **STEP 2: Parallelise `phi_padic_closure_all.py`.** Converted to
-      module-top-level `_phi_rows(rows)` worker + `stripes()` + `parallel_union`,
-      with `assert phi_set_serial(120) == phi_set(120)` before the M=200 run.
-      Launched and captured: `code/out/phi_padic_closure_all.captured.txt`,
-      EXIT_CODE=0, `|Phi(200)|=8156` matches serial. No obstruction found.
-- [x] **STEP 3: Run the remaining six p-adic/modular programs.** All ran to
-      completion (exit 0, no timeouts), captures in `code/out/`. None found an
-      obstruction: the achievable residue set of Phi is additively closed at
-      every prime-power of p=2,3,5,7,11,13 tested and mod p up to 31; mod 3/5
-      collapse to {0}. Documented in
-      `research/approaches/padic-modular-obstruction-dead-end.md`.
-- [x] **FALSIFY EVERY P-ADIC/MODULAR OBSTRUCTION** — none was found, so there
-      is no asserted residue/closure impossibility lemma. Ran
-      `code/witness_padic_falsification.py` against `code/out/near_misses.json`
-      using `is_magic_square_of_squares` in `code/lib/mss.py`: both witnesses
-      verified, every positive fully-realised Phi element from a witness
-      (Bremner 5544/7225, 336/625; Sallows 3360/12769) satisfies the proved
-      p-adic facts (v2>=3, v3>=1, res=0 mod 3/5) — `RESULT ALL CONSISTENT`,
-      no statement forbids a witness. Captured at
-      `code/out/witness_padic_falsification.captured.txt`. Claims
-      `phi-padic-no-obstruction` and `phi-padic-consistent-with-witnesses`
-      in the dead-end note, status: checked.
-- [x] **Settle the doubled-point question for GFP from the paper on disk.**
-      The paper (`research/sources/garcia-fritz-pasten-bremner-uniformity-2026.full.md`,
-      21KB, real PDF) defines in §1.1: "an arithmetic progression of length M is
-      a sequence of points P₁,…,P_M in E(Q) whose x-coordinates… form a
-      non-trivial arithmetic progression in Q." The Robertson reduction requires
-      x(2Qᵢ) in AP. Since 2Qᵢ ∈ E(Q), set Pᵢ = 2Qᵢ — GFP bounds every AP in
-      E(Q), doubled points included. The approach is NOT refuted on this ground.
-      However, C is ineffective (from Rémond's quantitative Mordell–Lang +
-      Gao–Ge–Kühne), so C^(r+1) is almost certainly >> 3. Record: GFP-bounds-x2P
-      is RESOLVED (approach sound on definitions; ineffective constant prevents
-      a contradiction). Update the uniformity-bremner-ap-bound thread with
-      this resolution. **DONE this run** — completed claim `robertson-elliptic-reduction`
-      (full text below), crux settled by Bremner 1999 pp.290–291 + GFP §1.1, verified
-      by rank/doubling computation on the witness (see report). Corrected: the
-      Robertson curve's c is the anti-diagonal AP difference (c=138600 for the
-      witness), NOT the centre e².
-- [x] **BLOCKER 2: Scholar to digest the re-downloaded Wu paper.** DONE this
-      run (research). The full.md is the complete real paper (78.9KB, 2103.01784v3);
-      claim `wu-bm-noninvariance-under-base-change` corrected: (1) Theorem 4.1.7's
-      surface satisfies weak approximation off the ARCHIMEDEAN places oo_K (was
-      'finite places' — inverted), and fails it off every finite subset T of
-      Omega_L; (2) Theorem 4.2.9 is a second distinct family re the Hasse
-      principle (BM-explained vs not under base change); (3) hypothesis is
-      Conjecture 3.0.1 (Stoll) over K, unconditional for K=Q,L=Q(i). Holds-here:
-      no (generic pencils, not Bremner's S). Summary note and CLAIMS.md updated.
-- [x] **k3_surface_checks.py exact rewrite (judge-mandated).** DONE this run
-      (tool_builder). Now exact integer/sympy arithmetic; regression-tests the
-      known integral point P=(345,196,-304,255,-396,-25); both routes (rewritten
-      + k3_surface_check2.py) agree on the identical 64-point set over box 700.
-      AMS: S(Q) is NONEMPTY — no Brauer-Manin obstruction can prove S(Q)=∅, so
-      `brauer-manin-k3-surface` is closed outright. Capture
-      `code/out/k3_surface_checks_exact.captured.txt`, EXIT_CODE=0.
-- [x] **Run the seven never-executed phi p-adic/modular programs.** DONE this
-      run (tool_builder). All captured under timeout 540 + tee, EXIT_CODE=0, no
-      timeouts; parallelised phi_padic_closure_all (self-check PASS, Phi(200)=8156
-      matches serial). No obstruction: achievable residue set of Phi additively
-      closed at every prime-power tested (p=2,3,5,7,11,13,17,19,23,29,31, mod up
-      to 2000); v2(q)>=3, v3(q)>=1; mod 3/5 collapse to {0}. Falsified against
-      both witnesses via exact verifier — none forbids a near-miss. Frontier
-      closed as a proof route.
-- [x] **DIRECTIVE 9: Request `exact-reduction-magic-507c` is CLOSED.** The doubled-point
-      question is resolved: GFP §1.1 defines AP as x(P) for P ∈ E(Q); 2Q ∈ E(Q)
-      so doubled points are covered. The HMS 2026 paper (Theorem 1.1,
-      arXiv:2603.06483, 132KB HTML full text already on disk) supplies an
-      **effectively computable** constant — advancing the GFP ineffective bound
-      — but the constant is almost certainly >> 3, so C^(r+1) < 3 fails for any
-      plausible rank. The approach `uniform-height-bound-elliptic-ap` is sound
-      on definitions, blocked by constant size. REQUESTS.md updated. **The two
-      wrapper fetches the operator named are not needed:**
-      `garcia-fritz-pasten-ellip-long-ap-large-rank-2021.full.md` (7147 bytes)
-      is a confirmed wrong arXiv ID (1807.06084 = CS survey, not the IMRN paper);
-      the real IMRN paper's content is established via the 2026 preprints.
-      `harrison-mudgal-schmidt-sum-product-bremner-2026.full.md` (6939 bytes)
-      is an abstract-page wrapper, but the full 132KB HTML text already exists at
-      `harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`. No further
-      downloads.
-- [x] **DIRECTIVE 9: Gathering phase is OVER.** Per operator: stop gathering
-      except against a stated gap. The only open request (`exact-reduction-magic-507c`)
-      is now closed. The run has 26 downloads and the core question the operator
-      wanted answered is answered. No further downloads without a new stated gap.
-- [ ] **DIRECTIVE 9: Scholar to claim-block the HMS 2026 paper from the full text**
-      **already on disk** (`research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`,
-      132KB). Theorem 1.1 is the effective-constant Bremner bound; Theorem 1.3 is
-      the Bourgain–Chang type sum-product for algebraic groups; Corollary 2.2 is
-      the generalised Bremner for correspondences. This paper advances the
-      uniformity approach from "ineffective" to "effective-but-large" — updating
-      the `bremner-conjecture-proved` claim and the uniformity thread is the
-      highest-priority scholar task. Replace the auto-generated summary at
-      `research/summaries/harrison-mudgal-schmidt-sum-product-bremner-2026.html.md`
-      with a proper digest and file the claim blocks. Then update `uniformity-bremner-ap-bound`
-      thread status to reflect the HMS advance.
-- [ ] research: establish Bremner reduction, real computational bound,
-      restricted classes, near-miss provenance; write research/ROOT.md.
+      Done; real papers (68KB and 11KB) on disk.
+- [x] **DIRECTIVE 8: Record the witness_padic_falsification result.** Claims
+      `phi-padic-no-obstruction`, `phi-padic-consistent-with-witnesses`,
+      `phi-padic-residue-closure` all `status: checked` in CLAIMS.md with
+      exact bounds. No drift.
+- [x] **STEP 1: Verify the parallel library.** PASS.
+- [x] **STEP 2: Parallelise `phi_padic_closure_all.py`.** PASS, |Φ(200)|=8156 matches serial.
+- [x] **STEP 3: Run the remaining six p-adic/modular programs.** All exit 0, no
+      obstruction found. Frontier closed as a proof route.
+- [x] **FALSIFY EVERY P-ADIC/MODULAR OBSTRUCTION.** Both witnesses verified,
+      no statement forbids a near-miss. RESULT ALL CONSISTENT.
+- [x] **k3_surface_checks.py exact rewrite.** DONE; S(Q) nonempty, Brauer-Manin
+      cannot prove S(Q)=∅, approach `brauer-manin-k3-surface` closed outright.
+- [x] **DIRECTIVE 9: Gathering phase OVER.** The run has what it needs. No
+      further downloads without a new stated gap.
+- [x] **Run the four Pell programs the operator ran externally.** Captures on
+      disk at `code/out/{verify_pell_records,verify_pell_argmax_unique,
+      pell_record_seq,prove_pell_record}.captured.txt`; claim
+      `phi-suprema-are-pell-pairs` in CLAIMS.md, status: checked.
+      **CORRECTION (directive 11):** verify_pell_argmax_unique REFUTES its own
+      name — ties=2 at M≤60 and M≤960, record-strictly-increasing=False. The
+      argmax is NOT unique; Pell pairs are always among the maximisers but not
+      the only ones. The claim `phi-suprema-are-pell-pairs` states this
+      correctly (no uniqueness asserted).
+
+---
+
+## BLOCKING — must complete before any new approach
+
+- [ ] **RUN `verify_pell_symbolic.py`** (directive 11, item 1):
+      `timeout 540 python3 code/out/verify_pell_symbolic.py 2>&1 | tee code/out/verify_pell_symbolic.captured.txt; echo EXIT_CODE=$?`
+      Reconcile its sympy output with the four numeric results already captured.
+
+- [ ] **ANSWER THE GFP-x2P BLOCKING QUESTION** (directives 10 and 11, item 2):
+      Does the Garcia-Fritz–Pasten AP-length bound (Theorem 1.8, C^(r+1))
+      apply to x-coordinates of *doubled* points x(2P) or only to x(P)? The
+      run's files already contain the answer — GFP §1.1 defines an AP as
+      x(P_i) for P_i ∈ E(Q), and 2Q ∈ E(Q) so doubled points are covered —
+      but it is scattered across CONTEXT.md, TASKS.md, the uniformity thread,
+      CLAIMS.md, and the approach file. Consolidate the answer in ONE place
+      the operator can read: write `code/out/gfp_x2p_answer.md` with a claim
+      block stating:
+      - the exact GFP definition of "arithmetic progression on E"
+      - why x(2Q) falls under it (2Q ∈ E(Q))
+      - the resulting bound on the Robertson curve E: y² = x(x²−c²)
+      - the effective-constant gap (HMS makes C computable but >> 3, so
+        C^(r+1) < 3 fails for any plausible rank)
+      - conclusion: approach sound on definitions, blocked by constant size,
+        NOT refuted; the conditional reduction to a finite computation
+        (Theorem 1.2, uniform rank boundedness) is the best structural result.
+      If GFP does NOT apply, declare `uniform-height-bound-elliptic-ap`
+      REFUTED IN ITS CURRENT FORM and state whether restating on the Kummer
+      surface K = E/{±1} recovers it. Either answer is a genuine partial
+      result. **Nothing else is worth more right now.**
+
+- [ ] **PARK THE THREE NEW APPROACHES** opened in violation of directive 10
+      ("do not open a fifth approach before answering the blocking question"):
+      `freys-curve-four-q-isogenies`, `integral-brauer-manin-nine-square`,
+      `richardson-orbits-weyl-group`. Change their status from `proposed` to
+      `parked-behind-blocking-question`. Do not delete them; they may become
+      relevant after the blocking question is answered, but no work on them
+      until then. The run went from 12 to 15 approaches with proved stuck at
+      16 while the operator watched; this stops the proliferation.
+
+## After the blocking question is answered
+
+- [ ] scholar: claim-block HMS 2026 from the full HTML text already on disk
+      (`research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`,
+      132KB). Theorem 1.1 effective-constant Bremner; Theorem 1.3 sum-product;
+      Corollary 2.2 generalised APs. Replace the auto-generated summary.
+- [ ] scholar: claim-block Hulse et al. (arXiv:2007.14324, 68KB, double
+      Dirichlet series, asymptotic counts for 3-square APs).
+- [ ] scholar: claim-block Wolird (arXiv:2310.12164, 11KB, Gaussian triplets
+      ↔ Pythagorean triples).
+- [ ] research: write research/ROOT.md — Bremner reduction, real computational
+      bound, restricted classes, near-miss provenance.
 - [ ] Establish ~1 structural impossibility lemma (extra-hypothesis partial
       result) and run it against the witness set.
 - [ ] Formalise the Robertson reduction and the Garcia-Fritz-Pasten bound in

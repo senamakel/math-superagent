@@ -32,7 +32,7 @@ mechanism: For a = e² (centre square), the curve E: y² = x(x²−a²) has
   step.  If C is genus 0, the MSS family is rationally parametrised
   (existence likely).  If genus 1, standard descent applies.  If genus ≥ 2,
   Faltings + an effective Chabauty computation settles it.
-status: proposed
+status: parked-behind-blocking-question
 first-step: Express the condition "x(2P) = a² ± d" on E: y² = x(x²−a⁴) in
   terms of the 4-isogeny kernel.  The curve X₀(4) has explicit equation
   (e.g. via the classical modular function j₄(z) = j(4z)).  Write the
