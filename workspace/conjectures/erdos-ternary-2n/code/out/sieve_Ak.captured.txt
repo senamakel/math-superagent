@@ -1,5 +1,13 @@
-Traceback (most recent call last):
-  File "/workspace/code/out/sieve_Ak.py", line 35, in <module>
-    assert digit_free(3) == False     # 10_3 contains no 2? 3=10_3 ok... pick 2^1=2 which has digit 2
-           ^^^^^^^^^^^^^^^^^^^^^^
-AssertionError
+digit_free witness checks passed
+k= 1  |A_k|=   1  witnesses_in_A={0: True, 2: True, 8: True}
+k= 2  |A_k|=   2  witnesses_in_A={0: True, 2: True, 8: True}
+k= 3  |A_k|=   4  witnesses_in_A={0: True, 2: True, 8: True}
+k= 4  |A_k|=   8  witnesses_in_A={0: True, 2: True, 8: True}
+k= 5  |A_k|=  16  witnesses_in_A={0: True, 2: True, 8: True}
+k= 6  |A_k|=  32  witnesses_in_A={0: True, 2: True, 8: True}
+k= 7  |A_k|=  64  witnesses_in_A={0: True, 2: True, 8: True}
+k= 8  |A_k|= 128  witnesses_in_A={0: True, 2: True, 8: True}
+k= 9  |A_k|= 256  witnesses_in_A={0: True, 2: True, 8: True}
+k=10  |A_k|= 512  witnesses_in_A={0: True, 2: True, 8: True}
+k=11  |A_k|=1024  witnesses_in_A={0: True, 2: True, 8: True}
+k=12  |A_k|=2048  witnesses_in_A={0: True, 2: True, 8: True}
