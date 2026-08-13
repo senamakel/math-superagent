@@ -121,35 +121,37 @@
       to 2000); v2(q)>=3, v3(q)>=1; mod 3/5 collapse to {0}. Falsified against
       both witnesses via exact verifier — none forbids a near-miss. Frontier
       closed as a proof route.
-- [ ] scholar: process the Garcia-Fritz-Pasten and Rome-Yamagishi papers into
-      claim blocks. Garcia-Fritz-Pasten 2026 (arXiv:2604.04850) establishes
-      Bremner's rank conjecture unconditionally (Theorem 1.8: AP length ≤
-      C^(r+1), C ineffective) and gives a short proof that uniform-rank-boundedness
-      ⇒ uniform-AP-boundedness (Theorem 1.2). Rome-Yamagishi 2024
-      (arXiv:2406.09364) proves n×n magic squares of squares exist for all
-      n ≥ 4 via the circle method — settles a conjecture of Várilly-Alvarado
-      but does NOT address the 3×3 case.
-- [ ] Extract the Garcia-Fritz-Pasten theorem into CONTEXT.md Established:
-      Bremner's conjecture is proved — APs on elliptic curves have length
-      bounded by C^(r+1) (C ineffective). The MSS requires an AP of length 3
-      of doubled-point x-coordinates on the Robertson curve; GFP's definition
-      covers these (Pᵢ = 2Qᵢ ∈ E(Q)). The bound does not give non-existence
-      but the uniformity corollary plus a rank bound would turn the problem
-      into a finite computation.
-- [ ] Open thread `uniformity-bremner-ap-bound`: does Theorem 1.8, combined
-      with a bound on the rank of the Robertson curve E: y² = x(x²−c²) when
-      c = e², give a finite bound on the size of a minimal counterexample?
-      The doubled-point question is settled: GFP §1.1 defines AP as x(Pᵢ)
-      for Pᵢ ∈ E(Q), and 2Qᵢ ∈ E(Q), so no mismatch. Risk: C is ineffective,
-      so C^(r+1) is not computable and almost certainly >> 3.
-- [x] Run the remaining phi programs (NOT the Faltings fibre route — that
-      is settled and closed, genus 0 on all fibres). `code/phi_canonical_check.py`
-      and `code/phi_identity_verify.py` verify the sin(4 arctan) form and Φ
-      algebraic identities; captures at `code/out/phi_canonical_check.py.captured.txt`
-      and `code/out/phi_identity_verify.py.captured.txt`. Both exit 0, all
-      structural claims survive (one cosmetic bug in verify_phi_doubling, one
-      range-truncation artifact in phi_canonical_check, one genuinely false
-      bound in phi_identity [5b] — all reported in `code/out/phi_program_runs.txt`).
+- [x] **DIRECTIVE 9: Request `exact-reduction-magic-507c` is CLOSED.** The doubled-point
+      question is resolved: GFP §1.1 defines AP as x(P) for P ∈ E(Q); 2Q ∈ E(Q)
+      so doubled points are covered. The HMS 2026 paper (Theorem 1.1,
+      arXiv:2603.06483, 132KB HTML full text already on disk) supplies an
+      **effectively computable** constant — advancing the GFP ineffective bound
+      — but the constant is almost certainly >> 3, so C^(r+1) < 3 fails for any
+      plausible rank. The approach `uniform-height-bound-elliptic-ap` is sound
+      on definitions, blocked by constant size. REQUESTS.md updated. **The two
+      wrapper fetches the operator named are not needed:**
+      `garcia-fritz-pasten-ellip-long-ap-large-rank-2021.full.md` (7147 bytes)
+      is a confirmed wrong arXiv ID (1807.06084 = CS survey, not the IMRN paper);
+      the real IMRN paper's content is established via the 2026 preprints.
+      `harrison-mudgal-schmidt-sum-product-bremner-2026.full.md` (6939 bytes)
+      is an abstract-page wrapper, but the full 132KB HTML text already exists at
+      `harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`. No further
+      downloads.
+- [x] **DIRECTIVE 9: Gathering phase is OVER.** Per operator: stop gathering
+      except against a stated gap. The only open request (`exact-reduction-magic-507c`)
+      is now closed. The run has 26 downloads and the core question the operator
+      wanted answered is answered. No further downloads without a new stated gap.
+- [ ] **DIRECTIVE 9: Scholar to claim-block the HMS 2026 paper from the full text**
+      **already on disk** (`research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`,
+      132KB). Theorem 1.1 is the effective-constant Bremner bound; Theorem 1.3 is
+      the Bourgain–Chang type sum-product for algebraic groups; Corollary 2.2 is
+      the generalised Bremner for correspondences. This paper advances the
+      uniformity approach from "ineffective" to "effective-but-large" — updating
+      the `bremner-conjecture-proved` claim and the uniformity thread is the
+      highest-priority scholar task. Replace the auto-generated summary at
+      `research/summaries/harrison-mudgal-schmidt-sum-product-bremner-2026.html.md`
+      with a proper digest and file the claim blocks. Then update `uniformity-bremner-ap-bound`
+      thread status to reflect the HMS advance.
 - [ ] research: establish Bremner reduction, real computational bound,
       restricted classes, near-miss provenance; write research/ROOT.md.
 - [ ] Establish ~1 structural impossibility lemma (extra-hypothesis partial

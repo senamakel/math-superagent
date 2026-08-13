@@ -46,35 +46,30 @@ differences `u-v,u+v,u,v` up to sign. `code/out/oracle_output.txt`,
   are perfect squares. Best known: **seven** (Bremner's square). **No 8-square-entry
   example is known**; eight is an open sub-question (Bremner II 2001).
 
-**Bremner's rank conjecture is proved — sourced, newly downloaded**
-(Garcia-Fritz–Pasten, arXiv:2604.04850v2, May 2026, full paper on disk at
-21KB — not a wrapper). Theorem 1.8 (strong form, unconditional): there is an
-absolute constant `C>1` such that for every elliptic curve `E/Q` of rank `r`,
-all arithmetic progressions on `E` have length bounded by `C^(r+1)`. The proof
-uses Nevanlinna theory + the uniform Mordell–Lang theorem of Gao–Ge–Kühne
-(Garcia-Fritz–Pasten 2021, IMRN). Theorem 1.2 gives a shorter, self-contained
-proof that if ranks of elliptic curves over Q are uniformly bounded, then so
-are AP lengths — using the height-uniform Mordell theorem of
-Dimitrov–Gao–Habegger and genus-2 curves with split Jacobian. Theorem 1.3
-extends the method to x-coordinates in finitely generated multiplicative
-groups.
+**Bremner's rank conjecture is proved — sourced, two independent routes**
+(Garcia-Fritz–Pasten, arXiv:2604.04850v2, May 2026, 21KB; Theorem 1.8,
+**ineffective** constant C) and (Harrison–Mudgal–Schmidt, arXiv:2603.06483, Mar
+2026, 132KB HTML full text on disk; Theorem 1.1, **effectively computable**
+constant C). Both prove: all APs in x- or y-coordinates of a rank-r E/Q have
+length ≤ C^(1+r). GFP via Nevanlinna + uniform Mordell–Lang; HMS via additive
+combinatorics (PFR of Gowers–Green–Manners–Tao) + David–Philippon. HMS also
+bounds geometric progressions and consecutive squares, and extends to
+generalised APs of arbitrary rank k (Corollary 2.2: |P| ≤ D^(1+r) for proper
+GAPs in C(Γ)).
 
 **Bearing on the MSS**: the Robertson reduction says an MSS exists iff there
 is `e` with three points of `2E(Q)` on `E: y² = x(x²−c²)` with x-coordinates
-in AP (length 3). Garcia-Fritz & Pastén's Theorem 1.8 bounds AP length by
-`C^(r+1)` for *any* points in E(Q). **The doubled-point question is settled**
-from §1.1 of the paper on disk: GFP defines AP as "a sequence of points
-P₁,…,P_M in E(Q) whose x-coordinates… form a non-trivial arithmetic progression
-in Q." Since 2Qᵢ ∈ E(Q), setting Pᵢ = 2Qᵢ brings doubled points under the
-theorem — no mismatch. **However, C is ineffective** (from Rémond's quantitative
-Mordell–Lang + Gao–Ge–Kühne), so C^(r+1) is not computable and almost certainly
->> 3 for any plausible rank. The theorem reframes the problem as bounding
-rank(E_e) but does not close it. The approach is **adopted** as
-`research/approaches/uniform-height-bound-elliptic-ap.md`. Theorem 1.2
+in AP (length 3). GFP/HMS bound AP length by `C^(r+1)` for *any* points in
+E(Q). **The doubled-point question is settled** from §1.1 of both papers: AP
+is x(P_i) for P_i ∈ E(Q); 2Q_i ∈ E(Q), so doubled points are covered — no
+mismatch. **GFP's C is ineffective** (Rémond→UMordell–Lang); **HMS's C is
+effectively computable** but built from David–Philippon + PFR and almost
+certainly >> 3, so C^(r+1) < 3 fails for any plausible rank. The theorem
+reframes the problem as bounding rank(E_e) but does not close it. Theorem 1.2
 (conditional): if ranks of elliptic curves over Q are uniformly bounded, then
-AP lengths are uniformly bounded — this would reduce MSS to a finite computation
-(though likely beyond reach). **Gap**: C is ineffective; no numerical
-contradiction can be extracted from Theorem 1.8 alone.
+AP lengths are uniformly bounded — this would reduce MSS to a finite
+computation (though likely beyond reach). The conditional reduction is the
+best structural result from this line.
 
 **Hulse–Kuan–Lowry-Duda–Walker (2024) — sourced, just re-downloaded** (arXiv:2007.14324,
 68KB, real paper, was a 19KB Springer paywall). Counts primitive three-term
@@ -229,10 +224,14 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 
 **Approach statuses** (`research/APPROACHES.md`):
 - **uniform-height-bound-elliptic-ap** — **adopted** (this round). Uses
-  Garcia-Fritz & Pastén (2026) uniform Mordell-Lang to bound AP length on
-  E_e: y² = x(x²−c²). First non-geometric, non-2-descent approach. First step:
-  extract exact theorem, check non-degeneracy for doubled-point AP, compute
-  explicit constant.
+  Garcia-Fritz & Pastén (2026) and Harrison–Mudgal–Schmidt (2026) uniform
+  Mordell–Lang / sum-product to bound AP length on E_e: y² = x(x²−c²).
+  GFP gives C^(r+1) with C ineffective; HMS gives C^(r+1) with C effectively
+  computable but astronomically large. Doubled-point question settled
+  (x(2Q) is x(P) for P = 2Q ∈ E(Q)). Constant size blocks a contradiction;
+  conditional reduction to a finite computation (Theorem 1.2, assuming uniform
+  rank boundedness) is the best structural result. Thread:
+  `uniformity-bremner-ap-bound`, status: effective-constant-advance-hms-2026.
 - **root-number-parity-four-curves** — **refuted** (this round). Birch–Stephens
   fixes parity by n mod 8; no additive-relation→root-number contradiction
   exists; Q-level mod-2 cannot separate Q from extension fields with MSS.
@@ -347,18 +346,16 @@ the Established section.
 ## Gaps
 
 (Double as research requests; see `research/REQUESTS.md`.)
-- **Garcia-Fritz–Pasten constant C is ineffective** — the bound C^(r+1) is
-  not computable. The Dimitrov–Gao–Habegger constant c(2,1) for genus-2 curves
-  over Q is also not computed in the paper. So Theorem 1.8 says "AP length is
-  bounded by *something* exponential in rank" but gives no number. The
-  doubled-point question (x(P) vs. x(2P)) is settled: GFP §1.1 defines AP as
-  x(Pᵢ) for Pᵢ ∈ E(Q), and 2Qᵢ ∈ E(Q), so doubled points are covered. The
-  approach is sound on definitions but the ineffective constant prevents any
-  numerical contradiction.
-- **Rank of the Robertson curve** `E_e: y² = x(x²−e⁴)` for candidate e:
-  Bremner's e=425 gives a specific curve — what is its rank? Can we bound
-  rank(E_e) in terms of e for e that admit many representations as a sum of two
-  squares?
+- **Garcia-Fritz–Pasten constant C is ineffective, HMS constant C is effectively
+  computable but astronomically large** — C^(r+1) < 3 fails for any plausible
+  rank. The approach `uniform-height-bound-elliptic-ap` is sound on definitions
+  (doubled points covered), blocked by constant size. The conditional
+  reduction to a finite computation (Theorem 1.2, assuming uniform rank
+  boundedness) is the best available structural result from this line.
+- **Rank of the Robertson curve** `E_e: y² = x(x²−c²)` for candidate c:
+  Bremner's witness c=138600 gives rank 2; a putative MSS would need rank ≥ ?
+  Can we bound rank(E_c) in terms of the number of sum-of-two-squares
+  representations of the parameters?
 - **Φ-triple beyond m,n ≤ 400** — the absence of a Φ-triple through m,n ≤ 400 is
   the current structural frontier, but it is verified-numerical only, not a proof;
   its natural falsifier is a Φ-triple found beyond the range (a true hit would

@@ -8,11 +8,12 @@ question: Does the Garcia-Fritz–Pasten theorem (Theorem 1.8: AP length ≤ C^(
   above by something provably small, then length-3 APs may be ruled out by the
   C^(r+1) bound if C can be made effective and small enough.
 
-status: resolved-effectiveness-blocks-non-existence
+status: effective-constant-advance-hms-2026
 
 rests_on:
   - robertson-elliptic-reduction (Established)
   - bremner-conjecture-proved (Garcia-Fritz–Pasten Theorem 1.8, newly downloaded)
+  - bremner-conjecture-effective (Harrison–Mudgal–Schmidt Theorem 1.1, on disk)
   - height-uniform-mordell (Dimitrov–Gao–Habegger 2020)
   - uniform-mordell-lang (Gao–Ge–Kühne 2021)
 
@@ -23,6 +24,21 @@ resolved-questions:
     reduction requires an AP of x(2Qᵢ) with Qᵢ ∈ E(Q). Since 2Qᵢ ∈ E(Q), set
     Pᵢ = 2Qᵢ — the GFP theorem bounds every AP in E(Q) including those from
     doubled points. No mismatch. The approach is sound on definitions.
+  - effective-constant-hms: RESOLVED 2026-08-13 (director, from HMS full text
+    on disk). Harrison–Mudgal–Schmidt (arXiv:2603.06483, 132KB HTML,
+    Theorem 1.1) proves Bremner's conjecture with an **effectively computable**
+    constant C ≥ 1: any AP, GP, or consecutive squares in x- or y-coordinates
+    of a rank-r E/Q has length ≤ C^(1+r). This advances GFP's ineffective C
+    to an effective one — the bound is in-principle decidable. However, C is
+    built from David–Philippon + PFR constants and is almost certainly >> 3,
+    so C^(r+1) < 3 fails for any plausible rank. Corollary 2.2 extends to
+    generalised arithmetic progressions of arbitrary rank k. Corollary 2.2
+    gives the bound |P| ≤ D^(1+r) for proper GAPs P in C(Γ) — this applies
+    to the four-centre-AP configuration with the stronger conclusion that
+    even a generalised AP meeting the MSS conditions would be bounded.
+    Research request exact-reduction-magic-507c is now CLOSED: the
+    definitional question is settled (GFP/HMS apply to doubled points), and
+    the constant-size blocker is identified precisely.
   - curve-form-and-rank: CLARIFIED/VERIFIED 2026-08-13 (tool_builder, exact Sage).
     The Robertson curve is E: y² = x(x²−c²) where c is the common difference of
     the anti-diagonal AP {a−c, a, a+c} — NOT the centre e² and NOT e⁴ (the
@@ -38,12 +54,10 @@ resolved-questions:
   - crux-applicability: SETTLED 2026-08-13 (tool_builder).  The MSS AP is an
     AP of x(P) for the points P = 2Pᵢ ∈ E(Q) (since Pᵢ ∈ E(Q) ⇒ 2Pᵢ ∈ E(Q)),
     so Garcia-Fritz–Pastén Theorem 1.8 (AP length ≤ C^(r+1) for APs of x(P),
-    P ∈ E(Q)) applies VERBATIM.  The uniform-height approach is NOT refuted on
-    the "x(2P) vs x(P)" crux.  Its only blocker is the ineffective constant C:
-    non-existence needs C^(rankEe+1) < 3, and since C is not explicit (and the
-    rank-2 witness curve already contains an AP-3), no contradiction follows.
-    Status of approach uniform-height-bound-elliptic-ap:
-    adopted-but-ineffective-as-stated.
+    P ∈ E(Q)) applies VERBATIM, and HMS Theorem 1.1 (effective constant) likewise.
+    The uniform-height approach is NOT refuted on the "x(2P) vs x(P)" crux.
+    Its only blocker is the constant size: C is astronomically large
+    (David–Philippon + PFR), so C^(r+1) < 3 is false for any plausible r.
 
 immediate-steps:
   1. Determine the exact form of the Robertson curve for an MSS centre e.
