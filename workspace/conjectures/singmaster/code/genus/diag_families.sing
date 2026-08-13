@@ -1,0 +1,38 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+int n;
+// family A: (n-1,n)  -- genus should match smooth-plane-curve (n-1)(n-2)/2
+for(n=3; n<=24; n=n+1)
+{
+  poly F = CB(x,n-1) - CB(y,n);
+  ideal I = F;
+  "A " + string(n) + " " + string(genus(I));
+}
+// family B: (n-2,n)
+for(n=4; n<=24; n=n+1)
+{
+  poly F = CB(x,n-2) - CB(y,n);
+  ideal I = F;
+  "B " + string(n) + " " + string(genus(I));
+}
+// family C: (n+1,n)
+for(n=3; n<=22; n=n+1)
+{
+  poly F = CB(x,n+1) - CB(y,n);
+  ideal I = F;
+  "C " + string(n) + " " + string(genus(I));
+}
+// family D: (n+2,n)
+for(n=3; n<=20; n=n+1)
+{
+  poly F = CB(x,n+2) - CB(y,n);
+  ideal I = F;
+  "D " + string(n) + " " + string(genus(I));
+}
