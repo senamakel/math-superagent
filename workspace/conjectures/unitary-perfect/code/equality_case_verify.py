@@ -39,15 +39,29 @@ def is_prime(n):
 
 def admissible_sizes(count):
     """The `count` smallest admissible component sizes q == 1 (mod 4), one per
-    distinct odd prime, ascending: q = p if p == 1 (mod 4), else q = p*p."""
+    distinct odd prime, ascending: q = p if p == 1 (mod 4), else q = p*p.
+
+    Correctness note: the count-th smallest size is *not* obtained by taking
+    the first `count` primes in prime order (11^2 = 121 would beat the prime
+    37).  We therefore generate sizes for every odd prime up to a generous
+    bound, sort all of them, truncate to `count`, and assert the truncation is
+    safe: the count-th smallest must be smaller than the smallest admissible
+    size contributed by any prime beyond the bound.
+    """
+    BOUND = 800
     sizes = []
-    p = 3
-    while len(sizes) < count:
+    for p in range(3, BOUND + 1, 2):
         if is_prime(p):
             sizes.append(p if p % 4 == 1 else p * p)
-        p += 2
     sizes.sort()
-    return sizes
+    assert len(sizes) >= count, (BOUND, count)
+    got = sizes[:count]
+    q = BOUND + 1
+    while not is_prime(q):
+        q += 2
+    min_future = q if q % 4 == 1 else q * q
+    assert got[-1] < min_future, (got[-1], min_future, BOUND)
+    return got
 
 
 def T(a):
