@@ -492,11 +492,10 @@ async fn reflect_step(
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
     memory: &VectorStore,
-    mailbox: &Mailbox,
-    reduction: &Reduction,
-    teams: &[TeamHandle],
+    beside: &Beside,
     mut state: SolutionState,
 ) -> SolutionState {
+    let mailbox = &beside.patterns;
     let prompt = format!(
         "Judge one attempt at a problem and extract the lesson.\n\nProblem:\n{}\n\n\
          Attempt report:\n{}\n\n{}\n\n\
@@ -577,7 +576,7 @@ async fn reflect_step(
 
     let progressed = record_verdict(&reflection, tracer, workspace, &mut state);
     let lesson = extract_lesson(&reflection);
-    tell_teams(teams, &state, progressed, &lesson);
+    tell_teams(&beside.teams, &state, progressed, &lesson);
     state.lessons.push(lesson);
     // Every completed cycle opens a line-of-attack search, not only a stuck
     // one. Spawned last, once the verdict and the lesson are in the state, so
@@ -586,7 +585,7 @@ async fn reflect_step(
     // And the other question nothing in the loop asks by itself: not what else
     // could get us there, but what would be enough. Spawned beside the
     // invention arm and on its own cadence — see [`open_reduction`].
-    open_reduction(subagents, tracer, workspace, reduction, &mut state);
+    open_reduction(subagents, tracer, workspace, &beside.reduction, &mut state);
     state
 }
 
@@ -597,11 +596,27 @@ async fn reflect_step(
 /// so the folder entry skips the whole directory.
 const REDUCTION_BLIND_SPOTS: [&str; 2] = ["backward", "BACKWARD.md"];
 
+/// Everything running beside the loop that a reflection has to reach.
+///
+/// Grouped rather than passed as three more parameters, for the reason
+/// [`Mailboxes`] is grouped: they are one idea — the work the loop starts and
+/// does not wait for — and the alternative is a signature nobody can read.
+#[derive(Clone)]
+pub(super) struct Beside {
+    /// What the pattern team found, drained here and by the attempt.
+    pub(super) patterns: Mailbox,
+    /// The reduction arm's outbox and the gate admitting one of it at a time.
+    pub(super) reduction: Reduction,
+    /// The standing teams, told after every verdict how the attempt went.
+    pub(super) teams: Vec<TeamHandle>,
+}
+
 /// The one reduction a run may have in flight, and where its report goes.
 ///
 /// Grouped rather than passed as two more parameters for the reason
 /// [`Mailboxes`] groups its own: they are one idea, and a caller holding the
 /// outbox without the gate could open a second reduction over the first.
+#[derive(Clone)]
 pub(super) struct Reduction {
     /// Where the open gaps are left for the next attempt.
     pub(super) outbox: Mailbox,

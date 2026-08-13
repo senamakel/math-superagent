@@ -73,6 +73,7 @@ impl Mailbox {
 /// it arrives through a mailbox, and a third one — a second kind of team, an
 /// operator channel that is not text — belongs in here rather than in `run`'s
 /// signature.
+#[derive(Clone)]
 pub(super) struct Mailboxes {
     /// What the pattern team found, drained by the attempt and the reflection.
     pub(super) patterns: Mailbox,
@@ -104,11 +105,6 @@ pub(super) async fn run(
     mailboxes: Mailboxes,
     state: SolutionState,
 ) -> Result<SolutionState> {
-    let Mailboxes {
-        patterns,
-        directives,
-        skeletons,
-    } = mailboxes;
     let attempt_agents = subagents.clone();
     let attempt_tracer = tracer.clone();
     let judge_agents = subagents.clone();
@@ -122,33 +118,32 @@ pub(super) async fn run(
     let reflect_memory = memory;
     let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
-    let attempt_mailbox = patterns.clone();
-    let pattern_mailbox = patterns;
-    let attempt_directives = directives;
-    let attempt_skeletons = skeletons.clone();
-    let reflect_skeletons = skeletons;
-    let reflect_teams = teams;
-    // One gate for the whole run, so a reduction that outlives the cycle that
-    // opened it cannot be joined by a second one writing the same file.
-    let reduction_gate = ReductionGate::default();
+    // Assembled once. The gate in it is the run's only one, so a reduction that
+    // outlives the cycle that opened it cannot be joined by a second one
+    // writing the same file.
+    let beside = Beside {
+        patterns: mailboxes.patterns.clone(),
+        reduction: Reduction {
+            outbox: mailboxes.skeletons.clone(),
+            gate: ReductionGate::default(),
+        },
+        teams,
+    };
+    let attempt_mailboxes = mailboxes;
 
     let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
         .add_node("attempt", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = attempt_agents.clone();
             let tracer = attempt_tracer.clone();
             let workspace = attempt_workspace.clone();
-            let mailbox = attempt_mailbox.clone();
-            let directives = attempt_directives.clone();
-            let skeletons = attempt_skeletons.clone();
+            let mailboxes = attempt_mailboxes.clone();
             async move {
                 Ok(NodeResult::Update(
                     attempt_step(
                         &subagents,
                         tracer.as_ref(),
                         workspace.as_deref(),
-                        &mailbox,
-                        &directives,
-                        &skeletons,
+                        &mailboxes,
                         state,
                     )
                     .await,
@@ -167,10 +162,7 @@ pub(super) async fn run(
         })
         .add_node("reflect", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = reflect_agents.clone();
-            let mailbox = pattern_mailbox.clone();
-            let skeletons = reflect_skeletons.clone();
-            let gate = reduction_gate.clone();
-            let teams = reflect_teams.clone();
+            let beside = beside.clone();
             let tracer = reflect_tracer.clone();
             let workspace = reflect_workspace.clone();
             let memory = reflect_memory.clone();
@@ -181,12 +173,7 @@ pub(super) async fn run(
                         tracer.as_ref(),
                         workspace.as_deref(),
                         &memory,
-                        &mailbox,
-                        &Reduction {
-                            outbox: skeletons,
-                            gate,
-                        },
-                        &teams,
+                        &beside,
                         state,
                     )
                     .await,

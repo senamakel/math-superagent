@@ -430,9 +430,7 @@ async fn attempt_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
-    patterns: &Mailbox,
-    directives: &Mailbox,
-    skeletons: &Mailbox,
+    mailboxes: &Mailboxes,
     mut state: SolutionState,
 ) -> SolutionState {
     state.attempts += 1;
@@ -451,7 +449,7 @@ async fn attempt_step(
     // Collecting here as well costs nothing when reflection has already run —
     // the mailbox is empty and the section is omitted — and it is the only
     // path that exists on the first attempt of every run.
-    let observations = observations_briefing(patterns);
+    let observations = observations_briefing(&mailboxes.patterns);
     // The attempt is the *only* collector of operator direction, unlike the
     // pattern mailbox above which reflection drains as well. A second collector
     // would be a second place a directive could be taken out of the mailbox and
@@ -460,13 +458,13 @@ async fn attempt_step(
     // gathered rather than as an instruction. Losing the distinction is the one
     // failure that matters here: the whole point of the channel is that a human
     // asked for this, and it outranks what the run inferred.
-    let direction = direction_briefing(directives);
+    let direction = direction_briefing(&mailboxes.directives);
     // Drained by the attempt alone, like the direction above and unlike the
     // pattern mailbox. Reflection folds what it collects into `fresh_context`,
     // which reaches the next attempt as *material gathered*; an open gap is not
     // material, it is a target, and rendering it under the wrong heading is how
     // a ready-made task reads as background reading.
-    let gaps = gap_briefing(skeletons);
+    let gaps = gap_briefing(&mailboxes.skeletons);
     // Every attempt after the first continues work already on disk. Without
     // saying so, each one restarts at "read the statement and write it down",
     // and a run can spend its whole budget re-documenting the problem without

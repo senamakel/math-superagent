@@ -232,3 +232,69 @@ fn work_written_after_the_run_started_is_included() -> std::io::Result<()> {
     assert!(after.contains("degree bound is not preserved"));
     Ok(())
 }
+
+/// The reducer's ordering is nearly the inverse of the inventor's, and the
+/// ordering *is* the argument. The claim ledger comes second, ahead of its own
+/// ledger, because the cheapest result available to this role is noticing that
+/// a lemma it was about to call a gap is already proved — and a claim ledger
+/// truncated away is a lemma proved twice.
+#[test]
+fn the_reduction_dossier_leads_with_the_goal_then_what_is_established()
+-> std::io::Result<()> {
+    let root = workspace("reduction-order")?;
+    write(&root, "GOAL.md", "Prove b_k >= 1 for every k.")?;
+    write(&root, "research/CLAIMS.md", "# Claims\n\nA table of claims.")?;
+    write(
+        &root,
+        "research/BACKWARD.md",
+        "# Backward\n\nA table of skeletons.",
+    )?;
+    write(&root, "research/THREADS.md", "# Threads\n\nA table.")?;
+    write(&root, "TASKS.md", "Some tasks.")?;
+
+    let dossier = reducer(&root);
+    let goal = dossier.find("GOAL.md").expect("the goal is included");
+    let claims = dossier
+        .find("research/CLAIMS.md")
+        .expect("the claims are included");
+    let backward = dossier
+        .find("research/BACKWARD.md")
+        .expect("the skeletons are included");
+    let threads = dossier
+        .find("research/THREADS.md")
+        .expect("the threads are included");
+    let tasks = dossier.find("TASKS.md").expect("the tasks are included");
+    assert!(goal < claims, "the goal precedes what the run established");
+    assert!(claims < backward, "the claims precede the ledger they close");
+    assert!(backward < threads);
+    assert!(threads < tasks, "the ranked sections precede the remainder");
+    // The method ledger is this role's boundary, in the dossier as in its
+    // prompt context: a role holding it drifts into proposing methods.
+    assert!(!dossier.contains("research/APPROACHES.md"));
+    Ok(())
+}
+
+/// A closed reduction reaches the reducer whole rather than as a truncated row,
+/// for the reason a closed approach reaches the inventor whole: the inference
+/// and the reason it broke only prevent a restatement if they arrive together.
+#[test]
+fn a_closed_reduction_reaches_the_reducer_whole() -> std::io::Result<()> {
+    let root = workspace("reduction-closed")?;
+    write(&root, "GOAL.md", "A goal.")?;
+    let before = reducer(&root);
+    assert!(!before.contains("uniform in k"));
+
+    write(
+        &root,
+        "research/backward/induction.md",
+        "```skeleton\ngoal: the conjecture holds\n\
+         implies: the two lemmas combine by induction on k\nstatus: spent\n\
+         killed-by: the induction needs a bound uniform in k\n```\n",
+    )?;
+
+    let after = reducer(&root);
+    assert!(after.contains("Decompositions this run has already closed"));
+    assert!(after.contains("combine by induction on k"));
+    assert!(after.contains("uniform in k"));
+    Ok(())
+}

@@ -1,0 +1,13 @@
+(1) Recharge surplus S_k = sum_{events i<k}(j_i+1) - (k-1):
+  IDENTITY FAIL at k 1 2 7
+   recharge identity exact over all k=1..1000: False
+   min surplus over k=1..1000: 6 at k 1
+   surplus monotone nondecreasing?  True
+   surplus at regen rows: [0, 6, 14, 26, 30, 65, 105, 107, 185, 191] ...
+
+(2) OLS slope log(jump) vs log(b) over 43 positive-jump events: 0.388 (near 1 => jump ~ c*b)
+
+(3) gap before small jumps (n=29): mean 3.62
+    gap before big jumps (n=13):   mean 4.23
+
+(4) ratio b_next/b_this across consecutive regen rows: n=42, min 0.999, median 1.197, max 3.915
