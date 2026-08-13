@@ -1,21 +1,33 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/encyclopedia-of-math-gilbreath-conjecture.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Encyclopedia of Mathematics — Gilbreath conjecture
 
-<!-- source: https://encyclopediaofmath.org/wiki/Gilbreath_conjecture | converted from HTML -->
+**Full text:** `research/sources/encyclopedia-of-math-gilbreath-conjecture.full.md` [[encyclopedia-of-math-gilbreath-conjecture.full]]
+**Source URL:** https://encyclopediaofmath.org/wiki/Gilbreath_conjecture
 
-## What is in it
+## What it establishes
 
-        - Navigation
-        - Tools
-        - Namespaces
-        - Variants
-        - Views
-        - Actions
-- Gilbreath conjecture
-      - References
+The current article (edited 14 Nov 2023) is a bare 3-sentence statement plus a
+reference list — no proof, no history, no generalisation discussion.
 
+- **Statement.** For any sequence `(x_n)`, `δ^1_n = |x_{n+1} − x_n|`, iterated
+  `δ^{k+1} = δ^1 δ^k`. Gilbreath conjectured (1958) that applying this to the
+  prime numbers makes the first term of every iterated sequence `δ^k` equal to 1.
+- **Verification claim.** "Odlyzko has verified the conjecture for the primes
+  ≤ 10^13" — consistent with the Odlyzko 1993 primary source in the library; no
+  other results are asserted.
+- **References.** Odlyzko 1993 (Math. Comp. 61, 373–380); Guy, *Unsolved Problems
+  in Number Theory* 3rd ed. §A10, ISBN 0-387-20860-7, Zbl 1058.11001; Gilbreath
+  2011 (J. Number Theory 131, 2436–2441).
 
-## What it claims
+## Hypotheses / bearing
 
-For any sequence $(x_n)$, define the absolute difference sequence $\delta^1_n = |x_{n+1} - x_n|$, and the iterated differences $\delta^{k+1} = \delta^1 \delta^k$. In 1958 N. L. Gilbreath conjectured that when applied to the sequence of prime numbers, the first term in each iterated sequence $\delta^k$ is always $1$. Odlyzko has verified the conjecture for the primes $\le 10^{13}$.
+Encyclopedic tier only. It confirms the canonical statement, name attribution
+(Gilbreath 1958), and the 10^13 verification bound — all already established in
+the library by the primary sources. It contains no statement that would add to
+or contradict the run's claims. No theorem to falsify; nothing here changes any
+claimed result. **No help beyond corroborating citation data** (the Guy Zbl
+number and the exact Gilbreath 2011 DOI are the only additions).
 
-*[digest of a 4242 character source; every section, statement, and proof in full at `research/sources/encyclopedia-of-math-gilbreath-conjecture.full.md`]*
+## Source status
+
+Authoritative-adjacent encyclopedia entry (Springer/EMS), minimal content.
+Nothing asserted here disagrees with the library's sourced claims.

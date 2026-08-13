@@ -1,43 +1,29 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/kumar-2003-information-entropy-correlation-primes.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Kumar, Ivanov, Stanley 2003, "Information entropy and correlations in prime numbers"
 
-<!-- source: https://arxiv.org/abs/cond-mat/0303110 | converted from HTML -->
+<!-- source: https://arxiv.org/abs/cond-mat/0303110 | full text: sources/kumar-2003-information-entropy-correlation-primes.full.md -->
 
-## What is in it
+Pradeep Kumar, Plamen Ch. Ivanov, H. Eugene Stanley. arXiv:cond-mat/0303110 (v4, 8 Apr
+2003), 6 pages, 2 figures. Abstract-page capture (the PDF body is not in the library).
 
-- Condensed Matter > Statistical Mechanics
-- Title: Information Entropy and Correlations in Prime Numbers
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-    - [1 blog link][25]
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+## What it establishes (abstract-level)
 
+Studied statistical properties of prime *gap increments* (second differences of primes) over
+the first 5×10^7 primes: the histogram of increments follows an exponential distribution with
+a superposed period-3 oscillation, analogous to the previously-reported period-6 oscillation
+for the gaps themselves.
 
-## What it claims
+## Bearing on this run
 
-Abstract: The difference between two consecutive prime numbers is called the distance between the primes. We study the statistical properties of the distances and their increments (the difference between two consecutive distances) for a sequence comprising the first $5\times 10^7$ prime numbers. We find that the histogram of the increments follows an exponential distribution with superposed periodic behavior of period three, similar to previously-reported period six oscillations for the distances.
+Tangential: it is about the statistics of A_1/A_2 entries of the *prime* array, not about
+the {0,2} regime or about general classes. Its relevance is limited to the "higher-order
+prime-gap structure" note (with WP 2006 and "gaps between the gaps"): those papers together
+are the closest literature to an empirical study of this run's actual rows. None of them is
+a proof or a source for the conjecture's mathematics; use only as empirical context about
+prime-gap increments.
 
-Comments: | 6 pages, 2 figures |
+## Source status
 
-Subjects: | Statistical Mechanics (cond-mat.stat-mech) |
-
-Cite as: | [arXiv:cond-mat/0303110][8] [cond-mat.stat-mech] |
-
-| (or [arXiv:cond-mat/0303110v4][9] [cond-mat.stat-mech] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.cond-mat/0303110][10]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 6796 character source; every section, statement, and proof in full at `research/sources/kumar-2003-information-entropy-correlation-primes.full.md`]*
+arXiv abstract page (fetched this cycle; the earlier summary record said "never cite any
+number without the full text" — the abstract is now held, the PDF body still not). Authors
+are statistical-physics researchers (Stanley group, Boston University); not a number-theory
+journal publication.

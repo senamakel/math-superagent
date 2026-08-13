@@ -318,3 +318,9 @@ recalled claim is relied on whose hypotheses fail here.
 - **Library search halted by directive.** FRONTIER.md is at 309→345 with
   checked at 3. No more downloads until a specific gap is stated that a source
   could close.
+- **CHT Theorem 1.6 hypothesis check — DO THIS NOW (directive).** The
+  `cht-inverse-theorem` claim has `holds-here: unchecked` in both copies. Take
+  the prime-difference data, compute M (from max normalized gap a_n), L
+  (longest 0-run), and R_0 = 100L·8^M, and check whether R_0 is at all
+  satisfiable at depth ≤ 1000. If R_0 ≫ 1000, the theorem does not bite at
+  reachable depths and `holds-here` must be set to `no` with the numbers.

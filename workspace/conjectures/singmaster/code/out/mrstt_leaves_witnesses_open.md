@@ -68,12 +68,15 @@ witness fails MRSTT's hypotheses TWICE:
    interior cut*, NOT a demonstration that a large-t witness would also escape
    the interior. That is not established.
 
-3. **Whether the largeness threshold on t is effective is PENDING
-   verification.** The run previously asserted "effective: yes" based on
-   Remark 1.7; the directive flags this as load-bearing and it must be
-   confirmed against `mrstt-fulltext.full.md` (task 1 of TASKS.md). If the
-   threshold is ineffective, the theorem yields no numerical B even in the
-   interior.
+3. **Whether the largeness threshold on t is effective — CONFIRMED.** Remark 1.7 of the
+   full text (arXiv:2106.03335v1) states verbatim: "The implied quantitative bounds in
+   the hypothesis 't is sufficiently large depending on ε' are effective; however, we
+   have made no attempt whatsoever to optimize them in this paper, and will likely be
+   too large to be of use in numerical verification of Singmaster's conjecture in their
+   current form." So the threshold IS a computable function of ε — not non-constructive.
+   The interior theorem therefore yields a numerical B in principle, but with an
+   unoptimized, astronomically large constant. This is the effective-versus-usable
+   distinction GOAL.md demands: effective-but-huge is not a bound anyone can evaluate.
 
 ```claim
 id: mrstt-interior-excludes-all-known-witnesses
@@ -100,10 +103,85 @@ bearing: makes precise what MRSTT leaves open, which is the partial result
   named in GOAL.md. Locates every known high-multiplicity example in the
   uncovered edge m < exp((log n)^(2/3+epsilon)), so no strengthening of the
   interior bound can move B, and directs effort to the edge where the
-  Diophantine curve methods apply. Does not itself bound B. The MRSTT
-  largeness threshold on t IS effective (confirmed from full text Remark 1.7),
-  though astronomically large.
+  Diophantine curve methods apply. Does not itself bound B.
 anchor: code/out/witnesses.json; code/out/verify_mrstt_witnesses.captured.txt;
   research/approaches/mrstt-exact-statement.md
 source: operator-computation
 ```
+
+```claim
+id: mrstt-threshold-effective
+statement: The "t sufficiently large depending on ε" hypothesis in MRSTT Theorem
+  1.3 (arXiv:2106.03335v1) is effective: the implied quantitative bound is a
+  computable function of ε, not a non-constructive existence claim. Remark 1.7
+  of the full text states verbatim: "The implied quantitative bounds in the
+  hypothesis 't is sufficiently large depending on ε' are effective; however,
+  we have made no attempt whatsoever to optimize them in this paper, and will
+  likely be too large to be of use in numerical verification of Singmaster's
+  conjecture in their current form."
+effective: yes
+uniform-in-k: yes (Theorem 1.3 covers all m in the interior range
+  simultaneously; no per-pair fixing)
+size: astronomically large — the authors did not optimize the constant, and
+  describe it as "likely too large to be of use in numerical verification."
+  No explicit expression for the threshold is given; it is the output of an
+  effective but unoptimized construction.
+kind: effective-bound — a computable threshold exists, distinguishing this from
+  Siegel/Faltings (ineffective), but the constant is not usable for numerical
+  work. This is precisely the effective-versus-usable distinction in GOAL.md:
+  an effective constant nobody can evaluate is a different object from a bound
+  one can check, and MRSTT gives the former.
+hypotheses: Remark 1.7 of MRSTT full text (research/sources/mrstt-fulltext.full.md)
+holds-here: yes — confirmed from the full text
+status: sourced (confirmed against primary text)
+bearing: This separates MRSTT from the Siegel/Faltings per-pair results: MRSTT's
+  interior theorem IS effective and uniform over the interior, unlike per-pair
+  genus arguments. But the constant is too large to use, and the boundary remains
+  open. See the companion analysis below for what this yields.
+anchor: research/sources/mrstt-fulltext.full.md (Remark 1.7);
+  research/approaches/mrstt-exact-statement.md
+source: primary-source
+```
+
+## Does an effective-but-astronomical interior threshold plus the boundary result yield anything?
+
+**No.** The MRSTT route is at a dead end for Singmaster's conjecture, for two
+independent reasons that compound rather than cancel.
+
+### Reason 1: the interior theorem cannot reach any known witness
+
+Every witness, including 3003 (the reason B ≥ 8), lies in the boundary
+`m < exp((log n)^(2/3+ε))`, as shown above. The interior theorem therefore
+cannot constrain the known lower bound regardless of whether its constant is
+effective or ineffective, optimised or astronomical. An interior bound of 2
+or 4 tells us nothing about numbers whose multiplicity is already known to
+be 6 or 8 from the edge.
+
+### Reason 2: the boundary admits no effective treatment from this method
+
+Proposition 1.12 of MRSTT states that the non-archimedean equidistribution
+method requires `N, M = O(exp(log^(3/2-ε) P))`, and "even under the Riemann
+hypothesis we do not know how to relax this requirement." The authors note
+that a randomness heuristic could push the range to `exp(P^c)`, which would
+lower the interior threshold from `exp((log n)^(2/3+ε))` to `(log n)^C` —
+still leaving the small-m regime `m = O(log n / log log n)` untouched, since
+the method fundamentally cannot handle `m / log t → 0`.
+
+The boundary is therefore not merely "not yet covered" — it is **provably
+inaccessible to the interior method**. No improvement in constants, no
+optimisation of the effective threshold, and no weakening of hypotheses can
+close the gap. The 2/3 exponent is a genuine barrier.
+
+### What this means
+
+MRSTT reduces Singmaster to the boundary `2 ≤ m ≤ (log t) / (log log t)^(3/2-ε)`.
+That is a structural reduction, and it is the sharpest statement of the open
+problem available. But it does not itself move the conjecture: the boundary is
+exactly where all the multiplicity lives, and the interior method cannot reach it.
+
+**The MRSTT route has delivered its partial result and can go no further.**
+Progress on B must come from the boundary, which is the Diophantine curve regime
+— fixed-(k1,k2) effective results (Avanesov, de Weger, BMSST) on one hand, and
+Baker's method on linear forms in logarithms for effective height bounds on the
+other. Neither currently gives uniformity, and neither is touched by MRSTT's
+interior theorem.

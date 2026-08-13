@@ -67,6 +67,8 @@ holds-here: yes as a template — the run's small-k binomial-equality curves
   equation is NOT the run's equation.
 status: asserted-by-source (full text held)
 bearing: shows the shape of a deliverable "effective bound with computed
-  constant"; Matveev primary itself still missing for authoritative constants.
+  constant"; the Matveev primary is now held at
+  research/sources/matveev-2000-homogeneous-linear-form.full.md (claim
+  matveev-2000-explicit-constants-primary) for the authoritative constants.
 anchor: research/summaries/matveev-application-linear-forms.md
 ```

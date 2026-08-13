@@ -1,0 +1,8 @@
+primes below 2e6: 148933
+step-law failures: 0; drain-law failures: 0
+b=1 -> b=0 transitions (must be 0): 0
+(2,4)-events: 42
+recharge identity failures over k=2..300: 0
+constructed (1,2,4)     -> row1: [1, 2, 6] b = 1
+constructed (1,0,4)     -> row1: [1, 4, 6] b = 0
+constructed (1,2,6)     -> row1: [1, 4, 4] b = 0

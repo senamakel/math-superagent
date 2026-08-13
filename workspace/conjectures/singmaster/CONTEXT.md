@@ -55,18 +55,52 @@ Each marked with evidence class and a link.
   content — the k=2/3 columns that carry all multiplicity.
 
 - **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`
-  from secondary attestation; PRIMARY SOURCE NOT HELD for Singmaster 1971.**
+  from primary where noted; Singmaster 1971 Monthly still NOT held.**
   Singmaster 1971 `O(log a)` — the real paper (AMM 78 (1971) 385–386) has NOT
-  been obtained; `research/sources/singmaster-1971.full.md` is the Fermat's
-  Library comments/annotation page (truncated comments, navigation prompts), not
-  the paper. The O(log a) argument is known from secondary attestation (MRSTT
-  intro, AEH 1974, Wikipedia) but the primary's exact wording, constants, and
-  proof details are not independently verified. Do not quote a constant or
-  exponent from the truncated Fermat's comment snippets.
+  been obtained; `research/sources/singmaster-1971.full.md` is a tombstone (the
+  prior file was Fermat's Library comments page, flagged and replaced). Attested
+  by Singmaster's own FQ 1975 paper (PRIMARY now held at
+  `research/sources/singmaster-1975-fibonacci-repeated.full.md`), AEH 1974
+  (held), MRSTT (held). Do not quote a constant from the Fermat's snippets.
   Abbott–Erdős–Hanson 1974 `O(log a/log log a)` — primary held.
   Kane 2007 best `N(t)=O((log t)(log_3 t)/(log_2 t)^3)` — primary summary held.
   Conditional on Cramér, `O_eps((log a)^{2/3+eps})`. None is uniform ⇒ none
   touches the conjecture. (`research/notes/established-review.md`.)
+
+- **BST 1999 primary now held — the fixed-pair ineffectivity anchor. `sourced`.**
+  Beukers–Shorey–Tijdeman, "Irreducibility of polynomials and arithmetic
+  progressions with equal products of terms", in *Number Theory in Progress
+  Vol. 1* (de Gruyter 1999) 11–26 — MRSTT's [4] — readable full text at
+  `research/sources/number-theory-in-progress-vol1-preview.full.md` (the
+  `best1.ps` preprint is raw PostScript/unreadable). Theorem 1.1: fixed
+  (m,n;d1,d2) equal-products equation has finitely many integral solutions
+  except the m=2,n=4,d1=2d2 family; for gcd(m,n)=1 the proof "resort[s] to
+  Siegel's theorem... which is, unfortunately, ineffective" (paper's own
+  words), and "Both results are ineffective" (Siegel B, Faltings C).
+  Theorem 2.2: genus of the equal-products curve is ≤1 only in four genus-0
+  and eight genus-1 parameter cases; for the binomial case d1=d2=1 the only
+  non-diagonal genus-1 pairs are (2,3),(2,4) — every other distinct pair has
+  genus ≥2 (primary-source proof of the Faltings threshold, agreeing with the
+  run's computed grid). Summary + claims:
+  `research/summaries/beukers-shorey-tijdeman-1999-equal-products.md`.
+
+- **Matveev 2000 primary now held — the effective-per-pair constants. `sourced`.**
+  E.M. Matveev, "An explicit lower bound for a homogeneous rational linear
+  form in logarithms of algebraic numbers", Izv. Math. 62:4 (1998) 723–772,
+  full English text at `research/sources/matveev-2000-homogeneous-linear-form.full.md`
+  (mathnet.ru). Theorem 2.2 ineq. (2.16): under the Kummer condition
+  [K(√α1..√αn):K]=2^n, with D=DK/κ, A_j ≥ max{h(αj), |ln αj|/D, 1/(DC1)},
+  Ω=∏A_j, B=max|b_j|A_j/A_n, C3=n/ρ,
+  C1=(1+e^{−2n}/148)(n ln 2+2)(1+1/n)C3,
+  C2=4(n+1)(6+5/(n ln 2+2))e^{2n}√n·C3, C′0=ln(C2DΩ/(C1A_n)):
+  ln|Λ| > −112·2^n·C2·C′0·D²·Ω·ln(2eB). Without Kummer: extra n^n
+  factor, B weaker. **One gate for any effective bound this run computes:
+  verify the Kummer condition and state the height convention (Matveev's A_j
+  are logarithms-heights; other authors exponentiate, which is why
+  Tiebekabe–Diouf's Theorem 2.9 looks different).** These constants make
+  "effective with computed constant" possible per pair, but NOT uniform in
+  (k1,k2) (C1,C2,D,Ω grow with n and heights).
+  Summary + claim: `research/summaries/matveev-2000-homogeneous-linear-form.md`.
 
 - **MRSTT interior, the current record. `sourced`** (arXiv:2106.03335, QJM 2022;
   Theorem 1.3). For fixed `0<eps<1`, t large: at most 2 solutions to C(n,m)=t in
@@ -170,25 +204,30 @@ Each marked with evidence class and a link.
 
 Durable memory holds this run's own established facts (genus plan, counting
 convention, family parametrization, Jenkins framing) — those are now redundant
-here and live in the sections above. No independent prior-run durable knowledge
-about Singmaster beyond what this run itself computed/sourced; `recall_memory`
-returns this run's session notes and the source-library graph, not external
-prior work. Treat all library claims as `sourced`/`computed` per the marking
-above, and MRSTT/Kane/internal results as taken on their word (`asserted`) where
-not re-derived here.
+here and live in the sections above. Treat all library claims as
+`sourced`/`computed` per the marking above, and MRSTT/Kane/internal results as
+taken on their word (`asserted`) where not re-derived here.
+
+One independent prior durable node bears on the problem (recalled, not this
+run's finding): **multinomial generalization** (De Koninck–Doyon–Verreault 2021,
+arXiv:2107.09107). For fixed k, `N_k(a)` (k-term multinomial = a) has average and
+normal order `k(k-1)` and `N_k(a)=O((log a/log log a)^{k-1})`; k=2 is the
+binomial case. It also corroborates the verification list (N(a)>=6 up to 10^60,
+3003 at N=8 as highest known). Hypothesis checked against this problem: the
+k=2 restriction is exactly Singmaster, and its conclusion — small columns, not
+typical values, are where a uniform bound is hard — matches the run's scratching.
+Carry it as corroboration only, not as a bound.
 
 ## Contradictions
 
 - **SOURCE INTEGRITY: `research/sources/singmaster-1971.full.md` is NOT Singmaster's paper.**
-  It is the Fermat's Library comments/annotation page (8538 bytes, mostly
-  navigation, sign-in prompts, and truncated comment snippets ending in
-  ellipsis). The O(log a) argument is not in that file. Every claim that
-  quoted the "primary facsimile" (`singmaster-1971-original`,
-  `best-unconditional-bound`, and `established-review.md`'s cross-check
-  section) was actually reading Fermat's Library markup and truncated comments.
-  The real paper (AMM 78 (1971) 385-386) has NOT been obtained. Demote
-  those claims to "attested-by-secondary-sources" status; do not quote a
-  constant or an exponent from the truncated comment snippets.
+  `computed`+`sourced`. The prior download was the Fermat's Library
+  comments/annotation page; it has been replaced by a tombstone (reads "this
+  file is NOT the Singmaster paper; the real paper has NOT been obtained") and
+  `research/summaries/singmaster-1971.md` records the accounting. The O(log a)
+  argument, the `N(3003)=8` "added in proof", and the six N=6 values below 2^23
+  are all attested by primaries that ARE held (Singmaster FQ 1975, AEH 1974,
+  MRSTT). Do not quote a constant or exponent from the Fermat's snippets.
 - **Kane bound exponent.** Fermat's Library's annotation of Singmaster 1971
   states the best bound with exponent 2 (`log_2^2 t`); Wikipedia, MRSTT, Jenkins
   all give exponent 3 (`log_2^3 t`). Exponent 3 taken as correct; the Fermat's
@@ -198,6 +237,16 @@ not re-derived here.
   infinite family) sits in k=2/3 columns — so small-column curves carry the
   multiplicity and a uniform bound must control them uniformly. The small-`k`
   effective results (Avanesov, de Weger, BMSST) are exactly the attackable part.
+- **Internal contradiction fixed (scholar, this pass):** `established-review.md`,
+  `ROOT.md`, and `singmaster-literature-exact.md` each contained a residual
+  "Singmaster 1971 primary held" claim left over from before the tombstone —
+  contradicting the source-integrity finding (the file is Fermat's Library
+  comments, NOT the paper). All three now say "primary NOT held; attested by
+  secondary sources", and the `best-unconditional-bound` /
+  `singmaster-bounds-history` claims were updated to match. Also added: the
+  collision-catalogue note's "BST 1999 not freely downloadable" gap is RESOLVED
+  (the de Gruyter vol-1 preview is held readable) — that is a contradiction
+  between an old "gap" record and the actual holdings, now reconciled.
 
 ## Gaps
 
@@ -213,9 +262,17 @@ not re-derived here.
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
   shape-of-the-boundary, not as a claim about large-t behavior.
-- **LEDGER STATUS: asserted=15, checked=4, proved=0.** Every asserted bound must
+- **LEDGER STATUS: asserted=22, checked=4, proved=0.** Every asserted bound must
   be run against `code/out/witnesses.json`. Any lemma implying B<8 is refuted by
   3003 (8 occurrences). State counting convention on every claim. See TASKS.md.
+- **RESOLVED: Matveev primary obtained.** The gap "authoritative constants of
+  Matveev's theorem" is closed — full English text with C1,C2,C′0 held
+  (`research/sources/matveev-2000-homogeneous-linear-form.full.md`, summary +
+  claim `matveev-2000-explicit-constants-primary`). The remaining live step is
+  applying Thm 2.3 (K=Q case, which applies to binomial products since the
+  αⱼ are rationals/primes, D=ρ=1) to a chosen small-(k1,k2) family and
+  numerically evaluating the resulting explicit bound — a GOAL-eligible
+  partial result.
 - Effective height bound with a **computed** constant for a specific (k1,k2)
   family (Baker / linear forms in logarithms) — the realistic partial-result
   target. The constant-supplier is now primary: **Matveev 2000** (Izv. Math. 62:4,

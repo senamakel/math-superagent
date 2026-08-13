@@ -99,17 +99,8 @@ killed-by: >
   "mixed blocks force reduction" is a claim that the second obstruction never
   occurs — but CHT state ruling out even long 0-blocks for the primes "looks
   difficult to establish rigorously, even if one assumes strong conjectures on
-  the primes". Since every leading block with b≥7 is mixed to depth 1000, the
-  mixed case is not a refuge: the data says the boundary (x=2,y=4) recurrences
-  are what regenerate, and proving THAT recurrence is the conjecture itself.
-
-  Empirical check (queued, NOT executed by this role — code/block_apex/
-  check_constant_blocks.py): recompute whole-block constancy, longest 0/2
-  runs, and terminal constant suffixes for the 161 live rows. The on-disk
-  witnesses already settle the small cases: k=1 block [2,2] constant length 2;
-  rows A_1..A_5 blocks are mixed. The depth-1000 record's own summary
-  (blocks_deep.captured.txt) shows min b=2 at k=1 only and min b=7 for k≥2,
-  consistent with "no constant block of length ≥ 3 in 161 live rows".
+  the primes". The data says the boundary (x=2,y=4) recurrences are what
+  regenerate, and proving THAT recurrence is the conjecture itself.
 precedent: >
   - https://arxiv.org/abs/2607.08712 (CHT 2026, Lemma 3.7(iii) {0,d} persists
     in all descendants without decrease; Theorem 1.6 long-0-block and long
@@ -140,15 +131,16 @@ falsifies: >
   ruling out one of CHT's two obstructions, which CHT explicitly state is
   beyond current techniques even under Cramér-style gap conjectures.
 buy: >
-  Nothing beyond what is already proved: the block patterns of the prime rows
-  to depth 1000 are overwhelmingly non-constant (which is itself a recorded
-  observation consistent with the {0,2} regime), but the approach's claim that
-  non-constancy forces regeneration is exactly the open conjecture restated,
-  with no theorem — in this library or the papers it cites — connecting block
-  pattern class to boundary reduction. The one durable residue is a clean
-  falsifier statement: any future "pattern ⟹ regeneration" claim must first
-  survive CHT Lemma 3.7(iii) and the sharp boundary of the block lemma (offset
-  n uses A_k(n+1) outside the block).
+  Nothing beyond what is already proved: the block patterns verified in the
+  early prime rows (A_1..A_5, mixed for k>=2) and the block-length record
+  (min b=2 at k=1 only) are consistent with the {0,2} regime, and the depth-1000
+  regeneration data shows the trigger is the boundary pair (x,y)=(2,4). But the
+  approach's claim that non-constancy forces regeneration is exactly the open
+  conjecture restated, with no theorem — in this library or the papers it cites
+  — connecting block pattern class to boundary reduction. The one durable
+  residue is a clean falsifier statement: any future "pattern ⟹ regeneration"
+  claim must first survive CHT Lemma 3.7(iii) and the sharp boundary of the
+  block lemma (offset n uses A_k(n+1) outside the block).
 first-step (retired): >
   Extracting and classifying block patterns from the depth-1000 data can only
   re-record the observed non-constancy; the SMT query "does a 2-then-odds

@@ -40,17 +40,14 @@ mechanism: |
   argument.
 status: refuted
 killed-by: |
-  (1) The operator has NO well-defined reduction mod 3. |a−b| is not a
-      function of (a mod 3, b mod 3): e.g. |1−1|=0 but |1−4|=3≡0, while
-      |1−7|=6≡0 yet |2−5|=3≡0 and |2−8|=6≡0 — already (1 mod 3, 1 mod 3)
-      gives both 0 and (with (1,7)) 0 again but (1,10) gives 9≡0, whereas
-      (1,2) gives 1, and (4,2) gives 2. Concretely: (a,b)=(1,4) vs (4,1):
-      |1−4|=3≡0 but |4−1|=3≡0; the counterexample (1,2) vs (1,5):
-      |1−2|=1, |1−5|=4≡1 — same residues (1,2) mod 3 give 1 both ways,
-      but (4,5): |4−5|=1. The decisive pair: (a,b)=(1,4) both ≡1 mod 3 with
-      |1−4|=3≡0, yet (2,5): |2−5|=3≡0, same residues again — so mod-3 can
-      only be "known modulo a sign", exactly as the approach itself admits,
-      and a finite-state machine on residues does NOT exist. So the central
+  (1) The operator has NO well-defined reduction mod 3: |a−b| is not a
+      function of (a mod 3, b mod 3). Minimal witness: (a,b)=(0,1) and
+      (3,1) share residues (0,1) mod 3, yet |0−1|≡1 and |3−1|=2 (mod 3). In general |a−b| ≡ ±(a−b) (mod 3), the sign
+      depending on which operand is larger: so the mod-3 reduction is
+      unambiguous exactly on the three diagonal pairs a≡b (result 0), and
+      all six pairs with r≠s are ambiguous. The enumeration is in
+      code/research_mod_check/enumerate_mod3_ambiguity.py. Hence a
+      finite-state machine on F_3 residues does NOT exist, and the central
       mechanism (deterministic mod-3 evolution of the halved triangle) is
       mathematically ill-defined.
   (2) Even on the sharpest mod-2 reduction that DOES exist (|a−b| ≡ a+b mod 2,
@@ -110,17 +107,12 @@ holding-claims: larger
   gc-block-lemma-odlyzko
 falsifies: |
   The whole mechanism: that |a−b| mod 3 is a function of (a mod 3, b mod 3).
-  A single pair (e.g. (1,2) vs (4,5): |1−2|=1, |4−5|=1, both ≡(1,2) mod 3 —
-  actually both 1; the true falsifier is (1,1)-residue pairs: |1−4|=3≡0 and
-  |1−1|=0 — wait |1−1|=0 mod 3 and (1,1) mod 3; and (4,4): |4−4|=0 — so
-  (1,1) mod-3 gives 0 via |1−4| and separately |4−7|=3≡0 gives 0 as well;
-  but |2−2|=0 vs |2−5|=3≡0 — still 0; the actual split pair is (1,2) vs
-  (4,5): both give 1, no split; the correct minimal split is (1,1) vs (1,4)
-  vs ... verified by the run's check: residue pairs with ambiguous |a−b| mod 3
-  include (0,1), (0,2), (1,1), (1,2), (2,1), (2,2), (2,0), ... — the
-  enumeration in code/research_mod_check/verify_mod6_claims.py lists them.
-  Any claim that "the halved triangle's residues evolve deterministically mod
-  3" is false as stated.
+  The cleanest falsifier is the pair (0,1) vs (3,1): same residues (0,1)
+  mod 3, but |0−1|≡1 and |3−1|=2 (mod 3). Seven of nine residue pairs are
+  ambiguous (all except (0,0),(0,2),(2,0)); the enumeration is in
+  code/research_mod_check/enumerate_mod3_ambiguity.py. Any claim that "the
+  halved triangle's residues evolve deterministically mod 3" is false as
+  stated.
 buy: |
   Nothing for the conjecture. The mod-6 gap structure is real but does not
   percolate to the left edge; the only reduction that exists is parity

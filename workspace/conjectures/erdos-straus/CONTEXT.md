@@ -299,12 +299,4 @@ yields an already-covered sub-progression of an open class. Ventas
   the exit-blocker of `research/threads/elementary-reductions.md`): write the
   scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
   exact arithmetic, capture it, and flip the claim to checked; then
-  `reduction-mod24` once the mod-3/mod-8 identities are checked.n every one in bulk and flip
-  them from `asserted` to `checked`.
-- **Failing command** (operator directive 4). Retry count 6, run-failed 5 in
-  `code/out/commands.log`. Read and fix before writing new programs.
-- **prime-reduction still sourced, not checked** (directive 1 priority, still
-  the exit-blocker of `research/threads/elementary-reductions.md`): write the
-  scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
-  exact arithmetic, capture it, and flip the claim to checked; then
   `reduction-mod24` once the mod-3/mod-8 identities are checked.

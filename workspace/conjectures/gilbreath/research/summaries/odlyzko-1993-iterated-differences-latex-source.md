@@ -1,93 +1,49 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/odlyzko-1993-iterated-differences-latex-source.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Odlyzko 1993 — author's LaTeX source (cleaner text of the paper)
 
-<!-- source: https://www-users.cse.umn.edu/~odlyzko/doc/arch/gilbreath.conj.tex | converted from plain text -->
+**Full text:** `research/sources/odlyzko-1993-iterated-differences-latex-source.full.md` [[odlyzko-1993-iterated-differences-latex-source.full]]
+**Source URL:** https://www-users.cse.umn.edu/~odlyzko/doc/arch/gilbreath.conj.tex (author's own TeX)
+**Published:** Math. Comp. 61 (1993) no. 203, 373–380; received 15 Jul 1992; dedicated to D. H. Lehmer.
 
-\documentstyle[11pt,amstex,amssymb]{amsart}
-\newtheorem{theorem}{Theorem}
-\newtheorem{corollary}{Corollary}
-\newtheorem{lemma}{Lemma}
-\newtheorem{prop}{Proposition}
-\newcommand{\eqn}[1]{(\ref{#1})}
-\newcommand{\dd}{\ldots}
-%\setlength{\textwidth}{4.75in}
-\linewidth=\textwidth
-\hsize=\textwidth
-\columnwidth\textwidth
-%\setlength{\textheight}{8.25in}
+## What it establishes
 
-%\def\Proof{\par\noindent{\bf Proof\/}:\enspace}
-\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+This is the author's LaTeX of the same paper held as PDF in
+`research/sources/odlyzko-1993-iterated-absolute-differences.full.md`; the
+cleaned text is the better OCR of the two. The substantive content is already
+digested in `research/summaries/odlyzko-1993-iterated-absolute-differences.md`
+(definitions, block lemma with constant 1, mod-4 linearization eq.~(2.2),
+verification to 10^13, G-table). What this file adds that the PDF digest
+records:
 
-\catcode`\@=11
-\renewcommand{\section}{
-        \setcounter{equation}{0}
-        \@startsection {section}{1}{\z@}{-3.5ex plus -1ex minus
-        -.2ex}{2.3ex plus .2ex}{\large\bf}
-        }
-\catcode`@=12
+- **The block lemma, exact words** (Introduction): "If for some *N* we find a
+  *K* such that `d_K (1) = 1` while `d_K (n) = 0` or 2 for all `1 ≤ n ≤ N`,
+  then we can conclude that `d_k (1) = 1` for `K ≤ k ≤ N + K−1`." A `{0,2}`
+  run of length N−1 after the leading 1 protects **N rows** — coefficient 1.
+  This is the primary statement the run's `odlyzko-block-lemma-exact`
+  (constant 1, n+1 rows for a block of length n) is consistent with.
+- **Killgrove–Ralston verification claim as Odlyzko restates it**: "verified
+  for k ≤ 63,419, that is for all primes < 792,731" — the latter digits differ
+  slightly from the K–R paper's own < 792,722 figure; the k ≤ 63,419 count is
+  unambiguous and common to both.
+- **Hardware/method** (§4, in the excerpt): segmented sieve in blocks of
+  5×10^5–8×10^6, 50–75 full-array iterations over blocks then isolated
+  processing of entries > 2, an SGI 4D-220, 5–20 MB, several months single
+  processor, ~2 s per 10^6-length interval. Also tested primes near 10^50 (436
+  iterations suffice) and probable primes near 10^100 (1417 iterations).
+- **Caveat** (§1): the 10^13 computation "cannot be fully guaranteed" — one
+  error found and corrected (block M = 8.972168×10^12: spurious g(n) = 914
+  from a nonexistent gap 1158; correct value 261).
 
-\title[Iterated Differences of Primes]{Iterated Absolute Values of Differences of Consecutive Primes}
-\author[Andrew M. Odlyzko]{Andrew M. Odlyzko \\
-~~ \\ [-.09in]
-AT\&T Bell Laboratories, Murray Hill, NJ 07974}
-\dedicatory{Dedicated to the memory of D.~H. Lehmer}
-\thanks{1991 Mathematics Subject Classification:
-Primary 11N05, 11Y99.
-Secondary 11K36, 11Y16, 68Q25}
-\begin{document}
-\maketitle
-\begin{abstract}
-Let $d_0 (n) = p_n$, the $n$-th prime, for $n \ge 1$, and let $d_{k+1} (n) = | d_k (n) - d_k (n+1) |$ for $k \ge 0$, $n \ge 1$.
-A well known conjecture, usually ascribed to Gilbreath but actually due to
-Proth in the 19-th century, says that $d_k (1) =1$ for all $k \ge 1$.
-This paper reports on a computation that verified this conjecture
-for $k \le \pi (10^{13}) \approx 3 \times 10^{11}$.
-It also discusses the evidence and the heuristics about this conjecture.
-It is very likely that similar conjectures are also valid for
-many other integer sequences.
-\end{abstract}
-\setlength{\baselineskip}{1.25\baselineskip}
+## Hypotheses / bearing
 
-\section{Introduction}
-Let $p_1 = 2$, $p_2 =3 , \ldots$ be the primes in their natural ordering,
-and set
-\begin{equation}
-\label{eq101}
-\begin{array}{r@{~}l@{~}l}
-d_0 (n) & = & p_n ~, ~~~~~~n \ge 1 \\
-~~ \\
-d_{k+1} (n) & = & | d_k (n) - d_k (n+1) | ~, ~~~~~~k \ge 0 , ~~~~n \ge 1 ~.
-\end{array}
-\end{equation}
-Table~1 shows $d_k (n)$ for $0 \le k \le 20$, $1 \le n \le 20$.
-Note
-that $d_k (1) =1$ for $1 \le k \le 20$.
-As was pointed out by H.~C. Williams, Proth \cite{Proth} claimed to prove that $d_k (1) =1$ for all $k \ge 1$, but his proof was faulty.
-More recently, Gilbreath (unpublished) independently conjectured that $d_k (1) =1$
-for all $k \ge 1$. (See Problem~A10 in \cite{Guy}, and also \cite{KR}.)
-This is usually referred to as Gilbreath's conjecture.
+The block lemma's hypotheses are: row K is 1 followed by N−1 entries in {0,2},
+absolute-difference iteration — exactly the run's consumption setup; holds
+here. Endorses the exact constant 1, contradicting nothing the run holds. The
+method section documents why brute-force verification to depth is expensive
+(~5×10^22 numbers at k ~ 3.4×10^11) — quantifying why the deliverable must be
+a proof, not a deeper run.
 
-Gilbreath's conjecture was verified for $k \le 63, 419$, that is for all
-primes
-\linebreak
-$< 792, 731$, by Killgrove and Ralston \cite{KR},
-who were fellow students of Gilbreath at UCLA in the late 1950's.
-This paper reports on a verification of this conjecture for all primes
-$< 10^{13}$, so that
-$d_k (1) =1$ for $1 \le k \lesssim 3.4 \times 10^{11}$.
-The computational results are presented in Section~3, and the algorithms
-that were used are described in Section~4.
+## Source status
 
-For a general sequence $d_0 (n)$, to compute $d_k (1)$ it is necessary to compute $d_j (i)$ for all $i+j \le k+1$, so that for $k \sim 3.4 \times 10^{11}$
-approximately $5 \times 10^{22}$
-numbers have to be computed,
-far too many for the technology of today or the near future.
-The computations for $d_0 (n) = p_n$ were possible because of special properties of the primes.
-Note that $d_k (1)$ is odd and $d_k (2), d_k (3) , \ldots$, are even for all $ k \ge 1$.
-If for some $N$ we find a $K$ such that $d_K (1) =1$ while $d_K (n) =0$ or 2 for all $1 \le n \le N$, then we can conclude that $d_k (1) =1$ for $K \le k \le N + K-1$.
-Let $G(N)$ denote the minimal $k$ (if it exists) such that $d_j (1) =1$
-for $1 \le j \le k$ and $d_k (n) =0$ or 2 for $1 \le n \le N$.
-Computations show that $G(N)$ does  exist for all $N$ that have been checked and is small.
-Table~2 presents some values.
-
-*[excerpt ends; 19219 characters not shown — see `research/sources/odlyzko-1993-iterated-differences-latex-source.full.md`]*
+Author's own TeX; identical in content to the AMS PDF. The two files
+cross-corroborate each other; the run's `odlyzko-block-lemma` /
+`odlyzko-verification-1993` / `odlyzko-mod4-linearization` claims rest on both.

@@ -18,6 +18,17 @@ next: |
 
 # Regeneration thread
 
+```claim
+id: regeneration-criterion-local-exact
+statement: In the prime Gilbreath triangle, let the leading {0,2} block of row A_k occupy 0-based columns 1..b_k, and define the edge e_k = A_k[b_k] (the last {0,2} entry of the block) and the intruder c_k = A_k[b_k+1]. Then b_{k+1} >= b_k  iff  (e_k == 2 and c_k == 4). Equivalently the first non-{0,2} value q_k = A_{k+1}[b_k] = |e_k - c_k| is in {0,2} iff (e_k,c_k)=(2,4).
+hypotheses: A_0 = primes (or any 2-then-odds sequence with even gaps >= ... ); c_k >= 4 by definition of intruder (first value past the {0,2} block, which has only even values and is not 0 or 2). b_k = length of the leading {0,2} block, positions 1..b_k.
+holds-here: yes - zero failures over all 998 transitions k=1..999 (sieve to 20,000,000, depth 1000); exactly 60 regeneration events, matching the independent long-standing count; both directions.
+status: proved (finite identity: q_k = |e_k-c_k| in {0,2} iff (e_k,c_k) = (2,4), since c_k >= 4 even; and b_{k+1} >= b_k iff q_k in {0,2} by definition of block length)
+bearing: regeneration is a single-row local property (edge==2 AND intruder==4) - the earlier CONTEXT.md "Ruled out" row claiming regeneration is not local was an off-by-one (e_k = A_k[b_k-1]) and is WITHDRAWN. The honest open question is purely frequency: how often (e==2,c==4) recurs before erosion (b shrinks by exactly 1 per non-regen row) drives b to 0. Minima record to depth 1000: 13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263 - never 0.
+answers: is-regeneration-local
+anchor: code/out/check_regenerate_lemma.captured.txt (Variant B), code/regeneration/check_regenerate_lemma.py, research/threads/regeneration.md
+```
+
 ## What we know
 
 - **Consumption is proven & source-backed.** Odlyzko 1993 (block lemma, constant 1); Killgrove–Ralston 1959 (same, off-by-one index); Chase 2024 Lemma 3.2 ({0,d} version). A leading {0,2} block of length b_k implies b_{k+1} ≥ b_k − 1 — the block shrinks by at most one per row. Regeneration is the sole remaining obstruction.
