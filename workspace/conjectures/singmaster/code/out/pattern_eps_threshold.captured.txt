@@ -1,0 +1,6 @@
+eps=0.2000 2/3+eps=0.8667: boundary j count=2, interior=39997, first interior j=3
+eps=0.3200 2/3+eps=0.9867: boundary j count=11, interior=39988, first interior j=12
+eps=0.3333 2/3+eps=1.0000: boundary j count=39999, interior=0, first interior j=None
+eps=0.3500 2/3+eps=1.0167: boundary j count=39999, interior=0, first interior j=None
+eps=0.5000 2/3+eps=1.1667: boundary j count=39999, interior=0, first interior j=None
+eps=0.9000 2/3+eps=1.5667: boundary j count=39999, interior=0, first interior j=None
