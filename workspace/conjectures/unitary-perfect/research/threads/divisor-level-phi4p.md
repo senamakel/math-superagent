@@ -16,8 +16,13 @@ blocked-by: No divisor-level transference theorem exists (per Maciejewski
 next: (1) compute ω(Φ_{4p}(2)) and the v2 distribution of its prime divisors
   for a stated range of primes p to test Conjecture 29 empirically; (2) test
   the mod-16 equidistribution on the known prime factors of the open
-  candidates; (3) look for a congruence class of p where an r ≡ 1 (mod 16)
-  divisor can be proved to exist by algebraic factorization.
+  candidates; (3) close the adopted algebraic step 2 using the now-grounded
+  supplementary law [2/π]_4 = i^{-b/2} (claim qr-supplementary-2): primaryize
+  2^p+i in Z[i] and evaluate (2/(2^p+i))_4 = Π_{π^e||2^p+i} (2/π)_4^e from
+  p mod 16 alone — the divisor-transference identity; (4) look for a
+  congruence class of p where an r ≡ 1 (mod 16) divisor forces a head by this
+  closed form. The per-class (p mod 8) shortcut is REFUTED (M4); only the
+  product formula survives.
 ```
 
 ## The question

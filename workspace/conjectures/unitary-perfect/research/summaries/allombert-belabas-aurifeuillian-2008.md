@@ -1,56 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/allombert-belabas-aurifeuillian-2008.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Practical Aurifeuillian factorization — Allombert & Belabas (2008)
 
-<!-- source: https://www.numdam.org/item/10.5802/jtnb.641.pdf | converted from PDF -->
+Source: https://www.numdam.org/item/10.5802/jtnb.641.pdf, J. Th. Nombres Bordeaux 20 (2008) 543-553. Full text at `[[allombert-belabas-aurifeuillian-2008.full]]`. The theory of the Aurifeuillean split that underlies `2^{2p}+1 = L_p·M_p`.
 
-## What it claims
+## Granville–Pleasants existence criterion (Prop 1.1)
 
-L’accès aux articles de la revue « Journal de Théorie des Nom-
-bres de Bordeaux » (http://jtnb.cedram.org/), implique l’accord
-avec les conditions générales d’utilisation (http://jtnb.cedram.
-org/legal/). Toute reproduction en tout ou partie cet article sous
-quelque forme que ce soit pour tout usage autre que l’utilisation à
-ﬁn strictement personnelle du copiste est constitutive d’une infrac-
-tion pénale. Toute copie ou impression de ce ﬁchier doit contenir la
-présente mention de copyright.
+Let a ∈ Q*, a* the squarefree representative of a in Q*/(Q*)^2. Then `a·ζ_d` is a square in Q(ζ_d) — equivalently `Φ_d(a)` has an Aurifeuillean factorization — iff `a* | d` and (exactly) one holds:
+- a* ≡ 1 (mod 4) and d odd; or
+- a* ≡ 3 (mod 4) and v2(d) = 1; or
+- a* even and v2(d) = 2.
 
-cedram
- Article mis en ligne dans le cadre du
-Centre de diffusion des revues académiques de mathématiques
-http://www.cedram.org/
+Reduction `Φ_d(a) = Φ_{D}(A)` with D = 2^{v2(d)} Π_{p|d,p≠2} p, A = a^{d/D}; the criterion reduces to (D,A).
 
-Journal de Théorie des Nombres
-de Bordeaux 20 (2008), 543-553
+## Product formula (Prop 2.1)
 
-Practical Aurifeuillian factorization
+For (d,a) satisfying the criterion, `Π_{j∈(Z/dZ)*} (χ(j)G − ζ^j_d)` is an Aurifeuillian divisor of `Φ_d(a)`, where `G(a) = f·Π_{p|a*} g(p)` ∈ Q(ζ_d), χ(j) a Legendre-Jakobi character (with an i factor when a* even, j ≡ 3 mod 4).
 
-par Bill ALLOMBERT et Karim BELABAS
+## Algorithm (Alg 3.1) and complexity (Thm 3.4, Cor 3.5)
 
-Dedicated to Henri Cohen on his 60th birthday
+Computes an Aurifeuillian factor in deterministic time `Õ(d^2 L)` (L = log(|a|+1)) assuming a prime ℓ ≡ 1 (mod d) with ℓ ≤ D·d^C, C<8 (Linnik best C=5.5, Heath-Brown; under GRH ℓ ≤ 2(d log d)^2 ⇒ the Õ(d^2 L) claim is unconditional-ish by Linnik too). O(dL) space.
 
-Résumé. Nous décrivons un algorithme simple pour déterminer
-les facteurs d’Aurifeuille des entiers Φd(a), où Φd est le d-ème
-polynôme cyclotomique, et a un entier. Sous une hypothèse de
-Riemann convenable, l’algorithme termine en temps polynomial
-déterministe ˜O(d2L), utilisant un…
+## Relevance to this problem
 
-Abs…
+For `Φ_{4p}(2)`: d = 4p, a = 2. Then a* = 2 even, v2(d) = v2(4p) = 2 ⇒ criterion satisfied. This is the *reason* `2^{2p}+1 = Φ_2(2)·Φ_4(2)·Φ_{4p}(2)... ` splits Aurifeuilleanly, and the same machinery gives the explicit `L_p, M_p` halves already used in the thread. So this source *explains/justifies* the split `2^{2p}+1 = L_p·M_p` and gives a deterministic algorithm to produce and factor the halves — relevant to any future factoring campaign or closed-form manipulation of L_p, M_p as algebraic numbers (they are norms from Q(ζ_{4p}) of `G ± ζ_{4p}`).
 
-## Statements it makes
+**Caveat / does not settle:** the paper gives the *algorithm* to find factors, not a closed algebraic identity for `(2/(2^p+i))_4`; the Aurifeuillean norm structure alone does not fix the biquadratic-character distribution. It supports the "Aurifeuillean split" claim already on disk (`aurifeuillean-split`) with the existence criterion.
 
-Proposition 1.1 (Granville-Pleasants [5]). Let a ∈ Q∗ and let ζd be a
-primitive d-th root of unity. Let a∗ be the squarefree integer, which is the
-
-Proposition 2.1. Let d > 2, and (d, a) satisfy the conditions of Propo-
-sition 1.1. Write a = a∗f 2, f ∈ Q∗ and let G(a) = f ∏p|a∗ g(p) ∈ Q(ζd).
-Then ∏
-
-Theorem 3.4. Let L := log(|a| + 1), and M(n) an upper bound for the
-bit complexity of multiplication of two n-bits integers. Assume that for all
-d > 1, there exists a prime ℓ ≡ 1 (mod d) satisfying ℓ ⩽ DdC for some con-
-stants C < 8 and D. Given such an ℓ, Algorithm 3.1 runs in deterministic
-time O(dM(dL) + dC/4+ε) = ˜O(d2L), using O(dL) space.
-
-Corollary 3.5. Assuming the Generalized Riemann Hypothesis, Algo-
-rithm 3.1 runs in time ˜O(d2L).
-
-*[digest of a 21886 character source; every section, statement, and proof in full at `research/sources/allombert-belabas-aurifeuillian-2008.full.md`]*
+```claim
+id: aurifeuillean-existence
+statement: Φ_d(a) has an Aurifeuillean factorization iff, with a* the squarefree
+  part of a (a*|d and one of:) a*≡1 mod 4 & d odd; a*≡3 mod 4 & v2(d)=1;
+  or a* even & v2(d)=2. For Φ_{4p}(2) with a=2: a*=2 even, v2(4p)=2, so the
+  criterion holds — the split 2^{2p}+1 = L_p·M_p is justified, and each factor
+  is a norm from Q(ζ_{4p}), ≈ half the bit length.
+hypotheses: a ∈ Q*, a*|d, the three-case condition; d>2, |a|>4 for nontriviality
+holds-here: yes (a=2, d=4p satisfies the even-d v2=2 case)
+status: sourced
+bearing: grounds the Aurifeuillean split (claim aurifeuillean-split) in a stated
+  existence criterion, and ties L_p, M_p to norms G±ζ_{4p} — the algebraic
+  objects the adopted quartic-character route works with
+anchor: research/sources/allombert-belabas-aurifeuillian-2008.full.md
+```

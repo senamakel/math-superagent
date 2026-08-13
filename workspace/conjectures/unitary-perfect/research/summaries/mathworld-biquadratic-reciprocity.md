@@ -1,98 +1,36 @@
-<!-- source: https://mathworld.wolfram.com/BiquadraticReciprocityTheorem.html | converted from HTML -->
+# Biquadratic reciprocity — MathWorld
 
-Biquadratic Reciprocity Theorem -- from Wolfram MathWorld
+Source: https://mathworld.wolfram.com/BiquadraticReciprocityTheorem.html. Full text at `[[mathworld-biquadratic-reciprocity.full]]`. Compact supplement; the operative formulas are in the Wikipedia digest.
 
-# Biquadratic Reciprocity Theorem
+## Statements
 
----
+For distinct Gaussian primes π, σ:
+```
+(π/σ)_4 (σ/π)_4 = (-1)^{((Nπ−1)/4)((Nσ−1)/4)}
+```
+`(α/π)_4 = 1` iff `x^4 ≡ α (mod π)` solvable in Z[i].
 
-Gauss stated the reciprocity theorem for the case [image: n=4]
+**Quartic character of 2** (Euler's conjecture, Gauss's proof): for prime p ≡ 1 (mod 8),
+```
+2 is a quartic residue (mod p)  ⟺  p = x^2 + 64y^2  for integers x,y.
+```
+If p ≡ 7 (mod 8) then 2 is ALWAYS a quartic residue: `p = 8k+7`, `(2^(k+1))^4 ≡ 2 (mod p)`; e.g. `2^4 ≡ 2 (mod 7)`.
 
-[image:  x^4=q (mod p) ] |
+## What it contributes
 
-(1)
+The `p = x^2+64y^2` criterion (Euler's conjecture, Gauss's theorem) — a pure-integer description of `(2/p)_4 = 1` matching the `r ≡ 1 (mod 16)` test for primitive divisors r of Φ_{4p}(2). Corroborates that `(2/r)_4 = +1 ⟺ r = a^2+64b^2`, consistent with the verified check F2.
 
- |
+**Caveat:** the p ≡ 7 (mod 8) ⇒ 2 always a quartic residue fact applies to a RATIONAL prime equal to the full modulus; it does NOT force a quartic residue among the *divisors* of a fixed composite `Φ_{4p}(2)`. The adopted per-class shortcut (for fixed p mod 8, some divisor ≡ 1 mod 16) was already REFUTED computationally (approach `biquadratic-character-divisors` correction M4) — this MathWorld fact is about a single prime, not about divisor support, so it is not in tension with that refutation.
 
-can be solved using the [Gaussian integers][1] as
-
-[image:  (pi/sigma)_4(sigma/pi)_4=(-1)^([(N(pi)-1)/4][(N(sigma)-1)/4]). ] |
-
-(2)
-
- |
-
-Here, [image: pi] and [image: sigma] are distinct [Gaussian primes][2], and
-
-[image:  N(a+bi)=a^2+b^2 ] |
-
-(3)
-
- |
-
-is the norm. The symbol [image: (alpha/pi)] means
-
-[image:  (alpha/pi)_4={1   if x^4=alpha (mod pi) is solvable; -1,i, or -i   otherwise, ] |
-
-(4)
-
- |
-
-where "solvable" means solvable in terms of [Gaussian integers][1].
-
-For a prime number [image: p] congruent to 1 (mod 8), 2 is a quartic residue (mod [image: p]) if there are integers [image: x,y] such that
-
-[image:  x^2+64y^2=p. ] |
-
-(5)
-
- |
-
-This is a generalization of the [genus theorem][3]. If [image: p] is 7 (mod 8), then 2 is always a quartic residue (mod [image: p]). In fact, if [image: p=8k+7], then [image: (2^((k+1)))^4] is congruent to 2 (mod [image: p]). For example, [image: 2^4] is congruent to 2 (mod 7).
-
----
-
-## See also
-
-[Biquadratic Residue][4], [Gaussian Integer][1], [Gaussian Prime][2], [Genus Theorem][3], [Reciprocity Theorem][5]
-
-## Explore with Wolfram|Alpha
-
-[image: WolframAlpha]
-
-More things to try:
-
-- [ANF (~P || Q) && (P || ~Q)][6]
-- [continued fraction 12/67][7]
-- [hexagonal tiling][8]
-
-## References
-
-Ireland, K. and Rosen, M. "Cubic and Biquadratic Reciprocity." Ch. 9 in *[A Classical Introduction to Modern Number Theory, 2nd ed.][9]*New York: Springer-Verlag, pp. 108-137, 1990.
-
-## Referenced on Wolfram|Alpha
-
-[Biquadratic Reciprocity Theorem][10]
-
-## Cite this as:
-
-[Weisstein, Eric W.][11] "Biquadratic Reciprocity Theorem." From **[MathWorld][12] --A Wolfram Resource. [https://mathworld.wolfram.com/BiquadraticReciprocityTheorem.html][13]
-
-## Subject classifications
-
-
-## Links
-
-[1]: /GaussianInteger.html
-[2]: /GaussianPrime.html
-[3]: /GenusTheorem.html
-[4]: /BiquadraticResidue.html
-[5]: /ReciprocityTheorem.html
-[6]: https://www.wolframalpha.com/input/?i=ANF+%28%7EP+%7C%7C+Q%29+%26%26+%28P+%7C%7C+%7EQ%29
-[7]: https://www.wolframalpha.com/input/?i=continued+fraction+12%2F67
-[8]: http://www.wolframalpha.com/input/?i=hexagonal+tiling
-[9]: http://www.amazon.com/exec/obidos/ASIN/038797329X/ref=nosim/ericstreasuretro
-[10]: https://www.wolframalpha.com/input/?i=biquadratic+reciprocity+theorem
-[11]: /about/author.html
-[12]: /
-[13]: https://mathworld.wolfram.com/BiquadraticReciprocityTheorem.html
+```claim
+id: qr-2-quartic-criterion
+statement: For a rational prime p ≡ 1 (mod 8), 2 is a quartic residue mod p iff
+  p = x^2 + 64y^2; and for p ≡ 7 (mod 8), 2 is always a quartic residue mod p.
+hypotheses: p odd prime, p ≡ 1 or 7 (mod 8)
+holds-here: yes as a statement about a single modulus; NOT a divisor-support fact
+status: sourced (Euler's conjecture, Gauss's theorem)
+bearing: gives the pure-integer form of (2/r)_4 = +1 ⟺ r = a^2+64b^2 used in the
+  adopted route; but cannot be applied divisor-by-divisor to force a head in
+  Φ_{4p}(2)
+anchor: research/sources/mathworld-biquadratic-reciprocity.full.md
+```

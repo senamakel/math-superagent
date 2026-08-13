@@ -6,6 +6,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `aurifeuillean-existence` | Φ_d(a) has an Aurifeuillean factorization iff, with a* the squarefree part of a (a*\|d and one of:) a*≡1 mod 4 & d odd; a*≡3 mod 4 & v2(d)=1; or a* even & v2(d)=2. For Φ_{4p}(2) with a=2: a*=2 even, v2(4p)=2, so the… | yes | asserted | `research/summaries/allombert-belabas-aurifeuillian-2008.md` |
 | `aurifeuillean-split` | For odd prime p, 2^(2p)+1 = L_p · M_p with L_p = 2^p - 2^((p+1)/2) + 1, M_p = 2^p + 2^((p+1)/2) + 1; both are integer-coefficient quartics in a power of 2, each ≈ half the bit length. | yes | checked | `research/notes/heven-and-3-higgs-structure.md` |
 | `bhv-primitive-divisor-theorem` | For Lucas/Lehmer sequences, u_n has a primitive prime divisor for all sufficiently large n (all n > some bound; n = 30 and a catalogue of small exceptions). Applied to 2^n + 1, every cyclotomic value Phi_n(2) has a… | yes | asserted | `research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md` |
 | `budget-equality-case-impossible` | Let n = 2^a * prod_i p_i^{e_i} be unitary perfect with p_i odd and distinct. In the equality case omega(odd part) = a + 1 of the 2-adic budget corollary - equivalently, every odd unitary component is 1 mod 4 - the odd… | yes | checked | `research/notes/equality-case-eliminated.md` |
@@ -43,6 +44,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `leangenius-shell-only` | The LeanGenius page is a JS shell; the Lean formal statement and AlphaProof link are at research/summaries/erdos-1052-formal-lean-statement.md | **unchecked** | catalogued | `research/summaries/leangenius-erdos-1052-formal.md` |
 | `mardi-frei1978-bibliographic` | MaRDI item Q1247995 confirms Frei 1978, Elemente der Mathematik 33 (1978) 95-96 as a publication on the fifth unitary perfect number; the held page carries no mathematics, so the OEIS-recorded Frei theorem (3-dividing… | **unchecked** | catalogued | `research/summaries/frei-1978-unitary-perfect-mardi-bibliographic.md` |
 | `oeis-a002827-five-terms-and-higgs-comment` | OEIS A002827 lists exactly the five UPNs 6, 60, 90, 87360, 146361946186458562560000 (90 = 2*3^2*5); records that the prime factors of a UPN are the Higgs primes (A057447) (Muljadi 2005); records Frei's theorem (1978)… | yes | catalogued | `research/summaries/oeis-a002827-internal-format.md` |
+| `qr-2-quartic-criterion` | For a rational prime p ≡ 1 (mod 8), 2 is a quartic residue mod p iff p = x^2 + 64y^2; and for p ≡ 7 (mod 8), 2 is always a quartic residue mod p. | yes | asserted | `research/summaries/mathworld-biquadratic-reciprocity.md` |
+| `qr-char-def-and-primary` | The quartic character (α/π)_4 on Z[i] (Nπ≠2) detects 4th powers; primary means ≡ 1 mod (1+i)^3; biquadratic reciprocity (λ/π)_4 = (π/λ)_4·(-1)^{((Nλ-1)/4)((Nπ-1)/4)} for primary relatively prime elements; and (i/n)_4 =… | yes | asserted | `research/summaries/reu-biquadratic-reciprocity-gaussian-integers.md` |
+| `qr-main-law` | For distinct primary primes π, λ of Z[i], [π/λ]_4 = [λ/π]_4 · (-1)^{((Nπ-1)/4)((Nλ-1)/4)}. | yes | asserted | `research/summaries/dummit-quartic-reciprocity-lecture.md` |
+| `qr-supplementary-2` | For a primary Gaussian prime π = a+bi, [2/π] = i^{-b/2}; [-1/π] = (-1)^{(a-1)/2}; [1+i/π] = i^{(a-b-1-b^2)/4}. Also [2/π] = +1 iff Nπ ≡ 1 (mod 16) when applied to a primitive divisor of Φ_{4p}(2). | yes | asserted | `research/summaries/wikipedia-quartic-reciprocity.md` |
 | `structural-search-cannot-reach` | The backtracking search over the product form prod (q_i+1)/q_i = 2, with q_i prime powers of distinct primes and the denominator rule forcing the next prime whenever the remaining target is not an integer, recovers… | yes | checked | `research/notes/why-the-search-is-closed.md` |
 | `subbarao1970-a-ge-11` | Any unitary perfect number other than the five known ones satisfies a >= 11, where 2^a \|\| n. Equivalently 2^11 = 2048 divides any sixth example. The elimination of a = 0, 3, 4, 5, 7, 8, 9, 10 and the classification a =… | yes | asserted | `research/notes/subbarao-1970-a-ge-11.md` |
 | `sw1966-budget-identity-36` | Subbarao-Warren 1966 Lemma 1 remark (3.6): for a UPN N = 2^m * n with n = n1*n2*n3 (n1 primes 1 mod 4; n2 primes 3 mod 4 even exponent; n3 primes 3 mod 4 odd exponent), a + b + sum_i C_i = m + 1 where each n3-prime p… | yes | catalogued | `research/summaries/subbarao-warren-1966-cambridge-pdf.md` |
@@ -169,6 +174,7 @@ Resolve these before building on either side.
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `aurifeuillean-existence` (research/summaries/allombert-belabas-aurifeuillian-2008.md) — asserted by the source, not proved there and not checked here
 - `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) — asserted by the source, not proved there and not checked here
 - `cohen1990-infinitary-divisor-classified` (research/summaries/cohen-1990-infinitary-divisors.md) — asserted by the source, not proved there and not checked here
 - `cohen1990-infinitary-perfect-classified` (research/notes/adjacent-divisor-classes-classified.md) — asserted by the source, not proved there and not checked here
@@ -186,6 +192,10 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `heven-thinness-not-finiteness` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
+- `qr-2-quartic-criterion` (research/summaries/mathworld-biquadratic-reciprocity.md) — asserted by the source, not proved there and not checked here
+- `qr-char-def-and-primary` (research/summaries/reu-biquadratic-reciprocity-gaussian-integers.md) — asserted by the source, not proved there and not checked here
+- `qr-main-law` (research/summaries/dummit-quartic-reciprocity-lecture.md) — asserted by the source, not proved there and not checked here
+- `qr-supplementary-2` (research/summaries/wikipedia-quartic-reciprocity.md) — asserted by the source, not proved there and not checked here
 - `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) — asserted by the source, not proved there and not checked here
 - `wall1972-biunitary-perfect-classified` (research/notes/adjacent-divisor-classes-classified.md) — asserted by the source, not proved there and not checked here
 - `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) — asserted by the source, not proved there and not checked here

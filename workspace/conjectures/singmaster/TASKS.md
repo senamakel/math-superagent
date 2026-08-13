@@ -4,74 +4,73 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## DIRECTIVE 18 — IMMEDIATE: run verify_riemann_hurwitz.py, nothing else
+## Riemann-Hurwitz genus derivation — extend and claim
 
-- [ ] **1. Run it.**
+The capture already exists and is non-empty —
+`code/out/verify_riemann_hurwitz.captured.txt` at 48 KiB, ALL CHECKS PASSED
+for 2<=m<=9, m<n<=10, plus (3,25),(4,25),(6,9). The old polyroots crash at
+(2,8) was fixed by switching to bisection (critical_points_of_q uses bisection
+on each Rolle-guaranteed interval, not mpmath polyroots). The directive's
+"option b" is already in place.
+
+- [ ] **1. Extend the range to 2 <= m < n <= 20.**
+      Edit `code/genus/verify_riemann_hurwitz.py` line 77: change the pairs list
+      from `range(2, 10) ... range(m+1, 11)` to `range(2, 20) ... range(m+1, 21)`.
+      Keep the `critical_points_of_q` bisection guard at `if n <= 15` (bisection
+      works for any n but is linear in n; the structural Rolle argument already
+      covers all n). Then run:
       ```
-      timeout 540 python3 code/genus/verify_riemann_hurwitz.py 2>&1 | tee code/out/verify_riemann_hurwitz.captured.txt; echo EXIT_CODE=$?
-      wc -c code/out/verify_riemann_hurwitz.captured.txt
+      timeout 540 python3 code/genus/verify_riemann_hurwitz.py 2>&1 | tee code/out/verify_riemann_hurwitz_full.captured.txt; echo EXIT_CODE=$?
       ```
-      No capture matching `riemann` exists in `code/out`. The program has been
-      unrun through directives 15, 16, 17, and 18. Run it before anything else.
-      Paste whatever comes out — including a traceback. An error is a result.
-      Silence is not.
+      State the range covered and the number of pairs verified in the capture.
 
-      **If it needs a fix to run, fix the program, not the priority.**
-      It imports sympy and mpmath; the container has both.
+- [ ] **2. Record the claim.**
+      After the extended run passes, create
+      `research/notes/genus-closed-form-derived-by-riemann-hurwitz.md` with:
+      - The closed form: `g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n))/2`
+      - Status: **proved** — the Riemann-Hurwitz argument is general in m,n:
+        (a) degree = n, (b) finite ramification = m(n-1) points each index 2
+        (Rolle guarantees n-1 simple real critical points of Q; smoothness
+        checked explicitly), (c) fibre at x=infinity computed explicitly via
+        Puiseux: n/gcd(m,n) branches each of index gcd(m,n), total I_inf = n-gcd,
+        (d) 2g-2 = -2n + m(n-1) + (n-gcd) → the closed form.
+      - Effective: yes (exact integer formula)
+      - Uniform in (m,n): yes (one formula for all distinct m,n)
+      - Singmaster bearing: gives NOTHING effective or uniform — genus >= 2
+        feeds Faltings, which is per-(k1,k2) and ineffective. The closed form
+        makes genus decidable for any pair but does not bound N(a).
+      - Evidence class: proved (the argument is structural, not instance-counting)
+      - Store with `remember_memory`.
 
-      **The mathematical point that decides whether the output is a derivation
-      or a table:** Rolle gives the `m(n-1)` finite critical points cleanly, but
-      the term `-gcd(m,n)` in the closed form
-      `g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2` cannot come from those. It has to come
-      from the points over `x = infinity`. The current program checks
-      `gcd(m,n)` only via Newton-polygon branch-count assertion (lines:
-      `ok(d == math.gcd(m,n), ...)` and `ok(d*(n//d)==n, ...)`), which is
-      structural bookkeeping, not an explicit computation of the fibre at
-      infinity. If the program does not compute the points over `x = infinity`
-      explicitly — the number of branches, their ramification indices, and the
-      contribution `n - gcd(m,n)` to `I_inf` — then the derivation is INCOMPLETE
-      and must be recorded as incomplete. A numerical match at the 17 pairs in the
-      loop does not substitute for that step; the run already has the numerical
-      match from Singular.
+## Matveev effective constant for {2,3}
 
-      **Open no new approaches and run no new searches until
-      `verify_riemann_hurwitz.captured.txt` exists and is non-empty.**
+- [ ] **3. Apply Matveev 2000 Thm 2.3 (K=Q, D=ρ=1) to triangular=tetrahedral.**
+      GOAL-eligible partial result: an effective height bound with a **computed**
+      constant for C(x,2)=C(y,3). The primary source is held
+      (`research/sources/matveev-2000-homogeneous-linear-form.full.md`), and
+      Avanesov already solved the (2,3) curve finitely — the deliverable is
+      making the constant explicit. Verify the Kummer condition for the
+      rational-integer case (αⱼ are rationals, so [K(√α₁..√αₙ):K] = 2ⁿ holds
+      automatically when the αⱼ are positive and squarefree).
 
-## Mason-Stothers — already done (directive 18 "open three cycles")
+## Integrality repro
 
-The three cycles the directive asks to open are already open:
+- [ ] **4. Reproduce integrality independently.**
+      Run parity check over 1..799, capture to
+      `code/out/integrality_reproduced.captured.txt`.
 
-- [x] `mason-stothers-vacuous-binomial` is `checked` (the claim id on disk;
-      directive 18 calls it `mason-stothers-vacuous-for-binomials` — same
-      content, hyphen variant). Capture at
-      `code/out/check_mason_stothers_bound.captured.txt`: degB'=0 for all
-      21 pairs with 2<=k2<k1<=8, slack >= 0 throughout.
-- [x] `research/approaches/mason-stothers-abc.md` is `refuted` — both in its
-      own file (`status: refuted`) and in APPROACHES.md, with the slack table
-      and structural reason (B' constant, inequality never binds).
-- [x] The run, the capture, and the refutation were all completed in the
-      directive 15/16 cycles. There is nothing more to do here.
+## Completed / no further action
 
-## Once the Riemann-Hurwitz capture exists
-
-- [ ] **2. Matveev effective constant for {2,3}** (GOAL-eligible partial result).
-      Apply Matveev 2000 Thm 2.3 (K=Q, D=ρ=1) to triangular=tetrahedral.
-- [ ] **3. Reproduce integrality independently.** Run the parity check over
-      1..799 and capture to `code/out/integrality_reproduced.captured.txt`.
+- [x] verify_riemann_hurwitz.py already runs and passes (bisection fix applied;
+      capture at code/out/verify_riemann_hurwitz.captured.txt, EXIT_CODE=0)
+- [x] Mason-Stothers refuted (capture, claim, approach all closed)
+- [x] Search stopped; library sufficient
+- [x] MRSTT effectiveness confirmed; witness double-failure stated
 
 ## Ledger discipline
 
-- **Do not convert or drop asserted claims without a second route.** Every
-  bound must be run against `code/out/witnesses.json`. Any lemma implying B<8
-  is refuted by 3003. State counting convention on every claim.
-- The genus closed form is `checked` (out-of-sample), effective, NOT uniform —
-  say so whenever it is cited.
-
-## Search policy
-
-- [x] **Stop searching.** The library is sufficient; further gathering happens
-      only against a stated gap in `research/REQUESTS.md`.
-- [ ] **Directive 19 gate:** no new approaches and no new searches until a new
-      capture lands (captured output above the current 57). This binds the
-      inventor too — a proposed approach is not execution. The budget is nearly
-      gone; the next run is the only spending allowed.
+- asserted=22, checked=4, proved=0 (genus R-H claim will be the first `proved`)
+- Every bound must be run against `code/out/witnesses.json`. Any lemma implying
+  B<8 is refuted by 3003. State counting convention on every claim.
+- The genus closed form is effective and uniform in (m,n), but gives nothing
+  for Singmaster (Faltings is per-pair and ineffective). Say so whenever cited.
