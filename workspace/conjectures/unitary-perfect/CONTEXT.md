@@ -109,9 +109,24 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   structural content the odd dependency graph is built from; use it forwards, do
   not execute it. `research/notes/why-the-search-is-closed.md`,
   `code/structural_search_CLOSED.py`.
+- **(computed/checked) Equality case `a=8` thread:** confirmed `257 = 2^8+1` is
+  non-3-Higgs (Route B). Route A (does `a ∈ H_even` follow from the reduction?)
+  remains unverified. If Route A holds, `a ≥ 10`.
 - **Rarity is not finiteness.** A density-zero / `o(x)` / `O(x^ε)` statement
   about UP numbers is almost certainly already known and does not touch the
   question. Say which one you have.
+- **The B2 witness sieve's `pow(2,2400,r)==1` prefilter is buggy** — it must not
+  be trusted for the H_even verification. A prime `r | 2^m+1` (m even ≤1200,
+  m=2k) only needs `ord_r(2) = 2d` with `d | k` (i.e. `ord = 4d` with `d|k`),
+  NOT `ord | 2400`. The oracle cross-check is decisive: direct witness pairs
+  `(r≤1000, m even≤1200)` with `r|2^m+1` = **1346**, but the sieve's table
+  (after the fix attempt) holds only 836, missing the `(29,14),(29,42),…` class:
+  `ord_29(2)=28∤2400` yet `29 | 2^14+1`. So the filter wrongly discards valid
+  witnesses and **under-kills** (it can only err toward claiming an m is IN when
+  it is not — the dangerous direction). A corrected sieve must iterate odd
+  divisors `d | m` / `d | 600` and test `pow(2, m, r)` directly for `r ≡ 1
+  mod 2d`, not filter on `ord | 2400`. NOT CERTIFIED. See the D_COMP (576 odd-norm
+  divisors) analysis in the commands log.
 
 ## Numbers
 

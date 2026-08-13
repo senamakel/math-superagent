@@ -9,6 +9,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `aurifeuillean-split` | For odd prime p, 2^(2p)+1 = L_p · M_p with L_p = 2^p - 2^((p+1)/2) + 1, M_p = 2^p + 2^((p+1)/2) + 1; both are integer-coefficient quartics in a power of 2, each ≈ half the bit length. | yes | checked | `research/notes/heven-and-3-higgs-structure.md` |
 | `bhv-primitive-divisor-theorem` | For Lucas/Lehmer sequences, u_n has a primitive prime divisor for all sufficiently large n (all n > some bound; n = 30 and a catalogue of small exceptions). Applied to 2^n + 1, every cyclotomic value Phi_n(2) has a… | yes | asserted | `research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md` |
 | `budget-equality-case-impossible` | Let n = 2^a * prod_i p_i^{e_i} be unitary perfect with p_i odd and distinct. In the equality case omega(odd part) = a + 1 of the 2-adic budget corollary - equivalently, every odd unitary component is 1 mod 4 - the odd… | yes | checked | `research/notes/equality-case-eliminated.md` |
+| `fkl-prime-chain-length` | For almost all primes p, the length H(p) of the longest prime chain ending at p satisfies H(p) <= (log p)^0.9503, and most chains starting at a fixed prime are O(x^(1+epsilon)) in count. | **unchecked** | asserted | `research/summaries/ford-konyagin-luca-prime-chains-2010.md` |
 | `ford-thinness-downward-closed-primes` | If P is a set of primes satisfying p in P => all q \| p-1 in P, and P omits the odd prime p0, then #{p<=x : p in P} <= c x^(1-delta) for delta,c > 0 depending only on p0. | yes | asserted | `research/summaries/ford-pratt-trees-missing-primes-2014.md` |
 | `hb-lemma20-closures` | Six open candidates m=2p (2446, 10294, 10958, 17398, 19066, 20282) are excluded: a large APR-CL-verified prime p* \| 2^m+1 has a non-3-Higgs witness q \| p*-1 (v2 overflow or a Pratt-tree descent to 17), and 30882 via… | yes | asserted | `research/notes/paper-extraction.md` |
 | `hb-no-v2ge4-witness-1e11` | For all 162 original open candidates m=2p (p∈[1213,17467]), no prime r≡1 mod 16p with r ≤ 10^11 divides L_p or M_p; for m=2426 extended to 6×10^11 (2,389,527 primes) with no divisor. So no v2≥4 non-3-Higgs witness… | yes | catalogued | `research/notes/paper-extraction.md` |
@@ -18,7 +19,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `heven-prime-case-reduction` | H_even is finite iff the set {m = 2p : p odd prime, 2p ∈ H_even} is finite, and \|H_even\| <= 4^\|H_even^prime\|. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-prime-case-reduction` | H_even is finite iff H_even^prime = {2p : p odd prime, 2p∈H_even} is finite, and \|H_even\| ≤ 4^\|H_even^prime\|. | yes | catalogued | `research/notes/paper-extraction.md` |
 | `heven-thinness-not-finiteness` | #{m ≤ X : m ∈ H} << X^(1-η) for an absolute η > 0, and Σ_{m∈H} 1/m < ∞. This is power-saving thinness but does NOT imply finiteness; on the prime branch the relevant bound is exponential at the primitive-divisor height… | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
-| `heven-thinness-not-finiteness` | #{m≤X : m∈H} ≪ X^{1-η} for an absolute η>0 and Σ_{m∈H} 1/m < ∞ (same for H_even, H_odd); power-saving thinness, NOT finiteness. | yes | proved | `research/notes/paper-extraction.md` |
+| `heven-thinness-not-finiteness` | #{m≤X : m∈H} ≪ X^{1-η} for an absolute η>0 and Σ_{m∈H} 1/m < ∞ (same for H_even, H_odd); power-saving thinness, NOT finiteness. | yes | catalogued | `research/notes/paper-extraction.md` |
 | `heven-two-mod-four` | H_even ⊆ {m ≡ 2 (mod 4)}. Every even m in H is 2 mod 4, i.e. v2(m) = 1. In particular m = 2k with k odd. | yes | catalogued | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-verified-members` | H_even ∩ [2,1200] = {2, 6, 10, 18, 26, 30, 46, 62, 82, 122}, so H_even has exactly these ten verified elements through 1200 and no verified element in (122, 1200]. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-verified-members` | H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}; no verified element of H_even in (122,1200]. | yes | asserted | `research/notes/paper-extraction.md` |
@@ -35,6 +36,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 Resolve these before building on either side.
 
 - `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `fkl-prime-chain-length` (research/summaries/ford-konyagin-luca-prime-chains-2010.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `ford-thinness-downward-closed-primes` (research/summaries/ford-pratt-trees-missing-primes-2014.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `hong-stewart-nonprimitive-bound` (research/summaries/hong-2022-stewart-revisited.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `sw1966-finiteness-fixed-omega` (research/summaries/subbarao-warren-1966-unitary-perfect.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
@@ -64,5 +66,6 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 - `hb-no-v2ge4-witness-1e11` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `hb-prop4-structural` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `heven-prime-case-reduction` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
+- `heven-thinness-not-finiteness` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `heven-two-mod-four` (research/notes/heven-and-3-higgs-structure.md) — read from a catalogue; no derivation here reproduces it
 - `sw1966-finiteness-fixed-omega` (research/summaries/subbarao-warren-1966-unitary-perfect.md) — read from a catalogue; no derivation here reproduces it

@@ -6,6 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
+| [[binary-digit]] | Can the binary-submask constraint alone bound multiplicities in the odd-only Pascal triangle, without invoking algebraic geometry or heights? | open | matveev-2000-explicit-constants-primary, sst-effective-shared-factor, mrstt-interior-theorem, kummer-lucas-class-not-logarithmic | scan odd binomial coefficients for n <= 2^18, record multiplicities |
 | [[diophantine-curves]] | Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound on N(a), or only per-pair finiteness (ineffective)? | open | jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree, hpt-bilu-tichy-exceptional-classification, bilu-tichy-method-ineffective-uniformity-wall, bilu-tichy-classification-primary, kummer-lucas-class-not-logarithmic, bst-fixed-kl-ineffective-primary, bst-genus-classification-matches-grid, matveev-2000-explicit-constants-primary, sdw-elliptic-logarithms-eight-pairs, yamada-boundary-necessary-condition, lind-1968-fibonacci-family-primary | prove genus formula via involution + Riemann-Hurwitz + singularity count (directive 10); then Matveev-2000 explicit constant for one small pair; run or delete… |
 
 ## Threads that could not be read

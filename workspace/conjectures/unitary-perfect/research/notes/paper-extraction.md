@@ -135,7 +135,7 @@ statement: #{m≤X : m∈H} ≪ X^{1-η} for an absolute η>0 and Σ_{m∈H} 1/m
 hypotheses: Ford's theorem on downward-closed prime sets (omitted prime 17),
   then Rankin's trick over the cubefree semigroup S_3^{(≤3)}
 holds-here: yes
-status: proved (paper Thm 21 + Cor 22, R)
+status: catalogued
 bearing: rarity is not finiteness; at the primitive-divisor height x=2^{2k}
   the bound is still exponential in k, so this theorem cannot close C6
 anchor: research/sources/maciejewski-bounded-box-subbarao-warren.full.md

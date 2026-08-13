@@ -170,8 +170,7 @@ statement: For odd prime p, 2^(2p)+1 = L_p · M_p with
 hypotheses: Aurifeuillean identity for b^n + 1, n odd
 holds-here: yes, sourced from the paper's equation (2) and the worked
   m = 2426 example, which matches the Cunningham Project table
-status: checked (the m = 2426, p = 1213 case matches the published
-  Cunningham table 2,2426L = 2·25893760589·C355)
+status: checked
 bearing: the open candidates are special-form SNFS targets after the split;
   a factoring campaign would target L_p and M_p separately
 falsifier: a failed modular check of L_p·M_p = 2^(2p)+1
@@ -188,4 +187,4 @@ source: arXiv:2605.20475 §5.2
 - The OEIS A002827 entry records Frei's theorem: a UPN not divisible by 3 has
   2^m | n with m ≥ 144, at least 144 distinct odd prime factors, and
   n > 10^440. Source for that claim: OEIS comment (Amiram Eldar, Mar 05 2019),
-  which cites Frei 1978. **Not yet verified against the primary text.**
+  which cites Frei 1978. **Not yet verified against the primary text.** which cites Frei 1978. **Not yet verified against the primary text.**
