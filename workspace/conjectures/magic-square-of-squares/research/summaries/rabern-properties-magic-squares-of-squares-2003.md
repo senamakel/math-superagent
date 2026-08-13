@@ -1,31 +1,99 @@
-# Rabern, "Properties of Magic Squares of Squares", Rose-Hulman Undergrad. Math. J. 4 (2003) Iss. 1, Art. 3
+<!-- source: https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3 | converted from HTML -->
 
-[[rabern-properties-magic-squares-of-squares-2003]]
-Source: https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3/ (landing page captured; full PDF at https://scholar.rose-hulman.edu/cgi/viewcontent.cgi?article=1299&context=rhumj returned 403 to the download tool).
+"Properties of Magic Squares of Squares" by Landon W. Rabern -->
 
-**Status: abstract + bibliographic page captured; full text NOT on disk (403).** The mathematics is, however, fully recovered independently: Morgenstern's `morgenstern-properties-3x3-square-of-squares-2007` ("3x3 Magic Square of Squares Properties", July 2015) was explicitly written to re-derive *all* of Rabern's properties from elementary AP theory (it opens by saying exactly that), and that source is on disk. So the claims below are known from the abstract plus the Morgenstern re-derivation, and are recorded as the established (asserted/proved) content.
+Skip to main content
 
-## What it establishes (from the abstract; congruences re-derived in morgenstern-2007)
+[image: Rose-Hulman Undergraduate Mathematics Journal] [1][image: Rose-Hulman Institute of Technology] [2]
 
-Assuming a 3×3 MSS of distinct squares exists, using **unique factorization in two finite extensions of Z** (Gaussian integers `Z[i]` and `Z[√2]`):
-- **Theorem 1.1:** all nine entries are **odd**.
-- **Theorem 1.2:** every prime divisor of the central parameter `e` is `p ≡ 1 (mod 4)` (Gaussian-integer proof: no `p≡3 mod 4` divides `e`).
-- **Theorem 1.3/1.5:** primes in certain classes (e.g. `p ≡ 3 or 5 mod 8`) dividing non-center or corner entries impose strong divisibility forcing the prime across multiple entries; some classes are excluded outright.
-- **Theorem 1.4:** no prime `p ≡ 5 (mod 8)` divides a **middle-side** entry (proof via `Z[√2]`).
+- [Home][3]
+- [About][4]
+- [FAQ][5]
+- [My Account][6]
 
-These are exactly the congruences the run already holds as `primitive-mss-entry-congruences` (proved in `morgenstern-properties-3x3-square-of-squares-2007`), so nothing new is added beyond a second, independent algebraic-number-theory route to the same conclusions.
+-
+-
 
-## Implications for this run
-- Independent confirmation (different proof technique) that the entry-level sieve `primitive-mss-entry-congruences` is correct in the near-miss range: any MSS that fails "all odd / all `1 mod 3` / no `3 mod 8` factor / no `5 mod 8` on middle side / centre `1 mod 4`-only" is impossible. The witness grids must (and do) satisfy these, so they are safe as lemmas, not refuted by near-misses.
-- The method (UFD in `Z[i]`, `Z[√2]`) is the same ring-theoretic tool the run's `gaussian-integer-factorisations` approach uses — corroborating that line.
-- **What could not be obtained:** the full text. The exact statement of the "force across multiple entries" theorems and any result not covered by Morgenstern's elementary re-derivation are not locally verifiable.
+[Home][3] > [RHUMJ][1] > [Vol. 4 (2003)][7] > [Iss. 1][8]
 
-```claim
-id: rabern-entry-prime-restrictions
-statement: Assuming a 3×3 MSS of distinct squares exists, all entries are odd; the only primes dividing the central parameter e are p≡1 mod 4; no p≡5 mod 8 divides a middle-side entry; and primes in further classes (3 or 5 mod 8) dividing non-center or corner entries force divisibility across multiple entries or are excluded. Proven via unique factorization in Z[i] and Z[√2].
-hypotheses: a 3×3 MSS of distinct squares exists (proving necessary conditions conditionally)
-holds-here: yes, as necessary conditions; they match the primitive-mss-entry-congruences the run already holds by elementary AP theory
-status: asserted (full text not on disk; congruences independently re-derived in morgenstern-2007 which is on disk)
-bearing: independent algebraic-number-theory confirmation of the entry sieve; corroborates the Gaussian-integer approach
-anchor: research/sources/rabern-properties-magic-squares-of-squares-2003.full.md
-```
+# [Properties of Magic Squares of Squares][9]
+
+## Authors
+
+- ******[Landon W. Rabern, Washington University][10] [Follow][11]
+
+## Abstract
+
+A problem due to Martin Labar is to find a 3x3 magic square with 9 distinct perfect square entries or prove that such a magic square cannot exist. In this paper, I assume that such a magic square exists and show that the entries must have certain properties. This is accomplished using unique factorization in two different finite extensions of Z. One property that is proven
+
+## Author Bio
+
+I am currently a senior at Washington University. I did this work on magic squares while I was studying abroad in The Netherlands. It was just for fun and not part of any sponsored program. I plan to enter a Ph.D. program in Mathematics upon graduation and I would like to concentrate on Number Theory.
+
+## Faculty Sponsor
+
+N. Mohan Kumar
+
+## Recommended Citation
+
+Rabern, Landon W. (2003) "Properties of Magic Squares of Squares," *Rose-Hulman Undergraduate Mathematics Journal*: Vol. 4: Iss. 1, Article 3.
+Available at: https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3
+
+**[Download][9]
+
+DOWNLOADS
+
+Since January 15, 2017
+
+[12]
+
+## Share
+
+COinS
+
+- [Journal Home][1]
+- [Editorial Board][13]
+- [Submission Guidelines and Policies][14]
+- [Sponsor Guidelines][15]
+- [Final Manuscript Preparation Guidelines][16]
+
+- [Submit a Paper][17]
+- [Receive Email Notices or RSS][18]
+
+## Search
+
+[Advanced Search][19]
+
+**[Elsevier - Digital Commons][20]
+
+[Home][3] | [About][4] | [FAQ][5] | [My Account][21] | [Accessibility Statement][22]
+
+[Privacy][23] [Copyright][24]
+
+
+## Links
+
+[1]: https://scholar.rose-hulman.edu/rhumj
+[2]: https://www.rose-hulman.edu/
+[3]: https://scholar.rose-hulman.edu
+[4]: https://scholar.rose-hulman.edu/about.html
+[5]: https://scholar.rose-hulman.edu/faq.html
+[6]: https://scholar.rose-hulman.edu/cgi/myaccount.cgi?context=
+[7]: https://scholar.rose-hulman.edu/rhumj/vol4
+[8]: https://scholar.rose-hulman.edu/rhumj/vol4/iss1
+[9]: https://scholar.rose-hulman.edu/cgi/viewcontent.cgi?article=1299&amp;context=rhumj
+[10]: https://scholar.rose-hulman.edu/do/search/?q=%28author%3A%22Landon%20W.%20Rabern%22%20AND%20-bp_author_id%3A%5B%2A%20TO%20%2A%5D%29%20OR%20bp_author_id%3A%28%22ab4669c9-2939-45ab-9c2a-f43a9bfb8681%22%29&start=0&context=4752797
+[11]: https://network.bepress.com/api/follow/subscribe?user=NzU5NmRkODEwN2I3OWEzMw%3D%3D&amp;institution=MjRhMTUzODRiN2VkODY4Ng%3D%3D&amp;format=html
+[12]: https://plu.mx/plum/a/?repo_url=https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3
+[13]: https://scholar.rose-hulman.edu/rhumj/editorialboard.html
+[14]: https://scholar.rose-hulman.edu/rhumj/policies.html
+[15]: https://scholar.rose-hulman.edu/rhumj/sponsor_guidelines.html
+[16]: https://scholar.rose-hulman.edu/rhumj/styleguide.html
+[17]: https://scholar.rose-hulman.edu/cgi/submit.cgi?context=rhumj
+[18]: https://scholar.rose-hulman.edu/rhumj/announcements.html
+[19]: https://scholar.rose-hulman.edu/do/search/advanced/?fq=virtual_ancestor_link:%22https://scholar.rose-hulman.edu/rhumj%22
+[20]: https://www.elsevier.com/solutions/digital-commons
+[21]: /cgi/myaccount.cgi?context=
+[22]: https://scholar.rose-hulman.edu/accessibility.html
+[23]: https://www.elsevier.com/legal/privacy-policy
+[24]: https://www.elsevier.com/legal/elsevier-website-terms-and-conditions
