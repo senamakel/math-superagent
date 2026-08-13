@@ -259,3 +259,76 @@ Evidence class: sourced (de Weger full text read; secondary credit lines in MRST
   genus 3 yet still a double cover of an elliptic curve; so for the small pairs the
   effective computation is via elliptic/Baker methods, and the genus threshold where
   Faltings "takes over" is not by itself a uniform bound.
+
+```claim
+id: singmaster-bounds-history
+statement: Best known bounds on N(a), the number of (n,k), 1<=k<=n-1, with C(n,k)=a
+  counting both mirrors and the trivial pair: Singmaster 1971 N(a)=O(log a);
+  Abbott-Erdos-Hanson 1974 N(a)=O(log a/log log a); Kane 2004
+  O((log a)(log log log a)/(log log a)^2); Kane 2007 O((log a)(log log log a)/(log log a)^3),
+  which remains the unconditional record. Conditional on Cramer's
+  conjecture N(a)=O_eps((log a)^{2/3+eps}).
+hypotheses: a>1; both-mirrors-and-trivial-pair convention.
+holds-here: true
+status: sourced
+bearing: establishes the current record and the convention-sensitive constant history
+anchor: research/summaries/singmaster-literature-exact.md
+```
+
+```claim
+id: mrstt-interior-theorem
+statement: (Theorem 1.3, MRSTT 2021) Let 0<eps<1, t sufficiently large depending on eps.
+  At most two solutions (n,m) to C(n,m)=t in exp((log n)^{2/3+eps}) <= m <= n/2;
+  hence at most four in exp((log n)^{2/3+eps}) <= m <= n - exp((log n)^{2/3+eps}).
+  At most one solution in exp((log n)^{2/3+eps}) <= m <= n/exp((log n)^{1-eps'})
+  for 0<eps'<eps/(2/3+eps). The threshold is effective but not optimized.
+hypotheses: 0<eps<1; t sufficiently large depending on eps (and eps' for the 1-solution part).
+holds-here: true
+status: sourced
+bearing: reduces Singmaster to the boundary region 2<=m<=exp((log n)^{2/3+eps})
+  (equivalently 2<=m<=(log t)/(log_2 t)^{3/2-eps}); that boundary is the whole open obstruction.
+anchor: research/summaries/singmaster-literature-exact.md
+```
+
+```claim
+id: fibonacci-n6-family
+statement: For each j>=1, n=F_{2j+2}F_{2j+3}-1, m=F_{2j}F_{2j+3}-1 give
+  C(n+1,m+1)=C(n,m+2); the common value occurs at least 6 times (2 interior + 2 mirrors
+  + trivial pair). j=1 gives C(15,5)=C(14,6)=3003, N(3003)=8.
+hypotheses: j>=1; F_0=0,F_1=1 Fibonacci.
+holds-here: true
+status: sourced (values cross-checked against witnesses.json: 3003 and the seven
+  N>=6 witnesses 120,210,1540,7140,11628,24310,3003 reproduced)
+bearing: forces N>=6 infinitely often; constrains any bound; NOT a counterexample to
+  any B>=6.
+anchor: research/summaries/singmaster-literature-exact.md
+```
+
+```claim
+id: deweger-smallk-effective
+statement: For fixed (k,l), C(n,k)=C(m,l) is solved effectively (explicit constants)
+  only in specific cases: (2,3) Avanesov; (2,4) de Weger/Pinter via Gelfond-Baker;
+  (3,4) de Weger via Mordell (C(n,3)=C(m,4) is genus 3 double-cover of Y^2+Y=X^3-X,
+  only trivial integral solutions); (2,5) Bugeaud-Mignotte-Siksek-Stoll-Tengely;
+  (2,6),(2,8),(3,6),(4,6),(4,8) Stroeker-de Weger (elliptic, Baker-type). For general
+  fixed (m,m') finiteness holds (Beukers-Shorey-Tijdeman via Siegel) but is INEFFECTIVE
+  in the pair, so cannot give a k-uniform bound.
+hypotheses: fixed k<l; each case is a distinct solved curve.
+holds-here: true
+status: sourced
+bearing: the effective tools cover only isolated small pairs; no uniform-in-k effective
+  bound comes from curve methods; de Weger's Conjecture A (all-nontrivial-collisions-
+  known) would imply N(a)<=8 and N(a)<=6 for all a except 3003.
+anchor: research/summaries/singmaster-literature-exact.md
+```
+
+```claim
+id: convention-n3003-eight
+statement: Under the both-mirrors-including-trivial-pair convention, N(3003)=8 via
+  (3003,1),(78,2),(15,5),(14,6) and their four mirrors. MRSTT (1.2) lists all eight.
+hypotheses: convention as stated.
+holds-here: true
+status: checked (witnesses.json reproduces 3003 with N=8 and nontrivial (14,6),(15,5),(78,2))
+bearing: the falsification witness: any claimed bound B<8 is false (3003 refutes it).
+anchor: research/summaries/singmaster-literature-exact.md
+```

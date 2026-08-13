@@ -1,0 +1,19 @@
+LIB "sing.lib";
+ring r=0,(x,y),dp;
+// smooth plane cubic x^3+y^3-1: genus should be 1
+poly f1 = x^3 + y^3 - 1;
+"genus cubic:", genus(f1);
+// smooth plane quartic x^4+y^4-1: genus should be (4-1)(4-2)/2 = 3
+poly f4 = x^4 + y^4 - 1;
+"genus quartic:", genus(f4);
+// k2=2 case: C(y,2)=C(x,k1) => y(y-1)=2*C(x,k1).  test k1=3,4,5
+// expected floor((k1-1)/2): k1=3->1, k1=4->1, k1=5->2
+poly C3 = x*(x-1)*(x-2)/6;   // C(x,3)
+poly f23 = y*(y-1) - 2*C3;
+"genus k1=3,k2=2:", genus(f23);
+poly C4 = x*(x-1)*(x-2)*(x-3)/24;
+poly f24 = y*(y-1) - 2*C4;
+"genus k1=4,k2=2:", genus(f24);
+poly C5 = x*(x-1)*(x-2)*(x-3)*(x-4)/120;
+poly f25 = y*(y-1) - 2*C5;
+"genus k1=5,k2=2:", genus(f25);

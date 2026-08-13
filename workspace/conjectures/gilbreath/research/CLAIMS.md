@@ -6,11 +6,21 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `block-profile-equals-a000232-minus-1` | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of terms before the first term > 2 in the (k)-th difference, minus 1). | yes | catalogued | `research/ROOT.md` |
 | `gilbreath-reduces-to-second-in-02` | The shape (odd, even, even, ...) is preserved by the absolute-difference operator on the prime rows, and A_k(0)=1 for all k>=1 iff A_k(1) in {0,2} for all k>=1. Hence Gilbreath's conjecture is equivalent to "the second… | yes | proved | `research/notes/reduction.md` |
+| `odlyzko-block-lemma-asserted` | A {0,2} block of length n at the start of a row protects approximately n/2 subsequent rows' first entries, which then all begin with 1; the block degrades at ~the rate it shortens. | **unchecked** | asserted | `research/ROOT.md` |
 | `second-entry-4-kills` | If A_k(1) = 4 (or any even value >= 4) for some k>=1, then A_{k+1}(0) = \|1 - A_k(1)\| >= 3 and Gilbreath's conjecture fails at that row. | yes | proved | `research/notes/reduction.md` |
 
 ## Contradictions
 
 Resolve these before building on either side.
 
+- `block-profile-equals-a000232-minus-1` (research/ROOT.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `gilbreath-reduces-to-second-in-02` (research/notes/reduction.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-asserted` (research/ROOT.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+
+## Taken from a catalogue
+
+These are lookups, not derivations. A catalogue is good evidence that a result is right and no evidence at all about why, so one of these may confirm a final answer and may never be the reason for it. Reproduce the terms with a program that does not read the catalogue, then say so; until then, report the result as looked up.
+
+- `block-profile-equals-a000232-minus-1` (research/ROOT.md) — read from a catalogue; no derivation here reproduces it

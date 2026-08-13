@@ -7,8 +7,13 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `best-unconditional-bound` | Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical: Singmaster O(log a); Abbott-Erdos-Hanson O(log a/log_2 a); Kane 2004 O(log t log_3 t/log_2^2 t).… | yes | asserted | `research/notes/established-review.md` |
+| `convention-n3003-eight` | Under the both-mirrors-including-trivial-pair convention, N(3003)=8 via (3003,1),(78,2),(15,5),(14,6) and their four mirrors. MRSTT (1.2) lists all eight. | yes | checked | `research/summaries/singmaster-literature-exact.md` |
+| `deweger-smallk-effective` | For fixed (k,l), C(n,k)=C(m,l) is solved effectively (explicit constants) only in specific cases: (2,3) Avanesov; (2,4) de Weger/Pinter via Gelfond-Baker; (3,4) de Weger via Mordell (C(n,3)=C(m,4) is genus 3… | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
+| `fibonacci-n6-family` | For each j>=1, n=F_{2j+2}F_{2j+3}-1, m=F_{2j}F_{2j+3}-1 give C(n+1,m+1)=C(n,m+2); the common value occurs at least 6 times (2 interior + 2 mirrors + trivial pair). j=1 gives C(15,5)=C(14,6)=3003, N(3003)=8. | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
 | `infinite-family-6` | The equation C(n+1,k+1)=C(n,k+2) has infinitely many solutions given by n=F_{2i+2}F_{2i+3}-1, k=F_{2i}F_{2i+3}-1 (i=1,2,...), producing infinitely many a with N(a)>=6 (both-halves convention). First members: 3003 (i=1)… | yes | checked | `research/notes/established-review.md` |
 | `mrstt-interior-boundary` | MRSTT (QJM 73 (2022) 1137-1177, arXiv:2106.03335) prove at most 2 solutions to C(n,m)=t in the left-half interior exp(log^{2/3+eps} n)<=m<=n/2 (at most 4 in the full interior exp(log^{2/3+eps} n)<=m<=n-exp(log^{2/3+eps}… | yes | asserted | `research/notes/established-review.md` |
+| `mrstt-interior-theorem` | (Theorem 1.3, MRSTT 2021) Let 0<eps<1, t sufficiently large depending on eps. At most two solutions (n,m) to C(n,m)=t in exp((log n)^{2/3+eps}) <= m <= n/2; hence at most four in exp((log n)^{2/3+eps}) <= m <= n -… | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
+| `singmaster-bounds-history` | Best known bounds on N(a), the number of (n,k), 1<=k<=n-1, with C(n,k)=a counting both mirrors and the trivial pair: Singmaster 1971 N(a)=O(log a); Abbott-Erdos-Hanson 1974 N(a)=O(log a/log log a); Kane 2004 O((log… | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
 | `witness-3003` | 3003 appears 8 times in Pascal's triangle under the convention that counts both (n,k) and (n,n-k) and includes the trivial pair C(a,1)=C(a,a-1). Explicitly 3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6) with four mirrors.… | yes | checked | `research/notes/established-review.md` |
 
 ## Load-bearing but unverified
@@ -16,7 +21,11 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `best-unconditional-bound` (research/notes/established-review.md) — asserted by the source, not proved there and not checked here
+- `deweger-smallk-effective` (research/summaries/singmaster-literature-exact.md) — asserted by the source, not proved there and not checked here
+- `fibonacci-n6-family` (research/summaries/singmaster-literature-exact.md) — asserted by the source, not proved there and not checked here
 - `mrstt-interior-boundary` (research/notes/established-review.md) — asserted by the source, not proved there and not checked here
+- `mrstt-interior-theorem` (research/summaries/singmaster-literature-exact.md) — asserted by the source, not proved there and not checked here
+- `singmaster-bounds-history` (research/summaries/singmaster-literature-exact.md) — asserted by the source, not proved there and not checked here
 
 ## Blocks that could not be read
 

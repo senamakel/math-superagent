@@ -16,13 +16,14 @@ Convention note: `N(a)` counts all `(n,k)` with `0<=k<=n`, `C(n,k)=a` (both `k` 
 
 ## Known bounds (all grow with `a`; none uniform)
 
-- Singmaster 1971: `N(a) = O(log a)`.
-- Abbott–Erdős–Hanson 1974: `N(a) = O(log a / log log a)` (AEH also: average and normal order of N is 2; number of `a<=x` with N(a)>=3 is `O(x^{1/2})`).
+- Singmaster 1971: `N(a) = O(log a)` — PRIMARY SOURCE held (AMM 78 (1971) 385–386, via Fermat's Library facsimile; the argument: if `a <= C(2b,b)` then either `i<b` or `j<b`, so `N(a)<=2b<=2+2 log2 a`).
+- Abbott–Erdős–Hanson 1974: `N(a) = O(log a / log log a)` — PRIMARY SOURCE held (renyi.hu/~p_erdos/1974-23.pdf, AMM 81 (1974) 256–261). Theorem 1: average AND normal order of N(t) is 2, and the number of t<=x with N(t)>2 is O(x^{1/2}). Theorem 2: N(t) < 2w(t) log t/(log t - w(t) log log t) where w(t)=#distinct prime factors, for w(t)<log t/log log t. Theorem 3: N(t)=O(log t/log log t) via Ingham's prime-gap theorem (a=5/8). Cramér-conditional: N(t)=O_eps((log t)^{2/3+eps}). Also: N(t)=6 for the six t<=2^48 = 120,210,1540,7140,11628,24310; only t<=2^48 with N(t)>=8 is 3003 (N=8). Theorem 4: G(t)=O((log t)^{1/2}) for products of consecutive integers.
 - Kane 2004: `O(log t log log log t / (log log t)^2)`.
 - Kane 2007 (best unconditional): `N(t) = O( (log t)(log log log t) / (log log t)^3 )`.
 - Conditional on Cramér's conjecture (AEH): `N(t) = O_eps((log t)^{2/3+eps})`.
-- Sourced: Wikipedia "Known bound" section; MRSTT introduction; Jenkins introduction quotes Kane's best bound identically.
+- Sourced: PRIMARY AEH 1974 full text; PRIMARy Singmaster 1971; Wikipedia "Known bound"; MRSTT intro; Jenkins intro.
 - **These all grow with `a`. The conjecture asserts constancy — reproducing one is not a result.**
+
 
 ## MRSTT (2021/2022): Singmaster's conjecture in the interior
 
