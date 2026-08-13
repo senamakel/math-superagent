@@ -6,6 +6,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `agama-trace-restatement` | (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent to: every leading entry A_k(0) > 0 and the partial sums of the leading entries… | yes | asserted | `research/notes/library-state.md` |
 | `anti-gilbreath-construction` | (Eppstein 2011) For any unbounded monotone f(n) ≥ 2, however slowly growing, there is a sequence X whose n-th gap is ≤ f(n) but whose triangle's right edge switches between 1 and other values infinitely often. | yes | asserted | `research/notes/library-state.md` |
 | `block-profile-equals-a000232-minus-1` | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of terms before the first term > 2 in the (k)-th difference, minus 1). | yes | catalogued | `research/ROOT.md` |
 | `candidate-regeneration-iff-refuted` | A candidate iff characterising block-length regeneration (q_in{0,2} ⇔ rhs, where rhs involves the intruder c, block length b, and second entry e) was tested against the actual prime Gilbreath rows to depth 1000 and… | no | asserted | `code/out/check_regenerate_lemma.notes.md` |
@@ -15,6 +16,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `cht-random-analogue` | (Theorem 1.3) If a_1,a_2,... are independent non-negative integer random variables with (i) a_n ≤ δn eventually (a.s.) and (ii) P(a_n∈A) ≤ 1−ε for every 2-separated set A eventually, then a.s. the left diagonal is… | **unchecked** | asserted | `research/notes/library-state.md` |
 | `closure-0d-double-edge` | {0,d} is closed under absolute differencing for every d ≥ 2 (\|0−d\|=d, \|d−d\|=0, \|0−0\|=0), so a leading 1 against {0,2} stays 1 — but the same closure preserves a large disturbance against {0,d} for d ≥ 4. | yes | proved | `research/notes/library-state.md` |
 | `gc-block-lemma-odlyzko` | If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for all K ≤ k ≤ N+K−1. So a leading {0,2} block of length N protects N subsequent rows, not n/2. | yes | asserted | `research/notes/library-state.md` |
+| `gilbreath-2011-expository` | Gilbreath's only substantive journal paper "Processing process: the Gilbreath conjecture" (J. Number Theory 131 (2011) 2436–2441) is autobiographical and expository, not a proof attempt. Its introduction (quoted… | yes | asserted | `research/notes/library-state.md` |
 | `gilbreath-polynomials-imply-gc` | (Riccardo Gatti, Mathematics 2023, 11(18), 4006, doi 10.3390/math11184006 — author CONFIRMED this cycle; the earlier "Alkan et al.?" note is wrong) In the "Gilbreath equation / Gilbreath polynomials" framework, GC is… | **unchecked** | asserted | `research/notes/library-state.md` |
 | `gilbreath-reduces-to-second-in-02` | The shape (odd, even, even, ...) is preserved by the absolute-difference operator on the prime rows, and A_k(0)=1 for all k>=1 iff A_k(1) in {0,2} for all k>=1. Hence Gilbreath's conjecture is equivalent to "the second… | yes | proved | `research/notes/reduction.md` |
 | `killgrove-ralston-block-protection` | If row i starts 1 and has M entries after the leading 1 (their "0 ≤ j ≤ M" includes P_{i,0}) all 0 or 2, then the next M−1 rows start with 1 (their span P_{i,0}..P_{i+M−1,0}); protection is one row per {0,2} entry,… | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
@@ -71,10 +73,12 @@ Resolve these before building on either side.
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `agama-trace-restatement` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `anti-gilbreath-construction` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `chase-2024-arxiv-id` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `cht-decay-lower-bound-logn` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `gc-block-lemma-odlyzko` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `gilbreath-2011-expository` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-block-protection` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here

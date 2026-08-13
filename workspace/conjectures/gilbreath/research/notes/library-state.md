@@ -186,6 +186,28 @@ bearing: a genuinely different-looking handle on the {0,2} regime (size bound on
 anchor: research/summaries/gatti-2023-gilbreath-polynomials-mdpi.md (recorded from two independent exa_search digests of https://www.mdpi.com/2227-7390/11/18/4006; full text unobtainable this cycle)
 ```
 
+## New holdings this cycle (librarian, this build)
+
+```claim
+id: gilbreath-2011-expository
+statement: Gilbreath's only substantive journal paper "Processing process: the Gilbreath conjecture" (J. Number Theory 131 (2011) 2436–2441) is autobiographical and expository, not a proof attempt. Its introduction (quoted verbatim in Houston 2012) records that Gilbreath developed the conjecture ~1958, and that "the great number theorist Erdős believed it was true, he also believed it would take about 200 years to prove".
+hypotheses: the quotation in Kevin Houston's blog post (written after emailing Gilbreath, from an author offprint).
+holds-here: yes — settles that no theorem about the {0,2} regime is to be found in the eponym's own paper.
+status: sourced (Houston 2012 blog, full text on disk; original paywalled at ScienceDirect, PII S0022314X11001740)
+bearing: history/context only; Erdős's "200 years" is now quotable from a held source. Not load-bearing for the mathematics.
+anchor: research/sources/houston-2012-gilbreath-conjecture-blog.full.md
+```
+
+```claim
+id: agama-trace-restatement
+statement: (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent to: every leading entry A_k(0) > 0 and the partial sums of the leading entries satisfy Σ_{k≤m} A_k(0) = m for every m. Since each leading entry is a positive integer, "all A_k(0) = 1" ⟺ "partial sums = index".
+hypotheses: primes as originator; parity gives each leading entry odd, hence ≥ 1.
+holds-here: yes — exact restatement of GC, not a new theorem.
+status: sourced (Agama 2021, arXiv:2104.05258, Prop 5.1–5.2; the paper proves no new theorem about the primes — the trace condition is the conjecture itself)
+bearing: converts GC into a statement about an increasing quantity (partial sums) with slope 1, which is the shape an invariant argument could target; also a caution that "trace/reduction" frameworks can be pure restatement.
+anchor: research/sources/agama-2021-gap-sequence-gilbreath.full.md
+```
+
 ## Angled coverage summary
 
 - Statement/names/history: Odlyzko 1993, Killgrove–Ralston 1959, Encyc. of Math, MathWorld, Caldwell glossary, Arias de Reyna 2020, Chase 2024 §7, Wikipedia (retrieved this run).
