@@ -128,6 +128,21 @@ notes; agents should not rebuild them from disk.
   Cramér, `O_ε((log a)^{2/3+ε})`. None uniform ⇒ none touches the
   conjecture (`research/notes/established-review.md`).
 
+- **The k=2 column is effectively finite per prime — Kiss 1988. `sourced`**
+  (FQ 26(2) 127–130, full text held, claim `kiss-1988-cx2-cyp-effective-finiteness`).
+  For each fixed odd prime p≥3, `C(y,p)=C(x,2)` has finitely many positive
+  integer solutions, **effectively** via Baker 1969 on `z²=(8/p!)·(x)_p+1`
+  (degree-p, all roots simple by an Eisenstein argument; note the curve has
+  genus (p−1)/2, matching this run's proved closed form g(2,p)=(p−1)/2).
+  Constant is effective but **unevaluated and p-dependent** — per-p, NOT
+  uniform in k; `effective-methods-wall` again, now with a 1988 primary.
+  Same page records Avanesov's complete (2,3) list: `C(x,3)=C(y,2)` has
+  exactly (x,y)=(3,2),(5,5),(10,16),(22,56),(36,120), i.e. witness values
+  120,1540,7140 — the check oracle for any (2,3)-specific computation.
+  Bearing: every known witness sits in k=2/3, so the k=2 column is exactly
+  what `G-boundary-uniform-count` must control; Kiss gives it per-prime
+  effective, never uniform.
+
 - **BST 1999 primary held — the fixed-pair ineffectivity anchor. `sourced`.**
   Beukers–Shorey–Tijdeman, Number Theory in Progress Vol. 1 (de Gruyter
   1999) 11–26, readable full text

@@ -433,25 +433,7 @@ recalled claim is relied on whose hypotheses fail here.
 
 ## Gaps
 
-- **The live question: what makes the giant jumps recur?**
-  The step law and recharge identity reduce the conjecture to:
-  `Σ_{i<k} (j_i + 1) ≥ k − 1 − b_1` for all k. At depth 1000 this holds with
-  enormous slack (b_1000 = 1.27M ≫ 1) — the surplus is carried by a handful
-  of giant jumps, not by an average rate. The conjecture is tight only if the
-  big jumps stop.
-  **Directive 23 — characterisation DONE, bound still open.** λ̂ = 0.585 is a
-  MEAN, and a mean is the wrong summary for a heavy-tailed jump distribution
-  (dominated by the tail). A lower bound on the mean rate controls the wrong
-  quantity. The object to bound is the GAP between consecutive large jumps;
-  the fork "genuine dynamics vs width artifact" is decided — 12/13 giants
-  are genuine, i=161 is capped (j ≥ 176,181), so the gap-between-large-jumps
-  object is real (`bigjump-cap-characterization-1000`, Established). The
-  giants are not erosion-recovery events (they arrive 1–13 rows after the
-  previous event: "energy stored during erosion" is dead) and do not sit on
-  Rule-90/power-of-2 structure (rule90 form B2: no separation). What is open:
-  a lower bound on the gap between successive large jumps — showing a jump
-  exceeding threshold J arrives at least once every T(J) rows — and whether
-  the tail persists at larger widths (later giants beyond the i=161 cap).
+- **The live question: make the geometric growth of the giants reproducible.** Step law + recharge reduce the conjecture to `Σ_{i<k}(j_i+1) ≥ k−1−b_1` for all k — at depth 1000 holds with slack (b_1000=1.27M ≫ 1), carried by a handful of giants. Directive 24: post-jump b grows ×1.68/event (R²=0.94 geom vs 0.78 lin, genuine 12); **if that holds, the conjecture reduces to "giants arrive infinitely often" — a finite upper bound on the inter-giant gap (showing a jump > J arrives at least once every T(J) rows), with no rate lower bound needed.** The giants are not erosion-recovery (arrive 1–13 rows after previous event; "energy stored during erosion" is dead) and not on Rule-90/power-of-2 structure (rule90 form B2: no separation). What is open: a lower bound on the inter-giant gap, and whether the tail persists past the i=161 cap (needs width, currently capped). This decides the mean-rate route (λ̂=0.585 measured, superseded as target).
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.
