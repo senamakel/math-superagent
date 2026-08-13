@@ -1,0 +1,6 @@
+p=2: 2:|R|=1(triv) | 4:|R|=1(triv) | 8:|R|=1(triv) | 16:2closed | 32:4closed
+p=3: 3:|R|=1(triv) | 9:3closed | 27:9closed | 81:27closed | 243:81closed
+p=5: 5:|R|=1(triv) | 25:5closed | 125:25closed | 625:125closed
+p=7: 7:3closed | 49:9closed | 343:57closed
+p=11: 11:3closed | 121:33closed | 1331:363closed
+p=13: 13:3closed | 169:39closed
