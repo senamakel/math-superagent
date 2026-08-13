@@ -353,7 +353,8 @@ Each carries the obstruction that closed it; do not re-propose.
   but per-a boundedness does not need it).
 - **Directive 25 — Fibonacci family boundary proof and per-a count.**
   `fibonacci-family-is-boundary` filed as proved (structural, k/n→1/φ²,
-  (log n)^{1/6} divergence for ε=1/2; verified j=1..12). **Next:**
+  log-ratio `log(cut)/log(k)` ∼ (log n)^{1/6} → ∞ at ε=1/2; verified
+  j=1..12). **Next:**
   count ALL nontrivial boundary reps per Fibonacci a_j for j=1..12.
   If always 2, C≥3 stands; if the count grows, G-boundary-uniform-count
   is FALSE — a genuine result either way.
