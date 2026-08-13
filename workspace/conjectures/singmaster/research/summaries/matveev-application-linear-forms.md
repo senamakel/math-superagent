@@ -1,79 +1,72 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/matveev-application-linear-forms.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Matveev-application template — L_n + L_m = 3^a (Tiebekabe–Diouf 2021)
 
-<!-- source: https://hal.science/hal-03243010/document | converted from PDF -->
+Source: P. Tiebekabe, I. Diouf, "On solutions of the Diophantine equation
+L_n + L_m = 3^a", Malaya J. Mat. 9(02) (2021) 1–11, doi:10.26637/mjm902/001.
+HAL preprint https://hal.science/hal-03243010 (downloaded as
+`research/sources/matveev-application-linear-forms.full.md`).
 
-## What it claims
+## What this source is (and what it is not)
 
-HAL is a multi-disciplinary open access archive
-for the deposit and dissemination of scientific re-
-search documents, whether they are published or not.
-The documents may come from teaching and research
-institutions in France or abroad, or from public or pri-
-vate research centers.
- L’archive ouverte pluridisciplinaire HAL, est des-
-tinée au dépôt et à la diffusion de documents scien-
-tifiques de niveau recherche, publiés ou non, émanant
-des établissements d’enseignement et de recherche
-français ou étrangers, des laboratoires publics ou
-privés.
+This is a **worked template for applying Matveev's explicit lower bound for
+linear forms in logarithms** to an exponential Diophantine equation — not a
+binomial-coefficient paper. Its value for this run is methodological: it shows
+the exact pipeline (translate equation to a linear form in logarithms → apply
+Matveev's theorem with its explicit constants → reduce with continued
+fractions via Dujella–Pethő) that GOAL.md's "effective height bound with a
+computed constant for a specific (k1,k2) family (Baker / linear forms in
+logarithms)" partial-result option would follow. It is a secondary reference
+for the Matveev theorem statement.
 
-HAL Authorization
+## Statements it uses (converted from its §2)
 
-On solutions of the Diophantine equation L n + L m = 3 a
+- **Theorem 2.9 (Matveev [8])**: Let n ≥ 1, L a number field of degree D,
+  η1,…,ηl nonzero in L, b1,…,bl integers with B = max|bi|. If
+  Λ = η1^b1 ··· ηl^bl ≠ 1, then the explicit lower bound
+  `ln|Λ| > − C(l,D) · (log B + ...)` holds with the standard Matveev-type
+  constants (the digest shows the theorem in the paper's own notation; the
+  concrete inequality is at the paper's Theorem 2.9).
+- **Lemma 2.10 (Dujella–Pethő)**: continued-fraction reduction: if p/q is a
+  convergent of κ with q > 6M and ε := ‖μq‖ − M‖κq‖ > 0, then an explicit
+  inequality has no solution — the computational reduction step that turns a
+  Matveev bound into a finite check.
+- **Lemma 2.11 (Legendre)**: rational approximation criterion.
+- **Theorem 3.1**: the only solutions of L_n + L_m = 3^a in nonnegative
+  integers n ≥ m, a are (1,0,1) and (4,0,2). Lemma 3.2 bounds a ≤ n+2 <
+  1.2×10^20 for n > 200 — this is the "explicit computed constant" that
+  Matveev's bound produces before the continued-fraction reduction to
+  n ≤ 200.
 
-Pagdame Tiebekabe, Ismaïla Diouf
+## Bearing for the run
 
-To cite this version:
+- Confirms the **exact tool chain** for an effective-Baker bound on a specific
+  curve family: Matveev (2000) explicit bound + Dujella–Pethő continued
+  fraction reduction. For the run's small-`k` curves (e.g. C(x,2)=C(y,k)
+  hyperelliptic family) the same chain is what a computed constant would look
+  like, and this source shows the constants are concrete numbers.
+- The Matveev theorem statement here (Theorem 2.9) is quoted but not itself
+  the original primary (Matveev 2000, Izv. Math. 64); for the library to
+  cite the constants authoritatively it should hold Matveev's paper or a
+  standard transcription (e.g. Bugeaud's book). That remains a gap for the
+  effective-bound thread — record in REQUESTS.md.
+- Also cites Laurent–Mignotte–Nesterenko two-log bound and Bugeaud–Mignotte–
+  Siksek modified Matveev, both standard alternatives.
 
-Pagdame Tiebekabe, Ismaïla Diouf. On solutions of the Diophantine equation L n + L m = 3 a. 2021. ⟨hal-
-03243010⟩
-
-MALAYA JOURNAL OF MATEMATIK
-Malaya J. Mat. 9(02)(2021), 1–11.
-http://doi.org/10.26637/mjm902/001
-
-On solutions of the Diophantine equation Ln + Lm = 3
-a
-
-PAGDAME TIEBEKABE *1,2 AND ISMA¨ILA DIOUF1
-
-1 Cheikh Anta Diop University, Faculty of Science, Department of Mathematics and Computer science,…
-
-## Statements it makes
-
-Proposition 2.7. For n ≥ 2, we have
-
-Theorem 2.8. Let γ1, γ2 be two non-zero algebraic numbers, and let log γ1 and log γ2 be any determination of
-their logarithms. Put D = [Q(γ1, γ2) : Q]/[R(γ1, γ2) : R], and
-
-Theorem 2.9. (Matveev [8])
-Let n ≥ 1 an integer. Let L a ﬁeld of algebraic number of degree D. Let η1, . . . , ηl non-zero elements of L
-and let b1, b2, . . . , bl integers, B := max{|b1|, ..., |bl|},
-
-Lemma 2.10. (Dujella and Peth˝o, [6])
-Let M a positive integer, let p/q the convergent of the continued fraction expansion of κ such that q > 6M
-and let A, B, µ real numbers such that A > 0 and B > 1. Let ε := ∥µq∥ − M ∥κq∥.
-If ε > 0 then there is no solution of the inequality
-
-Lemma 2.11. (Legendre)
-Let τ real number such that x, y are integers such that
-∣
-∣
-∣
-∣τ − x
-y
- ∣
-∣
-∣
-∣ < 1
-2y2 .
-
-Theorem 3.1. The only solutions (n, m, a) of the exponential Diophantine equation
-Ln + Lm = 3
-a in nonnegative integers n ≥ m and a, are : (1, 0, 1) and (4, 0, 2)
-
-Lemma 3.2. If (n, m, a) is a solution in positive integers of (1.1) with conditions n > m and n > 200, then
-inequalities
- a ≤ n + 2 < 1.2 × 1020 hold.
-
-*[digest of a 21411 character source; every section, statement, and proof in full at `research/sources/matveev-application-linear-forms.full.md`]*
+```claim
+id: matveev-application-template
+statement: Tiebekabe-Diouf 2021 solve L_n + L_m = 3^a completely (only
+  (4,0,2) and (1,0,1)) using the standard effective pipeline: reduce to a
+  linear form in two logarithms, apply Matveev's explicit lower bound (their
+  Thm 2.9; constants concrete) to get a <= n+2 < 1.2e20 for n > 200, then
+  Dujella-Petho continued-fraction reduction to finish. This is a working
+  template for an effective Baker-type bound with a computed constant on a
+  specific exponential Diophantine family.
+hypotheses: two-term exponential equation; algebraic numbers of bounded
+  degree/height.
+holds-here: yes as a template — the run's small-k binomial-equality curves
+  reduce to similar exponential/logarithmic forms; the specific L_n+L_m = 3^a
+  equation is NOT the run's equation.
+status: asserted-by-source (full text held)
+bearing: shows the shape of a deliverable "effective bound with computed
+  constant"; Matveev primary itself still missing for authoritative constants.
+anchor: research/summaries/matveev-application-linear-forms.md
+```

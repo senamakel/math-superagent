@@ -1,119 +1,73 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/number-theory-in-progress-vol1-preview.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Number Theory in Progress Vol. 1 (1999) — proceedings volume hosting BST 1999
 
-<!-- source: https://api.pageplace.de/preview/DT0400.9783110285581_A19815788/preview-9783110285581_A19815788.pdf | converted from PDF -->
+Source: *Number Theory in Progress, Vol. 1: Diophantine Problems and
+Polynomials*, Proceedings of the International Conference on Number Theory
+(Zakopane–Kościelisko, Poland, June 30–July 9, 1997), ed. K. Győry,
+H. Iwaniec, J. Urbanowicz, Walter de Gruyter, Berlin/New York, 1999.
+ISBN 3-11-015715-2.
 
-## What it claims
+Downloaded: https://api.pageplace.de/preview/DT0400.9783110285581_A19815788/preview-9783110285581_A19815788.pdf
+(3.4 MB PDF preview, converted to 289 KB Markdown). This preview covers the
+front matter, the full Table of Contents of both volumes, and the first ~100
+pages of Volume 1.
 
-Proceedings of the International Conference
-on Number Theory organized by the
-Stefan Banach International Mathematical Center
-in Honor of the 60th Birthday of Andrzej Schinzel
-Zakopane, Poland, June 30-July 9, 1997
-m
-I» Α Μ
-Volume 1
-Diophantine Problems and Polynomials
+## What is in the downloaded text (usable)
 
-Editors
+- Front matter: editors, preface, list of participants (includes F. Beukers,
+  Y. Bilu, A. Schinzel, R. Tijdeman, M. Waldschmidt, K. Győry, etc.).
+- Full Table of Contents of Volume 1 (pp. xi–xiii) and Volume 2 (pp. xv–xvi).
+- **Beukers–Shorey–Tijdeman, pp. 11–26** — the paper this run needs; read
+  via `research/summaries/beukers-shorey-tijdeman-1999-equal-products.md`.
+- M.J. Bertin, "Quelques nouveaux resultats sur les nombres de Pisot et de
+  Salem", pp. 1–9 (Mahler measure, Pisot/Salem; cites Matveev's result on
+  algebraic numbers of small logarithmic height — confirms the Matveev/height
+  relevance to Baker-type bounds).
+- B. Brindza, Á. Pintér, A.J. van der Poorten, M. Waldschmidt, "On the
+  distribution of solutions of Thue's equation", pp. 35–45 — a Baker-method
+  Théorème: at most `2n²(s+1)+13n` solutions of `|F(x,y)| = m` above an
+  explicit threshold; good example of an *effective bound with a computed
+  constant* (relevant to GOAL's "effective bound with constant computed"
+  partial-result option).
+- D.W. Boyd, "Mahler's measure and special values of L-functions", pp. 27–34.
+- D.F. Coray et al., "Cubic threefolds with six double points", pp. 63–74.
+- P. Débes, "Arithmétique et espaces de modules de revêtements", pp. 75–102
+  (Hurwitz spaces; contains Theorem 4.4: existence of indecomposable h(Y) in
+  Q[Y] with h(Y)−t reducible for infinitely many t ∈ Z, via Siegel-type
+  reasoning on genus-1/genus-2 components — a concrete "finiteness plus
+  explicit component genus" argument the run's curve-family thread can model).
+- A. Dubickas, "On a polynomial with large number of irreducible factors",
+  pp. 103–106 (cyclotomic-factor counts, Lehmer problem-adjacent).
+- References lists for each paper.
 
-Kaiman Györy
-Henryk Iwaniec
-Jerzy Urbanowicz
+## What is NOT in the download
 
-w
-DE
+- The publisher's page preview cuts off around p. 106; papers after that in
+  Vol. 1 (Shorey's "The equation a x^q = b y^q..." p. 473, etc.) are only in
+  the ToC, not the body.
+- Volume 2 is ToC-only.
+- The de Gruyter live page (doi 10.1515/9783110285581.11) is captcha-walled.
 
-Walter de Gruyter · Berlin · New York 1999
+## Bearing for the run
 
-Editors
+- This volume is the **primary bibliographic host** for BST 1999, which is
+  MRSTT's [4] — the fixed-pair ineffectivity source. The run now holds the
+  actual paper text.
+- The Brindza–Pintér–van der Poorten–Waldschmidt theorem is a clean example
+  of a Baker-method effective bound with an explicit constant in the products-
+  of-consecutive-integers area; useful as a model for what "effective with
+  computed constant" means for a subfamily of the run's curves.
 
-Κ. Gyφry
-Institute of  Mathematics
-and Informatics
-Lajos  Kossuth  University
-4010  Debrecen,  Hungary
- H.  Iwaniec
-Department of  Mathematics
-Rutgers  University
-New  Brunswick,  NJ  08903-2101
-USA
- J.  Urbanowicz
-Institute of  Mathematics
-Polish Academy  of  Sciences
-P.O.  Box  137
-00-950  Warszawa
-Poland
-
-1991 Mathematics Subject Classification:
-11-02,  11-06,  llAxx,  HBxx,  llCxx,  llDxx,  llExx,  llFxx,  llGxx,  llHxx,  llJxx,  llKxx,  llLxx,  llMxx,  llNxx,
-llPxx,  llRxx,  llSxx,  llTxx,  llYxx,  14Gxx,  14Hxx,  14Jxx,  20Bxx,  30Dxx,  32Axx,  33Exx,  40Gxx,  52Cxx,  60Cxx
-
-Keywords:
-aie-conjecture,  arithmetic algebraic  geometry, automorphic forms,  Baker's  method, computational number
-theory,…
-
-## Statements it makes
-
-Definition.  On  appelle  f-Salem  un  entier  algebrique  reciproque  ayant  u  conjugues
-exterieur  au  cercle  unite  et  au  moins  un  conjugue  de  module  1.  Nous  dirons  que
-le  i/-Salem  est  totalement reel si  ses  conjugues  exterieurs  au  cercle  unite  sont  tous
-reels.
- On  deduit  alors  directement  du  corollaire  0  le  theoreme  suivant.
-
-Theorem 2.1.  Let  m and  η  be  positive  integers  with  m <  η  and  let  Λ  e C*.  If
-X(X  +  1)  ·  ·  ·  (X  +  m -  1)  -  XY(Y  +  1)  ·  ·  ·  (Υ  +  η  -  1)  is  reducible  in  C[X,  Y]  then
-one  of  the  following  possibilities  holds:
-
-Theorem 2.2.  Consider  the  curve
-
-Proposition  3.2.  Let  the  notation  be  as  above  and  let  τηι,τη^  be  the  weighted
-degrees  of  F,  G  respectively.  Then,
-
-Proposition  3.3.  Let  notations  be  as  above  and  suppose  that  na  <  1 for  all  a.
-Then  η  =  d  and  f(X )  —  g(Y)  has  a  factor  of  degree  one  in  Y.
-
-Proposition  4.1.  Let  f,g€  C[X]  be polynomials of degree m,n respectively  and
-suppose f(X)  —  g(Y)  is irreducible.  Suppose that  the stationary  points of f and g
-are simple.  For  a G  Sf we  put  ra =  e Sg \  f(a)  =  g(y)}·  Let  gc be the genus
-of the curve  C :  f(X)  =  g(Y).  Then
-
-Proposition  5.1.  Let  I e Q*.  Then each of the following  genus one curves
-
-Theorem .  Let  μ(ή)  =  (η-  2)" 1  +  (η  -  l)" 2 .  There are at most 2n 2(s  +  1)  +  13η
-solutions of  equation  (1)  with
-
-Lemma  1.  Take  t  at  least  1, and  let  λ,  ηο,  ...,  r]t-i,  β,  Ψο>  ••  •  >  Φί-ι  be  nonzero
-complex  numbers.  Suppose  that  the  equation
-
-Lemma  5.  Let  a  be  a  non-zero  element  in  Κ  with  N^/q(a)  =  N.  There  exists  a
-unit  e  such  that
- fail  <  N1/71  exp  j  (6rn 2 /logn) r  ±ri? K }  ,
-
-Lemma  6.  Set  C  =  2m(2y/nM)n  and  assume  y  φ  0.  Then
-
-Lemma  7.  Suppose  y\  >  20η2(Μηπι)μ(η\  where  μ(η)  =  (η  -  2)_1  +  (η  -  1)~2.
-Set  C\  =  n(n-l)^ 3 -(n 2  +  3n),  c2  =  \n{n- -  \n2,  c3  =  n 2 (n-l)·^ 3 -n 2 ,
-and,  C4  =  n(n  —  l)·7-3  —  n;  and  write
-
-Corollary  1.  If  u  φ  0  with  e(u)  e  ksep,  then
-
-Corollary  1  is equivalent  to the  following  statement:
-
-Corollary  2.  If  u  φ  0  with  e(u)  G  ksep,  then
-
-Corollary  3.  If  ω  is  a  non-zero  period  ofe(z),  then  the  values  Ι,ω,ω^,...  ,α;' 9-1!
-are  linearly  independent  over  k.
-
-Theorem  5  (Sub-i-Module  Theorem).  Let  the t-module G  =  (G™,  Ø)  be defined
-over  k.  Let  í  £  LieG(C p)  with  Εχρ ö (í )  €  G(k).  Let  V  be the smallest vector
-space in LieG(C p)  which  contains v,  is defined over  k, and is closed under the
-action of the differential d'i(T).  Then V  —  Lie  H(Cp)  for some t-submodule Η
-of G.
-
-Theorem  6  (Linear  Independence  Criterion).  Let  the t-module  G  =  (G",  Ψ)  be
-defined overk.  Let  ν  £  LieG(C p)  with  Εχρ ψ  (ν)  €  G(k).  If  the coordinates of  ν…
-
-
-*[further statements in the full text]*
-
-*[digest of a 284443 character source; every section, statement, and proof in full at `research/sources/number-theory-in-progress-vol1-preview.full.md`]*
+```claim
+id: ntip-vol1-primary-host
+statement: Number Theory in Progress Vol. 1 (de Gruyter 1999) hosts
+  Beukers-Shorey-Tijdeman 1999 pp. 11-26 (MRSTT [4]), the primary source for
+  the run's ineffectivity obstruction; the downloaded preview contains the
+  full BST paper plus Bertin, Boyd, Brindza-Pinter-vdPoorten-Waldschmidt,
+  Coray et al., Debes, and Dubickas papers.
+hypotheses: none — bibliographic fact.
+holds-here: yes.
+status: verified (downloaded, readable text at
+  research/sources/number-theory-in-progress-vol1-preview.full.md)
+bearing: establishes where BST 1999 lives and that it is now readable locally.
+anchor: research/summaries/beukers-shorey-tijdeman-1999-equal-products.md
+```

@@ -18,24 +18,27 @@ interior points; the same convention must be stated before every claim.)
 
 Source: D. Singmaster, "How often does an integer occur as a binomial coefficient?",
 Amer. Math. Monthly 78 (1971) 385–386. doi:10.2307/2316907.
-(Full text captured via Fermat's Library reproduction.)
+(NOTE: the primary has NOT been obtained — the downloaded
+`research/sources/singmaster-1971.full.md` is the Fermat's Library comments page,
+not the paper; see `research/summaries/singmaster-1971.md`. The bound below is
+attested by AEH 1974, MRSTT §1, Wikipedia, and the Fermat's comments.)
 
-Statement (Proposition in [Sin1]):
+Statement (Proposition in [Sin1], attested by secondary sources):
 > N(a) = O(log a).
 
 The precise mechanism: for a solution `C(n,k) = a` with `1 ≤ k`, from
 `C(2k,k) ≥ 2^k` one gets `k ≤ log2(a)`, i.e. `k ≤ (log a)/(log 2) + O(1)`; and for each
 fixed `k`, `n ↦ C(n,k)` is strictly increasing so `n` is unique. Hence the number of
 solutions is at most the number of possible `k`, which is `O(log a)`.
-The Fermat's Library reproduction records the sharper constant form
-`N(a) ≤ 2 + 2 log2 a`.
+Secondary attestation records the sharper constant form `N(a) ≤ 2 + 2 log2 a`.
 
 Conjecture (same paper): "N(a) = O(1)" — the boundedness conjecture. Singmaster also
 reports that Erdős, in correspondence, suggested "N(a) = O(log log a)" might be
 above the truth (i.e. the true order might be slower).
 
-Evidence class: sourced (statement and mechanism quoted from primary text /
-  reproduction).
+Evidence class: attested-by-secondary-sources (primary NOT held; mechanism and
+constants from AEH/MRSTT/Wikipedia and the Fermat's comments, each independently
+reproducing the argument).
 
 ## (2) Abbott–Erdős–Hanson 1974 — O(log a / log log a)
 
@@ -263,14 +266,15 @@ Evidence class: sourced (de Weger full text read; secondary credit lines in MRST
 ```claim
 id: singmaster-bounds-history
 statement: Best known bounds on N(a), the number of (n,k), 1<=k<=n-1, with C(n,k)=a
-  counting both mirrors and the trivial pair: Singmaster 1971 N(a)=O(log a);
+  counting both mirrors and the trivial pair: Singmaster 1971 N(a)=O(log a)
+  (primary NOT held; attested by AEH/MRSTT/Wikipedia);
   Abbott-Erdos-Hanson 1974 N(a)=O(log a/log log a); Kane 2004
   O((log a)(log log log a)/(log log a)^2); Kane 2007 O((log a)(log log log a)/(log log a)^3),
   which remains the unconditional record. Conditional on Cramer's
   conjecture N(a)=O_eps((log a)^{2/3+eps}).
 hypotheses: a>1; both-mirrors-and-trivial-pair convention.
 holds-here: true
-status: sourced
+status: sourced (AEH/Kane/MRSTT primaries held; Singmaster 1971 attested-by-secondary-sources)
 bearing: establishes the current record and the convention-sensitive constant history
 anchor: research/summaries/singmaster-literature-exact.md
 ```
