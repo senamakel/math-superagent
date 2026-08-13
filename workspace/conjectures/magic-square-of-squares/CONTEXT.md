@@ -46,10 +46,29 @@ differences `u-v,u+v,u,v` up to sign. `code/out/oracle_output.txt`,
   are perfect squares. Best known: **seven** (Bremner's square). **No 8-square-entry
   example is known**; eight is an open sub-question (Bremner II 2001).
 
-**The witness set — reproduced and verified, the mandatory oracle for every
-impossibility lemma** (`code/out/near_misses.json`, `all_checks_passed: true`;
-GOAL.md: a lemma that `refutes` a witness is false). Both 7-square near-misses
-are built directly from the printed grids with exact arithmetic:
+**Bremner's rank conjecture is proved — sourced, newly downloaded**
+(Garcia-Fritz–Pasten, arXiv:2604.04850v2, May 2026, full paper on disk at
+21KB — not a wrapper). Theorem 1.8 (strong form, unconditional): there is an
+absolute constant `C>1` such that for every elliptic curve `E/Q` of rank `r`,
+all arithmetic progressions on `E` have length bounded by `C^(r+1)`. The proof
+uses Nevanlinna theory + the uniform Mordell–Lang theorem of Gao–Ge–Kühne
+(Garcia-Fritz–Pasten 2021, IMRN). Theorem 1.2 gives a shorter, self-contained
+proof that if ranks of elliptic curves over Q are uniformly bounded, then so
+are AP lengths — using the height-uniform Mordell theorem of
+Dimitrov–Gao–Habegger and genus-2 curves with split Jacobian. Theorem 1.3
+extends the method to x-coordinates in finitely generated multiplicative
+groups.
+
+**Bearing on the MSS**: the Robertson reduction (Established) says an MSS
+exists iff there is `e` with an AP of length 4 on `E: y² = x(x²−e⁴)`. The
+Garcia-Fritz-Pasten theorem bounds the length of any AP on this curve by
+`C^(r+1)` where `r = rank E(Q)`. So if the Robertson curve for a putative MSS
+has rank ≤ some bound, the AP length is bounded — and if 4 exceeds that bound,
+non-existence follows. **Gap**: what is the known rank of
+`E_e: y² = x(x²−e⁴)` for `e` being a putative MSS centre? Not yet computed;
+the bound `C^(r+1)` is ineffective (the constant `C` is not explicit in the
+statement). This turns the problem from "does an AP of length 4 exist?" into
+"bound the rank of the Robertson curve."
 - **Sallows LS1** = 7 of 8 line sums = 147² = 21609, failing non-principal
   diagonal = 38307; all nine entries perfect squares and distinct. The user's
   orientation `[127,46,58;2,113,94;74,82,97]` is the transpose of Bremner's

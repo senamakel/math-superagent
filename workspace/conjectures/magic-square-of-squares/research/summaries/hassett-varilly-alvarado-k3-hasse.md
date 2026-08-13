@@ -34,11 +34,13 @@ statement: There is an explicit K3 surface X_1/Q of degree 2, geometric
   principle (X_1(A_Q) != empty, X_1(A_Q)^A = empty).
 hypotheses: X_1 the explicit sixth-degree double cover of the paper; class A
   the quaternion (B^2-4AD, A); certification via Elsenhans-Jahnel + CTS
-holds-here: no (the magic-square K3 S is a different surface, not this X_1)
+holds-here: no
 status: proved
 bearing: method template and local-invariant machinery for the adopted
   Brauer-Manin line on Bremner II's S; shows a certified transcendental
-  obstruction on a K3 is achievable in practice
+  obstruction on a K3 is achievable in practice; the magic-square K3 S is a
+  different surface (NS-rank 12, not this rank-1 double cover), so the
+  theorem does not transfer directly
 anchor: research/sources/hassett-varilly-alvarado-k3-hasse.full.md
 ```
 

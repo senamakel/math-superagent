@@ -1,0 +1,39 @@
+============================================================================
+STEP 1: code/pattern/closedform.py vs mpmath_table.txt (c<=38)
+============================================================================
+comparing closed form floor(n_p(DU))-ceil(n_p(DL))+1 vs mpmath g
+c=16 s=5 p=5 q=6: g=9  n_p(DL)=0.01820 n_p(DU)=9.03690  kmin=1 kmax=9
+c=17 s=5 p=5 q=7: g=8  n_p(DL)=0.01344 n_p(DU)=8.41911  kmin=1 kmax=8
+c=17 s=6 p=5 q=6: g=9  n_p(DL)=0.01994 n_p(DU)=9.90398  kmin=1 kmax=9
+c=18 s=5 p=5 q=8: g=7  n_p(DL)=0.01143 n_p(DU)=7.98424  kmin=1 kmax=7
+c=18 s=5 p=6 q=7: g=10  n_p(DL)=0.02473 n_p(DU)=10.35965  kmin=1 kmax=10
+c=18 s=6 p=5 q=7: g=9  n_p(DL)=0.01468 n_p(DU)=9.19816  kmin=1 kmax=9
+checked 1222 tuples; disagreements: 0
+
+STEP 1 VERDICT: checked=1222 disagreements=0 OK (expect 0)
+
+============================================================================
+STEP (a): G(n) n=16..200 via g_of vs G_sequence.txt
+============================================================================
+recomputed G(16..200) in 1.0 s; total discrepancy=0 over 0 mismatched n-lines
+STEP (a) VERDICT: OK (expect 0)
+
+============================================================================
+STEP (b): G(500) via g_of  (all s+p+q<=500 tuples)
+============================================================================
+tuples: 9595422
+G(500) = 1470337306   (11.1 s, 9595422 tuples)
+wrote /workspace/code/out/G500_value.txt
+
+============================================================================
+STEP (c): hybrid precision pass over all tuples c<=500
+============================================================================
+tuples evaluated (DL<DU): 9595422 / 9595422 in 11.9 s
+smallest endpoint-to-integer distance over all tuples: 3.267e-09
+flagged (distance < 1e-7): 3
+  flagged c=434 s=151 p=19 q=264  dlo=2.722e-04 dhi=7.075e-08  g_of=80 g_mp60=80
+  flagged c=465 s=88 p=54 q=323  dlo=4.229e-04 dhi=3.267e-09  g_of=112 g_mp60=111
+  flagged c=474 s=29 p=6 q=439  dlo=4.399e-05 dhi=6.123e-08  g_of=12 g_mp60=12
+STEP (c) VERDICT: flagged=3, g changed by re-evaluation: 1 FAIL
+
+PIPELINE (abc) DONE -- primary G(500) recorded above; step-1-ok=True

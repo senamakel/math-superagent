@@ -1,48 +1,50 @@
-# García-Fritz & Pasten, "A note on Bremner's conjecture and uniformity", arXiv:2604.04850 (2026)
+# Garcia-Fritz–Pasten: A note on Bremner's conjecture and uniformity (2026)
 
-[[garcia-fritz-pasten-bremner-uniformity-2026]]
+Full text: `research/sources/garcia-fritz-pasten-bremner-uniformity-2026.full.md`
+(arXiv:2604.04850v2, 18 May 2026, 6 pages — now real PDF, not a wrapper).
 
-**Status: abstract page only on disk** — the `.full.md` is the arXiv landing page; the paper body (and the cited previous work) was never downloaded. Everything below is at abstract level.
+## What it establishes
 
-## What it establishes (abstract-level)
+**Theorem 1.8 (Strong form of Bremner's conjecture, unconditional, proved).**
+There is an absolute constant C > 1 such that if E is an elliptic curve over Q
+with rank r, then **all arithmetic progressions on E have length ≤ C^(r+1)**.
 
-- **Bremner's conjecture (1998):** elliptic curves over Q having *long sequences of distinct rational points whose x-coordinates are in arithmetic progression* must have **large rank**.
-- **Strong form proved** (by the same authors, some years ago): combining Nevanlinna theory with the **uniform Mordell–Lang theorem of Gao–Ge–Kühne**, one obtains: *if the ranks of elliptic curves over Q are uniformly bounded, then so are the lengths of the AP-of-x-coordinates sequences*.
-- **This note's new contribution:** a much more direct proof of that last statement using the **height-uniform Mordell theorem of Dimitrov–Gao–Habegger**. The method is flexible and extends to x-coordinates in finitely generated multiplicative groups and to geometric progressions; connections to a possible semiabelian uniform Mordell–Lang are discussed.
+This was proved by Garcia-Fritz–Pasten in their 2021 IMRN paper via Nevanlinna
+theory + the uniform Mordell–Lang theorem of Gao–Ge–Kühne.  The 2026 note gives
+an alternative short proof of the conditional uniformity consequence and extends
+the method to finitely generated multiplicative groups.
 
-## What it does NOT say
+**Theorem 1.2 (Conditional uniformity).** If the ranks of elliptic curves over Q
+are uniformly bounded, then so are the lengths of arithmetic progressions on
+elliptic curves over Q.
 
-- It does **not** prove uniform boundedness of ranks (that remains open — Elkies' conjecture). The statement is conditional: bounded ranks ⇒ bounded AP-lengths.
-- It does **not** address the magic square of squares directly, and it gives no quantitative bound on AP length (no explicit constant is quoted in the abstract).
+Proof uses the height-uniform Mordell theorem (Dimitrov–Gao–Habegger 2020) and
+genus-2 curves with split Jacobian.  Key construction: from an AP of length M on
+E, build a genus-2 hyperelliptic curve X whose Jacobian splits as E × E′;
+DGH bounds #X(Q) by c^(1+rank J(Q)) ≤ c^(1+2R), giving a bound on M.
 
-## Implications for this run — the single most valuable external corroboration on disk
+**Theorem 1.3 (Multiplicative groups).** If ranks are uniformly bounded, there
+is κ > 1 such that for any finitely generated multiplicative subgroup Γ ⊂ Q^×
+of rank ρ, #(x(E(Q)) ∩ Γ) ≤ κ·2^ρ.  (Corollary 1.4: same for geometric
+progressions.)
 
-- **Bremner's elliptic reduction** (`robertson-elliptic-reduction`): a 3×3 MSS ⇔ three points of `2E(Q)` on `E: y² = x(x²−c²)` with x-coordinates in **arithmetic progression**. That is exactly the structure of Bremner's conjecture.
-- The García-Fritz–Pasten theorem says the *length* of such progressions is controlled by the rank: **long AP of x-coordinates forces high rank**. Combined with Bremner 1999's empirical note (only one non-torsion AP triple found in a small search, on a rank-3 curve), this is the first structural reason the four-AP condition is hard: a full MSS needs three AP points on one curve, and rank is the scarce resource that the AP-length/rank correspondence ties the obstruction to.
-- **Conditionality is essential:** if ranks over Q are not uniformly bounded (Elkies), the theorem's conclusion is vacuous. So this source *motivates* a rank/resource view of the MSS obstruction but does **not** prove it.
+**Conjecture 1.5** (height-uniform Mordell–Lang for E × G_m, not proved) would
+give rank-dependent bounds for x-coordinates in multiplicative groups without
+assuming uniform rank boundedness.
 
-## Does not help computationally
+## Bearing on the 3×3 MSS
 
-- No explicit bound, no new variety, no density statement transferable to the K3 or to the Φ-set. The value is at the level of "the additive-AP obstruction is a rank phenomenon", and that is exactly the direction the run's adopted Chabauty–Coleman approach (rk J < g) is already pointed.
+The Robertson reduction says an MSS exists iff there is e with an arithmetic
+progression of x-coordinates on E_e: y² = x(x²−e⁴).  Theorem 1.8 bounds the
+length of any such AP by C^(r+1).  If rank(E_e) can be bounded above for putative
+MSS centres, this gives a contradiction for length ≥ 4 — or at least turns the
+problem into bounding the rank of the Robertson curve.
 
-```claim
-id: bremner-conjecture-uniform-bounded-rank-implies-bounded-ap
-statement: (García-Fritz–Pasten, abstract) If the Mordell-Weil ranks of elliptic
-  curves over Q are uniformly bounded, then the length of any sequence of distinct
-  rational points on a single elliptic curve whose x-coordinates are in arithmetic
-  progression is uniformly bounded; the strong form of Bremner's 1998 conjecture
-  follows from uniform Mordell-Lang (Gao-Ge-Kühne) and is re-proved here via the
-  height-uniform Mordell theorem (Dimitrov-Gao-Habegger).
-hypotheses: uniform boundedness of ranks over Q (open); E/Q an elliptic curve;
-  AP of x-coordinates. The structure holds for this problem (three AP
-  x-coordinates on E: y²=x(x²−c²) via robertson-elliptic-reduction), but the
-  decisive rank-unboundedness hypothesis is open and the MSS needs only THREE
-  points, not a long sequence.
-holds-here: partial
-status: asserted (abstract level; body not on disk)
-bearing: frames the four-AP obstruction as a rank-scarcity phenomenon; supports the
-  adopted Chabauty-Coleman direction (rk J < g is the same resource comparison);
-  does not provide an explicit bound or a proof for the 3-point case;
-  consistent with Bremner 1999's empirical rank-3 AP observation
-anchor: research/sources/garcia-fritz-pasten-bremner-uniformity-2026.full.md
-```
+**Gap**: C is not explicit (comes from Rémond's quantitative Mordell–Lang, not
+computed in the paper). The bound is therefore ineffective for computation.
+
+## Source
+
+Garcia-Fritz, Natalia and Pasten, Hector. "A note on Bremner's conjecture and
+uniformity." arXiv:2604.04850v2 [math.NT], 18 May 2026.
+https://arxiv.org/abs/2604.04850

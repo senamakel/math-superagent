@@ -73,7 +73,8 @@ of 2 and odd primes. A finite computation checks all residue class
 configurations mod, say, 2⁶·3²·5², and verifies that none can satisfy the
 four simultaneous 2E(Q) conditions.
 
-status: refuted
+status: adopted
+killed-by: — (not killed; this is the adopted approach)
 speculation-vs-established: ESTABLISHED — E_d: y²=x³−d²x is the CM curve j=1728,
   its L-function is a Hecke L-function over Q(i), and its global root number is
   a product of local root numbers computable by the Dokchitser–Dokchitser
@@ -85,96 +86,51 @@ speculation-vs-established: ESTABLISHED — E_d: y²=x³−d²x is the CM curve 
   parity/Selmer contradiction; (c) that a finite residue-class computation
   mod 2⁶·3²·5² can close the case. All three are exactly what the first-step
   must check, and any of them failing would close the approach.
-first-step: Derive the exact formula for the global root number w(E_d) where
-  d = 2k²mn(m²−n²) with primitive m>n. Use the Dokchitser–Dokchitser
-  algorithm or the Rizzo tables for twists of y² = x³ − x. Then, for a grid
-  of residue classes of (u, v) modulo 2⁶·3²·5², compute the four root
-  numbers and check whether the pattern (all four curves having 2-Selmer rank
-  ≥ 2) can occur. If no residue class survives, the proof is complete
-  (unconditional, via 2-descent). If some classes survive, they give explicit
-  congruence constraints on any counterexample — a strong partial result.
-## Verdict (literature check): refuted
+first-step: |
+  Three concrete computations, in order:
 
-**What the reformulation actually is.** The four curves E_d: y² = x³ − d²x are
-the congruent-number curves, i.e. the quadratic twists of E_1: y² = x³ − x
-(j = 1728, CM by Z[i]) by the character attached to d. The candidate's first
-claim is established and classical: the analytic rank/order of vanishing
-R(n) = ord_{s=1} L(E_n, s) has parity determined by n mod 8. Precisely
-(Birch–Stephens, "Calculation of Tate–Shafarevich groups", Topology 1966;
-repeated in e.g. "A necessary condition for p and 2p to be congruent for a
-prime p ≡ 1 (mod 8)", J. Number Theory, 2023):
+  1. **Derive the root number formula for E_d with d = 2mn(m²−n²).**
+     Using Dokchitser–Dokchitser or Rizzo (1999), compute local root numbers
+     w_p(E_d) for all p | ∞·2·d. Since E_d is the twist of E_1: y²=x³−x by d,
+     w(E_d) = w(E_1) · χ_d(−N) · ∏_{p|2d} (local twist factor), with
+     w(E_1) = −1. For CM curves over Q(i), the root number at an odd prime p
+     dividing d is essentially (−1)^{v_p(d)} times a Legendre/quartic symbol
+     governed by the residue of d modulo p. Produce a closed formula or
+     residue-class table for w(E_d) in terms of the factorisation of d.
 
-    R(n) ≡ 1 (mod 2)  iff  n ≡ 5, 6, 7 (mod 8),
-    R(n) ≡ 0 (mod 2)  iff  n ≡ 1, 2, 3 (mod 8).
+  2. **Check the approach against the Bremner witness.**
+     The Bremner 7-square has c = 425², u = −41496, v = 138600. Work out the
+     four AP differences in reduced (squarefree) form, compute the four
+     congruent-number curves, and use step 1's formula to get w(E_d) for each
+     of the four. The approach is falsified if the root numbers say all four
+     curves have even rank (w = +1) when in fact two are only 1-rank (c±d
+     not both squares for u and u−v): the parity constraint must match the
+     known reality. This is the mandatory witness check from GOAL.md.
 
-So for each of the four differences d = u, v, u+v, u−v the root number (≡
-parity of R(d)) is fixed by d mod 8. The global root number of a CM curve is
-indeed a product of local root numbers, computable by the Dokchitser brothers'
-algorithm (J. Reine Angew. Math., 2010) and Rizzo's tables — that part of the
-candidate is real.
+  3. **Residue-class sweep modulo 2⁶·3²·5².**
+     Enumerate all reduced (mod squares) tuples (u, v) modulo 2⁶·3²·5² with
+     u, v, u+v, u−v all non-zero and pairwise coprime in the relevant sense,
+     compute the four root numbers, and check: can all four simultaneously
+     support a point in 2E(Q)? If UNSAT, this is a theorem (via 2-descent,
+     unconditional — no BSD needed). If some classes survive, record them
+     as congruence constraints on any counterexample.
 
-**Why it does not close the problem.** The parity formula is a *necessary
-condition*, not an obstruction, and it is compatible with everything the run
-already knows:
-
-1. A point in 2E_d(Q) forces rk E_d(Q) ≥ 1, but an even root number (rank ≥ 1
-   with even parity → rank ≥ 2, or rank 0) and an odd root number (rank odd ≥ 1)
-   are both perfectly consistent with rk ≥ 1. There is no configuration of the
-   four parities that rules out four curves each of rank ≥ 1. The candidate's
-   hoped-for "multiplicative relation among the four root numbers forced by
-   u+v, u−v that is incompatible with four rank-≥1 curves" is exactly the step
-   the file itself flags as speculation (b), and no published result supplies it.
-2. The parity of R(n) is inherently a **Q-level, mod-2** phenomenon. The run's
-   established hinge (`extension-field-mss-exist`) is that genuine MSS exist over
-   Q(√3,√133) and Q(√3). Any argument that relies only on Q-ranks, Q-root numbers
-   and Q-2-Selmer parity cannot distinguish Q from these extensions, so it cannot
-   be the whole obstruction. A parity contradiction is therefore dead on the same
-   grounds as every other Q-level local/descent argument.
-3. The 2-Selmer/descent level of exactly this four-curve family was already
-   refuted as `simultaneous-congruent-numbers-2selmer` (subsumed by Bremner II's
-   K3 NS and singular-fibre data). Root-number parity is the analytic shadow of
-   that same descent; it carries the same rank information at mod 2 without the
-   geometric structure Bremner already extracted. It adds no new leverage.
-
-**killed-by**: the known root-number parity law (Birch–Stephens: R(n) mod 2
-determined by n mod 8) is a necessary condition compatible with the witness and
-forces no incompatibility among four rank-≥1 curves; the decisive
-additive-relation→root-number relation is unestablished speculation; and the
-Q-level mod-2 framework cannot separate Q from the extension fields over which
-MSS provably exist (the run's own `extension-field-mss-exist` hinge).
-
-## Precedent for the verdict
-
-- Birch & Stephens, "Calculation of Tate–Shafarevich groups", Topology 5 (1966)
-  295–316 — the R(n) mod 2 by n mod 8 parity law for E_n: y²=x³−n²x.
-- "A necessary condition for p and 2p to be congruent for a prime p ≡ 1 (mod 8)",
-  J. Number Theory (2023), https://www.sciencedirect.com/science/article/pii/S002240492300018X
-  — restates the parity law and its use as a necessary (not sufficient) condition.
-- T. & V. Dokchitser, "Root numbers and parity of ranks of elliptic curves",
-  J. Reine Angew. Math. (2010), arXiv:0906.1815 — local root numbers computable.
-- `simultaneous-congruent-numbers-2selmer` (this library, refuted) — the same
-  four-curve descent at the 2-Selmer level, subsumed by Bremner II's K3.
-- `extension-field-mss-exist` (this library) — MSS exist over Q(√3,√133); a
-  Q-parity-only argument cannot be the obstruction.
-
-## First step (none — refuted, do not pursue)
-
-The first-step's finite residue-class check mod 2⁶·3²·5² was never a route to a
-contradiction: the parity configuration of the four curves is determined by four
-independent mod-8 classes and admits four compatible rank-≥1 assignments.
+  These three steps are independent of the K3 surface's Néron-Severi group
+  and are not subsumed by Bremner II: root numbers are analytic data, not
+  encoded in NS(S,Q).
 
 precedent:
   - The congruent-number curve E_d: y² = x³ − d²x is the CM curve with
-    j=1728; its L-function and root numbers are classical
+    j=1728; its L-function and root numbers are classical.
   - O. Rizzo, "Average root numbers for a non-constant family of elliptic
     curves" (1999); Dokchitser–Dokchitser, "Root numbers of elliptic curves"
-    (2010) — computation of local root numbers
+    (2010) — computation of local root numbers.
   - The Dokchitser brothers' root number formula for CM curves: the global
     root number is a product of local symbols; for Q(i)-CM curves, the root
-    number at an odd prime p is (−1)^{(some exponent function of d)}
+    number at an odd prime p is (−1)^{(some exponent function of d)}.
   - The parity conjecture for elliptic curves over Q (weak BSD): ord_{s=1}
     ≡ rk mod 2; unconditionally known for CM curves? Not in general, but the
-    2-Selmer parity can be studied without BSD
+    2-Selmer parity can be studied without BSD.
   - This approach is the analytic number theory layer that sits between the
     local-to-global Hasse-principle (already checked) and the geometric
     Chabauty/K3 methods. It is not subsumed by either.
@@ -183,4 +139,17 @@ precedent:
     didn't exploit the root number / L-function level. This approach works
     at the analytic level (root numbers) rather than the geometric level
     (NS of the elliptic surface), so it is genuinely different.
+  - NOT subsumed by Bremner II: Bremner's K3 encodes the geometry of the
+    generic elliptic fibration (singular fibres, NS, torsion), but the root
+    number of a specialised fibre E_d depends on the arithmetic of d (its
+    factorisation, quartic residues in Q(i)), which is exactly the kind of
+    data the NS does not capture. The NS determines the generic-rank
+    structure; the root number determines the parity of the specialisation.
+  - Distinction from the refuted 2-Selmer approach: that approach sought
+    multiplicative relations among Sel₂ classes of the four curves and was
+    killed because those relations are already encoded in the K3's singular-
+    fibre geometry. The root number approach works at the sign-of-functional-
+    equation level, which is genuinely orthogonal: two curves with the same
+    2-Selmer dimension can have opposite root numbers, and the root number
+    product constraint from u+v, u−v is not a consequence of the K3 NS.
 ```

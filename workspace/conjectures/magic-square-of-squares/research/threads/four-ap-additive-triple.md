@@ -7,6 +7,15 @@ full MSS (CONTEXT.md Established, `ap_structure2.py`).
 
 **Status.** live — the run's structural frontier.
 
+**External corroboration added 2026-08-13.** García-Fritz–Pasten
+(`bremner-conjecture-uniform-bounded-rank-implies-bounded-ap`, abstract on disk):
+*if* ranks of elliptic curves over Q are uniformly bounded, *then* the length of
+AP-x-coordinate point sequences is uniformly bounded — the rank-resource view of
+the same additive obstruction (Bremner's 1998 conjecture, conditional on the open
+uniform-boundedness hypothesis). Rome–Yamagishi (`2024`, n×n MSS of squares exist
+for all n ≥ 4) shows the scarcity is 3×3-specific: no bearing on the triple
+condition itself. Neither provides a proof or a bound; both sharpen the framing.
+
 **Why it matters / how it relates to the sources.** This is the rational
 reduction of the same four-AP obstruction the sources attack:
 - Bremner's elliptic reduction (`robertson-elliptic-reduction`) demands three

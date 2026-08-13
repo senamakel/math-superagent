@@ -7,6 +7,13 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
 | [[four-ap-additive-triple]] | Does any additive triple q1, q2, q1+q2 in the universal rational set Φ exist? (A quadruple q1,q2,q1+q2,q1−q2 all in Φ would be a full MSS.) | open | phi-universal-set, phi-no-triple-m400, robertson-elliptic-reduction, three-primitive-equal-d-bound, k3-ns-rank-12-not-maximal | express the additive triple as a single polynomial variety and search its factorisation; correlate with Morgenstern's (a,b,a+b) equal-start census and Bremner… |
+| [[uniformity-bremner-ap-bound]] | Does the Garcia-Fritz–Pasten theorem (Theorem 1.8: AP length ≤ C^(r+1) on elliptic curves) combine with the Robertson reduction to give a finiteness result for… | open | -, robertson-elliptic-reduction, (Established), -, bremner-conjecture-proved, (Garcia-Fritz–Pasten, Theorem, 1.8, newly, downloaded), -, height-uniform-mordell, (Dimitrov–Gao–Habegger, 2020), -, uniform-mordell-lang, (Gao–Ge–Kühne, 2021) | spawn scholar to claim-block the Garcia-Fritz–Pasten paper, then symbolic_math to write the Robertson curve and the AP condition as exact polynomial equations,… |
+
+## Resting on nothing recorded
+
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[uniformity-bremner-ap-bound]] rests on `-`, `(Established)`, `-`, `bremner-conjecture-proved`, `(Garcia-Fritz–Pasten`, `Theorem`, `1.8`, `newly`, `downloaded)`, `-`, `height-uniform-mordell`, `(Dimitrov–Gao–Habegger`, `2020)`, `-`, `uniform-mordell-lang`, `(Gao–Ge–Kühne`, `2021)`, which no claim block on disk establishes
 
 ## Threads that could not be read
 

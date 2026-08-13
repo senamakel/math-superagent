@@ -92,9 +92,13 @@ falsification discipline, note also that any conclusion drawn must survive the
 **status: grounded** — the reformulation is real (Bremner II gives the
 hyperelliptic reduction) and the method is a named, standard, implemented
 theorem. But the **application rests on an unverified decisive hypothesis**
-(r < g for the specific 7→8 transition curve), with the explicit curve never
-written down anywhere. This is grounded as a *technique with an open applicability
-question*, not as a proven path.
+(r < g for the specific 7→8 transition curve). CORRECTION: the explicit curves
+for Category VII ARE in the literature — Bremner II eq. (12)–(13) gives the
+quartics — and this run computed (`code/out/bremner2_quartics.txt`) that the
+three eq. (13) quartics at λ=13 are genus 1 (elliptic), so Chabauty-Coleman's
+genus-≥2 rank hypothesis does not engage for those specific 7→8 curves; the
+correct tool there is elliptic 2-descent/Selmer on E: y²=F(x). Whether any
+OTHER 7→8 configuration yields a genus-≥2 curve with r < g is unverified.
 
 ## Precedent
 
