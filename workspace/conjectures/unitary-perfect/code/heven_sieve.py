@@ -112,7 +112,7 @@ def archive_dir():
 def main_worker(a, b, wid, ord_path, wit_path, stats):
     """Enumerate primes r in [a, b) (disjoint per worker), pow-filter, ord."""
     rows_ord, rows_wit = [], []
-    local = {"primes": 0, "passers": 0, "pairs": 0, "witnessed_m": set(),
+    local = {"primes": 0, "passers_main": 0, "pairs": 0, "witnessed_m": set(),
              "killed": set()}
     r = int(gmpy2.next_prime(a - 1 if a > 2 else 1))
     try:
@@ -121,7 +121,7 @@ def main_worker(a, b, wid, ord_path, wit_path, stats):
             if pow(2, MOD, r) != 1:
                 r = int(gmpy2.next_prime(r))
                 continue
-            local["passers"] += 1
+            local["passers_main"] += 1
             if not trial_division_prime(r):
                 raise AssertionError("next_prime produced composite %d" % r)
             ordr = ord_of_2_mod(r)
@@ -147,7 +147,7 @@ def main_worker(a, b, wid, ord_path, wit_path, stats):
 def comp_worker(orders, lo, hi, wid, ord_path, wit_path, stats):
     """For each d in orders: primes r = 1 + d*t in [lo, hi) with exact ord."""
     rows_ord, rows_wit = [], []
-    local = {"candidates": 0, "passers": 0, "pairs": 0,
+    local = {"candidates": 0, "passers_comp": 0, "pairs": 0,
              "witnessed_m": set(), "killed": set()}
     try:
         for d in orders:
@@ -159,7 +159,7 @@ def comp_worker(orders, lo, hi, wid, ord_path, wit_path, stats):
                 if pow(2, d, r) != 1:      # ord | d  required
                     t += 1
                     continue
-                local["passers"] += 1
+                local["passers_comp"] += 1
                 if not trial_division_prime(r):
                     t += 1
                     continue
@@ -286,9 +286,9 @@ def main(argv):
     wm = set(); killed = set()
     for st in stats.values():
         tot["primes"] += st.get("primes", 0)
-        tot["passers_main"] += st.get("passers", 0)
+        tot["passers_main"] += st.get("passers_main", 0)
         tot["candidates"] += st.get("candidates", 0)
-        tot["passers_comp"] += st.get("passers", 0)
+        tot["passers_comp"] += st.get("passers_comp", 0)
         tot["pairs"] += st["pairs"]
         wm |= st["witnessed_m"]
         killed |= st["killed"]
