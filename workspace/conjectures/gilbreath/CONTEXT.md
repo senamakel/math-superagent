@@ -377,10 +377,15 @@ recalled claim is relied on whose hypotheses fail here.
 - **What remains toward a GOAL.md partial result:** the block lemma is
   delivered (re-derived, constant explicit). Still open: a proved invariant
   forcing `A_k(1)∈{0,2}`; a theorem for a general class of sequences (must beat
-  Eppstein); a proved statement on the regeneration rate; and the Lean 4
+  Eppstein AND the Colonna g=4 deletion failure — see Established); a proved
+  statement on the regeneration rate; and the Lean 4
   formalisation of the difference operator and induction step (with `#print
-  axioms` and every `sorry`). No Lean work is on disk yet.
-- **Library search halted by directive.** FRONTIER.md restored 2026-08-13 from commit db36fc23 (42 rows) after the Gatti-2020 wrapper-page download replaced it with 15 social-media share buttons. URL filter active on rewrite (share/bookmark patterns dropped). Gatti 2020 classified not-load-bearing. Collapse >30% in candidate count is a failure signal (`research/notes/frontier-collapse-alarm.md`). No more downloads until a specific gap is stated that a source could close.
+  axioms` and every `sorry`). **Lean status answered this cycle:** Google
+  DeepMind's formal-conjectures repo (commit ed75a6dd) has a statement-only
+  `Gilbreath.lean` — `gilbreath_conjecture (k : ℕ+) : d k 0 = 1 := by sorry`,
+  no proof formalisation exists publicly; the run's own work (on mathlib4's
+  `Nat.dist`) is still to be written. Claim `deepmind-formal-conjectures-gilbreath-lean`.
+- **Library search halted by directive.** FRONTIER.md restored 2026-08-13 from commit db36fc23 (42 rows) after the Gatti-2020 wrapper-page download replaced it with 15 social-media share buttons; **a second collapse happened this cycle (Colonna 2026-08 + DeepMind re-downloads) and was restored from this session's read — the documented URL filter did not run on those rewrite writes, so re-check the candidate count after any multi-page download** (`research/notes/frontier-collapse-alarm.md`). Gatti 2020 classified not-load-bearing. Collapse >30% in candidate count is a failure signal. No more downloads until a specific gap is stated that a source could close.
 - **Memory cap observed.** The container touched 6.46 GiB of 8 GiB during the
   26-worker null run before falling to 2.6 GiB. Bound worker counts on anything
   that materialises the depth-1000 triangle per worker; single-row streaming

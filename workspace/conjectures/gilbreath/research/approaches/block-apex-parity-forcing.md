@@ -80,10 +80,21 @@ killed-by: >
   is useless against {0,d}-blocks with ODD d, and in this run was already
   refuted as a lift to exact values (mod-lift-obstruction, |2-6| mod 8).
 
-  Empirical check (queued, NOT executed by this role — code/block_apex/
-  check_constant_blocks.py): recompute whole-block constancy, longest 0/2
-  runs, and terminal constant suffixes for the 161 live rows from a fresh
-  exact sieve. What IS verified on disk and by hand: rows A_1..A_5
+  Empirical check (EXECUTED 2026 — code/block_apex/check_constant_blocks.py,
+  capture code/out/block_constancy.captured.txt, JSON code/out/block_constancy.json):
+  recomputed whole-block constancy, longest 0/2 runs, and terminal constant
+  suffixes for the 161 live rows from a fresh exact sieve (2e7, 1,270,607
+  primes, 1 worker, 26.2s; block lengths match blocks_depth1000.json 1000/1000).
+  RESULT: live rows k=1..161 have whole-block constant {0,2} blocks only at
+  k=1 ([2,2], b=2); every live block k=2..161 is mixed (attains both 0 and 2);
+  max live terminal constant suffix 7 (k=27); longest 0 run 29, longest 2 run
+  30; in the later finite-width regime (block = row tail) the constant all-2
+  suffix reaches 10 (k=811..818). So the prime-specific "no constant block of
+  length >= 3 in 161 live rows" is TRUE to depth 1000 — but this does not
+  revive the approach: non-constancy does not force regeneration, the 60
+  real regenerations are all at boundary (edge=2, intruder=4) regardless of
+  pattern, and Eppstein's class-level constant blocks still stand.
+  What IS verified on disk and by hand: rows A_1..A_5
   (witnesses.json first-12 entries) have blocks [2,2] (constant, k=1),
   [0,2,2,2,2,2,2], [2,0,0,0,0,0,2], [2,0,0,0,0,2,2,2,2,0,0], and
   [2,0,0,0,2,0,0,0,2,0,2] — all mixed for k>=2; and blocks_depth1000.json's

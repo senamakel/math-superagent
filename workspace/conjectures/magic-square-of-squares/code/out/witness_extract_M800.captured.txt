@@ -33,3 +33,4 @@
 [M=800] chunk 38688-39936: pairs 49060752 minus 13 plus 5 both 0 | cumulative pairs 797422080 minus 67 plus 37 both 0 | 443s
 [M=800] chunk 39936-41184: pairs 50618256 minus 10 plus 0 both 0 | cumulative pairs 848040336 minus 77 plus 37 both 0 | 504s
 [M=800] chunk 41184-42432: pairs 52175760 minus 5 plus 1 both 0 | cumulative pairs 900216096 minus 82 plus 38 both 0 | 504s
+[M=800] chunk 42432-43680: pairs 53733264 minus 5 plus 4 both 0 | cumulative pairs 953949360 minus 87 plus 42 both 0 | 518s
