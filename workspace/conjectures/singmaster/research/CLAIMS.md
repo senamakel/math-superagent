@@ -48,6 +48,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `oeis-a003016-row-count` | OEIS A003016(n) counts occurrences of n among entries of rows <= n of Pascal's triangle; sequence 0,3,1,2,2,2,3,2,2,2,4,2,...; related records in A003015/A138496. It is a row count, distinct from the run's both-mirror… | yes | asserted | `research/summaries/oeis-a003016-2026.md` |
 | `partition-equal-values-infinite-families` | Bhattacharya 2021 (Research in Number Theory 7 #67, open access): for A={a1,a2} with gcd(a1,a2)=1 and any f in Z[x] positive degree/leading coefficient, P_A(x)=f(y) has infinitely many positive integer solutions;… | **unchecked** | asserted | `research/summaries/bhattacharya-partition-equal-values-2021.md` |
 | `saradha-shorey-fixedm-effective` | For A=B=1 and k+l an integral multiple of k (i.e. products in ratio 1:mk, m fixed >=2), Saradha-Shorey (via a Runge-method extension to exponential Diophantine equations) proved max(x,y,k) is bounded by a number… | no | asserted | `research/summaries/shorey-tijdeman-survey.md` |
+| `sdw-elliptic-logarithms-eight-pairs` | Stroeker-de Weger 1999 (Math. Comp. 68, 1257-1281): the equation C(n,k)=C(m,l) is completely solved (all integer solutions listed) for exactly (k,l) = (2,3),(2,4),(2,6),(2,8),(3,4),(3,6),(4,6),(4,8), by reducing each to… | yes | asserted | `research/summaries/stroeker-deweger-1999-elliptic-binomial.md` |
 | `siegel-integral-points-ineffective` | A smooth algebraic curve of genus g>0 over a number field K has only finitely many O_K-integral points. For g>=2 this is ineffective (no computable bound in the coefficients); only the g=1 case has an effective form… | yes | asserted | `research/summaries/siegel-theorem-integral-points.md` |
 | `singmaster-1971-original` | Singmaster 1971 (AMM 78, 385-386; primary NOT held, attested by Singmaster FQ 1975, AEH 1974, MRSTT): N(a)=O(log a) via N(a)<=2+2 log_2 a; conjecture N(a)=O(1); M(8)=3003 is the only N(a)>=8 with a<2^23, and the six… | yes | asserted | `research/summaries/singmaster-1971.md` |
 | `singmaster-1975-pell-family` | Singmaster 1975 (FQ 13(4), primary): C(n+1,k+1)=C(n,k+2) solved completely via Pell u^2-5v^2=-4 (u=5(k+2)-1); infinitely many solutions n=F_{2j+2}F_{2j+3}-1, k=F_{2j}F_{2j+3}-1 (j>=1), giving infinitely many a with… | yes | asserted | `research/summaries/singmaster-fibonacci-1975.md` |
@@ -61,6 +62,27 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `tijdeman-preprints-host` | Tijdeman's Leiden page hosts the author preprint "best.ps" of Beukers-Shorey-Tijdeman 1999 (Zakopane proceedings pp. 11-26; MRSTT [4]). The downloaded .ps is raw PostScript (not readable); the readable copy is the de… | yes | asserted | `research/summaries/tijdeman-preprints-page.md` |
 | `totd-ologk-proof-and-history` | Theorem of the Day (Whitty) exposition: Singmaster's proof that N(k) <= 2 + 2 log_2 k = O(log k) (least s with k < C(2s,s); monotonicity of the binomial in each parameter; N(k) <= 2s; s <= 1 + log_2 k). Construction… | yes | asserted | `research/summaries/theorem-of-the-day-singmaster.md` |
 | `witness-3003` | 3003 appears 8 times in Pascal's triangle under the convention that counts both (n,k) and (n,n-k) and includes the trivial pair C(a,1)=C(a,a-1). Explicitly 3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6) with four mirrors.… | yes | checked | `research/notes/established-review.md` |
+
+## Contradictions
+
+Resolve these before building on either side.
+
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `(nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `—` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `extends` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `deweger-smallk-effective`
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `which` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `lists` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `only` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `(2` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `3)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `(2` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `4)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `(3` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `4)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `plus` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `(2` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) contradicts `5))` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -98,6 +120,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `mrstt-threshold-effective` (code/out/mrstt_leaves_witnesses_open.md) — asserted by the source, not proved there and not checked here
 - `ntip-vol1-primary-host` (research/summaries/number-theory-in-progress-vol1-preview.md) — asserted by the source, not proved there and not checked here
 - `oeis-a003016-row-count` (research/summaries/oeis-a003016-2026.md) — asserted by the source, not proved there and not checked here
+- `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) — asserted by the source, not proved there and not checked here
 - `siegel-integral-points-ineffective` (research/summaries/siegel-theorem-integral-points.md) — asserted by the source, not proved there and not checked here
 - `singmaster-1971-original` (research/summaries/singmaster-1971.md) — asserted by the source, not proved there and not checked here
 - `singmaster-1975-pell-family` (research/summaries/singmaster-fibonacci-1975.md) — asserted by the source, not proved there and not checked here
