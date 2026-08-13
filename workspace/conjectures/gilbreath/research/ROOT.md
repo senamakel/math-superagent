@@ -113,13 +113,25 @@ answers: are-our-block-lengths-reliable
   Odlyzko `10^13`, Killgrove–Ralston 1959 `k<63419`. **Digested.**
 - `odlyzko-publications-page`: bibliography only; confirms the Odlyzko 1993
   paper exists (pp. 373–380) but contains no statements. **No help for content.**
-- **Pending:** any *proved* theorem on a nontrivial Gilbreath-like class (e.g.
-  bounded-gap odds). Not yet in the library. (Chase 2024 and CHT 2026 are the
-  random/Cramér analogues, both landed; the *deterministic* bounded-gap class is
-  what Croft conjectured and Eppstein refuted — see claim
-  `anti-gilbreath-construction` in `notes/library-state.md`.)
+- `blair-morgan-2026-local-condition-frontier` and
+  `blair-morgan-2026-return-of-the-lemma` (Zenodo 10.5281/zenodo.19143644 and
+  .19144967, March 2026): the two working papers on the {0,2}-basin / frontier
+  formulation — the local-condition sufficiency theorem (Conjecture L
+  `|G_r[2]−G_r[1]| ≤ 2` ⇒ GC, verified numerically to 100,000 rows) and the
+  proved corridor obstruction (no pure minimal 8→7→6→5→4 erosion from Row 2).
+  **Landed and digested this build (full texts + summaries + claim blocks
+  `morgan-local-condition-sufficiency`, `morgan-frontier-basin-and-corridor-obstruction`).**
+- **Closed:** any *proved* theorem on a nontrivial deterministic
+  bounded-gap class. Not in the library and now shown to be unattainable by a
+  pure gap bound: for gap bound g, parity forces g=2 (the trivial consecutive
+  odds class, proved) or g≥4 (killed by Colonna's deletion counterexample —
+  claim `colonna-deletion-left-edge-failure`). Chase 2024 and CHT 2026 are the
+  random/Cramér analogues (both landed); Croft's bounded-gap generalisation is
+  refuted by Eppstein (`anti-gilbreath-construction` in
+  `notes/library-state.md`).
 
 The Odlyzko 1993 full text (block lemma with constant) is **landed** and has
-been re-derived here; a source proving a nontrivial restricted class remains
-the one open dependency. The three restricted classes above are stated from this
-run's own elementary proof, corroborated by the landed block-lemma sources.
+been re-derived here. A deterministic class theorem would need a non-gap
+hypothesis (CHT two-separated non-concentration); the three restricted classes
+above are stated from this run's own elementary proof, corroborated by the
+landed block-lemma sources.
