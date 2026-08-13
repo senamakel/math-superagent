@@ -1,0 +1,2 @@
+Phi(300) size 18281; members failing two_side: 0; non-members passing two_side: 0
+=> two_side EXACTLY equivalent to membership

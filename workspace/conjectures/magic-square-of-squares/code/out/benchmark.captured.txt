@@ -1,0 +1,9 @@
+[1] phi_pairs generation (exact distinct values)
+  phi_pairs(200): |Phi|=8156 in 0.01s
+  phi_pairs(400): |Phi|=32495 in 0.05s
+  phi_pairs(800): |Phi|=129870 in 0.20s
+  phi_pairs(1500): |Phi|=456137 in 0.69s
+[2] exact membership test in_phi rate
+  in_phi on 59384 valid candidate sums: 0.26s (229528/s), hits=0
+[3] plus_one_is_square prefilter pass rate
+  prefilter on 59347 valid sums: 0.22s; 0 survive (1+sum a rational square) = 0.000%

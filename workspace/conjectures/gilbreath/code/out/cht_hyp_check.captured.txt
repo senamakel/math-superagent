@@ -1,0 +1,13 @@
+primes <= 20000000: 1270607
+num normalized gaps a_n: 1270605
+max a_n = 89   (occurs at prime gap 180 between some consecutive primes)
+M = ceil(log2(89)) = 7
+check: 2^M = 128  >= max a_n = 89: True
+L = longest run of consecutive 0s = 2  (a_n=0 from n=1 to n=2)
+R_0 = 100 * L * 8^M = 100 * 2 * 8^7 = 419430400
+log10(R_0) = 8.6
+depth-1000 triangle reaches depth D=1000.
+R_0 >> 1000 ? True
+log2(R_0) = 28.6
+
+holds-here verdict: the CHT inverse theorem's R_0 threshold = 419430400, which ≫ 1000, so the no-{0,d}-block hypothesis is NOT satisfiable at any depth ≤ 1000 (actual row count needed ~ R_0). The theorem does not bite at reachable depths. holds-here = no

@@ -1,0 +1,2 @@
+N=300: |Phi|=18281; members failing triple_square: 0; reduced-fraction mismatches vs in_phi (B<=300): 0
+=> triple_square EXACTLY equivalent to in_phi
