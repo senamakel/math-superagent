@@ -80,14 +80,14 @@ blocks of the MSS are 3-square APs through the centre; Hulse gives analytic
 control of their count. Consistent with but independent of the run's
 algebraic |S(e)| formula. Not yet claim-blocked; scholar must digest.
 
-**Wolird (2023) — sourced, just re-downloaded** (arXiv:2310.12164, 11KB, real
-paper, was a 5.8KB arXiv abstract wrapper — fourth time a wrapper was fetched).
-Shows arithmetic triplets of Gaussian squares are in 3-to-1 correspondence
-with Pythagorean triples; an MSS solution over Q would generate non-trivial
-near-misses in Z[i] ("backwards result"). **Bearing**: extends the
-extension-field MSS picture from Bremner 1999 (Q(√3,√133)) into Gaussian
-integers; the correspondence is explicit and checkable. Not yet claim-blocked;
-scholar must digest.
+**Wolird (2023) — sourced, digested, holds-here: no** (arXiv:2310.12164, 11KB,
+real paper, was a 5.8KB arXiv abstract wrapper; `research/summaries/wolird-gaussian-transformation-magic-square-2023.md`,
+claim `wolird-gaussian-sibling-3-to-1`, status: asserted). Shows arithmetic
+triplets of Gaussian squares are in 3-to-1 correspondence with Gaussian
+Pythagorean triples (α²+β²+γ²=0); an MSS solution over Q would generate
+non-trivial near-misses in Z[i] ("backwards result"). **Bearing**: dead end
+for the proof goal — the author disclaims any bearing on existence; it is a
+Z[i] observational correspondence, distinct from Cain's quartic reformulation.
 
 **p-adic/modular obstruction to Φ no-triple — checked and bounded** (DIRECTIVE 8).
 `code/witness_padic_falsification.py` verified both near-miss witnesses
@@ -369,5 +369,7 @@ the Established section.
   7-square witness has exactly two half-realised endpoints; going 7 → 8 means
   realising one more.
 - **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
+  paper is now 78KB; the auto-generated summary still needs proper scholar
+  digestion.ull
   paper is now 78KB; the auto-generated summary still needs proper scholar
   digestion.

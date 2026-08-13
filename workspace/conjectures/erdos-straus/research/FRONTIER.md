@@ -6,7 +6,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 3 | http://math.uindy.edu/swett/esc.htm | http://math.uindy.edu/swett/esc.htm | [5] Swett Allan (1999), The Erdős-Straus conjecture, Current Research on ESC, rev.10/28/99. http://math.uindy.edu/swett/esc.htm [6] Yamamoto Koichi (1965), On the diophantine equation 4/n = 1/x + 1/y… |
+| 4 | http://math.uindy.edu/swett/esc.htm | http://math.uindy.edu/swett/esc.htm | [5] Swett Allan (1999), The Erdős-Straus conjecture, Current Research on ESC, rev.10/28/99. http://math.uindy.edu/swett/esc.htm [6] Yamamoto Koichi (1965), On the diophantine equation 4/n = 1/x + 1/y… |
 | 2 | https://arxiv.org/abs/1406.6307v1 | arXiv:1406.6307v1 | \| Number Theory (math.NT) \| MSC classes: \| 11D68 (Primary) 11N35 (Secondary) \| Cite as: \| [arXiv:1406.6307][5] [math.NT] \| \| (or [arXiv:1406.6307v1][6] [math.NT] for this version) \| \|… |
 | 2 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A073101 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A073101 - OEIS] [3] A073101 Number of integer solutions (x,y,z) to 4/n = 1/x + 1/y +… |
 | 2 | https://github.com/teorth/erdosproblems/blob/main/README.md#table | Erdős problem database | (On a Diophantine equation), Mat. Lapok, 1:192-210, 1050. Math. Rev. 13:208b. Erdős problems database contributors, [Erdős problem database][26], see no. 242. Ron Knott, [Egyptian Fractions][27] Eric… |
@@ -31,6 +31,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/abs/2602.20036v1 | v1 | to search &middot; [Advanced search][1] --> # Mathematics > Number Theory **arXiv:2602.20036**(math) [Submitted on 23 Feb 2026 ( [v1][2]), last revised 22 Mar 2026 (this version, v2)] # Title: A… |
 | 1 | https://arxiv.org/abs/2605.04551v1 | v1 | Enter to search &middot; [Advanced search][1] --> # Mathematics > Number Theory **arXiv:2605.04551**(math) [Submitted on 6 May 2026 ( [v1][2]), last revised 25 May 2026 (this version, v2)] # Title: A… |
 | 1 | https://github.com/esc-paper/erdos-straus | https://github.com/esc-paper/erdos-straus | language does not have integer limits, and checked the remaining integers in C++ using the arbitrary-precision integer library GMP 1 1 1 [https://github.com/esc-paper/erdos-straus][3]. The inability… |
+| 1 | https://arxiv.org/abs/2502.20935 | arXiv:2502.20935 [math.NT] | Partial Resolution of the Erdos-Straus, Sierpinski, and Generalized Erdos-Straus Conjectures Using New Analytical Formulas, preprint, [arXiv:2502.20935 [math.NT]][5], 2026. - [2] T. Tao, The number… |
 | 1 | https://arxiv.org/abs/1102.1643 | — | pp., Bonner Math. Schriften, 360, Univ. Bonn, Bonn, 2003 [24] K. Henriot, Nair-Tenenbaum bounds uniform with respect to the discriminant, arXiv:1102.1643 [25] C. Hooley, On the number of divisors of… |
 | 1 | https://arxiv.org/html/1908.02526v2 | HTML (experimental) | a PDF of the paper titled Brauer-Manin obstruction for Erd\H{o}s-Straus surfaces, by Martin Bright and 1 other authors [View PDF][5] [HTML (experimental)][6] Abstract: We study the failure of the… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Bogdan,+D+C | Dumitru C. Bogdan | on 29 Aug 2025] # Title: Further verification and empirical evidence for the Erdős-Straus conjecture Authors: [Spiridon Mihnea][2], [Dumitru C. Bogdan][3] View a PDF of the paper titled Further… |
@@ -45,6 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://doi.org/10.1090/S0002-9947-01-02782-9 | Sums Of k Unit Fractions | n = 1..1000][20], (corrected by [Peter Luschny][21], Jan 19 2019) Thomas Bloom, [Problem 242][22], Erdős Problems. Christian Elsholtz, [Sums Of k Unit Fractions][23], Trans. Amer. Math. Soc. 353… |
 | 1 | https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/ErdosProblems/242.lean | Yes | was last edited 07 May 2026. [View history][18] External data from [the database][19] - you can help update this Formalised statement? [Yes][20] Related OEIS sequences: [A073101][21] [A075245][22]… |
 | 1 | https://mathworld.wolfram.com/EgyptianFraction.html | Egyptian Fraction | contributors, [Erdős problem database][26], see no. 242. Ron Knott, [Egyptian Fractions][27] Eric Weisstein's World of Mathematics, [Egyptian Fraction][28] Wikipedia, [Erdős-Straus conjecture][29]… |
-| 1 | https://oeis.org/A075246 | A075246 | from [the database][19] - you can help update this Formalised statement? [Yes][20] Related OEIS sequences: [A073101][21] [A075245][22] [A075246][23] [A075247][24] [A075248][25] [A287116][26] [18… |
 
-_125 further candidates not shown; they are cited once each._
+_127 further candidates not shown; they are cited once each._

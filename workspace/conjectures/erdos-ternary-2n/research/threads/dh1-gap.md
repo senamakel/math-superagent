@@ -1,9 +1,11 @@
 ```thread
-question: What precisely does DH-1 leave open, and can the sieve dynamics improve the "26 ones" bound?
+question: What precisely does DH-1 leave open, and can Lagarias's density bound and DH-1 be combined?
 status: live
-rests-on: DH-1, SIEVE-EXACT, ternary-sieve-count-doubles, DENSE-ORBIT
+rests-on: DH-1, SIEVE-EXACT, ternary-lifting-theorem, LAG-2, DENSE-ORBIT
 blocked-by: none
-next: state the gap exactly; identify what structural fact about the 3-adic orbit constrains how many ones can appear without a 2
+next: state the gap exactly; identify what improving the 26 would take; work out
+  whether the DH shape constraint plus the O(X^{log_3 2}) count constraint
+  forces more than either alone
 ```
 
 # Building on DH-1 — the state of the art

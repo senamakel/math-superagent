@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[dh1-gap]] | What precisely does DH-1 leave open, and can the sieve dynamics improve the "26 ones" bound? | open | DH-1, SIEVE-EXACT, ternary-sieve-count-doubles, DENSE-ORBIT | state the gap exactly; identify what structural fact about the 3-adic orbit constrains how many ones can appear without a 2 |
+| [[dh1-gap]] | What precisely does DH-1 leave open, and can Lagarias's density bound and DH-1 be combined? | open | DH-1, SIEVE-EXACT, ternary-lifting-theorem, LAG-2, DENSE-ORBIT | state the gap exactly; identify what improving the 26 would take; work out whether the DH shape constraint plus the O(X^{log_3 2}) count constraint forces more… |
 | [[lean-formalization]] | Can the lifting theorem (\|A_k\| = 2^(k-1) for all k) be formalised in Lean 4 with Mathlib? | open | ternary-lifting-theorem | write the three lemmas in Lean 4; report #print axioms and every sorry |
 | [[lifting-proof]] | Is the 2-to-1 lifting of A_k provable via LTE, giving \|A_k\| = 2^(k-1) unconditionally? | dead | ternary-sieve-count-doubles, SIEVE-EXACT, SAYE-2, SAYE-3 | superseded by Lean formalisation (lean-formalization) and DH-1 × Lagarias (dh1-gap) |
 
