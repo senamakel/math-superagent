@@ -27,34 +27,47 @@ lambda, or a nested `def` cannot be pickled into a child process and the pool
 will fail. Pass what it needs as arguments, or read it from a module-level
 constant.
 
-## Worked example — `phi_set` from `phi_padic_closure_all.py`
+## Worked example — the residue sieve
+
+The sieve is the whole method here. `A_k` is the set of residues
+`r mod 2*3^(k-1)` for which the low `k` ternary digits of `2^r mod 3^k` avoid
+the digit 2. Testing one residue is independent of every other, so this is the
+ideal shape for a pool.
 
 Before, single core:
 
 ```python
-def phi_set(M):
-    return {f_frac(m, n) for m in range(2, M + 1) for n in range(1, m)}
+def sieve(k):
+    mod, per = 3**k, 2 * 3**(k-1)
+    return {r for r in range(per) if digit_free_mod(pow(2, r, mod), k)}
 ```
 
 After, 26 cores, **same set**:
 
 ```python
-def _phi_rows(rows):                      # top level, so it can be pickled
-    return {f_frac(m, n) for m in rows for n in range(1, m)}
+K = 12                                    # module-level, so children see it
 
-def phi_set(M):
+def _sieve_rows(residues):                # top level, so it can be pickled
+    mod = 3**K
+    return {r for r in residues if digit_free_mod(pow(2, r, mod), K)}
+
+def sieve(k):
+    per = 2 * 3**(k-1)
     return parallel_union(
-        _phi_rows,
-        stripes(list(range(2, M + 1)), workers()),
-        label="phi_set",
-        space=f"m = 2..{M}",
+        _sieve_rows,
+        stripes(list(range(per)), workers()),
+        label=f"sieve k={k}",
+        space=f"r = 0..{per-1} mod 3^{k}",
     )
 ```
 
-`stripes` deals the `m` values out round-robin rather than in blocks. That
-matters here because the loop is triangular — work grows linearly in `m`, so a
-contiguous split hands one worker the entire expensive tail and you get almost
-no speed-up. Striping balances it to within one row.
+`stripes` deals the residues out round-robin. Here the cost per residue is
+near-uniform, so balance matters less than it does for a triangular loop — but
+striping costs nothing and keeps the helper interchangeable.
+
+Note `pow(2, r, mod)`: never build `2**r` and reduce afterwards. Modular
+exponentiation is the difference between a sieve that runs and one that
+exhausts memory.
 
 ## Which helper
 
