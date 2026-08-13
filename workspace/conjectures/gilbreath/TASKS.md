@@ -1,33 +1,44 @@
 # Tasks
 
-## Directive 27 (steer): wider_width_extend results — gap corroborated, growth law unsettled
+## Directive 28 (steer): Width-capping correction + extend sieve for more genuine giants
 
-wider_width_extend (sieve 3e8, 16.25M primes, depth 240) is DONE. Results:
+**Directive 28 stated row 238's giant (j=5,596,824, land=16,252,084) is genuine
+because landing 16.2M against "width 3e8." This is a unit error.** 3e8 is the
+sieve bound, not the row width. Row width at row 239 is π(3e8) − 239 ≈
+16,252,086, and b₂₃₉ = 16,252,084 fills the row — flooring = 1, intruder None,
+k* = 239. Both capture files already record it as capped. The 14 genuine gaps
+remain [22,8,4,26,2,14,2,14,4,4,12,15,13], max=26, and the gap-trend OLS
+(slope −0.818, R² 0.109) is already on disk from Directive 25. Step 6 of the
+chain is NOT in doubt from this data; the claimed "gaps roughly doubling"
+(12, 28, 64) came from including a capped artifact as though genuine.
 
-- Two new genuine giants: row 162 (j=4,323,712) and row 175 (j=5,237,310)
-  — the capped i=161 is resolved.
-- Inter-giant gaps (14 genuine): 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13.
-  **Max = 26, UNCHANGED.** The two new gaps (15, 13) land inside the existing
-  range. Bounded-gap observation survived a width extension on never-seen data
-  — this is corroboration.
-- Growth law NOT DETERMINED: the 13th ratio (4.95) reverses the declining-ratio
-  trend Directive 25 used to argue sublinearity. Geometric R² improved to
-  0.9607 (from 0.942), per-event factor 1.751 (from 1.68). The honest position
-  is that the growth law is unsettled — both geometric and sublinear descriptions
-  fit this data, and the 14th point (13th ratio) broke the sublinear reconciliation.
-- **This does not damage the chain.** Step 7 needs bounded gap + j → ∞. Both
-  still hold: max gap unchanged at 26, j is growing faster than previously
-  measured (factor 1.751 vs 1.68). Only the sub-claim about which growth law
-  applies is unsettled.
+The parity result (14 of 15 giant pre-jump rows even, 14 of 14 with row 161
+excluded; p ≈ 0.0008 vs plain 1/2 null) is recorded in
+`research/notes/pattern_finder_wider_giants.md` as
+`giant-parity-even-pre-jump-rows` — status: checked numerically, suggestive,
+not established (post-hoc-with-two-confirmations), falsifier = a second
+odd-pre-jump-row giant.
 
 ### Immediate (in order)
 
-- [ ] **1. Update thread and claim for Directive 27.** DONE — `research/threads/regeneration.md`
-  updated with new giants, growth-law status, wider-width results. Claim
-  `directive25-gap-trend-and-reconciliation` downgraded (reconciliation contradicted,
-  gap strengthened). CONTEXT.md updated.
+- [ ] **1. Extend the sieve to capture genuinely new giants past row 238.**
+  The 3e8 sieve covers the live regime only to row 238; the 15th "giant" at
+  row 238→239 is the finite-width artifact of that sieve. To test the
+  bounded-gap claim on new data, extend the sieve past 3e8 so the live regime
+  (rows with intruder defined) reaches at least row 300. Use the same generator
+  and width-degradation test as `wider_width_extend`. Report: k*, genuine giant
+  rows, inter-giant gaps, max gap, and whether any new gap exceeds 26.
+  Anchor pattern: `code/out/wider_width_extend.captured.txt`.
+  **Budget:** single-threaded, O(W) memory, < 8 GiB. Say the sieve bound and
+  expected runtime before launching.
 
-- [ ] **2. Provability question (Directive 26 core, still open).** Before attempting
+- [ ] **2. Update thread and CONTEXT.md with width-capping correction.**
+  `research/threads/regeneration.md`'s thread-header status currently says
+  "max gap now 64 (175→239 drought)" — that is WRONG; row 239 is a
+  width-capped artifact, not a genuine giant. Restore the 14-genuine-giant
+  record (max=26) and remove the superseded claim. DONE — this edit.
+
+- [ ] **3. Provability question (Directive 26 core, still open).** Before attempting
   a proof: does "the gap between consecutive (2,4)-events is bounded" follow from
   anything known about prime gaps, or is it equivalent to something hard? Three branches:
   - **Corollary of known results:** prime gaps are O(p^θ) with θ≈0.525, but does
@@ -38,7 +49,7 @@ wider_width_extend (sieve 3e8, 16.25M primes, depth 240) is DONE. Results:
   - **Neither:** a new isolated statement, not known hard. Name the obstruction.
   `request_research` if the answer depends on a source the library does not have.
 
-- [ ] **3. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
+- [ ] **4. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
   `b.txt, bits.txt, diffs.txt, intruder.txt, jumps.txt, minima_b.txt,
   minima_rows.txt, regen_rows.txt, s.txt, s_runs0.txt, s_runs2.txt,
   b_genuine.txt` — 12 files. Canonical copies in

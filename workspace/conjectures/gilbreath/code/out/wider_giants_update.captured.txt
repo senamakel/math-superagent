@@ -1,0 +1,14 @@
+depth-1000: P=1270607 D=1000  wider: P=16252325 D=300
+b agreement rows 1..161: True
+row-161 b (0-based 160): depth1000=1094263 wider=1094263
+wider events with jump>0: 276
+giants (jump>1000): 15
+k* (first row with no intruder): None
+Traceback (most recent call last):
+  File "/workspace/code/pattern_finder/wider_giants_update.py", line 49, in <module>
+    live = [(r, bk, bl, j) for (r, bk, bl, j) in giants if r < kstar]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/pattern_finder/wider_giants_update.py", line 49, in <listcomp>
+    live = [(r, bk, bl, j) for (r, bk, bl, j) in giants if r < kstar]
+                                                           ^^^^^^^^^
+TypeError: '<' not supported between instances of 'int' and 'NoneType'
