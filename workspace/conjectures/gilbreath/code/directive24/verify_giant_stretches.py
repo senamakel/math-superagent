@@ -22,7 +22,6 @@ Also: snapshot length == 12, landing block of row 161 (capped artifact) is
 the 13th giant cross-checked in the main program, and total j = 1,091,362.
 """
 import json
-import math
 from itertools import pairwise
 from collections import Counter
 
@@ -75,10 +74,10 @@ def main():
     assert len(primes) == WANTED
     # different iterator: itertools.pairwise
     row = primes
-    rows = {0: row}
+    rows = [row]
     for r in range(1, 148):
-        row = [math.dist((a,), (b,)) for a, b in pairwise(row)]
-        rows[r] = row
+        row = [abs(a - b) for a, b in pairwise(row)]
+        rows.append(row)
 
     for e in snap['events']:
         k = e['k']
@@ -109,10 +108,10 @@ def main():
         assert longest_runs_by_value(v_runs) == e['longest_per_value'], \
             (k, 'value runs')
         # (c) landing bits
-        bits_runs = rle_of([r[k + 1][i] // 2 for i in range(bcur, bnxt + 1)])
+        bits_runs = rle_of([rows[k + 1][i] // 2 for i in range(bcur, bnxt + 1)])
         assert bits_runs == e['bits'], (k, 'bits rle')
         assert all(v <= 1 for v, c in bits_runs), (k, 'bits values')
-        assert r[k + 1][bnxt + 1] not in (0, 2), (k, 'block maximality')
+        assert rows[k + 1][bnxt + 1] not in (0, 2), (k, 'block maximality')
         zero_runs = [c for v, c in bits_runs if v == 0]
         one_runs = [c for v, c in bits_runs if v == 1]
         assert sum(zero_runs) == e['zc'] and sum(one_runs) == e['oc'], (k, '01 counts')
@@ -121,7 +120,7 @@ def main():
         # (d) control: stretches of row k, halved positions 1..L-1
         halves = [r[i] // 2 for i in range(1, len(r))]
         L = len(halves)
-        bound = [i for i in range(1, L) if math.dist((halves[i - 1],), (halves[i],)) > 1]
+        bound = [i for i in range(1, L) if abs(halves[i - 1] - halves[i]) > 1]
         cuts = [0] + bound + [L]
         stretches = []
         for a, z in zip(cuts, cuts[1:]):
@@ -141,8 +140,8 @@ def main():
         assert e['n_stretch'] == len(stretches), (k, 'n stretch')
         # generating stretch's left part: consecutive Lipschitz steps
         # connecting halves indices 0..bcur-1 (row positions 1..bcur)
-        assert all(math.dist((halves[t - 1],), (halves[t],)) <= 1
-                   for t in range(1, bcur)), (k, 'left chain')
+        assert all(abs(halves[t - 1] - halves[t]) <= 1 for t in range(1, bcur)), \
+            (k, 'left chain')
         if e['runner'] is not None:
             runner = max(((a, z) for a, z in stretches if not (a <= bcur - 1 < z)),
                          key=lambda t: t[1] - t[0])
