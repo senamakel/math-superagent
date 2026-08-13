@@ -6,8 +6,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 5 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A000232 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A000232 - OEIS] [3] A000232 Construct a triangle as in [A036262][4]. Sequence is one… |
-| 5 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][47] [Format][48] [Style Sheet][49] [Transforms][50] [Superseeker][51] [Recents][52] [The OEIS Community][53] Maintained by [The OEIS Foundation Inc.][54] Last modified August 13 02:40… |
+| 6 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A000232 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A000232 - OEIS] [3] A000232 Construct a triangle as in [A036262][4]. Sequence is one… |
+| 6 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][47] [Format][48] [Style Sheet][49] [Transforms][50] [Superseeker][51] [Recents][52] [The OEIS Community][53] Maintained by [The OEIS Foundation Inc.][54] Last modified August 13 02:40… |
 | 4 | http://browsehappy.com/ | upgrade your browser | Empirical Structure of the Gilbreath Decay Constants \| Zenodo Skip to main You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience. Published July 12, 2026 \|… |
 | 3 | https://doi.org/10.1090/S0025-5718-1993-1182247-7 | Iterated absolute values of differences of consecutive primes | in Valid-Extension Sets of Finite Gilbreath Sequences][23], arXiv:2606.23721 [math.CO], 2026. See p. 28 (Sect. 14.1). Andrew M. Odlyzko, [Iterated absolute values of differences of consecutive… |
 | 3 | https://doi.org/10.5281/zenodo.21326025 | zenodo.21326025 | Gilbreath’s conjecture*, Math. Ann. **388**(2024), 2611–2625. 7. M. M. Ross, *Empirical Structure of the Gilbreath Decay Constants*, [zenodo.21326025][3], July 2026. 8. T. Tao, *Gilbreath decay… |
@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://terrytao.wordpress.com/2010/10/16/245a-notes-5-differentiation-theorems/comment-page-4/#comment-693763 | 245A, Notes 5: Differentiation… | Tao's avatar] [31] \| [Terence Tao][31] on [245A, Notes 1: Lebesgue m…][44] \| [image: Terence Tao's avatar] [31] \| [Terence Tao][31] on [245A, Notes 5: Differentiation…][45] \| [image: RobertJDicks1's… |
 | 2 | https://terrytao.wordpress.com/2010/10/16/245a-notes-5-differentiation-theorems/comment-page-4/#comment-693780 | 245A, Notes 5: Differentiation… | Terence Tao's avatar] [31] \| [Terence Tao][31] on [245A, Notes 5: Differentiation…][32] \| [image: Unknown's avatar] \| Anonymous on [245A, Notes 5: Differentiation…][33] \| [image: Unknown's avatar] \|… |
 
-_405 further candidates not shown; they are cited once each._
+_409 further candidates not shown; they are cited once each._
