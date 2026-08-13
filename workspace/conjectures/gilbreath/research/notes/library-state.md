@@ -124,6 +124,24 @@ anchor: research/summaries/oeis-A000232-bfile-block-lengths.md; code/out/witness
 - **Gardner, Scientific American Dec 1980**: paywalled; bibliographic record (ERIC EJ235152) and its mapping into *The Last Recreations* ch. 12 (Peter Rowlett's Gardner index) confirm content, which is already covered by Caldwell's glossary and MathWorld.
 - **Gilbreath, "Processing process: the Gilbreath conjecture", J. Number Theory 131 (2011) 2436–2441**: paywalled at ScienceDirect; abstract-level metadata only.
 
+## Crank-alert: unrefereed "resolutions" of Gilbreath's conjecture — never cite
+
+Two preprints found on Zenodo claim a complete proof of Gilbreath's
+conjecture. Both are single-author, h-index 0, 0 citations, unrefereed, and
+argue from bespoke frameworks (not number theory): (1) Hedi ZARKOUNA,
+"Gilbreath's Conjecture Demystified by the Absolute Space (AIT)",
+Zenodo 10.5281/zenodo.20577831 (2026-06-07), book chapter — claims convergence
+to a static "invariant vector V = [1,2,0,0,…]" via an "Arithmetic Index
+Theory", primes as a subset of a generating function; (2) Okolo, Hanyelichukwu
+Paul, "A Resolution of Gilbreath's Conjecture and the Principle of Invariant
+Dissipation", Zenodo 10.5281/zenodo.16658834 (2025-08-01) — argues from an
+"Organized Complexity" framework, a "Harmonic Divisor Fan lattice", and an
+"axiom of Global Harmony". Neither engages the block/regeneration structure the
+run has proved, and neither has been checked by anyone. They are recorded here
+so that no agent in this run mistakes a Zenodo "resolution" for a result; the
+conjecture remains open as of the current literature (Colonna 2026 verification
+to 1.5×10^15, nothing more).
+
 ## New holdings this cycle (July 2026 update)
 
 ```claim
@@ -197,6 +215,16 @@ anchor: research/sources/wikipedia-gilbreaths-conjecture.full.md
 ```
 
 ## The Gilbreath-polynomial route (MDPI 2023, recorded by search digest only)
+
+```claim
+id: gatti-2020-not-load-bearing
+statement: gatti-2020-preprints-gilbreath-conditions (doi 10.20944/preprints202003.0145.v1, 8 Mar 2020, 10pp, NOT PEER-REVIEWED, 0 views 0 downloads 0 comments) is a claimed "proof of conditions" for GC via a global valid-extension equation (Eq. 2: signed sum of the whole right anti-diagonal) and an induction on prime bounds. Its Theorem 4 proof is LOCATED INVALID (right-inequality assumes conclusion), Lemma 4 interval-completeness of K_S is REFUTED by Muney 2026 (holes at length 5) and by hand example S={2,3,5} (|K_S|=5, not 2^{n−1}=4). The valid-extension formula (Eq. 2–3) is sound general-class machinery already extracted into claims above and is independently held from Alkan 2023 and Muney 2026. The paper contains no lemma testable against code/out/blocks_depth1000.json or the run's {0,2} data that is not already covered. The 2023 MDPI polynomial claim (gilbreath-polynomials-imply-gc) is a DIFFERENT paper (Mathematics 11(18):4006) whose PDF remains 403-unobtainable; the 2020 preprint does not contain the polynomial inequality.
+hypotheses: none load-bearing beyond what is already extracted.
+holds-here: classified as not-load-bearing — same class as granville-2026-piercing-gilbreath-not-load-bearing. Do not re-download or re-fetch.
+status: source held, claims extracted, invalid-proof located; the wrapper-page download destroyed the frontier on 2026-08-13 (recorded: research/notes/frontier-collapse-alarm.md). The filter on FRONTIER.md prevents recurrence.
+bearing: prevents re-fetching; the sound parts (valid-extension global formula, parity alternation) are already claims above.
+anchor: research/sources/gatti-2020-preprints-gilbreath-conditions.full.md; research/summaries/gatti-2020-preprints-gilbreath-conditions.md
+```
 
 ```claim
 id: gilbreath-polynomials-imply-gc
@@ -327,6 +355,8 @@ stored the text there; a re-download is refused as a duplicate). The Gatti
 general-class statement independent of the primes — claim
 `gatti-2020-parity-alternation-independent` lives in
 `research/summaries/gatti-2020-preprints-gilbreath-conditions.md`.
+
+## New holdings this cycle (librarian, this build) — the Ducci-sequence literature
 
 The two proposed approaches `ducci-potential-max-decrease` and
 `p-adic-valuation-carry-dynamics` were grounded in their primary literature

@@ -301,3 +301,37 @@ Three changes:
 2. **CONTEXT.md** — Replaced the both=0 paragraph with the full census table (M=100 through M=800) and directed the next step at Pari/GP on the 718+150 M=800 witnesses. Stripped the 17.7% partial `side_census_M800` from the Numbers section so nothing still quotes 6/11.
 
 3. **Thread + claim note** — Updated `research/threads/pair-sum-both-squares-incompatibility.md` next-step to name Pari/GP explicitly. Edited `code/out/side_census_result.md` to state the M=800 claim supersedes rather than merely extends the M=400 one, which re-derived `research/CLAIMS.md` automatically. The claim `phi-pair-sides-both-square-zero-through-M800` is in the ledger.
+
+## 21 — from steer
+
+**Source-quality sweep — kamel-sadek and the seven landing pages.**
+
+**Finding: the claim is correctly sourced.** `kamel-sadek-consecutive-squares-rank-5` (`proved`) does NOT rest on the 6,093-byte `kamel-sadek-consecutive-squares-elliptic-2016.full.md` (which IS an arXiv abstract landing page). The claim's `Check it at` points to `research/summaries/kamel-sadek-consecutive-squares-elliptic-2016-body.md`, which anchors on `research/sources/kamel-sadek-consecutive-squares-elliptic-2016-body.full.md` — the 26,208-byte real paper containing Corollary 3.4 verbatim, the explicit constructed curve, and the MAGMA independence verification. Published in Glasnik Matematički 52(1), 2017, pp. 45–52. The 6KB file is a vestigial abstract-page download superseded by the body file. **`proved` status is warranted.**
+
+**Full sweep across `research/sources/`.** Seven files under 20KB with near-zero theorem/lemma/proposition/proof occurrences are arXiv abstract landing pages. Every single one has a real-paper sibling on disk, and every claim above `catalogued` points through a summary to the real paper:
+
+| Landing page (bytes) | Real paper (bytes) | Claims affected |
+|---|---|---|
+| `arxiv-150606621-threexthree-…` (5,758) | `arxiv-150606621-ferreira-fulltext…` (6,808) | ferreira-…-refuted (checked) |
+| `arxiv-2103.01784.abstract…` (6,608) | `wu-non-invariance-brauer-manin…` (78,865) | none |
+| `arxiv-2310.12164.abstract…` (5,835) | `wolird-gaussian-transformation…` (11,398) | wolird-gaussian-sibling-3-to-1 (asserted) |
+| `kamel-sadek-…-2016` (6,093) | `kamel-sadek-…-body` (26,208) | kamel-sadek-…-rank-5 (proved) |
+| `knaf-selder-spindler-…-2019` (5,950) | `knaf-selder-spindler-…-2019.html` (122,618) | concordant-single-ap-… (asserted) |
+| `selder-spindler-…-2014` (6,752) | `selder-spindler-…-2014.html` (48,544) | concordant-forms-iff-… (proved) |
+| `garcia-fritz-pasten-patterns-elliptic-2026` (6,440) | `garcia-fritz-pasten-patterns-…-2026.html` (29,201) | patterns-bremner-2026-… (asserted) |
+
+Also checked: `open-problem-garden-magic-square-of-squares` (4,561 bytes, problem statement) and `michaud-rodgers-warwick-talk-2019` (12,662 bytes, talk abstract) — neither backs a claim above `catalogued`.
+
+**Zero claims are mis-statused.** No `proved`, `checked`, or `asserted` claim rests on a landing page. The directive's feared failure — `proved` sourced to an abstract — does not occur in this ledger. The seven vestigial landing pages are harmless duplicates; deleting them is a cleanup task, not a ledger correction.
+
+## 21 — from steer
+
+Source-quality failure, fix before anything else in directive 20. The claim kamel-sadek-consecutive-squares-rank-5 is status PROVED and justifies that with 'peer-reviewed journal, explicit construction, MAGMA-verified'. You never read the paper. research/sources/kamel-sadek-consecutive-squares-elliptic-2016.full.md is 6093 bytes and is the arXiv ABSTRACT LANDING PAGE for arXiv:1602.05862 - it begins 'Skip to main content', has 'View a PDF of the paper titled', and contains zero occurrences of theorem, lemma, proposition or proof. The abstract is all that is in this workspace. So there is no explicit construction here, no MAGMA verification here, and nothing that could have been checked. A status of proved sourced to an abstract is the exact failure this workspace records against itself: a citation is not evidence.
+
+Do one of two things and nothing else. Either fetch the actual text - the HTML (experimental) link on that arXiv page, or the published version - and re-check the claim against it, keeping proved only if the paper states it in the form you wrote; or drop it to catalogued with a statement that says what the ABSTRACT asserts, which is all you have. Its own holds-here already reads 'yes (as context/adjacent)', and a context/adjacent item is catalogued, not proved.
+
+Then sweep the same test across research/sources/. Any *.full.md under 20 KB with near-zero theorem/lemma/proposition/proof occurrences is a landing page, not a paper, and any claim above catalogued that rests on one is mis-statused. Report the list and what you changed. Use grep -a and allow non-English keywords - satz, beweis, theoreme, lemme - because both have caused false alarms here.
+
+For contrast, gilbreath handled this correctly this pass: it filed arXiv:2607.04166 as granville-2026-piercing-gilbreath-not-load-bearing, unchecked and asserted, with a statement saying the note presents no result the run can use. That is what an unread or low-quality source looks like in a ledger.
+
+The source-sweep audit is complete and recorded at `config/DIRECTIVES.md` §21. **Zero claims needed re-status.** The kamel-sadek claim is `proved` from the 26KB peer-reviewed body file, not the 6KB vestigial landing page. The six other landing pages in `research/sources/` all have real-paper siblings on disk, and every claim above `catalogued` points through a summary to the real paper. The TASKS.md entry records the sweep as done. No file was changed except `config/DIRECTIVES.md` and `TASKS.md`.

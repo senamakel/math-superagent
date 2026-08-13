@@ -57,12 +57,14 @@ def ks_by_formula(s):
     while len(tri[-1]) > 1:
         cur = tri[-1]
         tri.append([abs(cur[i] - cur[i + 1]) for i in range(len(cur) - 1)])
-    # anti-diagonal entries s^b_a with a + b = n  (0-based row b, col a), a>=1... n-1
+    # anti-diagonal entries s^b_a for Gatti Eq. 2: k = ±s^{n-1}_1 ± s^{n-2}_2 ± ... ± s^1_{n-1} + s_n ± 1.
+    # With 0-based tri[b][a]: s^b_a (1-based) = tri[b][a-1]; the terms are tri[b][n-1-b]
+    # for b = 1..n-1 (the apex tri[n-1][0] down to tri[1][n-2]). Row 0 (s_n) is added
+    # separately below; including it here is the classic off-by-one that breaks the formula.
     anti = []
-    for b in range(0, n - 1):          # rows 0..n-2 of the triangle
-        a = n - 1 - b                  # col such that a + b = n-1  (0-based, so original index a+1)
-        if a > 0:
-            anti.append(tri[b][a])
+    for b in range(1, n):            # b = 1..n-1 (0-based triangle rows)
+        a = n - 1 - b                # 0-based column of s^b_{n-b}: apex at b=n-1, a=0
+        anti.append(tri[b][a])
     vals = set()
     for signs in product([-1, 1], repeat=len(anti)):
         for tail in (-1, 1):

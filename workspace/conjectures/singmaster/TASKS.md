@@ -4,85 +4,82 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Priority work (directive 9)
+## Priority work (directive 10)
 
-- [ ] **1. Re-derive the genus closed-form substitutions.** The formula
-      `g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2` was checked against 111 Singular
-      entries by the operator, not by the run. Verify it yourself: re-derive the
-      substitutions that reduce it to the m=2,3,4 per-family formulas and to
-      (n-1)(n-2)/2 on adjacent pairs. Then spot-check three (m,n) pairs the grid
-      has NOT yet computed — pick pairs beyond the existing range, compute them
-      with Singular, and confirm the formula predicts them. The claim is in
-      CLAIMS.md as `genus-single-closed-form-all-pairs` status `checked`; do not
-      change its status to `proved`. It stays `checked` until a derivation
-      produces it.
+- [ ] **1. Prove the genus formula — the one item that can move `proved` off 2.**
+      The formula `g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2` is `checked` (111
+      Singular values, zero mismatches) but not `proved`. Directive 10 supplies
+      the derivation path, which is bounded and finishable:
 
-- [ ] **2. Derive the genus formula from Riemann-Hurwitz.** The formula is
-      `g = ((m-1)n - (m-2) - gcd(n,m))/2`. The `gcd(n,m)` term has the shape of a
-      ramification count for the projection `(x,y) -> x` on `C(x,m) = C(y,n)`,
-      and the `(m-1)n - (m-2)` term is the plane-curve degree formula minus the
-      diagonal factor. This is a bounded, finishable task: apply
-      Riemann-Hurwitz to that map, compute the ramification divisor, and show
-      `gcd(n,m)` emerges as the count of points where the fibre cardinality
-      drops. When the derivation is written in `code/out/` and checked against
-      the 111 Singular values with zero mismatches, the claim becomes `proved`.
+      **(a)** Verify the symmetric rewrite is an algebraic identity (one line):
+      `(m-1)n - (m-2) = mn - n - m + 2 = (m-1)(n-1) + 1`, so
+      `g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n))/2`. Symmetry in m,n is now on the
+      face of it. Already done in `code/out/genus_symmetric_form.md`.
 
-- [x] **3. Fix the false two-CAS claim in genus_table.captured.txt.** DONE.
-      The sentence now reads that the original grid and k2=3,4,5 extended rows
-      were checked by both Singular and Sage, but the 23 newest rows (k2=6..10)
-      rest on Singular alone because `pattern_sage_check_k2_6.captured.txt` is a
-      `NameError` — Sage never ran. Do not describe the new rows as
-      independently verified.
+      **(b)** The coprime case `gcd(m,n)=1` gives `g = (m-1)(n-1)/2 = p_a/2`
+      exactly — a factor of two, which means a quotient. The curve
+      `C(x,m) = C(y,n)` has bidegree `(m,n)` on `P^1×P^1` with arithmetic
+      genus `p_a = (m-1)(n-1)`. The involution is:
+      `C(k-1-z, k) = (-1)^k C(z,k)` — negating each of the k linear factors —
+      so the curve carries `x -> m-1-x` and `y -> n-1-y` for even degrees,
+      and their product when both are odd. Riemann-Hurwitz on the quotient by
+      this involution should produce `g = p_a/2` for the coprime case, and the
+      `gcd(m,n)` correction is the term measuring where the involutions and
+      branch loci interact.
 
-- [ ] **4. Maintain effective/uniform-in-k discipline on every new claim.**
-      The ledger is at 41 asserted, 7 checked, 2 proved. The genus formula claim
-      says explicitly that it gives neither an effective bound nor uniformity in
-      k — Faltings is per-pair and ineffective regardless of how cheap the genus
-      computation becomes. Every new claim the run files must say whether its
-      bound is effective and whether it is uniform in k. Do not add claims that
-      fail to state both.
+      **(c)** Do the singularity count at the points at infinity where the
+      bidegree curve meets the boundary of `P^1×P^1`. The total delta invariant
+      prediction is `((m-1)(n-1) - 1 + gcd(m,n))/2`. Prove that.
 
-- [ ] **5. Assertion backlog: 41 asserted, 7 checked, 2 proved.** Convert or
-      drop; do not add. Every asserted claim that cannot be checked or sourced
-      should be demoted.
+      **(d)** When the derivation is written in `code/out/` and checked against
+      the 111 Singular values with zero mismatches, promote the claim from
+      `checked` to `proved`. This moves `proved` from 2 to 3. The genus formula
+      remains NOT effective and NOT uniform in k — Faltings is still per-pair
+      and ineffective. This is a proof of the genus, not progress on Singmaster,
+      and the claim block must say so.
 
-## Priority work (directive 8, still live)
+- [ ] **2. The assertion backlog is now 45 asserted, 7 checked, 2 proved.**
+      Converting one checked claim to proved (item 1) is the single highest-
+      value ledger operation. After that, convert or drop asserted claims;
+      do not add new ones. Every asserted claim that cannot be checked or
+      sourced should be demoted.
 
-- [ ] **6. Run the seven uncaptured programs in one batch.** The only one with a
-      capture is `genus_table`. Run the rest, adjusting paths for the three that
-      sit in subdirectories:
+- [ ] **3. Run the five uncaptured programs.** The only one with a capture is
+      `genus_table`. Run the rest, adjusting paths for the three in
+      subdirectories:
       ```sh
       for p in genus/verify_superelliptic_formula pattern/fam_seqs genus/test_slope_across_rows genus/test_slope_hypothesis effectivegenus/rep_pairs genus/verify_k2_5_row pattern/print_family; do
         timeout 300 python3 code/$p.py 2>&1 | tee code/out/$(basename $p .py).captured.txt
         echo EXIT_CODE=$? >> code/out/$(basename $p .py).captured.txt
       done
       ```
-      Anything that fails, delete or fix — a program neither run nor removed is
-      dead weight that inflates code files against captured output.
+      Delete or tombstone any that fail — a program never executed is not evidence.
 
-- [ ] **7. Register the k2=5 closed form as established.** `genus[{5},n] = 2n-2
-      except 2n-4 when 5|n` — exact on all 19 points n=6..24, zero mismatches,
-      operator-confirmed. Now subsumed by the single genus formula but still
-      worth recording as a separate check. Write the claim.
+- [ ] **4. Register the k2=5 closed form and slope conjecture as established.**
+      Already operator-checked, zero mismatches. Subsumed by the single genus
+      formula but worth recording as separate corroboration. Trap: a truncated
+      (non-whole-period) window gives mean BELOW `(m-1)/2` and looks like a
+      refutation — state periodicity first, mean second.
 
-- [ ] **8. Register the slope conjecture as established.** Mean first-difference
-      over WHOLE periods is exactly (m-1)/2 for m=2,3,4,5, with period-m diff
-      patterns: [0,1], [1,0,2], [1,2,0,3], [2,2,2,0,4]. Operator-confirmed,
-      zero mismatches. **Trap for whoever writes this up:** a truncated window
-      (not a whole number of periods) gives a mean BELOW (m-1)/2 and looks like
-      a refutation — state periodicity first, mean second.
+- [ ] **5. Maintain effective/uniform-in-k discipline on every claim.**
+      The genus formula claim already says it gives neither an effective bound
+      nor uniformity in k. Every new claim must state both. Do not add claims
+      that fail to state either.
 
-- [ ] **9. Delete or tombstone any of the seven programs that fail to run.**
-      A program in the tree that has never produced a capture is not an asset.
+## Done (directive 9 → directive 10)
 
-## Done (directive 3)
-
+- [x] Directive 9 items 1–2 (re-derive substitutions, Riemann-Hurwitz derivation plan) now
+      subsumed by directive 10 item 1, which is sharper — the symmetric rewrite
+      `((m-1)(n-1)+1-gcd(m,n))/2` and the involution `C(k-1-z,k)=(-1)^k C(z,k)`
+      supply the exact mechanism. The coprime case `g=p_a/2` is the lever.
+- [x] False two-CAS claim in genus_table fixed.
+- [x] Genus symmetric rewrite verified and captured at `code/out/genus_symmetric_form.md`.
 - [x] MRSTT effectiveness — confirmed effective from full text (Remark 1.7),
       with an astronomically large but computable threshold. Uniform-in-k: yes
-      over interior; no over boundary. Boundary remains the whole open gap.
+      over interior; no over boundary.
 - [x] Witness double-failure stated honestly in `mrstt_leaves_witnesses_open.md`.
 - [x] Dead source files tombstoned (singmaster-1971, mrstt-interior-singmaster).
-- [x] MRSTT PENDING contradiction resolved — credit to the run.
+- [x] MRSTT PENDING contradiction resolved.
 
 ## Search policy (directive 4)
 

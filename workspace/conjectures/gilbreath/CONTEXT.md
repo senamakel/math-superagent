@@ -13,6 +13,7 @@ away.
 
 ## Established
 
+- **Gatti 2020's claimed class-level/prime proof is invalid — located flaw (full text now in library).** Gatti, *Gilbreath's Sequences and Proof of Conditions for Gilbreath's Conjecture* (Preprints 202003.0145.v1, 2020; the earlier downloadable form of the MDPI-403 "Gilbreath polynomials" paper) proves the valid-extension machinery (Eq. 2: `k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`, global anti-diagonal criterion; parity alternation Lemmas 1–3 — the general-class half of the run's parity wave) but **Theorem 4's proof of `min K ≤ p_n ≤ max K` for the primes is invalid**: the right-inequality step assumes its own conclusion ("If p_n ≤ max K, then subtracting 2p_{n−1}…") and derives only a trivial `min K ≤ α` via Bertrand. Also his Lemma 4 (valid-extension set = whole parity interval) is **false in general** — Muney 2026's length-5 hole; even `dim K_S = 2^{n−1}` fails on `{2,3,5}`: `|K_S|=5` (solutions `{1,3,5,7,9}`, hand-verified; coder script `code/research_mod_check/verify_gatti_kset.py` queued). So **no published deterministic bounded-gap/prime-class theorem exists** — the REQUESTS row stays open, and Gatti's polynomial inequality (MDPI 2023) remains asserted-by-source only. Claims: `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`.
 - **Verification record, CURRENT (sourced this cycle, 4 data points kept distinct):**
   Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna
   2025–26 to 1.5×10^15 (G(2.8e14)=788, G(6.15e14)=800, G(1.5e15)=800). Run's own: depth
@@ -85,6 +86,20 @@ away.
   `research/notes/block_lemma.md` (apex),
   `research/approaches/rule90-absorbing-boundary.md` (the absorption dead end),
   thread `research/threads/rule90-regeneration.md` (CLOSED).
+- **Ducci literature (sourced, four primary papers) — cyclic boundary drawn.**
+  All classical Ducci theorems are CYCLIC (wraparound |x_n−x_1|): nilpotence-
+  iff-power-of-2, cycle structure, Webb's no-uniform-bound do NOT transfer to
+  the half-infinite Gilbreath operator; Eppstein's escape is the standing
+  witness that the half-infinite object differs. What transfers: the
+  mod-2/Pascal law (= this run's proved rule90-interior-xor, now anchored in
+  four peer-reviewed sources) and Chamberland's factored-max +
+  rigidity-equality-case template — the shape any surviving potential must
+  take, since raw run-count/turning-point potentials are dead (Ruled out).
+  Gives `ducci-potential-max-decrease` and `p-adic-valuation-carry-dynamics`
+  their precedent and their caution. Anchor: `research/notes/library-state.md`
+  Ducci section; claims ducci-classical-nilpotence-iff-power-of-2,
+  ducci-pascal-mod2-rule90, ducci-max-factoring-potential-template,
+  ducci-avart-nilpotent-concatenation.
 - **Regeneration criterion — ESTABLISHED (depth 1000, exact, oracle-checked).**
   Block occupies 0-based cols `1..b_k`; intruder `c_k = A_k[b_k+1]` (first value
   past block), edge `e_k = A_k[b_k]` (the last `{0,2}` value — index `b_k`, not
@@ -160,6 +175,7 @@ away.
 
 ## Ruled out
 
+- **Gatti 2020 "prime-class proof" — REFUTED (invalid Theorem 4; source in library).** Gatti's *Gilbreath's Sequences...* (Preprints 202003.0145.v1, 2020) proves the global valid-extension formula (`k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`) and parity alternation, but its Theorem 4 (`min K ≤ p_n ≤ max K` for every prime, claimed toward a deterministic class theorem) is invalid: the right-inequality step assumes `p_n ≤ max K` and derives only a trivial `min K ≤ α` via Bertrand. Its Lemma 4 interval-completeness is false in general (Muney's length-5 hole; `dim K_S = 2^{n−1}` fails even at {2,3,5}: |K_S| = 5 — hand-verified, script queued). **So no published deterministic bounded-gap or prime-class theorem exists**, consistent with Eppstein: any general-class theorem must add non-concentration or restrict to primes. Do not build on Gatti's implication. Claims `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`, `research/notes/library-state.md`.
 - **"Regeneration iff lemma" — earlier REFUTED records are WITHDRAWN
   (off-by-one in the edge index); the corrected criterion is ESTABLISHED.**
   Both old "Ruled out" lines treated regeneration as non-local — they were the
@@ -333,7 +349,7 @@ recalled claim is relied on whose hypotheses fail here.
   form "under hypothesis H, events arrive at rate ≥ r, and r suffices" is a
   real partial result. Two routes: combinatorial (bound max erosion between
   events from Rule 90 + drain law) and analytic (bound event density from prime
-  gap hypotheses). Measure inter-event gap distribution first.
+  gap hypotheses). Measure inter-event gap distribution first. Concrete candidates: `renewal-process-edge-flip-hitting-time` — Rule-90 (0,4)-stall hitting-time bound, inter-event gap ≤ y₀/2 + stall + 1 (y₀ from the gap bound), conjectural stall bound L ≤ 2·b_k whose constant-zero-block exception IS the CHT obstruction — and `block-boundary-causal-separation` — two-state (b, y) Lyapunov framing. Both proposed, precedent-unchecked; any purely-gap rate bound must be prime-specific or carry a hypothesis Eppstein's construction violates.
   **Census (computed, negative): the boundary-data sequences — block profile
   b(k), second entries s(k), regen jumps, regen gaps — show NO low-degree
   polynomial, NO constant-coefficient linear recurrence of order ≤8, and NO

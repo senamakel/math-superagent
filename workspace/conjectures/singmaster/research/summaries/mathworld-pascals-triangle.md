@@ -1,46 +1,28 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mathworld-pascals-triangle.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# MathWorld — Pascal's Triangle (encyclopedic tier)
 
-<!-- source: https://mathworld.wolfram.com/PascalsTriangle.html | converted from HTML -->
+Source: https://mathworld.wolfram.com/PascalsTriangle.html (Wolfram MathWorld, Stover & Weisstein).
 
-## What is in it
+Encyclopedic entry on Pascal's triangle. Fixes the statement, the history
+(Tartaglia 1556, Pascal 1665, Yang Hui/Khayyam), the construction identity
+`(n;r)=(n-1;r)+(n-1;r-1)`, and the standard figure-number/Fibonacci/shallow-diagonal
+properties. Cited by three of this library's own sources (FRONTIER), so this is the
+canonical encyclopedic reference tier and was the gap this cycle closed.
 
-- Pascal's Triangle
-  - See also
-  - Explore with Wolfram|Alpha
-  - References
-  - Referenced on Wolfram|Alpha
-  - Cite this as:
-  - Subject classifications
+## What it establishes that bears on Singmaster's conjecture
 
+- **The witness set, exactly.** By row 3003, `3003 = (14;6)=(14;8)=(15;5)=(15;10)=(78;2)=(78;76)=(3003;1)=(3003;3002)`, i.e. N(3003)=8 counting both mirrors plus the trivial pair. Confirms the run's witness (independent of Wikipedia).
+- **The high-multiplicity catalogue.** The numbers that occur five or more times are
+  1, 120, 210, 1540, 3003, 7140, 11628, 24310, ... (OEIS A003015), "with no others up to 33×10¹⁶" — corroborates the run's six N=6 values and the 2^23/2^48 verification bounds. 120, 210 appear six times by row 210; 1540 and 7140 also reach 6.
+- **The infinite family, explicitly.** There are infinitely many numbers occurring at least 6 times, the solutions to `r=(n;m-1)=(n-1;m)` given by `m=F_2k-1·F_2k`, `n=F_2k·F_2k+1` (Singmaster 1975). First few r: 1, 3003, 61218182743304701891431482520, ... (OEIS A090162). This matches the run's verified parametrization `n=F_{2j+2}F_{2j+3}-1, k=F_{2j}F_{2j+3}-1` and the ~6.1e28 second member. Independent confirmation from a second encyclopedic source.
+- **The O(log a) / conjecture frame.** Cites Singmaster 1971 (AMM 78, 385-386) and references de Weger 1997 (JNT 63, equal binomial coefficients).
 
-## What it claims
+## Evidence class
 
-where [image: (n; r)] is a [binomial coefficient][3]. The triangle was studied by B. Pascal, in whose posthumous work it appeared in 1665 (Pascal 1665). However, it had been previously investigated my many other mathematicians, including Italian algebraist Niccol&ograve; Tartaglia, who published the first six rows of the triangle in 1556. It was also described centuries earlier by Chinese mathematician Yang Hui and the Persian astronomer-poet Omar Khayy&aacute;m. As a result, it is known as the Yang Hui triangle in China, the Khayyam triangle in Persia, and Tartaglia's triangle in Italy.
+`asserted` by the encyclopedic source; the numerical witness statements (3003,
+the N=6 list, the second family member) are consistent with, and independently
+corroborate, this run's `checked` computations (witnesses.json, brute.py, the
+Fibonacci-family verification). The infinite-family parametrization matches the
+run's verified Pell/Fibonacci derivation. No new claim is asserted here that is
+not already cross-checked in this workspace.
 
-Starting with [image: n=0], the [triangle][4] is
-
-[image:  1
-1  1
-1  2  1
-1  3  3  1
-1  4  6  4  1
-1  5  10  10  5  1
-1  6  15  20  15  6  1 ] |
-
-(2)
-
-|
-
-(OEIS [A007318][5]). [Pascal's formula][6] shows that each subsequent row is obtained by adding the two entries diagonally above,
-
-[image:  (n; r)=(n!)/((n-r)!r!)=(n-1; r)+(n-1; r-1). ] |
-
-(3)
-
-|
-
-Replacing the binomial coefficients in Pascal's triangle by [multinomial coefficients][7] in three indices gives [Pascal's tetrahedron][8], a…
-
-[image:…
-
-*[digest of a 13762 character source; every section, statement, and proof in full at `research/sources/mathworld-pascals-triangle.full.md`]*
+See also the full text at `research/sources/mathworld-pascals-triangle.full.md`.

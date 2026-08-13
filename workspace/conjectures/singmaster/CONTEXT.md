@@ -329,11 +329,15 @@ Pintér–Tengely 2023) and the OEIS row-count convention `oeis-a003016-row-coun
   `genus/verify_k2_5_row.py`, `pattern/print_family.py` — all have zero captured
   output. Their conclusions are already operator-checked (k2=5 closed form, slope
   conjecture) but a program never executed is not evidence. Run or tombstone them.
-- **PENDING CLAIM: genus table needs a standalone claim.** `genus_table.captured.txt`
-  is the definitive two-parameter Faltings threshold (two-CAS agreement, 2<=k1,k2<=12,
-  k2=3,4,5 extended to k1=24). It supersedes the operator's three-diagonal salvage
-  and should be its own claim marked `proved-by-two-CAS` — the GOAL.md deliverable,
-  not a capture file. See TASKS.md item 1.
+- **RESOLVED: genus Faltings-threshold is now a claim, not a pending item.**
+  The single two-parameter formula `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2` is claim
+  `genus-single-closed-form-all-pairs` (`checked`, 111 values) in
+  `code/out/genus_single_closed_form.md` — it supersedes the per-column grids
+  and the three-diagonal salvage, and states the {2,3}/{2,4} Faltings threshold
+  in closed form. What it is NOT (do not overstate): it is verified, not
+  derived via Riemann–Hurwitz/Plücker; and the 23 newest rows (k2=6..10) are
+  Singular-only (the Sage check errored). The two correct `proved`-status
+  claims remain erdos-selfridge and kummer-lucas. See TASKS.md item 1.
 - **RESOLVED: Matveev primary obtained.** The gap "authoritative constants of
   Matveev's theorem" is closed — full English text with C1,C2,C′0 held
   (`research/sources/matveev-2000-homogeneous-linear-form.full.md`, summary +
