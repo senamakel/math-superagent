@@ -25,6 +25,19 @@ lean-formalisation: |
 
 # Regeneration thread — event-rate lower bound
 
+**Directive 23 reframing (the thread's object from here on):** the event-rate
+route targets a MEAN (λ̂ ≈ 0.585), and a mean is the wrong summary for a
+heavy-tailed jump distribution. At depth 1000 the recharge identity holds with
+enormous slack — S_1000 = 1,270,603 vs required 998, b_1000 = 1.27M ≫ 1 — and
+that surplus is carried by a handful of giant jumps (largest: i=134
+j=217,657; i=146 j=360,698; i=161 j=176,181), not by an average rate. The
+conjecture is tight only if the big jumps stop. A lower bound on the mean rate
+is neither what the conjecture needs nor what the data says: what a bound must
+control is the GAP between consecutive large jumps. First characterise the big
+jumps (j > 1000) and say whether they are genuine dynamics or
+row-length/width-reset artifacts (i=161 lands at b≈1.27M = width−1, the known
+finite-width artifact). Anchor: `code/out/surplus_renewal_table.captured.txt`.
+
 ## The state of the problem
 
 Erosion is settled. The step law and recharge identity are exact:

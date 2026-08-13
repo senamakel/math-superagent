@@ -94,11 +94,19 @@ the computed table (M4):
   occur in all four classes for non-members. Only the product formula
   Π (2/π)_4^e = (2/(2^p+i))_4 is a viable exact route.
 
-## Why this beat the others
+## Why this beat the others (superseded — see APPROACHES.md for the current decision)
+
+This table reflects the previous round. The current decision closed
+`biquadratic-character-divisors` as a standalone line (its existence
+deliverable is weaker than C29 and its product identity computes a *product*
+of characters, not the *sum* orthogonality needs) and adopted
+`second-moment-character-mod16`, which absorbs the verified one-way generator
+equivalence as its first-moment sub-step and targets the *proportional*
+Conjecture 29 directly via Dirichlet orthogonality + a second-moment bound.
 
 | Candidate | Status | Reason |
 | --- | --- | --- |
-| `biquadratic-character-divisors` | **adopted** | Attacks the divisor-level gap — the paper's own named analytic target — with quartic reciprocity in Z[i] on the Gaussian factorization 2^{2p}+1 = (2^p+i)(2^p−i). Step (1) is verified: the equivalence (2/r)_4 = 1 ⟺ r ≡ 1 (mod 16) holds on all 71 primitive divisors through p=61, the H_even p-slice {3,5,13,23,31,41,61} is reproduced. Step (2) — the multiplicative product identity Π (2/π)_4^e = (2/(2^p+i))_4 evaluated via the supplementary law — is a divisor-transference theorem in algebraic form: determine how many divisors of Φ_{4p}(2) are ≡ 1 (mod 16) from p mod 16 alone, without factoring 2^p+i. |
+| `biquadratic-character-divisors` | refuted (absorbed) | Attacks the divisor-level gap with quartic reciprocity on 2^{2p}+1 = (2^p+i)(2^p−i); its verified equivalence (2/r)_4 = 1 ⟺ r ≡ 1 (mod 16) survives inside `second-moment-character-mod16`, but its existence deliverable ⊊ C29 and its product identity determines the character sum only mod 4. |
 | `higgs-depth-bound` | refuted | 3-Higgs primes are infinite (OEIS A057447), so Pratt depth is unbounded; the paper's m=2426 example has the fully 3-Higgs divisor P=25893760589. Thinness fallback = paper §5.3. |
 | `p-adic-baker-obstruction` | refuted | Iwasawa p-adic log diverges (v_ℓ(1/p_i^{e_i}) = 0 < 1/(ℓ−1) for odd p_i ≠ ℓ); Baker bounds apply to nonzero forms but the form is zero (the balance). |
 | `archimedean-baker-sum-reciprocals` | refuted | Same Baker error plus the honest Archimedean route gives same asymptotic scale — no contradiction. |

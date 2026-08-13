@@ -371,6 +371,13 @@ away.
   k=146); big jumps correlate with big b (r=0.771) and recover ~1.2–2× the
   block. Full table + the 5 structural facts a theorem must explain:
   `research/notes/regeneration_data.md`.
+- **Recharge surplus is heavy-tailed (Directive 23, depth 1000).** S_1000 =
+  1,270,603 vs required 998; most jump sizes are tiny (0,1,2,3,4,9,…) but the
+  tail carries the surplus — jumps > 10⁴ at i=64,94,110,112,126,130,134,146,161
+  (largest 360,698 at i=146), with the three largest (i=134,146,161) supplying
+  the bulk. The mean event rate λ̂ = 0.585 is dominated by this tail, so a
+  mean-rate bound is the wrong target. Anchor:
+  `code/out/surplus_renewal_table.captured.txt`.
 
 ## Recalled
 
