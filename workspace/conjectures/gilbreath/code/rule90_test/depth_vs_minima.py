@@ -177,11 +177,17 @@ def regime_depths(mins, origin):
 
 
 def event_depth(R, mins, origin):
-    """Depth of event row R from the most recent local-min run before it."""
+    """Depth of event row R from the most recent COMPLETED local-min run
+    before it (a run [p..q] is completed when R > q; an event inside the
+    current plateau has no completed regime to measure from -> None).
+    origin: 'prev_min' (depth from the run's first row) or 'last_minval'
+    (depth from the run's last row)."""
     ref = None
     for (p, q, _v) in mins:
-        if p < R:
+        if q < R:
             ref = p if origin == "prev_min" else q
+        elif p <= R <= q:
+            continue  # R is inside the current plateau: depth undefined
         else:
             break
     return None if ref is None else R - ref
@@ -208,16 +214,15 @@ def _variant(params):
     out = {"origin": origin, "tol": tol, "min_hits": min_hits,
            "min_total": len(depths), "regen_total": len(events)}
     # all regeneration events (incl. stalls) at relative depths
-    out["regen_rel"] = sum(1 for R in events
-                           if near_pow2(event_depth(R, mins, origin), tol))
-    out["regen_abs"] = sum(1 for R in events
-                           if near_pow2(R - 1, tol))
+    rel = (lambda R: R - 1) if origin == "absolute" \
+        else (lambda R: event_depth(R, mins, origin))
+    out["regen_rel"] = sum(1 for R in events if near_pow2(rel(R), tol))
+    out["regen_abs"] = sum(1 for R in events if near_pow2(R - 1, tol))
     # positive jumps at each threshold
     for thr in thresholds:
         evs = [R for R in jumps if b[R - 1] - b[R - 2] >= thr]
         out[f"j{thr}_n"] = len(evs)
-        out[f"j{thr}_rel"] = sum(1 for R in evs
-                                 if near_pow2(event_depth(R, mins, origin), tol))
+        out[f"j{thr}_rel"] = sum(1 for R in evs if near_pow2(rel(R), tol))
         out[f"j{thr}_abs"] = sum(1 for R in evs if near_pow2(R - 1, tol))
     return out
 
@@ -416,11 +421,18 @@ def main():
         dp = event_depth(R, mins, "prev_min")
         dl = event_depth(R, mins, "last_minval")
         da = R - 1
-        np_p, np_l, np_a = nearest_pow2(dp), nearest_pow2(dl), nearest_pow2(da)
+        np_p = nearest_pow2(dp) if dp is not None else None
+        np_l = nearest_pow2(dl) if dl is not None else None
+        np_a = nearest_pow2(da)
         tag = "   (stall)" if mag == 0 else ""
+        d_pm = str(dp) if dp is not None else "-"
+        d_lm = str(dl) if dl is not None else "-"
+        p2_p = str(np_p[0]) if np_p else "-"
+        p2_l = str(np_l[0]) if np_l else "-"
+        t1 = "Y" if np_p and np_p[2] <= 1 else "N"
         print_line(f"{R:>4} {mag:>8} {edge_k:>4} {intr_k:>4} "
-                   f"{dp:>5} {np_p[0]:>4} {dl:>5} {np_l[0]:>4} "
-                   f"{da:>5} {'Y' if np_p[2] <= 1 else 'N':>4}{tag}")
+                   f"{d_pm:>5} {p2_p:>4} {d_lm:>5} {p2_l:>4} "
+                   f"{da:>5} {t1:>4}{tag}")
 
     # ---- expansion events at thresholds ---------------------------------------
     thresholds = sorted({1, med, 1000})
@@ -453,17 +465,21 @@ def main():
                            space=f"{len(variants)} variants", count=n_workers)
     print_line()
     print_line(f"=== variant table (parallel across {n_workers} workers) ===")
+    print_line(f"cols: minH/tot = minima near 2^j (tol) among genuine regime "
+               f"lengths; rgRel/rgAbs = regen events near 2^j at relative / "
+               f"absolute depth; for each threshold (1, median, 1000): "
+               f"n=#jumps, rel/abs = near 2^j at relative / absolute depth")
     print_line(f"{'origin':>11} {'tol':>3} {'minH/tot':>9} {'rgRel':>5} "
-               f"{'rgAbs':>5} {'jN(thr)':>8} {'jRel':>4} {'jAbs':>4}")
+               f"{'rgAbs':>5} | {'j1':>12} {'jmed':>12} {'j1000':>12}")
     for r in results:
+        cells = []
         for thr in thresholds:
-            tag = "j" if thr == thresholds[1] else ("j1000" if thr == 1000 else "j1")
-            print_line(f"{r['origin']:>11} {r['tol']:>3} "
-                       f"{r['min_hits']}/{r['min_total']:>5} "
-                       f"{r['regen_rel']:>5} {r['regen_abs']:>5} "
-                       f"{tag}{r[f'j{thr}_n']:>4} {r[f'j{thr}_rel']:>4} "
-                       f"{r[f'j{thr}_abs']:>4}")
-        print_line()
+            cells.append(f"{r[f'j{thr}_rel']}/{r[f'j{thr}_n']} "
+                         f"({r[f'j{thr}_abs']}abs)")
+        print_line(f"{r['origin']:>11} {r['tol']:>3} "
+                   f"{r['min_hits']}/{r['min_total']:>5} "
+                   f"{r['regen_rel']:>5} {r['regen_abs']:>5} | "
+                   f"{cells[0]:>12} {cells[1]:>12} {cells[2]:>12}")
 
     # ---- verdict summary ---------------------------------------------------------
     print_line("=== variant verdict: which matched (tol=1, the stated "

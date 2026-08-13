@@ -1,2 +1,63 @@
 [event-rate] 1154 sequences across 26 workers, expected single-core ~12694s
 [parallel] event-rate: families x seeds across 26 worker(s) of 28 CPUs
+[event-rate] sweep finished in 278.4s
+====================================================================================================
+EVENT-RATE SWEEP (2-then-odds class)
+====================================================================================================
+batch  family               n events     elig rho_live rho_rows  min_b  b0 first_b0 stepF rechF
+sweep  consecutive         48      0        0        -   0.0000 199399   0     None     0     0
+sweep  f2-geo025           48   1234     3813   0.3236   0.3006      0  48        2     0     0
+sweep  f2-geo05            48    971     2033   0.4776   0.4464      0  29        2     0     0
+sweep  f2-rand24           48     48       48   1.0000   0.5000      1   0     None     0     0
+sweep  f2-skew246          48    969     1781   0.5441   0.5212      0  14        2     0     0
+sweep  f2-skew24810        48    969     2032   0.4769   0.4522      0  27        2     0     0
+sweep  f2-uniform10        48    724     1284   0.5639   0.4698      0  48        2     0     0
+sweep  f2-uniform25        48    946     2152   0.4396   0.3682      0  48        2     0     0
+sweep  f2-uniform3         48    808     1265   0.6387   0.5889      0  29        2     0     0
+sweep  f2-uniform5         48    685     1122   0.6105   0.5398      0  41        2     0     0
+sweep  f2-uniform50        48   1262     3490   0.3616   0.3082      0  48        2     0     0
+sweep  geo025              48   1235     3780   0.3267   0.3009      0  48        1     0     0
+sweep  geo05               48    965     2005   0.4813   0.4437      0  39        1     0     0
+sweep  rand24              48     18       18   1.0000   0.1875      0  30        1     0     0
+sweep  skew246             48    950     1759   0.5401   0.5110      0  31        1     0     0
+sweep  skew24810           48    954     2011   0.4744   0.4452      0  37        1     0     0
+sweep  uniform10           48    727     1252   0.5807   0.4718      0  48        1     0     0
+sweep  uniform25           48    951     2131   0.4463   0.3702      0  48        1     0     0
+sweep  uniform3            48    815     1251   0.6515   0.5940      0  45        1     0     0
+sweep  uniform5            48    697     1103   0.6319   0.5493      0  46        1     0     0
+sweep  uniform50           48   1261     3463   0.3641   0.3079      0  48        1     0     0
+deep   consecutive         10      0        0        -   0.0000 398799   0     None     0     0
+deep   f2-geo00625         10    482     2843   0.1695   0.1573      0  10        2     0     0
+deep   f2-geo0125          10    320     1469   0.2178   0.1999      0  10        2     0     0
+deep   f2-geo025           10    254      792   0.3207   0.2920      0  10        2     0     0
+deep   f2-geo05            10    199      402   0.4950   0.4393      0   9        2     0     0
+deep   f2-rand24           10     10       10   1.0000   0.5000      1   0     None     0     0
+deep   f2-skew246          10    221      403   0.5484   0.5262      0   4        2     0     0
+deep   f2-skew24810        10    221      461   0.4794   0.4519      0   6        2     0     0
+deep   f2-uniform10        10    158      291   0.5430   0.4527      0  10        2     0     0
+deep   f2-uniform25        10    210      455   0.4615   0.3839      0  10        2     0     0
+deep   f2-uniform3         10    161      266   0.6053   0.5590      0   6        2     0     0
+deep   f2-uniform5         10    147      245   0.6000   0.5288      0   9        2     0     0
+deep   f2-uniform50        10    226      726   0.3113   0.2619      0  10        2     0     0
+long   consecutive          4      0        0        -   0.0000 1995999   0     None     0     0
+long   f2-geo05             4    112      192   0.5833   0.5437      0   4        2     0     0
+long   f2-rand24            4      4        4   1.0000   0.5000      1   0     None     0     0
+long   f2-skew246           4     99      176   0.5625   0.5380      0   2        2     0     0
+----------------------------------------------------------------------------------------------------
+TOTAL: 1154 sequences, 20013 events / 46528 eligible rows; pooled live density 0.430128
+MINIMUM per-sequence live density: 0.087079 (31 events / 356 eligible) batch=deep, family=f2-geo00625, seed=6, min_b=0, first_b0=2
+MINIMUM b over class: 0 (batch=sweep, family=rand24, seed=2, first_b0=1)
+WARNING: 852 of 1154 sequences reached b=0; earliest at k=1 (batch=sweep, family=rand24, seed=2)
+[sweep] sequences=1008 live rows=42496 events=17189 pooled rho_rows=0.404485 mean per-seq rho_rows=0.414049 min per-seq rho_rows=0.000000
+[deep] sequences=130 live rows=9253 events=2609 pooled rho_rows=0.281963 mean per-seq rho_rows=0.365617 min per-seq rho_rows=0.000000
+[long] sequences=16 live rows=402 events=215 pooled rho_rows=0.534826 mean per-seq rho_rows=0.395051 min per-seq rho_rows=0.000000
+wall time 278.4s across 26 workers
+----------------------------------------------------------------------------------------------------
+ORACLE CROSS-CHECK (numpy vs pure-Python, independent code paths)
+f2-geo025    seed=3  eligible 48 vs 48 | events 13 vs 13 | min_b 0 vs 0 | first_b0 3 vs 3 | stepF 0 rechF 0 | rho match: True | ALL MATCH: True
+consecutive  seed=5  eligible 0 vs 0 | events 0 vs 0 | min_b 2939 vs 2939 | first_b0 None vs None | stepF 0 rechF 0 | rho match: True | ALL MATCH: True
+uniform25    seed=7  eligible 39 vs 39 | events 17 vs 17 | min_b 0 vs 0 | first_b0 1 vs 1 | stepF 0 rechF 0 | rho match: True | ALL MATCH: True
+f2-rand24    seed=11 eligible 1 vs 1 | events 1 vs 1 | min_b 2 vs 2 | first_b0 None vs None | stepF 0 rechF 0 | rho match: True | ALL MATCH: True
+----------------------------------------------------------------------------------------------------
+PRIME ROWS (reference): depth 1000, sieve 20000000, 60 regeneration events reported by the run's oracle
+The step law is already verified there to depth 1000 (code/out/step_law_and_recharge_verified.md); the sweep class here extends that verification to random sequences.

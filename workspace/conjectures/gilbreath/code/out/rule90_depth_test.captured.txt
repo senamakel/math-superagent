@@ -1,7 +1,7 @@
 # Rule-90 depth prediction vs block-length minima — exact numbers
 
 data: D=1000, sieve_limit=20000000, num_primes=1270607, first_bad=None, oracle_agree_first_40=True
-rows regenerated here from a fresh sieve in 38.7s (exact np.int64): full b record equal True, intruder record equal True, second-entry record equal True
+rows regenerated here from a fresh sieve in 3.7s (exact np.int64): full b record equal True, intruder record equal True, second-entry record equal True
 
 === established regeneration criterion, re-checked on the regenerated rows ===
   transitions: 999 (k=1..999); rows with intruder: 161; without: 838 (k>=162, block fills the finite sieve row)
@@ -128,21 +128,21 @@ mag: min 0, median (stalls incl.) 4.5, max 360698; median of positive jumps 34; 
 [parallel] rule90-depth: 12 variants across 26 worker(s) of 28 CPUs
   35     1314    2    4     1    1     1    1    34    Y
   39      594    2    4     1    1     1    1    38    Y
-  48        0    2    4     1    1    -2    1    47    Y   (stall)
-  49        0    2    4     2    2    -1    1    48    Y   (stall)
-  50        0    2    4     3    2     0    1    49    Y   (stall)
+  48        0    2    4    10    8    10    8    47    N   (stall)
+  49        0    2    4    11    8    11    8    48    N   (stall)
+  50        0    2    4    12    8    12    8    49    N   (stall)
   51      603    2    4     4    4     1    1    50    Y
   52      842    2    4     5    4     2    2    51    Y
   57     1739    2    4     1    1     1    1    56    Y
   58        1    2    4     2    2     2    2    57    Y
-  63        0    2    4     1    1    -1    1    62    Y   (stall)
-  64        0    2    4     2    2     0    1    63    Y   (stall)
+  63        0    2    4     7    8     7    8    62    Y   (stall)
+  64        0    2    4     8    8     8    8    63    Y   (stall)
   65    17326    2    4     3    2     1    1    64    Y
   69     8237    2    4     1    1     1    1    68    Y
   73       31    2    4     1    1     1    1    72    Y
-  76        0    2    4     1    1     0    1    75    Y   (stall)
+  76        0    2    4     4    4     4    4    75    Y   (stall)
   77        2    2    4     2    2     1    1    76    Y
-  80        0    2    4     1    1     0    1    79    Y   (stall)
+  80        0    2    4     5    4     4    4    79    Y   (stall)
   81       10    2    4     2    2     1    1    80    Y
   87        7    2    4     1    1     1    1    86    Y
   92        1    2    4     1    1     1    1    91    Y
@@ -162,8 +162,8 @@ mag: min 0, median (stalls incl.) 4.5, max 360698; median of positive jumps 34; 
  136        0    2    4     2    2     2    2   135    Y   (stall)
  137        4    2    4     3    2     3    2   136    Y
  139        9    2    4     1    1     1    1   138    Y
- 142        0    2    4     1    1    -1    1   141    Y   (stall)
- 143        0    2    4     2    2     0    1   142    Y   (stall)
+ 142        0    2    4     4    4     4    4   141    Y   (stall)
+ 143        0    2    4     5    4     5    4   142    Y   (stall)
  144        3    2    4     3    2     1    1   143    Y
  147   360698    2    4     1    1     1    1   146    Y
  160        2    2    4     1    1     1    1   159    Y
@@ -212,59 +212,24 @@ mag: min 0, median (stalls incl.) 4.5, max 360698; median of positive jumps 34; 
  162   176181     3    2    1   Y     3    2    1   Y   161  128   33   N
 
 === variant table (parallel across 26 workers) ===
-     origin tol  minH/tot rgRel rgAbs  jN(thr) jRel jAbs
-   prev_min   0 10/   26    46     7 j1  43   33    6
-   prev_min   0 10/   26    46     7 j  22   15    1
-   prev_min   0 10/   26    46     7 j1000  13    9    1
-
-   prev_min   1 21/   26    59    13 j1  43   42    8
-   prev_min   1 21/   26    59    13 j  22   21    2
-   prev_min   1 21/   26    59    13 j1000  13   13    1
-
-   prev_min   2 25/   26    60    20 j1  43   43   13
-   prev_min   2 25/   26    60    20 j  22   22    7
-   prev_min   2 25/   26    60    20 j1000  13   13    4
-
-   prev_min   4 26/   26    60    26 j1  43   43   19
-   prev_min   4 26/   26    60    26 j  22   22    9
-   prev_min   4 26/   26    60    26 j1000  13   13    5
-
-last_minval   0 10/   26    41     7 j1  43   36    6
-last_minval   0 10/   26    41     7 j  22   17    1
-last_minval   0 10/   26    41     7 j1000  13   10    1
-
-last_minval   1 20/   26    50    13 j1  43   42    8
-last_minval   1 20/   26    50    13 j  22   21    2
-last_minval   1 20/   26    50    13 j1000  13   13    1
-
-last_minval   2 25/   26    51    20 j1  43   43   13
-last_minval   2 25/   26    51    20 j  22   22    7
-last_minval   2 25/   26    51    20 j1000  13   13    4
-
-last_minval   4 26/   26    51    26 j1  43   43   19
-last_minval   4 26/   26    51    26 j  22   22    9
-last_minval   4 26/   26    51    26 j1000  13   13    5
-
-   absolute   0 0/   26    41     7 j1  43   36    6
-   absolute   0 0/   26    41     7 j  22   17    1
-   absolute   0 0/   26    41     7 j1000  13   10    1
-
-   absolute   1 3/   26    50    13 j1  43   42    8
-   absolute   1 3/   26    50    13 j  22   21    2
-   absolute   1 3/   26    50    13 j1000  13   13    1
-
-   absolute   2 3/   26    51    20 j1  43   43   13
-   absolute   2 3/   26    51    20 j  22   22    7
-   absolute   2 3/   26    51    20 j1000  13   13    4
-
-   absolute   4 8/   26    51    26 j1  43   43   19
-   absolute   4 8/   26    51    26 j  22   22    9
-   absolute   4 8/   26    51    26 j1000  13   13    5
-
+cols: minH/tot = minima near 2^j (tol) among genuine regime lengths; rgRel/rgAbs = regen events near 2^j at relative / absolute depth; for each threshold (1, median, 1000): n=#jumps, rel/abs = near 2^j at relative / absolute depth
+     origin tol  minH/tot rgRel rgAbs |           j1         jmed        j1000
+   prev_min   0 10/   26    41     7 | 33/43 (6abs) 15/22 (1abs)  9/13 (1abs)
+   prev_min   1 21/   26    56    13 | 42/43 (8abs) 21/22 (2abs) 13/13 (1abs)
+   prev_min   2 25/   26    58    20 | 43/43 (13abs) 22/22 (7abs) 13/13 (4abs)
+   prev_min   4 26/   26    60    26 | 43/43 (19abs) 22/22 (9abs) 13/13 (5abs)
+last_minval   0 10/   26    45     7 | 36/43 (6abs) 17/22 (1abs) 10/13 (1abs)
+last_minval   1 20/   26    56    13 | 42/43 (8abs) 21/22 (2abs) 13/13 (1abs)
+last_minval   2 25/   26    58    20 | 43/43 (13abs) 22/22 (7abs) 13/13 (4abs)
+last_minval   4 26/   26    60    26 | 43/43 (19abs) 22/22 (9abs) 13/13 (5abs)
+   absolute   0 0/   26     7     7 |  6/43 (6abs)  1/22 (1abs)  1/13 (1abs)
+   absolute   1 3/   26    13    13 |  8/43 (8abs)  2/22 (2abs)  1/13 (1abs)
+   absolute   2 3/   26    20    20 | 13/43 (13abs)  7/22 (7abs)  4/13 (4abs)
+   absolute   4 8/   26    26    26 | 19/43 (19abs)  9/22 (9abs)  5/13 (5abs)
 === variant verdict: which matched (tol=1, the stated prediction 2^j or 2^j +/- 1) ===
-  origin prev_min: minima 21/26, all-regen events 59/60 relative, jumps>=1    42/43 rel, jumps>=34   21/22 rel, jumps>=1000 13/13 rel
-  origin last_minval: minima 20/26, all-regen events 50/60 relative, jumps>=1    42/43 rel, jumps>=34   21/22 rel, jumps>=1000 13/13 rel
-  origin absolute: minima 3/26, all-regen events 50/60 relative, jumps>=1    42/43 rel, jumps>=34   21/22 rel, jumps>=1000 13/13 rel
+  origin prev_min: minima 21/26, all-regen events 56/60 relative, jumps>=1    42/43 rel, jumps>=34   21/22 rel, jumps>=1000 13/13 rel
+  origin last_minval: minima 20/26, all-regen events 56/60 relative, jumps>=1    42/43 rel, jumps>=34   21/22 rel, jumps>=1000 13/13 rel
+  origin absolute: minima 3/26, all-regen events 13/60 relative, jumps>=1    8/43 rel, jumps>=34   2/22 rel, jumps>=1000 1/13 rel
 
 reading: the prediction is about depth measured from the previous local minimum (regime start), so prev_min/last_minval are the test variants and absolute is the control (expected to miss).  tol=1 hit rates above the uniform baseline in the observed depth range support the rule-90 depth idea as numerical evidence; the far values and the post-k=161 artifact regime are the evidence against extrapolating it.
 
