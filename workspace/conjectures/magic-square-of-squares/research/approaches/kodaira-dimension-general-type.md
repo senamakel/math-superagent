@@ -2,7 +2,7 @@
 id: kodaira-dimension-general-type
 idea: Compute the Kodaira dimension of the compactified nine-square surface
   and apply Bombieri-Lang for κ=2.
-status: superseded
+status: refuted
 killed-by: Superseded by `resolve-magic-surface-birational` (adopted this
   round).  The original approach naively compactified the affine
   parametrisation (c, u, v) in weighted projective space without knowing

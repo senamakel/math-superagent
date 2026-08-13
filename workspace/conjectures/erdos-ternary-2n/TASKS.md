@@ -24,3 +24,7 @@
 - [ ] Prove the conjecture (open since 1979; believed true, not proved here).
 - [ ] Improve DH-1's ones-threshold 26 for the no-2 restricted shape.
 - [ ] Couple top-digit (real) and bottom-digit (3-adic) controls (LAG-4: open).
+
+## Housekeeping
+
+- [ ] **Rerun verify_mechanism.py with the digit-index bug fixed.** The original read `(r // 3**k) % 3` (position k, the *next* digit) instead of `(r // 3**(k-1)) % 3` (position k-1, the *newly-split* digit at level k). `verify_mechanism2.py` already uses the correct index and passes for k=2..14; rerun the original with the fix so the captured output no longer shows a spurious FAIL. This is a script bug, not a contradiction of the lifting theorem.

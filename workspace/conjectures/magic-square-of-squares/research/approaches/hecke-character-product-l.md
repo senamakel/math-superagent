@@ -3,7 +3,7 @@ id: hecke-character-product-l
 idea: Express the four congruent-number curves E_d for d ∈ {u,v,u+v,u−v} via
   Hecke Grössencharaktere of Q(i) and derive a contradiction at s=1 from the
   additive relations among their conductors.
-status: superseded
+status: refuted
 killed-by: The GFP-x2P blocking question is resolved (claims
   `gfp-2021-theorem-6-1-doubled-points-in-scope`,
   `patterns-bremner-2026-no-mismatch-for-2E-Q`), but this approach is

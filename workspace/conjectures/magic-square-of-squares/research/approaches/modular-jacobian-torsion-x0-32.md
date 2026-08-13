@@ -2,7 +2,7 @@
 id: modular-jacobian-torsion-x0-32
 idea: Map the three MSS doubled points to the Jacobian J₀(32) (rank 0,
   torsion Z/2×Z/2) and force them into cusps, contradicting non-degeneracy.
-status: superseded
+status: refuted
 killed-by: Superseded by `resolve-magic-surface-birational` (adopted this
   round).  The modular-Jacobian approach is geometric in character and would
   naturally live inside the κ=0 or κ=1 case of the birational
