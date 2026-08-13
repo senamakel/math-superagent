@@ -106,7 +106,15 @@ anchor: research/notes/established-review.md
 
 - **Kane bound exponent**: Fermat's Library's annotation of Singmaster 1971 quotes the best bound as `O((log t)(log_3 t)/(log_2 t)^2)` (exponent 2). The authoritative sources — Wikipedia "Known bound", MRSTT arXiv:2106.03335 intro ("O(log t log_3 t/log_2^3 t)"), Jenkins arXiv:1411.4111 intro — all state exponent **3**. Exponent 3 is taken as correct here; the Fermat's annotation is a transcription slip.
 
-## Primary-source cross-check of the witness set (Singmaster 1971 full text)
+## Primary-source cross-check of the witness set
 
-Singmaster's original monthly note, held at research/sources/singmaster-1971.full.md (facsimile via Fermat's Library), states in "Added in proof": *"M(8)=3003 and this is the only solution to N(a)>=8 with a<2^23. There are six solutions to N(a)=6 with a<2^23, namely 120, 210, 1540, 7140, 11628, 24310."* This independently confirms the run's witnesses.json record (3003→8; the six→6) by a primary source. (Original limit 2^23; extended to 2^48 in Singmaster FQ 1975, also held.)
+**STATUS: Demoted.** The file `research/sources/singmaster-1971.full.md` is the
+Fermat's Library comments page, NOT Singmaster's 1971 paper. Its mathematical
+content is truncated comment snippets. The claim that "Singmaster's original
+monthly note, held at ... (facsimile via Fermat's Library)" independently
+confirms the witness set is INCORRECT — it was reading a comments page, not
+the paper. The witness set (3003→8, six→6) is independently confirmed by
+`code/out/witnesses.json`, Singmaster FQ 1975 (held), and MRSTT §1.2, so no
+factual claim is wrong — only the provenance was misattributed. The real
+1971 paper (AMM 78 (1971) 385-386) has NOT been obtained.
 
