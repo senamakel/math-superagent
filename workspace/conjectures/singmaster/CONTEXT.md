@@ -86,7 +86,20 @@ notes; agents should not rebuild them from disk.
   height convention (Matveev's A_j are natural-log heights; other authors
   exponentiate — why Tiebekabe–Diouf's Thm 2.9 looks different).**
 
-- **MRSTT interior, the current record. `sourced`** (arXiv:2106.03335,
+- **Boundary cut correction (directive 24). `computed`.** The original
+  `code/boundary_cut.py` computed `exp((log n)**(2/3) + 0.5)` instead of
+  `exp((log n)**(2/3+0.5))`, a factor-of-411,000 error at n=229969 that
+  misclassified Fibonacci family members j>=2 as interior. Corrected:
+  `code/boundary_cut_corrected.py` and
+  `code/out/boundary_cut_corrected.captured.txt` (EXIT_CODE=0). Under the
+  correct cut ALL six Fibonacci family members j=1..6 are BOUNDARY
+  (87839 < 1.416e8 at j=6). Asymptotically: log k_j ∝ 4j, (log n_j)^(2/3+eps)
+  ∝ j^(2/3+eps); the boundary condition holds for all large j iff eps > 1/3.
+  With MRSTT's admissible eps=1/2, the family stays boundary forever.
+  Each Fibonacci a contributes at most 2 boundary left-half reps — the
+  infinite family does not threaten a constant per-a bound. Witness-set
+  boundary counts: 2 for each of 120, 210, 1540, 7140, 11628, 24310, and
+  3 for 3003 (max = 3 left-half reps, matching the C >= 3 lower bound).
   QJM 2022, Thm 1.3). Fixed 0<ε<1, t large: at most 2 solutions in
   `exp(log^{2/3+ε} n) ≤ m ≤ n/2`, at most 4 in the full interior; interior
   multiplicity is 0,1,2,4 — never 3 (Rem 1.11). The open boundary is
