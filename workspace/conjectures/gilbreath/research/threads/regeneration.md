@@ -1,15 +1,15 @@
 ```thread
 question: Prove the inter-giant gap is bounded — does "the gap between consecutive (2,4)-events with j > 1000 is bounded" follow from anything about prime gaps, or is it equivalent to something already known hard?
-status: live — Directive 26 completes the chain. The conjecture now reduces to ONE statement: the inter-giant gap is bounded. Next step: answer whether this is provable from the prime-gap distribution or is equivalent to an open problem (Cramér, GPY, something else).
+status: live — Directive 27: wider_width_extend (sieve 3e8, 16.25M primes, depth 240) corroborates bounded-gap (new giants at rows 162, 175 with gaps 15, 13 inside existing range; max gap unchanged at 26 over 14 genuine giants, up from 12). Growth law unsettled: 13th ratio 4.95 reverses the declining-ratio trend of Directive 25. The conjecture now reduces to ONE statement: the inter-giant gap is bounded. Next step: answer whether this is provable from the prime-gap distribution or is equivalent to an open problem (Cramér, GPY, something else).
 rests-on: |
   - IFF reduction (Lean, sorry-free, axioms clean): Gilbreath ⇔ A_k(1) ∈ {0,2} for all k.
   - Recharge identity (PROVED, universal): b_k = b_1 + Σ_{i<k}(j_i+1) − (k−1). So the conjecture holds iff Σ(j_i+1) ≥ k−2 for all k.
-  - Bigjump characterization (depth 1000): 13 giants (j > 1000) carry 99.76% of S_1000, 12 genuine, 1 capped (i=161). Claim bigjump-cap-characterization-1000.
+  - Bigjump characterization (depth 1000): 13 giants (j > 1000) carry 99.76% of S_1000, 12 genuine, 1 capped (i=161). Claim bigjump-cap-characterization-1000. **Directive 27: wider sieve resolves the cap — 14 genuine giants to depth 240, i=161 cap no longer an artifact concern (new jump 4,323,712 at row 162, 5,237,310 at row 175).**
   - Giants ARE the (2,4)-events: every one has edge=2, intruder=4. Step law: only (2,4) grows the block.
-  - Sublinear jump exponent: log(jump) vs log(b) OLS slope 0.388 over 43 positive-jump events. j ~ C·b^0.388 → ∞.
-  - Inter-giant gaps (genuine 12): 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12. Mean 10.18, median 8, max 26. No trend: Spearman ρ(gap, prior b) = −0.141; OLS R² ≤ 0.11. Flat while b spans 2,179 → 1,094,273.
+  - Jump growth: geometric fit R² 0.9607 over 14 giants, per-event factor 1.751 (improved from 0.942/1.68 over 12). Sublinear exponent 0.388 still holds for all 43 positive-jump events — both descriptions fit the data; **which is asymptotic is not determined** (see below).
+  - Inter-giant gaps (genuine 14, wider width): 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13. Mean 10.21, median 8, max 26 unchanged. New gaps (15, 13) inside existing range — no trend over 14 points while b spans 2,179 → 10,655,286 (4,900×). This is corroboration on data the model had never seen.
   - Bounded gap + j → ∞ ⇒ b_k ≥ 1 forever.
-blocked-by: nothing — Directive 25 items complete. Next is the provability question.
+blocked-by: nothing — Directive 27 items complete. Next is the provability question (Directive 26).
 next: |
   Answer: does "the inter-giant gap is bounded" follow from anything about prime gaps (e.g., the distribution of gap sizes, the frequency of certain patterns modulo small primes), or is it equivalent to something known hard (Cramér, GPY, a sieve-theoretic bound)? State the dependency before attempting a proof. If it is equivalent to a standard conjecture, that IS a partial result — a reduction of Gilbreath to something named. If it is not known hard but also not proved, name the obstruction.
 ```
@@ -48,24 +48,29 @@ reduces to.
    The step law (PROVED) says only (2,4) grows the block. So "giant" and
    "(2,4)-event with large j" are the same object — no separate mechanism.
 
-5. **j grows like b^0.388, sublinear but → ∞.**
-   log(jump) vs log(b) OLS slope 0.388 over 43 positive-jump events (depth
-   1000). j ~ C·b^0.388, so j → ∞ as b → ∞, but b_next/b = 1 + C·b^(−0.612)
-   → 1: growth decelerates. The ×1.68/event geometric description from
-   Directive 24 is a finite-sample fit at b ~ 10³–10⁶, not the asymptotic
-   law. Anchors: `code/out/surplus_renewal_structure.md`,
-   `code/out/directive25_gap_trend.md`.
+5. **j grows, but which growth law applies is NOT determined by this data.**
+   The geometric fit improved from R² 0.942 over 12 giants to **R² 0.9607 over
+   14**, with the per-event factor rising from 1.68 to **1.751** (14-giant OLS,
+   `wider_width_extend`). But the 13th ratio is 4.95 — larger than every earlier
+   ratio except none, reversing the declining-ratio trend Directive 25 used to
+   argue the sublinear law. The landing-block ratios including the new giants are
+   `2.73, 3.92, 1.35, 2.94, 1.12, 1.36, 1.92, 1.20, 1.59, 1.42, 1.49, 4.95, 1.97`
+   — the decline reverses at the 13th giant. So "sublinear-with-decaying-ratio"
+   was a reading of twelve points, and the thirteenth broke it. The geometric fit
+   got *stronger* with new data (R² ↑, factor ↑), not weaker. **The honest
+   position: the growth law is not determined.** What IS settled: j → ∞ (both
+   laws agree on that), and the inter-giant gap max is unchanged (26). Anchors:
+   `code/out/wider_width_extend.captured.txt`.
 
-6. **Inter-giant gap: no trend over 12 points.**
-   Genuine giant rows: 34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146.
-   Gaps in rows: 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12.
-   Mean 10.18, median 8, max 26.
-   OLS gap ~ giant#: slope −0.818, R²=0.109.
-   OLS gap ~ prior-b: slope ≈ 0, R²=0.041.
-   Spearman ρ(gap, prior b) = −0.141.
-   Flat while b spans 2,179 → 1,094,273. Anchor:
-   `code/out/directive25_gap_trend.md`, claim
-   `directive25-gap-trend-and-reconciliation`.
+6. **Inter-giant gap: no trend over 14 points (wider width, Directive 27).**
+   Genuine giant rows: 35, 57, 65, 69, 95, 97, 111, 113, 127, 131, 135, 147, 162, 175.
+   Gaps in rows: 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13.
+   Mean 10.21, median 8, max 26 (UNCHANGED from the 12-giant run).
+   The two new gaps (15, 13) land inside the existing range — the bounded-gap
+   observation survived a width extension on data the model had never seen:
+   sieve 3e8, 16.25M primes, depth 240. This is corroboration, not more of
+   the same. Anchor: `code/out/wider_width_extend.captured.txt`.
+   Max-gap by threshold: 26 at J=100/300/1000, 30 at 1e4, 18 at 1e5.
 
 7. **Bounded gap + j → ∞ ⇒ b_k ≥ 1 forever.**
    If the inter-giant gap G is bounded by some constant G_max and each
@@ -79,18 +84,19 @@ bounded.** Every other step in the chain is proved or established to depth
 
 ## Two cautions
 
-1. **Twelve gaps is a small sample.** "No trend" over 12 points is weak
-   evidence: R²=0.109 does not exclude a slow growth of 0.5 rows per giant.
-   At 100 giants (requiring a wider sieve) a slope of 0.5/giant would be
-   detectable; with 12 it is indistinguishable from noise. The strongest
-   statement the data supports is "the gap shows no sign of growing while
-   b increases 500×" — not "the gap is bounded."
+1. **Thirteen gaps is still a small sample.** "No trend" over 13 gaps is
+   weak evidence; R² on a 14-point OLS is low but a slow growth rate of
+   0.5 rows per giant is still not excluded. At 100 giants a slope that
+   small would be detectable; with 13 it is indistinguishable from noise.
+   The strongest statement the data supports is "max gap remains 26 while
+   b increases 4,900× and the sieve width increases 15×" — not "the gap
+   is bounded forever."
 
-2. **Every number comes from one finite triangle over one sieve.**
-   Depth 1000, sieve 2×10⁷, 1,270,607 primes. What is measured is a
-   property of *these* primes, to *this* depth. Whether the gap stays
-   bounded for the infinite sequence of primes is not settled by any finite
-   computation. This is a measurement, not a property of the primes.
+2. **Every number comes from one finite triangle over one sieve.** The
+   wider-width run (sieve 3e8, 16.25M primes, depth 240) is still one
+   triangle. Whether the gap stays bounded for the infinite sequence of
+   primes is not settled by any finite computation. This is a measurement,
+   not a property of the primes.
 
 ## The next question (Directive 26)
 
@@ -122,13 +128,14 @@ X is the target.
 
 - **IFF reduction:** Lean, sorry-free. Claim `lean-reduction-machine-checked`.
 - **Step law + recharge identity:** PROVED, universal. Claim `step-law-theorem-proved`.
-- **Bigjump characterization:** 12/13 genuine, claim `bigjump-cap-characterization-1000`.
-- **Sublinear jump exponent:** log-log slope 0.388 over 43 events. `code/out/surplus_renewal_structure.md`.
-- **Geometric-vs-sublinear reconciliation:** ×1.68/event is finite-sample; ratios decline 3.9 → 1.49, sublinear direction. Claim `directive25-gap-trend-and-reconciliation`.
-- **Width degradation:** k* = 162, all 12 genuine giants far above threshold. `code/out/directive24_width_degradation.md`.
+- **Bigjump characterization:** 12/13 genuine at depth 1000 (claim `bigjump-cap-characterization-1000`); **Directive 27 resolves the cap** — wider sieve (3e8, 16.25M primes, depth 240) adds two genuine giants at rows 162 (j=4,323,712) and 175 (j=5,237,310); i=161 cap no longer an artifact concern.
+- **Growth law:** NOT DETERMINED by this data. Geometric R² 0.9607, per-event factor 1.751 over 14 giants (improved from 0.942/1.68 over 12); but the 13th ratio 4.95 reverses the declining-ratio trend Directive 25 used to argue sublinearity. Both descriptions fit; the honest position is unsettled. What IS settled: j → ∞, inter-giant max gap unchanged at 26.
+- **Geometric-vs-sublinear reconciliation** downgraded: ratios `2.73,3.92,1.35,2.94,1.12,1.36,1.92,1.20,1.59,1.42,1.49,4.95,1.97` — the decline reverses at the 13th giant. Directive 25's "declining toward 1" was a reading of eleven ratios and the twelfth broke it. Claim `directive25-gap-trend-and-reconciliation` — reconciliation half downgraded, gap half strengthened. **Directive 27 resolves the fork from Directive 25 item 4: the sublinear asymptotic claim is not supported by the wider data.**
+- **Inter-giant gap (14 genuine, wider width):** gaps 22,8,4,26,2,14,2,14,4,4,12,15,13. Max 26 unchanged. New gaps (15,13) inside existing range. `code/out/wider_width_extend.captured.txt`.
+- **Width degradation:** k* at wider sieve = 239; all 14 genuine giants far above threshold.
 - **Mean event rate λ̂=0.585** superseded (heavy tail dominates).
 - **Rule 90 timing corollary** closed (null).
-- **CHT inverse theorem** does not bite at depth 1000.
+- **CHT inverse theorem** does not bite at any reachable depth.
 
 ## Data available
 

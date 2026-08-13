@@ -86,20 +86,19 @@ def main():
 
     print("MRSTT boundary-cut tabulation, eps=1/2, cut_n=exp(log(n)^(7/6))")
     print("Convention: N(a) counts both mirrors + trivial pair.")
-    print("category  a            rep (n,k)      cut_n        k      class")
-    print("-" * 72)
+    print("     rep (n,k)      cut_n        k      class")
+    print("-" * 52)
     counts = {}
     for (cat, *rest), n, k in sorted(rows, key=lambda r: r[0]):
         c = cut(n)
         cls = "BOUNDARY" if is_boundary(n, k) else "interior"
         counts[cls] = counts.get(cls, 0) + 1
         if cat == "witness":
-            label = "witness %d" % rest[0]
+            label = "W %d" % rest[0]
         else:
-            label = "fib j=%d a=%d" % (rest[0], rest[1])
-        print("%-13s %9d  (%7d,%2d)  %12.4f  %5d  %s"
-              % (label, rest[-1] if cat == "witness" else rest[1],
-                 n, k, c, k, cls))
+            label = "F j=%d" % rest[0]
+        print("%-7s  (%7d,%6d)  %12.4f  %6d  %s"
+              % (label, n, k, c, k, cls))
 
     print("-" * 72)
     print("Totals over all 19 known nontrivial occurrences:")

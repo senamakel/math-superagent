@@ -9,25 +9,7 @@ Budget 10,000 tokens (this file ~5,900 — ~4,100 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state (Directive 25 complete): geometric ×1.68/event and sublinear
-exponent 0.388 are reconciled — observed ratios b_{i+1}/b_i decline toward 1
-with b, so the geometric factor is a finite-sample description, not an
-asymptotic law.** Directive 24 items 1–2 DONE: k\* = 162
-(`code/out/directive24_width_degradation.md`), geometric R²=0.94 vs linear
-0.78 over the 12 genuine giants (`code/out/directive24_geometric_growth.md`).
-Directive 25 items 3–4 DONE (claim `directive25-gap-trend-and-reconciliation`,
-checked): inter-giant gaps (genuine 12) = 22,8,4,26,2,14,2,14,4,4,12 rows,
-mean 10.18, median 8, max 26, no trend (Spearman ρ vs prior b = −0.141; OLS
-R² ≤ 0.11 both fits) while b spans 2,179 → 1,094,273; the 11 consecutive ratios
-decline 3.9 → 1.49 toward 1, tracking rho = 1+C·b^(α−1) (α=0.388, C_pool=802.6;
-log-residual MSE 0.140 sublinear vs 0.154 geometric — neither decisive on 12
-points, the decline is the sublinear direction). **Operative target restated:
-the conjecture follows if the inter-giant gap G_k grows strictly slower than
-b^0.388** (G_k < j_k ≈ C·b_k^0.388); measured G ≤ 26 vs C·b^0.388 ~ 10–10³ —
-orders of slack at depth 1000; only a larger width (more giants) separates
-bounded-gap from growing-gap, and this run cannot (cap). Mean-rate route
-superseded; do not cite D=40 smoke. Also this cycle: sign-coherence /
-forward-difference identity REFUTED at its base step (Ruled out).
+**Run state (Directive 27): wider_width_extend (sieve 3e8, 16.25M primes, depth 240) corroborates bounded-gap: two new genuine giants (row 162, j=4,323,712; row 175, j=5,237,310), max inter-giant gap unchanged at 26 over 14 giants, new gaps (15,13) inside existing range. Growth law UNSETTLED: 13th ratio 4.95 reverses the declining-ratio trend of Directive 25; geometric R² improved to 0.9607, factor 1.751. The honest position: the growth law is not determined. What IS settled: j → ∞, gap max unchanged. Step 7 (bounded gap + j → ∞) stands.** Directive 24 cap resolved (k* = 239). Directive 25 gap half strengthened, reconciliation half contradicted (claim `directive25-gap-trend-and-reconciliation` — downgraded). The provability question (Directive 26) is live. Mean-rate route superseded; do not cite D=40 smoke.
 
 ## Established
 
@@ -65,19 +47,20 @@ forward-difference identity REFUTED at its base step (Ruled out).
   the timing corollary is CLOSED null (Ruled out). Anchor:
   `research/notes/block_lemma.md`,
   `research/approaches/rule90-absorbing-boundary.md`.
-- **Big-jump characterisation — DONE (Directive 23): the giants are genuine.**
+- **Big-jump characterisation — DONE (Directive 23), cap RESOLVED (Directive 27).**
   Of the 13 (2,4)-events with j > 1000 at depth 1000, 12 are genuine dynamics
-  (landing floors 176,186..1,268,392; heavy tail j>10^4: 9 genuine of 10) and
-  only **i=161 is the width artifact** (b_162 = 1,270,444 = W−162−1; true jump
-  ≥ 176,181 — quote as a lower bound, never exact). Genuine giants carry 86.1%
-  of S_1000=1,270,603; all 13 carry 99.76%. Giant rows: 34,56,64,68,94,96,
-  110,112,126,130,134,146,161. Rows k ≥ 162 are the width-exhaustion artifact:
-  **every block/jump/event measurement at rows ≥ 162 is a LOWER BOUND** (j at
-  i=161 recorded as ≥ 176,181; flooring falls 176,182 → 0 at k\* = 162 and all
-  12 genuine giants sit ≥ 536,885 above the threshold — none width-limited).
-  Claim `bigjump-cap-characterization-1000`; anchors
-  `code/out/bigjump_characterization.captured.txt`,
-  `code/out/bigjump_characterization.notes.md`.
+  and only **i=161 is the width artifact** (b_162 = 1,270,444 = W−162−1).
+  **Directive 27: wider sieve (3e8, 16.25M primes, depth 240) adds two genuine
+  giants at rows 162 (j=4,323,712) and 175 (j=5,237,310)** — the i=161 cap is
+  resolved; the two new giants land on intact rows with intruders {14,28} and
+  floor distances well above zero. All 14 genuine giants have landing floors
+  far above threshold; the heavy tail is genuine prime-renewal structure, not a
+  finite-width effect. Giant event rows: 35,57,65,69,95,97,111,113,127,131,135,
+  147,162,175. Claim `bigjump-cap-characterization-1000` (cap-resolved upgrade);
+  anchors `code/out/bigjump_characterization.captured.txt`,
+  `code/out/bigjump_characterization.notes.md`,
+  `code/out/wider_width_extend.captured.txt`. Rows k ≥ 239 at the wider sieve
+  are the width-exhaustion artifact.
 - **Ducci literature (four primary papers) — cyclic boundary drawn.** All
   classical Ducci theorems are CYCLIC (wraparound); nilpotence-iff-power-of-2,
   cycle structure, no-uniform-bound do NOT transfer to the half-infinite
@@ -286,10 +269,15 @@ forward-difference identity REFUTED at its base step (Ruled out).
   58,97,96,97,96,173,175,175,175,175,290,289,288,739,873,872,871,872,871,870,
   869,868,867,866,865,2179,2178,2177,2176,2770,2769`. Growth by doubling bursts
   around k=15,20,23,35,39.
-- Depth 1000 stats: min b=2 (k=1), max b=1,270,444 (k=162); 60 regeneration
+- Depth 1000 stats: min b=2 (k=1), max b=1,270,444 (k=162, cap); 60 regeneration
   events in 999 transitions; max jump 360,698 (k=146); intruder min 4, max 14,
   59.6% exactly 4, all ≡0 or 2 mod 4. **All 60 regen rows had intruder==4,
   but intruder==4 is NOT sufficient** (36 erosion rows also have it).
+- **Wider width (Directive 27, sieve 3e8, 16.25M primes, depth 240):** 74
+  events, 14 giants (j > 1000), max jump 5,237,310 (row 175); inter-giant gaps
+  (14 genuine) = 22,8,4,26,2,14,2,14,4,4,12,15,13, max 26 unchanged; landing
+  blocks 2,179 → 10,655,286; all s in {0,2}: true. Giants new at rows 162, 175;
+  k* = 239. Geometric R² 0.9607, factor 1.751 over 14. `code/out/wider_width_extend.captured.txt`.
 - **CORRECTION: the "/838-row pure-erosion run" is a finite-width artifact.**
   At k=162 the block fills the whole remaining sieve row; k=162..999 is the
   block retracting one column per row as width runs out. Genuine longest
@@ -346,17 +334,21 @@ failing hypotheses is relied on.
 
 ## Gaps
 
-- **The live question: prove the inter-giant gap is o(b^0.388).** Step law +
-  recharge reduce the conjecture to Σ_{i<k}(j_i+1) ≥ k−1−b_1. Under j ~
-  C·b^0.388, b_next/b = 1 + C·b^(−0.612) → 1, so the geometic description is
-  finite-sample; the conjecture follows if every giant jump exceeds the rows
-  consumed since the previous giant (G_k < C·b_k^0.388). Measured G ≤ 26 with
-  1.5–3 orders of slack; **a larger width that yields more giants is the only
-  thing that separates bounded-gap from growing-gap — this run cannot.**
-  Claim `directive25-gap-trend-and-reconciliation` (checked, depth 1000 only).
-  The whole growth/renewal direction is original to this run
-  (`block-growth-literature-not-covered`); λ̂=0.585 mean-rate and
-  "giants keep arriving" framings are superseded by the gap-vs-jump inequality.
+- **The live question: prove the inter-giant gap is bounded.** Step law +
+  recharge reduce the conjecture to Σ_{i<k}(j_i+1) ≥ k−1−b_1. Step 7 of the
+  chain: bounded gap + j → ∞ ⇒ b_k ≥ 1 forever. The gap half was corroborated
+  by wider_width_extend (max 26 unchanged over 14 giants, new gaps inside
+  existing range, 15× width increase). The growth law (geometric vs sublinear)
+  is NOT DETERMINED — the 13th ratio 4.95 reversed Directive 25's declining
+  trend, and the geometric fit improved (R² 0.9607, factor 1.751). **What IS
+  settled:** (a) j → ∞, (b) max inter-giant gap = 26 over 14 points while b
+  spans 4,900×. The growth law is irrelevant to step 7 — any growth law with
+  j → ∞ plus bounded gap suffices. Claim `directive25-gap-trend-and-reconciliation`
+  (gap half strengthened, reconciliation half downgraded). The provability
+  question (Directive 26) is live: does bounded inter-giant gap follow from
+  prime-gap distribution, or is it equivalent to a standard conjecture?
+  Anchors: `code/out/wider_width_extend.captured.txt`,
+  `code/out/directive25_gap_trend.md`.
 - **CHT inverse theorem route needs two analytic steps for the primes:** rule
   out long zero-blocks and long shallow {0,d}-blocks (Cramér-type, unproved).
   A proof bypassing that dichotomy is the alternative.

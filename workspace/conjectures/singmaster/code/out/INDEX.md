@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `README.md` | _(undescribed)_ |
+| `boundary_cut_tabulation.md` | Records the boundary-cut tabulation result: every known witness + Fibonacci family occurrence lies in the MRSTT-open boundary under eps=1/2; family stays boundary forever iff eps>=1/3 (else leaves into interior). Pins lower bound C>=3 for G-boundary-uniform-count. Evidence class: computed. |
 | `brute.captured.txt` | Brute-force oracle on the 7 witnesses: direct enumeration gives identical counts and occurrence sets (3003->8, rest->6), second independent route. |
 | `brute_oracle.md` | _(undescribed)_ |
 | `check_eras_refutation.captured.txt` | _(undescribed)_ |

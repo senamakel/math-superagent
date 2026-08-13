@@ -1,0 +1,30 @@
+=== (i) eps<1/3: J0(eps) = largest j with family members in genuine boundary strip ===
+    eps=0.1000  q=0.7667  J0=1
+    eps=0.1500  q=0.8167  J0=1
+    eps=0.2000  q=0.8667  J0=2
+    eps=0.2500  q=0.9167  J0=3
+    eps=0.3000  q=0.9667  J0=5
+    eps=0.3200  q=0.9867  J0=11
+    eps=0.3332  q=0.9999  J0=299
+
+=== (ii,iii) cut vs n: strip is genuine iff q<1; whole-triangle iff q>1 ===
+    eps=0.300 j=10: ln cut=18.139  ln n=20.045  ln k=19.083  -> cut< n, cut< k
+    eps=0.300 j=100: ln cut=162.175  ln n=193.281  ln k=192.319  -> cut< n, cut< k
+    eps=0.300 j=1000: ln cut=1496.546  ln n=1925.644  ln k=1924.681  -> cut< n, cut< k
+    eps=0.333 j=10: ln cut=20.045  ln n=20.045  ln k=19.083  -> cut< n, cut> k
+    eps=0.333 j=100: ln cut=193.281  ln n=193.281  ln k=192.319  -> cut< n, cut> k
+    eps=0.333 j=1000: ln cut=1925.644  ln n=1925.644  ln k=1924.681  -> cut< n, cut> k
+    eps=0.500 j=10: ln cut=33.038  ln n=20.045  ln k=19.083  -> cut> n, cut> k
+    eps=0.500 j=100: ln cut=464.752  ln n=193.281  ln k=192.319  -> cut> n, cut> k
+    eps=0.500 j=1000: ln cut=6792.119  ln n=1925.644  ln k=1924.681  -> cut> n, cut> k
+
+=== family reps j=2..9: boundary status under genuine thin strip (eps=0.2, q=0.8667) ===
+    j=2 k=39 cut=4.401e+01 boundary=True
+    j=3 k=272 cut=1.660e+02 boundary=False
+    j=4 k=1869 cut=5.943e+02 boundary=False
+    j=5 k=12815 cut=2.047e+03 boundary=False
+    j=6 k=87840 cut=6.839e+03 boundary=False
+    j=7 k=602069 cut=2.229e+04 boundary=False
+    j=8 k=4126647 cut=7.113e+04 boundary=False
+    j=9 k=28284464 cut=2.229e+05 boundary=False
+DONE

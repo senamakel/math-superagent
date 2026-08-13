@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "<string>", line 8, in <module>
+IndexError: list index out of range
+j=6 log n=12.35 k=87840 log k=11.38
+   eps=0.050 log cut=6.06 boundary(k<cut)=False
+   eps=0.100 log cut=6.87 boundary(k<cut)=False
+   eps=0.200 log cut=8.83 boundary(k<cut)=False
+   eps=0.333 log cut=12.34 boundary(k<cut)=True
+   eps=0.400 log cut=14.60 boundary(k<cut)=True
+   eps=0.500 log cut=18.77 boundary(k<cut)=True
+j=10 log n=20.05 k=193864605 log k=19.08
+   eps=0.050 log cut=8.57 boundary(k<cut)=False
+   eps=0.100 log cut=9.96 boundary(k<cut)=False
+   eps=0.200 log cut=13.44 boundary(k<cut)=False
+   eps=0.333 log cut=20.03 boundary(k<cut)=True
+   eps=0.400 log cut=24.48 boundary(k<cut)=True
+   eps=0.500 log cut=33.04 boundary(k<cut)=True
+j=20 log n=39.29 k=44361286907595735 log k=38.33
+   eps=0.050 log cut=13.89 boundary(k<cut)=False
+   eps=0.100 log cut=16.68 boundary(k<cut)=False
+   eps=0.200 log cut=24.08 boundary(k<cut)=False
+   eps=0.333 log cut=39.25 boundary(k<cut)=True
+   eps=0.400 log cut=50.19 boundary(k<cut)=True
+   eps=0.500 log cut=72.45 boundary(k<cut)=True

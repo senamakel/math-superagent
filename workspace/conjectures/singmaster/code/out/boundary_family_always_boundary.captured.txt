@@ -1,0 +1,27 @@
+j= 1 n=15             k=5         k/n=0.3333 cut=2.446e+01 boundary=True
+j= 1 n=14             k=6         k/n=0.4286 cut=2.225e+01 boundary=True
+j= 2 n=104            k=39        k/n=0.3750 cut=4.031e+02 boundary=True
+j= 2 n=103            k=40        k/n=0.3883 cut=3.972e+02 boundary=True
+j= 3 n=714            k=272       k/n=0.3810 cut=8.045e+03 boundary=True
+j= 3 n=713            k=273       k/n=0.3829 cut=8.027e+03 boundary=True
+j= 4 n=4895           k=1869      k/n=0.3818 cut=1.865e+05 boundary=True
+j= 4 n=4894           k=1870      k/n=0.3821 cut=1.864e+05 boundary=True
+j= 5 n=33552          k=12815     k/n=0.3819 cut=4.883e+06 boundary=True
+j= 5 n=33551          k=12816     k/n=0.3820 cut=4.882e+06 boundary=True
+j= 6 n=229970         k=87840     k/n=0.3820 cut=1.416e+08 boundary=True
+j= 6 n=229969         k=87841     k/n=0.3820 cut=1.416e+08 boundary=True
+j= 7 n=1576239        k=602069    k/n=0.3820 cut=4.491e+09 boundary=True
+j= 7 n=1576238        k=602070    k/n=0.3820 cut=4.491e+09 boundary=True
+j= 8 n=10803704       k=4126647   k/n=0.3820 cut=1.541e+11 boundary=True
+j= 8 n=10803703       k=4126648   k/n=0.3820 cut=1.541e+11 boundary=True
+j= 9 n=74049690       k=28284464  k/n=0.3820 cut=5.674e+12 boundary=True
+j= 9 n=74049689       k=28284465  k/n=0.3820 cut=5.674e+12 boundary=True
+j=10 n=507544127      k=193864605 k/n=0.3820 cut=2.229e+14 boundary=True
+j=10 n=507544126      k=193864606 k/n=0.3820 cut=2.229e+14 boundary=True
+j=11 n=3478759200     k=1328767775 k/n=0.3820 cut=9.290e+15 boundary=True
+j=11 n=3478759199     k=1328767776 k/n=0.3820 cut=9.290e+15 boundary=True
+j=12 n=23843770274    k=9107509824 k/n=0.3820 cut=4.091e+17 boundary=True
+j=12 n=23843770273    k=9107509825 k/n=0.3820 cut=4.091e+17 boundary=True
+ALL boundary j=1..12: True
+j=13: cut/n = 27539841.191143584
+DONE

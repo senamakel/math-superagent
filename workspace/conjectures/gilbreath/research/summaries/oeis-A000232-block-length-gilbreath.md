@@ -1,0 +1,42 @@
+<!-- source: https://oeis.org/search?q=id:A000232&fmt=text | converted from plain text -->
+
+# Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/
+
+Search: id:a000232
+Showing 1-1 of 1
+
+%I A000232 M2718 N1089 #44 May 30 2026 16:39:40
+%S A000232 3,8,14,14,25,24,23,22,25,59,98,97,98,97,174,176,176,176,176,291,290,
+%T A000232 289,740,874,873,872,873,872,871,870,869,868,867,866,2180,2179,2178,
+%U A000232 2177,2771,2770,2769,2768,2767,2766,2765,2764,2763,2763,2763,2763,3366,4208,4207
+%N A000232 Construct a triangle as in A036262. Sequence is one less than the position of the first number larger than 2 in the n-th row (n-th difference).
+%C A000232 Related to Gilbreath conjecture.
+%C A000232 In particular, if a(n) > 2 for every n, then the Gilbreath conjecture is true. - _Bartlomiej Pawlik_, Nov 28 2025
+%D A000232 W. Sierpiński, A Selection of Problems in the Theory of Numbers. Macmillan, NY, 1964, p. 35.
+%D A000232 N. J. A. Sloane, A Handbook of Integer Sequences, Academic Press, 1973 (includes this sequence).
+%D A000232 N. J. A. Sloane and Simon Plouffe, The Encyclopedia of Integer Sequences, Academic Press, 1995 (includes this sequence).
+%H A000232 T. D. Noe, <a href="/A000232/b000232.txt">Table of n, a(n) for n=1..274</a>
+%H A000232 Chris Caldwell, <a href="https://t5k.org/glossary/page.php?sort=GilbreathsConjecture">Gilbreath's conjecture</a>
+%H A000232 Albert N. Debono, <a href="http://web.archive.org/web/20060215084642/http://www.eng.um.edu.mt/~andebo/numbers/numcom11.htm">More on primes</a>, Numbers and Computers (11).
+%H A000232 R. B. Killgrove and K. E. Ralston, <a href="https://doi.org/10.1090/S0025-5718-59-99262-2">On a conjecture concerning the primes</a>, Math. Comp., 13 (1959), 121-122.
+%H A000232 Eric Weisstein's World of Mathematics, <a href="https://mathworld.wolfram.com/GilbreathsConjecture.html">Gilbreath's Conjecture</a>
+%H A000232 <a href="/index/Pri#gaps">Index entries for primes, gaps between</a>
+%F A000232 a(n) = A036277(n) - 1. - _T. D. Noe_, Feb 03 2007
+%p A000232 A000232 := proc(n)
+%p A000232     local k;
+%p A000232     for k from 1 do
+%p A000232         if A036262(n,k) > 2 then
+%p A000232             return k-1 ;
+%p A000232         end if;
+%p A000232     end do:
+%p A000232 end proc:
+%p A000232 seq(A000232(n),n=1..40) ; # _R. J. Mathar_, May 10 2023
+%t A000232 max = 10^4; triangle = NestList[Abs[Differences[#]] &, Prime[Range[max]], max]; a[n_] := (p = Position[triangle[[n + 1]], k_ /; k > 2, 1, 1]; If[p == {}, Nothing, p[[1, 1]] - 1]); Table[a[n], {n, 1, Sqrt[max]}] (* _Jean-François Alcover_, Feb 06 2016 *)
+%Y A000232 Cf. A001549.
+%K A000232 nonn
+%O A000232 1,1
+%A A000232 _N. J. A. Sloane_
+%E A000232 Edited by _Robert G. Wilson v_, Aug 18 2002
+%E A000232 More terms from _Jean-François Alcover_, Feb 06 2016
+
+# Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE

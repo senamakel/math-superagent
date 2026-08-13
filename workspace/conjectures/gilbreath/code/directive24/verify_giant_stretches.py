@@ -12,7 +12,7 @@ Checks per genuine event k in {34,56,64,68,94,96,110,112,126,130,134,146}:
       (uses lib.gilbreath.block_profile, the library oracle);
   (b) generating stretch h_k over [b_k, b_{k+1}+1]: values, min/max,
       dominant value + count, distinct count, drift, step counts,
-      longest run per value;
+      longest run per value (all exact ints; nothing floats);
   (c) landing bits over [b_k, b_{k+1}]: run lengths of 0 and 1,
       counts of zeros/ones, longest zero-run, longest one-run;
   (d) all maximal 1-Lipschitz stretches of length >= 100 with their
@@ -150,7 +150,7 @@ def main():
             assert len(stretches) == 1, (k, 'only cont')
 
     print('VERIFY-OK: 12 genuine giants independently recomputed '
-          '(fresh sieve, pairwise iterator, math.dist diffs, halved-value '
+          '(fresh sieve, pairwise iterator, abs-list-comp diffs, halved-value '
           'control scan): all (a)(b)(c)(d) numbers match the snapshot; '
           'block_profile oracle matches stored b at all 12 event rows; '
           'containers = [1, b_{k+1}+1]; library claims '

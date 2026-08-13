@@ -70,23 +70,27 @@ statement: In the prime Gilbreath triangle to depth 1000 (sieve 2e7,
   10.18, median 8, max 26, Spearman rho(gap, prior post-jump b) = -0.141,
   OLS R^2 <= 0.11 (both gap~index and gap~b) — flat, no trend while b spans
   2,179..1,094,273. The 11 consecutive genuine ratios rho = b_{i+1}/b_i are
-  2.73,3.92,1.35,2.94,1.12,1.36,1.92,1.20,1.59,1.42,1.49 (mean 1.91),
-  declining toward 1 with b; MSE of log-residuals vs the sublinear law
-  rho=1+C*b^(alpha-1) (alpha=0.388, pooled C=802.6) is 0.140 vs 0.154 for
-  the geometric constant 1.6816 — neither decisive on 12 points, but the
-  decline is the sublinear direction, making the geometric factor a
-  finite-sample description, not the asymptotic law.
+  2.73,3.92,1.35,2.94,1.12,1.36,1.92,1.20,1.59,1.42,1.49 (mean 1.91).
+  **Directive 27 (wider width): the gap half was corroborated — max gap
+  unchanged at 26 over 14 genuine giants (new gaps 15, 13 inside existing
+  range). The reconciliation half was contradicted: the 13th ratio is 4.95,
+  reversing the declining-ratio trend and washing out the MSE comparison
+  (geometric R² improved to 0.9607 from 0.942). The growth law is NOT
+  determined by this data.**
 hypotheses: rows are iterated absolute differences of the primes below 2e7
   to depth 1000; giants = (2,4)-events with jump > 1000; the capped i=161
-  is excluded; alpha=0.388 is the 43-event log-log OLS from
-  surplus-renewal-structure-1000
-holds-here: yes (depth 1000, exact)
-status: checked
+  is excluded; wider-width run (sieve 3e8, depth 240) adds two genuine giants.
+holds-here: yes (gap half corroborated by wider width; reconciliation half
+  contradicted — directive25 concluded the declining-ratio trend on 11 ratios
+  and the 13th reversed it)
+status: checked — gap half strengthened, reconciliation half downgraded
+  (Directive 27)
 bearing: operative target — the conjecture follows if the inter-giant gap
-  G_k grows strictly slower than b^0.388 (G_k < j_k ~ C*b_k^0.388); measured
-  G <= 26 vs required C*b^0.388 ~ 10..10^3 at these b (1.5-3 orders of
-  slack). A larger width that yields more giants separates bounded-gap from
-  growing-gap; this run cannot.
-anchor: code/out/directive25_gap_trend.md, code/out/directive25_gap_trend.captured.txt
+  G_k grows strictly slower than j_k; measured max gap 26, unchanged when
+  width increased 15× and b increased 4,900×. The growth law (geometric vs
+  sublinear) is unsettled and is not load-bearing — bounded-gap + j → ∞
+  suffice regardless.
+anchor: code/out/directive25_gap_trend.md, code/out/directive25_gap_trend.captured.txt,
+  code/out/wider_width_extend.captured.txt
 source: operator-computation
 ```

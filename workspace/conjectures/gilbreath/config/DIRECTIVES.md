@@ -594,3 +594,38 @@ Two cautions beside it. Twelve gaps is a small sample and "no trend" over that m
 The next question is whether step 6 is provable or merely true-looking: does "the gap between consecutive (2,4)-events is bounded" follow from anything about prime gaps, or is it equivalent to something already known hard? Answer that before trying to prove it.
 
 Rewrote `research/threads/regeneration.md` with the full 7-step chain, the ONE-statement reduction ("the inter-giant gap is bounded"), the two cautions, and the next question framed as a provability inquiry rather than a proof attempt. Updated `TASKS.md` to Directive 26 with that question as item 1. Amended `CONTEXT.md` in both the run-state line and the Gaps section so every role now has the chain and the target. No files changed beyond what the directive required — the hygiene task survives as item 2 in `TASKS.md`.
+
+## 27 — from steer
+
+wider_width_extend is the right experiment and it strengthens the main result. Two new giants past the old cap — row 162 (j=4,323,712) and row 175 (j=5,237,310) — so the capped i=161 is resolved, and:
+
+  gaps: 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13   max = 26, UNCHANGED
+  T(J) max-gap: 26 at J=100/300/1000, 30 at 1e4, 18 at 1e5
+  all s in {0,2}: True
+  giants NOT setting a record: none
+
+The bounded-gap observation survived a width extension on data it had never seen, and the two new gaps (15, 13) land inside the existing range. That is corroboration rather than more of the same, and it answers my "one finite triangle" caution directly.
+
+But the same file undercuts directive 25's other conclusion, and you should not leave both standing.
+
+Directive 25 concluded the ratios DECLINE toward 1 — 3.92 at b=5939 down to 1.49 — and used that to argue the sublinear law beats the geometric one asymptotically. The landing-block ratios including the new giants are
+
+  2.73 3.92 1.35 2.94 1.12 1.36 1.92 1.20 1.59 1.42 1.49 4.95 1.97
+
+The decline reverses at the 13th giant: 4.95 is larger than every earlier ratio except none — it exceeds even the first, 2.73. And your own geometric fit IMPROVED with the new points, R2 0.9607 over 14 giants against 0.942 over 12, with the per-event factor rising 1.68 to 1.751.
+
+So the honest position is that the growth law is NOT determined by this data. Sublinear-with-decaying-ratio was a reading of twelve points and the thirteenth broke it. Say that in research/threads/regeneration.md and downgrade the reconciliation half of directive25-gap-trend-and-reconciliation accordingly; keep the gap half, which got stronger.
+
+This does not damage the chain. Step 7 needs bounded gap and j -> infinity, and both still hold — j is now growing faster than you thought, not slower. Only the sub-claim about which growth law applies is unsettled.
+
+All edits complete. Here is what changed and why:
+
+1. **`research/threads/regeneration.md`** — Updated to Directive 27: the thread now records 14 genuine giants (cap resolved), growth law unsettled (13th ratio 4.95 reversed the declining trend), and the gap max unchanged at 26 over 14 points — the bounded-gap observation survived a width extension. The reconciliation half of Directive 25 is downgraded; the gap half is strengthened.
+
+2. **`code/out/directive25_gap_trend.md`** — Claim `directive25-gap-trend-and-reconciliation` now carries the Directive 27 upgrade: gap half corroborated, reconciliation half contradicted. The `bearing` field no longer ties the operative target to the sublinear exponent because the growth law is not determined.
+
+3. **`TASKS.md`** — Rewritten for Directive 27. The thread/claim update is marked DONE. The provability question (Directive 26) remains the live item. The wider-width results are recorded in the background section, and the earlier sublinear-ratio reconciliation framing is replaced with the honest "growth law not determined" position.
+
+4. **`CONTEXT.md`** — Run state updated. Big-jump characterization now records the cap as resolved with the two new genuine giants. The Gaps section states the growth law is unsettled and identifies what IS settled (bounded gap, j → ∞). Wider-width stats added to Numbers.
+
+The directive's core instruction — downgrade the reconciliation, keep the gap — is done. The chain (step 7: bounded gap + j → ∞) is undamaged; only the sub-claim about which growth law applies is withdrawn.
