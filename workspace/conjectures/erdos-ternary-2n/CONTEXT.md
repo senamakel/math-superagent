@@ -59,7 +59,8 @@ Neither is to be recorded as a proof.
 
 - Witnesses verified: `1_3`, `11_3`, `100111_3` for `n = 0, 2, 8`.
 - Exhaustive digit-free search, `n = 0..2000`: none besides `0, 2, 8`.
-- `|A_k|` sieve counts: **not yet computed** — first open experiment.
+- `|A_k|` sieve counts for `k = 1..22`: `1, 2, 4, 8, ..., 2^(k-1)` exactly — size doubles at every level. Captured at `code/out/sieve_Ak.captured.txt` and `code/out/sieve_cannot_close.md`.
+- Density `|A_k| / (2·3^(k-1)) = (1/2)(2/3)^(k-1) → 0` while count grows without bound.
 
 ## Recalled
 
