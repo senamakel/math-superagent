@@ -111,7 +111,7 @@ fn an_unknown_run_reads_as_absent_rather_than_failing_a_reporter() {
 #[test]
 fn a_handle_is_reachable_until_the_run_is_deregistered() {
     let registry = SteeringRegistry::new();
-    registry.register(task("agent-run-1"), SteeringHandle::allow_all());
+    registry.register(&task("agent-run-1"), SteeringHandle::allow_all());
     assert!(registry.get(&task("agent-run-1")).is_some());
 
     registry.deregister(&task("agent-run-1"));

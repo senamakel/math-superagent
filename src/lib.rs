@@ -1,7 +1,12 @@
-//! An embeddable, vendored `TinyAgents` harness.
+//! An embeddable research runtime over a vendored `TinyAgents` harness and a
+//! vendored `TinyFlows` state graph.
 //!
 //! The vendored `TinyAgents` runtime provides model and tool orchestration
-//! without the full application's memory, channels, or Web3 domains.
+//! without the full application's memory, channels, or Web3 domains, and runs
+//! one agent turn. `TinyFlows` provides the state graph that decides which turn
+//! runs next — the attempt/judge/reflect solution loop, and the graph each
+//! detached sub-agent run is driven by. [`agent::flow`] is the seam between
+//! them and documents why the split falls where it does.
 //! [`HelloAgent`] supplies a minimal OpenRouter-backed loop with arithmetic,
 //! echo, Exa search, and sub-agent delegation tools. Loop events are exported
 //! to Langfuse on a best-effort basis.

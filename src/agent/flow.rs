@@ -2,27 +2,27 @@
 //!
 //! Every explicit control-flow graph in this crate — the attempt/judge/reflect
 //! solution loop, and the single-node graph each async sub-agent run is driven
-//! by — is built with [`GraphBuilder`]. That runtime is TinyFlows', not
-//! TinyAgents'.
+//! by — is built with [`GraphBuilder`]. That runtime is `TinyFlows`', not
+//! `TinyAgents`'.
 //!
-//! The two are the same runtime. It was written in TinyAgents, extracted into
-//! TinyFlows, and is maintained there; TinyFlows' copy states so in its own
+//! The two are the same runtime. It was written in `TinyAgents`, extracted into
+//! `TinyFlows`, and is maintained there; `TinyFlows`' copy states so in its own
 //! module documentation. What the newer copy adds is scheduling this loop
 //! wants and the older one cannot express: a per-node concurrency bound
 //! (`with_node_concurrency`), so one fanned-out node can be widened without
 //! also widening the graph, and `Command::route`, which lets a single node emit
-//! plain activations and `Send` packets together. TinyAgents keeps what
-//! TinyFlows deliberately left behind — the harness, the model providers, the
+//! plain activations and `Send` packets together. `TinyAgents` keeps what
+//! `TinyFlows` deliberately left behind — the harness, the model providers, the
 //! tool runtime, and the orchestration task store — because agents are a host
-//! concern in TinyFlows, injected through its capability traits, which is
+//! concern in `TinyFlows`, injected through its capability traits, which is
 //! exactly the role this crate plays.
 //!
-//! So the two crates are not alternatives here. TinyAgents runs a *turn*;
-//! TinyFlows decides which turn runs next.
+//! So the two crates are not alternatives here. `TinyAgents` runs a *turn*;
+//! `TinyFlows` decides which turn runs next.
 //!
 //! # The seam
 //!
-//! The one place the split is visible is the error type. TinyFlows' graph has
+//! The one place the split is visible is the error type. `TinyFlows`' graph has
 //! its own [`tinyflows::graph::GraphError`] rather than `TinyAgentsError`,
 //! which is what let it stop depending on the harness at all. Node handlers in
 //! this crate call harness code and get `TinyAgentsError`; the graph they are
@@ -69,9 +69,7 @@ pub fn into_graph(error: TinyAgentsError) -> GraphError {
         TinyAgentsError::Validation(message) => GraphError::Validation(message),
         TinyAgentsError::Timeout(message) => GraphError::Timeout(message),
         TinyAgentsError::Cancelled => GraphError::Cancelled,
-        TinyAgentsError::Interrupted { node, message } => {
-            GraphError::Interrupted { node, message }
-        }
+        TinyAgentsError::Interrupted { node, message } => GraphError::Interrupted { node, message },
         TinyAgentsError::InvalidConcurrentUpdate(message) => {
             GraphError::InvalidConcurrentUpdate(message)
         }
@@ -107,16 +105,14 @@ pub fn from_graph(error: GraphError) -> TinyAgentsError {
         GraphError::Validation(message) => TinyAgentsError::Validation(message),
         GraphError::Timeout(message) => TinyAgentsError::Timeout(message),
         GraphError::Cancelled => TinyAgentsError::Cancelled,
-        GraphError::Interrupted { node, message } => {
-            TinyAgentsError::Interrupted { node, message }
-        }
+        GraphError::Interrupted { node, message } => TinyAgentsError::Interrupted { node, message },
         GraphError::InvalidConcurrentUpdate(message) => {
             TinyAgentsError::InvalidConcurrentUpdate(message)
         }
         GraphError::Checkpoint(message) => TinyAgentsError::Checkpoint(message),
         GraphError::Resume(message) => TinyAgentsError::Resume(message),
         GraphError::Serialization(error) => TinyAgentsError::Serialization(error),
-        other => TinyAgentsError::Graph(other.to_string()),
+        other @ GraphError::Graph(_) => TinyAgentsError::Graph(other.to_string()),
     }
 }
 

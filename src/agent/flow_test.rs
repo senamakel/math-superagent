@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 use super::*;
 
 use tinyflows::graph::{GraphBuilder, NodeContext, NodeResult};
@@ -92,6 +94,9 @@ async fn drives_a_two_node_loop_on_the_tinyflows_runtime() {
         .compile()
         .expect("a graph with an entry, a finish, and routed edges compiles");
 
-    let execution = graph.run(0).await.expect("the loop runs to its finish node");
+    let execution = graph
+        .run(0)
+        .await
+        .expect("the loop runs to its finish node");
     assert_eq!(execution.state, 3);
 }

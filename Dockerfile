@@ -5,6 +5,7 @@ COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 COPY examples ./examples
 COPY vendor/tinyagents ./vendor/tinyagents
+COPY vendor/tinyflows ./vendor/tinyflows
 RUN cargo build --locked --release --example orchestrator
 
 FROM debian:bookworm-slim

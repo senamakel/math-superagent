@@ -1,13 +1,13 @@
 # The solution loop
 
-`orchestrator::solutions` is a `TinyAgents` graph rather than a prompt. This file records how it routes, why each threshold is the number it is, and how a failure anywhere inside it is kept from ending a run.
+`orchestrator::solutions` is a `TinyFlows` graph rather than a prompt. This file records how it routes, why each threshold is the number it is, and how a failure anywhere inside it is kept from ending a run.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
 
 ## The solution loop
 
-`orchestrator::solutions` is a `TinyAgents` graph, not a prompt:
+`orchestrator::solutions` is a `TinyFlows` graph, not a prompt:
 
 ```text
   attempt ──> judge ──┬─ restart ──────────────────> attempt
@@ -16,6 +16,12 @@ The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of i
      │                             └─ stuck / scaling ──> diversify ──┐
      └────────────────────────────────────────────────────────────────┘
 ```
+
+The graph runtime is `TinyFlows`', reached through `agent::flow`; the agent
+turn each node runs is `TinyAgents`'. The two used to be one crate, and the
+distinction is worth keeping in mind while reading the rest of this file: every
+threshold below bounds a *turn*, and every arrow bounds which turn happens
+next.
 
 The judge and the reflection answer different questions. Reflection asks
 whether the answer is right and what the run learned, and it alone can end the

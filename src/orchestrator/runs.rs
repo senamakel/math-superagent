@@ -6,10 +6,10 @@
 //! status per run, its final text or its failure, and the steering handle a
 //! live run can still be redirected through.
 //!
-//! It used to be TinyAgents' orchestration task store, reached through
-//! `tinyagents::graph`. The graph runtime moved to TinyFlows (see
+//! It used to be `TinyAgents`' orchestration task store, reached through
+//! `tinyagents::graph`. The graph runtime moved to `TinyFlows` (see
 //! [`crate::agent::flow`]), which carries no task store at all, deliberately:
-//! what a host does with a detached run is the host's business, and TinyFlows
+//! what a host does with a detached run is the host's business, and `TinyFlows`
 //! keeps agents themselves behind capability traits. This crate is that host,
 //! so the registry lives here.
 //!
@@ -284,7 +284,7 @@ impl SteeringRegistry {
     }
 
     /// Registers the handle for `task_id`, replacing any prior one.
-    pub(super) fn register(&self, task_id: TaskId, handle: SteeringHandle) {
+    pub(super) fn register(&self, task_id: &TaskId, handle: SteeringHandle) {
         if let Ok(mut guard) = self.inner.lock() {
             guard.insert(task_id.as_str().to_string(), handle);
         }

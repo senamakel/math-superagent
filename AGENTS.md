@@ -307,15 +307,27 @@ new dependencies:
 - add a comment in `Cargo.toml` explaining the dependency;
 - keep `Cargo.lock` committed.
 
-TinyAgents lives at `vendor/tinyagents` as a Git submodule. Initialize it with:
+Two crates are vendored as Git submodules. Initialize both with:
 
 ```sh
 git submodule update --init --recursive
 ```
 
-Do not edit vendored code through the parent repository. Make TinyAgents
-changes upstream, push them there, then update this repository's gitlink in a
-separate commit.
+- `vendor/tinyagents` — the harness that runs one agent turn: the model
+  providers, the tool runtime, middleware, and steering.
+- `vendor/tinyflows` — the state-graph runtime every control-flow graph in this
+  crate is built on, reached through `agent::flow`. It is the same runtime that
+  used to be consumed from TinyAgents, extracted into TinyFlows and maintained
+  there.
+
+The split is the rule to keep: TinyAgents runs a turn, TinyFlows decides which
+turn runs next. A new graph is built with `agent::flow`, never with
+`tinyagents::graph`, and the two error types are converted only by
+`agent::flow::into_graph` / `from_graph`.
+
+Do not edit vendored code through the parent repository. Make TinyAgents or
+TinyFlows changes upstream, push them there, then update this repository's
+gitlink in a separate commit.
 
 Never export `CARGO_TARGET_DIR` or send build output to a temporary directory.
 Use the checkout's normal target configuration.

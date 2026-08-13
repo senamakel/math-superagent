@@ -578,7 +578,8 @@ src/orchestrator/           registry, specialists, workspace and document tools
 src/bin/euler_tui.rs        the tabbed console, behind the `tui` feature
 examples/                   the Docker entry point and two direct examples
 docs/                       the rationale behind the rules in AGENTS.md
-vendor/tinyagents/          pinned TinyAgents submodule
+vendor/tinyagents/          pinned TinyAgents submodule (the agent turn)
+vendor/tinyflows/           pinned TinyFlows submodule (the state graph)
 ```
 
 [`docs/runtime.md`](docs/runtime.md) carries the module-by-module map and says
@@ -587,12 +588,14 @@ file-level tree in a README drifts silently: nothing fails when a module is
 added, so the map quietly stops describing the crate.
 
 The crate deliberately leaves out TinyAgents memory domains, channels, Web3,
-SQLite persistence, REPL, and RLM features. The goal is a small mathematical
+SQLite persistence, REPL, and RLM features, and takes TinyFlows with default
+features only — its workflow engine, host capabilities, Chrome companion, and
+durable store are all a host concern this crate already solves its own way. The goal is a small mathematical
 research runtime, not a general agent platform.
 
 ## Development
 
-Initialize the vendored dependency and run the build contract:
+Initialize the vendored dependencies and run the build contract:
 
 ```sh
 git submodule update --init --recursive

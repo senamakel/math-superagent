@@ -143,7 +143,7 @@ impl AsyncSubagentManager {
         let spawned_task_id = task_id.clone();
         let run_id = task_id.as_str().to_string();
         let steering = SteeringHandle::allow_all();
-        steering_registry.register(task_id.clone(), steering.clone());
+        steering_registry.register(&task_id, steering.clone());
         let run_timeout = self.budget.run_timeout;
         let tracer = self
             .tracer
