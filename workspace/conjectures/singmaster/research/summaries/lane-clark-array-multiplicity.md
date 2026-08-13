@@ -1,55 +1,99 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/lane-clark-array-multiplicity.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Lane Clark — Multiplicities of integer arrays (INTEGERS 10 (2010) #A14)
 
-<!-- source: https://emis.muni.cz/journals/INTEGERS/papers/k14/k14.pdf | converted from PDF -->
+Source: Lane Clark, "Multiplicities of integer arrays," INTEGERS 10 (2010) 187–199.
+URL: https://emis.muni.cz/journals/INTEGERS/papers/k14/k14.pdf  (full text held at
+`research/sources/lane-clark-array-multiplicity.full.md`)
 
-## What is in it
+## What this source is
 
-- A14 INTEGERS 10 (2010), 187-199
+A **general abstract framework** for bounding the multiplicity of a value in a
+triangular integer array, applied to binomial coefficients, Narayana numbers,
+Eulerian numbers, and quasi-Eulerian numbers. It is not a new bound for
+Singmaster — for binomials it *re-derives* Singmaster's `N(a) = O(log a)` as a
+corollary of a general theorem. Its value to this run is structural: it states
+*the exact template that produces a logarithmically-growing bound*, which is
+precisely the mechanism Singmaster's conjecture says can be pushed to `O(1)`.
 
+## The framework (normal arrays)
 
-## What it claims
+An array `a(n,k)` is **normal** if it satisfies, with parameters
+`(d, f, r, Δ, g)`:
 
-Abstract
-We prove a general theorem about the multiplicity of the entries in certain integer
-arrays which is best possible in general. As an application we give non-trivial
-bounds for the multiplicities of several well-known combinatorial arrays including
-the binomial coeﬃcients, Narayana numbers and the Eulerian numbers. For the
-binomial coeﬃcients we obtain the result of Singmaster.
+- **semi-triangular**: `a(n,k) ≠ 0 ⇔ 0 ≤ k ≤ d(n)` for strictly increasing `d`
+- **increasing**: `a(n+1,k) > a(n,k)` for `1 ≤ k ≤ d(n)` (values grow down a column)
+- **semi-unimodal**: peak column `f(n)`; each row is non-decreasing up to `f(n)`
+- **multiplicity `r`**: any identical value occurs in at most `r` distinct
+  columns per row (for binomials `r = 2`, the two mirrors `k` and `n−k`)
+- **Δ-bounded**: `f(n) ≤ f(n−1) + Δ` (peak column creeps by at most Δ per row)
+- **growth function `g`**: strictly increasing, `g(f(n)) ≤ a(n,f(n))` — the
+  value at the peak column of row `n` is at least `g(f(n))`
 
-1. Introduction
+**Theorem 2 (main):** for a normal array `a = (a,d,f,r,Δ,g)`,
+`N_a(t) < r(g⁻¹(t) + Δ)` for all `t ≥ 2`, where `g⁻¹` inverts the growth function.
 
-An integer array or array is a function a : N
-2 → N where a(n, 0) = 1 (n ∈
-N). For a function b : P
-2 → N where b(n, 1) = 1 (n ∈ P), consider the array
-a(n, k) = b(n, k + 1) (n ∈ P, k ∈ N) where a(0, 0) = 1 and a(0, k) = 0 (k ∈ P).
-We write a = shift b and say a results from shifting b. Here N denotes the non-
-negative integers, P denotes the positive integers and [n] = {1, . . . , n} (n ∈ P). The
-cardinality of a set S is denoted # S or |S|.
-Suppose a is an array. Then
+**Corollary 3:** if `g(x) = τ^{x−c}` (exponential growth), then
+`N_a(t) < r(log_τ t + c + Δ) = O(log t)`.
+**Corollary 4:** if `g(x) = Ω(τ^x)`, then `N_a(t) = O(log_τ t)`.
 
-(D1) a is semi-triangular if and only if there exists a strictly increasing function d :
-N ↦→ N such that a(n, k) ̸= 0 ⇔ 0 ≤ k ≤ d(n) (n ∈ N).
+**Best-possible:** Examples 5 and 6 (explicitly constructed normal arrays with
+polynomial and exponential growth) achieve `N_a(t) = (2/3)t^{1/s}` and
+`N_a(t) = (2/3)log_s t` respectively for infinitely many `t` — so the
+`O(log t)` shape cannot be improved *within the general theorem*: the only way
+a better bound appears is via special structure of a particular array (exactly
+what Kane's 2007 refinement and MRSTT's interior theorem add for binomials).
 
-Suppose a = (a, d) is a semi-triangular array. Then
+## The binomial case (Example 7)
 
-(D2) a is increasing…
+The binomial array is normal with `d(n)=n`, `f(n)=⌊n/2⌋`, `g(x)=2^x` (since
+`C(n,⌊n/2⌋) ≥ 2^{⌊n/2⌋}`), `r=2` (two mirrors), `Δ=1`. `g⁻¹(x)=log₂x`, so
+Theorem 2 gives:
 
-## Statements it makes
+> **`N(a) < 2 log₂ a + 2` for `a ≥ 2`** — exactly Singmaster's bound.
 
-Theorem 2. Suppose that a = (a, d, f, r, ∆, g) is a normal array. For all integers
-t ≥ 2, Na(t) < r(
-g−1(t) + ∆
-)
-.
+This is a clean, self-contained reproof of the O(log a) bound with an explicit
+constant, and a good independent cross-check on the run's `best-unconditional-bound`
+history claim. The reduction is transparent: the log arises because the peak of
+row `n` is `C(n,⌊n/2⌋) ≥ 2^{n/2}`, so any `a` can appear only in rows `n ≤ 2 log₂ a`.
 
-Corollary 3. Suppose a = (a, d, f, r, ∆, g) is a normal array. If g(x) = τ x−c where
-τ ∈ (1, ∞) and c ∈ R, then
- Na(t) < r(
-logτ t + c + ∆
-) .
+Clark also records the standard facts (all attested by held primaries):
+Singmaster's search to `2^48` (`N(a)≤8`, `N=6` for {120,210,1540,7140,11628,24310},
+`N=8` only for 3003), the infinite `N(a)≥6` family, Singmaster's two conjectures
+(`O(1)` and `N(a)≤10`), and Abbott–Erdős–Hanson's `O(log a/log log a)` via
+Ingham's prime-gap theorem.
 
-Corollary 4. Suppose a = (a, d, f, r, ∆, g) is a normal array. If g(x) = Ω (τ x)
-where τ ∈ (1, ∞), then Na(t) = O( logτ t ) .
+## Bearing on this problem
 
-*[digest of a 21537 character source; every section, statement, and proof in full at `research/sources/lane-clark-array-multiplicity.full.md`]*
+- Gives the **structural mechanism** behind every log bound (peak growth `g`,
+  mirror multiplicity `r`, unimodality): the conjecture is equivalent to a
+  normal-array bound becoming constant, which the general Theorem 2 proves
+  impossible to obtain from the template alone. Improvement needs *binomial-specific*
+  structure — this is the same wall MRSTT/Kane/effective-curve methods hit, now
+  seen as a theorem about the template.
+- Confirms the counting-convention sensitivity: `r=2` is exactly the two-mirrors
+  multiplicity, so `N(a) < 2 log₂ a + 2` is in the "both mirrors" convention.
+- Adds array-theory context to the frontier's "general theorems about
+  multiplicities" angle (adjacent to the multinomial generalization
+  De Koninck–Doyon–Verreault 2021).
+
+```claim
+id: lane-clark-normal-array-bound
+statement: For any normal integer array a=(a,d,f,r,Δ,g) (semi-triangular, increasing,
+  semi-unimodal, multiplicity r, Δ-bounded peak, growth function g), N_a(t) <
+  r(g^{-1}(t)+Δ) for t>=2; if g(x)=τ^{x-c} then N_a(t) < r(log_τ t + c + Δ). For the
+  binomial array (d(n)=n, f(n)=⌊n/2⌋, g(x)=2^x, r=2, Δ=1) this gives N(a) < 2 log_2 a + 2,
+  exactly Singmaster's bound. The O(log t) shape is best possible within the general
+  template (Examples 5,6 achieve Θ(t^{1/s}) and Θ(log_s t) for infinitely many t), so
+  a constant bound requires binomial-specific structure beyond normality.
+hypotheses: "normal array" as defined in the paper; binomial case uses the two-mirror
+  counting convention (k and n-k distinct), each row's peak C(n,⌊n/2⌋)>=2^{⌊n/2⌋}.
+holds-here: yes
+status: asserted (read from the held primary; the binomial parameters and the
+  N(a)<2log_2 a+2 derivation check out; not re-derived numerically here but the
+  arithmetic is elementary)
+bearing: gives a self-contained structural reproof of the O(log a) bound and names
+  the exact template-level obstruction: within any normal-array bound the log is
+  irreducible, so constancy must come from binomial-specific structure. Corroborates
+  best-unconditional-bound and singmaster-bounds-history; supports the
+  effective-methods-wall uniformity argument.
+anchor: research/summaries/lane-clark-array-multiplicity.md
+```

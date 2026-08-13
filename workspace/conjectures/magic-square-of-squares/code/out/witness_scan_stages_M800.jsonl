@@ -1,1 +1,4 @@
 {"type": "chunk", "M": 800, "lo": 0, "hi": 1248, "pairs": 778128, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
+{"type": "chunk", "M": 800, "lo": 1248, "hi": 2496, "pairs": 2335632, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
+{"type": "chunk", "M": 800, "lo": 2496, "hi": 3744, "pairs": 3893136, "minus": 0, "plus": 0, "both": 0, "witnesses": []}
+{"type": "chunk", "M": 800, "lo": 3744, "hi": 4992, "pairs": 5450640, "minus": 1, "plus": 0, "both": 0, "witnesses": [{"kind": "minus", "q1": [571704, 11868025], "q2": [20418016080, 570449388961]}]}
