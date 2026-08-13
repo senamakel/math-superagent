@@ -261,10 +261,10 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 - **freys-curve-four-q-isogenies**, **integral-brauer-manin-nine-square**,
   **richardson-orbits-weyl-group** — all **refuted** at literature-check stage.
 - All others: **refuted** with reasons in APPROACHES.md.
-- **Search halted (directive 14):** no further downloads or source gathering.
-  The frontier still has ~429 candidates with ~359 unworked and exa_search is
-  still climbing; extracting claims from already-fetched sources is now the
-  priority over any new search.
+- **Search halted (directive 17, re-confirmed):** exa_search is at 122 (was 99
+  two directives ago). Frontier is 442 with 365 unworked. Twenty-three searches
+  changed nothing. **No further downloads or source gathering.** Extracting
+  claims from already-fetched sources is now the only priority.
 
 ## Ruled out
 
@@ -379,13 +379,18 @@ the Established section.
 ## Gaps
 
 (Double as research requests; see `research/REQUESTS.md`.)
-- **`hms-constant-bound`** (open request, directive 12): What is the smallest
-  explicit upper bound for C in HMS Theorem 1.1? Extracted from David–Philippon
-  quantitative Schneider–Lang constants, PFR constants (Gowers–Green–Manners–Tao),
-  and the genus-2 curve degree in Dimitrov–Gao–Habegger. If none can be extracted,
-  record precisely which ingredient's constant is uncomputed.
+- **`hms-constant-bound`** (RESOLVED from the 132KB HTML full text): no explicit
+  value or formula for C is given anywhere in HMS Theorem 1.1. C is
+  "effectively computable"; the claim block now names the three ingredients
+  (DP07, BZ, JS) needed to compute it — each individually effective, but HMS
+  does not carry out the computation. Value-computed: no. The paper's proof IS
+  effective (following it yields a number).
+- **`dp07-explicit-constant-for-e3-ap`** (open): the explicit constant from
+  David–Philippon 2007 Théorème 1.13, specialised to subvarieties of E³. This
+  is the next lane for the effective-C approach — if DP07's constant is small
+  enough, C^(1+r) < 3 could become decidable.
 - **Conditional reduction to a finite computation** — the run's best structural
-  output, not yet written as a claim block. See TASKS.md blocking item 1.
+  output, not yet written as a claim block. See TASKS.md blocking section.
 - **Rank of the Robertson curve** `E_c: y² = x(x²−c²)` for candidate AP-difference c
   (c ∈ {u,v,u+v,u−v} — not the centre e²): for Bremner's witness c=138600,
   rank(E_c)=2, torsion order 4. A putative MSS needs a length-3 AP of doubled
