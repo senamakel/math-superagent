@@ -62,17 +62,6 @@ it skips the case that is universal. The lemma must be re-derived with the δ=0 
 handled, before anything cites it.
 
 ```claim
-id: granville-nu2-density-measured
-statement: For the right diagonal through q_n of the prime Gilbreath triangle, the count nu_2(q_n) of 2s in the maximal {0,2} tail satisfies nu_2/n in [0.42, 0.52] for n in {50,100,200,400,800,1600,3200,3999}, consistent with nu_2 ~ n/2 and exceeding n^0.525 by a factor of 26 at n=3999. Granville's Lemma 5.4 hypothesis g*_n <= 2*nu_2(q_{n-1}) + 2 holds at every sampled n, with record gap 72 against budget 4098 at n=3999.
-hypotheses: primes below 3e6; diagonals delta_k(q_n) = A_k[n-k] for k=0..n-1; 0-2 cycle taken as the maximal {0,2} suffix of delta_2..delta_{n-2}; exact integer arithmetic
-holds-here: yes
-status: checked
-bearing: The gap in arXiv:2607.04166 Theorem 5.5 is a lower bound nu_2 > n^beta with beta > 0.525. Empirically nu_2 ~ n/2, so the needed bound is far from tight and the target is a density statement about 2s in a diagonal rather than a statement about prime gaps, whose side is already unconditional via Baker-Harman-Pintz alpha = 0.525.
-anchor: code/out/nu2_granville_check.captured.txt, research/sources/granville-2026-piercing-gilbreath-FULLPDF.full.md
-source: operator-computation
-```
-
-```claim
 id: lemma54-discarded-delta0-case-is-universal
 statement: Granville's Lemma 5.4 proof discards the case that some delta_{k-1}(q_n) = 0 occurs inside the {0,2} gray block. On the real prime rows (n = 20..2500, sieve 2e6) this discarded case occurs in 100% (2480/2480) of rows, yet the Lemma 5.4 statement still holds everywhere: the iff (v_n <= 2*nu_2+2  <=>  success) has 0 violations and the weakened sufficiency (g*_n <= 2*nu_2+2  =>  success) has 0 violations across all rows. So the lemma's statement is numerically true on the primes but its proof is incomplete — it waves through the very case that is universal — and must be re-derived with the delta=0 case handled explicitly before being cited.
 hypotheses: primes below 2e6; delta_k(q_n)=A_k[n-k]; 0-2 cycle = maximal {0,2} suffix of the diagonal body; success = delta_n(q_n)=1 (leading entry of the row is 1); exact integer arithmetic

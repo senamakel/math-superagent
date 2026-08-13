@@ -24,4 +24,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `s_runs2.txt` | Run lengths of consecutive s=2 values (k=1..1000). |
 | `t_bits.txt` | Halved A_k(2)/2, k=1..161, from boundary_state.py. |
 | `w_bits.txt` | Halved third-from-edge block entry (w_k/2), k=1..161, from boundary_state.py. |
+| `wider_giants.json` | Giant-jump data at a wider sieve (from the wider_giants_*.py family): W, depth, kstar, giant rows, inter-giant gaps, landing blocks, giant jumps, pre-jump blocks, landing floorings, and gap/(j+1) ratios — the wider-sieve confirmation of the genuine-giants characterization. |
+ate.py. |
+| `w_bits.txt` | Halved third-from-edge block entry (w_k/2), k=1..161, from boundary_state.py. |
 | `wider_giants.json` | _(undescribed)_ |
