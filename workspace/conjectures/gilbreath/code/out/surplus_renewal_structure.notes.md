@@ -14,5 +14,5 @@ hypotheses: rows are iterated absolute differences of primes below 2e7, block le
 holds-here: yes (depth 1000, exact)
 status: checked
 bearing: the monotone surplus S_k is the quantity whose unboundedness of (k-1) - S_k is the conjecture; converts regeneration into "S_k - (k-1) is bounded above by b_1", and shows regeneration events (incl. stalls) are the only increments. Does not bound the event rate — that is open and is the next step (TASKS.md item 1).
-anchor: code/out/surplus_renewal_structure.notes.md
+anchor: code/out/surplus_renewal_structure.notes.md, code/out/surplus_structure.captured.txt
 ```
