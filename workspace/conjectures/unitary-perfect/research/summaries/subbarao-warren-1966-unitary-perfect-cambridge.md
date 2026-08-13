@@ -1,26 +1,20 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/subbarao-warren-1966-unitary-perfect-cambridge.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
-
 <!-- source: https://www.cambridge.org/core/journals/canadian-mathematical-bulletin/article/unitary-perfect-numbers/741FD190AF22FFAC67645BCB29324531 | converted from HTML -->
 
-## What is in it
+# Subbarao–Warren (1966) — Cambridge Core journal page
 
-  - Article contents
-- Unitary Perfect Numbers
-  - Extract
-  - Information
-  - References
-- Cited by
-        - This article has been cited by the following publications. This list is generated based…
-- Save article to Kindle
-- Save article to Dropbox
-- Save article to Google Drive
-      - Reply to: Submit a response
+The Cambridge Core *article page* for Canad. Math. Bull. 9 (1966) 147–153
+(DOI 10.4153/CMB-1966-018-4). It contains only the extract (the paper's opening
+paragraph: `σ*` multiplicative, first four UPNs 6, 60, 90, 87360, the authors'
+overlooked-number apology, the conjecture that none exceeds 87360 — the
+original Subbarao–Warren conjecture this run attacks) plus the full "Cited by"
+list.
 
+**Value here.** The Cited-by list is bibliographic control: it confirms the
+citation chain Subbarao 1970 → Hagis 1971 → Wall 1972/1975/1983/1987/1988 →
+Graham 1989 → Cohen 1990 → Guy 1994/2004 → Sándor–Crstici 2004, all already
+held in this library. No mathematical content beyond the extract.
 
-## What it claims
-
-It is easily seen that σ*(N) is multiplicative. In fact σ*(l) = 1 if N > 1 has the prime decomposition . Let us define a positive integer to be unitary perfect whenever σ*(N) = 2N. The first four such numbers are 6, 60, 90 and 87, 360. In a recent abstract [ l ] published by one of us, the last of these numbers was overlooked. No other unitary perfect numbers are known to the authors.
-
----
-
-*[digest of a 14533 character source; every section, statement, and proof in full at `research/sources/subbarao-warren-1966-unitary-perfect-cambridge.full.md`]*
+**Do not cite this file for the lemmas** — the full text with Lemma 1 (3.6),
+Lemma 2, Theorems 1–4 is `[[subbarao-warren-1966-cambridge-pdf.full]]` (see
+`research/summaries/subbarao-warren-1966-cambridge-pdf.md`); the plain `[[subbarao-warren-1966-unitary-perfect]]` is a third conversion of the same paper.
+This file is a duplicate and carries nothing the other two do not.
