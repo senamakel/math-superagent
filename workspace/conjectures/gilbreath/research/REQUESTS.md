@@ -16,6 +16,7 @@ re-searching; struck-through rows are closed or in the library.
 
 ## Unobtainable (recorded so nobody re-attempts)
 
+- **Miller 1970 "Periodic forests of stunted trees", Phil. Trans. R. Soc. A 266 (1970) 63–111, doi 10.1098/rsta.1970.0003** — the primary 1970 peer-reviewed study connecting Rule 90 to Gilbreath's conjecture (the {0,2}→Rule-90 interior structure, via the forest-of-stunted-trees metaphor). Royal Society HTML + PDF endpoints both HTTP 403; JSTOR stormed with a JS bot-challenge stub. No open mirror found. **Do not re-attempt these two endpoints.** Secondary content is fully held: `wikipedia-rule-90` ("Stunted trees and triangular clearings" section) and `oeis-A396593` (which cites Miller+Odlyzko and restates the {0,2}-Rule-90 expansion). Record: `research/summaries/miller-1970-periodic-forests-stunted-trees.md`.
 - Zvengrowski 1979 "Iterated absolute differences", Math. Mag. 52(1) 36–37 — paywalled; content largely covered by held Ducci sources (Glaser–Schöffl, Calkin–Stevens–Thomas, CZ 2011).
 - Beardon 2011 "Cyclic Absolute Differences of Integers", Am. Math. Monthly 118(7) 650–652 — paywalled; an elementary cyclic-Ducci convergence proof, covered by held sources.
 - Brown–Merzel 2003 "Limiting behavior in Ducci sequences", Period. Math. Hungar. 47 45–50 — paywalled; its theorem (unique finite limit cycle, {0, M₀} components) is quoted in full in CZ 2011 §1 (held).

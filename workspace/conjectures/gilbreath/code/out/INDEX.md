@@ -99,4 +99,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `surplus_structure.captured.txt` | _(undescribed)_ |
 | `surplus_structure_independent.captured.txt` | _(undescribed)_ |
 | `survivor_analysis.captured.txt` | _(undescribed)_ |
+| `verify_rule90_against_sources.py` | Independently re-derives the Rule-90 interior XOR identification (|a-b|/2 = (a/2) XOR (b/2) on {0,2}) that the newly-added Wikipedia/MathWorld Rule 90 pages and OEIS A396593 state, confirming those catalogue statements match the actual absolute-difference operator without reading them. |
 | `witnesses.json` | Oracle: row data and block profile for depth 600 (sieve to 400000, 33860 primes); `A_1..A_5` first 12, `block_profile_first_40`. Everything else is checked against it. |

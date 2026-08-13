@@ -1,0 +1,36 @@
+== 2e7 rows 1..161 ==
+  events 43 (even 30, 0.698), giants 13 (even 12, 0.923)
+  giant pre-jump rows [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161]
+  hypergeom P(>= 12 even giants | event even base 30/43) = 0.03402
+== 3e8 rows 1..238 ==
+  events 51 (even 37, 0.725), giants 15 (even 14, 0.933)
+  giant pre-jump rows [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174, 238]
+  hypergeom P(>= 14 even giants | event even base 37/51) = 0.02975
+
+== distinct-union giants (2e7 + 3e8) ==
+  15 giants, even pre-jump 14 (0.933), odd [161]
+  hypergeom vs 3e8 event base (37/51): P = 0.02975
+  minus capped 238 (14 genuine): P = 0.04331
+  the exception i=161: at 3e8 it is GENUINE (jump 4323712, landing flooring 10834187) -- a real odd-row giant.
+
+== boundary-state parity profile (2e7, rows 1..161) ==
+edge=2  : even-row 50, odd-row 43  (even frac 0.538)
+intruder=4: even-row 50, odd-row 46  (even frac 0.521)
+(e=2,c=4) events: even-row 36, odd-row 24  (even frac 0.600)
+
+== giant jumps by pre-jump-row parity (3e8) ==
+  pre-jump row   34 EVEN: jump      1314, land      2179
+  pre-jump row   56 EVEN: jump      1739, land      5942
+  pre-jump row   64 EVEN: jump     17326, land     23265
+  pre-jump row   68 EVEN: jump      8237, land     31499
+  pre-jump row   94 EVEN: jump     61088, land     92620
+  pre-jump row   96 EVEN: jump     11354, land    103973
+  pre-jump row  110 EVEN: jump     37746, land    141706
+  pre-jump row  112 EVEN: jump    129923, land    271629
+  pre-jump row  126 EVEN: jump     53470, land    325090
+  pre-jump row  130 EVEN: jump    190810, land    515906
+  pre-jump row  134 EVEN: jump    217657, land    733564
+  pre-jump row  146 EVEN: jump    360698, land   1094273
+  pre-jump row  161 ODD : jump   4323712, land   5417975
+  pre-jump row  174 EVEN: jump   5237310, land  10655286
+  pre-jump row  238 EVEN: jump   5596824, land  16252084

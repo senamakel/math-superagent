@@ -64,10 +64,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `marechal-spectral-fractal-crank` | Maréchal's "complete spectral-fractal proof of Gilbreath's conjecture" (Zenodo, Apr 2025, doi 10.5281/zenodo.15116867) is one of five near-identical "universal spectral-fractal framework with characteristic dimension… | **unchecked** | asserted | `research/summaries/marechal-spectral-fractal-proofs-refuted.md` |
 | `mathworld-rule90-additive-sierpinski` | Rule 90 is an additive elementary cellular automaton whose next state is the XOR/mod-2 sum of a cell's two neighbours; from a single cell it generates the Sierpinski sieve, equivalently Pascal's triangle mod 2 (binomial… | yes | asserted | `research/summaries/mathworld-rule-90.md` |
 | `miller-1970-periodic-forests-stunted-trees` | Miller (1970) studied Rule 90 via a forest-of-growing-trees metaphor equivalent to the automaton, in connection with Gilbreath's conjecture, and found periodic initial configurations where all triangular clearings… | **unchecked** | asserted | `research/summaries/wikipedia-rule-90.md` |
+| `miller-1970-record` | Miller (1970) gives the forest-of-stunted-trees model equivalent to Rule 90 and connects it to Gilbreath's conjecture (forward difference triangle; a {0,2} subsequence in one row determines the next row's corresponding… | **unchecked** | asserted | `research/summaries/miller-1970-periodic-forests-stunted-trees.md` |
 | `mod-lift-obstruction` | The absolute-difference operator <a,b> -> \|a-b\| satisfies \|a-b\| = a+b - 2min(a,b), so the congruence \|a-b\| ≡ a+b (mod 2^t) holds iff min(a,b) ≡ 0 (mod 2^(t-1)). It holds for all even a,b mod 4, but fails mod 8 (\|2-6\|=4… | yes | proved | `research/approaches/mod4-pascal-invariant.md` |
-| `mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4), because d_k(n) is even there. | yes | asserted | `research/notes/library-state.md` |
 
-_53 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_55 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -134,6 +134,7 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 - `oeis-A036277-first-term-position` (research/summaries/oeis-A036277-first-term-greater-than-one.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A089582-second-entry-catalogue` (research/summaries/oeis-A089582-second-entry-sequence.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A213014-zero-run-of-block` (research/summaries/oeis-A213014-zeros-before-first-term.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-A396593-run-length-second-entry` (research/summaries/oeis-A396593-run-length-of-second-entry.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-a358691-gilbreath-transform` (research/summaries/oeis-A358691-gilbreath-transform.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-a397880-independent-corroboration-of-exact-decay-constants` (research/summaries/oeis_a397880.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-hasler-propagation` (research/summaries/oeis-A036262-iterated-prime-differences.md) — read from a catalogue; no derivation here reproduces it
