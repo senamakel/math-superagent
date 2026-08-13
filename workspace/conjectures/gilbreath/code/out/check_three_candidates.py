@@ -1,103 +1,88 @@
 #!/usr/bin/env python3
-"""Verify the mechanisms of three proposed approaches against the real prime rows.
+"""Machine checks for three candidate approaches (grounding cycle).
 
-Candidate 1 (window-range-bound): A_k(i) <= range(g_i..g_{i+k-1}) for k>=2,
-  where g_m = A_1(m) is the even gap. Check zero violations.
-Candidate 2 (alternating-sum-telescope-invariant): exact identity
-  sigma(b) = a_0 - (-1)^W a_W - 2*sum_i (-1)^i min(a_i,a_{i+1})
-  where b_i = |a_i - a_{i+1}|, sigma(b) = sum_i (-1)^i b_i.
-Candidate 3 (max-plus-tropical-spectral-dynamics): probe whether any
-  max-plus affine functional Phi(a) = max_i(a_i + c_i) with fixed c is
-  non-increasing (Phi(Ta)<=Phi(a)) on the actual rows, and whether a
-  two-point form max_{i<j}(a_i - a_j + d(j-i)) can be non-increasing.
+1. gantmacher-krein: is M[k][j] = (-1)^(k-j) * C(k,j) sign-regular?
+   Sign-regular means: for each minor order r, ALL r x r minors have a
+   single (weak) sign (all >= 0 or all <= 0), OR all <= 0 / all >= 0.
+   Find two minors of the same order with opposite nonzero signs.
+
+2. zero-sum-flow: the recharge identity is already proved; nothing to check
+   beyond reproducing b_k from the identity on the delete-5 sequence.
+
+3. fenchel-duality: universal claim "A_k(1) in {0,2} for ALL even-gap
+   2-then-odds inputs" -- check the Colonna delete-5 sequence
+   (2,3,7,11,13,17,19,23,...), which has all gaps after the first even.
+   Compute A_1(1) and A_2(0).
 """
-from lib.gilbreath import primes_up_to, rows_generator
+from math import comb
+from itertools import combinations
+import json
 
-primes = primes_up_to(200000)          # ~17984 primes
-depth = 160                            # stay in live regime (block has intruder)
-rows = list(rows_generator(primes, depth))
+def alternating_pascal_minors(N=6):
+    """M[k][j] = (-1)^(k-j) binom(k,j) for 0<=j<=k<=N. Report 2x2 minors by sign."""
+    M = [[0]*(N+1) for _ in range(N+1)]
+    for k in range(N+1):
+        for j in range(k+1):
+            M[k][j] = (-1)**(k-j) * comb(k, j)
+    pos, neg = [], []
+    rows = list(range(N+1)); cols = list(range(N+1))
+    for (i1, i2) in combinations(rows, 2):
+        for (j1, j2) in combinations(cols, 2):
+            d = M[i1][j1]*M[i2][j2] - M[i1][j2]*M[i2][j1]
+            if d > 0: pos.append(((i1,i2),(j1,j2),d))
+            elif d < 0: neg.append(((i1,i2),(j1,j2),d))
+    return M, pos, neg
 
-# ---- Candidate 1: cell-wise range bound ----
-# g_m = A_1(m).  A_k(i) depends on gaps g_i..g_{i+k-1} (k gaps).
-A1 = rows[1]
-viol1 = 0
-checked1 = 0
-worst_slack = 0
-for k in range(2, depth + 1):
-    row = rows[k]
-    for i in range(1, len(row)):       # i>=1 (A_k(i) with i the block-position index)
-        lo = i - 1
-        hi = i - 1 + (k - 1)           # indices into A1: gaps g_{lo}..g_{hi}
-        if hi >= len(A1):
-            break
-        window = A1[lo:hi + 1]
-        R = max(window) - min(window)
-        checked1 += 1
-        if row[i] > R:
-            viol1 += 1
-            if viol1 <= 3:
-                print(f"C1 VIOL k={k} i={i} A={row[i]} R={R}")
-    # also check intruder specifically on live rows (index b_k+1 -> A1 window)
-print(f"C1: checked {checked1} cells, violations {viol1}")
+def gilbreath_rows(seq, depth):
+    rows = [seq]
+    for _ in range(depth):
+        rows.append([abs(rows[-1][i] - rows[-1][i+1]) for i in range(len(rows[-1])-1)])
+    return rows
 
-# ---- Candidate 2: alternating-sum telescope identity ----
-def sigma(v):
-    return sum((-1) ** i * v[i] for i in range(len(v)))
+def delete5_primes(n=12):
+    # primes with 5 removed: 2,3,7,11,13,17,19,23,29,31,37,41
+    P = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71]
+    return [p for p in P if p != 5][:n]
 
-viol2 = 0
-for k in range(1, depth):              # check rows k (a) -> k+1 (b)
-    a = rows[k]
-    b = rows[k + 1]                    # b_i = |a_i - a_{i+1}|, i=0..len(a)-2
-    W = len(a) - 1
-    lhs = sigma(b)
-    # b has W entries (indices 0..W-1); sigma over those
-    minterm = sum((-1) ** i * min(a[i], a[i + 1]) for i in range(0, W))
-    rhs = a[0] - ((-1) ** W) * a[W] - 2 * minterm
-    if lhs != rhs:
-        viol2 += 1
-        if viol2 <= 3:
-            print(f"C2 VIOL k={k} lhs={lhs} rhs={rhs}")
-print(f"C2: checked rows k=1..{depth-1}, identity violations {viol2}")
+print("="*70)
+print("CHECK 1: alternating Pascal matrix sign-regularity")
+M, pos, neg = alternating_pascal_minors(6)
+n_pos, n_neg = len(pos), len(neg)
+print(f"2x2 minors: {n_pos} strictly positive, {n_neg} strictly negative")
+if pos and neg:
+    print(f"  positive example: rows {pos[0][0]} cols {pos[0][1]} det={pos[0][2]}")
+    print(f"  negative example: rows {neg[0][0]} cols {neg[0][1]} det={neg[0][2]}")
+    print("  => NOT sign-regular (same order has both signs) => Gantmacher-Krein")
+    print("     variation-diminishing theorem does NOT apply to this matrix.")
+else:
+    print("  (no mixed-sign pair found at this size)")
 
-# ---- Candidate 3: max-plus affine functional non-increase probe ----
-# Form A: Phi(a) = max_i (a_i - c*i) for c in a range. Non-increasing?
-from itertools import product
-def phi_affine(a, c):
-    return max(a[i] - c * i for i in range(len(a)))
+print("="*70)
+print("CHECK 2: signed forward differences of the primes oscillate")
+# first 12 primes; signed k-th forward difference D_k(i) = sum_j (-1)^(k-j) C(k,j) A0(i+j)
+A0 = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47]
+D = {0: A0[:]}
+for k in range(1, 5):
+    D[k] = [sum(((-1)**(k-j))*comb(k,j)*A0[i+j] for j in range(k+1))
+            for i in range(len(A0)-k)]
+for k in range(1, 5):
+    signs = [1 if v > 0 else (-1 if v < 0 else 0) for v in D[k]]
+    sc = sum(1 for a,b in zip(signs, signs[1:]) if a*b < 0)
+    print(f"  D_{k} signs: {signs}  sign changes: {sc}")
 
-# test on halved rows (values/2) restricted to live block+intruder region
-canded3a = []
-for c in [0.0, 0.5, 1.0, 2.0]:
-    bad = 0
-    tot = 0
-    for k in range(1, depth):
-        a = rows[k]
-        b = rows[k + 1]
-        tot += 1
-        if phi_affine([x / 2 for x in b], c) > phi_affine([x / 2 for x in a], c) + 1e-9:
-            bad += 1
-    canded3a.append((c, bad))
-print("C3 (affine Phi=max(a_i-c*i), halved): #non-increase violations per c:", canded3a)
-
-# Form: two-point Phi(a)=max_{i<j}(a_i - a_j + d*(j-i)), d>0 means penalize for a_i large far-left
-def phi_2pt(a, d):
-    best = -1e18
-    for i in range(len(a)):
-        for j in range(i + 1, len(a)):
-            v = a[i] - a[j] + d * (j - i)
-            if v > best:
-                best = v
-    return best
-
-canded3b = []
-for d in [0.0, 0.5, 1.0, 2.0, -0.5, -1.0]:
-    bad = 0
-    tot = 0
-    for k in range(1, depth):
-        a = rows[k]
-        b = rows[k + 1]
-        tot += 1
-        if phi_2pt([x / 2 for x in b], d) > phi_2pt([x / 2 for x in a], d) + 1e-9:
-            bad += 1
-    canded3b.append((d, bad))
-print("C3 (two-point Phi), #non-increase violations per d:", canded3b)
+print("="*70)
+print("CHECK 3: universal even-gap class claim (candidate 3)")
+seq = delete5_primes()
+rows = gilbreath_rows(seq, 3)
+print(f"  A_0 = {seq}")
+print(f"  A_1 = {rows[1][:8]}")
+print(f"  A_1(1) = {rows[1][1]}")
+print(f"  A_2 = {rows[2][:8]}")
+print(f"  A_2(0) = {rows[2][0]}")
+gaps = [seq[i+1]-seq[i] for i in range(len(seq)-1)]
+print(f"  gaps = {gaps}  (all even after the first: {all(g%2==0 for g in gaps[1:])})")
+if rows[1][1] not in (0,2):
+    print("  => A_1(1) = 4: a 2-then-odds sequence with all subsequent gaps even")
+    print("     violates the universal claim 'A_k(1) in {0,2} for ALL even-gap inputs'.")
+    print("     (This is the Colonna delete-5 example already in the library.)")
+print("="*70)
