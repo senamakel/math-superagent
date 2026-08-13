@@ -325,6 +325,16 @@ turn runs next. A new graph is built with `agent::flow`, never with
 `tinyagents::graph`, and the two error types are converted only by
 `agent::flow::into_graph` / `from_graph`.
 
+TinyFlows has two layers, and this crate uses only one of them. `graph` is the
+state-graph runtime the solution loop is built on: nodes are Rust closures and
+there are no node kinds, so `spawn`, `gate`, and `void` do not exist there.
+Those are `WorkflowGraph` node kinds, in the declarative workflow engine this
+crate does not run. `OrchestratorAgent::task_runner` is the one bridge: it
+implements the `TaskRunner` capability, so a host that *does* run a workflow can
+`spawn` one of this crate's specialists — and spell `spawn → void` when nothing
+is meant to collect it. Do not reach for a node kind from inside the solution
+loop; it has none.
+
 Do not edit vendored code through the parent repository. Make TinyAgents or
 TinyFlows changes upstream, push them there, then update this repository's
 gitlink in a separate commit.
