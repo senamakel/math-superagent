@@ -1,0 +1,77 @@
+# The reduction: Gilbreath's conjecture ↔ `A_k(1) ∈ {0,2}` for all k
+
+## Statement of the reduction
+
+Let `A_0 = (2,3,5,7,...)` be the primes and `A_{k+1}(i) = |A_k(i) - A_k(i+1)|`.
+For every `k ≥ 1`, `A_k` has the shape `(odd, even, even, ...)`: its first entry
+is odd and every other entry is even. Consequently
+
+> **Gilbreath's conjecture (`A_k(0) = 1` for all `k ≥ 1`) is equivalent to
+> `A_k(1) ∈ {0,2}` for all `k ≥ 1`.**
+
+Everything else about the problem is bookkeeping. If ever `A_k(1) = 4` (or any
+even value ≥ 4), then `A_{k+1}(0) = |1 - A_k(1)| ≥ 3`, the leading `1` is lost,
+and the conjecture dies at that row.
+
+## Proof (elementary)
+
+1. **Base.** `3 - 2 = 1` (odd), and for `i ≥ 1` both `p_{i+1}, p_i ≥ 3` are odd
+   (`2` is the only even prime), so `p_{i+1} - p_i` is even. Hence
+   `A_1 = (1, even, even, ...)`.
+2. **Induction step.** Assume `A_k = (1, e_1, e_2, ...)` with every `e_j` even.
+   Then `A_{k+1}(0) = |1 - e_1|` and `A_{k+1}(j) = |e_j - e_{j+1}|` for `j ≥ 1`.
+   The former is odd (|odd − even|), each of the latter is even (|even − even|),
+   so `A_{k+1} = (odd, even, even, ...)`. Shape preserved.
+3. **Equivalence.** `A_{k+1}(0) = |1 - A_k(1)|`, and `|1 - e| = 1` iff
+   `e ∈ {0, 2}`. So the first entry of every row after the first is `1` iff the
+   second entry of every row after the first is in `{0,2}`.
+
+## What this run has checked
+
+The generator in `code/out/witnesses.json` (exact integer arithmetic, sieve to
+400000, 33860 primes) records `second_entry_always_0_or_2 = true` and
+`leading_entry_is_1 = true` over `depth_verified = 600`, and the profiled rows
+k=1..40 all show `second ∈ {0,2}` with min leading `{0,2}` block length 2 (at
+k=1). That confirms the *instance* to depth 600; it does not prove the
+equivalence's conclusion, which is open.
+
+## Where this leaves the run
+
+The reduction is not the hard part — it is proved above and is not where the
+conjecture resists. The resistance is entirely in showing regeneration: that
+`A_k(1) ∈ {0,2}` for every `k`, i.e. that the `{0,2}` regime is entered
+sufficiently often as rows descend, since a block of length `n` protects only
+`≈ n/2` rows (Odlyzko's block lemma — asserted lead, not yet re-derived here).
+
+```claim
+id: gilbreath-reduces-to-second-in-02
+statement: The shape (odd, even, even, ...) is preserved by the absolute-difference operator on the prime rows, and A_k(0)=1 for all k>=1 iff A_k(1) in {0,2} for all k>=1. Hence Gilbreath's conjecture is equivalent to "the second entry of every row lies in {0,2}".
+hypotheses: A_0 = primes; A_{k+1}(i) = |A_k(i) - A_k(i+1)|; the only even prime is 2.
+holds-here: yes
+status: proved (elementary parity induction); instance checked numerically to depth 600 in witnesses.json
+bearing: the entire conjecture is the statement that the second entry of every row is 0 or 2; every candidate invariant or lemma must be about this and checked against the real rows, especially where the leading {0,2} block is short.
+anchor: research/notes/reduction.md
+contradicts: (none)
+answers: what-the-reduction-is
+```
+
+```claim
+id: second-entry-4-kills
+statement: If A_k(1) = 4 (or any even value >= 4) for some k>=1, then A_{k+1}(0) = |1 - A_k(1)| >= 3 and Gilbreath's conjecture fails at that row.
+hypotheses: same reduction hypotheses as gilbreath-reduces-to-second-in-02
+holds-here: yes
+status: proved (immediate from |1-e|=1 iff e in {0,2})
+bearing: a minimal counterexample is precisely a row whose second entry is 4, 6, 8, ...; this pins the structure to search for / exclude.
+anchor: research/notes/reduction.md
+answers: structure-of-minimal-counterexample
+```
+
+## Sources
+
+Reduction is original to this run (elementary arithmetic), consistent with the
+lead framing in `problem.md`. The OEIS contributor note (M. F. Hasler, in
+`oeis-A036262` summary) independently states the same: "all terms except for
+the first one are even. Thus, if the 2nd term in some row is > 2, it is >= 4,
+and the first term of the subsequent row is >= 3" — agreeing with this proof's
+killing row. Odlyzko's block-protection lemma (n/2 rows) remains an asserted
+lead, not yet sourced or re-derived.

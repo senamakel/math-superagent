@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `robertson-elliptic-reduction` | A 3×3 magic square of squares over Q exists iff there exist P₀, P₁, P₂ ∈ E(Q) on E: y² = x(x² − c²) such that the x-coordinates of the doubled points 2P₀, 2P₁, 2P₂ form an arithmetic progression: x(2P₀) = a − b,  x(2P₁)… | yes | proved | `research/summaries/bremner-on-squares-of-squares-1999.md` |
 | `root-number-parity-refuted-four-curves` | The root-number/parity argument on the four congruent-number curves E_d (d = u, v, u+v, u-v) cannot force non-existence: by Birch-Stephens the parity of R(n)=ord_{s=1}L(E_n,s) is fixed by n mod 8 (odd iff n ≡ 5,6,7 mod… | **unchecked** | asserted | `research/notes/literature-check-proposed-approaches-2026.md` |
 
-_8 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_9 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
@@ -89,6 +89,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `phi-count-sequence-not-in-oeis` (code/out/phi_pattern_findings.md) — asserted by the source, not proved there and not checked here
 - `rabern-fulltext-not-on-disk` (research/summaries/rabern-properties-magic-squares-of-squares-2003.md) — asserted by the source, not proved there and not checked here
 - `six-square-all-attainable` (research/summaries/boyer-square-of-squares-search-v2.md) — asserted by the source, not proved there and not checked here
+- `wu-chatelet-3folds-bm-noninvariance` (research/summaries/wu-chatelet-surfaces-noninvariance-3folds-2020.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
 

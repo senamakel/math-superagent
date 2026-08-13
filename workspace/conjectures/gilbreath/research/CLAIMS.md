@@ -4,4 +4,13 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `gilbreath-reduces-to-second-in-02` | The shape (odd, even, even, ...) is preserved by the absolute-difference operator on the prime rows, and A_k(0)=1 for all k>=1 iff A_k(1) in {0,2} for all k>=1. Hence Gilbreath's conjecture is equivalent to "the second… | yes | proved | `research/notes/reduction.md` |
+| `second-entry-4-kills` | If A_k(1) = 4 (or any even value >= 4) for some k>=1, then A_{k+1}(0) = \|1 - A_k(1)\| >= 3 and Gilbreath's conjecture fails at that row. | yes | proved | `research/notes/reduction.md` |
+
+## Contradictions
+
+Resolve these before building on either side.
+
+- `gilbreath-reduces-to-second-in-02` (research/notes/reduction.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_

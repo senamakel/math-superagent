@@ -51,6 +51,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `run_k3_checks.sh` | _(undescribed)_ |
 | `scholar_verify.py` | Scholar verification of the witness grids and source-reported numeric claims by exact integer arithmetic, so notes carry only program-checked numbers. |
 | `seven_square_grids_audit.txt` | _(undescribed)_ |
+| `verify_a088959_records.py` | Cross-checks OEIS A088959 record-holder e (square with record # of sum-of-two-squares reps) against this run's own |S(e)|=(∏_{p≡1 mod 4}(2a+1)−1)/2 via spf sieve to e≤3e6, without reading the catalogue. This is the independent reproduction the catalogue claims need. |
 | `verify_pell_argmax_unique.captured.txt` | _(undescribed)_ |
 | `verify_pell_argmax_unique.py` | _(undescribed)_ |
 | `verify_pell_records.captured.txt` | _(undescribed)_ |
