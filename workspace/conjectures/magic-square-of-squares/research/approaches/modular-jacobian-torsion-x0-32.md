@@ -40,8 +40,10 @@ mechanism: The modular curve X₀(32) parametrises elliptic curves with a
   be a torsion point (because the only torsion is cuspidal, corresponding
   to e = 0 or degenerate squares).  If it is zero, the AP condition
   degenerates.  Either way, no non-degenerate MSS exists.
-status: proposed
-first-step: Compute the exact map from the MSS data (e, u, v) to J₀(32)(Q).
+status: parked-behind-blocking-question
+first-step: PARKED per directive 10/11 — do not work on this until the GFP-x2P
+  blocking question is answered in `code/out/gfp_x2p_answer.md`. The approach
+  may be viable but no fifth approach before the blocking question.
   Start with X₀(32): the modular curve parametrising (E, C) where C is a
   cyclic subgroup of order 32.  Its equation is known: for the model
   y² = x³ − x (conductor 32), the cusps are the 2-torsion points

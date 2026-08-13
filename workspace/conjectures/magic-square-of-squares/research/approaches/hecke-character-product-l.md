@@ -37,8 +37,10 @@ mechanism: For the congruent-number curve E_n: y² = x³ − n²x with CM by
   functional equation and the Birch–Swinnerton-Dyer conjecture (proved
   for CM curves of rank 0 and 1 by Coates–Wiles and Gross–Zagier), this
   forces an impossible relation among Heegner-point heights.
-status: proposed
-first-step: Compute the exact relationship among the four L-functions.
+status: parked-behind-blocking-question
+first-step: PARKED per directive 10/11 — do not work on this until the GFP-x2P
+  blocking question is answered in `code/out/gfp_x2p_answer.md`. The approach
+  may be viable but no fifth approach before the blocking question.
   Start with the Hecke character ψ for the CM curve E: y² = x³ − x
   (conductor 32).  For each squarefree integer n, the twist E_n has
   L-function L(s, ψ · χ_n) where χ_n is the quadratic Dirichlet

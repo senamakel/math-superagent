@@ -46,8 +46,15 @@ compressed away.
 
 ## Ruled out
 
-No run-approach has been attempted yet, so nothing is closed. Two arguments are
-already known to be true-and-irrelevant heuristics, never proofs (`problem.md`,
+- **Pure modular sieve** (`|A_k|` alone): `|A_k| = 2^(k-1)` grows without bound
+  for `k ≤ 22`, so the sieve never empties. No obstruction modulo any power of 3
+  can prove the conjecture at any finite 3-adic precision. Proven for `k ≤ 22`
+  by exact computation; the 2-to-1 lifting still needs an unconditional proof
+  (`research/threads/lifting-proof.md`). This is a negative result about the
+  method, not about the conjecture: the conjecture may still be true, but the
+  kill comes from structure the sieve cannot see.
+
+Two arguments are already known to be true-and-irrelevant heuristics, never proofs (`problem.md`,
 `GOAL.md`):
 - **Density argument**: "density of integers whose ternary expansion avoids `2`
   tends to 0" is true but says nothing about the thin sequence `2^n`.

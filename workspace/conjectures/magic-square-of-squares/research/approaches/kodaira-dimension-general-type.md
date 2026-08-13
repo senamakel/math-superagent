@@ -23,8 +23,10 @@ mechanism: The nine entries are linear forms Lᵢⱼ(c, u, v) in the
   map), then κ(S) = 2.  The key computation is: what is the degree
   multiset of the defining equations after homogenisation, and does the
   adjunction formula yield an ample canonical divisor?
-status: proposed
-first-step: Derive the exact affine equations for V.  From the
+status: parked-behind-blocking-question
+first-step: PARKED per directive 10/11 — do not work on this until the GFP-x2P
+  blocking question is answered in `code/out/gfp_x2p_answer.md`. The approach
+  may be viable but no fifth approach before the blocking question.
   parametrisation, the nine entries are:
     a₁ = e² + u,       a₂ = e² − u − v,  a₃ = e² + v,
     a₄ = e² − u + v,   a₅ = e²,          a₆ = e² + u − v,
