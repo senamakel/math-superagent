@@ -61,9 +61,13 @@ notes; agents should not rebuild them from disk.
   `n=F_{2i+2}F_{2i+3}-1, k=F_{2i}F_{2i+3}-1` (i>=1). i=1 → 3003; i=2 →
   61218182743304701891431482520. Recurrences `n_i=7n_{i-1}-n_{i-2}+6`,
   `k_i=7k_{i-1}-k_{i-2}+9` (order-3 homogenisation `a_n=8a_{n-1}-8a_{n-2}+a_{n-3}`
-  confirmed), growth ratio → φ^4 ≈ 6.854. Verified N(a)>=6 for i=1..5.
-  Any `B<6` is refuted. This is the only Jenkins-family curve with
-  infinitely many lattice points (a=b=1).
+  confirmed), growth ratio → φ^4 ≈ 6.854. Verified N(a)>=6 for i=1..5;
+  exact counts (both mirrors + trivial): N=8 at i=1 (3003), N=6 at i=2
+  (29 digits) and i=3 (205 digits) — the i>=2 counts computed by per-k
+  binary inversion, beyond BBW 2017's 10^60 bound
+  (`code/out/verify_fibonacci_identity.captured.txt`). Any `B<6` is
+  refuted. This is the only Jenkins-family curve with infinitely many
+  lattice points (a=b=1).
 
 - **Lane Clark 2010 — the normal-array template giving every log bound.
   `checked`** (full text
@@ -100,6 +104,18 @@ notes; agents should not rebuild them from disk.
   infinite family does not threaten a constant per-a bound. Witness-set
   boundary counts: 2 for each of 120, 210, 1540, 7140, 11628, 24310, and
   3 for 3003 (max = 3 left-half reps, matching the C >= 3 lower bound).
+
+- **Fibonacci family is boundary — PROVED (structural). `proved`.**
+  For the MRSTT boundary cut with ε > 1/3, every sufficiently large
+  member of the Fibonacci family is boundary. `k/n → 1/φ²` exactly (ratio of
+  consecutive Fibonacci numbers), so `log k ∼ log n` and
+  `log(cut)/log(k) = (log n)^{2/3+ε − 1} = (log n)^{ε − 1/3} → ∞` for
+  ε > 1/3. For ε = 1/2 (run's standard), `cut/k = (log n)^{1/6} → ∞`.
+  **Effective** and **uniform in j**. Verified numerically j=1..12
+  (`code/out/boundary_family_always_boundary.captured.txt`).
+  **Open question:** each a_j carries at least 2 boundary reps (the
+  (k,k+1) collision); do any carry more? 3003 (j=1) has 3 — counting
+  all nontrivial boundary reps for j=2..12 is the next task (directive 25).
 
 - **MRSTT interior, the current record. `sourced`** (arXiv:2106.03335,
   QJM 2022, Thm 1.3). Fixed 0<ε<1, t large: at most 2 solutions in
@@ -338,6 +354,12 @@ Each carries the obstruction that closed it; do not re-propose.
   `G-nonfibonacci-pairs-are-bounded` (open — the core structural gap);
   `G-boundary-collision-a-finite` (revised — finiteness of A_all is false,
   but per-a boundedness does not need it).
+- **Directive 25 — Fibonacci family boundary proof and per-a count.**
+  `fibonacci-family-is-boundary` filed as proved (structural, k/n→1/φ²,
+  (log n)^{1/6} divergence for ε=1/2; verified j=1..12). **Next:**
+  count ALL nontrivial boundary reps per Fibonacci a_j for j=1..12.
+  If always 2, C≥3 stands; if the count grows, G-boundary-uniform-count
+  is FALSE — a genuine result either way.
 - **The other live partial-result target:** an effective height bound with a
   **computed** constant for a specific (k1,k2) inequality or near-miss family
   (Matveev Thm 2.3, K=Q, constants held, (2,3) template computed and its
@@ -346,7 +368,7 @@ Each carries the obstruction that closed it; do not re-propose.
   effective-methods-wall. The exact-solution (2,3) form is closed (vacuity
   above); candidates: a different small pair, or the delta-form |ln a − ln b|
   bounds already computed.
-- Ledger: live counts in TASKS.md (asserted=22, checked=4, proved=2 — genus-closed-form-integrality and genus R–H closed form). Every claimed bound must be run
+- Ledger: live counts in TASKS.md (asserted=22, checked=4, proved=3 — genus-closed-form-integrality, genus R–H closed form, fibonacci-family-is-boundary). Every claimed bound must be run
   against `code/out/witnesses.json`; one not run is `asserted`, never
   `checked`. Compute policy: never build the triangle; invert C(n,k)=a per
   small k by binary search (k ≤ log₂ a); 28 CPUs, parallel over a or

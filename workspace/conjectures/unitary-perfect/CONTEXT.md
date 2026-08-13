@@ -70,7 +70,33 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   have zero heads, all nine excluded p (7,11,19,29,37,43,47,53,59) carry a
   head. Character distribution by (p mod 8, Aurifeuillean half) is in the
   capture: **no residue class forces a head** (the per-class shortcut, M4,
-  is refuted).
+  is refuted). **Extended to p ≤ 97** (`char_mod16_sums.captured.txt`,
+  24 rows, 291 s): 7 further heads — p=73: 649301712182209,
+  9444732965601851473921; p=79: 381364611866507317969,
+  604462909806215075725313; p=83: 13063537; p=97: 4657, 17637260034881 —
+  consistent at p=83,97 with `heven_extend_probe` full factorisations.
+  p=67,71,89 are 3-Higgs with **zero heads yet excluded** by Thm 8, so a
+  missing head is NOT a membership certificate: the p≤61 zero-head ⟺
+  membership iff was range-limited. The extension run's self-check FAIL
+  lines are pinned as script artefacts: Q1 Parseval divides by 8 instead
+  of 4 (divisor 4 confirmed by `char_mod16_verify.captured.txt`), and
+  Q2's "sum_e = 3 or 2" targets drop the non-primitive factor 5 and use a
+  rational e-of-class — the honest full-Gaussian exponent is 0 mod 4 for
+  all p (identical to the directive-14 closed form). The 7 new heads are
+  NOT yet independently certified (`char_mod16_verify2.py` prepared;
+  capture 0 bytes).
+- **(computed/checked, this run) Directive-14 RESOLVED: closed-no-constraint.**
+  `(2/(2^p+i))_4 = 1` identically for every odd prime p ≥ 3 —
+  `code/out/directive14_quartic_closed_form.captured.txt` (EXIT_CODE=0), two
+  independent exact routes agreeing on all 17 primes p ≤ 61: (A) direct
+  product over the Gaussian factorization of 2^p+i; (B) Williams-1976
+  supplement on the primary associate 1−2^p·i, exponent (2^p−2^{2p})/2
+  ≡ 0 (mod 4) for all odd p, valid for all p ≥ 3 given the sourced law.
+  Consequence: the quartic product pins divisor class-counts only mod 4 and
+  never forces a head r ≡ 1 mod 16 — it adds nothing to the one-way
+  per-divisor mod-16 test. `biquadratic-character-divisors` is definitively
+  closed; the adopted `second-moment-character-mod16` approach is untouched
+  (its bound is on the quadratic character sums, not the product).
 - **(computed / checked) Definitional equivalence of 3-Higgs is closed
   independently of the classify harness.** `code/higgs/check_a057447.py`
   first-executed → `code/out/higgs_a057447.captured.txt`: literal A057447
@@ -386,6 +412,13 @@ Durable Cognee memory from earlier runs; consistent with Established here
    the product is head-blind and ≡ 1, so the global quartic character forces
    nothing (see Ruled out). **`char_mod16_sums` remains 0-byte — the
    adopted second-moment approach's first measurement (exact S_χ tables over
+   the 24 primes p ≤ 97, Parseval check) is still not on disk; do not report
+   character-sum tables as done.** `q_supplement` is DONE
+   (PASS, 43 bytes) — this gap's earlier "two planned runs 0-byte" statement
+   is resolved for q_supplement only.
+5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
+   2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
+   no OCR; Guy UPNT §B3 paywalled).es over
    the 24 primes p ≤ 97, Parseval check) is still not on disk; do not report
    character-sum tables as done.** `q_supplement` is DONE
    (PASS, 43 bytes) — this gap's earlier "two planned runs 0-byte" statement

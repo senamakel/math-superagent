@@ -2,366 +2,115 @@
 
 What this run knows, in its own words. Carries what an agent would otherwise
 rebuild from disk: established results with their basis, dead approaches and
-why, computed numbers, durable memory, and disagreements. Not a file catalogue
+why, computed numbers, durable memory, disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
-Budget 10,000 tokens (this file ~5,900 — ~4,100 under). Length is a bill the
-whole run pays on every model call; link the file holding any detail compressed
-away.
+Budget 10,000 tokens. Precision over padding: link the file holding any
+detail compressed away.
 
-**Run state (Directive 27): wider_width_extend (sieve 3e8, 16.25M primes, depth 240) corroborates bounded-gap: two new genuine giants (row 162, j=4,323,712; row 175, j=5,237,310), max inter-giant gap unchanged at 26 over 14 giants, new gaps (15,13) inside existing range. Growth law UNSETTLED: 13th ratio 4.95 reverses the declining-ratio trend of Directive 25; geometric R² improved to 0.9607, factor 1.751. The honest position: the growth law is not determined. What IS settled: j → ∞, gap max unchanged. Step 7 (bounded gap + j → ∞) stands.** Directive 24 cap resolved (k* = 239). Directive 25 gap half strengthened, reconciliation half contradicted (claim `directive25-gap-trend-and-reconciliation` — downgraded). The provability question (Directive 26) is live. Mean-rate route superseded; do not cite D=40 smoke.
+## Run state (Directive 26/27)
+
+**The conjecture is reduced to ONE open statement: the inter-giant gap is
+bounded.** The 7-step chain below is in `research/threads/regeneration.md`
+with cautions and data list; steps 1–5 are proved or established, step 6 is
+measurement only.
+
+1. **GC ⇔ `A_k(1) ∈ {0,2}`** — Lean 4, sorry-free, axiom footprint
+   `[propext, Classical.choice, Quot.sound]` (`gilbreath-second-entry-equivalence`).
+2. **⇔ `Σ_{i<k}(j_i+1) ≥ k−2`** — proved recharge identity
+   `b_k = b_1 + Σ(j_i+1) − (k−1)` (`step-law-theorem-proved`).
+3. **Giants (j>1000) carry 99.76% of S_1000** — heavy tail is genuine renewal
+   structure, not an averaging artifact (`bigjump-cap-characterization-1000`).
+4. **Giants ARE (2,4)-events (13/13)** — no separate mechanism (step law).
+5. **j → ∞ settled; the growth law is NOT determined.** Geometric fit R² =
+   0.9607, factor 1.751/event over 14 genuine giants (wider sieve); the
+   sublinear reading (ratios declining toward 1) was broken by the 13th
+   ratio 4.95. **Not load-bearing**: bounded gap + j → ∞ suffice regardless.
+6. **Inter-giant gaps (14 genuine giants): 22,8,4,26,2,14,2,14,4,4,12,15,13
+   rows** — mean 10.21, max 26, UNCHANGED when sieve width ↑15× and b
+   ↑4,900× (2,179 → 10,655,286). **Measurement, not proof.**
+7. **Bounded gap + j → ∞ ⇒ b_k ≥ 1 forever ⇒ GC.**
+
+**Next (Directive 26):** decide whether "the inter-giant gap is bounded" is a
+corollary of known prime-gap results (PNT + gap bounds), is **equivalent to a
+named open problem** (Cramér, GPY, Elliott–Halberstam), or is a genuinely new
+statement. An equivalence is a GOAL.md partial result (a reduction of
+Gilbreath to a named conjecture); if neither, name the obstruction. Do not
+re-derive steps 1–5.
+
+Caveats: both records are single finite triangles — depth 1000 (sieve 2e7,
+1,270,607 primes) and wider width (sieve 3e8, 16,252,325 primes, depth 240,
+k* = 239). The depth-1000 record dies at i=161 via its own finite-width cap,
+but the giants **continue** at wider width (new giants rows 162, 175 with
+j = 4,323,712 and 5,237,310) — the cap was sieve width, not prime structure.
+13 gaps is a small sample; "no trend" is not "bounded forever".
 
 ## Established
 
-- **The whole conjecture = "the second entry of every row lies in {0,2}".**
-  `A_1=(1, even, even, ...)` because 2 is the only even prime; the shape
-  (odd, even, even, ...) is preserved by the absolute-difference operator; and
-  `A_{k+1}(0)=|1-A_k(1)|` is 1 iff `A_k(1)∈{0,2}`. **Proved** (parity
-  induction), checked over full rows to depth 599. If ever `A_k(1)=4` (any
-  even ≥4) the conjecture dies that row. Anchor: `research/notes/reduction.md`.
-- **Oracle exists and is checked.** `witnesses.json` (33860 primes) reproduces
-  problem.md's rows A_1..A_5 exactly; depth 600,
-  `second_entry_always_0_or_2=true`; second-entry sequence reproduces OEIS
-  A089582's 105 terms exactly. Depth 1000 (sieve 2e7, 1.27e6 primes):
-  `first_bad=None`. Anchors: `code/out/witnesses.json`,
-  `code/out/blocks_depth1000.json`.
-- **Odlyzko's block lemma — RE-DERIVED AND PROVED by this run.** A leading
-  `{0,2}` block of length `n` (positions 1..n) forces `A_{k+d}(1)∈{0,2}` for
-  d=0..n−1 and `A_{k+d}(0)=1` for d=0..n: **exactly n+1 rows; the protection
-  constant is 1, not the ≈n/2 in problem.md/ROOT.md** (n/2 refuted — appears
-  in no source). Proved by a diagonal-subtriangle argument; verified
-  exhaustively over all 2^n patterns with adversarial even completions,
-  n=1..11 (122,820 pairs, zero violations); real rows to depth 600 regenerate
-  far past the guarantee. GOAL.md deliverable. The subtriangle apex is the
-  Sierpinski/XOR-fold of the block's bit pattern. Anchor:
-  `research/notes/block_lemma.md`. **Regeneration is the sole obstruction** —
-  row k+n's position 1 needs `A_k(n+1)`, outside the block, which the lemma
-  does not force.
-- **Rule 90 interior dynamics — PROVED.** Within any {0,2} block, halved
-  entries evolve under XOR (= Wolfram Rule 90 = Pascal mod 2): |a−b|/2 =
-  (a/2) XOR (b/2); after d descents the halved entry is XOR_{j=0}^{d}
-  [binom(d,j) mod 2]·(A_K(p+1+j)/2). Verified exhaustively n ≤ 13; confirmed
-  independently by CHT 2026 §1 and Wikipedia. At d = 2^j the kernel is all-1
-  (XOR of a full window). **Split from the refuted absorption wrapper** — the
-  interior identification says nothing about when the boundary regenerates;
-  the timing corollary is CLOSED null (Ruled out). Anchor:
-  `research/notes/block_lemma.md`,
-  `research/approaches/rule90-absorbing-boundary.md`.
-- **Big-jump characterisation — DONE (Directive 23), cap RESOLVED (Directive 27).**
-  Of the 13 (2,4)-events with j > 1000 at depth 1000, 12 are genuine dynamics
-  and only **i=161 is the width artifact** (b_162 = 1,270,444 = W−162−1).
-  **Directive 27: wider sieve (3e8, 16.25M primes, depth 240) adds two genuine
-  giants at rows 162 (j=4,323,712) and 175 (j=5,237,310)** — the i=161 cap is
-  resolved; the two new giants land on intact rows with intruders {14,28} and
-  floor distances well above zero. All 14 genuine giants have landing floors
-  far above threshold; the heavy tail is genuine prime-renewal structure, not a
-  finite-width effect. Giant event rows: 35,57,65,69,95,97,111,113,127,131,135,
-  147,162,175. Claim `bigjump-cap-characterization-1000` (cap-resolved upgrade);
-  anchors `code/out/bigjump_characterization.captured.txt`,
-  `code/out/bigjump_characterization.notes.md`,
-  `code/out/wider_width_extend.captured.txt`. Rows k ≥ 239 at the wider sieve
-  are the width-exhaustion artifact.
-- **Ducci literature (four primary papers) — cyclic boundary drawn.** All
-  classical Ducci theorems are CYCLIC (wraparound); nilpotence-iff-power-of-2,
-  cycle structure, no-uniform-bound do NOT transfer to the half-infinite
-  Gilbreath operator (Eppstein's escape is the witness). What transfers: the
-  mod-2/Pascal law (= this run's proved rule90-interior-xor, now in four
-  peer-reviewed sources) and Chamberland's factored-max +
-  rigidity-equality-case template — the shape any surviving potential must
-  take, since raw run-count potentials are dead. Anchor:
-  `research/notes/library-state.md` Ducci section.
-- **Step law + recharge identity — PROVED as theorems of the absolute-difference
-  operator for ANY array (no parity, no primes).** With intruder pair
-  (x,y)=(row[b_k], row[b_k+1]), `b_{k+1} ≥ b_k ⟺ (x,y)=(2,4)`, else
-  `b_{k+1} = b_k − 1` (erosion exactly 1 per row); recharge identity
-  `b_k = b_1 + Σ_{events i<k}(j_i+1) − (k−1)` (j_i = jump) — the `−(k−1)` term
-  IS the Odlyzko protection constant 1; (2,4)-events are the only growth
-  mechanism. **Narrowed target: the conjecture holds iff (2,4)-events arrive so
-  fast that Σ(j_i+1) never falls k−1 behind.** Corollaries (proved): drain law
-  `y_{k+1} = y_k − 2·[x_k=2]`; intruder-4 absorbing under erosion. Verified on
-  primes (depth 1000, 60 events) and 400 random nonneg arrays (3,521 rows, 610
-  events, zero failures). Anchor: `research/notes/step_law_proved.md`, claim
-  `step-law-theorem-proved`. Do not re-derive — only the (2,4)-event RATE is
-  open.
-- **Regeneration criterion — ESTABLISHED (exact, oracle-checked).** Edge
-  `e_k = A_k[b_k]` (last {0,2} value — index b_k, not b_k−1; the off-by-one
-  that earlier made this look refuted), intruder `c_k = A_k[b_k+1]`. Then
-  `b_{k+1} ≥ b_k ⟺ (e,c)=(2,4)`, zero failures over all 998 transitions, exactly
-  60 regeneration events. Intruder==4 is necessary not sufficient (36 erosion
-  rows also have y=4). c_k ≥ 6 forces b_{k+1}=b_k−1 exactly (proved corollary:
-  |e−c| ∈ {c−2,c} ⊄ {0,2}). Anchor: `code/out/check_regenerate_lemma.captured.txt`,
-  thread `research/threads/regeneration.md`.
-- **Conditional-rate experiment — DONE (Directive 19).** Post-startup (k>10)
-  event rate is family-independent: pooled λ̂ = 0.585 (1098/1876), Pearson X²
-  p = 0.68 over 8 families, D=400, W=200000. **λ̂ is MEASURED, not bounded
-  below for all k; and it is a MEAN, the wrong summary for the heavy-tailed
-  jump distribution (Directive 23) — do not build a mean-rate bound.** Claim
-  `conditional-rate-experiment-family-independent`; anchors
-  `code/out/conditional_rate_experiment.notes.md`.
-- **Mod-4 linearization (invariant candidate, mod 4 is the ceiling).**
-  For k≥1, n≥2 (entries even), `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)`
-  (Odlyzko §2 eq.201); CHT Lemma 3.10 generalises mod 2. The lift to mod 2^t
-  fails at t=3 (`|2−6|=4 ≢ 0 (mod 8)` vs 2+6=8≡0) because the free congruence
-  holds iff the smaller entry is divisible by 2^{t−1}; mod 4 conflates 0↔4 and
-  2↔6 — exactly the failure values to exclude. The mod-4 level is the run's
-  best algebraic handle; nothing higher works.
-- **CHT 2026 inverse theorem (sourced).** (Chase–Hunter–Tao, arXiv:2607.08712)
-  The only ways an array with small non-negative initial data can fail to decay
-  to {0,1} are **long zero-blocks** and **long shallow {0,d}-blocks (d≥2)**.
-  Either rule those out for the primes (needs Cramér + analytic hypotheses,
-  unproved) or find an invariant bypassing the dichotomy. Random analogue
-  (Thm 1.3): i.i.d. geometric Cramér model satisfies a.s. {0,1} — strongest
-  heuristic support, not a proof for primes. **Hypothesis check — DONE,
-  holds-here = no**: max normalized gap a_n = 89 → M=7, longest 0-run L=2,
-  R_0 = 100·L·8^M ≈ 4.2e8 ≫ 1000, so the inverse theorem does not bite at any
-  reachable depth. Do NOT re-run. `code/out/cht_hyp_check.captured.txt`.
-- **Generalisation families sourced.** Li 2026 modulo-k (primes kn+2, leading
-  entry stabilises to k; asserted-by-source); Croft's bounded-gap
-  generalisation FALSE via Eppstein; Chase 2024 random analogue = Math. Ann.
-  388, arXiv:2005.00530. **2-separation is the operative general-class
-  hypothesis** (Ross 2026, consistent with CHT (ii), Eppstein): not "gaps
-  slowly growing" but "gaps do not concentrate in a 2-separated set".
-- **Probabilistic-prime-gap grounding landed (Banks–Ford–Tao 2023).** The
-  canonical peer-reviewed source behind the random-analogue input (Chase 2024,
-  CHT 2026, Tao-blog Cramér model) is now in the library: *Large prime gaps
-  and probabilistic models*, Invent. math. 233 (2023) 1471–1518, open access,
-  doi 10.1007/s00222-023-01199-0. Full text at
-  `research/sources/maier-pomerance-2023-large-prime-gaps-probabilistic-models.full.md`
-  (filename is a misnomer — authors are Banks, Ford & Tao; the file header
-  records the correction). Summary + claim `bft2023-cramer-model-canonical` at
-  `research/summaries/banks-ford-tao-2023-large-prime-gaps-probabilistic-models.md`.
-  Content: Cramér's model (each n≥3 in with prob 1/log n, independent) gives
-  largest gap ~ log²x a.s.; Granville's model ~ ξ log²x (ξ=2e^{-γ}=1.1229.);
-  a new random-sieve model satisfies uniform Hardy–Littlewood (Thm 1.3) and an
-  RH analogue (Thm 1.4), largest gap g((ξ±ε)log²x); any set obeying uniform HL
-  has large gaps (Thm 1.5/1.6). **Caveat the run must keep:** the plain Cramér
-  model demonstrably fails for real primes (prime-k-tuple residue bias; Maier's
-  short-interval phenomenon), so a random-model → primes transfer is heuristic
-  support, not proof. This does NOT settle Gilbreath; it fixes the model and
-  its limits. Cramér's own 1936 paper is quoted therein; its scanned full text
-  is unobtainable by this converter (repository records under
-  `research/summaries/cramer-19*.md`), content grounded through this paper +
-  Chase 2024 + CHT 2026.
-- **Parity wave (proved, Ross 2026):** any (2, odd, odd, ...) sequence has every
-  row's leading term odd — but odd is NOT 1 (witness 2,3,13 → leading 9). The
-  conjecture lives strictly between "odd" and "1". **{0,d} closure double edge
-  (proved, one line):** {0,d} is closed under absolute differencing for every
-  d≥2, so the mechanism pinning 1 at d=2 is also the mechanism preserving large
-  disturbances at d≥4 (the CHT obstruction).
-- **Verification record, kept distinct:** run's own depth 600 (33860 primes)
-  and depth 1000 (1.27e6 primes); literature (sourced, not reproduced):
-  Killgrove–Ralston 1959 to 63,419 primes (<792,722); Odlyzko 1993 to 10^13
-  (G=635); Plouffe 2025 to 10^14; Colonna 2025–26 to 1.5×10^15 (G=800). Do not
-  conflate.
-- **Restricted classes proved (this run, from the reduction's mechanism):**
-  consecutive odds; any sequence with `A_1=(1,2,2,...,2)`; any triangle
-  reaching a row `(1,c,c,c,...)`, c∈{0,2} — leading 1 persists forever from
-  there. These prove the mechanism but not that regeneration is entered
-  infinitely often.
-- **`block_profile(k) = A000232(k) − 1`**, checked against the OEIS b-file for
-  k=1..16; the shifted sequence is **uncatalogued** (nobody re-search). No
-  closed form from the catalogue.
-- **Gilbreath-polynomial route (alternate handle, UNVERIFIED).** MDPI
-  Mathematics 2023, 11(18), 4006 claims GC follows from `p_n − 2^{n−1} ≤
-  P_{n−1}(1)` for a "Gilbreath polynomial" over weighted factorials. Page
-  returns HTTP 403, no arXiv mirror — asserted-by-source only. Worth the
-  inventor's attention; do not re-fetch blind. Anchor:
-  `research/notes/library-state.md` claim `gilbreath-polynomials-imply-gc`.
+- **Gatti 2020's claimed class-level/prime proof is invalid — located flaw (full text in library).** Gatti, *Gilbreath's Sequences and Proof of Conditions for Gilbreath's Conjecture* (Preprints 202003.0145.v1, 2020; the earlier downloadable form of the MDPI-403 "Gilbreath polynomials" paper) proves the valid-extension machinery (Eq. 2: `k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`, global anti-diagonal criterion; parity alternation Lemmas 1–3 — the general-class half of the run's parity wave) but **Theorem 4's proof of `min K ≤ p_n ≤ max K` for the primes is invalid**: the right-inequality step assumes its own conclusion ("If p_n ≤ max K, then subtracting 2p_{n−1}…") and derives only a trivial `min K ≤ α` via Bertrand. Also his Lemma 4 (valid-extension set = whole parity interval) is **false in general** — Muney 2026's length-5 hole; even `dim K_S = 2^{n−1}` fails on `{2,3,5}`: `|K_S|=5` (solutions `{1,3,5,7,9}`, machine-checked this run). **No published deterministic bounded-gap/prime-class theorem exists.** Claims: `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`.
+- **Older claimed "proofs" and LLM-era preprints — all not-load-bearing, do not cite.** Proth 1878 gave no proof (Williams's retraction, quoted in Chase 2024 §7: the actual paper states the property as a theorem); Granville 2026 "Piercing Gilbreath" (arXiv:2607.04166, cs.CR, a fintech author, not the number theorist) has no checkable statement; Maréchal, ZARKOUNA, Keen, Ross-class preprints likewise unverified claims. The conjecture is not proved by any of them.
+- **Verification record, CURRENT (sourced; 4 data points kept distinct):** Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna 2025–26 to 1.5×10^15 (G=800 at both 6.15e14 and 1.5e15); run's own: depth 1000 (1.27M primes) and wider depth 240 (16.25M primes). Do not conflate.
+- **Parity wave (proved, Ross 2026):** any (2, odd, odd, ...) sequence has every row's leading term odd — but odd is NOT 1. The conjecture lives strictly between "odd" and "1".
+- **{0,d} closure double edge (proved, one line):** {0,d} is closed under absolute differencing for every d≥2, so the mechanism pinning 1 at d=2 also preserves large disturbances at d≥4 (the CHT obstruction).
+- **2-separation is the operative general-class hypothesis** (Ross 2026; consistent with CHT condition (ii) and Eppstein). Chase 2024 gives the first rigorous form (random analogue).
+- **The whole conjecture = "the second entry of every row lies in {0,2}".** `A_1=(1, even, even, ...)` because 2 is the only even prime; (odd, even, even, ...) is preserved by the operator; `A_{k+1}(0)=|1−A_k(1)|` is 1 iff `A_k(1)∈{0,2}`. **Proved** (parity induction), checked over full rows to depth 599 + stored slices, and formalised in Lean 4 (IFF, sorry-free). Anchor: `research/notes/reduction.md`.
+- **Oracle exists and is checked.** `witnesses.json` (sieve 400000, 33860 primes) reproduces problem.md's rows A_1..A_5 exactly; depth 600, `second_entry_always_0_or_2=true`; second-entry sequence reproduces OEIS A089582's 105 terms exactly. Depth 1000 (sieve 2e7): `first_bad=None`. Wider record: `code/out/wider_width_b.json` (sieve 3e8, depth 240) matches the depth-1000 b-profile rows 1..161 with zero mismatches.
+- **Odlyzko's block lemma — RE-DERIVED AND PROVED by this run.** A leading `{0,2}` block of length `n` (positions 1..n) forces `A_{k+d}(1)∈{0,2}` for `d=0..n−1` and `A_{k+d}(0)=1` for `d=0..n`: **exactly n+1 rows; protection constant = 1 (one row per block entry), not the ≈n/2 of problem.md/ROOT.md** (the n/2 claim appears in no source and is refuted). Proved by diagonal-subtriangle argument; verified exhaustively over all 2^n block patterns with adversarial even completions, n=1..11 (122,820 pairs, zero violations). GOAL.md deliverable. The subtriangle apex is exactly the Sierpinski/XOR-fold of the block's bit pattern. Anchor: `research/notes/block_lemma.md`.
+- **Rule 90 interior dynamics — PROVED.** Within any {0,2} block, halved entries evolve under XOR (= Wolfram Rule 90 = Pascal mod 2); at depth d the halved entry is the XOR of binom(d,j)-selected initial bits; at d = 2^j the kernel is all-1 (Sierpinski). Confirmed independently by CHT 2026 §1. **The regeneration-TIMING corollary is CLOSED (null, tolerance-dependent) — do not re-assert.** The value identification stands; it says nothing about when the boundary regenerates. Anchor: `research/notes/block_lemma.md`, `research/approaches/rule90-absorbing-boundary.md`.
+- **Step law + recharge identity — PROVED as general theorems (this run, any array, no parity/primes needed).** With intruder pair `(x,y)=(row[b_k], row[b_k+1])`: `b_{k+1} ≥ b_k ⟺ (x,y)=(2,4)`, else `b_{k+1} = b_k − 1` (erosion rate exactly 1); recharge `b_k = b_1 + Σ_{events i<k}(j_i+1) − (k−1)` — the `−(k−1)` term IS the Odlyzko constant 1, and (2,4)-events are the ONLY growth mechanism. Drain law (proved corollary): `y_{k+1} = y_k − 2·[x_k=2]` on erosion. Verified on primes (depth 1000, 60 events), 400 random arrays (3,521 rows, 610 events), and all 1,154 sweep sequences — zero failures. Anchor: `research/notes/step_law_proved.md`. **Only the (2,4)-event RATE is open — now sharpened to the inter-giant gap (Run state).**
+- **Regeneration = single-row local fact (edge 2, intruder 4), established depth 1000.** Earlier "non-local" refutations were an off-by-one (correct edge index is `A_k[b_k]`, not `A_k[b_k−1]`); the corrected criterion has zero failures over all 998 transitions, exactly 60 events. `c_k ≥ 6` forces erosion (`b_{k+1}=b_k−1`). Do not let stale off-by-one notes block this.
+- **Giant-jump mechanism, characterised (computed, depth 147, exact; `code/out/giant_stretches.md`).** At a (2,4)-event, the landing block of row k+1 is the maximal prefix where the halved row k is 1-Lipschitz: `A_{k+1}(i)∈{0,2} ⟺ |h_k(i)−h_k(i+1)| ≤ 1`. The generating stretch over `[b_k, b_{k+1}+1]` (length j+2) is a {0,1,2}-valued chain with step statistics ~ 50% flat, 25% up, 25% down (a random-walk-like 3-state chain; dominant value 0 or 1 at ≈50%), ending at the first adjacent pair differing by 2 (a 0–2/2–0 adjacency, i.e. the first 2 NOT isolated inside 1s); landing bits balanced #0≈#1. The container `[1, b_{k+1}+1]` is the longest 1-Lipschitz stretch of its row in 10/12 giants (k=56 rank 4, k=110 rank 2). Total fresh {0,2} entries generated by the 12 giants: 1,091,362. Giant jumps ≈ current block length (each refills ~1×); jumps grow sublinearly with b overall (log-log slope 0.388, all 43 positive-jump events). **This frames regeneration as a hitting-time problem on a 1-Lipschitz chain — the giants are long ±1-excursions before a 2-step.** Computed, not proved.
+- **Edge-sliding mechanism test (computed, refutation budget 0).** Over 1509 random-family runs + 60 prime runs: edge is 0 before depth D (rightmost-2 depth) and 2 at K+D; no early events; 1462/1509 random runs hit the event exactly at E==K+D (primes 44/60, 16 late-unpinned with y≠4, 0 late-2, 0 profile-bad). D: random median 0 max 13; prime median 0 max 4. Prime event gaps mean 2.68 rows, sd/mean 1.13 vs geometric null 0.79 (overdispersed, sim p=0.0024). Confirms the edge-timing mechanism; does not bound it. Anchor: `code/out/event_gap_analysis.captured.txt`.
+- **Wider-width record (Directive 27, computed).** Sieve 3e8 (16,252,325 primes), depth 240, one worker, 32.4 s, exact; oracle-match vs depth-1000 rows 1..161: none. k* = 239; 14 genuine giants at rows 35,57,65,69,95,97,111,113,127,131,135,147,162,175 — rows 162 (j=4,323,712) and 175 (j=5,237,310) are NEW, resolving the depth-1000 i=161 cap (the "giants stop" was sieve width). Landing blocks: 2179, 5942, 23265, 31499, 92620, 103973, 141706, 271629, 325090, 515906, 733564, 1094273, 5417975, 10655286. Geometric log-fit m=0.5599, R²=0.9607, factor 1.751/event. Max-gap by threshold: 26 at J=100/300/1000, 30 at 1e4, 18 at 1e5. Weight-degradation: at width 3e8 the live regime is rows 1..238; the depth-1000 record's "838-row pure-erosion run from k=162" is that record's finite-width artifact (corrected earlier; genuine longest erosion run 13, k=97..109). Anchors: `code/out/wider_width_extend.captured.txt`, `code/out/wider_width_b.json`.
+- **Ducci literature (sourced, four primary papers) — cyclic boundary drawn.** Classical Ducci theorems are CYCLIC (wraparound) and do NOT transfer to the half-infinite Gilbreath operator; Eppstein's escape is the standing witness the half-infinite object differs. What transfers: the mod-2/Pascal law (= this run's proved rule90-interior-xor, now in four peer-reviewed sources) and Chamberland's factored-max + rigidity-equality-case template — the shape any surviving potential must take. Anchor: `research/notes/library-state.md` Ducci section.
+- **Mod-4 linearization (invariant candidate).** For k≥1, n≥2 (entries even), `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)` (Odlyzko §2 eq.201; CHT Lemma 3.10 parity formula). Cleanest algebraic handle; parity-only, never fixes the exact {0,2} value (see Ruled out: lift ceiling).
+- **CHT 2026 inverse theorem (sourced):** the only ways an array with small non-negative initial data fails to decay to `{0,1}` are long zero-blocks or long shallow {0,d}-blocks (d≥2); random analogue a.s. holds under 2-separated non-concentration. Hypothesis check on the real primes: M=7, L=2, R_0≈4.2e8 ≫ 1000 — **holds-here: no**, the inverse theorem does not bite at any reachable depth. Do NOT re-run the check (`cht-inverse-theorem-hyp-check`).
+- **Generalisation families sourced:** Li 2026 modulo-k (primes kn+2, leading entry stabilises to k; odd k<100,000, preprint); Croft's bounded-gap generalisation FALSE via Eppstein (triple-sourced); Chase 2024 = Math. Ann. 388, arXiv:2005.00530; BFT 2023 settles the canonical probabilistic gap models (Banks–Ford–Tao).
+- **Restricted classes proved (this run, from the reduction's mechanism):** consecutive odds; any `A_1=(1,2,...,2)`; any triangle reaching a row `(1,c,c,c,...)`, c∈{0,2} — leading 1 persists forever. Proves the mechanism, not that regeneration is entered infinitely often.
+- **`block_profile(k) = A000232(k) − 1`**, checked vs OEIS b-file k=1..16; the shifted sequence itself is uncatalogued (nobody should re-search).
 
 ## Ruled out
 
-- **Gatti 2020 "prime-class proof" — REFUTED (invalid Theorem 4; full text in
-  library).** Gatti's *Gilbreath's Sequences...* (Preprints 202003.0145.v1)
-  proves the global valid-extension formula (`k = ±s^{n−1}_1 ± … ± s^1_{n−1}
-  + s_n ± 1`) and parity alternation Lemmas 1–3, but Theorem 4's `min K ≤
-  p_n ≤ max K` proof assumes its own conclusion and derives only a trivial
-  `min K ≤ α` via Bertrand; its Lemma 4 interval-completeness is false in
-  general (Muney's length-5 hole; even `dim K_S = 2^{n−1}` fails at {2,3,5}:
-  |K_S|=5 — machine-checked this run, two independent programs). **So no
-  published deterministic bounded-gap or prime-class theorem exists.**
-  Claims `gatti-2020-theorem4-proof-invalid`,
-  `gatti-2020-lemma4-interval-completeness-refuted`,
-  `gatti-2020-valid-extension-global-formula`. Anchor:
-  `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`.
-- **LLM-era claimed "proofs" — all not-load-bearing, do not cite.** Granville
-  2026 "Piercing Gilbreath's Conjecture" (arXiv:2607.04166, cs.CR — fintech
-  author, NOT the number theorist), Maréchal 2025, ZARKOUNA 2026: claim
-  preprints with no checkable mechanism; no peer review. Claims
-  `granville-2026-piercing-gilbreath-not-load-bearing` etc.
-- **Small gaps alone do NOT suffice (Eppstein 2011, sourced, quoted in CHT).**
-  For any unbounded monotone f(n)≥2 there is a 2-then-odds sequence with gaps
-  ≤ f(n) whose right edge switches between 1 and other values infinitely often.
-  **Kills the blanket "general class with gaps bounded by g" strategy** — a
-  general-class theorem needs non-concentration (CHT's 2-separated condition)
-  or restriction to the primes. Sharpener (`colonna-deletion-left-edge-failure`,
-  asserted): deleting 5 (or 7) from the primes gives a 2-then-odds sequence
-  with gaps ≤ 4 (≤ 6) whose second entry is 4 — a concrete row-2 failure; only
-  gaps ≤ 3 is un-refuted as a plain bounded-gap class.
-- **Proth's "failed proof" is a retracted myth — no error to locate.** GOAL.md's
-  item rests on a claim its originator H.C. Williams retracted (email 2020,
-  quoted in Chase 2024 §7): Proth's paper states the property as a theorem
-  with no proof; Catalan's note calls it a postulate. GDZ with a JS-capable
-  browser is the only remaining route; no further offline fetch.
-- **Randomness is necessary, not optional:** Chase 2024 constructs exotic
-  {0,3}-style sequences where the {0,1} result fails — evenness/2-then-odds
-  alone is not enough.
-- **Rule 90 uniform boundary absorption — REFUTED.** The claimed bounded
-  absorption of any intruder v≥4 adjacent to a long {0,2} block fails in the
-  2-then-odds class: CHT Lemma 3.7(iii) shows {0,d}-valued blocks persist in
-  all descendants without decrease; Eppstein escapes arbitrarily. The interior
-  identification survives; the absorption mechanism is dead. Anchor:
-  `research/approaches/rule90-absorbing-boundary.md`. **Timing corollary —
-  CLOSED (null):** the relative-depth form (21/27 within tol=1 of a power of
-  2) gives p=0.0173 exact binomial, dead at tol=0 (p=0.113) and erased by
-  conditioning on [2,9] (p=0.68) — mild, tolerance-dependent, not structural.
-- **Raw run-count potential r(T) ≤ r — MACHINE-REFUTED in the actual
-  regime.** Exhaustive over 6,725,600 strings (len ≤ 8, values 0..6): fails
-  (first counterexample (6,6,6,6,6,6,5,5); worst (0,0,1,1,0,0,1,1)); fails
-  even in the halved {0,1} interior — minimal counterexample (0,0,1,1) →
-  (0,1,0), the halved form of (0,0,2,2) inside the leading {0,2} regime.
-  (a,a,c,c) is exactly Chamberland's rigid Ducci equality case where the
-  factored-max potential stalls. `runcount-lemma-refuted`. Only a corrected
-  weighted/max-factored potential (Chamberland's template) survives, untested.
-- **Block-apex pattern-class forcing — REFUTED.** Mixed blocks do not force
-  intruder reduction: CHT Lemma 3.7(iii) proves a {0,d}-valued block persists
-  in ALL descendants regardless of pattern, and depth-1000 data shows
-  regeneration fires on (edge, intruder)=(2,4) and nothing else (60/60 regens
-  at y=4, 0/65 at y≥6). Do not re-propose. Anchor:
-  `research/approaches/block-apex-parity-forcing.md`.
-- **Prime-gap mod-6 structure — REFUTED as a constraint machine.** The operator
-  has NO reduction mod 3 (|a−b| mod 3 is not a function of the residues:
-  witness (0,1)/(3,1)); "H_k(1) mod 3 ∈ {0,1}" is the conjecture restated.
-  Anchor: `research/approaches/prime-gap-mod6-structure.md`.
-- **Mod-4 linearization cannot be lifted — mod 4 is the ceiling** (see
-  Established: |a−b| ≡ a+b (mod 2^t) holds iff smaller entry ≡ 0 (mod
-  2^{t−1}); fails at t=3). Any invariant on a higher modulus is dead. Anchor:
-  `research/approaches/mod4-pascal-invariant.md`.
-- **Sign-coherence / forward-difference linearization — REFUTED at its base
-  step (this cycle; `code/out/check_fwd_diff_identity.captured.txt`, claim
-  `fwd-diff-identity-refuted`).** `A_k(i) = |Δ_k(i)|` (Δ_k = signed k-th
-  forward difference) is FALSE on the primes: first violation at (k,i)=(3,2) —
-  |Δ_3(2)|=4 vs A_3(2)=0, inside the leading {0,2} block; first at position 1
-  is k=4 (|Δ_4(1)|=6 vs 2). Mechanism: |u−v| = ||u|−|v|| iff u·v ≥ 0; the
-  signed triangle oscillates [4,−4,4,−4] where the rows are constant 0.
-  Sampler: 60 random 2-then-odds, all fail within 3 rows (D_1(i)=−gap_i, so
-  any local extremum of the gap sequence kills it — the primes have one at
-  i=2: gaps 2,4). Any linearization must survive (k=3, i=2).
-- **Backward-extension automaton and minimal-counterexample geometry —
-  REFUTED (valid-extension criterion is global, not local).** Alkan et al.
-  2023 (factorial-weighted K-criterion) and Muney 2026 (order-sensitive
-  subset-sum analogue; interior holes at length 5) both reach over the whole
-  prefix; a bounded SAT/SMT encoding is either the global criterion (as hard
-  as the conjecture) or strictly weaker. Muney's valid-extension set
-  re-describes the regeneration obstruction instead of resolving it. Anchors:
-  `research/approaches/backward-extension-automaton.md`,
-  `research/approaches/minimal-counterexample-geometry.md`.
+- **Gatti 2020 "prime-class proof" — REFUTED** (invalid Theorem 4; Lemma 4 interval-completeness false in general; see Established). No published deterministic bounded-gap/prime-class theorem exists.
+- **`A_k(i) = |Δ_k(i)|` (absolute difference = |signed forward difference|) — REFUTED.** First violation at (k,i)=(3,2): |Δ_3(2)|=4 but A_3(2)=0 — INSIDE the leading {0,2} block; first violation at position 1 is k=4 (|Δ_4(1)|=6 vs A_4(1)=2; 17/20 rows fail). Mechanism: |u−v|=||u|−|v|| iff u·v≥0, and the signed triangle has adjacent opposite signs (first pair (D_3(2),D_3(3))=(2,−2)); any strict local extremum of the gaps (primes: gaps 2,4 at i=2) kills it. Independent sampler: all 60 random 2-then-odds fail within 3 rows. Claim `fwd-diff-identity-refuted`. Approach `sign-coherence-forward-differences` is dead; any linearization must survive cell (3,2).
+- **"Jump = next-row {0,2}-run past the block front" — REFUTED as a universal law.** Holds at the giants (13/13 where the run is contiguous with the block) but fails globally: 10 conflicting rows (3,5,6,7,11,13,...), e.g. stall row k=13 has j=0 while the next row's {0,2}-run past the old front is 77 (not contiguous with the block). The correct frame is the 1-Lipschitz chain characterization (Established). Anchor: `code/out/jump_closure_law.captured.txt`.
+- **"Route A refuted by sweep" — WITHDRAWN (Directive 16).** Sweep deaths are g_0 startup (all k≤10, 90% by k≤3); they do not bear on the asymptotic event rate. Route A (event rate) is live but superseded as the target by the inter-giant gap (Run state).
+- **Small gaps alone do NOT suffice (Eppstein 2011 anti-Gilbreath, sourced, quoted in CHT).** For any unbounded monotone f(n)≥2 there is a 2-then-odds sequence with gaps ≤ f(n) whose right edge leaves and re-enters 1 infinitely often. Kills the blanket "general class with gaps ≤ g" strategy; Colonna's record-page footnote sharpens: deleting 5 (or 7) from the primes gives a 2-then-odds sequence with gaps ≤ 4 (≤ 6) whose second entry is 4 — only g ≤ 3 survives as a plain bounded-gap class. Any general-class claim must state how it beats Eppstein's construction.
+- **Bounded-support re-scope "gaps ⊆ {2,4,6}, first gap = 2" — REFUTED as vacuous (Directive 13).** The primes violate every finite gap-support condition; such a theorem says nothing about Gilbreath.
+- **Proth "failed proof" — retracted myth; nothing to locate an error in** (Williams's 2020 retraction via email, quoted in Chase 2024 §7). The corrected result is the retraction itself.
+- **Rule 90 uniform boundary absorption — REFUTED** (approach `rule90-absorbing-boundary.md`): CHT Lemma 3.7(iii) shows {0,d}-valued blocks persist in all descendants without decrease; Eppstein builds escapes of arbitrary delay. The Rule 90 interior identification is proved and survives; the absorption mechanism is dead.
+- **Rule 90 depth-prediction timing corollary — CLOSED (null).** Absolute-depth and jump-timing forms refuted; the relative-depth form is tolerance-dependent (p=0.68 after conditioning) — mild concentration, not a mechanism.
+- **Raw run-count/runcount potential r(T) ≤ r — MACHINE-REFUTED** (6,725,600 strings, worst (6,6,6,6,6,6,5,5)); fails even in the {0,2} regime: halved (0,0,1,1)→(0,1,0) (2 runs → 3). Only a corrected weighted/max-factored potential (Chamberland Ducci template) survives, untested.
+- **Block-apex pattern-class forcing — REFUTED.** CHT Lemma 3.7(iii): {0,d} blocks persist in ALL descendants regardless of pattern; depth-1000 record fires regeneration on boundary (edge,intruder)=(2,4) only (60/60 at y=4, 0/65 at y≥6). Constant blocks occur in the class (Eppstein). Do not re-propose.
+- **Prime-gap mod-6 structure — REFUTED as a constraint machine.** No reduction mod 3 exists (|a−b| mod 3 not a function of residues: (0,1)/(3,1)); "H_k(1) mod 3 ∈ {0,1}" is the conjecture restated. The mod-6 gap statistics never percolate to the left edge in any source.
+- **Mod-4 lift is the ceiling — mod 8 and above dead.** `|a−b| ≡ a+b (mod 2^t)` over evens holds iff the smaller entry is divisible by 2^{t−1}: holds t=2, fails t=3 (|2−6|=4 ≢ 0 (mod 8)). Mod 4 conflates exactly the failure values (0↔4, 2↔6). Any invariant on a higher modulus is dead.
+- **Backward-extension automaton / minimal-counterexample geometry — REFUTED.** Valid-extension criteria (Alkan et al. 2023 factorial K-criterion; Muney 2026 subset-sum analogue with interior holes, smallest at length 5 for (2,3,5,9,15)) are GLOBAL over the whole prefix — no bounded window, no finite state; Muney's valid-extension set re-describes the regeneration obstruction. Eppstein's class defeat stands.
+- **Martingale edge-stall — REFUTED (self-corrected).** The edge is a two-tap coupled XOR recurrence, not a running XOR of fresh bits — no Doob/Azuma bound at the one-bit-per-step filtration.
+- **Gross/net: "regeneration iff (edge,intruder)=(2,4)" earlier refutations — WITHDRAWN (off-by-one); the criterion is ESTABLISHED** (see Established). The stale note records the failure of the literal wrong-index reading, not of the criterion.
 
 ## Numbers
 
-- **Event-rate sweep over the 2-then-odds class — DONE.** 1154 sequences, 26
-  families × seeds, D=600..4000, W=2e5..2e6, 26 workers, wall 278 s, exact
-  int64. Step law + recharge identity fail **0 times** across all (46,528
-  eligible rows, 20,013 events) — universal in the class. **852/1154 (73.8%)
-  reach b_k=0, ALL within the first 10 rows (90% by k≤3)** — death is g_0
-  startup, not asymptotic (Directive 16 resurrected Route A). Full detail:
-  `code/out/event_rate_sweep.notes.md`.
-- Block profile (leading {0,2} length) rows k=1..40: `2,7,13,13,24,23,22,21,24,
-  58,97,96,97,96,173,175,175,175,175,290,289,288,739,873,872,871,872,871,870,
-  869,868,867,866,865,2179,2178,2177,2176,2770,2769`. Growth by doubling bursts
-  around k=15,20,23,35,39.
-- Depth 1000 stats: min b=2 (k=1), max b=1,270,444 (k=162, cap); 60 regeneration
-  events in 999 transitions; max jump 360,698 (k=146); intruder min 4, max 14,
-  59.6% exactly 4, all ≡0 or 2 mod 4. **All 60 regen rows had intruder==4,
-  but intruder==4 is NOT sufficient** (36 erosion rows also have it).
-- **Wider width (Directive 27, sieve 3e8, 16.25M primes, depth 240):** 74
-  events, 14 giants (j > 1000), max jump 5,237,310 (row 175); inter-giant gaps
-  (14 genuine) = 22,8,4,26,2,14,2,14,4,4,12,15,13, max 26 unchanged; landing
-  blocks 2,179 → 10,655,286; all s in {0,2}: true. Giants new at rows 162, 175;
-  k* = 239. Geometric R² 0.9607, factor 1.751 over 14. `code/out/wider_width_extend.captured.txt`.
-- **CORRECTION: the "/838-row pure-erosion run" is a finite-width artifact.**
-  At k=162 the block fills the whole remaining sieve row; k=162..999 is the
-  block retracting one column per row as width runs out. Genuine longest
-  pure-erosion run is **13** (k=97..109). Claims built on "regeneration
-  survived 838 erosion rows" are void. `code/out/regeneration_analysis.captured.txt`.
-- **Fact (a): block minima grow — `[13,24,96,97,175,2762,5939,31525,31533,
-  31534,733574,1094263]`**, smallest 13 (k=3). **Fact (b): regeneration is
-  real but NOT monotone** (97→96, 871→872, 21→24 occur).
-- **Regeneration mechanism at boundary level (computed, not proved):** all 60
-  regenerations fire at (x,y)=(2,4); y∈{6,...,14} never regenerate (0 of 65);
-  y drains monotonically by 2 per x==2 step to 4 and sticks; after regen the
-  new intruder is 4 in 43/59 cases; 33/60 events adjacent to another regen
-  (self-exciting; runs test z=−3.94); 17 maximal y=4-runs (lengths 1..15),
-  every run ends in regeneration; regen rate by b-bucket falls 1.00 (b<10) →
-  0.20 (b≥10^6); jump sizes median 4.5, 35/60 ≤ 1, 5 ≥ 10^5; big jumps
-  correlate with big b (r=0.771), recover ~1.2–2× the block. The 5 structural
-  facts a theorem must explain: `research/notes/regeneration_data.md`.
-- **Recharge surplus is heavy-tailed (Directive 23).** S_1000 = 1,270,603 vs
-  required 998; the tail (9 jumps > 10^4, largest 360,698 at i=146) carries
-  the surplus — a mean rate is the wrong summary. **Giants are NOT
-  erosion-recovery** (mean gap before big jumps 3.54 vs 2.48 before small;
-  arrive 1–13 rows after the previous event); each giant jump ≈ current b
-  (total recharge ≈ width of final row); jumps grow sublinearly with b
-  (log-log slope 0.388). Rule-90/power-of-2 correlate for these rows refuted
-  (B2: 9/13 next-regen at power-of-2-ish offset vs null 0.81). Anchors:
-  `code/out/surplus_renewal_structure.md`,
-  `code/out/surplus_renewal_table.captured.txt`.
+- **Event-rate sweep (2-then-odds class, DONE):** 1154 sequences, 26 families×seeds, batches D=600/W=200k ×48, D=1200/W=400k ×10, D=4000/W=2M ×4, 26 workers, 278 s, exact. Step law + recharge identity fail 0 times everywhere (46,528 rows, 20,013 events). **852/1154 (73.8%) reach b_k=0, ALL within k≤10 (89.7% by k≤3) — death is g_0 startup (rand24 dies iff g_0=4, survives iff g_0=2).** The sweep does not measure the asymptotic rate (Directive 16). Oracle 4/4 numpy-vs-pure-Python. `code/out/event_rate_sweep.notes.md`.
+- **Conditional-rate experiment (DONE, Directive 19):** post-startup (k>10) event rate family-independent — pooled λ̂=0.585 (1098/1876), Pearson X² p=0.68 over 8 families, D=400, W=200000, 118 survivors, 0 deaths by D=400. Inter-event gaps k≥11: mean 1.70, median 1, max 14. **λ̂ is a MEAN — superseded as the target: the heavy tail dominates (a mean-rate bound controls the wrong quantity).** Do NOT cite D=40 smoke (predates sign fix). `code/out/conditional_rate_experiment.notes.md`.
+- **Depth-1000 stats:** min b=2 (k=1), max b=1,270,444 (k=162); 60 regeneration events in 999 transitions; max single jump 360,698 (k=146); intruder min 4 max 14, 59.6% exactly 4, all ≡ 0 or 2 (mod 4); all 60 regen rows had intruder==4 but intruder==4 is NOT sufficient (36 erosion rows also have y=4). Genuine live-regime longest pure-erosion run: **13** (k=97..109); the "838-row run" at k=162..999 is the finite-width artifact of that record.
+- **Block minima record (depth 1000):** `[13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263]` — the block grows across the computed range; dwell at each minimum 1–4 rows. Block length is not merely bounded away from 0, it increases.
+- **Recharge surplus heavy-tailed (depth 1000):** S_1000 = 1,270,603 vs required 998; giants (j>1000) supply 99.76%; the largest are NOT erosion-recovery events (mean gap before big jumps 3.54 vs 2.48 before small; they arrive 1–13 rows after the previous event — "energy stored during erosion" is dead) and do NOT sit on Rule-90/power-of-2 offsets (no separation). Jumps grow sublinearly with b (log-log slope 0.388 over all events) yet each giant ≈ current block length. `code/out/surplus_renewal_structure.md`.
+- **Block profile rows 1..40:** `2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,289,288,739,873,872,871,872,871,870,869,868,867,866,865,2179,2178,2177,2176,2770,2769` (growth by roughly-doubling bursts at k≈15,20,23,35,39).
 
 ## Recalled
 
-Durable memory holds: the reduction (= `research/notes/reduction.md`), the
-oracle generator (`code/lib/gilbreath.py` reproduces the five rows exactly),
-the Odlyzko 1993 full text (block lemma, mod-4 linearization, verification
-bounds; claim `odlyzko-1993-citation-confirmed`), and — this direction's
-originality — **no held source studies the growth rate of b_k, jump
-distributions, or a renewal treatment** (claim `block-growth-literature-not-covered`;
-never cite literature for a growth-rate claim — prove it yourself). All
-recalled claims agree with what this run has independently computed; none with
-failing hypotheses is relied on.
+Durable memory holds the reduction, the oracle generator (`code/lib/gilbreath.py`), the Odlyzko 1993 full text, the step-law/recharge proof, the Ducci primary sources, BFT 2023 canonical gap models, and `block-growth-literature-not-covered` (no source studies block-length growth, jumps, or renewal structure — the geometric-growth/renewal direction is original to this run and unclaimed). These agree with what the run has independently computed; no recalled claim is relied on whose hypotheses fail here. `relate_memory` was unavailable this cycle (Cognee 409 service errors); claims ledger via `search_claims` worked normally.
 
 ## Contradictions
 
-- **Block-protection constant: n/2 vs N — RESOLVED by proof.** /ROOT.md/
-  reduction.md say "≈n/2"; the primary sources and this run's re-derivation
-  give **1** (n+1 rows). Stale n/2 wording may survive in notes; treat the
-  proved n+1 as correct.
-- **"General-class" framing vs Eppstein.** ROOT.md commits the run to the
-  general class, but Eppstein refutes the broad bounded-gap version of that
-  plan; Colonna's g=4 deletion sharpens it further (Ruled out). Unresolved:
-  the class must be carved down (non-concentration) or restricted to primes.
-- **`research/CLAIMS.md` is a generated ledger** (contradictions section clean,
-  one real row: `odlyzko-block-lemma-exact` vs `odlyzko-block-lemma-asserted`);
-  `research/notes/library-state.md` is the authoritative hand-maintained ledger.
+- **Block-protection constant: n/2 vs N — RESOLVED by proof.** Primary sources (Odlyzko 1993 §2, Killgrove–Ralston 1959) and this run's re-derivation give constant **1** (n+1 rows per length-n block); the n/2 claim (`odlyzko-block-lemma-asserted`) is refuted. Treat the proved n+1 as correct.
+- **"General-class" framing vs Eppstein — unresolved.** The honest position: the class must be carved down (non-concentration or primes only). Colonna's g=4 deletion example sharpens it. Do not claim a bounded-gap class theorem.
+- **`research/CLAIMS.md` is a generated ledger; the contradictions section is clean** (one legitimate row). `research/notes/library-state.md` is the authoritative hand-maintained ledger.
 
 ## Gaps
 
-- **The live question: prove the inter-giant gap is bounded.** Step law +
-  recharge reduce the conjecture to Σ_{i<k}(j_i+1) ≥ k−1−b_1. Step 7 of the
-  chain: bounded gap + j → ∞ ⇒ b_k ≥ 1 forever. The gap half was corroborated
-  by wider_width_extend (max 26 unchanged over 14 giants, new gaps inside
-  existing range, 15× width increase). The growth law (geometric vs sublinear)
-  is NOT DETERMINED — the 13th ratio 4.95 reversed Directive 25's declining
-  trend, and the geometric fit improved (R² 0.9607, factor 1.751). **What IS
-  settled:** (a) j → ∞, (b) max inter-giant gap = 26 over 14 points while b
-  spans 4,900×. The growth law is irrelevant to step 7 — any growth law with
-  j → ∞ plus bounded gap suffices. Claim `directive25-gap-trend-and-reconciliation`
-  (gap half strengthened, reconciliation half downgraded). The provability
-  question (Directive 26) is live: does bounded inter-giant gap follow from
-  prime-gap distribution, or is it equivalent to a standard conjecture?
-  Anchors: `code/out/wider_width_extend.captured.txt`,
-  `code/out/directive25_gap_trend.md`.
-- **CHT inverse theorem route needs two analytic steps for the primes:** rule
-  out long zero-blocks and long shallow {0,d}-blocks (Cramér-type, unproved).
-  A proof bypassing that dichotomy is the alternative.
-- **What remains toward a GOAL.md partial result:** block lemma delivered
-  (constant 1); Lean 4 formalisation delivered (nine theorems, zero sorry,
-  axiom footprint [propext, Classical.choice, Quot.sound], IFF equivalence;
-  claim `lean-reduction-machine-checked` — the {0,2} statement is exactly as
-  hard as the conjecture, reformulates rather than reduces). Still open: a
-  proved invariant forcing A_k(1)∈{0,2}; a general-class theorem (must beat
-  Eppstein AND the Colonna g=4 deletion failure); a proved statement on the
-  regeneration rate.
-- **Library search halted by directive.** FRONTIER.md restored from commits
-  twice (Gatti wrapper page, Colonna/DeepMind re-downloads); the documented
-  URL filter did not run on those rewrite writes — re-check the candidate
-  count after any further write before trusting FRONTIER.md. No downloads
-  until a specific gap is stated in research/REQUESTS.md.
+- **The open question: is "the inter-giant gap is bounded" provable?** Three possibilities to decide before attempting a proof (Directive 26): corollary of known prime-gap results; equivalent to a named open problem (a partial result — a reduction of GC to a named conjecture); or a genuinely new statement with a named obstruction. The catch: the (2,4)-event sits at the boundary of the Rule-90 interior XOR (edge) fed by the drain law (intruder), both driven by the halved-gap bits — so the gap is a function of the prime-gap sequence, but whether its boundedness reduces to standard prime-gap theory is unknown.
+- **The 1-Lipschitz chain reformulation (from the giant-stretch characterization):** each descent replaces the halved row by its adjacent-difference chain; the block front is the first 2-step (0–2/2–0 adjacency); giants are long ±1-excursions. Prove the halved chains of the primes keep 1-Lipschitz runs at the boundary infinitely often with bounded gaps between long runs — that IS the bounded-gap statement in chain language. Computed mechanism, no proof.
+- **CHT inverse theorem route needs two analytic steps for the primes** (rule out long zero-blocks and long shallow {0,d}-blocks; Cramér-type hypotheses unproved) — or an invariant bypassing the dichotomy.
+- **What remains toward a GOAL.md partial result:** block lemma delivered (re-derived, constant explicit); Lean 4 formalisation delivered (nine theorems, zero sorry, IFF, axioms `[propext, Classical.choice, Quot.sound]`); the natural next deliverable is the Directive-26 classification (GC reduces to a named conjecture) or a proved statement on the regeneration/gap rate. Erosion is settled; regeneration is the whole problem — state which every claim establishes.
+- **Library search halted by directive.** No more downloads until a specific gap is stated that a source could close; re-check the FRONTIER.md candidate count after any write (it has collapsed twice).

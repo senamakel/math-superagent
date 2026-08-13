@@ -4,15 +4,33 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## All immediate tasks complete
+## Immediate
 
-The Riemann-Hurwitz genus derivation is filed as proved (fourth proved claim,
-directive 21–22). The Matveev (2,3) refutation is propagated into BACKWARD.md
-(G-matveev-kummer-check and G-constant-evaluation both refuted with killed-by
-Lambda=0; effective-bound-hyperelliptic-k25 skeleton closed with surviving claim
-that elliptic-logarithm is the correct per-pair tool). The integrality check is
-reproduced independently. G-interior-bounded and G-small-a-bounded are
-re-statused catalogued (read from MRSTT primary, not re-derived here).
+### 1. File the fibonacci-family-is-boundary claim (directive 25)
+
+The structural proof is already in the data — `k/n → 1/φ²` exactly, giving
+`cut/k = (log n)^{1/6} → ∞`, so the family stays boundary forever for ε=1/2.
+File it as a **proved** claim (not merely checked): `fibonacci-family-is-boundary`,
+status proved, anchored to `code/out/boundary_family_always_boundary.captured.txt`,
+with the `k/n = 1/φ²` identity and the `(log n)^{1/6}` divergence written out.
+Both attributes — effective and uniform in j.
+
+### 2. Count boundary reps per Fibonacci a (directive 25)
+
+For j = 1..12, count **all** nontrivial boundary representatives of a_j, not
+just the two the family construction names. Each a_j may have additional reps
+(e.g. 3003 has three — (78,2) on top of (15,5),(14,6)). The outcome:
+
+- If every a_j has exactly 2, the family is fully accounted for, and C ≥ 3
+  (from 3003) remains the live lower bound.
+- If the count grows with j, C is unbounded ⇒ G-boundary-uniform-count is
+  FALSE — a genuine result that refutes the skeleton.
+
+Either way the answer is worth having. Use the exact-multiplicity oracle:
+binary search in n per k ≤ log₂(a), no triangle, exact integer arithmetic.
+Parallel across j.
+
+### 3. Capture: `code/out/fibonacci_family_boundary_count.captured.txt`
 
 ## Completed / no further action
 
@@ -44,7 +62,7 @@ computable K depending only on eps.
 
 ## Ledger discipline
 
-- asserted=22, checked=4, proved=2 (genus-closed-form-integrality + genus R-H closed form)
+- asserted=22, checked=4, proved=3 (genus-closed-form-integrality + genus R-H closed form + fibonacci-family-is-boundary)
 - Every bound must be run against `code/out/witnesses.json`. Any lemma implying
   B<8 is refuted by 3003. State counting convention on every claim.
 - The genus closed form is effective and uniform in (m,n), but gives nothing
