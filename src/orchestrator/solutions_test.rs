@@ -1007,6 +1007,54 @@ fn the_unverified_count_needs_a_program_and_resets() -> std::io::Result<()> {
     Ok(())
 }
 
+/// A reflection that reports SOLVED and PROGRESS: NO contradicts itself, and
+/// the loop must not end on it.
+///
+/// This is not hypothetical. A live Gilbreath run ended here: its `goals` agent
+/// timed out, the salvage path re-ran an already-queued script that
+/// re-confirmed an already-hand-checked refutation, and the reflection wrote
+/// SOLVED over PROGRESS: NO. The evidence bar did not catch it, because the
+/// salvage really had run a program — what no file on disk can show is that the
+/// program established nothing the run did not already have. The reflection
+/// itself knew, and said so in the lesson it wrote for the next attempt, but by
+/// then the verdict had routed the run to `done` and the container exited 0.
+#[test]
+fn solved_needs_the_reflection_to_agree_it_progressed() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-solved-progress-guard");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root)?;
+    // The evidence bar is satisfied throughout: this test is about the case
+    // where a program exists and ran, which is exactly when the guard matters.
+    std::fs::write(root.join("solution.py"), "print(5.05505046)\n")?;
+
+    let mut current = state();
+    record_verdict("VERDICT: SOLVED\nPROGRESS: NO", None, Some(&root), &mut current);
+    assert!(
+        !current.solved,
+        "SOLVED beside PROGRESS: NO is self-contradictory and must not end the run"
+    );
+    assert!(
+        current
+            .lessons
+            .iter()
+            .any(|lesson| lesson.contains("PROGRESS: NO")),
+        "the rejection must reach the next attempt as a lesson, not vanish"
+    );
+    assert_eq!(
+        current.unproductive, 1,
+        "a rejected close still counts as an unproductive attempt"
+    );
+
+    // The same verdict with the contradiction removed ends the run, so the
+    // guard rejects the incoherent reply rather than SOLVED itself.
+    record_verdict("VERDICT: SOLVED\nPROGRESS: YES", None, Some(&root), &mut current);
+    assert!(
+        current.solved,
+        "a coherent SOLVED with a program on disk still closes the loop"
+    );
+    Ok(())
+}
+
 /// The seeded README of an empty folder is not a proposal.
 ///
 /// `workspace/template` seeds `research/approaches/` and `research/threads/` so
