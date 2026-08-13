@@ -55,6 +55,25 @@
 
 ## BLOCKING — must complete before any new approach
 
+- [ ] **RUN THE SEVEN PHI_TRIPLE_VARIETY PROGRAMS — directive 14, do this first.**
+      ```
+      for f in code/phi_triple_variety/{side_census,no_triple_fast,ratio_search,prefilter_census,verify_prefilter,verify_triple_square,verify_two_side_equiv}.py; do timeout 540 python3 $f 2>&1 | tee code/out/$(basename $f).captured.txt; echo EXIT_CODE=$?; done
+      ```
+      These test the hypothesis in `side_census.py`: **`1+(q1+q2)` is never a
+      rational square** for `q1>q2` in Φ with `q1+q2<1`. If it holds it proves
+      no Φ-triple (a triple needs `1+(q1+q2)` square), hence no MSS; it is an
+      **asserted-only claim until run**. Capture all seven; then read the
+      1±(q1+q2) counts and promote or refute the hypothesis in
+      `research/threads/four-ap-additive-triple.md` and CLAIMS.md with the
+      actual numbers.
+
+- [ ] **STOP SEARCHING, START EXTRACTING — directive 14.** The frontier still
+      lists ~429 candidates with ~359 unworked and exa_search is still
+      climbing (83). No further downloads or source gathering. Claim
+      extraction from the already-fetched sources (HMS 2026, Hulse et al.,
+      Wolird, Wu 2103.01784, GFP/HMS full texts) takes priority over any new
+      search.
+
 - [ ] **WRITE THE CONDITIONAL RESULT AS A CLAIM** (directive 12, item 1):
       The run's best structural output: assuming uniform boundedness of ranks
       of elliptic curves over Q, the existence of a 3×3 magic square of nine

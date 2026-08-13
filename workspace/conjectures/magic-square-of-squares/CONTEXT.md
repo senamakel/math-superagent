@@ -140,6 +140,15 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   `m,n ≤ 200`). Status: verified-numerically on a finite range, conjectural as
   a theorem — **not a proof of non-existence**. Any claim beyond the range is
   `conjectured` until attacked.
+- **Hypothesis under test — asserted, NOT yet run (directive 14):** `1+(q1+q2)`
+  is **never** a rational square for `q1>q2` in Φ with `q1+q2<1`, while
+  `1−(q1+q2)` frequently is (`side_census.py`). A Φ-triple needs `1+(q1+q2)`
+  to be a square, so if this holds there is no Φ-triple and no MSS. Being
+  tested by `code/phi_triple_variety/{side_census,no_triple_fast,ratio_search,
+  prefilter_census,verify_prefilter,verify_triple_square,verify_two_side_equiv}.py`;
+  **no captured output on disk yet.** Status: asserted/conjectured — not a
+  result until the programs run and the counts are read; even then it is
+  verified-numerically over the covered range, not a theorem.
 - **The Faltings-fibre attack on the Φ-triple is dead — confirmed by execution**
   (`phi_fibre_genus_run.py`, `phi_fibre_genus_check.py`, both captured in
   `code/out/`). f is homogeneous degree 0, so f(m,n) depends only on the ratio
@@ -243,6 +252,10 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 - **freys-curve-four-q-isogenies**, **integral-brauer-manin-nine-square**,
   **richardson-orbits-weyl-group** — all **refuted** at literature-check stage.
 - All others: **refuted** with reasons in APPROACHES.md.
+- **Search halted (directive 14):** no further downloads or source gathering.
+  The frontier still has ~429 candidates with ~359 unworked and exa_search is
+  still climbing; extracting claims from already-fetched sources is now the
+  priority over any new search.
 
 ## Ruled out
 
