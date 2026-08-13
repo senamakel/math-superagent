@@ -1,60 +1,72 @@
-# A. Bhattacharya, "Equal values of certain partition functions via Diophantine equations" (Research in Number Theory 7 (2021) #67)
+# Tengely–Ulas 2021 — Equal values of partition functions via Diophantine equations
 
-Source: https://link.springer.com/article/10.1007/s40993-021-00293-7 (open access)
-Full text: `research/sources/bhattacharya-partition-equal-values-2021.full.md`
+Source: Sz. Tengely, M. Ulas, Res. Number Theory 7:67 (2021), open access.
+Full text read: `research/sources/bhattacharya-partition-equal-values-2021.full.md`
+(the journal page lists Tengely–Ulas as authors; the file name carries an older
+title). URL: https://doi.org/10.1007/s40993-021-00293-7
 
-## What it is
+## What the paper establishes
 
-Open-access 2021 study of when partition functions P_A(n) (partitions of n with
-parts in a finite set A) take equal values, P_A(x) = P_B(y). This is the
-partition-function analogue of equal-values problems (and the paper's starting
-point is a question of Benne de Weger about the equal-binomial-coefficients
-literature). It appeared as a frontier target of this run's own library (the
-earlier HPTV/Prouhet-Tarry-Escott thread cited the partition/Figurate family
-papers). Filed for breadth of the equal-values subject.
+For finite `A ⊂ N₊` with partition function `P_A(n)` (partitions of n with parts
+in A), the equal-values Diophantine equation `P_A(x)=P_B(y)`:
 
-## Results (from the abstract/entry)
+- **Thm 2.1**: for `A={a₁,a₂}` coprime and any polynomial `f ∈ Z[x]` with
+  positive leading coefficient, `P_A(x)=f(y)` has infinitely many solutions
+  (`n = a₁a₂(f(m)−1)` works; uses Sertöz's formula `P_A(n)=⌊n/(a₁a₂)⌋ or +1`).
+- **Thm 3.1**: `P₃(x)=P₄(y)` has infinitely many solutions, explicitly split
+  into 54 cases over residue classes mod 6/12; several parameter families
+  (quadratic→cubic reducibility), plus two isolated solutions (8,4) and
+  (6533,439) from the elliptic curve `Y²=X³−108X+1728` (rank 2).
+- **Thm 3.2**: `P₃(x)=P₅(y)` has only finitely many solutions — the complete
+  16-point list {(1,1),…,(10093,388)}; proved with 360 quartic equations,
+  Magma's IntegralQuarticPoints, elliptic reductions.
+- **Thm 4.3/4.4/4.5**: for `A={1,2,a}`: `P_A(m)=P₄(n)` infinitely many iff
+  `a ≢ 2 mod 4` (finitely many if `a ≡ 2 mod 4`); `y²=P_A(x)` has infinitely
+  many solutions for every `a ≥ 3` (Pell parametrization; square a handled by
+  polynomial-square families); `P_A(x)=P_B(y)` (a,b ≡ 0 mod 4, a/2 or b/2
+  non-square) infinitely many via Pell.
+- **Thm 5.1**: `y²=P₅(x)` has only the two solutions (1,1),(2027,77129).
+  Conjecture 5.2: `y²=P_n(x)` has only (1,1) for n ≥ 6.
+- **Thm 6.3**: for `A={1,2,a}, B={1,2,3,4,b}`, `b=4a`, `a ≡ 1,2,5,7,10,11
+  mod 12`: `P_A(x)=P_B(y)` infinitely many.
+- The finite-partition function case is quasi-polynomial (`P_A(L_A n+i) ∈ Q[n]`),
+  so every such equation reduces to finitely many polynomial Diophantine
+  equations with separable variables — the same separated-variable
+  `f(x)=g(y)` structure as the binomial problem.
 
-- **Thm 2.1**: for A = {a1,a2} with gcd(a1,a2)=1 and any f ∈ Z[x] of positive
-  degree and positive leading coefficient, P_A(x) = f(y) has infinitely many
-  positive integer solutions.
-- **Thm 3.1/3.2**: P_3(x) = P_4(y) has infinitely many solutions; P_3(x) =
-  P_5(y) has only finitely many, fully characterized.
-- **Thms 4.3-4.5**: for A = {1,2,a}, a≥3, y² = P_A(x) and P_A(x) = P_B(y)
-  (B={1,2,b}, a≠b, mild conditions) have infinitely many positive solutions.
+## Bearing for this run — does NOT help
 
-Method: explicit parametric families (partition functions are quasipolynomials
-for finite A) reducing to curve/Diophantine analysis.
-
-## Relevance
-
-- It is the *opposite* direction from Singmaster: here equal values are made to
-  occur *infinitely often* by construction, whereas Singmaster asks whether the
-  binomial triangle has bounded multiplicity. The structural contrast — which
-  combinatorial families admit infinite equal-value families and which do not —
-  is exactly the (5,4,3)/(6,4,4)-exceptions structure in HPTV 2014 and the
-  Bilu-Tichy exceptional pairs.
-- Provides the modern survey-frame reference for "equal values of X via
-  Diophantine equations" that the run's library cites.
-
-## Claims
+- This is an **adjacent problem to a different object** (finite-set partition
+  functions, not binomial coefficients). None of its theorems transfer to
+  `C(x,k1)=C(y,k2)`: the partition function's quasi-polynomial/reducibility
+  mechanism (a quadratic can equal a cubic only when a discriminant is a square,
+  giving Pell families) has no analogue in the binomial collision curve, whose
+  degrees in x and y are the *fixed* k1, k2.
+- The paper is useful only as a **methodological comparison**: it shows a whole
+  family of "equal values of counting functions" equations where *infinite
+  families do occur* (unlike the binomial problem, where Jenkins/HPT/BST show
+  the only infinite family is the quadratic/Fibonacci one). This contrast
+  sharpens the run's structural claim: for the binomial problem, the
+  exceptional (infinite) pairs are severely restricted by the Bilu–Tichy/HPT
+  classification, whereas for partition functions they are generic.
+- **Verdict: does not help the run's Singmaster goal.** Filed so nobody re-reads
+  the 82 KB full text expecting a transferable theorem. No claim block; nothing
+  in the run's ledger depended on it, and nothing should.
 
 ```claim
-id: partition-equal-values-infinite-families
-statement: Bhattacharya 2021 (Research in Number Theory 7 #67, open access):
-  for A={a1,a2} with gcd(a1,a2)=1 and any f in Z[x] positive degree/leading
-  coefficient, P_A(x)=f(y) has infinitely many positive integer solutions;
-  P_3(x)=P_4(y) has infinitely many, P_3(x)=P_5(y) finitely many (all found);
-  and for A={1,2,a}, y^2=P_A(x) and P_A(x)=P_B(y) have infinitely many
-  positive solutions under mild conditions.
-hypotheses: A finite; partition functions P_A quasipolynomial; conditions as
-  stated.
-holds-here: context only — partition functions, not binomial coefficients; the
-  infinite-equal-values phenomenon is the structural contrast to Singmaster's
-  bounded-multiplicity question.
-status: asserted
-bearing: breadth of the equal-values subject; illustrates which combinatorial
-  families admit infinite equal-value families (contrast with the binomial
-  triangle's known infinite families being few and classified).
+id: tengely-ulas-partition-equal-values-adjacent
+statement: Tengely-Ulas 2021 (Res. Number Theory 7:67) solve several
+  Diophantine equations P_A(x)=P_B(y) for finite-set partition functions: e.g.
+  P_3=P_4 has infinitely many solutions (Thm 3.1), P_3=P_5 finitely many (Thm
+  3.2, complete 16-list), y^2=P_A(x) infinitely many for all A={1,2,a} (Thm
+  4.4), y^2=P_5(x) only (1,1),(2027,77129) (Thm 5.1). The mechanism is
+  quasi-polynomiality of P_A plus discriminant-square (Pell) reducibility.
+hypotheses: finite A,B; P_A the number of partitions with parts in A.
+holds-here: no — different counting function (partitions, not binomials); the
+  infinite-family mechanism does not transfer to C(x,k1)=C(y,k2).
+status: asserted-by-source (full text read; statements quoted)
+bearing: negative/methodological — a contrast case where equal-values equations
+  are generically infinite, vs the binomial problem's severely restricted
+  infinite families; no Singmaster content.
 anchor: research/sources/bhattacharya-partition-equal-values-2021.full.md
 ```

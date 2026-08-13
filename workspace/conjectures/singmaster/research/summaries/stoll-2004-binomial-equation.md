@@ -1,69 +1,46 @@
-<!-- source: https://publi.math.unideb.hu/paper/928 | converted from HTML -->
+# Stoll–Tichy 2004 — α·C(x,m)+β·C(y,n)=γ (abstract page only; PDF corrupt)
 
-Publicationes Mathematicae
+Source: Th. Stoll, R.F. Tichy, "The Diophantine equation
+α·C(x,m)+β·C(y,n)=γ", Publicationes Mathematicae Debrecen 64/1-2 (2004) 155–165,
+DOI 10.5486/PMD.2004.2913.
+URL: https://publi.math.unideb.hu/paper/928
 
-[image: Publicationes Mathematicae Banner] [1]
+## What is held
 
-[Home][1]
+Only the **abstract-page capture** (`research/sources/stoll-2004-binomial-equation.full.md`,
+2 KB). The full-text PDF download **failed**: the file at
+`/paper/928/download/10_5486_PMD_2004_2913.pdf` is corrupt (PDF cross-reference
+table invalid, unparsable). The abstract is an image (no machine-readable
+statement text).
 
-·
+## What the abstract indicates (attested, not verified)
 
-[Aims and Scope][2]
+The paper studies the *linear combination* `α·C(x,m) + β·C(y,n) = γ` (note: a
+**sum**, not an equality of two binomial coefficients) — a different equation
+from the run's `C(x,k1)=C(y,k2)`. Filed under MSC 11D45, 11B65.
 
-·
+## Bearing for this run — does not help
 
-[Editorial Board][3]
+- The equation is a sum of two scaled binomial columns equalling a constant —
+  not the equality-of-two-coefficients problem. Its finiteness results (per the
+  MSC/abstract) would be about a different curve; nothing from the abstract page
+  can be cited for the run's problem.
+- The abstract is an image and the PDF is unreadable, so **no claim can be
+  sourced from this file**. Filed so nobody retries the corrupt URL expecting
+  more; the paper is not needed for any ledger row.
+- No claim block. If the run ever needs this specific paper, it must re-fetch
+  from a working source (journal DOI, publisher, or the author's page).
 
-·
-
-[Contents][4]
-
-·
-
-[Search][5]
-
-·
-
-[In Print][6]
-
-·
-
-[For Authors][7]
-
-·
-
-[Order Information][8]
-
-[2004][9] / [64/1-2][10] (11) — DOI: [10.5486/PMD.2004.2913][11] — pp. 155-165
-[image: Download icon for full paper document] [Full Text][12][image: Download icon for abstract document] [Abstract][13]
-
-# The Diophantine equation $\alpha\binom{x}{m}+\beta\binom{y}{n}=\gamma$
-
-**Authors:**Th. Stoll and R. F. Tichy
-
-**Abstract:**
-
-[image: Abstract in image format]
-
-Keywords: diophantine equations, binomial coefficients, finiteness results
-
-Mathematics Subject Classification: 11D45, 11B65
-
-© 2026, Publicationes Mathematicae, Debrecen, Hungary [x]
-
-
-## Links
-
-[1]: /
-[2]: /aims-and-scope
-[3]: /editoral-board
-[4]: /contents
-[5]: /search
-[6]: /in-print
-[7]: /for-authors
-[8]: /order-information
-[9]: /contents/2004
-[10]: /contents/2004/64/1-2
-[11]: https://doi.org/10.5486/PMD.2004.2913
-[12]: /paper/928/download/10_5486_PMD_2004_2913.pdf
-[13]: /paper/928/abstract/10_5486_PMD_2004_2913_abstract.jpeg
+```claim
+id: stoll-tichy-2004-abstract-only
+statement: Stoll-Tichy 2004 (Publ. Math. Debrecen 64, 155-165) concerns
+  alpha*C(x,m)+beta*C(y,n)=gamma, a linear-combination equation, NOT the
+  equality C(x,k1)=C(y,k2). Only the abstract page is held; the PDF download is
+  corrupt/unreadable, so nothing from the paper is libellable.
+hypotheses: n/a — no usable statement.
+holds-here: no (different equation; no readable text).
+status: unverified (no readable source)
+bearing: negative — the corrupt download is recorded so it is not retried; the
+  paper is not load-bearing for Singmaster.
+anchor: research/sources/stoll-2004-binomial-equation.full.md
+```

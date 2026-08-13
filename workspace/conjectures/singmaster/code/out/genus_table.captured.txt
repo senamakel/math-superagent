@@ -1,11 +1,17 @@
 GENUS of the plane curve C(x,k1) = C(y,k2) = 0
 C(z,k) = z(z-1)...(z-k+1)/k!  (degree k in z)
 ======================================================================
-Method: two independent CAS computations, exact integer arithmetic.
+Method: CAS computation, exact integer arithmetic.
   (1) Singular 4.3.1, normal.lib, genus(ideal) -- geometric genus p_g
       via resolution of singularities of the projective closure.
-  (2) Sage, Curve(f).genus().
-Both agree on every entry for 2<=k1,k2<=12 (and k2=3,4,5 extended to k1=24).
+  (2) Sage, Curve(f).genus() -- for the original 8x11 grid and the
+      k2=3,4,5 extended rows ONLY (Sage is not installed in this
+      container; the k2=6..10 rows are Singular-only).
+The two routes agree on every entry for 2<=k1,k2<=12 (and k2=3,4,5
+extended to k1=24). The 23 rows added since (k2=6 n=13..18, k2=7..10
+n=13..19) rest on Singular alone — the Sage check errored
+(NameError: PolynomialRing is not defined) and never ran. Do not
+describe these rows as independently verified.
 Genus is symmetric in (k1,k2).  Diagonal (k,k) is REDUCIBLE (x-y factor);
 excluded (package returns nonsense/negative there).
 
