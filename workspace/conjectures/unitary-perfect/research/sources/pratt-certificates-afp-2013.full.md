@@ -1,113 +1,50 @@
-<!-- source: https://isa-afp.org/entries/Pratt_Certificate.html | converted from HTML -->
+<!-- source: https://isa-afp.org/entries/Pratt_Certificate.html -->
 
-Pratt's Primality Certificates - Archive of Formal Proofs
+# Pratt's Primality Certificates — Archive of Formal Proofs (Wimmer & Noschinski, 2013)
 
-### Abstract
+Web entry: https://isa-afp.org/entries/Pratt_Certificate.html
+Formalisation: `Pratt_Certificate` theory in Isabelle/HOL's Archive of Formal
+Proofs, by Simon Wimmer and Lars Noschinski (July 2013; bulk-certificate reading
+added Nov 2024).
 
-In 1975, Pratt introduced a proof system for certifying primes. He showed that a number *p*is prime iff a primality certificate for *p*exists. By showing a logarithmic upper bound on the length of the certificates in size of the prime number, he concluded that the decision problem for prime numbers is in NP. This work formalizes soundness and completeness of Pratt's proof system as well as an upper bound for the size of the certificate.
+## What it establishes
 
-### License
+A machine-checked formalisation of Pratt's (1975) primality-certificate proof
+system: *p is prime iff a Pratt certificate for p exists*. It proves:
 
-[BSD License][1]
+- **Soundness**: every predicate in a valid certificate holds — in particular
+  `Prime(p)` appearing in a certificate means p is prime.
+- **Completeness**: for every prime p there exists a certificate.
+- **Succinctness**: a logarithmic (in p) upper bound on certificate size, so
+  primality testing is in NP with SW via `build_fpc` (constructing a
+  certificate for p from certificates for the primes dividing p−1).
 
-### History
+## Why it matters for this run
 
-November 19, 2024 Added a command for reading and verifying certificates in bulk. Introduced more compact syntax. Verified primes from FIPS 186-4 and PKCS #1 v2.2.
+This is **reference [17] of Maciejewski arXiv:2605.20475**, cited for the
+paper's "Open Problem 5": a machine-checked reproduction of its Theorems 8–17
+consists of (i) Pratt certificates for each 3-Higgs prime in `2^m + 1`, (ii)
+certificates witnessing non-3-Higgs status (v₂ > 3 or a non-recursive
+sub-prime), (iii) modular-exponentiation checks for BHV primitive-divisor
+existence. The AFP entry shows exactly the reusable, previously-formalised
+Pratt-certificate infrastructure for that program.
 
-### Topics
+No mathematical bearing on the UPN conjecture itself; it is the formal-verification
+infrastructure layer.
 
-- [Mathematics/Number theory][2]
-
-### Session Pratt_Certificate
-
-- [Pratt_Certificate][3]
-- [Pratt_Certificate_Code][4]
-
-### Depends on
-
-- [Lehmer's Theorem][5]
-
-### Used by
-
-- [Bertrand's postulate][6]
-- [Amicable Numbers][7]
-- [Archimedes' Cattle Problem][8]
-
-## Cite
-
-×
-
-Pratt_Certificate-AFP
-
+```claim
+id: pratt-certificates-afp-sound-complete
+statement: The Isabelle AFP Pratt_Certificate entry proves soundness,
+  completeness, and logarithmic certificate-size bound for Pratt's (1975)
+  primality-certificate proof system; a prime is prime iff it has a Pratt
+  certificate, and certificates are built recursively from primes dividing p-1.
+hypotheses: none beyond Pratt's constructive system
+holds-here: applicable to the run's proposed Lean/Isabelle formalisation of
+  Theorems 8-17 (Pratt certificates for 3-Higgs witnesses)
+status: asserted by source; not re-derived here
+bearing: supplies the reusable formalised Pratt-certificate machinery the
+  Maciejewski paper names in its Open Problem 5 for machine-checking the
+  Heven verification and the non-3-Higgs witnesses.
+anchor: research/sources/pratt-certificates-afp-2013.full.md
+answers: how-to-machine-check-the-3-higgs-verification
 ```
-@article{Pratt_Certificate-AFP,
-  author  = {Simon Wimmer and Lars Noschinski},
-  title   = {Pratt's Primality Certificates},
-  journal = {Archive of Formal Proofs},
-  month   = {July},
-  year    = {2013},
-  note    = {\url{https://isa-afp.org/entries/Pratt_Certificate.html},
-             Formal proof development},
-  ISSN    = {2150-914x},
-}
-```
-
-Copy Download
-
-## Download
-
-× [Download latest][9]
-
-Older releases:
-
-- [Feb 6, 2026][10]: Isabelle2025-2
-- [Dec 19, 2025][11]: Isabelle2025-1
-- [Mar 17, 2025][12]: Isabelle2025
-- [May 26, 2024][13]: Isabelle2024
-- [Sep 13, 2023][14]: Isabelle2023
-- [Oct 27, 2022][15]: Isabelle2022
-- [Dec 14, 2021][16]: Isabelle2021-1
-- [Feb 23, 2021][17]: Isabelle2021
-- [Apr 20, 2020][18]: Isabelle2020
-- [Jun 11, 2019][19]: Isabelle2019
-- [Aug 16, 2018][20]: Isabelle2018
-- [Oct 10, 2017][21]: Isabelle2017
-- [Dec 17, 2016][22]: Isabelle2016-1
-- [Feb 22, 2016][23]: Isabelle2016
-- [May 27, 2015][24]: Isabelle2015
-- [Aug 28, 2014][25]: Isabelle2014
-- [Dec 11, 2013][26]: Isabelle2013-2
-- [Nov 17, 2013][27]: Isabelle2013-1
-- [Jul 29, 2013][28]: Isabelle2013
-
-
-## Links
-
-[1]: https://isa-afp.org/LICENSE
-[2]: ../topics/mathematics/number-theory/
-[3]: ../thys/Pratt_Certificate/Pratt_Certificate.html
-[4]: ../thys/Pratt_Certificate/Pratt_Certificate_Code.html
-[5]: ../entries/Lehmer.html
-[6]: ../entries/Bertrands_Postulate.html
-[7]: ../entries/Amicable_Numbers.html
-[8]: ../entries/Archimedes_Cattle.html
-[9]: https://isa-afp.org/release/afp-Pratt_Certificate-current.tar.gz
-[10]: https://isa-afp.org/release/afp-Pratt_Certificate-2026-02-06.tar.gz
-[11]: https://isa-afp.org/release/afp-Pratt_Certificate-2025-12-19.tar.gz
-[12]: https://isa-afp.org/release/afp-Pratt_Certificate-2025-03-17.tar.gz
-[13]: https://isa-afp.org/release/afp-Pratt_Certificate-2024-05-26.tar.gz
-[14]: https://isa-afp.org/release/afp-Pratt_Certificate-2023-09-13.tar.gz
-[15]: https://isa-afp.org/release/afp-Pratt_Certificate-2022-10-27.tar.gz
-[16]: https://isa-afp.org/release/afp-Pratt_Certificate-2021-12-14.tar.gz
-[17]: https://isa-afp.org/release/afp-Pratt_Certificate-2021-02-23.tar.gz
-[18]: https://isa-afp.org/release/afp-Pratt_Certificate-2020-04-20.tar.gz
-[19]: https://isa-afp.org/release/afp-Pratt_Certificate-2019-06-11.tar.gz
-[20]: https://isa-afp.org/release/afp-Pratt_Certificate-2018-08-16.tar.gz
-[21]: https://isa-afp.org/release/afp-Pratt_Certificate-2017-10-10.tar.gz
-[22]: https://isa-afp.org/release/afp-Pratt_Certificate-2016-12-17.tar.gz
-[23]: https://isa-afp.org/release/afp-Pratt_Certificate-2016-02-22.tar.gz
-[24]: https://isa-afp.org/release/afp-Pratt_Certificate-2015-05-27.tar.gz
-[25]: https://isa-afp.org/release/afp-Pratt_Certificate-2014-08-28.tar.gz
-[26]: https://isa-afp.org/release/afp-Pratt_Certificate-2013-12-11.tar.gz
-[27]: https://isa-afp.org/release/afp-Pratt_Certificate-2013-11-17.tar.gz
-[28]: https://isa-afp.org/release/afp-Pratt_Certificate-2013-07-29.tar.gz

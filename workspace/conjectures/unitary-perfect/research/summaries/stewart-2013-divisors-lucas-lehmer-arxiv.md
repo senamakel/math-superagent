@@ -1,93 +1,67 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/stewart-2013-divisors-lucas-lehmer-arxiv.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# C. L. Stewart 2013, *On divisors of Lucas and Lehmer numbers* (Acta Math. preprint)
 
-<!-- source: https://arxiv.org/pdf/1008.1274 | converted from PDF -->
+Source: arXiv:1008.1274 (2010 preprint of Acta Math. 211 (2013) 291–314).
+Full text: `research/sources/stewart-2013-divisors-lucas-lehmer-arxiv.full.md`.
+Peer version: Acta Math. 211 (2013), DOI 10.1007/s11511-013-0105-y (Project
+Euclid, paywalled).
 
-## What it claims
+## What it establishes
 
-Abstract. Let un be the n-th term of a Lucas sequence or a Lehmer sequence.
-In this article we shall establish an estimate from below for the greatest prime
-factor of un which is of the form n exp(log n/104 log log n). In so doing we are
-able to resolve a question of Schinzel from 1962 and a conjecture of Erd˝os from
-1965. In addition we are able to give the ﬁrst general improvement on results
-of Bang from 1886 and Carmichael from 1912.
+**Theorem 1.** Let α, β be complex numbers with (α+β)² and αβ non-zero
+integers and α/β not a root of unity. There is an effective constant C (in
+terms of ω(αβ) and the discriminant of Q(α/β)) such that for n > C,
 
-1. Introduction
+```
+P(Φ_n(α,β)) > n · exp( log n / (104 log log n) )
+```
 
-Let α and β be complex numbers such that α + β and αβ are non-zero coprime
-integers and α/β is not a root of unity. Put
+where P(·) is the greatest prime divisor and Φ_n(X) the n-th cyclotomic
+polynomial. This is a **largest-prime-factor** lower bound, not a bound on the
+*number* ω(Φ_n(α,β)) of distinct prime divisors.
 
-un = (α
-n − βn)/(α − β) for n ≥ 0.
+Applied to the problem's `Φ_{4p}(2)` (Lucas/Lehmer term with n = 4p), it bounds
+how large the *largest* primitive divisor must be — it says nothing about how
+many distinct prime divisors `Φ_{4p}(2)` has.
 
-The integers un are known as Lucas numbers and their divisibility properties have
-been studied by Euler, Lagrange, Gauss, Dirichlet and others (see [11, Chapter
-XVII]). In 1876 Lucas [24] announced several new results concerning Lucas se-
-quences (un)
-∞
-n=0 and in a substantial paper in 1878 [25] he gave a systematic treat-
-ment of the divisibility properties of Lucas numbers and indicated some of the
-contexts in which they appeared. Much later Matijasevic [26] appealed to these…
+## Why it matters for this run
 
-## Statements it makes
+This is **reference [13] of Maciejewski arXiv:2605.20475** and the entire
+Stewart-tradition anchor for the paper's hypothesis **(H2)** —
 
-Theorem 1. Let α and β be complex numbers such that (α + β)
-2 and αβ are
-non-zero integers and α/β is not a root of unity. There exists a positive number C,
-which is eﬀectively computable in terms of ω(αβ) and the discriminant of Q(α/β),
-such that for n > C,
- P (Φn(α, β)) > n exp(log n/104 log log n). (7)
+`ω(Φ_{4p}(2)) ≥ C log p` — is *not* a current theorem. Stewart's program
+(T1977, T2013) gives `P(Φ_n(2)) ≫ n · exp(log n/log log n)` bounds and
+`log |Φ_n| ≥ (φ(n)/2) log |α|` (Lemma 7), but "a primary-source effective
+lower bound of the form ω(Φ_n(2)) ≫ log n is, to our knowledge, not in the
+literature" — exactly as the paper says. Actually a *trivial* upper bound
+`ω(Φ_{4p}(2)) ≤ 2p log 2` always holds; the hard direction is the lower bound,
+which this paper does not supply. This confirms the claimed gap is real:
+(largest-prime-factor) ≠ (number of prime factors).
 
-Theorem 2. Let a and b be integers with a > b > 0. There exists a number C1,
-which is eﬀectively computable in terms of ω(ab), such that if p is a prime number
-which does not divide ab and which exceeds C1 and n is an integer with n ≥ 2 then
+```claim
+id: stewart2013-largest-prime-factor-not-omega
+statement: Stewart (2013) Theorem 1 gives P(Phi_n(alpha,beta)) > n exp(log n / (104 log log n))
+  for n > C effective, a LARGEST PRIME FACTOR lower bound on the primitive part of
+  Lucas/Lehmer terms; it does not give any lower bound on omega(Phi_n(alpha,beta)),
+  the number of distinct prime divisors.
+hypotheses: (alpha+beta)^2, alpha*beta nonzero integers; alpha/beta not a root of unity;
+  n > C effective.
+holds-here: yes -- Phi_{4p}(2) is a cyclotomic/Lucas-type value with these hypotheses
+  (alpha/2 or the Aurifeuillean halves are in the right class).
+status: asserted by source; not re-derived here
+bearing: confirms the paper's (H2) -- omega(Phi_{4p}(2)) >= C log p -- is NOT a
+  consequence of the Stewart tradition; (H2) is a conjectural target, not a theorem.
+anchor: research/sources/stewart-2013-divisors-lucas-lehmer-arxiv.full.md
+answers: why-h2-omega-growth-is-open
+```
 
-Lemma 1. Suppose that (α + β)
-2 and αβ are coprime. If n > 4 and n ̸= 6, 12 then
-P (n/(3n)) divides Φn(α, β) to at most the ﬁrst power. All other prime factors of
-Φn(α, β) are congruent to ±1 (mod n).
+## Notes
 
-Lemma 2. Let d be a square-free integer diﬀerent from 1, θ be an algebraic integer
-of degree 2 over Q in Q(
-√
-d) and let θ′ denote the algebraic conjugate of θ over Q.
-Suppose that p is a prime which does not divide 2θθ′. Let ℘ be a prime ideal of the
-ring of algebraic integers of Q(
-√
-d) lying above p. The order of θ/θ′ in (Q(
-√
-d)℘)
-×
-
-Lemma 3. If 1 ≤ n < x and (n, ℓ) = 1 then
-
-Lemma 4. Let d be a squarefree integer with d ̸= 1 and let pk denote the k-th
-smallest prime of the form N πk = pk where N denotes the norm from Q(
-√
-d) to Q
-and πk is an algebraic integer in Q(
-√
-d). Let ε be a positive real number. There is
-a positive number C, which is eﬀectively computable in terms of ε and d, such that
-if k exceeds C then
- log pk < (1 + ε) log k.
-
-Lemma 5. Let p be a prime with p ≥ 5 and let ℘ be an unramiﬁed prime ideal of
-OK lying above p. Let α1, . . . , αn be multiplicatively independent ℘-adic units. Let
-b1, . . . , bn be integers, not all zero, and put
-
-Lemma 6. There exists an eﬀectively computable positive number c such that if
-n > 2 then |α|
-ϕ(n)−cq(n) log n ≤ |Φn(α, β)| ≤ |α|ϕ(n)+cq(n) log n, (25)
-
-Lemma 7. There exists an eﬀectively computable positive number c1 such that if
-n exceeds c1 then
- log |Φn(α, β)| ≥ ϕ(n)
-2 log |α|. (26)
-
-Lemma 8. Let n be an integer larger than 1, let p be a prime which does not
-divide αβ and let ℘ be a prime ideal of the ring of algebraic integers of Q(α/β)
-lying above p which does not ramify. Then there exists a positive number C, which
-is eﬀectively computable in terms of ω(αβ) and the discriminant of Q(α/β), such
-that if p exceeds C then
-
-*[digest of a 42351 character source; every section, statement, and proof in full at `research/sources/stewart-2013-divisors-lucas-lehmer-arxiv.full.md`]*
+- Lemma 7: `log|Φ_n(α,β)| ≥ (φ(n)/2) log|α|` — the log-mass of the primitive
+  part is ≳ n, consistent with the paper's cyclotomic mass identity
+  `log Φ_{4p}(2) ~ 2p log 2`.
+- Lemma 1: for n > 4, n ∉ {6,12}, Φ_n(α,β) has all prime divisors ≡ ±1
+  (mod n) except possibly one small prime dividing n/3 to the first power —
+  the structural reason the primitively divisible primes of `2^{2p}+1` are
+  ≡ 1 (mod 4p).
+- T1977 (Proc. LMS 35 (1977) 425–447) is the sibling paper reference [12];
+  not on arXiv, not yet held.
