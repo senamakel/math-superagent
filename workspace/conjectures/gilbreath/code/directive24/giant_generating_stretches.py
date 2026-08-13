@@ -188,6 +188,9 @@ def main():
         dom, domc = vc.most_common(1)[0]
         v_runs = rle(vals)
         bits_runs = rle(list(bits))
+        longest_per_value = {}
+        for v, c in v_runs:
+            longest_per_value[v] = max(longest_per_value.get(v, 0), c)
         zc = sum(1 for v in bits if v == 0)
         oc = len(bits) - zc
         longest0 = max((c for v, c in bits_runs if v == 0), default=0)
@@ -200,6 +203,7 @@ def main():
         D = dict(k=k, bcur=bcur, bnxt=bnxt, j=j, vals=vals, v_runs=v_runs,
                  vmin=vmin, vmax=vmax, dom=dom, domc=domc, n=len(vals),
                  lvl=lvl, up=up, dn=dn, drift=drift,
+                 longest_per_value=longest_per_value,
                  bits_runs=bits_runs, zc=zc, oc=oc, longest0=longest0,
                  longest1=longest1, head_bits=head_bits,
                  cs=cs, ce=ce, clen=ce - cs + 1, rank=rank, ties=ties,
@@ -215,6 +219,9 @@ def main():
         P(f"    steps: level {lvl} ({lvl / len(diffs):.4f}), up {up} "
           f"({up / len(diffs):.4f}), down {dn} ({dn / len(diffs):.4f}); "
           f"net drift {drift:+d}; level+up = {(lvl + up) / len(diffs):.4f}")
+        P(f"    longest value-runs: "
+          f"{', '.join(f'{v}: {L}' for v, L in sorted(longest_per_value.items()))}; "
+          f"count of 2s: {vc.get(2, 0)} ({vc.get(2, 0) / len(vals):.4f})")
         P(f"(c) landing bits row {k + 1} over [{bcur}, {bnxt}], len {len(bits)} = j+1")
         P(f"    rle 0/1: {fmt_runs(bits_runs)}")
         P(f"    #0={zc} ({zc / len(bits):.4f})  #1={oc} ({oc / len(bits):.4f})  "
