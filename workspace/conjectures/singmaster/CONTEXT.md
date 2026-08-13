@@ -293,6 +293,16 @@ Carry it as corroboration only, not as a bound.
   1 unchecked (`chan-divisibility-gap`).** Every asserted bound must
   be run against `code/out/witnesses.json`. Any lemma implying B<8 is refuted by
   3003 (8 occurrences). State counting convention on every claim. See TASKS.md.
+- **PROCESS: Five uncaptured programs (directive 7).** `test_slope_across_rows.py`,
+  `test_slope_hypothesis.py`, `effectivegenus/rep_pairs.py`,
+  `genus/verify_k2_5_row.py`, `pattern/print_family.py` — all have zero captured
+  output. Their conclusions are already operator-checked (k2=5 closed form, slope
+  conjecture) but a program never executed is not evidence. Run or tombstone them.
+- **PENDING CLAIM: genus table needs a standalone claim.** `genus_table.captured.txt`
+  is the definitive two-parameter Faltings threshold (two-CAS agreement, 2<=k1,k2<=12,
+  k2=3,4,5 extended to k1=24). It supersedes the operator's three-diagonal salvage
+  and should be its own claim marked `proved-by-two-CAS` — the GOAL.md deliverable,
+  not a capture file. See TASKS.md item 1.
 - **RESOLVED: Matveev primary obtained.** The gap "authoritative constants of
   Matveev's theorem" is closed — full English text with C1,C2,C′0 held
   (`research/sources/matveev-2000-homogeneous-linear-form.full.md`, summary +

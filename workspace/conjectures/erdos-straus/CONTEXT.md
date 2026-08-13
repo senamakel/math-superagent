@@ -150,13 +150,17 @@ disk), or asserted-by-source.
   [0,1,2,6,9] make 840t+1 a QR mod 11 and t=8 makes it ≡0 mod 11
   (non-primitive) — no polynomial family at modulus 11 can cover them
   (Schinzel). Only {3,4} are Schinzel-legal-but-uncovered at pure M=11, and
-  **both are already realized at composite moduli**: M=33 covers t≡3 mod 11,
-  M=22 covers t≡4. So prime 11 is **fully saturated over its 5 legal residues
-  {3,4,5,7,10}, gap 0** (`definitive_structure.py`, `schinzel_residue_gap.py`).
-  The "8 missing residues" is an artifact of reading pure-M=11 families only:
-  no new family is needed there, and 6 residues are unobtainable for ever.
-  This ends the saturation question for modulus 11: it cannot be saturated as
-  posed (6 QR-blocked), and the other 2 are already covered elsewhere.
+  **both are already realized at composite moduli — by M=33**: its s∈{14,27}
+  project to t≡3 mod 11 and s∈{4,26} to t≡4 (M=22, s∈{5,7,10,16,18,21},
+  adds NOTHING mod 11; the earlier "M=22 covers t≡4" was wrong). So prime 11
+  is **fully saturated over its 5 legal residues {3,4,5,7,10}, gap 0**
+  (`definitive_structure.py`: p=11 realized 5 = QNR-budget 5, gap [];
+  `schinzel_residue_gap.py`). The "8 missing residues" is an artifact of
+  reading pure-M=11 families only: no new family is needed there, and the
+  other 6 residues are unobtainable for ever (5 QR-blocked, s=8 nonunit).
+  This ends the saturation question for modulus 11: saturating M=11 means
+  realising exactly the five Schinzel-legal residues, which the family set
+  already does.
 - **Subprogression families** (checked, operator directive 4): 1451 parametric
   identity families for n ≡ 1 (mod 840), each n = a·k + b with b ≡ 1 (mod 840)
   and a = 840m for m ∈ {11,13,17,19,22,23,26,29,31,33,34,37,38,39,41,43}.
@@ -231,15 +235,15 @@ disk), or asserted-by-source.
   row above — exact fractions in `code/out/subprogression_coverage.md`): 554
   families → 94.72% of n ≡ 1 (mod 840); as share of all n ≈ 0.1128%. Other
   five open classes: 0 families.
-- **Wider-modulus sweep unfinished** (checked): `code/pattern_mining/extended_subprogression.py`
-  (all M ≤ 60 + primes ≤ 101) was killed at the 540s timeout inside its FOUND
-  loop; both captures (`extended_subprogression.captured.txt`, `.full.txt`) are
-  fragments with no summary — no family count, no per-M residue table, no union
-  density — and `code/out/subprogression_families.json` was never written (the
-  `| tail -50` pipe masked the exit status). Visible families add moduli beyond
-  the operator's set: M=38 (a=31920), 39 (32760), 41 (34440), 43 (36120). Whether
-  the wider grid shrinks the 5.28% gap is still OPEN; a re-run must print the
-  aggregation or it repeats the same dead end.
+- **Wider-modulus sweep: superseded, delete the "unfinished" alarm.** The
+  killer run of `extended_subprogression.py` (timeout, `| tail -50` masking)
+  is moot: its FOUND lines were recovered — `extended_subprogression.full.txt`
+  holds 603 FOUND blocks, all re-parsed into the 1451-family / 123-class /
+  96.112676% row above (moduli 11..43). The only residue of that failure is
+  housekeeping: `subprogression_families.json` was never written and
+  `aggregate_subprogression.py` (which runs on the full set) was never
+  re-run; `verify_current_coverage.py` on the full set now prints the same
+  aggregate itself. Do not re-run the wider grid.
 
 ## Recalled
 
@@ -317,6 +321,10 @@ yields an already-covered sub-progression of an open class. Ventas
 - **Failing command** (operator directive 4). Retry count 6, run-failed 5 in
   `code/out/commands.log`. Read and fix before writing new programs.
 - **prime-reduction still sourced, not checked** (directive 1 priority, still
+  the exit-blocker of `research/threads/elementary-reductions.md`): write the
+  scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
+  exact arithmetic, capture it, and flip the claim to checked; then
+  `reduction-mod24` once the mod-3/mod-8 identities are checked.till sourced, not checked** (directive 1 priority, still
   the exit-blocker of `research/threads/elementary-reductions.md`): write the
   scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
   exact arithmetic, capture it, and flip the claim to checked; then

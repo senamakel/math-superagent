@@ -1,1 +1,3 @@
 M=700 resume_i=0 budget=500s
+[M=700] budget exhausted at outer i=27861/99407 (resume 27861)
+  M=700: no triple through outer-i 27861/99407

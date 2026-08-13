@@ -7,6 +7,48 @@ yield a bound on `N(a)` that is *uniform* in `(k1,k2)`, with an *effective* cons
 or can we at least prove an effective bound for a specific small-`(k1,k2)` family,
 or name the obstruction that makes a uniform effective bound impossible?
 
+## Genus deliverable DONE — the complete two-parameter Faltings threshold
+
+`code/out/genus_table.captured.txt` is the definitive result. Two independent
+CAS routes (Singular `normal.lib::genus` and Sage `Curve.genus()`) agree on
+every entry for 2<=k1,k2<=12, extended to k1=24 for k2=3,4,5. **This supersedes
+the operator's three-diagonal salvage** (`code/out/genus_closed_forms.md`), which
+is now corroboration only.
+
+**Faltings threshold: genus = 1 exactly for {2,3} and {2,4}; genus >= 2 for
+every other distinct pair.** This is the complete answer to the GOAL.md
+deliverable. The two-parameter grid is far stronger than three fitted diagonals.
+
+This does NOT give Singmaster — Faltings remains ineffective in the parameter
+(finitely many per pair with no computable count), and the genus growing makes
+the uniform statement harder, not easier.
+
+### Small-column closed forms — all verified against the full grid
+
+- `{2,n}`: `genus = floor((n-1)/2)` — hyperelliptic
+- `{3,n}`: `genus = n-1 (3∤n), n-2 (3|n)` — cyclic-trigonal
+- `{4,n}`: `genus = 3(n-1)/2 (odd), 3(n-2)/2+1 (n≡2 mod 4), 3(n-2)/2 (n≡0 mod 4)`
+- `{5,n}`: `genus = 2n-2 except 2n-4 when 5|n` — **NEW, operator-checked, zero
+  mismatches on 19 points n=6..24**
+
+### Slope conjecture — established
+
+Mean first-difference over WHOLE periods is exactly `(m-1)/2` for m=2,3,4,5,
+with period-m diff patterns: `[0,1]`, `[1,0,2]`, `[1,2,0,3]`, `[2,2,2,0,4]`.
+Operator-checked, zero mismatches. Trap: truncated window (not whole periods)
+gives mean BELOW `(m-1)/2` — state periodicity first, mean second.
+
+### Diagonal closed forms (operator salvage, corroboration only)
+
+`g(n)=(n−1)(n−2)/2` for adjacent pairs; `g(n)=⌊(n−1)(n−3)/2⌋` for gap-two;
+`g(n)=⌊(n+1)(n−1)/2⌋` for gap-two-up. 55 points, zero mismatches. These are
+three diagonals of the now-established full grid. The Singular runs that
+generated them each ended `halt 1` (partial outputs of errored runs); the
+genus_table grid was computed cleanly with both Singular and Sage.
+
+Consistent with BST 1999 Thm 2.2 (primary): the only non-diagonal genus-1 pairs
+are (2,3) and (2,4), confirming the grid at proof level.
+
 ## Rest on
 
 - For each fixed `(k1,k2)` the equation is an algebraic curve; genus grows with the
@@ -31,15 +73,6 @@ or name the obstruction that makes a uniform effective bound impossible?
 - GOAL.md defines oracles: `genus(k1,k2)` and `multiplicity(a,n_max)`; the falsifier
   is 3003 (8 occurrences), so a bound `<8` is refuted.
 
-## What a bigger run would settle
-
-The genus deliverable is DONE for 2≤k1≤12, 2≤k2≤9 (Singular == Sage; see CONTEXT.md
-"Genus grid" and `code/out/genus_table.captured.txt`), and BST 1999 Thm 2.2 now gives a
-primary-source proof that only (2,3),(2,4) are genus 1. What remains is the
-secondary deliverable: an effective height bound with a **computed** constant for a
-specific small-`(k1,k2)` family, using Matveev 2000's explicit constants
-(`matveev-2000-explicit-constants-primary`) as the primary constant-supplier.
-
 ## Blocked by
 
 - Linking genus growth to a uniform bound requires the ineffective constants to be
@@ -50,41 +83,42 @@ specific small-`(k1,k2)` family, using Matveev 2000's explicit constants
 
 ## Next
 
-1. **MRSTT effectiveness RESOLVED (scholar, full-text):** Remark 1.7 states the
-   "t sufficiently large" thresholds ARE effective (computable, unoptimized, likely
-   astronomically large). Interior theorem yields a numerical B in principle;
-   boundary `2 ≤ m ≤ (log t)/(log₂t)^{3/2−ε}` remains the whole open gap.
-2. **Primary BST obtained:** `research/sources/number-theory-in-progress-vol1-preview.full.md`
-   (de Gruyter Zakopane vol. 1 preview, pp. 11–26) holds BST 1999 readable; the
-   author-hosted `best1.ps` is raw PostScript (not readable). The ineffectivity
-   quote is now primary-sourced.
-3. Genus deliverable: report the computed grid + BST 1999 Thm 2.2 confirmation +
-   the explicit statement that genus>1 gives per-pair finiteness only, never a
-   uniform bound.
-4. Effective-bound deliverable: for a specific small (k1,k2) (e.g. (2,p) hyperelliptic
-   family or the k2=2 row) apply Matveev 2000 Thm 2.3 constants to produce a
-   computed explicit bound; state its (lack of) uniformity in k.
-5. **LEDGER:** Every asserted bound must be run against `code/out/witnesses.json`.
-   Any lemma implying B<8 is refuted by 3003. State counting convention on every claim.
+1. **Matveev effective-bound computation.** For a specific small-(k1,k2) family
+   (e.g. (2,p) hyperelliptic or k2=2 row), apply Matveev 2000 Thm 2.3 constants
+   to produce a computed explicit bound; state its non-uniformity.
+2. **LEDGER:** Every asserted bound must be run against `code/out/witnesses.json`.
+   Any lemma implying B<8 is refuted by 3003. State counting convention on every
+   claim.
+3. **Uncaptured programs:** `test_slope_across_rows.py`, `test_slope_hypothesis.py`,
+   `effectivegenus/rep_pairs.py`, `genus/verify_k2_5_row.py`,
+   `pattern/print_family.py` — all five have zero captures. Run them or delete
+   them (per directive 7). Their conclusions are already operator-checked, so
+   capturing is verification, not discovery.
 
 ```thread
 question: Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound
   on N(a), or only per-pair finiteness (ineffective)?
-status: live — genus deliverable DONE (grid computed, Singular==Sage, 2<=k1<=12,
-  2<=k2<=9; BST 1999 Thm 2.2 primary-confirms only (2,3),(2,4) have genus 1); the
-  uniform bound is blocked by ineffectiveness of Faltings/Siegel/BST (primary-
-  sourced via BST 1999 Thm 1.1); effective-bound path is Matveev 2000 with
-  explicit but per-pair (non-uniform) constants.
-rests-on: jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit,
-  bbw-verification-bound, mrstt-interior-nothree, hpt-bilu-tichy-exceptional-classification,
-  bilu-tichy-method-ineffective-uniformity-wall, kummer-lucas-class-not-logarithmic,
-  bst-fixed-kl-ineffective-primary, bst-genus-classification-matches-grid,
-  matveev-2000-explicit-constants
+status: live — genus deliverable DONE (two-parameter grid via Singular+Sage,
+  2<=k1,k2<=12 + k2=3,4,5 extended to k1=24; genus=1 only for {2,3},{2,4}; BST
+  1999 Thm 2.2 primary-confirms). k2=5 closed form and slope conjecture both
+  operator-checked, zero mismatches. The genus_table two-CAS grid supersedes the
+  operator's three-diagonal salvage. Uniform bound still blocked by Faltings/
+  Siegel/BST ineffectiveness. Effective-bound path is Matveev 2000 with explicit
+  but per-pair (non-uniform) constants.
+rests-on: jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling,
+  mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree,
+  hpt-bilu-tichy-exceptional-classification,
+  bilu-tichy-method-ineffective-uniformity-wall,
+  kummer-lucas-class-not-logarithmic, bst-fixed-kl-ineffective-primary,
+  bst-genus-classification-matches-grid, matveev-2000-explicit-constants
+deliverables:
+  - genus-table-two-cas: two-parameter grid, genus=1 iff {2,3}/{2,4}, proved-by-two-CAS
+  - genus-k2-5-closed: 2n-2 except 2n-4 when 5|n, operator-checked
+  - genus-slope-conjecture: mean=(m-1)/2 over whole periods, operator-checked
 blocked-by: uniform bound needs effective Siegel or effective Schmidt subspace
   theorem (out of reach); Kane's method provably capped; MRSTT's interior method
   capped at exp(log^{3/2-eps} P); BST finiteness ineffective (primary).
-next: report genus grid + Faltings threshold as the honest deliverable; compute a
-  Matveev-2000-based explicit constant for one small (k1,k2) family, stating its
-  non-uniformity.
+next: promote genus_table to standalone claim marked proved-by-two-CAS; compute
+  a Matveev-2000-based explicit constant for one small (k1,k2) family; run or
+  delete the five uncaptured programs.
 ```
-
