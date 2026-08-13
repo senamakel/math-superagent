@@ -32,13 +32,21 @@ mechanism: Φ_{4p}(2) = (2^{2p}+1)/5, so every prime r | Φ_{4p}(2) is primitive
   here. Named machinery: Brun–Titchmarsh inequality, the Selberg/large sieve for
   primes in arithmetic progressions, and Ford's thinness theorem (already in the
   library as `ford-thinness-downward-closed-primes`).
-status: proposed
-first-step: (1) Recompute the exact thinness exponent η of S_3^{(≤3)} by direct
-  enumeration for k up to 10^8 (independent of the paper), confirming the
-  ≪ Y^{1−η} power saving. (2) State the resulting upper bound on
-  #{admissible r ≤ X} with explicit constants and identify the level of
-  distribution of the APs r ≡ 1 mod 4pk that Brun–Titchmarsh requires. (3) Derive
-  the δ in C24 as a function of η, and check whether the constants leave δ > 0.
+status: refuted
+killed-by: The Brun–Titchmarsh sum bounds the COUNT of primes r ≤ X in the
+  union of progressions r ≡ 1 mod 4pk — a density estimate on the AMBIENT set of
+  primes, not the divisors of the single integer Φ_{4p}(2). At X = 2^{2p} the
+  number of all primes ≡ 1 mod 4p is ≈ 2^{2p}/(p·2p log 2), astronomically
+  larger than ω(Φ_{4p}(2)) ≤ 2p log 2, so the bound is vacuous on the actual
+  divisor set: the ~ω-element divisor set carries log-mass exactly 2p log 2 −
+  log 5 by the cyclotomic identity, independent of any AP density. This is the
+  precise obstruction in the paper's §5.3 — "a finiteness proof must control
+  the divisors of Φ_{4p}(2) individually (a divisor-transference statement),
+  not via a density estimate on 1 mod 4p" — the same category error as the
+  closed rarity approaches, in sieve clothing: the claimed δ transfers a count
+  deficit on ambient primes, which does not touch the log-mass of the divisors
+  that actually occur.
+first-step: —
 ```
 
 ## Notes for the research check

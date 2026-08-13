@@ -27,14 +27,20 @@ mechanism: Orthogonality of the eight Dirichlet characters mod 16 gives
   construction, and works with the one-way implication only, avoiding its M2
   flaw. Named machinery: Dirichlet character orthogonality, the second-moment
   method, and quartic reciprocity for the explicit first moments.
-status: proposed
-first-step: For p = 3, 5, 7, 11, 13, 17, compute the full multiset of primitive
-  prime divisors of Φ_{4p}(2) and tabulate, for each of the four non-trivial
-  classes r mod 16 ∈ {1,5,9,13}, the counts and the character sums S_χ. Verify
-  the orthogonality identity exactly, and measure the empirical variance
-  Σ_χ|S_χ|² against the "unbiased" value ω(Φ). This establishes whether the
-  divisors are already equidistributed mod 16 (variance ≈ ω) on the small cases,
-  which is the hypothesis the second-moment bound must capture.
+status: adopted
+first-step: Reproduce the divisor tables of Φ_{4p}(2) = (2^{2p}+1)/5 for
+  p = 3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61 (factorization cheap;
+  cross-check against the already-verified 71-divisor table through p = 61 in
+  code/out/heven_gauss_61.captured.txt and the Cunningham 2^n+1 tables already
+  in the library), extract primitive divisors (ord_r(2) = 4p), and for each
+  compute its class r mod 16 ∈ {1,5,9,13} (all ≡ 1 mod 4). Tabulate
+  N_1,N_5,N_9,N_13 and the two honest observables: (i) the orthogonality /
+  Parseval identity Σ_a N_a = ω and Σ_χ|S_χ|² = 8·Σ_a N_a², and (ii) the ratio
+  N_1/ω per p. The decisive question is whether N_1/ω stays ≥ c uniformly
+  (empirical support for C29 with c ≈ 1/4 − ε) or collapses toward 0 on the
+  H_even slice {3,5,13,23,31,41,61} (systematic bias, which would refute C29's
+  premise — itself a located result). This is a check, not a search: ~17
+  factorizations, all already tabled.
 ```
 
 ## Notes for the research check

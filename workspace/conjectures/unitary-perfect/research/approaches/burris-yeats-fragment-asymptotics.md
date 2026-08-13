@@ -26,16 +26,21 @@ mechanism: The pair (P_3, S_3^{(≤3)}) satisfies the coupled fixed point
   from both enumeration and Chebotarev. Named machinery: Burris–Yeats prime
   fragments, formal Dirichlet series with a fixed-point equation, and
   singularity analysis (Flajolet–Odlyzko).
-status: proposed
-first-step: (1) Write down the exact fixed-point equation satisfied by the
-  counting function Π_3(x) = #{p ≤ x : p ∈ P_3} in terms of the cubefree
-  semigroup S_3^{(≤3)}, and the matching functional equation for Z(s). (2)
-  Numerically compute σ_3 and the thinness exponent η from the first ~10^6
-  elements of P_3 (recomputed independently), and test whether the singularity
-  of Z(s) is algebraic or logarithmic — that classification decides whether the
-  local distribution is accessible by transfer operators. (3) Identify what
-  local smoothness of S_3^{(≤3)} would make the paper's Theorem 27 hypothesis
-  (currently "too strong") checkable.
+status: refuted
+killed-by: Burris–Yeats fragments and singularity analysis of the fixed-point
+  Dirichlet series Z(s) deliver GLOBAL count asymptotics of S_3^{(≤3)} — at best
+  the thinness exponent η, already known unconditionally via Ford's theorem
+  (paper Theorem 21, the run's `ford-thinness-downward-closed-primes`). What
+  C23/C24 need is LOCAL arithmetic control: a shifted-primality statement
+  (r ≡ 1 mod 4k, ord_r(2) = 4k, (r−1)/4k ∈ S_3^{(≤3)}) about the prime support of
+  a single integer, and a singularity of Z(s) at its abscissa does not supply
+  that — the "express C24 as a contour integral of Z(s)" step is asserted, not
+  derived, and no local-distribution theorem for a Higgs-type semigroup exists
+  in the library (the paper's citation [16] is not held as a text). This is the
+  candidate's own falsifier made explicit: the expected singularity type gives
+  no short-interval control, so the route re-derives thinness — which the run
+  already has and which does not close C6.
+first-step: —
 ```
 
 ## Notes for the research check
