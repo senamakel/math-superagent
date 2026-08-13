@@ -106,10 +106,12 @@ def check_worked_examples() -> None:
     ))
 
     # 2. n == 3 (mod 4). The brief's lead identity is WRONG (it solves 3/n).
-    #    The corrected walk-up identity is:
+    #    The corrected identity is:
     #      n=4k+3, x=(n+1)/4, y=n(n+1)/4+1, z=y(y-1)
     #    Checked exactly and symbolically below. Here we check it directly as
-    #    a family for many n (no blind search cap involved).
+    #    a family for many n (no blind search cap involved).  Note: a naive
+    #    search capped at 1e5 finds NO witness for n=683 (z=1.36e10), which
+    #    is why sweep failures are cap artifacts, not missing solutions.
     mod4_ok = True
     bad_mod4 = []
     for kk in range(0, 2000):

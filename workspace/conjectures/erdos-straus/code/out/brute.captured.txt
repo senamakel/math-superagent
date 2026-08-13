@@ -1,0 +1,11 @@
+worked example                                             ok
+------------------------------------------------------------------------------
+PASS even identity  4/(2m)=1/m+1/(2m)+1/(2m)  for m=1..49   [checked exact int + Fraction]
+PASS n==3 (mod 4): corrected family solves for n=3..7999    [bad=[]]
+PASS all witnesses.json entries solve                       [bad=[] count=12]
+PASS n=1 has no positive solution (max of 1/x+1/y+1/z is 3) [naive_solve(1) -> None]
+------------------------------------------------------------------------------
+overall: ALL WORKED EXAMPLES MATCH
+symbolic: 4/n-(1/x+1/y+1/z), x=(n+1)/4, y=n(n+1)/4+1, z=y(y-1), n=4k+3 -> 0
+brief's typed lead solves  4/n == RHS?  diff = 1/(4*k + 3)  (nonzero => it is the 3/n, not 4/n, identity)
+naive oracle (brute.py) done. exit-ok = True

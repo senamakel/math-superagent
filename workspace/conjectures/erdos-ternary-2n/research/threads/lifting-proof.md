@@ -1,7 +1,7 @@
 ```thread
 question: Is the 2-to-1 lifting of A_k provable via LTE, giving |A_k| = 2^(k-1) unconditionally?
 status: live
-rests-on: ternary-sieve-count-doubles
+rests-on: ternary-sieve-count-doubles, SIEVE-EXACT
 blocked-by: verifying c = (2^{2·3^(k-2)} - 1)/3^(k-1) mod 3 is nonzero
 next: compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly
 ```
@@ -12,33 +12,47 @@ next: compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly
 
 `A_k = { r mod 2·3^(k-1) : low k ternary digits of 2^r mod 3^k avoid 2 }`.
 
-Data (`code/out/sieve_Ak.captured.txt`, `code/out/sieve_cannot_close.md`):
+Data (`code/out/sieve_Ak.captured.txt`, `code/out/sieve_cannot_close.md`,
+and the librarian's own derivation in `research/threads/sieve-dynamics.md`):
 `|A_k| = 2^(k-1)` for every k = 1..22, computed by lifting. Each class in
 `A_k` lifts to three candidates in `A_{k+1}`, and exactly two survive.
 
-## The LTE sketch (asserted by operator, not yet verified)
+## The bijective-structure derivation (librarian, elementary)
 
-Adding `j·2·3^(k-2)` to the exponent multiplies `2^r` by
-`(2^{2·3^(k-2)})^j`. LTE should give
+`2` has order `φ(3^k) = 2·3^(k-1)` mod 3^k (primitive root — LAG-1, SAYE-2).
+So `Φ_k : r mod 2·3^(k-1) ↦ 2^r mod 3^k` is a bijection onto `(Z/3^k)^×`.
+`S_k = { low k digits in {0,1} }`; power residues are units, and a unit's low
+digit is 1 (never 0), so the attainable patterns are: low digit 1, other k−1
+digits each in {0,1} — exactly `2^(k-1)` patterns. Bijection gives
+`|A_k| = 2^(k-1)` exactly. Drop the newest digit: each class has exactly two
+preimages (append 0 or 1 to the pattern), both units, both hit by a unique
+exponent — so the extension map `A_{k+1} → A_k` is exactly 2-to-1.
 
-    2^{2·3^(k-2)} ≡ 1 + c·3^(k-1) (mod 3^k)   with 3 ∤ c.
+This is a *proof* of the count once `Φ_k` bijectivity is formalised (it
+depends only on the primitive-root order, which is proved in LAG-1/SAYE-2). It
+does not need the LTE quotient c at all.
 
-Then the three lifts `r, r+2·3^(k-2), r+2·2·3^(k-2)` give top ternary digits
-`d, d+c, d+2c mod 3`; exactly one of those is 2, so exactly two survive.
+## The alternative LTE sketch (from the operator; needs the c-check)
+
+Adding `j·2·3^(k-2)` multiplies `2^r` by `(2^{2·3^(k-2)})^j`. If
+`v_3(2^{2·3^(k-2)} - 1) = k-1` with quotient c ≢ 0 (mod 3), then the three
+lifts give upper digits {d, d+c, d+2c} mod 3, exactly one equal to 2 — so
+exactly two survive. This is a second, independent route to the same theorem
+(LTE on base 4, whose order mod 3^k is 3^(k-1)).
 
 ## What must be checked before this is "proved"
 
-1. `v_3(2^{2·3^(k-2)} - 1) = k-1` exactly (this is LTE on the base `2^2 = 4`,
-   whose order mod 3^k is 3^(k-1)).
+1. `v_3(2^{2·3^(k-2)} - 1) = k-1` exactly (LTE on base 4) — for k = 2..12 it is
+   machine-verifiable; the run should do it.
 2. The quotient `c = (2^{2·3^(k-2)} - 1)/3^(k-1)` satisfies `c ≢ 0 (mod 3)`.
-3. The digit-shift step: the top digit of `x·(1 + c·3^(k-1))` mod 3^k is the
-   top digit of `x` plus `c` times the leading term — must be written down
-   carefully, since the addition can carry into the top digit.
-
-If any of these fails, the mechanism is wrong even though the data is right —
-find the real mechanism.
+3. The digit-shift step: carry analysis into the top digit — write it down
+   carefully.
+4. Whether the bijection proof (which is immediate and doesn't need LTE) and
+   the LTE proof agree — they should; cross-check.
 
 ## Status
 
-- Data: checked, exact, k = 1..22.
-- Mechanism: sketch only. Not verified. Not proved.
+- Data: checked, exact, k = 1..22 (operator).
+- Bijection derivation: proved-at-source level (primitive root order) + exact
+  count; the 2-to-1 map follows. To be marked `checked` once formalised.
+- LTE mechanism: sketch only. Not verified. Not proved.

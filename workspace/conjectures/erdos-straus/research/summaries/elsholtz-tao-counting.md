@@ -57,6 +57,7 @@ anchor: research/sources/elsholtz-tao-counting.full.md
 
 ```claim
 id: vanishing-type12-odd-squares
+answers: exact-statement-from-b7df
 statement: For any odd perfect square n, f_I(n)=f_II(n)=0: there is no Type-I and no Type-II solution to 4/n=1/x+1/y+1/z.
 hypotheses: n an odd perfect square.
 holds-here: true — the six open residue classes mod 840 (1,121,169,289,361,529) are all squares.
