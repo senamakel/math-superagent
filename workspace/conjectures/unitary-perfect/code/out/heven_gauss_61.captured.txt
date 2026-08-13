@@ -6,10 +6,154 @@ p=3  (3-Higgs yes)  bits(Phi_{4p}(2))=3  L_p*M_p check ok
 p=5  (3-Higgs yes)  bits(Phi_{4p}(2))=4  L_p*M_p check ok
   r=5              L^2 ord=4    v2(r-1)=2 t=. (2/r)_4=-i r%16=5    P3
   r=41             M^1 ord=20   v2(r-1)=3 t=2 (2/r)_4=-1 r%16=9    P3
-Traceback (most recent call last):
-  File "/workspace/code/heven_gauss.py", line 324, in <module>
-    main()
-  File "/workspace/code/heven_gauss.py", line 261, in main
-    assert prod_phi == Phi
-           ^^^^^^^^^^^^^^^
-AssertionError
+
+p=7  (3-Higgs yes)  bits(Phi_{4p}(2))=4  L_p*M_p check ok
+  r=5              M^1 ord=4    v2(r-1)=2 t=. (2/r)_4=+i r%16=5    P3
+  r=29             M^1 ord=28   v2(r-1)=2 t=1 (2/r)_4=-i r%16=13    P3
+  r=113            L^1 ord=28   v2(r-1)=4 t=4 (2/r)_4=+1 r%16=1 HEADnon-3H
+
+p=11  (3-Higgs yes)  bits(Phi_{4p}(2))=5  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=+i r%16=5    P3
+  r=397            L^1 ord=44   v2(r-1)=2 t=9 (2/r)_4=-i r%16=13    P3
+  r=2113           M^1 ord=44   v2(r-1)=6 t=48 (2/r)_4=+1 r%16=1 HEADnon-3H
+
+p=13  (3-Higgs yes)  bits(Phi_{4p}(2))=5  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=-i r%16=5    P3
+  r=53             M^1 ord=52   v2(r-1)=2 t=1 (2/r)_4=-i r%16=5    P3
+  r=157            M^1 ord=52   v2(r-1)=2 t=3 (2/r)_4=+i r%16=13    P3
+  r=1613           L^1 ord=52   v2(r-1)=2 t=31 (2/r)_4=+i r%16=13    P3
+
+p=17  (3-Higgs no)  bits(Phi_{4p}(2))=6  L_p*M_p check ok
+  r=5              M^1 ord=4    v2(r-1)=2 t=. (2/r)_4=-i r%16=5    P3
+  r=137            L^1 ord=68   v2(r-1)=3 t=2 (2/r)_4=-1 r%16=9    non-3H
+  r=953            L^1 ord=68   v2(r-1)=3 t=14 (2/r)_4=-1 r%16=9    non-3H
+  r=26317          M^1 ord=68   v2(r-1)=2 t=387 (2/r)_4=+i r%16=13    non-3H
+
+p=19  (3-Higgs yes)  bits(Phi_{4p}(2))=6  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=+i r%16=5    P3
+  r=229            L^1 ord=76   v2(r-1)=2 t=3 (2/r)_4=+i r%16=5    P3
+  r=457            L^1 ord=76   v2(r-1)=3 t=6 (2/r)_4=-1 r%16=9    P3
+  r=525313         M^1 ord=76   v2(r-1)=10 t=6912 (2/r)_4=+1 r%16=1 HEADnon-3H
+
+p=23  (3-Higgs yes)  bits(Phi_{4p}(2))=6  L_p*M_p check ok
+  r=5              M^1 ord=4    v2(r-1)=2 t=. (2/r)_4=+i r%16=5    P3
+  r=277            L^1 ord=92   v2(r-1)=2 t=3 (2/r)_4=+i r%16=5    P3
+  r=1013           M^1 ord=92   v2(r-1)=2 t=11 (2/r)_4=+i r%16=5    P3
+  r=1657           M^1 ord=92   v2(r-1)=3 t=18 (2/r)_4=-1 r%16=9    P3
+  r=30269          L^1 ord=92   v2(r-1)=2 t=329 (2/r)_4=-i r%16=13    P3
+
+p=29  (3-Higgs yes)  bits(Phi_{4p}(2))=6  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=-i r%16=5    P3
+  r=107367629      L^1 ord=116  v2(r-1)=2 t=925583 (2/r)_4=+i r%16=13    non-3H
+  r=536903681      M^1 ord=116  v2(r-1)=15 t=4628480 (2/r)_4=+1 r%16=1 HEADnon-3H
+
+p=31  (3-Higgs yes)  bits(Phi_{4p}(2))=6  L_p*M_p check ok
+  r=5              M^1 ord=4    v2(r-1)=2 t=. (2/r)_4=+i r%16=5    P3
+  r=5581           L^1 ord=124  v2(r-1)=2 t=45 (2/r)_4=-i r%16=13    P3
+  r=8681           M^1 ord=124  v2(r-1)=3 t=70 (2/r)_4=-1 r%16=9    P3
+  r=49477          M^1 ord=124  v2(r-1)=2 t=399 (2/r)_4=+i r%16=5    P3
+  r=384773         L^1 ord=124  v2(r-1)=2 t=3103 (2/r)_4=+i r%16=5    P3
+
+p=37  (3-Higgs yes)  bits(Phi_{4p}(2))=7  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=-i r%16=5    P3
+  r=149            L^1 ord=148  v2(r-1)=2 t=1 (2/r)_4=-i r%16=5    P3
+  r=593            M^1 ord=148  v2(r-1)=4 t=4 (2/r)_4=+1 r%16=1 HEADnon-3H
+  r=184481113      L^1 ord=148  v2(r-1)=3 t=1246494 (2/r)_4=-1 r%16=9    P3
+  r=231769777      M^1 ord=148  v2(r-1)=4 t=1566012 (2/r)_4=+1 r%16=1 HEADnon-3H
+
+p=41  (3-Higgs yes)  bits(Phi_{4p}(2))=7  L_p*M_p check ok
+  r=5              M^1 ord=4    v2(r-1)=2 t=. (2/r)_4=-i r%16=5    P3
+  r=10169          M^1 ord=164  v2(r-1)=3 t=62 (2/r)_4=-1 r%16=9    P3
+  r=181549         L^1 ord=164  v2(r-1)=2 t=1107 (2/r)_4=+i r%16=13    P3
+  r=12112549       L^1 ord=164  v2(r-1)=2 t=73857 (2/r)_4=-i r%16=5    P3
+  r=43249589       M^1 ord=164  v2(r-1)=2 t=263717 (2/r)_4=-i r%16=5    P3
+
+p=43  (3-Higgs yes)  bits(Phi_{4p}(2))=7  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=+i r%16=5    P3
+  r=173            M^1 ord=172  v2(r-1)=2 t=1 (2/r)_4=-i r%16=13    P3
+  r=101653         M^1 ord=172  v2(r-1)=2 t=591 (2/r)_4=+i r%16=5    P3
+  r=500177         M^1 ord=172  v2(r-1)=4 t=2908 (2/r)_4=+1 r%16=1 HEADnon-3H
+  r=1759217765581  L^1 ord=172  v2(r-1)=2 t=10228010265 (2/r)_4=-i r%16=13    v2-only(2)
+
+p=47  (3-Higgs yes)  bits(Phi_{4p}(2))=7  L_p*M_p check ok
+  r=5              M^1 ord=4    v2(r-1)=2 t=. (2/r)_4=+i r%16=5    P3
+  r=3761           M^1 ord=188  v2(r-1)=4 t=20 (2/r)_4=+1 r%16=1 HEADnon-3H
+  r=7484047069     M^1 ord=188  v2(r-1)=2 t=39808761 (2/r)_4=-i r%16=13    P3
+  r=140737471578113 L^1 ord=188  v2(r-1)=24 t=748603572224 (2/r)_4=+1 r%16=1 HEADv2-only(24)
+
+p=53  (3-Higgs yes)  bits(Phi_{4p}(2))=7  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=-i r%16=5    P3
+  r=15358129       M^1 ord=212  v2(r-1)=4 t=72444 (2/r)_4=+1 r%16=1 HEADnon-3H
+  r=586477649      M^1 ord=212  v2(r-1)=4 t=2766404 (2/r)_4=+1 r%16=1 HEADnon-3H
+  r=1801439824104653 L^1 ord=212  v2(r-1)=2 t=8497357660871 (2/r)_4=+i r%16=13    v2-only(2)
+
+p=59  (3-Higgs yes)  bits(Phi_{4p}(2))=7  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=+i r%16=5    P3
+  r=1181           L^1 ord=236  v2(r-1)=2 t=5 (2/r)_4=-i r%16=13    P3
+  r=3541           L^1 ord=236  v2(r-1)=2 t=15 (2/r)_4=+i r%16=5    P3
+  r=157649         L^1 ord=236  v2(r-1)=4 t=668 (2/r)_4=+1 r%16=1 HEADnon-3H
+  r=174877         L^1 ord=236  v2(r-1)=2 t=741 (2/r)_4=-i r%16=13    P3
+  r=5521693        M^1 ord=236  v2(r-1)=2 t=23397 (2/r)_4=-i r%16=13    P3
+  r=104399276341   M^1 ord=236  v2(r-1)=2 t=442369815 (2/r)_4=+i r%16=5    P3
+
+p=61  (3-Higgs yes)  bits(Phi_{4p}(2))=7  L_p*M_p check ok
+  r=5              L^1 ord=4    v2(r-1)=2 t=. (2/r)_4=-i r%16=5    P3
+  r=733            L^1 ord=244  v2(r-1)=2 t=3 (2/r)_4=+i r%16=13    P3
+  r=1709           L^1 ord=244  v2(r-1)=2 t=7 (2/r)_4=+i r%16=13    P3
+  r=3456749        M^1 ord=244  v2(r-1)=2 t=14167 (2/r)_4=+i r%16=13    P3
+  r=368140581013   L^1 ord=244  v2(r-1)=2 t=1508772873 (2/r)_4=-i r%16=5    P3
+  r=667055378149   M^1 ord=244  v2(r-1)=2 t=2733833517 (2/r)_4=-i r%16=5    P3
+
+========================================================================
+SUMMARY  (p in odd primes 3..61, every 2^{2p}+1 fully factored,
+         max 37 digits; nothing left unfactored in range)
+checks: C1 x17, C2 x17, C3 x71, C4 x71, C5 x71, C6 x17, C7 x71
+
+HEADS (prime divisor r | Phi_{4p}(2) with v2(r-1) >= 4, i.e. r = 1 mod 16, necessarily NON-3-Higgs):
+  p=7  r=113 = L_7^1   r = 1 (mod 16) -> 2p=14 killed
+  p=11  r=2113 = M_11^1   r = 1 (mod 16) -> 2p=22 killed
+  p=19  r=525313 = M_19^1   r = 1 (mod 16) -> 2p=38 killed
+  p=29  r=536903681 = M_29^1   r = 1 (mod 16) -> 2p=58 killed
+  p=37  r=593 = M_37^1   r = 1 (mod 16) -> 2p=74 killed
+  p=37  r=231769777 = M_37^1   r = 1 (mod 16) -> 2p=74 killed
+  p=43  r=500177 = M_43^1   r = 1 (mod 16) -> 2p=86 killed
+  p=47  r=3761 = M_47^1   r = 1 (mod 16) -> 2p=94 killed
+  p=47  r=140737471578113 = L_47^1   r = 1 (mod 16) -> 2p=94 killed
+  p=53  r=15358129 = M_53^1   r = 1 (mod 16) -> 2p=106 killed
+  p=53  r=586477649 = M_53^1   r = 1 (mod 16) -> 2p=106 killed
+  p=59  r=157649 = L_59^1   r = 1 (mod 16) -> 2p=118 killed
+
+VERIFIED H_even members with prime p (Thm 8: 2p in {6,10,26,46,62,82,122}):
+  p=3: r's=[5, 13] v2(r-1)=[2, 2] heads=0 full-Higgs-all=yes
+  p=5: r's=[5, 41] v2(r-1)=[2, 3] heads=0 full-Higgs-all=yes
+  p=13: r's=[5, 53, 157, 1613] v2(r-1)=[2, 2, 2, 2] heads=0 full-Higgs-all=yes
+  p=23: r's=[5, 277, 1013, 1657, 30269] v2(r-1)=[2, 2, 2, 2, 3] heads=0 full-Higgs-all=yes
+  p=31: r's=[5, 5581, 8681, 49477, 384773] v2(r-1)=[2, 2, 2, 2, 3] heads=0 full-Higgs-all=yes
+  p=41: r's=[5, 10169, 181549, 12112549, 43249589] v2(r-1)=[2, 2, 2, 2, 3] heads=0 full-Higgs-all=yes
+  p=61: r's=[5, 733, 1709, 3456749, 368140581013, 667055378149] v2(r-1)=[2, 2, 2, 2, 2, 2] heads=0 full-Higgs-all=yes
+
+THREE-HIGGS p <= 61 with 2p NOT in H_even, witness found in this table:
+  p=7 (2p=14): r=113 v2(r-1)=4>=4
+  p=11 (2p=22): r=2113 v2(r-1)=6>=4
+  p=19 (2p=38): r=525313 v2(r-1)=10>=4
+  p=29 (2p=58): r=107367629 not 3-Higgs (exact check of r-1); r=536903681 v2(r-1)=15>=4
+  p=37 (2p=74): r=593 v2(r-1)=4>=4; r=231769777 v2(r-1)=4>=4
+  p=43 (2p=86): r=500177 v2(r-1)=4>=4
+  p=47 (2p=94): r=3761 v2(r-1)=4>=4; r=140737471578113 v2(r-1)=24>=4
+  p=53 (2p=106): r=15358129 v2(r-1)=4>=4; r=586477649 v2(r-1)=4>=4
+  p=59 (2p=118): r=157649 v2(r-1)=4>=4
+
+CHARACTER DISTRIBUTION by (p mod 8, Aurifeuillean half):
+  p%8=1 L: {'+i': 1, '-1': 2, '-i': 1}
+  p%8=1 M: {'+i': 1, '-1': 1, '-i': 3}
+  p%8=3 L: {'+1': 1, '+i': 7, '-1': 1, '-i': 4}
+  p%8=3 M: {'+1': 3, '+i': 2, '-i': 3}
+  p%8=5 L: {'+i': 5, '-1': 1, '-i': 8}
+  p%8=5 M: {'+1': 5, '+i': 2, '-1': 1, '-i': 2}
+  p%8=7 L: {'+1': 2, '+i': 2, '-i': 2}
+  p%8=7 M: {'+1': 1, '+i': 6, '-1': 2, '-i': 2}
+
+Structural facts verified exactly for the range:
+  F1. every prime divisor of Phi_{4p}(2) is = 1 (mod 4p)  [ord=4p]
+  F2. (2/r)_4 = +1  <==>  r = 1 (mod 16) for every r | 2^{2p}+1
+DONE
