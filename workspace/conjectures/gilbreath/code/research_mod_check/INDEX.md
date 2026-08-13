@@ -10,5 +10,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `run_gatti_kset.sh` | Runs verify_gatti_kset.py with timeout and tees output to code/out/gatti_kset_check.captured.txt; prints EXIT_CODE. |
 | `run_verify.py` | _(undescribed)_ |
 | `run_verify.sh` | _(undescribed)_ |
-| `verify_gatti_kset.py` | _(undescribed)_ |
+| `verify_gatti_kset.py` | Verifies Gatti 2020's valid-extension-set claims on S={2,3,5}: K_S by the left-edge definition, by Gatti Eq.2's signed-sum formula, and his dim=2^(n-1) + Lemma-4 interval-completeness predictions. Expected |
 | `verify_mod6_claims.py` | _(undescribed)_ |
