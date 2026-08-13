@@ -73,8 +73,15 @@ of 2 and odd primes. A finite computation checks all residue class
 configurations mod, say, 2⁶·3²·5², and verifies that none can satisfy the
 four simultaneous 2E(Q) conditions.
 
-status: adopted
-killed-by: — (not killed; this is the adopted approach)
+status: refuted
+killed-by: Birch–Stephens (Topology 5, 1966) fixes ord_{s=1}L(E_n,s) parity by
+  n mod 8 (odd iff n ≡ 5,6,7 mod 8) — a necessary condition compatible with
+  any four rank-≥1 curves. The hoped-for additive-relation→root-number
+  contradiction is unestablished speculation, and a Q-level mod-2 parity
+  framework cannot separate Q from Q(√3,√133)/Q(√3) over which MSS provably
+  exist (this run's extension-field-mss-exist). The finite residue-class check
+  was never a route to a contradiction. Closed this round (research,
+  literature-check-proposed-approaches-2026).
 speculation-vs-established: ESTABLISHED — E_d: y²=x³−d²x is the CM curve j=1728,
   its L-function is a Hecke L-function over Q(i), and its global root number is
   a product of local root numbers computable by the Dokchitser–Dokchitser
