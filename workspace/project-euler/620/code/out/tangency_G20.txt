@@ -1,0 +1,88 @@
+PE620 tangency enumeration over G(20) tuples
+winning sign variant (sigma,eta,theta)=(-1,-1,-1):
+  Q = -rho*(beta-gamma) + R*beta - r*gamma (mod 1)
+    = (c-t)*B_t - (s-t)*G_t mod 1, B,G in turns
+machinery: coarse grid N=2^20+1 over [d_min,d_max]; contiguous runs
+  COARSE_TOL=1e-4; 3-zoom mpmath refine (dps=60, n=1000/zoom),
+  accept iff objective < TIGHT_TOL=1e-9; g = distinct refined
+  valid d over the 9 side combos pp,qq in {UU,LL,UL}.
+==============================================================================
+g(16,5,5,6)
+R=2.54647909 r=0.79577472 rp=0.79577472 rq=0.95492966
+d_min=0.159154943092  d_max=0.750704374011  (width 0.591549430919)
+coarse grid: 1048577 points, spacing ~5.641e-07
+  combos pp x qq = [UU,LL,UL] x [UU,LL,UL]:
+     pp=UU qq=UU : 5
+     pp=UU qq=LL : 1
+     pp=UU qq=UL : 0
+     pp=LL qq=UU : 1
+     pp=LL qq=LL : 5
+     pp=LL qq=UL : 0
+     pp=UL qq=UU : 0
+     pp=UL qq=LL : 0
+     pp=UL qq=UL : 0
+  distinct refined valid d (6):
+      d = 0.1608022526861881962290113
+      d = 0.1750837320473881408844363
+      d = 0.2111028959171491747870419
+      d = 0.2967108286446694109805833
+      d = 0.5459633132739678540445993
+      d = 0.5878063496299289480973016
+  g = 6   (distinct refined valid d over all 9 combos; elapsed 6.10 s)
+  sanity check: oracle g(16,5,5,6) = 9  ->  DISAGREE
+
+  ---------- RECONCILIATION: winning tangency residue vs n-integer model ----------
+  tangency: Q_t = (c-t)*B_t - (s-t)*G_t mod 1, B,G in turns (winning variant)
+  n-model : valid iff n_p, n_q in Z with n_t = [(c-t)beta + (s+t)gamma]/pi
+  tangency valid d's (6):
+      d = 0.1608022526861881962290113
+      d = 0.1750837320473881408844363
+      d = 0.2111028959171491747870419
+      d = 0.2967108286446694109805833
+      d = 0.5459633132739678540445993
+      d = 0.5878063496299289480973016
+  n-integer valid d's (9, integer levels k, degenerate endpoints excluded):
+      k= 1  d = 0.1609568066404845898542675   n_p=1.0  n_q=20.0
+      k= 2  d = 0.1665725042167690572725292   n_p=2.0  n_q=19.0
+      k= 3  d = 0.1766952402518107700934991   n_p=3.0  n_q=18.0
+      k= 4  d = 0.1927277121768668777246347   n_p=4.0  n_q=17.0
+      k= 5  d = 0.2173256584160875304334581   n_p=5.0  n_q=16.0
+      k= 6  d = 0.2557226018595534777766431   n_p=6.0  n_q=15.0
+      k= 7  d = 0.3194031323405300271112139   n_p=7.0  n_q=14.0
+      k= 8  d = 0.4389002591392177077267434   n_p=8.0  n_q=13.0
+      k= 9  d = 0.7316241487294157241905168   n_p=9.0  n_q=12.0
+
+  side-by-side (sorted, aligned by rank):
+       # | tangency d                 | n-integer d                | |dd|
+       1 | 0.1608022526861882         | 0.16095680664048459        | 1.546e-04
+       2 | 0.17508373204738814        | 0.16657250421676906        | 8.511e-03
+       3 | 0.21110289591714917        | 0.17669524025181077        | 3.441e-02
+       4 | 0.29671082864466941        | 0.19272771217686688        | 1.040e-01
+       5 | 0.54596331327396785        | 0.21732565841608753        | 3.286e-01
+       6 | 0.58780634962992895        | 0.25572260185955348        | 3.321e-01
+       7 | nan                        | 0.31940313234053003        | nan
+       8 | nan                        | 0.43890025913921771        | nan
+       9 | nan                        | 0.73162414872941572        | nan
+
+  per tangency d: are n_p, n_q integers there?
+      d = 0.1608022526861882   n_p = 0.95653543105812864399  (int no)   n_q = 20.043464568941871356  (int no)
+      d = 0.17508373204738814   n_p = 2.8699614328813854964  (int no)   n_q = 18.130038567118614504  (int no)
+      d = 0.21110289591714917   n_p = 4.7847519191660270558  (int no)   n_q = 16.215248080833972944  (int no)
+      d = 0.29671082864466941   n_p = 6.703544050064048403  (int no)   n_q = 14.296455949935951597  (int no)
+      d = 0.54596331327396785   n_p = 8.4977397441579342869  (int no)   n_q = 12.502260255842065713  (int no)
+      d = 0.58780634962992895   n_p = 8.640193984844494329  (int no)   n_q = 12.359806015155505671  (int no)
+  => n_p and n_q both integers at 0 of 6 tangency d's
+
+  per n-integer d: do the winning residues agree, Q_p(U) == Q_q(U) mod 1?
+      k= 1  d = 0.16095680664048459   Q_p(U) = 0.24990997459969493619   Q_q(U) = 0.22719088599972266926   (equal mod 1 no)
+      k= 2  d = 0.16657250421676906   Q_p(U) = 0.49925958098120423142   Q_q(U) = 0.95387234634654930129   (equal mod 1 no)
+      k= 3  d = 0.17669524025181077   Q_p(U) = 0.74737830468023136077   Q_q(U) = 0.67943482243657396434   (equal mod 1 no)
+      k= 4  d = 0.19272771217686688   Q_p(U) = 0.9933257384661331726   Q_q(U) = 0.40302339860557561146   (equal mod 1 no)
+      k= 5  d = 0.21732565841608753   Q_p(U) = 0.235590034247334103   Q_q(U) = 0.12326366749757645727   (equal mod 1 no)
+      k= 6  d = 0.25572260185955348   Q_p(U) = 0.47140245715421012718   Q_q(U) = 0.83763859741291829744   (equal mod 1 no)
+      k= 7  d = 0.31940313234053003   Q_p(U) = 0.69486825893678673926   Q_q(U) = 0.54078932630616976297   (equal mod 1 no)
+      k= 8  d = 0.43890025913921771   Q_p(U) = 0.8904420044411042215   Q_q(U) = 0.21858364040100383773   (equal mod 1 no)
+      k= 9  d = 0.73162414872941572   Q_p(U) = 0.99771899134945196639   Q_q(U) = 0.81610817395404724217   (equal mod 1 no)
+  => Q_p(U) == Q_q(U) mod 1 at 0 of 9 n-integer d's
+==============================================================================
+G(20) over processed tuple indices [0] = 6   oracle 205   DISAGREE
