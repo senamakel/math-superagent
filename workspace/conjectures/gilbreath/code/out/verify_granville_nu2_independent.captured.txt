@@ -1,0 +1,22 @@
+Part 1: sieve to 3000000, 216816 primes
+
+n      nu2      n^0.525    n/2     nu2/n    g*    2*nu2+2  lem54hyp
+50     26       7.8        25.0     0.520    14     54       True
+100    42       11.2       50.0     0.420    18     86       True
+200    98       16.1       100.0    0.490    22     198      True
+400    203      23.2       200.0    0.507    34     408      True
+800    389      33.4       400.0    0.486    34     780      True
+1600   785      48.1       800.0    0.491    36     1572     True
+3200   1604     69.2       1600.0   0.501    52     3210     True
+3999   2048     77.8       1999.5   0.512    72     4098     True
+Lemma 5.4 hypothesis failed at: 0 of the sampled n
+nu2/n range: 0.420..0.520
+n^0.525 at n=3999 = 77.8 (notes: ~78)
+
+Part 2: sieve to 2000000, 148933 primes
+tested n: 2480   all successful: True (2480)
+iff  v<=2*nu2+2 <=> success : violations = 0
+suff g*<=2*nu2+2 => success : violations = 0
+rows where the discarded delta=0 case actually occurs: 2480 (100.0%)
+zero entries inside the gray block: 1546291 of 3095143 block entries (50.0%);
+avg zeros per block: 623.50
