@@ -327,9 +327,17 @@ turn runs next. A new graph is built with `agent::flow`, never with
 
 TinyFlows has two layers and this crate now uses both, for different things.
 
-`graph` is the state-graph runtime the solution loop **executes** on today:
+`graph` is the state-graph runtime the solution loop executes on by default:
 nodes are Rust closures, there are no node kinds, and it is reached through
-`agent::flow`. That is still what a run does.
+`agent::flow`.
+
+`MATH_AGENT_ENGINE=workflow` runs the same loop on the declarative engine
+instead. Opt-in for a release, and it fails safe — an unrecognised value selects
+the state graph rather than stopping the run, because an operator who mistypes
+the variable should get the proven path. Both engines are proven to route
+identically (`orchestrator::parity`, exhaustive) and to report identically
+(`SolutionState::from_accumulator` feeds the same `outcome`). Neither has yet
+run an hour of live mathematics, which is why the default has not moved.
 
 The declarative workflow engine is reached through `OrchestratorAgent`:
 `workflow_capabilities` supplies the host traits, `workflow_agents` derives the

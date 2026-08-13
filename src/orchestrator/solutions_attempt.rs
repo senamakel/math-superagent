@@ -102,7 +102,7 @@ pub(super) struct SolutionState {
     /// The most recent attempt's report.
     pub(in crate::orchestrator) last_attempt: String,
     /// Accumulated lessons, newest last.
-    lessons: Vec<String>,
+    pub(in crate::orchestrator) lessons: Vec<String>,
     /// Material gathered by the diversify step, fed into the next attempt.
     fresh_context: String,
     /// Whether reflection judged the problem solved and verified.
@@ -190,7 +190,48 @@ impl SolutionState {
     }
 
     /// Returns the loop's outcome for the caller.
-    pub(super) fn outcome(&self) -> String {
+    /// Rebuilds a state from the workflow accumulator, for its report.
+    ///
+    /// The workflow engine's `loop` head carries the counters as JSON, so the
+    /// run that finishes there has numbers rather than a [`SolutionState`]. The
+    /// report those numbers describe is [`Self::outcome`], which is thirty
+    /// lines of wording each written against a specific way a run can end — a
+    /// single-route answer that must not be called solved, a provider failure
+    /// that must not read as a mathematical one. Rebuilding the state and
+    /// calling that method is how the two engines report identically instead of
+    /// approximately.
+    pub(in crate::orchestrator) fn from_accumulator(problem: &str, state: &serde_json::Value) -> Self {
+        let count = |key: &str| {
+            usize::try_from(state.get(key).and_then(serde_json::Value::as_u64).unwrap_or(0))
+                .unwrap_or(usize::MAX)
+        };
+        let text = |key: &str| {
+            state
+                .get(key)
+                .and_then(serde_json::Value::as_str)
+                .unwrap_or_default()
+                .to_string()
+        };
+        let mut rebuilt = Self::new(problem);
+        rebuilt.attempts = count("attempts");
+        rebuilt.unproductive = count("unproductive");
+        rebuilt.blocked = count("blocked");
+        rebuilt.computational = count("computational");
+        rebuilt.unverified = count("unverified");
+        rebuilt.restarts = count("restarts");
+        rebuilt.solved = state
+            .get("solved")
+            .and_then(serde_json::Value::as_bool)
+            .unwrap_or_default();
+        rebuilt.last_attempt = text("last_attempt");
+        let lesson = text("lesson");
+        if !lesson.is_empty() {
+            rebuilt.lessons.push(lesson);
+        }
+        rebuilt
+    }
+
+    pub(in crate::orchestrator) fn outcome(&self) -> String {
         let mut report = if self.solved {
             format!("Solved after {} attempt(s).\n\n", self.attempts)
         } else if self.unverified >= UNVERIFIED_THRESHOLD {

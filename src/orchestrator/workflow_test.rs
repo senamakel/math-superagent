@@ -317,3 +317,65 @@ async fn the_loop_runs_end_to_end_on_the_real_parser() {
 
     let _ = std::fs::remove_dir_all(&workspace);
 }
+
+
+/// The two engines must *report* the same, not only route the same. The report
+/// wording is written against specific ways a run can end, so rebuilding the
+/// state from the accumulator and calling the same `outcome` is what makes the
+/// switch invisible to whoever reads the result.
+#[test]
+fn a_finished_accumulator_reports_what_the_state_graph_would() {
+    use crate::orchestrator::solutions::SolutionState;
+
+    let endings = [
+        json!({ "attempts": 2, "solved": true, "unverified": 0, "blocked": 0,
+                "last_attempt": "the proof", "lesson": "" }),
+        json!({ "attempts": 3, "solved": false, "unverified": UNVERIFIED_THRESHOLD, "blocked": 0,
+                "last_attempt": "one route only", "lesson": "" }),
+        json!({ "attempts": 1, "solved": false, "unverified": 0, "blocked": BLOCKED_THRESHOLD,
+                "last_attempt": "[goals] failed: model error", "lesson": "" }),
+        json!({ "attempts": MAX_ATTEMPTS, "solved": false, "unverified": 0, "blocked": 0,
+                "last_attempt": "the furthest it got", "lesson": "try the other reduction" }),
+    ];
+
+    for ending in endings {
+        // What the workflow path produces.
+        let rebuilt = SolutionState::from_accumulator("a problem", &ending);
+
+        // What the state graph would have produced from the same run.
+        let count = |key: &str| {
+            usize::try_from(ending[key].as_u64().unwrap_or(0)).unwrap_or(usize::MAX)
+        };
+        let mut direct = SolutionState::new("a problem");
+        direct.attempts = count("attempts");
+        direct.solved = ending["solved"].as_bool().unwrap_or(false);
+        direct.unverified = count("unverified");
+        direct.blocked = count("blocked");
+        direct.last_attempt = ending["last_attempt"].as_str().unwrap_or("").to_string();
+        let lesson = ending["lesson"].as_str().unwrap_or("");
+        if !lesson.is_empty() {
+            direct.lessons.push(lesson.to_string());
+        }
+
+        assert_eq!(rebuilt.outcome(), direct.outcome(), "{ending}");
+    }
+}
+
+/// The attempt's prose has to survive to the end, or a finished run holds every
+/// counter and none of the text those counters are about.
+#[tokio::test]
+async fn the_attempt_report_reaches_the_accumulator() {
+    let run = run_with(json!({
+        "attempts": 1, "solved": true, "unproductive": 0, "blocked": 0,
+        "computational": 0, "unverified": 0, "restarts": 0,
+        "lesson": "done", "fresh_context": ""
+    }))
+    .await;
+
+    let state = run
+        .output()
+        .pointer(&format!("/nodes/{LOOP_NODE}/state"))
+        .cloned()
+        .unwrap_or(Value::Null);
+    assert_eq!(state["last_attempt"], json!("attempted"), "{state}");
+}

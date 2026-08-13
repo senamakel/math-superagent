@@ -346,6 +346,20 @@ Pass a positive problem number to the Project Euler wrapper:
 ./euler 10 "also compare the optimized method with a brute-force check"
 ```
 
+The solution loop runs on the state-graph runtime by default. The same loop is
+also authored as a declarative workflow, which `MATH_AGENT_ENGINE=workflow`
+selects:
+
+```sh
+MATH_AGENT_ENGINE=workflow ./euler 66
+```
+
+Opt-in while it earns its keep, and it fails safe: an unrecognised value gets
+the default rather than a stopped run. The two are proven to take the same
+routing decisions and to report the same result; what the workflow path buys is
+a loop that is a document — one an agent can read, patch through validated
+operations, and see rendered — rather than Rust that has to be recompiled.
+
 ### Open conjectures
 
 A Project Euler problem has one number as its answer and a ceiling on how long

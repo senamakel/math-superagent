@@ -130,6 +130,10 @@ pub(super) fn initial_state(problem: &str) -> Value {
         "since_reduction": super::solutions::REDUCTION_INTERVAL,
         "lesson": "",
         "fresh_context": "",
+        // The attempt report, carried so the run's final outcome can be built
+        // from the accumulator alone. Without it the loop finishes holding
+        // every counter and none of the prose those counters are about.
+        "last_attempt": "",
     })
 }
 
@@ -176,6 +180,9 @@ pub(super) fn state_update() -> Value {
         "restarts": fold("restarts"),
         "lesson": fold("lesson"),
         "fresh_context": fold("fresh_context"),
+        // From the attempt rather than the parser: it is what the attempt
+        // said, not what the reflection made of it.
+        "last_attempt": "=.nodes.attempt.item.text // .state.last_attempt",
     })
 }
 

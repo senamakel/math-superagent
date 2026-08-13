@@ -1,3 +1,28 @@
+
+/// Whether this run drives the loop with the workflow engine.
+///
+/// Opt-in, and it stays opt-in for a release. The state graph is what every
+/// live run so far has used, and the workflow path is proven equivalent by
+/// `orchestrator::parity` and by an end-to-end test on real capabilities —
+/// which is a strong argument and still not the same thing as an hour of live
+/// mathematics. An unrecognised value selects the state graph rather than
+/// failing: an operator who mistypes the variable should get the proven path,
+/// not a stopped run.
+fn workflow_engine_selected() -> bool {
+    selects_workflow_engine(std::env::var("MATH_AGENT_ENGINE").ok().as_deref())
+}
+
+/// Whether `value` names the workflow engine.
+///
+/// Split from the read above so it can be exercised without setting a
+/// process-wide environment variable from a test — the same reason
+/// `with_concurrency` exists beside `new`. Under Rust 2024 `set_var` is also
+/// `unsafe`, which this crate forbids outright, so a test that mutated the
+/// environment could not be written here at all.
+fn selects_workflow_engine(value: Option<&str>) -> bool {
+    value.is_some_and(|engine| engine.trim().eq_ignore_ascii_case("workflow"))
+}
+
 impl OrchestratorAgent {
     /// Loads provider configuration and assembles the built-in registry.
     ///
@@ -141,6 +166,11 @@ impl OrchestratorAgent {
     /// failing specialist becomes a lesson rather than a failure.
     pub async fn solve(&self, problem: impl Into<String>) -> Result<String> {
         let problem = problem.into();
+        if workflow_engine_selected() {
+            self.tracer
+                .note("solution loop: running on the workflow engine (MATH_AGENT_ENGINE=workflow)");
+            return self.solve_on_workflow(&problem).await;
+        }
         let state = solutions::SolutionState::new(problem.clone());
         // The support teams run *beside* the loop, not inside it. Everything
         // they do — gathering sources, digesting them, keeping the workspace
@@ -201,6 +231,84 @@ impl OrchestratorAgent {
         self.record_session("solution-loop", &problem, &outcome)
             .await;
         Ok(outcome)
+    }
+
+    /// Runs the same loop on the workflow engine.
+    ///
+    /// The support teams still run beside it, unchanged: they are host-side
+    /// tasks with their own budgets, they outlive any single graph run, and
+    /// folding them into the graph would tie their lifetime to it — which is
+    /// the thing `teams.rs` exists to prevent.
+    ///
+    /// The tool set is deliberately narrow. A `tool_call` node can reach
+    /// anything the bundle holds, and the only tool this graph calls is the
+    /// reflection parser — which `workflow_capabilities` supplies itself. Every
+    /// other tool a role uses reaches it through the role, where the per-role
+    /// grants still apply.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the graph fails to compile or the run fails. A
+    /// failing specialist is still a lesson rather than a failure: that is the
+    /// roles' behaviour, not the engine's, and it is unchanged here.
+    async fn solve_on_workflow(&self, problem: &str) -> Result<String> {
+        let patterns = solutions::Mailbox::default();
+        let directives = solutions::Mailbox::default();
+        let support = self.spawn_support_teams(problem, &patterns, &directives);
+
+        let outcome = self.run_workflow_loop(problem).await;
+
+        for team in &support {
+            team.cancel();
+            self.tracer.note(&format!(
+                "team {}: {} cycle(s) alongside the solve",
+                team.name(),
+                team.cycles()
+            ));
+        }
+
+        let outcome = match outcome {
+            Ok(outcome) => outcome,
+            Err(error) => {
+                self.record_session(
+                    "solution-loop",
+                    problem,
+                    &format!("SESSION FAILED: {error}"),
+                )
+                .await;
+                return Err(error);
+            }
+        };
+        self.record_session("solution-loop", problem, &outcome).await;
+        Ok(outcome)
+    }
+
+    /// Compiles and runs the loop graph, and reports what it reached.
+    ///
+    /// The report is built by rebuilding a `SolutionState` from the
+    /// accumulator and calling the same `outcome` the state graph calls, rather
+    /// than by describing the numbers here. That wording is written against
+    /// specific ways a run can end — an answer with one route behind it must
+    /// not be called solved, a provider failure must not read as a
+    /// mathematical one — and a second version of it would get one of them
+    /// wrong.
+    async fn run_workflow_loop(&self, problem: &str) -> Result<String> {
+        let graph = self.workflow_graph(problem);
+        let capabilities = self.workflow_capabilities([])?;
+        let compiled = tinyflows::compiler::compile(&graph).map_err(|error| {
+            tinyagents::TinyAgentsError::Graph(format!("the loop graph is invalid: {error}"))
+        })?;
+        let finished = tinyflows::engine::run(&compiled, serde_json::json!({}), &capabilities)
+            .await
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Graph(format!("the loop graph failed: {error}"))
+            })?;
+        let accumulator = finished
+            .output
+            .pointer(&format!("/nodes/{}/state", workflow::LOOP_NODE))
+            .cloned()
+            .unwrap_or(serde_json::Value::Null);
+        Ok(solutions::SolutionState::from_accumulator(problem, &accumulator).outcome())
     }
 
     /// Starts the long-lived teams that work alongside the solution loop.
