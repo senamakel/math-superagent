@@ -102,9 +102,83 @@ anchor: research/summaries/oeis-A000232-bfile-block-lengths.md; code/out/witness
 - **Gardner, Scientific American Dec 1980**: paywalled; bibliographic record (ERIC EJ235152) and its mapping into *The Last Recreations* ch. 12 (Peter Rowlett's Gardner index) confirm content, which is already covered by Caldwell's glossary and MathWorld.
 - **Gilbreath, "Processing process: the Gilbreath conjecture", J. Number Theory 131 (2011) 2436–2441**: paywalled at ScienceDirect; abstract-level metadata only.
 
+## New holdings this cycle (July 2026 update)
+
+```claim
+id: parity-wave-theorem
+statement: For any sequence beginning (2, odd, odd, ...), the leading term of every row of iterated absolute differences is odd. The shape (odd, even, even, ...) is preserved by the operator.
+hypotheses: A_0 = (2, odd, odd, ...); absolute-difference iteration.
+holds-here: yes — the primes satisfy the hypotheses; the run's reduction already proves the stronger {0,2} statement but not from this spare hypothesis.
+status: proved (elementary induction, Ross 2026 parity note; independent of the run's own parity argument)
+bearing: pins down the boundary: parity gives *odd*, not *1*; the conjecture lives between the two. Guranteeing the leading term is 1 is a separate claim about the {0,2} regime.
+anchor: research/sources/ross-gilbreath-parity-note.full.md
+```
+
+```claim
+id: closure-0d-double-edge
+statement: {0,d} is closed under absolute differencing for every d ≥ 2 (|0−d|=d, |d−d|=0, |0−0|=0), so a leading 1 against {0,2} stays 1 — but the same closure preserves a large disturbance against {0,d} for d ≥ 4.
+hypotheses: none beyond the closure identity.
+holds-here: yes — this is why long shallow {0,d}-blocks with d≥2 are obstructions (CHT inverse theorem), and why the {0,2} regime is exactly the right target.
+status: proved (one-line identity; Ross 2026; also implicit in CHT and Odlyzko)
+bearing: any invariant that forces the second entry into {0,2} must use more than closure; the d=2-versus-d≥4 distinction is the crux.
+anchor: research/sources/ross-gilbreath-parity-note.full.md
+```
+
+```claim
+id: two-separation-hypothesis
+statement: The operative general-class hypothesis is not "gaps grow slowly" but that gaps do not concentrate in an arithmetically rigid (2-separated) set — a set with no two consecutive integers (e.g. evens, multiples of 3). If gaps were trapped in a 2-separated set, the whole array would be trapped with them and collapse to 1 could genuinely fail.
+hypotheses: general Gilbreath-like sequences; 2-separation as defined.
+holds-here: yes — this is the precise form of "sufficiently random" that Odlyzko left undefined; the primes' gaps are believed (heuristically) not to be 2-separated-concentrating.
+status: asserted-by-source (Ross 2026; consistent with CHT 2026 Theorem 1.3 condition (ii) and Eppstein's anti-Gilbreath)
+bearing: refines the run's "general class with bounded gaps" goal: the class must be carved down to non-concentration, per CONTEXT ruling-out of the blanket bounded-gap strategy.
+anchor: research/sources/ross-gilbreath-parity-note.full.md
+```
+
+```claim
+id: cht-decay-lower-bound-logn
+statement: In the stationary continuous Gilbreath model (i.i.d. standard exponential top row), Σ_{i≤n} c_i ≥ log(n+e) with c_i = E[a(i,j)]; hence c_i cannot decay faster than 1/i, and neither convergence to 0 nor boundedness of (c_i) is proved.
+hypotheses: continuous model; expected values.
+holds-here: yes (as a model statement; not a statement about the primes' discrete rows).
+status: sourced (Chase–Hunter–Tao 2026, via Ross 2026 parity note and OEIS A397880 in the library)
+bearing: the averaged decay rate of a Gilbreath array is itself open — the regeneration obstruction has a quantified, still-open shadow.
+anchor: research/sources/chase-hunter-tao-2026-full-html.full.md; research/sources/ross-gilbreath-parity-note.full.md
+```
+
+```claim
+id: verification-record-2026
+statement: Current literature verification record: Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna 2025-2026 to 1.5×10^15 with G(π(2.8e14))=788, G(π(6.15e14))=800, G(π(1.5e15))=800. Still open.
+hypotheses: exact integer computation; G(π(x)) = row index whose row begins 1 and is followed only by 0s and 2s.
+holds-here: yes.
+status: sourced (Wikipedia en rev 1348550815; Plouffe arXiv abstract; Colonna CNRS record page; all three downloaded this run)
+bearing: the run must report 1.5×10^15 as the current record, strictly separate from its own depth-1000; the block criterion G is the same quantity the run's oracle computes as block_profile.
+anchor: research/sources/wikipedia-gilbreaths-conjecture.full.md; research/sources/plouffe-2025-verification-10e14.full.md; research/sources/colonna-proth-gilbreath-record.full.md
+```
+
+```claim
+id: modulo-k-gilbreath-family
+statement: (Li 2026, preprint) For any odd k, the sequence of primes of the form kn+2 has a difference triangle whose leading entry eventually stabilises to k; classical Gilbreath is k=1. Verified computationally for all odd k < 100,000.
+hypotheses: primes in one residue class mod k, k odd; iteration of absolute differences.
+holds-here: yes (it is a generalisation; k=1 is this run's object).
+status: asserted-by-source (Zenodo preprint v2, 9 Mar 2026, single author, 0 citations; not peer-reviewed; verification data not independently checked here)
+bearing: an extra generalisation family supporting the "not about primes" framing; the k>1 stabilisation is a consistency check — any k=1 invariant that too-cheaply proves the k>1 stabilisation too is likely vacuous. Spot-checking the k-stabilisation with the run's oracle is a natural small task.
+anchor: research/sources/li-2026-modulo-k-gilbreath-family.full.md
+```
+
+```claim
+id: chase-2024-arxiv-id
+statement: Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w.
+hypotheses: bibliographic.
+holds-here: yes.
+status: sourced (Wikipedia en, retrieved this run — supplies the arXiv ID and DOI missing from earlier holdings)
+bearing: gives the run a canonical citation for the random-analogue theorem.
+anchor: research/sources/wikipedia-gilbreaths-conjecture.full.md
+```
+
 ## Angled coverage summary
 
-- Statement/names/history: Odlyzko 1993, Killgrove–Ralston 1959, Encyc. of Math, MathWorld, Caldwell glossary, Arias de Reyna 2020, Chase 2024 §7.
+- Statement/names/history: Odlyzko 1993, Killgrove–Ralston 1959, Encyc. of Math, MathWorld, Caldwell glossary, Arias de Reyna 2020, Chase 2024 §7, Wikipedia (retrieved this run).
+- Verification record (current): Colonna 2026 to 1.5×10^15, Plouffe 2025 to 10^14, Odlyzko 1993 to 10^13.
+- Generalisations: Li 2026 modulo-k family; Chase 2024 random analogue; CHT 2026 Cramér model; Croft's bounded-gap generalisation refuted by Eppstein 2011 (triple-sourced).
 - Methods that worked/are current: Chase 2024 (random analogue, block lemmas), Chase–Hunter–Tao 2026 (Cramér model + inverse theorem + continuous model), Bhat–Cobeli–Zaharescu 2023 (quasi-periodicity of Proth–Gilbreath triangles; filtered rays 2023), Muney 2026 (valid-extension sets).
 - Methods that fail/limits: Eppstein anti-Gilbreath (gap bounds alone insufficient); CHT Remark 4.5 (2^{n+1} growth breaks a.s. result); Chase 2024 exotic {0,3}-type examples (randomness necessary).
 - Adjacent/computational: OEIS A000232/A036262/A100820/A397880/A395556, Odlyzko's G(N) table, Eppstein practical numbers (verified 212,000 rows).

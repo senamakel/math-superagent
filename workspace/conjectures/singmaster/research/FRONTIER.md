@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://www.math.ucla.edu/~tao | — | for…][41] \| [image: Unknown's avatar] \| Anonymous on [A digestion of the Jacobian co…][42] \| [image: Terence Tao's avatar] [43] \| [Terence Tao][43] on [246A, Notes 5: conformal …][44] \| [image:… |
 | 1 | http://www.sagemath.org | — | Math. Debrecen 47 (1995), 411–415. [13] SageMath, the Sage Mathematics Software System (Version 7.5.1), The Sage Developers, 2017, http://www.sagemath.org. INTEGERS: 17 (2017) 8 [14] D. Singmaster,… |
 
-_65 further candidates not shown; they are cited once each._
+_66 further candidates not shown; they are cited once each._
