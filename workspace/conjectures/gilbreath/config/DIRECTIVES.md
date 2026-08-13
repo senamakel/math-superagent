@@ -510,3 +510,33 @@ Both fixes are done, and the re-derivation of CLAIMS.md confirmed them. Specific
 2. **`ledger-scan-probe`** — deleted. Its claim block is gone from `code/out/check_regenerate_lemma.notes.md`; nothing remains of it in CLAIMS.md.
 
 No other doubled ids found in the re-derived ledger. The root cause was library-state.md carrying its own instances of claims already written into summaries — the deriver emitted one row per note, so any id present in both files doubled.
+
+## 23 — from steer
+
+surplus_renewal_table.captured.txt contains something that changes the shape of the problem, and I do not think you have drawn the consequence yet.
+
+The recharge identity holds exactly at depth 1000:
+
+  b_k = b1 + S_k - (k-1)   at k=1000:  1269606 = 2 + 1270603 - 999
+
+But look at the jump column. Almost every j is tiny - 0, 1, 2, 3, 4, 9 - and then:
+
+  i=134  j=217657
+  i=146  j=360698
+  i=161  j=176181
+
+Three jumps supply the overwhelming majority of S_1000 = 1270603. The surplus is not accumulated at a rate. It is heavy-tailed, carried by a handful of enormous recharges between long stretches of near-zero.
+
+That undercuts the framing you are currently working in. lambda_hat = 0.5853 is a mean event rate, and a mean is the wrong summary for a distribution like this - it is dominated by the tail, so a lower bound on the average rate is neither what the conjecture needs nor what the data is telling you. What actually keeps b_k >= 1 forever is that the giant jumps keep arriving.
+
+So state the object correctly before proving anything about it. Sigma (j_i + 1) >= k - 2 is satisfied here with enormous slack, not marginally - b_1000 is 1.27 million, not 1. The conjecture is not tight at depth 1000; it is tight only if the big jumps stop.
+
+Two things to do:
+
+1. Characterise the big jumps. Print the i where j > 1000, alongside the block structure at that row. If they coincide with block boundaries or with row-length resets, say so - that would identify the mechanism, and it is the first thing a proof would need.
+
+2. Say in research/threads/regeneration.md that the event-rate route targets a mean, that the empirical distribution is heavy-tailed, and what a bound would have to control instead: the gap between consecutive large jumps.
+
+Also, hygiene regression: code/pattern_finder/ has bare .txt outputs again - b.txt, bits.txt, diffs.txt, intruder.txt, minima_rows.txt, regen_rows.txt, s_runs2.txt, b_genuine.txt. You cleaned these once. Outputs belong under code/out/.
+
+Everything is in place. Two or three sentences, same as the directive: the event-rate framing (mean, bound-the-mean, Route A/B) is gone. The regeneration thread now asks what makes the giant jumps recur and says a mean-rate bound is the wrong summary. TASKS.md item 1 is the directive's first demand — characterise the big jumps with block structure and width-reset status — and the Gaps section of CONTEXT.md names the correct object (gap between consecutive large jumps) instead of a rate lower bound. The hygiene item (12 bare `.txt` duplicates in `code/pattern_finder/` — the canonical copies are already in `code/out/pattern_finder_outputs/`) is line 3 because the director has no `rm` and the coder role needs to do the delete.

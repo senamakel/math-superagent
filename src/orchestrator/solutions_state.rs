@@ -207,13 +207,6 @@ pub(super) async fn run(
         );
     let graph = wire_routes(graph).compile()?;
 
-    open_initial_reduction(
-        &subagents,
-        tracer_for_reduction.as_ref(),
-        workspace_for_reduction.as_deref(),
-        &initial_reduction,
-        &mut state,
-    );
     Ok(graph.run(state).await?.state)
 }
 

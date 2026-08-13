@@ -29,12 +29,13 @@
   control is the GAP between consecutive large jumps, not the average event
   rate. Confirm no stale "bound the mean rate" task survives in TASKS/CONTEXT.
 
-- [ ] **3. Hygiene: move bare .txt outputs out of `code/pattern_finder/`.**
-  `b.txt, bits.txt, diffs.txt, intruder.txt, minima_rows.txt, regen_rows.txt,
-  s_runs2.txt, b_genuine.txt` (plus any other bare outputs found there, e.g.
-  `jumps.txt, s.txt, s_runs0.txt, minima_b.txt`) belong under `code/out/`.
-  Move them, then `refresh_index` both folders. (Directive: cleaned once
-  before; outputs belong under code/out/.)
+- [ ] **3. Hygiene: remove the 12 bare duplicate outputs in `code/pattern_finder/`**
+  (`b.txt, bits.txt, diffs.txt, intruder.txt, jumps.txt, minima_b.txt,
+  minima_rows.txt, regen_rows.txt, s.txt, s_runs0.txt, s_runs2.txt,
+  b_genuine.txt`). Their canonical copies already exist with identical sizes in
+  `code/out/pattern_finder_outputs/` — so this is a `rm` of the duplicates, not
+  a move (the director has no delete tool; the coder role runs it). Keep the
+  `.py` scripts in `code/pattern_finder/`. Then `refresh_index` both folders.
 
 ### Background (established, do not redo)
 
