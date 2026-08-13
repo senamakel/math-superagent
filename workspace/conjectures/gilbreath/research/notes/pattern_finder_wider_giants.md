@@ -103,24 +103,16 @@ caveat stands.
 
 ```claim
 id: wider-width-giant-record-3e8
-statement: In the prime Gilbreath triangle from the sieve-3e8 run (16,252,325
-  primes, depth 300), there are 14 genuine giant (2,4)-events (jump > 1000)
-  with landing floorings >= 5,596,863 at pre-jump rows
-  34,56,64,68,94,96,110,112,126,130,134,146,161,174 and one capped event at
-  238 (flooring 1, jump >= 5,596,824). Rows 1..161 of the b-series match the
-  depth-1000 (2e7) run exactly. The old depth-1000 capped i=161 is resolved:
-  true jump 4,323,712, landing flooring 10,834,187. Record max genuine jump
-  5,237,310 (i=174). Live-regime inter-giant max gap = 26 (gaps
-  22,8,4,26,2,14,2,14,4,4,12,15,13), corroborating directive25's max-gap-26
-  bound when width increased 15x and b increased 4,900x.
-hypotheses: iterated absolute differences of primes below 3e8 to depth 300;
-  giants = step-law (2,4)-events with jump > 1000; capped events excluded.
-holds-here: yes
-status: checked (exact integers; fits are descriptions, not theorems)
-bearing: the recharge object of the run's narrowed target — giants keep
-  arriving with max gap 26 across a 15x width increase.
-anchor: code/out/pattern_finder_wider_giants.captured.txt,
-  code/out/pattern_finder_giant_corrected.captured.txt
+statement: **SUPERSEDED by 6e8 record (Directive 30).** In the prime Gilbreath
+  triangle from the sieve-3e8 run (16,252,325 primes, depth 300), there were
+  14 live giants (row 238 capped at flooring 1). The 6e8 run resolved the
+  cap: 15 genuine giants, max gap 64, ratio bound gap_i ≤ j_i+1 holds with
+  2+ orders margin. See `code/out/pattern_finder_6e8_giants.captured.txt`.
+hypotheses: (superseded)
+holds-here: no — superseded by 6e8 record
+status: superseded
+bearing: historical record of the 3e8 run before the cap was resolved
+anchor: code/out/pattern_finder_wider_giants.captured.txt
 source: operator-computation
 ```
 
