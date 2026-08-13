@@ -200,22 +200,27 @@ yields an already-covered sub-progression of an open class. Ventas
 - Subgroup-only characterization vs exact divisor-residue criterion (settled:
   56 counterexamples).
 
-## Gaps
-
-- **Exact statement of Elsholtz–Tao Prop 1.6** from the full text is now
-  resolved (proof located; see Established). What remains unread is nothing
-  that changes the picture.
+- **Subprogression families: novelty unchecked** (operator directive 3). The
+  554 families are 554/554 exact ℤ[k] polynomial identities, but whether they
+  are new or rediscoveries of Elsholtz–Tao Prop 1.9 / Salez seven-equation
+  families in different coordinates has not been checked. That check is the
+  next work, against `elsholtz-sums-of-k-unit-fractions.full.md` and
+  `elsholtz-tao-counting.full.md`. A rediscovery honestly labelled is fine;
+  a rediscovery announced as new is the failure.
+- **Positive-density gap in n ≡ 1 mod 840** (operator directive 3). The 554
+  families cover 94.72% of the class, leaving 5.28% (7375872/139671337) with
+  positive density. The complement is a union of full residue classes of t
+  under the 12 moduli {11,13,17,19,22,23,26,29,31,33,34,37}, so no further
+  family of those moduli closes it. Closing it needs new moduli coprime to
+  the existing set or a different mechanism (rational-function families,
+  per-prime shapes).
+- **The other five open classes are untouched** by the subprogression sweep:
+  n ≡ 121, 169, 289, 361, 529 (mod 840) have zero families. As a fraction of
+  all n, what is settled is ≈ 0.1128%. Do not report progress on the open
+  classes plural.
 - **The AP→subfamily lift** is now proven in principle by Mballa's
   construction (every b≡3 mod 4 gives a k sub-progression); the gap is
   whether a finite union of such — or of e=0/E-T family sub-progressions —
-  covers all of some open class, and the density of the union. The 56
-  exception rows and the e∈{7,9,14} rows (r=1: k=22,119,234,288,355,387;
-  r=361: k=1,34,112,141) are where a non-prime-divisor shape must appear.
-- **Verification-bound reproduction**: any slice of the 10¹⁸ bound (or
-  Salez's seven-equation sieve on a subset) on Salez's residual set R₂ ∪ R₇
-  (moduli 840 → 892,371,480 → 25,878,772,920 with S₂₉) remains unreproduced.
-- **An impossibility for a specific new shape** (named degree/shape in k),
-  per the run's brief: the natural candidate is showing no rational-function
-  family with x,y,z of fixed degree covers n ≡ 1 mod 840 — the exact
-  obstruction beyond Schinzel Thm 1 to be pinned down with the Schinzel
-  proof's techniques.
+  covers all of some open class, and the density of the union.
+- **Verification-bound reproduction**: any slice of the 10¹⁸ bound on Salez's
+  residual set R₂ ∪ R₇ remains unreproduced.

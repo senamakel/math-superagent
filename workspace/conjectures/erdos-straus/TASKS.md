@@ -1,53 +1,80 @@
 # Tasks
 
-Priority follows operator directive 2: the ledger is asserted-heavy (32
-asserted / 3 checked) and two anchors are not real sources. **Stop adding
-claims; convert the existing ones.**
+Priority follows operator directive 3: the 554 subprogression families are
+real (operator-verified, 554/554 polynomial identities in ℤ[k]), they cover
+94.72% of n ≡ 1 mod 840, but they touch only one of the six open classes and
+novelty against Elsholtz–Tao is unchecked.
+
+## 1. Promote the subprogression claim — done this cycle
+
+- [x] Claim `subprogression-families-verified-and-coverage` exists in
+      `code/out/subprogression_coverage.md` with a proper claim block. It must
+      be absorbed into `research/CLAIMS.md` (the ledger is auto-derived from
+      claim blocks, so the block in the coverage file is sufficient — the next
+      re-derivation will pick it up). Status in the block is `checked`, backed
+      by the operator's exact integer polynomial arithmetic pass (554/554).
+
+## 2. Novelty check — the next work
+
+- [ ] For each of the 554 families, determine whether the shape is a
+      rediscovery of a known Elsholtz–Tao type (Type I / Type II polynomial
+      family from E-T Prop 1.9 / Salez seven equations) in different
+      coordinates, or genuinely new. Use
+      `research/sources/elsholtz-sums-of-k-unit-fractions.full.md` and
+      `research/sources/elsholtz-tao-counting.full.md` as the reference. A
+      rediscovery honestly labelled is fine; a rediscovery announced as new is
+      the failure the operator named.
+- [ ] State for each of the 12 moduli m ∈ {11,13,17,19,22,23,26,29,31,33,34,37}
+      which E-T family (if any) produces that modulus, and whether the 83
+      residue classes of t are a subset of what E-T already classifies.
+
+## 3. State the positive-density gap — what closes it
+
+- [ ] The uncovered 5.28% of n ≡ 1 mod 840 is 7375872/139671337, a positive
+      density. No further family with the same 12 moduli can close it — the
+      complement is a union of full residue classes of t. State what a closing
+      mechanism would look like: new moduli m coprime to the existing set
+      {11,13,17,19,23,29,31,37} (with 2 and 3 already at full density within
+      the class via the classical families), or a different family shape
+      (non-ℤ[k]-polynomial, rational-function, or per-prime rather than
+      per-progression).
+- [ ] Compute the exact uncovered residue classes of t and state what prime
+      moduli would close which fraction of them.
+
+## 4. The other five classes — state explicitly
+
+- [ ] n ≡ 121, 169, 289, 361, 529 (mod 840) have zero families from the
+      subprogression sweep. State in every report: "one of six open classes
+      touched; about 0.1128% of all n settled." Do not say "progress on the
+      open classes" plural.
+
+## 5. Stop the exa_search
+
+- [x] The exa_search went from 29 to 44 with no claim changed. The operator
+      has directed: stop it. It is dead.
 
 ## Done (prior cycles)
 
 Oracle (`code/oracle.py`), parallel self-check, witness cross-check (12/12),
-small brute sweep n≤200, and the corrected n≡3 (mod 4) + even-case identities —
-all captured and recorded. See `research/CLAIMS.md` and `code/out/`.
+small brute sweep n≤200, the corrected n≡3 (mod 4) + even-case identities, and
+the eight classical covering identities — all captured, identity-checked, and
+recorded.
 
-## 1. Source integrity (operator directive 2) — done this cycle
+## Source integrity (operator directive 2) — done
 
-- [x] Tombstone Yamamoto 1965: the `.full.md` file is the J-STAGE landing page
-      only; the `_pdf/-char/en` URL was re-fetched and refused (scanned, no
-      text layer). Tombstone in `research/summaries/yamamoto-1965-paper.md`;
-      do not cite Yamamoto as a read source.
-- [x] Demote `yamamoto-1965-type12-origin` to asserted-never-read in
-      `research/CLAIMS.md`.
-- [x] Annotate `mathworld-egyptian-context` as orientation-only (encyclopedia
-      entry, not a load-bearing anchor).
+- [x] Yamamoto 1965 tombstoned; claim demoted to asserted-never-read.
+- [x] MathWorld annotated as orientation-only.
+- [x] Eight classical identities identity-checked (last block of
+      `code/out/commands.log`).
 
-## 2. Convert identity-family claims (asserted → checked)
+## Claim conversion (operator directive 2) — superseded by directive 3
 
-Each asserted identity family must get, in a claim block: the exact identity in
-k, a symbolic proof that `4/n(k) − 1/x − 1/y − 1/z ≡ 0` (`is_identity`), and a
-separate proof of positivity and integrality for ALL k in the stated class — not
-a test on small k. A family tested on k=0..4999 without an identity proof is
-`checked`, never `proved`.
+The eight classical identities are identity-checked but still `asserted` in
+the ledger. Promoting them from asserted → checked is still needed but is
+lower priority than the novelty check; the subprogression 554 are now the
+largest block of proved-identity claims and those get promoted first.
 
-- [ ] The eight classical covering identities (2 mod 3; 3 mod 4; 5 mod 8;
-      2/3 mod 5; 3/5/6 mod 7): write each exact (n,x,y,z) identity, prove it
-      symbolically in k, and prove integrality+positivity from the stated
-      modulus. Currently `is_identity`-checked in `code/out/commands.log` but
-      still `asserted` in the ledger — promote to checked claim rows.
-- [ ] The corrected n≡3 (mod 4) family and the even case: already checked
-      k=0..4999; restate as proved identities with integrality/positivity for
-      all k.
-- [ ] `prime-reduction` and `reduction-mod24`: prove the scaling lift
-      `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in exact arithmetic
-      and promote both to `checked`.
-- [ ] Label each family NEW vs REDISCOVERY against
-      `research/sources/elsholtz-sums-of-k-unit-fractions.full.md` — name the
-      known shape each identity instantiates and say whether anything here is
-      genuinely new.
-
-## 3. Only after the ledger is converted
-
-- [ ] Return to ansatz-space search over the six open classes
-      {1,121,169,289,361,529} mod 840, engaging Schinzel Thm 1 (no ℤ[k]
-      polynomial identity over a quadratic-residue class); a new family must
-      leave that shape.
+- [ ] Promote the eight classical identities to `checked` with explicit
+      identity proofs documented in claim blocks.
+- [ ] Promote `prime-reduction` and `reduction-mod24` to `checked` by
+      verifying the scaling lift in exact arithmetic.

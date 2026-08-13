@@ -6,7 +6,15 @@ An approach is what comes *before* a thread. A thread already has a question and
 
 Refuted and spent approaches are kept deliberately. Proposing again what this run already closed is the one failure the inventor exists to avoid, and the reason it closed is the only thing that prevents it.
 
-_No approaches yet. Record one as soon as a line of attack is named: `research/approaches/<name>.md`, with a fenced `approach` block carrying `idea`, `mechanism`, `status`, `precedent`, `first-step`, and `killed-by` lines._
+| Approach | Idea | Status | Precedent | First step |
+| --- | --- | --- | --- | --- |
+| [[kummer-lucas-p-adic]] | Kummer–Lucas p-adic constraints on multiple binomial-coefficient representations of the same integer — a combinatorial/number-theoretic line that uses base-p… | proposed | _unchecked_ | For small primes p=2,3,5, compute the exact mapping (n,k) → (v_p(C(n,k)), C(n,k) mod p) for n ≤ 100, classify which pairs of distinct (n,k) can agree on these… |
+
+## Not yet taken to the literature
+
+Nobody has checked whether these are known theory. Grounding one is cheaper than pursuing it: a named theorem arrives with its hypotheses, and a reformulation somebody already tried arrives with the reason it failed.
+
+- [[kummer-lucas-p-adic]]: Kummer's theorem (1852): v_p(C(n,k)) = the number of carries when adding k and n−k in base p. Lucas' theorem (1878): C(n,k) ≡ ∏_{i} C(n_i, k_i) (mod p) where n_i, k_i are base-p digits. If C(n,k) = C(m,l) = a with N(a) large, then for every prime p, all the representing pairs must produce the SAME carry-count (hence same v_p) and the SAME Lucas product mod p. This is an extremely strong constraint on the simultaneous base-p digit structures of all the n's. In particular, if N(a) ≥ 8 (as with 3003), the digit patterns for p=2,3,5,7,... must interlock across (3003,1), (78,2), (15,5), (14,6) simultaneously. The conjecture would follow if one could prove that for any given prime p, the number of (n,k) pairs with the same v_p(C(n,k)) and same Lucas residue grows at most logarithmically in the size of the numbers — and then intersect over enough primes to reduce the count to O(1). This is genuinely different from the algebraic-geometry (Faltings/Siegel) and analytic (MRSTT exponential-sum) lines because it works prime-by-prime in the combinatorial structure of the triangle rather than treating C(n,k) as a polynomial or analytic function.
 
 ## Approaches that could not be read
 
