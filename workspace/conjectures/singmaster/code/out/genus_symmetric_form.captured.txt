@@ -1,0 +1,17 @@
+SYMMETRIC FORM  g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n)) / 2
+algebraic identity with the run's form ((m-1)n-(m-2)-gcd)/2:
+  (m-1)n-(m-2) = mn-n-m+2 = (m-1)(n-1)+1   -- identical, and manifestly symmetric
+entries tested: 111 mismatches: 0 []
+max |old-new| numerator over table: 0
+
+arithmetic genus of a bidegree-(m,n) curve on P1xP1 is p_a = (m-1)(n-1), so
+  delta = p_a - g = ((m-1)(n-1) - 1 + gcd(m,n)) / 2   (total delta invariant of the singularities)
+  (m,n)=(2, 3): p_a=   2  g=   1  delta=   1  gcd=1
+  (m,n)=(3, 4): p_a=   6  g=   3  delta=   3  gcd=1
+  (m,n)=(4, 5): p_a=  12  g=   6  delta=   6  gcd=1
+  (m,n)=(5, 6): p_a=  20  g=  10  delta=  10  gcd=1
+  (m,n)=(6, 12): p_a=  55  g=  25  delta=  30  gcd=6
+  (m,n)=(9, 12): p_a=  88  g=  43  delta=  45  gcd=3
+  (m,n)=(10, 19): p_a= 162  g=  81  delta=  81  gcd=1
+
+parity: (m-1)(n-1)+1-gcd(m,n) even for all 2<=m<n<=200? True
