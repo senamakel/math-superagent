@@ -54,6 +54,21 @@ Each marked with evidence class and a link.
   matching n<=24 but not established). These are the structural small-column
   content — the k=2/3 columns that carry all multiplicity.
 
+  **Diagonal closed forms — the GOAL-eligible genus deliverable, `checked`.**
+  `code/out/genus_closed_forms.md`, claim `genus-closed-forms-three-diagonals`:
+  `g(n)=(n−1)(n−2)/2` for `C(x,n−1)=C(y,n)` (n=3..22, 20/20 match);
+  `g(n)=⌊(n−1)(n−3)/2⌋` for `C(x,n−2)=C(y,n)` (n=4..21, 18/18); 
+  `g(n)=⌊(n+1)(n−1)/2⌋` for `C(x,n+2)=C(y,n)` (n=3..19, 17/17); and
+  `g_D(n)=g_B(n+2)` holds throughout (same unordered pair re-indexed). Genus > 1
+  for n≥4, n≥5, n≥3 respectively — Faltings applies to all but one curve per
+  diagonal, and genus grows **quadratically**. Caveat: the Singular runs each
+  ended `halt 1` after printing their tables (partial outputs of errored runs);
+  tables are internally consistent and cross-checked, and the identity g_D=g_B
+  is independent evidence. Consistent with BST Thm 2.2: the diagonals' only
+  genus-1 points are C(x,2)=C(y,3) and C(x,2)=C(y,4), exactly BST's non-diagonal
+  genus-1 exceptions. The general (k1,k2) genus function beyond the grid rows
+  remains unestablished.
+
 - **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`
   from primary where noted; Singmaster 1971 Monthly still NOT held.**
   Singmaster 1971 `O(log a)` — the real paper (AMM 78 (1971) 385–386) has NOT
