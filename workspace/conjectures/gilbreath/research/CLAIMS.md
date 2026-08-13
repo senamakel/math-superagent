@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `odlyzko-verification-1993` | Gilbreath's conjecture verified for d_k(1), 1 ≤ k ≤ π(10^13) ≈ 3.4×10^11 (all primes < 10^13); G(π(10^13)) = 635; max g(n) = 635 at n ≈ π(7.17716×10^12) from prime gap 674. | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
 | `oeis-A036277-first-term-position` | A036277(n) is the position of the first term > 2 in row n of the Gilbreath array, equals A000232(n)+1; Hasler: GC ⟺ A036277(n) > A213014(n) + 2 for all n > 0. The row-to-row movement of A036277 shows the same… | yes | catalogued | `research/summaries/oeis-A036277-first-term-greater-than-one.md` |
 
-_32 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_35 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
