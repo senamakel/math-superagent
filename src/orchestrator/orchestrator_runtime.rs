@@ -167,6 +167,10 @@ impl OrchestratorAgent {
             solutions::Mailboxes {
                 patterns,
                 directives,
+                // Nothing outside the loop posts to this one: the reduction arm
+                // the loop opens is its only writer, so it is created here
+                // rather than threaded in from the teams above.
+                skeletons: solutions::Mailbox::default(),
             },
             state,
         )

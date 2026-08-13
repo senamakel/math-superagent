@@ -9,7 +9,7 @@ Budget 10,000 tokens (this file ~8300, so ~1700 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state (Directive 16–17): Route A RESTORED live. Lean 4 formalisation COMPLETE (nine theorems, zero sorry, axiom footprint [propext, Classical.choice, Quot.sound]; gilbreath_reduction is an IFF — reformulates, does not reduce). The single blocking task is the conditional-rate experiment: filter the sweep data to sequences surviving past k=10, measure per-family event density. Family-independent → combinatorial mechanism (Route A right). Family-dependent → real evidence about rate. This is the one experiment that isolates the rate from the startup transient. The gap-hypothesis separation check (Directive 15, DONE) shows no first-moment/tail statistic separates primes from {2..20} — the separation verdict is correct but the sweep deaths are g_0≠2 at k≤1, not gap statistics. Mechanism is combinatorial (step law + recharge identity universal, zero failures on 1,154 random sequences).**
+**Run state (Directive 19): Route A SUPPORTED by conditional-rate experiment. The (2,4) event rate is family-independent post-startup (pooled λ̂ = 0.585, Pearson X² p = 0.68 over 8 families, D=400, W=200000). The answer restores Route A — the mechanism is combinatorial. The gap: λ̂ is measured, not bounded below for all k. The next step is a lower bound on the rate, not another estimate. Do not cite the D=40 smoke numbers (predate sign fix, discarded per directive).**
 
 ## Established
 
@@ -151,6 +151,20 @@ away.
   random nonneg arrays (3,521 rows, 610 events, zero failures). Anchor:
   `research/notes/step_law_proved.md`, `code/regeneration/step_law_theorem.py`,
   `code/out/step_law_and_recharge_verified.md` (earlier computed form). Do not re-derive — only the (2,4)-event RATE is open.
+- **Conditional-rate experiment — DONE (TASKS complete, Directive 19).**
+  Post-startup (k>10) event rate is family-independent: pooled λ̂ = 0.585
+  (1098/1876), Pearson X² p = 0.68 over 8 families, D=400, W=200000,
+  seeds 10000..10019. 3 corner-class families (consecutive, f2-rand24,
+  rand24) immortal with zero eligible rows — contribute nothing. **λ̂ is
+  MEASURED, not bounded below for all k** — the conjecture needs
+  Σ(j_i+1) ≥ k−2 for all k, which requires a lower bound holding everywhere,
+  not a point estimate at D=400. Do NOT cite D=40 smoke (predates sign fix;
+  discarded). Anchors: `code/out/conditional_rate_experiment.captured.txt`,
+  `code/out/conditional_rate_records.jsonl`,
+  `code/out/conditional_rate_experiment.notes.md`, claim
+  `conditional-rate-experiment-family-independent`.
+  **Operator grounding (Directive 19):** `code/grounding/check_absdiff_vs_forwarddiff.py`
+  verifies the absolute-difference operator is the one the conjecture is about.
 - **Mod-4 linearization (invariant candidate).** For k≥1, n≥2 where entries are
   even, `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)` (Odlyzko §2 eq.201). Turns the
   absolute-value problem into linear Pascal-triangle congruences mod 4 — the

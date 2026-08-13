@@ -590,6 +590,13 @@ async fn reflect_step(
     state
 }
 
+/// What the reduction cadence does not count as the workspace having moved.
+///
+/// Both halves of what the reducer itself writes: the folder of skeletons and
+/// the table derived from it. `fingerprint_excluding` matches on file *names*,
+/// so the folder entry skips the whole directory.
+const REDUCTION_BLIND_SPOTS: [&str; 2] = ["backward", "BACKWARD.md"];
+
 /// The one reduction a run may have in flight, and where its report goes.
 ///
 /// Grouped rather than passed as two more parameters for the reason
@@ -614,13 +621,28 @@ pub(super) struct Reduction {
 ///
 /// Claimed before the spawn and released inside it, so a reduction that outlives
 /// the cycle that opened it still holds the gate.
+/// It also remembers the workspace it last decomposed, which is the second
+/// bound: the reducer's inputs are what the run has established, so a cadence
+/// tick over a tree that has not moved would rewrite the same skeleton from the
+/// same evidence. Kept here rather than in [`SolutionState`] because it is a
+/// fact about the arm rather than about the loop, and the loop does not route
+/// on it.
 #[derive(Clone, Default)]
-pub(super) struct ReductionGate(Arc<std::sync::atomic::AtomicBool>);
+pub(super) struct ReductionGate {
+    /// Whether a reduction holds the gate right now.
+    busy: Arc<std::sync::atomic::AtomicBool>,
+    /// The workspace fingerprint the last opened reduction saw.
+    seen: Arc<std::sync::atomic::AtomicU64>,
+    /// Whether anything has been decomposed yet, so a genuinely empty
+    /// workspace whose fingerprint happens to hash to zero is still decomposed
+    /// once.
+    ever: Arc<std::sync::atomic::AtomicBool>,
+}
 
 impl ReductionGate {
     /// Takes the gate, or reports that somebody already has it.
     fn claim(&self) -> bool {
-        self.0
+        self.busy
             .compare_exchange(
                 false,
                 true,
@@ -632,7 +654,21 @@ impl ReductionGate {
 
     /// Gives it back once the reduction has finished, however it finished.
     fn release(&self) {
-        self.0.store(false, std::sync::atomic::Ordering::Release);
+        self.busy
+            .store(false, std::sync::atomic::Ordering::Release);
+    }
+
+    /// Whether the workspace has changed since the last reduction was opened.
+    fn moved(&self, fingerprint: u64) -> bool {
+        !self.ever.load(std::sync::atomic::Ordering::Acquire)
+            || self.seen.load(std::sync::atomic::Ordering::Acquire) != fingerprint
+    }
+
+    /// Records the workspace this reduction is being opened against.
+    fn remember(&self, fingerprint: u64) {
+        self.seen
+            .store(fingerprint, std::sync::atomic::Ordering::Release);
+        self.ever.store(true, std::sync::atomic::Ordering::Release);
     }
 }
 
@@ -671,13 +707,22 @@ fn open_reduction(
     if state.solved || state.since_reduction < REDUCTION_INTERVAL {
         return;
     }
-    // Excluding the reducer's own folder, or it would wake itself forever on
-    // what it wrote last time — the reason `fingerprint_excluding` exists.
-    let moved = workspace.is_none_or(|workspace| {
-        super::teams::fingerprint_excluding(workspace, &[super::backward::BACKWARD_DIR])
-            != reduction.gate.seen()
+    // Excluding what the reducer itself writes, or it would wake forever on its
+    // own output — the reason `fingerprint_excluding` exists at all.
+    let fingerprint = workspace.map(|workspace| {
+        super::teams::fingerprint_excluding(workspace, &REDUCTION_BLIND_SPOTS)
     });
-    if !moved {
+    if let Some(fingerprint) = fingerprint
+        && !reduction.gate.moved(fingerprint)
+    {
+        if let Some(tracer) = tracer {
+            tracer.note(
+                "solution loop: nothing has landed since the last decomposition, not opening one",
+            );
+        }
+        // Deliberately without resetting the counter: the cadence has come due
+        // and been declined, so the next cycle asks again rather than waiting
+        // another full interval for evidence that may have arrived meanwhile.
         return;
     }
     if !reduction.gate.claim() {
@@ -686,11 +731,8 @@ fn open_reduction(
         }
         return;
     }
-    if let Some(workspace) = workspace {
-        reduction.gate.remember(super::teams::fingerprint_excluding(
-            workspace,
-            &[super::backward::BACKWARD_DIR],
-        ));
+    if let Some(fingerprint) = fingerprint {
+        reduction.gate.remember(fingerprint);
     }
     state.since_reduction = 0;
     if let Some(tracer) = tracer {

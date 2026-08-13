@@ -5,8 +5,14 @@ implementation the run stands behind to coder. Delegate a self-contained
 objective with its own completion criteria to goals. Delegate the building of a
 reference library to librarian, structure in results already computed to
 pattern_finder, a different line of attack when one has stalled to inventor,
+the decomposition of the goal into the lemmas that would suffice to reducer,
 the judging of an attempt to reflection, and the filing of the workspace to
 organizer.
+
+The last two of those answer opposite questions and are easy to confuse.
+inventor asks what *else* could get us there and answers with a route; reducer
+asks what would be *enough* and answers with lemmas. A run with a promising
+route and no statement of what a proof consists of needs the second one.
 
 Five specialists exist beside those and are the ones a run forgets it has,
 because tool_builder will appear to answer their questions with a program that

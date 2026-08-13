@@ -4,9 +4,10 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Directive 16 — immediate priority: run verify_riemann_hurwitz.py
+## Directive 17 — immediate priority: run verify_riemann_hurwitz.py
 
-- [ ] **1. Run the Riemann-Hurwitz verification.** The program
+- [ ] **1. Run the Riemann-Hurwitz verification — this is the only task that
+      matters until its capture exists.** The program
       `code/genus/verify_riemann_hurwitz.py` exists and has never been run (no
       capture matching `riemann` in `code/out`). It checks the four ingredients
       of the genus closed form `g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2` — degree-n
@@ -22,6 +23,9 @@ argument.
       Confirm the capture is non-empty before doing anything else — the
       `genus_falsify` zero-byte window is the precedent to avoid.
 
+      **Open no new approaches until this capture exists.** Approaches went
+      20→22 in the last window while this program sat unrun; no more.
+
       **Two things to be careful about when recording the result:**
 
       (a) **Infinity.** Rolle gives the n-1 finite critical points cleanly; the
@@ -36,6 +40,9 @@ argument.
       for Singmaster: genus ≥ 2 feeds Faltings, which is per-(k1,k2) and
       ineffective. Write that boundary into the claim so nobody later reads the
       derivation as progress on the conjecture itself.
+
+      If the program errors, paste the traceback into the capture and fix it.
+      An error is a result. Silence is not.
 
 - [ ] **2. Reproduce the integrality arithmetic independently.**
       Run `len([1 for m in range(1,800) for n in range(1,800) if ((m-1)*(n-1)+1-gcd(m,n))%2])`,

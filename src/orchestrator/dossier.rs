@@ -152,6 +152,76 @@ pub(super) fn inventor(workspace: &Path) -> String {
     build(workspace, budget_tokens())
 }
 
+/// Assembles the reducer's dossier for `workspace`.
+///
+/// The order is the argument here too, and it is nearly the inverse of the
+/// inventor's. The goal first, for the same reason. Then what the run has
+/// *established*, because the reducer's cheapest possible result is noticing
+/// that a lemma it was about to call a gap is already in the claim ledger — and
+/// a claim ledger truncated away is a lemma proved twice. Then its own ledger
+/// and the closed skeletons in full, which is the obligation the inventor has
+/// about approaches: a gap discharged three cycles ago must not come back as an
+/// open one. Then the threads, then the brief, then whatever fits.
+///
+/// `research/APPROACHES.md` is absent on purpose, as it is from this role's
+/// prompt context. The approach ledger is about method, and a role holding it
+/// drifts into proposing methods.
+pub(super) fn reducer(workspace: &Path) -> String {
+    build_reduction(workspace, budget_tokens())
+}
+
+/// Assembles the reducer's dossier against an explicit budget.
+///
+/// Split from [`reducer`] for the reason [`build`] is split from [`inventor`].
+fn build_reduction(workspace: &Path, tokens: u64) -> String {
+    let budget = usize::try_from(tokens)
+        .unwrap_or(usize::MAX)
+        .saturating_mul(CHARS_PER_TOKEN);
+    let mut packed = Packed::new(budget);
+
+    packed.verbatim("GOAL.md", &read(workspace, "GOAL.md"));
+
+    packed.section(
+        super::claims::CLAIMS_PATH,
+        &read(workspace, super::claims::CLAIMS_PATH),
+    );
+
+    packed.section(
+        super::backward::BACKWARD_PATH,
+        &read(workspace, super::backward::BACKWARD_PATH),
+    );
+    let skeletons = super::backward::collect(workspace);
+    let closed: String = skeletons
+        .closed()
+        .map(super::backward::Skeleton::full)
+        .collect::<Vec<_>>()
+        .join("\n");
+    packed.section("Decompositions this run has already closed", &closed);
+
+    packed.section(
+        super::threads::THREADS_PATH,
+        &read(workspace, super::threads::THREADS_PATH),
+    );
+
+    let brief = read(workspace, super::shared_context::CONTEXT_FILE);
+    let brief = super::shared_context::fit(&brief).unwrap_or(brief);
+    packed.section(super::shared_context::CONTEXT_FILE, &brief);
+
+    for relative in REMAINDER {
+        packed.section(relative, &read(workspace, relative));
+    }
+
+    if packed.body.trim().is_empty() {
+        return String::new();
+    }
+    format!(
+        "What this run has written down so far, read from the workspace just now rather than at \
+         the start of the run. A lemma the claim ledger below already establishes is not a gap, \
+         and a gap this ledger records as discharged must not be stated as open again.\n{}",
+        packed.body
+    )
+}
+
 /// Assembles the dossier against an explicit budget.
 ///
 /// Split from [`inventor`] so the packing can be tested at a budget the test

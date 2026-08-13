@@ -230,6 +230,136 @@ async fn ensure_approaches_written(
     format!("{reported}\n\n{retry}")
 }
 
+/// What a reduction turn has to move for it to have done anything.
+///
+/// A missing directory is an empty set rather than an error, which is the
+/// ordinary state of a workspace that has never been decomposed.
+fn skeleton_fingerprint(
+    workspace: Option<&Path>,
+) -> BTreeSet<(String, String, super::backward::GapStance)> {
+    let Some(workspace) = workspace else {
+        return BTreeSet::new();
+    };
+    super::backward::collect(workspace).fingerprint()
+}
+
+/// Re-issues the reduction once when it reported without writing.
+///
+/// The same control [`ensure_approaches_written`] is, against the same failure
+/// — a role that reports three candidates and leaves nothing on disk, so the
+/// next round has no record and pays for them again — and once rather than
+/// until it complies, for the same reason: a second refusal means this turn is
+/// not going to write, and the prose it did report is worth more than a retry
+/// loop.
+///
+/// The discriminator differs, and the difference is the point. Approaches are
+/// compared by *name added*, because proposing means new files. That is wrong
+/// here from the second cadence onward: refining a live skeleton — moving a gap
+/// to `discharged`, adding a lemma the run now needs — is exactly the correct
+/// work and adds no name. So this compares the fingerprint of every
+/// (skeleton, gap, status) triple instead, which is strictly stronger: an
+/// unchanged fingerprint means the turn changed nothing any downstream reader
+/// consumes, whatever it did to the bytes, and mtime would call that a success.
+///
+/// A plain before-and-after comparison is sound in a runtime where everything
+/// else is racing because `research/backward/` is written by exactly one role
+/// and the reduction gate admits one of it at a time.
+async fn ensure_skeleton_written(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    before: &BTreeSet<(String, String, super::backward::GapStance)>,
+    reported: String,
+) -> String {
+    if skeleton_fingerprint(workspace) != *before {
+        return reported;
+    }
+    let retry = delegate(
+        subagents,
+        "reducer",
+        format!(
+            "You reported a decomposition without writing it. Nothing under `research/backward/` \
+             changed, so nothing survives this turn: the ledger has no record of these lemmas and \
+             the next attempt will not be handed one of them to attack. Write it now with \
+             `write_document` to `research/backward/<slug>.md`, as a fenced `skeleton` block with \
+             `goal`, `implies`, `status`, and `rests-on` lines, followed by one fenced `gap` block \
+             per missing lemma with `id`, `lemma`, `status`, and `next` lines. Do not revise the \
+             mathematics, do not reconsider, and do not decompose anything further — write down \
+             what you already have, then report the slug and the gap ids you wrote.\n\n\
+             What you reported:\n{reported}"
+        ),
+    )
+    .await;
+    format!("{reported}\n\n{retry}")
+}
+
+/// Decomposes the goal and reports the gaps that are still open.
+///
+/// One delegation, where [`invention_arm`] is three. The inventor's output has
+/// to be checked against the literature before it is worth adopting, and only
+/// research can do that; a skeleton is checked by the forward loop attacking
+/// its gaps, which is the loop itself and costs no child run here.
+///
+/// What travels back is read off disk rather than taken from the reply. The
+/// reducer's prose is a summary of its own work, and the ledger is the record —
+/// the same argument the dossier is built on. It also means a turn that wrote
+/// good files and then produced a truncated report still delivers its gaps.
+async fn reduction_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> String {
+    let dossier = workspace.map(super::dossier::reducer).unwrap_or_default();
+    let before = skeleton_fingerprint(workspace);
+    let reported = delegate(
+        subagents,
+        "reducer",
+        format!(
+            "Work backward from this problem's goal and write down what would suffice to prove \
+             it. Not another route to it — the lemmas that, if somebody had them, would give it, \
+             and the inference that combines them. Write the result to \
+             `research/backward/<slug>.md` as a fenced `skeleton` block with `goal`, `implies`, \
+             `status`, and `rests-on` lines, followed by one fenced `gap` block per missing lemma \
+             with `id`, `lemma`, `status`, and `next` lines.\n\n\
+             Check each lemma against `research/CLAIMS.md` and `search_claims` before you call it \
+             a gap: a decomposition into three statements two of which the run has already proved \
+             is nearly a proof, and finding that is the cheapest result available to you. Mark \
+             those `discharged` with the claim id. Every gap you leave open needs a `next` a \
+             tool_builder could run today or a theorem_prover could be handed today — a lemma \
+             with no first move is a research request, not a task.\n\n\
+             Report the slug, the gaps you left open, and which lemma you would attack \
+             first.\n\nProblem:\n{}\n\n{}\n\n{dossier}",
+            state.problem(),
+            state.lesson_briefing()
+        ),
+    )
+    .await;
+    let reported = ensure_skeleton_written(subagents, workspace, &before, reported).await;
+    let gaps = open_gap_briefing(workspace);
+    merge_context(&[
+        ("What the run says would suffice", &reported),
+        ("Open gaps, read from the ledger", &gaps),
+    ])
+}
+
+/// Renders the open gaps on disk for the next attempt.
+///
+/// Empty when nothing is open, so [`Mailbox::post`] drops it rather than
+/// leaving the attempt a heading with nothing under it.
+fn open_gap_briefing(workspace: Option<&Path>) -> String {
+    let Some(workspace) = workspace else {
+        return String::new();
+    };
+    let skeletons = super::backward::collect(workspace);
+    let gaps = skeletons.open_gaps();
+    if gaps.is_empty() {
+        return String::new();
+    }
+    gaps.iter()
+        .map(|gap| gap.briefing())
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
 async fn invention_arm(
     subagents: &AsyncSubagentManager,
     workspace: Option<&Path>,

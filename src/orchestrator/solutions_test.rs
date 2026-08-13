@@ -367,7 +367,7 @@ fn an_attempt_is_told_what_arrived_beside_the_loop() {
 
     let observations = observations_briefing(&mailbox);
     let state = SolutionState::new("find the cycle lengths");
-    let prompt = attempt_prompt(&state, "", &observations, "");
+    let prompt = attempt_prompt(&state, "", &observations, "", "");
 
     assert!(prompt.contains("beside the loop"), "{prompt}");
     assert!(prompt.contains("has an 8-cycle"), "{prompt}");
@@ -385,7 +385,7 @@ fn an_attempt_with_an_empty_mailbox_says_nothing_about_it() {
     assert_eq!(observations, "");
 
     let state = SolutionState::new("find the cycle lengths");
-    let prompt = attempt_prompt(&state, "", &observations, "");
+    let prompt = attempt_prompt(&state, "", &observations, "", "");
     assert!(!prompt.contains("beside the loop"), "{prompt}");
 }
 
@@ -401,7 +401,7 @@ fn an_attempt_carries_operator_direction_above_the_judge() {
 
     let mut state = SolutionState::new("find the cycle lengths");
     state.steer = "tighten the enumeration".to_string();
-    let prompt = attempt_prompt(&state, "", "", &direction);
+    let prompt = attempt_prompt(&state, "", "", &direction, "");
 
     assert!(prompt.contains("check the n=14 bound"), "{prompt}");
     assert!(prompt.contains("Direction from the operator"), "{prompt}");
@@ -440,7 +440,7 @@ fn an_attempt_with_no_direction_says_nothing_about_it() {
     assert_eq!(direction, "");
 
     let state = SolutionState::new("find the cycle lengths");
-    let prompt = attempt_prompt(&state, "", "", &direction);
+    let prompt = attempt_prompt(&state, "", "", &direction, "");
     assert!(!prompt.contains("operator"), "{prompt}");
 }
 

@@ -1,58 +1,79 @@
 # Tasks
 
-## Directive 18 (steer): build-check probe
+## Directive 19 (steer): Route A supported by conditional-rate experiment — record results and move forward
 
-Build a focused probe program that measures one specific structural quantity
-on the prime rows (depth 1000, `blocks_depth1000.json`). A probe is small,
-fast, and answers one question definitively — it is not a sweep and not a
-search.
+Directive 18 ("build-check probe") was an operator probe testing whether the steer
+binary compiled and is discarded.
+
+### Done this cycle
+
+- [x] **Conditional-rate experiment — COMPLETE. Route A is supported, not merely un-refuted.**
+  D=400, W=200000, seeds 10000..10019, 26 workers, commit ae69d093 (sign fix).
+  Pooled lambda_hat = 0.585288 (1098/1876). Pearson X² p = 0.683 over 8 families
+  (consecutive, f2-rand24, rand24 are immortal corner-class with zero eligible rows
+  — they contribute nothing to the pooled figure). p = 0.68 is no evidence of
+  family dependence. Conditioned on survival past row 10, every live family
+  generates events at the same rate. That is what a combinatorial mechanism looks
+  like.
+
+  **Three cautions, as directed:**
+  1. **8 families agreed, not 11.** consecutive, f2-rand24 and rand24 show
+     ev_post=0, elig_post=0 — the block fills the finite row and the corner state
+     is provably immortal. They contribute nothing to the pooled figure.
+  2. **lambda_hat = 0.5853 is MEASURED, not bounded.** The conjecture needs
+     Σ (j_i + 1) ≥ k − 2 for all k, which requires a LOWER bound on the rate
+     holding for all k. An estimate at D=400 is not that. State the gap plainly.
+  3. **Do not cite the D=40 smoke numbers** (lambda 0.5577, p 0.894) anywhere —
+     they predate the sign fix.
+
+  Anchors: `code/out/conditional_rate_experiment.captured.txt`,
+  `code/out/conditional_rate_records.jsonl`,
+  `code/out/conditional_rate_experiment.notes.md`.
+
+- [x] ~~Conditional-rate smoke (D=40) — DISCARDED, predates sign fix. Do not cite.~~
+- [x] **Lean 4 formalisation — COMPLETE.** Nine theorems, zero sorry, axiom footprint
+  [propext, Classical.choice, Quot.sound]; IFF reformulation. Directive 17.
+- [x] **Operator grounding — DONE.** `code/grounding/check_absdiff_vs_forwarddiff.py`
+  verifies the absolute-difference operator is the one the conjecture is about.
+- [x] CHT Theorem 1.6 hypothesis check — holds-here: no (R_0 = 4.2e8 ≫ 1000).
+- [x] Rule 90 depth prediction — CLOSED (null computed).
+- [x] Gap-hypothesis separation check — DONE (no first-moment/tail statistic separates).
 
 ### Immediate (in order)
 
-- [ ] **1. Build and check a probe on the prime rows.** The step law makes
-  regeneration a local event at `(edge, intruder) = (2,4)`, so the open
-  question is: how often is `edge = 2`? The block's last entry (column b_k)
-  is the necessary half of the regeneration trigger. Measure:
-  - The sequence of edge values e_k = A_k[b_k] for k = 1..161 (live regime
-    where the intruder exists). Count how many are 0 vs 2.
-  - The distribution of run-lengths of consecutive edge=2 and edge=0.
-  - Whether edge=2 has a detectable period or pattern (autocorrelation,
-    spacing distribution).
-  - The fraction of rows with edge=2 (this is the upper bound on the
-    event rate, since every (2,4)-event requires edge=2).
+- [ ] **1. Bound the (2,4)-event rate from below, not estimate it.**
+  The conditional-rate experiment shows the rate IS family-independent post-startup —
+  this is evidence for Route A (combinatorial mechanism), not a rate bound.
+  The conjecture needs: for all k, Σ_{i<k} (j_i + 1) ≥ k − 2. The pooled λ̂ = 0.585
+  at D=400 says events arrive at ~0.59 per eligible row — above the needed 1/(mean
+  jump + 1) ≈ 0.18 (since mean jump ~4.5 on primes) — but this is an estimate, not a
+  theorem.
 
-  Write a small program that reads `blocks_depth1000.json`, extracts the
-  edge sequence for live rows, computes the statistics above, and captures
-  to `code/out/probe_edge_sequence.captured.txt`. This is independent of the
-  conditional-rate experiment and can run in parallel with it.
+  **The next step is a lower bound.** Two candidates:
+  - Route A: bound the worst-case erosion between events from the drain law
+    (y drops 2 per edge=2 row, 0 per edge=0 row; edge flips under Rule 90 interior).
+    If the longest possible run of (edge=0, intruder=4) before edge flips to 2
+    is bounded by a function of block length b, events cannot be arbitrarily far apart.
+  - Route B: derive a lower bound from a prime-gap concentration hypothesis.
+    Must state how it beats Eppstein and the Colonna g=4 deletion counterexample.
 
-  **Why this probe:** the recharge identity `b_k = 2 + Σ(j_i+1) − (k−1)`
-  reduces the conjecture to the (2,4)-event rate. If edge=2 occurs with a
-  structural frequency (not random), that frequency bounds the event rate
-  from below — because intruder=4 is absorbing (drain law) and edge=2 is the
-  only missing piece. If edge=2 appears to be random/unpatterned, that is
-  also a finding: it tells us the rate question is genuinely probabilistic
-  rather than structural.
+  Write the lemma that would close the gap, state its hypotheses, and test it on the
+  surviving sweep families before attempting a proof.
 
-- [ ] **2. Conditional-rate experiment: isolate the asymptotic event rate from the g_0 startup.** Use the existing sweep data (26 families × seeds, 1154 sequences, 302 survivors). Restrict to sequences that survived past row 10 (b_k ≥ 1 at k=11). On those only, measure:
-  - events per row (event density) by family
-  - whether the per-family densities are distinguishable (family-dependent → real evidence about the rate; family-independent → combinatorial mechanism, Route A is right)
-  - inter-event gap distribution conditional on k>10
-  - comparison to the prime rows' event density (60 events / 161 live rows = 0.373)
+- [ ] **2. State the honest gap.** The conjecture requires a rate lower bound that holds
+  for all k. lambda_hat = 0.585 at D=400 is a point estimate; it does not rule out a
+  regime where events become arbitrarily sparse. Say under what hypothesis the rate
+  cannot decay, and what would falsify it.
 
-  The sweep data already has per-sequence event counts and row counts. Write a
-  small program that reads the sweep JSON, filters to k>10 survivors, computes
-  conditional densities per family, and reports whether the densities cluster
-  (same across families) or separate. Capture to
-  `code/out/conditional_rate_experiment.captured.txt`.
+- [ ] **3. Write up the conditional-rate result as a claim.**
+  Already in `code/out/conditional_rate_experiment.notes.md` as
+  `conditional-rate-experiment-family-independent` — promote to library-state.md
+  and record in CONTEXT.md. Done below; verify it appears in CLAIMS.md on next
+  regeneration.
 
-  **This is the blocking task for the Route A/B question.** It answers whether the event rate is
-  combinatorial (Route A) or input-dependent (Route B). Either answer is
-  progress — a third approach is not.
+### Directive 17 (steer): Lean formalisation verified complete. Recorded.
 
-### Directive 17 (steer): Lean formalisation verified complete. Record as gilbreath-second-entry-equivalence, an IFF reformulation not a reduction. Axiom footprint [propext, Classical.choice, Quot.sound].
-
-### Directive 16 (steer): Route A is NOT refuted. Sweep deaths are g_0 startup, not rate. Run conditional-rate experiment (now item 2 above).
+### Directive 16 (steer): Route A is NOT refuted. Sweep deaths are g_0 startup. Resolved by conditional-rate experiment — Route A is now supported, not merely un-refuted.
 
 ### Background (established, do not redo)
 
@@ -61,20 +82,21 @@ search.
 - **Rule 90 interior (PROVED):** halved entries evolve under XOR = Rule 90 = Pascal mod 2. `research/notes/rule90-interior.md`.
 - **Step law + recharge identity — PROVED, universal:** `b_{k+1} ≥ b_k ⟺ (x,y)=(2,4)`, else `b_{k+1}=b_k−1`; `b_k = 2 + Σ(j_i+1) − (k−1)`. Zero failures on all 1,154 sweep sequences AND primes. `code/out/step_law_and_recharge_verified.md`.
 - **Drain law:** y_{k+1} = y_k − 2·[x_k=2]. Verified 101/101; combinatorial.
-- **Event-rate sweep (this run, 1,154 sequences):** step law + recharge identity universal (0 failures); 852/1,154 (73.8%) reach b_k=0, ALL within first 10 rows (764/852 by k≤3). Deaths are g_0 startup: rand24 deaths at k=1 from g_0=4; survivors at trunc_k=2 from g_0=2. Sweep does NOT bear on the asymptotic event rate. `code/out/event_rate_sweep_analysis.captured.txt`, `code/out/event_rate_sweep.notes.md`.
-- **Gap-hypothesis separation check — DONE (Directive 15).** None of the three candidates (bounded mean gap per window, frequency of gaps > G, Cramér g_n = O(log² p_n)) separates primes from {2..20}; all three are satisfied by both columns. `code/out/gap_hypothesis_separation.captured.txt`. The separation verdict is correct — but the sweep deaths are explained by g_0≠2 at k≤1, not by gap statistics.
-- **CHT Theorem 1.6 hypothesis check — DONE.** M=7, L=2, R_0=419,430,400 ≫ 1000; `holds-here: no`. `code/out/cht_hyp_check.captured.txt`.
-- **Rule 90 depth prediction — CLOSED** (null computed; tol=1 p=0.017, tol=0 dead). Thread `research/threads/rule90-regeneration.md`.
+- **Conditional-rate experiment — DONE.** p = 0.68 over 8 families, no family dependence post-startup. Route A supported. Anchors above.
+- **Event-rate sweep (this run, 1,154 sequences):** step law + recharge identity universal (0 failures); 852/1,154 (73.8%) reach b_k=0, ALL within first 10 rows (764/852 by k≤3). Deaths are g_0 startup. Sweep does NOT bear on the asymptotic event rate.
+- **Event-rate smoke (D=40) — DISCARDED, predates sign fix, do not cite.**
+- **CHT Theorem 1.6 hypothesis check — DONE.** M=7, L=2, R_0=419,430,400 ≫ 1000; `holds-here: no`.
+- **Rule 90 depth prediction — CLOSED** (null computed).
 - **Oracle:** `witnesses.json` (depth 600), `blocks_depth1000.json` (depth 1000).
-- **Library:** 92 sources on disk, downloads halted; no downloads until a specific gap is stated.
+- **Library:** 92 sources on disk, downloads halted.
 
 ### Threads
 
-- `research/threads/regeneration.md` — LIVE. Route A RESTORED (Directive 16): the sweep refutes startup, not rate. The open questions are the edge sequence probe on prime rows (item 1) and the conditional event rate on sweep survivors (item 2). Route B (analytic, prime-gap hypothesis) unchanged but secondary.
-- `research/threads/rule90-regeneration.md` — CLOSED (Directive 9). Depth-timing corollary refuted; the proved Rule 90 interior identification stands.
+- `research/threads/regeneration.md` — LIVE. Route A SUPPORTED (Directive 19): the conditional-rate experiment confirms family-independent post-startup event rate. The gap is: λ̂ = 0.585 is measured, not bounded below for all k. Next step is a lower bound on the rate, not another estimate.
+- `research/threads/rule90-regeneration.md` — CLOSED.
 
 ### Refuted this cycle (do not re-assert)
 
-- **"Route A refuted by sweep" — WITHDRAWN (Directive 16).** The sweep deaths are g_0 startup (all within k≤10, 90% by k≤3); they do not bear on the asymptotic event rate. Route A is live.
-- **Bounded-support re-scope "gaps ⊆ {2,4,6}, first gap = 2" — REFUTED as vacuous (Directive 13).** The primes violate every finite gap-support condition (gaps 8,10,12,14,34 below 2000; unbounded in general). A theorem conditional on finite support says nothing about Gilbreath.
-- **"The primes satisfy this" (re the bounded-support claim) — REFUTED and removed (Directive 14).** Was still present at line 16 in the `next:` block of `research/threads/regeneration.md` after Directive 13 corrected other lines.
+- **"Route A refuted by sweep" — WITHDRAWN (Directive 16).** The sweep deaths are g_0 startup.
+- **Bounded-support re-scope — REFUTED as vacuous (Directive 13).**
+- **D=40 smoke numbers — DISCARDED (Directive 19), predate sign fix.**
