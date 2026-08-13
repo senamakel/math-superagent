@@ -1,4 +1,71 @@
-# `side_census`: the stated hypothesis is false, and the true statement is stronger
+# The M=800 complete run
+
+`code/phi_triple_variety/side_census_par.py` (parallel, exact-sorted,
+checkpointed) run to completion on 26 workers (28 CPUs available):
+
+```
+M=800 |Phi|=129870 pairs sum<1: 2509516913
+  1-(q1+q2) rational square: 718
+  1+(q1+q2) rational square: 150
+  both: 0
+```
+
+Coverage: the **entire** outer index [0,129870) — the earlier
+`side_census_M800.captured.txt` was a budget-killed partial run that stopped
+at outer-i=22988/129870 (~18% of the index, the smallest Phi-values only) and
+printed 6/11/0 there; it is superseded. The checkpoint file
+`code/out/side_census_stages_M800.jsonl` sums to exactly the printed totals
+(pairs 2509516913, minus 718, plus 150, both 0), and four example witnesses
+(two kinds) were independently re-verified: both q's really lie in Phi
+(lib.phi.in_phi) and the claimed side is a rational square while the other is
+not.
+
+The invariant now stands at four consecutive complete sizes, each a full
+census over its index:
+
+| M | \|Phi(M)\| | pairs | minus | plus | both |
+| --- | --- | --- | --- | --- | --- |
+| 100 | 2040 | 614,165 | 46 | 5 | 0 |
+| 200 | 8156 | 9,856,010 | 132 | 24 | 0 |
+| 400 | 32495 | 156,988,030 | 325 | 66 | 0 |
+| 800 | 129870 | 2,509,516,913 | 718 | 150 | 0 |
+
+Each side condition alone is satisfiable at every M and the counts grow — so
+`both = 0` is not an artefact of either side being empty. A "both" witness
+would be a necessary-condition survivor for q1+q2 in Phi, i.e. exactly the
+kind of pair the no-triple conjecture needs to rule out; none exists through
+M = 800 (2.5e9 pairs). Still a computation, not a theorem; the structural
+question (why the two square conditions are incompatible for s = q1+q2 with
+q1,q2 in Phi) remains open.
+
+```claim
+id: phi-pair-sides-both-square-zero-through-M800
+statement: For every M in {100, 200, 400, 800} and every pair q1 > q2 from
+  Phi(M) with q1 + q2 < 1 (614165, 9856010, 156988030 and 2509516913 pairs
+  respectively), the quantity 1-(q1+q2) is a rational square exactly {46,
+  132, 325, 718} times and 1+(q1+q2) exactly {5, 24, 66, 150} times, and no
+  pair has both rational squares. The M=800 count is a COMPLETE census over
+  the full outer index (a prior partial capture that stopped at 18% of the
+  index and reported 6/11/0 there is superseded).
+hypotheses: M <= 800; q1, q2 in Phi(M); q1 > q2; q1 + q2 < 1; exact integer
+  arithmetic throughout; M=800 run parallel over 26 workers, checkpoint sums
+  equal the printed result, example witnesses re-verified independently
+holds-here: yes for M <= 800 only; a computation, not a theorem for all M
+status: checked
+bearing: extends phi-pair-sides-never-both-square to a complete 2.5e9-pair
+  census and so keeps alive the strongest unbroken side statement: the two
+  square conditions 1+s and 1-s are never simultaneously satisfied for a
+  pair-sum s realisable from Phi. A proof of that incompatibility would be an
+  impossibility lemma on pair sums (s = 2t/(1+t^2) parametrisation of
+  x^2+y^2=2 intersected with Phi-pair-sums), and it would not forbid the
+  known near-miss witnesses, which are not pair sums of Phi elements in
+  (0,1) with both sides square
+anchor: code/out/side_census_M800_complete.captured.txt;
+  code/out/side_census_stages_M800.jsonl;
+  code/phi_triple_variety/side_census_par.py;
+  code/out/side_census.captured.txt (M=400 serial)
+source: operator-computation
+```
 
 `code/phi_triple_variety/side_census.py` had never been run. It was written to
 test the hypothesis in its own docstring:
