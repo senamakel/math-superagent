@@ -1,61 +1,47 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wall-1983-unitary-harmonic-numbers.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wall (1983), *Unitary Harmonic Numbers*, Fibonacci Quarterly 21(1):18–25
 
-<!-- source: https://www.fq.math.ca/Scanned/21-1/wall.pdf | converted from PDF -->
+Full text: [[wall-1983-unitary-harmonic-numbers.full]]
+Source: https://www.fq.math.ca/Scanned/21-1/wall.pdf
 
-## What is in it
+## What it establishes
 
-- *(3
-45
-37
-241) = 15.
-- *(2 • 3
-47 • 17 • 41) = 17.
-- *(2 • 33527213) = 18.
-- *(2 • 3 25 27 • 13) = 15.
-- *(2-  325 • 7 • 13) = 13.
-- *(2 * 3 • 527213) = 14.
+`n` is **unitary harmonic** when its unitary-divisor harmonic mean
+`H*(n) = n·τ*(n)/σ*(n) = Π_{p^e||n} 2p^e/(1+p^e)` is an integer.
 
+- **Theorem 1.** Exactly **23** unitary harmonic numbers have `ω(n) < 4`
+  (Table 1).
+- **Theorem 2.** Exactly **43** unitary harmonic numbers are `< 10^6`
+  (Table 2). These include all but one of the `ω < 4` list.
+- The `n < 10^6` machinery: `2^a||n` forces `a ≤ 10`, and `2^a||n` forces
+  divisibility by the largest prime factor of `1+2^a`; iterated divisibility
+  constraints enumerate the candidates (a "sharp" B-search where `ω(n)>4`
+  after Theorem 1 forces further size cuts).
+- **Conjecture:** infinitely many unitary harmonic numbers (including
+  infinitely many odd ones), but only finitely many with `ω(n)` fixed.
 
-## What it claims
+## Bearing on this problem
 
-where, as usual,  x(n) and  o(n)  denote, respectively, the number and sum
-of the divisors of n.  An integer  n is said to be  harmonic  if  H(n)  is an
-integer.  For example, 6 and 140 are harmonic, since
+Adjacent-class background. Unitary perfect numbers are unitary harmonic
+(σ*(n)=2n gives H*(n)=1). The paper is one of the references for the
+bibliographic chain (Wall 1983) and for the 2-adic budget technique: the
+observation "any odd prime dividing σ*(n) must divide n" and `2^a||n ⟹ a ≤ 10`
+mirror the budget identity. It does not bound a sixth UPN; it classifies
+unitary harmonic numbers in a range, which strictly contains the unitary
+perfect ones. **Not load-bearing for H_even.**
 
-H(6)  = 2  and  #(140) = 5.
+Relevant cross-reference: the fifth UPN's exact factorization is restated here
+(`2^183·5^47…` OCR-garbled; correct `2^18·3·5^4·…`) with `H*(n)=2048` for it.
 
-Ore proved that any perfect number (even or odd) is harmonic, and that
-no prime power is harmonic.  Pomerance  [3] proved that any harmonic num-
-ber of the form  p
-aq
-b
-9  with p and  q prime, must be an even perfect number.
-Ore also  conjectured that there  is no odd  n > 1 which is harmonic, and
-Garcia  [1] verified Ore
-Ts conjecture for  n < 107; however,  since 0re
-Ts
-conjecture implies that there are no odd perfect numbers, any proof must
-be quite deep.
-
-A divisor  d of an integer  n is a  unitary  divisor  if g.c.d.  (d9  n/d)
-= 1, in which case we write  d\\n.  Let T*(n) and  o*(n)  be, respectively,
-the number and sum of the unitary divisors of  n.  If  n has oo(n) distinct
-prime factors, it is easy to show that
-
-T*(n) = 2
-U)(n)  and  o*(n)  =  O  (1 + p e ) ,
-
-p
-e\\n
-
-both functions being multiplicative.
-
-Let  H*(n)  be the harmonic mean of…
-
-## Statements it makes
-
-Theorem 1
-
-Theorem 2
-
-*[digest of a 16299 character source; every section, statement, and proof in full at `research/sources/wall-1983-unitary-harmonic-numbers.full.md`]*
+```claim
+id: wall1983-unitary-harmonic-classified
+statement: There are exactly 23 unitary harmonic numbers with omega(n) < 4
+  and exactly 43 unitary harmonic numbers n < 10^6 (Theorems 1, 2). Wall
+  conjectures infinitely many unitary harmonic numbers but only finitely
+  many with any fixed omega(n).
+hypotheses: n unitary harmonic (H*(n) integral); ranges n < 10^6, omega < 4
+holds-here: yes as adjacent-class background; does not bound a sixth UPN
+status: asserted
+bearing: bibliographic-chain and 2-adic-budget-technique background for the
+  unitary harmonic adjacent class; not used by the active divisor-level thread
+anchor: research/sources/wall-1983-unitary-harmonic-numbers.full.md
+```

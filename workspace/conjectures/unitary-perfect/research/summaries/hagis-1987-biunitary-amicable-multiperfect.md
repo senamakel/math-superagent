@@ -1,45 +1,61 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hagis-1987-biunitary-amicable-multiperfect.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hagis (1987), *Bi-Unitary Amicable and Multiperfect Numbers*, Fibonacci Quarterly 25(2):144–151
 
-<!-- source: https://www.fq.math.ca/Scanned/25-2/hagis.pdf | converted from PDF -->
+Full text: [[hagis-1987-biunitary-amicable-multiperfect.full]]
+Source: https://www.fq.math.ca/Scanned/25-2/hagis.pdf
 
-## What it claims
+## What it establishes
 
-In what fo llo w s, low er-case l e t t e r s w ill be used to denote n a tu ra l numbers,
-w ith p and q always re p re se n tin g prim es. As u su a l, (c, d) w ill symbolize th e
-g r e a te s t common d iv is o r of c and d. I f cd = n a n d (c, d) = 1, then d i s sa id
-to be a u n ita ry d iv is o r of n . I f (c , d)* denotes th e g re a te s t common u n ita ry
-d iv is o r of c and d, then d i s s a id t o be a h i- u n ita r y d iv is o r of n i f cd = n
-and (c , d)* = 1. The n o tio n of a b i- u n ita r y d iv is o r was f i r s t introduced by
-Subbarao & Suryanarayana in 1971 (see [6 ]) ..
-We s h a ll symbolize by a ( n ) , 0* ( n ) , and 0 ** ( n ) , re s p e c tiv e ly , th e sums of
-th e (p o s itiv e ) d iv is o r s , u n ita ry d iv is o r s , and h i-u n ita ry d iv is o rs of n. I t i s
-w e ll known th a t a(pa) = (pa+1 - l ) ! ( p - 1) and a *(p a ) = (pa + 1) arid th a t both
-a and a* a re m u ltip lic a tiv e fu n c tio n s. I t i s not d i f f i c u l t to v e rify th a t
-a ** (pa) = a(pa) i f a i s odd and 0 ** (pa) = - pa/2 i f a i s even and th a t
-0** i s m u…
+Definitions: `d` is a **bi-unitary** divisor of `n` when `cd=n` and `(c,d)*=1`
+(greatest common *unitary* divisor). `σ**(n)` is the sum of bi-unitary
+divisors; `σ**(p^a) = σ(p^a)` for odd `a`, `σ**(p^a) = σ(p^a) − p^{a/2}` for
+even `a`. `n` is **bi-unitary perfect** when `σ**(n)=2n` (Wall 1972: exactly
+6,60,90), **bi-unitary multiperfect** when `σ**(n)=kn`, k≥3.
 
-## Statements it makes
+- **Theorem 1.** No odd bi-unitary multiperfect numbers exist.
+- **Theorem 3.** For a bi-unitary amicable pair `(m,n)` with `m=2^a M`,
+  `n=2^b N`, `M,N` odd, `a<b`: `ω(M) ≤ a` and `ω(N) ≤ b`.
+- **Corollary 3.1.** `(2M, 2^b N)`, `b>1`, bi-unitary amicable with `M,N` odd
+  ⟹ `M=p^c`, `N=q^d`.
+- **Theorems 4.1–4.3.** Scaling rules: if `(aM,aN)` is bi-unitary amicable and
+  `σ**(b)/b = σ**(a)/a` with coprimality, then `(bM,bN)` is likewise
+  (and unitary/ordinary analogues for 4.2/4.3).
+- Computer searches: 13 bi-unitary multiperfect numbers with `k=3` and 4 with
+  `k=4` below `10^?`; 60 bi-unitary amicable pairs with smallest member
+  `< 10^6` (Table 2); bi-unitary aliquot cycle tables.
 
-Theorem 1: There a re no odd h i- u n ita r y m u ltip e rfe c t numbers.
+## Bearing on this problem — the 10^102 provenance
 
-Theorem 3: Suppose th a t (m; n) i s a h i-u n ita ry amicable p a ir and th a t m = ZaM
-and n = 2 bN where M :: N :: 1 (mod 2) and a < b. I f w(M) = s a n d w(M) = t [where
-w(L) denotes the number of d i s t i n c t prime fa c to rs of L], then s  a and t  a.
+**This paper contains, in its introduction, the sentence "if `n` is a
+unitary multiperfect number, then `n > 10^102` and `n` has at least 46
+distinct prime factors," citing Hagis [3] = Hagis 1984
+(`hagis-1984-lower-bounds-ump`), which is already in the library.**
 
-Corollary 3.1: I f (2M; 2bN) , where b > 1 and M and N a re odd, i s a b i- u n ita r y
-amicable p a ir , then M = pC and N = qd.
+This is the source of the garbled "Wall searched past 10^102" claim that
+GOAL.md/ROOT.md previously carried as a *search bound for unitary perfect
+numbers*. The corrected reading:
+- **10^102 is Hagis's lower bound for unitary *multiperfect* (triperfect,
+  k=3) numbers — `n > 10^102` in Hagis 1984 Theorem 3** — not a search
+  bound.
+- **Wall 1975** proves the fifth UPN `W ≈ 1.46e23` is next after 87360
+  (search bound `N < W`); it contains no 10^102.
+So the "10^102" orphan claim is **resolved as a category confusion**: it is a
+genuine, sourced bound, but for the wrong class (UMP k=3, which has no known
+members), where the unitary *perfect* (k=2) case is untouched.
 
-Theorem 4.1: Suppose th a t (m; n) i s a b i-u n ita ry amicable p a ir such th a t m =
-aM and n = aN where (a, M) = (a, N) = 1. I f b i s a n a tu ra l number such th a t
-o**(b)/b = o**(a)/a and (b, M) = (b, N) = 1, then (bM; bN) i s a b i- u n ita r y ami-
-cable p a ir .
-
-Theorem 4.2: Suppose th a t (m; n ) i s a u n ita ry amicable p a ir such th a t m = aM
-and n = aN where (a, M) = (a, N) = 1 and where M and N a re cu b e-free. I f
-o**(b)/b = o*(a)/a and (b, M) = (b, N) = 1,
-
-Theorem 4.3: Suppose th a t (m; n) i s an amicable p a ir such th a t m = aM and n =
-aN where (a, M)= (a, N) = 1 and where every exponent in the prime-power decom-
-p o s itio n of M and N i s odd. I f
-
-*[digest of a 14250 character source; every section, statement, and proof in full at `research/sources/hagis-1987-biunitary-amicable-multiperfect.full.md`]*
+```claim
+id: hagis1987-10e102-is-ump-triperfect-bound
+statement: Hagis (1984 Thm 3 / 1987 intro) gives n > 10^102 for unitary
+  triperfect (multiperfect, k=3) numbers, with at least 46 distinct prime
+  factors. This is a lower bound for the k>=3 multiperfect class, NOT a
+  search bound for unitary perfect numbers; Wall 1975's actual bound is
+  N < W ~ 1.46e23 for the fifth UPN.
+hypotheses: sigma*(n) = k n with k >= 3 (multiperfect); for k=2 (unitary
+  perfect) the bound does not apply
+holds-here: yes as provenance clarification; resolves the orphan 10^102 claim;
+  no implication for the k=2 finiteness question
+status: asserted (source primary, both Hagis 1984 and 1987 held)
+bearing: closes the provenance of the garbled 10^102 figure; corrects
+  GOAL.md/ROOT.md which conflated the UMP bound with a UPN search bound
+anchor: research/sources/hagis-1987-biunitary-amicable-multiperfect.full.md
+answers: provenance-of-10e102
+```
