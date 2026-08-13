@@ -7,6 +7,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `a059233-rowcount-half-triangle-conversion` | OEIS A059233 (Hasler 2023 formula): row-count of a in Pascal's triangle = ceiling(A003016(a)/2); with A003016(a) = N(a) for a>1 (entries; all occurrences of a>1 lie in rows <= a), the row count equals the half-triangle… | yes | checked | `research/summaries/oeis-a059233.md` |
+| `a138496-record-corroboration` | OEIS A138496 (record values of A003016) sets new records successively at n = 0, 1, 10, 120, 3003, with 3003 the highest — a third-party catalogue corroboration that 3003 is the record multiplicity and 120 the first N>=6… | yes | asserted | `research/summaries/oeis-a138496.md` |
 | `a180058-records-witness-pairs` | OEIS A180058 (smallest integer occurring in exactly n rows of Pascal's triangle) = 2, 6, 120, 3003 for n=1..4, with 3003 = C(14,6)=C(15,5)=C(78,2)=C(3003,1) and 120 = C(10,3)=C(16,2)=C(120,1) — matching this run's… | yes | checked | `research/summaries/oeis-a180058.md` |
 | `aeh-average-normal-order-2` | Abbott-Erdos-Hanson 1974 (Thm 1): the average and normal order of N(t) is 2; explicitly #{t<=x : N(t)>2} = O(sqrt(x)). | yes | asserted | `research/summaries/abbott-erdos-hanson-1974.md` |
 | `bazso-stirling-singmaster-analogue` | Bazso-Mezo-Pinter-Tengely 2023 (arXiv:2311.06080): for Stirling numbers of both kinds, Mi(a) <= 2 + 2 log a / W((1/2)log a) (a>=2; W = Lambert W), hence O(log a/(log log a - log log log a)). For a <= 100000, M2(a)<=2… | **unchecked** | asserted | `research/summaries/singmaster-type-stirling-2023.md` |
@@ -40,7 +41,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `kane-2004-first-improvement` | Kane 2004 (Integers 4 #A07, primary held): N(t) = O(log t · log log log t / (log log t)^2) for t>1, where N(t) counts representations t = C(n,m) (both mirrors, via N(t) <= 2 * #{2m<=n}). Proof: A/B/C decomposition; A(t)… | yes | asserted | `research/summaries/kane-2004-new-bounds.md` |
 | `kane-method-ceiling` | Kane 2007 (Integers 7 #A53 §8) proves his own lattice-point method cannot give better than inverse density O(log_2 t): a randomized construction gives log B = Ω(k^2(1+log(S/k^2))) (S>k^2) or Ω(S), so one cannot exclude… | yes | asserted | `research/summaries/kane-combinations2.md` |
 | `kummer-lucas-class-not-logarithmic` | For a fixed prime p the p-adic equivalence class (v_p(C(n,k)) fixed, C(n,k) mod p fixed) contains exponentially many pairs: for p=2, all C(2^m-1,k) (k=0..2^m-1) are odd ≡1 (mod 2) with v_2=0, giving 2^m members of one… | **unchecked** | proved | `research/notes/kummer-lucas-grounding.md` |
-| `lane-clark-normal-array-bound` | For any normal integer array a=(a,d,f,r,Δ,g) (semi-triangular, increasing, semi-unimodal, multiplicity r, Δ-bounded peak, growth function g), N_a(t) < r(g^{-1}(t)+Δ) for t>=2; if g(x)=τ^{x-c} then N_a(t) < r(log_τ t + c… | yes | asserted | `research/summaries/lane-clark-array-multiplicity.md` |
+| `lane-clark-normal-array-bound` | For any normal integer array a=(a,d,f,r,Δ,g) (semi-triangular, increasing, semi-unimodal, multiplicity r, Δ-bounded peak, growth function g), N_a(t) < r(g^{-1}(t)+Δ) for t>=2; if g(x)=τ^{x-c} then N_a(t) < r(log_τ t + c… | yes | checked | `research/summaries/lane-clark-array-multiplicity.md` |
 | `lind-1968-fibonacci-family-primary` | Lind 1968 (FQ 6(3), 86-93, PRIMARY): via the units of Q(sqrt(5)) (Thm 4: units are ±alpha^n, alpha=(1+sqrt(5))/2; Thm 6: (a+bsqrt(5))/2 is a unit iff a=L_n,b=F_n) and the complete solution x^2-5y^2 = -4 (x=L_{2n+1},… | yes | asserted | `research/summaries/lind-1968-quadratic-field.md` |
 | `matveev-2000-explicit-constants-primary` | Matveev (Izv. Math. 62 (1998) 723-772, homogeneous rational case, Kummer condition): for Lambda = b1 ln(alpha1) + ... + bn ln(alphan), n>=2, integers bj != 0 (bn != 0), Lambda != 0, D = DK/kappa, and Aj >=… | yes | asserted | `research/summaries/matveev-2000-homogeneous-linear-form.md` |
 | `matveev-application-template` | Tiebekabe-Diouf 2021 solve L_n + L_m = 3^a completely (only (4,0,2) and (1,0,1)) using the standard effective pipeline: reduce to a linear form in two logarithms, apply Matveev's explicit lower bound (their Thm 2.9;… | yes | asserted | `research/summaries/matveev-application-linear-forms.md` |
@@ -65,14 +66,14 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `sst-effective-shared-factor` | Saradha-Shorey-Tijdeman 1995 (Acta Arith 68(1) 89-100, Thm 2): for the equal-products equation (1) with gcd(L,M)>1 and L≠M, max(L,M,x,y) ≤ C2 where C2 is effectively computable and depends only on d1, d2 and the ratio… | yes | asserted | `research/summaries/saradha-shorey-tijdeman-equal-products-1995.md` |
 | `sst-equal-length-exception-family` | For the equal-length case (L=M) of (1), the only exceptional family is d1=1, d2=4, x=L+1, y=2, giving (L+1)(L+2)...(2L)=2·6·...·(4L-2) — the C(n,k) dual identity (2L choose L) = product relation that yields infinitely… | yes | asserted | `research/summaries/saradha-shorey-tijdeman-equal-products-1995.md` |
 | `stirling-2023-bound-and-record` | Bazso-Mező-Pinter-Tengely 2023 (arXiv:2311.06080, Debrecen): the number M_i(a) of times an integer a occurs among Stirling numbers of kind i satisfies M_i(a) <= 2 + 2 log a / W((1/2) log a) for a >= 2 (Lambert W), hence… | yes | asserted | `research/summaries/stirling-singmaster-2023.md` |
-| `stoll-tichy-2004-abstract-only` | Stoll-Tichy 2004 (Publ. Math. Debrecen 64, 155-165) concerns alpha*C(x,m)+beta*C(y,n)=gamma, a linear-combination equation, NOT the equality C(x,k1)=C(y,k2). Only the abstract page is held; the PDF download is… | no | asserted | `research/summaries/stoll-2004-binomial-equation.md` |
 
-_9 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_10 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `a138496-record-corroboration` (research/summaries/oeis-a138496.md) — asserted by the source, not proved there and not checked here
 - `aeh-average-normal-order-2` (research/summaries/abbott-erdos-hanson-1974.md) — asserted by the source, not proved there and not checked here
 - `bbw-verification-bound` (research/summaries/blokhuis-brouwer-deweger-collisions.md) — asserted by the source, not proved there and not checked here
 - `bilu-tichy-classification-primary` (research/summaries/bilu-tichy-2000-fxgy.md) — asserted by the source, not proved there and not checked here
@@ -94,7 +95,6 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `jenkins-ab-finite` (research/summaries/jenkins-fulltext.md) — asserted by the source, not proved there and not checked here
 - `kane-2004-first-improvement` (research/summaries/kane-2004-new-bounds.md) — asserted by the source, not proved there and not checked here
 - `kane-method-ceiling` (research/summaries/kane-combinations2.md) — asserted by the source, not proved there and not checked here
-- `lane-clark-normal-array-bound` (research/summaries/lane-clark-array-multiplicity.md) — asserted by the source, not proved there and not checked here
 - `lind-1968-fibonacci-family-primary` (research/summaries/lind-1968-quadratic-field.md) — asserted by the source, not proved there and not checked here
 - `matveev-2000-explicit-constants-primary` (research/summaries/matveev-2000-homogeneous-linear-form.md) — asserted by the source, not proved there and not checked here
 - `matveev-application-template` (research/summaries/matveev-application-linear-forms.md) — asserted by the source, not proved there and not checked here

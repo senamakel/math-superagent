@@ -54,7 +54,9 @@ away.
   ≥4) the conjecture dies that row. Anchor: `research/notes/reduction.md`.
 - **Oracle exists and is checked.** `witnesses.json` (sieve to 400000, 33860
   primes) reproduces problem.md's rows A_1..A_5 exactly; depth 600,
-  `second_entry_always_0_or_2=true`, `min_leading_02_block=2`. Pushed to depth
+  `second_entry_always_0_or_2=true`, `min_leading_02_block=2`; the
+  second-entry sequence also reproduces OEIS A089582's 105 terms exactly
+  (`oeis-A089582-second-entry-catalogue`). Pushed to depth
   1000 (sieve to 2e7, 1.27e6 primes): `first_bad=None`. Anchor:
   `code/out/witnesses.json`, `code/out/blocks_depth1000.json`.
 - **Odlyzko's block lemma — RE-DERIVED AND PROVED by this run.** A leading
@@ -366,7 +368,8 @@ recalled claim is relied on whose hypotheses fail here.
   general-class side, but Eppstein's anti-Gilbreath refutes the broad
   bounded-gap version of exactly that plan. The honest position: the class must
   be carved down (add non-concentration/randomness, or restrict to primes), and
-  this is unresolved.
+  this is unresolved. Colonna's g=4 deletion example sharpens it further (see
+  Ruled out): only gaps ≤ 3 is un-refuted as a plain bounded-gap class.
 - **`research/CLAIMS.md` is a generated ledger with a broken contradictions
   section** (a long claim block gets mis-parsed into spurious "contradicts"
   rows). `research/notes/library-state.md` is the authoritative, hand-maintained
@@ -406,10 +409,18 @@ recalled claim is relied on whose hypotheses fail here.
   `Gilbreath.lean` — `gilbreath_conjecture (k : ℕ+) : d k 0 = 1 := by sorry`,
   no proof formalisation exists publicly; the run's own work (on mathlib4's
   `Nat.dist`) is still to be written. Claim `deepmind-formal-conjectures-gilbreath-lean`.
-- **Library search halted by directive.** FRONTIER.md restored 2026-08-13 from commit db36fc23 (42 rows) after the Gatti-2020 wrapper-page download replaced it with 15 social-media share buttons; **a second collapse happened this cycle (Colonna 2026-08 + DeepMind re-downloads) and was restored from this session's read — the documented URL filter did not run on those rewrite writes, so re-check the candidate count after any multi-pa: max normalized gap a_n = 89 → M = 7, longest
+- **Library search halted by directive.** FRONTIER.md restored 2026-08-13 from
+  commit db36fc23 (42 rows) after the Gatti-2020 wrapper-page download replaced
+  it with 15 social-media share buttons; a second collapse happened this cycle
+  (Colonna 2026-08 + DeepMind re-downloads) and was restored from this session's
+  read — the documented URL filter did not run on those rewrite writes, so
+  re-check the candidate count after any further write before trusting
+  FRONTIER.md. No more downloads until a specific gap is stated that a source
+  could close.
+- **CHT Theorem 1.6 hypothesis check — DONE, holds-here = no.** Computed on
+  sieve 2e7 (1,270,607 primes): max normalized gap a_n = 89 → M = 7, longest
   0-run L = 2, so R_0 = 100·L·8^M = 419,430,400 ≈ 4.2e8 ≫ 1000. The
   no-{0,d}-block hypothesis is not satisfiable at any reachable depth, so the
-  CHT inverse theorem does not bite here. `code/out/cht_hyp_check.captured.txt`, claim `cht-inverse-theorem-hyp-check`. Do NOT re-run the check or re-flag the claim unchecked — the determination is final.
-
-t`, claim `cht-inverse-theorem-hyp-check`. Do NOT re-run the check or re-flag the claim unchecked — the determination is final.
-
+  CHT inverse theorem does not bite here. `code/out/cht_hyp_check.captured.txt`,
+  claim `cht-inverse-theorem-hyp-check`. Do NOT re-run the check or re-flag the
+  claim unchecked — the determination is final.

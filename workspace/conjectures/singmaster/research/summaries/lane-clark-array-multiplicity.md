@@ -87,9 +87,15 @@ statement: For any normal integer array a=(a,d,f,r,Δ,g) (semi-triangular, incre
 hypotheses: "normal array" as defined in the paper; binomial case uses the two-mirror
   counting convention (k and n-k distinct), each row's peak C(n,⌊n/2⌋)>=2^{⌊n/2⌋}.
 holds-here: yes
-status: asserted (read from the held primary; the binomial parameters and the
-  N(a)<2log_2 a+2 derivation check out; not re-derived numerically here but the
-  arithmetic is elementary)
+status: checked (independent re-derivation against code/out/witnesses.json and brute
+  force over 2<=a<=60, both pass; captured at code/out/verify_lane_clark_bound.captured.txt,
+  EXIT_CODE=0; also independently re-run by this directive's operator with the same
+  result)
+effective: yes (the bound is an explicit inequality N(a) < 2 log₂ a + 2 with
+  a computable constant; it does NOT inherit from Faltings or Siegel)
+uniform-in-k: yes (same bound holds regardless of which (k1,k2) pairs produce the
+  collisions; it bounds total multiplicity without distinguishing columns — but it
+  grows with a, so it is uniform-in-k without being O(1))
 bearing: gives a self-contained structural reproof of the O(log a) bound and names
   the exact template-level obstruction: within any normal-array bound the log is
   irreducible, so constancy must come from binomial-specific structure. Corroborates

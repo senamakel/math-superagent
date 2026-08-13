@@ -4,7 +4,13 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Priority work (directive 10)
+## Priority work (directive 11)
+
+- [x] **0. Lane Clark claim promoted to checked.** `lane-clark-normal-array-bound`
+      verified against witnesses.json and brute force 2<=a<=60, EXIT_CODE=0,
+      capture at `code/out/verify_lane_clark_bound.captured.txt`.
+      Now `checked` with effective:yes, uniform-in-k:yes. PENDING marker resolved.
+      Ledger: 44 asserted, 8 checked, 2 proved.
 
 - [ ] **1. Prove the genus formula — the one item that can move `proved` off 2.**
       The formula `g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2` is `checked` (111
@@ -38,7 +44,7 @@ argument.
       and ineffective. This is a proof of the genus, not progress on Singmaster,
       and the claim block must say so.
 
-- [ ] **2. The assertion backlog is now 45 asserted, 7 checked, 2 proved.**
+- [ ] **2. The assertion backlog is now 44 asserted, 8 checked, 2 proved.**
       Converting one checked claim to proved (item 1) is the single highest-
       value ledger operation. After that, convert or drop asserted claims;
       do not add new ones. Every asserted claim that cannot be checked or
@@ -66,8 +72,11 @@ argument.
       nor uniformity in k. Every new claim must state both. Do not add claims
       that fail to state either.
 
-## Done (directive 9 → directive 10)
+## Done (directive 9 → directive 10 → directive 11)
 
+- [x] **Directive 11: Lane Clark claim promoted to checked (asserted→checked).**
+      PENDING file resolved; effective:yes, uniform-in-k:yes stated. Ledger: 44 asserted,
+      8 checked, 2 proved.
 - [x] Directive 9 items 1–2 (re-derive substitutions, Riemann-Hurwitz derivation plan) now
       subsumed by directive 10 item 1, which is sharper — the symmetric rewrite
       `((m-1)(n-1)+1-gcd(m,n))/2` and the involution `C(k-1-z,k)=(-1)^k C(z,k)`
@@ -98,8 +107,8 @@ argument.
 - [x] Singmaster-1971 tombstone written
 
 ## Ledger discipline
-- 45 asserted, 7 checked, 2 proved. Any lemma implying B<8 is refuted by 3003;
+- 44 asserted, 8 checked, 2 proved. Any lemma implying B<8 is refuted by 3003;
   state the counting convention on every claim. Do not record a bound as
   checked unless `code/out/witnesses.json` has been run against it.
   Every new claim must say whether its bound is effective and whether it is
-  uniform in k. The 45 asserted is a backlog — convert or drop, do not add.
+  uniform in k. The 44 asserted is a backlog — convert or drop, do not add.

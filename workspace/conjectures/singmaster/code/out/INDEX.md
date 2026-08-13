@@ -25,6 +25,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `genus_symmetric_form.captured.txt` | _(undescribed)_ |
 | `genus_symmetric_form.md` | _(undescribed)_ |
 | `genus_table.captured.txt` | The deliverable: exact genus table for C(x,k1)=C(y,k2), the Faltings threshold (genus>=2 except {2,3},{2,4}), verified closed forms for the {2,n},{3,n},{4,n} families, and literature cross-checks. |
+| `job3_exitcode_sweep.py` | Job-3 read-only sweep: last line and EXIT_CODE status of every capture in code/out/*.captured.txt; writes code/out/exitcode_sweep.captured.txt listing per-capture last lines, the 9 captures with EXIT_CODE, and the 22 without. Linear in capture size. |
 | `mrstt_leaves_witnesses_open.md` | _(undescribed)_ |
 | `pattern_extend_6_8.captured.txt` | _(undescribed)_ |
 | `pattern_extend_7_10.captured.txt` | _(undescribed)_ |

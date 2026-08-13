@@ -6,8 +6,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 5 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A003016 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A003016 - OEIS] [3] A003016 Number of occurrences of n as an entry in rows <= n of… |
-| 5 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][53] [Format][54] [Style Sheet][55] [Transforms][56] [Superseeker][57] [Recents][58] [The OEIS Community][59] Maintained by [The OEIS Foundation Inc.][60] Last modified August 13 04:40… |
+| 6 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A003016 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A003016 - OEIS] [3] A003016 Number of occurrences of n as an entry in rows <= n of… |
+| 6 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][53] [Format][54] [Style Sheet][55] [Transforms][56] [Superseeker][57] [Recents][58] [The OEIS Community][59] Maintained by [The OEIS Foundation Inc.][60] Last modified August 13 04:40… |
 | 4 | https://github.com/teorth/erdosproblems/blob/main/README.md#table | Erdős problem database | Amer. Math. Monthly, (1974), 256-261. Thomas Bloom, [Problem 849][18], Erdős Problems. Erdős problems database contributors, [Erdős problem database][19], see no. 849. Daniel Kane, [New Bounds on the… |
 | 4 | https://www.jstor.org/stable/2316907 | 2316907 | as a binomial coefficient?", *[American Mathematical Monthly][30]*, **78**(4): 385– 386, [doi][31]: [10.2307/2316907][32], [JSTOR][33] [2316907][34], [MR][35] [1536288][36]. - [Singmaster, D.][4]… |
 | 3 | https://www.jstor.org/stable/2319526 | 2319526 | as a binomial coefficient", *[American Mathematical Monthly][30]*, **81**(3): 256– 261, [doi][31]: [10.2307/2319526][41], [JSTOR][33] [2319526][42], [MR][35] [0335283][43]. - [Kane, Daniel M.][13]… |

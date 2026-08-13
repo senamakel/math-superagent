@@ -1,0 +1,93 @@
+Total captures: 31
+
+code/out/brute.captured.txt: last line = '   C(14,8) = 3003'
+    EXIT_CODE = ABSENT
+code/out/check_witnesses_vs_mrstt.captured.txt: last line = 'that MRSTT explicitly leaves open.'
+    EXIT_CODE = ABSENT
+code/out/count_multiplicity.captured.txt: last line = '[count_multiplicity] wrote code/out/witnesses.json'
+    EXIT_CODE = ABSENT
+code/out/diag_families.captured.txt: last line = 'halt 1'
+    EXIT_CODE = ABSENT
+code/out/famA2.captured.txt: last line = 'halt 1'
+    EXIT_CODE = ABSENT
+code/out/famB.captured.txt: last line = 'halt 1'
+    EXIT_CODE = ABSENT
+code/out/famC.captured.txt: last line = 'halt 1'
+    EXIT_CODE = ABSENT
+code/out/famD.captured.txt: last line = 'halt 1'
+    EXIT_CODE = ABSENT
+code/out/fam_seqs.captured.txt: last line = 'code/pattern/fam_seqs.py EXIT_CODE=0 CAPTURED=code/out/fam_seqs.captured.txt'
+    EXIT_CODE = 0
+code/out/family_sequences.captured.txt: last line = 'All done.'
+    EXIT_CODE = ABSENT
+code/out/genus_spotcheck_new_pairs.captured.txt: last line = 'EXIT_CODE=0'
+    EXIT_CODE = 0
+code/out/genus_symmetric_form.captured.txt: last line = 'parity: (m-1)(n-1)+1-gcd(m,n) even for all 2<=m<n<=200? True'
+    EXIT_CODE = ABSENT
+code/out/genus_table.captured.txt: last line = 'installed and the check errored.'
+    EXIT_CODE = ABSENT
+code/out/pattern_extend_6_8.captured.txt: last line = 'Auf Wiedersehen.'
+    EXIT_CODE = ABSENT
+code/out/pattern_extend_7_10.captured.txt: last line = 'Auf Wiedersehen.'
+    EXIT_CODE = ABSENT
+code/out/pattern_extend_k2_6.captured.txt: last line = 'Auf Wiedersehen.'
+    EXIT_CODE = ABSENT
+code/out/pattern_fam_seqs.captured.txt: last line = '<EMPTY FILE>'
+    EXIT_CODE = ABSENT
+code/out/pattern_genus_residual.captured.txt: last line = 'm=11: 12->-10'
+    EXIT_CODE = ABSENT
+code/out/pattern_print_family.captured.txt: last line = 'ValueError: Exceeds the limit (4300 digits) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit'
+    EXIT_CODE = ABSENT
+code/out/pattern_sage_check_k2_6.captured.txt: last line = "NameError: name 'PolynomialRing' is not defined"
+    EXIT_CODE = ABSENT
+code/out/pattern_slope.captured.txt: last line = '11: too few pts [(12, 55)]'
+    EXIT_CODE = ABSENT
+code/out/pattern_verify_genus_formula.captured.txt: last line = 'All checks done.  Formula: g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2'
+    EXIT_CODE = ABSENT
+code/out/print_family.captured.txt: last line = 'code/pattern/print_family.py EXIT_CODE=0 CAPTURED=code/out/print_family.captured.txt'
+    EXIT_CODE = 0
+code/out/rep_pairs.captured.txt: last line = 'code/effectivegenus/rep_pairs.py EXIT_CODE=0 CAPTURED=code/out/rep_pairs.captured.txt'
+    EXIT_CODE = 0
+code/out/test_slope_across_rows.captured.txt: last line = 'code/genus/test_slope_across_rows.py EXIT_CODE=0 CAPTURED=code/out/test_slope_across_rows.captured.txt'
+    EXIT_CODE = 0
+code/out/test_slope_hypothesis.captured.txt: last line = 'code/genus/test_slope_hypothesis.py EXIT_CODE=0 CAPTURED=code/out/test_slope_hypothesis.captured.txt'
+    EXIT_CODE = 0
+code/out/verify_family.captured.txt: last line = '  j=4: n=4894 k=1868  value=459011554099867796553131978...  (reps (n+1,k+1),(n,k+2))'
+    EXIT_CODE = ABSENT
+code/out/verify_k2_5_row.captured.txt: last line = 'code/genus/verify_k2_5_row.py EXIT_CODE=0 CAPTURED=code/out/verify_k2_5_row.captured.txt'
+    EXIT_CODE = 0
+code/out/verify_lane_clark_bound.captured.txt: last line = 'EXIT_CODE=0'
+    EXIT_CODE = 0
+code/out/verify_mrstt_witnesses.captured.txt: last line = 'ALL CHECKS PASSED in 1.51 s (exact integer arithmetic throughout)'
+    EXIT_CODE = ABSENT
+code/out/verify_superelliptic_formula.captured.txt: last line = 'code/genus/verify_superelliptic_formula.py EXIT_CODE=0 CAPTURED=code/out/verify_superelliptic_formula.captured.txt'
+    EXIT_CODE = 0
+
+Captures with an EXIT_CODE line (9): fam_seqs.captured.txt, genus_spotcheck_new_pairs.captured.txt, print_family.captured.txt, rep_pairs.captured.txt, test_slope_across_rows.captured.txt, test_slope_hypothesis.captured.txt, verify_k2_5_row.captured.txt, verify_lane_clark_bound.captured.txt, verify_superelliptic_formula.captured.txt
+
+Distinct EXIT_CODE values: {'0': 9}
+
+Captures with NO EXIT_CODE line (22):
+  - brute.captured.txt
+  - check_witnesses_vs_mrstt.captured.txt
+  - count_multiplicity.captured.txt
+  - diag_families.captured.txt
+  - famA2.captured.txt
+  - famB.captured.txt
+  - famC.captured.txt
+  - famD.captured.txt
+  - family_sequences.captured.txt
+  - genus_symmetric_form.captured.txt
+  - genus_table.captured.txt
+  - pattern_extend_6_8.captured.txt
+  - pattern_extend_7_10.captured.txt
+  - pattern_extend_k2_6.captured.txt
+  - pattern_fam_seqs.captured.txt
+  - pattern_genus_residual.captured.txt
+  - pattern_print_family.captured.txt
+  - pattern_sage_check_k2_6.captured.txt
+  - pattern_slope.captured.txt
+  - pattern_verify_genus_formula.captured.txt
+  - verify_family.captured.txt
+  - verify_mrstt_witnesses.captured.txt
+EXIT_CODE=0

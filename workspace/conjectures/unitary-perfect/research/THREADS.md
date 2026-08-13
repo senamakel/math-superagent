@@ -4,9 +4,11 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[a-ge-8-bound]] | Does the combined bound a ≥ 8 survive independent verification, and can the equality case a = 8 be eliminated? | open | unitary-perfect-2-adic-budget, unitary-perfect-lower-bound-on-a, heven-two-mod-four | 1. Independent verification: recompute a, ω(odd) from brute.py oracle for all five; confirm Wall 1988 theorem from the scanned PDF is stated for new examples… |
+| [[divisor-level-phi4p]] | Can one prove that for all sufficiently large odd primes p in P_3 (the 3-Higgs primes), some prime divisor of Φ_{4p}(2) is NOT 3-Higgs — a divisor-level… | open | heven-prime-case-reduction, heven-two-mod-four, heven-thinness-not-finiteness, aurifeuillean-split | (1) compute ω(Φ_{4p}(2)) and the v2 distribution of its prime divisors for a stated range of primes p to test Conjecture 29 empirically; (2) test the mod-16… |
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
-- `divisor-level-phi4p` has no thread block, so nothing can say what it is chasing or what it rests on

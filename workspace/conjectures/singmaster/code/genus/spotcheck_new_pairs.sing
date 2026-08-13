@@ -6,6 +6,7 @@
 // Formula values (computed independently):
 //   g(11,17)=((10*16)+1-1)/2=80   g(11,20)=((10*19)+1-1)/2=95
 //   g(12,20)=((11*19)+1-4)/2=103
+// Note: 'gcd' is a reserved Singular builtin, so GCD is a manual Euclid proc.
 LIB "normal.lib";
 ring r=0,(x,y),dp;
 proc CB(xx, k)
@@ -15,9 +16,15 @@ proc CB(xx, k)
   for(i=0;i<k;i++){ p = p*(xx-i); }
   return(p/factorial(k));
 }
+proc GCDint(int a, int b)
+{
+  int aa=a; int bb=b; int t;
+  while (bb != 0) { t = aa mod bb; aa = bb; bb = t; }
+  return(aa);
+}
 // g(m,n) = ((m-1)*(n-1)+1-gcd(m,n))/2  -- closed form under test
 proc GF(int m, int n)
-{ return( ((m-1)*(n-1)+1-gcd(m,n))/2 ); }
+{ return( ((m-1)*(n-1)+1-GCDint(m,n)) div 2 ); }
 
 int m, n;
 list L = list(list(11,17), list(11,20), list(12,20));
@@ -28,9 +35,10 @@ for(i=1; i<=size(L); i=i+1)
   poly F = CB(x,m) - CB(y,n);
   ideal I = F;
   int g = genus(I);
-  "PAIR m=", m, " n=", n, "  SINGULAR_GENUS=", g, "  FORMULA=", GF(m,n),
-        "  ", (g==GF(m,n)) ? "PASS" : "FAIL";
-  // genus() redefines inside loop; re-kill int to stay clean
-  kill g;
+  int f = GF(m,n);
+  string verdict = "FAIL";
+  if (g == f) { verdict = "PASS"; }
+  "PAIR m=", m, " n=", n, "  SINGULAR_GENUS=", g, "  FORMULA=", f, "  ", verdict;
+  kill g; kill f;
 }
 quit;

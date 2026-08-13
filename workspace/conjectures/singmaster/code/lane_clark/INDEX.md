@@ -4,4 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `verify_lane_clark_bound.py` | Checks Lane Clark 2010 (INTEGERS 10 #A14) normal-array binomial bound N(a) < 2 log2 a + 2 against code/out/witnesses.json and brute force over small a — the verification oracle for claim lane-clark-normal-array-bound. |
+| `verify_lane_clark_bound.py` | Checks Lane Clark 2010 (INTEGERS 10 #A14) normal-array binomial bound N(a) < 2 log2 a + 2 against code/out/witnesses.json and brute force over small a — the verification oracle for claim lane-clark-normal-array-bound. Capture at code/out/verify_lane_clark_bound.captured.txt, EXIT_CODE=0, all checks pass. Claim now checked; effective:yes, uniform-in-k:yes. |

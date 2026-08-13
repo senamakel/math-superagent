@@ -1,5 +1,25 @@
 # The divisor-level problem for Φ_{4p}(2) — where the analytic target lives
 
+```thread
+question: Can one prove that for all sufficiently large odd primes p in P_3
+  (the 3-Higgs primes), some prime divisor of Φ_{4p}(2) is NOT 3-Higgs — a
+  divisor-level statement that would close H_even and hence the
+  Subbarao–Warren reduction?
+status: open
+rests-on: heven-prime-case-reduction, heven-two-mod-four,
+  heven-thinness-not-finiteness, aurifeuillean-split
+blocked-by: No divisor-level transference theorem exists (per Maciejewski
+  §5.3/§6): standard effective Chebotarev even under GRH controls varying
+  primes in ranges, not the prime support of a single fixed cyclotomic value.
+  The log-mass vs reciprocal-mass gap is exponential (2^(2p)/p). Conjectures
+  23, 24, 29 in the paper are the candidate theorems; none is proved.
+next: (1) compute ω(Φ_{4p}(2)) and the v2 distribution of its prime divisors
+  for a stated range of primes p to test Conjecture 29 empirically; (2) test
+  the mod-16 equidistribution on the known prime factors of the open
+  candidates; (3) look for a congruence class of p where an r ≡ 1 (mod 16)
+  divisor can be proved to exist by algebraic factorization.
+```
+
 ## The question
 
 Maciejewski's reduction (arXiv:2605.20475, Theorems 7, 21, §5.3) leaves

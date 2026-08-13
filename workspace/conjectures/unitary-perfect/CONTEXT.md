@@ -60,16 +60,28 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   Aurifeuillean split `2^(2p)+1 = L_p·M_p` with `L_p = 2^p − 2^((p+1)/2) + 1`,
   `M_p = 2^p + 2^((p+1)/2) + 1`. All details in
   `research/notes/heven-and-3-higgs-structure.md`.
-- **(sourced) Frei 1978 (via OEIS A002827 comment):** a UPN not divisible by 3
-  has `2^m | n` with `m ≥ 144`, ≥ 144 distinct odd prime factors, and
-  `n > 10^440`. OEIS-recorded; primary full text not yet in the library
-  (Frei's journal article is paywalled/digitised as TOC only). Directly bears
-  on the open "is 3 | n forced?" question.
+- **(sourced, unverified) Frei 1978 (via OEIS A002827 comment only):** a UPN not
+  divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 distinct odd prime
+  factors, and `n > 10^440`. The workspace previously held a bogus 8 KB TOC
+  page filed under Frei's name — deleted per directive. Primary text not yet
+  in the library; the correct URL is
+  `https://www.e-periodica.ch/digbib/view?pid=edm-001:1978:33#105` (Heft 4,
+  pp. 95–96). Directly bears on the open "is 3 | n forced?" question.
 - **(computed/checked) Lower bound on `a`:** any sixth UPN has
   `a ≥ ω(odd) − 1 ≥ 8`, so `2^8 | n`. Wall (1988) (≥ 9 odd components for a
   new example) + budget corollary. Equality `a = 8` forces 9 odd components,
   all `≡ 1 (mod 4)` — a rigid candidate class.
   `research/notes/lower-bound-on-a.md`, `code/out/wall1988_budget_lower_bound.captured.txt`.
+- **Equality case `a = 8` is under active attack** (`research/threads/a-ge-8-bound.md`,
+  blocked-by none). Seed is `2^8+1 = 257 = F_3`. Two elimination routes, both
+  unverified: **Route A** — if the paper's reduction forces `a ∈ H_even`, then
+  Prop. 5 `H_even ⊆ {m ≡ 2 (mod 4)}` kills `a = 8 ≡ 0 (mod 4)`, lifting the
+  bound to `a ≥ 10`; the open point is whether `a ∈ H_even` follows or only
+  something weaker. **Route B** — `257−1 = 2^8`, `v2 = 8 > 3`, so 257 is not
+  3-Higgs; kills `a = 8` if the seed factor's prime divisors must be 3-Higgs
+  (the paper's H definition). Routes may be equivalent; check the reduction
+  step against the full text before asserting either. If Route A holds, state
+  `a ≥ 10`, not `a ≥ 8`.
 - **(OEIS finding)** The verified H_even members `2,6,10,18,26,30,46,62,82,122`
   match **no** OEIS sequence — no catalogued closed form; structure comes from
   the problem.
@@ -111,16 +123,35 @@ content above is this run's own, from its notes and oracle.
 
 ## Contradictions
 
-None identified yet.
+- **Encyclopedia of Mathematics "Unitary divisor"** (fetched
+  `research/sources/encyclopedia-of-math-unitary-divisor.full.md`) writes
+  `90 = 2·3^3·5`. That is wrong: `90 = 2·3^2·5`, as in Subbarao–Warren 1966,
+  OEIS A002827, Wikipedia, and the workspace oracle. The EoM entry has a
+  typo in the exponent of 3. Do not cite EoM for the factorization of 90.
 
 ## Gaps
 
+- **The run's current first step (live, not done):** independent exact
+  verification of `H_even ∩ [2,1200]` against the paper's Theorem 8 set
+  `{2,6,10,18,26,30,46,62,82,122}`, per `code/H_EVEN_VERIFY_SPEC.md`.
+  Requires `code/lib/higgs.py` (sigma_star, memoized is_3_higgs, exact
+  factorize), `code/heven_sieve.py` (B2: witness sieve to 10^9 across 28
+  cores with the pow(2,2400,r) filter and ord_r(2) computation) and
+  `code/heven_classify.py` (B1/B3/B4: 246 Higgs-cubefree k cross-check, full
+  factorisation of survivors, killed-with-witness output). Phase A worked
+  examples (A1 sigma oracle + budget table, A2 Higgs on primes ≤31 with 17
+  non-Higgs/31 Higgs, A3 cyclotomic + Aurifeuillean identities and the m=2426
+  / Filter-N examples) must pass before Phase B. Spec is the yardstick; not
+  yet built, so nothing here is verified.
 - **Frei 1978 full text** (Über unitar perfekte Zahlen, Elem. Math. 33 (1978)
-  95–96). The OEIS-recorded theorem (UPN not divisible by 3 has m ≥ 144,
-  ω ≥ 144, n > 10^440) is load-bearing for the "is 3 | n forced?" question
-  and is unverified against the primary text. The e-periodica digitisation
-  only serves the journal TOC; need another source (DOI 10.5169/seals-…,
-  or a scan). `research/REQUESTS.md` row pending.
+  95–96). The previous file at `research/sources/frei-1978-unitar-perfekte-zahlen.full.md`
+  was a table-of-contents page (8 KB, "Über die Flächeninhalte ebener Schnitte
+  konvexer Körper") — deleted and replaced with a tombstone. Correct e-periodica
+  URL for Heft 4: `https://www.e-periodica.ch/digbib/view?pid=edm-001:1978:33#105`.
+  The OEIS-recorded theorem (UPN not divisible by 3 has m ≥ 144, ω ≥ 144,
+  n > 10^440) is load-bearing for the "is 3 | n forced?" question and is
+  unverified against the primary text. Either refetch from the correct URL or
+  find an alternate source.
 - **Wall 1975 full text** (The fifth unitary perfect number, CMB 18 (1975)
   115–122) is paywalled at Cambridge. The fifth UPN's construction is carried
   by OEIS/Wikipedia/Wall 1987/1988/Maciejewski, but the primary proof of

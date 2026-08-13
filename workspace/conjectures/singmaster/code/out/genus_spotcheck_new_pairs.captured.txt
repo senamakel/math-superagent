@@ -30,11 +30,14 @@ FB Mathematik der Universitaet, D-67653 Kaiserslautern        \  Debian 1:4.3.1-
 // ** loaded /usr/bin/../share/singular/LIB/sing.lib (4.2.0.2,May_2021)
 // ** loaded /usr/bin/../share/singular/LIB/polylib.lib (4.2.0.0,Dec_2020)
 // ** loaded /usr/bin/../share/singular/LIB/general.lib (4.1.2.0,Feb_2019)
-// ** int division with `/`: use `div` instead in line >> return( ((m-1)*(n-1)+1-gcd(m,n))/2 ); <<
-// ** int division with `/`: use `div` instead in line >> return( ((m-1)*(n-1)+1-gcd(m,n))/2 ); <<
-PAIR m= 11  n= 17   SINGULAR_GENUS= 80   FORMULA= 80    1
-   ? error occurred in or before code/genus/spotcheck_new_pairs.sing line 36: ` return( ((m-1)*(n-1)+1-gcd(m,n))/2 ); `
-   ? last reserved name was `gcd`
-   skipping text from `"PASS" : "FAIL"`
+PAIR m= 11  n= 17   SINGULAR_GENUS= 80   FORMULA= 80    PASS
+// ** redefining F (  poly F = CB(x,m) - CB(y,n);) code/genus/spotcheck_new_pairs.sing:42
+// ** redefining I (  ideal I = F;) code/genus/spotcheck_new_pairs.sing:43
+// ** redefining verdict (  string verdict = "FAIL";) code/genus/spotcheck_new_pairs.sing:46
+PAIR m= 11  n= 20   SINGULAR_GENUS= 95   FORMULA= 95    PASS
+// ** redefining F (  poly F = CB(x,m) - CB(y,n);) code/genus/spotcheck_new_pairs.sing:42
+// ** redefining I (  ideal I = F;) code/genus/spotcheck_new_pairs.sing:43
+// ** redefining verdict (  string verdict = "FAIL";) code/genus/spotcheck_new_pairs.sing:46
+PAIR m= 12  n= 20   SINGULAR_GENUS= 103   FORMULA= 103    PASS
 Auf Wiedersehen.
 EXIT_CODE=0

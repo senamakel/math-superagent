@@ -14,6 +14,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `full_grid.sing` | Full grid 2<=k1,k2<=12 (Singular). Output matches Sage. |
 | `genus_table.py` | **Library**: verified genus table + closed forms for the {2,n},{3,n},{4,n} families; the deliverable's source of exact genus values. |
 | `small_column_genus_forms.md` | _(undescribed)_ |
+| `spotcheck_new_pairs.sing` | Job-2 spot check of the closed genus formula g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2 at three pairs absent from genus_table.py TABLE and all captures: (11,17), (11,20), (12,20). Same incantation as full_grid.sing (ring r=0,(x,y),dp; poly CB; degree-max(m,n) curve; normal.lib genus). All three PASS with Singular genus 80/95/103, cross-verified by an independent Python computation of the formula. |
 | `test_range.sing` | Mid-range probe: (4..10,3), (5..9,4), and (k,k) diagonal (shows reducible → nonsense genus, excluded). |
 | `test_singular.sing` | First Singular test (failed: `genus` not in `sing.lib`). Kept as the dead-end record. |
 | `test_singular2.sing` | Correct Singular recipe: load `normal.lib`, call `genus(ideal)`. Reproduces cubic=1, quartic=3, (3,2)=1. |

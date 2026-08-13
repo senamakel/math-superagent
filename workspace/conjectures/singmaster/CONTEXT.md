@@ -15,21 +15,24 @@ of 8 here is 4 half-triangle. `computed`, matches `code/out/witnesses.json`.
 
 Each marked with evidence class and a link.
 
-- **Lane Clark 2010 (INTEGERS 10 #A14) — the normal-array template that produces every log bound. `sourced`** (full text now held at
+- **Lane Clark 2010 (INTEGERS 10 #A14) — the normal-array template that produces every log bound. `checked`** (full text held at
   `research/sources/lane-clark-array-multiplicity.full.md`, summary +
   claim `lane-clark-normal-array-bound`). A general theorem on "normal"
   triangular arrays gives `N_a(t) < r(g⁻¹(t)+Δ)` (Theorem 2); for binomials
   (`d=n`, `f=⌊n/2⌋`, `g=2^x`, `r=2` mirrors, `Δ=1`) this exactly reproduces
-  Singmaster's `N(a) < 2 log₂ a + 2`. The paper's own Examples 5,6 construct
-  normal arrays achieving `Θ(t^{1/s})` and `Θ(log_s t)` infinitely often, so
-  the `O(log t)` shape is **provably best-possible within the template** —
-  a constant bound must come from binomial-specific structure beyond the
-  normal-array axioms. This is the same message as Kane/MRSTT/effective-curves
+  Singmaster's `N(a) < 2 log₂ a + 2`. **Effective: yes** (explicit computable
+  constant). **Uniform-in-k: yes** (bound holds regardless of which columns
+  produce the collisions — but it grows with a, so it is uniform-in-k without
+  being O(1)). Verified against `code/out/witnesses.json` and brute force
+  2<=a<=60, both pass (EXIT_CODE=0, capture at
+  `code/out/verify_lane_clark_bound.captured.txt`). The paper's own Examples
+  5,6 construct normal arrays achieving `Θ(t^{1/s})` and `Θ(log_s t)` infinitely
+  often, so the `O(log t)` shape is **provably best-possible within the
+  template** — a constant bound must come from binomial-specific structure beyond
+  the normal-array axioms. This is the same message as Kane/MRSTT/effective-curves
   (uniformity needs structure), now stated as a theorem about the general
   framework. Corroborates `best-unconditional-bound`,
   `singmaster-bounds-history`, and the uniformity argument of `effective-methods-wall`.
-  Status: sourced; verification against witnesses left for the tool region (the
-  librarian role does not run programs).
 
 - **Witness set / the falsifier. `computed`, 3 independent routes.**
   `3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6)` (+4 mirrors), so `N(3003)=8`.
@@ -181,6 +184,21 @@ Each marked with evidence class and a link.
   the (3,6) solution was the first cubic=cubic. Kiss 1988:
   `C(x,2)=C(y,p)` finite for p prime.
 
+- **Yamada 2020 boundary necessary condition — the only quantitative hold on
+  the MRSTT-open edge. `sourced`** (arXiv:2002.07043 Thm 1.1; summary
+  `research/summaries/binom-collisions-necessary-conditions-2020.md`, claim
+  `yamada-boundary-necessary-condition`, `asserted`). If
+  `C(2n+δ,n-m)=C(2n+l,n-k)` (δ∈{0,1}, 0≤m<k<n/2, m≤0.735k) then
+  `l > n(1.3132 log₂(2n) − 2.00271)`, and for n large `l > (cn/log n)^{40/21}`
+  (any c<0.68943). Method: largest-prime-factor of the two products is
+  `≤ k₀=2(k+l)−δ−1` (Lemma 2.3) + prime-gap argument. Gives finiteness of
+  solutions with `m≤ηk` and `l<(cn/log n)^{40/21}` for any η<1, c<0.68943;
+  Cramér would give `exp(c₂√n)`. Edge equations like `C(2n,n)=C(y,2)` are
+  stated as far beyond present techniques. Per-configuration, NOT uniform —
+  but it is the one result this library holds that quantifies the boundary
+  regime MRSTT leaves open, so any boundary attack should measure itself
+  against it.
+
 - **Verification bound.** `sourced` from secondary attestation + Singmaster FQ 1975
   (held): no `N(a)>=8` for `a<2^23` (originally Singmaster 1971, re-stated in FQ
   1975); extended to `2^48` (Singmaster FQ 1975); Blokhuis–Brouwer–de Weger
@@ -232,6 +250,29 @@ Each marked with evidence class and a link.
   (Kane 2007 §8): a randomized construction proves his method cannot give
   better than `O(log_2 t)`; one cannot exclude low-density t with his
   technique. So a different mechanism is needed for constancy.
+
+- **Three newer speculatives — proposed, NOT yet refuted and NOT yet
+  established; carried so nobody re-derives them.** All three are approach
+  files in `research/approaches/` with no capture and no check yet; treat each
+  as an open idea with a stated first computation, not as a result.
+  (a) `binary-lucas-submask.md` — Lucas mod 2: every representation of an odd
+  `a` must satisfy `k ⊆ n` bitwise; odd-only Pascal triangle is sparse; claim
+  "no odd value appears more than 8 times" would give N(a)≤10 for odd a. First
+  step: enumerate odd coefficients `n<=2^16` and check max multiplicity against
+  the witnesses. (b) `consecutive-block-merge.md` — from `C(x,k1)=C(y,k2)`
+  cross-multiply to a product of consecutive blocks; use Sylvester/Erdős–
+  Selfridge first-power-prime structure to force `max(k1,k2)≤6` outside the
+  Pell family. First step: factor the witness 3003's block products
+  (15·14·13·12·11·6 = 14·13·12·11·10·9 checks; the (2,5) block split
+  78·77·60 = 15·14·13·12·11) and tabulate Sylvester primes. (c)
+  `sylvester-prime-machine.md` — Sylvester's theorem (product of k consecutive
+  integers > k has a prime > k to the first power) applied to `C(n,k)=a` gives
+  each nontrivial representation a prime `p_i > k_i` with `v_{p_i}(a)=1`;
+  the attempt to force distinctness is already refuted by the 3003 overlap
+  (primes 7,11,13 serve k=2,5,6 representations together), so state explicitly
+  that the block-merge/Sylvester engine has not been shown to beat the
+  overlap for small k. All three: any bound they yield must be run against
+  `code/out/witnesses.json` and none is yet (`asserted` at best).
 
 - **MRSTT's non-archimedean method has a hard ceiling.** `sourced` (Prop 1.12):
   requires N,M = O(exp(log^{3/2-eps} P)); even under RH this cannot be relaxed.
@@ -335,17 +376,7 @@ Pintér–Tengely 2023) and the OEIS row-count convention `a059233-rowcount-half
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
   shape-of-the-boundary, not as a claim about large-t behavior.
-- **LEDGER DISCIPLINE: one row per claim in research/CLAIMS.md; the table
-  currently holds ~45 rows, the large majority `asserted` (source's word),
-  about a dozen `checked` (this run's computation agrees or a primary confirms),
-  and exactly two `proved` (erdos-selfridge-no-perfect-power, 1975 primary;
-  kummer-lucas-class-not-logarithmic, refutation of the p-adic line).** Do not
-  cite the tallies precisely — they churn as claim blocks land. The discipline
-  that matters and is invariant: every asserted bound must be run against
-  `code/out/witnesses.json`; any lemma implying B<8 is refuted by 3003 (8
-  occurrences); state the counting convention on every claim; and every new
-  claim must say whether its bound is effective and whether it is uniform in k
-  (the genus formula is neither and its claim block says so). See TASKS.md.
+- **LEDGER DISCIPLINE: 44 asserted, 8 checked, 2 proved.**
 - **PROCESS (resolved): the five formerly-uncaptured programs now have captures.**
   `test_slope_across_rows.py` (EXIT_CODE=0), `test_slope_hypothesis.py` (0),
   `effectivegenus/rep_pairs.py` (0), `genus/verify_k2_5_row.py` (0) all run
