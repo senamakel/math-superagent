@@ -177,6 +177,43 @@ fn the_first_attempt_opens_with_an_oracle_run_of_its_own() {
 }
 
 #[test]
+fn the_salvage_task_asks_for_one_executed_result_and_nothing_else() {
+    // Five consecutive attempts across two live runs ended
+    // `[goals failed: run timed out]` with no artifact, because the attempt was
+    // exactly one delegation. The salvage exists to make a dead planner cost one
+    // child rather than the whole attempt, so it must ask for execution and must
+    // not invite a second plan.
+    let prompt = super::salvage_prompt("Compute S(10^8).");
+    assert!(prompt.contains("Compute S(10^8)."), "{prompt}");
+    assert!(prompt.contains("code/out/"), "{prompt}");
+    assert!(prompt.contains("never been run"), "{prompt}");
+    assert!(prompt.contains("Do not plan"), "{prompt}");
+    // A salvage that starts something open-ended repeats the failure it exists
+    // to absorb.
+    assert!(
+        prompt.contains("cannot finish in this run"),
+        "{prompt}"
+    );
+    // Being blocked is a reportable outcome; silence is not.
+    assert!(prompt.contains("what blocks it"), "{prompt}");
+}
+
+#[test]
+fn a_failed_planner_still_reports_what_the_salvage_executed() {
+    // The report the judge and reflection score must carry both halves: the
+    // failure, so the loop can see the planner died, and the salvage output, so
+    // an attempt that executed something is not scored as though it produced
+    // nothing.
+    let report = format!(
+        "[goals failed: {}]\n\nSalvaged by direct execution:\n{}",
+        "run timed out: subagent run timed out", "ran code/out/brute.captured.txt; matched 3/3"
+    );
+    assert!(report.contains("goals failed"), "{report}");
+    assert!(report.contains("Salvaged by direct execution"), "{report}");
+    assert!(report.contains("matched 3/3"), "{report}");
+}
+
+#[test]
 fn an_unreadable_judge_reply_never_throws_an_attempt_away() {
     use super::{Verdict, judge_verdict};
     // The expensive outcome needs the explicit word, in the same spirit as an
