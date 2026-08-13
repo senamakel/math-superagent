@@ -75,11 +75,14 @@ Each marked with evidence class and a link.
   `2<=m<=exp(log^{2/3+eps} n)`, i.e. `m<=log t/log_2^{3/2-eps} t` — that is
   **exactly what they leave open**. Interior multiplicity is 0,1,2,4 — never 3
   (Remark 1.11).
-  **Effectiveness of threshold NOT YET VERIFIED against full text.**
-  The run says "effective: yes (constants too large for numerical use —
-  Remark 1.7)" but the directive flags this as load-bearing and it must be
-  confirmed against the paper's own statement. If ineffective, the theorem
-  yields no numerical B even in the interior. **PENDING — task 1.**
+  **Effectiveness of threshold CONFIRMED from full text.** Remark 1.7 states
+  verbatim: "The implied quantitative bounds in the hypothesis 't is sufficiently
+  large depending on ε' are effective; however, we have made no attempt whatsoever
+  to optimize them in this paper, and will likely be too large to be of use in
+  numerical verification of Singmaster's conjecture in their current form." So the
+  interior theorem IS effective (a computable threshold exists) but with an
+  unoptimized, likely astronomically large constant — NOT non-constructive.
+  Uniform-in-k: yes over the interior; no over the boundary.
   **Exact statement with effective/yes, uniform-in-k/yes (over interior) now
   in `research/approaches/mrstt-exact-statement.md`.**
 
@@ -215,8 +218,14 @@ not re-derived here.
   3003 (8 occurrences). State counting convention on every claim. See TASKS.md.
 - Effective height bound with a **computed** constant for a specific (k1,k2)
   family (Baker / linear forms in logarithms) — the realistic partial-result
-  target. Sources say it is triple-exponential and too large to use; nobody has
-  made a constant explicit for the small-`k` family. This is the live thread.
+  target. The constant-supplier is now primary: **Matveev 2000** (Izv. Math. 62:4,
+  held) gives the explicit constants `ln|Λ| > −112·2ⁿC₂C′₀D²ωln(2eB)` (Thm 2.2)
+  and the rational/integer case with 2ⁿ improvement (Thm 2.3, K=Q — applies to
+  binomial products since αⱼ are rationals/primes, D=ρ=1). Claim
+  `matveev-2000-explicit-constants`. Binding constraints: the bound grows with
+  heights (hence with k), so it is a per-pair constant, not uniform; the run's
+  own CONTEXT gap "nobody has made a constant explicit" is now a *computation to
+  do* (apply Matveev Thm 2.3 to one small-(k1,k2) family), not a missing source.
 - The exact uniform-in-k obstruction: what precisely a general effective Siegel
   or effective Schmidt subspace theorem would need, and why it is out of reach —
   stating this cleanly is itself a deliverable (GOAL.md allows a proof that a

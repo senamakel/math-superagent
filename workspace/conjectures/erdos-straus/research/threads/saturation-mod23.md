@@ -10,7 +10,7 @@ Either exhibit families for the 14 missing residues, or prove an obstruction.
 question: Can the Salez seven-equation generator produce polynomial identity
   families for all 23 residue classes t mod 23 (where t = (n−1)/840,
   n = 840·23·k + (840s+1) with s = t)?
-status: open
+status: deferred
 rests-on: subprogression-families-verified-and-coverage,
   subprogression-coverage-positive-limit,
   seven-equations-complete

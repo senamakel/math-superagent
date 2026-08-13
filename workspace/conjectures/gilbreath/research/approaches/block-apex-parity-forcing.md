@@ -64,23 +64,33 @@ killed-by: >
   apex never enter.
 
   (2) "If no worst-case constant blocks beyond small size occur, regeneration
-  follows" — the classification premise is not in the literature, and the run's
-  own data contradicts it as stated. NO leading {0,2} block of the prime
-  triangle to depth 1000 (161 live rows) is whole-block constant beyond k=1
-  (b=2, trivially [2,2]): every block with b≥7 is mixed. But constant blocks
-  DO occur in the 2-then-odds class: Eppstein 2011's construction builds
-  arbitrarily long constant-zero filled triangles (his "big empty triangle"
-  of zeros to the right of a column of 2s) — so "constant blocks cannot form
-  from 2-then-odds" is outright false as a class statement, and Muney 2026
-  shows the valid-extension machinery that would classify realizable patterns
-  is a global, order-sensitive, folding-map criterion — as hard as the
-  conjecture, not a usable filter. No source characterizes which {0,2} block
-  patterns arise from 2-then-odds sequences; the connection the approach
-  postulates between mod-4 constraints and block formation is precisely the
-  part CHT 2026 say they CANNOT do: Lemma 3.10 (Odlyzko's mod-4 linearization,
-  the identically-named source of the "mod-4 constraint" idea) gives only
-  parity, is useless against {0,d}-blocks with ODD d, and in this run was
-  already refuted as a lift to exact values (mod-lift-obstruction, |2-6| mod 8).
+  follows" — the classification premise is not in the literature, and the
+  class-level version is outright false: constant blocks DO occur in the
+  2-then-odds class, since Eppstein 2011's construction builds arbitrarily
+  long constant-zero filled triangles (his "big empty triangle" of zeros to
+  the right of a column of 2s). So "constant blocks cannot form from
+  2-then-odds" fails as a class statement, and Muney 2026 shows the
+  valid-extension machinery that would classify realizable patterns is a
+  global, order-sensitive, folding-map criterion — as hard as the conjecture,
+  not a usable filter. No source characterizes which {0,2} block patterns
+  arise from 2-then-odds sequences; the connection the approach postulates
+  between mod-4 constraints and block formation is precisely the part CHT 2026
+  say they CANNOT do: Lemma 3.10 (Odlyzko's mod-4 linearization, the
+  identically-named source of the "mod-4 constraint" idea) gives only parity,
+  is useless against {0,d}-blocks with ODD d, and in this run was already
+  refuted as a lift to exact values (mod-lift-obstruction, |2-6| mod 8).
+
+  Empirical check (queued, NOT executed by this role — code/block_apex/
+  check_constant_blocks.py): recompute whole-block constancy, longest 0/2
+  runs, and terminal constant suffixes for the 161 live rows from a fresh
+  exact sieve. What IS verified on disk and by hand: rows A_1..A_5
+  (witnesses.json first-12 entries) have blocks [2,2] (constant, k=1),
+  [0,2,2,2,2,2,2], [2,0,0,0,0,0,2], [2,0,0,0,0,2,2,2,2,0,0], and
+  [2,0,0,0,2,0,0,0,2,0,2] — all mixed for k>=2; and blocks_depth1000.json's
+  record (b, s, intruder per row; min b=2 at k=1 only, min b=7 for k>=2) is
+  consistent with non-constancy but does NOT store full block patterns, so
+  "no constant block of length >= 3 in 161 live rows" is a queued check, not
+  an established fact. The refutation below does not depend on it.
 
   (3) The approach is not merely unsupported — it is the refuted
   rule90/regeneration problem in disguise. CHT Theorem 1.6 isolates the ONLY

@@ -138,8 +138,21 @@ disk), or asserted-by-source.
   restatement alone. `mathworld-egyptian-fraction.full.md` is an encyclopedia
   entry: orientation-only, never a load-bearing anchor.
 
+- **Coverage density triangulated** (checked, operator directive 5): three
+  independent routes agree. restricted to `extended_subprogression.full.txt`
+  (88 classes, moduli 11..37) the operator's CRT computation gives
+  4552829/4816253 = 0.945305, the run's `exact_union_density.py` gives
+  0.945305 by factoring over K mod 6 branches, and the run's
+  `independent_density_check.py` gives 0.94530 by direct empirical count over
+  K < 3·10⁶ (converging 0.92800 → 0.94180 → 0.94462 → 0.94514 → 0.94530).
+  The apparent discrepancy between 0.9453 and 0.9611 is entirely input scope:
+  the former reads one capture file, the latter all three. The density method
+  is sound — stop re-verifying it. (`code/out/coverage_triangulated.md`.)
+- **Saturation data** (checked, operator directive 5):
+  `aggregate_subprogression.py` M=11 covered only 3/11 residues (missing
+  0,1,2,3,4,6,8,9); M=33 is best at 12/33. No modulus is near saturation.
+  M=11 is the cheapest test of whether any modulus can be saturated at all.
 - **Subprogression families** (checked, operator directive 4): 1451 parametric
-  identity families for n ≡ 1 (mod 840), each n = a·k + b with b ≡ 1 (mod 840)
   and a = 840m for m ∈ {11,13,17,19,22,23,26,29,31,33,34,37,38,39,41,43}.
   Every family is an exact polynomial identity in ℤ[k] (operator-verified).
   123 distinct residue classes (m, s) of t = (n−1)/840. Coverage:
@@ -149,9 +162,12 @@ disk), or asserted-by-source.
   are the weakest. **The uncovered density factors over independent prime groups
   as a product of (p−c_p)/p, every factor strictly positive, so it is strictly
   positive for any finite set of families and can reach zero only if some modulus
-  m has all m residues realised. 23 is the smallest with room (9/23, missing 14).
-  The saturation question for modulus 23 is now the whole problem: either exhibit
-  families for the 14 missing residues, or prove an obstruction.**
+  m has all m residues realised. 23 is the smallest prime with room (9/23,
+  missing 14), but M=11 is the cheapest modulus to test overall, and it has
+  only 3/11 residues covered (missing 0,1,2,3,4,6,8,9). The saturation question
+  for modulus 11 is now the priority question: can the Salez seven-equation
+  generator realise those 8 missing residues mod 11, or is there an obstruction?
+  (Directive 5 — M=11 is the cheapest test.)**
 
 ## Ruled out
 
@@ -264,15 +280,15 @@ yields an already-covered sub-progression of an open class. Ventas
 
 ## Gaps
 
-- **Saturation of modulus 23** (operator directive 4). The Salez seven-equation
-  generator currently covers 9 of the 23 residue classes t mod 23 (t =
-  (n−1)/840). The missing 14 are [0,1,2,3,4,6,7,8,10,11,14,16,21,22]. The
-  uncovered density factors as a product of (p−c_p)/p over independent prime
-  groups, and the factor for modulus 23 is 14/23. If no further residues of 23
-  can be realised by the generator, that factor stays positive forever and the
-  uncovered density is bounded away from zero. The finite question: can the
-  generator realise all 23 residues? Either exhibit families for the missing 14,
-  or prove an obstruction that stops some residue being realisable at all.
+- **Saturation of modulus 11** (directive 5). The Salez seven-equation
+  generator currently covers only 3 of 11 residue classes t mod 11
+  (t = (n−1)/840), missing [0,1,2,3,4,6,8,9]. The uncovered density factors
+  as a product of (p−c_p)/p over independent prime groups, strictly positive
+  at every finite stage. It reaches zero only if some modulus m has all m
+  residues realised. M=11 is the smallest modulus and the cheapest test of
+  whether any modulus can be saturated at all. Either exhibit families for
+  the 8 missing residues, or prove an obstruction forbidding some of them.
+  (Modulus 23, previously the focus, is deferred in favor of M=11 per dir 5.)
 - **Bulk promote asserted → checked** (operator directive 4). The 1451 families
   are all exact ℤ[k] polynomial identities, provable mechanically by the
   cleared-denominator test. Run `is_identity` on every one in bulk and flip

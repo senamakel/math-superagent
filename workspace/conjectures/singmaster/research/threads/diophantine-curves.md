@@ -12,7 +12,15 @@ or name the obstruction that makes a uniform effective bound impossible?
 - For each fixed `(k1,k2)` the equation is an algebraic curve; genus grows with the
   parameters, Faltings (genus>1) and Siegel (integral points even at genus 1) give
   finiteness for each pair — **but with no count computable in the parameters**
-  (ineffective). This is the uniform-in-`k` obstruction.
+  (ineffective). This is the uniform-in-`k` obstruction. Now **primary-sourced**:
+  BST 1999 Thm 1.1/1.2 (Zakopane proceedings, held via de Gruyter preview) — "For
+  the remaining case gcd(m,n)=1 no general effective method is available... Siegel's
+  result... is, unfortunately, ineffective... Both results are ineffective."
+- **BST 1999 Theorem 2.2 (primary, independent of the computation): the genus
+  classification.** For binomial pairs (Λ = k2!/k1! > 0), the only non-diagonal
+  genus-1 pairs are (2,3) and (2,4); every other distinct pair has genus ≥ 2. This
+  confirms at proof level the run's computed genus grid (Singular == Sage,
+  2≤k1≤12, 2≤k2≤9) — the Faltings threshold is exact: only (2,3),(2,4) need Siegel.
 - Jenkins (arXiv:1411.4111) reformulated `C(x,y)=C(x-a,y+b)` as the curve
   `prod_{r=0}^{a+b-1}(x-y-r) = prod_{p=0}^{a-1}(x-p) prod_{q=1}^{b}(y+q)`.
   He proved finiteness for `a != b` (via non-quadratic limiting ratio, not via genus),
@@ -25,57 +33,58 @@ or name the obstruction that makes a uniform effective bound impossible?
 
 ## What a bigger run would settle
 
-Computing `genus(k1,k2)` for the concrete family, and finding where it crosses 1, is
-a finite algebraic-geometry computation (Gröbner basis / singularity count) — it does
-NOT scale with any problem bound and so is the honest part of the Diophantine program.
-That is the deliverable GOAL.md explicitly lists ("genus of C(x,k1)=C(y,k2) computed
-as a function of k1,k2, threshold above which Faltings applies made explicit").
+The genus deliverable is DONE for 2≤k1≤12, 2≤k2≤9 (Singular == Sage; see CONTEXT.md
+"Genus grid" and `code/out/genus_table.captured.txt`), and BST 1999 Thm 2.2 now gives a
+primary-source proof that only (2,3),(2,4) are genus 1. What remains is the
+secondary deliverable: an effective height bound with a **computed** constant for a
+specific small-`(k1,k2)` family, using Matveev 2000's explicit constants
+(`matveev-2000-explicit-constants`) as the primary constant-supplier.
 
 ## Blocked by
 
 - Linking genus growth to a uniform bound requires the ineffective constants to be
   removed — precisely the "finiteness is not a bound" trap.
-- An effective Baker-type height bound is triple-exponential and too large to use.
+- An effective Baker-type height bound is triple-exponential and too large to use;
+  Matveev's constants are explicit but depend on heights (growing with k) and on
+  B = max|bⱼ|Aⱼ/Aₙ — per-pair only, not uniform.
 
 ## Next
 
-1. **SOURCE INTEGRITY (just-executed):** `research/sources/singmaster-1971.full.md`
-   was the Fermat's Library comments page, not Singmaster's paper. Claims quoting
-   it as primary are demoted. The O(log a) bound is attested by secondary sources
-   (Singmaster FQ 1975, AEH 1974, MRSTT). Do not quote a constant from the
-   truncated Fermat's comments.
-2. **MRSTT exact statement (just-executed):** Written at
-   `research/approaches/mrstt-exact-statement.md` with effective: yes,
-   uniform-in-k: yes (over interior), and the exact boundary gap:
-   `2 ≤ m ≤ (log t)/(log log t)^{3/2-ε}`.
-   This is the deliverable the directive demanded; all further work now operates
-   against this stated gap.
-3. Have tool_builder compute `genus(k1,k2)` for small pairs symbolically (sympy):
-   defined curve, singularity count via Groebner of the partials, genus-degree formula.
-   Target: reproduce de Weger (3,4)=genus 3 and Jenkins (2,2)=genus 3 as checks.
-4. Scholar has confirmed (from full texts): de Weger's (3,4) genus-3 / elliptic
-   double-cover, Jenkins' (2,2) genus-3, and that genus>1 is ineffective in (k1,k2).
-5. Newest evidence (see summaries): Kane 2007 §8 proves his method cannot reach a
-   constant; MRSTT §1.3 proves the equidistribution barrier exp(log^{3/2-eps} P)
-   (unrelaxable even under RH); BBW 2017 gives the n<=10^6 / t<=10^60 verification.
-6. The genus computation therefore delivers the Faltings threshold but never a
-   uniform bound — name that obstruction when reporting.
-7. **LEDGER:** Run every asserted bound against `code/out/witnesses.json`.
-   asserted=15 checked=4 proved=0. Any lemma implying B<8 is refuted by 3003.
-   State counting convention on every one.
+1. **MRSTT effectiveness RESOLVED (scholar, full-text):** Remark 1.7 states the
+   "t sufficiently large" thresholds ARE effective (computable, unoptimized, likely
+   astronomically large). Interior theorem yields a numerical B in principle;
+   boundary `2 ≤ m ≤ (log t)/(log₂t)^{3/2−ε}` remains the whole open gap.
+2. **Primary BST obtained:** `research/sources/number-theory-in-progress-vol1-preview.full.md`
+   (de Gruyter Zakopane vol. 1 preview, pp. 11–26) holds BST 1999 readable; the
+   author-hosted `best1.ps` is raw PostScript (not readable). The ineffectivity
+   quote is now primary-sourced.
+3. Genus deliverable: report the computed grid + BST 1999 Thm 2.2 confirmation +
+   the explicit statement that genus>1 gives per-pair finiteness only, never a
+   uniform bound.
+4. Effective-bound deliverable: for a specific small (k1,k2) (e.g. (2,p) hyperelliptic
+   family or the k2=2 row) apply Matveev 2000 Thm 2.3 constants to produce a
+   computed explicit bound; state its (lack of) uniformity in k.
+5. **LEDGER:** Every asserted bound must be run against `code/out/witnesses.json`.
+   Any lemma implying B<8 is refuted by 3003. State counting convention on every claim.
 
 ```thread
 question: Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound
   on N(a), or only per-pair finiteness (ineffective)?
-status: live — genus deliverable open (not yet computed); each analysis shows the
-  uniform bound is blocked by ineffectiveness of Faltings/Siegel/BST.
+status: live — genus deliverable DONE (grid computed, Singular==Sage, 2<=k1<=12,
+  2<=k2<=9; BST 1999 Thm 2.2 primary-confirms only (2,3),(2,4) have genus 1); the
+  uniform bound is blocked by ineffectiveness of Faltings/Siegel/BST (primary-
+  sourced via BST 1999 Thm 1.1); effective-bound path is Matveev 2000 with
+  explicit but per-pair (non-uniform) constants.
 rests-on: jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit,
   bbw-verification-bound, mrstt-interior-nothree, hpt-bilu-tichy-exceptional-classification,
-  bilu-tichy-method-ineffective-uniformity-wall, kummer-lucas-class-not-logarithmic
+  bilu-tichy-method-ineffective-uniformity-wall, kummer-lucas-class-not-logarithmic,
+  bst-fixed-kl-ineffective-primary, bst-genus-classification-matches-grid,
+  matveev-2000-explicit-constants
 blocked-by: uniform bound needs effective Siegel or effective Schmidt subspace
   theorem (out of reach); Kane's method provably capped; MRSTT's interior method
-  capped at exp(log^{3/2-eps} P).
-next: run sympy genus(k1,k2) for small pairs; report Faltings threshold + explicit
-  statement that it is not a uniform bound.
+  capped at exp(log^{3/2-eps} P); BST finiteness ineffective (primary).
+next: report genus grid + Faltings threshold as the honest deliverable; compute a
+  Matveev-2000-based explicit constant for one small (k1,k2) family, stating its
+  non-uniformity.
 ```
 

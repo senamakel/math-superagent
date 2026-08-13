@@ -40,8 +40,7 @@ anchor: research/sources/odlyzko-1993-iterated-differences-latex-source.full.md;
 ## The current frontier (2026)
 
 ```claim
-id: cht-inverse-theorem
-statement: (Chase–Hunter–Tao 2026, Theorem 1.6) If a_n ≤ 2^M, no 0-block of length L, and no {0,d}-block with 2^{M−m}<d≤2^{M−m+1} of length ≥ R_m−3R_{m−1} at depth ≤ 2R_{m−1} (R_m ≥ 4R_{m−1}, R_0 ≥ 100L·8^M), then a^{(N−1,1)} ∈ {0,1}. I.e. the ONLY ways an array with small initial data can fail to decay are: long zero-blocks, or very long shallow {0,d}-blocks (d≥2).
+id: cht-inverse-theorem-library If a_n ≤ 2^M, no 0-block of length L, and no {0,d}-block with 2^{M−m}<d≤2^{M−m+1} of length ≥ R_m−3R_{m−1} at depth ≤ 2R_{m−1} (R_m ≥ 4R_{m−1}, R_0 ≥ 100L·8^M), then a^{(N−1,1)} ∈ {0,1}. I.e. the ONLY ways an array with small initial data can fail to decay are: long zero-blocks, or very long shallow {0,d}-blocks (d≥2).
 hypotheses: non-negative integer initial data with Cramér-type size bound (a_n ≤ 2^M ≤ log^O(1) N in the intended application); L ~ log^10 N.
 holds-here: for the primes, hypothesis (i) follows from Cramér's conjecture; (ii),(iii) are unproved though heuristically plausible — this is exactly the run's "consumption vs regeneration" obstruction, restated.
 status: sourced (arXiv:2607.08712, submitted 9 Jul 2026, 28pp, authors Z. Chase, Z. Hunter, T. Tao)
@@ -96,6 +95,7 @@ anchor: research/summaries/oeis-A000232-bfile-block-lengths.md; code/out/witness
 
 ## What could not be obtained
 
+- **Fine, N. J., "Binomial Coefficients Modulo a Prime", Amer. Math. Monthly 54 (1947) 589–592** — the original paper proving the Lucas correspondence (the mod-2/Sierpiński structure). Paywalled (JSTOR); no clean free PDF found; Scribd is a user-uploaded summary, not primary. Content is fully covered by Granville's e-survey chapters (held) and MathWorld/ProofWiki. Recorded so nobody re-searches.
 - **Proth 1878, Sur la série des nombres premiers** (Nouv. Corresp. Math. 4:236–240): the GDZ scan is JavaScript-rendered; both the resolver URL and the gdz.sub.uni-goettingen.de ID returned only stub pages. The Deutsche Digitale Bibliothek metadata record confirms the item (pages 236–240, public domain) but the page images need a JS browser. Two independent reader accounts (Arias de Reyna 2020; Chase 2024 §7) cover its content: Proth states the property, gives no proof, Catalan's note calls it a postulate.
 - **Guy, Unsolved Problems in Number Theory, §A10** (Springer): paywalled book; content is reflected in Odlyzko 1993 and MathWorld.
 - **Sierpiński, A Selection of Problems in the Theory of Numbers, pp. 34–35**: paywalled; the block observation is reported in Odlyzko 1993 (ref [Sier]).
@@ -218,6 +218,18 @@ holds-here: yes as a model statement — the digit-sum/Pascal structure is the s
 status: sourced (full PDF landed in sources/ross-gilbreath-decay-constants-zenodo-2026.full.md; c_4 hand-checked to ~7 digits by this run; c_5, c_6 asserted-by-source with deposited certificates, not re-derived); empirical laws empirically-claimed only.
 bearing: theorem-shaped targets for the inventor (digit-sensitive comparison (14); slope-one propagation); consistency constraint on any claimed regeneration mechanism; corroborates the Rule-90 microscope.
 anchor: research/sources/ross-gilbreath-decay-constants-zenodo-2026.full.md; research/summaries/ross-gilbreath-decay-constants-zenodo-2026.md
+```
+
+## New holdings this cycle (librarian, this build)
+
+```claim
+id: granville-lucas-kummer-sierpinski
+statement: (Granville, "Arithmetic properties of binomial coefficients", dynamic e-survey, chs. "Elementary Number Theory" + "Pascal's triangle via cellular automata") Kummer: the exponent of p in binom(n,m) equals the number of carries adding m and n−m base p (from Legendre's formula v_p(n!)=(n−s_p(n))/(p−1)); Lucas' theorem improves via Anton–Stickelberger–Hensel. Mod 2: Pascal's triangle is self-similar; rows 2^j are all 1s; row 2^j+r is two copies of row r with zeros between; Glaisher: row n has 2^{s_2(n)} odd entries; subtriangles of Pascal mod p obey the same addition law.
+hypotheses: none beyond binomial-coefficient arithmetic in Z/p.
+holds-here: yes — this is the primary reference for the run's Rule-90 interior dynamics (halved {0,2} entries evolve under XOR = Pascal mod 2) and for the 2^{s_2(i)} digit-sum statistic (Glaisher) that Ross 2026 finds modulating the decay constants.
+status: sourced (Granville's own page; the original Fine 1947 AMM 54:589-592 proving the Lucas correspondence is paywalled — recorded unobtainable as clean PDF; Wikipedia/CHT agree).
+bearing: anchors the Sierpinski kernel / binom(2^j,m)≡1 mod 2 fact used by the rule90-regeneration thread and the mod-4 linearization in a primary reference, not just Wikipedia.
+anchor: research/sources/granville-binomial-cellular-automata.full.md; research/summaries/granville-binomial-lucas-elementary.md (the elementary chapter is carried in full by its summary — no separate .full.md exists for it)
 ```
 
 ## Angled coverage summary

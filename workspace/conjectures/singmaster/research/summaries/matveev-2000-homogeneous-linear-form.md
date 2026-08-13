@@ -1,119 +1,122 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/matveev-2000-homogeneous-linear-form.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Matveev 2000 — explicit lower bound for a homogeneous rational linear form in logarithms of algebraic numbers (PRIMARY)
 
-<!-- source: https://www.mathnet.ru/php/getFT.phtml?jrnid=im&paperid=190&what=fullteng&option_lang=eng | converted from PDF -->
+Source: E.M. Matveev, "An explicit lower bound for a homogeneous rational
+linear form in logarithms of algebraic numbers", Izvestiya RAN Ser. Mat. 62:4
+(1998) 81–136; English translation in Izvestiya: Mathematics 62:4 (1998)
+723–772. Downloaded the **full English text** from mathnet.ru:
+https://www.mathnet.ru/php/getFT.phtml?jrnid=im&paperid=190&what=fullteng&option_lang=eng
+Stored at `research/sources/matveev-2000-homogeneous-linear-form.full.md`.
+(Note: the same mathnet entry "paperid=190" is the 1998 volume 62 paper; the
+follow-up "II" is Izv. Math. 64:6 (2000) 1217–1269 — the run's effective-bound
+uses the 1998 theorem, which is the one practitioners cite as Matveev 2000.)
 
-## What it claims
+This is the **primary authority for the explicit constants** of the
+linear-forms-in-logarithms lower bound that GOAL.md's "effective height bound
+with a computed constant (Baker / linear forms in logarithms)" partial result
+requires. The library already holds a worked application template
+(`research/summaries/matveev-application-linear-forms.md`, Tiebekabe–Diouf
+2021) which quoted a Theorem 2.9 (Matveev) without the full constants; this
+primary now supplies the constants themselves.
 
-Abstract. In this paper we study linear forms Λ = b1 ln α1 + ··· + bn ln αn with
-rational integer coeﬃcients bj (bn ̸=0, n ⩾ 2), where the αj are algebraic numbers
-satisfying the so-called strong independence condition. In standard notation, we
-prove an explicit estimate of the form
+## The theorem (homogeneous rational case, Kummer condition)
 
-|Λ| > exp(
-−CnDn+2Ωln(
-CnDn+2Ω
-′) ln(eB))
-.
+Linear form Λ = b1 ln α1 + ⋯ + bn ln αn, n ≥ 2, rational integers bj, bn ≠ 0,
+Λ ≠ 0. K an algebraic number field of degree DK over Q embedded in C (κ = 1 if
+K ⊆ R, else 2; D = DK/κ). α1,…,αn ∈ K* satisfy the **Kummer (strong
+independence) condition** (1.5):
 
-Its novel feature is that it contains no factors of the form n
-n.
+    [K(√α1,…,√αn) : K] = 2^n.
 
-§ 1. Introduction
+Let h(αj) be the absolute logarithmic height, ln αj arbitrary fixed values of
+the logarithms, ρ = rank_R{ln α1,…,ln αn}. Take Aj ≥ max{h(αj), |ln αj|/D,
+1/(DC1)} (Theorem 2.2's choice (2.13)), Ω = A1⋯An, A1 ≤ ⋯ ≤ An,
+B = max{ |bj|Aj/An : 1 ≤ j ≤ n } (2.14), and define C1, C2 by (2.4):
 
-Consider a ﬁeld K,[K : Q]= DK, and numbers β0,...,βn ∈ K, α1,...,αn ∈
-K∗ = K\{0}. In the general case, the theory of linear forms in logarithms studies
-expressions of the form
- Λ= β0 + β1 ln α1 + ··· + βn ln αn, (1.1)
+    C1 = (1 + e^{-2n}/148)(n ln 2 + 2)(1 + 1/n) C3,   C3 = n/ρ,
+    C2 = 4(n + 1)(6 + 5/(n ln 2 + 2)) e^{2n} n^{1/2} C3,     [exact form per (2.4)]
 
-and in the so-called homogeneous rational case it studies expressions of the form
+with C′0 = ln(C2 D ω/(C1 An)) (2.15), ω = Ω. Then (Theorem 2.2, inequality
+(2.16)):
 
-Λ= b1 ln α1 + ··· + bn ln αn, (1.2)
+    ln|Λ| > −112 · 2^n · C2 · C′0 · D² · ω · ln(2eB).
 
-where bj = βj ∈ Z.
-We always assume that Λ ̸=0 and βn ̸=0. We have n ⩾ 1 in the general case
-and n ⩾ 2 in the homogeneous rational case.
-This theme has recently been thoroughly investigated both because of its numer-
-ous applications and because it has yielded fruitful ideas, connected mainly with
-the names of Gelfond, who laid down the…
+Theorem 2.1 gives the more precise but more technical version (2.12):
+ln|Λ| > −91·2^n·C2·C0·D²·W0·ω, with C0, W0 satisfying explicit conditions
+(2.6),(2.8),(2.9)–(2.11) — quotable from the full text if the run's bound needs
+the sharper form.
 
-|Λ|…
+Theorem 2.3: for K = Q with Aj ≥ h(αj), E = 1, C3 = n, the same bounds hold
+with ϑ = 1; and for positive rational integers αj with Aj = ln αj the constant
+ϑ improves to (1/2)(1 − 1/(n·e^{n+1})), strengthening the bound by a factor
+~2^n.
 
-## Statements it makes
+The n-dependent factor in (2.16) satisfies (Remark after 2.16)
 
-Theorem 2.1. Suppose that
- Dω min{C0,W0}
-2C3 ⩾ 1, (2.9)
+    112·2^n·C2·ϑ^n/(C1^n e^{−n})·(C3 exp(C3)Ee/(2ϑ))^ρ < 2^15 (ne/(2ρ))^ρ ρ(2e^{2ρ} ln 2)^n / n^{1/2}.
 
-Theorem 2.2. Suppose that ϑ =1, E =1, C3 = n/ρ,
+## What the run must know about hypotheses before applying
 
-Theorem 2.3. Suppose that K = Q, Aj ⩾ h(αj), 1 ⩽ j ⩽ n, E =1, C3 = n.
-Let C0, W0, B, C′
-0 satisfy (2.6), (2.8), (2.14), (2.15).Then:
-(i) the inequalities (2.12), (2.16) hold with ϑ =1;
-(ii) if αj ∈ Z, αj > 0 and Aj =ln αj , 1 ⩽ j ⩽ n, then the inequali-
-ties (2.12), (2.16) hold with ϑ = 1
-2 (1 − 1/nen+1);
-(iii) for this ϑ we have Dω/(C1Anϑ) >E1/C1 in (2.6).
+1. **Kummer condition (1.5) is required for these constants.** Without it the
+   constant picks up an extra factor n^n and B must be the weaker (1.9)
+   (Matveev §1, p. 725–726). Any application to a curve family must either
+   verify (1.5) or quote the weaker bound. This is a verifiable algebraic
+   condition: for the numbers α appearing in the linear form attached to
+   C(x,k1)=C(y,k2), test whether adjoining √α1,…,√αn to K gives degree 2^n.
+2. The heights are **absolute logarithmic heights h(α)_log**; other authors
+   (incl. Tiebekabe–Diouf's Theorem 2.9) use exponential A_j, forcing ln A_j in
+   place of A_j — the mathnet primary's Remark after (1.4) flags exactly this.
+   When quoting the bound, state which convention.
+3. ρ = rank of the span of {ln α1,…,ln αn} over the reals; κ = 1 (K real) or
+   2; D = DK/κ. Kummer condition constrains which α's can be taken together.
 
-Lemma 3.1. Let fj(z, m) and gj(z, m)(with 1 ⩽ j ⩽ n − 1 and m =0, 1,... ) be
-functions that satisfy the relations
+## Bearing for the run
 
-Lemma 3.2. (i) If V⊆ W,then h(¯α, V) ⩽ h(¯α, W).
-(ii) h(¯α, rW)= rh(¯α, W), r> 0.
-(iii) h(¯α, V + W)= h(¯α, V)+ h(¯α, W).
-(iv) h(¯α, {¯v}) =0, ¯v ∈ R
-n.
-(v) h(¯α, W +¯v)= h(¯α, W), ¯v ∈ R
-n.
-(vi) h(¯α, W) is independent of the choice of the ﬁeld containing the numbers α.
+- This is the concrete engine for an effective per-pair bound: solutions of
+  C(x,k1)=C(y,k2) with x,y large force a small (non-zero) linear form in
+  logarithms; Matveev's (2.16) with the explicit C1,C2 turns "small" into an
+  explicit upper bound on x,y — a computable number, not a citation. The
+  constants are big but concrete; tool_builder can evaluate them for a chosen
+  (k1,k2).
+- It sharpens the run's "effective but astronomical" record: the
+  "triple-exponential" description in CONTEXT.md is exactly the size of these
+  Matveev-type bounds; the primary now lets the run state the shape of the
+  bound instead of quoting the folklore.
+- **It does not touch uniformity in k**: C1,C2,C′0,ω all grow with n (number
+  of logarithms) and D and the heights, which for binomial curves grow with
+  k1,k2. So Matveev + BST is effective per pair, non-uniform in the pair —
+  the exact ineffectivity-vs-uniformity wall, now with the explicit constants
+  on the effective side of the ledger.
 
-Lemma 4.1. Let LS,j be of the form (4.10). Then the system of equations (4.12)
-has no non-zero solution η(¯l ).
+```claim
+id: matveev-2000-explicit-constants-primary
+statement: Matveev (Izv. Math. 62 (1998) 723-772, homogeneous rational case,
+  Kummer condition): for Lambda = b1 ln(alpha1) + ... + bn ln(alphan), n>=2,
+  integers bj != 0 (bn != 0), Lambda != 0, D = DK/kappa, and
+  Aj >= max{h(alpha_j), |ln alpha_j|/D, 1/(D C1)}, Omega = prod Aj,
+  B = max{|bj| Aj/An}, with C1 = (1+e^{-2n}/148)(n ln 2 + 2)(1+1/n) C3,
+  C3 = n/rho, C2 = 4(n+1)(6+5/(n ln 2+2)) e^{2n} sqrt(n) C3,
+  C'_0 = ln(C2 D Omega/(C1 An)):  ln|Lambda| > -112 2^n C2 C'_0 D^2 Omega ln(2eB).
+  Requires [K(sqrt(alpha1),...,sqrt(alphan)):K] = 2^n; without it the constant
+  gains an extra n^n factor and B weakens to max|bj| (Matveev §1).
+hypotheses: Kummer condition (1.5); h = absolute logarithmic height; B as (2.14);
+  the constants are quotable from the held full text (Theorem 2.2, (2.4), (2.16)).
+holds-here: yes as the engine for per-pair effective bounds on C(x,k1)=C(y,k2)
+  solutions; the Kummer check and the height/degree bookkeeping are the gates
+  the run must verify before quoting a number. It is per-pair and not uniform
+  in (k1,k2) since C1,C2,D,Omega grow with n and the heights.
+status: asserted-by-source (PRIMARY full text held at
+  research/sources/matveev-2000-homogeneous-linear-form.full.md)
+bearing: the explicit constants that turn "effective in principle" into a
+  computable bound for a chosen (k1,k2); the uniformity wall remains, now
+  quantified on the effective side.
+anchor: research/summaries/matveev-2000-homogeneous-linear-form.md
+```
 
-Lemma 5.1. Let W0 ⊆ R
-n be a symmetric convex body, let ¯v ∈ C
-n be a vector
-(¯v ̸= ¯0), and let η> 0.Put ρ = rankR{Re ¯v, Im ¯v},
+## Relationship to the other Matveev sources in the library
 
-Lemma 6.1 ([20], Theorem 3). Given vectors
-
-Lemma 6.2. Suppose that α0,...,αn are non-zero algebraic numbers, K =
-Q(α0,...,αn), DK =[K : Q].Put K0 = Q(α0), D0 =[K0 : Q],and
-Kj = Kj−1(αj), Dj =[Kj : Kj−1], 1 ⩽ j ⩽ n.Then
-
-Lemma 7.1. Suppose that H, L0,N ∈ N,M0,L−1 ∈ N0,L0 = L−1H + H1,
-0 ⩽ H1 ⩽ H.Let d0 be the lowest common denominator of the numbers
-
-Lemma 7.2. In the notation of Lemma 7.1 we have
-
-Lemma 7.3. Suppose that γ ̸=0, H ∈ N, H> 1, z0 ⩾ max
-{|z|,H}
-.Then
-
-Lemma 9.1. Let (X , T ) be an object as above, with X⊆ R, z/∈X , z ∈ R.Sup-
-pose that the standard decomposition (9.1) of Q(ζ) satisﬁes (9.2), each factor qτ (ζ)
-is even or odd, and its roots form an arithmetic progression with some diﬀerence
-δτ > 0. (If uτ =1,weput δτ = |z|.) Put also
-
-Lemma 9.2. Let f (z, ζ) be an analytic function of ζ deﬁned for some ﬁxed z ∈ R.
-Consider (X , T ) with z/∈X such that the corresponding Q(ζ) satisﬁes the assump-
-tions of Lemma 9.1.Let δ0, r, U , T be as in (9.1)–(9.3), and let z0 be as in
-Lemma 9.1. Suppose that for some positive a0, a1, a2, a3, a4 and for some z1 ⩾ |z|,
-f (z, ζ) satisﬁes for |ζ| ⩽ R the inequality
-
-Lemma 10.1. Suppose that ϕ(z) is a convex decreasing function, X ′, X ′′, Y ′
-
-Lemma 10.2. For the above set (X , T ) we have r =1/2.In part 1(j =1) we
-have δ0 =2 for X = Xs (s> 0),and δ0 =1 otherwise. In part 2(j =2) we
-have δ0 =1. In both cases (j =1, 2), U satisﬁes (9.9) with a0, a1, a2, a3 given
-in (10.5).
-
-Lemma 13.1. Suppose that Λ is given by (1.2), Aj ⩾ h(αj ), 1 ⩽ j ⩽ n, An > 0,
-Λ/(2πi) /∈ Z, B is given by (2.14).Then
-
-Lemma 14.1. Let α1,...,αn be multiplicatively independent rational numbers.
-Then they can be re-indexed in such a way that
-
-Lemma 14.2. (i) If C1 is given by (14.1),then
-
-*[digest of a 92483 character source; every section, statement, and proof in full at `research/sources/matveev-2000-homogeneous-linear-form.full.md`]*
+- `research/sources/matveev-application-linear-forms.full.md` (Tiebekabe–Diouf
+  2021): a worked pipeline (Matveev + Dujella–Pethő continued fractions) on a
+  specific equation; its Theorem 2.9 is a transcription of this primary's
+  bound. Use the primary for constants.
+- The Bertin paper in the de Gruyter volume preview also cites Matveev for the
+  small-logarithmic-height problem. Not needed further.

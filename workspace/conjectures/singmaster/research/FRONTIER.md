@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://terrytao.wordpress.com/category/mathematics/mathnt/ | math.NT | - [Applets][7] - [Subscribe to feed][8] # Singmaster’s conjecture in the interior of Pascal’s triangle 7 June, 2021 in [math.NT][9], [paper][10] \| Tags: [binomial coefficients][11], [exponential… |
 | 1 | https://terrytao.wordpress.com/category/paper/ | paper | [Applets][7] - [Subscribe to feed][8] # Singmaster’s conjecture in the interior of Pascal’s triangle 7 June, 2021 in [math.NT][9], [paper][10] \| Tags: [binomial coefficients][11], [exponential… |
 
-_161 further candidates not shown; they are cited once each._
+_163 further candidates not shown; they are cited once each._

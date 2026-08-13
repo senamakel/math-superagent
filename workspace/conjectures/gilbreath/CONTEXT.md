@@ -9,7 +9,7 @@ Budget 10,000 tokens (this file ~2100, so well under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state: library sufficient, oracle built, search halted.** Live thread:
+**Run state: library sufficient, oracle built, search halted per directive.**
 `research/threads/rule90-regeneration.md` (test the depth-d=2^j prediction
 against `blocks_depth1000.json`). The regeneration thread
 (`research/threads/regeneration.md`) holds the **established** criterion: block

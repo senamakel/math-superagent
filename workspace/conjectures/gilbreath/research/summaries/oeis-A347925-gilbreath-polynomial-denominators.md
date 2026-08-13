@@ -1,6 +1,6 @@
 # OEIS A347925 — Gilbreath polynomials, coefficient denominators
 
-<!-- source: https://oeis.org/A347925 | full text: sources/oeis-A347925-gilbreath-polynomial-denominators.full.md -->
+<!-- source: https://oeis.org/A347925 | NOTE: this summary IS the complete document — the download system stores short OEIS pages as the summary file itself; there is no separate sources/oeis-A347925-gilbreath-polynomial-denominators.full.md on disk (a re-download is refused as a duplicate). -->
 
 Catalogue record (Gatti, submitted Sep 2021) for a(n) = least common denominator of the
 n-th Gilbreath polynomial P_n.

@@ -1,0 +1,12 @@
+sieve: 1270607 primes below 20000000 in 0.2s
+rows to depth 1000 in 5.4s; oracle k=1..40 ok
+
+=== 1. real prime rows, depth 1000 ===
+step-law failures over 999 transitions: 0
+drain-law ok on erosion steps with intruder: 101/101; failures: 0
+(2,4)-events in k=1..999: 60 (expect 60)
+recharge identity b_k = b_1 + sum_events(j+1) - (k-1): failures 0 over k=2..1000
+total recharge over events: 1270603; k - b_1 at k=1000: 998; surplus 1269605
+
+=== 2. general-class brute force (random arrays, no primes) ===
+rows checked (b>=1, intruder exists): 3521; (2,4)-events: 610; step-law failures: 0

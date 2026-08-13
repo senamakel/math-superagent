@@ -1,6 +1,6 @@
 # Gatti, rescode GitHub repository (OEIS A347924 / A347925 generator home)
 
-<!-- source: https://github.com/gttrcr/ResearchCode | full text: sources/gatti-researchcode-github.full.md -->
+<!-- source: https://github.com/gttrcr/ResearchCode | NOTE: this summary IS the complete document — the download system stores the small repo-root page here; the individual generator file's full text is at sources/gatti-researchcode-A347924-cs.full.md. There is no separate sources/gatti-researchcode-github.full.md on disk. -->
 
 Riccardo Gatti's research-code repository. Structure: `OEIS/` (the sequence generators,
 including A347924.cs and A347925.cs held at
