@@ -1,6 +1,6 @@
-# Ford (2014), *The distribution of integers with a divisor in a given interval* / Ford, *A new proof of the large sieve* — actually: **Ford, "The number of primes in a Pratt tree"** — the source actually fetched is **arXiv:1212.3498**, *On a problem of Erdős and Graham* — corrected below.
+# Ford (2014), arXiv:1212.3498 — *On primes in downward-closed sets* (the Pratt-tree thinness paper)
 
-Full text: [[ford-pratt-trees-missing-primes-2014.full]] (readable OCR). **Title per the abstract:** "Either P contains all of the primes or the counting function of P is O(x^{1−c})".
+Full text: [[ford-pratt-trees-missing-primes-2014.full]] (readable OCR). **Abstract:** "Suppose P is a set of primes such that for every p ∈ P, every prime factor of p−1 is also in P ... either P contains all of the primes or the counting function of P is O(x^{1−c}) for some c > 0, where c depends only on the smallest prime not in P."
 
 **Setup.** `P` a set of primes satisfying the downward-closure / Pratt condition
 ```

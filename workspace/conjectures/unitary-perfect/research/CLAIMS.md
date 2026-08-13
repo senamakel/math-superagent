@@ -18,7 +18,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `heven-prime-case-reduction` | H_even is finite iff H_even^prime = {2p : p odd prime, 2p∈H_even} is finite, and \|H_even\| ≤ 4^\|H_even^prime\|. | yes | catalogued | `research/notes/paper-extraction.md` |
 | `heven-thinness-not-finiteness` | #{m ≤ X : m ∈ H} << X^(1-η) for an absolute η > 0, and Σ_{m∈H} 1/m < ∞. This is power-saving thinness but does NOT imply finiteness; on the prime branch the relevant bound is exponential at the primitive-divisor height… | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-thinness-not-finiteness` | #{m≤X : m∈H} ≪ X^{1-η} for an absolute η>0 and Σ_{m∈H} 1/m < ∞ (same for H_even, H_odd); power-saving thinness, NOT finiteness. | yes | proved | `research/notes/paper-extraction.md` |
-| `heven-two-mod-four` | H_even ⊆ {m ≡ 2 (mod 4)}. Every even m in H is 2 mod 4, i.e. v2(m) = 1. In particular m = 2k with k odd. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
+| `heven-two-mod-four` | H_even ⊆ {m ≡ 2 (mod 4)}. Every even m in H is 2 mod 4, i.e. v2(m) = 1. In particular m = 2k with k odd. | yes | catalogued | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-verified-members` | H_even ∩ [2,1200] = {2, 6, 10, 18, 26, 30, 46, 62, 82, 122}, so H_even has exactly these ten verified elements through 1200 and no verified element in (122, 1200]. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-verified-members` | H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}; no verified element of H_even in (122,1200]. | yes | asserted | `research/notes/paper-extraction.md` |
 | `hong-stewart-nonprimitive-bound` | For degree-2 algebraic γ with Nγ = ±1 and n >= exp exp(...), the growth of primes dividing γ^n - 1 is governed by an explicit Stewart-type lower bound; the non-primitive part of 2^(2p)+1 is O(log(4p)) so the primitive… | yes | asserted | `research/summaries/hong-2022-stewart-revisited.md` |
@@ -50,7 +50,6 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `heven-frontier-50000` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-prime-case-reduction` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-thinness-not-finiteness` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
-- `heven-two-mod-four` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
 - `hong-stewart-nonprimitive-bound` (research/summaries/hong-2022-stewart-revisited.md) — asserted by the source, not proved there and not checked here
@@ -64,3 +63,4 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 - `hb-no-v2ge4-witness-1e11` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `hb-prop4-structural` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `heven-prime-case-reduction` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
+- `heven-two-mod-four` (research/notes/heven-and-3-higgs-structure.md) — read from a catalogue; no derivation here reproduces it

@@ -103,9 +103,10 @@ statement: H_even ⊆ {m ≡ 2 (mod 4)}. Every even m in H is 2 mod 4, i.e.
 hypotheses: the Lucas refinement of Fermat-prime structure (v2(q-1) ≤ 3 for
   3-Higgs q, and q | F_k ⇒ v2(q-1) = k+2 ≥ 4 for k ≥ 2)
 holds-here: yes, sourced from the paper's Proposition 5, proved there
-status: asserted-by-source (rigorous in the paper)
-bearing: kills the m ≡ 0 (mod 4) branch of H_even outright; the surviving
-  branch is exactly the prime case m = 2p for odd prime p
+status: catalogued
+bearing: kills the m ≡ 0 (mod 4) branch of H_even outright; finiteness reduces
+  to m = 2p (Theorem 7), while composite members exist (k = 9, 15 verified)
+  and are inherited from unresolved prime divisors via Proposition 4(3)
 falsifier: an m divisible by 4 with all prime factors of 2^m+1 3-Higgs
 anchor: research/sources/maciejewski-bounded-box-subbarao-warren.full.md
 source: arXiv:2605.20475 Proposition 5
