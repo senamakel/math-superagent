@@ -19,6 +19,7 @@ mod frontier;
 mod layout;
 mod oeis;
 mod patch;
+mod parity;
 mod paths;
 mod patterns;
 mod readable;

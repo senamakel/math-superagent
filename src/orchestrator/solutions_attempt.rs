@@ -96,9 +96,9 @@ pub(super) struct SolutionState {
     /// The problem as posed.
     problem: String,
     /// Attempts made so far.
-    attempts: usize,
+    pub(in crate::orchestrator) attempts: usize,
     /// Consecutive attempts that did not advance the work.
-    unproductive: usize,
+    pub(in crate::orchestrator) unproductive: usize,
     /// The most recent attempt's report.
     last_attempt: String,
     /// Accumulated lessons, newest last.
@@ -106,23 +106,23 @@ pub(super) struct SolutionState {
     /// Material gathered by the diversify step, fed into the next attempt.
     fresh_context: String,
     /// Whether reflection judged the problem solved and verified.
-    solved: bool,
+    pub(in crate::orchestrator) solved: bool,
     /// The judge's steer for the next attempt, if it gave one.
     steer: String,
     /// Restarts the judge has already forced.
-    restarts: usize,
+    pub(in crate::orchestrator) restarts: usize,
     /// The judge's score for each attempt so far, oldest first.
     scores: Vec<u8>,
     /// What the judge made of the attempt just finished.
-    judged: Verdict,
+    pub(in crate::orchestrator) judged: Verdict,
     /// Consecutive attempts that produced nothing but a provider failure.
-    blocked: usize,
+    pub(in crate::orchestrator) blocked: usize,
     /// Consecutive attempts whose only gain was a larger instance of something
     /// an earlier attempt already computed.
-    computational: usize,
+    pub(in crate::orchestrator) computational: usize,
     /// Consecutive attempts that reached a specific final answer supported by
     /// exactly one route, with no second route available to build.
-    unverified: usize,
+    pub(in crate::orchestrator) unverified: usize,
     /// What the diversify arms have reported so far, one slot each.
     ///
     /// Filled by arms running concurrently and drained by `diversify_merge`,
@@ -268,7 +268,7 @@ impl std::fmt::Display for Route {
 /// Kept as a free function so the policy is unit-testable without a provider:
 /// the routing rule is the part of this design most likely to be wrong, and it
 /// is the part a live run is least able to demonstrate cheaply.
-fn route(state: &SolutionState) -> Route {
+pub(in crate::orchestrator) fn route(state: &SolutionState) -> Route {
     // Checked before anything else, and before the attempt ceiling. An attempt
     // that died on the provider is not evidence about the mathematics, so
     // spending the ceiling on more of them is spending the run's one budget on
@@ -328,7 +328,7 @@ impl std::fmt::Display for Judged {
 /// find that out. The attempt ceiling outranks a restart — a run at its last
 /// attempt must reflect on what it has rather than throw it away and stop with
 /// nothing.
-fn judged_route(state: &SolutionState) -> Judged {
+pub(in crate::orchestrator) fn judged_route(state: &SolutionState) -> Judged {
     if state.judged == Verdict::Restart && state.attempts < MAX_ATTEMPTS {
         Judged::Restart
     } else {
