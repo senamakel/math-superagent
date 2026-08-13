@@ -170,16 +170,21 @@ for t, (r, j, bp, bl) in enumerate(giants):
 # --- things the run is asked to settle, in one place ---
 print("\n--- settlements ---")
 if n_g:
-    print(f"16th giant (i=15): row0={g_rows0[-1]} row1={g_rows1[-1]} "
-          f"jump={g_jumps[-1]} b_land={g_land[-1]} floor={g_floor[-1]} "
-          f"genuine={genuine[-1]}")
+    if n_g >= 16:
+        print(f"16th giant (i=15): row0={g_rows0[-1]} row1={g_rows1[-1]} "
+              f"jump={g_jumps[-1]} b_land={g_land[-1]} floor={g_floor[-1]} "
+              f"genuine={genuine[-1]}")
+    else:
+        print(f"only {n_g} giants found (fewer than 16); last giant: "
+              f"row0={g_rows0[-1]} row1={g_rows1[-1]} jump={g_jumps[-1]} "
+              f"b_land={g_land[-1]} floor={g_floor[-1]} genuine={genuine[-1]}")
     if len(g_gaps) >= 1:
         print(f"gap from previous giant (row1 {g_rows1[-2]} -> {g_rows1[-1]}): "
               f"{g_gaps[-1]}  -> {'TREND (> 64)' if g_gaps[-1] > 64 else 'NOISE (<= 64)'}")
-    print(f"max gap over all giants: {max(g_gaps)} at gap index "
-          f"{g_gaps.index(max(g_gaps))} (between giants {g_gaps.index(max(g_gaps))} "
-          f"and {g_gaps.index(max(g_gaps)) + 1}, rows1 {g_rows1[g_gaps.index(max(g_gaps)) - 1]}"
-          f"..{g_rows1[g_gaps.index(max(g_gaps))]})")
+    mx = max(g_gaps)
+    mi = g_gaps.index(mx)
+    print(f"max gap over all giants: {mx} at gap index {mi} "
+          f"(pre-jump rows1 {g_rows1[mi]} -> {g_rows1[mi + 1]})")
     print(f"max ratio gap_i/(j_i+1): {max(g/(j + 1) for g, j in zip(g_gaps, g_jumps[1:])):.4e}")
     print(f"min ratio gap_i/(j_i+1): {min(g/(j + 1) for g, j in zip(g_gaps, g_jumps[1:])):.4e}")
     print(f"ratio > 0.1 rows: "
