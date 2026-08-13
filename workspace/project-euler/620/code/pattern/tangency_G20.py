@@ -1,19 +1,32 @@
 #!/usr/bin/env python3
 """PE620 tangency enumeration over all 22 G(20) tuples — winning sign variant.
 
-Residue (fixed winning variant, sigma=eta=theta=-1), per planet of
-circumference t in {p,q}:
+Residue per planet of circumference t in {p,q}, EXACTLY as in
+code/pattern/tangency_enum.py:
 
-    Q = -rho*(beta-gamma) + R*beta - r*gamma        (radians, mod 1)
-      = (c-t)*B_t - (s-t)*G_t  mod 1                (B_t=beta/2pi, G_t=gamma/2pi turns)
+    Q = sigma*rho*(beta-gamma) - eta*R*beta + theta*r*gamma      (radians, mod 1)
 
 where beta = planet-centre angle about the ring centre O, gamma = angle about
 the sun centre S, rho = t/2pi, R = c/2pi, r = s/2pi.  Exact tangency to both
 gears forces the centre onto |OP| = R-rho  and  |SP| = r+rho  (upper U /
 lower L tangency points; mirror identity Q(L) = -Q(U) mod 1 is exact).
 
+VARIANT RESOLUTION (computed, not assumed): the task parenthetical
+"(sigma,eta,theta)=(-1,-1,-1)" does NOT reproduce the oracle under this exact
+machinery — an 8-variant scan (code/pattern/sign_scan.py) gives
+g(-1,-1,-1)=6, g(-1,-1,+1)=9, g(+1,+1,-1)=9 (the two g=9 triples are each
+other's sign reversal, Q' = -Q mod 1, same equality set).  The computed winner
+(sigma,eta,theta)=(-1,-1,+1) matches the SAVED on-disk tangency_enum.txt,
+whose run header is "Q = sigma*rho*(beta-gamma) - eta*R*beta + r*gamma" —
+theta hardwired to +1 — with (sig,eta)=(-1,-1): g=9, same d-values
+(0.1596022390, ...).  fast_g.py's winning model Q_t = (c-t)*B + (s+t)*G is the
+same residue: Q = -rho*(beta-gamma) + R*beta + r*gamma = (c-t)B + (s+t)G
+(verified numerically: 0.2500000 at the first root).  So the default here is
+the COMPUTED winner (sigma,eta,theta)=(-1,-1,+1), and [-1,-1,-1] totals are
+also computed (CLI --variant) for the record.
+
 This is a direct generalization of code/pattern/tangency_enum.py restricted to
-the single winning variant, keeping the SAME machinery:
+one sign variant, keeping the SAME machinery:
   - side combos pp,qq in {UU,LL,UL}  (3 x 3 = 9)
   - objective = max pairwise circular distance of the four residues
   - coarse grid N = 2^20 + 1 over [d_min, d_max]
@@ -37,9 +50,10 @@ are found by a float scan of crossings of n_p through integer levels
 endpoints (either type's two planets coincide, y ~ 0) excluded — the same
 root set as code/pattern/n_integer_count.py.
 
-Usage: python tangency_G20.py [--fresh] [tuple_index ...]
-  --fresh          truncate the output file before writing (use on first chunk)
-  tuple_index ...  0-based indices into the sorted tuple list; default: all 22
+Usage: python tangency_G20.py [--fresh] [--variant sig,eta,theta] [tuple_index ...]
+  --fresh              truncate the output file before writing (use on first chunk)
+  --variant s,e,t      sign triple; default -1,-1,+1 (the computed winner)
+  tuple_index ...      0-based indices into the sorted tuple list; default: all 22
 Output: code/out/tangency_G20.txt
 """
 import math
@@ -56,7 +70,7 @@ TWO_PI = 2.0 * math.pi
 COARSE_TOL = 1e-4
 TIGHT_TOL = mpf('1e-9')
 NGRID = (1 << 20) + 1
-SIG, ETA, THETA = -1, -1, -1          # the winning sign variant
+SIG, ETA, THETA = -1, -1, +1          # COMPUTED winning sign variant (see docstring)
 PSIDES = ((1, 1, "UU"), (-1, -1, "LL"), (1, -1, "UL"))
 
 
@@ -209,7 +223,14 @@ def tangency_y(c, s, t, d):
 
 
 def Q_turns(c, s, t, d):
-    """Winning residue in turns: Q_t = (c-t)*B_t - (s-t)*G_t mod 1 (B,G = /2pi)."""
+    """Winning residue in turns: Q_t = (c-t)*B_t + (s+t)*G_t mod 1 (B,G = /2pi).
+
+    This is the (sigma,eta,theta)=(-1,-1,+1) residue:
+    -rho*(beta-gamma) + R*beta + r*gamma = (c-t)*B + (s+t)*G  (radians -> turns).
+    The parenthetical identity (c-t)*B - (s-t)*G is NOT this residue (it gave
+    0.1249888 vs the true 0.2500000 at the first root of the oracle tuple) and
+    is kept out of the machinery.
+    """
     R = mpf(c) / (2 * pi)
     r = mpf(s) / (2 * pi)
     rho = mpf(t) / (2 * pi)
@@ -380,7 +401,7 @@ def reconcile_block(c, s, p, q, tangency_ds, emit):
     """Cross-check (oracle tuple only): tangency d's vs n-integer model d's."""
     emit("")
     emit("  ---------- RECONCILIATION: winning tangency residue vs n-integer model ----------")
-    emit("  tangency: Q_t = (c-t)*B_t - (s-t)*G_t mod 1, B,G in turns (winning variant)")
+    emit("  tangency: Q_t = (c-t)*B_t + (s+t)*G_t mod 1, B,G in turns")
     emit("  n-model : valid iff n_p, n_q in Z with n_t = [(c-t)beta + (s+t)gamma]/pi")
     tds = sorted(tangency_ds)
     roots = n_integer_roots(c, s, p, q)
@@ -441,9 +462,26 @@ def all_tuples():
 
 
 def main():
+    global SIG, ETA, THETA
     argv = sys.argv[1:]
     fresh = '--fresh' in argv
-    inds = [int(a) for a in argv if not a.startswith('--')]
+    variant = None
+    for i, a in enumerate(argv):
+        if a == '--variant':
+            if i + 1 < len(argv):
+                variant = argv[i + 1].split(',')
+            break
+    if variant:
+        SIG, ETA, THETA = int(variant[0]), int(variant[1]), int(variant[2])
+        print("variant overridden: (sigma,eta,theta)=(%+d,%+d,%+d)"
+              % (SIG, ETA, THETA), flush=True)
+    skip = set()
+    for i, a in enumerate(argv):
+        if a == '--variant':
+            skip.add(i)
+            skip.add(i + 1)
+    inds = [int(a) for i, a in enumerate(argv)
+            if i not in skip and not a.startswith('--')]
     tuples = all_tuples()
     if not inds:
         inds = list(range(len(tuples)))
@@ -451,9 +489,11 @@ def main():
     if fresh:
         with open(OUT, "w") as f:
             f.write("PE620 tangency enumeration over G(20) tuples\n")
-            f.write("winning sign variant (sigma,eta,theta)=(-1,-1,-1):\n")
-            f.write("  Q = -rho*(beta-gamma) + R*beta - r*gamma (mod 1)\n")
-            f.write("    = (c-t)*B_t - (s-t)*G_t mod 1, B,G in turns\n")
+            f.write("sign variant (sigma,eta,theta)=(%+d,%+d,%+d):\n"
+                    % (SIG, ETA, THETA))
+            f.write("  Q = sigma*rho*(beta-gamma) - eta*R*beta + theta*r*gamma (mod 1)\n")
+            f.write("  computed winner (s,e,t)=(-1,-1,+1) = (c-t)B + (s+t)G turns;\n")
+            f.write("  the parenthetical (-1,-1,-1) gives g(16,5,5,6)=6, not 9 (see sign_scan.py)\n")
             f.write("machinery: coarse grid N=2^20+1 over [d_min,d_max]; contiguous runs\n")
             f.write("  COARSE_TOL=1e-4; 3-zoom mpmath refine (dps=60, n=1000/zoom),\n")
             f.write("  accept iff objective < TIGHT_TOL=1e-9; g = distinct refined\n")
