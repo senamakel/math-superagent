@@ -1,0 +1,34 @@
+BUG IN equality_case_verify.py: admissible_sizes() is not minimal
+
+It iterates primes in order, takes the first count values, then sorts THOSE.
+That is not the count smallest admissible sizes.
+
+  admissible_sizes(9) as computed : [5, 9, 13, 17, 29, 49, 121, 361, 529]
+  the 9 genuinely smallest        : [5, 9, 13, 17, 29, 37, 41, 49, 53]
+  admissible, smaller, OMITTED    : [37, 41, 53]
+  larger, WRONGLY INCLUDED        : [121, 361, 529]  (11^2, 19^2, 23^2)
+
+37, 41 and 53 are 1 mod 4, hence admissible as themselves, and all are
+smaller than 121. The generator never reaches them because it stops
+iterating primes at 29.
+
+Consequence: M is supposed to be a MAXIMUM. Computed over a non-minimal
+set it is an UNDER-estimate, so "M < T therefore impossible" is not
+established by that computation - it is the wrong direction of error.
+
+   a             T(a)    M as computed        M correct  correct M >= T
+   2      1.600000000      1.360544218      1.435897436           False
+   8      1.992217899      1.625699272      1.720320566           False
+  20      1.999998093      1.800679358      1.926889821           False
+  28      1.999999993      1.892154201      1.997752860           False
+  29      1.999999996      1.892271515      2.004964964            True
+  30      1.999999998      1.892381781      2.012100070            True
+
+So the exclusion 2 <= a <= 28 SURVIVES under the correct minimal set:
+  M(28) = 1.997752860 < T(28) = 1.999999993   (still strictly below)
+but the claim that a = 29 is excluded is FALSE:
+  M(29) = 2.004964964 > T(29) = 1.999999996   (not excluded)
+
+The four qualitative checks in the run reproduction are all correct and
+are unaffected by the bug: T(1) = 4/3 attained exactly by {5,9} = odd
+part of 90; 257 prime and forced at a=8; 9 and 49 admissible, 3 and 7 not.
