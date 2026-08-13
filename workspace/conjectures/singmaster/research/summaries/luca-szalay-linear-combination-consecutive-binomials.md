@@ -1,56 +1,61 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/luca-szalay-linear-combination-consecutive-binomials.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Luca–Szalay, "Linear diophantine equation with three consecutive binomial coefficients" (2004)
 
-<!-- source: https://ami.uni-eszterhazy.hu/uploads/papers/finalpdf/AAPASM_31_from53to60.pdf | converted from PDF -->
+Source: https://ami.uni-eszterhazy.hu/uploads/papers/finalpdf/AAPASM_31_from53to60.pdf
+Acta Academiae Paedagogicae Agriensis, Sectio Mathematicae 31 (2004) 53–60.
+Full text: `research/sources/luca-szalay-linear-combination-consecutive-binomials.full.md`.
 
-## What it claims
+## What it establishes
 
-All such solutions arise in a natural way from the sequence of Fibonacci
-numbers (Fm)m≥0 given by F0 = 0, F1 = 1 and Fm+2 = Fm+1 + Fm for m ≥ 0.
-Goetgheluck (see [1]) extended the above result and found inﬁnitely many positive
-integer solutions (n, k) for the diophantine equation
+The paper classifies, for fixed integers A, B, C (A>0, C≠0, gcd(A,B,C)=1), when
+the linear-diophantine equation in three consecutive binomial coefficients
 
-2(
-n
-k
-) = (
-n − 1
-k + 1
-)
-.
+```
+A·C(n,k) + B·C(n,k+1) + C·C(n,k+2) = 0     (1 ≤ k < k+2 ≤ n−1)
+```
 
-These solutions arise in a natural way from the positive integer solutions of the Pell
-equation x
-2 − 3y2 = −2. Several other diophantine equations involving binomial
-coeﬃcients have been considered in [2], [4] and [5].
+has **infinitely many** integer solutions (n,k). The theorem:
 
-In this note, we ﬁx three integers A, B, C, not all zero, and look at the
-positive integer solutions (n, k) of the equation A
-(
-n
-k) + B( n
-k+1) + C( n
-k+2
-) = 0. To
-avoid degenerate cases, we shall assume that 1 ≤ k < k + 2 ≤ n − 1. We shall also
-assume that AC ̸= 0. Indeed, say if A = 0, then the above equation simpliﬁes to
+- **(i) B = A+C, C<0**: all solutions lie on the straight line A(k+2)+C(n−k) = 0.
+- **(ii) A=A0², B=−2A0C0, C=C0²** (coprime A0,C0): all solutions are
+  k+2 = t(t+C0)/(A0(A0+C0)),  n−k = t(t−A0)/(C0(A0+C0)), t a positive integer
+  in a congruence class mod A0C0(A0+C0) with t above a computable threshold.
+- **(iii) B≠A+C, D=B²−4AC > 0 nonsquare**: all solutions come from
+  finitely many binary recurrent sequences solving the Pell-type equation
+  X²−DY² = E with X,Y,E explicit (X=(B²−4AC)(n−k)−A(B−2C), Y=2A(k+2)+B(n−k)−A,
+  E=4A²C(A−B+C)).
+- If D<0 or D a perfect square (with E≠0), there are only finitely many solutions.
 
-⋆ This research was partially sponsored by grants SEP-CONACYT 37259-E and 37260-E.
+Method: substitute x=k+2, y=n−k, complete the square to a conic and, in the
+indefinite case, to a Pell equation. The proof is elementary (no heights).
 
-54 F. Luca, L. Szalay
+## Bearing for this run
 
-(2) B( n
-k + 1
-) + C( n
-k + 2
+- **Attests Goetgheluck (Math. Comp. 67 (1998) 1727–1733) precisely.** The
+  ratio-2 families `C(n,k)=2·C(a,b)` were previously an unattested REQUESTS row;
+  the citations here fix the journal/page and describe the family solved via the
+  Pell equation x²−3y²=−2.
+- Illustrates the standard near-collision engine (substitute the middle column,
+  complete the square, Pell) that appears in the run's k-column / consecutive-
+  blocks threads — the same shape as Goetgheluck, Satoh, and the near-collision
+  literature. The three-consecutive-coefficient equation is adjacent to the
+  run's equal-products structure, not identical to it.
+- Not load-bearing for the impossibility argument; corroboration + a missing
+  citation fixed.
 
-) = 0.
-
-Obviously, equation (2) has no solution if BC > 0. Suppose that BC < 0 (say,
-up to changing…
-
-## Statements it makes
-
-Theorem. Let A, B and C be integers with A > 0, C ̸= 0 and gcd(A, B, C) = 1.
-If the diophantine equation
-
-*[digest of a 11383 character source; every section, statement, and proof in full at `research/sources/luca-szalay-linear-combination-consecutive-binomials.full.md`]*
+```claim
+id: luca-szalay-three-consecutive-classification
+statement: For fixed integers A>0, C≠0, gcd(A,B,C)=1, the equation
+  A·C(n,k)+B·C(n,k+1)+C·C(n,k+2)=0 (1≤k<k+2≤n−1) has infinitely many integer
+  solutions iff (i) B=A+C and C<0 (solutions on a line), or (ii) A=A0², B=−2A0C0,
+  C=C0² (explicit quadratic family), or (iii) D=B²−4AC>0 nonsquare and the Pell
+  equation X²−DY²=E has infinitely many solutions (binary recurrent sequences).
+  Otherwise finitely many. Proof is elementary (conic/Pell completion).
+hypotheses: A,B,C fixed integers, A>0, C≠0, gcd=1, 1≤k<k+2≤n−1.
+holds-here: no — this is the three-consecutive-coefficient linear equation, not
+  the run's equal-products two-variable equation C(x,k1)=C(y,k2); it is adjacent
+  structure (near-collision engine), not a route to the conjecture.
+status: asserted (source's theorem, elementary, not re-derived here).
+bearing: corroboration of the near-collision method; fixes the Goetgheluck 1998
+  citation (Math. Comp. 67, 1727–1733) and its Pell structure.
+anchor: research/sources/luca-szalay-linear-combination-consecutive-binomials.full.md
+```
