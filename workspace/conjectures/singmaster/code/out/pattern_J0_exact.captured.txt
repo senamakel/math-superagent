@@ -1,0 +1,10 @@
+eps=0.1000: largest boundary j (exact, j<=400)=1, count=1
+eps=0.2000: largest boundary j (exact, j<=400)=2, count=2
+eps=0.2500: largest boundary j (exact, j<=400)=3, count=3
+eps=0.3000: largest boundary j (exact, j<=400)=5, count=5
+eps=0.3200: largest boundary j (exact, j<=400)=11, count=11
+Traceback (most recent call last):
+  File "/workspace/code/out/pattern_J0_exact.py", line 13, in <module>
+    cut=math.exp((math.log(nn))**(2/3+eps))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: math range error

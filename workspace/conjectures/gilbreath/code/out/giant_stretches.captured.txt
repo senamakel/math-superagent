@@ -11,6 +11,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^4 1^1 0^1 1^2 0^1 1^1 0^2 1^1 0^1 1^4 0^2 1^1 0^3 1^3  ...(672 runs total)...  1^1 0^3 1^4 0^2 1^1 0^2 1^1 0^1 1^1 0^4
     distinct=3 min=0 max=2 dominant=0 (count 677, frac 0.5144)
     steps: level 644 (0.4897), up 335 (0.2548), down 336 (0.2555); net drift -1; level+up = 0.7445
+    longest value-runs: 0: 11, 1: 8, 2: 4; count of 2s: 4 (0.0030)
 (c) landing bits row 35 over [865, 2179], len 1315 = j+1
     rle 0/1: 1^1 0^3 1^3 0^1 1^3 0^1 1^3 0^3 1^1 0^1 1^2 0^2 1^1 0^2 1^4  ...(660 runs total)...  1^3 0^2 1^1 0^3 1^1 0^1 1^2 0^1 1^4 0^3
     #0=644 (0.4897)  #1=671 (0.5103)  longest 0-run 10, longest 1-run 13; head: 100011101110111000101100
@@ -24,6 +25,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^3 1^1 0^1 1^1 0^2 1^1 0^4 1^1 0^1 1^5 0^2 1^1 0^2 1^1  ...(867 runs total)...  0^4 1^1 0^2 1^1 0^1 1^1 0^4 1^1 0^2 1^1
     distinct=3 min=0 max=2 dominant=0 (count 895, frac 0.5141)
     steps: level 874 (0.5023), up 433 (0.2489), down 433 (0.2489); net drift +0; level+up = 0.7511
+    longest value-runs: 0: 8, 1: 9, 2: 3; count of 2s: 3 (0.0017)
 (c) landing bits row 57 over [4203, 5942], len 1740 = j+1
     rle 0/1: 1^1 0^2 1^4 0^1 1^2 0^3 1^3 0^4 1^1 0^1 1^2 0^1 1^3 0^1 1^2  ...(871 runs total)...  0^2 1^1 0^3 1^2 0^1 1^4 0^3 1^2 0^1 1^1
     #0=874 (0.5023)  #1=866 (0.4977)  longest 0-run 8, longest 1-run 9; head: 100111101100011100001011
@@ -37,6 +39,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^1 1^1 0^1 1^2 0^4 1^1 0^2 1^1 0^1 1^1 0^3 1^1 0^1 1^3  ...(8419 runs total)...  0^3 1^1 0^2 1^1 0^2 1^2 0^2 1^1 0^1 1^1
     distinct=3 min=0 max=2 dominant=0 (count 8822, frac 0.5091)
     steps: level 8909 (0.5142), up 4209 (0.2429), down 4209 (0.2429); net drift +0; level+up = 0.7571
+    longest value-runs: 0: 13, 1: 14, 2: 3; count of 2s: 5 (0.0003)
 (c) landing bits row 65 over [5939, 23265], len 17327 = j+1
     rle 0/1: 1^4 0^1 1^1 0^3 1^2 0^1 1^4 0^2 1^3 0^2 1^1 0^1 1^2 0^4 1^1  ...(8645 runs total)...  0^2 1^2 0^1 1^2 0^1 1^1 0^1 1^1 0^1 1^3
     #0=8909 (0.5142)  #1=8418 (0.4858)  longest 0-run 13, longest 1-run 12; head: 111101000110111100111001
@@ -50,6 +53,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^4 1^3 0^2 1^2 0^2 1^1 0^1 1^2 0^1 1^2 0^3 1^2 0^1 1^1  ...(4171 runs total)...  0^2 1^1 0^2 1^1 0^2 1^4 0^3 1^1 0^4 1^2
     distinct=3 min=0 max=2 dominant=0 (count 4141, frac 0.5026)
     steps: level 4068 (0.4938), up 2085 (0.2531), down 2085 (0.2531); net drift +0; level+up = 0.7469
+    longest value-runs: 0: 12, 1: 12, 2: 4; count of 2s: 4 (0.0005)
 (c) landing bits row 69 over [23262, 31499], len 8238 = j+1
     rle 0/1: 1^1 0^3 1^1 0^2 1^1 0^1 1^1 0^1 1^1 0^1 1^3 0^1 1^2 0^1 1^1  ...(4236 runs total)...  1^2 0^1 1^1 0^3 1^1 0^2 1^2 0^3 1^1 0^1
     #0=4068 (0.4938)  #1=4170 (0.5062)  longest 0-run 11, longest 1-run 10; head: 100010010101011101101001
@@ -63,6 +67,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^2 3^1 2^1 1^1 0^2 1^1 0^1 1^1 0^2 1^1 0^3 1^4 0^3 1^4  ...(30378 runs total)...  1^2 0^4 1^3 0^2 1^7 0^4 1^1 0^1 1^2 2^2
     distinct=4 min=0 max=3 dominant=1 (count 30664, frac 0.5019)
     steps: level 30712 (0.5027), up 15189 (0.2486), down 15188 (0.2486); net drift +1; level+up = 0.7514
+    longest value-runs: 0: 14, 1: 16, 2: 2, 3: 1; count of 2s: 5 (0.0001)
 (c) landing bits row 95 over [31532, 92620], len 61089 = j+1
     rle 0/1: 1^1 0^1 1^4 0^1 1^4 0^1 1^2 0^2 1^1 0^3 1^1 0^2 1^1 0^3 1^2  ...(30694 runs total)...  1^1 0^1 1^1 0^6 1^1 0^3 1^3 0^1 1^1 0^1
     #0=30712 (0.5027)  #1=30377 (0.4973)  longest 0-run 15, longest 1-run 17; head: 101111011110110010001001
@@ -76,6 +81,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^1 1^3 0^1 1^1 0^5 1^1 0^5 1^4 0^1 1^1 0^4 1^4 0^2 1^1  ...(5731 runs total)...  0^1 1^1 0^1 1^1 0^2 1^2 0^2 1^1 0^1 1^4
     distinct=3 min=0 max=2 dominant=0 (count 5694, frac 0.5014)
     steps: level 5625 (0.4954), up 2865 (0.2523), down 2865 (0.2523); net drift +0; level+up = 0.7477
+    longest value-runs: 0: 13, 1: 14, 2: 1; count of 2s: 1 (0.0001)
 (c) landing bits row 97 over [92619, 103973], len 11355 = j+1
     rle 0/1: 1^2 0^2 1^3 0^4 1^2 0^4 1^1 0^3 1^3 0^3 1^1 0^3 1^1 0^1 1^2  ...(5644 runs total)...  1^4 0^4 1^7 0^1 1^1 0^1 1^1 0^1 1^3 0^3
     #0=5625 (0.4954)  #1=5730 (0.5046)  longest 0-run 13, longest 1-run 12; head: 110011100001100001000111
@@ -89,6 +95,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^1 1^1 0^2 1^2 0^2 1^1 0^1 1^2 0^2 1^1 0^2 1^1 0^1 1^1  ...(18969 runs total)...  0^3 1^3 0^5 1^3 0^5 1^4 0^1 1^2 0^1 1^1
     distinct=3 min=0 max=2 dominant=1 (count 18974, frac 0.5026)
     steps: level 18779 (0.4975), up 9484 (0.2513), down 9484 (0.2513); net drift +0; level+up = 0.7487
+    longest value-runs: 0: 14, 1: 19, 2: 1; count of 2s: 1 (0.0000)
 (c) landing bits row 111 over [103960, 141706], len 37747 = j+1
     rle 0/1: 1^3 0^1 1^1 0^1 1^1 0^1 1^3 0^1 1^1 0^1 1^2 0^1 1^5 0^3 1^2  ...(18823 runs total)...  0^4 1^1 0^2 1^1 0^4 1^1 0^3 1^2 0^1 1^2
     #0=18779 (0.4975)  #1=18968 (0.5025)  longest 0-run 18, longest 1-run 16; head: 111010101110101101111100
@@ -102,6 +109,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^2 1^1 0^1 1^2 0^1 1^1 0^1 1^1 0^4 1^2 0^1 1^2 0^1 1^4  ...(65013 runs total)...  0^1 1^1 0^1 1^3 0^1 1^1 0^1 1^3 0^5 1^2
     distinct=3 min=0 max=2 dominant=1 (count 65299, frac 0.5026)
     steps: level 64912 (0.4996), up 32506 (0.2502), down 32506 (0.2502); net drift +0; level+up = 0.7498
+    longest value-runs: 0: 15, 1: 17, 2: 2; count of 2s: 2 (0.0000)
 (c) landing bits row 113 over [141706, 271629], len 129924 = j+1
     rle 0/1: 1^1 0^1 1^3 0^1 1^5 0^3 1^1 0^1 1^2 0^1 1^2 0^3 1^1 0^1 1^4  ...(64870 runs total)...  1^3 0^1 1^4 0^2 1^4 0^2 1^1 0^4 1^1 0^1
     #0=64912 (0.4996)  #1=65012 (0.5004)  longest 0-run 16, longest 1-run 15; head: 101110111110001011011000
@@ -115,6 +123,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^1 1^1 0^1 1^1 2^2 1^3 0^1 1^2 0^1 1^1 0^3 1^2 0^3 1^1  ...(26737 runs total)...  0^1 1^1 0^1 1^1 0^4 1^2 0^3 1^1 0^1 1^2
     distinct=3 min=0 max=2 dominant=1 (count 26921, frac 0.5035)
     steps: level 26735 (0.5000), up 13368 (0.2500), down 13368 (0.2500); net drift +0; level+up = 0.7500
+    longest value-runs: 0: 16, 1: 14, 2: 2; count of 2s: 3 (0.0001)
 (c) landing bits row 127 over [271620, 325090], len 53471 = j+1
     rle 0/1: 1^5 0^1 1^1 0^2 1^2 0^1 1^3 0^2 1^1 0^1 1^1 0^2 1^2 0^3 1^1  ...(26810 runs total)...  1^3 0^2 1^11 0^3 1^1 0^1 1^1 0^2 1^3 0^1
     #0=26735 (0.5000)  #1=26736 (0.5000)  longest 0-run 15, longest 1-run 17; head: 111110100110111001010011
@@ -128,6 +137,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^1 1^2 0^2 1^1 0^1 1^1 0^3 1^1 0^4 1^1 0^3 1^2 0^2 1^1  ...(95232 runs total)...  1^1 0^2 1^1 0^1 1^1 0^2 1^2 0^3 1^4 0^1
     distinct=3 min=0 max=2 dominant=1 (count 95406, frac 0.5000)
     steps: level 95580 (0.5009), up 47615 (0.2495), down 47616 (0.2495); net drift -1; level+up = 0.7505
+    longest value-runs: 0: 17, 1: 18, 2: 1; count of 2s: 3 (0.0000)
 (c) landing bits row 131 over [325096, 515906], len 190811 = j+1
     rle 0/1: 1^2 0^1 1^1 0^1 1^4 0^2 1^2 0^3 1^2 0^2 1^1 0^1 1^1 0^1 1^2  ...(95129 runs total)...  0^1 1^4 0^1 1^1 0^1 1^1 0^2 1^1 0^3 1^1
     #0=95580 (0.5009)  #1=95231 (0.4991)  longest 0-run 17, longest 1-run 17; head: 110101111001100011001010
@@ -141,6 +151,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^2 1^1 0^3 1^1 0^2 1^7 0^1 1^1 0^1 1^1 0^1 1^1 0^1 1^4  ...(108998 runs total)...  1^4 0^3 1^2 0^1 1^4 0^1 1^1 0^1 1^2 0^1
     distinct=3 min=0 max=2 dominant=0 (count 108938, frac 0.5005)
     steps: level 108661 (0.4992), up 54498 (0.2504), down 54499 (0.2504); net drift -1; level+up = 0.7496
+    longest value-runs: 0: 16, 1: 21, 2: 2; count of 2s: 2 (0.0000)
 (c) landing bits row 135 over [515907, 733564], len 217658 = j+1
     rle 0/1: 1^1 0^1 1^2 0^2 1^2 0^1 1^1 0^6 1^8 0^3 1^3 0^2 1^7 0^6 1^1  ...(108491 runs total)...  0^3 1^1 0^2 1^1 0^1 1^2 0^3 1^4 0^1 1^1
     #0=108661 (0.4992)  #1=108997 (0.5008)  longest 0-run 20, longest 1-run 15; head: 101100110100000011111111
@@ -154,6 +165,7 @@ Cross-checks (a): block_profile == stored b for all 13 giant event rows (12 genu
     rle values (value^count, in order): 1^1 2^1 1^2 0^2 1^1 0^1 1^2 0^2 1^1 0^1 1^1 0^1 1^1 0^1 1^1  ...(180142 runs total)...  1^1 0^2 1^15 0^3 1^3 0^1 1^2 0^4 1^3 0^5
     distinct=3 min=0 max=2 dominant=0 (count 180930, frac 0.5016)
     steps: level 180558 (0.5006), up 90070 (0.2497), down 90071 (0.2497); net drift -1; level+up = 0.7503
+    longest value-runs: 0: 16, 1: 15, 2: 1; count of 2s: 1 (0.0000)
 (c) landing bits row 147 over [733575, 1094273], len 360699 = j+1
     rle 0/1: 1^2 0^1 1^1 0^1 1^3 0^1 1^1 0^1 1^12 0^3 1^4 0^1 1^2 0^3 1^2  ...(179846 runs total)...  1^1 0^2 1^2 0^1 1^1 0^3 1^1 0^2 1^1 0^4
     #0=180558 (0.5006)  #1=180141 (0.4994)  longest 0-run 15, longest 1-run 17; head: 110101110101111111111110
@@ -186,4 +198,4 @@ Total fresh (0, 2) entries generated by the 12 giants: 1091362; landing bits are
 Container is the longest 1-Lipschitz stretch of its row in all 12: False.
 Container == [1, b_{k+1}+1] in all 12 (start at block's first column, end at the chain break that defines the landing block end).
 
-Cost: one worker; time 10.0 s wall; space O(W) ~ 220 MB peak (current row + 12 kept windows).
+Cost: one worker; time 7.7 s wall; space O(W) ~ 220 MB peak (current row + 12 kept windows).

@@ -570,3 +570,27 @@ Three files changed:
 - **CONTEXT.md**: Run state line updated to flag the inconsistency; the Gaps section restated as "prove the inter-giant gap G_k is o(b^0.388)." The mean-rate and "giants keep arriving" routes are both marked superseded.
 
 The directive's own numbers — the 12 gaps, the sublinear exponent, the ratio decay under j ~ C·b^0.388 — are already in the record; what remains is fitting the gaps against i and b, and reconciling the two descriptions, which are now the next three unchecked items in TASKS.
+
+## 26 — from steer
+
+directive25_gap_trend answers the question well. The reconciliation is right: ratios decline 3.9 at b=5939 to 1.49 at b=733575, as the sublinear law predicts and opposite to a constant geometric factor, so x1.68/event is a local summary and not the asymptotic law. You refused to overclaim the comparison — MSE 0.140 vs 0.154, "neither wins decisively" — and caught your own Fraction ** Fraction bug. "Checked at depth 1000, numerical only" is the right class.
+
+Part A is the important part. Gaps 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12; mean 10.18, max 26; no trend (OLS slope -0.818, R^2 0.109; gap vs prior-b R^2 0.041; Spearman -0.141), flat while b ranges 2,179 to 1,094,273.
+
+That completes the chain. Write it out in research/threads/regeneration.md as one block, because it is now the run's whole position:
+
+  1. Gilbreath <=> second entry in {0,2}         (Lean, sorry-free, axioms clean)
+  2. <=> Sigma (j_i + 1) >= k - 2                (recharge identity, depth 800, 0 failures)
+  3. 13 giants carry 99.76% of S_1000            (bigjump_characterization)
+  4. giants ARE the (2,4)-events                 (every one has edge=2, intr=4)
+  5. j grows like b^0.388, sublinear but -> inf  (43-event OLS)
+  6. inter-giant gap: no trend, mean 10.18, max 26 over b 2e3..1.1e6
+  7. bounded gap + j -> inf  =>  b_k >= 1 forever
+
+So the conjecture now reduces to ONE statement: the inter-giant gap is bounded. Say that plainly and make it the thread's target.
+
+Two cautions beside it. Twelve gaps is a small sample and "no trend" over that many points is weak: R^2 0.109 does not exclude a slow trend. And every number comes from one finite triangle over one sieve, so step 6 is a measurement, not a property of the primes.
+
+The next question is whether step 6 is provable or merely true-looking: does "the gap between consecutive (2,4)-events is bounded" follow from anything about prime gaps, or is it equivalent to something already known hard? Answer that before trying to prove it.
+
+Rewrote `research/threads/regeneration.md` with the full 7-step chain, the ONE-statement reduction ("the inter-giant gap is bounded"), the two cautions, and the next question framed as a provability inquiry rather than a proof attempt. Updated `TASKS.md` to Directive 26 with that question as item 1. Amended `CONTEXT.md` in both the run-state line and the Gaps section so every role now has the chain and the target. No files changed beyond what the directive required — the hygiene task survives as item 2 in `TASKS.md`.
