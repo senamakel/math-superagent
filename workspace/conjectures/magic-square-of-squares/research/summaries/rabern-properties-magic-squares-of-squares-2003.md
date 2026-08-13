@@ -1,99 +1,70 @@
-<!-- source: https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3 | converted from HTML -->
+# Rabern 2003 — Properties of Magic Squares of Squares
 
-"Properties of Magic Squares of Squares" by Landon W. Rabern -->
+Source: Landon W. Rabern, "Properties of Magic Squares of Squares," Rose-Hulman
+Undergraduate Mathematics Journal 4(1), Article 3 (2003), Washington University.
+Index page (abstract + citation) downloaded:
+`research/sources/rabern-properties-magic-squares-of-squares-2003.full.md`
+(source URL https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3).
 
-Skip to main content
+**Full-text availability: the 4-page proof is NOT on disk.** The index page
+(abstract, author bio, citation) was downloaded, but the full PDF at
+https://scholar.rose-hulman.edu/cgi/viewcontent.cgi?article=1299&context=rhumj
+returns HTTP 403 Forbidden (blocked download, recorded here so nobody repeats
+the attempt). The claims below are therefore sourced via the abstract plus a
+**secondary** account (the search-exposed body text and Morgenstern's
+re-derivation), not proof-checked from the primary text.
 
-[image: Rose-Hulman Undergraduate Mathematics Journal] [1][image: Rose-Hulman Institute of Technology] [2]
+## What the paper establishes (sourced via abstract + secondary echoes)
 
-- [Home][3]
-- [About][4]
-- [FAQ][5]
-- [My Account][6]
+Assuming a 3×3 MSS of distinct squares exists, its entries have constrained
+prime structure. Key results (corroborated independently by the library's
+`morgenstern-properties-3x3-square-of-squares-2007.md` and CLAIMS.md
+`rabern-entry-prime-restrictions`, `primitive-mss-entry-congruences`):
 
--
--
+- **All nine entries are odd** (parity constraint derived from the magic
+  constant and square residues).
+- **No p ≡ 3 (mod 4) divides the centre e.** Proof via unique factorization
+  in Z[i] (Gaussian integers): factorising `a²+s² = 2e²` in Z[i] as
+  `(a+si)(a−si) = 2e²`; p ≡ 3 mod 4 is prime in Z[i]; then p|e forces p|a, p|s
+  and (with the full structure) a descent/contradiction. Hence all prime
+  factors of the centre are ≡ 1 mod 4 (or 2).
+- **No p ≡ 3 or 5 (mod 8) prime divides a middle-side entry.** Proof via UFD in
+  Z[√2]: for p ≡ 3,5 mod 8, p is prime in Z[√2]; from `d²+h²=2c²` derive
+  divisibility of the middle-side entries. Classification: the primes that are
+  prime in Z[√2] are exactly p ≡ 3,5 (mod 8) (Appendix lemma), giving these
+  entry restrictions.
 
-[Home][3] > [RHUMJ][1] > [Vol. 4 (2003)][7] > [Iss. 1][8]
+Thus central entry e is `1 mod 4`-only; middle-side entries have no
+`5 mod 8` prime factors; no entry has a `3 mod 8` factor. These match the
+run's `primitive-mss-entry-congruences` (all entries odd and ≡1 mod 3, etc.)
+and `primitive-mss-modular-124-72` (all ≡1 mod 24, sum ≡3 mod 72), and Rabern's
+`rabern-entry-prime-restrictions`.
 
-# [Properties of Magic Squares of Squares][9]
+## Caveat
 
-## Authors
+These are **necessary conditions** on a hypothetical MSS — they sieve the
+search; they do **not** establish or refute existence. The extension-field MSS
+(`extension-field-mss-exist`) satisfy the same modular/prime restrictions where
+defined, so no purely modular argument built on these (or the related
+congruences) can prove non-existence over Q. Status of the claim blocks drawn
+from this secondary sourcing: `rabern-entry-prime-restrictions` — **asserted**
+(full primary text not on disk); the underlying congruences that this run has
+independently verified are the stronger **proved/checked** claims
+`primitive-mss-entry-congruences` and `primitive-mss-modular-124-72`.
 
-- ******[Landon W. Rabern, Washington University][10] [Follow][11]
+## Claim block
 
-## Abstract
-
-A problem due to Martin Labar is to find a 3x3 magic square with 9 distinct perfect square entries or prove that such a magic square cannot exist. In this paper, I assume that such a magic square exists and show that the entries must have certain properties. This is accomplished using unique factorization in two different finite extensions of Z. One property that is proven
-
-## Author Bio
-
-I am currently a senior at Washington University. I did this work on magic squares while I was studying abroad in The Netherlands. It was just for fun and not part of any sponsored program. I plan to enter a Ph.D. program in Mathematics upon graduation and I would like to concentrate on Number Theory.
-
-## Faculty Sponsor
-
-N. Mohan Kumar
-
-## Recommended Citation
-
-Rabern, Landon W. (2003) "Properties of Magic Squares of Squares," *Rose-Hulman Undergraduate Mathematics Journal*: Vol. 4: Iss. 1, Article 3.
-Available at: https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3
-
-**[Download][9]
-
-DOWNLOADS
-
-Since January 15, 2017
-
-[12]
-
-## Share
-
-COinS
-
-- [Journal Home][1]
-- [Editorial Board][13]
-- [Submission Guidelines and Policies][14]
-- [Sponsor Guidelines][15]
-- [Final Manuscript Preparation Guidelines][16]
-
-- [Submit a Paper][17]
-- [Receive Email Notices or RSS][18]
-
-## Search
-
-[Advanced Search][19]
-
-**[Elsevier - Digital Commons][20]
-
-[Home][3] | [About][4] | [FAQ][5] | [My Account][21] | [Accessibility Statement][22]
-
-[Privacy][23] [Copyright][24]
-
-
-## Links
-
-[1]: https://scholar.rose-hulman.edu/rhumj
-[2]: https://www.rose-hulman.edu/
-[3]: https://scholar.rose-hulman.edu
-[4]: https://scholar.rose-hulman.edu/about.html
-[5]: https://scholar.rose-hulman.edu/faq.html
-[6]: https://scholar.rose-hulman.edu/cgi/myaccount.cgi?context=
-[7]: https://scholar.rose-hulman.edu/rhumj/vol4
-[8]: https://scholar.rose-hulman.edu/rhumj/vol4/iss1
-[9]: https://scholar.rose-hulman.edu/cgi/viewcontent.cgi?article=1299&amp;context=rhumj
-[10]: https://scholar.rose-hulman.edu/do/search/?q=%28author%3A%22Landon%20W.%20Rabern%22%20AND%20-bp_author_id%3A%5B%2A%20TO%20%2A%5D%29%20OR%20bp_author_id%3A%28%22ab4669c9-2939-45ab-9c2a-f43a9bfb8681%22%29&start=0&context=4752797
-[11]: https://network.bepress.com/api/follow/subscribe?user=NzU5NmRkODEwN2I3OWEzMw%3D%3D&amp;institution=MjRhMTUzODRiN2VkODY4Ng%3D%3D&amp;format=html
-[12]: https://plu.mx/plum/a/?repo_url=https://scholar.rose-hulman.edu/rhumj/vol4/iss1/3
-[13]: https://scholar.rose-hulman.edu/rhumj/editorialboard.html
-[14]: https://scholar.rose-hulman.edu/rhumj/policies.html
-[15]: https://scholar.rose-hulman.edu/rhumj/sponsor_guidelines.html
-[16]: https://scholar.rose-hulman.edu/rhumj/styleguide.html
-[17]: https://scholar.rose-hulman.edu/cgi/submit.cgi?context=rhumj
-[18]: https://scholar.rose-hulman.edu/rhumj/announcements.html
-[19]: https://scholar.rose-hulman.edu/do/search/advanced/?fq=virtual_ancestor_link:%22https://scholar.rose-hulman.edu/rhumj%22
-[20]: https://www.elsevier.com/solutions/digital-commons
-[21]: /cgi/myaccount.cgi?context=
-[22]: https://scholar.rose-hulman.edu/accessibility.html
-[23]: https://www.elsevier.com/legal/privacy-policy
-[24]: https://www.elsevier.com/legal/elsevier-website-terms-and-conditions
+```claim
+id: rabern-fulltext-not-on-disk
+statement: The full text of Rabern's 2003 RHUMJ paper is not in the library;
+  the index/abstract page and secondary accounts are. Its entry-prime
+  restrictions (all odd; centre 1-mod-4-only; no 3-mod-8 anywhere; no 5-mod-8
+  on middle-side) are asserted via those secondary sources.
+hypotheses: assumes a 3x3 MSS of distinct squares exists
+holds-here: yes
+status: asserted (primary full text not retrievable; 403 blocked)
+bearing: the restrictions are superseded/confirmed by this run's checked
+  congruences; do not cite Rabern's specific prime-distribution claims as
+  proof-checked.
+anchor: research/summaries/rabern-properties-magic-squares-of-squares-2003.md
+```

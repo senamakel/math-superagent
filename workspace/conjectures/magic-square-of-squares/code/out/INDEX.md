@@ -21,5 +21,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `phi_program_runs.txt` | Capture of fresh execution of the four never-run phi programs (phi_fibre_genus_run.py, verify_phi_doubling.py, phi_canonical_check.py, phi_identity_verify.py): commands, exit codes, full stdout, and per-program key conclusions. Fibre genus confirmed 0 (Faltings attack dead); two benign display artifacts; one program bug (phi_canonical_check orbit oracle, result independently confirmed); one genuinely false bound (phi_identity [5b]). |
 | `reconciliation_2026-08-12.txt` | _(undescribed)_ |
 | `run_k3_checks.sh` | _(undescribed)_ |
+| `check_ferreira_proof.py` | Sympy verification that refutes Ferreira's claimed non-existence proof (arXiv:1506.06621): substituting z2 (a root of eqn 46) back into (46) gives the tautology 0=0, not the paper's (47); witness m=5,n=3,w=1 satisfies (46) but fails (47). Records the exact algebraic error. |
 | `scholar_verify.py` | Scholar verification of the witness grids and source-reported numeric claims by exact integer arithmetic, so notes carry only program-checked numbers. |
 | `seven_square_grids_audit.txt` | _(undescribed)_ |
