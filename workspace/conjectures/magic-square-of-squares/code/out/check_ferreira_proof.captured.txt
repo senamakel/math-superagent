@@ -1,0 +1,6 @@
+substituting z2 into (46) gives (simplified): 0
+paper's claimed (47): n**2 - 2*n*w - w**2 - (n + w)**2
+claimed (47) simplified: 2*w*(-2*n - w)
+substitution == claimed (47)? False
+roots of claimed (47): []
+true roots of (46) for z: [m - sqrt(m**2 - 2*n*w - w**2), m + sqrt(m**2 - 2*n*w - w**2)]
