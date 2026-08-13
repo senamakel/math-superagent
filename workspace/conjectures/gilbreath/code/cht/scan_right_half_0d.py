@@ -43,6 +43,7 @@ Usage:  python3 scan_right_half_0d.py LIMIT DEPTH TAG
   (TAG in {2e7, 6e8} selects the b-profile oracle file)
 """
 import json
+import math
 import os
 import sys
 import time
