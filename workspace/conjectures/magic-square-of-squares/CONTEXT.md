@@ -114,6 +114,16 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   `m,n ≤ 200`). Status: verified-numerically on a finite range, conjectural as
   a theorem — **not a proof of non-existence**. Any claim beyond the range is
   `conjectured` until attacked.
+- **The Faltings-fibre attack on the Φ-triple is dead — confirmed by execution**
+  (`phi_fibre_genus_run.py`, `phi_fibre_genus_check.py`, both captured in
+  `code/out/`). f is homogeneous degree 0, so f(m,n) depends only on the ratio
+  r=n/m; the fibre f(p,q)=C is a quartic g(r)=C in ONE ratio, ≤4 roots, and each
+  root sweeps a whole line through the origin (genus 0). There is no genus-≥2
+  curve in this fibration, so Faltings' finiteness never engages. Also confirmed:
+  the f(P_k,P_{k−1}) = 1 − 1/P_{2k−1}² Pell-pair identity (record maxima of |Φ(B)|),
+  extended |Φ(B)| closed-form values (|Φ(500)|=50765, |Φ(1000)|=202861,
+  |Φ(2000)|=811155, |Φ(3000)|=1824231), and the canonical-pair→f bijection (with
+  orbit-collision caveat in `phi_canonical_check.py`).
 
 **|S(e)| analytic form and records — computed-and-checked** (`ap_structure2.py`
 [0], `pattern_seq.py`, exact sieve vs direct enumeration `e ≤ 1500`):
@@ -179,6 +189,11 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
   false.
 - **S-unit equations** — refuted, reason above (no new leverage; weaker than the
   Faltings finiteness Bremner II already gets).
+- **Faltings fibre of the Φ-triple** — refuted, now executed (`phi_fibre_genus_run.py`,
+  `phi_fibre_genus_check.py`): f is homogeneous-degree-0, so the fibre f(p,q)=C
+  degenerates to ≤4 lines through the origin (genus 0); Faltings (genus ≥ 2 ⇒ finite)
+  never applies. This is the "phi-triple-curve-genus-faltings" approach closed for
+  its actual mechanism.
 - **Simultaneous 2-Selmer of the four congruent-number curves** — refuted,
   reason above (subsumed by Bremner II's K3 data).
 - **Descent needs the exact variety first** — finish the elliptic/K3 reduction
@@ -266,11 +281,6 @@ the Established section.
 - **Exact reduction unanchored end-to-end**: the curve/K3 correspondence
   "rational point ⇒ distinct positive integer square solution" is not a claim
   block. Blocks any descent.
-- **k3_surface_checks.py exists but unverified** (`code/out/`): its docstring
-  asserts Bremner II's Category III six-square yields a `Q`-rational point on
-  the K3 `S`, so `S(Q)` nonempty and no Brauer–Manin obstruction could prove
-  `S(Q)=∅`. If true this closes `brauer-manin-k3-surface` outright (nothing to
-  obstruct) — run it and decide before spending budget on Br(S)/Br(Q).
 - Whether the four-AP condition (differences `u,v,u+v,u−v`) maps onto a known
   concordant-forms/congruent-numbers problem. Morgenstern's exhaustive search
   found no three *primitive* equal-`d` APs beyond `3.31×10¹⁵`; four linked
