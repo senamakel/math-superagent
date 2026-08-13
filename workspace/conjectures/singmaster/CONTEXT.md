@@ -353,15 +353,16 @@ Each carries the obstruction that closed it; do not re-propose.
   bound. Witness-set boundary counts: max 3 left-half reps at 3003.
 - **State of the decomposition (BACKWARD.md):** the backward skeleton
   `singmaster-uniform-bound` has exactly one open gap, `G-boundary-uniform-count`
-  — an absolute bound on the number of boundary representatives per a
-  (C >= 3 from 3003). `G-interior-bounded` and `G-small-a-bounded` are
-  catalogued. The boundary gap decomposes in
-  `research/backward/boundary-finite-collisions.md`:
-  `G-column-injectivity` (discharged); `G-fibonacci-boundary-finite` (refuted
-  — the family stays boundary, but each a has <= 2 boundary reps);
-  `G-nonfibonacci-pairs-are-bounded` (open — the core structural gap);
-  `G-boundary-collision-a-finite` (revised — finiteness of A_all is false,
-  but per-a boundedness does not need it).
+  — an absolute bound on the number of boundary representatives per a,
+  for EVERY admissible eps in (0,1). Larger eps → larger cut → more reps
+  counted as boundary, so the binding case is eps → 1 (directive 26).
+  The Fibonacci family is boundary for eps > 1/3 (most of the admissible
+  range), so it cannot be set aside as interior; any C must cover it.
+  `C >= 3` from 3003 is the current lower bound. The decisive computation
+  (directives 25–26): count ALL nontrivial boundary reps per Fibonacci a_j
+  for j=1..12 — if the count stays at 2, the skeleton survives; if it
+  grows, C is unbounded and singmaster-uniform-bound is refuted.
+  `G-interior-bounded` and `G-small-a-bounded` are catalogued.
 - **Directive 25 — Fibonacci family boundary proof and per-a count.**
   `fibonacci-family-is-boundary` filed as proved (structural, k/n→1/φ²,
   log-ratio `log(cut)/log(k)` ∼ (log n)^{1/6} → ∞ at ε=1/2; verified

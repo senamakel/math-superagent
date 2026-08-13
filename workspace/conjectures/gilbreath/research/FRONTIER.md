@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://web.archive.org/web/20201202160317/https://publons.com/follow/publon/create/10.20944/preprints202003.0145.v1 | Publons | Metrics 0 --- [Get PDF][12] Cite Share****0** --- **Bookmark****[BibSonomy][16]**[Mendeley][17]**[Reddit][18]**[Delicious][19]**[Publons][20] --- × Alerts Notify me about updates to this article or… |
 | 1 | https://web.archive.org/web/20201202160317/https://www.reddit.com/submit?url=https%3A%2F%2Fwww.preprints.org%2Fmanuscript%2F202003.0145%2Fv1 | Reddit | 0 Downloads 0 Comments 0 Metrics 0 --- [Get PDF][12] Cite Share****0** --- **Bookmark****[BibSonomy][16]**[Mendeley][17]**[Reddit][18]**[Delicious][19]**[Publons][20] --- × Alerts Notify me about… |
 
-_130 further candidates not shown; they are cited once each._
+_141 further candidates not shown; they are cited once each._
