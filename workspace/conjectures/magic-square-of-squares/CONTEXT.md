@@ -134,6 +134,20 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   Record placement does not bound values below its own index; any argument
   sieving near-1 Φ-values by a Pell-index ceiling is dead.
 
+**Φ 2,3-adic and modular structure — proved/checked** (`phi_pattern_findings.md`,
+`phi_valuation_proof_check.py`, `phi_padic_closure_exact.py`): every
+`q = f(m,n) ∈ Φ` (primitive `m>n≥1`, reduced) has `v2(q) ≥ 3` and `v3(q) ≥ 1` —
+every centre-AP difference `d/e²` is `0 mod 8` and `0 mod 3` (proved, confirmed
+over all 48,677 primitive pairs `m≤n≤400`). This is **necessary, not a sieve**:
+a sum of two 0-mod-8 values is 0-mod-8, so the additive relation `q1+q2=q3` gives
+no residue contradiction. No pure p-adic modular sieve can prove the no-Φ-triple:
+for every `p ∈ {2,3,5,7,11,13}` and `p^a ≤ 2000` the residue set
+`R = {f(m,n) mod p^a}` is non-degenerately **additively closed** (checked two
+independent ways). Reinforces the Ruled-out "locally solvable mod every prime
+power": a proof must use rationalness/integrality beyond congruences. Also:
+`f(m,n) < 1` strictly (sup = 1 only at the irrational `tan(π/8) = √2−1`), so the
+additive-chain clip `q1+q2 < 1` is real and is what kills Bremner's near-miss.
+
 **|S(e)| analytic form and records — computed-and-checked** (`ap_structure2.py`
 [0], `pattern_seq.py`, exact sieve vs direct enumeration `e ≤ 1500`):
 `|S(e)| = (∏_{p≡1 mod 4, p^a || e} (2a+1) − 1) / 2`. Max `|S(e)| = 202` at
