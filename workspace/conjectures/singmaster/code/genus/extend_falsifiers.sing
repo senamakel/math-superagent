@@ -1,0 +1,40 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+int n;
+// (1) family {5,n}: first falsifier n=25 (predicted 46), then n=26..30
+for(n=25; n<=30; n=n+1)
+{
+  poly F = CB(x,5) - CB(y,n);
+  ideal I = F;
+  "F5 n=", n, ": ", genus(I);
+}
+// (2) family {7,n}: falsifier n=14 (predicted 36), baseline n=13 (predicted 36)
+n=13;
+poly F = CB(x,7) - CB(y,n);
+ideal I = F;
+"F7 n=13: ", genus(I);
+n=14;
+F = CB(x,7) - CB(y,n);
+I = F;
+"F7 n=14: ", genus(I);
+// (3) sub-diagonal (n-2,n): falsifier n=22 (predicted 199), then 23,24,25 (220,241,264)
+for(n=22; n<=25; n=n+1)
+{
+  poly F = CB(x,n-2) - CB(y,n);
+  ideal I = F;
+  "D2 n=", n, ": ", genus(I);
+}
+// (4) sub-sub-diagonal (n-3,n): first uncomputed n=13,14 (predictions 54, 65)
+for(n=13; n<=14; n=n+1)
+{
+  poly F = CB(x,n-3) - CB(y,n);
+  ideal I = F;
+  "D3 n=", n, ": ", genus(I);
+}
