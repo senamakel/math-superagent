@@ -273,18 +273,28 @@ pub(super) fn fenced<'a>(text: &'a str, fence: &str) -> (Vec<&'a str>, bool) {
 /// several lines without being reformatted into one. Keys are lowercased and
 /// underscores folded to hyphens, because a model asked for `holds-here`
 /// writes `holds_here` about as often.
+///
+/// An indented line is always a continuation, whatever it contains. Naming a
+/// curve mid-statement is ordinary mathematical prose — `E: y² = x(x² − c²)`
+/// reads as a field called `e` on the word alone, and because [`set`] discards
+/// a key it does not recognise, every line after it was discarded too. One live
+/// claim lost its arithmetic-progression condition and its `2E(Q)` criterion
+/// that way while still rendering as `proved`, which is the worst shape
+/// available: the evidence is gone and the standing that rested on it is not.
 pub(super) fn fields(block: &str) -> Vec<(String, String)> {
+    let base = base_indent(block);
     let mut out: Vec<(String, String)> = Vec::new();
     for line in block.lines() {
         let trimmed = line.trim();
         if trimmed.is_empty() {
             continue;
         }
+        let opens = indent(line) <= base;
         match trimmed.split_once(':') {
             // A key is one word, so a colon inside a statement does not open a
             // new field. `S(n): the skip count` would otherwise become a field
             // named after the function it defines.
-            Some((key, value)) if is_key(key) => out.push((
+            Some((key, value)) if opens && is_key(key) => out.push((
                 key.trim().to_ascii_lowercase().replace('_', "-"),
                 value.trim().to_string(),
             )),
@@ -299,6 +309,51 @@ pub(super) fn fields(block: &str) -> Vec<(String, String)> {
         }
     }
     out
+}
+
+/// The column a block's field names start at.
+///
+/// Taken from the recognised keys rather than assumed to be zero, so a block
+/// written with every line indented still parses. A block with no recognised
+/// key falls back to the left margin, which is how one read before.
+fn base_indent(block: &str) -> usize {
+    block
+        .lines()
+        .filter(|line| {
+            line.trim()
+                .split_once(':')
+                .is_some_and(|(key, _)| is_key(key) && is_known(key))
+        })
+        .map(indent)
+        .min()
+        .unwrap_or(0)
+}
+
+/// How far a line is indented, counting a tab as one column.
+fn indent(line: &str) -> usize {
+    line.len() - line.trim_start().len()
+}
+
+/// Whether a key names a field [`set`] acts on.
+fn is_known(key: &str) -> bool {
+    matches!(
+        key.trim().to_ascii_lowercase().replace('_', "-").as_str(),
+        "id" | "statement"
+            | "hypotheses"
+            | "hypothesis"
+            | "holds-here"
+            | "holds"
+            | "status"
+            | "evidence"
+            | "bearing"
+            | "implies"
+            | "contradicts"
+            | "answers"
+            | "closes"
+            | "anchor"
+            | "source"
+            | "where"
+    )
 }
 
 /// Splits a comma- or whitespace-separated list of identifiers.
