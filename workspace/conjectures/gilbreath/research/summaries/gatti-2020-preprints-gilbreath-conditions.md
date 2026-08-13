@@ -21,7 +21,8 @@ Theorem 4 asserts the bound (15): `min K_{p1..p_{n-1}} ≤ p_n ≤ max K_{p1..p_
 ## Located flaw — Lemma 4 (interval completeness) is false and refuted by Muney 2026
 
 - Lemma 4 + Theorem 3 assert `K_S` = the whole parity class in `]min K, max K[`. Muney 2026 (held: research/sources/muney-2026-holes-valid-extension-html.full.md) **refutes this in general**: the valid-extension set can have interior holes, first at length 5 for `(2,3,5,9,15)`.
-- The Corollary-1 count `dim K_S = 2^{n−1}` also fails on a held example: for `S = {2,3,5} ∈ G_3`, the equation `|1 − |2 − |5−k||| = 1` has solutions `K = {1,3,5,7,9}` — five solutions, not `2^{3−1} = 4` (the eight signed combinations of Eq. 2 collapse to five distinct values because nested absolute values impose consistency).
+- **Even on the run's own example the open-interval statement is false at both endpoints.** For `S = {2,3,5}`, `min K = 1` and `max K = 9`, and both 1 and 9 ARE valid extensions (apex = 1), yet 1, 9 ∉ `]1,9[`. So Gatti's Theorem 3 equivalence `k ∈ ]min K, max K[ ∧ parity ⟺ S′ ∈ G_{n+1}` fails here at both endpoints — consistent with Muney's "endpoint validity and reflection symmetry" theorem (endpoints are always valid), which directly contradicts the open-interval form.
+- The Corollary-1 count `dim K_S = 2^{n−1}` also fails on a held example: for `S = {2,3,5} ∈ G_3`, the equation `|1 − |2 − |5−k||| = 1` has solutions `K = {1,3,5,7,9}` — five solutions, not `2^{3−1} = 4` (the eight signed combinations of Eq. 2 collapse to five distinct values because nested absolute values impose consistency). Verify: `code/research_mod_check/verify_gatti_kset.py` (queued for the coder; anti-diagonal fixed to rows b=1..n−1 so the formula matches Eq. 2).
 - Gatti's regularity claim (exponential trend of the bounds) is explicitly "observed", not proved.
 
 ## Status

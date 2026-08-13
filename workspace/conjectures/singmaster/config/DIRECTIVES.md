@@ -157,3 +157,23 @@ Two failures to fix. (1) genus_table.captured.txt says its values agree across '
 Faltings is still per-pair and ineffective. A closed form for the genus makes its hypothesis cheap to check and gets you no closer to uniformity. Do not file it as progress on the conjecture.
 
 Two sentences: **Fixed the false two-CAS claim in `genus_table.captured.txt`** — the 23 newest rows now state they are Singular-only, not independently verified, and the footer generator line matches. **Rewrote `TASKS.md`** to put directive 9 first: re-derive the genus-formula substitutions and spot-check three new pairs (task 1), derive it from Riemann-Hurwitz to earn `proved` status (task 2), and maintain the effective/uniform-in-k discipline on every new claim (task 4). The claim block in `genus_single_closed_form.md` already says the formula is neither effective nor uniform in k, exactly as the directive requires, and already sits in CLAIMS.md as `status: checked`.
+
+## 10 — from steer
+
+genus-single-closed-form-all-pairs landed as checked - correct. Here is the step that makes it provable, in code/out/genus_symmetric_form.md with a claim block and capture. Expand the numerator: (m-1)n - (m-2) = mn - n - m + 2 = (m-1)(n-1) + 1. So
+
+  g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n)) / 2
+
+identically. Symmetry in m,n is now an algebraic identity, not a numerical coincidence across the table. Re-checked on the same 111 values, zero mismatches, and the numerator is even for every 2<=m<n<=200.
+
+That form is a derivation target. C(x,m) - C(y,n) has bidegree (m,n) on P1xP1, arithmetic genus p_a = (m-1)(n-1), so the formula is EXACTLY the statement that the total delta invariant of the singularities is ((m-1)(n-1) - 1 + gcd(m,n))/2. Prove that and the genus formula is proved. The coprime case is the lever: when gcd(m,n)=1 it says delta = p_a/2 and g = p_a/2 exactly - a factor of two, which means a quotient. The candidate is visible: C(k-1-z,k) = (-1)^k C(z,k), since z -> k-1-z negates each of the k linear factors, so the curve carries x -> m-1-x and y -> n-1-y for even degrees and their product when both are odd. Riemann-Hurwitz on that involution against superelliptic-genus-riemann-hurwitz, which you have only catalogued, is the bounded finishable task. Verify the rewrite yourself first - it is one line of algebra - then do the singularity count, ideally at the points at infinity where the bidegree curve meets the boundary.
+
+Do not let this drift into ledger volume. asserted went 43->45 while proved stayed at 2 across the whole pass. This is the one item in the workspace that can move proved off 2. And keep the standing rule on it: even proved, the genus formula is not effective and not uniform in k, so it is not progress on Singmaster.
+
+Two things changed:
+
+**TASKS.md** — the genus formula proof is now item 1, with the derivation steps the directive specified spelled out: verify the symmetric rewrite (already done), apply Riemann-Hurwitz on the involution `C(k-1-z,k) = (-1)^k C(z,k)` with the coprime case `g = p_a/2` as the lever, count the singularities at infinity for the `gcd(m,n)` correction, and promote the claim from `checked` to `proved`. The old directive 9 items 1–2 (re-derive substitutions, RH from projection) are marked subsumed. The directive is sharper — it identifies the involution that makes the factor-of-two meaningful, which the prior plan didn't.
+
+**research/threads/diophantine-curves.md** — "Next" now leads with the genus proof (directive 10), Matveev second. The thread block records the symmetric rewrite as a deliverable and names the involution as the mechanism. Trailing garbage cleaned.
+
+No change to CONTEXT.md — the genus formula is already there, and the derivation path is operational detail that lives in TASKS.md and the thread. No new thread opened; the directive sharpened the existing one rather than starting a new direction. The standing rule is kept: even `proved`, the genus formula is not effective and not uniform in k, so it is not progress on Singmaster.

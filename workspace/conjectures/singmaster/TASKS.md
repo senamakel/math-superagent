@@ -98,8 +98,8 @@ argument.
 - [x] Singmaster-1971 tombstone written
 
 ## Ledger discipline
-- 43 claims: 41 asserted, 7 checked, 2 proved. Any lemma implying B<8 is refuted by 3003;
+- 45 asserted, 7 checked, 2 proved. Any lemma implying B<8 is refuted by 3003;
   state the counting convention on every claim. Do not record a bound as
   checked unless `code/out/witnesses.json` has been run against it.
   Every new claim must say whether its bound is effective and whether it is
-  uniform in k. The 41 asserted is a backlog — convert or drop, do not add.
+  uniform in k. The 45 asserted is a backlog — convert or drop, do not add.

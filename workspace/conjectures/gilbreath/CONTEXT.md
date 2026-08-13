@@ -14,6 +14,14 @@ away.
 ## Established
 
 - **Gatti 2020's claimed class-level/prime proof is invalid — located flaw (full text now in library).** Gatti, *Gilbreath's Sequences and Proof of Conditions for Gilbreath's Conjecture* (Preprints 202003.0145.v1, 2020; the earlier downloadable form of the MDPI-403 "Gilbreath polynomials" paper) proves the valid-extension machinery (Eq. 2: `k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`, global anti-diagonal criterion; parity alternation Lemmas 1–3 — the general-class half of the run's parity wave) but **Theorem 4's proof of `min K ≤ p_n ≤ max K` for the primes is invalid**: the right-inequality step assumes its own conclusion ("If p_n ≤ max K, then subtracting 2p_{n−1}…") and derives only a trivial `min K ≤ α` via Bertrand. Also his Lemma 4 (valid-extension set = whole parity interval) is **false in general** — Muney 2026's length-5 hole; even `dim K_S = 2^{n−1}` fails on `{2,3,5}`: `|K_S|=5` (solutions `{1,3,5,7,9}`, hand-verified; coder script `code/research_mod_check/verify_gatti_kset.py` queued). So **no published deterministic bounded-gap/prime-class theorem exists** — the REQUESTS row stays open, and Gatti's polynomial inequality (MDPI 2023) remains asserted-by-source only. Claims: `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`.
+- **LLM-era claimed "proofs" — all classified not-load-bearing, do not cite.**
+  Granville 2026 "Piercing Gilbreath's Conjecture" (arXiv:2607.04166, cs.CR — a
+  fintech/data-science author, NOT the number theorist) promises "a path to the
+  solution" via sieving/magic-primes and has no checkable statement; Maréchal
+  and ZARKOUNA 2026 likewise recorded as unverified claim preprints
+  (`research/summaries/granville-2026-piercing-gilbreath-arxiv.md`, claims
+  `granville-2026-piercing-gilbreath-not-load-bearing`). No peer review, no
+  mechanism this run can test; the conjecture is not proved by any of them.
 - **Verification record, CURRENT (sourced this cycle, 4 data points kept distinct):**
   Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna
   2025–26 to 1.5×10^15 (G(2.8e14)=788, G(6.15e14)=800, G(1.5e15)=800). Run's own: depth
@@ -203,8 +211,12 @@ away.
   claim its originator H.C. Williams retracted (email 2020, quoted in Chase
   2024 §7): Proth's actual paper states the property as a theorem and gives no
   proof; Catalan's appended note calls it a postulate. The corrected result is
-  the retraction itself. The GDZ scan is JS-blocked (recorded unobtainable);
-  content covered by two independent reader accounts.
+  the retraction itself. The Google Books capture of NCM vol. 4 is now also
+  exhausted — metadata/ToC/word-cloud only, no page text OCR'd
+  (`research/summaries/proth-1878-ncm-vol4-googlebooks.md`). GDZ
+  (`gdz.sub.uni-goettingen.de/id/PPN598948236_0004`) with a JS-capable browser
+  is the only remaining route, and no further offline fetch should be
+  attempted.
 - **Randomness is necessary, not optional:** Chase 2024 constructs exotic
   {0,3}-style sequences where the `{0,1}` result fails — evenness/2-then-odds
   alone is not enough.
@@ -368,9 +380,7 @@ recalled claim is relied on whose hypotheses fail here.
   Eppstein); a proved statement on the regeneration rate; and the Lean 4
   formalisation of the difference operator and induction step (with `#print
   axioms` and every `sorry`). No Lean work is on disk yet.
-- **Library search halted by directive.** FRONTIER.md is at 309→345 with
-  checked at 3. No more downloads until a specific gap is stated that a source
-  could close.
+- **Library search halted by directive.** FRONTIER.md restored 2026-08-13 from commit db36fc23 (42 rows) after the Gatti-2020 wrapper-page download replaced it with 15 social-media share buttons. URL filter active on rewrite (share/bookmark patterns dropped). Gatti 2020 classified not-load-bearing. Collapse >30% in candidate count is a failure signal (`research/notes/frontier-collapse-alarm.md`). No more downloads until a specific gap is stated that a source could close.
 - **Memory cap observed.** The container touched 6.46 GiB of 8 GiB during the
   26-worker null run before falling to 2.6 GiB. Bound worker counts on anything
   that materialises the depth-1000 triangle per worker; single-row streaming

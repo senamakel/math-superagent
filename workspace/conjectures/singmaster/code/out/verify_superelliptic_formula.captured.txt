@@ -1,0 +1,52 @@
+== {2,n} pair: hyperelliptic (m=2, d=n);  literature vs claimed vs recorded ==
+  n= 3: lit= 1 claim= 1 recorded= 1  OK
+  n= 4: lit= 1 claim= 1 recorded= 1  OK
+  n= 5: lit= 2 claim= 2 recorded= 2  OK
+  n= 6: lit= 2 claim= 2 recorded= 2  OK
+  n= 7: lit= 3 claim= 3 recorded= 3  OK
+  n= 8: lit= 3 claim= 3 recorded= 3  OK
+  n= 9: lit= 4 claim= 4 recorded= 4  OK
+  n=10: lit= 4 claim= 4 recorded= 4  OK
+  n=11: lit= 5 claim= 5 recorded= 5  OK
+  n=12: lit= 5 claim= 5 recorded= 5  OK
+
+== {3,n} pair: cyclic trigonal (m=3, d=n);  literature vs claimed vs recorded ==
+  n= 4: lit= 3 claim= 3 recorded= 3  OK
+  n= 5: lit= 4 claim= 4 recorded= 4  OK
+  n= 6: lit= 4 claim= 4 recorded= 4  OK
+  n= 7: lit= 6 claim= 6 recorded= 6  OK
+  n= 8: lit= 7 claim= 7 recorded= 7  OK
+  n= 9: lit= 7 claim= 7 recorded= 7  OK
+  n=10: lit= 9 claim= 9 recorded= 9  OK
+  n=11: lit=10 claim=10 recorded=10  OK
+  n=12: lit=10 claim=10 recorded=10  OK
+  n=13: lit=12 claim=12 recorded=12  OK
+  n=14: lit=13 claim=13 recorded=13  OK
+  n=15: lit=13 claim=13 recorded=13  OK
+  n=16: lit=15 claim=15 recorded=15  OK
+  n=17: lit=16 claim=16 recorded=16  OK
+  n=18: lit=16 claim=16 recorded=16  OK
+  n=19: lit=18 claim=18 recorded=18  OK
+  n=20: lit=19 claim=19 recorded=19  OK
+  n=21: lit=19 claim=19 recorded=19  OK
+  n=22: lit=21 claim=21 recorded=21  OK
+  n=23: lit=22 claim=22 recorded=22  OK
+  n=24: lit=22 claim=22 recorded=22  OK
+
+== {4,n} pair: NOT a direct superelliptic cover (2:1 cover of w^2=1+24C(x,n)) ==
+  Literature formula for the *base* hyperelliptic w^2=1+24C(x,n) (m=2,d=n):
+  n : base genus | recorded {4,n} genus
+   5:       2      |       6
+   6:       2      |       7
+   7:       3      |       9
+   8:       3      |       9
+   9:       4      |      12
+  10:       4      |      13
+  11:       5      |      15
+  12:       5      |      15
+
+RESULT: ALL literature-formula cross-checks PASS for {2,n} and {3,n}
+  -> the Sutherland/Wikipedia superelliptic genus formula reproduces
+     the run's independently computed small-column genus rows,
+     giving the small-column closed forms a citable primary anchor.
+code/genus/verify_superelliptic_formula.py EXIT_CODE=0 CAPTURED=code/out/verify_superelliptic_formula.captured.txt

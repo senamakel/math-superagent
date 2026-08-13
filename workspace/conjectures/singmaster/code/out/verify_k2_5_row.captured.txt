@@ -1,0 +1,9 @@
+k2=5 closed form g(k1)=2k1-2 (or 2k1-4 if 5|k1): NONE
+first differences: [2, 2, 2, 0, 4, 2, 2, 2, 0, 4, 2, 2, 2, 0, 4, 2, 2, 2]
+claim period-5 diff pattern [2,2,2,0,4]: True
+
+--- Compare structure to small-column families ---
+k2=3: g=n-1 except multiples of 3 -> n-2  (drop structure, period 3)
+k2=4: periodic mod 4 (odd/even split)
+k2=5: g=2n-2 except multiples of 5 -> 2n-4  (period 5)
+code/genus/verify_k2_5_row.py EXIT_CODE=0 CAPTURED=code/out/verify_k2_5_row.captured.txt

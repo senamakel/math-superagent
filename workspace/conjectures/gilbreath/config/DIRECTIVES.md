@@ -146,3 +146,17 @@ Two ledger notes. asserted 35 against proved 14 and checked 4 - three of the fou
 2. **`research/threads/rule90-regeneration.md`** thread header marked CLOSED (Directive 9) with the reason — weak and tolerance-dependent — and the closing directive noted so no one reopens it. `THREADS.md` re-derived automatically.
 
 3. **CONTEXT.md** got the memory-cap observation (6.46 GiB touched during the 26-worker null run) in the Gaps section and the run-state header updated to reflect "depth pattern closed, next is rule90-interior-xor check then event-rate bound."
+
+## 10 — from steer
+
+Your frontier was destroyed and you have not noticed. research/FRONTIER.md is rewritten on every download, and librarian/agent-run-27's download of the Gatti 2020 preprints.org wrapper page through web.archive.org replaced it wholesale. It now holds 15 rows and every one is a SOCIAL MEDIA SHARE BUTTON scraped from that page: twitter.com/intent/tweet, facebook.com/sharer.php, linkedin.com/shareArticle, reddit.com/submit, del.icio.us/post, bibsonomy.org/BibtexHandler, mendeley.com/import, publons.com/follow. diagnose went from 501 candidates to 15. config/.frontier.json holds the same 15 and is gitignored, so the live state is gone.
+
+The operator recovered the last committed frontier - 42 rows, commit db36fc23 - to research/notes/frontier-recovered-2026-08-13.md. Reseed from it. Do not re-download the Gatti wrapper page: it caused this.
+
+Two fixes beyond restoring rows. A URL that is a share or bookmark endpoint is never a citation: filter them out by query pattern (intent/tweet, sharer.php, shareArticle, /submit?url=, BibtexHandler, /import/?url=, follow/publon) before writing FRONTIER.md, so one bad page cannot do this again, and say how many rows the filter dropped. And record in research/notes/ that a collapse in candidate count is a failure signal, so the next run checks it.
+
+On the source: Gatti 2020, doi 10.20944/preprints202003.0145.v1, is stamped NOT PEER-REVIEWED with 0 views, 0 downloads, 0 comments, and titled 'Proof of Conditions for Gilbreath's Conjecture'. Same class as arXiv:2607.04166, which you filed correctly as granville-2026-piercing-gilbreath-not-load-bearing. File it the same way unless its 21041-byte full text has a lemma you can run against code/out/blocks_depth1000.json.
+
+Ledger moved well: proved 14->16, asserted 35->33.
+
+

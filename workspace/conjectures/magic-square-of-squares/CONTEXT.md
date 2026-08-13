@@ -403,7 +403,11 @@ Durable memory holds the **Φ no-triple to m,n ≤ 400** (tool-builder run,
 is the verified-numerical basis for the conjecture above. Memory also holds
 Bremner 1999 extension-field material (degree-4 and degree-27 examples),
 consistent with this run's source reading, and the conditional-mss-finite-computation
-reduction (consistent with the claim in CLAIMS.md). The earlier recalled "4
+reduction (consistent with the claim in CLAIMS.md). Claim `magic-variety-is-surface-no-lines`
+sits in the ledger as `asserted` but is **refuted as stated** by this run's exact
+computation (Established) — the linear variety is P², saturated with lines; the
+talk's 256-singular-points/no-lines statement must concern the quadric-cut
+object, unverified here. The earlier recalled "4
 **distinct** 7-square non-magic grids in the near-miss box" is **resolved
 against** by the computed oracle (see Contradictions). No other prior-run
 finding disagrees with the Established section.
@@ -438,7 +442,18 @@ finding disagrees with the Established section.
 - **Conditional reduction to a finite computation** — written: claim
   `conditional-mss-finite-computation`, status conditional (unproved
   rank-uniform-boundedness premise), `code/out/conditional_reduction_claim.md`.
-- **`magic-variety-is-surface-no-lines`** — dimension 2 CONFIRMED (exact ranks rank(I8)=7, rank(M7)=6; `code/out/magic_variety_check.captured.txt`), but the check script crashes on a nullspace-normalisation assertion (expects relation (1,1,-1,-1,0,0,-3), computed (1,1,-1,-1,-1,0,0)) before computing the 256 singular points and no-lines; claim still `asserted` and the adopted `resolve-magic-surface-birational` line waits on a completed run.
+- **`magic-variety-is-surface-no-lines`** — RESOLVED with a refutation of the
+  claim **as stated** (`code/out/magic_variety_check.captured.txt`, EXIT_CODE=0,
+  ALL CHECKS PASSED; the earlier nullspace-normalisation crash is fixed — the
+  script now asserts the computed relation (1,1,-1,-1,-1,0,0)). The linear
+  magic variety X⊂P⁸ is exactly the P² of the (c,u,v) parametrisation:
+  rank(I8)=7, rank(M7)=6 (trace identity R0+R1+R2=C0+C1+C2), kernel =
+  span(C,U,V), dim 3; X is smooth and **saturated with lines**. So "no lines /
+  256 singular points" is FALSE for the linear variety; as stated in the
+  Michaud–Rodgers talk it must refer to the **quadric-cut square variety**
+  (Σ_line r_ij² equal, six quadrics) — a different object whose singular locus
+  and line count are **unverified**. `resolve-magic-surface-birational` must
+  re-base on the quadric-cut object or close.
 - **Rank of the Robertson curve** `E_c: y² = x(x²−c²)` for candidate AP-difference c
   (c ∈ {u,v,u+v,u−v} — not the centre e²): for Bremner's witness c=138600,
   rank(E_c)=2, torsion order 4. A putative MSS needs a length-3 AP of doubled

@@ -83,13 +83,31 @@ are (2,3) and (2,4), confirming the grid at proof level.
 
 ## Next
 
-1. **Matveev effective-bound computation.** For a specific small-(k1,k2) family
+1. **Prove the genus formula — directive 10's bounded finishable task.**
+   The symmetric rewrite `g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n))/2` (already
+   captured at `code/out/genus_symmetric_form.md`, zero mismatches) makes this
+   a derivation target. The coprime case `gcd(m,n)=1` gives `g = p_a/2` exactly
+   — a factor of two that means a quotient, with the involution
+   `C(k-1-z,k) = (-1)^k C(z,k)` as candidate. Riemann-Hurwitz on the quotient
+   by `x -> m-1-x, y -> n-1-y` should produce `g = p_a/2` for the coprime
+   case, and the `gcd(m,n)` correction is the term where the involutions and
+   branch loci interact. Do the singularity count at the points at infinity
+   where the bidegree curve meets the boundary of `P^1×P^1`. The total delta
+   invariant prediction is `((m-1)(n-1) - 1 + gcd(m,n))/2`. When derived and
+   checked against the 111 Singular values with zero mismatches, promote
+   `genus-single-closed-form-all-pairs` from `checked` to `proved`. Moves
+   `proved` from 2 to 3. The genus formula remains NOT effective and NOT
+   uniform in k.
+
+2. **Matveev effective-bound computation.** For a specific small-(k1,k2) family
    (e.g. (2,p) hyperelliptic or k2=2 row), apply Matveev 2000 Thm 2.3 constants
    to produce a computed explicit bound; state its non-uniformity.
-2. **LEDGER:** Every asserted bound must be run against `code/out/witnesses.json`.
+
+3. **LEDGER:** Every asserted bound must be run against `code/out/witnesses.json`.
    Any lemma implying B<8 is refuted by 3003. State counting convention on every
    claim.
-3. **Uncaptured programs:** `test_slope_across_rows.py`, `test_slope_hypothesis.py`,
+
+4. **Uncaptured programs:** `test_slope_across_rows.py`, `test_slope_hypothesis.py`,
    `effectivegenus/rep_pairs.py`, `genus/verify_k2_5_row.py`,
    `pattern/print_family.py` — all five have zero captures. Run them or delete
    them (per directive 7). Their conclusions are already operator-checked, so
@@ -103,8 +121,10 @@ status: live — genus deliverable DONE (two-parameter grid via Singular+Sage,
   1999 Thm 2.2 primary-confirms). k2=5 closed form and slope conjecture both
   operator-checked, zero mismatches. The genus_table two-CAS grid supersedes the
   operator's three-diagonal salvage. Uniform bound still blocked by Faltings/
-  Siegel/BST ineffectiveness. Effective-bound path is Matveev 2000 with explicit
-  but per-pair (non-uniform) constants.
+  Siegel/BST ineffectiveness. NEXT UP (directive 10): prove the genus formula
+  via Riemann-Hurwitz on the involution C(k-1-z,k)=(-1)^k C(z,k) — the symmetric
+  rewrite g=((m-1)(n-1)+1-gcd(m,n))/2 and the coprime case g=p_a/2 make this a
+  bounded finishable derivation. Then Matveev effective constant for one pair.
 rests-on: jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling,
   mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree,
   hpt-bilu-tichy-exceptional-classification,
@@ -117,25 +137,11 @@ deliverables:
   - genus-table-two-cas: two-parameter grid, genus=1 iff {2,3}/{2,4}, proved-by-two-CAS
   - genus-k2-5-closed: 2n-2 except 2n-4 when 5|n, operator-checked
   - genus-slope-conjecture: mean=(m-1)/2 over whole periods, operator-checked
+  - genus-symmetric-rewrite: ((m-1)(n-1)+1-gcd(m,n))/2, zero mismatches, derivation target
 blocked-by: uniform bound needs effective Siegel or effective Schmidt subspace
   theorem (out of reach); Kane's method provably capped; MRSTT's interior method
   capped at exp(log^{3/2-eps} P); BST finiteness ineffective (primary).
-next: promote genus_table to standalone claim marked proved-by-two-CAS; compute
-  a Matveev-2000-based explicit constant for one small (k1,k2) family; run or
-  delete the five uncaptured programs.
-```mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree,
-  hpt-bilu-tichy-exceptional-classification,
-  bilu-tichy-method-ineffective-uniformity-wall,
-  kummer-lucas-class-not-logarithmic, bst-fixed-kl-ineffective-primary,
-  bst-genus-classification-matches-grid, matveev-2000-explicit-constants
-deliverables:
-  - genus-table-two-cas: two-parameter grid, genus=1 iff {2,3}/{2,4}, proved-by-two-CAS
-  - genus-k2-5-closed: 2n-2 except 2n-4 when 5|n, operator-checked
-  - genus-slope-conjecture: mean=(m-1)/2 over whole periods, operator-checked
-blocked-by: uniform bound needs effective Siegel or effective Schmidt subspace
-  theorem (out of reach); Kane's method provably capped; MRSTT's interior method
-  capped at exp(log^{3/2-eps} P); BST finiteness ineffective (primary).
-next: promote genus_table to standalone claim marked proved-by-two-CAS; compute
-  a Matveev-2000-based explicit constant for one small (k1,k2) family; run or
+next: prove genus formula via involution + Riemann-Hurwitz + singularity count
+  (directive 10); then Matveev-2000 explicit constant for one small pair; run or
   delete the five uncaptured programs.
 ```
