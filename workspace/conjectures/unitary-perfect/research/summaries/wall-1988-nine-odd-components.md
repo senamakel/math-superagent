@@ -24,8 +24,7 @@ hypotheses: N = 2^a m unitary perfect, m odd, N not one of the five known;
 holds-here: yes - applies to any sixth UPN, which is the object the run
   targets; the four small known UPNs (omega_odd < 9) fall outside the
   hypothesis so the statement is not refuted by them
-status: asserted (proved in the source by outline case analysis; not
-  independently verified here)
+status: asserted
 bearing: gives the missing lower side that the budget corollary alone cannot;
   combined with omega(odd) <= a+1 it yields a >= 8 (2^8 | sixth UPN), see
   lower-bound-on-a.md

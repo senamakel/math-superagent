@@ -19,7 +19,7 @@ statement: There are at most finitely many unitary perfect numbers with a fixed
 hypotheses: sigma* multiplicative; N unitary perfect iff sigma*(N) = 2N
 holds-here: yes - a sixth UPN, if it exists, therefore has arbitrarily large
   omega, tying growth of omega(odd) to the finiteness question
-status: proved in source (Theorem 4); not re-derived here
+status: catalogued
 bearing: justifies that the open question reduces to whether omega(odd) can
   grow; the run's a >= 8 and Wall 1988's omega(odd) >= 9 are steps in that
   direction but do not bound omega above

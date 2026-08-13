@@ -85,6 +85,17 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 - **(OEIS finding)** The verified H_even members `2,6,10,18,26,30,46,62,82,122`
   match **no** OEIS sequence — no catalogued closed form; structure comes from
   the problem.
+- **(computed/checked, independent reproduction)** The ten members of
+  `H_even ∩ [2,1200]` are each verified IN by **complete factorisation** of
+  `2^m+1` with every prime 3-Higgs:
+  `code/out/heven_complete_verify.captured.txt` — 2^122+1 factored completely into
+  `5·733·1709·3456749·368140581013·667055378149`, all 3-Higgs. So the ten
+  members are independently confirmed (not merely taken from the paper).
+- **(computed) 257 = 2^8+1 is non-3-Higgs** (`v2(256)=8 > 3`), confirmed by the
+  witness check in `code/out/heven_patterns.captured.txt`. This underpins
+  Route B to kill the `a=8` equality case in the thread. NB the pattern script's
+  hard-coded "want" table had `257:True`; the computed (correct) value is False —
+  that table row is a script bug, and the genuine value is non-Higgs.
 
 ## Ruled out
 

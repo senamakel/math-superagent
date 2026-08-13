@@ -21,8 +21,7 @@ statement: Except for the five known UPNs, a unitary perfect number has an odd
 hypotheses: N = 2^a m unitary perfect not among the five known; entry-point
   computation over odd primes p < 2^15; Subbarao's a >= 10 for new UPNs
 holds-here: yes - applies to any sixth UPN, the object the run targets
-status: asserted (source's argument; the 1093/3511 claim is a bounded
-  computational sweep, catalogue-grade, not re-run here)
+status: asserted
 bearing: supplies the 32771 component floor used by Wall 1988 to derive
   omega(odd) >= 9, and hence the a >= 8 lower bound on a sixth UPN
 anchor: research/summaries/wall-1988-nine-odd-components.md

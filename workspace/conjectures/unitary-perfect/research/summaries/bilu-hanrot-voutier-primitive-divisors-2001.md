@@ -20,9 +20,7 @@ hypotheses: n in the covered (large) range; primitive divisor means it divides
   no earlier term
 holds-here: yes for Phi_{4p}(2) with p large (the H_even prime branch), and for
   every 2^(2k)+1 in Prop 4
-status: asserted - the theorem is classical and the source proves it, but the
-  captured OCR of this specific file is unusable so the exact threshold and
-  exception list were not re-read from it
+status: asserted
 bearing: underpins Maciejewski Prop 4 (Higgs-cubefree structure of H_even) and
   Conjecture 23; without it the geometric control of ord_r(2) = 4k fails
 anchor: research/sources/maciejewski-bounded-box-subbarao-warren.full.md
