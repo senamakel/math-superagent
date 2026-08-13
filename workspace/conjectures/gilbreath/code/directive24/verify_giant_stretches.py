@@ -109,7 +109,7 @@ def main():
             (k, 'value runs')
         # (c) landing bits
         bits_runs = rle_of([rows[k + 1][i] // 2 for i in range(bcur, bnxt + 1)])
-        assert bits_runs == e['bits'], (k, 'bits rle')
+        assert [[v, c] for v, c in bits_runs] == e['bits'], (k, 'bits rle')
         assert all(v <= 1 for v, c in bits_runs), (k, 'bits values')
         assert rows[k + 1][bnxt + 1] not in (0, 2), (k, 'block maximality')
         zero_runs = [c for v, c in bits_runs if v == 0]
