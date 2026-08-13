@@ -13,6 +13,13 @@ For non-exceptional pairs, Bilu (1999, Acta Arith.) proves that max(x,y) is boun
   (b) that an integer a can be the common value for at most two distinct exceptional pairs,
 then for all other pairs we have effective finiteness per-pair, and the homogeneity constraint limits how many different k-values can hit the same a.
 
-status: proposed
-first-step: Compute the polynomial decomposition of C(x,k) for k=2,...,8 using sympy or Magma to detect whether C(x,k) can be written as φ(f(x)) with deg(φ) > 1. Determine which (k1,k2) share a common compositional factor φ. Cross-reference with the known Bilu–Tichy standard types. Then attempt to prove that the only standard-pair configuration for binomial polynomials is the (k+1,k+2) family (which is type (I) with m=1). Even a partial classification (e.g., for k1,k2 ≤ 12) would bound N(a) for numbers whose representations all involve small k.
+status: grounded (classification) / refuted (as a route to a uniform bound)
+killed-by: hpt-bilu-tichy-exceptional-classification + bilu-tichy-method-ineffective-uniformity-wall — Hajdu-Papp-Tijdeman 2022 (Ramanujan J 58, arXiv/Springer 10.1007/s11139-022-00555-7) already applies Bilu-Tichy to exactly this problem (motivated by de Weger's binomial question) and obtains Theorem 2.3: finitely many solutions unless (i) P(y)=f(T(y)) or (ii) an explicit quadratic-composition case — but in the authors' own words it is INEFFECTIVE. It classifies the exceptional pairs (surviving kernel) but gives no count computable in (k1,k2); the effective per-pair bound grows with degree/height of C(x,k), so it is not uniform in k. The route cannot deliver a uniform N(a) bound. This is the same ineffectivity wall as Faltings/Siegel and sst-effective-shared-factor.
+precedent:
+  https://doi.org/10.1007/s11139-022-00555-7  (Hajdu, Papp, Tijdeman, Ramanujan J 58 (2022) 1075-1093, full text held)
+  https://doi.org/10.4064/aa-95-3-261-288  (Bilu & Tichy, Acta Arith. 95 (2000) 261-288, primary)
+  https://doi.org/10.1006/jnth.1997.2109   (de Weger, Equal binomial coefficients, JNT 63 (1997) — the motivating problem)
+  https://doi.org/10.1007/s11139-022-00555-7 (HPT Thm 2.3 = the applied classification; Lemma 5.4 = Bilu-Tichy criterion)
+  claims: hpt-bilu-tichy-exceptional-classification, bilu-tichy-method-ineffective-uniformity-wall
+first-step: (grounded kernel only) compute the polynomial decomposition of C(x,k) to identify which pairs share a common compositional factor φ — this confirms the exceptional-pair classification but, per killed-by, cannot be promoted to a uniform bound.
 ```

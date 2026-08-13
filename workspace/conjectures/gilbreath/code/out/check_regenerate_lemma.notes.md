@@ -1,46 +1,63 @@
-# Refuted: candidate regeneration lemma
+# Regeneration lemma: off-by-one corrected, criterion ESTABLISHED
 
-**Status: refuted** by `check_regenerate_lemma.py` against the actual prime Gilbreath rows (sieve to 2e7, 1.27e6 primes, depth 1000).
+## Correction note (important)
 
-## What was tested
+This file previously reported the candidate regeneration lemma as **refuted**.
+That conclusion was based on an **off-by-one** in the edge index used for `e_k`.
+The corrected run (`regeneration/check_regenerate_lemma.py` ->
+`code/out/check_regenerate_lemma.captured.txt`, sieve 20M, 1.27e6 primes,
+depth 1000) shows the lemma holds **exactly**. Withdraw/refute the old
+refutation.
 
-A candidate `iff` characterising when regeneration occurs — the claim was that some property `rhs` of the row (involving the intruder `c`, the block length `b`, and the second entry `e`) is equivalent to the second entry staying in `{0,2}`. The oracle PASSED (first 40 rows block lengths and second entries match `witnesses.json`), so the failures are the lemma's.
+## The bug
 
-## Two distinct failure modes
+The leading `{0,2}` block of row k occupies 0-based columns `1..b_k`. Its
+**last** value is at column `b_k`, not `b_k - 1`. The old run used
+`e_k = A_k[b_k-1]` (and `q_k = A_{k+1}[b_k-1]`), which is one short of the
+block. Since `A_{k+1}[j] = |A_k[j] - A_k[j+1]|`, the diff partner of the
+intruder `c_k = A_k[b_k+1]` is `A_k[b_k]`. The old indexing made `q_k == |e_k-c_k|`
+fail on 141/161 rows and the iff fail on 109 rows. All of that disappears with
+`e_k = A_k[b_k]`.
 
-### [IFF FAIL] — the `iff` is false in the direction needed
+## The established criterion (exact, checked over all 998 transitions)
 
-At rows k=3,5,6,7,8,15,17,19,20,21,23,24,25,26,27,28,29,... and many more:
-`q_in{0,2}=True` (the left side holds — the second entry *is* in `{0,2}`) but `rhs=False` (the right side does not hold). So the proposed right-hand-side is not necessary for the second entry to be in `{0,2}` — the `iff` fails in the direction the lemma needs.
+Let `b_k = block_profile(A_k)` (leading `{0,2}` length), `c_k = A_k[b_k+1]`
+(intruder, first value past the block), `e_k = A_k[b_k]` (true last `{0,2}`
+value), and `q_k = A_{k+1}[b_k]` (which equals |e_k - c_k| identically).
+Then for every k = 1..999 with an intruder:
 
-### [REGEN FAIL] — the lemma's regeneration prediction mismatches reality
+- `q_k ∈ {0,2}`  ⟺  `(e_k == 2 and c_k == 4)`
+- `b_{k+1} ≥ b_k`  ⟺  `(e_k == 2 and c_k == 4)`
 
-At rows where the lemma's right-hand-side would predict regeneration but the block length does not actually increase (or decreases):
-- k=3: b stays 13→13 (lemma predicted regen)
-- k=8: b goes 21→24 (lemma predicted erosion)
-- k=11: b goes 97→96 (lemma predicted regen)
-- k=13: b goes 97→96
-- k=15: b goes 173→175
-- k=17: b goes 175→175
-- k=19: b goes 175→290
-- k=23: b goes 739→873
-- k=26: b goes 871→872
-- and many more through k=161
+**Zero failures** over all 998 transitions. Exactly **60** regeneration events
+(matching the long-standing count of 60 in 999 transitions). For the 838 rows
+whose whole leading length is `{0,2}` (no intruder), `b_{k+1} ≥ b_k` is always
+false, so the iff still holds there.
 
-## What survives
+Distributions (meaningful/intruder rows), (e,c) pairs:
+(2,4):60, (0,4):36, (2,6):16, (0,6):13, (0,8):8, (2,8):8, (0,12):5, (0,14):4,
+(2,10):4, (2,12):3, (0,10):2, (2,14):2.
+q distribution: q=2:60, q=4:52, q=6:21, q=8:12, q=10:5, q=12:7, q=14:4.
 
-The oracle is sound. The data the lemma was tested against is correct. The lemma itself is wrong — both directions of its `iff` fail systematically across the computed rows. It is not a near miss; it is the wrong characterisation.
+## What this resolves and what remains open
 
-## Next
+Resolves the old open item "intruder==4 necessary but not sufficient (36 erosion
+rows also have intruder 4)": among the 96 rows with intruder 4, the 60 with edge
+2 regenerate and the 36 with edge 0 erode. Regeneration IS a single-row local
+property: the block must currently end in 2 with a 4 immediately past it.
 
-Do not weaken and re-assert. The honest open question remains: is there a k with block length 0? Everything computed says no; nothing proves it.
+Open: showing this criterion is available often enough that erosion never drives
+`b_k` to 0 (the honest open question — is there a k with block length 0?). The
+criterion being local makes this more tractable, but it is not yet proved.
 
 ```claim
-id: candidate-regeneration-iff-refuted
-statement: A candidate iff characterising block-length regeneration (q_in{0,2} ⇔ rhs, where rhs involves the intruder c, block length b, and second entry e) was tested against the actual prime Gilbreath rows to depth 1000 and refuted. The → direction fails at k=3,5,6,7,8,15,17,19,20,21,23,24,25,26,27,28,29,... (q_in{0,2}=True but rhs=False). The ← direction fails at k=3,8,11,13,15,17,19,23,26,... (lemma predicts regen but block does not grow, or predicts erosion but block grows).
-hypotheses: none that survive — the lemma itself is what was tested
-holds-here: no — refuted
-status: refuted (test run captured at code/out/check_regenerate_lemma.captured.txt; oracle PASSED, lemma FAILED)
-bearing: the iff approach to characterising regeneration by a single-row property of the intruder and block length does not work. Regeneration is not a local property of the current row alone.
-anchor: code/out/check_regenerate_lemma.notes.md
+id: regeneration-lemma-edge-2-intruder-4-established
+statement: For the Gilbreath rows of the primes to depth 1000, regeneration of the leading {0,2} block is characterised exactly by a single-row local property: b_{k+1} >= b_k  ⟺  (A_k[b_k] == 2 and A_k[b_k+1] == 4), where b_k = block_profile(A_k). The value q_k = A_{k+1}[b_k] = |A_k[b_k] - A_k[b_k+1]| lies in {0,2} under exactly the same condition. Zero failures over all 998 transitions (k=1..999); 60 regeneration events, matching the independent long-standing count.
+hypotheses: b_k < width of A_k (i.e. an intruder exists). Blocks with no intruder (whole row in {0,2}) never regenerate (b_{k+1} >= b_k false) there, consistent with the iff. Indexing is 0-based within the row, A_0 = primes.
+holds-here: yes — verified exactly to depth 1000 (sieve 20M), oracle PASSED (first-40 blocks + second entries match witnesses.json)
+status: computed and checked (depth 1000), not yet proved for all k
+anchor: code/out/check_regenerate_lemma.captured.txt
 ```
+
+The earlier claim `candidate-regeneration-iff-refuted` is withdrawn; its
+"failures" were the off-by-one bug.
