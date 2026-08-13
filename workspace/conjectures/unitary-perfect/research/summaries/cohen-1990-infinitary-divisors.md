@@ -1,82 +1,48 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/cohen-1990-infinitary-divisors.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
-
 <!-- source: https://www.ams.org/journals/mcom/1990-54-189/S0025-5718-1990-0993927-5/S0025-5718-1990-0993927-5.pdf | converted from PDF -->
 
-## What it claims
+# Cohen (1990), *On an integer's infinitary divisors*, Math. Comp. 54(189) 395–411
 
-Abstract.  The  notions  of  unitary  divisor  and  biunitary  divisor  are  extended
-in  a  natural  fashion  to  give  k-ary  divisors,  for  any  natural  number  k  .  We
-show  that  we  may  sensibly  allow  k  to  increase  indefinitely,  and  this  leads  to
-infinitary  divisors.  The  infinitary  divisors  of  an  integer  are  described  in  full,
-and  applications  to  the  obvious  analogues  of  the  classical  perfect  and  amicable
-numbers  and  aliquot  sequences  are  given.
+Full text: [[cohen-1990-infinitary-divisors.full]] (AMS PDF, clean).
 
-1. Introduction
+**Setup.** `k`-ary divisors by induction: 1-ary = unitary; `k`-ary for `k ≥ 2`
+iff `gcd_k−1(d, n/d) = 1`; infinitary = limit `k → ∞`. On prime powers
+`p^x |_∞ p^y` iff the binary expansions of `x` and `y` are disjoint.
 
-A divisor  d  of  a natural  number  n  is unitary  if the  greatest  common  divisor
-of  d  and  n/d  is  1, and  is biunitary  if  the  greatest  common  unitary  divisor  of
-d  and  n/d  is  1.  Unitary  and  biunitary  divisors  have  been  studied  by  several
-authors,  often  in  terms  analogous  to  those  of  the  classical  perfect  and  amicable
-numbers.  Among  these  writers  are  E. Cohen  [2], Hagis  [4-6],  Lai  [7], Subbarao
-and  Warren  [9], Suryanarayana  [11] (see also  [12]) and  Wall  [15,  16].
-It  is  easily  seen  that,  for  a  prime  power  py,  the…
+## Statements (proved in the paper)
 
-R…
+- Theorem 1: `p^x |_k p^y` iff `k > y−1` implies `x ≤ y` (refinement rules).
+- Theorems 2–13: complete description of infinitary divisors of `p^y`
+  (binary-expansion criterion), multiplicativity, and counting.
+- Theorem 14: if `σ_∞(n) = q·n` with `q` prime and `q^{2a} ∥ n`, then
+  `σ_∞(q^n)...` (divisibility propagation).
+- **Theorem 16: the only infinitary perfect numbers not divisible by 8 are
+  `6, 60, 90`.**
 
-## Statements it makes
+## Bearing on this run
 
-Definition  1.  A divisor  d  of  an  integer  n  is called  a  1-ary divisor  of  n  if  the
-greatest  common  divisor  of  d  and  n/d  is  1; and  d  is  called  a  k-axy divisor
-of  n  (for  k  >  2 )  if  the  greatest  common  (k  -  l)-ary  divisor  of  d  and  n/d
-is  1.
+Theorem 16 is the classification of a *different* divisor family: infinitary
+perfect numbers include 90 but exclude 87360 (which is unitary-but-not-
+infinitary perfect: `87360` is `2^6·3·5·7·13`, and infinitary rules differ).
+Because the run's target class (unitary) is a strict subfamily of the
+infinitary family on the divisor-hierarchy ladder, Theorem 16 is *adjacent
+evidence*, not a constraint: it classifies `{6,60,90}` for infinitary
+perfection but says nothing about the `σ*(n) = 2n` question beyond those three
+happening to be both. The adjacent-divisor-classes note
+(`research/notes/adjacent-divisor-classes-classified.md`) records the
+cohen1990 claim already; this digest adds the precise setup and Theorem 14.
 
-Theorem 1.  For  k  > y -  1 >  0,  px\kpy  if and  only if px\    xpy .
-
-Definition  2.  We  call  px  an  infinitary  divisor  of  py   (y  >  0)  if  px\v_xpy  .  We
-also  define  1 to  be  an  infinitary  divisor  of  1.
-
-Theorem  2.    We have  px\00Py  if and  only  if  (px , py~x)00  -  1 ■
-
-Theorem  3.  We have  p\oopy  if and  only  if  y  is  odd.
-
-Theorem  4.  If  y  is even and  px\00py ,  then  x  is even.
-
-Theorem  5.   We have  px\oopy  if and  only  if  p2x\00p2y ■
-
-Theorem  6.  If  px\aopy  and  y  is  divisible  by  2J  for  some  j  >  0,  then  x  is
-divisible by  2J.
-
-Corollary  2.  For  0 <  k  <  2J,  P^^p2'^  \for  2J <  k  <  2j+l,  p2'  \00p2'+k  .
-
-Theorem 7   .  Let  y = JZy 2.  Then p   \n'  if and only ify¡  =  1.
-J  OO  J
-
-Theorem 8.  Let  x  =  ^2x-2J  and  y -  x  =  ¿~2 z.2J.  Then
-
-Corollary  3.  The  infinitary  divisors  of  p   ~     are  all  px  ,  0  <  x  <  2a -  1.
-
-Theorem  9.  If  px\00py  and  py\00p:,  then  px\00pz  ■
-
-Theorem  10.  Suppose    2a   <  y    <    2a+l  .    If  px\00Py~2",    then  px\00py   and
-
-theorem,  p2 ^l^'.
-
-Theorem  8).  But  then  y  -  x  =  2a + J2 z¡2}  and  the  right-hand  side  is a proper
-
-Theorem  11.  //  2a <  y  <  2a+1  and  y  -  2a <  x  <  2a,  then  px \ ^  .
-
-Theorem  12.  We have  px\00Py  if and  only  if  (yx) is odd.
-
-Definition  3.  Let  d  be  a  divisor  of  n  and  write  n  =  Y['j=xp/  ,  for  distinct
-
-Theorem  13.  Let  y  =  ^£ly¡21.  Then
-
-Theorem  14.  Suppose  o^n)  =  qn,  where  q  is prime,  and  that  q2a\\n, for  some
-a.  Then  o^qn)  =  (q +  l)qn  .
-
-Theorem  15.  Suppose  o^n)  =  sn,  and  that  I  and  m  satisfy
-
-Theorem  16.  The only infinitary  perfect  numbers  not divisible  by 8 are  6, 60, and
-90.
-
-*[digest of a 35156 character source; every section, statement, and proof in full at `research/sources/cohen-1990-infinitary-divisors.full.md`]*
+```claim
+id: cohen1990-infinitary-divisor-classified
+statement: k-ary/infinitary divisor structure on prime powers is governed by
+  binary-expansion disjointness; the only infinitary perfect numbers not
+  divisible by 8 are 6, 60, 90 (Theorem 16).
+hypotheses: sigma_inf(n) = 2n, 8 ∤ n
+holds-here: yes but only as adjacent-divisor background -- unitary perfect is a
+  different (more restrictive) hierarchy of perfect numbers; 87360 is not
+  infinitary perfect
+status: asserted
+bearing: context for the adjacent divisor classes; no constraint on a sixth
+  unitary perfect number
+anchor: research/sources/cohen-1990-infinitary-divisors.full.md
+answers: whether-cohen1990-constrains-sixth-upn
+```

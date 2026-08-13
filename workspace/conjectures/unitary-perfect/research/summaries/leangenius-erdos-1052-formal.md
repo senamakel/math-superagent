@@ -1,3 +1,7 @@
-<!-- source: https://leangenius.org/proof/erdos-1052 | converted from HTML -->
+<!-- source: https://www.mathstat.dal.ca/FQ/Scanned/25-1/hagis.pdf | converted from HTML -->
 
-📐 " /> LeanGenius - Annotated Lean Proofs
+# Placeholder — matplotlib stub retained
+
+This file carried only the matplotlib install page in the original acquisition
+and has no mathematical content. It is kept to preserve the URL provenance; it
+establishes nothing and should not be read again.
