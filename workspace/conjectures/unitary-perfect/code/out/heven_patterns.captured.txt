@@ -1,0 +1,124 @@
+3-Higgs primes, first 64: [2, 3, 5, 7, 11, 13, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 101, 107, 109, 127, 131, 139, 149, 151, 157, 167, 173, 179, 181, 191, 197, 199, 211, 223, 229, 233, 251, 263, 269, 271, 277, 281, 283, 293, 311, 313, 317, 331, 347, 349, 359, 367, 373, 379, 383, 397, 419]
+count of 3-Higgs primes <= 10^4: 826
+count of 3-Higgs primes <= 10^6: 41870
+SEQUENCE_HIGGS3=2,3,5,7,11,13,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,101,107,109,127,131,139,149,151,157,167,173,179,181,191,197,199,211,223,229,233,251,263,269,271,277,281,283,293,311,313,317,331,347,349,359,367,373,379,383,397,419
+
+== witness 3-Higgs status checks (paper's claims) ==
+  2: got=True want=True [ok]
+  3: got=True want=True [ok]
+  5: got=True want=True [ok]
+  7: got=True want=True [ok]
+  13: got=True want=True [ok]
+  17 (v2(16)=4, non): got=False want=False [ok]
+  19: got=True want=True [ok]
+  37: got=True want=True [ok]
+  41: got=True want=True [ok]
+  61: got=True want=True [ok]
+  73: got=True want=True [ok]
+  89: got=True want=True [ok]
+  97 (v2(96)=5, non): got=False want=False [ok]
+  109: got=True want=True [ok]
+  113 (v2(112)=4, non): got=False want=False [ok]
+  257 (v2=8, non): got=False want=False [ok]
+  593 (v2(592)=4, non): got=False want=False [ok]
+  953 (17|952, non): got=False want=False [ok]
+  1213: got=True want=True [ok]
+  4513 (v2(4512)=5, non): got=False want=False [ok]
+  4663: got=True want=True [ok]
+  5059: got=True want=True [ok]
+  6983: got=True want=True [ok]
+  343081 (chain 953>17, non): got=False want=False [ok]
+  493169 (v2=4 in -1, non): got=False want=False [ok]
+  20127043 (v3=4 in -1, non): got=False want=False [ok]
+  all witness claims reproduced: True
+
+== prime divisors of the five UPNs are all 3-Higgs ==
+  n=6: primes=[2, 3] ALL 3-HIGGS
+  n=60: primes=[2, 3, 5] ALL 3-HIGGS
+  n=90: primes=[2, 3, 5] ALL 3-HIGGS
+  n=87360: primes=[2, 3, 5, 7, 13] ALL 3-HIGGS
+  n=146361946186458562560000: primes=[2, 3, 5, 7, 11, 13, 19, 37, 79, 109, 157, 313] ALL 3-HIGGS
+  all five UPNs have only 3-Higgs prime divisors: True
+
+== H_even cap [2,1200] (full factorization for m <= 122) ==
+  m=   2 k=  1 2^m+1 fully factored, all 3-Higgs -> IN: [5]
+  m=   6 k=  3 2^m+1 fully factored, all 3-Higgs -> IN: [5, 13]
+  m=  10 k=  5 2^m+1 fully factored, all 3-Higgs -> IN: [5, 41]
+  m=  14 k=  7 fully factored, witness [113] -> excluded
+  m=  18 k=  9 2^m+1 fully factored, all 3-Higgs -> IN: [5, 13, 37, 109]
+  m=  22 k= 11 fully factored, witness [2113] -> excluded
+  m=  26 k= 13 2^m+1 fully factored, all 3-Higgs -> IN: [5, 53, 157, 1613]
+  m=  30 k= 15 2^m+1 fully factored, all 3-Higgs -> IN: [5, 13, 41, 61, 1321]
+  m=  34 k= 17 fully factored, witness [137, 953, 26317] -> excluded
+  m=  38 k= 19 fully factored, witness [525313] -> excluded
+  m=  42 k= 21 fully factored, witness [113, 1429, 14449] -> excluded
+  m=  46 k= 23 2^m+1 fully factored, all 3-Higgs -> IN: [5, 277, 1013, 1657, 30269]
+  m=  50 k= 25 fully factored, witness [8101] -> excluded
+  m=  54 k= 27 fully factored, witness [246241, 279073] -> excluded
+  m=  58 k= 29 fully factored, witness [107367629, 536903681] -> excluded
+  m=  62 k= 31 2^m+1 fully factored, all 3-Higgs -> IN: [5, 5581, 8681, 49477, 384773]
+  m=  66 k= 33 fully factored, witness [2113, 4327489, 312709] -> excluded
+  m=  70 k= 35 fully factored, witness [113, 7416361, 47392381] -> excluded
+  m=  74 k= 37 fully factored, witness [593, 231769777] -> excluded
+  m=  78 k= 39 fully factored, witness [1249, 3121, 21841] -> excluded
+  m=  82 k= 41 2^m+1 fully factored, all 3-Higgs -> IN: [5, 10169, 181549, 12112549, 43249589]
+  m=  86 k= 43 fully factored, witness [500177] -> excluded
+  m=  90 k= 45 fully factored, witness [54001] -> excluded
+  m=  94 k= 47 PARTIAL, witness [3761] -> excluded (rigorous)
+  m=  98 k= 49 PARTIAL, witness [113] -> excluded (rigorous)
+  m= 102 k= 51 fully factored, witness [137, 409, 953, 3061, 13669, 26317, 1326700741] -> excluded
+  m= 106 k= 53 fully factored, witness [15358129, 586477649] -> excluded
+  m= 110 k= 55 PARTIAL, witness [2113] -> excluded (rigorous)
+  m= 114 k= 57 fully factored, witness [160969, 525313, 275415303169] -> excluded
+  m= 118 k= 59 fully factored, witness [157649] -> excluded
+  m= 122 k= 61 PARTIAL, leftover 24 digits, unres. locally
+  m= 126 k= 63 PARTIAL, witness [113, 1429, 14449] -> excluded (rigorous)
+  m= 130 k= 65 fully factored, witness [108140989558681] -> excluded
+  m= 134 k= 67 fully factored, witness [2559066073, 9739278030221] -> excluded
+  m= 138 k= 69 PARTIAL, leftover 27 digits, unres. locally
+  m= 142 k= 71 PARTIAL, witness [148587949] -> excluded (rigorous)
+  m= 146 k= 73 PARTIAL, witness [9929] -> excluded (rigorous)
+  m= 150 k= 75 fully factored, witness [1201, 8101, 13334701, 1182468601] -> excluded
+  m= 154 k= 77 fully factored, witness [113, 2113, 3019242689, 76096559910757] -> excluded
+  m= 158 k= 79 PARTIAL, leftover 45 digits, unres. locally
+  m= 162 k= 81 fully factored, witness [246241, 3618757, 279073, 106979941, 168410989, 4977454861] -> excluded
+  m= 166 k= 83 PARTIAL, witness [13063537] -> excluded (rigorous)
+  m= 170 k= 85 fully factored, witness [137, 953, 1021, 4421, 26317, 550801, 23650061, 7226904352843746841] -> excluded
+  m= 174 k= 87 PARTIAL, witness [29581, 107367629, 536903681] -> excluded (rigorous)
+  m= 178 k= 89 PARTIAL, leftover 50 digits, unres. locally
+  m= 182 k= 91 PARTIAL, witness [113] -> excluded (rigorous)
+  m= 186 k= 93 PARTIAL, leftover 34 digits, unres. locally
+  m= 190 k= 95 PARTIAL, witness [54721, 525313] -> excluded (rigorous)
+  m= 194 k= 97 PARTIAL, witness [389, 3881, 4657, 5821, 4959325597, 3555339061] -> excluded (rigorous)
+  m= 198 k= 99 PARTIAL, witness [2113, 235621, 4327489, 312709] -> excluded (rigorous)
+  m= 202 k=101 PARTIAL, witness [9491060093] -> excluded (rigorous)
+  m= 206 k=103 PARTIAL, witness [41201, 17325013, 520379897] -> excluded (rigorous)
+  m= 210 k=105 PARTIAL, witness [113, 1429, 14449, 7416361, 47392381] -> excluded (rigorous)
+  m= 214 k=107 PARTIAL, leftover 55 digits, unres. locally
+  m= 218 k=109 PARTIAL, leftover 53 digits, unres. locally
+  m= 222 k=111 fully factored, witness [593, 231769777, 1398316729, 1453030298001690873541] -> excluded
+  m= 226 k=113 PARTIAL, witness [58309, 2362153] -> excluded (rigorous)
+  m= 230 k=115 PARTIAL, witness [1021622741] -> excluded (rigorous)
+  m= 234 k=117 PARTIAL, witness [1249, 3121, 7489, 21061, 21841] -> excluded (rigorous)
+  m= 238 k=119 PARTIAL, witness [113, 137, 953, 2381, 9521, 26317, 42841, 823481] -> excluded (rigorous)
+  m= 242 k=121 PARTIAL, witness [2113] -> excluded (rigorous)
+  m= 246 k=123 PARTIAL, witness [802333429] -> excluded (rigorous)
+  m= 250 k=125 PARTIAL, witness [8101, 28001, 96001] -> excluded (rigorous)
+  m= 254 k=127 PARTIAL, witness [26417, 72118729, 140385293] -> excluded (rigorous)
+  m= 258 k=129 PARTIAL, witness [500177] -> excluded (rigorous)
+  m= 262 k=131 PARTIAL, witness [269665073, 642811237] -> excluded (rigorous)
+  m= 266 k=133 PARTIAL, witness [113, 2129, 525313] -> excluded (rigorous)
+  m= 270 k=135 PARTIAL, witness [30241, 49681, 54001, 246241, 279073] -> excluded (rigorous)
+  m= 274 k=137 PARTIAL, witness [189061] -> excluded (rigorous)
+  m= 278 k=139 PARTIAL, witness [1408349] -> excluded (rigorous)
+  m= 282 k=141 PARTIAL, witness [3761] -> excluded (rigorous)
+  m= 286 k=143 PARTIAL, witness [2113, 958673, 9467173] -> excluded (rigorous)
+  m= 290 k=145 PARTIAL, witness [168781, 107367629, 536903681] -> excluded (rigorous)
+  m= 294 k=147 PARTIAL, witness [113, 1429, 14449, 540961] -> excluded (rigorous)
+  m= 298 k=149 PARTIAL, leftover 86 digits, unres. locally
+  m= 302 k=151 PARTIAL, leftover 91 digits, unres. locally
+  m= 306 k=153 PARTIAL, witness [137, 409, 613, 953, 3061, 13669, 26317, 2582029, 4260133, 1326700741, 318194713] -> excluded (rigorous)
+  m= 310 k=155 PARTIAL, witness [37201, 8973817381] -> excluded (rigorous)
+  m= 314 k=157 PARTIAL, witness [2790467761] -> excluded (rigorous)
+  m= 318 k=159 PARTIAL, witness [10177, 15358129, 586477649] -> excluded (rigorous)
+  m= 322 k=161 PARTIAL, witness [113, 298817] -> excluded (rigorous)
