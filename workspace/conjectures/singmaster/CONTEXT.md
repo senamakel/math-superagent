@@ -359,5 +359,3 @@ Pintér–Tengely 2023) and the OEIS row-count convention `oeis-a003016-row-coun
 - Compute policy is in place (never build the triangle; invert per small k by
   binary search; k<=log2(a); 28 CPUs; parallelise over a or (k1,k2); `timeout
   540`; state workers+range). Follow it.
-meout
-  540`; state workers+range). Follow it.

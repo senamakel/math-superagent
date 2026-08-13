@@ -75,6 +75,16 @@
 
 ---
 
+- [x] **source-quality sweep (directive 21).** Seven arXiv abstract landing pages under
+      20KB in research/sources/; every one has a real-paper sibling on disk. Zero claims
+      above `catalogued` rest on landing pages. kamel-sadek-consecutive-squares-rank-5
+      is `proved` from the 26KB body file (Corollary 3.4 + MAGMA verification + Glasnik
+      Matematički publication), not the 6KB vestigial abstract. concordant-forms-iff-ell-torsion-order-2
+      is `proved` from the 49KB Selder-Spindler HTML (Theorem 2.2). No status changes needed.
+      The seven vestigial files are harmless — no claim is mis-statused by them — but are
+      redundant clutter. Delete any that are byte-identical to arXiv abstract pages
+      (they all are) when the operator confirms.
+
 ## BLOCKING — must complete before any new approach
 
 ### EXA_SEARCH — STOPPED (directive 17)
