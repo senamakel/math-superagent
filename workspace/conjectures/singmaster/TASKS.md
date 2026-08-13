@@ -13,16 +13,20 @@ for 2<=m<=9, m<n<=10, plus (3,25),(4,25),(6,9). The old polyroots crash at
 on each Rolle-guaranteed interval, not mpmath polyroots). The directive's
 "option b" is already in place.
 
-- [ ] **1. Extend the range to 2 <= m < n <= 20.**
-      Edit `code/genus/verify_riemann_hurwitz.py` line 77: change the pairs list
-      from `range(2, 10) ... range(m+1, 11)` to `range(2, 20) ... range(m+1, 21)`.
-      Keep the `critical_points_of_q` bisection guard at `if n <= 15` (bisection
-      works for any n but is linear in n; the structural Rolle argument already
-      covers all n). Then run:
+- [x] **1. Extend the range to 2 <= m < n <= 20 — DONE.**
+      `code/genus/verify_riemann_hurwitz.py` line ~103 now reads
+      `pairs = [(m, n) for m in range(2, 20) for n in range(m + 1, 21)]`;
+      the `critical_points_of_q` bisection guard `if n <= 15` is untouched
+      (structural Rolle argument covers all n). Ran:
       ```
       timeout 540 python3 code/genus/verify_riemann_hurwitz.py 2>&1 | tee code/out/verify_riemann_hurwitz_full.captured.txt; echo EXIT_CODE=$?
       ```
-      State the range covered and the number of pairs verified in the capture.
+      EXIT_CODE=0, ALL CHECKS PASSED, zero FAIL lines. All 171 pairs
+      2<=m<n<=20 verified (count 171 = sum_{m=2}^{19}(20-m)); n<=15 pairs
+      (91 of them) get the full bisection + explicit smoothness check, n>=16
+      pairs (80 of them) the structural (b)-skipped treatment and full (a),
+      (c), (inf) checks. Pair (2,3) and (2,4) in-range re-confirm genus 1
+      (Faltings threshold); (19,20) reaches g=171.
 
 - [ ] **2. Record the claim.**
       After the extended run passes, create
