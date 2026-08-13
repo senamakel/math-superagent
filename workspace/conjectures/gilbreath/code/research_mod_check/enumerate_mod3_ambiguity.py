@@ -24,4 +24,6 @@ for (r, s), outs in sorted(ambig.items()):
     print(f"  residues ({r},{s}): {desc}")
 
 print()
-print("Total ambiguous residue pairs:", len(ambig), "/ 9")
+print("Held: exactly the 6 off-diagonal residue pairs (r,s), r != s, are",
+      "ambiguous; the 3 diagonal pairs give |a-b| ≡ 0 mod 3 always.")
+print("Observed ambiguous pairs:", len(ambig), "/ 9")

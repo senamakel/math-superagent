@@ -108,8 +108,9 @@ holding-claims: larger
 falsifies: |
   The whole mechanism: that |a−b| mod 3 is a function of (a mod 3, b mod 3).
   The cleanest falsifier is the pair (0,1) vs (3,1): same residues (0,1)
-  mod 3, but |0−1|≡1 and |3−1|=2 (mod 3). Seven of nine residue pairs are
-  ambiguous (all except (0,0),(0,2),(2,0)); the enumeration is in
+  mod 3, but |0−1|≡1 and |3−1|=2 (mod 3). All six residue pairs with r≠s
+  are ambiguous (|a−b| ≡ ±(a−b) mod 3, sign unbounded by residues); only
+  the three diagonal pairs are unambiguous (0). The enumeration is in
   code/research_mod_check/enumerate_mod3_ambiguity.py. Any claim that "the
   halved triangle's residues evolve deterministically mod 3" is false as
   stated.

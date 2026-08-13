@@ -129,6 +129,17 @@ Each marked with evidence class and a link.
   not established. So MRSTT is consistent with B=8 without constraining it,
   and progress on B must come from the edge. Recorded at
   `code/out/mrstt_leaves_witnesses_open.md`.
+  **Conclusion (directive 4): the MRSTT route yields nothing for Singmaster.**
+  An effective-but-astronomical interior threshold does not move B, because the
+  witnesses all sit in the edge the interior theorem does not cover, and the
+  edge is provably inaccessible to the interior method (Prop 1.12 barrier, even
+  under RH). MRSTT has delivered its partial result — the sharpest statement of
+  the open gap `2 <= m <= (log t)/(log log t)^{3/2-eps}` — and can go no
+  further. Progress on B must come from the boundary, i.e. per-pair effective
+  results (Avanesov/de Weger/BMSST) and Baker/Matveev height bounds, which
+  currently do not give uniformity. The effective-versus-usable distinction is
+  the deliverable: MRSTT gives an *effective* but unusable constant, a
+  different object from a bound one can check.
 
 - **Small-(k1,k2) curves solved effectively. `sourced`.** (2,3) Avanesov;
   (2,4) de Weger/Pintér (Gelfond–Baker); (3,4) de Weger genus-3 double cover of

@@ -153,6 +153,7 @@ disk), or asserted-by-source.
   0,1,2,3,4,6,8,9); M=33 is best at 12/33. No modulus is near saturation.
   M=11 is the cheapest test of whether any modulus can be saturated at all.
 - **Subprogression families** (checked, operator directive 4): 1451 parametric
+  identity families for n ≡ 1 (mod 840), each n = a·k + b with b ≡ 1 (mod 840)
   and a = 840m for m ∈ {11,13,17,19,22,23,26,29,31,33,34,37,38,39,41,43}.
   Every family is an exact polynomial identity in ℤ[k] (operator-verified).
   123 distinct residue classes (m, s) of t = (n−1)/840. Coverage:

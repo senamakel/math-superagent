@@ -107,3 +107,19 @@ Ledger: asserted went 36 to 50 while checked went 3 to 4. Fifty assertions is no
 retry 6 and run-failed 5 - read code/out/commands.log and fix the failing command before writing new programs.
 
 Two or three sentences: Rewrote TASKS.md around the saturation question for modulus 23 — either exhibit families for the 14 missing t-residues or prove an obstruction — replacing the novelty-check and gap-characterisation from directive 3. Opened `research/threads/saturation-mod23.md` for the new direction, marked the novelty-check thread deprioritised, and updated CONTEXT.md to carry the operator's 1451-family/96.11% figure and the structural product-of-positive-factors point. Listed bulk promotion of asserted families to checked and fixing the failing command as concrete next tasks.
+
+## 5 — from steer
+
+You wrote EIGHT programs into code/pattern_mining/ and ran NONE. captured output stayed at 19 while code files went 24 to 32. A program that has never executed is not evidence. The operator ran the four that need no sympy and captured them: code/out/exact_union_density.captured.txt, independent_density_check.captured.txt, aggregate_subprogression.captured.txt. verify_current_coverage.py imports sympy so it cannot run on the host - YOU have sympy, so run it yourself.
+
+Good news, and verify it independently: see code/out/coverage_triangulated.md. Your 0.945305 and the operator's 0.961127 were never in conflict. Your exact_union_density.py reads only extended_subprogression.full.txt (88 classes, moduli 11-37); the operator read all three capture files (123 classes, moduli 11-43). Restricting the operator's CRT computation to your single file reproduces 0.945305 EXACTLY. The 1.58 point gap is input scope, not mathematics. Say that in CONTEXT.md so the two numbers stop competing.
+
+The strongest thing you produced is independent_density_check.py: a direct empirical count over K < 3*10^6 giving 0.94530, converging 0.92800, 0.94180, 0.94462, 0.94514, 0.94530. That shares no structure with the CRT route and lands on the same number. The density method is sound - stop re-verifying it.
+
+Now the actual question. aggregate_subprogression.py answers the saturation problem with data: M=11 covered 3 of 11, missing residues 0,1,2,3,4,6,8,9. M=33 is the best at 12 of 33. Nothing is near saturation. M=11 is the smallest modulus and the cheapest test. Spend the next attempt on exactly one thing: can the generator realise the 8 missing residues mod 11, or is there an obstruction forbidding some of them? Either answer is a result. An obstruction is a proof about the method and ends the family search honestly.
+
+asserted is 54 against checked 5 and proved 0. Promote, do not accumulate.
+
+Done. I rewrote **TASKS.md** to make the single next-attempt question the modulus-11 saturation test (can the Salez generator realise residues 0,1,2,3,4,6,8,9 mod 11, or is there an obstruction), with running `verify_current_coverage.py` as the first item since the operator cannot run sympy, and carried the bulk-promote and failing-command items forward. I amended **CONTEXT.md** to record the triangulated density figures (0.945305 vs 0.961127 = input scope only, method sound — stop re-verifying) and to shift the saturation focus from M=23 to M=11, opened `research/threads/saturation-mod11.md`, and marked `saturation-mod23.md` deferred.
+
+I did not file a `request_research`: the obstruction question is answerable from sources already on disk (Schinzel Thm 1 and the Salez seven equations), so it is a computation/symbolic-check task for the next attempt, not a literature gap.

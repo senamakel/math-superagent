@@ -23,9 +23,11 @@ structural facts the library fixes:
 
 ## Current verification bound
 
-- Verified (primary source, Singmaster 1971 full text + witnesses.json + brute
-  oracle): no `a <= 2^48` has N(a) >= 8 except 3003; the six N(a)=6 values
-  <= 2^48 are 120, 210, 1540, 7140, 11628, 24310.
+- Verified (Singmaster FQ 1975 primary + witnesses.json + brute oracle): no
+  `a <= 2^48` has N(a) >= 8 except 3003; the six N(a)=6 values <= 2^48 are
+  120, 210, 1540, 7140, 11628, 24310. (The 1971 Monthly note itself is paywalled;
+  its "Added in proof" search result is restated verbatim in the held 1975 FQ
+  paper, which also gives the two-search methodology.)
 - Blokhuis–Brouwer–de Weger 2017 (INTEGERS 17 #A64, held): no unknown collisions
   for `n <= 10^6` or value `<= 10^60`.
 - OEIS A003015 corroborates the first terms independently.
@@ -67,11 +69,15 @@ classes with hypotheses are stated and anchored to held primary sources. Further
 gathering now happens only against a stated gap in research/REQUESTS.md or a lead
 on research/FRONTIER.md the run's own thread demands.
 
-Held sources (see research/sources/): Singmaster 1975 FQ (primary), Abbott–Erdős–Hanson
-1974, Kane 2004 & 2007 (summaries), MRSTT 2021 full text, Jenkins 2014 full text,
-de Weger 1997 full text, Blokhuis–Brouwer–de Weger 2017 full text, Bugeaud–Mignotte–
-Siksek–Stoll–Tengely 2008, Hajdu–Papp–Tijdeman 2022 (Ramanujan J), Tao blog,
-Wikipedia, OEIS A003015/A003016. Singmaster 1971 (AMM 78) NOT held — the downloaded
-file is the Fermat's Library comments page (see `research/summaries/singmaster-1971.md`).
-blog,
-Wikipedia, OEIS A003015/A003016.
+Held sources (see research/sources/): Singmaster 1975 FQ (primary, infinite
+family + 2^48 search), Beukers–Shorey–Tijdeman 1999 (primary via the de Gruyter
+*Number Theory in Progress Vol. 1* preview — MRSTT [4], the ineffectivity
+anchor), Matveev 2000 linear-forms-in-logarithms primary (explicit constants),
+Abbott–Erdős–Hanson 1974, Kane 2004 & 2007 (summaries), MRSTT 2021 full text,
+Jenkins 2014 full text, de Weger 1997 full text,
+Blokhuis–Brouwer–de Weger 2017 full text, Bugeaud–Mignotte–Siksek–Stoll–Tengely
+2008, Hajdu–Papp–Tijdeman 2022 (Ramanujan J), Tao blog, Wikipedia,
+OEIS A003015/A003016. Singmaster 1971 (AMM 78) NOT held — the downloaded file
+is the Fermat's Library comments page (see
+`research/summaries/singmaster-1971.md`); its bound and witness frame are
+attested by the held 1975 FQ primary and AEH 1974.

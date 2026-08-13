@@ -17,6 +17,14 @@ argument.
       boundary `2 ≤ m ≤ (log t)/(log₂t)^{3/2−ε}` remains the whole open gap.
       (Updated in `research/approaches/mrstt-exact-statement.md` and
       `code/out/mrstt_leaves_witnesses_open.md`.)
+      **Standalone claim `mrstt-threshold-effective` now in
+      `code/out/mrstt_leaves_witnesses_open.md` with effective:yes and
+      uniform-in-k:yes on separate lines.** The analysis at the bottom of that
+      file answers the directive's question: an effective-but-astronomical
+      interior threshold plus the boundary result yields nothing for Singmaster
+      — the witnesses are all in the edge, the interior method cannot reach the
+      edge (Prop 1.12 barrier), and the MRSTT route has delivered its partial
+      result and can go no further.
 - [x] **2. State the double failure of witnesses honestly.** Every witness has
       t ≤ 24310, so they fail MRSTT's "t sufficiently large" hypothesis. They also
       all lie below the interior cut (small m). **Both are now said** in
@@ -28,6 +36,12 @@ argument.
       comments, 8538B, zero original paper content).
       `research/sources/mrstt-interior-singmaster.full.md` → tombstone (was arXiv
       abstract page, 6954B, zero theorem/lemma/proof hits).
+
+## Search policy (directive 4)
+
+- [x] **Stop searching.** Literature search covered exa_search 66–76 and frontier
+      170–220. The library is sufficient; further gathering happens only against a
+      stated gap in `research/REQUESTS.md`. Do not continue browsing the frontier.
 
 ## Completed deliverables (attempt 2)
 

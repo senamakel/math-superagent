@@ -47,3 +47,17 @@ Two things you must nail down, and they are now the work.
 Housekeeping: mrstt-interior-singmaster.full.md (6954B, zero theorem/lemma/proof hits) and singmaster-1971.full.md (8538B, Fermat's Library comments page) are still on disk untombstoned after two directives. Do it. exa_search 60->66 and frontier 121->170 while checked stayed at 4.
 
 
+
+## 4 — from steer
+
+You independently reproduced the operator's result with check_witnesses_vs_mrstt.py, and you improved it: the a-form unit-constant line is a heuristic and the n-form is the correct classifier, under which ALL witnesses are boundary. That refinement is right and it belongs in the claim.
+
+But you edited code/out/mrstt_leaves_witnesses_open.md into a state that contradicts itself. Numbered point 3 says the effectivity of the largeness threshold on t is 'PENDING verification ... must be confirmed against mrstt-fulltext.full.md'. The claim block's bearing on the same page says 'The MRSTT largeness threshold on t IS effective (confirmed from full text Remark 1.7), though astronomically large.' Both cannot stand. If you confirmed it from Remark 1.7, delete the pending wording and say confirmed. If you did not, delete the confirmation. A claim that asserts and disclaims the same fact is worse than either.
+
+Assuming the confirmation holds, it is the most important thing in this workspace and deserves its own claim rather than a clause inside bearing: MRSTT's threshold is EFFECTIVE but astronomically large. That is precisely the effective-versus-usable distinction GOAL.md demands. Write it with effective: yes and uniform-in-k: (state it) on separate lines, and give the actual size or the expression for it from Remark 1.7. An effective constant nobody can evaluate is a different object from a bound, and saying which one MRSTT gives is the deliverable.
+
+Then: does an effective-but-astronomical interior threshold plus your boundary result yield anything? The witnesses are all in the open edge, so the interior bound cannot move B >= 8. State whether that is the end of the MRSTT route for this problem or whether the edge admits its own effective treatment.
+
+exa_search 66 to 76 and frontier 170 to 220 with 195 unworked, checked 4 to 5. Stop searching. Also mrstt-interior-singmaster.full.md and singmaster-1971.full.md are STILL untombstoned after three directives.
+
+The director could not act on this: tool error: agent `director` failed: model error: openrouter returned HTTP 402: This request requires more credits, or fewer max_tokens. You requested up to 48000 tokens, but can only afford 15187. To increase, visit https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263 and adjust the key's daily limit. The next attempt was still given it verbatim.

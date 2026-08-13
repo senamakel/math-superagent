@@ -38,7 +38,7 @@ The genus deliverable is DONE for 2≤k1≤12, 2≤k2≤9 (Singular == Sage; see
 primary-source proof that only (2,3),(2,4) are genus 1. What remains is the
 secondary deliverable: an effective height bound with a **computed** constant for a
 specific small-`(k1,k2)` family, using Matveev 2000's explicit constants
-(`matveev-2000-explicit-constants`) as the primary constant-supplier.
+(`matveev-2000-explicit-constants-primary`) as the primary constant-supplier.
 
 ## Blocked by
 

@@ -26,13 +26,9 @@ rests-on: |
     These are the *values* of b_k at minima, not the row indices k.
 blocked-by: nothing yet — the prediction is cheap to test
 next: |
-  1. **Split the claim.** Extract `rule90-interior-xor` as its own proved
-     claim, separate from the refuted absorption approach. File in
-     research/notes/ and amend CONTEXT.md. The proved core is: within any
-     {0,2} block, the halved operator is XOR (Rule 90), giving the
-     Sierpinski/Pascal-mod-2 structure of the subtriangle. This is proved by
-     the block-lemma diagonal argument and verified exhaustively for n≤13.
-     The refuted absorption wrapper stays dead.
+  1. ~~**Split the claim.**~~ DONE — `rule90-interior-xor` is its own proved
+     claim in `research/notes/rule90-interior.md` (Directive 4). The absorption
+     wrapper stays dead in `research/approaches/rule90-absorbing-boundary.md`.
 
   2. **Derive the depth prediction.** From the XOR structure:
      - In a {0,2} block of length n starting at row K, the halved entries

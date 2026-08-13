@@ -234,6 +234,17 @@ anchor: research/sources/granville-binomial-cellular-automata.full.md; research/
 
 ## Angled coverage summary
 
+```claim
+id: torelli-prime-gap-bound
+statement: (Torelli 2006, Thm 2) For all n >= 1, p_{n+1} <= p_n + n — the n-th prime gap never exceeds the prime index. Equivalently every prefix of the primoids a_n = (p_{n+2} − 1)/2 is a sub-permutation: a_n <= a_{n−1} + ceil(n/2). Proved from Dusart's bounds (p_n >= n(ln n + ln ln n − 1); p_n <= n(ln n + ln ln n − 0.9484) for n >= 39017) plus a computer check of the small range.
+hypotheses: none beyond the primes; Dusart's proven bounds.
+holds-here: yes — the primes satisfy it identically; it is the strongest deterministic (non-heuristic) prime-gap bound in the library.
+status: sourced (peer-reviewed RAIRO-ITA 40:107-121, 2006, doi 10.1051/ita:2006017, full PDF held)
+bearing: bounds the width of the input feeding the {0,2} block: combined with the run's proved block lemma (length-N block protects N+1 rows), erosion can be bounded in terms of the prime index; Torelli also proves the Gilbreath and Goldbach iis classes are incomparable and notes GC is still open. Does not by itself give regeneration.
+anchor: research/sources/torelli-2006-increasing-integer-sequences-goldbach-pdf.full.md
+answers: is-there-a-proved-prime-gap-bound
+```
+
 - Statement/names/history: Odlyzko 1993, Killgrove–Ralston 1959, Encyc. of Math, MathWorld, Caldwell glossary, Arias de Reyna 2020, Chase 2024 §7, Wikipedia (retrieved this run).
 - Verification record (current): Colonna 2026 to 1.5×10^15, Plouffe 2025 to 10^14, Odlyzko 1993 to 10^13.
 - Generalisations: Li 2026 modulo-k family; Chase 2024 random analogue; CHT 2026 Cramér model; Croft's bounded-gap generalisation refuted by Eppstein 2011 (triple-sourced).

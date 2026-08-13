@@ -63,19 +63,25 @@ in the interior (1.4). The possible interior multiplicities are 0, 1, 2, 4.
 
 ## Effectiveness and uniformity
 
-- **effective: PENDING VERIFICATION** — the summary asserts "effective: yes" citing
-  Remark 1.7 (threshold is effective but constants too large for numerical use).
-  The directive flags this as load-bearing: the word "effective" must be confirmed
-  against the full text's own statement in §1 and §1.3. If the proof of "t
-  sufficiently large depending on ε" uses a non-constructive step, the theorem
-  yields no numerical B even in the interior. **Task 1 of TASKS.md — check
-  mrstt-fulltext.full.md and mark yes/no explicitly.**
-- **uniform-in-k: yes** — the theorem covers all m in the stated range
-  simultaneously; it does not fix (k1,k2) pairs. This is what makes MRSTT
-  genuinely stronger than per-pair Siegel/Faltings: it is uniform over all
-  m in the interior.
+- **effective: yes** — confirmed from the full text, Remark 1.7, which states
+  verbatim: "The implied quantitative bounds in the hypothesis 't is
+  sufficiently large depending on ε' are effective; however, we have made no
+  attempt whatsoever to optimize them in this paper, and will likely be too
+  large to be of use in numerical verification of Singmaster's conjecture in
+  their current form." So the threshold is a computable function of ε — not
+  non-constructive — but unoptimized and astronomically large. This is the
+  effective-versus-usable distinction GOAL.md demands: an effective constant
+  nobody can evaluate is a different object from a bound.
+- **uniform-in-k: yes (over the interior)** — the theorem covers all m in the
+  stated range simultaneously; it does not fix (k1,k2) pairs. This is what
+  makes MRSTT genuinely stronger than per-pair Siegel/Faltings: it is uniform
+  over all m in the interior.
 - **uniform-in-the-boundary: no** — the theorem explicitly does NOT cover
   the boundary (1.5)/(1.6). The method has a hard ceiling there (Prop 1.12).
+- **size of the threshold:** no explicit expression is given in the paper;
+  Remark 1.7 says the constant was not optimised and "will likely be too large
+  to be of use in numerical verification of Singmaster's conjecture in their
+  current form." It is an effective-but-unusable bound, not a usable one.
 
 ## Method and its limit (Proposition 1.12)
 

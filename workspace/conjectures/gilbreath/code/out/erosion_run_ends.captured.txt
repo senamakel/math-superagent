@@ -1,0 +1,5 @@
+live-regime erosion runs (k=1..161): 26
+  directly followed by a regeneration: 26
+  not: 0
+  length list: [13, 12, 12, 8, 7, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1]
+all erosion runs in record: 27; tail runs (len>=100): [(161, 838)]
