@@ -65,9 +65,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `ross-2026-decay-constants` | (Ross, Zenodo 10.5281/zenodo.21326026, July 2026) In the CHT continuous Gilbert model (top row i.i.d. standard exponentials, c_i = E a(i,j)), exact sign-cone computations give c_4 = 778959731701/1447295850000 =… | yes | asserted | `research/notes/library-state.md` |
 | `rule90-identification-real-absorption-refuted` | The {0,2} interior of a Gilbreath row evolves under the halved operator as XOR (= Wolfram Rule 90 = Pascal/Sierpinski mod 2) — this is proved here (block-lemma apex) and confirmed by CHT 2026 §1. But a uniform… | yes | asserted | `research/approaches/rule90-absorbing-boundary.md` |
 | `rule90-interior-xor` | Within any {0,2} block of the Gilbreath triangle, halved entries evolve under XOR (= Rule 90 = Pascal mod 2). The d-step evolution from initial halved block h is (A_{K+d}(p+1)/2) = XOR_{j=0}^{d} [binom(d,j) mod 2] ·… | yes | proved | `research/notes/rule90-interior.md` |
-| `runcount-lemma-refuted` | The lemma r(T(x)) <= r(x) — the number of maximal constant runs is non-increasing under the absolute-difference map T(x)_i = \|x_i − x_{i+1}\| — is FALSE, and so is the turning-point analogue t(T(x)) <= t(x). Hand… | yes | asserted | `research/notes/library-state.md` |
+| `rule90-relative-depth-null` | The relative-depth measure of block-length minima of the prime triangle (depth of each local min from the previous local-min row) is 21/27 within tolerance 1 of a power of 2. Against the exact binomial null X ~… | yes | checked | `research/notes/library-state.md` |
 
-_10 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_11 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
