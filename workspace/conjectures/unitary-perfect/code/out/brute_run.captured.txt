@@ -1,0 +1,41 @@
+control 6 (pos control): sigma_star = 12 2n = 12 unitary_perfect = True
+control 12 (neg control): sigma_star = 20 2n = 24 unitary_perfect = False
+control 28 (neg control): sigma_star = 40 2n = 56 unitary_perfect = False
+
+n = 6
+  = 2 * 3
+  sigma_star = 12   2n = 12   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2/1  == 2: True
+  sum v2(p^e+1) = 2, a+1 = 2, identity: True
+  omega(odd part) = 1 <= a+1 = 2: True
+
+n = 60
+  = 2^2 * 3 * 5
+  sigma_star = 120   2n = 120   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2/1  == 2: True
+  sum v2(p^e+1) = 3, a+1 = 3, identity: True
+  omega(odd part) = 2 <= a+1 = 3: True
+
+n = 90
+  = 2 * 3^2 * 5
+  sigma_star = 180   2n = 180   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2/1  == 2: True
+  sum v2(p^e+1) = 2, a+1 = 2, identity: True
+  omega(odd part) = 2 <= a+1 = 2: True
+
+n = 87360
+  = 2^6 * 3 * 5 * 7 * 13
+  sigma_star = 174720   2n = 174720   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2/1  == 2: True
+  sum v2(p^e+1) = 7, a+1 = 7, identity: True
+  omega(odd part) = 4 <= a+1 = 7: True
+
+n = 146361946186458562560000
+  = 2^18 * 3 * 5^4 * 7 * 11 * 13 * 19 * 37 * 79 * 109 * 157 * 313
+  sigma_star = 292723892372917125120000   2n = 292723892372917125120000   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2/1  == 2: True
+  sum v2(p^e+1) = 19, a+1 = 19, identity: True
+  omega(odd part) = 11 <= a+1 = 19: True
+
+ALL FIVE UNITARY PERFECT: True
+CONTROLS (6 yes, 12/28 no): True

@@ -6,8 +6,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 6 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A003016 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A003016 - OEIS] [3] A003016 Number of occurrences of n as an entry in rows <= n of… |
-| 6 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][53] [Format][54] [Style Sheet][55] [Transforms][56] [Superseeker][57] [Recents][58] [The OEIS Community][59] Maintained by [The OEIS Foundation Inc.][60] Last modified August 13 04:40… |
+| 7 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A003016 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A003016 - OEIS] [3] A003016 Number of occurrences of n as an entry in rows <= n of… |
+| 7 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][53] [Format][54] [Style Sheet][55] [Transforms][56] [Superseeker][57] [Recents][58] [The OEIS Community][59] Maintained by [The OEIS Foundation Inc.][60] Last modified August 13 04:40… |
 | 5 | https://www.jstor.org/stable/2316907 | 2316907 | as a binomial coefficient?", *[American Mathematical Monthly][30]*, **78**(4): 385– 386, [doi][31]: [10.2307/2316907][32], [JSTOR][33] [2316907][34], [MR][35] [1536288][36]. - [Singmaster, D.][4]… |
 | 5 | http://browsehappy.com/ | upgrade your browser | On the triangulation of smooth fibre bundlesAll You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience. # [Instytut Matematyczny Polskiej Akademii Nauk][2]… |
 | 5 | http://bip.impan.pl/index.php | — | 39-58 DOI: 10.4064/fm-118-1-39-58 #### Autorzy - F. Johnson [Pobierz zgodnie z CC-BY][8] Przeszukaj wydawnictwa IMPAN ** - [9] - [10] - [11] - [12] - [13] - [14] - - [15] - [16] --> ## Przeszukaj… |
@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://en.wikipedia.org/wiki/Archimedean_property | Archimedean | threshold could be lowered if we had stronger bounds on exponential sums. To try to control solutions to (1) we use a combination of “ [Archimedean][27] ” and “non-Archimedean” approaches. In the… |
 | 1 | http://www.warwick.ac.uk/∼maseap/progs/intpoint/bounds.m | — | TENGELY, AND N ´ORA VARGA get a large upper bound for log \|X\|. A MAGMA code were written to obtain such bounds, it can be found at http://www.warwick.ac.uk/∼maseap/progs/intpoint/bounds.m. In our… |
 
-_535 further candidates not shown; they are cited once each._
+_538 further candidates not shown; they are cited once each._
