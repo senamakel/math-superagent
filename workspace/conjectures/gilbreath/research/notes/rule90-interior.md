@@ -91,11 +91,11 @@ does not depend on the absorption claim and is proved independently.
 
 ```claim
 id: rule90-interior-xor
-statement: Within any {0,2} block of the Gilbreath triangle, halved entries evolve under XOR (= Rule 90 = Pascal mod 2). The d-step evolution from initial halved block h is (A_{K+d}(p+1)/2) = XOR_{j=0}^{d} [binom(d,j) mod 2] · h_{p+1+j}. At depths d = 2^j the kernel is all-1, so every halved entry is the XOR of a width-(2^j+1) window of the initial bit pattern — predicting block regeneration at specific depths.
+statement: Within any {0,2} block of the Gilbreath triangle, halved entries evolve under XOR (= Rule 90 = Pascal mod 2). The d-step evolution from initial halved block h is (A_{K+d}(p+1)/2) = XOR_{j=0}^{d} [binom(d,j) mod 2] · h_{p+1+j}. At depths d = 2^j the kernel is all-1, so every halved entry is the XOR of a width-(2^j+1) window of the initial bit pattern. NOTE: the regeneration-timing corollary of this (regeneration at depths 2^j) is REFUTED — see claim rule90-relative-depth-null; the value-evolution identification itself stands proved.
 hypotheses: A_{k+1}(h) = |A_k(h) − A_k(h+1)|; A_K(1..n) ∈ {0,2}.
 holds-here: yes
 status: proved (block-lemma diagonal argument); verified exhaustively over all 2^n block patterns for n ≤ 13. Independent confirmation from CHT 2026 §1 and classical Rule 90 / Pascal-mod-2 theory.
-bearing: the XOR evolution governs the {0,2} interior exactly; regeneration at depths that are powers of 2 is a structural prediction (not merely empirical) derived from this identification. Split from the refuted absorption wrapper (rule90-identification-real-absorption-refuted).
+bearing: the XOR evolution governs the {0,2} interior exactly — this is the edge-flip mechanism for the regeneration thread's Route A. The depth-timing corollary is refuted and must not be re-asserted. Split from the refuted absorption wrapper (rule90-identification-real-absorption-refuted).
 anchor: research/notes/rule90-interior.md
 splits-from: rule90-identification-real-absorption-refuted
 ```

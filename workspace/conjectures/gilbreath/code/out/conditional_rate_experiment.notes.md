@@ -90,7 +90,7 @@ id: conditional-rate-experiment-family-independent
 statement: On the 2-then-odds Gilbreath class, conditioning on survival past row 10 removes the entire family-dependence of the (2,4) regeneration rate: pooled over 8 gap families with 20 fresh seeds each (D=400, W=200000, 118 surviving sequences, 1876 eligible rows), Pearson homogeneity X^2 = 4.81, df = 7, p = 0.68 (scipy chi2 survival) — no evidence that rho_post10 differs by family; pooled rho_post10 = 0.585 (1098/1876). Inter-event row gaps at k>=11: mean 1.70, median 1, max 14.
 hypotheses: k>10 (startup killed; 0 of 118 survivors died by D=400), eligible rows only (b_k >= 1 with intruder), first gap and support as in the 8 surviving families; exact int64 arithmetic; step law (proved) gives regeneration <=> (2,4) event.
 holds-here: yes — computed directly on 220 fresh sequences; oracle (problem.md A_1..A_5) PASS; numpy-vs-pure-Python cross-check PASS on 2 pairs
-status: computed and checked (D=400, W=200000, 118 sequences containing 1098 events), not a proof; per-sequence overdispersion var/mean = 1.86 means the pooled-rate homogeneity is the exact claim, not Poisson exactness
+status: checked
 anchor: code/out/conditional_rate_experiment.captured.txt
 ```
 
@@ -99,7 +99,7 @@ id: conditional-rate-experiment-prime-reference
 statement: The same machinery on the actual primes (sieve 2e7, D=161) gives exactly 60 (2,4)-events over 161 live rows = 0.3727 overall, reproducing the recorded reference from the depth-1000 block data event-for-event; rho_post10 = 0.351. The random surviving families' post-10 rate (0.53..0.68) exceeds the primes' (0.35..0.37).
 hypotheses: live regime k=1..161 (intruder exists at every row); event = (A_k[b_k]==2 and A_k[b_k+1]==4) with b_k the leading {0,2} block length; exact int64.
 holds-here: yes — computed; the sieve-2e7 event-row list equals the recorded block-data list
-status: computed and checked; verifies the 60-event/161-row reference, not a proof
+status: checked
 anchor: code/out/conditional_rate_experiment.captured.txt
 ```
 
@@ -108,7 +108,7 @@ id: conditional-rate-experiment-sweep-deaths-startup-only
 statement: In the fresh D=400 run, 102/220 seeds (46%) die (first_b0 <= 10) and 0 of the 118 survivors die by k=400; startup deaths are g_0-driven exactly as the sweep showed (364/852 by k=1, 852/852 by k=10).
 hypotheses: same 11 families x 20 seeds as the conditional-rate run; first_b0 = first row with b_k = 0.
 holds-here: yes — computed; replicates the recorded sweep finding with fresh seeds
-status: computed and checked (D=400), consistent with the recorded D=600/1200/4000 sweep
+status: checked (D=400, exact int64, oracle-agreeing generator)
 anchor: code/out/conditional_rate_experiment.captured.txt
 ```
 

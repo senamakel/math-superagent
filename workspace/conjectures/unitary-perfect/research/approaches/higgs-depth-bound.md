@@ -46,13 +46,14 @@ mechanism: The Pratt tree of a prime p is the rooted tree whose nodes are
   required for a primitive divisor r | Φ_{4p}(2) exceeds what the
   3-Higgs condition allows given the growth rate of r ~ 2^p.
 
-status: proposed
-first-step: (1) Enumerate all 3-Higgs primes up to some moderate bound
-  (say p ≤ 10^7) using the recursive definition, recording their Pratt
-  depth and maximum exponent at each depth. (2) Prove that if the depth
-  is unbounded, then there must exist a 3-Higgs prime whose Pratt tree
-  contains a chain of length ≥ 5 with specific properties, and test
-  whether such chains exist in the enumerated data. (3) Formulate the
-  recursive size bound as a recurrence and apply analytic estimates to
-  bound depth.
+status: refuted
+killed-by: The 3-Higgs primes form an infinite set (OEIS A057447, b-file to
+  n≥1000; Ford's power-saving thinness is consistent with infinitude and
+  the set demonstrably continues). The paper's own m=2426 example features
+  the fully 3-Higgs divisor P=25893760589 with nontrivial Pratt descent
+  depth, directly refuting bounded depth ≤ D for any small D. Since depth
+  is unbounded, the "depth growth rate" fallback is just a re-derivation of
+  thinness constraints the paper already makes via Ford's theorem — thinness
+  does not close the gap (the paper's §5.3 says "density arguments by
+  themselves cannot close Conjecture 6").
 ```

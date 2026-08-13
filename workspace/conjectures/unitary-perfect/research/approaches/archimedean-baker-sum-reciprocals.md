@@ -108,14 +108,16 @@ mechanism: Start from the exact balance:
   controlled by 2^{-a}. This distinguishes it from both the algebraic
   (quartic reciprocity) and combinatorial (Pratt-tree) approaches.
 
-status: proposed
-first-step: (1) Write the exact additive form: expand log Π(1+1/p_i^{e_i}) =
-  log(2^{a+1}/(2^a+1)) as Σ log(1+1/p_i^{e_i}) = log 2 + log(1-1/(2^a+1)),
-  then expand each log(1+x) to get S = Σ 1/p_i^{e_i} with explicit error
-  bounds in terms of p_i and e_i. (2) Compute S exactly for the five known
-  UPNs and verify that the error matches the predicted O(2^{-a}) bound.
-  (3) Apply Matveev's explicit Baker bound (2000, Izv. Math.) to the linear
-  form Λ = log 2 - S, using the heights H(p_i^{e_i}) = p_i^{e_i} and the
-  bound on ω, to obtain an explicit inequality relating a and m, and determine
-  whether this forces a < some absolute bound.
+status: refuted
+killed-by: Baker's theorem (Matveev 2000, Baker–Wüstholz 1993) gives a
+  lower bound for NONZERO linear forms in logarithms. The proposed
+  "homogeneous" form Λ = Σ log(p_i^{e_i}+1) + log(2^a+1) − (a+1)log 2 −
+  Σ log p_i^{e_i} is identically zero — it is precisely the logarithm of
+  the balance equation (2^a+1)·Π(p_i^{e_i}+1) = 2^{a+1}·Π p_i^{e_i}. A
+  zero form records a multiplicative dependence; it is not an inequality
+  Baker's theorem can bound below, so "0 = |Λ| > exp(−C···)" is a category
+  error. The remaining Archimedean route (Σ 1/p_i^{e_i} ≈ log 2 with error
+  O(2^{-a})) is honest and the file itself shows it does not close: the
+  lower bound m > exp(a/C) and the upper bound log m ≤ 3(a+1)log(a+1) are
+  on the same asymptotic scale. No contradiction.
 ```

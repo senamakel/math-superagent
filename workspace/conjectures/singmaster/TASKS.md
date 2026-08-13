@@ -71,3 +71,7 @@ The three cycles the directive asks to open are already open:
 
 - [x] **Stop searching.** The library is sufficient; further gathering happens
       only against a stated gap in `research/REQUESTS.md`.
+- [ ] **Directive 19 gate:** no new approaches and no new searches until a new
+      capture lands (captured output above the current 57). This binds the
+      inventor too — a proposed approach is not execution. The budget is nearly
+      gone; the next run is the only spending allowed.

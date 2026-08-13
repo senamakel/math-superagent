@@ -28,3 +28,13 @@ researcher with 0 citations, none peer-reviewed.**
 **Refuted as a source, recorded so nobody re-searches or cites it.** The conjecture is not
 proved by this author. (This is the correct handling of a "proof" claim on an open
 problem: record the refutation rather than carry it as a lead.)
+
+```claim
+id: marechal-spectral-fractal-crank
+statement: Maréchal's "complete spectral-fractal proof of Gilbreath's conjecture" (Zenodo, Apr 2025, doi 10.5281/zenodo.15116867) is one of five near-identical "universal spectral-fractal framework with characteristic dimension √2" preprints the same author released within one week claiming complete proofs of Gilbreath, the Riemann Hypothesis, the Prime Number Theorem, Erdős–Graham, and Baum–Connes — an Erdős–Graham entry is not even a conjecture (ESW proved it in 2003). No peer review, 0 citations, no computable hypothesis and no derivation of any of this run's quantities (block lengths, {0,2} regime, second entry). Recorded as a refuted source: the conjecture is not proved by this author and the paper must not be cited or re-fetched in support of any mathematics here.
+hypotheses: none load-bearing.
+holds-here: n/a — refuted as a source, not a theorem.
+status: asserted at most; classified crank by template evidence (five millennium-level claims in seven days + an entry that is not even open).
+bearing: prevents re-searching or carrying the "proof" as a lead; keeps the theorem list clean. Same handling as granville-2026-piercing-gilbreath-not-load-bearing.
+anchor: research/summaries/marechal-spectral-fractal-proofs-refuted.md
+```

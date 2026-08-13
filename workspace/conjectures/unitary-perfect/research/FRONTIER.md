@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://portal.mardi4nfdi.de/w/index.php?title=On_unitary_perfect_numbers&amp;oldid=67115082 | https://portal.mardi4nfdi.de/w/index.php?title=On_unitary_perfect_numbers&oldid=67115082 | numbers Report a bug (only for logged in users!) [Click here to report a bug for this page (MaRDI item Q1247995)][22] Retrieved from "… |
 | 1 | http://www.ams.org/mathscinet-getitem?mr=637303 | MathSciNet | 14. W. E. Beck and R. M. Najar, *A lower bound for odd triperfect numbers*, Math. Comp. **38**(1982), 249–251. [MATH][46] [MathSciNet][47] [Google Scholar][48] 15. E. Bedocchi, *Perfect numbers in… |
 
-_162 further candidates not shown; they are cited once each._
+_180 further candidates not shown; they are cited once each._

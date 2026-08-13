@@ -97,19 +97,65 @@ mechanism: |
   approach proves an explicit bound linking the zero-block length to the
   regeneration rate, making the CHT inverse theorem quantitative for the
   regeneration problem.
-status: proposed
+status: grounded (search, attempt-5) — literature provides the exact machinery; the blocking lemma is a genuinely open statement
+precedent: |
+  (grounded, attempt-5 search — lower-bound-search-6.md) The blocking lemma's
+  own technical machinery IS in the literature, and the run had not brought it
+  to bear:
+  - **Northshield (2010), "Sums across Pascal's triangle modulo 2"**,
+    http://hdl.handle.net/1951/69939 — studies mod-2 binomial sums
+    Σ [C(i+j,i) mod 2] along Pascal lines via generating functions with
+    functional equations of the form A(x) = P(x)·A(x^2) (divide-and-conquer,
+    base-2 digit representations). The edge value e_d = XOR_{j=0}^d [C(d,j)
+    mod 2]·h_{b_k−d+j} is EXACTLY such a mod-2 binomial sum; Northshield gives
+    the recursion that determines the whole edge sequence (e_0, e_1, ...),
+    which is the algebraic form of the (0,4)-stall zero-run question. This
+    replaces the brute-force 2^n edge-run enumeration with an exact
+    generating-function / digital-root analysis.
+  - **Malyshev (2021), "Boolean analogues of Pascal's triangle with maximal
+    possible number of ones"**, doi 10.1515/dma-2021-0029 — max # of 1s in a
+    size-s Boolean Pascal triangle ≤ ⌈s(s+1)/3⌉, attained on Fibonacci-mod-2
+    top row. Bounds how sparse edge=2 rows can be in a window, i.e. a raw
+    lower bound on the edge-flip rate feeding the drain law.
+  - **Blair Morgan (2026)**, doi 10.5281/zenodo.19143643 and 10.5281/zenodo.
+    19144967 — independent rediscovery of the run's own reduction (GC ⟺
+    second entry in {0,2}) and of the local-obstruction picture (a pure
+    8→7→6→5→4 erosion corridor is impossible: it would force a zero-block in
+    positions 4–7 contradicting Row 2's twos). Corroborates that the run's
+    local boundary-obstruction shape is the accepted one. Preprints,
+    h-index 0, not peer-reviewed.
+  - Cyclic-Ducci sources (Lewis–Tefft 2024 arXiv:2401.17502; Breuer–
+    Shparlinski 2019 Bull. Austral. Math. Soc.) confirmed NOT the model — the
+    half-infinite regeneration has no right edge and is not covered by any
+    cyclic vanishing/period theorem.
+  No published source proves a half-infinite (2,4)-event rate lower bound:
+  the blocking lemma itself is genuinely open, but its proof engine (mod-2
+  Pascal sums) is a named literature technique.
+  Evidence class: directional (search collision, downloaded sources not yet
+  read in full — search halted per directive). Read Northshield/Malyshev in
+  the source before building a proof on them.
 first-step: |
   Encode the edge evolution as a linear process over GF(2). The halved block
   at row k is a binary string h ∈ {0,1}^{b_k}. After d rows of erosion, the
   edge (at position b_k − d of the halved block) is e_d = XOR_{j=0}^{d}
   [C(d,j) mod 2] · h_{b_k − d + j} (the Rule 90 convolution, proved in
   block_lemma.md). For a fixed h, the sequence e_0, e_1, ..., e_{b_k−1} is a
-  sequence of XORs of expanding windows of h. Write a small program that,
-  given a binary string h, computes the longest run of consecutive zeros in
-  (e_d). Exhaustively compute this max-run over all 2^n binary strings for
-  n = 1..12 and report the worst case and the pattern that achieves it. Then
-  state the conjecture: "the worst-case zero-run is at most n" (or some
-  explicit bound) and whether the all-zero string is the unique worst case.
+  sequence of XORs of expanding windows of h.
+  (a) REPLACE the brute-force 2^n enumeration with the exact mod-2 structure:
+  read Northshield 2010 and derive the A(x)=P(x)A(x^2) recursion for the edge
+  sequence, then state the zero-run bound in terms of the digital (base-2)
+  root structure of the window h. That is the normal, non-enumerative form of
+  the blocking lemma's proof.
+  (b) Small-instance verification (this is the permitted oracle use, NOT the
+  method): for n = 1..12 compute the max zero-run of (e_d) over all 2^n
+  strings h to confirm the conjecture "worst-case zero-run ≤ n" and that the
+  all-zero string is the unique bad case — establishing the exact bound a
+  proof must match before attempting it.
+  (c) Then combine with the drain law: inter-event gap ≤ drain_time(y₀→4) +
+  stall_time at y=4 + 1, giving the regeneration rate lower bound. The
+  all-zero halved block (constant-zero original block) is the CHT zero-block
+  obstruction; excluding it (primes' min b ≥ 2, no long zero-blocks) is the
+  hypothesis the bound needs.
   If the bound holds for every non-zero string, the approach yields a
   provable regeneration rate lower bound for any sequence whose blocks are
   not constant-zero.

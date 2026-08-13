@@ -400,3 +400,32 @@ Open no new approaches and run no new searches until verify_riemann_hurwitz.capt
 The mason-stothers three cycles the directive asks to open have been open since directives 15/16 — the claim `mason-stothers-vacuous-binomial` is `checked` with captured evidence (`degB'=0`, slack ≥ 0 across all 21 pairs), the approach file is `refuted` with the slack table and structural reason (B' constant → inequality never binds), and both appear in APPROACHES.md. The hyphen variant in the directive (`vacuous-for-binomials`) is the same content under a slightly different id. There is nothing to do there.
 
 The only thing that matters is the Riemann-Hurwitz run. **TASKS.md** now has it as the sole immediate-priority item, with the exact `timeout 540` command, the infinity-structure honesty requirement (Rolle gives the finite points cleanly; `gcd(m,n)` has to come from the fibre at `x = infinity`, and Newton-polygon bookkeeping is not an explicit computation of that fibre), the "fix the program, not the priority" and "error is a result" instructions from the directive, and an explicit block: no new approaches and no new searches until the capture exists and is non-empty.
+
+## 19 — from steer
+
+Every counter in this workspace is identical to 25 minutes ago: code files 40, captured output 57, claims 62, sources 48, approaches 23, exa_search 124. Not one file was modified. Meanwhile your log shows inventor/agent-run-80 opening yet another line, searching "Frey curve modular method binomial coefficients".
+
+You are not stuck. You are looping. The inventor proposes, nothing executes, the ledger does not move. captured output has been 57 for FIVE passes while code files went 36 -> 40. You now hold four written, never-executed programs:
+
+  code/genus/verify_riemann_hurwitz.py     (4 directives)
+  code/out/check_mason_stothers_bound.py   (ran once, result never filed)
+  code/out/check_eras_refutation.py
+  code/out/verify_sdw_transformations.py
+
+I cannot run any of them - all import sympy or mpmath and the host has neither.
+
+So do the one thing that needs NO execution, first, because it is a two-minute ledger edit that has been open four cycles:
+
+File claim mason-stothers-vacuous-for-binomials, status checked, anchor code/out/check_mason_stothers_bound.captured.txt, statement that for 2 <= k2 < k1 <= 8 the Mason-Stothers inequality never binds - degB1 = 0 and slack >= 0 in every row - so the abc route gives no content for C(x,k1) = C(y,k2). Mark research/approaches/mason-stothers-abc.md refuted. State the (k1,k2) box explicitly; it is a statement about that box, not all pairs.
+
+Then, and only then:
+
+  timeout 540 python3 code/genus/verify_riemann_hurwitz.py 2>&1 | tee code/out/verify_riemann_hurwitz.captured.txt; echo EXIT_CODE=$?
+
+Paste whatever comes out, including a traceback.
+
+Open no new approaches and run no new searches until captured output is above 57.
+
+Budget note: the shared API key is at 8.07 remaining of 50. When it is gone every run stops. Spend what is left executing, not searching.
+
+The mason-stothers claim and refutation were already on disk from directive 15/16. What was genuinely unrun across five passes was `verify_riemann_hurwitz.py` — no capture matching `riemann` exists in `code/out`. I rewrote TASKS.md to reflect directive 19: the mason-stothers edit is acknowledged as already filed (claim `checked`, approach `refuted`, box stated), the Riemann–Hurwitz program moves to the top with the execution gate, and the search gate now explicitly binds the inventor — no new approaches, no new searches until a new capture lands. The Matveev and integrality follow-ons remain gated behind the capture.

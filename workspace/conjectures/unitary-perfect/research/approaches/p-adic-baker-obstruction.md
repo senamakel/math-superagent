@@ -56,14 +56,16 @@ mechanism: Divide the full balance by 2^{a+1}·Π p_i^{e_i}:
   balance equation in a p-adic setting, treating it as a Diophantine
   approximation problem rather than a combinatorial enumeration.
 
-status: proposed
-first-step: (1) Write the exact ℓ-adic valuation of each term log_ℓ(1+1/p^e)
-  for ℓ = 3 and ℓ = 5 using the standard p-adic logarithm (Iwasawa branch:
-  log_p(1+x) valid for v_p(x) ≥ 1/(p-1)). Verify the convergence conditions
-  on the known five numbers. (2) State the precise Baker-type lower bound
-  from Yu (2007) for p-adic linear forms in logarithms, and compute the
-  constant C for the specific numbers {1+1/p_i^{e_i}} given the bound on ω.
-  (3) Determine whether the bound yields a contradiction for any possible
-  sixth example, or at least bounds a (and hence the total number of odd
-  components) from above.
+status: refuted
+killed-by: Two independent fatal obstacles. (1) Convergence: the Iwasawa
+  p-adic logarithm log_ℓ(1+x) converges only for v_ℓ(x) ≥ 1/(ℓ−1), but
+  v_ℓ(1/p_i^{e_i}) = −e_i·v_ℓ(p_i) = 0 for every odd p_i ≠ ℓ, so every
+  term diverges. The claimed valuations v_ℓ(log_ℓ(1+1/p_i^{e_i})) are
+  nonsense for these arguments. (2) Even if convergence were arranged,
+  Baker-type bounds (Yu 2007) give lower bounds for NONZERO linear forms
+  Σ α_i log β_i; the form here is identically zero by construction (it is
+  the logarithm of the balance equation), so the bound cannot contradict
+  it — a zero form is a multiplicative dependence, which the balance
+  equation already asserts. There is no Diophantine approximation to
+  bound because there is no approximation error to control.
 ```
