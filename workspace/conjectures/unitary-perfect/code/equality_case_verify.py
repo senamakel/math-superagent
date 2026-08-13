@@ -41,12 +41,10 @@ def admissible_sizes(count):
     """The `count` smallest admissible component sizes q == 1 (mod 4), one per
     distinct odd prime, ascending: q = p if p == 1 (mod 4), else q = p*p.
 
-    Correctness note: the count-th smallest size is *not* obtained by taking
-    the first `count` primes in prime order (11^2 = 121 would beat the prime
-    37).  We therefore generate sizes for every odd prime up to a generous
-    bound, sort all of them, truncate to `count`, and assert the truncation is
-    safe: the count-th smallest must be smaller than the smallest admissible
-    size contributed by any prime beyond the bound.
+    Generate over all odd primes up to BOUND, sort by size, then slice to
+    `count`.  A safety assertion confirms that the largest taken value is
+    strictly smaller than the smallest admissible size from any prime beyond
+    BOUND, guaranteeing the set is genuinely minimal.
     """
     BOUND = 800
     sizes = []

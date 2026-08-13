@@ -35,12 +35,19 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   a new result.
 - **(computed / checked, this run) Equality-case bound: `ω(odd) = a+1` is
   impossible for `2 ≤ a ≤ 28`.** Verified from captured output
-  `code/out/equality_case_elimination.captured.txt`: (1) a=1 max product = 4/3
+  `code/out/equality_case_verify.captured.txt`: (1) a=1 max product = 4/3
   exactly, {5,9} is the odd part of 90; (2) 2^8+1=257 is prime, forced when
   a=8; (3) 9=3^2 and 49=7^2 are admissible, 3 and 7 are not; (4) exclusion
-  runs 2 ≤ a ≤ 28, stops at 29. Claim `budget-equality-case-impossible` is
-  `checked`. Thread `a-ge-8-bound` is closed. a=1 is realised by n=90.
+  runs 2 ≤ a ≤ 28, with correct minimal admissible sizes. M(28)=1.997752860
+  < T(28)=1.999999993; M(29)=2.004964964 > T(29). Claim
+  `budget-equality-case-impossible` is `checked`. Thread `a-ge-8-bound` is
+  closed. a=1 is realised by n=90.
   `research/notes/equality-case-eliminated.md`.
+  **BUG-FIX (directive 11):** `admissible_sizes()` had a slice-then-sort bug
+  (missed 37,41,53; wrongly included 121,361,529). Fixed to sort-then-slice
+  with BOUND=800 + safety assertion. Boundary at a=28 survives the fix;
+  a=29 was never recorded as excluded in any task or thread.
+  `code/equality_case.py` fixed with same pattern.
 - **(sourced) Graham 1989:** UPNs with squarefree odd part are exactly
   `6, 60, 87360` — so any sixth example has a **repeated odd prime power**.
   The summary is corrected (scholar-pass): previous "Digest only" banner was a

@@ -125,6 +125,10 @@ bearing: closes the equality boundary of unitary-perfect-lower-bound-on-a. That
   different input, most plausibly the forced divisors of 2^a + 1 used as in the
   a = 8 case rather than only the smallest admissible sizes
 anchor: code/out/equality_case_elimination.captured.txt;
+  code/out/equality_case_reproduced.captured.txt (operator directive 4/7/8/9/10,
+  verbatim rerun, EXIT_CODE=0, 3728 bytes);
+  code/out/equality_case_verify.captured.txt (independent exact-Fraction
+  verifier, 5015 bytes, 4/4 points PASS on fresh arithmetic);
   research/notes/parity-and-2-adic-budget.md;
   research/notes/lower-bound-on-a.md
 source: operator-computation

@@ -104,8 +104,10 @@ theorem reduction {s : ℕ → ℕ} (shape : StartsOddEvenEven s)
     (hlead : leading_entry s = 1) :
     leading_entry (Step s) = 1 ↔ s 1 = 0 ∨ s 1 = 2 := by
   unfold leading_entry Step
+  change s 0 = 1 at hlead
   rw [hlead]
-  simpa [Nat.succ_eq_add_one] using (dist_one_eq_one (n := s 1))
+  change Nat.dist 1 (s 1) = 1 ↔ s 1 = 0 ∨ s 1 = 2
+  exact dist_one_eq_one
 
 -- per-lemma axiom footprint (to locate any sorryAx)
 #print axioms dist_odd_even

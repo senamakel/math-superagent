@@ -34,18 +34,32 @@ def is_prime(n):
         d += 2
     return True
 
-def minimal_admissible(limit_primes):
-    """Minimal component size = 1 mod 4, one per odd prime, ascending."""
-    out = []
-    p = 3
-    while len(out) < limit_primes:
+def minimal_admissible(count):
+    """Minimal component size = 1 mod 4, one per odd prime, ascending.
+    
+    Generate admissible sizes for odd primes up to a generous bound, sort
+    all, then slice to `count`.  Assert that the count-th smallest is below
+    the smallest admissible size from any prime beyond the bound, so the
+    truncation is safe (not missing any genuinely smaller value).
+    """
+    BOUND = 800
+    sizes = []
+    for p in range(3, BOUND + 1, 2):
         if is_prime(p):
-            out.append(p if p % 4 == 1 else p * p)
-        p += 2
-    out.sort()
-    return out
+            sizes.append(p if p % 4 == 1 else p * p)
+    sizes.sort()
+    assert len(sizes) >= count, (BOUND, count)
+    got = sizes[:count]
+    # Safety: the next prime after BOUND must contribute an admissible size
+    # strictly larger than the largest we took.
+    q = BOUND + 1
+    while not is_prime(q):
+        q += 2
+    min_future = q if q % 4 == 1 else q * q
+    assert got[-1] < min_future, (got[-1], min_future, BOUND)
+    return got
 
-MIN_Q = minimal_admissible(4000)
+MIN_Q = minimal_admissible(200)
 
 print("minimal admissible component sizes (1 mod 4), first 12:", MIN_Q[:12])
 print("  note 9 = 3^2 and 49 = 7^2 enter as squares since 3, 7 = 3 (mod 4)")

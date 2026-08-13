@@ -1,0 +1,2 @@
+'shape_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'shape_iter' depends on axioms: [propext, Classical.choice, Quot.sound]

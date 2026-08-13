@@ -43,7 +43,18 @@ at k≤1 from first-gap≠2, not from the event rate.
 ### Deferred until item 1 is answered
 
 - [ ] **2. Housekeeping: move bare .txt output files from `code/pattern_finder/` to `code/out/` or delete them.** Requires a shell (`mv`/`rm`); this role has no move/delete tool.
-- [ ] **3. Lean 4 formalisation (independent).** `code/lean/t8.lean`/`t9.lean` already prove the entrywise shape-preservation lemmas with no `sorry`. Still to write: the full row-shape theorem, the reduction to the {0,2} second-entry claim, and the `#print axioms` output + every remaining `sorry`.
+- [x] **3. Lean 4 formalisation (independent).** **DONE this run:**
+  `code/lean/gilbreath_reduction.lean` kernel-checks (`lean` EXIT=0) the full
+  reduction — shape preservation, |1−n|=1 ⟺ n∈{0,2}, and the machine-checked
+  induction step `gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X`
+  for any row stream with the prime-row shape and leading 1. `#print axioms` =
+  `[propext, Classical.choice, Quot.sound]` for every declaration, **zero
+  sorry / sorryAx** (grep-verified on `code/out/lean_gilbreath_reduction.captured.txt`).
+  Pre-existing broken `code/lean/reduction.lean` and `shape.lean` also repaired
+  and kernel-checked (`code/out/lean_reduction.captured.txt`,
+  `code/out/lean_shape.captured.txt`). Boundary: the prime *instantiation*
+  (row 1 is (1, even, even, ...), second entry 2) remains a computation check
+  (witnesses.json), not a Lean proof; regeneration is untouched.
 
 ### Background (established, do not redo)
 

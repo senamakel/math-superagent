@@ -1,0 +1,17 @@
+COUNTING CONVENTION: N(a) counts BOTH mirrored occurrences (C(n,k) and C(n,n-k) are two distinct pairs) and includes the trivial pair C(a,1) = C(a,a-1).
+
+=== Cross-check fast_multiplicity vs lib oracle (both conventions equal) ===
+  a=     6: fast N=3  lib N=3  OK
+  a=    10: fast N=2  lib N=4  MISMATCH
+  a=    36: fast N=2  lib N=4  MISMATCH
+  a=   120: fast N=6  lib N=6  OK
+  a=   210: fast N=4  lib N=6  MISMATCH
+  a=  1540: fast N=4  lib N=6  MISMATCH
+  a=  7140: fast N=4  lib N=6  MISMATCH
+  a= 11628: fast N=4  lib N=6  MISMATCH
+  a= 24310: fast N=4  lib N=6  MISMATCH
+  a=  3003: fast N=6  lib N=8  MISMATCH
+Traceback (most recent call last):
+  File "/workspace/code/verify_fibonacci_identity.py", line 99, in <module>
+    assert ok, "fast_multiplicity disagrees with the lib oracle"
+AssertionError: fast_multiplicity disagrees with the lib oracle

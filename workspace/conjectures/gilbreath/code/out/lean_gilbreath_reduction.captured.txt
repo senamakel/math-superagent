@@ -1,18 +1,15 @@
-code/lean/gilbreath_reduction.lean:107:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
-  leading_entry s
-in the target expression
-  (s 0).dist (s (0 + 1)) = 1 ↔ s 1 = 0 ∨ s 1 = 2
+code/lean/gilbreath_reduction.lean:103:31: warning: Variable name `shape` is not explicitly referenced.
 
-s : ℕ → ℕ
-shape : StartsOddEvenEven s
-hlead : leading_entry s = 1
-⊢ (s 0).dist (s (0 + 1)) = 1 ↔ s 1 = 0 ∨ s 1 = 2
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _shape
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
 'dist_odd_even' depends on axioms: [propext, Classical.choice, Quot.sound]
 'dist_dist_even' depends on axioms: [propext, Classical.choice, Quot.sound]
 'dist_one_eq_one' depends on axioms: [propext, Classical.choice, Quot.sound]
 'shape_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
-'gilbreath_reduction' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
-'reduction' depends on axioms: [propext, sorryAx]
-'reduction_lemma' depends on axioms: [propext, sorryAx]
+'gilbreath_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'reduction_lemma' depends on axioms: [propext, Classical.choice, Quot.sound]
 'shape_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
 'shape_rows' depends on axioms: [propext, Classical.choice, Quot.sound]

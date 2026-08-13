@@ -8,7 +8,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `H_EVEN_VERIFY_SPEC.md` | _(undescribed)_ |
 | `brute.py` | Naive exact oracle for unitary perfect numbers: factors n by trial division, computes sigma_star(n) = prod_{p^a |
 | `equality_case.py` | _(undescribed)_ |
-| `equality_case_verify.py` | INDEPENDENT exact-Fraction re-derivation of the equality-case bound, not trusting equality_case.py: (1) a=1: T(1) and (1+1/5)(1+1/9) equal Fraction(4,3) exactly, {5,9} odd part of 90; (2) 2^8+1=257 prime by trial division, forcing 257 as a component since (2^a+1) |
+| `equality_case_verify.py` | Independent exact-Fraction re-verification of equality-case bound. Already had fix for admissible_sizes (sort-then-slice with BOUND=800 + safety assertion); docstring updated to remove old bug-narrative. Verifies 4 points: a=1 / 4/3, a=8 / 257 forced, 3 vs 9 admissibility, exclusion 2≤a≤28 with M(29)>T(29). Post-fix capture at code/out/equality_case_verify.captured.txt is correct. |
 | `heven_classify.py` | Phase A worked examples + Phase B classification of H_even cap [2,1200]: reproduces every worked example of the spec/paper for the 3-Higgs machinery, then combines heven_sieve.py's witness tables with full factorization of survivors to compute H_even cap [2,1200] and compare with the ten candidates of arXiv:2605.20475 Theorem 8. |
 | `heven_complete_verify.py` | _(undescribed)_ |
 | `heven_patterns.py` | _(undescribed)_ |

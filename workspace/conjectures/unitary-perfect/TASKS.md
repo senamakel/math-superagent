@@ -3,12 +3,15 @@
 ## Completed
 
 - [x] Library audit + scholar pass 2026-08-14 (see research/notes/scholar-pass-library-audit.md)
-- [x] `budget-equality-case-impossible` verified from captured output `code/out/equality_case_elimination.captured.txt`:
+- [x] `budget-equality-case-impossible` verified from captured output `code/out/equality_case_verify.captured.txt`:
   (1) a=1 max product = 4/3 exactly, {5,9} is odd part of 90;
   (2) 2^8+1=257 prime, forced when a=8;
   (3) 9=3^2 and 49=7^2 admissible, 3 and 7 are not;
-  (4) exclusion runs 2 ≤ a ≤ 28, stops at 29.
-  All four confirmed. Thread `a-ge-8-bound` resolved: equality case impossible for 2 ≤ a ≤ 28.
+  (4) exclusion runs 2 ≤ a ≤ 28, stops at 29. Correct M values: M(28)=1.997752860 < T(28), M(29)=2.004964964 > T(29).
+  BUG-FIX (directive 11): admissible_sizes() had a slice-then-sort bug (missed 37,41,53; wrongly included 121,361,529). Fixed to sort-then-slice over BOUND=800 with safety assertion. The 28-boundary survives the fix; a=29 was never recorded as excluded in any task or thread. All four checks confirmed.
+  Thread `a-ge-8-bound` resolved: equality case impossible for 2 ≤ a ≤ 28.
+
+- [x] **Independent reproduction (operator directives 4/7/8/9/10, attempt 3).** Reran `code/equality_case.py` verbatim -> `code/out/equality_case_reproduced.captured.txt` (3728 bytes, EXIT_CODE=0) and wrote a from-scratch exact-Fraction verifier `code/equality_case_verify.py` -> `code/out/equality_case_verify.captured.txt` (5015 bytes, EXIT_CODE=0). All four points PASS on fresh arithmetic: (1) T(1) = Fraction(4,3) exactly, (1+1/5)(1+1/9) = 4/3 exactly, {5,9} = odd part of 90; (2) 257 prime, M(8) = 4235328000/2498670421 approx 1.6950 < 512/257 approx 1.9922; (3) 3,7 = 3 mod 4 not admissible, 9 = 3^2 and 49 = 7^2 admissible; (4) M(a) < T(a) exactly for all 2 <= a <= 28, M(29) >= T(29). Claim `budget-equality-case-impossible` anchor updated with both captures; status `checked` on this run's own evidence. First verifier draft had a real bug (admissible list in prime-count order, missed 37,41 for 121,361); fixed by generating sizes for all odd primes, sorting, truncating, asserting safety. Zero-byte captures cleared and confirmed: `sieve_pass_1e8` and `sieve_timing_1e6` now carry tombstones (76, 94 bytes).
 
 ## Next
 
