@@ -1,0 +1,42 @@
+PE620 parity-filter test of the n_t integer meshing model
+model: n_t(d) = [(c-t)*beta + (s+t)*mu]/pi (see n_integer_count.py)
+with-parity:  n_p,n_q in Z and n_p-n_q == p-q (mod 2)
+without-parity: n_p,n_q in Z only (filter removed)
+============================================================================
+
+g(16,5,5,6): with parity = 9, without parity = 9
+   valid d count (no parity) = 9
+   n_p+n_q over valid d: min=21.0000000000 max=21.0000000000 (s+c = 21)
+
+G(20) tuples, g with vs without parity filter   [c+s even => filter parity condition n_p-n_q==p-q (mod 2) reduces to n_p==n_q (mod 2)]
+  #    c  s  p  q   g(par)  g(nopar)  change?  c+s parity
+   1  16  5  5  6        9        9          -   1 (odd)
+   2  17  5  5  7        8        8          -   0
+   3  17  6  5  6        9        9          -   1 (odd)
+   4  18  5  5  8        7        7          -   1 (odd)
+   5  18  5  6  7       10       10          -   1 (odd)
+   6  18  6  5  7        9        9          -   0
+   7  18  7  5  6       10       10          -   1 (odd)
+   8  19  5  5  9        7        7          -   0
+   9  19  5  6  8        9        9          -   0
+  10  19  6  5  8        8        8          -   1 (odd)
+  11  19  6  6  7       11       11          -   1 (odd)
+  12  19  7  5  7        9        9          -   0
+  13  19  8  5  6       11       11          -   1 (odd)
+  14  20  5  5 10        7        7          -   1 (odd)
+  15  20  5  6  9        9        9          -   1 (odd)
+  16  20  5  7  8       11       11          -   1 (odd)
+  17  20  6  5  9        8        8          -   0
+  18  20  6  6  8       10       10          -   0
+  19  20  7  5  8        9        9          -   1 (odd)
+  20  20  7  6  7       12       12          -   1 (odd)
+  21  20  8  5  7       10       10          -   0
+  22  20  9  5  6       12       12          -   1 (odd)
+
+G(20) with parity    = 205
+G(20) without parity = 205
+tuples whose g changed: NONE
+tuples with c+s odd: [(16, 5, 5, 6), (17, 6, 5, 6), (18, 5, 5, 8), (18, 5, 6, 7), (18, 7, 5, 6), (19, 6, 5, 8), (19, 6, 6, 7), (19, 8, 5, 6), (20, 5, 5, 10), (20, 5, 6, 9), (20, 5, 7, 8), (20, 7, 5, 8), (20, 7, 6, 7), (20, 9, 5, 6)]
+change set == odd-c+s set: False
+n_p+n_q over ALL valid d of all tuples: min=21.0000000000 max=29.0000000000
+   (model identity: n_p+n_q = s+c at every d; all tuples here have s+c = 2s+p+q)
