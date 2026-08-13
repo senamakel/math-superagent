@@ -1,0 +1,19 @@
+rows: 2705
+
+-- type: how many of x,y,z are divisible by n (exact) --
+all rows: {1: 2694, ('1-of-3', 'z'): 2694, 2: 11, ('2-of-3', 'yz'): 11}
+r=  1: {1: 450}
+r=121: {1: 451}
+r=169: {1: 448, 2: 3}
+r=289: {1: 447, 2: 4}
+r=361: {1: 451}
+r=529: {1: 447, 2: 4}
+among rows with e>=6: {6: {1: 4}, 7: {1: 12, 2: 1}, 9: {1: 1}, 14: {1: 1}}
+
+-- u-structure (u = d*y - n*x, the smaller factor of (n*x)^2) --
+u prime: 1940/2705
+u is a prime power: 1940
+u divides n*x: 2516   u needs (n*x)^2 (some exponent doubled): 189
+u/nx ratio bins: {'<0.01': 2700, '0.01-0.1': 5}
+u distinct-prime-count distribution: {1: 1940, 2: 685, 3: 80}
+exp-overflow errors: 0 ([])

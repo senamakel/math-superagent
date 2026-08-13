@@ -1,42 +1,23 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/plouffe-2025-verification-10e14.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Verification of Gilbreath's conjecture up to 10^14 — Plouffe, arXiv:2510.06688
 
-<!-- source: https://arxiv.org/abs/2510.06688 | converted from HTML -->
+<!-- source: https://arxiv.org/abs/2510.06688 | full text: sources/plouffe-2025-verification-10e14.full.md -->
 
-## What is in it
+Records the 2025 verification bound extending Odlyzko's 1993 result.
 
-- Mathematics > Number Theory
-- Title: Verification of Gilbraith's conjecture up to 10$^{14}$
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+## What it establishes
 
+- Simon Plouffe, "Verification of Gilbraith's conjecture up to 10^14" (note the misspelling
+  "Gilbraith" in the title), math.NT, arXiv:2510.06688, 2025.
+- A calculation verifies Proth–Gilbreath for all primes up to 10^14, extending Odlyzko's
+  1993 bound (10^13).
+- Abstract restates the block-lemma criterion plainly: **to prove the conjecture it
+  suffices to find a line beginning with 1 and followed only by 0 and 2** — the same
+  reduction the run's ROOT.md carries.
+- The 2025 record (π(10^14) ≈ 3.2×10^12 rows) is already superseded by Colonna's
+  1.5×10^15 (2026); keep all three numbers distinct: Odlyzko 10^13 (1993), Plouffe 10^14
+  (2025), Colonna 1.5×10^15 / G=800 (2026).
 
-## What it claims
+## Source status
 
-Abstract: A calculation was performed to verify Proth-Gilbraith's conjecture for all prime numbers up to 0$^{14}$. The previous calculation was performed by Andrew Odlyzko in 1993 up to 0$^{13}$. This involves calculating the differences between consecutive primes in absolute value and starting over. The conjecture states that all lines except the first begin with 1. To prove it, it suffices to find a line beginning with 1 and followed only by 0 and 2.
-
-Comments: | Minor changes and addition of a new reference |
-
-Subjects: | Number Theory (math.NT) |
-
-Cite as: | [arXiv:2510.06688][6] [math.NT] |
-
-| (or [arXiv:2510.06688v2][7] [math.NT] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.2510.06688][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 5918 character source; every section, statement, and proof in full at `research/sources/plouffe-2025-verification-10e14.full.md`]*
+arXiv abstract page (retrieved this run). Equivalent to the published record; relevant as
+the middle 2025 data point and for its plain restatement of the reduction.

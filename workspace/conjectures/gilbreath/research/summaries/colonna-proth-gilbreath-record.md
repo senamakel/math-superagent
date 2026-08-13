@@ -1,50 +1,37 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/colonna-proth-gilbreath-record.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Proth–Gilbreath conjecture: successive verification records — Colonna (CNRS), 2025–2026
 
-<!-- source: https://www.lactamme.polytechnique.fr/Mosaic/descripteurs/GilbreathConjecture.01.Ang.html | converted from HTML -->
+<!-- source: https://www.lactamme.polytechnique.fr/Mosaic/descripteurs/GilbreathConjecture.01.Ang.html | full text: sources/colonna-proth-gilbreath-record.full.md -->
 
-## What is in it
+The current verification record page (collaboration with J.-P. Delahaye, Université de
+Lille), updated through Aug 2026.
 
-- Proth-Gilbreath Conjecture,
-Verification up to 1.5x10 15
-  - Beat the Andrew Odlyzko Record G(Pi(10 13))=635 (1993)
-    - G(Pi(2.8000*10 14))=788 (11/08/2025)
-G(Pi(6.1500*10 14))=800 (12/13/2025)
-G(Pi(1.0025*10…
-      - [image: The Proth-Gilbreath Conjecture -display of the process for the 64 first prime…
-  - ****[www.lactamme.polytechnique.fr][3]
-      - CMAP (Centre de Math&eacute;matiques APpliqu&eacute;es) UMR CNRS 7641, &Eacute;cole…
-  - 1-Introduction:
-  - 2-Definition:
-  - 3-The Theory:
-  - 4-The Computation:
-    - The Hardware:
-    - The programs:
-  - 5-The Results:
-  - 6-The Successive Absolute Records [01]:
-  - 7-The Successive Relative Records [01]:
-  - 8-The Prime Gaps:
+## What it establishes
 
+- Verification of the Proth–Gilbreath conjecture extended far past Odlyzko's 10^13:
+  - `G(π(2.8×10^14)) = 788` (11/08/2025)
+  - `G(π(6.15×10^14)) = 800` (12/13/2025)
+  - **`G(π(1.5×10^15)) = 800` (Jan 2026)** — current record, per Wikipedia's 2026 entry.
+  - Here `G(π(x))` is the number of rows needed (the row-index k such that row k begins 1
+    and is followed only by 0s and 2s), Odlyzko's G-function; `G(π(10^13)) = 635`.
+- Page includes the process display for the first 64 primes, the theory section (the
+  block-lemma reduction), the computation method (hardware + programs), absolute and
+  relative record tables, and prime-gap analysis.
+- Confirms the reduction (leading 1 + all-{0,2} tail ⇒ next rows all begin 1) as the
+  engine of the whole verification programme, exactly as the run's ROOT.md and Odlyzko's
+  paper state.
 
-## What it claims
+## Bearing on this run
 
-******[[Site Map and Help [Plan du Site et Aide]]][4]
-******[[The Y2K Bug [Le bug de l'an 2000]]][5]
-******[[Are we ready for the Year 2038 [Notre informatique est-elle pr&ecirc;te pour l'An 2038]?]][6]
-******[[Real Numbers don't exist in Computers and Floating Point Computations aren't safe. [Les Nombres R&eacute;els n'existent pas dans les Ordinateurs et les Calculs Flottants ne sont pas s&ucirc;rs.]]][7]
-******[[Please, visit A Virtual Machine for Exploring Space-Time and Beyond, the place where you can find more than 10.000 pictures and animations between Art and Science]][8]
-(CMAP28 WWW site: this page was created on 09/28/2025 and last updated on 08/12/2026 15:35:39 -CEST-)
+- The **current** literature verification bound is **1.5×10^15 (G = 800)**, not 10^13.
+  Any note that says "verified to 10^13 (Odlyzko)" is correct-but-outdated; the run's
+  CONTEXT/Gaps should carry all four data points: 10^13 Odlyzko 1993, 10^14 Plouffe 2025,
+  2.8×10^14 / 6.15×10^14 / 1.5×10^15 Colonna 2025–2026, and the run's own depth 1000.
+- G(n) = the block length of the 635th/693rd/744th/800th row grows very slowly:
+  635 → 800 across seven orders of magnitude of n — a strong empirical statement about how
+  rarely regeneration is needed, consistent with the run's depth-1000 numbers.
 
-****[[en fran&ccedil;ais/in french]][9]
+## Source status
 
-**Preliminary Remark**: The following research is the fruit of a collaboration with Jean-Paul Delahaye professor at the Universit&eacute; de Lille, researcher at the Lille Cristal laboratory and well known columnist for the *Pour La Science*newspaper.
-
-Contents:
-
-- 1-Introduction:
-- 2-Definition:
-- 3-The Theory:
-- 4-The Computation:
-- 5-The Results:
-- 6-The…
-
-*[digest of a 79711 character source; every section, statement, and proof in full at `research/sources/colonna-proth-gilbreath-record.full.md`]*
+Primary record page by the verifier (J.-F. Colonna, CMAP/CNRS, in collaboration with J.-P.
+Delahaye), retrieved this run; corroborated by Wikipedia's 2025–2026 entries. Not a
+peer-reviewed paper but the verifier's own account of a reproducible computation.

@@ -1,63 +1,49 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/erdos-selfridge-product-not-power-1975.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Erdős–Selfridge, "The product of consecutive integers is never a power"
 
-<!-- source: https://www.renyi.hu/~p_erdos/1975-46.pdf | converted from PDF -->
+Source: https://www.renyi.hu/~p_erdos/1975-46.pdf — P. Erdős, J. L. Selfridge,
+Illinois J. Math. 19 (1975) 292–301.
+Full text: `research/sources/erdos-selfridge-product-not-power-1975.full.md`.
 
-## What it claims
+## Statement
 
-We dedicate this paper to the memory of our friends H . Davenport, Ju.V .
-Linnik, L. J. Mordell, L. Moser, A . Rényi and W . Sierpinski, all of whom were
-alive when we started our work in 1966 at the University of Illinois at Urbana .
+The equation
+```
+(n+1)(n+2)...(n+k) = x^l        (k ≥ 2, l ≥ 2, n ≥ 0)
+```
+has no solutions in integers: **a product of two or more consecutive positive
+integers is never a perfect power.**
 
-0. Introduction
+The proof (for k ≥ 3; the square case k=2 was handled by Rigge and Erdős) shows
+there is a prime p > k whose exponent in the product (n+1)...(n+k) is **not** a
+multiple of l (in fact p divides the product with exact exponent 1 for essentially
+all cases). The auxiliary result: for every k ≥ 2 there is a prime p > k such that
+the p-adic valuation of (n+1)...(n+k) is not divisible by l — a strengthening of the
+Sylvester–Schur theorem via a large-prime-in-block argument.
 
-It was conjectured about 150 years ago that the product of consecutive
-integers is never a power . That is, the equation
+## Implication for this problem
 
-(n+1) • • (n+k)=x`
+This is a foundational tool for the binomial-coefficient Diophantine theory. The
+binomial coefficient C(n,k) = n(n-1)...(n-k+1)/k! is a product (of consecutive
+terms) divided by a factorial — so selfridge-type "no block of consecutive integers
+is a perfect power" results are what force the structure behind, e.g., the
+C(x,k1)=C(y,k2) collision family and the Fibonacci/N6 family's non-degeneracy. It
+also underlies the AP-product results (SST 1995, Bennett–Siksek) that the run's
+Diophantine thread and the effective-height program rest on: any effective bound
+that says a product of AP terms is not a perfect power is a bound the binomial
+collision argument can ride on.
 
-(1)
-
-has no solution in integers with k >_ 2, 1 >_ 2 and n >_ 0 . (These restrictions
-on k, 1 and n will be implicit throughout this paper .) The early literature on this
-subject can be found in Dickson's history and the somewhat later literature in
-the paper of Obláth [5].
-Rigge [6], and a few months later Erdös [1], proved the conjecture for 1 = 2 .
-Later these two authors [1] proved that for fixed 1 there are at most finitely
-many solutions to (1). In 1940, Erdös and Siegel jointly proved that there is
-an absolute constant c such that (1) has no solutions with k > c, but this proof
-was never published. Later Erdös [2] found a different proof ; by improving
-the method used, we can now…
-
-THEOREM…
-
-## Statements it makes
-
-THEOREM 1 . The product of two or more consecutive positive integers is
-never a power .
-
-THEOREM 2 . Let k, 1, n be integers such that k >_ 3, 1 >_ 2 and n + k >_ p (k) ,
-where p(k) is the least prime satisfying p (k) >_ k. Then there is a prime p >_ k for
-which a p # 0 (mod 1), where a p is the power of p dividing (n + 1) . . . (n + k) .
-
-Theorem 2 implies Theorem 1, since it is easy to see that (n + 1)(n + 2) is
-never an lth power and if n < k then by Bertrand's postulate the largest prime
-factor of (n + 1) . . . (n + k) divides this product to exactly the first power .
-Moreover, this shows that in proving Theorem 2 it will suffice to assume n > k .
-One could conjecture the following strengthening of Theorem 2 : if k >_ 4
-and n + k >_ p (k) , then there is at least one prime greater than k which divides
-
-LEMMA 1 . For any l' < 1, the products ai, . . . ai,, (i
-
-LEMMA 2. By deleting a suitably chosen subset of 7r(k - 1) of the numbers
-a,(1 < i < k), we have
- a, . . . aj, , I (k - 1) !
-
-LEMMA 3. Let G be a bipartite graph of s white and t black vertices which
-contains no rectangles. Then the number of edges of G is at most
-
-Lemma 1 shows in particular that the bound (12) applies to the sequence
-a1 < . . . < a, Using (12) we next prove that the product of any k - 7r(k) of
-the a's exceeds k! provided k >_ 30000. Because of Lemma 2 this implies
-Theorem 2 for k >_ 30000 and l > 2 . Evidently it suffices to prove
-
-*[digest of a 22311 character source; every section, statement, and proof in full at `research/sources/erdos-selfridge-product-not-power-1975.full.md`]*
+```claim
+id: erdos-selfridge-no-perfect-power
+statement: The product of two or more consecutive positive integers is never a
+  perfect power: (n+1)(n+2)...(n+k)=x^l has no solutions for k≥2, l≥2, n≥0. In
+  fact for every k≥2 there is a prime p>k whose exponent in (n+1)...(n+k) is not
+  a multiple of l.
+hypotheses: none beyond k≥2, l≥2, n≥0.
+holds-here: not itself used as a theorem on the Conjecture, but underpins the
+  AP-product results the C(x,k1)=C(y,k2) argument relies on.
+status: proved (primary source, in full here)
+bearing: structural foundation — bounds preventing products of consecutive terms
+  from being powers are the engine behind effective finiteness for binomial
+  collisions.
+anchor: research/sources/erdos-selfridge-product-not-power-1975.full.md
+```
