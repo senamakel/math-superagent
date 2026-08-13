@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/pdf/2210.04622.pdf | https://arxiv.org/pdf/2210.04622.pdf | - [2] Raghavendra N. Bhat, Sequences, Series and Uniform distribution of SP Numbers, *arxiv*preprint, 7 pp. (2022). [https://arxiv.org/pdf/2210.04622.pdf][8] - [3] Raghavendra N. Bhat, Cristian… |
 | 1 | https://institucional.us.es/blogimus/wp-content/uploads/2020/07/SWAC_Dec50.jpg | — | the conjecture. Their feat is all the more remarkable if we look at what computers were like in the 1950s. [image: The SWAC computer] [1] The SWAC computer where Kilgrove and Ralston tested the… |
 
-_59 further candidates not shown; they are cited once each._
+_66 further candidates not shown; they are cited once each._
