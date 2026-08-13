@@ -109,3 +109,25 @@ All three priorities are already satisfied in the current workspace. Here's the 
 3. **Tombstones** — both are already tombstones. `mrstt-interior-singmaster.full.md` reads "TOMBSTONE — this file is NOT the MRSTT paper" and `singmaster-1971.full.md` reads "TOMBSTONE — this file is NOT the Singmaster paper."
 
 All three items are checked off in `TASKS.md` under "Priority work (directive 3)" — the run already cleaned these up before this directive landed. The operator's two notes (`mrstt_leaves_witnesses_open.md` and `genus_closed_forms.md`) are also already read and the latter's content (quadratic genus growth along three diagonals, zero-mismatch closed forms, Faltings threshold at n=3/4/5) is not yet in CONTEXT.md, but the directive's three explicit priorities required no edits to satisfy.
+
+## 7 — from steer
+
+Your genus_table.captured.txt SUPERSEDES the operator's salvage and you should say so. Two independent CAS routes (Singular normal.lib and Sage Curve.genus()) agreeing on every entry for 2<=k1,k2<=12, extended to k1=24 for k2=3,4,5, is far stronger than three fitted diagonals. Most importantly it gives the FULL two-parameter Faltings threshold: genus = 1 exactly for {2,3} and {2,4}, and genus >= 2 for every other distinct pair. That is the complete answer to the GOAL.md deliverable and it should be its own claim, marked proved-by-two-CAS, not left in a capture.
+
+The operator independently checked your two new results and both hold. The k2=5 closed form genus = 2n-2, except 2n-4 when 5|n, is exact on all 19 points n=6..24, zero mismatches. The slope conjecture also holds: mean first-difference over WHOLE periods is exactly (m-1)/2 for m=2,3,4,5, and the period-m patterns [0,1], [1,0,2], [1,2,0,3], [2,2,2,0,4] hold over every complete period. Note a trap for whoever writes this up: computed over a truncated window that is not a whole number of periods, the mean comes out BELOW (m-1)/2 (0.444, 0.875, 1.286) and looks like a refutation. It is not. State the periodicity first and the mean second.
+
+Your framing is right and keep it: this does not approach Singmaster. Faltings stays ineffective in the parameter, so a sharper genus makes the uniform statement harder, not easier.
+
+One process failure. Five of your six newest programs have ZERO captures - test_slope_across_rows, test_slope_hypothesis, rep_pairs, verify_k2_5_row, print_family. Only genus_table ran. code files went 16 to 21 with captured output flat at 26. Run them or delete them; a program never executed is not evidence.
+
+Credit: the mrstt PENDING contradiction is resolved. Good.
+
+Now let me give the summary reply. The changes are:
+
+1. **TASKS.md** — rewritten priority section. Four new items: promote genus_table to a standalone `proved-by-two-CAS` claim (supersedes the operator's salvage); register k2=5 closed form as established; register slope conjecture with trap; run or delete the five uncaptured programs.
+
+2. **CONTEXT.md** — genus section rewritten to lead with `genus_table.captured.txt` as the definitive two-parameter grid (two-CAS agreement, full Faltings threshold: genus=1 iff {2,3}/{2,4}), with the operator's diagonal salvage repositioned as supplementary corroboration. k2=5 closed form and slope conjecture moved from absent/unverified to established. Gaps section now flags the five uncaptured programs and the pending standalone claim.
+
+3. **research/threads/diophantine-curves.md** — updated: genus deliverable marked DONE, two-CAS grid is definitive, operator salvage is corroboration only. New deliverables listed (genus-table-two-cas, genus-k2-5-closed, genus-slope-conjecture). Next steps include the standalone claim and the uncaptured programs.
+
+No programs run, no mathematics attempted — these are file changes to carry the directive into the workspace the next attempt reads. The one thing I did not do: create the `proved-by-two-CAS` claim block itself. That requires a `search_claims` interaction and possibly a new claim file — it's subtask 1 in the rewritten TASKS.md, ready for the next attempt to execute.

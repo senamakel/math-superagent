@@ -345,8 +345,4 @@ yields an already-covered sub-progression of an open class. Ventas
   mod-3/mod-8 identities are identity-checked (they are: the eight classical
   families are all is_identity PASS — Established, "all eight classical
   covering identities"; so the mod-24 reduction chain is effectively closed,
-  and `elementary-reductions.md` may be closed).till sourced, not checked** (directive 1 priority, still
-  the exit-blocker of `research/threads/elementary-reductions.md`): write the
-  scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
-  exact arithmetic, capture it, and flip the claim to checked; then
-  `reduction-mod24` once the mod-3/mod-8 identities are checked.
+  and `elementary-reductions.md` may be closed).
