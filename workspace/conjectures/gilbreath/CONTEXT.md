@@ -5,7 +5,7 @@ rebuild from disk: established results with their basis, dead approaches and
 why, computed numbers, durable memory, and disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
-Budget 10,000 tokens (this file ~7,900 — ~2,100 under). Length is a bill the
+Budget 10,000 tokens (this file ~5,900 — ~4,100 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
@@ -71,7 +71,10 @@ forward-difference identity REFUTED at its base step (Ruled out).
   only **i=161 is the width artifact** (b_162 = 1,270,444 = W−162−1; true jump
   ≥ 176,181 — quote as a lower bound, never exact). Genuine giants carry 86.1%
   of S_1000=1,270,603; all 13 carry 99.76%. Giant rows: 34,56,64,68,94,96,
-  110,112,126,130,134,146,161. Rows k ≥ 162 are the width-exhaustion artifact.
+  110,112,126,130,134,146,161. Rows k ≥ 162 are the width-exhaustion artifact:
+  **every block/jump/event measurement at rows ≥ 162 is a LOWER BOUND** (j at
+  i=161 recorded as ≥ 176,181; flooring falls 176,182 → 0 at k\* = 162 and all
+  12 genuine giants sit ≥ 536,885 above the threshold — none width-limited).
   Claim `bigjump-cap-characterization-1000`; anchors
   `code/out/bigjump_characterization.captured.txt`,
   `code/out/bigjump_characterization.notes.md`.

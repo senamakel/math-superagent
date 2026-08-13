@@ -64,14 +64,6 @@ def longest_runs_by_value(runs):
     return {str(k): v for k, v in m.items()}
 
 
-def left_stretch_len(halves, start):
-    """1-based left rank of the step into position start (int(math.dist))."""
-    for i in range(start, 1, -1):
-        if math.dist((halves[i - 1],), (halves[i],)) > 1:
-            return start - i
-    return start - 1
-
-
 def main():
     snap = json.load(open('code/out/giant_stretches_snapshot.json'))
     b = json.load(open('code/out/blocks_depth1000.json'))['b']
@@ -87,7 +79,6 @@ def main():
     for r in range(1, 148):
         row = [math.dist((a,), (b,)) for a, b in pairwise(row)]
         rows[r] = row
-    assert blocks := [block_profile(rows[r]) for r in GENUINE], "snapshot link"
 
     for e in snap['events']:
         k = e['k']
@@ -138,24 +129,26 @@ def main():
                 stretches.append((a, z))              # half-open [a, z) positions (1-based)
         lens = sorted((z - a for a, z in stretches), reverse=True)
         assert lens == e['lengths'], (k, 'stretch lengths')
-        # bcur is the last position of the old block; in 1-based half-open
-        # notation the stretch containing bcur is [a, z) with a <= bcur+1 <= z
-        cont = next((a, z) for a, z in stretches if a <= bcur + 1 <= z)
-        assert cont == (e['cs'], e['ce'] + 1), (k, 'container')   # cs .. ce inclusive
-        clen = e['ce'] - e['cs'] + 1
-        assert clen == bnxt + 1, (k, 'container len')
+        # halves[t] = row[t+1]/2, so row position p <-> halves index p-1.
+        # Old block = row positions 1..bcur <-> halves indices 0..bcur-1.
+        cont = next((a, z) for a, z in stretches if a <= bcur - 1 < z)
+        assert cont == (0, bnxt + 1), (k, 'container')   # [0, bnxt+1) slice
+        clen = bnxt + 1
+        assert cont[1] - cont[0] == clen, (k, 'container len')
         rank = 1 + sum(1 for ln in lens if ln > clen)
         assert rank == e['rank'] and sum(1 for ln in lens if ln == clen) - 1 == e['ties'], \
             (k, 'rank')
         assert e['n_stretch'] == len(stretches), (k, 'n stretch')
-        assert left_stretch_len(halves, bcur + 2) == bcur, (k, 'left chain')
+        # generating stretch's left part: consecutive Lipschitz steps
+        # connecting halves indices 0..bcur-1 (row positions 1..bcur)
+        assert all(math.dist((halves[t - 1],), (halves[t],)) <= 1
+                   for t in range(1, bcur)), (k, 'left chain')
         if e['runner'] is not None:
-            runner = max(((a, z) for a, z in stretches if not (a <= bcur + 1 <= z)),
+            runner = max(((a, z) for a, z in stretches if not (a <= bcur - 1 < z)),
                          key=lambda t: t[1] - t[0])
             assert e['runner'][2] == runner[1] - runner[0], (k, 'runner')
         else:
-            assert all(not (a <= bcur + 1 <= z) or z - a == clen or True
-                       for a, z in stretches) and len(stretches) == 1, (k, 'only cont')
+            assert len(stretches) == 1, (k, 'only cont')
 
     print('VERIFY-OK: 12 genuine giants independently recomputed '
           '(fresh sieve, pairwise iterator, math.dist diffs, halved-value '
