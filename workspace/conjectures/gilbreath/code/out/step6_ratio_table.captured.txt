@@ -1,0 +1,4 @@
+  File "/workspace/code/pattern_finder/step6_ratio_table.py", line 184
+    f"0.6^k 0.4^{{n-k}} =")
+                          ^
+SyntaxError: f-string: expecting '}'

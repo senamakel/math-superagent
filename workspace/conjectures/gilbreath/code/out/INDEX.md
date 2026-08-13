@@ -92,7 +92,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `jump_smooth_run_law.captured.txt` | _(undescribed)_ |
 | `lean_gilbreath_reduction.captured.txt` | `lean` compile of the machine-checked reduction of Gilbreath's conjecture to the {0,2} second-entry claim (EXIT=0), with `#print axioms` for every declaration = [propext, Classical.choice, Quot.sound], grep-verified zero sorryAx. |
 | `lean_gilbreath_reduction.notes.md` | Note for the above: what was run, the exact axiom ledgers, and the boundary (prime instantiation is computation-checked, not Lean-proved); carries claim block `lean-reduction-machine-checked`. |
-| `lean_reduction.captured.txt` | `lean` compile of the repaired reduction lemma file (EXIT=0, clean). |
+| `lean_reduction.captured.txt` | **BROKEN — zero bytes** (identical to a command that never ran). Pending re-emit with `#print axioms` per Directive 31. The claim `gilbreath-second-entry-equivalence` is anchored to `lean_gilbreath_reduction.captured.txt` (1028B, non-empty), not to this file. |
 | `lean_shape.captured.txt` | `lean` compile of the repaired self-contained shape-preservation file (EXIT=0), axioms = standard base set. |
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
