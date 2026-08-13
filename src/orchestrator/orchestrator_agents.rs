@@ -327,7 +327,51 @@ fn register_inventor(
     )
 }
 
-/// Registers the reflection, pattern, inventor, and librarian agents.
+/// Registers the reducer, which reasons backward from the goal.
+///
+/// Split out of [`register_support_agents`] for the reason the inventor is: it
+/// carries a widened turn cap and a deliberately narrow tool set, and the
+/// argument for each belongs beside it rather than inlined between two other
+/// registrations.
+///
+/// The turn cap is the inventor's, and the shape it exists for is the same. A
+/// reasoning model asked for a decomposition *with the mathematics stated* —
+/// the goal, the lemmas, and the inference combining them — is exactly the turn
+/// that was being cut off at the run's 12,000-token cap with no tool call to
+/// show for it. See [`RunBudget::for_invention`].
+///
+/// The tool set is the narrowest of any role that writes: the document tools
+/// and the memory tools, and nothing else. Every exclusion is stated on the
+/// registry definition; the one worth repeating here is that it has no
+/// delegation bench, unlike the inventor. The inventor needs one because a new
+/// line of attack has to be checked against something outside the run before it
+/// is worth writing down. A skeleton is checked by the forward loop attacking
+/// its gaps, which is the loop itself.
+fn register_reducer(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let budget = parts.budget.for_invention();
+    let mut reducer =
+        specialist_harness(parts.model_for("reducer"), budget, "reducer", parts.tracer);
+    for tool in parts.documents.tools() {
+        register_resilient(&mut reducer, tool);
+    }
+    // All three memory tools. A discharged reduction — this conjecture reduces
+    // to these lemmas, and here is the claim that closed each — is the most
+    // durable thing this runtime produces about a problem, and a later run
+    // re-deriving it is the most expensive way to learn it was known.
+    register_memory(&mut reducer, &parts.vector_store);
+    subagents.register_with_turn_cap(
+        "reducer",
+        Arc::new(reducer),
+        prompt,
+        budget.max_turn_output_tokens,
+    )
+}
+
+/// Registers the reflection, pattern, inventor, reducer, and librarian agents.
 ///
 /// Each gets only the tools its role needs: reflection has no research or
 /// execution tools at all, so it cannot drift into solving the problem it is
@@ -369,6 +413,8 @@ fn register_support_agents(
     register_pattern_agent(subagents, parts, prompts.pattern)?;
 
     register_inventor(subagents, parts, prompts.inventor)?;
+
+    register_reducer(subagents, parts, prompts.reducer)?;
 
     let mut librarian = specialist_harness(
         parts.model_for("librarian"),

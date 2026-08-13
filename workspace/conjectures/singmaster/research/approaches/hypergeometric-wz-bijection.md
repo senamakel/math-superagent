@@ -1,0 +1,33 @@
+```approach
+id: hypergeometric-identity-bijection
+idea: Recast C(x,k1)=C(y,k2) as an identity of hypergeometric evaluations with rational arguments, and apply the WZ (Wilf–Zeilberger) algorithmic proof theory to classify all solutions. This is a combinatorial/bijective reformulation: a binomial coefficient equality is the statement that two hypergeometric sums evaluate to the same value; the WZ theory can produce certificates of equality and, in principle, classify when two such evaluations can coincide.
+
+mechanism: The binomial coefficient C(n,k) can be written as terminating hypergeometric series: C(n,k) = limit_{ε→0} ₂F₁(-n, 1; 1; ε) evaluated via Chu–Vandermonde. More concretely, for fixed k, C(n,k) is a polynomial in n of degree k with rational coefficients (the falling-factorial polynomial). The equality C(x,k1) = C(y,k2) is therefore the statement that two polynomial functions in their respective variables, evaluated at integer arguments, produce the same value.
+
+The genuinely new angle: treat a given value a as the evaluation point, and consider the FIBER a⁻¹({a}) under the function f: ℕ × ℕ → ℕ given by f(n,k) = C(n,k). This is a level-set counting problem. The function f factors through the map that sends (n,k) to the roots of the polynomial C(n,k) - a in n for each fixed k. For a fixed a and fixed k, this is a degree-k polynomial with at most k integer roots.
+
+Now, use the CLASSIFICATION OF POLYNOMIALS WITH THE SAME VALUE SET over the integers. If two polynomials P_k(n) = C(n,k) and P_ℓ(n) = C(n,ℓ) for different k,ℓ produce the same integer value at some integer arguments, then the difference polynomial R(n) = P_k(n) - P_ℓ(m) for integer n,m must have specific factorisation properties. In particular, P_k(n) - a is the same as P_ℓ(m) - a = 0.
+
+The structural fact: P_k(n) = n(n-1)...(n-k+1)/k! is a PÓLYA-INTEGER-VALUED polynomial — it maps integers to integers — and such polynomials have a basis of binomial coefficients: P_k(n) = Σ_{j=0}^{k} S(k,j)/k! · C(n,j). The coefficients S(k,j) are Stirling numbers of the first kind. The key observation: if P_k(x) = P_ℓ(y) has "too many" integer solutions for a given value a, then the two polynomials P_k and P_ℓ would have to share a nontrivial COMMON VALUE PATTERN. Specifically, consider the rational variety V_{k,ℓ} = {(n,m,a) : P_k(n) = P_ℓ(m) = a} in ℂ³. This is a curve in the (n,m)-plane for fixed a. The number of integer points on this curve is bounded by the degree and the genus.
+
+But the NEW insight: the identity C(x,k1) = C(y,k2) is equivalent to the identity of two HYPERGEOMETRIC EVALUATIONS ₂F₁(-x, -k1; 1; 0) and ₂F₁(-y, -k2; 1; 0) with the parameters shifted. The WZ theory provides a complete algorithmic classification of ALL identities of this type via the concept of "certifiable hypergeometric identities." Specifically, the Petkovšek–Wilf–Zeilberger book "A = B" (1996) contains algorithms that can find ALL terminating hypergeometric identities of a given form.
+
+For the binomial case, the known infinite family (Pell/Singmaster) C(n+1,k+1)=C(n,k+2) corresponds to the hypergeometric identity ₂F₁(-(n+1), -(k+1); 1; 0) = ₂F₁(-n, -(k+2); 1; 0). The WZ certificate for this identity is known (it comes from the Fibonacci/Pell recursion). The claim: the WZ algorithm can enumerate ALL hypergeometric identities of the form C(x,k1)=C(y,k2) for a given pair of column indices, and the finite set of non-Pell solutions corresponds to sporadic hypergeometric coincidences that can be systematically bounded.
+
+This approach uses the ALGORITHMIC nature of hypergeometric summation, not the ad-hoc nature of Diophantine geometry. It reduces the problem to a finite search over WZ certificates for a bounded set of parameter ranges.
+
+Status: proposed
+Precedent:
+  - Petkovšek–Wilf–Zeilberger, "A = B" (A.K. Peters, 1996): Gosper's algorithm, WZ algorithm, classification of hypergeometric identities.
+  - Zeilberger 1990 (J. Comput. Appl. Math. 32, 321-368): "A fast algorithm for proving terminating hypergeometric identities."
+  - The WZ algorithm has been applied to binomial-coefficient identities extensively (e.g., Strehl 1994 for Apery numbers), but NOT to the equal-values problem.
+  - NOT previously proposed for Singmaster; the combinatorial/hypergeometric angle has not been tried by this run.
+
+first-step:
+  1. Write the identity C(x,k1) = C(y,k2) as a terminating hypergeometric equality in two variables and apply Gosper's algorithm to determine when it can hold for ALL x,y (this recovers the Pell family).
+  2. For the non-identical case, convert C(x,k1) - C(y,k2) = 0 to a polynomial Diophantine equation and apply the WZ certificate construction to classify all solutions with a bounded certificate size.
+  3. Show that the WZ certificate size grows with the degree/parameters, and that solutions beyond a computable threshold would require a certificate size that exceeds the algorithm's search space, giving an effective bound.
+  4. Implement the WZ search for small (k1,k2) pairs and enumerate all solutions — this would reproduce the de Weger (3,4) and Stroeker-de Weger eight-pair results via a uniform algorithmic method rather than per-curve elliptic logarithm machinery.
+
+Speculative: This is the most speculative of the three proposals. The WZ theory classifies identities of the form Σ F(n,k) = constant (summation identities), while C(x,k) equality is an identity of a single hypergeometric term evaluated at two different parameter sets. The WZ theory for function identities (as opposed to summation identities) is less developed, and the algorithm for classifying ALL values of parameters for which ₂F₁(a₁,a₂;b₁;z) = ₂F₁(a'₁,a'₂;b'₁;z') is a problem in the classification of hypergeometric coincidences, which is related to the Belyi maps (Beukers–Heckman, etc.) and is a deep subject, not an algorithmic one. The realistic content is: use the WZ framework to classify all solutions of C(x,k1)=C(y,k2) for each fixed (k1,k2) by converting the Diophantine equation to a finite set of Thue equations via the hypergeometric-to-polynomial reduction, which is essentially what Stroeker-de Weger already did for the elliptic pairs. So the "new" part reduces to the known effective-methods wall. The genuinely new angle — algorithmic classification via hypergeometric coincidences — may exist in the computer algebra literature (Beukers, Vidūnas, etc. on hypergeometric identities) but is not a method for Diophantine equations per se; it would need to be checked whether it can bound solutions rather than just classify identities.
+```
