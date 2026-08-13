@@ -1,50 +1,64 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/webb-1982-length-of-four-number-game.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Webb, "The Length of the Four-Number Game", Fibonacci Quarterly 20.1 (1982) 33–35
 
-<!-- source: https://www.fq.math.ca/Scanned/20-1/webb.pdf | converted from PDF -->
+Source: https://www.fq.math.ca/Scanned/20-1/webb.pdf (full text at
+`research/sources/webb-1982-length-of-four-number-game.full.md`).
 
-## What it claims
+## What it establishes
 
-Given  any  initial  4-tuple  S  =  SQ  =  (wQ9  x0s  y09  z0)9  we obtain a sequence {/S^},
-where  Sn  + 1  =  DSn.  This  sequence is  sometimes called the  four-number  game.  The
-following  curious  fact  seems  to  have  been  discovered and  rediscovered  several
-times—-[3], [4],  [5]—Sn=  (0, 0, 09 0) for all sufficiently large  n.  We can thus
-make the following definition.
+The four-number game is the cyclic Ducci map on 4-tuples with the
+(in this paper) specific ordering `D(w,x,y,z) = (|w−z|, |w−x|, |x−y|, |y−z|)`.
+Every integer 4-tuple reaches `(0,0,0,0)` in finitely many steps (length
+`L(S)`), and the paper answers *how long* a game can be in terms of the
+initial maximum.
 
-DEFINITION:  The length of the sequence  {Sn}9  denoted  L(S)9  is the smallest  n  such
-that  Sn  = (0, 0, 0, 0).
+- **Max is non-increasing under D** (opening observation, `|Sₙ₊₁| ≤ |Sₙ|`
+  where `|S| := max` of the tuple) — the same Lyapunov fact the run proved
+  for the half-infinite Gilbreath operator.
+- **Theorem 1**: if `max(S) ≤ tₙ` (n-th Tribonacci number, `t₀=0, t₁=1, t₂=1,
+  t_k = t_{k−1}+t_{k−2}+t_{k−3}`), then `L(S) ≤ L(Tₙ)+1 = 3⌊n/2⌋+1` where
+  `Tₙ = (tₙ, t_{n−1}, t_{n−2}, t_{n−3})`. **Game length is bounded by the
+  initial max; and unbounded as a function of max** (e.g. `L(Tₙ) = 3⌊n/2⌋`).
+- **Run structure forces the dynamics**: `L(S) ≤ 6` unless the initial tuple
+  is monotonically decreasing (up to cyclic permutation and reversal); and a
+  long game must pass through a sequence of monotone-decreasing tuples with
+  "additive" structure (ratios approaching the real root `r ≈ 1.839` of
+  `x³ − x² − x − 1 = 0`, the Tribonacci constant). This is a direct primary
+  statement of *oscillation/run-shape determining iteration length* — the
+  mechanism the run's `total-variation-oscillation-potential` approach asked
+  the literature for.
+- Extremal structure: `L(S) = L(Tₙ)+1` is attained (e.g. by
+  `(tₙ, t_{n−2}+t_{n−3}, t_{n−3}, 0)`).
 
-A natural question to ask is:  "How long can a game continue before all zeros
-are reached?"  Again, it is well known that the length can be arbitrarily long if
-the numbers in  Sn  are sufficiently large [4]. One of the easiest ways to see this
-makes use of the so-called Tribonacci numbers:
+## Relation to this run
 
-t0  = 0,  t1  = 1,  t2  = 1  and  tn  = £n_i +  tn_2  + £n-3  f° r  n  2. 3.
+Webb's "no uniform bound" fact (lengths arbitrarily large for large inputs)
+is the cyclic-case limit the run already knows is superseded for the
+half-infinite object by Eppstein's anti-Gilbreath construction. What survives
+as a **template** is the proof architecture: max is a Lyapunov function, and
+the *run-shape* (monotonicity) of the tuple classifies which dynamics are
+possible. Webb shows that in the cyclic world non-monotone inputs die in ≤ 6
+steps; the Gilbreath obstruction is precisely that the half-infinite analog of
+"≤ 6" does not hold, so the run needs the prime gaps' structure to play the
+role Webb's monotonicity plays here.
 
-If we let  Tn  =  (tn,  tn_19  t n_ 2,  tn_3)9  then a simple calculation shows that
+```claim
+id: webb-four-number-game-length-tribonacci
+statement: For the cyclic four-number game D(w,x,y,z)=(|w−z|,|w−x|,|x−y|,|y−z|), if max(S0) ≤ t_n (Tribonacci) then the game reaches zero in at most 3*floor(n/2)+1 steps; lengths are unbounded as the initial max grows, and any game of length > 6 must begin (up to symmetry) with a monotonically decreasing tuple.
+hypotheses: 4-tuples of nonnegative integers; cyclic closure |a−b| wraps around.
+holds-here: no (cyclic 4-tuple setting; the half-infinite Gilbreath triangle is neither cyclic nor length-4)
+status: proved (in source); primary source landed
+bearing: primary antecedent of the total-variation-oscillation-potential approach; confirms the run-shape-controls-dynamics mechanism and gives the exact potential template (max non-increasing + monotonicity classification) that the approach proposes to localize to a left window
+anchor: research/sources/webb-1982-length-of-four-number-game.full.md
+answers: is-there-a-variationdiminishing-theorem-for-the-difference-map
+```
 
-and so  _ „
-L(Tn) = 3[|J.
+## What could not be obtained
 
-It has also been noticed that  the sequence  beginning  with  some  Tn  seems to
-have the longest length of any…
-
-M…
-
-## Statements it makes
-
-DEFINITION:  The length of the sequence  {Sn}9  denoted  L(S)9  is the smallest  n  such
-that  Sn  = (0, 0, 0, 0).
-
-THEOREM  1:  If  \s\  ±  \Tn\9  then£(S)  <.  L(Tn)  + 1 = 3[~1  + 1.
-
-LEMMA:  If  S19  S29  ••• >  S10  are all monotonic  (decreasing),  5 X  is additive, and
-|5j,| £  tn9  then either  |SJ  <_  2tn_2  or  |S7| £  4tn_„ or  |S10| 1  8tn„6.
-
-THEOREM  2:  If  S1  is additive and  |5j £  tn9  then L(5X) £ L(!Tn) = 3[~1 ,  n  •> 2.
-
-Theorem 1 is now an easy corollary, since:  if  S0  is monotonic decreasing and
-\SQ\  <L  \Tn\*  then  \SX\  <_  \.Tn\  and  S1  is additive. If  S0  is not monotonic decreas-
-ing, then  L(S0)  £  6.
-There actually are examples where  L(S)  =  L(Tn)  + 1:
-
-*[digest of a 7860 character source; every section, statement, and proof in full at `research/sources/webb-1982-length-of-four-number-game.full.md`]*
+Webb's paper itself is free (FQ archive). The related papers it cites —
+Zvengrowski 1979 (Math. Mag. 52(1) 36–37) and Beardon 2011 (Am. Math. Monthly
+118(7) 650–652, "Cyclic Absolute Differences of Integers") — are paywalled
+at Math. Mag./AMM; no free scan was found in this cycle. Both are cyclic-case
+Ducci statements; their content is partially covered by the free primary
+papers Ciamberlini–Marengoni 1937 (via the Ducci surveys), Glaser–Schöffl
+1995 and Calkin–Stevens–Thomas 2005 already in the library, plus the
+Brown–Merzel limiting-behavior theorem quoted in CZ 2011.

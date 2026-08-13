@@ -1,31 +1,74 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Caragiu, Zaharescu, Zaki, "On Ducci Sequences with Algebraic Numbers", Fibonacci Quarterly 49.1 (2011) 34–40
 
-<!-- source: https://www.fq.math.ca/Papers1/49-1/CaragiuZaharescuZaki.pdf | converted from PDF -->
+Source: https://www.fq.math.ca/Papers1/49-1/CaragiuZaharescuZaki.pdf (full
+text at `research/sources/caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.full.md`).
 
-## What it claims
+## What it establishes
 
-given by D(x0, x1, . . . , xd−1) = (|x0 − x1|, |x1 − x2|, . . . , |xd−1 − x0|). (1)
-The origins of the problem may be traced back to Professor E. Ducci of Italy, who is credited
-in a 1937 article [8] with the discovery of the fact that the repeated application of D in the
-case d = 4 eventually leads to the null vector. Indeed, what makes this iteration even more
-interesting is the fact that if (and only if) d is a power of 2, the repeated application of D
-eventually leads to the null d-tuple. If d is not a power of 2, the dynamics induced by D
-always leads into cycles with the interesting property that the components of each d-tuple in
-a cycle are either 0 or some constant c (which is the same for all the d-tuples in the cycle), in
-which case it turns out that the Ducci map is essentially (up to a constant) a binary iteration
-D : Fd
-2 → Fd
-2 D(u0, u1, . . . , ud−1) = (u0 + u1, u1 + u2, . . . , ud−1 + u0). (2)
-The map D holds the key for the Ducci iteration in the case of integers, and is ultimately
-responsible for the lengths of the Ducci cycles (see [1, 4, 5, 7, 9, 10, 16]). The…
+Studies the iterated-absolute-difference map on a **periodic** sequence;
+§1 explicitly notes that the map `a′ₖ = |aₖ − aₖ₊₁|` on the infinite periodic
+sequence is "the same map which appears in the well-known conjecture of
+Gilbreath", and that periodicity is what makes the long-run behaviour
+understandable there even though Gilbreath's conjecture is open.
 
-u…
+- **Lemma 2.1**: the map is 2-Lipschitz: `‖D(X) − D(Y)‖ ≤ 2‖X − Y‖`
+  (Euclidean), and no λ < 1 works (not a contraction).
+- **Maximum component is non-increasing** (proof of Thm 1.1: all components
+  of `Dⁿ(X)` lie in `[0, M]` for `M = max D(X)`), converging to a limit `M₀`;
+  every element of the limit set has components in `{0, M₀}` (Brown–Merzel).
+- **Theorem 1.1 (the main result)**: for `X` with real-algebraic components,
+  the iterates converge to their (unique, finite) limiting cycle and the
+  convergence is *at most* exponentially fast: either the cycle is reached in
+  finitely many steps, or `‖D^{j+mL}(X) − V_j‖ ≥ C₁ e^{−C₂ m}` for all m.
+  Explicit `C₂ = (log 2)([K:ℚ]−1)L` from the proof; with M₀ algebraic and
+  Roth's theorem `C₂ = (log 2)(2+ε)L`.
+- The proof machinery: iterates are integer-coefficient linear combinations
+  of the initial components with coefficients bounded by `2ⁿ`; clearing
+  denominators into a number field and using `|N_{K/ℚ}(nonzero algebraic
+  integer)| ≥ 1` gives the separation bound.
 
-## Statements it makes
+## Relation to this run
 
-Theorem 1.1. Let X ∈ Rd. Let V1, . . . , VL ∈ EX satisfying (5). Assume that all the compo-
-nents of X are algebraic numbers. Then one of the following holds true.
+- The **same operator** as Gilbreath's on an infinite periodic sequence — the
+  nearest tractable relative of the half-infinite case in the literature, and
+  one this run had not previously sourced the treatment of. The exponential
+  convergence dichotomy (finite reach vs. `C₁e^{−C₂m}` lower bound) is a
+  structural statement about the iteration that has no known analog for the
+  half-infinite, non-periodic Gilbreath triangle.
+- The 2-Lipschitz and max-non-increase facts hold in the half-infinite case
+  verbatim (the run proves max non-increase locally in `ducci-potential`);
+  the algebraic-separation lower bound does *not* transfer (no cycle, no
+  periodicity, no K to work in).
+- Useful negative control: any proposed "uniform fast convergence to {0,2}"
+  for a general class must fail on algebraic periodic inputs — the theorem
+  forbids faster-than-exponential decay there.
 
-Lemma 2.1. Given a positive integer d ≥ 1, let X, Y ∈ Rd. Then,
+```claim
+id: czz2011-ducci-2-lipschitz
+statement: The difference map D on d-tuples with a′_k=|a_k−a_{k+1}| (and a′_d=|a_d−a_1|) is 2-Lipschitz in the Euclidean norm and is not a contraction; iterates have non-increasing maximum M and every limit-cycle element has components in {0, M0}.
+hypotheses: finite d-tuples of real numbers, cyclic closure.
+holds-here: yes, and the max-non-increase half transfers to the half-infinite Gilbreath rows (run's own proof of |a−b| ≤ max(a,b)); the 2-Lipschitz bound likewise transfers entrywise
+status: proved (in source); primary source landed
+bearing: Lyapunov/contraction facts for the approach ducci-potential-max-decrease; matches the run's own max Lyapunov function
+anchor: research/sources/caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.full.md
+answers: what-lipschitz-and-max-facts-hold-for-the-difference-map
+```
 
-*[digest of a 17477 character source; every section, statement, and proof in full at `research/sources/caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.full.md`]*
+```claim
+id: czz2011-infinite-periodic-ducci-is-gilbreath-operator
+statement: On an infinite periodic sequence, the map a′_k=|a_k−a_{k+1}| is exactly the operator of Gilbreath's conjecture; in the periodic setting (Brown–Merzel) iterates converge to a single finite cycle, and for algebraic initial data the convergence is at most exponentially fast (finite reach or ‖diff‖ ≥ C1 e^{−C2 m}).
+hypotheses: periodic sequence of real algebraic numbers; map without the wrap-around entry (a′_k=|a_k−a_{k+1}| for all k).
+holds-here: the operator identity holds; the periodicity/algebraicity hypotheses do not (prime gap sequence is neither periodic nor algebraic-separated in the needed sense)
+status: proved (in source); primary source landed
+bearing: names the nearest solvable relative of the half-infinite Gilbreath triangle and gives a structural dichotomy (finite reach vs exponential lower bound) — a useful control on what general-class theorems may assert
+anchor: research/sources/caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.full.md
+answers: is-there-a-tractable-relative-of-the-gilbreath-iteration
+```
+
+## What could not be obtained
+
+Taylor & Francis blocks the published version (403); the FQ archive PDF is
+the canonical free copy and was used. The paper's own references include
+Brown–Merzel 2003 (limiting behavior) and the p-adic Ducci game note
+(Caragiu–Baxter 2007) — neither in the library; the p-adic note is a
+possible source for the run's `p-adic-valuation-carry-dynamics` approach.
