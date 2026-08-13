@@ -8,7 +8,7 @@ question: Does the Garcia-Fritz–Pasten theorem (Theorem 1.8: AP length ≤ C^(
   above by something provably small, then length-3 APs may be ruled out by the
   C^(r+1) bound if C can be made effective and small enough.
 
-status: open
+status: resolved-effectiveness-blocks-non-existence
 
 rests_on:
   - robertson-elliptic-reduction (Established)
@@ -23,6 +23,27 @@ resolved-questions:
     reduction requires an AP of x(2Qᵢ) with Qᵢ ∈ E(Q). Since 2Qᵢ ∈ E(Q), set
     Pᵢ = 2Qᵢ — the GFP theorem bounds every AP in E(Q) including those from
     doubled points. No mismatch. The approach is sound on definitions.
+  - curve-form-and-rank: CLARIFIED/VERIFIED 2026-08-13 (tool_builder, exact Sage).
+    The Robertson curve is E: y² = x(x²−c²) where c is the common difference of
+    the anti-diagonal AP {a−c, a, a+c} — NOT the centre e² and NOT e⁴ (the
+    thread's "E_e: y²=x(x²−e⁴)" was loose).  For Bremner's 7-square witness:
+    centre a = 425², anti-diagonal {205²,425²,565²} ⇒ c = 138600.  Computed:
+    E: y² = x³ − 138600²·x has rank 2, torsion order 4.  Main diagonal
+    {373²,425²,565²}: x(373²)=139129 and x(425²)=180625 are in 2E(Q) (both
+    {X, X±c} all squares); x(565²)=319225 is NOT (X−c=425² square but
+    X+c=457825 not a square) — so exactly 2 of the 3 doubled points are
+    realised, matching a 7-square near-miss (not an MSS).  This is the
+    concrete witness-level check grounding the claim
+    `robertson-elliptic-reduction`.
+  - crux-applicability: SETTLED 2026-08-13 (tool_builder).  The MSS AP is an
+    AP of x(P) for the points P = 2Pᵢ ∈ E(Q) (since Pᵢ ∈ E(Q) ⇒ 2Pᵢ ∈ E(Q)),
+    so Garcia-Fritz–Pastén Theorem 1.8 (AP length ≤ C^(r+1) for APs of x(P),
+    P ∈ E(Q)) applies VERBATIM.  The uniform-height approach is NOT refuted on
+    the "x(2P) vs x(P)" crux.  Its only blocker is the ineffective constant C:
+    non-existence needs C^(rankEe+1) < 3, and since C is not explicit (and the
+    rank-2 witness curve already contains an AP-3), no contradiction follows.
+    Status of approach uniform-height-bound-elliptic-ap:
+    adopted-but-ineffective-as-stated.
 
 immediate-steps:
   1. Determine the exact form of the Robertson curve for an MSS centre e.

@@ -1,114 +1,70 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Harrison, Mudgal & Schmidt, "Uniform sum-product phenomenon for algebraic groups and Bremner's conjecture", arXiv:2603.06483 (2026)
 
-<!-- source: https://arxiv.org/html/2603.06483v1 | converted from HTML -->
+[[harrison-mudgal-schmidt-sum-product-bremner-2026]]
+Full text: `research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`
+URL: https://arxiv.org/abs/2603.06483
+Authors: Joseph Harrison, Akshat Mudgal, Harry Schmidt (U. Warwick). 30 pp, v1 6 Mar 2026.
 
-## What is in it
+## What it establishes
 
-- Uniform sum-product phenomenon for algebraic groups and Bremner’s conjecture
-        - Abstract.
-        - Key words and phrases:
-        - 2020 Mathematics Subject Classification
-  - 1. Introduction
-        - Theorem 1.1.
-        - Conjecture 1.2.
-        - Theorem 1.3.
-        - Corollary 1.4.
-        - Theorem 1.5.
-        - Example 1.6.
-        - Definition 1.7.
-        - Theorem 1.8.
-        - Example 1.9.
-    - Outline
-    - Notation
-    - Acknowledgements
-  - 2. Further Applications
-    - 2.1. Generalised Bremner
-        - Theorem 2.1.
-        - Corollary 2.2.
-    - 2.2. Sum-product phenomenon
-        - Theorem 2.3.
-        - Corollary 2.4.
-    - 2.3. Elekes–Szabó
-        - Definition 2.5.
-- …
+**Theorem 1.1 — Bremner's conjecture with an *effectively computable* constant.**
+There is an effectively computable constant C ≥ 1 (independent of the curve and
+its coefficients a, b) such that: for E/Q in Weierstrass form y²=x³+ax+b of rank r,
+with X = {x(P): P∈E(Q)}, Y = {y(P): P∈E(Q)}, and A any **arithmetic progression,
+geometric progression, or a set of consecutive squares {u²,(u+d)²,…,(u+ld)²}**,
+if A ⊆ X or A ⊆ Y then |A| ≤ C^(1+r).
 
+So all three pattern classes in the *coordinates* of rational points of a
+rank-r elliptic curve have their length bounded by C^(1+r), uniformly in the
+curve, with C effective. The general form is Corollary 2.2, bounding proper
+generalised arithmetic progressions P of rank k contained in 𝒞(Γ) for a
+correspondence 𝒞 of degree d between G (≈ 𝔾_m or an elliptic curve) and a
+1-dimensional group H: |P| ≤ D(d)^(1+r), independent of k.
 
-## What it claims
+**Method.** Combination of additive combinatorics (resolution of the weak
+polynomial Freiman–Ruzsa conjecture over ℤ by Gowers–Green–Manners–Tao, 2025)
+with Diophantine geometry (uniform Mordell–Lang, David–Philippon; S-unit bounds,
+Evertse–Schlickewei–Schmidt). Theorems 2.1 and 4.2 give the corresponding
+sum-product / expansion statements via a non-degeneracy ("coset") analysis.
 
-In this paper we combine methods from additive combinatorics and Diophantine geometry to study the generalised sum-product phenomenon in algebraic groups. As an application of this circle of ideas, we resolve a conjecture of Bremner on arithmetic progressions in coordinates of elliptic curves, along with various other generalisations studied in the literature.
+## Why it matters for the magic-square-of-squares run
 
-We also prove a uniform Bourgain–Chang-type sum-product estimate for general 1 1 -dimensional algebraic groups G G over ℂ \mathbb{C}. Using these ideas, we provide an alternative solution to a problem of Bays–Breuillard. Furthermore, we show an Elekes–Szabó type result in the same setting for sets with small doubling, improving upon an earlier result of Bays–Breuillard when G G is not 𝔾 a \mathbb{G}_{a}. Our power saving here can be shown to be quantitatively optimal.
+The run's adopted approach `uniform-height-bound-elliptic-ap` was blocked by one
+thing: Garcia-Fritz–Pasten's constant in the AP-length bound C^(r+1) was
+**ineffective** (came from Rémond / Uniform Mordell–Lang), so one could not in
+principle compute C and check whether C^(r+1) < 3. Harrison–Mudgal–Schmidt
+(Theorem 1.1) supplies a constant that is **effectively computable**.
 
-We use a combination of deep, classical results in Diophantine geometry due to David–Philippon, Laurent and Evertse–Schmidt–Schlickewei along with the recent breakthrough work on the weak Polynomial Freiman–Ruzsa conjecture over integers due to…
+The relevant ceiling remains: an MSS gives an AP of length ≥ 3, so a proof of
+non-existence via this bound requires C^(1+r) < 3, i.e. rank r < log(3)/log(C) − 1.
+Effectiveness means C is *in principle* computable and this inequality is *in
+principle* decidable, but C is almost certainly enormous (built from
+David–Philippon and PFR constants), so no small explicit value is available in
+the paper. The approach is therefore advanced but not closed: the obstruction is
+reduced from "ineffective" to "effective-but-astronomically-large, no explicit
+bound given".
 
-## Statements it makes
+## Robertson-reduction connection (preliminary, be careful)
 
-###### Theorem 1.1.
+Theorem 1.1's third pattern class — x-coordinates equal to squares of a rational
+AP, {u²,(u+d)²,(u+2d)²} ⊆ X — is structurally the face of the MSS condition. An
+MSS centre-line gives A², e², B² all squares with A²+B²=2e², whose *square
+roots* A,e,B satisfy A²+e²... (not an AP of the roots in general). The exact
+map from the Robertson AP-of-x(2Q_i) to Theorem 1.1's classes is **not yet
+established** and must be pinned before Theorem 1.1 is cited as applying to the
+MSS. Do not over-claim: the effectiveness advance is solid, the precise
+application to the four centre APs is open.
 
-###### Conjecture 1.2.
-
-###### Theorem 1.3.
-
-###### Corollary 1.4.
-
-###### Theorem 1.5.
-
-###### Definition 1.7.
-
-###### Theorem 1.8.
-
-###### Theorem 2.1.
-
-###### Corollary 2.2.
-
-Theorem 1.1 follows in a straightforward manner from the above result, see § 7. Corollary 2.2 also gives a more general and uniform version of [21, Theorem 6.1].
-
-###### Theorem 2.3.
-
-###### Corollary 2.4.
-
-###### Definition 2.5.
-
-###### Theorem 2.6.
-
-###### Corollary 2.7.
-
-###### Proposition 3.1.
-
-###### Lemma 3.2.
-
-###### Definition 3.4.
-
-###### Theorem 3.7.
-
-###### Definition 4.1.
-
-###### Theorem 4.2.
-
-###### Lemma 4.3.
-
-###### Lemma 4.4.
-
-###### Proposition 5.1.
-
-###### Lemma 5.2.
-
-###### Corollary 5.3.
-
-###### Lemma 6.1.
-
-###### Lemma 6.2.
-
-###### Lemma 6.3.
-
-###### Lemma 6.4.
-
-###### Lemma 6.5.
-
-###### Lemma 6.6.
-
-Theorem 1.5 is a special case of Theorem 2.6. Indeed, if 𝒱 \mathcal{V} is an irreducible subvariety of G g G^{g} which is not a coset of a subgroup, then we have the trivial inequality codef ⁡ ( 𝒱) ≤ dim ⁡ ( 𝒱) − 1 {\rm codef}(\mathcal{V})\leq{\rm dim}(\mathcal{V})-1. Thus, we will now prove Theorem 1.8.
-
-Proposition 5.1 implies that this variety 𝒱 sum \mathcal{V}_{\rm sum} is non-degenerate of dimension g g and the projections π 1 \pi_{1} to G g G^{g} is surjective and π 2 \pi_{2} to H ¯ \overline{H} restricted to 𝒱 \mathcal{V} is dominant. Thus, we may apply Lemma 4.2 to deduce that
-
-*[digest of a 126685 character source; every section, statement, and proof in full at `research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`]*
+```claim
+id: hms-2026-bremner-effective-constant
+statement: There is an effectively computable C ≥ 1 such that for any E/Q of rank r,
+  any arithmetic or geometric progression, or set of consecutive squares, contained in
+  the x- or y-coordinates of E(Q), has length ≤ C^(1+r). (Theorem 1.1.)
+hypotheses: E/Q Weierstrass form; pattern in X or Y coordinates
+holds-here: yes (this makes the previously-ineffective GFP constant effective)
+status: sourced (Harrison, Mudgal, Schmidt, arXiv:2603.06483, Theorem 1.1, read in full text)
+bearing: reduces `uniform-height-bound-elliptic-ap`'s obstruction from an ineffective to an
+  effective-but-uncomputed constant; exact mapping of the MSS four-centre-AP to the three
+  pattern classes still open (not claimed here)
+anchor: research/summaries/harrison-mudgal-schmidt-sum-product-bremner-2026.html.md
+```

@@ -75,6 +75,35 @@ rank(E_e) but does not close it. The approach is **adopted** as
 AP lengths are uniformly bounded — this would reduce MSS to a finite computation
 (though likely beyond reach). **Gap**: C is ineffective; no numerical
 contradiction can be extracted from Theorem 1.8 alone.
+
+**Hulse–Kuan–Lowry-Duda–Walker (2024) — sourced, just re-downloaded** (arXiv:2007.14324,
+68KB, real paper, was a 19KB Springer paywall). Counts primitive three-term
+APs of squares {a²,b²,c²} via a double Dirichlet series D(s,w) with
+meromorphic continuation to C²; Tauberian estimates give asymptotic
+#APs(middle ≤ X) ~ (√2/π²)log(1+√2)·X^{1/2}. **Bearing**: the building
+blocks of the MSS are 3-square APs through the centre; Hulse gives analytic
+control of their count. Consistent with but independent of the run's
+algebraic |S(e)| formula. Not yet claim-blocked; scholar must digest.
+
+**Wolird (2023) — sourced, just re-downloaded** (arXiv:2310.12164, 11KB, real
+paper, was a 5.8KB arXiv abstract wrapper — fourth time a wrapper was fetched).
+Shows arithmetic triplets of Gaussian squares are in 3-to-1 correspondence
+with Pythagorean triples; an MSS solution over Q would generate non-trivial
+near-misses in Z[i] ("backwards result"). **Bearing**: extends the
+extension-field MSS picture from Bremner 1999 (Q(√3,√133)) into Gaussian
+integers; the correspondence is explicit and checkable. Not yet claim-blocked;
+scholar must digest.
+
+**p-adic/modular obstruction to Φ no-triple — checked and bounded** (DIRECTIVE 8).
+`code/witness_padic_falsification.py` verified both near-miss witnesses
+against the proved p-adic facts: every positive fully-realised Φ-element from
+Bremner (5544/7225, 336/625) and Sallows (3360/12769) satisfies v2≥3, v3≥1,
+res=0 mod 3, res=0 mod 5. For every p∈{2,3,5,7,11,13} and p^a≤2000, the
+residue set is additively closed; mod 3/5 collapse to {0}. Claims
+`phi-padic-no-obstruction`, `phi-padic-consistent-with-witnesses`,
+`phi-padic-residue-closure` all `status: checked` in CLAIMS.md with exact
+bounds — NOT the stronger unbounded statement. A proof must use
+rationalness/integrality beyond congruences.
 - **Sallows LS1** = 7 of 8 line sums = 147² = 21609, failing non-principal
   diagonal = 38307; all nine entries perfect squares and distinct. The user's
   orientation `[127,46,58;2,113,94;74,82,97]` is the transpose of Bremner's
@@ -222,6 +251,16 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
   separate `Q` from `Q(√3,√133)` proves too much. Likewise any lemma that forbids
   the "two realised + two half-realised" pattern of Bremner's 7-square witness is
   false.
+- **p-adic/modular obstruction to Φ no-triple** — **checked.** For every
+  prime p ∈ {2,3,5,7,11,13} and p^a ≤ 2000, the achievable residue set is
+  non-degenerately additively closed; mod 3 and mod 5 collapse to the single
+  trivial residue {0}. Verified on both near-miss witnesses. No pure p-adic
+  sieve over these primes can prove the no-triple conjecture; a proof must
+  use rationalness/integrality beyond congruences.
+  `phi-padic-no-obstruction`, `phi-padic-consistent-with-witnesses`,
+  `phi-padic-residue-closure`, all `status: checked` in CLAIMS.md.
+  Bounded claim: primes {2,3,5,7,11,13}, p^a ≤ 2000 — not an unbounded
+  statement.
 - **S-unit equations** — refuted, reason above (no new leverage; weaker than the
   Faltings finiteness Bremner II already gets).
 - **Faltings fibre of the Φ-triple** — refuted, now executed (`phi_fibre_genus_run.py`,

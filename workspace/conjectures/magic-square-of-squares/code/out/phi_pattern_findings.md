@@ -91,7 +91,7 @@ statement: For every prime p ∈ {2,3,5,7,11,13} and precision p^a with p^a≤20
   non-degenerately additively closed: distinct r1,r2∈R with (r1+r2) mod p^a ∈ R.
 hypotheses: primitive m>n≥1, p^a ≤ 2000
 holds-here: yes
-status: verified-numerical (exact, both sample-based and exhaustive over
+status: checked (exact, both sample-based and exhaustive over
   residue classes)
 bearing: a pure modular sieve cannot prove the no-Φ-triple conjecture at these
   primes/precisions; a non-existence proof must use rationalness/integrality

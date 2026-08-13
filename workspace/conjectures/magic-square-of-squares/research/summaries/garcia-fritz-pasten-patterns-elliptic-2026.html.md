@@ -84,5 +84,6 @@ holds-here: yes (this dissolves the `exact-reduction-magic-507c` mismatch worry)
 status: sourced (Garcia-Fritz–Pasten 2026, arXiv:2605.14962, Section 2.2 + remark after Thm 3.1)
 bearing: unblocks the doubled-point applicability question for uniform-height-bound-elliptic-ap;
   the surviving obstruction to non-existence via Theorem 1.1 is the ineffectiveness of c(2), not geometry
+answers: exact-reduction-magic-507c
 anchor: research/summaries/garcia-fritz-pasten-patterns-elliptic-2026.html.md
 ```
