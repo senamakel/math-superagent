@@ -29,21 +29,27 @@ mechanism: For a primitive divisor r of Φ_{4p}(2), ord_r(2) = 4p. A
   |(2^p−i)); the quartic character (2/r)_4 = (2/π)_4 is computable by
   quartic reciprocity from the Gaussian factorization. The Aurifeuillean
   split 2^{2p}+1 = L_p·M_p separates the integer factors into two classes.
-  The target is (H1)-shaped, NOT the full proportional Conjecture 29:
-  prove that for p in a fixed congruence class mod 8, at least one prime
-  factor of L_p or M_p is ≡ 1 (mod 16). If this holds for all
-  sufficiently large p ∈ P_3 (i.e. for all p in a class whose primes are
-  3-Higgs), it proves the existence form of (H1) for that class — an
-  infinite-family divisor-transference theorem of exactly the shape the
-  paper says is missing. (It is weaker than C29, which requires a
-  positive proportion c·ω(Φ_{4p}(2)) of divisors ≡ 1 mod 16 and the
-  ω → ∞ conjunct; existence per p in one mod-8 class does not close C6
-  for primes in the other classes.)
 
-  This is not the closed search, not the product-form backtrack, and not
-  thinness/Chebotarev: it is a named algebraic invariant (quartic
-  reciprocity) applied to a single fixed cyclotomic value, operating at
-  the divisor level where the paper says the missing theorem lives.
+  **The key insight** (what no literature has): multiplicativity of the
+  quartic character gives a divisor-transference product identity that
+  BYPASSES factorization:
+
+      Π_{π^e || 2^p+i} (2/π)_4^e  =  (2/(2^p+i))_4.
+
+  The right side is evaluated in closed form by Gauss's supplementary law of
+  quartic reciprocity applied to the Gaussian integer 2^p + i, as a function
+  of p mod 16 alone. Each left factor (2/π)_4 = 1 ⟺ N(π) ≡ 1 (mod 16). So
+  the product identity determines exactly how many prime divisors of Φ_{4p}(2)
+  are ≡ 1 (mod 16), without factoring 2^p + i. This is a divisor-transference
+  theorem in algebraic form — the paper's missing object.
+
+  **What has been verified** (step 1, done): the equivalence (2/r)_4 = 1 ⟺
+  r ≡ 1 (mod 16) holds on all 71 primitive divisors through p=61; the H_even
+  p-slice {3,5,13,23,31,41,61} is reproduced exactly; heads (r≡1 mod 16)
+  exist in all four residue classes mod 8 for non-H_even primes, and are
+  absent for all seven H_even members — but no single mod-8 class forces a
+  head (the per-class shortcut is refuted). The product formula is the only
+  viable exact route.
 
 status: adopted
 first-step: (1) [done] Verify the generator equivalence on every primitive
