@@ -58,9 +58,20 @@ this at the centre has not understood the problem.
 here before being relied on:
 
 - If a row begins with `1` followed by a block of length `n` all of whose
-  entries lie in `{0, 2}`, then the next `≈ n/2` rows all begin with `1`. The
-  `{0,2}` structure is self-propagating for a while, and it degrades only at
-  the rate the block shortens.
+  entries lie in `{0, 2}`, then the following rows all begin with `1` for as
+  long as that block lasts. The `{0,2}` structure is self-propagating for a
+  while, and it degrades only at the rate the block shortens.
+
+  **The rate is 1, not `≈ n/2`.** This file previously said a block of length
+  `n` buys `≈ n/2` rows. That is wrong and this run refuted it: a leading
+  `{0,2}` block of length `n` protects exactly `n+1` rows, so the protection
+  constant is **1**. If row `k` has `A_k(1..n) ⊆ {0,2}` then row `k+1` has
+  `A_{k+1}(1..n−1) ⊆ {0,2}`, because a difference of two elements of `{0,2}` is
+  again in `{0,2}` — the block loses exactly one position per row and nothing
+  replaces it from the left. Established as `odlyzko-block-lemma-exact` in
+  `research/notes/block_lemma.md`, and re-derived independently as the step law
+  in `code/out/step_law_and_recharge_verified.md`. Do not reintroduce the `n/2`
+  figure; treat it as a corrected error.
 - Consequently the conjecture reduces to showing rows keep entering the `{0,2}`
   regime, which is a statement about **any** sequence starting `2` followed by
   odd numbers with sufficiently small gaps — not about primality.
