@@ -1,0 +1,36 @@
+// Spot-check the closed genus formula g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2
+// at three pairs NOT in genus_table.py TABLE nor any captured run:
+//   (11,17), (11,20), (12,20)  (2<m<n, all confirmed absent).
+// Same incantation as full_grid.sing / extend_k2_6.sing:
+// degree-max(m,n) plane curve C(x,m)-C(y,n), ring (x,y), normal.lib genus.
+// Formula values (computed independently):
+//   g(11,17)=((10*16)+1-1)/2=80   g(11,20)=((10*19)+1-1)/2=95
+//   g(12,20)=((11*19)+1-4)/2=103
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+// g(m,n) = ((m-1)*(n-1)+1-gcd(m,n))/2  -- closed form under test
+proc GF(int m, int n)
+{ return( ((m-1)*(n-1)+1-gcd(m,n))/2 ); }
+
+int m, n;
+list L = list(list(11,17), list(11,20), list(12,20));
+int i;
+for(i=1; i<=size(L); i=i+1)
+{
+  m = L[i][1]; n = L[i][2];
+  poly F = CB(x,m) - CB(y,n);
+  ideal I = F;
+  int g = genus(I);
+  "PAIR m=", m, " n=", n, "  SINGULAR_GENUS=", g, "  FORMULA=", GF(m,n),
+        "  ", (g==GF(m,n)) ? "PASS" : "FAIL";
+  // genus() redefines inside loop; re-kill int to stay clean
+  kill g;
+}
+quit;

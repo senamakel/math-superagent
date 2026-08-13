@@ -43,3 +43,28 @@
 [FAIL] totals disagree with the recorded complete census (side_census_M800_complete.captured.txt); witness file NOT written (stale checkpoint data would corrupt it). Delete the checkpoint and re-run for a cold scan.
 [M=800] |Phi|=129870  exact-sorted index  resume_i=44928  nproc=26  budget=540.0s
 [M=800] chunk 44928-45744: pairs 36993768 minus 8 plus 3 both 0 | cumulative pairs 1046233896 minus 113 plus 49 both 0 | 227s
+[M=800] chunk 45744-46560: pairs 37659624 minus 9 plus 1 both 0 | cumulative pairs 1083893520 minus 122 plus 50 both 0 | 257s
+[M=800] chunk 46560-47376: pairs 38321972 minus 9 plus 4 both 0 | cumulative pairs 1122215492 minus 131 plus 54 both 0 | 281s
+[M=800] chunk 47376-48192: pairs 38231629 minus 5 plus 2 both 0 | cumulative pairs 1160447121 minus 136 plus 56 both 0 | 281s
+[M=800] chunk 48192-49008: pairs 37569207 minus 9 plus 5 both 0 | cumulative pairs 1198016328 minus 145 plus 61 both 0 | 281s
+[M=800] chunk 49008-49824: pairs 36914740 minus 11 plus 2 both 0 | cumulative pairs 1234931068 minus 156 plus 63 both 0 | 281s
+[M=800] chunk 49824-50640: pairs 36266791 minus 5 plus 2 both 0 | cumulative pairs 1271197859 minus 161 plus 65 both 0 | 290s
+[M=800] chunk 50640-51456: pairs 35616442 minus 7 plus 5 both 0 | cumulative pairs 1306814301 minus 168 plus 70 both 0 | 290s
+[M=800] chunk 51456-52272: pairs 34972676 minus 10 plus 3 both 0 | cumulative pairs 1341786977 minus 178 plus 73 both 0 | 290s
+[M=800] chunk 52272-53088: pairs 34337008 minus 4 plus 0 both 0 | cumulative pairs 1376123985 minus 182 plus 73 both 0 | 290s
+[M=800] chunk 53088-53904: pairs 33703745 minus 17 plus 3 both 0 | cumulative pairs 1409827730 minus 199 plus 76 both 0 | 290s
+[M=800] chunk 53904-54720: pairs 33074616 minus 14 plus 1 both 0 | cumulative pairs 1442902346 minus 213 plus 77 both 0 | 290s
+[M=800] chunk 54720-55536: pairs 32450378 minus 13 plus 3 both 0 | cumulative pairs 1475352724 minus 226 plus 80 both 0 | 290s
+[M=800] chunk 55536-56352: pairs 31829774 minus 7 plus 1 both 0 | cumulative pairs 1507182498 minus 233 plus 81 both 0 | 290s
+[M=800] chunk 56352-57168: pairs 31212693 minus 8 plus 2 both 0 | cumulative pairs 1538395191 minus 241 plus 83 both 0 | 290s
+[M=800] chunk 57168-57984: pairs 30600627 minus 8 plus 1 both 0 | cumulative pairs 1568995818 minus 249 plus 84 both 0 | 290s
+[M=800] chunk 57984-58800: pairs 29997625 minus 9 plus 0 both 0 | cumulative pairs 1598993443 minus 258 plus 84 both 0 | 290s
+[M=800] chunk 58800-59616: pairs 29392525 minus 8 plus 4 both 0 | cumulative pairs 1628385968 minus 266 plus 88 both 0 | 290s
+[M=800] chunk 59616-60432: pairs 28795928 minus 14 plus 4 both 0 | cumulative pairs 1657181896 minus 280 plus 92 both 0 | 290s
+[M=800] chunk 60432-61248: pairs 28202144 minus 4 plus 3 both 0 | cumulative pairs 1685384040 minus 284 plus 95 both 0 | 290s
+[M=800] chunk 61248-62064: pairs 27611813 minus 14 plus 3 both 0 | cumulative pairs 1712995853 minus 298 plus 98 both 0 | 290s
+[M=800] chunk 62064-62880: pairs 27034079 minus 8 plus 2 both 0 | cumulative pairs 1740029932 minus 306 plus 100 both 0 | 290s
+[M=800] chunk 62880-63696: pairs 26454590 minus 8 plus 2 both 0 | cumulative pairs 1766484522 minus 314 plus 102 both 0 | 290s
+[M=800] chunk 63696-64512: pairs 25878755 minus 9 plus 1 both 0 | cumulative pairs 1792363277 minus 323 plus 103 both 0 | 290s
+[M=800] chunk 64512-65328: pairs 25309521 minus 18 plus 1 both 0 | cumulative pairs 1817672798 minus 341 plus 104 both 0 | 290s
+[M=800] chunk 65328-66144: pairs 24745167 minus 14 plus 4 both 0 | cumulative pairs 1842417965 minus 355 plus 108 both 0 | 290s

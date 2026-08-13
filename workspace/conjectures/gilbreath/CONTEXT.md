@@ -5,7 +5,7 @@ rebuild from disk: established results with their basis, dead approaches and
 why, computed numbers, durable memory, and disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
-Budget 10,000 tokens (this file ~6000, so ~4000 under). Length is a bill the
+Budget 10,000 tokens (this file ~8300, so ~1700 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
@@ -410,4 +410,6 @@ recalled claim is relied on whose hypotheses fail here.
   0-run L = 2, so R_0 = 100·L·8^M = 419,430,400 ≈ 4.2e8 ≫ 1000. The
   no-{0,d}-block hypothesis is not satisfiable at any reachable depth, so the
   CHT inverse theorem does not bite here. `code/out/cht_hyp_check.captured.txt`, claim `cht-inverse-theorem-hyp-check`. Do NOT re-run the check or re-flag the claim unchecked — the determination is final.
+
+t`, claim `cht-inverse-theorem-hyp-check`. Do NOT re-run the check or re-flag the claim unchecked — the determination is final.
 

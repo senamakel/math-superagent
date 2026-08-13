@@ -37,14 +37,42 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 - **(sourced) Graham 1989:** unitary perfect numbers with squarefree odd part
   are exactly `6, 60, 87360`. So any sixth example has a **repeated odd prime
   power**.
-- **(asserted by abstract only — NOT verified, needs full text)** Maciejewski
-  arXiv:2605.20475: any admissible *source kernel* of the odd dependency graph
-  is one of `3^2`, `5^4`, or one of **five additional "impostor" kernels**, all
-  eliminated for seed classes `1 ≤ a ≤ 10000` by a three-filter certificate
-  (Zsigmondy exponent obstructions, inherited non-3-Higgs witnesses, 2-adic
-  budget overshoot). It does not prove finiteness. Do not treat the impostor
-  kernels or the filters as established until the full text is fetched and the
-  claim checked.
+- **(sourced, full text held)** Maciejewski arXiv:2605.20475 (May 2026):
+  `research/sources/maciejewski-bounded-box-subbarao-warren.full.md` (93 KB,
+  the definition of 3-Higgs confirmed at §1.1). Key proven statements, all
+  with this paper as anchor: (1) Every prime divisor of a UPN is **3-Higgs**:
+  `p-1` divides the cube of the product of smaller 3-Higgs primes, exponent
+  cap 3 (OEIS A057447). (2) The odd dependency graph: edges `p → r` when
+  `r | p^e + 1` for admissible e; source SCCs; within the box
+  `B = {p ≤ 2000, e ≤ 6, p^e ≤ 10^9, |SCC| ≤ 6, cycle ≤ 6}` the only admissible
+  source kernels are `3^2`, `5^4` and five impostors. (3) Proposition 5:
+  `H_even ⊆ {m ≡ 2 (mod 4)}`. (4) Proposition 4 (structural lemma): if
+  `m = 2k ∈ H_even`, `k` odd, every prime factor of `k` is 3-Higgs with
+  `v_q(k) ≤ 3`, and `2d ∈ H_even` for every odd `d | k`. (5) Theorem 7
+  (prime-case reduction): `|H_even| < ∞` iff `|{m = 2p : p odd prime,
+  2p ∈ H_even}| < ∞`, with `|H_even| ≤ 4^|H_even^prime|`. (6) Theorem 8:
+  `H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}`. (7) Theorem 21:
+  `#{m ≤ X : m ∈ H} << X^(1-η)` and `Σ 1/m < ∞` — **thinness, not
+  finiteness**; the gap is exponential at the primitive-divisor height.
+  (8) Frontier: `|H_even ∩ [2,40000]| ≤ 201`, `|H_even ∩ [2,50000]| ≤ 272`,
+  rigorous, with explicit candidate lists (Theorems 9–19 + Lemma 20 APR-CL
+  closures). Analytic target: divisor-level problem for `Φ_{4p}(2)`, the
+  Aurifeuillean split `2^(2p)+1 = L_p·M_p` with `L_p = 2^p − 2^((p+1)/2) + 1`,
+  `M_p = 2^p + 2^((p+1)/2) + 1`. All details in
+  `research/notes/heven-and-3-higgs-structure.md`.
+- **(sourced) Frei 1978 (via OEIS A002827 comment):** a UPN not divisible by 3
+  has `2^m | n` with `m ≥ 144`, ≥ 144 distinct odd prime factors, and
+  `n > 10^440`. OEIS-recorded; primary full text not yet in the library
+  (Frei's journal article is paywalled/digitised as TOC only). Directly bears
+  on the open "is 3 | n forced?" question.
+- **(computed/checked) Lower bound on `a`:** any sixth UPN has
+  `a ≥ ω(odd) − 1 ≥ 8`, so `2^8 | n`. Wall (1988) (≥ 9 odd components for a
+  new example) + budget corollary. Equality `a = 8` forces 9 odd components,
+  all `≡ 1 (mod 4)` — a rigid candidate class.
+  `research/notes/lower-bound-on-a.md`, `code/out/wall1988_budget_lower_bound.captured.txt`.
+- **(OEIS finding)** The verified H_even members `2,6,10,18,26,30,46,62,82,122`
+  match **no** OEIS sequence — no catalogued closed form; structure comes from
+  the problem.
 
 ## Ruled out
 
@@ -87,12 +115,18 @@ None identified yet.
 
 ## Gaps
 
-- **Full text of arXiv:2605.20475 not fetched — workspace holds abstract only.**
-  Needed, all load-bearing and none guessable: the definition of a **3-Higgs**
-  prime; the construction of the odd dependency graph; the five impostor
-  kernels; the three filters; and the exact divisor-level problem for `Φ_{4p}(2)`
-  that the paper names as the analytic target for closing the `H_even` branch.
-  Confirm the real text is held by finding the 3-Higgs definition before
-  anything else. This is the only place a result is available.
-- Open structural question: is `3 | n` forced for a sixth example? (all five have
-  it; open.) Both directions are a result.
+- **Frei 1978 full text** (Über unitar perfekte Zahlen, Elem. Math. 33 (1978)
+  95–96). The OEIS-recorded theorem (UPN not divisible by 3 has m ≥ 144,
+  ω ≥ 144, n > 10^440) is load-bearing for the "is 3 | n forced?" question
+  and is unverified against the primary text. The e-periodica digitisation
+  only serves the journal TOC; need another source (DOI 10.5169/seals-…,
+  or a scan). `research/REQUESTS.md` row pending.
+- **Wall 1975 full text** (The fifth unitary perfect number, CMB 18 (1975)
+  115–122) is paywalled at Cambridge. The fifth UPN's construction is carried
+  by OEIS/Wikipedia/Wall 1987/1988/Maciejewski, but the primary proof of
+  "W is the next after 87360" is not in the library.
+- **Goto 2007** (Upper Bounds for UPNs, RMJM 37 (2007) 1557–1576) is
+  paywalled at Project Euclid; the OEIS-recorded bound `m < 2^(2^k)` for
+  `ω(m) = k` is carried but not verified against the primary text.
+- Open structural question: is `3 | n` forced for a sixth example? (all five
+  have it; open.) Both directions are a result.
