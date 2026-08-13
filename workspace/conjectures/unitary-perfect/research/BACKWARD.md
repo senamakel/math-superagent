@@ -9,7 +9,7 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
 | [[heven-finiteness-via-c29-second-moment]] | Conjecture 6 (Maciejewski arXiv:2605.20475) — H_even = {even m : every prime divisor of 2^m+1 is 3-Higgs} is finite. | Take any odd prime p with 2p ∈ H_even^prime. By hb-prop4-structural, p ∈ P_3. For large p, Lemma C29-omega-lower gives ω(Φ_{4p}(2)) ≥ C·log p (or the weaker ω… | live | 4 |
-| [[heven-finiteness-via-mod16]] | Conjecture 6 (Maciejewski arXiv:2605.20475) — H_even = {even m : every prime divisor of 2^m+1 is 3-Higgs} is finite. | Take any odd prime p with 2p ∈ H_even^prime = {2q : q odd prime, 2q ∈ H_even}. By hb-prop4-structural, p ∈ P_3 (p is 3-Higgs, and it is the single prime factor… | live | 2 |
+| [[heven-finiteness-via-mod16]] | Conjecture 6 (Maciejewski arXiv:2605.20475) — H_even = {even m : every prime divisor of 2^m+1 is 3-Higgs} is finite. | Take any odd prime p with 2p ∈ H_even^prime = {2q : q odd prime, 2q ∈ H_even}. By hb-prop4-structural, p ∈ P_3 (p is 3-Higgs, and it is the single prime factor… | live | 6 |
 
 ## The open gaps — each one is a task
 
@@ -27,6 +27,18 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 - [[heven-finiteness-via-c29-second-moment]] `C29-L4-second-moment-bound` — There exists δ < 1 such that for all sufficiently large p ∈ P_3, the quadratic character sum S₂ = Σ_{r|Φ} (2/r) satisfies |S₂| ≤ δ·ω. Since (2/r) = +1 for r ≡ 1,9 (mod 16) and −1 for r ≡ 5,13 (mod 16), this says the divisors are not overwhelmingly concentrated in the {5,13} classes where the quartic character cannot separate 5 from 13. Combined with the first-moment evaluation of S₁ (Lemma C29-L3), this yields N_1 ≥ (1−δ)ω/4 via C29-L2, establishing C29 with c = (1−δ)/4.
   - next: (a) tool_builder: compute N₁,N₅,N₉,N₁₃ for all p ≤ 61 from the existing divisor table (code/out/heven_gauss_61.captured.txt), and on the H_even slice {3,5,13,23,31,41,61} compute the ratio N₁/ω explicitly — the decisive empirical question is whether N₁/ω stays ≥ c uniformly or collapses toward 0 on the H_even slice. (b) theorem_prover: the Aurifeuillean split L_p·M_p = 2^{2p}+1 induces a partition of the divisors; the quadratic character (2/r) = (−1)^{(r²−1)/8} relates to whether r splits in Q(√2)/Q. Can the product ∏_{r|L_p} (2/r) and ∏_{r|M_p} (2/r) be evaluated independently from the Aurifeuillean norm form? If so, a bias in one factor would give the variance bound. The falsifier is systematic bias into r ≡ 9 (mod 16), which would survive this check and refute C29.
   - _no thread — nothing is attacking this_
+- [[heven-finiteness-via-mod16]] `G-prime-case-reduction` — H_even is finite iff H_even^prime = {2p : p odd prime, 2p ∈ H_even} is finite, and |H_even| ≤ 4^|H_even^prime|. (Maciejewski Theorem 7.)
+  - next: _no first step — a gap nobody can begin is a research request, not a task_
+  - _no thread — nothing is attacking this_
+- [[heven-finiteness-via-mod16]] `G-mod4-restriction` — H_even ⊆ {m ≡ 2 (mod 4)}; equivalently every m ∈ H_even has v2(m) = 1. (Maciejewski Proposition 5.)
+  - next: _no first step — a gap nobody can begin is a research request, not a task_
+  - _no thread — nothing is attacking this_
+- [[heven-finiteness-via-mod16]] `G-higgs-cubefree-structure` — If m = 2k ∈ H_even with k odd, then every prime q | k is 3-Higgs with v_q(k) ≤ 3. In particular, on the prime branch k = p, membership 2p ∈ H_even forces p ∈ P_3. (Maciejewski Proposition 4.)
+  - next: _no first step — a gap nobody can begin is a research request, not a task_
+  - _no thread — nothing is attacking this_
+- [[heven-finiteness-via-mod16]] `G-conditional-finiteness` — If (H1) and (H2) hold, then H_even is finite. (Maciejewski Theorem 30.)
+  - next: _no first step — a gap nobody can begin is a research request, not a task_
+  - _no thread — nothing is attacking this_
 - [[heven-finiteness-via-mod16]] `G-H1-divisor-mod16-existence` — (H1) There exists an effective constant C > 0 such that for every odd prime p with ω(Φ_{4p}(2)) ≥ C·log p, at least one prime divisor r | Φ_{4p}(2) satisfies r ≡ 1 (mod 16).
   - next: tool_builder: for each odd prime p in a stated range (start 1213 ≤ p ≤ 2000, split L_p·M_p via the Aurifeuillean split `aurifeuillean-split`), partially factor Φ_{4p}(2) = L_p·M_p to a stated factor bound, record the count ω (exact only where fully factored) and the number of prime divisors r ≡ 1 (mod 16); then test the (H1) predicate for a fixed C (e.g. C = 1): report the smallest p with ω ≥ C·log p but zero r ≡ 1 (mod 16) divisors, or "none found up to bound" with what was left unfactored. Bounded: timeout 540, state range + unfactored cofactors. NOTE: hb-thm30-h1-not-chebotarev records that this is NOT derivable from effective Chebotarev even under GRH — it is a divisor-transference statement about one fixed integer.
   - _no thread — nothing is attacking this_
@@ -42,10 +54,6 @@ Do not state these again. Each one is a lemma this run has, and the claim beside
 - [[heven-finiteness-via-c29-second-moment]] `C29-G-higgs-structure` — If m = 2k ∈ H_even with k odd, then every prime q | k is 3-Higgs with v_q(k) ≤ 3. On the prime branch 2p ∈ H_even ⇒ p ∈ P_3. (closed by hb-prop4-structural)
 - [[heven-finiteness-via-c29-second-moment]] `C29-G-mod16-implication` — For a prime r ≡ 1 (mod 4p), if r ≡ 1 (mod 16) then v2(r−1) ≥ 4 > 3, hence r ∉ P_3 (r is not 3-Higgs). This is one-way: the converse is false (343081 has v2 = 3 yet is non-3-Higgs). (closed by hb-defs-3higgs-heven, verified empirically through p=61 (code/out/heven_gauss_61.captured.txt))
 - [[heven-finiteness-via-c29-second-moment]] `C29-L1-factorization-structure` — For odd prime p ≠ 5, Φ_{4p}(2) = (2^{2p}+1)/5 = (L_p·M_p)/5 where L_p = 2^p − 2^{(p+1)/2} + 1, M_p = 2^p + 2^{(p+1)/2} + 1. Every prime divisor r | Φ_{4p}(2) is primitive (ord_r(2) = 4p), hence r ≡ 1 (mod 4p) and r mod 16 ∈ {1,5,9,13}. The Gaussian factorization is 2^{2p}+1 = (2^p+i)(2^p−i) in Z[i]. (closed by aurifeuillean-split, bhv-primitive-divisor-theorem, and the identity 2^{2p}+1 = Φ_4(2)·Φ_{4p}(2) = 5·Φ_{4p}(2) for p ≠ 5)
-- [[heven-finiteness-via-mod16]] `G-prime-case-reduction` — H_even is finite iff H_even^prime = {2p : p odd prime, 2p ∈ H_even} is finite, and |H_even| ≤ 4^|H_even^prime|. (Theorem 7.) (closed by heven-prime-case-reduction)
-- [[heven-finiteness-via-mod16]] `G-mod4-restriction` — H_even ⊆ {m ≡ 2 (mod 4)}; equivalently every m ∈ H_even has v2(m) = 1. (Proposition 5, via the Lucas/Fermat-number obstruction v2(q−1) ≥ 4 for q | F_k, k ≥ 2.) (closed by heven-two-mod-four)
-- [[heven-finiteness-via-mod16]] `G-higgs-cubefree-structure` — If m = 2k ∈ H_even with k odd, then every prime q | k is 3-Higgs with v_q(k) ≤ 3. In particular, on the prime branch k = p, membership 2p ∈ H_even forces p ∈ P_3. (closed by hb-prop4-structural)
-- [[heven-finiteness-via-mod16]] `G-conditional-finiteness` — If (H1) there is an effective C > 0 such that every odd prime p with ω(Φ_{4p}(2)) ≥ C·log p has a prime divisor r | Φ_{4p}(2) with r ≡ 1 (mod 16), and (H2) there is an effective p0 such that ω(Φ_{4p}(2)) ≥ C·log p for every prime p ≥ p0, then H_even is finite. (Theorem 30.) (closed by hb-thm30-conditional)
 
 ## Skeletons that could not be read
 

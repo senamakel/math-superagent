@@ -32,46 +32,54 @@ rests-on: heven-prime-case-reduction, heven-two-mod-four, hb-prop4-structural,
   hb-thm30-conditional, hb-defs-3higgs-heven, bhv-primitive-divisor-theorem
 ```
 
-The four reduction steps below are **already established in the run**; they are
-recorded here as discharged so a later turn does not re-state them as gaps.
+### Maciejewski structural results — taken from the paper, not independently proved or checked here
+
+These four reductions are Maciejewski's Theorems 7, Proposition 5, Proposition 4,
+and the conditional form of Theorem 30. The run has **read them from the paper**
+and catalogued them; **none is proved or checked independently here**. The
+skeleton is therefore **conditional**: finiteness of H_even reduces to (H1) and
+(H2) **given** the Maciejewski structural results. A conditional reduction is a
+real result; claiming these as discharged without independent verification is
+not. Evidence class for all four: `asserted` (from `heven-prime-case-reduction`,
+`heven-two-mod-four`, `hb-prop4-structural`) or `asserted` (from
+`hb-thm30-conditional`).
 
 ```gap
 id: G-prime-case-reduction
 lemma: H_even is finite iff H_even^prime = {2p : p odd prime, 2p ∈ H_even} is
-  finite, and |H_even| ≤ 4^|H_even^prime|. (Theorem 7.)
-status: discharged
-discharged-by: heven-prime-case-reduction
+  finite, and |H_even| ≤ 4^|H_even^prime|. (Maciejewski Theorem 7.)
+status: conditional-on-paper
+evidence: asserted (heven-prime-case-reduction, catalogued from paper-extraction.md)
 ```
 
 ```gap
 id: G-mod4-restriction
 lemma: H_even ⊆ {m ≡ 2 (mod 4)}; equivalently every m ∈ H_even has v2(m) = 1.
-  (Proposition 5, via the Lucas/Fermat-number obstruction v2(q−1) ≥ 4 for
-  q | F_k, k ≥ 2.)
-status: discharged
-discharged-by: heven-two-mod-four
+  (Maciejewski Proposition 5.)
+status: conditional-on-paper
+evidence: catalogued (heven-two-mod-four, heven-and-3-higgs-structure.md)
 ```
 
 ```gap
 id: G-higgs-cubefree-structure
 lemma: If m = 2k ∈ H_even with k odd, then every prime q | k is 3-Higgs with
   v_q(k) ≤ 3. In particular, on the prime branch k = p, membership 2p ∈ H_even
-  forces p ∈ P_3.
-status: discharged
-discharged-by: hb-prop4-structural
+  forces p ∈ P_3. (Maciejewski Proposition 4.)
+status: conditional-on-paper
+evidence: catalogued (hb-prop4-structural, paper-extraction.md)
 ```
 
 ```gap
 id: G-conditional-finiteness
-lemma: If (H1) there is an effective C > 0 such that every odd prime p with
-  ω(Φ_{4p}(2)) ≥ C·log p has a prime divisor r | Φ_{4p}(2) with r ≡ 1 (mod 16),
-  and (H2) there is an effective p0 such that ω(Φ_{4p}(2)) ≥ C·log p for every
-  prime p ≥ p0, then H_even is finite. (Theorem 30.)
-status: discharged
-discharged-by: hb-thm30-conditional
+lemma: If (H1) and (H2) hold, then H_even is finite. (Maciejewski Theorem 30.)
+status: conditional-on-paper
+evidence: asserted (hb-thm30-conditional, paper-extraction.md; unchecked)
 ```
 
-The two genuinely missing lemmas — the paper's (H1) and (H2), both still open.
+### The two open gaps — these are what the run must attack
+
+Given the Maciejewski structural results above, finiteness of H_even reduces
+exactly to (H1) and (H2). These are the paper's own open conjuncts.
 
 ```gap
 id: G-H1-divisor-mod16-existence
