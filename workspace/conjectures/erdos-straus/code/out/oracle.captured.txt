@@ -8,3 +8,5 @@ PASS      all witnesses.json entries solve                     [count=12]
 PASS      brute sweep n in [2,200]: 199/199 solved, unsolved=[] [x<=y<=z cap=5e6, all solved (conjecture verified in range)]
 ----------------------------------------------------------------------------------------
 overall: ALL WORKED EXAMPLES MATCH
+[parallel] self-check: n = 1..2000 across 26 worker(s) of 28 CPUs
+self-check PASS: 2000 values, 26 workers
