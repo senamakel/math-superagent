@@ -1,87 +1,33 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Gatti 2020 — Gilbreath's sequences and proof of conditions for Gilbreath's conjecture
 
-<!-- source: https://web.archive.org/web/20201202160317/https://www.preprints.org/manuscript/202003.0145/v1/download | converted from PDF -->
+<!-- source: https://web.archive.org/web/20201202160317/https://www.preprints.org/manuscript/202003.0145/v1/download (PDF capture of https://www.preprints.org/manuscript/202003.0145/v1) | full text: sources/gatti-2020-preprints-gilbreath-conditions.full.md -->
 
-## What it claims
+Riccardo Gatti, Preprints.org 202003.0145.v1 (8 Mar 2020), "NOT PEER-REVIEWED". Later expanded/recast as the MDPI Mathematics 11(18):4006 (2023) "Gilbreath Equation, Gilbreath Polynomials…" paper (whose PDF is 403-blocked; the run holds only its RePEc/abstract record). This is the same valid-extension machinery the run already held from Alkan et al. 2023 and Muney 2026 — now sourced independently in primary form.
 
-The conjecture attributed to Norman L. Gilbreath, but formulated
-by Francois Proth in the second half of the 1800s, concerns an interest-
-ing property of the ordered sequence of prime numbers P . Gilbreath’s
-conjecture stated that, computing the absolute value of diﬀerences of
-consecutive primes on ordered sequence of prime numbers, and if this
-calculation is done for the terms in the new sequence and so on, every
-sequence will starts with 1. In this paper is deﬁned the concept of
-Gilbreath’s sequence, Gilbreath’s triangle and Gilbreath’s equation.
-On the basis of the results obtained from the proof of properties, an
-inductive proof is produced thanks to which it is possible to estab-
-lish the necessary condition to state that the Gilbreath’s conjecture is
-true.
+## What it establishes (sound parts)
 
-1 Introduction to Gilbreath’s conjecture
+- **Gilbreath's equation (Thm 2, Cor 1).** Appending `k` to `S ∈ G_n` preserves the property iff the nested-absolute "Gilbreath equation" holds; the solutions are `k = ±s^{n-1}_1 ± s^{n-2}_2 ± … ± s^1_{n-1} + s_n ± 1` (Eq. 2), a signed sum down the **whole right anti-diagonal** plus `s_n ± 1`. Hence `max K_S = Σ_i s^{n-i}_i + s_n + 1`, `min K_S = 2s_n − max K_S` (Eq. 3, the reflection symmetry). This is the same **global, order-sensitive criterion** as the run's held Alkan/Muney results — independent confirmation that valid extension is a whole-prefix condition, not a bounded window. Bearing: reinforces the refutation of the backward-extension-automaton approach (research/approaches/backward-extension-automaton.md).
+- **Parity alternation (Lemmas 1–3).** In a Gilbreath sequence, `s_1` even ⟹ `s_2..s_n` all odd; `s_1` odd ⟹ all later even. This is the general-class half of the run's parity-wave/shape fact for the primes, proved by induction on the extension equation. Consistent with, and an independent statement of, the run's proved `(odd, even, even, …)` row-shape preservation.
+- **Upper/lower bound sequences (Defs 2–6).** Every Gilbreath-sequence element lies between iterated `min/max K` bounds; the bound sequences grow exponentially (fit example: `U'_S ≈ 14.42 e^{0.75n}`, R²≈0.92 for S={2,3,5,7,11,13}); no closed form for the (n+1)-th bound given the first n — Gatti openly states none was found.
 
-Let the ordered sequence P = {2, 3, 5, 7, 11, 13, 17, ...} = {p1, ..., pn, ...} formed
-by prime numbers, and set pb
-a = |pb−1
-a+1 − pb−1
-a | where b ⩾ 1. Gilbreath con-
-jectured that every term pb
-1 = 1. In this notation, the elements of P should
-be indicated with {p0
-1, ..., p0
-n,…
+## Located flaw — Theorem 4's proof does not prove the prime case
 
-## Statements it makes
+Theorem 4 asserts the bound (15): `min K_{p1..p_{n-1}} ≤ p_n ≤ max K_{p1..p_{n-1}}` for every prime. The **right inequality is not established**:
 
-Theorem 1. Let a sequence S = {s1, ..., sn} ∈ Gn and a sequence S′ =
-{s1, ..., sn−1}, then S′ ∈ Gn−1.
+- The induction step begins "If `p_n ≤ max K`, then subtracting `2p_{n-1}` from both sides…", i.e. it **assumes the conclusion**, then derives `min K ≤ α` for an arbitrary `α > 0` (using Bertrand `p_n < 2p_{n-1}`) — a trivially true statement — and then asserts "hence `p_n ≤ max K`". The needed inequality is `p_n ≤ p_{n-1} + 1 + Σ` (anti-diagonal entries); Bertrand only gives `2p_{n-1} − p_n > 0`, and Gatti substitutes the generic "min K ≤ positive" for the specific bound required. Nothing connects them.
+- The left inequality does work (via Corollary 2, `k = s_n` is always a valid extension, so `min K ≤ p_{n-1} ≤ p_n`).
+- So Theorem 4 is **unproved by this argument**; the claim itself is, in effect, a bounded-gap/valid-extension statement about the primes (equivalent in spirit to the conjecture, not a corollary of it).
 
-Theorem 2. Let a sequence S = {s1, ..., sn} ∈ Gn and a sequence S′ =
-{s1, ..., sn, k}, than S′ ∈ Gn+1 ⇔ k ∈ KS.
+## Located flaw — Lemma 4 (interval completeness) is false and refuted by Muney 2026
 
-Corollary 1. Let a sequence S = {s1, ..., sn} ∈ Gn and a sequence S′ =
-{s1, ..., sn, k}, then there are 2
-n values of k that satisfy S′ ∈ Gn+1.
+- Lemma 4 + Theorem 3 assert `K_S` = the whole parity class in `]min K, max K[`. Muney 2026 (held: research/sources/muney-2026-holes-valid-extension-html.full.md) **refutes this in general**: the valid-extension set can have interior holes, first at length 5 for `(2,3,5,9,15)`.
+- The Corollary-1 count `dim K_S = 2^{n−1}` also fails on a held example: for `S = {2,3,5} ∈ G_3`, the equation `|1 − |2 − |5−k||| = 1` has solutions `K = {1,3,5,7,9}` — five solutions, not `2^{3−1} = 4` (the eight signed combinations of Eq. 2 collapse to five distinct values because nested absolute values impose consistency).
+- Gatti's regularity claim (exponential trend of the bounds) is explicitly "observed", not proved.
 
-Corollary 2. Let a sequence S = {s1, ..., sn} ∈ Gn and a sequence S′ =
-{s1, ..., sn, sn}, than S′ ∈ Gn+1.
+## Status
 
-Lemma 1. Let a sequence S = {s1, ..., sn} ∈ Gn where s1 ∈ 2Z, then
-{s2, ..., sn} ⊂ (2Z + 1)n−1
-
-Lemma 2. Let a sequence S = {s1, ..., sn} ∈ Gn where s1 ∈ 2Z + 1, then
-{s2, ..., sn} ⊂ (2Z)
-n−1
-
-Lemma 3. Let S = {s1, ..., sn} ∈ Gn where s1 ∈ 2Z + ( 1
-2 ± 1
-2), then
-{s2, ..., sn} ⊂ [
-2Z + ( 1
-2 ∓ 1
-2)]n−1
-
-Lemma 4. Let a sequence S = {s1, ..., sn, k} ∈ Gn+1 where s1 ∈ 2Z +( 1
-2 ± 1
-2)
-, then KS = {x ∈] min KS; max KS[∧x ∈ 2Z + ( 1
-2 ∓ 1
-2) }
-
-Theorem 3. Let a sequence S = {s1, ..., sn} ∈ Gn and S′ = {s1, ..., sn, k},
-where s1 ∈ 2Z + ( 1
-2 ± 1
-2)
-, then k ∈] min KS; max KS[∧k ∈ 2Z + ( 1
-2 ∓ 1
-2) ⇔
-S′ ∈ Gn+1
-
-Theorem 4. For every n-th prime number, n > 1 it is true that l{p1,...,pn−1}n ⩽
-pn ⩽ u{p1,...,pn−1}n.
- 8
-
-Lemma 3 is already proved since p1 = 2 is even and all other elements are
-odd: by deﬁnition of prime number, there are no even prime numbers except
-for 2. From theorem 4 and lemma 3 is proved theorem 3 for P .
-
-*[digest of a 19892 character source; every section, statement, and proof in full at `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`]*
+- `gatti-2020-machinery-global` — the Eq.-2 anti-diagonal solution formula and parity alternation: **checked** (independently reproduces the run's Alkan/Muney-held global criterion; the `{2,3,5}` count check above is hand-verified, reproduce with brute.py if in doubt).
+- `gatti-2020-theorem4-invalid` — Theorem 4's proof fails at the right-inequality step: **located flaw, recorded as refuted** (the paper claims GC'’s core bound; the proof does not establish it).
+- `gatti-2020-lemma4-refuted` — interval-completeness of K_S: **refuted in general** by Muney 2026 (length-5 hole); the CROSS-CHECK that the primes' prefixes avoid holes remains open (that is the conjecture, in this language).
+- The 2023 MDPI "polynomial" claim (`gilbreath-polynomials-imply-gc`: GC follows from `p_n − 2^{n−1} ≤ P_{n-1}(1)`) is **still asserted-by-source, unverified**: the preprint on disk is a different (earlier) paper and does not contain the polynomial inequality; the MDPI PDF remains 403-unobtainable. Do not cite the preprint as evidence for the polynomial claim.
+- Bibliographic note: Gatti cites Proth's C.R. paper as "C.R. 86 (1887) 329–331" — another instance of the wrong Proth citation (the library's `proth-citation-correction` holds the correct record: C.R. 85 (1877) 329–331 are Pépin's pages).
