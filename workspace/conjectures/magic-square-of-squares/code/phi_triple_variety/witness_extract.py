@@ -53,6 +53,7 @@ from lib.phi import phi_pairs
 EXPECTED = {
     100: {"index": 2040,  "pairs": 614165,    "minus": 46,  "plus": 5,  "both": 0},
     200: {"index": 8156,  "pairs": 9856010,   "minus": 132, "plus": 24, "both": 0},
+    400: {"index": 32495, "pairs": 156988030, "minus": 325, "plus": 66, "both": 0},
     800: {"index": 129870, "pairs": 2509516913, "minus": 718, "plus": 150, "both": 0},
 }
 

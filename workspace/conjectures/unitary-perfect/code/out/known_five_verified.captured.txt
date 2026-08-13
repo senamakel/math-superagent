@@ -1,0 +1,46 @@
+ORACLE CHECK: n unitary perfect iff sigma_star(n) == 2n, exact integers
+negative control: sigma_star(12) = 20 vs 2n = 24 -> False
+negative control: sigma_star(28) = 40 vs 2n = 56 -> (28 is perfect, NOT unitary perfect): False
+
+n = 6
+  = 2^1 * 3
+  sigma_star = 12   2n = 12   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2
+  2-adic budget: sum v2(p^e+1) = 2, a+1 = 2, identity: True
+  omega(odd) = 1 <= a+1 = 2: True   equality: False
+  3 | n: True   odd part squarefree: True
+
+n = 60
+  = 2^2 * 3 * 5
+  sigma_star = 120   2n = 120   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2
+  2-adic budget: sum v2(p^e+1) = 3, a+1 = 3, identity: True
+  omega(odd) = 2 <= a+1 = 3: True   equality: False
+  3 | n: True   odd part squarefree: True
+
+n = 90
+  = 2^1 * 3^2 * 5
+  sigma_star = 180   2n = 180   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2
+  2-adic budget: sum v2(p^e+1) = 2, a+1 = 2, identity: True
+  omega(odd) = 2 <= a+1 = 2: True   equality: True
+  3 | n: True   odd part squarefree: False
+
+n = 87360
+  = 2^6 * 3 * 5 * 7 * 13
+  sigma_star = 174720   2n = 174720   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2
+  2-adic budget: sum v2(p^e+1) = 7, a+1 = 7, identity: True
+  omega(odd) = 4 <= a+1 = 7: True   equality: False
+  3 | n: True   odd part squarefree: True
+
+n = 146361946186458562560000
+  = 2^18 * 3 * 5^4 * 7 * 11 * 13 * 19 * 37 * 79 * 109 * 157 * 313
+  sigma_star = 292723892372917125120000   2n = 292723892372917125120000   UNITARY PERFECT: True
+  prod (1+1/p^a) = 2
+  2-adic budget: sum v2(p^e+1) = 19, a+1 = 19, identity: True
+  omega(odd) = 11 <= a+1 = 19: True   equality: False
+  3 | n: True   odd part squarefree: False
+
+Graham 1989: squarefree odd part => n in {6, 60, 87360}. Consistent above:
+  the two with non-squarefree odd part are 90 (3^2) and the fifth (5^4).
