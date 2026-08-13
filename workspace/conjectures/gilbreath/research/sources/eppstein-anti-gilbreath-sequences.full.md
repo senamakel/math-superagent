@@ -1,0 +1,113 @@
+<!-- source: https://11011110.github.io/blog/2011/02/20/anti-gilbreath-sequences.html | converted from HTML -->
+
+Anti-Gilbreath sequences
+
+[&laquo; Gilbreath made practical][1] [The sad case of Ike Antkare &raquo;][2]
+
+Here's a followup to my post yesterday about [a practical variant][1] of [Gilbreath's conjecture][3]. Recall that the conjecture concerns a triangle of numbers in which the primes run down the left edge of the triangle and each other number is the difference of the two numbers to its left; Gilbreath conjectured that the numbers on the right edge are all 1. Many sources on this problem repeat a statement by Hallard Croft that the conjecture has nothing to do with prime numbers, and that every sequence that has similar general properties to the primes (all numbers but the first having different parity from the first number, slow growth rate, and small gaps) would have the same property.
+
+But it isn't true.
+
+Instead, for any unbounded monotonic function \( f(n) \ge 2 \), no matter how slowly growing, there is a sequence \( X \) whose \( n \)th gap is at most \( f(n) \) and whose triangle's right edge switches between \( 1 \) and other values infinitely often.
+
+To see this, suppose that we have already settled on the first few values of some sequence \( X \), and have generated a triangle from that prefix. For instance, \( X \) might start off like the sequence of primes:
+
+```
+  2
+  3 1
+  5 2 1
+  7 2 0 1
+ 11 4 2 2 1
+ 13 2 2 0 2 1
+ 17 4 2 0 0 2 1
+ 19 2 2 0 0 0 2 1
+ 23 4 2 0 0 0 0 2 1
+ 29 6 2 0 0 0 0 0 2 1
+ 31 2 4 2 2 2 2 2 2 0 1
+```
+
+Let \( g_i \) be the number in the second column of row \( i \) (the gap between two consecutive numbers in the defining sequence) and let \( s_i \) be the sum of all of the entries on row \( i − 1 \) other than the first and the last one. For instance, in the row beginning \( 29 \), this sum is \( 6+2+2=10 \), but in the row beginning \( 31 \) it is \( 2+4+2+2+2+2+2+2=18 \), much larger. The significance of this definition is that, if the gap is larger than the row sum, then the rightmost number in that row will be their difference (minus one). For instance, if we replaced \( 31 \) by \( 43 \) we would have a big gap, bigger than the previous row sum:
+
+```
+  2
+  3  1
+  5  2  1
+  7  2  0  1
+ 11  4  2  2  1
+ 13  2  2  0  2  1
+ 17  4  2  0  0  2  1
+ 19  2  2  0  0  0  2  1
+ 23  4  2  0  0  0  0  2  1
+ 29  6  2  0  0  0  0  0  2  1
+ 43 14  8  6  6  6  6  6  6  4  3
+```
+
+In this example, the gap \( g_i \) is \( 14 \), while the previous row sum \( s_i \) is only \( 10 \), so the gap is big enough to survive differencing with all the entries in the row above it and escape to the right side of the triangle giving us a big value there.
+
+But maybe \( 14 \) is too big a gap to be allowed at this point in the sequence? No problem! We just need to control the sequence in such a way that the row sums remain small while the gap limit grows, so that in some later row the gap limit will exceed the row sum.
+
+To do so, extend the triangle a row at a time, working backwards from the right side of the row (rather than forwards from the left) to determine the values in each row. More specifically, starting from the triangle we have already computed, the positions under the final "1" in our partial triangle should form a column of 2s, and the positions to the right of them should all be zero. To the left of the column of 2s, each number is calculated as either the sum or the difference of the numbers above and to the right, choosing the difference when possible so that the numbers all stay small.
+
+Starting again from our partial triangle of prime numbers, this gives us:
+
+```
+  2
+  3 1
+  5 2 1
+  7 2 0 1
+ 11 4 2 2 1
+ 13 2 2 0 2 1
+ 17 4 2 0 0 2 1
+ 19 2 2 0 0 0 2 1
+ 23 4 2 0 0 0 0 2 1
+ 29 6 2 0 0 0 0 0 2 1
+ 31 2 4 2 2 2 2 2 2 0 1
+ 35 4 2 2 0 2 0 2 0 2 2 1
+ 39 4 0 2 0 0 2 2 0 0 2 0 1
+ 43 4 0 0 2 2 2 0 2 2 2 0 0 1
+ 47 4 0 0 0 2 0 2 2 0 2 0 0 0 1
+ 51 4 0 0 0 0 2 2 0 2 2 0 0 0 0 1
+ 55 4 0 0 0 0 0 2 0 0 2 0 0 0 0 0 1
+ 59 4 0 0 0 0 0 0 2 2 2 0 0 0 0 0 0 1
+ 61 2 2 2 2 2 2 2 2 0 2 0 0 0 0 0 0 0 1
+ 63 2 0 2 0 2 0 2 0 2 2 0 0 0 0 0 0 0 0 1
+ 67 4 2 2 0 0 2 2 0 0 2 0 0 0 0 0 0 0 0 0 1
+ 69 2 2 0 2 2 2 0 2 2 2 0 0 0 0 0 0 0 0 0 0 1
+ 73 4 2 0 0 2 0 2 2 0 2 0 0 0 0 0 0 0 0 0 0 0 1
+```
+
+Notice the big triangle of zeros on the right. We've chosen the continuation of our sequence, \( 35, 39, 43, 47, \dots \) in such a way that this triangle is forced to be empty.
+
+If all of the entries (after the gap) in the row are 0's and 2's, then the row sums remain bounded by \( O(\mathrm{row length}) \), so eventually we will get a small enough row sum relative to the gap limit to allow us to break the pattern and put in a large gap that can escape to the right. For instance, if we keep extending this same sequence to make the empty triangle even bigger, we eventually reach a nice small row sum of 8 at the number 159, so skipping to 171 as the following number would give a gap of 12 which is big enough to escape.
+
+If we start with a situation in which some of the entries are bigger than 0 or 2, then we can force a situation where they're all 0's and 2's before starting to build the big empty triangle, by choosing a sequence of gaps such that, at each step, either the first number in the row that is greater than four is reduced or the region containing numbers greater than four shrinks by at least one position:
+
+```
+  2
+  3  1
+  5  2  1
+  7  2  0  1
+ 11  4  2  2  1
+ 13  2  2  0  2  1
+ 17  4  2  0  0  2  1
+ 19  2  2  0  0  0  2  1
+ 23  4  2  0  0  0  0  2  1
+ 29  6  2  0  0  0  0  0  2  1
+ 43 14  8  6  6  6  6  6  6  4  3
+ 51  8  6  2  4  2  4  2  4  2  2  1
+ 55  4  4  2  0  4  2  2  0  4  2  0  1
+ 57  2  2  2  0  0  4  2  0  0  4  2  0  1
+ 61  4  2  0  2  2  2  2  0  0  0  4  2  0  1
+ 65  4  0  2  2  0  2  0  2  2  2  2  2  0  0  1
+```
+
+By repeating this process, of making a big empty triangle, using it to put a non-1 on the right, then restoring the rows to contain only 0's and 2's and making another big triangle etc., we can break the all-1's pattern as many times as we like.
+
+What Gilbreath's conjecture is really telling us is that the prime numbers don't have any unlikely hidden patterns of this type encoded within them. The same thing seems likely to be true for most "natural" sequences, sequences that aren't artificially defined in such a way as to violate Gilbreath's conjecture, but it's certainly not true for all sequences, or even all sequences with small gaps.
+
+
+## Links
+
+[1]: /blog/2011/02/19/gilbreath-made-practical.html
+[2]: /blog/2011/02/22/sad-case-of.html
+[3]: https://en.wikipedia.org/wiki/Gilbreath_conjecture
