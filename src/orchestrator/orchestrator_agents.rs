@@ -213,6 +213,7 @@ struct SupportPrompts {
     judge: String,
     pattern: String,
     inventor: String,
+    reducer: String,
     librarian: String,
     scholar: String,
     curator: String,

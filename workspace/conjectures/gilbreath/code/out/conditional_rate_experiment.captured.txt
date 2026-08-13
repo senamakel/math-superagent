@@ -1,0 +1,47 @@
+====================================================================================================
+PART 0  ORACLE: prime rows A_1..A_5 vs problem.md table
+====================================================================================================
+  A_1 = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4]  match=True  (task prefix [1, 2, 2, 4, 2, 4, 2, 4, 6, 2] ok=True)
+  A_2 = [1, 0, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2]  match=True  (task prefix [1, 0, 2, 2, 2, 2, 2, 2, 4] ok=True)
+  A_3 = [1, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0]  match=True  (task prefix [1, 2, 0, 0, 0, 0, 0, 2] ok=True)
+  A_4 = [1, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0]  match=True  (task prefix [1, 2, 0, 0, 0, 0, 2, 2, 2, 2] ok=True)
+  A_5 = [1, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2]  match=True  (task prefix [1, 2, 0, 0, 0, 2, 0, 0, 0, 2] ok=True)
+  PASS
+====================================================================================================
+PART 1  SNIFF code/out/event_rate_stats.jsonl keys
+====================================================================================================
+  keys: ['D', 'W', 'b0_hits', 'b1', 'b_min', 'batch', 'eligible', 'events', 'family', 'first_b0', 'live_rows', 'mean_jump', 'recharge_fail', 'rho_live', 'rho_rows', 'seed', 'step_fail', 'sum_j1', 'trunc_k']
+  per-row event positions present: none
+  stored aggregates not conditionable on k>10
+  stored survivor rates (unconditional, all rows):
+    f2-geo05           441 events /    896 eligible = 0.4922
+    f2-rand24           62 events /     62 eligible = 1.0000
+    f2-skew246         923 events /   1622 eligible = 0.5691
+    f2-skew24810       546 events /   1098 eligible = 0.4973
+    f2-uniform3        444 events /    633 eligible = 0.7014
+    f2-uniform5        130 events /    217 eligible = 0.5991
+    geo05              206 events /    395 eligible = 0.5215
+    rand24              18 events /     18 eligible = 1.0000
+    skew246            352 events /    617 eligible = 0.5705
+    skew24810          249 events /    491 eligible = 0.5071
+    uniform3            57 events /     78 eligible = 0.7308
+    uniform5            34 events /     52 eligible = 0.6538
+  (1154 stored sequences total)
+====================================================================================================
+PART 2  FRESH RUN: families with >=5 stored survivors, 20 seeds each, D=400, W=200000
+====================================================================================================
+  families used (stored survivor counts):
+    consecutive       62
+    f2-geo05          20
+    f2-rand24         62
+    f2-skew246        42
+    f2-skew24810      25
+    f2-uniform3       23
+    f2-uniform5        8
+    geo05              9
+    rand24            18
+    skew246           17
+    skew24810         11
+  seeds: 10000..10019  (seed = 10000 + i)
+  220 sequences, 26 workers, ~7 s/seq single-core -> ~59 s wall (2 min budget)
+[parallel] conditional-rate: families x seeds across 26 worker(s) of 28 CPUs
