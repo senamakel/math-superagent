@@ -18,8 +18,91 @@ relation among the 8 line forms (R0 R1 R2 C0 C1 C2 D0 D1):
    -> the trace identity: R0 + R1 + R2 = C0 + C1 + C2
 relation among the 7 difference rows (R1-R0 R2-R0 C1-C0 C2-C0 D0-R0 D1-R0 C0-R0):
     (1, 1, -1, -1, -1, 0, 0)
-   -> (R1-R0) + (R2-R0) - (C1-C0) - (C2-C0) - 3(C0-R0) = 0
-Traceback (most recent call last):
-  File "/workspace/code/out/magic_variety_check.py", line 171, in <module>
-    assert proportional(nM, (1, 1, -1, -1, 0, 0, -3)), nM
-AssertionError: (1, 1, -1, -1, -1, 0, 0)
+   rows are (R1-R0, R2-R0, C0-R0, C1-R0, C2-R0, D0-R0, D1-R0);
+   -> (R1-R0) + (R2-R0) - (C0-R0) - (C1-R0) - (C2-R0) = 0
+   i.e. R0 + R1 + R2 = C0 + C1 + C2  (the trace identity again)
+So the '7 line-sum equations' are NOT independent: rank 6, and
+the variety is cut by 6 independent linear equations (plus the
+consequence that re-states the trace identity).
+
+==========================================================================
+3. The kernel: a 3-dimensional linear subspace of A^9  =>  P^2 in P^8
+==========================================================================
+nullspace basis of M7 (dim = 3 ):
+   w0 = [2/3, 2/3, -1/3, -2/3, 1/3, 4/3, 1, 0, 0]
+   w1 = [2/3, -1/3, 2/3, 1/3, 1/3, 1/3, 0, 1, 0]
+   w2 = [-1/3, 2/3, 2/3, 4/3, 1/3, -2/3, 0, 0, 1]
+
+explicit generators (from the (c,u,v) parametrisation):
+   C (constant grid): [1, 1, 1, 1, 1, 1, 1, 1, 1]
+   U (u-grid): [1, -1, 0, -1, 0, 1, 0, 1, -1]
+   V (v-grid): [0, -1, 1, 1, 0, -1, -1, 1, 0]
+
+independence of C, U, V: rank([C | U | V]) = 3
+span equality (kernel basis <-> {C,U,V}) by exact rref checks:
+   w0 in span{C,U,V}: True
+   w1 in span{C,U,V}: True
+   w2 in span{C,U,V}: True
+   C in span(kerM): True
+   U in span(kerM): True
+   V in span(kerM): True
+   -> span(C,U,V) = ker(M7), a 3-dimensional linear space
+
+dimension of solution space in A^9: 9 - 6 = 3
+hence X = P(ker M) is a P^2 ⊂ P^8 — a surface (dim 2), smooth.
+A rank-7 system WOULD have given a 2-dim affine kernel (a P^1), which
+contradicts the 3-parameter (c,u,v) description; the true rank 6 is
+forced by the trace relation and gives exactly the P^2 the
+parametrisation describes.
+
+==========================================================================
+4. The parametrisation (c,u,v) |-> grid is a bijection A^3 -> X-hat
+==========================================================================
+all eight line sums of the symbolic grid equal: True
+recovery: (centre, a00-centre, a02-centre) = (c, u, v): True
+rebuilding the grid from the recovered parameters is the identity: True
+injectivity: (c,u,v) are read off the three pinned entries (centre,
+top-left, top-right), so two grids agree  =>  equal parameters.
+-> EVERY magic grid (all 8 line sums equal) is uniquely in the image.
+generic cone point a*C + b*U + g*V satisfies all 7 equations: True
+
+==========================================================================
+5. Lines: X = P^2 contains a 2-parameter family of lines
+==========================================================================
+X is the projectivisation of the 3-dim cone; every 2-dimensional
+subspace of the cone is a line of X.  Lines of a P^2 form the
+Grassmannian G(1,2) ≅ P^2: a 2-parameter family, and any two distinct
+points of X span a unique contained line.
+explicit witness line {s*C + t*U}: M7 * (s*C + t*U) == 0 for all s,t: True
+Reason it is exact: L_i(P + t Q) = L_i(P) + t L_i(Q) for linear forms,
+so P + tQ ∈ X for all t iff P, Q ∈ X — and every P, Q ∈ X work here.
+
+*** THE CLAIM 'X CONTAINS NO LINES' IS FALSE FOR THIS LINEAR VARIETY. ***
+The linear space X ≅ P² is saturated with lines (a P²'s worth).
+The no-lines / 256-singular-points claims of the Michaud-Rodgers talk
+must refer to the QUADRIC-CUT square variety (entries' values r_ij with
+Σ_line r² equal, six quadrics) — a different object.  The linear part
+contributes no obstruction: it is exactly the free (c,u,v) freedom.
+
+==========================================================================
+6. What the square conditions become inside the P^2
+==========================================================================
+Bremner 7-square witness is a point of X (all 8 sums equal): True
+   its 8 line sums: [541875, 541875, 541875, 541875, 541875, 541875, 541875, 541875]
+   square entries: 7 of 9  (the two non-squares are 360721 and 222121)
+Sallows LS1 is NOT a point of X (only 7 of 8 sums agree): True
+   its 8 line sums: [21609, 21609, 21609, 21609, 21609, 21609, 21609, 38307]
+   square entries: 9 of 9 — a 9-square grid OUTSIDE X, so it does not
+   contradict the best-in-X count.
+
+Inside X ≅ P² the MSS problem is: all nine entries
+   (c+u, c-u-v, c+v, c-u+v, c, c+u-v, c-v, c+u+v, c-u)
+simultaneously rational squares — NINE quadratic conditions on the
+THREE parameters (c,u,v).  Best known point of X: 7 of 9 squares
+(Bremner).  8-square and 9-square points of X are open.
+
+==========================================================================
+ALL CHECKS PASSED — linear magic variety is P^2 ⊂ P^8, rank 7
+(incidence) / rank 6 (differences), kernel dim 3, generators
+(C, U, V) = (constant, u, v) grids, no-line claim refuted for X.
+==========================================================================

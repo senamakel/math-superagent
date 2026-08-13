@@ -1,0 +1,6 @@
+checked 6725600 sequences (len 1..8, values 0..6)
+r(T(x)) <= r(x) counterexample: ((6, 6, 6, 6, 6, 6, 5, 5), 2, 3, [0, 0, 0, 0, 0, 1, 0])
+worst run-count increase: (3, (0, 0, 1, 1, 0, 0, 1, 1))
+t(T(x)) <= t(x) counterexample: ((6, 6, 6, 6, 6, 6, 5, 5), 0, 1, [0, 0, 0, 0, 0, 1, 0])
+worst turning-point increase: (5, (0, 0, 1, 1, 0, 0, 1, 1))
+LEMMA r(T(x)) <= r(x): REFUTED (see above)

@@ -1,0 +1,6 @@
+L=1: protection ends after k=[2, 3], i.e. leading-1 rows after K: varies (expected 1)
+L=2: protection ends after k=[3, 4], i.e. leading-1 rows after K: varies (expected 2)
+L=3: protection ends after k=[4, 5], i.e. leading-1 rows after K: varies (expected 3)
+L=4: protection ends after k=[5, 6], i.e. leading-1 rows after K: varies (expected 4)
+L=5: protection ends after k=[6, 7], i.e. leading-1 rows after K: varies (expected 5)
+L=8: protection ends after k=[9, 10], i.e. leading-1 rows after K: varies (expected 8)

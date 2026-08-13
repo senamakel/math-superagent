@@ -15,7 +15,8 @@ assert passes):
   (2) The natural 7x9 DIFFERENCE system (line sums L_1..L_7 minus the
       reference sum L_0 = first row sum; seven rows) has rank 6, NOT 7:
       the trace identity reappears as the single row relation
-         (R1-R0) + (R2-R0) - (C1-C0) - (C2-C0) - 3(C0-R0) = 0.
+         (R1-R0) + (R2-R0) - (C0-R0) - (C1-R0) - (C2-R0) = 0,
+      i.e. R0 + R1 + R2 = C0 + C1 + C2.
       Rank 7 would give a 2-dimensional solution space (a P¹ in P⁸,
       contradicting the 3-parameter (c,u,v) description); the true rank 6
       gives dimension 9-6 = 3.
@@ -167,8 +168,10 @@ print("   -> the trace identity: R0 + R1 + R2 = C0 + C1 + C2")
 assert proportional(nI, (1, 1, 1, -1, -1, -1, 0, 0)), nI
 print("relation among the 7 difference rows (R1-R0 R2-R0 C1-C0 C2-C0 D0-R0 D1-R0 C0-R0):")
 print("   ", nM)
-print("   -> (R1-R0) + (R2-R0) - (C1-C0) - (C2-C0) - 3(C0-R0) = 0")
-assert proportional(nM, (1, 1, -1, -1, 0, 0, -3)), nM
+print("   rows are (R1-R0, R2-R0, C0-R0, C1-R0, C2-R0, D0-R0, D1-R0);")
+print("   -> (R1-R0) + (R2-R0) - (C0-R0) - (C1-R0) - (C2-R0) = 0")
+print("   i.e. R0 + R1 + R2 = C0 + C1 + C2  (the trace identity again)")
+assert proportional(nM, (1, 1, -1, -1, -1, 0, 0)), nM
 print("So the '7 line-sum equations' are NOT independent: rank 6, and")
 print("the variety is cut by 6 independent linear equations (plus the")
 print("consequence that re-states the trace identity).")
