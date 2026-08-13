@@ -295,15 +295,22 @@ yields an already-covered sub-progression of an open class. Ventas
 
 ## Gaps
 
-- **Saturation of modulus 11** (directive 5). The Salez seven-equation
-  generator currently covers only 3 of 11 residue classes t mod 11
-  (t = (n−1)/840), missing [0,1,2,3,4,6,8,9]. The uncovered density factors
-  as a product of (p−c_p)/p over independent prime groups, strictly positive
-  at every finite stage. It reaches zero only if some modulus m has all m
-  residues realised. M=11 is the smallest modulus and the cheapest test of
-  whether any modulus can be saturated at all. Either exhibit families for
-  the 8 missing residues, or prove an obstruction forbidding some of them.
-  (Modulus 23, previously the focus, is deferred in favor of M=11 per dir 5.)
+- **Beyond M=11: the gap structure is now exact** (directive 5, resolved):
+  M=11 is **fully saturated over its legal residues** — see Established. The
+  live bottleneck is the **QNR-allowed-but-unrealized gaps** at larger primes:
+  M=17 gap [3,13], M=19 [3,5,7,10], M=23 [3,8], M=29 8 residues, M=31,
+  M=37, M=41, M=43. `definitive_structure.py` shows the **structural ceiling**:
+  with primes {11..37} the irreducible uncovered density (QR-blocked core) is
+  0.2542%/branch; adding 41,43 lowers it to 0.0606%/branch — i.e. even if
+  every Schinzel-legal residue at every used prime were realized, ~0.06–0.25%
+  of n≡1 (mod 840) within a branch is **permanently** unreachable by any
+  polynomial family at those primes (the finite-bound generator got to
+  96.11%). **Closing the flat 3.89% of a single branch needs either a prime
+  ∤ 840 not yet used, or an irreducible core that no polynomial identity can
+  touch.** The squares of the class (m²≡1 mod 840, density 0) are provably the
+  only n≡1 mod 840 no single polynomial identity covers
+  (`square_obstruction.py`); all non-square members are Schinzel-legal for
+  some prime.
 - **Bulk promote asserted → checked** (operator directive 4). 838/1451 done:
   every `subprogression.captured.txt` block re-checked as an exact identity at
   its claimed (a,b) (`verify_current_coverage.py`, failures 0). The 603
