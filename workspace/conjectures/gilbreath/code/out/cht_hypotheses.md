@@ -40,11 +40,11 @@ reachable depths; the inverse theorem gives no information about the prime
 rows at depth <= 1000.
 
 ```claim
-id: cht-inverse-theorem
-statement: If a_n <= 2^M, no length-L 0-block, and no {0,d}-block (2^{M-m} < d <= 2^{M-m+1}) of length >= R_m - 3 R_{m-1} at depth <= 2 R_{m-1} (R_m >= 4 R_{m-1}, R_0 >= 100 L 8^M), then a(N-1,1) in {0,1}; long zero-blocks and long shallow {0,d}-blocks are the only obstructions to decay.
-hypotheses: nonneg-integer initial data with a_n <= 2^M; R-tower hierarchy with R_0 >= 100 L 8^M; axioms (ii) no-L-zero-block and (iii) no-shallow-{0,d}-block verified at depths up to order R_0, with the array spanning depth > 2 R_0.
+id: cht-inverse-theorem-hyp-check-v2
+statement: The CHT Theorem 1.6 hypothesis check on the real prime rows: for the prime-difference triangle to depth 1000 (sieve 2e7, 1,270,607 primes, 1,270,605 normalized gaps a_n = (p_{n+2} - p_{n+1})/2 - 1), max a_n = 89, M = ceil(log2 89) = 7, longest 0-run L = 2 (provably exact: p, p+2, p+4 cannot all be prime), longest {0,d}-block = 7 (d = 1), and the CHT no-{0,d}-block threshold R_0 = 100*L*8^M = 419,430,400 = 419,430x the run's max reachable depth (1000).
+hypotheses: CHT Theorem 1.6 (a_n <= 2^M; no length-L 0-block; no {0,d}-block of length >= R_m - 3 R_{m-1} at depth <= 2 R_{m-1} with R_m >= 4 R_{m-1}, R_0 >= 100 L 8^M) demands the no-{0,d}-block condition hold over a depth window of order R_0 and the array span depth > 2 R_0; the depth-1000 triangle reaches only depth 1000.
 holds-here: no (R_0 = 419430400 ≫ 1000: the theorem's no-{0,d}-block protection threshold is ~4.2e8 rows, so the hypothesis is not satisfiable at any depth <= 1000 — the theorem does not bite at reachable depths)
-status: checked — computed from the real prime rows (sieve 2e7, 1,270,607 primes, 1,270,605 normalized gaps a_n = (p_{n+2} - p_{n+1})/2 - 1): max a_n = 89 -> M = 7, longest 0-run L = 2 (provably exact: p, p+2, p+4 cannot all be prime), longest {0,d}-block = 7 (d = 1), so R_0 = 100*L*8^M = 419,430,400 = 419,430x the run's max reachable depth (1000). First nine gaps match OEIS A100820.
+status: checked — computed from the real prime rows (sieve 2e7, 1,270,607 primes, 1,270,605 normalized gaps); first nine gaps match OEIS A100820. Independent confirmation in code/out/cht_hyp_check.captured.txt (second program, re-sieves and recomputes: max a_n = 89, L = 2, R_0 = 419430400; both agree).
 bearing: the CHT inverse-theorem route cannot be applied to the reachable prime rows; the attack must either rule out long zero-blocks and long shallow {0,d}-blocks for the primes (needs analytic hypotheses) or find an invariant bypassing the dichotomy.
 anchor: code/out/cht_hypotheses.captured.txt, code/cht/check_cht_hypotheses.py, research/sources/chase-hunter-tao-2026-full-html.full.md (Theorem 1.6)
 ```

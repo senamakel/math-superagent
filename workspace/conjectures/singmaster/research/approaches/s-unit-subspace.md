@@ -88,3 +88,28 @@ first-step: none — the mechanism is structurally sound but its output is a
   re-propose unless a way to bound s = omega(a)+pi(log2 a) uniformly is found —
   which is exactly the content of the conjecture.
 ```
+
+```claim
+id: sunit-subspace-inapplicable
+statement: The S-unit/Subspace-Theorem route to bounding N(a) is structurally
+  sound (from C(n,k)=a every factor n-j of the falling factorial is an S-unit of
+  S = primes(a) ∪ primes<=log2 a, since n(n-1)...(n-k+1)=a·k! and k<=log2(a))
+  but refuted as a route to a constant: |S| = omega(a)+pi(log2 a) is unbounded in
+  a (take a primorial), and every S-unit counting bound (Evertse 1984 best
+  (2^35 n^2)^{n^3 s}, ESS 2002 dimension-and-rank bound) grows with |S| and the
+  rank |S|-1, so N(a) <= f(omega(a)+log2 a) with f exponential in its argument —
+  an upper bound growing with a, not a uniform B. It does not even reproduce
+  Singmaster's O(log a). Additionally N(a) sums over ~log2 a columns and the ESS
+  theorem counts solutions of one fixed equation; the per-pair S-unit reduction
+  is exactly SST 1995 Thm 2 / BST 1999 Thm 1.1 (non-uniform/ineffective, held in
+  library). No published application of the Subspace Theorem to N(a) exists;
+  closest is EGST 1987 equal values of binary forms (per-form constants).
+hypotheses: a>1 with N(a) representations; both-mirrors-and-trivial convention.
+holds-here: yes (the mechanism analysis is exact; the conclusion is
+  non-uniformity, matching the library's standing wall)
+status: grounded (deduction from held primary statements: Evertse 1984 count
+  bound as quoted in Mueller BLMS 2000; ESS Annals 155 (2002); SSST 1995; BST 1999)
+bearing: permanently retires the S-unit/subspace candidate with the obstruction
+  named (|S| unbounded ⇒ bound not constant), so it is not re-proposed.
+anchor: research/approaches/s-unit-subspace.md
+```
