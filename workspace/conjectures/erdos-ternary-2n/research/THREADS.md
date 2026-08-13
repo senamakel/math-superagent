@@ -7,6 +7,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
 | [[dh1-gap]] | What precisely does DH-1 leave open, and can the sieve dynamics improve the "26 ones" bound? | open | DH-1, SIEVE-EXACT, ternary-sieve-count-doubles, DENSE-ORBIT | state the gap exactly; identify what structural fact about the 3-adic orbit constrains how many ones can appear without a 2 |
+| [[lean-formalization]] | Can the lifting theorem (\|A_k\| = 2^(k-1) for all k) be formalised in Lean 4 with Mathlib? | open | ternary-lifting-theorem | write the three lemmas in Lean 4; report #print axioms and every sorry |
 | [[lifting-proof]] | Is the 2-to-1 lifting of A_k provable via LTE, giving \|A_k\| = 2^(k-1) unconditionally? | open | — | superseded by the Lean formalisation task (research/threads/lean-formalization.md) and the DH-1 × Lagarias combination (research/threads/dh1-gap.md) |
 
 ## Threads that could not be read
