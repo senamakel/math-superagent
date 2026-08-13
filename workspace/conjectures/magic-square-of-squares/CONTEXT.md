@@ -236,6 +236,17 @@ the Established section.
 ## Gaps
 
 (Double as research requests; see `research/REQUESTS.md`.)
+- **The `robertson-elliptic-reduction` claim is truncated** — it ends mid-sentence
+  at "iff there is c with three points of 2E(Q)," and does not state which three
+  points, their x-coordinates, or how they form an AP. The Garcia-Fritz–Pasten
+  theorem bounds AP length on E, but we need the complete Robertson reduction to
+  confirm (a) that an MSS gives an AP of x-coordinates on E_e, and (b) the
+  length of that AP. Scholar must re-read Bremner 1999 §2 and complete the claim
+  block with the full statement.
+- **Rank of the Robertson curve** `E_e: y² = x(x²−e⁴)` for candidate e:
+  Bremner's e=425 gives a specific curve — what is its rank? Can we bound
+  rank(E_e) in terms of e for e that admit many representations as a sum of two
+  squares?
 - **Φ and |S(e)| results are not yet claim blocks in `research/CLAIMS.md`** —
   they live in scratch + durable memory + code only. Promote them (with
   falsifiers) before any impossibility lemma is built on them: the absence of a
@@ -257,3 +268,9 @@ the Established section.
 - **The eight-square sub-question**: no example known, no proof. Bremner's
   7-square witness has exactly two half-realised endpoints; going 7 → 8 means
   realising one more — a precise target for an impossibility lemma.
+- **Garcia-Fritz–Pasten constant C is not explicit** — the bound C^(r+1) is
+  ineffective without knowing C. The Dimitrov–Gao–Habegger constant c(2,1) for
+  genus-2 curves over Q is also not computed in the paper. So Theorem 1.8 says
+  "AP length is bounded by *something* exponential in rank" but does not give a
+  number to check against 4. Scholar: has anyone computed or bounded these
+  constants?

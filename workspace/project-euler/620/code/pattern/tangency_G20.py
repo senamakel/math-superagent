@@ -65,7 +65,7 @@ import numpy as np
 from mpmath import mp, mpf, pi, atan2, sqrt, fabs, nint
 
 mp.dps = 60
-OUT = "/workspace/code/out/tangency_G20.txt"
+OUT = "/workspace/code/out/tangency_G20_recheck.txt"
 TWO_PI = 2.0 * math.pi
 COARSE_TOL = 1e-4
 TIGHT_TOL = mpf('1e-9')

@@ -1,268 +1,177 @@
-"""PE620 discrete-lattice brute oracle (least-mesh-angle model).
+"""PE620 naive brute oracle: grid-scan of the n_t meshing model.
 
-MODEL (least-mesh-angle lattice, positions as multiples of beta=2*pi/(s+c)):
-  C at origin, radius R = c/(2*pi).  S at (d,0), radius r = s/(2*pi).
-  d is the off-centre distance, a free (real) parameter of an arrangement.
-  A planet of size k (radius rho = k/(2*pi)) tangent internally to C and
-  externally to S has centre at distance a = R-rho from O and b = r+rho from
-  S.  A planet centred on the ray from S at angle m*beta meshes with both
-  gears iff, by the law of cosines at S (sides OS=d, SP=b, OP=a):
-      d^2 + b^2 - 2*d*b*cos(m*beta) = a^2
-  i.e.  f_k(d) := (d^2 + b^2 - a^2) / (2*d*b)  equals cos(2*pi*m/N).
-  Slots m in {0,...,N-1}, N = s+c.  Slot m and its mirror N-m are the two
-  tangency points of the same pair of positions; when m=0 or 2*m=N the two
-  coincide (degenerate) and are excluded.  cos is strictly decreasing on the
-  non-degenerate half-range, so each size has at most ONE non-degenerate slot
-  pair per d, hence one placement of its two planets per d -- so an
-  arrangement for a valid d is unique, and g = number of valid d values.
+MODEL (n_t integer-level model; formulas identical to
+code/pattern/n_integer_count.py):
+  A type-t planet (circumference t) tangent internally to ring C and
+  externally to sun S has its centre at distance a_t = R - rho_t from the
+  ring centre O and b_t = r + rho_t from the sun centre S, where
+  R = c/2pi, r = s/2pi, rho_t = t/2pi.  For a centre-offset d:
+      x = (a_t^2 - b_t^2 + d^2)/(2d),   y = sqrt(a_t^2 - x^2),
+      beta = atan2(y, x),               mu = atan2(y, x - d),
+      n_t(d) = [(c - t)*beta + (s + t)*mu] / pi.
+  A valid arrangement (the two p-planets at the mirror tangency pair, the
+  two q-planets at theirs) exists at an interior d iff n_p(d) and n_q(d)
+  are integers with (n_p - n_q) == (p - q) (mod 2).  Endpoints where a
+  type's two tangency points coincide (y ~ 0) are degenerate and excluded.
 
-  The two sizes p, q must work with the SAME d.  So g = number of distinct
-  valid candidate d values, where a candidate d is a root of
-  f_p(d)=cos(m_p*beta) for some integer slot m_p that ALSO satisfies
-  f_q(d)=cos(m_q*beta) for some integer slot m_q.
+NAIVE ORACLE (this file): scan d in [d_min, d_max] on a grid of N = 2^20
+points; mark points with |n_p - round(n_p)| < 1e-3 AND
+|n_q - round(n_q)| < 1e-3 AND (round(n_p) - round(n_q)) mod 2 == (p - q)
+mod 2 AND y_p, y_q > 1e-5; g = number of DISTINCT integer levels of n_p
+attained at marked points (n_p is monotone, so one level = one arrangement
+root; levels sitting on degenerate endpoints are removed by the y test).
 
-  Closed form: f_k(d)=cos(2*pi*m/N)  <=>  d^2 - 2*b*cos(2*pi*m/N)*d
-  + (b^2-a^2) = 0, roots  d = b*cos(2*pi*m/N)
-  +/- sqrt(b^2*cos^2(2*pi*m/N) - (b^2-a^2)).  Note a^2 - b^2*sin^2 >= 0 is
-  the two-circle intersection condition along the ray.
+This is the bounded brute-force oracle that validates the O(1)-per-tuple
+closed form in code/solution.py on every reachable tuple; it is NOT the
+G(500) method (its cost scales with the grid resolution N, appropriate only
+for the small c,s,p,q of the oracle values).
 
-  Physical constraints on candidate d (checked on every root):
-    * both planet types' two-circle intersection: |a-b| <= d <= a+b;
-    * 1 cm closest gap between S and C boundaries:  R - r - d >= 1;
-    * d > 0.
-
-  Algorithm per (c,s,p,q): for every non-degenerate slot m_p, form the
-  quadratic in d and keep its real roots inside the valid d interval; dedupe;
-  for each candidate d, check whether size q has any non-degenerate valid
-  slot (|f_q(d)-cos(2*pi*m/N)| < TOL).  g = number of such d.
-  Complexity O(N) per pair (N = s+c staircase to ~40 for the oracle cases).
-
-  This file IS the brute oracle.  It is a bounded, tiny-N program that
-  reproduces the statement's worked values; it is not the G(500) method.
-
-  Oracle values to reproduce:
-      g(16,5,5,6) = 9
-      G(16)       = 9      (only pair: g(16,5,5,6))
-      G(20)       = 205    (22 pairs with s+p+q <= 20)
-  Output goes to /workspace/code/out/lattice_test.txt
+Expected: g(16,5,5,6)=9, G(16)=9, 22 per-tuple G(20) values summing 205.
+Transcript: /workspace/code/out/brute_oracle_final.txt
 """
-
 import math
+import os
 import time
 
-OUTFILE = "/workspace/code/out/lattice_test.txt"
-TOL = 1e-9
+import numpy as np
 
-# ----------------------------------------------------------------------
-# geometry helpers
-# ----------------------------------------------------------------------
+OUT = "/workspace/code/out/brute_oracle_final.txt"
+NGRID = 1 << 20
+TOL = 1e-3
+YTOL = 1e-5
 
-def radii(c, s):
-    """(R, r, N): ring radius, sun radius, lattice size N = c + s."""
+
+def n_arrays(c, s, t, dv):
+    """n_t(d) = [(c-t)*beta + (s+t)*mu]/pi over the d grid (float scan)."""
     R = c / (2.0 * math.pi)
     r = s / (2.0 * math.pi)
-    return R, r, c + s
+    rho = t / (2.0 * math.pi)
+    a = R - rho
+    b = r + rho
+    x = (a * a - b * b + dv * dv) / (2.0 * dv)
+    y = np.sqrt(np.maximum(a * a - x * x, 0.0))
+    beta = np.arctan2(y, x)
+    mu = np.arctan2(y, x - dv)
+    return ((c - t) * beta + (s + t) * mu) / math.pi
 
 
-def a_b(k, R, r):
-    """(a, b): centre distances to O and to S for a size-k planet (radius
-    rho = k/(2pi) gives a = R-rho, b = r+rho)."""
-    rho = k / (2.0 * math.pi)
-    return R - rho, r + rho
+def y_array(c, s, t, dv):
+    """Half-height y of the tangency point (degeneracy measure), per grid d."""
+    R = c / (2.0 * math.pi)
+    r = s / (2.0 * math.pi)
+    rho = t / (2.0 * math.pi)
+    a = R - rho
+    b = r + rho
+    x = (a * a - b * b + dv * dv) / (2.0 * dv)
+    return np.sqrt(np.maximum(a * a - x * x, 0.0))
 
 
-def f_k(d, k, R, r):
-    """cos of the angle at S (between SO and SP) of a size-k planet whose
-    centre is at offset d from S: f = (d^2 + b^2 - a^2)/(2db)."""
-    a, b = a_b(k, R, r)
-    return (d * d + b * b - a * a) / (2.0 * d * b)
+def d_interval(c, s, p, q):
+    """(d_min, d_max): interior centre-offset range with both types tangent
+    and the 1 cm S-C gap, d_max = R - r - 1."""
+    R = c / (2.0 * math.pi)
+    r = s / (2.0 * math.pi)
+    ap, bp = R - p / (2.0 * math.pi), r + p / (2.0 * math.pi)
+    aq, bq = R - q / (2.0 * math.pi), r + q / (2.0 * math.pi)
+    d_min = max(abs(ap - bp), abs(aq - bq))
+    d_max = min(ap + bp, aq + bq, R - r - 1.0)
+    return d_min, d_max
 
 
-def cos_slot(m, N):
-    """cos(2*pi*m/N) for slot m in a lattice of size N."""
-    return math.cos(2.0 * math.pi * m / N)
-
-
-def nondegenerate_slots(N):
-    """Non-degenerate slot representatives m with 0 < m < N/2.  Each such m
-    is the mirror pair {m, N-m} of positions; m=0 and 2*m=N are degenerate
-    (both positions coincide) and excluded."""
-    out = []
-    for m in range(1, N // 2 + 1):
-        if 2 * m == N:
-            continue
-        out.append(m)
-    return out
-
-
-def candidate_roots(m, k, R, r):
-    """Real d roots of f_k(d) = cos(2*pi*m/N) (closed-form quadratic roots).
-    Returns [] if the discriminant is negative."""
-    a, b = a_b(k, R, r)
-    c = cos_slot(m, int(round(2.0 * math.pi * (R + r))))
-    disc = b * b * c * c - (b * b - a * a)
-    if disc < 0:
-        return []
-    sd = math.sqrt(disc)
-    return [d for d in (b * c + sd, b * c - sd) if d > 1e-12]
-
-
-def valid_d_interval(c, s, p, q):
-    """(DL, DU) or None: d range with both sizes' two-circle intersections
-    and the 1 cm gap R - r - d >= 1 and d > 0."""
-    R, r, _ = radii(c, s)
-    bounds = []
-    for k in (p, q):
-        a, b = a_b(k, R, r)
-        bounds.append((abs(a - b), a + b))
-    DL = max(lo for lo, _ in bounds)
-    DU = min(hi for _, hi in bounds)
-    DU = min(DU, R - r - 1.0)
-    if DL > DU or DU <= 0:
-        return None
-    return DL, DU
-
-
-def valid_slots(d, k, N, R, r, tol=TOL):
-    """Non-degenerate slots m (0 < m < N/2) for which f_k(d) = cos(2*pi*m/N)
-    within tol.  Each such m describes the two positions {m, N-m}."""
-    out = []
-    for m in nondegenerate_slots(N):
-        if abs(f_k(d, k, R, r) - cos_slot(m, N)) <= tol:
-            out.append(m)
-    return out
-
-
-# ----------------------------------------------------------------------
-# counting
-# ----------------------------------------------------------------------
-
-def g_count(c, s, p, q, verbose=False):
-    """g(c,s,p,q) per the discrete-lattice model.
-
-    Returns (g, details) where details is a list of dicts
-      {d: float, m_p: [non-degenerate p slots], m_q: [non-degenerate q
-      slots], passed_q: bool}.
-    Each d with passed_q and with at least one non-degenerate slot for both
-    sizes contributes exactly ONE arrangement (two p-planets at the mirror
-    pair, two q-planets at theirs).
-    """
-    R, r, N = radii(c, s)
-    dr = valid_d_interval(c, s, p, q)
-    if dr is None:
+def g_grid(c, s, p, q, N=NGRID, tol=TOL, ytol=YTOL):
+    """Naive-oracle g(c,s,p,q): distinct integer levels of n_p at valid grid
+    points.  Returns (g, sorted level list)."""
+    d_min, d_max = d_interval(c, s, p, q)
+    if d_min > d_max:
         return 0, []
-    DL, DU = dr
-
-    # candidate d values: roots of the p-equation over non-degenerate slots
-    candidates = {}           # rounded key -> (d, m_p)
-    for mp in nondegenerate_slots(N):
-        for d in candidate_roots(mp, p, R, r):
-            if DL - 1e-9 <= d <= DU + 1e-9:
-                key = round(d, 9)
-                if key not in candidates:
-                    candidates[key] = (d, mp)
-                else:
-                    # same d from another slot: keep both m's for reporting
-                    pass
-
-    details = []
-    for key in sorted(candidates):
-        d, mp = candidates[key]
-        mps = valid_slots(d, p, N, R, r)
-        mqs = valid_slots(d, q, N, R, r)
-        passed_q = len(mqs) > 0
-        if mps and mqs:
-            details.append(dict(d=d, m_p=mps, m_q=mqs, passed_q=True))
-        elif verbose:
-            details.append(dict(d=d, m_p=mps, m_q=mqs, passed_q=False))
-
-    if verbose:
-        for v in details:
-            print("  d = %.17g   p-slots %-10s q-slots %-10s %s"
-                  % (v['d'], v['m_p'], v['m_q'],
-                     "VALID" if v['passed_q'] else "(q fails)"))
-    valid = [v for v in details if v['passed_q']]
-    return len(valid), valid
+    dv = np.linspace(d_min, d_max, N)
+    npv = n_arrays(c, s, p, dv)
+    nqv = n_arrays(c, s, q, dv)
+    rp = np.rint(npv)
+    rq = np.rint(nqv)
+    ok = (np.abs(npv - rp) < tol) & (np.abs(nqv - rq) < tol)
+    ok &= ((rp.astype(np.int64) - rq.astype(np.int64)) % 2) == ((p - q) % 2)
+    yp = y_array(c, s, p, dv)
+    yq = y_array(c, s, q, dv)
+    ok &= (yp > ytol) & (yq > ytol)
+    levels = sorted(set(rp.astype(np.int64)[ok]))
+    return len(levels), levels
 
 
-def G_sum(n, verbose=False):
-    """G(n) = sum over s>=5, p>=5, p<q, s+p+q<=n of g(s+p+q, s, p, q)."""
-    total = 0
+def all_tuples(n):
+    """(c,s,p,q) with s+p+q<=n, s>=5, p>=5, p<q (c = s+p+q), sorted."""
+    return sorted((s + p + q, s, p, q)
+                  for s in range(5, n - 10)
+                  for p in range(5, n - s - 5)
+                  for q in range(p + 1, n - s - p + 1))
+
+
+def run_table(n, emit):
+    """All per-tuple g for s+p+q<=n; returns (rows, total)."""
     rows = []
-    for s in range(5, n - 10):
-        for p in range(5, n - s - 5):
-            for q in range(p + 1, n - s - p + 1):
-                c = s + p + q
-                g, _ = g_count(c, s, p, q, verbose=verbose)
-                rows.append((c, s, p, q, g))
-                total += g
-    return total, rows
+    total = 0
+    for (c, s, p, q) in all_tuples(n):
+        gi, _ = g_grid(c, s, p, q)
+        rows.append((c, s, p, q, gi))
+        total += gi
+    return rows, total
 
-
-# ----------------------------------------------------------------------
-# oracle driver
-# ----------------------------------------------------------------------
 
 def main():
-    out = []
-    def emit(s=""):
-        print(s, flush=True)
-        out.append(s)
+    lines = []
+    def emit(s_=""):
+        print(s_, flush=True)
+        lines.append(s_)
 
-    emit("PE620 discrete-lattice brute oracle (least-mesh-angle model)")
-    emit("beta = 2*pi/(s+c), N = s+c slots; candidate d = closed-form roots")
-    emit("of f_p(d)=cos(2*pi*m_p/N); each candidate needs a valid q slot.")
-    emit("Each valid d = exactly one arrangement (2 p-planets + 2 q-planets")
-    emit("at the mirror slot pairs).  tol = %.0e." % TOL)
-    emit("=" * 72)
+    emit("PE620 naive brute oracle: n_t = [(c-t)*beta + (s+t)*mu]/pi, grid scan")
+    emit("grid N = 2^%d, |n-round| < %.0e for BOTH types, parity"
+         % (NGRID.bit_length() - 1, TOL))
+    emit("(round(n_p)-round(n_q)) mod 2 == (p-q) mod 2, degenerate endpoints")
+    emit("excluded (y_p, y_q > %.0e);  g = distinct integer levels of n_p"
+         % YTOL)
+    emit("at valid grid points.")
+    emit("=" * 74)
 
-    # [1] g(16,5,5,6) must be 9
+    # [1] g(16,5,5,6)
     t0 = time.perf_counter()
-    g, dvals = g_count(16, 5, 5, 6, verbose=True)
+    g, lv = g_grid(16, 5, 5, 6)
     dt = time.perf_counter() - t0
     emit("")
     emit("[1] g(16,5,5,6) = %d   (oracle 9)   %s   [%.2fs]"
          % (g, "AGREE" if g == 9 else "DISAGREE", dt))
-    emit("    %d distinct valid d values:" % len(dvals))
-    for v in dvals:
-        emit("      d = %.17g   p-slots %s   q-slots %s"
-             % (v['d'], v['m_p'], v['m_q']))
-    emit("")
+    emit("    n_p integer levels attained at valid d: %s" % (lv,))
 
-    # [2] G(16) must be 9
+    # [2] G(16)
     t0 = time.perf_counter()
-    g16, rows16 = G_sum(16)
+    rows16, g16 = run_table(16, emit)
     dt = time.perf_counter() - t0
+    emit("")
     emit("[2] G(16) = %d   (oracle 9)   %s   [%.2fs]"
          % (g16, "AGREE" if g16 == 9 else "DISAGREE", dt))
-    for c, s, p, q, gv in rows16:
-        emit("      g(%d,%d,%d,%d) = %d" % (c, s, p, q, gv))
-    emit("")
+    for (c, s, p, q, gi) in rows16:
+        emit("      g(%2d,%2d,%2d,%2d) = %3d" % (c, s, p, q, gi))
 
-    # [3] G(20) must be 205
+    # [3] G(20)
     t0 = time.perf_counter()
-    g20, rows20 = G_sum(20)
+    rows20, g20 = run_table(20, emit)
     dt = time.perf_counter() - t0
-    emit("[3] G(20) = %d   (oracle 205)   %s   [%.2fs]"
+    emit("")
+    emit("[3] G(20): %d tuples (s+p+q<=20), per-tuple g:" % len(rows20))
+    for (c, s, p, q, gi) in rows20:
+        emit("      g(%2d,%2d,%2d,%2d) = %3d" % (c, s, p, q, gi))
+    emit("")
+    emit("G(20) = %d   (oracle 205)   %s   [%.2fs]"
          % (g20, "AGREE" if g20 == 205 else "DISAGREE", dt))
-    emit("    per-pair g values (%d pairs, s+p+q<=20):" % len(rows20))
-    emit("      c  s  p  q    g")
-    for c, s, p, q, gv in rows20:
-        emit("     %2d %2d %2d %2d  %3d" % (c, s, p, q, gv))
-    emit("")
 
-    v1 = "AGREE" if g == 9 else "DISAGREE"
-    v2 = "AGREE" if g16 == 9 else "DISAGREE"
-    v3 = "AGREE" if g20 == 205 else "DISAGREE"
-    emit("Verdicts: g(16,5,5,6)=9 -> %s | G(16)=9 -> %s | G(20)=205 -> %s"
-         % (v1, v2, v3))
-    emit("MODEL %s the oracle on all three values."
-         % ("MATCHES" if v1 == v2 == v3 == "AGREE" else "DOES NOT MATCH"))
+    v_ok = (g == 9 and g16 == 9 and g20 == 205)
     emit("")
-    emit("Output saved to %s" % OUTFILE)
-
-    with open(OUTFILE, "w") as f:
-        f.write("\n".join(out) + "\n")
+    emit("Naive oracle %s the three oracle values 9 / 9 / 205."
+         % ("MATCHES" if v_ok else "DOES NOT MATCH"))
+    emit("")
+    emit("Transcript saved to %s" % OUT)
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    with open(OUT, "w") as f:
+        f.write("\n".join(lines) + "\n")
 
 
 if __name__ == "__main__":

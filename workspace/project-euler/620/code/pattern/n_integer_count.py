@@ -22,7 +22,7 @@ import math
 import numpy as np
 import os
 
-OUT = "/workspace/code/out/n_integer_model.txt"
+OUT = "/workspace/code/out/n_integer_model_fresh.txt"
 os.makedirs("/workspace/code/out", exist_ok=True)
 
 
