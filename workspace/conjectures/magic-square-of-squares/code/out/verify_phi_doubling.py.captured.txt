@@ -1,0 +1,5 @@
+Im(w(t)^2) = 4*t*(1 - t**2)/(t**4 + 2*t**2 + 1)
+Im(w(n/m)^2) - f(m,n) = 0
+(m,n)=(9,2): f=0.7673356401384083, Im(w^2)=5544/7225, equal=False
+(m,n)=(4,3): f=0.5376, Im(w^2)=336/625, equal=False
+IDENTITY VERIFIED

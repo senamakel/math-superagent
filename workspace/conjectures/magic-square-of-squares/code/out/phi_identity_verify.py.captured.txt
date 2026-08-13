@@ -1,0 +1,14 @@
+[1] sympy: expand(f - (1 - r^2)) = m**4/(m**4 + 2*m**2*n**2 + n**4) + 2*m**2*n**2/(m**4 + 2*m**2*n**2 + n**4) + n**4/(m**4 + 2*m**2*n**2 + n**4) - 1 -> NOT IDENTITY
+[2] random exact identity check (2000 pairs, m <= 1e6): PASS
+[3] canonical opposite-parity pairs M <= 600: 73031 distinct f-values, 73031 distinct r-values, conflicts 0 -> PASS
+[4] |Phi(B)| closed-form vs direct enumeration, B = 2..1200: PASS (all 1199 values equal)
+    |Phi(1000)| = 202861 (closed form gives 202861)
+    recorded |Phi(150)|=4582 (got 4582), |Phi(200)|=8156 (got 8156), |Phi(400)|=32495 (got 32495)
+[5] f(P_k,P_{k-1}) = 1 - 1/P_{2k-1}^2, k=2..30: PASS
+[5b] f(m,n) < 1 - 1/P_{2k-1}^2 whenever m < P_{2k-1} (k = 3..6, i.e. all pairs with m < 985): 2980 FAILS
+
+[6] record-max numerator/denominator heads:
+    numerators : [24, 840, 28560, 970224, 32959080, 1119638520, 38034750624]
+    denominators: [25, 841, 28561, 970225, 32959081, 1119638521, 38034750625]
+    odd Pell   : [1, 5, 29, 169, 985, 5741, 33461, 195025]
+    |Phi(2^k)| k=1..10: [1, 4, 15, 55, 217, 847, 3358, 13332, 53258, 212740]

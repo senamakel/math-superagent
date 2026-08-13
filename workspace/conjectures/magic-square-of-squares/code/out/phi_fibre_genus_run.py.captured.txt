@@ -1,0 +1,12 @@
+homogeneous degree 0 (f(tm,tn)==f(m,n)): True
+f(m, r m) = -4*r*(r**2 - 1)/(r**2 + 1)**2
+depends on ratio only (no m left): True
+g(r)-C numerator degree in r: 4
+  => for each constant C, at most 4 ratios r = n/m solve f=C
+
+Each such ratio r sweeps the whole line {(p, r p)} : f is constant on it.
+So the 'fibre' f(p,q)=C is a finite union of rational lines (genus 0).
+Faltings (genus>=2 finite points) does NOT apply to this fibration.
+
+ratios r with f(1,r)=f(9,2): [-9/2, -11/7, 2/9, 7/11]
+(9,2) itself is ratio n/m = 2/9; the listed roots are the full level set)
