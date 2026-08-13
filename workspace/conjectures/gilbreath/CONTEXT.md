@@ -30,13 +30,18 @@ measurement only.
    **Not load-bearing**: bounded gap + j → ∞ suffice regardless.
 6. **Inter-giant gaps (15 giants): 22,8,4,26,2,14,2,14,4,4,12,15,13,64
    rows** — max 64, the 175→239 drought (pattern-finder pass to depth 300,
-   `code/out/pattern_finder_wider_giants.captured.txt`; **this corrects
-   thread regeneration.md's "max 26 unchanged"**). The 15th giant, row 239,
-   records j = 5,596,824 and lands at the last column of row 240 —
-   **width-capped, true j ≥ 5,596,824**, same status as depth-1000's i=161.
-   64 ≪ the jump scale (~10⁵–10⁶ at this b), so the reduction keeps orders
-   of slack; but max-gap 26→64 is the first hint gaps may grow with b.
-   **Measurement, not proof.**
+   `code/out/pattern_finder_wider_giants.captured.txt`). **TWO figures live
+   in this run's records with a convention disagreement**: the raw pass
+   reports max 64 over all 15 events; the checked claim
+   `wider-width-giant-record-3e8` excludes the 15th giant (landing
+   width-truncated at flooring 1, jump ≥ 5,596,824 a lower bound) and
+   reports live-regime max 26 over the 14 fully-live giants. The 64-row
+   GAP itself is exact — both event row indices are width-independent and
+   no j>1000 event occurs in rows 176..238; only the 15th jump SIZE is a
+   lower bound. Threshold table (3e8 run): max gap 26 at J ∈ {100,300,1000},
+   30 at J=10⁴, 18 at J=10⁵. 64 ≪ the jump scale (~10⁵–10⁶ at this b),
+   so the reduction keeps orders of slack; but 64 is the first hint gaps
+   may grow with b. **Measurement, not proof — see Contradictions.**
 7. **Bounded gap + j → ∞ ⇒ b_k ≥ 1 forever ⇒ GC.**
 
 **Next (Directive 26):** decide whether "the inter-giant gap is bounded" is a
