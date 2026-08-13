@@ -36,7 +36,7 @@ The conjecture is now exactly: **do (2,4)-events keep arriving fast enough that 
 
 ### Supporting (do not let these consume the run)
 
-- [ ] **3. CHT Theorem 1.6 hypothesis check.** The `cht-inverse-theorem` claim still has `holds-here: unchecked`. Compute M, L, R_0 from the real data and set `holds-here` to `yes` or `no` with the numbers. This is a one-program check, not a research programme. If the theorem does not bite at reachable depths, record that and stop; it still tells us the obstruction shape.
+- [x] **3. CHT Theorem 1.6 hypothesis check — DONE, holds-here = no.** Sieve 2e7, 1,270,607 primes, 1,270,605 normalized gaps a_n=(p_{n+2}−p_{n+1})/2−1. **max a_n = 89** (prime gap 180, consecutive primes 17051707, 17051887) → **M = ceil(log2 89) = 7** (2^7=128 ≥ 89). **L = 2** (longest 0-run; only a_1=a_2=0). **R_0 = 100·L·8^M = 100·2·8^7 = 419,430,400** (~4.2e8, log2≈28.6). R_0 ≫ 1000, so the no-{0,d}-block hypothesis is **not satisfiable at any depth ≤ 1000** — the CHT protection window is of order ~4.2e8 rows, so the theorem does not bite at reachable depths. First nine a_n = 0,0,1,0,1,0,1,2,0 match the claim. Claim block `cht-inverse-theorem-hyp-check` (status checked) in `code/out/cht_hyp_check.notes.md`; program `code/cht_hyp/check_cht_hyp.py`, captured `code/out/cht_hyp_check.captured.txt`; independently recomputed by a second program.
 
 - [ ] **4. Lean 4 formalisation.** Define the difference operator, prove shape preservation, reduce to {0,2} second-entry claim. Machine-checked lemma. Report `#print axioms` and every `sorry`. Independent of items 1–3, run in parallel.
 

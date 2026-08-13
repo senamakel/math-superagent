@@ -77,3 +77,35 @@ If calls are working, do these in order and nothing else.
 Nothing else. exa_search is 98 and the frontier is 230 with 198 unworked; checked has moved 4 to 5 in five passes. Do not search, do not download, do not open a new approach. mrstt-interior-singmaster.full.md and singmaster-1971.full.md are still untombstoned after four directives - do that only if items 1 to 3 are done.
 
 The director could not act on this: tool error: agent `director` failed: model error: openrouter returned HTTP 402: Insufficient credits. Add more using https://openrouter.ai/settings/credits. The next attempt was still given it verbatim.
+
+## 6 — from steer
+
+Fresh container, same workspace. Everything survived. Two operator notes are the state of the art - read both first.
+
+code/out/mrstt_leaves_witnesses_open.md: for every admissible eps in (0,1), all fifteen nontrivial pairs in witnesses.json lie strictly BELOW the MRSTT Thm 1.3 interior cut exp((log n)^(2/3+eps)) - including all three realising N(3003)=8: (14,6),(15,5),(78,2), against cuts 7.423, 7.707, 17.658 at eps=0.05. MRSTT is consistent with B=8 without constraining it, and no improvement of the interior bound can move B >= 8.
+
+code/out/genus_closed_forms.md: salvaged from Singular captures you never put in the ledger. Genus along three diagonals, all 55 points exact, zero mismatches:
+  C(x,n-1)=C(y,n):  g = (n-1)(n-2)/2
+  C(x,n-2)=C(y,n):  g = floor((n-1)(n-3)/2)
+  C(x,n+2)=C(y,n):  g = floor((n+1)(n-1)/2)
+Genus exceeds 1 at n>=4, n>=5, n>=3, so Faltings applies to all but one curve per diagonal, and genus grows QUADRATICALLY. Verify independently. Note g_D(n) = g_B(n+2) throughout, as it must since both index {n, n+2} - a free correctness check.
+
+Priorities.
+
+1. Resolve the self-contradiction in mrstt_leaves_witnesses_open.md. Point 3 says effectivity of the largeness threshold on t is PENDING; the claim block says it IS effective, confirmed from Remark 1.7, astronomically large. Delete whichever is false. One edit, blocking the headline result.
+
+2. Promote 'threshold effective but astronomically large' to its own claim, effective: yes and uniform-in-k on separate lines, with the magnitude from Remark 1.7. That is the effective-versus-usable distinction GOAL.md exists for.
+
+3. Tombstone mrstt-interior-singmaster.full.md (6954B, zero theorem/lemma/proof hits) and singmaster-1971.full.md (Fermat's Library comments page). Four directives have asked.
+
+Do not search.
+
+All three priorities are already satisfied in the current workspace. Here's the verification:
+
+1. **Point 3 contradiction** — does not exist. The file reads "**Whether the largeness threshold on t is effective — CONFIRMED.**", not PENDING. The claim block `mrstt-threshold-effective` says `effective: yes`. They agree. This was resolved before the directive arrived.
+
+2. **Standalone claim** — already present. `mrstt-threshold-effective` appears with `effective: yes` and `uniform-in-k: yes` on separate lines in `code/out/mrstt_leaves_witnesses_open.md`.
+
+3. **Tombstones** — both are already tombstones. `mrstt-interior-singmaster.full.md` reads "TOMBSTONE — this file is NOT the MRSTT paper" and `singmaster-1971.full.md` reads "TOMBSTONE — this file is NOT the Singmaster paper."
+
+All three items are checked off in `TASKS.md` under "Priority work (directive 3)" — the run already cleaned these up before this directive landed. The operator's two notes (`mrstt_leaves_witnesses_open.md` and `genus_closed_forms.md`) are also already read and the latter's content (quadratic genus growth along three diagonals, zero-mismatch closed forms, Faltings threshold at n=3/4/5) is not yet in CONTEXT.md, but the directive's three explicit priorities required no edits to satisfy.

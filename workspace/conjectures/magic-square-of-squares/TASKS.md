@@ -105,14 +105,24 @@ These have been unrun for two directives. Run them. Order: verifiers first
 - [ ] **`side_census.py M=800`** — both=0 survived M=200 and M=400; push to 800.
       `PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt; echo EXIT_CODE=$?`
 
+**Partial-sweeps caveat (directive 18):** `no_triple_fast_M700` stopped at
+i=40143/99407 (40.4%); `prefilter_census_M1000` at i=38006/202861 (18.7%).
+"Survivors 0" over a fraction is not "none at full M". Any claim from a
+partial sweep must carry the fraction covered, or it is asserted not checked.`
+
 ### Structural work — the run's deliverable
 
-- [ ] **IDENTIFY THE CONCORDANT-FORMS CURVE FOR both=0.**
-      1−s and 1+s simultaneously rational squares ⇔ point on x²+y²=2 (genus 0).
-      Derive the parametrisation of s, intersect with s = q1+q2 (q1,q2 ∈ Φ),
-      and check whether Φ-membership forces a local obstruction. Any found
-      obstruction must be run against the 66 plus-witnesses and 325 minus-witnesses
-      in `code/out/side_census.captured.txt`.
+- [ ] **IDENTIFY THE CONCORDANT-FORMS CURVE FOR both=0 (directive 18 priority 1).**
+      1−s and 1+s simultaneously rational squares is the classical concordant-forms
+      problem, equivalent to a rational point on the circle x²+y²=2 (genus 0).
+      Write the explicit curve for s = q1+q2 with q1,q2 ∈ Φ. The condition that
+      1±s are both squares is s = 2t/(1+t²) for some rational t. Intersect this
+      with the set S = {q1+q2 : q1,q2 ∈ Φ, q1+q2 < 1}. Ask whether Φ-membership
+      of the summands forces a local obstruction mod p that prevents s from being
+      of the form 2t/(1+t²). Any obstruction found must be run against the 66
+      plus-witnesses and 325 minus-witnesses in `code/out/side_census.captured.txt`
+      — both sets have exactly one side square, so the obstruction must permit one
+      and block the other, or it is false.
 
 - [ ] **WRITE THE CONDITIONAL RESULT AS A CLAIM.**
       Assumption: uniform boundedness of ranks of E/Q → 3×3 MSS existence reduces

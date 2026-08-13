@@ -44,7 +44,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/abs/1107.1010v6 | arXiv:1107.1010v6 | \| Number Theory (math.NT) \| MSC classes: \| 11D68, 11N37 secondary: 11D71, 11N56 \| Cite as: \| [arXiv:1107.1010][7] [math.NT] \| \| (or [arXiv:1107.1010v6][8] [math.NT] for this version) \| \|… |
 | 1 | https://arxiv.org/abs/1908.02526v2 | arXiv:1908.02526v2 | (math.AG) \| MSC classes: \| 14G05 (primary), 11D68, 11D25, 14F22 (secondary) \| Cite as: \| [arXiv:1908.02526][7] [math.NT] \| \| (or [arXiv:1908.02526v2][8] [math.NT] for this version) \| \|… |
 | 1 | https://arxiv.org/abs/2012.05984v1 | arXiv:2012.05984v1 | \| 2 figures \| Subjects: \| Number Theory (math.NT) \| MSC classes: \| 11D68, 11D72 \| Cite as: \| [arXiv:2012.05984][6] [math.NT] \| \| (or [arXiv:2012.05984v1][7] [math.NT] for this version) \| \|… |
+| 1 | https://arxiv.org/abs/2404.01508v3 | arXiv:2404.01508v3 | \| Subjects: \| Number Theory (math.NT) \| MSC classes: \| 11D72, 11A07, 11A41 \| Cite as: \| [arXiv:2404.01508][6] [math.NT] \| \| (or [arXiv:2404.01508v3][7] [math.NT] for this version) \| \|… |
 | 1 | https://arxiv.org/abs/2502.20935v2 | — | also investigated this conjecture and posed a similar question: Is a similar decomposition possible if 4 is replaced by 5? He 1arXiv:2502.20935v2 [math.NT] 16 Feb 2026 conjectured that for every… |
-| 1 | https://arxiv.org/abs/2605.04551v2 | arXiv:2605.04551v2 | \| 10 pages \| Subjects: \| Number Theory (math.NT) \| MSC classes: \| 11D68, 11Y16 \| Cite as: \| [arXiv:2605.04551][6] [math.NT] \| \| (or [arXiv:2605.04551v2][7] [math.NT] for this version) \| \|… |
 
-_325 further candidates not shown; they are cited once each._
+_333 further candidates not shown; they are cited once each._

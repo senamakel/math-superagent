@@ -5,7 +5,7 @@ rebuild from disk: established results with their basis, dead approaches and
 why, computed numbers, durable memory, and disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
-Budget 10,000 tokens (this file ~2100, so well under). Length is a bill the
+Budget 10,000 tokens (this file ~5700, so well under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
@@ -111,6 +111,29 @@ candidate event-timing mechanism) and `research/threads/regeneration.md`
   `code/regeneration/check_regenerate_lemma.py`,
   `code/out/check_regenerate_lemma.captured.txt`, thread
   `research/threads/regeneration.md`.
+- **Step law + recharge identity — ESTABLISHED (independent re-derivation).**
+  With the intruder pair `(x,y)=(row[b_k], row[b_k+1])`, exactly:
+  `b_{k+1} ≥ b_k ⟺ (x,y)=(2,4)`, and `b_{k+1} = b_k − 1` otherwise (the
+  erosion rate is exactly 1 per row, not "≥ b_k−1"). The recharge identity
+  `b_k = b_1 + Σ_{events i<k}(j_i+1) − (k−1)` (j_i = jump at event) is exact:
+  the `−(k−1)` term *is* the Odlyzko protection constant 1, and the `(2,4)`-
+  events are the *only* growth mechanism. **This is the narrowed target**:
+  the conjecture holds iff `(2,4)`-events arrive so fast that `Σ(j_i+1)` never
+  falls `k−1` behind. Verified by a fully independent implementation (own
+  sieve/generation/block measure) on primes < 3·10⁶ (216,816 primes) to depth
+  800: 0 step-law failures over 799 transitions, 0 recharge failures, 42
+  events, min b=2, margin 216,812 vs 798 consumption (≈272× surplus — but
+  recharge ≈ row width, so a single event refills nearly the whole block and
+  the surplus must not be read as a trend). Also confirmed: the **drain law**
+  `y_{k+1} = y_k − 2·[x_k=2]` on erosion steps (101/101) — and the step law
+  **holds on random non-prime arrays** (3,521 rows, 610 events, zero failures),
+  so these are combinatorial facts about the absolute-difference operator,
+  provable outright, with primes entering only through event density. Caveat
+  carried by the claim's hypotheses: the law needs an intruder pair to exist
+  (`b_k+1 < row width`); when the block runs to the end of a *finite* row
+  there is no pair, and that row erodes by 1 — the finite-width artifact
+  documented under Numbers. Anchor:
+  `code/out/step_law_and_recharge_verified.md` (claim `step-law-and-recharge-identity`). Do not re-derive.
 - **Mod-4 linearization (invariant candidate).** For k≥1, n≥2 where entries are
   even, `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)` (Odlyzko §2 eq.201). Turns the
   absolute-value problem into linear Pascal-triangle congruences mod 4 — the
@@ -287,18 +310,16 @@ recalled claim is relied on whose hypotheses fail here.
 
 ## Gaps
 
-- **The honest open question, stated sharply:** is there a k with block length
-  0? Everything computed says no (minima grow: 13,24,96,97,175,2762,...) and
-  nothing proves it. Thread `research/threads/regeneration.md` is open.
-- **Regeneration criterion established but the recurrence is open.** The local
-  criterion is `(e==2, c==4)` — the block must end in 2 with a 4 immediately
-  past it. This holds exactly to depth 1000 (60/60 events, zero failures).
-  What is open is **why** the boundary re-enters `(2,4)` before `b` hits 0 —
-  i.e. why the block-end flips to 2 and the intruder drains to 4 and sticks
-  rather than the block-length decaying to zero. The Rule 90 interior dynamics
-  (`research/threads/rule90-regeneration.md`) give one candidate explanation
-  (powers-of-2 depths force all-2 stretches via the Sierpinski kernel). The
-  mod-4 linearization is the cleanest algebraic handle.
+- **The live question: bound the (2,4)-event rate from below.** The step law and
+  recharge identity (`code/out/step_law_and_recharge_verified.md`) reduce the
+  conjecture to: `Σ_{i<k} (j_i + 1) ≥ k − 1 − b_1` for all k. Since `b_1=2`,
+  this is a statement about event frequency and jump sizes. A theorem of the
+  form "under hypothesis H, events arrive at rate ≥ r, and r suffices" is a
+  real partial result. Two routes: combinatorial (bound max erosion between
+  events from Rule 90 + drain law) and analytic (bound event density from prime
+  gap hypotheses). Measure inter-event gap distribution first.
+  Threads `research/threads/regeneration.md` and
+  `research/threads/rule90-regeneration.md`.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.

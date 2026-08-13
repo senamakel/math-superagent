@@ -235,3 +235,31 @@ Still unrun after two directives: benchmark.py, ratio_search.py, verify_prefilte
    - **Five unrun programs + side_census M=800** moved to top of blocking section.
 
 3. **`CONTEXT.md`** — updated search-halt text with current numbers; marked `hms-constant-bound` as RESOLVED; added proved-count drift resolution to Contradictions.
+
+## 18 — from steer
+
+Fresh container, same workspace. Everything survived, including 17 proved and 15 checked claims. Do not re-derive them.
+
+Two established results to build on. code/out/ferreira_proof_refuted.md: the claimed proof in arXiv 1506.06621 is invalid, its equation (47) does not follow from the stated substitution. code/out/side_census_result.md: the docstring hypothesis '1+(q1+q2) is never a rational square' is REFUTED - a square for 66 of 156,988,030 pairs at M=400, witnesses verified in exact Fraction arithmetic with in_phi confirming both members lie in Phi.
+
+What replaced it is your best lead, reproduced at M=200 and M=400: 1-(q1+q2) is a rational square 325 times, 1+(q1+q2) 66 times, and BOTH is 0. Neither condition is empty, so both=0 is not an artefact. A candidate impossibility lemma on PAIRS, far cheaper than anything on triples.
+
+Priorities.
+
+1. Identify the curve. 1-s and 1+s simultaneously rational squares is the classical concordant-forms problem, equivalent to a rational point on a specific curve. Write it down for s = q1+q2 with q1,q2 in Phi and ask whether Phi-membership forces a local obstruction. Any obstruction must be run against the pairs in code/out/side_census.captured.txt or it is asserted, never checked.
+
+2. PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt
+
+3. Partial sweeps are never complete. no_triple_fast_M700 stopped at i=40143/99407; prefilter_census_M1000 at i=38006/202861 with 'survivors 0', which is 19 percent of the index. Any claim from either carries the fraction covered.
+
+hms-2026-bremner-effective-constant asserts an effective constant EXISTS and gives no value. Bounding C is the blocker. Keep value-computed: no.
+
+Do not search.
+
+Three changes, all driven by directive 18's priorities:
+
+1. **TASKS.md structural work** — moved the concordant-forms curve identification to the top and made it explicit that the obstruction must be run against the 66 plus-witnesses and 325 minus-witnesses, not just stated.
+2. **Thread `pair-sum-both-squares-incompatibility`** — rewrote next steps so curve identification is step 1, side_census M=800 is step 2, matching the directive's order.
+3. **TASKS.md unrun-programs section** — added the partial-sweeps caveat the directive insisted on: `no_triple_fast_M700` at 40.4% and `prefilter_census_M1000` at 18.7%; any claim from either must carry that fraction.
+
+CONTEXT.md needed no change — the partial-sweeps fraction, the HMS constant gap, and the both=0 finding are all already there. The directive's content is reflected in the files that control what gets done next.

@@ -1,65 +1,71 @@
 ```thread
-question: Why does a fresh {0,2} block always reappear before the current one is exhausted by erosion? (Is there a k with block length 0?)
-status: open — consumption proved and sourced; regeneration is a LOCAL criterion (edge-2/intruder-4, checked exactly to depth 1000) but its availability is not proved; CHT inverse theorem pins the only obstructions
+question: Can we bound the (2,4)-event rate from below, and does that bound suffice to keep b_k ≥ 1 for all k?
+status: open — step law and recharge identity are exact (verified depth 800, zero failures); the conjecture is now the event-rate inequality
 rests-on: |
-  - Reduction proved (A_k(1) ∈ {0,2} ⇔ conjecture), checked to depth 599
-  - Consumption proven & sourced: Odlyzko 1993 block lemma (length-N {0,2} block → N+1 rows start 1, constant 1); Killgrove–Ralston 1959 same; Chase 2024 Lemma 3.2 ({0,d}-block length L ⇒ max drops by 1 after L rows). Block length b_k → b_{k+1} ≥ b_k − 1.
-  - REGENERATION IS LOCAL (run's own corrected computation): b_{k+1} ≥ b_k ⟺ (A_k[b_k]==2 and A_k[b_k+1]==4), zero failures over all 998 transitions k=1..999 (sieve 20M, depth 1000); exactly 60 regeneration events (matching the independent long-standing count). The earlier "refutation" was an off-by-one edge-index bug (e_k=A_k[b_k−1] instead of A_k[b_k]) and has been withdrawn (code/out/check_regenerate_lemma.notes.md).
-  - Block profiles to depth 1000; minima [13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263] never reach 0
-  - Muney 2026 (arXiv:2606.23721): the FULL valid-extension set K_S is governed by the whole ordered right anti-diagonal (folding map F_S; K_S=C_S ⟺ e_i≤1+Σ_{j>i}e_j). This is a DIFFERENT, global question — orthogonal to the local block-regeneration criterion; no contradiction.
-  - CHT 2026 Theorem 1.6 (deterministic inverse): the ONLY obstructions to decay are long zero-blocks or long shallow {0,d}-blocks (d≥2); Theorem 1.3 random-analogue needs only 2-separated non-concentration.
-blocked-by: the local criterion (edge 2 + intruder 4) is checked to depth 1000 but not PROVED for all k; and even as a proven law it only says when regeneration CAN happen, not that it happens before b_k reaches 0 (its availability/frequency is unproved).
+  - Step law: b_{k+1} ≥ b_k ⟺ (x,y) = (2,4), else b_{k+1} = b_k − 1. Verified independently to depth 800 (0 failures). code/out/step_law_and_recharge_verified.md.
+  - Recharge identity: b_k = b_1 + Σ_{events i<k} (j_i + 1) − (k−1). Verified independently to depth 800 (0 failures). The conjecture holds iff Σ (j_i + 1) ≥ k−1−b_1 for all k.
+  - Drain law: during erosion, y_{k+1} = y_k − 2·[x_k = 2]. Verified 101/101. code/out/regeneration_analysis.captured.txt.
+  - Block lemma (proved): constant = 1, n+1 rows per length-n block. research/notes/block_lemma.md.
+  - Rule 90 interior (proved): halved entries evolve under XOR. research/notes/rule90-interior.md.
+  - CHT 2026 Theorem 1.6: only obstructions to decay are long zero-blocks or long shallow {0,d}-blocks.
+  - Eppstein 2011: gap bounds alone do not suffice; must add non-concentration or restrict to primes.
+blocked-by: nothing — the step law and recharge identity are exact; what remains is bounding the event rate
 next: |
-  1. State the honest open question as: is there a k with block length 0? Nothing computed says yes (min block ever seen = 13); nothing proves no.
-  2. The local criterion being exact makes regeneration a well-defined event with computable rate at each row; turn the depth-1000 statistics (how often (e,c)=(2,4) occurs at regenerations, 60 events) into a lower-bound argument if possible.
-  3. Measure the CHT-1.6 obstructions on the real rows (longest zero-blocks, longest shallow {0,d}-blocks vs the R_m thresholds) to see how far the prime rows are from the failure regime.
-  4. Muney's folding-map/fiber formalism is the correct global object for the extension-set question; keep it separate from the local regeneration criterion.
+  1. Extract inter-event gap distribution and jump-size distribution from blocks_depth1000.json. Measure cumulative recharge vs consumption at each event, worst-case inter-event gap, and whether the surplus trend is growing or shrinking.
+  2. Route A (combinatorial): prove a worst-case bound on erosion between events from the Rule 90 edge-flip dynamics + drain law. If the edge must flip to 2 within at most F(b) rows, then the max inter-event gap is bounded.
+  3. Route B (analytic): assume a prime-gap hypothesis, derive a lower bound on event density. Must state how it beats Eppstein.
+  4. Deliverable: a theorem of the form "under hypothesis H, the event rate ≥ r, and r suffices."
 ```
 
-# Regeneration thread
+# Regeneration thread — event-rate lower bound
 
-```claim
-id: regeneration-criterion-local-exact
-statement: In the prime Gilbreath triangle, let the leading {0,2} block of row A_k occupy 0-based columns 1..b_k, and define the edge e_k = A_k[b_k] (the last {0,2} entry of the block) and the intruder c_k = A_k[b_k+1]. Then b_{k+1} >= b_k  iff  (e_k == 2 and c_k == 4). Equivalently the first non-{0,2} value q_k = A_{k+1}[b_k] = |e_k - c_k| is in {0,2} iff (e_k,c_k)=(2,4).
-hypotheses: A_0 = primes (or any 2-then-odds sequence with even gaps >= ... ); c_k >= 4 by definition of intruder (first value past the {0,2} block, which has only even values and is not 0 or 2). b_k = length of the leading {0,2} block, positions 1..b_k.
-holds-here: yes - zero failures over all 998 transitions k=1..999 (sieve to 20,000,000, depth 1000); exactly 60 regeneration events, matching the independent long-standing count; both directions.
-status: proved (finite identity: q_k = |e_k-c_k| in {0,2} iff (e_k,c_k) = (2,4), since c_k >= 4 even; and b_{k+1} >= b_k iff q_k in {0,2} by definition of block length)
-bearing: regeneration is a single-row local property (edge==2 AND intruder==4) - the earlier CONTEXT.md "Ruled out" row claiming regeneration is not local was an off-by-one (e_k = A_k[b_k-1]) and is WITHDRAWN. The honest open question is purely frequency: how often (e==2,c==4) recurs before erosion (b shrinks by exactly 1 per non-regen row) drives b to 0. Minima record to depth 1000: 13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263 - never 0.
-answers: is-regeneration-local
-anchor: code/out/check_regenerate_lemma.captured.txt (Variant B), code/regeneration/check_regenerate_lemma.py, research/threads/regeneration.md
-```
+## The state of the problem
+
+Erosion is settled. The step law and recharge identity are exact:
+- **Step law:** `b_{k+1} ≥ b_k ⟺ (x,y) = (2,4)`, else `b_{k+1} = b_k − 1`
+- **Recharge:** `b_k = b_1 + Σ_{events i<k} (j_i + 1) − (k−1)`
+
+Both verified independently to depth 800 with zero failures (`code/out/step_law_and_recharge_verified.md`). The drain law (`y_{k+1} = y_k − 2·[x_k = 2]`) is also verified 101/101. These are combinatorial facts about the absolute-difference operator, not facts about primes.
+
+The conjecture is now exactly: **do (2,4)-events keep arriving fast enough that `Σ (j_i + 1)` never falls `k−1` behind?** Since `b_1 = 2` and `j_i ≥ 0`, the recharge identity gives `b_k = 2 + Σ (j_i+1) − (k−1)`. The conjecture `b_k ≥ 1` for all k is equivalent to `Σ_{i<k} (j_i + 1) ≥ k − 2`.
 
 ## What we know
 
-- **Consumption is proven & source-backed.** Odlyzko 1993 (block lemma, constant 1); Killgrove–Ralston 1959 (same, off-by-one index); Chase 2024 Lemma 3.2 ({0,d} version). A leading {0,2} block of length b_k implies b_{k+1} ≥ b_k − 1 — the block shrinks by at most one per row. Regeneration is the sole remaining obstruction.
+- **Consumption is exact, not just bounded.** The step law says `b_{k+1} = b_k − 1` at every non-event row. No "at most" — it is exactly one per row. The Odlyzko block lemma (constant 1) is the same fact from a different angle.
 
-- **Regeneration IS a single-row local property — established by the run's own corrected computation.** With the correct edge index e_k = A_k[b_k], the criterion
-  `b_{k+1} ≥ b_k  ⟺  (A_k[b_k] == 2 and A_k[b_k+1] == 4)`
-  holds with **zero failures over all 998 transitions** (k=1..999, sieve 20M / 1.27e6 primes, depth 1000), and exactly 60 regeneration events (matching the independent count). The old claim that regeneration is "not local" came from an off-by-one edge-index bug and has been **withdrawn** (`code/out/check_regenerate_lemma.notes.md`; claim `regeneration-lemma-edge-2-intruder-4-established`, status checked).
+- **Regeneration is a single-row local property.** With `e_k = A_k[b_k]` (correct edge index), `b_{k+1} ≥ b_k ⟺ (e_k==2, c_k==4)`. Zero failures over 998 transitions, 60 events. The old off-by-one "refutation" is withdrawn.
 
-- **Muney 2026 (arXiv:2606.23721) governs the full valid-extension set — a different, global question.** K_S (which integers can be appended while every row's leading entry stays 1) is governed by the whole ordered right anti-diagonal via the folding composition F_S: k∈K_S ⟺ F_S(|k−s_n|)=1, and K_S=C_S iff e_i≤1+Σ_{j>i} e_j (Theorem 20). This does NOT contradict the local regeneration criterion: the set of admissible next values is global, but whether the block *grows* when a particular next value is chosen is local. Both facts stand; neither subsumes the other.
+- **The drain law governs the intruder between events.** During erosion, `y_{k+1} = y_k` when `x_k=0`, and `y_{k+1} = y_k − 2` when `x_k=2`. The intruder is monotone non-increasing, reaches 4 and sticks. This plus the Rule 90 edge-flip dynamics is the combinatorial engine for Route A.
 
-- **The only obstructions are now pinned.** CHT 2026 Theorem 1.6 (deterministic inverse): if initial data a_n ≤ 2^M, no length-L zero-block, and no long shallow {0,d}-block, then the left diagonal is {0,1}-valued. A GC failure must be mediated by a long zero-block or a long shallow {0,d}-block; both are heuristically rare but unproved.
+- **The recharge identity is exact accounting.** `b_k = 2 + Σ (j_i+1) − (k−1)`. Empirically the surplus is enormous (272× at depth 800), but that is a fact about 800 rows, not a theorem. The recharge total is close to row width because a single event can refill most of the block — which is why the surplus looks large and must not be read as a trend.
 
-## Two sharp facts from the data
+## Two routes to the event-rate bound
 
-### Fact (a): Block length never approaches 0 — minima grow
-Minima over depth 1000: `[13, 24, 96, 97, 175, 2762, 5939, 31525, 31533, 31534, 733574, 1094263]`. Smallest block length after row 3 is **13**; minima grow rapidly. Strong numerical evidence the conjecture holds; not a proof.
+### Route A — Combinatorial: bound max erosion between events
 
-### Fact (b): Regeneration is real but NOT monotone
-`97→96`, `871→872`, `21→24` occur; consumption and regeneration alternate; longest genuine live-regime erosion run 13 rows (the 838-row run is a finite-width artifact).
+Between two (2,4)-events, the block erodes by exactly 1 per row. The intruder starts at some value ≥ 4 and drains to 4 (drop rate: 2 per row with edge=2, 0 per row with edge=0). The edge flips between 0 and 2 under the Rule 90 interior dynamics.
 
-## The honest open question
+A lemma bounding the longest possible run of (edge=0, intruder=4) before the edge flips to 2 would give a worst-case inter-event gap. This is a combinatorial claim: within a {0,2} block of length b, evolving under XOR, with an intruder y draining by the drain law, what is the maximum number of consecutive rows with edge=0?
 
-**Is there a k with block length 0?** Everything computed says no (min block ever seen = 13). Nothing proves it.
+If this maximum is G(b), then events are at most G(b) rows apart, and the recharge inequality can be checked. The Rule 90 depth-d=2^j prediction (`research/threads/rule90-regeneration.md`) is a candidate mechanism: if the edge flips to 2 at depths that are powers of 2, then G(b) ≤ 2^⌈log₂(b)⌉.
 
-## What must be explained
+### Route B — Analytic: bound event density from prime gaps
 
-For regeneration to fail, a row k must reach small block length with the rows below failing to hit the (edge-2, intruder-4) regeneration configuration before b hits 0. The data + sources say:
-1. Regeneration has an exact local criterion (edge 2, intruder 4) — checked to depth 1000, not proved for all k, and its availability at small block lengths is unmeasured as a theorem.
-2. The CHT inverse theorem reduces failure to two concrete structures (long zero-blocks, long shallow {0,d}-blocks) — measure these on the real rows.
-3. Muney's `e_i ≤ 1 + Σ_{j>i} e_j` interval-completeness criterion is the natural structural invariant for the full extension-set question; keep it separate from the local regeneration law.
+Assume a hypothesis on prime gaps and derive a lower bound on (2,4)-event frequency. The intruder at row k is ultimately derived from a prime gap at the block boundary. Under even a weak gap bound, can one show the intruder reaches 4 at a rate that keeps the recharge sum ahead?
+
+This is the "general class with gap bound + non-concentration" route. Must state explicitly how it beats Eppstein's anti-Gilbreath construction (which has small gaps but fails the conjecture). The CHT 2-separation hypothesis is the natural candidate.
+
+## First step: measure
+
+Before attempting either proof, extract from `blocks_depth1000.json`:
+- Inter-event gap distribution
+- Jump-size distribution
+- Cumulative recharge vs consumption at each event
+- Worst-case inter-event gap and block length at gap start
+- Whether the recharge surplus trend is growing or shrinking
+
+The data already exists. One program, run it, report the numbers.
 
 ## Data available
-- `code/out/witnesses.json` (depth 600); `code/out/blocks_depth1000.json`; `code/out/regeneration_analysis.captured.txt`; `code/out/check_regenerate_lemma.captured.txt` + `.notes.md` (criterion ESTABLISHED, refutation withdrawn).
-- Sources: Odlyzko 1993, Killgrove–Ralston 1959, Chase 2024, CHT 2026, Muney 2026, Eppstein 2011 anti-Gilbreath.
+- `code/out/blocks_depth1000.json`; `code/out/regeneration_analysis.captured.txt`; `code/out/check_regenerate_lemma.captured.txt`; `code/out/step_law_and_recharge_verified.md`; `code/out/step_law_captured.txt`; `code/out/step_law_independent.captured.txt`
+- Sources: Odlyzko 1993, Killgrove–Ralston 1959, Chase 2024, CHT 2026, Eppstein 2011

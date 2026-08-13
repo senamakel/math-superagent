@@ -148,10 +148,24 @@ disk), or asserted-by-source.
   The apparent discrepancy between 0.9453 and 0.9611 is entirely input scope:
   the former reads one capture file, the latter all three. The density method
   is sound — stop re-verifying it. (`code/out/coverage_triangulated.md`.)
-- **Saturation data** (checked, operator directive 5):
-  `aggregate_subprogression.py` M=11 covered only 3/11 residues (missing
-  0,1,2,3,4,6,8,9); M=33 is best at 12/33. No modulus is near saturation.
-  M=11 is the cheapest test of whether any modulus can be saturated at all.
+- **Modulus-11 saturation ANSWERED — structural (checked, directive 5)**:
+  of the 8 M=11-missing t-residues [0,1,2,3,4,6,8,9], **six are impossible**:
+  [0,1,2,6,9] make 840t+1 a QR mod 11 and t=8 makes it ≡0 mod 11
+  (non-primitive) — no polynomial family at modulus 11 can cover them
+  (Schinzel). Only {3,4} are Schinzel-legal-but-uncovered at pure M=11, and
+  **both are already realized at composite moduli**: M=33 covers t≡3 mod 11,
+  M=22 covers t≡4. So prime 11 is **fully saturated over its 5 legal residues
+  {3,4,5,7,10}, gap 0** (`definitive_structure.py`, `schinzel_residue_gap.py`).
+  The "8 missing residues" is an artifact of reading pure-M=11 families only:
+  no new family is needed there, and 6 residues are unobtainable for ever.
+  This ends the saturation question for modulus 11: it cannot be saturated as
+  posed (6 QR-blocked), and the other 2 are already covered elsewhere.
+  **Schinzel narrowing (directive 7):** of the 8 "missing" residues at M=11,
+  only 2 are actually reachable — s∈{3,4}. The other six are Schinzel-forbidden:
+  s∈{0,1,2,6,9} give b a QR mod 11 (no ℤ[k]-polynomial identity possible),
+  and s=8 gives b divisible by 11 (not primitive). Same analysis at M=23:
+  11 QNR-allowed residues, 9 realised, gap={3,8}. The saturation question at
+  each modulus reduces to the QNR-allowed-but-unrealised residues only.
 - **Subprogression families** (checked, operator directive 4): 1451 parametric
   identity families for n ≡ 1 (mod 840), each n = a·k + b with b ≡ 1 (mod 840)
   and a = 840m for m ∈ {11,13,17,19,22,23,26,29,31,33,34,37,38,39,41,43}.

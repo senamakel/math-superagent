@@ -43,21 +43,17 @@ The question is whether this structure forces s into a form that is
 incompatible with the concordant condition.
 
 **Next steps.**
-1. ~~Re-run side_census at larger M~~ — now at M=800 (directive 16), in TASKS.md.
-2. ~~Run the remaining phi_triple_variety programs~~ — five unrun programs in TASKS.md.
-3. **Name the curve for both=0 (directive 16).** The condition "both 1−s and 1+s
-   are rational squares" is equivalent to s = 2t/(1+t²) for some rational t
-   (parametrisation of the circle x²+y²=2). Write the explicit curve: if
-   s = q1+q2 with q1,q2 ∈ Φ, then s is a sum of two sin(4θ) values. The
-   condition that 1±s are both squares is that s is on the image of the
-   rational map t ↦ 2t/(1+t²). Intersect with the set S = {q1+q2 : q1,q2 ∈ Φ,
-   q1+q2 < 1}. Ask: does Φ-membership of the summands force a local
-   obstruction mod p that prevents s from being of the form 2t/(1+t²)?
-4. **Run the obstruction against the witnesses (directive 16).** If an
-   obstruction is found, it MUST be checked against the 66 plus-witnesses
-   and 325 minus-witnesses in `code/out/side_census.captured.txt` — both sets
-   have exactly one side square, so the obstruction must permit one and block
-   the other, or it is false.
+1. **Identify the curve (directive 18 priority 1).** The condition "both 1−s and 1+s
+   are rational squares" is the classical concordant-forms problem, equivalent to
+   a rational point on the circle x²+y²=2. Write the explicit curve for
+   s = q1+q2 with q1,q2 ∈ Φ: 1−s = t², 1+s = u² ⇒ t²+u² = 2 ⇒ s = 2w/(1+w²)
+   for some rational w. Intersect {s = q1+q2 : q1,q2 ∈ Φ, s < 1} with the
+   image of w ↦ 2w/(1+w²). Ask whether Φ-membership of the summands forces a
+   local obstruction. Any obstruction found must be run against the 66
+   plus-witnesses and 325 minus-witnesses in `code/out/side_census.captured.txt`.
+2. **Re-run side_census at M=800 (directive 18 priority 2).**
+   `PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt`
+3. **Run the remaining phi_triple_variety programs** — five unrun programs in TASKS.md.
 
 ```thread
 question: For q1,q2 in Phi with q1>q2 and q1+q2<1, can 1-(q1+q2) and

@@ -3,9 +3,11 @@
 Source: D. Singmaster, "How often does an integer occur as a binomial coefficient?",
 Amer. Math. Monthly 78 (1971) 385–386.
 
-**STATUS: NOT HELD.** The file `research/sources/singmaster-1971.full.md` is the
-Fermat's Library comments/annotation page (8538 bytes, mostly navigation, sign-in
-prompts, and truncated comment snippets ending in ellipsis). It is NOT the paper.
+**STATUS: NOT HELD.** The original is paywalled at tandfonline (DOI
+10.1080/00029890.1971.11992769, pp. 385-386) and was not freely obtainable this
+run; the `research/sources/singmaster-1971.full.md` file is the Fermat's Library
+comments/annotation page (8538 bytes, mostly navigation, sign-in prompts, and
+truncated comment snippets ending in ellipsis). It is NOT the paper.
 
 ## What the Fermat's Library page contains (and does not)
 

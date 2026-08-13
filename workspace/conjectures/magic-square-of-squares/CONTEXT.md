@@ -248,11 +248,15 @@ six-square-entry configurations are attainable; smallest-magic-sum six-square
 example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 
 **Approach statuses** (`research/APPROACHES.md`):
-- **uniform-height-bound-elliptic-ap** — **adopted**. GFP (ineffective) + HMS
-  (effective but >> 3). Doubled-point question settled; blocked by constant size,
-  not definitions. The conditional reduction to a finite computation (Theorem 1.2,
-  uniform rank boundedness) is the best structural result. **Blocking: write the
-  conditional-result claim and bound the HMS constant C.**
+- **resolve-magic-surface-birational** — the **adopted** line: determine κ of the
+  resolved 3×3 MSS variety X̃ (X⊂P⁸ is a surface with 256 singular points and no
+  lines — `magic-variety-is-surface-no-lines`, currently asserted; the direct
+  dimension/no-lines check is first in TASKS.md blocking).
+- **uniform-height-bound-elliptic-ap** — folded into that as the effectiveness
+  partner for the κ=2 case: GFP (ineffective) + HMS (effective but >> 3);
+  doubled-point question settled; blocked by constant size, not definitions.
+  Conditional reduction (uniform rank boundedness ⇒ AP lengths bounded) is claim
+  `uniform-rank-ap-bounded` (proved). **Blocking: bound the HMS constant C.**
 - **PARKED behind the blocking section** (directives 10/11/13): `hecke-character-product-l`,
   `kodaira-dimension-general-type`, `modular-jacobian-torsion-x0-32`. No work until
   the magic-variety check or the C-bound is done.
@@ -328,6 +332,11 @@ grid — none found. Necessary-condition check, not a proof. Extended exact
 |Φ(2000)|=811155, |Φ(3000)|=1824231; record max f values follow
 `f(P_k,P_{k−1}) = 1 − 1/P_{2k−1}²` with odd Pell hypotenuses 5,29,169,985,…
 (i.e. maxima occur on Pell pairs; m=2→24/25, m=5→840/841, m=12→28560/28561, …).
+Identity now also verified **symbolically** (`code/out/verify_pell_symbolic.captured.txt`,
+exit 0: sympy norm-factorisation `(a²+b²)²−4ab(b²−a²)=(a²+2ab−b²)²`, exact k=2..39,
+argmax probe to M≤1920); a Pell pair is always **among** the maximisers — the
+argmax is NOT unique (ties at M≤60, M≤960; claim `phi-suprema-are-pell-pairs`,
+corrected from the misnamed uniqueness version).
 
 **The literature's actual computational bound — sourced** (Morgenstern 2013,
 `research/summaries/morgenstern-extended-searches-2013.md`): 3809 instances of

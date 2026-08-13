@@ -79,4 +79,7 @@ def spam_genus(k1, k2):
             return 3*(b-1)//2
         else:
             return 3*(b-2)//2 + (1 if b % 4 == 2 else 0)
+    if a == 5:
+        # pairs {5,n}: slope 2n, drop 2 at multiples of 5 (period-5 correction)
+        return (2*b-2) - (2 if b % 5 == 0 else 0)
     return None

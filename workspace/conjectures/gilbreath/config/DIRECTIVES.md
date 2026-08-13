@@ -61,3 +61,32 @@ Then use rule90-interior-xor as steered: Rule 90 regenerates full-width rows at 
 downloads went 74 to 92 and frontier 361 to 403 with 347 unworked, while checked stayed at 3 - it has not moved in four passes. Stop downloading.
 
 The director could not act on this: tool error: agent `director` failed: model error: openrouter returned HTTP 402: This request requires more credits, or fewer max_tokens. You requested up to 48000 tokens, but can only afford 3293. To increase, visit https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263 and adjust the key's daily limit. The next attempt was still given it verbatim.
+
+## 6 — from steer
+
+YOUR TASK PROMPT CONTAINS A REFUTED STATEMENT. It was composed before the workspace was corrected and cannot be changed for the life of this container, so read this instead.
+
+The prompt says: 'A {0,2} block of length n protects roughly n/2 rows, so protection is spent geometrically.' That is FALSE and this run refuted it in a previous session. Do not act on it and do not reintroduce it.
+
+The truth, already established on disk: a leading {0,2} block of length n protects exactly n+1 rows. The protection constant is 1. If row k has A_k(1..n) in {0,2} then row k+1 has A_{k+1}(1..n-1) in {0,2}, since a difference of two elements of {0,2} is again in {0,2}; the block loses exactly one position per row and nothing replaces it from the left. Consumption is LINEAR, not geometric. See research/notes/block_lemma.md (claim odlyzko-block-lemma-exact, status proved) and code/out/step_law_and_recharge_verified.md. problem.md, METHOD.md and GOAL.md have all been corrected - trust those over your prompt wherever they disagree.
+
+Erosion is therefore SETTLED and is not the open problem. What is open is regeneration, and the accounting is exact:
+
+  step law:  b_{k+1} >= b_k if the intruder pair (x,y) = (2,4), else b_{k+1} = b_k - 1
+  recharge:  b_k = b_1 + sum over events i<k of (j_i + 1) - (k-1)
+
+verified with zero failures to depth 800 on 216816 primes, no b=1 to b=0 transition, minimum block length 2. A (2,4)-event is the ONLY mechanism that grows the block.
+
+So the conjecture is exactly: do (2,4)-events keep arriving fast enough that the recharge sum never falls k-1 behind? Spend this run on that and nothing else. A lower bound on the event rate, even under a stated hypothesis on prime gaps, is a real result. Another verification of erosion is not - it is already proved.
+
+Do not re-derive the step law. Verify it independently once if you must, then build on it.
+
+Two changes to `TASKS.md`, one to `CONTEXT.md`, one to the regeneration thread:
+
+- **`TASKS.md` rewritten.** The dead-reckoning items (deduplication, CHT as primary, Rule 90 prediction on its own) are gone. Item 1 is now "bound the (2,4)-event rate from below" — the run's whole job. The step law and recharge identity are treated as the accounting framework, with two routes (combinatorial and analytic) and "measure the inter-event gap distribution first" as the concrete next step. The Rule 90 depth prediction is subordinated to item 2 (a candidate mechanism for event timing). CHT hypotheses and Lean 4 are supporting items, not the main work.
+
+- **`CONTEXT.md` updated.** Run-state line now says "erosion settled, step law exact, focus is event-rate lower bound." The step law and recharge identity are added to Established with their anchor (`code/out/step_law_and_recharge_verified.md`). The Gaps section states the exact inequality: `Σ (j_i + 1) ≥ k−1−b_1` for all k.
+
+- **`research/threads/regeneration.md` rewritten.** The question changed from the open-ended "is there a k with block length 0?" to "can we bound the (2,4)-event rate from below, and does that bound suffice?" The rests-on block now names the step law, recharge identity, and drain law as the foundation. The body describes two routes (combinatorial via Rule 90 + drain law, analytic via prime-gap hypotheses) and asks for the inter-event gap distribution as the first measurement. `THREADS.md` re-derived automatically.
+
+No new downloads, no re-derivation of the step law, no erosion verification — the directive says those are done. What remains is the event-rate lower bound, which is exactly what the task list now asks for.
