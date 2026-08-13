@@ -1,111 +1,79 @@
 #!/usr/bin/env python3
-"""code/phi_triple_variety/ratio_search.py — (A) ratio-form fast no-triple search.
+"""code/phi_triple_variety/ratio_search.py — (A) closed-form ratio search.
 
-Search for an additive triple q1, q2, q1+q2 with q1>q2>0 all in Phi, using
-the ratio parametrisation f(m,n)=f(t=n/m) collapsed to DISTINCT values and
-the exact membership machinery from code/lib/phi.py.
+Search for an additive triple q1, q2, q1+q2 (q1>q2>0) all in Phi, using the
+VERIFIED closed-form membership test  A/B in Phi  <=>  B, B-A, B+A all
+perfect squares (reduced 0<A<B).  Exactly equivalent to the authoritative
+uncapped in_phi (verified on every reduced fraction B<=400), but is three
+isqrt calls, so the search pushes well past the prior m,n<=400 bound.
 
-Cost model (exact): |Phi(M)| ~ 0.2 M^2 distinct values from m <= M, so the
-full q1>q2 pair loop is ~0.5|Phi|^2 ~ 0.02 M^4 pairs.  Every pair first
-passes a NECESSARY prefilter (0 < sum < 1 AND both 1±sum RATIONAL SQUARES,
-reduced correctly via gcd — necessary for sum in Phi, so it never
-false-negatives a candidate); only survivors hit the authoritative uncapped
-in_phi test.  The prefilter is ~all-selective, so expensive tests are few;
-the cost is dominated by the O(Phi^2) cheap pair enumeration.
+Pair loop exploits value order: pairs sorted ASCENDING by value; for fixed
+larger q1=pairs[i], q2 ranges over pairs[0..i) ascending, so sum grows
+monotonically in j and the loop breaks as soon as q1+q2 >= 1.  This avoids
+visiting the [1,2) tail of sums entirely, so the cost is ~the number of
+pairs with sum < 1 (about 1/4 of all pairs for these values) not all pairs.
 
-Usage: python3 code/phi_triple_variety/ratio_search.py [M ...] [--timeout S]
+Fully exact integer arithmetic.  Checkpointed: pass M and a resume outer
+index; deterministic ordering makes a resumed run revisit i<resume cheaply.
+
+Usage: python3 code/phi_triple_variety/ratio_search.py M [resume] [--timeout S]
 """
 import sys
 import time
 from math import gcd, isqrt
-from lib.phi import phi_pairs, in_phi, rational_square
+from lib.phi import phi_pairs, in_phi_squares
 
 
-def _sum_in_phi_necessary(A1, B1, A2, B2):
-    """Correct NECESSARY-condition test that A1/B1+A2/B2 might be in Phi.
-    Returns (A3,B3) reduced sum and whether both 1±(A3/B3) are rational
-    squares (each then confirmed by the authoritative in_phi)."""
-    num = A1 * B2 + A2 * B1
-    den = B1 * B2
-    g = gcd(num, den)
-    A3, B3 = num // g, den // g
-    if A3 <= 0 or A3 >= B3:
-        return (A3, B3), False
-    dm, dp = B3 - A3, B3 + A3
-    g1 = gcd(dm, B3)
-    g2 = gcd(dp, B3)
-    ok = (rational_square(dm // g1, B3 // g1)
-          and rational_square(dp // g2, B3 // g2))
-    return (A3, B3), ok
-
-
-def search(M, budget):
+def search(M, resume=0, budget=580.0):
     t0 = time.time()
     Phi = phi_pairs(M)
     pairs = sorted(Phi, key=lambda nd: nd[0] * 1.0 / nd[1])
     P = len(pairs)
     triples = []
-    n_valid = 0
-    n_survive_pre = 0
     n_exact = 0
-    for i in range(P):
+    reached = resume
+    for i in range(resume, P):
         A1, B1 = pairs[i]
+        B1B2_prod = B1
         for j in range(i):
             A2, B2 = pairs[j]
-            # quick reject on sum >= 1 without full gcd:
+            # sum >= 1  <=>  A1*B2 + A2*B1 >= B1*B2 ; since B2 (and A2) grow
+            # with j (ascending value), the sum is monotone in j -> break.
             if A1 * B2 + A2 * B1 >= B1 * B2:
-                continue
-            (A3, B3), survive = _sum_in_phi_necessary(A1, B1, A2, B2)
-            n_valid += 1
-            if not survive:
-                continue
-            n_survive_pre += 1
+                break
+            g = gcd(A1 * B2 + A2 * B1, B1 * B2)
+            num = (A1 * B2 + A2 * B1) // g
+            den = (B1 * B2) // g
             n_exact += 1
-            if in_phi(A3, B3):
-                triples.append(((A1, B1), (A2, B2), (A3, B3)))
+            if in_phi_squares(num, den):
+                triples.append(((A1, B1), (A2, B2), (num, den)))
             if time.time() - t0 > budget:
-                print(f"[M={M}] budget {budget:.0f}s exhausted mid-scan "
-                      f"i={i}/{P}; none so far")
-                return None, (M, P, n_valid, n_survive_pre, n_exact,
-                              time.time() - t0)
-    print(f"[M={M}] |Phi|={P}, pairs sum<1: {n_valid}, survived "
-          f"necessary-prefilter: {n_survive_pre}, exact tests: {n_exact}, "
-          f"triples: {len(triples)}, {time.time()-t0:.0f}s")
-    return triples, (M, P, n_valid, n_survive_pre, n_exact, time.time() - t0)
+                reached = i
+                print(f"[M={M}] budget exhausted at outer i={i}/{P} "
+                      f"(resume {i})", flush=True)
+                return triples, reached, P
+        reached = i + 1
+    print(f"[M={M}] |Phi|={P} exact tests: {n_exact} triples: {len(triples)} "
+          f"reached-i={reached}/{P} {time.time()-t0:.0f}s", flush=True)
+    return triples, reached, P
 
 
 def main():
     args = sys.argv[1:]
-    Ms, budget = [], 590.0
-    i = 0
-    while i < len(args):
-        a = args[i]
+    nums = [a for a in args if a.lstrip('-').isdigit() and not a.startswith('--')]
+    budget = 580.0
+    for a in args:
         if a.startswith("--timeout"):
-            budget = float(a.split("=")[1]) if "=" in a else float(args[i + 1])
-            i += 2
-        elif a.isdigit():
-            Ms.append(int(a)); i += 1
-        else:
-            i += 1
-    if not Ms:
-        Ms = [600]
-    print(f"Searching additive triples in Phi over M in {Ms}, "
-          f"budget {budget:.0f}s per M\n", flush=True)
-    total = 0
-    for M in Ms:
-        triples, stat = search(M, budget)
-        if triples is None and stat is None:
-            continue
-        if triples:
-            (A1, B1), (A2, B2), (A3, B3) = triples[0]
-            print(f"  *** TRIPLE at M={M}: {A1}/{B1}+{A2}/{B2}={A3}/{B3}")
-            total += 1
-        else:
-            Mx, P, nv, npre, nex, dt = stat
-            print(f"  => NO additive triple for primitive m,n <= {Mx} "
-                  f"pairs-sum<1: {nv} survived-pre: {npre} exact: {nex} "
-                  f"({dt:.0f}s)", flush=True)
-    print(f"\nSUMMARY: triples found overall = {total}")
+            budget = float(a.split("=")[1])
+    M = int(nums[0]) if nums else 600
+    resume = int(nums[1]) if len(nums) >= 2 else 0
+    print(f"M={M} resume_i={resume} budget={budget:.0f}s", flush=True)
+    triples, reached, P = search(M, resume, budget)
+    if triples:
+        (A1, B1), (A2, B2), (A3, B3) = triples[0]
+        print(f"  *** TRIPLE at M={M}: {A1}/{B1}+{A2}/{B2}={A3}/{B3}")
+    else:
+        print(f"  M={M}: no triple through outer-i {reached}/{P}")
 
 
 if __name__ == "__main__":
