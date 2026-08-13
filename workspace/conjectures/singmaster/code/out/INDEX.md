@@ -42,7 +42,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_family.captured.txt` | Equal-pair finder n<=1000: reproduces all 7 witnesses; Pell family C(n+1,k+1)=C(n,k+2) members j=1..4 (the infinite N>=6 family, Singmaster 1975). |
 | `verify_k2_5_row.captured.txt` | _(undescribed)_ |
 | `verify_lane_clark_bound.PENDING.md` | _(undescribed)_ |
-| `verify_lane_clark_bound.purpose.md` | _(undescribed)_ |
+| `verify_lane_clark_bound.purpose.md` | Points to the live Lane Clark verification program in code/lane_clark/ and the claim it checks. |
 | `verify_lane_clark_bound.py` | _(undescribed)_ |
 | `verify_library_claims.py` | _(undescribed)_ |
 | `verify_mrstt_witnesses.captured.txt` | Captured output of code/verify_mrstt_witnesses.py (final run, EXIT_CODE=0): 3003's four witness pairs all equal 3003 with exactly 8 pairs in the triangle (mirrors included); all six N=6 witnesses + 3003 (N=8) reproduced by direct enumeration; Fibonacci family holds j=1..12; k<=log2(a)=39 candidates per a up to 10^12 (~1560 comb evaluations). |
