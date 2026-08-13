@@ -11,27 +11,35 @@ verified the Directives 24–27 record against the outputs, no rewrite; this
 cycle's changes are the two Contradictions entries and the gap-convention
 correction in the chain.)
 
-## Run state (Directive 30)
+## Run state (Directive 34)
 
-**The 6e8 run (`code/out/pattern_finder_6e8_giants.captured.txt`, sieve 6e8,
-31,324,703 primes, depth 400, 96.2s) overturns Directives 28/29.** Row 238
-(0-based; 1-based row 239) lands at b=23,163,290 with flooring **8,161,173** —
-genuine, not capped. The 3e8 record capped it via insufficient width; 6e8
-resolves it. The 15 genuine giants (0-based pre-jump rows):
-`[34,56,64,68,94,96,110,112,126,130,134,146,161,174,238]`. Gaps:
-`[22,8,4,26,2,14,2,14,4,4,12,15,13,64]`, **max=64** (the 175→238 drought of
-exactly 64 rows). Row 248 (0-based 247) is the cap (flooring exactly 0) —
-**exclude it from every table, ratio, or claim**. k*=248 at 6e8 — only 247
-usable rows. Parity: 14/15 even (only 161 odd), one-sided p = 16/2^15 =
-4.9×10⁻⁴ — stronger than the 13/14 figure. Record max genuine jump
-12,508,030 (row 238).
+**Six papers the run cited off `/abs/` landing pages are now in the library as
+full PDFs, and must be read before the next mathematics.** CHT 2026 proves
+the random-integer analogue (Theorem 1.3: independent geometric gaps with
+non-concentration on 2-separated sets → a.s. Gilbreath; Theorem 1.6: inverse
+theorem isolating the two obstructions). The FULL PDF is 98 KB with 137
+theorem/lemma/proof hits. Arias de Reyna, Muney, BCZ, and Granville also
+await reading. The six summaries will go to `research/notes/`.
 
-**Step 6 rephrased (Directive 30):** the condition needed is **gap_i ≤ j_i+1**,
-not "gap is bounded." This holds with 2+ orders of margin: max ratio
-64/(5,237,310+1) = 0.0000122. The ratio bound is sufficient (each giant
-carries its own recharge) and verified on all 15 giants. "Gap bounded" is
-superseded. The open question is now: can the geometric growth of b (and
-hence j) be proved from prime-gap theory, or is it a new statement?
+**Granville 2026 (arXiv:2607.04166) — re-grade.** The "not-load-bearing"
+classification was made off the 6.8 KB `/abs/` landing page and is wrong.
+The full PDF (175 KB, 70 theorem/lemma/proof hits) contains Lemma 5.4
+(supply-vs-demand budget inequality in right-diagonal coordinates, equivalent
+to the run's own recharge identity) and Theorem 5.5 (if g*_n < n^α and
+ν_2 > n^β with β > α, success propagates; α = 0.525 unconditional by Baker-
+Harman-Pintz). The operator measured ν_2/n ≈ 0.49–0.52 on primes below 3e6,
+and the Lemma 5.4 hypothesis holds at every sampled n. The proof is uneven
+(Theorem 2.5: "Take κ₀=0 and the theorem is proved!"; Lemma 5.4 discards a
+delta=0 case that occurs in 100% of columns), and the paper is cs.CR not
+peer reviewed. Status: Lemma 5.4 worth re-deriving from scratch (this run can
+prove it); the reduction to "lower-bound ν_2" is the live comparison against
+the ratio-bound route. Do NOT treat as not-load-bearing; do NOT adopt the
+author's proofs.
+
+**The 6e8 run stands** (15 genuine giants, max gap 64, ratio bound 2+ orders
+slack, geometric growth R²=0.968). The open question: whether the Granville
+ν_2 route is strictly weaker and should supersede the ratio-bound route
+(Directive 32/33/34).
 
 ## Established
 
