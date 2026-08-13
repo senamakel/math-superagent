@@ -619,6 +619,33 @@ fn a_fresh_run_is_due_a_reduction_on_its_first_completed_cycle() {
     );
 }
 
+/// The reduction opened beside the first attempt is opened from a state that
+/// has attempted nothing, so anything it reads has to come from the problem
+/// statement rather than from the loop's own output. This is what makes
+/// opening it at the start sound rather than merely early: were the reducer's
+/// brief assembled from lessons or verdicts, an initial reduction would be
+/// briefed on an empty run and waste the child.
+#[test]
+fn the_initial_reduction_is_due_before_any_attempt_has_run() {
+    let current = state();
+    assert_eq!(
+        current.attempts, 0,
+        "the initial reduction is opened before the graph starts"
+    );
+    assert!(
+        !current.solved,
+        "a fresh run is not solved, so the cadence gate does not short-circuit"
+    );
+    assert!(
+        current.since_reduction >= REDUCTION_INTERVAL,
+        "the counter must already be due, or the first attempt runs with no skeleton beside it"
+    );
+    assert!(
+        !current.problem().trim().is_empty(),
+        "the reducer works backward from the goal, which must be present at start"
+    );
+}
+
 /// Two reducers decompose the same goal, so they write the same file, and
 /// `write_document` is last-writer-wins: the loser's gaps are gone with no
 /// error anywhere. The gate is what makes that impossible rather than
