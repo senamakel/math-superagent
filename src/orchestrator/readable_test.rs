@@ -115,6 +115,45 @@ fn tracking_parameters_are_stripped_from_urls() {
 }
 
 #[test]
+fn an_arxiv_abstract_url_is_read_as_the_pdf_it_describes() {
+    // The abstract page carries no mathematics; the PDF is the paper.
+    assert_eq!(
+        clean_url("https://arxiv.org/abs/2607.08712"),
+        "https://arxiv.org/pdf/2607.08712"
+    );
+    // A version suffix names a specific revision and must survive.
+    assert_eq!(
+        clean_url("https://arxiv.org/abs/2607.04166v3"),
+        "https://arxiv.org/pdf/2607.04166v3"
+    );
+    // Plain http and the www host reach the same pages.
+    assert_eq!(
+        clean_url("http://arxiv.org/abs/2309.03922"),
+        "https://arxiv.org/pdf/2309.03922"
+    );
+    assert_eq!(
+        clean_url("https://www.arxiv.org/abs/2309.03922"),
+        "https://arxiv.org/pdf/2309.03922"
+    );
+    // Tracking is still stripped after the rewrite.
+    assert_eq!(
+        clean_url("https://arxiv.org/abs/2607.08712?utm_source=x"),
+        "https://arxiv.org/pdf/2607.08712"
+    );
+    // A PDF link is already what we want, and a bare listing is not an abstract.
+    assert_eq!(
+        clean_url("https://arxiv.org/pdf/2607.08712"),
+        "https://arxiv.org/pdf/2607.08712"
+    );
+    assert_eq!(clean_url("https://arxiv.org/abs/"), "https://arxiv.org/abs/");
+    // Only arXiv is rewritten; another host's /abs/ path is its own.
+    assert_eq!(
+        clean_url("https://x.test/abs/2607.08712"),
+        "https://x.test/abs/2607.08712"
+    );
+}
+
+#[test]
 fn conversion_records_its_source_and_format() {
     let markdown = to_markdown(
         b"<p>Hello</p>",
