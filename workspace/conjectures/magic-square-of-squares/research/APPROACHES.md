@@ -36,3 +36,4 @@ Do not propose these again. A reason stated precisely is what makes that possibl
 ## Approaches that could not be read
 
 - `README` has no approach block, so nothing can say what the idea is or whether anyone has checked it
+- `padic-modular-obstruction-dead-end` has no approach block, so nothing can say what the idea is or whether anyone has checked it

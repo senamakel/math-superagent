@@ -13,8 +13,21 @@ def f_frac(m,n):
     g=gcd(num,den)
     return Fraction(num//g, den//g)
 
-def phi_set(M):
+def phi_set_serial(M):
     return {f_frac(m,n) for m in range(2,M+1) for n in range(1,m)}
+
+# top-level worker so it can be pickled into the pool (PARALLEL.md rule 1)
+def _phi_rows(rows):
+    return {f_frac(m, n) for m in rows for n in range(1, m)}
+
+def phi_set(M):
+    from lib.parallel import parallel_union, stripes, workers
+    return parallel_union(
+        _phi_rows,
+        stripes(list(range(2, M + 1)), workers()),
+        label="phi_set",
+        space=f"m = 2..{M}",
+    )
 
 def residue_set(Phi, mod):
     """Achievable q mod mod (q = A/B, B invertible mod mod)."""
@@ -42,6 +55,8 @@ def nondeg_closed(R, mod):
 
 def main():
     M=200
+    # verify the parallel version agrees with the serial one at a small bound
+    assert phi_set_serial(120) == phi_set(120), "parallel phi_set disagrees with serial"
     Phi=phi_set(M)
     print(f"Phi({M}): |Phi|={len(Phi)}")
     from collections import Counter

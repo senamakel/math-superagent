@@ -13,7 +13,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
 
-- [[uniformity-bremner-ap-bound]] rests on `-`, `(Established)`, `-`, `bremner-conjecture-proved`, `(Garcia-Fritz–Pasten`, `Theorem`, `1.8`, `newly`, `downloaded)`, `-`, `height-uniform-mordell`, `(Dimitrov–Gao–Habegger`, `2020)`, `-`, `uniform-mordell-lang`, `(Gao–Ge–Kühne`, `2021)`, which no claim block on disk establishes
+- [[uniformity-bremner-ap-bound]] rests on `-`, `(Established)`, `-`, `(Garcia-Fritz–Pasten`, `Theorem`, `1.8`, `newly`, `downloaded)`, `-`, `height-uniform-mordell`, `(Dimitrov–Gao–Habegger`, `2020)`, `-`, `uniform-mordell-lang`, `(Gao–Ge–Kühne`, `2021)`, which no claim block on disk establishes
 
 ## Threads that could not be read
 

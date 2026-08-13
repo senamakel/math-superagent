@@ -10,17 +10,38 @@
       (both were abstract-page wrappers; now 21KB and 40KB — real papers).
 - [x] Re-download Wu 2103.01784 from PDF endpoint (was 6.6KB abstract-page
       wrapper; now 78KB, real paper with theorems).
-- [ ] **STEP 1: Verify the parallel library.** The tool is `code/lib/parallel.py`, standard library only — the container root filesystem is read-only so pip is not an option. Read `code/lib/PARALLEL.md` first. Then: `timeout 120 python3 code/lib/parallel.py`. It runs its own self-check comparing a pooled union of squares(1..2000) against the serial answer. It must print `self-check PASS`. Do NOT proceed to the next step if this fails.
-- [ ] **STEP 2: Parallelise `phi_padic_closure_all.py` first.** That is the program with `phi_set` — the exact worked example in PARALLEL.md. Convert it as PARALLEL.md shows: a module-top-level `_phi_rows(rows)` worker, `stripes()` to deal the `m` values round-robin (the loop is triangular — a block split gives one worker the whole expensive tail), and `parallel_union` to combine. Assert the parallel result equals the serial one at a small bound before trusting a large one: `assert phi_set_serial(120) == phi_set(120)`. Then launch: `timeout 540 python3 code/phi_padic_closure_all.py 2>&1 | tee code/out/phi_padic_closure_all.captured.txt; echo EXIT_CODE=$?`. The tee is what has been missing — output that only reaches the model dies when the attempt hits its ceiling.
-- [ ] **STEP 3: Parallelise and run the remaining six p-adic/modular programs.** Same pattern for each of `code/phi_2adic.py`, `code/phi_3adic_closure.py`, `code/phi_padic_valuation.py`, `code/phi_padic_closure_exact.py`, `code/phi_mod3_check.py`, `code/phi_modular_obstruction.py`: refactor any search loop to use `parallel_union` or `parallel_any` (whichever matches the shape — union for set builds, any for counterexample hunts), launch as `timeout 540 python3 code/<name>.py 2>&1 | tee code/out/<name>.captured.txt; echo EXIT_CODE=$?`. For any search that genuinely cannot finish inside the ceiling, bound it explicitly, capture the partial result with the bound stated, and record what was NOT covered. Do not re-run an unbounded search hoping it lands. Do this before opening any new approach or thread.
-- [ ] **FALSIFY EVERY P-ADIC/MODULAR OBSTRUCTION** — a p-adic or modular
-      closure result is an IMPOSSIBILITY argument. Run every obstruction found
-      against `code/out/near_misses.json` using the verifier in `code/lib/mss.py`.
-      If a residue argument would also forbid the Sallows LS1 grid or Bremner's
-      7-square grid, the argument is FALSE and must be recorded as refuted, not
-      weakened. An obstruction lemma not run against the witness set has status
-      `asserted`, never `checked`. Record outcomes in `code/out/` and as claim
-      blocks.
+- [x] **Ferreira 1506.06621 — handle per steer directive 6.** PDF fetched
+      (65,364 bytes, real paper, not a wrapper — the /abs/ and /html/ wrappers
+      were the stale copies the steer spotted). Category math.GM, no
+      presumption of correctness. Error located at (46)→(47): substituting
+      z2 = m−√(m²−2nw−w²) into (46) yields the tautology 0=0, not the paper's
+      (47). Verified by sympy (`code/out/check_ferreira_proof.py`) and by
+      construction with witness m=5,n=3,w=1. Claim `ferreira-15060621-proof-invalid`
+      in CLAIMS.md, status: checked. The paper establishes nothing.
+- [x] **STEP 1: Verify the parallel library.** `timeout 120 python3 code/lib/parallel.py`
+      printed `self-check PASS: 2000 values, 26 workers`. Done.
+- [x] **STEP 2: Parallelise `phi_padic_closure_all.py`.** Converted to
+      module-top-level `_phi_rows(rows)` worker + `stripes()` + `parallel_union`,
+      with `assert phi_set_serial(120) == phi_set(120)` before the M=200 run.
+      Launched and captured: `code/out/phi_padic_closure_all.captured.txt`,
+      EXIT_CODE=0, `|Phi(200)|=8156` matches serial. No obstruction found.
+- [x] **STEP 3: Run the remaining six p-adic/modular programs.** All ran to
+      completion (exit 0, no timeouts), captures in `code/out/`. None found an
+      obstruction: the achievable residue set of Phi is additively closed at
+      every prime-power of p=2,3,5,7,11,13 tested and mod p up to 31; mod 3/5
+      collapse to {0}. Documented in
+      `research/approaches/padic-modular-obstruction-dead-end.md`.
+- [x] **FALSIFY EVERY P-ADIC/MODULAR OBSTRUCTION** — none was found, so there
+      is no asserted residue/closure impossibility lemma. Ran
+      `code/witness_padic_falsification.py` against `code/out/near_misses.json`
+      using `is_magic_square_of_squares` in `code/lib/mss.py`: both witnesses
+      verified, every positive fully-realised Phi element from a witness
+      (Bremner 5544/7225, 336/625; Sallows 3360/12769) satisfies the proved
+      p-adic facts (v2>=3, v3>=1, res=0 mod 3/5) — `RESULT ALL CONSISTENT`,
+      no statement forbids a witness. Captured at
+      `code/out/witness_padic_falsification.captured.txt`. Claims
+      `phi-padic-no-obstruction` and `phi-padic-consistent-with-witnesses`
+      in the dead-end note, status: checked.
 - [ ] **Settle the doubled-point question for GFP from the paper on disk.**
       The paper (`research/sources/garcia-fritz-pasten-bremner-uniformity-2026.full.md`,
       21KB, real PDF) defines in §1.1: "an arithmetic progression of length M is

@@ -65,12 +65,15 @@ def find_point(ub):
 
 pts = find_point(700)
 print("\npoints on S with 2TU=u, 2VW=v, -2XY=u+v (box 700):")
-for p in pts[:10]:
-    print("  ", p, "T^2+U^2 =", p[0]**2+p[1]**2)
-print("count:", len(pts))
+pts_set = sorted(set(p for p in pts))
+for p in pts_set:
+    print("   ", p, "  T^2+U^2 =", p[0]**2+p[1]**2)
+print("count:", len(pts_set))
 
 # --- four-AP coverage of the nine entries ---
-g = grid_from_params('c', 'u', 'v')
+g = [["c+u", "c-u-v", "c+v"],
+     ["c-u+v", "c", "c+u-v"],
+     ["c-v", "c+u+v", "c-u"]]
 lines = {
     "diff u (main diag)": [g[0][0], g[1][1], g[2][2]],
     "diff v (anti diag)": [g[0][2], g[1][1], g[2][0]],

@@ -1,11 +1,15 @@
-# K3 rational-point check — resolved: S(Q) is nonempty (machine-verified)
+# K3 rational-point check — resolved: S(Q) is nonempty (machine-verified, exact)
 
-**Status: CHECKED.** `code/out/reconciliation_2026-08-12.txt` Task D and
-`code/out/k3_surface_checks_output.txt` record the machine execution
-(`python code/out/k3_surface_checks.py` via `code/out/run_k3_checks.sh`) with
-exact integer arithmetic, and an independent exact construction verified with
-sympy's simultaneous solve. My earlier hand-arithmetic (this session) agreed up
-to sign orbit; the machine record is the canonical one.
+**Status: CHECKED (exact arithmetic).** `code/out/k3_surface_checks.py` was
+rewritten to use exact integer/sympy arithmetic (no floats) for the rational-point
+search on the Bremner II Category III K3 surface `S`. The rewritten script and the
+independent exact route `code/out/k3_surface_check2.py` both enumerate S-points with
+`2TU = u, 2VW = v, -2XY = u+v` over the box 700 and return the **identical set of 64
+points** (verified by set comparison). The run's known integral point
+`P = (345, 196, -304, 255, -396, -25)` is a regression test in the rewritten script
+and is confirmed to be in that set. Capture:
+`code/out/k3_surface_checks_exact.captured.txt` (EXIT_CODE=0, ALL EXACT CHECKS
+PASSED). The earlier float-probe `[]` output is superseded (see below).
 
 ## The verified facts
 
@@ -22,9 +26,15 @@ Bremner II Category III Figure 1 grid `541² 421² 49² / −132839 157441 44772
 - Hence **S(Q) is nonempty**, and **no Brauer–Manin obstruction can prove S(Q) = ∅**.
 - The sign-variant point `(345,196,304,−255,396,25)` (this session's hand arithmetic) is the same orbit — sign flips on (V,W) and (X,Y) preserve the products and the trace — agreeing exactly where products occur.
 
-## Why the script printed "Rational points on S: []"
+## Why the earlier script printed "Rational points on S: []"
 
-The float probe inside `k3_surface_checks.py` assigns a parity from `(±√(a+c) ± √(c−a))/2` that cannot be integral for this data (`sqrt values: 541 149 49 559 371 421` are all odd ⇒ halves are half-integers); the exact construction in Task D is the corrected route. The `[]` output is NOT a statement about S(Q) — the point above exists. This is recorded so nobody re-reads the empty line as a result.
+The original float probe inside the old `k3_surface_checks.py` assigned a parity
+from `(±√(a+c) ± √(c−a))/2`: all the square roots here are odd (541, 149, 49, 559,
+371, 421), so the halves are half-integers and the float test reported them
+non-integral, returning `[]`. That `[]` was an artifact of the float/parity probe's
+integrality test, NOT a statement about S(Q) — the exact route (rewritten
+`k3_surface_checks.py` and `k3_surface_check2.py`) finds the point. This is recorded
+so nobody re-reads the empty line as a result.
 
 ## What this settles for the run
 
@@ -44,10 +54,9 @@ statement: The Category III K3 S: T²+U²=V²+W²=X²+Y², TU+VW+XY=0 from Bremn
   obstruction can prove S(Q)=empty.
 hypotheses: the six-square configuration of Bremner II Figure 1, recovery via (c,u,v)
 holds-here: yes
-status: checked (exact construction + sympy verify in code/out/reconciliation_2026-08-12.txt Task D; script code/out/k3_surface_checks.py via run_k3_checks.sh)
-bearing: closes the brauer-manin-k3-surface approach as formulated (its goal was
-  S(Q)=empty); the obstruction question moves to the extra (7th-9th square) conditions
-anchor: code/out/reconciliation_2026-08-12.txt
+status: checked (exact integer/sympy; script code/out/k3_surface_checks.py rewritten + independent route code/out/k3_surface_check2.py agree on the same 64-point set; P=(345,196,-304,255,-396,-25) regression test; capture code/out/k3_surface_checks_exact.captured.txt)
+bearing: closes the brauer-manin-k3-surface approach as formulated (its goal was S(Q)=empty); S(Q) is nonempty, so no Brauer-Manin obstruction can prove S(Q)=empty; the obstruction question moves to the extra (7th-9th square) conditions
+anchor: code/out/k3_surface_checks_exact.captured.txt, code/out/k3_surface_check2.py
 answers: exact-reduction-magic-507c (partially: pins the six-square surface and its
   rational points; the full-MSS correspondence is still not a claim block)
 ```

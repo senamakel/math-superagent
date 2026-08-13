@@ -27,6 +27,19 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `oeis_verify.py` | _(undescribed)_ |
 | `pattern_seq.py` | _(undescribed)_ |
 | `pattern_verify.py` | _(undescribed)_ |
+| `phi_2adic.py` | _(undescribed)_ |
+| `phi_3adic_closure.py` | _(undescribed)_ |
+| `phi_canonical_check.py` | _(undescribed)_ |
+| `phi_count_seq.py` | _(undescribed)_ |
 | `phi_exact_search.py` | _(undescribed)_ |
 | `phi_extend.py` | _(undescribed)_ |
+| `phi_identity_verify.py` | _(undescribed)_ |
+| `phi_mod3_check.py` | _(undescribed)_ |
+| `phi_modular_obstruction.py` | Looks for a modular obstruction to an additive triple: achievable residue set of Phi mod p additively closed (non-degenerately for p>=7) for primes up to 31; mod 3/5 collapse to {0} giving only degenerate triple — no obstruction found. |
+| `phi_padic_closure_all.py` | _(undescribed)_ |
+| `phi_padic_closure_exact.py` | _(undescribed)_ |
+| `phi_padic_valuation.py` | _(undescribed)_ |
+| `phi_range.py` | _(undescribed)_ |
+| `phi_valuation_proof_check.py` | _(undescribed)_ |
 | `scholar_parity_check.py` | Drop: a parity/3c-must-be-square-style argument (that a full MSS centre line X = 3c must have c/3 a square) is checked against the two near-misses and shown dead — 3·147² and 3·425² both have v2 = 1 and neither centre line is a full square AP; the 2E(Q) reduction needs B² = 3e² with B irrational. Kept as an explicit probe of a dead argument. |
+| `witness_padic_falsification.py` | Runs the p-adic/modular claims against the known near-miss witnesses (Sallows LS1 and Bremner 7-square) from code/out/near_misses.json using the exact is_magic_square_of_squares verifier. Extracts each witness's centre AP differences (u,v,u+v,u-v), maps each positive fully-realised difference to its q=d/e^2 element of Phi, and confirms it satisfies the proved p-adic facts (v2>=3, v3>=1, res=0 mod 3). Reports that no p-adic/modular program found an obstruction, hence no residue/closure argument forbids either witness. Output code/out/witness_padic_falsification.captured.txt. Correctness: RESULT ALL CONSISTENT, exit 0. |

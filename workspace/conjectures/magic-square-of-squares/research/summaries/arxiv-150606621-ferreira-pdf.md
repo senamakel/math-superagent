@@ -1,10 +1,31 @@
 <!-- source: https://arxiv.org/pdf/1506.06621v2 | converted from PDF -->
+# Ferreira's claimed proof of non-existence (arXiv:1506.06621) is invalid
 
-arXiv:1506.06621v2  [math.GM]  26 Jun 2015
-On the 3 × 3 magic square constructed with nine distinct
-square numbers
+Source: Jailton C. Ferreira, "On the 3×3 magic square constructed with nine
+distinct square numbers," arXiv:1506.06621v2 (2015, math.GM). This is the PDF
+(65,364 bytes, real paper, confirmed by steer directive 6). The earlier /abs/
+and /html/ wrappers in `research/sources/` were stale; the full text below
+matches the HTML version already read and refuted.
 
-Jailton C. Ferreira
+Category: math.GM (General Mathematics — no presumption of correctness).
+Rome-Yamagishi 2024 (arXiv:2406.09364, on disk at 39.5 KB) settles n≥4 and
+leaves n=3 open. If this 2015 proof had been accepted, that paper would cite
+it as resolved. It does not.
+
+## Where the proof fails (exact, reproducible)
+
+The error is at (46)→(47). Substituting z = z2 = m − √(m²−2nw−w²) into (46):
+  (m−z2)² + (n+w)² − (m²+n²) = (√(m²−2nw−w²))² + (n+w)² − m² − n²
+  = m²−2nw−w² + n²+2nw+w² − m² − n² = 0.
+This is the identity 0=0 — necessarily so, since z2 was defined as a root of
+(46). The paper's (47) n²−2nw−w²−(n+w)² is not implied; it simplifies to
+−2w(2n+w), which is not identically zero.
+
+Concrete countercheck: m=5, n=3, w=1 → (46) holds (0=0), (47) yields −14 ≠ 0.
+Verified by sympy at `code/out/check_ferreira_proof.py`.
+
+The paper establishes nothing. Claim `ferreira-15060621-proof-invalid` in
+CLAIMS.md, status: checked.
 
 Abstract
 
