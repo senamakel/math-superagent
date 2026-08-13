@@ -173,8 +173,9 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 - **root-number-parity-four-curves** — **refuted** (this round). Birch–Stephens
   fixes parity by n mod 8; no additive-relation→root-number contradiction
   exists; Q-level mod-2 cannot separate Q from extension fields with MSS.
-- **Brauer–Manin on the K3** — **refuted** (blocked for S itself; no reason
-  recorded — needs Brauer-group computation of S).
+- **Brauer–Manin on the K3** — **refuted** (S(Q) explicit nonempty via the
+  Category III point P=(345,196,−304,255,−396,−25); an analytic BM obstruction
+  cannot prove S(Q)=∅ — see K3 section).
 - All others: **refuted** with reasons in APPROACHES.md.
 
 ## Ruled out
