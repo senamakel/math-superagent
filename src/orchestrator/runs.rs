@@ -160,7 +160,7 @@ impl RunRecord {
 /// inside a detached task is not.
 #[derive(Clone, Debug, Default)]
 pub(super) struct RunStore {
-    inner: Arc<Mutex<BTreeMap<TaskId, RunRecord>>>,
+    inner: Arc<Mutex<BTreeMap<String, RunRecord>>>,
 }
 
 impl RunStore {
@@ -179,13 +179,13 @@ impl RunStore {
     /// refusing rather than resolving by overwriting a live run's record.
     pub(super) fn insert(&self, task_id: TaskId, agent: impl Into<String>) -> Result<()> {
         let mut guard = self.lock()?;
-        if guard.contains_key(&task_id) {
+        if guard.contains_key(task_id.as_str()) {
             return Err(TinyAgentsError::Validation(format!(
                 "agent run `{task_id}` is already registered"
             )));
         }
         guard.insert(
-            task_id.clone(),
+            task_id.as_str().to_string(),
             RunRecord {
                 task_id,
                 agent: agent.into(),
@@ -199,7 +199,7 @@ impl RunStore {
 
     /// Returns the record for `task_id`, if it is registered.
     pub(super) fn get(&self, task_id: &TaskId) -> Option<RunRecord> {
-        self.lock().ok()?.get(task_id).cloned()
+        self.lock().ok()?.get(task_id.as_str()).cloned()
     }
 
     /// Returns every registered run, oldest id first.
@@ -238,14 +238,14 @@ impl RunStore {
     /// to return an error to.
     fn update(&self, task_id: &TaskId, change: impl FnOnce(&mut RunRecord)) {
         if let Ok(mut guard) = self.lock()
-            && let Some(record) = guard.get_mut(task_id)
+            && let Some(record) = guard.get_mut(task_id.as_str())
         {
             change(record);
         }
     }
 
     /// Locks the registry, reporting a poisoned lock as a validation failure.
-    fn lock(&self) -> Result<std::sync::MutexGuard<'_, BTreeMap<TaskId, RunRecord>>> {
+    fn lock(&self) -> Result<std::sync::MutexGuard<'_, BTreeMap<String, RunRecord>>> {
         self.inner
             .lock()
             .map_err(|_| TinyAgentsError::Validation("agent run registry lock is poisoned".into()))
@@ -258,9 +258,23 @@ impl RunStore {
 /// different lifetimes: a record outlives its run so a caller can read what
 /// happened, while a handle is deregistered the moment the run ends, and a
 /// handle held past that point would accept a redirect nothing will ever read.
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Default)]
 pub(super) struct SteeringRegistry {
-    inner: Arc<Mutex<HashMap<TaskId, SteeringHandle>>>,
+    inner: Arc<Mutex<HashMap<String, SteeringHandle>>>,
+}
+
+impl std::fmt::Debug for SteeringRegistry {
+    /// Written by hand because `SteeringHandle` is not `Debug`. Only the count
+    /// is printed: a handle is a channel into a live run and has nothing
+    /// readable in it, and the question a reader has of this type is how many
+    /// runs are still steerable.
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let live = self.inner.lock().map(|guard| guard.len());
+        formatter
+            .debug_struct("SteeringRegistry")
+            .field("live", &live.unwrap_or_default())
+            .finish()
+    }
 }
 
 impl SteeringRegistry {
@@ -272,20 +286,20 @@ impl SteeringRegistry {
     /// Registers the handle for `task_id`, replacing any prior one.
     pub(super) fn register(&self, task_id: TaskId, handle: SteeringHandle) {
         if let Ok(mut guard) = self.inner.lock() {
-            guard.insert(task_id, handle);
+            guard.insert(task_id.as_str().to_string(), handle);
         }
     }
 
     /// Drops the handle for `task_id`.
     pub(super) fn deregister(&self, task_id: &TaskId) {
         if let Ok(mut guard) = self.inner.lock() {
-            guard.remove(task_id);
+            guard.remove(task_id.as_str());
         }
     }
 
     /// Returns the handle for `task_id`, if the run is still steerable.
     pub(super) fn get(&self, task_id: &TaskId) -> Option<SteeringHandle> {
-        self.inner.lock().ok()?.get(task_id).cloned()
+        self.inner.lock().ok()?.get(task_id.as_str()).cloned()
     }
 }
 

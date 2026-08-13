@@ -109,9 +109,7 @@ impl AsyncSubagentTool {
             let manager = self.manager.clone();
             waits.spawn(async move {
                 match manager.await_record(&run_id, wait_seconds).await {
-                    Ok(record) => serde_json::to_value(record).unwrap_or_else(
-                        |error| json!({ "run_id": run_id, "error": error.to_string() }),
-                    ),
+                    Ok(record) => record.to_json(),
                     Err(error) => json!({ "run_id": run_id, "error": error.to_string() }),
                 }
             });
@@ -267,10 +265,10 @@ impl Tool<()> for AsyncSubagentTool {
             }
             AsyncToolKind::SpawnMany => self.spawn_many(&call)?,
             AsyncToolKind::AwaitMany => self.await_many(&call).await?,
-            AsyncToolKind::Peek => serde_json::to_value(
-                self.manager
-                    .record(&required_string(&call.arguments, "run_id")?)?,
-            )?,
+            AsyncToolKind::Peek => self
+                .manager
+                .record(&required_string(&call.arguments, "run_id")?)?
+                .to_json(),
             AsyncToolKind::Steer => {
                 let run_id = required_string(&call.arguments, "run_id")?;
                 self.manager
@@ -283,11 +281,10 @@ impl Tool<()> for AsyncSubagentTool {
                     .get("wait_seconds")
                     .and_then(Value::as_u64)
                     .unwrap_or_else(|| self.manager.max_await_seconds());
-                serde_json::to_value(
-                    self.manager
-                        .await_record(&required_string(&call.arguments, "run_id")?, wait_seconds)
-                        .await?,
-                )?
+                self.manager
+                    .await_record(&required_string(&call.arguments, "run_id")?, wait_seconds)
+                    .await?
+                    .to_json()
             }
         };
         Ok(ToolResult::text(

@@ -8,7 +8,7 @@ use tokio::sync::Semaphore;
 
 use crate::agent::Tool as _;
 
-use super::runs::RunStatus;
+use crate::orchestrator::runs::RunStatus;
 use super::{AgentExecutor, AsyncSubagentManager, DEFAULT_MAX_CONCURRENT_AGENTS};
 use crate::agent::Result;
 use crate::agent::budget::RunBudget;
