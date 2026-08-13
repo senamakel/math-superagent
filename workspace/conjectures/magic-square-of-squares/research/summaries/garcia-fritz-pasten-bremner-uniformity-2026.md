@@ -33,10 +33,12 @@ statement: (García-Fritz–Pasten, abstract) If the Mordell-Weil ranks of ellip
   progression is uniformly bounded; the strong form of Bremner's 1998 conjecture
   follows from uniform Mordell-Lang (Gao-Ge-Kühne) and is re-proved here via the
   height-uniform Mordell theorem (Dimitrov-Gao-Habegger).
-hypotheses: uniform boundedness of ranks (open); E/Q an elliptic curve; AP of x-coordinates
-holds-here: yes for the structure (the MSS condition is three AP x-coordinates on E:
-  y²=x(x²−c²) via robertson-elliptic-reduction), but the decisive rank-unboundedness
-  hypothesis is open and the MSS needs only THREE points, not a long sequence
+hypotheses: uniform boundedness of ranks over Q (open); E/Q an elliptic curve;
+  AP of x-coordinates. The structure holds for this problem (three AP
+  x-coordinates on E: y²=x(x²−c²) via robertson-elliptic-reduction), but the
+  decisive rank-unboundedness hypothesis is open and the MSS needs only THREE
+  points, not a long sequence.
+holds-here: partial
 status: asserted (abstract level; body not on disk)
 bearing: frames the four-AP obstruction as a rank-scarcity phenomenon; supports the
   adopted Chabauty-Coleman direction (rk J < g is the same resource comparison);
