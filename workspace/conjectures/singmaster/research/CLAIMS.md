@@ -43,6 +43,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `kummer-lucas-class-not-logarithmic` | For a fixed prime p the p-adic equivalence class (v_p(C(n,k)) fixed, C(n,k) mod p fixed) contains exponentially many pairs: for p=2, all C(2^m-1,k) (k=0..2^m-1) are odd ≡1 (mod 2) with v_2=0, giving 2^m members of one… | **unchecked** | proved | `research/notes/kummer-lucas-grounding.md` |
 | `lane-clark-normal-array-bound` | For any normal integer array a=(a,d,f,r,Δ,g) (semi-triangular, increasing, semi-unimodal, multiplicity r, Δ-bounded peak, growth function g), N_a(t) < r(g^{-1}(t)+Δ) for t>=2; if g(x)=τ^{x-c} then N_a(t) < r(log_τ t + c… | yes | checked | `research/summaries/lane-clark-array-multiplicity.md` |
 | `lind-1968-fibonacci-family-primary` | Lind 1968 (FQ 6(3), 86-93, PRIMARY): via the units of Q(sqrt(5)) (Thm 4: units are ±alpha^n, alpha=(1+sqrt(5))/2; Thm 6: (a+bsqrt(5))/2 is a unit iff a=L_n,b=F_n) and the complete solution x^2-5y^2 = -4 (x=L_{2n+1},… | yes | asserted | `research/summaries/lind-1968-quadratic-field.md` |
+| `mason-stothers-vacuous-binomial` | Mason-Stothers (polynomial abc: for pairwise coprime A,B,C in C[t] with A+B+C=0, max deg <= N0(ABC)-1) has NO content for the binomial difference: with A=C(T,k1)·k2!, B=-C(T,k2)·k1!, R=A+B, divided by gcd =… | yes | checked | `research/approaches/mason-stothers-abc.md` |
 | `matveev-2000-explicit-constants-primary` | Matveev (Izv. Math. 62 (1998) 723-772, homogeneous rational case, Kummer condition): for Lambda = b1 ln(alpha1) + ... + bn ln(alphan), n>=2, integers bj != 0 (bn != 0), Lambda != 0, D = DK/kappa, and Aj >=… | yes | asserted | `research/summaries/matveev-2000-homogeneous-linear-form.md` |
 | `matveev-application-template` | Tiebekabe-Diouf 2021 solve L_n + L_m = 3^a completely (only (4,0,2) and (1,0,1)) using the standard effective pipeline: reduce to a linear form in two logarithms, apply Matveev's explicit lower bound (their Thm 2.9;… | yes | asserted | `research/summaries/matveev-application-linear-forms.md` |
 | `minkowski-identity-equal-blocks` | BST 1999 p. 11 (Minkowski 1968): for every positive integer m, 2·6·10···(4m-2) = (m+1)(m+2)···(2m). As an infinite family of equal products of pairs of blocks; Saradha-Shorey-Tijdeman (Theorem A quoted in BST) show this… | yes | asserted | `research/summaries/beukers-shorey-tijdeman-1999-equal-products.md` |
@@ -65,9 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `singmaster-bounds-history` | Best known bounds on N(a), the number of (n,k), 1<=k<=n-1, with C(n,k)=a counting both mirrors and the trivial pair: Singmaster 1971 N(a)=O(log a) (primary NOT held; attested by AEH/MRSTT/Wikipedia); Abbott-Erdos-Hanson… | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
 | `sst-effective-shared-factor` | Saradha-Shorey-Tijdeman 1995 (Acta Arith 68(1) 89-100, Thm 2): for the equal-products equation (1) with gcd(L,M)>1 and L≠M, max(L,M,x,y) ≤ C2 where C2 is effectively computable and depends only on d1, d2 and the ratio… | yes | asserted | `research/summaries/saradha-shorey-tijdeman-equal-products-1995.md` |
 | `sst-equal-length-exception-family` | For the equal-length case (L=M) of (1), the only exceptional family is d1=1, d2=4, x=L+1, y=2, giving (L+1)(L+2)...(2L)=2·6·...·(4L-2) — the C(n,k) dual identity (2L choose L) = product relation that yields infinitely… | yes | asserted | `research/summaries/saradha-shorey-tijdeman-equal-products-1995.md` |
-| `stirling-2023-bound-and-record` | Bazso-Mező-Pinter-Tengely 2023 (arXiv:2311.06080, Debrecen): the number M_i(a) of times an integer a occurs among Stirling numbers of kind i satisfies M_i(a) <= 2 + 2 log a / W((1/2) log a) for a >= 2 (Lambert W), hence… | yes | asserted | `research/summaries/stirling-singmaster-2023.md` |
 
-_10 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_13 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
@@ -115,9 +115,11 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `sst-effective-shared-factor` (research/summaries/saradha-shorey-tijdeman-equal-products-1995.md) — asserted by the source, not proved there and not checked here
 - `sst-equal-length-exception-family` (research/summaries/saradha-shorey-tijdeman-equal-products-1995.md) — asserted by the source, not proved there and not checked here
 - `stirling-2023-bound-and-record` (research/summaries/stirling-singmaster-2023.md) — asserted by the source, not proved there and not checked here
+- `sunit-subspace-inapplicable` (research/approaches/s-unit-subspace.md) — asserted by the source, not proved there and not checked here
 - `tao-boundary-and-method-ceiling` (research/summaries/tao-interior-blog.md) — asserted by the source, not proved there and not checked here
 - `tijdeman-preprints-host` (research/summaries/tijdeman-preprints-page.md) — asserted by the source, not proved there and not checked here
 - `totd-ologk-proof-and-history` (research/summaries/theorem-of-the-day-singmaster.md) — asserted by the source, not proved there and not checked here
+- `vieta-jumping-quadratic-only` (research/approaches/vieta-jumping-pell-classification.md) — asserted by the source, not proved there and not checked here
 - `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
