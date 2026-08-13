@@ -1,82 +1,48 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/chase-hunter-tao-2026-full-html.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Chase, Hunter, Tao 2026 — Gilbreath's conjecture: a Cramér random model and a deterministic analysis
 
-<!-- source: https://arxiv.org/html/2607.08712v1 | converted from HTML -->
+**Full text:** `research/sources/chase-hunter-tao-2026-full-html.full.md` [[chase-hunter-tao-2026-full-html.full]]
+**Source:** arXiv:2607.08712v1 [math.CO], 9 Jul 2026. State of the art on the conjecture.
 
-## What is in it
+## Exact statements (verified against full text)
 
-- Gilbreath’s conjecture: a Cramér random model
-and a deterministic analysis
-        - Abstract.
-        - 2020 Mathematics Subject Classification
-  - 1. Introduction
-    - 1.1. Gilbreath arrays
-    - 1.2. Gilbreath’s conjecture for Cramér type models
-        - Theorem 1.1 (Gilbreath’s conjecture for a random model).
-        - Theorem 1.2 (Gilbreath for Cramér random model).
-        - Theorem 1.3 (Gilbreath for general random models).
-    - 1.3. A continuous model problem
-        - Theorem 1.4 (Lower bound).
-        - Remark 1.5.
-    - 1.4. Deterministic analysis
-        - Theorem 1.6 (Deterministic criterion).
-    - 1.5. Acknowledgements and AI disclosure
-  - 2. Lower bound
-        - Proposition 2.1 (Key inequality).
-- …
+- **Normalized-gap equivalence.** Removing the top row and left diagonal, dividing by 2, subtracting 1 from the new top row: GC ⟺ the left diagonal of the array from `a_n = (p_{n+2}−p_{n+1})/2 − 1` is eventually `{0,1}`-valued. First nine normalized gaps: `0,0,1,0,1,0,1,2,0` (OEIS A100820). This is exactly the run's shape: `{0,2}` second entry (even) ↔ `{0,1}` normalized entry after halving.
+- **Theorem 1.1 (Chase 2024 recovery).** Independent a_n uniform on `{0,...,f(n)−1}`, `2≤f(n)≤(1/10)loglog n/logloglog n` ⇒ a.s. left diagonal eventually `{0,1}`. Improved: works up to f(n)=δn.
+- **Theorem 1.2 (Cramér model).** Independent geometric a_n, `P(a_n=k)=(1−2/(2+log n))^k·2/(2+log n)` ⇒ a.s. left diagonal eventually `{0,1}`. 2-separated-concentration ≤ 1/2 gives axiom (ii) for any ε<1/2.
+- **Theorem 1.3 (general models — the operative one).** For every ε>0 ∃δ>0: independent nonneg-integer a_n with (i) a_n≤δn a.s. eventually, and (ii) P(a_n∈A)≤1−ε for every 2-separated set A eventually ⇒ a.s. left diagonal eventually `{0,1}`. Max growth threshold between δn (works) and 2^{n+1} (fails, Remark 4.5).
+- **Theorem 1.4 (continuous model).** c_i=E[a(i,j)] in the i.i.d.-exponential model satisfies Σ_{i=0}^n c_i ≥ log(n+e); so c_i can't decay faster than 1/i. c_0=1,c_1=1,c_2=7/9,c_3=227/288 (not monotone). Neither convergence to 0 nor boundedness of (c_i) is proved. Prop. 2.1: c_n ≥ exp(−Σ_{i<n} c_i).
+- **Theorem 1.6 (deterministic inverse theorem).** If a_n≤2^M, no length-L 0-block, no {0,d}-block (2^{M−m}<d≤2^{M−m+1}) of length ≥ R_m−3R_{m−1} at depth ≤ 2R_{m−1}, with R_m≥4R_{m−1}, R_0≥100L·8^M, then a(N−1,1)∈{0,1}. Contrapositive machinery (towers, good blocks) shows the ONLY obstructions to decay are long zero-blocks or very long shallow {0,d}-blocks.
+- **Lemma 3.10 (parity formula).** a(i,j) ≡ Σ_k C(i,k) a_{j+k} (mod 2); Lucas' theorem governs. Generalizes Odlyzko's mod-4 linearization to the parity of any entry.
+- **Lemma 3.7–3.8:** {0,d} closed under |x−y|; parentage dichotomy of {0,d}-blocks. **Lemma 3.11 (separation):** a 0/1-stage row is 2-separated-forceable — formalizes the run's "2-separated concentration is the operative hypothesis."
 
+## Hypotheses held here?
 
-## What it claims
+The Cramér-geometric and general-model theorems are statements about random initial data, NOT the primes (which are deterministic + only conjecturally random). Axiom (i) for the primes needs Cramér's conjecture (i.e. gaps O(log²n)); axioms (ii)/(iii) of Theorem 1.6 are heuristically plausible for primes but unproved even under Hardy–Littlewood. So these give **heuristic support, not proof, for the prime case**.
 
-Gilbreath’s conjecture asserts that if one starts with the sequence of primes and takes successive absolute differences to create a triangular array, then the left diagonal of this array consists entirely of ones after the first row. In this paper, we show that the analogue of this conjecture for a Cramér random model holds, in which the (normalized) prime gaps are replaced by independent random variables with geometric distributions of logarithmic size. We also give some preliminary analysis of the associated continuous probabilistic model for this problem, as well as a deterministic “inverse theorem” that isolates the specific obstructions to Gilbreath’s conjecture (assuming a Cramér type bound on prime gaps), namely long blocks of zeroes, or very long shallow { 0, d } \{0,d\} -valued blocks for some d ≥ 2 d\geq 2.
+## Bearing on this run
 
-## Statements it makes
+- Theorem 1.6 pins the obstruction exactly onto the run's "consumption vs regeneration" split: regeneration would fail only via a long zero-block or a long shallow {0,d}-block. A counterexample-invariant attack should target exactly these two structures.
+- Theorem 1.3 justifies crowning the general-class approach: the "randomness" hypothesis needed is precisely 2-separated non-concentration (consistent with the run's `two-separation-hypothesis` claim), the primes' evenness being the trap the /2−1 formulation avoids.
+- Theorem 1.4's non-monotone c_i and the stubborn 1/i floor corroborate how hard the regeneration/decay question is in even the simplest continuous model.
 
-###### Theorem 1.1 (Gilbreath’s conjecture for a random model).
+## Claims
 
-###### Theorem 1.2 (Gilbreath for Cramér random model).
+```claim
+id: cht-inverse-theorem
+statement: If a_n≤2^M, no length-L 0-block, and no {0,d}-block (2^{M−m}<d≤2^{M−m+1}) of length ≥ R_m−3R_{m−1} at depth ≤2R_{m−1} (R_m≥4R_{m−1}, R_0≥100L·8^M), then a(N−1,1)∈{0,1}; long zero-blocks and long shallow {0,d}-blocks are the only obstructions.
+hypotheses: nonneg-integer initial data with a_n≤2^M; R-tower hierarchy as stated.
+holds-here: for the primes (i) needs Cramér's conjecture; (ii)/(iii) unproved though plausible.
+status: proved in source (elementary contrapositive), not checked here
+bearing: directs the obstruction hunt at zero-blocks and shallow {0,d}-blocks.
+anchor: research/sources/chase-hunter-tao-2026-full-html.full.md
+answers: what-are-the-only-obstructions-to-gc-decay
+```
 
-###### Theorem 1.3 (Gilbreath for general random models).
-
-###### Theorem 1.4 (Lower bound).
-
-###### Theorem 1.6 (Deterministic criterion).
-
-###### Proposition 2.1 (Key inequality).
-
-Theorem 1.4 follows.
-
-###### Lemma 3.7 (Inheritance).
-
-###### Lemma 3.8 (Parentage).
-
-###### Lemma 3.10 (Parity formula).
-
-###### Lemma 3.11 (Separation).
-
-###### Definition 3.12 (Tower).
-
-###### Lemma 3.13 (Attained tower).
-
-###### Lemma 3.14 (Towers have large shadow).
-
-###### Proposition 4.1 (Bound on failure probability).
-
-###### Lemma 4.3 (Unlikely attainment).
-
-###### Lemma 4.4 (Number of towers).
-
-###### Lemma 5.1 (Inductive claim).
-
-###### Lemma 5.2 (Coarse monotonicity).
-
-###### Proposition 5.3 (Locating a large triangle).
-
-###### Definition 5.4 (Good blocks).
-
-###### Lemma 5.5 (Basic properties of good blocks).
-
-###### Lemma 5.7 (Strict coarse upwards monotonicity).
-
-###### Lemma 5.8 (Blocks are small or huge).
-
-*[digest of a 89651 character source; every section, statement, and proof in full at `research/sources/chase-hunter-tao-2026-full-html.full.md`]*
+```claim
+id: cht-normalized-gap-definition
+statement: GC ⟺ the left diagonal of the array generated by a_n=(p_{n+2}−p_{n+1})/2−1 is eventually {0,1}-valued; first nine a_n are 0,0,1,0,1,0,1,2,0 (OEIS A100820).
+hypotheses: primes; the /2−1 normalization.
+holds-here: yes — the clean form of the run's {0,2}↔{0,1} correspondence.
+status: proved (normalization bookkeeping)
+bearing: reframes every {0,2} claim as a {0,1} claim on the normalized gaps.
+anchor: research/sources/chase-hunter-tao-2026-full-html.full.md
+```

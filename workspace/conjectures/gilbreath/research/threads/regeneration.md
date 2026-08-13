@@ -1,21 +1,18 @@
 ```thread
 question: Why does a fresh {0,2} block always reappear before the current one is exhausted by erosion?
-status: open — data gathered, one candidate lemma refuted, two sharp facts established
+status: open — but a precise single-row regeneration criterion is now ESTABLISHED to depth 1000
 rests-on: |
   - Reduction proved (A_k(1) ∈ {0,2} ⇔ conjecture), checked to depth 599
   - Block profiles computed to depth 1000 (code/out/blocks_depth1000.json)
   - Erosion bound: b(k+1) ≥ b(k) - 1 (a block loses at most 1 per row)
-  - Odlyzko's lemma (consumption): a block of length n protects exactly n+1 rows; constant is 1, not n/2. Proved by diagonal-subtriangle argument, verified exhaustively (n=1..11, 122820 adversarial pairs, zero violations) and on real prime rows to depth 600. This is consumption = 1 position per row, linear. Regeneration is the sole remaining obstruction.
-  - 60 regeneration events (b diff ≥ 0) in 999 transitions; longest pure-erosion run = 838
-  - Candidate iff lemma REFUTED (code/out/check_regenerate_lemma.captured.txt and code/out/check_regenerate_lemma.notes.md): both directions of the iff fail systematically. Regeneration is not characterisable by a single-row local property of the intruder and block length alone.
-blocked-by: nothing yet — the mechanism of regeneration has not been stated
+  - Odlyzko's lemma (consumption): a block of length n protects exactly n+1 rows; constant is 1, not n/2. Proved by diagonal-subtriangle argument, verified exhaustively (n=1..11, 122820 adversarial pairs, zero violations) and on real prime rows to depth 600. Consumption = 1 position per row, linear. Regeneration is the sole remaining obstruction.
+  - REGENERATION CRITERION (ESTABLISHED, exact, checked to depth 1000): with the block in 0-based cols 1..b_k, let c_k=A_k[b_k+1] (intruder) and e_k=A_k[b_k] (the true last {0,2} value of the block — NOT b_k-1, that is the earlier off-by-one error). Then q_k=A_{k+1}[b_k]=|e_k-c_k| lies in {0,2} IFF (e_k==2 and c_k==4), and b_{k+1}>=b_k IFF (e_k==2 and c_k==4). Zero failures over all 998 transitions; exactly 60 regeneration events (matching the long-standing count). The earlier note "regeneration is not a local property / lemma refuted" is WITHDRAWN: it was an off-by-one in the edge index. See code/regeneration/check_regenerate_lemma.py and code/out/check_regenerate_lemma.captured.txt.
+blocked-by: nothing yet — criterion established, but why the criterion forces b never to hit 0 (globally) is not yet proved
 next: |
-  1. State the two sharp facts from the data precisely (see code/out/regeneration_analysis.captured.txt):
-     (a) The block length never approaches 0 over the range computed — the smallest ever seen is 13 (at k=3), and minima grow rapidly: [13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263]. Dwell at each minimum is 1 to 4 rows. This is numerical evidence that the conjecture holds strongly — block length is not just bounded away from 0, it grows.
-     (b) Regeneration is real but NOT monotone — 97→96, 871→872, 21→24 all occur, so consumption and regeneration alternate. The block can shrink before growing.
-  2. The honest open question, stated sharply: is there a k with block length 0? Everything computed says no and nothing proves it. State it this way.
-  3. Convert data into a characterisation attempt: what *does* the row below a short block look like when regeneration succeeds? What does it look like when it fails locally?
-  4. Do not search the library further — the directive says to stop searching and convert. The library is sufficient.
+  1. Promote the criterion: regeneration = (edge==2 AND intruder==4), i.e. block must end in 2 with a 4 just past it. This is a real single-row local fact, not an artifact.
+  2. Link it to the mod-4 linearization d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4): edge 2 + intruder 4 means columns b_k, b_k+1 sum to 2 (mod 4) giving q=2 at column b_k in the next row.
+  3. Stress cases: at every k where b_k is small (local minima [13,24,96,97,...]), check whether the row below has (edge==2,intruder==4) available *before* erosion would drive b to 0. b never hits 0 in the computed range; explain via regeneration being cheap (needs only edge 2 and intruder 4 at the current boundary).
+  4. The honest open question remains: is there a k with block length 0? No proof yet.
 ```
 
 # Regeneration thread
@@ -24,9 +21,18 @@ next: |
 
 - **Consumption is proven**: a leading {0,2} block of length b_k in row k implies b_{k+1} ≥ b_k - 1. The block shrinks by at most 1 per row. Constant = 1 (n+1 rows per length-n block), re-derived and proved.
 
-- **The candidate iff lemma is REFUTED.** `check_regenerate_lemma.py` tested a proposed characterisation of regeneration by a single-row local property (involving intruder c, block length b, and second entry e) against the real rows to depth 1000. Both directions fail systematically. The oracle PASSED; the lemma FAILED. See `code/out/check_regenerate_lemma.notes.md` for exact k-values. The takeaway: **regeneration is not a local property** — it cannot be read off the current row's intruder and block length alone.
+- **The regeneration criterion is ESTABLISHED (depth 1000, exact).** The block occupies 0-based columns `1..b_k`. Let the intruder be `c_k = A_k[b_k+1]` (the first value past the block) and the edge be `e_k = A_k[b_k]` (the **last** `{0,2}` value of the block — 0-based index `b_k`, not `b_k-1`). Then the value `q_k = A_{k+1}[b_k] = |e_k - c_k|` satisfies:
+  - `q_k ∈ {0,2}`  ⟺  `(e_k == 2 and c_k == 4)`
+  - `b_{k+1} ≥ b_k`  ⟺  `(e_k == 2 and c_k == 4)`
+  - With **zero failures** over all 998 transitions; exactly **60** regeneration events, matching the long-standing count.
+  - For rows whose whole leading length is `{0,2}` (no intruder, 838 of them), `b_{k+1} ≥ b_k` is always false, so the iff still holds.
+  - Distributions: (e,c) pairs — (2,4):60, (0,4):36, (2,6):16, (0,6):13, (0,8):8, (2,8):8, (0,12):5, (0,14):4, (2,10):4, (2,12):3, (0,10):2, (2,14):2.
 
-## Two sharp facts from the data
+### Correction to prior record
+
+The earlier thread entry "**candidate iff lemma REFUTED — regeneration is not a local property**" was based on an **off-by-one**: it used `e_k = A_k[b_k-1]` (and `q_k = A_{k+1}[b_k-1]`). Under that wrong index, `q_k == |e_k-c_k|` fails on 141/161 rows and the iff on 109. The correct definition `e_k = A_k[b_k]` follows from `A_{k+1}[j]=|A_k[j]-A_k[j+1]|`: the diff partner of the intruder `A_k[b_k+1]` is `A_k[b_k]`, not `A_k[b_k-1]`. With the correction, the iff holds exactly. **Withdrawn.**
+
+This resolves the thread's open item "intruder==4 necessary but not sufficient (36 erosion rows also have intruder 4)": the missing condition is `e==2`. Among the 96 rows with intruder 4, the 60 with edge 2 regenerate and the 36 with edge 0 erode.
 
 ### Fact (a): Block length never approaches 0 — minima grow
 
@@ -34,16 +40,11 @@ Record of minima over depth 1000: `[13, 24, 96, 97, 175, 2762, 5939, 31525, 3153
 
 - The smallest block length after the first few rows is **13** (at k=3).
 - Minima grow rapidly — the block length is not merely bounded away from 0, it *increases*.
-- Dwell at each minimum is 1 to 4 rows.
-- This is strong numerical evidence that the conjecture holds, but it is not a proof.
+- This is strong numerical evidence, not a proof.
 
 ### Fact (b): Regeneration is real but NOT monotone
 
-- `97→96` occurs (k=13): the block shrinks to a new local minimum.
-- `871→872` occurs (k=26): the block grows by 1.
-- `21→24` occurs (k=8): the block grows by 3.
-- Consumption and regeneration **alternate** — the block can shrink before growing.
-- The longest genuine live-regime erosion run is 13 rows (k=97..109). The 838-row run is a finite-width artifact.
+`97→96` (k=13), `871→872` (k=26), `21→24` (k=8) all occur. Consumption and regeneration alternate.
 
 ## The honest open question
 
@@ -51,16 +52,12 @@ Record of minima over depth 1000: `[13, 24, 96, 97, 175, 2762, 5939, 31525, 3153
 
 ## What must be explained
 
-For regeneration to fail, there must be a row k where b_k is small and the rows below fail to produce a fresh {0,2} block before b reaches 0. The conjecture asserts this never happens. To prove it, the data says:
-
-1. Regeneration is NOT local — the single-row iff approach is dead. The mechanism must involve structure further into the row.
-2. The mod-4 linearization (`d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4)` for even entries) is the cleanest algebraic handle — Pascal-triangle congruences govern the even entries, and the question is whether they force the boundary between {0,2} territory and intruder territory to always move outward eventually.
-3. The intruder (first non-{0,2} value) is 4 in 59.6% of rows and always 0 or 2 mod 4. Intruder==4 is *necessary* for regeneration (all 60 regen rows have intruder 4 at depth 1000) but NOT sufficient (36 erosion rows also have intruder 4).
+To prove the conjecture one must show the regeneration criterion — the block ends in 2 with a 4 immediately past it — is available often enough that erosion never drives `b` to 0. The criterion is now known precisely; why it is always eventually available is not.
 
 ## Data available
 
 - `code/out/witnesses.json`: depth 600, block profile for k=1..40
 - `code/out/blocks_depth1000.json`: full b, s, intruder sequences to depth 1000
-- `code/out/regeneration_analysis.captured.txt`: summary stats (Q1–Q5)
-- `code/out/check_regenerate_lemma.captured.txt`: refutation of candidate iff lemma
-- `code/out/check_regenerate_lemma.notes.md`: refutation write-up with fenced claim
+- `code/regeneration/check_regenerate_lemma.py` and `code/out/check_regenerate_lemma.captured.txt`: the established criterion, oracle-verified
+- `code/out/regeneration_analysis.captured.txt`: earlier summary stats
+- `code/out/check_regenerate_lemma.notes.md`: (superseded refutation note from the off-by-one run)
