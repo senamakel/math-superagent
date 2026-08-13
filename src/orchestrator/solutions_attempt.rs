@@ -390,7 +390,7 @@ async fn attempt_step(
     if state.attempts == 1 {
         open_with_execution(subagents, tracer, &state.problem);
     }
-    state.last_attempt = delegate(subagents, "goals", prompt).await;
+    state.last_attempt = attempt_with_salvage(subagents, tracer, prompt, &state.problem).await;
     state.fresh_context.clear();
     state.steer.clear();
     state
