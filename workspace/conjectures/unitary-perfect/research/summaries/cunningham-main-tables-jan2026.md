@@ -1,104 +1,47 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/cunningham-main-tables-jan2026.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
-
 <!-- source: https://homes.cerias.purdue.edu/~ssw/cun/pmain126.txt | converted from plain text -->
 
-Table 2-              Factorizations of 2^n-1, n odd, n<1500
+# Cunningham Project Main Tables (Jan 2026)
 
-    n                                Prime Factors
-    3   7
-    5   31
-    7   127
-    9  (3) 73
-   11   23.89
-   13   8191
-   15  (3,5) 151
-   17   131071
-   19   524287
-   21  (3,7) 7*.337
-   23   47.178481
-   25  (5) 601.1801
-   27  (3,9) 262657
-   29   233.1103.2089
-   31   2147483647
-   33  (3,11) 599479
-   35  (5,7) 71.122921
-   37   223.616318177
-   39  (3,13) 79.121369
-   41   13367.164511353
-   43   431.9719.2099863
-   45  (3,5,9,15) 631.23311
-   47   2351.4513.13264529
-   49  (7) 4432676798593
-   51  (3,17) 103.2143.11119
-   53   6361.69431.20394401
-   55  (5,11) 881.3191.201961
-   57  (3,19) 32377.1212847
-   59   179951.3203431780337
-   61   2305843009213693951
-   63  (3,7,9,21) 92737.649657
-   65  (5,13) 145295143558111
-   67   193707721.761838257287
-   69  (3,23) 10052678938039
-   71   228479.48544121.212885833
-   73   439.2298041.9361973132609
-   75  (3,5,15,25) 100801.10567201
-   77  (7,11) 581283643249112959
-   79   2687.202029703.1113491139767
-   81  (3,9,27) 2593.71119.97685839
-   83   167.57912614113275649087721
-   85  (5,17) 9520972806333758431
-   87  (3,29) 4177.9857737155463
-   89   618970019642690137449562111
-   91  (7,13) 911.112901153.23140471537
-   93  (3,31) 658812288653553079
-   95  (5,19) 191.420778751.30327152671
-   97   11447.13842607235828485645766393
-   99  (3,9,11,33) 199.153649.33057806959
-  101   7432339208719.341117531003194129
-  103   2550183799.3976656429941438590393
-  105  (3,5,7,15,21,35) 29191.106681.152041
-  107   162259276829213363391578010288127
-  109   745988807.870035986098720987332873
-  111  (3,37) 321679.26295457.319020217
-  113   3391.23279.65993.1868569.1066818132868207
-  115  (5,23) 14951.4036961.2646507710984041
-  117  (3,9,13,39) 937.6553.86113.7830118297
-  119  (7,17) 239.20231.62983048367.131105292137
-  121  (11) 727.1786393878363164227858270210279
-  123  (3,41) 3887047.177722253954175633
-  125  (5,25) 269089806001.4710883168879506001
-  127   170141183460469231731687303715884105727
-  129  (3,43) 11053036065049294753459639
-  131   263.10350794431055162386718619237468234569
-  133  (7,19) 163537220852725398851434325720959
-  135  (3,5,9,15,27,45) 271.348031.49971617830801
-  137   32032215596496435569.5439042183600204290159
-  139   5625767248687.123876132205208335762278423601
-  141  (3,47) 4375578271.646675035253258729
-  143  (11,13) 724153.158822951431.5782172113400990737
-  145  (5,29) 2679895157783862814690027494144991
-  147  (3,7,21,49) 7*.2741672362528725535068727
-  149   86656268566282183151.8235109336690846723986161
-  151   18121.55871.165799.2332951.7289088383388253664437433
-  153  (3,9,17,51) 919.75582488424179347083438319
-  155  (5,31) 31*.311.11471.73471.4649919401.18158209813151
-  157   852133201.60726444167.1654058017289.2134387368610417
-  159  (3,53) 6679.13960201.540701761.229890275929
-  161  (7,23) 1289.3188767.45076044553.14808607715315782481
-  163   150287.704161.110211473.27669118297.36230454570129675721
-  165  (3,5,11,15,33,55) 2048568835297380486760231
-  167   2349023.79638304766856507377778616296087448490695649
-  169  (13) 4057.6740339310641.3340762283952395329506327023033
-  171  (3,9,19,57) 93507247.3042645634792541312037847
-  173   730753.1505447.70084436712553223.155285743288572277679887
-  175  (5,7,25,35) 39551.60816001.535347624791488552837151
-  177  (3,59) 184081.27989941729.9213624084535989031
-  179   359.1433.1489459109360039866456940197095433721664951999121
-  181   43441.1164193.7648337.7923871097285295625344647665764672671
-  183  (3,61) 367.55633.37201708625305146303973352041
-  185  (5,37) 1587855697992791.7248808599285760001152755641
-  187  (11,17) 707983.1032670816743843860998850056278950666491537
-  189  (3,7,9,21,27,63) 1560007.207617485544258392970753527
-  191   383.7068569257.39940132241.332584516519201.87274497124602996457
+The Main Tables as of January 5, 2026 (factorizations of `2^n ± 1`,
+`3^n ± 1`, `5^n ± 1`, `6^n ± 1`, `7^n ± 1`, `10^n ± 1`, `11^n ± 1`, `12^n ± 1`
+b^n ± 1 with b = 2,...,12 and selected higher bases), with all factors through
+#6871 on Page 148. Portion held: `[[cunningham-main-tables-jan2026.full]]` is
+the **Table 2 excerpt** — factorizations of `2^n − 1`, `n` odd, `n < 1500`
+(the file's visible content), a 1.02 MB plain-text table.
 
-*[excerpt ends; 1020312 characters not shown — see `research/sources/cunningham-main-tables-jan2026.full.md`]*
+## What it establishes and what it does not
+
+- Exact prime factorizations of `2^n − 1` for odd `n < 1500` (e.g.
+  `2^149 − 1 = 86656268566282183151 · 8235109336690846723986161`). Useful for
+  Mersenne-side checks; **the table covers `2^n − 1`, NOT `2^n + 1`** — the
+  `+1` side (Fermat/Aurifeuillean `L_p, M_p`, the site of the `H_even` prime
+  branch `2^{2p}+1`) is not in the held excerpt.
+- **None of the H_even open candidates appear**: the open branch is `m = 2p`
+  with `p ∈ [1213, 17467]`, hence exponents `n = 2p` up to ~35000, and the
+  numbers are `2^n + 1` — outside both the held range (`n < 1500`) and the
+  held side (`−1`). The known ten `H_even` members (`m ≤ 122` ⇒ `2^m + 1`,
+  m even, m ≤ 122) would need the even-exponent `+1` tables, which are the
+  **Appendix C** tables (not held).
+
+## Bearing on this run
+
+**No direct bearing.** This source cannot verify any `H_even` element (needs
+`2^m+1`, m even) nor factor any open candidate (`2^{2p}+1`, p ≥ 1213). It is a
+lookup for `2^n−1` side data only. The A002827 OEIS internal-format file
+remains the correct catalogue check for the five UPNs. Do not re-fetch the full
+file expecting `+1` data; the `+1` tables live in a separate Appendix C file.
+
+```claim
+id: cunningham-2n-minus-1-lookup
+statement: Cunningham Main Tables (Jan 2026) hold factorizations of 2^n - 1,
+  n odd, n < 1500 in the held excerpt; the 2^n + 1 tables and Appendix C are
+  not in the library, and no H_even candidate (2^m + 1, m even) or open
+  H_even prime case (2^(2p) + 1, p >= 1213) appears in it.
+hypotheses: the held file is the pmain126.txt Table 2 excerpt
+holds-here: n/a -- the object needed (2^m + 1 for H_even) is not in the source
+status: catalogued
+bearing: prevents a wasteful re-read; the H_even verification must use its own
+  factorization pipeline, not this table
+anchor: research/sources/cunningham-main-tables-jan2026.full.md
+answers: whether-cunningham-tables-cover-heven
+```
