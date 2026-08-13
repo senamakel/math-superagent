@@ -1,0 +1,30 @@
+Step 1: the two forms are the same expression, checked identically
+  disagreements over 1 <= m,n <= 399: 0
+
+Step 2: parity by case, exhaustively over each parity class
+  m even, n even  : odd values of N found = 0
+  m even, n odd   : odd values of N found = 0
+  m odd, n even   : odd values of N found = 0
+  m odd, n odd    : odd values of N found = 0
+
+Step 3: integrality far past the sampled range m<=29, n<=59
+  pairs checked with 2 <= m < n < 1500: 1121253
+  first non-integral g(m,n): None
+  ALL INTEGRAL: True
+
+Step 4: the predictions in verify_genus_formula.captured.txt, recomputed
+  g(2,13): run says   6, symmetric form gives   6  ok
+  g(3,25): run says  24, symmetric form gives  24  ok
+  g(4,25): run says  36, symmetric form gives  36  ok
+  g(5,25): run says  46, symmetric form gives  46  ok
+  g(6,19): run says  45, symmetric form gives  45  ok
+  g(7,16): run says  45, symmetric form gives  45  ok
+  g(8,17): run says  56, symmetric form gives  56  ok
+  g(9,18): run says  64, symmetric form gives  64  ok
+  g(10,20): run says  81, symmetric form gives  81  ok
+  g(11,13): run says  60, symmetric form gives  60  ok
+  all predictions reproduced by the symmetric form: True
+
+NOTE: step 4 is an internal consistency check of two algebraically equal
+expressions, NOT independent confirmation of the genus. Confirming the
+genus itself needs a CAS computing the curve, which the host lacks.

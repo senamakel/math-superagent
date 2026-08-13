@@ -1,30 +1,34 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/caldwell-gilbreaths-conjecture-glossary.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Caldwell, The Prime Glossary — "Gilbreath's Conjecture" (t5k.org, Wayback capture)
 
-<!-- source: https://web.archive.org/web/2024/https://t5k.org/glossary/page.php?sort=GilbreathsConjecture | converted from HTML -->
+**Full text:** `research/sources/caldwell-gilbreaths-conjecture-glossary.full.md` — wikilink: [[caldwell-gilbreaths-conjecture-glossary.full]]
+**Source:** https://web.archive.org/web/2024/https://t5k.org/glossary/page.php?sort=GilbreathsConjecture (Chris Caldwell's Prime Pages, widely-read primer)
 
-## What is in it
+## What it establishes
 
-- Gilbreath's conjecture
+Encyclopedic-tier glossary entry, notable mainly as a **vector of the retracted Proth myth** and as an independent restatement of the block lemma and of Odlyzko's G(π(x)) table.
 
+- **The canonical statement and rows.** Displays the triangle A_0..A_11 (2,3,5,7,… → 1,2,2,4,2,4,2,4,6,2 → 1,0,2,2,2,2,2,2,4 → …) — exactly the run's oracle rows; Gilbreath's students verified the leading-1 claim for "the first 64,419 rows" (the K–R source figure is 63,419 primes — Caldwell's digit is a typo/rounding).
+- **The block lemma, stated correctly (constant 1).** "If the row starts with a 1 and then n entries which are either 0 or 2, then the next n rows must start with a one." This is the run's proved `odlyzko-block-lemma-exact`: one row protected per {0,2} block entry — independent (encyclopedic) agreement with Odlyzko 1993 and Killgrove–Ralston 1959.
+- **Odlyzko's computation method and G-table.** Explains why Odlyzko did not compute all 5×10^22 entries: he only needed the first 635 rows, using the block lemma to skip. Reproduces G(π(10^x)) = 5,15,35,65,95,135,175,248,329,417,481,635 (x=2..13) — matching Odlyzko Table 2 and the run's `odlyzko-verification-1993`.
+- **Guy's "nothing special about primes" comment** (quoted): the primes are not special, only slow-growing and reasonably distributed; a proof might come from maximal-gap and gap-distribution knowledge — the same general-class framing the run's ROOT.md commits to.
+- **The Proth myth, repeated uncritically.** "Proth claimed to have proven this result in 1878, but his proof turned out to be faulty," citing "Théorèmes sur les nombres premiers, *C. R. Acad. Sci. Paris* 85 (1877) 329–331". Both claims are wrong: Proth's only discussion is Nouv. Corresp. Math. 4 (1878) 236–240 with no proof, and C.R. 85:329–331 is Pépin's paper (documented in `proth-myth-retracted` / `proth-citation-correction`).
 
-## What it claims
+## Bearing on this run
 
-2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, ...
-1, 2, 2, 4, 2, 4, 2, 4, 6, 2, ...
-1, 0, 2, 2, 2, 2, 2, 2, 4, ...
-1, 2, 0, 0, 0, 0, 0, 2, ...
-1, 2, 0, 0, 0, 0, 2, ...
-1, 2, 0, 0, 0, 2, ...
-1, 2, 0, 0, 2, ...
-1, 2, 0, 2, ...
-1, 2, 2, ...
-1, 0, ...
-1, ...
+- Corroborates (third independent source) the block lemma constant 1 and the G-table — both already proved/sourced; encyclopedic confirmation only.
+- **Do not cite Caldwell for the Proth episode.** It is the myth's continuing public vector: the glossary repeats the retracted "faulty proof" claim and the wrong C.R. pages. It *contradicts* the run's sourced `proth-myth-retracted` and `proth-citation-correction`; record it as the counter-example of how the myth circulates, never as authority.
 
-**Gilbreath's [Conjecture][2]**is that the numbers in the first column are all one (after the initial two). Two of Gilbreath's students verified this conjecture for the first 64,419 rows. Since then it has been checked to higher and higher limits, and continues to hold. For example, by 1993 Andrew Odlyzko had checked this conjecture using the primes up to 10,000,000,000,000 (that is 346,065,536,839 rows)!
+```claim
+id: caldwell-proth-myth-repeats
+statement: Caldwell's Prime Glossary (t5k.org) restates the block lemma correctly (a row of 1 then n entries in {0,2} protects the next n rows' leading 1) and reproduces Odlyzko's G(π(10^x)) table (5,15,35,65,95,135,175,248,329,417,481,635), but repeats the retracted myth "Proth claimed to have proven this result in 1878, but his proof turned out to be faulty" and cites C.R. 85 (1877) 329–331 for it — pages that are actually Pépin's paper.
+hypotheses: the glossary's own text (Wayback capture, 2024).
+holds-here: yes — the block-lemma/table corroboration matches the run's proved and sourced results; the Proth claim is the myth refuted by proth-myth-retracted and proth-citation-correction.
+status: catalogued/corroborative for the block lemma and G-table; contradicted for the Proth episode.
+bearing: third independent source for the constant-1 block lemma and G-table; the standing exhibit of the Proth-myth's circulation — cite as counter-source only.
+anchor: research/sources/caldwell-gilbreaths-conjecture-glossary.full.md
+contradicts: proth-myth-retracted, proth-citation-correction
+```
 
-As if often the case, Gilbreath was not the first to look at the conjecture that bears his name. Proth claimed to have proven this result in 1878, but his proof turned out to be faulty.
+## Source status
 
-How do we check this conjecture? Certainly Odlyzko did not check all iterated differences for all of the primes up to 10 13 (this would require the computation of about 5 22 numbers)! To understand what he did do, first notice that the first number in…
-
-*[digest of a 4272 character source; every section, statement, and proof in full at `research/sources/caldwell-gilbreaths-conjecture-glossary.full.md`]*
+Wayback capture of the Prime Pages glossary (t5k.org, Chris Caldwell); encyclopedic tier, widely cited by OEIS entries. No theorem content beyond the block-lemma restatement.

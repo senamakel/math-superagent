@@ -11,6 +11,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `anti-gilbreath-construction` | For any unbounded monotone f(n)≥2 there is a sequence X with n-th gap ≤ f(n) whose triangle's right edge is 1 infinitely often and other values infinitely often; constructed backwards so a large surviving gap escapes to… | yes | asserted | `research/summaries/eppstein-anti-gilbreath-sequences.md` |
 | `arias-block-and-evolution` | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime model attained GC in ~49.9% of runs but eventual-1 (n>10) in 99.16% with no… | yes | asserted | `research/summaries/arias-de-reyna-gilbreath-blog.md` |
 | `block-profile-equals-a000232-minus-1` | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of terms before the first term > 2 in the (k)-th difference, minus 1). | yes | catalogued | `research/ROOT.md` |
+| `caldwell-proth-myth-repeats` | Caldwell's Prime Glossary (t5k.org) restates the block lemma correctly (a row of 1 then n entries in {0,2} protects the next n rows' leading 1) and reproduces Odlyzko's G(π(10^x)) table… | yes | catalogued | `research/summaries/caldwell-gilbreaths-conjecture-glossary.md` |
 | `chase-2024-arxiv-id` | Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. | yes | asserted | `research/notes/library-state.md` |
 | `chase-2024-block-consumption03` | If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma 3.2). | yes | proved | `research/summaries/chase-2024-random-analogue-gilbreath.md` |
 | `chase-2024-theorem1` | For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on {0,..,f(n)−1}) is almost surely eventually Gilbreath (first term of every late row… | **unchecked** | proved | `research/summaries/chase-2024-random-analogue-gilbreath.md` |
@@ -65,14 +66,15 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `odlyzko-mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4) because d_k(n) is even there; the absolute-value triangle obeys Pascal's rule mod 4 (mod 2 after halving). | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
 | `odlyzko-verification-1993` | Gilbreath's conjecture verified for d_k(1), 1 ≤ k ≤ π(10^13) ≈ 3.4×10^11 (all primes < 10^13); G(π(10^13)) = 635; max g(n) = 635 at n ≈ π(7.17716×10^12) from prime gap 674. | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
 | `oeis-A036277-first-term-position` | A036277(n) is the position of the first term > 2 in row n of the Gilbreath array, equals A000232(n)+1; Hasler: GC ⟺ A036277(n) > A213014(n) + 2 for all n > 0. The row-to-row movement of A036277 shows the same… | yes | catalogued | `research/summaries/oeis-A036277-first-term-greater-than-one.md` |
-| `oeis-A089582-second-entry-catalogue` | The second-entry sequence A_k(1) (k≥1) of the prime Gilbreath triangle is the OEIS catalogue sequence A089582, and GC ⟺ A089582 ⊆ {0,2}. The run's exact generator reproduces all 105 catalogued terms with zero mismatches. | yes | catalogued | `research/summaries/oeis-A089582-second-entry-sequence.md` |
 
-_31 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_32 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
 Resolve these before building on either side.
 
+- `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-myth-retracted`
+- `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-citation-correction`
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `odlyzko-block-lemma-asserted`
 
 ## Load-bearing but unverified
@@ -125,6 +127,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 These are lookups, not derivations. A catalogue is good evidence that a result is right and no evidence at all about why, so one of these may confirm a final answer and may never be the reason for it. Reproduce the terms with a program that does not read the catalogue, then say so; until then, report the result as looked up.
 
 - `block-profile-equals-a000232-minus-1` (research/ROOT.md) — read from a catalogue; no derivation here reproduces it
+- `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) — read from a catalogue; no derivation here reproduces it
 - `guy-A10-canonical-statement` (research/summaries/crc-mirror-guy-A10-gilbreath.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A036277-first-term-position` (research/summaries/oeis-A036277-first-term-greater-than-one.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A089582-second-entry-catalogue` (research/summaries/oeis-A089582-second-entry-sequence.md) — read from a catalogue; no derivation here reproduces it
