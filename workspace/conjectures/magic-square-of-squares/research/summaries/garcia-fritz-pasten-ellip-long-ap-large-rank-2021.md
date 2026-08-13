@@ -57,7 +57,6 @@ bearing: dissolves the doubled-point applicability blocker (exact-reduction-magi
   obstruction is ineffectiveness of C (cannot get C^(1+r) < 3), plus unbounded rank of E_c.
 anchor: research/sources/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.full.md (Thm 6.1, Sec 6.1) + garcia-fritz-pasten-bremner-uniformity-2026.full.md (Thm 1.8)
 answers: exact-reduction-magic-507c
-contradicts: garcia-fritz-pasten-ellip-long-ap-large-rank-2021 WRONG-FETCH note (outdated; file is now the genuine paper)
 ```
 
 ## Source

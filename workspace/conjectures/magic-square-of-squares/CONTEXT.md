@@ -224,19 +224,17 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 
 **Approach statuses** (`research/APPROACHES.md`):
 - **uniform-height-bound-elliptic-ap** — **adopted**. GFP (ineffective) + HMS
-  (effective but >> 3). Doubled-point question settled (x(2Q) is x(P) for
-  P = 2Q ∈ E(Q)); blocked by constant size, not by definitions. The
-  conditional reduction to a finite computation (Theorem 1.2, assuming
-  uniform rank boundedness) is the best structural result. **Blocking task:
-  consolidate the GFP-x2P answer in `code/out/gfp_x2p_answer.md`.**
-- **PARKED behind the blocking question:** `freys-curve-four-q-isogenies`
-  (since refuted by literature check), `integral-brauer-manin-nine-square`
-  (since refuted), `richardson-orbits-weyl-group` (since refuted),
-  `hecke-character-product-l`, `kodaira-dimension-general-type`,
-  `modular-jacobian-torsion-x0-32`. No work on any of these until the
-  GFP-x2P answer is filed.
+  (effective but >> 3). Doubled-point question settled; blocked by constant size,
+  not definitions. The conditional reduction to a finite computation (Theorem 1.2,
+  uniform rank boundedness) is the best structural result. **Blocking: write the
+  conditional-result claim and bound the HMS constant C.**
+- **PARKED behind the blocking section** (directives 10/11/13): `hecke-character-product-l`,
+  `kodaira-dimension-general-type`, `modular-jacobian-torsion-x0-32`. No work until
+  the magic-variety check or the C-bound is done.
 - **root-number-parity-four-curves** — **refuted**.
 - **Brauer–Manin on the K3** — **refuted** (S(Q) nonempty).
+- **freys-curve-four-q-isogenies**, **integral-brauer-manin-nine-square**,
+  **richardson-orbits-weyl-group** — all **refuted** at literature-check stage.
 - All others: **refuted** with reasons in APPROACHES.md.
 
 ## Ruled out

@@ -11,11 +11,10 @@ question: Does the Garcia-Fritz–Pasten theorem (Theorem 1.8: AP length ≤ C^(
 status: effective-constant-advance-hms-2026
 
 rests_on:
-  - robertson-elliptic-reduction (Established)
-  - bremner-conjecture-proved (Garcia-Fritz–Pasten Theorem 1.8, newly downloaded)
-  - bremner-conjecture-effective (Harrison–Mudgal–Schmidt Theorem 1.1, on disk)
-  - height-uniform-mordell (Dimitrov–Gao–Habegger 2020)
-  - uniform-mordell-lang (Gao–Ge–Kühne 2021)
+  - robertson-elliptic-reduction
+  - bremner-conjecture-proved
+  - hms-2026-bremner-effective-constant
+  - patterns-bremner-2026-no-mismatch-for-2E-Q
 
 resolved-questions:
   - doubled-point-x2P: RESOLVED 2026-08-13 (director, from the paper on disk).

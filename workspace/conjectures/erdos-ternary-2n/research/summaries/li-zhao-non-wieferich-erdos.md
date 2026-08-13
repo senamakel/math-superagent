@@ -1,63 +1,37 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/li-zhao-non-wieferich-erdos.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Li–Zhao: Non-Wieferich property of prime ideals and a conjecture of Erdős
 
-<!-- source: https://arxiv.org/html/2601.12753 | converted from HTML -->
+**Source:** arXiv:2601.12753 (Jan 2026). Full text at `research/sources/li-zhao-non-wieferich-erdos.full.md`.
 
-## What is in it
+## What it establishes
 
-- Non-Wieferich property of prime ideals and a conjecture of Erdös Thanks: ∗ Corresponding…
-        - Abstract.
-        - Key words and phrases:
-        - 2020 Mathematics Subject Classification
-  - 1. Introduction
-    - 1.1. A conjecture of Erdös and Dupuy-Weirich theorem
-        - Conjecture 1.1.
-        - Conjecture 1.2.
-        - Remark 1.1.
-        - Theorem (Dupuy and Weirich [3, Theorem 3]).
-    - 1.2. Wieferich primes
-        - Definition 1.1.
-        - Theorem 1.1.
-        - Remark 1.2.
-    - 1.3. Asymptotic equidistribution of digits
-        - Definition 1.2.
-        - Theorem 1.2.
-        - Theorem 1.3.
-  - 2. The valuation ring and Teichmuller map
-        - Proposition 2.1.
-        - Lemma 2.1.
-- …
+1. **Dupuy–Weirich theorem (stated precisely, source [3] = JNT 158 (2016) 268–280):** For distinct primes p,q and digit b, the Cesàro average over n of the frequency of digit b in the first m digits of (p^n)_q converges, as m → ∞, to 1/q. That is, `lim_{m→∞} f_{p,m}(b) = 1/q` where `f_{p,m}(b) = lim_{N→∞} (1/N) Σ_{n=1}^N f_{p,n,m}(b)`. This is the *average-over-n* analogue of digit equidistribution; Conjecture 1.2 (Dupuy–Weirich) asserts the stronger pointwise limit for each n.
+2. **Theorem 1.1 (the Wieferich-tower structure, the crucial one for this run):** For a prime ideal 𝔭 of a number field's ring of integers and α not a root of unity, the kernel of the reduction map `⟨α⟩_{𝔭^r} → ⟨α⟩_{𝔭^{r-1}}` has size 1 for all r > v except when `r − v ≡ 1 (mod e)`, where it has size p (the rational prime below 𝔭); e = ramification index. **In particular, if 𝔭 is unramified, 𝔭 is never α-Wieferich for r > v.** Applied to α = 2, 𝔭 = (3) in ℚ (ramification index e = 1): the kernel `⟨2⟩_{3^r} → ⟨2⟩_{3^{r-1}}` has size 3 for all sufficiently large r. That is the full growth: the 3-adic tower has **no Wieferich obstruction** — the kernel is always as large as possible.
+3. **Theorem 1.2:** the generalized Dupuy–Weirich theorem for number fields: if (β) has only unramified prime-ideal factors of residue degree 1, digits are asymptotically equidistributed on average.
+4. **Theorem 1.3:** block complexity of β-adic expansions of α^n when ramified factors appear: `C(α) = (Σ g_j e_j^{-1} log p_j)/(Σ g_j f_j log p_j)`.
+5. **Proof of Theorem 1.2** is a neat induction: `D_m(b) = N(β) D_{m-1}(b) + h_{m-1}`, iterated to get `f_{α,m}(b) → 1/#D`.
 
+## What it implies for this run
 
-## What it claims
+- The 3-adic tower `2 mod 3^r` has kernel size 3 at every level (unramified, e=1): the reduction `⟨2⟩_{3^r} → ⟨2⟩_{3^{r-1}}` is exactly 3-to-1 for r > v — consistent with SIEVE-EXACT / |A_k| = 2^{k-1}, where each class splits into exactly 2 digit-children (the digit map between consecutive levels is 3-to-1, and among the 3 lifts exactly 2 avoid the digit 2 in the new position).
+- The Wieferich obstruction that plagues the binary digits of 3^n (Dupuy–Weirich, Conrad notes) is **absent** on the 3-adic side for powers of 2. This asymmetry is significant: for (2^n)_3, the low-digit block is fully "generic" at every level — no 3-adic obstruction limits the digit structure. What limits the *pointwise* behaviour is not the tower's kernel but the arithmetic of the specific exponent n.
+- Theorem 1.3 gives block complexity log C_m(α)/(m log N(β)) → (Σ g_j e_j^{-1} log p_j)/(Σ g_j f_j log p_j) for ramified bases — for β = 3 ramified?? no, for β=3 in ℚ, 𝔭=(3) has e=2 (since 3 = p^1·unit, ramified with e = ... for ℚ, (3) over 3: e = 1 for the only prime above 3 in ℚ — ℚ has no ramified primes below; the ramified case is in number fields). Keep as context.
 
-Let K K be a number field with ring of integers 𝒪 \mathcal{O} and α ∈ 𝒪 \alpha\in\mathcal{O}. For any prime ideal 𝔭 \mathfrak{p} of 𝒪 \mathcal{O}, we obtain its higher α \alpha -Wieferich property, which implies a nonexistence theorem for higher Wieferich unramified prime ideals. If β ∈ 𝒪 \beta\in\mathcal{O} is relatively prime to α \alpha and all prime ideal factors of ( β) (\beta) are unramified and have residue degree 1 1, we apply our higher α \alpha -Wieferich property to establish the asymptotic equidistribution of digits in β \beta -adic expansions of α n \alpha^{n}, which is a generalization of the Dupuy-Weirich theorem. When ( β) (\beta) have ramified prime ideal factors, we also obtain a result on the block complexity of β \beta -adic expansions of α n \alpha^{n}.
-
-## Statements it makes
-
-###### Conjecture 1.1.
-
-###### Conjecture 1.2.
-
-###### Theorem (Dupuy and Weirich [3, Theorem 3]).
-
-###### Definition 1.1.
-
-###### Theorem 1.1.
-
-Theorem 1.1 enables us to generalize the Dupuy-Weirich [3] theorem to general number fields.
-
-###### Definition 1.2.
-
-###### Theorem 1.2.
-
-###### Theorem 1.3.
-
-###### Proposition 2.1.
-
-###### Lemma 2.1.
-
-###### Definition 2.1.
-
-###### Lemma 2.2.
-
-*[digest of a 39113 character source; every section, statement, and proof in full at `research/sources/li-zhao-non-wieferich-erdos.full.md`]*
+## Claims
+```claim
+id: LZ-1
+statement: Dupuy–Weirich theorem: for distinct primes p,q, limit over m of the Cesàro average over n of digit-b frequency in the first m digits of (p^n)_q equals 1/q.
+hypotheses: p,q distinct primes, b a digit, m → ∞ before n.
+holds-here: yes for p=2,q=3.
+status: proved (as stated in Li–Zhao, citing JNT 2016; theorem 1.2 here is a generalization)
+bearing: the strongest average digit-uniformity result on the low digits; says nothing pointwise, matching GOAL.md's heuristic caveat.
+anchor: research/sources/li-zhao-non-wieferich-erdos.full.md
+```
+```claim
+id: LZ-2
+statement: For α=2, the kernel of ⟨2⟩_{3^r} → ⟨2⟩_{3^{r-1}} has size p=3 for all r > v (unramified prime ideal (3) over 3 in ℚ, e=1). Equivalently, the order of 2 modulo 3^r is exactly 3 times the order modulo 3^{r-1} for all large r, and the reduction is 3-to-1: no Wieferich obstruction in the 3-adic tower.
+hypotheses: α not a root of unity; 𝔭 unramified; e=1.
+holds-here: yes; matches the primitive-root order 2·3^{r-1} exactly (LAG-2, SAYE-2).
+status: proved (Theorem 1.1 in Li–Zhao)
+bearing: the low-digit block of (2^n)_3 is generic at every level — the obstruction to the conjecture is not a 3-adic Wieferich phenomenon.
+anchor: research/sources/li-zhao-non-wieferich-erdos.full.md
+```

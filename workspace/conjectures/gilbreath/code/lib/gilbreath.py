@@ -41,8 +41,9 @@ def primes_up_to(n):
     sieve[0] = sieve[1] = 0
     for i in range(2, isqrt(n) + 1):
         if sieve[i]:
+            step = i
             start = i * i
-            sieve[start::step] = b"\x00" * (((n - start) // (step := i)) + 1)
+            sieve[start::step] = b"\x00" * (((n - start) // step) + 1)
     return [i for i in range(2, n + 1) if sieve[i]]
 
 

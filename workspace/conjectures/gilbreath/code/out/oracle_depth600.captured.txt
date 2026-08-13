@@ -1,0 +1,27 @@
+primes_up_to(60) (A_0): [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59]
+
+A_1 first 12 = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4]
+  matches problem.md? True
+A_2 first 12 = [1, 0, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2]
+  matches problem.md? True
+A_3 first 12 = [1, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0]
+  matches problem.md? True
+A_4 first 12 = [1, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0]
+  matches problem.md? True
+A_5 first 12 = [1, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2]
+  matches problem.md? True
+
+ALL five worked rows match: True
+
+primes available under 400000: 33860
+running to depth 600, one row at a time (O(width) memory)...
+
+checked rows k=1..600: 600
+min leading {0,2} block over the run: 2
+max leading {0,2} block seen: 33764 (row 95)
+leading entry is 1 for all k?        True
+second entry in {0,2} for all k?    True
+parity: all index>=1 entries even?    True
+width covered (A_0 length):            33860 primes
+
+EXIT AGREE

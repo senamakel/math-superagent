@@ -38,6 +38,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `morgenstern-8-digit-smallest-entry` | All nine entries of any 3×3 magic square of squares with distinct entries are at least the squares of 8-digit numbers; the fixed-start AP generator/termination enumeration is complete for each L up to its termination. | yes | catalogued | `research/summaries/morgenstern-smallest-entry-8-digit.md` |
 | `n-by-n-mss-exist-for-n-ge-4` | For every integer n >= 4 there exists an n x n magic square of squares (all entries distinct positive integers, all squares, all 2n+2 line sums equal). More generally for d >= 3 there is n0(d) such that an n x n magic… | no | proved | `research/summaries/rome-yamagishi-magic-squares-of-powers-2024.md` |
 | `near-miss-baseline-and-incidence` | the parametrisation identity and completeness hold on the rerun; Sallows LS1 has 7 of 8 line sums 21609 failing the non-principal diagonal 38307; Bremner's grid is a true magic square (all 8 sums 541875, centre 425² =… | yes | checked | `code/out/oracle_note.md` |
+| `oeis-a001653-odd-pell` | A001653(n) = A000129(2n-1), the odd-indexed Pell numbers P_{2n-1} (1, 5, 29, 169, 985, 5741, ...), with recurrence a(n)=6a(n-1)-a(n-2) and growth ratio 3+2*sqrt(2). Equivalently the Z-values of Pythagorean triples (X,… | yes | catalogued | `research/summaries/oeis_a001653.md` |
 | `oeis-a006339-min-hypotenuse` | A006339(n) = A046112(n) = min h with prod_{p=1 mod 4}(2 a_i + 1) = 2n - 1, equivalently h^2 a sum of two squares in exactly n ways (including the axis representation); the record values/holders match the run's own… | yes | catalogued | `research/summaries/oeis_a006339.md` |
 | `oeis-a046112-circle-lattice-points` | A046112(n) = min r with 8n-4 lattice points on x^2+y^2 = r^2, equals A006339(n); \|S(e)\| (run's AP-difference count) is the same multiplicative function minus the degenerate axis term. | yes | catalogued | `research/summaries/oeis_a046112.md` |
 | `patterns-bremner-2026-no-mismatch-for-2E-Q` | The magic-square-of-squares AP of doubled-point x-coordinates IS an AP of x-coordinates of points of the single curve E: y²=x(x²−c²) lying in the finite-rank subgroup 2E(Q) (rank equal to rank E(Q)); hence… | yes | asserted | `research/summaries/garcia-fritz-pasten-patterns-elliptic-2026.html.md` |
@@ -65,22 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `van-luijk-algebraic-br-not-sufficient-on-k3s` | If a smooth diagonal plane cubic a x^3 + b y^3 + c z^3 = 0 over a number field has local points everywhere, has no k-cubic points (three collinear points over a Galois Z/3Z extension), and abc is not a cube, then the K3… | no | proved | `research/summaries/van-luijk-cubic-points-brauer-manin-k3.md` |
 | `witness-padic-falsification` | For every prime power in the tested set (p=2 up to 32; p=3 up to 243; p=5 up to 3125; p=7 up to 16807; p=11 up to 161051; p=13 up to 371293), every achievable residue set R of the universal set Phi = {f(m,n)} is… | yes | checked | `code/out/witness_padic_closure_claim.md` |
 | `wolird-gaussian-sibling-3-to-1` | Over the Gaussian integers, arithmetic triplets of squares are in 3-to-1 correspondence with Gaussian Pythagorean triples (solutions of alpha^2+beta^2+gamma^2=0); a magic square of Gaussian squares contains 8 arithmetic… | no | asserted | `research/summaries/wolird-gaussian-transformation-magic-square-2023.md` |
-| `wu-bm-noninvariance-under-base-change` | For any nontrivial extension L/K of number fields, assuming Stoll's conjecture for all curves over K (Conj. 3.0.1 = a curve C over K has C(K) dense in pr∞_K(C(A_K)^Br)), there exist smooth projective geometrically… | no | proved | `research/summaries/wu-non-invariance-brauer-manin.md` |
 
-## Contradictions
-
-Resolve these before building on either side.
-
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `garcia-fritz-pasten-ellip-long-ap-large-rank-2021` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `WRONG-FETCH` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `note` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `(outdated;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `file` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `is` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `now` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `genuine` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gfp-2021-theorem-6-1-doubled-points-in-scope` (research/summaries/garcia-fritz-pasten-ellip-long-ap-large-rank-2021.md) contradicts `paper)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+_1 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
@@ -107,6 +94,7 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 
 - `ls1-in-lucas-family` (research/summaries/boyer-notes-supplement-2005.md) — read from a catalogue; no derivation here reproduces it
 - `morgenstern-8-digit-smallest-entry` (research/summaries/morgenstern-smallest-entry-8-digit.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-a001653-odd-pell` (research/summaries/oeis_a001653.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-a006339-min-hypotenuse` (research/summaries/oeis_a006339.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-a046112-circle-lattice-points` (research/summaries/oeis_a046112.md) — read from a catalogue; no derivation here reproduces it
 - `three-primitive-equal-d-bound` (research/summaries/morgenstern-extended-searches-2013.md) — read from a catalogue; no derivation here reproduces it
