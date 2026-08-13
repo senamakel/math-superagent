@@ -1,97 +1,53 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/harborth-1977-odd-binomial-count.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Harborth, "Number of odd binomial coefficients" (1977)
 
-<!-- source: https://doi.org/10.2307/2041936 | converted from HTML -->
+Source: https://doi.org/10.2307/2041936 (Proc. Amer. Math. Soc. 62 (1977) 19–22)
+Full text: `research/sources/harborth-1977-odd-binomial-count.full.md`.
 
-## What is in it
+## What it establishes
 
-- Digital content for Proceedings of the American Mathematical Society
-  - Journal Details
-  - Subscription Issues (2021 - present)
-  - Free Archive (1950 - 2020)
-  - Journal overview:
-- The Editorial Board
-- Submission
-  - After Acceptance
-  - Useful Tools
+Let `F(n)` be the number of odd binomial coefficients in the first `n` rows of
+Pascal's triangle, and `θ = (log 3)/(log 2) = 1.584962…`. Then:
 
+- **Theorem 1:** `lim sup_{n→∞} F(n)/n^θ = 1`.
+- **Theorem 2:** `lim inf_{n→∞} F(n)/n^θ = β = 0.812556…` (a specific
+  characterizing value given in the paper, refining the earlier Stolarsky bounds
+  `0.72 ≤ β ≤ (9/7)(3/4)^θ ≈ 0.815`).
 
-## What it claims
+Almost all binomial coefficients are even (`F(n)/n² → 0`).
 
-- 2026
-- 2026-154-01
-- 2026-154-02
-- 2026-154-03
-- 2026-154-04
-- 2026-154-05
-- 2026-154-06
-- 2026-154-07
-- 2026-154-08
-- 2026-154-09
-- 2026-154-10
-- 2025
-- 2025-153-01
-- 2025-153-02
-- 2025-153-03
-- 2025-153-04
-- 2025-153-05
-- 2025-153-06
-- 2025-153-07
-- 2025-153-08
-- 2025-153-09
-- 2025-153-10
-- 2025-153-11
-- 2025-153-12
-- 2024
-- 2024-152-01
-- 2024-152-02
-- 2024-152-03
-- 2024-152-04
-- 2024-152-05
-- 2024-152-06
-- 2024-152-07
-- 2024-152-08
-- 2024-152-09
-- 2024-152-10
-- 2024-152-11
-- 2024-152-12
-- 2023
-- 2023-151-01
-- 2023-151-02
-- 2023-151-03
-- 2023-151-04
-- 2023-151-05
-- 2023-151-06
-- 2023-151-07
-- 2023-151-08
-- 2023-151-09
-- 2023-151-10
-- 2023-151-11
-- 2023-151-12
-- 2022
-- 2022-150-01
-- 2022-150-02
-- 2022-150-03
-- 2022-150-04
-- 2022-150-05
-- 2022-150-06
-- 2022-150-07
-- 2022-150-08
-- 2022-150-09
-- 2022-150-10
-- 2022-150-11
-- 2022-150-12
-- 2021
-- 2021-149-01
-- 2021-149-02
-- 2021-149-03
-- 2021-149-04
-- 2021-149-05
-- 2021-149-06
-- 2021-149-07
-- 2021-149-08
-- 2021-149-09
-- 2021-149-10
-- 2021-149-11
-- 2021-149-12
+Connection to the odd-entries structure (Lucas mod 2): the number of odd entries
+in row `n` is `2^{a(n)}` where `a(n)` is the number of 1s in the binary expansion
+of `n`; `F(n) = Σ_{r=0}^{n−1} 2^{a(r)}`. Harborth's proof uses the
+`F(2^m + x) = F(2^m) + 2·F(x)` recursion from binary decomposition.
 
-*[digest of a 28549 character source; every section, statement, and proof in full at `research/sources/harborth-1977-odd-binomial-count.full.md`]*
+## Bearing for this run
+
+- The odd-only Pascal triangle is exactly the support of the adopted
+  `binary-lucas-submask` thread: every representation of an *odd* `a` must have
+  `k ⊆ n` bitwise (Lucas mod 2). This paper is the canonical density result on
+  that triangle's support: the odd entries are sparse (about `n^θ` with
+  `θ=1.585`, i.e. far fewer than the `n²/2` entries), and the row-`n` count `2^{a(n)}`
+  is the size of the submask set of `n`.
+- Harborth's `2^{a(n)}` is the exact number of `k` with `k ⊆ n`, so the submask
+  constraint's sparsity is quantified precisely by this source.
+- Not a bound on `N(a)` by itself: the constraint `k ⊆ n` says *which pairs* can
+  represent an odd `a`, not how many can land on the same integer.
+
+```claim
+id: harborth-1977-odd-count-density
+statement: Let F(n) be the number of odd entries in the first n rows of Pascal's
+  triangle and θ=(log 3)/(log 2)=1.584962…. Then limsup F(n)/n^θ = 1 and
+  liminf F(n)/n^θ = 0.812556…, so the odd-entry support is sparse (F(n)≈n^θ).
+  The number of odd entries in row n is 2^{a(n)}, a(n) the binary digit sum of n.
+hypotheses: none (a theorem about binomial coefficients mod 2).
+holds-here: yes — the odd-only triangle is the support of every odd-valued
+  representation, and 2^{a(n)} is exactly the number of k with k ⊆ n (the size of
+  the submask set that the adopted binary-lucas-submask thread sums over).
+status: asserted (source's theorem; the recursion F(2^m+x)=F(2^m)+2F(x) and the
+  values 1 and 0.812556… are quoted from the held primary but not independently
+  re-derived here).
+bearing: quantifies the sparsity of the odd-only support that the
+  binary-lucas-submask thread relies on; the row count 2^{a(n)} is the exact
+  submask-set cardinality.
+anchor: research/sources/harborth-1977-odd-binomial-count.full.md
+```
