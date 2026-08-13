@@ -277,12 +277,14 @@ the Established section.
   Bremner's e=425 gives a specific curve — what is its rank? Can we bound
   rank(E_e) in terms of e for e that admit many representations as a sum of two
   squares?
-- **Φ and |S(e)| results are not yet claim blocks in `research/CLAIMS.md`** —
-  they live in scratch + durable memory + code only. Promote them (with
-  falsifiers) before any impossibility lemma is built on them: the absence of a
-  Φ-triple through m,n ≤ 400 is the current structural frontier, and its
-  natural falsifier is a Φ-triple found beyond the range (a true hit would
-  *construct* a 7-square magic grid, not merely refute).
+- **Φ-triple beyond m,n ≤ 400** — the absence of a Φ-triple through m,n ≤ 400 is
+  the current structural frontier, but it is verified-numerical only, not a proof;
+  its natural falsifier is a Φ-triple found beyond the range (a true hit would
+  *construct* a 7-square magic grid). The φ-universal-set and φ-no-triple-m400
+  claims are now claim blocks in `research/CLAIMS.md` (via `code/out/phi_claim_blocks.md`,
+  status checked-as-recorded). The two remaining open thread steps: write the
+  additive-triple condition as a polynomial variety and correlate with Morgenstern's
+  (a,b,a+b) equal-start census.
 - **Exact reduction unanchored end-to-end**: the curve/K3 correspondence
   "rational point ⇒ distinct positive integer square solution" is not a claim
   block. Blocks any descent.
