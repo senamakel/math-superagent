@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://link.springer.com/10.1007/978-3-030-39081-5_34?fromPaywallRec=false | Combinatorics on n-sets: Arithmetic Properties and Numerical Results | type problem][8] Article 11 April 2022 ### [On permutations of \(\{1,\ldots ,n\}\) and related topics][9] Article 25 March 2021 ### [Combinatorics on n-sets: Arithmetic Properties and Numerical… |
 | 1 | https://mathscinet.ams.org/mathscinet/freetools/msc-search?text=11A41 | MSN | From Encyclopedia of Mathematics Jump to: navigation, search 2020 Mathematics Subject Classification: *Primary:*[11A41][23] [[MSN][24]][[ZBL][25]] A conjecture on the distribution of [prime… |
 
-_158 further candidates not shown; they are cited once each._
+_161 further candidates not shown; they are cited once each._
