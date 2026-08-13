@@ -9,19 +9,7 @@ Budget 10,000 tokens (this file ~6000, so ~4000 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state: depth pattern closed (Directive 9); focus is rule90-interior-xor check then event-rate lower bound.**
-The regeneration thread (`research/threads/regeneration.md`) holds the **established** criterion: block
-regeneration ⟺ `(edge==2, intruder==4)`, zero failures over all 998
-transitions. The old "candidate iff lemma refuted" record was an off-by-one and
-is **withdrawn** (see `code/out/check_regenerate_lemma.notes.md`) — do not keep
-it. The conjecture reduces to: do (2,4)-events arrive fast enough that
-`Σ (j_i + 1)` never falls `k−1` behind? A lower bound on the event rate,
-even under a stated hypothesis, is a real result. Erosion verification
-is no longer useful; the step law is exact and needs no re-derivation.
-`research/threads/rule90-regeneration.md` is CLOSED (Directive 9): the null test
-is done, the signal is tolerance-dependent and too weak; do not reopen.
-Next: check `rule90-interior-xor` edge-flip predictions against
-`blocks_depth1000.json`, then bound the event rate (Route A: combinatorial).
+**Run state: recharge-side target — a lower bound on the (2,4)-event rate from the starting sequence's gap constraints, not from depth structure.** Established: regeneration ⟺ `(edge==2, intruder==4)`, zero failures over 998 transitions (the old "refuted iff" record was an off-by-one and is **withdrawn** — `code/out/check_regenerate_lemma.notes.md`; do not keep it). The conjecture is exactly: do (2,4)-events arrive fast enough that `Σ (j_i + 1)` never falls `k−1` behind (recharge identity, Established). Erosion verification is no longer useful — the step law is exact, no re-derivation. Closed by solver (Attempt 1): run-count/total-variation Lyapunov potentials fail even inside the {0,2} regime ((0,0,1,1)→(0,1,0)); Rule 90 relative-depth concentration (z=2.25, p=0.017) is a mild effect, not a mechanism — **do not reopen either**. The concrete candidates are two proposed approaches (both precedent-unchecked in the literature): `renewal-process-edge-flip-hitting-time` — bound the (0,4)-stall hitting time under the Rule 90 edge dynamics, giving inter-event gap ≤ y₀/2 + stall + 1 with y₀ from the gap bound; its conjectural stall bound L ≤ 2·b_k and the constant-zero-block exception are exactly CHT's long-zero-block obstruction — and `block-boundary-causal-separation` — the 2-state (b, y) framing with a Lyapunov function. **Either must state how it beats Eppstein 2011**: gap constraints alone fail in the 2-then-odds class, so a purely-gap rate bound must be prime-specific or carry a hypothesis Eppstein's construction violates.
 
 ## Established
 

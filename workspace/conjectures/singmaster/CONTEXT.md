@@ -313,12 +313,17 @@ Pintér–Tengely 2023) and the OEIS row-count convention `oeis-a003016-row-coun
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
   shape-of-the-boundary, not as a claim about large-t behavior.
-- **LEDGER STATUS: 43 claims — 41 asserted, 7 checked, 2 proved.** Every asserted bound must
-  be run against `code/out/witnesses.json`. Any lemma implying B<8 is refuted by
-  3003 (8 occurrences). State counting convention on every claim. Every new
-  claim must say whether its bound is effective and whether it is uniform in k.
-  The genus formula is neither and its claim block says so; keep that discipline.
-  See TASKS.md.
+- **LEDGER DISCIPLINE: one row per claim in research/CLAIMS.md; the table
+  currently holds ~45 rows, the large majority `asserted` (source's word),
+  about a dozen `checked` (this run's computation agrees or a primary confirms),
+  and exactly two `proved` (erdos-selfridge-no-perfect-power, 1975 primary;
+  kummer-lucas-class-not-logarithmic, refutation of the p-adic line).** Do not
+  cite the tallies precisely — they churn as claim blocks land. The discipline
+  that matters and is invariant: every asserted bound must be run against
+  `code/out/witnesses.json`; any lemma implying B<8 is refuted by 3003 (8
+  occurrences); state the counting convention on every claim; and every new
+  claim must say whether its bound is effective and whether it is uniform in k
+  (the genus formula is neither and its claim block says so). See TASKS.md.
 - **PROCESS: Five uncaptured programs (directive 7).** `test_slope_across_rows.py`,
   `test_slope_hypothesis.py`, `effectivegenus/rep_pairs.py`,
   `genus/verify_k2_5_row.py`, `pattern/print_family.py` — all have zero captured
