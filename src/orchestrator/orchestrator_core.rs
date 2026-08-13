@@ -1,5 +1,6 @@
 
 mod approaches;
+mod authoring;
 pub(crate) mod async_subagents;
 mod backward;
 mod caps;
@@ -76,6 +77,7 @@ use vector::{
     VectorStore,
 };
 
+pub use authoring::WorkflowCatalog;
 pub use runner::{SubagentAgentRunner, SubagentTaskRunner};
 pub use tinyagents::harness::host::AgentDefinition;
 #[cfg(feature = "graph-debug")]

@@ -35,7 +35,7 @@ tinyagents = { path = "vendor/tinyagents", default-features = false }
 # copy does not. Default features only: the workflow engine's host capabilities,
 # Chrome companion, and durable store are all a host concern this crate already
 # solves its own way.
-tinyflows = { path = "vendor/tinyflows", default-features = false }
+tinyflows = { path = "vendor/tinyflows", default-features = false, features = ["store"] }
 # The workflow testkit: programmable capability mocks, a structured run trace,
 # and named assertions. A dev dependency on the same path, because it is only
 # ever needed by tests — and `assert_no_null_bindings` is the reason it is here
@@ -71,7 +71,7 @@ ratatui = { version = "0.29", optional = true }
 crossterm = { version = "0.28", optional = true }
 
 [dev-dependencies]
-tinyflows = { path = "vendor/tinyflows", default-features = false, features = ["testkit"] }
+tinyflows = { path = "vendor/tinyflows", default-features = false, features = ["store", "testkit"] }
 
 [features]
 default = []

@@ -498,6 +498,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "fs2"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9564fc758e15025b46aa6643b1b77d047d1a56a1aea6e01002ac0c7026876213"
+dependencies = [
+ "libc",
+ "winapi",
+]
+
+[[package]]
 name = "futures"
 version = "0.3.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1890,6 +1900,7 @@ version = "0.8.0"
 dependencies = [
  "async-trait",
  "font8x8",
+ "fs2",
  "futures-timer",
  "futures-util",
  "getrandom 0.4.3",
@@ -1899,6 +1910,7 @@ dependencies = [
  "jaq-std",
  "serde",
  "serde_json",
+ "sha2 0.10.9",
  "thiserror",
  "tokio",
  "tracing",

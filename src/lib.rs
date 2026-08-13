@@ -57,5 +57,5 @@ pub use hello_agent::HelloAgent;
 pub use orchestrator::render_solution_loop;
 pub use orchestrator::{
     AgentDefinition, AgentRegistry, OrchestratorAgent, SubagentAgentRunner, SubagentTaskRunner,
-    prompt_report,
+    WorkflowCatalog, prompt_report,
 };
