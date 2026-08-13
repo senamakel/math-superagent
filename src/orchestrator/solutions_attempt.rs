@@ -3,16 +3,16 @@
 /// Raised past the research rescue below so the rescue has attempts left to
 /// pay off in. A ceiling that trips first would spend a fresh literature
 /// search and then stop.
-const MAX_ATTEMPTS: usize = 8;
+pub(in crate::orchestrator) const MAX_ATTEMPTS: usize = 8;
 /// Consecutive unproductive attempts before diversifying rather than retrying.
-const STUCK_THRESHOLD: usize = 2;
+pub(in crate::orchestrator) const STUCK_THRESHOLD: usize = 2;
 /// Consecutive attempts lost to the provider before the loop stops trying.
 ///
 /// Two rather than one, because a single upstream blip is exactly what the
 /// retry ladder and `ReroutingModel` exist to absorb, and ending a run on one
 /// would throw away work they would have recovered. Two in a row is a wall
 /// rather than a blip, and no number of further attempts gets past it.
-const BLOCKED_THRESHOLD: usize = 2;
+pub(in crate::orchestrator) const BLOCKED_THRESHOLD: usize = 2;
 /// Attempts after which each reflection also re-opens the literature.
 ///
 /// Diversification triggers on *consecutive* unproductive attempts, so a run
@@ -38,7 +38,7 @@ const RESEARCH_RESCUE_ATTEMPTS: usize = 5;
 /// whole budget that way, each attempt genuinely progressing and the method
 /// never changing. Two is the same evidence bar the unproductive count uses:
 /// once is what an attempt looks like, twice is a pattern.
-const COMPUTATIONAL_THRESHOLD: usize = 2;
+pub(in crate::orchestrator) const COMPUTATIONAL_THRESHOLD: usize = 2;
 
 /// Consecutive attempts reaching the same single-route answer before the loop
 /// stops asking for a second route and reports what it has.
@@ -59,7 +59,7 @@ const COMPUTATIONAL_THRESHOLD: usize = 2;
 /// first UNVERIFIED is an attempt saying it could not find a second route, and
 /// the run should try once more with the lesson before that becomes the
 /// finding. Twice is the run having tried.
-const UNVERIFIED_THRESHOLD: usize = 2;
+pub(in crate::orchestrator) const UNVERIFIED_THRESHOLD: usize = 2;
 
 /// Completed cycles between one decomposition of the goal and the next.
 ///
@@ -77,7 +77,7 @@ const UNVERIFIED_THRESHOLD: usize = 2;
 /// how long the loop waits — nothing waits. What it does not bound is waste on
 /// a tick where nothing has changed; the research-tree fingerprint does that,
 /// and the in-flight gate bounds collision. Three failures, three bounds.
-const REDUCTION_INTERVAL: usize = 3;
+pub(in crate::orchestrator) const REDUCTION_INTERVAL: usize = 3;
 
 /// Restarts the judge may force in one run.
 ///
@@ -88,7 +88,7 @@ const REDUCTION_INTERVAL: usize = 3;
 /// nothing to its conclusion. Two is enough for the fault the judge exists to
 /// catch — a run building on something untrue — to be caught twice, and few
 /// enough that the loop still spends most of its attempts attempting.
-const MAX_RESTARTS: usize = 2;
+pub(in crate::orchestrator) const MAX_RESTARTS: usize = 2;
 
 /// State carried around the solution loop.
 #[derive(Clone, Debug)]

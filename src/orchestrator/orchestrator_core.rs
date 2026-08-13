@@ -31,6 +31,7 @@ mod teams;
 mod text;
 mod threads;
 mod vector;
+mod workflow;
 
 use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
@@ -350,6 +351,22 @@ impl OrchestratorAgent {
     #[must_use]
     pub fn workflow_agents(&self) -> Vec<tinyflows::model::AgentDefinition> {
         definitions::workflow_agents(&self.registry)
+    }
+
+    /// The solution loop as a workflow graph.
+    ///
+    /// The same attempt/judge/reflect loop the run executes, authored
+    /// declaratively: a `loop` head carrying the counters as its accumulator,
+    /// `switch` nodes carrying the routing ladder as jq, and the diversify arms
+    /// as parallel successors converging on a `merge`. Every threshold in it is
+    /// the Rust constant, generated rather than typed, so the document and the
+    /// running loop cannot disagree about a number.
+    ///
+    /// Not yet what a run executes — the state graph still is. This is the
+    /// document that has to be proven equivalent to it first.
+    #[must_use]
+    pub fn workflow_graph(&self, problem: &str) -> tinyflows::model::WorkflowGraph {
+        workflow::solution_loop(problem, self.workflow_agents())
     }
 
     /// # Errors
