@@ -34,10 +34,9 @@ use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use tinyagents::graph::{GraphBuilder, NodeContext, NodeResult};
-
 use super::vector::VectorStore;
 use crate::agent::Result;
+use crate::agent::flow::{GraphBuilder, NodeContext, NodeResult, from_graph};
 use crate::agent::trace::RunTracer;
 
 use super::async_subagents::AsyncSubagentManager;

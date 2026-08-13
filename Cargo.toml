@@ -28,6 +28,14 @@ crate-type = ["rlib", "cdylib"]
 # TinyAgents provides the provider-neutral agent loop and tool runtime. The
 # vendored checkout is intentionally used without SQLite, REPL, or RLM features.
 tinyagents = { path = "vendor/tinyagents", default-features = false }
+# TinyFlows owns the state-graph runtime the agent loop is built on. The same
+# runtime used to be consumed from TinyAgents; it was extracted into TinyFlows,
+# where it is maintained, and carries the scheduling this loop wants — per-node
+# concurrency bounds and mixed `Command::route` fan-out — which the TinyAgents
+# copy does not. Default features only: the workflow engine's host capabilities,
+# Chrome companion, and durable store are all a host concern this crate already
+# solves its own way.
+tinyflows = { path = "vendor/tinyflows", default-features = false }
 # Implements the asynchronous TinyAgents `Tool` trait for the bundled basic
 # tools without hand-written future boxing.
 async-trait = "0.1"

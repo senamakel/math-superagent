@@ -205,9 +205,9 @@ pub(super) async fn run(
             "done",
             |state: SolutionState, _ctx: NodeContext| async move { Ok(NodeResult::Update(state)) },
         );
-    let graph = wire_routes(graph).compile()?;
+    let graph = wire_routes(graph).compile().map_err(from_graph)?;
 
-    Ok(graph.run(state).await?.state)
+    Ok(graph.run(state).await.map_err(from_graph)?.state)
 }
 
 /// Decomposes the goal beside the first attempt, before any cycle completes.

@@ -193,7 +193,8 @@ impl AsyncSubagentManager {
                         async move {
                             let response = executor
                                 .execute(&state.run_id, state.input.clone(), steering, tracer)
-                                .await?;
+                                .await
+                                .map_err(crate::agent::flow::into_graph)?;
                             state.response = Some(response);
                             Ok(NodeResult::Update(state))
                         }
@@ -214,7 +215,7 @@ impl AsyncSubagentManager {
                     }),
                 )
                 .await
-                .map_err(|_| tinyagents::TinyAgentsError::Timeout("subagent run timed out".into()))
+                .map_err(|_| GraphError::Timeout("subagent run timed out".into()))
                 .and_then(|result| result),
                 Err(error) => Err(error),
             };
