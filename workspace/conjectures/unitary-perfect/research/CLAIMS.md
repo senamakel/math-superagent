@@ -7,6 +7,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `aurifeuillean-split` | For odd prime p, 2^(2p)+1 = L_p · M_p with L_p = 2^p - 2^((p+1)/2) + 1, M_p = 2^p + 2^((p+1)/2) + 1; both are integer-coefficient quartics in a power of 2, each ≈ half the bit length. | yes | checked | `research/notes/heven-and-3-higgs-structure.md` |
+| `bhv-primitive-divisor-theorem` | For Lucas/Lehmer sequences, u_n has a primitive prime divisor for all sufficiently large n (all n > some bound; n = 30 and a catalogue of small exceptions). Applied to 2^n + 1, every cyclotomic value Phi_n(2) has a… | yes | asserted | `research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md` |
 | `hb-lemma20-closures` | Six open candidates m=2p (2446, 10294, 10958, 17398, 19066, 20282) are excluded: a large APR-CL-verified prime p* \| 2^m+1 has a non-3-Higgs witness q \| p*-1 (v2 overflow or a Pratt-tree descent to 17), and 30882 via… | yes | asserted | `research/notes/paper-extraction.md` |
 | `hb-no-v2ge4-witness-1e11` | For all 162 original open candidates m=2p (p∈[1213,17467]), no prime r≡1 mod 16p with r ≤ 10^11 divides L_p or M_p; for m=2426 extended to 6×10^11 (2,389,527 primes) with no divisor. So no v2≥4 non-3-Higgs witness… | yes | catalogued | `research/notes/paper-extraction.md` |
 | `hb-prop4-structural` | If m=2k∈H_even with k odd, then every prime factor of k is 3-Higgs, v_q(k)≤3 for every prime q\|k (k is Higgs-cubefree), and 2d∈H_even for every odd divisor d\|k. | yes | catalogued | `research/notes/paper-extraction.md` |
@@ -30,6 +31,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Resolve these before building on either side.
 
+- `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `sw1966-finiteness-fixed-omega` (research/summaries/subbarao-warren-1966-unitary-perfect.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
@@ -38,6 +40,7 @@ Resolve these before building on either side.
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) — asserted by the source, not proved there and not checked here
 - `hb-lemma20-closures` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
 - `heven-frontier-50000` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-prime-case-reduction` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
