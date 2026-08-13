@@ -44,6 +44,43 @@ const HEAD_BUDGET: usize = MAX_COMMAND_OUTPUT_BYTES / 4;
 /// The remainder of [`MAX_COMMAND_OUTPUT_BYTES`], kept from the end.
 const TAIL_BUDGET: usize = MAX_COMMAND_OUTPUT_BYTES - HEAD_BUDGET;
 
+/// Where every command's output is written, so that running a program leaves
+/// something behind.
+///
+/// What a command printed used to reach the model and nothing else. A live run
+/// executed `phi_padic_closure_all.py` in 126 ms for 1,766 bytes of output and
+/// `benchmark.py` for 463 more, read both, and left `code/out/` untouched —
+/// five babysitting passes watched `code files` climb 36 → 44 while `captured
+/// output` sat at 17. Two directives asked the run to redirect its own output
+/// and neither changed the behaviour, which is the repository's own maxim
+/// arriving on schedule: a prompt instruction is not a control.
+///
+/// It matters because the attempt ends at a cap. `DEFAULT_RUN_MINUTES` stops
+/// the agent thirty minutes in and takes its context with it, so output that
+/// existed only in that context is destroyed — the program ran, the number was
+/// computed, and the next attempt has no way to know it. Writing here costs one
+/// append per command and makes the evidence outlive the attempt that produced
+/// it.
+const COMMAND_LOG: &str = "code/out/commands.log";
+
+/// How much of one command's output the log keeps.
+///
+/// Smaller than [`MAX_COMMAND_OUTPUT_BYTES`] on purpose: the model gets the
+/// full rendering, and the log is the record that has to stay readable and
+/// committable. A program worth more than this should write its own file.
+const COMMAND_LOG_ENTRY_BYTES: usize = 8 * 1024;
+
+/// How large the log is allowed to get before its oldest entries are dropped.
+///
+/// Workspace contents are committed, so an append-only file with no ceiling
+/// becomes the thing this repository already refuses to keep. Trimming happens
+/// at an entry boundary and from the front, because the most recent run is the
+/// one the next attempt needs.
+const COMMAND_LOG_MAX_BYTES: usize = 512 * 1024;
+
+/// Separates entries in [`COMMAND_LOG`], and is where a trim cuts.
+const COMMAND_LOG_MARK: &str = "\n=== command ===\n";
+
 /// How long the pipe drains are given to finish after the child is killed.
 ///
 /// Killing the child closes the pipes it holds, and that is what ends the
