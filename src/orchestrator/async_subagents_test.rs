@@ -3,12 +3,12 @@
 
 use std::sync::Arc;
 
-use tinyagents::graph::OrchestrationTaskStatus;
 use tinyagents::harness::steering::SteeringCommand;
 use tokio::sync::Semaphore;
 
 use crate::agent::Tool as _;
 
+use super::runs::RunStatus;
 use super::{AgentExecutor, AsyncSubagentManager, DEFAULT_MAX_CONCURRENT_AGENTS};
 use crate::agent::Result;
 use crate::agent::budget::RunBudget;
@@ -61,12 +61,12 @@ async fn spawn_returns_before_completion_then_peek_and_await_return_response() -
         tinyagents::TinyAgentsError::Tool(format!("test start semaphore closed: {error}"))
     })?;
     let running = manager.record(run_id.as_str())?;
-    assert_eq!(running.status, OrchestrationTaskStatus::Running);
+    assert_eq!(running.status, RunStatus::Running);
 
     manager.steer(run_id.as_str(), "focus on proof".into())?;
     release.add_permits(1);
     let completed = manager.await_record(run_id.as_str(), 1).await?;
-    assert_eq!(completed.status, OrchestrationTaskStatus::Completed);
+    assert_eq!(completed.status, RunStatus::Completed);
     assert_eq!(
         completed.result.and_then(|result| result.text),
         Some("initial:focus on proof".into())
@@ -94,21 +94,21 @@ async fn independent_runs_can_execute_in_parallel() -> Result<()> {
     })?;
     assert_eq!(
         manager.record(first.as_str())?.status,
-        OrchestrationTaskStatus::Running
+        RunStatus::Running
     );
     assert_eq!(
         manager.record(second.as_str())?.status,
-        OrchestrationTaskStatus::Running
+        RunStatus::Running
     );
 
     release.add_permits(2);
     assert_eq!(
         manager.await_record(first.as_str(), 1).await?.status,
-        OrchestrationTaskStatus::Completed
+        RunStatus::Completed
     );
     assert_eq!(
         manager.await_record(second.as_str(), 1).await?.status,
-        OrchestrationTaskStatus::Completed
+        RunStatus::Completed
     );
     Ok(())
 }
@@ -155,7 +155,7 @@ async fn concurrent_runs_are_capped_and_the_queue_drains() -> Result<()> {
     for id in &ids {
         assert_eq!(
             manager.await_record(id.as_str(), 5).await?.status,
-            OrchestrationTaskStatus::Completed
+            RunStatus::Completed
         );
     }
     Ok(())
@@ -179,7 +179,7 @@ async fn a_missing_follow_up_agent_is_not_an_error() -> Result<()> {
     release.add_permits(1);
     assert_eq!(
         manager.await_record(run_id.as_str(), 5).await?.status,
-        OrchestrationTaskStatus::Completed
+        RunStatus::Completed
     );
     Ok(())
 }

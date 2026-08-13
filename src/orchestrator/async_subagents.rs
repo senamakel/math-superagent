@@ -7,13 +7,6 @@ use std::time::Duration;
 
 use async_trait::async_trait;
 use serde_json::{Value, json};
-// The task store and the steering registry stay TinyAgents': they belong to the
-// harness that runs a turn, not to the graph runtime that schedules one, and
-// TinyFlows deliberately carries neither. Only the graph types below moved.
-use tinyagents::graph::{
-    InMemoryTaskStore, OrchestrationTaskKind, OrchestrationTaskResult, OrchestrationTaskSpec,
-    SteeringRegistry, TaskStore,
-};
 use tinyagents::harness::context::{RunConfig, RunContext};
 use tinyagents::harness::events::{AgentEvent, EventSink};
 use tinyagents::harness::ids::{RunId, TaskId};
@@ -29,6 +22,7 @@ use crate::agent::flow::{GraphBuilder, GraphError, GraphExecution, NodeContext, 
 use crate::agent::trace::RunTracer;
 use crate::agent::{AgentHarness, Message, Result, Tool, ToolCall, ToolResult, ToolSchema};
 
+use super::runs::{RunOutcome, RunRecord, RunStatus, RunStore, SteeringRegistry};
 use super::vector::VectorStore;
 
 static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
@@ -70,7 +64,7 @@ struct Recording<'a> {
     agent: &'a str,
     run_id: &'a str,
     input: &'a str,
-    store: &'a Arc<InMemoryTaskStore>,
+    store: &'a RunStore,
     task_id: &'a TaskId,
     /// Where a failure to record is said out loud.
     ///
@@ -116,15 +110,13 @@ async fn record_outcome(
         Ok(execution) => {
             let response = execution.state.response.unwrap_or_default();
             record_session(into, &response).await;
-            let _ = into
-                .store
-                .complete(into.task_id, OrchestrationTaskResult::text(response));
+            into.store.complete(into.task_id, RunOutcome::text(response));
             true
         }
         Err(error) => {
             let error = error.to_string();
             record_session(into, &format!("SESSION FAILED: {error}")).await;
-            let _ = into.store.fail(into.task_id, error);
+            into.store.fail(into.task_id, error);
             false
         }
     }
@@ -382,7 +374,7 @@ fn session_id() -> Arc<str> {
 #[derive(Clone)]
 pub(crate) struct AsyncSubagentManager {
     agents: Arc<RwLock<HashMap<String, Arc<dyn AgentExecutor>>>>,
-    store: Arc<InMemoryTaskStore>,
+    store: RunStore,
     steering: SteeringRegistry,
     budget: RunBudget,
     tracer: Option<Arc<RunTracer>>,

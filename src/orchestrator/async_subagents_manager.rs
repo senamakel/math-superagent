@@ -14,7 +14,7 @@ impl AsyncSubagentManager {
     ) -> Self {
         Self {
             agents: Arc::default(),
-            store: Arc::new(InMemoryTaskStore::new()),
+            store: RunStore::new(),
             steering: SteeringRegistry::new(),
             budget,
             tracer,
@@ -136,15 +136,7 @@ impl AsyncSubagentManager {
         let executor = self.executor_for(agent_name)?;
         let sequence = NEXT_RUN_ID.fetch_add(1, Ordering::Relaxed);
         let task_id = TaskId::new(format!("agent-run-{sequence}"));
-        let spec = OrchestrationTaskSpec::new(
-            task_id.clone(),
-            OrchestrationTaskKind::SubAgent {
-                agent: agent_name.to_string(),
-            },
-        )
-        .with_timeout_ms(self.budget.run_timeout_ms())
-        .with_input(json!({ "prompt": input }));
-        self.store.insert(spec)?;
+        self.store.insert(task_id.clone(), agent_name)?;
 
         let store = self.store.clone();
         let steering_registry = self.steering.clone();
@@ -182,7 +174,7 @@ impl AsyncSubagentManager {
             // queue drains behind it. The run deadline starts after the wait,
             // so a queued run is not charged for time it spent waiting.
             let _permit = slots.acquire().await;
-            let _ = store.mark_running(&spawned_task_id);
+            store.mark_running(&spawned_task_id);
             let graph = GraphBuilder::<RunState, RunState>::overwrite()
                 .add_node(
                     "subagent",
@@ -270,7 +262,7 @@ impl AsyncSubagentManager {
         })
     }
 
-    fn record(&self, task_id: &str) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
+    fn record(&self, task_id: &str) -> Result<RunRecord> {
         let task_id = TaskId::new(task_id);
         self.store.get(&task_id).ok_or_else(|| {
             tinyagents::TinyAgentsError::Validation(format!("unknown agent run `{task_id}`"))
@@ -285,15 +277,9 @@ impl AsyncSubagentManager {
     /// out of a previous tool result to say so.
     fn outstanding_runs(&self) -> Vec<String> {
         self.store
-            .list(tinyagents::graph::OrchestrationTaskFilter::default())
+            .list()
             .into_iter()
-            .filter(|record| {
-                matches!(
-                    record.status,
-                    tinyagents::graph::OrchestrationTaskStatus::Pending
-                        | tinyagents::graph::OrchestrationTaskStatus::Running
-                )
-            })
+            .filter(|record| matches!(record.status, RunStatus::Pending | RunStatus::Running))
             .map(|record| record.task_id().to_string())
             .collect()
     }
@@ -321,7 +307,7 @@ impl AsyncSubagentManager {
         &self,
         task_id: &str,
         wait_seconds: u64,
-    ) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
+    ) -> Result<RunRecord> {
         let deadline = tokio::time::Instant::now()
             + Duration::from_secs(wait_seconds.min(self.max_await_seconds()));
         loop {
