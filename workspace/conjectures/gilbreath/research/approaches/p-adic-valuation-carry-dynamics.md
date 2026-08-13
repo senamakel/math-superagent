@@ -54,6 +54,48 @@ mechanism: |
   provably absorbing at the left edge for 2-then-odd starts — this is the
   claim research must source or falsify (p-adic/carry treatments of the
   difference map, e.g. in the Ducci-sequence and 2-adic dynamics literature).
+precedent: |
+  (grounded, librarian cycle 2026) The exact 2-adic/Pascal linear core the
+  approach needs is now in the library from four independent primary Ducci
+  sources, with the boundary the approach cannot cross.
+
+  GROUNDED — the mod-2 map IS the exact linear core, proved in the cyclic
+  Ducci literature: Avart 2011 (Fib. Q. 49.2, held) proves the identity
+  T^n(x) = Σ_i C(n,i)·r^i(x) over Z2 (the Pascal/Rule-90 kernel, exactly the
+  run's rule90-interior-xor), and Calkin–Stevens–Thomas 2005 (Fib. Q. 43.1,
+  held) give the complete cycle-length characterization via the minimal
+  polynomial µ_n(λ) = (1+λ)^n + 1 and the power-of-2 nilpotence proof
+  (I+S_L)^{2^r} = I + I = 0. Glaser–Schöffl 1995 (Fib. Q. 33.4, held) give
+  the same kernel via Pascal's triangle mod 2 (their Theorem 1) PLUS the
+  digit-sum fact 2^{s2(k)} ones in row k (Glaisher, property (7)) and the
+  all-1s row at k = 2^r − 1 / all-0s interior at 2^r (properties (5),(6)) —
+  the exact binomial-parity facts the rule90-regeneration thread uses.
+
+  GROUNDED — the p-adic valuation law (v2(|a−b|) ≥ min(v2 a, v2 b), equality
+  iff valuations differ, lift iff equal) is the exact non-Archimedean
+  triangle inequality; it is not in these papers (they work mod 2 / over Z2,
+  not over Z_2^× valuations), so the CARRY-level (v ≥ 2) content remains
+  genuinely open, exactly as the approach states: "research must source or
+  falsify (p-adic/carry treatments...)".
+
+  BOUNDARY — every one of the four sources is about the CYCLIC map. The
+  nilpotence/cycle-length conclusions (zero iff power of 2, concatenation
+  characterization, period divisibility) are cyclic-object theorems. The
+  Gilbreath triangle has no wraparound; a valuation-carry cascade into
+  position 1 of a non-cyclic row is NOT a cyclic Ducci quantity. The
+  approach's claim "the carry cascade into position 1 never raises the
+  valuation past 1" is a half-infinite statement the Ducci/carry literature
+  does not address; Eppstein 2011 (held) is the standing demonstration that
+  half-infinite behaviour diverges from cyclic. So the valuation law's
+  transfer is safe (it is a pointwise identity), but any absorption or
+  boundedness conclusion must be proved for the windowed half-infinite
+  object, not imported.
+
+  What would falsify the approach: a single row k ≤ 1000 with v2(A_k(1)) ≥ 2
+  (i.e. A_k(1) a multiple of 4) — the oracle says none exists (depth 1000,
+  A_k(1) ∈ {0,2}); or a counterexample valuation cascade in a 2-then-odds
+  start (Eppstein-class) showing the left-edge valuation can be raised past 1
+  — which would show the absorption claim is class-false.
 status: proposed
 first-step: |
   Compute the valuation triangle V_k(i) = v_2(A_k(i)) from the depth-1000

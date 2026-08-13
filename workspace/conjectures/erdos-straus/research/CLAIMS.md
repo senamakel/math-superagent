@@ -33,6 +33,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `esc-expert-quality-gate` | Terence Tao (erdosproblems.com forum, 13 Feb 2026): new ESC preprints should not be given attention unless published in a reputable venue, or by an author with a track record in the area, or claiming only realistic… | yes | asserted | `research/notes/librarian-cycle-lean-formalization-and-ecosystem.md` |
 | `esc-formal-lean-statement-distinct` | The google-deepmind formal-conjectures repo states Erdős Problem #242 in Lean as: for every n > 2 there exist 1 ≤ x < y < z (strictly increasing, hence distinct) with 4/n = 1/x + 1/y + 1/z; the theorem body is `sorry`… | yes | asserted | `research/notes/librarian-cycle-lean-formalization-and-ecosystem.md` |
 | `esc-single-construction-reduction-leonelchlon` | Forum user leonelchlon (27 Jan 2026, asserted, not independently verified) claims ESC reduces to one construction: given q ≡ 3 (mod 4) and s² + p = qk, find δ, b, c with (4b−1)(4c−1) = 4pδ + 1 and δ \| bc; setting b =… | **unchecked** | asserted | `research/notes/librarian-cycle-lean-formalization-and-ecosystem.md` |
+| `lopez-type-a-b-only-exceptions-193-2521` | Among the first 9000 natural numbers the only primes lacking a Type-A solution (du, dv, duv) are 193 and 2521; both have a Type-B solution (193: 5(10, 386, 965); 2521: 11(58, 5042, 73109)). | yes | asserted | `research/summaries/lopez-complete-congruence-system-2024.md` |
+| `lopez-type-b-iff-congruence` | For prime p = 4k+1, a Type-B solution (duv, dup, dvp) of 4/p = 1/x+1/y+1/z exists iff there exist d,n ∈ N with p ≡ −n (mod 4dn−1), equivalently iff ∃ t ≥ 0 and divisors a,b \| k+1+t with a+b = 3+4t; such a solution is of… | yes | asserted | `research/summaries/lopez-complete-congruence-system-2024.md` |
 | `mathworld-egyptian-context` | MathWorld's Egyptian Fraction page records the standard background (greedy/Fibonacci–Sylvester algorithm; every rational has arbitrarily many Egyptian-fraction expansions but finitely many with a fixed number of terms;… | yes | asserted | `research/summaries/mathworld-egyptian-fraction.md` |
 | `mballa-square-reformulation` | 4/n = 1/x+1/y+1/z has a solution iff there exist x, t ∈ N with t²(4x−n)² − 2nxt a perfect square; the y, z are then the roots of V² − (4x−n)(2t)V + 2nxt = 0. (Equivalent to ESC by Conjecture 1 of the paper.) | yes | asserted | `research/summaries/mballa-analytical-formulas-2025.md` |
 | `mballa-symmetric-density` | For k=4, explicit symmetric solutions (y=z) exist for all n ≡ 0,2,3 (mod 4), and for n ≡ 1 (mod 4) when n has a divisor b ≡ 3 (mod 4); the latter holds for almost all n ≡ 1 (mod 4), so the conjecture is verified by… | yes | asserted | `research/summaries/mballa-unified-parametric.md` |
@@ -64,10 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `swett-1e14` | ESC(n) holds for all integers 1 < n <= 10^14 (Swett 1999; sieve over a filter set S(n), n<=1000, plus two lemmas and greedy verification of 3209 residual primes). | yes | asserted | `research/summaries/swett-esc-verification-history.md` |
 | `type-definition` | For odd prime p, every solution to 4/p=1/x+1/y+1/z is Type I (p divides exactly one of x,y,z) or Type II (p divides exactly two), and f(p)=3 f_I(p)+3 f_II(p). | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
 | `vanishing-type12-odd-squares` | For any odd perfect square n, f_I(n)=f_II(n)=0: there is no Type-I and no Type-II solution to 4/n=1/x+1/y+1/z. | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
-| `vaughan-2-3-bound` | The number of n ≤ N for which 4/n is not a sum of three unit fractions is ≤ N exp(−c (log N)^{2/3}) for some absolute constant c > 0. | yes | asserted | `research/summaries/vaughan-1970.md` |
-| `ventas-fct-external-source-criterion` | If p+i has a divisor d ≡ 3 (mod 4) with 4i \| (p+d), then 4/p has a direct three-term solution (FCT construction); computational tests on 10⁹ primes near 10^17/10^52 and 10⁷ near 10^131 found no counterexamples at small… | yes | asserted | `research/summaries/ventas-fct-heuristic-fulltext.md` |
 
-_6 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_8 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
@@ -97,6 +97,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `esc-529-crt-periodicity-refuted` (research/notes/librarian-cycle-lean-formalization-and-ecosystem.md) — asserted by the source, not proved there and not checked here
 - `esc-expert-quality-gate` (research/notes/librarian-cycle-lean-formalization-and-ecosystem.md) — asserted by the source, not proved there and not checked here
 - `esc-formal-lean-statement-distinct` (research/notes/librarian-cycle-lean-formalization-and-ecosystem.md) — asserted by the source, not proved there and not checked here
+- `lopez-type-a-b-only-exceptions-193-2521` (research/summaries/lopez-complete-congruence-system-2024.md) — asserted by the source, not proved there and not checked here
+- `lopez-type-b-iff-congruence` (research/summaries/lopez-complete-congruence-system-2024.md) — asserted by the source, not proved there and not checked here
 - `mathworld-egyptian-context` (research/summaries/mathworld-egyptian-fraction.md) — asserted by the source, not proved there and not checked here
 - `mballa-square-reformulation` (research/summaries/mballa-analytical-formulas-2025.md) — asserted by the source, not proved there and not checked here
 - `mballa-symmetric-density` (research/summaries/mballa-unified-parametric.md) — asserted by the source, not proved there and not checked here
