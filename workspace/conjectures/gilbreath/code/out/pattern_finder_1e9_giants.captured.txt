@@ -299,3 +299,20 @@ row 296: b=50847237 floor=0 intruder=None
 row 297: b=50847236 floor=0 intruder=None
 row 298: b=50847235 floor=0 intruder=None
 row 299: b=50847234 floor=0 intruder=None
+row 300: b=50847233 floor=0 intruder=None  [146s]
+row 301: b=50847232 floor=0 intruder=None
+row 302: b=50847231 floor=0 intruder=None
+row 303: b=50847230 floor=0 intruder=None
+row 304: b=50847229 floor=0 intruder=None
+row 305: b=50847228 floor=0 intruder=None
+row 306: b=50847227 floor=0 intruder=None
+row 307: b=50847226 floor=0 intruder=None
+row 308: b=50847225 floor=0 intruder=None
+row 309: b=50847224 floor=0 intruder=None
+row 310: b=50847223 floor=0 intruder=None
+row 311: b=50847222 floor=0 intruder=None
+row 312: b=50847221 floor=0 intruder=None
+row 313: b=50847220 floor=0 intruder=None
+row 314: b=50847219 floor=0 intruder=None
+row 315: b=50847218 floor=0 intruder=None
+row 316: b=50847217 floor=0 intruder=None
