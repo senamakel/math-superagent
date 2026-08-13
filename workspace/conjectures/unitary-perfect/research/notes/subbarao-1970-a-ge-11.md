@@ -59,6 +59,17 @@ a ≥ 8 and the a = 8 / a = 9 / a = 10 cases would be live. Two independent
 Wall papers assert the fuller list, which is strong but not a substitute for
 the note.
 
+## 2026-08-13 update (librarian cycle 7)
+
+- The U. Alberta author's publication list (`research/sources/subbarao-publications-ualberta.full.md`)
+  confirms the note's shelf data (AMM 77(4):389–390) and carries a direct PDF
+  link (`documents/1970Infinity.pdf`), but that PDF is **a JSTOR cover page
+  only** (`https://www.jstor.org/stable/2316150`); the body is still not held.
+  Summary: `research/summaries/subbarao-1970-infinity-unitary-perfect.md`.
+- Claim `subbarao1970-a-ge-11` remains `asserted` (three Wall primaries +
+  author bibliography), NOT promoted to checked. The note body is the one
+  falsifier; REQUESTS row open.
+
 ## Witness check
 
 All five known UPNs satisfy the claim vacuously or directly: {6, 60, 90,

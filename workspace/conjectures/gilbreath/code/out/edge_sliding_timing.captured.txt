@@ -1,0 +1,12 @@
+events (x=2,y=4, incl. jump-0 stalls): 60
+runs: 60
+profile-bad: 0 (must be 0: proved core)
+timing over 60 runs: early 0, hit-at-K+D 44, late 16
+intruder value at K+D over runs: {4: 44, 6: 8, 8: 4, 10: 1, 12: 1, 14: 2}
+  late with y at K+D = 6: n=8 waits [1, 2, 3, 4, 7]... mean 2.8 max 7
+  late with y at K+D = 8: n=4 waits [2, 5]... mean 2.8 max 5
+  late with y at K+D = 10: n=1 waits [8]... mean 8.0 max 8
+  late with y at K+D = 12: n=1 waits [8]... mean 8.0 max 8
+  late with y at K+D = 14: n=2 waits [10, 11]... mean 10.5 max 11
+T1 violations ((2,4) strictly between K+D and E): 0
+T2 violations (y==4 at K+D but event not there): 0

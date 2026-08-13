@@ -540,3 +540,33 @@ Two things to do:
 Also, hygiene regression: code/pattern_finder/ has bare .txt outputs again - b.txt, bits.txt, diffs.txt, intruder.txt, minima_rows.txt, regen_rows.txt, s_runs2.txt, b_genuine.txt. You cleaned these once. Outputs belong under code/out/.
 
 Everything is in place. Two or three sentences, same as the directive: the event-rate framing (mean, bound-the-mean, Route A/B) is gone. The regeneration thread now asks what makes the giant jumps recur and says a mean-rate bound is the wrong summary. TASKS.md item 1 is the directive's first demand — characterise the big jumps with block structure and width-reset status — and the Gaps section of CONTEXT.md names the correct object (gap between consecutive large jumps) instead of a rate lower bound. The hygiene item (12 bare `.txt` duplicates in `code/pattern_finder/` — the canonical copies are already in `code/out/pattern_finder_outputs/`) is line 3 because the director has no `rm` and the coder role needs to do the delete.
+
+## 25 — from steer
+
+directive24_geometric_growth.md is careful work. Geometric R^2 0.942 vs linear 0.807, robustness checked by dropping the capped point, and the sharpest argument stated plainly: the first four ratios 2.7, 3.9, 1.35, 2.94 differ by up to 3x, rejecting a constant additive increment. The caveats are right too — 12 points, a description not a law, per-event not per-row, and all 12 floored at >= 536,885 so none is width-truncated.
+
+Now draw the consequence your own numbers force, because I think it changes the target.
+
+You record that jumps grow SUBLINEARLY with b, log-log slope 0.388. Take that seriously as a law: j ~ C*b^0.388. Then
+
+  b_next / b_i = 1 + j/b = 1 + C * b^(-0.612)
+
+which tends to 1 as b grows. So the ratio DECAYS. The x1.68 per event is a good description of twelve points at the b-values you reached, but under your own exponent it cannot be the asymptotic law — geometric growth and a sublinear jump exponent are inconsistent in the limit, and you have written both down without reconciling them.
+
+That is not bad news. b still increases whenever j exceeds the inter-giant gap, and j -> infinity under the sublinear law, so divergence survives. What changes is what has to be proved. Not "the ratio stays above 1" — that is false asymptotically if 0.388 is real. The binding question is:
+
+  does the inter-giant gap stay bounded (or grow slower than b^0.388)?
+
+Measure it. From the 13 giants at i = 34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, the inter-giant gaps are 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15. Fit those against i and against b, say whether they trend, and report alongside j. If the gap is bounded while j grows, b_k >= 1 follows and you have the mechanism. If the gap grows comparably, say so — that is the real obstruction and worth knowing.
+
+Then restate the reduction in research/threads/regeneration.md in those terms rather than as "giants keep arriving", which is too weak to prove anything with.
+
+Three files changed:
+
+- **TASKS.md**: Rewritten under Directive 25. Items 1–2 (width-degradation, geometric fit) checked off as done. Items 3–5 are the new core: measure inter-giant gap trend against i and b, reconcile the geometric description (×1.68/event over 12 points) with the sublinear exponent (0.388, 43 events), and restate the target as the gap-vs-jump inequality `G_k < C·b_k^0.388`. The Background section now records the inconsistency explicitly rather than presenting geometric growth as the settled conclusion.
+
+- **`research/threads/regeneration.md`**: Reframed from "geometric growth → giants keep arriving" to "under the sublinear law j ~ C·b^0.388, the conjecture follows if the inter-giant gap grows strictly slower than b^0.388." The geometric ×1.68/event is recorded as a finite-sample description at b ~ 10³–10⁶, inconsistent with the sublinear exponent in the limit (b_next/b → 1). The question is now the gap trend, not the event rate.
+
+- **CONTEXT.md**: Run state line updated to flag the inconsistency; the Gaps section restated as "prove the inter-giant gap G_k is o(b^0.388)." The mean-rate and "giants keep arriving" routes are both marked superseded.
+
+The directive's own numbers — the 12 gaps, the sublinear exponent, the ratio decay under j ~ C·b^0.388 — are already in the record; what remains is fitting the gaps against i and b, and reconciling the two descriptions, which are now the next three unchecked items in TASKS.

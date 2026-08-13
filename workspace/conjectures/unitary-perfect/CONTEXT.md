@@ -119,10 +119,17 @@ Every claim marked with its evidence class; all anchors are in this workspace.
     APR-CL-verified large prime divisors with non-3-Higgs Pratt witnesses;
     30882 via a further route. `research/notes/paper-extraction.md`.
   - **Gap decomposition (live skeleton `research/backward/heven-finiteness-via-mod16.md`):**
-    four reduction steps are discharged (prime-case reduction, m ≡ 2 mod 4,
-    Higgs-cubefree structure, Thm-30 conditional); exactly two lemmas are open,
-    the paper's (H1) — every p with `ω(Φ_{4p}(2)) ≥ C·log p` has a divisor
-    `r ≡ 1 mod 16` — and (H2) — `ω(Φ_{4p}(2)) ≥ C·log p` for p ≥ p0.
+    **CORRECTED per directive 16.** The four structural reductions
+    (prime-case, m ≡ 2 mod 4, Higgs-cubefree, Thm-30 conditional) are
+    **conditional-on-paper** — asserted/catalogued from Maciejewski, not
+    independently proved or checked here. The skeleton now honestly shows
+    **6 open gaps**: four conditional-on-paper structural lemmas plus the
+    two genuinely open (H1) and (H2). The parallel C29 skeleton shows 4
+    genuinely open gaps (no structural borrows masked as discharged). Both
+    are conditional reductions, which is a real result. Exactly two lemmas
+    remain to attack for the Thm-30 route: (H1) — every p with
+    `ω(Φ_{4p}(2)) ≥ C·log p` has a divisor `r ≡ 1 mod 16` — and (H2) —
+    `ω(Φ_{4p}(2)) ≥ C·log p` for p ≥ p0.
     Each of the paper's Conjectures 23 / 24 / 29 alone would close C6;
     Conjecture 29 (proportional `#{r ≡ 1 mod 16} ≥ c·ω`) is the adopted
     second-moment approach's target.
@@ -161,12 +168,13 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 odd components,
   `n > 10^440`. Primary text not in the library. Load-bearing for the
   "is 3 | n forced?" question.
-- **(directive-8) Literature fetching is suspended for this cycle.** Downloads
-  went 62 → 67 (Guy §B3, Handbook of Number Theory perfect-numbers chapter,
-  Goto 2007) — all catalogue entries about a problem already stated correctly
-  in `problem.md`. The library phase is closed; any new source fetch must be
-  justified against a stated gap that actually blocks a computation, not a
-  survey interest.
+- **(directive-8) Literature fetching is suspended for this cycle.** The
+  library phase is closed; the last acquisitions (Guy 3rd-ed §B3, Handbook of
+  Number Theory perfect-numbers chapter, Goto 2007, Hagis 1985, a second Frei
+  volume-TOC scan) are all catalogue entries about a problem already stated
+  correctly in `problem.md`, or adjacent problems with no bearing — none adds
+  a theorem this run lacks. Any new source fetch must be justified against a
+  stated gap that actually blocks a computation, not a survey interest.
 - **(sourced, unverified) Lean formalisation reference:**
   `google-deepmind/formal-conjectures ErdosProblems/1052.lean` defines
   `IsUnitaryPerfect`, asserts all five known are UPN, and marks "all UPNs are
@@ -225,8 +233,8 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   `1213 ≤ p ≤ 24989` are residue-mixed mod 4 (117 of 264 ≡ 1). Membership and
   candidates are determined by the factorization of `2^{2p}+1`; do not re-run
   sequence mining on the 10 verified terms.
-- **Approach ledger moved: `biquadratic-character-divisors` is REFUTED
-  (absorbed); `second-moment-character-mod16` is ADOPTED.** (Why: the
+- **Approach ledger: `biquadratic-character-divisors` is REFUTED (absorbed);
+  `second-moment-character-mod16` is ADOPTED.** (Why: the
   biquadratic route's deliverable — existence of one head, the (H1) form of
   Thm 30 — is strictly weaker than Conjecture 29's proportional bound, and
   its product identity determines a character sum only mod 4; orthogonality
@@ -246,11 +254,22 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   entire content is the congruence `C5−C13+2·C9 ≡ 0 (mod 4)` among the
   NON-head classes {5,9,13}, all with v2(r−1) ≤ 3 whose 3-Higgs status is
   decided by odd primes of r−1 — invisible to quartic characters of 2; the
-  composite evaluation candidate is the constant `(2/(2^p+i))_4 = +1` in p.
-  Numerical confirmations R2–R4 are staged in `code/closure_biquadratic.py`
-  **and are NOT yet captured — do not report them as computed.** The adopted
-  second-moment approach is untouched: its first moment S_χ is a SUM with
-  weight +1 on heads; only the product is head-blind.
+  composite evaluation candidate is verified identically +1 (computed/checked,
+  `code/out/directive14_quartic_closed_form.captured.txt`, all 17 odd primes
+  p ≤ 61, 71 Gaussian divisor rows): `(2/(2^p+i))_4` evaluated two independent
+  ways — direct product of `(2/π)_4^e` over the Gaussian factorization, and
+  the supplementary-law closed form `[2/α]_4 = i^{(2a−b−2−b²)/2}` on the
+  primary associate α = −i(2^p+i) = 1 − 2^p i (hand derivation of the
+  exponent `2^{p−1}(1−2^p) ≡ 0 (mod 4)`) — every row +1, all matches OK.
+  Verdict: **no residue class of p forces a head `r ≡ 1 mod 16`, and the
+  global quartic character carries no information about which r | Φ_{4p}(2)
+  can be 3-Higgs beyond the one-way per-divisor mod-16 test. Directive 14 is
+  CLOSED with a computed capture — the biquadratic line is dead twice over:
+  product ≠ sum (a product determines the character sum only mod 4, and
+  orthogonality needs the sum), and the product is ≡ +1 identically, so it
+  cannot even pin the count mod 4.** The adopted second-moment approach is
+  untouched: its first moment S_χ is a SUM with weight +1 on heads; only the
+  product is head-blind.
   `research/approaches/biquadratic-character-divisors.md`,
   `research/approaches/second-moment-character-mod16.md`.
 
@@ -359,13 +378,16 @@ Durable Cognee memory from earlier runs; consistent with Established here
    `divisor-level-phi4p`); (b) lower bound on `a` beyond 11, or impossibility
    of a residue class of `a`; (c) is `3 | n` forced for a sixth? (all five
    have it; open in both directions). Directive-14 is CLOSED by argument
-   (head-blindness of product identities — see Ruled out), with the sole
-   remaining piece the uncaptured numerical confirmation in
-   `code/closure_biquadratic.py`. **`char_mod16_sums` remains 0-byte — the
-   adopted second-moment approach's first measurement is still not on disk;
-   do not report character-sum tables as done.** `q_supplement` is DONE
+   plus a captured computation: `code/out/directive14_quartic_closed_form.captured.txt`
+   verifies `(2/(2^p+i))_4 = +1` identically (two independent evaluations),
+   the product is head-blind and ≡ 1, so the global quartic character forces
+   nothing (see Ruled out). **`char_mod16_sums` remains 0-byte — the
+   adopted second-moment approach's first measurement (exact S_χ tables over
+   the 24 primes p ≤ 97, Parseval check) is still not on disk; do not report
+   character-sum tables as done.** `q_supplement` is DONE
    (PASS, 43 bytes) — this gap's earlier "two planned runs 0-byte" statement
    is resolved for q_supplement only.
 5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
    2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
+   no OCR; Guy UPNT §B3 paywalled). 10^102 anchor (Wall–Hagis 1972 letter scanned with
    no OCR; Guy UPNT §B3 paywalled).

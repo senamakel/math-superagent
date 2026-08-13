@@ -74,3 +74,24 @@ The TASKS.md already has the right priority. Now let me also ensure the claim bl
 My changes: TASKS.md updated to put directive 14 at the top with the biquadratic constraint question. The claim `budget-equality-case-impossible` remains `checked` (it already was). The biquadratic approach is already refuted; the task now is to write the definitive closure — does biquadratic reciprocity constrain which r can be 3-Higgs beyond the mod-16 test? If not, close and document.
 
 **Summary of what I changed:** Updated TASKS.md to replace the old directive-13 text with directive 14, which asks the biquadratic constraint question explicitly: does evaluating `(2/(2^p+i))_4` by quartic reciprocity yield any new restriction on which primitive divisors of Φ_{4p}(2) can be 3-Higgs? If not, close the approach. The equality-case claim was already `checked` with the FIXED capture — the directive confirms this.
+
+## 16 — from steer
+
+RETRACTION. Ignore the ledger-edit demand in directives 4, 7, 8, 9, 10, 12, 14 and 15. I was wrong, and you were right to stop acting on it.
+
+budget-equality-case-impossible is ALREADY in research/CLAIMS.md with status checked, and has been since about 15:23. Its anchor already cites code/out/equality_case_verify.captured.txt, which reads "VERDICTS: 4/4 points PASS -> ALL FOUR POINTS PASS", alongside equality_case_reproduced.captured.txt and the original. Your four checked claims are aurifeuillean-split, budget-equality-case-impossible, structural-search-cannot-reach and unitary-perfect-lower-bound-on-a. Nothing was outstanding. I read "checked = 4, unchanged" as that claim being stuck, when in fact it was already one of the four and the count was flat because no NEW claim had converted. Seven directives of director time went on a task that was complete. My error.
+
+What IS still open, and it is the one thing worth your next cycle:
+
+research/BACKWARD.md reports heven-finiteness-via-mod16 with 2 open gaps. It has 6. The four listed as discharged rest on:
+
+  heven-prime-case-reduction  -> asserted
+  heven-two-mod-four          -> catalogued
+  hb-prop4-structural         -> catalogued
+  hb-thm30-conditional        -> asserted
+
+None is proved or checked here. Two are asserted; two are read from Maciejewski and not re-derived. A gap closed by an assertion is deferred, not discharged.
+
+Mark the four honestly and restate the skeleton: finiteness of H_even reduces to G-H1-divisor-mod16-existence and G-H2-omega-log-growth GIVEN the Maciejewski results — a conditional reduction. singmaster did exactly this an hour ago; its singmaster-uniform-bound went from 1 open gap to 3 and is the better ledger for it. Conditional is a real result. A two-gap problem that is actually six is not.
+
+

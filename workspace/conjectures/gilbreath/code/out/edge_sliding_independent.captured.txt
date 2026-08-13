@@ -1,0 +1,10 @@
+independent prime-row edge-sliding test (sieve 2e7, D=161)
+runs: 42
+  profile-bad: 0/60
+  timing: hit 20 (0.476), early 0, late-unpinned 16, late-2 6
+  D dist: n=42 min=0 median=0 max=4 mean=0.738
+
+independent gap-dispersion check on 118 survivor records
+  gaps: n=1030 mean=1.702 sd=1.359 sd/mean=0.7987 (geometric null < 1 always; observed 0.799)
+  chi2-style check: var/mean = 1.086 (>1 overdispersed, <1 under)
+DONE

@@ -30,28 +30,52 @@ PART B  REGENERATE SURVIVORS -> EDGE-SLIDING TEST
 ====================================================================================================
   118 sequences, 14 workers, ~60-70 s wall
 [parallel] edge-sliding: survivor seqs across 14 worker(s) of 28 CPUs
-multiprocessing.pool.RemoteTraceback: 
-"""
-Traceback (most recent call last):
-  File "/usr/lib/python3.11/multiprocessing/pool.py", line 125, in worker
-    result = (True, func(*args, **kwds))
-                    ^^^^^^^^^^^^^^^^^^^
-TypeError: run_test() missing 1 required positional argument: 'seed'
-"""
+  events_pos vs records: PASS 118/118
+  runs: 1509 = 1006 D0 + 503 D>=1 + 0 no-2-in-block
+  event timing: hit (E==K+D) 1462, early (E<K+D) 0, late-unpinned (E>K+D, y!=4 at K+D) 47, late-2 (E>K+D, y==4 at K+D — refutes) 0
+  hit-rate over runs with a 2: 1462/1509 = 0.969
+  y-pinning at K+D: 1462/1509 = 0.969 of runs with a 2
+  edge profile (0 before K+D, 2 at K+D): 1509 ok, 0 bad
+  early count 0 + late-2 count 0 + profile-bad 0 = the refutation budget (must be 0 for the proved core)
+  D (rightmost-2 depth) dist: n=1509 min=0 median=0 max=13 mean=0.615
+  D histogram: 0:1006 1:291 2:114 3:54 4:15 5:13 6:8 7:1 8:2 9:2 10:2 13:1
+    waits W        n= 1509 mean=  0.714 median=  0 max=  13 sd= 1.393 sd/mean=1.952 var/mean=2.719
+    gaps(=W+1)     n= 1509 mean=  1.714 median=  1 max=  14 sd= 1.393 sd/mean=0.813 var/mean=1.132
+  late extra time E-(K+D): n=47 min=1 median=2 max=9 mean=3.17
+  runs by run-start b (n, hit, early, late) and gap stats:
+    b10-99       n= 278 hit=259 (0.932) early=  0 late= 19
+    b10-99 gaps    n=  278 mean=  1.982 median=  1 max=  10 sd= 1.633 sd/mean=0.824 var/mean=1.346
+    b100-999     n= 284 hit=281 (0.989) early=  0 late=  3
+    b100-999 gaps  n=  284 mean=  1.849 median=  1 max=  14 sd= 1.537 sd/mean=0.831 var/mean=1.278
+    b1000-99999  n= 585 hit=573 (0.979) early=  0 late= 12
+    b1000-99999 gaps n=  585 mean=  1.708 median=  1 max=  11 sd= 1.387 sd/mean=0.812 var/mean=1.126
+    b<10         n= 229 hit=219 (0.956) early=  0 late= 10
+    b<10 gaps      n=  229 mean=  1.384 median=  1 max=   8 sd= 1.026 sd/mean=0.741 var/mean=0.761
+    b>=1e5       n= 133 hit=130 (0.977) early=  0 late=  3
+    b>=1e5 gaps    n=  133 mean=  1.459 median=  1 max=   4 sd= 0.857 sd/mean=0.588 var/mean=0.504
 
-The above exception was the direct cause of the following exception:
+====================================================================================================
+PART C  PRIMES: events, gaps, edge-sliding test
+====================================================================================================
+  b-series events (rows<=161): 60; matches recorded 60-row list: True
+    prime gaps     n=   59 mean=  2.712 median=  1 max=  14 sd= 3.052 sd/mean=1.125 var/mean=3.434
+  geometric null p=0.3727: mean=2.683, sd/mean=0.792 (null always < 1)
+  prime gap histogram: 1:33 2:6 3:7 4:4 5:3 6:1 8:1 9:1 13:2 14:1
+  chi-square GOF vs geometric(0.373): chi2=10.609 df=3 p=0.0140   (merged cells: [1-1] obs33 exp22.0; [2-2] obs6 exp13.8; [3-3] obs7 exp8.7; [4-4] obs4 exp5.4; [5-6] obs9 exp9.0)
+  simulation P(sd/mean >= 1.125 | geom(0.373)) = 12/5000 = 0.0024
+  regenerating prime rows (sieve 2e7, D=161)...
+  regenerated prime events: 60; matches b-series: True
+  prime runs: 60
+  prime run test (n=60): hit (E==K+D) 44 (0.733), early 0, late-unpinned 16, late-2 0; profile-bad 0
+  prime D dist: n=60 min=0 median=0 max=4 mean=0.517
+  prime D histogram: 0:42 1:11 2:3 3:2 4:2
+    prime waits    n=   60 mean=  1.683 median=  0 max=  13 sd= 3.034 sd/mean=1.802 var/mean=5.467
+    prime gaps(=W+1) n=   60 mean=  2.683 median=  1 max=  14 sd= 3.034 sd/mean=1.131 var/mean=3.430
 
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "/workspace/code/pattern_finder/event_gap_analysis.py", line 540, in <module>
-    main()
-  File "/workspace/code/pattern_finder/event_gap_analysis.py", line 296, in main
-    res = parallel_map(run_test, tasks, label="edge-sliding",
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/workspace/code/lib/parallel.py", line 112, in parallel_map
-    return list(pool.imap(function, items, chunksize=1))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.11/multiprocessing/pool.py", line 873, in next
-    raise value
-TypeError: run_test() missing 1 required positional argument: 'seed'
+====================================================================================================
+PART D  VERDICT
+====================================================================================================
+  (1) Proved core (edge 0 before K+D, 2 at K+D, no early events): refutation budget = 0 over 1509 random-family runs + 0 profile-bad over 60 prime runs
+  (2) y-pinning at K+D: 1462/1509 random, prime: events hit 44/60 exactly at K+D
+  (3) gap dispersion verdict: random sd/mean 0.799 vs geometric null 0.642; prime sd/mean printed above in PART C.  A geometric process always has sd/mean = sqrt(1-p) < 1; observed values above that are the overdispersion the edge-sliding prediction explains.
+  wall time 6.4s

@@ -58,6 +58,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `qr-supplementary-2` | For a primary Gaussian prime π = a+bi, [2/π] = i^{-b/2}; [-1/π] = (-1)^{(a-1)/2}; [1+i/π] = i^{(a-b-1-b^2)/4}. Also [2/π] = +1 iff Nπ ≡ 1 (mod 16) when applied to a primitive divisor of Φ_{4p}(2). | yes | asserted | `research/summaries/wikipedia-quartic-reciprocity.md` |
 | `stewart2013-largest-prime-factor-not-omega` | Stewart (2013) Theorem 1 gives P(Phi_n(alpha,beta)) > n exp(log n / (104 log log n)) for n > C effective, a LARGEST PRIME FACTOR lower bound on the primitive part of Lucas/Lehmer terms; it does not give any lower bound… | yes | asserted | `research/summaries/stewart-2013-divisors-lucas-lehmer-arxiv.md` |
 | `structural-search-cannot-reach` | The backtracking search over the product form prod (q_i+1)/q_i = 2, with q_i prime powers of distinct primes and the denominator rule forcing the next prime whenever the remaining target is not an integer, recovers… | yes | checked | `research/notes/why-the-search-is-closed.md` |
+| `subbarao-bibliography-primary` | The U. Alberta publication list confirms, from the author's own records, the shelf data of the Subbarao chain: Subbarao & Warren, Unitary perfect numbers, Canad. Math. Bull. 9 (1966) 147-153; Subbarao, Are there an… | yes | asserted | `research/summaries/subbarao-publications-ualberta.md` |
 | `subbarao1970-a-ge-11` | Any unitary perfect number other than the five known ones satisfies a >= 11, where 2^a \|\| n. Equivalently 2^11 = 2048 divides any sixth example. The elimination of a = 0, 3, 4, 5, 7, 8, 9, 10 and the classification a =… | yes | asserted | `research/notes/subbarao-1970-a-ge-11.md` |
 | `sw1966-budget-identity-36` | Subbarao-Warren 1966 Lemma 1 remark (3.6): for a UPN N = 2^m * n with n = n1*n2*n3 (n1 primes 1 mod 4; n2 primes 3 mod 4 even exponent; n3 primes 3 mod 4 odd exponent), a + b + sum_i C_i = m + 1 where each n3-prime p… | yes | catalogued | `research/summaries/subbarao-warren-1966-cambridge-pdf.md` |
 | `sw1966-finiteness-fixed-omega` | There are at most finitely many unitary perfect numbers with a fixed number of distinct prime factors. | yes | catalogued | `research/summaries/subbarao-warren-1966-unitary-perfect.md` |
@@ -65,9 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `unitary-perfect-lower-bound-on-a` | Any unitary perfect number other than the five known ones satisfies a >= omega(odd part) - 1 >= 8, where 2^a \|\| n. Equivalently 2^8 = 256 divides any sixth unitary perfect number. This follows by combining Wall (1988),… | yes | checked | `research/notes/lower-bound-on-a.md` |
 | `wall1972-biunitary-perfect-classified` | The bi-unitary perfect numbers are exactly 6, 60 and 90. A bi-unitary divisor d of n is one whose greatest common *unitary* divisor with n/d is 1. Theorem 1: no odd bi-unitary perfect numbers. Theorem 2: the only even… | yes | asserted | `research/notes/adjacent-divisor-classes-classified.md` |
 | `wall1975-bound-is-1e23-not-1e102` | Wall 1975 (the fifth unitary perfect number paper) proves W is the next unitary perfect number after 87360 by eliminating all N < W, where W = 146361946186458562560000 ~ 1.46e23. The paper's seed cap is a < 38 (for N <… | yes | asserted | `research/notes/wall-1975-bounds-and-102-claim.md` |
-| `wall1975-bound-is-1e23-not-1e102` | Wall 1975 proves W is the next unitary perfect number after 87360 by eliminating all N < W = 146361946186458562560000 ~= 1.46e23; the seed cap is a < 38 for N < W; the number of distinct prime divisors of the odd part… | yes | asserted | `research/summaries/wall-1975-fifth-unitary-perfect-number-pdf.md` |
 
-_6 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_7 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -219,6 +219,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `qr-main-law` (research/summaries/dummit-quartic-reciprocity-lecture.md) — asserted by the source, not proved there and not checked here
 - `qr-supplementary-2` (research/summaries/wikipedia-quartic-reciprocity.md) — asserted by the source, not proved there and not checked here
 - `stewart2013-largest-prime-factor-not-omega` (research/summaries/stewart-2013-divisors-lucas-lehmer-arxiv.md) — asserted by the source, not proved there and not checked here
+- `subbarao-bibliography-primary` (research/summaries/subbarao-publications-ualberta.md) — asserted by the source, not proved there and not checked here
 - `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) — asserted by the source, not proved there and not checked here
 - `wall1972-biunitary-perfect-classified` (research/notes/adjacent-divisor-classes-classified.md) — asserted by the source, not proved there and not checked here
 - `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) — asserted by the source, not proved there and not checked here
