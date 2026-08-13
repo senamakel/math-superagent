@@ -172,12 +172,12 @@ re-deriving any of the sourced statements above.
 
 Two 2026 works converged (recalled, durable): Mballa (arXiv:2602.20036) —
 symmetric y=z families for n ≡ 1 (mod 4) via a divisor b ≡ 3 (mod 4) of n;
-proved for density-one set; **for n=840k+1 the b≡3 mod 4 structure becomes
-b·840k+1 = multiple-of-b, i.e. k ≡ −b⁻¹ mod /b·gcd(840,b)**, so e.g. b=11
-gives k ≡ 5 mod 11 sub-progression covered ([full construction in
-`research/sources/mballa-unified-parametric.full.md`] §5.1, example n=6721).
-Ventas (arXiv:2605.04551) — same b≡3 mod 4 divisor mechanism, heuristic.
-These give concrete sub-progressions of the open classes already covered;
+proved for density-one set. Concrete for the open classes: for n = 840k+1,
+"b ≡ 3 (mod 4) divides n" becomes 840k ≡ −1 (mod b), i.e. k ≡ −840⁻¹
+(mod b/gcd(840,b)); e.g. b=11 gives k ≡ 8 (mod 11), source example n=6721
+(`research/sources/mballa-unified-parametric.full.md` §5.1). So each such b
+yields an already-covered sub-progression of an open class. Ventas
+(arXiv:2605.04551) uses the same b≡3 mod 4 mechanism, heuristically.
 
 ## Contradictions
 

@@ -7,6 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | _(undescribed)_ |
 | `ap_structure2_output.txt` | _(undescribed)_ |
 | `bremner2_quartics.txt` | Deliverable: exact quartics (12) and (13), the (13,9,2) square check (root 12682 = 34*373 = bottom-right 373^2 entry of the 7-square witness), and genus computations (all three (13) quartics genus 1, two routes). |
+| `candidate_verdict_math.py` | Verifies the two structural claims behind refuting the elimination-ideal and p-adic-valuation approaches: J=(0) over Qbar, and the Bremner witness q-values satisfy v2>=3, v3>=1 with no local contradiction. |
 | `check_ferreira_proof.captured.txt` | _(undescribed)_ |
 | `check_ferreira_proof.py` | Sympy verification that refutes Ferreira's claimed non-existence proof (arXiv:1506.06621): substituting z2 (a root of eqn 46) back into (46) gives the tautology 0=0, not the paper's (47); witness m=5,n=3,w=1 satisfies (46) but fails (47). Records the exact algebraic error. |
 | `check_near_misses_latest.txt` | Fresh full stdout of `code/check_near_misses.py` (exit 0, ALL CHECKS PASSED): verifier cases, rerun worked examples, both near-misses, incidence rank, (c,u,v) extractions, Pythagorean pairs. |

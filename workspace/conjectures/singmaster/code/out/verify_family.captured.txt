@@ -21,3 +21,9 @@ Values with N(a) >= 6 (>=2 nontrivial canonical reps, 4 <= N): 7
   a=24310: N=6  nontrivial=[[17, 8], [221, 2]]
 
 [verify_family] wrote code/out/family_pairs.json
+
+Pell family (Singmaster 1975): C(n+1,k+1)=C(n,k+2), N(a)>=6:
+  j=1: n=14 k=4  value=3003  (reps (n+1,k+1),(n,k+2))
+  j=2: n=103 k=38  value=61218182743304701891431482520  (reps (n+1,k+1),(n,k+2))
+  j=3: n=713 k=271  value=353783517152276505700698314...  (reps (n+1,k+1),(n,k+2))
+  j=4: n=4894 k=1868  value=459011554099867796553131978...  (reps (n+1,k+1),(n,k+2))
