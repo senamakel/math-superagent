@@ -370,9 +370,7 @@ the Established section.
 - **Approaches status vs. CONTEXT.md's stale "all three proposed"**: resolved in
   favour of `research/APPROACHES.md` — Brauer–Manin adopted, S-unit and 2-Selmer
   refuted with reasons; this file now says the same.
-- **Cycle brief's graph-theory method vs. the actual problem**: the graph /
-  minimal-counterexample framing does not apply; method is arithmetic geometry
-  (`GOAL.md`). No source states a graph reduction.
+- **Proved-count drift (20→17, directive 17): resolved as deliberate re-classification, not lost claims.** Three claims (`bremner-conjecture-proved`, `n-by-n-mss-exist-for-n-ge-4`, `dgh-uniform-mordell-lang-curves`) have `holds-here: no` — they are true theorems proved by their authors, but do not apply to THIS problem. The `search_claims` re-derivation correctly moved them from `proved` to `asserted` (source-established but not applicable here). This is a tightening of the holds-here/proved intersection, not a bug. Recorded in TASKS.md.
 - `problem.md` frames non-existence as primary while several experts treat
   existence as open both ways; keep one thread on existence.
 

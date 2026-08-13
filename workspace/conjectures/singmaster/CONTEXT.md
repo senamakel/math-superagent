@@ -115,7 +115,11 @@ Each marked with evidence class and a link.
   "finitely many", but **ineffective** — no count computable in (k1,k2).
   Singmaster needs a constant uniform over all pairs at once. This is the
   central obstruction; every approach must say how it beats it, and the genus
-  computation does not.
+  computation does not. The Bilu–Tichy route has the same wall: HPT 2022 Thm 2.3
+  (Ramanujan J 58) applies the classification to this exact problem but is
+  explicitly **ineffective**; only the shifted-power-values result (Thm 2.4) is
+  effective. So `bilu-tichy-classification` is refuted as a route to a uniform
+  bound, with the exceptional-pair classification as its surviving kernel.
 
 - **Genus route yields no uniform bound.** `computed`: genus>1 for essentially
   all distinct pairs, but that only re-proves per-pair Faltings finiteness.
