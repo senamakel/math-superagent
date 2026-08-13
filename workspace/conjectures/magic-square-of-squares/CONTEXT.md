@@ -216,7 +216,11 @@ repeats (all-`k²` and the `{1,25,49}` family).
 `phi_extend.py`): `|Φ(M)|` = 22, 86, 331, 737, 1314, 2040, 2930, 4582 for
 M = 10..150; 8156 (M=200); 32495 (M=400). No additive triple for any pair from
 `m,n ≤ 400` (156,988,030 tests). A triple would have lifted to a 7-square magic
-grid — none found. Necessary-condition check, not a proof.
+grid — none found. Necessary-condition check, not a proof. Extended exact
+`|Φ(M)|` (closed form, `phi_canonical_check.py`): |Φ(500)|=50765, |Φ(1000)|=202861,
+|Φ(2000)|=811155, |Φ(3000)|=1824231; record max f values follow
+`f(P_k,P_{k−1}) = 1 − 1/P_{2k−1}²` with odd Pell hypotenuses 5,29,169,985,…
+(i.e. maxima occur on Pell pairs; m=2→24/25, m=5→840/841, m=12→28560/28561, …).
 
 **The literature's actual computational bound — sourced** (Morgenstern 2013,
 `research/summaries/morgenstern-extended-searches-2013.md`): 3809 instances of
