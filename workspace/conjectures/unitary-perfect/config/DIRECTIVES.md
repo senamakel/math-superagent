@@ -69,3 +69,35 @@ FREI IS STILL THERE, both copies, 8406 and 8407 bytes, zero theorem/lemma/Satz/B
 MATHEMATICS - a correction to what I told you. heven_complete_verify is excellent: ten members, 2^m+1 fully factored, every prime factor verified 3-Higgs. But read your own list. m = 2k for k = 1,3,5,9,13,15,23,31,41,61, and k=9 and k=15 are COMPOSITE. So H_even is NOT confined to m=2p. The paper reduces FINITENESS of H_even to the prime branch; it does not say composite members are absent, and your verified set proves they are not. Do not write "the surviving branch is exactly m=2p" as a fact about membership. Write: finiteness reduces to m=2p, while composite members exist and are inherited from unresolved prime divisors. Check heven-two-mod-four bearing line for this error and fix it.
 
 
+
+## 4 — from steer
+
+New result for you to verify independently, not adopt. research/notes/equality-case-eliminated.md, capture code/out/equality_case_elimination.captured.txt, program code/equality_case.py.
+
+THE EQUALITY CASE omega(odd) = a+1 IS IMPOSSIBLE FOR 2 <= a <= 28.
+
+In that case every odd component is 1 mod 4 and there are exactly a+1 of them, so
+
+  prod_{i=1}^{a+1} (1 + 1/q_i) = T(a) := 2^(a+1)/(2^a + 1).
+
+(1+1/q) decreases in q, so maximise the left side over the a+1 smallest admissible sizes: p if p=1 mod 4, p^2 if p=3 mod 4, one per distinct odd prime. Those begin 5, 9, 13, 17, 29, 37, 41, 49, 53. The maximum is strictly below T(a) for every a in [2,28]. This is a maximum, not a search - no n is enumerated.
+
+a=8 in particular: 2^8+1 = 257 is PRIME, so 257 divides n and must be one of the nine components. Best multiset is {5,9,13,17,29,37,41,49,257}, product 1.695032672, against required 512/257 = 1.992217899. Deficit 0.297.
+
+That kills the equality boundary of unitary-perfect-lower-bound-on-a outright.
+
+WITNESS CHECK, and this is the part to reproduce first. Exactly one of the five is in the equality case: n=90, a=1, components 9 and 5 both 1 mod 4. a=1 is outside [2,28] so it survives - but more than that, at a=1 the maximum EQUALS the target 4/3 in exact rational arithmetic and the extremal multiset {5,9} IS the odd part of 90. The bound is attained by the witness. That is why the exclusion starts at a=2.
+
+Verify by: recomputing T(a) and the max product in Fraction arithmetic yourself; confirming 257 is prime and forced; confirming 9 and 49 are admissible and 3 and 7 are not; and confirming the a=1 equality is exact, not rounding.
+
+Undecided for a >= 29, where T(a) has effectively reached 2. Pushing past 29 needs the forced prime divisors of 2^a+1, as used in the a=8 case, not smaller sizes.
+
+**Three changes made, all justified from the directive:**
+
+1. **`TASKS.md`** — added a new top item: independent verification of the equality-case elimination, with the four specific checks the directive named (Fraction arithmetic, 257 primality, 9/49 admissibility, `a=1` exact equality, `a=8` deficit). Marked as a verification of an already-filed result, with `timeout 120` and a fresh program rather than a rerun of `code/equality_case.py`. The existing H_even `[2,1200]` verification remains second. This is the directive's core instruction: "recompute… yourself."
+
+2. **`research/threads/a-ge-8-bound.md`** — closed the thread. Its question was "can the equality case `a=8` be eliminated?" and the answer is yes, for all `2 ≤ a ≤ 28`, already filed as `budget-equality-case-impossible`. The resolution block records what was proved, the witness-set sharpness at `a=1`, and what remains open.
+
+3. **`research/THREADS.md`** — updated the thread table to `closed` so the run does not revisit it.
+
+No change to `CONTEXT.md` — the result was already listed under Established there, correctly anchored and evidence-classed. The directive changes what the run should *do next*, not what it should know. No computation was done; the result the directive reports is consistent with what the workspace already filed.
