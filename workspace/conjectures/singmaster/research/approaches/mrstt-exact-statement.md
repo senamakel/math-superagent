@@ -1,91 +1,132 @@
-# MRSTT — the exact statement (the deliverable for this attempt)
+# MRSTT exact theorem statement — Singmaster in the interior
 
-Source read line-by-line: K. Matomäki, M. Radziwiłł, X. Shao, T. Tao, J. Teräväinen,
-"Singmaster's conjecture in the interior of Pascal's triangle", arXiv:2106.03335,
-Quart. J. Math. 73 (2022) 1137–1177. Full text: research/sources/mrstt-fulltext.full.md.
+Source: K. Matomäki, M. Radziwiłł, X. Shao, T. Tao, J. Teräväinen,
+"Singmaster's conjecture in the interior of Pascal's triangle",
+arXiv:2106.03335v1 (7 Jun 2021), Quart. J. Math. 73 (2022) 1137–1177.
 
-Convention: below, `N(a)` counts **all** integer pairs `(n,m)`, `1<=m<n`, with
-`C(n,m)=a`, both mirrors and the trivial pair counted (the MRSTT convention).
-This is the convention of witnesses.json.
+Full text held at `research/sources/mrstt-fulltext.full.md` (123KB).
+Summary at `research/summaries/mrstt-fulltext.md`.
 
----
+## Counting convention (same as the rest of this run)
 
-## The literal statement of Theorem 1.3
+N(a) counts both mirrors (n,k) and (n,n-k) AND the trivial pair
+C(a,1)=C(a,a-1). So N(3003)=8 under this convention, 4 in half-triangle.
 
-Let `0 < ε < 1`, and assume `t` is **sufficiently large depending on ε**. Then there
-are **at most two** integer solutions `(n,m)` to `C(n,m)=t` in the region
+## Theorem 1.3 (Interior Theorem) — literal statement
 
+Let 0 < ε < 1. Let n and m be integers with
+
+    exp((log n)^{2/3+ε}) ≤ m ≤ n/2                                    (1.3)
+
+and let t = C(n,m). Then for t sufficiently large depending on ε, the
+equation C(n',m') = t has at most TWO solutions (n',m') in the region
+(1.3). Consequently, in the symmetric interior
+
+    exp((log n)^{2/3+ε}) ≤ m ≤ n - exp((log n)^{2/3+ε})               (1.4)
+
+the equation has at most FOUR solutions.
+
+### Refinement (Theorem 1.3, second part)
+
+For 0 < ε' < ε/(2/3+ε), in the region
+
+    exp((log n)^{2/3+ε}) ≤ m ≤ n / exp((log n)^{1-ε'})
+
+there is at most ONE solution.
+
+### Sharpness (Remark 1.4)
+
+The bound of two (resp. four) is sharp: the infinite Fibonacci family
+C(F_{2j+2}F_{2j+3}, F_{2j}F_{2j+3}) = C(F_{2j+2}F_{2j+3}-1, F_{2j}F_{2j+3}+1)
+provides infinitely many t with exactly two solutions in the left-half
+interior (hence four in the full interior). These are the solutions to
+C(n+1,m+1)=C(n,m+2).
+
+## What this reduces the conjecture to (Remark 1.5)
+
+To prove Singmaster's conjecture (N(t) = O(1)), it now suffices to handle
+the **boundary region**:
+
+    2 ≤ m ≤ exp((log n)^{2/3+ε})                                       (1.5)
+
+Equivalently, in terms of t:
+
+    2 ≤ m ≤ (log t) / (log log t)^{3/2 - ε}                            (1.6)
+
+This is the **exact open gap**. The interior is settled; the small-m
+regime (where m/log t → 0) is the whole remaining problem.
+
+## Remark 1.11 — no interior value 3
+
+A modification of the proof shows there cannot be exactly THREE solutions
+in the interior (1.4). The possible interior multiplicities are 0, 1, 2, 4.
+
+## Effectiveness and uniformity
+
+- **effective: yes** — the threshold "t sufficiently large depending on ε"
+  is effective (the proof produces an explicit, computable function of ε).
+  However, Remark 1.7 states the constants are far too large for numerical
+  verification (triple-exponential or worse; the paper does not optimize them).
+- **uniform-in-k: yes** — the theorem covers all m in the stated range
+  simultaneously; it does not fix (k1,k2) pairs. This is what makes MRSTT
+  genuinely stronger than per-pair Siegel/Faltings: it is uniform over all
+  m in the interior.
+- **uniform-in-the-boundary: no** — the theorem explicitly does NOT cover
+  the boundary (1.5)/(1.6). The method has a hard ceiling there (Prop 1.12).
+
+## Method and its limit (Proposition 1.12)
+
+The proof uses non-archimedean equidistribution of fractional parts
+{v_p(C(n,m))} over primes p in [P, P + P/log^100 P], with
+P ≈ exp((log n)^{2/3+ε/2}). The key estimate requires
+
+    N, M = O(exp(log^{3/2-ε} P))
+
+where N, M are the parameters being compared. Even under the Riemann
+Hypothesis this restriction cannot be relaxed; only a randomness heuristic
+would push the range to exp(P^c), which would lower the interior boundary
+function from exp((log n)^{2/3+ε}) to (log n)^C.
+
+**Implication**: the 2/3 exponent is a genuine barrier for the interior
+method. Extending the interior theorem to smaller m requires a fundamentally
+different technique — improving constants cannot bridge the gap.
+
+## Theorem 1.8 — falling factorial analogue
+
+For the falling factorial (n)_m = n(n-1)...(n-m+1), at most TWO integer
+solutions in exp((log n)^{2/3+ε}) ≤ m < n. Sharp (family
+(a^2-a)_{a^2-2a} = (a^2-a-1)_{a^2-2a+1} attains it).
+
+## Table: what is and is not covered
+
+| Region | m range (in n) | Bound | Method | Effective? | Uniform in k? |
+|--------|---------------|-------|--------|-----------|---------------|
+| Interior (MRSTT Thm 1.3) | exp((log n)^{2/3+ε}) ≤ m ≤ n/2 | ≤2 (≤4 full) | non-archimedean equidistribution | yes (huge) | yes |
+| Deep interior (Thm 1.3) | exp((log n)^{2/3+ε}) ≤ m ≤ n/exp((log n)^{1-ε'}) | ≤1 | same | yes (huge) | yes |
+| Boundary (open) | 2 ≤ m ≤ exp((log n)^{2/3+ε}) | unknown | — | — | — |
+| Fixed (k1,k2) | m=k1, m'=k2 fixed | finite | Siegel/Faltings | no | no |
+
+```claim
+id: mrstt-exact-statement
+statement: MRSTT Theorem 1.3 (arXiv:2106.03335, QJM 2022): For 0<ε<1 and t
+  sufficiently large (effective threshold), C(n,m)=t has at most 2 solutions in
+  exp((log n)^{2/3+ε}) ≤ m ≤ n/2 (at most 4 in the full symmetric interior
+  exp((log n)^{2/3+ε}) ≤ m ≤ n-exp((log n)^{2/3+ε})), and at most 1 in
+  exp((log n)^{2/3+ε}) ≤ m ≤ n/exp((log n)^{1-ε'}). To prove Singmaster it now
+  suffices to handle the boundary 2 ≤ m ≤ exp((log n)^{2/3+ε}), equivalently
+  2 ≤ m ≤ (log t)/(log log t)^{3/2-ε}. The bound of 2/4 is sharp (infinite
+  Fibonacci family attains it). Interior multiplicities cannot be exactly 3
+  (Remark 1.11). The method's non-archimedean equidistribution requires
+  N,M = O(exp(log^{3/2-ε} P)), cannot be relaxed even under RH, making the
+  2/3 exponent a genuine barrier (Prop 1.12).
+hypotheses: 0<ε<1; t sufficiently large depending on ε; counting both mirrors
+  plus trivial pair (N(3003)=8 convention).
+holds-here: yes — this is the current record theorem for the interior.
+status: asserted-by-source (full text held; not re-derived here)
+bearing: Reduces Singmaster to the boundary (1.5)/(1.6). The entire remaining
+  gap is the small-m regime. The constant is effective (yes) and uniform in
+  k over the interior (yes), but does not cover the boundary (no).
+effective: yes (but constants too large for numerical use — Remark 1.7)
+uniform-in-k: yes (over the interior range; no over the boundary)
+anchor: research/approaches/mrstt-exact-statement.md
 ```
-exp( (log n)^{2/3+ε} )  ≤  m  ≤  n/2        (left half)
-```
-
-By symmetry `C(n,m)=C(n,n-m)`, there are therefore **at most four** solutions in the
-symmetric interior
-
-```
-exp( (log n)^{2/3+ε} )  ≤  m  ≤  n − exp( (log n)^{2/3+ε} ).
-```
-
-Furthermore, in the smaller region `exp((log n)^{2/3+ε}) ≤ m ≤ n/exp((log n)^{1−ε′})`
-there is **at most one** solution, whenever `0 < ε′ < ε/(2/3+ε)`, with `t` large
-depending on both ε and ε′.
-
-- effective: **yes** — Remark 1.7 states explicitly that the implied constants in
-  "t sufficiently large depending on ε" are effective, but deliberately NOT optimized
-  and likely too large for numerical use.
-- uniform-in-k: the bound itself (at most 2 in a half, at most 4 in the interior) is
-  **uniform over all column indices m in the interior region and over all t** (t large);
-  the constant does not depend on m. But — see the gap below — it does **not** cover
-  the small-m boundary, where only an ineffective bound exists.
-
-## What is left open (Remark 1.5, verbatim content)
-
-To prove Singmaster's conjecture it now suffices to handle
-
-```
-2 ≤ m ≤ exp( (log n)^{2/3+ε} n )      equivalently      2 ≤ m ≤ (log t) / (log_2 t)^{3/2−ε}
-```
-
-for any fixed ε>0 (the first equivalence is via `n/m ≍ exp(log t / m)`).
-
-This small-m / outer-rows regime, where `m / log t → 0`, is **the entire remaining
-gap**. There, the only known handle is Beukers–Shorey–Tijdeman / Siegel finiteness,
-which is **completely ineffective** (no `w(n)` computable). So:
-
-- effective: **no** in the boundary.
-- uniform-in-k: **no** in the boundary — no bound at all (not even an ineffective
-  finite one that is uniform) is known there.
-
-## Sharpness (Remark 1.4)
-
-The bound of two (per half) / four (interior) is attained by the infinite family
-`C(n+1,m+1)=C(n,m+2)` with `n=F_{2j+2}F_{2j+3}−1`, `m=F_{2j}F_{2j+3}−1`
-(Fibonacci). First member (j=1): 3003 with its eight occurrences.
-
-## No-interior-3 (Remark 1.11)
-
-There cannot be exactly three solutions in the interior: multiplicities there are
-0, 1, 2, or 4 — never 3. (Three would force an `n=2m` solution, then
-`|m′−m| ≫ m^{1/2}` by de Moivre–Laplace / Stirling, contradicting the distance
-estimate (1.10).)
-
-## Method and its hard limit (Section 1.3)
-
-The new content is a **non-Archimedean** equidistribution argument: evaluate
-`v_p(C(n,m))` (Legendre), draw `p` from primes in `[P, P+P/log^100 P]` with
-`P ≈ exp((log(n+n′))^{2/3+ε/2})`, and compare covariance distributions (Prop 3.2).
-The equidistribution estimate Prop 1.12 carries the hard restriction
-`N, M = O(exp(log^{3/2−ε} P))`, which even under the Riemann Hypothesis cannot be
-relaxed below `exp(log^{3/2−ε} P)`. Only a randomness heuristic would push to
-`exp(P^c)`, which would lower the interior boundary from `exp((log n)^{2/3+ε})` to
-`(log n)^C`. So the exponent **2/3 is a genuine, named barrier**, not an artifact.
-
-## Bearing for the run
-
-- Interior is done and effective: at most 4, never 3, uniform over the interior.
-- **The whole remaining problem is the boundary** `2 ≤ m ≤ (log t)/(log_2 t)^{3/2−ε}`,
-  and every known tool there is ineffective (Siegel/Beukers–Shorey–Tijdeman) or
-  non-uniform in m.
-- Therefore any uniform upper bound on `N(a)` must be built on the boundary, on a
-  method different from the interior equidistribution argument. This is the precise
-  statement of the frontier this run faces.
