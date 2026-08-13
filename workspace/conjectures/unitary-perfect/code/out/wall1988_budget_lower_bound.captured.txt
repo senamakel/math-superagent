@@ -1,0 +1,16 @@
+witness set: combined bound  a >= omega_odd - 1 >= 8  (Wall 1988 + budget corollary)
+                         n   a  w_odd  a+1  w<=a+1  a>=8  sigma*=2n
+                         6   1      1    2    True False       True
+                        60   2      2    3    True False       True
+                        90   1      2    2    True False       True
+                     87360   6      4    7    True False       True
+  146361946186458562560000  18     11   19    True  True       True
+
+None of the five is refuted: Wall 1988 constrains a NEW example, and the
+only known example with omega_odd >= 9 is the fifth, which has a = 18 >= 8.
+The four small ones have omega_odd in {1,2,2,4} < 9 and are exactly the
+cases Wall's theorem excludes from its scope, so no witness is killed.
+
+Consequence for a sixth example: omega_odd >= 9 and omega_odd <= a+1
+  =>  a >= omega_odd - 1 >= 8,  i.e. 2^8 = 256 divides it.
+Equality a = 8 forces omega_odd = 9 with every odd component = 1 mod 4.
