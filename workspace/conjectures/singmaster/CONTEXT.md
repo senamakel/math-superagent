@@ -308,30 +308,27 @@ Each carries the obstruction that closed it; do not re-propose.
   uncaptured programs now captured (EXIT_CODE=0; only `pattern/print_family.py`
   dies at i=5 on Python's 4300-digit int-str limit after printing i=1..4);
   genus integrality independently reproduced (above).
-- **State of the decomposition (BACKWARD.md):** all immediate tasks are
-  complete; the backward skeleton `singmaster-uniform-bound` has exactly one
-  open gap, `G-boundary-uniform-count` — an absolute bound on the number of
-  boundary (small-k) representatives per a — which is the conjecture itself
-  distilled to its MRSTT-open edge (the witness set forces C ≥ 3 via 3003).
-  Its stated next computation: tabulate each nontrivial occurrence's column
-  k against the interior cut exp((log n)^{2/3+1/2}) for the Fibonacci family
-  j=1..6 and the witness set, pinning the exact lower bound on C. `G-interior-
-  bounded` and `G-small-a-bounded` are catalogued (read from MRSTT primary,
-  not re-derived). **The gap is now decomposed** in
-  `research/backward/boundary-finite-collisions.md`: `G-column-injectivity`
-  (discharged — C(n,k) strictly increasing in n for n>=k, so one rep per
-  column); `G-fibonacci-boundary-finite` (open, computation-ready: for eps=1/2
-  find largest j with k_j+1 < exp((log(n_j+1))^{2/3+1/2}) for j=1..100, since
-  log k_j ∝ j but (log n_j)^{2/3+eps} ∝ j^{2/3+eps} — **this program has NOT
-  been run: `code/out/boundary_cut_tabulation.captured.txt` is 0 bytes**);
-  `G-nonfibonacci-pairs-are-bounded` (open — the core structural gap: minimal
-  k2 = k1+1 for the Fibonacci family; needs a bound on non-Fibonacci boundary
-  pairs, the actual heart of the conjecture); `G-boundary-collision-a-finite`
-  (open — synthesis of the previous two). The agent attacking the boundary
-  should start with the j=1..100 Fibonacci cut table — it is cheap (no
-  triangle, closed-form n_j,k_j via φ^4 growth), exact, and its 0-byte
-  capture means it is still open. `effective-bound-hyperelliptic-k25` is broken (Lambda=0
-  vacuity); `genus-closed-form-proof` discharged by the proved genus formula.
+- **Boundary cut bug fixed (directive 24).** The original `code/boundary_cut.py`
+  computed `exp((log n)**(2/3) + 0.5)` instead of `exp((log n)**(2/3+0.5))` —
+  two-character typo, factor-411k error at n=229969. `code/boundary_cut_corrected.py`
+  with `code/out/boundary_cut_corrected.captured.txt` (EXIT_CODE=0) proves:
+  under the CORRECT cut ALL six Fibonacci family members are BOUNDARY. The
+  family never crosses to interior for eps > 1/3. `G-fibonacci-boundary-finite`
+  is refuted (the family stays boundary forever, not finitely many). The
+  skeleton's step (5) is revised: each Fibonacci a contributes at most 2
+  boundary reps, so the infinite family does NOT threaten a constant per-a
+  bound. Witness-set boundary counts: max 3 left-half reps at 3003.
+- **State of the decomposition (BACKWARD.md):** the backward skeleton
+  `singmaster-uniform-bound` has exactly one open gap, `G-boundary-uniform-count`
+  — an absolute bound on the number of boundary representatives per a
+  (C >= 3 from 3003). `G-interior-bounded` and `G-small-a-bounded` are
+  catalogued. The boundary gap decomposes in
+  `research/backward/boundary-finite-collisions.md`:
+  `G-column-injectivity` (discharged); `G-fibonacci-boundary-finite` (refuted
+  — the family stays boundary, but each a has <= 2 boundary reps);
+  `G-nonfibonacci-pairs-are-bounded` (open — the core structural gap);
+  `G-boundary-collision-a-finite` (revised — finiteness of A_all is false,
+  but per-a boundedness does not need it).
 - **The other live partial-result target:** an effective height bound with a
   **computed** constant for a specific (k1,k2) inequality or near-miss family
   (Matveev Thm 2.3, K=Q, constants held, (2,3) template computed and its

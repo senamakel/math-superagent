@@ -22,9 +22,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check-block-protection.py` | Boundary protection lemma verifier. |
 | `check_A089582_crosscheck.py` | Cross-checks the run's own second-entry sequence A_k(1) against the OEIS catalogue A089582 (105 terms). Verifies the oracle generator against an independent catalogue source. |
 | `check_edge_zero_run.py` | _(undescribed)_ |
-| `check_fwd_diff_identity.captured.txt` | _(undescribed)_ |
+| `check_fwd_diff_identity.captured.txt` | Executed output of code/out/check_fwd_diff_identity.py: the identity A_k(i)= |
 | `check_fwd_diff_identity.py` | Checks the identity A_k(i) = |
-| `check_fwd_diff_identity_sampled.captured.txt` | Independent second route (a fresh sampler, uniform even gaps in [2,500]): 60 random 2-then-odds sequences, 1839 (seq,k,i) triples checked, all 60 trials fail the identity A_k(i)=|Δ_k(i)| within the first 3 rows — first failures at (k=3, i=0..3). Shows the refutation is generic to the 2-then-odds class (a local extremum of the gap sequence kills it), not a prime-distribution artifact. |
+| `check_fwd_diff_identity_sampled.captured.txt` | Independent second route for fwd-diff-identity-refuted: a fresh sampler (uniform even gaps in [2,500]) over 60 random 2-then-odds sequences, 1839 (seq,k,i) triples — all 60 trials fail A_k(i)= |
 | `check_reduction.captured.txt` | Output of `check_reduction.py`: reduction facts hold for k=1..599. |
 | `check_reduction.py` | Per-row check of the reduction facts. |
 | `check_regenerate_lemma.captured.txt` | Output of `regeneration/check_regenerate_lemma.py` (sieve 20M, depth 1000): the regeneration criterion `A_{k+1}[b_k] ∈ {0,2} ⟺ (e_k==2 and c_k==4)` and `b_{k+1}≥b_k ⟺ (e_k==2 and c_k==4)` holds with ZERO failures over all 998 transitions; 60 regeneration events. Supersedes/corrects the earlier refutation note (which had an off-by-one in the edge index). |
@@ -45,6 +45,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `directive24_geometric_growth.md` | Markdown finding (b): geometric growth test. Geometric fit (log b vs event index) beats linear fit on both the 12 genuine giants (R² 0.9439 vs 0.7830; slope +0.519764; ×1.6816/event, doubling every ≈1.33 events) and all 13 (R² 0.9421 vs 0.8072); per-step ratios, residuals, caveats (12-point sample, description not proof). |
 | `directive24_verify.captured.txt` | Independent numpy verification of the directive24 compute: k*=162, flooring(r)=0 on all 839 rows 162..1000, 13/13 giant landing floors match the characterization table, 43 b-increasing steps with exactly the 13 giants having jump>1000, both fits reproduced to 6 decimals. |
 | `directive24_width_degradation.md` | Markdown finding (a): width-degradation caveat. k*=162; all measurements at rows ≥162 are LOWER BOUNDS (block glued to finite right edge from row 162); the 12 genuine giants all have event-row flooring ≥ 536,885 — none width-limited; first row past each giant with flooring<1000 is row 162 for all 13; table of 13 event rows with exact b_i, b_{i+1}, floors. |
+| `directive25_gap_trend.captured.txt` | Executed output of code/directive25/gap_trend_reconciliation.py: Part A inter-giant gaps (genuine 12) = 22,8,4,26,2,14,2,14,4,4,12 rows, mean 10.18, median 8, max 26, no trend (OLS R2 <= 0.11 both fits, Spearman rho = -0.141 exact); Part B observed ratios across the 11 genuine consecutive pairs (2.73..1.49, mean 1.91), sublinear rho_sub = 1 + C*b^(alpha-1) with alpha=0.388, C_pool=802.6, MSE 0.140 vs geometric 1.6816 MSE 0.154 - no decisive law on 12 points; ratios decline toward 1 with b (sublinear direction). Independent re-derivation reproduces gaps and all 11 ratios to 4 decimals. |
+| `directive25_gap_trend.md` | Finding note for Directive 25 items 3–4 (computed this cycle): inter-giant gap trend (flat, no growth with b or index — genuine-12 gaps 22,8,4,26,2,14,2,14,4,4,12) and the geometric-vs-sublinear reconciliation (observed rho declines toward 1 with b, tracking the sublinear law rho=1+C·b^(α−1), so ×1.68/event is a finite-sample description, not an asymptotic law). States the operative target: conjecture follows if the inter-giant gap G_k grows strictly slower than b^0.388. Carries claim directive25-gap-trend-and-reconciliation (checked, depth 1000, numerical evidence only). Anchors the captured output and the program. |
 | `edge_sliding_independent.captured.txt` | _(undescribed)_ |
 | `edge_sliding_timing.captured.txt` | _(undescribed)_ |
 | `erosion_dynamics.captured.txt` | Output of `pattern/erosion_dynamics.py`: erosion-step predictions 101/101 and the regen trigger (x,y)=(2,4) verified 60/60. |
@@ -75,6 +77,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
 | `pattern_finder_boundary.captured.txt` | _(undescribed)_ |
 | `pattern_finder_cycle_floor.captured.txt` | _(undescribed)_ |
+| `pattern_finder_threshold_gaps.captured.txt` | _(undescribed)_ |
 | `regen_c4_check.captured.txt` | Earlier regeneration-trigger check (superseded by erosion_dynamics and regeneration_* outputs). |
 | `regen_mechanism.captured.txt` | Earlier regeneration-mechanism probe (superseded). |
 | `regeneration_analysis.captured.txt` | Output of `pattern/regeneration_analysis.py`: the 60-event table, rate buckets, histograms, runs test, minima. |
@@ -97,4 +100,3 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `surplus_structure_independent.captured.txt` | _(undescribed)_ |
 | `survivor_analysis.captured.txt` | _(undescribed)_ |
 | `witnesses.json` | Oracle: row data and block profile for depth 600 (sieve to 400000, 33860 primes); `A_1..A_5` first 12, `block_profile_first_40`. Everything else is checked against it. |
-; `A_1..A_5` first 12, `block_profile_first_40`. Everything else is checked against it. |
