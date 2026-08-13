@@ -128,3 +128,32 @@ are powers of 2 relative to the start of the current block regime. Specifically:
   dynamics force block-length regeneration at depths that are powers of 2."
 - **If it fails:** state the exact k and depth where it fails and by how much.
   A sharp, falsifiable prediction that is refuted by the data is a result.
+
+## Refutation of the depth prediction (pattern_finder, this record)
+
+Tested every concrete form of "regeneration at powers of 2" against
+`code/out/blocks_depth1000.json` (programs `code/pattern/rule90_depth_test.py`
+and `rule90_depth_test2.py`). All forms are **refuted**:
+
+- **(A) Gaps between consecutive regen rows:** 13 of 42 are non-powers of 2
+  (non-powers: 3,3,12,5,7,6,5,3,14,13,5,3,13).
+- **(B2) Next-regen offset after each big-jump row (jump ≥ 1000):** rows
+  [34,56,64,68,94,96,110,112,126,130,134,146,161]; only 9/13 have the next
+  regen row at a power-of-2-ish offset (offset ∈ 2^j or 2^j−1) — against a
+  null rate 34/42 = 0.81 for **all** regen rows. No separation.
+- **(C) Big-jump rows at absolute k:** none is a power of 2
+  (34→32, 56→64, 94→64, 110→128, ...), i.e. big regeneration does not happen
+  *at* a power-of-2 row.
+- **(D) Strict local-minima row indices:** [7,11,13,21,25,33,37,55,67,71,85,90,
+  93,95,109,124,127,133,137,145,158] — **none** is a power of 2.
+- **(E) Next-regen offset histogram:** {1:10,2:11,3:4,4:7,5:3,6:1,7:1,8:1,
+  12:1,13:2,14:1} — offsets 12,13,14 break the power-of-2 story and there are
+  more 3s and 5s than 8s.
+
+So the **regeneration-timing corollary** of the Rule 90 interior structure is
+refuted by the depth-1000 record. This does **not** touch the interior-XOR
+identification itself (proved, `rule90-interior-xor`), which concerns the
+*values* inside the block, not *when* the boundary regenerates. The depth
+prediction should not be re-asserted. The open regeneration content is
+unchanged: why the boundary pair (x,y) = (2,4) recurs — see
+`research/threads/regeneration.md`.

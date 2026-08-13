@@ -1,0 +1,49 @@
+[parallel] rule90-depth variants: 48 variants x D=1000 across 26 worker(s) of 28 CPUs
+[parallel] rule90-depth: 48 variants across 26 worker(s) of 28 CPUs
+D=1000
+local-minima row indices k: [1, 8, 12, 14, 22, 26, 34, 38, 47, 56, 62, 68, 72, 75, 79, 86, 91, 94, 96, 110, 125, 128, 134, 138, 141, 146, 159, 1000]
+local-minima block lengths b_k: [2, 21, 96, 96, 288, 871, 865, 2176, 2762, 4203, 5939, 23262, 31496, 31525, 31525, 31530, 31533, 31532, 92619, 103960, 271617, 325089, 515907, 733567, 733574, 733575, 1094261, 1269606]
+count: 28
+
+=== minimum depths from regime start (prev local-min row) ===
+ regimeStart  k_min    depth nearest2^j  close
+           1      1        0          -     no
+           1      8        7          8    YES
+           8     12        4          4    YES
+          12     14        2          1    YES
+          14     22        8          8    YES
+          22     26        4          4    YES
+          26     34        8          8    YES
+          34     38        4          4    YES
+          38     47        9          8    YES
+          47     56        9          8    YES
+          56     62        6          -     no
+          62     68        6          -     no
+          68     72        4          4    YES
+          72     75        3          2    YES
+          75     79        4          4    YES
+          79     86        7          8    YES
+          86     91        5          4    YES
+          91     94        3          2    YES
+          94     96        2          1    YES
+          96    110       14          -     no
+         110    125       15         16    YES
+         125    128        3          2    YES
+         128    134        6          -     no
+         134    138        4          4    YES
+         138    141        3          2    YES
+         141    146        5          4    YES
+         146    159       13          -     no
+         159   1000      841          -     no
+
+regimes: 28, near-power-of-2 (tol=1): 21 (75%)
+
+=== variant table ===
+   origin   thr tol  minHit/tot  jumpMag^2  jumpAtAbs^2
+Traceback (most recent call last):
+  File "/workspace/code/rule90_test/analyze_rule90_depth.py", line 250, in <module>
+    main()
+  File "/workspace/code/rule90_test/analyze_rule90_depth.py", line 216, in main
+    atabs = sum(1 for (k, d, near) in r["jumps_abs_near"] if near is not None)
+                                      ~^^^^^^^^^^^^^^^^^^
+KeyError: 'jumps_abs_near'

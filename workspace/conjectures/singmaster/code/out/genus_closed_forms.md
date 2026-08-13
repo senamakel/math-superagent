@@ -38,6 +38,25 @@ The gap-two family needs the floor because its growth is parity-split — the
 first differences run `3,3,5,5,7,7,9,9,…`, giving `(n²−4n+2)/2` for even `n` and
 `(n−1)(n−3)/2` exactly for odd `n`. The floor unifies both.
 
+## The k2=5 row, now closed
+
+`C(x,5) = C(y,n)` has no prior closed form; the two candidates in
+`verify_closed2.py` both FAIL (`2⌊(n−1)/2⌋` gives g(6)=4≠10; `2n−4(/5:2n−5)`
+gives g(6)=8≠10). The correct form, verified exactly against all 19 computed
+points (n=6..24):
+
+    genus[{5}, n] = 2n−2, except 2n−4 when 5 | n.
+
+First differences are the exact period-5 pattern [2,2,2,0,4] (dip to 0 at
+multiples of 5, catch-up 4), mirroring the m=3 row (diffs 2,1,0 period-3) and
+m=4 row (3,1,2,0 period-4). Mean of first-differences = (m−1)/2 for m=2,3,4,5 —
+the slope conjecture `genus[{m},n] ≈ ((m−1)/2)n` with a period-m dip.
+
+**This does NOT change the central conclusion.** The genus still grows, Faltings
+remains ineffective in the parameter (it gives "finitely many" with no count
+computable in (k1,k2)), so no uniform bound follows. The closure is a
+small-column structural fact, not an approach to Singmaster.
+
 **Consistency check that the run did not make:** `g_D(n) = g_B(n+2)` for every
 overlapping `n`. That must hold, since `C(x,n+2) = C(y,n)` and
 `C(x,n−2) = C(y,n)` describe the same unordered pair `{n, n+2}` re-indexed. It
