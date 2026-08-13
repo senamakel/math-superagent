@@ -6,7 +6,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 4 | http://math.uindy.edu/swett/esc.htm | http://math.uindy.edu/swett/esc.htm | [5] Swett Allan (1999), The Erdős-Straus conjecture, Current Research on ESC, rev.10/28/99. http://math.uindy.edu/swett/esc.htm [6] Yamamoto Koichi (1965), On the diophantine equation 4/n = 1/x + 1/y… |
+| 5 | http://math.uindy.edu/swett/esc.htm | http://math.uindy.edu/swett/esc.htm | [5] Swett Allan (1999), The Erdős-Straus conjecture, Current Research on ESC, rev.10/28/99. http://math.uindy.edu/swett/esc.htm [6] Yamamoto Koichi (1965), On the diophantine equation 4/n = 1/x + 1/y… |
 | 2 | https://arxiv.org/abs/1406.6307v1 | arXiv:1406.6307v1 | \| Number Theory (math.NT) \| MSC classes: \| 11D68 (Primary) 11N35 (Secondary) \| Cite as: \| [arXiv:1406.6307][5] [math.NT] \| \| (or [arXiv:1406.6307v1][6] [math.NT] for this version) \| \|… |
 | 2 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A073101 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A073101 - OEIS] [3] A073101 Number of integer solutions (x,y,z) to 4/n = 1/x + 1/y +… |
 | 2 | https://github.com/teorth/erdosproblems/blob/main/README.md#table | Erdős problem database | (On a Diophantine equation), Mat. Lapok, 1:192-210, 1050. Math. Rev. 13:208b. Erdős problems database contributors, [Erdős problem database][26], see no. 242. Ron Knott, [Egyptian Fractions][27] Eric… |

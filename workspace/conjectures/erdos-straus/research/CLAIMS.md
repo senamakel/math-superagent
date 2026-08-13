@@ -7,9 +7,14 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `bello-fab-completeness` | The divisor-based parametrisation fab(n,a,b) recovers exactly the decompositions of 1/n with all three denominators divisible by 4 (the m=4/Erdős–Straus case after scaling); all primes p ≡ 1 mod 4 with p < 10^14 are… | yes | asserted | `research/summaries/bello-benito-fernandez-divisor-parametrization.md` |
+| `bhakti-calc-open-classes-100pct` | A guided (k,A)-search finds ESC solutions for all 60,000 tested n = 840·i + m, i = 1..10000, m in {1,121,169,289,361,529} (100% success), and for 92% of the 18,000 massive n = 840·10^i + m; no covering identity is given. | yes | asserted | `research/summaries/bhakti-constructive-algorithm.md` |
+| `bhakti-suzuki-nand-s` | For n = 4s+1 prime, ESC has a solution iff there exist k ≥ 1, A ≥ 1 with (4k−1)A − (s+k) \| A·n·(s+k), in which case x = s+k, y = An, z = An(s+k)/((4k−1)A−(s+k)) (or y,z swapped) solves 4/n = 1/x+1/y+1/z. | yes | asserted | `research/summaries/bhakti-constructive-algorithm.md` |
 | `bradford-2026-covering-open` | Bradford (arXiv:2602.11774) claims an elementary proof of the Erdős–Straus conjecture via two lemmas producing explicit solutions for primes in residue classes modulo M(k,ℓ), but the concluding covering-system claim is… | yes | asserted | `research/summaries/bradford-solution-straus-erdos.md` |
 | `bradford-divisor-counting-open-classes` | For the 66,737 primes p ≡ r (mod 840) with r in {1,121,169,289,361,529} and p ≤ 3.5×10^7, every p has a solution, and f(p) grows with p; Type-1 solutions are about 2.2 times more numerous than Type-2. | yes | asserted | `research/summaries/mihnea-dumitru-verification-1e18.md` |
 | `bradford-two-variable-reduction` | For prime p, the Erdős–Straus equation 4/p = 1/x+1/y+1/z has a solution iff there is x with ⌈p/4⌉ ≤ x ≤ ⌈p/2⌉ and d \| x² with (Type I) d ≡ −px mod (4x−p), or (Type II) d ≤ x and d ≡ −x mod (4x−p); the map from (x,d) to… | yes | asserted | `research/summaries/bradford-elemental-patterns.md` |
+| `browning-elsholtz-f3-bound` | For any ε > 0, f_3(m,n) ≤ C_ε m^ε n^{3/5+ε}, extending Elsholtz–Tao's f(p) ≪ p^{3/5+o(1)} to general m uniformly. | yes | asserted | `research/summaries/browning-elsholtz-representations-unit-fractions.md` |
+| `elsholtz-k-unit-fractions-bound` | For k ≥ 3, m > k fixed, the number of n ≤ N for which m/n is not a sum of k unit fractions is at most N exp(−c_{m,k} (log N)^{1 − 1/(2^{k−1} − 1)}). | yes | asserted | `research/summaries/elsholtz-sums-of-k-unit-fractions.md` |
+| `erdos-1950-original` | Erdős 1950 (Mat. Lapok 1, 192–210) studies integer solutions of 1/x1+...+1/xn = a/b (unit fractions), defines N(a,b) for distinct-denominator minimal length, and discusses Nakayama's results; it is the founding… | yes | asserted | `research/summaries/erdos-1950-original.md` |
 | `mballa-symmetric-density` | For k=4, explicit symmetric solutions (y=z) exist for all n ≡ 0,2,3 (mod 4), and for n ≡ 1 (mod 4) when n has a divisor b ≡ 3 (mod 4); the latter holds for almost all n ≡ 1 (mod 4), so the conjecture is verified by… | yes | asserted | `research/summaries/mballa-unified-parametric.md` |
 | `mordell-covering-840` | Combinations of Mordell's polynomial identities (n ≡ 2 mod 3, 3 mod 4, 2 or 3 mod 5, 3/5/6 mod 7, 5 mod 8) give three-term Egyptian fractions for all n except possibly n ≡ 1,121,169,289,361,529 mod 840; the smallest… | yes | asserted | `research/summaries/wikipedia-erdos-straus.md` |
 | `mordell-nonsquare-necessary` | A polynomial identity giving solutions of 4/n for all n ≡ r mod p can exist only when r is NOT a quadratic residue mod p; hence no complete covering system of single-congruence identities can exist (1 is a square mod… | yes | asserted | `research/summaries/wikipedia-erdos-straus.md` |
@@ -35,9 +40,14 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `bello-fab-completeness` (research/summaries/bello-benito-fernandez-divisor-parametrization.md) — asserted by the source, not proved there and not checked here
+- `bhakti-calc-open-classes-100pct` (research/summaries/bhakti-constructive-algorithm.md) — asserted by the source, not proved there and not checked here
+- `bhakti-suzuki-nand-s` (research/summaries/bhakti-constructive-algorithm.md) — asserted by the source, not proved there and not checked here
 - `bradford-2026-covering-open` (research/summaries/bradford-solution-straus-erdos.md) — asserted by the source, not proved there and not checked here
 - `bradford-divisor-counting-open-classes` (research/summaries/mihnea-dumitru-verification-1e18.md) — asserted by the source, not proved there and not checked here
 - `bradford-two-variable-reduction` (research/summaries/bradford-elemental-patterns.md) — asserted by the source, not proved there and not checked here
+- `browning-elsholtz-f3-bound` (research/summaries/browning-elsholtz-representations-unit-fractions.md) — asserted by the source, not proved there and not checked here
+- `elsholtz-k-unit-fractions-bound` (research/summaries/elsholtz-sums-of-k-unit-fractions.md) — asserted by the source, not proved there and not checked here
+- `erdos-1950-original` (research/summaries/erdos-1950-original.md) — asserted by the source, not proved there and not checked here
 - `mballa-symmetric-density` (research/summaries/mballa-unified-parametric.md) — asserted by the source, not proved there and not checked here
 - `mordell-covering-840` (research/summaries/wikipedia-erdos-straus.md) — asserted by the source, not proved there and not checked here
 - `mordell-nonsquare-necessary` (research/summaries/wikipedia-erdos-straus.md) — asserted by the source, not proved there and not checked here

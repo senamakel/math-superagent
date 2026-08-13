@@ -25,15 +25,26 @@ and no neither-type solution. The literature guarantees:
 - No single Mordell-style modular identity can cover `p ≡ 1 (mod 840)` because
   1 is a quadratic residue mod every modulus (Mordell 1967; Wikipedia
   "Nonexistence of identities").
+- **The precise polynomial obstruction (Schinzel 2000, Theorem 1)**: if
+  `(a,b)=1` and `b` is a quadratic residue mod `a`, then there are **no**
+  polynomials `F1,F2,F3 ∈ Z[x]` with positive leading coefficients satisfying
+  `4/(ax+b) = 1/F1(x) + 1/F2(x) + 1/F3(x)`. With `a = 840`, `b` one of the six
+  open residues — each a square mod 840 — this rules out **any single
+  polynomial identity of the standard shape** covering an open class. (Full
+  text: `research/sources/schinzel-three-unit-fractions.full.md`.)
 - The seven constant-coefficient modular equations are **exhaustive** for
   degree-1 prime polynomials (Salez 2014), so any new family must be a
   genuinely new type, not one of the seven shapes.
 
 ## Current verification bound
 
-- `n <= 10^17` (Salez 2014, arXiv:1406.6307).
-- erdosproblems.com #242 cites a newer `n <= 10^18` bound as [MiDu25]
-  (unverified here — flag before relying on it).
+- `n <= 10^18` (Mihnea & Dumitru, arXiv:2509.00128, 2025 — the [MiDu25]
+  citation from erdosproblems #242, now verified from the primary source).
+  They extend Salez's modular-filter sieve with the S_29 filter, checking a
+  residual set R_8 (2,101,514 classes) modulo G_8 = 25,878,772,920.
+- Historical chain (all in library): Straus ≤5000 (1950) → ... → Swett 10^14
+  (1999, now on disk via Wayback) → 2×10^14 (2012) → Salez 10^17 (2014) →
+  Mihnea–Dumitru 10^18 (2025).
 - Oracle should reproduce the Type-I/II + existence logic on small `n` before
   any computation beyond that bound is trusted (see
   `code/verify_library_claims.py`).

@@ -1,0 +1,44 @@
+total exceptions: 56
+k  r      n       e  e' d  target gens
+3   1    2521    5  2  11 10 gens=[2, 3] reachable_u<=nx=False
+3   1    2521    5  4  19 10 gens=[5, 13] reachable_u<=nx=False
+37  1    31081   3  2  11 2  gens=[3, 6] reachable_u<=nx=False
+119 1    99961   7  4  19 18 gens=[2, 5] reachable_u<=nx=False
+124 1    104161  5  2  11 10 gens=[2, 3] reachable_u<=nx=False
+124 1    104161  5  4  19 12 gens=[3, 5] reachable_u<=nx=False
+211 1    177241  5  4  19 13 gens=[3, 5, 9] reachable_u<=nx=False
+234 1    196561  6  2  11 10 gens=[2, 3] reachable_u<=nx=False
+279 1    234361  4  2  11 2  gens=[3, 6] reachable_u<=nx=False
+288 1    241921  5  4  19 10 gens=[5, 13] reachable_u<=nx=False
+355 1    298201  4  2  11 10 gens=[2, 3] reachable_u<=nx=False
+387 1    325081  5  4  19 13 gens=[2, 5, 10] reachable_u<=nx=False
+17  121  14401   4  2  11 10 gens=[2, 3] reachable_u<=nx=False
+72  121  60601   4  2  11 10 gens=[2, 3] reachable_u<=nx=False
+83  121  69841   3  2  11 10 gens=[1, 2, 3] reachable_u<=nx=False
+104 121  87481   7  6  27 20 gens=[1, 5, 23] reachable_u<=nx=False
+168 121  141241  4  2  11 8  gens=[1, 2, 3, 6] reachable_u<=nx=False
+183 121  153841  5  2  11 2  gens=[3, 6] reachable_u<=nx=False
+260 121  218521  3  2  11 2  gens=[3, 6] reachable_u<=nx=False
+293 121  246241  9  2  11 2  gens=[3, 6] reachable_u<=nx=False
+293 121  246241  9  6  27 20 gens=[1, 2, 4, 11] reachable_u<=nx=False
+293 121  246241  9  7  31 15 gens=[2, 6, 8, 13] reachable_u<=nx=False
+314 121  263881  4  2  11 10 gens=[2, 3] reachable_u<=nx=False
+25  169  21169   7  4  19 12 gens=[3, 15] reachable_u<=nx=False
+37  169  31249   5  4  19 10 gens=[8, 13] reachable_u<=nx=False
+77  169  64849   5  4  19 18 gens=[2, 10] reachable_u<=nx=False
+80  169  67369   7  4  19 8  gens=[3, 14, 17] reachable_u<=nx=False
+80  169  67369   7  6  27 23 gens=[2, 4, 7] reachable_u<=nx=False
+132 169  111049  5  4  19 10 gens=[8, 13] reachable_u<=nx=False
+178 169  149689  5  4  19 2  gens=[7, 10, 13] reachable_u<=nx=False
+261 169  219409  7  6  27 8  gens=[2, 7, 17] reachable_u<=nx=False
+88  289  74209   5  4  19 8  gens=[7, 11, 13, 14] reachable_u<=nx=False
+413 289  347209  6  4  19 12 gens=[3, 7, 13] reachable_u<=nx=False
+446 289  374929  5  4  19 18 gens=[2, 7, 13] reachable_u<=nx=False
+1   361  1201    5  2  11 10 gens=[2, 3] reachable_u<=nx=False
+34  361  28921   5  2  11 10 gens=[2, 3] reachable_u<=nx=False
+34  361  28921   5  4  19 12 gens=[3, 5] reachable_u<=nx=False
+112 361  94441   6  2  11 2  gens=[1, 3, 6] reachable_u<=nx=False
+141 361  118801  14  4  19 10 gens=[1, 5, 13] reachable_u<=nx=False
+141 361  118801  14  9  39 17 gens=[2, 5, 7] reachable_u<=nx=False
+Counter({361: 18, 1: 12, 121: 11, 169: 8, 529: 4, 289: 3})
+Counter({5: 26, 4: 9, 7: 6, 3: 5, 6: 4, 9: 3, 14: 3})

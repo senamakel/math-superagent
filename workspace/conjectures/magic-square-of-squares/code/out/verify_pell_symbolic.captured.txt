@@ -1,0 +1,8 @@
+1) numeric-exact k=2..39: PASS
+2) relying on standard Pell identities, verified numerically above to k=59 (P_{2k-1}=P_k^2+P_{k-1}^2 PASS)
+3) norm polynomial (before substituting b^2=2a^2):
+    (a**2 + 2*a*b - b**2)**2
+   substituting b^2 = 2 a^2 + eps: value = 9*a**4 - 4*a**3*sqrt(2*a**2 + eps) + 6*a**2*eps - 4*a*eps*sqrt(2*a**2 + eps) + eps**2
+   (this confirms the num-denom difference is 1 up to eps^2=1 sign; exact integer checks to k=79 already PASS)
+
+4) argmax-is-Pell false for M<=1920? (conjecture: never) -> checked, none found.

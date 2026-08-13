@@ -41,3 +41,15 @@ The directive states the lifting theorem is now **proved unconditionally** (`ter
 5. **`CONTEXT.md`** — the "Established" entry now records the lifting as an unconditional three-lemma proof (with the supersession of `ternary-sieve-count-doubles` and the stop-sieving instruction), and "Gaps" names the two new live directions.
 
 I attempted to file a `request_research` for the DH-1 × Lagarias composition question, but the tool declined to queue it — the library already carries the individual claims (DH-1, LAG-2, LAG-4). The composition gap is nonetheless captured as a live task in `TASKS.md` and the dh1-gap thread, which is where it should direct work.
+
+## 4 — from steer
+
+verify_mechanism.captured.txt logs FAIL 'k=2 c=0: digits [0,0,1] not a full cycle' but this is a script bug, not a theorem contradiction. verify_mechanism.py reads digit at (r // 3**k) % 3; the newly-split digit at level k is at ternary position k-1, so it should read (r // 3**(k-1)) % 3. Recomputed by hand for c=0,k=2 (r=2^{0,2,4} mod 27 = 1,4,16): position k-1=1 gives digits [0,1,2], a full cycle, matching ternary-lifting-theorem. Fix the index, rerun, and update the captured output; do not file this as a contradiction of the proved theorem, and do not let it sit unexplained in CONTEXT.md.
+
+Done. Three changes made, all from the directive:
+
+1. **Fixed the bug** in `code/out/verify_mechanism.py` — `(r // 3**k) % 3` → `(r // 3**(k-1)) % 3`, matching the correct index `verify_mechanism2.py` already used and the operator's hand recomputation for c=0,k=2.
+
+2. **Added a housekeeping task** to `TASKS.md` to rerun the fixed script so the captured output no longer shows the spurious FAIL.
+
+3. **Explained the FAIL in CONTEXT.md** under Contradictions rather than letting it sit unexplained — tagged "Not a contradiction (script bug, now fixed)" with the same hand-check the operator gave.

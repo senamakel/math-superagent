@@ -4,7 +4,15 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[regeneration]] | Why does a fresh {0,2} block always reappear before the current one is exhausted by erosion? | open | \|, -, Reduction, proved, (A_k(1), ∈, {0, 2}, ⇔, conjecture), checked, to, depth, 599, -, Block, profiles, computed, to, depth, 1000, (code/out/blocks_depth1000.json), -, Erosion, bound:, b(k+1), ≥, b(k), -, 1, (a, block, loses, at, most, 1, per, row), -, Odlyzko's, lemma, (consumption):, a, block, of, length, n, protects, ~n/2, rows, -, 60, regeneration, events, (b, diff, ≥, 0), in, 999, transitions;, max, single-erosion, run, =, 838 | \| 1. Characterize the intruder (first non-{0,2} value past the block) — 59.6% are 4, all are 0 or 2 mod 4 2. What must happen in the row below for a block to… |
+
+## Resting on nothing recorded
+
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[regeneration]] rests on `|`, `-`, `Reduction`, `proved`, `(A_k(1)`, `∈`, `{0`, `2}`, `⇔`, `conjecture)`, `checked`, `to`, `depth`, `599`, `-`, `Block`, `profiles`, `computed`, `to`, `depth`, `1000`, `(code/out/blocks_depth1000.json)`, `-`, `Erosion`, `bound:`, `b(k+1)`, `≥`, `b(k)`, `-`, `1`, `(a`, `block`, `loses`, `at`, `most`, `1`, `per`, `row)`, `-`, `Odlyzko's`, `lemma`, `(consumption):`, `a`, `block`, `of`, `length`, `n`, `protects`, `~n/2`, `rows`, `-`, `60`, `regeneration`, `events`, `(b`, `diff`, `≥`, `0)`, `in`, `999`, `transitions;`, `max`, `single-erosion`, `run`, `=`, `838`, which no claim block on disk establishes
 
 ## Threads that could not be read
 

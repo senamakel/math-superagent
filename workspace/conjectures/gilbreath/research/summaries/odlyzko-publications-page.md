@@ -1,24 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/odlyzko-publications-page.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Odlyzko publications page — bibliography only, no content statements
 
-<!-- source: https://www-users.cse.umn.edu/~odlyzko/doc/old/cnt.html | converted from HTML -->
+Source: https://www-users.cse.umn.edu/~odlyzko/doc/old/cnt.html (converted from
+HTML). Full text: [[odlyzko-publications-page.full]].
 
-## What is in it
+## What it establishes
 
-  - Andrew Odlyzko: Papers on Computational Number Theory
+Nothing usable for this run. It is a bibliography page listing Andrew Odlyzko's
+computational number theory papers with links. The only row relevant to
+Gilbreath:
 
+> **Iterated absolute values of differences of consecutive primes**, A. M.
+> Odlyzko, *Math. Comp.* 61 (1993), pp. 373-380. \[PostScript/PDF/LaTeX links\].
 
-## What it claims
+This confirms the paper exists and its pagination/citation, matching the
+journal row already cited by encyclopedia-of-math and OEIS A036262. It contains
+**no** statement of the block lemma, no verification depth, no proof content.
 
-- **Jumping champions**, A. Odlyzko, M. Rubinstein, and M. Wolf, *Experimental Math.*, 8 (no. 2) (1999), pp. 107-118. [[PostScript, 2 MB]][13] [[gzip'd PostScript, 400 KB]][14] [[PDF, 2 MB]][15] [[LaTeX]][16]
+## What it does not settle
 
-- **A nonlinear equation and its application to nearest neighbor spacings for zeros of the zeta function and eigenvalues of random matrices**, P. J. Forrester and A. M. Odlyzko, in *Organic Mathematics*, J. Borwein, P. Borwein, L. Jorgenson, and R. Corless, eds., Amer. Math. Soc. 1997, pp. 239-250. Electronic version available at http://www.cecm.sfu.ca/projects/OMP/. [[PostScript]][17] [[PDF]][18] [[LaTeX]][19] A condensed version, **GUE eigenvalues and Riemann zeta function zeros: A non-linear equation for a new statistic**has appeared in *Phys. Rev. E*54 (1996), pp. R4493-R4495. [[PostScript]][20] [[PDF]][21] [[LaTeX]][22]
+The Odlyzko 1993 block lemma (a `{0,2}` block of length `n` protecting `≈ n/2`
+rows) is **not** given here — only that the paper exists. The exact statement
+and its constant remain a pending dependency (`odlyzko-block-lemma-asserted`,
+`holds-here: unchecked`). Do not cite this page for anything beyond the
+existence/citation of the paper.
 
-- **The future of integer factorization**, A. M. Odlyzko, *CryptoBytes (The technical newsletter of RSA Laboratories)*1 (no. 2) (1995), pp. 5-12. [[PostScript]][23] [[PDF]][24] [[LaTeX]][25]
+```claim
+id: odlyzko-1993-citation-confirmed
+statement: Odlyzko's paper "Iterated absolute values of differences of consecutive primes" exists as Math. Comp. 61 (1993) 373-380, per the author's own bibliography page.
+hypotheses: the bibliography page is the author's own publication list.
+holds-here: yes
+status: sourced (bibliography listing)
+bearing: confirms the primary source for the block lemma exists and its citation; says nothing about the lemma's content.
+anchor: research/sources/odlyzko-publications-page.full.md
+answers: does-the-odlyzko-1993-paper-exist
+```
 
-- **Discrete logarithms and smooth polynomials**, A. M.…
+## Verdict
 
--…
-
--…
-
-*[digest of a 10896 character source; every section, statement, and proof in full at `research/sources/odlyzko-publications-page.full.md`]*
+**No help for content.** It is one bibliography page; the only value is pinning
+the Odlyzko 1993 citation so a later fetch can target the exact paper. The
+block-lemma gap stands open.

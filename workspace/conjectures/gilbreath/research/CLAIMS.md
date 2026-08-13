@@ -6,12 +6,32 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `anti-gilbreath-construction` | (Eppstein 2011) For any unbounded monotone f(n) ≥ 2, however slowly growing, there is a sequence X whose n-th gap is ≤ f(n) but whose triangle's right edge switches between 1 and other values infinitely often. | yes | asserted | `research/notes/library-state.md` |
 | `block-profile-equals-a000232-minus-1` | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of terms before the first term > 2 in the (k)-th difference, minus 1). | yes | catalogued | `research/ROOT.md` |
+| `cht-inverse-theorem` | (Chase–Hunter–Tao 2026, Theorem 1.6) If a_n ≤ 2^M, no 0-block of length L, and no {0,d}-block with 2^{M−m}<d≤2^{M−m+1} of length ≥ R_m−3R_{m−1} at depth ≤ 2R_{m−1} (R_m ≥ 4R_{m−1}, R_0 ≥ 100L·8^M), then a^{(N−1,1)} ∈… | **unchecked** | asserted | `research/notes/library-state.md` |
+| `cht-random-analogue` | (Theorem 1.3) If a_1,a_2,... are independent non-negative integer random variables with (i) a_n ≤ δn eventually (a.s.) and (ii) P(a_n∈A) ≤ 1−ε for every 2-separated set A eventually, then a.s. the left diagonal is… | **unchecked** | asserted | `research/notes/library-state.md` |
+| `gc-block-lemma-odlyzko` | If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for all K ≤ k ≤ N+K−1. So a leading {0,2} block of length N protects N subsequent rows, not n/2. | yes | asserted | `research/notes/library-state.md` |
 | `gilbreath-reduces-to-second-in-02` | The shape (odd, even, even, ...) is preserved by the absolute-difference operator on the prime rows, and A_k(0)=1 for all k>=1 iff A_k(1) in {0,2} for all k>=1. Hence Gilbreath's conjecture is equivalent to "the second… | yes | proved | `research/notes/reduction.md` |
+| `mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4), because d_k(n) is even there. | yes | asserted | `research/notes/library-state.md` |
+| `odlyzko-1993-citation-confirmed` | Odlyzko's paper "Iterated absolute values of differences of consecutive primes" exists as Math. Comp. 61 (1993) 373-380, per the author's own bibliography page. | yes | asserted | `research/summaries/odlyzko-publications-page.md` |
 | `odlyzko-block-lemma-asserted` | A {0,2} block of length n at the start of a row protects approximately n/2 subsequent rows' first entries, which then all begin with 1; the block degrades at ~the rate it shortens. | **unchecked** | asserted | `research/notes/reduction.md` |
+| `oeis-miss-A000232-minus-1` | The run's leading-{0,2}-block lengths at row k (k=1..40: 2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,...) equal OEIS A000232(k) − 1 exactly (A000232 is "one less than the position of the first number… | yes | checked | `research/notes/library-state.md` |
+| `proth-myth-retracted` | The widespread claim "Proth (1878) claimed to prove Gilbreath's conjecture and his proof was wrong" is unsupported and was retracted by its originator H.C. Williams ("On rereading his actual paper...I can find no… | yes | asserted | `research/notes/library-state.md` |
 | `reduction-checked-against-full-rows` | R1 (row k>=1 has shape (odd, even, even, ...)) and R2 (A_{k+1}(0)==1 iff A_k(1) in {0,2}) hold for every k in 1..599 on the sieve-to-400000 triangle (33,860 primes), not merely on the first-12-entry witness slices. | yes | checked | `research/notes/check_reduction_operator.md` |
 | `reduction-checked-against-full-rows` | R1 (row k>=1 has shape (odd, even, even, ...)) and R2 (A_{k+1}(0)==1 iff A_k(1) in {0,2}) hold for every k in 1..599 on the sieve-to-400000 triangle (33,860 primes), not merely on the first-12-entry witness slices. | yes | checked | `research/notes/reduction.md` |
 | `second-entry-4-kills` | If A_k(1) = 4 (or any even value >= 4) for some k>=1, then A_{k+1}(0) = \|1 - A_k(1)\| >= 3 and Gilbreath's conjecture fails at that row. | yes | proved | `research/notes/reduction.md` |
+| `verification-bounds` | Gilbreath's conjecture verified for the first 63,419 primes (Killgrove–Ralston 1959, SWAC, primes < 792,722) and for all primes < 10^13 (Odlyzko 1993, k ≤ π(10^13) ≈ 3.4×10^11). | yes | asserted | `research/notes/library-state.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `anti-gilbreath-construction` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `gc-block-lemma-odlyzko` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `odlyzko-1993-citation-confirmed` (research/summaries/odlyzko-publications-page.md) — asserted by the source, not proved there and not checked here
+- `proth-myth-retracted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `verification-bounds` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
 

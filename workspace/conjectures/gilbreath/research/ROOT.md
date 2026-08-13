@@ -72,9 +72,19 @@ repeatedly.
 
 **Not settled (open goals)**: the general class "2 followed by odd numbers with
 gaps bounded by `g`", and the regeneration claim that the `{0,2}` regime is
-entered infinitely often. Odlyzko's block lemma (a `{0,2}` block of length `n`
-protects `≈ n/2` rows) is an **asserted lead, not yet sourced or re-derived**
-— see `notes/reduction.md`.
+entered infinitely often.
+
+Odlyzko's block lemma is now **sourced with its exact constant**: if
+`d_K(1)=1` and `d_K(n) ∈ {0,2}` for `1 ≤ n ≤ N`, then `d_k(1)=1` for
+`K ≤ k ≤ N+K−1` — a leading `{0,2}` block of length `N` protects **`N`
+subsequent rows** (one per block entry), not `≈ n/2`. Primary source: Odlyzko
+1993, *Iterated absolute values of differences of consecutive primes*, Math.
+Comp. 61(203) 373–380, intro (full LaTeX at
+`sources/odlyzko-1993-iterated-differences-latex-source.full.md`); independently
+stated in Killgrove–Ralston 1959, Math. Comp. 13:121–122 (full PDF at
+`sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md`).
+Sourced, not yet re-derived here — see `notes/library-state.md` claim
+`gc-block-lemma-odlyzko`.
 
 ```claim
 id: block-profile-equals-a000232-minus-1

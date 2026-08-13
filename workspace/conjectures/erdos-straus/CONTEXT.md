@@ -26,10 +26,14 @@ sourced facts, not checked claims — the ledger must be built from them.
   (checked, `code/out/commands.log`, also by `solves_fraction` independent
   route). `parallel.py` self-check passes on 26 workers of 28 CPUs (checked).
   Use `oracle.py`s `solves`/`is_identity` as ground truth; do not rebuild.
-- **Even case is settled:** `4/(2m)=1/m+1/(2m)+1/(2m)`, verified m=1..49
-  (checked). Prime reduction (`4/p` solvable ⇒ `4/(mp)` by scaling) is
-  standard; the prior `oracle.py` demo of it encoded the wrong identity and
-  FAILed for that reason — see `research/approaches/oracle-findings.md`.
+- **Even case is settled (checked):** `4/(2m)=1/m+1/(2m)+1/(2m)`, verified
+  m=1..5000 (`code/out/verify_elementary_reductions.py`).
+- **Prime reduction is still `asserted`, not `checked`.** The scaling argument
+  `f(nm) ≥ f(n)` (a solution for p lifts to one for every multiple mp by
+  `(x,y,z)↦(mx,my,mz)`) has not yet been run through code here; it is the top
+  open task in TASKS.md. Do not cite it as checked until the program and
+  capture exist. (The prior `oracle.py` demo of it encoded the wrong identity
+  and FAILed for that reason — see `research/approaches/oracle-findings.md`.)
 - **Six open classes verified by computation** (checked,
   `verify_library_claims.py` Claim 2, which is sound in this part): the five
   Mordell-shape covering conditions (≡2 mod 3, ≡3 mod 4, ≡2/3 mod 5,

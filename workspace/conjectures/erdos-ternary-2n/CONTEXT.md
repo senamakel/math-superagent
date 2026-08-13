@@ -92,6 +92,12 @@ existing method stalls.
   `2 X^{log_3 2}` (proved) differ in constant; both have exponent `log_3 2 < 1`
   and neither contradicts the exact `2^(k-1)` sieve count. The primary Narkiewicz
   source (constant/method) is still missing from the library.
+- **Not a contradiction (script bug, now fixed):** `code/out/verify_mechanism.captured.txt`
+  logged `FAIL k=2 c=0: digits [0,0,1] not a full cycle`. That is an off-by-one
+  in the digit index — the script read `(r // 3**k) % 3` (position k, the *next*
+  digit) where it should read `(r // 3**(k-1)) % 3` (position k-1, the
+  *newly-split* digit). `verify_mechanism2.py` uses the correct index and passes
+  k=2..14. The lifting theorem is unaffected.
 
 ## Gaps
 

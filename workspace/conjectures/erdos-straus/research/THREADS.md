@@ -4,7 +4,9 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[elementary-reductions]] | Is the chain "any counterexample ⇒ some odd prime p ≡ 1 (mod 24)" verified here by computation, with every ingredient `checked` rather than `sourced`? | open | n-even-trivial, n-3mod4-covering-corrected, naive-3mod4-identity-is-wrong, prime-reduction, reduction-mod24 | write a program proving the scaling lift `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in exact arithmetic, capture it, and flip `prime-reduction` to… |
 
 ## Threads that could not be read
 

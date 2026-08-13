@@ -143,3 +143,19 @@ Your ledger is drifting toward assertion. Since the last check claims went 57 to
 Two sentences of report:
 
 **What I changed and why.** Directives 12 and 13 together name five blocking tasks, none of which existed in TASKS.md in the right form. I rewrote the `BLOCKING` section with them in priority order: the conditional-result claim (the deliverable the run does not yet have), the HMS-constant-bound attack (turning "C is large" into a precise obstruction), `verify_pell_symbolic.py` (still unrun after three directives), and the `magic-variety-is-surface-no-lines` direct check (the one asserted claim directive 13 picked to make checked). I added `hms-constant-bound` to REQUESTS.md because `exact-reduction-magic-507c` was RESOLVED and the run was running without a stated gap — the tool refused to queue it as a research request because the library already carries the relevant claims, but it now sits in REQUESTS.md as a row the operator and the scholar can see. I updated CONTEXT.md's Gaps and Approach statuses to reflect the new blocking structure and to stop saying `freys-curve-four-q-isogenies` et al. were "parked" when they have been refuted at literature-check. No programs were run and no mathematics was computed — the roles that do that are already dispatched.
+
+## 14 — from steer
+
+captured output stuck at 31 while code files reached 64. Run these unrun programs and capture: for f in code/phi_triple_variety/{side_census,no_triple_fast,ratio_search,prefilter_census,verify_prefilter,verify_triple_square,verify_two_side_equiv}.py; do timeout 540 python3 $f 2>&1 | tee code/out/$(basename $f).captured.txt; echo EXIT_CODE=$?; done. These test the hypothesis in side_census.py (1+(q1+q2) never a rational square) — a real result if it holds, an asserted-only claim until run. Also: frontier is 429 candidates with 359 unworked and exa_search still climbing (83) — stop searching and start extracting claims from what is already fetched before adding more sources.
+
+Done. My report:
+
+**What I changed and why.**
+
+1. **TASKS.md** — added two blocking tasks ahead of the existing queue: run the seven unexecuted `code/phi_triple_variety/` programs with the directive's exact `timeout 540 ... | tee ... .captured.txt; echo EXIT_CODE=$?` command, and halt all source gathering in favour of claim-extraction from already-fetched sources. This is the whole operational content of directive 14 — the run's next action must be executing those seven programs, not opening another approach or downloading more.
+
+2. **CONTEXT.md** — added the hypothesis the seven programs test (`1+(q1+q2)` never a rational square for `q1>q2` in Φ with `q1+q2<1`) to the Φ section, explicitly flagged `asserted/conjectured — no captured output on disk yet`, so no downstream role mistakes it for an established result until it is run and read. Added a "Search halted (directive 14)" line so the frontier's 429 candidates with 359 unworked stop attracting work.
+
+3. **research/threads/four-ap-additive-triple.md** — recorded the hypothesis and the seven-program test in the live structural-frontier thread where it belongs, since the hypothesis is a strengthening of the no-triple conjecture, not a new direction.
+
+I did **not** open a new thread (this belongs to the existing `four-ap-additive-triple` thread), did **not** file a research request (the directive names no external gap — it is a computation the run can perform itself), and did not compute anything — the command sits verbatim in TASKS.md for the executor role.

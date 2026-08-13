@@ -383,6 +383,4 @@ the Established section.
   realising one more.
 - **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
   paper is now 78KB; the auto-generated summary still needs proper scholar
-  digestion.ull
-  paper is now 78KB; the auto-generated summary still needs proper scholar
   digestion.

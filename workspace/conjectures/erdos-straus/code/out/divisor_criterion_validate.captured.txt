@@ -1,0 +1,5 @@
+rows checked: 2705
+criterion holds at minimal e on all rows: 2705/2705  violations: []
+criterion fails for all e'<e: 2705 (violations 0: [])
+brute-force agreement everywhere: 2705/2705  violations: []
+done in 3.8s

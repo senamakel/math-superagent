@@ -4,7 +4,10 @@ Oracle and claims checked:
   0. solves() exact rational check of 4/n = 1/x+1/y+1/z on examples.
   1. Symbolic verification that the classical identity families are genuine:
           4/(3t-1) = 1/t + 1/(3t-1) + 1/(t(3t-1))        [n ≡ 2 mod 3]
-          4/(4t-1) = 1/t + 1/(t(4t-1))  (two terms; third split) [n ≡ 3 mod 4]
+          n=4t-1 (3 mod 4), CORRECTED form (operator, verified k=0..4999):
+             x=t, y=n*t+1, z=y*(y-1):  since 1/y+1/z = 1/(y-1) = 1/(nt),
+             1/x+1/y+1/z = 1/t + 1/(nt) = (n+1)/(nt) = 4/n
+             [the naive x=n,y=(n+1)/2,z=n(n+1)/2 solves 3/n, NOT 4/n]
           4/(8t-3) = 1/(2t) + 1/(t(8t-3)) + 1/(2t(8t-3))  [n ≡ 5 mod 8]
      (The mod 5 and mod 7 families are attested by Mordell/Wikipedia but their
      explicit polynomial forms are not in this run's sources; only the residue
@@ -52,8 +55,11 @@ def ident(name, n_expr, *denoms):
 
 N1 = 3*t - 1            # n ≡ 2 mod 3
 ident("n=3t-1 (2 mod 3): 4/n=1/t+1/n+1/(tn)", N1, t, N1, t*N1)
+# n ≡ 3 mod 4, corrected form.  With n=4t-1: take x = t, y = nt+1, z = y(y-1).
+# Then 1/x + 1/y + 1/z = 1/t + 1/(y-1) = 1/t + 1/(nt) = (n+1)/(nt) = 4/n.
 N2 = 4*t - 1            # n ≡ 3 mod 4
-ident("n=4t-1 (3 mod 4): 4/n=1/t+1/(t(4t-1)) [2-term]", N2, t, t*N2)
+ident("n=4t-1 (3 mod 4), corrected: x=t, y=nt+1, z=y(y-1)",
+      N2, t, N2*t + 1, (N2*t + 1)*(N2*t))
 N3 = 8*t - 3            # n ≡ 5 mod 8
 ident("n=8t-3 (5 mod 8): 4/n=1/(2t)+1/(t n)+1/(2t n)", N3, 2*t, t*N3, 2*t*N3)
 
@@ -110,8 +116,8 @@ def all_solutions(n, bound_factor=6):
     for x in range(n//4+1, bound_factor*n+1):
         r1 = Fraction(4,n) - Fraction(1,x)
         if r1 <= 0: continue
-        # y >= x, and 1/y < r1 so y > 1/r1
-        ymin = max(x, int(1/r1) + (1 % r1 != 0))
+        # y >= x, and 1/y < r1 so y > 1/r1, i.e. y >= floor(1/r1)+1
+        ymin = max(x, int(1/r1) + 1)
         for y in range(ymin, bound_factor*n+1):
             r2 = r1 - Fraction(1,y)
             if r2 <= 0: continue

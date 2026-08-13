@@ -1,61 +1,64 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/kane-combinations2.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Kane 2007 — Improved bounds on representing t as a binomial coefficient
 
-<!-- source: http://cseweb.ucsd.edu/~dakane/combinations2.pdf | converted from PDF -->
+Source: D. M. Kane, Integers 7 (2007) #A53, full text read from
+http://cseweb.ucsd.edu/~dakane/combinations2.pdf [[kane-combinations2]]
 
-## What it claims
+## Result
 
-Let N (t) denote the number of ways of writing t as a binomial coeﬃ-
+`N(t) = O((log t)(log₃t)/(log₂t)³)` — the current **unconditional record** for the
+total number of solutions to `C(n,m)=t`. (Improved Kane 2004's
+`O((log t)(log₃t)/(log₂t)²)` by a factor `log₂t`.)
 
-cient. We show that N (t) = O  (log t)(log log log t)
-(log log t)3  .
+## Method (Section 2)
 
-1 Introduction
+Restrict to `n>2m` (mirror symmetry; at most one solution with `n=2m`). Define `f`
+implicitly by `C(f(m),m)=t`, extended smoothly via the Γ-function (`f(z)` is analytic).
+Then bound the number of integer lattice points `(m,f(m))` on the graph. Kane needs
+derivatives of `f` that are **small but nonzero** (eq (4)):
+`0 < |f^{(k)}(x)/k!| < 2x^{α−k} e^{2α}(log x)^k`, and the Rolle/interpolation Lemma 1:
+if `f−g` (g the interpolating polynomial) has `k+1` integer points then
+`|f^{(k)}(y)/k!| = |A/B(m₁,…,m_{k+1})|` for integer `A` and `B` the LCM of the
+interpolation denominators.
 
-As in [2] we deﬁne
- N (t) = ∣
-∣
-∣
-∣
-{
-(n, m) ∈ Z
-2 : ( n
-m
+**The new ingredient (Prop 2)**: `log B(m₁,…,m_k) = O(S·max(1, log(k² log S/S)))`
+when the `m_i` span an interval of length `S`. Proved by counting primes dividing
+`(m_i−m_j)`, splitting at `S/k` and `S²/k²log S`, using the PNT (Chebyshev `ψ`).
 
-) = t}∣
-∣
-∣
-∣
+## Section 8 — the dead end (IMPORTANT for this run)
 
-to be the number of ways of writing an integer t > 1 as a binomial coeﬃcient.
-N (3003) = 8, and N (t) ≥ 6 for inﬁnitely many t, but essentially no other
-lower bounds on N (t) are known. Singmaster conjectured in [2] that N (t) =
-O(1). Although no one has yet managed to achieve this bound (or even gotten
-particularly close), there has been some work on bounding the size of N (t)
-(see [1, 2, 3]). The record was that N (t) = O ( (log t)(log log log t)
-(log log t)2 ) proved by the
-author in [1]. Using a reﬁnement of this argument we improve this bound by a
-factor of log log t.
+Kane states his technique **cannot be improved much further**:
 
-2 Overview of Our Technique
+- Randomized construction of `m_i` gives `log B = Ω(k²(1+log(S/k²)))` for `S>k²`,
+  else `Ω(S)`.
+- Therefore the inverse density of solutions is at best `O(log₂t)`; and since there
+  are `Θ((log t)/(log₂t)²)` values of `m` in the relevant range, **this method alone
+  cannot exclude as many as `O((log t)/(log₂t)³)` solutions** — exactly the size of
+  the bound it proves.
 
-We recall the basics of the argument from [1]. First we note that it suﬃces to
-consider only solutions of the form t = ( n
-m
-) where n > 2m, since for any other
-solution (n, m) with n < 2m, we have the solution (n, n − m) with n > 2m
-(there is at most one…
+So Kane's bound is not just unoptimized; the approach is **structurally incapable**
+of reaching a uniform / `O(1)` constant. This is a stronger, citable statement of why
+the log-ratio methods in the record are not the path to Singmaster.
 
-## Statements it makes
+## Bearing
 
-Lemma 1. If F (x) : R → R is an inﬁnitely diﬀerentiable function and if F (x) =
-0 for x = x1, x2, ..., xn+1 (where x1 < x2 < ... < xn+1), then F (n)(y) = 0 for
-some y ∈ (x1, xn+1).
+Confirms the record and, more valuably, documents a proven ceiling on the
+Archimedean/convexity method. Any attempt to "sharpen Kane" to a constant is refuted
+by Section 8's own lower bound on `log B`. Combined with MRSTT's non-Archimedean
+method and its own exp(log^{3/2−ε}P) barrier, this frames the boundary-region gap as
+the place a different idea is needed.
 
-Proposition 2. If mi are integers where the largest and smallest diﬀer by at
-most S,
- log(B(m1, . . . , mk)) = O (S max(1, log ( k2 log S
-S
- ))
-) .
-
-*[digest of a 12618 character source; every section, statement, and proof in full at `research/sources/kane-combinations2.full.md`]*
+```claim
+id: kane-method-ceiling
+statement: Kane 2007 (Integers 7 #A53 §8) proves his own lattice-point method cannot
+  give better than inverse density O(log_2 t): a randomized construction gives
+  log B = Ω(k^2(1+log(S/k^2))) (S>k^2) or Ω(S), so one cannot exclude as many as
+  O((log t)/(log_2 t)^3) solutions by this technique. The record
+  N(t)=O((log t)(log_3 t)/(log_2 t)^3) is thus not just unoptimized but structurally
+  limited.
+hypotheses: none beyond the setup (n>2m; f analytic extension; k,S as in the proof).
+holds-here: yes — bounds the whole Archimedean/convexity approach, this run's record.
+status: asserted (author's own analysis of his method's limits)
+bearing: shuts the door on 'sharpen Kane to a constant'; names why uniform needs a
+  different method.
+anchor: research/summaries/kane-combinations2.md
+```
