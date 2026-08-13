@@ -6,8 +6,12 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `bradford-divisor-counting-open-classes` | For the 66,737 primes p ≡ r (mod 840) with r in {1,121,169,289,361,529} and p ≤ 3.5×10^7, every p has a solution, and f(p) grows with p; Type-1 solutions are about 2.2 times more numerous than Type-2. | yes | asserted | `research/summaries/mihnea-dumitru-verification-1e18.md` |
 | `mordell-covering-840` | Combinations of Mordell's polynomial identities (n ≡ 2 mod 3, 3 mod 4, 2 or 3 mod 5, 3/5/6 mod 7, 5 mod 8) give three-term Egyptian fractions for all n except possibly n ≡ 1,121,169,289,361,529 mod 840; the smallest… | yes | asserted | `research/summaries/wikipedia-erdos-straus.md` |
 | `mordell-nonsquare-necessary` | A polynomial identity giving solutions of 4/n for all n ≡ r mod p can exist only when r is NOT a quadratic residue mod p; hence no complete covering system of single-congruence identities can exist (1 is a square mod… | yes | asserted | `research/summaries/wikipedia-erdos-straus.md` |
+| `n-3mod4-covering-corrected` | For every n=4k+3 (k>=0), setting x=(n+1)/4, y=n(n+1)/4+1, z=y(y-1) gives x,y,z positive integers with 4/n = 1/x + 1/y + 1/z exactly. | yes | checked | `code/out/verify_elementary_reductions.md` |
+| `n-even-trivial` | For every even n=2m (m>=1), 4/n = 1/m + 1/(2m) + 1/(2m) exactly, with m, 2m positive integers. | yes | checked | `code/out/verify_elementary_reductions.md` |
+| `naive-3mod4-identity-is-wrong` | The identity x=n, y=(n+1)/2, z=n(n+1)/2 for n=4k+3 does NOT solve 4/n=1/x+1/y+1/z; it solves 3/n=1/x+1/y+1/z (residual 4/n - 1/x-1/y-1/z = 1/n exactly, nonzero, for every k checked). | yes | checked | `code/out/verify_elementary_reductions.md` |
 | `prime-reduction` | It suffices to prove the Erdős–Straus conjecture for prime n: f(nm) ≥ f(n), so a composite counterexample would have a smaller prime-factor counterexample. | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
 | `reduction-mod24` | By identifying n ≡ −1 mod 3, −1 mod 4, −3 mod 8, it suffices to prove the conjecture for primes p ≡ 1 mod 24; the six residual residues mod 840 {1,121,169,289,361,529} are exactly the intersection of this class with the… | yes | asserted | `research/summaries/salez-erdos-straus-new-modular-pdf.md` |
 | `reduction-mod24` | By identifying n ≡ −1 mod 3, −1 mod 4, −3 mod 8, it suffices to prove the conjecture for primes p ≡ 1 mod 24; the six open residues mod 840 are exactly this slice. | yes | asserted | `research/summaries/salez-seven-modular-equations.md` |
@@ -15,13 +19,16 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `schinzel-thm2-m-greater-3b` | If m > 3b > 0 and a > 0, there are no polynomials F1,F2,F3 in Z[x] with positive leading coefficients satisfying m/(ax+b) = 1/F1+1/F2+1/F3. | no | asserted | `research/summaries/schinzel-three-unit-fractions.md` |
 | `seven-equations-complete` | For p an odd prime, 4/p is 3-Egyptian if and only if one of seven constant-coefficient modular equations (14a,b,c; 15a,b,c,d) holds; this is a COMPLETE set for degree-1 prime polynomials (three new: 14c, 15c, 15d). For… | yes | asserted | `research/summaries/salez-erdos-straus-new-modular-pdf.md` |
 | `seven-equations-complete` | For p an odd prime, 4/p is 3-Egyptian if and only if one of seven constant-coefficient modular equations (14a,b,c; 15a,b,c,d) holds; this is a COMPLETE set for degree-1 prime polynomials. | yes | asserted | `research/summaries/salez-seven-modular-equations.md` |
+| `swett-1e14` | ESC(n) holds for all integers 1 < n <= 10^14 (Swett 1999; sieve over a filter set S(n), n<=1000, plus two lemmas and greedy verification of 3209 residual primes). | yes | asserted | `research/summaries/swett-esc-verification-history.md` |
 | `type-definition` | For odd prime p, every solution to 4/p=1/x+1/y+1/z is Type I (p divides exactly one of x,y,z) or Type II (p divides exactly two), and f(p)=3 f_I(p)+3 f_II(p). | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
 | `vanishing-type12-odd-squares` | For any odd perfect square n, f_I(n)=f_II(n)=0: there is no Type-I and no Type-II solution to 4/n=1/x+1/y+1/z. | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
+| `verification-1e18` | The Erdős–Straus conjecture holds for all n up to 10^18 (Mihnea–Dumitru 2025, extending Salez's modular-filter method with the S_29 filter). | yes | asserted | `research/summaries/mihnea-dumitru-verification-1e18.md` |
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `bradford-divisor-counting-open-classes` (research/summaries/mihnea-dumitru-verification-1e18.md) — asserted by the source, not proved there and not checked here
 - `mordell-covering-840` (research/summaries/wikipedia-erdos-straus.md) — asserted by the source, not proved there and not checked here
 - `mordell-nonsquare-necessary` (research/summaries/wikipedia-erdos-straus.md) — asserted by the source, not proved there and not checked here
 - `prime-reduction` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
@@ -30,5 +37,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `schinzel-thm1-polynomial-obstruction` (research/summaries/schinzel-three-unit-fractions.md) — asserted by the source, not proved there and not checked here
 - `seven-equations-complete` (research/summaries/salez-erdos-straus-new-modular-pdf.md) — asserted by the source, not proved there and not checked here
 - `seven-equations-complete` (research/summaries/salez-seven-modular-equations.md) — asserted by the source, not proved there and not checked here
+- `swett-1e14` (research/summaries/swett-esc-verification-history.md) — asserted by the source, not proved there and not checked here
 - `type-definition` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
 - `vanishing-type12-odd-squares` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
+- `verification-1e18` (research/summaries/mihnea-dumitru-verification-1e18.md) — asserted by the source, not proved there and not checked here

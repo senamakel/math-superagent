@@ -1,0 +1,6 @@
+timeout placeholder
+shape_preserved_(odd,even,even,...)_for_all_k_ge_1: True
+iff_A(k+1,0)==1 <-> A(k,1) in {0,2} over depth-1 rows: True
+first_bad: None
+rows_checked(depth-1): 599
+min_second_in_{0,2} as in witnesses: True

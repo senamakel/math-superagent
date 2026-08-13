@@ -12,6 +12,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `DH-2` | The nested-modulus method with determinate-power lifting solves 3^x = Σ 2^(a_i) (n ≤ 22 distinct) and 2^x = Σ 3^(a_i) (n ≤ 25 distinct) completely, and the computations terminate. | yes | proved | `research/summaries/dimitrov-howe-ar5iv-full.md` |
 | `EP-406` | The Erdős problem (only finitely many 2^n with base-3 digits only 0,1) is open; known solutions exactly {2^0, 2^2, 2^8}; N(x) ≤ 1.62 x^(log_3 2) (Narkiewicz). | yes | asserted | `research/summaries/erdos-problems-b33.md` |
 | `LAG-1` | N_1(X) = #{n ≤ X : ternary of 2^n omits digit 2} satisfies N_1(X) ≤ 1.62 X^{α_0}, α_0 = log_3 2 ≈ 0.63092 (Narkiewicz 1980). | yes | asserted | `research/summaries/lagarias-ar5iv-full.md` |
+| `LAG-1-(see-research/summaries/lagarias-ar5iv-full.md)` | N_1(X) ≤ 1.62 X^{α_0}, α_0 = log_3 2. | yes | asserted | `research/threads/narkiewicz-bound.md` |
 | `LAG-2` | For every nonzero λ ∈ ℤ_3, #{n ≤ X : (λ2^n)_3 omits digit 2} ≤ 2 X^{α_0} for X ≥ 2. | yes | proved | `research/summaries/lagarias-ar5iv-full.md` |
 | `LAG-3` | dim_H E^(1)(ℤ_3) = log_3 2; (1/2)log_3 2 ≤ dim_H E^(2)(ℤ_3) ≤ 1/2; (1/6)log_3 2 ≤ dim_H E^(3)(ℤ_3). Conjecture B: dim_H E(ℤ_3) = 0. | **unchecked** | proved | `research/summaries/lagarias-ar5iv-full.md` |
 | `LAG-4` | The real truncated method uses only the top ~log_3 X digits and the 3-adic method only the bottom ~log_3 X digits of (2^n)_3; neither exploits the middle digits, and combining them is open. | yes | asserted | `research/summaries/lagarias-ar5iv-full.md` |
@@ -24,7 +25,14 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `STOLL-1` | Narkiewicz's method: 2^n mod 3^k, expressed as sum of distinct powers of 3, has exactly 2^{k-1} possible residues among the units; by primitivity of 2 mod 3^k, n lies in only 2^{k-1} residue classes mod 2·3^{k-1};… | yes | asserted | `research/summaries/stoll-erdos-termary-digits-slides.md` |
 | `STOLL-2` | Stewart (1980): for a,b multiplicatively independent, the number of nonzero digits of n in base a plus in base b is ≥ c log n / log log n; applied to (2^n)_3 this gives (count of 1s) + (count of 2s) ≥ c log n / log log… | yes | proved | `research/summaries/stoll-erdos-termary-digits-slides.md` |
 | `STOLL-3` | Kaneko–Stoll (2018): for any finite ternary pattern P, a positive proportion of n have ≥ c_1 log n occurrences of P in (2^n)_3... (their theorem is stated for (m^n)_p generally, p prime, m not a power of p). | yes | proved | `research/summaries/stoll-erdos-termary-digits-slides.md` |
+| `ternary-lifting-theorem` | Let A_k be the residues r mod 2*3^(k-1) whose low k ternary digits of 2^r mod 3^k lie in {0,1}. Then \|A_k\| = 2^(k-1) for every k >= 1. Proof: 2^(2*3^(k-2)) has order 3 mod 3^k, hence equals 1 + c*3^(k-1) with 3 not… | yes | proved | `code/out/lifting_theorem.md` |
 | `ternary-sieve-count-doubles` | Let A_k be the set of residues r mod 2*3^(k-1) for which the low k ternary digits of 2^r mod 3^k all lie in {0,1}. Then \|A_k\| = 2^(k-1) for every k = 1..22, verified exactly by lifting. The density \|A_k\|/(2*3^(k-1)) =… | yes | checked | `code/out/sieve_cannot_close.md` |
+
+## Contradictions
+
+Resolve these before building on either side.
+
+- `ternary-lifting-theorem` (code/out/lifting_theorem.md) contradicts `none` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -32,6 +40,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `EP-406` (research/summaries/erdos-problems-b33.md) — asserted by the source, not proved there and not checked here
 - `LAG-1` (research/summaries/lagarias-ar5iv-full.md) — asserted by the source, not proved there and not checked here
+- `LAG-1-(see-research/summaries/lagarias-ar5iv-full.md)` (research/threads/narkiewicz-bound.md) — asserted by the source, not proved there and not checked here
 - `LAG-4` (research/summaries/lagarias-ar5iv-full.md) — asserted by the source, not proved there and not checked here
 - `SAYE-1` (research/summaries/saye-ar5iv-full.md) — asserted by the source, not proved there and not checked here
 - `STOLL-1` (research/summaries/stoll-erdos-termary-digits-slides.md) — asserted by the source, not proved there and not checked here

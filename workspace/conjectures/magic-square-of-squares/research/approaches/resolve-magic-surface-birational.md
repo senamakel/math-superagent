@@ -1,139 +1,143 @@
 ```approach
 id: resolve-magic-surface-birational
-idea: Resolve the 256 singular points of the magic square surface X ⊂ P⁸
-  (Michaud-Rodgers 2019), intersect with the eight square-entry quadrics to
-  obtain a smooth projective surface S̃ parametrising the full 3×3 MSS, and
-  determine its birational type (Kodaira dimension κ).  Each possible κ
-  carries a specific Diophantine tool never applied to this problem — and
-  the correct tool is determined by a finite exact computation, not by
-  guesswork.
+idea: Resolve the 256 singular points of the magic-square-of-squares variety
+  X ⊂ P⁸ and determine the Kodaira dimension κ of the smooth model X̃.  The
+  answer is a finite, exact, computable structural fact that has never been
+  obtained — and whichever of the four values of κ holds, it points to a
+  specific Diophantine tool, so the computation replaces the 30-year
+  guessing game of "pick a tool and hope the geometry fits" with "read the
+  geometry off and use the tool it dictates".
 
-  This approach is NOT the same as the parked `kodaira-dimension-general-type`
-  candidate, which blithely assumes the affine parametrisation can be
-  compactified in weighted projective space without knowing the singular
-  locus.  Here the singularities are KNOWN: 256 of them, at isolated points
-  of X, from Michaud-Rodgers' 2019 explicit computation of the magic variety
-  (a surface, with no lines, 256 singular points over C).  The resolution of
-  these singularities is well-defined (they are quotient singularities from
-  the S₃ action on the parametrisation — the variety is the GIT quotient of
-  the space of 3×3 matrices by the diagonal torus plus the permutation group
-  of the magic square symmetries).  Once resolved, S̃ is smooth, and the
-  eight square-entry conditions become eight divisors on S̃.  Computing the
-  canonical class of S̃ via adjunction on the blow-up of P⁸ determines κ(S̃).
+  Setup (correct reading of Michaud-Rodgers): coordinates x₀₀,…,x₂₂ on P⁸
+  are the SQUARE ROOTS of the nine entries; the 8 line-sums of the entries
+  xᵢⱼ² are equal, giving 7 independent homogeneous QUADRATIC equations.  The
+  zero set X is a surface (Hilbert polynomial degree 2), with 256 singular
+  points over C (each with three zero coordinates), and contains no lines.
+  So X already parametrises ALL magic squares whose entries are squares —
+  there are no extra square conditions to impose; the coordinate change
+  absorbs them.  The MSS problem over Q is: does X(Q) contain a point with
+  no zero coordinate whose nine values xᵢⱼ² are distinct positive integers?
+  (Positivity/distinctness are Zariski-open conditions, so they do not
+  affect the birational type.)
 
-  Cases and their Diophantine consequences:
-  - κ = −∞ (rational/ruled): S̃ is birational to P² or a P¹-bundle; the MSS
-    problem has a rational parametrisation — existence would be proved by
-    writing it down.
-  - κ = 0 (K3, Enriques, abelian): S̃ has trivial canonical bundle; the
-    Brauer-Manin obstruction on S̃ can be computed (S̃ is smooth, unlike the
-    original affine V); this is the one case where integral BM or
-    transcendental BM can actually be evaluated.
-  - κ = 1 (properly elliptic): S̃ fibres over a curve with elliptic fibres;
-    the MSS problem reduces to rational points on the base curve and ranks of
-    the fibres — a descent problem of known type.
-  - κ = 2 (general type): S̃ has ample canonical bundle; Bombieri-Lang
-    (conditional but widely believed for surfaces) implies finiteness of
-    rational points; combined with GFP height bounds, the finite set is
-    effectively computable.
+mechanism: Every previous Diophantine attack treated the MSS as a system of
+  equations and fought its singularities implicitly.  Bremner II (2001)
+  computed the Néron-Severi group of a six-square K3 S (κ=0, S(Q) nonempty);
+  Brauer-Manin on S is dead for that reason.  My own integral-Brauer-Manin
+  proposal was refuted because the nine-square affine V/Z is singular and
+  non-proper — but research's refutation itself named the missing step:
+  "Re-proposing requires first finding a smooth projective model of the MSS
+  variety with a computable Br, which no source provides."  That smooth
+  model is X̃, obtained by resolving the KNOWN 256 singular points of X.
+  The resolution is algorithmic (the singularities come from the S₃ action
+  on the parametrisation, so they are cyclic quotient singularities, type
+  Aₙ/Dₙ, resolved by a standard sequence of blow-ups), not blind.
 
-  The computation of κ(S̃) is a finite exact computation: resolve the 256
-  singularities of X explicitly (they are toric or quotient singularities),
-  blow up P⁸ along the singular locus, take the proper transform of X, and
-  compute the canonical class on the resulting smooth surface.  This is
-  heavier than a Gröbner basis but is algorithmic: the singularities are
-  isolated and their local equations are known (from the S₃-action on the
-  magic subspace).  The payoff is not one conditional result but FOUR — one
-  for each possible κ — and determining WHICH κ holds is itself a structural
-  result about the MSS that has been open for 30 years.
-status: proposed
-mechanism: The approach exploits a structural fact that every previous
-  Diophantine attack on the MSS has ignored: the projective geometry of the
-  bare magic variety X is KNOWN (Michaud-Rodgers 2019), and its
-  singularities are a finite computable set.  All previous approaches
-  (Brauer-Manin, Chabauty, Faltings, GFP uniformity) treat the MSS as a
-  system of Diophantine equations without first understanding the geometry
-  of the solution space.  Computing κ(S̃) fills that gap and then tells
-  you which Diophantine tool to use — the opposite of the usual approach
-  (pick a tool and hope the geometry fits).
+  Then κ(X̃) is decisive, because each case has a tool that has never been
+  correctly applied to the MSS precisely because the smooth model was never
+  built:
+
+  - κ = 2 (general type): K_{X̃} ample.  Bombieri-Lang (conjectural for
+    surfaces over Q, but the standard structural hypothesis) gives finiteness
+    of X̃(Q); the Garcia-Fritz-Pastén height-uniform theorem (this run's
+    `bremner-conjecture-proved`, applies verbatim to the MSS AP by
+    `gfp-2021-theorem-6-1-doubled-points-in-scope`) then bounds the heights
+    of those finitely many points, conditional on a rank bound on the
+    Robertson curve — turning non-existence into a finite, in-principle
+    checkable computation.
+  - κ = 0 (K3/Enriques): X̃ has trivial canonical bundle and is SMOOTH, so
+    Br(X̃)/Br(Q) is computable where Br of the singular affine V was not.
+    This is exactly the obstruction my integral-Brauer-Manin proposal wanted
+    but could not reach; the resolution is the missing step that unblocks it.
+  - κ = 1 (properly elliptic): X̃ fibres over a curve with elliptic fibres;
+    the MSS reduces to base-curve points plus fibre ranks — a descent problem
+    of known type.
+  - κ = −∞ (rational/ruled): X̃ ≅ P² or a P¹-bundle up to birational
+    equivalence; the MSS would admit a rational parametrisation, and
+    existence would be decided by writing it down.
+
+  The result is a genuine partial result in ALL FOUR cases — not "the
+  conjecture follows" but "here is the birational type of the solution
+  space, and therefore the correct next tool" — which is exactly the stated
+  deliverable for an open problem.
+status: adopted
 first-step: |
-  Three concrete moves, in order:
+  Tool_builder can start today.  Three concrete, checkable moves:
 
-  1. **Get the explicit equations of X ⊂ P⁸ from Michaud-Rodgers.**
-     Download or reconstruct the 7 homogeneous line-sum equations defining
-     the magic variety in P⁸ (coordinates are the 9 entries x₀₀, …, x₂₂).
-     This is a surface of degree 6 with 256 ordinary double points
-     (conjectured; verify by checking that the singular locus is 0-dimensional
-     of degree 256).  Write a sympy script that computes the singular locus
-     explicitly — the Jacobian of the 7 equations drops rank at 256 points.
-     Verify against Michaud-Rodgers' count.
+  1. **Reconstruct X and verify the 256 singular points (exact, sympy).**
+     Define P⁸ coordinates x₀₀,…,x₂₂; define the 8 line-sums
+     L_r = Σⱼ xᵢⱼ² (3 rows), L_c (3 columns), L_d, L_a (2 diagonals); set
+     the 7 independent differences L_i − L_0 = 0.  Compute the singular
+     locus: the 7×9 Jacobian of these quadrics must drop rank.  Solve
+     (or confirm by Gröbner/primary decomposition) that the singular locus
+     is 0-dimensional with degree 256, and that each singular point has
+     exactly three zero coordinates.  Michaud-Rodgers is a TALK (claim
+     `magic-variety-is-surface-no-lines`, status: asserted) — this step
+     turns it into a checked claim, and the 256-point count is the first
+     concrete thing the whole approach rests on.
 
-  2. **Intersect with the 8 square-entry quadrics.**
-     The full nine-square surface S (before resolution) is X ∩ V(Q₁,…,Q₈)
-     where Qᵢⱼ = xᵢⱼ − sᵢⱼ² = 0 (the sᵢⱼ are auxiliary variables, eliminated
-     by taking the radical of the ideal).  In practice: substitute the magic
-     parametrisation (c, u, v) into the square conditions aᵢ = sᵢ² and
-     eliminate sᵢ.  This gives a system of polynomial equations in c, u, v.
-     The resulting affine surface V ⊂ A³ is the object whose smooth
-     compactification S̃ we need.  Compute a Gröbner basis for V to determine
-     its dimension (should be 2) and degree.
+  2. **Identify the local singularity type at one singular point.**
+     Linearise the 7 quadrics at a representative singular point (say the
+     one with x₁₂=x₂₁=x₂₂=0 up to symmetry); the tangent cone is a rank-
+     deficient system of quadrics in 3 variables.  Determine the quotient
+     singularity type (cyclic Aₙ or dihedral Dₙ) from the S₃-stabiliser of
+     the point.  This fixes the blow-up recipe for step 3.
 
-  3. **Compute a smooth compactification and its canonical class.**
-     Extend V to a projective surface in weighted projective space (weights
-     determined by the degrees of c, u, v in the parametrisation).
-     Desingularise via blow-ups at the singular points.  Compute K_{S̃} via
-     the adjunction formula K_{S̃} = (K_{ambient} + S̃)|_{S̃} after each blow-up.
-     Determine κ(S̃) = −∞, 0, 1, or 2 by computing the Iitaka dimension of
-     K_{S̃}: if K_{S̃} is not effective → κ = −∞; if mK_{S̃} ∼ 0 for some m →
-     κ = 0; if K_{S̃}·H = 0 for ample H → κ ≤ 1; if K_{S̃}·H > 0 → κ = 2.
+  3. **Resolve and compute K_{X̃}.**
+     Blow up P⁸ along the singular locus, take the proper transform X̃ of X,
+     and compute the canonical class K_{X̃} = (K_{P⁸}(X̃))|_{X̃} by adjunction,
+     tracking the exceptional divisors.  Compute the Iitaka dimension of
+     K_{X̃}: not effective → κ=−∞; mK_{X̃} ∼ 0 for some m → κ=0;
+     K_{X̃}·H = 0 for ample H → κ≤1 (check elliptic fibration); K_{X̃}·H > 0
+     → κ=2.  Report κ(X̃) with the computation that produced it.
 
-  Guard: steps 2 and 3 are heavy symbolic computations and may exceed what
-  sympy can handle in one session.  The fallback is to compute the Kodaira
-  dimension using the known structure of X (step 1) plus the fact that the
-  square-entry conditions are eight quadrics on P⁸ — their intersection with
-  the degree-6 surface X generically gives a finite set, so S is a curve or
-  a finite set modulo the parametrisation.  If S is a curve, compute its
-  genus; if genus 0, the MSS has a rational parametrisation; if genus 1, it's
-  an elliptic curve; if genus ≥ 2, Faltings applies.  This is a strictly
-  simpler computation and may already close the problem.
+  Fallback if the full resolution is too heavy: the eight line-sum-of-squares
+  quadrics on P⁸ already force X to be a surface, and its canonical class
+  can be bounded by resolving only the singularities that are needed for
+  the adjunction computation (isolated quotient singularities contribute
+  only their discrepancy).  If even that is too heavy, a lighter first
+  result is the degree and geometric genus of X̃, which already distinguishes
+  κ=2 (p_g > 1 and growing plurigenera) from κ≤1.
 precedent:
-  - Michaud-Rodgers, "The magic square variety" (Warwick talk, 2019):
-    X ⊂ P⁸ is a surface with 256 singular points and no lines.  This is the
-    ONLY source that establishes the projective geometry of X; all other MSS
-    work treats it as a Diophantine system without studying the solution
-    variety as an algebraic variety.  The run's claim
-    `magic-variety-is-surface-no-lines` captures this.
-  - Bremner II (2001): the K3 surface S for the six-square configuration III;
-    NS(S,Q) of rank 12, S(Q) nonempty.  The nine-square surface S̃ is a
-    subvariety of (a blow-up of) S — the three extra square conditions cut
-    out a 0-dimensional subscheme on S, so S̃ is birational to S but with
-    additional structure at the basepoints.
-  - The GFP theorem (Garcia-Fritz-Pastén 2026, this run claims
-    `bremner-conjecture-proved` and `gfp-2021-theorem-6-1-doubled-points-in-scope`):
-    if κ = 2 (general type) and Bombieri-Lang holds, the set of rational
-    points is finite; the GFP theorem then bounds the height of those
-    finitely many points in terms of the rank of the Robertson curve, giving
-    an effective search bound (conditional on BL + uniform rank bound).
-  - The resolution of quotient singularities is algorithmic (toric methods
-    for cyclic quotient singularities; GIT for reductive quotients).  The
-    256 singularities of X come from the S₃-action on the parametrisation
-    (permuting the magic square's rows and columns) — they are quotient
-    singularities of type A_n or D_n, which are resolved by a well-known
-    sequence of blow-ups.
-  - NOT subsumed by any approach in APPROACHES.md.  The parked
-    `kodaira-dimension-general-type` approach assumes the affine
-    parametrisation can be compactified naively; this approach uses the
-    KNOWN singular locus of X (Michaud-Rodgers) to guide the
-    compactification, making it algorithmic rather than speculative.
-    No other approach studies the solution variety as a projective variety
-    with known singularities.
-speculation: The birational type of S̃ is not known.  If κ = 2, the
-  conditional finiteness result is the strongest partial result available
-  for the MSS (it reduces the problem to a finite search).  If κ ≤ 1, the
-  classification enables a specific Diophantine attack — e.g., if κ = 0 and
-  S̃ is a K3, its Brauer group can be computed (smooth S̃ has a computable
-  Br, unlike the singular affine V).  The risk is that the computation of
-  κ(S̃) is too heavy for the available symbolic tools; the fallback (computing
-  the genus of the curve S obtained by intersecting X with the eight quadrics)
-  is a lighter computation with a similar payoff structure.
+  - Michaud-Rodgers, "Magic Squares of Squares" (Warwick talk, 2019):
+    X ⊂ P⁸ is a surface with 256 singular points over C (three zero
+    coordinates each) and contains no lines.  Claim
+    `magic-variety-is-surface-no-lines`, status asserted (talk-level) — this
+    run must verify it, which is exactly first-step 1.
+  - Bremner II, "On squares of squares II", Acta Arith. 99 (2001) 289-308:
+    the six-square K3 S with NS(S,Q) of rank 12 and S(Q) nonempty (claim
+    `k3-ns-rank-12-not-maximal`); κ(S)=0, so Brauer-Manin on S is vacuous.
+    The nine-square X is a subvariety; X̃ is the object the K3 approach needed
+    but never built.
+  - Colliot-Thélène-Xu (Compositio 145 (2009)) / Browning-Matthiesen
+    (Ann. ENS 50 (2017)): integral Brauer-Manin is computable only for
+    smooth homogeneous spaces / normic hypersurfaces.  This run's refutation
+    of `integral-brauer-manin-nine-square` explicitly names "a smooth
+    projective model of the MSS variety with a computable Br" as the missing
+    prerequisite — which is exactly X̃ in the κ=0 case.
+  - Garcia-Fritz-Pastén (arXiv:2604.04850, 2026) + Dimitrov-Gao-Habegger
+    (Ann. Math. 194 (2021)): uniform Mordell-Lang; height-uniform bounds on
+    APs of x-coordinates (claims `bremner-conjecture-proved`,
+    `gfp-2021-theorem-6-1-doubled-points-in-scope`).  Supplies the
+    effectiveness needed to make the κ=2 (Bombieri-Lang) case a finite
+    search rather than a bare finiteness statement.
+  - Resolution of cyclic quotient singularities: toric/orbifold blow-ups,
+    classical (type Aₙ/Dₙ surface singularities; Reid's chapters in the
+    standard references).  Algorithmic.
+  - NOT subsumed by any approach in APPROACHES.md.  It is the sharpening of
+    the parked `kodaira-dimension-general-type` candidate — which naively
+    homogenises the affine parametrisation without knowing the singular
+    locus — using the KNOWN 256-point singular structure of X.  It is the
+    smooth-model step that the refuted `integral-brauer-manin-nine-square`
+    and `brauer-manin-k3-surface` approaches both lacked.  No source has
+    computed κ(X̃) or resolved X.
+speculation: The birational type κ(X̃) is unknown and is the thing being
+  computed — that is the point.  The claim that the 256 singularities are
+  cyclic quotient singularities from the S₃ action is a hypothesis to verify
+  in first-step 2.  The Bombieri-Lang step in the κ=2 case is conditional
+  (BL is open for surfaces over Q), and the GFP effectiveness step is
+  conditional on a uniform rank bound; both conditionals are labelled as
+  such and the computation of κ(X̃) itself is unconditional.  The risk is
+  that steps 2-3 exceed sympy's capacity; the fallback (degree and geometric
+  genus of X̃) is a lighter computation with the same κ=2-vs-κ≤1 dichotomy.
 ```
