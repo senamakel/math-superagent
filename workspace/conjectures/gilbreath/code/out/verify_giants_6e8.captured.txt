@@ -57,24 +57,24 @@ parity of genuine giants (0-based rows): even=14, odd=1 -> odd rows [161]
     exact identity (recharge law): b_land[i+1] = b_land[i] - gap[i] + sum_{events in window}(j_e+1),
       window = pre-jump rows [rows[i], rows[i+1]-1]; the giant's own event contributes j[i+1]+1,
       so requested equality holds iff (1 + sum_other(j_e+1)) == 0, which is impossible (j_e >= 1).
-    i= 0 rows 34->56 gap=22 j[i+1]=     1739 req_ok=n  exact_ok=n  events in window=4 (own giant + 3 other)  sum(j_e+1)=3782  diff vs j[i+1]+1 = 2042
-    i= 1 rows 56->64 gap= 8 j[i+1]=    17326 req_ok=n  exact_ok=n  events in window=2 (own giant + 1 other)  sum(j_e+1)=17329  diff vs j[i+1]+1 = 2
+    i= 0 rows 34->56 gap=22 j[i+1]=     1739 req_ok=n  exact_ok=Y  events in window=7 (own giant + 6 other)  sum(j_e+1)=3785  diff vs j[i+1]+1 = 2045
+    i= 1 rows 56->64 gap= 8 j[i+1]=    17326 req_ok=n  exact_ok=Y  events in window=4 (own giant + 3 other)  sum(j_e+1)=17331  diff vs j[i+1]+1 = 4
     i= 2 rows 64->68 gap= 4 j[i+1]=     8237 req_ok=n  exact_ok=Y  events in window=1 (own giant + 0 other)  sum(j_e+1)=8238  diff vs j[i+1]+1 = 0
-    i= 3 rows 68->94 gap=26 j[i+1]=    61088 req_ok=n  exact_ok=n  events in window=6 (own giant + 5 other)  sum(j_e+1)=61145  diff vs j[i+1]+1 = 56
+    i= 3 rows 68->94 gap=26 j[i+1]=    61088 req_ok=n  exact_ok=Y  events in window=8 (own giant + 7 other)  sum(j_e+1)=61147  diff vs j[i+1]+1 = 58
     i= 4 rows 94->96 gap= 2 j[i+1]=    11354 req_ok=n  exact_ok=Y  events in window=1 (own giant + 0 other)  sum(j_e+1)=11355  diff vs j[i+1]+1 = 0
     i= 5 rows 96->110 gap=14 j[i+1]=    37746 req_ok=n  exact_ok=Y  events in window=1 (own giant + 0 other)  sum(j_e+1)=37747  diff vs j[i+1]+1 = 0
-    i= 6 rows 110->112 gap= 2 j[i+1]=   129923 req_ok=n  exact_ok=n  events in window=1 (own giant + 0 other)  sum(j_e+1)=129924  diff vs j[i+1]+1 = 0
+    i= 6 rows 110->112 gap= 2 j[i+1]=   129923 req_ok=n  exact_ok=Y  events in window=2 (own giant + 1 other)  sum(j_e+1)=129925  diff vs j[i+1]+1 = 1
     i= 7 rows 112->126 gap=14 j[i+1]=    53470 req_ok=n  exact_ok=Y  events in window=2 (own giant + 1 other)  sum(j_e+1)=53475  diff vs j[i+1]+1 = 4
-    i= 8 rows 126->130 gap= 4 j[i+1]=   190810 req_ok=n  exact_ok=n  events in window=2 (own giant + 1 other)  sum(j_e+1)=190819  diff vs j[i+1]+1 = 8
+    i= 8 rows 126->130 gap= 4 j[i+1]=   190810 req_ok=n  exact_ok=Y  events in window=3 (own giant + 2 other)  sum(j_e+1)=190820  diff vs j[i+1]+1 = 9
     i= 9 rows 130->134 gap= 4 j[i+1]=   217657 req_ok=n  exact_ok=Y  events in window=3 (own giant + 2 other)  sum(j_e+1)=217662  diff vs j[i+1]+1 = 4
-    i=10 rows 134->146 gap=12 j[i+1]=   360698 req_ok=n  exact_ok=n  events in window=4 (own giant + 3 other)  sum(j_e+1)=360718  diff vs j[i+1]+1 = 19
-    i=11 rows 146->161 gap=15 j[i+1]=  4323712 req_ok=n  exact_ok=n  events in window=2 (own giant + 1 other)  sum(j_e+1)=4323716  diff vs j[i+1]+1 = 3
-    i=12 rows 161->174 gap=13 j[i+1]=  5237310 req_ok=n  exact_ok=n  events in window=4 (own giant + 3 other)  sum(j_e+1)=5237322  diff vs j[i+1]+1 = 11
-    i=13 rows 174->238 gap=64 j[i+1]= 12508030 req_ok=n  exact_ok=n  events in window=4 (own giant + 3 other)  sum(j_e+1)=12508064  diff vs j[i+1]+1 = 33
+    i=10 rows 134->146 gap=12 j[i+1]=   360698 req_ok=n  exact_ok=Y  events in window=7 (own giant + 6 other)  sum(j_e+1)=360721  diff vs j[i+1]+1 = 22
+    i=11 rows 146->161 gap=15 j[i+1]=  4323712 req_ok=n  exact_ok=Y  events in window=3 (own giant + 2 other)  sum(j_e+1)=4323717  diff vs j[i+1]+1 = 4
+    i=12 rows 161->174 gap=13 j[i+1]=  5237310 req_ok=n  exact_ok=Y  events in window=6 (own giant + 5 other)  sum(j_e+1)=5237324  diff vs j[i+1]+1 = 13
+    i=13 rows 174->238 gap=64 j[i+1]= 12508030 req_ok=n  exact_ok=Y  events in window=8 (own giant + 7 other)  sum(j_e+1)=12508068  diff vs j[i+1]+1 = 37
     requested naive equality holds: 0/14  (expected 0: misses the +1 Odlyzko constant and any intermediate events)
-    exact recharge identity holds: 5/14  FAIL
+    exact recharge identity holds: 14/14  PASS
     b_land[i+1] - (b_land[i] - gap[i]) = sum(j_e+1) >= j[i+1]+1 > 0 for all 14 : PASS (never negative)
 
 ==============================================================================
-FINAL: 15 giants / 14 gaps / max gap 64 -> PASS; even gaps 12/14; p_fair=0.000488281, p_06=0.00517203; recharge identity 5/14.
+FINAL: 15 giants / 14 gaps / max gap 64 -> PASS; even gaps 12/14; p_fair=0.000488281, p_06=0.00517203; recharge identity 14/14.
 ==============================================================================
