@@ -1,72 +1,592 @@
 ==============================================================================
 Verified Riemann-Hurwitz accounting for C(x,m)=C(y,n).
-Formula g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2 (normalized genus).
+Formula g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2 (genus of the normalization).
 ==============================================================================
 ------------------------------------------------------------------------------
 (m,n)=(2,3)   gcd=1   predicted g=1
    [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 3 == n
-   [OK ] (b) Q' has 2 real simple critical points in (0,2)
-   [OK ] (b) critical VALUES of Q pairwise distinct
-   [OK ] (b) finite ramification = 4 points = m(n-1) = 4 (each index 2 via simple critical points)
-   [OK ] (c) RH: 2g-2=0  ==  -2n+m(n-1)+(n-gcd) = 0   (n-d = 2)
-   [OK ] (c) closed-form g=1 matches RH-forced g=1
-   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 1
-   [OK ] (inf) each of 1 points index n/d=3, total 1*(3)=3=deg
-   [OK ] (d) m=2: g(2,n)=1 == floor((n-1)/2)=1
+   [OK ] (b) Q' has 2 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 4 points = m(n-1), each index e=2 (simple critical y, degree-2 equation in x gives 2 points per critical value)
+   [OK ] (c) RH: 2g-2 = 0 == -2n + m(n-1) + (n-gcd) = 0   (I_inf = n-gcd = 2)
+   [OK ] (c) closed-form g=1 == RH-forced g=1
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.44224957031
+   [OK ] (inf) min index e=3 (e*m == 0 mod n); branches = n/e = 1 == gcd(2,3)
+   [OK ] (inf) all 3 leading roots fit: max|residual|/n! = 9.6549e-18 < 1e-2 at u0=10^-26
+   [OK ] (inf) I_inf = branches*(e-1) = 1*2 = 2 == n - gcd = 2
+   [OK ] (d) m=2: g(2,3)=1 == floor((n-1)/2)=1
 ------------------------------------------------------------------------------
 (m,n)=(2,4)   gcd=2   predicted g=1
    [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 4 == n
-   [OK ] (b) Q' has 3 real simple critical points in (0,3)
-   [OK ] (b) critical VALUES of Q pairwise distinct
-   [OK ] (b) finite ramification = 6 points = m(n-1) = 6 (each index 2 via simple critical points)
-   [OK ] (c) RH: 2g-2=0  ==  -2n+m(n-1)+(n-gcd) = 0   (n-d = 2)
-   [OK ] (c) closed-form g=1 matches RH-forced g=1
-   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 2
-   [OK ] (inf) each of 2 points index n/d=2, total 2*(2)=4=deg
-   [OK ] (d) m=2: g(2,n)=1 == floor((n-1)/2)=1
+   [OK ] (b) Q' has 3 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 1 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 6 points = m(n-1), each index e=2 (simple critical y, degree-2 equation in x gives 2 points per critical value)
+   [OK ] (c) RH: 2g-2 = 0 == -2n + m(n-1) + (n-gcd) = 0   (I_inf = n-gcd = 2)
+   [OK ] (c) closed-form g=1 == RH-forced g=1
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.8612097182
+   [OK ] (inf) min index e=2 (e*m == 0 mod n); branches = n/e = 2 == gcd(2,4)
+   [OK ] (inf) all 4 leading roots fit: max|residual|/n! = 3.2237e-14 < 1e-2 at u0=10^-28
+   [OK ] (inf) I_inf = branches*(e-1) = 2*1 = 2 == n - gcd = 2
+   [OK ] (d) m=2: g(2,4)=1 == floor((n-1)/2)=1
 ------------------------------------------------------------------------------
 (m,n)=(2,5)   gcd=1   predicted g=2
    [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 5 == n
-   [OK ] (b) Q' has 4 real simple critical points in (0,4)
-   [OK ] (b) critical VALUES of Q pairwise distinct
-   [OK ] (b) finite ramification = 8 points = m(n-1) = 8 (each index 2 via simple critical points)
-   [OK ] (c) RH: 2g-2=2  ==  -2n+m(n-1)+(n-gcd) = 2   (n-d = 4)
-   [OK ] (c) closed-form g=2 matches RH-forced g=2
-   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 1
-   [OK ] (inf) each of 1 points index n/d=5, total 1*(5)=5=deg
-   [OK ] (d) m=2: g(2,n)=2 == floor((n-1)/2)=2
+   [OK ] (b) Q' has 4 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 8 points = m(n-1), each index e=2 (simple critical y, degree-2 equation in x gives 2 points per critical value)
+   [OK ] (c) RH: 2g-2 = 2 == -2n + m(n-1) + (n-gcd) = 2   (I_inf = n-gcd = 4)
+   [OK ] (c) closed-form g=2 == RH-forced g=2
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.26793315527
+   [OK ] (inf) min index e=5 (e*m == 0 mod n); branches = n/e = 1 == gcd(2,5)
+   [OK ] (inf) all 5 leading roots fit: max|residual|/n! = 4.4093e-12 < 1e-2 at u0=10^-30
+   [OK ] (inf) I_inf = branches*(e-1) = 1*4 = 4 == n - gcd = 4
+   [OK ] (d) m=2: g(2,5)=2 == floor((n-1)/2)=2
 ------------------------------------------------------------------------------
 (m,n)=(2,6)   gcd=2   predicted g=2
    [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 6 == n
-   [OK ] (b) Q' has 5 real simple critical points in (0,5)
-   [FAIL] (b) critical VALUES of Q pairwise distinct
-   [OK ] (b) finite ramification = 10 points = m(n-1) = 10 (each index 2 via simple critical points)
-   [OK ] (c) RH: 2g-2=2  ==  -2n+m(n-1)+(n-gcd) = 2   (n-d = 4)
-   [OK ] (c) closed-form g=2 matches RH-forced g=2
-   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 2
-   [OK ] (inf) each of 2 points index n/d=3, total 2*(3)=6=deg
-   [OK ] (d) m=2: g(2,n)=2 == floor((n-1)/2)=2
+   [OK ] (b) Q' has 5 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 2 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 10 points = m(n-1), each index e=2 (simple critical y, degree-2 equation in x gives 2 points per critical value)
+   [OK ] (c) RH: 2g-2 = 2 == -2n + m(n-1) + (n-gcd) = 2   (I_inf = n-gcd = 4)
+   [OK ] (c) closed-form g=2 == RH-forced g=2
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.66716827534
+   [OK ] (inf) min index e=3 (e*m == 0 mod n); branches = n/e = 2 == gcd(2,6)
+   [OK ] (inf) all 6 leading roots fit: max|residual|/n! = 1.2116e-10 < 1e-2 at u0=10^-32
+   [OK ] (inf) I_inf = branches*(e-1) = 2*2 = 4 == n - gcd = 4
+   [OK ] (d) m=2: g(2,6)=2 == floor((n-1)/2)=2
 ------------------------------------------------------------------------------
 (m,n)=(2,7)   gcd=1   predicted g=3
    [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 7 == n
-   [OK ] (b) Q' has 6 real simple critical points in (0,6)
-   [OK ] (b) critical VALUES of Q pairwise distinct
-   [OK ] (b) finite ramification = 12 points = m(n-1) = 12 (each index 2 via simple critical points)
-   [OK ] (c) RH: 2g-2=4  ==  -2n+m(n-1)+(n-gcd) = 4   (n-d = 6)
-   [OK ] (c) closed-form g=3 matches RH-forced g=3
-   [OK ] (d/inf) Newton-polygon branch count at infinity = gcd = 1
-   [OK ] (inf) each of 1 points index n/d=7, total 1*(7)=7=deg
-   [OK ] (d) m=2: g(2,n)=3 == floor((n-1)/2)=3
+   [OK ] (b) Q' has 6 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 12 points = m(n-1), each index e=2 (simple critical y, degree-2 equation in x gives 2 points per critical value)
+   [OK ] (c) RH: 2g-2 = 4 == -2n + m(n-1) + (n-gcd) = 4   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=3 == RH-forced g=3
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 3.06135971521
+   [OK ] (inf) min index e=7 (e*m == 0 mod n); branches = n/e = 1 == gcd(2,7)
+   [OK ] (inf) all 7 leading roots fit: max|residual|/n! = 1.3244e-9 < 1e-2 at u0=10^-34
+   [OK ] (inf) I_inf = branches*(e-1) = 1*6 = 6 == n - gcd = 6
+   [OK ] (d) m=2: g(2,7)=3 == floor((n-1)/2)=3
 ------------------------------------------------------------------------------
 (m,n)=(2,8)   gcd=2   predicted g=3
    [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 8 == n
-Traceback (most recent call last):
-  File "/workspace/code/genus/verify_riemann_hurwitz.py", line 123, in <module>
-    crit = critical_points_of_q(n)
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/workspace/code/genus/verify_riemann_hurwitz.py", line 72, in critical_points_of_q
-    roots = polyroots([complex(c) for c in coeffs])
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3/dist-packages/mpmath/calculus/polynomials.py", line 196, in polyroots
-    raise ctx.NoConvergence("Didn't converge in maxsteps=%d steps." \
-mpmath.libmp.libhyper.NoConvergence: Didn't converge in maxsteps=50 steps.
+   [OK ] (b) Q' has 7 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 3 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 14 points = m(n-1), each index e=2 (simple critical y, degree-2 equation in x gives 2 points per critical value)
+   [OK ] (c) RH: 2g-2 = 4 == -2n + m(n-1) + (n-gcd) = 4   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=3 == RH-forced g=3
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 3.45192471978
+   [OK ] (inf) min index e=4 (e*m == 0 mod n); branches = n/e = 2 == gcd(2,8)
+   [OK ] (inf) all 8 leading roots fit: max|residual|/n! = 8.1114e-9 < 1e-2 at u0=10^-36
+   [OK ] (inf) I_inf = branches*(e-1) = 2*3 = 6 == n - gcd = 6
+   [OK ] (d) m=2: g(2,8)=3 == floor((n-1)/2)=3
+------------------------------------------------------------------------------
+(m,n)=(2,9)   gcd=1   predicted g=4
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 9 == n
+   [OK ] (b) Q' has 8 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 16 points = m(n-1), each index e=2 (simple critical y, degree-2 equation in x gives 2 points per critical value)
+   [OK ] (c) RH: 2g-2 = 6 == -2n + m(n-1) + (n-gcd) = 6   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=4 == RH-forced g=4
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 3.83975638111
+   [OK ] (inf) min index e=9 (e*m == 0 mod n); branches = n/e = 1 == gcd(2,9)
+   [OK ] (inf) all 9 leading roots fit: max|residual|/n! = 3.3694e-8 < 1e-2 at u0=10^-38
+   [OK ] (inf) I_inf = branches*(e-1) = 1*8 = 8 == n - gcd = 8
+   [OK ] (d) m=2: g(2,9)=4 == floor((n-1)/2)=4
+------------------------------------------------------------------------------
+(m,n)=(2,10)   gcd=2   predicted g=4
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 10 == n
+   [OK ] (b) Q' has 9 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 4 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 18 points = m(n-1), each index e=2 (simple critical y, degree-2 equation in x gives 2 points per critical value)
+   [OK ] (c) RH: 2g-2 = 6 == -2n + m(n-1) + (n-gcd) = 6   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=4 == RH-forced g=4
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 4.22545327573
+   [OK ] (inf) min index e=5 (e*m == 0 mod n); branches = n/e = 2 == gcd(2,10)
+   [OK ] (inf) all 10 leading roots fit: max|residual|/n! = 1.065e-7 < 1e-2 at u0=10^-40
+   [OK ] (inf) I_inf = branches*(e-1) = 2*4 = 8 == n - gcd = 8
+   [OK ] (d) m=2: g(2,10)=4 == floor((n-1)/2)=4
+------------------------------------------------------------------------------
+(m,n)=(3,4)   gcd=1   predicted g=3
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 4 == n
+   [OK ] (b) Q' has 3 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 1 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 9 points = m(n-1), each index e=2 (simple critical y, degree-3 equation in x gives 3 points per critical value)
+   [OK ] (c) RH: 2g-2 = 4 == -2n + m(n-1) + (n-gcd) = 4   (I_inf = n-gcd = 3)
+   [OK ] (c) closed-form g=3 == RH-forced g=3
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.41421356237
+   [OK ] (inf) min index e=4 (e*m == 0 mod n); branches = n/e = 1 == gcd(3,4)
+   [OK ] (inf) all 4 leading roots fit: max|residual|/n! = 4.2426e-21 < 1e-2 at u0=10^-28
+   [OK ] (inf) I_inf = branches*(e-1) = 1*3 = 3 == n - gcd = 3
+------------------------------------------------------------------------------
+(m,n)=(3,5)   gcd=1   predicted g=4
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 5 == n
+   [OK ] (b) Q' has 4 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 12 points = m(n-1), each index e=2 (simple critical y, degree-3 equation in x gives 3 points per critical value)
+   [OK ] (c) RH: 2g-2 = 6 == -2n + m(n-1) + (n-gcd) = 6   (I_inf = n-gcd = 4)
+   [OK ] (c) closed-form g=4 == RH-forced g=4
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.82056420303
+   [OK ] (inf) min index e=5 (e*m == 0 mod n); branches = n/e = 1 == gcd(3,5)
+   [OK ] (inf) all 5 leading roots fit: max|residual|/n! = 5.4928e-18 < 1e-2 at u0=10^-30
+   [OK ] (inf) I_inf = branches*(e-1) = 1*4 = 4 == n - gcd = 4
+------------------------------------------------------------------------------
+(m,n)=(3,6)   gcd=3   predicted g=4
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 6 == n
+   [OK ] (b) Q' has 5 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 2 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 15 points = m(n-1), each index e=2 (simple critical y, degree-3 equation in x gives 3 points per critical value)
+   [OK ] (c) RH: 2g-2 = 6 == -2n + m(n-1) + (n-gcd) = 6   (I_inf = n-gcd = 3)
+   [OK ] (c) closed-form g=4 == RH-forced g=4
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.22090615485
+   [OK ] (inf) min index e=2 (e*m == 0 mod n); branches = n/e = 3 == gcd(3,6)
+   [OK ] (inf) all 6 leading roots fit: max|residual|/n! = 6.754e-16 < 1e-2 at u0=10^-32
+   [OK ] (inf) I_inf = branches*(e-1) = 3*1 = 3 == n - gcd = 3
+------------------------------------------------------------------------------
+(m,n)=(3,7)   gcd=1   predicted g=6
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 7 == n
+   [OK ] (b) Q' has 6 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 18 points = m(n-1), each index e=2 (simple critical y, degree-3 equation in x gives 3 points per critical value)
+   [OK ] (c) RH: 2g-2 = 10 == -2n + m(n-1) + (n-gcd) = 10   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=6 == RH-forced g=6
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.61670150219
+   [OK ] (inf) min index e=7 (e*m == 0 mod n); branches = n/e = 1 == gcd(3,7)
+   [OK ] (inf) all 7 leading roots fit: max|residual|/n! = 2.153e-14 < 1e-2 at u0=10^-34
+   [OK ] (inf) I_inf = branches*(e-1) = 1*6 = 6 == n - gcd = 6
+------------------------------------------------------------------------------
+(m,n)=(3,8)   gcd=1   predicted g=7
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 8 == n
+   [OK ] (b) Q' has 7 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 3 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 21 points = m(n-1), each index e=2 (simple critical y, degree-3 equation in x gives 3 points per critical value)
+   [OK ] (c) RH: 2g-2 = 12 == -2n + m(n-1) + (n-gcd) = 12   (I_inf = n-gcd = 7)
+   [OK ] (c) closed-form g=7 == RH-forced g=7
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 3.00899287332
+   [OK ] (inf) min index e=8 (e*m == 0 mod n); branches = n/e = 1 == gcd(3,8)
+   [OK ] (inf) all 8 leading roots fit: max|residual|/n! = 2.9426e-13 < 1e-2 at u0=10^-36
+   [OK ] (inf) I_inf = branches*(e-1) = 1*7 = 7 == n - gcd = 7
+------------------------------------------------------------------------------
+(m,n)=(3,9)   gcd=3   predicted g=7
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 9 == n
+   [OK ] (b) Q' has 8 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 24 points = m(n-1), each index e=2 (simple critical y, degree-3 equation in x gives 3 points per critical value)
+   [OK ] (c) RH: 2g-2 = 12 == -2n + m(n-1) + (n-gcd) = 12   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=7 == RH-forced g=7
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 3.39852287977
+   [OK ] (inf) min index e=3 (e*m == 0 mod n); branches = n/e = 3 == gcd(3,9)
+   [OK ] (inf) all 9 leading roots fit: max|residual|/n! = 2.2822e-12 < 1e-2 at u0=10^-38
+   [OK ] (inf) I_inf = branches*(e-1) = 3*2 = 6 == n - gcd = 6
+------------------------------------------------------------------------------
+(m,n)=(3,10)   gcd=1   predicted g=9
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 10 == n
+   [OK ] (b) Q' has 9 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 4 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 27 points = m(n-1), each index e=2 (simple critical y, degree-3 equation in x gives 3 points per critical value)
+   [OK ] (c) RH: 2g-2 = 16 == -2n + m(n-1) + (n-gcd) = 16   (I_inf = n-gcd = 9)
+   [OK ] (c) closed-form g=9 == RH-forced g=9
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 3.78583060905
+   [OK ] (inf) min index e=10 (e*m == 0 mod n); branches = n/e = 1 == gcd(3,10)
+   [OK ] (inf) all 10 leading roots fit: max|residual|/n! = 1.1886e-11 < 1e-2 at u0=10^-40
+   [OK ] (inf) I_inf = branches*(e-1) = 1*9 = 9 == n - gcd = 9
+------------------------------------------------------------------------------
+(m,n)=(4,5)   gcd=1   predicted g=6
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 5 == n
+   [OK ] (b) Q' has 4 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 16 points = m(n-1), each index e=2 (simple critical y, degree-4 equation in x gives 4 points per critical value)
+   [OK ] (c) RH: 2g-2 = 10 == -2n + m(n-1) + (n-gcd) = 10   (I_inf = n-gcd = 4)
+   [OK ] (c) closed-form g=6 == RH-forced g=6
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.37972966146
+   [OK ] (inf) min index e=5 (e*m == 0 mod n); branches = n/e = 1 == gcd(4,5)
+   [OK ] (inf) all 5 leading roots fit: max|residual|/n! = 7.2478e-24 < 1e-2 at u0=10^-30
+   [OK ] (inf) I_inf = branches*(e-1) = 1*4 = 4 == n - gcd = 4
+------------------------------------------------------------------------------
+(m,n)=(4,6)   gcd=2   predicted g=7
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 6 == n
+   [OK ] (b) Q' has 5 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 2 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 20 points = m(n-1), each index e=2 (simple critical y, degree-4 equation in x gives 4 points per critical value)
+   [OK ] (c) RH: 2g-2 = 12 == -2n + m(n-1) + (n-gcd) = 12   (I_inf = n-gcd = 4)
+   [OK ] (c) closed-form g=7 == RH-forced g=7
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.76273438327
+   [OK ] (inf) min index e=3 (e*m == 0 mod n); branches = n/e = 2 == gcd(4,6)
+   [OK ] (inf) all 6 leading roots fit: max|residual|/n! = 3.9498e-21 < 1e-2 at u0=10^-32
+   [OK ] (inf) I_inf = branches*(e-1) = 2*2 = 4 == n - gcd = 4
+------------------------------------------------------------------------------
+(m,n)=(4,7)   gcd=1   predicted g=9
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 7 == n
+   [OK ] (b) Q' has 6 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 24 points = m(n-1), each index e=2 (simple critical y, degree-4 equation in x gives 4 points per critical value)
+   [OK ] (c) RH: 2g-2 = 16 == -2n + m(n-1) + (n-gcd) = 16   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=9 == RH-forced g=9
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.14657275837
+   [OK ] (inf) min index e=7 (e*m == 0 mod n); branches = n/e = 1 == gcd(4,7)
+   [OK ] (inf) all 7 leading roots fit: max|residual|/n! = 3.6467e-19 < 1e-2 at u0=10^-34
+   [OK ] (inf) I_inf = branches*(e-1) = 1*6 = 6 == n - gcd = 6
+------------------------------------------------------------------------------
+(m,n)=(4,8)   gcd=4   predicted g=9
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 8 == n
+   [OK ] (b) Q' has 7 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 3 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 28 points = m(n-1), each index e=2 (simple critical y, degree-4 equation in x gives 4 points per critical value)
+   [OK ] (c) RH: 2g-2 = 16 == -2n + m(n-1) + (n-gcd) = 16   (I_inf = n-gcd = 4)
+   [OK ] (c) closed-form g=9 == RH-forced g=9
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.5302513207
+   [OK ] (inf) min index e=2 (e*m == 0 mod n); branches = n/e = 4 == gcd(4,8)
+   [OK ] (inf) all 8 leading roots fit: max|residual|/n! = 1.1066e-17 < 1e-2 at u0=10^-36
+   [OK ] (inf) I_inf = branches*(e-1) = 4*1 = 4 == n - gcd = 4
+------------------------------------------------------------------------------
+(m,n)=(4,9)   gcd=1   predicted g=12
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 9 == n
+   [OK ] (b) Q' has 8 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 32 points = m(n-1), each index e=2 (simple critical y, degree-4 equation in x gives 4 points per critical value)
+   [OK ] (c) RH: 2g-2 = 22 == -2n + m(n-1) + (n-gcd) = 22   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=12 == RH-forced g=12
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.91336328927
+   [OK ] (inf) min index e=9 (e*m == 0 mod n); branches = n/e = 1 == gcd(4,9)
+   [OK ] (inf) all 9 leading roots fit: max|residual|/n! = 1.5959e-16 < 1e-2 at u0=10^-38
+   [OK ] (inf) I_inf = branches*(e-1) = 1*8 = 8 == n - gcd = 8
+------------------------------------------------------------------------------
+(m,n)=(4,10)   gcd=2   predicted g=13
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 10 == n
+   [OK ] (b) Q' has 9 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 4 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 36 points = m(n-1), each index e=2 (simple critical y, degree-4 equation in x gives 4 points per critical value)
+   [OK ] (c) RH: 2g-2 = 24 == -2n + m(n-1) + (n-gcd) = 24   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=13 == RH-forced g=13
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 3.29575696926
+   [OK ] (inf) min index e=5 (e*m == 0 mod n); branches = n/e = 2 == gcd(4,10)
+   [OK ] (inf) all 10 leading roots fit: max|residual|/n! = 1.3654e-15 < 1e-2 at u0=10^-40
+   [OK ] (inf) I_inf = branches*(e-1) = 2*4 = 8 == n - gcd = 8
+------------------------------------------------------------------------------
+(m,n)=(5,6)   gcd=1   predicted g=10
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 6 == n
+   [OK ] (b) Q' has 5 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 2 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 25 points = m(n-1), each index e=2 (simple critical y, degree-5 equation in x gives 5 points per critical value)
+   [OK ] (c) RH: 2g-2 = 18 == -2n + m(n-1) + (n-gcd) = 18   (I_inf = n-gcd = 5)
+   [OK ] (c) closed-form g=10 == RH-forced g=10
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.3480061546
+   [OK ] (inf) min index e=6 (e*m == 0 mod n); branches = n/e = 1 == gcd(5,6)
+   [OK ] (inf) all 6 leading roots fit: max|residual|/n! = 2.3974e-26 < 1e-2 at u0=10^-32
+   [OK ] (inf) I_inf = branches*(e-1) = 1*5 = 5 == n - gcd = 5
+------------------------------------------------------------------------------
+(m,n)=(5,7)   gcd=1   predicted g=12
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 7 == n
+   [OK ] (b) Q' has 6 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 30 points = m(n-1), each index e=2 (simple critical y, degree-5 equation in x gives 5 points per critical value)
+   [OK ] (c) RH: 2g-2 = 22 == -2n + m(n-1) + (n-gcd) = 22   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=12 == RH-forced g=12
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.7056611428
+   [OK ] (inf) min index e=7 (e*m == 0 mod n); branches = n/e = 1 == gcd(5,7)
+   [OK ] (inf) all 7 leading roots fit: max|residual|/n! = 6.3769e-24 < 1e-2 at u0=10^-34
+   [OK ] (inf) I_inf = branches*(e-1) = 1*6 = 6 == n - gcd = 6
+------------------------------------------------------------------------------
+(m,n)=(5,8)   gcd=1   predicted g=14
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 8 == n
+   [OK ] (b) Q' has 7 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 3 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 35 points = m(n-1), each index e=2 (simple critical y, degree-5 equation in x gives 5 points per critical value)
+   [OK ] (c) RH: 2g-2 = 26 == -2n + m(n-1) + (n-gcd) = 26   (I_inf = n-gcd = 7)
+   [OK ] (c) closed-form g=14 == RH-forced g=14
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.06915206929
+   [OK ] (inf) min index e=8 (e*m == 0 mod n); branches = n/e = 1 == gcd(5,8)
+   [OK ] (inf) all 8 leading roots fit: max|residual|/n! = 4.2792e-22 < 1e-2 at u0=10^-36
+   [OK ] (inf) I_inf = branches*(e-1) = 1*7 = 7 == n - gcd = 7
+------------------------------------------------------------------------------
+(m,n)=(5,9)   gcd=1   predicted g=16
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 9 == n
+   [OK ] (b) Q' has 8 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 40 points = m(n-1), each index e=2 (simple critical y, degree-5 equation in x gives 5 points per critical value)
+   [OK ] (c) RH: 2g-2 = 30 == -2n + m(n-1) + (n-gcd) = 30   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=16 == RH-forced g=16
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.43630305418
+   [OK ] (inf) min index e=9 (e*m == 0 mod n); branches = n/e = 1 == gcd(5,9)
+   [OK ] (inf) all 9 leading roots fit: max|residual|/n! = 1.1441e-20 < 1e-2 at u0=10^-38
+   [OK ] (inf) I_inf = branches*(e-1) = 1*8 = 8 == n - gcd = 8
+------------------------------------------------------------------------------
+(m,n)=(5,10)   gcd=5   predicted g=16
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 10 == n
+   [OK ] (b) Q' has 9 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 4 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 45 points = m(n-1), each index e=2 (simple critical y, degree-5 equation in x gives 5 points per critical value)
+   [OK ] (c) RH: 2g-2 = 30 == -2n + m(n-1) + (n-gcd) = 30   (I_inf = n-gcd = 5)
+   [OK ] (c) closed-form g=16 == RH-forced g=16
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.80580948285
+   [OK ] (inf) min index e=2 (e*m == 0 mod n); branches = n/e = 5 == gcd(5,10)
+   [OK ] (inf) all 10 leading roots fit: max|residual|/n! = 1.6038e-19 < 1e-2 at u0=10^-40
+   [OK ] (inf) I_inf = branches*(e-1) = 5*1 = 5 == n - gcd = 5
+------------------------------------------------------------------------------
+(m,n)=(6,7)   gcd=1   predicted g=15
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 7 == n
+   [OK ] (b) Q' has 6 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 36 points = m(n-1), each index e=2 (simple critical y, degree-6 equation in x gives 6 points per critical value)
+   [OK ] (c) RH: 2g-2 = 28 == -2n + m(n-1) + (n-gcd) = 28   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=15 == RH-forced g=15
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.32046924776
+   [OK ] (inf) min index e=7 (e*m == 0 mod n); branches = n/e = 1 == gcd(6,7)
+   [OK ] (inf) all 7 leading roots fit: max|residual|/n! = 1.1446e-28 < 1e-2 at u0=10^-34
+   [OK ] (inf) I_inf = branches*(e-1) = 1*6 = 6 == n - gcd = 6
+------------------------------------------------------------------------------
+(m,n)=(6,8)   gcd=2   predicted g=17
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 8 == n
+   [OK ] (b) Q' has 7 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 3 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 42 points = m(n-1), each index e=2 (simple critical y, degree-6 equation in x gives 6 points per critical value)
+   [OK ] (c) RH: 2g-2 = 32 == -2n + m(n-1) + (n-gcd) = 32   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=17 == RH-forced g=17
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.65395429191
+   [OK ] (inf) min index e=4 (e*m == 0 mod n); branches = n/e = 2 == gcd(6,8)
+   [OK ] (inf) all 8 leading roots fit: max|residual|/n! = 1.6929e-26 < 1e-2 at u0=10^-36
+   [OK ] (inf) I_inf = branches*(e-1) = 2*3 = 6 == n - gcd = 6
+------------------------------------------------------------------------------
+(m,n)=(6,9)   gcd=3   predicted g=19
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 9 == n
+   [OK ] (b) Q' has 8 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 48 points = m(n-1), each index e=2 (simple critical y, degree-6 equation in x gives 6 points per critical value)
+   [OK ] (c) RH: 2g-2 = 36 == -2n + m(n-1) + (n-gcd) = 36   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=19 == RH-forced g=19
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.99650342519
+   [OK ] (inf) min index e=3 (e*m == 0 mod n); branches = n/e = 3 == gcd(6,9)
+   [OK ] (inf) all 9 leading roots fit: max|residual|/n! = 8.3695e-25 < 1e-2 at u0=10^-38
+   [OK ] (inf) I_inf = branches*(e-1) = 3*2 = 6 == n - gcd = 6
+------------------------------------------------------------------------------
+(m,n)=(6,10)   gcd=2   predicted g=22
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 10 == n
+   [OK ] (b) Q' has 9 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 4 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 54 points = m(n-1), each index e=2 (simple critical y, degree-6 equation in x gives 6 points per critical value)
+   [OK ] (c) RH: 2g-2 = 42 == -2n + m(n-1) + (n-gcd) = 42   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=22 == RH-forced g=22
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 2.34554113415
+   [OK ] (inf) min index e=5 (e*m == 0 mod n); branches = n/e = 2 == gcd(6,10)
+   [OK ] (inf) all 10 leading roots fit: max|residual|/n! = 1.9185e-23 < 1e-2 at u0=10^-40
+   [OK ] (inf) I_inf = branches*(e-1) = 2*4 = 8 == n - gcd = 8
+------------------------------------------------------------------------------
+(m,n)=(7,8)   gcd=1   predicted g=21
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 8 == n
+   [OK ] (b) Q' has 7 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 3 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 49 points = m(n-1), each index e=2 (simple critical y, degree-7 equation in x gives 7 points per critical value)
+   [OK ] (c) RH: 2g-2 = 40 == -2n + m(n-1) + (n-gcd) = 40   (I_inf = n-gcd = 7)
+   [OK ] (c) closed-form g=21 == RH-forced g=21
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.29683955465
+   [OK ] (inf) min index e=8 (e*m == 0 mod n); branches = n/e = 1 == gcd(7,8)
+   [OK ] (inf) all 8 leading roots fit: max|residual|/n! = 6.8279e-31 < 1e-2 at u0=10^-36
+   [OK ] (inf) I_inf = branches*(e-1) = 1*7 = 7 == n - gcd = 7
+------------------------------------------------------------------------------
+(m,n)=(7,9)   gcd=1   predicted g=24
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 9 == n
+   [OK ] (b) Q' has 8 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 56 points = m(n-1), each index e=2 (simple critical y, degree-7 equation in x gives 7 points per critical value)
+   [OK ] (c) RH: 2g-2 = 46 == -2n + m(n-1) + (n-gcd) = 46   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=24 == RH-forced g=24
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.6083119076
+   [OK ] (inf) min index e=9 (e*m == 0 mod n); branches = n/e = 1 == gcd(7,9)
+   [OK ] (inf) all 9 leading roots fit: max|residual|/n! = 6.2284e-29 < 1e-2 at u0=10^-38
+   [OK ] (inf) I_inf = branches*(e-1) = 1*8 = 8 == n - gcd = 8
+------------------------------------------------------------------------------
+(m,n)=(7,10)   gcd=1   predicted g=27
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 10 == n
+   [OK ] (b) Q' has 9 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 4 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 63 points = m(n-1), each index e=2 (simple critical y, degree-7 equation in x gives 7 points per critical value)
+   [OK ] (c) RH: 2g-2 = 52 == -2n + m(n-1) + (n-gcd) = 52   (I_inf = n-gcd = 9)
+   [OK ] (c) closed-form g=27 == RH-forced g=27
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.93078203669
+   [OK ] (inf) min index e=10 (e*m == 0 mod n); branches = n/e = 1 == gcd(7,10)
+   [OK ] (inf) all 10 leading roots fit: max|residual|/n! = 2.3307e-27 < 1e-2 at u0=10^-40
+   [OK ] (inf) I_inf = branches*(e-1) = 1*9 = 9 == n - gcd = 9
+------------------------------------------------------------------------------
+(m,n)=(8,9)   gcd=1   predicted g=28
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 9 == n
+   [OK ] (b) Q' has 8 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 64 points = m(n-1), each index e=2 (simple critical y, degree-8 equation in x gives 8 points per critical value)
+   [OK ] (c) RH: 2g-2 = 54 == -2n + m(n-1) + (n-gcd) = 54   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=28 == RH-forced g=28
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.27651800701
+   [OK ] (inf) min index e=9 (e*m == 0 mod n); branches = n/e = 1 == gcd(8,9)
+   [OK ] (inf) all 9 leading roots fit: max|residual|/n! = 4.7046e-33 < 1e-2 at u0=10^-38
+   [OK ] (inf) I_inf = branches*(e-1) = 1*8 = 8 == n - gcd = 8
+------------------------------------------------------------------------------
+(m,n)=(8,10)   gcd=2   predicted g=31
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 10 == n
+   [OK ] (b) Q' has 9 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 4 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 72 points = m(n-1), each index e=2 (simple critical y, degree-8 equation in x gives 8 points per critical value)
+   [OK ] (c) RH: 2g-2 = 60 == -2n + m(n-1) + (n-gcd) = 60   (I_inf = n-gcd = 8)
+   [OK ] (c) closed-form g=31 == RH-forced g=31
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.56828233614
+   [OK ] (inf) min index e=5 (e*m == 0 mod n); branches = n/e = 2 == gcd(8,10)
+   [OK ] (inf) all 10 leading roots fit: max|residual|/n! = 2.8694e-31 < 1e-2 at u0=10^-40
+   [OK ] (inf) I_inf = branches*(e-1) = 2*4 = 8 == n - gcd = 8
+------------------------------------------------------------------------------
+(m,n)=(9,10)   gcd=1   predicted g=36
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 10 == n
+   [OK ] (b) Q' has 9 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 4 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 81 points = m(n-1), each index e=2 (simple critical y, degree-9 equation in x gives 9 points per critical value)
+   [OK ] (c) RH: 2g-2 = 70 == -2n + m(n-1) + (n-gcd) = 70   (I_inf = n-gcd = 9)
+   [OK ] (c) closed-form g=36 == RH-forced g=36
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.25892541179
+   [OK ] (inf) min index e=10 (e*m == 0 mod n); branches = n/e = 1 == gcd(9,10)
+   [OK ] (inf) all 10 leading roots fit: max|residual|/n! = 3.5745e-35 < 1e-2 at u0=10^-40
+   [OK ] (inf) I_inf = branches*(e-1) = 1*9 = 9 == n - gcd = 9
+------------------------------------------------------------------------------
+(m,n)=(3,25)   gcd=1   predicted g=24
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 25 == n
+   [..] (b) n=25: critical-root bisection skipped (verified for all n<=15 above); Rolle gives n-1 simple real roots (structural).
+   [OK ] (c) RH: 2g-2 = 46 == -2n + m(n-1) + (n-gcd) = 46   (I_inf = n-gcd = 24)
+   [OK ] (c) closed-form g=24 == RH-forced g=24
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [FAIL] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 9.47326698375
+   [OK ] (inf) min index e=25 (e*m == 0 mod n); branches = n/e = 1 == gcd(3,25)
+   [OK ] (inf) all 25 leading roots fit: max|residual|/n! = 1.2607e-7 < 1e-2 at u0=10^-70
+   [OK ] (inf) I_inf = branches*(e-1) = 1*24 = 24 == n - gcd = 24
+------------------------------------------------------------------------------
+(m,n)=(4,25)   gcd=1   predicted g=36
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 25 == n
+   [..] (b) n=25: critical-root bisection skipped (verified for all n<=15 above); Rolle gives n-1 simple real roots (structural).
+   [OK ] (c) RH: 2g-2 = 70 == -2n + m(n-1) + (n-gcd) = 70   (I_inf = n-gcd = 24)
+   [OK ] (c) closed-form g=36 == RH-forced g=36
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [FAIL] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 8.96225666945
+   [OK ] (inf) min index e=25 (e*m == 0 mod n); branches = n/e = 1 == gcd(4,25)
+   [OK ] (inf) all 25 leading roots fit: max|residual|/n! = 2.112e-10 < 1e-2 at u0=10^-70
+   [OK ] (inf) I_inf = branches*(e-1) = 1*24 = 24 == n - gcd = 24
+------------------------------------------------------------------------------
+(m,n)=(6,9)   gcd=3   predicted g=19
+   [OK ] (a) degree in y of m!*(y)_n - n!*(x)_m = 9 == n
+   [OK ] (b) Q' has 8 real SIMPLE critical points, one in each (j,j+1)
+   [OK ] (b) exact identity (n-1-y)_n == (-1)^n (y)_n  [zero difference: True]
+   [OK ] (b) critical values coincide only in mirror pairs c_i+c_j=n-1 (found 0 pair(s), all mirror)
+   [OK ] (b) no singular point: scaled critical-value sets of (x)_m and (y)_n disjoint
+   [OK ] (b) finite ramification = 48 points = m(n-1), each index e=2 (simple critical y, degree-6 equation in x gives 6 points per critical value)
+   [OK ] (c) RH: 2g-2 = 36 == -2n + m(n-1) + (n-gcd) = 36   (I_inf = n-gcd = 6)
+   [OK ] (c) closed-form g=19 == RH-forced g=19
+   [OK ] (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+   [OK ] (inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = 1.99650342519
+   [OK ] (inf) min index e=3 (e*m == 0 mod n); branches = n/e = 3 == gcd(6,9)
+   [OK ] (inf) all 9 leading roots fit: max|residual|/n! = 8.3695e-25 < 1e-2 at u0=10^-38
+   [OK ] (inf) I_inf = branches*(e-1) = 3*2 = 6 == n - gcd = 6
+==============================================================================
+SOME CHECKS FAILED
+==============================================================================

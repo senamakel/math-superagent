@@ -37,16 +37,20 @@ superseded by the sourced constant) vs regeneration is the whole obstruction.
   `code/pattern/blocks_deep.py` pushed to **depth 1000** (sieve to 20,000,000,
   1,270,607 primes): `first_bad = None`, agrees on k=1..40, longest pure
   erosion run 838 rows, regeneration still occurring (max jump 360698 at
-  k=146); see `code/out/blocks_depth1000.json`.
+  k=146); see `code/out/blocks_depth1000.json`. (The 838-row "run" k=162..999 is
+  a finite-width artifact — the block fills the remaining sieve row and
+  retracts one column per row; genuine live-regime longest pure-erosion run is
+  13. See CONTEXT.md "Numbers".)
 - **Cross-checked against the OEIS catalogue:** `block_profile(k) = A000232(k) − 1`
   for k=1..16 (independent source agreement on the data).
-- **Reported in the literature:** Odlyzko verified the conjecture for primes
-  `≤ 10^13` (i.e. out to `pi(10^13) ≈ 3·10^11` rows of primes), Math. Comp. 61
-  (1993) 373–380. This is *sourced* (encyclopedia-of-math, mathworld,
-  oeis-A036262) but **not reproduced here** and not a proof.
-
-These two numbers must never be conflated in a claim: depth 600 (ours) vs
-`10^13` (Odlyzko, cited).
+- **Reported in the literature (sourced, not reproduced here):** current
+  verification record is **Colonna/Delahaye 2025–26 to all primes < 1.5×10^15**
+  (completed 2026-03-18, 57,600 G(π(x)) values, absolute record G(π(x)) = 811 at
+  x ≈ 1.2125×10^15); Plouffe 2025 to 10^14 (arXiv:2510.06688, G=693 at
+  π(10^14)); Odlyzko 1993 to 10^13 (≈ 3.4×10^11 rows, G=635). Claim
+  `verification-record-2026` in `research/notes/library-state.md` carries the
+  full record table with sources. These must never be conflated with the run's
+  own depth 600 / 1000.
 
 ## Restricted classes of Gilbreath-like sequences settled, with hypotheses
 
