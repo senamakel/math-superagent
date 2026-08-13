@@ -124,6 +124,13 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   extended |Φ(B)| closed-form values (|Φ(500)|=50765, |Φ(1000)|=202861,
   |Φ(2000)|=811155, |Φ(3000)|=1824231), and the canonical-pair→f bijection (with
   orbit-collision caveat in `phi_canonical_check.py`).
+- **Do not build on a Φ "dominance" argument — that bound is false** (`phi_identity_verify.py`
+  [5b], correct self-flag; in durable memory). Although record maxima of
+  f occur at Pell pairs f(P_k,P_{k−1}) = 1 − 1/P_{2k−1}², the claim
+  "f(m,n) < 1 − 1/P_{2k−1}² whenever m < P_{2k−1}" is FALSE: 2980 real
+  counterexamples, e.g. f(12,5) = 1 − 1/169² > 1 − 1/29² while 12 < 29 = P₅.
+  Record placement does not bound values below its own index; any argument
+  sieving near-1 Φ-values by a Pell-index ceiling is dead.
 
 **|S(e)| analytic form and records — computed-and-checked** (`ap_structure2.py`
 [0], `pattern_seq.py`, exact sieve vs direct enumeration `e ≤ 1500`):
