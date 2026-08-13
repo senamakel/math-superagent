@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/code/directive24/verify_giant_stretches.py", line 161, in <module>
+    main()
+  File "/workspace/code/directive24/verify_giant_stretches.py", line 112, in main
+    assert bits_runs == e['bits'], (k, 'bits rle')
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (34, 'bits rle')
