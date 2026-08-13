@@ -1,0 +1,2 @@
+[M=700] budget exceeded at i=40143/99407; no triple yet; pref-survivors 0, exact 0
+M=700 complete-through-i=40143/99407: NO additive triple (preimage box m,n <= 700)

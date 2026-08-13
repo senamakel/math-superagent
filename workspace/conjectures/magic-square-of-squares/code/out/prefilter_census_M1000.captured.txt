@@ -1,0 +1,1 @@
+[M=1000] budget at i=38006/202861; pairs checked 722247021; survivors 0

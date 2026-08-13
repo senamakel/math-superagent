@@ -5,14 +5,16 @@ rests-on: |
   - Reduction proved (A_k(1) ∈ {0,2} ⇔ conjecture), checked to depth 599
   - Block profiles computed to depth 1000 (code/out/blocks_depth1000.json)
   - Erosion bound: b(k+1) ≥ b(k) - 1 (a block loses at most 1 per row)
-  - Odlyzko's lemma (consumption): a block of length n protects ~n/2 rows
-  - 60 regeneration events (b diff ≥ 0) in 999 transitions; max single-erosion run = 838
+  - Odlyzko's lemma (consumption): a block of length n protects exactly n+1 rows; constant is 1, not n/2. Proved by diagonal-subtriangle argument, verified exhaustively (n=1..11, 122820 adversarial pairs, zero violations) and on real prime rows to depth 600. This is consumption = 1 position per row, linear. Regeneration is the sole remaining obstruction.
+  - 60 regeneration events (b diff ≥ 0) in 999 transitions; longest pure-erosion run = 838
+  - Block lengths at k=1..40: 2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,..., with local decreases (24→23→22→21, 97→96) — these are consumption outrunning regeneration locally. The question: is there a k with block length 0 before the next increase?
 blocked-by: nothing yet — the mechanism of regeneration has not been stated
 next: |
   1. Characterize the intruder (first non-{0,2} value past the block) — 59.6% are 4, all are 0 or 2 mod 4
   2. What must happen in the row below for a block to regrow? Study the k where b jumps.
   3. Stress-case: rows where b ≤ 10 — does regeneration still occur? (yes, b never stays at 2, but *why*?)
   4. State a precise claim about regeneration before trying to prove it.
+  5. Run verify_constant.py and check_real.py against the sieve-to-400000 triangle as a final confirmation of the constant=1 lemma.
 ```
 
 # Regeneration thread

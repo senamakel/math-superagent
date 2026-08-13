@@ -18,7 +18,8 @@ precedent:
     3x3 magic square, so the 7 line-sum equations are already solved by the
     parametrisation and carry no further (c,u,v) content.
   - Bremner, "On squares of squares", Acta Arith. 88 (1999) 289-297: MSS exist
-    over proper extension fields (over Q(sqrt3,sqrt133), degree 4).  Source:
+    over proper extension fields (over Q(sqrt3,sqrt133), degree 4), and the
+    entries are integral there (c,u,v integral, s_i in O_K).  Source:
     research/sources/bremner-on-squares-of-squares-1999.full.md.
   - Michaud-Rodgers (Warwick 2019 talk/project): the magic-square variety X in
     P^8 is a surface with 256 singular points; adjoining the square conditions
@@ -27,51 +28,70 @@ precedent:
     claim magic-variety-is-surface-no-lines.  This is the exact algebraic
     geometry where a Gröbner elimination would be computed.
 
-killed-by: The square conditions are VACUOUS over an algebraically closed (or
-  fraction) field.  For every (c,u,v) in Qbar^3, each entry entry_i(c,u,v) is
-  an affine linear form and always has a square root s_i = sqrt(entry_i) in
-  Qbar.  Hence the rational map (c,u,v,s_i) -> (c,u,v) is dominant, the image
-  of V is all of A^3, and the elimination ideal
-  J = I(V) ∩ Qbar[c,u,v] = (0).  V(J) = A^3: the proposed trichotomy
-  "contains 1 / surface / curve" is false — none of the three holds.
+killed-by: The square conditions are VACUOUS, and this kills the ideal over Z too,
+  not just over an algebraically closed field.  For every (c,u,v) in Qbar^3,
+  each entry entry_i(c,u,v) is an affine linear form and always has a square
+  root s_i = sqrt(entry_i) in Qbar.  So the projection (c,u,v,s) -> (c,u,v)
+  is DOMINANT: its image is all of A^3, the Zariski closure of the projection
+  is A^3, and the Qbar-elimination ideal J_Ȳ = I(V) ∩ Qbar[c,u,v] = (0).
 
-  The two concrete consequences:
-  1. J cannot contain 1: if it did, no solution would exist over Qbar, but a
-     full nine-square MSS provably exists over Q(sqrt3,sqrt133) (Bremner
-     1999), giving a Qbar-point and hence a prime containing J, so J is not
-     the unit ideal.  (Even over Z this forces the Z-linear combination that
-     would equal 1 to involve the s_i's square relations in a way no
-     (c,u,v)-only ideal can express.)
-  2. J is neither a surface nor a curve: V(J) = A^3, dimension 3.
+  Base-changing to Qbar can only shrink J under the natural map
+  (J_Z ⊗ Qbar) ⊆ J_Ȳ: any f ∈ J_Z ⊗ Qbar ⊂ Qbar[c,u,v] that came from
+  J_Z = I(V)∩Z[c,u,v] also lies in J_Ȳ = (0).  Since Z[c,u,v] is a free
+  (flat) Z-module, the map J_Z -> J_Z ⊗ Qbar is injective.  Therefore
+  J_Z = (0).  The elimination ideal over Z is EXACTLY the zero ideal:
+
+     * there are NO nonzero polynomial invariants in (c,u,v) alone that every
+       integer MSS must satisfy (this kills the pre-existing proposed
+       approach groebner-elimination-nine-square's branch (c)),
+     * J does not contain 1 (kills branch (a), the would-be proof of
+       non-existence).
+
+  The proposed trichotomy "contains 1 / surface / curve" is false — none of
+  the three holds: V(J) = A^3 (dimension 3, neither a surface nor a curve),
+  and 1 ∉ J.  Concretely 1 ∉ J is forced independently by the extension-field
+  hinge: a full nine-square MSS exists over O_K (K = Q(sqrt3,sqrt133),
+  Bremner 1999), i.e. V has a point over the flat Z-algebra O_K with (c,u,v)
+  integral and s_i in O_K; substituting that point into any ideal element that
+  equalled 1 would give 1 = 0, so 1 ∉ J over Z as well as over Qbar.
 
   The whole difficulty of the problem is INTEGRAL / RATIONAL square roots
-  (positivity, distinctness, integrality of each s_i), which no ideal over an
-  algebraically closed field can see.  An elimination ideal over Z[c,u,v]
-  captures exactly the Zariski closure over Qbar — i.e. nothing — and cannot
-  distinguish Q from Qbar, which is precisely the separation this run's
-  extension-field-mss-exist hinge says any valid argument must perform.
-  Over an algebraically closed field the system is locally solvable at every
-  prime power (the run's claim phi-padic-no-obstruction + locally-solvable
-  fact); the obstruction is arithmetic (rational square roots in an additive
-  configuration), not algebraic variety structure.
+  (positivity, distinctness, integrality of each s_i), which no ideal over a
+  closure, nor any Z-flat elimination, can see: the elimination ideal is (0)
+  over Z and over Qbar alike.  The obstruction is arithmetic (rational square
+  roots in an additive configuration), not algebraic variety structure — the
+  same separation-failure (Q vs Qbar / vs O_K) that sinks every purely
+  algebraic-geometric attack, e.g. integral-brauer-manin-nine-square.
 
 first-step was executed conceptually (code/out/candidate_verdict_math.py):
-  for several (c,u,v) all 9 entries are affine forms with Qbar square roots;
-  dominance is immediate.  Computing a literal Gröbner basis of J over Z
-  would only re-return J=(0) and teach nothing; it is not worth the compute.
+  for several (c,u,v) all 9 entries are affine forms; the projection is
+  dominant; dominance is immediate.  Computing a literal Gröbner basis of J
+  over Z (Singular/Macaulay2/sympy domain=ZZ) would only re-return J=(0) and
+  teach nothing; it is not worth the compute.  This refutes the pre-existing
+  proposed approach groebner-elimination-nine-square: branch (a) "1 ∈ J" is
+  forbidden by the extension-field MSS (over O_K), branch (c) "nonzero proper
+  ideal with arithmetic generators" is forbidden by J_Z = (0) via faithful
+  flatness, and stationing over Z instead of Qbar changes nothing because
+  elimination over a flat base sees the same (Zariski) closure.  The only
+  computing that survives the elimination is the 2-cover / elliptic structure
+  of the doubled-point x-coordinates, which is the subject of
+  mordell-weil-sieve-robertson and uniform-height-bound-elliptic-ap — not of
+  the elimination ideal.
 ```
 
 ## Why this fails (reader's digest)
 
 The proposal's trichotomy rests on a category error. Over an algebraically closed
 field, "is a perfect square" is *not an algebraic condition* — `s² = e` is
-solvable for `s` for any `e`. So eliminating the `s_i` over Z (whose geometric
-content is the same as over Q̄) throws away the entire problem. The arithmetic of
-MSS lives in the difference between having a *rational* square root and *any*
-square root; that difference is invisible to elimination ideals. This is the same
+solvable for `s` for any `e`. Eliminating the `s_i` therefore throws away the
+entire problem, and — because `Z → Q̄` is flat, so elimination over Z sees the
+same Zariski closure — there are no nonzero `(c,u,v)`-only polynomial
+invariants at all, and `1 ∉ J`. The arithmetic of MSS lives in the difference
+between having a *rational* square root and *any* square root; that difference is
+invisible to elimination ideals whether over Z or over Q̄. This is the same
 reason the run's `integral-brauer-manin-nine-square` was refuted: the variety is
 singular/non-proper and the arithmetic square-root condition is not captured by
-algebraic geometry over the closure.
+algebraic geometry over a closure.
 
 ## Sources considered and rejected
 

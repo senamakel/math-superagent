@@ -174,6 +174,18 @@ bearing: gives the run a canonical citation for the random-analogue theorem.
 anchor: research/sources/wikipedia-gilbreaths-conjecture.full.md
 ```
 
+## The Gilbreath-polynomial route (MDPI 2023, recorded by search digest only)
+
+```claim
+id: gilbreath-polynomials-imply-gc
+statement: (Alkan et al.? — authors not confirmed, see status) In the "Gilbreath equation / Gilbreath polynomials" framework (Mathematics 2023, 11(18), 4006, doi 10.3390/math11184006), GC is implied by the bound p_n − 2^{n−1} ≤ P_{n−1}(1), where P_{n−1} is the (n−1)-st Gilbreath polynomial evaluated at 1, built from the first n primes. A finite sequence S=(s_1..s_n) is a "Gilbreath sequence" iff s_1 has some parity and s_2..s_n the opposite, and min K(s_1..s_m) ≤ s_{m+1} ≤ max K(s_1..s_m) for all m ≤ n, with max K_S = s_1·(n−1)! + s_2·(n−2)! + ... + s_n·0! + 1, min K_S = 2·s_n − max K_S (weighted factorial bounds).
+hypotheses: ordered primes; the framework's own definitions (Gilbreath polynomials from the prime sequence).
+holds-here: the implication "bound ⇒ GC" would give the run a second, independent route (a polynomial-evaluation bound instead of a block-regeneration argument); not yet checked here.
+status: sourced-by-search-digest only — the MDPI page returns HTTP 403 to the downloader, there is no arXiv mirror found, and the author list is not confirmed from the digest. UNVERIFIED. The bound statement is taken verbatim from the search summary's quotation of the abstract; treat the theorem as asserted-by-source until the full text is obtained.
+bearing: a genuinely different-looking handle on the {0,2} regime (size bound on p_n vs a polynomial in the primes). If the bound is true it gives GC directly; worth obtaining the full text (e.g. via the journal's open-access PDF) and checking whether the bound is proved and how P_{n−1}(1) grows.
+anchor: (no full text in library) — recorded from the exa_search digest of https://www.mdpi.com/2227-7390/11/18/4006
+```
+
 ## Angled coverage summary
 
 - Statement/names/history: Odlyzko 1993, Killgrove–Ralston 1959, Encyc. of Math, MathWorld, Caldwell glossary, Arias de Reyna 2020, Chase 2024 §7, Wikipedia (retrieved this run).

@@ -46,9 +46,17 @@ Each marked with evidence class and a link.
   ineffective. Full grid in `code/out/commands.log`; approach in
   `research/approaches/genus-computation.md`.
 
-- **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`,
-  primary texts held.** Singmaster 1971 `O(log a)`; Abbott–Erdős–Hanson 1974
-  `O(log a/log log a)`; Kane 2007 best `N(t)=O((log t)(log_3 t)/(log_2 t)^3)`.
+- **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`
+  from secondary attestation; PRIMARY SOURCE NOT HELD for Singmaster 1971.**
+  Singmaster 1971 `O(log a)` — the real paper (AMM 78 (1971) 385–386) has NOT
+  been obtained; `research/sources/singmaster-1971.full.md` is the Fermat's
+  Library comments/annotation page (truncated comments, navigation prompts), not
+  the paper. The O(log a) argument is known from secondary attestation (MRSTT
+  intro, AEH 1974, Wikipedia) but the primary's exact wording, constants, and
+  proof details are not independently verified. Do not quote a constant or
+  exponent from the truncated Fermat's comment snippets.
+  Abbott–Erdős–Hanson 1974 `O(log a/log log a)` — primary held.
+  Kane 2007 best `N(t)=O((log t)(log_3 t)/(log_2 t)^3)` — primary summary held.
   Conditional on Cramér, `O_eps((log a)^{2/3+eps})`. None is uniform ⇒ none
   touches the conjecture. (`research/notes/established-review.md`.)
 
@@ -66,10 +74,14 @@ Each marked with evidence class and a link.
   via Beukers–Shorey–Tijdeman (Siegel) — **ineffective**. Kiss 1988:
   `C(x,2)=C(y,p)` finite for p prime.
 
-- **Verification bound.** `sourced`: no `N(a)>=8` for `a<2^23` (Singmaster
-  1971), extended to `2^48` (Singmaster FQ 1975); Blokhuis–Brouwer–de Weger
+- **Verification bound.** `sourced` from secondary attestation + Singmaster FQ 1975
+  (held): no `N(a)>=8` for `a<2^23` (originally Singmaster 1971, re-stated in FQ
+  1975); extended to `2^48` (Singmaster FQ 1975); Blokhuis–Brouwer–de Weger
   2017: no unknown collisions for `n<=10^6` or value `<=10^60`. This run's own
   scan: N=6 values found for `n<=20000, value<=10^12` matching the primary list.
+  Note: the 1971 primary source has NOT been obtained; the 2^23 bound is attested
+  in Singmaster's own FQ 1975 paper (held) and in MRSTT, but the original
+  published article is not in the library.
 
 ## Ruled out
 
@@ -100,6 +112,20 @@ Each marked with evidence class and a link.
   distinct pairs, and the a=b=1 family is the one Jenkins left open (golden-ratio
   quadratic, infinitely many lattice points).
 
+- **Triangular=tetrahedral `C(x,2)=C(y,3)` is NOT an infinite N>=6 family.**
+  `recall_scratch` holds a provisional hypothesis claiming it is ("positive-rank
+  elliptic curve → infinite integer solutions, each giving N(a)=6"). **Contradicted
+  on two grounds.** (a) The curve is genus 1; positive rank gives infinitely many
+  *rational* points but Siegel's theorem gives only finitely many *integral*
+  points — the scratch conflated the two. (b) The pair (2,3) is solved
+  (`deweger-smallk-effective`, `sourced`): Avanesov/Skolem solved `C(n,2)=C(m,3)`
+  with finitely many solutions. The 6-fold witnesses 120=C(16,2)=C(10,3),
+  1540=C(56,2)=C(22,3), 7140=C(120,2)=C(36,3) are isolated triangular/tetrahedral
+  collisions, not a family. **The only established infinite N>=6 family is the
+  Pell/Singmaster `C(n+1,k+1)=C(n,k+2)` one (genus 0, quadratic).** Do not
+  rebuild the infinite family on the triangular=tetrahedral curve; verify the
+  solution count before relying on it.
+
 ## Numbers
 
 - `N(3003)=8` (both+trivial); N=6 set {120,210,1540,7140,11628,24310}.
@@ -121,6 +147,16 @@ not re-derived here.
 
 ## Contradictions
 
+- **SOURCE INTEGRITY: `research/sources/singmaster-1971.full.md` is NOT Singmaster's paper.**
+  It is the Fermat's Library comments/annotation page (8538 bytes, mostly
+  navigation, sign-in prompts, and truncated comment snippets ending in
+  ellipsis). The O(log a) argument is not in that file. Every claim that
+  quoted the "primary facsimile" (`singmaster-1971-original`,
+  `best-unconditional-bound`, and `established-review.md`'s cross-check
+  section) was actually reading Fermat's Library markup and truncated comments.
+  The real paper (AMM 78 (1971) 385-386) has NOT been obtained. Demote
+  those claims to "attested-by-secondary-sources" status; do not quote a
+  constant or an exponent from the truncated comment snippets.
 - **Kane bound exponent.** Fermat's Library's annotation of Singmaster 1971
   states the best bound with exponent 2 (`log_2^2 t`); Wikipedia, MRSTT, Jenkins
   all give exponent 3 (`log_2^3 t`). Exponent 3 taken as correct; the Fermat's

@@ -13,3 +13,4 @@ _No approaches yet. Record one as soon as a line of attack is named: `research/a
 - `README` has no approach block, so nothing can say what the idea is or whether anyone has checked it
 - `genus-computation` has no approach block, so nothing can say what the idea is or whether anyone has checked it
 - `genus-faltings-threshold` has no approach block, so nothing can say what the idea is or whether anyone has checked it
+- `mrstt-exact-statement` has no approach block, so nothing can say what the idea is or whether anyone has checked it

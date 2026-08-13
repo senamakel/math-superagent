@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://terrytao.wordpress.com/2026/06/ | June 2026 | - [On writing][4] - [Books][5] - [Does one have to be a genius to do maths?][52] - [Mastodon+][6] ### Archives - [July 2026][53] (9) - [June 2026][54] (3) - [May 2026][55] (1) - [March 2026][56] (4)… |
 | 2 | https://terrytao.wordpress.com/2026/07/21/a-digestion-of-the-jacobian-conjecture-counterexample/comment-page-2/#comment-693766 | A digestion of the Jacobian co… | \| [image: Unknown's avatar] \| Anonymous on [A digestion of the Jacobian co…][42] \| [image: Unknown's avatar] \| Anonymous on [A digestion of the Jacobian co…][43] \| [image: Terence Tao's avatar] [31]… |
 
-_282 further candidates not shown; they are cited once each._
+_283 further candidates not shown; they are cited once each._

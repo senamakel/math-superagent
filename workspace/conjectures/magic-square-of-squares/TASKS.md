@@ -63,29 +63,65 @@
       argmax is NOT unique; Pell pairs are always among the maximisers but not
       the only ones. The claim `phi-suprema-are-pell-pairs` states this
       correctly (no uniqueness asserted).
+- [x] **DIRECTIVE 15: side_census.py RUN by operator at M=400 — docstring
+      hypothesis REFUTED.** The claim "1+(q1+q2) is NEVER a rational square" is
+      false: it is a rational square for 66 of 156,988,030 pairs. Three witnesses
+      re-verified in exact Fraction arithmetic with in_phi confirming both
+      members lie in Φ. The sharper finding: 1−(q1+q2) is a rational square 325
+      times, 1+(q1+q2) is 66 times, and **BOTH = 0** — no pair has both 1−s and
+      1+s rational squares. This is now the structural question: are the two
+      conditions provably incompatible? Recorded as claim
+      `phi-pair-sides-never-both-square` in CLAIMS.md (status: checked for M=400),
+      and the docstring hypothesis is marked refuted in
+      `research/threads/four-ap-additive-triple.md`.
 
 ---
 
 ## BLOCKING — must complete before any new approach
 
-- [ ] **RUN THE SEVEN PHI_TRIPLE_VARIETY PROGRAMS — directive 14, do this first.**
+- [ ] **RUN THE REMAINING SIX PHI_TRIPLE_VARIETY PROGRAMS (directive 15).**
+      `side_census.py` has been run by the operator (M=400) and the hypothesis
+      it tests is refuted — but the run must independently verify rather than
+      adopt. The remaining six have never been run. Run them all in this order:
       ```
-      for f in code/phi_triple_variety/{side_census,no_triple_fast,ratio_search,prefilter_census,verify_prefilter,verify_triple_square,verify_two_side_equiv}.py; do timeout 540 python3 $f 2>&1 | tee code/out/$(basename $f).captured.txt; echo EXIT_CODE=$?; done
+      # 1. Verify the two_side equivalence independently
+      PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_two_side_equiv.py 300 2>&1 | tee code/out/verify_two_side_equiv.captured.txt; echo EXIT_CODE=$?
+      # 2. Verify the triple_square equivalence independently
+      PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_triple_square.py 300 2>&1 | tee code/out/verify_triple_square.captured.txt; echo EXIT_CODE=$?
+      # 3. Independent prefilter verification (no reliance on closed form)
+      PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_prefilter.py 80 2>&1 | tee code/out/verify_prefilter.captured.txt; echo EXIT_CODE=$?
+      # 4. Benchmark phi_pairs and membership test rates
+      PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/benchmark.py 2>&1 | tee code/out/benchmark.captured.txt; echo EXIT_CODE=$?
+      # 5. Fast no-triple search with closed-form test
+      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/no_triple_fast.py 700 2>&1 | tee code/out/no_triple_fast.captured.txt; echo EXIT_CODE=$?
+      # 6. Ratio search with closed-form test
+      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/ratio_search.py 700 2>&1 | tee code/out/ratio_search.captured.txt; echo EXIT_CODE=$?
+      # 7. Prefilter census at M=700 (checkpointable)
+      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/prefilter_census.py 700 2>&1 | tee code/out/prefilter_census.captured.txt; echo EXIT_CODE=$?
       ```
-      These test the hypothesis in `side_census.py`: **`1+(q1+q2)` is never a
-      rational square** for `q1>q2` in Φ with `q1+q2<1`. If it holds it proves
-      no Φ-triple (a triple needs `1+(q1+q2)` square), hence no MSS; it is an
-      **asserted-only claim until run**. Capture all seven; then read the
-      1±(q1+q2) counts and promote or refute the hypothesis in
-      `research/threads/four-ap-additive-triple.md` and CLAIMS.md with the
-      actual numbers.
+      Capture all seven. Then compare: the independent verifiers (1-3) must
+      agree with the side_census finding; the searches (5-7) must confirm
+      both=0 at larger M.
 
-- [ ] **STOP SEARCHING, START EXTRACTING — directive 14.** The frontier still
-      lists ~429 candidates with ~359 unworked and exa_search is still
-      climbing (83). No further downloads or source gathering. Claim
-      extraction from the already-fetched sources (HMS 2026, Hulse et al.,
-      Wolird, Wu 2103.01784, GFP/HMS full texts) takes priority over any new
-      search.
+- [ ] **RE-RUN side_census AT M=800 (directive 15).** The operator ran M=400.
+      The run must push to larger M to see if both=0 survives:
+      ```
+      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt; echo EXIT_CODE=$?
+      ```
+      It is stdlib-only and needs no sympy or Sage.
+
+- [ ] **OPEN THREAD `pair-sum-both-squares-incompatibility` (directive 15).**
+      The finding: over all 156,988,030 pairs at M=400, 1−(q1+q2) is a rational
+      square 325 times, 1+(q1+q2) is 66 times, and BOTH = 0. The question:
+      are the two conditions provably incompatible for q1,q2 ∈ Φ? If yes, name
+      the invariant — a congruence obstruction, or a descent on the curve
+      attached to 1−s and 1+s simultaneously square, which is the classical
+      concordant-forms shape. This would be an impossibility lemma on **pairs**,
+      cheaper than anything on triples. Write
+      `research/threads/pair-sum-both-squares-incompatibility.md` with the
+      question, the evidence (M=400, both=0), the concordant-forms framing,
+      and the first step: determine whether s = q1+q2 with both 1±s square
+      forces s into a form incompatible with being a sum of two Φ-values.
 
 - [ ] **WRITE THE CONDITIONAL RESULT AS A CLAIM** (directive 12, item 1):
       The run's best structural output: assuming uniform boundedness of ranks
@@ -115,13 +151,15 @@
       `timeout 540 python3 code/out/verify_pell_symbolic.py 2>&1 | tee code/out/verify_pell_symbolic.captured.txt; echo EXIT_CODE=$?`
       Reconcile its sympy output with the four numeric results already captured.
 
+- [ ] **STOP SEARCHING — directive 15.** exa_search is at 99 and the frontier
+      is 429 with 359 unworked. Nothing in the last 16 searches changed a claim.
+      No further downloads or source gathering. The run has what it needs.
+
 - [ ] **OPEN THE NEXT REQUEST IN REQUESTS.md** (directive 12, item 3):
-      The only request (`exact-reduction-magic-507c`) is RESOLVED. The run is
-      running without a stated gap. Open request `hms-constant-bound`:
-      "What is the smallest explicit upper bound for C in HMS Theorem 1.1
-      that can be extracted from the paper's ingredients (David–Philippon,
-      PFR, the genus-2 construction), or from subsequent work?" If C cannot
-      be extracted, state what is missing from each ingredient.
+      The request `hms-constant-bound` is RESOLVED. Open a new request for
+      the constant from David–Philippon 2007 Théorème 1.13: what is the
+      explicit constant, specialised to subvarieties of self-products of a
+      single elliptic curve (the shape needed for the MSS AP)?
 
 - [ ] **CHECK `magic-variety-is-surface-no-lines`** (directive 13, item 1):
       Compute directly rather than asserting on a source's word: X in P⁸ cut

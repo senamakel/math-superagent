@@ -108,6 +108,14 @@ disk), or asserted-by-source.
   divisor parametrisation; Swett — the six-class lemma (n mod 840 outside the
   set ⇒ solved) dated to 1999. (`research/summaries/*.md`.)
 
+- **Source integrity (operator directive 2)**: `research/sources/yamamoto-1965-paper.full.md`
+  is only the J-STAGE landing page (title/author/nav, no mathematics); the real
+  PDF has no text layer and is TOMBSTONED — Yamamoto 1965 is not a source this
+  run has read, and its Type I/II attribution rests on Elsholtz–Tao's
+  restatement alone. `mathworld-egyptian-fraction.full.md` is an encyclopedia
+  entry: orientation-only, never a load-bearing anchor. **Stop adding claims;
+  the next work converts existing asserted identity families to checked.**
+
 ## Ruled out
 
 - **Brief's n≡3 (mod 4) identity is 3/n, not 4/n** (checked). All oracle.py

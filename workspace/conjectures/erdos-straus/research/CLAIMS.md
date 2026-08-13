@@ -44,7 +44,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `verification-1e18` | The Erdős–Straus conjecture holds for all n up to 10^18 (Mihnea–Dumitru 2025, extending Salez's modular-filter method with the S_29 filter). | yes | asserted | `research/summaries/mihnea-dumitru-verification-1e18.md` |
 | `verification-bounds` | The Erdos-Straus conjecture has been verified by exhaustive search for all n <= 10^14 (Swett 1999), 2*10^14 (Bello-Hernandez, Benito, Fernandez 2012), 10^17 (Salez 2014, seven-modular-equation sieve), and 10^18 (Mihnea… | yes | asserted | `research/notes/es-structure.md` |
 | `xu-tame-wild-dichotomy` | For primes n = 24m+1, a solution is tame when n2,n3 divide (6m+k)(24m+1) with n1=6m+k; only nine wild primes (no tame solution) exist among the 7185 primes with m ≤ 30000, and congruence-class families cover all 586… | yes | asserted | `research/summaries/xu-tame-solutions-24m1.md` |
-| `yamamoto-1965-type12-origin` | Yamamoto 1965 (Mem. Fac. Sci. Kyushu Univ. Ser. A 19, 37–47) is the origin of the Type I / Type II classification of solutions of 4/p and of the numerical verification to 10^7; the article is open-access on J-STAGE (DOI… | yes | asserted | `research/summaries/yamamoto-1965-paper.md` |
+| `yamamoto-1965-type12-origin` | Yamamoto 1965 (Mem. Fac. Sci. Kyushu Univ. Ser. A 19, 37–47) is attributed, by Elsholtz–Tao §1 and Table 1, as the origin of the Type I / Type II classification of 4/p solutions and of the 10^7 verification. The paper… | yes | asserted | `research/summaries/yamamoto-1965-paper.md` |
 
 ## Load-bearing but unverified
 

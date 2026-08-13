@@ -20,7 +20,7 @@ id: mathworld-egyptian-context
 statement: MathWorld's Egyptian Fraction page records the standard background (greedy/Fibonacci–Sylvester algorithm; every rational has arbitrarily many Egyptian-fraction expansions but finitely many with a fixed number of terms; 1/a = 1/(a+1) + 1/(a(a+1)) splitting identity; odd-denominator representations exist for y odd per Breusch 1954) and states the Erdős–Straus conjecture (4/n = 1/a+1/b+1/c) as eq. 12, with the Sierpiński 5/n analog.
 hypotheses: none beyond the reference being encyclopedic.
 holds-here: true — context tier; the fixed-term finiteness justifies seeking parametric families rather than per-n algorithms.
-status: sourced (MathWorld entry; the underlying facts are classical and cross-present in Eppstein and Elsholtz–Tao).
+status: asserted-by-source, orientation-only (encyclopedia entry; not an anchor for any six-class or load-bearing claim — per operator directive 2).
 bearing: fixes terminology and reference network; not a source for any six-class claim.
 anchor: research/sources/mathworld-egyptian-fraction.full.md
 ```

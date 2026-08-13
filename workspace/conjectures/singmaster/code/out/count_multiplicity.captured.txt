@@ -1,0 +1,19 @@
+N(a) counts BOTH mirrored occurrences (C(n,k) and C(n,n-k) are two distinct pairs) and includes the trivial pair C(a,1) = C(a,a-1).
+
+multiplicity(3003, 3003) = 8  (expected 8)
+  canonical reps (each stands for its mirror pair): [(14, 6), (15, 5), (78, 2), (3003, 1)]
+  nontrivial canonical reps: [(14, 6), (15, 5), (78, 2)]
+  identity  3003 = C(3003,1) = C(78,2) = C(15,5) = C(14,6): [3003, 3003, 3003, 3003]
+  asserted: multiplicity==6 for 120,210,1540,7140,11628,24310
+
+[count_multiplicity] scanning canonical reps with value <= 10000000; max n = 2 while C(n,2)<=10000000
+values with N(a) >= 6 in a <= 10000000: 7
+  a=120: N=6  nontrivial=[(10, 3), (16, 2)]
+  a=210: N=6  nontrivial=[(10, 4), (21, 2)]
+  a=1540: N=6  nontrivial=[(22, 3), (56, 2)]
+  a=3003: N=8  nontrivial=[(14, 6), (15, 5), (78, 2)]
+  a=7140: N=6  nontrivial=[(36, 3), (120, 2)]
+  a=11628: N=6  nontrivial=[(19, 5), (153, 2)]
+  a=24310: N=6  nontrivial=[(17, 8), (221, 2)]
+[count_multiplicity] all 7 high-multiplicity values cross-checked against inversion multiplicity: agree
+[count_multiplicity] wrote code/out/witnesses.json

@@ -40,7 +40,8 @@ invariance discussion is the part worth mining for the k=1 argument.
   proposed invariant proves too much too cheaply, that is evidence it is vacuous.
 - A concrete oracle extension: compute the modulo-k triangles **for small odd k and small
   depths** and check the k-stabilisation numerically; record as a checked claim. (Not yet
-  done — this is a lead, see REQUESTS.)
+  done — a natural small task for the run's own oracle, since it is computable here and
+  needs no outside source.)
 
 ## Source status
 

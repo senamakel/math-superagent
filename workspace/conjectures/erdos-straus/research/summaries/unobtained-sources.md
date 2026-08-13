@@ -12,7 +12,9 @@ Recorded so nobody repeats a fetch or mis-files a source.
   it, so the text itself is unobtained.** This does not cost the run anything:
   the Type I/II classification and the 10^7 verification bound that the paper
   is cited for are restated with primary citations in the two Elsholtz–Tao
-  copies already on disk. Do not re-attempt the PDF.
+  copies already on disk. Do not re-attempt the PDF — TOMBSTONED per operator
+  directive 2: stop citing Yamamoto 1965 as a read source; the landing page is
+  the only thing on disk.
 - **Eppstein, "Algorithms for Egyptian Fractions" / "Small Numerators"**
   (ics.uci.edu/~eppstein/numth/egypt/). Both pages now in the library
   (`research/sources/eppstein-small-numerators.full.md` and the intro stored as

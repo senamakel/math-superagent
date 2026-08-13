@@ -1,50 +1,60 @@
-# Singmaster 1971 — How often does an integer occur as a binomial coefficient?
+# Singmaster 1971 — TOMBSTONE: primary source NOT obtained
 
-Source: D. Singmaster, Amer. Math. Monthly 78 (1971) 385–386; primary facsimile read
-(fermatslibrary, with the JSTOR page reproduced). [[singmaster-1971]]
+Source: D. Singmaster, "How often does an integer occur as a binomial coefficient?",
+Amer. Math. Monthly 78 (1971) 385–386.
 
-## What the paper establishes
+**STATUS: NOT HELD.** The file `research/sources/singmaster-1971.full.md` is the
+Fermat's Library comments/annotation page (8538 bytes, mostly navigation, sign-in
+prompts, and truncated comment snippets ending in ellipsis). It is NOT the paper.
 
-- **Definition**: `N(a)` = number of times `a` occurs as `C(x,y)`. `N(1)=∞`;
-  `N(2)=1`, `N(3)=N(4)=N(5)=2`, `N(6)=3`, etc. For `a>1`, `N(a)<∞`.
-- **Proposition**: `N(a) = O(log a)`. Proof: let `b` be first with `C(2b,b)>a`;
-  `C(i+j,j)=a` forces `i<b` or `j<b` (monotonicity in each argument); for each `i`
-  (or `j`) there is at most one solution; so `N(a) ≤ 2b`. From `C(2(b-1),b-1)≥2^{b-1}≤a`
-  get `b ≤ 1+log₂a`; hence `N(a) ≤ 2+2log₂a = O(log a)`.
-- **Conjecture**: `N(a)=O(1)`. Records that Erdős concurs and says it must be very
-  hard, and later suggested (in correspondence) trying to show `N(a)=O(log log a)`
-  — i.e. even the correct order might be slower than the log bounds.
-- **M(k)** (first `a` with `N(a)=k`): M(1)=2, M(2)=3, M(3)=6, M(4)=10, M(6)=120.
-- **"Added in proof" (primary witness frame)**: `M(8)=3003`, the ONLY solution to
-  `N(a)≥8` with `a<2^23`; the six solutions to `N(a)=6` with `a<2^23` are
-  120, 210, 1540, 7140, 11628, 24310.
-- Note: `3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6)` (from the article's marginal
-  discussion): twice in its own row, twice in row 78, twice in rows 14/15.
+## What the Fermat's Library page contains (and does not)
 
-## Caveat / minor source issue
+The Fermat's Library page reproduces two pages of the JSTOR facsimile (pages
+385–386), which include the Research Problem statement, the Proposition
+(`N(a) = O(log a)`), and the "Added in proof" note. However:
 
-The Fermat's Library annotation comment states the "current best bound" (2007) as
-`N(t) = O((log t)(log log log t)/(log log t)^2)` — exponent **2**. This contradicts
-all authoritative sources (MRSTT, Jenkins, Wikipedia, Kane's own paper) which give
-exponent **3**. This is the same transcription slip already recorded in
-`research/notes/established-review.md`; **exponent 3 is correct** (Kane 2007).
+- The "Added in proof" is partly visible but the surrounding discussion is
+  truncated Fermat's Library user comments, not the paper.
+- The actual proof text visible in the facsimile image is not machine-readable
+  in the .full.md; only the commenters' paraphrases are text.
+- One comment says: "To prove the O(log a) bound we start by defining N(a) as
+  the ..." — truncated with ellipsis.
+- Another comment quotes the Kane 2007 bound with exponent 2 rather than 3,
+  a known transcription error.
+
+## What is reliably known about the paper (from secondary attestation)
+
+- **Definition**: N(a) = number of times a occurs as C(x,y). N(1)=∞; N(a)<∞ for a>1.
+- **Proposition**: N(a) = O(log a). Proof sketch (from AEH 1974, MRSTT, Wikipedia):
+  let b be first with C(2b,b) > a; monotonicity forces i<b or j<b for any solution
+  C(i+j,j)=a; hence N(a) ≤ 2b ≤ 2 + 2·log₂ a.
+- **Conjecture**: N(a) = O(1).
+- **"Added in proof"**: M(8)=3003, only N(a)≥8 with a<2^23; six N(a)=6 values
+  below 2^23: 120, 210, 1540, 7140, 11628, 24310. (This is the witness frame,
+  independently confirmed by `code/out/witnesses.json` and Singmaster FQ 1975.)
 
 ## Bearing for this run
 
-Primary source for the `O(log a)` bound, the original conjecture, and the
-`a<2^23` witness frame (`N(3003)=8`, six `N=6` values). Independent confirmation of
-the witnesses that `code/out/witnesses.json` reproduces. The `O(log a)` bound grows
-in `a` — not a result toward the constant, but the historical baseline.
+The O(log a) bound, the conjecture statement, and the witness frame are all
+reliably attested by multiple independent secondary sources (Singmaster's own FQ
+1975 paper, AEH 1974, MRSTT, Wikipedia, de Weger 1997). But **no constant or
+exponent should be quoted as directly from this primary** — the primary has not
+been obtained. Demoted from `sourced (primary facsimile read)` to
+`attested-by-secondary-sources`.
 
 ```claim
 id: singmaster-1971-original
-statement: Singmaster 1971 (AMM 78, primary source): N(a)=O(log a) via N(a)<=2+2 log_2 a
-  (b with C(2b,b)>a forces i<j<b); conjecture N(a)=O(1); M(8)=3003 is the only
-  N(a)>=8 with a<2^23, and the six N(a)=6 values <2^23 are 120,210,1540,7140,11628,24310.
+statement: Singmaster 1971 (AMM 78, 385-386; primary NOT held, attested by
+  Singmaster FQ 1975, AEH 1974, MRSTT): N(a)=O(log a) via N(a)<=2+2 log_2 a;
+  conjecture N(a)=O(1); M(8)=3003 is the only N(a)>=8 with a<2^23, and the six
+  N(a)=6 values <2^23 are 120,210,1540,7140,11628,24310.
 hypotheses: a>1; N counts C(x,y)=a over positive x,y (both symmetric copies).
 holds-here: yes — the original bound and witness frame.
-status: sourced (primary facsimile read; witnesses match witnesses.json)
-bearing: O(log a) is the baseline (grows with a, not a result); the witness frame
-  independently confirms N(3003)=8 and the six N=6 values.
+status: attested-by-secondary-sources (primary not held; file at
+  research/sources/singmaster-1971.full.md is Fermat's Library comments page,
+  not the paper; secondary attestation from Singmaster FQ 1975, AEH 1974
+  primary, MRSTT §1, Wikipedia)
+bearing: O(log a) is the baseline (grows with a, not a result); the witness
+  frame independently confirms N(3003)=8 and the six N=6 values.
 anchor: research/summaries/singmaster-1971.md
 ```

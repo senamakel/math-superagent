@@ -21,15 +21,23 @@ mechanism: The parametrisation already encodes the magic property, so the nine "
        partial result ("any integer MSS satisfies this explicit polynomial"). Distinctness
        and positivity are imposed after, not inside, the elimination.
 
-first-step: Run a Gröbner-basis elimination over ZZ (Singular or Macaulay2; sympy's
-       groebner with domain=ZZ as a fallback) on <L_i − s_i^2> ∩ Z[c,u,v], report whether
-       1 ∈ J, the number and degrees of generators, and the primary decomposition. If J is
-       nonzero proper, factor the generators and read off the arithmetic constraints on
-       (c,u,v).
+status: refuted
 
-speculation-vs-established: ESTABLISHED — the (c,u,v) parametrisation and its nine linear
-       forms (checked, this run: oracle_note.md); the fact that elimination over Q̄ is
-       dominant (elementary: every field element of an algebraically closed field is a
-       square). SPECULATION — that J over Z is nonzero and informative; the computation is
-       the check, and outcome (b) refutes the line cheaply.
+first-step: None — the approach is closed.
+
+killed-by: |
+  Research (this round, agent-run-80) refutes it on two independent structural grounds.
+  (1) 1 ∉ J because a full nine-square MSS exists over O_K for K=Q(√3,√133) (Bremner 1999);
+  substituting that point into any polynomial in J gives 1=0 — impossible. So the hoped-for
+  outcome "1 ∈ J ⟹ no integer solution" cannot occur. (2) J_Z = (0). Over Q̄ every
+  affine-linear entry has a square root, so the projection is dominant and J_Q̄ = (0); by
+  faithful flatness of Z → Q̄, J_Z = (0). So outcomes (a) and (c) are both impossible, and
+  the "integrality makes J nonzero" premise is wrong for this specific system. A Gröbner
+  basis of the zero ideal teaches nothing.
+
+precedent: |
+  This run's oracle (code/out/oracle_output.txt): (c,u,v) parametrisation completeness.
+  Bremner, Acta Arith. 88 (1999): extension-field MSS.
+  Faithful flatness of Z → Q̄ and elimination theory over algebraically closed fields.
+  Research/approach refutation write-up at research/approaches/elimination-ideal-grobner-z.md.
 ```

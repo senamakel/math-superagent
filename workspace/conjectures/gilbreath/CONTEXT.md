@@ -19,6 +19,31 @@ mechanically broken Contradictions section (see Contradictions).
 
 ## Established
 
+- **Verification record, CURRENT (sourced this cycle, 4 data points kept distinct):**
+  Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna
+  2025–26 to 1.5×10^15 (G(2.8e14)=788, G(6.15e14)=800, G(1.5e15)=800). Run's own: depth
+  1000 (1.27M primes), depth 600 (33860 primes). Do not conflate.
+- **Parity wave (proved, Ross 2026):** any (2, odd, odd, ...) sequence has every row's
+  leading term odd — but odd is NOT 1. Witnesses: 2,3,13 → leading 9; every-sixth-prime
+  pyramid leading column 2,15,9,7,5,3,1,1,1,1,1,7,3. The conjecture lives strictly
+  between "odd" and "1".
+- **{0,d} closure double edge (proved, one line):** {0,d} is closed under absolute
+  differencing for every d≥2, so the mechanism pinning 1 at d=2 is also the mechanism
+  preserving large disturbances at d≥4 (the CHT obstruction).
+- **2-separation is the operative general-class hypothesis** (Ross 2026; consistent with
+  CHT condition (ii) and Eppstein): not "gaps slowly growing" but "gaps do not
+  concentrate in a 2-separated set" (no two consecutive integers). Odlyzko's
+  "sufficiently random" left undefined; Chase 2024 gives the first rigorous form.
+- **Generalisation families now sourced:** Li 2026 modulo-k (primes kn+2, leading entry
+  stabilises to k; verified odd k<100,000; preprint, asserted-by-source); Croft's
+  bounded-gap generalisation FALSE via Eppstein (now triple-sourced: Eppstein, CHT,
+  Wikipedia); Chase 2024 random analogue = Math. Ann. 388, arXiv:2005.00530.
+- **Rule 90** governs the {0,2} parts of rows (Wikipedia); same Pascal/mod-2 structure as
+  the run's mod-4 linearization — independent confirmation of the microscope.
+- **Continuous-model decay:** CHT Σc_i ≥ log(n+e) (c_i decays no faster than 1/i;
+  boundedness open); Ross 2026 exact rational c_4,c_5,c_6, empirical
+  c_i ≈ C·λ^{s_2(i)}/i, λ≈1.14–1.20.
+
 - **The whole conjecture = "the second entry of every row lies in {0,2}".**
   `A_1=(1, even, even, ...)` because 2 is the only even prime; the shape
   (odd, even, even, ...) is preserved by the absolute-difference operator; and
