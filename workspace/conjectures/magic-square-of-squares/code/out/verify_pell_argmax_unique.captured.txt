@@ -1,0 +1,12 @@
+(1) Pell algebra: (m^2+n^2)^2 - 4mn(m^2-n^2) == 1 for (P_k,P_{k-1})
+   PASS  k=2..79
+   reduced == 1-1/P_{2k-1}^2: PASS
+
+(2) argmax uniqueness & strictly increasing record f
+  M<=    30: argmax (29, 12) = 970224/970225 (PELL P_5) ties=0 record-strictly-increasing=True
+  M<=    60: argmax (29, 12) = 970224/970225 (PELL P_5) ties=2 record-strictly-increasing=False
+  M<=   120: argmax (70, 29) = 32959080/32959081 (PELL P_6) ties=1 record-strictly-increasing=True
+  M<=   240: argmax (169, 70) = 1119638520/1119638521 (PELL P_7) ties=1 record-strictly-increasing=True
+  M<=   480: argmax (408, 169) = 38034750624/38034750625 (PELL P_8) ties=0 record-strictly-increasing=True
+  M<=   960: argmax (408, 169) = 38034750624/38034750625 (PELL P_8) ties=2 record-strictly-increasing=False
+  M<=  1920: argmax (985, 408) = 1292061882720/1292061882721 (PELL P_9) ties=1 record-strictly-increasing=True

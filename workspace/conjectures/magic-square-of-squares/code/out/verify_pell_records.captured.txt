@@ -1,0 +1,13 @@
+C1: f(P_k,P_{k-1}) == 1 - 1/P_{2k-1}^2
+  C1 PASS (k=2..59)
+  supporting identity P_{2k-1}=P_k^2+P_{k-1}^2: PASS
+
+C2: argmax of f over primitive m>n>=1, m<=M
+  M=20: argmax=(12, 5) = 28560/28561  = (P_4,P_3) PELL
+  M=100: argmax=(70, 29) = 32959080/32959081  = (P_6,P_5) PELL
+  M=500: argmax=(408, 169) = 38034750624/38034750625  = (P_8,P_7) PELL
+  M=1000: argmax=(985, 408) = 1292061882720/1292061882721  = (P_9,P_8) PELL
+
+C3: f(m,n)<1 over m<=5000 box
+  max f over m<=5000 = 43892069261880/43892069261881 at (2378, 985) (=1-1/6625109^2 if sqrt-den is integer)
+  C3 PASS (no f>=1 found)
