@@ -109,7 +109,7 @@ async fn a_two_node_workflow_runs_against_the_real_capabilities() {
                 NodeKind::Agent,
                 // Binds the tool's *structured* output, which only survives
                 // because the invoker returns `{ text, raw }` rather than text.
-                json!({ "prompt": "=\"there are \" + (.item.raw.claims | tostring) + \" claims\"" }),
+                json!({ "prompt": "=\"there are \" + (.item.json.claims | tostring) + \" claims\"" }),
             ),
         ],
         edges: vec![edge("start", "count"), edge("count", "read")],
@@ -201,6 +201,44 @@ async fn a_named_role_runs_from_a_one_node_workflow() {
         .and_then(Value::as_str)
         .unwrap_or_default();
     assert_eq!(text, "scholar read: the library", "{:?}", outcome.output);
+
+    let _ = std::fs::remove_dir_all(&workspace);
+}
+
+
+/// The loop cannot route without its reflection parser, so
+/// `workflow_capabilities` supplies it rather than trusting a caller to
+/// remember. A graph missing it would run, fold nulls, and never leave the
+/// first verdict — a green run that goes nowhere.
+#[tokio::test]
+async fn the_bundle_always_carries_the_reflection_parser() {
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    let workspace = std::env::temp_dir().join(format!("riemann-parser-{}", std::process::id()));
+    std::fs::create_dir_all(&workspace).expect("a scratch workspace can be created");
+
+    let caps = bundle(
+        Arc::new(MockModel::constant("unused")),
+        &workspace,
+        [Arc::new(crate::orchestrator::reflection_tool::ParseReflection::new(None))
+            as Arc<dyn Tool<()>>],
+        SubagentTaskRunner::new(manager.clone()),
+        SubagentAgentRunner::new(manager),
+    );
+
+    let counters = caps
+        .tools
+        .invoke(
+            "parse_reflection",
+            json!({
+                "reflection": "VERDICT: SOLVED\nPROGRESS: YES",
+                "state": { "attempts": 1 },
+            }),
+            None,
+        )
+        .await
+        .expect("the parser is callable from a tool_call node");
+    // Reachable *and* structured, so `=item.json.solved` binds.
+    assert_eq!(counters["solved"], json!(true), "{counters}");
 
     let _ = std::fs::remove_dir_all(&workspace);
 }

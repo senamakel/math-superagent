@@ -824,7 +824,7 @@ fn open_invention(
 /// explicit positive verdict, an executable artifact on disk, and a reflection
 /// that does not contradict itself by reporting no progress. Each was added
 /// after a live run ended on the case it rules out.
-fn record_verdict(
+pub(in crate::orchestrator) fn record_verdict(
     reflection: &str,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,

@@ -70,11 +70,17 @@ impl WorkspaceTools {
 impl ToolInvoker for WorkspaceTools {
     /// Runs `slug` with `args`.
     ///
-    /// The result is returned as `{ text, raw }` rather than as bare text, so a
-    /// workflow can bind either `=item.text` for the model-facing string or
-    /// `=item.raw.<field>` for the structured value a tool chose to publish.
-    /// Flattening to text would throw the second one away, and several of this
-    /// crate's tools exist precisely to return structure.
+    /// A tool's **structured** output is returned as the result when it
+    /// published one, and its text otherwise. That is what makes the natural
+    /// binding work: a `tool_call` node wraps whatever comes back in the
+    /// `{ json, text, raw }` envelope, so returning the structure directly puts
+    /// it at `=item.json.<field>` — where an author would look for it — rather
+    /// than one level deeper under a wrapper of this crate's own invention.
+    ///
+    /// Several of this crate's tools exist precisely to return structure, so
+    /// flattening everything to text would throw away the thing they are for.
+    /// The text is still reachable: the envelope keeps it, and a text-only tool
+    /// comes back as `{ text }`.
     ///
     /// A tool that reports failure through
     /// [`ToolResult::error`](crate::agent::ToolResult) becomes an engine error
@@ -111,7 +117,10 @@ impl ToolInvoker for WorkspaceTools {
         if let Some(error) = result.error {
             return Err(EngineError::Capability(format!("`{slug}` failed: {error}")));
         }
-        Ok(json!({ "text": result.content, "raw": result.raw }))
+        Ok(result
+            .raw
+            .filter(|raw| raw.is_object() || raw.is_array())
+            .unwrap_or_else(|| json!({ "text": result.content })))
     }
 }
 

@@ -62,6 +62,30 @@ const NODES: [(&str, &str); 9] = [
     ("done", "done"),
 ];
 
+/// Where the workflow-engine loop legitimately differs from the drawn one.
+///
+/// The two are meant to decide identically, not to be identical: one is a state
+/// graph of Rust closures and the other a document of typed nodes, and three
+/// differences follow from that rather than from anyone's choice.
+///
+/// - `solve` — the `loop` head. It exists to own the accumulator and to
+///   recognise a finished run; the state graph keeps both in `SolutionState`
+///   and needs no node for them.
+/// - `parse` — an `agent` node returns prose, so the verdict has to become
+///   counters before the ladder can read them. The state graph does that
+///   inside its reflect node.
+/// - `judged` and `route` — the routing ladders as their own `switch` nodes.
+///   The state graph carries both as router *closures* attached to an edge, so
+///   they are decisions without nodes; a document has to name them to hold
+///   them.
+/// - `report` — the same terminal as `done`, named for what it does with the
+///   accumulator it is handed.
+///
+/// Pinned so a fourth difference is a decision somebody makes here rather than
+/// a drift nobody notices.
+#[cfg(test)]
+pub(super) const WORKFLOW_ONLY: [&str; 5] = ["solve", "parse", "judged", "route", "report"];
+
 /// Builds the solution loop as a `TinyFlows` workflow graph.
 ///
 /// The result is a description for rendering and inspection, not something to

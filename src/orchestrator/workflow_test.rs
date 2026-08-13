@@ -14,13 +14,17 @@ fn graph() -> WorkflowGraph {
     solution_loop("find the largest x", workflow_agents(&registry))
 }
 
-/// One reflection verdict, in the shape the accumulator folds.
+/// One set of parsed counters, in the shape the accumulator folds.
 ///
-/// The fields go at the top level, not under a `json` key: an `agent` node
-/// envelopes what the runner returned into `{ json, text, raw }`, so the
-/// runner's own object *is* `item.json` and wrapping it again would bury every
-/// field one level too deep. That is the shape a parsed reflection has to
-/// produce on the live path too — see `reflect` in `workflow.rs`.
+/// Mocked at the `parse_reflection` tool rather than at the reflection agent,
+/// because that is where the counters are decided on the live path too: an
+/// `agent` node returns prose, and the tool turns it into these numbers. The
+/// tool's own agreement with the state graph is asserted in
+/// `reflection_tool_test.rs`; this fixes the counters so the *routing* is what
+/// these tests are about.
+///
+/// The invoker returns a tool's structure as the result, so the envelope puts
+/// it at `item.json` — which is what the fold reads.
 fn verdict(fields: Value) -> Respond {
     Respond::value(fields)
 }
@@ -30,7 +34,11 @@ async fn run_with(reflection: Value) -> tinyflows::testkit::TestRun {
     TestHarness::new(&graph())
         .mock_agent("goals", Respond::value(json!({ "text": "attempted" })))
         .mock_agent("judge", Respond::value(json!({ "verdict": "proceed" })))
-        .mock_agent("reflection", verdict(reflection))
+        .mock_agent(
+            "reflection",
+            Respond::value(json!({ "text": "VERDICT: recorded" })),
+        )
+        .mock_tool("parse_reflection", verdict(reflection))
         .mock_agent("librarian", Respond::value(json!({ "text": "papers" })))
         .mock_agent(
             "pattern_finder",
@@ -217,4 +225,95 @@ async fn a_completed_run_has_nothing_to_diagnose() {
     }))
     .await;
     run.assert_clean_diagnosis();
+}
+
+
+/// The end-to-end gate for the switch: the whole loop, on the real capability
+/// bundle and the real reflection parser, with only the roles themselves
+/// standing in. Everything between the reflection's prose and the routing
+/// decision is production code here — the tool invoker, `record_verdict`, the
+/// envelope, the fold, and the ladder.
+///
+/// This is the piece that had to exist before a launcher could be switched: an
+/// `agent` node returns text, and until the parser was wired the accumulator
+/// had nothing to fold.
+#[tokio::test]
+async fn the_loop_runs_end_to_end_on_the_real_parser() {
+    use std::sync::Arc;
+
+    use tinyflows::compiler::compile;
+    use tinyflows::engine::run;
+
+    use crate::agent::budget::RunBudget;
+    use crate::agent::{MockModel, Tool};
+    use crate::orchestrator::async_subagents::{AgentExecutor, AsyncSubagentManager};
+    use crate::orchestrator::caps;
+    use crate::orchestrator::reflection_tool::ParseReflection;
+    use crate::orchestrator::runner::{SubagentAgentRunner, SubagentTaskRunner};
+
+    /// A role that answers with whatever it was registered to say.
+    struct Fixed(&'static str);
+
+    #[async_trait::async_trait]
+    impl AgentExecutor for Fixed {
+        async fn execute(
+            &self,
+            _run_id: &str,
+            _input: String,
+            _steering: tinyagents::harness::steering::SteeringHandle,
+            _tracer: Option<Arc<crate::agent::trace::RunTracer>>,
+        ) -> Result<String, tinyagents::TinyAgentsError> {
+            Ok(self.0.to_string())
+        }
+    }
+
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    for (role, reply) in [
+        ("goals", "attempted the thing"),
+        ("judge", "SCORE: 4\nVERDICT: PROCEED"),
+        // The real parser reads this prose. No workspace is passed, so the
+        // executable-artifact check cannot run and `solved` rests on the
+        // verdict and the progress line agreeing — which is the documented
+        // behaviour for an absent workspace, not a shortcut.
+        (
+            "reflection",
+            "VERDICT: SOLVED\nPROGRESS: YES\nKIND: MATHEMATICAL\nLESSON: the bound is tight",
+        ),
+    ] {
+        manager
+            .register_executor(role, Arc::new(Fixed(reply)))
+            .expect("registering a role once succeeds");
+    }
+
+    let workspace = std::env::temp_dir().join(format!("riemann-e2e-{}", std::process::id()));
+    std::fs::create_dir_all(&workspace).expect("a scratch workspace can be created");
+
+    let caps = caps::bundle(
+        Arc::new(MockModel::constant("unused: every node names a role")),
+        &workspace,
+        [Arc::new(ParseReflection::new(None)) as Arc<dyn Tool<()>>],
+        SubagentTaskRunner::new(manager.clone()),
+        SubagentAgentRunner::new(manager),
+    );
+
+    let compiled = compile(&graph()).expect("the loop is structurally valid");
+    let outcome = run(&compiled, json!({}), &caps)
+        .await
+        .expect("the loop runs to completion");
+
+    let state = outcome
+        .output
+        .pointer(&format!("/nodes/{LOOP_NODE}/state"))
+        .cloned()
+        .unwrap_or(Value::Null);
+    // The reflection's prose became the counter that ended the run, through
+    // production code the whole way.
+    assert_eq!(state["solved"], json!(true), "{state}");
+    assert!(
+        outcome.output.pointer("/nodes/report").is_some(),
+        "the loop never reached its terminal node: {}",
+        outcome.output
+    );
+
+    let _ = std::fs::remove_dir_all(&workspace);
 }

@@ -153,7 +153,11 @@ pub(super) fn state_update() -> Value {
     // ladder read its seed values on every pass. The run still completed and
     // still reported success — which is exactly the failure
     // `assert_no_null_bindings` exists to catch, and did.
-    let reflect = ".nodes.reflect.item.json";
+    // Read off the parser, not the reflection: an `agent` node returns prose,
+    // and the counters are a function of that prose *and* of what is on disk.
+    // `parse_reflection` is where those meet, and its structured output lands
+    // in `raw` because the tool invoker returns `{ text, raw }`.
+    let reflect = ".nodes.parse.item.json";
     // `// .state.<key>` is load-bearing on two passes, not one. The loop head
     // runs *before* the body on the first activation, so there is no reflection
     // to fold and every field would otherwise be assigned null — wiping the
@@ -258,6 +262,19 @@ pub(super) fn solution_loop(
             "Is the answer right, and what did this attempt teach the next one?",
         ),
         node(
+            "parse",
+            NodeKind::ToolCall,
+            json!({
+                "slug": "parse_reflection",
+                "args": {
+                    "reflection": "=.item.text",
+                    "state": format!("=.nodes.{LOOP_NODE}.state"),
+                    "last_attempt": "=.nodes.attempt.item.text",
+                    "problem": format!("=.nodes.{LOOP_NODE}.state.problem"),
+                },
+            }),
+        ),
+        node(
             "route",
             NodeKind::Switch,
             json!({ "expression": reflect_ladder() }),
@@ -281,7 +298,8 @@ pub(super) fn solution_loop(
         // reflecting, so it costs a judge call rather than a judge call plus a
         // reflection about to be thrown away.
         edge("judged", "restart", "attempt"),
-        edge("reflect", "main", "route"),
+        edge("reflect", "main", "parse"),
+        edge("parse", "main", "route"),
         edge("route", "retry", LOOP_NODE),
         edge("route", "solved", LOOP_NODE),
         edge("route", "reported", LOOP_NODE),

@@ -100,7 +100,7 @@ pub(super) struct SolutionState {
     /// Consecutive attempts that did not advance the work.
     pub(in crate::orchestrator) unproductive: usize,
     /// The most recent attempt's report.
-    last_attempt: String,
+    pub(in crate::orchestrator) last_attempt: String,
     /// Accumulated lessons, newest last.
     lessons: Vec<String>,
     /// Material gathered by the diversify step, fed into the next attempt.

@@ -27,6 +27,7 @@ mod parity;
 mod paths;
 mod patterns;
 mod readable;
+mod reflection_tool;
 mod requests;
 mod runner;
 mod runs;
@@ -383,6 +384,14 @@ impl OrchestratorAgent {
         &self,
         tools: impl IntoIterator<Item = Arc<dyn Tool<()>>>,
     ) -> Result<tinyflows::caps::Capabilities> {
+        // The reflection parser is added rather than left to the caller. It is
+        // not a tool a workflow author chooses — the loop cannot route without
+        // it, and a caller who forgot it would get a graph that runs, folds
+        // nulls, and never leaves the first verdict.
+        let tools = tools.into_iter().chain(std::iter::once(Arc::new(
+            reflection_tool::ParseReflection::new(Some(self.workspace.clone())),
+        )
+            as Arc<dyn Tool<()>>));
         Ok(caps::bundle(
             openrouter_model_from_env()?,
             &self.workspace,

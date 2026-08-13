@@ -32,7 +32,9 @@ impl Tool<()> for EchoTool {
             return Err(tinyagents::TinyAgentsError::Tool("refused".into()));
         }
         let mut result = ToolResult::text(call.id, self.name(), "did the thing");
-        result.raw = Some(call.arguments);
+        if self.name != "plain" {
+            result.raw = Some(call.arguments);
+        }
         Ok(result)
     }
 }
@@ -47,20 +49,33 @@ fn invoker() -> WorkspaceTools {
             name: "broken",
             fail: true,
         }) as Arc<dyn Tool<()>>,
+        Arc::new(EchoTool {
+            name: "plain",
+            fail: false,
+        }) as Arc<dyn Tool<()>>,
     ])
 }
 
-/// Both halves of a result survive: several of this crate's tools exist to
-/// return structure, and flattening to text would discard it.
+/// A tool's structure comes back as the result itself, so the `tool_call`
+/// envelope puts it at `=item.json.<field>` — where an author looks for it.
 #[tokio::test]
-async fn a_result_carries_both_its_text_and_its_structure() {
+async fn a_structured_result_binds_at_its_own_fields() {
     let value = invoker()
         .invoke("read_file", json!({ "path": "GOAL.md" }), None)
         .await
         .expect("a held tool runs");
 
-    assert_eq!(value["text"], json!("did the thing"));
-    assert_eq!(value["raw"], json!({ "path": "GOAL.md" }));
+    assert_eq!(value, json!({ "path": "GOAL.md" }));
+}
+
+/// A tool with nothing structural to say still binds predictably.
+#[tokio::test]
+async fn a_text_only_result_comes_back_as_text() {
+    let value = invoker()
+        .invoke("plain", json!({}), None)
+        .await
+        .expect("a held tool runs");
+    assert_eq!(value, json!({ "text": "did the thing" }));
 }
 
 /// The authority boundary. An invoker built without a tool must refuse it by
@@ -93,5 +108,5 @@ async fn a_failing_tool_becomes_an_error_rather_than_a_successful_result() {
 fn the_granted_slugs_are_readable_for_an_assertion() {
     // Tests assert the authority a role ends up with, not the config meant to
     // produce it, so the resolved set has to be readable.
-    assert_eq!(invoker().slugs(), ["broken", "read_file"]);
+    assert_eq!(invoker().slugs(), ["broken", "plain", "read_file"]);
 }

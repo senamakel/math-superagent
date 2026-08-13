@@ -1,5 +1,5 @@
 //! Deterministic tests for the rendered solution loop.
-#![allow(clippy::expect_used)]
+#![allow(clippy::expect_used, clippy::panic)]
 
 use super::*;
 
@@ -112,4 +112,24 @@ fn an_unsupported_extension_is_refused_by_name() {
     let error = render_solution_loop("loop.svg").expect_err("svg is not a raster format");
     let rendered = error.to_string();
     assert!(rendered.contains("loop.svg"), "{rendered}");
+}
+
+
+/// The two graphs are allowed to differ, but only in ways somebody decided.
+/// This pins the difference so a node appearing in one and not the other is a
+/// choice rather than a drift.
+#[test]
+fn the_workflow_loop_differs_from_the_drawn_one_only_where_declared() {
+    let drawn: Vec<&str> = NODES.iter().map(|(id, _)| *id).collect();
+    let authored = crate::orchestrator::workflow::solution_loop("a problem", Vec::new());
+
+    for node in &authored.nodes {
+        let id = node.id.as_str();
+        // `start` is the workflow model's required trigger; the state graph has
+        // an entry node instead.
+        if id == "start" || drawn.contains(&id) || WORKFLOW_ONLY.contains(&id) {
+            continue;
+        }
+        panic!("`{id}` is in the workflow loop but neither drawn nor declared as workflow-only");
+    }
 }

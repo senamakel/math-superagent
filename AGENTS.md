@@ -340,10 +340,11 @@ test-only module and must stay one.
 
 Three rules hold across both:
 
-- Derive, never restate. The workflow role registry is read off `AgentRegistry`
-  and the routing ladder's thresholds are generated from the Rust constants. A
-  second list is a second answer to a question about authority or about a
-  threshold that cost a live run to learn.
+- Derive, never restate. The workflow role registry is read off `AgentRegistry`,
+  the routing ladder's thresholds are generated from the Rust constants, and
+  `parse_reflection` calls `record_verdict` rather than reimplementing it. A
+  second list is a second answer to a question about authority, about a
+  threshold that cost a live run to learn, or about what ends a run.
 - Execution and outbound HTTP are refused from a workflow. See
   `orchestrator::caps::execution` and `::network` — running a command means
   declaring a complexity class first, and reaching the network means going
