@@ -50,6 +50,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `oeis-a001653-odd-pell` | A001653(n) = A000129(2n-1), the odd-indexed Pell numbers P_{2n-1} (1, 5, 29, 169, 985, 5741, ...), with recurrence a(n)=6a(n-1)-a(n-2) and growth ratio 3+2*sqrt(2). Equivalently the Z-values of Pythagorean triples (X,… | yes | catalogued | `research/summaries/oeis_a001653.md` |
 | `oeis-a006339-min-hypotenuse` | A006339(n) = A046112(n) = min h with prod_{p=1 mod 4}(2 a_i + 1) = 2n - 1, equivalently h^2 a sum of two squares in exactly n ways (including the axis representation); the record values/holders match the run's own… | yes | catalogued | `research/summaries/oeis_a006339.md` |
 | `oeis-a046112-circle-lattice-points` | A046112(n) = min r with 8n-4 lattice points on x^2+y^2 = r^2, equals A006339(n); \|S(e)\| (run's AP-difference count) is the same multiplicative function minus the degenerate axis term. | yes | catalogued | `research/summaries/oeis_a046112.md` |
+| `oeis-a088959-record-radii` | A088959 lists the record-holder integers e (smallest e whose square has more sum-of-two-squares representations than any smaller square); these are exactly the argmax-e of this run's \|S(e)\| = (prod_{p=1 mod… | yes | catalogued | `research/summaries/oeis_a088959.md` |
 | `patterns-bremner-2026-no-mismatch-for-2E-Q` | The magic-square-of-squares AP of doubled-point x-coordinates IS an AP of x-coordinates of points of the single curve E: y²=x(x²−c²) lying in the finite-rank subgroup 2E(Q) (rank equal to rank E(Q)); hence… | yes | asserted | `research/summaries/garcia-fritz-pasten-patterns-elliptic-2026.html.md` |
 | `pech-hourglass-sum-of-two-squares-and-additive-e` | A magic hourglass (7-square: two diagonals + central column) with centre a=A² needs A a sum of two squares in at least 3 ways, A=m²+n²=r²+s²=u²+v², giving cell differences b=4mn(m²−n²), c=4rs(r²−s²), d=4uv(u²−v²); the… | yes | asserted | `research/summaries/pech-carres-magiques-2006.md` |
 | `phi-count-sequence-not-in-oeis` | \|Φ(M)\| = 22,86,186,331,518,737,1002,1314,1656,2040,2480,2930,3448,4002,4582 (M=10..150 step 10; 8156 at 200, 32495 at 400) has no OEIS match. | yes | asserted | `code/out/phi_pattern_findings.md` |
@@ -65,9 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `primitive-mss-entry-congruences` | In a primitive 3x3 MSS all nine entries are odd and ≡1 mod 3; no entry has a 3 mod 8 prime factor; no middle-side entry has a 5 mod 8 factor; central entry ≡1 mod 4 only; and the step ratio z=py excludes p ∈ {0,1,2,3,4}… | yes | proved | `research/summaries/morgenstern-properties-3x3-square-of-squares-2007.md` |
 | `primitive-mss-modular-124-72` | A primitive 3x3 MSS has all nine entries ≡1 mod 24 and magic sum ≡3 mod 72. | yes | proved | `research/summaries/zimmermann-loria-magic-squares-of-squares-2015.md` |
 | `rabern-fulltext-not-on-disk` | The full text of Rabern's 2003 RHUMJ paper is not in the library; the index/abstract page and secondary accounts are. Its entry-prime restrictions (all odd; centre 1-mod-4-only; no 3-mod-8 anywhere; no 5-mod-8 on… | yes | asserted | `research/summaries/rabern-properties-magic-squares-of-squares-2003.md` |
-| `richardson-pvs-valid-but-mss-not-pvs-invariant` | (SL3 x SL3, M3) with the two-sided action is a prehomogeneous vector space (relative invariant det, open orbit = invertible matrices; Sato-Kimura), but the nine-square condition is not a PVS relative invariant, and the… | **unchecked** | asserted | `research/notes/literature-check-3-new-approaches.md` |
 
-_11 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_13 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
@@ -99,4 +99,6 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 - `oeis-a001653-odd-pell` (research/summaries/oeis_a001653.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-a006339-min-hypotenuse` (research/summaries/oeis_a006339.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-a046112-circle-lattice-points` (research/summaries/oeis_a046112.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-a088959-record-radii` (research/summaries/oeis_a088959.md) — read from a catalogue; no derivation here reproduces it
+- `sum-of-two-squares-multiplicity` (research/summaries/oeis_a088111.md) — read from a catalogue; no derivation here reproduces it
 - `three-primitive-equal-d-bound` (research/summaries/morgenstern-extended-searches-2013.md) — read from a catalogue; no derivation here reproduces it
