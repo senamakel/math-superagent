@@ -51,7 +51,6 @@ holds-here: yes
 status: proved (elementary parity induction); instance checked numerically to depth 600 in witnesses.json
 bearing: the entire conjecture is the statement that the second entry of every row is 0 or 2; every candidate invariant or lemma must be about this and checked against the real rows, especially where the leading {0,2} block is short.
 anchor: research/notes/reduction.md
-contradicts: (none)
 answers: what-the-reduction-is
 ```
 

@@ -16,7 +16,6 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 Resolve these before building on either side.
 
 - `block-profile-equals-a000232-minus-1` (research/ROOT.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `gilbreath-reduces-to-second-in-02` (research/notes/reduction.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `odlyzko-block-lemma-asserted` (research/ROOT.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Taken from a catalogue
