@@ -61,18 +61,20 @@ groups.
 
 **Bearing on the MSS**: the Robertson reduction says an MSS exists iff there
 is `e` with three points of `2E(Q)` on `E: y² = x(x²−c²)` with x-coordinates
-in AP. A full MSS gives an AP of length ≥ 3 of x-coordinates of points in
-2E(Q) on E_e. Garcia-Fritz & Pastén's Theorem 1.8 bounds AP length by
-`C^(r+1)`. If `C^(r+1) < 3` for some rank bound R (i.e. if `rk E_e(Q) ≤ R`),
-non-existence follows. The approach is **adopted** as
-`research/approaches/uniform-height-bound-elliptic-ap.md` — the first
-approach to use uniform Mordell–Lang rather than K3 geometry or
-2-descent. First step: extract exact Theorem 1.1/1.2 statement from the
-paper; check non-degeneracy for the MSS doubled-point configuration
-(x(2Q_i) in AP, not x(P_i)); compute explicit constant H(R,3). **Gap**: C is
-ineffective in the paper — no explicit value; the Dimitrov–Gao–Habegger
-constant is also not computed. Whether an effective bound < 3 can be
-extracted is the open question.
+in AP (length 3). Garcia-Fritz & Pastén's Theorem 1.8 bounds AP length by
+`C^(r+1)` for *any* points in E(Q). **The doubled-point question is settled**
+from §1.1 of the paper on disk: GFP defines AP as "a sequence of points
+P₁,…,P_M in E(Q) whose x-coordinates… form a non-trivial arithmetic progression
+in Q." Since 2Qᵢ ∈ E(Q), setting Pᵢ = 2Qᵢ brings doubled points under the
+theorem — no mismatch. **However, C is ineffective** (from Rémond's quantitative
+Mordell–Lang + Gao–Ge–Kühne), so C^(r+1) is not computable and almost certainly
+>> 3 for any plausible rank. The theorem reframes the problem as bounding
+rank(E_e) but does not close it. The approach is **adopted** as
+`research/approaches/uniform-height-bound-elliptic-ap.md`. Theorem 1.2
+(conditional): if ranks of elliptic curves over Q are uniformly bounded, then
+AP lengths are uniformly bounded — this would reduce MSS to a finite computation
+(though likely beyond reach). **Gap**: C is ineffective; no numerical
+contradiction can be extracted from Theorem 1.8 alone.
 - **Sallows LS1** = 7 of 8 line sums = 147² = 21609, failing non-principal
   diagonal = 38307; all nine entries perfect squares and distinct. The user's
   orientation `[127,46,58;2,113,94;74,82,97]` is the transpose of Bremner's
@@ -273,16 +275,14 @@ the Established section.
 ## Gaps
 
 (Double as research requests; see `research/REQUESTS.md`.)
-- **The `robertson-elliptic-reduction` claim was truncated but is now completed** —
-  the statement names E: y² = x(x²−c²), the three points P₀,P₁,P₂ ∈ E(Q) with
-  x-coordinates in 2E(Q) as a−b, a, a+b, and the AP condition x₂P₂−x₂P₁ =
-  x₂P₁−x₂P₀. Traced through Bremner 1999 eqs. (2)–(4).  **Still needed**: scholar
-  to verify the Garcia-Fritz–Pasten theorem's non-degeneracy hypotheses hold for
-  x-coordinates of *doubled* points (x₂P) on E_e, as opposed to x(P) itself.
-  The GFP theorem bounds AP-length of x(P_i) on E, but the MSS AP is of x₂P_i,
-  which are rational functions of the x(P_i).  If there is a mismatch, the
-  reduction statement must be downgraded from `proved` to `asserted` with the
-  gap named.
+- **Garcia-Fritz–Pasten constant C is ineffective** — the bound C^(r+1) is
+  not computable. The Dimitrov–Gao–Habegger constant c(2,1) for genus-2 curves
+  over Q is also not computed in the paper. So Theorem 1.8 says "AP length is
+  bounded by *something* exponential in rank" but gives no number. The
+  doubled-point question (x(P) vs. x(2P)) is settled: GFP §1.1 defines AP as
+  x(Pᵢ) for Pᵢ ∈ E(Q), and 2Qᵢ ∈ E(Q), so doubled points are covered. The
+  approach is sound on definitions but the ineffective constant prevents any
+  numerical contradiction.
 - **Rank of the Robertson curve** `E_e: y² = x(x²−e⁴)` for candidate e:
   Bremner's e=425 gives a specific curve — what is its rank? Can we bound
   rank(E_e) in terms of e for e that admit many representations as a sum of two
@@ -305,12 +305,6 @@ the Established section.
 - **The eight-square sub-question**: no example known, no proof. Bremner's
   7-square witness has exactly two half-realised endpoints; going 7 → 8 means
   realising one more — a precise target for an impossibility lemma.
-- **Garcia-Fritz–Pasten constant C is not explicit** — the bound C^(r+1) is
-  ineffective without knowing C. The Dimitrov–Gao–Habegger constant c(2,1) for
-  genus-2 curves over Q is also not computed in the paper. So Theorem 1.8 says
-  "AP length is bounded by *something* exponential in rank" but does not give a
-  number to check against 4. Scholar: has anyone computed or bounded these
-  constants?
 - **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
   paper is now 78KB of real content (previously 6.6KB abstract wrapper). The
   auto-generated digest in `research/summaries/wu-non-invariance-brauer-manin.md`

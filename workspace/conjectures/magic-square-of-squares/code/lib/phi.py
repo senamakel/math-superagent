@@ -115,9 +115,16 @@ def plus_one_is_square(q_nd):
 
 
 def sum_in_phi_prefilter(q1, q2):
-    """Cheap necessary-condition test that q1+q2 MIGHT be in Phi.
-    q1,q2 are reduced (num,den).  Returns the reduced sum and whether
-    1+sum is a rational square (necessary for sum in Phi)."""
+    """Cheap NECESSARY-condition test that q1+q2 MIGHT be in Phi.
+
+    q1,q2 are reduced (num,den).  Returns (sum_nd, survive).
+
+    For ANY q in Phi, both 1-q and 1+q are rational squares (since
+    f = 1 - R^2 so 1-f = R^2, and 1+f = ((m^2+2mn-n^2)/(m^2+n^2))^2).
+    Therefore if q1+q2 is to be in Phi, the SUM must satisfy BOTH
+    1-(q1+q2) and 1+(q1+q2) rational squares, and 0 < q1+q2 < 1.
+    These are necessary (never false-negative a candidate), cheap, and
+    knock out ~all pairs in practice."""
     A1, B1 = q1
     A2, B2 = q2
     num = A1 * B2 + A2 * B1
@@ -127,7 +134,8 @@ def sum_in_phi_prefilter(q1, q2):
     # q1+q2 must lie in (0,1) to be in Phi
     if A3 >= B3 or A3 <= 0:
         return (A3, B3), False
-    return (A3, B3), plus_one_is_square((A3, B3))
+    return (A3, B3), (rational_square(B3 - A3, B3)
+                      and rational_square(B3 + A3, B3))
 
 
 # ---------------------------------------------------------------------------
