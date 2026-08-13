@@ -15,6 +15,7 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | downloaded sources | `research/L0.<n>/`, digested into `research/L1.<n>/` |
 | directions of attack | `research/threads/` |
 | candidate reformulations | `research/approaches/` |
+| proof skeletons and their open gaps | `research/backward/` |
 | reflections | `reflections/L0.<n>/` |
 | what other programs import | `code/lib/<subject>.py` |
 | programs attacking one question | `code/<question>/` |
@@ -270,10 +271,10 @@ The librarian receives the root as context so it does not download the same
 paper twice. Toolkits keep the older flat shape: a folder, an `INDEX.md`, and
 one small file per helper.
 
-## The five derived ledgers
+## The six derived ledgers
 
-Five files beside the library are written by code, never by an agent, and
-re-derived from disk on every relevant write. All five follow the rule `INDEX.md`
+Six files beside the library are written by code, never by an agent, and
+re-derived from disk on every relevant write. All six follow the rule `INDEX.md`
 already established: what a source establishes is a judgement and stays with the
 agent that made it; whether the summary agrees with the files is not, so it is
 measured. Each is described through `record_description` when written, so no
@@ -331,6 +332,26 @@ stances are a life cycle rather than a flag: `proposed`, `grounded`, `refuted`,
 `adopted`, `spent`. Empty `precedent` means nobody checked, which is not the same
 as nothing having been found; refuted and spent approaches are kept with their
 reasons, on the dead-thread argument.
+
+`research/BACKWARD.md` (`backward.rs`) is the other axis: not what the run has
+tried, but what would be *enough*. An approach is a route to the goal; a
+skeleton is the goal decomposed into propositions that can each be attacked
+alone. Without one, an investigation can verify data for twelve hours having
+never written down what a proof would consist of, which is the failure this
+ledger exists to make visible. A skeleton is
+`research/backward/<slug>.md` carrying one fenced `skeleton` block — `goal`,
+`implies`, `status`, `rests-on`, `killed-by`, with stances `sketched`, `live`,
+`discharged`, `broken`, `spent` — and one fenced `gap` block per missing lemma:
+`id`, `lemma`, `status`, `discharged-by`, `thread`, `next`. Two block kinds
+rather than a `gaps:` list because a gap needs an identity that survives a
+rewrite; a list cannot carry per-gap status or say which claim closed which
+lemma. `implies` is load-bearing: three attractive lemmas that do not recombine
+into the goal is what a decomposition gets wrong, and a file that never stated
+the inference cannot be checked for it. Unlike the approach ledger this one is
+re-derived on a *note* write as well as its own, because a gap is discharged by
+a claim — so the same note that adds or removes one can close a gap or strand
+it. `discharged` is deliberately not a closed stance: it is the one terminal
+state that is a result.
 
 `research/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
 to throw away. `readable.rs` has always parsed every anchor into a reference

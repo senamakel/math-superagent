@@ -1,0 +1,14 @@
+3-Higgs recursion matches OEIS A057447 for all 58 DATA terms.
+First 30 terms: 2, 3, 5, 7, 11, 13, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 101, 107, 109, 127, 131, 139, 149
+sigma_star(6) == 2n : True
+sigma_star(60) == 2n : True
+sigma_star(90) == 2n : True
+sigma_star(87360) == 2n : True
+sigma_star(146361946186458562560000) == 2n : True
+EXAMPLE factorization of the fifth term reproduces it: True
+prime divisors of 6: [2, 3]; not 3-Higgs in first 58 terms: none
+prime divisors of 60: [2, 3, 5]; not 3-Higgs in first 58 terms: none
+prime divisors of 90: [2, 3, 5]; not 3-Higgs in first 58 terms: none
+prime divisors of 87360: [2, 3, 5, 7, 13]; not 3-Higgs in first 58 terms: none
+prime divisors of 146361946186458562560000: [2, 3, 5, 7, 11, 13, 19, 37, 79, 109, 157, 313]; not 3-Higgs in first 58 terms: none
+ALL CHECKS PASSED
