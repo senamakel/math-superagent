@@ -42,3 +42,31 @@ confirms the shape of the obstruction: effective per-pair, not uniform in the
 pair, via an explicitly-compu-table route when the curve data is available.
 
 Evidence class: sourced (full text read).
+
+```claim
+id: bmsst-hyperelliptic-effective-method
+statement: Bugeaud-Mignotte-Siksek-Stoll-Tengely 2008 (Algebra & Number Theory
+  2:8, 859-885; arXiv:0801.4459): for a hyperelliptic curve C: Y^2 = a_n X^n +
+  ... + a_0 with n >= 5 and squarefree/irreducible RHS, a COMPLETELY EXPLICIT
+  upper bound on the integral points follows from Matveev's linear-forms bounds,
+  refined height estimates (Voutier, Bugeaud), and regulator estimates (Landau),
+  PROVIDED one knows a rational point on C and a Mordell-Weil basis for J(Q);
+  combined with a refined Mordell-Weil sieve this determines ALL integral
+  points. Their Theorem 3 gives log|x| <= 8A*_1 log(4A*_1) + 8A*_2 + H* + ...
+  with A*_1 containing C(L,2r+1)(c*_1)^2 d R^2 (regulator squared, unit ranks,
+  Matveev constants of K = Q(alpha)); worked examples have log x bounds
+  10^263-10^565, reduced by the sieve (index ~10^3240 over ~10^5 primes).
+hypotheses: hyperelliptic with irreducible RHS of degree n>=5; a rational point;
+  explicit MW basis of the Jacobian; explicit canonical-height-difference
+  bounds (available only for genus 2 at present - BMSST p.2 verbatim: no such
+  bounds are known for genus >= 3).
+holds-here: yes for the solved (2,5) pair (the curve C(x,2)=C(y,5) is BMSST
+  equation (4), genus 2, Jacobian rank 3); the genus>=3 gap means the family
+  beyond a small initial segment is inaccessible to this route.
+status: asserted-by-source (primary full text read)
+bearing: the method engine behind the (2,5) complete solution and a concrete
+  template for an effective per-pair bound with computed constants (GOAL
+  deliverable); confirms the effective-methods-wall obstruction (per-curve
+  data required, not uniform in (k1,k2)).
+anchor: research/sources/bugeaud-hyperelliptic-2008.full.md
+```

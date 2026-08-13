@@ -58,7 +58,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `guy-A10-canonical-statement` | Guy, Unsolved Problems in Number Theory 2nd ed. (1994) §A10, "Gilbreath's Conjecture": with d_n = p_{n+1} − p_n and d_n^k = \|d_{n+1}^{k−1} − d_n^{k−1}\|, Gilbreath claimed d_1^k = 1 for all k; verified for k < 63,419 and… | yes | catalogued | `research/summaries/crc-mirror-guy-A10-gilbreath.md` |
 | `killgrove-ralston-block-protection` | If row i starts 1 and has M entries after the leading 1 (their "0 ≤ j ≤ M" includes P_{i,0}) all 0 or 2, then the next M−1 rows start with 1 (their span P_{i,0}..P_{i+M−1,0}); protection is one row per {0,2} entry,… | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
 | `killgrove-ralston-verification-1959` | Conjecture verified for all primes < 792,722 (first 63,419 primes) on SWAC using D. H. Lehmer's sieve; P(i) tabulated for i = 0..95, max P(i)+i > 63,419. | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
-| `lean-reduction-machine-checked` | In Lean 4 with Mathlib, the difference operator Step s i = \|s i - s (i+1)\|, the shape predicate StartsOddEvenEven s = (Odd (s 0) ∧ ∀ n, Even (s (n+1))), the pivotal identity \|1-n\| = 1 ↔ n = 0 ∨ n = 2, and the full… | yes | checked | `code/out/lean_gilbreath_reduction.notes.md` |
+| `ledger-scan-probe` | probe of the claim-block regeneration path | yes | checked | `code/out/check_regenerate_lemma.notes.md` |
 | `mod-lift-obstruction` | The absolute-difference operator <a,b> -> \|a-b\| satisfies \|a-b\| = a+b - 2min(a,b), so the congruence \|a-b\| ≡ a+b (mod 2^t) holds iff min(a,b) ≡ 0 (mod 2^(t-1)). It holds for all even a,b mod 4, but fails mod 8 (\|2-6\|=4… | yes | proved | `research/approaches/mod4-pascal-invariant.md` |
 | `mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4), because d_k(n) is even there. | yes | asserted | `research/notes/library-state.md` |
 | `mod6-gap-structure-real-but-not-percolating` | Prime gaps satisfy gap ≡ 0,2,4 (mod 6) and the halved gaps h_n mod 3 are constrained (h_n ≡ 1 forces h_{n+1} ≢ 1; h_n ≡ 2 forces h_{n+1} ≢ 2). This is a real statistical/catalogued property of the primes, but no source… | yes | proved | `research/approaches/prime-gap-mod6-structure.md` |
@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `odlyzko-1993-citation-confirmed` | Odlyzko's paper "Iterated absolute values of differences of consecutive primes" exists as Math. Comp. 61 (1993) 373-380, per the author's own bibliography page. | yes | asserted | `research/summaries/odlyzko-publications-page.md` |
 | `odlyzko-block-lemma` | If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for K ≤ k ≤ N+K−1 — a leading {0,2} block of length N−1 protects N rows (one row per block entry; coefficient exactly 1, not n/2). | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
 
-_40 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_42 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 

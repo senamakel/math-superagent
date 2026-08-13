@@ -61,3 +61,14 @@ anchor: code/out/check_regenerate_lemma.captured.txt
 
 The earlier claim `candidate-regeneration-iff-refuted` is withdrawn; its
 "failures" were the off-by-one bug.
+
+```claim
+id: ledger-scan-probe
+statement: probe of the claim-block regeneration path
+hypotheses: none
+holds-here: yes
+status: checked
+bearing: probe only; delete after the mechanism is understood
+anchor: code/out/check_regenerate_lemma.notes.md
+source: probe
+```

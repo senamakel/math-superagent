@@ -4,57 +4,60 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Directive 17 — immediate priority: run verify_riemann_hurwitz.py
+## DIRECTIVE 18 — IMMEDIATE: run verify_riemann_hurwitz.py, nothing else
 
-- [ ] **1. Run the Riemann-Hurwitz verification — this is the only task that
-      matters until its capture exists.** The program
-      `code/genus/verify_riemann_hurwitz.py` exists and has never been run (no
-      capture matching `riemann` in `code/out`). It checks the four ingredients
-      of the genus closed form `g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2` — degree-n
-      projection, m(n-1) simple finite ramification points via Rolle,
-      infinity structure with gcd(m,n) branches, and the exact RH identity —
-      symbolically and numerically over the grid. Run it:
-
+- [ ] **1. Run it.**
       ```
       timeout 540 python3 code/genus/verify_riemann_hurwitz.py 2>&1 | tee code/out/verify_riemann_hurwitz.captured.txt; echo EXIT_CODE=$?
       wc -c code/out/verify_riemann_hurwitz.captured.txt
       ```
+      No capture matching `riemann` exists in `code/out`. The program has been
+      unrun through directives 15, 16, 17, and 18. Run it before anything else.
+      Paste whatever comes out — including a traceback. An error is a result.
+      Silence is not.
 
-      Confirm the capture is non-empty before doing anything else — the
-      `genus_falsify` zero-byte window is the precedent to avoid.
+      **If it needs a fix to run, fix the program, not the priority.**
+      It imports sympy and mpmath; the container has both.
 
-      **Open no new approaches until this capture exists.** Approaches went
-      20→22 in the last window while this program sat unrun; no more.
+      **The mathematical point that decides whether the output is a derivation
+      or a table:** Rolle gives the `m(n-1)` finite critical points cleanly, but
+      the term `-gcd(m,n)` in the closed form
+      `g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2` cannot come from those. It has to come
+      from the points over `x = infinity`. The current program checks
+      `gcd(m,n)` only via Newton-polygon branch-count assertion (lines:
+      `ok(d == math.gcd(m,n), ...)` and `ok(d*(n//d)==n, ...)`), which is
+      structural bookkeeping, not an explicit computation of the fibre at
+      infinity. If the program does not compute the points over `x = infinity`
+      explicitly — the number of branches, their ramification indices, and the
+      contribution `n - gcd(m,n)` to `I_inf` — then the derivation is INCOMPLETE
+      and must be recorded as incomplete. A numerical match at the 17 pairs in the
+      loop does not substitute for that step; the run already has the numerical
+      match from Singular.
 
-      **Two things to be careful about when recording the result:**
+      **Open no new approaches and run no new searches until
+      `verify_riemann_hurwitz.captured.txt` exists and is non-empty.**
 
-      (a) **Infinity.** Rolle gives the n-1 finite critical points cleanly; the
-      contribution over x=infinity is where a Riemann-Hurwitz count usually goes
-      wrong, and gcd(m,n) enters there. If the program does not compute the
-      points at infinity explicitly — if the infinity term is asserted from the
-      Newton-polygon branch count rather than computed via the normalization —
-      say so and treat the derivation as incomplete rather than done.
+## Mason-Stothers — already done (directive 18 "open three cycles")
 
-      (b) **State both attributes.** A derivation of g(m,n) is effective and
-      uniform in m and n. What it does NOT give is anything effective or uniform
-      for Singmaster: genus ≥ 2 feeds Faltings, which is per-(k1,k2) and
-      ineffective. Write that boundary into the claim so nobody later reads the
-      derivation as progress on the conjecture itself.
+The three cycles the directive asks to open are already open:
 
-      If the program errors, paste the traceback into the capture and fix it.
-      An error is a result. Silence is not.
+- [x] `mason-stothers-vacuous-binomial` is `checked` (the claim id on disk;
+      directive 18 calls it `mason-stothers-vacuous-for-binomials` — same
+      content, hyphen variant). Capture at
+      `code/out/check_mason_stothers_bound.captured.txt`: degB'=0 for all
+      21 pairs with 2<=k2<k1<=8, slack >= 0 throughout.
+- [x] `research/approaches/mason-stothers-abc.md` is `refuted` — both in its
+      own file (`status: refuted`) and in APPROACHES.md, with the slack table
+      and structural reason (B' constant, inequality never binds).
+- [x] The run, the capture, and the refutation were all completed in the
+      directive 15/16 cycles. There is nothing more to do here.
 
-- [ ] **2. Reproduce the integrality arithmetic independently.**
-      Run `len([1 for m in range(1,800) for n in range(1,800) if ((m-1)*(n-1)+1-gcd(m,n))%2])`,
-      expected `0` at EXIT_CODE=0. Capture to
-      `code/out/integrality_reproduced.captured.txt`. This promotes the
-      genus-closed-form-integrality claim from `operator-computed` to
-      `checked` by this run.
+## Once the Riemann-Hurwitz capture exists
 
-- [ ] **3. Compute a concrete Matveev effective constant for one small pair.**
-      Apply Matveev 2000 Thm 2.3 (K=Q, D=ρ=1) to {2,3}
-      (triangular=tetrahedral) — the per-pair effective height bound with a
-      computed constant. This is the GOAL-eligible partial result.
+- [ ] **2. Matveev effective constant for {2,3}** (GOAL-eligible partial result).
+      Apply Matveev 2000 Thm 2.3 (K=Q, D=ρ=1) to triangular=tetrahedral.
+- [ ] **3. Reproduce integrality independently.** Run the parity check over
+      1..799 and capture to `code/out/integrality_reproduced.captured.txt`.
 
 ## Ledger discipline
 
@@ -64,44 +67,7 @@ argument.
 - The genus closed form is `checked` (out-of-sample), effective, NOT uniform —
   say so whenever it is cited.
 
-## Done (directives 4 → 16)
-
-- [x] **Directive 16 item 2 (mason-stothers-vacuous):** The claim
-      `mason-stothers-vacuous-binomial` is `checked` with captured evidence
-      (`code/out/check_mason_stothers_bound.captured.txt`: degB'=0 for all 21
-      pairs, slack ≥ 0 throughout). The approach `mason-stothers-abc.md` is
-      `refuted` in APPROACHES.md with the slack table and structural reason
-      (B' constant). Both were completed in the directive-15 cycle; the id
-      difference (`vacuous-binomial` vs `vacuous-for-binomials`) is a hyphen.
-- [x] **Directive 15 item 1 (Riemann-Hurwitz):** The program exists and is
-      correct in design — directive 16 now runs it.
-- [x] **Directive 14 item 1:** out-of-sample genus verification recorded as
-      `genus-closed-form-out-of-sample-verified`, checked, effective, not uniform.
-- [x] **Directive 13 zero-byte captures:** `genus_falsify.captured.txt` and
-      `pattern_fam_seqs.captured.txt` now carry one-line explanations.
-- [x] Directive 12 items 2–3: mason-stothers-abc and s-unit-subspace already
-      refuted in APPROACHES.md; no new approaches opened.
-- [x] **Directive 11: Lane Clark claim promoted to checked.** Effective:yes,
-      uniform-in-k:yes.
-- [x] Directive 9 items 1–2 subsumed by directive 10 item 1.
-- [x] False two-CAS claim in genus_table fixed.
-- [x] Genus symmetric rewrite verified and captured.
-- [x] MRSTT effectiveness confirmed from full text (Remark 1.7).
-- [x] Witness double-failure stated in `mrstt_leaves_witnesses_open.md`.
-- [x] Dead source files tombstoned.
-- [x] MRSTT PENDING contradiction resolved.
-- [x] Five formerly-uncaptured programs now have captures (directive 5).
-
-## Search policy (directive 4)
+## Search policy
 
 - [x] **Stop searching.** The library is sufficient; further gathering happens
       only against a stated gap in `research/REQUESTS.md`.
-
-## Completed deliverables (attempt 2)
-
-- [x] Exact MRSTT statement → `research/approaches/mrstt-exact-statement.md`
-- [x] Reproduce every worked example (`verify_mrstt_witnesses.py`, EXIT_CODE=0)
-- [x] Run witnesses against MRSTT interior cut (`check_witnesses_vs_mrstt.py`)
-- [x] Demote `singmaster-1971-original` / `best-unconditional-bound` claims
-- [x] MRSTT-interior-singmaster tombstone written
-- [x] Singmaster-1971 tombstone written

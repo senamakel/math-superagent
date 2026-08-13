@@ -1,71 +1,35 @@
-<!-- source: https://doi.org/10.4064/aa-64-1-87-98 | converted from HTML -->
+# Zannier 1993 — "Some remarks on the S-unit equation in function fields" (dead download)
 
-Some remarks on the S-unit equation in function fieldsAll
+Source: U. Zannier, Acta Arithmetica 64 (1993) 87–98, DOI 10.4064/aa-64-1-87-98.
 
-You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.
+## What is held
 
-# [Instytut Matematyczny Polskiej Akademii Nauk][2] / [pl][2] / [Wydawnictwa][3] / [Czasopisma IMPAN][4] / [Acta Arithmetica][5] / [Wszystkie zeszyty][6]
+Only the **IMPAN landing-page capture** (`research/sources/zannier-1993-sunit-function-fields-summary.full.md`,
+~2 KB). The page shows the title, author, volume/pages, and a CC-BY download
+link — **no paper content**.
 
-## Acta Arithmetica**
+## Bearing for this run — does not help
 
-Przeszukaj wydawnictwa IMPAN **
+- The paper is a **function-field** S-unit equation paper (Mason/Voloch-type
+  results over function fields). The run's `mason-stothers-abc` approach note
+  already records why function-field S-unit results (Zannier 1993 among Mason
+  1984, Wang 2004, Mueller 2000) **do not transfer** to the number-field
+  integral points of `C(x,k1)=C(y,k2)` — the classification there stays
+  ineffective per-pair.
+- Nothing is libellable from this landing page. The file exists so the
+  bibliographic record is on disk and nobody re-fetches the wrong URL.
 
--->
-
-## Some remarks on the S-unit equation in function fields
-
-### [Tom 64 / 1993][7]
-
-Umberto Zannier Acta Arithmetica 64 (1993), 87-98 DOI: 10.4064/aa-64-1-87-98
-
-#### Autorzy
-
-- Umberto Zannier
-
-[Pobierz zgodnie z CC-BY][8]
-
-Przeszukaj wydawnictwa IMPAN **
-
-- [9]
-- [10]
-- [11]
-- [12]
-- [13]
-- [14]
--
-- [15]
-- [16]
-
--->
-
-## Przeszukaj wydawnictwa IMPAN
-
-Zbyt krótkie zapytanie. Wpisz co najmniej 4 znaki.
-
-## Przepisz kod z obrazka
-
-Odśwież obrazek
-
-Odśwież obrazek
-
-Wyjdź
-
-
-## Links
-
-[1]: http://browsehappy.com/
-[2]: /
-[3]: https://www.impan.pl/pl/wydawnictwa
-[4]: https://www.impan.pl/pl/wydawnictwa/czasopisma-i-serie-wydawnicze
-[5]: https://www.impan.pl/pl/wydawnictwa/czasopisma-i-serie-wydawnicze/acta-arithmetica
-[6]: https://www.impan.pl/pl/wydawnictwa/czasopisma-i-serie-wydawnicze/acta-arithmetica/all
-[7]: pl/wydawnictwa/czasopisma-i-serie-wydawnicze/acta-arithmetica/all/64
-[8]: /shop/publication/transaction/download/product/107800
-[9]: https://www.impan.pl/pl/instytut/dofinansowane-projekty
-[10]: http://bip.impan.pl/index.php
-[11]: /pl/instytut/o-nas/gazeta
-[12]: https://www.impan.pl/en/insitute/a-plus
-[13]: https://www.impan.pl/pl/inne/strategia-hr
-[14]: https://www.impan.pl/en/mathematical-world/organisations/wcnm
-[15]: https://www.impan.pl/pl/dzialalnosc/biblioteka/ozwrcin
-[16]: http://rcin.org.pl/impan/dlibra?action=ChangeLanguageAction&language=en
+```claim
+id: zannier-1993-landing-only
+statement: Zannier 1993 (Acta Arith. 64, 87-98) "Some remarks on the S-unit
+  equation in function fields" exists at DOI 10.4064/aa-64-1-87-98, but only
+  the IMPAN landing page is held; no theorem is libellable from this file.
+  The mason-stothers-abc approach already records why function-field S-unit
+  results do not transfer to the number-field binomial-curve problem.
+hypotheses: none — no usable statement.
+holds-here: no (no readable content; function-field framework does not apply).
+status: unverified (landing-page capture only)
+bearing: negative — the bibliographic record is confirmed; no content is
+  sourced. Do not quote Zannier 1993 as a held source.
+anchor: research/sources/zannier-1993-sunit-function-fields-summary.full.md
+```

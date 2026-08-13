@@ -23,5 +23,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `rule90_depth_test.py` | _(undescribed)_ |
 | `rule90_depth_test2.py` | _(undescribed)_ |
 | `sequence_extract.py` | _(undescribed)_ |
-| `surplus_structure.py` | Confirms the recharge surplus S_k = b_k - b_1 + (k-1) is monotone nondecreasing over k=1..1000 (a corollary of the proved erosion bound d >= -1), strictly increasing exactly at the 60 regeneration rows. Also computes OLS slope of log(jump) vs log(b) = 0.388 over 43 positive-jump events (jump grows sublinearly with b). |
+| `surplus_structure.py` | Structural probes on blocks_depth1000.json: (1) recharge surplus S_k = b_k - b_1 + (k-1) and its delta law S_{k+1}-S_k = (b_{k+1}-b_k)+1, monotonicity, and event-set (fixed this run: 1-based/0-based index bug and > vs >= event detection dropped the 17 jump-0 stalls — identity now exact over all k=1..1000, 60 events, monotone nondecreasing); (2) OLS slope log(jump) vs log(b) = 0.388 over 43 positive-jump events; (3) gap before large vs small jumps (no separation: 3.54 vs 2.48); (4) b-ratio across consecutive regen rows. Verified by independent one-line recomputation. Captured in out/surplus_structure.captured.txt, out/surplus_renewal_table.captured.txt; writeup out/surplus_renewal_structure.md. |
 | `verify_intruder_law.py` | _(undescribed)_ |

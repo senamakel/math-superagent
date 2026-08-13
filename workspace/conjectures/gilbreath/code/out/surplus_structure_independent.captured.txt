@@ -1,0 +1,6 @@
+identity ok: True | events: 60
+surplus nondecreasing: True
+S[k] == b[k]-b1+k identity: True
+final surplus S_1000 = 1270603 ; needed (k-2) = 998 ; margin = 1269605
+slope log(jump) vs log(b) over 43 events: 0.388
+b at events sample: [7, 13, 13, 24, 24, 58, 97, 97, 173, 175, 175, 175, 175, 290, 739, 873, 872, 2179, 2770, 2762, 2762, 2762, 3365, 4207, 5942]

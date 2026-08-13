@@ -72,5 +72,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `step_law_and_recharge_verified.md` | _(undescribed)_ |
 | `step_law_captured.txt` | _(undescribed)_ |
 | `step_law_independent.captured.txt` | _(undescribed)_ |
+| `surplus_renewal_structure.md` | Writeup of the executed result: the recharge surplus S_k = b_k - b_1 + (k-1) is a monotone renewal statistic — delta law S_{k+1}-S_k = (b_{k+1}-b_k)+1 exact at all 999 transitions, strictly increasing exactly at the 60 (2,4)-events, S_k >= N_k always, S_1000 = 1270603 vs 998 required (margin 1269605). Reformulates Gilbreath: b_k >= 1 for all k iff S_k >= k - b_1 for all k, i.e. erosion never overtakes the recharged surplus. Carries claim `surplus-renewal-structure-1000` (checked, depth 1000). Does NOT bound the event rate — the open next step. |
 | `survivor_analysis.captured.txt` | _(undescribed)_ |
 | `witnesses.json` | Oracle: row data and block profile for depth 600 (sieve to 400000, 33860 primes); `A_1..A_5` first 12, `block_profile_first_40`. Everything else is checked against it. |

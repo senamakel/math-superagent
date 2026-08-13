@@ -26,3 +26,23 @@ run's verified Pell/Fibonacci derivation. No new claim is asserted here that is
 not already cross-checked in this workspace.
 
 See also the full text at `research/sources/mathworld-pascals-triangle.full.md`.
+
+```claim
+id: mathworld-witness-and-family-corroboration
+statement: MathWorld (Stover & Weisstein, Pascal's Triangle): confirms the
+  witness set exactly (3003 = C(14,6)=C(14,8)=C(15,5)=C(15,10)=C(78,2)=C(78,76)=
+  C(3003,1)=C(3003,3002), i.e. N(3003)=8 under both-mirrors-plus-trivial), the
+  high-multiplicity catalogue A003015 (1, 120, 210, 1540, 3003, 7140, 11628,
+  24310, ... "with no others up to 33*10^16"), and the infinite family
+  m = F_{2k-1}F_{2k}, n = F_{2k}F_{2k+1} as the solutions to C(n,m-1)=C(n-1,m)
+  (Singmaster 1975), first values 1, 3003, 61218182743304701891431482520, ...
+  (OEIS A090162).
+hypotheses: entries counted as (n,k) pairs (mirrors distinct); rows <= n.
+holds-here: yes — independent encyclopedic corroboration of the run's witness
+  set, N=6 list, verification bound, and the Fibonacci-family parametrization.
+status: asserted (encyclopedic tier; the numerical statements match the run's
+  checked computations)
+bearing: a second encyclopedic source (besides Wikipedia and OEIS) confirming
+  the record frame; no new binomial method or bound.
+anchor: research/sources/mathworld-pascals-triangle.full.md
+```

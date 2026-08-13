@@ -15,7 +15,15 @@
 
 ## Next
 
-- [ ] Attack H_even via the divisor-level problem for Φ_{4p}(2). The biquadratic-character approach (research/approaches/biquadratic-character-divisors.md) is the active line. First concrete step: compute Gaussian factorization of 2^p + i for small primes p and tabulate (2/π)_4 against p mod 8 and Aurifeuillean half. Use `code/heven_classify.py` and `code/heven_patterns.py` as entry points.
+- [ ] **DIRECTIVE 12:** Run the fixed equality-case verifier and record the capture.
+  ```bash
+  timeout 540 python3 code/equality_case_verify.py 2>&1 | tee code/out/equality_case_verify_FIXED.captured.txt; echo EXIT_CODE=$?
+  ```
+  Confirm M(28) < T(28) and M(29) >= T(29), then update claim
+  `budget-equality-case-impossible` anchor to include this capture. Record the
+  boundary as 28, no exclusion at 29 or beyond. Move checked from 4 to 5.
+
+- [ ] Attack H_even via the divisor-level problem for Φ_{4p}(2).
 
 ## Standing
 

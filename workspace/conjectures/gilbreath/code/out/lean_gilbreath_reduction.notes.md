@@ -59,12 +59,6 @@ pure; the instantiation to the primes is arithmetic.
 The regeneration content of the conjecture is untouched: this formalises the
 existing reduction, it does not prove that second entries stay in {0,2}.
 
-```claim
-id: lean-reduction-machine-checked
-statement: In Lean 4 with Mathlib, the difference operator Step s i = |s i - s (i+1)|, the shape predicate StartsOddEvenEven s = (Odd (s 0) ∧ ∀ n, Even (s (n+1))), the pivotal identity |1-n| = 1 ↔ n = 0 ∨ n = 2, and the full reduction theorem are formalised and kernel-checked: gilbreath_reduction {X : ℕ→ℕ→ℕ} (hs : RowStream X) (hshape₁ : StartsOddEvenEven (X 1)) (hlead₁ : X 1 0 = 1) : GilbreathConjecture X ↔ SecondEntryIn02 X, i.e. for any row stream with the prime-row shape and leading entry 1 at row 1, "every row starts with 1" is equivalent to "every row's second entry is 0 or 2". #print axioms on every declaration returns exactly [propext, Classical.choice, Quot.sound] (the standard Lean base set used by Mathlib itself), with zero sorry and zero sorryAx.
-hypotheses: the statement is a theorem about arbitrary row streams (X (k+1) = Step (X k)); the hypotheses are that stream row 1 has the shape and leading 1. These hold for the prime triangle by computation only (witnesses.json reproduces A_1 = 1,2,2,4,2,4,2,4,6,2,...) — not instantiated in Lean.
-holds-here: yes — the prime rows satisfy the hypotheses (verified computationally), and the theorem gives exactly the run's established claim gilbreath-reduces-to-second-in-02 as a machine-checked statement.
-status: checked (three files compile with EXIT=0 and the axiom ledgers are captured: code/out/lean_gilbreath_reduction.captured.txt, code/out/lean_reduction.captured.txt, code/out/lean_shape.captured.txt)
-bearing: GOAL.md deliverable "Lean 4 formalisation of the difference operator and the induction step, with #print axioms output and every sorry listed" is complete; the instantiation-to-primes boundary remains computation-checked, not Lean-proved.
-anchor: code/lean/gilbreath_reduction.lean (proves everything self-contained); also code/lean/reduction.lean and code/lean/shape.lean (repaired from non-compiling)
+[SUPERSEDED by `gilbreath-second-entry-equivalence` — Directive 20, 2026-08-14.  The claim below paraphrased the operator as `|s i - s (i+1)|`, which in ℕ is ambiguous (could be read as truncated `Nat.sub` rather than `Nat.dist`).  The source file `code/lean/gilbreath_reduction.lean` defines `Step s i = Nat.dist (s i) (s (i+1))` verbatim, and `gilbreath-second-entry-equivalence` (in `research/notes/library-state.md`) quotes that definition exactly.  This row is retired; the verbatim claim at `proved` is the live one.]
+
 ```

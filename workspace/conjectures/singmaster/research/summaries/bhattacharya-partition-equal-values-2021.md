@@ -1,4 +1,4 @@
-# Tengely–Ulas 2021 — Equal values of partition functions via Diophantine equations
+# Tengely–Ulas 2021 — Equal values of partition functions via Diophantine equations (does NOT help)
 
 Source: Sz. Tengely, M. Ulas, Res. Number Theory 7:67 (2021), open access.
 Full text read: `research/sources/bhattacharya-partition-equal-values-2021.full.md`

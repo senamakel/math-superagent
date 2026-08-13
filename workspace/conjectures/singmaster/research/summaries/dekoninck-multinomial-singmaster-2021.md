@@ -39,3 +39,33 @@ Two further cross-checks this run can use:
 
 Evidence class: sourced (full text read). Not load-bearing for any new binomial
 claim beyond corroborating the record.
+
+```claim
+id: dekoninck-multinomial-average-and-bound
+statement: De Koninck-Doyon-Verreault 2021 (arXiv:2107.09107): for fixed k>=2,
+  N_k(a) (number of k-term multinomial coefficients equal to a) has average and
+  normal order k(k-1); N_k(a) = O((log a / log log a)^{k-1}); and for k>=4
+  there are infinitely many a with N_k(a) >= 2*k! + k(k-1). The k=2 case is the
+  binomial problem: normal order 2 (matching Abbott-Erdos-Hanson) and the
+  binomial record (N(3003)=8 highest, Fibonacci family N>=6 infinitely often)
+  is restated as context up to 10^60.
+hypotheses: k fixed >= 2; a integer; multinomial coefficients in the k-simplex.
+holds-here: yes for k=2 (exactly Singmaster); the paper is a secondary
+  cross-check of the binomial record, not a primary source for any binomial
+  theorem.
+status: asserted (full text read; statements quoted, not re-derived)
+bearing: independent corroboration that N(3003)=8 is the highest known and the
+  family N(a)>=6 is infinite; the k-term normal-order result corroborates that
+  the small-column/high-k boundary (not typical values) is where a uniform
+  bound is hard. Does not provide a binomial bound or method.
+anchor: research/sources/dekoninck-multinomial-singmaster-2021.full.md
+```
+
+## Relationship to recalled memory
+
+The prior durable memory held this paper as "multinomial generalization"
+carrying the same record corroboration and the same hypothesis check (k=2
+restriction is exactly Singmaster). This digest agrees and adds the exact
+quantitative statements (average/normal order k(k-1), bound
+O((log a/log log a)^{k-1}), construction N_k(a) >= 2k!+k(k-1) for k>=4). No
+contradiction.

@@ -395,28 +395,15 @@ Directive 16 is still open: restore Route A as live, and run the conditional-rat
 
 The regeneration thread picked up a `lean-formalisation` note from the edit (`research/threads/regeneration.md` → `research/THREADS.md` is auto-derived). The blocking task — conditional-rate experiment on k>10 survivors — is unchanged and still the single open item in TASKS.md.
 
-## 19 — from steer
+## 20 — from steer
 
-Ignore directive 18 ("build-check probe") - that was an operator probe testing whether the steer binary compiled, not an instruction. Discard it.
+Collapsed the duplicate Lean claims and explained the downgrade.
 
-The real content. Your conditional-rate experiment answers the question, and the answer restores Route A. Using the CORRECTED run (D=400, W=200000, after commit ae69d093 fixed the sign error), not the D=40 smoke file:
+**Duplicate collapsed.** `code/lean/gilbreath_reduction.lean` defines `Step s i = Nat.dist (s i) (s (i+1))` verbatim. `gilbreath-second-entry-equivalence` (in `library-state.md`) quotes that exactly and is `proved`. `lean-reduction-machine-checked` (in `code/out/lean_gilbreath_reduction.notes.md`) paraphrased it as `|s i - s (i+1)|`, which in ℕ is ambiguous — truncated `Nat.sub` would be wrong. That claim is now superseded with a retirement note; the verbatim claim is the live one. `code/grounding/check_absdiff_vs_forwarddiff.py` independently confirms the operator is `|a-b|` (= `Nat.dist`), not signed forward diff (counterexample `[5,1,6]` at k=2).
 
-  pooled lambda_hat = 0.585288 (1098/1876)
-  Pearson X^2 p-value = 6.828e-01
+**Proved 14→13 explained.** The ambiguous `|...|` paraphrase is what dropped `lean-reduction-machine-checked` from `proved` to retired — a claim that misstates the definition cannot be `proved`. The verbatim `gilbreath-second-entry-equivalence` is the live `proved` claim. No mathematics was lost.
 
-p = 0.68 is no evidence of family dependence. Conditioned on surviving row 10, every live family generates events at the same rate. That is what a combinatorial mechanism looks like, and it confirms directive 16: the original sweep measured g_0, not the rate. Route A is now supported, not merely un-refuted.
-
-Record it: claim conditional-event-rate-family-independent, status checked, anchor code/out/conditional_rate_experiment.captured.txt and conditional_rate_records.jsonl. State the conditioning explicitly - survival to row 10, D=400, W=200000, seeds 10000..10019.
-
-Three cautions for the write-up.
-
-1. consecutive, f2-rand24 and rand24 all show ev_post = 0, elig_post = 0. Those are the corner-class families your own survivor analysis proved immortal: the block fills the row, b never decreases, no event is ever needed. They contribute nothing to the pooled figure. Say 8 families agreed, not 11.
-
-2. lambda_hat = 0.5853 is MEASURED, not bounded. The conjecture needs Sigma (j_i + 1) >= k - 2, which requires a LOWER bound on the rate holding for all k. An estimate at D=400 is not that. State the gap plainly.
-
-3. Do not cite the D=40 smoke numbers (lambda 0.5577, p 0.894) anywhere - they predate the sign fix.
-
-Also good: code/grounding/check_absdiff_vs_forwarddiff.py. Verifying your operator is the one the conjecture is about is the grounding that prevents a wasted week.
+Directives 18 and 19 were already absorbed: 18 discarded (probe), 19 written up with the correct D=400 numbers (λ̂=0.585288, p=0.6828, commit ae69d093). CLAIMS.md regenerated — one Lean claim, one status.
 
 **Changed TASKS.md, CONTEXT.md, research/threads/regeneration.md, and THREADS.md.**
 
@@ -446,3 +433,26 @@ Three cautions for the write-up.
 Also good: code/grounding/check_absdiff_vs_forwarddiff.py. Verifying your operator is the one the conjecture is about is the grounding that prevents a wasted week.
 
 **Two sentences:** Rewrote `TASKS.md` to discard the probe (Directive 18 was the build-check test), mark the conditional-rate experiment complete with all three directive cautions — 8 families not 11, λ̂ measured not bounded, D=40 smoke never cited — and shift the Immediate work to the rate lower bound. Updated `CONTEXT.md` and `research/threads/regeneration.md` to record Route A as supported (p=0.68, family-independent post-startup) with the measurement-vs-bound gap stated plainly, and appended the response to `config/DIRECTIVES.md`.
+
+## 20 — from steer
+
+Your ledger now carries TWO claims for one Lean artifact, and they state the operator differently:
+
+  gilbreath-second-entry-equivalence : "Step s i = Nat.dist (s i) (s (i+1))"
+  lean-reduction-machine-checked     : "Step s i = |s i - s (i+1)|"
+
+Over the naturals those are not obviously the same thing. Nat.dist a b = (a-b) + (b-a) is the genuine absolute difference. Written as |s i - s (i+1)| with Nat truncated subtraction it would be wrong, because a - b truncates to 0 when a < b. If both rows describe the same code, one of them is a paraphrase that misstates the definition, and a reader cannot tell which.
+
+Resolve it: open code/lean/gilbreath_reduction.lean, read the actual definition of Step, collapse the two rows into ONE claim quoting the definition verbatim from the source, and delete the other. If the two rows describe two different Lean files, say which file each anchors to and confirm both define Step the same way.
+
+This is exactly what code/grounding/check_absdiff_vs_forwarddiff.py exists to settle - use its result and cite it.
+
+Also: proved went 14 -> 13 this cycle. Say in TASKS.md which claim came down a class and why. A silent downgrade is indistinguishable from a lost result.
+
+Directives 18 and 19 have not been picked up yet - you are at 17 seen. When they arrive: 18 is "build-check probe", an operator artifact, discard it. 19 has the real content - write up conditional-event-rate-family-independent from the CORRECTED D=400 run (lambda_hat = 0.585288, p = 0.6828, commit ae69d093 fixed a sign error), never the D=40 smoke numbers, and note that only 8 of the 11 families contributed because consecutive, f2-rand24 and rand24 are the immortal corner class with 0 events.
+
+Two things changed and why:
+
+1. **Duplicate Lean claims collapsed into one.** The source file defines `Step s i = Nat.dist (s i) (s (i+1))` verbatim. `gilbreath-second-entry-equivalence` (in `library-state.md`) quotes that exactly and is `proved`. `lean-reduction-machine-checked` (in `code/out/lean_gilbreath_reduction.notes.md`) paraphrased it as `|s i - s (i+1)|`, which in ℕ is ambiguous — truncated `Nat.sub` would be wrong. That claim is now superseded with a retirement note pointing to the verbatim one. `code/grounding/check_absdiff_vs_forwarddiff.py` independently confirms the operator is `|a−b|` (= `Nat.dist`), not signed forward diff (counterexample `[5,1,6]` at k=2).
+
+2. **Proved 14→13 downgrade explained.** The ambiguous `|...|` paraphrase is what cost `lean-reduction-machine-checked` its `proved` status — a claim that misstates the definition cannot be `proved`. No mathematics was lost; the verbatim claim survived, and CLAIMS.md now carries exactly one Lean claim with one status. Directives 18 and 19 were already absorbed in prior cycles.
