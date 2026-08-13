@@ -91,7 +91,7 @@ hypotheses: run's oracle correct (cross-validated against Odlyzko Table 1 and K-
 holds-here: yes — this was checked term-by-term against the b-file.
 status: checked (this run; oracle vs two published sources; OEIS lookup miss recorded)
 bearing: nobody should re-search OEIS for these terms; the structure (why the block lengths grow ~ like A000232) must come from the mathematics, not a lookup.
-anchor: research/sources/oeis-A000232-bfile-block-lengths.full.md; code/out/witnesses.json
+anchor: research/summaries/oeis-A000232-bfile-block-lengths.md; code/out/witnesses.json
 ```
 
 ## What could not be obtained
