@@ -15,31 +15,31 @@
 
 ## Next
 
-- [x] **DIRECTIVE 13 (priority 1): DONE 2026-08.** Ran
-  `timeout 540 python3 code/equality_case_verify.py 2>&1 | tee
-  code/out/equality_case_verify_FIXED.captured.txt; echo EXIT_CODE=$?` ->
-  `EXIT_CODE=0`, 4/4 points PASS on fresh exact-Fraction arithmetic.
-  M(28)=1.997752859598546538 < T(28)=1.999999993 and
-  M(29)=2.004964963784822807 > T(29): boundary confirmed at 28, no
-  exclusion at 29. Claim `budget-equality-case-impossible` anchor updated
-  with the FIXED capture as primary anchor (directive 13). Both
-  `equality_case_verify.captured.txt` (previous run) and the FIXED capture
-  show the same boundary; the operator-requested filename is now on disk.
+- [x] **DIRECTIVE 13 (priority 1): DONE.** See Completed above. Claim
+  `budget-equality-case-impossible` is `checked` with the FIXED capture
+  as anchor; boundary at a=28, a=29 explicitly NOT excluded. Equality case
+  needs a ≥ 29 for a sixth UPN. Combined with Wall 1988, the sharpest form
+  this workspace holds. Ledger conversion done (directive 14).
 
-- [ ] **DIRECTIVE 13 (priority 2):** Attack the biquadratic-reciprocity question
-  for the Φ_{4p}(2) thread. For which odd primes p is 2 a fourth power modulo
-  a primitive divisor r of Φ_{4p}(2)? The condition r ≡ 1 (mod 4p) already
-  forces r ≡ 1 (mod 4), so the biquadratic character (2/r)_4 is defined.
-  Gauss determines it by the representation r = a² + b². The supplementary
-  law [2/π]_4 for the Gaussian prime π | r gives (2/r)_4 = +1 iff r ≡ 1
-  (mod 16). The product identity Π_{π^e || 2^p+i} (2/π)_4^e = (2/(2^p+i))_4
-  evaluated via the supplementary law expresses how many divisors of Φ_{4p}(2)
-  are ≡ 1 (mod 16) as a function of p mod 16 alone — this is the divisor-
-  transference formula. State whether this constrains which r can be 3-Higgs,
-  and if not, say so and close the approach. The existing `heven_gauss.py`
-  already computes the per-factor characters through p=61; the next step is
-  the closed-form evaluation of (2/(2^p+i))_4 by quartic reciprocity on the
-  Gaussian integer 2^p + i, comparing it against the per-factor product.
+- [ ] **DIRECTIVE 14 (priority 1):** Answer whether the biquadratic character
+  of 2 modulo a primitive divisor r of Φ_{4p}(2) constrains which r can be
+  3-Higgs, beyond the already-known one-way implication r ≡ 1 (mod 16) ⟹
+  v2(r−1) ≥ 4 ⟹ r not 3-Higgs. Known from `heven_gauss.py` through p=61:
+  (2/r)_4 = +1 iff r ≡ 1 mod 16 (F2 verified), and the per-factor product
+  of (2/π)_4 over Gaussian primes π | (2^p+i) equals the quartic character
+  (2/(2^p+i))_4. The question: does evaluating (2/(2^p+i))_4 by quartic
+  reciprocity on the Gaussian integer 2^p+i yield any new restriction on
+  the set of r that *can* occur — e.g. forces some residue class of p to
+  always carry a head (r ≡ 1 mod 16), or forces the count of heads to be
+  at least one? If the biquadratic theory recovers only the mod-16 condition
+  r-by-r with no global constraint on the divisor set, then it does not
+  advance the thread and the `biquadratic-character-divisors` approach
+  should be marked `closed-no-constraint` rather than left open. The
+  deliverable is either (a) a new structural constraint on which r can be
+  3-Higgs derived from the product identity, or (b) a clear statement that
+  biquadratic reciprocity gives nothing beyond the per-divisor mod-16 test
+  and the approach is closed. Use `code/heven_gauss.py` and the Williams
+  1976 supplement as starting points.
 
 - [x] **Executed (2026-08, this run):** Gaussian factorization of `2^p + i`
   and quartic-character table for every odd prime `p ≤ 61` —

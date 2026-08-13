@@ -1,0 +1,87 @@
+reproduce_examples.py -- sanity oracle for problem.md (exact integer arithmetic)
+Python: 3.11.2
+Convention: N(a) counts both mirrors + trivial pair C(a,1)=C(a,a-1).
+
+=== [1] trivial pair: C(a,1) = C(a,a-1) = a ===
+[PASS] trivial pair a=2  -- C(2,1)=2  C(2,1)=2
+[PASS] trivial pair a=3  -- C(3,1)=3  C(3,2)=3
+[PASS] trivial pair a=6  -- C(6,1)=6  C(6,5)=6
+[PASS] trivial pair a=10  -- C(10,1)=10  C(10,9)=10
+[PASS] trivial pair a=15  -- C(15,1)=15  C(15,14)=15
+[PASS] trivial pair a=21  -- C(21,1)=21  C(21,20)=21
+[PASS] trivial pair a=120  -- C(120,1)=120  C(120,119)=120
+[PASS] trivial pair a=210  -- C(210,1)=210  C(210,209)=210
+[PASS] trivial pair a=1540  -- C(1540,1)=1540  C(1540,1539)=1540
+[PASS] trivial pair a=3003  -- C(3003,1)=3003  C(3003,3002)=3003
+[PASS] trivial pair a=7140  -- C(7140,1)=7140  C(7140,7139)=7140
+[PASS] trivial pair a=11628  -- C(11628,1)=11628  C(11628,11627)=11628
+[PASS] trivial pair a=24310  -- C(24310,1)=24310  C(24310,24309)=24310
+
+=== [2] symmetry: C(n,k) = C(n,n-k) ===
+[PASS] symmetry over all n<=60, 0<=k<=n  -- 3661 pairs agreed
+
+=== [3] record value: 3003 appears 8 times ===
+[PASS] 3003 = C(3003,1) = C(78,2) = C(15,5) = C(14,6) exactly  -- C(3003,1)=3003 C(3003,3002)=3003 C(78,2)=3003 C(15,5)=3003 C(14,6)=3003
+[PASS] N(3003)=8 by direct enumeration (rows 0..3003)  -- found 8 pairs in 0.00s; explicit: (14,6), (14,8), (15,5), (15,10), (78,2), (78,76), (3003,1), (3003,3002)
+[PASS] N(3003)=8 by per-k inversion (canonical reps [(14, 6), (15, 5), (78, 2)])  -- N=8 in 0.000s
+[PASS] witnesses.json nontrivial pairs agree for 3003  -- both list [(14, 6), (15, 5), (78, 2)]
+
+=== [4] six N=6 witnesses: one nontrivial collision identity each ===
+[PASS] N(120)=6 by direct enumeration, exactly one collision identity  -- canonical entries [(10, 3), (16, 2)] (one identity, rows differ), 4 mirrored + trivial pair = 6, direct enum in 0.000s
+[PASS] N(120)=6 by inversion, agreeing with enumeration  -- inversion canonical reps [(10, 3), (16, 2)] (N=6)
+[PASS] each listed entry equals 120 exactly  -- values verified for [(10, 3), (16, 2)]
+[PASS] witnesses.json nontrivial pairs agree for 120  -- both list [(10, 3), (16, 2)]
+[PASS] N(210)=6 by direct enumeration, exactly one collision identity  -- canonical entries [(10, 4), (21, 2)] (one identity, rows differ), 4 mirrored + trivial pair = 6, direct enum in 0.000s
+[PASS] N(210)=6 by inversion, agreeing with enumeration  -- inversion canonical reps [(10, 4), (21, 2)] (N=6)
+[PASS] each listed entry equals 210 exactly  -- values verified for [(10, 4), (21, 2)]
+[PASS] witnesses.json nontrivial pairs agree for 210  -- both list [(10, 4), (21, 2)]
+[PASS] N(1540)=6 by direct enumeration, exactly one collision identity  -- canonical entries [(22, 3), (56, 2)] (one identity, rows differ), 4 mirrored + trivial pair = 6, direct enum in 0.000s
+[PASS] N(1540)=6 by inversion, agreeing with enumeration  -- inversion canonical reps [(22, 3), (56, 2)] (N=6)
+[PASS] each listed entry equals 1540 exactly  -- values verified for [(22, 3), (56, 2)]
+[PASS] witnesses.json nontrivial pairs agree for 1540  -- both list [(22, 3), (56, 2)]
+[PASS] N(7140)=6 by direct enumeration, exactly one collision identity  -- canonical entries [(36, 3), (120, 2)] (one identity, rows differ), 4 mirrored + trivial pair = 6, direct enum in 0.001s
+[PASS] N(7140)=6 by inversion, agreeing with enumeration  -- inversion canonical reps [(36, 3), (120, 2)] (N=6)
+[PASS] each listed entry equals 7140 exactly  -- values verified for [(36, 3), (120, 2)]
+[PASS] witnesses.json nontrivial pairs agree for 7140  -- both list [(36, 3), (120, 2)]
+[PASS] N(11628)=6 by direct enumeration, exactly one collision identity  -- canonical entries [(19, 5), (153, 2)] (one identity, rows differ), 4 mirrored + trivial pair = 6, direct enum in 0.002s
+[PASS] N(11628)=6 by inversion, agreeing with enumeration  -- inversion canonical reps [(19, 5), (153, 2)] (N=6)
+[PASS] each listed entry equals 11628 exactly  -- values verified for [(19, 5), (153, 2)]
+[PASS] witnesses.json nontrivial pairs agree for 11628  -- both list [(19, 5), (153, 2)]
+[PASS] N(24310)=6 by direct enumeration, exactly one collision identity  -- canonical entries [(17, 8), (221, 2)] (one identity, rows differ), 4 mirrored + trivial pair = 6, direct enum in 0.004s
+[PASS] N(24310)=6 by inversion, agreeing with enumeration  -- inversion canonical reps [(17, 8), (221, 2)] (N=6)
+[PASS] each listed entry equals 24310 exactly  -- values verified for [(17, 8), (221, 2)]
+[PASS] witnesses.json nontrivial pairs agree for 24310  -- both list [(17, 8), (221, 2)]
+
+=== [5] infinite family: C(n+1,m+1)=C(n,m+2), n=F_{2j+2}F_{2j+3}-1, m=F_{2j}F_{2j+3}-1, j=1..6 ===
+[PASS] family j=1: identity C(15,5)=C(14,6) holds  -- a has 4 digits
+[PASS] family j=1: common value occurs in >= 6 distinct ways  -- exhibited (15,5), (14,6), (15,10), (14,8) + trivial pair; common value 3003
+[PASS] family j=1 gives the record value a=3003  -- n=14 m=4 a=3003
+[PASS] exact N(a) for family j=1  -- N=8 by inversion (0.00s); >=6 required
+[PASS] family j=2: identity C(104,39)=C(103,40) holds  -- a has 29 digits
+[PASS] family j=2: common value occurs in >= 6 distinct ways  -- exhibited (104,39), (103,40), (104,65), (103,63) + trivial pair; common value 29 digits
+[PASS] family j=2 matches the recorded 29-digit member  -- a=61218182743304701891431482520
+[PASS] exact N(a) for family j=2  -- N=6 by inversion (0.00s); >=6 required
+[PASS] family j=3: identity C(714,272)=C(713,273) holds  -- a has 205 digits
+[PASS] family j=3: common value occurs in >= 6 distinct ways  -- exhibited (714,272), (713,273), (714,442), (713,440) + trivial pair; common value 205 digits
+[PASS] exact N(a) for family j=3  -- N=6 by inversion (35.43s); >=6 required
+[PASS] family j=4: identity C(4895,1869)=C(4894,1870) holds  -- a has 1412 digits
+[PASS] family j=4: common value occurs in >= 6 distinct ways  -- exhibited (4895,1869), (4894,1870), (4895,3026), (4894,3024) + trivial pair; common value 1412 digits
+      (j=4: exact N not computed at 1412 digits; >=6 shown by exhibition)
+[PASS] family j=5: identity C(33552,12815)=C(33551,12816) holds  -- a has 9689 digits
+[PASS] family j=5: common value occurs in >= 6 distinct ways  -- exhibited (33552,12815), (33551,12816), (33552,20737), (33551,20735) + trivial pair; common value 9689 digits
+      (j=5: exact N not computed at 9689 digits; >=6 shown by exhibition)
+[PASS] family j=6: identity C(229970,87840)=C(229969,87841) holds  -- a has 66416 digits
+[PASS] family j=6: common value occurs in >= 6 distinct ways  -- exhibited (229970,87840), (229969,87841), (229970,142130), (229969,142128) + trivial pair; common value 66416 digits
+      (j=6: exact N not computed at 66416 digits; >=6 shown by exhibition)
+
+=== [6] column bound: C(n,k) >= C(2k,k) >= 2^k, so k <= log2(a) ===
+[PASS] C(2k,k) >= 2^k for all 1<=k<=300  -- checked in 0.002s; 0 mismatches
+[PASS] C(n,k) >= C(2k,k) for all grid n in [2k, 2k+60], k<=40  -- 2440 grid points checked; mismatches: 0
+[PASS] every canonical rep found obeys 2^k <= a (k <= log2 a)  -- checked 19 distinct reps; violations: 0
+[PASS] all canonical entries of rows n<=200 obey k <= log2(C(n,k))  -- rows 4..200 tested; violations: 0
+[PASS] inversion search bound k<=floor(log2 a) complete on all 7 witnesses  -- 3015..24310 covered; only the checked k-window was searched
+
+=== SUMMARY ===
+sections 1-6 run in 37.4s total
+checks passed: 64, failed: 0
+RESULT: ALL CHECKS PASSED

@@ -76,10 +76,16 @@ def main():
         assert j_got == j_exp, f"jump mismatch at i={i}"
         print(f"  i={i:3d}  table j={j_exp:7d}   recomputed j={j_got:7d}   {flag}")
 
-    # ---- sanity 2: step law over every transition with an intruder ---------
-    print("\n== sanity 2: step law from JSON over all transitions ==")
+    # ---- sanity 2: event/erosion detection from the b array ----------------
+    # The JSON stores s[k] = second entry = A_{k+1}(1), NOT the block edge
+    # A_{k+1}[b[k]], so the step law's edge==2 cannot be tested from the JSON
+    # (it is tested from full rows in sanity 3). Here we check what the JSON
+    # can establish: an event (b grows) has intruder == 4, and a row with no
+    # intruder (block runs to row end) erodes to exactly b-1.
+    print("\n== sanity 2: event/erosion detection from the b array ==")
     fails = 0
     nevents = 0
+    events_no_intruder4 = 0
     event_rows = []
     for k in range(1, len(b)):
         if intr[k - 1] is None:
@@ -87,15 +93,17 @@ def main():
                 fails += 1
         else:
             event = b[k] >= b[k - 1]
-            pair = (s[k - 1] == 2 and intr[k - 1] == 4)
-            if event != pair:
-                fails += 1
             if event:
                 nevents += 1
                 event_rows.append(k)
+                if intr[k - 1] != 4:
+                    events_no_intruder4 += 1
     print(f"  events detected from the b array = {nevents} (expect 60)")
-    print(f"  step-law / erosion violations = {fails} (expect 0)")
+    print(f"  events whose intruder != 4 = {events_no_intruder4} (expect 0; "
+          f"all 60 are (2,4)-events)")
+    print(f"  no-intruder rows with non-exact erosion = {fails} (expect 0)")
     assert nevents == 60 and fails == 0
+    assert events_no_intruder4 == 0
 
     # ---- sanity 3: independent recompute of rows A_0..A_165 ----------------
     print(f"\n== sanity 3: independent recompute "
@@ -107,6 +115,7 @@ def main():
     row0 = next(gen)
     assert len(row0) == W
     mism = 0
+    event_edges = {}          # k -> (edge, intruder) of event row k (fresh)
     for k in range(1, LIVE_RECOMPUTE + 1):
         row = next(gen)
         prof = block_profile(row)
@@ -115,13 +124,21 @@ def main():
             mism += 1
         if k in GIANT_IDS:
             e, c = row[b[k - 1]], row[b[k - 1] + 1]
-            if not (e == s[k - 1] == 2 and c == intr[k - 1] == 4):
+            event_edges[k] = (e, c)
+            # JSON s[k-1] is the SECOND entry A_k(1), not the block edge; the
+            # edge is not stored in the JSON, so compare against the fresh row.
+            if not (e == 2 and c == 4):
                 print(f"  (edge,intruder) mismatch at event row {k}: "
-                      f"fresh ({e},{c}), JSON ({s[k-1]},{intr[k-1]})")
+                      f"fresh ({e},{c})")
+                mism += 1
+            elif intr[k - 1] != 4:
+                print(f"  JSON intruder mismatch at event row {k}: "
+                      f"fresh {c}, JSON {intr[k-1]}")
                 mism += 1
     print(f"  recompute mismatches = {mism} (expect 0); all 13 event rows and "
           f"13 landing rows covered")
     assert mism == 0
+    assert set(event_edges) == GIANT_IDS
 
     # ---- the verdict table ---------------------------------------------------
     print("\n== giant jumps (j > 1000): cap test ==")
@@ -133,7 +150,7 @@ def main():
     print("intruder; recorded j is a lower bound on the true jump).")
     print()
     print(f"{'i':>4} {'j':>8} {'b_i':>9} {'b_{i+1}':>9} {'edge':>4} {'intr':>4}"
-          f" {'cols':>9} {'maxblk':>9} {'floor':>9}  verdict")
+          f" {'landIntr':>8} {'cols':>9} {'maxblk':>9} {'floor':>9}  verdict")
     capped_rows = []
     total_giant_j = 0
     genuine_giant_j = 0
@@ -142,7 +159,9 @@ def main():
         total_giant_j += j
         b_i = b[i - 1]
         b_land = b[i]
-        edge, intruder_v = s[i - 1], intr[i - 1]
+        edge, intruder_v = event_edges[i]
+        land_intr = intr[i]          # landing row i+1; None iff capped
+        assert intruder_v == intr[i - 1]
         cols = W - (i + 1)
         max_block = cols - 1
         floor_d = max_block - b_land
@@ -155,8 +174,10 @@ def main():
             verdict = "GENUINE"
             genuine_giant_j += j
             note = ""
+        land_intr_s = "None" if land_intr is None else f"{land_intr}"
         print(f"{i:>4} {j:>8,} {b_i:>9,} {b_land:>9,} {edge:>4} {intruder_v:>4}"
-              f" {cols:>9,} {max_block:>9,} {floor_d:>9,}  {verdict}{note}")
+              f" {land_intr_s:>8} {cols:>9,} {max_block:>9,} {floor_d:>9,}  "
+              f"{verdict}{note}")
 
     # prove the classification exhaustive: every event's landing row either
     # has an intruder (floor >= 1, genuine) or is the unique capped row 162.

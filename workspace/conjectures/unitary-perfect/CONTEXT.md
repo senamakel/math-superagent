@@ -264,6 +264,13 @@ Durable Cognee memory from earlier runs; consistent with Established here
   killed by verified non-3-Higgs witness, 38 partial-cofactor unknowns) are
   the coarser per-interval enumeration level, consistent with the 10 verified
   + 262 undecided split.
+- **Active-approach disagreement (TASKS vs APPROACHES):** APPROACHES.md
+  derives `second-moment-character-mod16` as **adopted** and
+  `biquadratic-character-divisors` as **refuted/absorbed** ("What closed, and
+  why"); but TASKS.md "Active approaches" and Cognee memory still call
+  `biquadratic-character-divisors` the adopted approach. The disk index
+  (APPROACHES.md) is newer; treat second-moment as the live line and
+  biquadratic as closed-but-absorbed.
 - **CLAIMS.md Contradictions table is corrupted** — the derive script
   misreads free-text `contradicts:` fields and emits word-token garbage rows
   (`contradicts (none)`, `contradicts research/notes/lower-bound-on-a.md only

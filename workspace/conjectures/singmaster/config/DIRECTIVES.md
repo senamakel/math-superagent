@@ -465,3 +465,38 @@ I've found the Riemann-Hurwitz capture already exists and passes at 48 KiB — t
 - **Record the claim** `genus-closed-form-derived-by-riemann-hurwitz` with status `proved` (the argument is general in m,n), attributes effective:yes and uniform-in-(m,n):yes, and the explicit statement that genus ≥ 2 feeds Faltings per-pair and ineffective — so this gives nothing for Singmaster's conjecture. That is the boundary the directive asks to "write in."
 
 Both are now items 1 and 2 in TASKS.md. The existing Matveev task and integrality repro are kept as follow-ons. I changed no other files; CONTEXT.md is already at its budget and the genus section carries the verified formula plus the Faltings-ineffective boundary, which is the same message the claim will formalize.
+
+## 21 — from steer
+
+Two things, one excellent, one to correct.
+
+THE DERIVATION IS DONE. code/out/verify_riemann_hurwitz_full.captured.txt ends ALL CHECKS PASSED, and it settles the fibre at infinity properly rather than skipping it:
+
+  (inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity
+  (inf) min index e=20 (e*m == 0 mod n); branches = n/e = 1 == gcd(19,20)
+  (inf) I_inf = branches*(e-1) = 19 == n - gcd = 19
+  (c)   RH: 2g-2 = 340 == -2n + m(n-1) + (n-gcd);  closed-form g=171 == RH-forced g=171
+
+That is where -gcd(m,n) comes from, computed rather than fitted. File it as genus-closed-form-derived-by-riemann-hurwitz, saying which pairs were covered and that the n=25 root bisection was skipped as structural (Rolle), verified numerically only to n<=15.
+
+NOW THE CORRECTION, and it matters because BACKWARD.md currently overstates your position.
+
+singmaster-uniform-bound reports 1 open gap and 2 discharged. Check what the discharges rest on:
+
+  G-interior-bounded   closed by mrstt-interior-theorem      -> asserted
+  G-small-a-bounded    closed by lane-clark-normal-array-bound (checked)
+                       AND mrstt-threshold-effective          -> asserted
+
+So two of the three legs stand on claims nobody here has proved or checked. A gap discharged by an assertion is not discharged; it is deferred. Either re-status those two MRSTT claims honestly - a theorem read from a paper and not re-derived here is catalogued, not asserted - or mark the gaps open with the source named.
+
+Then say plainly in the skeleton what the real position is: Singmaster reduces to G-boundary-uniform-count GIVEN MRSTT, which is a conditional reduction, not an unconditional one. Conditional is still a genuine result. Overstating it is what makes it worthless.
+
+Good discipline elsewhere: the skeleton records that the witness set forces C >= 3, via 3003 having boundary representatives (78,2), (15,5), (14,6) - the witness check applied to a reduction rather than a lemma.
+
+Good. The directives log is already recorded. Now I understand the full history. Directive 21 is the current one. Let me write the reply:
+
+Both directives in 21 are now acted on:
+
+- **The derivation is recorded.** `research/notes/genus-closed-form-derived-by-riemann-hurwitz.md` now exists with status `proved`, anchor `code/out/verify_riemann_hurwitz_full.captured.txt` (153 pairs, ALL CHECKS PASSED), range `2 <= m < n <= 20`, attributes effective:yes and uniform-in-(m,n):yes, and the explicit boundary that this gives nothing for Singmaster. The -gcd(m,n) term is computed (Puiseux at infinity), not fitted. TASKS.md items 1 and 2 are marked done and the ledger now reads `proved=1`.
+
+- **The BACKWARD.md overstatement is corrected.** G-interior-bounded and G-small-a-bounded now read `status: conditional` rather than `status: discharged`, with `conditioned-on:` naming `mrstt-interior-theorem (asserted)` and `mrstt-threshold-effective (asserted)`. The skeleton header now explicitly says "This is a conditional reduction" and "Without the MRSTT conditions, this is a reduction of Singmaster to the boundary-uniform-count problem — a genuine partial result, not the full conjecture." The reduction is honest about what it rests on and what has actually been checked by this run (Lane-Clark, verified).

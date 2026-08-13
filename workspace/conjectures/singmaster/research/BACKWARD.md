@@ -10,7 +10,7 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 | --- | --- | --- | --- | --- |
 | [[effective-bound-hyperelliptic-k25]] | An explicit effective bound with a computed constant on the integral solutions of C(x,2)=C(y,k) for a fixed hyperelliptic pair, stated with its k-dependence… | The pair {2,k} has genus floor((k-1)/2) (superelliptic-genus-formula), so the curve is hyperelliptic with RHS C(y,k) of degree k. For k=5 the genus is 2, where… | live | 2 |
 | [[genus-closed-form-proof]] | Prove (not merely check) that for distinct m,n >= 2 the geometric genus of the projective closure of C(x,m)=C(y,n) equals g(m,n) = ((m-1)n - (m-2) -… | View the curve in P^1 x P^1, where C(x,m)=C(y,n) has bidegree (m,n) and arithmetic genus p_a = (m-1)(n-1) (G-bidegree-pa). The geometric genus is p_a - delta,… | live | 1 |
-| [[singmaster-uniform-bound]] | N(a) is bounded by an absolute constant B, for every a > 1, under the both-mirrors-plus-trivial convention (N(3003)=8). | Fix an admissible eps in (0,1) and let a_0(eps) be the effective MRSTT threshold. For a <= a_0, Lane-Clark gives N(a) <= 2*log2(a_0) + 2, an absolute constant… | live | 3 |
+| [[singmaster-uniform-bound]] | N(a) is bounded by an absolute constant B, for every a > 1, under the both-mirrors-plus-trivial convention (N(3003)=8). | **This is a conditional reduction.** It assumes MRSTT interior theorem (asserted from primary, not re-derived here) and MRSTT threshold effectiveness (asserted… | live | 3 |
 
 ## The open gaps — each one is a task
 
@@ -40,6 +40,12 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
 
 - [[genus-closed-form-proof]] `G-bidegree-pa` — The projective closure of C(x,m)=C(y,n) in P^1 x P^1 has bidegree (m,n) and arithmetic genus p_a = (m-1)(n-1), with the diagonal m=n reducible and therefore excluded. (closed by genus-symmetric-form-and-delta-prediction (records the bidegree-(m,n) and p_a = (m-1)(n-1) identification; elementary for the degree-m and degree-n binomial polynomials))
+
+## Resting on nothing recorded
+
+A reduction taking an unrecorded belief as input proves the goal from something nobody downstream can check. Either write the claim, or the id is misspelled.
+
+- [[singmaster-uniform-bound]] rests on `(asserted)`, `(asserted)`, `(checked)`, which no claim block on disk establishes
 
 ## Skeletons that could not be read
 

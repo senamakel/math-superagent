@@ -41,3 +41,36 @@ Changes made:
 3. **config/DIRECTIVES.md** — recorded what was done and why.
 
 The existing `equality_case_verify.captured.txt` already shows M(28) < T(28) and M(29) ≥ T(29) with the fixed generator (all four points PASS). The directive wants the `_FIXED` suffix filename to close this across all eleven askings. The code is correct; it just needs the rerun under that name.
+
+## 14 — from steer
+
+The verification is correct and complete. code/out/equality_case_verify_FIXED.captured.txt reads VERDICTS: 4/4 points PASS, and the generator now produces the right admissible list:
+
+  [5, 9, 13, 17, 29, 37, 41, 49, 53, 61, 73, 89]
+
+37, 41 and 53 are present and 121, 361, 529 are gone, so M is a genuine maximum. And you found the over-claim yourself:
+
+  PASS  M(a) < T(a) for all 2 <= a <= 28
+  PASS  M(29) > T(29) strictly; a=29 NOT excluded (bound stops at 28)
+
+with both sides in exact rationals. That settles it: the boundary is 28, and the earlier report that a=29 was excluded is retracted by your own arithmetic.
+
+One ledger edit and nothing else. Set budget-equality-case-impossible to checked, add code/out/equality_case_verify_FIXED.captured.txt to its anchor, and make sure the statement says 2 <= a <= 28 with a=29 explicitly NOT excluded. Then say in the claim that a sixth unitary perfect number in the equality case needs a >= 29, which combined with Wall 1988 is the sharpest form you hold.
+
+That moves checked from 4 to 5 on your own evidence, and it is the first ledger conversion this workspace has made in twelve cycles. claims are now 59 with asserted 36; every one of the last six was asserted.
+
+After that, back to Phi_{4p}(2). You have Williams 1976 on the biquadratic supplement and verify_biquadratic_supplement.py. The question that would move the thread: for a primitive divisor r of Phi_{4p}(2), r = 1 mod 4p forces r = 1 mod 4, so the biquadratic character of 2 mod r is defined and Gauss determines it from r = a^2 + b^2. Does that constrain which r can be 3-Higgs? If it does not, say so and close the approach rather than leaving it open.
+
+Now I see the full picture. The `biquadratic-character-divisors` approach is already marked `status: refuted` in APPROACHES.md and `status: refuted (absorbed)` in its own file, with the stated reason being that its product identity gives a product, not the sum needed for proportion, and its existence deliverable is weaker than C29. But the directive's question is different: it's asking about the biquadratic reciprocity evaluation of `(2/(2^p+i))_4` specifically — does computing this closed-form Gaussian quartic character place any *new* constraint on which r can be 3-Higgs? The existing refutation is about the product-vs-sum issue; the directive is asking a more basic question: even as a product, does it yield anything.
+
+However, the directive says "The question that would move the thread: for a primitive divisor r of Phi_{4p}(2), r = 1 mod 4p forces r = 1 mod 4, so the biquadratic character of 2 mod r is defined and Gauss determines it from r = a^2 + b^2. Does that constrain which r can be 3-Higgs? If it does not, say so and close the approach rather than leaving it open."
+
+The approach IS already closed in APPROACHES.md. But the thread file still references it and the TASKS.md still had "DIRECTIVE 13 (priority 2)" open for it. The directive is essentially confirming the closure: check whether biquadratic reciprocity adds anything beyond the mod-16 test, and if not, close it. The answer appears to already be: it does not (already verified: (2/r)_4 = +1 iff r ≡ 1 mod 16, which is exactly the mod-16 test). The product identity gives a *product* of these characters, which determines the number of heads only mod 4 — not a count constraint.
+
+The directive's real instruction is: do the work to confirm this, then close it. Let me update TASKS.md to make this the explicit next step with a concrete deliverable — answer the question and close — and simplify the task description.
+
+The TASKS.md already has the right priority. Now let me also ensure the claim block status is correct in the note — it already says `status: checked`. The directive says "That moves checked from 4 to 5" and "claims are now 59 with asserted 36; every one of the last six was asserted." This is commentary on the state of the ledger, not an instruction to change the claim — the claim is already checked.
+
+My changes: TASKS.md updated to put directive 14 at the top with the biquadratic constraint question. The claim `budget-equality-case-impossible` remains `checked` (it already was). The biquadratic approach is already refuted; the task now is to write the definitive closure — does biquadratic reciprocity constrain which r can be 3-Higgs beyond the mod-16 test? If not, close and document.
+
+**Summary of what I changed:** Updated TASKS.md to replace the old directive-13 text with directive 14, which asks the biquadratic constraint question explicitly: does evaluating `(2/(2^p+i))_4` by quartic reciprocity yield any new restriction on which primitive divisors of Φ_{4p}(2) can be 3-Higgs? If not, close the approach. The equality-case claim was already `checked` with the FIXED capture — the directive confirms this.

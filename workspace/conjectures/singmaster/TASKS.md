@@ -28,23 +28,11 @@ on each Rolle-guaranteed interval, not mpmath polyroots). The directive's
       (c), (inf) checks. Pair (2,3) and (2,4) in-range re-confirm genus 1
       (Faltings threshold); (19,20) reaches g=171.
 
-- [ ] **2. Record the claim.**
-      After the extended run passes, create
-      `research/notes/genus-closed-form-derived-by-riemann-hurwitz.md` with:
-      - The closed form: `g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n))/2`
-      - Status: **proved** — the Riemann-Hurwitz argument is general in m,n:
-        (a) degree = n, (b) finite ramification = m(n-1) points each index 2
-        (Rolle guarantees n-1 simple real critical points of Q; smoothness
-        checked explicitly), (c) fibre at x=infinity computed explicitly via
-        Puiseux: n/gcd(m,n) branches each of index gcd(m,n), total I_inf = n-gcd,
-        (d) 2g-2 = -2n + m(n-1) + (n-gcd) → the closed form.
-      - Effective: yes (exact integer formula)
-      - Uniform in (m,n): yes (one formula for all distinct m,n)
-      - Singmaster bearing: gives NOTHING effective or uniform — genus >= 2
-        feeds Faltings, which is per-(k1,k2) and ineffective. The closed form
-        makes genus decidable for any pair but does not bound N(a).
-      - Evidence class: proved (the argument is structural, not instance-counting)
-      - Store with `remember_memory`.
+- [x] **2. Record the claim. — DONE.**
+      Note filed at `research/notes/genus-closed-form-derived-by-riemann-hurwitz.md`
+      (directive 21). Status: proved; effective: yes; uniform in (m,n): yes;
+      Singmaster bearing: none. The -gcd(m,n) term is derived via Puiseux
+      expansion at infinity, not fitted.
 
 ## Matveev effective constant for {2,3}
 
@@ -75,7 +63,7 @@ on each Rolle-guaranteed interval, not mpmath polyroots). The directive's
 
 ## Ledger discipline
 
-- asserted=22, checked=4, proved=0 (genus R-H claim will be the first `proved`)
+- asserted=22, checked=4, proved=1 (genus R-H closed form: proved)
 - Every bound must be run against `code/out/witnesses.json`. Any lemma implying
   B<8 is refuted by 3003. State counting convention on every claim.
 - The genus closed form is effective and uniform in (m,n), but gives nothing

@@ -16,13 +16,41 @@ JSON: b[0] = b_1 = 2,  max b = 1,270,444,  min b = 2
   i=146  table j= 360698   recomputed j= 360698   OK
   i=161  table j= 176181   recomputed j= 176181   OK
 
-== sanity 2: step law from JSON over all transitions ==
+== sanity 2: event/erosion detection from the b array ==
   events detected from the b array = 60 (expect 60)
-  step-law / erosion violations = 46 (expect 0)
-Traceback (most recent call last):
-  File "/workspace/code/pattern/bigjump_characterization.py", line 199, in <module>
-    main()
-  File "/workspace/code/pattern/bigjump_characterization.py", line 98, in main
-    assert nevents == 60 and fails == 0
-                             ^^^^^^^^^^
-AssertionError
+  events whose intruder != 4 = 0 (expect 0; all 60 are (2,4)-events)
+  no-intruder rows with non-exact erosion = 0 (expect 0)
+
+== sanity 3: independent recompute (primes_up_to(20,000,000), rows A_0..A_165) ==
+  regenerated 1,270,607 primes (expect 1,270,607)
+  recompute mismatches = 0 (expect 0); all 13 event rows and 13 landing rows covered
+
+== giant jumps (j > 1000): cap test ==
+rows are 1-based; event i sits on row i, lands on row i+1, which has
+columns = W - (i+1) and max possible block max_block = columns - 1
+= W - i - 2 (one column holds the leading 1).
+CAPPED <=> b_{i+1} == max_block <=> floor_distance = 0: the {0,2}
+run ends at the finite row's right edge (landing row has no
+intruder; recorded j is a lower bound on the true jump).
+
+   i        j       b_i   b_{i+1} edge intr landIntr      cols    maxblk     floor  verdict
+  34    1,314       865     2,179    2    4        4 1,270,572 1,270,571 1,268,392  GENUINE
+  56    1,739     4,203     5,942    2    4        4 1,270,550 1,270,549 1,264,607  GENUINE
+  64   17,326     5,939    23,265    2    4        6 1,270,542 1,270,541 1,247,276  GENUINE
+  68    8,237    23,262    31,499    2    4        6 1,270,538 1,270,537 1,239,038  GENUINE
+  94   61,088    31,532    92,620    2    4        4 1,270,512 1,270,511 1,177,891  GENUINE
+  96   11,354    92,619   103,973    2    4       14 1,270,510 1,270,509 1,166,536  GENUINE
+ 110   37,746   103,960   141,706    2    4        4 1,270,496 1,270,495 1,128,789  GENUINE
+ 112  129,923   141,706   271,629    2    4       14 1,270,494 1,270,493   998,864  GENUINE
+ 126   53,470   271,620   325,090    2    4        4 1,270,480 1,270,479   945,389  GENUINE
+ 130  190,810   325,096   515,906    2    4        4 1,270,476 1,270,475   754,569  GENUINE
+ 134  217,657   515,907   733,564    2    4        4 1,270,472 1,270,471   536,907  GENUINE
+ 146  360,698   733,575 1,094,273    2    4       12 1,270,460 1,270,459   176,186  GENUINE
+ 161  176,181 1,094,263 1,270,444    2    4     None 1,270,445 1,270,444         0  CAPPED-ARTIFACT  [landing row A_162 fills finite width: intruder null; true j >= 176,181]
+
+== summary ==
+giants with j > 1000: 13  GENUINE = 12  CAPPED-ARTIFACT = 1  (capped rows: [161])
+heavy tail j > 10^4: 10 events  genuine = 9,  capped = 1
+largest three: i=146 j=360,698 (GENUINE), i=134 j=217,657 (GENUINE), i=161 j=176,181 (CAPPED)
+sum of giant-jump j over the 13 = 1,267,543; genuine part (12 events) = 1,091,362 (86.10%); capped part = 176,181 (recorded; true value >= that)
+(the 13 giants carry 99.76% of the full recharge surplus S_1000 = 1,270,603)

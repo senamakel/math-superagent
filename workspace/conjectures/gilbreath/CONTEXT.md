@@ -430,7 +430,10 @@ recalled claim is relied on whose hypotheses fail here.
   GAP between consecutive large jumps — first characterise the big jumps
   (j > 1000) and say whether they are genuine dynamics or width-reset
   artifacts (i=161 lands at b≈1.27M = width−1). See
-  `code/out/surplus_renewal_table.captured.txt`.
+  `code/out/surplus_renewal_table.captured.txt`. **Note the characterisation
+  is partly done (Numbers): the giants are not erosion-recovery events — the
+  open piece is whether the specific giant-jump rows correlate with
+  Rule-90/power-of-2 structure (maxima, untested).**
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.
@@ -464,12 +467,6 @@ recalled claim is relied on whose hypotheses fail here.
   Mathlib axioms), **zero sorry / zero sorryAx**. The central theorem
   `gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X` is an
   **IFF** — it proves the {0,2} statement is exactly as hard as the
-  conjecture, not a stepping stone to a proof. It reformulates rather than
-  reduces. The prime instantiation (row 1 = (1, even, even, ...)) remains
-  computation-checked (witnesses.json), not Lean-proved. Regeneration is
-  untouched. This is a GOAL.md deliverable. Claim:
-  `lean-reduction-machine-checked`. Anchors:
-  `code/lean/gilbreath_reduction.lean`, `code/out/lean_gilbreath_reduction.captured.txt`.tement is exactly as hard as the
   conjecture, not a stepping stone to a proof. It reformulates rather than
   reduces. The prime instantiation (row 1 = (1, even, even, ...)) remains
   computation-checked (witnesses.json), not Lean-proved. Regeneration is

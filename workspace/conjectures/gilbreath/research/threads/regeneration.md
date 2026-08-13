@@ -20,6 +20,22 @@ next: |
 
 lean-formalisation: |
   COMPLETE (Directive 17 verified). Nine theorems kernel-checked. gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X is an IFF — the {0,2} second-entry statement is exactly as hard as the conjecture, not a simplification. Axiom footprint [propext, Classical.choice, Quot.sound]. Zero sorry/sorryAx. claim: gilbreath-second-entry-equivalence, anchor: code/lean/gilbreath_reduction.lean.
+
+big-jump-characterisation: |
+  DONE (Directive 23 item 1). Of the 13 (2,4)-events with j > 1000, 12 are
+  GENUINE (the landing block ends strictly inside the finite row with a
+  non-{0,2} intruder past it; floor distances 176186..1268392, no clustering
+  at the width edge) and only i=161 is CAPPED-ARTIFACT (b_162 = 1270444 =
+  W - 162 - 1, the known width-exhaustion row: recorded j = 176181 is a
+  LOWER BOUND on the true jump). The heavy tail (j > 10^4) is 9 genuine of
+  10, including the two largest measured jumps i=146 (j=360698) and i=134
+  (j=217657). Genuine giants carry 86.1% of S_1000 = 1270603; the 13 giants
+  carry 99.76% of it. → The surplus heavy tail is GENUINE prime renewal
+  structure, NOT a finite-width effect; the gap-between-large-jumps object is
+  real. i=161 must be quoted as j >= 176181. claim:
+  bigjump-cap-characterization-1000, anchors:
+  code/out/bigjump_characterization.captured.txt,
+  code/out/bigjump_characterization.notes.md.
 ```
 
 # Regeneration thread — event-rate lower bound
