@@ -80,9 +80,12 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   smallest admissible sizes. For `2 ≤ a ≤ 28` the maximum falls short; `a = 8`
   is dead (257 prime forces 257 as component, deficit 0.297). The bound is
   attained with equality at `a = 1` (n = 90). Undecided beyond `a = 28`. So any
-  sixth example in the equality case has `a ≥ 29`. Combined with Wall 1988,
-  any sixth example with exactly 9 odd components has `a ≥ 29` rather than
-  `a ≥ 8`. Thread `a-ge-8-bound` superseded by this result.
+  sixth example in the equality case has `a ≥ 29`. **Over-read correctly:** this
+  does NOT give any sixth with exactly 9 odd components `a ≥ 29` — with `ω(odd)
+  = 9` and `a ≥ 9` the example is not in the equality case (needs `a+1 = ω`),
+  so only `a = 8` is excluded there; correct bound for `ω = 9` is `a ≥ 9`. The
+  fifth example shows `ω < a+1` is normal (ω=11, a+1=19); the lemma bites only
+  at the exact extremum. Thread `a-ge-8-bound` superseded by this result.
 - **(OEIS finding)** The verified H_even members `2,6,10,18,26,30,46,62,82,122`
   match **no** OEIS sequence — no catalogued closed form; structure comes from
   the problem.
