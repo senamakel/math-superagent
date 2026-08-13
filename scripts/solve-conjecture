@@ -76,12 +76,36 @@ if [ ! -f "$workspace_path/problem.md" ]; then
     exit 2
 fi
 
+# The method belongs to the workspace, not to this script.
+#
+# This block read "Solve by structural graph theory ... connectivity, girth,
+# degree distribution, forbidden subgraphs, separators, ear decompositions, DFS
+# trees and their back edges, expansion", and the oracle phase asked for a
+# checker "given a graph, its minimum degree and the set of its cycle lengths".
+# That is Erdős–Gyárfás, and every conjecture launched afterwards was told to do
+# it. A live magic-square-of-squares run — a question about rational points on
+# an elliptic curve, with no graph anywhere in it — spent eighteen minutes being
+# told to hunt a minimal counterexample by girth and to encode degree bounds for
+# a SAT solver. It worked despite the instruction rather than because of it,
+# because `problem.md` and `GOAL.md` said what the problem actually was.
+#
+# So the domain-specific half now comes from `METHOD.md` beside the statement.
+# A workspace that does not supply one gets a neutral instruction, which is
+# worse than a method written for the problem and far better than a method
+# written for a different problem.
+method_path=$workspace_path/METHOD.md
+if [ -f "$method_path" ]; then
+    method=$(cat "$method_path")
+else
+    method="Choose the line of attack the problem calls for and say which one you have chosen and why. Reason about the structure a counterexample or a solution must have, and use every other capability in service of that argument rather than instead of it."
+fi
+
 extra_instructions=$*
 task="Attack the open conjecture stated in /workspace/problem.md. Your objective and the criteria that end this run are in /workspace/GOAL.md. Read both before doing anything else.
 
 This is an open problem. It has resisted specialists for decades, so the working assumption is that you will not prove it, and the deliverable is a genuine partial result stated exactly rather than a claim of the whole. Claiming the conjecture on an argument that has not survived attack is the one outright failure available here.
 
-Solve by structural graph theory. Reason about what a minimal counterexample must look like — connectivity, girth, degree distribution, forbidden subgraphs, separators, ear decompositions, DFS trees and their back edges, expansion — and use every other capability in service of that argument rather than instead of it.
+$method
 
 Work in these phases. They overlap: 1 and 2 run together, and 3 starts as soon as 2 has a claim worth testing. A phase you cannot exit is a phase that consumes the run.
 
