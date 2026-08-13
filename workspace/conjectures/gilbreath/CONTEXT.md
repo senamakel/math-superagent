@@ -406,20 +406,16 @@ recalled claim is relied on whose hypotheses fail here.
   statement about event frequency and jump sizes.
   **Mechanism vs rate (resolved this cycle):** the step law, recharge identity,
   and drain law are combinatorial — they hold universally (zero failures on all
-  1,154 random sequences). The event-rate sweep appeared to refute a
-  combinatorial rate: 852/1,154 (73.8%) reach `b_k = 0`. **Directive 16
-  correction:** ALL deaths are within the first 10 rows (764/852 by k≤3). Death
-  is g_0 startup: rand24 dies at k=1 iff g_0=4, survives iff g_0=2. The sweep
-  measures INITIALISATION, not the asymptotic event rate. Route A is RESTORED
-  live. **The conditional-rate experiment (filter to k>10 survivors, measure
-  per-family event density) is the blocking task** — it isolates the rate from
-  the startup. Family-independent density → combinatorial; family-dependent →
-  real evidence about rate. **Directive 13 stands independently:** bounded
-  finite support is vacuous for the primes (gaps 8,10,12,14,34 below 2000;
-  unbounded). **Gap-hypothesis separation check (Directive 15, DONE):** no
-  first-moment or tail statistic (H1/H2/H3) separates primes from {2..20}; the
-  separation verdict is correct but the sweep deaths are g_0≠2 at k≤1, not gap
-  statistics.
+  1,154 random sequences). **The conditional-rate experiment (Directive 19,
+  DONE)** shows the post-startup (2,4)-event rate is family-independent:
+  pooled λ̂ = 0.585 (1098/1876), Pearson X² p = 0.68 over 8 families at
+  D=400, W=200000. This confirms Route A: the mechanism is combinatorial.
+  **The gap:** λ̂ is measured, not bounded below for all k. The conjecture
+  needs a rate lower bound holding everywhere, not a point estimate. The next
+  step is a lower-bound lemma (Route A: bound worst-case inter-event gap from
+  drain law + edge-flip dynamics; or Route B: derive from gap concentration,
+  stating how it beats Eppstein and Colonna's g=4 deletion). Do not cite the
+  discarded D=40 smoke numbers (predate sign fix).
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.

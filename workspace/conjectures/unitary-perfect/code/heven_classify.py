@@ -14,9 +14,11 @@ All arithmetic exact; no floats anywhere.
 Usage: python3 code/heven_classify.py [--tables code/out]
 """
 import os
+import math
 import sys
 
 import sympy
+from sympy import factorint, isprime, pollard_rho
 
 from lib.higgs import (budget_row, factorize, is_3_higgs, is_unitary_perfect,
                        odd_higgs_cubefree, sigma_star, v2)
@@ -196,6 +198,63 @@ def read_tables(tables_dir):
     return ord_rows, wit_rows
 
 
+def _split_rec(mm, fs, depth):
+    """Bounded pollard-rho split (mirrors heven_patterns.partial_factor):
+    trial division for factors <= 1e5, then up to `depth` rho attempts;
+    return the leftover (1 iff fully factored).  Never searches for UPNs —
+    it is a factoring routine for fixed m <= 1200."""
+    if mm == 1:
+        return 1
+    m0 = mm
+    for d in range(2, 100_001):
+        if d * d > m0:
+            break
+        if m0 % d == 0:
+            while m0 % d == 0:
+                fs[d] = fs.get(d, 0) + 1
+                m0 //= d
+            if m0 == 1:
+                return 1
+    mm = m0
+    if mm == 1:
+        return 1
+    for d in (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37):
+        if mm % d == 0:
+            while mm % d == 0:
+                fs[d] = fs.get(d, 0) + 1
+                mm //= d
+            if mm == 1:
+                return 1
+    # one round of pollard rho with a fresh seed
+    rho = pollard_rho(mm)
+    if rho and rho != mm and rho != 1:
+        r1 = _split_rec(rho, fs, depth - 1)
+        r2 = _split_rec(mm // rho, fs, depth - 1)
+        if r1 != 1 and r2 != 1:
+            # fully split
+            return 1
+        if r1 == 1:
+            fs.update({})
+        if r2 == 1:
+            fs.update({})
+        if r1 == 1 and r2 == 1:
+            return 1
+    if mm != 1 and sympy.isprime(mm):
+        fs[mm] = fs.get(mm, 0) + 1
+        return 1
+    return mm
+
+
+def _partial_factor(n):
+    """({p: e}, leftover) for n; leftover == 1 iff complete."""
+    fs = {}
+    left = _split_rec(n, fs, depth=6)
+    if left != 1 and sympy.isprime(left):
+        fs[left] = fs.get(left, 0) + 1
+        return fs, 1
+    return fs, left
+
+
 def phase_b3_b4(tables_dir):
     """Combine sieve witnesses with full factorization of survivors."""
     print("=" * 78)
@@ -225,16 +284,28 @@ def phase_b3_b4(tables_dir):
     print("survivors (to full-factor): %d" % len(survivors))
     print("survivor list: %s" % survivors)
 
-    # full factorization of each survivor; classify
+    # full factorization for m <= 122 (tiny, 2^122+1 has 37 digits); for
+    # 122 < m <= 1200 the sieve already certifies every killed m, and
+    # killing a candidate only needs ONE certified non-3-Higgs divisor, so
+    # bounded trial division to 10^5 + one rho round suffices (same budget
+    # as heven_patterns.py); an m with no witness found stays UNRESOLVED
+    # and is reported, never silently classified.
     in_heven, undecided = [], []
     survivor_factorizations = {}
     for m in survivors:
         n = 2**m + 1
-        fs = sympy.factorint(n)
+        if m <= 122:
+            fs = factorint(n)
+        else:
+            fs, left = _partial_factor(n)
+            if left != 1:
+                undecided.append((m, "leftover %d digits"
+                                  % (len(str(left)))))
+                continue
         chk = 1
         for p, e in fs.items():
             chk *= p**e
-        complete = (chk == n) and all(sympy.isprime(p) for p in fs)
+        complete = (chk == n) and all(isprime(p) for p in fs)
         if not complete:
             undecided.append((m, fs))
             continue
@@ -245,15 +316,15 @@ def phase_b3_b4(tables_dir):
     print("-" * 78)
     print("computed H_even ∩ [2,1200] = %s" % in_heven)
     print("expected (Theorem 8)         = %s" % TEN)
-    match = (in_heven == TEN)
+    match = (in_heven == TEN and not undecided)
     print("MATCH: %s" % ("YES" if match else "*** NO — DISCREPANCY ***"))
     if not match:
         print("  only in computed: %s" % sorted(set(in_heven) - set(TEN)))
         print("  only in expected: %s" % sorted(set(TEN) - set(in_heven)))
-    print("killed-by-sieve: %d, in-H_even: %d, undecided: %d"
+    print("killed-by-sieve: %d, in-H_even: %d, unresolved(m>122): %d"
           % (len(killed), len(in_heven), len(undecided)))
     for m, fs in undecided:
-        print("    UNDECIDED m=%d: incomplete factorization %s" % (m, fs))
+        print("    UNRESOLVED m=%d: %s" % (m, fs))
     # spot-check two hand-verifiable factorizations
     sp6 = sympy.factorint(2**6 + 1)
     sp18 = sympy.factorint(2**18 + 1)

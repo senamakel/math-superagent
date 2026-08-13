@@ -12,6 +12,7 @@ fn every_role_with_memory_can_query_the_graph_and_not_only_the_chunks() -> agent
         "librarian",
         "scholar",
         "inventor",
+        "reducer",
         "reflection",
         "pattern_finder",
     ] {
@@ -42,7 +43,7 @@ fn every_role_with_memory_can_query_the_graph_and_not_only_the_chunks() -> agent
 /// every run and nothing fails to say so.
 #[test]
 fn the_reasoning_model_reaches_the_judgement_roles() {
-    for role in ["inventor", "judge", "reflection", "director"] {
+    for role in ["inventor", "reducer", "judge", "reflection", "director"] {
         assert!(
             REASONING_ROLES.contains(&role),
             "{role} judges and should be on the reasoning model"

@@ -1,6 +1,6 @@
 ```thread
 question: Can we bound the (2,4)-event rate from below, and does that bound suffice to keep b_k ≥ 1 for all k?
-status: open — step law + recharge identity PROVED; Route A RESTORED live (Directive 16: sweep deaths are g_0 startup, not rate); conditional-rate experiment is the blocking task
+status: open — step law + recharge identity PROVED; Route A SUPPORTED (conditional-rate experiment: family-independent post-startup rate, p=0.68 over 8 families); the gap is a LOWER BOUND on the rate for all k (λ̂=0.585 is measured, not bounded)
 rests-on: |
   - Step law (PROVED): b_{k+1} ≥ b_k ⟺ (x,y) = (2,4), else b_{k+1} = b_k − 1. Theorems of the absolute-difference operator for ANY array (no parity, no primes), proof in research/notes/step_law_proved.md; verified on real primes depth 1000 (0 failures) and 400 random arrays (3,521 rows, 610 events, 0 failures).
   - Recharge identity (PROVED): b_k = b_1 + Σ_{events i<k} (j_i + 1) − (k−1). research/notes/step_law_proved.md. The conjecture holds iff Σ (j_i + 1) ≥ k−1−b_1 for all k.
@@ -9,14 +9,14 @@ rests-on: |
   - Rule 90 interior (proved): halved entries evolve under XOR. research/notes/rule90-interior.md. The depth-d=2^j timing corollary is REFUTED (see rule90-regeneration thread); the interior identification stands as the edge-flip mechanism for Route A.
   - CHT 2026 Theorem 1.6: only obstructions to decay are long zero-blocks or long shallow {0,d}-blocks. hypotheses checked, R_0=4.2e8 ≫ 1000, does not bite at reachable depths.
   - Eppstein 2011: gap bounds alone do not suffice; must add non-concentration or restrict to primes.
-  - **Event-rate sweep (Directive 12, this run, 1154 sequences):** the step law and recharge identity hold on ALL sequences (zero failures, 46,528 rows, 20,013 events) — the mechanism IS combinatorial. 852/1154 (73.8%) reach b_k = 0, but ALL deaths within first 10 rows (764/852 by k≤3, 852/852 by k≤10). **Directive 16 correction:** these deaths are g_0 startup, NOT the asymptotic event rate. rand24 deaths at k=1 (iff g_0=4): 30/48; survivors at trunc_k=2 (iff g_0=2): 18/18. Wide-support families die more because they more often draw g_0≠2 and die at row 1. The sweep measures INITIALISATION, so it does NOT refute Route A. Route A is RESTORED as live. **The conditional-rate experiment (restrict to k>10 survivors, measure per-family event density) is the blocking task.** code/out/event_rate_sweep_analysis.captured.txt.
-  - **Gap-hypothesis separation check — DONE (Directive 15).** None of H1/H2/H3 separates primes from {2..20}; all three satisfied by both columns. This is correct — but the sweep deaths are g_0 startup, not gap statistics. code/out/gap_hypothesis_separation.captured.txt.
+  - **Event-rate sweep (Directive 12, this run, 1154 sequences):** the step law and recharge identity hold on ALL sequences (zero failures, 46,528 rows, 20,013 events) — the mechanism IS combinatorial. 852/1154 (73.8%) reach b_k = 0, but ALL deaths within first 10 rows (764/852 by k≤3, 852/852 by k≤10). **Directive 16 correction:** these deaths are g_0 startup, NOT the asymptotic event rate. Route A is RESTORED as live.
+  - **Conditional-rate experiment (Directive 19, DONE):** D=400, W=200000, seeds 10000..10019, 26 workers, commit ae69d093 (sign fix). Pooled λ̂ = 0.585 (1098/1876), Pearson X² p = 0.68 over 8 families. 3 corner-class families (consecutive, f2-rand24, rand24) immortal with zero eligible rows — contribute nothing. **Post-startup event rate is family-independent → Route A supported.** λ̂ is measured, not bounded below for all k. Do NOT cite D=40 smoke (predates sign fix, discarded). Anchors: code/out/conditional_rate_experiment.captured.txt, code/out/conditional_rate_records.jsonl, code/out/conditional_rate_experiment.notes.md.
   - Directive 13 stands independently: bounded finite support is vacuous for the primes (gaps 8,10,12,14,34 below 2000; unbounded).
-blocked-by: nothing — the step law and recharge identity are exact and universal; the conditional-rate experiment (TASKS item 1) is the next step
+blocked-by: nothing — the mechanism is proved combinatorial; the conditional-rate experiment is done and supports Route A; the gap is a rate lower bound
 next: |
-  1. **Run the conditional-rate experiment (TASKS item 1).** Read sweep JSON, filter to sequences surviving past k=10, compute per-family event density. Family-independent → Route A combinatorial; family-dependent → real evidence about rate. Capture to `code/out/conditional_rate_experiment.captured.txt`.
-  2. Route A (combinatorial): prove a worst-case bound on erosion between events from the Rule 90 edge-flip dynamics + drain law. The mechanism is combinatorial; the g_0 startup artefact is irrelevant to the rate question. If the conditional experiment shows family-independent event density, Route A is the correct framing.
-  3. Route B (analytic, secondary): assume a prime-gap hypothesis, derive a lower bound on event density. Must state how it beats Eppstein.
+  1. **Bound the (2,4)-event rate from below, not estimate it.** The conditional-rate experiment measured λ̂=0.585 at D=400 — a point estimate. The conjecture needs Σ(j_i+1) ≥ k−2 for all k, which needs a rate lower bound holding everywhere. State the lemma that would close the gap and test it on the surviving sweep families.
+  2. Route A (combinatorial): prove a worst-case bound on erosion between events from the drain law + edge-flip dynamics. The edge flips between 0 and 2 under Rule 90 interior XOR; the intruder drains at 2 per edge=2 row. If the longest possible run of (edge=0, intruder=4) before edge flips to 2 is bounded by a function of block length b, events cannot be arbitrarily far apart — and that gives a rate lower bound.
+  3. Route B (analytic, secondary): assume a prime-gap concentration hypothesis, derive a lower bound on event density. Must state how it beats Eppstein and Colonna's g=4 deletion.
   4. Deliverable: a theorem of the form "under hypothesis H, the event rate ≥ r, and r suffices."
 
 lean-formalisation: |
@@ -35,31 +35,19 @@ Both verified independently to depth 800 with zero failures (`code/out/step_law_
 
 The conjecture is now exactly: **do (2,4)-events keep arriving fast enough that `Σ (j_i + 1)` never falls `k−1` behind?** Since `b_1 = 2` and `j_i ≥ 0`, the recharge identity gives `b_k = 2 + Σ (j_i+1) − (k−1)`. The conjecture `b_k ≥ 1` for all k is equivalent to `Σ_{i<k} (j_i + 1) ≥ k − 2`.
 
-**The mechanism is combinatorial; the rate is not (Directive 12).** The event-rate
-sweep over 1,154 random 2-then-odds sequences settles this: the step law and
-recharge identity hold universally (zero failures, 46,528 rows, 20,013 events
-across all families), confirming the mechanism is a fact about the operator
-`|a−b|`. But the event RATE — whether `Σ (j_i+1) ≥ k−2` holds — is sharply
-dependent on the gap support. 852/1,154 sequences (73.8%) reach `b_k = 0`, all
-deaths within the first 10 rows. The phase boundary (sweep batch, n=48 per family):
+**The mechanism is combinatorial; the rate is family-independent post-startup (Directive 19).**
+The conditional-rate experiment (D=400, W=200000, 26 workers, commit ae69d093) confirms:
+pooled λ̂ = 0.585 (1098/1876), Pearson X² p = 0.68 over 8 families. Post-startup, every
+live family generates events at the same rate — this is what a combinatorial mechanism
+looks like. 3 corner-class families (consecutive, f2-rand24, rand24) are immortal with
+zero eligible rows and contribute nothing to the pooled figure. **The gap:** λ̂ is
+measured, not bounded below for all k. The conjecture needs Σ(j_i+1) ≥ k−2 holding
+everywhere, which requires a rate lower bound, not a point estimate. Do NOT cite the
+discarded D=40 smoke numbers (predate sign fix).
 
-| gap support | % die | first-gap-2 helps? |
-|---|---|---|
-| `{2}` | 0% | N/A (primes-like) |
-| `{2,4}` | 62% | yes — 0% with f2 |
-| `{2,4,6}` | 94% | drops to 60% with f2 |
-| `{2..20}` | 100% | still 100% with f2 |
-| `{2..100}` | 100% | still 100% with f2 |
-| Geom(p=.25) | 100% | still 100% with f2 |
-
-A purely combinatorial bound on the event rate from the `{0,2}` interior + drain law
-alone would have to hold for `{2..20}` and Geom(p=.25) — but those die 100% of the
-time. So Route A cannot be "no prime input." It MUST include a gap-support hypothesis
-that the dying families violate. Route A is re-scoped accordingly: the mechanism
-(step law, drain law, edge-flip) is combinatorial; the rate hypothesis is about the
-input sequence's gap profile. **Directive 13: the bounded-support form (gaps ⊆ {2,4,6}, first gap 2) is VACUOUS for Gilbreath — the primes do NOT satisfy it (gaps 8,10,12,14,34 occur below 2000; prime gaps are unbounded), so no finite-support hypothesis holds.** The separating property must be a CONCENTRATION condition that tolerates rare large gaps; pick one (bounded mean gap per window / frequency of gaps > G / Cramér g_n = O(log² p_n)) and check it against both the primes and {2..20} before writing it in.
-
-**Directive 16 correction:** the inference that the sweep refutes Route A is WRONG. The sweep data shows deaths are g_0 startup: 764/852 by k≤3, 852/852 by k≤10, nothing dies late. rand24 deaths at k=1 (iff g_0=4): 30/48; survivors at trunc_k=2 (iff g_0=2): 18/18. Wide-support families die more because they more often draw g_0≠2 and die at row 1. The sweep measures INITIALISATION, not the asymptotic event rate. Route A is RESTORED as live: the mechanism is combinatorial, and the conditional-rate experiment (restrict to k>10 survivors) is what will test it.
+The event-rate sweep deaths (852/1154, all within first 10 rows) are g_0 startup —
+Directive 16's correction stands. The conditional-rate experiment isolates the rate
+from the startup and supports Route A.
 
 ## What we know
 
@@ -73,15 +61,17 @@ input sequence's gap profile. **Directive 13: the bounded-support form (gaps ⊆
 
 ## Two routes to the event-rate bound
 
-### Route A — Combinatorial + concentration hypothesis: bound max erosion between events
+### Route A — Combinatorial: bound max erosion between events (now supported by conditional-rate experiment)
+
+The conditional-rate experiment (Directive 19, DONE) confirms: post-startup (k>10), the (2,4)-event rate is family-independent (pooled λ̂ = 0.585, Pearson X² p = 0.68 over 8 families). The mechanism is combinatorial. **The gap:** λ̂ is measured, not bounded below for all k.
 
 Between two (2,4)-events, the block erodes by exactly 1 per row. The intruder starts at some value ≥ 4 and drains to 4 (drop rate: 2 per row with edge=2, 0 per row with edge=0). The edge flips between 0 and 2 under the Rule 90 interior dynamics.
 
 A lemma bounding the longest possible run of (edge=0, intruder=4) before the edge flips to 2 would give a worst-case inter-event gap. This is a combinatorial claim: within a {0,2} block of length b, evolving under XOR, with an intruder y draining by the drain law, what is the maximum number of consecutive rows with edge=0?
 
-**Re-scoped per Directive 12, corrected per Directive 13:** the event-rate sweep refutes a purely combinatorial bound. Any such lemma must additionally assume a hypothesis on the input sequence's gaps that the dying sweep families ({2..20}, Geom(p=.25)) violate. **The bounded-support form (gaps ⊆ {2,4,6}, first gap = 2) is VACUOUS for the primes** — gaps 8,10,12,14,34 occur below 2000 and prime gaps are unbounded, so no finite-support hypothesis holds. The hypothesis must be a CONCENTRATION condition that tolerates rare large gaps (bounded mean gap per window / frequency of gaps > G / Cramér g_n = O(log² p_n)); pick one and check it against BOTH primes and {2..20}. Without a separating hypothesis, the lemma would prove a bound false for the dying families — a contradiction.
+The conditional-rate experiment (Directive 19) confirms the rate is family-independent post-startup — the mechanism is combinatorial. The gap is that λ̂=0.585 is measured, not bounded. The lemma must produce a LOWER BOUND on the rate, not an estimate. If the worst-case inter-event gap is G(b), then the rate is at least 1/(G(b)+1), and the recharge inequality can be checked.
 
-If this maximum is G(b) under the concentration hypothesis, then events are at most G(b) rows apart, and the recharge inequality can be checked.
+**Directive 13 stands:** bounded finite support is vacuous for the primes. The lemma must work without assuming finite gap support.
 
 ### Route B — Analytic: bound event density from prime gaps
 

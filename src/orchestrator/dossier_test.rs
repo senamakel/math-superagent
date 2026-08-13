@@ -2,17 +2,23 @@
 //! what it does when it does not fit.
 #![allow(clippy::expect_used)]
 
-use super::{DEFAULT_DOSSIER_TOKENS, build};
+use super::{DEFAULT_DOSSIER_TOKENS, build, build_reduction};
 
 /// The dossier at the budget a run actually uses.
 fn inventor(root: &std::path::Path) -> String {
     build(root, DEFAULT_DOSSIER_TOKENS)
 }
 
+/// The reducer's, at the same budget.
+fn reducer(root: &std::path::Path) -> String {
+    build_reduction(root, DEFAULT_DOSSIER_TOKENS)
+}
+
 fn workspace(name: &str) -> std::io::Result<std::path::PathBuf> {
     let root = std::env::temp_dir().join(format!("math-agent-dossier-{name}"));
     let _ = std::fs::remove_dir_all(&root);
     std::fs::create_dir_all(root.join("research/approaches"))?;
+    std::fs::create_dir_all(root.join("research/backward"))?;
     std::fs::create_dir_all(root.join("reflections"))?;
     std::fs::create_dir_all(root.join("code/lib"))?;
     Ok(root)

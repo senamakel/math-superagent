@@ -106,6 +106,40 @@ fn the_formalisation_agent_must_report_what_the_kernel_checked() -> agent::Resul
     Ok(())
 }
 
+/// The reducer's boundary, asserted rather than left to a comment: an
+/// exclusion nothing tests is one the next edit deletes.
+///
+/// The approach ledger is about *method*, and a role holding it drifts into
+/// proposing methods — which is the inventor's job and the one confusion this
+/// role must not create. It is asked what would suffice, not how to get there.
+/// Its own ledger and the claim ledger are what it reasons from, and it must
+/// have both or it cannot tell a gap from a lemma the run already proved.
+#[test]
+fn the_reducer_is_given_what_is_established_and_not_the_method_ledger() {
+    let context = role_context("reducer");
+    assert!(!context.contains(&"research/APPROACHES.md"));
+    for required in ["GOAL.md", "research/BACKWARD.md", "research/CLAIMS.md"] {
+        assert!(
+            context.contains(&required),
+            "the reducer must be sent `{required}`"
+        );
+    }
+}
+
+/// The ledger has to reach the roles that turn a gap into work, and must not
+/// reach the judge — which scores the *report*, and would otherwise credit an
+/// attempt for gaps it can see on disk and the report never mentioned.
+#[test]
+fn the_open_gaps_reach_the_planners_and_not_the_judge() {
+    for role in ["goals", "orchestrator", "context_curator", "reducer"] {
+        assert!(
+            role_context(role).contains(&"research/BACKWARD.md"),
+            "{role} decides what to attack and needs the open gaps"
+        );
+    }
+    assert!(!role_context("judge").contains(&"research/BACKWARD.md"));
+}
+
 #[test]
 fn learning_and_research_indexes_are_not_prompt_context() {
     for role in SPECIALISTS.into_iter().chain(DELEGATES) {
@@ -135,6 +169,7 @@ fn the_shared_brief_reaches_the_roles_that_reason_and_not_the_ones_that_file() {
         "librarian",
         "research",
         "inventor",
+        "reducer",
         // The role that writes it has to see what it is amending.
         "context_curator",
     ] {

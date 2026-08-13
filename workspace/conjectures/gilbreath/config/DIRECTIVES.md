@@ -395,8 +395,54 @@ Directive 16 is still open: restore Route A as live, and run the conditional-rat
 
 The regeneration thread picked up a `lean-formalisation` note from the edit (`research/threads/regeneration.md` → `research/THREADS.md` is auto-derived). The blocking task — conditional-rate experiment on k>10 survivors — is unchanged and still the single open item in TASKS.md.
 
-## 18 — from steer
+## 19 — from steer
 
-build-check probe
+Ignore directive 18 ("build-check probe") - that was an operator probe testing whether the steer binary compiled, not an instruction. Discard it.
 
-**Changed:** `TASKS.md` — added the edge-sequence probe as item 1 (immediate), moved the conditional-rate experiment to item 2. Both run independently on existing data (`blocks_depth1000.json` and the sweep JSON), so neither blocks the other. The probe measures the one quantity the step law makes indispensable — how often the block's last entry is 2 — since `edge=2` is the necessary half of every `(2,4)` regeneration event, and its frequency on the prime rows is the structural signal the rate question turns on. No other file needed changing: the regeneration thread already covers this gap, the run state in CONTEXT.md already names it, and no approach or thread is opened or closed by a measurement.
+The real content. Your conditional-rate experiment answers the question, and the answer restores Route A. Using the CORRECTED run (D=400, W=200000, after commit ae69d093 fixed the sign error), not the D=40 smoke file:
+
+  pooled lambda_hat = 0.585288 (1098/1876)
+  Pearson X^2 p-value = 6.828e-01
+
+p = 0.68 is no evidence of family dependence. Conditioned on surviving row 10, every live family generates events at the same rate. That is what a combinatorial mechanism looks like, and it confirms directive 16: the original sweep measured g_0, not the rate. Route A is now supported, not merely un-refuted.
+
+Record it: claim conditional-event-rate-family-independent, status checked, anchor code/out/conditional_rate_experiment.captured.txt and conditional_rate_records.jsonl. State the conditioning explicitly - survival to row 10, D=400, W=200000, seeds 10000..10019.
+
+Three cautions for the write-up.
+
+1. consecutive, f2-rand24 and rand24 all show ev_post = 0, elig_post = 0. Those are the corner-class families your own survivor analysis proved immortal: the block fills the row, b never decreases, no event is ever needed. They contribute nothing to the pooled figure. Say 8 families agreed, not 11.
+
+2. lambda_hat = 0.5853 is MEASURED, not bounded. The conjecture needs Sigma (j_i + 1) >= k - 2, which requires a LOWER bound on the rate holding for all k. An estimate at D=400 is not that. State the gap plainly.
+
+3. Do not cite the D=40 smoke numbers (lambda 0.5577, p 0.894) anywhere - they predate the sign fix.
+
+Also good: code/grounding/check_absdiff_vs_forwarddiff.py. Verifying your operator is the one the conjecture is about is the grounding that prevents a wasted week.
+
+**Changed TASKS.md, CONTEXT.md, research/threads/regeneration.md, and THREADS.md.**
+
+Directive 18 was a probe — discarded. The conditional-rate experiment is marked complete with the three cautions as directed: 8 families (not 11 — the three corner-class are immortal with zero eligible rows), λ̂ = 0.5853 is measured not bounded, and D=40 smoke is not cited anywhere. TASKS.md now has the experiment as Done with its anchors and cautions, and the Immediate items shift to the rate lower bound (item 1), stating the gap (item 2), and promoting the claim to library-state (item 3). CONTEXT.md run-state says Route A supported, the conditional-rate result is in Established with the measurement-vs-bound distinction, and Gaps reflect the experiment is done and the next step is a lower bound. The regeneration thread header and body both record the experiment as complete, Route A as supported, and the gap as "λ̂ is measured, not bounded below for all k." The D=40 smoke file is recorded as discarded alongside all other refuted items.
+
+## 19 — from steer
+
+Ignore directive 18 ("build-check probe") - that was an operator probe testing whether the steer binary compiled, not an instruction. Discard it.
+
+The real content. Your conditional-rate experiment answers the question, and the answer restores Route A. Using the CORRECTED run (D=400, W=200000, after commit ae69d093 fixed the sign error), not the D=40 smoke file:
+
+  pooled lambda_hat = 0.585288 (1098/1876)
+  Pearson X^2 p-value = 6.828e-01
+
+p = 0.68 is no evidence of family dependence. Conditioned on surviving row 10, every live family generates events at the same rate. That is what a combinatorial mechanism looks like, and it confirms directive 16: the original sweep measured g_0, not the rate. Route A is now supported, not merely un-refuted.
+
+Record it: claim conditional-event-rate-family-independent, status checked, anchor code/out/conditional_rate_experiment.captured.txt and conditional_rate_records.jsonl. State the conditioning explicitly - survival to row 10, D=400, W=200000, seeds 10000..10019.
+
+Three cautions for the write-up.
+
+1. consecutive, f2-rand24 and rand24 all show ev_post = 0, elig_post = 0. Those are the corner-class families your own survivor analysis proved immortal: the block fills the row, b never decreases, no event is ever needed. They contribute nothing to the pooled figure. Say 8 families agreed, not 11.
+
+2. lambda_hat = 0.5853 is MEASURED, not bounded. The conjecture needs Sigma (j_i + 1) >= k - 2, which requires a LOWER bound on the rate holding for all k. An estimate at D=400 is not that. State the gap plainly.
+
+3. Do not cite the D=40 smoke numbers (lambda 0.5577, p 0.894) anywhere - they predate the sign fix.
+
+Also good: code/grounding/check_absdiff_vs_forwarddiff.py. Verifying your operator is the one the conjecture is about is the grounding that prevents a wasted week.
+
+**Two sentences:** Rewrote `TASKS.md` to discard the probe (Directive 18 was the build-check test), mark the conditional-rate experiment complete with all three directive cautions — 8 families not 11, λ̂ measured not bounded, D=40 smoke never cited — and shift the Immediate work to the rate lower bound. Updated `CONTEXT.md` and `research/threads/regeneration.md` to record Route A as supported (p=0.68, family-independent post-startup) with the measurement-vs-bound gap stated plainly, and appended the response to `config/DIRECTIVES.md`.

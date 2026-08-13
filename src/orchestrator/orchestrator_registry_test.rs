@@ -195,6 +195,7 @@ fn the_registry_advertises_every_agent_the_solution_loop_drives() -> agent::Resu
         "reflection",
         "pattern_finder",
         "inventor",
+        "reducer",
         "librarian",
     ] {
         assert!(
@@ -202,6 +203,66 @@ fn the_registry_advertises_every_agent_the_solution_loop_drives() -> agent::Resu
             "`{expected}` must be registered"
         );
     }
+    Ok(())
+}
+
+/// The reducer reads the whole workspace and writes one kind of file. Every
+/// other authority is withheld, and each exclusion is a different failure: a
+/// role that can search turns "what would suffice" into a literature survey,
+/// one that can compute discharges its own gaps with a program it wrote, and
+/// one with a bench runs a second investigation beside the first.
+#[test]
+fn the_reducer_can_write_notes_but_cannot_compute_or_search() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let reducer = registry
+        .get("reducer")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("reducer is registered".into()))?;
+    for required in [
+        "read_document",
+        "write_document",
+        "search_claims",
+        "request_research",
+        "recall_memory",
+        "remember_memory",
+        "relate_memory",
+    ] {
+        assert!(
+            reducer.tools.iter().any(|tool| tool == required),
+            "reducer must have `{required}`"
+        );
+    }
+    for forbidden in [
+        "exa_search",
+        "oeis_lookup",
+        "execute_command",
+        "write_tool_file",
+        "apply_patch",
+        "spawn_agent",
+        "await_agent",
+        "note_scratch",
+        "recall_scratch",
+    ] {
+        assert!(
+            !reducer.tools.iter().any(|tool| tool == forbidden),
+            "reducer must not have `{forbidden}`"
+        );
+    }
+    Ok(())
+}
+
+/// It holds no research tool either way, so `--no-research` changes nothing
+/// about it — which is what having no `research_enabled` branch in its
+/// definition is supposed to mean.
+#[test]
+fn the_reducer_is_the_same_role_with_research_disabled() -> agent::Result<()> {
+    let enabled = default_registry(true)?;
+    let disabled = default_registry(false)?;
+    let tools = |registry: &super::AgentRegistry| {
+        registry
+            .get("reducer")
+            .map(|definition| definition.tools.clone())
+    };
+    assert_eq!(tools(&enabled), tools(&disabled));
     Ok(())
 }
 

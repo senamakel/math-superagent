@@ -2,9 +2,10 @@
 #![allow(clippy::expect_used)]
 
 use super::{
-    BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, Mailbox, Progress, Route,
-    STUCK_THRESHOLD, SolutionState, UNVERIFIED_THRESHOLD, approach_slugs, evidence_briefing,
-    extract_lesson, kind_of, provider_blocked, record_verdict, route,
+    BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, Mailbox, Progress, REDUCTION_INTERVAL,
+    ReductionGate, Route, STUCK_THRESHOLD, SolutionState, UNVERIFIED_THRESHOLD, approach_slugs,
+    evidence_briefing, extract_lesson, gap_briefing, kind_of, provider_blocked, record_verdict,
+    route, skeleton_fingerprint,
 };
 
 fn state() -> SolutionState {
@@ -600,6 +601,135 @@ fn a_rewritten_approach_does_not_count_as_a_proposal() {
     assert_ne!(approach_slugs(Some(&root)), before);
 }
 
+/// The cadence has to fire on the first completed cycle, not once the counter
+/// has climbed to the interval.
+///
+/// This is `open_invention`'s recorded evidence one role wider. A gate needing
+/// several completed attempt/judge/reflect cycles is a gate a run whose
+/// attempts take the better part of an hour never reaches — across a day of
+/// live runs the inventor was spawned once and its ledger never existed on
+/// disk. Detached, an early first reduction costs one child run and the
+/// skeleton reaches the attempt after next.
+#[test]
+fn a_fresh_run_is_due_a_reduction_on_its_first_completed_cycle() {
+    let current = state();
+    assert!(
+        current.since_reduction >= REDUCTION_INTERVAL,
+        "a run that has never decomposed its goal is already due one"
+    );
+}
+
+/// Two reducers decompose the same goal, so they write the same file, and
+/// `write_document` is last-writer-wins: the loser's gaps are gone with no
+/// error anywhere. The gate is what makes that impossible rather than
+/// unlikely.
+#[test]
+fn a_second_reduction_is_not_opened_while_one_is_in_flight() {
+    let gate = ReductionGate::default();
+    assert!(gate.claim(), "the first reduction takes the gate");
+    assert!(!gate.claim(), "the second must be refused");
+    // Held by the arm rather than by the cycle that opened it, so a reduction
+    // outliving its cycle still keeps the gate shut.
+    let held = gate.clone();
+    assert!(!held.claim());
+    gate.release();
+    assert!(held.claim(), "the gate reopens once the arm finishes");
+}
+
+/// The second bound. The reducer's inputs are what the run has established, so
+/// a tick over a workspace that has not moved would rewrite the same skeleton
+/// from the same evidence — the pattern team's `results_unchanged` argument
+/// applied to the research tree.
+#[test]
+fn the_cadence_declines_a_workspace_that_has_not_moved() {
+    let gate = ReductionGate::default();
+    // Nothing has been decomposed yet, so the first tick goes ahead whatever
+    // the fingerprint is — including a workspace that happens to hash to zero.
+    assert!(gate.moved(0));
+    gate.remember(0);
+    assert!(!gate.moved(0), "an unchanged tree is not new evidence");
+    assert!(gate.moved(1), "a claim landing is");
+}
+
+/// An attempt told "Lemmas that would suffice:" with nothing under it
+/// reasonably concludes the run decided there were none, which is a different
+/// statement from no reduction having run.
+#[test]
+fn the_gap_briefing_renders_nothing_for_an_empty_mailbox() {
+    let skeletons = Mailbox::default();
+    assert!(gap_briefing(&skeletons).is_empty());
+
+    skeletons.post("- `G-density` (event-rate): events occur with density >= 1/2".to_string());
+    let briefing = gap_briefing(&skeletons);
+    assert!(briefing.contains("G-density"));
+    assert!(
+        briefing.contains("task"),
+        "an open gap has to arrive as a target rather than as background: {briefing}"
+    );
+}
+
+/// The gaps travel in the attempt's prompt, under their own heading rather than
+/// folded into the material the reflection gathered.
+#[test]
+fn the_attempt_is_told_which_lemmas_would_suffice() {
+    let current = state();
+    let prompt = super::attempt_prompt(
+        &current,
+        "",
+        "",
+        "",
+        "Lemmas that would suffice to prove the goal:\n- `G-density`: events are dense\n\n",
+    );
+    assert!(prompt.contains("G-density"));
+}
+
+/// The discriminator behind `ensure_skeleton_written`, and the deliberate
+/// inversion of `a_rewritten_approach_does_not_count_as_a_proposal`: refining a
+/// live skeleton adds no filename and *is* the correct work, so the comparison
+/// has to be on what downstream readers consume.
+#[test]
+fn a_rewritten_skeleton_counts_when_a_gap_moves() -> std::io::Result<()> {
+    let root = approaches_workspace("reduction");
+    let dir = root.join("research/backward");
+    std::fs::create_dir_all(&dir)?;
+    let write = |status: &str| -> std::io::Result<()> {
+        std::fs::write(
+            dir.join("event-rate.md"),
+            format!(
+                "```skeleton\ngoal: G\nimplies: the density bound gives it\n```\n\n\
+                 ```gap\nid: G-density\nlemma: events are dense\nstatus: {status}\n```\n"
+            ),
+        )
+    };
+    write("open")?;
+    let before = skeleton_fingerprint(Some(&root));
+    assert!(!before.is_empty());
+
+    write("open")?;
+    assert_eq!(
+        skeleton_fingerprint(Some(&root)),
+        before,
+        "rewriting the same gap is not moving anything a reader consumes"
+    );
+
+    write("discharged")?;
+    assert_ne!(
+        skeleton_fingerprint(Some(&root)),
+        before,
+        "closing a gap is the work, and it adds no filename"
+    );
+    Ok(())
+}
+
+/// A workspace that has never been decomposed has no `research/backward/` at
+/// all, which has to measure as empty rather than as an error.
+#[test]
+fn skeleton_fingerprint_treats_a_missing_directory_as_empty() {
+    let root = approaches_workspace("no-reduction");
+    assert!(skeleton_fingerprint(Some(&root)).is_empty());
+    assert!(skeleton_fingerprint(None).is_empty());
+}
+
 /// The judge must be able to see work the attempt could not report.
 ///
 /// `RunBudget` caps an agent run, and a `goals` run pursuing an open goal does
@@ -624,6 +754,14 @@ fn the_judge_is_shown_what_the_attempt_wrote_even_when_it_reported_nothing()
          status: checked\n```\n",
     )?;
     std::fs::write(root.join("research/approaches/dp.md"), "an idea")?;
+    std::fs::create_dir_all(root.join("research/backward"))?;
+    std::fs::write(
+        root.join("research/backward/reduction.md"),
+        "```skeleton\ngoal: p(4,400)\nimplies: the two lemmas combine\n```\n\n\
+         ```gap\nid: G-open\nlemma: the recurrence terminates\nstatus: open\n```\n\n\
+         ```gap\nid: G-done\nlemma: p(4,400) = 521/1020\nstatus: discharged\n\
+         discharged-by: p4-400\n```\n",
+    )?;
 
     let brief = evidence_briefing(&root);
     assert!(
@@ -635,6 +773,12 @@ fn the_judge_is_shown_what_the_attempt_wrote_even_when_it_reported_nothing()
         "a computed claim must count as established: {brief}"
     );
     assert!(brief.contains("approaches proposed: 1"));
+    // What separates an investigation closing in on a theorem from one
+    // accumulating verified data beside it.
+    assert!(
+        brief.contains("1 open, 1 discharged"),
+        "the judge must see how much of a proof the run now has: {brief}"
+    );
     // The instruction matters as much as the counts: a judge given numbers and
     // no reading of them scores the silent report it can see.
     assert!(brief.contains("reported nothing and left work here"));
