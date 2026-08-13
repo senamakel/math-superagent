@@ -16,6 +16,16 @@ bearing: the total-variation-oscillation-potential approach is refuted as stated
 anchor: research/approaches/total-variation-oscillation-potential.md; code/out/check_runcount_lemma.py; code/out/check_runcount_lemma.captured.txt; code/out/check_runcount_lemma_class.captured.txt
 ```
 
+```claim
+id: rule90-relative-depth-null
+statement: The relative-depth measure of block-length minima of the prime triangle (depth of each local min from the previous local-min row) is 21/27 within tolerance 1 of a power of 2. Against the exact binomial null X ~ Binomial(27, 9/16) — p = (9 near-2^j values in [0,15])/16, the program's own depth>0 guard excluding 0 — P(X >= 21) = 0.017299, significant at 5% but not 1%. The signal is tolerance-dependent: at tol=0 (exact powers {1,2,4,8,16}) 10/27 hit with p = 0.113, and conditioning on the observed concentrated range [2,9] post hoc gives p = 0.68. The permutation null is degenerate (the predicate tests depth values, not positions, so every shuffle of the 27 depths has the same hit count).
+hypotheses: regime lengths are comparable to independent draws uniform over the observed range [0,15]; the 27 genuine regime lengths (k=1000 tail depth 841 dropped); tolerances as stated.
+holds-here: yes — the numbers are read from the depth-1000 record the run computed (code/out/blocks_depth1000.json -> code/out/rule90_depth_results.json), and the exact p-value is machine-verified three independent ways (Fraction tail, scipy.stats.binom.sf, direct float sum; agree to 8 digits).
+status: checked (this run; code/rule90_test/null_rule90_depth.py, capture code/out/null_rule90_depth.captured.txt, JSON code/out/rule90_depth_null.json)
+bearing: closes the rule90-regeneration thread's timing-corollary question: the mild tol=1 concentration is not strong enough to support a structural regeneration mechanism on its own (dead at tol=0). The proved rule90-interior-xor identification is unaffected; the honest open question remains regeneration (thread research/threads/regeneration.md).
+anchor: research/threads/rule90-regeneration.md; code/out/rule90_depth_results.json; code/out/null_rule90_depth.captured.txt
+```
+
 ## The canonical tier (statement, names, history)
 
 ```claim
