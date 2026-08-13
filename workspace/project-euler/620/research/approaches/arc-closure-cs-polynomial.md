@@ -54,11 +54,15 @@ integer-level count, and the unit-circle polynomial `z^{c-p}(a_p z - d)^{s+p} =
   mirror symmetry (upper/lower are the two tangency points). Anchors:
   `code/out/n_integer_model.txt`, `code/out/winner_refine.txt`,
   `code/out/tangency_enum.txt`.
-- **Sourced:** the toothed-contour congruence shape (Kurasov 2020, MATEC Web
-  Conf. 329:03027, eq. 7/8 — eccentric systems), plus the Guo 5.21–5.25 /
-  Parker–Lin / Zou / Sun coaxal assembly-condition literature.
-  Caveat: Kurasov full text is 403-blocked; eq. 7/8 from search-engine
-  extraction, unverified locally.
+- **Sourced (full text read):** the toothed-contour congruence shape (Kurasov
+  2020, MATEC Web Conf. 329:03027, eqs. 1, 6, 7, 8, 10–14 — eccentric systems),
+  plus the Guo 5.21–5.25 / Parker–Lin / Zou / Sun coaxal assembly-condition
+  literature. Kurasov's full text is on disk at
+  `research/sources/kurasov-2020-assembly-conditions-pq.full.md` (obtained via
+  the ProQuest media PDF after the direct MATEC route returned 403); the exact
+  signs in eq. (7) are still OCR-garbled in the PDF, so the sign assignment is
+  read from the search abstract and pinned by the oracle. REQUEST
+  simionescu1998-full-text remains open (paywalled).
 - **Still to prove (first-step 1):** the exact identity n_p+n_q = c+s and the
   monotonicity of n_p over the whole interval for all (c,s,p,q) — currently
   numerical, needs an elementary geometric proof.
