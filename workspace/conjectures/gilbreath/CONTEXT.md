@@ -23,12 +23,20 @@ measurement only.
    structure, not an averaging artifact (`bigjump-cap-characterization-1000`).
 4. **Giants ARE (2,4)-events (13/13)** — no separate mechanism (step law).
 5. **j → ∞ settled; the growth law is NOT determined.** Geometric fit R² =
-   0.9607, factor 1.751/event over 14 genuine giants (wider sieve); the
-   sublinear reading (ratios declining toward 1) was broken by the 13th
-   ratio 4.95. **Not load-bearing**: bounded gap + j → ∞ suffice regardless.
-6. **Inter-giant gaps (14 genuine giants): 22,8,4,26,2,14,2,14,4,4,12,15,13
-   rows** — mean 10.21, max 26, UNCHANGED when sieve width ↑15× and b
-   ↑4,900× (2,179 → 10,655,286). **Measurement, not proof.**
+   0.968, factor ≈1.765/event over 15 giants (pattern-finder convention;
+   0.9607 / 1.751 over the 14 fully-live ones); the sublinear reading
+   (ratios declining toward 1) was broken by the 13th ratio 4.95, and the
+   next ratios (1.97, 1.53) put the series back near the geometric trend.
+   **Not load-bearing**: bounded gap + j → ∞ suffice regardless.
+6. **Inter-giant gaps (15 giants): 22,8,4,26,2,14,2,14,4,4,12,15,13,64
+   rows** — max 64, the 175→239 drought (pattern-finder pass to depth 300,
+   `code/out/pattern_finder_wider_giants.captured.txt`; **this corrects
+   thread regeneration.md's "max 26 unchanged"**). The 15th giant, row 239,
+   records j = 5,596,824 and lands at the last column of row 240 —
+   **width-capped, true j ≥ 5,596,824**, same status as depth-1000's i=161.
+   64 ≪ the jump scale (~10⁵–10⁶ at this b), so the reduction keeps orders
+   of slack; but max-gap 26→64 is the first hint gaps may grow with b.
+   **Measurement, not proof.**
 7. **Bounded gap + j → ∞ ⇒ b_k ≥ 1 forever ⇒ GC.**
 
 **Next (Directive 26):** decide whether "the inter-giant gap is bounded" is a
@@ -39,11 +47,15 @@ Gilbreath to a named conjecture); if neither, name the obstruction. Do not
 re-derive steps 1–5.
 
 Caveats: both records are single finite triangles — depth 1000 (sieve 2e7,
-1,270,607 primes) and wider width (sieve 3e8, 16,252,325 primes, depth 240,
-k* = 239). The depth-1000 record dies at i=161 via its own finite-width cap,
-but the giants **continue** at wider width (new giants rows 162, 175 with
-j = 4,323,712 and 5,237,310) — the cap was sieve width, not prime structure.
-13 gaps is a small sample; "no trend" is not "bounded forever".
+1,270,607 primes) and wider width (sieve 3e8, 16,252,325 primes, depth 300
+in the pattern-finder pass, k* = 239). The depth-1000 record dies at i=161
+via its own finite-width cap, but the giants **continue** at wider width
+(new giants rows 162, 175, 239 — the cap was sieve width, not prime
+structure). 15 giants is a small sample, and the 239th-row giant is itself
+width-capped; "no trend" is not "bounded forever". Width-degradation
+exactness: at 3e8, live rows are 1..238, k* = 239 (all 15 giants sit at
+flooring ≥ 1 — but the 239 one has flooring exactly 1, i.e. is
+width-limited, quote j ≥ 5,596,824).
 
 ## Established
 
