@@ -88,14 +88,28 @@ anchor: research/summaries/bremner-on-squares-of-squares-1999.md
 
 ```claim
 id: robertson-elliptic-reduction
-statement: A 3×3 magic square of squares exists iff there is c with three points of 2E(Q),
-  E: y²=x(x²−c²), whose x-coordinates are in AP; equivalently {X,X±c} all rational squares.
-hypotheses: c ∈ Q, distinct entries
+statement: A 3×3 magic square of squares exists iff there exist P₀, P₁, P₂ ∈ E(Q) on
+  E: y² = x(x² − c²) with x-coordinates in 2E(Q) —
+    a−b = x₂P₀,  a = x₂P₁,  a+b = x₂P₂ —
+  satisfying the arithmetic-progression condition
+    x₂P₂ − x₂P₁ = x₂P₁ − x₂P₀.
+  A point (X,Y) ∈ E(Q) lies in 2E(Q) iff {X, X+c, X−c} are all rational squares.
+  E has rational torsion = {2-torsion} only; replacing P_i by P_i+T (T torsion)
+  leaves the square unchanged.  The corresponding grid (entries as rational squares)
+  is eq. (4) of Bremner 1999 p. 291.
+hypotheses: c ∈ Q (c = e² for integer MSS), distinct entries, centre a = x₂P₁
 holds-here: yes
 status: proved
-bearing: the run's single-curve reformulation; the standard starting point for descent
-anchor: research/sources/bremner-on-squares-of-squares-1999.full.md
+bearing: the run's single-curve reformulation; the standard starting point for any
+  descent or AP-length argument; the Garcia-Fritz–Pasten bound on AP length in E(Q)
+  applies to exactly these three points once the reduction is fully stated
+anchor: research/sources/bremner-on-squares-of-squares-1999.full.md pp. 290–291
 answers: exact-reduction-magic-507c
+verified-by: statement traced through Bremner 1999 eqs. (2)–(4) and the surrounding
+  prose; the derivation is peer-reviewed (Acta Arithmetica).  Re-verification task
+  in TASKS.md: scholar to confirm the three-points-plus-AP wording against the
+  paper and check that the Garcia-Fritz–Pasten theorem's non-degeneracy hypotheses
+  are satisfied for x-coordinates of doubled points (not arbitrary points).
 ```
 
 ```claim
