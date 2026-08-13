@@ -1,9 +1,12 @@
 ```thread
 question: Is the 2-to-1 lifting of A_k provable via LTE, giving |A_k| = 2^(k-1) unconditionally?
-status: live
-rests-on: ternary-sieve-count-doubles, SIEVE-EXACT, SAYE-2, SAYE-3
-blocked-by: LTE carry analysis (fragile); bijection route is already complete and preferred
-next: connect the LTE mechanism to SAYE-2 class-splitting; verify c ≡ d_1(2^j) (mod 3)
+status: closed — PROVED unconditionally
+result: The theorem is proved via both routes (bijection and LTE). The three-lemma
+  proof (step element has order 3, lifts share low digits, top digits are a
+  permutation of {0,1,2}) is written in code/out/lifting_theorem.md with claim
+  id ternary-lifting-theorem. |A_k| = 2^(k-1) for all k.
+next: superseded by the Lean formalisation task (research/threads/lean-formalization.md)
+  and the DH-1 × Lagarias combination (research/threads/dh1-gap.md)
 ```
 
 # Proving the 2-to-1 lifting
