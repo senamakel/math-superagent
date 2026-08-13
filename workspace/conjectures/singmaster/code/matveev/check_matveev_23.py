@@ -126,8 +126,10 @@ for y in range(3, 10**6 + 1):
         x = (1 + r) // 2
         if x >= 2 and 3 * x * (x - 1) == y * (y - 1) * (y - 2):
             found.append((x, y))
+expected = [(2, 3)] + solutions          # (2,3): C(2,2)=C(3,3)=1, the trivial value-1 pair
 print(f"[P3] y<=10^6 oracle found {len(found)} pairs: {found}")
-print(f"[P3] RESULT: {'EXACTLY the Avanesov/SDW set, consistent' if found == solutions else 'MISMATCH'}")
+print(f"[P3] expected Avanesov/SDW complete set (y<=10^6): {expected}")
+print(f"[P3] RESULT: {'EXACTLY the Avanesov/SDW set, consistent' if found == expected else 'MISMATCH'}")
 
 # ----------------------------------------------------------------------
 # P2. Nonzero forms: difference equations C(x,2) = C(y,3) + d  (d != 0).
@@ -171,6 +173,13 @@ for d in [-3, -2, -1, 1, 2, 3]:
     U = 3 * x * (x - 1)
     V = y * (y - 1) * (y - 2)
     primes, bs, Lam = linear_form(factorint(U), factorint(V))
+    if len(primes) < 2:
+        # Matveev Theorem 2.2/2.3 requires n >= 2 (homogeneous rational case,
+        # page 724: "n > 2"; the n=1 form is a two-logarithm Baker form, not
+        # covered by this theorem).  Skipped here, not claimed.
+        print(f"  {d:>4} {str(anchor):>14} {len(primes):>3}  "
+              f"Skipped: {len(primes)}-term form violates Thm 2.2 n>=2")
+        continue
     # exact theorem: d != 0 forces the form nonzero
     nonzero = (primes != [] and Lam != 0.0)
     okk, det = kummer_subset_verification(primes)
