@@ -1,46 +1,28 @@
-<!-- source: http://www.multimagie.com/English/Morgenstern25.htm | converted from HTML -->
+# Morgenstern, "Three new searches for a magic hourglass", June 2014
 
-MULTIMAGIE.COM - Three new searches for a magic hourglass
+[[morgenstern-hourglass-searches-2014]]
+Source: http://www.multimagie.com/English/Morgenstern25.htm
 
-**Three new searches for a magic hourglass
-****by Lee Morgenstern, June 2014.**
+## What it establishes
+Three fresh computational searches for a **magic hourglass**, all reporting **no solutions found**, and — importantly for the Buell-bound caveat — the third is a *pair*-based search strictly wider than Buell's *triple*-based one.
 
----
+**Search 1 (all central values, partial):** `[(m²+n²)(r²+s²)]² ± 4[mn(m²−n²)(r²+s²)² ± rs(r²−s²)(m²+n²)²]` both squares, all `m,n,r,s < 9000` with `gcd(m,n)=gcd(r,s)=1`. Central values up to ~`8.1×10⁷`, partial search of central values up to almost `(2·9000²)² ≈ 2.6×10¹⁶` (possible square length up to 33 digits). Took several weeks.
 
-I have just completed three new searches for a Magic Hourglass.
+**Search 2 (opposite extreme to Buell):** same formulas but `(m²+n²)(r²+s²) < 5×10¹²` with `m,n` coprime and `r,s` coprime — i.e. `m²+n²` sharing **no factor** with `r²+s²`. ~10 hours on 4 i7 cores.
 
-The first search was for
+**Search 3 (wider than Buell):** `(m²+n²)² ± 4[mn(m²−n²) ± rs(r²−s²)]` both squares, with `(m²+n²) = (r²+s²) < 5×10¹²`, `m,n` and `r,s` allowed common factors. Buell used **triples** `m²+n² = r²+s² = u²+v²` (which restricts scaling); here **pairs** `m²+n² = r²+s² = (u²+v²)t` allow non-square `t`, so this search tests **more** possibilities than Buell's and acts as an independent verification that **Buell's search correctly found no solutions**. No solutions found. ~10 hours on 4 cores.
 
-- [m�+n�)(r�+s�)]� +- 4[mn(m�-n�)(r�+s�)� + rs(r�-s�)(m�+n�)�] both squares or
-- [m�+n�)(r�+s�)]� +- 4[mn(m�-n�)(r�+s�)� - rs(r�-s�)(m�+n�)�] both squares for all values of m,n,r,s < 9000, with m,n coprime and r,s coprime.
+## Implications for this run
+- Strengthens the "no full-MSS `25×10²⁴` centre bound" caveat already in `buell-search-for-magic-hourglass-1999.md`: not only is that Buell's *hourglass*-only, *coprime* bound, but Morgenstern's pair reformulation (strictly wider than the triple form) also finds nothing in the same range. The absent solution is robust to the scaling relaxation.
+- Consistent with CONTEXT.md's note that the hourglass (Φ/gaussian) structure is where the searches concentrate, and that buell's triple-based restriction was the only thing preventing a wider statement; this page shows the wider statement also has no hit up to the same scale.
+- Adds no new theorem; it is a search-range fact (several weeks + ~hours of CPU).
 
-The second search used the same formulas as above, but with
-
-- (m�+n�)(r�+s�) < 5 x 10^12, with m,n coprime and r,s coprime.
-
-The third search was for
-
-- (m�+n�)� +- 4[mn(m�-n�) + rs(r�-s�)] both squares or
-- (m�+n�)� +- 4[mn(m�-n�) - rs(r�-s�)] both squares, for (m�+n�) = (r�+s�) < 5 x 10^12, and m,n and r,s could have factors in common.
-
-No solutions were found.
-
----
-
-The third search was similar to the [Buell search][1] and in the same range, except that instead of using triples of m�+n� = r�+s� = u�+v�, which restricts the possible scalings, I used pairs, which allows m�+n� = r�+s� = (u�+v�)t, where t can be a non-square. So my search tested more possibilities than the Buell search and also serves as a verification that the Buell search correctly found no solutions.
-
-The second search was the opposite extreme to the Buell search. Instead of m�+n� = r�+s�, it was for m�+n� having no factors in common with r�+s�. This requires (u�+v�)t to be the product of the other two sums of squares.
-
-The first search was for all central values less than about 8.1 x 10^7 and a partial search for central values up to almost (2x9000�)�, which is about 2.6 x 10^16, thus there was the possibility of finding a solution where the square of the central value could be up to 33 digits long.
-
-The second and third search both took about 10 hours running on four i7 processors. The first search took several weeks.
-
----
-
-Return to the home page [http://www.multimagie.com][2]
-
-
-## Links
-
-[1]: ../Buell.pdf
-[2]: http://www.multimagie.com/indexengl.htm
+```claim
+id: morgenstern-2014-hourglass-no-solutions
+statement: Three searches for the magic hourglass found no solutions: (1) all m,n,r,s<9000 (central values up to 8.1e7, partial central values up to ~2.6e16, gcd(m,n)=gcd(r,s)=1); (2) (m²+n²)(r²+s²)<5e12, m²+n² coprime to r²+s²; (3) (m²+n²)=(r²+s²)<5e12 allowing common factors, a pair-based search strictly wider than Buell's triple-based search, which independently confirms Buell found no solution.
+hypotheses: the three formula families; hourglass configuration; gcd conditions as stated
+holds-here: yes (upper-bound/sieve context)
+status: asserted (reported on Morgenstern's page; not re-run here)
+bearing: corroborates no-hourglass to the searched scale, including under the relaxed (pair) form; reinforces that the 25e24 figure is an hourglass, not full-MSS, bound
+anchor: research/sources/morgenstern-hourglass-searches-2014.full.md
+```
