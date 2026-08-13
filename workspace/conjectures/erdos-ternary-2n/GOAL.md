@@ -7,19 +7,36 @@ been open since 1979 and is believed true, so the working assumption is that
 you will not prove it. Claiming it on an argument that has not survived attack
 is the one outright failure available here.
 
+**Everything about the modular sieve is already done, and none of it counts
+again.** A previous run of this workspace proved `|A_k| = 2^(k-1)` for all `k`
+(`ternary-lifting-theorem`, status proved), determined `A_k` to `k = 26`,
+identified the classes of `n = 0, 2, 8`, and stated exactly why the sieve cannot
+close. It then exited, correctly, because the exit test below used to be
+satisfied by precisely that. It is not satisfied by it any more. Re-deriving the
+count, re-sieving to a larger `k`, or restating the obstruction is **not** a
+partial result and does not end this run.
+
 A partial result that would count:
 
-- an explicit `k` and a complete determination of the sieve set `A_k`, with
-  the surviving residue classes listed and the classes of `n = 0, 2, 8`
-  identified among them;
-- a proved statement about how `|A_k|` behaves — that it grows, shrinks,
-  stabilises, or satisfies a recursion — with the proof, not the data;
-- a reproduction of Narkiewicz's bound with its constant made explicit, or a
-  located error in it;
+- a statement of exactly what Dimitrov–Howe (`DH-1`) leaves open — any
+  counterexample has no digit 2 and at least 26 ones, so say over what range of
+  `x` that is consistent, and what a strengthening of 26 to a function of `x`
+  would require;
+- any argument that constrains the **middle** ternary digits of `2^n`, which
+  `LAG-4` records as untouched by every existing method, or a proof that a
+  stated approach cannot reach them;
 - a proof of the conjecture restricted to a stated subclass of `n` (a
-  congruence class, a range, a family), with the hypothesis named;
-- a precise statement of *why* the modular sieve cannot close, if it cannot —
-  naming the obstruction rather than reporting that the search did not finish.
+  congruence class, a range, a family), with the hypothesis named — note a
+  congruence class alone is now known to be unreachable this way;
+- a machine-checked Lean 4 formalisation of the lifting theorem, with
+  `#print axioms` output and every remaining `sorry` reported;
+- an established consequence, for the thin sequence `2^n`, of the
+  Hausdorff-dimension bounds in `LAG-3`, `AL-I-2`, `ABL-II-1` — including a
+  precise statement of what dimension 0 would *not* give, since a dimension
+  statement about a set is not a statement about which integers lie in it;
+- a located error in a source, or a reproduction of Narkiewicz's bound with its
+  constant made explicit — noting that the count itself is Narkiewicz's and is
+  recorded here as `STOLL-1`, so re-deriving it is not a discovery.
 
 A result stated without the bound it was established under is not a result.
 `|A_k|` computed for `k ≤ 12` is a fact about `k ≤ 12`.
