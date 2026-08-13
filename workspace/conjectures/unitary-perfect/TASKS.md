@@ -7,6 +7,22 @@ paper proves only the counting bounds `|H_even ∩ [2,40000]| ≤ 201` and
 `|H_even ∩ [2,50000]| ≤ 272`; an independent exact verification of the small
 end of this set is the concrete first step.
 
+- [ ] **Independent verification of the equality-case elimination** — the result
+      in `research/notes/equality-case-eliminated.md` is already filed as claim
+      `budget-equality-case-impossible` but was adopted from operator
+      computation, not reproduced here. Write a fresh program (do not reuse
+      `code/equality_case.py`) that: (a) recomputes `T(a) = 2^{a+1}/(2^a+1)`
+      and the max product over the `a+1` smallest admissible sizes in exact
+      `Fraction` arithmetic for `a = 1..30`; (b) confirms 257 is prime and
+      forced at `a=8`, and confirms 9 and 49 are admissible while 3 and 7 are
+      not (3 mod 4, so their minimal admissible power is the square); (c)
+      confirms the `a=1` equality `T(1) = max = 4/3` is exact in rational
+      arithmetic and attained by `{5,9}`, matching the odd part of `n=90`; (d)
+      confirms the `a=8` deficit in exact arithmetic. Output to
+      `code/out/equality_case_independent.captured.txt`. This is a verification
+      of an already-filed result, not a new claim; a discrepancy is a loud
+      contradiction. Bounded `timeout 120` — it's arithmetic, not factoring.
+
 - [ ] **Independent exact verification of `H_even ∩ [2,1200]`** — implement and
       run `code/H_EVEN_VERIFY_SPEC.md`: reproduce the Phase A worked examples
       (sigma_star oracle on all five, 3-Higgs predicate with 17 non-Higgs /
