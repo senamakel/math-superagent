@@ -1,29 +1,43 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/tijdeman-preprints-page.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Tijdeman's preprints page — host of the Beukers–Shorey–Tijdeman preprint and the Shorey 2007 survey
 
-<!-- source: https://pub.math.leidenuniv.nl/~tijdemanr/preprints.html | converted from HTML -->
+Source: http://www.math.leidenuniv.nl/~tijdeman/best1.ps (PostScript preprint)
+and https://pub.math.leidenuniv.nl/~tijdemanr/preprints.html (the index page).
+Downloaded the page as `research/sources/tijdeman-preprints-page.full.md`;
 
-## What is in it
+## What the page provides
 
-- **
-Preprints and reports**
+- A direct author-hosted preprint link for Beukers–Shorey–Tijdeman 1999:
+  `http://www.math.leidenuniv.nl/~tijdeman/best1.ps` (the "best.ps" entry).
+  Downloaded as `research/sources/beukers-shorey-tijdeman-1999-equal-products.full.md`
+  — **but that .ps file converted to raw PostScript text, not readable prose**
+  (the downloader does not rasterize PS into text). Use instead the readable
+  de Gruyter volume preview at
+  `research/sources/number-theory-in-progress-vol1-preview.full.md` for the
+  BST paper's content.
+- Author-hosted PDFs/sources for dozens of Tijdeman's papers, including:
+  - `shoreyt.pdf` — Tijdeman, "Highlights in the Research Work of T.N. Shorey"
+    (already in the library as `research/sources/shorey-tijdeman-survey.full.md`);
+  - `sartij9.ps`, `hatijdt3f.ps`, etc. (mostly unrelated combinatorics/words).
+- The page confirms the bibliographic identity of BST 1999 (Zakopane
+  proceedings, de Gruyter, Vol. 1, pp. 11–26) that MRSTT cite as [4].
 
+## Bearing for the run
 
-## What it claims
+- Records that the author-hosted preprint of BST 1999 exists but the PostScript
+  is not human-readable after conversion; no need to re-fetch it.
+- The page itself is not a claim source; keep it filed as the index that maps
+  `best1.ps` to the paper, and cite the de Gruyter preview for content.
 
-L. Hajdu, R. Tijdeman, Algebraic discrete tomography, Ch. 4 of Advances in Discrete Tomography and its Applications, ed. by G. T. Herman and A. Kuba, Birkhauser, Boston etc., 2007, pp. 55-81. [DiscTom.pdf][11]
-
-T. N. Shorey, R. Tijdeman, Prime factors of arithmetic progressions and binomial coefficients, Diophantine Geometry, proceedings ed. by U. Zannier, CRM Series No. 4, Edizioni Della Normale, 2007, pp. 283-296. [shoretij.pdf][12]
-
-C. Fuchs, R. Tijdeman, Substitutions, abstract number systems and the space filling property, Ann.Inst. Fourier Grenoble 56 (2006), 2345-2389. [futi4.ps][13]
-
-S. W. Rosema, R. Tijdeman, The Tribonacci substitution, Integers, Electronic J. Combin. Number Th. 5 (3) (2005) A 13, 21 pp. [rotij7.ps][14]
-
-A. Alpers, R. Tijdeman, The two-dimensional Prouhet-Tarry-Escott problem, J. Number Th. 123 (2007), 403-412. [altijd.pdf][15]
-
-L. Hajdu, R. Tijdeman, A criterion for polynomials to divide infinitely many k-nomials, Diophantine Approximation, Developments in Mathematics Vol. 16, Springer-Verlag Wien, 2008, pp. 211-220. [hajtijpol.pdf][16]
-
-J. Hancl, R.…
-
-J.…
-
-*[digest of a 9668 character source; every section, statement, and proof in full at `research/sources/tijdeman-preprints-page.full.md`]*
+```claim
+id: tijdeman-preprints-host
+statement: Tijdeman's Leiden page hosts the author preprint "best.ps" of
+  Beukers-Shorey-Tijdeman 1999 (Zakopane proceedings pp. 11-26; MRSTT [4]).
+  The downloaded .ps is raw PostScript (not readable); the readable copy is
+  the de Gruyter volume-1 preview.
+hypotheses: none — bibliographic.
+holds-here: yes.
+status: verified (both downloads held)
+bearing: avoids re-fetching the unreadable .ps; points future readers to the
+  readable volume preview.
+anchor: research/summaries/tijdeman-preprints-page.md
+```

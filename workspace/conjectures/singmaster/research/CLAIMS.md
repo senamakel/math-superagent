@@ -40,6 +40,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `sst-effective-shared-factor` | Saradha-Shorey-Tijdeman 1995 (Acta Arith 68(1) 89-100, Thm 2): for the equal-products equation (1) with gcd(L,M)>1 and L≠M, max(L,M,x,y) ≤ C2 where C2 is effectively computable and depends only on d1, d2 and the ratio… | yes | asserted | `research/summaries/saradha-shorey-tijdeman-equal-products-1995.md` |
 | `sst-equal-length-exception-family` | For the equal-length case (L=M) of (1), the only exceptional family is d1=1, d2=4, x=L+1, y=2, giving (L+1)(L+2)...(2L)=2·6·...·(4L-2) — the C(n,k) dual identity (2L choose L) = product relation that yields infinitely… | yes | asserted | `research/summaries/saradha-shorey-tijdeman-equal-products-1995.md` |
 | `tao-boundary-and-method-ceiling` | Tao's blog (coauthor exposition) confirms: interior theorem reduces Singmaster to the boundary 2<=m<exp((log n)^{2/3+eps}) (mirror), where only ineffective BST/Siegel-known bounded-(m,m') results exist; the Vinogradov… | yes | asserted | `research/summaries/tao-interior-blog.md` |
+| `tijdeman-preprints-host` | Tijdeman's Leiden page hosts the author preprint "best.ps" of Beukers-Shorey-Tijdeman 1999 (Zakopane proceedings pp. 11-26; MRSTT [4]). The downloaded .ps is raw PostScript (not readable); the readable copy is the de… | yes | asserted | `research/summaries/tijdeman-preprints-page.md` |
 | `witness-3003` | 3003 appears 8 times in Pascal's triangle under the convention that counts both (n,k) and (n,n-k) and includes the trivial pair C(a,1)=C(a,a-1). Explicitly 3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6) with four mirrors.… | yes | checked | `research/notes/established-review.md` |
 
 ## Load-bearing but unverified
@@ -72,6 +73,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `sst-effective-shared-factor` (research/summaries/saradha-shorey-tijdeman-equal-products-1995.md) — asserted by the source, not proved there and not checked here
 - `sst-equal-length-exception-family` (research/summaries/saradha-shorey-tijdeman-equal-products-1995.md) — asserted by the source, not proved there and not checked here
 - `tao-boundary-and-method-ceiling` (research/summaries/tao-interior-blog.md) — asserted by the source, not proved there and not checked here
+- `tijdeman-preprints-host` (research/summaries/tijdeman-preprints-page.md) — asserted by the source, not proved there and not checked here
 
 ## Blocks that could not be read
 
