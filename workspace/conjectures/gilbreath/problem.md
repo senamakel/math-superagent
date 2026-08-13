@@ -87,10 +87,24 @@ State this in `research/ROOT.md` and say which side the run's approach is on.
 
 ## The obstruction, stated honestly
 
-The `{0,2}` block shrinks. Odlyzko's argument gives `≈ n/2` rows of protection
-from a block of length `n`, so protection is consumed geometrically, and each
-new stretch of `{0,2}` must be **regenerated** by the rows below. Nobody has
-proved that regeneration always happens.
+The `{0,2}` block shrinks, at exactly one position per row. A block of length
+`n` therefore buys `n` rows and no more — protection is consumed **linearly**,
+not geometrically — and each new stretch of `{0,2}` must be **regenerated** by
+the rows below. Nobody has proved that regeneration always happens.
+
+This run has made the accounting exact. With `b_k` the leading block length and
+`(x,y)` the intruder pair at position `b_k`:
+
+```
+step law:      b_{k+1} ≥ b_k  if (x,y) = (2,4),  else  b_{k+1} = b_k − 1
+recharge:      b_k = b_1 + Σ_{events i<k} (j_i + 1) − (k−1)
+```
+
+verified with zero failures to depth 800 (`code/out/step_law_and_recharge_verified.md`).
+So a `(2,4)`-event is the *only* mechanism that grows the block, and the
+conjecture is exactly the assertion that such events keep arriving fast enough
+that the recharge sum never falls `k−1` behind. That is the gap — not whether
+the block erodes, which is settled.
 
 This is where every attempt stops. A proof must either
 
