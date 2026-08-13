@@ -1,60 +1,67 @@
-```thread
-question: Can the survival tree of A_k be shown to have only three infinite paths ({0,2,8}), and is the 2-to-1 split exact (no collisions) at every level?
-status: live
-rests-on: SAYE-2, LAG-2, DH-1, SAYE-3, ternary-sieve-count-doubles
-blocked-by: SAYE-2 (split rule) not yet independently verified in this workspace; collision count C_k not yet computed
-next: verify the split rule constant (LTE/SAYE-2) explicitly, compute C_k = 2|A_k| - |A_{k+1}| for small k, track the last-digit epsilon of each survivor class
-```
-
 # Thread: the sieve dynamics of A_k
 
-**status:** open — this is the central line.
+**status:** open — the central line. The sieve textbook picture is wrong; the exact structure is below.
 
 ## Question
 
-Does the survival tree of classes `A_k ⊂ Z/(2·3^(k-1))Z` eventually die outside the three witnesses {0,2,8}, and can its splitting be captured by a transfer operator whose spectral radius is strictly below the naive 2 (i.e. below Narkiewicz's growth)? What exactly is the splitting distribution of a class `j ∈ A_k` into children at `A_{k+1}`?
+The Erdős conjecture says the orbit `{2^n : n ≥ 0}` meets the digit-2-avoiding set only at n ∈ {0,2,8}. What is the exact structure of the sieve sets `A_k`, and what does that structure force any proof to show?
 
-## What it rests on (claim ids)
+## Exact structure of A_k (derived; elementary, worth formalising)
 
-- `SAYE-2`: the digit split rule `d_{k+1}(2^(i u_k + j)) ≡ d_{k+1}(2^j) + i·d_1(2^j) (mod 3)`.
-- `LAG-2`: |A_k| ≤ 2^(k-1) uniformly (Narkiewicz bound in 3-adic form).
-- `DH-1`: the low-ones tail is settled; residuals have ≥ 26 ones.
-- `SAYE-3`: the recursion enumerates A_k in Θ(2^k) work, mirroring the fastest known sieve.
+Key facts:
 
-## The exact split rule (derived from SAYE-2, elementary)
+1. **2 is a primitive root mod 3^k for every k ≥ 1** (order `φ(3^k) = 2·3^(k-1)`) — LAG-1/LAG-2, Saye's Lemma 1.
+2. Therefore the map
+   `Φ_k : Z/(2·3^(k-1))Z → (Z/3^k Z)^×`,  `n ↦ 2^n mod 3^k`
+   is a **bijection** (domain and codomain both have 2·3^(k-1) elements; injectivity by order).
+3. `S_k = { r mod 3^k : k low digits in {0,1} }` with `|S_k| = 2^k`, and since the low digit of a unit is 1 or 2, `S_k ∩ (Z/3^k)^×` has 2^k elements, all with low digit 1.
+4. Hence **`|A_k| = 2^k` exactly, for every k**, with a bijection between the 2^k digit patterns and the 2^k residue classes of A_k.
 
-Fix class j at level k. Its children at level k+1 are i ∈ {0,1,2} with the (k+1)-st digit not equal to 2:
+**Consequences (each elementary, each decisive):**
 
-`d_{k+1}(2^(i u_k + j)) = (d_{k+1}(2^j) + i·ε) mod 3`, ε = d_1(2^j) ∈ {1,2}.
+- **The naive growth is exact, not approximate.** `|A_k| = 2^k` forever. Any "the sieve empties" argument is false *by bijection*: at every finite level all 2^k digit patterns occur.
+- **No class ever dies and no two classes ever collide.** Each class of A_k corresponds to a unique digit pattern; each pattern extends by one {0,1} bit in exactly 2 ways; each extension is a unit mod 3^(k+1); each unit is hit by exactly one exponent. The map A_{k+1} → A_k (drop the newest digit) is exactly 2-to-1.
+- **The survivor tree is a full infinite binary tree.** `A_∞ = ∩_k A_k` (as subsets of Z) = {n : (2^n)_3 avoids digit 2} — the conjecture says this set is {0,2,8}. But every infinite branch of the digit tree is *consistent at every finite level*: for any infinite {0,1} string there is, at each level k, an exponent realising its truncation. The question is whether that exponent can be chosen consistently for all levels — i.e. whether the infinite digit string is the 3-adic expansion of some actual 2^n.
 
-- If ε = 1: children i with `d + i ≢ 2 (mod 3)`. One i is forbidden; the other two survive.
-- If ε = 2: children i with `d + 2i ≢ 2 (mod 3)`. Since 2 = −1 mod 3, `d − i ≢ 2`, i.e. i ≠ d − 2 = d + 1 (mod 3). One i is forbidden; two survive.
+**The honest reformulation (this is the real problem):**
 
-So **every class splits into exactly two children at every level** (the forbidden child is unique because ε is a unit). This is the crucial structural fact: `|A_{k+1}| = 2·|A_k|` exactly, if every class contributes two distinct children. The growth is exactly 2^k — matching Narkiewicz's bound — and there is no death.
+Let `Σ_{0,1} ⊂ Z_3` be the 3-adic Cantor set `{λ : all digits ∈ {0,1}}`. Since 2^2 = 4 generates `1+3Z_3` topologically (LTE: v_3(4^t − 1) = 1 + v_3(t)), the closure of the orbit `{2^n : n ∈ Z}` in `Z_3^×` is **all of `Z_3^×`** — both cosets ±(1+3Z_3) are dense in it. So the conjecture is:
 
-Wait — check the case d + i·ε ≡ 2 mod 3 for both i = a and i = b, a ≠ b: that would need (a−b)·ε ≡ 0 mod 3, impossible since ε is a unit. So exactly one i is forbidden. **Every class in A_k has exactly two children in A_{k+1}.** Therefore |A_{k+1}| = 2·|A_k| for all k, unless two different classes produce the same child (a collision).
+> **A dense orbit (the powers of 2 in Z_3^×) meets the Cantor set Σ_{0,1} ∩ Z_3^× in exactly the three integer points 1, 4, 256.**
 
-**Collisions are the only way survival can decay.** |A_k| = 2^k · (1 − collision effects). The witnesses {0,2,8} survive forever; Narkiewicz's 2^k growth is exactly this doubling, and the sieve can only close by showing collisions eventually wipe out every class that is not one of the three witnesses. This reframes the whole problem:
+Every n produces an element 2^n of the dense orbit; the conjecture says that though the orbit is dense, it lands in the thin Cantor set only three times. This is precisely the Furstenberg transversality / "intersections of multiplicative translates of Cantor sets" framework from LAG-3/LAG-4 — the closure is everything, so dimension arguments on the closure cannot decide the orbit's visits; only the arithmetic of the map n ↦ 2^n can.
 
-> **Size never decays. The classes can only merge, not die. A proof of the conjecture must show that the infinite binary tree of survivors (2 children per node, no death) has only three infinite paths.**
+## What blocks any size-based proof
 
-## What blocks it / what is next
+- `|A_k| = 2^k` exactly → counting never decays; a proof cannot bound the count of survivors, only *which paths* survive.
+- Narkiewicz's `1.62 X^{α_0}` is the count of n ≤ X with the property for all digits... no: it is the count of low-digit survivors integrated over digit lengths; it is consistent with 2^k growth and gives no path information.
+- The witnesses 0,2,8 are exactly the three known infinite paths; a claimed obstruction must let these three through (GOAL.md witness check).
 
-- Narkiewicz's bound says nothing about collisions; the count 2^k is attained (or near-attained) for all k, and there is no death, so any "the sieve empties" argument is false by SAYE-2's splitting lemma.
-- The next concrete step: compute |A_k| exactly and count collisions C_k = 2|A_k| − |A_{k+1}| for small k. If C_k is 0 for all small k, the tree is exactly binary for a long time and collision structure is very sparse; if C_k > 0, examine where collisions come from (a class merging with a sibling of another class).
-- Likely refinement: track not just the class but the pair (last digit of representative power, pending carry structure) to detect when two classes land on the same residue mod 3^(k+1).
+## What is next
 
-## Refined question (the one to attack)
+1. **Formalise the bijection** (tool/lean): Φ_k bijective, |A_k| = 2^k, 2-to-1 extension map. This kills the "sieve shrinks" picture permanently and redirects effort.
+2. **Compute the real object:** the set of infinite paths realised by actual 2^n. Algorithmically: maintain for each digit-pattern its realising exponent mod 2·3^(k-1) (unique); a path is realised iff the limit exponent exists in Z (not just Z_3). List all n ≤ 2·3^45 reproduced from the digit data alone (Saye's recursion IS this).
+3. **The transfer operator for paths**, not counts: on the tree of digit patterns, the self-consistency constraint for a path to be 2^n is a contraction-type condition on the exponent coordinates. Narkiewicz's argument effectively shows the low-digit data is independent of the exponent; the missing piece is the middle/high-digit coupling.
+4. Confirm (numerically) the closure claim: order of 4 mod 3^k = 3^(k-1) for k ≤ 46 — this verifies the dense-orbit statement at finite levels.
 
-For n ≥ 9, the class of n at level k is a node in a full binary tree of survivors. The witnesses 0,2,8 give three infinite paths. Since every node has exactly 2 children, the tree is a binary tree with ~2^k nodes at depth k. The conjecture is that the paths {0,2,8} are the only three *infinite* paths that extend (no other infinite branch). Finitary version: for each witness w ∈ {0,2,8} and each n > 8, there is some k with n ∉ A_k. That is, each non-witness dies. But death never happens at a node — it happens on a *path*: eventually, for each n, the path of n must *collide* (become equal as residues mod 3^k ... no, n is fixed; rather for each n its own path must, at some level k, be excluded).
+## Claims to record from this thread
 
-Actually hold on: death never happens means EVERY path survives at every k! That can't be right. If |A_{k+1}| = 2|A_k| at every step with no collisions, then every path in the full binary tree of survivors continues, so the limit set A_∞ has |A_∞| = continuum-many-integers? No — A_∞ ⊆ Z, the actual integer n's. The issue: A_k contains the *residue class of n mod 2·3^(k-1)*, not the exponent n itself. The path of a *fixed integer* n is the sequence of its residue classes; if every residue class at every level survives, then n ∈ A_k for all k, so n ∈ A_∞. So if there were truly no collisions, A_∞ would contain every n — but the three witnesses + n=1,3,9 etc. all have 2s eventually... clearly collisions must happen and must exclude most n. So the growth 2^k with no collisions *cannot* continue forever: the universe of residue classes mod 2·3^(k-1) has size 2·3^(k-1) which grows like 3^k > 2^k, so there's room; the including map A_k → A_{k+1} is 2-to-1 and injective on residue classes as long as collisions are absent... but |A_k| = 2^k means A_k fills... it fills 2^k of 2·3^(k-1) classes = (2/3)^k fraction, going to 0. So no contradiction: A_k can genuinely be a 2^k-element subset forever.
+```claim
+id: SIEVE-EXACT
+statement: |A_k| = 2^k exactly for all k; Φ_k: n mod 2·3^(k-1) ↦ 2^n mod 3^k is a bijection onto the units mod 3^k; the extension map A_{k+1} → A_k is exactly 2-to-1.
+hypotheses: 2 primitive root mod 3^k (proved: order 2·3^(k-1)).
+holds-here: yes — this is the exact structure of the sieve set.
+status: proved-here (elementary; follows from LAG-1 bijectivity; to be formalised)
+bearing: kills all "sieve shrinks by counting" arguments; redirects to path structure.
+anchor: research/threads/sieve-dynamics.md
+```
 
-But then the conjecture says A_∞ = {0,2,8}, i.e. of the continuum of infinite binary paths, only three correspond to integers that are powers of 2. The path set is the limit of the binary tree; membership of integer n requires the residue sequence to match the actual n mod 2·3^(k-1). So the question is genuinely about *which infinite paths are realizable*.
-
-## Next concrete computations (small, decisive)
-
-1. Reproduce the three witnesses through digit_free and the sieve for k=1..12; check |A_k| recurrence.
-2. Count collisions C_k = 2|A_k| − |A_{k+1}| for small k; check whether |A_k| = 2^k · (1−o(1)).
-3. Track the last-digit ε = d_1(2^j) of each survivor class; see if the set of ε's is uniformly 1/2,1/2.
-4. Formulate the conjecture "only three infinite paths" as a finite automaton question: the transition is a permutation on (j mod u_k, digit-histo) — this is a finitely-generated dynamics on Z/2·3^(k-1)Z that a small program can explore to k≈46 without materialising 2^n.
+```claim
+id: DENSE-ORBIT
+statement: The closure of {2^n : n ∈ Z} in Z_3^× is all of Z_3^× (since ord(4 mod 3^k) = 3^(k-1) → 4 topologically generates 1+3Z_3, and 2 ≡ −1 mod 3 gives the −(1+3Z_3) coset too). The Erdős conjecture is: the dense orbit {2^n} meets Σ_{0,1} ∩ Z_3^× in exactly {1, 4, 256}.
+hypotheses: ord(4 mod 3^k) = 3^(k-1) for all k (LTE).
+holds-here: yes.
+status: proved-here (derived; closure claim elementary)
+bearing: reframes the problem as dense-orbit-vs-Cantor-set; explains why all existing methods stall on the middle digits.
+anchor: research/threads/sieve-dynamics.md
+```
