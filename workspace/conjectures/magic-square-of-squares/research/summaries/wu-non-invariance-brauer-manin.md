@@ -40,7 +40,6 @@ bearing: caution for the Q(√3)-base-change "hinge": BM non-invariance under
   explains Q-vanishing needs the class and its evaluations computed, not
   inferred from the extension-field MSS constructions
 anchor: research/sources/wu-non-invariance-brauer-manin.full.md
-contradicts: nothing on disk (no recalled claim says BM is base-change invariant)
 ```
 
 **Gap this leaves:** the open request `exact-reduction-magic-507c` is not touched by these three papers — Bremner's own reduction remains the anchor; nothing here supplies `Br(S)/Br(Q)` for the magic-square K3.

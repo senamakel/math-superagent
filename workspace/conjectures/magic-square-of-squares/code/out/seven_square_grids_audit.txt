@@ -1,0 +1,105 @@
+================================================================================
+Task B audit — the four 7-square grids of oracle test 5b — 2026-08-13
+Script: code/audit_seven_grids.py (exact re-run of code/brute.py
+near_miss_scan(80,120) semantics: c = e^2, e<=80, |u|,|v|<=120, all
+entries in [1,6640], squares = 1^2..81^2).  Verbatim output below.
+================================================================================
+##############################################################################
+# Task B audit: the four 7-square grids of oracle test 5b
+# c = e^2, e <= 80, |u|,|v| <= 120, entries in [1, 6640], squares = 1^2..81^2
+# exact re-run of code/brute.py near_miss_scan(80,120)
+##############################################################################
+[scan] kept 4052328 all-positive grids; distribution {1: 3653312, 2: 309896, 3: 85360, 4: 1952, 5: 748, 6: 964, 7: 4, 9: 92}
+[scan] best k = 9 (trivial repeated grids), best distinct k = 5
+[scan] reproduction asserts PASSED: identical kept-count, square-count distribution, best k, best distinct k
+
+seven-square grids found: 4
+
+--- grid 1/4: (e, u, v) = (17, -120, -120), c = e^2 = 289
+      [169, 529, 169]
+      [289, 289, 289]
+      [409, 49, 409]
+      entries (row-major): [169, 529, 169, 289, 289, 289, 409, 49, 409]
+      entries (sorted):    [49, 169, 169, 289, 289, 289, 409, 409, 529]
+      distinct count: 5 of 9; repeats: [(169, 2), (289, 3), (409, 2)]
+      k = 7 square entries (isqrt recount), at positions [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 1)]
+      non-square entries: [409, 409]
+      line sums (8): [867, 867, 867, 867, 867, 867, 867, 867]
+      all 8 line sums equal (867 = 3c): True => true magic square with 7 square entries
+
+--- grid 2/4: (e, u, v) = (17, -120, 120), c = e^2 = 289
+      [169, 289, 409]
+      [529, 289, 49]
+      [169, 289, 409]
+      entries (row-major): [169, 289, 409, 529, 289, 49, 169, 289, 409]
+      entries (sorted):    [49, 169, 169, 289, 289, 289, 409, 409, 529]
+      distinct count: 5 of 9; repeats: [(169, 2), (289, 3), (409, 2)]
+      k = 7 square entries (isqrt recount), at positions [(0, 0), (0, 1), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1)]
+      non-square entries: [409, 409]
+      line sums (8): [867, 867, 867, 867, 867, 867, 867, 867]
+      all 8 line sums equal (867 = 3c): True => true magic square with 7 square entries
+
+--- grid 3/4: (e, u, v) = (17, 120, -120), c = e^2 = 289
+      [409, 289, 169]
+      [49, 289, 529]
+      [409, 289, 169]
+      entries (row-major): [409, 289, 169, 49, 289, 529, 409, 289, 169]
+      entries (sorted):    [49, 169, 169, 289, 289, 289, 409, 409, 529]
+      distinct count: 5 of 9; repeats: [(169, 2), (289, 3), (409, 2)]
+      k = 7 square entries (isqrt recount), at positions [(0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 1), (2, 2)]
+      non-square entries: [409, 409]
+      line sums (8): [867, 867, 867, 867, 867, 867, 867, 867]
+      all 8 line sums equal (867 = 3c): True => true magic square with 7 square entries
+
+--- grid 4/4: (e, u, v) = (17, 120, 120), c = e^2 = 289
+      [409, 49, 409]
+      [289, 289, 289]
+      [169, 529, 169]
+      entries (row-major): [409, 49, 409, 289, 289, 289, 169, 529, 169]
+      entries (sorted):    [49, 169, 169, 289, 289, 289, 409, 409, 529]
+      distinct count: 5 of 9; repeats: [(169, 2), (289, 3), (409, 2)]
+      k = 7 square entries (isqrt recount), at positions [(0, 1), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+      non-square entries: [409, 409]
+      line sums (8): [867, 867, 867, 867, 867, 867, 867, 867]
+      all 8 line sums equal (867 = 3c): True => true magic square with 7 square entries
+
+mutual distinctness of the four grids:
+      grid 1 vs grid 2: same entry multiset, different arrangement
+      grid 1 vs grid 3: same entry multiset, different arrangement
+      grid 1 vs grid 4: same entry multiset, different arrangement
+      grid 2 vs grid 3: same entry multiset, different arrangement
+      grid 2 vs grid 4: same entry multiset, different arrangement
+      grid 3 vs grid 4: same entry multiset, different arrangement
+================================================================================
+AUDIT CONCLUSIONS (verified above)
+1. The four grids are (e,u,v) = (17, +/-120, +/-120) with c = 289 = 17^2,
+   the four sign-symmetry arrangements of the single entry pattern
+   {49, 169 x2, 289 x3, 409 x2, 529}.
+2. Every one is a TRUE magic square (all 8 line sums equal 867 = 3c = 3*289),
+   with exactly 7 of its 9 entries perfect squares (all except the two
+   409s; 409 is not in {1..81}^2 and has no integer square root).
+3. NONE has 9 distinct entries: each has 5 distinct values, with repeats
+   (169 twice, 289 three times, 409 twice).  So these are k=7 grids with
+   repeated entries — they are NOT near-miss candidates for the problem
+   (which requires distinct entries) and NOT witnesses under GOAL.md.
+4. The four grids are mutually distinct as matrices (pairwise A != B) and
+   all share the same entry multiset {49,169,169,289,289,289,409,409,529};
+   no grid shares every entry with any other, and all four are distinct
+   arrangements of one another under the dihedral sign symmetries of the
+   parametrisation.
+5. Reconciliation with oracle_output.txt: test 5b printed only the k=9
+   trivial best grid and the k=5 distinct grid; the four k=7 grids were
+   NOT printed there.  Re-running the identical scan reproduces the
+   recorded string "7: 4" exactly (distribution assert passed), which is
+   the evidence that these four ARE the grids behind that count.
+6. Cross-check (second route): code/extract_sevens.py re-scans the same
+   box with an independent isqrt-per-entry sieve keeping distinct
+   entries only; it reports zero 7-square distinct grids (and zero
+   6-square distinct grids), consistent with best_distinct_k = 5 — see
+   its output appended below.
+================================================================================
+Cross-check: python code/extract_sevens.py (independent sieve, distinct
+entries only, same box)
+7-square distinct grids: 0
+6-square distinct grids: 0
+================================================================================

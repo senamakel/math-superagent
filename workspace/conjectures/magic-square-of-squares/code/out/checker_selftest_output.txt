@@ -1,0 +1,92 @@
+==============================================================================
+Task C: checker-soundness self-test of is_magic_square_of_squares
+(code/lib/mss.py, exact math.isqrt) — 2026-08-13
+Script: code/checker_selftest.py, verbatim output below.
+==============================================================================
+##############################################################################
+# Task C: checker-soundness self-test of
+# is_magic_square_of_squares (code/lib/mss.py, exact isqrt)
+##############################################################################
+[0] statement: a distinct-entry 3x3 magic square of squares
+    cannot be exhibited, so the True-branch oracle test uses
+    genuine magic squares of squares with REPEATED entries.
+    (None with distinct entries is known: that is the open
+    conjecture; catalogue bound: every entry >= 8-digit
+    square, Morgenstern, source summary in research/.)
+
+[1] genuine magic square of squares with repeats ({1,25,49} AP family):
+    grid [[1, 49, 25], [49, 25, 1], [25, 1, 49]]
+    magic constant 75, centre 25 = M/3: True; entries are 1^2, 5^2, 7^2
+  ok       strict False (not-distinct) / relaxed True (accept)
+       strict False (expected False) / relaxed True (expected True); diagnosis: not-distinct
+
+[2] same family via parametrisation (c,u,v)=(25,0,-24):
+    grid [[25,49,1],[1,25,49],[49,1,25]] (magic, constant 75 =
+    3*25; entries 1,25,49 each three times)
+    magic constant 75, centre 25 = M/3: True
+  ok       strict False / relaxed True
+       strict False (expected False) / relaxed True (expected True); diagnosis: not-distinct
+
+[3] nine 1s (magic + all squares, heavily repeated):
+  ok       strict False / relaxed True
+       strict False (expected False) / relaxed True (expected True); diagnosis: not-distinct
+
+[4] negative control: all squares with repeats but NOT
+    magic (c,u,v)=(25,0,24): rows 99/75/75, cols 99/75/75,
+    diagonal 49+25+25=99 != 75): relaxed must be False
+  ok       strict False / relaxed False
+       strict False (expected False) / relaxed False (expected False); diagnosis: not-distinct
+
+[5] distinct positive squares, not magic (sums 35/134/116):
+  ok       strict False / relaxed False
+       strict False (expected False) / relaxed False (expected False); diagnosis: not-magic
+
+[6] Lo Shu (magic constant 15, entries not all squares):
+  ok       strict False / relaxed False
+       strict False (expected False) / relaxed False (expected False); diagnosis: not-a-square
+
+[7] Sallows LS1 7-square near-miss (7 of 8 sums 21609,
+    failing non-principal diagonal 38307):
+  ok       strict False / relaxed False (not-magic)
+       strict False (expected False) / relaxed False (expected False); diagnosis: not-magic
+
+[8] Bremner's true 7-square magic square (all 8 sums
+    541875; non-squares 360721, 222121):
+  ok       strict False / relaxed False (not-a-square)
+       strict False (expected False) / relaxed False (expected False); diagnosis: not-a-square
+
+[9] soundness reading
+    * relaxed True  <=>  all 8 line sums equal AND all 9
+      entries positive squares (distinctness waived):
+      exhibited on cases [1]-[3]
+    * strict False on the same grids for exactly the
+      distinctness reason (diagnosis not-distinct), not
+      because of magic or squares: above
+    * the all-square repeated but NOT-magic grid is rejected
+      in the relaxed branch too (diagonal 99 != 75): case [4]
+    * both literature near-misses rejected with correct
+      diagnoses (not-magic / not-a-square): above
+    * a distinct-entry True instance remains unexhibited:
+      it is the open conjecture, not a checker gap.
+##############################################################################
+# CHECKER SELF-TEST: ALL CASES AS EXPECTED
+##############################################################################
+==============================================================================
+NOTES
+* A tiny 3x3 magic square of squares with nine DISTINCT positive entries
+  cannot be constructed: none is known at all — that is the open
+  conjecture (played by Morgenstern's catalogue to every entry >= the
+  square of an 8-digit number; research/summaries/
+  morgenstern-smallest-entry-8-digit.md).  So, exactly as the task's
+  fallback allows, the checker's True branch is exercised on genuine
+  magic squares of squares WITH repeats ({1,25,49} family: all 8 line
+  sums 75, entries 1,25,49 — relaxed True, strict False/not-distinct),
+  and the rejection branches on the non-magic, non-square and
+  near-miss cases.  (Case [2] is the (c,u,v)=(25,0,-24) member;
+  independently verified magic by sympy: all 8 line sums 75.)
+* A first version of case [2] wrongly used (25,0,24), which is NOT
+  magic (principal diagonal 99); the checker correctly rejected it
+  (relaxed False).  That grid is kept here as negative control [4] —
+  the checker does distinguish an all-square repeated magic grid from
+  an all-square repeated NON-magic grid.
+==============================================================================

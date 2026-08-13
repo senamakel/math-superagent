@@ -28,13 +28,12 @@ statement: If a smooth diagonal plane cubic a x^3 + b y^3 + c z^3 = 0 over a
   the algebraic Brauer-Manin obstruction is not the only one for K3 surfaces.
 hypotheses: existence of such a cubic is OPEN (Selmer curve fails); Y is the
   cubic-quotient K3, not Bremner II's surface S
-holds-here: no (hypothesis of such a cubic unproven; different K3)
+holds-here: no
 status: proved (as a theorem conditional on the open existence hypothesis)
 bearing: maps the limits of algebraic-Brauer arguments on K3s; the run's K3
   is a different surface, so the theorem neither applies nor obstructs the
   adopted Brauer-Manin line; reinforces that a transcendental class is needed
 anchor: research/sources/van-luijk-cubic-points-brauer-manin-k3.full.md
-contradicts: none (its open Question 3 is compatible with the run's plan)
 ```
 
 This source **does not establish** anything about the magic-square K3 directly — it is methodology terrain for the adopted approach, and its conditional result is undischarged. Filed under the brauer-manin thread for the record.

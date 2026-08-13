@@ -40,7 +40,6 @@ bearing: method template and local-invariant machinery for the adopted
   Brauer-Manin line on Bremner II's S; shows a certified transcendental
   obstruction on a K3 is achievable in practice
 anchor: research/sources/hassett-varilly-alvarado-k3-hasse.full.md
-contradicts: none; complements van-luijk's conditional algebraic-part result
 ```
 
 **Does not help directly**: it is not a reduction of the magic-square problem; it is the state-of-the-art toolkit for the approach that is currently adopted. Recorded as such so nobody re-reads the 65k-char text for a magic-square statement that is not there.

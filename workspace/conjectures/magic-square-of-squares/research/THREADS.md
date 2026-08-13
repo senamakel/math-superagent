@@ -12,7 +12,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
 
-- [[four-ap-additive-triple]] rests on `phi-universal-set`, `(CONTEXT.md)`, which no claim block on disk establishes
+- [[four-ap-additive-triple]] rests on `(CONTEXT.md)`, which no claim block on disk establishes
 
 ## Threads that could not be read
 

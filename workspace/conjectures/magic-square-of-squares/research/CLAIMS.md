@@ -26,6 +26,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `near-miss-baseline-and-incidence` | the parametrisation identity and completeness hold on the rerun; Sallows LS1 has 7 of 8 line sums 21609 failing the non-principal diagonal 38307; Bremner's grid is a true magic square (all 8 sums 541875, centre 425² =… | yes | asserted | `code/out/oracle_note.md` |
 | `oeis-a006339-min-hypotenuse` | A006339(n) = A046112(n) = min h with prod_{p=1 mod 4}(2 a_i + 1) = 2n - 1, equivalently h^2 a sum of two squares in exactly n ways (including the axis representation); the record values/holders match the run's own… | yes | catalogued | `research/summaries/oeis_a006339.md` |
 | `oeis-a046112-circle-lattice-points` | A046112(n) = min r with 8n-4 lattice points on x^2+y^2 = r^2, equals A006339(n); \|S(e)\| (run's AP-difference count) is the same multiplicative function minus the degenerate axis term. | yes | catalogued | `research/summaries/oeis_a046112.md` |
+| `phi-no-triple-m400` | No additive triple q1, q2, q1+q2 all in Φ exists for any pair from primitive m,n ≤ 400 — 156,988,030 exact unbounded membership tests, zero triples (also none through m,n ≤ 200). Beyond that range no triple is known and… | yes | checked | `code/out/phi_claim_blocks.md` |
+| `phi-universal-set` | For centre e², d where e²±d are both squares are exactly d = 4k²mn(m²−n²) with e = k(m²+n²), so d/e² = f(m,n) = 4mn(m²−n²)/(m²+n²)² belongs to the universal rational set Φ; \|S(e)\| = (∏_{p≡1 mod 4}(2a+1) − 1)/2; a… | yes | checked | `code/out/phi_claim_blocks.md` |
 | `primitive-mss-entry-congruences` | In a primitive 3x3 MSS all nine entries are odd and ≡1 mod 3; no entry has a 3 mod 8 prime factor; no middle-side entry has a 5 mod 8 factor; central entry ≡1 mod 4 only; and the step ratio z=py excludes p ∈ {0,1,2,3,4}… | **unchecked** | proved | `research/summaries/morgenstern-properties-3x3-square-of-squares-2007.md` |
 | `primitive-mss-modular-124-72` | A primitive 3x3 MSS has all nine entries ≡1 mod 24 and magic sum ≡3 mod 72. | yes | proved | `research/summaries/zimmermann-loria-magic-squares-of-squares-2015.md` |
 | `robertson-elliptic-reduction` | A 3×3 magic square of squares exists iff there is c with three points of 2E(Q), | yes | proved | `research/summaries/bremner-on-squares-of-squares-1999.md` |
@@ -33,66 +35,23 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `six-square-all-attainable` | All sixteen (up to symmetry) configurations of six square entries in a magic square are attainable with infinitely many examples; the smallest has magic sum 3·145 = 435. | yes | asserted | `research/summaries/boyer-square-of-squares-search-v2.md` |
 | `sum-of-two-squares-multiplicity` | A088111 gives the number of representations as a sum of two positive squares; the multiplicity grows slowly (via the divisors ≡1 mod 4 structure), not a closed form. | yes | catalogued | `research/summaries/oeis_a088111.md` |
 | `three-primitive-equal-d-bound` | Up to d = 6.4×10²² there are only five configurations of three primitive 3-square APs all with the same difference d, the largest at d = 3.31×10¹⁵. | **unchecked** | catalogued | `research/summaries/morgenstern-extended-searches-2013.md` |
-| `van-luijk-algebraic-br-not-sufficient-on-k3s` | If a smooth diagonal plane cubic a x^3 + b y^3 + c z^3 = 0 over a number field has local points everywhere, has no k-cubic points (three collinear points over a Galois Z/3Z extension), and abc is not a cube, then the K3… | **unchecked** | proved | `research/summaries/van-luijk-cubic-points-brauer-manin-k3.md` |
+| `van-luijk-algebraic-br-not-sufficient-on-k3s` | If a smooth diagonal plane cubic a x^3 + b y^3 + c z^3 = 0 over a number field has local points everywhere, has no k-cubic points (three collinear points over a Galois Z/3Z extension), and abc is not a cube, then the K3… | no | proved | `research/summaries/van-luijk-cubic-points-brauer-manin-k3.md` |
 | `wu-bm-noninvariance-under-base-change` | Assuming a conjecture of Stoll, for any nontrivial extension L/K of number fields there exist smooth projective geometrically connected surfaces over K whose Brauer-Manin obstruction behaviour (weak approximation off… | **unchecked** | asserted | `research/summaries/wu-non-invariance-brauer-manin.md` |
 
 ## Contradictions
 
 Resolve these before building on either side.
 
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `earlier` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `reading` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `'centre` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `133·22` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `=` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `2926'` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `(OCR` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `superscript` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `loss` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `propagated` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `into` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `memory` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `and` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `earlier` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `bremner-deg4-centre-532` (research/summaries/bremner-on-squares-of-squares-1999.md) contradicts `digest)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `(resolves)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `CONTEXT.md` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `Gap` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `'if` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `True` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `this` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `closes` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `brauer-manin-k3-surface'` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `hassett-varilly-alvarado-transcendental-bm-k3` (research/summaries/hassett-varilly-alvarado-k3-hasse.md) contradicts `none;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `hassett-varilly-alvarado-transcendental-bm-k3` (research/summaries/hassett-varilly-alvarado-k3-hasse.md) contradicts `complements` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `hassett-varilly-alvarado-transcendental-bm-k3` (research/summaries/hassett-varilly-alvarado-k3-hasse.md) contradicts `van-luijk's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `hassett-varilly-alvarado-transcendental-bm-k3` (research/summaries/hassett-varilly-alvarado-k3-hasse.md) contradicts `conditional` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `hassett-varilly-alvarado-transcendental-bm-k3` (research/summaries/hassett-varilly-alvarado-k3-hasse.md) contradicts `algebraic-part` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `hassett-varilly-alvarado-transcendental-bm-k3` (research/summaries/hassett-varilly-alvarado-k3-hasse.md) contradicts `result` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `none` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `(its` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `open` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `Question` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `3` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `is` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `compatible` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `with` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `run's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `van-luijk-algebraic-br-not-sufficient-on-k3s` (research/summaries/van-luijk-cubic-points-brauer-manin-k3.md) contradicts `plan)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `on` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `disk` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `(no` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `recalled` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `claim` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `says` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `BM` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `is` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `base-change` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `wu-bm-noninvariance-under-base-change` (research/summaries/wu-non-invariance-brauer-manin.md) contradicts `invariant)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `on` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `disk;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `consistent` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `with` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `Morgenstern's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `primitive` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `equal-d` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `census` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `(three-primitive-equal-d-bound)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 

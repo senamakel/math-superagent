@@ -74,7 +74,6 @@ status: asserted (exact arithmetic hand-verified in-session; scripts
 bearing: closes the brauer-manin-k3-surface approach as formulated (its goal was
   S(Q)=empty); the obstruction question moves to the extra (7th-9th square) conditions
 anchor: code/out/k3_surface_check2.py
-contradicts: (resolves) the CONTEXT.md Gap 'if True this closes brauer-manin-k3-surface'
 answers: exact-reduction-magic-507c (partially: pins the six-square surface and its
   rational points; the full-MSS correspondence is still not a claim block)
 ```

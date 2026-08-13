@@ -82,8 +82,6 @@ holds-here: yes (verified by hand row/col/diagonal sum in Q(√3); script
 status: checked
 bearing: the extension-field MSS hinge (non-existence cannot be purely
   structural) stands unchanged; only the literal centre value is corrected
-contradicts: earlier reading 'centre 133·22 = 2926' (OCR superscript loss,
-  propagated into memory and the earlier digest)
 anchor: research/summaries/bremner-on-squares-of-squares-1999.md
 ```
 

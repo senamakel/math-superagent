@@ -1,0 +1,27 @@
+# Approach: monotone-endpoint-evaluation
+
+```approach
+idea: The monotone f-crossing structure of the validated W-model residue makes the discrete count g(c,s,p,q) a function of endpoint values alone — no root-finding, no numerical scanning, no degree-2(c+s) polynomial. Fix the admissibility rule, evaluate f at the geometric interval endpoints analytically via arccos of rational functions, and sum over tuples.
+mechanism: The validated tooth-mesh residue Q_t(d) = (c-t)·β_t + (s+t)·γ_t (sign convention σ=η=θ=−1; claim `tangency_enum_oracle_match`) gives f(d) = Q_p(d) − Q_q(d) strictly monotone on (DL,DU). Every integer m strictly between f(DL+) and f(DU−) corresponds to exactly one valid planet-centre separation d where all four planets mesh simultaneously (mirror-pair identification absorbs the U/L doubling). The count is therefore g = max(0, ⌊f(DU−)⌋ − ⌈f(DL+)⌉ + 1), minus degenerate coincidences (d = DL where two same-size planets merge; d where p-planets or q-planets coincide pairwise inside the interval). The endpoint limits f(DL+), f(DU−) are computable from the nondegenerate triangle at the bound: at d = DL (the larger of |a_p−b_p|, |a_q−b_q|), the type that set the bound degenerates (y→0, β,γ ∈ {0,½}) giving Q_t = 0 or (c+s)/2 mod 1; the other type remains nondegenerate and its angles are arccos of rational functions in c,s,p,q via the law of cosines. At d = DU the same structure holds with the active upper bound. Thus g(c,s,p,q) is computed exactly via rational + arccos evaluations and floor/ceil — no numerical root searches, no transcendental scanning. The admissibility fix (removing the 8 spurious counts in G(20)) is a separate combinatorial rule for excluding degenerate planet coincidences; the endpoint-count structure itself is correct.
+status: adopted
+precedent: tangency_enum_oracle_match (validated residue sign convention); offcentre_dual_mesh_phase_invariant; Kurasov 2020 (eccentric-gear assembly as per-pair signed-sum congruences, MATEC 329:03027); g20_overcount_by_eight (admissibility defect, not model defect); tangent_circle_center_ellipse (ellipse-locus geometry); offcentre_two_positions_per_type (mirror-pair structure)
+first-step: Derive closed-form expressions for β_t and γ_t via the triangle-of-centres law of cosines at d=DL and d=DU, distinguishing which geometric bound is active (|a−b| pinch, a+b closure, or 1cm gap), to compute f(DL+) and f(DU−) as arccos of rational expressions in c,s,p,q. Implement g(c,s,p,q) using exact rational arithmetic plus mpmath-60 arccos, output G(16)=9 and G(20)=205, then scale to G(500).
+```
+
+## Why this beats the three candidates
+
+- **inversion-coaxial**: refuted — inversion is conformal, not an isometry; tooth pitch does not survive the map. Structural objection, not a search failure.
+- **algebraic-elimination-chebyshev**: grounded as machinery, but the monotone structure of f makes Chebyshev-Sturm root-finding overkill. We don't need to find roots — we only need f at the interval endpoints. A degree-2(c+s) polynomial is wasted when the monotone crossing count is floor/ceil of endpoint values. The approach is correct but the wrong tool for this problem's structure.
+- **tooth-labelling-crt**: grounded as a reformulation (Kurasov 2020 confirms signed-sum congruences for eccentric gears), but the gcd-closed-form/O(n log n) payoff is unsupported by any source and contradicted by the tangency-forces-position structure (four ring-tooth indices are not independent; the count is one-dimensional). The approach's payoff claim is unsubstantiated.
+
+**monotone-endpoint-evaluation** synthesises the validated residue (`tangency_enum_oracle_match`) with the monotone crossing structure (`fast_g.py`) and the literature's per-pair congruence framework (Kurasov 2020). It replaces numerical root-bisection with analytic endpoint evaluation and fixes the admissibility defect. The cost is O(n³) tuple iteration × O(1) arccos and floor/ceil per tuple — practically fast for n=500 even in Python, and structurally correct (the problem's sum over s+p+q ≤ n intrinsically iterates O(n³) tuples; the method-cost-grows-with-bound prohibition applies to per-tuple cost, which is O(1)).
+
+```claim
+id: monotone_endpoint_count_structure
+statement: With the validated residue Q_t(d) = (c-t)*beta_t + (s+t)*gamma_t and f(d) = Q_p(d) - Q_q(d) strictly monotone on (DL,DU), the discrete count g(c,s,p,q) = #{m in Z : f(DL+) < m < f(DU-)} minus degenerate coincidences (same-size planet collision at d=DL or interior). Endpoint limits are computable via arccos of rational functions in c,s,p,q from the triangle-of-centres law of cosines at the active geometric bound. No root-finding, no degree-growth with problem parameters.
+hypotheses: sign convention (sigma,eta,theta)=(-1,-1,-1) correctly encodes the off-centre tooth-mesh phase (validated at g(16,5,5,6)=9); f monotonicity holds for all admissible tuples (verified per-case in fast_g.py); endpoint arccos evaluation is exact to within mpmath precision (60 digits, sufficient to resolve integer level boundaries at G(500) scale).
+holds-here: yes — residue validated; monotonicity checked; endpoint geometry reduces to known triangle.
+status: adopted (this run)
+bearing: provides the exact, non-scanning route to g without polynomial construction or closed-form conjecture; the admissibility fix (G(20)=213→205) is the next step.
+anchor: research/approaches/monotone-endpoint-evaluation.md
+```
