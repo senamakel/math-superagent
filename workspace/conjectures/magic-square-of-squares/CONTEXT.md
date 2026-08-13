@@ -386,12 +386,11 @@ the Established section.
 ## Gaps
 
 (Double as research requests; see `research/REQUESTS.md`.)
-- **`hms-constant-bound`** (RESOLVED from the 132KB HTML full text): no explicit
-  value or formula for C is given anywhere in HMS Theorem 1.1. C is
-  "effectively computable"; the claim block now names the three ingredients
-  (DP07, BZ, JS) needed to compute it — each individually effective, but HMS
-  does not carry out the computation. Value-computed: no. The paper's proof IS
-  effective (following it yields a number).
+- **`hms-constant-bound`** — CLOSED (claim `hms-constant-nonextractable-on-disk`,
+  checked): no value for HMS's C or any of its three ingredients (DP07, BZ, JS)
+  exists on disk; the binding obstruction is DP07 (paywalled, not obtainable
+  this cycle). Surviving lane to a number: DP07 Thm 1.13
+  (`dp07-explicit-constant-for-e3-ap`).
 - **`dp07-explicit-constant-for-e3-ap`** (open): the explicit constant from
   David–Philippon 2007 Théorème 1.13, specialised to subvarieties of E³. This
   is the next lane for the effective-C approach — if DP07's constant is small
@@ -402,6 +401,17 @@ the Established section.
   (c ∈ {u,v,u+v,u−v} — not the centre e²): for Bremner's witness c=138600,
   rank(E_c)=2, torsion order 4. A putative MSS needs a length-3 AP of doubled
   points (all three realised); can we bound rank(E_c) for such c?
+- **Φ-triple beyond m,n ≤ 400** — absence is verified-numerical, not a proof;
+  natural falsifier is a Φ-triple found beyond the range.
+- **Exact reduction unanchored end-to-end**: the curve/K3 correspondence
+  "rational point ⇒ distinct positive integer square solution" is not a claim block.
+- **The eight-square sub-question**: no example known, no proof. Bremner's
+  7-square witness has exactly two half-realised endpoints; going 7 → 8 means
+  realising one more.
+- **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
+  paper is now 78KB; the auto-generated summary still needs proper scholar
+  digestion.enerated summary still needs proper scholar
+  digestion.; can we bound rank(E_c) for such c?
 - **Φ-triple beyond m,n ≤ 400** — absence is verified-numerical, not a proof;
   natural falsifier is a Φ-triple found beyond the range.
 - **Exact reduction unanchored end-to-end**: the curve/K3 correspondence

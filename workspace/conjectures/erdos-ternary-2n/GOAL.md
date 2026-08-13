@@ -114,6 +114,12 @@ naive estimate is wrong.
 ## Ending
 
 Stop and report when you have a partial result of the kind listed above, or
-when you can state precisely what blocks the sieve and why. Report the three
-witnesses reproduced, the `k` reached, the surviving class count at that `k`,
-and the evidence class of every claim.
+when you can state precisely what blocks **the route you actually pursued** and
+why. Report the three witnesses reproduced, the evidence class of every claim,
+and — if you are stopping on a blocker — which of the listed partial results you
+attempted and what defeated each.
+
+"The modular sieve cannot close" no longer ends this run. It is already proved,
+it is already written down, and it was the exit condition the previous run met
+before stopping with the conjecture untouched. An obstruction only ends the run
+if it is an obstruction to something not yet closed.
