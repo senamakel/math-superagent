@@ -88,9 +88,9 @@ hypotheses: "normal array" as defined in the paper; binomial case uses the two-m
   counting convention (k and n-k distinct), each row's peak C(n,⌊n/2⌋)>=2^{⌊n/2⌋}.
 holds-here: yes
 status: checked (independent re-derivation against code/out/witnesses.json and brute
-  force over 2<=a<=60, both pass; captured at code/out/verify_lane_clark_bound.captured.txt,
-  EXIT_CODE=0; also independently re-run by this directive's operator with the same
-  result)
+  force over 2<=a<=60, both pass; fresh operator run captured at
+  code/out/verify_lane_clark_bound.newcaptured.txt, EXIT_CODE=0, 2025; prior capture
+  code/out/verify_lane_clark_bound.captured.txt deliberately NOT adopted as evidence)
 effective: yes (the bound is an explicit inequality N(a) < 2 log₂ a + 2 with
   a computable constant; it does NOT inherit from Faltings or Siegel)
 uniform-in-k: yes (same bound holds regardless of which (k1,k2) pairs produce the

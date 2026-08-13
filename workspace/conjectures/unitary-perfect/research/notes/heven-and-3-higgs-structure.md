@@ -118,7 +118,7 @@ statement: H_even is finite iff the set {m = 2p : p odd prime, 2p ∈ H_even}
   is finite, and |H_even| <= 4^|H_even^prime|.
 hypotheses: Proposition 4 (Zsigmondy + Higgs-cubefree structure)
 holds-here: yes, sourced from the paper's Theorem 7, proved there
-status: asserted-by-source (rigorous in the paper)
+status: asserted
 bearing: closes the UPN branch if and only if the 2p prime branch closes. That
   is the exact bottleneck the run should attack.
 falsifier: infinite H_even with finite prime branch would refute; or a

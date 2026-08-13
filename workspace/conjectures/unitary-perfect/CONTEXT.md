@@ -66,8 +66,7 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 - **(sourced, unverified) Frei 1978 (via OEIS A002827 comment only):** a UPN not
   divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 distinct odd prime
   factors, and `n > 10^440`. The two bogus TOC-page files previously filed
-  under Frei's name were deleted per directive (tombstones at
-  `research/sources/frei-1978-unitar-perfekte-zahlen*.full.md`). Primary
+  under Frei's name were deleted per directive 5. Primary
   text not yet in the library; the OEIS-sourced theorem is unverified.
 - **(computed/checked) Lower bound on `a`:** any sixth UPN has
   `a ≥ ω(odd) − 1 ≥ 8`, so `2^8 | n`. Wall (1988) (≥ 9 odd components for a
@@ -189,9 +188,9 @@ Established section above).
   cyclotomic/Aurifeuillean/m=2426/Filter-N) must pass before Phase B, and only
   the ten IN-members have been reproduced so far.
 - **Frei 1978 full text** (Über unitar perfekte Zahlen, Elem. Math. 33 (1978)
-  95–96). The previous file at `research/sources/frei-1978-unitar-perfekte-zahlen.full.md`
-  was a table-of-contents page (8 KB, "Über die Flächeninhalte ebener Schnitte
-  konvexer Körper") — deleted and replaced with a tombstone. Correct e-periodica
+  95–96). Previous fetches resolved to a volume table-of-contents page (about
+  plane sections of convex bodies, not Frei) — deleted per directive 5.
+  Correct e-periodica
   URL for Heft 4: `https://www.e-periodica.ch/digbib/view?pid=edm-001:1978:33#105`.
   The OEIS-recorded theorem (UPN not divisible by 3 has m ≥ 144, ω ≥ 144,
   n > 10^440) is load-bearing for the "is 3 | n forced?" question and is

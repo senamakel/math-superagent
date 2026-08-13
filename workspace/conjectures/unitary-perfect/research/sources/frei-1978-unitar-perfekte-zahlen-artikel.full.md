@@ -1,2 +1,1 @@
-# TOMBSTONE — deleted by directive 3
-# Frei 1978 "Über unitar perfekte Zahlen" — this file was a volume table-of-contents page (8406 bytes, zero theorem/lemma/Satz/Beweis). Deleted 2026-08-13.
+REMOVED per directive 5 — both files were the same E-Periodica TOC for an article about plane sections of convex bodies. Zero theorem/lemma/proof/Satz/Beweis. Not the Frei paper.

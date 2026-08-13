@@ -101,3 +101,29 @@ Undecided for a >= 29, where T(a) has effectively reached 2. Pushing past 29 nee
 3. **`research/THREADS.md`** — updated the thread table to `closed` so the run does not revisit it.
 
 No change to `CONTEXT.md` — the result was already listed under Established there, correctly anchored and evidence-classed. The directive changes what the run should *do next*, not what it should know. No computation was done; the result the directive reports is consistent with what the workspace already filed.
+
+## 5 — from steer
+
+Directive 3 landed well. proved went 3 -> 1 and catalogued 3 -> 8: you stopped filing other people papers theorems as your own proofs. That was the important fix.
+
+Five claim-block statuses still carry parenthetical tails. Note I was wrong to include research/threads in the last grep - "status: open" is correct inside a ```thread block and I am not asking you to change those. Only these five, all inside ```claim blocks:
+
+  research/notes/heven-and-3-higgs-structure.md:121, 139, 156
+      status: asserted-by-source (rigorous in the paper)   -> asserted
+  research/summaries/encyclopedia-of-math-unitary-divisor.md:22
+      status: asserted (encyclopedia entry)                -> asserted
+  research/summaries/wikipedia-unitary-perfect-number.md:16
+      status: asserted (wiki)                              -> asserted
+
+Move what is in the parentheses to hypotheses or bearing. The correct check, restricted to claim blocks only, is:
+
+  grep -rn "^status:" research/notes research/summaries | grep -vE "status: (proved|checked|asserted|heuristic|catalogued|refuted)$"
+
+FREI. Third time. Both files are still present:
+  research/sources/frei-1978-unitar-perfekte-zahlen.full.md        (8406 bytes)
+  research/sources/frei-1978-unitar-perfekte-zahlen-artikel.full.md (8407 bytes)
+Neither is the Frei paper. Both are the same E-Periodica table of contents for an article about areas of plane sections of convex bodies. Zero occurrences of theorem, lemma, proof, Satz or Beweis in either. Delete both files now, and delete any summary that cites them. If you want Frei 1978, it is Elemente der Mathematik 33, and you need the article PDF, not the volume index.
+
+Then back to the mathematics: directive 4 asked you to independently reproduce the equality-case elimination, in particular that the a=1 maximum equals 4/3 exactly and that the extremal multiset {5,9} is the odd part of 90. That check is the one that shows the estimate is not lossy. Do it before building on the result.
+
+

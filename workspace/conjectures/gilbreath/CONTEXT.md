@@ -9,7 +9,7 @@ Budget 10,000 tokens (this file ~8300, so ~1700 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state: recharge-side target — a lower bound on the (2,4)-event rate from the starting sequence's gap constraints, not from depth structure. Event-rate sweep (1138 sequences, 26 workers) crashed in report() on a degenerate family with elig==0; the format-string bug and missing stats persistence are FIXED — rerun is TASKS.md item 1.** Established: regeneration ⟺ `(edge==2, intruder==4)`, zero failures over 998 transitions (the old "refuted iff" record was an off-by-one and is **withdrawn** — `code/out/check_regenerate_lemma.notes.md`; do not keep it). The conjecture is exactly: do (2,4)-events arrive fast enough that `Σ (j_i + 1)` never falls `k−1` behind (recharge identity, Established). Erosion verification is no longer useful — the step law is exact, no re-derivation. Closed by solver (Attempt 1): run-count/total-variation Lyapunov potentials fail even inside the {0,2} regime ((0,0,1,1)→(0,1,0)); Rule 90 relative-depth concentration (z=2.25, p=0.017) is a mild effect, not a mechanism — **do not reopen either**. The concrete candidates are three proposed approaches (all precedent-unchecked in the literature): `renewal-process-edge-flip-hitting-time` — bound the (0,4)-stall hitting time under the Rule 90 edge dynamics, giving inter-event gap ≤ y₀/2 + stall + 1 with y₀ from the gap bound; its conjectural stall bound L ≤ 2·b_k and the constant-zero-block exception are exactly CHT's long-zero-block obstruction — and `block-boundary-causal-separation` — the 2-state (b, y) framing with a Lyapunov function — and `polynomial-evolution-halved-triangle-over-gf2` — lift the Rule 90 operator to Z_2[[X]], prove the carry term (from min(a,b) in |a−b| = a+b−2min) always lies in the ideal (2,X) so it vanishes at position 1; equivalent to the conjecture but gives the carry term an explicit algebraic form to hunt, with BCZ's F_2[[X]] program as the mod-2-level nearest literature. **Each must state how it beats Eppstein 2011**: gap constraints alone fail in the 2-then-odds class, so a purely-gap rate bound must be prime-specific or carry a hypothesis Eppstein's construction violates.
+**Run state: mechanism is combinatorial, event rate is not. Step law + recharge identity hold universally (0 failures across 1,154 random sequences). The event-rate sweep (Directive 12) refutes a purely combinatorial rate bound: 852/1,154 (73.8%) reach b_k=0, wide-support families ({2..20}, {2..100}, Geom(p=.25)) die 100%. Route A re-scoped to require a gap-support hypothesis (gaps ⊆ {2,4,6}, first gap 2) that the primes satisfy and the dying families violate. Target: a theorem "under hypothesis H, the event rate ≥ r, and r suffices" where H separates the primes from the dying sweep families.** Established: regeneration ⟺ `(edge==2, intruder==4)`, zero failures over 998 transitions (the old "refuted iff" record was an off-by-one and is **withdrawn** — `code/out/check_regenerate_lemma.notes.md`; do not keep it). The conjecture is exactly: do (2,4)-events arrive fast enough that `Σ (j_i + 1)` never falls `k−1` behind (recharge identity, Established). Erosion verification is no longer useful — the step law is exact, no re-derivation. Closed by solver (Attempt 1): run-count/total-variation Lyapunov potentials fail even inside the {0,2} regime ((0,0,1,1)→(0,1,0)); Rule 90 relative-depth concentration (z=2.25, p=0.017) is a mild effect, not a mechanism — **do not reopen either**. The concrete candidates are three proposed approaches (all precedent-unchecked in the literature): `renewal-process-edge-flip-hitting-time` — bound the (0,4)-stall hitting time under the Rule 90 edge dynamics, giving inter-event gap ≤ y₀/2 + stall + 1 with y₀ from the gap bound; its conjectural stall bound L ≤ 2·b_k and the constant-zero-block exception are exactly CHT's long-zero-block obstruction — and `block-boundary-causal-separation` — the 2-state (b, y) framing with a Lyapunov function — and `polynomial-evolution-halved-triangle-over-gf2` — lift the Rule 90 operator to Z_2[[X]], prove the carry term (from min(a,b) in |a−b| = a+b−2min) always lies in the ideal (2,X) so it vanishes at position 1; equivalent to the conjecture but gives the carry term an explicit algebraic form to hunt, with BCZ's F_2[[X]] program as the mod-2-level nearest literature. **Each must state how it beats Eppstein 2011**: gap constraints alone fail in the 2-then-odds class, so a purely-gap rate bound must be prime-specific or carry a hypothesis Eppstein's construction violates.
 
 ## Established
 
@@ -414,23 +414,22 @@ recalled claim is relied on whose hypotheses fail here.
 
 ## Gaps
 
-- **The live question: bound the (2,4)-event rate from below.** The step law and
-  recharge identity (`code/out/step_law_and_recharge_verified.md`) reduce the
-  conjecture to: `Σ_{i<k} (j_i + 1) ≥ k − 1 − b_1` for all k. Since `b_1=2`,
-  this is a statement about event frequency and jump sizes. A theorem of the
-  form "under hypothesis H, events arrive at rate ≥ r, and r suffices" is a
-  real partial result. Two routes: combinatorial (bound max erosion between
-  events from Rule 90 + drain law) and analytic (bound event density from prime
-  gap hypotheses). Measure inter-event gap distribution first. Concrete candidates: `renewal-process-edge-flip-hitting-time` — Rule-90 (0,4)-stall hitting-time bound, inter-event gap ≤ y₀/2 + stall + 1 (y₀ from the gap bound), conjectural stall bound L ≤ 2·b_k whose constant-zero-block exception IS the CHT obstruction — `block-boundary-causal-separation` — two-state (b, y) Lyapunov framing — and `polynomial-evolution-halved-triangle-over-gf2` — the carry term in the Z_2[[X]] lift, prove it lies in (2,X) so position 1 stays {0,1}. All three proposed, precedent-unchecked; any purely-gap rate bound must be prime-specific or carry a hypothesis Eppstein's construction violates.
-  **Census (computed, negative): the boundary-data sequences — block profile
-  b(k), second entries s(k), regen jumps, regen gaps — show NO low-degree
-  polynomial, NO constant-coefficient linear recurrence of order ≤8, and NO
-  OEIS match. Do not re-search for recurrence structure.** Event record is
-  small: 60 events, live regime k=1..161 (beyond that is the finite-width
-  artifact). A wider record (sieve ~1e8, ~5.7M primes, ~1–2 min) is cheap but
-  pointless without a specific rate claim to test.
-  Threads `research/threads/regeneration.md` and
-  `research/threads/rule90-regeneration.md`.
+- **The live question: bound the (2,4)-event rate from below.**
+  The step law and recharge identity reduce the conjecture to:
+  `Σ_{i<k} (j_i + 1) ≥ k − 1 − b_1` for all k. Since `b_1=2`, this is a
+  statement about event frequency and jump sizes.
+  **Mechanism vs rate (Directive 12, settled by the 1,154-sequence sweep):**
+  the step law, recharge identity, and drain law are combinatorial — they hold
+  universally (zero failures on all 1,154 random sequences). But the event
+  **rate** is not: 852/1,154 (73.8%) reach `b_k = 0`, all within the first 10
+  rows; wide-support families ({2..20}, {2..100}, Geom(p=.25)) die 100% of the
+  time with or without first gap forced to 2. The phase boundary is gap support:
+  narrow support ({2}, {2,4}, {2,4,6}) + first gap = 2 survives; wide support
+  dies. Route A (combinatorial bound on max erosion between events) MUST
+  include a gap-support hypothesis that the primes satisfy and the dying
+  families violate. Route B (analytic, assume a prime-gap hypothesis) is
+  unchanged. A theorem of the form "under hypothesis H, events arrive at rate
+  ≥ r, and r suffices" is a real partial result.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.

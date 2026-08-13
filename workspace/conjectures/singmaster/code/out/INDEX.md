@@ -11,6 +11,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `commands.log` | _(undescribed)_ |
 | `count_multiplicity.captured.txt` | Oracle run: 3003 verified 8 times; a<=10^7 scan reports exactly 7 values with N>=6 (3003:8; 120,210,1540,7140,11628,24310:6); every value cross-checked against the inversion multiplicity. |
 | `diag_families.captured.txt` | _(undescribed)_ |
+| `exitcode_sweep.captured.txt` | _(undescribed)_ |
 | `famA2.captured.txt` | _(undescribed)_ |
 | `famB.captured.txt` | _(undescribed)_ |
 | `famC.captured.txt` | _(undescribed)_ |
@@ -22,6 +23,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `family_sequences.captured.txt` | _(undescribed)_ |
 | `genus_closed_forms.md` | _(undescribed)_ |
 | `genus_single_closed_form.md` | _(undescribed)_ |
+| `genus_spotcheck_new_pairs.captured.txt` | _(undescribed)_ |
 | `genus_symmetric_form.captured.txt` | _(undescribed)_ |
 | `genus_symmetric_form.md` | _(undescribed)_ |
 | `genus_table.captured.txt` | The deliverable: exact genus table for C(x,k1)=C(y,k2), the Faltings threshold (genus>=2 except {2,3},{2,4}), verified closed forms for the {2,n},{3,n},{4,n} families, and literature cross-checks. |
@@ -42,7 +44,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `test_slope_hypothesis.captured.txt` | _(undescribed)_ |
 | `verify_family.captured.txt` | Equal-pair finder n<=1000: reproduces all 7 witnesses; Pell family C(n+1,k+1)=C(n,k+2) members j=1..4 (the infinite N>=6 family, Singmaster 1975). |
 | `verify_k2_5_row.captured.txt` | _(undescribed)_ |
-| `verify_lane_clark_bound.PENDING.md` | _(undescribed)_ |
+| `verify_lane_clark_bound.captured.txt` | _(undescribed)_ |
+| `verify_lane_clark_bound.newcaptured.txt` | Fresh operator re-run of code/lane_clark/verify_lane_clark_bound.py, EXIT_CODE=0: every witness in witnesses.json satisfies N(a) < 2log2(a)+2 (3003: N=8 < 25.104) and brute force over 2<=a<=60 passes. This capture is the sole evidence for claim lane-clark-normal-array-bound = checked; the earlier .captured.txt was deliberately not adopted. |
 | `verify_lane_clark_bound.purpose.md` | Points to the live Lane Clark verification program in code/lane_clark/ and the claim it checks. |
 | `verify_lane_clark_bound.py` | _(undescribed)_ |
 | `verify_library_claims.py` | _(undescribed)_ |

@@ -1,3 +1,3 @@
-# Frei 1978 — captcha wall (pointer)
+# Frei 1978 — captcha wall (pointer, retained)
 
-Fetching E-periodica's Direct-PDF endpoint for the Heft-4 "Kleine Mitteilungen" block (`cntmng?pid=edm-001:1978:33::216`, pp. 90–96, which contains Frei's note on pp. 95–96) returned **"Verification required / Bestätigung erforderlich"** — a bot wall, no content. See `research/summaries/frei-1978-unitar-perfekte-zahlen.md` for the canonical failure record. Do not re-fetch this endpoint with the same tool.
+Fetching E-periodica's Direct-PDF endpoint for the Heft-4 "Kleine Mitteilungen" block (`cntmng?pid=edm-001:1978:33::216`, pp. 90–96, which contains Frei's note on pp. 95–96) returned **"Verification required / Bestätigung erforderlich"** — a bot wall, no content. The canonical failure record was removed per directive 5 (the two TOC-page source files for Frei were deleted). Do not re-fetch this endpoint with the same tool.

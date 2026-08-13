@@ -61,6 +61,32 @@ this means:
 Recorded as an open research request (see REQUESTS.md row "Wall's search
 bound primary statement").
 
+```claim
+id: wall1975-bound-is-1e23-not-1e102
+statement: Wall 1975 (the fifth unitary perfect number paper) proves W is the
+  next unitary perfect number after 87360 by eliminating all N < W, where
+  W = 146361946186458562560000 ~ 1.46e23. The paper's seed cap is a < 38 (for
+  N < W) and the odd-part bounds are m < 20189, m < 133, m < 7 in the special
+  cases. The string "10^102" does not occur in the paper.
+hypotheses: the full Cambridge PDF in research/sources is the primary text and
+  is accurately OCR'd; the claim "Wall searched past 10^102 in 1975" appears
+  only in this run's own GOAL.md/ROOT.md/CONTEXT.md and in no held source
+holds-here: yes - fixes the actual historical search scale for the run's
+  compute policy
+status: sourced (from the held Wall 1975 full text); the companion statement
+  that no held source evidences "10^102" is a documented absence, verified by
+  exa_search and full-text search over the library
+bearing: the compute-policy consequence (no numeric search) is unchanged -
+  10^23 already exceeds any reachable region - but the specific figure 10^102
+  must not be stated as sourced. It is an orphan claim requiring Guy UPNT
+  Sec B3 or the Wall-Hagis 1972 letter (scanned, no OCR) to resolve
+anchor: research/sources/wall-1975-fifth-unitary-perfect-number-pdf.full.md;
+  research/notes/wall-1975-bounds-and-102-claim.md
+contradicts: GOAL.md, ROOT.md, CONTEXT.md to the extent each states 10^102 as
+  a literature fact with no anchor
+answers: primary-source-for-the-10-102-search-bound
+```
+
 ## Related: EoM typo
 
 The Encyclopedia of Mathematics "Unitary divisor" page (held) writes

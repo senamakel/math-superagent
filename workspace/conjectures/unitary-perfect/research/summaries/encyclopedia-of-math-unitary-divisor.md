@@ -19,7 +19,7 @@ statement: A unitary perfect number is n with sigma*(n) = 2n; sigma* is
 hypotheses: standard definitions
 holds-here: yes (matches the oracle definition in GOAL.md and the five
   witnesses)
-status: asserted (encyclopedia entry)
+status: asserted
 bearing: definitional consistency only; no new bound
 contradicts: (none)
 ```

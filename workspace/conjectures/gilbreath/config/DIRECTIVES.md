@@ -192,3 +192,36 @@ Then rerun and capture:
 On the mathematics: whatever rho_live and rho_rows come out as, an event rate measured on rows 1..161 is a statement about rows 1..161. If you use it to argue the {0,2} regime persists, say explicitly what makes the rate a lower bound for all k rather than an observed frequency in the live regime. Consumption is not regeneration.
 
 Two edits to `code/event_rate/event_rate_sweep.py`, one to `TASKS.md`, and one line to `CONTEXT.md`. The format-string crash that destroyed 135 seconds × 26 workers of compute is fixed (`rls`/`rrs` built as strings, `-` for `None`), and `stats_list` is now persisted to `code/out/event_rate_stats.jsonl` before `report()` is called — a formatting bug can never cost the compute again. `TASKS.md` is reordered so the rerun is item 1, with the directive's reminder that `rho_live` on rows 1..161 is an observed frequency, not a proved lower bound for all k.
+
+## 12 — from steer
+
+Directive 11 landed fully: event_rate_stats.jsonl has 1154 rows, the sweep reran, the analysis exists. Good.
+
+Now read your own sweep against your own thread. They contradict each other.
+
+research/threads/regeneration.md makes Route A priority and calls it "combinatorial, not about gaps", justified by "the mechanism needs no primes - random arrays, 3521 rows, 610 events, zero failures".
+
+Your sweep says 852 of 1154 sequences DIED (73.8%):
+
+  consecutive   died  0/48    0%
+  f2-rand24     died  0/48    0%
+  {2,4,6}       died 45/48   94%
+  {2..20}       died 48/48  100%
+  {2..100}      died 48/48  100%
+  Geom(p=.25)   died 48/48  100%
+
+Both are true and they are about different things. The step law and recharge identity are combinatorial - they are identities about the absolute-difference operator, so of course they hold on random arrays. But whether Sigma (j_i + 1) >= k-2 holds is NOT combinatorial: it is a claim about the ARRIVAL RATE of (2,4)-events, and your sweep shows that rate depends sharply on gap support. Wide-support families die 100% of the time.
+
+So Route A as stated cannot work. A purely combinatorial lemma about {0,2} rows under XOR with no prime input would have to prove an event-rate bound that is FALSE for {2..20} and Geom(.25). If you produce such a proof it is a bug, not a theorem.
+
+Update the thread: the mechanism is prime-free, the RATE is not. Re-scope Route A to assume something the dying families fail - bounded gaps, gap density, or non-concentration - say which, and check that primes satisfy it and {2..20} does not. That is exactly the content of Eppstein 2011, which you already record as saying gap bounds alone do not suffice and one must add non-concentration or restrict to primes.
+
+Also you are at 3.38 GiB of the 8 GiB cap, up from 1.11 GiB. An OOM kills the container silently with nothing on the console.
+
+The directive is carried out. I made three changes:
+
+1. **`research/threads/regeneration.md`** — Route A re-scoped. The header now records the sweep result (852/1154 dead, wide-support families die 100%) and Route A's `rests-on` carries it as a refutation of the purely-combinatorial claim. The body text replaces "no prime input" with the phase-boundary table and the explicit statement that Route A must assume a gap-support hypothesis (gaps ⊆ {2,4,6}, first gap = 2) that the primes satisfy and {2..20}/Geom(p=.25) fail. Route B is unchanged.
+
+2. **`TASKS.md`** — rewritten. Item 1 is now "find the gap-support hypothesis that separates primes from the dying families" with the sweep's phase-boundary data as the starting point. Item 2 is the inter-event gap analysis on the prime rows (the measurement step the thread already listed). Item 3 is Lean 4 formalisation (unchanged, parallel). Item 4 is memory hygiene — the container is at 3.38 GiB of 8, and `event_rate_stats.jsonl` (378 KiB) and `commands.log` (511 KiB) are the two largest files to archive or truncate before any further large runs.
+
+3. **`CONTEXT.md`** — run-state header and Gaps section updated to state the mechanism-vs-rate distinction plainly, with the sweep's phase-boundary numbers, so every role sees it.

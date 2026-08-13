@@ -71,7 +71,7 @@ def main():
 
     print("\n=== Check 2: re-derive bound (brute force over 2<=a<=60) ===")
     ok2 = True
-    for a in range(2, 60):
+    for a in range(2, 61):
         N = brute_count(a)
         bound = 2*log2(a)+2
         if N >= bound:

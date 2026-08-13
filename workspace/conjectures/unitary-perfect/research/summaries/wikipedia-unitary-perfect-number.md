@@ -13,7 +13,7 @@ statement: 6 is the only number that is both a perfect number and a unitary
 hypotheses: standard definitions
 holds-here: yes (6 is in the witness set; 28 is perfect but not unitary-perfect
   per code/out/known_five_verified.captured.txt)
-status: asserted (wiki)
+status: asserted
 bearing: none new; consistency check only
 contradicts: (none)
 ```

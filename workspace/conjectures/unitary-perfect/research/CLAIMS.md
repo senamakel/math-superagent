@@ -26,9 +26,11 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `heven-verified-members` | H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}; no verified element of H_even in (122,1200]. | yes | asserted | `research/notes/paper-extraction.md` |
 | `hong-stewart-nonprimitive-bound` | For degree-2 algebraic γ with Nγ = ±1 and n >= exp exp(...), the growth of primes dividing γ^n - 1 is governed by an explicit Stewart-type lower bound; the non-primitive part of 2^(2p)+1 is O(log(4p)) so the primitive… | yes | catalogued | `research/summaries/hong-2022-stewart-revisited.md` |
 | `structural-search-cannot-reach` | The backtracking search over the product form prod (q_i+1)/q_i = 2, with q_i prime powers of distinct primes and the denominator rule forcing the next prime whenever the remaining target is not an integer, recovers… | yes | checked | `research/notes/why-the-search-is-closed.md` |
+| `subbarao1970-a-ge-11` | Any unitary perfect number other than the five known ones satisfies a >= 11, where 2^a \|\| n. Equivalently 2^11 = 2048 divides any sixth example. The elimination of a = 0, 3, 4, 5, 7, 8, 9, 10 and the classification a =… | yes | asserted | `research/notes/subbarao-1970-a-ge-11.md` |
 | `sw1966-finiteness-fixed-omega` | There are at most finitely many unitary perfect numbers with a fixed number of distinct prime factors. | yes | catalogued | `research/summaries/subbarao-warren-1966-unitary-perfect.md` |
 | `unitary-perfect-2-adic-budget` | Every unitary perfect number is even (Subbarao-Warren 1966), and for n = 2^a * prod_i p_i^{e_i} unitary perfect with p_i odd and distinct, a >= 1, the identity sum_i v2(p_i^{e_i} + 1) = a + 1 holds exactly. Consequently… | yes | proved | `research/notes/parity-and-2-adic-budget.md` |
 | `unitary-perfect-lower-bound-on-a` | Any unitary perfect number other than the five known ones satisfies a >= omega(odd part) - 1 >= 8, where 2^a \|\| n. Equivalently 2^8 = 256 divides any sixth unitary perfect number. This follows by combining Wall (1988),… | yes | checked | `research/notes/lower-bound-on-a.md` |
+| `wall1975-bound-is-1e23-not-1e102` | Wall 1975 (the fifth unitary perfect number paper) proves W is the next unitary perfect number after 87360 by eliminating all N < W, where W = 146361946186458562560000 ~ 1.46e23. The paper's seed cap is a < 38 (for N <… | yes | asserted | `research/notes/wall-1975-bounds-and-102-claim.md` |
 | `wall1987-largest-odd-component` | Except for the five known UPNs, a unitary perfect number has an odd component larger than 2^15 (smallest candidate 32771); and among primes p < 3*10^9 only 1093 and 3511 satisfy p^2 \| 1 + 2^A for their entry point A. | yes | asserted | `research/summaries/wall-1987-largest-odd-component.md` |
 | `wall1988-nine-odd-components` | Any unitary perfect number other than the five known ones has at least nine odd prime-power components, omega(odd) >= 9. | yes | asserted | `research/summaries/wall-1988-nine-odd-components.md` |
 | `wikipedia-unitary-perfect` | 6 is the only number that is both a perfect number and a unitary perfect number. | yes | asserted | `research/summaries/wikipedia-unitary-perfect-number.md` |
@@ -42,7 +44,42 @@ Resolve these before building on either side.
 - `fkl-prime-chain-length` (research/summaries/ford-konyagin-luca-prime-chains-2010.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `ford-thinness-downward-closed-primes` (research/summaries/ford-pratt-trees-missing-primes-2014.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `hong-stewart-nonprimitive-bound` (research/summaries/hong-2022-stewart-revisited.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `research/notes/lower-bound-on-a.md` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `only` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `in` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `that` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `a` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `>=` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `8` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `there` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `is` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `presented` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `as` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `frontier;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `it` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `is` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `not` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `false` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `merely` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) contradicts `weaker` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `sw1966-finiteness-fixed-omega` (research/summaries/subbarao-warren-1966-unitary-perfect.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `GOAL.md` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `ROOT.md` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `CONTEXT.md` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `to` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `extent` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `each` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `states` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `10^102` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `as` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `a` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `literature` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `fact` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `with` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `no` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) contradicts `anchor` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wikipedia-unitary-perfect` (research/summaries/wikipedia-unitary-perfect-number.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
@@ -59,6 +96,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `heven-thinness-not-finiteness` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
+- `subbarao1970-a-ge-11` (research/notes/subbarao-1970-a-ge-11.md) — asserted by the source, not proved there and not checked here
+- `wall1975-bound-is-1e23-not-1e102` (research/notes/wall-1975-bounds-and-102-claim.md) — asserted by the source, not proved there and not checked here
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) — asserted by the source, not proved there and not checked here
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) — asserted by the source, not proved there and not checked here
 - `wikipedia-unitary-perfect` (research/summaries/wikipedia-unitary-perfect-number.md) — asserted by the source, not proved there and not checked here

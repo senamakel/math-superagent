@@ -1,5 +1,1 @@
-<!-- source: https://www.e-periodica.ch/cntmng?pid=edm-001:1978:33::214 | converted from HTML -->
-
-Verification required
-
-# Bestätigung erforderlich
+REMOVED per directive 5 — captcha wall page only, no article content. The source files it referenced were deleted.

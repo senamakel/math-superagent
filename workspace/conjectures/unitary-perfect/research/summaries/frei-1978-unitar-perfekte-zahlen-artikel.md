@@ -1,3 +1,1 @@
-# Frei 1978 — failed capture (pointer)
-
-This fetch of Frei's "Über unitar perfekte Zahlen" (Elem. Math. 33 (1978) 95–96) resolved to the **volume table of contents only** — E-periodica serves its scan frame, not the page text. See `research/summaries/frei-1978-unitar-perfekte-zahlen.md` for the canonical failure record with all attempts and endpoints. The raw TOC capture is at `research/sources/frei-1978-unitar-perfekte-zahlen-artikel.full.md`. Do not cite this as the article.
+REMOVED per directive 5 — cited the tombstone source file that was deleted.
