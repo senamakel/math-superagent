@@ -1,0 +1,11 @@
+[1] Phi(120): |Phi| = 2930
+    v2(q) distribution: {3: 1459, 4: 731, 5: 381, 6: 199, 7: 100, 8: 60}
+    v2 distribution, both (m,n) odd: {3: 1814, 4: 920, 5: 456, 6: 222, 7: 100, 8: 28}
+    v2 distribution, mixed parity   : {3: 1800, 4: 900, 5: 480, 6: 240, 7: 120, 8: 60}
+[2] per-valuation odd-part residue sets mod 2^12:
+    v=3: |S|=1188, additively-closed-within-valuation: True
+    v=4: |S|=712, additively-closed-within-valuation: True
+    v=5: |S|=381, additively-closed-within-valuation: True
+    v=6: |S|=199, additively-closed-within-valuation: True
+    v=7: |S|=100, additively-closed-within-valuation: True
+    v=8: |S|=60, additively-closed-within-valuation: True

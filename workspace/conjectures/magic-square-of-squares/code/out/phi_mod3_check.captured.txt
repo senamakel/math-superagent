@@ -1,0 +1,6 @@
+mod=3: distinct residues among primitive pairs m,n<=100: [(0, 3043)]
+   all-same-residue: True, common residue: 0, 2r==r mod 3? True
+   pairs with denominator 0 mod 3: 0
+mod=5: distinct residues among primitive pairs m,n<=100: [(0, 2040)]
+   all-same-residue: True, common residue: 0, 2r==r mod 5? True
+   pairs with denominator 0 mod 5: 1003

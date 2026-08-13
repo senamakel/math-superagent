@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Yamagishi,+S | Shuntaro Yamagishi | ( [v1][2]), last revised 4 Sep 2024 (this version, v2)] # Title: On the existence of magic squares of powers Authors: [Nick Rome][3], [Shuntaro Yamagishi][4] View a PDF of the paper titled On the… |
 | 1 | https://citation-needed.springer.com/v2/references/10.1007/BF02985794?format=refman&amp;flavour=citation | Download citation | on the magic squares of squares problem. *The Mathematical Intelligencer***27**, 52–64 (2005). https://doi.org/10.1007/BF02985794 [Download citation][73] - Published: 12 November 2008 - Issue date:… |
 
-_117 further candidates not shown; they are cited once each._
+_124 further candidates not shown; they are cited once each._

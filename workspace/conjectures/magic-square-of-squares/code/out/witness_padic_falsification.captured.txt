@@ -1,0 +1,23 @@
+[A] sallows_ls1: entries_squares=True all_8_sums_equal=False
+    exact verifier is_magic_square_of_squares = False (expected False: neither is a full MSS)
+    centre c=12769 (e=yes, e=113)
+      d=u=-9405: not fully-realised; q=d/e^2=-9405/12769; not a positive fully-realised Phi element; p-adic facts do not apply; violations=none
+      d=v=3360: fully-realised; q=d/e^2=3360/12769; q in Phi (positive, fully-realised); p-adic facts apply; violations=none
+      d=u+v=-6045: not fully-realised; q=d/e^2=-6045/12769; not a positive fully-realised Phi element; p-adic facts do not apply; violations=none
+      d=u-v=-12765: not fully-realised; q=d/e^2=-12765/12769; not a positive fully-realised Phi element; p-adic facts do not apply; violations=none
+[A] bremner_magic: entries_squares=False all_8_sums_equal=True
+    exact verifier is_magic_square_of_squares = False (expected False: neither is a full MSS)
+    centre c=180625 (e=yes, e=425)
+      d=u=-41496: not fully-realised; q=d/e^2=-41496/180625; not a positive fully-realised Phi element; p-adic facts do not apply; violations=none
+      d=v=138600: fully-realised; q=d/e^2=5544/7225; q in Phi (positive, fully-realised); p-adic facts apply; violations=none
+      d=u+v=97104: fully-realised; q=d/e^2=336/625; q in Phi (positive, fully-realised); p-adic facts apply; violations=none
+      d=u-v=-180096: not fully-realised; q=d/e^2=-180096/180625; not a positive fully-realised Phi element; p-adic facts do not apply; violations=none
+
+[C] Seven p-adic/modular programs concluded NO nondegenerate additive-triple
+    obstruction (all achievable residue sets additively closed; mod 3 and mod 5
+    collapse to single residue {0}).  There is therefore no asserted
+    impossibility lemma to falsify: no residue/closure argument forbids either
+    known witness.  Verified above that any Phi element arising from a witness
+    satisfies the proved p-adic facts (v2>=3, v3>=1, res=0 mod 3).
+
+RESULT: ALL CONSISTENT - no statement forbids a witness
