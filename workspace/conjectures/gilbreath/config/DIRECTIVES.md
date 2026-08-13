@@ -850,3 +850,32 @@ Record Tao's difficulty assessment as calibration, not discouragement: it is the
 - **Route C** (CHT deterministic): needs Cramér (open, strictly stronger than BHP); CHT's own assessment on p.8 says (ii) and (iii) "look difficult to establish rigorously, even if one assumes strong conjectures on the primes." Best available calibration.
 
 The thread now selects Route B as primary, keeps Route A as fallback, and does not pursue Route C. Tao's assessment is recorded as calibration, not discouragement. TASKS.md and CONTEXT.md were updated to match — Directive 35 items are at the top of TASKS.md, and the Run state section reflects the three-route decision. Directive 34/32/33 items (paper reading, Granville Lemma 5.4) follow behind, since the route selection is logically prior.
+
+## 36 — from steer
+
+DIRECTIVE 36 — the 1e9 run settles something, but not what it set out to. Read your own capture again.
+
+At W = 50,847,534 the row-248 event is STILL capped: b_land = 50,847,285 = W - 248 - 1 exactly, floor = 0, genuine = False. Doubling the width from 6e8 to 1e9 did not free it. Its jump is now a lower bound of 27,684,003, up from 8,161,172 — the bound moved, the measurement did not.
+
+That is the real finding and deserves its own note: THE EMPIRICAL ROUTE IS AT ITS CEILING. Your fit says b_land doubles every 14.16 rows (log2 slope 0.070645, r2 0.946) while gaps are 9 to 64 rows, so each giant costs 1.5x to 8x the width of the last. You are at 1e9, 1.37 GiB, 185 s. Two more giants means 1e10 to 1e11, which does not fit the 8 GiB cap. Do not queue a 2e9 or 4e9 run expecting to break this — state what width giant 16 actually needs and stop buying giants with sieve.
+
+What the 1e9 run DID establish, and it is worth having:
+- max gap is still 64. The 239 -> 248 gap of 9 is noise, so the 64 at 175 -> 239 stands as the maximum over everything measured.
+- the ratio bound gap_i/(j_i+1) holds everywhere, max 1.2644e-02, none above 0.1. Step 6 in ratio form survives a width doubling — the strongest empirical statement you have.
+- rows 1..247 reproduce the 6e8 record and rows 1..161 the 2e7 record, so the oracle passed.
+
+One correction. Your parity p-value counts all 16 giants including row 247, which you yourself mark genuine=False. Recompute on the 15 genuine giants only: 1 odd (161) of 15, p = (C(15,1)+C(15,0))/2^15 = 16/32768 = 4.883e-04 under uniform parity, and 0.0052 against the measured (2,4)-event base rate 0.600. Quote the base-rate figure, not the fair-coin one — the events are not fair coins.
+
+Now pivot. The remaining work is theoretical, not computational: Granville's nu_2 lower bound (directives 32, 33) and Chase-Hunter-Tao Theorem 1.6 (directive 35), which you have not yet read. Both are in research/sources/ as *-FULLPDF.full.md.
+
+The directive is carried out. Here is what I changed:
+
+- **TASKS.md** rewritten: parity correction first (15 genuine giants, 1 odd, base-rate p=0.0052), then the 1e9 settlement findings, then Granville and CHT reading as the primary theoretical work. "Do not queue a 2e9 or 4e9 sieve run" is a standing instruction.
+
+- **`code/out/1e9_settlement.md`** written: four settled findings (row-248 still capped, max gap 64 stands, ratio bound ≤ 0.01264 everywhere, oracle passed), the ceiling rationale, and the parity correction quoting the base-rate figure as directed.
+
+- **`research/threads/regeneration.md`** thread header pivoted: empirical route at ceiling, Route B (Granville ν_2) primary with Lemma 5.4 re-derivation as next step, parity corrected. Route A kept as empirical fallback.
+
+- **`CONTEXT.md`** Run state, Established (wider-width record), and Gaps sections updated to Directive 36 — 1e9 record, ceiling finding, pivot to theoretical routes. The Granville and CHT FULLPDFs are confirmed in the library and are the next items to read in TASKS.md.
+
+- **`config/directive36.md`** has my full reply since the DIRECTIVES.md edit tool failed on a 95 KB file.
