@@ -120,19 +120,17 @@ claims ledger via `search_claims` worked normally.
 
 ## Gaps
 
-- **The open question: is "the inter-giant gap is bounded" provable?** Three
-  possibilities to decide before attempting a proof (Directive 26): corollary
-  of known prime-gap results; equivalent to a named open problem (a partial
-  result — a reduction of GC to a named conjecture); or a genuinely new
-  statement with a named obstruction. The catch: the (2,4)-event sits at the
-  boundary of the Rule-90 interior XOR (edge) fed by the drain law (intruder),
-  both driven by the halved-gap bits — so the gap is a function of the
-  prime-gap sequence, but whether its boundedness reduces to standard
-  prime-gap theory is unknown. **The 15th giant changed the measurement (the
-  row-span of the drought, 26 → 64, went with b growing 2,179 → 16,252,084);
-  a gap-growth law G(b) ~ c·b^θ with θ > 0 would break the reduction, so the
-  Directive-26 classification is what decides whether that is a live risk.
-  See Contradictions for the 26-vs-64 convention.**
+- **The open question: the ratio bound gap_i ≤ j_i+1 — proved or provable?**
+  The recharge identity says GC holds iff Σ(j_i+1) ≥ k−2. This is satisfied
+  if each giant covers the distance to the next: gap_i ≤ j_i+1. The 6e8 run
+  verifies this with 2+ orders of margin over 15 giants (max ratio
+  0.0000122). The open question: can the geometric growth of b (~1.765× per
+  giant event) be proved from known prime-gap theory, or is it a new
+  statement? A proof that j grows geometrically while gaps grow at most
+  polynomially would prove the conjecture. The Directive-26 classification
+  (corollary of known results vs equivalent to a named conjecture vs new
+  isolated statement) is refocused on the jump growth rate rather than gap
+  boundedness.
 - **The 1-Lipschitz chain reformulation (from the giant-stretch characterization):** each descent replaces the halved row by its adjacent-difference chain; the block front is the first 2-step (0–2/2–0 adjacency); giants are long ±1-excursions. Prove the halved chains of the primes keep 1-Lipschitz runs at the boundary infinitely often with bounded gaps between long runs — that IS the bounded-gap statement in chain language. Computed mechanism, no proof.
 - **CHT inverse theorem route needs two analytic steps for the primes** (rule out long zero-blocks and long shallow {0,d}-blocks; Cramér-type hypotheses unproved) — or an invariant bypassing the dichotomy.
 - **What remains toward a GOAL.md partial result:** block lemma delivered (re-derived, constant explicit); Lean 4 formalisation delivered (nine theorems, zero sorry, IFF, axioms `[propext, Classical.choice, Quot.sound]`); the natural next deliverable is the Directive-26 classification (GC reduces to a named conjecture) or a proved statement on the regeneration/gap rate. Erosion is settled; regeneration is the whole problem — state which every claim establishes.

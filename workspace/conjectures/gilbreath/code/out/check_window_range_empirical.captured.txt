@@ -1,0 +1,3 @@
+live rows checked: 64, (2,4)-events: 29
+mean intruder-window range R over live rows: 31.7
+max R at an event row: 70

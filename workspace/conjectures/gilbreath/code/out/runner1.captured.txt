@@ -1,0 +1,3 @@
+C1 all-cells: checked=2828595 violations=12393
+C1 intruder: live=64 events=29 intruder>R viol=5 meanR_all=31.7 meanR_at_event=29.03
+C2 identity: rows checked 159, violations=0
