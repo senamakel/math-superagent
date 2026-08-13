@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://terrytao.wordpress.com/2010/10/16/245a-notes-5-differentiation-theorems/comment-page-4/#comment-693780 | 245A, Notes 5: Differentiation… | Terence Tao's avatar] [31] \| [Terence Tao][31] on [245A, Notes 5: Differentiation…][32] \| [image: Unknown's avatar] \| Anonymous on [245A, Notes 5: Differentiation…][33] \| [image: Unknown's avatar] \|… |
 | 2 | https://terrytao.wordpress.com/2010/10/16/245a-notes-5-differentiation-theorems/comment-page-4/#comment-693781 | 245A, Notes 5: Differentiation… | (Opens in new window) Pinterest][30] - Like Loading... ### Recent Comments [image: Terence Tao's avatar] [31] \| [Terence Tao][31] on [245A, Notes 5: Differentiation…][32] \| [image: Unknown's avatar]… |
 
-_336 further candidates not shown; they are cited once each._
+_337 further candidates not shown; they are cited once each._
