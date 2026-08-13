@@ -39,15 +39,18 @@ A2 PASS
 ==============================================================================
 A3. Cyclotomic / Aurifeuillean identities
 ==============================================================================
-Traceback (most recent call last):
-  File "/workspace/code/heven_classify.py", line 289, in <module>
-    main()
-  File "/workspace/code/heven_classify.py", line 275, in main
-    a3 = phase_a3()
-         ^^^^^^^^^^
-  File "/workspace/code/heven_classify.py", line 122, in phase_a3
-    ph = int(sympy.cyclotomic_poly(4 * p).subs(x, 2))   # exact int, no floats
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 320, in __int__
-    raise TypeError("Cannot convert symbols to int")
-TypeError: Cannot convert symbols to int
+2^(2p)+1 == 5*Phi_{4p}(2) for first 30 odd primes: True
+Aurifeuillean 2^(2p)+1 == (2^p - 2^((p+1)/2) + 1)(2^p + 2^((p+1)/2) + 1) on all odd primes <= 100: PASS
+m=2426: L*M == 2^2426+1: True; 25893760589 | L: True; 25893760589 prime: True
+Filter-N: 20127043 | 2^1509+1: True; 20127042 == 2*3^4*13*19*503: True; 20127043 non-3-Higgs (v3=4>3): True
+A3 PASS
+==============================================================================
+B1. Higgs-cubefree odd k in [1,600] (Proposition 4(1)(2) filter)
+==============================================================================
+odd k in [1,600] that are Higgs-cubefree: 246 (paper: 246) MATCH
+==============================================================================
+B3/B4. Survivor classification and Theorem 8 comparison
+==============================================================================
+NO SIEVE TABLES — run heven_sieve.py first.  B3/B4 skipped.
+==============================================================================
+SUMMARY  A1:PASS A2:PASS A3:PASS B1:PASS B3/B4:FAIL

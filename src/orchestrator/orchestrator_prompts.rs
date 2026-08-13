@@ -148,6 +148,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/CLAIMS.md",
             "research/THREADS.md",
             "research/APPROACHES.md",
+            // The open gaps are the run's stock of ready-made tasks: a lemma
+            // with a first move somebody could make today. A planner that
+            // cannot see them plans around them.
+            "research/BACKWARD.md",
             "CONTEXT.md",
         ],
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
@@ -196,6 +200,21 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/THREADS.md",
             "research/APPROACHES.md",
             "research/CLAIMS.md",
+            "CONTEXT.md",
+        ],
+        // Also handed a dossier built from disk at delegation time, for the
+        // reason the inventor is.
+        //
+        // Not sent `research/APPROACHES.md`, and that exclusion is the role's
+        // boundary rather than an oversight. The approach ledger is about
+        // *method*, and a role holding it drifts into proposing methods — which
+        // is the inventor's job and the one confusion this role must not
+        // create. It is asked what would suffice, not how to get there.
+        "reducer" => &[
+            "GOAL.md",
+            "research/BACKWARD.md",
+            "research/CLAIMS.md",
+            "research/THREADS.md",
             "CONTEXT.md",
         ],
         // The curator writes the shared brief, so it is the one role that
