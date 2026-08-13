@@ -64,10 +64,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `oeis-A089582-second-entry-catalogue` | The second-entry sequence A_k(1) (k≥1) of the prime Gilbreath triangle is the OEIS catalogue sequence A089582, and GC ⟺ A089582 ⊆ {0,2}. The run's exact generator reproduces all 105 catalogued terms with zero mismatches. | yes | catalogued | `research/summaries/oeis-A089582-second-entry-sequence.md` |
 | `oeis-A213014-zero-run-of-block` | A213014(n) counts the zeros following the initial 1 in row n of the Gilbreath array; Hasler: GC would be violated if the initial 1 were not always followed by ≥0 zeros and then a 2 as the first term > 1. The sequence… | yes | catalogued | `research/summaries/oeis-A213014-zeros-before-first-term.md` |
 | `oeis-a358691-gilbreath-transform` | Kimberling defines the Gilbreath transform G(S) = leading column of the absolute-difference array of S; GC ⟺ G(primes)=(1,1,1,...). Catalogue-asserted conjectures: odd-indexed primes give G=(3,3,3,3,1,1,1,...),… | yes | catalogued | `research/summaries/oeis-A358691-gilbreath-transform.md` |
+| `oeis-a397880-independent-corroboration-of-exact-decay-constants` | OEIS A397880/A395556 independently list the numerators/denominators of the CHT/Ross exact decay constants c(n): 1, 1, 7/9, 227/288, 778959731701/1447295850000 — matching CHT's proven c_2,c_3 and Ross's proven c_4 from a… | yes | catalogued | `research/summaries/oeis_a397880.md` |
 | `oeis-hasler-propagation` | Every row's non-first terms are even; the first term >1 in a row must be 2 (else ≥4 and the next row's first term is ≥3); a ≥4 value preceded by zeros propagates unchanged toward the row start in later rows; and GC ⟺… | yes | catalogued | `research/summaries/oeis-A036262-iterated-prime-differences.md` |
-| `oeis-miss-A000232-minus-1` | The run's leading-{0,2}-block lengths at row k (k=1..40: 2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,...) equal OEIS A000232(k) − 1 exactly (A000232 is "one less than the position of the first number… | yes | checked | `research/notes/library-state.md` |
 
-_25 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_26 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -147,6 +147,7 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 - `oeis-A089582-second-entry-catalogue` (research/summaries/oeis-A089582-second-entry-sequence.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A213014-zero-run-of-block` (research/summaries/oeis-A213014-zeros-before-first-term.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-a358691-gilbreath-transform` (research/summaries/oeis-A358691-gilbreath-transform.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-a397880-independent-corroboration-of-exact-decay-constants` (research/summaries/oeis_a397880.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-hasler-propagation` (research/summaries/oeis-A036262-iterated-prime-differences.md) — read from a catalogue; no derivation here reproduces it
 
 ## Blocks that could not be read

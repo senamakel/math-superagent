@@ -46,7 +46,10 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   `r | p^e + 1` for admissible e; source SCCs; within the box
   `B = {p ≤ 2000, e ≤ 6, p^e ≤ 10^9, |SCC| ≤ 6, cycle ≤ 6}` the only admissible
   source kernels are `3^2`, `5^4` and five impostors. (3) Proposition 5:
-  `H_even ⊆ {m ≡ 2 (mod 4)}`. (4) Proposition 4 (structural lemma): if
+  `H_even ⊆ {m ≡ 2 (mod 4)}`. Finiteness *reduces* to the prime case
+  `m = 2p` (Theorem 7); composite members exist (k=9, k=15 are verified
+  members of H_even per `heven_complete_verify`) and are inherited from
+  unresolved prime divisors via Proposition 4(3).
   `m = 2k ∈ H_even`, `k` odd, every prime factor of `k` is 3-Higgs with
   `v_q(k) ≤ 3`, and `2d ∈ H_even` for every odd `d | k`. (5) Theorem 7
   (prime-case reduction): `|H_even| < ∞` iff `|{m = 2p : p odd prime,
@@ -62,26 +65,24 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   `research/notes/heven-and-3-higgs-structure.md`.
 - **(sourced, unverified) Frei 1978 (via OEIS A002827 comment only):** a UPN not
   divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 distinct odd prime
-  factors, and `n > 10^440`. The workspace previously held a bogus 8 KB TOC
-  page filed under Frei's name — deleted per directive. Primary text not yet
-  in the library; the correct URL is
-  `https://www.e-periodica.ch/digbib/view?pid=edm-001:1978:33#105` (Heft 4,
-  pp. 95–96). Directly bears on the open "is 3 | n forced?" question.
+  factors, and `n > 10^440`. The two bogus TOC-page files previously filed
+  under Frei's name were deleted per directive (tombstones at
+  `research/sources/frei-1978-unitar-perfekte-zahlen*.full.md`). Primary
+  text not yet in the library; the OEIS-sourced theorem is unverified.
 - **(computed/checked) Lower bound on `a`:** any sixth UPN has
   `a ≥ ω(odd) − 1 ≥ 8`, so `2^8 | n`. Wall (1988) (≥ 9 odd components for a
   new example) + budget corollary. Equality `a = 8` forces 9 odd components,
   all `≡ 1 (mod 4)` — a rigid candidate class.
   `research/notes/lower-bound-on-a.md`, `code/out/wall1988_budget_lower_bound.captured.txt`.
-- **Equality case `a = 8` is under active attack** (`research/threads/a-ge-8-bound.md`,
-  blocked-by none). Seed is `2^8+1 = 257 = F_3`. Two elimination routes, both
-  unverified: **Route A** — if the paper's reduction forces `a ∈ H_even`, then
-  Prop. 5 `H_even ⊆ {m ≡ 2 (mod 4)}` kills `a = 8 ≡ 0 (mod 4)`, lifting the
-  bound to `a ≥ 10`; the open point is whether `a ∈ H_even` follows or only
-  something weaker. **Route B** — `257−1 = 2^8`, `v2 = 8 > 3`, so 257 is not
-  3-Higgs; kills `a = 8` if the seed factor's prime divisors must be 3-Higgs
-  (the paper's H definition). Routes may be equivalent; check the reduction
-  step against the full text before asserting either. If Route A holds, state
-  `a ≥ 10`, not `a ≥ 8`.
+- **Equality case `a = 8` was eliminated** (`research/notes/equality-case-eliminated.md`,
+  `code/out/equality_case_elimination.captured.txt`). The equality case
+  `ω(odd) = a + 1` requires `Π(1+1/q_i) = 2^{a+1}/(2^a+1)`, maximised over
+  smallest admissible sizes. For `2 ≤ a ≤ 28` the maximum falls short; `a = 8`
+  is dead (257 prime forces 257 as component, deficit 0.297). The bound is
+  attained with equality at `a = 1` (n = 90). Undecided beyond `a = 28`. So any
+  sixth example in the equality case has `a ≥ 29`. Combined with Wall 1988,
+  any sixth example with exactly 9 odd components has `a ≥ 29` rather than
+  `a ≥ 8`. Thread `a-ge-8-bound` superseded by this result.
 - **(OEIS finding)** The verified H_even members `2,6,10,18,26,30,46,62,82,122`
   match **no** OEIS sequence — no catalogued closed form; structure comes from
   the problem.
@@ -109,9 +110,6 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   structural content the odd dependency graph is built from; use it forwards, do
   not execute it. `research/notes/why-the-search-is-closed.md`,
   `code/structural_search_CLOSED.py`.
-- **(computed/checked) Equality case `a=8` thread:** confirmed `257 = 2^8+1` is
-  non-3-Higgs (Route B). Route A (does `a ∈ H_even` follow from the reduction?)
-  remains unverified. If Route A holds, `a ≥ 10`.
 - **Rarity is not finiteness.** A density-zero / `o(x)` / `O(x^ε)` statement
   about UP numbers is almost certainly already known and does not touch the
   question. Say which one you have.

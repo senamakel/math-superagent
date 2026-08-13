@@ -14,11 +14,11 @@
 
 - [ ] **3. CHECK CHT Theorem 1.6 hypotheses — already done.** `cht-inverse-theorem` has `holds-here: no (R_0 = 419,430,400 ≫ 1000)` per `code/out/cht_hyp_check.captured.txt`. Verify the capture is in context and no re-run is needed.
 
-- [ ] **4. Test Rule 90 depth prediction against block-length minima.** Rule 90 interior XOR evolution (proved, `research/notes/rule90-interior.md`) gives: at depths d = 2^j, binom(2^j, m) ≡ 1 (mod 2) for all m, so halved entries are the XOR of a width-(2^j+1) window. If XOR = 1 for a stretch, the original row is all-2 — a regenerated block.
+- [x] **4. Test Rule 90 depth prediction against block-length minima.** DONE — `code/rule90_test/depth_vs_minima.py` (12 variants, 26 of 28 workers), outputs `code/out/rule90_depth_test.notes.md` / `.captured.txt`. Result: minima regime depths from prev-min within tol=1 of 2^j: 21/26 (exact 10/26; far values {6,6,6,13,14}); all 13 jumps ≥1000 land within relative depth ≤3 of the previous min (13/13); jumps ≥ median(34): 21/22 rel. Absolute-depth control misses (1/13). Rows regenerated exactly; regeneration criterion re-confirmed (60 events, zero failures). Numerical evidence for the depth idea, not proof — the tol=1 hit rate 21/26 vs uniform baseline 57% over [2,15] is marginal (binomial p ≈ 0.01).
 
   Thread `research/threads/rule90-regeneration.md` status: the relative-depth null check (`code/out/null_rule90_depth.captured.txt`) found mild tol=1 concentration (p=0.017) but no signal at tol=0 — thread tagged as needing a different angle on the depth prediction. Test block EXPANSION events (b_{k+1} ≫ b_k) and check whether those depths are near powers of 2 rather than block-length minima depths.
 
-  If re-running: use `code/rule90_test/analyze_rule90_depth.py` against `code/out/blocks_depth1000.json`, parallelise over hypothesis variants (`code/lib/parallel.py`, 28 CPUs), report match/mismatch with exact k and depth values.
+  If re-running: use `code/rule90_test/depth_vs_minima.py` against `code/out/blocks_depth1000.json`, parallelise over hypothesis variants (`code/lib/parallel.py`, 28 CPUs), report match/mismatch with exact k and depth values.
 
 - [ ] **5. Formalise the difference operator in Lean 4.** Define the operator, prove (odd, even, even, ...) shape preservation, reduce to {0,2} second-entry claim as a machine-checked lemma. Report `#print axioms` and every remaining `sorry`. This is independent of items 2–4 and can run in parallel.
 

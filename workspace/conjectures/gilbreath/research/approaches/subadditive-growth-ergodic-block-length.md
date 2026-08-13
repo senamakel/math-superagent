@@ -123,24 +123,39 @@ mechanism: |
   open. But even without limits, a finite-horizon bound like
   "b_k ≥ c·k for all k ≥ k_0" might be provable by induction using the
   recharge identity and a worst-case bound on the event gap.
-status: proposed
+status: adopted
 first-step: |
-  Compute the empirical growth rate from the depth-1000 data. For each
-  k = 1..161 (the live regime), compute L_k = b_k / k, r_k = N_k / k,
-  and J_k = S_k / N_k (where N_k = event count before k, S_k = Σ(j_i+1)).
-  Plot L_k, r_k, J_k, and r_k·J_k − 1 against k. Look for trends:
-  is L_k converging? Is r_k·J_k − 1 stable? Compute the minimum of
-  r_k·J_k − 1 over the observed range — this is the "safety margin."
+  **(a) Empirical growth-rate profile (tool_builder).** From the depth-1000
+  data in `code/out/blocks_depth1000.json`, compute for every live row
+  k = 1..161: L_k = b_k / k, the event count N_k up to k, the recharge sum
+  S_k = Σ_{i≤N_k} (j_i + 1), the event density r_k = N_k / k, the average
+  per-event contribution J_k = S_k / N_k, and the net margin
+  M_k = r_k · J_k − 1. Produce a table and note whether M_k is always
+  positive, its minimum, and whether it converges. Output to
+  `code/out/growth_rate_profile.{captured.txt,json}`.
 
-  Then formulate the mathematical question: given the gap distribution of
-  the first N primes, what is the worst-case inter-event gap (under
-  adversarial edge-flip patterns) and the minimum jump size, and does the
-  product (event_rate × average_jump_contribution) exceed 1 for all
-  sufficiently large N? Write a program that, given a sequence of gaps,
-  computes the worst-case b_k evolution (with the block pattern chosen
-  adversarially at each step to maximize erosion, subject to the Rule 90
-  constraints) and tests whether b_k can ever reach 0. This is a
-  game-theoretic formulation: Nature chooses the block pattern to minimize
-  regeneration; the gaps are fixed by the primes. Compile the extent to
-  which this worst-case analysis is tractable.
+  **(b) Worst-case inter-event gap from the data (tool_builder).** For each
+  of the 60 regeneration events in the live regime, extract the inter-event
+  gap ΔT (rows between this event and the previous one), the intruder value
+  y_0 at the start of the erosion run, and the jump size j. Compute the
+  maximum, mean, and distribution of ΔT, and compare ΔT against the naive
+  drain bound y_0/2 + (0,4)-stall. Compute the empirical stall length at
+  y=4 (rows where x=0 while y=4, before x flips to 2). Output to
+  `code/out/inter_event_gap_analysis.{captured.txt,json}`.
+
+  **(c) Game-theoretic worst-case bound (tool_builder).** Write a program
+  that, given a fixed sequence of intruder values y_0 (from the real row
+  data), allows Nature to choose the edge sequence x adversarially
+  (subject only to the Rule 90 constraint that x cannot be constant-0 for
+  more than b_k consecutive rows — the WH stall bound, even in its weakest
+  linear form) and the step law b_{k+1} = b_k − 1 except at (2,4). Compute
+  the minimum possible b_k after k rows of this adversarial play and check
+  whether it can ever reach 0. This quantifies the "safety margin" between
+  the worst case permitted by the known combinatorial bounds and the
+  conjecture's requirement. Output to
+  `code/out/adversarial_block_evolution.{captured.txt,json}`.
+
+  **(d) Thread.** Promote to a thread at `research/threads/subadditive-growth.md`
+  as soon as (a) produces its first output, carrying the recharge identity
+  and the r·J > 1 criterion as its foundation.
 ```

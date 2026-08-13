@@ -1,16 +1,19 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wikipedia-unitary-perfect-number.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wikipedia — *Unitary perfect number* (informational)
 
-<!-- source: https://en.wikipedia.org/wiki/Unitary_perfect_number | converted from HTML -->
+Full text: [[wikipedia-unitary-perfect-number.full]].
 
-## What is in it
+**Statement.** A unitary perfect number is an integer equal to the sum of its positive proper unitary divisors. 6 is the only number that is both perfect and unitary perfect.
 
-  - Known examples
-  - Properties
-  - References
+**Bearing.** Contextual only; carries no result this run does not already have from the primary sources and OEIS. The one cross-check: 6 is both ordinary-perfect and unitary-perfect, consistent with the run's witness set.
 
-
-## What it claims
-
-A **unitary perfect number**is an [integer][2] which is the sum of its positive [proper][3] [unitary divisors][4], not including the number itself. (A [divisor][5]*d*of a number *n*is a unitary divisor if *d*and *n*/*d*share no common [factors][5].) The number 6 is the only number that is both a [perfect number][6] and a unitary perfect number.
-
-*[digest of a 11845 character source; every section, statement, and proof in full at `research/sources/wikipedia-unitary-perfect-number.full.md`]*
+```claim
+id: wikipedia-unitary-perfect
+statement: 6 is the only number that is both a perfect number and a unitary
+  perfect number.
+hypotheses: standard definitions
+holds-here: yes (6 is in the witness set; 28 is perfect but not unitary-perfect
+  per code/out/known_five_verified.captured.txt)
+status: asserted (wiki)
+bearing: none new; consistency check only
+contradicts: (none)
+```

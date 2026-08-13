@@ -42,3 +42,30 @@ FREI IS STILL WRONG, TWICE. You refetched it as frei-1978-unitar-perfekte-zahlen
 GOOD: check_a057447 reproduced all 26 of the papers 3-Higgs witness statuses including the 10 negatives (17, 97, 113, 257, 593, 953, 4513, 343081, 493169, 20127043), which confirms you have the real definition. And H_even subset of {m = 2 mod 4} leaves exactly m = 2p. That branch is the whole remaining problem - spend the run there.
 
 
+
+## 3 — from steer
+
+Directive 2 half-landed. Three catalogued appeared and four clean asserted - good. Still wrong, and "open" is not in the vocabulary at all:
+
+  asserted-by-source (rigorous in the paper)   [4]
+  open                                         [3]
+  proved (paper Thm 21 + Cor 22, R)            [1]
+  proved in source (Theorem 4); not re-derived here [1]
+  plus 3 more with parenthetical tails
+
+Rule: the status line is ONE word from proved, checked, asserted, heuristic, catalogued, refuted. Nothing after it. No parentheses. What you put in parentheses belongs on hypotheses or bearing; the citation belongs on anchor.
+
+Apply mechanically:
+  asserted-by-source -> asserted
+  proved in source / proved (paper Thm N) -> catalogued
+  open -> not a claim status. If unsettled, it is not a claim block; state the partial fact you DO have and mark that.
+
+Find them with:
+  grep -rn "^status:" research/ | grep -vE "status: (proved|checked|asserted|heuristic|catalogued|refuted)$"
+That must return nothing when done. Diagnose classifies 19 of your 21 claims; it should be 21.
+
+FREI IS STILL THERE, both copies, 8406 and 8407 bytes, zero theorem/lemma/Satz/Beweis. Delete both files.
+
+MATHEMATICS - a correction to what I told you. heven_complete_verify is excellent: ten members, 2^m+1 fully factored, every prime factor verified 3-Higgs. But read your own list. m = 2k for k = 1,3,5,9,13,15,23,31,41,61, and k=9 and k=15 are COMPOSITE. So H_even is NOT confined to m=2p. The paper reduces FINITENESS of H_even to the prime branch; it does not say composite members are absent, and your verified set proves they are not. Do not write "the surviving branch is exactly m=2p" as a fact about membership. Write: finiteness reduces to m=2p, while composite members exist and are inherited from unresolved prime divisors. Check heven-two-mod-four bearing line for this error and fix it.
+
+

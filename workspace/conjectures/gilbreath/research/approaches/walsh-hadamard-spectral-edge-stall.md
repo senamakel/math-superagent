@@ -75,7 +75,52 @@ mechanism: |
   "linear complexity" (Berlekamp-Massey) of the halved block over GF(2).
   For the prime gaps, this may be provably large (close to b_k), which would
   give a substantially better than b_k stall bound.
-status: proposed
+status: refuted
+killed-by: |
+  The Walsh-Hadamard diagonalisation of Rule 90 is correct and the
+  combinatorial question about max zero-run in the edge sequence is a real
+  one — but the approach is quantitatively insufficient and the program
+  it launches cannot close.
+
+  1. **The quantitative gap is fatal even if the lemma holds.** The
+     approach's own arithmetic shows this: even with the best-case bound
+     "stall ≤ b_k", the inter-event gap is at most G/2 + b_k + 1, which
+     GROWS with b_k. In the recharge identity
+     b_k = b_1 + Σ(j_i+1) − (k−1), each event contributes j_i+1 ≥ 1, and
+     with at most one event every ∼b_k rows we get at most k/b_k events
+     contributing mass ≥ 1 each — total recharge ≤ b_1 + k/b_k, against
+     consumption k. Since b_k grows super-exponentially relative to k
+     (b_161 ≈ 1.27×10^6 vs k=161), k/b_k ≪ k, and the inequality fails by
+     an enormous margin. The approach's own text recognises this: "the
+     bound needs to be much stronger."
+
+  2. **The sub-linear O(log n) sharpening is the unproved non-degeneracy
+     hypothesis.** The "O(log n)" claim would require the WH spectrum to
+     avoid concentration at any single frequency — which is exactly the
+     CHT "no long shallow {0,d}-block" obstruction, restated in spectral
+     language. The CHT inverse theorem says this is as hard as the
+     conjecture itself; no source proves it for primes, and Eppstein's
+     construction shows the general 2-then-odds class permits the
+     degenerate (all-zero) block that maximises the stall. So the
+     spectral-sharpening step is the conjecture, not a route to it.
+
+  3. **The framework is not wrong, it is just a dead end as a
+     self-contained attack.** The WH formulation is a useful lens on the
+     stall problem and could serve as a sub-lemma inside a broader
+     approach (like the adopted subadditive-growth framework). But as a
+     standalone proof strategy it aims at a bound the recharge identity
+     shows is too weak by several orders of magnitude. The correct
+     quantitative target is to bound the *mass* of jumps relative to
+     inter-event gaps, not the gap length alone — which is exactly what
+     the adopted approach does.
+precedent: |
+  BCZ 2023 (Bhat–Cobeli–Zaharescu) study PG triangles via GF(2)[[X]]
+  rational generating functions — the WH/Rule-90 diagonalisation is their
+  mod-2 framework. They do not address the stall problem or give spectral
+  bounds on the edge sequence. The combinatorial question (max zero-run in
+  Rule-90 edge sequence) appears not to have been studied in the CA or
+  coding-theory literature under this framing, but the quantitative
+  insufficiency does not depend on its answer.
 first-step: |
   Exhaustively compute the maximum zero-run in the edge sequence e_d for all
   2^n binary strings h ∈ GF(2)^n with n ≤ 16. For each n, record the max

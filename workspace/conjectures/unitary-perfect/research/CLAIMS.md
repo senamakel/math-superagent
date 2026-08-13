@@ -9,6 +9,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `aurifeuillean-split` | For odd prime p, 2^(2p)+1 = L_p · M_p with L_p = 2^p - 2^((p+1)/2) + 1, M_p = 2^p + 2^((p+1)/2) + 1; both are integer-coefficient quartics in a power of 2, each ≈ half the bit length. | yes | checked | `research/notes/heven-and-3-higgs-structure.md` |
 | `bhv-primitive-divisor-theorem` | For Lucas/Lehmer sequences, u_n has a primitive prime divisor for all sufficiently large n (all n > some bound; n = 30 and a catalogue of small exceptions). Applied to 2^n + 1, every cyclotomic value Phi_n(2) has a… | yes | asserted | `research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md` |
 | `budget-equality-case-impossible` | Let n = 2^a * prod_i p_i^{e_i} be unitary perfect with p_i odd and distinct. In the equality case omega(odd part) = a + 1 of the 2-adic budget corollary - equivalently, every odd unitary component is 1 mod 4 - the odd… | yes | checked | `research/notes/equality-case-eliminated.md` |
+| `emath-unitary-divisor-defs` | A unitary perfect number is n with sigma*(n) = 2n; sigma* is multiplicative with sigma*(p^e) = p^e + 1; the number of unitary divisors is 2^omega(n); every unitary perfect number is even; infinitude (even existence of a… | yes | asserted | `research/summaries/encyclopedia-of-math-unitary-divisor.md` |
 | `fkl-prime-chain-length` | For almost all primes p, the length H(p) of the longest prime chain ending at p satisfies H(p) <= (log p)^0.9503, and most chains starting at a fixed prime are O(x^(1+epsilon)) in count. | **unchecked** | asserted | `research/summaries/ford-konyagin-luca-prime-chains-2010.md` |
 | `ford-thinness-downward-closed-primes` | If P is a set of primes satisfying p in P => all q \| p-1 in P, and P omits the odd prime p0, then #{p<=x : p in P} <= c x^(1-delta) for delta,c > 0 depending only on p0. | yes | catalogued | `research/summaries/ford-pratt-trees-missing-primes-2014.md` |
 | `hb-lemma20-closures` | Six open candidates m=2p (2446, 10294, 10958, 17398, 19066, 20282) are excluded: a large APR-CL-verified prime p* \| 2^m+1 has a non-3-Higgs witness q \| p*-1 (v2 overflow or a Pratt-tree descent to 17), and 30882 via… | yes | asserted | `research/notes/paper-extraction.md` |
@@ -30,24 +31,28 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `unitary-perfect-lower-bound-on-a` | Any unitary perfect number other than the five known ones satisfies a >= omega(odd part) - 1 >= 8, where 2^a \|\| n. Equivalently 2^8 = 256 divides any sixth unitary perfect number. This follows by combining Wall (1988),… | yes | checked | `research/notes/lower-bound-on-a.md` |
 | `wall1987-largest-odd-component` | Except for the five known UPNs, a unitary perfect number has an odd component larger than 2^15 (smallest candidate 32771); and among primes p < 3*10^9 only 1093 and 3511 satisfy p^2 \| 1 + 2^A for their entry point A. | yes | asserted | `research/summaries/wall-1987-largest-odd-component.md` |
 | `wall1988-nine-odd-components` | Any unitary perfect number other than the five known ones has at least nine odd prime-power components, omega(odd) >= 9. | yes | asserted | `research/summaries/wall-1988-nine-odd-components.md` |
+| `wikipedia-unitary-perfect` | 6 is the only number that is both a perfect number and a unitary perfect number. | yes | asserted | `research/summaries/wikipedia-unitary-perfect-number.md` |
 
 ## Contradictions
 
 Resolve these before building on either side.
 
 - `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `emath-unitary-divisor-defs` (research/summaries/encyclopedia-of-math-unitary-divisor.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `fkl-prime-chain-length` (research/summaries/ford-konyagin-luca-prime-chains-2010.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `ford-thinness-downward-closed-primes` (research/summaries/ford-pratt-trees-missing-primes-2014.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `hong-stewart-nonprimitive-bound` (research/summaries/hong-2022-stewart-revisited.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `sw1966-finiteness-fixed-omega` (research/summaries/subbarao-warren-1966-unitary-perfect.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wikipedia-unitary-perfect` (research/summaries/wikipedia-unitary-perfect-number.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) — asserted by the source, not proved there and not checked here
+- `emath-unitary-divisor-defs` (research/summaries/encyclopedia-of-math-unitary-divisor.md) — asserted by the source, not proved there and not checked here
 - `hb-lemma20-closures` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
 - `heven-frontier-50000` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-prime-case-reduction` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
@@ -56,6 +61,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `heven-verified-members` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) — asserted by the source, not proved there and not checked here
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) — asserted by the source, not proved there and not checked here
+- `wikipedia-unitary-perfect` (research/summaries/wikipedia-unitary-perfect-number.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
 

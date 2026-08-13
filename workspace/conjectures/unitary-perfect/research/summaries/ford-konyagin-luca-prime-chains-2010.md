@@ -22,7 +22,7 @@ hypotheses: p prime; chain is p_{j+1} ≡ 1 (mod p_j); "almost all" quantifier
 holds-here: partially - the 3-Higgs primes form a downward-closed set of
   Pratt-type chains, so these apply to the counting/length of P_3, but H_even
   needs the semigroup shift (r-1)/(4p) which this source does not control
-status: asserted (proved in source, not re-verified here)
+status: asserted
 bearing: context only; bounds chain length of the 3-Higgs lattice but does not
   contribute a new step to the divisor-level Phi_{4p}(2) branch
 contradicts: (none)
