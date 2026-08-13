@@ -17,24 +17,6 @@ first-step: (blocked for S itself) — reselect the variety: either (a) the full
 ## What closed, and why
 
 The K3 surface S (Category III six-square configuration) has an explicit Q-point — the Figure 1 six-square grid yields
-(T,U,V,W,X,Y) = (345, 196, 304, −255, 396, 25) with all three sum-of-two-squares values 157441 = c, 2TU = u = 135240,
-2VW = v = −155040, −2XY = u+v = −19800, TU+VW+XY = 0 (exact arithmetic, hand-verified this session; machine scripts
-written, not yet executed — no executor available). Hence the original goal "prove S(Q) = ∅ by Brauer–Manin" is
-impossible: a BM obstruction cannot empty a nonempty rational-point set. The approach is not refuted as mathematics —
-its toolkit (Br₁/transcendental, HV-A local-invariant machinery) is precisely what a correct model needs — but the
-specific surface S is the wrong target. The interesting object is the locus of S(Q) (or a birational model of it)
-where the fourth AP difference u−v is also realised (7→8→9 square entries), i.e. Bremner II Cat VII's hyperelliptic
-curves and/or the full nine-square variety. This matches the run's existing refutation notes: the "2 realised + 2
-half-realised" near-miss pattern is not forbidden (Bremner's 7-square grid realises exactly two AP differences fully,
-one of them as u+v = −2XY here), so the obstruction, if any, lives in the extra conditions, not in S itself.
-
-A K3 with NS(Q) rank 12 < 20 and even-degree rational curves, no rational curves of degree 4 or 8 (k3-ns-rank-12-
-not-maximal) can still easily have rational points — the rank-12 gap bounds the Picard group but not S(Q). Keep this
-in mind when designing the reframed obstruction.
-
-## What closed, and why (k3-brauer-manin)
-
-The K3 surface S (Category III six-square configuration) has an explicit Q-point — the Figure 1 six-square grid yields
 (T,U,V,W,X,Y) = (345, 196, −304, 255, −396, −25) with all three sum-of-two-squares values 157441 = c, 2TU = u = 135240,
 2VW = v = −155040, −2XY = u+v = −19800, TU+VW+XY = 0 (exact arithmetic, MACHINE-VERIFIED in
 code/out/reconciliation_2026-08-12.txt Task D and by sympy; claim catIII-k3-has-q-point, status: checked). Hence the
