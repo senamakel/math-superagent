@@ -1,14 +1,11 @@
-depth-1000: P=1270607 D=1000  wider: P=16252325 D=300
-b agreement rows 1..161: True
-row-161 b (0-based 160): depth1000=1094263 wider=1094263
-wider events with jump>0: 276
-giants (jump>1000): 15
-k* (first row with no intruder): None
+P=16252325, D=300, rows 1..238 agree between the two runs
+live giants (jump>1000, rows<239): 15
+rows: [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174, 238]
+gaps: [22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13, 64] max 64
+landing blocks: [2179, 5942, 23265, 31499, 92620, 103973, 141706, 271629, 325090, 515906, 733564, 1094273, 5417975, 10655286, 16252085]
+jumps: [1314, 1739, 17326, 8237, 61088, 11354, 37746, 129923, 53470, 190810, 217657, 360698, 4323712, 5237310, 5596825]
 Traceback (most recent call last):
-  File "/workspace/code/pattern_finder/wider_giants_update.py", line 49, in <module>
-    live = [(r, bk, bl, j) for (r, bk, bl, j) in giants if r < kstar]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/workspace/code/pattern_finder/wider_giants_update.py", line 49, in <listcomp>
-    live = [(r, bk, bl, j) for (r, bk, bl, j) in giants if r < kstar]
-                                                           ^^^^^^^^^
-TypeError: '<' not supported between instances of 'int' and 'NoneType'
+  File "/workspace/code/pattern_finder/wider_giants_update.py", line 52, in <module>
+    assert fl > 1000, f"giant row {r} not genuine: flooring {fl}"
+           ^^^^^^^^^
+AssertionError: giant row 238 not genuine: flooring 0

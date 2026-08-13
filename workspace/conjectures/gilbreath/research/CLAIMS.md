@@ -9,6 +9,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `agama-trace-restatement` | (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent to: every leading entry A_k(0) > 0 and the partial sums of the leading entries… | yes | asserted | `research/notes/library-state.md` |
 | `anti-gilbreath-construction` | For any unbounded monotone f(n)≥2 there is a sequence X with n-th gap ≤ f(n) whose triangle's right edge is 1 infinitely often and other values infinitely often; constructed backwards so a large surviving gap escapes to… | yes | asserted | `research/summaries/eppstein-anti-gilbreath-sequences.md` |
 | `arias-block-and-evolution` | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime model attained GC in ~49.9% of runs but eventual-1 (n>10) in 99.16% with no… | yes | asserted | `research/summaries/arias-de-reyna-gilbreath-blog.md` |
+| `bcz-2023-left-edge-stabilization` | In the iterated-absolute-difference triangle (P-G triangle) of a non-negative integer top row u, the left-edge sequence w stabilizes to at most two values (one zero, one nonzero) provided u does not grow too fast; in… | yes | asserted | `research/summaries/bhat-cobeli-zaharescu-2023-filtered-rays-iterated-abs-diffs.md` |
 | `bft2023-cramer-model-canonical` | (Banks–Ford–Tao 2023, Invent. math. 233:1471–1518) Cramér's model (each n≥3 in with prob 1/log n, jointly independent) gives largest gap ~ log^2 x a.s.; Granville's corrected model gives ~ xi log^2 x… | yes | proved | `research/summaries/banks-ford-tao-2023-large-prime-gaps-probabilistic-models.md` |
 | `bigjump-cap-characterization-1000` | Of the 13 (2,4)-events with jump j > 1000 in the prime Gilbreath triangle to depth 1000 (sieve 2e7, W = 1270607 primes), 12 are genuine dynamics and 1 is a finite-width artifact. Genuine means the landing block b_{i+1}… | yes | checked | `code/out/bigjump_characterization.notes.md` |
 | `block-growth-literature-not-covered` | No held source — Odlyzko 1993, Killgrove–Ralston 1959, Chase 2024, CHT 2026, Eppstein 2011, Arias de Reyna blog, Blair Morgan 2026, Agama 2021, Debono, Tao blog, Houston 2012, Caldwell, Colonna 2026, or OEIS… | yes | checked | `research/notes/block-growth-literature.md` |
@@ -65,9 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `killgrove-ralston-block-protection` | If row i starts 1 and has M entries after the leading 1 (their "0 ≤ j ≤ M" includes P_{i,0}) all 0 or 2, then the next M−1 rows start with 1 (their span P_{i,0}..P_{i+M−1,0}); protection is one row per {0,2} entry,… | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
 | `killgrove-ralston-verification-1959` | Conjecture verified for all primes < 792,722 (first 63,419 primes) on SWAC using D. H. Lehmer's sieve; P(i) tabulated for i = 0..95, max P(i)+i > 63,419. | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
 | `marechal-spectral-fractal-crank` | Maréchal's "complete spectral-fractal proof of Gilbreath's conjecture" (Zenodo, Apr 2025, doi 10.5281/zenodo.15116867) is one of five near-identical "universal spectral-fractal framework with characteristic dimension… | **unchecked** | asserted | `research/summaries/marechal-spectral-fractal-proofs-refuted.md` |
-| `mathworld-rule90-additive-sierpinski` | Rule 90 is an additive elementary cellular automaton whose next state is the XOR/mod-2 sum of a cell's two neighbours; from a single cell it generates the Sierpinski sieve, equivalently Pascal's triangle mod 2 (binomial… | yes | asserted | `research/summaries/mathworld-rule-90.md` |
 
-_60 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_61 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -84,6 +84,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `agama-trace-restatement` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `anti-gilbreath-construction` (research/summaries/eppstein-anti-gilbreath-sequences.md) — asserted by the source, not proved there and not checked here
 - `arias-block-and-evolution` (research/summaries/arias-de-reyna-gilbreath-blog.md) — asserted by the source, not proved there and not checked here
+- `bcz-2023-left-edge-stabilization` (research/summaries/bhat-cobeli-zaharescu-2023-filtered-rays-iterated-abs-diffs.md) — asserted by the source, not proved there and not checked here
 - `chase-2024-arxiv-id` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `cht-decay-lower-bound-logn` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `colonna-deletion-left-edge-failure` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
