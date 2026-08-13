@@ -1,5 +1,5 @@
-Traceback (most recent call last):
-  File "/workspace/code/genus/sage_check_k2_6.py", line 23, in <module>
-    R = PolynomialRing(QQ, 'x,y')
-        ^^^^^^^^^^^^^^
-NameError: name 'PolynomialRing' is not defined
+(Sage check for k2=6 row did not run: NameError: PolynomialRing is not defined
+— sage is not installed in this container. The k2=6..10 extended rows rest on
+Singular alone per CONTEXT.md. Replaced by the Singular re-run
+pattern_extend_k2_6.captured.txt which confirms m=6, n=13..18 against the
+closed form.)

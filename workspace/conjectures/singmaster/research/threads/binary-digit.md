@@ -52,3 +52,20 @@ rests-on: matveev-2000-explicit-constants-primary, sst-effective-shared-factor,
 blocked-by: nothing yet — approach is brand new to the run
 next: scan odd binomial coefficients for n <= 2^18, record multiplicities
 ```
+
+## Literature check (librarian, this pass)
+
+The thread's stated gap — "is the odd-only triangle's *value multiplicity*
+studied?" — was searched. Finding: **the base-p/odd-triangle literature counts
+how many coefficients are odd (or nonzero mod p^α), not how often one integer
+value recurs across rows.** Rowland 2017 (survey now held,
+`research/summaries/rowland-binomial-valuations-words.md`) summarizes Kummer,
+Lucas, Glaisher 1899 (`2^{popcount(n)}` odd entries per row), Fine 1947, and
+Rowland's matrix generalization (exact polynomial for the nonzero-mod-p^α
+count) — all sparsity counts, none concerning equal *values* across rows. So the
+submask *multiplicity* question remains genuinely unstudied in the surveyed
+literature; the thread's premise survives. The matrix theorem supplies a precise,
+computable refinement of the sparsity intuition the mechanism relies on.
+Implication for the first step: the n<=2^18 odd-triangle scan is not reproducing
+known work but probing genuinely open territory, and its maximum-multiplicity
+finding (whether any odd value reaches 9) is a new datum.

@@ -100,8 +100,7 @@ def q_val(c, n):
     return falling_mp(c, n) / mpf(sp.factorial(n))
 
 
-pairs = [(m, n) for m in range(2, 10) for n in range(m + 1, 11)]
-pairs += [(3, 25), (4, 25), (6, 9)]
+pairs = [(m, n) for m in range(2, 20) for n in range(m + 1, 21)]
 
 print("=" * 78)
 print("Verified Riemann-Hurwitz accounting for C(x,m)=C(y,n).")

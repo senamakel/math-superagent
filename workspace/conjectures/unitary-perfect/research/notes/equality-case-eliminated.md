@@ -129,6 +129,9 @@ anchor: code/out/equality_case_elimination.captured.txt;
   verbatim rerun, EXIT_CODE=0, 3728 bytes);
   code/out/equality_case_verify.captured.txt (independent exact-Fraction
   verifier, 5015 bytes, 4/4 points PASS on fresh arithmetic);
+  code/out/equality_case_verify_FIXED.captured.txt (directive 13, exact
+  filename, EXIT_CODE=0, 4/4 points PASS, M(28)=1.997752859598546538 < T(28),
+  M(29)=2.004964963784822807 > T(29), boundary confirmed at a = 28);
   research/notes/parity-and-2-adic-budget.md;
   research/notes/lower-bound-on-a.md
 source: operator-computation

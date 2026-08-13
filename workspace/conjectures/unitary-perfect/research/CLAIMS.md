@@ -60,6 +60,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `wall1987-largest-odd-component` | Except for the five known UPNs, a unitary perfect number has an odd component larger than 2^15 (smallest candidate 32771); and among primes p < 3*10^9 only 1093 and 3511 satisfy p^2 \| 1 + 2^A for their entry point A. | yes | asserted | `research/summaries/wall-1987-largest-odd-component.md` |
 | `wall1988-nine-odd-components` | Any unitary perfect number other than the five known ones has at least nine odd prime-power components, omega(odd) >= 9. | yes | asserted | `research/summaries/wall-1988-nine-odd-components.md` |
 | `wikipedia-unitary-perfect` | 6 is the only number that is both a perfect number and a unitary perfect number. | yes | asserted | `research/summaries/wikipedia-unitary-perfect-number.md` |
+| `williams1976-biquadratic-supplement-primary` | In Z[i], a Gaussian integer a+bi is primary iff a+b == 1 mod 4 and b == 0 mod 2. The main biquadratic law is (alpha/beta)_4 = (-1)^{bd/4} (beta/alpha)_4 for primary alpha=a+bi, beta=c+di. The supplemental law: (1+i /… | yes | asserted | `research/summaries/williams-1976-supplement-biquadratic-reciprocity.md` |
 
 ## Contradictions
 
@@ -169,6 +170,15 @@ Resolve these before building on either side.
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wikipedia-unitary-perfect` (research/summaries/wikipedia-unitary-perfect-number.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `-` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `agrees` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `with` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `qr-supplementary-2`
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `and` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `REU` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) contradicts `notes` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -203,6 +213,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) — asserted by the source, not proved there and not checked here
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) — asserted by the source, not proved there and not checked here
 - `wikipedia-unitary-perfect` (research/summaries/wikipedia-unitary-perfect-number.md) — asserted by the source, not proved there and not checked here
+- `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
 

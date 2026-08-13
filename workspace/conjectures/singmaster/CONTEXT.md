@@ -15,6 +15,18 @@ of 8 here is 4 half-triangle. `computed`, matches `code/out/witnesses.json`.
 
 Each marked with evidence class and a link.
 
+- **Small-column genus closed forms anchored to the literature superelliptic formula. `checked` (EXIT_CODE=0).**
+  `code/genus/verify_superelliptic_formula.py` cross-checks the run's computed
+  small-column genus rows for `C(x,k1)=C(y,k2)` against Sutherland's superelliptic
+  genus formula `g=((d-2)(m-1)+m-gcd(m,d))/2` (Open Book Series 4 (2020) eq. (1);
+  Wikipedia Superelliptic curve). `{2,n}` hyperelliptic model `(2y-1)^2=1+8C(x,n)`:
+  10 values OK; `{3,n}` cyclic trigonal model `(y-1)^3-(y-1)=6C(x,n)` (z^3-z): 21
+  values OK; `{4,n}` correctly reported as NOT a direct superelliptic cover (2:1
+  cover of `w^2=1+24C(x,n)`, base genus shown). ALL literature-formula checks PASS.
+  Capture `code/out/verify_superelliptic_formula.captured.txt`. This gives the
+  `{2,n}` and `{3,n}` closed forms a citable primary anchor; it is a cross-check,
+  not an independent re-derivation, and it does not touch uniformity.
+
 - **Lane Clark 2010 (INTEGERS 10 #A14) — the normal-array template that produces every log bound. `checked`** (full text held at
   `research/sources/lane-clark-array-multiplicity.full.md`, summary +
   claim `lane-clark-normal-array-bound`). A general theorem on "normal"
@@ -52,20 +64,20 @@ Each marked with evidence class and a link.
   in Jenkins' family with infinitely many lattice points (a=b=1). Any `B<6`
   is refuted.
 
-- **Genus closed-form integrality — proved (operator), not yet independently verified by this run. `operator-computed`.** 
+- **Genus closed-form integrality — proved (operator) AND now independently verified by this run. `checked` (was `operator-computed`).**
   The expression `N(m,n) = (m-1)(n-1) + 1 - gcd(m,n)` is even for all `m,n >= 1`
   (four-case parity argument: gcd is even exactly when both are even, which is
   exactly when `(m-1)(n-1)+1` is even; the other three cases both terms are odd).
   So `g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2` is always an integer.
-  Verified over 1,121,253 pairs, `2 <= m < n < 1500`, zero exceptions.
-  **Effective and uniform in m and n, inheriting nothing from Faltings or Siegel,
-  and it bounds nothing** — a lemma about the arithmetic expression, not about
-  Singmaster's conjecture. The ten predictions matching the symmetric form are
-  internal consistency (algebraically equal expressions), NOT independent genus
-  confirmation — do not mark them verified until Singular confirms them. This
-  result needs independent verification by this run (item 4 in TASKS.md) before
-  it can be claimed as established. Proof at `research/notes/genus-integrality-proved.md`;
-  capture at `code/out/genus_integrality_proved.captured.txt`.
+  **Independent repro done this run (TASKS item 4, EXIT_CODE=0):**
+  `code/genus/repro_integrality.py` — 638401 pairs over 1<=m,n<=799, ZERO odd
+  N in all four parity classes, and the two algebraic forms agree on 1..399;
+  capture `code/out/integrality_reproduced.captured.txt` (this replaces, and
+  separately from, the operator's `genus_integrality_proved.captured.txt` 1,121,253-pair
+  check over 2<=m<n<1500). The ten symmetric-form predictions remain internal
+  consistency (algebraically equal expressions), NOT independent genus
+  confirmation — Singular confirms the genus itself; integrality alone is settled.
+  Proof at `research/notes/genus-integrality-proved.md`.
   For distinct `m,n>=2` the geometric genus of the projective closure is
   `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2` (symmetric in m,n; numerator always even).
   Reduces by substitution to the per-column forms ({2,n}→`floor((n-1)/2)`
@@ -411,9 +423,16 @@ Pintér–Tengely 2023) and the OEIS row-count convention `a059233-rowcount-half
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
   shape-of-the-boundary, not as a claim about large-t behavior.
-- **Genus integrality is proved (operator), NOT independently verified by this run.** The four-case parity argument is recorded. This run must reproduce the arithmetic itself — the operator's exact check is `len([1 for m in range(1,800) for n in range(1,800) if ((m-1)*(n-1)+1-gcd(m,n))%2])`, expected `0`, capture to `code/out/integrality_reproduced.captured.txt` — before claiming it as established. Until then the claim is `operator-computed`, not `proved` by this run. See TASKS.md item 2.
+- **RESOLVED: Genus integrality independently verified by this run.** `repro_integrality.py`
+  (EXIT_CODE=0): 638401 pairs over 1..799, ZERO odd values, both algebraic forms
+  agree on 1..399; capture `code/out/integrality_reproduced.captured.txt`. The claim
+  `genus-closed-form-integrality` is now `proved` (operator parity proof + this run's
+  machine repro). See the Established genus-integrality bullet.
 - **RESOLVED: Two zero-byte captures fixed.** `genus_falsify.captured.txt` and `pattern_fam_seqs.captured.txt` now carry one-line explanations (EXIT_CODE=1, program failed silently). Per directive 13.
-- **LEDGER DISCIPLINE: 44 asserted, 8 checked, 2 proved.**
+- **LEDGER DISCIPLINE (running):** claims marked `proved` in CLAIMS.md are now
+  `genus-closed-form-integrality` (reproduced this run), `erdos-selfridge-product-not-power-1975`,
+  and `kummer-lucas-class-not-logarithmic`; the rest are `checked`/`asserted` per the table.
+  Refresh the count whenever a claim's status changes.
 - **PROCESS (resolved): the five formerly-uncaptured programs now have captures.**
   `test_slope_across_rows.py` (EXIT_CODE=0), `test_slope_hypothesis.py` (0),
   `effectivegenus/rep_pairs.py` (0), `genus/verify_k2_5_row.py` (0) all run
@@ -432,8 +451,8 @@ Pintér–Tengely 2023) and the OEIS row-count convention `a059233-rowcount-half
   and the three-diagonal salvage, and states the {2,3}/{2,4} Faltings threshold
   in closed form. What it is NOT (do not overstate): it is verified, not
   derived via Riemann–Hurwitz/Plücker; and the 23 newest rows (k2=6..10) are
-  Singular-only (the Sage check errored). The two correct `proved`-status
-  claims remain erdos-selfridge and kummer-lucas. See TASKS.md item 1.
+  Singular-only (the Sage check errored). `proved`-status claims now also include
+  `genus-closed-form-integrality`. See TASKS.md item 1.
 - **RESOLVED: Matveev primary obtained.** The gap "authoritative constants of
   Matveev's theorem" is closed — full English text with C1,C2,C′0 held
   (`research/sources/matveev-2000-homogeneous-linear-form.full.md`, summary +

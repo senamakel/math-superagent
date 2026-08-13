@@ -15,17 +15,16 @@
 
 ## Next
 
-- [ ] **DIRECTIVE 13 (priority 1):** Run the fixed equality-case verifier and record the capture under the specific filename.
-  ```bash
-  timeout 540 python3 code/equality_case_verify.py 2>&1 | tee code/out/equality_case_verify_FIXED.captured.txt; echo EXIT_CODE=$?
-  ```
-  Confirm M(28) < T(28) and M(29) >= T(29), then update claim
-  `budget-equality-case-impossible` anchor to include this capture as its
-  primary anchor. The existing `equality_case_verify.captured.txt` already
-  shows all four points PASS with the fixed generator; this is a rename
-  to the filename the operator has been asking for across directives
-  4,7,8,9,10,11,12,13. Boundary 28, no exclusion at 29 or beyond. Move
-  checked from 4 to 5.
+- [x] **DIRECTIVE 13 (priority 1): DONE 2026-08.** Ran
+  `timeout 540 python3 code/equality_case_verify.py 2>&1 | tee
+  code/out/equality_case_verify_FIXED.captured.txt; echo EXIT_CODE=$?` ->
+  `EXIT_CODE=0`, 4/4 points PASS on fresh exact-Fraction arithmetic.
+  M(28)=1.997752859598546538 < T(28)=1.999999993 and
+  M(29)=2.004964963784822807 > T(29): boundary confirmed at 28, no
+  exclusion at 29. Claim `budget-equality-case-impossible` anchor updated
+  with the FIXED capture as primary anchor (directive 13). Both
+  `equality_case_verify.captured.txt` (previous run) and the FIXED capture
+  show the same boundary; the operator-requested filename is now on disk.
 
 - [ ] **DIRECTIVE 13 (priority 2):** Attack the biquadratic-reciprocity question
   for the Φ_{4p}(2) thread. For which odd primes p is 2 a fourth power modulo

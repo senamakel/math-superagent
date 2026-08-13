@@ -35,13 +35,15 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   a new result.
 - **(computed / checked, this run) Equality-case bound: `ω(odd) = a+1` is
   impossible for `2 ≤ a ≤ 28`.** Verified from captured output
-  `code/out/equality_case_verify.captured.txt`: (1) a=1 max product = 4/3
+  `code/out/equality_case_verify_FIXED.captured.txt` (directive 13, exact
+  filename, EXIT_CODE=0, 4/4 points PASS on fresh exact-Fraction arithmetic):
+  (1) a=1 max product = 4/3
   exactly, {5,9} is the odd part of 90; (2) 2^8+1=257 is prime, forced when
   a=8; (3) 9=3^2 and 49=7^2 are admissible, 3 and 7 are not; (4) exclusion
-  runs 2 ≤ a ≤ 28, with correct minimal admissible sizes. M(28)=1.997752860
-  < T(28)=1.999999993; M(29)=2.004964964 > T(29). Claim
-  `budget-equality-case-impossible` is `checked`. Thread `a-ge-8-bound` is
-  closed. a=1 is realised by n=90.
+  runs 2 ≤ a ≤ 28, with correct minimal admissible sizes. M(28)=1.997752859598546538
+  < T(28)=1.999999993; M(29)=2.004964963784822807 > T(29). Claim
+  `budget-equality-case-impossible` is `checked`, anchors updated with the
+  FIXED capture as primary. a=1 is realised by n=90.
   `research/notes/equality-case-eliminated.md`.
   **BUG-FIX (directive 11):** `admissible_sizes()` had a slice-then-sort bug
   (missed 37,41,53; wrongly included 121,361,529). Fixed to sort-then-slice
@@ -99,6 +101,30 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   5·733·1709·3456749·368140581013·667055378149`, all Higgs). Independent of
   the paper; **but it only proves membership of the ten, not emptiness of
   (122, 1200]** — that still rests on the paper (see Gaps).
+- **(computed, source-backed) The 3-Higgs definition is verified against
+  OEIS A057447 and the witnesses.** `code/higgs/check_a057447.py` →
+  `code/out/higgs_a057447.captured.txt` (`ALL CHECKS PASSED`): the literal
+  A057447 recursion reproduces all 58 DATA terms (2,3,5,7,11,13,19,23,29,31,
+  37,41,43,47,53,59,61,67,71,73,79,83,89,101,107,109,127,131,139,149,…);
+  all five witnesses pass `σ*(n) = 2n`; the fifth term's EXAMPLE
+  factorization reproduces it; every prime divisor of each of the five is
+  3-Higgs. Closes the definitional-equivalence hole that the broken A2
+  self-test opened (see Numbers: A2 had the divisibility direction backwards).
+- **(computed) Divisor-level quartic-character table for p ≤ 61.**
+  `code/heven_gauss.py` → `code/out/heven_gauss_61.captured.txt`
+  (`EXIT_CODE=0`, C1–C7 pass, 71 divisor rows, nothing left unfactored).
+  Proved by exact computation for the range: (F1) every prime divisor
+  `r | Φ_{4p}(2)` is primitive, `ord_r(2) = 4p`, `r ≡ 1 (mod 4p)`, single
+  exception `r = 5 | Φ_20(2)` at p = 5 (LTE `v_5(2^{2p}+1)=1+v_5(p)`);
+  (F2) `(2/r)_4 = +1 ⟺ r ≡ 1 (mod 16)` for all 71 rows. 12 heads
+  (`r ≡ 1 mod 16`, necessarily non-3-Higgs) found, independently certified
+  by `code/heven_heads_verify.py` → `heven_heads_verify.captured.txt`
+  (`ALL HEADS CERTIFIED 12/12`). Empirical (not a proof): for the 16 3-Higgs
+  primes `p ≤ 61`, `2p ∈ H_even` (the seven Thm-8 members) iff `Φ_{4p}(2)`
+  has no prime divisor `≡ 1 mod 16` — the nine excluded 3-Higgs `p`
+  (7,11,19,29,37,43,47,53,59) each carry a head witnessing `2p ∉ H_even`.
+  Next step (TASKS.md): the closed-form evaluation of `(2/(2^p+i))_4` by
+  quartic reciprocity on the Gaussian integer, vs the per-factor product.
 - **(computed) 257 = 2^8+1 is non-3-Higgs** (`v2(256)=8 > 3`) in
   `code/out/heven_patterns.captured.txt`; the pattern script's hard-coded
   "want" table row `257:True` is a script bug, the computed False is correct.
@@ -269,12 +295,9 @@ Durable Cognee memory from earlier runs; consistent with Established here
 5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
    2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
    no OCR; Guy UPNT §B3 paywalled).
-6. **`code/higgs/check_a057447.py` is execution-ready and has never been
-   run** — no capture exists, and the script's own docstring says so. It is
-   the true literal-definition check A2 was meant to be: generate 3-Higgs
-   primes exactly per the OEIS A057447 name line, compare all 58 DATA terms,
-   re-verify the five witnesses and the fifth term's EXAMPLE factorization,
-   and test "every prime divisor of a UPN is 3-Higgs". Run
-   `timeout 540 python3 code/higgs/check_a057447.py 2>&1 | tee
-   code/out/higgs_a057447.captured.txt; echo EXIT_CODE=$?` — it closes the
-   definitional-equivalence hole independently of the broken A2 self-test.
+6. **Phase A RED (see Gap 1).** The substantive definitional-equivalence hole
+   A2 was meant to close is now CLOSED independently: `check_a057447.py`
+   reproduces the 3-Higgs recursion against OEIS A057447 for all 58 DATA terms
+   and confirms all five witnesses' prime divisors are 3-Higgs (see
+   Established). What remains RED is only the `heven_classify` harness's own
+   self-test capture.

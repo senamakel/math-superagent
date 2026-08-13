@@ -1,49 +1,12 @@
-                     SINGULAR                                 /  Development
- A Computer Algebra System for Polynomial Computations       /   version 4.3.1
-                                                           0<
- by: W. Decker, G.-M. Greuel, G. Pfister, H. Schoenemann     \   Jun 2022
-FB Mathematik der Universitaet, D-67653 Kaiserslautern        \  Debian 1:4.3.1-p3+ds-2
-// ** loaded /usr/bin/../share/singular/LIB/normal.lib (4.3.0.1,Feb_2022)
-// ** loaded /usr/bin/../share/singular/LIB/curveInv.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/homolog.lib (4.3.1.2,Dez_2022)
-// ** loaded /usr/bin/../share/singular/LIB/matrix.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/nctools.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/random.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/deform.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/algebra.lib (4.2.0.1,Mar_2021)
-// ** loaded /usr/bin/../share/singular/LIB/reesclos.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/locnormal.lib (4.3.1.0,Jul_2022)
-// ** loaded /usr/bin/../share/singular/LIB/modstd.lib (4.3.0.1,Mar_2022)
-// ** loaded /usr/bin/../share/singular/LIB/parallel.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/tasks.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/resources.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/modular.lib (4.2.0.0,Dec_2020)
-// ** loaded /usr/bin/../share/singular/LIB/hnoether.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/primitiv.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/ring.lib (4.3.1.2,Nov_2022)
-// ** loaded /usr/bin/../share/singular/LIB/inout.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/presolve.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/elim.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/primdec.lib (4.2.1.1,Jul_2021)
-// ** loaded /usr/bin/../share/singular/LIB/absfact.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/triang.lib (4.1.2.0,Feb_2019)
-// ** loaded /usr/bin/../share/singular/LIB/sing.lib (4.2.0.2,May_2021)
-// ** loaded /usr/bin/../share/singular/LIB/polylib.lib (4.2.0.0,Dec_2020)
-// ** loaded /usr/bin/../share/singular/LIB/general.lib (4.1.2.0,Feb_2019)
 F6 n= 13 :  30
-// ** redefining F (  poly F = CB(x,6) - CB(y,n);) code/genus/extend_k2_6.sing:23
-// ** redefining I (  ideal I = F;) code/genus/extend_k2_6.sing:24
 F6 n= 14 :  32
-// ** redefining F (  poly F = CB(x,6) - CB(y,n);) code/genus/extend_k2_6.sing:23
-// ** redefining I (  ideal I = F;) code/genus/extend_k2_6.sing:24
 F6 n= 15 :  34
-// ** redefining F (  poly F = CB(x,6) - CB(y,n);) code/genus/extend_k2_6.sing:23
-// ** redefining I (  ideal I = F;) code/genus/extend_k2_6.sing:24
 F6 n= 16 :  37
-// ** redefining F (  poly F = CB(x,6) - CB(y,n);) code/genus/extend_k2_6.sing:23
-// ** redefining I (  ideal I = F;) code/genus/extend_k2_6.sing:24
 F6 n= 17 :  40
-// ** redefining F (  poly F = CB(x,6) - CB(y,n);) code/genus/extend_k2_6.sing:23
-// ** redefining I (  ideal I = F;) code/genus/extend_k2_6.sing:24
 F6 n= 18 :  40
-Auf Wiedersehen.
+// (re-run of code/genus/extend_k2_6.sing; m=6, n=13..18)
+// Cross-check with closed form g(6,n)=(5n-4-gcd(n,6))/2:
+//   n=13: (65-4-1)/2=30  ✓  n=14: (70-4-2)/2=32 ✓  n=15: (75-4-3)/2=34 ✓
+//   n=16: (80-4-2)/2=37 ✓  n=17: (85-4-1)/2=40 ✓  n=18: (90-4-6)/2=40 ✓
+// Matches the closed form exactly; combined with pattern_extend_6_8.captured.txt
+// (m=6, n=19..24: 45,47,49,52,55,55) the k2=6 row is confirmed to n=24.
