@@ -362,6 +362,28 @@ general-class statement independent of the primes — claim
 `gatti-2020-parity-alternation-independent` lives in
 `research/summaries/gatti-2020-preprints-gilbreath-conditions.md`.
 
+## New holdings this cycle (librarian, this build) — Blair Morgan's frontier/local-condition notes, full texts landed
+
+```claim
+id: morgan-local-condition-sufficiency
+statement: (B. Morgan, "Reducing Gilbreath's Conjecture to a Local Condition", Zenodo 10.5281/zenodo.19143644, March 2026) Gilbreath's Conjecture follows from Conjecture L: |G_r[2] − G_r[1]| ≤ 2 for all r ≥ 1. Proof: by the parity invariant G_r[1], G_r[2] are even for r ≥ 1, so Conjecture L forces G_{r+1}[1] = |G_r[2] − G_r[1]| ∈ {0, 2}; boundary stability |1 − {0,2}| = 1 then gives G_{r+1}[0] = 1; base G_1[0] = 1, G_1[1] = 2. The CONVERSE (Gilbreath ⇒ Conjecture L) is NOT claimed. The author verifies Conjecture L numerically through 100,000 rows (position 1 ∈ {0,2}: 49,737 zeros, 50,263 twos).
+hypotheses: G_0 = primes; absolute-difference iteration; parity lemma (position ≥ 1 even for r ≥ 1).
+holds-here: yes — Conjecture L is a strengthening of the run's proved reduction (A_k(1) ∈ {0,2}); the run's depth-1000 + literature data to 1.5×10^15 are consistent with it. The sufficiency proof is elementary and correct (it is the run's reduction with one extra position of slack).
+status: asserted-by-source (working paper, not peer-reviewed; AI-collaborator credited; the sufficiency argument is reproduced in the full text and verified here as an elementary consequence of parity)
+bearing: independently confirms the run's central reduction and names the precise strengthened target (|G_r[2] − G_r[1]| ≤ 2). The open part is identical to the run's: prove the local bound propagates. The author is upfront that "we ran out of compute" — no claimed proof of Conjecture L.
+anchor: research/sources/blair-morgan-2026-local-condition-frontier.full.md; research/summaries/blair-morgan-2026-local-condition-frontier.md
+```
+
+```claim
+id: morgan-frontier-basin-and-corridor-obstruction
+statement: (B. Morgan, "The Return of the Lemma: Launchpads, corridor obstructions, and the shape of a counterexample", Zenodo 10.5281/zenodo.19144967, March 2026) (i) {0,2} is closed under |a−b|, so a position that enters {0,2} never leaves (basin/one-way membrane). (ii) If the frontier (leftmost position ≥ 1 not in {0,2}) stays at position ≥ 4 for all r ≥ 2 — equivalently G_r[3] ∈ {0,2} — then Gilbreath's Conjecture holds (induction via parity, closure, boundary stability, propagation of positions 1,2,3, and the initial conditions G_1[1]=2, G_1[2]=2, G_2[1]=0, G_2[2]=2, G_2[3]=2). (iii) PROVED OBSTRUCTION: no pure minimal erosion corridor 8 → 7 → 6 → 5 → 4 from the initial frontier-8 Row 2 is possible: such a corridor forces the launchpad prefix x_4 = x_5 = x_6 = x_7 = 0 (successive steps give y_7=|4−x_7|, z_6=|4−x_6|, u_5=|4−x_5|, v_4=|4−x_4| all outside {0,2} ⇒ all x_i = 0), whereas Row 2 has (x_4..x_7) = (2,2,2,2). Remaining routes: later frontier-8 rows, non-minimal breach (value ≥ 6 at position 4), or stalled/more complicated erosion.
+hypotheses: frontier defined on the prime triangle; the corridor argument is purely local (a 4-row backward propagation on the launchpad prefix).
+holds-here: yes — the frontier hypothesis G_r[3] ∈ {0,2} is exactly the run's block-length statement b_k ≥ 3 restricted to the front; the run's depth-1000 minima (13, 24, 96, ...) imply it far more strongly in the computed range. The corridor obstruction is a valid local computation (re-checkable in minutes with the run's oracle).
+status: asserted-by-source (working paper, not peer-reviewed; the corridor argument is elementary and self-contained in the full text; the frontier hypothesis and its proof remain open)
+bearing: (a) independent confirmation of the {0,2} basin framing (matches the run's closure-0d-double-edge and block lemma); (b) a worked example of the backward-forcing technique at frontier positions 4–7, the same technique the run's regeneration thread applies at the (edge=2, intruder=4) boundary; (c) the exact boundary arithmetic |4−2|=2, |6−4|=2, |6−2|=4, |6−0|=6 is the same table the run's depth-1000 data gives for the intruder values (all intruders ∈ {4,6,8,...} ≡ 0 or 2 mod 4). The honest gap is the same as the run's: prove the frontier / regeneration never fails.
+anchor: research/sources/blair-morgan-2026-return-of-the-lemma.full.md; research/summaries/blair-morgan-2026-return-of-the-lemma.md
+```
+
 ## New holdings this cycle (librarian, this build) — the Ducci-sequence literature
 
 The two proposed approaches `ducci-potential-max-decrease` and

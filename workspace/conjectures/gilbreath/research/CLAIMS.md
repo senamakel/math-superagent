@@ -59,15 +59,15 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4), because d_k(n) is even there. | yes | asserted | `research/notes/library-state.md` |
 | `mod6-gap-structure-real-but-not-percolating` | Prime gaps satisfy gap ≡ 0,2,4 (mod 6) and the halved gaps h_n mod 3 are constrained (h_n ≡ 1 forces h_{n+1} ≢ 1; h_n ≡ 2 forces h_{n+1} ≢ 2). This is a real statistical/catalogued property of the primes, but no source… | yes | proved | `research/approaches/prime-gap-mod6-structure.md` |
 | `modulo-k-gilbreath-family` | (Li 2026, preprint) For any odd k, the sequence of primes of the form kn+2 has a difference triangle whose leading entry eventually stabilises to k; classical Gilbreath is k=1. Verified computationally for all odd k <… | yes | asserted | `research/notes/library-state.md` |
+| `morgan-frontier-basin-and-corridor-obstruction` | (B. Morgan, "The Return of the Lemma: Launchpads, corridor obstructions, and the shape of a counterexample", Zenodo 10.5281/zenodo.19144967, March 2026) (i) {0,2} is closed under \|a−b\|, so a position that enters {0,2}… | yes | asserted | `research/notes/library-state.md` |
+| `morgan-local-condition-sufficiency` | (B. Morgan, "Reducing Gilbreath's Conjecture to a Local Condition", Zenodo 10.5281/zenodo.19143644, March 2026) Gilbreath's Conjecture follows from Conjecture L: \|G_r[2] − G_r[1]\| ≤ 2 for all r ≥ 1. Proof: by the parity… | yes | asserted | `research/notes/library-state.md` |
 | `no-well-defined-mod3-reduction` | The absolute-difference operator <a,b> -> \|a-b\| has NO reduction mod 3: \|a-b\| mod 3 is not a function of (a mod 3, b mod 3). Hence no finite-state machine for the halved Gilbreath triangle over F_3 exists. | yes | proved | `research/approaches/prime-gap-mod6-structure.md` |
 | `odlyzko-1993-citation-confirmed` | Odlyzko's paper "Iterated absolute values of differences of consecutive primes" exists as Math. Comp. 61 (1993) 373-380, per the author's own bibliography page. | yes | asserted | `research/summaries/odlyzko-publications-page.md` |
 | `odlyzko-block-lemma` | If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for K ≤ k ≤ N+K−1 — a leading {0,2} block of length N−1 protects N rows (one row per block entry; coefficient exactly 1, not n/2). | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
 | `odlyzko-block-lemma-asserted` | A {0,2} block of length n at the start of a row protects approximately n/2 subsequent rows' first entries, which then all begin with 1; the block degrades at ~the rate it shortens. | no | asserted | `research/notes/reduction.md` |
 | `odlyzko-block-lemma-exact` | If row A_k has a leading {0,2} block of length n (positions 1..n), then exactly n+1 rows A_k..A_{k+n} are guaranteed to begin with 1; the leading-entry protection constant is 1 (not n/2). Equivalently A_{k+d}(1) in… | yes | proved | `research/notes/block_lemma.md` |
-| `odlyzko-mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4) because d_k(n) is even there; the absolute-value triangle obeys Pascal's rule mod 4 (mod 2 after halving). | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
-| `odlyzko-verification-1993` | Gilbreath's conjecture verified for d_k(1), 1 ≤ k ≤ π(10^13) ≈ 3.4×10^11 (all primes < 10^13); G(π(10^13)) = 635; max g(n) = 635 at n ≈ π(7.17716×10^12) from prime gap 674. | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
 
-_38 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_40 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -101,6 +101,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `modulo-k-gilbreath-family` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `morgan-frontier-basin-and-corridor-obstruction` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `morgan-local-condition-sufficiency` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-1993-citation-confirmed` (research/summaries/odlyzko-publications-page.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-block-lemma` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-mod4-linearization` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
