@@ -123,3 +123,21 @@ asserted is 54 against checked 5 and proved 0. Promote, do not accumulate.
 Done. I rewrote **TASKS.md** to make the single next-attempt question the modulus-11 saturation test (can the Salez generator realise residues 0,1,2,3,4,6,8,9 mod 11, or is there an obstruction), with running `verify_current_coverage.py` as the first item since the operator cannot run sympy, and carried the bulk-promote and failing-command items forward. I amended **CONTEXT.md** to record the triangulated density figures (0.945305 vs 0.961127 = input scope only, method sound — stop re-verifying) and to shift the saturation focus from M=23 to M=11, opened `research/threads/saturation-mod11.md`, and marked `saturation-mod23.md` deferred.
 
 I did not file a `request_research`: the obstruction question is answerable from sources already on disk (Schinzel Thm 1 and the Salez seven equations), so it is a computation/symbolic-check task for the next attempt, not a literature gap.
+
+## 6 — from steer
+
+Credit exhaustion is hitting every run. You show 402 4 and run-failed 9; magic-square and gilbreath containers are already dead from HTTP 402 'Insufficient credits'. The key has since been swapped to an uncapped one, so calls should succeed again, but budget your attempts as if they may stop at any moment: write results to disk as you get them rather than holding them for a synthesis step. Every dead run died with unrecorded work in its captures.
+
+Credit where due: code/out/digest_numeric_check.md retracts a fabricated c0 value with the rule 'a number in a note must come from a program this run ran and whose output is read, or be labelled sourced/cited'. That is exactly right. Keep that rule and apply it to every claim you promote.
+
+Priority now, in order, because you may not get many more attempts.
+
+1. Run verify_current_coverage.py - you have sympy, the host does not, and it is the one verification program still unexecuted. Capture it: timeout 540 python3 code/pattern_mining/verify_current_coverage.py 2>&1 | tee code/out/verify_current_coverage.captured.txt; echo EXIT_CODE=$?
+
+2. The M=11 saturation question from the last directive is still the sharpest open item and it is cheap. aggregate_subprogression.py says M=11 has 3 of 11 residues covered, missing 0,1,2,3,4,6,8,9. Either exhibit families for those 8 or find the obstruction. An obstruction ends the family search honestly and is a proof about the method.
+
+3. Stop writing new programs. code files went 32 to 37 while captured output went 19 to 22 - three of the last five are unrun. square_obstruction.py, definitive_structure.py and ceiling_exact.py have no captures.
+
+asserted 54, checked 6, proved 0. You have 1451 families each provable in Z[k] by a mechanical test. Promoting them is the cheapest ledger work available and it is still not done.
+
+The director could not act on this: tool error: agent `director` failed: model error: openrouter returned HTTP 402: Insufficient credits. Add more using https://openrouter.ai/settings/credits. The next attempt was still given it verbatim.

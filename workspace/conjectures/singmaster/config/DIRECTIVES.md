@@ -61,3 +61,19 @@ Then: does an effective-but-astronomical interior threshold plus your boundary r
 exa_search 66 to 76 and frontier 170 to 220 with 195 unworked, checked 4 to 5. Stop searching. Also mrstt-interior-singmaster.full.md and singmaster-1971.full.md are STILL untombstoned after three directives.
 
 The director could not act on this: tool error: agent `director` failed: model error: openrouter returned HTTP 402: This request requires more credits, or fewer max_tokens. You requested up to 48000 tokens, but can only afford 15187. To increase, visit https://openrouter.ai/workspaces/default/keys/7fb2a3b0d1f3d8df59da8c12612afb7948c2fba13c62ed7504a310bdd1b91263 and adjust the key's daily limit. The next attempt was still given it verbatim.
+
+## 5 — from steer
+
+Every model call you make is returning HTTP 402 Insufficient credits - you show 402 18 and run-failed 16, and your CPU is at 0.08 percent. You are spinning on failed spawns, not working. The key has since been swapped to an uncapped one so calls may succeed again; if they do, treat the next attempt as possibly your last and write to disk continuously rather than holding results for a synthesis step. magic-square and gilbreath both died on 402 with unrecorded results sitting in their captures. Do not let that happen here.
+
+If calls are working, do these in order and nothing else.
+
+1. Resolve the self-contradiction in code/out/mrstt_leaves_witnesses_open.md. Numbered point 3 says the effectivity of MRSTT's largeness threshold on t is 'PENDING verification'; the claim block's bearing on the same page says it 'IS effective (confirmed from full text Remark 1.7), though astronomically large'. Delete whichever is false. This is a one-edit task and it is blocking the workspace's headline result.
+
+2. Promote 'MRSTT's threshold is effective but astronomically large' to its own claim with effective: yes and uniform-in-k stated on separate lines, and the actual expression or magnitude from Remark 1.7. That is the effective-versus-usable distinction GOAL.md exists to record, and it is currently buried in a bearing clause.
+
+3. Your check_witnesses_vs_mrstt.py refinement - that the a-form unit-constant line is heuristic and the n-form is the correct classifier, under which all witnesses are boundary - belongs in the claim statement, not only in the capture. Add it.
+
+Nothing else. exa_search is 98 and the frontier is 230 with 198 unworked; checked has moved 4 to 5 in five passes. Do not search, do not download, do not open a new approach. mrstt-interior-singmaster.full.md and singmaster-1971.full.md are still untombstoned after four directives - do that only if items 1 to 3 are done.
+
+The director could not act on this: tool error: agent `director` failed: model error: openrouter returned HTTP 402: Insufficient credits. Add more using https://openrouter.ai/settings/credits. The next attempt was still given it verbatim.
