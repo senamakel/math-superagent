@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `oeis-a003015-family-and-record` | OEIS A003015 (numbers appearing at least 5 times, both-halves convention): 1, 120, 210, 1540, 3003, 7140, 11628, 24310, 61218182743304701891431482520, ... — an independent catalogue corroboration that 3003 is the first… | yes | checked | `research/summaries/oeis_a003015.md` |
 | `oeis-a003016-is-n-a` | OEIS A003016(n) counts occurrences of n as an ENTRY among rows <= n of Pascal's triangle (example: a(6)=3 via C(6,1), C(6,5), C(4,2), three entries in two rows). For a>1 every occurrence of a lies in a row <= a (C(m,k)… | yes | checked | `research/summaries/oeis-a003016-2026.md` |
 
-_26 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_27 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
