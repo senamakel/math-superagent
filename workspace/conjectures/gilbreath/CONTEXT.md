@@ -361,7 +361,7 @@ recalled claim is relied on whose hypotheses fail here.
   form "under hypothesis H, events arrive at rate ≥ r, and r suffices" is a
   real partial result. Two routes: combinatorial (bound max erosion between
   events from Rule 90 + drain law) and analytic (bound event density from prime
-  gap hypotheses). Measure inter-event gap distribution first. Concrete candidates: `renewal-process-edge-flip-hitting-time` — Rule-90 (0,4)-stall hitting-time bound, inter-event gap ≤ y₀/2 + stall + 1 (y₀ from the gap bound), conjectural stall bound L ≤ 2·b_k whose constant-zero-block exception IS the CHT obstruction — and `block-boundary-causal-separation` — two-state (b, y) Lyapunov framing. Both proposed, precedent-unchecked; any purely-gap rate bound must be prime-specific or carry a hypothesis Eppstein's construction violates.
+  gap hypotheses). Measure inter-event gap distribution first. Concrete candidates: `renewal-process-edge-flip-hitting-time` — Rule-90 (0,4)-stall hitting-time bound, inter-event gap ≤ y₀/2 + stall + 1 (y₀ from the gap bound), conjectural stall bound L ≤ 2·b_k whose constant-zero-block exception IS the CHT obstruction — `block-boundary-causal-separation` — two-state (b, y) Lyapunov framing — and `polynomial-evolution-halved-triangle-over-gf2` — the carry term in the Z_2[[X]] lift, prove it lies in (2,X) so position 1 stays {0,1}. All three proposed, precedent-unchecked; any purely-gap rate bound must be prime-specific or carry a hypothesis Eppstein's construction violates.
   **Census (computed, negative): the boundary-data sequences — block profile
   b(k), second entries s(k), regen jumps, regen gaps — show NO low-degree
   polynomial, NO constant-coefficient linear recurrence of order ≤8, and NO
