@@ -56,6 +56,17 @@ resolved-questions:
     (David–Philippon + PFR), so C^(r+1) < 3 is false for any plausible r.
 
 immediate-steps:
+  0. DP07 lane (2026-08-13, librarian): GGK state on p. 3 that David–Philippon
+     (IMRP 2007, Thm 1.13) is the ONLY prior uniform-ML result with a completely
+     explicit constant, for subvarieties of self-products of a single elliptic
+     curve — the shape of the MSS AP-of-x-coordinates condition (a curve in E^2
+     cut out by x(P1)−x(P0) = x(P2)−x(P1)).  Obtain DP07's statement + constant
+     and check whether its explicit C can reach C^(1+r) < 3 for the ranks
+     attainable by E_c.  Until this is done the effective-constant blocker stands:
+     DGH (genus ≥ 2 only), Kühne (g ≥ 2), GGK (existential c(g,d)) and HMS
+     (effective but astronomically large, David–Philippon + PFR based) all fail
+     to give C^(1+r) < 3.  This is the one open lane to turn the uniform bound
+     into a numerical contradiction.
   1. Determine the exact form of the Robertson curve for an MSS centre e.
      The reduction: three points of 2E(Q) on E: y² = x(x²−c²) with
      x-coordinates in AP.  (X,Y) ∈ 2E(Q) iff {X, X±c} are all rational squares.
