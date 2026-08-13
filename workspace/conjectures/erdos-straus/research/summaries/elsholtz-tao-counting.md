@@ -35,6 +35,46 @@ of the ar5iv HTML of this same paper).
 - Verification history (Table 1): Straus ≤5000 (1950), ..., Swett 10^14
   (1999), 2×10^14 (2012), Salez 10^17 (2014).
 
+```claim
+id: prime-reduction
+statement: It suffices to prove the Erdős–Straus conjecture for prime n: f(nm) >= f(n), so a composite counterexample would have a smaller prime-factor counterexample.
+hypotheses: none (this is why n prime is the only open case).
+holds-here: true.
+status: sourced (Elsholtz–Tao intro; Wikipedia; erdosproblems 242).
+bearing: all identity work may be restricted to primes n ≡ 1 (mod 840).
+anchor: research/sources/elsholtz-tao-counting.full.md
+```
+
+```claim
+id: type-definition
+statement: For odd prime p, every solution to 4/p=1/x+1/y+1/z is Type I (p divides exactly one of x,y,z) or Type II (p divides exactly two), and f(p)=3 f_I(p)+3 f_II(p).
+hypotheses: p odd prime.
+holds-here: true.
+status: sourced (Elsholtz–Tao Sec 1).
+bearing: defines the two standard shapes that all known families use.
+anchor: research/sources/elsholtz-tao-counting.full.md
+```
+
+```claim
+id: vanishing-type12-odd-squares
+statement: For any odd perfect square n, f_I(n)=f_II(n)=0: there is no Type-I and no Type-II solution to 4/n=1/x+1/y+1/z.
+hypotheses: n an odd perfect square.
+holds-here: true — the six open residue classes mod 840 (1,121,169,289,361,529) are all squares.
+status: sourced (Elsholtz–Tao Prop 1.6; proof in paper via quadratic reciprocity; goes back to Schinzel and Yamamoto).
+bearing: THE obstruction. Any identity covering n ≡ 1 (mod 840) cannot be type I or II, else an odd square in the class would have a type-I/II solution. Does not force f(n)=0 at a square (a neither-type solution may exist).
+anchor: research/sources/elsholtz-tao-counting.full.md
+```
+
+```claim
+id: solvable-840-classes
+statement: Every primitive residue class n ≡ r mod 840 is solvable by polynomials unless r is a perfect square; perfect-square primitive classes cannot be solved by polynomials.
+hypotheses: primitive residue class, type-I/II polynomial solvability.
+holds-here: true — the six residuals are the primitive squares mod 840.
+status: sourced (Elsholtz–Tao intro; Mordell 1969; Schinzel 2000).
+bearing: a new family must not reduce to type-I/II polynomial shape.
+anchor: research/sources/elsholtz-tao-counting.full.md
+```
+
 ## Implication for this run
 
 The six open classes `n ≡ 1,121,169,289,361,529 (mod 840)` are exactly the

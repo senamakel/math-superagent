@@ -105,24 +105,26 @@ def check_worked_examples() -> None:
         "checked exact int + Fraction",
     ))
 
-    # 2. n == 3 (mod 4) identity: verified symbolically below with sympy,
-    #    and numerically for all n < 2000 in that class by direct search.
+    # 2. n == 3 (mod 4). The brief's lead identity is WRONG (it solves 3/n).
+    #    The corrected walk-up identity is:
+    #      n=4k+3, x=(n+1)/4, y=n(n+1)/4+1, z=y(y-1)
+    #    Checked exactly and symbolically below. Here we check it directly as
+    #    a family for many n (no blind search cap involved).
     mod4_ok = True
-    missing = []
-    for n in range(3, 2000, 4):
-        w = naive_solve(n, cap=2000)
-        if w is None:
+    bad_mod4 = []
+    for kk in range(0, 2000):
+        nn = 4 * kk + 3
+        xx = (nn + 1) // 4
+        yy = nn * (nn + 1) // 4 + 1
+        zz = yy * (yy - 1)
+        if not (xx > 0 and yy > 0 and zz > 0 and solves(nn, xx, yy, zz)):
             mod4_ok = False
-            missing.append(n)
-            break
-        if not solves(n, *w):
-            mod4_ok = False
-            missing.append(n)
+            bad_mod4.append(nn)
             break
     results.append((
-        "n==3 (mod 4): naive_solve finds a witness for every n<2000",
+        "n==3 (mod 4): corrected family solves for n=3..7999",
         mod4_ok,
-        f"missing={missing} cap=2000",
+        f"bad={bad_mod4}",
     ))
 
     # 3. All witnesses in witnesses.json.
@@ -164,29 +166,26 @@ def check_worked_examples() -> None:
 
 
 def symbolic_identity_check() -> None:
-    """Symbolically verify 4/n = 1/n + 1/((n+1)/2) + 1/(n(n+1)/2) for n==3 mod 4.
-
-    Substituting n = 4k+3 makes (n+1)/2 = 2k+2 an integer, so all three
-    denominators are integers. We check the rational-function identity in k.
-    """
+    """Symbolically verify the corrected n==3 (mod 4) covering identity, and
+    show the brief's typed lead is FALSE (it solves 3/n, not 4/n)."""
     from sympy import simplify, symbols
     k = symbols("k")
     n = 4 * k + 3
-    x = n
-    y = (n + 1) / 2
-    z = n * (n + 1) / 2
+    # Corrected family: x=(n+1)/4, y=n(n+1)/4+1, z=y(y-1)
+    x = (n + 1) / 4
+    y = n * (n + 1) / 4 + 1
+    z = y * (y - 1)
     diff = 4 / n - (1 / x + 1 / y + 1 / z)
     s = simplify(diff)
-    print("symbolic identity check: 4/n - (1/n+1/((n+1)/2)+1/(n(n+1)/2)), n=4k+3 ->", s)
-    assert s == 0, "mod-3 identity is NOT exact; the brief's lead is wrong"
-    # spot-check integrality/positivity of the three denominators for k in 0..9
-    poses = []
-    for kk in range(0, 10):
-        nn = 4 * kk + 3
-        xx, yy, zz = nn, (nn + 1) // 2, nn * (nn + 1) // 2
-        poses.append((nn, xx > 0 and yy > 0 and zz > 0 and solves(nn, xx, yy, zz)))
-    assert all(p[1] for p in poses), poses
-    print("mod-3 identity denominators positive+integral and solve for n=3,7,...,39: OK")
+    print("symbolic: 4/n-(1/x+1/y+1/z), x=(n+1)/4, y=n(n+1)/4+1, z=y(y-1), n=4k+3 ->",
+          s)
+    assert s == 0
+    # Now show the brief's lead, as literally typed, fails:
+    xb, yb, zb = n, (n + 1) / 2, n * (n + 1) / 2
+    sb = simplify(4 / n - (1 / xb + 1 / yb + 1 / zb))
+    print("brief's typed lead solves  4/n == RHS?  diff =", sb,
+          " (nonzero => it is the 3/n, not 4/n, identity)")
+    assert sb != 0
 
 
 if __name__ == "__main__":

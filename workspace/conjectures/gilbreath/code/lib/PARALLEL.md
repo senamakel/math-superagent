@@ -27,47 +27,33 @@ lambda, or a nested `def` cannot be pickled into a child process and the pool
 will fail. Pass what it needs as arguments, or read it from a module-level
 constant.
 
-## Worked example — the residue sieve
+## Worked example — testing many candidate invariants
 
-The sieve is the whole method here. `A_k` is the set of residues
-`r mod 2*3^(k-1)` for which the low `k` ternary digits of `2^r mod 3^k` avoid
-the digit 2. Testing one residue is independent of every other, so this is the
-ideal shape for a pool.
-
-Before, single core:
+Depth is inherently sequential and must not be parallelised. What is parallel
+here is the *hypothesis space*: many candidate invariants, or many starting
+sequences from the general Gilbreath-like class, each tested independently.
 
 ```python
-def sieve(k):
-    mod, per = 3**k, 2 * 3**(k-1)
-    return {r for r in range(per) if digit_free_mod(pow(2, r, mod), k)}
-```
+STARTS = [...]                       # module-level, so children see it
 
-After, 26 cores, **same set**:
+def _test_starts(chunk):             # top level, so it can be pickled
+    return {s for s in chunk if leads_with_one(s, depth=500)}
 
-```python
-K = 12                                    # module-level, so children see it
-
-def _sieve_rows(residues):                # top level, so it can be pickled
-    mod = 3**K
-    return {r for r in residues if digit_free_mod(pow(2, r, mod), K)}
-
-def sieve(k):
-    per = 2 * 3**(k-1)
+def survivors(starts):
     return parallel_union(
-        _sieve_rows,
-        stripes(list(range(per)), workers()),
-        label=f"sieve k={k}",
-        space=f"r = 0..{per-1} mod 3^{k}",
+        _test_starts,
+        stripes(list(starts), workers()),
+        label="gilbreath-like starts",
+        space=f"{len(starts)} sequences, depth 500",
     )
 ```
 
-`stripes` deals the residues out round-robin. Here the cost per residue is
-near-uniform, so balance matters less than it does for a triangular loop — but
-striping costs nothing and keeps the helper interchangeable.
+Use `parallel_any` to stop at the first counterexample — it terminates the
+pool on the first truthy return, which is what you want when hunting a start
+sequence whose leading entry leaves 1.
 
-Note `pow(2, r, mod)`: never build `2**r` and reduce afterwards. Modular
-exponentiation is the difference between a sieve that runs and one that
-exhausts memory.
+Keep one row at a time inside each worker. Holding the whole triangle is what
+turns a cheap depth sweep into an OOM kill, and the container cap is 8 GiB.
 
 ## Which helper
 

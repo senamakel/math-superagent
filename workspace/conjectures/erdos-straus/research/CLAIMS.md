@@ -4,4 +4,26 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `mordell-covering-840` | Combinations of Mordell's polynomial identities (n ≡ 2 mod 3, 3 mod 4, 2 or 3 mod 5, 3/5/6 mod 7, 5 mod 8) give three-term Egyptian fractions for all n except possibly n ≡ 1,121,169,289,361,529 mod 840; the smallest… | yes | asserted | `research/summaries/wikipedia-erdos-straus.md` |
+| `mordell-nonsquare-necessary` | A polynomial identity giving solutions of 4/n for all n ≡ r mod p can exist only when r is NOT a quadratic residue mod p. | yes | asserted | `research/summaries/wikipedia-erdos-straus.md` |
+| `prime-reduction` | It suffices to prove the Erdős–Straus conjecture for prime n: f(nm) >= f(n), so a composite counterexample would have a smaller prime-factor counterexample. | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
+| `reduction-mod24` | By identifying n ≡ −1 mod 3, −1 mod 4, −3 mod 8, it suffices to prove the conjecture for primes p ≡ 1 mod 24; the six open residues mod 840 are exactly this slice. | yes | asserted | `research/summaries/salez-seven-modular-equations.md` |
+| `seven-equations-complete` | For p an odd prime, 4/p is 3-Egyptian if and only if one of seven constant-coefficient modular equations (14a,b,c; 15a,b,c,d) holds; this is a COMPLETE set for degree-1 prime polynomials. | yes | asserted | `research/summaries/salez-seven-modular-equations.md` |
+| `solvable-840-classes` | Every primitive residue class n ≡ r mod 840 is solvable by polynomials unless r is a perfect square; perfect-square primitive classes cannot be solved by polynomials. | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
+| `type-definition` | For odd prime p, every solution to 4/p=1/x+1/y+1/z is Type I (p divides exactly one of x,y,z) or Type II (p divides exactly two), and f(p)=3 f_I(p)+3 f_II(p). | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
+| `vanishing-type12-odd-squares` | For any odd perfect square n, f_I(n)=f_II(n)=0: there is no Type-I and no Type-II solution to 4/n=1/x+1/y+1/z. | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `mordell-covering-840` (research/summaries/wikipedia-erdos-straus.md) — asserted by the source, not proved there and not checked here
+- `mordell-nonsquare-necessary` (research/summaries/wikipedia-erdos-straus.md) — asserted by the source, not proved there and not checked here
+- `prime-reduction` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
+- `reduction-mod24` (research/summaries/salez-seven-modular-equations.md) — asserted by the source, not proved there and not checked here
+- `seven-equations-complete` (research/summaries/salez-seven-modular-equations.md) — asserted by the source, not proved there and not checked here
+- `solvable-840-classes` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
+- `type-definition` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
+- `vanishing-type12-odd-squares` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here

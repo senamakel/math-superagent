@@ -1,30 +1,23 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/bright-loughran-brauer-manin.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Bright & Loughran, "Brauer–Manin obstruction for Erdős–Straus surfaces"
 
-<!-- source: https://arxiv.org/abs/1908.02526 | converted from HTML -->
+Source: arXiv:1908.02526 (Bull. LMS 52 (2020) 746–761).
+Full text: `research/sources/bright-loughran-brauer-manin.full.md`
 
-## What is in it
+## What it establishes (sourced)
 
-- Mathematics > Number Theory
-- Title: Brauer-Manin obstruction for Erdős-Straus surfaces
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+- The `4/p = 1/x+1/y+1/z` solution set is the set of integer points on an
+  "Erdős–Straus surface" (a variety / Cayley-type surface).
+- Main result: **there is no Brauer–Manin obstruction** to the existence of
+  points on these surfaces. I.e. the failure of the Hasse principle (integer
+  points don't lift from modular solutions) is *not* explained by a Brauer–
+  Manin obstruction.
+- Consequence: this rules out one class of explanations for why modular
+  identities fail; the reason the six squares resist is the Schinzel/
+  quadratic-reciprocity vanishing (Prop 1.6 of Elsholtz–Tao), not a
+  Brauer–Manin obstruction.
 
+## Implication
 
-## What it claims
-
-Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
-
-Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][42].
-
-[Which authors of this paper are endorsers?][43] | Disable MathJax ( [What is MathJax?][44])
-
-*[digest of a 6056 character source; every section, statement, and proof in full at `research/sources/bright-loughran-brauer-manin.full.md`]*
+Bounds the kind of obstruction that could attack the problem. The library now
+has the singularities/rational-point angle as well as the elementary modular
+identity angle.

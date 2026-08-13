@@ -26,6 +26,26 @@ Full text: `research/sources/salez-seven-modular-equations.full.md`
   claims every `n < 10^17` (non-square) has a modular certificate; checked
   51.7M squares separately. Program in C++.
 
+```claim
+id: seven-equations-complete
+statement: For p an odd prime, 4/p is 3-Egyptian if and only if one of seven constant-coefficient modular equations (14a,b,c; 15a,b,c,d) holds; this is a COMPLETE set for degree-1 prime polynomials.
+hypotheses: p odd prime (polynomial degree 1 prime polynomial).
+holds-here: true — so no single modular equation of the seven can cover n ≡ 1 (mod 840); a new family must be of a type outside the seven.
+status: sourced (Salez Prop 3 / Cor 1; proof in paper; three of the seven are new).
+bearing: bounds the ansatz search — anything collapsing to the seven shapes is a rediscovery; a new family must be a genuinely new type.
+anchor: research/sources/salez-seven-modular-equations.full.md
+```
+
+```claim
+id: reduction-mod24
+statement: By identifying n ≡ −1 mod 3, −1 mod 4, −3 mod 8, it suffices to prove the conjecture for primes p ≡ 1 mod 24; the six open residues mod 840 are exactly this slice.
+hypotheses: none.
+holds-here: true.
+status: sourced (Salez Sec 1.1).
+bearing: n ≡ 1 (mod 840) implies n ≡ 1 (mod 24); parameterise n = 840k+1.
+anchor: research/sources/salez-seven-modular-equations.full.md
+```
+
 ## Implication for the run
 
 This is the definitive statement of the modular-equation obstruction: the

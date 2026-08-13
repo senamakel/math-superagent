@@ -1,77 +1,30 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/erdos-problems-242.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Erdős Problems #242 — Erdős–Straus
 
-<!-- source: https://www.erdosproblems.com/242 | converted from HTML -->
+Source: https://www.erdosproblems.com/242
+Full text: `research/sources/erdos-problems-242.full.md`
 
-242 | Erdős Problems
+## What it establishes (sourced, problem-compendium)
 
-[image: Logo] [1]
+- Erdos-Straus: for every `n>2` there exist distinct integers
+  `1<=x<y<z` with `4/n=1/x+1/y+1/z`. First appears in Obláth [Ob50]
+  (submitted 1948), described as a conjecture of Erdős.
+- **Prime reduction** and verification to `n <= 10^18` cited as
+  [MiDu25] (note: newer bound than Wikipedia's 10^17).
+- Obláth: true if `n+1` divisible by a prime `≡ 3 mod 4` → almost all `n`.
+- **Mordell [Mo69]**: true for all `n` except congruent to one of
+  {1,121,169,289,361,529} mod 840.
+- **Terzi [Te71]**: extended to 198 bad congruences mod 120120.
+- **Vaughan [Va70]**: exceptions in [1,x] ≤ `x exp(-c (log x)^{2/3})`.
+- Equivalence (BlEl22, Thm 1): the conjecture is equivalent to: for any prime
+  `p`, there are `a,c,d>=1` with `p ≡ -a/c mod (4acd-1)` or
+  `p ≡ -(4c^2 d+1)/k mod 4cd` for some `k | 4c^2d+1`.
+- Bright–Loughran [BrLo20]: no Brauer–Manin obstruction.
+- Elsholtz–Tao [ElTa13]: `sum_{p<=N} f(p) = N (log N)^{2+o(1)}`,
+  `f(p) <= p^{3/5+o(1)}`.
+- Elsholtz–Planitzer [ElPl20]: for almost all n, `f(n) >= (log n)^{log 6+o(1)}`.
 
-[Forum][2] [Inbox][3] [Favourites][4] [Tags][5]
+## Implication
 
-More
-
-[FAQ][6] [Prizes][7] [Problem Lists][8] [Definitions][9] [Links][10]
-
-[Forum][2]
-
-Menu
-
-[Inbox][3] [Favourites][4] [Tags][5] [FAQ][6] [Prizes][7] [Problem Lists][8] [Definitions][9] [Links][10]
-
-Dual View [Random Solved][11] [Random Open][12]
-
-FALSIFIABLE Open, but could be disproved with a finite counterexample.
-
-For every $n>2$ there exist distinct integers $1\leq x<y<z$ such that\[\frac{4}{n} = \frac{1}{x}+\frac{1}{y}+\frac{1}{z}.\]
-
-[#242][13]: [Er50c] [Er61] [Er79] [ErGr80] [Va99,1.13]
-
-[number theory][14] | [unit fractions][15]
-
-The open status of this problem reflects the current belief of the owner of this website. There may be literature on this problem that I am unaware of, which may partially or completely solve the stated problem. Please do your own literature search before expending significant effort on solving this problem. If you find any relevant literature not mentioned here, please add this in a comment.
-
-Comment activity that has not yet been incorporated into the remarks
-
-None Partial Solution
-
-There are no solutions, partial or complete, claimed in the comments.
-
--->
-
-The [Erdős-Straus conjecture][16]. Perhaps the first place it appears in the literature is in a paper of Obláth [Ob50] (submitted in 1948), which describes it as a conjecture of Erdős.
-
-The existence of a representation of $4/n$ as the sum of at most four distinct unit fractions follows trivially from a greedy algorithm.
-
-Schinzel conjectured (see [Si56]) the generalisation that, for any fixed $a$, if $n$ is sufficiently large in terms of $a$ then there exist distinct integers $1\leq x<y<z$ such that\[\frac{a}{n} = \frac{1}{x}+\frac{1}{y}+\frac{1}{z}.\]When $a=5$ this conjecture is due to Sierpiński [Si56]. For more background and results on this generalisation see Pomerance and Weingartner [PoWe25].
-
-It suffices to prove this when $n$ is prime. This has been verified for all $n\leq 10^{18}$ [MiDu25].
-
-There are many partial results, some of which are listed below.
-
-- Obláth [Ob50] noted it is true if $n+1$ is divisible by a prime $\equiv 3\pmod{4}$. This implies almost all $n$ have the required decomposition.
-- Arguing via parametric solutions, Mordell [Mo69] proved it is true for all $n$ except those congruent to one of $\{1,121,169,289,361,529\}$ modulo $840$.
-- Terzi [Te71] extended this to prove that it is true for all $n$ except those congruent to one of $198$ possible bad congruences modulo $120120$.
-- Vaughan [Va70] proved that the number of exceptions in $[1,x]$ is\[\leq x \exp(-c(\log x)^{2/3})\]for some constant $c>0$.
-- This conjecture is equivalent (see Theorem 1 of [BlEl22]) to the statement that, for any prime $p$, there exist integers $a,c,d\geq 1$ such that either $p\equiv -a/c\pmod{4acd-1}$ or $p\equiv -\frac{4c^2d+1}{k}\pmod{4cd}$ for some $k\mid 4c^2d+1$.
-- Bright and Loughran [BrLo20] have shown there is no Brauer-Manin obstruction to the existence of solutions.
-- If $f(n)$ counts the number of solutions then Elsholtz and Tao [ElTa13] have proved\[\sum_{p\leq N}f(p)=N(\log N)^{2+o(1)}\]and $f(p)\leq p^{3/5+o(1)}$ for all primes $p$.
-- Elsholtz and Planitzer [ElPl20] have proved that for almost all $n$\[f(n) \geq (\log n)^{\log 6+o(1)}.\]
-
-[View the LaTeX source][17]
-
-This page was last edited 07 May 2026. [View history][18]
-
-External data from [the database][19] - you can help update this
-Formalised statement? [Yes][20]
-Related OEIS sequences: [A073101][21] [A075245][22] [A075246][23] [A075247][24] [A075248][25] [A287116][26]
-
-[18 comments on this problem][27]
-
-[0 claimed proofs for this problem][28]
-
-**Likes this problem** | [old-bielefelder][29], [jgold][30], [TFBloom][31], [jbbaehr22][32], [Dogmachine][33], [ArdaErgun][34] |
-
-**Interested in collaborating** | [jgold][30], [Bradford][35], [auro][36] |
-
-
-*[excerpt ends; 1869 characters not shown — see `research/sources/erdos-problems-242.full.md`]*
+Confirms the six open classes and the prime reduction. Adds the newer 10^18
+verification bound claim ([MiDu25]) and the BlEl22 equivalence as an alternate
+(congruence-pair) formulation worth comparing with the Rosati 7-equation form.

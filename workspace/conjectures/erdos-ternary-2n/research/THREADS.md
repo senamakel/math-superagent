@@ -7,13 +7,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
 | [[lifting-proof]] | Is the 2-to-1 lifting of A_k provable via LTE, giving \|A_k\| = 2^(k-1) unconditionally? | open | ternary-sieve-count-doubles | compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly |
-| [[narkiewicz-bound]] | What is the exact statement, constant, and method of Narkiewicz's bound on {n <= x : 2^n digit-2-free}? | open | EP-406, (bound, N(x), <=, 1.62, x^(log_3, 2), asserted-by-source), LAG-2, (proved, Lagarias) | locate and download Narkiewicz (1980) "A note on a paper of H. Gupta concerning powers of two"; verify the constant and method against EP-406 and LAG-2 |
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[narkiewicz-bound]] rests on `(bound`, `N(x)`, `<=`, `1.62`, `x^(log_3`, `2)`, `asserted-by-source)`, `(proved`, `Lagarias)`, which no claim block on disk establishes
+| [[narkiewicz-bound]] | What is the exact statement, constant, and method of Narkiewicz's bound on {n <= x : 2^n digit-2-free}? | open | EP-406, LAG-2 | locate and download Narkiewicz (1980); verify constant and method against EP-406 and LAG-2 |
 
 ## Threads that could not be read
 

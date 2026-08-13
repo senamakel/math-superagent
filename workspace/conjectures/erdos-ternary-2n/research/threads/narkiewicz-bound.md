@@ -1,9 +1,9 @@
 ```thread
 question: What is the exact statement, constant, and method of Narkiewicz's bound on {n <= x : 2^n digit-2-free}?
 status: live
-rests-on: EP-406 (bound N(x) <= 1.62 x^(log_3 2), asserted-by-source), LAG-2 (proved, Lagarias)
+rests-on: EP-406, LAG-2
 blocked-by: primary Narkiewicz paper not in library
-next: locate and download Narkiewicz (1980) "A note on a paper of H. Gupta concerning powers of two"; verify the constant and method against EP-406 and LAG-2
+next: locate and download Narkiewicz (1980); verify constant and method against EP-406 and LAG-2
 ```
 
 # Narkiewicz's bound — the known nontrivial result
