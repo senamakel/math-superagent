@@ -7,6 +7,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `CONRAD-W` | The only known base-2 Wieferich primes are 1093 and 3511; the only known base-3 ones are 11 and 1006003; the searches cover p < 1.25·10^15 (base 2) and p < 2^32 (base 3). | **unchecked** | asserted | `research/summaries/conrad-wieferich-primes.md` |
+| `DENSE-ORBIT` | The closure of {2^n : n ∈ Z} in Z_3^× is all of Z_3^× (ord(4 mod 3^k) = 3^(k-1), so 4 topologically generates 1+3Z_3; 2 ≡ −1 mod 3 gives the other coset). The Erdős conjecture is equivalent to: the dense orbit {2^n}… | yes | proved | `research/threads/sieve-dynamics.md` |
 | `DH-1` | For x ∉ {0,2,8}, the ternary expansion of 2^x contains a digit 2 or at least 26 digits equal to 1. | yes | proved | `research/summaries/dimitrov-howe-ar5iv-full.md` |
 | `DH-2` | The nested-modulus method with determinate-power lifting solves 3^x = Σ 2^(a_i) (n ≤ 22 distinct) and 2^x = Σ 3^(a_i) (n ≤ 25 distinct) completely, and the computations terminate. | yes | proved | `research/summaries/dimitrov-howe-ar5iv-full.md` |
 | `EP-406` | The Erdős problem (only finitely many 2^n with base-3 digits only 0,1) is open; known solutions exactly {2^0, 2^2, 2^8}; N(x) ≤ 1.62 x^(log_3 2) (Narkiewicz). | yes | asserted | `research/summaries/erdos-problems-b33.md` |
@@ -17,6 +18,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `SAYE-1` | The number of n ≤ 2·3^45 with (2^n)_3 omitting the digit 2 is exactly the three known values n ∈ {0,2,8} within that range; equivalently no new exception exists for 16 ≤ n ≤ 5.9×10^21. | yes | asserted | `research/summaries/saye-ar5iv-full.md` |
 | `SAYE-2` | u_k = 2·3^(k-1) is both φ(3^k) and the order of 2 modulo 3^k; the map n → 2^n mod 3^k has period u_k, and classes split under the digit recursion given by d_{k+1}(2^(i u_k + j)) ≡ d_{k+1}(2^j) + i·d_1(2^j) (mod 3). | yes | proved | `research/summaries/saye-ar5iv-full.md` |
 | `SAYE-3` | The recursion that generates n with prescribed trailing ternary digits runs in Θ(2^K) time for depth K, versus Θ(3^K) for exhaustive testing; every n < 2^u_K is covered. | yes | proved | `research/summaries/saye-ar5iv-full.md` |
+| `SIEVE-EXACT` | \|A_k\| = 2^(k-1) exactly for all k ≥ 1; Φ_k: n mod 2·3^(k-1) ↦ 2^n mod 3^k is a bijection onto (Z/3^k)^×; the extension map A_{k+1} → A_k is exactly 2-to-1; no class dies and no two classes collide at any finite level. | yes | proved | `research/threads/sieve-dynamics.md` |
 | `ternary-sieve-count-doubles` | Let A_k be the set of residues r mod 2*3^(k-1) for which the low k ternary digits of 2^r mod 3^k all lie in {0,1}. Then \|A_k\| = 2^(k-1) for every k = 1..22, verified exactly by lifting. The density \|A_k\|/(2*3^(k-1)) =… | yes | checked | `code/out/sieve_cannot_close.md` |
 
 ## Load-bearing but unverified
