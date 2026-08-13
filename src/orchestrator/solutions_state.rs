@@ -103,7 +103,7 @@ pub(super) async fn run(
     memory: VectorStore,
     teams: Vec<TeamHandle>,
     mailboxes: Mailboxes,
-    state: SolutionState,
+    mut state: SolutionState,
 ) -> Result<SolutionState> {
     let attempt_agents = subagents.clone();
     let attempt_tracer = tracer.clone();
