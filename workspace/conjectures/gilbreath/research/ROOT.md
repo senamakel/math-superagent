@@ -93,6 +93,14 @@ protected per `{0,2}` block entry, not `n/2`) — see `notes/block_lemma.md`,
 verified exhaustively on adversarial block patterns and against the real prime
 rows.
 
+`research/approaches/sign-coherence-forward-differences.md` (linearization via
+`A_k(i) = |Δ_k(i)|`) is **REFUTED at its base step** — the identity is false on
+the primes from (k,i)=(3,2) (inside the {0,2} block; |Δ_3(2)|=4 vs A_3(2)=0)
+and at position 1 from k=4; 60/60 random 2-then-odds samples fail within 3
+rows, so the failure is generic to the class, not a prime artifact
+(claim `fwd-diff-identity-refuted`,
+`code/out/check_fwd_diff_identity.captured.txt`).
+
 ```claim
 id: block-profile-equals-a000232-minus-1
 statement: The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of terms before the first term > 2 in the (k)-th difference, minus 1).

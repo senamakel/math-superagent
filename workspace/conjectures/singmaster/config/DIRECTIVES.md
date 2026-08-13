@@ -573,3 +573,31 @@ Both fixes are in place:
 - The superelliptic catalogue row is now `status: checked` and acknowledges the derivation here
 
 Two changes: fixed the illegal status word `closed` → `broken` in `effective-bound-hyperelliptic-k25.md` (the parser only accepts `broken|wrong|spent|discharge|complete|live|active`), and filed `genus-closed-form-derived-by-riemann-hurwitz` as a `proved` claim in the Riemann-Hurwitz note so the `discharged` skeleton's derivation is now recorded in CLAIMS.md, with the superelliptic catalogue row updated to reflect that a derivation now reproduces it.
+
+## 24 — from steer
+
+code/boundary_cut.py has two faults, and one is mathematical. code/out/boundary_cut_tabulation.captured.txt is 0 bytes because the program hung: your own log shows it hit `timeout 120` and returned 39 bytes.
+
+1. WRONG CUT. Line 24 computes
+
+     cut = exp((log n)**(2/3) + 0.5)
+
+   The MRSTT boundary is k < exp((log n)^(2/3+eps)). The exponent applies to the whole bracket; 0.5 is part of it, not an added constant. At n=229969 the two differ by a factor of 411,000 — 344.4 as coded against 1.416e8 correct.
+
+2. HANGS. reps(a) is called on the Fibonacci family, whose a_j has 1412 digits at j=4 and far more beyond, then loops k up to log2(a) — about 229,000 iterations at j=6 — each binary-searching math.comb on numbers that size. But the family's (n,k) is known BY CONSTRUCTION. It needs no search at all.
+
+Corrected program and capture, for you to verify independently rather than adopt: code/boundary_cut_corrected.py, code/out/boundary_cut_corrected.captured.txt (EXIT_CODE=0, runs in seconds). It tabulates both cuts side by side so the disagreement is visible.
+
+The result that matters: under the CORRECT cut every Fibonacci family member is BOUNDARY — k < cut in all six rows, 87839 < 1.416e8 at j=6. Under your mis-coded cut, j>=2 all flip to INTERIOR. So the bug was hiding the entire family from the count that G-boundary-uniform-count is about.
+
+This does not refute a uniform bound. Each member is a different a, so infinitely many a each with >=1 boundary representative is consistent with a constant C bounding the count PER a. What it does mean is that the family is inside the object you are counting and any argument for C has to cover it, not set it aside.
+
+Witness-set boundary counts under the correct cut: 2 for each of 120, 210, 1540, 7140, 11628, 24310, and 3 for 3003 — max 3 on left-half reps, matching the C >= 3 your skeleton already records.
+
+Verify by recomputing the cut at n=103 and n=229969 both ways before trusting any of it.
+
+**Wrote `config/DIRECTIVES.md`.** Two things changed: `G-fibonacci-boundary-finite` refuted and the skeleton restructured around the corrected boundary cut.
+
+The bug was the exponent grouping: `exp((log n)**(2/3) + 0.5)` instead of `exp((log n)**(2/3+0.5))`. The corrected computation (already on disk at `code/boundary_cut_corrected.py`, capture `code/out/boundary_cut_corrected.captured.txt`, EXIT_CODE=0) proves the Fibonacci family stays boundary for all eps > 1/3 — with MRSTT's admissible eps=1/2 the family never crosses to interior. The asymptotic is a power comparison: `log k_j ∝ 4j log φ` (linear) vs `(log n_j)^(2/3+eps) ∝ (4j log φ)^(2/3+eps)` (sublinear when 2/3+eps < 1, superlinear when > 1). The crossing threshold is eps=1/3, not "all eps>0" as the skeleton originally claimed.
+
+This does not break the uniform-bound program. Each Fibonacci `a` is a distinct integer, and each has at most 2 boundary left-half reps (the `(k,k+1)` collision plus possibly a k=2 collision). The per-`a` count stays bounded — what's refuted is the claim that `A_fib` is finite, which the skeleton's step (5) used to conclude `A_all` finite. That route is closed, but per-`a` boundedness survives: `G-fibonacci-boundary-finite` → refuted, `G-boundary-collision-a-finite` → revised, the synthesis no longer needs finiteness of the set of `a`'s. The core structural gap `G-nonfibonacci-pairs-are-bounded` is unchanged.

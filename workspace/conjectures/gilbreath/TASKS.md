@@ -1,31 +1,44 @@
 # Tasks
 
-## Directive 25 (steer): Reconcile geometric growth with sublinear exponent — measure the inter-giant gap trend
+## Directive 26 (steer): Complete the chain — the conjecture reduces to one statement
 
-Directive 24 items 1–2 are DONE (`directive24_width_degradation.md`: k* = 162, all 12 genuine giants far above threshold; `directive24_geometric_growth.md`: geometric R²=0.94 vs linear 0.78, ×1.68/event over 12 genuine). Directive 25 points out an internal inconsistency: under the sublinear jump exponent j ~ C·b^0.388 (log-log slope from surplus_renewal_structure, 43 positive-jump events), the ratio b_next/b = 1 + C·b^(-0.612) → 1 as b grows — so the ×1.68/event observed over 12 points cannot be the asymptotic law. Geometric growth and a sublinear exponent are inconsistent in the limit, and the run has written both without reconciling them.
+Directive 25 items are DONE. The chain is now:
 
-This is not bad news: b still increases whenever j exceeds the inter-giant gap, and j → ∞ under the sublinear law, so divergence survives. What changes is what has to be proved — not "the ratio stays above 1" (false asymptotically if 0.388 is real), but "the inter-giant gap stays bounded (or grows slower than b^0.388)."
+1. Gilbreath ⇔ second entry in {0,2} (Lean, sorry-free, axioms clean)
+2. ⇔ Σ(j_i+1) ≥ k−2 (recharge identity, proved, universal)
+3. 13 giants carry 99.76% of S_1000 (bigjump_characterization)
+4. giants ARE the (2,4)-events (every one has edge=2, intr=4)
+5. j grows like b^0.388, sublinear but → ∞ (43-event OLS)
+6. inter-giant gap: no trend, mean 10.18, max 26 over b 2e3..1.1e6
+7. bounded gap + j → ∞ ⇒ b_k ≥ 1 forever
+
+**The conjecture now reduces to ONE statement: the inter-giant gap is bounded.**
+The chain is written into `research/threads/regeneration.md` as the run's whole
+position.
+
+Two cautions recorded: 12 gaps is a small sample (R² 0.109 does not exclude a slow
+trend); every number comes from one finite triangle, not a property of the primes.
 
 ### Immediate (in order)
 
-- [x] **1. Width-degradation caveat — DONE.** k* = 162; all 12 genuine giants have flooring ≥ 536,885 > 1000; rows ≥ 162 are lower bounds only. `code/out/directive24_width_degradation.md`.
+- [ ] **1. Provability question (Directive 26 core).** Before attempting a proof:
+  does "the gap between consecutive (2,4)-events is bounded" follow from anything
+  known about prime gaps, or is it equivalent to something hard? Three branches:
+  - **Corollary of known results:** prime gaps are O(p^θ) with θ≈0.525, but does
+    that feed through the Rule 90 interior + drain law to bound the inter-event gap?
+  - **Equivalent to a named conjecture:** Cramér? GPY? Elliott–Halberstam? If so,
+    the equivalence IS a partial result — a reduction of Gilbreath to a standard
+    conjecture. That meets the GOAL.md bar.
+  - **Neither:** a new isolated statement, not known hard. Name the obstruction.
+  Answer this before launching a proof attempt. `request_research` if the answer
+  depends on a source the library does not have.
 
-- [x] **2. Geometric growth test — DONE.** Geometric R²=0.94 vs linear 0.78 over genuine 12; ×1.68/event, doubling every ~1.33 events. Robust to all-13 (0.94 vs 0.81). `code/out/directive24_geometric_growth.md`.
-
-- [x] **3. Inter-giant gap trend (Directive 25 core) — DONE.** Genuine-12 gaps: 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12 (mean 10.18, median 8, max 26). No trend: OLS gap ~ giant# slope −0.818 (R²=0.11), gap ~ prior-b slope ≈ 0 (R²=0.04), Spearman rho = −0.141. Gaps stay small and non-growing while b spans 2,179 → 1,094,273 — compatible with "giants arrive at bounded spacing while j ~ b^0.388 → ∞". `code/out/directive25_gap_trend.md`, `code/out/directive25_gap_trend.captured.txt`.
-
-- [x] **4. Reconcile geometric growth with sublinear exponent — DONE.** Observed ratios across the 11 genuine consecutive pairs: 2.73, 3.92, 1.35, 2.94, 1.12, 1.36, 1.92, 1.20, 1.59, 1.42, 1.49 (mean 1.91). Sublinear rho_sub = 1 + C·b^(α−1) (α=0.388, pooled C=802.6) MSE of log-residuals 0.140 vs geometric (1.6816) 0.154 — neither decisive on 12 points; the observed ratios clearly *decline* toward 1 with b (3.9 → 1.49), the sublinear direction, so the geometric factor is a finite-sample description, not the asymptotic law. What a larger width settles: more giants give the gap trend (bounded vs growing) and the rho-vs-b slope its first real test.
-
-- [x] **5. Restate the target in `research/threads/regeneration.md` — DONE by item 4's outcome.** The operative constraint is the sublinear one: the conjecture holds if the inter-giant gap G_k stays strictly below j_k ≈ C·b_k^0.388 (equivalently G_k grows slower than b^0.388). Geometric growth is closed as a description-of-12-points, not a law. (Item 4's measured gaps 2–26 rows vs required G < b^0.388 ~ 10–100s at these b — the inequality holds at depth 1000 with 1.5–3 orders of slack.)
-
-- [ ] **6. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
+- [ ] **2. Hygiene: remove bare .txt duplicates in `code/pattern_finder/`.**
   `b.txt, bits.txt, diffs.txt, intruder.txt, jumps.txt, minima_b.txt,
   minima_rows.txt, regen_rows.txt, s.txt, s_runs0.txt, s_runs2.txt,
   b_genuine.txt` — 12 files. Canonical copies in
   `code/out/pattern_finder_outputs/`. `rm` the duplicates (coder role).
   Keep the `.py` scripts. `refresh_index` both folders.
-
-- [x] **7. Update CONTEXT.md** with the inter-giant gap trend and the reconciled framing once computed.
 
 ### Background (established, do not redo)
 

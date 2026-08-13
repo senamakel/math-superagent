@@ -1,0 +1,50 @@
+sieve 300000000: 16252325 primes in 4.2s
+row 40: b=2769 intruder=8 (17s)
+row 80: b=31525 intruder=4 (19s)
+row 120: b=271622 intruder=6 (21s)
+row 160: b=1094263 intruder=4 (24s)
+row 200: b=10655261 intruder=28 (26s)
+row 240: b=16252084 intruder=None (29s)
+row 280: b=16252044 intruder=None (31s)
+rows done in 32.4s
+oracle mismatches vs blocks_depth1000 (rows 1..161): none
+
+events total: 74; events with intruder defined: 74
+k* (first row with b_k >= P-k-1, no intruder): 239
+genuine regime rows: 1..238
+
+giants (jump>1000), live regime: 14
+  row  35: jump     1314  b_k=     865  land=    2179
+  row  57: jump     1739  b_k=    4203  land=    5942
+  row  65: jump    17326  b_k=    5939  land=   23265
+  row  69: jump     8237  b_k=   23262  land=   31499
+  row  95: jump    61088  b_k=   31532  land=   92620
+  row  97: jump    11354  b_k=   92619  land=  103973
+  row 111: jump    37746  b_k=  103960  land=  141706
+  row 113: jump   129923  b_k=  141706  land=  271629
+  row 127: jump    53470  b_k=  271620  land=  325090
+  row 131: jump   190810  b_k=  325096  land=  515906
+  row 135: jump   217657  b_k=  515907  land=  733564
+  row 147: jump   360698  b_k=  733575  land= 1094273
+  row 162: jump  4323712  b_k= 1094263  land= 5417975
+  row 175: jump  5237310  b_k= 5417976  land=10655286
+  giant rows: [35, 57, 65, 69, 95, 97, 111, 113, 127, 131, 135, 147, 162, 175]
+  gaps between giants: [22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13]  max = 26
+
+== threshold table T(J): max gap between live events with jump > J ==
+J=    100: count 20  max-gap 26  rows [20, 23, 24, 35, 39, 51, 52, 57, 65, 69, 95, 97, 111, 113, 127, 131, 135, 147, 162, 175]
+J=    300: count 18  max-gap 26  rows [23, 35, 39, 51, 52, 57, 65, 69, 95, 97, 111, 113, 127, 131, 135, 147, 162, 175]
+J=   1000: count 14  max-gap 26  rows [35, 57, 65, 69, 95, 97, 111, 113, 127, 131, 135, 147, 162, 175]
+J=  10000: count 11  max-gap 30  rows [65, 95, 97, 111, 113, 127, 131, 135, 147, 162, 175]
+J= 100000: count  6  max-gap 18  rows [113, 131, 135, 147, 162, 175]
+
+events setting a new all-time max: 39 of 73
+giants NOT setting a record: none
+new giants beyond row 161: [(162, 4323712, 1094263), (175, 5237310, 5417976)]
+
+landing blocks of giants (in order): [2179, 5942, 23265, 31499, 92620, 103973, 141706, 271629, 325090, 515906, 733564, 1094273, 5417975, 10655286]
+geometric fit log(land) = a + m*x over 14 giants: m=0.5599 R2=0.9607  (per-event factor exp(m)=1.751)
+
+all s in {0,2}: True
+
+wrote code/out/wider_width_b.json (32.4s total)
