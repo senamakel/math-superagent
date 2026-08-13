@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://terrytao.wordpress.com/2026/08/12/a-digestion-of-the-proof-of-sendovs-conjecture/ | — | ### Recent Comments [image: Unknown's avatar] \| Anonymous on [A digestion of the proof of Se…][39] \| [image: Unknown's avatar] [40] \| [A digestion of the p…][40] on [Sendov’s conjecture for…][41] \|… |
 | 1 | https://terrytao.wordpress.com/career-advice/work-hard/ | Work hard | - [A partial digestion of the HRT counterexample][58] - [Career advice][3] - [Third SAIR competition: inverse Galois challenge][59] - [Work hard][60] - [Analysis I][61] - [About][2] - [On writing][4]… |
 
-_423 further candidates not shown; they are cited once each._
+_442 further candidates not shown; they are cited once each._
