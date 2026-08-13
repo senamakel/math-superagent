@@ -20,14 +20,14 @@ The design rationale behind them — every threshold that a live run has already
 met, and what it cost — is one level down, so that a rule stays readable and the
 evidence for it stays available.
 
-- [`docs/roles.md`](docs/roles.md) — the fifteen roles, the source adapters,
+- [`docs/roles.md`](docs/roles.md) — the nineteen roles, the source adapters,
   the two recall paths, and which workspace files reach which role's prompt.
 - [`docs/solution-loop.md`](docs/solution-loop.md) — the attempt/judge/reflect
   graph, its thresholds, and how a tool or provider failure is absorbed.
 - [`docs/runtime.md`](docs/runtime.md) — the crate layout, `RunBudget`, and the
   tracing that makes a run legible.
 - [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
-  research tree, the five derived ledgers, and checkpointing.
+  research tree, the six derived ledgers, and checkpointing.
 
 Keep them consistent with the code. A rule here that the code does not enforce
 is the failure this repository keeps recording: a prompt instruction is not a

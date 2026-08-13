@@ -1,13 +1,12 @@
 (1) Recharge surplus S_k = sum_{events i<k}(j_i+1) - (k-1):
-   recharge identity exact over all rows k=1..1000: False
-   failures: [(4, 12, 13), (5, 23, 24), (6, 22, 23)]
+   recharge identity exact over all rows k=1..1000: True
    min surplus over k=1..1000: 0 at k 1
    surplus monotone nondecreasing?  True
-   surplus at the first 10 regen rows (row, S just before the event): [(2, 6), (3, 13), (5, 26), (9, 30), (10, 65), (11, 105), (13, 107), (15, 185), (16, 188), (20, 307)]
+   surplus at the first 10 regen rows (row, S just before the event): [(2, 6), (3, 13), (4, 14), (5, 26), (9, 30), (10, 65), (11, 105), (13, 107), (15, 185), (16, 188)]
 
 (2) OLS slope log(jump) vs log(b) over 43 positive-jump events: 0.388 (near 1 => jump ~ c*b)
 
-(3) gap before small jumps (n=29): mean 3.62
-    gap before big jumps (n=13):   mean 4.23
+(3) gap before small jumps (n=46): mean 2.48
+    gap before big jumps (n=13):   mean 3.54
 
-(4) ratio b_next/b_this across consecutive regen rows: n=42, min 0.999, median 1.197, max 3.915
+(4) ratio b_next/b_this across consecutive regen rows: n=59, min 0.997, median 1.000, max 3.917

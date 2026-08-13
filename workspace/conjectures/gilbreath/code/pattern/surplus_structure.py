@@ -11,7 +11,7 @@ import json
 from collections import Counter
 d = json.load(open('code/out/blocks_depth1000.json'))
 b = d['b']; D = d['D']
-regen = [k for k in range(1, D) if b[k] > b[k-1]]
+regen = [k for k in range(1, D) if b[k] >= b[k-1]]  # events incl. jump-0 stalls
 live = [k for k in regen if k <= 161]  # genuine live regime
 b1 = b[0]
 
@@ -22,7 +22,7 @@ print("(1) Recharge surplus S_k = sum_{events i<k}(j_i+1) - (k-1):")
 # CORRECTION (this run): the earlier version compared 1-based expected values
 # against the 0-based list b[k], an off-by-one in the check that produced a
 # spurious failure at k=1.  Here exp is checked against b[k-1].
-events = regen  # 0-based transition indices with b[e] > b[e-1]
+events = regen  # 0-based transition indices with b[e] >= b[e-1] (incl. jump-0)
 esum = 0
 ev_it = 0
 bad = []
