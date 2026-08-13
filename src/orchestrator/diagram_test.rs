@@ -32,7 +32,11 @@ fn the_picture_carries_every_route_the_loop_wires() {
     // the tables is that these two counts cannot drift apart.
     assert_eq!(
         graph.edges.len(),
-        DIRECT_EDGES.len() + JUDGE_ROUTES.len() + REFLECT_ROUTES.len()
+        DIRECT_EDGES.len()
+            + JUDGE_ROUTES.len()
+            + REFLECT_ROUTES.len()
+            // Once fanning out, once joining.
+            + DIVERSIFY_ARMS.len() * 2
     );
 
     for (verdict, target) in REFLECT_ROUTES {
@@ -49,6 +53,25 @@ fn the_picture_carries_every_route_the_loop_wires() {
                 && edge.to_node.as_str() == target
                 && edge.from_port == verdict.to_string()),
             "no rendered edge for judge/{verdict} -> {target}"
+        );
+    }
+}
+
+/// The fan-out and the barrier are the loop's only concurrency, so a picture
+/// that lost either would be describing a sequential run.
+#[test]
+fn every_arm_is_drawn_both_fanning_out_and_joining() {
+    let graph = solution_loop();
+    for arm in DIVERSIFY_ARMS {
+        assert!(
+            graph.edges.iter().any(|edge| edge.from_node.as_str() == "diversify"
+                && edge.to_node.as_str() == arm),
+            "no fan-out edge to `{arm}`"
+        );
+        assert!(
+            graph.edges.iter().any(|edge| edge.from_node.as_str() == arm
+                && edge.to_node.as_str() == DIVERSIFY_MERGE),
+            "no join edge from `{arm}`"
         );
     }
 }

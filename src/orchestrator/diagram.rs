@@ -34,7 +34,9 @@ use tinyflows::visualization::render_graph;
 
 use crate::error::{Error, Result};
 
-use super::solutions::{DIRECT_EDGES, ENTRY, FINISH, JUDGE_ROUTES, REFLECT_ROUTES};
+use super::solutions::{
+    DIRECT_EDGES, DIVERSIFY_ARMS, DIVERSIFY_MERGE, ENTRY, FINISH, JUDGE_ROUTES, REFLECT_ROUTES,
+};
 
 /// The loop's nodes, as `(id, name)`.
 ///
@@ -48,11 +50,15 @@ use super::solutions::{DIRECT_EDGES, ENTRY, FINISH, JUDGE_ROUTES, REFLECT_ROUTES
 /// Node identity still comes from the edge table: a node named here but
 /// unreachable renders detached, which is the renderer's way of showing
 /// exactly that mistake.
-const NODES: [(&str, &str); 5] = [
+const NODES: [(&str, &str); 9] = [
     ("attempt", "attempt"),
     ("judge", "judge"),
     ("reflect", "reflect"),
     ("diversify", "diversify"),
+    ("diversify_library", "library"),
+    ("diversify_patterns", "patterns"),
+    ("diversify_invention", "invention"),
+    (DIVERSIFY_MERGE, "merge"),
     ("done", "done"),
 ];
 
@@ -100,6 +106,20 @@ pub(super) fn solution_loop() -> WorkflowGraph {
         .iter()
         .map(|(from, to)| edge(from, "always", to))
         .collect();
+    // The fan-out and the join. Captioned distinctly from `always` because they
+    // are the two edges in the loop that are not one-in-one-out: `fanout` marks
+    // three successors leaving together, and `join` marks an arrival the merge
+    // waits on rather than acts on.
+    edges.extend(
+        DIVERSIFY_ARMS
+            .iter()
+            .map(|arm| edge("diversify", "fanout", arm)),
+    );
+    edges.extend(
+        DIVERSIFY_ARMS
+            .iter()
+            .map(|arm| edge(arm, "join", DIVERSIFY_MERGE)),
+    );
     edges.extend(
         JUDGE_ROUTES
             .iter()

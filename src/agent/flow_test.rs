@@ -100,3 +100,96 @@ async fn drives_a_two_node_loop_on_the_tinyflows_runtime() {
         .expect("the loop runs to its finish node");
     assert_eq!(execution.state, 3);
 }
+
+#[tokio::test]
+async fn a_fan_out_runs_its_arms_at_once_and_the_barrier_waits_for_all_of_them() {
+    // The two primitives the diversify step now rests on, exercised together:
+    // one node commands three successors, each writes its own slot, and the
+    // merge runs once — after all three have arrived, not once per arrival.
+    use std::sync::Arc;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    use tinyflows::graph::{ClosureStateReducer, Command};
+
+    #[derive(Clone, Debug, Default, PartialEq, Eq)]
+    struct State {
+        slots: Vec<&'static str>,
+        merges: usize,
+    }
+
+    #[derive(Clone, Debug)]
+    enum Update {
+        Slot(&'static str),
+        Merged,
+    }
+
+    let live = Arc::new(AtomicUsize::new(0));
+    let peak = Arc::new(AtomicUsize::new(0));
+
+    let mut builder = GraphBuilder::<State, Update>::new()
+        .set_reducer(ClosureStateReducer::new(
+            |mut state: State, update: Update| {
+                match update {
+                    // Disjoint slots, so the order arms are committed in cannot
+                    // change the result — sorted here only so the assertion can
+                    // be written without depending on that order.
+                    Update::Slot(name) => {
+                        state.slots.push(name);
+                        state.slots.sort_unstable();
+                    }
+                    Update::Merged => state.merges += 1,
+                }
+                Ok(state)
+            },
+        ))
+        .with_parallel(true)
+        .add_node("fan", |_state: State, _ctx: NodeContext| async move {
+            Ok(NodeResult::Command(Command::goto(["a", "b", "c"])))
+        });
+
+    for arm in ["a", "b", "c"] {
+        let live = live.clone();
+        let peak = peak.clone();
+        builder = builder.add_node(arm, move |_state: State, _ctx: NodeContext| {
+            let live = live.clone();
+            let peak = peak.clone();
+            async move {
+                // Records how many arms were inside a node at the same moment.
+                // Without `with_parallel(true)` this never exceeds one, which is
+                // the failure the loop would silently regress to.
+                let now = live.fetch_add(1, Ordering::SeqCst) + 1;
+                peak.fetch_max(now, Ordering::SeqCst);
+                tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+                live.fetch_sub(1, Ordering::SeqCst);
+                Ok(NodeResult::Update(Update::Slot(arm)))
+            }
+        });
+    }
+
+    let graph = builder
+        .add_node("merge", |_state: State, _ctx: NodeContext| async move {
+            Ok(NodeResult::Update(Update::Merged))
+        })
+        .set_entry("fan")
+        .with_unconditional_fanout("fan", ["a", "b", "c"])
+        .add_waiting_edge("a", "merge")
+        .add_waiting_edge("b", "merge")
+        .add_waiting_edge("c", "merge")
+        .set_finish("merge")
+        .compile()
+        .expect("a fan-out with a registered barrier compiles");
+
+    let execution = graph
+        .run(State::default())
+        .await
+        .expect("the fan-out runs and the barrier clears");
+
+    assert_eq!(execution.state.slots, ["a", "b", "c"]);
+    // Once, not three times: a merge that ran per arrival would start an
+    // attempt on the first arm home and discard the other two.
+    assert_eq!(execution.state.merges, 1);
+    assert!(
+        peak.load(Ordering::SeqCst) > 1,
+        "arms took turns instead of running together"
+    );
+}

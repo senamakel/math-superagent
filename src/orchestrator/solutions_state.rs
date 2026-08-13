@@ -116,7 +116,6 @@ pub(super) async fn run(
     let judge_workspace = workspace.clone();
     let diversify_workspace = workspace;
     let reflect_memory = memory;
-    let diversify_agents = subagents.clone();
     let diversify_tracer = tracer;
     // Assembled once. The gate in it is the run's only one, so a reduction that
     // outlives the cycle that opened it cannot be joined by a second one
