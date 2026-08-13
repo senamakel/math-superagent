@@ -5,7 +5,7 @@ Full text: [[subbarao-warren-1966-unitary-perfect.full]] (Canad. Math. Bull. 9 (
 **Setup.** `σ*(N) = Π (p_i^{a_i} + 1)` over `p_i^{a_i} || N` is multiplicative; `N` is unitary perfect iff `σ*(N) = 2N`. First four found: `6, 60, 90, 87360` (the fifth, in the authors' footnote, was overlooked in an earlier abstract of one of them).
 
 **Establishments relevant here.**
-- The paper begins the parity argument: it is easy to see no odd UPN exists, and Lemma 1 handles `N = 2n`; Lemma 2 the case `3 | N` (this is the ancestor of the run's 2-adic budget identity, which is proved cleanly in `research/notes/parity-and-2-adic-budget.md`).
+- The paper begins the parity argument: it is easy to see no odd UPN exists, and Lemma 1 handles `N = 2n`; Lemma 2 the case `3 | N`. Lemma 1's remark (3.6) is the **1966 origin of the run's 2-adic budget identity** — see `research/summaries/subbarao-warren-1966-cambridge-pdf.md` (claim `sw1966-budget-identity-36`); the run's clean proof is in `research/notes/parity-and-2-adic-budget.md`.
 - **Theorem 4 (finiteness in fixed `ω`):** there are at most finitely many UPNs with a fixed number of distinct prime factors. This is the reason the finiteness question is at bottom a question about how many distinct primes can occur — the direct ancestor of the run's `|H_even| ≤ 4^N` prime-case reduction and Wall 1988's `ω(odd) ≥ 9`.
 
 **Consequence for this run.** Theorem 4 is the historical grounding for "rarity in a fixed `ω` is plausible, but growth of `ω` is open" — exactly the dichotomy GOAL.md warns about (rarity ≠ finiteness). The paper's Conjecture (`n > 87360 ⇒ no more`) is the original Subbarao–Warren conjecture this run attacks.

@@ -1,39 +1,72 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/graham-1989-squarefree-odd-part.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Graham (1989), *Unitary perfect numbers with squarefree odd part* — digest
 
-<!-- source: https://www.fq.math.ca/Scanned/27-4/graham.pdf | converted from PDF -->
+Full text: [[graham-1989-squarefree-odd-part.full]] (Fib. Quart. 27 (1989)
+317–322; submitted July 1987; OCR moderately noisy but readable).
 
-## What it claims
+## The theorem
 
-and  he later  showed  [4] that  this  is the fifth  unitary  perfect  number.  No
-other unitary  perfect numbers are known, and Wall  [5] has shown that any other
-such number must have an odd prime divisor exceeding 2 1 5 .
-In this paper, we consider  the existence of unitary perfect numbers of the
-form  2ms, where  s is a squarefree  odd integer.  We shall prove  that  there are
-only three such numbers.
+> **Theorem.** If `2^m s` is a unitary perfect number and `s` is squarefree
+> odd, then exactly one of
+> `m = 1, s = 3` (gives `6`);
+> `m = 2, s = 3·5` (gives `60`);
+> `m = 6, s = 3·5·7·13` (gives `87360`).
 
-Theorem:  If 2ms is a unitary  perfect  number and s  is squarefree, then either
-m  -  \  and  s  = 3,  m = 2 and  s = 3 • 5, or  m = 6 and  s = 3 • 5 • 7 s 13.
+So the UPNs whose odd part is squarefree are exactly `6, 60, 87360`. In
+particular **90 and the fifth UPN (whose odd parts contain `3^2` and `5^4`)
+are excluded from this classification** — they are the two known examples with
+a repeated odd prime power, and any *sixth* UPN must have a repeated odd prime
+power (a non-squarefree odd part).
 
-2.  Preliminaries
+## Method (why it is not a search)
 
-Throughout this paper, the  letter  s shall be used to denote an odd square-
-free  number.  The letter p, with or without a subscript, shall denote an odd
-prime.  The letter  q,  with  or without  a subscript,  shall  denote  a Mersenne
-prime.
-Our  starting  point is the observation that, for any fixed  m, it is easy to
-determine  all unitary  perfect  numbers  of the form  2ms.  From the previously
-stated formula for  o\n),  we see  that if s  = pYp2  - - -  P r > then  2ms  is unitary
-perfect if and…
+The proof is "top-down/bottom-up" ratio analysis of the identity
 
-## Statements it makes
+```
+σ*(2^m s)/(2^m s) = ((2^m+1)/2^m) · Π (p_i+1)/p_i = 2
+```
 
-Theorem:  If 2ms is a unitary  perfect  number and s  is squarefree, then either
-m  -  \  and  s  = 3,  m = 2 and  s = 3 • 5, or  m = 6 and  s = 3 • 5 • 7 s 13.
+- Every odd prime dividing `2^m + 1` must appear as a denominator on the RHS;
+  forcing a prime to appear twice kills the case (e.g. `m=1`: `3 | 2^1+1`,
+  `43 | 2^1+1`, `11 | 43+1`, `3 | 11+1` ⇒ 3 twice).
+- Some `p_i` must be a Mersenne prime (a prime with `p_i + 1` a power of 2).
+- For a Mersenne prime `q | s`, the chains `p_1 = q, p_{i+1} | p_i + 1` grow
+  at least geometrically (`p_2 ≥ 2p_1 − 1`, `p_3 ≥ 4p_1 − 3`, …), bounding the
+  product `G(q) = Π (p_i+1)/p_i`. Lemmas 1–4 give explicit `G(q)` bounds
+  (e.g. `G(q) < (2^m)/(2^m − 1)` for q a Mersenne prime; products for
+  `q ≥ 127` and `q ≥ 8191`).
+- The balance forces `Π G(q_i) = 2`; splitting `m` odd / `m ≡ 0 mod 4` /
+  `m ≡ 2 mod 4`, each case is shown to have LHS `< 2` if `s` is any larger
+  product. The cases `m ≤ 10` are checked directly, then `m > 10`.
 
-Lemma  1:  If p and 6 are real numbers with p > 1, then
+## Consequences for this run
 
-Lemma  4:  Let (7., ..., q£ be the Mersenne primes that divide  s  and are at least
-127.  Then  °
-G(qd) ... G(qz) * g .
+- Any sixth UPN `n = 2^a·m` (m odd) has a **repeated odd prime power**. This
+  is the sharpest structural restriction from the "squarefree" side: the two
+  kernels that actually occur are `3^2` (in 90) and `5^4` (in the fifth).
+- Any lemma that kills all repeated odd prime powers is **false** (it kills 90
+  and the fifth example). Run every candidate lemma against all five witnesses
+  before recording it as anything but `asserted`.
+- The Mersenne-prime chain structure (`p_{i+1} | p_i + 1`, geometric growth)
+  is the ancestor of the odd dependency graph / Pratt-tree machinery that
+  Maciejewski uses for the 3-Higgs primes.
 
-*[digest of a 12202 character source; every section, statement, and proof in full at `research/sources/graham-1989-squarefree-odd-part.full.md`]*
+**Hypotheses:** `s` squarefree odd; `n = 2^m s` unitary perfect. Held as
+`sourced` (proved in the paper; the OCR's Lemma statements are partial but the
+theorem statement and the three-case bounding argument are fully legible).
+
+```claim
+id: graham1989-squarefree-odd-part
+statement: A unitary perfect number with squarefree odd part s, n = 2^m s,
+  is exactly one of 6 (2^1*3), 60 (2^2*3*5), 87360 (2^6*3*5*7*13); so any
+  sixth UPN has a repeated odd prime power.
+hypotheses: n = 2^m s unitary perfect, s odd squarefree
+holds-here: yes - applies to every hypothetical sixth UPN, forcing a
+  non-squarefree odd part
+status: asserted (proved in Graham 1989; not re-derived here)
+bearing: the two occurring non-squarefree kernels are 3^2 (90) and 5^4
+  (fifth); a lemma ruling out all repeated odd prime powers is false
+anchor: research/sources/graham-1989-squarefree-odd-part.full.md
+contradicts: (none) -- 90 and 5^4 lie outside the squarefree-odd-part
+  hypothesis, so the theorem does not touch them
+answers: whether-a-sixth-has-repeated-odd-prime
+```

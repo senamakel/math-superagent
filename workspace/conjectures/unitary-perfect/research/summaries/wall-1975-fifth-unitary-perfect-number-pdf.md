@@ -1,4 +1,48 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wall-1975-fifth-unitary-perfect-number-pdf.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wall (1975), *The fifth unitary perfect number* — digest
+
+Full text: [[wall-1975-fifth-unitary-perfect-number-pdf.full]] (Canad. Math.
+Bull. 18 (1975) 115–122; OCR noisy, exponents of the fifth example render as
+`2^183 · 5^47` in the raw text — the true factorization is `2^18 · 5^4`).
+
+**Establishments (read from the full text):**
+
+- **The result.** `W = 146,361,946,186,458,562,560,000` is the *next* unitary
+  perfect number after 87360: the paper eliminates every UPN `N < W`. `W` is
+  `2^18 · 3 · 5^4 · 7 · 11 · 13 · 19 · 37 · 79 · 109 · 157 · 313`.
+- **Attribution to Subbarao 1970 §2:** "Subbarao [1] has reported the
+  impossibility of having A be 0, 3, 4, 5, 7, 8, 9 or 10, and that if A = 1,
+  then N = 6 or 90; if A = 2, then N = 60; if A = 6, then N = 87360. Thus we
+  may restrict our attention here to A ≥ 11." [1] = Subbarao, *Are there an
+  infinity of unitary perfect numbers?*, AMM 77 (1970) 389–390.
+- **Seed cap.** For `N < W`, `a < 38` (from `(3/2)·2^38 > W`).
+- **The 2-adic budget identity appears here too** (p. 116): "If N is unitary
+  perfect and N = 2^A k with k odd, then as a consequence of (2), the number
+  of distinct prime divisors of k is no more than A + 1." — the same identity
+  derived in `research/notes/parity-and-2-adic-budget.md`.
+- **Elimination method (3):** if N has enough known divisors to require
+  `N > W`, the case is dead. The "excess" test (e) / bound (6) via largest
+  prime `p | 2^A+1`; runtime was partly by computer (11 ≤ A ≤ 38).
+- **Special cases (8)–(15):** descend the candidates, e.g. (15) forces
+  `N = W` exactly.
+- **"10^102" does not occur anywhere in this paper** — see
+  `research/notes/wall-1975-bounds-and-102-claim.md`.
+
+```claim
+id: wall1975-bound-is-1e23-not-1e102
+statement: Wall 1975 proves W is the next unitary perfect number after 87360
+  by eliminating all N < W = 146361946186458562560000 ~= 1.46e23; the seed cap
+  is a < 38 for N < W; the number of distinct prime divisors of the odd part
+  is at most a + 1 (the 2-adic budget identity); "10^102" does not occur.
+hypotheses: full Cambridge PDF is the primary text and accurately OCR'd
+holds-here: yes - fixes the actual historical search scale; compute policy
+  unchanged (10^23 already unreachable)
+status: asserted (sourced from the held Wall 1975 full text)
+bearing: the run must state 10^23, not 10^102, when citing Wall; the
+  10^102 figure remains an orphan claim
+anchor: research/sources/wall-1975-fifth-unitary-perfect-number-pdf.full.md
+contradicts: GOAL.md, ROOT.md, CONTEXT.md to the extent each states 10^102
+answers: primary-source-for-the-10-102-search-bound
+```
 
 <!-- source: https://www.cambridge.org/core/services/aop-cambridge-core/content/view/B1919CB85AE1D97A7BAD3842B6E2AFB4/S000843950006598Xa.pdf/the-fifth-unitary-perfect-number.pdf | converted from PDF -->
 

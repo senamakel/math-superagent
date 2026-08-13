@@ -1,0 +1,74 @@
+  A1 prefix matches problem.md: True   A1 = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2]
+  A2 prefix matches problem.md: True   A2 = [1, 0, 2, 2, 2, 2, 2, 2, 4]
+  A3 prefix matches problem.md: True   A3 = [1, 2, 0, 0, 0, 0, 0, 2]
+PRELUDE SELF-CHECK: PASS
+
+Gap-sequence comparison (n = 17983 gaps in each column)
+----------------------------------------------------------------------------------------------------------
+                                     primes<200000             rand{2..20} rand{2..20} v1(first=2)
+number of gaps                               17983                   17983                   17983
+max gap                                         86                      20                      20
+mean gap                                   11.1214                 11.0189                 11.0445
+max window SUM, W=100                         1434                    1310                    1280
+max window mean, W=100                     14.3400                 13.1000                 12.8000
+max window SUM, W=1000                       12370                   11574                   11408
+max window mean, W=1000                    12.3700                 11.5740                 11.4080
+max window SUM, W=10000                     118382                  110928                  111304
+max window mean, W=10000                   11.8382                 11.0928                 11.1304
+freq gap>6                                  0.5690                  0.7021                  0.7034
+freq gap>10                                 0.3969                  0.5026                  0.5025
+freq gap>20                                 0.1231                  0.0000                  0.0000
+freq gap>50                                 0.0034                  0.0000                  0.0000
+max element (p_max)                         199999                  198154                  198616
+log^2(p_max)                               148.988                 148.762                 148.819
+max gap / log^2 p                           0.5772                  0.1344                  0.1344
+Cramer: max gap<=log^2 p                      True                    True                    True
+
+==========================================================================================================
+Hypothesis checks with the exact predicates used, then the verdict
+==========================================================================================================
+
+[H1] bounded mean gap per sliding window
+     predicate: max over W in {100,1000,10000} of (max window mean)
+                <= 2 * global mean + 1
+     primes<200000            max win mean  14.3400  <= bound  23.2429?  True
+     rand{2..20}              max win mean  13.1000  <= bound  23.0377?  True
+     rand{2..20} v1(first=2)  max win mean  12.8000  <= bound  23.0891?  True
+     -> primes: SATISFIED;  {2..20} columns: SATISFIED (window means of
+        i.i.d. sequences converge to the global mean; any finite-variance
+        sequence passes, so this predicate cannot separate)
+
+[H2] bounded empirical frequency of gaps > G  (G = 6,10,20,50)
+     predicate: every frequency lies in [0,1] (they are probabilities)
+     primes<200000            freq>6=0.5690  freq>10=0.3969  freq>20=0.1231  freq>50=0.0034
+     rand{2..20}              freq>6=0.7021  freq>10=0.5026  freq>20=0.0000  freq>50=0.0000
+     rand{2..20} v1(first=2)  freq>6=0.7034  freq>10=0.5025  freq>20=0.0000  freq>50=0.0000
+     -> primes: SATISFIED;  {2..20} columns: SATISFIED -- freq>20 and
+        freq>50 are identically 0 (hard cap 20), a STRICTER tail bound
+        than the primes', so again no separation
+
+[H3] Cramer g_n = O(log^2 p_n)
+     predicate (sharp folklore form): max gap <= log^2(max element)
+     primes<200000            86 <= log^2(199999) = 148.988?  True   ratio = 0.5772
+     rand{2..20}              20 <= log^2(198154) = 148.762?  True   ratio = 0.1344
+     rand{2..20} v1(first=2)  20 <= log^2(198616) = 148.819?  True   ratio = 0.1344
+     -> primes: SATISFIED;  {2..20} columns: SATISFIED (max gap 20 makes
+        it trivially true at any reachable p)
+
+VERDICT: none of the three candidate hypotheses separates the prime
+column from the {2..20} columns.  For every one of H1, H2, H3 the prime
+column is SATISFIED and BOTH {2..20} columns are SATISFIED, so the
+premise 'satisfied by primes AND failed by {2..20}' holds for no candidate.
+The reason is structural: the i.i.d. {2..20} model reproduces the primes'
+first moment (mean 11.1214 vs 11.0189) with window means and
+window maxima of the same order, and the 20-cap makes the tail hypotheses
+(H2, H3) satisfied more strongly by the random columns than by the primes.
+Where the columns genuinely differ, the difference goes the WRONG way for
+separation: max gap 86 (primes) vs 20/20;
+prime freq(gap>50) = 0.00345 vs 0.00000 in both random columns --
+the random model is TAMER on the tail.  These three candidates therefore
+cannot be the property behind Gilbreath's conjecture: a separating
+hypothesis must use structure beyond bounded support / bounded mean
+(e.g. the non-concentration / 2-separated-set avoidance condition of
+Chase-Hunter-Tao, which the primes satisfy and Eppstein-type models
+exploit).

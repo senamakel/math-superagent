@@ -269,3 +269,31 @@ Three changes made:
 2. **Genus integrality recorded, not adopted** — the four-case parity proof is written into CONTEXT.md with its proper caveats: effective, uniform, bounds nothing, the ten prediction matches are internal consistency not independent confirmation, and this run must verify it independently before claiming it as established. TASKS.md item 4 now asks for that independent verification.
 
 3. **Mason-Stothers re-prioritised** — `check_mason_stothers_bound.py` is still unrun after directive 12 and is now TASKS.md item 3, the top remaining action item. It needs `sympy` which the container has and the host does not — exactly the condition directive 13 describes.
+
+## 14 — from steer
+
+The Singular out-of-sample test is the right experiment and the best result this run has produced.
+
+code/out/genus_falsify.captured.txt: 17 candidate pairs, all out-of-sample, predicted FIRST from the closed form, then recomputed independently in Singular. 17 of 17 returned, MISMATCHES: 0, including {13,26} gcd=13 -> 144, {14,28} gcd=14 -> 169, {16,26} -> 187. Predict-then-compute-by-another-route is genuine falsification methodology, and it answers directive 13 exactly. The closed form now has out-of-sample CAS confirmation, not in-sample agreement.
+
+Record it: claim id genus-closed-form-out-of-sample-verified, status checked, anchor code/out/genus_falsify.captured.txt. State both attributes - the verification is effective, and it is NOT uniform in k, being 17 specific pairs. Say which m,n range the pairs span.
+
+Caveat on genus-closed-form-integrality, now proved=3 in your ledger. The only files carrying it are research/notes/genus-integrality-proved.md, which I wrote, and CLAIMS.md. You adopted it without an independent capture. The proof is four parity cases and self-checking, so I am not disputing it - but make it rest on your own arithmetic:
+
+  timeout 300 python3 -c "
+  from math import gcd
+  print(len([1 for m in range(1,800) for n in range(1,800) if ((m-1)*(n-1)+1-gcd(m,n))%2]))" 2>&1 | tee code/out/integrality_reproduced.captured.txt; echo EXIT_CODE=$?
+
+STILL UNRUN, third directive: code/out/check_mason_stothers_bound.py. Captures 55 -> 56, none is mason. It needs sympy - your container has it, the host does not. Run it; if slack >= 0 throughout, record mason-stothers-vacuous-for-binomials as checked and mark research/approaches/mason-stothers-abc.md refuted.
+
+Infrastructure, not your fault: your Cognee container was OOM-killed seven times in the last hour. It still reports healthy, so recall may be silently degraded.
+
+All four parts of the directive are now carried into the workspace. What I changed and why:
+
+1. **Recorded the out-of-sample genus verification as a checked claim** — new note `code/out/genus_out_of_sample_verified.md` with claim id `genus-closed-form-out-of-sample-verified`, status `checked`, anchor `code/out/genus_falsify.captured.txt`. It states both attributes the directive required (effective: yes; uniform in k: no, 17 specific pairs) and the span (m in 2..16, n in 13..28). It's now live in the re-derived CLAIMS ledger.
+
+2. **Rewrote TASKS.md** so the immediate priority is directive 14's work: item 1 (record the claim) is done, item 2 carries the operator's exact integrality-reproduction command (to be run by the executor, not me — I don't compute), item 3 carries the still-unrun `check_mason_stothers_bound.py` command, and item 4 makes the Matveev-{2,3} constant computation the forward direction with explicit "skip sub-agents, write the program directly" per the solver note.
+
+3. **Amended CONTEXT.md** (staying in budget): added the out-of-sample confirmation to the genus bullet with both attributes, and updated the integrality gap note to point at the specific reproduction command.
+
+No thread was opened or killed — the directive confirms existing work and reaffirms the already-live Matveev direction rather than starting or abandoning an attack line. No `request_research` was filed because the named gap is a computation, and Matveev's primary source is already held. The three commands (items 2, 3, 4) are handed to the next attempt via TASKS.md, since I do not run programs.

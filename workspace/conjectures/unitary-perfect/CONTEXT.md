@@ -29,7 +29,10 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 - **(proved, checked against all five) 2-adic budget identity**:
   `Σ_i v2(p_i^{e_i}+1) = a + 1`, exactly; corollary `ω(odd part) ≤ a + 1`,
   equality iff every odd component `≡ 1 (mod 4)`. Bounds `ω` *above*; the
-  open useful direction is a **lower** bound on `a`. Same note.
+  open useful direction is a **lower** bound on `a`. Same note. **Provenance
+  (scholar-pass 2026-08):** the identity is SW 1966 Lemma 1 remark (3.6) and
+  Wall 1975 p.116; this run's derivation is an independent complete proof, not
+  a new result.
 - **(sourced, three primary Wall texts) Subbarao 1970: any sixth UPN has
   `a ≥ 11`** — i.e. `2^11 | n`; `a = 0,3,4,5,7,8,9,10` impossible,
   `a=1 → {6,90}`, `a=2 → {60}`, `a=6 → {87360}`. The 2-page AMM note is
@@ -47,11 +50,15 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   would drop the claim to `a ≥ 8`. `research/notes/subbarao-1970-a-ge-11.md`.
 - **(sourced) Graham 1989:** UPNs with squarefree odd part are exactly
   `6, 60, 87360` — so any sixth example has a **repeated odd prime power**.
+  The summary is corrected (scholar-pass): previous "Digest only" banner was a
+  template bug; file now carries the theorem and method (Mersenne-prime
+  chains, `p_{i+1} ≥ 2p_i − 1` geometric growth).
 - **(sourced) Subbarao–Warren 1966:** for each fixed `ω`, at most finitely
-  many UPNs.
+  many UPNs (Theorem 4); `m = 8,9,10` are **not** excluded in 1966 (that is
+  Subbarao 1970).
 - **(sourced, full text held) Maciejewski arXiv:2605.20475** (May 2026; 3-Higgs
-  definition confirmed §1.1; OEIS A057447). Cardinal facts, anchor
-  `research/notes/heven-and-3-higgs-structure.md`:
+  definition confirmed §1.1; OEIS A057447). Cardinal facts — anchor
+  `research/notes/paper-extraction.md` (verified verbatim, scholar-pass 2026-08):
   - Every prime divisor of a UPN is **3-Higgs**: `p−1 | (product of smaller
     3-Higgs primes)^3`, exponent cap 3 (17 first non-Higgs, `v2(16)=4`).
   - Odd dependency graph, edges `p → r` when `r | p^e + 1`; inside the bounded
@@ -120,6 +127,26 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   even" formally proved by AlphaProof per a linked fork — the fetched copy
   carries `sorry` bodies. Pointer for any lean_prover work; build nothing on
   it unverified.
+- **(scholar-pass 2026-08) Maciejewski full text verified verbatim.** Read the
+  complete arXiv:2605.20475 paper; the `paper-extraction.md` digest is
+  accurate. Additional pinned details: the 279→272 arithmetic is *inside* the
+  paper (Theorem 19 factor-cache alone gives ≤ 279; Lemma 20's seven closures
+  give 272); Lemma 20's exact table (m → p* digits → witness q) is
+  2446→368→4513, 10294→1549→2657, 10958→1649→593, 17398→2612→139313,
+  19066→2870→343081, 20282→3053 (v2(p*−1)=5071), plus 30882 = 6·5147 via
+  Prop 4(3); the five composite-k inherited candidates are m ∈ {27978, 30354,
+  31538, 41898, 46630}; Prop 5's proof uses the Fermat-number obstruction
+  (`ord_q(2) = 2^(j+1)`, Lucas `q ≡ 1 (mod 2^(j+2))`, `v2(q−1) ≥ 4 > 3`).
+  Claims `heven-verified-members`, `heven-frontier-50000`, `heven-two-mod-four`,
+  `hb-*` all confirmed against the document.
+- **(scholar-pass 2026-08) Wall 1975 read cover-to-cover.** The fifth UPN's
+  exact factorization `2^18·3·5^4·…` is confirmed (OCR renders exponents as
+  `2^183·5^47`; context + OEIS confirm 18 and 4). The paper's introduction
+  *states the 2-adic budget identity*: for `N = 2^A k` UPN, k odd, the number
+  of distinct prime divisors of k is at most A+1 — so the budget identity has
+  1975 provenance too (and 1966 via SW Lemma 1 (3.6), recorded in the
+  subbarao-warren summary). "10^102" does **not** occur in Wall 1975; the
+  actual bound is `N < W ≈ 1.46e23`, seed cap `a < 38`.
 
 ## Ruled out
 
@@ -210,17 +237,26 @@ Durable Cognee memory from earlier runs; consistent with Established here
 - **Verify harness vs expectation:** current `heven_classify` Phase A fails
   its self-tests while earlier CONTEXT described the pipeline as passing;
   nothing built on classify's Phase A/B output is certified until green.
-- **Counting bounds: 279 vs 272.** Memory recall of the paper's full text
-  surfaces "the factor-cache verification alone yields
-  `|H_even∩[2,50000]| ≤ 279`"; the abstract's 272 is the final rigorous bound
-  after Lemma 20's seven closures (six APR-CL-verified candidates plus 30882
-  via Prop 4(3): 279 − 7 = 272). Same pipeline, two stages — not a
-  disagreement. The 820 / 782 / 38 figures in the same passage
-  (Higgs-cubefree m=2k candidates / killed by a verified non-3-Higgs witness /
-  partial-cofactor unknowns, primitive cases m=2p) are a coarser enumeration
-  level than the 10 verified + 262 undecided split; how they fold into the
-  stages is not pinned in the extraction note — read paper §5 before quoting
-  any of them.
+- **Counting bounds: 279 vs 272 — RESOLVED (scholar-pass 2026-08).** The
+  arithmetic is *inside* Maciejewski's paper: Theorem 19's factor-cache
+  verification alone yields `|H_even∩[2,50000]| ≤ 279` (198 undecided in
+  (1200,40000], 33 in (40000,45000], 38 in (45000,50000]); Lemma 20's seven
+  closures (2446, 10294, 10958, 17398, 19066, 20282 via APR-CL-verified
+  witness primes, plus 30882 = 6·5147 via Prop 4(3) from 10294) lower it to
+  272. Same pipeline, two stages, resolved in the document. The 820 / 782 / 38
+  figures (Theorem 19: 820 Higgs-cubefree candidates in (45000,50000], 782
+  killed by verified non-3-Higgs witness, 38 partial-cofactor unknowns) are
+  the coarser per-interval enumeration level, consistent with the 10 verified
+  + 262 undecided split.
+- **CLAIMS.md Contradictions table is corrupted** — the derive script
+  misreads free-text `contradicts:` fields and emits word-token garbage rows
+  (`contradicts (none)`, `contradicts research/notes/lower-bound-on-a.md only
+  in that`, `contradicts GOAL.md, ROOT.md, CONTEXT.md to the extent…`). The
+  real contradictions the notes assert are: (1) `subbarao1970-a-ge-11`
+  supersedes the run's `a ≥ 8` — a strength ordering, not a disagreement; (2)
+  `wall1975-bound-is-1e23-not-1e102` contradicts GOAL/ROOT/CONTEXT only in the
+  unattested "10^102" figure. Read the notes, not the ledger table, until the
+  parser is fixed.
 
 ## Gaps
 

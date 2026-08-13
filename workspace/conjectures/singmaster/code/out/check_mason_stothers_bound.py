@@ -5,18 +5,18 @@ Mason-Stothers (A'+B'+R'=0, coprime): max deg <= N0(A'B'R') - 1 must hold;
 we verify it is always satisfied (vacuous) for binomial pairs, i.e. the
 inequality never binds.
 """
-from sympy import binomial, Poly, symbols, gcd
+from sympy import binomial, Poly, symbols, gcd, expand_func
 
 T = symbols('T')
 
 def vacuous(k1, k2):
-    A = Poly(binomial(T, k1) * __import__('math').factorial(k2), T)
-    B = Poly(-binomial(T, k2) * __import__('math').factorial(k1), T)
+    A = Poly(expand_func(binomial(T, k1)) * __import__('math').factorial(k2), T)
+    B = Poly(-expand_func(binomial(T, k2)) * __import__('math').factorial(k1), T)
     R = A + B
     D = Poly(gcd(A.as_expr(), B.as_expr()), T)
-    A1 = Poly(A.as_expr() / D.as_expr(), T)
-    B1 = Poly(B.as_expr() / D.as_expr(), T)
-    R1 = Poly(R.as_expr() / D.as_expr(), T)
+    A1 = A.exquo(D)
+    B1 = B.exquo(D)
+    R1 = R.exquo(D)
     # number of distinct roots of the product (over C), upper bounded by deg sums
     N0_ub = A1.degree() + B1.degree() + R1.degree()
     maxdeg = max(A1.degree(), B1.degree(), R1.degree())

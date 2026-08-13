@@ -92,6 +92,18 @@ Each marked with evidence class and a link.
   period) window gives a mean below `(m-1)/2` and looks like a refutation;
   state periodicity first, mean second (whole-period mean is exactly (m-1)/2
   for m=2..5).
+  **Out-of-sample Singular confirmation — `checked`, effective but NOT uniform.**
+  `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2` was predicted FIRST from the closed form,
+  then recomputed independently in Singular for 17 out-of-sample pairs (outside
+  the 2..12 × 2..9 grid the formula was originally fitted to; pairs span m in
+  2..16, n in 13..28): 17/17 returned, 0 mismatches, incl. {13,26} gcd 13→144,
+  {14,28} gcd 14→169, {16,26} gcd 2→187. Claim
+  `genus-closed-form-out-of-sample-verified` in
+  `code/out/genus_out_of_sample_verified.md`; anchor
+  `code/out/genus_falsify.captured.txt`. Effective: yes (finite exact CAS
+  recomputation); **uniform in k: no** (17 specific pairs). This confirms the
+  formula past the fitted grid but does not prove it — the uniform derivation
+  (Riemann–Hurwitz + singularity delta-invariant) is still open (TASKS.md item 5).
 
 - **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`
   from primary where noted; Singmaster 1971 Monthly still NOT held.**
@@ -387,7 +399,7 @@ Pintér–Tengely 2023) and the OEIS row-count convention `a059233-rowcount-half
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
   shape-of-the-boundary, not as a claim about large-t behavior.
-- **Genus integrality is proved (operator), NOT independently verified by this run.** The four-case parity argument is recorded. This run must verify it independently (second engine or wider bounds) before claiming it as established. Until then the claim is `operator-computed`, not `proved` by this run. See TASKS.md item 4.
+- **Genus integrality is proved (operator), NOT independently verified by this run.** The four-case parity argument is recorded. This run must reproduce the arithmetic itself — the operator's exact check is `len([1 for m in range(1,800) for n in range(1,800) if ((m-1)*(n-1)+1-gcd(m,n))%2])`, expected `0`, capture to `code/out/integrality_reproduced.captured.txt` — before claiming it as established. Until then the claim is `operator-computed`, not `proved` by this run. See TASKS.md item 2.
 - **RESOLVED: Two zero-byte captures fixed.** `genus_falsify.captured.txt` and `pattern_fam_seqs.captured.txt` now carry one-line explanations (EXIT_CODE=1, program failed silently). Per directive 13.
 - **LEDGER DISCIPLINE: 44 asserted, 8 checked, 2 proved.**
 - **PROCESS (resolved): the five formerly-uncaptured programs now have captures.**

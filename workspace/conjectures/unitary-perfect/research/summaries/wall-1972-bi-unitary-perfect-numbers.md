@@ -1,4 +1,7 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wall-1972-bi-unitary-perfect-numbers.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wall (1972), *Bi-unitary perfect numbers* — digest
+
+Full text: [[wall-1972-bi-unitary-perfect-numbers.full]] (Proc. Amer. Math.
+Soc. 33 (1972) 39–42; abstract and theorem statements legible).
 
 <!-- source: https://www.ams.org/journals/proc/1972-033-01/S0002-9939-1972-0289403-9/S0002-9939-1972-0289403-9.pdf | converted from PDF -->
 

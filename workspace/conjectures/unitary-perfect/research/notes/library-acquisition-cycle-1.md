@@ -30,14 +30,15 @@ in the notes/threads already in the library.
    The likely carriers are Guy §B3 (body not yet acquired) or the Wall–Hagis
    1972 letter (scanned, no text layer).
 4. **Hagis 1984**, *Lower bounds for unitary multiperfect numbers*, Fib. Quart.
-   22(2) (1984) 140–144 — open at `https://fq.math.ca/Scanned/22-2/hagis.pdf`
-   (and `https://www.mathstat.dal.ca/FQ/Scanned/22-2/hagis.pdf`), scanned.
-   Useful content (from the search-result excerpt, not yet from the file):
-   Theorem 1 no odd unitary multiperfect numbers; for UMP n = 2^a·… with
-   σ*(n) = kn: k = 4 or 6 ⇒ t > 51, n > 10^1010 and 2 | n... These bounds are
-   for *multiperfect* numbers (k ≥ 4), not unitary perfect (k = 2), so they do
-   not directly bound a sixth UPN; they are background for the budget/ω
-   structure. Fetch failed this cycle; retry.
+   22(2) (1984) 140–144 — **now held and digested**:
+   `research/sources/hagis-1984-lower-bounds-ump.full.md`,
+   `research/summaries/hagis-1984-lower-bounds-ump.md` (claim
+   `hagis1984-ump-lower-bounds-exact`). Full theorems: no odd UMP; for
+   σ*(n) = kn: k ≥ 8 ⇒ n > 10^663, t > 247; k = 4 or 6 ⇒ n > 10^110, t > 51,
+   2^49|n; k odd ≥ 5 ⇒ n > 10^461, t > 166; unitary triperfect k = 3: t > 45,
+   n > 10^102, 2^16|n (with 3^2∥n ⇒ t > 237, 3^3∥n ⇒ t > 544). These bound
+   multiperfect (k ≥ 3), NOT unitary perfect (k = 2); background for the
+   budget/ω structure only.
 
 ## Blocked acquisitions recorded so nobody retries the same dead routes
 

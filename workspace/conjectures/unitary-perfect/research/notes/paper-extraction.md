@@ -204,4 +204,17 @@ answers: whether-pass-loop-a1f1
 - The paper settles the impostor branch only inside box ℬ at max a=10000; the
   UPN conjecture as a whole is untouched beyond that.
 le is untouched beyond that.
- that.
+
+## Verified against the full text (scholar pass, 2026-08)
+
+Read the complete document (`research/sources/maciejewski-bounded-box-subbarao-warren.full.md`). Every numbered item above is present verbatim and the digest is accurate. Additional precision worth recording:
+
+- **Theorem 19** reports `820` Higgs-cubefree candidates in `m = 2k`, `45000 < m ≤ 50000`, of which `782` are killed by a verified non-3-Higgs witness (after an 18-case second-pass FactorDB retry) and `38` are partial-cofactor unknowns. This is the coarser enumeration level behind the earlier "820 / 782 / 38" memory fragment.
+- **The 279 → 272 arithmetic is inside the paper**, not an external reconciliation: Theorem 19's factor-cache verification alone gives `|H_even∩[2,50000]| ≤ 279` (with `198` undecided in `(1200,40000]`, `33` in `(40000,45000]`, `38` in `(45000,50000]`); the seven deep-Pratt closures of Lemma 20 (`2446, 10294, 10958, 17398, 19066, 20282`, plus `30882` via Prop 4(3) from `10294`) lower it to `272`. So "279 vs 272" is two stages of one pipeline, resolved.
+- **Lemma 20 exact table**: `m → p* digits → non-3-Higgs witness q` = 2446→368→4513 (v2(4512)=5), 10294→1549→2657 (v2(2656)=5), 10958→1649→593 (v2(592)=4), 17398→2612→139313 (v2(139312)=4), 19066→2870→343081 (Pratt 343081≻953≻17), 20282→3053 (direct v2(p*−1)=5071). All six `p*` APR-CL-verified via PARI `isprime(n,2)`, runtime logs bundled; `30882 = 6·5147` closed by Prop 4(3) from `10294 = 2·5147`.
+- **Prop 5 proof** uses the Fermat-number obstruction: any `q | F_j = 2^(2^j)+1` has ord_q(2) = 2^(j+1), and by the Lucas refinement `q ≡ 1 (mod 2^(j+2))`, so `v2(q−1) ≥ j+2 ≥ 4 > 3`; hence `m ∉ H` whenever `v2(m) ≥ 2`. This kills the `m ≡ 0 (mod 4)` branch without any factoring.
+- **Theorem 7's bound is `4^N`**, where N = |H_even^prime|, from `v_q(k) ≤ 3` and the divisor-closure (Prop 4(3)): each prime of `k` must itself be in the prime branch, and each occurs with exponent 0..3.
+- **The five composite-`k` inherited candidates are `m ∈ {27978, 30354, 31538, 41898, 46630}`**, each with `k` a product of two Higgs primes — from Theorem 7's paragraph.
+- **The 53-candidate / 82-prime v2 statistics** (`v2(q−1) = 2 : 53 primes; = 3 : 29; ≥ 4 : 0` across 82 verified primes of open candidates in m ≤ 20000) are the empirical basis for Conjecture 29.
+- **§6's "next steps"** include enlarging the box ℬ (max prime to 5000/10000, SCC size 7/8) and a formal-verification program (Pratt-certificate machine-checked Theorems 8–17) — both candidate avenues for this run.
+- `anc/` (factor cache, APR-CL transcripts, `candidate_frontier_50000.tsv`, three verification scripts) is bundled as supplementary material, referenced by `anc/scripts/...` paths in §7; not downloaded here.

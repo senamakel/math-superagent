@@ -1,4 +1,9 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wall-1975-fifth-unitary-perfect-number-cambridge.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wall (1975), *The fifth unitary perfect number* — Cambridge extract page
+
+> The Cambridge abstract/extract page (doi:10.4153/CMB-1975-021-9). The real
+> digest of the mathematics is `research/summaries/wall-1975-fifth-unitary-perfect-number-pdf.md`
+> (the full PDF text) — this file is a secondary landing page with the
+> extract only, kept for the citation and the DOI.
 
 <!-- source: https://doi.org/10.4153/CMB-1975-021-9 | converted from HTML -->
 

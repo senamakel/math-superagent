@@ -28,6 +28,6 @@ hypotheses: bibliographic only
 holds-here: n/a -- no theorem taken from it
 status: catalogued
 bearing: confirms the REQUESTS row-1 target exists; primary text still missing
-anchor: research/sources/frei-1978-unitary-perfect-mardi-bibliographic.full.md
+anchor: research/summaries/frei-1978-unitary-perfect-mardi-bibliographic.md
 answers: whether-mardi-frei1978-is-useful
 ```

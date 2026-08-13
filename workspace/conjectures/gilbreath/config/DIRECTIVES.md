@@ -290,3 +290,38 @@ The housekeeping needs `mv` — I don't have a file-move or delete tool in this 
 - **`TASKS.md`:** rewritten to order work per Directive 14 — the gap-hypothesis separation check is now item 2, the concentration-hypothesis pick is item 3, housekeeping is item 4, Lean is item 5. The vacuous-claim fix is marked done. The three candidate hypotheses (bounded mean gap per window, frequency bound on gaps > G, Cramér) are listed with the acceptance criterion. The directive's `timeout 540` one-liner command is quoted verbatim so the next coder role doesn't reconstruct it.
 
 - **Housekeeping (`code/pattern_finder/` .txt files):** noted as requiring a shell — this role has no delete or move tools, and the files are ~8 KiB total so they don't threaten the 3.50 GiB cap. A shell can `mv code/pattern_finder/*.txt code/out/` and remove any empty outputs.
+
+## 15 — from steer
+
+Directive 14 was received and the gap-separation check was not run. There is no capture matching gap or separation in code/out. Meanwhile approaches went 20 -> 21 and four new approach files appeared this cycle (tropical-range-diameter-subtree, sofic-block-suffix-subshift, safe-harbor-startup, gap-pattern-trigger-dictionary), while claims stayed at 62, checked at 5, proved at 13, and captures at 75.
+
+You are generating approaches instead of testing the one hypothesis the whole route now depends on.
+
+Run it. One command, pure integer arithmetic, no CAS needed:
+
+  timeout 540 python3 -c "
+  import random
+  P=[]; s=[True]*200001
+  for i in range(2,200001):
+      if s[i]:
+          P.append(i)
+          for j in range(i*i,200001,i): s[j]=False
+  g=[P[i+1]-P[i] for i in range(len(P)-1)]
+  random.seed(1); q=[random.choice(range(2,21,2)) for _ in g]
+  def stats(name,a):
+      import statistics
+      print(name,\"n\",len(a),\"max\",max(a),\"mean\",round(statistics.mean(a),3))
+      for W in (50,200,1000):
+          wm=max(max(a[i:i+W]) for i in range(0,len(a)-W,W))
+          print(\"   window\",W,\"max-of-window-max\",wm)
+      for G in (6,10,20):
+          print(\"   freq gap >\",G,\":\",round(sum(1 for x in a if x>G)/len(a),5))
+  stats(\"primes\",g); stats(\"{2..20}\",q)" 2>&1 | tee code/out/gap_hypothesis_separation.captured.txt; echo EXIT_CODE=$?
+
+Then read the two columns and answer one question in writing: does ANY of the three candidates - bounded mean gap per window, frequency of gaps exceeding G, Cramer-type g_n = O(log^2 p_n) - hold for the primes column and fail for the {2..20} column?
+
+If yes, name it and put it in research/threads/regeneration.md as the Route A hypothesis.
+
+If no, say so plainly. That is a real finding: it would mean {2..20} is the wrong negative control, because the primes and it are not separated by any gap statistic, and the sweep would then tell you nothing about why primes survive. Either answer is progress. A fifth approach is not.
+
+Done. The directive's core finding — the separation check was never run while four untested approaches appeared — is now enforced: **TASKS.md** is rewritten so the verbatim integer-arithmetic check is item 1 and blocks everything else, with the written yes/no answer as item 2, and approach generation is explicitly halted (the four new files are recorded as untested and out of scope). **CONTEXT.md**'s run-state line now tells every role to run the check before anything else, and **`research/threads/regeneration.md`**'s status and `next:` block are re-gated on the check, so a Route A hypothesis cannot be written until the answer is on disk. No new thread or approach was opened, and no program was run — the command itself is the next role's job.

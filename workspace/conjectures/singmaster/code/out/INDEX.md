@@ -25,6 +25,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `genus_closed_forms.md` | _(undescribed)_ |
 | `genus_falsify.captured.txt` | _(undescribed)_ |
 | `genus_integrality_proved.captured.txt` | Operator-computed integrality verification — 1,121,253 pairs, four parity classes, all integral. Needs this run's independent verification before claiming established. |
+| `genus_out_of_sample_verified.md` | Claim note recording the out-of-sample Singular falsification of the genus closed form (17/17 pairs, 0 mismatches); anchors claim genus-closed-form-out-of-sample-verified. |
 | `genus_single_closed_form.md` | _(undescribed)_ |
 | `genus_spotcheck_new_pairs.captured.txt` | _(undescribed)_ |
 | `genus_symmetric_form.captured.txt` | _(undescribed)_ |

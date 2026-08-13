@@ -4,76 +4,81 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Directive 13 — immediate priority
+## Directive 14 — immediate priority
 
-- [x] **1. Two zero-byte captures fixed.** `code/out/genus_falsify.captured.txt`
-      and `code/out/pattern_fam_seqs.captured.txt` were 0 bytes; each now carries
-      a one-line explanation (`EXIT_CODE=1 — program failed silently`).
-- [x] **2. Genus integrality recorded but NOT adopted.** `research/notes/genus-integrality-proved.md`
-      and `code/out/genus_integrality_proved.captured.txt` hold a four-case parity
-      proof that `(m-1)(n-1) + 1 - gcd(m,n)` is always even, so the closed form
-      `g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2` is always integer. 1,121,253 pairs
-      verified with zero exceptions. **Effective, uniform in m and n, inherits
-      nothing from Faltings or Siegel, and bounds nothing.** The ten predictions
-      matching the symmetric form are internal consistency (algebraically equal
-      expressions), NOT independent genus confirmation — do not mark them verified
-      until Singular confirms them. **This result needs independent verification
-      by this run** before it can be claimed as established.
-- [ ] **3. Run `check_mason_stothers_bound.py` — STILL unrrun after directive 12.**
-      The script is at `code/out/check_mason_stothers_bound.py`. Run:
+- [x] **1. Record the out-of-sample genus verification.** Claim id
+      `genus-closed-form-out-of-sample-verified`, status `checked`, anchor
+      `code/out/genus_falsify.captured.txt`. Written in
+      `code/out/genus_out_of_sample_verified.md`. 17/17 pairs out-of-sample,
+      predicted first from the closed form then recomputed in Singular, 0
+      mismatches; pairs span m in 2..16, n in 13..28. Attributes stated:
+      **effective: yes**, **uniform in k: no** (17 specific pairs, not all).
+- [ ] **2. Make `genus-closed-form-integrality` rest on this run's own
+      arithmetic.** The proof note `research/notes/genus-integrality-proved.md`
+      and `code/out/genus_integrality_proved.captured.txt` were operator-written
+      and adopted without an independent capture. Run the operator's exact
+      reproduction (parity of `(m-1)(n-1)+1-gcd(m,n)` over m,n up to 799):
+      ```
+      timeout 300 python3 -c "
+      from math import gcd
+      print(len([1 for m in range(1,800) for n in range(1,800) if ((m-1)*(n-1)+1-gcd(m,n))%2]))" 2>&1 | tee code/out/integrality_reproduced.captured.txt; echo EXIT_CODE=$?
+      ```
+      Expected output `0` (no odd values of `N`), EXIT_CODE=0. If so, the
+      integrality claim's arithmetic is independently reproduced by this run —
+      update its `holds-here`/`status` note to cite this capture in addition to
+      the four-case proof. If nonzero, the proof is wrong and must be reopened.
+- [ ] **3. Run `check_mason_stothers_bound.py` — third directive, STILL UNRUN.**
       ```
       timeout 540 python3 code/out/check_mason_stothers_bound.py 2>&1 | tee code/out/check_mason_stothers_bound.captured.txt; echo EXIT_CODE=$?
       ```
-      It uses sympy — the container has it; the host does not, which is why this
-      must run inside the container. Check the capture is non-empty before moving
-      on. If slack >= 0 for every (k1,k2) tested, the claim
-      `mason-stothers-vacuous-binomial` moves from `checked` (with the caveat
-      "checker script was written, not run") to `checked` with captured evidence.
-      This is the one remaining item from directive 12 that was not completed
-      (code went from 35 to 36 files but no capture was produced).
+      Uses sympy (container has it; host does not — run inside the container).
+      Confirm the capture is non-empty. If slack >= 0 for every (k1,k2) tested,
+      move `mason-stothers-vacuous-binomial` from `checked` (with "checker
+      written, not run") to `checked` with captured evidence, and mark
+      `research/approaches/mason-stothers-abc.md` refuted (already stated
+      refuted in the approach file; the capture supplies the missing evidence).
+
+## Priority work — the forward direction (directive 14, solver)
+
+- [ ] **4. Compute a concrete Matveev effective constant for one small pair,
+      directly, skipping sub-agents.** Both `goals` and `tool_builder` timed out
+      in attempts 2 and 3; the direct-execution salvage added nothing beyond
+      CONTEXT.md. Do not spawn sub-agents for this. Write the program directly:
+      apply Matveev 2000 Thm 2.3 (K=Q, D=ρ=1, applies to binomial products since
+      the αⱼ are rationals/primes) to a specific small-(k1,k2) family — start
+      with {2,3} (triangular=tetrahedral, Avanesov's solved case, an isolated
+      collision not an infinite family). Compute the explicit constant
+      numerically and state its k-dependence numerically. This is the
+      GOAL-eligible partial result: an effective height bound with a computed
+      constant for a specific (k1,k2), per-pair not uniform. Constants C1, C2,
+      C′0 are in `research/sources/matveev-2000-homogeneous-linear-form.full.md`;
+      verify the Kummer condition and state the height convention (Matveev's A_j
+      are logarithms-heights).
+- [ ] **5. Prove the genus formula from Riemann–Hurwitz/Plücker.** The
+      integrality lemma (item 2) removes one gap. The remaining gap is the
+      derivation: coprime case `g = p_a/2` via the involution
+      `C(k-1-z,k) = (-1)^k C(z,k)` plus the singularity delta-invariant for the
+      `gcd(m,n)` term. Route from `checked` to `proved`; the out-of-sample test
+      (item 1) is evidence, not a derivation.
 
 ## Ledger discipline
 
-- **Ledger: 44 asserted, 8 checked, 2 proved.** Convert or drop asserted claims,
-  do not add. Every bound must be run against `code/out/witnesses.json`. Any lemma
-  implying B<8 is refuted by 3003. State counting convention on every claim.
-- When the mason-stothers capture is non-empty and confirms the prediction, the
-  `mason-stothers-vacuous-binomial` claim moves to `checked` with evidence. The
-  approach file `research/approaches/mason-stothers-abc.md` already says `refuted`;
-  the capture is the evidence that was missing from the claim block.
+- **Do not convert or drop asserted claims without a second route.** Every
+  bound must be run against `code/out/witnesses.json`. Any lemma implying B<8
+  is refuted by 3003. State counting convention on every claim.
+- The out-of-sample claim (item 1) is `checked`, effective, NOT uniform — say
+  so whenever it is cited.
 
-## Priority work — genus derivation
+## Done (directives 4 → 14)
 
-- [ ] **4. Independent verification of genus integrality.** The operator's proof
-      (four parity cases) is recorded. This run must verify it independently
-      before claiming it. Run the verification with a second engine (e.g. sympy
-      symbolic parity check on `(m-1)(n-1)+1-gcd` for symbolic parities) or a
-      different bound (m,n up to 2000) and capture the output. Until then, the
-      integrality claim is `operator-computed`, not `proved` by this run.
-
-- [ ] **5. Prove the genus formula from Riemann–Hurwitz/Plücker.** The integrality
-      lemma removes one gap (the expression is always integer). The remaining
-      gap is the derivation itself — the coprime case `g=p_a/2` via the
-      involution `C(k-1-z,k) = (-1)^k C(z,k)` plus the singularity delta-invariant
-      for the `gcd(m,n)` term. This is the route from `checked` (111 Singular
-      values) to `proved`. The involution mechanism and the singularity count at
-      the points at infinity of `P^1×P^1` are the concrete lemmas needed.
-
-- [ ] **6. Matveev effective-bound computation.** Apply Matveev 2000 Thm 2.3
-      (K=Q, D=ρ=1) to a specific small-(k1,k2) family (e.g. k2=2 hyperelliptic
-      row) and compute the explicit constant numerically. State its k-dependence.
-      The primary source is held; the constants C1, C2, C′0 are in
-      `research/sources/matveev-2000-homogeneous-linear-form.full.md`. This is a
-      GOAL-eligible partial result.
-
-## Done (directive 9 → 10 → 11 → 12 → 13)
-
+- [x] **Directive 14 item 1:** out-of-sample genus verification recorded as
+      `genus-closed-form-out-of-sample-verified`, checked, effective, not uniform.
 - [x] **Directive 13 zero-byte captures:** `genus_falsify.captured.txt` and
       `pattern_fam_seqs.captured.txt` now carry one-line explanations.
 - [x] Directive 12 items 2–3: mason-stothers-abc and s-unit-subspace already
       refuted in APPROACHES.md; no new approaches opened.
-- [x] **Directive 11: Lane Clark claim promoted to checked.** Ledger: 44 asserted,
-      8 checked, 2 proved. Effective:yes, uniform-in-k:yes.
+- [x] **Directive 11: Lane Clark claim promoted to checked.** Effective:yes,
+      uniform-in-k:yes.
 - [x] Directive 9 items 1–2 subsumed by directive 10 item 1.
 - [x] False two-CAS claim in genus_table fixed.
 - [x] Genus symmetric rewrite verified and captured.

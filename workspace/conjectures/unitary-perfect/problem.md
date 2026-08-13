@@ -82,9 +82,12 @@ structural classes rather than shrinking a search region.
 ## The current structural frontier
 
 Maciejewski, *Bounded-box reductions in the Subbarao–Warren problem for unitary
-perfect numbers*, arXiv:2605.20475 (May 2026). Its abstract is held in this
-workspace; **the full text is not, and getting it is the librarian's first
-task.** From the abstract:
+perfect numbers*, arXiv:2605.20475 (May 2026). **The full text is held in this
+workspace at `research/sources/maciejewski-bounded-box-subbarao-warren.full.md`
+and is digested at `research/notes/paper-extraction.md`; the three-Higgs
+definition, the odd dependency graph, the five impostor kernels, and the three
+filters are all confirmed in the document** (the earlier "abstract only"
+status is outdated). From the abstract:
 
 - It keeps the seed factor `2^a + 1` explicit in the full balance above.
 - Within a bounded enumeration of source components of the *odd dependency
