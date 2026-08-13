@@ -139,6 +139,7 @@ giants = [(r, b_list[r - 1] - b_list[r - 2], b_list[r - 2], b_list[r - 1])
 g_rows1 = [r for (r, _, _, _) in giants]
 g_rows0 = [r - 1 for (r, _, _, _) in giants]
 g_jumps = [j for (_, j, _, _) in giants]
+g_pre = [bp for (_, _, bp, _) in giants]
 g_land = [bl for (_, _, _, bl) in giants]
 g_floor = [W - r - 1 - bl for (r, _, _, bl) in giants]   # W - i0 - 2 - b_land
 genuine = [fl > 0 for fl in g_floor]
@@ -191,14 +192,12 @@ print(f"\n--- parity of 0-based pre-jump rows ---")
 print(f"0-based rows: {g_rows0}")
 print(f"odd 0-based among {n_g} giants (j > 1000): {odd0}")
 print(f"other than 161/capped: {[r for r in odd0 if r not in (161,)] or 'NONE'}")
-# H0: pre-jump row is uniform on {0,...,DEPTH-1}, independent across giants —
-# standard exact null for a parity count, as in giant_parity_significance.py.
-p_each = Fraction(comb(DEPTH, 1), 2 ** DEPTH) * DEPTH   # = 1/2 exactly
-p_odd_ge = Fraction(0)
-for t in range(n_odd, n_g + 1):
-    p_odd_ge += Fraction(comb(n_g, t)) * (p_each ** t) * ((1 - p_each) ** (n_g - t))
-print(f"p(exactly {n_odd} of {n_g} odd 0-based rows under uniform H0) "
-      f"= {p_odd_ge} = {float(p_odd_ge):.4g}")
+# H0: each giant's pre-jump 0-based row is uniform over 0..DEPTH-1 (parity
+# exactly 1/2 since DEPTH = 400 is even), independent across giants.  The
+# task's specified tail is P(<= 1 odd row) = (C(n,1)+C(n,0)) / 2^n.
+p_le1 = Fraction(comb(n_g, 1) + comb(n_g, 0), 2 ** n_g)
+print(f"p(<=1 odd 0-based row | {n_g} giants, uniform parity H0) "
+      f"= (C({n_g},1)+C({n_g},0))/2^{n_g} = {p_le1} = {float(p_le1):.4g}")
 
 # --- geometric vs linear fits on landing blocks of GENUINE giants ---
 print(f"\n--- fits on landing blocks, genuine giants only "
@@ -206,43 +205,47 @@ print(f"\n--- fits on landing blocks, genuine giants only "
 rows_g = [r - 1 for r, _, _, _ in giants]
 grow_g = [r for t, (r, _, _, _) in enumerate(giants) if genuine[t]]
 land_g = [bl for t, bl in enumerate(g_land) if genuine[t]]
-y = np.log2(np.array(land_g, dtype=np.float64))
-xg = np.array(grow_g, dtype=np.float64)
-slope, intercept = np.polyfit(xg, y, 1)      # numpy OLS, deg 1
-resid = y - (slope * xg + intercept)
-r2 = 1.0 - float(np.sum(resid * resid) / np.sum((y - y.mean()) ** 2))
-print(f"numpy log2 OLS: slope={slope:.6f} intercept={intercept:.4f} "
-      f"r2={r2:.6f}  (doubling every {1/abs(slope):.2f} rows)")
-xx = xg.tolist()
-yy_frac = [Fraction(int(round(bl))).numerator for bl in land_g]
-# exact closed-form OLS over Fractions of the same (x, log2 b) points
-isum = sum(Fraction(int(x)) for x in xx) / len(xx)
-# sum (x - xbar)(y - ybar) / sum (x - xbar)^2 with y converted to Fraction from
-# the float log2 (exact double, same values numpy used)
-yv = [Fraction(yi) for yi in y.tolist()]     # exact copy of the doubles
-ybar = sum(yv) / len(yv)
-Sxy = sum((Fraction(int(x)) - isum) * (yy - ybar) for x, yy in zip(xx, yv))
-Sxx = sum((Fraction(int(x)) - isum) ** 2 for x in xx)
-slope_f = Sxy / Sxx
-inter_f = ybar - slope_f * isum
-resid_f = [yy - (slope_f * Fraction(int(x)) + inter_f) for x, yy in zip(xx, yv)]
-ss_res = sum(rr * rr for rr in resid_f)
-ss_tot = sum((yy - ybar) * (yy - ybar) for yy in yv)
-r2_f = 1 - ss_res / ss_tot
-print(f"exact Fraction OLS: slope={float(slope_f):.6f} intercept={float(inter_f):.4f} "
-      f"r2={float(r2_f):.6f}")
-print(f"agreement numpy vs exact: |slope diff| = {abs(slope - float(slope_f)):.2e} "
-      f"(must be ~0)")
-yrel = np.diff(y)
-resid_lin = y - (slope * xg + intercept)
-ss_res_lin = float(np.sum(resid_lin * resid_lin))
-ybar_all = float(y.mean())
-ss_tot_all = float(np.sum((y - ybar_all) ** 2))
-print(f"r2 (numpy) as double-check of residual computation: {1 - ss_res_lin / ss_tot_all:.6f}")
-# per-step log2 increments as an independent growth check
-print(f"per-giant log2 b_land increments: {[f'{v:.3f}' for v in yrel]}")
-print(f"relative growth factors b_land[i+1]/b_land[i]: "
-      f"{[f'{g_land[t + 1] / g_land[t]:.3f}' for t in range(len(g_land) - 1)]}")
+if sum(genuine) >= 2:
+    y = np.log2(np.array(land_g, dtype=np.float64))
+    xg = np.array(grow_g, dtype=np.float64)
+    slope, intercept = np.polyfit(xg, y, 1)      # numpy OLS, deg 1
+    resid = y - (slope * xg + intercept)
+    r2 = 1.0 - float(np.sum(resid * resid) / np.sum((y - y.mean()) ** 2))
+    print(f"numpy log2 OLS: slope={slope:.6f} intercept={intercept:.4f} "
+          f"r2={r2:.6f}  (doubling every {1/abs(slope):.2f} rows)")
+    xx = xg.tolist()
+    # exact closed-form OLS over Fractions of the same (x, log2 b) points;
+    # yv copies the doubles exactly, so both fits use identical data.
+    isum = sum(Fraction(int(x)) for x in xx) / len(xx)
+    yv = [Fraction(yi) for yi in y.tolist()]     # exact copy of the doubles
+    ybar = sum(yv) / len(yv)
+    Sxy = sum((Fraction(int(x)) - isum) * (yy - ybar) for x, yy in zip(xx, yv))
+    Sxx = sum((Fraction(int(x)) - isum) ** 2 for x in xx)
+    slope_f = Sxy / Sxx
+    inter_f = ybar - slope_f * isum
+    resid_f = [yy - (slope_f * Fraction(int(x)) + inter_f) for x, yy in zip(xx, yv)]
+    ss_res = sum(rr * rr for rr in resid_f)
+    ss_tot = sum((yy - ybar) * (yy - ybar) for yy in yv)
+    r2_f = 1 - ss_res / ss_tot
+    print(f"exact Fraction OLS: slope={float(slope_f):.6f} "
+          f"intercept={float(inter_f):.4f} r2={float(r2_f):.6f}")
+    print(f"agreement numpy vs exact: |slope diff| = "
+          f"{abs(slope - float(slope_f)):.2e} (must be ~0)")
+    yrel = np.diff(y)
+    print(f"per-giant log2 b_land increments: {[f'{v:.3f}' for v in yrel]}")
+    print(f"relative growth factors b_land[i+1]/b_land[i]: "
+          f"{[f'{g_land[t + 1] / g_land[t]:.3f}' for t in range(len(g_land) - 1)]}")
+    # --- linear model for comparison (b vs row0, plain OLS) ---
+    s_lin, i_lin = np.polyfit(xg, np.array(land_g, dtype=np.float64), 1)
+    resid_lin = np.array(land_g, dtype=np.float64) - (s_lin * xg + i_lin)
+    ss_res_lin = float(np.sum(resid_lin * resid_lin))
+    ybar_all = float(np.mean(land_g))
+    ss_tot_all = float(np.sum((np.array(land_g, dtype=np.float64) - ybar_all) ** 2))
+    r2_lin = 1 - ss_res_lin / ss_tot_all
+    print(f"linear b vs row0 OLS: slope={s_lin:.3f} intercept={i_lin:.3f} "
+          f"r2={r2_lin:.6f}")
+else:
+    print("fewer than 2 genuine giants: fits skipped")
 
 # --- durability: write giants_1e9.json ---
 os.makedirs(OUTDIR, exist_ok=True)
