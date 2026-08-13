@@ -246,6 +246,27 @@ Live thread: `research/threads/regeneration.md` (event-rate bound).
   arbitrarily. The Rule 90 interior identification is proved and survives
   independently (see Established); the absorption mechanism is dead.
   Recorded: `research/approaches/rule90-absorbing-boundary.md`.
+- **Rule 90 depth-prediction timing corollary — CLOSED (null computed).** The
+  absolute-depth and jump-timing forms were already refuted; the relative-depth
+  form (21/27 within tol=1 of a power of 2) is now null-tested: p = 0.0173
+  against the exact binomial Binomial(27, 9/16), but dead at tol=0 (p =
+  0.113) and erased by conditioning on the observed [2,9] range (p = 0.68).
+  The concentration is real but mild and tolerance-dependent — not a
+  structural regeneration mechanism. The proved interior identification
+  (rule90-interior-xor) is unaffected; this closes the timing question, not
+  the regeneration question.
+- **Raw run-count potential r(T) ≤ r — MACHINE-REFUTED in the actual
+  regime.** The on-disk verifier `code/out/check_runcount_lemma.py` (written,
+  never run) was executed: exhaustively over 6,725,600 strings (len ≤ 8,
+  values 0..6) the lemma r(T(x)) ≤ r(x) fails (first counterexample
+  (6,6,6,6,6,6,5,5), worst at (0,0,1,1,0,0,1,1)). The class-restricted run
+  shows failure even in the halved {0,1} interior — minimal counterexample
+  (0,0,1,1) → (0,1,0) (2 runs → 3), the halved form of (0,0,2,2) inside the
+  leading {0,2} regime. Claim `runcount-lemma-refuted` promoted from hand
+  counterexample (odd-valued (5,5,0,0), technically outside the class) to
+  machine-checked. The total-variation-oscillation-potential approach's raw
+  r/t potentials are dead; only a corrected weighted/max-factored potential
+  (Chamberland's Ducci template) survives, untested.
 - **Mod-4 linearization cannot be lifted — mod 4 is the ceiling.** The lift
   `|a−b| ≡ a+b (mod 2^t)` holds over even entries iff `2·min(a,b) ≡ 0
   (mod 2^t)`, i.e. the smaller entry divisible by `2^{t−1}`. It holds at t=2
