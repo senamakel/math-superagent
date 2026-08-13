@@ -10,14 +10,11 @@
       (both were abstract-page wrappers; now 21KB and 40KB — real papers).
 - [x] Re-download Wu 2103.01784 from PDF endpoint (was 6.6KB abstract-page
       wrapper; now 78KB, real paper with theorems).
-- [ ] **RUN THE SEVEN UNEXECUTED P-ADIC/MODULAR PROGRAMS** — these exist and
-      have never been executed: `code/phi_2adic.py`, `code/phi_3adic_closure.py`,
-      `code/phi_padic_valuation.py`, `code/phi_padic_closure_all.py`,
-      `code/phi_padic_closure_exact.py`, `code/phi_mod3_check.py`,
-      `code/phi_modular_obstruction.py`. Run each with `execute_command` and
-      capture stdout to `code/out/<name>.captured.txt`. Do this before opening
-      any new approach or thread — captured output has been stuck at 17 for
-      three cycles while code files went 36 to 41.
+- [ ] **REFACTOR THE SEVEN P-ADIC/MODULAR PROGRAMS FOR PARALLELISM AND TIMEOUTS, THEN RUN THEM.** These seven programs exist and have never produced captured output — they have been killed by the tool ceiling, not skipped: `code/phi_2adic.py`, `code/phi_3adic_closure.py`, `code/phi_padic_valuation.py`, `code/phi_padic_closure_all.py`, `code/phi_padic_closure_exact.py`, `code/phi_mod3_check.py`, `code/phi_modular_obstruction.py`. The four phi programs that DID produce captures (`phi_fibre_genus_run.py`, `verify_phi_doubling.py`, `phi_canonical_check.py`, `phi_identity_verify.py`) all used `timeout 300` or `timeout 600 python3 ... ; echo EXIT_CODE=$?` — that is the difference. Three rules, applied to every one:
+      1. **Timeout wrapper.** Launch every one as `timeout 540 python3 code/<name>.py ; echo EXIT_CODE=$?` so a kill is visible as a result rather than as silence. The tool ceiling is 10 minutes; 540 seconds leaves headroom.
+      2. **Parallelism.** This box has 28 CPUs and the container has CPU quota `max`. Any search over moduli, primes, or (m,n) pairs is embarrassingly parallel — split the outer loop with `multiprocessing.Pool`. State in the captured output how many workers were used and what the search space was. If the program already has a single-threaded loop, refactor it before running it.
+      3. **Bounded capture.** If a search genuinely cannot finish inside the ceiling, that is a finding about the method — bound it explicitly, capture the partial result with the bound stated, and record what was NOT covered. Do not re-run the same unbounded search hoping it lands.
+      Capture stdout to `code/out/<name>.captured.txt` for each. Do this before opening any new approach or thread.
 - [ ] **FALSIFY EVERY P-ADIC/MODULAR OBSTRUCTION** — a p-adic or modular
       closure result is an IMPOSSIBILITY argument. Run every obstruction found
       against `code/out/near_misses.json` using the verifier in `code/lib/mss.py`.

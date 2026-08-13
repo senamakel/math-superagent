@@ -399,6 +399,40 @@ impl Tool<()> for ExecuteCommand {
     }
 }
 
+/// Shortens one stream for [`COMMAND_LOG`], keeping the end.
+///
+/// The tail is what a program's conclusion is in, which is the same reason
+/// [`TAIL_BUDGET`] is the larger share of what reaches the model.
+fn clipped(text: &str) -> String {
+    if text.len() <= COMMAND_LOG_ENTRY_BYTES {
+        return text.to_string();
+    }
+    let cut = text
+        .char_indices()
+        .map(|(at, _)| at)
+        .find(|at| text.len() - at <= COMMAND_LOG_ENTRY_BYTES)
+        .unwrap_or(text.len());
+    format!("[earlier output dropped]\n{}", &text[cut..])
+}
+
+/// Drops whole entries from the front of the log until it fits.
+///
+/// Cutting at [`COMMAND_LOG_MARK`] rather than at a byte offset keeps every
+/// entry that survives readable, and keeps the file valid UTF-8 whatever a
+/// program printed.
+fn trimmed(log: String) -> String {
+    if log.len() <= COMMAND_LOG_MAX_BYTES {
+        return log;
+    }
+    let over = log.len() - COMMAND_LOG_MAX_BYTES;
+    match log.match_indices(COMMAND_LOG_MARK).find(|(at, _)| *at >= over) {
+        Some((at, _)) => log[at..].to_string(),
+        // One entry larger than the whole ceiling: keep it and let the next
+        // append trim, rather than returning a fragment cut mid-character.
+        None => log,
+    }
+}
+
 /// Rejects an intractable method while allowing a deliberately bounded oracle.
 ///
 /// The gate used to refuse every declared exponential cost, and the schema
