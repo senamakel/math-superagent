@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `rabern-fulltext-not-on-disk` | The full text of Rabern's 2003 RHUMJ paper is not in the library; the index/abstract page and secondary accounts are. Its entry-prime restrictions (all odd; centre 1-mod-4-only; no 3-mod-8 anywhere; no 5-mod-8 on… | yes | asserted | `research/summaries/rabern-properties-magic-squares-of-squares-2003.md` |
 | `richardson-pvs-valid-but-mss-not-pvs-invariant` | (SL3 x SL3, M3) with the two-sided action is a prehomogeneous vector space (relative invariant det, open orbit = invertible matrices; Sato-Kimura), but the nine-square condition is not a PVS relative invariant, and the… | **unchecked** | asserted | `research/notes/literature-check-3-new-approaches.md` |
 
-_12 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_11 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
@@ -89,7 +89,6 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `phi-count-sequence-not-in-oeis` (code/out/phi_pattern_findings.md) — asserted by the source, not proved there and not checked here
 - `rabern-fulltext-not-on-disk` (research/summaries/rabern-properties-magic-squares-of-squares-2003.md) — asserted by the source, not proved there and not checked here
 - `six-square-all-attainable` (research/summaries/boyer-square-of-squares-search-v2.md) — asserted by the source, not proved there and not checked here
-- `wu-chatelet-3folds-bm-noninvariance` (research/summaries/wu-chatelet-surfaces-noninvariance-3folds-2020.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
 
