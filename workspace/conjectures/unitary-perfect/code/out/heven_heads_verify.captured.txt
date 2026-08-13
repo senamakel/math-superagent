@@ -1,0 +1,16 @@
+p=  7 r=113             prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 11 r=2113            prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 19 r=525313          prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 29 r=536903681       prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 37 r=593             prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 37 r=231769777       prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 43 r=500177          prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 47 r=3761            prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 47 r=140737471578113 prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 53 r=15358129        prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 53 r=586477649       prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+p= 59 r=157649          prime=True |2^{2p}+1=True r%16=1 (r-1)%(4p)=0 CERTIFIED
+heads certified: 12/12
+no-head primes (2p in H_even, Thm 8): [3, 5, 13, 23, 31, 41, 61]
+(absence of heads for those p rests on the full exact factorization in code/out/heven_gauss_61.captured.txt)
+ALL HEADS CERTIFIED
