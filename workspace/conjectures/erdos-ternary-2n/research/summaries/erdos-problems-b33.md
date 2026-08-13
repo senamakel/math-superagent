@@ -1,58 +1,21 @@
-<!-- source: https://www.erdosproblems.com/latex/406 | converted from HTML -->
+# Erdős Problems entry — powers of 2 with digits 0,1 in base 3
 
-406 | Erdős Problems
+**Source:** https://www.erdosproblems.com/latex/406 — the standard problem-collection entry, cross-referenced in Guy's Unsolved Problems in Number Theory (Problem B33).
 
-[image: Logo] [1]
+## What it records
 
-[Forum][2] [Inbox][3] [Favourites][4] [Tags][5]
+- **Statement:** Is it true that only finitely many powers of 2 have only digits 0 and 1 in base 3? Known examples: 1 = 1, 4 = 1+3, 256 = 1+3+3^2+3^5.
+- **Kummer's theorem link:** if we only allow digits 1 and 2, then 2^15 seems the largest such power; this would imply 3 | binomial(2^(k+1), 2^k) for all large k (the original motivation for Erdős's question, later proved by Sárközy/Granville–Ramaré/Velammal by other means).
+- **Counting function:** N(x) = #{n ≤ x : 2^n has only digits 0,1 in base 3}, and Narkiewicz proved N(x) ≤ 1.62 x^(log_3 2).
+- **Generalizations** and literature pointers: Abram–Lagarias (J. Fractal Geom. 2014) on intersections of multiplicative translates of 3-adic Cantor sets; Lagarias (2009); Guy B33.
 
-More
-
-[FAQ][6] [Prizes][7] [Problem Lists][8] [Definitions][9] [Links][10]
-
-[Forum][2]
-
-Menu
-
-[Inbox][3] [Favourites][4] [Tags][5] [FAQ][6] [Prizes][7] [Problem Lists][8] [Definitions][9] [Links][10]
-
-Dual View [Random Solved][11] [Random Open][12]
-
-Is it true that there are only finitely many powers of $2$ which have only the digits $0$ and $1$ when written in base $3$?
-
-The only examples seem to be $1$, $4=1+3$, and $256=1+3+3^2+3^5$. If we only allow the digits $1$ and $2$ then $2^{15}$ seems to be the largest such power of $2$.
-
-This would imply via Kummer's theorem that\[3\mid \binom{2^{k+1}}{2^k}\]for all large $k$.
-
-Saye \cite{Sa22} has computed that $2^n$ contains every possible ternary digit for $16\leq n \leq 5.9\times 10^{21}$.
-
-Let $N(x)$ count the number of $n\leq x$ such that $2^n$ has only the digits $0$ and $1$ in base $3$. Narkiewicz \cite{Na80} proved\[N(x)\leq 1.62 x^{\log_32}\]This is mentioned in problem B33 of Guy's collection \cite{Gu04}. There are many generalisations possible - see, for example, \cite{AbLa14} and \cite{La09}.
-
-### References
-
-[AbLa14] Abram, William C. and Lagarias, Jeffrey C., *Intersections of multiplicative translates of 3-adic {C}antor
-sets*. J. Fractal Geom. (2014), 349--390. [Gu04] Guy, Richard K., *Unsolved problems in number theory*. (2004), xviii+437. [La09] Lagarias, Jeffrey C., *Ternary expansions of powers of 2*. J. Lond. Math. Soc. (2) (2009), 562--588. [Na80] Narkiewicz, W., *A note on a paper of {H}. {G}upta concerning powers of two and
-three: ``{P}owers of {$2$}\ and sums of distinct powers of
-{$3$}''\ [{U}niv. {B}eograd. {P}ubl. {E}lektrotehn. {F}ak.
-Ser. {M}at. {F}iz. {N}o. 602-633 (1978), 151--158 (1979);\
-{MR} 81g:10016]*. Univ. Beograd. Publ. Elektrotehn. Fak. Ser. Mat. Fiz. (1980), 173--174. [Sa22] Saye, Robert I., *On two conjectures concerning the ternary digits of powers of
-two*. J. Integer Seq. (2022), Art. 22.3.4, 9.
-
-[Back to the problem][13]
-
-
-## Links
-
-[1]: /
-[2]: /forum
-[3]: /dm
-[4]: /favourites
-[5]: /tags
-[6]: /faq
-[7]: /prizes
-[8]: /lists
-[9]: /definitions
-[10]: /links
-[11]: /random_solved
-[12]: /random_open
-[13]: /406
+## Claims
+```claim
+id: EP-406
+statement: The Erdős problem (only finitely many 2^n with base-3 digits only 0,1) is open; known solutions exactly {2^0, 2^2, 2^8}; N(x) ≤ 1.62 x^(log_3 2) (Narkiewicz).
+hypotheses: none.
+holds-here: yes — problem statement and counting-function bound as recorded in the standard collection.
+status: asserted-by-source (standard reference)
+bearing: fixes the statement and the count-bound citation for every note.
+anchor: research/sources/erdos-problems-b33.md
+```

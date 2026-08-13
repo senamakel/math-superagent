@@ -6,8 +6,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `CONRAD-W` | The only known base-2 Wieferich primes are 1093 and 3511; the only known base-3 ones are 11 and 1006003; the searches cover p < 1.25·10^15 (base 2) and p < 2^32 (base 3). | **unchecked** | asserted | `research/summaries/conrad-wieferich-primes.md` |
 | `DH-1` | For x ∉ {0,2,8}, the ternary expansion of 2^x contains a digit 2 or at least 26 digits equal to 1. | yes | proved | `research/summaries/dimitrov-howe-ar5iv-full.md` |
 | `DH-2` | The nested-modulus method with determinate-power lifting solves 3^x = Σ 2^(a_i) (n ≤ 22 distinct) and 2^x = Σ 3^(a_i) (n ≤ 25 distinct) completely, and the computations terminate. | yes | proved | `research/summaries/dimitrov-howe-ar5iv-full.md` |
+| `EP-406` | The Erdős problem (only finitely many 2^n with base-3 digits only 0,1) is open; known solutions exactly {2^0, 2^2, 2^8}; N(x) ≤ 1.62 x^(log_3 2) (Narkiewicz). | yes | asserted | `research/summaries/erdos-problems-b33.md` |
 | `LAG-1` | N_1(X) = #{n ≤ X : ternary of 2^n omits digit 2} satisfies N_1(X) ≤ 1.62 X^{α_0}, α_0 = log_3 2 ≈ 0.63092 (Narkiewicz 1980). | yes | asserted | `research/summaries/lagarias-ar5iv-full.md` |
 | `LAG-2` | For every nonzero λ ∈ ℤ_3, #{n ≤ X : (λ2^n)_3 omits digit 2} ≤ 2 X^{α_0} for X ≥ 2. | yes | proved | `research/summaries/lagarias-ar5iv-full.md` |
 | `LAG-3` | dim_H E^(1)(ℤ_3) = log_3 2; (1/2)log_3 2 ≤ dim_H E^(2)(ℤ_3) ≤ 1/2; (1/6)log_3 2 ≤ dim_H E^(3)(ℤ_3). Conjecture B: dim_H E(ℤ_3) = 0. | **unchecked** | proved | `research/summaries/lagarias-ar5iv-full.md` |
@@ -21,6 +23,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `EP-406` (research/summaries/erdos-problems-b33.md) — asserted by the source, not proved there and not checked here
 - `LAG-1` (research/summaries/lagarias-ar5iv-full.md) — asserted by the source, not proved there and not checked here
 - `LAG-4` (research/summaries/lagarias-ar5iv-full.md) — asserted by the source, not proved there and not checked here
 - `SAYE-1` (research/summaries/saye-ar5iv-full.md) — asserted by the source, not proved there and not checked here

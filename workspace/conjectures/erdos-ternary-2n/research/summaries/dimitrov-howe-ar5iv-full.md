@@ -1,55 +1,47 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/dimitrov-howe-ar5iv-full.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Dimitrov–Howe: Powers of 3 with few nonzero bits and a conjecture of Erdős
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/2105.06440 | converted from HTML -->
+**Source:** arXiv:2105.06440 (2021, v4 2023), Rocky Mountain J. Math. Full text at `research/sources/dimitrov-howe-ar5iv-full.full.md`.
 
-## What is in it
+## What it establishes
 
-- Powers of 3 3 with few nonzero bits
-and a conjecture of Erdős
-        - Abstract.
-        - Key words and phrases:
-        - 2020 Mathematics Subject Classification
-  - 1. Introduction
-        - Theorem 1.1.
-        - Theorem 1.2.
-    - Acknowledgments
-  - 2. Notation and conventions
-        - Convention 2.1.
-        - Definition 2.2.
-        - Notation 2.3.
-  - 3. Extraneous solutions to congruences
-        - Lemma 3.1.
-        - Proof of Lemma 3.1.
-        - Lemma 3.2.
-        - Proof.
-  - 4. Lifting solutions
-  - 5. Proof of Theorem 1.1
-    - Step One:
-    - Step Two:
-    - Step Three:
-        - Proof of Theorem 1.1.
-  - 6. Proof of Theorem 1.2
-  - References
+**Theorem 1.1:** The only powers of 3 that are sums of ≤22 distinct powers of 2 are 3^x for 0 ≤ x ≤ 25.
 
+**Theorem 1.2 (the relevant one for Erdős):** The only powers of 2 that are sums of ≤25 distinct powers of 3 are
+- 2^0 = 3^0 = 1
+- 2^2 = 3^0 + 3^1 = 4
+- 2^8 = 3^0 + 3^1 + 3^2 + 3^5 = 256
 
-## What it claims
+Equivalently: for x ∉ {0,2,8}, the base-3 expansion of 2^x either contains a digit 2 **or** contains at least twenty-six 1s.
 
-Using completely elementary methods, we find all powers of 3 3 that can be written as the sum of at most twenty-two distinct powers of 2 2, as well as all powers of 2 2 that can be written as the sum of at most twenty-five distinct powers of 3 3. The latter result is connected to a conjecture of Erdős, namely, that 1 1, 4 4, and 256 256 are the only powers of 2 2 that can be written as a sum of distinct powers of 3 3.
+This is the strongest known *provable* statement about the sparse side of the Erdős conjecture: a counterexample must have at least 26 ones.
 
-We present this work partly as a reminder that for certain exponential Diophantine equations, elementary techniques based on congruences can yield results that would be difficult or impossible to obtain with more advanced techniques involving, for example, linear forms in logarithms.
+## Method (important — it is the same shape this run's sieve takes)
 
-## Statements it makes
+- Work modulo a nested sequence of moduli M_1 | M_2 | ... (each M_i = product of carefully chosen factors m_i).
+- At each stage enumerate solutions to 3^x ≡ Σ 2^(a_j) (mod M_i), then "lift" to M_{i+1}; stop when all summands are *determinate* (a power p^i is determinate mod M iff M is divisible by p^(i+1), i.e. it lies on the tail, not the cycle, of the powers-of-p diagram).
+- Moduli chosen to make the orders of 2 and 3 mod the new prime p have the right 2- and 3-adic valuations (they need primes with O_3' divisible by large 2-powers and O_2' by large 3-powers).
+- The technique is purely elementary (ring theory, CRT, discrete logs); proofs terminate because after finitely many lifts every power that appears is determinate.
 
-###### Theorem 1.1.
+## Implication for this run
 
-###### Theorem 1.2.
+The Erdős conjecture is *equivalent* to: no 2^x (x>8) is a sum of distinct powers of 3 with zero 2-digits and *arbitrarily many* 1s. Dimitrov–Howe close off the ≤25-ones cases; the residual is "≥26 ones and no 2s", which is exactly what the middle-digit structure must forbid. Their modulus-sequence philosophy is a cleaner template than a fixed 3^k sieve: sieve a sequence of moduli that the order structure makes determinate one stage at a time.
 
-###### Definition 2.2.
-
-###### Lemma 3.1.
-
-Lemma 3.1 shows that in the example we presented in the introduction, it was necessary for us to use a modulus divisible by a prime (in our case, 257 257) for which either the order of 3 3 is divisible by 2 5 2^{5} or the order of 2 2 is divisible by 3 4 3^{4}. Since 3 4 = 2 0 + 2 4 + 2 6 {3^{4}=2^{0}+2^{4}+2^{6}}, if we use a modulus M M that is divisible by 2 7 2^{7} (so that 2 0 2^{0}, 2 4 2^{4}, and 2 6 2^{6} are determinate powers of 2 2 modulo M M), Lemma 3.1 shows that there will be other, extraneous, solutions modulo M M unless M M is divisible by such a prime.
-
-###### Lemma 3.2.
-
-*[digest of a 70013 character source; every section, statement, and proof in full at `research/sources/dimitrov-howe-ar5iv-full.full.md`]*
+## Claims
+```claim
+id: DH-1
+statement: For x ∉ {0,2,8}, the ternary expansion of 2^x contains a digit 2 or at least 26 digits equal to 1.
+hypotheses: none beyond x integer.
+holds-here: yes — direct partial resolution of the sparse side of the conjecture.
+status: proved (elementary; computational proof in Magma, self-contained)
+bearing: any counterexample to Erdős must have ≥ 26 ones; the "no-2" sieve must therefore survive at least 26 ones.
+anchor: research/sources/dimitrov-howe-ar5iv-full.full.md
+```
+```claim
+id: DH-2
+statement: The nested-modulus method with determinate-power lifting solves 3^x = Σ 2^(a_i) (n ≤ 22 distinct) and 2^x = Σ 3^(a_i) (n ≤ 25 distinct) completely, and the computations terminate.
+hypotheses: moduli chosen per their Table 3 and Lemma 3.1; prime factors p with ord_p(3) having large 2-part and ord_p(2) large 3-part.
+holds-here: yes — this is the template for an exact modular sieve of the Erdős equation.
+status: proved (with computational certificate; programs in supplementary Magma)
+bearing: the run's sieve should mirror the determinate-power staging rather than a single-modulus sieve.
+anchor: research/sources/dimitrov-howe-ar5iv-full.full.md
+```

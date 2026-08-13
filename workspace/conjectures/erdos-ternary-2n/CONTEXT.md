@@ -27,11 +27,22 @@ compressed away.
   only on `n mod 2·3^(k-1)`, and the digit-avoidance sieve on residue classes is
   `A_k = { n mod 2·3^(k-1) : low k ternary digits of 2^n mod 3^k lie in {0,1} }`.
   `|S_k| = 2^k` out of `3^k`; `A_{k+1}` refines `A_k`.
-- **Shape of a proof (conjectured, not shown)**: if `|A_k| → 0` after removing
-  the classes containing `n = 0, 2, 8`, the conjecture is proved for all `n`
-  outside those classes. Whether `|A_k| → 0` or stabilises is the central open
-  question; **`|A_k|` as a function of `k` is the first experiment and has not
-  been computed yet.**
+- **Sieve count, computed and checked for k ≤ 22** (`code/out/sieve_Ak.captured.txt`,
+  `code/out/sieve_cannot_close.md`): `|A_k| = 2^(k-1)` exactly at every k tested.
+  Computed by lifting rather than re-scanning — each surviving class mod
+  `2·3^(k-2)` lifts to three candidates mod `2·3^(k-1)`, and exactly two survive.
+  The witnesses `n = 0, 2, 8` remain in `A_k` at every level.
+- **Negative result (checked for k ≤ 22, not yet proved unconditionally)**: because
+  `|A_k| = 2^(k-1)` grows without bound, the modular sieve never empties. No
+  obstruction modulo any power of 3 can prove the conjecture at any finite 3-adic
+  precision. The density `|A_k|/(2·3^(k-1)) = (1/2)(2/3)^(k-1) → 0` while the
+  count doubles — the naive-count obstruction in `problem.md` is realized.
+- **Lifting proof sketch (conjectured, not checked)**: LTE should give
+  `2^{2·3^(k-2)} ≡ 1 + c·3^(k-1) (mod 3^k)` with `3 ∤ c`. Then the three
+  lifts shift the top ternary digit by `{0, c, 2c} mod 3`, exactly one of
+  which is 2, so exactly two survive. Proving this would make `|A_k| = 2^(k-1)`
+  a theorem. The constant `c` and the congruence need verification before
+  recording as proved. See `research/threads/lifting-proof.md`.
 
 ## Ruled out
 
