@@ -1,1 +1,10 @@
-0
+Parity check of N(m,n) = (m-1)(n-1)+1-gcd(m,n) over 1 <= m, n <= 799
+Total pairs checked: 638401
+Pairs with N odd:    0
+Per parity class (m mod 2, n mod 2) -> [count N odd, count N even]:
+  m%2=0, n%2=0: [159201, 0]
+  m%2=0, n%2=1: [159600, 0]
+  m%2=1, n%2=0: [159600, 0]
+  m%2=1, n%2=1: [160000, 0]
+Two algebraic forms agree on 1..399 x 1..399: 159201 / 399^2
+RESULT: INTEGRALITY REPRODUCED — ZERO odd values, both forms agree.

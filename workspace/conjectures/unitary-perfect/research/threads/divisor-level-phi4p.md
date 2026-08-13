@@ -16,13 +16,17 @@ blocked-by: No divisor-level transference theorem exists (per Maciejewski
 next: (1) compute ω(Φ_{4p}(2)) and the v2 distribution of its prime divisors
   for a stated range of primes p to test Conjecture 29 empirically; (2) test
   the mod-16 equidistribution on the known prime factors of the open
-  candidates; (3) close the adopted algebraic step 2 using the now-grounded
-  supplementary law [2/π]_4 = i^{-b/2} (claim qr-supplementary-2): primaryize
-  2^p+i in Z[i] and evaluate (2/(2^p+i))_4 = Π_{π^e||2^p+i} (2/π)_4^e from
-  p mod 16 alone — the divisor-transference identity; (4) look for a
-  congruence class of p where an r ≡ 1 (mod 16) divisor forces a head by this
-  closed form. The per-class (p mod 8) shortcut is REFUTED (M4); only the
-  product formula survives.
+  candidates; (3) **[DIRECTIVE 13] Evaluate the product identity**:
+  Π_{π^e || 2^p+i} (2/π)_4^e = (2/(2^p+i))_4. The right side is computable in
+  closed form from p mod 16 alone via the supplementary law of quartic
+  reciprocity applied to the Gaussian integer 2^p + i. Each left factor
+  satisfies (2/π)_4 = +1 iff N(π) ≡ 1 mod 16, i.e. iff r is not 3-Higgs
+  (the one-way obstruction v2(r-1) ≥ 4 ⟹ r ∉ P₃). So the product identity
+  determines exactly how many divisors of Φ_{4p}(2) are ≡ 1 mod 16 without
+  factoring 2^p + i — this is the divisor-transference theorem the paper says
+  is missing, in algebraic form. State whether this constrains which r can be
+  3-Higgs; if it does not, close the approach. The per-class (p mod 8)
+  shortcut is REFUTED (M4); only the product formula survives.
 ```
 
 ## The question

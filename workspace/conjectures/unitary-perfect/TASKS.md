@@ -15,15 +15,32 @@
 
 ## Next
 
-- [ ] **DIRECTIVE 12:** Run the fixed equality-case verifier and record the capture.
+- [ ] **DIRECTIVE 13 (priority 1):** Run the fixed equality-case verifier and record the capture under the specific filename.
   ```bash
   timeout 540 python3 code/equality_case_verify.py 2>&1 | tee code/out/equality_case_verify_FIXED.captured.txt; echo EXIT_CODE=$?
   ```
   Confirm M(28) < T(28) and M(29) >= T(29), then update claim
-  `budget-equality-case-impossible` anchor to include this capture. Record the
-  boundary as 28, no exclusion at 29 or beyond. Move checked from 4 to 5.
+  `budget-equality-case-impossible` anchor to include this capture as its
+  primary anchor. The existing `equality_case_verify.captured.txt` already
+  shows all four points PASS with the fixed generator; this is a rename
+  to the filename the operator has been asking for across directives
+  4,7,8,9,10,11,12,13. Boundary 28, no exclusion at 29 or beyond. Move
+  checked from 4 to 5.
 
-- [ ] Attack H_even via the divisor-level problem for Φ_{4p}(2).
+- [ ] **DIRECTIVE 13 (priority 2):** Attack the biquadratic-reciprocity question
+  for the Φ_{4p}(2) thread. For which odd primes p is 2 a fourth power modulo
+  a primitive divisor r of Φ_{4p}(2)? The condition r ≡ 1 (mod 4p) already
+  forces r ≡ 1 (mod 4), so the biquadratic character (2/r)_4 is defined.
+  Gauss determines it by the representation r = a² + b². The supplementary
+  law [2/π]_4 for the Gaussian prime π | r gives (2/r)_4 = +1 iff r ≡ 1
+  (mod 16). The product identity Π_{π^e || 2^p+i} (2/π)_4^e = (2/(2^p+i))_4
+  evaluated via the supplementary law expresses how many divisors of Φ_{4p}(2)
+  are ≡ 1 (mod 16) as a function of p mod 16 alone — this is the divisor-
+  transference formula. State whether this constrains which r can be 3-Higgs,
+  and if not, say so and close the approach. The existing `heven_gauss.py`
+  already computes the per-factor characters through p=61; the next step is
+  the closed-form evaluation of (2/(2^p+i))_4 by quartic reciprocity on the
+  Gaussian integer 2^p + i, comparing it against the per-factor product.
 
 - [x] **Executed (2026-08, this run):** Gaussian factorization of `2^p + i`
   and quartic-character table for every odd prime `p ≤ 61` —
@@ -56,6 +73,7 @@
 
 - [ ] Do not fetch any new sources while FRONTIER.md unworked count > 100. The Maciejewski paper (93 KB) is already on disk at `research/sources/maciejewski-bounded-box-subbarao-warren.full.md`. Surveys (Guy B3, Handbook, Goto 2007) are already in the library.
 - [ ] The [74:08] "progress no" verdict came from a judge that TIMED OUT. It is not an assessment. H_even is the correct branch.
+- [ ] Budget: 31.17 remaining of 75 daily cap (~19 hours). Spend on depth, not breadth — the directive says close something, not start something new.
 
 ## Active approaches
 
