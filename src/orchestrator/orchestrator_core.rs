@@ -2,6 +2,7 @@
 mod approaches;
 pub(crate) mod async_subagents;
 mod backward;
+mod caps;
 mod checkpoint;
 mod claims;
 // The renderer writes files and pulls in raster encoders, so it is compiled
