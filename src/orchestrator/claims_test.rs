@@ -47,6 +47,69 @@ fn a_colon_in_prose_does_not_start_a_field() {
     assert!(claims[0].statement.contains("S(n): the least number"));
 }
 
+/// Naming a curve mid-statement is ordinary mathematical prose, and `E` is a
+/// field name on the word alone. An indented line is a continuation whatever it
+/// contains, so the rest of the statement survives. A live claim lost its
+/// arithmetic-progression condition and its `2E(Q)` criterion to this while
+/// still rendering as `proved`.
+#[test]
+fn an_indented_colon_line_continues_the_value() {
+    let text = note(concat!(
+        "id: robertson-elliptic-reduction\n",
+        "statement: A magic square of squares exists iff there are P0, P1, P2 on\n",
+        "  E: y^2 = x(x^2 - c^2) with x-coordinates in 2E(Q),\n",
+        "  satisfying x2P2 - x2P1 = x2P1 - x2P0.\n",
+        "status: proved",
+    ));
+    let (claims, faults) = parse(&text, "research/L1.1/bremner.md");
+    assert!(faults.is_empty());
+    assert_eq!(claims.len(), 1);
+
+    let claim = &claims[0];
+    assert!(claim.statement.contains("E: y^2 = x(x^2 - c^2)"));
+    // The condition the whole claim turns on, and the first thing lost.
+    assert!(claim.statement.contains("x2P2 - x2P1 = x2P1 - x2P0"));
+    assert_eq!(claim.status, Status::Proved);
+}
+
+/// A key the reader does not act on still opens a field when it sits at the
+/// column the other keys do. Folding it into the previous value instead would
+/// append prose to whatever came before it, which for `answers` is a list of
+/// request identifiers.
+#[test]
+fn an_unrecognised_key_at_the_margin_does_not_extend_the_previous_field() {
+    let text = note(concat!(
+        "id: a-claim\n",
+        "statement: Something holds.\n",
+        "answers: exact-reduction-magic-507c\n",
+        "verified-by: traced through the paper\n",
+        "status: proved",
+    ));
+    let (claims, _) = parse(&text, "research/L1.0/a.md");
+    assert_eq!(claims.len(), 1);
+    assert_eq!(claims[0].answers, vec!["exact-reduction-magic-507c"]);
+    assert_eq!(claims[0].status, Status::Proved);
+}
+
+/// A block written with every line indented has no line at the left margin, so
+/// the column its field names start at is read from the block rather than
+/// assumed.
+#[test]
+fn a_uniformly_indented_block_still_parses() {
+    let text = note(concat!(
+        "    id: indented\n",
+        "    statement: A holds because of B\n",
+        "      where B: the second condition.\n",
+        "    status: checked",
+    ));
+    let (claims, faults) = parse(&text, "research/L1.0/a.md");
+    assert!(faults.is_empty());
+    assert_eq!(claims.len(), 1);
+    assert_eq!(claims[0].id, "indented");
+    assert_eq!(claims[0].status, Status::Checked);
+    assert!(claims[0].statement.contains("B: the second condition"));
+}
+
 /// A block that claims nothing, or that nothing can refer to, is reported
 /// rather than dropped: a claim silently discarded leaves the note reading as
 /// though it recorded something.
