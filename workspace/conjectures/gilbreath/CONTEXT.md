@@ -46,8 +46,6 @@ question remains: is there a k with block length 0?
   stabilises to k; verified odd k<100,000; preprint, asserted-by-source); Croft's
   bounded-gap generalisation FALSE via Eppstein (now triple-sourced: Eppstein, CHT,
   Wikipedia); Chase 2024 random analogue = Math. Ann. 388, arXiv:2005.00530.
-- **Rule 90** governs the {0,2} parts of rows (Wikipedia); same Pascal/mod-2 structure as
-  the run's mod-4 linearization — independent confirmation of the microscope.
 - **Continuous-model decay:** CHT Σc_i ≥ log(n+e) (c_i decays no faster than 1/i;
   boundedness open); Ross 2026 exact rational c_4,c_5,c_6, empirical
   c_i ≈ C·λ^{s_2(i)}/i, λ≈1.14–1.20.
@@ -87,7 +85,9 @@ question remains: is there a k with block length 0?
   [binom(d,j) mod 2] · (A_K(p+1+j)/2). This is the Sierpinski/Pascal-mod-2
   structure of the subtriangle, proved by the block-lemma diagonal argument and
   verified exhaustively over all 2^n patterns for n ≤ 13. Independent
-  confirmation from CHT 2026 §1 (Sierpinski note) and Wikipedia (Rule 90).
+  confirmation from CHT 2026 §1 (Sierpinski note) and Wikipedia (Rule 90;
+  same Pascal/mod-2 structure as the run's mod-4 linearization — independent
+  confirmation of the microscope).
   **This structure is now split from the refuted absorption wrapper** (which
   claimed a uniform boundary-absorption bound — refuted by CHT Lemma 3.7(iii)
   and Eppstein 2011). The proved Rule 90 core stands alone. It predicts
