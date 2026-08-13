@@ -220,6 +220,30 @@ pub(super) async fn run(
     Ok(graph.run(state).await?.state)
 }
 
+/// Decomposes the goal beside the first attempt, before any cycle completes.
+///
+/// The cadence in [`open_reduction`] counts completed cycles, which made the
+/// earliest possible skeleton arrive after a full attempt/judge/reflect pass —
+/// on a conjecture run, the better part of an hour during which every role
+/// works without a statement of what would be enough. Nothing justifies that
+/// wait: the reducer works backward from the problem statement, so its input is
+/// present before the run starts, and the arm is detached, so opening it here
+/// delays the graph by nothing.
+///
+/// It goes through the same gate as every later reduction, so the first
+/// completed cycle cannot open a second one on top of this one, and a workspace
+/// resumed mid-investigation is decomposed from what is already on disk rather
+/// than from the statement alone.
+fn open_initial_reduction(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
+    reduction: &Reduction,
+    state: &mut SolutionState,
+) {
+    open_reduction(subagents, tracer, workspace, reduction, state);
+}
+
 /// Connects the loop's nodes, separately from building them.
 ///
 /// The routing is the part of this design most likely to be wrong, so it is
