@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://www.math.ualberta.ca/~subbarao/documents/Subbarao_Cook_Newberry_Weber1972.pdf | On unitary perfect numbers | 2014, Kiev. M. V. Subbarao, [Letter to N. J. A. Sloane, Feb 18 1974][25] M. V. Subbarao, T. J. Cook, R. S. Newberry and J. M. Weber, [On unitary perfect numbers][26], Delta, 3 (No. 1, 1972), 22-26.… |
 | 1 | https://mathscinet.ams.org/mathscinet/freetools/msc-search?text=11Axx | 11A | # Unitary divisor From Encyclopedia of Mathematics Jump to: navigation, search 2020 Mathematics Subject Classification: *Primary:*[11A][23] [[MSN][24]][[ZBL][25]] A divisor $d$ of a natural number… |
 
-_187 further candidates not shown; they are cited once each._
+_217 further candidates not shown; they are cited once each._
