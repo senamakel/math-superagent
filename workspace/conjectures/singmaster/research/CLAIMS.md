@@ -6,6 +6,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `a059233-rowcount-half-triangle-conversion` | OEIS A059233 (Hasler 2023 formula): row-count of a in Pascal's triangle = ceiling(A003016(a)/2); combined with A003016(a) = N(a) for a>1 (all occurrences of a>1 lie in rows <= a), row-count(a) = half-triangle solution… | yes | checked | `research/summaries/oeis-a059233.md` |
+| `a180058-records-witness-pairs` | OEIS A180058 (smallest integer occurring in exactly n rows of Pascal's triangle) = 2, 6, 120, 3003 for n=1..4, with 3003 = C(14,6)=C(15,5)=C(78,2)=C(3003,1) and 120 = C(10,3)=C(16,2)=C(120,1) — matching this run's… | yes | checked | `research/summaries/oeis-a180058.md` |
 | `aeh-average-normal-order-2` | Abbott-Erdos-Hanson 1974 (Thm 1): the average and normal order of N(t) is 2; explicitly #{t<=x : N(t)>2} = O(sqrt(x)). | yes | asserted | `research/summaries/abbott-erdos-hanson-1974.md` |
 | `bazso-stirling-singmaster-analogue` | Bazso-Mezo-Pinter-Tengely 2023 (arXiv:2311.06080): for Stirling numbers of both kinds, Mi(a) <= 2 + 2 log a / W((1/2)log a) (a>=2; W = Lambert W), hence O(log a/(log log a - log log log a)). For a <= 100000, M2(a)<=2… | **unchecked** | asserted | `research/summaries/singmaster-type-stirling-2023.md` |
 | `bbw-verification-bound` | Blokhuis-Brouwer-de Weger 2017 (INTEGERS 17 #A64, Thm 1): no binomial collisions beyond the known list (3003 + six sporadic + Lind/Singmaster/Tovey infinite family + trivial relations) for (k,l) in a list, for (m,l) in… | yes | asserted | `research/summaries/blokhuis-brouwer-deweger-collisions.md` |
@@ -28,7 +30,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `genus-single-closed-form-all-pairs` | For distinct m, n >= 2 the geometric genus of the projective closure of C(x,m) = C(y,n) is g(m,n) = ((m-1)*n - (m-2) - gcd(n,m))/2. Checked against all 111 genus values computed in this workspace - the 8x11 grid of… | yes | checked | `code/out/genus_single_closed_form.md` |
 | `grktu-known-solutions-list` | Gallegos-Ruiz-Katsipis-Tengely-Ulas 2020 (JNT 208, arXiv:1904.11369, held): the complete list of known solutions of C(n,k)=C(m,l) (2<=k<=n/2, 2<=l<=m/2, k<l) is 3003=C(78,2)=C(15,5)=C(14,6); 120=C(16,2)=C(10,3);… | yes | asserted | `research/summaries/gallega-ruiz-katsipis-tengely-ulas-binommld-2019.md` |
 | `grktu-near-collision-complete` | GRKTU 2020 solves C(n,k)=C(m,l)+d completely for -3<=d<=3 and (k,l) in {(2,3),(2,4),(2,5),(2,6),(2,8),(3,4),(3,6),(4,6),(4,8)}, with full tables; also C(n,k)=C(m,k)+d for k in {3,4,5}, d in {1..20}; also the polynomial… | yes | asserted | `research/summaries/gallega-ruiz-katsipis-tengely-ulas-binommld-2019.md` |
-| `half-triangle-convention-consistency` | This run's both-mirrors-plus-trivial convention N(a) equals 2 times the half-triangle solution count ((n,k) with 1<=k<=n/2). Checked on the canonical exemplars: N(120)=6 <-> {(120,1),(16,2),(10,3)}, N(3003)=8 <->… | yes | asserted | `research/summaries/erdos-problem-849.md` |
+| `half-triangle-convention-consistency` | This run's both-mirrors-plus-trivial convention N(a) equals 2 times the half-triangle solution count ((n,k) with 1<=k<=n/2). Checked on the canonical exemplars: N(120)=6 <-> {(120,1),(16,2),(10,3)}, N(3003)=8 <->… | yes | checked | `research/summaries/erdos-problem-849.md` |
 | `hpt-bilu-tichy-exceptional-classification` | For binomial/arithmetic-progression-product polynomials f_{A,c,d} (roots an arithmetic progression, at most r terms missing, n>2r^{3/2}+5r+8), Hajdu-Papp-Tijdeman 2022 Thm 2.3: f_{A,c,d}(x)=P(y) (deg P≥2) has finitely… | yes | asserted | `research/notes/bilu-tichy-grounding.md` |
 | `hptv-exception-pairs-infinite` | HPTV 2014: among all triples (k,m,n) with k>=3, m>=3, n>=3, the equation f_{k,m}(x) = f_{2,n}(y) has infinitely many solutions only for (m,n,k) = (5,4,3) and (6,4,4); all other triples satisfying the even-k condition… | yes | asserted | `research/summaries/hajdu-pinter-tengely-varga-equal-figurate-2014.md` |
 | `hptv-figurate-effective-finiteness` | Hajdu-Pinter-Tengely-Varga 2014 (JNT 137, 130-141; author PDF held): the equal-values equation f_{k,m}(x) = f_{2,n}(y) for figurate numbers f_{k,m}(X)=X(X+1)...(X+k-2)((m-2)X+k+2-m)/k! has EFFECTIVELY finitely many… | yes | asserted | `research/summaries/hajdu-pinter-tengely-varga-equal-figurate-2014.md` |
@@ -50,6 +52,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `mrstt-threshold-effective` | The "t sufficiently large depending on ε" hypothesis in MRSTT Theorem 1.3 (arXiv:2106.03335v1) is effective: the implied quantitative bound is a computable function of ε, not a non-constructive existence claim. Remark… | yes | asserted | `code/out/mrstt_leaves_witnesses_open.md` |
 | `ntip-vol1-primary-host` | Number Theory in Progress Vol. 1 (de Gruyter 1999) hosts Beukers-Shorey-Tijdeman 1999 pp. 11-26 (MRSTT [4]), the primary source for the run's ineffectivity obstruction; the downloaded preview contains the full BST paper… | yes | asserted | `research/summaries/number-theory-in-progress-vol1-preview.md` |
 | `oeis-a003016-row-count` | OEIS A003016(n) counts occurrences of n among entries of rows <= n of Pascal's triangle; sequence 0,3,1,2,2,2,3,2,2,2,4,2,...; related records in A003015/A138496. It is a row count, distinct from the run's both-mirror… | yes | asserted | `research/summaries/oeis-a003016-2026.md` |
+| `oeis-a090162-family-record` | OEIS A090162 records the values C(F(2n)F(2n+1), F(2n-1)F(2n)-1): 1, 3003, 61218182743304701891431482520, 3.537e204... , "known to occur at least six times" in Pascal's triangle — the catalogue-tier record of the same… | yes | asserted | `research/summaries/oeis-a090162.md` |
 | `partition-equal-values-infinite-families` | Bhattacharya 2021 (Research in Number Theory 7 #67, open access): for A={a1,a2} with gcd(a1,a2)=1 and any f in Z[x] positive degree/leading coefficient, P_A(x)=f(y) has infinitely many positive integer solutions;… | **unchecked** | asserted | `research/summaries/bhattacharya-partition-equal-values-2021.md` |
 | `saradha-shorey-fixedm-effective` | For A=B=1 and k+l an integral multiple of k (i.e. products in ratio 1:mk, m fixed >=2), Saradha-Shorey (via a Runge-method extension to exponential Diophantine equations) proved max(x,y,k) is bounded by a number… | no | asserted | `research/summaries/shorey-tijdeman-survey.md` |
 | `sdw-elliptic-logarithms-eight-pairs` | Stroeker-de Weger 1999 (Math. Comp. 68, 1257-1281): the equation C(n,k)=C(m,l) is completely solved (all integer solutions listed) for exactly (k,l) = (2,3),(2,4),(2,6),(2,8),(3,4),(3,6),(4,6),(4,8), by reducing each to… | yes | asserted | `research/summaries/stroeker-deweger-1999-elliptic-binomial.md` |
@@ -62,12 +65,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `sst-equal-length-exception-family` | For the equal-length case (L=M) of (1), the only exceptional family is d1=1, d2=4, x=L+1, y=2, giving (L+1)(L+2)...(2L)=2·6·...·(4L-2) — the C(n,k) dual identity (2L choose L) = product relation that yields infinitely… | yes | asserted | `research/summaries/saradha-shorey-tijdeman-equal-products-1995.md` |
 | `stirling-2023-bound-and-record` | Bazso-Mező-Pinter-Tengely 2023 (arXiv:2311.06080, Debrecen): the number M_i(a) of times an integer a occurs among Stirling numbers of kind i satisfies M_i(a) <= 2 + 2 log a / W((1/2) log a) for a >= 2 (Lambert W), hence… | yes | asserted | `research/summaries/stirling-singmaster-2023.md` |
 | `superelliptic-genus-formula` | A superelliptic curve y^m = f(x), f squarefree of degree d>=3, m>=2 (tame), has genus g = ((d-2)(m-1) + m - gcd(m,d))/2 (Riemann-Hurwitz; Shorey-Tijdeman; Sutherland 2020 eq. (1)). Applied to the binomial-column pairs:… | yes | checked | `research/summaries/superelliptic-genus-formula.md` |
-| `tao-boundary-and-method-ceiling` | Tao's blog (coauthor exposition) confirms: interior theorem reduces Singmaster to the boundary 2<=m<exp((log n)^{2/3+eps}) (mirror), where only ineffective BST/Siegel-known bounded-(m,m') results exist; the Vinogradov… | yes | asserted | `research/summaries/tao-interior-blog.md` |
-| `tijdeman-preprints-host` | Tijdeman's Leiden page hosts the author preprint "best.ps" of Beukers-Shorey-Tijdeman 1999 (Zakopane proceedings pp. 11-26; MRSTT [4]). The downloaded .ps is raw PostScript (not readable); the readable copy is the de… | yes | asserted | `research/summaries/tijdeman-preprints-page.md` |
-| `totd-ologk-proof-and-history` | Theorem of the Day (Whitty) exposition: Singmaster's proof that N(k) <= 2 + 2 log_2 k = O(log k) (least s with k < C(2s,s); monotonicity of the binomial in each parameter; N(k) <= 2s; s <= 1 + log_2 k). Construction… | yes | asserted | `research/summaries/theorem-of-the-day-singmaster.md` |
-| `witness-3003` | 3003 appears 8 times in Pascal's triangle under the convention that counts both (n,k) and (n,n-k) and includes the trivial pair C(a,1)=C(a,a-1). Explicitly 3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6) with four mirrors.… | yes | checked | `research/notes/established-review.md` |
+| `superelliptic-genus-riemann-hurwitz` | A superelliptic curve y^m=f(x) (f squarefree degree d>=3) has genus g = 1/2 (m(\|B\|-2) - sum_alpha (m,r_alpha)) + 1, B = roots of f (plus infinity if m does not divide d), r_alpha = root orders; ramification index over… | yes | catalogued | `research/summaries/wikipedia-superelliptic-curve.md` |
 
-_1 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_6 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -138,7 +138,6 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `fibonacci-n6-family` (research/summaries/singmaster-literature-exact.md) — asserted by the source, not proved there and not checked here
 - `grktu-known-solutions-list` (research/summaries/gallega-ruiz-katsipis-tengely-ulas-binommld-2019.md) — asserted by the source, not proved there and not checked here
 - `grktu-near-collision-complete` (research/summaries/gallega-ruiz-katsipis-tengely-ulas-binommld-2019.md) — asserted by the source, not proved there and not checked here
-- `half-triangle-convention-consistency` (research/summaries/erdos-problem-849.md) — asserted by the source, not proved there and not checked here
 - `hpt-bilu-tichy-exceptional-classification` (research/notes/bilu-tichy-grounding.md) — asserted by the source, not proved there and not checked here
 - `hptv-exception-pairs-infinite` (research/summaries/hajdu-pinter-tengely-varga-equal-figurate-2014.md) — asserted by the source, not proved there and not checked here
 - `hptv-figurate-effective-finiteness` (research/summaries/hajdu-pinter-tengely-varga-equal-figurate-2014.md) — asserted by the source, not proved there and not checked here
@@ -157,6 +156,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `mrstt-threshold-effective` (code/out/mrstt_leaves_witnesses_open.md) — asserted by the source, not proved there and not checked here
 - `ntip-vol1-primary-host` (research/summaries/number-theory-in-progress-vol1-preview.md) — asserted by the source, not proved there and not checked here
 - `oeis-a003016-row-count` (research/summaries/oeis-a003016-2026.md) — asserted by the source, not proved there and not checked here
+- `oeis-a090162-family-record` (research/summaries/oeis-a090162.md) — asserted by the source, not proved there and not checked here
 - `sdw-elliptic-logarithms-eight-pairs` (research/summaries/stroeker-deweger-1999-elliptic-binomial.md) — asserted by the source, not proved there and not checked here
 - `siegel-integral-points-ineffective` (research/summaries/siegel-theorem-integral-points.md) — asserted by the source, not proved there and not checked here
 - `singmaster-1971-original` (research/summaries/singmaster-1971.md) — asserted by the source, not proved there and not checked here
@@ -170,6 +170,12 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `tijdeman-preprints-host` (research/summaries/tijdeman-preprints-page.md) — asserted by the source, not proved there and not checked here
 - `totd-ologk-proof-and-history` (research/summaries/theorem-of-the-day-singmaster.md) — asserted by the source, not proved there and not checked here
 - `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) — asserted by the source, not proved there and not checked here
+
+## Taken from a catalogue
+
+These are lookups, not derivations. A catalogue is good evidence that a result is right and no evidence at all about why, so one of these may confirm a final answer and may never be the reason for it. Reproduce the terms with a program that does not read the catalogue, then say so; until then, report the result as looked up.
+
+- `superelliptic-genus-riemann-hurwitz` (research/summaries/wikipedia-superelliptic-curve.md) — read from a catalogue; no derivation here reproduces it
 
 ## Blocks that could not be read
 

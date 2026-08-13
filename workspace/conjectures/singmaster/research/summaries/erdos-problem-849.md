@@ -67,7 +67,8 @@ statement: This run's both-mirrors-plus-trivial convention N(a) equals 2 times
 hypotheses: k <= n/2 strict count; all four witness pairs have k < n/2 so no
   centre-column ambiguity.
 holds-here: yes — 120 and 3003 verified in code/out/witnesses.json.
-status: verified-numerically (matches witnesses.json and the source's exemplars)
+status: checked (exemplar pairs match code/out/witnesses.json exactly;
+  formula row-count = ceiling(N/2) per OEIS A059233)
 bearing: pins the convention translation so a read of the source cannot be
   mis-counted; a B>=10 finding would contradict the source's "no known t>=5".
 anchor: research/summaries/erdos-problem-849.md
