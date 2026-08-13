@@ -223,21 +223,20 @@ six-square-entry configurations are attainable; smallest-magic-sum six-square
 example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 
 **Approach statuses** (`research/APPROACHES.md`):
-- **uniform-height-bound-elliptic-ap** — **adopted** (this round). Uses
-  Garcia-Fritz & Pastén (2026) and Harrison–Mudgal–Schmidt (2026) uniform
-  Mordell–Lang / sum-product to bound AP length on E_e: y² = x(x²−c²).
-  GFP gives C^(r+1) with C ineffective; HMS gives C^(r+1) with C effectively
-  computable but astronomically large. Doubled-point question settled
-  (x(2Q) is x(P) for P = 2Q ∈ E(Q)). Constant size blocks a contradiction;
-  conditional reduction to a finite computation (Theorem 1.2, assuming uniform
-  rank boundedness) is the best structural result. Thread:
-  `uniformity-bremner-ap-bound`, status: effective-constant-advance-hms-2026.
-- **root-number-parity-four-curves** — **refuted** (this round). Birch–Stephens
-  fixes parity by n mod 8; no additive-relation→root-number contradiction
-  exists; Q-level mod-2 cannot separate Q from extension fields with MSS.
-- **Brauer–Manin on the K3** — **refuted** (S(Q) explicit nonempty via the
-  Category III point P=(345,196,−304,255,−396,−25); an analytic BM obstruction
-  cannot prove S(Q)=∅ — see K3 section).
+- **uniform-height-bound-elliptic-ap** — **adopted**. GFP (ineffective) + HMS
+  (effective but >> 3). Doubled-point question settled (x(2Q) is x(P) for
+  P = 2Q ∈ E(Q)); blocked by constant size, not by definitions. The
+  conditional reduction to a finite computation (Theorem 1.2, assuming
+  uniform rank boundedness) is the best structural result. **Blocking task:
+  consolidate the GFP-x2P answer in `code/out/gfp_x2p_answer.md`.**
+- **PARKED behind the blocking question:** `freys-curve-four-q-isogenies`
+  (since refuted by literature check), `integral-brauer-manin-nine-square`
+  (since refuted), `richardson-orbits-weyl-group` (since refuted),
+  `hecke-character-product-l`, `kodaira-dimension-general-type`,
+  `modular-jacobian-torsion-x0-32`. No work on any of these until the
+  GFP-x2P answer is filed.
+- **root-number-parity-four-curves** — **refuted**.
+- **Brauer–Manin on the K3** — **refuted** (S(Q) nonempty).
 - All others: **refuted** with reasons in APPROACHES.md.
 
 ## Ruled out
