@@ -176,6 +176,5 @@ pub(super) fn corpus() -> Vec<Case> {
     cases
 }
 
-#[cfg(test)]
 #[path = "parity_test.rs"]
 mod test;

@@ -19,6 +19,9 @@ mod frontier;
 mod layout;
 mod oeis;
 mod patch;
+// Test-only, and deliberately so: this exists to compare the two engines'
+// decisions, and nothing a run does should ever call it.
+#[cfg(test)]
 mod parity;
 mod paths;
 mod patterns;
