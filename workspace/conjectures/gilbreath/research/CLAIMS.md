@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `no-well-defined-mod3-reduction` | The absolute-difference operator <a,b> -> \|a-b\| has NO reduction mod 3: \|a-b\| mod 3 is not a function of (a mod 3, b mod 3). Hence no finite-state machine for the halved Gilbreath triangle over F_3 exists. | yes | proved | `research/approaches/prime-gap-mod6-structure.md` |
 | `odlyzko-1993-citation-confirmed` | Odlyzko's paper "Iterated absolute values of differences of consecutive primes" exists as Math. Comp. 61 (1993) 373-380, per the author's own bibliography page. | yes | asserted | `research/summaries/odlyzko-publications-page.md` |
 
-_44 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_45 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 

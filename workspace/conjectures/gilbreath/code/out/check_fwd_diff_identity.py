@@ -59,7 +59,11 @@ def main():
     print("oracle: rows A_1..A_5 reproduce problem.md:", oracle_ok)
 
     # ---- signed forward-difference triangle D ----
-    # D_k(i) = sum_j (-1)^{k-j} C(k,j) A_0(i+j); satisfies D_{k+1}(i) = D_k(i) - D_k(i+1)
+    # D_k(i) = sum_j (-1)^j C(k,j) A_0(i+j); satisfies D_{k+1}(i) = D_k(i) - D_k(i+1)
+    # (coefficients are (-1)^j, NOT (-1)^{k-j}; the two differ by the global
+    #  factor (-1)^k, and only |D_k(i)| is compared to A_k(i), so the sign
+    #  error below would have been invisible downstream — the assertion
+    #  caught it.)
     D = [A0]
     for _ in range(DEPTH):
         D.append([D[-1][i] - D[-1][i + 1] for i in range(len(D[-1]) - 1)])
@@ -68,10 +72,10 @@ def main():
         bc = binom_row(k)
         for i in range(0, 6):
             direct = sum(
-                ((-1) ** (k - j)) * bc[j] * A0[i + j] for j in range(k + 1)
+                ((-1) ** j) * bc[j] * A0[i + j] for j in range(k + 1)
             )
             assert D[k][i] == direct, (k, i, D[k][i], direct)
-    print("signed triangle D matches closed form Σ (-1)^{k-j} C(k,j) A_0(i+j): True")
+    print("signed triangle D matches closed form Σ (-1)^j C(k,j) A_0(i+j): True")
 
     # ---- the identity, position 1, k = 1..6 ----
     print("\nposition 1: |Δ_k(1)| vs A_k(1)")
