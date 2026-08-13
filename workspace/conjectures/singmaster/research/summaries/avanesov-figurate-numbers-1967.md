@@ -1,72 +1,60 @@
-<!-- source: https://www.impan.pl/en/publishing-house/journals-and-series/acta-arithmetica/all/12/4/96317/reshenie-odnoj-problemy-figurnyh-chisel | converted from HTML -->
+# Avanesov 1967 — "Solution of a problem on figurate numbers" (Acta Arith. 12)
 
-Решение одной проблемы фигурных чиселAll
+Source: Э. Аванесов (E. T. Avanesov), "Решение одной проблемы фигурных чисел"
+(Solution of a problem on figurate numbers), Acta Arithmetica 12 (1967)
+409–420, DOI 10.4064/aa-12-4-409-420.
 
-You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.
+## What is held
 
-# [Instytut Matematyczny Polskiej Akademii Nauk][2] / [Institute of Mathematics][3] / [Publishing house][4] / [Journals and Serials][5] / [Acta Arithmetica][6] / [All issues][7]
+- **Landing page** (Russian, CC-BY freeshare notice):
+  `research/sources/avanesov-figurate-numbers-1967.full.md` — the DOI,
+  author, pages, and free-download link.
+- **The article PDF is NOT readable in this workspace**: the freeshare
+  download (`/shop/en/publication/transaction/download/product/96317`)
+  parses as PDF with no extractable text layer — a 1967 scanned Russian
+  article without OCR. The body cannot be read by `download_document`.
 
-## Acta Arithmetica**
+## What the (2,3) problem is, and what is attested
 
-Search for IMPAN publications **
+- **Result (attested by two independent held full texts)**: the Diophantine
+  equation C(x,3) = C(y,2) (triangular = tetrahedral numbers) has exactly five
+  positive-integer solutions: (x,y) = (3,2), (5,5), (10,16), (22,56), (36,120).
+  - Kiss 1988 (Fibonacci Quart. 26(2) 127–130, full text held): "Avanesov proved
+    that this holds only in the cases (x;y) = (3;2), (5;5), (10;16), (22;56),
+    and (36;120)", and cites this Acta Arith. paper as [2].
+  - GRKTU 2020 (arXiv:1904.11369, full text held): "In 1966, Avanesov [1]
+    found all integral solutions of equation (1) with (k,l)=(2,3)."
+- **Arithmetic re-verified this run**:
+  C(5,3)=10=C(5,2); C(10,3)=120=C(16,2); C(22,3)=1540=C(56,2);
+  C(36,3)=7140=C(120,2); (3,2) degenerate row. The values 120, 1540, 7140 are
+  three of the six N=6 witnesses — the list is the check oracle any (2,3)
+  computation (e.g. the Matveev-2000 effective constant task) must reproduce.
 
--->
+## Bearing
 
-## Решение одной проблемы фигурных чисел
+- The five-pair list is **attested, not read from the primary** (primary body
+  unreadable here). Treat the list as sourced-through-two-full-texts
+  (Kiss + GRKTU), arithmetic checked, primary citation now precise. If a later
+  run needs the primary body itself, obtain an OCR'd copy from another
+  archive; do not re-download the IMPAN scan expecting a text layer.
 
-### [Volume 12 / 1967][8]
-
-Э. Аванесов Acta Arithmetica 12 (1967), 409-420 DOI: 10.4064/aa-12-4-409-420
-
-#### Authors
-
-- Э. Аванесов
-
-[Free download under CC-BY license][9]
-
-Search for IMPAN publications **
-
-- [10]
-- [11]
-- [12]
-- [13]
-- [14]
-- [15]
--
-- [16]
-- [17]
-
--->
-
-## Search for IMPAN publications
-
-Query phrase too short. Type at least 4 characters.
-
-## Rewrite code from the image
-
-Reload image
-
-Reload image
-
-Exit
-
-
-## Links
-
-[1]: http://browsehappy.com/
-[2]: /
-[3]: https://www.impan.pl/en
-[4]: https://www.impan.pl/en/publishing-house
-[5]: https://www.impan.pl/en/publishing-house/journals-and-series
-[6]: https://www.impan.pl/en/publishing-house/journals-and-series/acta-arithmetica
-[7]: https://www.impan.pl/en/publishing-house/journals-and-series/acta-arithmetica/all
-[8]: en/publishing-house/journals-and-series/acta-arithmetica/all/12
-[9]: /shop/en/publication/transaction/download/product/96317
-[10]: https://www.impan.pl/pl/instytut/dofinansowane-projekty
-[11]: http://bip.impan.pl/index.php
-[12]: /pl/instytut/o-nas/gazeta
-[13]: https://www.impan.pl/en/insitute/a-plus
-[14]: https://www.impan.pl/en/insitute/hr-strategy
-[15]: https://www.impan.pl/en/mathematical-world/organisations/wcnm
-[16]: https://www.impan.pl/pl/dzialalnosc/biblioteka/ozwrcin
-[17]: http://rcin.org.pl/impan/dlibra?action=ChangeLanguageAction&language=en
+```claim
+id: avanesov-1967-cx3-cy2-complete
+statement: Avanesov 1967 (Acta Arith. 12, 409-420; primary PDF unreadable -
+  scanned, no text layer) solved the triangular=tetrahedral equation
+  C(x,3)=C(y,2): all positive integer solutions are (x,y)=(3,2),(5,5),(10,16),
+  (22,56),(36,120), i.e. the nontrivial equal values 120, 1540, 7140 (=C(16,2),
+  C(56,2), C(120,2)) plus degenerate (3,2)=1. Attested by two independent full
+  texts held in this library (Kiss 1988 p.127; GRKTU 2020 introduction);
+  arithmetic re-verified this run.
+hypotheses: none.
+holds-here: yes - the (2,3) curve C(x,2)=C(y,3) is genus 1 (the run's closed
+  form g(2,3)=1), the only small pair with 3003-type structure; the five-pair
+  list is the oracle any (2,3) effective computation must reproduce.
+status: attested through two held full texts + arithmetic check; primary body
+  not readable this run (recorded, not retried)
+bearing: (2,3) complete solution list; constrains any effective height bound
+  computation on the (2,3) curve (BACKWARD.md matveev-explicit-2-3 thread) as
+  its finite-list check.
+anchor: research/summaries/avanesov-figurate-numbers-1967.md
+```

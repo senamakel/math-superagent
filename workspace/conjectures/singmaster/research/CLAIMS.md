@@ -10,6 +10,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `a138496-record-corroboration` | OEIS A138496 (record values of A003016) sets new records successively at n = 0, 1, 10, 120, 3003, with 3003 the highest — a third-party catalogue corroboration that 3003 is the record multiplicity and 120 the first N>=6… | yes | asserted | `research/summaries/oeis-a138496.md` |
 | `a180058-records-witness-pairs` | OEIS A180058 (smallest integer occurring in exactly n rows of Pascal's triangle) = 2, 6, 120, 3003 for n=1..4, with 3003 = C(14,6)=C(15,5)=C(78,2)=C(3003,1) and 120 = C(10,3)=C(16,2)=C(120,1) — matching this run's… | yes | checked | `research/summaries/oeis-a180058.md` |
 | `aeh-average-normal-order-2` | Abbott-Erdos-Hanson 1974 (Thm 1): the average and normal order of N(t) is 2; explicitly #{t<=x : N(t)>2} = O(sqrt(x)). | yes | asserted | `research/summaries/abbott-erdos-hanson-1974.md` |
+| `avanesov-1967-cx3-cy2-complete` | Avanesov 1967 (Acta Arith. 12, 409-420; primary PDF unreadable - scanned, no text layer) solved the triangular=tetrahedral equation C(x,3)=C(y,2): all positive integer solutions are (x,y)=(3,2),(5,5),(10,16),… | yes | asserted | `research/summaries/avanesov-figurate-numbers-1967.md` |
 | `bazso-stirling-singmaster-analogue` | Bazso-Mezo-Pinter-Tengely 2023 (arXiv:2311.06080): for Stirling numbers of both kinds, Mi(a) <= 2 + 2 log a / W((1/2)log a) (a>=2; W = Lambert W), hence O(log a/(log log a - log log log a)). For a <= 100000, M2(a)<=2… | **unchecked** | asserted | `research/summaries/singmaster-type-stirling-2023.md` |
 | `bbw-verification-bound` | Blokhuis-Brouwer-de Weger 2017 (INTEGERS 17 #A64, Thm 1): no binomial collisions beyond the known list (3003 + six sporadic + Lind/Singmaster/Tovey infinite family + trivial relations) for (k,l) in a list, for (m,l) in… | yes | asserted | `research/summaries/blokhuis-brouwer-deweger-collisions.md` |
 | `best-unconditional-bound` | Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical: Singmaster 1971 O(log a) (primary NOT held; attested by AEH 1974, MRSTT, Wikipedia);… | yes | checked | `research/notes/established-review.md` |
@@ -65,9 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `mrstt-interior-boundary` | MRSTT (QJM 73 (2022) 1137-1177, arXiv:2106.03335) prove at most 2 solutions to C(n,m)=t in the left-half interior exp(log^{2/3+eps} n)<=m<=n/2 (at most 4 in the full interior exp(log^{2/3+eps} n)<=m<=n-exp(log^{2/3+eps}… | yes | asserted | `research/notes/established-review.md` |
 | `mrstt-interior-excludes-all-known-witnesses` | For every admissible epsilon in (0,1), all fifteen nontrivial pairs (n,m) recorded in code/out/witnesses.json lie strictly below the MRSTT Theorem 1.3 interior cut exp((log n)^(2/3+epsilon)), hence outside the range in… | yes | checked | `code/out/mrstt_leaves_witnesses_open.md` |
 | `mrstt-interior-nothree` | MRSTT (arXiv:2106.03335, Remark 1.11) prove there cannot be exactly three solutions to C(n,m)=t in the interior exp(log^{2/3+eps} n) <= m <= n - exp(log^{2/3+eps} n); interior multiplicities are 0,1,2,4 (never 3).… | yes | asserted | `research/summaries/mrstt-fulltext.md` |
-| `mrstt-interior-theorem` | (Theorem 1.3, MRSTT 2021) Let 0<eps<1, t sufficiently large depending on eps. At most two solutions (n,m) to C(n,m)=t in exp((log n)^{2/3+eps}) <= m <= n/2; hence at most four in exp((log n)^{2/3+eps}) <= m <= n -… | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
 
-_34 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_35 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -100,6 +100,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `a138496-record-corroboration` (research/summaries/oeis-a138496.md) — asserted by the source, not proved there and not checked here
 - `aeh-average-normal-order-2` (research/summaries/abbott-erdos-hanson-1974.md) — asserted by the source, not proved there and not checked here
+- `avanesov-1967-cx3-cy2-complete` (research/summaries/avanesov-figurate-numbers-1967.md) — asserted by the source, not proved there and not checked here
 - `bbw-verification-bound` (research/summaries/blokhuis-brouwer-deweger-collisions.md) — asserted by the source, not proved there and not checked here
 - `bilu-tichy-classification-primary` (research/summaries/bilu-tichy-2000-fxgy.md) — asserted by the source, not proved there and not checked here
 - `bilu-tichy-method-ineffective-uniformity-wall` (research/notes/bilu-tichy-grounding.md) — asserted by the source, not proved there and not checked here
