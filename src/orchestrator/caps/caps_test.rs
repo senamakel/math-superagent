@@ -34,7 +34,7 @@ use super::bundle;
 use crate::agent::{MockModel, Result, Tool, ToolCall, ToolResult, ToolSchema};
 use crate::agent::budget::RunBudget;
 use crate::orchestrator::async_subagents::AsyncSubagentManager;
-use crate::orchestrator::runner::SubagentTaskRunner;
+use crate::orchestrator::runner::{SubagentAgentRunner, SubagentTaskRunner};
 
 /// A tool that reports a fixed count, standing in for the workspace tools a
 /// real workflow reaches for.
@@ -92,6 +92,7 @@ async fn a_two_node_workflow_runs_against_the_real_capabilities() {
         &workspace,
         [Arc::new(CountingTool) as Arc<dyn Tool<()>>],
         SubagentTaskRunner::new(AsyncSubagentManager::new(RunBudget::default(), None)),
+        SubagentAgentRunner::new(AsyncSubagentManager::new(RunBudget::default(), None)),
     );
 
     let graph = WorkflowGraph {
@@ -126,6 +127,80 @@ async fn a_two_node_workflow_runs_against_the_real_capabilities() {
         .and_then(Value::as_str)
         .unwrap_or_default();
     assert!(text.contains("load-bearing"), "{:?}", outcome.output);
+
+    let _ = std::fs::remove_dir_all(&workspace);
+}
+
+/// Phase 2's gate: a role registered with this crate runs from a one-node
+/// workflow that names it in `agent_ref`, with the role's own prompt and tools
+/// rather than a bare completion.
+#[tokio::test]
+async fn a_named_role_runs_from_a_one_node_workflow() {
+    use crate::orchestrator::async_subagents::AgentExecutor;
+    use tinyflows::model::AgentDefinition as FlowAgent;
+
+    /// Reports the instruction it was handed, so the test can assert the
+    /// workflow's prompt reached the role rather than something reassembled.
+    struct RecordingRole;
+
+    #[async_trait::async_trait]
+    impl AgentExecutor for RecordingRole {
+        async fn execute(
+            &self,
+            _run_id: &str,
+            input: String,
+            _steering: tinyagents::harness::steering::SteeringHandle,
+            _tracer: Option<Arc<crate::agent::trace::RunTracer>>,
+        ) -> Result<String> {
+            Ok(format!("scholar read: {input}"))
+        }
+    }
+
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    manager
+        .register_executor("scholar", Arc::new(RecordingRole))
+        .expect("registering a role once succeeds");
+
+    let workspace = std::env::temp_dir().join(format!("riemann-role-gate-{}", std::process::id()));
+    std::fs::create_dir_all(&workspace).expect("a scratch workspace can be created");
+
+    let caps = bundle(
+        // Deliberately a model that would answer something else: if the node
+        // reached the bare completion path instead of the role, this is the
+        // string that would come back.
+        Arc::new(MockModel::constant("a bare completion, not the role")),
+        &workspace,
+        [] as [Arc<dyn Tool<()>>; 0],
+        SubagentTaskRunner::new(manager.clone()),
+        SubagentAgentRunner::new(manager),
+    );
+
+    let graph = WorkflowGraph {
+        name: "role gate".into(),
+        agents: vec![FlowAgent::new("scholar")],
+        nodes: vec![
+            node("start", NodeKind::Trigger, Value::Null),
+            node(
+                "read",
+                NodeKind::Agent,
+                json!({ "agent_ref": "scholar", "prompt": "the library" }),
+            ),
+        ],
+        edges: vec![edge("start", "read")],
+        ..WorkflowGraph::default()
+    };
+
+    let compiled = compile(&graph).expect("the graph is structurally valid");
+    let outcome = run(&compiled, json!({}), &caps)
+        .await
+        .expect("the workflow runs the named role");
+
+    let text = outcome
+        .output
+        .pointer("/nodes/read/items/0/json/text")
+        .and_then(Value::as_str)
+        .unwrap_or_default();
+    assert_eq!(text, "scholar read: the library", "{:?}", outcome.output);
 
     let _ = std::fs::remove_dir_all(&workspace);
 }

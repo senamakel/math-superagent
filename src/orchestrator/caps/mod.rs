@@ -20,7 +20,8 @@
 //! | `llm` | one model turn, no tools | [`llm`] |
 //! | `http` | *refused on purpose* | [`network`] |
 //! | `resolver` | no catalog yet | [`resolver`] |
-//! | `memory`, `agent` | still to come | — |
+//! | `agent` | the role registry | [`super::runner`] |
+//! | `memory` | *unset; the recall tools reach the same store* | — |
 //!
 //! # What is deliberately missing
 //!
@@ -36,7 +37,7 @@ use std::sync::Arc;
 use tinyagents::harness::model::ChatModel;
 use tinyflows::caps::Capabilities;
 
-use super::runner::SubagentTaskRunner;
+use super::runner::{SubagentAgentRunner, SubagentTaskRunner};
 use crate::agent::Tool;
 
 pub(crate) mod execution;
@@ -53,15 +54,20 @@ pub(crate) mod tools;
 /// workflow may use, not the whole registry — see [`tools`] for why that
 /// matters here.
 ///
-/// `agent` and `memory` are left unset for now, so an `agent` node falls back
-/// to a bare completion and a `memory` node fails with a capability error. Both
-/// are honest about what exists: there is no role registry behind a workflow
-/// yet, and a `memory` node has no meaningful no-op.
+/// `agents` is what an `agent` node's `agent_ref` reaches. With it set, a role
+/// runs with its own prompt, tools, and budget; without it, an `agent` node
+/// would fall back to a bare tool-less completion, which is a different thing
+/// wearing the same name.
+///
+/// `memory` is still unset, so a `memory` node fails with a capability error.
+/// That is honest: a memory node has no meaningful no-op, and the recall tools
+/// already reach the same store through `tool_call`.
 pub(crate) fn bundle(
     model: Arc<dyn ChatModel<()>>,
     workspace: impl Into<std::path::PathBuf>,
     tools: impl IntoIterator<Item = Arc<dyn Tool<()>>>,
     tasks: SubagentTaskRunner,
+    agents: SubagentAgentRunner,
 ) -> Capabilities {
     Capabilities {
         llm: Arc::new(llm::SingleTurnModel::new(model)),
@@ -70,7 +76,7 @@ pub(crate) fn bundle(
         code: Arc::new(execution::RefusingCodeRunner),
         state: Arc::new(state::WorkspaceState::new(workspace)),
         resolver: Arc::new(resolver::NoCatalog),
-        agent: None,
+        agent: Some(Arc::new(agents)),
         shell: None,
         memory: None,
         tasks: Some(Arc::new(tasks)),

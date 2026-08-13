@@ -9,6 +9,7 @@ mod claims;
 // only when somebody asks to draw the loop.
 #[cfg(feature = "graph-debug")]
 mod diagram;
+mod definitions;
 mod digest;
 mod documents;
 mod dossier;
@@ -70,7 +71,7 @@ use vector::{
     VectorStore,
 };
 
-pub use runner::SubagentTaskRunner;
+pub use runner::{SubagentAgentRunner, SubagentTaskRunner};
 pub use tinyagents::harness::host::AgentDefinition;
 #[cfg(feature = "graph-debug")]
 pub use diagram::render_solution_loop;
@@ -340,6 +341,17 @@ impl OrchestratorAgent {
     /// `caps::execution` and `caps::network` for why that is a decision rather
     /// than an omission.
     ///
+    /// The roles a workflow may name in an `agent_ref`, derived from this
+    /// orchestrator's own registry.
+    ///
+    /// Derived rather than restated, so a workflow's view of what a role may
+    /// touch cannot drift from the run's. See `definitions` for why that is the
+    /// one thing this must not be a second list of.
+    #[must_use]
+    pub fn workflow_agents(&self) -> Vec<tinyflows::model::AgentDefinition> {
+        definitions::workflow_agents(&self.registry)
+    }
+
     /// # Errors
     ///
     /// Returns an error when the provider model cannot be configured from the
@@ -353,6 +365,7 @@ impl OrchestratorAgent {
             &self.workspace,
             tools,
             self.task_runner(),
+            SubagentAgentRunner::new(self.subagents.clone()),
         ))
     }
 }

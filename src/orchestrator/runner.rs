@@ -37,7 +37,7 @@
 
 use async_trait::async_trait;
 use serde_json::Value;
-use tinyflows::caps::{TaskRunner, TaskSpec, TaskState};
+use tinyflows::caps::{AgentRunner, TaskRunner, TaskSpec, TaskState};
 use tinyflows::error::{EngineError, Result as EngineResult};
 
 use super::async_subagents::AsyncSubagentManager;
@@ -157,6 +157,95 @@ impl TaskRunner for SubagentTaskRunner {
         self.manager
             .stop_run(ticket)
             .map_err(|error| EngineError::Capability(error.to_string()))
+    }
+}
+
+/// Runs this crate's registered roles for an `agent` node.
+///
+/// An `agent` node whose config carries an `agent_ref` routes here instead of
+/// taking a bare completion, so the role runs with its own prompt, its own
+/// tools, and its own budget — the whole point of a role existing. Without
+/// this, an `agent` node would reach [`LlmProvider`](tinyflows::caps::LlmProvider)
+/// and get a single tool-less turn, which is a different thing wearing the same
+/// name.
+///
+/// Shares the manager with [`SubagentTaskRunner`], so a role reached from an
+/// `agent` node and the same role reached from a `spawn` node are one registry
+/// and one concurrency pool rather than two.
+#[derive(Clone, Debug)]
+pub struct SubagentAgentRunner {
+    manager: AsyncSubagentManager,
+}
+
+impl SubagentAgentRunner {
+    /// Wraps a manager as an agent runner.
+    pub(super) fn new(manager: AsyncSubagentManager) -> Self {
+        Self { manager }
+    }
+}
+
+/// Reads the instruction out of an `agent` node's resolved config.
+///
+/// Three spellings are accepted because three are in use: `prompt` is what an
+/// `agent` node writes, `input` is what the assembled request carries, and a
+/// bare string config is what the shortest possible node looks like. Accepting
+/// all three costs nothing and turns a silent empty turn into a run that did
+/// what the author meant.
+fn instruction_from(request: &Value) -> EngineResult<String> {
+    let text = request
+        .as_str()
+        .map(str::to_string)
+        .or_else(|| {
+            ["prompt", "input", "text"]
+                .iter()
+                .find_map(|key| request.get(key).and_then(Value::as_str))
+                .map(str::to_string)
+        })
+        .ok_or_else(|| {
+            EngineError::Capability(
+                "an agent node needs a `prompt`, an `input`, or a bare string".into(),
+            )
+        })?;
+    if text.trim().is_empty() {
+        return Err(EngineError::Capability(
+            "an agent node was given an empty prompt".into(),
+        ));
+    }
+    Ok(text)
+}
+
+#[async_trait]
+impl AgentRunner for SubagentAgentRunner {
+    /// Runs `agent_ref` to completion and returns what it said.
+    ///
+    /// Returns `{ text }`, matching what [`LlmProvider`](tinyflows::caps::LlmProvider)
+    /// returns, so a downstream node binds `=item.text` without knowing which
+    /// path produced the turn.
+    ///
+    /// This waits, unlike [`SubagentTaskRunner`], and the difference is the
+    /// node kind rather than an inconsistency: an `agent` node is a step in a
+    /// sequence and its successor needs the answer, while a `spawn` node exists
+    /// precisely so the branch does not wait. A workflow that wants an agent to
+    /// run beside the graph uses `spawn`.
+    ///
+    /// # Errors
+    ///
+    /// Returns a capability error when the config carries no instruction, when
+    /// `agent_ref` is not registered, or when the run failed or produced
+    /// nothing before its deadline.
+    async fn run_agent(
+        &self,
+        agent_ref: &str,
+        request: Value,
+        _conn: Option<&str>,
+    ) -> EngineResult<Value> {
+        let instruction = instruction_from(&request)?;
+        let response = self
+            .manager
+            .run_to_completion(agent_ref, instruction)
+            .await
+            .map_err(|error| EngineError::Capability(error.to_string()))?;
+        Ok(serde_json::json!({ "text": response }))
     }
 }
 
