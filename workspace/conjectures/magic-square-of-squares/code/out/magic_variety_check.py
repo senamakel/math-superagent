@@ -107,10 +107,23 @@ def normalized(v):
 
 
 def proportional(a, b):
-    """Exact: two nonzero integer tuples are Q-scalar multiples."""
-    if not a or not b or any(x == 0 for x in a) or any(y == 0 for y in b):
+    """Exact: two integer tuples (same length, not both zero) are
+    Q-scalar multiples.  Handles zero entries: zeros must match, and all
+    nonzero cross-ratios a[i]/b[i] must be equal."""
+    if len(a) != len(b) or not any(a) or not any(b):
         return False
-    return all(a[i] * b[0] == b[i] * a[0] for i in range(len(a)))
+    pair = None
+    for ai, bi in zip(a, b):
+        if ai == 0 or bi == 0:
+            if ai != bi:
+                return False
+            continue
+        if pair is None:
+            pair = (ai, bi)
+        else:
+            if ai * pair[1] != bi * pair[0]:
+                return False
+    return pair is not None
 
 
 def in_span(cols, vec):
