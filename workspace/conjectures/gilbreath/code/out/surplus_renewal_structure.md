@@ -95,6 +95,6 @@ bearing: the monotone surplus S_k is the quantity whose unboundedness of
   bounded above by b_1", and shows regeneration events (incl. stalls) are the
   only increments. Does not bound the event rate — that is open and is the
   next step (TASKS.md item 1).
-anchor: code/out/surplus_renewal_structure.md; code/out/surplus_structure.captured.txt; code/out/surplus_renewal_table.captured.txt
+anchor: code/out/surplus_renewal_structure.md, code/out/surplus_structure.captured.txt, code/out/surplus_renewal_table.captured.txt
 source: operator-computation
 ```
