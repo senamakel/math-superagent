@@ -283,6 +283,25 @@ def main():
         f.write(txt + "\n")
     with open('code/out/giant_stretches.md', 'w') as f:
         f.write(txt + "\n")
+    snapshot = {
+        'events': [
+            dict(k=D['k'], bcur=D['bcur'], bnxt=D['bnxt'], j=D['j'],
+                 vals=D['vals'], bits=list(D['bits_runs']),
+                 vmin=D['vmin'], vmax=D['vmax'], dom=D['dom'], domc=D['domc'],
+                 distinct=D['distinct'], drift=D['drift'],
+                 lvl=D['lvl'], up=D['up'], dn=D['dn'],
+                 longest_per_value=D['longest_per_value'],
+                 container=(D['cs'], D['ce']), clen=D['clen'],
+                 rank=D['rank'], ties=D['ties'], n_stretch=D['n_stretch'],
+                 lengths=D['lengths'],
+                 zc=D['zc'], oc=D['oc'],
+                 longest0=D['longest0'], longest1=D['longest1'])
+            for D in details
+        ],
+        'tot_j': tot_j,
+    }
+    with open('code/out/giant_stretches_snapshot.json', 'w') as f:
+        json.dump(snapshot, f)
     print(txt)
 
 
