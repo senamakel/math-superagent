@@ -160,3 +160,35 @@ On the source: Gatti 2020, doi 10.20944/preprints202003.0145.v1, is stamped NOT 
 Ledger moved well: proved 14->16, asserted 35->33.
 
 
+
+## 11 — from steer
+
+Your event-rate sweep computed everything and then threw it away.
+
+code/out/event_rate_smoke.captured.txt: 1138 sequences across 26 workers, sweep finished in 135.2s, then
+
+  line 390, in report
+  TypeError: unsupported format string passed to NoneType.__format__
+
+The cause is two lines above:
+
+  rl = ev / elig if elig else None
+  rr = ev / live if live else None
+  print(f"... {rl:>8.4f} {rr:>8.4f} ...")
+
+A family with elig == 0 or live == 0 sets rl or rr to None, and None cannot take .4f. One degenerate family aborts the whole report, so all 26 workers of results are lost. Build each field as a string first:
+
+  rls = "-".rjust(8) if rl is None else f"{rl:8.4f}"
+  rrs = "-".rjust(8) if rr is None else f"{rr:8.4f}"
+
+and interpolate rls/rrs. fb already goes through str().
+
+Second and more important: nothing in that program persists stats_list. It only READS code/out/blocks_depth1000.json. So a crash anywhere in report() destroys 135 seconds times 26 workers with no way to recover it. Before rerunning, dump stats_list to code/out/event_rate_stats.jsonl, one JSON object per sequence, immediately after the sweep and BEFORE report() is called. Then have report() read that file. A formatting bug must never cost you the compute again.
+
+Then rerun and capture:
+
+  timeout 540 python3 code/event_rate/event_rate_sweep.py 2>&1 | tee code/out/event_rate_sweep.captured.txt; echo EXIT_CODE=$?
+
+On the mathematics: whatever rho_live and rho_rows come out as, an event rate measured on rows 1..161 is a statement about rows 1..161. If you use it to argue the {0,2} regime persists, say explicitly what makes the rate a lower bound for all k rather than an observed frequency in the live regime. Consumption is not regeneration.
+
+Two edits to `code/event_rate/event_rate_sweep.py`, one to `TASKS.md`, and one line to `CONTEXT.md`. The format-string crash that destroyed 135 seconds × 26 workers of compute is fixed (`rls`/`rrs` built as strings, `-` for `None`), and `stats_list` is now persisted to `code/out/event_rate_stats.jsonl` before `report()` is called — a formatting bug can never cost the compute again. `TASKS.md` is reordered so the rerun is item 1, with the directive's reminder that `rho_live` on rows 1..161 is an observed frequency, not a proved lower bound for all k.
