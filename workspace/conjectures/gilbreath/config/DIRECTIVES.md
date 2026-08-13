@@ -394,3 +394,9 @@ Directive 16 is still open: restore Route A as live, and run the conditional-rat
 3. **research/notes/library-state.md** — Added `gilbreath-second-entry-equivalence` claim block with the full statement, axiom footprint, and the bearing Directive 17 requires: "it closes no distance toward a proof of the conjecture itself — the {0,2} regime is exactly the conjecture, not a simplification." The `lean-reduction-machine-checked` claim (pre-existing, had the same content in a different claim block) remains as a separate entry — these are now two claim ids for the same artifact: one from the run's own notes (`lean-reduction-machine-checked`) and one the directive expressly names (`gilbreath-second-entry-equivalence`).
 
 The regeneration thread picked up a `lean-formalisation` note from the edit (`research/threads/regeneration.md` → `research/THREADS.md` is auto-derived). The blocking task — conditional-rate experiment on k>10 survivors — is unchanged and still the single open item in TASKS.md.
+
+## 18 — from steer
+
+build-check probe
+
+**Changed:** `TASKS.md` — added the edge-sequence probe as item 1 (immediate), moved the conditional-rate experiment to item 2. Both run independently on existing data (`blocks_depth1000.json` and the sweep JSON), so neither blocks the other. The probe measures the one quantity the step law makes indispensable — how often the block's last entry is 2 — since `edge=2` is the necessary half of every `(2,4)` regeneration event, and its frequency on the prime rows is the structural signal the rate question turns on. No other file needed changing: the regeneration thread already covers this gap, the run state in CONTEXT.md already names it, and no approach or thread is opened or closed by a measurement.

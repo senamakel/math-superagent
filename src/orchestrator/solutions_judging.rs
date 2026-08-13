@@ -493,6 +493,7 @@ async fn reflect_step(
     workspace: Option<&Path>,
     memory: &VectorStore,
     mailbox: &Mailbox,
+    reduction: &Reduction,
     teams: &[TeamHandle],
     mut state: SolutionState,
 ) -> SolutionState {
@@ -582,7 +583,129 @@ async fn reflect_step(
     // one. Spawned last, once the verdict and the lesson are in the state, so
     // the inventor is told what this attempt actually established.
     open_invention(subagents, tracer, workspace, mailbox, &state);
+    // And the other question nothing in the loop asks by itself: not what else
+    // could get us there, but what would be enough. Spawned beside the
+    // invention arm and on its own cadence — see [`open_reduction`].
+    open_reduction(subagents, tracer, workspace, reduction, &mut state);
     state
+}
+
+/// The one reduction a run may have in flight, and where its report goes.
+///
+/// Grouped rather than passed as two more parameters for the reason
+/// [`Mailboxes`] groups its own: they are one idea, and a caller holding the
+/// outbox without the gate could open a second reduction over the first.
+pub(super) struct Reduction {
+    /// Where the open gaps are left for the next attempt.
+    pub(super) outbox: Mailbox,
+    /// What stops two reducers writing the same skeleton file.
+    pub(super) gate: ReductionGate,
+}
+
+/// Admits one reduction at a time, for the whole run.
+///
+/// [`open_invention`] needs no such thing: two inventors produce two approach
+/// files under two slugs, which is untidy and nothing more. Two reducers is a
+/// different failure. They decompose the same goal, so they write the same
+/// `research/backward/<slug>.md`, `write_document` is last-writer-wins, and the
+/// gaps the loser found are gone with no error anywhere — the workspace's own
+/// version of two containers on one workspace, where both runs work, both
+/// write, and the damage only shows up in what is missing later.
+///
+/// Claimed before the spawn and released inside it, so a reduction that outlives
+/// the cycle that opened it still holds the gate.
+#[derive(Clone, Default)]
+pub(super) struct ReductionGate(Arc<std::sync::atomic::AtomicBool>);
+
+impl ReductionGate {
+    /// Takes the gate, or reports that somebody already has it.
+    fn claim(&self) -> bool {
+        self.0
+            .compare_exchange(
+                false,
+                true,
+                std::sync::atomic::Ordering::AcqRel,
+                std::sync::atomic::Ordering::Acquire,
+            )
+            .is_ok()
+    }
+
+    /// Gives it back once the reduction has finished, however it finished.
+    fn release(&self) {
+        self.0.store(false, std::sync::atomic::Ordering::Release);
+    }
+}
+
+/// Opens a decomposition of the goal beside the loop, on a cadence.
+///
+/// The loop asks, every cycle, how the last attempt went. Nothing in it ever
+/// asks what a proof of the goal would consist of, and the two questions have
+/// different answers: an investigation can report genuine progress every single
+/// attempt — a bound pushed further, more cases verified — and end its budget
+/// with a great deal of data and no statement of what would have been enough.
+/// A live Gilbreath workspace contains that statement and it took sixteen
+/// operator directives to produce.
+///
+/// Detached, and that is [`open_invention`]'s argument rather than a new one: a
+/// skeleton is worth as much an attempt later, nothing in [`route`] reads it,
+/// and awaiting one would put a child run of unbounded length between the
+/// reflection and the next attempt — which is the failure [`Mailbox`] was
+/// written about, where a live run sat 33 minutes unable to start an attempt it
+/// was ready for.
+///
+/// Three conditions, because there are three different ways this can go wrong.
+/// The interval bounds what the ledger costs. The fingerprint bounds waste: the
+/// reducer's inputs are the claim ledger and the threads, so a tick over a
+/// research tree that has not moved would rewrite the same skeleton from the
+/// same evidence. The gate bounds collision. A tick that fails the fingerprint
+/// test deliberately does *not* reset the counter, so the next cycle tries
+/// again rather than waiting another full interval.
+fn open_reduction(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
+    reduction: &Reduction,
+    state: &mut SolutionState,
+) {
+    state.since_reduction += 1;
+    if state.solved || state.since_reduction < REDUCTION_INTERVAL {
+        return;
+    }
+    // Excluding the reducer's own folder, or it would wake itself forever on
+    // what it wrote last time — the reason `fingerprint_excluding` exists.
+    let moved = workspace.is_none_or(|workspace| {
+        super::teams::fingerprint_excluding(workspace, &[super::backward::BACKWARD_DIR])
+            != reduction.gate.seen()
+    });
+    if !moved {
+        return;
+    }
+    if !reduction.gate.claim() {
+        if let Some(tracer) = tracer {
+            tracer.note("solution loop: a reduction is already in flight, not opening another");
+        }
+        return;
+    }
+    if let Some(workspace) = workspace {
+        reduction.gate.remember(super::teams::fingerprint_excluding(
+            workspace,
+            &[super::backward::BACKWARD_DIR],
+        ));
+    }
+    state.since_reduction = 0;
+    if let Some(tracer) = tracer {
+        tracer.note("solution loop: decomposing the goal beside the next attempt");
+    }
+    let subagents = subagents.clone();
+    let workspace = workspace.map(Path::to_path_buf);
+    let outbox = reduction.outbox.clone();
+    let gate = reduction.gate.clone();
+    let state = state.clone();
+    tokio::spawn(async move {
+        let report = reduction_arm(&subagents, workspace.as_deref(), &state).await;
+        outbox.post(report);
+        gate.release();
+    });
 }
 
 /// Opens a line-of-attack search beside the loop at the end of a full cycle.

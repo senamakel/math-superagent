@@ -54,62 +54,6 @@ search.
 
 ### Directive 16 (steer): Route A is NOT refuted. Sweep deaths are g_0 startup, not rate. Run conditional-rate experiment (now item 2 above).
 
-Directive 12 said the sweep refutes Route A as a purely combinatorial lemma
-because a combinatorial rate bound would contradict families dying 100%. That
-inference is wrong. The sweep data itself shows:
-
-- Death is determined by INITIALISATION: 764/852 deaths by k≤3, 852/852 by k≤10. Nothing dies late.
-- rand24 deaths at k=1 (theorem: iff g_0=4): 30/48. rand24 survivors trunc_k=2 (theorem: iff g_0=2): 18/18.
-- Wide-support families die more because they more often draw g_0≠2 and die at row 1.
-
-So the sweep measures the STARTUP TRANSIENT, not the asymptotic event rate. The
-phase-boundary table is a g_0 artifact. Route A's claim — that the event rate
-is combinatorial — is UNTESTED by the sweep, not refuted. **Route A is restored
-as live.** The Directive 13 correction stands independently: bounded gap support
-is vacuous for the primes (gaps 8,10,12,14,34 below 2000; unbounded).
-
-The separation verdict (gap_hypothesis_separation.captured.txt — DONE this
-cycle) is still correct and still useful: no first-moment or tail statistic
-separates primes from {2..20}, and the random model is TAMER (max gap 20 vs 86,
-freq>50 = 0 vs 0.00345) yet dies. Given the g_0 explanation, that death happens
-at k≤1 from first-gap≠2, not from the event rate.
-
-### Immediate (in order — item 1 blocks everything else)
-
-- [ ] **1. Conditional-rate experiment: isolate the asymptotic event rate from the g_0 startup.** Use the existing sweep data (26 families × seeds, 1154 sequences, 302 survivors). Restrict to sequences that survived past row 10 (b_k ≥ 1 at k=11). On those only, measure:
-  - events per row (event density) by family
-  - whether the per-family densities are distinguishable (family-dependent → real evidence about the rate; family-independent → combinatorial mechanism, Route A is right)
-  - inter-event gap distribution conditional on k>10
-  - comparison to the prime rows' event density (60 events / 161 live rows = 0.373)
-
-  The sweep data already has per-sequence event counts and row counts. Write a
-  small program that reads the sweep JSON, filters to k>10 survivors, computes
-  conditional densities per family, and reports whether the densities cluster
-  (same across families) or separate. Capture to
-  `code/out/conditional_rate_experiment.captured.txt`.
-
-  **This is the single blocking task.** It answers whether the event rate is
-  combinatorial (Route A) or input-dependent (Route B). Either answer is
-  progress — a third approach is not.
-
-### Deferred until item 1 is answered
-
-- [ ] **2. Housekeeping: move bare .txt output files from `code/pattern_finder/` to `code/out/` or delete them.** Requires a shell (`mv`/`rm`); this role has no move/delete tool.
-- [x] **3. Lean 4 formalisation — COMPLETE (Directive 17 verified).**
-  Nine theorems kernel-checked across `gilbreath_reduction.lean`, `reduction.lean`,
-  `shape.lean`: `dist_odd_even`, `dist_dist_even`, `dist_one_eq_one`,
-  `shape_theorem`, `shape_rows`, `reduction`, `reduction_lemma`,
-  `gilbreath_reduction`. Every declaration depends on exactly
-  `[propext, Classical.choice, Quot.sound]` (the three standard Mathlib axioms),
-  **zero sorry / zero sorryAx** (grep-verified on three capture files).
-  `gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X` is an
-  **IFF-machine-checked equivalence, not a reduction**: the {0,2} statement is
-  exactly as hard as the conjecture — it reformulates rather than reduces.
-  The prime instantiation (row 1 = (1, even, even, ...)) remains
-  computation-checked (witnesses.json), not Lean-proved. Claim:
-  `gilbreath-second-entry-equivalence`. Anchors:
-  `code/lean/gilbreath_reduction.lean`, `code/out/lean_gilbreath_reduction.captured.txt`.
-
 ### Background (established, do not redo)
 
 - **Reduction:** A_k(1) ∈ {0,2} ⇔ conjecture. Proved, checked to depth 599.
@@ -126,7 +70,7 @@ at k≤1 from first-gap≠2, not from the event rate.
 
 ### Threads
 
-- `research/threads/regeneration.md` — LIVE. Route A RESTORED (Directive 16): the sweep refutes startup, not rate. The open question is the conditional event rate (item 1). Route B (analytic, prime-gap hypothesis) unchanged but secondary.
+- `research/threads/regeneration.md` — LIVE. Route A RESTORED (Directive 16): the sweep refutes startup, not rate. The open questions are the edge sequence probe on prime rows (item 1) and the conditional event rate on sweep survivors (item 2). Route B (analytic, prime-gap hypothesis) unchanged but secondary.
 - `research/threads/rule90-regeneration.md` — CLOSED (Directive 9). Depth-timing corollary refuted; the proved Rule 90 interior identification stands.
 
 ### Refuted this cycle (do not re-assert)

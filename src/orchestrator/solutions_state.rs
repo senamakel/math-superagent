@@ -139,6 +139,7 @@ pub(super) async fn run(
             let workspace = attempt_workspace.clone();
             let mailbox = attempt_mailbox.clone();
             let directives = attempt_directives.clone();
+            let skeletons = attempt_skeletons.clone();
             async move {
                 Ok(NodeResult::Update(
                     attempt_step(
@@ -147,6 +148,7 @@ pub(super) async fn run(
                         workspace.as_deref(),
                         &mailbox,
                         &directives,
+                        &skeletons,
                         state,
                     )
                     .await,
@@ -166,6 +168,8 @@ pub(super) async fn run(
         .add_node("reflect", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = reflect_agents.clone();
             let mailbox = pattern_mailbox.clone();
+            let skeletons = reflect_skeletons.clone();
+            let gate = reduction_gate.clone();
             let teams = reflect_teams.clone();
             let tracer = reflect_tracer.clone();
             let workspace = reflect_workspace.clone();
@@ -178,6 +182,10 @@ pub(super) async fn run(
                         workspace.as_deref(),
                         &memory,
                         &mailbox,
+                        &Reduction {
+                            outbox: skeletons,
+                            gate,
+                        },
                         &teams,
                         state,
                     )
