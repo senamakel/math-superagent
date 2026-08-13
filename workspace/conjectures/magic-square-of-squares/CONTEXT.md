@@ -65,7 +65,7 @@ is x(P_i) for P_i ∈ E(Q); 2Q_i ∈ E(Q), so doubled points are covered — no
 mismatch. **GFP's C is ineffective** (Rémond→UMordell–Lang); **HMS's C is
 effectively computable** but built from David–Philippon + PFR and almost
 certainly >> 3, so C^(r+1) < 3 fails for any plausible rank. The theorem
-reframes the problem as bounding rank(E_e) but does not close it. Theorem 1.2
+reframes the problem as bounding rank(E_c) but does not close it. Theorem 1.2
 (conditional): if ranks of elliptic curves over Q are uniformly bounded, then
 AP lengths are uniformly bounded — this would reduce MSS to a finite
 computation (though likely beyond reach). The conditional reduction is the

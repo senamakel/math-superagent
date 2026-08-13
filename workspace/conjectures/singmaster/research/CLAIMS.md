@@ -5,3 +5,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
 _No claims recorded yet._
+
+## Blocks that could not be read
+
+- `code/out/brute_oracle.md`: a claim block has no `id`, so nothing can refer to it

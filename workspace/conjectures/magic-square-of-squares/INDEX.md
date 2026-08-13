@@ -4,4 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `CONTEXT.md` | Shared brief sent to nearly every role every model call: the run's established results with their basis, dead approaches and why, computed numbers, recalled memory, contradictions, and gaps for the 3×3 magic square of squares. |
+| `CONTEXT.md` | Shared brief sent to nearly every role every model call: the run's established results with basis, dead approaches and why, computed numbers, recalled memory, contradictions, and gaps for the 3×3 magic square of squares. |
