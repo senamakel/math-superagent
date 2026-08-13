@@ -1,0 +1,29 @@
+== depth-1000 (2e7), rows 1..161 ==
+  events 43: odd-row 13 (0.302), even-row 30
+  giants 13: rows [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161]
+  odd-row giants 1/13
+  exact hypergeom P(>= 1 odd giants | event base 13/43) = 0.9967
+== 3e8-wide, rows 1..238 ==
+  events 51: odd-row 14 (0.275), even-row 37
+  giants 15: rows [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174, 238]
+  odd-row giants 1/15
+  exact hypergeom P(>= 1 odd giants | event base 14/51) = 0.9971
+
+== distinct giant events over the combined record ==
+14 distinct giant rows: [35, 57, 65, 69, 95, 97, 111, 113, 127, 131, 135, 147, 162, 175]
+odd rows: 13/14; even-row giants: [162]
+vs plain 1/2: P(>= 13 of 14 odd rows | p=0.5) = 0.0009
+  row 35: odd=True, mod4=3, mod8=3, is_pow2=False
+  row 57: odd=True, mod4=1, mod8=1, is_pow2=False
+  row 65: odd=True, mod4=1, mod8=1, is_pow2=False
+  row 69: odd=True, mod4=1, mod8=5, is_pow2=False
+  row 95: odd=True, mod4=3, mod8=7, is_pow2=False
+  row 97: odd=True, mod4=1, mod8=1, is_pow2=False
+  row 111: odd=True, mod4=3, mod8=7, is_pow2=False
+  row 113: odd=True, mod4=1, mod8=1, is_pow2=False
+  row 127: odd=True, mod4=3, mod8=7, is_pow2=False
+  row 131: odd=True, mod4=3, mod8=3, is_pow2=False
+  row 135: odd=True, mod4=3, mod8=7, is_pow2=False
+  row 147: odd=True, mod4=3, mod8=3, is_pow2=False
+  row 162: odd=False, mod4=2, mod8=2, is_pow2=False
+  row 175: odd=True, mod4=3, mod8=7, is_pow2=False

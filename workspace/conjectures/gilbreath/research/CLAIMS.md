@@ -62,12 +62,12 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `killgrove-ralston-block-protection` | If row i starts 1 and has M entries after the leading 1 (their "0 ≤ j ≤ M" includes P_{i,0}) all 0 or 2, then the next M−1 rows start with 1 (their span P_{i,0}..P_{i+M−1,0}); protection is one row per {0,2} entry,… | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
 | `killgrove-ralston-verification-1959` | Conjecture verified for all primes < 792,722 (first 63,419 primes) on SWAC using D. H. Lehmer's sieve; P(i) tabulated for i = 0..95, max P(i)+i > 63,419. | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
 | `marechal-spectral-fractal-crank` | Maréchal's "complete spectral-fractal proof of Gilbreath's conjecture" (Zenodo, Apr 2025, doi 10.5281/zenodo.15116867) is one of five near-identical "universal spectral-fractal framework with characteristic dimension… | **unchecked** | asserted | `research/summaries/marechal-spectral-fractal-proofs-refuted.md` |
+| `mathworld-rule90-additive-sierpinski` | Rule 90 is an additive elementary cellular automaton whose next state is the XOR/mod-2 sum of a cell's two neighbours; from a single cell it generates the Sierpinski sieve, equivalently Pascal's triangle mod 2 (binomial… | yes | asserted | `research/summaries/mathworld-rule-90.md` |
+| `miller-1970-periodic-forests-stunted-trees` | Miller (1970) studied Rule 90 via a forest-of-growing-trees metaphor equivalent to the automaton, in connection with Gilbreath's conjecture, and found periodic initial configurations where all triangular clearings… | **unchecked** | asserted | `research/summaries/wikipedia-rule-90.md` |
 | `mod-lift-obstruction` | The absolute-difference operator <a,b> -> \|a-b\| satisfies \|a-b\| = a+b - 2min(a,b), so the congruence \|a-b\| ≡ a+b (mod 2^t) holds iff min(a,b) ≡ 0 (mod 2^(t-1)). It holds for all even a,b mod 4, but fails mod 8 (\|2-6\|=4… | yes | proved | `research/approaches/mod4-pascal-invariant.md` |
 | `mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4), because d_k(n) is even there. | yes | asserted | `research/notes/library-state.md` |
-| `mod6-gap-structure-real-but-not-percolating` | Prime gaps satisfy gap ≡ 0,2,4 (mod 6) and the halved gaps h_n mod 3 are constrained (h_n ≡ 1 forces h_{n+1} ≢ 1; h_n ≡ 2 forces h_{n+1} ≢ 2). This is a real statistical/catalogued property of the primes, but no source… | yes | proved | `research/approaches/prime-gap-mod6-structure.md` |
-| `modulo-k-gilbreath-family` | (Li 2026, preprint) For any odd k, the sequence of primes of the form kn+2 has a difference triangle whose leading entry eventually stabilises to k; classical Gilbreath is k=1. Verified computationally for all odd k <… | yes | asserted | `research/notes/library-state.md` |
 
-_49 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_53 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -99,6 +99,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `granville-lucas-kummer-sierpinski` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-block-protection` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
+- `mathworld-rule90-additive-sierpinski` (research/summaries/mathworld-rule-90.md) — asserted by the source, not proved there and not checked here
 - `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `modulo-k-gilbreath-family` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `morgan-frontier-basin-and-corridor-obstruction` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
@@ -113,6 +114,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `regeneration-lemma-edge-2-intruder-4-established` (code/out/check_regenerate_lemma.notes.md) — asserted by the source, not proved there and not checked here
 - `ross-2026-decay-constants` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `rule90-identification-real-absorption-refuted` (research/approaches/rule90-absorbing-boundary.md) — asserted by the source, not proved there and not checked here
+- `rule90-rowcount-popcount` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
+- `rule90-wikipedia-interior-confirmation` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
 - `runcount-lemma-refuted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `tao-cramer-blog-frame` (research/summaries/tao-blog-2026-gilbreath-cramer-model.md) — asserted by the source, not proved there and not checked here
 - `torelli-prime-gap-bound` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here

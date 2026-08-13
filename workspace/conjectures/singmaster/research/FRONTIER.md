@@ -45,6 +45,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://mathscinet.ams.org/mathscinet-getitem?mr=1689495 | by Beukers, Shorey, and Tildeman | be more than eight solutions to (1) for sufficiently large [image: {t}]. This is latter claim known for bounded values of [image: {m,m'}] [by Beukers, Shorey, and Tildeman][25], with the main tool… |
 | 1 | http://www.integers-ejcnt.org/e7/e7.Abstract.html | New Bounds on the Number of Representations of t as a Binomial Coefficient | [Problem 849][18], Erdős Problems. Erdős problems database contributors, [Erdős problem database][19], see no. 849. Daniel Kane, [New Bounds on the Number of Representations of t as a Binomial… |
 | 1 | https://en.wikipedia.org/wiki/Archimedean_property | Archimedean | threshold could be lowered if we had stronger bounds on exponential sums. To try to control solutions to (1) we use a combination of “ [Archimedean][27] ” and “non-Archimedean” approaches. In the… |
-| 1 | http://www.warwick.ac.uk/∼maseap/progs/intpoint/bounds.m | — | TENGELY, AND N ´ORA VARGA get a large upper bound for log \|X\|. A MAGMA code were written to obtain such bounds, it can be found at http://www.warwick.ac.uk/∼maseap/progs/intpoint/bounds.m. In our… |
+| 1 | http://jtnb.cedram.org/item?id=JTNB_2006__18_1_125_0 | — | Nicolas GOUILLON Explicit lower bounds for linear forms in two logarithms Tome 18, no 1 (2006), p. 125-146. <http://jtnb.cedram.org/item?id=JTNB_2006__18_1_125_0> © Université Bordeaux 1, 2006, tous… |
 
-_539 further candidates not shown; they are cited once each._
+_545 further candidates not shown; they are cited once each._

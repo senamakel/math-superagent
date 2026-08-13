@@ -306,8 +306,15 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 - Budget table `(a, ω(odd), Σv2, a+1)`: 6→(1,1,2,2); 60→(2,2,3,3); 90→(1,2,2,2,
   equality); 87360→(6,4,7,7); fifth→(18,11,19,19). Identity exact in all five;
   equality in `ω ≤ a+1` holds only for 90.
-- Gaussian table: 17 primes p ≤ 61, 71 divisor rows, 12 heads; the details are
-  in Established. Full per-p table `heven_gauss_61.captured.txt`.
+- Gaussian/character tables: 17 primes p ≤ 61, 71 divisor rows, 12 certified
+  heads (`heven_gauss_61.captured.txt`); extended to 24 primes p ≤ 97
+  (`char_mod16_sums.captured.txt`, 19 heads total of which 12 certified, 7
+  awaiting certification); full per-p table at `heven_gauss_61.captured.txt`.
+- Factorisation frontier (Aurifeuillean halves, `heven_extend_probe.captured.txt`):
+  L_p·M_p fully factors through p = 307 (12 primes 61..307; worst singles
+  p=251 M 381 s, p=151 M 77 s); probes p=331/401/521 hit the 540 s cap
+  (rc=124). Beyond ~307 only partial factorisation — and a head needs just one
+  found divisor.
 - **Verify harness `heven_classify.py`: the two Phase-A bugs are FIXED ON DISK
   but the full rerun is UNCERTIFIED.** Code now has the literal rule
   `(P**3) % (p−1) == 0` (correct direction) in both `lib/higgs.py::
@@ -401,28 +408,20 @@ Durable Cognee memory from earlier runs; consistent with Established here
    witnesses.
 4. Open structural directions, any result: (a) divisor-level problem for
    `Φ_{4p}(2)` — the paper's named analytic target (thread
-   `divisor-level-phi4p`; feasible full-factorization window is now p ≤ ~300
-   per `heven_extend_probe.captured.txt` — 12 primes 61..307 fully factored,
-   the natural range for the C29 empirics / head-count-vs-ω measurement);
-   (b) lower bound on `a` beyond 11, or impossibility
-   of a residue class of `a`; (c) is `3 | n` forced for a sixth? (all five
-   have it; open in both directions). Directive-14 is CLOSED by argument
-   plus a captured computation: `code/out/directive14_quartic_closed_form.captured.txt`
-   verifies `(2/(2^p+i))_4 = +1` identically (two independent evaluations),
-   the product is head-blind and ≡ 1, so the global quartic character forces
-   nothing (see Ruled out). **`char_mod16_sums` remains 0-byte — the
-   adopted second-moment approach's first measurement (exact S_χ tables over
-   the 24 primes p ≤ 97, Parseval check) is still not on disk; do not report
-   character-sum tables as done.** `q_supplement` is DONE
-   (PASS, 43 bytes) — this gap's earlier "two planned runs 0-byte" statement
-   is resolved for q_supplement only.
-5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
-   2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
-   no OCR; Guy UPNT §B3 paywalled).es over
-   the 24 primes p ≤ 97, Parseval check) is still not on disk; do not report
-   character-sum tables as done.** `q_supplement` is DONE
-   (PASS, 43 bytes) — this gap's earlier "two planned runs 0-byte" statement
-   is resolved for q_supplement only.
+   `divisor-level-phi4p`; full-factorization window is p ≤ ~307 —
+   `heven_extend_probe.captured.txt`, 12 primes 61..307 fully factored;
+   probes p=331/401/521 hit the 540 s cap — the natural range for C29
+   empirics); (b) lower bound on `a` beyond 11, or impossibility of a
+   residue class of `a`; (c) is `3 | n` forced for a sixth? (all five have
+   it; open in both directions). Directive-14: CLOSED, see Established
+   (argument-level AND computed). `char_mod16_sums.captured.txt` (9128 B)
+   now holds the exact S_χ tables for all 24 primes p ≤ 97 — but its two
+   internal self-checks FAIL (pinned script artefacts: Parseval /8 vs the
+   correct /4; Q2 "sum_e = 3 or 2" targets drop the non-primitive factor 5
+   and use a rational e-of-class) and the 7 heads beyond p=61 are NOT
+   certified (`char_mod16_verify2.py` prepared, capture 0 bytes): report
+   the tables, not their checks, and not the new heads as certified.
+   `q_supplement` is DONE (PASS, 43 bytes).
 5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
    2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
    no OCR; Guy UPNT §B3 paywalled).
