@@ -1,0 +1,166 @@
+primes > 2 and < 20000000: 1270607
+oracle first-40 block lengths match witnesses.json : True
+oracle first-40 second entries match witnesses.json : True
+oracle PASS (first 40 rows block lengths + second entries == witnesses.json)
+  [IFF FAIL] k=3 b=13 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=3 b=13->13 e=0 c=4
+  [IFF FAIL] k=5 b=24 e=2 c=8 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=6 b=23 e=0 c=8 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=7 b=22 e=0 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=8 b=21 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=8 b=21->24 e=0 c=4
+  [REGEN FAIL] k=11 b=97->96 e=2 c=4
+  [REGEN FAIL] k=13 b=97->96 e=2 c=4
+  [IFF FAIL] k=15 b=173 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=15 b=173->175 e=0 c=4
+  [IFF FAIL] k=17 b=175 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=17 b=175->175 e=0 c=4
+  [IFF FAIL] k=19 b=175 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=19 b=175->290 e=0 c=4
+  [IFF FAIL] k=20 b=290 e=2 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=21 b=289 e=0 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=23 b=739 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=23 b=739->873 e=0 c=4
+  [IFF FAIL] k=24 b=873 e=2 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=25 b=872 e=0 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=26 b=871 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=26 b=871->872 e=0 c=4
+  [IFF FAIL] k=27 b=872 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=28 b=871 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=29 b=870 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=30 b=869 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=31 b=868 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=32 b=867 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=33 b=866->865 e=2 c=4
+  [IFF FAIL] k=35 b=2179 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=36 b=2178 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=37 b=2177->2176 e=2 c=4
+  [IFF FAIL] k=38 b=2176 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=38 b=2176->2770 e=0 c=4
+  [IFF FAIL] k=39 b=2770 e=2 c=10 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=40 b=2769 e=0 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=41 b=2768 e=0 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=42 b=2767 e=2 c=8 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=43 b=2766 e=2 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=44 b=2765 e=2 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=45 b=2764 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=46 b=2763->2762 e=2 c=4
+  [IFF FAIL] k=48 b=2762 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=48 b=2762->2762 e=0 c=4
+  [IFF FAIL] k=50 b=2762 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=50 b=2762->3365 e=0 c=4
+  [IFF FAIL] k=51 b=3365 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=51 b=3365->4207 e=0 c=4
+  [IFF FAIL] k=52 b=4207 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=53 b=4206 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=54 b=4205 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=55 b=4204->4203 e=2 c=4
+  [IFF FAIL] k=57 b=5942 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=57 b=5942->5943 e=0 c=4
+  [IFF FAIL] k=58 b=5943 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=59 b=5942 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=60 b=5941 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=61 b=5940->5939 e=2 c=4
+  [IFF FAIL] k=62 b=5939 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=62 b=5939->5939 e=0 c=4
+  [IFF FAIL] k=64 b=5939 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=64 b=5939->23265 e=0 c=4
+  [IFF FAIL] k=65 b=23265 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=66 b=23264 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=67 b=23263->23262 e=2 c=4
+  [IFF FAIL] k=69 b=31499 e=2 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=70 b=31498 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=71 b=31497->31496 e=2 c=4
+  [IFF FAIL] k=73 b=31527 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=74 b=31526->31525 e=2 c=4
+  [IFF FAIL] k=75 b=31525 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=75 b=31525->31525 e=0 c=4
+  [IFF FAIL] k=77 b=31527 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=78 b=31526->31525 e=2 c=4
+  [IFF FAIL] k=79 b=31525 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=79 b=31525->31525 e=0 c=4
+  [IFF FAIL] k=81 b=31535 e=2 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=82 b=31534 e=2 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=83 b=31533 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=84 b=31532 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=85 b=31531->31530 e=2 c=4
+  [IFF FAIL] k=87 b=31537 e=0 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=88 b=31536 e=2 c=8 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=89 b=31535 e=0 c=8 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=90 b=31534 e=0 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=92 b=31534 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=93 b=31533->31532 e=2 c=4
+  [IFF FAIL] k=94 b=31532 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=94 b=31532->92620 e=0 c=4
+  [REGEN FAIL] k=95 b=92620->92619 e=2 c=4
+  [IFF FAIL] k=97 b=103973 e=0 c=14 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=98 b=103972 e=0 c=14 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=99 b=103971 e=2 c=14 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=100 b=103970 e=0 c=14 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=101 b=103969 e=2 c=12 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=102 b=103968 e=2 c=10 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=103 b=103967 e=2 c=10 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=104 b=103966 e=0 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=105 b=103965 e=2 c=8 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=106 b=103964 e=2 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=107 b=103963 e=2 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=108 b=103962 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=109 b=103961->103960 e=2 c=4
+  [IFF FAIL] k=110 b=103960 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=110 b=103960->141706 e=0 c=4
+  [IFF FAIL] k=112 b=141706 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=112 b=141706->271629 e=0 c=4
+  [IFF FAIL] k=113 b=271629 e=2 c=14 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=114 b=271628 e=2 c=14 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=115 b=271627 e=2 c=12 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=116 b=271626 e=2 c=12 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=117 b=271625 e=2 c=10 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=118 b=271624 e=0 c=10 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=119 b=271623 e=2 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=120 b=271622 e=0 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=121 b=271621 e=0 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=122 b=271620 e=2 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=123 b=271619 e=2 c=6 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=124 b=271618->271617 e=2 c=4
+  [IFF FAIL] k=125 b=271617 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=125 b=271617->271620 e=0 c=4
+  [IFF FAIL] k=126 b=271620 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=126 b=271620->325090 e=0 c=4
+  [REGEN FAIL] k=127 b=325090->325089 e=2 c=4
+  [IFF FAIL] k=128 b=325089 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=128 b=325089->325096 e=0 c=4
+  [IFF FAIL] k=130 b=325096 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=130 b=325096->515906 e=0 c=4
+  [IFF FAIL] k=131 b=515906 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=131 b=515906->515907 e=0 c=4
+  [REGEN FAIL] k=133 b=515908->515907 e=2 c=4
+  [IFF FAIL] k=135 b=733564 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=135 b=733564->733564 e=0 c=4
+  [REGEN FAIL] k=137 b=733568->733567 e=2 c=4
+  [IFF FAIL] k=138 b=733567 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=138 b=733567->733576 e=0 c=4
+  [IFF FAIL] k=139 b=733576 e=0 c=8 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=140 b=733575 e=0 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=142 b=733574 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=142 b=733574->733574 e=0 c=4
+  [IFF FAIL] k=144 b=733577 e=0 c=4 q=0 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=145 b=733576->733575 e=2 c=4
+  [IFF FAIL] k=147 b=1094273 e=0 c=12 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=148 b=1094272 e=0 c=12 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=149 b=1094271 e=0 c=12 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=150 b=1094270 e=2 c=12 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=151 b=1094269 e=0 c=12 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=152 b=1094268 e=0 c=10 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=153 b=1094267 e=2 c=8 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=154 b=1094266 e=0 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=155 b=1094265 e=0 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=156 b=1094264 e=0 c=6 q=0 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=157 b=1094263 e=2 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=158 b=1094262 e=0 c=6 q=2 q_in{0,2}=True rhs=False
+  [IFF FAIL] k=161 b=1094263 e=0 c=4 q=2 q_in{0,2}=True rhs=False
+  [REGEN FAIL] k=161 b=1094263->1270444 e=0 c=4
+Traceback (most recent call last):
+  File "/workspace/code/regeneration/check_regenerate_lemma.py", line 126, in <module>
+    c_k = int(r1[b_k + 1])
+              ~~^^^^^^^^^
+IndexError: index 1270445 is out of bounds for axis 0 with size 1270445

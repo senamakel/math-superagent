@@ -1,11 +1,30 @@
 # Thread: four-AP additive triple over the universal rational set Φ
 
-**Question.** Is there an additive triple `q1, q2, q1+q2 ∈ Φ`, where
+**Question.** Does any additive triple `q1, q2, q1+q2 ∈ Φ`, where
 `Φ = {f(m,n) = 4mn(m²−n²)/(m²+n²)²}` is the universal set of centre-line
 AP ratios? A Φ-triple lifts to a 7-square magic grid and a Φ-quadruple to a
 full MSS (CONTEXT.md Established, `ap_structure2.py`).
 
 **Status.** live — the run's structural frontier.
+
+**UPDATE (directive 15):** The docstring hypothesis of `side_census.py` —
+"1+(q1+q2) is NEVER a rational square" — is **REFUTED**. At M=400, 1+(q1+q2)
+is a rational square for 66 of 156,988,030 pairs (three witnesses re-verified
+in exact Fraction arithmetic with in_phi confirming both members lie in Φ).
+The docstring hypothesis must not be used as a prefilter justification anywhere.
+
+**What survived and is sharper:** over all 156,988,030 pairs, 1−(q1+q2) is a
+rational square 325 times, 1+(q1+q2) is 66 times, and **BOTH = 0** — no pair
+has both 1−s and 1+s rational squares. Neither condition is empty, so both=0
+is not an artefact. This is moved to its own thread:
+`research/threads/pair-sum-both-squares-incompatibility.md`. A Φ-triple needs
+BOTH 1−(q1+q2) and 1+(q1+q2) to be rational squares (because every member
+q ∈ Φ has both 1−q and 1+q square), so if both=0 is provable on pairs it
+would be an impossibility lemma on pairs, cheaper than anything on triples.
+
+The no-triple search through m,n ≤ 400 (156,988,030 tests, zero triples) is
+unchanged — it tests q1+q2 itself ∈ Φ, which is the full condition, and it
+remains the strongest numerical evidence.
 
 **External corroboration added 2026-08-13.** García-Fritz–Pasten
 (`bremner-conjecture-uniform-bounded-rank-implies-bounded-ap`, abstract on disk):
@@ -34,16 +53,6 @@ reduction of the same four-AP obstruction the sources attack:
 with recalled memory). The 7-square witnesses fail the additive condition at
 the rational level: Bremner's realised ratios `q_v = 5544/7225` and
 `q_{u+v} = 336/625` are both in Φ but `q_v + q_{u+v} = 1.305 > 1`.
-
-**New (directive 14):** `side_census.py` hypothesises a stronger structural
-claim: `1+(q1+q2)` is **never** a rational square for `q1>q2` in Φ with
-`q1+q2<1`, while `1−(q1+q2)` frequently is. A Φ-triple needs both `1−(q1+q2)`
-and `1+(q1+q2)` to be rational squares (equivalent to `(B±(A1+A2))` both
-squares), so if this hypothesis survives it would prove no MSS — a real
-result. **Seven programs in `code/phi_triple_variety/` test this on different
-ranges and via independent verifications; none have been run yet.**
-Captured output expected at `code/out/{side_census,no_triple_fast,ratio_search,
-prefilter_census,verify_prefilter,verify_triple_square,verify_two_side_equiv}.captured.txt`.
 
 **Blocked by.** A proof of the no-triple conjecture beyond `m,n ≤ 400`.
 The natural falsifier is a specific Φ-triple found past the range — that
