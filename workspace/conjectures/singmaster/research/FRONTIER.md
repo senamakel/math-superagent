@@ -44,7 +44,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://www.fq.math.ca/Scanned/13-4/singmaster.pdf | "Repeated binomial coefficients and Fibonacci numbers" | 385– 386, [doi][31]: [10.2307/2316907][32], [JSTOR][33] [2316907][34], [MR][35] [1536288][36]. - [Singmaster, D.][4] (1975), ["Repeated binomial coefficients and Fibonacci numbers"][37] (PDF),… |
 | 1 | http://www.its.caltech.edu/~maksym/ | Maksym Radziwill | Matomaki][14], [Maksym Radziwill][15], [Singmaster's conjecture][16], [Xuancheng Shao][17] \| by [Terence Tao][18] [Kaisa Matomäki][19], [Maksym Radziwill][20], [Xuancheng Shao][21], [Joni… |
 | 1 | http://www.math.ucla.edu/~tao | — | for…][41] \| [image: Unknown's avatar] \| Anonymous on [A digestion of the Jacobian co…][42] \| [image: Terence Tao's avatar] [43] \| [Terence Tao][43] on [246A, Notes 5: conformal …][44] \| [image:… |
+| 1 | http://www.sagemath.org | — | Math. Debrecen 47 (1995), 411–415. [13] SageMath, the Sage Mathematics Software System (Version 7.5.1), The Sage Developers, 2017, http://www.sagemath.org. INTEGERS: 17 (2017) 8 [14] D. Singmaster,… |
 | 1 | https://doi.org/10.2307%2F2319526 | 10.2307/2319526 | number of times an integer occurs as a binomial coefficient", *[American Mathematical Monthly][30]*, **81**(3): 256– 261, [doi][31]: [10.2307/2319526][41], [JSTOR][33] [2319526][42], [MR][35]… |
-| 1 | https://en.wikipedia.org/wiki/Pick%27s_theorem | Pick’s theorem | the area subtended by the triangle connecting three of these points would lie between [image: {0}] and [image: {1/2}], contradicting [Pick’s theorem][29]. Developing these ideas, we were able to show… |
 
-_43 further candidates not shown; they are cited once each._
+_44 further candidates not shown; they are cited once each._

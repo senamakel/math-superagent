@@ -10,11 +10,8 @@ question: Does the Garcia-Fritz–Pasten theorem (Theorem 1.8: AP length ≤ C^(
 
 status: effective-constant-advance-hms-2026
 
-rests_on:
-  - robertson-elliptic-reduction
-  - bremner-conjecture-proved
-  - hms-2026-bremner-effective-constant
-  - patterns-bremner-2026-no-mismatch-for-2E-Q
+rests_on: robertson-elliptic-reduction, bremner-conjecture-proved,
+  hms-2026-bremner-effective-constant, patterns-bremner-2026-no-mismatch-for-2E-Q
 
 resolved-questions:
   - doubled-point-x2P: RESOLVED 2026-08-13 (director, from the paper on disk).

@@ -1,119 +1,87 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gao-ge-kuhne-uniform-mordell-lang-2021.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Gao–Ge–Kühne, "The Uniform Mordell–Lang Conjecture" (arXiv:2105.15085)
 
-<!-- source: https://arxiv.org/pdf/2105.15085 | converted from PDF -->
+Full text: `research/sources/gao-ge-kuhne-uniform-mordell-lang-2021.full.md`
+(arXiv:2105.15085v4, 26 Mar 2026, accepted at Publ. Math. IHÉS; downloaded from the arXiv PDF).
 
-## What is in it
+## What it establishes
 
-- {
-P ∈ X ◦(Q) ∩ Γ : ˆhL(P ) ≥ c5 max{1, h(X), hFal(A)}
-} ≤ (1 + (8c4)1/2)rkΓgM N ′
-- {
-P ∈ X ◦(Q) ∩ Γ : ˆhL(P − P0) ≥ c2
-12/4 + c9 max{1, hFal(A)}
-} ≤ c
-rkΓ+1
-10 .
+**Theorem 1.1 (Uniform Mordell–Lang).** For all integers g, d ≥ 0 there exists a
+constant c(g, d) > 0 such that: for any abelian variety A of dimension g over an
+algebraically closed field F of characteristic 0, any irreducible closed subvariety
+X ⊆ A with deg_L X = d, and any subgroup Γ ⊆ A(F) of finite rank ρ, the intersection
+X(F) ∩ Γ is covered by at most c(g, d)^(1+ρ) cosets contained in X. Equivalently,
+#X°(F) ∩ Γ ≤ c(g, d)^(1+ρ) where X° is the complement of the Ueno locus
+(Theorem 1.1′).
 
+**Theorem 1.2 (New Gap Principle) / Theorem 1.3 (Uniform Bogomolov).** For
+polarized (A,L) of dimension g and irreducible X generating A with deg_L X ≤ d:
+the set of small-height points {P ∈ X°(Q) : ĥ(P) ≤ c1 max{1, h_Fal(A)}} is contained
+in a proper Zariski-closed X′ ⊊ X with deg_L X′ < c2. All constants c_i = c_i(g, d).
 
-## What it claims
+**The constant is existential, not explicit.** The paper states this directly
+(p. 3, after citing Rémond): "An explicit upper bound for the number of cosets was
+obtained by Rémond, which additionally depends on the ambient abelian variety A via
+its Faltings height... The novelty here is the complete removal of this very
+dependence." And: "Before these works, the only uniform results of Mordell-Lang type
+were obtained by David and Philippon [DP07, Thm. 1.13] for subvarieties of
+self-products of an elliptic curve. It should be also noted that they give a
+completely explicit constant in this special case. In this regard, it is interesting
+to ask whether the present arguments can yield explicit upper bounds... or if
+substantial new ideas are necessary."
 
-Abstract. The Mordell–Lang conjecture for abelian varieties states that the
-intersection of an algebraic subvariety X with a subgroup of finite rank is
-contained in a finite union of cosets contained in X. In this article, we prove a
-uniform version of this conjecture, meaning that the number of cosets necessary
-depend only on the dimension of the ambient variety and the degree (with
-respect to some polarization) of the subvariety X. To achieve this, we prove
-a general gap principle on algebraic points that extends the new gap principle
-for curves embedded into their Jacobians, previously obtained by Dimitrov–
-Gao–Habegger and K¨uhne. Our new gap principle also implies the full uniform
-Bogomolov conjecture in abelian varieties.
+## Bearing on the magic-square-of-squares problem
 
-Contents
+The adopted approach `uniform-height-bound-elliptic-ap` needs a constant C so that
+C^(1+r) < 3 to contradict an MSS's three-term AP of doubled-point x-coordinates.
+This paper is the "uniform Mordell-Lang" input to Garcia-Fritz–Pasten's Theorem 1.8,
+and it confirms at the primary source that:
 
-1. Introduction 1
-2. Preliminaries on abelian varieties 8
-3. Hilbert schemes and non-degeneracy 11
-4. Applying the height inequality 18
-5. Applying equidistribution 27
-6. Proof of the gap principle (Theorem 1.2) 36
-7. Proof of the uniform Mordell–Lang conjecture (Theorem 1.1) 38
-8. Proof of the uniform Bogomolov conjecture (Theorem 1.3) 44
-Appendix…
+1. **The GGK constant c(g,d) is not explicit** — so no numerical threshold can be
+   extracted from the GGK chain (matching the run's prior belief, now anchored to a
+   citation).
+2. **David–Philippon [DP07 Thm 1.13] is the unique prior uniform-ML result with a
+   completely explicit constant**, and its scope is *subvarieties of self-products of
+   an elliptic curve*. This is close to (though not identical with) the MSS AP
+   configuration, where the points 2Q_i lie on a single elliptic curve E_c. Whether
+   DP07's explicit constant is small enough to beat C^(1+r) < 3 is the natural next
+   question — asking it is precisely what this primary source licenses.
+3. GGK cite Kühne's equidistribution paper (arXiv:2101.10272) and the survey
+   arXiv:2104.03431 as the curve-in-Jacobian stepping stones; both are now in the
+   library.
 
-## Statements it makes
+```claim
+id: ggk-uniform-mordell-lang-theorem
+statement: "Uniform Mordell–Lang (Gao–Ge–Kühne, Thm 1.1): for all g, d ≥ 0 there is
+c(g,d) > 0 such that for any abelian variety A of dimension g over an algebraically
+closed char-0 field, irreducible closed X ⊆ A of degree d, and finite-rank subgroup
+Γ ⊆ A(F), the intersection X(F) ∩ Γ is covered by at most c(g,d)^(1+rk Γ) cosets
+contained in X. Constants existential only; the paper leaves open whether explicit
+bounds are attainable."
+hypotheses: char 0, X irreducible, Γ finite rank, degree taken with respect to an
+ample polarization
+holds-here: yes (the doubled-point AP of the MSS lies in a rank ≤ rk E(Q) subgroup
+of a single elliptic curve; the uniform bound applies but with an unknown constant)
+evidence: proved
+bearing: anchors the uniform-height-bound-elliptic-ap chain at the primary source;
+confirms the incomputable-constant obstruction; points to David–Philippon (explicit
+constant, self-products of an elliptic curve) as the one potentially-effective
+uniform-ML result relevant to the MSS
+anchor: research/summaries/gao-ge-kuhne-uniform-mordell-lang-2021.md
+```
 
-Theorem 1.1 (Uniform Mordell–Lang Conjecture). For all integers g, d ≥ 0,
-there exists a constant c(g, d) > 0 with the following property. Let X ⊆ A be an
-irreducible closed subvariety and Γ ⊆ A(F ) a subgroup of finite rank. Then the
-intersection X(F ) ∩ Γ is covered by at most
-
-Theorem 1.1′. For all integers g, d ≥ 0, there exists a constant c(g, d) > 0
-with the following property. Let X ⊆ A be an irreducible closed subvariety and
-Γ ⊆ A(F ) a subgroup of finite rank. Then
-
-Theorem 1.2 (New Gap Principle). Given two positive integers g and d, there
-exist positive constants c1 = c1(g, d) and c2 = c2(g, d) with the following property:
-For any polarized abelian variety (A, L) of dimension g and any irreducible closed
-subvariety X ⊆ A that generates A of degree degL X ≤ d, the set
-
-Theorem 1.3 (Uniform Bogomolov Conjecture). Given two positive integers g
-and d, there exist positive constants c3 = c3(g, d) and c3 = c3(g, d) with the follow-
-ing property: For any abelian variety (A, L) of dimension g and any irreducible
-closed subvariety X ⊆ A that generates A of degree degL X ≤ d, we have
-
-Lemma 2.1. Let L and L′ be two ample line bundles on A. Then L and L′ define
-the same polarization if and only if c1(L) = c1(L
-′).
-
-Lemma 2.2. Let L be an ample line bundle on A. Then
-(i) dim H 0(A, L) = Pf(L);
-(ii) degL(A) = g! · Pf(L);
-(iii) if f : A′ → A be an isogeny, then dim H 0(A
-′, f ∗L) = deg(f ) dim H 0(A, L);
-(iv) there exists an abelian variety A0, an ample line bundle L0 on A0 defining
-a principal polarization, and an isogeny u0 : A → A0 such that L ∼= u
-∗
-0L0;
-moreover, deg(u0) = degL(A)/g!.
-
-Lemma 2.3. Let L and L
-′ be two symmetric ample line bundles on A. If c1(L
-′) =
-c1(L), then ˆhL = ˆhL′.
-
-Lemma 2.4. Assume that L is very ample. Let Y and Y ′ be irreducible subva-
-rieties of A. Then
-
-Lemma 2.5. Let X be an irreducible subvariety of A and let A′ denote the abelian
-subvariety generated by X − X. Then degL A′ ≪g degL(X)
-2g.
-
-Lemma 3.1. Let V be a (not necessarily irreducible) subvariety of Hr,d(A)
-◦.
-Then there exist m0 = m0(V ) points P1, . . . , Pm0 ∈ A(Q) such that the Zariski
-closed subset of V defined by
-
-Lemma 3.2. Let V be a (not necessarily irreducible) subvariety of Hr,d(A)
-◦.
-Then there exists m0 = m0(V ) ≥ 1 with the following property. For each m ≥ m0,
-there exists P ∈ A
-m(Q) such that
-
-Lemma 3.3. Let S be an irreducible subvariety of H
-◦. Then there exists m0 =
-m0(S) ≥ 1 such that the restriction of ι
-[m] to X [m]
-S is generically finite onto its
-image for every m ≥ m0.
-
-Proposition 3.4. Let S ⊆ H
-◦ be an irreducible subvariety and consider XS ⊆
-AS → S. Writing ¯η for the geometric generic point of S, assume that the follow-
-ing hypotheses hold true:
-
-Lemma 3.5. For a (not…
-
-
-*[further statements in the full text]*
-
-*[digest of a 116103 character source; every section, statement, and proof in full at `research/sources/gao-ge-kuhne-uniform-mordell-lang-2021.full.md`]*
+```claim
+id: dp07-explicit-uniform-ml-elliptic-self-products
+statement: "David–Philippon (DP07 Thm 1.13) is, per GGK, the only uniform
+Mordell–Lang-type result with a completely explicit constant, and it applies to
+subvarieties of self-products of a single elliptic curve; all other uniform ML
+results (GGK, DGH, Kühne) have existential constants."
+hypotheses: subvariety of E^n, E an elliptic curve; degree and rank data as in DP07
+holds-here: yes (the MSS configuration is an AP in x-coordinates of points on ONE
+elliptic curve E_c, i.e. a subvariety-type condition of the E^n class — whether it
+matches DP07's exact hypotheses needs checking)
+evidence: asserted (stated by GGK; DP07 itself not in library)
+bearing: the only open lane toward an effective constant for the uniform-height
+approach: obtain/read DP07 Thm 1.13 and compute whether its explicit C beats
+C^(1+r) < 3 for the MSS doubled-point AP
+anchor: research/summaries/gao-ge-kuhne-uniform-mordell-lang-2021.md
+```

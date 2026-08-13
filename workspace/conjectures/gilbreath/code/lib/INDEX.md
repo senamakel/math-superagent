@@ -1,39 +1,7 @@
 # Index — code/lib
 
-What other programs import. One subject per module, so reading the part you
-need costs almost nothing.
-
-`/workspace/code` is on `PYTHONPATH`, so a module here is importable by name
-from any working directory and any invocation:
-
-```python
-from lib.perms import lex_ranks
-```
-
-Never write `sys.path.insert`. If an import fails, the file is in the wrong
-place and moving it is the fix.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
-
-_No library modules yet._
-
-## Adding one
-
-A routine earns a place here when a second program would otherwise repeat it,
-or when getting it right took real work — exact arithmetic, an off-by-one in a
-recurrence, a verified base case. A single-use expression does not. The third
-time you type a routine out, it belonged here the first time.
-
-Write `code/lib/<subject>.py` holding the functions for one subject, each with
-a docstring, each callable without reading its source: explicit arguments, one
-job, no reliance on globals or on a file written earlier in the run. Check it
-against a case whose answer is already known, then `describe_file` it. The
-description carries each function's signature, what it returns, and what
-established that it is correct — an unverified helper must say `unverified`, so
-a later agent knows what it is standing on.
-
-Keep a module small enough to read whole. A second subject is a second module.
-
-Every helper uses exact integer or rational arithmetic unless its row says
-otherwise. Say so explicitly when a function returns a float.
+| `gilbreath.py` | Exact iterated absolute-difference row generator for Gilbreath's conjecture. primes_up_to(n) sieves the primes; rows_generator(primes, depth) yields A_0..A_depth one row at a time (O(width) memory); block_profile(row) is the length of the leading {0,2} block ignoring the leading entry. Main asserts reproduction of the five worked rows in problem.md (A_1..A_5 first 12 each) exactly, then runs to depth 600 over the first 33860 primes (sieve to 400000, same width as code/out/witnesses.json) confirming the leading entry is always 1, the second entry is always in {0,2}, and every index>=1 entry of every row k>=1 is even. Captured output in code/out/oracle_depth600.captured.txt. Correctness established by matching witnesses.json and the problem.md table exactly (A_1=[1,2,2,4,2,4,2,4,6,2,6,4], A_2, A_3, A_4, A_5 all match; 33860 primes, depth 600, EXIT AGREE). Single-threaded. |

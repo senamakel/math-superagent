@@ -8,9 +8,9 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | --- | --- | --- | --- | --- |
 | [[dh1-gap]] | What precisely does DH-1 leave open, and can the sieve dynamics improve the "26 ones" bound? | open | DH-1, SIEVE-EXACT, ternary-sieve-count-doubles, DENSE-ORBIT | state the gap exactly; identify what structural fact about the 3-adic orbit constrains how many ones can appear without a 2 |
 | [[lifting-proof]] | Is the 2-to-1 lifting of A_k provable via LTE, giving \|A_k\| = 2^(k-1) unconditionally? | open | ternary-sieve-count-doubles, SIEVE-EXACT, SAYE-2, SAYE-3 | connect the LTE mechanism to SAYE-2 class-splitting; verify c ≡ d_1(2^j) (mod 3) |
-| [[narkiewicz-bound]] | What is the exact statement, constant, and method of Narkiewicz's bound on {n <= x : 2^n digit-2-free}? | open | EP-406, LAG-2 | locate and download Narkiewicz (1980); verify constant and method against EP-406 and LAG-2 |
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+- `narkiewicz-bound` has no thread block, so nothing can say what it is chasing or what it rests on
 - `sieve-dynamics` has no thread block, so nothing can say what it is chasing or what it rests on
