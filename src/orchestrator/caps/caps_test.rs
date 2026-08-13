@@ -22,3 +22,110 @@ fn no_shell_runner_is_supplied() {
         );
     }
 }
+
+use std::sync::Arc;
+
+use serde_json::{Value, json};
+use tinyflows::compiler::compile;
+use tinyflows::engine::run;
+use tinyflows::model::{Edge, Node, NodeKind, WorkflowGraph};
+
+use super::bundle;
+use crate::agent::{MockModel, Result, Tool, ToolCall, ToolResult, ToolSchema};
+use crate::agent::budget::RunBudget;
+use crate::orchestrator::async_subagents::AsyncSubagentManager;
+use crate::orchestrator::runner::SubagentTaskRunner;
+
+/// A tool that reports a fixed count, standing in for the workspace tools a
+/// real workflow reaches for.
+struct CountingTool;
+
+#[async_trait::async_trait]
+impl Tool<()> for CountingTool {
+    fn name(&self) -> &'static str {
+        "count_claims"
+    }
+    fn description(&self) -> &'static str {
+        "counts what is on disk"
+    }
+    fn schema(&self) -> ToolSchema {
+        ToolSchema::new(self.name(), self.description(), json!({ "type": "object" }))
+    }
+    async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
+        let mut result = ToolResult::text(call.id, self.name(), "counted");
+        result.raw = Some(json!({ "claims": 7 }));
+        Ok(result)
+    }
+}
+
+fn node(id: &str, kind: NodeKind, config: Value) -> Node {
+    Node {
+        id: id.into(),
+        kind,
+        type_version: 1,
+        name: id.to_string(),
+        config,
+        ports: Vec::new(),
+        position: None,
+    }
+}
+
+fn edge(from: &str, to: &str) -> Edge {
+    Edge {
+        from_node: from.into(),
+        from_port: "main".into(),
+        to_node: to.into(),
+        to_port: "main".into(),
+    }
+}
+
+/// Phase 1's gate: a workflow compiles and runs to completion against this
+/// crate's real capabilities — not mocks — with a tool call feeding a model
+/// turn, and the tool's structured output surviving the hop.
+#[tokio::test]
+async fn a_two_node_workflow_runs_against_the_real_capabilities() {
+    let workspace = std::env::temp_dir().join(format!("riemann-caps-gate-{}", std::process::id()));
+    std::fs::create_dir_all(&workspace).expect("a scratch workspace can be created");
+
+    let caps = bundle(
+        Arc::new(MockModel::constant("7 claims, and one of them is load-bearing")),
+        &workspace,
+        [Arc::new(CountingTool) as Arc<dyn Tool<()>>],
+        SubagentTaskRunner::new(AsyncSubagentManager::new(RunBudget::default(), None)),
+    );
+
+    let graph = WorkflowGraph {
+        name: "capability gate".into(),
+        nodes: vec![
+            node("start", NodeKind::Trigger, Value::Null),
+            node(
+                "count",
+                NodeKind::ToolCall,
+                json!({ "slug": "count_claims", "args": {} }),
+            ),
+            node(
+                "read",
+                NodeKind::Agent,
+                // Binds the tool's *structured* output, which only survives
+                // because the invoker returns `{ text, raw }` rather than text.
+                json!({ "prompt": "=\"there are \" + (.item.raw.claims | tostring) + \" claims\"" }),
+            ),
+        ],
+        edges: vec![edge("start", "count"), edge("count", "read")],
+        ..WorkflowGraph::default()
+    };
+
+    let compiled = compile(&graph).expect("the graph is structurally valid");
+    let outcome = run(&compiled, json!({}), &caps)
+        .await
+        .expect("the workflow runs to completion against real capabilities");
+
+    let text = outcome
+        .output
+        .pointer("/nodes/read/items/0/json/text")
+        .and_then(Value::as_str)
+        .unwrap_or_default();
+    assert!(text.contains("load-bearing"), "{:?}", outcome.output);
+
+    let _ = std::fs::remove_dir_all(&workspace);
+}

@@ -17,7 +17,10 @@
 //! | `code` | *refused on purpose* | [`execution`] |
 //! | `shell` | *not supplied on purpose* | [`execution`] |
 //! | `tasks` | `AsyncSubagentManager` | [`super::runner`] |
-//! | `llm`, `memory`, `agent`, `resolver` | still to come | — |
+//! | `llm` | one model turn, no tools | [`llm`] |
+//! | `http` | *refused on purpose* | [`network`] |
+//! | `resolver` | no catalog yet | [`resolver`] |
+//! | `memory`, `agent` | still to come | — |
 //!
 //! # What is deliberately missing
 //!
@@ -28,9 +31,51 @@
 //! needs to run something calls the `execute_command` tool like everything else
 //! does.
 
+use std::sync::Arc;
+
+use tinyagents::harness::model::ChatModel;
+use tinyflows::caps::Capabilities;
+
+use super::runner::SubagentTaskRunner;
+use crate::agent::Tool;
+
 pub(crate) mod execution;
+pub(crate) mod llm;
+pub(crate) mod network;
+pub(crate) mod resolver;
 pub(crate) mod state;
 pub(crate) mod tools;
+
+/// Assembles the bundle a workflow run is handed.
+///
+/// `tools` is the run's authority: only these are callable from a `tool_call`
+/// node, and a slug outside the set is refused by name. Pass exactly what the
+/// workflow may use, not the whole registry — see [`tools`] for why that
+/// matters here.
+///
+/// `agent` and `memory` are left unset for now, so an `agent` node falls back
+/// to a bare completion and a `memory` node fails with a capability error. Both
+/// are honest about what exists: there is no role registry behind a workflow
+/// yet, and a `memory` node has no meaningful no-op.
+pub(crate) fn bundle(
+    model: Arc<dyn ChatModel<()>>,
+    workspace: impl Into<std::path::PathBuf>,
+    tools: impl IntoIterator<Item = Arc<dyn Tool<()>>>,
+    tasks: SubagentTaskRunner,
+) -> Capabilities {
+    Capabilities {
+        llm: Arc::new(llm::SingleTurnModel::new(model)),
+        tools: Arc::new(tools::WorkspaceTools::new(tools)),
+        http: Arc::new(network::RefusingHttpClient),
+        code: Arc::new(execution::RefusingCodeRunner),
+        state: Arc::new(state::WorkspaceState::new(workspace)),
+        resolver: Arc::new(resolver::NoCatalog),
+        agent: None,
+        shell: None,
+        memory: None,
+        tasks: Some(Arc::new(tasks)),
+    }
+}
 
 #[cfg(test)]
 #[path = "caps_test.rs"]

@@ -19,7 +19,7 @@ impl Tool<()> for EchoTool {
         self.name
     }
 
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "echoes its arguments"
     }
 

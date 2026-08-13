@@ -87,8 +87,7 @@ async fn a_stored_file_records_the_key_it_answers_for() {
 
     let entry = std::fs::read_dir(scratch.root.join(STATE_DIR))
         .expect("the state directory exists")
-        .filter_map(std::result::Result::ok)
-        .next()
+        .find_map(std::result::Result::ok)
         .expect("one file was written");
     let text = std::fs::read_to_string(entry.path()).expect("the file is readable");
     assert!(text.contains("dedup/lemma-5.4"), "{text}");

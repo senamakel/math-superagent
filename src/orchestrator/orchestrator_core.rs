@@ -326,6 +326,35 @@ impl OrchestratorAgent {
     pub fn task_runner(&self) -> SubagentTaskRunner {
         SubagentTaskRunner::new(self.subagents.clone())
     }
+
+    /// The capability bundle a `TinyFlows` workflow run is handed.
+    ///
+    /// `tools` is the run's authority and is deliberately a parameter rather
+    /// than this orchestrator's whole registry: a `tool_call` node can reach
+    /// anything the bundle holds, so handing over everything would dissolve the
+    /// per-role tool boundaries this crate maintains. Pass exactly what the
+    /// workflow may use.
+    ///
+    /// State is kept under this orchestrator's workspace, and background work
+    /// goes to its specialists. Execution and outbound HTTP are refused — see
+    /// `caps::execution` and `caps::network` for why that is a decision rather
+    /// than an omission.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the provider model cannot be configured from the
+    /// environment.
+    pub fn workflow_capabilities(
+        &self,
+        tools: impl IntoIterator<Item = Arc<dyn Tool<()>>>,
+    ) -> Result<tinyflows::caps::Capabilities> {
+        Ok(caps::bundle(
+            openrouter_model_from_env()?,
+            &self.workspace,
+            tools,
+            self.task_runner(),
+        ))
+    }
 }
 
 impl std::fmt::Debug for OrchestratorAgent {
