@@ -10,49 +10,35 @@ idea: Recast the MSS as a problem about Q-rational isogenies of degree 4
   configuration of four 4-isogenies on the same curve with linked kernels.
   The modular curve X₀(4) parametrising 4-isogenies is rational (genus 0),
   so one can write explicit coordinates; the four linked conditions define
-  a curve C on X₀(4)⁴ whose rational points are the MSS.  Compute the
-  genus of C; if genus(C) ≥ 2, Faltings gives finiteness; if genus(C) = 1
-  and rank < genus, Chabauty applies.  This is NOT the refuted
-  Chabauty–Coleman approach — those were Bremner's explicit quartics
-  (genus 1).  Here the object is the moduli curve of linked 4-isogenies,
-  which lives at the level of the j-invariant 1728 family and may have
-  higher genus.
-mechanism: For a = e² (centre square), the curve E: y² = x(x²−a²) has
-  CM by Z[i] (j=1728).  A point P ∈ E such that x(2P) is in AP with a
-  corresponds to a 4-isogeny from E to some E′, because the doubling map
-  [2]: E → E/⟨P⟩ factors through a cyclic 4-isogeny when P has order 4
-  in the appropriate Selmer structure.  Concretely: the four differences
-  u, v, u+v, u−v correspond to four points Pᵢ (i = 1..4) on E with
-  x(2Pᵢ) = a² ± dᵢ forming an AP.  The linkage u+v−(u+v)=0 and u−v−(u−v)=0
-  forces the sum of the corresponding kernels to satisfy a torsion
-  condition on the product of four copies of X₀(4).  The resulting modular
-  curve C (the fibre product of four X₀(4)'s with the additive linkage
-  imposed) is a curve over Q whose rational points parametrise all MSS
-  with centre a².  Computing its genus and Jacobian rank is the decisive
-  step.  If C is genus 0, the MSS family is rationally parametrised
-  (existence likely).  If genus 1, standard descent applies.  If genus ≥ 2,
-  Faltings + an effective Chabauty computation settles it.
-status: parked-behind-blocking-question
-first-step: Express the condition "x(2P) = a² ± d" on E: y² = x(x²−a⁴) in
-  terms of the 4-isogeny kernel.  The curve X₀(4) has explicit equation
-  (e.g. via the classical modular function j₄(z) = j(4z)).  Write the
-  coordinates of a point on X₀(4) corresponding to the isogeny with
-  kernel ⟨P⟩.  Then write the additive linkage u+v = w, u−v = z as an
-  algebraic condition on the four points (φ₁, φ₂, φ₃, φ₄) ∈ X₀(4)⁴.
-  Compute the genus of the resulting curve symbolically.
-precedent: Standard — X₀(N) for N = 4 is rational; the j-map from X₀(4) to
-  X(1) is explicit (e.g., Fricke 1928, or modern references).  The
-  connection between congruent numbers and 4-isogenies on
-  y² = x³ − n²x is classical.  The new move is: instead of studying the
-  single curve E_e with three doubled points, study the moduli space of
-  four linked 4-isogenies, which encodes all four AP differences
-  simultaneously and whose geometry (genus) determines the answer.
-  NOT subsumed by Bremner II's K3: that K3 encodes the generic fibration
-  E_λ over Q(λ); the modular curve here encodes the SPECIFIC choice of
-  four kernel points linked by additive relations, which is data at a
-  different level (moduli of isogenies, not NS of a surface).
-speculation: The fibre product may have genus 0 and yield a parametric
-  construction of an MSS (proving existence), or genus ≥ 2 ruling out any
-  rational MSS.  The 4-isogeny formulation has not been applied to the
-  MSS problem before in the literature.
+  a curve C on X₀(4)⁴ whose rational points are the MSS.
+status: refuted
+killed-by: "P ∈ 2E(Q)" means P is a DOUBLE of some Q-point — equivalently
+  {X, X±c} are rational squares — it is NOT a 4-isogeny kernel. E_n:
+  y²=x³−n²x has exactly three rational 2-torsion points and lies in a
+  FOUR-curve isogeny class connected by 2-isogenies (LMFDB congruent-
+  number-curve knowl): there is no distinguished 4-isogeny tied to a point
+  of 2E(Q); a 4-isogeny is a curve-level composite of two 2-isogenies,
+  independent of which doubled point is selected. And the Robertson/Bremner
+  reduction (Bremner, Acta Arith. 88 (1999) 289–297; Robertson 1996) is that
+  an MSS ⇔ THREE points of 2E(Q) on the single curve E: y²=x(x²−c²) whose
+  x-coordinates are in arithmetic progression — three points on one curve,
+  not four linked 4-isogenies. The X₀(4)⁴ moduli curve does not match the
+  actual MSS structure.
+precedent:
+  - "LMFDB, Congruent number curves",
+    url: https://www.lmfdb.org/knowledge/show/ec.congruent_number_curve
+  - "A. Bremner, On squares of squares, Acta Arith. 88 (1999) 289–297",
+    url: https://matwbn.icm.edu.pl/ksiazki/aa/aa88/aa8837.pdf
+    (Robertson reduction: three points in 2E(Q) with x-coords in AP)
+  - "X0(N) parametrises cyclic N-isogenies; X0(4) rational; Jeon-Kwon,
+    Explicit constructions of cyclic N-isogenies, arXiv:2512.21088"
+  - "Claim: freys-4-isogeny-misidentifies-doubling (research/notes/
+    literature-check-3-new-approaches.md)"
+first-step: NONE. The doubling/4-isogeny conflation is structural. The
+  correct object is the Robertson reduction (three points in 2E(Q) on one
+  curve), which is the adopted uniform-height-bound-elliptic-ap thread, not
+  a 4-isogeny moduli curve.
+speculation: (as originally written) "the 4-isogeny formulation has not been
+  applied to MSS before." True but for a bad reason: it does not correspond
+  to the MSS structure at all.
 ```
