@@ -98,12 +98,16 @@ it. The honest open question remains: is there a k with block length 0?
   and `b_{k+1} ≥ b_k ⟺ (e==2 and c==4)`, **zero failures over all 998
   transitions, exactly 60 regeneration events** (matches the long-standing
   count). 838 no-intruder rows (block runs to end of row) always have
-  `b_{k+1}<b_k`, so the iff holds across all 998. This resolves "intruder==4
+  `b_{k+1}<b_k` (in fact `b_{k+1}=b_k−1`), so the iff holds across all 998.
+  This resolves "intruder==4
   necessary not sufficient": among 96 intruder-4 rows the 60 with edge 2
   regenerate and the 36 with edge 0 erode. So regeneration = the block ends in
   2 with a 4 immediately past it — a single-row local fact, not an artifact,
   but the mod-4/why-it-recurs content is still open (edge 2 + intruder 4 means
-  columns b_k,b_k+1 sum to 2 mod 4 giving q=2). Anchor:
+  columns b_k,b_k+1 sum to 2 mod 4 giving q=2). **Proved corollary (matches
+  durable memory): `c_k ≥ 6` forces `b_{k+1}=b_k−1` exactly** — `|e−c| ∈ {c−2,c}
+  ⊄ {0,2}` kills position b_k of the next row, and the erosion bound
+  `b_{k+1} ≥ b_k−1` gives the other side. Anchor:
   `code/regeneration/check_regenerate_lemma.py`,
   `code/out/check_regenerate_lemma.captured.txt`, thread
   `research/threads/regeneration.md`.
@@ -179,6 +183,29 @@ it. The honest open question remains: is there a k with block length 0?
   arbitrarily. The Rule 90 interior identification is proved and survives
   independently (see Established); the absorption mechanism is dead.
   Recorded: `research/approaches/rule90-absorbing-boundary.md`.
+- **Mod-4 linearization cannot be lifted — mod 4 is the ceiling.** The lift
+  `|a−b| ≡ a+b (mod 2^t)` holds over even entries iff `2·min(a,b) ≡ 0
+  (mod 2^t)`, i.e. the smaller entry divisible by `2^{t−1}`. It holds at t=2
+  (min of two evens is even) and fails at t=3 (`|2−6|=4 ≢ 0 (mod 8)` vs
+  `2+6=8 ≡ 0`). So mod 4 is the ceiling; mod 4 conflates 0↔4 and 2↔6 — exactly
+  the failure values the conjecture must exclude — and CHT say the mod-2 parity
+  level "will not be used directly" (only parity, never the exact {0,2}).
+  Any invariant built on a higher modulus is dead; the mod-4 level itself is
+  still the run's best algebraic handle (see Established). Anchor:
+  `research/approaches/mod4-pascal-invariant.md`,
+  `code/research_mod_check/check_mod_lift.py`.
+- **Backward-extension automaton and minimal-counterexample geometry —
+  REFUTED (the valid-extension criterion is global, not local).** Alkan et al.
+  2023 (factorial-weighted K-criterion) and Muney 2026 (valid-extension set =
+  order-sensitive subset-sum analogue with interior holes, smallest at length 5
+  for (2,3,5,9,15)) both give criteria that reach back over the whole prefix —
+  no bounded window determines whether a row extends into `{0,2}`. The trap
+  state hope is Eppstein's class defeat; a bounded SAT/SMT encoding is either
+  the global criterion (as hard as the conjecture) or strictly weaker. Muney's
+  valid-extension set is the backward analogue of the leading `{0,2}` block and
+  re-describes the regeneration obstruction instead of resolving it. Anchors:
+  `research/approaches/backward-extension-automaton.md`,
+  `research/approaches/minimal-counterexample-geometry.md`.
 
 ## Numbers
 
