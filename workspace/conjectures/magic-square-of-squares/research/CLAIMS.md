@@ -48,6 +48,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `sum-of-two-squares-multiplicity` | A088111 gives the number of representations as a sum of two positive squares; the multiplicity grows slowly (via the divisors ≡1 mod 4 structure), not a closed form. | yes | catalogued | `research/summaries/oeis_a088111.md` |
 | `three-primitive-equal-d-bound` | Up to d = 6.4×10²² there are only five configurations of three primitive 3-square APs all with the same difference d, the largest at d = 3.31×10¹⁵. | yes | catalogued | `research/summaries/morgenstern-extended-searches-2013.md` |
 | `van-luijk-algebraic-br-not-sufficient-on-k3s` | If a smooth diagonal plane cubic a x^3 + b y^3 + c z^3 = 0 over a number field has local points everywhere, has no k-cubic points (three collinear points over a Galois Z/3Z extension), and abc is not a cube, then the K3… | no | proved | `research/summaries/van-luijk-cubic-points-brauer-manin-k3.md` |
+| `wu-bm-noninvariance-under-base-change` | For any nontrivial extension L/K of number fields, assuming Stoll's conjecture for all curves over K (Conj. 3.0.1 = a curve C over K has C(K) dense in pr∞_K(C(A_K)^Br)), there exist smooth projective geometrically… | no | proved | `research/summaries/wu-non-invariance-brauer-manin.md` |
 
 ## Load-bearing but unverified
 
