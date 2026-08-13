@@ -257,6 +257,18 @@ bearing: a genuinely different-looking handle on the {0,2} regime (size bound on
 anchor: research/sources/oeis-A347924-gilbreath-polynomials.full.md; research/sources/oeis-A347925-gilbreath-polynomial-denominators.full.md (summary file); research/sources/gatti-researchcode-A347924-cs.full.md; research/sources/gatti-2023-repec-record.full.md
 ```
 
+## New holdings this cycle (librarian, this build) — Lean 4 formalisation COMPLETE
+
+```claim
+id: gilbreath-second-entry-equivalence
+statement: In Lean 4 with Mathlib, the Gilbreath difference operator Step s i = Nat.dist (s i) (s (i+1)), the shape predicate StartsOddEvenEven s = (Odd (s 0) ∧ ∀ n, Even (s (n+1))), and the reduction lemma |1−n| = 1 ↔ n = 0 ∨ n = 2 are formalised and kernel-checked. Nine theorems (dist_odd_even, dist_dist_even, dist_one_eq_one, shape_theorem, shape_rows, reduction, reduction_lemma, gilbreath_reduction) are proved. gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X — an IFF. Every declaration's axiom footprint is exactly [propext, Classical.choice, Quot.sound] (the three standard Mathlib base axioms). Zero sorry, zero sorryAx. The IFF is an equivalence: it proves the {0,2} second-entry statement is exactly as hard as the conjecture, not a stepping stone to a proof. It reformulates rather than reduces.
+hypotheses: X is a RowStream (X (k+1) = Step (X k)); X 1 has StartsOddEvenEven shape; X 1 0 = 1 (leading 1 at row 1). These hold for the prime triangle by computation (witnesses.json), not by Lean instantiation.
+holds-here: yes — proved (Lean kernel-checked, EXIT=0, #print axioms = [propext, Classical.choice, Quot.sound], zero sorry/sorryAx)
+status: proved (this run, Lean 4 / Mathlib; GOAL.md deliverable)
+bearing: any future argument can target either the left-column statement or the {0,2} second-entry statement and the equivalence is beyond doubt; it closes no distance toward a proof of the conjecture itself — the {0,2} regime is exactly the conjecture, not a simplification.
+anchor: code/lean/gilbreath_reduction.lean; code/out/lean_gilbreath_reduction.captured.txt
+```
+
 ## New holdings this cycle (librarian, this build)
 
 ```claim

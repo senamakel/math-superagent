@@ -1,5 +1,7 @@
 # Tasks
 
+## Directive 17 (steer): Lean formalisation verified complete. Record as gilbreath-second-entry-equivalence, an IFF reformulation not a reduction. Axiom footprint [propext, Classical.choice, Quot.sound]. Directive 16 (conditional-rate experiment) remains the blocking task.
+
 ## Directive 16 (steer): Route A is NOT refuted. Sweep deaths are g_0 startup, not rate. Run conditional-rate experiment.
 
 Directive 12 said the sweep refutes Route A as a purely combinatorial lemma
@@ -43,18 +45,20 @@ at k≤1 from first-gap≠2, not from the event rate.
 ### Deferred until item 1 is answered
 
 - [ ] **2. Housekeeping: move bare .txt output files from `code/pattern_finder/` to `code/out/` or delete them.** Requires a shell (`mv`/`rm`); this role has no move/delete tool.
-- [x] **3. Lean 4 formalisation (independent).** **DONE this run:**
-  `code/lean/gilbreath_reduction.lean` kernel-checks (`lean` EXIT=0) the full
-  reduction — shape preservation, |1−n|=1 ⟺ n∈{0,2}, and the machine-checked
-  induction step `gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X`
-  for any row stream with the prime-row shape and leading 1. `#print axioms` =
-  `[propext, Classical.choice, Quot.sound]` for every declaration, **zero
-  sorry / sorryAx** (grep-verified on `code/out/lean_gilbreath_reduction.captured.txt`).
-  Pre-existing broken `code/lean/reduction.lean` and `shape.lean` also repaired
-  and kernel-checked (`code/out/lean_reduction.captured.txt`,
-  `code/out/lean_shape.captured.txt`). Boundary: the prime *instantiation*
-  (row 1 is (1, even, even, ...), second entry 2) remains a computation check
-  (witnesses.json), not a Lean proof; regeneration is untouched.
+- [x] **3. Lean 4 formalisation — COMPLETE (Directive 17 verified).**
+  Nine theorems kernel-checked across `gilbreath_reduction.lean`, `reduction.lean`,
+  `shape.lean`: `dist_odd_even`, `dist_dist_even`, `dist_one_eq_one`,
+  `shape_theorem`, `shape_rows`, `reduction`, `reduction_lemma`,
+  `gilbreath_reduction`. Every declaration depends on exactly
+  `[propext, Classical.choice, Quot.sound]` (the three standard Mathlib axioms),
+  **zero sorry / zero sorryAx** (grep-verified on three capture files).
+  `gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X` is an
+  **IFF-machine-checked equivalence, not a reduction**: the {0,2} statement is
+  exactly as hard as the conjecture — it reformulates rather than reduces.
+  The prime instantiation (row 1 = (1, even, even, ...)) remains
+  computation-checked (witnesses.json), not Lean-proved. Claim:
+  `gilbreath-second-entry-equivalence`. Anchors:
+  `code/lean/gilbreath_reduction.lean`, `code/out/lean_gilbreath_reduction.captured.txt`.
 
 ### Background (established, do not redo)
 

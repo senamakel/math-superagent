@@ -18,6 +18,9 @@ next: |
   2. Route A (combinatorial): prove a worst-case bound on erosion between events from the Rule 90 edge-flip dynamics + drain law. The mechanism is combinatorial; the g_0 startup artefact is irrelevant to the rate question. If the conditional experiment shows family-independent event density, Route A is the correct framing.
   3. Route B (analytic, secondary): assume a prime-gap hypothesis, derive a lower bound on event density. Must state how it beats Eppstein.
   4. Deliverable: a theorem of the form "under hypothesis H, the event rate ≥ r, and r suffices."
+
+lean-formalisation: |
+  COMPLETE (Directive 17 verified). Nine theorems kernel-checked. gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X is an IFF — the {0,2} second-entry statement is exactly as hard as the conjecture, not a simplification. Axiom footprint [propext, Classical.choice, Quot.sound]. Zero sorry/sorryAx. claim: gilbreath-second-entry-equivalence, anchor: code/lean/gilbreath_reduction.lean.
 ```
 
 # Regeneration thread — event-rate lower bound

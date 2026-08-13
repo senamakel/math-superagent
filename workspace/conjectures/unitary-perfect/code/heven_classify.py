@@ -65,6 +65,10 @@ def phase_a2():
     print("=" * 78)
     print("A2. 3-Higgs predicate")
     print("=" * 78)
+    print("257 decision: 257-1 = 256 = 2^8, v2 = 8 > 3, so 257 is NOT "
+          "3-Higgs and consequently m = 8 is NOT in H_even (2^8+1 = 257 is "
+          "a non-Higgs prime divisor): is_3_higgs(257) = %s" % is_3_higgs(257))
+    assert is_3_higgs(257) is False, "257 must NOT be 3-Higgs"
     statuses = {}
     for p in list(sympy.primerange(2, 32)):
         statuses[p] = is_3_higgs(p)
@@ -74,22 +78,29 @@ def phase_a2():
     ok31 = (statuses.get(31) is True)
     print("17 non-Higgs (17-1 = 2^4, v2 = 4 > 3): %s" % ok17)
     print("31 Higgs (31-1 = 2*3*5): %s" % ok31)
-    # equivalence of the working form with the literal OEIS definition:
-    # p is 3-Higgs iff p-1 divides the cube of the product of all smaller
-    # 3-Higgs primes, which holds iff every prime q | p-1 is itself 3-Higgs
-    # with v_q(p-1) <= 3 — the working form implemented by is_3_higgs.  We
-    # verify computationally on primes <= 1000 that the two conditions agree.
-    lit = {2: True}
+    # The genuinely literal OEIS A057447 rule, run from scratch: p is
+    # 3-Higgs iff (p-1) | P^3 where P is the product of all primes already
+    # certified 3-Higgs by the SAME rule, and P starts at 2 (the base; 2 is
+    # 3-Higgs).  Upon certification P *= p.  Compare with the working form
+    # is_3_higgs (p-1 fully factored, every q | p-1 3-Higgs with v_q <= 3)
+    # on every prime p <= 1000.  A single disagreement prints loudly and
+    # fails the phase.
+    lit_lists = {2: True}
+    P = 2                       # running product of literal-certified primes
     equiv = True
     for p in sympy.primerange(3, 1000 + 1):
-        # literal: for every q | p-1, q must be 3-Higgs and v_q(p-1) <= 3
-        ok_lit = all(is_3_higgs(q) and e <= 3 for q, e in factorize(p - 1).items())
-        lit[p] = ok_lit
-        if lit[p] != is_3_higgs(p):
-            print("    definitional mismatch at %d" % p)
+        lit = (P ** 3) % (p - 1) == 0      # the literal divisibility, exact
+        lit_lists[p] = lit
+        if lit != is_3_higgs(p):
+            print("    *** LITERAL-RULE MISMATCH at p=%d: literal=%s "
+                  "is_3_higgs=%s ***" % (p, lit, is_3_higgs(p)))
             equiv = False
-    print("working-form vs literal definition agree on all primes <= 1000: %s"
-          % equiv)
+        if lit:
+            P *= p
+    print("literal rule (p-1) | P^3 vs working form: agree on ALL primes "
+          "<= 1000: %s" % equiv)
+    print("literal-Higgs primes <= 1000: %d of %d"
+          % (sum(lit_lists.values()), len(sympy.primerange(2, 1000 + 1))))
     ok = ok17 and ok31 and equiv
     print("A2 %s" % ("PASS" if ok else "FAIL"))
     return ok
@@ -101,12 +112,13 @@ def phase_a3():
     print("A3. Cyclotomic / Aurifeuillean identities")
     print("=" * 78)
     ok = True
+    x = sympy.Symbol("x")
     # 2^(2p) + 1 == 5 * Phi_{4p}(2) for the first 30 odd primes
     cnt = 0
     for p in sympy.primerange(3, 10**6):
         if cnt == 30:
             break
-        ph = int(sympy.cyclotomic_poly(4 * p).eval(2))
+        ph = int(sympy.cyclotomic_poly(4 * p).subs(x, 2))   # exact int, no floats
         if 2 ** (2 * p) + 1 != 5 * ph:
             print("    FAIL Phi_{4p}(2) identity at p=%d" % p)
             ok = False

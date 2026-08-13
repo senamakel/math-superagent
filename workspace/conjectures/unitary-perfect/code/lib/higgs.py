@@ -169,29 +169,34 @@ def is_3_higgs(p):
 
 
 def _higgs_status_bulk(limit=1000):
-    """Agreement check (A2 self-test): definitions agree on all primes <= limit.
+    """Agreement check (A2 self-test): literal rule vs is_3_higgs.
 
-    Returns (equivalences_ok, list_of_statuses) where equivalences_ok counts
-    how many primes p have the factored-form predicate agreeing with the
-    literal definition "p-1 divides cube of product of smaller 3-Higgs
-    primes".  Also asserts the two boundary facts 17 non-Higgs, 31 Higgs.
+    Runs the GENUINELY literal OEIS A057447 definition from scratch over all
+    primes <= limit: maintain P, the product of primes certified 3-Higgs by
+    the literal rule itself (2 is the base; p is literal-Higgs iff
+    (P**3) % (p-1) == 0, and if so P *= p), and compare each status with
+    is_3_higgs(p).  (The old version had the divisibility reversed: it
+    computed prod3 from the factors of p-1 and tested p-1 % prod3, which is
+    not the definition and flagged every qualifying prime as a mismatch.)
+
+    Returns (equivalences_ok, boundary_ok) and asserts the boundary facts
+    17 non-Higgs (17-1 = 2^4, v2 = 4 > 3), 31 Higgs, 257 non-Higgs
+    (257-1 = 2^8, v2 = 8 > 3).
     """
-    lit = {}
-    lit[2] = True
     primes = list(sympy.primerange(2, limit + 1))
+    lit = {}
+    P = 1
     for p in primes:
         if p == 2:
             lit[p] = True
+            P *= p
             continue
-        prod3 = 1
-        for q, e in factorize(p - 1).items():
-            if e > 3:
-                break
-            prod3 *= q**(3 * e)
-        else:
-            lit[p] = ((p - 1) % prod3 == 0)
+        lit[p] = (P ** 3) % (p - 1) == 0     # literal rule, exact integers
+        if lit[p]:
+            P *= p
     equiv = all(lit[p] == is_3_higgs(p) for p in primes)
-    base_ok = (is_3_higgs(2) and not is_3_higgs(17) and is_3_higgs(31))
+    base_ok = (is_3_higgs(2) and not is_3_higgs(17) and is_3_higgs(31)
+               and not is_3_higgs(257))
     return equiv, base_ok
 
 

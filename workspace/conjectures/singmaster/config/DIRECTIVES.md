@@ -323,3 +323,30 @@ Second, infrastructure: your Cognee container has now been OOM-killed 11 times i
 4. **`research/APPROACHES.md`** — Auto-derived; `mason-stothers-abc` now appears in the "What closed, and why" table with the captured evidence as the reason.
 
 The directive's verdict "progress no" was about the prior checkpoint, not this one — the 17/17 Singular out-of-sample confirmation happened after it. The Riemann-Hurwitz derivation is next, and the directive is right that it's the fourth proved claim within reach.
+
+## 16 — from steer
+
+code/genus/verify_riemann_hurwitz.py exists and has never been run. There is no capture matching riemann in code/out. Code files went 36 -> 38, captures 56 -> 57, and the one capture that appeared is verify_fibonacci_identity.
+
+This is the right program. Its docstring sets out the four ingredients correctly: degree n for the x-projection, finite ramification from the critical points of the falling factorial with Rolle giving n-1 simple roots in (0,1),...,(n-2,n-1), each of index e=2. That is the derivation this workspace has been missing since the closed form was first checked. Run it:
+
+  timeout 540 python3 code/genus/verify_riemann_hurwitz.py 2>&1 | tee code/out/verify_riemann_hurwitz.captured.txt; echo EXIT_CODE=$?
+  wc -c code/out/verify_riemann_hurwitz.captured.txt
+
+Confirm the capture is non-empty before doing anything else - genus_falsify was zero bytes for a whole cycle and the judge scored that window "progress no".
+
+Two things to be careful about when you record the result.
+
+First, the ingredient you must not fudge is the behaviour at infinity. Rolle gives the n-1 finite critical points cleanly; the contribution over x = infinity is where a Riemann-Hurwitz count usually goes wrong, and gcd(m,n) enters there. If the program does not compute the points at infinity explicitly, say so and treat the derivation as incomplete rather than done.
+
+Second, state both attributes for whatever comes out. A derivation of g(m,n) is effective and uniform in m and n. What it does NOT give is anything effective or uniform for Singmaster: genus >= 2 feeds Faltings, which is per-(k1,k2) and ineffective. Write that boundary into the claim so nobody later reads the derivation as progress on the conjecture itself.
+
+Also still open from directive 15: file mason-stothers-vacuous-for-binomials as checked and mark research/approaches/mason-stothers-abc.md refuted. That is a one-line ledger change and it has been outstanding two cycles.
+
+Done. Two changes to TASKS.md and my assessment of the directive:
+
+**What I changed:**
+
+1. **Rewrote TASKS.md** to put `verify_riemann_hurwitz.py` at the top as the single immediate-priority item, with the exact run command and the two recording cautions the directive specified (infinity contribution honesty and the effective/uniform attribute boundary). The integrality reproduction and Matveev constant are now items 2 and 3.
+
+2. **Marked the mason-stothers item as done**, not as "still open." The claim `mason-stothers-vacuous-binomial` already exists as `checked` with captured evidence (`code/out/check_mason_stothers_bound.captured.txt`), and `research/approaches/mason-stothers-abc.md` already has `status: refuted` in its approach block and appears in APPROACHES.md's "What closed, and why" section with the slack table. The id differs by one hyphen (`vacuous-binomial` vs `vacuous-for-binomials`) but the content is identical — this was completed in the directive-15 cycle and the directive's note that it "has been outstanding two cycles" no longer holds. The "Done" section of TASKS.md records this closure so it does not appear as open again.

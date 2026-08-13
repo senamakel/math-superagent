@@ -1,0 +1,175 @@
+==============================================================================
+A1. sigma_star oracle + 2-adic budget identity
+==============================================================================
+n = 6
+    = 2 * 3
+    sigma_star = 12, 2n = 12, unitary perfect: True
+    a = 1, omega(odd) = 1, sum v2(p^e+1) = 2, a+1 = 2, identity: True
+n = 60
+    = 2^2 * 3 * 5
+    sigma_star = 120, 2n = 120, unitary perfect: True
+    a = 2, omega(odd) = 2, sum v2(p^e+1) = 3, a+1 = 3, identity: True
+n = 90
+    = 2 * 3^2 * 5
+    sigma_star = 180, 2n = 180, unitary perfect: True
+    a = 1, omega(odd) = 2, sum v2(p^e+1) = 2, a+1 = 2, identity: True
+n = 87360
+    = 2^6 * 3 * 5 * 7 * 13
+    sigma_star = 174720, 2n = 174720, unitary perfect: True
+    a = 6, omega(odd) = 4, sum v2(p^e+1) = 7, a+1 = 7, identity: True
+n = 146361946186458562560000
+    = 2^18 * 3 * 5^4 * 7 * 11 * 13 * 19 * 37 * 79 * 109 * 157 * 313
+    sigma_star = 292723892372917125120000, 2n = 292723892372917125120000, unitary perfect: True
+    a = 18, omega(odd) = 11, sum v2(p^e+1) = 19, a+1 = 19, identity: True
+n = 12
+    = 2^2 * 3
+    sigma_star = 20, 2n = 24, unitary perfect: False
+    a = 2, omega(odd) = 1, sum v2(p^e+1) = 2, a+1 = 3, identity: False
+A1 PASS: five UPNs verified, 12 negative control verified, budget identity exact on all five
+==============================================================================
+A2. 3-Higgs predicate
+==============================================================================
+prime <= 31: 2:H 3:H 5:H 7:H 11:H 13:H 17:n 19:H 23:H 29:H 31:H
+17 non-Higgs (17-1 = 2^4, v2 = 4 > 3): True
+31 Higgs (31-1 = 2*3*5): True
+    definitional mismatch at 3
+    definitional mismatch at 5
+    definitional mismatch at 7
+    definitional mismatch at 11
+    definitional mismatch at 13
+    definitional mismatch at 19
+    definitional mismatch at 23
+    definitional mismatch at 29
+    definitional mismatch at 31
+    definitional mismatch at 37
+    definitional mismatch at 41
+    definitional mismatch at 43
+    definitional mismatch at 47
+    definitional mismatch at 53
+    definitional mismatch at 59
+    definitional mismatch at 61
+    definitional mismatch at 67
+    definitional mismatch at 71
+    definitional mismatch at 73
+    definitional mismatch at 79
+    definitional mismatch at 83
+    definitional mismatch at 89
+    definitional mismatch at 101
+    definitional mismatch at 107
+    definitional mismatch at 109
+    definitional mismatch at 127
+    definitional mismatch at 131
+    definitional mismatch at 139
+    definitional mismatch at 149
+    definitional mismatch at 151
+    definitional mismatch at 157
+    definitional mismatch at 167
+    definitional mismatch at 173
+    definitional mismatch at 179
+    definitional mismatch at 181
+    definitional mismatch at 191
+    definitional mismatch at 197
+    definitional mismatch at 199
+    definitional mismatch at 211
+    definitional mismatch at 223
+    definitional mismatch at 229
+    definitional mismatch at 233
+    definitional mismatch at 251
+    definitional mismatch at 263
+    definitional mismatch at 269
+    definitional mismatch at 271
+    definitional mismatch at 277
+    definitional mismatch at 281
+    definitional mismatch at 283
+    definitional mismatch at 293
+    definitional mismatch at 311
+    definitional mismatch at 313
+    definitional mismatch at 317
+    definitional mismatch at 331
+    definitional mismatch at 347
+    definitional mismatch at 349
+    definitional mismatch at 359
+    definitional mismatch at 367
+    definitional mismatch at 373
+    definitional mismatch at 379
+    definitional mismatch at 383
+    definitional mismatch at 397
+    definitional mismatch at 419
+    definitional mismatch at 421
+    definitional mismatch at 431
+    definitional mismatch at 439
+    definitional mismatch at 457
+    definitional mismatch at 461
+    definitional mismatch at 463
+    definitional mismatch at 467
+    definitional mismatch at 491
+    definitional mismatch at 499
+    definitional mismatch at 503
+    definitional mismatch at 509
+    definitional mismatch at 521
+    definitional mismatch at 523
+    definitional mismatch at 541
+    definitional mismatch at 547
+    definitional mismatch at 557
+    definitional mismatch at 563
+    definitional mismatch at 569
+    definitional mismatch at 571
+    definitional mismatch at 587
+    definitional mismatch at 599
+    definitional mismatch at 601
+    definitional mismatch at 607
+    definitional mismatch at 617
+    definitional mismatch at 631
+    definitional mismatch at 643
+    definitional mismatch at 659
+    definitional mismatch at 661
+    definitional mismatch at 677
+    definitional mismatch at 683
+    definitional mismatch at 691
+    definitional mismatch at 701
+    definitional mismatch at 709
+    definitional mismatch at 719
+    definitional mismatch at 727
+    definitional mismatch at 733
+    definitional mismatch at 739
+    definitional mismatch at 743
+    definitional mismatch at 751
+    definitional mismatch at 757
+    definitional mismatch at 761
+    definitional mismatch at 787
+    definitional mismatch at 797
+    definitional mismatch at 809
+    definitional mismatch at 821
+    definitional mismatch at 827
+    definitional mismatch at 829
+    definitional mismatch at 839
+    definitional mismatch at 853
+    definitional mismatch at 857
+    definitional mismatch at 859
+    definitional mismatch at 863
+    definitional mismatch at 877
+    definitional mismatch at 883
+    definitional mismatch at 907
+    definitional mismatch at 911
+    definitional mismatch at 937
+    definitional mismatch at 941
+    definitional mismatch at 947
+    definitional mismatch at 967
+    definitional mismatch at 983
+    definitional mismatch at 991
+    definitional mismatch at 997
+working-form vs literal definition agree on all primes <= 1000: False
+A2 FAIL
+==============================================================================
+A3. Cyclotomic / Aurifeuillean identities
+==============================================================================
+Traceback (most recent call last):
+  File "/workspace/code/heven_classify.py", line 280, in <module>
+    main()
+  File "/workspace/code/heven_classify.py", line 266, in main
+    a3 = phase_a3()
+         ^^^^^^^^^^
+  File "/workspace/code/heven_classify.py", line 113, in phase_a3
+    ph = int(sympy.cyclotomic_poly(4 * p).eval(2))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Add' object has no attribute 'eval'. Did you mean: 'evalf'?

@@ -28,6 +28,23 @@ A partial result that would count:
 A result stated without the bound it was established under is not a result. A
 count verified for `n <= 10^6` is a fact about `n <= 10^6`.
 
+## Progress — verified this run
+
+- **Infinite family `N(a) >= 6` verified exactly (computed, PYTHON_EXIT=0).**
+  For each `j = 1..6`, `n = F_{2j+2}F_{2j+3}-1`, `m = F_{2j}F_{2j+3}-1` gives
+  `C(n+1,m+1) = C(n,m+2)` (exact integer arithmetic) with six distinct
+  occurrences: the two interior pairs, their two mirrors, and the trivial pair
+  `C(a,1)=C(a,a-1)` — so `N(a) >= 6`. Exact `N(a)` under the run's convention
+  (both mirrors + trivial pair): `N(3003) = 8`; the j=2 member (29 digits) has
+  `N = 6`; the j=3 member (205 digits) has `N = 6` — the latter far beyond the
+  Blokhuis–Brouwer–de Weger 2017 `10^60` verification bound. This closes the
+  "infinite family verified" deliverable: the family is the reason `B >= 6`,
+  matches `code/out/witnesses.json`, and the exact-count method (per-k binary
+  search, `k <= log2(a)`, no triangle) is cross-checked against
+  `lib.binom_multiplicity` on all ten check values. Capture:
+  `code/out/verify_fibonacci_identity.captured.txt`. `<8` bounds remain refuted
+  by 3003.
+
 ## The oracle here is an exact multiplicity counter and a falsifier
 
 There is no value to recompute — the answer is a bound. So the oracle is:

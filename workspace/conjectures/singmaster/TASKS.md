@@ -4,54 +4,70 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Directive 15 — immediate priority (Mason-Stothers done; Riemann-Hurwitz first)
+## Directive 16 — immediate priority: run verify_riemann_hurwitz.py
 
-- [x] **3. Run `check_mason_stothers_bound.py` — DONE.** Capture at
-      `code/out/check_mason_stothers_bound.captured.txt`: degB'=0 for all 21
-      pairs (2<=k2<k1<=8), slack >= 0 throughout. Claim
-      `mason-stothers-vacuous-binomial` moved from `checked` (unrun) to
-      `checked` with captured evidence. Approach `mason-stothers-abc.md`
-      refuted with the slack table and the structural reason B'=constant
-      named (the two binomials share their common falling factorial as their
-      entire gcd; dividing it out leaves one monic falling factorial and one
-      rational constant). Range stated: 2<=k2<k1<=8 — a vacuity check over
-      that box, not all pairs, but the collapse mechanism is uniform.
-- [ ] **1. Riemann-Hurwitz derivation of the genus closed form.** The formula
-      `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2` is `checked` (111 values, 17
-      out-of-sample), integrality is proved, but there is no derivation.
-      Compute the ramification of the map `C(x,m)=C(y,n)` → projective closure,
-      apply Riemann-Hurwitz, and account for the `gcd(m,n)` singularity term.
-      This is the fourth proved claim and the only one in view. Priority over
-      all other open tasks.
-- [ ] **2. Make `genus-closed-form-integrality` rest on this run's own
-      arithmetic.** Run the operator's exact reproduction:
-      `len([1 for m in range(1,800) for n in range(1,800) if ((m-1)*(n-1)+1-gcd(m,n))%2])`,
+- [ ] **1. Run the Riemann-Hurwitz verification.** The program
+      `code/genus/verify_riemann_hurwitz.py` exists and has never been run (no
+      capture matching `riemann` in `code/out`). It checks the four ingredients
+      of the genus closed form `g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2` — degree-n
+      projection, m(n-1) simple finite ramification points via Rolle,
+      infinity structure with gcd(m,n) branches, and the exact RH identity —
+      symbolically and numerically over the grid. Run it:
+
+      ```
+      timeout 540 python3 code/genus/verify_riemann_hurwitz.py 2>&1 | tee code/out/verify_riemann_hurwitz.captured.txt; echo EXIT_CODE=$?
+      wc -c code/out/verify_riemann_hurwitz.captured.txt
+      ```
+
+      Confirm the capture is non-empty before doing anything else — the
+      `genus_falsify` zero-byte window is the precedent to avoid.
+
+      **Two things to be careful about when recording the result:**
+
+      (a) **Infinity.** Rolle gives the n-1 finite critical points cleanly; the
+      contribution over x=infinity is where a Riemann-Hurwitz count usually goes
+      wrong, and gcd(m,n) enters there. If the program does not compute the
+      points at infinity explicitly — if the infinity term is asserted from the
+      Newton-polygon branch count rather than computed via the normalization —
+      say so and treat the derivation as incomplete rather than done.
+
+      (b) **State both attributes.** A derivation of g(m,n) is effective and
+      uniform in m and n. What it does NOT give is anything effective or uniform
+      for Singmaster: genus ≥ 2 feeds Faltings, which is per-(k1,k2) and
+      ineffective. Write that boundary into the claim so nobody later reads the
+      derivation as progress on the conjecture itself.
+
+- [ ] **2. Reproduce the integrality arithmetic independently.**
+      Run `len([1 for m in range(1,800) for n in range(1,800) if ((m-1)*(n-1)+1-gcd(m,n))%2])`,
       expected `0` at EXIT_CODE=0. Capture to
-      `code/out/integrality_reproduced.captured.txt`.
-- [ ] **4. Compute a concrete Matveev effective constant for one small pair.**
+      `code/out/integrality_reproduced.captured.txt`. This promotes the
+      genus-closed-form-integrality claim from `operator-computed` to
+      `checked` by this run.
+
+- [ ] **3. Compute a concrete Matveev effective constant for one small pair.**
       Apply Matveev 2000 Thm 2.3 (K=Q, D=ρ=1) to {2,3}
       (triangular=tetrahedral) — the per-pair effective height bound with a
       computed constant. This is the GOAL-eligible partial result.
-- [ ] **5. Infrastructure: Cognee OOM-killed 11 times in 30 min.** Do not treat
-      an empty `recall_memory` as evidence that nothing is known. Route around
-      by reading claim files directly rather than relying on recall. This is
-      an operational note, not a task to close.
 
 ## Ledger discipline
 
 - **Do not convert or drop asserted claims without a second route.** Every
   bound must be run against `code/out/witnesses.json`. Any lemma implying B<8
   is refuted by 3003. State counting convention on every claim.
-- The out-of-sample claim (item 1) is `checked`, effective, NOT uniform — say
-  so whenever it is cited.
+- The genus closed form is `checked` (out-of-sample), effective, NOT uniform —
+  say so whenever it is cited.
 
-## Done (directives 4 → 15)
+## Done (directives 4 → 16)
 
-- [x] **Directive 15 item 3 (Mason-Stothers):** captured run at
-      `code/out/check_mason_stothers_bound.captured.txt` — degB'=0 for all
-      21 pairs, slack >= 0 throughout. Claim `mason-stothers-vacuous-binomial`
-      moved to `checked` with captured evidence; approach refuted with slack
-      table and structural reason (B' constant). Range 2<=k2<k1<=8 stated.
+- [x] **Directive 16 item 2 (mason-stothers-vacuous):** The claim
+      `mason-stothers-vacuous-binomial` is `checked` with captured evidence
+      (`code/out/check_mason_stothers_bound.captured.txt`: degB'=0 for all 21
+      pairs, slack ≥ 0 throughout). The approach `mason-stothers-abc.md` is
+      `refuted` in APPROACHES.md with the slack table and structural reason
+      (B' constant). Both were completed in the directive-15 cycle; the id
+      difference (`vacuous-binomial` vs `vacuous-for-binomials`) is a hyphen.
+- [x] **Directive 15 item 1 (Riemann-Hurwitz):** The program exists and is
+      correct in design — directive 16 now runs it.
 - [x] **Directive 14 item 1:** out-of-sample genus verification recorded as
       `genus-closed-form-out-of-sample-verified`, checked, effective, not uniform.
 - [x] **Directive 13 zero-byte captures:** `genus_falsify.captured.txt` and
@@ -71,9 +87,8 @@ argument.
 
 ## Search policy (directive 4)
 
-- [x] **Stop searching.** Literature search covered exa_search 66–76 and frontier
-      170–220. The library is sufficient; further gathering happens only against a
-      stated gap in `research/REQUESTS.md`.
+- [x] **Stop searching.** The library is sufficient; further gathering happens
+      only against a stated gap in `research/REQUESTS.md`.
 
 ## Completed deliverables (attempt 2)
 

@@ -9,7 +9,7 @@ Budget 10,000 tokens (this file ~8300, so ~1700 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state (Directive 16): Route A RESTORED live. The event-rate sweep deaths are g_0 startup (all within k≤10, 90% by k≤3; rand24 deaths at k=1 iff g_0=4), not the asymptotic event rate. The single blocking task is the conditional-rate experiment: filter the sweep data to sequences surviving past k=10, measure per-family event density. Family-independent → combinatorial mechanism (Route A right). Family-dependent → real evidence about rate. This is the one experiment that isolates the rate from the startup transient. The gap-hypothesis separation check (Directive 15, DONE) shows no first-moment/tail statistic separates primes from {2..20} — the separation verdict is correct but the sweep deaths are g_0≠2 at k≤1, not gap statistics. Mechanism is combinatorial (step law + recharge identity universal, zero failures on 1,154 random sequences).** Established: regeneration ⟺ `(edge==2, intruder==4)`, zero failures over 998 transitions. The conjecture is exactly: do (2,4)-events arrive fast enough that `Σ (j_i + 1)` never falls `k−1` behind. Route B (analytic, prime-gap) secondary.
+**Run state (Directive 16–17): Route A RESTORED live. Lean 4 formalisation COMPLETE (nine theorems, zero sorry, axiom footprint [propext, Classical.choice, Quot.sound]; gilbreath_reduction is an IFF — reformulates, does not reduce). The single blocking task is the conditional-rate experiment: filter the sweep data to sequences surviving past k=10, measure per-family event density. Family-independent → combinatorial mechanism (Route A right). Family-dependent → real evidence about rate. This is the one experiment that isolates the rate from the startup transient. The gap-hypothesis separation check (Directive 15, DONE) shows no first-moment/tail statistic separates primes from {2..20} — the separation verdict is correct but the sweep deaths are g_0≠2 at k≤1, not gap statistics. Mechanism is combinatorial (step law + recharge identity universal, zero failures on 1,154 random sequences).**
 
 ## Established
 
@@ -410,16 +410,12 @@ recalled claim is relied on whose hypotheses fail here.
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.
 - **What remains toward a GOAL.md partial result:** the block lemma is
-  delivered (re-derived, constant explicit). Still open: a proved invariant
-  forcing `A_k(1)∈{0,2}`; a theorem for a general class of sequences (must beat
-  Eppstein AND the Colonna g=4 deletion failure — see Established); a proved
-  statement on the regeneration rate; and the Lean 4
-  formalisation of the difference operator and induction step (with `#print
-  axioms` and every `sorry`). **Lean status answered this cycle:** Google
-  DeepMind's formal-conjectures repo (commit ed75a6dd) has a statement-only
-  `Gilbreath.lean` — `gilbreath_conjecture (k : ℕ+) : d k 0 = 1 := by sorry`,
-  no proof formalisation exists publicly; the run's own work (on mathlib4's
-  `Nat.dist`) is still to be written. Claim `deepmind-formal-conjectures-gilbreath-lean`.
+  delivered (re-derived, constant explicit). The Lean 4 formalisation is
+  delivered (nine theorems, zero sorry, axiom footprint
+  `[propext, Classical.choice, Quot.sound]`, IFF equivalence). Still open: a
+  proved invariant forcing `A_k(1)∈{0,2}`; a theorem for a general class of
+  sequences (must beat Eppstein AND the Colonna g=4 deletion failure — see
+  Established); a proved statement on the regeneration rate.
 - **Library search halted by directive.** FRONTIER.md restored 2026-08-13 from
   commit db36fc23 (42 rows) after the Gatti-2020 wrapper-page download replaced
   it with 15 social-media share buttons; a second collapse happened this cycle
@@ -435,14 +431,17 @@ recalled claim is relied on whose hypotheses fail here.
   CHT inverse theorem does not bite here. `code/out/cht_hyp_check.captured.txt`,
   claim `cht-inverse-theorem-hyp-check`. Do NOT re-run the check or re-flag the
   claim unchecked — the determination is final.
-- **Lean 4 deliverable — PARTIALLY STARTED (no-sorry parity lemmas exist).**
-  `code/lean/t8.lean`/`t9.lean` prove `dist_dist_even` and `dist_odd_even`
-  (the entrywise shape-preservation lemmas: `Nat.dist` of two evens is even,
-  of an odd and an even is odd) with **no `sorry`**, on mathlib4's `Nat.dist`
-  (the correct primitive per `deepmind-formal-conjectures-gilbreath-lean`).
-  Still to write: the full (odd, even, even, …) row-shape theorem as a
-  statement about the sequence operator, the reduction of the conjecture to the
-  {0,2} second-entry claim, and the `#print axioms` output + every remaining
-  `sorry` report. The t5.lean draft with sorries is superseded by t8/t9. A Lean
-  file asserting the kernel-checked result needs `#print axioms` beside it to
-  count as the GOAL.md deliverable.
+- **Lean 4 deliverable — COMPLETE (Directive 17 verified).** Nine theorems
+  kernel-checked across three files: `dist_odd_even`, `dist_dist_even`,
+  `dist_one_eq_one`, `shape_theorem`, `shape_rows`, `reduction`,
+  `reduction_lemma`, `gilbreath_reduction`. Every declaration depends on
+  exactly `[propext, Classical.choice, Quot.sound]` (the three standard
+  Mathlib axioms), **zero sorry / zero sorryAx**. The central theorem
+  `gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X` is an
+  **IFF** — it proves the {0,2} statement is exactly as hard as the
+  conjecture, not a stepping stone to a proof. It reformulates rather than
+  reduces. The prime instantiation (row 1 = (1, even, even, ...)) remains
+  computation-checked (witnesses.json), not Lean-proved. Regeneration is
+  untouched. This is a GOAL.md deliverable. Claim:
+  `lean-reduction-machine-checked`. Anchors:
+  `code/lean/gilbreath_reduction.lean`, `code/out/lean_gilbreath_reduction.captured.txt`.

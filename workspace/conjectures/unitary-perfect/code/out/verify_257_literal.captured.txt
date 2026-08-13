@@ -1,0 +1,11 @@
+==============================================================================
+Literal-rule 3-Higgs check (A2-style), primes <= 1000
+==============================================================================
+definition: p literal-Higgs iff (P**3) % (p-1) == 0 with
+  P = product of primes already certified by the same rule; base 2.
+17 non-3-Higgs (17-1 = 2^4, v2 = 4 > 3): True
+31  3-Higgs    (31-1 = 2*3*5):           True
+257 decision: 257-1 = 256 = 2^8, v2 = 8 > 3 => is_3_higgs(257) = False  (257 is NOT 3-Higgs, so m = 8 is NOT in H_even)
+literal rule and lib.higgs.is_3_higgs agree on ALL primes <= 1000: PASS
+total primes <= 1000: 168; disagreements: 0
+literal-Higgs count <= 1000: 127; non-Higgs count <= 1000: 41

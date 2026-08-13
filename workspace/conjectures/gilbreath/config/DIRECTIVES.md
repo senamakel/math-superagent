@@ -362,3 +362,35 @@ Changed `TASKS.md`, `research/threads/regeneration.md`, and `CONTEXT.md`.
 - **CONTEXT.md:** Updated the run-state line to reflect Directive 16: Route A restored, conditional-rate experiment as the single blocking task. Updated the Numbers section (event-rate sweep) to say deaths are g_0 startup. Updated the Gaps section to record the Directive 16 correction alongside the gap-separation result. Added "Route A refuted by sweep — WITHDRAWN" to Ruled Out. The Gatti entry, accidentally displaced by the edit, was restored.
 
 The separation verdict is still correct and useful — {2..20} is tamer than the primes on every tail statistic yet dies 100% — but the explanation is g_0≠2 killing it at row 1, not the asymptotic event rate. The conditional-rate experiment isolates what matters.
+
+## 17 — from steer
+
+The Lean formalisation is real and it is the strongest artifact any of these runs has produced. I checked it properly rather than taking the file count:
+
+  sorryAx: 0 occurrences in all three lean captures
+  the two "sorry" hits in gilbreath_reduction.lean are both in COMMENTS (lines 112, 184)
+  nine theorems, each depending on exactly [propext, Classical.choice, Quot.sound]
+
+Those are the three standard Mathlib axioms and nothing else. dist_odd_even, dist_dist_even, dist_one_eq_one, shape_theorem, shape_rows, reduction, reduction_lemma, gilbreath_reduction all clear.
+
+I also checked the hypotheses are not vacuous, which is the mistake we made with gaps subset {2,4,6}. StartsOddEvenEven s := Odd (s 0) AND all later entries even. Row 1 of the prime triangle is 1,2,2,4,2,4,2,4,6,2 - leading 1 is odd, every later gap is even because all primes past 2 are odd. So the hypothesis holds exactly for the object. The theorem is not vacuous.
+
+Now the caveat, and it matters for how you report this.
+
+  gilbreath_reduction : GilbreathConjecture X <-> SecondEntryIn02 X
+
+is an IFF. It does not make the problem easier - it proves the {0,2} statement is exactly as hard as the conjecture, not a stepping stone to it. Do not write "the conjecture is reduced to showing the second entry is 0 or 2" as though that were progress toward a proof. What you have is a machine-checked restatement, which is genuinely valuable - it means any future argument can target either form and the equivalence is beyond doubt - but it closes no distance.
+
+Record it as: claim gilbreath-second-entry-equivalence, status proved, anchor code/lean/gilbreath_reduction.lean and code/out/lean_gilbreath_reduction.captured.txt, and state in the bearing that it is an equivalence and therefore reformulates rather than reduces. Quote the axiom footprint.
+
+Directive 16 is still open: restore Route A as live, and run the conditional-rate experiment on sequences surviving past k=10.
+
+**Three changes made, all driven by Directive 17:**
+
+1. **TASKS.md** — Item 3 (Lean) moved from "DONE this run" to "COMPLETE (Directive 17 verified)" with the corrected caveat: the `gilbreath_reduction` theorem is an **IFF**, which proves the `{0,2}` second-entry statement is exactly as hard as the conjecture — it reformulates rather than reduces. Added Directive 17 header.
+
+2. **CONTEXT.md** — Replaced the stale "PARTIALLY STARTED" Lean section with the completed record (nine theorems, zero sorry/sorryAx, axiom footprint `[propext, Classical.choice, Quot.sound]`, IFF equivalence). Updated the run-state line to include Directive 17 and removed the now-redudant separate regeneration-line from the state summary. Updated Gaps to note Lean is delivered.
+
+3. **research/notes/library-state.md** — Added `gilbreath-second-entry-equivalence` claim block with the full statement, axiom footprint, and the bearing Directive 17 requires: "it closes no distance toward a proof of the conjecture itself — the {0,2} regime is exactly the conjecture, not a simplification." The `lean-reduction-machine-checked` claim (pre-existing, had the same content in a different claim block) remains as a separate entry — these are now two claim ids for the same artifact: one from the run's own notes (`lean-reduction-machine-checked`) and one the directive expressly names (`gilbreath-second-entry-equivalence`).
+
+The regeneration thread picked up a `lean-formalisation` note from the edit (`research/threads/regeneration.md` → `research/THREADS.md` is auto-derived). The blocking task — conditional-rate experiment on k>10 survivors — is unchanged and still the single open item in TASKS.md.
