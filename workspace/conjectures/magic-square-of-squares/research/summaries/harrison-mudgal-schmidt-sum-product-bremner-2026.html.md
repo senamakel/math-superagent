@@ -1,70 +1,50 @@
-# Harrison, Mudgal & Schmidt, "Uniform sum-product phenomenon for algebraic groups and Bremner's conjecture", arXiv:2603.06483 (2026)
+# Harrison, Mudgal & Schmidt, "Uniform sum-product phenomenon for algebraic groups and Bremner's conjecture", arXiv:2603.06483v1 (2026)
 
-[[harrison-mudgal-schmidt-sum-product-bremner-2026]]
-Full text: `research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`
-URL: https://arxiv.org/abs/2603.06483
-Authors: Joseph Harrison, Akshat Mudgal, Harry Schmidt (U. Warwick). 30 pp, v1 6 Mar 2026.
+[[harrison-mudgal-schmidt-sum-product-bremner-2026.html.full]]
+Full text: `research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md` (32 pp, HTML conversion).
+Authors: Joseph Harrison, Akshat Mudgal, Harry Schmidt (Warwick). v1, 6 Mar 2026.
+Companion PDF-conversion summary: `research/summaries/harrison-mudgal-schmidt-sum-product-bremner-2026.md` (superseded digest).
 
-## What it establishes
+## Theorem 1.1 — exact statement (verbatim content)
 
-**Theorem 1.1 — Bremner's conjecture with an *effectively computable* constant.**
-There is an effectively computable constant C ≥ 1 (independent of the curve and
-its coefficients a, b) such that: for E/Q in Weierstrass form y²=x³+ax+b of rank r,
-with X = {x(P): P∈E(Q)}, Y = {y(P): P∈E(Q)}, and A any **arithmetic progression,
-geometric progression, or a set of consecutive squares {u²,(u+d)²,…,(u+ld)²}**,
-if A ⊆ X or A ⊆ Y then |A| ≤ C^(1+r).
+"There is an **effectively computable** constant C ≥ 1 with the following property. Let E be an elliptic curve in Weierstrass form y² = x³ + ax + b, a, b ∈ Q, and let r be the rank of E(Q). Let X = {x(P) : P ∈ E(Q)} and Y = {y(P) : P ∈ E(Q)}. Let A be either an arithmetic progression, a geometric progression or a set of the form {u², (u+d)², (u+2d)², …, (u+dl)²}, with u, d ∈ Q and l ∈ N. If A ⊆ X or A ⊆ Y, then |A| ≤ C^(1+r)."
 
-So all three pattern classes in the *coordinates* of rational points of a
-rank-r elliptic curve have their length bounded by C^(1+r), uniformly in the
-curve, with C effective. The general form is Corollary 2.2, bounding proper
-generalised arithmetic progressions P of rank k contained in 𝒞(Γ) for a
-correspondence 𝒞 of degree d between G (≈ 𝔾_m or an elliptic curve) and a
-1-dimensional group H: |P| ≤ D(d)^(1+r), independent of k.
+Hypotheses: curve over **Q** in short Weierstrass form; r = rank E(Q); pattern entirely inside one coordinate set; C ≥ 1. The paper notes explicitly: "the constant C in Theorem 1.1 does not depend on a, b" — **C is absolute**, uniform over all E/Q (only r enters, in the exponent).
 
-**Method.** Combination of additive combinatorics (resolution of the weak
-polynomial Freiman–Ruzsa conjecture over ℤ by Gowers–Green–Manners–Tao, 2025)
-with Diophantine geometry (uniform Mordell–Lang, David–Philippon; S-unit bounds,
-Evertse–Schlickewei–Schmidt). Theorems 2.1 and 4.2 give the corresponding
-sum-product / expansion statements via a non-degeneracy ("coset") analysis.
+**(a) What C is a function of.** Per the statement: of nothing — an absolute effective constant. Per the proof chain (Theorem 1.1 ⇐ Corollary 2.2 in §7 ⇐ Theorem 2.1 ⇐ Theorem 4.2 + Prop 5.1 ⇐ Theorem 3.7 + Lemmas 4.1/4.4): a worked-out value would be a function of (i) the **David–Philippon uniform-Mordell–Lang constant** C(d, g) from [11, Théorème 1.13] (Theorem 3.7's first part "follows directly" from it — this is the input for the elliptic-curve case; d = degree of the subvariety in E^g), specialised to the correspondence 𝒞 = {(P, x(P))} ⊆ E × 𝔾_a (Example 3.5; 𝒞 is not a translate of a subgroup, else E would be isogenous to 𝔾_a, so Corollary 2.2's hypotheses hold); (ii) degree- and subgroup-count bounds from Bombieri–Zannier [2, Lemma 2] and the sub-Pfaffian complexity bound of Jones–Schmidt [27] ("an absolute (effectively computable) constant", used in Lemma 4.1); (iii) for the 𝔾_m half of Theorem 3.7 only: Laurent [29] + the Evertse–Schlickewei–Schmidt S-unit bound [18]. **No exact expression for C is stated anywhere in the paper.** The weak-PFR constants of Gowers–Green–Manners–Tao (Lemma 6.3: d ≤ C log(4K), |A′| ≥ |A|/K^(C′), C = 140, C′ = 110; propagated by Lemmas 6.2, 6.6) feed the sum-product theorems 1.3, 2.3, 1.8, 2.6 — **not** the §7 proof of Corollary 2.2/Theorem 1.1, which invokes only Theorem 2.1. The introduction sketches an alternative route through (1.9) and Proposition 5.1, but the formal §7 proof is PFR-free. (Correction to the prior summary: "C built from David–Philippon + PFR constants" is inaccurate for Theorem 1.1.)
 
-## Why it matters for the magic-square-of-squares run
+**(b) Is any explicit value/formula given?** **No.** The paper's only explicit constants are in the PFR/structural lemmas (140, 110, 400, 100 in Lemmas 6.2–6.6) and cited external results (Cushman's 4/3+10/4407, CPS's 1/21). Theorem 1.1's C is asserted "effectively computable" and never exhibited, bounded, or sized — not even as a function of the ingredients. An explicit C would require re-deriving David–Philippon's Théorème 1.13 constant specialised to this correspondence, which the paper does not do.
 
-The run's adopted approach `uniform-height-bound-elliptic-ap` was blocked by one
-thing: Garcia-Fritz–Pasten's constant in the AP-length bound C^(r+1) was
-**ineffective** (came from Rémond / Uniform Mordell–Lang), so one could not in
-principle compute C and check whether C^(r+1) < 3. Harrison–Mudgal–Schmidt
-(Theorem 1.1) supplies a constant that is **effectively computable**.
+**(c) Which ingredient dominates.** Structurally the David–Philippon uniform-ML constant for subvarieties of E^g is the dominant input (it is the only Diophantine-geometry input in the elliptic-curve case); the paper does not quantify any of the sizes. S-unit bounds concern the 𝔾_m case only. Nothing in the paper gives even an order of magnitude for C.
 
-The relevant ceiling remains: an MSS gives an AP of length ≥ 3, so a proof of
-non-existence via this bound requires C^(1+r) < 3, i.e. rank r < log(3)/log(C) − 1.
-Effectiveness means C is *in principle* computable and this inequality is *in
-principle* decidable, but C is almost certainly enormous (built from
-David–Philippon and PFR constants), so no small explicit value is available in
-the paper. The approach is therefore advanced but not closed: the obstruction is
-reduced from "ineffective" to "effective-but-astronomically-large, no explicit
-bound given".
+## Why it matters for the MSS run
 
-## Robertson-reduction connection (preliminary, be careful)
-
-Theorem 1.1's third pattern class — x-coordinates equal to squares of a rational
-AP, {u²,(u+d)²,(u+2d)²} ⊆ X — is structurally the face of the MSS condition. An
-MSS centre-line gives A², e², B² all squares with A²+B²=2e², whose *square
-roots* A,e,B satisfy A²+e²... (not an AP of the roots in general). The exact
-map from the Robertson AP-of-x(2Q_i) to Theorem 1.1's classes is **not yet
-established** and must be pinned before Theorem 1.1 is cited as applying to the
-MSS. Do not over-claim: the effectiveness advance is solid, the precise
-application to the four centre APs is open.
+- The MSS gives three points Pᵢ = 2Qᵢ ∈ E(Q) with x(Pᵢ) = a−b, a, a+b in AP (Robertson reduction, claim `robertson-elliptic-reduction`), so A = {a−b, a, a+b} ⊆ X — Theorem 1.1's **first** pattern class, length 3 ≤ C^(1+r). Note the centre line's entries r², e², s² (all squares in AP) are an AP of *values*; their square roots are never in AP jointly with r²+s²=2e², so the "consecutive squares" class does *not* apply. The doubled-point applicability is settled (claim `patterns-bremner-2026-no-mismatch-for-2E-Q`).
+- The prior open question — could C^(1+r) < 3 ever be verified? — is **answered negatively by this paper as it stands**: no value, no formula, and the machinery (DP uniform ML) yields constants vastly larger than 3. The run's blocker is unchanged operationally: C is in-principle computable but uncomputed. Corollary 2.2 additionally bounds proper generalised APs of *any* rank k by D(d)^(1+r), which the thread notes covers the four-centre-AP configuration {u, v, u+v, u−v}.
+- Theorem A.1 (Appendix A): for the AP/GP surfaces S_A, S_B attached to E^t × P, an effectively computable t exists with S_A(K) = S_B(K) = D(K) — a Zariski-closure consequence, not usable numerically.
 
 ```claim
 id: hms-2026-bremner-effective-constant
-statement: There is an effectively computable C ≥ 1 such that for any E/Q of rank r,
-  any arithmetic or geometric progression, or set of consecutive squares, contained in
-  the x- or y-coordinates of E(Q), has length ≤ C^(1+r). (Theorem 1.1.)
-hypotheses: E/Q Weierstrass form; pattern in X or Y coordinates
-holds-here: yes (this makes the previously-ineffective GFP constant effective)
-status: sourced (Harrison, Mudgal, Schmidt, arXiv:2603.06483, Theorem 1.1, read in full text)
-bearing: reduces `uniform-height-bound-elliptic-ap`'s obstruction from an ineffective to an
-  effective-but-uncomputed constant; exact mapping of the MSS four-centre-AP to the three
-  pattern classes still open (not claimed here)
+statement: There is an effectively computable constant C >= 1, independent of the curve
+  coefficients a, b (absolute over all E/Q), such that for any E/Q in Weierstrass form
+  y^2 = x^3 + ax + b of rank r, any arithmetic progression, geometric progression, or set
+  of consecutive squares contained in {x(P): P in E(Q)} or {y(P): P in E(Q)} has length
+  <= C^(1+r). (Theorem 1.1.)
+hypotheses: E/Q rank r; A an AP/GP/consecutive-squares set in Q with A subset X or A subset Y;
+  C effectively computable, C >= 1, independent of a and b
+holds-here: yes — the Robertson AP {a-b, a, a+b} of x(2Q_i) is an AP inside X, so a putative
+  MSS must satisfy 3 <= C^(1+r(E_e)); the consecutive-squares class does NOT apply (square
+  roots of an AP of squares are never in AP when r^2+s^2 = 2e^2)
+status: proved (theorem stated and proved in the paper; statement verified in the full text v1;
+  no explicit value or formula for C is given anywhere)
+bearing: makes the Garcia-Fritz-Pasten AP-length constant effective in principle, resolving the
+  ineffectiveness obstruction of uniform-height-bound-elliptic-ap; but since C is uncomputed and
+  built from David-Philippon uniform Mordell-Lang constants, the inequality C^(1+r) < 3 cannot be
+  evaluated and is not obtainable from the paper; the §7 proof of Theorem 1.1 does not use
+  weak-PFR (140, 110), correcting the earlier note
 anchor: research/summaries/harrison-mudgal-schmidt-sum-product-bremner-2026.html.md
 ```
+
+## Plain-English verdict
+
+**No concrete number can be extracted from this paper.** C^(1+r) < 3 would require C < 3 when r = 0 and C < 3^(1/2) ≈ 1.733 when r ≥ 1; the paper gives neither a value for C nor any bound on it, and its only route to an explicit C runs through David–Philippon's quantitative uniform Mordell–Lang, whose constants are known (from the DP07 literature, not stated in this paper) to be far beyond 3. The advance is real and theoretical: the uniform AP-length bound for elliptic curves is now stated with an *effectively computable* constant, so "decide whether C^(1+r) < 3" is a well-posed finite task rather than an open-ended one. But within the paper it stays unexecuted, and there is no prospect from HMS's Theorem 1.1 alone of a rank-bound R with C^(1+R) < 3. The uniform-height approach survives only as "an effective bound exists and is formally decidable"; the next lane (thread step 0) remains David–Philippon's actually-explicit constant, not this paper.
