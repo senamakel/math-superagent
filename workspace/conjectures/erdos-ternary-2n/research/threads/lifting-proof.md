@@ -52,7 +52,18 @@ exactly two survive. This is a second, independent route to the same theorem
 
 ## Status
 
-- Data: checked, exact, k = 1..22 (operator).
-- Bijection derivation: proved-at-source level (primitive root order) + exact
-  count; the 2-to-1 map follows. To be marked `checked` once formalised.
-- LTE mechanism: sketch only. Not verified. Not proved.
+- Data: checked, exact, k = 1..26 (operator; `code/out/sieve_lift.captured.txt`).
+- Bijection derivation: **completed proof**, no LTE needed. The map
+  `Φ_k : r mod 2·3^(k-1) ↦ 2^r mod 3^k` is a bijection onto the units (2 is a
+  primitive root mod 3^k, order φ(3^k), LAG-1/SAYE-2). Units' low digit is 1,
+  so the attainable length-k {0,1} patterns are those with low digit 1:
+  exactly 2^(k-1). Each length-k pattern extends to length k+1 in exactly two
+  ways (new digit ∈ {0,1}), both units, both hit by a unique exponent — so
+  `A_{k+1} → A_k` is exactly 2-to-1 and surjective. This is complete and needs
+  no carry analysis.
+- LTE mechanism: the formula `2^{2·3^(k-2)} = 4^{3^(k-2)} ≡ 1 + c·3^(k-1)
+  (mod 3^k)`, c ≢ 0 mod 3, follows from LTE (v_3(4^t − 1) = 1 + v_3(t) at
+  t = 3^(k-2)), so conditions 1–2 hold by theorem. Condition 3 (carry into the
+  k-th digit when adding c·3^(k-1)·x to x) is **not automatic** and is exactly
+  why the bijection proof is preferred: it avoids the carry issue entirely.
+  Recorded as a fragile alternative, not the mechanism.
