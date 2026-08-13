@@ -39,22 +39,38 @@ compressed away.
   obstruction modulo any power of 3 can prove the conjecture at any finite 3-adic
   precision. The density `|A_k|/(2·3^(k-1)) = (1/2)(2/3)^(k-1) → 0` while the
   count doubles — the naive-count obstruction in `problem.md` is realized.
-- **Lifting proof sketch (conjectured, not checked)**: LTE should give
-  `2^{2·3^(k-2)} ≡ 1 + c·3^(k-1) (mod 3^k)` with `3 ∤ c`. Then the three
-  lifts shift the top ternary digit by `{0, c, 2c} mod 3`, exactly one of
-  which is 2, so exactly two survive. Proving this would make `|A_k| = 2^(k-1)`
-  a theorem. The constant `c` and the congruence need verification before
-  recording as proved. See `research/threads/lifting-proof.md`.
+- **Bijection argument (derived, not yet fully formalised — see SIEVE-EXACT)**: Φ_k:
+  n mod 2·3^(k-1) ↦ 2^n mod 3^k is a bijection onto (Z/3^k)^× because 2 is a
+  primitive root mod 3^k (order = φ(3^k) = 2·3^(k-1)). S_k ∩ (Z/3^k)^× has size
+  2^(k-1) (low digit forced to 1, remaining k-1 digits in {0,1}). Therefore
+  |A_k| = 2^(k-1) for all k. The 2-to-1 lifting mechanism via LTE gives the
+  *how*; this bijection argument gives the *that*. Both routes agree.
+- **DH-1 (Dimitrov & Howe, proved)**: for n ∉ {0,2,8}, the ternary expansion of
+  2^n contains a digit 2 **or** at least 26 digits equal to 1. Equivalently: any
+  digit-2-free counterexample must have ≥ 26 ones. This is the state of the art
+  on the shape of a counterexample. Gap: can the 26 be improved using the sieve
+  dynamics (SIEVE-EXACT, 2-to-1 lifting)? Source: `research/summaries/dimitrov-howe-ar5iv-full.md`.
+- **SAYE-2 class-splitting (proved)**: u_k = 2·3^(k-1) = ord(2 mod 3^k);
+  d_{k+1}(2^{i u_k + j}) ≡ d_{k+1}(2^j) + i·d_1(2^j) (mod 3). This is the
+  transfer map between A_k and A_{k+1} — the splitting rule the LTE proof must
+  recover and connect to.
+- **SAYE-3 complexity (proved)**: the recursion over surviving digit patterns
+  runs in Θ(2^K) for depth K, versus Θ(3^K) for exhaustive search. Matches the
+  2-to-1 lifting: the work doubles at each level, confirming the sieve picture.
 
 ## Ruled out
 
 - **Pure modular sieve** (`|A_k|` alone): `|A_k| = 2^(k-1)` grows without bound
-  for `k ≤ 22`, so the sieve never empties. No obstruction modulo any power of 3
-  can prove the conjecture at any finite 3-adic precision. Proven for `k ≤ 22`
-  by exact computation; the 2-to-1 lifting still needs an unconditional proof
-  (`research/threads/lifting-proof.md`). This is a negative result about the
+  for `k ≤ 26`, so the sieve never empties. No obstruction modulo any power of 3
+  can prove the conjecture at any finite 3-adic precision. The bijection argument
+  (SIEVE-EXACT) gives this unconditionally for all k; the 2-to-1 lifting (LTE)
+  is the mechanism. This is a negative result about the
   method, not about the conjecture: the conjecture may still be true, but the
   kill comes from structure the sieve cannot see.
+- **Materialising A_k as a set past k=26** is ruled out by resource constraints:
+  k=26 used 2.1 GiB of the 8 GiB container cap; k=30 would be ~536 million
+  residues and would OOM-kill the container. If a larger k must be checked,
+  count without storing and state the memory cost first.
 
 Two arguments are already known to be true-and-irrelevant heuristics, never proofs (`problem.md`,
 `GOAL.md`):
@@ -68,7 +84,8 @@ Neither is to be recorded as a proof.
 
 - Witnesses verified: `1_3`, `11_3`, `100111_3` for `n = 0, 2, 8`.
 - Exhaustive digit-free search, `n = 0..2000`: none besides `0, 2, 8`.
-- `|A_k|` sieve counts for `k = 1..22`: `1, 2, 4, 8, ..., 2^(k-1)` exactly — size doubles at every level. Captured at `code/out/sieve_Ak.captured.txt` and `code/out/sieve_cannot_close.md`.
+- `|A_k|` sieve counts for `k = 1..26`: `1, 2, 4, 8, ..., 2^(k-1)` exactly — size doubles at every level. Captured at `code/out/sieve_Ak.captured.txt` and `code/out/sieve_cannot_close.md`.
+- `k=26`: 33.5 million residues, 333s wall clock, 2.1 GiB memory. Container cap is 8 GiB.
 - Density `|A_k| / (2·3^(k-1)) = (1/2)(2/3)^(k-1) → 0` while count grows without bound.
 
 ## Recalled

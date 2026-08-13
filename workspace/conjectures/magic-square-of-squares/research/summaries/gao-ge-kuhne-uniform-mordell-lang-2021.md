@@ -1,44 +1,119 @@
 > **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gao-ge-kuhne-uniform-mordell-lang-2021.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
 
-<!-- source: https://arxiv.org/abs/2105.15085 | converted from HTML -->
+<!-- source: https://arxiv.org/pdf/2105.15085 | converted from PDF -->
 
 ## What is in it
 
-- Mathematics > Number Theory
-- Title: The Uniform Mordell-Lang Conjecture
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+- {
+P ∈ X ◦(Q) ∩ Γ : ˆhL(P ) ≥ c5 max{1, h(X), hFal(A)}
+} ≤ (1 + (8c4)1/2)rkΓgM N ′
+- {
+P ∈ X ◦(Q) ∩ Γ : ˆhL(P − P0) ≥ c2
+12/4 + c9 max{1, hFal(A)}
+} ≤ c
+rkΓ+1
+10 .
 
 
 ## What it claims
 
-Abstract: The Mordell--Lang conjecture for abelian varieties states that the intersection of an algebraic subvariety $X$ with a subgroup of finite rank is contained in a finite union of cosets contained in $X$. In this article, we prove a uniform version of this conjecture, meaning that that the number of cosets necessary does not depend on the ambient abelian variety. To achieve this, we prove a general gap principle on algebraic points that extends the gap principle for curves embedded into their Jacobians, previously obtained by Dimitrov--Gao--Habegger and Kühne. Our new gap principle also implies the full uniform Bogomolov conjecture in abelian varieties.
+Abstract. The Mordell–Lang conjecture for abelian varieties states that the
+intersection of an algebraic subvariety X with a subgroup of finite rank is
+contained in a finite union of cosets contained in X. In this article, we prove a
+uniform version of this conjecture, meaning that the number of cosets necessary
+depend only on the dimension of the ambient variety and the degree (with
+respect to some polarization) of the subvariety X. To achieve this, we prove
+a general gap principle on algebraic points that extends the new gap principle
+for curves embedded into their Jacobians, previously obtained by Dimitrov–
+Gao–Habegger and K¨uhne. Our new gap principle also implies the full uniform
+Bogomolov conjecture in abelian varieties.
 
-Comments: | Accepted to Publications mathématiques de l'IHÉS. Comments are welcome! |
+Contents
 
-Subjects: | Number Theory (math.NT); Algebraic Geometry (math.AG) |
+1. Introduction 1
+2. Preliminaries on abelian varieties 8
+3. Hilbert schemes and non-degeneracy 11
+4. Applying the height inequality 18
+5. Applying equidistribution 27
+6. Proof of the gap principle (Theorem 1.2) 36
+7. Proof of the uniform Mordell–Lang conjecture (Theorem 1.1) 38
+8. Proof of the uniform Bogomolov conjecture (Theorem 1.3) 44
+Appendix…
 
-MSC classes: | 11G10, 14G05, 14G25, 14K12 |
+## Statements it makes
 
-Cite as: | [arXiv:2105.15085][8] [math.NT] |
+Theorem 1.1 (Uniform Mordell–Lang Conjecture). For all integers g, d ≥ 0,
+there exists a constant c(g, d) > 0 with the following property. Let X ⊆ A be an
+irreducible closed subvariety and Γ ⊆ A(F ) a subgroup of finite rank. Then the
+intersection X(F ) ∩ Γ is covered by at most
 
-| (or [arXiv:2105.15085v4][9] [math.NT] for this version)  |
+Theorem 1.1′. For all integers g, d ≥ 0, there exists a constant c(g, d) > 0
+with the following property. Let X ⊆ A be an irreducible closed subvariety and
+Γ ⊆ A(F ) a subgroup of finite rank. Then
 
-| [https://doi.org/10.48550/arXiv.2105.15085][10]
+Theorem 1.2 (New Gap Principle). Given two positive integers g and d, there
+exist positive constants c1 = c1(g, d) and c2 = c2(g, d) with the following property:
+For any polarized abelian variety (A, L) of dimension g and any irreducible closed
+subvariety X ⊆ A that generates A of degree degL X ≤ d, the set
 
-Focus to learn more
+Theorem 1.3 (Uniform Bogomolov Conjecture). Given two positive integers g
+and d, there exist positive constants c3 = c3(g, d) and c3 = c3(g, d) with the follow-
+ing property: For any abelian variety (A, L) of dimension g and any irreducible
+closed subvariety X ⊆ A that generates A of degree degL X ≤ d, we have
 
-arXiv-issued DOI via DataCite
+Lemma 2.1. Let L and L′ be two ample line bundles on A. Then L and L′ define
+the same polarization if and only if c1(L) = c1(L
+′).
 
-|
+Lemma 2.2. Let L be an ample line bundle on A. Then
+(i) dim H 0(A, L) = Pf(L);
+(ii) degL(A) = g! · Pf(L);
+(iii) if f : A′ → A be an isogeny, then dim H 0(A
+′, f ∗L) = deg(f ) dim H 0(A, L);
+(iv) there exists an abelian variety A0, an ample line bundle L0 on A0 defining
+a principal polarization, and an isogeny u0 : A → A0 such that L ∼= u
+∗
+0L0;
+moreover, deg(u0) = degL(A)/g!.
 
-*[digest of a 6563 character source; every section, statement, and proof in full at `research/sources/gao-ge-kuhne-uniform-mordell-lang-2021.full.md`]*
+Lemma 2.3. Let L and L
+′ be two symmetric ample line bundles on A. If c1(L
+′) =
+c1(L), then ˆhL = ˆhL′.
+
+Lemma 2.4. Assume that L is very ample. Let Y and Y ′ be irreducible subva-
+rieties of A. Then
+
+Lemma 2.5. Let X be an irreducible subvariety of A and let A′ denote the abelian
+subvariety generated by X − X. Then degL A′ ≪g degL(X)
+2g.
+
+Lemma 3.1. Let V be a (not necessarily irreducible) subvariety of Hr,d(A)
+◦.
+Then there exist m0 = m0(V ) points P1, . . . , Pm0 ∈ A(Q) such that the Zariski
+closed subset of V defined by
+
+Lemma 3.2. Let V be a (not necessarily irreducible) subvariety of Hr,d(A)
+◦.
+Then there exists m0 = m0(V ) ≥ 1 with the following property. For each m ≥ m0,
+there exists P ∈ A
+m(Q) such that
+
+Lemma 3.3. Let S be an irreducible subvariety of H
+◦. Then there exists m0 =
+m0(S) ≥ 1 such that the restriction of ι
+[m] to X [m]
+S is generically finite onto its
+image for every m ≥ m0.
+
+Proposition 3.4. Let S ⊆ H
+◦ be an irreducible subvariety and consider XS ⊆
+AS → S. Writing ¯η for the geometric generic point of S, assume that the follow-
+ing hypotheses hold true:
+
+Lemma 3.5. For a (not…
+
+
+*[further statements in the full text]*
+
+*[digest of a 116103 character source; every section, statement, and proof in full at `research/sources/gao-ge-kuhne-uniform-mordell-lang-2021.full.md`]*
