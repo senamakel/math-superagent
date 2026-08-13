@@ -118,7 +118,7 @@ for line in proc.stdout.splitlines():
     if m is not None:
         key = tuple(sorted((int(m.group(1)), int(m.group(2)))))
         val = int(m.group(3))
-        results[tuple(sorted(key))] = val
+        results[key] = val
 
 print("\n--- Comparison ---")
 mism = []
