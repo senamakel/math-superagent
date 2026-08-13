@@ -278,14 +278,25 @@ Each carries the obstruction that closed it; do not re-propose.
   uncaptured programs now captured (EXIT_CODE=0; only `pattern/print_family.py`
   dies at i=5 on Python's 4300-digit int-str limit after printing i=1..4);
   genus integrality independently reproduced (above).
-- **The only remaining live partial-result target:** an effective height
-  bound with a **computed** constant for a specific (k1,k2) inequality or
-  near-miss family (Matveev Thm 2.3, K=Q, constants held and the (2,3)
-  template computed), with its k-dependence stated — GOAL.md accepts such a
-  per-pair constant since uniformity is closed by effective-methods-wall.
-  The exact-solution (2,3) form is closed (vacuity above); candidates: a
-  different small pair, or the delta-form |ln a − ln b| bounds already
-  computed.
+- **State of the decomposition (BACKWARD.md):** all immediate tasks are
+  complete; the backward skeleton `singmaster-uniform-bound` has exactly one
+  open gap, `G-boundary-uniform-count` — an absolute bound on the number of
+  boundary (small-k) representatives per a — which is the conjecture itself
+  distilled to its MRSTT-open edge (the witness set forces C ≥ 3 via 3003).
+  Its stated next computation: tabulate each nontrivial occurrence's column
+  k against the interior cut exp((log n)^{2/3+1/2}) for the Fibonacci family
+  j=1..6 and the witness set, pinning the exact lower bound on C. `G-interior-
+  bounded` and `G-small-a-bounded` are catalogued (read from MRSTT primary,
+  not re-derived). `effective-bound-hyperelliptic-k25` is broken (Lambda=0
+  vacuity); `genus-closed-form-proof` discharged by the proved genus formula.
+- **The other live partial-result target:** an effective height bound with a
+  **computed** constant for a specific (k1,k2) inequality or near-miss family
+  (Matveev Thm 2.3, K=Q, constants held, (2,3) template computed and its
+  implementation verified against the paper), with its k-dependence stated —
+  GOAL.md accepts such a per-pair constant since uniformity is closed by
+  effective-methods-wall. The exact-solution (2,3) form is closed (vacuity
+  above); candidates: a different small pair, or the delta-form |ln a − ln b|
+  bounds already computed.
 - Ledger: live counts in TASKS.md (asserted=22, checked=4, proved=2 — genus-closed-form-integrality and genus R–H closed form). Every claimed bound must be run
   against `code/out/witnesses.json`; one not run is `asserted`, never
   `checked`. Compute policy: never build the triangle; invert C(n,k)=a per
