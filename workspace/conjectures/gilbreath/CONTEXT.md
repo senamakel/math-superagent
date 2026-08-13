@@ -378,6 +378,17 @@ away.
   the bulk. The mean event rate λ̂ = 0.585 is dominated by this tail, so a
   mean-rate bound is the wrong target. Anchor:
   `code/out/surplus_renewal_table.captured.txt`.
+  **The giants are NOT preceded by long erosion — "energy stored during
+  erosion" is dead as a recharge mechanism.** Mean gap before the 9 big jumps
+  is 3.54 rows vs 2.48 before small jumps; the giants come 1–13 rows after the
+  previous event, so they are intrinsic to specific rows, not recovered from a
+  long stall. Each giant jump ≈ the current block length (total recharge
+  1,270,603 ≈ width of final row); jumps grow sublinearly with b
+  (log-log slope 0.388). Candidate next: correlate the 9 giant-jump rows
+  (i=64,94,110,112,126,130,134,146,161) with powers of 2 / Rule-90 all-2
+  regenerations — untested (the rule90 thread was closed on *minima*, these
+  are *maxima*). Anchors: `code/out/surplus_renewal_structure.md`,
+  `code/out/surplus_renewal_table.captured.txt`.
 
 ## Recalled
 
