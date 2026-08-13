@@ -6,7 +6,11 @@ An approach is what comes *before* a thread. A thread already has a question and
 
 Refuted and spent approaches are kept deliberately. Proposing again what this run already closed is the one failure the inventor exists to avoid, and the reason it closed is the only thing that prevents it.
 
-_No approaches yet. Record one as soon as a line of attack is named: `research/approaches/<name>.md`, with a fenced `approach` block carrying `idea`, `mechanism`, `status`, `precedent`, `first-step`, and `killed-by` lines._
+| Approach | Idea | Status | Precedent | First step |
+| --- | --- | --- | --- | --- |
+| [[finite-subcovering]] | Finite sub-covering by AP-identity families | proposed | none, yet | Extract every (r, M, a) with e(k)=0 for all k ≡ a (mod M) within the 450-row sweep, verify each as a symbolic identity in k, and measure the union's density. |
+| [[rational-function-identities]] | Rational-function identities evading the Schinzel polynomial obstruction | proposed | none, yet | Write a sympy-based search over rational-function ansätze of the form x(k)=(n(k)+t)/4 with t fixed, y(k)=P(k)/Q(k), z(k)=R(k)/S(k), degrees ≤ 2, and check… |
+| [[two-variable-ansatz]] | Bradford (x,d) two-variable reduction as polynomial-ansatz search space | proposed | none, yet | Formulate the Bradford congruence as a polynomial identity in k: d(k)·Q(k) = x(k)² for some quotient Q(k), with d(k) ≡ −n(k)·x(k) (mod 4x(k)−n(k)), and search… |
 
 ## Approaches that could not be read
 

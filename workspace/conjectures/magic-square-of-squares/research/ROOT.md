@@ -246,6 +246,16 @@ and what it covered.
   surface's rational points are pinned); the reduction of the full MSS to a
   variety whose points correspond exactly to distinct-integer solutions is still
   not a claim block.
+- **Effective AP-length constant (HMS 2026)**: Harrison–Mudgal–Schmidt Theorem
+  1.1 (arXiv:2603.06483) proves Bremner's conjecture with an *effectively
+  computable* constant C ≥ 1 independent of (a,b), bounding AP/GP/consecutive-
+  squares sets in x- or y-coordinates of rank-r E/Q by C^(1+r) — resolving the
+  ineffectiveness obstruction of the GFP bound (request `hms-constant-bound`,
+  closed). No explicit value or formula for C appears in the paper; its §7 proof
+  uses David–Philippon uniform Mordell–Lang, not weak-PFR. C^(1+r) < 3 is not
+  decidable from HMS; the David–Philippon explicit-constant lane is the only
+  route to a number. Detail:
+  `research/summaries/harrison-mudgal-schmidt-sum-product-bremner-2026.html.md`.
 - **Brauer–Manin lanes now closed or reframed.** Q-level quaternion/Hilbert
   reciprocity (`hilbert-reciprocity-four-conics`) refuted; the algebraic-Brauer
   sufficiency on K3s is conditional-on-open-hypothesis (van Luijk); a

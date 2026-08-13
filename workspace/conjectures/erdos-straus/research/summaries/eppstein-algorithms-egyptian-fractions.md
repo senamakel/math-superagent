@@ -1,30 +1,22 @@
-<!-- source: https://www.ics.uci.edu/~eppstein/numth/egypt/intro.html | converted from HTML -->
+# Eppstein, "Algorithms for Egyptian Fractions" — index page (ics.uci.edu)
 
-Algorithms for Egyptian Fractions
+Source: https://www.ics.uci.edu/~eppstein/numth/egypt/intro.html (HTML)
+Stored as a summary (the page's whole content is the 2.7 KB intro; no separate `.full.md`).
 
-## Introduction
+## What it is
 
-When we use fractional numbers today, there are two ways we usually represent them: as fractions (ratios of integers) such as 5/6, and as decimal numbers such as 0.8333. Computers typically use binary versions of either of these two representations. But these are not the only possibilities. The ancient Egyptians used a third method: instead of writing down a single fraction, they would write a sum of several distinct *unit fractions, *each having numerator one. For instance the Egyptians would have written 5/6 as 1/2 + 1/3 (of course, they would have used hieroglyphics instead of Arabic numerals). Today such sums are known as *Egyptian fractions. *(We will see another important modern representation, *continued fractions, *later.)
+The index page of Eppstein's Egyptian-fraction survey (the Mathematica notebook published as "Ten Algorithms for Egyptian Fractions", Mathematica in Educ. Res. 4(2):5–15, 1995, with later additions: binary remainder improvements, reverse greedy, generalized remainder, small multiple). It states the foundations: every rational has infinitely many Egyptian-fraction representations, but only finitely many with a given number of terms [Ste92]; the representation problem splits into methods (approximation, conflict resolution, binary, continued fraction, reverse greedy, brute force, small numerators). The page links the sections; the section that matters for this run's problem is **Small Numerators** (see `research/summaries/eppstein-small-numerators.md`), which contains the modular-conditions analysis of 4/y and 25 explicit open-class representations.
 
-Any number has infinitely many Egyptian fraction representations, although there are only finitely many having a given number of terms [[Ste92]][1] It is not known how the Egyptians found their representations, but today many algorithms are known for this problem, each behaving differently in terms of the number of unit fractions produced, the size of the denominators of the fractions, and the time taken to find the representations. For a good but brief introduction to Egyptian fraction algorithms and their implementation in *Mathematica*, see Wagon's book [[Wag91]][2]. Here we examine a number of algorithms in more detail, implement them, and analyze their performance. We also include some investigations into how many unit fractions are needed to represent rational numbers having small numerators.
+## Implication
 
-We will represent Egyptian fractions as lists of unit fractions. The original rational number represented by such a list can be recovered by Plus@@%. Throughout we use q to denote the rational number we are trying to represent, or x/y when we want to talk about its numerator and denominator separately.
+Holds the survey's framing and reference network (Wagon 1991, Stewart 1992). The substantive content is in the small-numerators section, already summarised under its own file. Nothing else here bears on the six open classes directly.
 
-An earlier version of this notebook was published as "Ten Algorithms for Egyptian Fractions" in *Mathematica in Education and Research.*I have since improved the [binary remainder method][3], and added the [reverse greedy][4], [.generalized remainder, and small multiple][5] methods.
-
-[Methods Based on Approximation][6] [Conflict Resolution Methods][7] [Methods Based on the Binary Number System][8] [Continued Fraction Methods][9] [Reverse Greedy Methods][4] [Brute Force Methods][5] [Small Numerators][10] [References][11]
-
-
-## Links
-
-[1]: refs.html#Ste92
-[2]: refs.html#Wag91
-[3]: binary.html#binrem
-[4]: greed.html
-[5]: force.html
-[6]: approx.html
-[7]: conflict.html
-[8]: binary.html
-[9]: cfrac.html
-[10]: smallnum.html
-[11]: refs.html
+```claim
+id: eppstein-algorithms-index
+statement: Eppstein's survey index states the Egyptian-fraction foundations (every rational has infinitely many representations, finitely many with a fixed number of terms) and organises the algorithmic methods; the 4/y-specific content is in its "Small Numerators" section.
+hypotheses: none.
+holds-here: true — context; the fixed-term finiteness is the same fact MathWorld records and it grounds the "parametric family" approach.
+status: sourced (Eppstein, ics.uci.edu survey; the finiteness fact is classical, cf. MathWorld).
+bearing: indexes the survey; the substantive small-numerators content lives in the companion summary.
+anchor: research/summaries/eppstein-algorithms-egyptian-fractions.md
+```

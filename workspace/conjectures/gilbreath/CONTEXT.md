@@ -31,15 +31,22 @@ yet re-derived from library-state).
   `second_entry_always_0_or_2=true`, `min_leading_02_block=2`. Pushed to depth
   1000 (sieve to 2e7, 1.27e6 primes): `first_bad=None`. Anchor:
   `code/out/witnesses.json`, `code/out/blocks_depth1000.json`.
-- **Odlyzko's block lemma — CORRECTED.** Exact sourced statement (Odlyzko 1993
-  intro; also Killgrove–Ralston 1959 p.121): if row K has `d_K(1)=1` and
-  `d_K(n)∈{0,2}` for `1≤n≤N`, then `d_k(1)=1` for `K≤k≤N+K−1`. **The constant
-  is N (one protected row per block entry), not the ≈n/2 claimed in
-  problem.md/ROOT.md.** Consumption is therefore slower than the run's earlier
-  framing assumed, but still finite — regeneration remains the whole
-  obstruction, and each new stretch must still be entered from below.
-  **Sourced**, not re-derived here. Anchor:
-  `research/sources/odlyzko-1993-iterated-differences-latex-source.full.md`.
+- **Odlyzko's block lemma — RE-DERIVED AND PROVED by this run.** A leading
+  `{0,2}` block of length `n` (positions 1..n) forces `A_{k+d}(1)∈{0,2}` for
+  `d=0..n−1` and `A_{k+d}(0)=1` for `d=0..n`: **exactly `n+1` rows guaranteed
+  to begin with 1; the protection constant is 1 (one row per block entry),
+  not the ≈n/2 in problem.md/ROOT.md** (the n/2 claim is refuted — appears in
+  no source). Proved by a diagonal-subtriangle argument; verified exhaustively
+  over all `2^n` block patterns with adversarial even completions, n=1..11
+  (122,820 pairs, zero violations), sharpness for n=1..8; real rows to depth
+  600 show zero violations and regenerate far past the guarantee (median 492
+  rows margin). Consistent with Odlyzko 1993 §2 and Killgrove–Ralston 1959.
+  This is a GOAL.md deliverable ("block lemma re-derived with its constant
+  made explicit"). The subtriangle apex is exactly the Sierpinski/XOR-fold of
+  the block's bit pattern. Anchor: `research/notes/block_lemma.md`.
+  **Regeneration is still the sole obstruction** — row k+n's position 1 needs
+  `A_k(n+1)`, outside the block, whose reduction to `{0,2}` the lemma does not
+  force.
 - **Mod-4 linearization (invariant candidate).** For k≥1, n≥2 where entries are
   even, `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)` (Odlyzko §2 eq.201). Turns the
   absolute-value problem into linear Pascal-triangle congruences mod 4 — the
@@ -113,20 +120,23 @@ recalled claim is relied on whose hypotheses fail here.
 
 ## Contradictions
 
-- **Block-protection constant: n/2 vs N.** `problem.md` and `ROOT.md` phrase
-  the lemma as "`≈n/2` rows protected"; the sourced Odlyzko statement gives **N**
-  (one row per block entry), strictly stronger consumption-wise. The run has
-  resolved in favour of N (the primary source) but has not deleted the n/2
-  wording everywhere — treat N as correct.
+- **Block-protection constant: n/2 vs N — RESOLVED by proof.** `problem.md`/
+  `ROOT.md`/`reduction.md` phrase the lemma as "≈n/2 rows protected"; the
+  primary sources (Odlyzko 1993 §2, Killgrove–Ralston 1959) and this run's own
+  re-derivation (`research/notes/block_lemma.md`) give constant **1**: a block
+  of length n protects n+1 rows. The n/2 claim (claim `odlyzko-block-lemma-asserted`)
+  is **refuted** — stale n/2 wording may survive in notes; treat the proved n+1
+  as correct.
 - **"General-class" framing vs Eppstein.** ROOT.md commits the run to the
   general-class side, but Eppstein's anti-Gilbreath refutes the broad
   bounded-gap version of exactly that plan. The honest position: the class must
   be carved down (add non-concentration/randomness, or restrict to primes), and
   this is unresolved.
-- **CLAIMS.md is stale** relative to `research/notes/library-state.md` (which
-  has the 7 additional claims: block-lemma, mod-4, CHT inverse/random, Eppstein,
-  Proth-myth, OEIS-miss). Read library-state.md, not CLAIMS.md, for the current
-  ledger.
+- **`research/CLAIMS.md` is a generated ledger with a broken contradictions
+  section** (a long claim block gets mis-parsed into spurious "contradicts"
+  rows). `research/notes/library-state.md` is the authoritative, hand-maintained
+  claim ledger and holds the same content formatted correctly — read
+  library-state.md for the current ledger.
 
 ## Gaps
 
@@ -138,6 +148,9 @@ recalled claim is relied on whose hypotheses fail here.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.
-- **Odlyzko's block lemma is sourced but not re-derived with its constant made
-  explicit here** — worth doing as a concrete partial result (GOAL.md asks for
-  this as a deliverable).
+- **What remains toward a GOAL.md partial result:** the block lemma is
+  delivered (re-derived, constant explicit). Still open: a proved invariant
+  forcing `A_k(1)∈{0,2}`; a theorem for a general class of sequences (must beat
+  Eppstein); a proved statement on the regeneration rate; and the Lean 4
+  formalisation of the difference operator and induction step (with `#print
+  axioms` and every `sorry`). No Lean work is on disk yet.

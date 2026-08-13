@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/home/enamakel/work/riemann/workspace/conjectures/magic-square-of-squares/code/phi_triple_variety/side_census.py", line 9, in <module>
-    from lib.phi import phi_pairs
-ModuleNotFoundError: No module named 'lib'

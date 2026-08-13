@@ -1,24 +1,26 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mathworld-egyptian-fraction.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# MathWorld, "Egyptian Fraction" (Wolfram) — encyclopedic reference
 
-<!-- source: https://mathworld.wolfram.com/EgyptianFraction.html | converted from HTML -->
+Source: https://mathworld.wolfram.com/EgyptianFraction.html (Eric W. Weisstein, Wolfram MathWorld)
+Full text: `research/sources/mathworld-egyptian-fraction.full.md`
 
-## What is in it
+## What it establishes (encyclopedic context)
 
-- Egyptian Fraction
-  - See also
-  - Explore with Wolfram|Alpha
-  - References
-  - Referenced on Wolfram|Alpha
-  - Cite this as:
-  - Subject classifications
+The standard background tier for the whole subject: Egyptian fractions as sums of (usually distinct) unit fractions; Rhind papyrus 2/n table (~1650 BC); Fibonacci/Sylvester greedy algorithm; every rational has Egyptian-fraction representations with arbitrarily many terms, but only finitely many with a fixed number of terms; `1/a = 1/(a+1) + 1/(a(a+1))` splitting identity; Martin 1999 dense Egyptian fractions; each x/y with y odd has an odd-denominator representation (Breusch 1954; Guy 1994); Vose 1985 `t = O(sqrt(log y))` term bound; no known algorithm to minimise terms or largest denominator.
 
+**Erdős–Straus exactly as stated (eq. 12):** `4/n = 1/a+1/b+1/c` "always can be solved" — the conjecture, referenced to the separate MathWorld Erdős–Straus page. Sierpiński's `5/n` analog (1956) also noted.
 
-## What it claims
+References worth noting: Eppstein "Ten Algorithms for Egyptian Fractions" 1995; Guy §D11 "Egyptian Fractions" in Unsolved Problems in Number Theory 2nd ed. pp. 158–166; Klee–Wagon pp. 175–177, 206–208; Breusch 1954 (odd-denominator case, the AMM "special case" of problem 4512 — relevant to 3/n odd-denominator expansions).
 
-An Egyptian fraction is a sum of positive (usually) distinct [unit fractions][2]. The famous [Rhind papyrus][3], dated to around 1650 BC contains a table of representations of [image: 2/n] as Egyptian fractions for [odd][4][image: n] between 5 and 101. The reason the Egyptians chose this method for representing fractions is not clear, although Andr&eacute; Weil characterized the decision as "a wrong turn" (Hoffman 1998, pp. 153-154). The unique fraction that the Egyptians did not represent using unit fractions was 2/3 (Wells 1986, p. 29).
+## Implication for this run
 
-Egyptian fractions are almost always required to exclude repeated terms, since representations such as [image: 1/5+1/5+1/5] are trivial. Any [rational number][5] has representations as an Egyptian fraction with arbitrarily many terms and with arbitrarily large [denominators][6], although for a given fixed number of terms, there are only finitely many. Fibonacci proved that *any*fraction can be [represented as][7] a sum of distinct unit fractions (Hoffman 1998, p. 154). An infinite chain of unit fractions can be constructed using the identity
+Context tier, not machinery. Confirms the conjecture's statement and the standard reference network (Guy D11, Eppstein, Breusch). Nothing here changes the six-class analysis; the useful adjacent results are (i) the `1/a = 1/(a+1)+1/(a(a+1))` splitting identity (the base of every Egyptian-fraction identity family, including the n≡2 mod 3 family), and (ii) the fact that *fixed-term* representations are finite for each n — the reason identities (parametric families) rather than per-n algorithms are the right instrument for a class-settling. Do not cite MathWorld for any of the six-class claims — it points to the Erdős–Straus page for those; the library's primary sources (Elsholtz–Tao, Salez, Schinzel) carry the actual statements.
 
-[imag…
-
-*[digest of a 13428 character source; every section, statement, and proof in full at `research/sources/mathworld-egyptian-fraction.full.md`]*
+```claim
+id: mathworld-egyptian-context
+statement: MathWorld's Egyptian Fraction page records the standard background (greedy/Fibonacci–Sylvester algorithm; every rational has arbitrarily many Egyptian-fraction expansions but finitely many with a fixed number of terms; 1/a = 1/(a+1) + 1/(a(a+1)) splitting identity; odd-denominator representations exist for y odd per Breusch 1954) and states the Erdős–Straus conjecture (4/n = 1/a+1/b+1/c) as eq. 12, with the Sierpiński 5/n analog.
+hypotheses: none beyond the reference being encyclopedic.
+holds-here: true — context tier; the fixed-term finiteness justifies seeking parametric families rather than per-n algorithms.
+status: sourced (MathWorld entry; the underlying facts are classical and cross-present in Eppstein and Elsholtz–Tao).
+bearing: fixes terminology and reference network; not a source for any six-class claim.
+anchor: research/sources/mathworld-egyptian-fraction.full.md
+```

@@ -42,6 +42,7 @@ bearing: makes the Garcia-Fritz-Pasten AP-length constant effective in principle
   built from David-Philippon uniform Mordell-Lang constants, the inequality C^(1+r) < 3 cannot be
   evaluated and is not obtainable from the paper; the §7 proof of Theorem 1.1 does not use
   weak-PFR (140, 110), correcting the earlier note
+answers: hms-constant-bound
 anchor: research/summaries/harrison-mudgal-schmidt-sum-product-bremner-2026.html.md
 ```
 

@@ -62,7 +62,14 @@ role: The GFP height-uniform theorem is the effectiveness partner for the κ=2 c
   `resolve-magic-surface-birational`, not as a separate line of attack.
 
 resolution: crux-resolved; effective-C gap remains — now part of the κ=2 case
-  of resolve-magic-surface-birational.
+  of resolve-magic-surface-birational. The HMS 2026 Theorem 1.1 constant C is
+  stated effectively computable and independent of a, b, but no explicit value
+  or formula appears in the paper; its §7 proof chain routes through
+  David–Philippon uniform Mordell–Lang (Theorem 3.7, from [11] Thm 1.13), NOT
+  through weak-PFR (the 140/110 constants feed only the sum-product theorems,
+  correcting earlier notes). C^(1+r) < 3 is therefore not decidable from HMS;
+  the only lane to a concrete number remains the David–Philippon explicit
+  constant specialised to 𝒞 = {(P, x(P))} ⊆ E × 𝔾_a.
 speculation-vs-established: unchanged from the original approach file.
 first-step: unchanged — compute explicit C for the family E_c when/if κ(X̃)=2 is established.
 

@@ -28,6 +28,18 @@ disk), or asserted-by-source.
   `{1,121,169,289,361,529}` mod 840 open; all six are squares mod 840
   (1,11²,13²,17²,19²,23²), each ≡1 mod 24; smallest prime in an open class is
   1009. (`code/out/esc_residues.py`, `verify_library_claims.py` Claim 2.)
+- **All eight classical covering identities now explicit and identity-checked**
+  (checked; last block of `code/out/commands.log`): (n,x,y,z) forms — 2 mod 3:
+  (n, (n+1)/3, n(n+1)/3); 3 mod 4: ((n+1)/4, n(n+1)/2, n(n+1)/2); 5 mod 8
+  (n=8k+5): ((n+3)/4, n(n+3)/8, n(n+3)/4); 2 mod 5 (n=20k+17):
+  ((n+3)/4, n(n+3)/10, n(n+3)/2); 3 mod 5 (n=20k+18):
+  ((n+2)/4, 3n(n+2)/20, 3n(n+2)/4); 6 mod 7 (n=28k+27):
+  ((n+1)/4, 2n(n+1)/7, 2n(n+1)); 5 mod 7 (n=28k+26): ((n+2)/4, n(n+2)/7,
+  n(n+2)); 3 mod 7 (n=28k+24): ((n+4)/4, n(n+4)/14, n(n+4)/2). All pass
+  `is_identity` (diff ≡ 0 in k); denominators integral exactly by the stated
+  n+c ≡ 0 mod modulus. Upgrades "the other 834 classes fall by polynomial
+  identities" from sourced to identity-checked here; the mod-5/mod-7 forms
+  (previously unattested in sources) are now on disk — do not re-derive.
 - **Even case trivial; n≡3 mod 4 corrected** (checked): `4/(2m)=1/m+1/(2m)+1/(2m)`;
   for n=4k+3, `x=(n+1)/4, y=n(n+1)/4+1, z=y(y−1)` is an identity, integral and
   positive for k=0..4999. The brief's `x=n, y=(n+1)/2, z=n(n+1)/2` is FALSE
@@ -48,8 +60,19 @@ disk), or asserted-by-source.
   complete for degree-1" is the same boundary; sourced.)
 - **Type I/II** (sourced): for odd prime p every solution is Type I (p divides
   exactly one of x,y,z) or Type II (exactly two), f(p) = 3f_I + 3f_II;
-  Elsholtz–Tao Prop 1.6 asserts f_I=f_II=0 at odd perfect squares — asserted
-  by source, exact statement still unread from the full text.
+  Elsholtz–Tao Prop 1.6 (f_I=f_II=0 at odd perfect squares) is sourced with its
+  proof located (quadratic reciprocity, `research/sources/pomerance-erdos-straus.full.md`
+  lines 665–685; claim `elt-prop16-vanishing-odd-squares`).
+- **Elsholtz–Tao Prop 1.9 / Salez seven equations** (sourced): the complete
+  list of polynomial-solvable primitive classes is four Type-I forms
+  (n ≡ −f mod 4ad with f|4a²d+1; n ≡ −f mod 4ac + n ≡ −c/a mod f;
+  n ≡ −f mod 4cd + n² ≡ −4c²d mod f; n ≡ −1/e mod 4ab with e|a+b) and three
+  Type-II forms (n ≡ −e mod 4ab; −4a²d mod f with 4ad|f+1; −4a²d−e mod 4ade).
+  The explicit (a,...,f) sextuple constructions for each are in
+  `elsholtz-tao-counting.full.md` lines 2390–2470 — the raw material for any
+  parametrised Type-I/II family search; verify_identity-checked against
+  witnesses before reuse. Salez's seven equations are the degree-1 linear case
+  of the same list.
 - **Minimal-excess divisor criterion** (checked, exact, 2705/2705 — this
   cycle's main computed result): for n=4m+1 (all six classes), candidate
   `x_e = (n+4e+3)/4` with `d_e = 4e+3`; a split `d_e/(n x_e) = 1/y+1/z`
@@ -147,6 +170,15 @@ supersede nothing except where stated. `research/CLAIMS.md` carries the full
 claim ledger with `holds-here` and evidence class per row — read it before
 re-deriving any of the sourced statements above.
 
+Two 2026 works converged (recalled, durable): Mballa (arXiv:2602.20036) —
+symmetric y=z families for n ≡ 1 (mod 4) via a divisor b ≡ 3 (mod 4) of n;
+proved for density-one set; **for n=840k+1 the b≡3 mod 4 structure becomes
+b·840k+1 = multiple-of-b, i.e. k ≡ −b⁻¹ mod /b·gcd(840,b)**, so e.g. b=11
+gives k ≡ 5 mod 11 sub-progression covered ([full construction in
+`research/sources/mballa-unified-parametric.full.md`] §5.1, example n=6721).
+Ventas (arXiv:2605.04551) — same b≡3 mod 4 divisor mechanism, heuristic.
+These give concrete sub-progressions of the open classes already covered;
+
 ## Contradictions
 
 - Brief's n≡3 (mod 4) identity vs computation (settled: brief wrong).
@@ -160,19 +192,20 @@ re-deriving any of the sourced statements above.
 
 ## Gaps
 
-- **Exact statement of Elsholtz–Tao Prop 1.6** from
-  `research/sources/elsholtz-tao-counting.full.md` (Mordell type definition,
-  n prime vs odd square scope). Request `exact-statement-from-b7df` is
-  satisfied by Schinzel Thm 1 for the polynomial-obstruction question; the
-  Prop 1.6 reading is separate and still open.
-- **Reproducing any slice of the 10¹⁸ bound** (or Salez's seven-equation
-  sieve on a subset) — the sourced bound is not yet checked here.
-- **Lifting the AP observation to families:** which (r, M, a) rows of {e=0}
-  (or e≤1) arise from a genuine polynomial/divisor identity over that
-  sub-progression, and whether a finite union of such subfamilies covers a
-  provable positive proportion of (or eventually all of) the six classes' k.
-  Schinzel Thm 1 constrains only the single-identity shape, not finite
-  sub-coverings. This is the natural next attack; the 56-exception rows and
-  the e∈{7,9,14} rows are where a non-prime-divisor shape has to appear.
-- Housekeeping: `code/out/INDEX.md` is stale (predates the extended sweep and
-  the elementary-reductions note); refresh before relying on it.
+- **Exact statement of Elsholtz–Tao Prop 1.6** from the full text is now
+  resolved (proof located; see Established). What remains unread is nothing
+  that changes the picture.
+- **The AP→subfamily lift** is now proven in principle by Mballa's
+  construction (every b≡3 mod 4 gives a k sub-progression); the gap is
+  whether a finite union of such — or of e=0/E-T family sub-progressions —
+  covers all of some open class, and the density of the union. The 56
+  exception rows and the e∈{7,9,14} rows (r=1: k=22,119,234,288,355,387;
+  r=361: k=1,34,112,141) are where a non-prime-divisor shape must appear.
+- **Verification-bound reproduction**: any slice of the 10¹⁸ bound (or
+  Salez's seven-equation sieve on a subset) on Salez's residual set R₂ ∪ R₇
+  (moduli 840 → 892,371,480 → 25,878,772,920 with S₂₉) remains unreproduced.
+- **An impossibility for a specific new shape** (named degree/shape in k),
+  per the run's brief: the natural candidate is showing no rational-function
+  family with x,y,z of fixed degree covers n ≡ 1 mod 840 — the exact
+  obstruction beyond Schinzel Thm 1 to be pinned down with the Schinzel
+  proof's techniques.

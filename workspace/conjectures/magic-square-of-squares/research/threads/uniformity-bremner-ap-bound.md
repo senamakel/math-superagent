@@ -35,6 +35,15 @@ resolved-questions:
     Research request exact-reduction-magic-507c is now CLOSED: the
     definitional question is settled (GFP/HMS apply to doubled points), and
     the constant-size blocker is identified precisely.
+  - constant-size-corrected: RESOLVED 2026-08-13 (scholar, from HMS §7 proof).
+    The parent entry's "David–Philippon + PFR constants" is WRONG for Theorem
+    1.1: the §7 proof of Corollary 2.2 (⇒ Theorem 1.1) uses Theorem 2.1 ⇐
+    Theorem 4.2 ⇐ Theorem 3.7 = David–Philippon uniform ML ([11] Thm 1.13) +
+    Bombieri–Zannier/sub-Pfaffian complexity bounds; the GGMT weak-PFR
+    constants (140, 110) feed only the sum-product theorems (1.3, 2.3, 1.8,
+    2.6). No explicit value or formula for C appears anywhere in the paper;
+    C^(1+r) < 3 is not decidable from it. The DP07 explicit-constant lane
+    (step 0) is the only route to a number.
   - curve-form-and-rank: CLARIFIED/VERIFIED 2026-08-13 (tool_builder, exact Sage).
     The Robertson curve is E: y² = x(x²−c²) where c is the common difference of
     the anti-diagonal AP {a−c, a, a+c} — NOT the centre e² and NOT e⁴ (the
