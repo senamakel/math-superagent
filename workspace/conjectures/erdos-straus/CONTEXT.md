@@ -290,8 +290,22 @@ yields an already-covered sub-progression of an open class. Ventas
   whether any modulus can be saturated at all. Either exhibit families for
   the 8 missing residues, or prove an obstruction forbidding some of them.
   (Modulus 23, previously the focus, is deferred in favor of M=11 per dir 5.)
-- **Bulk promote asserted → checked** (operator directive 4). The 1451 families
-  are all exact ℤ[k] polynomial identities, provable mechanically by the
+- **Bulk promote asserted → checked** (operator directive 4). 838/1451 done:
+  every `subprogression.captured.txt` block re-checked as an exact identity at
+  its claimed (a,b) (`verify_current_coverage.py`, failures 0). The 603
+  extended-capture blocks await bulk `is_identity` — blocked until the
+  verifier disagreement (see Contradictions) is chased.
+- **Failing command** (operator directive 4). Retry count 6, run-failed 5 in
+  `code/out/commands.log`. Read and fix before writing new programs.
+- **prime-reduction still sourced, not checked** (directive 1 priority, still
+  the exit-blocker of `research/threads/elementary-reductions.md`): write the
+  scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
+  exact arithmetic, capture it, and flip the claim to checked; then
+  `reduction-mod24` once the mod-3/mod-8 identities are checked.d** (directive 1 priority, still
+  the exit-blocker of `research/threads/elementary-reductions.md`): write the
+  scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
+  exact arithmetic, capture it, and flip the claim to checked; then
+  `reduction-mod24` once the mod-3/mod-8 identities are checked.ble mechanically by the
   cleared-denominator test. Run `is_identity` on every one in bulk and flip
   them from `asserted` to `checked`.
 - **Failing command** (operator directive 4). Retry count 6, run-failed 5 in
