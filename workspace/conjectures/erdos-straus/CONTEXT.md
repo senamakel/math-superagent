@@ -180,6 +180,12 @@ disk), or asserted-by-source.
 - **No period ≤59 in e(k)** over k≤450 in any of the six classes (checked):
   naive "minimal excess repeats in a way a small-modulus shape could ride"
   is out; excess is driven by the divisor/prime-divisor structure instead.
+- **A "verified" run whose aggregation line was piped away is not a result**
+  (lesson learned this cycle): `extended_subprogression.py` was run with
+  `| tail -50`, so its count/density summary died with the pipe while the
+  FOUND lines survived in the capture; the JSON save never ran. The pattern to
+  avoid: piping long-running aggregate output through `tail` or `head` and
+  reading FOUND lines as if they were the result.
 - Schinzel Thm 2 (no polynomial identities when m>3b>0) is strictly weaker
   than Thm 1 for our shape; do not cite it separately.
 
@@ -209,6 +215,15 @@ disk), or asserted-by-source.
   {11,13,17,19,22,23,26,29,31,33,34,37}, 83 residue classes of t, covering
   132295465/139671337 = 94.72% of n ≡ 1 (mod 840). Uncovered: 7375872/139671337
   = 5.28%. As fraction of all n: ≈ 0.1128%. Other five classes: 0 families.
+- **Wider-modulus sweep unfinished** (checked): `code/pattern_mining/extended_subprogression.py`
+  (all M ≤ 60 + primes ≤ 101) was killed at the 540s timeout inside its FOUND
+  loop; both captures (`extended_subprogression.captured.txt`, `.full.txt`) are
+  fragments with no summary — no family count, no per-M residue table, no union
+  density — and `code/out/subprogression_families.json` was never written (the
+  `| tail -50` pipe masked the exit status). Visible families add moduli beyond
+  the operator's set: M=38 (a=31920), 39 (32760), 41 (34440), 43 (36120). Whether
+  the wider grid shrinks the 5.28% gap is still OPEN; a re-run must print the
+  aggregation or it repeats the same dead end.
 
 ## Recalled
 
@@ -273,7 +288,12 @@ yields an already-covered sub-progression of an open class. Ventas
   leaving 5.28% (7375872/139671337) with positive density. The complement is
   a union of full residue classes of t under the 12 moduli; no further family
   of those moduli closes it. Needs new moduli coprime to the existing set or a
-  different mechanism (rational-function families, per-prime shapes).
+  different mechanism (rational-function families, per-prime shapes). Whether
+  M ∈ {38, 39, 41, 43} or other moduli ≤ 101 (visible, unverified, in the
+  wider sweep fragments) add new residue classes and shrink the gap is
+  UNKNOWN — the run that would answer it (re-run extended_subprogression.py
+  with aggregation intact, or parse the two captures) has not produced a
+  summary.
 - **The other five open classes untouched**: n ≡ 121, 169, 289, 361, 529
   (mod 840) have zero families from the sweep. ≈ 0.1128% of all n settled.
 - **AP→subfamily lift**: proven in principle by Mballa; gap is whether a

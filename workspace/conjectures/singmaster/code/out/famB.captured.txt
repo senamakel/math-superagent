@@ -84,3 +84,5 @@ B 20 161
 B 21 180
 // ** redefining F (  poly F = CB(x,n-2) - CB(y,n);) code/genus/famB.sing:17
 // ** redefining I (  ideal I = F;) code/genus/famB.sing:18
+
+halt 1

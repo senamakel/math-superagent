@@ -1,0 +1,45 @@
+primes in (2, 20000000): 1270607
+oracle first-40 block lengths match witnesses.json : True
+oracle first-40 second entries match witnesses.json : True
+oracle PASS
+
+================================================================
+VARIANT A -- literal task reading  (e=A_k[b_k-1], q=A_{k+1}[b_k-1])
+================================================================
+  transitions with an intruder:  161
+  q == |e-c|  mismatches:        141
+  IFF failures (q in {0,2} iff e==2&c==4): 109
+  REGEN failures (b_next>=b iff e==2&c==4): 48
+  first failure example:          (3, 13, 0, 4, 2)
+
+================================================================
+VARIANT B -- corrected reading     (e=A_k[b_k], q=A_{k+1}[b_k])
+================================================================
+  transitions with an intruder:  161
+  q == |e-c|  mismatches:        0
+  IFF failures (q in {0,2} iff e==2&c==4): 0
+  REGEN failures (b_next>=b iff e==2&c==4): 0
+  transitions where e==2&c==4 (regeneration events): 60
+
+distribution of q_k = A_{k+1}[b_k]  (corrected), over meaningful rows:
+   q=2:60, q=4:52, q=6:21, q=8:12, q=10:5, q=12:7, q=14:4
+distribution of (e_k, c_k) pairs (corrected) over meaningful rows:
+   (e=2, c=4): 60
+   (e=0, c=4): 36
+   (e=2, c=6): 16
+   (e=0, c=6): 13
+   (e=0, c=8): 8
+   (e=2, c=8): 8
+   (e=0, c=12): 5
+   (e=0, c=14): 4
+   (e=2, c=10): 4
+   (e=2, c=12): 3
+   (e=0, c=10): 2
+   (e=2, c=14): 2
+
+full-998-transition check of 'b_{k+1} >= b_k  iff  (e==2 and c==4)':
+  transitions with no intruder (whole row in {0,2}): 838
+    among them with b_{k+1} >= b_k: 0 (0 required for the iff to hold across all 998)
+  total regeneration events (b_{k+1} >= b_k) over all 998: 60
+  regeneration events at meaningful rows with e==2&c==4: 60
+  remaninder (must be 0): 0
