@@ -15,57 +15,30 @@
 
 ## Next
 
-- [x] **DIRECTIVE 13 (priority 1): DONE.** See Completed above. Claim
-  `budget-equality-case-impossible` is `checked` with the FIXED capture
-  as anchor; boundary at a=28, a=29 explicitly NOT excluded. Equality case
-  needs a ≥ 29 for a sixth UPN. Combined with Wall 1988, the sharpest form
-  this workspace holds. Ledger conversion done (directive 14).
+- [ ] **PRIORITY 1 (directive 16): Mark the four "discharged" structural gaps honestly.**
+  `research/backward/heven-finiteness-via-mod16.md` now correctly shows 6 open gaps:
+  the four Maciejewski structural results (`G-prime-case-reduction`,
+  `G-mod4-restriction`, `G-higgs-cubefree-structure`, `G-conditional-finiteness`)
+  are **conditional-on-paper** — asserted/catalogued, not independently proved or
+  checked here — plus the two genuinely open (H1) and (H2). The reduction is
+  **conditional**: finiteness of H_even reduces to (H1)+(H2) *given* the
+  Maciejewski structural results. That is a real result and is what the skeleton
+  now states. The parallel `heven-finiteness-via-c29-second-moment` skeleton
+  correctly shows 4 genuinely open gaps (no structural borrows masked as
+  discharged). Both skeletons are now honest.
 
-- [x] **DIRECTIVE 14 (priority 1): DONE — CLOSED-no-constraint.** Computed
-  `(2/(2^p+i))_4` for all odd primes p ≤ 61 two independent exact ways
-  (`code/directive14_quartic_closed_form.py` → `code/out/directive14_quartic_closed_form.captured.txt`,
-  EXIT_CODE=0, all matches OK):
-  (A) direct product over the Gaussian factorization `prod (2/π)_4^e`;
-  (B) supplementary-law closed form on the primary associate
-  `α = -i(2^p+i) = 1 − 2^p i`, `[2/α]_4 = i^{(2a−b−2−b²)/2}` with a=1,
-  b=−2^p ⇒ exponent `2^{p−1}(1−2^p) ≡ 0 (mod 4)`. **Result: identically +1
-  for every odd prime p**, hence (a) closed form is the constant 1, (b) NO
-  residue class of p mod 16 forces a head — the product is vacuous, and even
-  a non-1 value would only pin the count of the four character classes mod
-  4, never force a single r to have `(2/r)_4=+1`; (c) the global quartic
-  character of 2 carries NO constraint on which r | Φ_{4p}(2) can be 3-Higgs
-  beyond the one-way per-divisor mod-16 test. The 12 heads that kill
-  `2p∉H_even` occur at primes p where the product is still +1, confirming
-  the product is not a head detector. Approach
-  `biquadratic-character-divisors` is definitively closed (matches
-  CONTEXT's earlier REFUTED/absorbed ledger).
+- [ ] Next: pick one gap with a concrete `next` step and attack it. The cheapest
+  is `C29-L2-character-orthogonality` (elementary character theory on C₄ — a
+  theorem_prover can close it in one go). Then `C29-L3-first-moment-quartic` has
+  a clear symbolic_math task (closed-form evaluation of `(2/(2^p+i))_4` per
+  directive 14's already-computed constant +1, now verify the product identity
+  side numerically). The heaviest is `C29-L4-second-moment-bound` (requires
+  Aurifeuillean split + variance bound) or `C29-omega-growth` (Stewart/Hong
+  radical lower bound → ω unbounded).
 
-- [x] **Executed (2026-08, this run):** Gaussian factorization of `2^p + i`
-  and quartic-character table for every odd prime `p ≤ 61` —
-  `code/heven_gauss.py` → `code/out/heven_gauss_61.captured.txt`
-  (`EXIT_CODE=0`, all checks C1–C7 pass, 71 divisor rows, nothing left
-  unfactored). Proved by exact computation for this range: (F1) every prime
-  divisor `r | Φ_{4p}(2)` is primitive, `ord_r(2) = 4p`, `r ≡ 1 (mod 4p)`,
-  with the single exception `r = 5 | Φ_20(2)` at `p = 5` (LTE
-  `v_5(2^{2p}+1) = 1 + v_5(p)`); (F2) `(2/r)_4 = +1 ⟺ r ≡ 1 (mod 16)` for
-  all 71 divisor rows. 12 heads (`r ≡ 1 (mod 16)`, necessarily non-3-Higgs)
-  found, independently certified by `code/heven_heads_verify.py` →
-  `code/out/heven_heads_verify.captured.txt` (`ALL HEADS CERTIFIED 12/12`).
-  Empirical (exact, not a proof): for the 16 3-Higgs primes `p ≤ 61`,
-  `2p ∈ H_even` (the seven Thm-8 members {6,10,26,46,62,82,122}) iff
-  `Φ_{4p}(2)` has no prime divisor `≡ 1 mod 16` — all seven members have
-  all-3-Higgs divisors and zero heads; all nine excluded 3-Higgs `p`
-  (7,11,19,29,37,43,47,53,59) carry a head witnessing `2p ∉ H_even`.
-  Also first-executed `code/higgs/check_a057447.py`
-  (`code/out/higgs_a057447.captured.txt`): literal A057447 recursion
-  reproduces all 58 OEIS DATA terms; all five witnesses pass
-  `σ*(n) = 2n`; every witness prime divisor is 3-Higgs.
-
-- [ ] Next step on the chosen line: extend the same divisor-level table to
-  larger `p` (partial-factor if needed — a head needs only one found
-  divisor) and seek a congruence class of `p mod 8` where a head is forced;
-  the character-distribution table (p mod 8 × Aurifeuillean half) is already
-  in the capture.
+- [x] **DIRECTIVE 14: DONE — CLOSED-no-constraint.** `(2/(2^p+i))_4 = +1`
+  identically for all odd primes p; the global quartic character of 2 carries
+  NO constraint beyond the per-divisor mod-16 test. Definitively closed.
 
 ## Standing
 
@@ -75,7 +48,12 @@
 
 ## Active approaches
 
-The only approach with a program and a verified claim is `biquadratic-character-divisors` (adopted). It attacks Conjecture 29 via quartic reciprocity in Z[i] on the Gaussian factor 2^p + i.
+The adopted approach is `second-moment-character-mod16` (targets Conjecture 29 via
+Dirichlet orthogonality on (Z/16Z)* + second-moment bound). `biquadratic-character-divisors`
+is REFUTED and absorbed — its one-way generator equivalence survives inside the
+adopted approach as first-moment evaluation; the standalone line is closed per
+directive 14's `(2/(2^p+i))_4 = +1` identity result. The only approach with a
+verified first-moment computation is the adopted one.
 
 ## Don't
 

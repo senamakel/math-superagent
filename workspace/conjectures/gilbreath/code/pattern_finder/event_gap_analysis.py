@@ -112,6 +112,12 @@ def evolve(a0, D):
     return recs, rows_at
 
 
+def _run_task(task):
+    """Pool shim: parallel_map hands over the whole item, not unpacked args."""
+    fam, seed = task
+    return run_test(fam, seed)
+
+
 def rightmost2_depth(row, b):
     """D = distance from the block edge (1-based column b) to the rightmost
     entry == 2 within columns 1..b.  None if the block has no 2."""
@@ -293,7 +299,10 @@ def main():
     nw = min(workers(), 14)          # bound memory: <=~140 MB/worker
     print(f"  {len(tasks)} sequences, {nw} workers, ~60-70 s wall",
           flush=True)
-    res = parallel_map(run_test, tasks, label="edge-sliding",
+    def _run(task):
+        fam, seed = task
+        return run_test(fam, seed)
+    res = parallel_map(_run_task, tasks, label="edge-sliding",
                        space="survivor seqs", count=nw)
     rmap = {(r["family"], r["seed"]): r for r in surv}
     verr = 0
