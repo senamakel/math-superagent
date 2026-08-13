@@ -364,6 +364,7 @@ impl Tool<()> for ExecuteCommand {
                 self.timeout.as_secs()
             ),
         };
+        self.record(&command, &status, &stdout, &stderr).await;
         // File anything the command wrote through the shell. `layout::placed`
         // covers the write path; a heredoc and a redirect go round it, and
         // that is how a root fills up during a run.
