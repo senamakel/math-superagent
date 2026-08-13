@@ -12,4 +12,3 @@
   brute-force check: PASS
 
 RESULT: all checks pass
-EXIT_CODE=0
