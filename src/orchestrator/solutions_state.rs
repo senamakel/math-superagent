@@ -194,7 +194,62 @@ pub(super) async fn run(
                     .await,
                 )))
             }
-        })
+        });
+    let graph = add_join_and_finish(graph);
+    let graph = add_diversify_arms(
+        graph,
+        library_agents,
+        pattern_agents,
+        invention_agents,
+        diversify_tracer,
+        invention_workspace,
+    );
+    let graph = wire_routes(graph).compile().map_err(from_graph)?;
+
+    Ok(graph.run(state).await.map_err(from_graph)?.state)
+}
+
+
+
+/// Adds the barrier the arms converge on and the loop's terminal node.
+///
+/// Neither needs anything from the run — the merge reads state the arms already
+/// wrote, and `done` only passes the final state through — so they are built
+/// apart from the nodes that have to capture handles.
+fn add_join_and_finish(
+    builder: GraphBuilder<SolutionState, LoopUpdate>,
+) -> GraphBuilder<SolutionState, LoopUpdate> {
+    builder
+        .add_node(
+            DIVERSIFY_MERGE,
+            |state: SolutionState, _ctx: NodeContext| async move {
+                Ok(NodeResult::Update(LoopUpdate::whole(diversify_merge(
+                    state,
+                ))))
+            },
+        )
+        .add_node(
+            "done",
+            |state: SolutionState, _ctx: NodeContext| async move {
+                Ok(NodeResult::Update(LoopUpdate::whole(state)))
+            },
+        )
+}
+
+/// Adds the diversify fan-out node and the three arms it commands.
+///
+/// Lifted out of [`run`] because these four nodes are one idea — the loop's
+/// only concurrent section — and because they are what pushed the wiring
+/// function past a length anybody reads in one go.
+fn add_diversify_arms(
+    builder: GraphBuilder<SolutionState, LoopUpdate>,
+    library_agents: AsyncSubagentManager,
+    pattern_agents: AsyncSubagentManager,
+    invention_agents: AsyncSubagentManager,
+    diversify_tracer: Option<Arc<RunTracer>>,
+    invention_workspace: Option<PathBuf>,
+) -> GraphBuilder<SolutionState, LoopUpdate> {
+    builder
         .add_node(
             "diversify",
             move |_state: SolutionState, _ctx: NodeContext| {
@@ -234,15 +289,6 @@ pub(super) async fn run(
                 ))))
             },
         )
-        .add_node(
-            "done",
-            |state: SolutionState, _ctx: NodeContext| async move {
-                Ok(NodeResult::Update(LoopUpdate::whole(state)))
-            },
-        );
-    let graph = wire_routes(graph).compile().map_err(from_graph)?;
-
-    Ok(graph.run(state).await.map_err(from_graph)?.state)
 }
 
 /// Decomposes the goal beside the first attempt, before any cycle completes.

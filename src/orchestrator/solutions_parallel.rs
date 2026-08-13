@@ -159,6 +159,10 @@ impl LoopUpdate {
 /// the fan-out rests on: findings are written to disjoint slots, so merging
 /// two arms in either order gives the same state, and the runtime is free to
 /// commit them as they arrive.
+// The `Result` is the reducer trait's, not a claim that this can fail: a fold
+// over disjoint slots has no failure mode. Keeping the signature is what lets
+// it be passed to `ClosureStateReducer` at all.
+#[allow(clippy::unnecessary_wraps)]
 pub(super) fn reduce(mut state: SolutionState, update: LoopUpdate) -> GraphResult<SolutionState> {
     match update {
         LoopUpdate::Whole(next) => Ok(*next),
