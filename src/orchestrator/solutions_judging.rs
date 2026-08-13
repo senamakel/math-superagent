@@ -841,7 +841,21 @@ fn record_verdict(
     // said twice before it ends anything.
     let unverified = upper.contains("VERDICT: UNVERIFIED") || upper.contains("VERDICT:UNVERIFIED");
     let evidenced = workspace.is_none_or(has_executable_artifact);
-    state.solved = claimed && evidenced;
+    // ...and require the reflection to agree with itself. Solving the problem
+    // is progress, so `VERDICT: SOLVED` beside `PROGRESS: NO` is not a close
+    // call to resolve in favour of stopping — it is a reply that contradicts
+    // itself, and the loop must not end on one.
+    //
+    // A live Gilbreath run ended exactly there. Its `goals` agent timed out,
+    // the salvage path re-ran an already-queued script that re-confirmed an
+    // already-hand-checked refutation, and the reflection wrote SOLVED over
+    // PROGRESS: NO. The evidence test above passed, because the salvage really
+    // had run a program; what it could not see is that the program established
+    // nothing new. The reflection knew — its own lesson for the next attempt
+    // said the salvage "was reported as task completion when it advanced
+    // nothing" — but the verdict had already routed the run to `done`.
+    let progressed = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
+    state.solved = claimed && evidenced && progressed;
     if unverified && evidenced {
         state.unverified += 1;
     } else {
