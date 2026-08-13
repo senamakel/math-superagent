@@ -1,5 +1,48 @@
 # Approach: The effective-methods wall for C(x,k1)=C(y,k2)
 
+```approach
+idea: The effective integral-point toolbox (David's elliptic logarithms at genus
+  1; Bugeaud-Mignotte-Siksek-Stoll-Tengely Baker/Matveev + Mordell-Weil sieve at
+  genus 2) cannot deliver a uniform-in-(k1,k2) bound on N(a). The exact
+  obstruction is two-fold: (i) there is NO effective integral-point method at
+  genus >= 3 (canonical-height-difference bounds on Jacobians exist only for
+  genus 2, BMSST 2008 p.2 verbatim), and the family leaves genus <= 2
+  immediately (genus{2,n}=floor((n-1)/2); {3,4} already genus 3);
+  (ii) every effective per-pair constant grows with the curve's rank, regulator,
+  and heights — David c4 has exponent r+2, BMSST A1* contains the regulator
+  squared, Matveev 2000 ln|Lambda| > -112*2^n*C2*C0'*D^2*omega*ln(2eB) grows in
+  n, D, Omega=prod A_j — all growing with the column index k1,k2, so no constant
+  uniform in (k1,k2) emerges; and a uniform B must sum per-pair bounds over
+  ~log2(a) columns down to the MRSTT-open boundary 2<=m<=(log t)/(log2 t)^{3/2-eps},
+  which the per-pair bounds cannot do. Consequence: curve methods yield
+  per-pair effective finiteness (one pair at a time) but the named
+  uniformity-obstruction makes them incapable of bounding N(a) by a constant.
+  This is a GOAL-eligible impossibility statement; the bounded honest per-pair
+  deliverable is the explicit Matveev/David constant for ONE fixed small pair,
+  stated with its k-dependence.
+
+mechanism: For C(x,2)=C(y,3) reducing to Y^2+Y=X^3-9X+20 (rank 2), the
+  elliptic-logarithm/LLL pipeline (Stroeker-de Weger 1999) yields M0=4.62556e40
+  reduced to M3=7 per-pair. For C(x,2)=C(y,5) (BMSST eq. (4): the Jacobian has
+  rank 3), the descent x-alpha=kappa*xi^2 + Matveev + Landau-regulator bounds
+  give log x up to 10^565, cut by the Mordell-Weil sieve (lattice index ~10^3240
+  over ~10^5 primes). Both are per-curve: hypotheses require a rational point, an
+  explicit MW basis, and explicit canonical-height-difference bounds, which exist
+  only for genus 1 (David/Siegel-Baker) and genus 2 (Stoll/Flynn-Smart). The
+  per-pair constants grow with rank, regulator, heights, so diverge in (k1,k2).
+
+status: grounded
+precedent:
+  https://arxiv.org/abs/0801.4459 (BMSST 2008, held full text: genus-3 gap, Thm 3 constant, sieve)
+  https://www.ams.org/journals/mcom/1999-68-227/S0025-5718-99-01047-9 (Stroeker-deWeger 1999, held: W23/per-pair elliptic logarithms)
+  https://doi.org/10.1006/jnth.1997.2109 (de Weger 1997, held: (3,4) genus-3 double cover of Y^2+Y=X^3-X)
+  https://www.mathnet.ru/eng/im190 (Matveev 2000, held Thm 2.2: ln|Lambda| > -112*2^n*C2*C0'*D^2*omega*ln(2eB))
+claims: effective-methods-wall, deweger-smallk-effective, bst-fixed-kl-ineffective, mrstt-interior-theorem
+first-step: complete (deliverable stated); follow-up is to compute the explicit
+  Matveev/David constant for one fixed small pair (e.g. (2,3)) and write its
+  k-dependence — that is a per-pair effective result, not a uniform B.
+```
+
 ## Question
 
 For a representative small pair, `C(x,2)=C(y,3)` (genus 1, elliptic) and

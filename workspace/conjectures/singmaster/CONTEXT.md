@@ -288,7 +288,12 @@ Carry it as corroboration only, not as a bound.
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
   shape-of-the-boundary, not as a claim about large-t behavior.
-- **LEDGER STATUS: asserted=22, checked=4, proved=0.** Every asserted bound must
+- **LEDGER STATUS: 42 claims — 33 asserted, 6 checked
+  (best-unconditional-bound, convention-n3003-eight,
+  genus-closed-forms-three-diagonals, infinite-family-6,
+  mrstt-interior-excludes-all-known-witnesses, witness-3003), 2 proved
+  (erdos-selfridge-no-perfect-power, kummer-lucas-class-not-logarithmic),
+  1 unchecked (`chan-divisibility-gap`).** Every asserted bound must
   be run against `code/out/witnesses.json`. Any lemma implying B<8 is refuted by
   3003 (8 occurrences). State counting convention on every claim. See TASKS.md.
 - **RESOLVED: Matveev primary obtained.** The gap "authoritative constants of

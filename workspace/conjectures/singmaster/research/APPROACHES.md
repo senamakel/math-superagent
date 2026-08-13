@@ -9,6 +9,7 @@ Refuted and spent approaches are kept deliberately. Proposing again what this ru
 | Approach | Idea | Status | Precedent | First step |
 | --- | --- | --- | --- | --- |
 | [[bilu-tichy-classification]] | Bilu–Tichy (2000) classification of polynomial pairs F(x)=G(y) with infinitely many integer/rational solutions, applied to F(x)=C(x,k1) and G(y)=C(y,k2) — the… | grounded | https://doi.org/10.1007/s11139-022-00555-7, (Hajdu, Papp, Tijdeman, Ramanujan, J, 58, (2022), 1075-1093, full, text, held),… | (grounded kernel only) compute the polynomial decomposition of C(x,k) to identify which pairs share a common compositional factor φ — this confirms the… |
+| [[effective-methods-wall]] | The effective integral-point toolbox (David's elliptic logarithms at genus 1; Bugeaud-Mignotte-Siksek-Stoll-Tengely Baker/Matveev + Mordell-Weil sieve at genus… | grounded | https://arxiv.org/abs/0801.4459, (BMSST, 2008, held, full, text:, genus-3, gap, Thm, 3, constant, sieve),… | complete (deliverable stated); follow-up is to compute the explicit Matveev/David constant for one fixed small pair (e.g. (2,3)) and write its k-dependence —… |
 | [[frey-curve-modular]] | Frey-curve / modular method (Darmon–Granville, Ribet level-lowering, Bennett–Skinner) applied to the equal-products-of-consecutive-integers equation — the… | proposed | _unchecked_ | Rewrite C(x,2)=C(y,k) for k≥3 in the Darmon–Granville signature framework: (1/2) + (1/k) + (1/R) < 1 for some R, identify the attached Frey curve, and check… |
 | [[height-gap-adelic]] | Adelic height machine plus a "gap principle" — use the fact that if an integer a has many representations C(n_i,k_i) = a, then the corresponding rational… | proposed | _unchecked_ | Compute the Vojta constant (the "2 + ε" in Vojta's inequality, or the explicit Rémond constant) for the specific family of curves X_k(a) = {y : C(y,k) = a}.… |
 | [[kummer-lucas-p-adic]] | Kummer–Lucas p-adic constraints on multiple binomial-coefficient representations of the same integer — a combinatorial/number-theoretic line that uses base-p… | refuted | https://www.mdpi.com/2073-8994/12/2/288, (generalized, Lucas:, row, n, all, ≡1, mod, p^e, iff, n=(p^e, m-1)/(p^e-1);, special, case, n=2^m-1, all, odd, —,… | none — the mechanism's engine is false; do not re-propose. |
@@ -31,7 +32,6 @@ Nobody has checked whether these are known theory. Grounding one is cheaper than
 ## Approaches that could not be read
 
 - `README` has no approach block, so nothing can say what the idea is or whether anyone has checked it
-- `effective-methods-wall` has no approach block, so nothing can say what the idea is or whether anyone has checked it
 - `genus-computation` has no approach block, so nothing can say what the idea is or whether anyone has checked it
 - `genus-faltings-threshold` has no approach block, so nothing can say what the idea is or whether anyone has checked it
 - `mrstt-exact-statement` has no approach block, so nothing can say what the idea is or whether anyone has checked it

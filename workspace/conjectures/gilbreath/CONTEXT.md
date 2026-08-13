@@ -14,9 +14,12 @@ The conjecture reduces to: do (2,4)-events keep arriving fast enough that
 `Σ (j_i + 1)` never falls `k−1` behind? A lower bound on the event rate, even
 under a stated hypothesis on prime gaps, is a real result. Erosion verification
 is no longer useful; the step law is exact and needs no re-derivation.
-`research/threads/rule90-regeneration.md` (test depth-d=2^j prediction as
-candidate event-timing mechanism) and `research/threads/regeneration.md`
-(event-rate bound).
+`research/threads/rule90-regeneration.md` — the depth-d=2^j timing prediction
+was tested against the depth-1000 record and is **REFUTED** (thread status;
+the raw test output was never captured to `code/out/`, so the refutation
+record is the thread's status line — do not re-open that prediction). The
+proved Rule-90 interior identification stands independently. Live thread:
+`research/threads/regeneration.md` (event-rate bound).
 
 ## Established
 

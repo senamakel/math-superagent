@@ -13,7 +13,7 @@ k = Symbol('k', integer=True)
 
 def check_identity(a, b, xstr, ystr, zstr):
     """Return True if 4*x*y*z - n*(y*z + x*z + x*y) == 0 as a polynomial."""
-    n = a * k + b
+    n = Poly(a * k + b, k)
     try:
         X = Poly(expand(xstr), k)
         Y = Poly(expand(ystr), k)
@@ -47,6 +47,7 @@ for fn in ['code/out/subprogression.captured.txt', 'code/out/extended_subprogres
             zstr = lines[i+2].strip()
             assert ystr.startswith('y=') and zstr.startswith('z='), (i, ystr[:20], zstr[:20])
             ystr = ystr[2:]; zstr = zstr[2:]
+            zstr = zstr.split('  [')[0]   # drop trailing [('14a',...)] tag
             s = (b - 1) // 840
             if s % 11 in (3, 4):
                 hits.append((fn, a, b, s % 11, xstr, ystr, zstr))
