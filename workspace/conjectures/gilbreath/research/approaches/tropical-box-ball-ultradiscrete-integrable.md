@@ -103,7 +103,70 @@ mechanism: |
   ultradiscrete limit of the discrete Painlevé I equation gives a cellular
   automaton with similar absolute-difference structure. This is uncharted
   territory for the Gilbreath conjecture.
-status: proposed
+status: refuted
+killed-by: |
+  The tropical/BBS framing is creative but unsupported at three load-bearing
+  points, two of which the existing literature directly contradicts.
+
+  1. **The "soliton absorption" mechanism is the refuted rule90-absorbing-
+     boundary in new clothes.** CHT 2026 Lemma 3.7(iii) proves that a
+     {0,d}-valued block stays {0,d}-valued in ALL descendants WITHOUT
+     decrease in magnitude — the exact opposite of absorption. An intruder
+     value ≥ 4 adjacent to a {0,2} block is the d ≥ 2 case of a {0,d}
+     block beginning at the boundary, and CHT says it persists, not that
+     it drains. The drain law the run observes (y decreases by 2 when x=2)
+     is a fact about the prime rows, not a consequence of any integrable
+     structure, and CHT's proof that {0,d} persistence can be the generic
+     obstruction refutes any claim that soliton absorption is a general
+     property of the operator.
+
+  2. **The BBS and the absolute-difference operator are structurally
+     different.** The BBS moves balls rightward one site per time step
+     (a shift-based CA); the Gilbreath operator |a−b| is a difference
+     between neighbours producing a value at the LEFT position. The two
+     CAs have different light-cone geometry: BBS information flows
+     rightward, Gilbreath information flows downward with a fixed stencil
+     coupling neighbours. The connection "Rule 90 is the mod-2 reduction
+     of BBS" is shallow — Rule 90 is the mod-2 reduction of many CAs, and
+     the fact that two systems share a mod-2 skeleton does not make one
+     the ultradiscrete limit of the other. The approach's own first step
+     (checking soliton conservation) is the right test, but no source
+     establishes the connection, and the structural mismatch between the
+     shift-based BBS and the difference-based Gilbreath operator makes
+     the "exact integrable system" claim a long shot.
+
+  3. **The conserved-quantity argument is the conjecture stated in
+     integrable-systems language, not a reduction.** The claim "conserved
+     soliton amplitudes prevent any soliton from reaching the left column"
+     assumes (a) soliton amplitudes exist and are conserved, (b) the
+     absorption time is a function of amplitude, and (c) the amplitudes are
+     bounded. Each of (a), (b), (c) is a restatement of the regeneration
+     problem — (a) is the existence of an invariant separating the block
+     from the tail, (b) is the drain law with a uniform bound, (c) is the
+     gap boundedness hypothesis. No source has established any of these
+     for the Gilbreath operator on the primes, and the approach does not
+     reduce them to something known.
+
+  The approach is not worthless — the tropical/max-plus formulation
+  |a−b| = max(a,b) − min(a,b) is a real identity and may provide a useful
+  lens. But the BBS/soliton connection is not established in the literature
+  and the absorption claim is refuted at the general-class level. The
+  computational first step (checking soliton conservation) is still worth
+  running as a negative-result probe, but the approach cannot be adopted
+  as a proof strategy without first establishing the connection it
+  postulates.
+precedent: |
+  No source connects the Gilbreath absolute-difference operator to the
+  Box-Ball System or ultradiscrete Toda lattice. The BBS literature
+  (Takahashi–Satsuma 1990, Tokihiro et al. 1996, Inoue–Takenawa 2023)
+  treats a shift-based CA on the half-line; the tropical limit of the
+  discrete Toda lattice produces the BBS, not a difference operator. The
+  CHT (2026) and BCZ (2023) results are at the mod-2 level (Rule 90 /
+  Sierpinski), which is the common ground between Rule 90 and BBS but
+  does not lift to the full nonlinear Gilbreath operator. The Ducci
+  literature (Ciamberlini–Marengoni 1937, Calkin–Stevens–Thomas 2005,
+  Chamberland 2003) treats the same operator on cyclic sequences but does
+  not connect it to integrable systems.
 first-step: |
   Write a small computational exploration. For the halved Gilbreath triangle
   of the primes (depth 200, width 200), treat the entries as a BBS
@@ -112,7 +175,7 @@ first-step: |
   "space" — but reversed (since the Gilbreath triangle goes down, while BBS
   time goes right). Specifically: transpose the triangle so that rows become
   time steps. Look for soliton tracks: trajectories where a "ball" (a value
-  ≥ 2 in the halved triangle) moves rightward at a characteristic speed. 
+  ≥ 2 in the halved triangle) moves rightward at a characteristic speed.
 
   Then compute the "soliton content" of the initial row (halved gaps between
   primes): apply the standard BBS inverse scattering transform — for each
