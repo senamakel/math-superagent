@@ -59,16 +59,20 @@ Dimitrov–Gao–Habegger and genus-2 curves with split Jacobian. Theorem 1.3
 extends the method to x-coordinates in finitely generated multiplicative
 groups.
 
-**Bearing on the MSS**: the Robertson reduction (Established) says an MSS
-exists iff there is `e` with an AP of length 4 on `E: y² = x(x²−e⁴)`. The
-Garcia-Fritz-Pasten theorem bounds the length of any AP on this curve by
-`C^(r+1)` where `r = rank E(Q)`. So if the Robertson curve for a putative MSS
-has rank ≤ some bound, the AP length is bounded — and if 4 exceeds that bound,
-non-existence follows. **Gap**: what is the known rank of
-`E_e: y² = x(x²−e⁴)` for `e` being a putative MSS centre? Not yet computed;
-the bound `C^(r+1)` is ineffective (the constant `C` is not explicit in the
-statement). This turns the problem from "does an AP of length 4 exist?" into
-"bound the rank of the Robertson curve."
+**Bearing on the MSS**: the Robertson reduction says an MSS exists iff there
+is `e` with three points of `2E(Q)` on `E: y² = x(x²−c²)` with x-coordinates
+in AP. A full MSS gives an AP of length ≥ 3 of x-coordinates of points in
+2E(Q) on E_e. Garcia-Fritz & Pastén's Theorem 1.8 bounds AP length by
+`C^(r+1)`. If `C^(r+1) < 3` for some rank bound R (i.e. if `rk E_e(Q) ≤ R`),
+non-existence follows. The approach is **adopted** as
+`research/approaches/uniform-height-bound-elliptic-ap.md` — the first
+approach to use uniform Mordell–Lang rather than K3 geometry or
+2-descent. First step: extract exact Theorem 1.1/1.2 statement from the
+paper; check non-degeneracy for the MSS doubled-point configuration
+(x(2Q_i) in AP, not x(P_i)); compute explicit constant H(R,3). **Gap**: C is
+ineffective in the paper — no explicit value; the Dimitrov–Gao–Habegger
+constant is also not computed. Whether an effective bound < 3 can be
+extracted is the open question.
 - **Sallows LS1** = 7 of 8 line sums = 147² = 21609, failing non-principal
   diagonal = 38307; all nine entries perfect squares and distinct. The user's
   orientation `[127,46,58;2,113,94;74,82,97]` is the transpose of Bremner's
@@ -144,18 +148,17 @@ six-square-entry configurations are attainable; smallest-magic-sum six-square
 example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 
 **Approach statuses** (`research/APPROACHES.md`):
-- **Brauer–Manin on the K3** — **adopted**. `S` is the intersection of three
-  quadrics in P⁵ from configuration III; Bremner computed NS(S,C) (rank 20),
-  NS(S,Q) (rank 12, generators Γ₁…Γ₁₂), intersection form, singular fibres.
-  Missing step: compute `Br(S)/Br(Q)` (algebraic part H¹(Gal,NS) + transcendental)
-  and evaluate the BM pairing on adelic points from local solubility.
-- **S-unit equations over the parametrisation** — **refuted**: correct but adds
-  no leverage; Bremner II already shows the constraints reduce to genus ≥ 3
-  hyperelliptic curves (finite rational points by Faltings), and S-unit
-  finiteness is a weaker form of the same conclusion.
-- **Simultaneous congruent-number / 2-Selmer** — **refuted**: the four curves'
-  Selmer data is already encoded in Bremner II's NS and singular-fibre geometry;
-  no advantage over working directly with the K3.
+- **uniform-height-bound-elliptic-ap** — **adopted** (this round). Uses
+  Garcia-Fritz & Pastén (2026) uniform Mordell-Lang to bound AP length on
+  E_e: y² = x(x²−c²). First non-geometric, non-2-descent approach. First step:
+  extract exact theorem, check non-degeneracy for doubled-point AP, compute
+  explicit constant.
+- **root-number-parity-four-curves** — **refuted** (this round). Birch–Stephens
+  fixes parity by n mod 8; no additive-relation→root-number contradiction
+  exists; Q-level mod-2 cannot separate Q from extension fields with MSS.
+- **Brauer–Manin on the K3** — **refuted** (blocked for S itself; no reason
+  recorded — needs Brauer-group computation of S).
+- All others: **refuted** with reasons in APPROACHES.md.
 
 ## Ruled out
 
