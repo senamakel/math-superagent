@@ -1,0 +1,303 @@
+sieve to 20000000: 1270607 primes in 0.8s
+row 50: b=2762 whole=mixed tail=1 (1.5s)
+row 100: b=103970 whole=mixed tail=1 (2.2s)
+row 150: b=1094270 whole=mixed tail=1 (5.6s)
+row 200: b=1270406 whole=mixed tail=2 (8.3s)
+row 250: b=1270356 whole=mixed tail=1 (9.5s)
+row 300: b=1270306 whole=mixed tail=2 (10.7s)
+row 350: b=1270256 whole=mixed tail=3 (11.9s)
+row 400: b=1270206 whole=mixed tail=2 (13.0s)
+row 450: b=1270156 whole=mixed tail=1 (14.1s)
+row 500: b=1270106 whole=mixed tail=2 (15.2s)
+row 550: b=1270056 whole=mixed tail=5 (16.3s)
+row 600: b=1270006 whole=mixed tail=1 (17.4s)
+row 650: b=1269956 whole=mixed tail=1 (18.4s)
+row 700: b=1269906 whole=mixed tail=2 (19.5s)
+row 750: b=1269856 whole=mixed tail=2 (20.6s)
+row 800: b=1269806 whole=mixed tail=1 (21.7s)
+row 850: b=1269756 whole=mixed tail=1 (22.9s)
+row 900: b=1269706 whole=mixed tail=3 (24.0s)
+row 950: b=1269656 whole=mixed tail=1 (25.1s)
+row 1000: b=1269606 whole=mixed tail=1 (26.2s)
+
+STATS: {
+ "const_rows": [],
+ "const_rows_2": [
+  1
+ ],
+ "min_b": 2,
+ "max_b": 1270444,
+ "max_tail": 10,
+ "max_tail_k": 811,
+ "max_r0": 29,
+ "max_r2": 30,
+ "live": 161
+}
+
+Live-regime rows with whole-block constant:
+   {'k': 1, 'b': 2, 'whole': 'const2', 'tail': 2, 'r0': 0, 'r2': 2}
+
+Live-regime rows with terminal constant suffix >= 3:
+   {'k': 2, 'b': 7, 'whole': 'mixed', 'tail': 6, 'r0': 1, 'r2': 6}
+   {'k': 9, 'b': 24, 'whole': 'mixed', 'tail': 5, 'r0': 6, 'r2': 5}
+   {'k': 10, 'b': 58, 'whole': 'mixed', 'tail': 6, 'r0': 5, 'r2': 6}
+   {'k': 14, 'b': 96, 'whole': 'mixed', 'tail': 3, 'r0': 3, 'r2': 7}
+   {'k': 16, 'b': 175, 'whole': 'mixed', 'tail': 6, 'r0': 5, 'r2': 7}
+   {'k': 22, 'b': 288, 'whole': 'mixed', 'tail': 6, 'r0': 7, 'r2': 6}
+   {'k': 27, 'b': 872, 'whole': 'mixed', 'tail': 7, 'r0': 10, 'r2': 8}
+   {'k': 28, 'b': 871, 'whole': 'mixed', 'tail': 6, 'r0': 9, 'r2': 16}
+   {'k': 29, 'b': 870, 'whole': 'mixed', 'tail': 5, 'r0': 15, 'r2': 8}
+   {'k': 30, 'b': 869, 'whole': 'mixed', 'tail': 4, 'r0': 14, 'r2': 7}
+   {'k': 31, 'b': 868, 'whole': 'mixed', 'tail': 3, 'r0': 13, 'r2': 9}
+   {'k': 35, 'b': 2179, 'whole': 'mixed', 'tail': 3, 'r0': 10, 'r2': 13}
+   {'k': 39, 'b': 2770, 'whole': 'mixed', 'tail': 4, 'r0': 11, 'r2': 9}
+   {'k': 40, 'b': 2769, 'whole': 'mixed', 'tail': 3, 'r0': 10, 'r2': 8}
+   {'k': 47, 'b': 2762, 'whole': 'mixed', 'tail': 3, 'r0': 11, 'r2': 8}
+   {'k': 52, 'b': 4207, 'whole': 'mixed', 'tail': 4, 'r0': 12, 'r2': 12}
+   {'k': 53, 'b': 4206, 'whole': 'mixed', 'tail': 3, 'r0': 11, 'r2': 11}
+   {'k': 56, 'b': 4203, 'whole': 'mixed', 'tail': 3, 'r0': 11, 'r2': 9}
+   {'k': 58, 'b': 5943, 'whole': 'mixed', 'tail': 4, 'r0': 9, 'r2': 15}
+   {'k': 59, 'b': 5942, 'whole': 'mixed', 'tail': 3, 'r0': 14, 'r2': 14}
+   {'k': 63, 'b': 5939, 'whole': 'mixed', 'tail': 3, 'r0': 14, 'r2': 15}
+   {'k': 65, 'b': 23265, 'whole': 'mixed', 'tail': 3, 'r0': 13, 'r2': 12}
+   {'k': 72, 'b': 31496, 'whole': 'mixed', 'tail': 3, 'r0': 14, 'r2': 13}
+   {'k': 83, 'b': 31533, 'whole': 'mixed', 'tail': 3, 'r0': 14, 'r2': 14}
+   {'k': 86, 'b': 31530, 'whole': 'mixed', 'tail': 3, 'r0': 15, 'r2': 16}
+   {'k': 96, 'b': 92619, 'whole': 'mixed', 'tail': 3, 'r0': 16, 'r2': 14}
+   {'k': 97, 'b': 103973, 'whole': 'mixed', 'tail': 3, 'r0': 15, 'r2': 13}
+   {'k': 103, 'b': 103967, 'whole': 'mixed', 'tail': 3, 'r0': 17, 'r2': 18}
+   {'k': 119, 'b': 271623, 'whole': 'mixed', 'tail': 4, 'r0': 16, 'r2': 16}
+   {'k': 120, 'b': 271622, 'whole': 'mixed', 'tail': 3, 'r0': 15, 'r2': 19}
+   {'k': 129, 'b': 325096, 'whole': 'mixed', 'tail': 3, 'r0': 29, 'r2': 19}
+   {'k': 132, 'b': 515907, 'whole': 'mixed', 'tail': 3, 'r0': 26, 'r2': 19}
+   {'k': 136, 'b': 733564, 'whole': 'mixed', 'tail': 3, 'r0': 22, 'r2': 22}
+   {'k': 141, 'b': 733574, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 19}
+   {'k': 146, 'b': 733575, 'whole': 'mixed', 'tail': 3, 'r0': 16, 'r2': 19}
+   {'k': 147, 'b': 1094273, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 20}
+   {'k': 148, 'b': 1094272, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 153, 'b': 1094267, 'whole': 'mixed', 'tail': 5, 'r0': 18, 'r2': 20}
+   {'k': 154, 'b': 1094266, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 19}
+   {'k': 155, 'b': 1094265, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 19}
+   {'k': 159, 'b': 1094261, 'whole': 'mixed', 'tail': 3, 'r0': 17, 'r2': 19}
+   {'k': 160, 'b': 1094263, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 17}
+   {'k': 167, 'b': 1270439, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 170, 'b': 1270436, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 18}
+   {'k': 180, 'b': 1270426, 'whole': 'mixed', 'tail': 5, 'r0': 21, 'r2': 18}
+   {'k': 181, 'b': 1270425, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 19}
+   {'k': 182, 'b': 1270424, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 192, 'b': 1270414, 'whole': 'mixed', 'tail': 4, 'r0': 17, 'r2': 21}
+   {'k': 193, 'b': 1270413, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 20}
+   {'k': 197, 'b': 1270409, 'whole': 'mixed', 'tail': 5, 'r0': 20, 'r2': 22}
+   {'k': 198, 'b': 1270408, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 20}
+   {'k': 199, 'b': 1270407, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 22}
+   {'k': 203, 'b': 1270403, 'whole': 'mixed', 'tail': 6, 'r0': 22, 'r2': 19}
+   {'k': 204, 'b': 1270402, 'whole': 'mixed', 'tail': 5, 'r0': 21, 'r2': 20}
+   {'k': 205, 'b': 1270401, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 18}
+   {'k': 206, 'b': 1270400, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 209, 'b': 1270397, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 18}
+   {'k': 214, 'b': 1270392, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 222, 'b': 1270384, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 19}
+   {'k': 228, 'b': 1270378, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 232, 'b': 1270374, 'whole': 'mixed', 'tail': 5, 'r0': 19, 'r2': 20}
+   {'k': 233, 'b': 1270373, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 20}
+   {'k': 234, 'b': 1270372, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 20}
+   {'k': 240, 'b': 1270366, 'whole': 'mixed', 'tail': 6, 'r0': 20, 'r2': 20}
+   {'k': 241, 'b': 1270365, 'whole': 'mixed', 'tail': 5, 'r0': 19, 'r2': 21}
+   {'k': 242, 'b': 1270364, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 21}
+   {'k': 243, 'b': 1270363, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 19}
+   {'k': 252, 'b': 1270354, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 19}
+   {'k': 256, 'b': 1270350, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 19}
+   {'k': 267, 'b': 1270339, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 18}
+   {'k': 270, 'b': 1270336, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 18}
+   {'k': 275, 'b': 1270331, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 20}
+   {'k': 278, 'b': 1270328, 'whole': 'mixed', 'tail': 5, 'r0': 21, 'r2': 24}
+   {'k': 279, 'b': 1270327, 'whole': 'mixed', 'tail': 4, 'r0': 23, 'r2': 21}
+   {'k': 280, 'b': 1270326, 'whole': 'mixed', 'tail': 3, 'r0': 22, 'r2': 19}
+   {'k': 285, 'b': 1270321, 'whole': 'mixed', 'tail': 6, 'r0': 20, 'r2': 21}
+   {'k': 286, 'b': 1270320, 'whole': 'mixed', 'tail': 5, 'r0': 20, 'r2': 22}
+   {'k': 287, 'b': 1270319, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 20}
+   {'k': 288, 'b': 1270318, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 17}
+   {'k': 307, 'b': 1270299, 'whole': 'mixed', 'tail': 5, 'r0': 20, 'r2': 19}
+   {'k': 308, 'b': 1270298, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 21}
+   {'k': 309, 'b': 1270297, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 23}
+   {'k': 315, 'b': 1270291, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 18}
+   {'k': 322, 'b': 1270284, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 18}
+   {'k': 334, 'b': 1270272, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 22}
+   {'k': 335, 'b': 1270271, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 17}
+   {'k': 342, 'b': 1270264, 'whole': 'mixed', 'tail': 3, 'r0': 17, 'r2': 19}
+   {'k': 345, 'b': 1270261, 'whole': 'mixed', 'tail': 4, 'r0': 23, 'r2': 24}
+   {'k': 346, 'b': 1270260, 'whole': 'mixed', 'tail': 3, 'r0': 23, 'r2': 20}
+   {'k': 349, 'b': 1270257, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 18}
+   {'k': 350, 'b': 1270256, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 17}
+   {'k': 353, 'b': 1270253, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 18}
+   {'k': 360, 'b': 1270246, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 26}
+   {'k': 361, 'b': 1270245, 'whole': 'mixed', 'tail': 3, 'r0': 25, 'r2': 19}
+   {'k': 384, 'b': 1270222, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 21}
+   {'k': 385, 'b': 1270221, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 19}
+   {'k': 388, 'b': 1270218, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 17}
+   {'k': 407, 'b': 1270199, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 20}
+   {'k': 408, 'b': 1270198, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 24}
+   {'k': 414, 'b': 1270192, 'whole': 'mixed', 'tail': 5, 'r0': 18, 'r2': 21}
+   {'k': 415, 'b': 1270191, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 18}
+   {'k': 416, 'b': 1270190, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 18}
+   {'k': 425, 'b': 1270181, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 20}
+   {'k': 445, 'b': 1270161, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 19}
+   {'k': 448, 'b': 1270158, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 21}
+   {'k': 453, 'b': 1270153, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 460, 'b': 1270146, 'whole': 'mixed', 'tail': 7, 'r0': 19, 'r2': 19}
+   {'k': 461, 'b': 1270145, 'whole': 'mixed', 'tail': 6, 'r0': 18, 'r2': 18}
+   {'k': 462, 'b': 1270144, 'whole': 'mixed', 'tail': 5, 'r0': 17, 'r2': 19}
+   {'k': 463, 'b': 1270143, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 22}
+   {'k': 464, 'b': 1270142, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 20}
+   {'k': 468, 'b': 1270138, 'whole': 'mixed', 'tail': 7, 'r0': 19, 'r2': 25}
+   {'k': 469, 'b': 1270137, 'whole': 'mixed', 'tail': 6, 'r0': 24, 'r2': 21}
+   {'k': 470, 'b': 1270136, 'whole': 'mixed', 'tail': 5, 'r0': 23, 'r2': 19}
+   {'k': 471, 'b': 1270135, 'whole': 'mixed', 'tail': 4, 'r0': 22, 'r2': 17}
+   {'k': 472, 'b': 1270134, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 19}
+   {'k': 477, 'b': 1270129, 'whole': 'mixed', 'tail': 5, 'r0': 19, 'r2': 18}
+   {'k': 478, 'b': 1270128, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 20}
+   {'k': 479, 'b': 1270127, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 483, 'b': 1270123, 'whole': 'mixed', 'tail': 3, 'r0': 24, 'r2': 23}
+   {'k': 496, 'b': 1270110, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 18}
+   {'k': 499, 'b': 1270107, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 22}
+   {'k': 502, 'b': 1270104, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 18}
+   {'k': 503, 'b': 1270103, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 21}
+   {'k': 517, 'b': 1270089, 'whole': 'mixed', 'tail': 6, 'r0': 23, 'r2': 18}
+   {'k': 518, 'b': 1270088, 'whole': 'mixed', 'tail': 5, 'r0': 22, 'r2': 18}
+   {'k': 519, 'b': 1270087, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 21}
+   {'k': 520, 'b': 1270086, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 19}
+   {'k': 523, 'b': 1270083, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 20}
+   {'k': 524, 'b': 1270082, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 529, 'b': 1270077, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 535, 'b': 1270071, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 18}
+   {'k': 542, 'b': 1270064, 'whole': 'mixed', 'tail': 5, 'r0': 18, 'r2': 21}
+   {'k': 543, 'b': 1270063, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 25}
+   {'k': 544, 'b': 1270062, 'whole': 'mixed', 'tail': 3, 'r0': 24, 'r2': 18}
+   {'k': 547, 'b': 1270059, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 18}
+   {'k': 550, 'b': 1270056, 'whole': 'mixed', 'tail': 5, 'r0': 18, 'r2': 18}
+   {'k': 551, 'b': 1270055, 'whole': 'mixed', 'tail': 4, 'r0': 17, 'r2': 19}
+   {'k': 552, 'b': 1270054, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 17}
+   {'k': 557, 'b': 1270049, 'whole': 'mixed', 'tail': 3, 'r0': 22, 'r2': 18}
+   {'k': 568, 'b': 1270038, 'whole': 'mixed', 'tail': 5, 'r0': 18, 'r2': 19}
+   {'k': 569, 'b': 1270037, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 18}
+   {'k': 570, 'b': 1270036, 'whole': 'mixed', 'tail': 3, 'r0': 17, 'r2': 26}
+   {'k': 587, 'b': 1270019, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 21}
+   {'k': 588, 'b': 1270018, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 21}
+   {'k': 601, 'b': 1270005, 'whole': 'mixed', 'tail': 3, 'r0': 22, 'r2': 18}
+   {'k': 619, 'b': 1269987, 'whole': 'mixed', 'tail': 6, 'r0': 21, 'r2': 23}
+   {'k': 620, 'b': 1269986, 'whole': 'mixed', 'tail': 5, 'r0': 22, 'r2': 19}
+   {'k': 621, 'b': 1269985, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 20}
+   {'k': 622, 'b': 1269984, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 18}
+   {'k': 635, 'b': 1269971, 'whole': 'mixed', 'tail': 5, 'r0': 18, 'r2': 17}
+   {'k': 636, 'b': 1269970, 'whole': 'mixed', 'tail': 4, 'r0': 17, 'r2': 20}
+   {'k': 637, 'b': 1269969, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 20}
+   {'k': 644, 'b': 1269962, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 21}
+   {'k': 665, 'b': 1269941, 'whole': 'mixed', 'tail': 6, 'r0': 18, 'r2': 18}
+   {'k': 666, 'b': 1269940, 'whole': 'mixed', 'tail': 5, 'r0': 17, 'r2': 27}
+   {'k': 667, 'b': 1269939, 'whole': 'mixed', 'tail': 4, 'r0': 26, 'r2': 18}
+   {'k': 668, 'b': 1269938, 'whole': 'mixed', 'tail': 3, 'r0': 25, 'r2': 17}
+   {'k': 684, 'b': 1269922, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 18}
+   {'k': 685, 'b': 1269921, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 17}
+   {'k': 698, 'b': 1269908, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 20}
+   {'k': 699, 'b': 1269907, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 25}
+   {'k': 704, 'b': 1269902, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 21}
+   {'k': 705, 'b': 1269901, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 18}
+   {'k': 708, 'b': 1269898, 'whole': 'mixed', 'tail': 4, 'r0': 17, 'r2': 18}
+   {'k': 709, 'b': 1269897, 'whole': 'mixed', 'tail': 3, 'r0': 17, 'r2': 23}
+   {'k': 713, 'b': 1269893, 'whole': 'mixed', 'tail': 5, 'r0': 21, 'r2': 20}
+   {'k': 714, 'b': 1269892, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 18}
+   {'k': 715, 'b': 1269891, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 19}
+   {'k': 721, 'b': 1269885, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 18}
+   {'k': 724, 'b': 1269882, 'whole': 'mixed', 'tail': 6, 'r0': 20, 'r2': 18}
+   {'k': 725, 'b': 1269881, 'whole': 'mixed', 'tail': 5, 'r0': 19, 'r2': 19}
+   {'k': 726, 'b': 1269880, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 20}
+   {'k': 727, 'b': 1269879, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 18}
+   {'k': 732, 'b': 1269874, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 21}
+   {'k': 746, 'b': 1269860, 'whole': 'mixed', 'tail': 4, 'r0': 22, 'r2': 20}
+   {'k': 747, 'b': 1269859, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 21}
+   {'k': 752, 'b': 1269854, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 21}
+   {'k': 756, 'b': 1269850, 'whole': 'mixed', 'tail': 3, 'r0': 22, 'r2': 19}
+   {'k': 760, 'b': 1269846, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 20}
+   {'k': 761, 'b': 1269845, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 20}
+   {'k': 770, 'b': 1269836, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 18}
+   {'k': 778, 'b': 1269828, 'whole': 'mixed', 'tail': 4, 'r0': 22, 'r2': 18}
+   {'k': 779, 'b': 1269827, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 22}
+   {'k': 792, 'b': 1269814, 'whole': 'mixed', 'tail': 5, 'r0': 18, 'r2': 17}
+   {'k': 793, 'b': 1269813, 'whole': 'mixed', 'tail': 4, 'r0': 17, 'r2': 17}
+   {'k': 794, 'b': 1269812, 'whole': 'mixed', 'tail': 3, 'r0': 16, 'r2': 18}
+   {'k': 798, 'b': 1269808, 'whole': 'mixed', 'tail': 3, 'r0': 24, 'r2': 18}
+   {'k': 801, 'b': 1269805, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 17}
+   {'k': 804, 'b': 1269802, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 19}
+   {'k': 811, 'b': 1269795, 'whole': 'mixed', 'tail': 10, 'r0': 19, 'r2': 18}
+   {'k': 812, 'b': 1269794, 'whole': 'mixed', 'tail': 9, 'r0': 18, 'r2': 21}
+   {'k': 813, 'b': 1269793, 'whole': 'mixed', 'tail': 8, 'r0': 20, 'r2': 20}
+   {'k': 814, 'b': 1269792, 'whole': 'mixed', 'tail': 7, 'r0': 19, 'r2': 19}
+   {'k': 815, 'b': 1269791, 'whole': 'mixed', 'tail': 6, 'r0': 18, 'r2': 20}
+   {'k': 816, 'b': 1269790, 'whole': 'mixed', 'tail': 5, 'r0': 19, 'r2': 22}
+   {'k': 817, 'b': 1269789, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 21}
+   {'k': 818, 'b': 1269788, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 20}
+   {'k': 824, 'b': 1269782, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 22}
+   {'k': 831, 'b': 1269775, 'whole': 'mixed', 'tail': 6, 'r0': 22, 'r2': 18}
+   {'k': 832, 'b': 1269774, 'whole': 'mixed', 'tail': 5, 'r0': 21, 'r2': 20}
+   {'k': 833, 'b': 1269773, 'whole': 'mixed', 'tail': 4, 'r0': 20, 'r2': 20}
+   {'k': 834, 'b': 1269772, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 18}
+   {'k': 840, 'b': 1269766, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 19}
+   {'k': 841, 'b': 1269765, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 23}
+   {'k': 860, 'b': 1269746, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 18}
+   {'k': 868, 'b': 1269738, 'whole': 'mixed', 'tail': 8, 'r0': 19, 'r2': 19}
+   {'k': 869, 'b': 1269737, 'whole': 'mixed', 'tail': 7, 'r0': 18, 'r2': 18}
+   {'k': 870, 'b': 1269736, 'whole': 'mixed', 'tail': 6, 'r0': 17, 'r2': 18}
+   {'k': 871, 'b': 1269735, 'whole': 'mixed', 'tail': 5, 'r0': 17, 'r2': 20}
+   {'k': 872, 'b': 1269734, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 20}
+   {'k': 873, 'b': 1269733, 'whole': 'mixed', 'tail': 3, 'r0': 19, 'r2': 20}
+   {'k': 878, 'b': 1269728, 'whole': 'mixed', 'tail': 4, 'r0': 19, 'r2': 21}
+   {'k': 879, 'b': 1269727, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 19}
+   {'k': 899, 'b': 1269707, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 16}
+   {'k': 900, 'b': 1269706, 'whole': 'mixed', 'tail': 3, 'r0': 17, 'r2': 18}
+   {'k': 904, 'b': 1269702, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 19}
+   {'k': 908, 'b': 1269698, 'whole': 'mixed', 'tail': 7, 'r0': 18, 'r2': 19}
+   {'k': 909, 'b': 1269697, 'whole': 'mixed', 'tail': 6, 'r0': 18, 'r2': 20}
+   {'k': 910, 'b': 1269696, 'whole': 'mixed', 'tail': 5, 'r0': 19, 'r2': 19}
+   {'k': 911, 'b': 1269695, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 19}
+   {'k': 912, 'b': 1269694, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 20}
+   {'k': 916, 'b': 1269690, 'whole': 'mixed', 'tail': 4, 'r0': 21, 'r2': 17}
+   {'k': 917, 'b': 1269689, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 19}
+   {'k': 923, 'b': 1269683, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 17}
+   {'k': 924, 'b': 1269682, 'whole': 'mixed', 'tail': 3, 'r0': 17, 'r2': 17}
+   {'k': 928, 'b': 1269678, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 17}
+   {'k': 929, 'b': 1269677, 'whole': 'mixed', 'tail': 3, 'r0': 17, 'r2': 20}
+   {'k': 940, 'b': 1269666, 'whole': 'mixed', 'tail': 5, 'r0': 23, 'r2': 19}
+   {'k': 941, 'b': 1269665, 'whole': 'mixed', 'tail': 4, 'r0': 22, 'r2': 21}
+   {'k': 942, 'b': 1269664, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 17}
+   {'k': 945, 'b': 1269661, 'whole': 'mixed', 'tail': 4, 'r0': 25, 'r2': 18}
+   {'k': 946, 'b': 1269660, 'whole': 'mixed', 'tail': 3, 'r0': 24, 'r2': 23}
+   {'k': 955, 'b': 1269651, 'whole': 'mixed', 'tail': 6, 'r0': 20, 'r2': 18}
+   {'k': 956, 'b': 1269650, 'whole': 'mixed', 'tail': 5, 'r0': 19, 'r2': 19}
+   {'k': 957, 'b': 1269649, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 19}
+   {'k': 958, 'b': 1269648, 'whole': 'mixed', 'tail': 3, 'r0': 18, 'r2': 17}
+   {'k': 965, 'b': 1269641, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 20}
+   {'k': 970, 'b': 1269636, 'whole': 'mixed', 'tail': 3, 'r0': 21, 'r2': 18}
+   {'k': 985, 'b': 1269621, 'whole': 'mixed', 'tail': 4, 'r0': 18, 'r2': 21}
+   {'k': 986, 'b': 1269620, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 16}
+   {'k': 989, 'b': 1269617, 'whole': 'mixed', 'tail': 3, 'r0': 26, 'r2': 19}
+   {'k': 992, 'b': 1269614, 'whole': 'mixed', 'tail': 3, 'r0': 23, 'r2': 20}
+   {'k': 995, 'b': 1269611, 'whole': 'mixed', 'tail': 3, 'r0': 20, 'r2': 20}
+
+Longest terminal suffixes (top 15 live rows):
+   {'k': 811, 'b': 1269795, 'whole': 'mixed', 'tail': 10, 'r0': 19, 'r2': 18}
+   {'k': 812, 'b': 1269794, 'whole': 'mixed', 'tail': 9, 'r0': 18, 'r2': 21}
+   {'k': 813, 'b': 1269793, 'whole': 'mixed', 'tail': 8, 'r0': 20, 'r2': 20}
+   {'k': 868, 'b': 1269738, 'whole': 'mixed', 'tail': 8, 'r0': 19, 'r2': 19}
+   {'k': 27, 'b': 872, 'whole': 'mixed', 'tail': 7, 'r0': 10, 'r2': 8}
+   {'k': 460, 'b': 1270146, 'whole': 'mixed', 'tail': 7, 'r0': 19, 'r2': 19}
+   {'k': 468, 'b': 1270138, 'whole': 'mixed', 'tail': 7, 'r0': 19, 'r2': 25}
+   {'k': 814, 'b': 1269792, 'whole': 'mixed', 'tail': 7, 'r0': 19, 'r2': 19}
+   {'k': 869, 'b': 1269737, 'whole': 'mixed', 'tail': 7, 'r0': 18, 'r2': 18}
+   {'k': 908, 'b': 1269698, 'whole': 'mixed', 'tail': 7, 'r0': 18, 'r2': 19}
+   {'k': 2, 'b': 7, 'whole': 'mixed', 'tail': 6, 'r0': 1, 'r2': 6}
+   {'k': 10, 'b': 58, 'whole': 'mixed', 'tail': 6, 'r0': 5, 'r2': 6}
+   {'k': 16, 'b': 175, 'whole': 'mixed', 'tail': 6, 'r0': 5, 'r2': 7}
+   {'k': 22, 'b': 288, 'whole': 'mixed', 'tail': 6, 'r0': 7, 'r2': 6}
+   {'k': 28, 'b': 871, 'whole': 'mixed', 'tail': 6, 'r0': 9, 'r2': 16}
+
+wrote /workspace/code/out/block_constancy.json; total 26.2s

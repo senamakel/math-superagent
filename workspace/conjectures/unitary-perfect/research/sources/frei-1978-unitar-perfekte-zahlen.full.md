@@ -1,4 +1,4 @@
-<!-- source: https://www.e-periodica.ch/digbib/view?pid=edm-001:1978:33#105 | converted from HTML -->
+<!-- source: https://www.e-periodica.ch/digbib/view?pid=edm-001:1978:33::101 | converted from HTML -->
 
 E-Periodica - Über die Flächeninhalte ebener Schnitte konvexer Körper
 

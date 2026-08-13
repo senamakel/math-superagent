@@ -21,6 +21,7 @@ Declared cost: O(sum over rows of row length) time = O(D*W/2) ~ 6e8 numpy ops,
 O(max block) memory. Bound: timeout 540, D=1000, W=1,270,607.
 """
 import json
+from pathlib import Path
 import sys
 import time
 
@@ -28,6 +29,7 @@ import numpy as np
 
 from lib.gilbreath import primes_up_to
 
+ROOT = Path(__file__).resolve().parents[2]  # /workspace
 D = 1000
 SIEVE = 20_000_000
 LIVE = 161  # last live row (before width exhaustion) per regeneration_data.md
@@ -109,7 +111,7 @@ def main():
     }
     rec["stats"] = stats
     rec.pop("rows")  # keep the JSON small; full rows are in live_rows + capture
-    out_path = "code/out/block_constancy.json"
+    out_path = ROOT / "code" / "out" / "block_constancy.json"
     with open(out_path, "w") as f:
         json.dump({"stats": stats, "live_rows": live}, f)
 
