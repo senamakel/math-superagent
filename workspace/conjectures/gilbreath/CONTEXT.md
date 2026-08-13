@@ -407,22 +407,19 @@ recalled claim is relied on whose hypotheses fail here.
 
 ## Gaps
 
-- **The live question: bound the (2,4)-event rate from below.**
+- **The live question: what makes the giant jumps recur?**
   The step law and recharge identity reduce the conjecture to:
-  `Σ_{i<k} (j_i + 1) ≥ k − 1 − b_1` for all k. Since `b_1=2`, this is a
-  statement about event frequency and jump sizes.
-  **Mechanism vs rate (resolved this cycle):** the step law, recharge identity,
-  and drain law are combinatorial — they hold universally (zero failures on all
-  1,154 random sequences). **The conditional-rate experiment (Directive 19,
-  DONE)** shows the post-startup (2,4)-event rate is family-independent:
-  pooled λ̂ = 0.585 (1098/1876), Pearson X² p = 0.68 over 8 families at
-  D=400, W=200000. This confirms Route A: the mechanism is combinatorial.
-  **The gap:** λ̂ is measured, not bounded below for all k. The conjecture
-  needs a rate lower bound holding everywhere, not a point estimate. The next
-  step is a lower-bound lemma (Route A: bound worst-case inter-event gap from
-  drain law + edge-flip dynamics; or Route B: derive from gap concentration,
-  stating how it beats Eppstein and Colonna's g=4 deletion). Do not cite the
-  discarded D=40 smoke numbers (predate sign fix).
+  `Σ_{i<k} (j_i + 1) ≥ k − 1 − b_1` for all k. At depth 1000 this holds with
+  enormous slack (b_1000 = 1.27M ≫ 1) — the surplus is carried by a handful
+  of giant jumps, not by an average rate. The conjecture is tight only if the
+  big jumps stop.
+  **Directive 23:** λ̂ = 0.585 is a MEAN, and a mean is the wrong summary
+  for a heavy-tailed jump distribution (dominated by the tail). A lower bound
+  on the mean rate controls the wrong quantity. The object to bound is the
+  GAP between consecutive large jumps — first characterise the big jumps
+  (j > 1000) and say whether they are genuine dynamics or width-reset
+  artifacts (i=161 lands at b≈1.27M = width−1). See
+  `code/out/surplus_renewal_table.captured.txt`.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.
@@ -456,6 +453,12 @@ recalled claim is relied on whose hypotheses fail here.
   Mathlib axioms), **zero sorry / zero sorryAx**. The central theorem
   `gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X` is an
   **IFF** — it proves the {0,2} statement is exactly as hard as the
+  conjecture, not a stepping stone to a proof. It reformulates rather than
+  reduces. The prime instantiation (row 1 = (1, even, even, ...)) remains
+  computation-checked (witnesses.json), not Lean-proved. Regeneration is
+  untouched. This is a GOAL.md deliverable. Claim:
+  `lean-reduction-machine-checked`. Anchors:
+  `code/lean/gilbreath_reduction.lean`, `code/out/lean_gilbreath_reduction.captured.txt`.tement is exactly as hard as the
   conjecture, not a stepping stone to a proof. It reformulates rather than
   reduces. The prime instantiation (row 1 = (1, even, even, ...)) remains
   computation-checked (witnesses.json), not Lean-proved. Regeneration is
