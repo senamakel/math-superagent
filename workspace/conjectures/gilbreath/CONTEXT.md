@@ -299,6 +299,42 @@ away.
 
 ## Numbers
 
+- **Event-rate sweep over the 2-then-odds general class — DONE (TASKS item 1).**
+  1154 sequences, 26 families × seeds (gaps: {2}; {2,4}; skew{2,4,6,8,10};
+  uniform{2..2g}, g=3..50; geometric p=0.5..0.0625; each ± first gap forced to
+  2), batches D=600/W=200k ×48, D=1200/W=400k ×10, D=4000/W=2M ×4, 26 workers,
+  wall 278 s, exact int64.
+  **The step law and the recharge identity (the exact {0,2}-block accounting,
+  `b_{k+1} ≥ b_k ⟺ (2,4)`-event else `b_{k+1} = b_k − 1`, and
+  `b_k = b_1 + Σ(j_i+1) − (k−1)`) fail 0 times across every one of the 1154
+  sequences (46,528 eligible rows, 20,013 events)** — universal in the random
+  class, same as the prime rows (0 failures, depth 1000). The step law is a
+  theorem for all nonneg sequences, so the check is a sanity pass, now measured
+  on random data rather than only on the primes.
+  **Regeneration is NOT generic in the random class: 852/1154 (73.8%) reach
+  `b_k = 0` — all deaths inside the first 10 rows (89.7% inside the first 3;
+  342 at k=1, 346 at k=2); no sequence surviving row 10 ever died (up to
+  D=4000).** The class-level failure is the startup transient, never long-run
+  erosion. **Forcing the first gap to 2 is decisive where support ⊆ {2,4}:
+  consecutive 0/48 and f2-rand24 0/48 sequences die in each batch (incl.
+  D=4000), vs 62% deaths at k≤1 for rand24 without it.** Death fraction grows
+  monotonically with gap-support width (uniform{2..20}+: 100%); the primes'
+  gap profile (2,2,4,2,4,2,4,6,2,…) is the small-support, first-gap-2 skew that
+  survives. 240 non-degenerate survivors: `rho_live ≥ 0.318` and `min_b ≥ 1`
+  (primes: min b=2). Oracle: 4/4 numpy-vs-pure-Python matches (events, min_b,
+  first_b0, densities). Bounded claims in FULL detail + claim blocks:
+  `code/out/event_rate_sweep.notes.md`
+  (id `event-rate-sweep-step-law-universal`,
+  `event-rate-sweep-regeneration-not-generic`,
+  `first-gap-2-startup-sufficiency-supported`); raw captures
+  `code/out/event_rate_sweep.captured.txt`,
+  `code/out/event_rate_sweep_analysis.captured.txt`; stats
+  `code/out/event_rate_stats.jsonl`. **Implication for the general-class
+  strategy: the naive "2-then-odds, gaps bounded" class FAILS as a whole
+  (consistent with Eppstein); a general theorem needs first-gap-2 + a
+  small-support skew hypothesis — the primes satisfy both, and the data
+  localises the entire class failure to the startup rows. Nothing here
+  extends to all k; no regeneration-rate lower bound for the primes follows.**
 - Block profile (leading {0,2} length) rows k=1..40:
   `2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,289,288,739,873,872,871,872,871,870,869,868,867,866,865,2179,2178,2177,2176,2770,2769`.
   Grows roughly by doubling bursts around k=15,20,23,35,39.
