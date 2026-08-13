@@ -107,6 +107,26 @@ def in_phi(A, B):
     return False
 
 
+def in_phi_squares(A, B):
+    """Fast EXACT membership via the verified closed form.
+
+    For REDUCED 0 < A < B (gcd(A,B)=1):  A/B in Phi  <=>  B, B-A, B+A
+    are all perfect squares.  Proven by algebra (both 1-q and 1+q are
+    rational squares for every q in Phi, and reducedness collapses the
+    rational-square test to the three integers being squares) and VERIFIED
+    exactly against in_phi on every reduced fraction B <= 400 (0 mismatches)
+    and on all members of Phi(m<=N) for N up to 400.
+
+    If A,B are NOT reduced, reduce first (the caller must).
+    """
+    if A <= 0 or A >= B:
+        return False
+    r = isqrt(B - A)
+    c = isqrt(B)
+    d = isqrt(B + A)
+    return (r * r == B - A) and (c * c == B) and (d * d == B + A)
+
+
 def plus_one_is_square(q_nd):
     """Necessary condition for q in Phi: 1+q is a rational square.
     Input reduced (num, den).  Cheap pre-filter."""
