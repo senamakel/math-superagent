@@ -6,6 +6,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `bell-esc-equivalence-congruence-classes` | The Erdős–Straus conjecture holds iff every prime p lies in a class p ≡ −a/c (mod 4acd−1) for some a,c,d ≥ 1, or p ≡ −(4c²d+1)/k (mod 4cd) for some c,d,k ≥ 1 with k \| 4c²d+1. Necessity: from any solution 4/p =… | yes | asserted | `research/summaries/bloom-elsholtz-egyptian-fractions-survey.md` |
+| `bell-mod840-list-discrepancy` | The Bloom–Elsholtz survey lists the unsolved classes mod 840 as {1, 49, 121, 169, 289, 361}, whereas this run's verified list (code/verify_library_claims.py, Mordell/classical identities) is {1, 121, 169, 289, 361, 529}. | **unchecked** | asserted | `research/summaries/bloom-elsholtz-egyptian-fractions-survey.md` |
 | `bello-fab-completeness` | The divisor-based parametrisation fab(n,a,b) recovers exactly the decompositions of 1/n with all three denominators divisible by 4 (the m=4/Erdős–Straus case after scaling); all primes p ≡ 1 mod 4 with p < 10^14 are… | yes | asserted | `research/summaries/bello-benito-fernandez-divisor-parametrization.md` |
 | `bhakti-calc-open-classes-100pct` | A guided (k,A)-search finds ESC solutions for all 60,000 tested n = 840·i + m, i = 1..10000, m in {1,121,169,289,361,529} (100% success), and for 92% of the 18,000 massive n = 840·10^i + m; no covering identity is given. | yes | asserted | `research/summaries/bhakti-constructive-algorithm.md` |
 | `bhakti-suzuki-nand-s` | For n = 4s+1 prime, ESC has a solution iff there exist k ≥ 1, A ≥ 1 with (4k−1)A − (s+k) \| A·n·(s+k), in which case x = s+k, y = An, z = An(s+k)/((4k−1)A−(s+k)) (or y,z swapped) solves 4/n = 1/x+1/y+1/z. | yes | asserted | `research/summaries/bhakti-constructive-algorithm.md` |
@@ -37,6 +39,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `seven-equations-complete` | For p an odd prime, 4/p is 3-Egyptian if and only if one of seven constant-coefficient modular equations (14a,b,c; 15a,b,c,d) holds; this is a COMPLETE set for degree-1 prime polynomials. | yes | asserted | `research/summaries/salez-seven-modular-equations.md` |
 | `six-classes-are-square-residues-840` | The six open classes are exactly {r mod 840 : r odd, gcd(r,840)=1, r a square mod 840} = {1², 11², 13², 17², 19², 23²} mod 840 = {1, 121, 169, 289, 361, 529}; equivalently the residues r with r ≡ 1 (mod 24), r ≡ 1 or 4… | yes | asserted | `research/notes/es-structure.md` |
 | `six-classes-contain-odd-squares` | Each of the six open classes mod 840 contains infinitely many odd perfect squares: for r = s^2 mod 840 with s in {1,11,13,17,19,23}, n = (s + 840k)^2 is an odd perfect square congruent to r (mod 840). E.g. 841 = 29^2 in… | yes | asserted | `research/notes/es-structure.md` |
+| `subprogression-families-verified-and-coverage` | The 554 parametric families in code/out/subprogression.captured.txt are each an exact polynomial identity in Z[k]: 4xyz - n(yz+xz+xy) = 0 identically, where n = a*k + b, verified in exact integer polynomial arithmetic… | yes | checked | `code/out/subprogression_coverage.md` |
 | `swett-1e14` | ESC(n) holds for all integers 1 < n <= 10^14 (Swett 1999; sieve over a filter set S(n), n<=1000, plus two lemmas and greedy verification of 3209 residual primes). | yes | asserted | `research/summaries/swett-esc-verification-history.md` |
 | `type-definition` | For odd prime p, every solution to 4/p=1/x+1/y+1/z is Type I (p divides exactly one of x,y,z) or Type II (p divides exactly two), and f(p)=3 f_I(p)+3 f_II(p). | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
 | `vanishing-type12-odd-squares` | For any odd perfect square n, f_I(n)=f_II(n)=0: there is no Type-I and no Type-II solution to 4/n=1/x+1/y+1/z. | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
@@ -50,6 +53,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `bell-esc-equivalence-congruence-classes` (research/summaries/bloom-elsholtz-egyptian-fractions-survey.md) — asserted by the source, not proved there and not checked here
 - `bello-fab-completeness` (research/summaries/bello-benito-fernandez-divisor-parametrization.md) — asserted by the source, not proved there and not checked here
 - `bhakti-calc-open-classes-100pct` (research/summaries/bhakti-constructive-algorithm.md) — asserted by the source, not proved there and not checked here
 - `bhakti-suzuki-nand-s` (research/summaries/bhakti-constructive-algorithm.md) — asserted by the source, not proved there and not checked here
