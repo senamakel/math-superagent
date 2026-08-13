@@ -322,6 +322,78 @@ turn is not going to write, and the prose it did report is still worth carrying
 into the attempt, so the re-issue's reply is appended to it rather than
 replacing it.
 
+## The reduction runs beside the loop too
+
+`open_reduction` sits next to `open_invention` at the tail of `reflect` and
+answers the question the loop never asks by itself. Every cycle asks how the
+last attempt went. None of them asks what a proof of the goal would *consist
+of*, and the two have different answers: a run can report genuine progress every
+single attempt — a bound pushed further, more cases verified — and spend its
+whole budget with a great deal of data and nothing that says what would have
+been enough. A live Gilbreath workspace holds exactly that statement, reducing
+the conjecture to an event-rate bound, and it took sixteen operator directives
+to produce.
+
+So the `reducer` is delegated a decomposition: the goal, the lemmas that would
+imply it, the inference combining them, and one `gap` per lemma nobody has
+proved. It writes `research/backward/<slug>.md`, `research/BACKWARD.md` is
+derived from those files, and the open gaps reach the next attempt under their
+own heading — as targets rather than as gathered material, which is why they
+travel in a third `Mailbox` rather than in `fresh_context`.
+
+Detached for `open_invention`'s reason and one more. Nothing in `route` reads a
+skeleton, so a gap is worth as much an attempt later; and a `reduce` node in the
+graph would put a child run of unbounded length between the reflection and the
+next attempt, which is the failure `Mailbox` was written about — a live run sat
+33 minutes unable to start an attempt it was ready for. Keeping it out of the
+graph also leaves `Route` untouched, so no routing test changes and
+`open_invention`'s own `Route::Retry` gate stays correct.
+
+Three conditions, because there are three separate ways this goes wrong.
+
+`REDUCTION_INTERVAL = 3` bounds what the ledger *costs*. It is the one threshold
+here that is not two, and deliberately: every two answers "is this a pattern or a
+one-off", and this is a refresh interval on a document whose inputs move slowly.
+A skeleton is worth rewriting only once something has landed that could discharge
+one of its gaps, which takes a full cycle plus whatever the standing teams
+delivered beside it. Against `MAX_ATTEMPTS = 8` it buys two or three skeletons.
+Because the arm is detached the interval bounds spend rather than latency, so it
+is set on what the ledger costs rather than on how long the loop can afford to
+wait. `since_reduction` starts *at* the threshold, so the first completed cycle
+opens a reduction — `open_invention`'s recorded evidence one role wider, since a
+gate needing several completed cycles is a gate a long run never reaches.
+
+A workspace fingerprint bounds *waste*. The reducer's inputs are what the run has
+established, so a tick over a tree that has not moved would rewrite the same
+skeleton from the same evidence. `fingerprint_excluding` skips what the reducer
+itself writes, or it would wake forever on its own output — the pattern team's
+`results_unchanged` argument applied one folder wider. A declined tick
+deliberately does *not* reset the counter, so the next cycle asks again rather
+than waiting another full interval for evidence that may have arrived meanwhile.
+
+`ReductionGate` bounds *collision*, and this is the one `open_invention` does not
+need. Two inventors produce two approach files under two slugs, which is untidy.
+Two reducers decompose the same goal, so they write the same file,
+`write_document` is last-writer-wins, and the loser's gaps are gone with no error
+anywhere — two containers on one workspace, one level down. The gate is claimed
+before the spawn and released inside it, so a reduction outliving the cycle that
+opened it still holds it.
+
+`ensure_skeleton_written` is the same control `ensure_approaches_written` is,
+with the discriminator inverted and for a stated reason. Approaches compare
+*names added*, because proposing means new files. That is wrong here from the
+second cadence onward: refining a live skeleton — closing a gap, adding a lemma
+the run now needs — is exactly the correct work and adds no name. So it compares
+a fingerprint of every `(skeleton, gap, status)` triple, which is strictly
+stronger: an unchanged fingerprint means the turn moved nothing any downstream
+reader consumes, whatever it did to the bytes. A plain before-and-after
+comparison is sound in a runtime where everything else is racing because that
+folder has exactly one writer and the gate admits one of it at a time.
+
+What travels back is read off disk rather than taken from the reply, so a turn
+that wrote good files and then produced a truncated report still delivers its
+gaps.
+
 `COMPUTATIONAL_THRESHOLD` is the second way into this step, and it exists because
 "did the attempt establish something new" and "is the run getting anywhere"
 turned out to be different questions and `route` only asked the first. Pushing an

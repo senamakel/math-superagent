@@ -17,28 +17,32 @@ b1 = b[0]
 
 # (1) surplus just before each event, and running
 print("(1) Recharge surplus S_k = sum_{events i<k}(j_i+1) - (k-1):")
-surpl = []
-acc = 0
-for k in range(1, D):
-    if k-1 in regen:  # event fired at transition k-1 -> k
-        # actually compute surplus at row k
-        pass
-# recompute cleanly: surplus at row k = b_k - b_1 + (k-1)
-surpl = [b[k] - b1 + k for k in range(0, D)]  # k is 1-based row number; row index k-1
-# check: for row index i (0-based), k=i+1, surplus should equal sum of (j+1) over events with eventrow < i+1... 
-# verify identity instead using event jumps
-events = regen
-sumj = b1
-ok = True
-for k in range(1, D):
-    exp = b1 + sum((b[e]-b[e-1])+1 for e in events if e < k) - (k-1)
-    if exp != b[k]:
-        ok = False; print("  IDENTITY FAIL at k", k, exp, b[k]); break
-print("   recharge identity exact over all k=%d..%d: %s" % (1, D, ok))
-surplus = [b[k]-b1+k for k in range(D)]
-print("   min surplus over k=1..1000:", min(surplus[1:]), "at k", surplus[1:].index(min(surplus[1:]))+1)
-print("   surplus monotone nondecreasing? ", all(surplus[i]<=surplus[i+1] for i in range(D-1)))
-print("   surplus at regen rows:", [surplus[e-1] for e in [k for k in regen if k<=161]][:10], "...")
+# Recharge identity: for 1-based row k, b_k = b_1 + sum_{events i<k} (j_i+1) - (k-1),
+# where events are 1-based row indices i of transitions with b_{i+1} > b_i.
+# CORRECTION (this run): the earlier version compared 1-based expected values
+# against the 0-based list b[k], an off-by-one in the check that produced a
+# spurious failure at k=1.  Here exp is checked against b[k-1].
+events = regen  # 0-based transition indices with b[e] > b[e-1]
+esum = 0
+ev_it = 0
+bad = []
+for k in range(1, D + 1):
+    while ev_it < len(events) and events[ev_it] < k:
+        e = events[ev_it]
+        esum += (b[e] - b[e - 1]) + 1
+        ev_it += 1
+    expect = b1 + esum - (k - 1)
+    if expect != b[k - 1]:
+        bad.append((k, expect, b[k - 1]))
+print("   recharge identity exact over all rows k=1..%d: %s" % (D, len(bad) == 0))
+if bad:
+    print("   failures:", bad[:3])
+# Surplus at 1-based row k is S_k = b_k - b_1 + (k-1); 0-based: b[i] - b1 + i.
+surplus = [b[i] - b1 + i for i in range(D)]
+print("   min surplus over k=1..1000:", min(surplus), "at k", surplus.index(min(surplus)) + 1)
+print("   surplus monotone nondecreasing? ", all(surplus[i] <= surplus[i + 1] for i in range(D - 1)))
+print("   surplus at the first 10 regen rows (row, S just before the event):",
+      [(e + 1, b[e] - b1 + e) for e in events[:10]])
 
 # (2) log(jump) vs log(b) across ALL events (jump>0)
 import math

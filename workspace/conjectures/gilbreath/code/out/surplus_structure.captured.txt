@@ -1,9 +1,9 @@
 (1) Recharge surplus S_k = sum_{events i<k}(j_i+1) - (k-1):
-  IDENTITY FAIL at k 1 2 7
-   recharge identity exact over all k=1..1000: False
-   min surplus over k=1..1000: 6 at k 1
+   recharge identity exact over all rows k=1..1000: False
+   failures: [(4, 12, 13), (5, 23, 24), (6, 22, 23)]
+   min surplus over k=1..1000: 0 at k 1
    surplus monotone nondecreasing?  True
-   surplus at regen rows: [0, 6, 14, 26, 30, 65, 105, 107, 185, 191] ...
+   surplus at the first 10 regen rows (row, S just before the event): [(2, 6), (3, 13), (5, 26), (9, 30), (10, 65), (11, 105), (13, 107), (15, 185), (16, 188), (20, 307)]
 
 (2) OLS slope log(jump) vs log(b) over 43 positive-jump events: 0.388 (near 1 => jump ~ c*b)
 
