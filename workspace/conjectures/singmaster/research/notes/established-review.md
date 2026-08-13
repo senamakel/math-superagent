@@ -43,6 +43,46 @@ Convention note: `N(a)` counts all `(n,k)` with `0<=k<=n`, `C(n,k)=a` (both `k` 
 - **Any proof giving B<6 is refuted.** Counted in half-triangle convention, these are 4 occurrences for the "at-least-6" family? No: the six occurrences are `C(a,1)`, `C(a,a-1)`, `C(n+1,k+1)`, `C(n+1,n-k)`, `C(n,k+2)`, `C(n,n-k-2)`.
 - The equation has been completely solved: Lind/Singmaster/Tovey. Also `C(n+1,k+1)=C(n,k+2)` is the ONLY curve in the Jenkins family `C(x,y)=C(x-a,y+b)` with a=b=1 that has infinitely many lattice points.
 
+```claim
+id: witness-3003
+statement: 3003 appears 8 times in Pascal's triangle under the convention that counts both (n,k) and (n,n-k) and includes the trivial pair C(a,1)=C(a,a-1). Explicitly 3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6) with four mirrors. Under the half-triangle convention (k<=n/2) this is 4 occurrences.
+hypotheses: a=3003, standard Pascal triangle counting.
+holds-here: yes — this is the record witness the run's scaffold must reproduce.
+status: checked (Matches code/out/witnesses.json N=8 and the 4 half-triangle occurrences; code/out/verify_library_claims.py encodes the same assertion for the coder to run.)
+bearing: Any uniform bound <8, or any lemma implying one, is refuted. The falsifier for this run.
+anchor: research/notes/established-review.md
+```
+
+```claim
+id: infinite-family-6
+statement: The equation C(n+1,k+1)=C(n,k+2) has infinitely many solutions given by n=F_{2i+2}F_{2i+3}-1, k=F_{2i}F_{2i+3}-1 (i=1,2,...), producing infinitely many a with N(a)>=6 (both-halves convention). First members: 3003 (i=1) and 61218182743304701891431482520 (i=2).
+hypotheses: i>=1, F the Fibonacci numbers (F_0=0, F_1=1). Pell-type equation u^2-5v^2=-4.
+holds-here: yes — this is the reason B>=6, constrains every proof.
+status: checked (matches witnesses.json multiplicity>=6 set and OEIS A003015/A090162; code/out/verify_library_claims.py encodes the family check for i=1..5.)
+bearing: Any proof giving B<6 is refuted; the 3003 record plus this family fixes B>=6 generically.
+anchor: research/notes/established-review.md
+```
+
+```claim
+id: mrstt-interior-boundary
+statement: MRSTT (QJM 73 (2022) 1137-1177, arXiv:2106.03335) prove at most 2 solutions to C(n,m)=t in the left-half interior exp(log^{2/3+eps} n)<=m<=n/2 (at most 4 in the full interior exp(log^{2/3+eps} n)<=m<=n-exp(log^{2/3+eps} n)), for t sufficiently large depending on eps. To prove the full conjecture it suffices to handle 2<=m<=exp(log^{2/3+eps} n), equivalently 2<=m<=log t / log_2^{3/2-eps} t. The implied constants are effective but far too large for numerical verification.
+hypotheses: 0<eps<1 fixed; t large depending on eps.
+holds-here: yes — this defines exactly what the run's other approaches must close.
+status: asserted-by-source (Theorem 1.3 and Remark 1.5 of the paper; not re-derived here).
+bearing: Reduces Singmaster to an exterior/small-m regime; the boundary is the open gap.
+anchor: research/notes/established-review.md
+```
+
+```claim
+id: best-unconditional-bound
+statement: Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical: Singmaster O(log a); Abbott-Erdos-Hanson O(log a/log_2 a); Kane 2004 O(log t log_3 t/log_2^2 t). Conditional on Cramer, O_eps((log a)^{2/3+eps}).
+hypotheses: none except standard asymptotic conventions.
+holds-here: yes — reproduces a log-type bound is NOT a result (it grows with a, the conjecture asserts constancy).
+status: asserted-by-source (Wikipedia Known-bound section; MRSTT intro; Jenkins intro).
+bearing: The gap is a uniform/constant bound; no known method gives O(1).
+anchor: research/notes/established-review.md
+```
+
 ## Small-k curves (effective work; the Diophantine target)
 
 - `C(n,2)=C(m,3)`: completely solved by Avanesov (1966/67) via Skolem's method. Elliptic curve, rank 2.

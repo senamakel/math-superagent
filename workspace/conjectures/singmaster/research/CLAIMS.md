@@ -4,7 +4,19 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `best-unconditional-bound` | Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical: Singmaster O(log a); Abbott-Erdos-Hanson O(log a/log_2 a); Kane 2004 O(log t log_3 t/log_2^2 t).… | yes | asserted | `research/notes/established-review.md` |
+| `infinite-family-6` | The equation C(n+1,k+1)=C(n,k+2) has infinitely many solutions given by n=F_{2i+2}F_{2i+3}-1, k=F_{2i}F_{2i+3}-1 (i=1,2,...), producing infinitely many a with N(a)>=6 (both-halves convention). First members: 3003 (i=1)… | yes | checked | `research/notes/established-review.md` |
+| `mrstt-interior-boundary` | MRSTT (QJM 73 (2022) 1137-1177, arXiv:2106.03335) prove at most 2 solutions to C(n,m)=t in the left-half interior exp(log^{2/3+eps} n)<=m<=n/2 (at most 4 in the full interior exp(log^{2/3+eps} n)<=m<=n-exp(log^{2/3+eps}… | yes | asserted | `research/notes/established-review.md` |
+| `witness-3003` | 3003 appears 8 times in Pascal's triangle under the convention that counts both (n,k) and (n,n-k) and includes the trivial pair C(a,1)=C(a,a-1). Explicitly 3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6) with four mirrors.… | yes | checked | `research/notes/established-review.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `best-unconditional-bound` (research/notes/established-review.md) — asserted by the source, not proved there and not checked here
+- `mrstt-interior-boundary` (research/notes/established-review.md) — asserted by the source, not proved there and not checked here
 
 ## Blocks that could not be read
 
