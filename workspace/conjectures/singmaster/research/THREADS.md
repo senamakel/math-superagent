@@ -9,3 +9,4 @@ _No threads yet. Open one as soon as a direction has a question and a claim unde
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+- `diophantine-curves` has no thread block, so nothing can say what it is chasing or what it rests on
