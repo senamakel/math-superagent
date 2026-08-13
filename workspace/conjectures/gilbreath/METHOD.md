@@ -6,7 +6,12 @@ Three cautions this problem has already earned:
 
 This is probably not a theorem about primes. Odlyzko's observation makes the argument work for any sequence beginning `2` followed by odd numbers with small enough gaps, so an approach leaning on deep prime distribution is likely attacking the wrong object, and a theorem for a general Gilbreath-like class would settle the prime case as a corollary. Say which side the approach is on before starting.
 
-Consumption is not regeneration. A `{0,2}` block of length `n` protects roughly `n/2` rows, so protection is spent geometrically and each new stretch must be regenerated from below. Nobody has proved regeneration always happens, and that gap is where every attempt stops. An argument establishing that the regime persists for `n/2` rows and treating that as persistence forever has proved nothing. State explicitly which of the two any claim establishes.
+Consumption is not regeneration, and erosion is now settled while regeneration is not. A `{0,2}` block of length `n` protects exactly `n+1` rows: the protection constant is **1**, not `n/2`. The `n/2` figure this file used to carry was wrong and this run refuted it — see `odlyzko-block-lemma-exact` in `research/notes/block_lemma.md` and the independently re-derived step law in `code/out/step_law_and_recharge_verified.md`. The block loses exactly one position per row, because a difference of two elements of `{0,2}` is again in `{0,2}` and nothing replaces the position lost from the left. Do not reintroduce `n/2`. The exact accounting is
+
+    step law:  b_{k+1} >= b_k if the intruder pair (x,y) = (2,4), else b_{k+1} = b_k - 1
+    recharge:  b_k = b_1 + sum over events i<k of (j_i + 1) - (k-1)
+
+verified with zero failures to depth 800. A `(2,4)`-event is the only mechanism that grows the block, so the conjecture is exactly the claim that events keep arriving fast enough that the recharge sum never falls `k-1` behind. Nobody has proved that. State explicitly whether a claim establishes erosion, which is done, or regeneration, which is the open problem.
 
 The conjecture asserts a positive, so the failure mode here is an argument that proves too little while reading as though it proves enough — the mirror of the impossibility problems. Still run every claimed invariant against the real rows in `code/out/witnesses.json`, especially the rows where the leading `{0,2}` block is short, since those are where a too-strong structural claim breaks. A lemma the generated rows refute is false and is recorded as refuted, not weakened. A lemma not run against the rows is `asserted`, never `checked`.
 
