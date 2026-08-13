@@ -14,146 +14,100 @@ idea: Vieta jumping / infinite descent on the Markov-type surface defined by
   N(a) ≥ 7 must belong to the known Pell family, reducing the problem to
   proving that the Pell family has bounded multiplicity.
 
-mechanism: Start from the known fact: the equation C(n+1, k+1) = C(n, k+2)
-  is equivalent to n² - 5k² - n(5k+3) - ... = something quadratic. Actually,
-  let's derive it from the binomial identity:
-    C(n+1, k+1) = C(n, k+2)
-    (n+1)n(n-1)...(n-k+1) / (k+1)! = n(n-1)...(n-k-1) / (k+2)!
-  Cancel n(n-1)...(n-k) (common to both):
-    (n+1) / (k+1) = (n-k-1) / (k+2)
-    (n+1)(k+2) = (n-k-1)(k+1)
-    nk + 2n + k + 2 = nk + n - k² - k - k - 1
-    2n + k + 2 = n - k² - 2k - 1
-    n = k² + 3k + 3
-  Wait, that gives a specific relation n = k²+3k+3, which is NOT the Fibonacci
-  family. Let me re-derive more carefully.
+mechanism: [PARTIALLY GROUNDED as a classification, REFUTED as a mechanism.]
+  What the idea correctly points at is the REAL classification result, which
+  the library already holds:
+  (i) The infinite family C(n+1,k+1)=C(n,k+2) is COMPLETELY classified and
+      is a Pell phenomenon: Lind 1968 (FQ 6, 86-93, PRIMARY, claim
+      lind-1968-fibonacci-family-primary) solved it entirely via the units of
+      Q(sqrt 5) / Pell u^2 - 5v^2 = -4, giving exactly
+      n = F_{2i+2}F_{2i+3}-1, k = F_{2i}F_{2i+3}-1 (i>=1), with C(x,2)=C(y,2)
+      the only fixed-pair diagonal case; Singmaster 1975 rediscovered it.
+      The complete list of all known nontrivial solutions of C(n,k)=C(m,l)
+      (GRKTU 2020, claim grktu-known-solutions-list) is: the Fibonacci family
+      plus twelve sporadic values (3003, 120, 1540, 7140, 210, 11628, 24310,
+      ...), each on a FIXED pair of small columns.
+  (ii) Jenkins (arXiv:1411.4111, claim jenkins-ab-finite): the shifted family
+      C(x,y) = C(x-a,y+b) has finitely many natural solutions for EVERY shift
+      (a,b) except a=b=1 — the golden-ratio quadratic giving the Pell family.
+      So "the only genus-0 diagonal of the shift family is (1,1)" is exactly
+      Jenkins' theorem; for a != b the curves have genus >= 2 (limiting ratio
+      c, root of c^{a+b}-(c+1)^a=0, is non-quadratic — Jenkins' Lemma).
+      The run's genus grid and BST 1999 Thm 2.2 (claim
+      bst-genus-classification-matches-grid) corroborate: for FIXED distinct
+      pairs the genus-0 and genus-1 loci are exhausted by (2,2) diagonal,
+      (2,3) and (2,4); everything else is genus >= 2.
+  What is NOT supported:
+  (i) "N(a) large forces membership in a genus-0 curve" is FALSE on the
+      witnesses: every known high-multiplicity value sits on FIXED curves of
+      genus >= 1, not on a genus-0 diagonal. 3003 = C(15,5)=C(14,6) is the
+      (1,1)-shift pair (genus-0 quadratic), but its third representation
+      C(78,2) lives on the fixed curve C(x,2)=C(y,78)?? no — on the fixed-a
+      fiber C(x,2)=3003 — and the six N=6 values (120, 210, 1540, 7140,
+      11628, 24310) each come from ONE nontrivial pair on a FIXED curve of
+      genus 1 ((2,3): 120,1540,7140; (2,4): 210; (2,5): 11628; ...). So the
+      mechanism's engine (an a with >= 7 reps must be Pell-family) would have
+      to show 3003 is the LAST non-Pell collision — exactly the content of
+      de Weger's Conjecture A (claim deweger-genus3-curve), which is OPEN, not
+      a consequence of Vieta jumping.
+  (ii) Vieta jumping is a descent on a QUADRATIC equation (one variable is
+      the root of a degree-2 polynomial in the others: Markov x^2+y^2+z^2=3xyz,
+      IMO 1988 Problem 6, Pell x^2 - Dy^2 = m). The binomial equations
+      C(x,k1)=C(y,k2) are degree-k1/k2 >= 3 algebraic curves; the "conjugate
+      solution" phenomenon that makes Vieta jumping work (sum of the two roots
+      is an integer polynomial in the other variables) has NO analogue at
+      degree >= 3. The literature on Vieta jumping (Lemmermeyer arXiv:2601.15229
+      survey "Vieta jumping and small norms"; the Markov/cluster-algebra work
+      Lampe J. Algebra 2016, Banaian-Sen Ramanujan J 2023, Gyoda-Maruyama
+      arXiv:2312.07329) is uniformly about quadratic equations / Pell-type
+      conics and Markov-type cubics. No source applies Vieta jumping to
+      binomial equalities, and none could: the method is quadratic by
+      construction.
+  (iii) The reformulation "bound the column indices rather than the value"
+      (classify all solutions of C(x,k)=C(y,l) with k,l not fixed) is the
+      Jenkins/C(x,y)=C(x-1,y+1) frame, which is settled as far as infinite
+      families go (Lind-Singmaster complete classification + Jenkins a!=b
+      finiteness). It does not bound N(a): a value can be hit by many
+      FIXED small pairs before any shift-family structure appears (3003 is
+      hit by the (1,1)-shift pair AND the fixed (2,·)-column; the six N=6
+      values are single-pair).
 
-  Actually C(n+1, k+1) = (n+1)!/((k+1)!(n-k)!) and C(n, k+2) = n!/((k+2)!(n-k-2)!).
-  The equality gives:
-    (n+1)!/((k+1)!(n-k)!) = n!/((k+2)!(n-k-2)!)
-    (n+1)/(k+1) · 1/((n-k)(n-k-1)) = 1/((k+2)(k+1))
-    Wait, this is getting messy. Let me use the known formulation instead.
-
-  The known infinite family (Singmaster 1975, Lind 1968) is:
-    C(F_{2i+2}F_{2i+3},  F_{2i}F_{2i+3}) = C(F_{2i+2}F_{2i+3}-1,  F_{2i}F_{2i+3}+1)
-  Setting n = F_{2i+2}F_{2i+3} and k = F_{2i}F_{2i+3}:
-    C(n, k) = C(n-1, k+1)  with the specific n,k satisfying n²-5k²-... = 0.
-
-  The Vieta jumping approach: consider the surface S(k1,k2):
-    C(x, k1) = C(y, k2)
-  For fixed (k1,k2), this is a curve. The intersection of two such curves for
-  different pairs that share the same value a gives constraints on (x,y) pairs.
-  Specifically, if C(x1,k1)=C(x2,k2)=a and C(y1,l1)=C(y2,l2)=a, then the ratios
-  x1(x1-1).../k1! = y1(y1-1).../l1!, etc.
-
-  The Vieta jumping mechanism: suppose C(n,k)=C(m,l)=a with k < l. Express n
-  in terms of m: from n(n-1)...(n-k+1)·l! = m(m-1)...(m-l+1)·k!, the left side is
-  a polynomial in n of degree k. For fixed m,l,k,a, n is a root of this degree-k
-  polynomial. Vieta jumping uses the fact that if n is one integer root, then the
-  sum of roots gives another integer — the "conjugate" solution. By iterating,
-  we get an infinite sequence of integer solutions to the same equation, which
-  must either be finite (by Siegel/Faltings for genus ≥1) or follow a specific
-  recurrence. When the curve has genus 0 (which happens only for the (5,6) or
-  adjacent-index family in the binomial case), the Vieta jumping can generate
-  infinitely many solutions — and the known Pell family is exactly this.
-
-  The new claim: for any a with N(a) ≥ r (some threshold), the Vieta jumping
-  process on the system of equations {C(x,k_i)=a} for all representations i
-  must generate an infinite descending chain unless the (n_i,k_i) satisfy a
-  common recurrence. This forces all but a bounded number of representations
-  to lie in genus-0 curves — which are exactly the (k, k+1) or (k, k+2) families
-  classified by Singmaster/Lind.
-
-status: proposed (speculative)
-first-step: For the specific equation C(x,2)=C(y,3) (triangular=tetrahedral),
-  write the Vieta jumping on the elliptic curve. The curve is genus 1; Vieta
-  jumping (or the chord-tangent method) gives the group law. Verify that the
-  known solutions (x,y) = (16,10) for a=120, (56,22) for a=1540,
-  (120,36) for a=7140 are related by the group law on the same elliptic curve.
-  If they are NOT in the same coset of the Mordell-Weil group modulo 2-torsion,
-  that would suggest the curve has rank ≥2 and Vieta jumping can't generate
-  all solutions from a single seed. This would be concrete data about whether
-  the Vieta jumping approach can classify all solutions. The computation:
-  (1) write the Weierstrass form of C(x,2)=C(y,3)=a for a=120,1540,7140.
-  (2) Compute whether the corresponding points are in the same Mordell-Weil
-  coset, or whether they belong to different curves (since a changes the constant
-  term, these are DIFFERENT curves for each a, not the same curve).
-  
-  Correction: for each a, C(x,2)=a gives x²-x-2a=0, so x = (1+√(1+8a))/2
-  (triangular). And C(y,3)=a gives y(y-1)(y-2)=6a. These are different curves
-  for each a. So the Vieta jumping doesn't generate solutions on ONE curve —
-  it's a relation between different curves parametrized by a.
-  
-  The proper Vieta jumping: fix k1,k2 and consider the curve C(x,k1)=C(y,k2).
-  If this curve has a rational parametrization (genus 0), then there are
-  infinitely many solutions. The Vieta jumping on a genus-0 curve with integer
-  points can be analyzed via the continued-fraction/Pell structure. For genus 1,
-  the chord-tangent group law generates all rational points (Mordell-Weil).
-  The approach is to classify all (k1,k2) with genus 0, solve each via Pell,
-  and show that all other (k1,k2) have genus ≥1 and finite many integral points
-  (already known ineffectively via Siegel/Faltings). The new angle: for genus ≥2,
-  use an effective argument (like Runge's method on the Newton polygon) rather
-  than ineffective Faltings.
-
-  I realize the Vieta jumping per se is not adding much beyond Pell for genus 0
-  and the group law for genus 1. Let me reformulate this approach.
-
-  REFORMULATION: **Effective Pell classification of all genus-0 binomial curves**.
-  The equation C(x,k1) = C(y,k2) defines a curve. The genus formula
-  g = ((k1-1)(k2-1)+1-gcd(k1,k2))/2 is 0 exactly when (k1-1)(k2-1) ≤
-  gcd(k1,k2)-1, which is very restrictive. Compute which pairs have genus 0:
-  - (1,k): trivial
-  - (2,2): C(x,2)=C(y,2) → x²-x=y²-y → (x-y)(x+y-1)=0, so x=y or x=1-y.
-    Infinite, but these are the trivial symmetries.
-  - (2,3): C(x,2)=C(y,3), genus 1 (elliptic), not genus 0.
-  - The adjacent-index family (k, k+1): g = ( (k-1)k + 1 - 1 )/2 = k(k-1)/2,
-    which is 0 only for k=1,2.
-  - The family (k, k+2): g = ( (k-1)(k+1) + 1 - gcd(k,k+2) )/2
-    = (k²-1 + 1 - gcd(k,k+2))/2. If k is odd, gcd=1, g=k²/2 > 0 for k≥2.
-    If k is even, gcd=2, g=(k²-2)/2 > 0 for k≥2.
-  So NO non-trivial pair has genus 0 except the trivial (1,1), (1,2) and the
-  symmetric pair (2,2) (which is just the mirror symmetry). This means every
-  non-trivial distinct pair gives genus ≥1, so Siegel/Faltings applies. The
-  infinite Pell family has genus 0 because it's the DIAGONAL case of the
-  Jenkins family (a=b=1): C(x,y)=C(x-1,y+1), which is not of the form
-  C(x,k1)=C(y,k2) with fixed k1,k2. Wait, yes it is:
-    C(n+1, k+1) = C(n, k+2)
-    → (x = n+1, k1 = k+1) and (y = n, k2 = k+2)
-    Here k2 = k1+1, but k1 varies with the solution — it's not fixed!
-    This is the crucial point: the infinite family has FIXED RELATION between
-    k1 and k2 (k2 = k1+1) but NOT fixed k1,k2 themselves. The genus in this
-    case, treating k as a parameter, is a family of curves parametrized by k,
-    and each member has genus ≥1 for k≥2. The Pell equation arises from the
-    parametrization across k.
-
-  So the approach shifts: rather than fixing (k1,k2) and solving per pair,
-  consider the equation with k1,k2 as variables. That is, the FULL equation:
-    C(x, k) = C(y, l)  with x,y,k,l all integer variables.
-  This is a Diophantine equation in FOUR variables. The genus-0 infinite family
-  corresponds to l = k+1, x = y+1, giving a Pell-type quadratic. The question is:
-  are there any OTHER infinite families where (x,y,k,l) roam freely but
-  C(x,k)=C(y,l) holds?
-
-  This is the Jenkins framing: Jenkins fixes a shift (a,b) = (k1-k2, something)
-  and studies C(x, y) = C(x-a, y+b) as a curve. The infinite family is a=1,b=1
-  (the golden-ratio case). Jenkins proves finiteness for a≠b.
-
-  For the approach: classify all solutions to C(x,k)=C(y,l) where (x,k) and (y,l)
-  are NOT the trivial mirror pair and NOT in the Jenkins a=b=1 family. Show that
-  any such solution has max(k,l) ≤ some absolute bound. This is a different
-  reduction: bound the column indices rather than the value.
-
-status: proposed (speculative, reformulated mid-write)
-first-step: Compute the genus of the Jenkins family C(x, y) = C(x-a, y+b) as a
-  function of (a,b). For a=b=1 (the infinite family), it's genus 0. For a≠b,
-  Jenkins proves genus ≥2 via non-quadraticity of the limiting ratio. The first
-  concrete step: verify Jenkins' theorem computationally for small a,b (a,b ≤ 5)
-  by computing the genus of C(x,y) = C(x-a,y+b) via the run's Singular pipeline
-  and confirming the genus ≥2 threshold for a≠b. This would reproduce Jenkins
-  result computationally and extend it to parameter ranges not covered by his
-  proof (which uses the limiting-ratio argument and does not compute genus
-  directly). Then: use the genus data to determine whether Jenkins' finiteness
-  result can be made effective via Runge's method (for genus 0 cases — none
-  except a=b=1) or via the effective Chabauty-Kim method for curves with small
-  Mordell-Weil rank.
+status: refuted
+killed-by: (i) the completed Pell classification of the infinite family
+  (lind-1968-fibonacci-family-primary, singmaster-1975-pell-family,
+  grktu-known-solutions-list) and Jenkins' a!=b finiteness
+  (jenkins-ab-finite) already exhaust the genus-0 diagonal content — the
+  only infinite family is the (1,1)/Pell one; (ii) the claim that large N(a)
+  forces genus-0 membership is contradicted by the witnesses (3003 has a
+  genus-1/g2 fixed-curve component via C(78,2); the six N=6 values are each
+  a single nontrivial pair on a fixed genus>=1 curve) and is exactly de
+  Weger's OPEN Conjecture A, not a consequence of descent; (iii) Vieta
+  jumping is a quadratic-recurrence technique with no degree>=3 analogue;
+  the search found no application of it to binomial equalities.
+precedent:
+  https://arxiv.org/abs/1411.4111 (Jenkins, repeated binomial coefficients —
+    the shift-family finiteness, held: jenkins-ab-finite)
+  https://www.fq.math.ca/6-3.html (Lind 1968, Fibonacci Quart. 6(3), 86-93 —
+    the Pell/unit-of-Q(sqrt5) complete solution, held primary:
+    lind-1968-fibonacci-family-primary)
+  https://www.fq.math.ca/13-4.html (Singmaster 1975, Fibonacci Quart. 13(4),
+    295-298 — rediscovery, Pell u^2-5v^2=-4:
+    singmaster-1975-pell-family)
+  https://doi.org/10.1016/j.jnt.2019.07.002 (GRKTU 2020, JNT 208 — complete
+    known-solutions list: grktu-known-solutions-list)
+  https://doi.org/10.48550/arxiv.2601.15229 (Lemmermeyer 2026 — Vieta jumping
+    survey; scope: conics/quadratic number fields, Pell-type)
+  https://doi.org/10.1016/j.jalgebra.2016.04.033 (Lampe 2016 — Markov
+    equation via cluster mutations; quadratic)
+  claims: jenkins-ab-finite, lind-1968-fibonacci-family-primary,
+    singmaster-1975-pell-family, grktu-known-solutions-list,
+    deweger-genus3-curve, bst-genus-classification-matches-grid,
+    infinite-family-6
+first-step: none — the working kernel (Pell-family classification, shift-family
+  genus-0 locus = {(1,1)}) is already grounded library content; the Vieta-
+  jumping mechanism has no degree>=3 analogue and the genus-0-forcing claim is
+  contradicted by known N=6/N=8 witnesses. Do not re-propose Vieta jumping for
+  this problem; the honest reformulation is de Weger's Conjecture A (no
+  nontrivial collisions beyond the known list + infinite family), which is
+  open and is attacked by the effective-methods wall, not by descent.
 ```
