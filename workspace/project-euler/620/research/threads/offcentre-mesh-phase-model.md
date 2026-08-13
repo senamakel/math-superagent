@@ -125,7 +125,10 @@ source: this-run-computation
 
 ```claim
 id: fast_g_lattice_mismatch
-statement: fast_g counts integer levels of f(d) = Q_p(d) - Q_q(d) with Q_t = [(c-t)*beta_t + (s+t)*gamma_t]/(2*pi) turns; since n_t = 2*Q_t and n_p + n_q = c+s, f = n_p - (c+s)/2. Integer f-levels are integer n_p-levels when c+s is even, but HALF-INTEGER n_p-levels (configurations the validated model rejects) when c+s is odd. Hence fast_g systematically counts the wrong lattice for the 13 odd-(c+s) tuples of G(20), each off by ±1, net +8 (g(16,5,5,6), c+s=21 odd, agrees by endpoint alignment). The corrected rule is g = ceil(n_p(DU)) - floor(n_p(DL)) - 1, i.e. count integer levels of n_p = 2*Q_p.
+statement: fast_g counts integer levels of f(d) = Q_p(d) - Q_q(d) with Q_t = [(c-t)*beta_t + (s+t)*gamma_t]/(2*pi) turns; since n_t = 2*Q_t and n_p + n_q = c+s, f = n_p - (c+s)/2. Integer f-levels are integer n_p-levels when c+s is even, but HALF-INTEGER n_p-levels (configurations the validated model rejects) when c+s is odd. Hence fast_g systematically counts the wrong lattice for the
+13 odd-(c+s) tuples of G(20) (exactly the opposite-parity (p,q) tuples), and
+the observed net overcount is +8 (per-tuple magnitudes/signs are the TASKS
+step-1 diagnostic). g(16,5,5,6), c+s=21 odd, agrees by endpoint alignment. The corrected rule is g = ceil(n_p(DU)) - floor(n_p(DL)) - 1, i.e. count integer levels of n_p = 2*Q_p.
 hypotheses: n_p monotone increasing on (DL,DU) (checked per tuple); integer n_p levels are the validated arrangement condition; fast_g's Q_t, DL, DU identical to n_integer's.
 holds-here: yes — pure algebra from the two programs' own formulas on disk; verified arithmetically on (16,5,5,6) and (20,5,5,10)
 status: checked (rule equivalence); the empirical prediction (which tuples differ, net +8→0 after patch) is TASKS step 1, not yet run
@@ -143,7 +146,7 @@ holds-here: yes
 status: checked (direct comparison of code/out/tangency_enum.txt and code/out/n_integer_model.txt)
 bearing: do not generalise tangency_enum to G(20); n_integer is the per-tuple oracle
 anchor: code/out/tangency_enum.txt; code/out/n_integer_model.txt
-contradicts: tangency_enum_oracle_match (if read as the arrangement-condition model; the shared fact is only the count 9)
+contradicts: tangency_enum_oracle_match
 source: this-run-computation
 ```
 
