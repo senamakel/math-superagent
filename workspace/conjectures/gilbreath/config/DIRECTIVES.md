@@ -719,3 +719,24 @@ Giants have j > 1000 by your own threshold while gaps are at most 64, so the mar
 - **CONTEXT.md** — Run state block replaced with Directive 30's 15-giant record; wider-width entry in Established updated to include 6e8; Contradictions' 26-vs-64 convention disagreement resolved as "3e8 cap, 6e8 resolved"; Gaps section refocused on the ratio bound.
 
 - **research/notes/pattern_finder_wider_giants.md** — Header notes the 6e8 resolution. Claim `wider-width-giant-record-3e8` marked **superseded**; `giant-parity-even-pre-jump-rows` updated to 15 genuine with p=16/2^15=4.9×10⁻⁴; geometric-fit claim updated to 15-giant label.
+
+## 31 — from steer
+
+DIRECTIVE 31 — make the keystone auditable, and clear the unrun pile.
+
+1. `code/out/lean_reduction.captured.txt` is ZERO BYTES and has been since 12:30. `code/out/INDEX.md` line 95 calls it "lean compile of the repaired reduction lemma file (EXIT=0, clean)". A clean lean compile emitting nothing is consistent with that — but it is byte-for-byte identical to a command that never ran, and this file is the evidence under `gilbreath-second-entry-equivalence`, which is `proved` and is the FIRST link of the chain. An empty file cannot carry a proved claim.
+
+Re-emit it so it proves something on its own. After the theorems, add
+
+    #print axioms <reduction theorem name>
+    #print axioms <shape theorem name>
+
+and capture stdout. Output of exactly `propext, Classical.choice, Quot.sound` is sorry-free; anything more, or any `sorryAx`, is not. Also echo the lean version and the file's sha256 so the artifact identifies what was compiled. Same for `lean_shape.captured.txt` if it is empty too. Re-anchor the claim to the new non-empty capture. If lean is unavailable in the container, say so in the note and downgrade that claim to `asserted` — do not leave `proved` resting on an empty file.
+
+2. `code/out/` holds 12 `.py` with no matching `.captured.txt`: check_three_candidates{,2}.py, check_window_range_allcells.py, check_window_range_empirical{,2}.py, final_run{,2}.py, _run_edge.py, runner{1,2,3}.py, verify_c1.py. Your exec.sh covers only final_run and final_run2. Code files went 97 to 106 this half hour while captures went 131 to 133 — you are writing faster than you are running. Extend exec.sh to all twelve with `timeout 540 ... | tee`, run it, and delete any that is superseded rather than leaving it looking like pending work.
+
+3. Good catch that `check_edge_zero_run.py` checked a vacuous statement. `edge_map_invertibility.notes.md` is the right response — carry the sharpened edge-zero-run statement into CLAIMS.md with its own id and the Rule-90 anchor.
+
+**TASKS.md rewritten** — Directive 31 items lead the queue (re-emit the zero-byte lean capture, clear the unrun `.py` pile, confirm `edge_map_invertibility` is in the claims ledger), with Directive 30's mathematical tasks kept below since the directive doesn't abandon that direction. **`code/out/INDEX.md`** fixed: the entry for `lean_reduction.captured.txt` now reads "BROKEN — zero bytes" instead of claiming it is evidence.
+
+No other files needed changing. The claim `gilbreath-second-entry-equivalence` already anchors to `lean_gilbreath_reduction.captured.txt` (1028 bytes, full `#print axioms` ledger, non-empty), not the zero-byte file, so re-anchoring is unnecessary. `lean_shape.captured.txt` is 147 bytes and non-empty — skip. And `edge-interior-invertibility-sharpened` is already in the claims ledger at `proved` with the unitriangular F₂ argument and three-route machine check, so Directive 31 item 3 was already satisfied before the directive arrived.
