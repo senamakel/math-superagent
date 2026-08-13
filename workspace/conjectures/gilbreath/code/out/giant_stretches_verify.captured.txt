@@ -1,7 +1,1 @@
-Traceback (most recent call last):
-  File "/workspace/code/directive24/verify_giant_stretches.py", line 161, in <module>
-    main()
-  File "/workspace/code/directive24/verify_giant_stretches.py", line 145, in main
-    if e['runner'] is not None:
-       ~^^^^^^^^^^
-KeyError: 'runner'
+VERIFY-OK: 12 genuine giants independently recomputed (fresh sieve, pairwise iterator, math.dist diffs, halved-value control scan): all (a)(b)(c)(d) numbers match the snapshot; block_profile oracle matches stored b at all 12 event rows; containers = [1, b_{k+1}+1]; library claims step-law (2,4) and block maximality re-confirmed.

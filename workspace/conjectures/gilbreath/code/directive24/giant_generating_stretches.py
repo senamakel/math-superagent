@@ -294,6 +294,7 @@ def main():
                  container=(D['cs'], D['ce']), clen=D['clen'],
                  rank=D['rank'], ties=D['ties'], n_stretch=D['n_stretch'],
                  lengths=D['lengths'],
+                 runner=list(D['runner']) if D['runner'] else None,
                  zc=D['zc'], oc=D['oc'],
                  longest0=D['longest0'], longest1=D['longest1'])
             for D in details

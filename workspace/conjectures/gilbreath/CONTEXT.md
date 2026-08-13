@@ -138,6 +138,27 @@ forward-difference identity REFUTED at its base step (Ruled out).
   388, arXiv:2005.00530. **2-separation is the operative general-class
   hypothesis** (Ross 2026, consistent with CHT (ii), Eppstein): not "gaps
   slowly growing" but "gaps do not concentrate in a 2-separated set".
+- **Probabilistic-prime-gap grounding landed (Banks–Ford–Tao 2023).** The
+  canonical peer-reviewed source behind the random-analogue input (Chase 2024,
+  CHT 2026, Tao-blog Cramér model) is now in the library: *Large prime gaps
+  and probabilistic models*, Invent. math. 233 (2023) 1471–1518, open access,
+  doi 10.1007/s00222-023-01199-0. Full text at
+  `research/sources/maier-pomerance-2023-large-prime-gaps-probabilistic-models.full.md`
+  (filename is a misnomer — authors are Banks, Ford & Tao; the file header
+  records the correction). Summary + claim `bft2023-cramer-model-canonical` at
+  `research/summaries/banks-ford-tao-2023-large-prime-gaps-probabilistic-models.md`.
+  Content: Cramér's model (each n≥3 in with prob 1/log n, independent) gives
+  largest gap ~ log²x a.s.; Granville's model ~ ξ log²x (ξ=2e^{-γ}=1.1229.);
+  a new random-sieve model satisfies uniform Hardy–Littlewood (Thm 1.3) and an
+  RH analogue (Thm 1.4), largest gap g((ξ±ε)log²x); any set obeying uniform HL
+  has large gaps (Thm 1.5/1.6). **Caveat the run must keep:** the plain Cramér
+  model demonstrably fails for real primes (prime-k-tuple residue bias; Maier's
+  short-interval phenomenon), so a random-model → primes transfer is heuristic
+  support, not proof. This does NOT settle Gilbreath; it fixes the model and
+  its limits. Cramér's own 1936 paper is quoted therein; its scanned full text
+  is unobtainable by this converter (repository records under
+  `research/summaries/cramer-19*.md`), content grounded through this paper +
+  Chase 2024 + CHT 2026.
 - **Parity wave (proved, Ross 2026):** any (2, odd, odd, ...) sequence has every
   row's leading term odd — but odd is NOT 1 (witness 2,3,13 → leading 9). The
   conjecture lives strictly between "odd" and "1". **{0,d} closure double edge

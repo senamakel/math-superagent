@@ -49,7 +49,7 @@ for k in range(1, DEPTH + 1):
     n = len(nxt)
     if k > 1:
         prev_b = b_list[-1]
-        pred = (bb >= prev_b) == (ebits[-2] == 1 and intr[-2] == 4)
+        pred = (bb >= prev_b) == (ebits[k - 2] == 1 and intr[k - 2] == 4)
         if not pred:
             step_fail += 1
             print(f"STEP-LAW FAIL at transition {k-1}->{k}")
