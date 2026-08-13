@@ -1,18 +1,18 @@
 ```thread
-question: Prove the ratio bound — does "gap_i ≤ j_i + 1 for each giant" hold for all giants, and is the Granville ν_2 route a provably weaker target? FORKED (Directive 34): Route A = ratio bound (current, needs geometric growth of b), Route B = lower-bound ν_2 > n^0.525 (Granville Lemma 5.4/Theorem 5.5, needs Lemma 5.4 re-derived here). Comparison queued.
-status: live — FORKED (Directive 34). 15 genuine giants at 6e8 (31.3M primes), max gap 64, ratio bound gap_i ≤ j_i+1 holds with 2+ orders slack (max ratio 0.0000122). Granville route: ν_2/n ≈ 0.49–0.52 on primes below 3e6, Lemma 5.4 hypothesis holds at every sampled n, and the demand-side α=0.525 is unconditional (Baker-Harman-Pintz). The two routes must be compared; if Granville's is provably weaker, switch. Currently: read CHT 2026 first (Directive 34), then re-derive Lemma 5.4 with delta=0 case handled properly (Directive 33), then compare routes.
+question: Which of the three routes to GC has the weakest demand side? Route B (Granville ν_2) selected as primary; Route A (ratio bound) kept as fallback.
+status: live — THREE-ROUTE (Directive 35). Route B (Granville ν_2 > n^0.525) has the weakest demand side: BHP is unconditional, ν_2/n ≈ 0.49–0.52 measured above threshold, Lemma 5.4 to re-derive here. Route A (ratio bound gap_i ≤ j_i+1) holds with 2+ orders slack on 15 giants at 6e8; needs geometric growth of b. Route C (CHT deterministic) needs Cramér (open, stronger than BHP); authors' own assessment: "look difficult to establish rigorously." Primary target: prove Lemma 5.4, then lower-bound ν_2.
 rests-on: |
   - IFF reduction (Lean, sorry-free): GC ⇔ A_k(1) ∈ {0,2}.
-  - Recharge identity (PROVED, universal): b_k = b_1 + Σ_{i<k}(j_i+1) − (k−1). GC holds iff Σ(j_i+1) ≥ k−2 for all k.
-  - 6e8 giant record: 15 genuine giants, gaps max 64, ratio gap_i/(j_i+1) ≤ 0.0167 (2+ orders slack). Anchor: code/out/pattern_finder_6e8_giants.captured.txt.
-  - Geometric growth: b ~ 1.765× per giant event (R²=0.968 over 15); j ~ b^0.388 sublinear. Gaps ≤ 64 and at most slowly growing.
-  - Ratio bound gap_i ≤ j_i+1 holds now; the open question is proving it continues to hold — i.e., proving j grows faster than the inter-giant gap.
-blocked-by: nothing computational. k*=248 at 6e8; next giant needs sieve roughly 1e9 (landing block ~55M).
+  - Recharge identity (PROVED, universal): b_k = b_1 + Σ_{i<k}(j_i+1) − (k−1).
+  - 6e8 giant record: 15 genuine giants, max gap 64, ratio bound gap_i/(j_i+1) ≤ 0.0000122.
+  - Geometric growth: b ~ 1.765× per giant event (R²=0.968 over 15); j ~ b^0.388.
+  - Granville Lemma 5.4/Theorem 5.5: GC reduces to ν_2 > n^β, β > 0.525; α=0.525 unconditional (BHP).
+  - CHT Theorem 1.6 column restriction (Directive 35): j ≥ N′ = right half only; leading block at j=1 does NOT violate (iii). Right-half {0,d}-block scan queued.
+blocked-by: CHT right-half {0,d} scan (Directive 35 item 1). Lemma 5.4 re-derivation (Directive 32/33 item 11).
 next: |
-  1. Produce ratio table: giant row, b_land, j_i, gap_i, ratio gap_i/(j_i+1), flooring — 15 rows, from 6e8 output (Directive 30 item 4).
-  2. Estimate width for 16th genuine giant (sieve ~1e9).
-  3. Restate step 6 as the ratio bound, mark "bounded gap" superseded.
-  4. Provability refocused: can the geometric growth of b be proved from prime-gap theory, or is it a new statement?
+  1. Scan right-half {0,d} blocks with d≥2 in 6e8 data; compare against CHT threshold R_m − 3R_{m−1}. → code/out/cht_right_half_0d_scan.captured.txt
+  2. Re-derive Granville Lemma 5.4 with delta=0 case handled.
+  3. Write three-route comparison section below.
 ```
 
 # Regeneration thread — the ratio bound is the whole conjecture
