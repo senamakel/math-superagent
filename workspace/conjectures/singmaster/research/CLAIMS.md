@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `matveev-2-3-constants-computed` | For the (2,3) triangular=tetrahedral curve C(x,2)=C(y,3), i.e. 3x(x-1)=y(y-1)(y-2), the exact-solution linear form Lambda = ln P - ln Q attached to the two-sided product equality has ALL coefficients zero (n_nonzero=0),… | yes | checked | `code/out/matveev_2_3_constant.md` |
 | `matveev-2000-explicit-constants-primary` | Matveev (Izv. Math. 62 (1998) 723-772, homogeneous rational case, Kummer condition): for Lambda = b1 ln(alpha1) + ... + bn ln(alphan), n>=2, integers bj != 0 (bn != 0), Lambda != 0, D = DK/kappa, and Aj >=… | yes | asserted | `research/summaries/matveev-2000-homogeneous-linear-form.md` |
 
-_42 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_43 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -151,6 +151,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `singmaster-bounds-history` (research/summaries/singmaster-literature-exact.md) — asserted by the source, not proved there and not checked here
 - `sst-effective-shared-factor` (research/summaries/saradha-shorey-tijdeman-equal-products-1995.md) — asserted by the source, not proved there and not checked here
 - `sst-equal-length-exception-family` (research/summaries/saradha-shorey-tijdeman-equal-products-1995.md) — asserted by the source, not proved there and not checked here
+- `stein-1980-not-held-content-attested` (research/summaries/stein-1980-exponential-sums-parity.md) — asserted by the source, not proved there and not checked here
 - `stirling-2023-bound-and-record` (research/summaries/stirling-singmaster-2023.md) — asserted by the source, not proved there and not checked here
 - `sunit-subspace-inapplicable` (research/approaches/s-unit-subspace.md) — asserted by the source, not proved there and not checked here
 - `tao-boundary-and-method-ceiling` (research/summaries/tao-interior-blog.md) — asserted by the source, not proved there and not checked here
