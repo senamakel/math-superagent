@@ -30,16 +30,18 @@ The Erdős problems database (also in library) states the cleaner form
 > For an odd perfect square `n`, there are no Type-I and no Type-II solutions to
 > `4/n = 1/x + 1/y + 1/z`; i.e. `f_I(n) = f_II(n) = 0`.
 
+(Title and content confirmed from source §1: the abstract's statement list in
+`research/sources/pomerance-erdos-straus.full.md` lists "Proposition 1.6
+(Vanishing)" with the square condition; the claim is asserted in the paper and
+re-stated in this run's `code/verify_library_claims.py` claim block
+`vanishing-type12-odd-squares` with status *asserted — not re-proved here*.)
+
 This is why the classical machinery stops exactly at the square residue classes:
 every classical parametric solution of `4/n` for `n ≡ r (mod m)` (in particular
 those giving Type I or Type II for prime `n`) is ruled out when `n` is an odd
 perfect square — and the six residual classes mod 840 are all perfect square
 residues (`1, 121, 169, 289, 361, 529 = 1², 11², 13², 17², 19², 23²`). Salez's
-Schinzel-theorem (Prop 2) is the polynomial-family form of the same fact. (The
-claim block in an earlier run's `verify_library_claims.py` asserts this as
-`vanishing-type12-odd-squares`; the exact statement is quoted from the paper's
-Prop 1.6 in this run's excerpt `code/out/et-excerpts.txt` — see Contradictions
-for what is verified how.)
+Schinzel-theorem (Prop 2) is the polynomial-family form of the same fact.
 
 **Solvable congruences (Prop 1.9).** Every primitive residue class
 `n ≡ r (mod 840)` is "solvable by polynomials" unless `r` is a perfect square;
