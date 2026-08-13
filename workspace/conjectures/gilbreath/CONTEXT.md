@@ -5,7 +5,7 @@ rebuild from disk: established results with their basis, dead approaches and
 why, computed numbers, durable memory, and disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
-Budget 10,000 tokens (this file ~5700, so well under). Length is a bill the
+Budget 10,000 tokens (this file ~6000, so ~4000 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
