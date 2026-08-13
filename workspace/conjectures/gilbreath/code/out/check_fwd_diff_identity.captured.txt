@@ -1,0 +1,8 @@
+oracle: rows A_1..A_5 reproduce problem.md: True
+Traceback (most recent call last):
+  File "/workspace/code/out/check_fwd_diff_identity.py", line 137, in <module>
+    main()
+  File "/workspace/code/out/check_fwd_diff_identity.py", line 73, in main
+    assert D[k][i] == direct, (k, i, D[k][i], direct)
+           ^^^^^^^^^^^^^^^^^
+AssertionError: (1, 0, -1, 1)
