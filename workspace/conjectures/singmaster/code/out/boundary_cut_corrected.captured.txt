@@ -40,8 +40,14 @@ Fibonacci family: (n,k) known by construction, no search
  5    33551    12814      4.882e+06  boundary          194.6  interior
  6   229969    87839      1.416e+08  boundary          344.4  interior
 
-The family sits INTERIOR under the correct cut for every j: k grows like
-0.38*n while the cut grows subpolynomially, so the family contributes to
-the MRSTT interior count, not to the boundary count G-boundary-uniform-count
-is about. Under the mis-coded cut it would also read interior, but for the
-wrong reason and with the wrong margin.
+Read the table, not the expectation. Under the CORRECT cut every family
+member is BOUNDARY: k < cut in all six rows (87839 < 1.416e8 at j=6).
+Under the mis-coded cut j>=2 flips to INTERIOR. The two cuts therefore
+disagree on the whole family, and the mis-coded one hides it entirely
+from the boundary count that G-boundary-uniform-count is about.
+
+This does NOT refute a uniform bound. Each family member is a different a,
+so an infinite family each contributing >=1 boundary representative is
+consistent with a constant C bounding the count PER a. What it does mean:
+the family is inside the object being counted, so any argument for C must
+cover it rather than set it aside as interior.
