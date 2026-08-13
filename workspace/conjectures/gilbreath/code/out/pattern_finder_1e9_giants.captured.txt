@@ -245,3 +245,19 @@ row 243: b=23163286 floor=27684004 intruder=4
 row 244: b=23163285 floor=27684004 intruder=4
 row 245: b=23163284 floor=27684004 intruder=4
 row 246: b=23163283 floor=27684004 intruder=4
+row 247: b=23163282 floor=27684004 intruder=4
+row 248: NO INTRUDER (block reaches right edge, b=50847285, floor=0)
+row 248: b=50847285 floor=0 intruder=None
+row 249: b=50847284 floor=0 intruder=None
+row 250: b=50847283 floor=0 intruder=None  [126s]
+row 251: b=50847282 floor=0 intruder=None
+row 252: b=50847281 floor=0 intruder=None
+row 253: b=50847280 floor=0 intruder=None
+row 254: b=50847279 floor=0 intruder=None
+row 255: b=50847278 floor=0 intruder=None
+row 256: b=50847277 floor=0 intruder=None
+row 257: b=50847276 floor=0 intruder=None
+row 258: b=50847275 floor=0 intruder=None
+row 259: b=50847274 floor=0 intruder=None
+row 260: b=50847273 floor=0 intruder=None
+row 261: b=50847272 floor=0 intruder=None
