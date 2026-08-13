@@ -1,0 +1,86 @@
+events: 74
+row    jump      b_k    s0      sup    sdn   vmin vmax end exit past | sup+sdn==s0 | vmax<=2
+  1       5          2      0      3      2   1   3   3   2   1   False  False
+  2       6          7      4      0      2   0   2   0   2   2   False  True
+  3       0         13      0      0      0   2   2   2   2   0   True  True
+  4      11         13      3      3      5   0   2   0   4   4   False  True
+  8       3         21      0      2      1   2   4   3   2   1   False  False
+  9      34         24     12     10     12   0   2   0   2   2   False  True
+ 10      39         58     25      7      7   0   2   2   2   0   False  True
+ 12       1         96      1      0      0   2   2   2   2   0   False  True
+ 14      77         96     44     16     17   0   2   1   2   3   False  True
+ 15       2        173      0      1      1   1   2   2   2   0   False  True
+ 16       0        175      0      0      0   2   2   2   2   0   True  True
+ 17       0        175      0      0      0   2   2   2   2   0   True  True
+ 18       0        175      0      0      0   2   2   2   2   0   True  True
+ 19     115        175     65     24     26   0   2   0   3   3   False  True
+ 22     451        288    239    106    106   0   2   2   2   0   False  True
+ 23     134        739     56     38     40   0   2   0   3   3   False  True
+ 26       1        871      0      1      0   2   3   3   3   0   False  False
+ 34    1314        865    644    334    336   0   2   0   2   2   False  True  <== giant
+ 38     594       2176    284    154    156   0   2   0   5   5   False  True
+ 47       0       2762      0      0      0   2   2   2   2   0   True  True
+ 48       0       2762      0      0      0   2   2   2   2   0   True  True
+ 49       0       2762      0      0      0   2   2   2   2   0   True  True
+ 50     603       2762    295    154    154   0   2   2   2   4   False  True
+ 51     842       3365    422    209    211   0   2   0   2   2   False  True
+ 56    1739       4203    874    432    433   0   2   1   2   3   False  True  <== giant
+ 57       1       5942      0      1      0   2   3   3   3   0   False  False
+ 62       0       5939      0      0      0   2   2   2   2   0   True  True
+ 63       0       5939      0      0      0   2   2   2   2   0   True  True
+ 64   17326       5939   8909   4208   4209   0   2   1   3   4   False  True  <== giant
+ 68    8237      23262   4068   2084   2085   0   2   1   3   4   False  True  <== giant
+ 72      31      31496     12      9     10   0   2   1   3   4   False  True
+ 75       0      31525      0      0      0   2   2   2   2   0   True  True
+ 76       2      31525      2      0      0   2   2   2   2   0   False  True
+ 79       0      31525      0      0      0   2   2   2   2   0   True  True
+ 80      10      31525      5      3      2   1   3   3   4   7   True  False
+ 86       7      31530      3      1      3   0   2   0   4   4   False  True
+ 91       1      31533      0      0      1   1   2   1   3   4   False  True
+ 94   61088      31532  30712  15188  15188   0   3   2   2   0   False  False  <== giant
+ 96   11354      92619   5625   2864   2865   0   2   1   7   8   False  True  <== giant
+110   37746     103960  18779   9483   9484   0   2   1   2   3   False  True  <== giant
+111       0     141706      0      0      0   2   2   2   2   0   True  True
+112  129923     141706  64912  32505  32506   0   2   1   7   8   False  True  <== giant
+125       3     271617      1      0      2   0   2   0   2   2   False  True
+126   53470     271620  26735  13367  13368   0   2   1   2   3   True  True  <== giant
+128       7     325089      2      3      2   1   3   3   2   1   False  False
+129       0     325096      0      0      0   2   2   2   2   0   True  True
+130  190810     325096  95580  47614  47616   0   2   0   2   2   False  True  <== giant
+131       1     515906      0      0      1   1   2   1   2   3   False  True
+132       1     515907      1      0      0   2   2   2   2   0   False  True
+134  217657     515907 108661  54497  54499   0   2   0   2   2   False  True  <== giant
+135       0     733564      0      0      0   2   2   2   2   0   True  True
+136       4     733564      2      0      2   0   2   0   2   2   True  True
+138       9     733567      3      2      4   0   2   0   4   4   False  True
+141       0     733574      0      0      0   2   2   2   2   0   True  True
+142       0     733574      0      0      0   2   2   2   2   0   True  True
+143       3     733574      2      0      1   1   2   1   2   3   False  True
+146  360698     733575 180558  90069  90071   0   2   0   6   6   False  True  <== giant
+159       2    1094261      0      1      1   1   2   2   2   0   False  True
+160       0    1094263      0      0      0   2   2   2   2   0   True  True
+161 4323712    1094263 2162475 1080618 1080619   0   2   1   2   3   False  True  <== giant
+162       1    5417975      1      0      0   2   2   2   2   0   False  True
+164       5    5417975      1      3      1   1   4   4   3   7   False  False
+167       0    5417978      0      0      0   2   2   2   2   0   True  True
+168       2    5417978      1      1      0   2   3   3   4   7   True  False
+173       0    5417976      0      0      0   2   2   2   2   0   True  True
+174 5237310    5417976 2617983 1309663 1309664   0   2   1  27  28   False  True  <== giant
+223       0   10655238      0      0      0   2   2   2   2   0   True  True
+224       6   10655238      3      2      1   2   4   3   2   1   True  False
+225       0   10655244      0      0      0   2   2   2   2   0   True  True
+226      22   10655244     10      5      7   0   2   0   5   5   False  True
+235       2   10655258      0      1      1   1   2   2   2   0   False  True
+236       0   10655260      0      0      0   2   2   2   2   0   True  True
+237       0   10655260      0      0      0   2   2   2   2   0   True  True
+238 5596825   10655260 2795575 1400624 1400626   0   2   0 None None   False  True  <== giant
+
+non-balanced (s0 != sup+sdn): 46 -> [(1, 5, 0, 3, 2), (2, 6, 4, 0, 2), (4, 11, 3, 3, 5), (8, 3, 0, 2, 1), (9, 34, 12, 10, 12), (10, 39, 25, 7, 7), (12, 1, 1, 0, 0), (14, 77, 44, 16, 17), (15, 2, 0, 1, 1), (19, 115, 65, 24, 26)]
+amplitude > 2: 10 -> [(1, 5, 1, 3), (8, 3, 2, 4), (26, 1, 2, 3), (57, 1, 2, 3), (80, 10, 1, 3), (94, 61088, 0, 3), (128, 7, 1, 3), (164, 5, 1, 4), (168, 2, 2, 3), (224, 6, 2, 4)]
+giants: 15, balanced 1, amp<=2 14
+small : 36, balanced 4, amp<=2 27
+stalls: 23
+exit-gap (halved) histogram: {2: 53, 3: 9, 4: 5, 5: 2, 6: 1, 7: 2, 27: 1}
+endpoint histogram: {0: 17, 1: 14, 2: 34, 3: 8, 4: 1}
+vmax histogram: {2: 64, 3: 7, 4: 3}
+elapsed 97.4s

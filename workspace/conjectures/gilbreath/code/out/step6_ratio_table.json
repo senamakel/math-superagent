@@ -1,0 +1,258 @@
+{
+ "directive": 30,
+ "source": "code/out/pattern_finder_outputs/giants_6e8.json",
+ "W": 31324703,
+ "num_primes_6e8": 31324703,
+ "depth": 400,
+ "k_star_no_intruder_1based": 248,
+ "excluded_row0": 247,
+ "excluded_reason": "flooring == 0; block meets the row's right edge at k*; jump is a finite-width truncation artifact",
+ "n_giants_total": 16,
+ "n_surviving": 15,
+ "surviving_rows0": [
+  34,
+  56,
+  64,
+  68,
+  94,
+  96,
+  110,
+  112,
+  126,
+  130,
+  134,
+  146,
+  161,
+  174,
+  238
+ ],
+ "gaps": [
+  22,
+  8,
+  4,
+  26,
+  2,
+  14,
+  2,
+  14,
+  4,
+  4,
+  12,
+  15,
+  13,
+  64
+ ],
+ "table": [
+  {
+   "giant": 1,
+   "row0": 34,
+   "row1": 35,
+   "b_land": 2179,
+   "j": 1314,
+   "gap": 22,
+   "ratio": 0.016730038022813688,
+   "margin": 2178,
+   "flooring": 31322488
+  },
+  {
+   "giant": 2,
+   "row0": 56,
+   "row1": 57,
+   "b_land": 5942,
+   "j": 1739,
+   "gap": 8,
+   "ratio": 0.004597701149425287,
+   "margin": 5941,
+   "flooring": 31318703
+  },
+  {
+   "giant": 3,
+   "row0": 64,
+   "row1": 65,
+   "b_land": 23265,
+   "j": 17326,
+   "gap": 4,
+   "ratio": 0.00023085358111617706,
+   "margin": 23264,
+   "flooring": 31301372
+  },
+  {
+   "giant": 4,
+   "row0": 68,
+   "row1": 69,
+   "b_land": 31499,
+   "j": 8237,
+   "gap": 26,
+   "ratio": 0.0031561058509346927,
+   "margin": 31498,
+   "flooring": 31293134
+  },
+  {
+   "giant": 5,
+   "row0": 94,
+   "row1": 95,
+   "b_land": 92620,
+   "j": 61088,
+   "gap": 2,
+   "ratio": 3.273911833554322e-05,
+   "margin": 92619,
+   "flooring": 31231987
+  },
+  {
+   "giant": 6,
+   "row0": 96,
+   "row1": 97,
+   "b_land": 103973,
+   "j": 11354,
+   "gap": 14,
+   "ratio": 0.0012329370321444298,
+   "margin": 103972,
+   "flooring": 31220632
+  },
+  {
+   "giant": 7,
+   "row0": 110,
+   "row1": 111,
+   "b_land": 141706,
+   "j": 37746,
+   "gap": 2,
+   "ratio": 5.298434312660609e-05,
+   "margin": 141705,
+   "flooring": 31182885
+  },
+  {
+   "giant": 8,
+   "row0": 112,
+   "row1": 113,
+   "b_land": 271629,
+   "j": 129923,
+   "gap": 14,
+   "ratio": 0.000107755303100274,
+   "margin": 271628,
+   "flooring": 31052960
+  },
+  {
+   "giant": 9,
+   "row0": 126,
+   "row1": 127,
+   "b_land": 325090,
+   "j": 53470,
+   "gap": 4,
+   "ratio": 7.480690467730172e-05,
+   "margin": 325089,
+   "flooring": 30999485
+  },
+  {
+   "giant": 10,
+   "row0": 130,
+   "row1": 131,
+   "b_land": 515906,
+   "j": 190810,
+   "gap": 4,
+   "ratio": 2.0963152019537657e-05,
+   "margin": 515905,
+   "flooring": 30808665
+  },
+  {
+   "giant": 11,
+   "row0": 134,
+   "row1": 135,
+   "b_land": 733564,
+   "j": 217657,
+   "gap": 12,
+   "ratio": 5.5132363616315504e-05,
+   "margin": 733563,
+   "flooring": 30591003
+  },
+  {
+   "giant": 12,
+   "row0": 146,
+   "row1": 147,
+   "b_land": 1094273,
+   "j": 360698,
+   "gap": 15,
+   "ratio": 4.158592067069773e-05,
+   "margin": 1094272,
+   "flooring": 30230282
+  },
+  {
+   "giant": 13,
+   "row0": 161,
+   "row1": 162,
+   "b_land": 5417975,
+   "j": 4323712,
+   "gap": 13,
+   "ratio": 3.0066750498934596e-06,
+   "margin": 5417974,
+   "flooring": 25906565
+  },
+  {
+   "giant": 14,
+   "row0": 174,
+   "row1": 175,
+   "b_land": 10655286,
+   "j": 5237310,
+   "gap": 64,
+   "ratio": 1.222001137606684e-05,
+   "margin": 10655285,
+   "flooring": 20669241
+  },
+  {
+   "giant": 15,
+   "row0": 238,
+   "row1": 239,
+   "b_land": 23163290,
+   "j": 12508030,
+   "gap": null,
+   "ratio": null,
+   "margin": 23163289,
+   "flooring": 8161173
+  }
+ ],
+ "gap_trend": {
+  "slope_numpy": 1.3054945054945055,
+  "intercept_numpy": 6.085714285714289,
+  "r2": 0.11631623711850014,
+  "slope_exact_frac": "594/455",
+  "slope_exact_float": 1.3054945054945055,
+  "agree": true,
+  "max_gap": 64,
+  "max_gap_pair": [
+   174,
+   238
+  ]
+ },
+ "parity": {
+  "n": 15,
+  "even": 14,
+  "odd": 1,
+  "p_fair_frac": "1/2048",
+  "p_fair": 0.00048828125,
+  "p_given_0p6_frac": "157837977/30517578125",
+  "p_given_0p6": 0.005172034830336
+ },
+ "geometric": {
+  "slope_numpy": 0.5769184213197123,
+  "intercept_numpy": 8.365062695098391,
+  "slope_closed_form": 0.5769184213197122,
+  "agree": true,
+  "factor": 1.7805430843196082,
+  "b_next_float": 41243235.81958954,
+  "b_next_int": 41243236,
+  "next_row": 302,
+  "required_W": 41244539,
+  "required_pi": 41244539,
+  "sieve_bound_N": 847917348
+ },
+ "sufficiency": {
+  "ratio_bound_failures": 0,
+  "ratio_bound_failure_gaps": [],
+  "margin_failures": 0,
+  "margin_failure_gaps": [],
+  "min_margin": 2156,
+  "min_margin_at_gap_pair": [
+   34,
+   56
+  ]
+ }
+}
