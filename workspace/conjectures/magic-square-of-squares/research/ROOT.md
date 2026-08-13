@@ -14,6 +14,23 @@ proof of non-existence is known. LaBar's problem (1984); Gardner's $100 prize;
 the 4×4 Euler magic square of squares is a *different* problem (`problem.md`,
 `research/summaries/wikipedia-magic-square-of-squares.md`).
 
+**Status note (2026-08-13):** this compiled document predates the latest
+machine-verified advances. The claims ledger `research/CLAIMS.md` (derived from
+the notes) is the authority for statuses; the deltas from this document are:
+(1) `robertson-elliptic-reduction` is now `holds-here: yes`; (2) Bremner II's
+Category III K3 **has a Q-point** — `S(Q) ≠ ∅` is machine-checked
+(`catIII-k3-has-q-point`, `code/out/reconciliation_2026-08-12.txt` Task D), so
+no Brauer–Manin obstruction can prove `S(Q) = ∅` and the `brauer-manin-k3-
+surface` approach is reframed (see `research/approaches/brauer-manin-k3-
+surface.md`); (3) the four-AP "Φ" facts and the no-triple-to-400 evidence are
+now claim blocks (`phi-universal-set`, `phi-no-triple-m400`,
+`code/out/phi_claim_blocks.md`); (4) the `25×10²⁴`/`6.4×10²²`/`2.4×10¹⁹`
+catalogue bounds and the witness grids were re-confirmed in
+`code/out/reconciliation_2026-08-12.txt` (near_misses.json byte-identical,
+all_checks_passed still true) and `code/out/seven_square_grids_audit.txt`
+(the "4 distinct 7-square grids" reading is resolved — those grids repeat
+entries; distinct-entry best in the small box remains 5).
+
 ---
 
 ## 1. The structure a hypothetical full solution must have
@@ -114,7 +131,11 @@ and what it covered.
   positive entries ≤ 100 and the near-miss box `c = e², e ≤ 80, |u|,|v| ≤ 120`
   (4,052,328 grids): best distinct grid has 5 square entries, no distinct
   6-square magic grid exists in either box. Range facts only
-  (`code/out/oracle_note.md`).
+  (`code/out/oracle_note.md`). Re-audited 2026-08-13
+  (`code/out/seven_square_grids_audit.txt`): the four `7-square` grids in the
+  box are `(e,u,v)=(17,±120,±120)`, `c=289`, true magic with 7 square entries
+  but **repeated** entries only (5 distinct values) — not distinct-entry
+  near-misses, consistent with best-distinct-5.
 
 ---
 
@@ -188,7 +209,13 @@ and what it covered.
   Neron–Severi rank 20 but Q-defined `NS(S,Q)` rank 12, every rational curve on
   `S` even degree, and no irreducible rational curves of degree 4 or 8 —
   claim `k3-ns-rank-12-not-maximal` (**proved**); note it is the *six-square*
-  surface, not the full nine-square variety.
+  surface, not the full nine-square variety. **Machine-checked 2026-08-13:**
+  this same S has a Q-point — claim `catIII-k3-has-q-point`, `(345,196,−304,
+  255,−396,−25)` on `T²+U²=V²+W²=X²+Y², TU+VW+XY=0`, confirmed by exact
+  construction + sympy in `code/out/reconciliation_2026-08-12.txt` Task D, so
+  **S(Q) is nonempty** and no rational-point set on S can be shown empty by a
+  Brauer–Manin argument (the NS rank-12 / even-degree facts concern divisors
+  and curves, not isolated points — they stand).
 
 ---
 
@@ -201,7 +228,8 @@ and what it covered.
   generators`, `near-miss-baseline-and-incidence`, `six-square-all-attainable`
   are asserted by their sources and not independently reproduced here (the
   near-miss *grids* themselves are checked; the surrounding structural claims are
-  asserted).
+  asserted). `phi-universal-set` / `phi-no-triple-m400` are checked-as-recorded
+  (the run's own earlier programs; not re-executed this session).
 - **Catalogued** (taken on a source/sequence's word, no local derivation):
   `ls1-in-lucas-family`, `morgenstern-8-digit-smallest-entry`,
   `three-primitive-equal-d-bound`, `sum-of-two-squares-multiplicity`.
@@ -212,4 +240,18 @@ and what it covered.
   Bremner).
 - **Live gap** (`research/REQUESTS.md`, `exact-reduction-magic-507c`): the exact
   reduction variety (elliptic surface / K3) and which points correspond to
-  solutions, needed before any descent is sound.
+  solutions, needed before any descent is sound. Partially advanced by
+  `phi-universal-set` (a Φ-quadruple ⇔ full MSS, extraction of the rational
+  reduction is claim-blocked) and by `catIII-k3-has-q-point` (the six-square
+  surface's rational points are pinned); the reduction of the full MSS to a
+  variety whose points correspond exactly to distinct-integer solutions is still
+  not a claim block.
+- **Brauer–Manin lanes now closed or reframed.** Q-level quaternion/Hilbert
+  reciprocity (`hilbert-reciprocity-four-conics`) refuted; the algebraic-Brauer
+  sufficiency on K3s is conditional-on-open-hypothesis (van Luijk); a
+  transcendental obstruction is real and certified-constructible (Hassett–
+  Várilly-Alvarado), but Bremner II's S already has Q-points, so the obstruction
+  question lives on the extra (7th–9th) square conditions or on Bremner II Cat
+  VII's hyperelliptics (`chabauty-coleman-hyperelliptic`). Wu (arXiv:2103.01784)
+  cautions that BM behaviour is not base-change-invariant (abstract on disk
+  only).

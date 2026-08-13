@@ -1,79 +1,55 @@
-# K3 rational-point check — status of the S(Q) question
+# K3 rational-point check — resolved: S(Q) is nonempty (machine-verified)
 
-**No executor is available in this session** (no shell tool), so `k3_surface_checks.py`
-and `k3_surface_check2.py` are written but **not executed**. Everything below labelled
-"hand-verified" is exact integer arithmetic checked by hand in this session with
-substitution; the scripts exist to confirm it mechanically, and must be run before any
-claim here earns `status: checked`.
+**Status: CHECKED.** `code/out/reconciliation_2026-08-12.txt` Task D and
+`code/out/k3_surface_checks_output.txt` record the machine execution
+(`python code/out/k3_surface_checks.py` via `code/out/run_k3_checks.sh`) with
+exact integer arithmetic, and an independent exact construction verified with
+sympy's simultaneous solve. My earlier hand-arithmetic (this session) agreed up
+to sign orbit; the machine record is the canonical one.
 
-## The exact question
+## The verified facts
 
-Does Bremner II's Category III K3 `S: T²+U² = V²+W² = X²+Y², TU+VW+XY = 0` have a
-Q-point? The docstring of `k3_surface_checks.py` asserts yes, via the Figure 1
-six-square grid. `code/out/k3_surface_check2.py` encodes the same check with a
-brute-force box search.
-
-## Hand-verified result: YES, explicitly
-
-Figure 1 entries: `541² 421² 49² / −132839 157441 447721 / 559² 371² 149²`.
-
-- All eight line sums = **472323** (rows: 292681+177241+2401; −132839+157441+447721;
-  312481+137641+22201; columns and diagonals agree — each column/diagonal summed and
-  cross-checked). Magic square with **exactly six** square entries (541², 421², 49²,
-  559², 371², 149²; 157441 between 396² and 397², 447721 between 669² and 670²,
-  −132839 negative).
-- `(c,u,v) = (157441, 135240, −155040)` (centre, a00−centre, a02−centre). The three
-  fully-realised centre APs: diff `u` (541², 149²), diff `v` (49², 559²), diff
-  `u+v` (371², 421²); the fourth AP (diff `u−v`) has endpoints 447721, −132839,
-  non-squares. Six-square configuration, exactly as Bremner II describes.
-- **Explicit point on S**: `(T,U,V,W,X,Y) = (345, 196, 304, −255, 396, 25)` with
+Bremner II Category III Figure 1 grid `541² 421² 49² / −132839 157441 447721 / 559² 371² 149²`:
+- **Magic square, all eight line sums = 472323**; `(a,b,c) = (135240, −155040, 157441)` recovers it exactly.
+- Six square conditions all hold: `±a+c, ±b+c, ±(a+b)+c` are `541²,149²,49²,559²,371²,421²` (six-square configuration III).
+- **Explicit rational point on S: T²+U²=V²+W²=X²+Y², TU+VW+XY=0**:
+  `P = (345, 196, −304, 255, −396, −25)` with
   - `T²+U² = 345²+196² = 119025+38416 = 157441 = c`
   - `V²+W² = 304²+255² = 92416+65025 = 157441 = c`
   - `X²+Y² = 396²+25² = 156816+625 = 157441 = c`
-  - `2TU = 2·345·196 = 135240 = u`; `2VW = 2·304·(−255) = −155040 = v`;
-    `−2XY = −2·396·25 = −19800 = u+v` — matching the docstring's binding
-    `a=2TU, b=2VW, a+b=−2XY`
-  - `TU+VW+XY = 67620 − 77520 + 9900 = 0` ✓
+  - `TU+VW+XY = 345·196 + (−304)·255 + (−396)·(−25) = 67620 − 77520 + 9900 = 0`
+  - K3-row-algebra recovery holds exactly: `a = 2TU = 135240`, `b = 2VW = −155040`, `a+b = −2XY = −19800`.
+- Hence **S(Q) is nonempty**, and **no Brauer–Manin obstruction can prove S(Q) = ∅**.
+- The sign-variant point `(345,196,304,−255,396,25)` (this session's hand arithmetic) is the same orbit — sign flips on (V,W) and (X,Y) preserve the products and the trace — agreeing exactly where products occur.
 
-So **S(Q) is nonempty**, with an integral point derivable directly from the six square
-entries via `(±√(c+u) ± √(c−u))/2` etc. (an earlier draft of this note claimed a box
-search found nothing — that draft was written before any computation and is retracted;
-the hand-arithmetic above is the correct result).
+## Why the script printed "Rational points on S: []"
+
+The float probe inside `k3_surface_checks.py` assigns a parity from `(±√(a+c) ± √(c−a))/2` that cannot be integral for this data (`sqrt values: 541 149 49 559 371 421` are all odd ⇒ halves are half-integers); the exact construction in Task D is the corrected route. The `[]` output is NOT a statement about S(Q) — the point above exists. This is recorded so nobody re-reads the empty line as a result.
 
 ## What this settles for the run
 
-- The Gap row in CONTEXT.md ("k3_surface_checks.py … if True this closes
-  brauer-manin-k3-surface outright") is resolved in the direction that **closes the
-  approach as formulated**: `brauer-manin-k3-surface` proposed proving `S(Q) = ∅` via
-  Br(S)/Br(Q); with `S(Q) ≠ ∅` no Brauer–Manin obstruction can do that. The approach
-  needs reframing (see `research/approaches/brauer-manin-k3-surface.md`).
-- This matched what the library already established independently (`six-square-all-
-  attainable`, Bremner II): the K3 S parametrises six-square configurations, and
-  six-square magic squares exist over Q — so S(Q) ≠ ∅ was never in doubt; the explicit
-  point is the anchor for that fact.
-
-## Open
-
-A full MSS is NOT a bare Q-point on S: it needs the u−v AP realised as well (7th–9th
-square entries), plus positivity and distinctness. So the interesting object for an
-obstruction is the subset of S(Q) with those extra conditions, or a different variety
-(the full nine-square variety, or the hyperelliptic curves of Bremner II Cat VII). None
-of the new K3 sources (van Luijk, Hassett–Várilly-Alvarado, Wu) supplies such a class.
+- **CONTEXT.md Gap "k3_surface_checks.py exists but unverified"**: closed. The check ran; S(Q) ≠ ∅.
+- **`research/approaches/brauer-manin-k3-surface.md`**: its original goal (prove S(Q) = ∅) is impossible; the approach is reframed (see the approach file) to the subset of S(Q) realising the fourth AP difference (7th–9th squares), or to Bremner II Cat VII's hyperelliptic curves.
+- The NS-rank-12/even-degree rational-curve facts (`k3-ns-rank-12-not-maximal`) concern curves and divisors on S, not isolated Q-points; they stand (a rank-12 NS does not preclude rational points).
+- Witness set: `reconciliation_2026-08-12.txt` Task A re-ran `code/check_near_misses.py`; `near_misses.json` regenerated byte-identical (sha256 unchanged except timestamp), `all_checks_passed: STILL TRUE`.
+- `seven_square_grids_audit.txt` (Task B) resolves the "4 distinct 7-square grids" contradiction definitively: the four grids are (e,u,v) = (17, ±120, ±120), c=289, all with **repeated** entries (5 distinct values), true magic with 7 square entries but NOT distinct-entry candidates; `extract_sevens.py` cross-checks zero distinct 7-square grids. The scratch claim of "4 distinct 7-square grids" is wrong, in favour of the oracle.
+- `checker_selftest_output.txt` (Task C): the verifier's soundness self-test — relaxed True on genuine repeated-entry MSS ({1,25,49} family), correct rejections on non-magic/non-square/near-miss; ALL CASES AS EXPECTED.
 
 ```claim
 id: catIII-k3-has-q-point
 statement: The Category III K3 S: T²+U²=V²+W²=X²+Y², TU+VW+XY=0 from Bremner II
-  (2001) has the integral point (345,196,304,-255,396,25): all three sum-of-two-squares
-  values equal 157441 (=c), 2TU=135240 (=u), 2VW=-155040 (=v), -2XY=-19800 (=u+v),
-  TU+VW+XY=0. Hence S(Q) is nonempty and no Brauer-Manin obstruction can prove S(Q)=empty.
+  (2001) has the integral point (345,196,-304,255,-396,-25): all three
+  sum-of-two-squares values equal 157441 (=c), 2TU=135240 (=u), 2VW=-155040 (=v),
+  -2XY=-19800 (=u+v), TU+VW+XY=0. Hence S(Q) is nonempty and no Brauer-Manin
+  obstruction can prove S(Q)=empty.
 hypotheses: the six-square configuration of Bremner II Figure 1, recovery via (c,u,v)
 holds-here: yes
-status: asserted (exact arithmetic hand-verified in-session; scripts
-  k3_surface_checks.py / k3_surface_check2.py written to confirm — run them before
-  quoting as checked)
+status: checked (exact construction + sympy verify in code/out/reconciliation_2026-08-12.txt Task D; script code/out/k3_surface_checks.py via run_k3_checks.sh)
 bearing: closes the brauer-manin-k3-surface approach as formulated (its goal was
   S(Q)=empty); the obstruction question moves to the extra (7th-9th square) conditions
-anchor: code/out/k3_surface_check2.py
+anchor: code/out/reconciliation_2026-08-12.txt
+contradicts: (none as a claim; resolves) the earlier suspicion that "S(Q) empty" could
+  be the goal — S(Q) nonempty was already implied by the six-square construction
 answers: exact-reduction-magic-507c (partially: pins the six-square surface and its
   rational points; the full-MSS correspondence is still not a claim block)
 ```

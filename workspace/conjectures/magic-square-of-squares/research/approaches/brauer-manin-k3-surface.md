@@ -5,7 +5,7 @@ idea: Bremner II (2001) identifies the magic-square-of-squares problem (six-squa
 
 mechanism: Bremner II §3 gives everything needed: the 20 explicit divisors generating NS(S,C), the 12 generating NS(S,Q), the intersection form (25), the singular-fibre decompositions (16-20) showing field-of-definition data at λ = ±√3, ±i, ±1, ±1/√3. The algebraic Brauer group Br₁(S)/Br(Q) ≅ H¹(Gal(Q̄/Q), NS(S_Q̄)) is computable from the Galois action on the 8 extra generators Γ₁₃,…,Γ₁₂₀ (the conics C+++, lines L₂, and the six lines at the I₄ fibres). The geometric Brauer group Br(S_Q̄) ≅ Hom(T,Q/Z) where T = NS(S,C)^⊥ in H²(S,Z) has rank 10. For a K3 with NS rank 20, Br(S_Q̄) is finite and controlled by the transcendental lattice. The computation has three concrete stages: (1) determine H¹(Gal, NS) — a finite group cohomology computation over a V₄-extension, (2) compute the transcendental Brauer group from the intersection form, (3) evaluate the BM pairing on the adelic points corresponding to the known local solubility (solutions mod every prime power — problem.md). The 12×12 intersection matrix and singular-fibre structure are explicitly in Bremner II; the only additional data needed is the Galois action on the 8 transcendental generators, which can be read from the line/conic equations.
 
-status: blocked — the original goal (prove S(Q) = ∅) is IMPOSSIBLE: S(Q) is nonempty, with the explicit integral point (T,U,V,W,X,Y) = (345, 196, 304, -255, 396, 25) on S: T²+U²=V²+W²=X²+Y²=157441, 2TU=135240 (=u), 2VW=-155040 (=v), -2XY=-19800 (=u+v), TU+VW+XY=0, derived from Bremner II Figure 1's six-square configuration (claim catIII-k3-has-q-point, status: asserted with exact hand-verified arithmetic; scripts k3_surface_checks.py / k3_surface_check2.py written to confirm by machine). A Brauer-Manin obstruction proves emptiness of a set of rational points; a nonempty S(Q) cannot be obstructed. Bremner II's own NS/rank/curve results (k3-ns-rank-12-not-maximal) stand untouched — S is a K3 with the 8-gap, even-degree rational curves, no degree-4/8 rational curves — but none of that contradicts S(Q) ≠ ∅.
+status: refuted — the original goal (prove S(Q) = ∅) is IMPOSSIBLE: S(Q) is nonempty, with the explicit integral point (T,U,V,W,X,Y) = (345, 196, -304, 255, -396, -25) on S: T²+U²=V²+W²=X²+Y²=157441, 2TU=135240 (=u), 2VW=-155040 (=v), -2XY=-19800 (=u+v), TU+VW+XY=0, derived from Bremner II Figure 1's six-square configuration and MACHINE-VERIFIED (claim catIII-k3-has-q-point, status: checked, code/out/reconciliation_2026-08-12.txt Task D + sympy). A Brauer-Manin obstruction proves emptiness of a set of rational points; a nonempty S(Q) cannot be obstructed. Bremner II's own NS/rank/curve results (k3-ns-rank-12-not-maximal) stand untouched — S is a K3 with the 8-gap, even-degree rational curves, no degree-4/8 rational curves — but none of that contradicts S(Q) ≠ ∅.
 
 reframed-goal: the obstruction question must move to the SUBSET of S(Q) realising the extra square conditions (7th, 8th, 9th entries = the fourth AP difference u−v realised), or to the full nine-square variety / the Bremner II Category VII hyperelliptic curves f(t)=☐. The adopted BM machinery (Hassett–Várilly-Alvarado template: algebraic Br₁ via H¹(Gal,NS), transcendental part, local invariants at bad reduction via Colliot-Thélène–Skorobogatov, real/2-adic control) is still the right toolkit for a DIFFERENT birational model whose points correspond to 8- or 9-square configurations — not for S itself. Before pursuing that, identify the correct model: Bremner II Cat VII gives the 7→8 hyperelliptic curves; the full nine-square variety is the intersection of the four AP conditions (Michaud-Rodgers: surface in P⁸, 256 singular points, no lines — asserted, unchecked).
 
@@ -31,3 +31,20 @@ one of them as u+v = −2XY here), so the obstruction, if any, lives in the extr
 A K3 with NS(Q) rank 12 < 20 and even-degree rational curves, no rational curves of degree 4 or 8 (k3-ns-rank-12-
 not-maximal) can still easily have rational points — the rank-12 gap bounds the Picard group but not S(Q). Keep this
 in mind when designing the reframed obstruction.
+
+## What closed, and why (k3-brauer-manin)
+
+The K3 surface S (Category III six-square configuration) has an explicit Q-point — the Figure 1 six-square grid yields
+(T,U,V,W,X,Y) = (345, 196, −304, 255, −396, −25) with all three sum-of-two-squares values 157441 = c, 2TU = u = 135240,
+2VW = v = −155040, −2XY = u+v = −19800, TU+VW+XY = 0 (exact arithmetic, MACHINE-VERIFIED in
+code/out/reconciliation_2026-08-12.txt Task D and by sympy; claim catIII-k3-has-q-point, status: checked). Hence the
+original goal "prove S(Q) = ∅ by Brauer–Manin" is impossible: a BM obstruction cannot empty a nonempty rational-point
+set. The approach is not refuted as mathematics — its toolkit (Br₁/transcendental, Hassett–Várilly-Alvarado
+local-invariant machinery) is precisely what a correct model needs — but the specific surface S is the wrong target.
+The interesting object is the locus of S(Q) (or a birational model of it) where the fourth AP difference u−v is also
+realised (7→8→9 square entries), i.e. Bremner II Cat VII's hyperelliptic curves and/or the full nine-square variety
+(see chabauty-coleman-hyperelliptic, adopted). This matches the run's existing refutation notes: the "2 realised + 2
+half-realised" near-miss pattern is not forbidden (Bremner's 7-square grid realises exactly two AP differences fully,
+one of them as u+v = −2XY here), so the obstruction, if any, lives in the extra conditions, not in S itself. A K3 with
+NS(Q) rank 12 < 20 and even-degree rational curves can still easily have rational points — the rank-12 gap bounds the
+Picard group but not S(Q).

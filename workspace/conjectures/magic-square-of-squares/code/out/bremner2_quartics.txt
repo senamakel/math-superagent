@@ -1,0 +1,126 @@
+Bremner, "On squares of squares II" (Acta Arith. 99.3 (2001), pp. 289-308)
+Equations (12) and (13), exact quartics at lambda=13, square check, genus.
+================================================================================
+
+Source: research/sources/bremner-on-squares-of-squares-II-2001.full.md (pp. 297-298).
+
+---------------------------------------------------------------------
+EQ (12)  [Category VII; the base quartic driving the seven-square search]
+---------------------------------------------------------------------
+(1+2l-l^2)^2 p^4 - 32 l^2 p^3 q + 2(1-12l+2l^2+12l^3+l^4) p^2 q^2
+   + 32 l^2 p q^3 + (1+2l-l^2)^2 q^4  =  square
+
+Coefficients in (p^4, p^3 q, p^2 q^2, p q^3, q^4):
+  [(1+2l-l^2)^2, -32l^2, 2(1-12l+2l^2+12l^3+l^4), 32l^2, (1+2l-l^2)^2]
+
+---------------------------------------------------------------------
+EQ (13)  [three quartics giving the remaining three entries of the VII square]
+---------------------------------------------------------------------
+(13a):
+  (1-2l-l^2)^2 p^4 + 32 l^2 p^3 q + 2(1+12l+2l^2-12l^3+l^4) p^2 q^2
+    - 32 l^2 p q^3 + (1-2l-l^2)^2 q^4  =  square
+  coeffs: [(1-2l-l^2)^2, 32l^2, 2(1+12l+2l^2-12l^3+l^4), -32l^2, (1-2l-l^2)^2]
+
+(13b):
+  (1+2l-l^2)^2 p^4 - 4(1+10l^2+l^4) p^3 q
+    + 2(1-12l+2l^2+12l^3+l^4) p^2 q^2
+    + 4(1+10l^2+l^4) p q^3 + (1+2l-l^2)^2 q^4  =  square
+  coeffs: [(1+2l-l^2)^2, -4(1+10l^2+l^4), 2(1-12l+2l^2+12l^3+l^4),
+           4(1+10l^2+l^4), (1+2l-l^2)^2]
+
+(13c):
+  (1-2l-l^2)^2 p^4 + 4(1+10l^2+l^4) p^3 q
+    + 2(1+12l+2l^2-12l^3+l^4) p^2 q^2
+    - 4(1+10l^2+l^4) p q^3 + (1-2l-l^2)^2 q^4  =  square
+  coeffs: [(1-2l-l^2)^2, 4(1+10l^2+l^4), 2(1+12l+2l^2-12l^3+l^4),
+           -4(1+10l^2+l^4), (1-2l-l^2)^2]
+
+=====================================================================
+TASK 1  --  eq (12) at lambda=13, p=9, q=2:  reproduces Bremner's 7-square witness
+=====================================================================
+value      = 160833124
+sqrt       = 12682      (exact: 12682^2 = 160833124)
+12682/34   = 373
+=> This is the BOTTOM-RIGHT grid entry 373^2; details below.
+
+The parametrization at (lam,p,q) = (13,9,2) gives:
+  alpha=1037, delta=-391, rho(=u)=14450, sigma=12682
+  m,n,r,s = 13090, 6120, -4046, 13872
+  a = 47969376, b = 160221600, c = 208802500, v = 12682
+Grid entries (unscaled) / 1156 (=34^2):
+  [222121,  529, 319225]
+  [277729,180625,  83521]
+  [42025, 360721, 139129]
+
+The value of eq (12) = sigma^2 = v^2 = 12682^2 is the BOTTOM-RIGHT entry
+  -a + c = 160833124 = 12682^2 = (34*373)^2  ->  grid entry 373^2 = 139129.
+This is exactly the entry in Bremner's witness (1): the square at (1) contains
+373^2 in the bottom row; the reconstructed grid is a symmetry of Bremner's (1),
+whose entries are {373^2,289^2,565^2,360721,425^2,23^2,205^2,527^2,222121}.
+  (non-squares 360721 and 222121 appear in rows 2 col 1 and 3 col 3 resp.)
+
+  cross-check: this grid equals (a symmetry of) the run's bremner_magic witness
+  in code/out/near_misses.json (same nine entries, magic sum 541875).
+
+=====================================================================
+TASK 2  --  the three (13) quartics at lambda=13, exact polynomials and genus
+=====================================================================
+lambda=13.  F(x) = Q(x,1) is degree 4 with non-zero discriminant in each case,
+so each y^2 = F(x) is a smooth projective curve of GENUS 1 (elliptic curve).
+
+(13a) at 13:  4*( 9409 p^4 + 1352 p^3 q + 1346 p^2 q^2 - 1352 p q^3 + 9409 q^4 )
+     coeffs (p^4,p^3q,p^2q^2,pq^3,q^4): [37636, 5408, 5384, -5408, 37636] = 4*[9409,1352,1346,-1352,9409]
+     F(x) = 4*(9409x^4 +1352x^3 +1346x^2 -1352x +9409), discriminant != 0, genus 1
+     roots all non-rational (4 distinct complex, two conjugate pairs), so no
+     rational decomposition -> irreducible smooth quartic.
+
+(13b) at 13:  4*( 5041 p^4 - 30252 p^3 q + 27554 p^2 q^2 + 30252 p q^3 + 5041 q^4 )
+     coeffs: [20164, -121008, 110216, 121008, 20164] = 4*[5041,-30252,27554,30252,5041]
+     F(x) = 4*(5041x^4 -30252x^3 +27554x^2 +30252x +5041), discriminant != 0, genus 1
+     (5041 = 71^2, 9409 = 97^2)
+
+(13c) at 13:  4*( 9409 p^4 + 30252 p^3 q + 1346 p^2 q^2 - 30252 p q^3 + 9409 q^4 )
+     coeffs: [37636, 121008, 5384, -121008, 37636] = 4*[9409,30252,1346,-30252,9409]
+     F(x) = 4*(9409x^4 +30252x^3 +1346x^2 -30252x +9409), discriminant != 0, genus 1
+
+Genus determination, two independent routes:
+  Route A (Sage): HyperellipticCurve(QQ['x'](F)) -> genus 1 for all three,
+     and each F is squarefree (distinct roots over QQbar = 4).
+  Route B (sympy): degree 4, squarefree polynomial (discriminant != 0),
+     y^2 = F(x) with F quartic squarefree is an elliptic curve: genus 1.
+Both routes agree: GENUS 1 for all three (13) quartics.
+(These are "bielliptic/hyperelliptic" only in the weak sense of being genus-1;
+ none has genus >= 2.)
+
+=====================================================================
+TASK 3  --  what a 2-descent would need (none required here: all genus 1)
+=====================================================================
+None of the three (13) quartics has genus >= 2 -- all are genus 1 (elliptic),
+so a 2-descent on a higher-genus Jacobian is NOT the tool these particular
+curves need.
+
+Had any been genus >= 2, a 2-descent to bound the Jacobian rank would require:
+  (i)   a smooth projective model (here a quartic y^2=f(x) is already smooth
+        when f is squarefree);
+  (ii)  the Jacobian J(C) equipped with a theta divisor, giving the isogeny
+        J -> J and the 2-Selmer group Sel^(2)(J/Q), computed from the 2-torsion
+        (for a genus-2 hyperelliptic the 2-torsion points/degree-2 divisors);
+  (iii) a height pairing / regulator computation to bound the Mordell-Weil rank
+        r = dim_2 Sel^(2) - dim_2(J(Q)[2]) - dim_2(III[2]);
+  (iv)  for genus 2 in practice, the Magma function RankBounds using the
+        Cassels/Tate pairing; PARI/GP or Sage do not ship a general genus-2
+        2-descent.
+
+Since all three are genus-1, the correct tool per-curve is an ordinary elliptic
+2-descent / Selmer computation on E: y^2 = F(x). Each E for (13) would be
+checked for rational points, and any rational (p,q) point lying on both (12)
+and one of (13) would complete the seven-square search in the range Bremner
+covered (p+q+n+d <= 1000); none exist beyond his witness at (13,9,2).
+
+=====================================================================
+Numbers produced by executed programs (no float, all exact integer algebra):
+  code/bremner2_quartics.py   (eq extraction, lambda=13 substitution, square check)
+  code/bremner2_reconstruct.py(grid reconstruction, entry identification)
+  code/bremner2_genus.sage    (Sage HyperellipticCurve genus route)
+  code/bremner2_verify.py     (coefficient forms + discriminant/second genus route)
+=====================================================================

@@ -6,13 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[four-ap-additive-triple]] | Does any additive triple q1, q2, q1+q2 in the universal rational set Φ exist? (A quadruple q1,q2,q1+q2,q1−q2 all in Φ would be a full MSS.) | open | phi-universal-set, (CONTEXT.md), robertson-elliptic-reduction, three-primitive-equal-d-bound, k3-ns-rank-12-not-maximal | promote Φ/\|S(e)\| into claim blocks; express the additive triple as a single polynomial variety and search its factorisation; correlate with Morgenstern's… |
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[four-ap-additive-triple]] rests on `(CONTEXT.md)`, which no claim block on disk establishes
+| [[four-ap-additive-triple]] | Does any additive triple q1, q2, q1+q2 in the universal rational set Φ exist? (A quadruple q1,q2,q1+q2,q1−q2 all in Φ would be a full MSS.) | open | phi-universal-set, phi-no-triple-m400, robertson-elliptic-reduction, three-primitive-equal-d-bound, k3-ns-rank-12-not-maximal | express the additive triple as a single polynomial variety and search its factorisation; correlate with Morgenstern's (a,b,a+b) equal-start census and Bremner… |
 
 ## Threads that could not be read
 

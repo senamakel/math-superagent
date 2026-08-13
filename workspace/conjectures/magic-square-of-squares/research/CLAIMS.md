@@ -10,7 +10,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `bremner-deg4-centre-532` | The degree-4 MSS over Q(√3,√133) printed in Bremner 1999 has centre 532 = 133·2² = 2²·7·19 and magic constant 1596, not 2926 = "133·22" as the OCR'd text reads. All eight r-terms of the printed entries cancel exactly;… | **unchecked** | checked | `research/summaries/bremner-on-squares-of-squares-1999.md` |
 | `buell-hourglass-25e24-coprime` | Buell's search shows no 7-square magic hourglass with centre < 25×10²⁴, under a coprimality assumption on the diagonal/column triples; Zimmermann-Loria relax that assumption and find much smaller (10-digit) hourglass… | **unchecked** | asserted | `research/summaries/buell-search-for-magic-hourglass-1999.md` |
 | `cain-quartic-gaussian-reformulation` | The 3x3 MSS problem is equivalent (per the authors) to solving quartic polynomials with factorization constraints over an abelian extension of Q; a Gaussian-integer case gives a new search method. | **unchecked** | asserted | `research/summaries/cain-gaussian-integers-magic-square-of-squares-2019.md` |
-| `catIII-k3-has-q-point` | The Category III K3 S: T²+U²=V²+W²=X²+Y², TU+VW+XY=0 from Bremner II (2001) has the integral point (345,196,304,-255,396,25): all three sum-of-two-squares values equal 157441 (=c), 2TU=135240 (=u), 2VW=-155040 (=v),… | yes | asserted | `code/out/k3_surface_check_note.md` |
+| `catIII-k3-has-q-point` | The Category III K3 S: T²+U²=V²+W²=X²+Y², TU+VW+XY=0 from Bremner II (2001) has the integral point (345,196,-304,255,-396,-25): all three sum-of-two-squares values equal 157441 (=c), 2TU=135240 (=u), 2VW=-155040 (=v),… | yes | checked | `code/out/k3_surface_check_note.md` |
 | `centre-five-representations` | A 3x3 magic square of squares whose centre is a sum of two positive squares in at most 4 distinct ways is impossible. | **unchecked** | asserted | `research/summaries/brown-mathpages-magic-square-of-squares.md` |
 | `chabauty-coleman-grounded-but-application-open` | Bremner II reduces a 7th square entry to rational points on hyperelliptic curves f(t)=square (generally high genus); Chabauty-Coleman (r<g) is the standard p-adic method to compute such points, but the explicit f(t) for… | **unchecked** | asserted | `research/approaches/chabauty-coleman-hyperelliptic.md` |
 | `extension-field-mss-exist` | 3×3 MSS (all nine entries squares, distinct) exist over proper algebraic number | **unchecked** | proved | `research/summaries/bremner-on-squares-of-squares-1999.md` |
@@ -43,6 +43,31 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Resolve these before building on either side.
 
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `(none` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `as` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `a` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `claim;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `resolves)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `earlier` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `suspicion` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `that` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `"S(Q)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `empty"` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `could` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `be` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `goal` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `—` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `S(Q)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `nonempty` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `was` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `already` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `implied` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `by` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `six-square` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `construction` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `on` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `disk;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
@@ -58,7 +83,6 @@ Resolve these before building on either side.
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) — asserted by the source, not proved there and not checked here
 - `fixed-start-ap-generators` (research/summaries/morgenstern-smallest-entry-8-digit.md) — asserted by the source, not proved there and not checked here
 - `near-miss-baseline-and-incidence` (code/out/oracle_note.md) — asserted by the source, not proved there and not checked here
 - `six-square-all-attainable` (research/summaries/boyer-square-of-squares-search-v2.md) — asserted by the source, not proved there and not checked here

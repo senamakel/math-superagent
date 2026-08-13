@@ -31,8 +31,9 @@ The natural falsifier is a specific Φ-triple found past the range — that
 would *construct* a 7-square magic grid (not merely refute a claim).
 
 **Next.**
-1. Promote the |S(e)| and Φ facts into claim blocks with falsifiers (they
-   currently live in scratch + durable memory + code only).
+1. ~~Promote the |S(e)| and Φ facts into claim blocks with falsifiers~~ — DONE
+   (2026-08-13: `code/out/phi_claim_blocks.md`, claims `phi-universal-set`,
+   `phi-no-triple-m400`).
 2. Hunt for a Φ-triple structurally rather than by wider enumeration: write
    the additive condition as a single polynomial in two pairs of parameters
    and look for its factorisation/variety; the K3 NS rank-12 data may tell
@@ -46,11 +47,10 @@ would *construct* a 7-square magic grid (not merely refute a claim).
 question: Does any additive triple q1, q2, q1+q2 in the universal rational
   set Φ exist? (A quadruple q1,q2,q1+q2,q1−q2 all in Φ would be a full MSS.)
 status: live
-rests-on: phi-universal-set (CONTEXT.md), robertson-elliptic-reduction,
+rests-on: phi-universal-set, phi-no-triple-m400, robertson-elliptic-reduction,
   three-primitive-equal-d-bound, k3-ns-rank-12-not-maximal
 blocked-by: no proof of the no-triple conjecture beyond m,n <= 400
-next: promote Φ/|S(e)| into claim blocks; express the additive triple as a
-  single polynomial variety and search its factorisation; correlate with
-  Morgenstern's (a,b,a+b) equal-start census and Bremner II's degree-6/10
-  rational curves
+next: express the additive triple as a single polynomial variety and search
+  its factorisation; correlate with Morgenstern's (a,b,a+b) equal-start
+  census and Bremner II's degree-6/10 rational curves
 ```
