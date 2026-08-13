@@ -201,6 +201,12 @@ report("M(29) >= T(29)", M(29) >= T(29), f"M(29)={M(29)}, T(29)={T(29)}")
 
 print()
 print("=" * 78)
-print(f"VERDICTS: {sum(results)}/4 PASS  ->  {'ALL FOUR PASS' if all(results) else 'SOME FAILED'}")
+point_ok = [
+    all(results[0:3]),   # point 1: a = 1, T(1) = max product = 4/3, {5,9} odd part of 90
+    all(results[3:5]),   # point 2: 257 prime, forced component, a=8 bound < T(8)
+    results[5],          # point 3: mod-4 admissibility
+    all(results[6:8]),   # point 4: table 2..30, M < T for 2..28 and M(29) >= T(29)
+]
+print(f"VERDICTS: {sum(point_ok)}/4 points PASS  ->  {'ALL FOUR POINTS PASS' if all(point_ok) else 'SOME POINT FAILED'}")
 print("=" * 78)
-raise SystemExit(0 if all(results) else 1)
+raise SystemExit(0 if all(point_ok) else 1)
