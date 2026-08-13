@@ -456,3 +456,30 @@ Two things changed and why:
 1. **Duplicate Lean claims collapsed into one.** The source file defines `Step s i = Nat.dist (s i) (s (i+1))` verbatim. `gilbreath-second-entry-equivalence` (in `library-state.md`) quotes that exactly and is `proved`. `lean-reduction-machine-checked` (in `code/out/lean_gilbreath_reduction.notes.md`) paraphrased it as `|s i - s (i+1)|`, which in ℕ is ambiguous — truncated `Nat.sub` would be wrong. That claim is now superseded with a retirement note pointing to the verbatim one. `code/grounding/check_absdiff_vs_forwarddiff.py` independently confirms the operator is `|a−b|` (= `Nat.dist`), not signed forward diff (counterexample `[5,1,6]` at k=2).
 
 2. **Proved 14→13 downgrade explained.** The ambiguous `|...|` paraphrase is what cost `lean-reduction-machine-checked` its `proved` status — a claim that misstates the definition cannot be `proved`. No mathematics was lost; the verbatim claim survived, and CLAIMS.md now carries exactly one Lean claim with one status. Directives 18 and 19 were already absorbed in prior cycles.
+
+## 21 — from steer
+
+Your checkpointing has been failing continuously and it is not your fault. Do not spend attempts on it.
+
+  [278:25] workspace checkpoint failed: Unable to create
+           /workspace/.workspace-history/index.lock: File exists
+  ...repeating every ~60s
+
+Cause, diagnosed from the host: your workspace is 7.7 GB. config/trace.jsonl alone is 828 MB, and .workspace-history is 6.9 GB made of repeated ~167 MB objects, each one another snapshot of that same trace file. Every checkpoint runs git add --all over 828 MB, takes minutes, and the next checkpoint collides with the lock the previous one still holds. That is why retry went 6 -> 13 and run-failed 14 -> 15.
+
+Consequences for you, so you plan around them:
+  - your per-write history is NOT being recorded right now;
+  - anything you rely on recovering from .workspace-history may not be there;
+  - the retry and run-failed counters are inflated by this, not by your mathematics.
+
+What you can do: nothing about the checkpointer, that is runtime code outside your workspace. What you CAN do is stop making it worse - do not write further large files into the workspace, and if you generate pools or record files, keep them small or write summary counts instead. I have reported the runtime bug to the operator.
+
+The mathematics is unaffected and still the priority. Outstanding from directives 19 and 20:
+
+1. Collapse the two duplicate Lean claims. gilbreath-second-entry-equivalence says Step = Nat.dist(s i)(s (i+1)); lean-reduction-machine-checked says Step = |s i - s (i+1)|. Over the naturals truncated subtraction is not the absolute difference. Read the actual definition in code/lean/gilbreath_reduction.lean, keep ONE claim quoting it verbatim, delete the other, and cite code/grounding/check_absdiff_vs_forwarddiff.py.
+
+2. Say in TASKS.md which claim caused proved to fall 14 -> 13, and why.
+
+3. Directive 18 is "build-check probe", an operator artifact. Discard it.
+
+All three outstanding items from directives 19 and 20 are already done. The duplicate Lean claims are collapsed (`lean-reduction-machine-checked` no longer appears in `search_claims`; only the verbatim `gilbreath-second-entry-equivalence` with `Evidence: proved` remains). `TASKS.md` already explains the proved-count downgrade (`|...|` paraphrase ambiguous between `Nat.dist` and `Nat.sub` → claim misstated the definition → cannot be `proved`). No "build-check probe" artifact exists in the workspace — it doesn't appear in any file or claim on disk. The checkpointing information is noted but requires no workspace changes. Nothing to edit.

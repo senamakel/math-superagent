@@ -25,6 +25,33 @@
 
 - [ ] Attack H_even via the divisor-level problem for Φ_{4p}(2).
 
+- [x] **Executed (2026-08, this run):** Gaussian factorization of `2^p + i`
+  and quartic-character table for every odd prime `p ≤ 61` —
+  `code/heven_gauss.py` → `code/out/heven_gauss_61.captured.txt`
+  (`EXIT_CODE=0`, all checks C1–C7 pass, 71 divisor rows, nothing left
+  unfactored). Proved by exact computation for this range: (F1) every prime
+  divisor `r | Φ_{4p}(2)` is primitive, `ord_r(2) = 4p`, `r ≡ 1 (mod 4p)`,
+  with the single exception `r = 5 | Φ_20(2)` at `p = 5` (LTE
+  `v_5(2^{2p}+1) = 1 + v_5(p)`); (F2) `(2/r)_4 = +1 ⟺ r ≡ 1 (mod 16)` for
+  all 71 divisor rows. 12 heads (`r ≡ 1 (mod 16)`, necessarily non-3-Higgs)
+  found, independently certified by `code/heven_heads_verify.py` →
+  `code/out/heven_heads_verify.captured.txt` (`ALL HEADS CERTIFIED 12/12`).
+  Empirical (exact, not a proof): for the 16 3-Higgs primes `p ≤ 61`,
+  `2p ∈ H_even` (the seven Thm-8 members {6,10,26,46,62,82,122}) iff
+  `Φ_{4p}(2)` has no prime divisor `≡ 1 mod 16` — all seven members have
+  all-3-Higgs divisors and zero heads; all nine excluded 3-Higgs `p`
+  (7,11,19,29,37,43,47,53,59) carry a head witnessing `2p ∉ H_even`.
+  Also first-executed `code/higgs/check_a057447.py`
+  (`code/out/higgs_a057447.captured.txt`): literal A057447 recursion
+  reproduces all 58 OEIS DATA terms; all five witnesses pass
+  `σ*(n) = 2n`; every witness prime divisor is 3-Higgs.
+
+- [ ] Next step on the chosen line: extend the same divisor-level table to
+  larger `p` (partial-factor if needed — a head needs only one found
+  divisor) and seek a congruence class of `p mod 8` where a head is forced;
+  the character-distribution table (p mod 8 × Aurifeuillean half) is already
+  in the capture.
+
 ## Standing
 
 - [ ] Do not fetch any new sources while FRONTIER.md unworked count > 100. The Maciejewski paper (93 KB) is already on disk at `research/sources/maciejewski-bounded-box-subbarao-warren.full.md`. Surveys (Guy B3, Handbook, Goto 2007) are already in the library.
