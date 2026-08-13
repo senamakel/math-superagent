@@ -68,13 +68,14 @@ import event_rate.event_rate_sweep as SWEEP
 STORED = "code/out/event_rate_stats.jsonl"
 RECORDS = "code/out/conditional_rate_records.jsonl"
 
-# problem.md worked rows, exactly as given in the task instruction
+# problem.md worked rows, exactly as printed there (12 entries per row;
+# the task's short lists are the leading prefixes of these).
 EXPECTED = {
-    1: [1, 2, 2, 4, 2, 4, 2, 4, 6, 2],
-    2: [1, 0, 2, 2, 2, 2, 2, 2, 4],
-    3: [1, 2, 0, 0, 0, 0, 0, 2],
-    4: [1, 2, 0, 0, 0, 0, 2, 2, 2, 2],
-    5: [1, 2, 0, 0, 0, 2, 0, 0, 0, 2],
+    1: [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4],
+    2: [1, 0, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2],
+    3: [1, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0],
+    4: [1, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0],
+    5: [1, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2],
 }
 
 
@@ -89,10 +90,16 @@ def part0_oracle():
     print("PART 0  ORACLE: prime rows A_1..A_5 vs problem.md table")
     print("=" * 100)
     for k in range(1, 6):
-        got = [int(v) for v in rows[k - 1][:10]]
+        got = [int(v) for v in rows[k - 1][:12]]
         match = got == EXPECTED[k]
+        pref = [int(v) for v in rows[k - 1][:10]]
+        if k == 2:
+            pref = [int(v) for v in rows[k - 1][:9]]
+        if k == 3:
+            pref = [int(v) for v in rows[k - 1][:8]]
         ok = ok and match
-        print(f"  A_{k} = {got}  match={match}")
+        print(f"  A_{k} = {got}  match={match}"
+              f"  (task prefix {pref} ok={pref == EXPECTED[k][:len(pref)]})")
     print(f"  {'PASS' if ok else 'FAIL'}")
 
 
