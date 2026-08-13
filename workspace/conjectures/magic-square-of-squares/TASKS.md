@@ -55,7 +55,7 @@
       `code/out/witness_padic_falsification.captured.txt`. Claims
       `phi-padic-no-obstruction` and `phi-padic-consistent-with-witnesses`
       in the dead-end note, status: checked.
-- [ ] **Settle the doubled-point question for GFP from the paper on disk.**
+- [x] **Settle the doubled-point question for GFP from the paper on disk.**
       The paper (`research/sources/garcia-fritz-pasten-bremner-uniformity-2026.full.md`,
       21KB, real PDF) defines in §1.1: "an arithmetic progression of length M is
       a sequence of points P₁,…,P_M in E(Q) whose x-coordinates… form a
@@ -66,7 +66,11 @@
       Gao–Ge–Kühne), so C^(r+1) is almost certainly >> 3. Record: GFP-bounds-x2P
       is RESOLVED (approach sound on definitions; ineffective constant prevents
       a contradiction). Update the uniformity-bremner-ap-bound thread with
-      this resolution.
+      this resolution. **DONE this run** — completed claim `robertson-elliptic-reduction`
+      (full text below), crux settled by Bremner 1999 pp.290–291 + GFP §1.1, verified
+      by rank/doubling computation on the witness (see report). Corrected: the
+      Robertson curve's c is the anti-diagonal AP difference (c=138600 for the
+      witness), NOT the centre e².
 - [ ] **BLOCKER 2: Scholar to digest the re-downloaded Wu paper.** The file
       `research/sources/wu-non-invariance-brauer-manin.full.md` is now 78KB of
       real content.  Read it, replace the auto-generated digest in
