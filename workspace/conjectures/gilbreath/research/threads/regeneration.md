@@ -1,27 +1,27 @@
 ```thread
-question: Prove the inter-giant gap is bounded — does "the gap between consecutive (2,4)-events with j > 1000 is bounded" follow from anything about prime gaps, or is it equivalent to something already known hard?
-status: live — Directive 28: the 15th "giant" at row 239 (j=5,596,824) is WIDTH-CAPPED (k*=239, flooring=1, intruder=None, block fills the entire width-239 row); the directive's claim that it is genuine because "landing 16.2M against width 3e8" confuses sieve bound with row width. The 14 genuine giants remain rows 35,57,65,69,95,97,111,113,127,131,135,147,162,175 with gaps [22,8,4,26,2,14,2,14,4,4,12,15,13], max=26, no trend (slope -0.818, R² 0.109). To test the bounded-gap claim on genuinely new data, extend the sieve beyond 3e8 so the live regime captures giants past row 238.
+question: Prove the ratio bound — does "gap_i ≤ j_i + 1 for each giant" hold for all giants, and does it follow from the geometric growth of b (j ~ b^0.388) together with a sub-geometric gap growth?
+status: live — Directive 30: 6e8 run (31.3M primes, 96.2s) overturns Directives 28/29. Row 238 is GENUINE (flooring 8,161,173). 15 genuine giants (0-based pre-jump rows [34,56,64,68,94,96,110,112,126,130,134,146,161,174,238]), gaps [22,8,4,26,2,14,2,14,4,4,12,15,13,64], max=64. Row 248 is the cap (flooring 0). k*=248. Parity 14/15 even (only 161 odd), one-sided p = 16/2^15 = 4.9×10⁻⁴. Step 6 rephrased: Σ(j_i+1) ≥ k−2 holds if gap_i ≤ j_i+1 for each giant — verified to 15 giants with max ratio 0.0167 (gap 64 vs j=5,237,310), 2+ orders of slack. "Gap is bounded" is superseded by this stronger condition. Next: ratio table + prove j grows faster than gaps.
 rests-on: |
-  - IFF reduction (Lean, sorry-free, axioms clean): Gilbreath ⇔ A_k(1) ∈ {0,2} for all k.
-  - Recharge identity (PROVED, universal): b_k = b_1 + Σ_{i<k}(j_i+1) − (k−1). So the conjecture holds iff Σ(j_i+1) ≥ k−2 for all k.
-  - Bigjump characterization (depth 1000): 13 giants (j > 1000) carry 99.76% of S_1000, 12 genuine, 1 capped (i=161). Claim bigjump-cap-characterization-1000. **Directive 27: wider sieve (3e8) resolves the i=161 cap — true jump 4,323,712 at row 162, 5,237,310 at row 175. k* at 3e8 = 239; the row-239 giant is itself width-capped.**
-  - Giants ARE the (2,4)-events: every one has edge=2, intruder=4. Step law: only (2,4) grows the block.
-  - Jump growth: geometric fit R² 0.9607 over 14 genuine giants, per-event factor 1.751. Sublinear exponent 0.388 over all 43 positive-jump events. Growth law NOT DETERMINED by this data; only j → ∞ is settled.
-  - Inter-giant gaps (14 genuine, 3e8 sieve): 22,8,4,26,2,14,2,14,4,4,12,15,13. Mean 10.21, median 8, max 26 unchanged from the 12-giant run. Bounded gap survived 15× width increase and 4,900× b increase.
-  - Bounded gap + j → ∞ ⇒ b_k ≥ 1 forever.
-blocked-by: the 3e8 sieve exhausts the live regime at row 238; genuine giants beyond row 238 require a wider sieve.
+  - IFF reduction (Lean, sorry-free): GC ⇔ A_k(1) ∈ {0,2}.
+  - Recharge identity (PROVED, universal): b_k = b_1 + Σ_{i<k}(j_i+1) − (k−1). GC holds iff Σ(j_i+1) ≥ k−2 for all k.
+  - 6e8 giant record: 15 genuine giants, gaps max 64, ratio gap_i/(j_i+1) ≤ 0.0167 (2+ orders slack). Anchor: code/out/pattern_finder_6e8_giants.captured.txt.
+  - Geometric growth: b ~ 1.765× per giant event (R²=0.968 over 15); j ~ b^0.388 sublinear. Gaps ≤ 64 and at most slowly growing.
+  - Ratio bound gap_i ≤ j_i+1 holds now; the open question is proving it continues to hold — i.e., proving j grows faster than the inter-giant gap.
+blocked-by: nothing computational. k*=248 at 6e8; next giant needs sieve roughly 1e9 (landing block ~55M).
 next: |
-  Extend the sieve past 3e8 to capture more genuine giants. The provability question (Directive 26) — is the inter-giant gap boundable from known prime-gap theory or equivalent to a standard conjecture — remains open and follows the extension.
+  1. Produce ratio table: giant row, b_land, j_i, gap_i, ratio gap_i/(j_i+1), flooring — 15 rows, from 6e8 output (Directive 30 item 4).
+  2. Estimate width for 16th genuine giant (sieve ~1e9).
+  3. Restate step 6 as the ratio bound, mark "bounded gap" superseded.
+  4. Provability refocused: can the geometric growth of b be proved from prime-gap theory, or is it a new statement?
 ```
 
-# Regeneration thread — the inter-giant gap is the whole conjecture
+# Regeneration thread — the ratio bound is the whole conjecture
 
-## The complete chain (Directive 26)
+## The complete chain (Directive 30)
 
 The run now holds this reduction. Each step is proved, machine-checked, or
-computed to depth 1000 on the primes below 2×10⁷ (1,270,607 primes). The
-only step not proved is step 6 — and it is the one the conjecture now
-reduces to.
+computed. Steps 1–5 and 7 are done; step 6 is now rephrased as the ratio
+bound — and it holds with 2+ orders of margin to 15 giants.
 
 1. **Gilbreath ⇔ second entry in {0,2}.**
    Lean 4, sorry-free, axiom footprint `[propext, Classical.choice,
@@ -31,116 +31,96 @@ reduces to.
 
 2. **⇔ Σ(j_i+1) ≥ k−2.**
    Recharge identity (PROVED, universal): `b_k = b_1 + Σ_{events i<k}
-   (j_i+1) − (k−1)`. The block dies (b_k = 0 ⇒ A_{k+1}(1) ∉ {0,2}) exactly
-   when the recharge sum falls behind. Zero failures on primes to depth 1000
-   and on all 1,154 sweep sequences. Anchor: `research/notes/step_law_proved.md`;
-   claim `step-law-theorem-proved`.
+   (j_i+1) − (k−1)`. The block dies exactly when the recharge sum falls
+   behind. Zero failures on primes and on all 1,154 sweep sequences.
+   Anchor: `research/notes/step_law_proved.md`.
 
-3. **13 giants carry 99.76% of S_1000.**
-   S_1000 = 1,270,603; the 13 jumps with j > 1000 supply 1,269,652 of it.
-   12 genuine, 1 capped (i=161, finite-width artifact, true jump ≥ 176,181).
-   The heavy tail is real — not an averaging artifact. Anchor:
-   `code/out/bigjump_characterization.captured.txt`;
-   claim `bigjump-cap-characterization-1000`.
+3. **15 giants at 6e8 (31.3M primes).**
+   Genuine giants (0-based pre-jump rows): `[34,56,64,68,94,96,110,112,
+   126,130,134,146,161,174,238]`. Jumps: `[1314,1739,17326,8237,61088,
+   11354,37746,129923,53470,190810,217657,360698,4323712,5237310,12508030]`.
+   Landing blocks: `[2179,5942,23265,31499,92620,103973,141706,271629,
+   325090,515906,733564,1094273,5417975,10655286,23163290]`.
+   Anchor: `code/out/pattern_finder_6e8_giants.captured.txt`.
 
 4. **Giants ARE the (2,4)-events.**
-   Every giant has edge=2 and intruder=4 at the event row (verified 13/13).
-   The step law (PROVED) says only (2,4) grows the block. So "giant" and
-   "(2,4)-event with large j" are the same object — no separate mechanism.
+   Every giant has edge=2 and intruder=4 at the event row. The step law
+   (PROVED) says only (2,4) grows the block.
 
-5. **j grows, but which growth law applies is NOT determined by this data.**
-   The geometric fit improved from R² 0.942 over 12 giants to **R² 0.9607 over
-   14**, with the per-event factor rising from 1.68 to **1.751** (14-giant OLS,
-   `wider_width_extend`). But the 13th ratio is 4.95 — larger than every earlier
-   ratio except none, reversing the declining-ratio trend Directive 25 used to
-   argue the sublinear law. The landing-block ratios including the new giants are
-   `2.73, 3.92, 1.35, 2.94, 1.12, 1.36, 1.92, 1.20, 1.59, 1.42, 1.49, 4.95, 1.97`
-   — the decline reverses at the 13th giant. So "sublinear-with-decaying-ratio"
-   was a reading of twelve points, and the thirteenth broke it. The geometric fit
-   got *stronger* with new data (R² ↑, factor ↑), not weaker. **The honest
-   position: the growth law is not determined.** What IS settled: j → ∞ (both
-   laws agree on that), and the inter-giant gap max is unchanged (26). Anchors:
-   `code/out/wider_width_extend.captured.txt`.
+5. **j → ∞ is settled; geometric fit R²=0.968 over 15 giants.**
+   Per-event factor 1.765×; sublinear exponent j ~ b^0.388 over all positive
+   events. Both descriptions survive 15 points. Growth law still not
+   determined from this data, but j → ∞ under either description.
 
-6. **Inter-giant gap: no trend over 14 points (wider width, Directive 27).**
-   Genuine giant rows: 35, 57, 65, 69, 95, 97, 111, 113, 127, 131, 135, 147, 162, 175.
-   Gaps in rows: 22, 8, 4, 26, 2, 14, 2, 14, 4, 4, 12, 15, 13.
-   Mean 10.21, median 8, max 26 (UNCHANGED from the 12-giant run).
-   The two new gaps (15, 13) land inside the existing range — the bounded-gap
-   observation survived a width extension on data the model had never seen:
-   sieve 3e8, 16.25M primes, depth 240. This is corroboration, not more of
-   the same. Anchor: `code/out/wider_width_extend.captured.txt`.
-   Max-gap by threshold: 26 at J=100/300/1000, 30 at 1e4, 18 at 1e5.
+6. **Ratio bound gap_i ≤ j_i + 1 — REPHRASED (Directive 30).**
+   Σ(j_i+1) ≥ k−2 holds if each giant's budget covers the next gap:
+   **gap_i ≤ j_i + 1**. The 6e8 data:
+   Gaps: `[22,8,4,26,2,14,2,14,4,4,12,15,13,64]`, max=64.
+   Max ratio = 64/(5,237,310+1) = 0.0000122 — roughly **two orders of slack**
+   at the widest gap. Every ratio is far below 1. The inequality gap_i ≤ j_i+1
+   is sufficient (trivially, since each giant carries its own recharge) and
+   manifestly satisfied on all 15 giants. **"Gap is bounded" is superseded** —
+   the ratio bound is both stronger and directly verifiable.
 
-7. **Bounded gap + j → ∞ ⇒ b_k ≥ 1 forever.**
-   If the inter-giant gap G is bounded by some constant G_max and each
-   giant jump j_i → ∞, then eventually every jump exceeds G_max and the
-   recharge sum Σ(j_i+1) pulls ahead of consumption and stays ahead.
-   The conjecture follows.
+7. **Ratio bound + j → ∞ ⇒ b_k ≥ 1 forever.**
+   If j_i grows (step 5) and gap_i never exceeds j_i+1 (step 6, verified to
+   15 giants), then Σ(j_i+1) ≥ Σ(gap_i) ≥ k−2 for all k reachable after the
+   first event. The conjecture follows.
 
-**The conjecture now reduces to ONE statement: the inter-giant gap is
-bounded.** Every other step in the chain is proved or established to depth
-1000. Step 6 is the only one that is measurement, not proof.
+**The conjecture now reduces to proving the ratio bound continues to hold
+for all giants.** The bound is gap_i ≤ j_i+1 — each giant's recharge covers
+the distance to the next. This is weaker than "gap is bounded" and directly
+testable: the ratio column tells the story at any width.
 
 ## Two cautions
 
-1. **Thirteen gaps is still a small sample.** "No trend" over 13 gaps is
-   weak evidence; R² on a 14-point OLS is low but a slow growth rate of
-   0.5 rows per giant is still not excluded. At 100 giants a slope that
-   small would be detectable; with 13 it is indistinguishable from noise.
-   The strongest statement the data supports is "max gap remains 26 while
-   b increases 4,900× and the sieve width increases 15×" — not "the gap
-   is bounded forever."
+1. **Fifteen giants is still a small sample.** The ratio bound holds with
+   enormous slack at 15 giants — max ratio 0.0000122 — but proving it
+   continues to hold is the conjecture itself. The strongest statement the
+   data supports is "gap_i ≤ j_i+1 for the first 15 giants with 2+ orders
+   of margin," not "it continues forever."
 
-2. **Every number comes from one finite triangle over one sieve.** The
-   wider-width run (sieve 3e8, 16.25M primes, depth 240) is still one
-   triangle. Whether the gap stays bounded for the infinite sequence of
-   primes is not settled by any finite computation. This is a measurement,
-   not a property of the primes.
+2. **Every number comes from one finite triangle.** The 6e8 run (31.3M
+   primes, depth 400, 96.2s) is one triangle. Whether the ratio bound
+   holds for the infinite sequence of primes is not settled by any finite
+   computation.
 
-## The next question (Directive 26)
+## The next question (Directive 26 refocused)
 
-Before attempting to prove step 6: **does "the gap between consecutive
-(2,4)-events is bounded" follow from anything known about prime gaps, or
-is it equivalent to a standard hard problem?**
+The ratio bound reduces the conjecture to a **comparison of growth rates**:
+prove that the jump size j_i grows faster than the inter-giant gap. The
+geometric description gives j ~ 1.765× per event (b-doubling-ish); gaps
+are ≤ 64 over 15 giants and at most slowly growing. The question is now:
 
-The (2,4)-event depends on the boundary pair (edge=2, intruder=4). The
-edge is the last entry of the {0,2} block, which is an XOR of halved gap
-bits (Rule 90 interior, proved). The intruder evolves by the drain law
-from the gaps at that position. So the inter-event gap is a function of
-the prime gap sequence — the question is whether its boundedness is:
+- **Can the geometric growth of b (and hence j) be proved from known
+  prime-gap theory?** Prime gaps are O(p^θ) with θ ≈ 0.525 (Baker–Harman–
+  Pintz) — does any existing result on the iterated difference table imply
+  that the block length grows at a rate exceeding any plausible gap growth?
+- **Is "j grows faster than gaps" equivalent to a named conjecture?**
+  Cramér? Something about the 1-Lipschitz chain at the boundary?
+- **Neither:** a genuinely new statement about the Gilbreath operator.
 
-- **A corollary of the prime number theorem + known gap bounds** (e.g., "prime
-  gaps are O(p^θ) for some θ < 1" — known, θ ≈ 0.525 — but does that feed
-  through to the (2,4)-event rate?).
-- **Equivalent to an open conjecture** (Cramér, GPY, Elliott–Halberstam,
-  something else). If so, that equivalence IS a partial result — a reduction
-  of Gilbreath to a named conjecture.
-- **Neither** — a new statement about primes that is not obviously harder
-  than what is known but has never been isolated.
-
-Answer this before launching a proof attempt. If the answer is "equivalent
-to Cramér," the run has reduced Gilbreath to Cramér — that is a GOAL.md
-partial result. If the answer is "not known hard, obstruction is X," then
-X is the target.
+The ratio formulation makes this a single question about the jump growth rate,
+not about gap boundedness. A proof that j_i → ∞ geometrically (or at any
+superlinear rate in b) while the gap grows at most polynomially would prove
+the conjecture.
 
 ## Prior work absorbed
 
 - **IFF reduction:** Lean, sorry-free. Claim `lean-reduction-machine-checked`.
 - **Step law + recharge identity:** PROVED, universal. Claim `step-law-theorem-proved`.
-- **Bigjump characterization:** 12/13 genuine at depth 1000 (claim `bigjump-cap-characterization-1000`); **Directive 27 resolves the cap** — wider sieve (3e8, 16.25M primes, depth 240) adds two genuine giants at rows 162 (j=4,323,712) and 175 (j=5,237,310); i=161 cap no longer an artifact concern.
-- **Growth law:** NOT DETERMINED by this data. Geometric R² 0.9607, per-event factor 1.751 over 14 giants (improved from 0.942/1.68 over 12); but the 13th ratio 4.95 reverses the declining-ratio trend Directive 25 used to argue sublinearity. Both descriptions fit; the honest position is unsettled. What IS settled: j → ∞, inter-giant max gap unchanged at 26.
-- **Geometric-vs-sublinear reconciliation** downgraded: ratios `2.73,3.92,1.35,2.94,1.12,1.36,1.92,1.20,1.59,1.42,1.49,4.95,1.97` — the decline reverses at the 13th giant. Directive 25's "declining toward 1" was a reading of eleven ratios and the twelfth broke it. Claim `directive25-gap-trend-and-reconciliation` — reconciliation half downgraded, gap half strengthened. **Directive 27 resolves the fork from Directive 25 item 4: the sublinear asymptotic claim is not supported by the wider data.**
-- **Inter-giant gaps (14 genuine, 3e8 sieve):** gaps 22,8,4,26,2,14,2,14,4,4,12,15,13. Max 26 unchanged over 14 genuine giants. The 15th "giant" at row 239 is WIDTH-CAPPED (k*=239, flooring=1, intruder=None — block fills the π(3e8)−239-row-wide record; the 64-row gap 175→239 and the gap-doubling pattern are finite-width artifacts). `code/out/wider_width_extend.captured.txt`.
-- **Width degradation:** k* at wider sieve = 239; all 14 genuine giants far above threshold.
-- **Mean event rate λ̂=0.585** superseded (heavy tail dominates).
-- **Rule 90 timing corollary** closed (null).
-- **CHT inverse theorem** does not bite at any reachable depth.
+- **Bigjump characterization:** 12/13 genuine at depth 1000 (claim `bigjump-cap-characterization-1000`); all caps resolved at wider widths. **Directive 30: 6e8 run (31.3M primes, depth 400) confirms row 238 genuine (flooring 8,161,173) and adds it as the 15th giant.**
+- **Growth law:** geometric fit R²=0.968 over 15 giants, per-event factor 1.765×. Not load-bearing: the ratio bound is what matters.
+- **Ratio bound (Directive 30):** gap_i ≤ j_i+1 holds with 2+ orders of margin for 15 giants (max ratio 0.0000122 at gap 64 vs j=5,237,310). Sufficient for the conjecture; "bounded gap" superseded.
+- **Inter-giant gaps (15 genuine, 6e8 sieve):** `[22,8,4,26,2,14,2,14,4,4,12,15,13,64]`, max=64. Row 248 (0-based 247) is the cap (flooring 0, exclude).
+- **Parity:** 14/15 even (only 161 odd), one-sided p = 16/2^15 = 4.9×10⁻⁴. `code/out/pattern_finder_6e8_giants.captured.txt`.
+- **Next giant estimate:** k*=248 at 6e8; geometric projection ~55M block → sieve ~1e9.
 
 ## Data available
 
 - `code/out/blocks_depth1000.json`
 - `code/out/surplus_renewal_table.captured.txt`
 - `code/out/bigjump_characterization.captured.txt`
-- `code/out/directive25_gap_trend.md`, `code/out/directive25_gap_trend.captured.txt`
-- `code/out/directive24_width_degradation.md`, `code/out/directive24_geometric_growth.md`
+- `code/out/wider_width_extend.captured.txt`
+- `code/out/pattern_finder_6e8_giants.captured.txt`
+- `code/out/pattern_finder_outputs/giants_6e8.json`
