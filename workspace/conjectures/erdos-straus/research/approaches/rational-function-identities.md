@@ -1,8 +1,8 @@
 ```approach
 idea: Rational-function identities evading the Schinzel polynomial obstruction
 mechanism: Schinzel Theorem 1 proves no polynomials F₁,F₂,F₃ ∈ Z[x] with positive leading coefficients can satisfy 4/(ax+b) = 1/F₁+1/F₂+1/F₃ when b is a quadratic residue mod a. Its hypothesis is F_i ∈ Z[x] — polynomials. Rational functions F_i(k) = P_i(k)/Q_i(k) with a fixed polynomial denominator Q(k) are not covered by the theorem, and the identity 4/n(k) = 1/x(k)+1/y(k)+1/z(k) can still hold as a rational-function identity with integer-valued outputs. The run's witness set shows x = (n+t)/4 with t ∈ {3,15,19,23,31,47}, suggesting the natural ansatz x(k) = (n(k)+t)/4, y(k) = A(k)/B(k), z(k) = C(k)/D(k) with polynomial A,B,C,D. A symbolic search over low-degree numerators and denominators is the direct next step.
-status: proposed
+status: refuted
 precedent: none yet
 first-step: Write a sympy-based search over rational-function ansätze of the form x(k)=(n(k)+t)/4 with t fixed, y(k)=P(k)/Q(k), z(k)=R(k)/S(k), degrees ≤ 2, and check whether any yields an identity over n=840k+r.
-killed-by:
+killed-by: No concrete example of a non-polynomial integer-valued rational-function identity for the Erdős–Straus equation exists in the literature or in the run's data. The Chamberland Type-II parametrization — the most general known — already yields polynomial denominators once q, r, s₁, s₂ are fixed. An identity with denominators in Int(Z) \ Z[x] would be unprecedented, and the approach offers no ansatz beyond "search low-degree rational functions," which is a grid search, not a structural escape from Schinzel.
 ```

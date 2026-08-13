@@ -1,78 +1,48 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/chase-2024-random-analogue-gilbreath.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Chase 2024 — A random analogue of Gilbreath's conjecture
 
-<!-- source: https://link.springer.com/article/10.1007/s00208-023-02579-w | converted from HTML -->
+**Full text:** `research/sources/chase-2024-random-analogue-gilbreath.full.md` [[chase-2024-random-analogue-gilbreath.full]]
+**Source:** Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. Open access. Zachary Chase.
 
-## What is in it
+## What it establishes
 
-- A random analogue of Gilbreath’s conjecture
-  - Abstract
-    - Similar content being viewed by others
-    - [Extending an Erdős result on a Romanov type problem][8]
-    - [On permutations of \(\{1,\ldots ,n\}\) and related topics][9]
-    - [Combinatorics on n-sets: Arithmetic Properties and Numerical Results][10]
-    - Explore related subjects
-  - 1 Introduction
-    - Theorem 1
-    - Theorem 2
-  - 2 A general bootstrapping argument
-    - Definition 2.1
-    - Proposition 2.2
-    - Proof
-    - Remark
-  - 3 A lower bound for ending with 0
-    - Definition 3.1
-    - Lemma 3.2
-    - Proof
-    - Lemma 3.3
-    - Proof
-    - Definition 3.4
-    - Lemma 3.5
-    - Proof
-    - Corollary 3.6
-    - Proposition 3.7
-- …
+Proves the (precise form of) the postulate that "2 followed by increasing odd numbers with small random gaps" is eventually Gilbreath. This is the historical first rigorous random-analogue theorem (predecessor of CHT 2026).
 
+- **Theorem 1.** Let f increasing, 2≤f(n), f(M) ≤ (1/100)·loglog M/logloglog M for M large. Random seq: a_1=2, a_2=3, a_{n+1}=a_n+2u_n, u_n uniform on {0,..,f(n)−1} independent. Then a.s. some M_0 with: for all M≥M_0, after M iterations the first term is 1.
+- **Theorem 2 (the heart).** For M large, 2≤C≤(1/100)loglog M/logloglog M: for a length-M sequence uniform on {0,..,C−1}, w.p. ≥ 1−e^{−e^{∜⁵√log M}}... (precisely ≥1−e^{−e^{(log M)^{1/20}}}), after e^{(log M)^{1/5}} iterations everything is 0 or 1.
+- **Lemma 3.2 (the {0,d}-block consumption lemma).** Let a_1..a_i nonneg, d=max a_j, L = length of longest {0,d}-block containing a d. If L ≤ i−1, then after L iterations the largest number is ≤ d−1. This is precisely the run's "consumption" statement: a {0,d}-block of length L shrinks the maximum by one every L rows.
+- **Lemma 3.5 / Corollary 3.6 (parity).** f_i(a_1..a_{i+1}) ≡ Σ_{j∈J_i} a_j mod 2 with J_i⊆[i+1] containing 1 and i+1; so the parity of the ultimate iterate depends linearly on the first and last initial parities, so independent uniform data iterate to even with prob between 1/3 and 2/3, and long runs of even values are exponentially unlikely. (This is the parity formula CHT generalises as Lemma 3.10.)
+- **Section 6:** proof adapts to any distribution with positive weight on each of 0..C−1, not just uniform.
+- **Proth myth retraction (Sect. 7):** the claim "Proth claimed to prove GC and was wrong" is baseless; H.C. Williams, its apparent originator, retracted ("I can find no support for my assertion... Apologies for seeming to have started a myth", email 2020). Corrects the citation: Proth discussed GC only in Nouv. Corresp. Math. 4 (1878) 236–240; the C.R. 85 (1877) "Théorèmes sur les nombres premiers" is actually Pepin's paper, and C.R. 87 (1877) does not discuss GC at all.
 
-## What it claims
+## Hypotheses held here?
 
-A well-known conjecture of Gilbreath, and independently Proth from the 1800s, states that if \(a_{0,n} = p_n\) denotes the *n*th prime number and \(a_{i,n} = |a_{i-1,n}-a_{i-1,n+1}|\) for \(i, n \ge 1\), then \(a_{i,1} = 1\) for all \(i \ge 1\). It has been postulated repeatedly that the property of having \(a_{i,1} = 1\) for *i*large enough should hold for any choice of initial \((a_{0,n})_{n \ge 1}\) provided that the gaps \(a_{0,n+1}-a_{0,n}\) are not too large and are sufficiently random. We prove (a precise form of) this postulate.
+Theorems 1–2 are statements about *random* initial data with f(n) extremely slowly growing (≤ loglog n/logloglogn/100). The primes are deterministic and conjecturally only Cramér-random with gaps ~ log n, far above this f; so the theorem does NOT apply to the primes directly — it is heuristic support for the Cramér-type picture, superseded by CHT 2026 Theorem 1.3 for the more realistic f(n)=o(n). Confirms the "small random gaps suffices" postulate at the level of the 2/{0,1}/(0,2) regime.
 
-## Statements it makes
+## Bearing on this run
 
-### Theorem 1
+- **Lemma 3.2 is the run's consumption lemma at the {0,d} level** — matches Odlyzko's block lemma and the run's `odlyzko-block-lemma-exact` (a {0,d}-block of length L bounds how fast the max can drop). Good independent re-derivation of the consumption side.
+- Theorem 1's mechanism (leading odd term dropping by 2 each step while second term is 2) is exactly the run's `{0,2}`-regeneration mechanism that CHT later generalises: once everything is 0 or 2 (after halving 0/1), a leading odd ≥3 shrinks by 2 per 2-valued step toward 1 and stays 1 forever.
+- Exotic {0,3}-type examples (0s and 3s, or the Sierpinski {0,3} example) are the reason small-gaps/randomness is *necessary* — echoed in the run's `two-separation-hypothesis` and Eppstein anti-Gilbreath.
+- Confirms `proth-myth-retracted` and `chase-2024-arxiv-id` claims independently.
 
-### Theorem 2
+## Claims
 
-### Definition 2.1
+```claim
+id: chase-2024-theorem1
+statement: For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on {0,..,f(n)−1}) is almost surely eventually Gilbreath (first term of every late row is 1).
+hypotheses: random initial data with f growing ≤ logloglog(log...); Cramér-type small gap model.
+holds-here: primes are deterministic & gaps ~log n exceed this f; heuristic support only, superseded by CHT 2026.
+status: proved in source; not checked here.
+bearing: establishes small-random-gaps suffices in a weak random model; first rigorous random analogue.
+anchor: research/sources/chase-2024-random-analogue-gilbreath.full.md
+```
 
-### Proposition 2.2
-
-### Definition 3.1
-
-### Lemma 3.2
-
-### Lemma 3.3
-
-### Definition 3.4
-
-### Lemma 3.5
-
-### Corollary 3.6
-
-### Proposition 3.7
-
-Proposition [2.2][25] now tells us that with probability at least \(\frac{1}{200C^2}\), a simple random walk of length Footnote 2 \((1+\frac{1}{200C})L\) consists entirely of red vertices. Note \((1+\frac{1}{200C})L \ge (1+\frac{1}{400C})i_{j-1}\), since it is equivalent to \(\frac{1}{400C}i_{j-1} \ge (2+\frac{1}{200C})i_j\), which is true since \(i_j \le \frac{i_{j-1}}{1000C}\). We have thus shown that, if \(a_1,\dots ,a_{(1+\frac{1}{400C})i_{j-1}+\overline{i}}\) are chosen independently and uniformly at random from \([C]_0\), then with probability at least \(\frac{1}{200C^2}\), all \(f_{\overline{i}}(a_r,\dots ,a_{r+\overline{i}})\) for \(1 \le r \le (1+\frac{1}{400C})i_{j-1}\) are either…
-
-### Corollary 3.8
-
-### Theorem 2
-
-### Lemma 5.1
-
-### Theorem 1
-
-### Definition 5.2
-
-### Lemma 5.3
-
-*[digest of a 52800 character source; every section, statement, and proof in full at `research/sources/chase-2024-random-analogue-gilbreath.full.md`]*
+```claim
+id: chase-2024-block-consumption03
+statement: If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma 3.2).
+hypotheses: none beyond the {0,d}-block structure.
+holds-here: yes — the run's consumption (block shrinks max one level per its length).
+status: proved in source (elementary induction); consistent with Odlyzko block lemma.
+bearing: independent source for the consumption half of regeneration.
+anchor: research/sources/chase-2024-random-analogue-gilbreath.full.md
+```

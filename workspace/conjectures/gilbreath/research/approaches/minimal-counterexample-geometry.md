@@ -41,12 +41,93 @@ mechanism: |
   theorem: the block can never reach 0. Even UNSAT for m up to some concrete
   number (say m = 100) would be a genuine partial result: the block length can
   never drop below 100 in one erosion run given gap bound g.
-status: proposed
-first-step: |
-  Write a program that, given a block bit-pattern of length b and the values
-  at and past the block boundary, computes the erosion trajectory exactly —
-  tracking the shrinking block tip value (what becomes the next row's second
-  entry) row by row. Extract the minimal constraint system for m consecutive
-  erosion rows from the depth-1000 data. Then encode as SMT: can a 2-then-odds
-  sequence exist that causes m = 20 pure erosion rows? If UNSAT, enlarge m.
+status: refuted
+killed-by: >
+  Refuted on six grounds; see research/notes/minimal-counterexample-geometry-grounding.md.
+
+  (1) The exact reverse-engineering theory is GLOBAL, not a bounded local
+  constraint system. Muney 2026 (arXiv:2606.23721) computes the valid-extension
+  set by backward preimage steps on the whole right anti-diagonal (reverse-tree,
+  Prop. 18); membership is an order-sensitive analogue of Brown's subset-sum
+  completeness criterion with weights reaching the whole prefix (Alkan et al.
+  2023 factorial K-criterion). A finite SMT encoding is either that global
+  criterion (as hard as GC) or a strictly weaker bounded approximation whose
+  UNSAT proves nothing about the primes.
+
+  (2) The class-level target statement is FALSE. Eppstein 2011 constructs, for
+  ANY unbounded monotone f(n)>=2, a 2-then-odds sequence with gaps <= f(n)
+  whose right edge leaves and re-enters the good regime infinitely often —
+  i.e. arbitrary-length erosion runs (block up to the row's end without
+  regeneration) are realizable from a 2-then-odds start with small gaps. The
+  primes can only differ via the unproved CHT non-concentration hypothesis;
+  the approach encodes only "2-then-odds + gaps", which is exactly the class
+  Eppstein defeats.
+
+  (3) The run's own rows contradict the "tip values form a backward-difference
+  recurrence whose reverse-engineering is impossible" premise. Depth-1000 data:
+  during erosion the intruder y obeys a ONE-ROW drain rule — y(k+1) = y(k) - 2
+  iff the last block entry x(k)=2, else y(k+1)=y(k) — and is monotone
+  non-increasing to 4 and sticks; regeneration fires exactly at (x,y)=(2,4);
+  101 erosion steps conform with zero failures; genuine intruder-driven erosion
+  runs of length 13 occur (k=97..109, 113..124, 147..158) and always end in
+  (2,4) regeneration, never at b=0. No A_{k+m}(1)=4 at b=0 failure trajectory
+  exists at all in depth 1000 (the 162..999 run is a finite-record
+  width-exhaustion artifact, intruder None).
+
+  (4) SAT/CAS counterexample hunting (MATHCHECK, Konev-Lisitsa EDC, Bright) has
+  never been applied to Gilbreath, and structurally cannot be: the successful
+  applications all have finite/bounded-state properties, while GC's property is
+  about an unbounded array with a global extension criterion. Searches found no
+  published SAT/SMT attack on GC.
+
+  (5) The block lemma's protection is linear (n+1 rows per length-n block,
+  Odlyzko 1993 p.374 + this run's proved re-derivation). "n rows of pure
+  erosion to reach 0" is the consumption half; the regeneration half — that the
+  boundary keeps re-entering {0,2} before b→0 — is exactly the unproved
+  conjecture, reframed not solved.
+
+  (6) CHT 2026 (Thm 1.6, Lemmas 3.7(iii)/3.8): a {0,d}-valued block propagates
+  in all descendants and the only obstructions to decay are long zero-blocks /
+  long shallow {0,d}-blocks — global length-height obstructions, not pointwise
+  tip conditions. No known necessary condition on erosion tip values makes the
+  approach's system unsatisfiable; the only exact tip theory (Muney) is global
+  and, by Eppstein, satisfiable in the 2-then-odds class for arbitrary m.
+precedent: >
+  - https://doi.org/10.48550/arXiv.2606.23721 (Muney 2026: reverse-tree,
+    valid-extension sets, global Brown-completeness-analogue criterion,
+    Prop. 2/12/18, Cor. 3)
+  - https://www.mdpi.com/2227-7390/11/18/4006 (Alkan et al. 2023: Gilbreath
+    polynomials, factorial-weighted min/max K criterion, GC-implies bound)
+  - https://11011110.github.io/blog/2011/02/20/anti-gilbreath-sequences.html
+    (Eppstein 2011: backward construction, no-regeneration runs of arbitrary
+    length in the small-gap 2-then-odds class)
+  - https://arxiv.org/abs/2607.08712 (Chase-Hunter-Tao 2026: Thm 1.6
+    obstructions = long 0-blocks / long shallow {0,d}-blocks; Lemmas 3.7(iii),
+    3.8 {0,d} propagation; unproved non-concentration hypothesis for primes)
+  - https://doi.org/10.1090/S0025-5718-1993-1182247-7 + this run's
+    research/notes/block_lemma.md (block lemma linear protection, constant 1)
+  - MATHCHECK (Zulkoski/Ganesh/Czarnecki, IJCAI 2016) + Konev-Lisitsa (SAT 2014)
+    + Bright (CACM 2022): SAT-for-conjectures exists and has never reached GC
+holding-claims: larger
+  anti-gilbreath-construction, odlyzko-block-lemma-exact, cht-inverse-theorem,
+  regeneration-lemma-edge-2-intruder-4-established, valid-extension-nonlocal
+falsifies: >
+  That a bounded-window SMT system over 2-then-odds gap bounds can be UNSAT for
+  all m (or even for m up to a fixed bound with a gap bound valid for ALL
+  primes). Eppstein refutes the class-level claim; the run's data refute the
+  reverse-difference premise; the global extension criteria refute the bounded
+  encoding; and any all-primes gap bound needs the unproved CHT hypothesis.
+buy: >
+  None as a proof route. The salvageable residue: the run's own exact computed
+  regeneration trigger (regen iff boundary (x,y)=(2,4); erosion = one-row drain)
+  and Muney's reverse-tree as the correct descriptive tool. Both were already
+  captured in regeneration_data.md and the backward-extension thread; the
+  approach adds no new leverage.
+first-step (retired): >
+  Extracting the tip-value constraint system from depth-1000 data already
+  succeeded and found a ONE-ROW rule with no backward coupling, satisfiable
+  indefinitely (13-row erosion runs occur). Encoding that as SMT and finding
+  UNSAT would contradict the run's own data; finding SAT would prove trivially
+  what Eppstein already builds. No run of the SMT encoding is justified: the
+  constraint system is already characterized and is satisfiable.
 ```

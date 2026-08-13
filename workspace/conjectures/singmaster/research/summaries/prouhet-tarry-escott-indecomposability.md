@@ -1,61 +1,56 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/prouhet-tarry-escott-indecomposability.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hajdu–Papp–Tijdeman 2022 — PTE, indecomposability, and binomial-coefficient Diophantine equations
 
-<!-- source: https://link.springer.com/article/10.1007/s11139-022-00555-7 | converted from HTML -->
+Source: L. Hajdu, Á. Papp, R. Tijdeman, "The Prouhet–Tarry–Escott problem,
+indecomposability of polynomials and Diophantine equations", Ramanujan J. 58 (2022)
+1075–1093. Full text: `research/sources/prouhet-tarry-escott-indecomposability.full.md`.
 
-## What is in it
+This is the **Bilu–Tichy grounding source** for the run's binomial-equation approach
+(motivated by Benne de Weger's question on equal/differing binomial coefficients).
 
-- The Prouhet–Tarry–Escott problem, indecomposability of polynomials and Diophantine…
-  - Abstract
-    - Similar content being viewed by others
-    - [Equal values of certain partition functions via Diophantine equations][8]
-    - [On products of consecutive arithmetic progressions. II][9]
-    - [Properties of High Rank Subvarieties of Affine Spaces][10]
-    - Explore related subjects
-  - 1 Introduction
-    - Problem 1
-    - Problem 2
-  - 2 Results
-    - Theorem 2.1
-    - Remark 1
-    - Remark 2
-    - Theorem 2.2
-    - Remark 3
-    - Corollary 2.1
-    - Theorem 2.3
-    - Remark 4
-    - Theorem 2.4
-  - 3 Proofs of results of Prouhet–Tarry–Escott type
-    - Proof of Theorem 2.1
-    - Corollary 3.1
-- …
+## What it establishes
 
+- **Theorem 2.1 (PTE structure).** For `n > 2r^{3/2}+5r+8`, any partition of
+  `{1,…,n}` into `A_0` (|A_0|=r) and equal-size sets `A_i` whose first `k−1`
+  symmetric polynomials agree must have `k=2`, and the `A_i` are symmetric about
+  the mean of the remaining set. Corollary 3.1: the only `k>2` solution to
+  Problem 1 is `n=7` (sets `{2,3,7}` and `{1,5,6}`).
 
-## What it claims
+- **Theorem 2.2 (PTE ⇔ decomposability).** Such a partition exists iff
+  `f_A(x)=∏_{a∈A}(x−a)` is decomposable over Q; the decomposition is explicit.
 
-In this paper, we show how the subjects mentioned in the title are related. First we study the structure of partitions of \(A \subseteq \{1, \dots , n\}\) in *k*-sets such that the first \(k-1\) symmetric polynomials of the elements of the *k*-sets coincide. Then we apply this result to derive a decomposability result for the polynomial \(f_A(x) := \prod _{x \in A} (x-a)\). Finally we prove two theorems on the structure of the solutions (*x*, *y*) of the Diophantine equation \(f_A(x)=P(y)\) where \(P(y)\in \mathbb {Q}[y]\) and on shifted power values of \(f_A(x)\).
+- **Corollary 2.1 (binomial case).** `f_{A,c,d}(x)=∏_{a∈A}(x−c−ad)` is decomposable
+  over Q iff `n−r` is even and `A` is symmetric about its mean; the only (up to
+  equivalence) decomposition is then the quadratic one.
 
-## Statements it makes
+- **Theorem 2.3 (classifies infinite families — INEFFECTIVE).** `f_{A,c,d}(x)=P(y)`,
+  deg P≥2, has finitely many integer solutions unless (i) `P(y)=f_{A,c,d}(T(y))` for
+  a non-constant rational T, or (ii) `P(y)=φ*(Q(y))` with Q having at most two roots
+  of odd multiplicity. **Acknowledged ineffective** ("This result, similarly to the
+  above mentioned ones, is ineffective").
 
-### Theorem 2.1
+- **Theorem 2.4 (EFFECTIVE, different equation).** `f_{A,c,d}(x)=ay^ℓ+b` with ℓ
+  unknown ≥2 has all `x,y,ℓ` effectively bounded by a constant depending on the data.
+  Proof uses Schinzel–Tijdeman (ℓ<C₁ via linear forms in logs), Brindza, and Lemma 5.4
+  (Bilu–Tichy criterion: `f(x)=g(y)` infinite bounded-denominator solutions iff
+  `f=φ∘F∘λ`, `g=φ∘G∘κ` with (F,G) a standard pair).
 
-Theorem [2.1][31] yields a complete answer to Problem [2][54] for every \(n>2r^{3/2}+5r+8\). On the other hand, for any *r*and *n*with \(n-r\) even, if \(A=\{1,\dots ,n\}\setminus A_0\) is symmetric with respect to \(\bar{a}\) (i.e., \(a\in A\) implies that \(2\bar{a}-a\in A\)), then we have a partition as in Problem [2][54] with \(k=2\).
+## What follows for this run
 
-### Theorem 2.2
+- The binomial collision `C(x,k1)=C(y,k2)` is the `r=0, c=0, d=1` special case of
+  `f_{A,c,d}(x)=P(y)` (binomial polynomials have roots an arithmetic progression).
+  So **the Bilu–Tichy classification has been applied to this exact problem** and
+  determines which `(k1,k2)` are exceptional.
+- Theorem 2.3's finiteness is **ineffective** — it gives "finitely many" with no count
+  computable in `(k1,k2)`. The effective result (Thm 2.4) is for **shifted power
+  values**, not equal binomials. So this route yields per-pair finiteness only, the
+  same ineffectivity wall as Faltings/Siegel — **not a uniform bound on N(a)**.
+- The surviving grounded kernel is the **classification of exceptional pairs**: the
+  infinite Singmaster Fibonacci family `C(n+1,k+1)=C(n,k+2)` is the concrete
+  exceptional example (its common factor comes from the Pell/quadratic structure).
 
-### Corollary 2.1
+Evidence class: sourced (full text read). Records the named obstruction that refutes
+`bilu-tichy-classification` as a route to uniformity.
 
-### Theorem 2.3
-
-### Theorem 2.4
-
-### Corollary 3.1
-
-### Lemma 5.1
-
-### Lemma 5.2
-
-### Lemma 5.3
-
-### Lemma 5.4
-
-*[digest of a 65359 character source; every section, statement, and proof in full at `research/sources/prouhet-tarry-escott-indecomposability.full.md`]*
+Claim block: `hpt-bilu-tichy-exceptional-classification` and
+`bilu-tichy-method-ineffective-uniformity-wall` are held in
+`research/notes/bilu-tichy-grounding.md` (the approach-level note).

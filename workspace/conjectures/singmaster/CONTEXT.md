@@ -45,6 +45,14 @@ Each marked with evidence class and a link.
   Faltings threshold but NOT a uniform bound** — per-pair finiteness is
   ineffective. Full grid in `code/out/commands.log`; approach in
   `research/approaches/genus-computation.md`.
+  **Verified closed forms (checked against every computed entry, n<=24).**
+  `{2,n}`: `y(y-1)=2C(x,n)` hyperelliptic, `genus=floor((n-1)/2)`. `{3,n}`:
+  `Y^3-Y=6C(x,n)` (Y=y-1) cyclic-trigonal, `genus=n-1` if 3∤n else `n-2`.
+  `{4,n}`: 2:1 cover of `w^2=1+24C(x,n)` via `w=y^2-3y+1`, `genus=3(n-1)/2`
+  (n odd), `3(n-2)/2+1` (n≡2 mod 4), `3(n-2)/2` (n≡0 mod 4). `k2=5` row has no
+  verified closed form yet (candidate `2k1-4`, `/5:2k1-5` in verify_closed2.py,
+  matching n<=24 but not established). These are the structural small-column
+  content — the k=2/3 columns that carry all multiplicity.
 
 - **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`
   from secondary attestation; PRIMARY SOURCE NOT HELD for Singmaster 1971.**
@@ -65,10 +73,25 @@ Each marked with evidence class and a link.
   `exp(log^{2/3+eps} n)<=m<=n/2`, at most 4 in the full interior. Inner region
   at most 1. To prove the conjecture it suffices to handle
   `2<=m<=exp(log^{2/3+eps} n)`, i.e. `m<=log t/log_2^{3/2-eps} t` — that is
-  **exactly what they leave open**. Constants effective but far too large to use.
-  Interior multiplicity is 0,1,2,4 — never 3 (Remark 1.11).
+  **exactly what they leave open**. Interior multiplicity is 0,1,2,4 — never 3
+  (Remark 1.11).
+  **Effectiveness of threshold NOT YET VERIFIED against full text.**
+  The run says "effective: yes (constants too large for numerical use —
+  Remark 1.7)" but the directive flags this as load-bearing and it must be
+  confirmed against the paper's own statement. If ineffective, the theorem
+  yields no numerical B even in the interior. **PENDING — task 1.**
   **Exact statement with effective/yes, uniform-in-k/yes (over interior) now
   in `research/approaches/mrstt-exact-statement.md`.**
+
+- **MRSTT leaves all known witnesses untouched — fail TWICE.** `computed`.
+  All 15 nontrivial witness pairs (including the three for 3003: (14,6),(15,5),
+  (78,2)) lie below the interior cut exp((log n)^{2/3+eps}) for every admissible
+  eps. AND every witness has t <= 24310, failing the "t sufficiently large"
+  hypothesis independently. The region comparison is about the shape of the
+  boundary, NOT a claim that a large-t witness would also escape — that is
+  not established. So MRSTT is consistent with B=8 without constraining it,
+  and progress on B must come from the edge. Recorded at
+  `code/out/mrstt_leaves_witnesses_open.md`.
 
 - **Small-(k1,k2) curves solved effectively. `sourced`.** (2,3) Avanesov;
   (2,4) de Weger/Pintér (Gelfond–Baker); (3,4) de Weger genus-3 double cover of
@@ -171,6 +194,20 @@ not re-derived here.
 
 ## Gaps
 
+- **RESOLVED: MRSTT effectiveness CONFIRMED from full text.** The run read
+  mrstt-fulltext.full.md line-by-line; Remark 1.7 states verbatim: "The implied
+  quantitative bounds in the hypothesis 't is sufficiently large depending on ε'
+  are effective; however, we have made no attempt whatsoever to optimize them in
+  this paper, and will likely be too large to be of use in numerical
+  verification of Singmaster's conjecture in their current form." So the interior
+  theorem IS effective (a computable threshold exists) but with an unoptimized,
+  likely astronomically large constant. Full statement in
+  `research/approaches/mrstt-exact-statement.md`.
+- **PRIORITY: Witness double-failure not stated.** `mrstt_leaves_witnesses_open.md`
+  compares witness (n,m) against the interior threshold but does not also flag that
+  every witness has t ≤ 24310, independently failing the "t sufficiently large"
+  hypothesis. The region comparison must be presented as shape-of-the-boundary,
+  not as a claim about large-t behavior. See TASKS.md task 2.
 - **LEDGER STATUS: asserted=15, checked=4, proved=0.** Every asserted bound must
   be run against `code/out/witnesses.json`. Any lemma implying B<8 is refuted by
   3003 (8 occurrences). State counting convention on every claim. See TASKS.md.
@@ -182,6 +219,8 @@ not re-derived here.
   or effective Schmidt subspace theorem would need, and why it is out of reach —
   stating this cleanly is itself a deliverable (GOAL.md allows a proof that a
   stated approach cannot give uniformity, with the obstruction named).
+- Source-gathering continued (frontier 121→170) without new claims checked;
+  further gathering happens only against a stated gap in research/REQUESTS.md.
 - Compute policy is in place (never build the triangle; invert per small k by
   binary search; k<=log2(a); 28 CPUs; parallelise over a or (k1,k2); `timeout
   540`; state workers+range). Follow it.

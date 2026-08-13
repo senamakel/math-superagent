@@ -1,79 +1,31 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/eppstein-gilbreath-practical-numbers.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Eppstein 2011 — Gilbreath made practical (practical numbers)
 
-<!-- source: https://11011110.github.io/blog/2011/02/19/gilbreath-made-practical.html | converted from HTML -->
+**Full text:** `research/sources/eppstein-gilbreath-practical-numbers.full.md` [[eppstein-gilbreath-practical-numbers.full]]
+**Source:** https://11011110.github.io/blog/2011/02/19/gilbreath-made-practical.html (D. Eppstein), companion to the anti-Gilbreath post.
 
-Gilbreath made practical
+## What it establishes
 
-[&laquo; Conference deadline synchronization][1] [Anti-Gilbreath sequences &raquo;][2]
+Introduces the **Rule-90 cellular-automaton lens** on the {0,2} interior and a **new conjecture for the practical numbers**.
 
-Make a triangle of numbers in which the leftmost column is the sequence of prime numbers and each other number is the absolute value of the difference of the two numbers to its left:
+- **Rule 90 identification.** In the prime triangle, the big region of 0s and 2s on the right behaves like the one-dimensional Rule-90 CA (each triangle column is an automaton configuration, time flowing left→right). Rule 90 behaves "as if random" despite being deterministic; so each successive row gets a seemingly-random {0,2} string whose 2s wears down larger values in the next row. (Eppstein gives no proof here — it is a heuristic framing, later formalised by the run's `rule90-identification-real-absorption-refuted` and CHT/Odlyzko's mod-4/Pascal structure.)
+- **Practical numbers.** The practical numbers (every fraction < 1 with denominator dividing them is an Egyptian fraction with those denominators) are dense like primes and also have first element parity different from all the rest. The practical-number triangle also has 1s all down the right edge (worked example shown).
+- **Conjecture + verification.** Eppstein conjectures the right edge is all 1s for practical numbers, with evidence: **computed first 212,000 rows** (up to practical number 2,314,890), all ending in 1. Heuristic: Rule-90 randomness makes counterexamples increasingly rare, so "if true this far out it seems almost certainly true in general."
+- Provides Python source (bit-manipulation Rule-90), noting speedups possible.
 
+## Hypotheses / bearing
+
+- Note the practical numbers don't start (2,3) — they start (1,2,4,6,...) — so they are NOT of the run's canonical "(2, odd, odd, ...)" shape; Eppstein's leading column is 1,2,4 here. It is a separate Gilbreath-like family, marginally relevant as confirmation that the {0,2} regime + Rule-90 recurs in many "prime-like" sequences.
+- Bearing: the Rule-90 lens corroborates the mod-2/Pascal structure (Odlyzko, CHT Lemma 3.10, run's mod4-linearization); the 212,000-row practical-verification is a data point in the run's "small-gaps/prime-like sequences are Gilbreath" general-class program.
+- It is a heuristic/motivational source; the run's own depth-600 prime check and Odlyzko's rigorous verification dwarf this numerically, and it proves no theorem.
+
+## Claims
+
+```claim
+id: eppstein-practical-rule90
+statement: (heuristic/conjectural) the {0,2} interior of a Gilbreath triangle evolves as a Rule-90 cellular automaton (per-column, time left→right), which behaves as if random and wears down larger values; the practical-number triangle's right edge was verified all-1 to 212,000 rows (up to 2,314,890).
+hypotheses: the {0,2} interior of a Gilbreath-like integer triangle.
+holds-here: yes as heuristic; the Rule-90 structure is formalised by Odlyzko/CHT mod-2 parity; the practical-verification is empirical.
+status: asserted by source (blog heuristic + a computation); not a theorem.
+bearing: motivates the Rule-90/randomness view of the {0,2} regime; adds a second verified prime-like family.
+anchor: research/sources/eppstein-gilbreath-practical-numbers.full.md
 ```
-  2
-  3 1
-  5 2 1
-  7 2 0 1
- 11 4 2 2 1
- 13 2 2 0 2 1
- 17 4 2 0 0 2 1
- 19 2 2 0 0 0 2 1
- 23 4 2 0 0 0 0 2 1
- 29 6 2 0 0 0 0 0 2 1
- 31 2 4 2 2 2 2 2 2 0 1
- 37 6 4 0 2 0 2 0 2 0 0 1
- 41 4 2 2 2 0 0 2 2 0 0 0 1
- 43 2 2 0 2 0 0 0 2 0 0 0 0 1
- 47 4 2 0 0 2 2 2 2 0 0 0 0 0 1
- 53 6 2 0 0 0 2 0 2 0 0 0 0 0 0 1
- 59 6 0 2 2 2 2 0 0 2 2 2 2 2 2 2 1
- 61 2 4 4 2 0 2 0 0 0 2 0 2 0 2 0 2 1
- 67 6 4 0 4 2 2 0 0 0 0 2 2 0 0 2 2 0 1
- 71 4 2 2 2 2 0 2 2 2 2 2 0 2 2 2 0 2 2 1
- 73 2 2 0 2 0 2 2 0 2 0 2 0 0 2 0 2 2 0 2 1
- 79 6 4 2 2 0 0 2 0 0 2 2 0 0 0 2 2 0 2 2 0 1
- 83 4 2 2 0 2 2 2 0 0 0 2 0 0 0 0 2 0 0 2 0 0 1
- 89 6 2 0 2 2 0 2 0 0 0 0 2 2 2 2 2 0 0 0 2 2 2 1
- 97 8 2 0 0 2 0 0 2 2 2 2 2 0 2 0 2 0 0 0 0 2 0 2 1
-```
-
-Notice the pattern of 1's running down the right side? [Gilbreath's conjecture][3] states that it continues like that forever. It seems very likely to be true: the numbers in the second column on the left start out quite small (polylogarithmically small if [Cramér's conjecture][4] is to be believed), while the big region of 0's and 2's on the right behaves like the [Rule 90][5] one dimensional cellular automaton (with each automaton configuration being a column of the triangle and the automaton's time steps proceeding left to right). Rule 90 behaves in many ways as if it were random (despite being deterministic), and so each successive row of the triangle gets filled with a seemingly-random sequence of 0's and 2's, with the 2's in the sequence quickly wearing down any larger values in the next row.
-
-There are some other sequences of integers that behave a lot like the prime numbers, one of which is the [practical numbers][6], numbers \( q \) such that any fraction \( p/q \) less than one can be represented as an [Egyptian fraction][7] in which all denominators are divisors of \( q \). The practical numbers are highly composite, but they have similar density properties to the prime numbers. And like the prime numbers, the first one has a different parity from all the rest. What happens if we try making a triangle in the same way from them? We get:
-
-```
-  1
-  2 1
-  4 2 1
-  6 2 0 1
-  8 2 0 0 1
- 12 4 2 2 2 1
- 16 4 0 2 0 2 1
- 18 2 2 2 0 0 2 1
- 20 2 0 2 0 0 0 2 1
- 24 4 2 2 0 0 0 0 2 1
- 28 4 0 2 0 0 0 0 0 2 1
- 30 2 2 2 0 0 0 0 0 0 2 1
- 32 2 0 2 0 0 0 0 0 0 0 2 1
- 36 4 2 2 0 0 0 0 0 0 0 0 2 1
- 40 4 0 2 0 0 0 0 0 0 0 0 0 2 1
- 42 2 2 2 0 0 0 0 0 0 0 0 0 0 2 1
- 48 6 4 2 0 0 0 0 0 0 0 0 0 0 0 2 1
- 54 6 0 4 2 2 2 2 2 2 2 2 2 2 2 2 0 1
- 56 2 4 4 0 2 0 2 0 2 0 2 0 2 0 2 0 0 1
- 60 4 2 2 2 2 0 0 2 2 0 0 2 2 0 0 2 2 2 1
- 64 4 0 2 0 2 0 0 0 2 0 0 0 2 0 0 0 2 0 2 1
- 66 2 2 2 0 0 2 2 2 2 0 0 0 0 2 2 2 2 0 0 2 1
- 72 6 4 2 0 0 0 2 0 2 0 0 0 0 0 2 0 2 0 0 0 2 1
- 78 6 0 4 2 2 2 2 0 0 2 2 2 2 2 2 0 0 2 2 2 2 0 1
- 80 2 4 4 0 2 0 2 0 0 0 2 0 2 0 2 0 0 0 2 0 2 0 0 1
-```
-
-Again, we get 1's all down the right side. I conjecture that this pattern continues forever. As evidence, I tried computing the first 212000 rows of the triangle (up to the practical number 2314890) and they all ended with a 1. The same argument involving Rule 90 makes provides a heuristic explanation for why counterexamples should be increasingly rare in later rows of the triangle, so that if it's true this far out it seems almost certainly true in general.
-
-Here's my Python source code (using my [Eratosthenes][8] code for generating prime and practical numbers from [PADS][9]). It could be made a lot faster by using bit manipulation tricks to speed up the Rule 90 part of each row, but I think this should be sufficient as a proof-of-concept.
-
-```
-from Eratosthenes import *
-
-
-*[excerpt ends; 1224 characters not shown — see `research/sources/eppstein-gilbreath-practical-numbers.full.md`]*

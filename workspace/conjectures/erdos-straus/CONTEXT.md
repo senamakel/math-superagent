@@ -138,23 +138,20 @@ disk), or asserted-by-source.
   restatement alone. `mathworld-egyptian-fraction.full.md` is an encyclopedia
   entry: orientation-only, never a load-bearing anchor.
 
-- **Subprogression families** (checked, operator directive 3): 554 parametric
+- **Subprogression families** (checked, operator directive 4): 1451 parametric
   identity families for n ≡ 1 (mod 840), each n = a·k + b with b ≡ 1 (mod 840)
-  and a = 840m for m ∈ {11,13,17,19,22,23,26,29,31,33,34,37}. Every family is
-  an exact polynomial identity in ℤ[k]: 4xyz − n(yz+xz+xy) ≡ 0, verified
-  554/554 in exact integer polynomial arithmetic (operator). Under n = 840t+1
-  this gives 83 residue classes of t, covering 132295465/139671337 = 94.72% of
-  the class, leaving positive density 5.28%. The other five open classes are
-  untouched. Novelty against Elsholtz–Tao Prop 1.9 is unchecked — that is the
-  next work. **Capture-generation caveat (checked by curator against disk):
-  `subprogression.captured.txt` has since been overwritten by a longer
-  `search_subprogression.py` run that also emits families at a = 840m for
-  m ∈ {38, 39, 41, 43} and ends with NO summary line** — the 554/83-classes/
-  94.72% numbers apply to the capture state the operator parsed, not to the
-  file now on disk; the current capture's counts are unreported and must be
-  re-parsed before citing. (`code/out/subprogression_coverage.md` holds the
-  checked computation for its generation; `code/out/subprogression.captured.txt`
-  is the later, unsuffixed one.)
+  and a = 840m for m ∈ {11,13,17,19,22,23,26,29,31,33,34,37,38,39,41,43}.
+  Every family is an exact polynomial identity in ℤ[k] (operator-verified).
+  123 distinct residue classes (m, s) of t = (n−1)/840. Coverage:
+  732719497/762354697 = 96.112676% of n ≡ 1 (mod 840), up from 94.72% at 554
+  families. The other five open classes are untouched. The per-prime avoided
+  fractions are 14/23, 23/29, 24/31, 27/37, 35/41, 40/43 — the newest primes
+  are the weakest. **The uncovered density factors over independent prime groups
+  as a product of (p−c_p)/p, every factor strictly positive, so it is strictly
+  positive for any finite set of families and can reach zero only if some modulus
+  m has all m residues realised. 23 is the smallest with room (9/23, missing 14).
+  The saturation question for modulus 23 is now the whole problem: either exhibit
+  families for the 14 missing residues, or prove an obstruction.**
 
 ## Ruled out
 
@@ -211,10 +208,10 @@ disk), or asserted-by-source.
   sub-covering attack.
 - d=3 and d=7 criteria: 2705/2705 both; minimality exact 2705/2705;
   divisor criterion holds at minimal e and fails at all e′<e, 2705/2705.
-- Subprogression coverage (operator directive 3): 554 families, moduli
-  {11,13,17,19,22,23,26,29,31,33,34,37}, 83 residue classes of t, covering
-  132295465/139671337 = 94.72% of n ≡ 1 (mod 840). Uncovered: 7375872/139671337
-  = 5.28%. As fraction of all n: ≈ 0.1128%. Other five classes: 0 families.
+- Subprogression coverage (operator directive 3; superseded by the 1451-family
+  row above — exact fractions in `code/out/subprogression_coverage.md`): 554
+  families → 94.72% of n ≡ 1 (mod 840); as share of all n ≈ 0.1128%. Other
+  five open classes: 0 families.
 - **Wider-modulus sweep unfinished** (checked): `code/pattern_mining/extended_subprogression.py`
   (all M ≤ 60 + primes ≤ 101) was killed at the 540s timeout inside its FOUND
   loop; both captures (`extended_subprogression.captured.txt`, `.full.txt`) are
@@ -267,36 +264,31 @@ yields an already-covered sub-progression of an open class. Ventas
 
 ## Gaps
 
-- **Subprogression novelty unchecked** (operator directive 3). The 554
-  families are 554/554 exact ℤ[k] polynomial identities, but whether they are
-  new or rediscoveries of Elsholtz–Tao Prop 1.9 / Salez seven-equation
-  families in different coordinates has not been checked. That check is the
-  next work, against `elsholtz-sums-of-k-unit-fractions.full.md` and
-  `elsholtz-tao-counting.full.md`. A rediscovery honestly labelled is fine;
-  a rediscovery announced as new is the failure.
-- **Does Chamberland's Type-II iff give a covering sieve for n ≡ 1 (mod 840)?**
-  For p = 840k+1 to have a Type-II solution it is necessary and sufficient
-  that 840k+1 = q·r − 4s₁s₂ with q ≡ 3 (mod 4), s₁,s₂ | (q+1)/4. For FIXED
-  q and s₁,s₂ this is a linear congruence in k — exactly the sub-progression
-  covering mechanism — and varying q,s₁,s₂ over a finite set gives a finite
-  sieve. Gap: what fraction of k does the union over q ≤ Q cover, and does
-  adding q ≫ Q (with s₁,s₂ | (q+1)/4) close the density gap? This is a
-  concrete, computable question the run can attack with the 554-family
-  infrastructure. Check the smallest primes requiring s₁,s₂ ≥ 3 (1009, in
-  class 169) against the q≤23 Table 2 to bound where the q-grid must start.
-- **Positive-density gap in n ≡ 1 mod 840**: the 554 families cover 94.72%,
-  leaving 5.28% (7375872/139671337) with positive density. The complement is
-  a union of full residue classes of t under the 12 moduli; no further family
-  of those moduli closes it. Needs new moduli coprime to the existing set or a
-  different mechanism (rational-function families, per-prime shapes). Whether
-  M ∈ {38, 39, 41, 43} or other moduli ≤ 101 (visible, unverified, in the
-  wider sweep fragments) add new residue classes and shrink the gap is
-  UNKNOWN — the run that would answer it (re-run extended_subprogression.py
-  with aggregation intact, or parse the two captures) has not produced a
-  summary.
-- **The other five open classes untouched**: n ≡ 121, 169, 289, 361, 529
-  (mod 840) have zero families from the sweep. ≈ 0.1128% of all n settled.
-- **AP→subfamily lift**: proven in principle by Mballa; gap is whether a
-  finite union covers all of some open class, and the density of the union.
-- **Verification-bound reproduction**: any slice of the 10¹⁸ bound on Salez's
-  residual set R₂ ∪ R₇ remains unreproduced.
+- **Saturation of modulus 23** (operator directive 4). The Salez seven-equation
+  generator currently covers 9 of the 23 residue classes t mod 23 (t =
+  (n−1)/840). The missing 14 are [0,1,2,3,4,6,7,8,10,11,14,16,21,22]. The
+  uncovered density factors as a product of (p−c_p)/p over independent prime
+  groups, and the factor for modulus 23 is 14/23. If no further residues of 23
+  can be realised by the generator, that factor stays positive forever and the
+  uncovered density is bounded away from zero. The finite question: can the
+  generator realise all 23 residues? Either exhibit families for the missing 14,
+  or prove an obstruction that stops some residue being realisable at all.
+- **Bulk promote asserted → checked** (operator directive 4). The 1451 families
+  are all exact ℤ[k] polynomial identities, provable mechanically by the
+  cleared-denominator test. Run `is_identity` on every one in bulk and flip
+  them from `asserted` to `checked`.
+- **Failing command** (operator directive 4). Retry count 6, run-failed 5 in
+  `code/out/commands.log`. Read and fix before writing new programs.
+- **prime-reduction still sourced, not checked** (directive 1 priority, still
+  the exit-blocker of `research/threads/elementary-reductions.md`): write the
+  scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
+  exact arithmetic, capture it, and flip the claim to checked; then
+  `reduction-mod24` once the mod-3/mod-8 identities are checked.n every one in bulk and flip
+  them from `asserted` to `checked`.
+- **Failing command** (operator directive 4). Retry count 6, run-failed 5 in
+  `code/out/commands.log`. Read and fix before writing new programs.
+- **prime-reduction still sourced, not checked** (directive 1 priority, still
+  the exit-blocker of `research/threads/elementary-reductions.md`): write the
+  scaling-lift proof `4/n = 1/x+1/y+1/z ⇒ 4/(nm) = 1/(mx)+1/(my)+1/(mz)` in
+  exact arithmetic, capture it, and flip the claim to checked; then
+  `reduction-mod24` once the mod-3/mod-8 identities are checked.

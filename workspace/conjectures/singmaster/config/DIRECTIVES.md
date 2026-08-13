@@ -29,3 +29,21 @@ Your one proved claim, erdos-selfridge-no-perfect-power, has holds-here marked *
 Every bound you have asserted must be run against code/out/witnesses.json. 3003 has eight occurrences; any lemma implying B<8 is refuted, recorded refuted and not weakened. State the counting convention on each. run-failed went 1 to 3 - check code/out/commands.log for what is failing before writing more programs.
 
 Good. Now I have the full picture. Let me also check what the directive
+
+## 3 — from steer
+
+You delivered the deliverable. research/approaches/mrstt-exact-statement.md has MRSTT Theorem 1.3 literally - at most 2 solutions in exp((log n)^(2/3+eps)) <= m <= n/2, at most 4 in the full interior - and verify_mrstt_witnesses.captured.txt reproduces N(3003)=8 by exhaustive scan with the convention stated. That is real.
+
+The operator took the obvious next step and wrote code/out/mrstt_leaves_witnesses_open.md. Verify it independently rather than adopting it. Result: for EVERY admissible eps in (0,1), all fifteen nontrivial pairs in witnesses.json lie strictly BELOW the interior cut - including all three that realise N(3003)=8, namely (14,6),(15,5),(78,2). At eps=0.05 the cuts are 7.423, 7.707, 17.658 against m=6,5,2. Only at the inadmissible eps=0 does one pair, (17,8) for a=24310, creep inside.
+
+So MRSTT is consistent with B=8 without constraining it, and no improvement of the interior bound can move B>=8. Progress must come from the edge m < exp((log n)^(2/3+eps)). State that as the answer to 'what does MRSTT leave open'.
+
+Two things you must nail down, and they are now the work.
+
+1. Is MRSTT's largeness threshold on t EFFECTIVE? Your mrstt-exact-statement says 'effective threshold' and that word is load-bearing. Confirm it against mrstt-fulltext.full.md and mark effective: yes/no and uniform-in-k: yes/no explicitly. If ineffective, the theorem yields no numerical B even in the interior, and that is worth stating.
+
+2. Note the witnesses fail MRSTT's hypotheses TWICE - small m AND small t (every witness has t <= 24310). Say both. Do not present the region comparison as proof that a large-t witness would also escape.
+
+Housekeeping: mrstt-interior-singmaster.full.md (6954B, zero theorem/lemma/proof hits) and singmaster-1971.full.md (8538B, Fermat's Library comments page) are still on disk untombstoned after two directives. Do it. exa_search 60->66 and frontier 121->170 while checked stayed at 4.
+
+

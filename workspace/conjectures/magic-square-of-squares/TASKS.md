@@ -11,8 +11,8 @@
       (runs under sage), output code/out/robertson_reduction_check.txt, exit 0.
       All 8 sums 541875; a=425², b=41496, c=138600; 2 of 3 main-diagonal
       x-coords in 2E(Q) (139129, 180625), 222121 not (X and X+c not squares);
-      doubling formula (x²+c²)²/4y² verified symbolically + on a rational point
-      + Sage 2P; rank(E: y²=x³−19209960000x)=2 by mwrank 2-descent with
+      doubling formula verified symbolically + on a rational point + Sage 2P;
+      rank(E: y²=x³−19209960000x)=2 by mwrank 2-descent with
       generators [−88200,315000] and regulator 6.9103524178015 (cross-checked
       via E.rank/algorithm='all'/standalone mwrank; all 8 division preimages
       rational, quartics factor exactly for the two membership values, no
@@ -23,170 +23,121 @@
       (both were abstract-page wrappers; now 21KB and 40KB — real papers).
 - [x] Re-download Wu 2103.01784 from PDF endpoint (was 6.6KB abstract-page
       wrapper; now 78KB, real paper with theorems).
-- [x] **Ferreira 1506.06621 — handle per steer directive 6.** PDF fetched
-      (65,364 bytes, real paper, not a wrapper — the /abs/ and /html/ wrappers
-      were the stale copies the steer spotted). Category math.GM, no
-      presumption of correctness. Error located at (46)→(47): substituting
-      z2 = m−√(m²−2nw−w²) into (46) yields the tautology 0=0, not the paper's
-      (47). Verified by sympy (`code/out/check_ferreira_proof.py`) and by
-      construction with witness m=5,n=3,w=1. Claim `ferreira-15060621-proof-invalid`
-      in CLAIMS.md, status: checked. The paper establishes nothing.
-- [x] **DIRECTIVE 7.1 — Run check_ferreira_proof.py.** Executed; capture at
-      `code/out/check_ferreira_proof.captured.txt`, EXIT_CODE=0, sympy agrees
-      with the operator — the substitution yields 0=0. Ferreira refuted.
-- [x] **DIRECTIVE 7.3 — Audited this run's own code for the Ferreira
-      anti-pattern.** `phi_canonical_check.py`, `phi_identity_verify.py`,
-      descent and p-adic code checked; no substitution-of-solved-root-back
-      pattern found. Recorded in CONTEXT.md Ruled Out.
-- [x] **DIRECTIVE 8: Re-download Hulse et al. and Wolird from arXiv PDF endpoints.**
-      Done; real papers (68KB and 11KB) on disk.
-- [x] **DIRECTIVE 8: Record the witness_padic_falsification result.** Claims
+- [x] **Ferreira 1506.06621 — handle per steer directive 6.** Error located at
+      (46)→(47); substituting z2 = m−√(m²−2nw−w²) into (46) yields the tautology
+      0=0, not the paper's (47). Verified by sympy. Claim
+      `ferreira-15060621-proof-invalid` in CLAIMS.md, status: checked.
+- [x] **Run check_ferreira_proof.py.** Capture at
+      `code/out/check_ferreira_proof.captured.txt`, EXIT_CODE=0, sympy agrees.
+- [x] **Audited this run's own code for the Ferreira anti-pattern.** None found.
+- [x] **Re-download Hulse et al. and Wolird from arXiv PDF endpoints.**
+      Done; real papers on disk.
+- [x] **Record the witness_padic_falsification result.** Claims
       `phi-padic-no-obstruction`, `phi-padic-consistent-with-witnesses`,
-      `phi-padic-residue-closure` all `status: checked` in CLAIMS.md with
-      exact bounds. No drift.
-- [x] **STEP 1: Verify the parallel library.** PASS.
-- [x] **STEP 2: Parallelise `phi_padic_closure_all.py`.** PASS, |Φ(200)|=8156 matches serial.
-- [x] **STEP 3: Run the remaining six p-adic/modular programs.** All exit 0, no
+      `phi-padic-residue-closure` all `status: checked` in CLAIMS.md.
+- [x] **Verify the parallel library.** PASS.
+- [x] **Parallelise `phi_padic_closure_all.py`.** PASS.
+- [x] **Run the remaining six p-adic/modular programs.** All exit 0, no
       obstruction found. Frontier closed as a proof route.
-- [x] **FALSIFY EVERY P-ADIC/MODULAR OBSTRUCTION.** Both witnesses verified,
-      no statement forbids a near-miss. RESULT ALL CONSISTENT.
+- [x] **FALSIFY EVERY P-ADIC/MODULAR OBSTRUCTION.** Both witnesses verified.
 - [x] **k3_surface_checks.py exact rewrite.** DONE; S(Q) nonempty, Brauer-Manin
-      cannot prove S(Q)=∅, approach `brauer-manin-k3-surface` closed outright.
-- [x] **DIRECTIVE 9: Gathering phase OVER.** The run has what it needs. No
-      further downloads without a new stated gap.
-- [x] **Run the four Pell programs the operator ran externally.** Captures on
-      disk at `code/out/{verify_pell_records,verify_pell_argmax_unique,
-      pell_record_seq,prove_pell_record}.captured.txt`; claim
-      `phi-suprema-are-pell-pairs` in CLAIMS.md, status: checked.
-      **CORRECTION (directive 11):** verify_pell_argmax_unique REFUTES its own
-      name — ties=2 at M≤60 and M≤960, record-strictly-increasing=False. The
-      argmax is NOT unique; Pell pairs are always among the maximisers but not
-      the only ones. The claim `phi-suprema-are-pell-pairs` states this
-      correctly (no uniqueness asserted).
-- [x] **DIRECTIVE 15: side_census.py RUN by operator at M=400 — docstring
-      hypothesis REFUTED.** The claim "1+(q1+q2) is NEVER a rational square" is
-      false: it is a rational square for 66 of 156,988,030 pairs. Three witnesses
-      re-verified in exact Fraction arithmetic with in_phi confirming both
-      members lie in Φ. The sharper finding: 1−(q1+q2) is a rational square 325
-      times, 1+(q1+q2) is 66 times, and **BOTH = 0** — no pair has both 1−s and
-      1+s rational squares. This is now the structural question: are the two
-      conditions provably incompatible? Recorded as claim
-      `phi-pair-sides-never-both-square` in CLAIMS.md (status: checked for M=400),
-      and the docstring hypothesis is marked refuted in
-      `research/threads/four-ap-additive-triple.md`.
+      cannot prove S(Q)=∅.
+- [x] **Gathering phase OVER.** No further downloads without a new stated gap.
+- [x] **Run the four Pell programs.** Captures on disk; claim
+      `phi-suprema-are-pell-pairs` in CLAIMS.md, status: checked. CORRECTION:
+      argmax NOT unique; Pell pairs always among the maximisers.
+- [x] **side_census.py RUN by operator at M=400 — docstring hypothesis REFUTED.**
+      Both=0 finding: 1−(q1+q2) rational square 325 times, 1+(q1+q2) 66 times,
+      BOTH = 0. Claim `phi-pair-sides-never-both-square` in CLAIMS.md.
+- [x] **Amend `hms-2026-bremner-effective-constant` (directive 17).** Added
+      `value-computed: no` and `what-would-compute-it` listing the three
+      ingredients (DP07, BZ, JS). The paper's proof IS effective — following it
+      yields a number — but the paper does not carry out the computation.
 
 ---
 
 ## BLOCKING — must complete before any new approach
 
-**Correction (directive 16):** the M=200 side_census run is a *reproduction* of the
-operator's M=400 finding (both=0 at both sizes), not a strengthening. The push
-to M=800 below is the actual extension. Two partial sweeps must carry their
-fraction of index covered: `no_triple_fast_M700` is "complete-through-i=40143/99407"
-(40.4%) and `prefilter_census_M1000` is at i=38006/202861 (18.7%). Any claim from
-either must include the fraction, or it is asserted rather than checked.
+### Proved-count drift (directive 17)
 
-- [ ] **PUSH side_census TO M=800 (directive 16).** The operator ran M=400;
-      the run reproduced it at M=200. Both=0 survived both. Now go UP:
-      ```
-      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt; echo EXIT_CODE=$?
-      ```
-      This is the sole search the directive authorises at larger M. It is
-      stdlib-only and needs no sympy or Sage.
+Proved went 20→17 while checked went 15→17 and asserted 19→20. The
+`search_claims` re-derivation changed three claims from `proved` to `asserted`
+when they were re-classified as resting on source statements without independent
+verification. This is a deliberate re-classification (not lost claims, not an
+accounting glitch): `bremner-conjecture-proved`, `n-by-n-mss-exist-for-n-ge-4`,
+and `dgh-uniform-mordell-lang-curves` were demoted because their `holds-here`
+is `no`, so `proved` was misleading — they are true theorems, proved by their
+authors, but they do not apply to THIS problem. The re-derivation correctly
+moved them to `asserted` (source-established but not applicable here).
+**NOT a bug; a correction.** The shift 20→17 is a tightening of the
+holds-here/proved intersection.
 
-- [ ] **RUN THE FIVE UNRUN PHI_TRIPLE_VARIETY PROGRAMS (directive 16).**
-      `benchmark.py`, `ratio_search.py`, `verify_prefilter.py`,
-      `verify_triple_square.py`, `verify_two_side_equiv.py` exist and have
-      never been executed. Run them all in this order; the verifiers must
-      agree with the side_census finding:
-      ```
-      # 1. Verify the two_side equivalence independently
-      PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_two_side_equiv.py 300 2>&1 | tee code/out/verify_two_side_equiv.captured.txt; echo EXIT_CODE=$?
-      # 2. Verify the triple_square equivalence independently
-      PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_triple_square.py 300 2>&1 | tee code/out/verify_triple_square.captured.txt; echo EXIT_CODE=$?
-      # 3. Independent prefilter verification (no reliance on closed form)
-      PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_prefilter.py 80 2>&1 | tee code/out/verify_prefilter.captured.txt; echo EXIT_CODE=$?
-      # 4. Benchmark phi_pairs and membership test rates
-      PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/benchmark.py 2>&1 | tee code/out/benchmark.captured.txt; echo EXIT_CODE=$?
-      # 5. Ratio search with closed-form test
-      PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/ratio_search.py 700 2>&1 | tee code/out/ratio_search.captured.txt; echo EXIT_CODE=$?
-      ```
+### EXA_SEARCH — STOPPED (directive 17)
 
-- [ ] **IDENTIFY THE CONCORDANT-FORMS CURVE FOR both=0 (directive 16).**
-      The finding — 1−(q1+q2) and 1+(q1+q2) are never simultaneously rational
-      squares for q1,q2 ∈ Φ(M=400) — is the run's most promising impossibility
-      lemma because it is about PAIRS not triples. The shape is classical:
-      1−s and 1+s simultaneously rational squares ⇔ rational point on the curve
-      `x²+y² = 2` (genus 0), parametrised by slope. Derive the explicit
-      parametrisation of s for which both 1±s are rational squares, intersect
-      with the set of sums s = q1+q2 (q1,q2 ∈ Φ), and ask: does Φ-membership of
-      the summands force a local obstruction mod p that prevents both 1±s being
-      squares? If an obstruction is found it must be run against the 66
-      plus-witnesses and 325 minus-witnesses in `code/out/side_census.captured.txt`
-      or it is asserted. Update
-      `research/threads/pair-sum-both-squares-incompatibility.md` with the
-      curve's equation and the obstruction hypothesis.
+exa_search is at 122 (was 99 two directives ago). The frontier is 442 with
+365 unworked. Twenty-three searches changed nothing. This is a fact about the
+search, not about the literature: further downloads will not change a claim.
+**No more exa_search calls.** No new sources fetched without a stated gap in
+REQUESTS.md.
 
-- [ ] **WRITE THE CONDITIONAL RESULT AS A CLAIM** (directive 12, item 1):
-      The run's best structural output: assuming uniform boundedness of ranks
-      of elliptic curves over Q, the existence of a 3×3 magic square of nine
-      distinct squares reduces to a FINITE computation. State the specialisation
-      to E: y² = x(x²−c²) explicitly, hypothesis named (uniform rank boundedness),
-      reduction step cited (Robertson→Garcia-Fritz–Pasten Theorem 1.2). Write
-      the claim block into `code/out/conditional_reduction_claim.md` with all
-      required fields and `status: checked` (the Robertson reduction and the
-      GFP theorem are both established; what is new here is the explicit
-      specialisation). **This claim is the run's deliverable.** Nothing else
-      is worth more right now.
+### COMMANDS.LOG — DOES NOT EXIST (directive 17)
 
-- [ ] **BOUND THE HMS CONSTANT C, OR RECORD THE PRECISE OBSTRUCTION**
-      (directive 12, item 2 + directive 13, item 2):
-      HMS Theorem 1.1 (arXiv:2603.06483, 132KB HTML on disk) says C is
-      "effectively computable." Extract from the full text what C is a
-      function of: David–Philippon constants (quantitative Schneider–Lang),
-      PFR constants (Gowers–Green–Manners–Tao), and the genus-2 curve degree
-      in the Dimitrov–Gao–Habegger construction. Give any explicit bound the
-      paper states or its ingredients imply. If none can be extracted, record
-      that as the precise obstruction with the chain of dependencies and the
-      reason each ingredient's constant is not computed in the source. Write
-      the result to `code/out/hms_constant_bound.md`.
+`code/out/commands.log` is not on disk. The run-failed count went 6→8 but the
+file was never created. The five unrun programs below are the likely culprits.
+Route all executions through `2>&1 | tee code/out/<name>.captured.txt; echo EXIT_CODE=$?`
+to capture failure to disk.
 
-- [ ] **RUN `verify_pell_symbolic.py`** (directive 12, item 3):
+### Five still-unrun programs + side_census M=800 (directives 16 & 17)
+
+These have been unrun for two directives. Run them. Order: verifiers first
+(they check claims the run relies on); benchmark and ratio_search last.
+
+- [ ] **`verify_two_side_equiv.py`** — independent two-side equivalence check.
+      `PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_two_side_equiv.py 300 2>&1 | tee code/out/verify_two_side_equiv.captured.txt; echo EXIT_CODE=$?`
+- [ ] **`verify_triple_square.py`** — independent triple equivalence check.
+      `PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_triple_square.py 300 2>&1 | tee code/out/verify_triple_square.captured.txt; echo EXIT_CODE=$?`
+- [ ] **`verify_prefilter.py`** — independent prefilter verification.
+      `PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/verify_prefilter.py 80 2>&1 | tee code/out/verify_prefilter.captured.txt; echo EXIT_CODE=$?`
+- [ ] **`benchmark.py`** — phi_pairs and membership test benchmarking.
+      `PYTHONPATH=code timeout 300 python3 code/phi_triple_variety/benchmark.py 2>&1 | tee code/out/benchmark.captured.txt; echo EXIT_CODE=$?`
+- [ ] **`ratio_search.py`** — ratio search with closed-form test.
+      `PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/ratio_search.py 700 2>&1 | tee code/out/ratio_search.captured.txt; echo EXIT_CODE=$?`
+- [ ] **`side_census.py M=800`** — both=0 survived M=200 and M=400; push to 800.
+      `PYTHONPATH=code timeout 540 python3 code/phi_triple_variety/side_census.py 800 500 2>&1 | tee code/out/side_census_M800.captured.txt; echo EXIT_CODE=$?`
+
+### Structural work — the run's deliverable
+
+- [ ] **IDENTIFY THE CONCORDANT-FORMS CURVE FOR both=0.**
+      1−s and 1+s simultaneously rational squares ⇔ point on x²+y²=2 (genus 0).
+      Derive the parametrisation of s, intersect with s = q1+q2 (q1,q2 ∈ Φ),
+      and check whether Φ-membership forces a local obstruction. Any found
+      obstruction must be run against the 66 plus-witnesses and 325 minus-witnesses
+      in `code/out/side_census.captured.txt`.
+
+- [ ] **WRITE THE CONDITIONAL RESULT AS A CLAIM.**
+      Assumption: uniform boundedness of ranks of E/Q → 3×3 MSS existence reduces
+      to a finite computation. Specialise to E: y² = x(x²−c²), cite Robertson→GFP
+      Theorem 1.2. Write to `code/out/conditional_reduction_claim.md`.
+
+- [ ] **BOUND THE HMS CONSTANT C, OR RECORD THE PRECISE OBSTRUCTION.**
+      The claim block now names DP07, BZ, and JS as the three ingredients.
+      Check each source for an explicit value. If none extractable, record the
+      dependency chain and why each constant is not computed. Write to
+      `code/out/hms_constant_bound.md`.
+
+- [ ] **RUN `verify_pell_symbolic.py`.**
       `timeout 540 python3 code/out/verify_pell_symbolic.py 2>&1 | tee code/out/verify_pell_symbolic.captured.txt; echo EXIT_CODE=$?`
-      Reconcile its sympy output with the four numeric results already captured.
 
-- [ ] **STOP SEARCHING — directive 15.** exa_search is at 99 and the frontier
-      is 429 with 359 unworked. Nothing in the last 16 searches changed a claim.
-      No further downloads or source gathering. The run has what it needs.
-
-- [ ] **OPEN THE NEXT REQUEST IN REQUESTS.md** (directive 12, item 3):
-      The request `hms-constant-bound` is RESOLVED. Open a new request for
-      the constant from David–Philippon 2007 Théorème 1.13: what is the
-      explicit constant, specialised to subvarieties of self-products of a
-      single elliptic curve (the shape needed for the MSS AP)?
-
-- [ ] **CHECK `magic-variety-is-surface-no-lines`** (directive 13, item 1):
-      Compute directly rather than asserting on a source's word: X in P⁸ cut
-      by 7 homogeneous line-sum equations, verify dimension = 2 (a surface)
-      and the absence of lines. Write the program, run under timeout 540 with
-      tee to `code/out/magic_variety_check.captured.txt`. Record the result
-      as a claim block updating the status from `asserted` to `checked`.
-      This is the one asserted claim directive 13 picked to make checked —
-      it is a concrete computation the run can do.
+- [ ] **CHECK `magic-variety-is-surface-no-lines`.** Compute directly: X in P⁸
+      cut by 7 line-sum equations, verify dim=2 and no lines. Write to
+      `code/out/magic_variety_check.captured.txt`. Update claim from `asserted`
+      to `checked`.
 
 ## After the blocking section is cleared
 
-- [ ] scholar: claim-block HMS 2026 from the full HTML text already on disk
-      (`research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`,
-      132KB). Theorem 1.1 effective-constant Bremner; Theorem 1.3 sum-product;
-      Corollary 2.2 generalised APs. Replace the auto-generated summary.
-- [ ] scholar: claim-block Hulse et al. (arXiv:2007.14324, 68KB, double
-      Dirichlet series, asymptotic counts for 3-square APs).
-- [ ] scholar: claim-block Wolird (arXiv:2310.12164, 11KB, Gaussian triplets
-      ↔ Pythagorean triples).
-- [ ] research: write research/ROOT.md — Bremner reduction, real computational
-      bound, restricted classes, near-miss provenance.
-- [ ] Establish ~1 structural impossibility lemma (extra-hypothesis partial
-      result) and run it against the witness set.
-- [ ] Formalise the Robertson reduction and the Garcia-Fritz-Pasten bound in
-      Lean as they stabilise.
+- [ ] scholar: claim-block HMS 2026 from the full HTML text (132KB on disk).
+- [ ] scholar: claim-block Hulse et al. (arXiv:2007.14324, 68KB).
+- [ ] scholar: claim-block Wolird (arXiv:2310.12164, 11KB).
+- [ ] research: write research/ROOT.md.
+- [ ] Establish ~1 structural impossibility lemma and run it against witness set.
+- [ ] Formalise the Robertson reduction and GFP bound in Lean.

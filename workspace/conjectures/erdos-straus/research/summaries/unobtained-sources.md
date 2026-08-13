@@ -46,6 +46,51 @@ Recorded so nobody repeats a fetch or mis-files a source.
 
 ## Download attempts that failed / were not repeated
 
+- **Pomerance, "The Erdős–Straus Conjecture" survey** (`esconj.pdf` and
+  `esconjfl.pdf`, math.dartmouth.edu/~carlp): both refused — document too
+  large, even when the trailing lowercase file was tried. The survey's
+  content is covered by the two Elsholtz–Tao copies, the Bloom–Elsholtz
+  survey, Schinzel, Salez, and the m=5-side Pomerance–Weingartner 2025 paper
+  already on disk. The 2025-03-12 NTWS talk recording (YouTube) exists; slides
+  are not separately published. Do not re-attempt the PDF.
+- **Mordell, *Diophantine Equations* (1969) pp. 287–290**: only shadow-library
+  mirrors found; out of scope. Restated identically by Wikipedia, Salez
+  (Prop 2 / Schinzel theorem), Elsholtz–Tao §2, erdosproblems #242 — all on
+  disk. Do not re-attempt (see `research/notes/mordell-book.md`).
+- **Sander, "Egyptian fractions and the Erdős–Straus conjecture", Nieuw
+  Archief Wisk. (4) 15 (1997) 43–50**: no open PDF found; only zbMATH/MaRDI
+  bibliographic records. The finiteness fact the run needs (for a,b,m,k fixed,
+  only finitely many polynomial families) is restated in Schinzel 2000 (on
+  disk, first paragraph + Sander [9] reference) and in the MaRDI record.
+  Do not re-attempt the PDF.
+- **The AMS journal-page URL for Webb 1970**: the `.pdf` variant is what has
+  the content; the URL with a trailing slash returns only the journal shell.
+  Avoid the shell form.
+- **Bernstein 1962 (J. reine angew. Math. 211, 1–10)**: De Gruyter paywall.
+  The paper's m=4 constructions are superseded by the complete parametrisation
+  in Elsholtz–Tao §2 / the Bloom–Elsholtz survey Theorem 1, both on disk.
+  Do not re-attempt.
+- **Obláth 1949/50 (Mathesis 59, 308–316)**: no open full text; the founding
+  paper. The statement the run uses (Erdős's conjecture, verification history)
+  is fully re-derived in Elsholtz–Tao Table 1 and erdosproblems #242.
+  Do not re-attempt.
+- **Vaughan 1970 (Mathematika 17, 193–198)**: paywalled. DOI direct fetch →
+  403 (Wiley); Cambridge abstract page fetched but is abstract-only ("Get
+  access to the full version"). The paper's result (exception bound
+  ≤ N exp(−c (log N)^{2/3})) is fully sourced from the Bloom–Elsholtz survey
+  (self-contained proof sketch) and erdosproblems #242. Do not re-attempt.
+- Schinzel AMU PDF: connection error (obtained via Project Euclid).
+- Swett original URL: 404 (obtained via Wayback).
+- Yamamoto 1965 PDF: scanned, no text layer (citation obtained; text rests on
+  Elsholtz–Tao's restatement).
+- The `egyptian-count13.pdf` URL from Tao's own page (in Wikipedia refs) was
+  not re-attempted; the Elsholtz–Tao full text is already in the library as
+  the ar5iv HTML.–Tao §2 / the Bloom–Elsholtz survey Theorem 1, both on disk.
+  Do not re-attempt.
+- **Obláth 1949/50 (Mathesis 59, 308–316)**: no open full text; the founding
+  paper. The statement the run uses (Erdős's conjecture, verification history)
+  is fully re-derived in Elsholtz–Tao Table 1 and erdosproblems #242.
+  Do not re-attempt.
 - **Vaughan 1970 (Mathematika 17, 193–198)**: paywalled. DOI direct fetch →
   403 (Wiley); Cambridge abstract page fetched but is abstract-only ("Get
   access to the full version"). The paper's result (exception bound

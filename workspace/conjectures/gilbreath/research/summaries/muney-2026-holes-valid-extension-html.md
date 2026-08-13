@@ -23,7 +23,9 @@ Yes for the finite theory (verified by the included reproducible code and enumer
 
 ## Bearing on this run — the key new sourcing
 
-The run had **empirically REFUTED** a candidate "regeneration is a single-row local property" lemma (check_regenerate_lemma). Muney now gives this a **proof-level foundation**: K_S is determined by the entire (length n−1) ordered anti-diagonal via the folding map — it cannot be read off a single local row quantity. This independently confirms the regeneration-thread conclusion that regeneration is genuinely non-local, and supplies the correct global object (the folding composition F_S and its fiber over 1) for a future regeneration argument. It also supplies an order-sensitive completeness criterion (Theorem 20) — a structural invariant the run's {0,2}-block-length track could potentially dualize.
+Muney's theorem governs the **full valid-extension set** K_S — the set of ALL integers that can be appended while keeping every row's leading entry 1. That set is governed by the whole ordered right anti-diagonal via the folding map F_S; it cannot be read off a single local row quantity.
+
+**Important distinction (do not over-claim):** this is a different question from the run's *block-regeneration criterion*. The run's own corrected computation (`check_regenerate_lemma.notes.md`, depth 1000) established that **block regeneration** b_{k+1} ≥ b_k IS a single-row local property — it holds iff (A_k[b_k]==2 and A_k[b_k+1]==4), zero failures over 998 transitions (the earlier "refutation" was an off-by-one indexing bug and has been withdrawn). There is **no contradiction** between the two: which specific next value is allowed by the full extension set is a global question (Muney), but whether the leading {0,2} block *grows when a particular next value is chosen* can still be a local law (the run's criterion). Muney's Theorem 20 (interval-completeness criterion) and the reverse-tree algorithm are structural tools for the global question; the run's local criterion is the empirically-checked law for the growth question.
 
 ## Claims
 
@@ -33,8 +35,7 @@ statement: The valid-extension set K_S and the interval-completeness condition K
 hypotheses: S∈𝒢_n (2,3-start, strictly increasing, Gilbreath); e_i=s_{n−i}^i anti-diagonal.
 holds-here: yes (finite theory; code reproduces enumeration through n=11).
 status: proved in source (elementary + Brown's criterion); first hole n=5 (2,3,5,9,15)
-bearing: confirms and explains the run's empirical refutation that regeneration is single-row-local; gives the correct global object for a regeneration argument.
+bearing: the full valid-extension set is a global (whole-anti-diagonal) object — orthogonal to, and NOT contradicting, the run's local block-regeneration criterion (edge-2/intruder-4, checked depth 1000). Supplies the correct global object if the extension-set route is pursued.
 anchor: research/sources/muney-2026-holes-valid-extension-html.full.md
-contradicts: nothing on disk; supports the thread's local-iff-refutation
-answers: why-is-regeneration-nonlocal
+answers: what-structure-governs-the-valid-extension-set
 ```

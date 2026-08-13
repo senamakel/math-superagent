@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[diophantine-curves]] | Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound on N(a), or only per-pair finiteness (ineffective)? | open | jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree | run sympy genus(k1,k2) for small pairs; report Faltings threshold + explicit statement that it is not a uniform bound. |
+| [[diophantine-curves]] | Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound on N(a), or only per-pair finiteness (ineffective)? | open | jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree, hpt-bilu-tichy-exceptional-classification, bilu-tichy-method-ineffective-uniformity-wall, kummer-lucas-class-not-logarithmic | run sympy genus(k1,k2) for small pairs; report Faltings threshold + explicit statement that it is not a uniform bound. |
 
 ## Threads that could not be read
 

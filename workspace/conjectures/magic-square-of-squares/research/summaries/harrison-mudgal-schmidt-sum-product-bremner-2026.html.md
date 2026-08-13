@@ -35,8 +35,16 @@ hypotheses: E/Q rank r; A an AP/GP/consecutive-squares set in Q with A subset X 
 holds-here: yes — the Robertson AP {a-b, a, a+b} of x(2Q_i) is an AP inside X, so a putative
   MSS must satisfy 3 <= C^(1+r(E_e)); the consecutive-squares class does NOT apply (square
   roots of an AP of squares are never in AP when r^2+s^2 = 2e^2)
-status: proved (theorem stated and proved in the paper; statement verified in the full text v1;
-  no explicit value or formula for C is given anywhere)
+status: proved (theorem stated and proved in the paper; statement verified in the full text v1)
+value-computed: no — no explicit value or formula for C is given anywhere in the paper
+what-would-compute-it: the David–Philippon constant from [11, Théorème 1.13] specialised to the
+  subvariety 𝒞 = {(P, x(P))} ⊆ E × 𝔾_a of Example 3.5, combined with the Bombieri–Zannier
+  subgroup-count bound [2, Lemma 2] and the Jones–Schmidt sub-Pfaffian complexity constant [27];
+  the proof chain Theorem 1.1 ⇐ Corollary 2.2 ⇐ Theorem 2.1 ⇐ Theorem 4.2 ⇐ Theorem 3.7 invokes
+  DP07 as the sole Diophantine-geometry input for the elliptic-curve case, and each ingredient
+  (DP07, BZ, JS) is individually effective — following the proof yields a number, not merely a
+  non-vacuous existence statement. So the paper's proof IS effective (follow it → number), but
+  the paper does not carry out the computation.
 bearing: makes the Garcia-Fritz-Pasten AP-length constant effective in principle, resolving the
   ineffectiveness obstruction of uniform-height-bound-elliptic-ap; but since C is uncomputed and
   built from David-Philippon uniform Mordell-Lang constants, the inequality C^(1+r) < 3 cannot be

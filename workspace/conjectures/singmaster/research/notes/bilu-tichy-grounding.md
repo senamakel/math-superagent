@@ -83,6 +83,10 @@ statement: For binomial/arithmetic-progression-product polynomials f_{A,c,d} (ro
   C(n+1,k+1)=C(n,k+2) is the exceptional example.
 hypotheses: A⊆{1,..,n}, |A|=n-r, n>2r^{3/2}+5r+8; deg P≥2. Holds here: yes (binomial
   polys are AP products, r=0).
+holds-here: yes — verified against the primary full text
+  (research/sources/prouhet-tarry-escott-indecomposability.full.md, Corollary 2.1 +
+  Theorem 2.3): C(x,k1) is c=0,d=1,r=0, and the infinite Fibonacci family is the
+  exceptional case of (i).
 status: sourced (primary full text held; not re-derived here)
 bearing: Classifies exactly which (k1,k2) give infinitely many solutions — a grounded
   structural fact. But finiteness is INEFFECTIVE (authors' own words), so it does not
@@ -98,6 +102,12 @@ statement: The Bilu-Tichy/Baker route to C(x,k1)=C(y,k2) gives: (a) an INEFFECTI
   hence is not uniform in (k1,k2). It therefore cannot deliver a uniform bound on N(a);
   the only effective HPT result (Thm 2.4) is for shifted power values, not equal binomials.
 hypotheses: fixed pair (k1,k2); Bilu-Tichy standard-pair framework.
+holds-here: yes — verified against the primary full text
+  (research/sources/prouhet-tarry-escott-indecomposability.full.md): Theorem 2.3's
+  finiteness is explicitly "ineffective" (authors' words), Theorem 2.4 (the only
+  effective result) is for shifted power values f_{A,c,d}(x)=ay^ℓ+b, and the
+  effective per-pair analogue for non-standard pairs grows with degree/height of
+  C(x,k), so it is not uniform in (k1,k2).
 status: sourced (primary arguments in HPT full text)
 bearing: Names the exact obstruction for the bilu-tichy candidate: ineffectivity of the
   classification finiteness + non-uniformity of the effective version. This is a clean

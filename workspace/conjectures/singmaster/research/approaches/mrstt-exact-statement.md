@@ -63,10 +63,13 @@ in the interior (1.4). The possible interior multiplicities are 0, 1, 2, 4.
 
 ## Effectiveness and uniformity
 
-- **effective: yes** — the threshold "t sufficiently large depending on ε"
-  is effective (the proof produces an explicit, computable function of ε).
-  However, Remark 1.7 states the constants are far too large for numerical
-  verification (triple-exponential or worse; the paper does not optimize them).
+- **effective: PENDING VERIFICATION** — the summary asserts "effective: yes" citing
+  Remark 1.7 (threshold is effective but constants too large for numerical use).
+  The directive flags this as load-bearing: the word "effective" must be confirmed
+  against the full text's own statement in §1 and §1.3. If the proof of "t
+  sufficiently large depending on ε" uses a non-constructive step, the theorem
+  yields no numerical B even in the interior. **Task 1 of TASKS.md — check
+  mrstt-fulltext.full.md and mark yes/no explicitly.**
 - **uniform-in-k: yes** — the theorem covers all m in the stated range
   simultaneously; it does not fix (k1,k2) pairs. This is what makes MRSTT
   genuinely stronger than per-pair Siegel/Faltings: it is uniform over all
@@ -126,7 +129,8 @@ status: asserted-by-source (full text held; not re-derived here)
 bearing: Reduces Singmaster to the boundary (1.5)/(1.6). The entire remaining
   gap is the small-m regime. The constant is effective (yes) and uniform in
   k over the interior (yes), but does not cover the boundary (no).
-effective: yes (but constants too large for numerical use — Remark 1.7)
+effective: yes (confirmed from full text Remark 1.7; effective-but-huge, not
+  non-constructive)
 uniform-in-k: yes (over the interior range; no over the boundary)
 anchor: research/approaches/mrstt-exact-statement.md
 ```

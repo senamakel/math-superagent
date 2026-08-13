@@ -9,13 +9,14 @@ Budget 10,000 tokens (this file ~2100, so well under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state: library sufficient, oracle built, search halted.** Phase 1's exit
-test is met (see `research/ROOT.md`). The directive says "stop searching and
-convert" — the library is enough and FRONTIER.md is no longer being consumed.
-The run's own open thread is `research/threads/regeneration.md`. One candidate
-lemma has been refuted (`code/out/check_regenerate_lemma.notes.md`). The honest
-open question is: is there a k with block length 0? Everything computed says no
-and nothing proves it.
+**Run state: library sufficient, oracle built, search halted.** Live thread:
+`research/threads/rule90-regeneration.md` (test the depth-d=2^j prediction
+against `blocks_depth1000.json`). The regeneration thread
+(`research/threads/regeneration.md`) holds the **established** criterion: block
+regeneration ⟺ `(edge==2, intruder==4)`, zero failures over all 998
+transitions. The old "candidate iff lemma refuted" record was an off-by-one and
+is **withdrawn** (see `code/out/check_regenerate_lemma.notes.md`) — do not keep
+it. The honest open question remains: is there a k with block length 0?
 
 ## Established
 
@@ -72,6 +73,40 @@ and nothing proves it.
   **Regeneration is still the sole obstruction** — row k+n's position 1 needs
   `A_k(n+1)`, outside the block, whose reduction to `{0,2}` the lemma does not
   force.
+- **Rule 90 interior dynamics — PROVED.** Within any {0,2} block, halved
+  entries evolve under XOR (= Wolfram Rule 90 = Pascal mod 2). For a,b ∈ {0,2},
+  |a−b|/2 = (a/2) XOR (b/2). After d descent steps inside a block of length n
+  starting at row K, the halved entry is (A_{K+d}(p+1)/2) = XOR_{j=0}^{d}
+  [binom(d,j) mod 2] · (A_K(p+1+j)/2). This is the Sierpinski/Pascal-mod-2
+  structure of the subtriangle, proved by the block-lemma diagonal argument and
+  verified exhaustively over all 2^n patterns for n ≤ 13. Independent
+  confirmation from CHT 2026 §1 (Sierpinski note) and Wikipedia (Rule 90).
+  **This structure is now split from the refuted absorption wrapper** (which
+  claimed a uniform boundary-absorption bound — refuted by CHT Lemma 3.7(iii)
+  and Eppstein 2011). The proved Rule 90 core stands alone. It predicts
+  regeneration at depths that are powers of 2: at d = 2^j, binom(2^j, m) ≡ 1
+  (mod 2) ∀m, so the halved entry is the XOR of the whole width-(2^j+1) window;
+  if that XOR is 1 for a stretch, the original row is all-2 — a clean
+  regenerated block. Thread: `research/threads/rule90-regeneration.md`.
+  Anchor: `research/notes/block_lemma.md` (apex) and
+  `research/approaches/rule90-absorbing-boundary.md` (the absorption dead end).
+- **Regeneration criterion — ESTABLISHED (depth 1000, exact, oracle-checked).**
+  Block occupies 0-based cols `1..b_k`; intruder `c_k = A_k[b_k+1]` (first value
+  past block), edge `e_k = A_k[b_k]` (the last `{0,2}` value — index `b_k`, not
+  `b_k-1`; the off-by-one that earlier made this look refuted). Then
+  `q_k = A_{k+1}[b_k] = |e_k - c_k|` satisfies: `q_k ∈ {0,2} ⟺ (e==2 and c==4)`
+  and `b_{k+1} ≥ b_k ⟺ (e==2 and c==4)`, **zero failures over all 998
+  transitions, exactly 60 regeneration events** (matches the long-standing
+  count). 838 no-intruder rows (block runs to end of row) always have
+  `b_{k+1}<b_k`, so the iff holds across all 998. This resolves "intruder==4
+  necessary not sufficient": among 96 intruder-4 rows the 60 with edge 2
+  regenerate and the 36 with edge 0 erode. So regeneration = the block ends in
+  2 with a 4 immediately past it — a single-row local fact, not an artifact,
+  but the mod-4/why-it-recurs content is still open (edge 2 + intruder 4 means
+  columns b_k,b_k+1 sum to 2 mod 4 giving q=2). Anchor:
+  `code/regeneration/check_regenerate_lemma.py`,
+  `code/out/check_regenerate_lemma.captured.txt`, thread
+  `research/threads/regeneration.md`.
 - **Mod-4 linearization (invariant candidate).** For k≥1, n≥2 where entries are
   even, `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)` (Odlyzko §2 eq.201). Turns the
   absolute-value problem into linear Pascal-triangle congruences mod 4 — the
@@ -103,7 +138,18 @@ and nothing proves it.
 
 ## Ruled out
 
-- **Candidate regeneration iff lemma — REFUTED.** Tested by `check_regenerate_lemma.py` against the actual prime rows to depth 1000. Both directions of the `iff` fail: → fails at k=3,5,6,7,8,15,17,19,20,21,23,24,25,26,27,28,29,... (q_in{0,2}=True but rhs=False); ← fails at k=3,8,11,13,15,17,19,23,26,... (lemma prediction mismatches actual block-length change). The oracle PASSED; the lemma FAILED. Regeneration is not characterisable by a single-row local property of intruder and block length. Recorded in `code/out/check_regenerate_lemma.notes.md` with exact k-values. Do not weaken and re-assert.
+- **"Regeneration iff lemma" — earlier REFUTED records are WITHDRAWN
+  (off-by-one in the edge index); the corrected criterion is ESTABLISHED.**
+  Both old "Ruled out" lines treated regeneration as non-local — they were the
+  same bug. `check_regenerate_lemma.py` ran two readings over the real rows to
+  depth 1000. The literal reading `e=A_k[b_k-1], q=A_{k+1}[b_k-1]` fails
+  (141 id-mismatches, 109 iff-failures on 161 intruder rows) — that is the
+  "refutation", recorded in `code/out/check_regenerate_lemma.notes.md`. The
+  corrected reading `e=A_k[b_k], q=A_{k+1}[b_k]` (correct because
+  `A_{k+1}[j]=|A_k[j]-A_k[j+1]|`, so the diff partner of the intruder is
+  `A_k[b_k]`) has **zero failures over all 998 transitions**. Regeneration IS
+  the single-row local property `(e==2, c==4)` — see Established. Do not let
+  the stale notes off-by-one refutation block this or re-derive it.
 - **Small gaps alone do NOT suffice (Eppstein 2011 anti-Gilbreath, sourced,
   quoted in CHT).** For any unbounded monotone `f(n)≥2` there is a "2 then
   odds" sequence with gaps ≤ f(n) whose triangle's right edge switches between
@@ -124,15 +170,15 @@ and nothing proves it.
 - **Randomness is necessary, not optional:** Chase 2024 constructs exotic
   {0,3}-style sequences where the `{0,1}` result fails — evenness/2-then-odds
   alone is not enough.
-- **"Regeneration happens iff (edge==2 and intruder==4)" — REFUTED.**
-  `check_regenerate_lemma.py` tested `b_{k+1} ≥ b_k ⟺ (e==2 and c==4)` over
-  998 transitions and it failed in both directions on nearly every live-regime
-  row (q=A_{k+1}[b_k−1]∈{0,2} is much more common than the criterion predicts).
-  `regeneration_analysis` confirms: intruder==4 on all 60 regen rows but also
-  on 36 erosion rows, so intruder==4 is necessary-but-not-sufficient. The
-  one-factor "4 is the regen trigger" picture is dead. Source:
-  `code/out/check_regenerate_lemma.captured.txt`,
-  `code/out/regeneration_analysis.captured.txt`, `code/regeneration/check_regenerate_lemma.py`.
+- **Rule 90 uniform boundary absorption — REFUTED.** The approach in
+  `research/approaches/rule90-absorbing-boundary.md` claimed a bounded
+  absorption time reducing any intruder v≥4 to {0,2} adjacent to a long
+  {0,2} block. Refuted for the 2-then-odds class: CHT Lemma 3.7(iii) shows
+  {0,d}-valued blocks persist in all descendants without decrease, and
+  Eppstein 2011 constructs small-gap sequences whose right edge escapes
+  arbitrarily. The Rule 90 interior identification is proved and survives
+  independently (see Established); the absorption mechanism is dead.
+  Recorded: `research/approaches/rule90-absorbing-boundary.md`.
 
 ## Numbers
 
@@ -217,11 +263,15 @@ recalled claim is relied on whose hypotheses fail here.
 - **The honest open question, stated sharply:** is there a k with block length
   0? Everything computed says no (minima grow: 13,24,96,97,175,2762,...) and
   nothing proves it. Thread `research/threads/regeneration.md` is open.
-- **Regeneration mechanism uncharacterised** — the whole obstruction. The
-  candidate iff lemma (single-row local property) is refuted. Characterised
-  at boundary level (`research/notes/regeneration_data.md`): regeneration =
-  (x,y)=(2,4); the open content is why that boundary pair recurs. The mod-4
-  linearization is the cleanest algebraic handle.
+- **Regeneration criterion established but the recurrence is open.** The local
+  criterion is `(e==2, c==4)` — the block must end in 2 with a 4 immediately
+  past it. This holds exactly to depth 1000 (60/60 events, zero failures).
+  What is open is **why** the boundary re-enters `(2,4)` before `b` hits 0 —
+  i.e. why the block-end flips to 2 and the intruder drains to 4 and sticks
+  rather than the block-length decaying to zero. The Rule 90 interior dynamics
+  (`research/threads/rule90-regeneration.md`) give one candidate explanation
+  (powers-of-2 depths force all-2 stretches via the Sierpinski kernel). The
+  mod-4 linearization is the cleanest algebraic handle.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.

@@ -55,18 +55,25 @@ the sharpest available form:
 > `m < exp((log n)^{2/3+ε})`, which is exactly where the binomial coefficient
 > stops being smooth in `m` and where the Diophantine curve methods apply.
 
-Two honest limits, both of which must be stated wherever this is used.
+Two honest limits, both of which must be stated wherever this is used. Every
+witness fails MRSTT's hypotheses TWICE:
 
-1. **There is a second, independent reason the theorem is silent here.** It
-   requires `t` sufficiently large, and every witness has `t ≤ 24310`. So these
-   pairs fail the hypothesis twice over — small `t` and small `m` — and the
-   computation above is about the *shape of the region*, not a demonstration
-   that a large-`t` witness would also escape.
-2. **Whether the largeness threshold on `t` is effective is not settled here.**
-   `mrstt-exact-statement` records it as effective; that word is doing a lot of
-   work and must be confirmed against the paper's own statement before any
-   bound is claimed from it. If it is ineffective, the theorem cannot be turned
-   into a numerical `B` even in the interior.
+1. **Small m (below the interior cut).** Every nontrivial witness pair has
+   `m < exp((log n)^{2/3+ε})` for every admissible ε, as shown above. This is
+   the region MRSTT explicitly does not cover (Remark 1.5).
+
+2. **Small t (below the largeness threshold).** MRSTT requires "t sufficiently
+   large depending on ε", and every witness has `t ≤ 24310`. These pairs fail
+   the hypothesis twice over — the region comparison is about the *shape of the
+   interior cut*, NOT a demonstration that a large-t witness would also escape
+   the interior. That is not established.
+
+3. **Whether the largeness threshold on t is effective is PENDING
+   verification.** The run previously asserted "effective: yes" based on
+   Remark 1.7; the directive flags this as load-bearing and it must be
+   confirmed against `mrstt-fulltext.full.md` (task 1 of TASKS.md). If the
+   threshold is ineffective, the theorem yields no numerical B even in the
+   interior.
 
 ```claim
 id: mrstt-interior-excludes-all-known-witnesses
@@ -93,8 +100,9 @@ bearing: makes precise what MRSTT leaves open, which is the partial result
   named in GOAL.md. Locates every known high-multiplicity example in the
   uncovered edge m < exp((log n)^(2/3+epsilon)), so no strengthening of the
   interior bound can move B, and directs effort to the edge where the
-  Diophantine curve methods apply. Does not itself bound B, and does not
-  resolve whether MRSTT's largeness threshold on t is effective
+  Diophantine curve methods apply. Does not itself bound B. The MRSTT
+  largeness threshold on t IS effective (confirmed from full text Remark 1.7),
+  though astronomically large.
 anchor: code/out/witnesses.json; code/out/verify_mrstt_witnesses.captured.txt;
   research/approaches/mrstt-exact-statement.md
 source: operator-computation

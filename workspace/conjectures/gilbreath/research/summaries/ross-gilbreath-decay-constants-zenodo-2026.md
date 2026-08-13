@@ -1,39 +1,93 @@
-# Empirical Structure of the Gilbreath Decay Constants — Ross, Zenodo, July 2026
+> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/ross-gilbreath-decay-constants-zenodo-2026.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
 
-<!-- source: https://zenodo.org/records/21326026 | full text: sources/ross-gilbreath-decay-constants-zenodo-2026.full.md -->
+<!-- source: https://zenodo.org/records/21326026/files/Empirical_Structure_of_the_Gilbreath_Decay_Constants.pdf | converted from PDF -->
 
-Empirical study of the continuous model's decay constants; anchors OEIS A397880 (numerators
-of c_n). Not a proof of anything about primes, but the quantitative companion to the CHT
-lower bound.
+Empirical Structure of the Gilbreath Decay Constants
 
-## What it establishes
+Michael M. Ross
+Independent Researcher
+michaelmross@cantab.net
 
-- Model: top row independent standard exponential variables; `c_i = E[a(i,j)]` at depth i.
-  CHT proved `Σ_{i≤n} c_i ≥ log(n+e)`, computed c_0..c_3 exactly, left boundedness of
-  `(c_i)` open.
-- New **exact rational values for c_4, c_5, c_6** (code + certificates in
-  `github.com/michaelmross/Gilbreath`, exact rational arithmetic).
-- Monte Carlo to depth 8192. Principal empirical law `c_i ≈ C·λ^{s_2(i)}/i` with effective
-  λ drifting through ~1.14–1.20; conditioning on digit-sum classes reveals the 1/i decay;
-  pooled data show a dyadic sawtooth.
-- Finite-depth experiments: polynomial-vs-exponential growth transition for continuous
-  uniform data; full-row relaxation ~ G^0.63–G^0.66; spike survival distance asymptotic to
-  its amplitude.
-- `c_i` is not monotone: `c_2 < c_3`, `c_3 > c_4 < c_5 > c_6`, tracking the binary digit
-  sum A000120(n) (also in the OEIS A397880 summary already on disk).
+July 2026
 
-## Bearing on this run
+Abstract
 
-- The digit-sum structure of the *continuous* model is the same Pascal/mod-2 structure the
-  run's `mod4-linearization` claim uses for the discrete prime rows — an independent
-  confirmation that the {0,2}/Rule-90 structure is the right microscope.
-- The open question "does c_i → 0, or even stay bounded?" is the averaged decay-rate
-  version of the run's regeneration obstruction; a regeneration mechanism would imply
-  something about this rate.
+Chase, Hunter, and Tao introduced a stationary continuous Gilbreath model in which the
+top row consists of independent standard exponential variables and ci := E a(i, j) denotes the
+expected entry at depth i. They proved ∑
 
-## Source status
+i≤n ci ≥ log(n + e), computed c0, . . . , c3 exactly, and
+could not prove that (ci) is bounded. This note reports a Monte Carlo study to depth 8192,
+anchored by new exact rational values of c4, c5, and c6. The principal empirical law is
 
-Zenodo record v1 (12 Jul 2026), single author (M. Ross, ORCID 0009-0001-3428-5337), with
-reproducible code and rational-arithmetic certificates. Empirical; record claims as
-checked-empirical only. OEIS A397880 (already in library) documents c_0..c_6 and the CHT
-lower bound.
+ci ≈ C λs2(i)
+
+i ,
+
+where s2(i) is the binary digit sum and the effective λ drifts slowly through approximately
+1.14–1.20 in the sampled windows. The conjectural 1/i behavior thus becomes visible after
+conditioning on digit-sum classes, while pooled data decay more slowly and display a pronounced
+dyadic sawtooth; at extreme digit sums the modulation saturates below its geometric extrapola-
+tion. Complementary finite-depth experiments indicate a polynomial-versus-exponential growth
+transition for continuous uniform data, a full-row relaxation law of order G
+0.63–G
+0.66, and a spike
+survival distance asymptotic to its amplitude. These findings quantify the decay mechanism of
+the Gilbreath array that lies beyond the elementary parity wave.
+
+1 Introduction
+
+Given a sequence a1, a2, . . ., its Gilbreath array is defined recursively by
+
+a(0, j) = aj, a(i + 1, j) = |a(i, j) − a(i, j + 1)|. (1)
+
+For the prime sequence, Gilbreath’s conjecture asserts that the left edge equals 1 at every positive
+depth. There are two distinct mechanisms in that statement. If a sequence begins with 2 and is
+followed by odd integers, parity alone forces every subsequent leading entry to be odd. It does not
+force that entry to be 1. The latter behavior requires the array to reach and sustain the closed
+{0, 2} regime, in which a leading 1 remains pinned. This distinction is developed in the companion
+note [3].
+The present paper concerns the quantitative question behind that second mechanism: how
+rapidly do typical amplitudes in an absolute-difference array decay? Chase, Hunter, and Tao (CHT)
+study the continuous stationary model in which the aj are independent exponential random variables
+of mean one [2]. Translation invariance in j gives
+
+E a(i, j) = ci, (2)
+
+1
+
+where ci depends only on the depth. They prove
+
+n∑
+
+i=0 ci ≥ log(n + e), (3)
+
+so exponential decay is impossible. They tentatively suggest that 1/i may be the maximal plausible
+rate, but note that the available theory does not even establish that (ci) is bounded [2, Remark 1.5].
+The experiments below reveal a more structured version of the 1/i picture. The binary digit sum
+
+s2(i) := the number of ones in the binary expansion of i
+
+modulates the leading order. This is natural: CHT already point to Lucas’ theorem and the fact
+that row i of Pascal’s triangle has 2s2(i) odd entries. The new numerical claim is that this parity
+statistic enters approximately geometrically.
+
+All asymptotic-looking statements in this note, except the exact low-depth values and identities
+explicitly derived below, are empirical. The figures are intended to identify theorem-shaped targets,
+not to substitute for proofs.
+
+2 Exact low-depth anchors
+
+The constants ci are rational. Writing ar = sbr, where s = ∑i+1
+r=1 ar and (b1, . . . , bi+1) is uniform on
+the standard simplex, homogeneity gives
+
+ci = (i + 1)E b(i, 1). (4)
+
+On each region where the signs of all intermediate differences are fixed, b(i, 1) is a linear form.
+Partitioning the simplex into these rational sign cones therefore reduces ci to a finite sum of rational
+polytope volumes and first moments.
+CHT record c0, c1, c2, c3. Exact sign-cone computations in the present study extend the table by
+three values: c4 = 778959731701
+
+*[excerpt ends; 11955 characters not shown — see `research/sources/ross-gilbreath-decay-constants-zenodo-2026.full.md`]*

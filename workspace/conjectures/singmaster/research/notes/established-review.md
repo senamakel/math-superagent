@@ -21,7 +21,9 @@ Convention note: `N(a)` counts all `(n,k)` with `0<=k<=n`, `C(n,k)=a` (both `k` 
 - Kane 2004: `O(log t log log log t / (log log t)^2)`.
 - Kane 2007 (best unconditional): `N(t) = O( (log t)(log log log t) / (log log t)^3 )`.
 - Conditional on Cramér's conjecture (AEH): `N(t) = O_eps((log t)^{2/3+eps})`.
-- Sourced: PRIMARY AEH 1974 full text; PRIMARy Singmaster 1971; Wikipedia "Known bound"; MRSTT intro; Jenkins intro.
+- Sourced: PRIMARY AEH 1974 full text; Singmaster 1971's bound attested by secondary
+  sources (primary NOT held — the downloaded file is the Fermat's Library comments
+  page); Wikipedia "Known bound"; MRSTT intro; Jenkins intro.
 - **These all grow with `a`. The conjecture asserts constancy — reproducing one is not a result.**
 
 
@@ -79,7 +81,7 @@ id: best-unconditional-bound
 statement: Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical, all primary-sourced: Singmaster 1971 O(log a); Abbott-Erdos-Hanson 1974 O(log a/log_2 a) [AMM 81 (1974) 256-261, Theorem 3, via Ingham prime-gap theorem]; Kane 2004 O(log t log_3 t / log_2^2 t). AEH Theorem 1: average and normal order of N(t) is 2. Conditional on Cramer's conjecture, O_eps((log a)^{2/3+eps}).
 hypotheses: none except standard asymptotic conventions.
 holds-here: yes — reproduces a log-type bound is NOT a result (it grows with a, the conjecture asserts constancy).
-status: checked (AEH 1974 full text held as research/sources/abbott-erdos-hanson-1974.full.md; Singmaster 1971 held as research/sources/singmaster-1971.full.md; Kane bound quoted identically in MRSTT and Jenkins intros and Wikipedia Known-bound.)
+status: checked (AEH 1974 full text held as research/sources/abbott-erdos-hanson-1974.full.md; Singmaster 1971 primary NOT held — the downloaded research/sources/singmaster-1971.full.md is the Fermat's Library comments page, so the O(log a) claim is attested-by-secondary-sources (AEH, MRSTT, Wikipedia); Kane bound quoted identically in MRSTT and Jenkins intros and Wikipedia Known-bound.)
 bearing: The gap is a uniform/constant bound; no known method gives O(1).
 anchor: research/notes/established-review.md
 ```

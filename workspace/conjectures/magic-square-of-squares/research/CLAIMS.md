@@ -11,6 +11,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `boyer-counting-lines-3n-1-over-2` | For a square central cell C=c² whose root c has n distinct 4k+1 prime factors, the number of lines x²+y²=2c² with two square entries (x<y) is (3ⁿ−1)/2; for non-square C with n distinct 4k+1 prime factors it is 2ⁿ⁻¹. | yes | asserted | `research/summaries/boyer-search-seven-square-entries.md` |
 | `bremner-conjecture-proved` | There is an absolute constant C > 1 such that if E is an elliptic curve over Q with rank r, then all arithmetic progressions on E (sequences of rational points whose x-coordinates form a non-trivial AP) have length <=… | yes | proved | `research/summaries/garcia-fritz-pasten-bremner-uniformity-2026.md` |
 | `bremner-deg4-centre-532` | The degree-4 MSS over Q(√3,√133) printed in Bremner 1999 has centre 532 = 133·2² = 2²·7·19 and magic constant 1596, not 2926 = "133·22" as the OCR'd text reads. All eight r-terms of the printed entries cancel exactly;… | yes | checked | `research/summaries/bremner-on-squares-of-squares-1999.md` |
+| `btva22-quasihyperbolic-3x3-surface` | (Rome-Yamagishi 2024 intro, citing Bruin-Thomas-Varilly-Alvarado 2022, "Explicit computation of symmetric differentials and its application to quasihyperbolicity", ANTS 16): the 3x3 MSS variety cut out by 6 quadrics in… | yes | asserted | `research/summaries/rome-yamagishi-magic-squares-of-powers-2024.md` |
 | `buell-fulltext-corrupt-unobtainable` | Buell's "A search for a magic hourglass" PDF (multimagie.com/Buell.pdf) has a corrupt text layer; identical mojibake from the original and from the Wayback Machine. No arXiv version or alternate host exists. Full text… | yes | checked | `research/summaries/buell-search-for-magic-hourglass-1999.md` |
 | `buell-hourglass-25e24-authoritative` | Duncan Buell (1998, preprint 1999) computed that configuration 7.I ("magic hourglass", square central cell) has no solution with central cell < 25·10²⁴; Boyer draws the direct consequence that any 3x3 MSS of squares… | yes | asserted | `research/summaries/boyer-search-seven-square-entries.md` |
 | `buell-hourglass-25e24-coprime` | Buell's search shows no 7-square magic hourglass with centre < 25×10²⁴, under a coprimality assumption on the diagonal/column triples; Zimmermann-Loria relax that assumption and find much smaller (10-digit) hourglass… | **unchecked** | asserted | `research/summaries/buell-search-for-magic-hourglass-1999.md` |
@@ -65,15 +66,15 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `phi-pell-record` | For Pell numbers P_k, the consecutive pair (P_k,P_{k−1}) gives f(P_k,P_{k−1}) = 4P_k P_{k−1}(P_k²−P_{k−1}²)/(P_k²+P_{k−1}²)² = 1 − 1/P_{2k−1}² ∈ Φ, already reduced; these are exactly the largest values of f over the… | yes | proved | `code/out/phi_pell_record.md` |
 | `phi-range-clip` | f(m,n) = sin(4 arctan(n/m)) < 1 strictly for all integer m>n≥1 (sup = 1 at the irrational t = tan(π/8) = √2−1, never attained); so the additive-chain clip q1+q2 < 1 is non-trivial and is the exact obstruction that… | yes | proved | `code/out/phi_pattern_findings.md` |
 | `phi-suprema-are-pell-pairs` | For f(m,n) = 4mn(m^2-n^2)/(m^2+n^2)^2 over primitive m > n >= 1, the identity f(P_k, P_{k-1}) = 1 - 1/P_{2k-1}^2 holds for k = 2..59 with P_{2k-1} = P_k^2 + P_{k-1}^2, equivalently (m^2+n^2)^2 - 4mn(m^2-n^2) = 1 at Pell… | yes | checked | `code/out/pell_records_established.md` |
-| `phi-universal-set` | For centre e², d where e²±d are both squares are exactly d = 4k²mn(m²−n²) with e = k(m²+n²), so d/e² = f(m,n) = 4mn(m²−n²)/(m²+n²)² belongs to the universal rational set Φ; \|S(e)\| = (∏_{p≡1 mod 4}(2a+1) − 1)/2; a… | yes | checked | `code/out/phi_claim_blocks.md` |
 
-_21 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_23 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `boyer-counting-lines-3n-1-over-2` (research/summaries/boyer-search-seven-square-entries.md) — asserted by the source, not proved there and not checked here
+- `btva22-quasihyperbolic-3x3-surface` (research/summaries/rome-yamagishi-magic-squares-of-powers-2024.md) — asserted by the source, not proved there and not checked here
 - `buell-hourglass-25e24-authoritative` (research/summaries/boyer-search-seven-square-entries.md) — asserted by the source, not proved there and not checked here
 - `centre-five-representations` (research/summaries/brown-mathpages-magic-square-of-squares.md) — asserted by the source, not proved there and not checked here
 - `concordant-single-ap-solutions-computable-large` (research/summaries/knaf-selder-spindler-concordant-elliptic-algorithm-2019.md) — asserted by the source, not proved there and not checked here

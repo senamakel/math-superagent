@@ -11,23 +11,19 @@ question: Are the 554 subprogression families new, or are they rediscoveries
   coordinates? For each of the 12 moduli m ∈ {11,13,17,19,22,23,26,29,31,33,
   34,37}, which E-T family (if any) produces that modulus, and are the 83
   residue classes of t a subset of what E-T already classifies?
-status: open
+status: deprioritised (directive 4 — focus shifted to saturation of modulus 23;
+  the novelty question is still valid but the bulk-promotion of families to
+  checked takes priority, and the families are now known to be Salez
+  seven-equation instantiations from the FOUND-line tags)
 rests-on: subprogression-families-verified-and-coverage,
   elsholtz-k-unit-fractions-bound,
   elt-prop16-vanishing-odd-squares,
   seven-equations-complete
-blocked-by: none — the Elsholtz–Tao source and the subprogression data are
-  both on disk
-next: (1) Parse the 554 families from code/out/subprogression.captured.txt
-  into a structured form (m, t-residue, x(k), y(k), z(k)). (2) For each
-  family, classify whether it is Type I or Type II (which denominator(s) carry
-  the factor n). (3) Cross-reference against E-T Prop 1.9's four Type-I and
-  three Type-II forms — match the modulus a = 840m and offset b to the E-T
-  parametrisation and determine whether the family is a specialisation of an
-  E-T form or genuinely new. (4) Report: per-modulus counts (how many of the
-  83 classes are E-T-covered vs new), and whether any family shape (degree,
-  coefficient pattern) is absent from the E-T classification. A rediscovery
-  honestly labelled is fine.
+blocked-by: none
+next: postponed — the FOUND lines already tag each family with its
+  Salez equation (14a–15d), so the families are instantiations of known
+  forms by construction. The open question is not "are they new shapes"
+  but "which (m,s) pairs can the generator reach."
 ```
 
 ## What the operator established

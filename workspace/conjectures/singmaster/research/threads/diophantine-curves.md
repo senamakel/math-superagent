@@ -70,7 +70,8 @@ question: Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bo
 status: live — genus deliverable open (not yet computed); each analysis shows the
   uniform bound is blocked by ineffectiveness of Faltings/Siegel/BST.
 rests-on: jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit,
-  bbw-verification-bound, mrstt-interior-nothree
+  bbw-verification-bound, mrstt-interior-nothree, hpt-bilu-tichy-exceptional-classification,
+  bilu-tichy-method-ineffective-uniformity-wall, kummer-lucas-class-not-logarithmic
 blocked-by: uniform bound needs effective Siegel or effective Schmidt subspace
   theorem (out of reach); Kane's method provably capped; MRSTT's interior method
   capped at exp(log^{3/2-eps} P).

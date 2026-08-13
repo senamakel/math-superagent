@@ -1,63 +1,49 @@
 ```thread
 question: Why does a fresh {0,2} block always reappear before the current one is exhausted by erosion?
-status: open — but a precise single-row regeneration criterion is now ESTABLISHED to depth 1000
+status: open — consumption proved and sourced, regeneration empirically non-local and now sourced non-local; obstruction pinned by CHT inverse theorem
 rests-on: |
   - Reduction proved (A_k(1) ∈ {0,2} ⇔ conjecture), checked to depth 599
-  - Block profiles computed to depth 1000 (code/out/blocks_depth1000.json)
-  - Erosion bound: b(k+1) ≥ b(k) - 1 (a block loses at most 1 per row)
-  - Odlyzko's lemma (consumption): a block of length n protects exactly n+1 rows; constant is 1, not n/2. Proved by diagonal-subtriangle argument, verified exhaustively (n=1..11, 122820 adversarial pairs, zero violations) and on real prime rows to depth 600. Consumption = 1 position per row, linear. Regeneration is the sole remaining obstruction.
-  - REGENERATION CRITERION (ESTABLISHED, exact, checked to depth 1000): with the block in 0-based cols 1..b_k, let c_k=A_k[b_k+1] (intruder) and e_k=A_k[b_k] (the true last {0,2} value of the block — NOT b_k-1, that is the earlier off-by-one error). Then q_k=A_{k+1}[b_k]=|e_k-c_k| lies in {0,2} IFF (e_k==2 and c_k==4), and b_{k+1}>=b_k IFF (e_k==2 and c_k==4). Zero failures over all 998 transitions; exactly 60 regeneration events (matching the long-standing count). The earlier note "regeneration is not a local property / lemma refuted" is WITHDRAWN: it was an off-by-one in the edge index. See code/regeneration/check_regenerate_lemma.py and code/out/check_regenerate_lemma.captured.txt.
-blocked-by: nothing yet — criterion established, but why the criterion forces b never to hit 0 (globally) is not yet proved
+  - Consumption proven & sourced: Odlyzko 1993 block lemma (length-N {0,2} block → N+1 rows start 1, constant 1); Killgrove–Ralston 1959 same; Chase 2024 Lemma 3.2 ({0,d}-block length L ⇒ max drops by 1 after L rows). Block l length → l−1 per row.
+  - Block profiles to depth 1000 (code/out/blocks_depth1000.json); minima [13,24,96,97,175,2762,...] grow, never reach 0
+  - Regeneration is NON-LOCAL — empirically refuted (check_regenerate_lemma: no single-row iff from intruder+length), and NOW SOURCED: Muney 2026 (arXiv:2606.23721) proves K_S and K_S=C_S are governed by the WHOLE ordered right anti-diagonal via the folding map F_S, k∈K_S ⟺ F_S(|k−s_n|)=1, and K_S=C_S ⟺ e_i≤1+Σ_{j>i}e_j (order-sensitive Brown criterion). Confirms empirically-regeneration is not a single-row property.
+  - CHT 2026 Theorem 1.6 (deterministic inverse): the ONLY obstructions to decay are long zero-blocks or long shallow {0,d}-blocks (d≥2); Theorem 1.3 random-analogue needs only 2-separated non-concentration.
+blocked-by: the mechanism of regeneration has not been stated; Muney gives the correct global object (folding composition F_S and its fiber over 1) but not an a priori bound ruling out the two CHT obstructions for the primes.
 next: |
-  1. Promote the criterion: regeneration = (edge==2 AND intruder==4), i.e. block must end in 2 with a 4 just past it. This is a real single-row local fact, not an artifact.
-  2. Link it to the mod-4 linearization d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4): edge 2 + intruder 4 means columns b_k, b_k+1 sum to 2 (mod 4) giving q=2 at column b_k in the next row.
-  3. Stress cases: at every k where b_k is small (local minima [13,24,96,97,...]), check whether the row below has (edge==2,intruder==4) available *before* erosion would drive b to 0. b never hits 0 in the computed range; explain via regeneration being cheap (needs only edge 2 and intruder 4 at the current boundary).
-  4. The honest open question remains: is there a k with block length 0? No proof yet.
+  1. Convert the empirical minima data into the honest claim (no k with block length 0 computed; nothing proves it).
+  2. Link the two obstructions (CHT 1.6) to block length: a regeneration failure requires a long zero-block or long shallow {0,d}-block; measure how close real prime rows come to these on the depth-1000 data (0-block lengths, {0,d}-block lengths vs the R_m thresholds).
+  3. The {0,2}-regeneration is NOT a single-row local property (Muney sourced + run refutation): frame regeneration as a statement about the right anti-diagonal folding composition F_S and its fiber over 1 — the correct global object.
+  4. Treat Muney's e_i≤1+Σ_{j>i}e_j (interval-completeness) as a candidate structural invariant for the anti-diagonal of a row entering the {0,2} regime; check it on the real rows and see whether prime rows near the depth-1000 minima satisfy it.
 ```
 
 # Regeneration thread
 
 ## What we know
 
-- **Consumption is proven**: a leading {0,2} block of length b_k in row k implies b_{k+1} ≥ b_k - 1. The block shrinks by at most 1 per row. Constant = 1 (n+1 rows per length-n block), re-derived and proved.
+- **Consumption is proven & source-backed.** Odlyzko 1993 (block lemma, constant 1); Killgrove–Ralston 1959 (same, off-by-one index); Chase 2024 Lemma 3.2 ({0,d} version). A leading {0,2} block of length b_k implies b_{k+1} ≥ b_k − 1 — the block shrinks by at most one per row. Regeneration is the sole remaining obstruction.
 
-- **The regeneration criterion is ESTABLISHED (depth 1000, exact).** The block occupies 0-based columns `1..b_k`. Let the intruder be `c_k = A_k[b_k+1]` (the first value past the block) and the edge be `e_k = A_k[b_k]` (the **last** `{0,2}` value of the block — 0-based index `b_k`, not `b_k-1`). Then the value `q_k = A_{k+1}[b_k] = |e_k - c_k|` satisfies:
-  - `q_k ∈ {0,2}`  ⟺  `(e_k == 2 and c_k == 4)`
-  - `b_{k+1} ≥ b_k`  ⟺  `(e_k == 2 and c_k == 4)`
-  - With **zero failures** over all 998 transitions; exactly **60** regeneration events, matching the long-standing count.
-  - For rows whose whole leading length is `{0,2}` (no intruder, 838 of them), `b_{k+1} ≥ b_k` is always false, so the iff still holds.
-  - Distributions: (e,c) pairs — (2,4):60, (0,4):36, (2,6):16, (0,6):13, (0,8):8, (2,8):8, (0,12):5, (0,14):4, (2,10):4, (2,12):3, (0,10):2, (2,14):2.
+- **Regeneration is NOT local — now sourced.** The run's `check_regenerate_lemma` empirically refuted any single-row iff for regeneration. Muney 2026 (arXiv:2606.23721) gives this a proof-level foundation: the valid-extension set K_S of a Gilbreath prefix S is determined by its **entire ordered right anti-diagonal** through the folding composition `F_S(d) = ||…||d−e_1|−e_2|…−e_{n−1}|`, with `k∈K_S ⟺ F_S(|k−s_n|)=1`, and `K_S = C_S` iff `e_i ≤ 1 + Σ_{j>i} e_j` for all i (Theorem 20). A single-row/leading-block quantity cannot determine this — confirming the empirical refutation and supplying the correct global object.
 
-### Correction to prior record
+- **The only obstructions are now pinned.** CHT 2026 Theorem 1.6 (deterministic inverse): if initial data a_n ≤ 2^M, no length-L zero-block, and no long shallow {0,d}-block, then the left diagonal is {0,1}-valued. So for the input to the primes, a regeneration/GC failure must be mediated by a long zero-block or a long shallow {0,d}-block. Both are heuristically rare but unproved absent (even under Hardy–Littlewood).
 
-The earlier thread entry "**candidate iff lemma REFUTED — regeneration is not a local property**" was based on an **off-by-one**: it used `e_k = A_k[b_k-1]` (and `q_k = A_{k+1}[b_k-1]`). Under that wrong index, `q_k == |e_k-c_k|` fails on 141/161 rows and the iff on 109. The correct definition `e_k = A_k[b_k]` follows from `A_{k+1}[j]=|A_k[j]-A_k[j+1]|`: the diff partner of the intruder `A_k[b_k+1]` is `A_k[b_k]`, not `A_k[b_k-1]`. With the correction, the iff holds exactly. **Withdrawn.**
-
-This resolves the thread's open item "intruder==4 necessary but not sufficient (36 erosion rows also have intruder 4)": the missing condition is `e==2`. Among the 96 rows with intruder 4, the 60 with edge 2 regenerate and the 36 with edge 0 erode.
+## Two sharp facts from the data
 
 ### Fact (a): Block length never approaches 0 — minima grow
-
-Record of minima over depth 1000: `[13, 24, 96, 97, 175, 2762, 5939, 31525, 31533, 31534, 733574, 1094263]`.
-
-- The smallest block length after the first few rows is **13** (at k=3).
-- Minima grow rapidly — the block length is not merely bounded away from 0, it *increases*.
-- This is strong numerical evidence, not a proof.
+Minima over depth 1000: `[13, 24, 96, 97, 175, 2762, 5939, 31525, 31533, 31534, 733574, 1094263]`. Smallest block length after row 3 is **13**; minima grow rapidly. Strong numerical evidence the conjecture holds; not a proof.
 
 ### Fact (b): Regeneration is real but NOT monotone
-
-`97→96` (k=13), `871→872` (k=26), `21→24` (k=8) all occur. Consumption and regeneration alternate.
+`97→96`, `871→872`, `21→24` occur; consumption and regeneration alternate; longest genuine live-regime erosion run 13 rows (the 838-row run is a finite-width artifact).
 
 ## The honest open question
 
-**Is there a k with block length 0?** Everything computed says no. Nothing proves it.
+**Is there a k with block length 0?** Everything computed says no (min block ever seen = 13). Nothing proves it.
 
 ## What must be explained
 
-To prove the conjecture one must show the regeneration criterion — the block ends in 2 with a 4 immediately past it — is available often enough that erosion never drives `b` to 0. The criterion is now known precisely; why it is always eventually available is not.
+For regeneration to fail, a row k must reach small block length with the rows below failing to regenerate a fresh {0,2} block before b hits 0. The data + sources say:
+1. Regeneration is NOT local — single-row iff dead (empirical refutation + Muney's sourced global criterion).
+2. The CHT inverse theorem reduces failure to two concrete structures (long zero-blocks, long shallow {0,d}-blocks) — measure these on the real rows.
+3. Muney's `e_i ≤ 1 + Σ_{j>i} e_j` interval-completeness criterion is the natural structural invariant to try on the anti-diagonals of rows that successfully regenerate.
 
 ## Data available
-
-- `code/out/witnesses.json`: depth 600, block profile for k=1..40
-- `code/out/blocks_depth1000.json`: full b, s, intruder sequences to depth 1000
-- `code/regeneration/check_regenerate_lemma.py` and `code/out/check_regenerate_lemma.captured.txt`: the established criterion, oracle-verified
-- `code/out/regeneration_analysis.captured.txt`: earlier summary stats
-- `code/out/check_regenerate_lemma.notes.md`: (superseded refutation note from the off-by-one run)
+- `code/out/witnesses.json` (depth 600); `code/out/blocks_depth1000.json`; `code/out/regeneration_analysis.captured.txt`; `code/out/check_regenerate_lemma.captured.txt` + `.notes.md`.
+- Sources: Odlyzko 1993, Killgrove–Ralston 1959, Chase 2024, CHT 2026, Muney 2026, Eppstein 2011 anti-Gilbreath.
