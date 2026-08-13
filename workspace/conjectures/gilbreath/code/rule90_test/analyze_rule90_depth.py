@@ -196,6 +196,30 @@ def main():
     print(f"\nregimes: {n_regimes}, near-power-of-2 (tol=1): {hit} "
           f"({100.0*hit/n_regimes:.0f}%)")
 
+    # Baseline: fraction of integers in the observed depth range that are
+    # within tolerance of a power of two, for a uniform distribution.  This is
+    # what the observed fraction must beat to be evidence, not artifact.
+    gen_depths = [d for (_, _, d) in regimes if d != regimes[-1][2]]  # drop tail void
+    lo, hi = min(gen_depths), max(gen_depths)
+    print(f"\n=== baseline: uniform over observed genuine depth range [{lo},{hi}] ===")
+    for tol in (0, 1, 2, 4):
+        near_set = [v for v in range(lo, hi + 1)
+                    if is_near_power_of_two(v, tol) is not None]
+        obs = sum(1 for d in gen_depths if is_near_power_of_two(d, tol) is not None)
+        obs_total = len(gen_depths)
+        print(f"  tol={tol}: baseline {len(near_set)}/{hi - lo + 1} "
+              f"({100.0 * len(near_set) / (hi - lo + 1):.0f}%)  |  "
+              f"observed {obs}/{obs_total} ({100.0 * obs / obs_total:.0f}%)")
+
+    # Exact (tol=0) hits among genuine regime lengths
+    exact = [(ks, km, d) for (ks, km, d) in regimes
+             if is_near_power_of_two(d, 0) is not None]
+    print("\n=== EXACT power-of-two regime lengths (tol=0), genuine (k<159) ===")
+    for (ks, km, d) in exact:
+        if km < 159:
+            print(f"  regime {ks}->{km}: depth {d} = "
+                  f"{is_near_power_of_two(d, 0)[0]}")
+
     # Parallelised variants
     variants = []
     for origin in ("regime", "absolute"):
