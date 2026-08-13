@@ -123,6 +123,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `runner3.py` | _(undescribed)_ |
 | `sequence_dump.txt` | _(undescribed)_ |
 | `sequence_extract.captured.txt` | _(undescribed)_ |
+| `step6_ratio_table.captured.txt` | Captured stdout of Directive 30 step-6 ratio table run: the full giant table, worked-example PASS lines, row-238 confirmation, OLS gap trend both ways, parity p-values, geometric growth/extrapolated next width, and the 14-gap sufficiency check (0 failures). |
 | `step_law_and_recharge_verified.md` | _(undescribed)_ |
 | `step_law_captured.txt` | _(undescribed)_ |
 | `step_law_independent.captured.txt` | _(undescribed)_ |
