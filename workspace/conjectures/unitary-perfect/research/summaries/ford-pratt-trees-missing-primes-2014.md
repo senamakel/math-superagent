@@ -29,7 +29,7 @@ hypotheses: downward-closure (1.1); P nonempty omitting an odd p0 (so P is not
   all primes)
 holds-here: yes - the 3-Higgs primes satisfy (1.1) and omit 17, giving
   power-saving thinness; this is the engine of heven-thinness-not-finiteness
-status: asserted (proved in source, not re-verified here)
+status: catalogued
 bearing: proves rarity (power-saving thinness) of the 3-Higgs primes and hence
   of H; explicitly NOT finiteness, since at the primitive-divisor height the
   bound is still exponential in p (see the thread)

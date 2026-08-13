@@ -157,18 +157,18 @@ content above is this run's own, from its notes and oracle.
 
 ## Gaps
 
-- **The run's current first step (live, not done):** independent exact
-  verification of `H_even ∩ [2,1200]` against the paper's Theorem 8 set
-  `{2,6,10,18,26,30,46,62,82,122}`, per `code/H_EVEN_VERIFY_SPEC.md`.
-  Requires `code/lib/higgs.py` (sigma_star, memoized is_3_higgs, exact
-  factorize), `code/heven_sieve.py` (B2: witness sieve to 10^9 across 28
-  cores with the pow(2,2400,r) filter and ord_r(2) computation) and
-  `code/heven_classify.py` (B1/B3/B4: 246 Higgs-cubefree k cross-check, full
-  factorisation of survivors, killed-with-witness output). Phase A worked
-  examples (A1 sigma oracle + budget table, A2 Higgs on primes ≤31 with 17
-  non-Higgs/31 Higgs, A3 cyclotomic + Aurifeuillean identities and the m=2426
-  / Filter-N examples) must pass before Phase B. Spec is the yardstick; not
-  yet built, so nothing here is verified.
+- **The full H_even ∩ [2,1200] exact classification (`code/H_EVEN_VERIFY_SPEC.md`,
+  Phase B) is NOT complete.** The ten IN-members are independently confirmed by
+  complete factorisation (`heven_complete_verify.captured.txt`), and the
+  survivor/undecided split (how many even m ≤1200 are killed vs undecided) needs
+  the **B2 witness sieve**, which is currently **buggy and not certified** (see
+  Ruled out: the `ord | 2400` prefilter drops valid witnesses like 29|2^14+1).
+  Until a corrected sieve passes the 1346-direct-pairs oracle equality and is
+  wrapped in `timeout 540 … | tee`, the classification is not verified and the
+  `H_even ∩ (122,1200] = ∅` claim rests on the paper alone, not on this run.
+  The spec is the yardstick; Phase A (A1 sigma+budget, A2 Higgs primes, A3
+  cyclotomic/Aurifeuillean/m=2426/Filter-N) must pass before Phase B, and only
+  the ten IN-members have been reproduced so far.
 - **Frei 1978 full text** (Über unitar perfekte Zahlen, Elem. Math. 33 (1978)
   95–96). The previous file at `research/sources/frei-1978-unitar-perfekte-zahlen.full.md`
   was a table-of-contents page (8 KB, "Über die Flächeninhalte ebener Schnitte

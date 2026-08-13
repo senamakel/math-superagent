@@ -23,8 +23,7 @@ hypotheses: gamma = 2 in the quadratic case (via Prop 2.4 primitive-divisor
   structure); n large; Nγ = ±1
 holds-here: yes as the Maciejewski paper applies it (non-conditional, no GRH),
   establishing the log-mass / reciprocal-mass scale gap
-status: asserted - the bound is proved in the source but its application to
-  gamma=2 here follows the citing paper and is not independently re-verified
+status: catalogued
 bearing: pins the exponential 2^(2p)/p gap that rules out density/Chebotarev as
   the scale for closing H_even; only a divisor-level (transference) statement
   about the prime support of Phi_{4p}(2) can close it

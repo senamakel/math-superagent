@@ -10,7 +10,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `bhv-primitive-divisor-theorem` | For Lucas/Lehmer sequences, u_n has a primitive prime divisor for all sufficiently large n (all n > some bound; n = 30 and a catalogue of small exceptions). Applied to 2^n + 1, every cyclotomic value Phi_n(2) has a… | yes | asserted | `research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md` |
 | `budget-equality-case-impossible` | Let n = 2^a * prod_i p_i^{e_i} be unitary perfect with p_i odd and distinct. In the equality case omega(odd part) = a + 1 of the 2-adic budget corollary - equivalently, every odd unitary component is 1 mod 4 - the odd… | yes | checked | `research/notes/equality-case-eliminated.md` |
 | `fkl-prime-chain-length` | For almost all primes p, the length H(p) of the longest prime chain ending at p satisfies H(p) <= (log p)^0.9503, and most chains starting at a fixed prime are O(x^(1+epsilon)) in count. | **unchecked** | asserted | `research/summaries/ford-konyagin-luca-prime-chains-2010.md` |
-| `ford-thinness-downward-closed-primes` | If P is a set of primes satisfying p in P => all q \| p-1 in P, and P omits the odd prime p0, then #{p<=x : p in P} <= c x^(1-delta) for delta,c > 0 depending only on p0. | yes | asserted | `research/summaries/ford-pratt-trees-missing-primes-2014.md` |
+| `ford-thinness-downward-closed-primes` | If P is a set of primes satisfying p in P => all q \| p-1 in P, and P omits the odd prime p0, then #{p<=x : p in P} <= c x^(1-delta) for delta,c > 0 depending only on p0. | yes | catalogued | `research/summaries/ford-pratt-trees-missing-primes-2014.md` |
 | `hb-lemma20-closures` | Six open candidates m=2p (2446, 10294, 10958, 17398, 19066, 20282) are excluded: a large APR-CL-verified prime p* \| 2^m+1 has a non-3-Higgs witness q \| p*-1 (v2 overflow or a Pratt-tree descent to 17), and 30882 via… | yes | asserted | `research/notes/paper-extraction.md` |
 | `hb-no-v2ge4-witness-1e11` | For all 162 original open candidates m=2p (p∈[1213,17467]), no prime r≡1 mod 16p with r ≤ 10^11 divides L_p or M_p; for m=2426 extended to 6×10^11 (2,389,527 primes) with no divisor. So no v2≥4 non-3-Higgs witness… | yes | catalogued | `research/notes/paper-extraction.md` |
 | `hb-prop4-structural` | If m=2k∈H_even with k odd, then every prime factor of k is 3-Higgs, v_q(k)≤3 for every prime q\|k (k is Higgs-cubefree), and 2d∈H_even for every odd divisor d\|k. | yes | catalogued | `research/notes/paper-extraction.md` |
@@ -23,7 +23,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `heven-two-mod-four` | H_even ⊆ {m ≡ 2 (mod 4)}. Every even m in H is 2 mod 4, i.e. v2(m) = 1. In particular m = 2k with k odd. | yes | catalogued | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-verified-members` | H_even ∩ [2,1200] = {2, 6, 10, 18, 26, 30, 46, 62, 82, 122}, so H_even has exactly these ten verified elements through 1200 and no verified element in (122, 1200]. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-verified-members` | H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}; no verified element of H_even in (122,1200]. | yes | asserted | `research/notes/paper-extraction.md` |
-| `hong-stewart-nonprimitive-bound` | For degree-2 algebraic γ with Nγ = ±1 and n >= exp exp(...), the growth of primes dividing γ^n - 1 is governed by an explicit Stewart-type lower bound; the non-primitive part of 2^(2p)+1 is O(log(4p)) so the primitive… | yes | asserted | `research/summaries/hong-2022-stewart-revisited.md` |
+| `hong-stewart-nonprimitive-bound` | For degree-2 algebraic γ with Nγ = ±1 and n >= exp exp(...), the growth of primes dividing γ^n - 1 is governed by an explicit Stewart-type lower bound; the non-primitive part of 2^(2p)+1 is O(log(4p)) so the primitive… | yes | catalogued | `research/summaries/hong-2022-stewart-revisited.md` |
 | `structural-search-cannot-reach` | The backtracking search over the product form prod (q_i+1)/q_i = 2, with q_i prime powers of distinct primes and the denominator rule forcing the next prime whenever the remaining target is not an integer, recovers… | yes | checked | `research/notes/why-the-search-is-closed.md` |
 | `sw1966-finiteness-fixed-omega` | There are at most finitely many unitary perfect numbers with a fixed number of distinct prime factors. | yes | catalogued | `research/summaries/subbarao-warren-1966-unitary-perfect.md` |
 | `unitary-perfect-2-adic-budget` | Every unitary perfect number is even (Subbarao-Warren 1966), and for n = 2^a * prod_i p_i^{e_i} unitary perfect with p_i odd and distinct, a >= 1, the identity sum_i v2(p_i^{e_i} + 1) = a + 1 holds exactly. Consequently… | yes | proved | `research/notes/parity-and-2-adic-budget.md` |
@@ -48,14 +48,12 @@ Resolve these before building on either side.
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) — asserted by the source, not proved there and not checked here
-- `ford-thinness-downward-closed-primes` (research/summaries/ford-pratt-trees-missing-primes-2014.md) — asserted by the source, not proved there and not checked here
 - `hb-lemma20-closures` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
 - `heven-frontier-50000` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-prime-case-reduction` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-thinness-not-finiteness` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
-- `hong-stewart-nonprimitive-bound` (research/summaries/hong-2022-stewart-revisited.md) — asserted by the source, not proved there and not checked here
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) — asserted by the source, not proved there and not checked here
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) — asserted by the source, not proved there and not checked here
 
@@ -63,9 +61,11 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 These are lookups, not derivations. A catalogue is good evidence that a result is right and no evidence at all about why, so one of these may confirm a final answer and may never be the reason for it. Reproduce the terms with a program that does not read the catalogue, then say so; until then, report the result as looked up.
 
+- `ford-thinness-downward-closed-primes` (research/summaries/ford-pratt-trees-missing-primes-2014.md) — read from a catalogue; no derivation here reproduces it
 - `hb-no-v2ge4-witness-1e11` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `hb-prop4-structural` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `heven-prime-case-reduction` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `heven-thinness-not-finiteness` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
 - `heven-two-mod-four` (research/notes/heven-and-3-higgs-structure.md) — read from a catalogue; no derivation here reproduces it
+- `hong-stewart-nonprimitive-bound` (research/summaries/hong-2022-stewart-revisited.md) — read from a catalogue; no derivation here reproduces it
 - `sw1966-finiteness-fixed-omega` (research/summaries/subbarao-warren-1966-unitary-perfect.md) — read from a catalogue; no derivation here reproduces it
