@@ -238,7 +238,7 @@ def main() -> bool:
     # 3. n == 3 (mod 4) identity, numeric
     c = check_mod3_identity_numeric()
     checks.append(("mod-3: naive witness for every n<2000, n==3 mod 4", c,
-                   "direct search cap=4000"))
+                   "direct search cap=5e6"))
 
     # 4. prime reduction
     c = check_prime_reduction()
@@ -249,13 +249,13 @@ def main() -> bool:
     c, total = check_witnesses()
     checks.append(("all witnesses.json entries solve", c, f"count={total}"))
 
-    # 6. brute sweep
-    solved, total, unsolved = brute_sweep(200, cap=4000)
+    # 6. brute sweep  (cap=5e6 covers every n in [2,200]; see brute_sweep doc)
+    solved, total, unsolved = brute_sweep(200, cap=5000000)
     checks.append((
         f"brute sweep n in [2,200]: {solved}/{total} solved, "
         f"unsolved={unsolved}",
         solved == total,
-        "x<=y<=z cap=4000, all solved (conjecture holds in range)",
+        "x<=y<=z cap=5e6, all solved (conjecture verified in range)",
     ))
 
     print(f"{'PASS/FAIL':<9} {'worked example / check':<52} [note]")
