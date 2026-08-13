@@ -10,6 +10,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `run_gatti_kset.sh` | Runs verify_gatti_kset.py with timeout and tees output to code/out/gatti_kset_check.captured.txt; prints EXIT_CODE. |
 | `run_verify.py` | _(undescribed)_ |
 | `run_verify.sh` | _(undescribed)_ |
-| `verify_mod6_claims.py` | _(undescribed)_ |
-(n-1) and Lemma-4 interval-completeness predictions. Expected: |K_S|=5 (not 4), solutions {1,3,5,7,9}. |
+| `verify_gatti_kset.py` | _(undescribed)_ |
 | `verify_mod6_claims.py` | _(undescribed)_ |
