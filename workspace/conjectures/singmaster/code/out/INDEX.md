@@ -54,6 +54,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_lane_clark_bound.purpose.md` | Points to the live Lane Clark verification program in code/lane_clark/ and the claim it checks. |
 | `verify_lane_clark_bound.py` | _(undescribed)_ |
 | `verify_library_claims.py` | _(undescribed)_ |
-| `verify_mrstt_witnesses.captured.txt` | Captured output of code/verify_mrstt_witnesses.py (final run, EXIT_CODE=0): 3003's four witness pairs all equal 3003 with exactly 8 pairs in the triangle (mirrors included); all six N=6 witnesses + 3003 (N=8) reproduced by direct enumeration; Fibonacci family holds j=1..12; k<=log2(a)=39 candidates per a up to 10^12 (~1560 comb evaluations). |
+| `verify_fibonacci_identity.captured.txt` | This run's capture of code/verify_fibonacci_identity.py, PYTHON_EXIT=0: Singmaster family identity C(n+1,m+1)=C(n,m+2) verified j=1..6 (a up to 66416 digits), six distinct occurrences each (N(a)>=6), exact N(a) via fast inversion for j=1..3: N(3003)=8, N=6 at 29 and 205 digits, the latter beyond the BBW 2017 10^60 verification bound; fast oracle == lib oracle on 10 values. |
 | `verify_superelliptic_formula.captured.txt` | _(undescribed)_ |
 | `witnesses.json` | Repro of the witness list: 3003:8 and the six 6-fold values with nontrivial canonical reps; conventions and scan bounds recorded. |
