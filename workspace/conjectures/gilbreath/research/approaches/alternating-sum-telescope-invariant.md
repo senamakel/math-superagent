@@ -5,7 +5,23 @@ idea: An exact Abel/telescoping identity for the signed alternating sum of a Gil
 mechanism: Write |a-b| = a + b - 2*min(a,b). For a row a_0..a_W with next row b_i = |a_i - a_{i+1}| (i=0..W-1), sum the signed functional sigma(a) = sum_{i=0}^{W-1} (-1)^i b_i. The linear part telescopes exactly: sum (-1)^i (a_i + a_{i+1}) = a_0 - (-1)^W a_W. Hence
   sigma(next row) = a_0 - (-1)^W a_W - 2 * sum_{i=0}^{W-1} (-1)^i min(a_i, a_{i+1}).
 The linear "sum" term (a+b) is annihilated by the alternating-sum kernel, so the signed alternating sum of the next row is (boundary) - 2*(alternating sum of the pairwise minima). In the even interior (i >= 1) each min(a_i, a_{i+1}) is even, so the min-correction is divisible by 4 — this recovers the known mod-4 linearization as a corollary, but the identity is EXACT, not just a congruence (the refuted mod-4 approach was the congruence ceiling; this keeps the full integer equality). The program is to find weights w_i such that the weighted functional Phi(a) = sum (-1)^i w_i a_i makes the boundary term vanish or sign-definite and the min-correction sign-definite, i.e. Phi(next row) <= Phi(row), a genuine monotone potential of the operator. A monotone Phi whose minimal value is attained exactly on the safe shape (halved {0,1} block, i.e. original {0,2}) would force A_k(1) in {0,2}.
-status: proposed
+status: refuted
+killed-by: |
+  The exact telescoping identity σ(T(a)) = a_0 − (−1)^W a_W − 2·Σ (−1)^i min(a_i, a_{i+1})
+  is correct, but the approach hunts a weighted scalar functional Φ monotone
+  under the absolute-difference operator — the same class as the refuted
+  run-count potential (r(T(x)) ≤ r(x), machine-refuted at (0,0,1,1)) and the
+  turning-point potential. The XOR interior dynamics zigzag through {0,2}
+  space with no scalar monotonicity: a row can lose and regain the same
+  pattern cyclically. Worse, the first min-pair min(1, A_k(1)) = 1 identically
+  for any A_k(1) ≥ 1, so the min-correction is structurally blind to the
+  second entry — it cannot distinguish A_k(1)=2 (conjecture holds) from
+  A_k(1)=100 (conjecture fails). A weighted functional would need the weights
+  alone to carry that sensitivity, with no structural guidance from the
+  identity. The approach is a scalar-potential search with no compass, and
+  every scalar potential tried so far (run-count, turning-point, TV-distance)
+  died on the same XOR-induced non-monotonicity. The identity itself survives
+  as a useful algebraic fact but not as a route to an invariant.
 first-step: (a) Verify the exact identity on the three smallest real rows (problem.md's A_1..A_3) against the oracle before building anything — per the run's own lesson, an unverified identity is worthless. (b) Symbolically search (sympy) for a small-support weight vector w = (w_0,...,w_m) making Phi monotone: Phi(T(row)) <= Phi(row) over all {0,2}-valued blocks with an adversarial even completion, and check whether the resulting Phi is minimized at the {0,2} shape. Report the first w found or the exhaustive refutation of weight vectors up to a stated length/coefficient bound.
 ```
 
