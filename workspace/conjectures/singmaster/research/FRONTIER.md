@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Pint%C3%A9r,+%7B | {Á}kos Pintér | Singmaster-type results for Stirling numbers and some related diophantine equations Authors: [András Bazsó][2], [István Mező][3], [{Á}kos Pintér][4], [Szabolcs Tengely][5] View a PDF of the paper… |
 | 1 | https://terrytao.wordpress.com/2026/07/21/a-digestion-of-the-jacobian-conjecture-counterexample/ | A digestion of the Jacobian conjecture counterexample | \| Michael M. Ross on [A digestion of the Jacobian co…][56] \| ### Top Posts - [A digestion of the proof of Sendov's conjecture][40] - [A digestion of the Jacobian conjecture counterexample][57] - [A… |
 
-_487 further candidates not shown; they are cited once each._
+_495 further candidates not shown; they are cited once each._

@@ -43,7 +43,21 @@ mechanism: C(x,2) = C(y,3) is a genus-1 elliptic curve. The standard approach
   The resulting bound will be enormous (like the Stroeker–de Weger M₀ ≈ 10⁴⁰)
   but it is EXPLICIT and COMPUTED — exactly the GOAL-eligible deliverable.
 
-status: adopted
+status: refuted-as-written
+refuted-by: code/matveev/check_matveev_23.py (EXIT_CODE=0, ALL CHECKS PASSED,
+  capture code/out/check_matveev_23.captured.txt).  The mechanism is vacuous on
+  the solution locus: U = 3x(x-1) and V = y(y-1)(y-2) are EQUAL at every
+  solution, so every b_j = v_{p_j}(U) - v_{p_j}(V) is 0 and Lambda = 0
+  identically; Matveev Thm 2.2 requires Lambda != 0 (b_n != 0).  The theorem
+  therefore cannot apply to the d = 0 curve.  The nonzero forms live on the
+  difference equations C(x,2) = C(y,3) + d (d != 0); their explicit Matveev
+  constants were computed end to end (see the note) and give y-bounds with
+  log10 y max 2.9e10 (d=-1), 9.5e17 (d=+1), 3.4e27 (d=+3) — effective,
+  per-pair, and unusably large: the effective-vs-usable gap made concrete.
+  For d = 0 the honest effective route is David's elliptic logarithms
+  (Stroeker-de Weger 1999 Thm B23, held primary), which completely solves
+  the curve; that route is per-pair and not uniform in k, so the
+  effective-methods-wall stands unchanged.
 precedent:
   https://www.mathnet.ru/eng/im190 (Matveev 2000, Thm 2.3 for K=Q, held)
   https://www.ams.org/journals/mcom/1999-68-227/ (Stroeker–de Weger 1999, held:

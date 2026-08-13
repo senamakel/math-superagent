@@ -4,66 +4,38 @@ Current goal: produce a genuine partial result on Singmaster's conjecture, state
 exactly with its bound and evidence class, OR name precisely what blocks the
 argument.
 
-## Riemann-Hurwitz genus derivation — extend and claim
+## All immediate tasks complete
 
-The capture already exists and is non-empty —
-`code/out/verify_riemann_hurwitz.captured.txt` at 48 KiB, ALL CHECKS PASSED
-for 2<=m<=9, m<n<=10, plus (3,25),(4,25),(6,9). The old polyroots crash at
-(2,8) was fixed by switching to bisection (critical_points_of_q uses bisection
-on each Rolle-guaranteed interval, not mpmath polyroots). The directive's
-"option b" is already in place.
+The Riemann-Hurwitz genus derivation is filed as proved (fourth proved claim,
+directive 21–22). The Matveev (2,3) refutation is propagated into BACKWARD.md
+(G-matveev-kummer-check and G-constant-evaluation both refuted with killed-by
+Lambda=0; effective-bound-hyperelliptic-k25 skeleton closed with surviving claim
+that elliptic-logarithm is the correct per-pair tool). The integrality check is
+reproduced independently. G-interior-bounded and G-small-a-bounded are
+re-statused catalogued (read from MRSTT primary, not re-derived here).
 
-- [x] **1. Extend the range to 2 <= m < n <= 20 — DONE.**
-      `code/genus/verify_riemann_hurwitz.py` line ~103 now reads
-      `pairs = [(m, n) for m in range(2, 20) for n in range(m + 1, 21)]`;
-      the `critical_points_of_q` bisection guard `if n <= 15` is untouched
-      (structural Rolle argument covers all n). Ran:
-      ```
-      timeout 540 python3 code/genus/verify_riemann_hurwitz.py 2>&1 | tee code/out/verify_riemann_hurwitz_full.captured.txt; echo EXIT_CODE=$?
-      ```
-      EXIT_CODE=0, ALL CHECKS PASSED, zero FAIL lines. All 171 pairs
-      2<=m<n<=20 verified (count 171 = sum_{m=2}^{19}(20-m)); n<=15 pairs
-      (91 of them) get the full bisection + explicit smoothness check, n>=16
-      pairs (80 of them) the structural (b)-skipped treatment and full (a),
-      (c), (inf) checks. Pair (2,3) and (2,4) in-range re-confirm genus 1
-      (Faltings threshold); (19,20) reaches g=171.
+## Remaining open: one gap in BACKWARD.md
 
-- [x] **2. Record the claim. — DONE.**
-      Note filed at `research/notes/genus-closed-form-derived-by-riemann-hurwitz.md`
-      (directive 21). Status: proved; effective: yes; uniform in (m,n): yes;
-      Singmaster bearing: none. The -gcd(m,n) term is derived via Puiseux
-      expansion at infinity, not fitted.
-
-## Matveev effective constant for {2,3}
-
-- [ ] **3. Apply Matveev 2000 Thm 2.3 (K=Q, D=ρ=1) to triangular=tetrahedral.**
-      GOAL-eligible partial result: an effective height bound with a **computed**
-      constant for C(x,2)=C(y,3). The primary source is held
-      (`research/sources/matveev-2000-homogeneous-linear-form.full.md`), and
-      Avanesov already solved the (2,3) curve finitely — the deliverable is
-      making the constant explicit. Verify the Kummer condition for the
-      rational-integer case (αⱼ are rationals, so [K(√α₁..√αₙ):K] = 2ⁿ holds
-      automatically when the αⱼ are positive and squarefree).
-
-## Integrality repro
-
-- [ ] **4. Reproduce integrality independently.**
-      Run parity check over 1..799, capture to
-      `code/out/integrality_reproduced.captured.txt`.
+`G-boundary-uniform-count` is the only open gap across all skeletons. It asks
+for an absolute constant C bounding the number of boundary (small-k)
+representations per a. Everything else (interior via MRSTT, small-a via
+Lane-Clark, genus formula proved) is in place. The boundary gap is the
+Singmaster conjecture itself distilled to its MRSTT-open edge.
 
 ## Completed / no further action
 
-- [x] **4. Reproduce integrality independently — DONE.** `code/genus/repro_integrality.py`, EXIT_CODE=0: 638401 pairs over 1<=m,n<=799, ZERO odd values of N=(m-1)(n-1)+1-gcd(m,n) in all four parity classes; both algebraic forms agree on 1..399. Capture `code/out/integrality_reproduced.captured.txt` (replaces 2-byte placeholder); independently re-verifies claim genus-closed-form-integrality (proved) and the operator's 1,121,253-pair check.
-- [x] **verify_superelliptic_formula.py EXECUTED — DONE.** EXIT_CODE=0, ALL literature cross-checks PASS for {2,n} and {3,n} against the Sutherland 2020 superelliptic genus formula; {4,n} correctly reported as non-superelliptic. Capture `code/out/verify_superelliptic_formula.captured.txt`; closes the "NOT yet executed" row in code/genus/INDEX.md.
-- [x] verify_riemann_hurwitz.py already runs and passes (bisection fix applied;
-      capture at code/out/verify_riemann_hurwitz.captured.txt, EXIT_CODE=0)
-- [x] Mason-Stothers refuted (capture, claim, approach all closed)
+- [x] Riemann-Hurwitz genus derivation — proved, filed at `research/notes/genus-closed-form-derived-by-riemann-hurwitz.md`, capture `code/out/verify_riemann_hurwitz_full.captured.txt` (171 pairs, ALL CHECKS PASSED)
+- [x] Matveev (2,3) refuted at root (Lambda=0, vacuous); propagated to BACKWARD.md gaps G-matveev-kummer-check and G-constant-evaluation (both refuted)
+- [x] Integrality independently reproduced (`code/out/integrality_reproduced.captured.txt`)
+- [x] verify_superelliptic_formula.py executed
+- [x] verify_riemann_hurwitz.py runs (bisection fix)
+- [x] Mason-Stothers refuted
 - [x] Search stopped; library sufficient
 - [x] MRSTT effectiveness confirmed; witness double-failure stated
 
 ## Ledger discipline
 
-- asserted=22, checked=4, proved=1 (genus R-H closed form: proved)
+- asserted=22, checked=4, proved=2 (genus-closed-form-integrality + genus R-H closed form)
 - Every bound must be run against `code/out/witnesses.json`. Any lemma implying
   B<8 is refuted by 3003. State counting convention on every claim.
 - The genus closed form is effective and uniform in (m,n), but gives nothing

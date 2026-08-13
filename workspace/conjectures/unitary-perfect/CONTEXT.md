@@ -205,6 +205,15 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   ord 28). Current `code/heven_sieve.py` adds a complement sweep over orders
   `d ≤ 2400, v2(d) ≥ 2, d ∤ 2400`; the (29,14) class is recovered (m=14 in
   the 10^4 killed list).
+- **Sequence-level structure hunting on H_even is exhausted (negative,
+  `code/out/pattern_extract.captured.txt`).** `K_SEQ = m/2 =
+  {1,3,5,9,13,15,23,31,41,61}` and `M_SEQ = {2,6,10,18,26,30,46,62,82,122}`
+  match **no OEIS entry**; no constant-coefficient recurrence (the order-5 fit
+  is a spurious artifact of 10 points), no low-degree polynomial, no stable
+  differences, no closed-form structure. The 264 prime candidates
+  `1213 ≤ p ≤ 24989` are residue-mixed mod 4 (117 of 264 ≡ 1). Membership and
+  candidates are determined by the factorization of `2^{2p}+1`; do not re-run
+  sequence mining on the 10 verified terms.
 - **Approach ledger moved: `biquadratic-character-divisors` is REFUTED
   (absorbed); `second-moment-character-mod16` is ADOPTED.** The biquadratic
   route's deliverable (existence of one head `r ≡ 1 mod 16`, the (H1) form
