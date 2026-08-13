@@ -1,22 +1,19 @@
 # Index — code/pattern
 
-What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+What each file in this folder is for. Keep it current: describe a file when you
+create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
-| `analyze_genuine.py` | _(undescribed)_ |
-| `blocks_deep.py` | Exact sieve-to-20M row generator for the primes to depth 1000 (O(D*W) time, O(W) memory), independent of the witness generator; saves blocks_depth1000.json with b, s, intruder and summary stats. Oracle-agrees on k=1..40; refuses to extend past a mismatch. Its captured summary is out/blocks_deep.captured.txt. |
-| `boundary_check.py` | _(undescribed)_ |
-| `dump_sequences.py` | _(undescribed)_ |
-| `erosion_dynamics.py` | _(undescribed)_ |
-| `extract_genuine.py` | _(undescribed)_ |
-| `extract_witness.py` | Prints b(1..40), s(1..40), b(k+1)-b(k) from witnesses.json; the b(k+1)-b(k) diffs are the consumption (-1) vs regeneration (>=0) measure. Verified: diffs match blocks_depth1000.json exactly. |
-| `fresh_window.py` | _(undescribed)_ |
-| `intruder_runs.py` | _(undescribed)_ |
-| `pinning_check.py` | _(undescribed)_ |
-| `regen_from_json.py` | Re-derives regeneration/erosion/intruder summary from blocks_depth1000.json without rerunning the 20M sieve; lists every regeneration onset (k, b_k, b_{k+1}, diff, c_k) and erosion runs. Verified to reproduce blocks_deep.py's summary from the on-disk JSON, and to agree with the c>=6 erosion theorem exactly on all 999 transitions. |
-| `regeneration_analysis.py` | _(undescribed)_ |
-| `regeneration_detail.py` | _(undescribed)_ |
+| `blocks_deep.py` | Exact sieve-to-20M row generator for the primes to depth 1000 (O(D×W) time, O(W) memory), independent of the witness generator; saves blocks_depth1000.json with b, s, intruder and summary stats. Oracle-agrees on k=1..40; refuses to extend past a mismatch. Its captured summary is out/blocks_deep.captured.txt. |
+| `erosion_dynamics.py` | Verifies the erosion-track dynamics (x,y) exactly over every erosion row; confirms the regeneration trigger (x==2 && y==4) on every row (101/101 predictions, 60/60 triggers). |
+| `dump_sequences.py` | Dumps the sequence data from blocks_depth1000.json for the sequence tools (b, s, regen events, erosion runs, s runs, s changes). |
+| `extract_witness.py` | Prints b(1..40), s(1..40), b(k+1)-b(k) from witnesses.json; the diffs are the consumption (-1) vs regeneration (>=0) measure. Verified: diffs match blocks_depth1000.json exactly. |
+| `regen_from_json.py` | Re-derives regeneration/erosion/intruder summary from blocks_depth1000.json without rerunning the 20M sieve; lists every regeneration onset (k, b_k, b_{k+1}, diff, c_k) and erosion runs. Verified to reproduce blocks_deep.py's summary from the on-disk JSON. |
+| `regeneration_analysis.py` | Regeneration-event analysis from blocks_depth1000.json: full 60-event table, regen rate by b-bucket, jump/gap histograms, runs test, Q1–Q5 of the regeneration questions. Captured in out/regeneration_analysis.captured.txt. |
+| `regeneration_detail.py` | Follow-up detail for the regeneration note: s at events, gap histogram, big-jump ratios, intruder traces across the three longest genuine erosion runs. Captured in out/regeneration_detail.captured.txt. |
+| `intruder_runs.py` | Intruder-run structure: the 17 maximal y=4 runs of the live regime (all end in regeneration), the erosion-step y-drain table, after-regen intruder counts by jump size. |
+| `regeneration_successors.py` | Verification of successor patterns: every jump-0 stall followed by regeneration; after-regen successor counts; the y-drain staircases to 4; ASCII histograms. |
 | `regeneration_lastfacts.py` | Last facts for the note: every 4-run's last row is a regeneration row; erosion-run start intruders; tall-intruder rows; y monotonicity check; min-b by row window. |
-| `regeneration_successors.py` | _(undescribed)_ |
-)_ |
+| `boundary_check.py` | Boundary lemma verifier (block-protection constant). |
+| `pinning_check.py`, `fresh_window.py`, `analyze_genuine.py`, `extract_genuine.py` | Earlier probes of block pinning, fresh windows, and genuine-sequence extraction; superseded by the regeneration_* set for the current questions. |

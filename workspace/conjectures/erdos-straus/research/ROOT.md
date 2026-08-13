@@ -95,7 +95,17 @@ them (`r=1` first), or a proof one shape cannot cover `r=1`.
 
 - `research/sources/pomerance-erdos-straus.full.md` is misnamed: it is the
   ar5iv HTML of the Elsholtz–Tao paper (1107.1010), not Pomerance's survey.
-  The real Pomerance survey `esconj.pdf` (math.dartmouth.edu/~carlp) was too
-  large to download. Do NOT cite it as Pomerance.
+  Do NOT cite it as Pomerance. (The real Pomerance survey `esconj.pdf` was too
+  large to download; the *other* Pomerance paper — with Weingartner,
+  arXiv:2511.16817, "Exceptions to the Erdős–Straus–Schinzel conjecture" — IS
+  in the library as `pomerance-weingartner-exceptions-ess.full.md`.)
 - `research/sources/salez-erdos-straus-new-modular.full.md` is the abstract
   landing page; the full paper is `salez-seven-modular-equations.full.md`.
+- `research/sources/vaughan-1970.full.md` is the **abstract page only**
+  (paywalled); Vaughan's bound is sourced from Bloom–Elsholtz survey + #242.
+- `research/sources/ionascu-wilson-erdos-straus.full.md` IS Ionascu & Wilson
+  (arXiv:1001.1100) — an earlier note wrongly denied this; Bello et al is a
+  different paper (arXiv:1010.2035, in library).
+- The six-class bibliography discrepancy: Bloom–Elsholtz survey lists
+  {1,49,121,169,289,361} mod 840 (49 non-primitive, 529 omitted — typo);
+  always cite {1,121,169,289,361,529}.
