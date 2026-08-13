@@ -183,9 +183,11 @@ These give concrete sub-progressions of the open classes already covered;
 
 - Brief's n≡3 (mod 4) identity vs computation (settled: brief wrong).
 - Elsholtz–Tao Prop 1.6 asserted "no Type I/II at odd squares" vs
-  verify_library_claims.py Claim 3's noise (detector broken; Prop 1.6 exact
-  statement still unread — treat as asserted-by-source). Schinzel Thm 1 is
-  the sharp, checkable statement of the same obstruction.
+  verify_library_claims.py Claim 3's noise (detector broken — it counts
+  denominators divisible by n among triples found by a bounded search, which
+  hits trivial multiples at small n; never cite Claim 3's output). Prop 1.6
+  itself is now sourced with its proof read (quadratic reciprocity); Schinzel
+  Thm 1 is the sharp, checkable statement of the same obstruction.
 - Naive d=7 criterion vs corrected (mod-7) criterion (settled by 2705 rows).
 - Subgroup-only characterization vs exact divisor-residue criterion (settled:
   56 counterexamples).

@@ -14,8 +14,8 @@ open.** Phase 1's exit test is met (see `research/ROOT.md`: minimal
 counterexample structure, verification bounds, ≥3 restricted classes settled).
 The current frontier is 2026 work (Chase–Hunter–Tao); the run's own open thread
 is `research/threads/regeneration.md`. `research/notes/library-state.md` is the
-authoritative claim ledger and is current; `research/CLAIMS.md` lags it (not
-yet re-derived from library-state).
+authoritative claim ledger; `research/CLAIMS.md` is a generated ledger with a
+mechanically broken Contradictions section (see Contradictions).
 
 ## Established
 
