@@ -1,0 +1,2 @@
+primary Gaussian primes tested: 501
+ALL OK

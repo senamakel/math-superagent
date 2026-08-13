@@ -871,6 +871,18 @@ fn record_verdict(
             tracer.note("solution loop: SOLVED rejected, no program in the workspace");
         }
     }
+    if claimed && evidenced && !progressed {
+        state.lessons.push(
+            "Reported SOLVED while reporting PROGRESS: NO. Solving the problem is progress, so \
+             those cannot both be true: either the attempt established something, in which case \
+             say what and mark progress, or it did not, in which case it did not solve anything. \
+             Re-running a program whose result the run already had is not a solution."
+                .to_string(),
+        );
+        if let Some(tracer) = tracer {
+            tracer.note("solution loop: SOLVED rejected, the reflection also reported no progress");
+        }
+    }
     // A blocked attempt is counted before progress is judged, because
     // reflection on a provider error cannot report progress and would
     // otherwise register as an unproductive attempt — driving the run into
