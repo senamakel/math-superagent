@@ -5,8 +5,11 @@ rebuild from disk: established results with their basis, dead approaches and
 why, computed numbers, durable memory, disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
-Budget 10,000 tokens. Precision over padding: link the file holding any
-detail compressed away.
+Budget 10,000 tokens. Length is a bill the whole run pays on every model call;
+link the file holding any detail compressed away. (Last cycle was a check-edit:
+verified the Directives 24–27 record against the outputs, no rewrite; this
+cycle's changes are the two Contradictions entries and the gap-convention
+correction in the chain.)
 
 ## Run state (Directive 26/27)
 
@@ -149,10 +152,11 @@ errors); claims ledger via `search_claims` worked normally.
   boundary of the Rule-90 interior XOR (edge) fed by the drain law (intruder),
   both driven by the halved-gap bits — so the gap is a function of the
   prime-gap sequence, but whether its boundedness reduces to standard
-  prime-gap theory is unknown. **The 15th giant changed the measurement (max
-  gap 26 → 64 went with b growing 2,179 → 16,252,084); a gap-growth law
-  G(b) ~ c·b^θ with θ > 0 would break the reduction, so the Directive-26
-  classification is what decides whether that is a live risk.**
+  prime-gap theory is unknown. **The 15th giant changed the measurement (the
+  row-span of the drought, 26 → 64, went with b growing 2,179 → 16,252,084);
+  a gap-growth law G(b) ~ c·b^θ with θ > 0 would break the reduction, so the
+  Directive-26 classification is what decides whether that is a live risk.
+  See Contradictions for the 26-vs-64 convention.**
 - **The 1-Lipschitz chain reformulation (from the giant-stretch characterization):** each descent replaces the halved row by its adjacent-difference chain; the block front is the first 2-step (0–2/2–0 adjacency); giants are long ±1-excursions. Prove the halved chains of the primes keep 1-Lipschitz runs at the boundary infinitely often with bounded gaps between long runs — that IS the bounded-gap statement in chain language. Computed mechanism, no proof.
 - **CHT inverse theorem route needs two analytic steps for the primes** (rule out long zero-blocks and long shallow {0,d}-blocks; Cramér-type hypotheses unproved) — or an invariant bypassing the dichotomy.
 - **What remains toward a GOAL.md partial result:** block lemma delivered (re-derived, constant explicit); Lean 4 formalisation delivered (nine theorems, zero sorry, IFF, axioms `[propext, Classical.choice, Quot.sound]`); the natural next deliverable is the Directive-26 classification (GC reduces to a named conjecture) or a proved statement on the regeneration/gap rate. Erosion is settled; regeneration is the whole problem — state which every claim establishes.
