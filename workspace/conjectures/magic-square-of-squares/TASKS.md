@@ -55,50 +55,52 @@
 
 ## BLOCKING — must complete before any new approach
 
-- [ ] **RUN `verify_pell_symbolic.py`** (directive 11, item 1):
+- [ ] **WRITE THE CONDITIONAL RESULT AS A CLAIM** (directive 12, item 1):
+      The run's best structural output: assuming uniform boundedness of ranks
+      of elliptic curves over Q, the existence of a 3×3 magic square of nine
+      distinct squares reduces to a FINITE computation. State the specialisation
+      to E: y² = x(x²−c²) explicitly, hypothesis named (uniform rank boundedness),
+      reduction step cited (Robertson→Garcia-Fritz–Pasten Theorem 1.2). Write
+      the claim block into `code/out/conditional_reduction_claim.md` with all
+      required fields and `status: checked` (the Robertson reduction and the
+      GFP theorem are both established; what is new here is the explicit
+      specialisation). **This claim is the run's deliverable.** Nothing else
+      is worth more right now.
+
+- [ ] **BOUND THE HMS CONSTANT C, OR RECORD THE PRECISE OBSTRUCTION**
+      (directive 12, item 2 + directive 13, item 2):
+      HMS Theorem 1.1 (arXiv:2603.06483, 132KB HTML on disk) says C is
+      "effectively computable." Extract from the full text what C is a
+      function of: David–Philippon constants (quantitative Schneider–Lang),
+      PFR constants (Gowers–Green–Manners–Tao), and the genus-2 curve degree
+      in the Dimitrov–Gao–Habegger construction. Give any explicit bound the
+      paper states or its ingredients imply. If none can be extracted, record
+      that as the precise obstruction with the chain of dependencies and the
+      reason each ingredient's constant is not computed in the source. Write
+      the result to `code/out/hms_constant_bound.md`.
+
+- [ ] **RUN `verify_pell_symbolic.py`** (directive 12, item 3):
       `timeout 540 python3 code/out/verify_pell_symbolic.py 2>&1 | tee code/out/verify_pell_symbolic.captured.txt; echo EXIT_CODE=$?`
       Reconcile its sympy output with the four numeric results already captured.
 
-- [ ] **ANSWER THE GFP-x2P BLOCKING QUESTION** (directives 10 and 11, item 2):
-      Does the Garcia-Fritz–Pasten AP-length bound (Theorem 1.8, C^(r+1))
-      apply to x-coordinates of *doubled* points x(2P) or only to x(P)? The
-      run's files already contain the answer — GFP §1.1 defines an AP as
-      x(P_i) for P_i ∈ E(Q), and 2Q ∈ E(Q) so doubled points are covered —
-      but it is scattered across CONTEXT.md, TASKS.md, the uniformity thread,
-      CLAIMS.md, and the approach file. Consolidate the answer in ONE place
-      the operator can read: write `code/out/gfp_x2p_answer.md` with a claim
-      block stating:
-      - the exact GFP definition of "arithmetic progression on E"
-      - why x(2Q) falls under it (2Q ∈ E(Q))
-      - the resulting bound on the Robertson curve E: y² = x(x²−c²)
-      - the effective-constant gap (HMS makes C computable but >> 3, so
-        C^(r+1) < 3 fails for any plausible rank)
-      - conclusion: approach sound on definitions, blocked by constant size,
-        NOT refuted; the conditional reduction to a finite computation
-        (Theorem 1.2, uniform rank boundedness) is the best structural result.
-      **The claim block MUST carry `answers: exact-reduction-magic-507c`.** That
-      field — not prose saying "RESOLVED" in REQUESTS.md — is the only thing
-      that closes the request in the ledger. The run wrote "RESOLVED" in
-      REQUESTS.md prose five times while no claim block on disk carries the
-      `answers:` field, which is exactly why the operator still sees
-      "Still open" after five consecutive checks. Without that field the
-      request stays open no matter what the prose says.
-      If GFP does NOT apply, declare `uniform-height-bound-elliptic-ap`
-      REFUTED IN ITS CURRENT FORM and state whether restating on the Kummer
-      surface K = E/{±1} recovers it — and file the same claim block with
-      `answers: exact-reduction-magic-507c`. Either answer is a genuine
-      partial result. **Nothing else is worth more right now.**
+- [ ] **OPEN THE NEXT REQUEST IN REQUESTS.md** (directive 12, item 3):
+      The only request (`exact-reduction-magic-507c`) is RESOLVED. The run is
+      running without a stated gap. Open request `hms-constant-bound`:
+      "What is the smallest explicit upper bound for C in HMS Theorem 1.1
+      that can be extracted from the paper's ingredients (David–Philippon,
+      PFR, the genus-2 construction), or from subsequent work?" If C cannot
+      be extracted, state what is missing from each ingredient.
 
-- [ ] **PARK THE THREE NEW APPROACHES** opened in violation of directive 10
-      ("do not open a fifth approach before answering the blocking question"):
-      `freys-curve-four-q-isogenies`, `integral-brauer-manin-nine-square`,
-      `richardson-orbits-weyl-group`. Change their status from `proposed` to
-      `parked-behind-blocking-question`. Do not delete them; they may become
-      relevant after the blocking question is answered, but no work on them
-      until then. The run went from 12 to 15 approaches with proved stuck at
-      16 while the operator watched; this stops the proliferation.
+- [ ] **CHECK `magic-variety-is-surface-no-lines`** (directive 13, item 1):
+      Compute directly rather than asserting on a source's word: X in P⁸ cut
+      by 7 homogeneous line-sum equations, verify dimension = 2 (a surface)
+      and the absence of lines. Write the program, run under timeout 540 with
+      tee to `code/out/magic_variety_check.captured.txt`. Record the result
+      as a claim block updating the status from `asserted` to `checked`.
+      This is the one asserted claim directive 13 picked to make checked —
+      it is a concrete computation the run can do.
 
-## After the blocking question is answered
+## After the blocking section is cleared
 
 - [ ] scholar: claim-block HMS 2026 from the full HTML text already on disk
       (`research/sources/harrison-mudgal-schmidt-sum-product-bremner-2026.html.full.md`,

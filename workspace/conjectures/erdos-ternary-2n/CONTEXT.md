@@ -27,11 +27,13 @@ compressed away.
   only on `n mod 2·3^(k-1)`, and the digit-avoidance sieve on residue classes is
   `A_k = { n mod 2·3^(k-1) : low k ternary digits of 2^n mod 3^k lie in {0,1} }`.
   `|S_k| = 2^k` out of `3^k`; `A_{k+1}` refines `A_k`.
-- **Sieve count, computed and checked for k ≤ 22** (`code/out/sieve_Ak.captured.txt`,
+- **Sieve count, computed and checked for k ≤ 26** (`code/out/sieve_Ak.captured.txt`,
   `code/out/sieve_cannot_close.md`): `|A_k| = 2^(k-1)` exactly at every k tested.
   Computed by lifting rather than re-scanning — each surviving class mod
   `2·3^(k-2)` lifts to three candidates mod `2·3^(k-1)`, and exactly two survive.
-  The witnesses `n = 0, 2, 8` remain in `A_k` at every level.
+  The witnesses `n = 0, 2, 8` remain in `A_k` at every level. **k=26 used 333s and
+  2.1 GiB; further k by materialising A_k as a set will OOM-kill the container.
+  Directive: no more sieving past k=26.**
 - **Negative result (checked for k ≤ 22, not yet proved unconditionally)**: because
   `|A_k| = 2^(k-1)` grows without bound, the modular sieve never empties. No
   obstruction modulo any power of 3 can prove the conjecture at any finite 3-adic
