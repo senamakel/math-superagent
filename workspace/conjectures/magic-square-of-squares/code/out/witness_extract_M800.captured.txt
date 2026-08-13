@@ -34,3 +34,10 @@
 [M=800] chunk 39936-41184: pairs 50618256 minus 10 plus 0 both 0 | cumulative pairs 848040336 minus 77 plus 37 both 0 | 504s
 [M=800] chunk 41184-42432: pairs 52175760 minus 5 plus 1 both 0 | cumulative pairs 900216096 minus 82 plus 38 both 0 | 504s
 [M=800] chunk 42432-43680: pairs 53733264 minus 5 plus 4 both 0 | cumulative pairs 953949360 minus 87 plus 42 both 0 | 518s
+[M=800] chunk 43680-44928: pairs 55290768 minus 18 plus 4 both 0 | cumulative pairs 1009240128 minus 105 plus 46 both 0 | 557s
+[M=800] BUDGET exceeded; reached=44928/129870
+[FAIL] outer index covered: got 44928, expected 129870
+[FAIL] pairs checked: got 1009240128, expected 2509516913
+[FAIL] minus total: got 105, expected 718
+[FAIL] plus total: got 46, expected 150
+[FAIL] totals disagree with the recorded complete census (side_census_M800_complete.captured.txt); witness file NOT written (stale checkpoint data would corrupt it). Delete the checkpoint and re-run for a cold scan.
