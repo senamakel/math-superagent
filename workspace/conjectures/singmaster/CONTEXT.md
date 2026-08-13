@@ -100,6 +100,9 @@ notes; agents should not rebuild them from disk.
   infinite family does not threaten a constant per-a bound. Witness-set
   boundary counts: 2 for each of 120, 210, 1540, 7140, 11628, 24310, and
   3 for 3003 (max = 3 left-half reps, matching the C >= 3 lower bound).
+
+- **MRSTT interior, the current record. `sourced`** (arXiv:2106.03335,
+  QJM 2022, Thm 1.3). Fixed 0<ε<1, t large: at most 2 solutions in
   `exp(log^{2/3+ε} n) ≤ m ≤ n/2`, at most 4 in the full interior; interior
   multiplicity is 0,1,2,4 — never 3 (Rem 1.11). The open boundary is
   exactly `2 ≤ m ≤ (log t)/(log log t)^{3/2−ε}`. Threshold is **effective**
