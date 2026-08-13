@@ -29,7 +29,5 @@ holds-here: n/a -- no theorem taken from it
 status: catalogued
 bearing: confirms the REQUESTS row-1 target exists; primary text still missing
 anchor: research/sources/frei-1978-unitary-perfect-mardi-bibliographic.full.md
-contradicts: frei-goto-acquisition-status note claims the MaRDI page was a
-  tombstone for deleted files; the current held page is live and bibliographic
 answers: whether-mardi-frei1978-is-useful
 ```

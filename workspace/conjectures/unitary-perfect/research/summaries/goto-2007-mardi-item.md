@@ -52,7 +52,5 @@ bearing: bibliographic + confirms the earlier misattribution correction; the
   run's lower bounds a >= 11 and omega(odd) >= 9 are the stronger instrument
   for any sixth UPN
 anchor: research/sources/goto-2007-mardi-item.full.md
-contradicts: goto-2007-k-times-2-k-wording (recorded misattribution in
-  library-acquisition-cycle-1.md; resolved in this note)
 answers: goto2007-upn-bound-exact-form
 ```

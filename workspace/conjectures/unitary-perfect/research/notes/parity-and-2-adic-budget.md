@@ -25,6 +25,14 @@ So there is no odd unitary perfect number, and every unitary perfect number is
 
 ## The 2-adic budget identity
 
+**Provenance.** Subbarao–Warren (1966) already state this identity as Lemma 1,
+remark (3.6): `a + b + Σ C_i = m + 1` with each `C_i = v2(1+p)` for the
+`p ≡ 3 (mod 4)` primes with odd exponent, which is exactly the identity below
+in their `n1·n2·n3` notation (`research/summaries/subbarao-warren-1966-cambridge-pdf.md`,
+claim `sw1966-budget-identity-36`). This run's version is an independent
+complete proof with a witness check against all five numbers — the result is
+not new, and must be reported as a re-derivation with the 1966 attribution.
+
 Write `n = 2^a · Π_i p_i^{e_i}` with the `p_i` odd and distinct, `a ≥ 1`. Then
 
 ```
