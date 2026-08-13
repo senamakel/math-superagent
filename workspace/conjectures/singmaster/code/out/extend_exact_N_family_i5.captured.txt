@@ -1,0 +1,5 @@
+i=5  n=33551  k=12814  a digits=9688  kmax=floor(log2 a)=32183
+family identity C(n+1,k+1)=C(n,k+2) holds: True
+first column that could falsify: k=2 (C(2k,k)<=a); known-pair columns are 12815 and 12816
+columns to scan: 32182  (k=2..32183, minus none)
+workers=28
