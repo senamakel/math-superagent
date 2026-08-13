@@ -49,8 +49,23 @@ instead reduces the problem to a finite — possibly enormous but finite —
 computation whose size depends on the rank bound R, not on an arbitrary
 search parameter.
 
-status: adopted
+status: adopted-but-ineffective-as-stated
+The crux is RESOLVED in favour of the approach: the MSS AP is genuinely an AP of
+x(P) for points P ∈ E(Q) (the doubled points 2P₀, 2P₁, 2P₂ are themselves points of
+E(Q)), so Garcia-Fritz–Pastén Theorem 1.8 (AP length ≤ C^(r+1)) applies verbatim;
+it is NOT a doubled-point AP outside the theorem's scope.  The blocker is no longer
+non-degeneracy but EFFECTIVENESS: C is an absolute constant that is not explicit in
+the paper, and the inequality C^(rankEe+1) < 3 would be needed for non-existence.
+The Bremner-witness curve (rank 2) already admits an AP of length 3 in E(Q) whose
+x-coords are a−b,a,a+b (realising 2 of the 3 doubled points), so any C with C^3 ≥ 3
+is compatible with reality — as is any plausible effective C.  Without an explicit
+C (or a rank bound forcing C^(r+1) < 3), the bound C^(r+1) cannot be checked
+against 3, and the approach proves a theorem that may be true but is not
+computationally actionable.  Crux-resolution and witness ranks:
+research/summaries/bremner-on-squares-of-squares-1999.md claim `robertson-elliptic-reduction`.
 killed-by: —
+
+resolution: crux-resolved; effective-C gap remains
 speculation-vs-established: ESTABLISHED (literature): Dimitrov–Gao–Habegger
   (2021) and Kühne (2021) proved the uniform Mordell-Lang conjecture;
   Garcia-Fritz & Pastén (2026, arXiv:2604.04850) apply it to APs of
@@ -65,36 +80,39 @@ speculation-vs-established: ESTABLISHED (literature): Dimitrov–Gao–Habegger
   though the family is thin — quadratic twist by squares — so it may reduce
   to bounding the rank of y² = x³ − x over Q-extensions).
 first-step: |
-  Three concrete moves, in order:
+  Step 2 below is now DONE (crux resolved): the non-degeneracy question is settled
+  in the approach's favour by the reduction itself — the MSS AP points 2P₀, 2P₁, 2P₂
+  are points of E(Q), so they fall inside the scope of Theorem 1.8 (APs of x(P),
+  P ∈ E(Q)), no separate doubled-point subvariety analysis is needed.  Remaining
+  concrete moves, in order:
 
-  1. **Extract the exact theorem statement from Garcia-Fritz & Pastén.**
-     Read Theorem 1.1 (or whichever gives the uniform bound) in
-     research/sources/garcia-fritz-pasten-bremner-uniformity-2026.full.md.
-     Write down: the exact family of elliptic curves covered, the
-     non-degeneracy condition, the explicit bound on AP length as a function
-     of the rank, and every hypothesis (field, integrality, reduction type).
-     This is not interpretation — it is transcription of the theorem as
-     published.
+  1. **Compute explicit C for the family** E_c: y² = x(x²−c²), c a square, in the
+     sense of the conditional uniform-rank theorem.  The paper gives the *structure*
+     (AP length ≤ C^(r+1)) but C is an absolute constant that is not made explicit
+     in garcia-fritz-pasten-bremner-uniformity-2026.full.md.  Determine whether
+     C(R, L) — or the underlying Dimitrov–Gao–Habegger constant c(2,1) for genus-2
+     curves — has been bounded by anyone (the paper cites [25] Yu–Yuan–Zhou,
+     "Quantitativity on the number of rational points", arXiv:2602.01820, for an
+     explicit height-uniform bound; check whether that bound is effective enough to
+     pin C below 3^(1/(r+1))).
 
-  2. **Check non-degeneracy for the MSS doubled-point configuration.**
-     The MSS needs x(2Q₁), x(2Q₂), x(2Q₃) in AP, not x(P₁), x(P₂), x(P₃).
-     Determine whether the subvariety of E³ × E³ defined by the
-     doubling-plus-AP condition contains a translate of G_m or E. This is an
-     explicit computation in the function field of E: write the
-     doubling-formula x(2Q) = (x(Q)² + c²)²/(4x(Q)(x(Q)² − c²)) on
-     E: y² = x(x²−c²), impose x(2Q₁) + x(2Q₃) = 2x(2Q₂), and check whether
-     the resulting variety is a cylinder over a positive-dimensional subgroup.
-     Use symbolic_math (sympy or Singular) to compute the dimension and
-     irreducible components. If degenerate (contains a translate of G_m or E),
-     the uniform bound does not apply and the approach closes with that as
-     the result.
+  2. **Bound the rank of** E_e: y² = x(x²−e⁴) (equivalently E_c with c = e²) **for
+     e admitting many sum-of-two-squares representations.**  The Bremner-witness
+     curve (c = 138600, not a square!) has rank 2; the rank of E_c for c = e²
+     (c square) is likely smaller but unboundedness is unproved.  A uniform bound
+     R with C^(R+1) < 3 would give non-existence; but the Bremner witness already
+     shows rank ≥ 2 curves with AP-3 happen, so R must be small AND C small —
+     quantify both before committing further effort here.
 
-  3. **If non-degenerate, compute the explicit constant.**
-     With the Garcia-Fritz–Pastén formula for the height bound H(R, L), plug
-     in L = 3 and determine H(R, 3) for R = 0, 1, 2. Even if the constant is
-     astronomical, the result is a theorem: "Conditional on rk E_c(Q) ≤ R for
-     all square c, any 3×3 MSS has all entries bounded by H(R, 3)." This is
-     the partial result the run is tasked to produce.
+  3. **If C and R are in hand**, plug L = 3: "Conditional on rk E_c(Q) ≤ R, any 3×3
+     MSS has |entries| ≤ H(R, 3)", a finite computation.  If C cannot be made
+     explicit, record the approach as a reduction (MSS ⇒ AP-3 on E_c of bounded
+     height, effective bound unavailable) rather than a contradiction — which is
+     the honest status.
+
+  Guard: the uniform-rank-boundedness conjecture (ranks of all elliptic curves over
+  Q uniformly bounded) is a major open problem; the conditional result is real but
+  conditional.  The run must not present an effective-C gap as closed.
 
 precedent:
   - V. Dimitrov, Z. Gao, P. Habegger, "Uniformity in Mordell-Lang for

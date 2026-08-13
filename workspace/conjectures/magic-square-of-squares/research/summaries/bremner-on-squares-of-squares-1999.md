@@ -89,27 +89,45 @@ anchor: research/summaries/bremner-on-squares-of-squares-1999.md
 ```claim
 id: robertson-elliptic-reduction
 statement: A 3×3 magic square of squares exists iff there exist P₀, P₁, P₂ ∈ E(Q) on
-  E: y² = x(x² − c²) with x-coordinates in 2E(Q) —
-    a−b = x₂P₀,  a = x₂P₁,  a+b = x₂P₂ —
-  satisfying the arithmetic-progression condition
-    x₂P₂ − x₂P₁ = x₂P₁ − x₂P₀.
-  A point (X,Y) ∈ E(Q) lies in 2E(Q) iff {X, X+c, X−c} are all rational squares.
-  E has rational torsion = {2-torsion} only; replacing P_i by P_i+T (T torsion)
-  leaves the square unchanged.  The corresponding grid (entries as rational squares)
-  is eq. (4) of Bremner 1999 p. 291.
-hypotheses: c ∈ Q (c = e² for integer MSS), distinct entries, centre a = x₂P₁
+  E: y² = x(x² − c²) with x-coordinates of the *doubled* points 2P₀, 2P₁, 2P₂
+  in arithmetic progression, i.e. with
+    a−b = x(2P₀),  a = x(2P₁),  a+b = x(2P₂)
+  and
+    x(2P₂) − x(2P₁) = x(2P₁) − x(2P₀)  (= b).
+  Use: a point (X, Y) ∈ E(Q) lies in 2E(Q) (i.e. X = x(2Q) for some Q ∈ E(Q))
+  iff {X, X+c, X−c} are all rational squares.  E has rational torsion = {2-torsion}
+  only; replacing Pᵢ by Pᵢ+T (T torsion) leaves the square unchanged.  The
+  corresponding grid (entries as rational squares) is eq. (4) of Bremner 1999 p. 291,
+  with centre a = x(2P₁) = c·(λ₂P₁-side) and magic constant a.
+hypotheses: c ∈ Q (c = e² for integer MSS, with c the common difference of the
+  anti-diagonal AP {a−c, a, a+c}); distinct entries; centre a = x(2P₁)
 holds-here: yes
 status: proved
 bearing: the run's single-curve reformulation; the standard starting point for any
-  descent or AP-length argument; the Garcia-Fritz–Pasten bound on AP length in E(Q)
-  applies to exactly these three points once the reduction is fully stated
+  descent or AP-length argument.  The Garcia-Fritz–Pastén (2026) Theorem 1.8 bound
+  — every AP of x-coordinates of points in E(Q) has length ≤ C^(r+1) — APPLIES
+  DIRECTLY to the MSS AP, because the three points 2P₀, 2P₁, 2P₂ ARE points of E(Q)
+  (Pᵢ ∈ E(Q) ⇒ 2Pᵢ ∈ E(Q)) and their x-coordinates a−b, a, a+b are in AP.  So the
+  crux is settled: the MSS AP is an AP of x(P) for points P = 2Pᵢ ∈ E(Q); it is NOT
+  merely an AP of doubled-point x-coordinates disjoint from the theorem's scope.
+  The theorem therefore bounds the MSS AP by C^(rankEe+1).  It yields a
+  non-existence contradiction ONLY IF C^(rankEe+1) < 3, i.e. rankEe(Q) + 1 < log_C 3;
+  since C is not explicit (and invariably large), and since the Bremner-witness
+  curve (rank 2) already sits inside the bound C^3 ≥ 3, no contradiction follows —
+  the uniform-height approach is NOT refuted on the crux, but it is ineffective as a
+  proof of non-existence without an explicit C (see uniform-height-bound-elliptic-ap).
 anchor: research/sources/bremner-on-squares-of-squares-1999.full.md pp. 290–291
 answers: exact-reduction-magic-507c
 verified-by: statement traced through Bremner 1999 eqs. (2)–(4) and the surrounding
-  prose; the derivation is peer-reviewed (Acta Arithmetica).  Re-verification task
-  in TASKS.md: scholar to confirm the three-points-plus-AP wording against the
-  paper and check that the Garcia-Fritz–Pasten theorem's non-degeneracy hypotheses
-  are satisfied for x-coordinates of doubled points (not arbitrary points).
+  prose; the derivation is peer-reviewed (Acta Arithmetica).  Crux resolution:
+  Bremner 1999 p. 290 states a−b, a, a+b are the x-coordinates of "three points in
+  2E(Q)" — i.e. of the doubled points 2P₀, 2P₁, 2P₂ — and these are themselves
+  points of E(Q), so Garcia-Fritz–Pastén Theorem 1.8 (APs of x(P), P ∈ E(Q))
+  applies verbatim.  Independently computed on Bremner's witness: main diagonal
+  {373², 425², 565²}, anti-diagonal difference c = 138600, E: y²=x³−c²x has rank 2,
+  torsion order 4; x(373²)=139129 and x(425²)=180625 are in 2E(Q) (both {X,X±c}
+  all squares); x(565²)=319225 is NOT (X−c=425² square but X+c=457825 not) — exactly
+  2 of the 3 doubled points, matching a 7-square near-miss not an MSS.
 ```
 
 ```claim

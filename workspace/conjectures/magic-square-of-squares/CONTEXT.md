@@ -162,6 +162,17 @@ arithmetic progression) on `E: y² = x(x²−c²)`; a point is in `2E(Q)` iff
 `X, X±c` are all rational squares. Bremner searched points of `E(Q)` in AP and
 found essentially none; very restrictive when `rank E(Q)` is small.
 
+**Existence for n×n, n ≥ 4 — sourced but does not touch 3×3** (Rome–Yamagishi
+2024, arXiv:2406.09364, `research/summaries/rome-yamagishi-magic-squares-of-powers-2024.md`):
+Theorem 1.2 proves an n×n magic square of squares exists for every n ≥ 4 (circle
+method), settling Várilly-Alvarado's conjecture; Theorem 1.3 extends to d-th
+powers. The n = 3 case is **excluded** — the circle method's column-independence
+threshold is not met there. So the obstruction is genuinely 3×3-specific;
+higher-n existence is settled and gives no structural handle on n = 3.
+A supporting hint (not a proof): Bremner/BTVA22 note the 3×3 surface cut by 6
+quadrics in P⁸ contains only finitely many genus-0/1 curves, and (per Lang) only
+finitely many rational points outside them.
+
 **Magic squares of squares exist over extension fields — sourced, and this is the
 hinge.** Bremner 1999 constructs genuine MSS over algebraic number fields: a
 family over `Q(i,√(u³−u))`, an explicit example over `Q(√3,√133)` (degree 4),
@@ -223,6 +234,14 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 - **Descent needs the exact variety first** — finish the elliptic/K3 reduction
   before Fermat-style descent.
 - **A search is not a proof**; extending a bound only to falsify a structural claim.
+- **Substituting a solved root back into the equation it solved** — the Ferreira
+  (arXiv:1506.06621) failure mode. The paper solves (46) for z, keeps the root
+  z2, substitutes z2 back into (46), and reads the result as a constraint on
+  m,n,w. Since z2 is by construction a root of (46), the substitution is
+  identically 0. This manufactures a vacuous identity that looks like a
+  constraint. Audit this run's own p-adic, Φ-identity, and descent code for
+  the same anti-pattern before trusting any elimination step. Claim
+  `ferreira-1506-06621-refuted`, status: checked, in CLAIMS.md.
 
 ## Numbers
 

@@ -18,6 +18,19 @@
       (47). Verified by sympy (`code/out/check_ferreira_proof.py`) and by
       construction with witness m=5,n=3,w=1. Claim `ferreira-15060621-proof-invalid`
       in CLAIMS.md, status: checked. The paper establishes nothing.
+- [ ] **DIRECTIVE 7.1 — Run check_ferreira_proof.py and reconcile with hand
+      algebra.** The operator's refutation is at `code/out/ferreira_proof_refuted.md`
+      (status checked), but the script `code/out/check_ferreira_proof.py` was never
+      executed. Run under `timeout 540 python3 code/out/check_ferreira_proof.py 2>&1 |
+      tee code/out/check_ferreira_proof.captured.txt; echo EXIT_CODE=$?`. If sympy
+      disagrees with the operator, sympy wins — report it. The claim blocks
+      `ferreira-1506-06621-refuted` and `ferreira-15060621-proof-invalid` already
+      exist in CLAIMS.md (status: checked), so directive 7.2 is satisfied.
+- [ ] **DIRECTIVE 7.3 — Audit for the Ferreira failure mode in the run's own
+      code.** The error is substituting a solved root back into the equation it
+      solved, manufacturing a vacuous identity that reads like a constraint.
+      Check `phi_canonical_check.py`, `phi_identity_verify.py`, and any descent
+      or p-adic code for this anti-pattern. Add to CONTEXT.md Ruled Out:
 - [x] **STEP 1: Verify the parallel library.** `timeout 120 python3 code/lib/parallel.py`
       printed `self-check PASS: 2000 values, 26 workers`. Done.
 - [x] **STEP 2: Parallelise `phi_padic_closure_all.py`.** Converted to
