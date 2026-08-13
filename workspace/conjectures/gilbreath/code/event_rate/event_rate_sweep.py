@@ -387,8 +387,10 @@ def report(stats_list, batches, title):
             rl = ev / elig if elig else None
             rr = ev / live if live else None
             fb = min((s["first_b0"] for s in b0s), default=None)
+            rls = "-".rjust(8) if rl is None else f"{rl:8.4f}"
+            rrs = "-".rjust(8) if rr is None else f"{rr:8.4f}"
             print(f"{batch:<6} {fam:<18} {len(sel):>3} {ev:>6} {elig:>8} "
-                  f"{rl:>8.4f} {rr:>8.4f} {mn:>6} {len(b0s):>3} "
+                  f"{rls} {rrs} {mn:>6} {len(b0s):>3} "
                   f"{str(fb):>8} {sf:>5} {rf:>5}")
             rows_out.append((batch, fam, len(sel), ev, elig, live, mn,
                              len(b0s), fb, sf, rf))
@@ -406,6 +408,10 @@ def main():
     stats_list = parallel_map(run_sequence, tasks, label="event-rate",
                               space="families x seeds", count=n_workers)
     print(f"[event-rate] sweep finished in {time.time()-t0:.1f}s", flush=True)
+    # Persist stats before report() in case formatting crashes
+    with open("code/out/event_rate_stats.jsonl", "w") as f:
+        for s in stats_list:
+            f.write(json.dumps(s) + "\n")
     rows = report(stats_list, batches, "EVENT-RATE SWEEP (2-then-odds class)")
     all_event = sum(r[3] for r in rows)
     all_elig = sum(r[4] for r in rows)

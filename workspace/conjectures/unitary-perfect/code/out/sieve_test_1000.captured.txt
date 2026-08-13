@@ -1,0 +1,9 @@
+SIEVE BOUND=1000 workers=4 wall=0.0s
+primes enumerated:          167
+passed pow(2,2400,r)==1:    20
+distinct ord rows:          20
+witness pairs (r,m):        784
+distinct witnessed m:       600
+distinct m killed (non-Higgs witness r <= 1000): 0
+killed m list: []
+tables: /workspace/code/out/ord_sieve_table.tsv, /workspace/code/out/witnesses_1200.tsv
