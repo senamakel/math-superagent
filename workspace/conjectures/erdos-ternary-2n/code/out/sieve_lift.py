@@ -22,7 +22,7 @@ def lift_up_to(kmax):
         mod_new = 2 * (3 ** (k - 1))
         nxt = []
         for n in members:
-            for cand in (n, n + mod_old):
+            for cand in (n, n + mod_old, n + 2 * mod_old):
                 if good_low(k, pow(2, cand, 3 ** k)):
                     nxt.append(cand)
         members = nxt
