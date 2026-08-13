@@ -6,6 +6,15 @@
 sympy). Primes below 2e6, diagonals `delta_k(q_n) = A_k[n-k]` through columns n = 20..2499,
 2480 columns tested. Capture: `code/out/lemma54_iff_check.captured.txt`.
 
+**In-container reproduction (this run, 2026):** the script was re-run in-container
+(timeout 540, EXIT_CODE=0) and the independent route
+`code/verify_granville_nu2_independent.py` (lib.gilbreath generator, entry-level zero
+statistics) reproduces the four numbers below identically and adds the finer grain: of
+3,095,143 gray-block entries across the 2480 columns, 1,546,291 (50.0%, avg 623.5 per
+block) are 0 — the discarded `delta=0` case is not merely present per row, it is the
+dominant entrywise regime of the block. Captures: `code/out/lemma54_iff_check.captured.txt`,
+`code/out/verify_granville_nu2_independent.captured.txt`.
+
 The 0-2 cycle of `delta(q_{n-1})` is its maximal `{0,2}` suffix before the terminal entry;
 `tau_n` is where that cycle starts, `nu_2` counts the 2s in it, and `v_n = delta_{tau_n}(q_n)`
 is the yellow value his Table 13 calls unknown.

@@ -48,6 +48,15 @@ and the heuristic `nu_2 ~ n/2`, and an analogy to digit-counting in normal numbe
 no sympy), primes below 3e6, diagonals through columns up to n = 3999. Capture at
 `code/out/nu2_granville_check.captured.txt`:
 
+**In-container reproduction (this run, 2026):** `code/nu2_granville_check.py` re-run
+in-container (timeout 540, EXIT_CODE=0) reproduces every number below exactly, and the
+independent route `code/verify_nu2_claim.py` (different sieve/row order) and
+`code/verify_granville_nu2_independent.py` (lib.gilbreath rows_generator + prefix-max g*)
+both agree identically. Captures: `code/out/nu2_granville_check.captured.txt`,
+`code/out/verify_nu2_claim.captured.txt`,
+`code/out/verify_granville_nu2_independent.captured.txt`. All exact integers, single
+worker, well under the 8 GiB cap.
+
     n      nu2      n^0.525    n/2     nu2/n    g*     2*nu2+2   Lemma5.4 hyp
     50     26       7.8        25.0    0.520    14     54        holds
     100    42       11.2       50.0    0.420    18     86        holds
