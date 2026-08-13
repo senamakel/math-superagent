@@ -6,6 +6,19 @@
       near-misses constructed+verified, incidence rank, (c,u,v) extraction,
       Pythagorean pairs; write code/out/near_misses.json with provenance for
       Sallows LS1 and Bremner's magic square.
+- [x] tool_builder: exact-integer verification of the completed Robertson
+      reduction on Bremner's 7-square witness — code/robertson_reduction_check.py
+      (runs under sage), output code/out/robertson_reduction_check.txt, exit 0.
+      All 8 sums 541875; a=425², b=41496, c=138600; 2 of 3 main-diagonal
+      x-coords in 2E(Q) (139129, 180625), 222121 not (X and X+c not squares);
+      doubling formula (x²+c²)²/4y² verified symbolically + on a rational point
+      + Sage 2P; rank(E: y²=x³−19209960000x)=2 by mwrank 2-descent with
+      generators [−88200,315000] and regulator 6.9103524178015 (cross-checked
+      via E.rank/algorithm='all'/standalone mwrank; all 8 division preimages
+      rational, quartics factor exactly for the two membership values, no
+      rational root for X=222121); converse grid (4) from the AP is the
+      witness transpose, all 8 sums 3a, non-squares exactly {360721,222121} —
+      the witness is one doubled point short of an MSS.
 - [x] Re-download Garcia-Fritz-Pasten and Rome-Yamagishi from PDF endpoints
       (both were abstract-page wrappers; now 21KB and 40KB — real papers).
 - [x] Re-download Wu 2103.01784 from PDF endpoint (was 6.6KB abstract-page

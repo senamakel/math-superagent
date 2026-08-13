@@ -4,9 +4,10 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[diophantine-curves]] | Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound on N(a), or only per-pair finiteness (ineffective)? | open | jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit, bbw-verification-bound, mrstt-interior-nothree | run sympy genus(k1,k2) for small pairs; report Faltings threshold + explicit statement that it is not a uniform bound. |
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
-- `diophantine-curves` has no thread block, so nothing can say what it is chasing or what it rests on

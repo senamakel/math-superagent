@@ -1,19 +1,22 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wikipedia-singmaster.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wikipedia — Singmaster's conjecture (secondary/tertiary source)
 
-<!-- source: https://en.wikipedia.org/wiki/Singmaster%27s_conjecture | converted from HTML -->
+Source: https://en.wikipedia.org/wiki/Singmaster%27s_conjecture
+[[wikipedia-singmaster]]
 
-## What is in it
+## What it establishes (nothing new — corroboration only)
 
-  - Statement
-  - Known bound
-  - Elementary examples
-  - Open questions
-  - See also
-  - References
+- **Statement**: Singmaster's conjecture — a finite upper bound on the multiplicities
+  of entries of Pascal's triangle other than 1. The only number appearing infinitely
+  often is 1, because any other `x` appears only within the first `x+1` rows (trivial:
+  if `C(n,k)=x` then `n≤x`).
+- Lists the known repeated-coefficient values and the record `N=8` for 3003.
+- Records the known-bound history culminating in Kane 2007.
 
+## Bearing
 
-## What it claims
-
-**Singmaster's conjecture**is a [conjecture][2] in [combinatorial number theory][3], named after the British mathematician [David Singmaster][4] who proposed it in 1971. It says that there is a finite [upper bound][5] on the [multiplicities][6] of entries in [Pascal's triangle][7] (other than the number 1, which appears infinitely many times). It is clear that the only number that appears infinitely many times in [Pascal's triangle][7] is 1, because any other number *x*can appear only within the first *x*+ 1 rows of the triangle.
-
-*[digest of a 14141 character source; every section, statement, and proof in full at `research/sources/wikipedia-singmaster.full.md`]*
+**Secondary source** — it ranks below every primary paper in the library and IS NOT
+needed for any claim; every fact it states is primary-sourced elsewhere in this run
+(MRSTT full text, Singmaster 1971/1975, AEH 1974, Kane 2007, de Weger 1997). Its one
+useful non-mathematical role: the "appears only within the first x+1 rows" statement,
+which is trivial and also in MRSTT. **Verdict**: does not help the run; read nothing
+more from it.

@@ -12,15 +12,48 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `cht-random-analogue` | (Theorem 1.3) If a_1,a_2,... are independent non-negative integer random variables with (i) a_n ≤ δn eventually (a.s.) and (ii) P(a_n∈A) ≤ 1−ε for every 2-separated set A eventually, then a.s. the left diagonal is… | **unchecked** | asserted | `research/notes/library-state.md` |
 | `gc-block-lemma-odlyzko` | If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for all K ≤ k ≤ N+K−1. So a leading {0,2} block of length N protects N subsequent rows, not n/2. | yes | asserted | `research/notes/library-state.md` |
 | `gilbreath-reduces-to-second-in-02` | The shape (odd, even, even, ...) is preserved by the absolute-difference operator on the prime rows, and A_k(0)=1 for all k>=1 iff A_k(1) in {0,2} for all k>=1. Hence Gilbreath's conjecture is equivalent to "the second… | yes | proved | `research/notes/reduction.md` |
+| `killgrove-ralston-block-protection` | If row i starts 1 and has M entries after the leading 1 (their "0 ≤ j ≤ M" includes P_{i,0}) all 0 or 2, then the next M−1 rows start with 1 (their span P_{i,0}..P_{i+M−1,0}); protection is one row per {0,2} entry,… | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
+| `killgrove-ralston-verification-1959` | Conjecture verified for all primes < 792,722 (first 63,419 primes) on SWAC using D. H. Lehmer's sieve; P(i) tabulated for i = 0..95, max P(i)+i > 63,419. | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
 | `mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4), because d_k(n) is even there. | yes | asserted | `research/notes/library-state.md` |
 | `odlyzko-1993-citation-confirmed` | Odlyzko's paper "Iterated absolute values of differences of consecutive primes" exists as Math. Comp. 61 (1993) 373-380, per the author's own bibliography page. | yes | asserted | `research/summaries/odlyzko-publications-page.md` |
-| `odlyzko-block-lemma-asserted` | A {0,2} block of length n at the start of a row protects approximately n/2 subsequent rows' first entries, which then all begin with 1; the block degrades at ~the rate it shortens. | **unchecked** | asserted | `research/notes/reduction.md` |
+| `odlyzko-block-lemma` | If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for K ≤ k ≤ N+K−1 — a leading {0,2} block of length N−1 protects N rows (one row per block entry; coefficient exactly 1, not n/2). | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
+| `odlyzko-block-lemma-asserted` | A {0,2} block of length n at the start of a row protects approximately n/2 subsequent rows' first entries, which then all begin with 1; the block degrades at ~the rate it shortens. | no | asserted | `research/notes/reduction.md` |
+| `odlyzko-block-lemma-exact` | If row A_k has a leading {0,2} block of length n (positions 1..n), then exactly n+1 rows A_k..A_{k+n} are guaranteed to begin with 1; the leading-entry protection constant is 1 (not n/2). Equivalently A_{k+d}(1) in… | yes | proved | `research/notes/block_lemma.md` |
+| `odlyzko-mod4-linearization` | For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4) because d_k(n) is even there; the absolute-value triangle obeys Pascal's rule mod 4 (mod 2 after halving). | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
+| `odlyzko-verification-1993` | Gilbreath's conjecture verified for d_k(1), 1 ≤ k ≤ π(10^13) ≈ 3.4×10^11 (all primes < 10^13); G(π(10^13)) = 635; max g(n) = 635 at n ≈ π(7.17716×10^12) from prime gap 674. | yes | asserted | `research/summaries/odlyzko-1993-iterated-absolute-differences.md` |
 | `oeis-miss-A000232-minus-1` | The run's leading-{0,2}-block lengths at row k (k=1..40: 2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,...) equal OEIS A000232(k) − 1 exactly (A000232 is "one less than the position of the first number… | yes | checked | `research/notes/library-state.md` |
+| `proth-1878-no-proof` | Proth's "Sur la série des nombres premiers" (Nouv. Corresp. Math. 4 (1878) 236–240) states the Gilbreath property as a theorem but contains no proof; editor E. Catalan appended a note suggesting the assertions are… | yes | asserted | `research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md` |
+| `proth-citation-correction` | The citation "Théorèmes sur les nombres premiers, C. R. Acad. Sci. Paris 85 (1877) 329–331" attached to Proth's Gilbreath claim is wrong on two counts: those pages are Pépin's paper, and C.R. 87 (1877) does not discuss… | yes | asserted | `research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md` |
 | `proth-myth-retracted` | The widespread claim "Proth (1878) claimed to prove Gilbreath's conjecture and his proof was wrong" is unsupported and was retracted by its originator H.C. Williams ("On rereading his actual paper...I can find no… | yes | asserted | `research/notes/library-state.md` |
 | `reduction-checked-against-full-rows` | R1 (row k>=1 has shape (odd, even, even, ...)) and R2 (A_{k+1}(0)==1 iff A_k(1) in {0,2}) hold for every k in 1..599 on the sieve-to-400000 triangle (33,860 primes), not merely on the first-12-entry witness slices. | yes | checked | `research/notes/check_reduction_operator.md` |
 | `reduction-checked-against-full-rows` | R1 (row k>=1 has shape (odd, even, even, ...)) and R2 (A_{k+1}(0)==1 iff A_k(1) in {0,2}) hold for every k in 1..599 on the sieve-to-400000 triangle (33,860 primes), not merely on the first-12-entry witness slices. | yes | checked | `research/notes/reduction.md` |
 | `second-entry-4-kills` | If A_k(1) = 4 (or any even value >= 4) for some k>=1, then A_{k+1}(0) = \|1 - A_k(1)\| >= 3 and Gilbreath's conjecture fails at that row. | yes | proved | `research/notes/reduction.md` |
 | `verification-bounds` | Gilbreath's conjecture verified for the first 63,419 primes (Killgrove–Ralston 1959, SWAC, primes < 792,722) and for all primes < 10^13 (Odlyzko 1993, k ≤ π(10^13) ≈ 3.4×10^11). | yes | asserted | `research/notes/library-state.md` |
+
+## Contradictions
+
+Resolve these before building on either side.
+
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `run's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `earlier` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `loose` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `'≈` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `n/2` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `rows'` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `ledger` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `(reduction.md` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `repeats` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `it)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `—` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `primary` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `source` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `and` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `this` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `re-derivation` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `give` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `n+1.` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -28,8 +61,15 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `anti-gilbreath-construction` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `gc-block-lemma-odlyzko` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `killgrove-ralston-block-protection` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
+- `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-1993-citation-confirmed` (research/summaries/odlyzko-publications-page.md) — asserted by the source, not proved there and not checked here
+- `odlyzko-block-lemma` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
+- `odlyzko-mod4-linearization` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
+- `odlyzko-verification-1993` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
+- `proth-1878-no-proof` (research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md) — asserted by the source, not proved there and not checked here
+- `proth-citation-correction` (research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md) — asserted by the source, not proved there and not checked here
 - `proth-myth-retracted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `verification-bounds` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 

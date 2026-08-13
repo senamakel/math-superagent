@@ -47,8 +47,12 @@ depths; they do not prove the equivalence's conclusion, which is open.
 The reduction is not the hard part — it is proved above and is not where the
 conjecture resists. The resistance is entirely in showing regeneration: that
 `A_k(1) ∈ {0,2}` for every `k`, i.e. that the `{0,2}` regime is entered
-sufficiently often as rows descend, since a block of length `n` protects only
-`≈ n/2` rows (Odlyzko's block lemma — asserted lead, not yet re-derived here).
+sufficiently often as rows descend. The consumption constant is now sourced:
+Odlyzko 1993 (Introduction) and Killgrove–Ralston 1959 (p. 121) both state that
+a leading `{0,2}` block of length N−1 protects **N** rows (one row per block
+entry; coefficient exactly 1). The earlier "≈ n/2 rows" phrasing in problem.md
+and the claim block below was an unsourced lead and is **wrong** — see the
+refutation note on `odlyzko-block-lemma-asserted`.
 
 ```claim
 id: gilbreath-reduces-to-second-in-02
@@ -86,11 +90,11 @@ answers: reduction-full-rows-check
 ```claim
 id: odlyzko-block-lemma-asserted
 statement: A {0,2} block of length n at the start of a row protects approximately n/2 subsequent rows' first entries, which then all begin with 1; the block degrades at ~the rate it shortens.
-hypotheses: row begins 1 followed by n entries in {0,2}; structural self-propagation of the absolute-difference operator. NOT yet re-derived or made exact (constant in n/2 unknown).
-holds-here: unchecked
-status: asserted (attributed to Odlyzko 1993 in problem.md/FRONTIER, not sourced in this run's library)
-bearing: frames the central obstruction (consumption vs regeneration) but cannot yet be relied on; exact statement and constant are an open dependency.
-anchor: problem.md + research/notes/reduction.md
+hypotheses: row begins 1 followed by n entries in {0,2}; structural self-propagation of the absolute-difference operator.
+holds-here: false — REFUTED against the primary sources. Odlyzko 1993 (Intro) and Killgrove–Ralston 1959 (p. 121) both state the protection is one row per {0,2} entry (coefficient 1, linear): a block of length N−1 protects rows K..K+N−1 (N rows). The "≈ n/2" constant appears in neither paper.
+status: refuted (the run's own unsourced lead contradicted by the two primary sources)
+bearing: the consumption budget must be quoted as linear (coefficient 1), not geometric (1/2). Consumption at ~n/2 per row-shortening was the framing that made regeneration look harder than it is; with constant 1 the protection is n rows per block of length n−1. Regeneration is still unproved, but the correct constant changes the balance.
+anchor: research/sources/odlyzko-1993-iterated-differences-latex-source.full.md; research/sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md
 answers: consumption-rate-of-02-block
 ```
 
@@ -101,5 +105,6 @@ lead framing in `problem.md`. The OEIS contributor note (M. F. Hasler, in
 `oeis-A036262` summary) independently states the same: "all terms except for
 the first one are even. Thus, if the 2nd term in some row is > 2, it is >= 4,
 and the first term of the subsequent row is >= 3" — agreeing with this proof's
-killing row. Odlyzko's block-protection lemma (n/2 rows) remains an asserted
-lead, not yet sourced or re-derived.
+killing row. Odlyzko's block-protection constant is now sourced (linear, 1 row
+per {0,2} entry; see `odlyzko-block-lemma`), refuting the earlier "≈ n/2"
+asserted lead.

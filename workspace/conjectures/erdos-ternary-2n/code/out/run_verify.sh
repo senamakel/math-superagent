@@ -1,1 +1,4 @@
-cd /workspace/code/out && timeout 300 python3 verify_al.py 2>&1 | tee verify_al.captured.txt; echo EXIT_CODE=$?
+#!/bin/bash
+cd /workspace
+timeout 300 python3 code/out/check_binomial_approach.py 2>&1 | tee code/out/check_binomial_approach.captured.txt
+echo "EXIT_CODE=$?"

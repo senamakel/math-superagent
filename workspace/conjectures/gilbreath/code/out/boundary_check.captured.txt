@@ -1,0 +1,11 @@
+W = 1270607 primes below 20000000
+rows to depth 1000 in 4.8s; Kabs (block covers full view) = 162
+oracle agree k=1..40: True
+tail linearity b(k) == W-k-1 exact for k = 162..1000: True
+  first tail terms: [(162, 1270444, 1270444), (163, 1270443, 1270443), (164, 1270442, 1270442)]
+boundary lemma: 999 of 999 eligible rows agree (rows with an intruder in width); failures: []
+  regen predicted: 60, observed: 60
+erosion runs pre-Kabs: 26; lengths [3, 1, 1, 2, 2, 7, 3, 8, 4, 4, 3, 3, 2, 2, 5, 4, 2, 1, 13, 12, 1, 1, 1, 2, 2, 12]; max 13
+min b over k=2..1000: 7 at k = 2
+s counts: zeros 520, twos 480
+wrote code/out/boundary_check.json

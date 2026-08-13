@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Howe,+E+W | Everett W. Howe | 3 Jul 2023 (this version, v4)] # Title: Powers of 3 with few nonzero bits and a conjecture of Erdős Authors: [Vassil S. Dimitrov][3], [Everett W. Howe][4] View a PDF of the paper titled Powers of 3… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Li,+R | Ruofan Li | [Submitted on 19 Jan 2026] # Title: Non-Wieferich property of prime ideals and a conjecture of Erdös Authors: [Ruofan Li][2], [Jiuzhou Zhao][3] View a PDF of the paper titled Non-Wieferich property… |
 
-_103 further candidates not shown; they are cited once each._
+_105 further candidates not shown; they are cited once each._

@@ -1,93 +1,45 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/abram-bolshakov-lagarias-cantor-intersections-II.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Abram–Bolshakov–Lagarias: Intersections of multiplicative translates of 3-adic Cantor sets II (Two infinite families)
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/1508.05967 | converted from HTML -->
+**Source:** arXiv:1508.05967 (Abram, Bolshakov, Lagarias), Experimental Mathematics 26 (2017) 410–426. Full text at `research/sources/abram-bolshakov-lagarias-cantor-intersections-II.full.md`. Notation as in Part I summary (`Σ_{3,2̄}`, `ℰ`, `ℰ⁽ᵏ⁾`, `Γ`, `𝒞(1,M₁,…,Mₙ)`).
 
-## What is in it
+## What this paper establishes
 
-- Intersections of multiplicative translates of
-3 3 -adic Cantor sets II: Two infinite…
-        - Abstract.
-  - 1. Introduction
-    - 1.1. Exceptional set conjecture and nesting constants
-        - Definition 1.1.
-        - Conjecture 1.2.
-        - Definition 1.3.
-    - 1.2. Statistics of ternary digits and n n -digit Hausdorff dimension constant
-        - Definition 1.4.
-    - 1.3. Roadmap
-  - 2. Results
-    - 2.1. The infinite family P k = ( 20 k − 1 ​ 1) 3 P_{k}=(20^{k-1}1)_{3}
-        - Theorem 2.1.
-        - Theorem 2.2.
-    - 2.2. The infinite family Q k = ( 2 k ​ 0 k − 1 ​ 1) 3 Q_{k}=(2^{k}0^{k-1}1)_{3}
-        - Theorem 2.3.
-        - Theorem 2.4.
-    - 2.3. The n n -digit Hausdorff dimension constants α n {\alpha}_{n}.
-- …
+1. **Improved upper bound on the exceptional set** (Thm 2.6 / eq. (1.10)): `dim_H ℰ(ℤ_3) ≤ Γ ≤ Γ_** = log_3 φ ≈ 0.438018`, down from ½. Here `α_n := sup{dim_H 𝒞(1,M) : (M)_3 has ≥ n nonzero digits}`, `Γ_** = lim_n α_n`, and the equality `Γ_** = log_3 φ` is proved. (φ = golden ratio, log_3 φ ≈ 0.438018.)
+2. **The "number of nonzero ternary digits" statistic provably does not drive dimension to 0** (Thm 2.4, 2.6): family `Q_k = 3^{2k} − 3^k + 1 = (2^k 0^{k−1} 1)_3` has `d_3(Q_k) = k+1 → ∞` yet `dim_H 𝒞(1,Q_k) = log_3 φ` for every k ≥ 2, constant. The path set is `X(1,Q_k) = X(1,7)^{(*k)}` (k-fold interleaving), and interleaving preserves topological entropy (Prop 3.6, Cor 3.7). So `α_k = log_3 φ` for all k ≥ 2.
+3. **Family P_k = 2·3^k + 1 = (20^{k−1}1)_3**: automata have `1+⌊k/2⌋` nested strongly connected components ("Matryoshka dolls"), `2^{k+1}` vertices; `dim_H 𝒞(1,P_k) ≥ (1/13) log_3 2` for all k and `liminf ≥ (1/8) log_3 2` (Thm 2.1, 2.2); dimension ≤ log_3 φ. Nonmonotonic in k.
+4. **Stewart bound quoted** (Thm 6.1): `s_3(2^m) > log m/(log log m + c) − 3` for m ≥ 25 (number of nonzero ternary digits of 2^m grows at least this fast).
+5. **The route via n_3(M) is closed**: it is *not* true that dim_H 𝒞(1,M) → 0 as the number of nonzero ternary digits of M → ∞ (Theorem 2.6: α_k = log_3 φ for all k ≥ 2). Since the number of nonzero ternary digits of 2^m does go to infinity (Senge–Straus, Stewart), the general "dimension → 0 as digits grow" programme (suggested in Part I §1.6 as a route to the Exceptional Set Conjecture) is refuted: some M with arbitrarily many nonzero ternary digits keep dimension log_3 φ.
 
+## Bearing on the run
 
-## What it claims
+- The chain of upper bounds on the exceptional set is now: `dim_H ℰ(ℤ_3) ≤ Γ ≤ Γ_** = log_3 φ ≈ 0.438018`. It is a *bound*, not the conjecture (dim = 0). Part II also gives lower-bound evidence that the statistic-based routes stop at φ.
+- The quantity `Γ` = lim_k dim_H ℰ⁽ᵏ⁾ has a positive lower bound (Part I Thm 5.2: dim ℰ⁽²⁾ ≥ log_3 φ, dim ℰ⁽³⁾ ≥ log_3 β₁ > 0) and an upper bound log_3 φ; the run's known-witness computation (𝒞(1,4), 𝒞(1,4,256)) matches both the lower ends and, by coincidence, the value log_3 φ appears on both sides of the sandwich for Γ.
 
-This paper studies the structure of finite intersections of general multiplicative translates 𝒞 ⁡ ( M 1, M 2, …, M n) = 1 M 1 ​ Σ 3, 2 ¯ ∩ ⋯ ∩ 1 M n ​ Σ 3, 2 ¯ {{\mathcal{C}}}(M_{1},M_{2},\ldots,M_{n})=\frac{1}{M_{1}}\Sigma_{3,\bar{2}}\cap\cdots\cap\frac{1}{M_{n}}\Sigma_{3,\bar{2}} for integers 1 ≤ M 1 < M 2 < ⋯ < M n 1\leq M_{1}<M_{2}<\cdots<M_{n}, in which Σ 3, 2 ¯ \Sigma_{3,\bar{2}} denotes the 3 3 -adic Cantor set (of 3 3 -adic integers whose expansions omit the digit 2 2), which has Hausdorff dimension log 3 ⁡ 2 ≈ 0.630929 \log_{3}2\approx 0.630929. This study was motivated by questions concerning the discrete dynamical system on the 3 3 -adic integers ℤ 3 {\mathbb{Z}}_{3} given by multiplication by 2 2. The exceptional set ℰ ⁡ ( ℤ 3) \mathcal{E}(\mathbb{Z}_{3}) is defined to be the set of all elements of ℤ 3 \mathbb{Z}_{3} whose forward orbits under this action intersect the 3 3 -adic Cantor set Σ 3, 2 ¯ \Sigma_{3,\bar{2}} infinitely many times. It is conjectured that it has Hausdorff dimension 0 0. An earlier paper showed that upper bounds on the Hausdorff dimension of the…
-
-## Statements it makes
-
-###### Definition 1.1.
-
-###### Conjecture 1.2.
-
-###### Definition 1.3.
-
-###### Definition 1.4.
-
-###### Theorem 2.1.
-
-###### Theorem 2.2.
-
-###### Theorem 2.3.
-
-###### Theorem 2.4.
-
-###### Theorem 2.5.
-
-###### Theorem 2.6.
-
-###### Corollary 2.7.
-
-###### Definition 3.1.
-
-###### Proposition 3.2.
-
-###### Definition 3.3.
-
-###### Proposition 3.4.
-
-###### Proposition 3.6.
-
-###### Corollary 3.7.
-
-###### Definition 4.1.
-
-###### Proposition 4.2.
-
-###### Definition 4.3.
-
-###### Proposition 4.4.
-
-###### Theorem 4.7.
-
-Theorem 4.7 shows that there exist an arbitrarily large number of different values M j M_{j}, each having a 2 2 in their ternary expansion, such that dim H ( 𝒞 ⁡ ( 1, M 1, M 2, …, M n)) > 0 \dim_{H}(\mathcal{C}(1,M_{1},M_{2},...,M_{n}))>0.
-
-###### Proposition 5.1.
-
-###### Theorem 6.1.
-
-###### Theorem 6.2.
-
-###### Theorem 8.1.
-
-###### Theorem 8.2.
-
-###### Theorem 9.1.
-
-*[digest of a 123428 character source; every section, statement, and proof in full at `research/sources/abram-bolshakov-lagarias-cantor-intersections-II.full.md`]*
+## Claims
+```claim
+id: ABL-II-1
+statement: dim_H ℰ(ℤ_3) ≤ Γ ≤ Γ_** = log_3 φ ≈ 0.438018, where Γ is the nesting constant and Γ_** = inf_k α_k with α_k = sup{dim_H 𝒞(1,M) : (M)_3 has ≥ k nonzero ternary digits}; moreover α_k = log_3 φ for all k ≥ 2, attained by Q_k = 3^{2k}−3^k+1.
+hypotheses: none.
+holds-here: yes.
+status: proved (Theorems 2.5, 2.6, eq. (1.10))
+bearing: the current best upper bound on the exceptional set; also the negative result that "dimension → 0 as the number of nonzero digits grows" is false.
+anchor: research/sources/abram-bolshakov-lagarias-cantor-intersections-II.full.md
+```
+```claim
+id: ABL-II-2
+statement: dim_H 𝒞(1,Q_k) = log_3 φ for all k ≥ 2 with Q_k = 3^{2k}−3^k+1 = (2^k 0^{k−1} 1)_3, via X(1,Q_k) = X(1,7)^{(*k)} and entropy preservation under interleaving.
+hypotheses: k ≥ 2.
+holds-here: yes — a concrete infinite family with unbounded digit count but constant positive dimension.
+status: proved (Theorems 2.3, 2.4; Prop 3.4, 3.6, Cor 3.7)
+bearing: closes the "few-statistic" route: a statistic d_3(M) → ∞ does not force dim_H 𝒞(1,M) → 0.
+anchor: research/sources/abram-bolshakov-lagarias-cantor-intersections-II.full.md
+```
+```claim
+id: ABL-II-3
+statement: s_3(2^m), the number of nonzero ternary digits of 2^m, satisfies s_3(2^m) > log m/(log log m + c) − 3 for m ≥ 25 (Stewart, quoted with proof sketch in Part II Thm 6.1).
+hypotheses: m ≥ 25.
+holds-here: yes — gives the growth rate of the "≥26 ones" case in DH-1.
+status: asserted-by-source (quoted from Stewart 1980; proof sketch given)
+bearing: quantifies the DH-1 residual: a counterexample has ≥26 ones, and the ones-count grows at least like log m/log log m.
+anchor: research/sources/abram-bolshakov-lagarias-cantor-intersections-II.full.md
+```

@@ -1,87 +1,146 @@
 # Shared context
 
-Run state: **very early.** No research notes, no durable memory, no library, no
-scratch yet. The only concrete computation that has landed is the witness set in
-`code/out/witnesses.json`. Everything below marked `asserted-by-source` comes
-from `problem.md` and is not yet verified by this run — verify before leaning on
-it. Marked `computed` is read from the witness file and cross-checks against the
-problem statement's worked examples by hand arithmetic.
+Singmaster's conjecture: `N(a) := #{ (n,k) : C(n,k) = a }` is bounded by an
+absolute constant. Working assumption: open since 1971, not provable here; the
+deliverable is a genuine partial result stated exactly. This brief is re-sent on
+every model call, so everything here must survive contact with the witnesses and
+the counting convention.
+
+**Counting convention (fix before stating any bound; used everywhere in this
+run):** `N(a)` counts BOTH mirrors `(n,k),(n,n-k)` AND the trivial pair
+`C(a,1)=C(a,a-1)`. So `N(3003)=8` = 3 nontrivial reps × 2 + 2 trivial. A bound
+of 8 here is 4 half-triangle. `computed`, matches `code/out/witnesses.json`.
 
 ## Established
 
-- **Counting convention (must be fixed before stating any bound).** The witness
-  file counts `N(a)` as **both mirrored occurrences plus the trivial pair**
-  `C(a,1)=C(a,a-1)`. So `N(3003)=8` means 3 nontrivial entries × 2 mirrors + 2
-  trivial. A bound of 8 under this convention is 4 counting only `k<=n/2`
-  excluding the trivial pair. **Every claim and every program must name its
-  convention.** `computed` from `code/out/witnesses.json`.
+Each marked with evidence class and a link.
 
-- **The witness set (the falsifier every bound must survive).**
-  `computed`, exact integer arithmetic over `2<=k<=n/2, n<=20000, value<=10^12`:
-  `3003 = C(3003,1) = C(78,2) = C(15,5) = C(14,6)`, so `N(3003)=8`. A claimed
-  `B<8`, or any lemma implying one, is **false — record refuted, not weakened.**
-  Values in that range with `N=6`: `120,210,1540,7140,11628,24310` (each = one
-  nontrivial pair + mirrors + trivial). This is the bound's extent: "no number
-  known >8" is only established here up to `n<=20000`; Singmaster has no proof.
+- **Witness set / the falsifier. `computed`, 3 independent routes.**
+  `3003 = C(3003,1)=C(78,2)=C(15,5)=C(14,6)` (+4 mirrors), so `N(3003)=8`.
+  Verified by `code/out/witnesses.json`, the naive oracle `code/brute.py`, and a
+  primary source confirming it (Singmaster FQ 1975 "Added in proof"; also listed
+  in MRSTT (1.2)). **Any bound <8, or any lemma implying one, is refuted.**
+  Six numbers with `N=6` <= 2^48: 120, 210, 1540, 7140, 11628, 24310 (each one
+  nontrivial pair + mirrors + trivial). `sourced`+`computed`.
 
-- **Elementary facts** (`asserted-by-source` in `problem.md`, not yet checked by
-  a program): `N(a)>=2` for all `a>1` via `C(a,1)=C(a,a-1)`; occurrences pair
-  under `C(n,k)=C(n,n-k)`; for fixed `a` only `k<=log2(a)` can occur because
-  `C(n,k)>=C(2k,k)>=2^k`. Verify these (they are cheap) before any derivation.
+- **Infinite family `N(a)>=6` — the reason `B>=6`. `computed` from a `sourced`
+  identity.** `C(n+1,k+1)=C(n,k+2)` has infinitely many solutions:
+  `n=F_{2i+2}F_{2i+3}-1, k=F_{2i}F_{2i+3}-1` (i>=1; `F` Fibonacci). i=1 gives
+  3003; i=2 gives 61218182743304701891431482520. Closed form derived in
+  `code/family_seq/family_sequences.py`: `n_i=7n_{i-1}-n_{i-2}+6`,
+  `k_i=7k_{i-1}-k_{i-2}+9` (Lucas-identity proof checked against direct
+  Fibonacci computation). Verified N(a)>=6 for i=1..5. This is the *only* curve
+  in Jenkins' family with infinitely many lattice points (a=b=1). Any `B<6`
+  is refuted.
+
+- **Genus grid — the headline computation. `computed`, two independent engines
+  agree.** `genus(k1,k2)` of `C(x,k1)=C(y,k2)` computed for 2<=k1<=12,
+  2<=k2<=9 by both Singular (`normal.lib::genus`) and Sage (`Curve.genus`);
+  outputs identical. Pattern:
+  - `k2=2: genus=floor((k1-1)/2)` (k1=3→1,4→1,5→2,...),
+  - grows with k1 for fixed k2 (k2=3: k1=4→3,6→4,8→7,10→9; k2=4: 5→6,7→9,9→12),
+  - diagonal k1=k2 is reducible/degenerate (genus undefined → curve factors, contains x=y).
+  Cross-checks Jenkins (2,2) genus 3 and de Weger (3,4) genus 3. So Faltings
+  (genus>1) applies to essentially every distinct pair. **This delivers the
+  Faltings threshold but NOT a uniform bound** — per-pair finiteness is
+  ineffective. Full grid in `code/out/commands.log`; approach in
+  `research/approaches/genus-computation.md`.
+
+- **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`,
+  primary texts held.** Singmaster 1971 `O(log a)`; Abbott–Erdős–Hanson 1974
+  `O(log a/log log a)`; Kane 2007 best `N(t)=O((log t)(log_3 t)/(log_2 t)^3)`.
+  Conditional on Cramér, `O_eps((log a)^{2/3+eps})`. None is uniform ⇒ none
+  touches the conjecture. (`research/notes/established-review.md`.)
+
+- **MRSTT interior, the current record. `sourced`** (arXiv:2106.03335, QJM 2022;
+  Theorem 1.3). For fixed `0<eps<1`, t large: at most 2 solutions to C(n,m)=t in
+  `exp(log^{2/3+eps} n)<=m<=n/2`, at most 4 in the full interior. Inner region
+  at most 1. To prove the conjecture it suffices to handle
+  `2<=m<=exp(log^{2/3+eps} n)`, i.e. `m<=log t/log_2^{3/2-eps} t` — that is
+  **exactly what they leave open**. Constants effective but far too large to use.
+  Interior multiplicity is 0,1,2,4 — never 3 (Remark 1.11).
+
+- **Small-(k1,k2) curves solved effectively. `sourced`.** (2,3) Avanesov;
+  (2,4) de Weger/Pintér (Gelfond–Baker); (3,4) de Weger genus-3 double cover of
+  `Y^2+Y=X^3-X`; (2,5) BMSST 2008 hyperelliptic. Finiteness for each fixed pair
+  via Beukers–Shorey–Tijdeman (Siegel) — **ineffective**. Kiss 1988:
+  `C(x,2)=C(y,p)` finite for p prime.
+
+- **Verification bound.** `sourced`: no `N(a)>=8` for `a<2^23` (Singmaster
+  1971), extended to `2^48` (Singmaster FQ 1975); Blokhuis–Brouwer–de Weger
+  2017: no unknown collisions for `n<=10^6` or value `<=10^60`. This run's own
+  scan: N=6 values found for `n<=20000, value<=10^12` matching the primary list.
 
 ## Ruled out
 
-- **Finiteness per fixed `(k1,k2)` is already known and is NOT the conjecture.**
-  `C(x,k1)=C(y,k2)` is a curve of growing genus: Faltings (genus>1) and Siegel
-  (integral points, any genus) each give finitely many points, but **ineffective**
-  — no count computable in `(k1,k2)`. Singmaster needs a bound **uniform over all
-  pairs at once and effective**. This is the central obstruction, `sourced` from
-  `problem.md`/`GOAL.md`; every proposed approach must say how it beats it.
+- **Finiteness per fixed (k1,k2) — already known and NOT the conjecture.**
+  Faltings (genus>1, confirmed by the grid) and Siegel (genus 1) each give
+  "finitely many", but **ineffective** — no count computable in (k1,k2).
+  Singmaster needs a constant uniform over all pairs at once. This is the
+  central obstruction; every approach must say how it beats it, and the genus
+  computation does not.
+
+- **Genus route yields no uniform bound.** `computed`: genus>1 for essentially
+  all distinct pairs, but that only re-proves per-pair Faltings finiteness.
+  Closing uniformity needs effective Siegel or effective Schmidt subspace
+  theorem — out of reach. Recorded so the inventor does not re-propose it.
+
+- **Kane's lattice-point method cannot beat inverse density.** `sourced`
+  (Kane 2007 §8): a randomized construction proves his method cannot give
+  better than `O(log_2 t)`; one cannot exclude low-density t with his
+  technique. So a different mechanism is needed for constancy.
+
+- **MRSTT's non-archimedean method has a hard ceiling.** `sourced` (Prop 1.12):
+  requires N,M = O(exp(log^{3/2-eps} P)); even under RH this cannot be relaxed.
+  Only a randomness heuristic pushes to exp(P^c). Hence the interior method
+  cannot be extended to the small-m regime by improving constants.
+
+- **Diagonal k1=k2 curves are degenerate.** `computed`: `C(x,k)=C(y,k)` factors
+  (contains x=y), genus undefined — the arithmetically interesting cases are the
+  distinct pairs, and the a=b=1 family is the one Jenkins left open (golden-ratio
+  quadratic, infinitely many lattice points).
 
 ## Numbers
 
-- `N(3003)=8` (both+trivial convention), `N=6` values listed above, all verified
-  for `n<=20000`. Each of the `N=6` witnesses is a single nontrivial pair in a
-  small column (`k=2,3`) plus the trivial pair — consistent with the elementary
-  `k=2` relation `C(x,2)=C(y,k)` being the main source of multiplicity.
+- `N(3003)=8` (both+trivial); N=6 set {120,210,1540,7140,11628,24310}.
+- Genus grid (Singular == Sage): k2=2 → floor((k1-1)/2); k2=3 → 1,3,4,7,9
+  (k1=2..10 even); k2=4 → 1,3,6,7,9,12,13,15; k2=5 → 2,4,6,10,12,14,16,16,20,22; etc.
+- Infinite family second member ~6.1e28; digit ratio → phi^4 ≈ 6.854.
+- Family recurrences `n_i=7n_{i-1}-n_{i-2}+6`, `k_i=7k_{i-1}-k_{i-2}+9` checked i=3..8.
 
 ## Recalled
 
-- **None.** `recall_memory` returned nothing for Singmaster, MRSTT, or the genus
-  of `C(x,k1)=C(y,k2)`. No earlier run, no durable finding. This run starts from
-  scratch; treat any claim about the literature as unverified until a source
-  lands.
+Durable memory holds this run's own established facts (genus plan, counting
+convention, family parametrization, Jenkins framing) — those are now redundant
+here and live in the sections above. No independent prior-run durable knowledge
+about Singmaster beyond what this run itself computed/sourced; `recall_memory`
+returns this run's session notes and the source-library graph, not external
+prior work. Treat all library claims as `sourced`/`computed` per the marking
+above, and MRSTT/Kane/internal results as taken on their word (`asserted`) where
+not re-derived here.
 
 ## Contradictions
 
-- None between sources yet (no sources loaded). One standing tension to keep
-  visible: the `k<=log2(a)` elementary bound says high `N(a)` must come from
-  small `k`, yet the infinite family with `N(a)>=6` (Fibonacci-indexed, per
-  `problem.md`, **unverified**) and `3003` both feature `k=2`/`k=3` columns — so
-  small-column curves carry the witnesses and any uniform bound must control them
-  uniformly. State and check this before relying on it.
+- **Kane bound exponent.** Fermat's Library's annotation of Singmaster 1971
+  states the best bound with exponent 2 (`log_2^2 t`); Wikipedia, MRSTT, Jenkins
+  all give exponent 3 (`log_2^3 t`). Exponent 3 taken as correct; the Fermat's
+  slip is recorded, not trusted.
+- **Standing tension** (structural, not a source clash): `k<=log2(a)` says high
+  N(a) must come from small k, and every witness (3003, the N=6 family, the
+  infinite family) sits in k=2/3 columns — so small-column curves carry the
+  multiplicity and a uniform bound must control them uniformly. The small-`k`
+  effective results (Avanesov, de Weger, BMSST) are exactly the attackable part.
 
 ## Gaps
 
-Each is a `request_research`-sized gap, not a mood. Primary urgent ones:
-
-- **Exact MRSTT statement** (Matomäki–Radziwiłł–Shao–Tao–Teräväinen): the exact
-  range of `k` their interior-Pascal bound covers, the constant, and precisely
-  what it leaves open — the current record, worth being precise about because it
-  is the strongest known partial result.
-- **The `N(a)>=6` infinite family identity** (proposed Fibonacci-indexed,
-  `problem.md` lead): get the exact identity, verify it computationally, record it
-  as the reason `B>=6`.
-- **Genus of `C(x,k1)=C(y,k2)` as a function of `(k1,k2)`** and where it crosses
-  1 — sets the Faltings threshold, and whether it can be made effective/uniform.
-- **Baker/linear-forms effective height bound** with a **computed** constant for
-  a specific `(k1,k2)` family (names in `problem.md`: de Weger, `C(x,2)=C(y,k)`
-  curves) — the realistic partial-result target.
-- **An effective bound that is uniform in `k`** — the open core; only the small-`k`
-  column families are plausibly attackable.
-
-Compute policy already in place (from `GOAL.md`, follow it): never build the
-triangle; invert `C(n,k)=a` by binary search in `n` per small `k`
-(`O(log)` per `k`), parallelise over `a`/pairs (28 CPUs), `timeout 540`, state
-workers+range in every capture. The oracle is `multiplicity(a,n_max)` and
-`genus(k1,k2)`; `code/lib/` is empty so `multiplicity` does not exist yet.
+- Effective height bound with a **computed** constant for a specific (k1,k2)
+  family (Baker / linear forms in logarithms) — the realistic partial-result
+  target. Sources say it is triple-exponential and too large to use; nobody has
+  made a constant explicit for the small-`k` family. This is the live thread.
+- The exact uniform-in-k obstruction: what precisely a general effective Siegel
+  or effective Schmidt subspace theorem would need, and why it is out of reach —
+  stating this cleanly is itself a deliverable (GOAL.md allows a proof that a
+  stated approach cannot give uniformity, with the obstruction named).
+- Compute policy is in place (never build the triangle; invert per small k by
+  binary search; k<=log2(a); 28 CPUs; parallelise over a or (k1,k2); `timeout
+  540`; state workers+range). Follow it.

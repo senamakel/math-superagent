@@ -1,100 +1,45 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/odlyzko-1993-iterated-absolute-differences.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Odlyzko 1993 — Iterated absolute values of differences of consecutive primes
 
-<!-- source: https://www.ams.org/journals/mcom/1993-61-203/S0025-5718-1993-1182247-7/S0025-5718-1993-1182247-7.pdf | converted from PDF -->
+**Full text:** `research/sources/odlyzko-1993-iterated-absolute-differences.full.md` (PDF-derived) and `research/sources/odlyzko-1993-iterated-differences-latex-source.full.md` (author's TeX, cleaner OCR).
+**Source URL:** https://www.ams.org/journals/mcom/1993-61-203/S0025-5718-1993-1182247-7/S0025-5718-1993-1182247-7.pdf
+**Published:** *Math. Comp.* 61 (1993), no. 203, 373–380. doi 10.1090/S0025-5718-1993-1182247-7. Received July 15, 1992. Dedicated to D. H. Lehmer.
 
-mathematics  of  computation
-volume  61, number  203
-july  1993, pages  373-380
+## Content
 
-ITERATED  ABSOLUTE  VALUES OF  DIFFERENCES  OF
-CONSECUTIVE PRIMES
+- **(A) Definitions.** `d_0(n) = p_n`; `d_{k+1}(n) = |d_k(n) − d_k(n+1)|`. The conjecture (attributed to Proth 1878, rediscovered by Gilbreath ~1958) is `d_k(1) = 1` for all `k ≥ 1`. Parity shape: `d_k(1)` odd, `d_k(n)` even for `n ≥ 2`, all `k ≥ 1`.
+- **(B) The block lemma, exact words (Introduction):** "If for some *N* we find a *K* such that `d_K(1) = 1` while `d_K(n) = 0` or 2 for all `1 ≤ n ≤ N`, then we can conclude that `d_k(1) = 1` for `K ≤ k ≤ N + K − 1`." So a `{0,2}` run of length N−1 after the leading 1 protects **N rows** — one row per block entry, linear coefficient exactly 1. This is stronger than the run's unsourced "≈ n/2 rows" (problem.md, CONTEXT.md), which appears **nowhere** in this paper.
+- **(C) Verification bound.** All primes `< 10^13`; `d_k(1) = 1` for `1 ≤ k ≤ π(10^13) ≈ 3.4 × 10^11`. Table 2: `G(π(x)) = 5, 15, 35, 65, 95, 135, 175, 248, 329, 417, 481, 635` for `x = 10^2..10^13`. Largest `g(n) = 635` (least row from which 1000 consecutive entries are 0/2) at `n ≈ π(7.17716 × 10^12)`, caused by the prime gap 674.
+- **(D) Methods.** Mod-4 linearization (eq. 2.2): `d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4)` for `k ≥ 1, n ≥ 2` — absolute values disappear mod 4 and the triangle follows Pascal's rule. Segmented sieve in blocks `5×10^5–8×10^6`, 50–75 full-array iterations then isolated processing of entries `> 2`. Hardware: SGI 4D-220 (4× R3000 25 MHz, 128 MB), 5–20 MB used, several months single-processor, ~2 s per 10^6-length interval. Also tested primes near 10^50 (436 iterations suffice) and probable primes near 10^100 (1417 iterations).
+- **(E) Reliability.** Author states results "cannot be fully guaranteed"; one error found (block `M = 8.972168×10^12`: spurious `g(n) = 914` from a nonexistent gap 1158; correct value 261).
 
-ANDREW M. ODLYZKO
+## Claims
 
-Dedicated  to the  memory  of D. H.  Lehmer
+```claim
+id: odlyzko-block-lemma
+statement: If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for K ≤ k ≤ N+K−1 — a leading {0,2} block of length N−1 protects N rows (one row per block entry; coefficient exactly 1, not n/2).
+hypotheses: any triangle d_{k+1}(n)=|d_k(n)−d_k(n+1)| from an integer sequence whose row K is 1 followed by N−1 entries in {0,2}; parity shape (odd, even, ...) holds automatically for primes.
+holds-here: yes — this is the run's central consumption lemma; the exact constant is N (linear), correcting the ≈ n/2 asserted in problem.md/CONTEXT.md.
+status: sourced (Odlyzko 1993, Introduction; identical in the author's LaTeX source; independently in Killgrove–Ralston 1959)
+bearing: fixes the protection budget: a {0,2} block of length L protects L+1 rows including the current row; consumption is linear, not geometric. Regeneration is still unproved, but the framing must use the corrected constant.
+anchor: research/sources/odlyzko-1993-iterated-differences-latex-source.full.md
+```
 
-Abstract.  Let  dç,(n)  =  p„  ,  the  nth  prime,  for  n  >  1 ,  and  let  dk+x(n)  =
-\dk(n)  -  dk(n  +  1)|  for  k  >  0,  n  >  1 .  A  well-known  conjecture,  usually
-ascribed  to  Gilbreath  but  actually  due  to  Proth  in  the  19th  century,  says that
-dk(\)  =  1  for  all  k  >  1 .  This  paper  reports  on  a  computation  that  verified
-this  conjecture  for  k  <  tt(1013)  »  3 x  10"  .  It  also  discusses  the  evidence  and
-the  heuristics  about  this  conjecture.  It  is very likely that  similar  conjectures  are
-also valid  for  many  other  integer  sequences.
+```claim
+id: odlyzko-verification-1993
+statement: Gilbreath's conjecture verified for d_k(1), 1 ≤ k ≤ π(10^13) ≈ 3.4×10^11 (all primes < 10^13); G(π(10^13)) = 635; max g(n) = 635 at n ≈ π(7.17716×10^12) from prime gap 674.
+hypotheses: exact integer computation; primes from a segmented sieve.
+holds-here: yes — the deepest published verification and the bound the run cites.
+status: sourced (Odlyzko 1993, §3, Tables 2–3)
+bearing: the run need not re-verify depth; the deliverable is a proof. Also documents that long computations are error-prone (one corrected error).
+anchor: research/sources/odlyzko-1993-iterated-absolute-differences.full.md
+```
 
-1.  Introduction
-
-Let  pi  =2,  p2 =  3,  ...    be  the  primes  in  their  natural  ordering,  and  set
-
-do(n)  =pn,         n>\,
-
-dk+x(n) =  \dk(n)-dk(n+l)\,         k>0,n>  1.
-
-Table  1 (next page) shows  dk(n)  for  0  <  k  <  20,  1 <  n  <  20.  Note  that
-dk(l)  =  1  for  1 <  k  <  20.  As was pointed  out by H. C. Williams, Proth  [15]
-claimed  to  prove  that  dk(l)  =  1  for  all  k  >  1,  but  his  proof  was  faulty.  More
-recently,  Gilbreath  (unpublished)  independently  conjectured  that  dk(l)  — 1  for
-all  k  >  1 .  (See Problem  A10  in  [7], and  also  [8].)  This  is usually  referred  to  as
-Gilbreath's  conjecture.
-Gilbreath's  conjecture  was  verified  for  k  <  63,419,  that  is  for  all  primes
-<  792,731  , by Killgrove and  Ralston  [8], who were fellow students  of Gilbreath
-at  UCLA  in  the  late  1950s.  This  paper  reports  on  a verification  of  this  conjecture
-for  all  primes  <  1013,  so  that  dk(l)  =  1  for  1  <  k  <  3.4  x  1011 .  The
-computational  results  are  presented  in  §3,  and  the  algorithms  that  were  used
-are  described  in  §4.
-For  a  general  sequence  do(n),  to  compute  dk(l)  it  is  necessary  to  compute
-dj(i)  for  all  i + j  <  k +  1,  so that  for  k  ~  3.4 x  10"  approximately  5 x  1022
-numbers  have  to  be  computed,  far  too  many  for  the  technology  of  today  or  the
-near  future.  The  computations  for  d0(n)  -  pn  were possible  because  of  special
-properties  of  the  primes.  Note  that  dk(l)  is  odd  and  dk(2),  dk(3),  ...  ,  are
-even  for  all  k  >  1 .  If  for  some  A^ we  find a  K  such  that  dfc(l)  -  1  while
-dn(n)  =  0  or  2  for  all  1 <  n  <  N,  then  we  can  conclude  that  dk(l)  =  1  for
-K<k<N  + K-l.  Let  C7(7V) denote  the  minimal  k  (if it  exists) such that
-dj(l)  =1  for  1 <  j  <  k  and  dk(n)  =  0  or  2 for  1 <  n  <  N.  Computations
-
-Received by the editor  July  15, 1992.
-1991 Mathematics Subject Classification. Primary 11N05, 11Y99; Secondary 11K36, 11Y16,
-68Q25.
- 373  ©1993  American Mathematical Society
-0025-5718/93 $1.00+  $.25 per page
-
-374 A.  M.  ODLYZKO
-
-Table  1.  Iterated  differences  dk(n)  for  0 <  k  <  20,  1 <  n  <  20
-
-k\n
-
-0
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
- 10    11    12    13    14    15    16    17    18    19    20
-
-13    17    19    23    29    31    37    41    43    47    53    59    61    67    71
-
-show  that  G(N)  does  exist  for  all  N  that  have  been  checked  and  is  small.
-Table  2  presents  some  values.  (Similar  observations  have  been  made  before,
-cf. pp. 34-35 in [17].)
-A  rigorous  proof  of  Gilbreath's  conjecture  appears  out  of  reach,  given  our
-knowledge  of  primes.  Maximal  gaps  between  consecutive  primes  around  x  are
-thought  to  be  not  much  larger  than  (logx)2.  (There  is a  conjecture  of  Cramer
-[5] that  these  gaps  are  0((logx)2),  and  numerical  evidence  [3, 4,  20]  supports
-
-*[excerpt ends; 16627 characters not shown — see `research/sources/odlyzko-1993-iterated-absolute-differences.full.md`]*
+```claim
+id: odlyzko-mod4-linearization
+statement: For k ≥ 1, n ≥ 2, d_{k+1}(n) ≡ d_k(n) + d_k(n+1) (mod 4) because d_k(n) is even there; the absolute-value triangle obeys Pascal's rule mod 4 (mod 2 after halving).
+hypotheses: row shapes (odd, even, even, ...) — true for primes and any 2-followed-by-odd-numbers start with even gaps.
+holds-here: yes — the cleanest algebraic handle on the operator; generalized in Chase–Hunter–Tao 2026 Lemma 3.10.
+status: sourced (Odlyzko 1993, eq. 2.2)
+bearing: candidate invariants forcing A_k(1) ∈ {0,2} are best sought at the mod-4/mod-2 level.
+anchor: research/sources/odlyzko-1993-iterated-absolute-differences.full.md
+```

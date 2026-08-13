@@ -74,8 +74,7 @@ lookup.)*
 - **Wikipedia / Open Problem Garden / Boyer multipage index** — tertiary restatements,
   no theorem or bound; pointers only.
 - **Brown orthomagic** — different intermediate object, no reduction to the full problem.
-- **Cain (arXiv)** — only the abstract page downloaded (no body); the quartic/Gaussian
-  reformulation is asserted, not usable without the full text.
+- **Cain (arXiv:1908.03236)** — **SUPERSEDED**: the scholar digest's earlier entry said "only the abstract page downloaded (no body); the reformulation is asserted, not usable". That is stale — the full 15-page PDF has been on disk since the next cycle and is read in `research/summaries/cain-gaussian-integers-magic-square-of-squares-2019.md` (status: checked; real, concrete Theorem 4.2 identity `Im[x²y²z²] = −4·ΠIm[xᵢ²]`, F_29 smallest non-Parker field). Cain now HELPS the Φ-route: his Eq. 4.1 is the group law behind the run's f(m,n)=Im((m+ni)⁴)/4.
 - **Michaud-Rodgers talk** — sketch-level; centre bound mis-attributed; no proofs.
 
 ## Still missing / open
@@ -83,6 +82,14 @@ lookup.)*
 - Buell full text (not on disk, only citations) — if the hourglass bound's exact
   hypothesis set is needed, re-fetch.
 - Cain's paper body (if the quartic-over-abelian-extension reformulation is wanted).
+- **NEW (this pass): Yu, Yuan & Zhou, "Quantitativity on the number of rational
+  points in the Mordell conjecture", arXiv:2602.01820** — cited in Garcia-Fritz–Pasten
+  2026 §2 as giving "a completely explicit height-uniform upper bound" (#X(k) ≤ c^(1+ρ)).
+  This is the strongest cited route to an *effective* C for the uniform-height approach;
+  the library's uniform-ML claims (DP07/GGK/DGH/Kühne, all ≤2021) do not cover a 2026
+  preprint, and the request tool refuses to queue it because they match on topic. If a
+  future run can fetch arXiv:2602.01820, the question is whether c(2,1) is explicit and
+  small enough to bound AP length on the Robertson curve.
 - End-to-end reduction "rational point on K3 ⇔ distinct int MSS" is still not a
   checked claim (open request `exact-reduction-magic-507c`).
 

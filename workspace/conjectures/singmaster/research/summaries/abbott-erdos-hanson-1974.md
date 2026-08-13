@@ -1,38 +1,50 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/abbott-erdos-hanson-1974.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Abbott–Erdős–Hanson 1974 — On the number of times an integer occurs as a binomial coefficient
 
-<!-- source: https://www.renyi.hu/~p_erdos/1974-23.pdf | converted from PDF -->
+Source: H. L. Abbott, P. Erdős, D. Hanson, Amer. Math. Monthly 81 (1974) 256–261,
+primary PDF (renyi.hu) read. [[abbott-erdos-hanson-1974]]
 
-## What it claims
+## Theorems (primary-source statements)
 
-We are now in a position to apply the theorem of Ingham . By this theorem, there is a
-largest prime P satisfying K S N - K < P _<_ N. It follows that P divides t and
-hence that n ? P for all n e S2. Hence all of the numbers in S2 lie between P
-and N . The number of numbers in S2 is thus
+- **Theorem 1**: the **average and normal order of N(t) is 2**; more precisely the
+  number of `t ≤ x` with `N(t) > 2` is `O(√x)`. (Proof: count pairs, get
+  `Σ_{t≤x} N(t) = 2x + 2·2^{1/2}√x + O(x^{1/3}log x)`.)
+- **Theorem 2**: for `w(t) < log t/log log t` (w = #distinct prime factors),
+  `N(t) < 2 w(t) log t / (log t − w(t) log log t)`.
+- **Theorem 3**: `N(t) = O(log t / log log t)` — the first improvement over
+  Singmaster. Proof uses **Ingham's theorem** (prime between `x` and `x+x^{5/8}`):
+  split the solution set `S={n : C(n,k)=t}` into `n > (log t)^{6/5}` (hence
+  `k < log t/log log t`) and the rest; for the rest, the largest `P` prime in
+  `(N−K, N]` divides `t` and all `n ≥ P`, so `|S₂| ≤ N−P ≤ P^{5/8} = O((log t)^{3/4})`.
+- **Theorem 4**: `G(t) = O(√(log t))` for `t = (n+1)(n+2)…(n+l)` (products of
+  consecutive integers), with explicit constant `(2+δ)√(log t/log 2)`.
 
-SZ I <_ N - P <_ P5/8 < N518 <_ (log t) 3/a = O (log t/log log t),
+**Cramér-conditional**: assuming a prime between `x` and `x+(log x)^2`,
+`N(t) = O_ε((log t)^{2/3+ε})`.
 
-where, in obtaining the second inequality, we again appeal to Ingham's result . This
-completes the proof of Theorem 3 .
-We remark that if one makes use of the unproved conjecture of Cramér [3]
+## Witness data recorded in the paper
 
-asserting that there is a prime between x and x + (log x) Z for all sufficiently large x,
-then our argument gives N(t) = 0((logt) 213+E ) The proof is basically the same
-as before, except that one puts S, = {n : n e S, log n > (log t) 113-E }. We omit the
-rather laborious details of the argument .
-We conclude with a brief discussion of a somewhat related problem . Let G(t)
+- `N(t)=6` for the six `t ≤ 2^48`: 120, 210, 1540, 7140, 11628, 24310.
+- The **only** `t ≤ 2^48` with `N(t) ≥ 8` is `t = 3003`, `N(3003)=8`
+  (attributed to Singmaster's verification).
+- `N(t) ≥ 6` **infinitely often** (Singmaster/Lind).
 
-denote the number of representations of the positive integer t as a product of con-
+## Bearing for this run
 
-secutive integers; that is, G(t) is the number of solutions of t = (n + 1)(n + 2) . .…
+Primary source for the `O(log t/log log t)` historical step and for the
+average/normal-order-2 fact (which books show that "almost all a occur as themselves
++ one mirror"). The `O(√x)` bound on `N(t)>2` counts the size of the set of numbers
+with *any* nontrivial repeat, which is the relevant empirical picture: repeats are
+rare and bounded in number, matching `B=8`-style thinking — but this is about the
+set of t, not the multiplicity of one t, so it does not itself bound N(a) < 8.
 
-## Statements it makes
-
-THEOREM 1. The average and normal order of N(t) = 2 .
-
-THEOREM 2 . Let w(t) denote the number of distinct prime factors of the integer
-
-THEOREM 3 . N(t) = O (log t/log log t) .
-
-THEOREM 4 . G(t) = O (J log t).
-
-*[digest of a 9283 character source; every section, statement, and proof in full at `research/sources/abbott-erdos-hanson-1974.full.md`]*
+```claim
+id: aeh-average-normal-order-2
+statement: Abbott-Erdos-Hanson 1974 (Thm 1): the average and normal order of N(t) is
+  2; explicitly #{t<=x : N(t)>2} = O(sqrt(x)).
+hypotheses: none.
+holds-here: yes.
+status: sourced (primary PDF read; proof reproduced in note)
+bearing: numbers with any nontrivial repeat are O(sqrt(x)) of [1,x]; does NOT by
+  itself bound the multiplicity of a single value, but frames the empirical picture.
+anchor: research/summaries/abbott-erdos-hanson-1974.md
+```

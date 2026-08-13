@@ -1,0 +1,6 @@
+sieve 1270607 primes in 0.2s
+rows to depth 1000 in 3.4s; oracle ok k=1..40
+erosion steps checked: 101; track predictions correct: 101/101
+regen rows: 60; with (x==2,y==4) trigger visible: 60
+intruder y(k) over k with visible intruder: min 4, max 14, n=161
+intruder value counts: [(4, 96), (6, 29), (8, 16), (10, 6), (12, 8), (14, 6)]

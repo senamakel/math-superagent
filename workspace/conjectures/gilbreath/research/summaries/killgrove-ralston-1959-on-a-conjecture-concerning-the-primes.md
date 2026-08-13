@@ -1,193 +1,34 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Killgrove & Ralston 1959 — On a conjecture concerning the primes
 
-<!-- source: https://www.ams.org/journals/mcom/1959-13-066/S0025-5718-59-99262-2/S0025-5718-59-99262-2.pdf | converted from PDF -->
+**Full text:** `research/sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md`
+**Source URL:** https://www.ams.org/journals/mcom/1959-13-066/S0025-5718-59-99262-2/S0025-5718-59-99262-2.pdf
+**Published:** *Math. Comp.* (Math. Tables Aids Comp.) 13 (1959), 121–122. Received Oct. 7, 1958; ONR-sponsored. Authors at UCLA.
 
-CONJECTURE   CONCERNING   THE    PRIMES 121
+## Content
 
-9.  I.Roman,  "An  Euler  summation  formula,  "Am.  Math.  Monthly,  v.  43, 1936, p.  9-21.
-10.  H.  E.  Salzer,  "A  simple  method  for  summing  certain  slowly  convergent  series,"  J.
-Math  and  Phys.,  v.  33, 1954, p.  356-359.
-11.  H.  E.  Salzer,  "Formulas  for  the  partial  summation  of  series,"  MTAC,  v.  X,  1956,
-p.  149-156.
-12.  T.  B.  Sprague,  "On  Lubbock's  formula  for  approximating  to  the  value  of  a  life  an-
-nuity,"  /.  Inst.  Actuaries,  London,  v.  18,  1874, p.  305-317.
-13.  J.  F.  Steffensen,  Interpolation,  Williams  &  Wilkins,  Baltimore,  Maryland,  1927,
-p.  138-148.
-14.  E.  T.  Whittaker,  & G.  Robinson,  The  Calculus  of Observations,  Blackie,  London,  1924,
-p.  149-150.
+- **(A) The conjecture, attributed.** "The conjecture (Norman L. Gilbreath, private communication, July 1958) is then that `P_{i,0} = 1` for all `i > 0`" (the run's `A_k(0)`). Sequence `P_{0,j}` = j-th prime, `P_{0,0}=2`; iteration `P_{i,j} = |P_{i−1,j+1} − P_{i−1,j}|`. Their table reproduces the run's `A_1..A_6` exactly.
+- **(B) Block lemma, exact words.** "if for some *i* and all *j*, `0 ≤ j ≤ M`, we have `P_{i,j} = 0` or 2 and `P_{i,0} = 1`, then all of the differences that derive from them will be bounded by 2, from which it follows that `P_{i,0}, P_{i+1,0}, ..., P_{i+M−1,0} = 1`." (Their indexing includes the leading 1 in the block so the count is off-by-one relative to Odlyzko; either way the protection is **one row per {0,2} entry**, coefficient 1.)
+- **(C) P(i) and the verification.** `P(i)` = largest M with `P_{i,j} ≤ 2` for all `j ≤ M`; then `P_{k,0} = 1` for `i ≤ k < P(i) + i`. SWAC run on Lehmer's sieve of primes `< 792,722`; "the conjecture holds for all primes less than 792,722, which amounts to the first 63,419 primes" (Odlyzko's text states `< 792,731`, 63,419 — trivial discrepancy in the upper bound value). Full table of P(i) for i = 0..95, reaching `P(95) > 63,324`, `P(95)+95 > 63,419`. The P(i) values (3, 8, 14, 14, 25, 24, 23, 22, 25, 59, ...) are exactly OEIS A000232, which the run's block profile reproduces as P(i)−1.
+- **(D) Context.** Also notes uncountably many sequences have the property (e.g. `{1, 0-or-2, ...}`); any such sequence has first differences bounded by `2^j`.
 
-On  a  Conjecture  Concerning  the  Primes
+## Claims
 
-By  R.  B. Killgrove  and  K.  E.  Ralston
+```claim
+id: killgrove-ralston-block-protection
+statement: If row i starts 1 and has M entries after the leading 1 (their "0 ≤ j ≤ M" includes P_{i,0}) all 0 or 2, then the next M−1 rows start with 1 (their span P_{i,0}..P_{i+M−1,0}); protection is one row per {0,2} entry, coefficient 1.
+hypotheses: triangle from primes via absolute differences; row is (1, 0/2, ...).
+holds-here: yes — earliest published statement of the block lemma; agrees with Odlyzko 1993 up to indexing.
+status: sourced (Killgrove–Ralston 1959, p. 121)
+bearing: primary confirmation that the "≈ n/2" phrasing in problem.md is wrong; the true protection is linear with constant 1.
+anchor: research/sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md
+```
 
-Consider  the  sequence  {Poj}, j  =  0,  1, 2,  • • • ,  where  Po¡  is  thej'th  prime  num-
-ber,  Poo  =  2,  Poi  =  3,  Po2  =  5,  • • •  .  Now  define  the  absolute  differences  of  the
-primes  by  the  recursion  relation
-
-Pa  =  | P,-i,,+i  — Pi-u  I •
-
-The  conjecture  (Norman  L.  Gilbreath,  private  communication,  July  1958)  is
-then  that  P,o  =  1  for  all  i  >  0.  The  validity  of  the  conjecture  for  the  first  few
-primes  can  be  seen  from  the  following  table  of  their  absolute  differences.
-2     3     5     7      11      13      17
-1      2     2     4       2       4
-1      0     2       2       2
-i      2     0       0
-1      2       0
-1      2
-1
-
-There  are  an  uncountable  number  of  sequences  {boy) with  the  property  that
-their  absolute  differences  6¿o defined  as  above  are  unity.  In  particular  the  sequences
-[k  +  I,  k,  k,  ■ ■ ■ ]  and  any  sequence  of  the  form  {¿>oo =  1;  boy =  0  or  2,  j  >  0)
-have  this  property.  Furthermore  it  can  easily  be  verified  that  any  sequence,  {&o,},
-with  the  required  property  has  its  first  absolute  differences  bounded  by  the  se-
-quence  [2'\,  that  is,  bu  ^  2'.
-Consider  again  the  absolute  differences  of  the  primes.  Since  all  primes  greater
-than  2 are  odd  numbers  it  follows  that  all  differences  P,y,  j  >  0,  are  even  numbers.
-Now,  if  for  some  i  and  all  j,  0  <  j  <  M,  we  have  PtJ  =  0  or  2  and  P,o  =  1,  then
-all  of  the  differences  that  derive  from  them  will  be  bounded  by  2,  from  which  it
-follows that
- Pt',0  ,  Pj+1,0  ,  Pi+2,0  i   " '  "   i   "t+Jf-1,0    =    I-
-
-We  now  define  the  function  P(i)  to  be  the  largest  integer  M  such  that  P,3  ^  2
-for  all j  <  M.  Thus  we  can  say  that  Pko  =  1 for  i  ^  k  <  P(i)  +  i.
-A  routine  was  coded  for  the  SWAC  to  evaluate  this  function  P(i),  using  the
-primes  less  than  792,722  from  a  sieve  prepared  by  D.  H.  Lehmer.  The  results  of
-
-Received  Oct.  7,  1958.  The  preparation  of  this  paper  was  sponsored  by  the  Office  of  Naval
-Research.  Reproduction  in  whole  or  in  part  is  permitted  for  any  purpose  of  the  United  States
-Government.
- 122 D.   S.   STOLLER   AND   L.   C.   STOLLER
-
-this  calculation  are  shown  in  the  following  table.  From  these  results  it  is  seen  that
-the  conjecture  holds  for  all  primes  less  than  792,722,  which  amounts  to  the  first
-63,419 primes.
- Table  of  the  Function  P(i)   for  0  <  i  <    95
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
- P(i)
-
-3
-8
-14
-14
-25
-24
-23
-22
-25
-59
-98
-97
-98
-97
-174
-176
-176
-176
-176
-291
-290
-289
-740
-874
-873
-872
-873
-872
-871
-870
-869
-868
- i>(«) + »
-
-4
-10
-17
-18
-30
-30
-30
-30
-34
-69
-109
-109
-111
-111
-189
-192
-193
-194
-195
-311
-311
-311
-763
-898
-898
-898
-900
-900
-900
-900
-900
-900
- 33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-
-*[excerpt ends; 1260 characters not shown — see `research/sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md`]*
+```claim
+id: killgrove-ralston-verification-1959
+statement: Conjecture verified for all primes < 792,722 (first 63,419 primes) on SWAC using D. H. Lehmer's sieve; P(i) tabulated for i = 0..95, max P(i)+i > 63,419.
+hypotheses: exact computation; finite initial segment.
+holds-here: yes — the first machine verification; the run's block profile matches their P(i)−1.
+status: sourced (Killgrove–Ralston 1959, p. 121–122; bound cross-checked against Odlyzko 1993's restatement)
+bearing: the standard "verified to k < 63,419" citation; note Odlyzko's restatement says primes < 792,731 — the two sources differ in the last digits (792,722 vs 792,731); the first-63,419-primes count is unambiguous and consistent.
+anchor: research/sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md
+```

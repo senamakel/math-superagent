@@ -27,6 +27,25 @@ N_MAX = 1000
 VALUE_CAP = 10**18
 
 
+def pell_family_members(j_max):
+    """Pell-family members (Singmaster 1975): C(n+1,k+1)=C(n,k+2).
+
+    n = F_{2j+2} F_{2j+3} - 1,  k = F_{2j} F_{2j+3} - 1  (j >= 1), giving
+    infinitely many a with N(a) >= 6.  Returns [(j, n, k, a)].
+    """
+    F = [0, 1]
+    for _ in range(2 + 2 * (j_max + 2) + 1):
+        F.append(F[-1] + F[-2])
+    out = []
+    for j in range(1, j_max + 1):
+        n = F[2 * j + 2] * F[2 * j + 3] - 1
+        k = F[2 * j] * F[2 * j + 3] - 1
+        a = comb(n + 1, k + 1)
+        assert a == comb(n, k + 2), (j, n, k)
+        out.append((j, n, k, a))
+    return out
+
+
 def equal_pairs(n_max, value_cap):
     """Return (collisions, high_multiplicities).
 
@@ -86,3 +105,10 @@ if __name__ == "__main__":
             "high_multiplicity": {str(v): info for v, info in high.items()},
         }, fh, indent=1, sort_keys=True)
     print("\n[verify_family] wrote code/out/family_pairs.json")
+
+    print("\nPell family (Singmaster 1975): C(n+1,k+1)=C(n,k+2), N(a)>=6:")
+    for (j, n, k, a) in pell_family_members(4):
+        astr = str(a)
+        short = astr if len(astr) <= 30 else astr[:27] + "..."
+        print(f"  j={j}: n={n} k={k}  value={short}  "
+              f"(reps (n+1,k+1),(n,k+2))")

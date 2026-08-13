@@ -56,6 +56,26 @@ Also a one-parameter family over `Q(i,√(µ³−µ))`, and one MSS over `Q(u)` 
 ```
 7 square entries; an example with 8 distinct square entries is unknown.
 
+**Robertson reduction verified exactly on the witness** (`code/robertson_reduction_check.py`,
+output `code/out/robertson_reduction_check.txt`, exit 0, run under sage):
+all 8 line sums = 541875 = 3a with a = 425² = 180625; reduction parameters
+b = 41496 (main diagonal half-difference), c = 138600 (anti-diagonal
+half-difference — c is NOT the centre). Membership test on
+E : y² = x(x² − c²): X ∈ 2E(Q) iff X, X−c, X+c all squares. Exactly 2 of the
+3 main-diagonal x-coordinates lie in 2E(Q): X = 139129 (X±c = 23², 527²) and
+X = 180625 (X±c = 205², 565²); X = 222121 fails (X not a square, X+c = 360721
+not a square). Doubling formula x(2Q) = (x²+c²)²/(4y²) verified symbolically
+against the duplication formula, on a rational point, and against Sage's 2P.
+rank(E) = 2 over Q (mwrank 2-descent: E.rank, algorithm='all', and standalone
+mwrank agree; generators [−88200:31752000:1], [315000:158760000:1]; regulator
+6.9103524178015; #E(Q)/2E(Q) = 16, III[2] = 1). All 8 division preimages are
+rational (x ∈ {−88200,−60984,−53900,−30800,217800,315000,356400,623700}); the
+duplication quartic (x²+c²)² − 4X·x(x²−c²) factors completely over Q exactly
+for X = 139129 and 180625 and has no rational root for X = 222121. Converse
+grid (4) built from the AP (139129, 180625, 222121) is the transpose of the
+witness: all 8 sums 3a, entries squares except exactly {360721, 222121} — the
+witness is one doubled point short of an MSS.
+
 ## Implications for this run
 
 - Confirms the parametrisation and the elliptic reformulation (`robertson-elliptic-reduction`).
@@ -140,7 +160,16 @@ verified-by: statement traced through Bremner 1999 eqs. (2)–(4) and surroundin
   (X±c=205²,565²) yes; X=a−b=139129 (X±c=23²,527²) yes; X=a+b=222121 (X−c=289² but
   X+c=360721 not square) NO.  So 2 of the 3 main-diagonal x-coords are in 2E — the
   witness is a 7-square near-miss, one doubled point short of an MSS.  This is the
-  exact shape an impossibility lemma must not forbid.
+  exact shape an impossibility lemma must not forbid.  Machine verification 2026-08-13:
+  code/robertson_reduction_check.py (runs under sage) re-derives every one of these
+  statements with exact integer/Fraction/QQ arithmetic and exit 0 — all 8 lines sum
+  541875; rank(E: y²=x³−19209960000x)=2 by mwrank 2-descent (E.rank, algorithm='all',
+  standalone mwrank agree; generators [−88200:31752000:1],[315000:158760000:1];
+  regulator 6.9103524178015; #E/2E=16, III[2]=1); x(2Q)=(x²+c²)²/(4y²) verified
+  symbolically vs the duplication formula and on a rational point and vs Sage 2P;
+  the eight division preimages are all rational and the duplication quartic
+  (x²+c²)²−4X·x(x²−c²) splits completely over Q exactly for X=139129,180625 and has
+  no rational root for X=222121.  Output code/out/robertson_reduction_check.txt.
 ```
 
 ```claim

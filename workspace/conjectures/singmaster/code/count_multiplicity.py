@@ -20,57 +20,14 @@ Method: inversion, never the triangle.
 """
 
 import json
-import math
 from math import comb
 
-CONVENTION = (
-    "N(a) counts BOTH mirrored occurrences (C(n,k) and C(n,n-k) are two "
-    "distinct pairs) and includes the trivial pair C(a,1) = C(a,a-1)."
+from lib.binom_multiplicity import (
+    CONVENTION,
+    canonical_reps,
+    multiplicity,
+    nontrivial_reps,
 )
-
-
-def canonical_reps(a, n_max):
-    """All (n,k) with 1<=k<=n/2, n<=n_max and C(n,k)=a, via inversion.
-
-    Each element represents BOTH (n,k) and its mirror (n,n-k).  The trivial
-    rep (a,1) is included when n_max >= a (its mirror is (a,a-1)).
-    """
-    reps = set()
-    # k <= log2(a): a = C(n,k) >= C(2k,k) >= 2^k forces k <= floor(log2 a).
-    k_max = a.bit_length()      # >= floor(log2 a) + generosity for small a
-    for k in range(1, k_max + 1):
-        if k > n_max:
-            break
-        if comb(n_max, k) < a:
-            continue
-        # smallest n in [k, n_max] with C(n,k) >= a
-        lo, hi = k, n_max
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if comb(mid, k) >= a:
-                hi = mid
-            else:
-                lo = mid + 1
-        n = lo
-        if n <= n_max and comb(n, k) == a:
-            kk = min(k, n - k)
-            if 1 <= kk and 2 * kk <= n:
-                reps.add((n, kk))
-    return reps
-
-
-def multiplicity(a, n_max):
-    """N(a) over all 0<=k<=n<=n_max, counting both mirrors and the trivial pair."""
-    total = 0
-    for (n, k) in canonical_reps(a, n_max):
-        total += 1 if 2 * k == n else 2   # k = n/2 has no distinct mirror
-    return total
-
-
-def nontrivial_reps(a, n_max):
-    """Canonical reps with 2<=k<=n/2 (the trivial pair (a,1) excluded)."""
-    return sorted((n, k) for (n, k) in canonical_reps(a, n_max)
-                  if not (n == a and k == 1))
 
 
 def scan_high_multiplicity(a_max):

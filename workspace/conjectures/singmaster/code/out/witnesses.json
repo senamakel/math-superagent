@@ -1,39 +1,21 @@
 {
- "generated_by": "operator, exact integer arithmetic, all C(n,k) with 2<=k<=n/2, n<=20000, value<=10^12",
  "conjecture": "N(a) is bounded by an absolute constant (Singmaster 1971)",
- "convention": "N(a) counts BOTH mirrored occurrences and includes the trivial pair C(a,1)=C(a,a-1)",
- "record": {
-  "a": 3003,
-  "N": 8,
-  "nontrivial_occurrences": [
-   [
-    14,
-    6
-   ],
-   [
-    15,
-    5
-   ],
-   [
-    78,
-    2
-   ]
-  ]
+ "convention": "N(a) counts BOTH mirrored occurrences (C(n,k) and C(n,n-k) are two distinct pairs) and includes the trivial pair C(a,1) = C(a,a-1).",
+ "generated_by": "code/count_multiplicity.py, exact integer arithmetic, inversion for multiplicity, direct enumeration for scan",
+ "scan": {
+  "a_max": 10000000,
+  "reported_N_ge": 6
  },
- "multiplicity_ge_6": {
-  "3003": {
-   "N": 8,
+ "witnesses": {
+  "11628": {
+   "N": 6,
    "nontrivial": [
     [
-     14,
-     6
-    ],
-    [
-     15,
+     19,
      5
     ],
     [
-     78,
+     153,
      2
     ]
    ]
@@ -51,19 +33,6 @@
     ]
    ]
   },
-  "210": {
-   "N": 6,
-   "nontrivial": [
-    [
-     10,
-     4
-    ],
-    [
-     21,
-     2
-    ]
-   ]
-  },
   "1540": {
    "N": 6,
    "nontrivial": [
@@ -77,28 +46,15 @@
     ]
    ]
   },
-  "7140": {
+  "210": {
    "N": 6,
    "nontrivial": [
     [
-     36,
-     3
+     10,
+     4
     ],
     [
-     120,
-     2
-    ]
-   ]
-  },
-  "11628": {
-   "N": 6,
-   "nontrivial": [
-    [
-     19,
-     5
-    ],
-    [
-     153,
+     21,
      2
     ]
    ]
@@ -112,6 +68,36 @@
     ],
     [
      221,
+     2
+    ]
+   ]
+  },
+  "3003": {
+   "N": 8,
+   "nontrivial": [
+    [
+     14,
+     6
+    ],
+    [
+     15,
+     5
+    ],
+    [
+     78,
+     2
+    ]
+   ]
+  },
+  "7140": {
+   "N": 6,
+   "nontrivial": [
+    [
+     36,
+     3
+    ],
+    [
+     120,
      2
     ]
    ]

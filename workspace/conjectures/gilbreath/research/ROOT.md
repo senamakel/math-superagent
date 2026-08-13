@@ -24,8 +24,9 @@ A minimal counterexample is a row whose second entry is `4, 6, 8, ...` (any even
 (M. F. Hasler, A036262) such a value `≥ 4`, once it has zeros ahead of it, keeps
 its value and "propagates" toward the front; so the smallest counterexample is
 searched for among rows whose leading `{0,2}` block has *ended* and cannot be
-regenerated in time. Consumption (a block of length `n` protects `≈ n/2` rows)
-vs regeneration is the whole obstruction.
+regenerated in time. Consumption (a block of length `n` protects `n` rows per
+Odlyzko's exact lemma — see below; the `≈ n/2` figure in the original brief is
+superseded by the sourced constant) vs regeneration is the whole obstruction.
 
 ## Current verification bound
 

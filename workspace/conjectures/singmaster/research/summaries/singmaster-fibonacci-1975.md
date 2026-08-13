@@ -1,38 +1,68 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/singmaster-fibonacci-1975.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Singmaster 1975 — Repeated binomial coefficients and Fibonacci numbers
 
-<!-- source: https://mathstat.dal.ca/FQ/Scanned/13-4/singmaster.pdf | converted from PDF -->
+Source: D. Singmaster, Fibonacci Quarterly 13(4) (1975) 295–298; primary scanned
+PDF read. [[singmaster-fibonacci-1975]]
 
-## What it claims
+## What the paper establishes
 
-In this note, I show that there are infinitely  many solutions to the equation
-(
-n + 1 ) - f
-  n ) [k+  1  ]  \  k+2  J  '
+**The infinite family (equation (1))**: `C(n+1,k+1) = C(n,k+2)` has **infinitely
+many** solutions. From the equation, `(n+1)(k+2) = (n−k)(n−k−1)`; with
+`m=n+1, j=k+2`:
+`m = [−1+3j+√(5j²−2j+1)]/2`, requiring `5j²−2j+1=s²v²`, i.e.
+**`(5j−1)² − 5v² = −4`** (u=5j−1) — a Pell-like equation, completely solvable by
+standard theory. All solutions come from `u+v√5 = (L_{2i−1} + F_{2i−1}√5)(9+4√5)^t`
+etc.; the class `(9+4√5)` drives the infinitely many solutions. Result (eq (6)):
 
-given by n = F2j+2F2i+3  ~  h  k
- =  ^2l^2i+3  ~  ^  where Fn  is the n
-th  Fibonacci number, beginning with  F0  = 0. This
-gives  infinitely  many  binomial  coefficients  occurring  at  least  6 times. The method  and results of a computer search
-for  repeated binomial  coefficients, up to  248:, will  be given.
+    n = F_{2j+2}·F_{2j+3} − 1
+    k = F_{2j}·F_{2j+3} − 1         (j=1,2,…)
 
-1.  INTRODUCTION
+satisfying `C(n+1,k+1)=C(n,k+2)`, so infinitely many binomial coefficients occur at
+**least 6 times**.
 
-In  [ 6 ] ,  I  have conjectured  that  the  number  of  times  an  integer can occur  as a binomial  coefficient  is bounded. A
-computer search up to  248  has revealed only the following seven nontrivial  repetitions:
-120- ( ' / ) - ( ' / ) ;  ™ - ( ? ) - ( y ) ;  ' * * - ( ? ) - ( ? ) ;
+- First members (n,k): (14,4), (103,38), (713,271), (4894,1868), …
+- **j=1**: `n=14,k=4`: `C(15,5)=C(14,6)=3003`.
+- **j=2**: `C(104,39)=C(103,40) = 61218182743304701891431482520`; Singmaster
+  verified computationally (mod-p and division methods) that this number does **not**
+  occur as any other binomial coefficient — so it has exactly the multiplicity from
+  the family (6 twice-family + mirrors + trivial).
+- There is **no** extension to a triple pattern (consecutive n in (1) impossible).
 
-7140=  ( ' f  ) -  ( * ) ;  11628-  ( ' f  ) -  ( j ) ;  « , » - ( * ' ) -  ( ' / ) ;
+## The computer search (§4, primary)
 
-3003-  ( ? ) . ( y ) - ( y ) .
+Two searches:
+1. ALGOL up to `2^23`: built 4717 binomial coefficients `C(n,k)`, `k≥2, n≥2k`, by
+   addition, binary-search the preceding rows. Found all seven nontrivial
+   repetitions: 120, 210, 1540, 7140, 11628, 24310, **3003**.
+2. FORTRAN up to **`2^48`** (60-bit limit): triangular/tetrahedral subroutine +
+   binary search. Refound 210, 11628, 24310, 3003 — **no new results**. So
+   up to `2^48`, the only `N=8` value is 3003 and the six `N=6` values are as above.
 
-In  [ 2 ] ,  it  has been shown  that  the  only  numbers which are both triangular,  i.e., =  (  "  )  for some n, and tetrahe-
+## Conjecture (beyond the 1971 one)
 
-dral,  i.e.,  =  I"  )  for  some n,  are  1, 10,  120,  1540  and  7140. The first two  are…
+"No binomial coefficient is repeated more than 10 times. (Perhaps the right number
+is 8 or 12?)" — Singmaster's own guess; the run's `B=8` witness is consistent with
+the lower end of this range.
 
-1001…
+## Bearing for this run
 
-## Statements it makes
+Primary source for the `infinite-family-6` / `fibonacci-n6-family` claims, with the
+full Pell solution and the explicit `2^48` verification frame. This is the exact
+basis for "N(a)≥6 infinitely often," and it confirms 3003 (j=1) as the `N=8` record
+and that the j=2 value is `N=6` exactly. Cross-checked by witnesses.json / OEIS
+A003015.
 
-Lemma.  (Ln  + Fn^5)(9  + 4^/s)  =  Ln+6  + Fn+&sf5  .
-
-*[digest of a 13135 character source; every section, statement, and proof in full at `research/sources/singmaster-fibonacci-1975.full.md`]*
+```claim
+id: singmaster-1975-pell-family
+statement: Singmaster 1975 (FQ 13(4), primary): C(n+1,k+1)=C(n,k+2) solved
+  completely via Pell u^2-5v^2=-4 (u=5(k+2)-1); infinitely many solutions
+  n=F_{2j+2}F_{2j+3}-1, k=F_{2j}F_{2j+3}-1 (j>=1), giving infinitely many a with
+  N(a)>=6. j=1: 3003=C(15,5)=C(14,6); j=2: 61218182743304701891431482520
+  =C(104,39)=C(103,40), verified to occur nowhere else. Computer search up to 2^48
+  finds only 3003 with N=8 and exactly 120,210,1540,7140,11628,24310 with N=6.
+  Conjecture: no binomial coefficient repeated more than 10 times (maybe 8 or 12).
+hypotheses: j>=1; F_0=0,F_1=1 Fibonacci.
+holds-here: yes — the basis for N>=6 infinitely often.
+status: sourced (primary PDF read; values match witnesses.json/OEIS)
+bearing: fixes B>=6; 3003 is the record N=8; j=2 value has N=6 exactly.
+anchor: research/summaries/singmaster-fibonacci-1975.md
+```

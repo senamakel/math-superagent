@@ -1,78 +1,36 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/zhao-li-beta-adic-digit-omission.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Zhao–Li: On β-adic expansions of powers of an algebraic integer omitting a digit
 
-<!-- source: https://arxiv.org/html/2405.06220v2 | converted from HTML -->
+**Source:** arXiv:2405.06220v2, Quaestiones Mathematicae (published 2025), doi:10.2989/16073606.2025.2478908. Full text at `research/sources/zhao-li-beta-adic-digit-omission.full.md`.
 
-## What is in it
+## What it establishes
 
-- On β \beta -adic expansions of powers of an algebraic integer omitting a digit Thanks: ∗…
-        - Abstract.
-        - Key words and phrases:
-        - 2020 Mathematics Subject Classification
-  - 1. Introduction
-        - Conjecture 1.1.
-        - Problem 1.2 (*Persistence*problem).
-        - Conjecture 1.3.
-        - Definition 1.4.
-        - Theorem 1.5.
-        - Theorem 1.6 (Kovács [15]).
-        - Definition 1.7.
-        - Theorem 1.8.
-        - Corollary 1.9.
-  - 2. β \beta -adic expansion
-        - Definition 2.1.
-        - Remark 2.2.
-        - Definition 2.3.
-        - Definition 2.4.
-        - Remark 2.5.
-        - Lemma 2.6.
-        - Proof.
-        - Lemma 2.7.
-        - Proof.
-- …
+1. **Narkiewicz's bound stated exactly** (eq. (1.1), with the citation): `ℳ(N) ≤ 1.62 N^σ` with `σ = log_3 2 ≈ 0.63092`, where `ℳ(N) = #{1 ≤ n ≤ N : (2^n)_3 omits the digit 2}`. This is the cleanest confirmation in the library of the 1.62 constant and its meaning. (It is the counting function for n ≥ 1; the run's A_k has |A_k| = 2^{k-1} = N^σ at N = 2·3^{k-1} up to constant, consistent.)
+2. **Theorem 1.8 (the general theorem)**: for α, β coprime algebraic integers in a number field K, with (β) = 𝔭₁^{e₁}⋯𝔭_h^{e_h} all unramified of prime norm, the number of n ≤ N with the β-adic expansion of α^n omitting a digit b is `≤ C₁ N^{σ(β)}`, `σ(β) = log(|N(β)|−1)/log|N(β)|`, C₁ a constant depending only on β (explicit in the proof: C₀ = u·|N(β)|^{m₀}·C̃₀, C₁ = C₀|N(β)|^{σ(β)} — all three quantities are effectively computed in §4).
+3. **Corollary 1.9**: for coprime rational integers p,q, `ℳ_b(p,q,N) ≤ C N^{log(q−1)/log q}` with C effectively computable. For p=2, q=3, digit b=2 (which Theorem 1.5 allows since b ∈ {1,…,|N(β)|−1}): `ℳ_2(2,3,N) ≤ C·N^{log 2/log 3}` — a **complete modern proof of the Narkiewicz-type bound with effectively computable constant**.
+4. **Method**: 𝔭-adic interpolation. The sequence α^n is split into finitely many subsequences α^{l}(α^{u})^{n} each having an analytic 𝔭-adic interpolation G_l(x) = α^{l}(α^{u})^x (Lemma 3.2, Cor 3.3); a quantitative nonvanishing of derivatives (Lemma 4.1) bounds how many n can share k prescribed non-b digits (Eq. (4.7)–(4.13)).
+5. Also records: Erdős's original reference [4] is the Luminy conference paper "Some unconventional problems in number theory" (Math. Mag. 52 (1979), 67–70); the connection to Sloane persistence (Conjecture 1.3: 2^k omitting digit 0) and to practical binomial coefficients (`(2n choose n)` not practical if 2^n omits digit 2 — Leonetti–Sanna [17]).
 
+## Bearing on the run
 
-## What it claims
+- **The open REQUESTS row `full-text-narkiewicz-b0b1` is now answered.** The constant 1.62 is confirmed verbatim as the statement of Narkiewicz's 1980 result (Zhao–Li eq. (1.1)), and the exponent σ = log_3 2 is independently re-proved with an effectively computable constant via 𝔭-adic interpolation. What remains unverified is Narkiewicz's *original derivation* of 1.62 (his two-page note is not in the library; Zhao–Li cite it but prove the bound by their own method).
+- The exponent `σ(3) = log 2/log 3 = log_3 2` exactly matches the run's `|A_k| = 2^{k-1}` count: at the period scale N = 2·3^{k-1}, N^{log_3 2} = (2·3^{k-1})^{log_3 2} = 2·2^{k-1}·(3^{k-1})^{log_3 2}·... — the count 2^{k-1} and the bound N^{log_3 2} are the same growth, so the counting obstruction is sharp, not loose.
 
-Let α, β \alpha,\beta be two relatively prime algebraic integers in a number field K K and N N be a positive integer. We show that the number of n ∈ { 1, 2, …, N } n\in\{1,2,\dots,N\} such that the β \beta -adic expansion of α n \alpha^{n} omits a given digit is less than C 1 ​ N σ ⁡ ( β) C_{1}N^{\sigma(\beta)}, where σ ⁡ ( β):= log ⁡ ( | N ⁡ ( β) | − 1) log ⁡ | N ⁡ ( β) | \sigma(\beta):=\frac{\log(|N(\beta)|-1)}{\log|N(\beta)|} and C 1 C_{1} is a constant depending only on β \beta, if all prime ideal factors of β \beta are unramified and their norms are integer primes.
-
-## Statements it makes
-
-###### Conjecture 1.1.
-
-###### Conjecture 1.3.
-
-###### Definition 1.4.
-
-###### Theorem 1.5.
-
-###### Theorem 1.6 (Kovács [15]).
-
-###### Definition 1.7.
-
-###### Theorem 1.8.
-
-###### Corollary 1.9.
-
-###### Definition 2.1.
-
-###### Definition 2.3.
-
-###### Definition 2.4.
-
-###### Lemma 2.6.
-
-###### Lemma 2.7.
-
-###### Lemma 2.8.
-
-###### Corollary 2.9 (=Theorem 1.5).
-
-###### Proposition 3.1 ( [20, Chapter 1, (M)]).
-
-###### Lemma 3.2.
-
-###### Corollary 3.3.
-
-###### Lemma 4.1.
-
-*[digest of a 49364 character source; every section, statement, and proof in full at `research/sources/zhao-li-beta-adic-digit-omission.full.md`]*
+## Claims
+```claim
+id: ZL-1
+statement: ℳ(N) = #{1 ≤ n ≤ N : (2^n)_3 omits digit 2} satisfies ℳ(N) ≤ 1.62 N^{log_3 2} (Narkiewicz 1980), σ = log_3 2 ≈ 0.63092; stated verbatim in Zhao–Li eq. (1.1).
+hypotheses: none.
+holds-here: yes — this is the counting-function bound; matches |A_k| = 2^{k-1} at period scale.
+status: asserted-by-source (Zhao–Li cite Narkiewicz [19]; they do not reprove the 1.62 constant)
+bearing: pins the Narkiewicz constant exactly; the primary derivation remains unverified but the statement is now double-sourced.
+anchor: research/sources/zhao-li-beta-adic-digit-omission.full.md
+```
+```claim
+id: ZL-2
+statement: For coprime rational integers p,q and digit b, ℳ_b(p,q,N) ≤ C·N^{log(q−1)/log q} with C effectively computable; for p=2,q=3,b=2 this is a Narkiewicz-type bound with exponent log_3 2 and an explicit constant from the proof.
+hypotheses: p,q coprime, q ≥ 3, b ∈ {1,…,q−1} (Thm 1.5) or any digit b ∈ D_β (Thm 1.8).
+holds-here: yes — exactly the Erdős case with β=3 unramified (𝔭=(3), e=1, N(𝔭)=3).
+status: proved (Zhao–Li Theorems 1.5/1.8, Corollary 1.9)
+bearing: an independent modern reproof of the counting bound with an explicit constant — the deliverable "reproduce Narkiewicz's bound with its constant made explicit" is achieved in modern form.
+anchor: research/sources/zhao-li-beta-adic-digit-omission.full.md
+```

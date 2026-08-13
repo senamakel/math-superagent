@@ -41,7 +41,26 @@ as a function of k1,k2, threshold above which Faltings applies made explicit").
 
 1. Have tool_builder compute `genus(k1,k2)` for small pairs symbolically (sympy):
    defined curve, singularity count via Groebner of the partials, genus-degree formula.
-2. Have the scholar confirm GOAL's candidates against de Weger's (3,4) genus-3 result
-   and Jenkins' (2,2) genus-3 computation (both in the library).
-3. Open `research/approaches/` proposal documenting which of the four GOAL deliverables
-   the genus computation actually delivers, and the uniform-bound obstruction.
+   Target: reproduce de Weger (3,4)=genus 3 and Jenkins (2,2)=genus 3 as checks.
+2. Scholar has confirmed (from full texts): de Weger's (3,4) genus-3 / elliptic
+   double-cover, Jenkins' (2,2) genus-3, and that genus>1 is ineffective in (k1,k2).
+3. Newest evidence (see summaries): Kane 2007 §8 proves his method cannot reach a
+   constant; MRSTT §1.3 proves the equidistribution barrier exp(log^{3/2-eps} P)
+   (unrelaxable even under RH); BBW 2017 gives the n<=10^6 / t<=10^60 verification.
+4. The genus computation therefore delivers the Faltings threshold but never a
+   uniform bound — name that obstruction when reporting.
+
+```thread
+question: Can the family C(x,k1)=C(y,k2) yield a uniform-in-(k1,k2) effective bound
+  on N(a), or only per-pair finiteness (ineffective)?
+status: live — genus deliverable open (not yet computed); each analysis shows the
+  uniform bound is blocked by ineffectiveness of Faltings/Siegel/BST.
+rests-on: jenkins-ab-finite, deweger-genus3-curve, kane-method-ceiling, mrstt-method-limit,
+  bbw-verification-bound, mrstt-interior-nothree
+blocked-by: uniform bound needs effective Siegel or effective Schmidt subspace
+  theorem (out of reach); Kane's method provably capped; MRSTT's interior method
+  capped at exp(log^{3/2-eps} P).
+next: run sympy genus(k1,k2) for small pairs; report Faltings threshold + explicit
+  statement that it is not a uniform bound.
+```
+
