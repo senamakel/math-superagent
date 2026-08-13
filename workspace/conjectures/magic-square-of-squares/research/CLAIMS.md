@@ -42,46 +42,6 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `van-luijk-algebraic-br-not-sufficient-on-k3s` | If a smooth diagonal plane cubic a x^3 + b y^3 + c z^3 = 0 over a number field has local points everywhere, has no k-cubic points (three collinear points over a Galois Z/3Z extension), and abc is not a cube, then the K3… | no | proved | `research/summaries/van-luijk-cubic-points-brauer-manin-k3.md` |
 | `wu-bm-noninvariance-under-base-change` | Assuming a conjecture of Stoll, for any nontrivial extension L/K of number fields there exist smooth projective geometrically connected surfaces over K whose Brauer-Manin obstruction behaviour (weak approximation off… | **unchecked** | asserted | `research/summaries/wu-non-invariance-brauer-manin.md` |
 
-## Contradictions
-
-Resolve these before building on either side.
-
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `(none` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `as` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `a` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `claim;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `resolves)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `earlier` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `suspicion` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `that` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `"S(Q)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `empty"` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `could` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `be` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `goal` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `—` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `S(Q)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `nonempty` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `was` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `already` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `implied` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `by` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `six-square` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `catIII-k3-has-q-point` (code/out/k3_surface_check_note.md) contradicts `construction` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `nothing` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `on` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `disk;` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `consistent` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `with` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `Morgenstern's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `primitive` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `equal-d` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `census` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `phi-no-triple-m400` (code/out/phi_claim_blocks.md) contradicts `(three-primitive-equal-d-bound)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.

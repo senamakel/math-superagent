@@ -48,8 +48,6 @@ status: checked (exact construction + sympy verify in code/out/reconciliation_20
 bearing: closes the brauer-manin-k3-surface approach as formulated (its goal was
   S(Q)=empty); the obstruction question moves to the extra (7th-9th square) conditions
 anchor: code/out/reconciliation_2026-08-12.txt
-contradicts: (none as a claim; resolves) the earlier suspicion that "S(Q) empty" could
-  be the goal — S(Q) nonempty was already implied by the six-square construction
 answers: exact-reduction-magic-507c (partially: pins the six-square surface and its
   rational points; the full-MSS correspondence is still not a claim block)
 ```

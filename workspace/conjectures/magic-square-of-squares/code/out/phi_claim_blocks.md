@@ -68,8 +68,7 @@ status: checked (exact tests, `code/phi_extend.py`; verified-numerical — a the
 bearing: the strongest verified-numerical support for the no-MSS conjecture; a triple
   past m,n ≤ 400 is the natural falsifier (it would CONSTRUCT a 7-square grid)
 anchor: code/phi_extend.py
-contradicts: nothing on disk; consistent with Morgenstern's primitive equal-d census
-  (three-primitive-equal-d-bound)
+
 ```
 
 These two claims unblock the thread's step 1; the thread's steps 2–3 (polynomial

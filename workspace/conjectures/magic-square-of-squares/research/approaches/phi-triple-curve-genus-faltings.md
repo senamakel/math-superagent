@@ -34,33 +34,53 @@ For the two specific Φ-values in Bremner's 7-square witness — q_v =
 f(9,2) + f(1,r) = f(p,q) and f(4,3) + f(1,r) = f(p,q) are explicit,
 finite-coefficient, and their genus is a direct computation.
 
-Unlike the S-unit or congruent-number approaches (which rename the genus
-obstruction without exploiting the specific structure), this computes the
-actual geometric object whose rational points are the Φ-triples, and it is
-the natural next step after the Φ enumeration hit m,n ≤ 400.
+status: refuted
+killed-by: f(m,n) is homogeneous of degree 0 (both numerator 4mn(m²−n²) and
+  denominator (m²+n²)² scale by t⁴ under (m,n)→(tm,tn)), so f(p,q) depends
+  only on the ratio r = q/p. Fixing q₁ AND the ratio r fixes q₂, hence fixes
+  the constant C = q₁ + q₂; the fibre f(p,q) = C is then g(r)=C, a quartic in
+  ONE ratio r with at most 4 roots, i.e. a finite union of rational lines
+  through the origin (each genus 0). There is NO genus-≥2 curve here, so
+  Faltings' finiteness does not apply, there is no elliptic-rank case to
+  compute, and the "1-parameter family of curves" degenerates to lines with
+  infinitely many rational points. The genus computation the candidate names
+  as its first step returns 0 for every fibre, which closes the approach as
+  formulated. Verification: research/notes/verdict_facts_check.py (FACT A,
+  exact sympy). To get any genus ≥ 2 one would have to fix q₁ but NOT r and
+  eliminate (m,n) — but that object is a surface/3-fold, not a curve, and no
+  Faltings statement applies to it; the candidate's stated projection (fix
+  q₁ and the ratio) is precisely the one that kills the geometry.
 
-status: proposed
-speculation-vs-established: ESTABLISHED — the Φ reduction and f(m,n) = sin(4
-  arctan(n/m)) form are this run's own checked code (phi-universal-set); the
-  equation f(m1,n1)+f(m2,n2)=f(m3,n3) is a well-defined rational equation;
-  Faltings applies to any genus-≥2 curve it projects to. SPECULATION — (a)
-  that fixing q₁ and the ratio n₂/m₂ yields a non-degenerate curve (genus
-  ≥ 2 rather than a degenerate genus 0/1 fibre); (b) that the specific curves
-  at q = 5544/7225 and 336/625 have tractable geometry. The genus computation
-  itself settles (a) immediately.
+speculation-vs-established: REFUTED on the mechanism. Established (this run,
+  checked): Φ reduction, f(m,n) = sin(4 arctan(n/m)) form, q_v = 5544/7225 =
+  f(9,2), q_{u+v} = 336/625 = f(4,3). Established (literature): Faltings 1983
+  (genus ≥ 2 ⇒ finite rational points). Refuted (this run, exact): the
+  proposed fibre (fix q₁ and ratio r) is a union of rational lines, genus 0.
+  The homogeneous-degree-0 degeneracy means the trigonometric factorisation
+  sin(4α)+sin(4β)=2sin(2(α+β))cos(2(α−β)) is a genuine identity but does not
+  classify a family of positive-genus curves; it collapses the dimension.
+  No published genus computation for any non-degenerate Φ-triple curve exists,
+  precisely because the family is degenerate.
+
 precedent:
   - Φ reduction: this run's own code (ap_structure2.py, phi_exact_search.py),
     claims phi-universal-set, phi-no-triple-m400
-  - Faltings (1983): curves of genus ≥ 2 over number fields have finitely
-    many rational points
-  - The sin(4 arctan) form of f(m,n) is standard from the AP-of-squares
-    parametrisation (problem.md, Robertson reduction)
-  - No published genus computation for the Φ-triple curve is known to this
-    library
-first-step: Write the equation f(m1,n1) + f(m2,n2) = f(m3,n3) as a single
-  polynomial by clearing denominators. Fix q1 = f(m0,n0) for a specific
-  Φ-value (e.g., from Bremner's witness: (m0,n0) = (9,2) giving q =
-  5544/7225, or (4,3) giving q = 336/625). Project to a curve in two
-  variables by eliminating one pair. Compute genus using sympy/magma.
-  Determine the geometry: rational, elliptic, or general type.
+  - Faltings (1983): Endlichkeitssätze für abelsche Varietäten über
+    Zahlkörpern, Invent. Math. 73, 349–366 — curves of genus ≥ 2 over number
+    fields have finitely many rational points (the theorem the candidate
+    invokes; its hypothesis genus ≥ 2 is what the fibre fails)
+  - Homogeneity of f: this run, code/out/phi_fibre_genus_run.py + research/
+    notes/verdict_facts_check.py (FACT A, exact) — f(tm,tn)=f(m,n), fibres
+    are ≤4 rational lines, genus 0
+  - sin(4 arctan(n/m)) form of f: standard from AP-of-squares parametrisation
+    (problem.md, Robertson reduction; this run's phi-universal-set)
+  - No published non-degenerate genus computation for a Φ-triple curve is
+    known to this library; the approach's own speculations (a) and (b) are
+    both false for the stated fibre.
+first-step: none — closed. A future Φ-triple attack must NOT fix the ratio r
+  (that degenerates f to a quartic in one ratio). It must fix only q₁ and work
+  with the full surface in (m,n,p,q); that is a Diophantine-geometry problem
+  of a different type (a variety, not a curve), to which Faltings' curve
+  theorem does not apply. Recorded so nobody re-proposes the ratio-fixing
+  fibre as a "genus computation".
 ```

@@ -106,7 +106,7 @@ evidence: code/check_near_misses.py and code/lib/mss.py, exact integer /
   after cross-check); near-misses constructed from the printed grids in the
   local Bremner source.
 hypotheses: the two grids as printed in Bremner 1999 are what they say.
-holds-here: true
+holds-here: yes
 statement: the parametrisation identity and completeness hold on the rerun;
   Sallows LS1 has 7 of 8 line sums 21609 failing the non-principal diagonal
   38307; Bremner's grid is a true magic square (all 8 sums 541875, centre
