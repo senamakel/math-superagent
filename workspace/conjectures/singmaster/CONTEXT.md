@@ -250,14 +250,11 @@ Each carries the obstruction that closed it; do not re-propose.
   RH cannot relax it). The interior method cannot be pushed to the small-m
   boundary.
 
-- **"Fibonacci family crosses to interior for large j" — refuted by
-  directive 24 (boundary cut correction).** The original cut was
-  `exp((log n)^(2/3) + 0.5)`, a factor-411k error at n=229969. The correct
-  cut `exp((log n)^(2/3+0.5))` keeps all six j=1..6 members boundary, and
-  asymptotically the family stays boundary for all eps > 1/3. With
-  eps=1/2 (as MRSTT allows), the family never crosses. It stays in the
-  object `G-boundary-uniform-count` is counting, and any argument for C
-  must cover it.
+- **"Fibonacci family crosses to interior for large j" — refuted (see the
+  boundary-cut correction and the PROVED boundary entry under Established).**
+  The family stays boundary for all eps > 1/3, hence forever at the standard
+  eps=1/2; it stays inside the object `G-boundary-uniform-count` counts, and
+  any argument for C must cover it.
 
 - **Speculatives carried earlier, now settled in `research/APPROACHES.md`:**
   `binary-lucas-submask` **adopted** (Lucas mod 2: for odd a every rep has
