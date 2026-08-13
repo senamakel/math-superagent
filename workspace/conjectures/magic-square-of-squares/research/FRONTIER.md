@@ -45,6 +45,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Rome,+N | Nick Rome | on 13 Jun 2024 ( [v1][2]), last revised 4 Sep 2024 (this version, v2)] # Title: On the existence of magic squares of powers Authors: [Nick Rome][3], [Shuntaro Yamagishi][4] View a PDF of the paper… |
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Yamagishi,+S | Shuntaro Yamagishi | ( [v1][2]), last revised 4 Sep 2024 (this version, v2)] # Title: On the existence of magic squares of powers Authors: [Nick Rome][3], [Shuntaro Yamagishi][4] View a PDF of the paper titled On the… |
 | 1 | https://citation-needed.springer.com/v2/references/10.1007/BF02985794?format=refman&amp;flavour=citation | Download citation | on the magic squares of squares problem. *The Mathematical Intelligencer***27**, 52–64 (2005). https://doi.org/10.1007/BF02985794 [Download citation][73] - Published: 12 November 2008 - Issue date:… |
-| 1 | http://www.ams.org/mathscinet-getitem?mr=1424443 | MathSciNet | 50. John P. Robertson, Magic squares of squares,*Mathematics Magazine*69(1996), nº4, 289–293 [Article][56] [MATH][57] [MathSciNet][58] [Google Scholar][59] 51. Lee Sallows, The lost theorem,*The… |
+| 1 | https://arxiv.org/html/1506.06621v2 | HTML (experimental) | of the paper titled On the $3 \times 3$ magic square constructed with nine distinct square numbers, by Jailton C. Ferreira [View PDF][4] [HTML (experimental)][5] Abstract: A proof that there is no $3… |
 
-_109 further candidates not shown; they are cited once each._
+_117 further candidates not shown; they are cited once each._
