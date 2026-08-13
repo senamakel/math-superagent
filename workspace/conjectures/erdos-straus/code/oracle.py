@@ -124,20 +124,27 @@ def check_even_case() -> bool:
 
 
 def check_mod3_identity_symbolic() -> bool:
-    """4/n = 1/n + 1/((n+1)/2) + 1/(n(n+1)/2) for n ≡ 3 (mod 4), as identity in k.
+    """Mordell identity for n ≡ 3 (mod 4) = n ≡ -1 (mod 4):
 
-    Substitue n = 4k+3 so (n+1)/2 = 2k+2 and n(n+1)/2 are integers.  Verify
-    the rational-function identity in k and that denominators are positive
-    integers for k = 0..9.
+        4/n = 1/((n+1)/4) + 1/(n(n+1)/2) + 1/(n(n+1)/2)
+
+    CORRECTION vs problem.md: the brief gives
+    4/n = 1/n + 1/((n+1)/2) + 1/(n(n+1)/2), which simplifies to 3/n, not 4/n
+    (checked: diff = 1/n).  The correct identity falls out of the
+    Elsholtz-Tao Type II parametrisation with a=b=e=1, c=2, d=(n+1)/4,
+    n ≡ -1 mod 4  (4ab | n+e  =>  4 | n+1):  (x,y,z) = (d, nd(a+b)/e, nd(a+b)/e)
+    = ((n+1)/4, n(n+1)/2, n(n+1)/2).  Verified: sympy diff == 0 and
+    denominators integer + positive for k = 0..9.
     """
     k = symbols("k")
     n = 4 * k + 3
-    x = n
-    y = (n + 1) / 2
+    x = (n + 1) / 4
+    y = n * (n + 1) / 2
     z = n * (n + 1) / 2
     ident = is_identity(x, y, z, n, k_symbol=k)
     pos = all(
-        solves(4 * kk + 3, 4 * kk + 3, (4 * kk + 3 + 1) // 2,
+        solves(4 * kk + 3, (4 * kk + 3 + 1) // 4,
+               (4 * kk + 3) * (4 * kk + 3 + 1) // 2,
                (4 * kk + 3) * (4 * kk + 3 + 1) // 2)
         for kk in range(10)
     )
@@ -148,7 +155,7 @@ def check_mod3_identity_numeric() -> bool:
     """Independent numeric check: naive search finds a witness for every odd
     n == 3 (mod 4) below 2000 (not required to be the identity's triple)."""
     for n in range(3, 2000, 4):
-        w = naive_solve(n, cap=4000)
+        w = naive_solve(n, cap=5000000)
         if w is None or not solves(n, *w):
             return False
     return True
@@ -157,14 +164,14 @@ def check_mod3_identity_numeric() -> bool:
 def check_prime_reduction() -> bool:
     """Prime reduction: if 4/p solves, then scaling by m/p solves m (multiple of p).
 
-    Demo: take p = 3.  4/3 = 1/1 + 1/3 + 1/3  (the mod-3 identity, n=3).
-    Let base = (x, y, z) = (1, 3, 3).  For any m that is a multiple of p=3,
-    claim  (x*m/3, y*m/3, z*m/3) solves m.  Demonstrates on m = 3, 6, 9, 30.
-    Verifies both the concrete equality and that the general claim holds for
-    a spread of multiples.
+    Demo: take p = 3.  The correct mod-4 identity at n=3 gives
+    4/3 = 1/1 + 1/6 + 1/6, base = (1, 6, 6).  (The brief's base (1,3,3) is
+    wrong: 1/1+1/3+1/3 = 5/3, not 4/3.)
+    For any m that is a multiple of p=3, claim (x*m/3, y*m/3, z*m/3) solves m.
+    Demonstrates on m = 3, 6, 9, 15, 30, 99, 300.
     """
     p = 3
-    base = (1, 3, 3)
+    base = (1, 6, 6)
     if not solves(p, *base):
         return False
     for m in (3, 6, 9, 15, 30, 99, 300):
@@ -193,11 +200,16 @@ def check_witnesses() -> tuple[bool, int]:
     return True, total
 
 
-def brute_sweep(max_n: int = 200, cap: int = 4000) -> tuple[int, int, list[int]]:
+def brute_sweep(max_n: int = 200, cap: int = 5000000) -> tuple[int, int, list[int]]:
     """Direct search x <= y <= z for every n in [2, max_n].
 
     Kept deliberately small (max_n <= 200 as required).  Returns
     (solved_count, total_count, unsolved_list).
+
+    cap note: several prime n in [2,200] (127, 149, 157, 167, 179, 193, 197,
+    199) need a z as large as ~2e6, so a small cap (4000) spuriously reports
+    them unsolved.  cap=5e6 covers all of [2,200] and the sweep is still
+    instant because x <= 3n/4 <= 150 keeps the loop tiny.
     """
     solved = 0
     unsolved: list[int] = []
