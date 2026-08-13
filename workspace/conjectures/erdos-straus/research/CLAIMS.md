@@ -6,7 +6,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `bradford-2026-covering-open` | Bradford (arXiv:2602.11774) claims an elementary proof of the Erdős–Straus conjecture via two lemmas producing explicit solutions for primes in residue classes modulo M(k,ℓ), but the concluding covering-system claim is… | yes | asserted | `research/summaries/bradford-solution-straus-erdos.md` |
 | `bradford-divisor-counting-open-classes` | For the 66,737 primes p ≡ r (mod 840) with r in {1,121,169,289,361,529} and p ≤ 3.5×10^7, every p has a solution, and f(p) grows with p; Type-1 solutions are about 2.2 times more numerous than Type-2. | yes | asserted | `research/summaries/mihnea-dumitru-verification-1e18.md` |
+| `bradford-two-variable-reduction` | For prime p, the Erdős–Straus equation 4/p = 1/x+1/y+1/z has a solution iff there is x with ⌈p/4⌉ ≤ x ≤ ⌈p/2⌉ and d \| x² with (Type I) d ≡ −px mod (4x−p), or (Type II) d ≤ x and d ≡ −x mod (4x−p); the map from (x,d) to… | yes | asserted | `research/summaries/bradford-elemental-patterns.md` |
 | `mordell-covering-840` | Combinations of Mordell's polynomial identities (n ≡ 2 mod 3, 3 mod 4, 2 or 3 mod 5, 3/5/6 mod 7, 5 mod 8) give three-term Egyptian fractions for all n except possibly n ≡ 1,121,169,289,361,529 mod 840; the smallest… | yes | asserted | `research/summaries/wikipedia-erdos-straus.md` |
 | `mordell-nonsquare-necessary` | A polynomial identity giving solutions of 4/n for all n ≡ r mod p can exist only when r is NOT a quadratic residue mod p; hence no complete covering system of single-congruence identities can exist (1 is a square mod… | yes | asserted | `research/summaries/wikipedia-erdos-straus.md` |
 | `n-3mod4-covering-corrected` | For every n=4k+3 (k>=0), setting x=(n+1)/4, y=n(n+1)/4+1, z=y(y-1) gives x,y,z positive integers with 4/n = 1/x + 1/y + 1/z exactly. | yes | checked | `code/out/verify_elementary_reductions.md` |
@@ -28,7 +30,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `bradford-2026-covering-open` (research/summaries/bradford-solution-straus-erdos.md) — asserted by the source, not proved there and not checked here
 - `bradford-divisor-counting-open-classes` (research/summaries/mihnea-dumitru-verification-1e18.md) — asserted by the source, not proved there and not checked here
+- `bradford-two-variable-reduction` (research/summaries/bradford-elemental-patterns.md) — asserted by the source, not proved there and not checked here
 - `mordell-covering-840` (research/summaries/wikipedia-erdos-straus.md) — asserted by the source, not proved there and not checked here
 - `mordell-nonsquare-necessary` (research/summaries/wikipedia-erdos-straus.md) — asserted by the source, not proved there and not checked here
 - `prime-reduction` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
