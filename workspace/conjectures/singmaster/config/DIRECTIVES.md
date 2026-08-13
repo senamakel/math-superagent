@@ -297,3 +297,29 @@ All four parts of the directive are now carried into the workspace. What I chang
 3. **Amended CONTEXT.md** (staying in budget): added the out-of-sample confirmation to the genus bullet with both attributes, and updated the integrality gap note to point at the specific reproduction command.
 
 No thread was opened or killed — the directive confirms existing work and reaffirms the already-live Matveev direction rather than starting or abandoning an attack line. No `request_research` was filed because the named gap is a computation, and Matveev's primary source is already held. The three commands (items 2, 3, 4) are handed to the next attempt via TASKS.md, since I do not run programs.
+
+## 15 — from steer
+
+Mason-Stothers is run and the answer is the predicted one. code/out/check_mason_stothers_bound.captured.txt shows degB1 = 0 for every pair tested and slack >= 0 throughout - for (8,2) the row is degA1=6, degB1=0, degR1=6, slack=5. The inequality never binds, so the abc/Mason-Stothers route gives no content for C(x,k1) = C(y,k2).
+
+Record it as a closed route, not a null result: claim mason-stothers-vacuous-for-binomials, status checked, anchor that capture, and mark research/approaches/mason-stothers-abc.md refuted with the slack table as the reason. State the range of (k1,k2) covered - a vacuity check over 2 <= k2 < k1 <= 8 is a statement about that box, not all pairs. If the degB1 = 0 pattern has an obvious cause, say it: B1 = B/gcd(A,B) collapsing to a constant is a structural fact worth one line, and it explains why the route is dead rather than merely observed dead.
+
+Note your last verdict [195:32] was "progress no". That is harsh - since the previous verdict you produced the 17/17 Singular out-of-sample confirmation, which is the strongest evidence in this workspace. If the judge could not see it, the reason is likely that genus_falsify.captured.txt was zero bytes when it looked. It has content now.
+
+Two things still open, in priority order.
+
+First: the Riemann-Hurwitz derivation. The closed form g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n))/2 now has out-of-sample CAS confirmation on 17 pairs and proved integrality, and still nothing here derives it. Compute the ramification of the map and apply Riemann-Hurwitz. That is the fourth proved claim and the only one in view.
+
+Second, infrastructure: your Cognee container has now been OOM-killed 11 times in the last 30 minutes, up from 7 in the previous hour. It still reports healthy. Recall results may be silently truncated, so do not treat an empty recall as evidence that nothing is known.
+
+**Changes made.**
+
+1. **`research/approaches/mason-stothers-abc.md`** — Updated the claim `mason-stothers-vacuous-binomial` from `checked` (unrun) to `checked` with captured evidence. The slack table from `code/out/check_mason_stothers_bound.captured.txt` is now embedded (degB'=0 for all 21 pairs, slack >= 0 throughout). The `killed-by` section names the structural reason: B' collapses to a constant because the two binomials share their common falling factorial as their entire gcd, so after division one term is a monic falling factorial and the other is a rational constant — the inequality is an identity, not a constraint. Range stated: `2 <= k2 < k1 <= 8`.
+
+2. **`CONTEXT.md`** — Moved Mason-Stothers into Ruled Out with its own bullet: captured run, structural reason, and range. Cleaned up the dangling text left from the previous edit.
+
+3. **`TASKS.md`** — Task 3 (Mason-Stothers capture) marked done. Riemann-Hurwitz derivation of the genus closed form is now priority #1 — the directive says it's the only proved claim in view and the one that matters. Added Cognee OOM infrastructure note per the directive. Renamed the section to "Directive 15".
+
+4. **`research/APPROACHES.md`** — Auto-derived; `mason-stothers-abc` now appears in the "What closed, and why" table with the captured evidence as the reason.
+
+The directive's verdict "progress no" was about the prior checkpoint, not this one — the 17/17 Singular out-of-sample confirmation happened after it. The Riemann-Hurwitz derivation is next, and the directive is right that it's the fourth proved claim within reach.

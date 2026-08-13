@@ -19,7 +19,20 @@ mechanism: The Aurifeuillean factors are L_p = 2^p − 2^{(p+1)/2} + 1 and
   rather than equidistribution of divisors. The mechanism is classical algebraic
   number theory: prime ideal factorization in the ring of integers of Q(ζ_8)
   or Q(√2, √−1) applied to the norm element 2^p ± 2^{(p+1)/2} + 1.
-status: proposed
+status: refuted
+killed-by: Subsumed by the already-adopted biquadratic-character-divisors
+  approach, which uses quartic (rather than quadratic) reciprocity in Z[i].
+  Quadratic reciprocity (Legendre/Jacobi symbols) only controls the quadratic
+  character mod small primes, which gives mod-8 or mod-16 constraints indirectly
+  and at best a necessary condition. The v2(r−1) ≥ 4 condition — which is
+  exactly "r is NOT 3-Higgs" — is a quartic condition: (2/r)_4 = 1 ⟺ r ≡ 1
+  (mod 16) for r ≡ 1 (mod 8). Quadratic reciprocity cannot distinguish between
+  r ≡ 1 (mod 8) and r ≡ 1 (mod 16); it can at best force r ≡ 1 (mod 8), which
+  gives v2(r−1) ≥ 3 — still 3-Higgs. The biquadratic approach uses the richer
+  structure of Z[i] where 2^{2p}+1 = (2^p+i)(2^p−i) factors, and quartic
+  reciprocity directly computes (2/π)_4 for each Gaussian prime π, determining
+  whether r ≡ 1 (mod 16). This approach would be a strict weakening of the
+  adopted one, using a coarser invariant.
 first-step: Derive the exact Aurifeuillean splitting for 2^{2p}+1 in terms of
   the residue class of p mod 8; compute L_p and M_p modulo 16 and modulo small
   primes for p ≡ 1,3,5,7 (mod 8); identify which residue classes give

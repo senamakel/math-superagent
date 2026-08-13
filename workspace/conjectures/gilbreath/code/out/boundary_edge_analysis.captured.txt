@@ -1,0 +1,118 @@
+==============================================================================
+boundary-edge analysis of the prime Gilbreath triangle, live k=1..161
+cost: sieve 2e7 (1,270,607 primes); 2 passes x 162 numpy abs-diff
+  steps on ~1.27e6-wide int64 rows (O(162*1.27e6) ~ 2.1e8 ops/pass);
+  peak RAM ~100 MB (2 rows + 26 block prefixes + sieve).
+==============================================================================
+sieve: 1270607 primes < 20000000 in 0.45s
+pass 1 (rows A_1..A_162): 0.42s  (width A_0 = 1270607, width A_162 = 1270445)
+
+== (a) oracle checks ==
+  oracle A_1 first-10 == [1, 2, 2, 4, 2, 4, 2, 4, 6, 2]: PASS
+  oracle A_2 first-9  == [1, 0, 2, 2, 2, 2, 2, 2, 4]: PASS
+  oracle A_3 first-8  == [1, 2, 0, 0, 0, 0, 0, 2]: PASS
+  oracle num_primes == 1,270,607: PASS
+  oracle b[1..162] equals blocks_depth1000.json: PASS
+  oracle s[1..162] equals blocks_depth1000.json: PASS
+  oracle intruder[1..161] equals blocks_depth1000.json: PASS
+  oracle b,s for k=1..40 equal witnesses.json: PASS
+  consumption check: k=162 starts the finite-width artifact: b_162 = 1270444 == W-162-1 = 1270444 : True
+  all rows k=1..161 indeed have an intruder; k>=162 is excluded from the live regime (block fills the visible row).
+
+== (b) regeneration criterion and live-regime erosion runs ==
+  criterion (e==2 and c==4) <=> b_next>=b over k=1..161: failures = 0 []
+  erosion (criterion) transitions with Delta b != -1: failures = 0 []
+  regeneration transitions k=1..161: 60 (prior record: 60)
+  all regeneration rows have edge==2 (implied by criterion, 0 failures): True
+  erosion runs: 26  (prior record: 26)
+  run lengths sorted: [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 7, 8, 12, 12, 13]
+  run lengths equal prior depth-1000 record: True
+  every run followed by a regeneration transition: True []
+  sum of run lengths = 101 = erosion transitions (prior: 101)
+  longest run: start k=97, length=13 (prior record: start k=97, length=13)
+  runs (start, length): (5,3), (11,1), (13,1), (20,2), (24,2), (27,7), (35,3), (39,8), (52,4), (58,4), (65,3), (69,3), (73,2), (77,2), (81,5), (87,4), (92,2), (95,1), (97,13), (113,12), (127,1), (133,1), (137,1), (139,2), (144,2), (147,12)
+
+== (c) exact boundary formula vs real rows (0.50s) ==
+  Pascal-mod-2 kernel by Lucas equals math.comb parity (d <= 12): True None
+  edge comparisons: 101 (one per run-depth, sum of run lengths = 101)
+  edge mismatches:   0   first: None
+  interior-slice comparisons: 23058943 halved entries over all runs/depths
+  interior mismatches:          0   first: None
+  per-run (K, L, edge_tested, edge_bad, interior_tested, interior_bad):
+    k=5    L=3   edge  3/0   interior        69/0
+    k=11   L=1   edge  1/0   interior        97/0
+    k=13   L=1   edge  1/0   interior        97/0
+    k=20   L=2   edge  2/0   interior       579/0
+    k=24   L=2   edge  2/0   interior      1745/0
+    k=27   L=7   edge  7/0   interior      6083/0
+    k=35   L=3   edge  3/0   interior      6534/0
+    k=39   L=8   edge  8/0   interior     22132/0
+    k=52   L=4   edge  4/0   interior     16822/0
+    k=58   L=4   edge  4/0   interior     23766/0
+    k=65   L=3   edge  3/0   interior     69792/0
+    k=69   L=3   edge  3/0   interior     94494/0
+    k=73   L=2   edge  2/0   interior     63053/0
+    k=77   L=2   edge  2/0   interior     63053/0
+    k=81   L=5   edge  5/0   interior    157665/0
+    k=87   L=4   edge  4/0   interior    126142/0
+    k=92   L=2   edge  2/0   interior     63067/0
+    k=95   L=1   edge  1/0   interior     92620/0
+    k=97   L=13  edge 13/0   interior   1351571/0
+    k=113  L=12  edge 12/0   interior   3259482/0
+    k=127  L=1   edge  1/0   interior    325090/0
+    k=133  L=1   edge  1/0   interior    515908/0
+    k=137  L=1   edge  1/0   interior    733568/0
+    k=139  L=2   edge  2/0   interior   1467151/0
+    k=144  L=2   edge  2/0   interior   1467153/0
+    k=147  L=12  edge 12/0   interior  13131210/0
+
+== (d) stall statistics ==
+  ALL live-regime erosion runs (26):
+    K | L | intruders | stuck@4 | b_start -> b_end | edges (0/2) | max edge-0 run | hits2
+     5 |  3 | [8, 8, 6] |      n |       24 -> 22       | 022 |           1 | Y
+    11 |  1 | [4] |      Y |       97 -> 97       | 0 |           1 | n
+    13 |  1 | [4] |      Y |       97 -> 97       | 0 |           1 | n
+    20 |  2 | [6, 6] |      n |      290 -> 289      | 02 |           1 | Y
+    24 |  2 | [6, 6] |      n |      873 -> 872      | 02 |           1 | Y
+    27 |  7 | [6, 4, 4, 4, 4, 4, 4] |      n |      872 -> 866      | 2000000 |           6 | Y
+    35 |  3 | [4, 4, 4] |      Y |     2179 -> 2177     | 000 |           3 | n
+    39 |  8 | [10, 8, 8, 8, 8, 6, 6, 4] |      n |     2770 -> 2763     | 20002020 |           3 | Y
+    52 |  4 | [4, 4, 4, 4] |      Y |     4207 -> 4204     | 0000 |           4 | n
+    58 |  4 | [6, 4, 4, 4] |      n |     5943 -> 5940     | 2000 |           3 | Y
+    65 |  3 | [6, 4, 4] |      n |    23265 -> 23263    | 200 |           2 | Y
+    69 |  3 | [6, 6, 4] |      n |    31499 -> 31497    | 020 |           1 | Y
+    73 |  2 | [6, 4] |      n |    31527 -> 31526    | 20 |           1 | Y
+    77 |  2 | [4, 4] |      Y |    31527 -> 31526    | 00 |           2 | n
+    81 |  5 | [8, 6, 6, 4, 4] |      n |    31535 -> 31531    | 20200 |           2 | Y
+    87 |  4 | [8, 8, 8, 6] |      n |    31537 -> 31534    | 0022 |           2 | Y
+    92 |  2 | [6, 4] |      n |    31534 -> 31533    | 20 |           1 | Y
+    95 |  1 | [4] |      Y |    92620 -> 92620    | 0 |           1 | n
+    97 | 13 | [14, 14, 14, 14, 12, 10, 10, 8, 8, 8, 6, 6, 4] |      n |   103973 -> 103961   | 0002202002020 |           3 | Y
+   113 | 12 | [14, 14, 12, 12, 10, 10, 8, 6, 6, 6, 6, 4] |      n |   271629 -> 271618   | 020202200020 |           3 | Y
+   127 |  1 | [4] |      Y |   325090 -> 325090   | 0 |           1 | n
+   133 |  1 | [4] |      Y |   515908 -> 515908   | 0 |           1 | n
+   137 |  1 | [4] |      Y |   733568 -> 733568   | 0 |           1 | n
+   139 |  2 | [8, 6] |      n |   733576 -> 733575   | 22 |           0 | Y
+   144 |  2 | [4, 4] |      Y |   733577 -> 733576   | 00 |           2 | n
+   147 | 12 | [12, 12, 12, 12, 12, 10, 8, 6, 6, 6, 6, 6] |      n |  1094273 -> 1094262  | 000022200002 |           4 | Y
+  runs with intruder stuck at 4: 10 of 26
+    (K, L, max consecutive edge-0 rows, b_start, b_end):
+    k=11   L=1   max_edge0=1   b 97 -> 97
+    k=13   L=1   max_edge0=1   b 97 -> 97
+    k=35   L=3   max_edge0=3   b 2179 -> 2177
+    k=52   L=4   max_edge0=4   b 4207 -> 4204
+    k=77   L=2   max_edge0=2   b 31527 -> 31526
+    k=95   L=1   max_edge0=1   b 92620 -> 92620
+    k=127  L=1   max_edge0=1   b 325090 -> 325090
+    k=133  L=1   max_edge0=1   b 515908 -> 515908
+    k=137  L=1   max_edge0=1   b 733568 -> 733568
+    k=144  L=2   max_edge0=2   b 733577 -> 733576
+    stuck@4 run lengths: [1, 1, 1, 1, 1, 1, 2, 2, 3, 4]
+    stuck@4 max-edge-0 list: [1, 1, 1, 1, 1, 1, 2, 2, 3, 4]
+    stuck@4 b_start min/max: 97/733577, b_end min/max: 97/733576
+  GLOBAL max consecutive edge-0 rows (live regime k=1..161): 6 at rows 28..33 (inside erosion run k=27)
+  equals max over per-run maxz: True
+  every run hits edge 2 before the block dies: False (16/26); last edge of every run == 2: False (6/26)
+  (context) zero-jump regeneration stalls (Delta b == 0): 17 at k=[3, 16, 17, 18, 47, 48, 49, 62, 63, 75, 79, 111, 129, 135, 141, 142, 160]
+
+total wall time: 1.38s

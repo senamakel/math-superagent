@@ -22,7 +22,23 @@ mechanism: Write n = 2^a·Π p_i^{e_i} with p_i odd distinct. The full balance i
   have no solution without p_i = 3. The mechanism is elementary congruence
   chasing, sharpened by the exact 2-adic budget — it reduces to checking a
   finite (though possibly large) case analysis over residue classes.
-status: proposed
+status: refuted
+killed-by: Same fundamental obstruction as three-divisibility-mod-3 (already
+  refuted): the even-a branch is not eliminated. The odd-a case forces 3 | n
+  (since 3 | 2^a+1 for odd a) but Subbarao–Warren 1966 already classified
+  a = 1 → {6, 90} and excluded a = 3, 5, 7, so the odd-a case is settled. The
+  mod-9/27 refinement adds constraints but no obstruction for even a. The
+  mod-3/mod-4 interplay is precisely the kind of constraint that describes what
+  a counterexample must look like without proving none exists — it reduces to
+  "if 3 ∤ n then the prime set must satisfy congruence conditions X," which
+  Subbarao–Warren already noted in 1966 (Lemma 2: "The authors have not been
+  able to find any unitary perfect numbers not divisible by 3 nor have they been
+  able to prove that there are none"). The 2-adic budget ω(odd) ≤ a+1 bounds
+  the number of primes but does not interact with the mod-9 analysis in a way
+  that forces a contradiction — it is a counting bound, not a congruence
+  obstruction. The even-a branch remains unclosed after 60 years, and this
+  approach adds a finer sieve on the same branch without a mechanism to
+  eliminate it.
 first-step: Tabulate (p^e+1) mod 9 and mod 27 for all p mod 9 (p≠3) and e=1,2,3,4
   (higher exponents reduce mod 6); compute the 3-adic valuation v3(p^e+1) for
   each; write the full balance mod 9 and mod 27 and attempt to derive a

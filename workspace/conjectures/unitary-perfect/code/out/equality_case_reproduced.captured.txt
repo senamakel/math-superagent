@@ -1,0 +1,57 @@
+minimal admissible component sizes (1 mod 4), first 12: [5, 9, 13, 17, 29, 37, 41, 49, 53, 61, 73, 89]
+  note 9 = 3^2 and 49 = 7^2 enter as squares since 3, 7 = 3 (mod 4)
+
+    a omega=a+1   T(a)=2^(a+1)/(2^a+1)    max product    equality case
+    1         2            1.333333333    1.333333333         possible
+    2         3            1.600000000    1.435897436       IMPOSSIBLE
+    3         4            1.777777778    1.520361991       IMPOSSIBLE
+    4         5            1.882352941    1.572788267       IMPOSSIBLE
+    5         6            1.939393939    1.615296057       IMPOSSIBLE
+    6         7            1.969230769    1.654693522       IMPOSSIBLE
+    7         8            1.984496124    1.688462778       IMPOSSIBLE
+    8         9            1.992217899    1.720320566       IMPOSSIBLE
+    9        10            1.996101365    1.748522543       IMPOSSIBLE
+   10        11            1.998048780    1.772474906       IMPOSSIBLE
+   11        12            1.999023914    1.792390355       IMPOSSIBLE
+   12        13            1.999511838    1.810868606       IMPOSSIBLE
+   13        14            1.999755889    1.828797998       IMPOSSIBLE
+   14        15            1.999877937    1.845575961       IMPOSSIBLE
+   15        16            1.999938967    1.861908492       IMPOSSIBLE
+   16        17            1.999969483    1.877296165       IMPOSSIBLE
+   17        18            1.999984741    1.890999057       IMPOSSIBLE
+   18        19            1.999992371    1.903690326       IMPOSSIBLE
+   19        20            1.999996185    1.915815742       IMPOSSIBLE
+   20        21            1.999998093    1.926889821       IMPOSSIBLE
+   30        31            1.999999998    2.012100070         possible
+   40        41            2.000000000    2.071152789         possible
+   50        51            2.000000000    2.117134393         possible
+   60        61            2.000000000    2.153032628         possible
+   70        71            2.000000000    2.183161101         possible
+   80        81            2.000000000    2.208779998         possible
+   90        91            2.000000000    2.231097100         possible
+  100       101            2.000000000    2.251122236         possible
+  110       111            2.000000000    2.269196138         possible
+  120       121            2.000000000    2.285328380         possible
+
+smallest a whose equality case survives the bound: 1
+
+====================================================================
+The a = 8 case in exact arithmetic
+====================================================================
+  2^8 + 1 = 257, prime: True
+  so 257 | n and 257 must itself be one of the odd components
+  odd components must satisfy  prod (1+1/q) = 512/257 = 1.992217899
+  with exactly 9 components, all = 1 (mod 4), one of them a power of 257
+  most generous admissible multiset: [5, 9, 13, 17, 29, 37, 41, 49, 257]
+  its product = 1.695032672  <  1.992217899
+  deficit = 0.297185227
+  EQUALITY CASE a=8 IMPOSSIBLE: True
+
+====================================================================
+Witness set check: the bound must not kill any known number
+====================================================================
+  n=6: a=1 omega=1 equality=False all components 1 mod 4=False   (not in the equality case, untouched)
+  n=60: a=2 omega=2 equality=False all components 1 mod 4=False   (not in the equality case, untouched)
+  n=90: a=1 omega=2 equality=True all components 1 mod 4=True   <- in scope
+  n=87360: a=6 omega=4 equality=False all components 1 mod 4=False   (not in the equality case, untouched)
+  n=146361946186458562560000: a=18 omega=11 equality=False all components 1 mod 4=False   (not in the equality case, untouched)

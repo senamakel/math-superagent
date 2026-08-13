@@ -33,8 +33,9 @@ mechanism: [REFUTED — two independent failures, one elementary and one
   maxdeg <= N0-1 is satisfied IDENTICALLY, with equality exactly in the np
   adjacent case. The theorem never binds; it says nothing about k1,k2.
   (This is an elementary algebraic identity, verified by cancellation of the
-  common falling factorial; a symbolic checker for 2<=k2<k1<=8 was written at
-  code/out/check_mason_stothers_bound.py but not executed in this pass.)
+  common falling factorial; the symbolic checker at
+  code/out/check_mason_stothers_bound.py was executed and captured at
+  code/out/check_mason_stothers_bound.captured.txt; see slack table below.)
 
   (B) The parametrization version (apply abc to the identity
   C(phi(T)+a,k1)=C(phi(T)+b,k2) holding on a genus-0 family) is a TWO-TERM
@@ -72,9 +73,16 @@ mechanism: [REFUTED — two independent failures, one elementary and one
 status: refuted
 killed-by: (i) elementary: the direct binomial three-term identity makes
   Mason-Stothers hold with equality, hence vacuously, for every distinct pair —
-  verified symbolically for 2<=k2<k1<=8 (code/out/check_mason_stothers_bound.py);
-  the parametrized version is a two-term equality with no Mason-Stothers
-  content; (ii) methodological: the effective function-field abc/Siegel/Schmidt
+  **captured run confirms this**: code/out/check_mason_stothers_bound.captured.txt
+  shows degB'=0 for all 21 pairs with 2<=k2<k1<=8, slack >= 0 throughout
+  (slack = (N0_ub-1) - maxdeg; slack>=0 means the inequality never binds).
+  The structural reason B' collapses to a constant: A = C(T,k1)·k2! and
+  B = -C(T,k2)·k1! share (T)_{min(k1,k2)} as their entire gcd; dividing it
+  out leaves A' as a falling-factorial product of |k1-k2| consecutive linear
+  factors and B' as ±(min!)/(max!) (nonzero rational constant). Since B' is
+  degree 0, N0(A'B'R') counts roots of A' and R' only, and R' is coprime to
+  A', so N0 = |k1-k2| + deg(R') >= |k1-k2|+1 = maxdeg+1 identically;
+  (ii) methodological: the effective function-field abc/Siegel/Schmidt
   analogues (Mason 1984, Zannier 1993, Wang 2004, Mueller 2000) are statements
   about S-integral points over function fields and do not transfer to the
   number-field integral points of C(x,k1)=C(y,k2); the number-field
@@ -124,15 +132,49 @@ statement: Mason-Stothers (polynomial abc: for pairwise coprime A,B,C in C[t]
   Gauss/Ritt factor cancellation), deg B' = 0 (nonzero rational constant),
   deg R' = |k1-k2| with gcd(A',R') = 1 (a common root of A',R' would force
   B'=0 there) — so N0(A'B'R') >= |k1-k2|+1 = maxdeg+1 and the inequality holds
-  identically; equality exactly for adjacent pairs. A symbolic checker for
-  2<=k2<k1<=8 was written (code/out/check_mason_stothers_bound.py) but NOT
-  executed in this pass; the algebraic identity is uniform in k1,k2.
+  identically; equality exactly for adjacent pairs. **Captured symbolic checker
+  at code/out/check_mason_stothers_bound.captured.txt confirms: degB'=0 for
+  all 21 pairs with 2<=k2<k1<=8, slack >= 0 throughout.** The algebraic
+  identity is uniform in k1,k2; degB'=0 — B' collapsing to a constant — is the
+  structural reason the route is dead, not merely observed dead.
 hypotheses: distinct k1,k2 >= 2; characteristic zero.
 holds-here: yes
 status: checked (algebraic identity verified by hand for the general pair;
-  the checker script was written, not run)
+  captured run at code/out/check_mason_stothers_bound.captured.txt: degB'=0 for
+  every pair, slack >= 0 throughout for 2<=k2<k1<=8; see table below)
 bearing: permanently retires the Mason-Stothers candidate with the obstruction
   named (vacuous direct identity; no number-field transfer of function-field
   effectivity), so it is not re-proposed.
 anchor: research/approaches/mason-stothers-abc.md
+
+Captured slack table (code/out/check_mason_stothers_bound.captured.txt):
+```
+k1 k2 : degA' degB' degR' : slack = (N0_ub-1) - maxdeg  (slack>=0 => vacuous)
+3 2 :   1   0   1 :   0
+4 2 :   2   0   2 :   1
+4 3 :   1   0   1 :   0
+5 2 :   3   0   3 :   2
+5 3 :   2   0   2 :   1
+5 4 :   1   0   1 :   0
+6 2 :   4   0   4 :   3
+6 3 :   3   0   3 :   2
+6 4 :   2   0   2 :   1
+6 5 :   1   0   1 :   0
+7 2 :   5   0   5 :   4
+7 3 :   4   0   4 :   3
+7 4 :   3   0   3 :   2
+7 5 :   2   0   2 :   1
+7 6 :   1   0   1 :   0
+8 2 :   6   0   6 :   5
+8 3 :   5   0   5 :   4
+8 4 :   4   0   4 :   3
+8 5 :   3   0   3 :   2
+8 6 :   2   0   2 :   1
+8 7 :   1   0   1 :   0
+```
+Range: 2 <= k2 < k1 <= 8 (21 pairs). degB'=0 for ALL pairs — the constant
+collapse is structural, not accidental. slack >= 0 throughout — the inequality
+never binds. The pattern extends uniformly: B' = ±(min!)/(max!) is always a
+nonzero rational constant independent of the variable T, because the gcd(A,B)
+absorbs the entire common falling factorial, leaving no variable factor in B'.```
 ```

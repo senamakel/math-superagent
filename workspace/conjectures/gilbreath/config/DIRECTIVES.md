@@ -325,3 +325,40 @@ If yes, name it and put it in research/threads/regeneration.md as the Route A hy
 If no, say so plainly. That is a real finding: it would mean {2..20} is the wrong negative control, because the primes and it are not separated by any gap statistic, and the sweep would then tell you nothing about why primes survive. Either answer is progress. A fifth approach is not.
 
 Done. The directive's core finding — the separation check was never run while four untested approaches appeared — is now enforced: **TASKS.md** is rewritten so the verbatim integer-arithmetic check is item 1 and blocks everything else, with the written yes/no answer as item 2, and approach generation is explicitly halted (the four new files are recorded as untested and out of scope). **CONTEXT.md**'s run-state line now tells every role to run the check before anything else, and **`research/threads/regeneration.md`**'s status and `next:` block are re-gated on the check, so a Route A hypothesis cannot be written until the answer is on disk. No new thread or approach was opened, and no program was run — the command itself is the next role's job.
+
+## 16 — from steer
+
+I was wrong in directive 12, and your own survivor_analysis.captured.txt shows it. Read this before acting on 12-15.
+
+Directive 12 said the sweep refutes Route A as a purely combinatorial lemma, because a combinatorial rate bound would contradict families dying 100%. That inference does not hold. Your corner-class check is why:
+
+  consecutive trunc_k=1: 62/62 (theorem: all)
+  f2-rand24 trunc_k=2:   62/62 (theorem: all)
+  rand24 survivors trunc_k=2 (theorem: iff g_0=2): 18/18
+  rand24 deaths at k=1   (theorem: iff g_0=4): 30/48
+
+For rand24 that is 18 + 30 = 48, the whole family, survival decided ENTIRELY by the first gap g_0. And your death-depth distribution: 764/852 deaths by k<=3, 852/852 by k<=10. Nothing dies late.
+
+So the sweep measures INITIALISATION, not the asymptotic event rate. Wide-support families die more because they more often draw g_0 != 2, and they die at row 1. That says nothing about events arriving at depth. The phase-boundary table is a g_0 artifact.
+
+Apply all three:
+
+1. Route A is NOT refuted. Restore it as live in research/threads/regeneration.md with the corrected reason: the sweep does not bear on the rate. Keep the directive 13 correction - bounded gap support is vacuous for primes - that stands independently.
+
+2. The separation verdict is still right and still useful: no first-moment or tail statistic separates primes from {2..20}, and the random model is TAMER (max gap 20 vs 86, freq>50 = 0 vs 0.00345) yet dies. Given point 1 the explanation is that it dies at k<=1 from g_0.
+
+3. Run the experiment that isolates the rate: restrict to sequences surviving past k=10, then measure events per row on THOSE only, by family. Family-independent conditional rate means the mechanism is combinatorial and Route A is right. Family-dependent means you have real evidence about the rate.
+
+Sorry for the misdirection. Your data was better than my inference.
+
+Changed `TASKS.md`, `research/threads/regeneration.md`, and `CONTEXT.md`.
+
+**What I changed:**
+
+- **TASKS.md:** Replaced the Directive 15 heading and blocking task (gap-hypothesis separation check, already run — the capture existed on disk despite the earlier TASKS claim it was missing) with the Directive 16 task: a conditional-rate experiment that filters the sweep data to sequences surviving past row 10 and measures per-family event density on those only. The gap-separation check moved to Background as done.
+
+- **`research/threads/regeneration.md`:** Restored Route A as live. The thread-status line, `rests-on` block, and `next` block all now reflect that the sweep deaths are g_0 startup (all within k≤10), not a refutation of the asymptotic event rate. The gap-separation verdict (no H1/H2/H3 separates primes from {2..20}) is recorded as correct but irrelevant to the rate question — deaths happen at k≤1 from g_0≠2, not from gap statistics. The blocking task is now the conditional-rate experiment.
+
+- **CONTEXT.md:** Updated the run-state line to reflect Directive 16: Route A restored, conditional-rate experiment as the single blocking task. Updated the Numbers section (event-rate sweep) to say deaths are g_0 startup. Updated the Gaps section to record the Directive 16 correction alongside the gap-separation result. Added "Route A refuted by sweep — WITHDRAWN" to Ruled Out. The Gatti entry, accidentally displaced by the edit, was restored.
+
+The separation verdict is still correct and useful — {2..20} is tamer than the primes on every tail statistic yet dies 100% — but the explanation is g_0≠2 killing it at row 1, not the asymptotic event rate. The conditional-rate experiment isolates what matters.

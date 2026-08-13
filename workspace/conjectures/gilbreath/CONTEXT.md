@@ -9,7 +9,7 @@ Budget 10,000 tokens (this file ~8300, so ~1700 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state (Directive 15): approach generation is HALTED — do not open a fifth approach. The single blocking task is the gap-hypothesis separation check, which was never run (no capture matching "gap"/"separation" in `code/out/`): run the verbatim integer-arithmetic one-liner in TASKS.md item 1, capture to `code/out/gap_hypothesis_separation.captured.txt`, then answer in writing whether any of the three candidates (bounded mean gap per window / frequency of gaps > G / Cramér) separates primes from {2..20}. Either yes (name it in `research/threads/regeneration.md` Route A) or no ({2..20} is the wrong negative control) is progress; a new approach is not.** Mechanism is combinatorial, event rate is not. Step law + recharge identity hold universally (0 failures across 1,154 random sequences). The event-rate sweep (Directive 12) refutes a purely combinatorial rate bound: 852/1,154 (73.8%) reach b_k=0, wide-support families ({2..20}, {2..100}, Geom(p=.25)) die 100%. Route A re-scoped to require an input hypothesis that the dying families violate. **Directive 13: the bounded-support re-scope (gaps ⊆ {2,4,6}, first gap 2) is VACUOUS for Gilbreath — the primes do NOT satisfy it (gaps 8,10,12,14,34 all below 2000; prime gaps unbounded), so no finite-support hypothesis holds.** The separating property must be a CONCENTRATION condition tolerating rare large gaps — pick one (bounded mean gap per window / frequency of gaps > G / Cramér g_n = O(log² p_n)), state it, check numerically against BOTH primes and {2..20}, then write it in. Target: a theorem "under hypothesis H, the event rate ≥ r, and r suffices" where H separates the primes from the dying sweep families.** Established: regeneration ⟺ `(edge==2, intruder==4)`, zero failures over 998 transitions (the old "refuted iff" record was an off-by-one and is **withdrawn** — `code/out/check_regenerate_lemma.notes.md`; do not keep it). The conjecture is exactly: do (2,4)-events arrive fast enough that `Σ (j_i + 1)` never falls `k−1` behind (recharge identity, Established). Erosion verification is no longer useful — the step law is exact, no re-derivation. Closed by solver (Attempt 1): run-count/total-variation Lyapunov potentials fail even inside the {0,2} regime ((0,0,1,1)→(0,1,0)); Rule 90 relative-depth concentration (z=2.25, p=0.017) is a mild effect, not a mechanism — **do not reopen either**. The concrete candidates are three proposed approaches (all precedent-unchecked in the literature): `renewal-process-edge-flip-hitting-time` — bound the (0,4)-stall hitting time under the Rule 90 edge dynamics, giving inter-event gap ≤ y₀/2 + stall + 1 with y₀ from the gap bound; its conjectural stall bound L ≤ 2·b_k and the constant-zero-block exception are exactly CHT's long-zero-block obstruction — and `block-boundary-causal-separation` — the 2-state (b, y) framing with a Lyapunov function — and `polynomial-evolution-halved-triangle-over-gf2` — lift the Rule 90 operator to Z_2[[X]], prove the carry term (from min(a,b) in |a−b| = a+b−2min) always lies in the ideal (2,X) so it vanishes at position 1; equivalent to the conjecture but gives the carry term an explicit algebraic form to hunt, with BCZ's F_2[[X]] program as the mod-2-level nearest literature. **Each must state how it beats Eppstein 2011**: gap constraints alone fail in the 2-then-odds class, so a purely-gap rate bound must be prime-specific or carry a hypothesis Eppstein's construction violates.
+**Run state (Directive 16): Route A RESTORED live. The event-rate sweep deaths are g_0 startup (all within k≤10, 90% by k≤3; rand24 deaths at k=1 iff g_0=4), not the asymptotic event rate. The single blocking task is the conditional-rate experiment: filter the sweep data to sequences surviving past k=10, measure per-family event density. Family-independent → combinatorial mechanism (Route A right). Family-dependent → real evidence about rate. This is the one experiment that isolates the rate from the startup transient. The gap-hypothesis separation check (Directive 15, DONE) shows no first-moment/tail statistic separates primes from {2..20} — the separation verdict is correct but the sweep deaths are g_0≠2 at k≤1, not gap statistics. Mechanism is combinatorial (step law + recharge identity universal, zero failures on 1,154 random sequences).** Established: regeneration ⟺ `(edge==2, intruder==4)`, zero failures over 998 transitions. The conjecture is exactly: do (2,4)-events arrive fast enough that `Σ (j_i + 1)` never falls `k−1` behind. Route B (analytic, prime-gap) secondary.
 
 ## Established
 
@@ -183,6 +183,8 @@ away.
 ## Ruled out
 
 - **Gatti 2020 "prime-class proof" — REFUTED (invalid Theorem 4; source in library).** Gatti's *Gilbreath's Sequences...* (Preprints 202003.0145.v1, 2020) proves the global valid-extension formula (`k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`) and parity alternation, but its Theorem 4 (`min K ≤ p_n ≤ max K` for every prime, claimed toward a deterministic class theorem) is invalid: the right-inequality step assumes `p_n ≤ max K` and derives only a trivial `min K ≤ α` via Bertrand. Its Lemma 4 interval-completeness is false in general (Muney's length-5 hole; `dim K_S = 2^{n−1}` fails even at {2,3,5}: |K_S| = 5 — hand-verified, script queued). **So no published deterministic bounded-gap or prime-class theorem exists**, consistent with Eppstein: any general-class theorem must add non-concentration or restrict to primes. Do not build on Gatti's implication. Claims `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`, `research/notes/library-state.md`.
+- **"Route A refuted by sweep" — WITHDRAWN (Directive 16).** The sweep deaths are g_0 startup (all within k≤10, 90% by k≤3); they do not bear on the asymptotic event rate. rand24 deaths at k=1 (iff g_0=4) vs survivors at trunc_k=2 (iff g_0=2). Route A is live; the conditional-rate experiment tests it.
+- **Bounded-support re-scope "gaps ⊆ {2,4,6}, first gap = 2" — REFUTED as vacuous (Directive 13).** The primes violate every finite gap-support condition; a theorem conditional on finite support says nothing about Gilbreath.
 - **"Regeneration iff lemma" — earlier REFUTED records are WITHDRAWN
   (off-by-one in the edge index); the corrected criterion is ESTABLISHED.**
   Both old "Ruled out" lines treated regeneration as non-local — they were the
@@ -297,41 +299,18 @@ away.
 ## Numbers
 
 - **Event-rate sweep over the 2-then-odds general class — DONE (TASKS item 1).**
-  1154 sequences, 26 families × seeds (gaps: {2}; {2,4}; skew{2,4,6,8,10};
-  uniform{2..2g}, g=3..50; geometric p=0.5..0.0625; each ± first gap forced to
-  2), batches D=600/W=200k ×48, D=1200/W=400k ×10, D=4000/W=2M ×4, 26 workers,
-  wall 278 s, exact int64.
-  **The step law and the recharge identity (the exact {0,2}-block accounting,
-  `b_{k+1} ≥ b_k ⟺ (2,4)`-event else `b_{k+1} = b_k − 1`, and
-  `b_k = b_1 + Σ(j_i+1) − (k−1)`) fail 0 times across every one of the 1154
-  sequences (46,528 eligible rows, 20,013 events)** — universal in the random
-  class, same as the prime rows (0 failures, depth 1000). The step law is a
-  theorem for all nonneg sequences, so the check is a sanity pass, now measured
-  on random data rather than only on the primes.
-  **Regeneration is NOT generic in the random class: 852/1154 (73.8%) reach
-  `b_k = 0` — all deaths inside the first 10 rows (89.7% inside the first 3;
-  342 at k=1, 346 at k=2); no sequence surviving row 10 ever died (up to
-  D=4000).** The class-level failure is the startup transient, never long-run
-  erosion. **Forcing the first gap to 2 is decisive where support ⊆ {2,4}:
-  consecutive 0/48 and f2-rand24 0/48 sequences die in each batch (incl.
-  D=4000), vs 62% deaths at k≤1 for rand24 without it.** Death fraction grows
-  monotonically with gap-support width (uniform{2..20}+: 100%); the primes'
-  gap profile (2,2,4,2,4,2,4,6,2,…) is the small-support, first-gap-2 skew that
-  survives. 240 non-degenerate survivors: `rho_live ≥ 0.318` and `min_b ≥ 1`
-  (primes: min b=2). Oracle: 4/4 numpy-vs-pure-Python matches (events, min_b,
-  first_b0, densities). Bounded claims in FULL detail + claim blocks:
-  `code/out/event_rate_sweep.notes.md`
-  (id `event-rate-sweep-step-law-universal`,
-  `event-rate-sweep-regeneration-not-generic`,
-  `first-gap-2-startup-sufficiency-supported`); raw captures
-  `code/out/event_rate_sweep.captured.txt`,
-  `code/out/event_rate_sweep_analysis.captured.txt`; stats
-  `code/out/event_rate_stats.jsonl`. **Implication for the general-class
-  strategy: the naive "2-then-odds, gaps bounded" class FAILS as a whole
-  (consistent with Eppstein); a general theorem needs first-gap-2 + a
-  small-support skew hypothesis — the primes satisfy both, and the data
-  localises the entire class failure to the startup rows. Nothing here
-  extends to all k; no regeneration-rate lower bound for the primes follows.**
+  1154 sequences, 26 families × seeds, batches D=600/W=200k ×48, D=1200/W=400k ×10,
+  D=4000/W=2M ×4, 26 workers, wall 278 s, exact int64.
+  **The step law and the recharge identity (the exact {0,2}-block accounting)
+  fail 0 times across every one of the 1154 sequences (46,528 eligible rows,
+  20,013 events)** — universal in the random class, same as the prime rows.
+  **852/1154 (73.8%) reach b_k = 0, but ALL within the first 10 rows (764/852 by
+  k≤3, 852/852 by k≤10).** Death is g_0 startup: rand24 dies at k=1 iff g_0=4
+  (30/48), survives at trunc_k=2 iff g_0=2 (18/18). Wide-support families die
+  more because they more often draw g_0≠2. The sweep does NOT measure the
+  asymptotic event rate — Route A is untested, not refuted (Directive 16).
+  Oracle: 4/4 numpy-vs-pure-Python matches. Full detail:
+  `code/out/event_rate_sweep.notes.md`, `code/out/event_rate_sweep_analysis.captured.txt`.
 - Block profile (leading {0,2} length) rows k=1..40:
   `2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,289,288,739,873,872,871,872,871,870,869,868,867,866,865,2179,2178,2177,2176,2770,2769`.
   Grows roughly by doubling bursts around k=15,20,23,35,39.
@@ -411,13 +390,22 @@ recalled claim is relied on whose hypotheses fail here.
   The step law and recharge identity reduce the conjecture to:
   `Σ_{i<k} (j_i + 1) ≥ k − 1 − b_1` for all k. Since `b_1=2`, this is a
   statement about event frequency and jump sizes.
-  **Mechanism vs rate (Directive 12, settled by the 1,154-sequence sweep):**
-  the step law, recharge identity, and drain law are combinatorial — they hold
-  universally (zero failures on all 1,154 random sequences). But the event
-  **rate** is not: 852/1,154 (73.8%) reach `b_k = 0`, all within the first 10
-  rows; wide-support families ({2..20}, {2..100}, Geom(p=.25)) die 100% of the
-  time with or without first gap forced to 2. The phase boundary is gap support:
-  narrow support ({2}, {2,4}, {2,4,6}) + first gap = 2 survives; wide support dies — i.e. survival correlates with gaps CONCENTRATED on small values, not contained in a finite set (Directive 13: the primes themselves are not finite-support, with gaps 8,10,12,14,34 below 2000). Route A (combinatorial bound on max erosion between events) MUST include an input hypothesis that separates the primes from the dying families. **Directive 13: that hypothesis cannot be bounded gap support — the primes violate every finite-support condition, so the {2,4,6} re-scope is vacuous.** It must be a concentration condition tolerating rare large gaps; candidates named in the run-state line; pick one and check it against BOTH primes and {2..20} before writing it in.
+  **Mechanism vs rate (resolved this cycle):** the step law, recharge identity,
+  and drain law are combinatorial — they hold universally (zero failures on all
+  1,154 random sequences). The event-rate sweep appeared to refute a
+  combinatorial rate: 852/1,154 (73.8%) reach `b_k = 0`. **Directive 16
+  correction:** ALL deaths are within the first 10 rows (764/852 by k≤3). Death
+  is g_0 startup: rand24 dies at k=1 iff g_0=4, survives iff g_0=2. The sweep
+  measures INITIALISATION, not the asymptotic event rate. Route A is RESTORED
+  live. **The conditional-rate experiment (filter to k>10 survivors, measure
+  per-family event density) is the blocking task** — it isolates the rate from
+  the startup. Family-independent density → combinatorial; family-dependent →
+  real evidence about rate. **Directive 13 stands independently:** bounded
+  finite support is vacuous for the primes (gaps 8,10,12,14,34 below 2000;
+  unbounded). **Gap-hypothesis separation check (Directive 15, DONE):** no
+  first-moment or tail statistic (H1/H2/H3) separates primes from {2..20}; the
+  separation verdict is correct but the sweep deaths are g_0≠2 at k≤1, not gap
+  statistics.
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.

@@ -274,6 +274,18 @@ Each marked with evidence class and a link.
   better than `O(log_2 t)`; one cannot exclude low-density t with his
   technique. So a different mechanism is needed for constancy.
 
+- **Mason-Stothers / polynomial abc is vacuous for binomials. `checked` with capture.**
+  `code/out/check_mason_stothers_bound.captured.txt`: degB'=0 for all 21 pairs
+  with 2<=k2<k1<=8, slack >= 0 throughout. Structural reason: the two binomial
+  polynomials share their common falling factorial as their entire gcd; dividing
+  it out leaves one monic falling factorial (|k1-k2| distinct roots) and one
+  rational constant, so N0 = maxdeg+1 identically and the inequality never binds.
+  The effective function-field abc/Siegel analogues (Mason 1984, Zannier 1993,
+  Wang 2004, Mueller 2000) do not transfer to number-field integral points.
+  Approach `mason-stothers-abc.md` refuted with the slack table as reason.
+  Range: 2<=k2<k1<=8 — a vacuity check over that box, not all pairs, but the
+  collapse mechanism is uniform.
+
 - **Three newer speculatives — proposed, NOT yet refuted and NOT yet
   established; carried so nobody re-derives them.** All three are approach
   files in `research/approaches/` with no capture and no check yet; treat each

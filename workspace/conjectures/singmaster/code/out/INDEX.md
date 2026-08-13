@@ -7,6 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | _(undescribed)_ |
 | `brute.captured.txt` | Brute-force oracle on the 7 witnesses: direct enumeration gives identical counts and occurrence sets (3003->8, rest->6), second independent route. |
 | `brute_oracle.md` | _(undescribed)_ |
+| `check_mason_stothers_bound.captured.txt` | _(undescribed)_ |
 | `check_mason_stothers_bound.py` | _(undescribed)_ |
 | `check_witnesses_vs_mrstt.captured.txt` | Full output of code/check_witnesses_vs_mrstt.py, EXIT_CODE=0: all 15 nontrivial witness occurrences classified BOUNDARY (MRSTT-OPEN) under the n-form threshold exp((log n)^(2/3+0.1)) — 0 of 15 interior; a-form bound B(a)=(log a)/(log_2 a)^1.4 reported with the asymptotic caveat; strengthening: 0 of 44 pairs (mirrors and trivial included) in the symmetric interior. |
 | `commands.log` | _(undescribed)_ |
@@ -17,7 +18,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `famB.captured.txt` | _(undescribed)_ |
 | `famC.captured.txt` | _(undescribed)_ |
 | `famD.captured.txt` | _(undescribed)_ |
-| `fam_seqs.captured.txt` | _(undescribed)_ |
+| `fam_seqs.captured.txt` | Real capture of code/pattern/fam_seqs.py (Fibonacci/Pell infinite N>=6 family): i, n_i, k_i, u_i=5n+6, v_i=5k+9, and digit counts of C(n+1,k+1) for i=1..8, EXIT_CODE=0. This file is why pattern_fam_seqs.captured.txt was deleted: the stale placeholder claimed fam_seqs.py produced no output, contradicted by this capture (second independent run just now also EXIT_CODE=0, 285 bytes). |
 | `family_pairs.json` | All collisions (values with >=2 canonical reps) for n<=1000, value<=1e18, plus the N>=6 values, exact. |
 | `family_seq_err.txt` | _(undescribed)_ |
 | `family_seq_raw.txt` | _(undescribed)_ |
@@ -36,7 +37,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_extend_6_8.captured.txt` | _(undescribed)_ |
 | `pattern_extend_7_10.captured.txt` | _(undescribed)_ |
 | `pattern_extend_k2_6.captured.txt` | _(undescribed)_ |
-| `pattern_fam_seqs.captured.txt` | _(undescribed)_ |
 | `pattern_genus_residual.captured.txt` | _(undescribed)_ |
 | `pattern_print_family.captured.txt` | _(undescribed)_ |
 | `pattern_sage_check_k2_6.captured.txt` | _(undescribed)_ |

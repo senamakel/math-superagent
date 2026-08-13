@@ -7,12 +7,17 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `diag_families.sing` | _(undescribed)_ |
 | `extend3_4.sing` | Extends k2=3,4,5 to k1=24, confirming the closed forms. |
 | `extend_falsifiers.sing` | _(undescribed)_ |
+| `extend_k2_6.sing` | _(undescribed)_ |
+| `extend_rows_6_8.sing` | _(undescribed)_ |
+| `extend_rows_7_10.sing` | _(undescribed)_ |
+| `falsify_genus_formula.py` | Out-of-sample falsification of the unified genus formula g(m,n) = ((m-1)(n-1)+1-gcd(m,n))/2 for the projective closure of C(x,m)=C(y,n): predicts g for 17 never-computed pairs (new columns m=13..16, rows 2,3,5,10 past their last n, large-gcd residues), computes them freshly with Singular normal.lib::genus, and compares. Parser is an anchored single-line regex ^PAIR \{(\d+),(\d+)\} genus=\s*(\d+)\s*$ — previously line.split-based and silently dropped rows. Verified: rerun EXIT_CODE=0, 17/17 MATCH, capture code/out/genus_falsify.captured.txt; old and new parsers agree on every real capture line. |
 | `famA2.sing` | _(undescribed)_ |
 | `famB.sing` | _(undescribed)_ |
 | `famC.sing` | _(undescribed)_ |
 | `famD.sing` | _(undescribed)_ |
 | `full_grid.sing` | Full grid 2<=k1,k2<=12 (Singular). Output matches Sage. |
 | `genus_table.py` | **Library**: verified genus table + closed forms for the {2,n},{3,n},{4,n} families; the deliverable's source of exact genus values. |
+| `sage_check_k2_6.py` | _(undescribed)_ |
 | `small_column_genus_forms.md` | _(undescribed)_ |
 | `spotcheck_new_pairs.sing` | Job-2 spot check of the closed genus formula g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2 at three pairs absent from genus_table.py TABLE and all captures: (11,17), (11,20), (12,20). Same incantation as full_grid.sing (ring r=0,(x,y),dp; poly CB; degree-max(m,n) curve; normal.lib genus). All three PASS with Singular genus 80/95/103, cross-verified by an independent Python computation of the formula. |
 | `test_range.sing` | Mid-range probe: (4..10,3), (5..9,4), and (k,k) diagonal (shows reducible → nonsense genus, excluded). |

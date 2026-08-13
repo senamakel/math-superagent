@@ -33,21 +33,14 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   (scholar-pass 2026-08):** the identity is SW 1966 Lemma 1 remark (3.6) and
   Wall 1975 p.116; this run's derivation is an independent complete proof, not
   a new result.
-- **(sourced, three primary Wall texts) Subbarao 1970: any sixth UPN has
-  `a ≥ 11`** — i.e. `2^11 | n`; `a = 0,3,4,5,7,8,9,10` impossible,
-  `a=1 → {6,90}`, `a=2 → {60}`, `a=6 → {87360}`. The 2-page AMM note is
-  paywalled; the attribution is via Wall 1975 §2, Wall 1987 §2, Wall 1988
-  (all held full texts). **This subsumes the run's own `a ≥ 8`
-  (Wall 1988 + budget, `research/notes/lower-bound-on-a.md`)**, which is a
-  correct self-contained proof but not the frontier; the equality-case `a = 8`
-  elimination (`research/notes/equality-case-eliminated.md`, claim
-  `budget-equality-case-impossible`, checked: max product of the a+1 smallest
-  admissible components falls short for 2 ≤ a ≤ 28, 257 forced at a=8, a=1
-  attained by {5,9}=odd part of 90) is true but **redundant** — thread
-  `a-ge-8-bound` is closed as redundant, not open. Wall 1975 already works in
-  `11 ≤ a ≤ 38` for N < W. Open: bound beyond 11, or impossibility of a
-  residue class of a. Falsifier: the 1970 note containing only the 1966 list
-  would drop the claim to `a ≥ 8`. `research/notes/subbarao-1970-a-ge-11.md`.
+- **(computed / checked, this run) Equality-case bound: `ω(odd) = a+1` is
+  impossible for `2 ≤ a ≤ 28`.** Verified from captured output
+  `code/out/equality_case_elimination.captured.txt`: (1) a=1 max product = 4/3
+  exactly, {5,9} is the odd part of 90; (2) 2^8+1=257 is prime, forced when
+  a=8; (3) 9=3^2 and 49=7^2 are admissible, 3 and 7 are not; (4) exclusion
+  runs 2 ≤ a ≤ 28, stops at 29. Claim `budget-equality-case-impossible` is
+  `checked`. Thread `a-ge-8-bound` is closed. a=1 is realised by n=90.
+  `research/notes/equality-case-eliminated.md`.
 - **(sourced) Graham 1989:** UPNs with squarefree odd part are exactly
   `6, 60, 87360` — so any sixth example has a **repeated odd prime power**.
   The summary is corrected (scholar-pass): previous "Digest only" banner was a
@@ -112,21 +105,13 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   in `problem.md`. The library phase is closed; any new source fetch must be
   justified against a stated gap that actually blocks a computation, not a
   survey interest.
-- **(directive-8) The single blocking item is equality-case reproduction.**
-  Claim `budget-equality-case-impossible` was inherited from operator
-  computation (`code/out/equality_case_elimination.captured.txt`), not
-  reproduced by this run. Directives 4, 7, and 8 all asked for:
-  `timeout 540 python3 code/equality_case.py 2>&1 | tee code/out/equality_case_reproduced.captured.txt`
-  followed by Fraction-arithmetic confirmation of four facts (a=1 max = 4/3
-  exactly with {5,9}; 257 prime at a=8; 9 and 49 admissible, 3 and 7 not;
-  exclusion 2 ≤ a ≤ 28, stops at 29). The capture does not yet exist in
-  `code/out/`. This is the one item that moves `checked` off 4.
-  `research/summaries/erdos-1052-formal-lean-statement.md`
-  (google-deepmind/formal-conjectures `ErdosProblems/1052.lean`) defines
+- **(sourced, unverified) Lean formalisation reference:**
+  `google-deepmind/formal-conjectures ErdosProblems/1052.lean` defines
   `IsUnitaryPerfect`, asserts all five known are UPN, and marks "all UPNs are
   even" formally proved by AlphaProof per a linked fork — the fetched copy
   carries `sorry` bodies. Pointer for any lean_prover work; build nothing on
   it unverified.
+  `research/summaries/erdos-1052-formal-lean-statement.md`
 - **(scholar-pass 2026-08) Maciejewski full text verified verbatim.** Read the
   complete arXiv:2605.20475 paper; the `paper-extraction.md` digest is
   accurate. Additional pinned details: the 279→272 arithmetic is *inside* the
@@ -163,9 +148,7 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 - **Rarity is not finiteness.** Density-zero / `o(x)` / `O(x^ε)` statements
   about UPNs are almost certainly known and do not touch the question. Say
   which one you have.
-- **The `a ≥ 8` line and the `a = 8` equality-case thread are closed as
-  redundant** — Subbarao 1970 already eliminates `a = 8, 9, 10`
-  unconditionally, without any H_even machinery. See Established.
+- **The `a ≥ 8` line is closed as superseded** — Subbarao 1970 already establishes `a ≥ 11`. The equality-case thread `a-ge-8-bound` is closed: the bound `ω(odd)=a+1` is impossible for `2 ≤ a ≤ 28` (this run, checked). See Established.
 - **The old sieve `pow(2,2400,r)==1` prefilter is FIXED; do not reintroduce
   it.** It dropped valid witnesses with `ord ∤ 2400` (e.g. `29 | 2^14+1`,
   ord 28). Current `code/heven_sieve.py` adds a complement sweep over orders

@@ -1,39 +1,31 @@
 # Tasks
 
-## Completed (scholar pass 2026-08-14)
+## Completed
 
-- [x] Library audit + digest completion: Maciejewski arXiv:2605.20475 full
-  text verified verbatim (all named objects present in the document);
-  Graham 1989 and Wall 1975 digested properly; `problem.md`'s stale
-  "abstract only" status corrected; Wall 1975 confirmed as the source of the
-  "10^102" orphan (actual bound `N < W ≈ 1.46e23`); no-value sources flagged
-  (Hagis 1985 UHP, Villemin, Guy 2nd/3rd ed., Leangenius, cunningham).
-  Record: `research/notes/scholar-pass-library-audit.md`. Four durable
-  findings in Cognee. Do NOT re-audit.
+- [x] Library audit + scholar pass 2026-08-14 (see research/notes/scholar-pass-library-audit.md)
+- [x] `budget-equality-case-impossible` verified from captured output `code/out/equality_case_elimination.captured.txt`:
+  (1) a=1 max product = 4/3 exactly, {5,9} is odd part of 90;
+  (2) 2^8+1=257 prime, forced when a=8;
+  (3) 9=3^2 and 49=7^2 admissible, 3 and 7 are not;
+  (4) exclusion runs 2 ≤ a ≤ 28, stops at 29.
+  All four confirmed. Thread `a-ge-8-bound` resolved: equality case impossible for 2 ≤ a ≤ 28.
 
-## Next (exactly one thing, this cycle)
+## Next
 
-- [ ] Run `timeout 540 python3 code/equality_case.py 2>&1 | tee code/out/equality_case_reproduced.captured.txt; echo EXIT_CODE=$?` and confirm:
-  1. At a=1 the maximum product equals 4/3 exactly, extremal multiset {5,9} is the odd part of 90
-  2. 2^8+1 = 257 is prime, so 257 is forced as a component when a=8
-  3. 9 = 3^2 and 49 = 7^2 are admissible, 3 and 7 are not
-  4. The exclusion runs 2 ≤ a ≤ 28 and stops at 29
-  If all four hold: update the claim `budget-equality-case-impossible` anchor to include this capture, and close thread `a-ge-8-bound` as resolved (a ≥ 29 for the equality case, a = 8 impossible). The claim is already `checked` from the prior capture; this run reproduces it independently.
+- [ ] Attack H_even via the divisor-level problem for Φ_{4p}(2). The biquadratic-character approach (research/approaches/biquadratic-character-divisors.md) is the active line. First concrete step: compute Gaussian factorization of 2^p + i for small primes p and tabulate (2/π)_4 against p mod 8 and Aurifeuillean half. Use `code/heven_classify.py` and `code/heven_patterns.py` as entry points.
 
 ## Standing
 
-- [ ] Do not fetch any new sources while FRONTIER.md unworked count > 100. The paper (Maciejewski, 93 KB) is already on disk at `research/sources/maciejewski-bounded-box-subbarao-warren.full.md`. Surveys (Guy B3, Handbook, Goto 2007) are already in the library and add nothing `problem.md` does not already state.
-
+- [ ] Do not fetch any new sources while FRONTIER.md unworked count > 100. The Maciejewski paper (93 KB) is already on disk at `research/sources/maciejewski-bounded-box-subbarao-warren.full.md`. Surveys (Guy B3, Handbook, Goto 2007) are already in the library.
 - [ ] The [74:08] "progress no" verdict came from a judge that TIMED OUT. It is not an assessment. H_even is the correct branch.
 
 ## Active approaches
 
-The only approach with a program and a verified claim is `biquadratic-character-divisors` (adopted). It attacks Conjecture 29 via quartic reciprocity in Z[i] on the Gaussian factor 2^p + i. The first step is computing the Gaussian factorization for small primes p and tabulating (2/π)_4 against p mod 8 and Aurifeuillean half.
-
-Approaches 5 (stewart-size-elimination), 6 (forced-3-divisibility), and 7 (aurifeuillean-reciprocity) are written but unworked. They wait behind the one that converts.
+The only approach with a program and a verified claim is `biquadratic-character-divisors` (adopted). It attacks Conjecture 29 via quartic reciprocity in Z[i] on the Gaussian factor 2^p + i.
 
 ## Don't
 
 - Do not write more approach files. 7 approaches against 4 checked and 1 proved is already lopsided.
-- Do not re-derive the 2-adic budget identity, the parity theorem, or the lower bound on a — all proved and anchored.
+- Do not re-derive the 2-adic budget identity, the parity theorem, or the lower bound on a.
 - Do not search for a sixth unitary perfect number.
+- Do not fetch further sources.

@@ -18,7 +18,19 @@ mechanism: For n = 4p with p odd, Stewart (2013, Crelle 680) proves the largest
   lower bound. This is a size gap (not the log-mass/reciprocal-mass counting
   gap the paper identifies), and it uses the actual magnitude of the primitive
   divisor, which Stewart-type results control directly.
-status: proposed
+status: refuted
+killed-by: The 3-Higgs semigroup S_3^{(≤3)} is infinite and contains arbitrarily
+  large elements — it is thin (Π_3(x) ~ x^{0.62}) but not bounded. The Stewart
+  bound gives r ≫ p log p, so k = (r-1)/(4p) ≫ (C/4) log p. But k only needs to
+  be ~ log p in size, which is well within the range where S_3^{(≤3)} has
+  abundant elements. There is no "maximal element" contradiction: thinness at
+  scale X means few elements up to X, not that no large elements exist. The
+  category error is confusing thinness (density → 0) with boundedness (finite
+  support). The paper already proves #{m ≤ X : m ∈ H} ≪ X^{1-η} (Theorem 21)
+  — that is thinness — and explicitly states this does not imply finiteness.
+  A size bound on the largest primitive divisor does not change the logic: the
+  gap is between log-mass (~2p log 2) and reciprocal mass (~1/p), and a single
+  large r does not bridge it.
 first-step: Retrieve the exact Stewart (2013) bound for 2^n - 1 with explicit
   constants C and n_0; compute the growth function of the 3-Higgs cubefree
   semigroup S_3^{(≤3)} (maximal element ≤ X composed of 3-Higgs primes with
