@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `mod6-gap-structure-real-but-not-percolating` | Prime gaps satisfy gap ≡ 0,2,4 (mod 6) and the halved gaps h_n mod 3 are constrained (h_n ≡ 1 forces h_{n+1} ≢ 1; h_n ≡ 2 forces h_{n+1} ≢ 2). This is a real statistical/catalogued property of the primes, but no source… | yes | proved | `research/approaches/prime-gap-mod6-structure.md` |
 | `modulo-k-gilbreath-family` | (Li 2026, preprint) For any odd k, the sequence of primes of the form kn+2 has a difference triangle whose leading entry eventually stabilises to k; classical Gilbreath is k=1. Verified computationally for all odd k <… | yes | asserted | `research/notes/library-state.md` |
 
-_50 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_49 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 

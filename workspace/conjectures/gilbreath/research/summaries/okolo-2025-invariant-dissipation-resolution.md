@@ -1,5 +1,7 @@
 # Okolo 2025 — "A Resolution of Gilbreath's Conjecture and the Principle of Invariant Dissipation"
 
+> **This file is the parallel duplicate of `okolo-2025-invariant-dissipation-gilbreath.md`, which is canonical.** Both were written for the same Zenodo record 10.5281/zenodo.16658834 by concurrent librarian passes. The canonical summary holds the sole claim id `okolo-2025-invariant-dissipation-crank`; this file keeps its fuller classification narrative for reference but no longer carries a claim block (removed to avoid a duplicate ledger row).
+
 <!-- source: https://doi.org/10.5281/zenodo.16658834 | downloaded 2025, full text restricted (metadata page only) -->
 
 ## Classification: NOT LOAD-BEARING — crank family, do not cite
@@ -29,21 +31,9 @@ Global Harmony" forbidding the counterexample is not an argument.
 
 ## Claim
 
-```claim
-id: okolo-2025-invariant-dissipation-not-load-bearing
-statement: Okolo's "Resolution of Gilbreath's Conjecture and the Principle of Invariant
-  Dissipation" (Zenodo 10.5281/zenodo.16658834, 2025) is a claim-heavy non-peer-reviewed
-  preprint whose files are restricted; it promises an unconditional proof via an
-  "Organized Complexity" framework with an "axiom of Global Harmony" and a "Principle of
-  Invariant Dissipation" with purported implications for cosmology/quantum-info/genetics.
-  It presents no checkable statement or mechanism this run can test.
-hypotheses: none stated; files restricted so nothing can be verified
-holds-here: n/a (no statement to hold)
-status: asserted-by-source (classified not-load-bearing, like Maréchal/Granville/ZARKOUNA)
-bearing: must not be cited as evidence for or against Gilbreath's conjecture; records this
-  entry so nobody re-fetches or re-searches it.
-anchor: research/summaries/okolo-2025-invariant-dissipation-resolution.md
-```
+The single canonical claim for this source is `okolo-2025-invariant-dissipation-crank` in
+the canonical summary `okolo-2025-invariant-dissipation-gilbreath.md`. This duplicate file
+carries no claim block so the ledger does not hold two ids for one source.
 
 ## Why it was filed
 
