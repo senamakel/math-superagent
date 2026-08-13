@@ -1,44 +1,39 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/ventas-ceiling-continued-fraction.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Ventas, "A Ceiling Continued Fraction Approach to the Erdős–Straus Conjecture"
 
-<!-- source: https://arxiv.org/abs/2605.04551 | converted from HTML -->
+Source: arXiv:2605.04551 (v2, 25 May 2026), HTML: https://arxiv.org/html/2605.04551v2
+Full text: `research/sources/ventas-ceiling-continued-fraction.full.md`
 
-## What is in it
+## What it establishes (sourced, primary)
 
-- Mathematics > Number Theory
-- Title: A Ceiling Continued Fraction Approach to the Erdős-Straus Conjecture: Heuristic…
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+A framework (FCT: finite/ceiling continued fractions) that constructs three
+term Egyptian fractions for Mordell-type primes `p ≡ 1, 11², 13², 17², 19²,
+23² (mod 840)` from the divisor structure of shifted integers `p + i`.
 
+- Key existence statement (informal): for primes `p ≡ 1 (mod 4)`, if `p + i`
+  has a divisor `d ≡ 3 (mod 4)` with `4i | (p + d)`, then there is a direct
+  three-term solution built from `(p + d)/i`. For `p ≡ 3 (mod 4)` the
+  two-term representation emerges immediately.
+- Computational tests: 10^9 primes around 10^17, 10^52, and 10^7 primes around
+  10^131 with very small search depth (M=40 sources) find no counterexamples.
+- Probabilistic model gives a super-polynomial bound on the failure
+  probability; Borel–Cantelli then gives heuristic evidence the counterexamples
+  (if any) form a finite set. **Heuristic, not a proof.**
 
-## What it claims
+## Consequence
 
-Abstract: We introduce the Ceiling Continued Fractions (FCT) framework for constructing three-term Egyptian fraction representations in the Erdős-Straus conjecture. The approach exploits divisor structures of shifted integers p+i rather than congruence-based techniques. We derive a super-polynomial upper bound on the failure probability; its convergence, together with the Borel-Cantelli lemma, provides heuristic evidence that counterexamples, if any exist, form a finite set. Computational tests on 10^9 primes in ranges around 10^17, 10^52, and 10^131, show no counterexamples with very small search depth.
+Another constructive engine aimed directly at the six open classes, but it is
+explicitly heuristic (probabilistic, finite-set conclusion). The concrete
+divisor condition `p + i` having `d ≡ 3 (mod 4)` with `4i | (p+d)` is
+checkable per prime — a candidate rule the run's oracle can test on the
+witnesses, and a possible source of a deterministic family if the condition
+can be made to hold identically for a sub-class.
 
-Comments: | 10 pages |
-
-Subjects: | Number Theory (math.NT) |
-
-MSC classes: | 11D68, 11Y16 |
-
-Cite as: | [arXiv:2605.04551][6] [math.NT] |
-
-| (or [arXiv:2605.04551v2][7] [math.NT] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.2605.04551][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 6446 character source; every section, statement, and proof in full at `research/sources/ventas-ceiling-continued-fraction.full.md`]*
+```claim
+id: ventas-fct-heuristic
+statement: Under the FCT framework, a prime p ≡ 1 (mod 4) has a 3-term solution whenever p+i has a divisor d ≡ 3 (mod 4) with 4i | (p+d); computational tests over 10^9 primes near 10^17/10^52 and 10^7 primes near 10^131 find no counterexamples with search depth 40, giving heuristic (Borel–Cantelli) evidence that counterexamples, if any, form a finite set.
+hypotheses: primes ≡ 1 (mod 4) (the open classes are a subset); heuristic/probabilistic argument.
+holds-here: true — applies directly to the six open classes, but the conclusion is heuristic, not proved.
+status: sourced (arXiv:2605.04551; computational + probabilistic heuristic).
+bearing: concrete per-prime divisor condition testable on witnesses; not a proof engine by itself.
+anchor: research/sources/ventas-ceiling-continued-fraction.full.md
+```

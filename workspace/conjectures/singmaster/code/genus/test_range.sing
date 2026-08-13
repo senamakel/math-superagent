@@ -1,0 +1,34 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+// helper: C(x,k) polynomial
+proc CB(xx, k)
+{
+  poly p = 1;
+  int i;
+  for(i=0;i<k;i++){ p = p*(xx-i); }
+  return(p/factorial(k));
+}
+// k2=3 cases, k1 = 4,6,8,10
+int k1, k2;
+k2 = 3;
+for(k1=4; k1<=10; k1=k1+2)
+{
+   poly F = CB(x,k1) - CB(y,k2);
+   ideal I = F;
+   "genus k1=",k1," k2=3: ", genus(I);
+}
+// k2=4, k1=5,7,9
+k2=4;
+for(k1=5; k1<=9; k1=k1+2)
+{
+   poly F = CB(x,k1) - CB(y,k2);
+   ideal I = F;
+   "genus k1=",k1," k2=4: ", genus(I);
+}
+// symmetric k1=k2=k for k=3,4,5 (reducible! check)
+for(k1=3; k1<=5; k1=k1+1)
+{
+   poly F = CB(x,k1) - CB(y,k1);
+   ideal I = F;
+   "genus k1=k2=",k1,": ", genus(I);
+}

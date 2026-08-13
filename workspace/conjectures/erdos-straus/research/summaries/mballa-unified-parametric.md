@@ -1,49 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mballa-unified-parametric.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Mballa, "A unified parametric approach to the Erdős–Straus conjecture with explicit solutions for a set of integers of natural density one"
 
-<!-- source: https://arxiv.org/html/2602.20036v1 | converted from HTML -->
+Source: arXiv:2602.20036 (23 Feb 2026, v2 22 Mar 2026), HTML: https://arxiv.org/html/2602.20036v2
+Full text: `research/sources/mballa-unified-parametric.full.md`
 
-## What is in it
+## What it establishes (sourced, primary)
 
-- Properties of the Function F x, t ( k) ​ ( n) F_{x,t}^{(k)}(n) with Applications to the…
-        - Abstract
-  - 1 Introduction
-  - Decrease, boundedness and convergence on the admissible domain
-    - Admissible domain of a pair
-        - Proposition 1 (Decrease and positivity on the domain).
-        - Proof.
-        - Proposition 2 (Convergence and boundedness on the domain).
-        - Proof.
-  - Quadratic equivalence theorem
-        - Proof.
-        - Proof.
-        - Proposition 3 (Explicit symmetric solutions for three residue classes).
-        - Proof.
-        - Proposition 4 (Explicit symmetric solutions for a subfamily of n ≡ 1 ( mod 4) n\equiv…
-        - Proof.
-    - An example of application to a residue class modulo 840
-- …
+Symmetric (y = z) solutions. Defines `F(k)_{x,t}(n) = t²(kx − n)² − 2nxt`;
+zeros of F produce symmetric solutions with `y = z`. Proves a Zero Lemma: a
+zero of F on the admissible domain `D(k)_{x,t}` forces n to be the domain's
+upper bound. For k = 4 (Erdős–Straus):
 
+- Explicit symmetric solutions for `n ≡ 0, 2, 3 (mod 4)` — 75% of integers —
+  (these are of course covered by the classical identities; the point is the
+  unified F-based framework).
+- For `n ≡ 1 (mod 4)`: symmetric solutions exist when n has a divisor
+  `b ≡ 3 (mod 4)`; proved for **almost all** such n, so the exceptional set
+  has natural density zero. The conjecture is thus verified (by explicit
+  symmetric families) for a proportion approaching 1 within the `n ≡ 1 (mod 4)`
+  class — including infinitely many new explicit families not covered by
+  Mordell.
 
-## What it claims
+## Consequence
 
-This article develops a parametric approach to study the Diophantine equation k n = 1 x + 1 y + 1 z \frac{k}{n}=\frac{1}{x}+\frac{1}{y}+\frac{1}{z}, underlying the Erdős–Straus ( k = 4 k=4), Sierpiński ( k = 5 k=5), and their generalizations. We introduce and analyze the fundamental function F x, t ( k) ​ ( n) = t 2 ​ ( k ​ x − n) 2 − 2 ​ n ​ x ​ t F_{x,t}^{(k)}(n)=t^{2}(kx-n)^{2}-2nxt, whose perfect square values are equivalent to solutions of the conjectures.
+The `n ≡ 1 (mod 4)` divisor-condition (existence of `b ≡ 3 (mod 4)`) is
+exactly the same structure Ventas uses (`d ≡ 3 (mod 4)` divisor of shifted
+integers) — two independent families converging on the same mechanism for the
+hard class. Since the six open classes are contained in `n ≡ 1 (mod 4)`, a
+run targeting `n ≡ 1 (mod 840)` should check whether the divisor `b ≡ 3
+(mod 4)` condition can be made to hold **identically** for a polynomial
+sub-family (e.g. `b = 4k+3` dividing a quadratic in k), which would be a new
+positive-density family inside the open class.
 
-For any fixed pair ( x, t) (x,t), we define its admissible domain 𝒟 x, t ( k) \mathcal{D}_{x,t}^{(k)} and prove that on this domain, F F is strictly decreasing, non-negative, and converges to its minimum. A key result is the Zero Lemma: if F ⁡ ( n 0) = 0 F(n_{0})=0 for some n 0 n_{0} in the domain, then n 0 n_{0} is necessarily the upper bound of 𝒟 x, t ( k) \mathcal{D}_{x,t}^{(k)}, and such zeros of F F yield explicit symmetric solutions with y = z y=z.
-
-As an illustration, in the classical Erdős–Straus case ( k = 4 k=4), we explicitly construct symmetric solutions y = z y=z for all integers n ≡ 0, 2, 3 ( mod 4) n\equiv…
-
-Co…
-
-## Statements it makes
-
-###### Proposition 1 (Decrease and positivity on the domain).
-
-###### Proposition 2 (Convergence and boundedness on the domain).
-
-lemma (Zero Lemma) Let k ≥ 4 k\geq 4 be an integer, and let x, t ∈ ℕ ∗ x,t\in\mathbb{N}^{*} be fixed. Consider n ↦ F x, t ( k) ​ ( n) n\mapsto F_{x,t}^{(k)}(n) defined on its admissible domain 𝒟 x, t = { n ≥ N 1 ≥ 2 ∣ n < k ​ x ​ and ​ t ≥ 2 ​ n ​ x ( k ​ x − n) 2 } \mathcal{D}_{x,t}=\{n\geq N_{1}\geq 2\mid n<kx\text{ and }t\geq\dfrac{2nx}{(kx-n)^{2}}\}.
-
-###### Proposition 3 (Explicit symmetric solutions for three residue classes).
-
-###### Proposition 4 (Explicit symmetric solutions for a subfamily of n ≡ 1 ( mod 4) n\equiv 1\pmod{4}).
-
-*[digest of a 35032 character source; every section, statement, and proof in full at `research/sources/mballa-unified-parametric.full.md`]*
+```claim
+id: mballa-symmetric-density
+statement: For k=4, explicit symmetric solutions (y=z) exist for all n ≡ 0,2,3 (mod 4), and for n ≡ 1 (mod 4) when n has a divisor b ≡ 3 (mod 4); the latter holds for almost all n ≡ 1 (mod 4), so the conjecture is verified by explicit families for a proportion tending to 1 in that class.
+hypotheses: k=4 Erdős–Straus; divisor b ≡ 3 (mod 4) condition.
+holds-here: true — the six open classes are inside n ≡ 1 (mod 4).
+status: sourced (arXiv:2602.20036; density-zero exceptional set proved).
+bearing: the b ≡ 3 (mod 4) divisor mechanism is a concrete target for a polynomial sub-family inside the open classes; check if it can be made to hold identically on n = 840k+1.
+anchor: research/sources/mballa-unified-parametric.full.md
+```
