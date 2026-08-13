@@ -1,5 +1,27 @@
 # Scholar digest — what the reference library now establishes
 
+## This session (scholar pass on the current research agent batch)
+
+Completed the two remaining unprocessed full-text sources (both had template
+digests; the sibling abstract files were redundant duplicates):
+
+- **Hulse–Kuan–Lowryduda–Walker (arXiv:2007.14324)** — proved sharp asymptotics
+  for primitive 3-term APs of squares (# with largest term ≤ X ~
+  (√2/π²)log(1+√2)X^{1/2}); primitive APs of squares have length ≤ 3; each such
+  AP ↔ rational point on x²+y²=2 and ↔ right triangle of area = common diff.
+  **Bearing: corroborates the run's Φ/S(e) abundance finding** — APs of squares
+  are plentiful, so scarcity is not the MSS obstruction; the additive relation
+  among u,v,u+v,u−v is. Claim `aps-of-squares-count-asymptotics` (proved,
+  holds-here yes).
+- **Wolird (arXiv:2310.12164)** — recreational Gaussian 3-to-1 sibling
+  correspondence; author disclaims any bearing on existence. **Dead end**,
+  holds-here no. Claim `wolird-gaussian-sibling-3-to-1` (asserted).
+- **Verified** the two target papers (GFP Bremner-uniformity, Rome–Yamagishi)
+  were already properly claim-blocked in the follow-up session; validated the
+  `exact-reduction-magic-507c` closure and the four φ-program runs against the
+  output files; confirmed `near_misses.json` has `all_checks_passed: true`
+  (reconciling CONTEXT.md's stale "false" claim — the checks pass).
+
 ## Completed in this session
 
 **Replaced 18 template digests with proper scholar notes** under `research/summaries/`,
