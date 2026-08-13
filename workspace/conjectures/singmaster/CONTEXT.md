@@ -46,7 +46,13 @@ Each marked with evidence class and a link.
   Jenkins (2,2)=3 and de Weger (3,4)=3). **So Faltings applies to every distinct
   pair — the Faltings-threshold deliverable — but per-pair finiteness is
   ineffective, and a quadratically-growing genus makes uniformity harder, not
-  easier (the standing trap).** Diagonal m=n reducible (contains x=y). Single
+  easier (the standing trap).** Diagonal m=n reducible (contains x=y). Identically
+  `g=((m-1)(n-1)+1-gcd(n,m))/2`, so coprime pairs have `g=p_a/2` with `p_a=(m-1)(n-1)`
+  the bidegree arithmetic genus; equivalently the singularities' total delta
+  invariant is `((m-1)(n-1)-1+gcd(n,m))/2` — the concrete statement whose
+  verification would promote the formula from checked to proved (mechanism
+  candidate: the involutions z→k-1-z; claim
+  `genus-symmetric-form-and-delta-prediction`). Single
   formula: `code/out/genus_single_closed_form.md`, claim
   `genus-single-closed-form-all-pairs`. **Two caveats an agent must not
   overstate:** (a) the original 8x11 grid was two-CAS (Singular+Sage agree),
@@ -353,7 +359,7 @@ Pintér–Tengely 2023) and the OEIS row-count convention `oeis-a003016-row-coun
   (Izv. Math. 62:4, held) gives the explicit constants
   `ln|Λ| > −112·2ⁿC₂C′₀D²ωln(2eB)` (Thm 2.2) and the rational/integer case
   with 2ⁿ improvement (Thm 2.3, K=Q — applies to binomial products since αⱼ
-  are rationals/primes, D=ρ=1). Claim `matveev-2000-explicit-constants`.
+  are rationals/primes, D=ρ=1). Claim `matveev-2000-explicit-constants-primary`.
   Binding constraints: the bound grows with heights (hence with k), so it is a
   per-pair constant, not uniform (`effective-methods-wall`); GOAL.md accepts a
   per-pair effective constant stated with its k-dependence. Apply Matveev
