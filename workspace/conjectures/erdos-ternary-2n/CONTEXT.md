@@ -13,19 +13,25 @@ establish.
 ## Established
 
 **The modular sieve is exactly `|A_k| = 2^(k-1)` and therefore can never close.**
-*(proved via bijection; numerically checked k = 1..26 — this is the run's main
-negative result and one of the stated deliverable options.)*
-- 2 is a primitive root mod 3^k (order `φ(3^k) = 2·3^(k-1)`, SAYE-2/LTE, proved),
-  so `Φ_k : r mod 2·3^(k-1) ↦ 2^r mod 3^k` is a bijection onto the units mod 3^k.
-- Units have low digit 1, so the attainable length-k {0,1} patterns are "low
-  digit 1, other k−1 digits in {0,1}": exactly `2^(k-1)`. Hence `|A_k| = 2^(k-1)`
-  and the lift `A_{k+1} → A_k` is exactly 2-to-1; no class dies, no two collide.
-- So density `|A_k|/(2·3^(k-1)) = (1/2)(2/3)^(k-1) → 0` while **the count doubles
-  each level**. Narkiewicz's `O(x^{log_3 2})` bound matches this up to constant
-  and gives no path information. **Conclusion: no obstruction modulo any power
-  of 3 can prove the Erdős conjecture at any finite 3-adic precision.**
-  *(links: `research/threads/sieve-dynamics.md`, `code/out/sieve_cannot_close.md`,
-  `code/out/sieve_lift.captured.txt` — exact list k=1..26.)*
+*(proved unconditionally — three-lemma argument, claim `ternary-lifting-theorem`;
+numerically checked k = 1..26 — this is the run's main negative result and one of
+the stated deliverable options.)*
+- The three-lemma proof is in `code/out/lifting_theorem.md`: (1)
+  `2^(2·3^(k-2))` has order 3 mod 3^k, so equals `1 + c·3^(k-1)` with `3 ∤ c`
+  (c=1 checked k=2..15); (2) the three lifts `r + j·2·3^(k-2)` agree mod
+  3^(k-1) so share their low k−1 digits; (3) the k-th digit is
+  `d + v·j·c mod 3`, an affine bijection of Z/3 since 3 divides neither v
+  (a power of 2) nor c — so the three top digits are 0,1,2 and exactly one
+  lift dies, two survive. Hence `|A_k| = 2|A_{k-1}|`, `|A_1| = 1`,
+  `|A_k| = 2^(k-1)` for **all** k. Supersedes `ternary-sieve-count-doubles`
+  (which asserted it only to k=22).
+- **Stop sieving**: `sieve_structure.py` enumerating `A_k` explicitly is data
+  no longer needed; the count is a theorem, not a table.
+- So density `|A_k|/(2·3^(k-1)) = (1/2)(2/3)^(k-1) → 0` while **the count
+  doubles each level**. Narkiewicz's `O(x^{log_3 2})` bound matches this up to
+  constant and gives no path information. **Conclusion: no obstruction modulo
+  any power of 3 can prove the Erdős conjecture at any finite 3-adic
+  precision.**
 - The three witnesses `n = 0, 2, 8` survive in `A_k` at every level checked; the
   negation of "the sieve closes" is not a forbidden-witness overreach.
 
