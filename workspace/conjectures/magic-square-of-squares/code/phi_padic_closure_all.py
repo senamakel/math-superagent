@@ -22,7 +22,7 @@ def residue_set(Phi, mod):
     skip=0
     for q in Phi:
         num,den=q.numerator,q.denominator
-        if den % mod == 0:
+        if gcd(den, mod) != 1:
             skip+=1
             continue
         r=(num * pow(den % mod, -1, mod)) % mod
