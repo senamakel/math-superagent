@@ -7,7 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | _(undescribed)_ |
 | `brute.captured.txt` | Brute-force oracle on the 7 witnesses: direct enumeration gives identical counts and occurrence sets (3003->8, rest->6), second independent route. |
 | `brute_oracle.md` | _(undescribed)_ |
-| `check_eras_refutation.py` | _(undescribed)_ |
+| `check_eras_refutation.py` | Verification computations for the grounding pass of three inventor approaches (Erdős–Selfridge structural, Bombieri–Pila determinant, hypergeometric-WZ). Decisive exact facts it checks when run: (1) 8·9=72=2³·3² has no prime >2 to exponent 1, falsifying the exponent-1 premise of erdos-selfridge-structural; (2) the trivial root-count bound O((log a)²) beats the Bombieri–Pila a^{1/d} term; (3) 360360·720 = 2162160·120 = 259459200 with 360360=2³·3²·5·7·11·13 and 2162160=2⁴·3³·5·7·11·13, showing large primes 7,11,13 sit inside both 3003 blocks. |
 | `check_mason_stothers_bound.captured.txt` | _(undescribed)_ |
 | `check_mason_stothers_bound.py` | _(undescribed)_ |
 | `check_witnesses_vs_mrstt.captured.txt` | Full output of code/check_witnesses_vs_mrstt.py, EXIT_CODE=0: all 15 nontrivial witness occurrences classified BOUNDARY (MRSTT-OPEN) under the n-form threshold exp((log n)^(2/3+0.1)) — 0 of 15 interior; a-form bound B(a)=(log a)/(log_2 a)^1.4 reported with the asymptotic caveat; strengthening: 0 of 44 pairs (mirrors and trivial included) in the symmetric interior. |
@@ -58,6 +58,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_lane_clark_bound.py` | _(undescribed)_ |
 | `verify_library_claims.py` | _(undescribed)_ |
 | `verify_mrstt_witnesses.captured.txt` | Captured output of code/verify_mrstt_witnesses.py (final run, EXIT_CODE=0): 3003's four witness pairs all equal 3003 with exactly 8 pairs in the triangle (mirrors included); all six N=6 witnesses + 3003 (N=8) reproduced by direct enumeration; Fibonacci family holds j=1..12; k<=log2(a)=39 candidates per a up to 10^12 (~1560 comb evaluations). |
-| `verify_sdw_transformations.py` | Exact symbolic verification that all eight Stroeker-de Weger 1999 Table 1 reductions C(n,k1)=C(m,k2) -> elliptic model (W23, Q24, W26, Q28, W34, C36, W46, Q48) are polynomial identities, and that the Table 3 Mordell-Weil basis points lie on their curves. Independent algebraic check of sdw-elliptic-logarithms-eight-pairs; NOT yet executed (needs coder: timeout 540 python3 code/out/verify_sdw_transformations.py | tee code/out/verify_sdw_transformations.captured.txt; echo EXIT_CODE=$?). |
+| `verify_sdw_transformations.py` | Exact symbolic verification that all eight Stroeker-de Weger 1999 Table 1 reductions C(n,k1)=C(m,k2) -> elliptic model (W23, Q24, W26, Q28, W34, C36, W46, Q48) are polynomial identities, and that the Table 3 Mordell-Weil basis points lie on their curves. Independent algebraic check of sdw-elliptic-logarithms-eight-pairs; NOT yet executed (needs coder: timeout 540 python3 code/out/verify_sdw_transformations.py |
 | `verify_superelliptic_formula.captured.txt` | _(undescribed)_ |
 | `witnesses.json` | Repro of the witness list: 3003:8 and the six 6-fold values with nontrivial canonical reps; conventions and scan bounds recorded. |
