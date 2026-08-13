@@ -1,6 +1,21 @@
 === Closed-form identities ===
-Traceback (most recent call last):
-  File "/workspace/code/pattern/first_diff_fibonacci.py", line 29, in <module>
-    if fibs[m]*fibs[m+3] - fibs[m-2]*fibs[m+1] != fibs[2*m+1]:
-                                                  ~~~~^^^^^^^
-IndexError: list index out of range
+F_m F_{m+1} - F_{m-2}F_{m-1} == F_{2m-1}  for m=3..59: True
+F_m F_{m+3} - F_{m-2}F_{m+1} == F_{2m+1}  for m=3..59: True
+
+=== Family first differences vs Fibonacci ===
+ i          n_i          k_i |       diff_n       diff_k | F_{4i+3}   matchN F_{4i+1}   matchK
+ 1           14            4 |
+ 2          103           38 |           89           34 | F11=      89     True | F09=      34     True
+ 3          713          271 |          610          233 | F15=     610     True | F13=     233     True
+ 4         4894         1868 |         4181         1597 | F19=    4181     True | F17=    1597     True
+ 5        33551        12814 |        28657        10946 | F23=   28657     True | F21=   10946     True
+ 6       229969        87839 |       196418        75025 | F27=  196418     True | F25=   75025     True
+ 7      1576238       602068 |      1346269       514229 | F31= 1346269     True | F29=  514229     True
+ 8     10803703      4126646 |      9227465      3524578 | F35= 9227465     True | F33= 3524578     True
+ 9     74049689     28284463 |     63245986     24157817 | F39=63245986     True | F37=24157817     True
+10    507544126    193864604 |    433494437    165580141 | F43=433494437     True | F41=165580141     True
+11   3478759199   1328767774 |   2971215073   1134903170 | F47=2971215073     True | F45=1134903170     True
+12  23843770273   9107509823 |  20365011074   7778742049 | F51=20365011074     True | F49=7778742049     True
+
+RESULT: n_i-n_{i-1}=F_{4i+3} for i=2..12: True
+RESULT: k_i-k_{i-1}=F_{4i+1} for i=2..12: True
