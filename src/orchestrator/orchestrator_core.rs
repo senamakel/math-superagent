@@ -21,6 +21,7 @@ mod paths;
 mod patterns;
 mod readable;
 mod requests;
+mod runner;
 mod runs;
 mod shared_context;
 mod solutions;
@@ -68,6 +69,7 @@ use vector::{
     VectorStore,
 };
 
+pub use runner::SubagentTaskRunner;
 pub use tinyagents::harness::host::AgentDefinition;
 #[cfg(feature = "graph-debug")]
 pub use diagram::render_solution_loop;
@@ -303,6 +305,26 @@ pub struct OrchestratorAgent {
     tracer: Arc<RunTracer>,
     workspace: PathBuf,
     memory: VectorStore,
+}
+
+impl OrchestratorAgent {
+    /// This orchestrator's specialists, offered to `TinyFlows` as background
+    /// work a workflow can start and not wait for.
+    ///
+    /// The registry is already populated when this is called, so the runner
+    /// starts exactly the roles this orchestrator knows — a workflow cannot
+    /// spawn a specialist that was never registered, and finds that out at the
+    /// spawn rather than at a gate.
+    ///
+    /// Public because the caller is outside this crate by definition: it is a
+    /// host assembling `TinyFlows` capabilities for a workflow run. Nothing in
+    /// this crate's own solution loop uses it — that loop is built on the
+    /// state-graph runtime, which has no `spawn` node. See
+    /// [`crate::agent::flow`].
+    #[must_use]
+    pub fn task_runner(&self) -> SubagentTaskRunner {
+        SubagentTaskRunner::new(self.subagents.clone())
+    }
 }
 
 impl std::fmt::Debug for OrchestratorAgent {

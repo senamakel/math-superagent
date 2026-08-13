@@ -86,7 +86,7 @@ impl AsyncSubagentManager {
         )
     }
 
-    fn register_executor(
+    pub(super) fn register_executor(
         &self,
         name: impl Into<String>,
         executor: Arc<dyn AgentExecutor>,
@@ -260,6 +260,50 @@ impl AsyncSubagentManager {
                 "agent `{agent}` produced no response before its deadline"
             ))
         })
+    }
+
+    /// Starts `agent` on `input` without waiting, returning its run id.
+    ///
+    /// The same detached spawn the model-visible `spawn_agent` tool performs,
+    /// named for the `TinyFlows` [`TaskRunner`](super::runner::SubagentTaskRunner)
+    /// that offers it to a `spawn` node. Separate from the private `spawn` only
+    /// in visibility: a capability implementation lives outside this module and
+    /// must not reach into it for anything wider.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when `agent` is not registered, or when the run
+    /// registry refuses the new id.
+    pub(super) fn spawn_detached(&self, agent: &str, input: String) -> Result<TaskId> {
+        self.spawn(agent, input)
+    }
+
+    /// Reads a run's record, or nothing when the id was never issued.
+    ///
+    /// Returns an `Option` rather than this crate's `Result` because the one
+    /// caller outside this module distinguishes "unknown ticket" from every
+    /// other failure and has its own error type to say so in.
+    pub(super) fn task_record(&self, task_id: &str) -> Option<RunRecord> {
+        self.record(task_id).ok()
+    }
+
+    /// Asks a live run to stop, cooperatively.
+    ///
+    /// Delivered through the same steering channel a human directive uses, so a
+    /// run stops at its next boundary rather than being killed mid-tool-call and
+    /// leaving a half-written workspace file behind.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the run is unknown, already terminal, or has no
+    /// steering handle registered.
+    pub(super) fn stop_run(&self, task_id: &str) -> Result<()> {
+        self.steer(
+            task_id,
+            "Stop this run now. Write down what you have established so far and \
+             finish; do not start anything new."
+                .to_string(),
+        )
     }
 
     fn record(&self, task_id: &str) -> Result<RunRecord> {

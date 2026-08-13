@@ -181,7 +181,7 @@ impl FollowUp {
 }
 
 #[async_trait]
-trait AgentExecutor: Send + Sync {
+pub(super) trait AgentExecutor: Send + Sync {
     async fn execute(
         &self,
         run_id: &str,
