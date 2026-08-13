@@ -49,7 +49,7 @@ def main(kmax):
             for j in (0, 1, 2):
                 cand = c + j * mod_old
                 r = pow(2, cand, p3k1)
-                d = (r // 3 ** k) % 3   # the (k+1)-th ternary digit
+                d = (r // 3 ** (k-1)) % 3   # the k-th ternary digit (position k-1)
                 digs.append(d)
                 if good_low(k+1, pow(2, cand, 3 ** (k+1))):
                     nxt.append(cand)
