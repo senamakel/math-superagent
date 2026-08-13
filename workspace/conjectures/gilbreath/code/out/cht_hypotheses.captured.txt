@@ -1,0 +1,16 @@
+sieve limit: 20000000 (fixed; a deeper sieve only raises M by ~1 while R_0 grows by 8^M, and the verdict is R_0 vs reachable depth 1000)
+primes <= 20000000: 1270607
+num normalized gaps a_n: 1270605
+first nine a_n: [0, 0, 1, 0, 1, 0, 1, 2, 0]  (OEIS A100820 check: PASS)
+max a_n = 89  (prime gap 180; first at n = 1094420)
+M = smallest integer with a_n <= 2^M: 7  (2^6 = 64 < 89 <= 128 = 2^7)
+L = longest run of consecutive 0s = 2  (a_n = 0 for n = 1..2)
+longest {0,d}-block over all d >= 1: length 7 (attained by d = 1)
+top (d, longest {0,d}-block): [(1, 7), (2, 7), (4, 6), (7, 5), (8, 5)]
+R_0 = 100 * L * 8^M = 100 * 2 * 8^7 = 419430400
+log10(R_0) = 8.62;  R_0 / 1000 = 419,430.4
+run's reachable depth: 1000;  R_0 > 1000: True
+
+wrote /workspace/code/out/cht_hypotheses.md
+
+VERDICT: holds-here = no  (R_0 = 419,430,400 >> 1000)

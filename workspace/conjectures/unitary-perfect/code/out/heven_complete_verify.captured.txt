@@ -1,0 +1,63 @@
+k=  1 m=   2: 2^m+1 fully factored, factors [5]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k=  3 m=   6: 2^m+1 fully factored, factors [5, 13]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=13: ord=12 d=3 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k=  5 m=  10: 2^m+1 fully factored, factors [5, 41]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=41: ord=20 d=5 (d|k: True) t=2 v2(q-1)=3 v2(t)=1 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k=  9 m=  18: 2^m+1 fully factored, factors [5, 13, 37, 109]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=13: ord=12 d=3 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=37: ord=36 d=9 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=109: ord=36 d=9 (d|k: True) t=3 v2(q-1)=2 v2(t)=0 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k= 13 m=  26: 2^m+1 fully factored, factors [5, 53, 157, 1613]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=53: ord=52 d=13 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=157: ord=52 d=13 (d|k: True) t=3 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1613: ord=52 d=13 (d|k: True) t=31 v2(q-1)=2 v2(t)=0 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k= 15 m=  30: 2^m+1 fully factored, factors [5, 13, 41, 61, 1321]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=13: ord=12 d=3 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=41: ord=20 d=5 (d|k: True) t=2 v2(q-1)=3 v2(t)=1 3-Higgs=True
+      q=61: ord=60 d=15 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1321: ord=60 d=15 (d|k: True) t=22 v2(q-1)=3 v2(t)=1 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k= 23 m=  46: 2^m+1 fully factored, factors [5, 277, 1013, 1657, 30269]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=277: ord=92 d=23 (d|k: True) t=3 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1013: ord=92 d=23 (d|k: True) t=11 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1657: ord=92 d=23 (d|k: True) t=18 v2(q-1)=3 v2(t)=1 3-Higgs=True
+      q=30269: ord=92 d=23 (d|k: True) t=329 v2(q-1)=2 v2(t)=0 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k= 31 m=  62: 2^m+1 fully factored, factors [5, 5581, 8681, 49477, 384773]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=5581: ord=124 d=31 (d|k: True) t=45 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=8681: ord=124 d=31 (d|k: True) t=70 v2(q-1)=3 v2(t)=1 3-Higgs=True
+      q=49477: ord=124 d=31 (d|k: True) t=399 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=384773: ord=124 d=31 (d|k: True) t=3103 v2(q-1)=2 v2(t)=0 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k= 41 m=  82: 2^m+1 fully factored, factors [5, 10169, 181549, 12112549, 43249589]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=10169: ord=164 d=41 (d|k: True) t=62 v2(q-1)=3 v2(t)=1 3-Higgs=True
+      q=181549: ord=164 d=41 (d|k: True) t=1107 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=12112549: ord=164 d=41 (d|k: True) t=73857 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=43249589: ord=164 d=41 (d|k: True) t=263717 v2(q-1)=2 v2(t)=0 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+k= 61 m= 122: 2^m+1 fully factored, factors [5, 733, 1709, 3456749, 368140581013, 667055378149]
+      q=5: ord=4 d=1 (d|k: True) t=1 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=733: ord=244 d=61 (d|k: True) t=3 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=1709: ord=244 d=61 (d|k: True) t=7 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=3456749: ord=244 d=61 (d|k: True) t=14167 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=368140581013: ord=244 d=61 (d|k: True) t=1508772873 v2(q-1)=2 v2(t)=0 3-Higgs=True
+      q=667055378149: ord=244 d=61 (d|k: True) t=2733833517 v2(q-1)=2 v2(t)=0 3-Higgs=True
+   ord=4d with d|k: True; v2(t)<=1: True; all 3-Higgs: True  -> IN H_even
+
+ALL TEN VERIFIED ELEMENTS REPRODUCED WITH COMPLETE FACTORIZATION: True
+verified m = [2, 6, 10, 18, 26, 30, 46, 62, 82, 122]
+DONE

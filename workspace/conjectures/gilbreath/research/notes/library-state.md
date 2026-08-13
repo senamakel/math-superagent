@@ -64,10 +64,10 @@ anchor: research/sources/odlyzko-1993-iterated-differences-latex-source.full.md;
 ```claim
 id: cht-inverse-theorem-library If a_n ≤ 2^M, no 0-block of length L, and no {0,d}-block with 2^{M−m}<d≤2^{M−m+1} of length ≥ R_m−3R_{m−1} at depth ≤ 2R_{m−1} (R_m ≥ 4R_{m−1}, R_0 ≥ 100L·8^M), then a^{(N−1,1)} ∈ {0,1}. I.e. the ONLY ways an array with small initial data can fail to decay are: long zero-blocks, or very long shallow {0,d}-blocks (d≥2).
 hypotheses: non-negative integer initial data with Cramér-type size bound (a_n ≤ 2^M ≤ log^O(1) N in the intended application); L ~ log^10 N.
-holds-here: no — computed from depth-1000 prime data (code/out/cht_hyp_check.captured.txt): max normalised gap a_n = 89 → M = ceil(log2 89) = 7, longest 0-run L = 2, R_0 = 100·L·8^M = 419,430,400 ≫ 1000. The theorem's no-{0,d}-block hypothesis is not satisfiable at any reachable depth; the two obstruction families (long zero-blocks, long shallow {0,d}-blocks) are not surveyable within 1000 rows.
+holds-here: no — checked against the real prime rows (sieve 2e7, code/cht/check_cht_hypotheses.py, code/out/cht_hypotheses.captured.txt / cht_hypotheses.md): max normalised gap a_n = 89 → M = ceil(log2 89) = 7, longest 0-run L = 2, longest {0,d}-block = 7 (d=1), so R_0 = 100·L·8^M = 419,430,400 ≫ 1000 (419,430× the reachable depth). The theorem's no-{0,d}-block hypothesis is not satisfiable at any reachable depth; the two obstruction families (long zero-blocks, long shallow {0,d}-blocks) are not surveyable within 1000 rows.
 status: sourced (arXiv:2607.08712, submitted 9 Jul 2026, 28pp, authors Z. Chase, Z. Hunter, T. Tao)
 bearing: the run's attack must either rule out long zero-blocks and long shallow {0,d}-blocks for the primes, or find an invariant that bypasses this dichotomy. A counterexample-invariant approach should target exactly these two structures.
-anchor: research/sources/chase-hunter-tao-2026-full-html.full.md
+anchor: research/sources/chase-hunter-tao-2026-full-html.full.md; code/out/cht_hypotheses.captured.txt; code/out/cht_hypotheses.md
 ```
 
 ```claim

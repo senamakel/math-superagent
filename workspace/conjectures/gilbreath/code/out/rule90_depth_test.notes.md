@@ -127,8 +127,6 @@ thresholds used: [1, 34, 1000]
  111    37746     1    1    0   Y     1    1    0   Y   110  128   18   N
  113   129923     3    2    1   Y     3    2    1   Y   112  128   16   N
  127    53470     2    2    0   Y     2    2    0   Y   126  128    2   N
-[parallel] rule90-depth variants: 36 variants x D=1000 across 26 worker(s) of 28 CPUs
-[parallel] rule90-depth: 36 variants across 26 worker(s) of 28 CPUs
  131   190810     3    2    1   Y     3    2    1   Y   130  128    2   N
  135   217657     1    1    0   Y     1    1    0   Y   134  128    6   N
  147   360698     1    1    0   Y     1    1    0   Y   146  128   18   N
@@ -175,5 +173,3 @@ last_minval   4   1000 26/   26   13   13   100%       5
 
 === cross-check: positive jumps vs the established regeneration criterion (edge==2 and intruder==4 at the pre-transition row) ===
   23/43 pre-rows satisfy it; 20 failures: [(3, 0, 4), (10, 0, 4), (11, 0, 4), (13, 0, 4), (15, 0, 4), (27, 0, 4), (35, 0, 4), (39, 0, 4), (51, 0, 4), (52, 0, 4), (77, 0, 4), (92, 0, 4), (97, 0, 4), (127, 0, 4), (132, 0, 4), (135, 0, 4), (137, 0, 4), (139, 0, 4), (144, 0, 4), (162, 0, 4)]
-
-wrote code/out/rule90_depth_test.notes.md

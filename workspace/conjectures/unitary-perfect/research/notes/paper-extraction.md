@@ -93,7 +93,7 @@ statement: If m=2k∈H_even with k odd, then every prime factor of k is 3-Higgs,
 hypotheses: Zsigmondy's theorem on {2^n+1} gives a primitive divisor r of
   2^{2k}+1 with ord_r(2)=4k and 4k | r-1; r 3-Higgs ⇒ v_q(r-1)≤3
 holds-here: yes
-status: proved (paper Prop 4, R)
+status: catalogued
 bearing: confines H_even to the doubled image of the cubefree 3-Higgs
   semigroup; this is the engine that lets finite factor-cache verification
   bound H_even over long ranges and transfers to the prime case
@@ -107,7 +107,7 @@ statement: H_even is finite iff H_even^prime = {2p : p odd prime, 2p∈H_even}
   is finite, and |H_even| ≤ 4^|H_even^prime|.
 hypotheses: Prop 4 structural lemma (Higgs-cubefree + divisor closure)
 holds-here: yes
-status: proved (paper Thm 7, R)
+status: catalogued
 bearing: the exact bottleneck — the UPN branch closes iff the 2p prime branch
   closes; every open primitive candidate has the form m=2p, the rest inherited
 anchor: research/sources/maciejewski-bounded-box-subbarao-warren.full.md
@@ -121,7 +121,7 @@ statement: H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}; no verified
 hypotheses: paper's factor cache, APR-CL transcripts; correct recursive
   3-Higgs verification for Theorem 8
 holds-here: yes (not independently recomputed in this run)
-status: asserted-by-source (rigorous in paper)
+status: asserted
 bearing: the only confirmed H_even members; a run reproducing part of this
   table independently is the natural first check before trusting anything past it
 anchor: research/sources/maciejewski-bounded-box-subbarao-warren.full.md
@@ -151,7 +151,7 @@ statement: Six open candidates m=2p (2446, 10294, 10958, 17398, 19066, 20282)
 hypotheses: p* primality by PARI/GP APR-CL (isprime(n,2)) trusted; trial
   division of q | p*-1; factor cache of 2^m+1
 holds-here: yes (as sourced; transcript-dependent on APR-CL correctness)
-status: asserted-by-source (rigorous given APR-CL)
+status: asserted
 bearing: the deep-closure mechanism that lowers the undecided frontier;
   shows the bottleneck is genuinely NFS-scale (cofactors of L_p/M_p),
   not shallow small-prime data
@@ -171,7 +171,7 @@ hypotheses: (H1) effective divisor-level mod-16 equidistribution of prime
   consequence — those control varying primes, not divisors of one cyclotomic value.
 holds-here: hypotheses unverified — this is a conditional theorem, not an
   unconditional result
-status: asserted (paper Thm 30, C-A)
+status: asserted
 bearing: names the precise near-miss route; the divisor-level mod-16
   equidistribution is the paper's recommended target, close to Conj 29
 anchor: research/sources/maciejewski-bounded-box-subbarao-warren.full.md
@@ -188,7 +188,7 @@ statement: For all 162 original open candidates m=2p (p∈[1213,17467]), no
 hypotheses: enumeration of r≡1 mod 16p up to 10^11, tested against the
   Aurifeuillean halves L_p,M_p; v2(r−1)≥4 forces r non-3-Higgs
 holds-here: yes (computational sweep reported by the paper; bounded by 10^11)
-status: catalogued (computational; not an argument over all scales)
+status: catalogued
 bearing: rules out a shallow 2-adic witness; says any such witness must be
   ≥10^11 (≥6×10^11 for 2426), which is why the open branch is NFS-scale —
   supports treating Conj 29/Thm 30 (H1) as the empirical-equidistribution target
@@ -203,3 +203,5 @@ answers: whether-pass-loop-a1f1
   this note is the paper's structural digest and does not re-derive them.
 - The paper settles the impostor branch only inside box ℬ at max a=10000; the
   UPN conjecture as a whole is untouched beyond that.
+le is untouched beyond that.
+ that.

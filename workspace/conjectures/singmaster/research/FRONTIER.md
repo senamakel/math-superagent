@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Radziwi%C5%82%C5%82,+M | Maksym Radziwiłł | [Submitted on 7 Jun 2021] # Title: Singmaster's conjecture in the interior of Pascal's triangle Authors: [Kaisa Matomäki][2], [Maksym Radziwiłł][3], [Xuancheng Shao][4], [Terence Tao][5], [Joni… |
 | 1 | https://en.wikipedia.org/wiki/Peter_Montgomery_(mathematician) | Peter L. Montgomery | matrix itself, which determines the p p -rank of the Jacobian of X X and the numerator of its zeta function modulo p p. In memory of [Peter L. Montgomery][3]. ## 1. Introduction Let X / k X/k by a… |
 
-_387 further candidates not shown; they are cited once each._
+_399 further candidates not shown; they are cited once each._

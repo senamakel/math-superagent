@@ -1,6 +1,6 @@
 ```thread
 question: Does the combined bound a ≥ 8 survive independent verification, and can the equality case a = 8 be eliminated?
-status: live
+status: open
 rests-on: unitary-perfect-2-adic-budget, unitary-perfect-lower-bound-on-a, heven-two-mod-four
 blocked-by: none yet
 next:

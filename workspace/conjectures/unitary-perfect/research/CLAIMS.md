@@ -9,11 +9,11 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `aurifeuillean-split` | For odd prime p, 2^(2p)+1 = L_p · M_p with L_p = 2^p - 2^((p+1)/2) + 1, M_p = 2^p + 2^((p+1)/2) + 1; both are integer-coefficient quartics in a power of 2, each ≈ half the bit length. | yes | checked | `research/notes/heven-and-3-higgs-structure.md` |
 | `hb-lemma20-closures` | Six open candidates m=2p (2446, 10294, 10958, 17398, 19066, 20282) are excluded: a large APR-CL-verified prime p* \| 2^m+1 has a non-3-Higgs witness q \| p*-1 (v2 overflow or a Pratt-tree descent to 17), and 30882 via… | yes | asserted | `research/notes/paper-extraction.md` |
 | `hb-no-v2ge4-witness-1e11` | For all 162 original open candidates m=2p (p∈[1213,17467]), no prime r≡1 mod 16p with r ≤ 10^11 divides L_p or M_p; for m=2426 extended to 6×10^11 (2,389,527 primes) with no divisor. So no v2≥4 non-3-Higgs witness… | yes | catalogued | `research/notes/paper-extraction.md` |
-| `hb-prop4-structural` | If m=2k∈H_even with k odd, then every prime factor of k is 3-Higgs, v_q(k)≤3 for every prime q\|k (k is Higgs-cubefree), and 2d∈H_even for every odd divisor d\|k. | yes | proved | `research/notes/paper-extraction.md` |
+| `hb-prop4-structural` | If m=2k∈H_even with k odd, then every prime factor of k is 3-Higgs, v_q(k)≤3 for every prime q\|k (k is Higgs-cubefree), and 2d∈H_even for every odd divisor d\|k. | yes | catalogued | `research/notes/paper-extraction.md` |
 | `hb-thm30-conditional` | If (H1) every odd prime p with ω(Φ_{4p}(2)) ≥ C log p has some prime divisor r≡1 mod 16, and (H2) ω(Φ_{4p}(2)) ≥ C log p for p≥p0, then H_even is finite, contained in the ten verified elements plus m=2p, p<p0 in the… | **unchecked** | asserted | `research/notes/paper-extraction.md` |
 | `heven-frontier-50000` | \|H_even ∩ [2,40000]\| ≤ 201 and \|H_even ∩ [2,50000]\| ≤ 272, rigorous. No verified element in (122, 50000]. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-prime-case-reduction` | H_even is finite iff the set {m = 2p : p odd prime, 2p ∈ H_even} is finite, and \|H_even\| <= 4^\|H_even^prime\|. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
-| `heven-prime-case-reduction` | H_even is finite iff H_even^prime = {2p : p odd prime, 2p∈H_even} is finite, and \|H_even\| ≤ 4^\|H_even^prime\|. | yes | proved | `research/notes/paper-extraction.md` |
+| `heven-prime-case-reduction` | H_even is finite iff H_even^prime = {2p : p odd prime, 2p∈H_even} is finite, and \|H_even\| ≤ 4^\|H_even^prime\|. | yes | catalogued | `research/notes/paper-extraction.md` |
 | `heven-thinness-not-finiteness` | #{m ≤ X : m ∈ H} << X^(1-η) for an absolute η > 0, and Σ_{m∈H} 1/m < ∞. This is power-saving thinness but does NOT imply finiteness; on the prime branch the relevant bound is exponential at the primitive-divisor height… | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-thinness-not-finiteness` | #{m≤X : m∈H} ≪ X^{1-η} for an absolute η>0 and Σ_{m∈H} 1/m < ∞ (same for H_even, H_odd); power-saving thinness, NOT finiteness. | yes | proved | `research/notes/paper-extraction.md` |
 | `heven-two-mod-four` | H_even ⊆ {m ≡ 2 (mod 4)}. Every even m in H is 2 mod 4, i.e. v2(m) = 1. In particular m = 2k with k odd. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
@@ -22,6 +22,15 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `structural-search-cannot-reach` | The backtracking search over the product form prod (q_i+1)/q_i = 2, with q_i prime powers of distinct primes and the denominator rule forcing the next prime whenever the remaining target is not an integer, recovers… | yes | checked | `research/notes/why-the-search-is-closed.md` |
 | `unitary-perfect-2-adic-budget` | Every unitary perfect number is even (Subbarao-Warren 1966), and for n = 2^a * prod_i p_i^{e_i} unitary perfect with p_i odd and distinct, a >= 1, the identity sum_i v2(p_i^{e_i} + 1) = a + 1 holds exactly. Consequently… | yes | proved | `research/notes/parity-and-2-adic-budget.md` |
 | `unitary-perfect-lower-bound-on-a` | Any unitary perfect number other than the five known ones satisfies a >= omega(odd part) - 1 >= 8, where 2^a \|\| n. Equivalently 2^8 = 256 divides any sixth unitary perfect number. This follows by combining Wall (1988),… | yes | checked | `research/notes/lower-bound-on-a.md` |
+| `wall1987-largest-odd-component` | Except for the five known UPNs, a unitary perfect number has an odd component larger than 2^15 (smallest candidate 32771); and among primes p < 3*10^9 only 1093 and 3511 satisfy p^2 \| 1 + 2^A for their entry point A. | yes | asserted | `research/summaries/wall-1987-largest-odd-component.md` |
+| `wall1988-nine-odd-components` | Any unitary perfect number other than the five known ones has at least nine odd prime-power components, omega(odd) >= 9. | yes | asserted | `research/summaries/wall-1988-nine-odd-components.md` |
+
+## Contradictions
+
+Resolve these before building on either side.
+
+- `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -34,9 +43,13 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `heven-two-mod-four` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
+- `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) — asserted by the source, not proved there and not checked here
+- `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
 
 These are lookups, not derivations. A catalogue is good evidence that a result is right and no evidence at all about why, so one of these may confirm a final answer and may never be the reason for it. Reproduce the terms with a program that does not read the catalogue, then say so; until then, report the result as looked up.
 
 - `hb-no-v2ge4-witness-1e11` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
+- `hb-prop4-structural` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it
+- `heven-prime-case-reduction` (research/notes/paper-extraction.md) — read from a catalogue; no derivation here reproduces it

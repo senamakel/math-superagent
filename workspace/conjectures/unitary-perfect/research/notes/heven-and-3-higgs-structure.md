@@ -88,7 +88,7 @@ hypotheses: Maciejewski's factor cache and APR-CL verification transcript for
   Theorem 8 are correct
 holds-here: yes, as sourced from the paper's Theorem 8 with its proof sketch; not
   independently recomputed in this run
-status: asserted-by-source (rigorous in the paper)
+status: asserted
 bearing: the only confirmed H_even members below 1200; the search for any 2p
   candidate must pass through these or be a partial-cofactor unknown
 falsifier: a verified member of H_even in (122,1200] would refute Theorem 8
