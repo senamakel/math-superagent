@@ -81,7 +81,6 @@ claim must be checked against this problem before relying on it.
 
 ## Gaps
 
-- `|A_k|` counts across `k` (and which classes survive with `n = 0, 2, 8` identified among them).
-- Narkiewicz (1980) bound: exact statement, explicit constant, and method not yet found/reproduced — unverified until reproduced here or attributed to a primary source.
-- Digit-omission literature (`a^n` in base `b` omitting a fixed digit) and the finite-automaton / Cobham-angle not yet gathered.
-- `research/ROOT.md`, `FRONTIER.md`, `CLAIMS.md` not yet written; neither is `code/lib` populated (no `sieve(k)` / `digit_free` helpers yet — `code/lib/INDEX.md` lists none).
+- **Narkiewicz (1980) bound** — the standard nontrivial result: `|{n ≤ x : 2^n digit-2-free}| = O(x^c)` with explicit `c < 1`. The exact statement, constant, and method are not yet in the library. Requested in `research/threads/narkiewicz-bound.md`.
+- **Proof of 2-to-1 lifting** — the LTE argument sketched in `code/out/sieve_cannot_close.md` and in `research/threads/lifting-proof.md`. Needs: computing `c = (2^{2·3^(k-2)} - 1)/3^(k-1) mod 3` and verifying `c ≠ 0 mod 3`. A proof turns `|A_k| = 2^(k-1)` from a fact about `k ≤ 22` into a theorem.
+- **What the sieve cannot see** — once the lifting proof is done, the central question shifts from "does `|A_k| → 0`?" (answered: no, it grows) to "what non-modular structure kills the remaining classes?" Dmitrov-Howe / Lagarias / Saye all have partial results here; the literature needs systematic extraction.
