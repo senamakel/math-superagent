@@ -105,20 +105,15 @@ claims ledger via `search_claims` worked normally.
 
 ## Contradictions
 
-- **Inter-giant max gap: 26 vs 64 — CONVENTION DISAGREEMENT, unresolved by
-  any single figure.** Raw pass over all 15 giants (row 35..239): gaps
-  `22,8,4,26,2,14,2,14,4,4,12,15,13,64`, max 64 (the 175→239 drought of
-  exactly 64 rows). The checked claim `wider-width-giant-record-3e8`
-  (status: checked) counts only the 14 fully-live giants and reports
-  max 26 with the 64 excluded as "an artifact" because the 15th landing is
-  width-truncated (flooring 1). Resolution: both readings agree the drought
-  is real (the row indices are width-independent and no j>1000 event occurs
-  in rows 176..238) — the disagreement is whether the truncated 15th jump
-  (≥ 5,596,824) counts. Rules: (a) quote "max 26 (14 live giants)" and
-  "row span of 64 over all 15 events" with the 15th jump a lower bound;
-  (b) never call the 64-row drought an artifact (the gap is exact);
-  (c) never quote max 26 as "unchanged" — it survived 14 giants, and the
-  live group has 15 events with one truncated size.
+- **Inter-giant max gap: 26 vs 64 — RESOLVED by Directive 30.** The 3e8 run
+  capped row 238 (flooring 1), giving live-regime max 26 over 14 giants. The
+  6e8 run resolved the cap: row 238 lands at 23,163,290 with flooring
+  8,161,173 — genuine. So there are 15 genuine giants, gaps
+  [22,8,4,26,2,14,2,14,4,4,12,15,13,64], max=64. The earlier 26 figure was a
+  width artifact. Row 248 (0-based 247) is the 6e8 cap (flooring 0) and must
+  be excluded. Claim `wider-width-giant-record-3e8` is superseded by the 6e8
+  record. The ratio bound gap_i ≤ j_i+1 (verified with 2+ orders margin)
+  supersedes "gap bounded" as the conjecture target.
 - **Block-protection constant: n/2 vs N — RESOLVED by proof.** Primary sources (Odlyzko 1993 §2, Killgrove–Ralston 1959) and this run's re-derivation give constant **1** (n+1 rows per length-n block); the n/2 claim (`odlyzko-block-lemma-asserted`) is refuted. Treat the proved n+1 as correct.
 - **"General-class" framing vs Eppstein — unresolved.** The honest position: the class must be carved down (non-concentration or primes only). Colonna's g=4 deletion example sharpens it. Do not claim a bounded-gap class theorem.
 - **`research/CLAIMS.md` is a generated ledger; the contradictions section is clean** (one legitimate row besides the gap figure above). `research/notes/library-state.md` is the authoritative hand-maintained ledger.
