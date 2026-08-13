@@ -335,6 +335,14 @@ recalled claim is relied on whose hypotheses fail here.
 - **Library search halted by directive.** FRONTIER.md is at 309→345 with
   checked at 3. No more downloads until a specific gap is stated that a source
   could close.
+- **CHT Theorem 1.6 hypothesis check — DONE, holds-here = no.** Computed on
+  sieve 2e7 (1,270,607 primes): max normalized gap a_n = 89 → M = 7, longest
+  0-run L = 2, so R_0 = 100·L·8^M = 419,430,400 ≈ 4.2e8 ≫ 1000. The
+  no-{0,d}-block hypothesis is not satisfiable at any reachable depth, so the
+  CHT inverse theorem does not bite here. `code/out/cht_hyp_check.captured.txt`.
+R.md is at 309→345 with
+  checked at 3. No more downloads until a specific gap is stated that a source
+  could close.
 - **CHT Theorem 1.6 hypothesis check — DO THIS NOW (directive).** The
   `cht-inverse-theorem` claim has `holds-here: unchecked` in both copies. Take
   the prime-difference data, compute M (from max normalized gap a_n), L

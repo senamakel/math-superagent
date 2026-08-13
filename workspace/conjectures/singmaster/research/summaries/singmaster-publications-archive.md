@@ -1,19 +1,29 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/singmaster-publications-archive.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Singmaster's publication list (archived personal page, 2017)
 
-<!-- source: https://web.archive.org/web/20170116155532/http://anduin.eldar.org/~problemi/singmast/pubchron.html | converted from HTML -->
+Source: https://web.archive.org/web/20170116155532/http://anduin.eldar.org/~problemi/singmast/pubchron.html
+Full text: `research/sources/singmaster-publications-archive.full.md`
 
-## What is in it
+## What it is
 
-    - PUBLICATIONS of  David Singmaster
+A chronological bibliography of David Singmaster's publications (archived from
+his personal site, 2017). The relevant entries:
 
+- "How often does an integer occur as a binomial coefficient?" Amer. Math.
+  Monthly 78:4 (Apr 1971) 385-386.
+- "Repeated binomial coefficients and Fibonacci numbers." Fibonacci Quarterly
+  13:4 (Dec 1975) 295-298.
+- Also: "Notes on Binomial Coefficients I–A Generalization of Lucas'
+  Congruence" (J. London Math. Soc. 1974), "On polynomial functions (mod m)"
+  (JNT 1974), and Rubik's-cube items — context only.
 
-## What it claims
+## Value
 
-Computing, Information Systems and Mathematics  87 Rodenhurst Road
-South Bank University  London, SW4 8AF, England
-London, SE1 0AA, England    Tel/fax: 0181-674 3676
-Tel: 0171-815 7411
-Fax: 0171-815 7499
-E-mail: [ZINGMAST@VAX.SBU.AC.UK][1]
+Confirms the exact bibliographic date/issue of the 1971 note (Monthly 78(4),
+April 1971, pp. 385-386) — matching the Wikipedia citation and the FQ 1975
+"Added in proof" reference. It is a bibliography (secondary), not the paper
+itself; the primary 1971 note remains not-held (tombstone). Filed for
+completeness of the citation record, not as evidence for any theorem.
 
-*[digest of a 37883 character source; every section, statement, and proof in full at `research/sources/singmaster-publications-archive.full.md`]*
+No new claims; the bibliography corroborates Singmaster 1971 / 1975 entries
+already in the ledger. This note exists so the citation record is on disk
+rather than in recall.

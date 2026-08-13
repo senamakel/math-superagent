@@ -29,6 +29,14 @@ Both verified independently to depth 800 with zero failures (`code/out/step_law_
 
 The conjecture is now exactly: **do (2,4)-events keep arriving fast enough that `Σ (j_i + 1)` never falls `k−1` behind?** Since `b_1 = 2` and `j_i ≥ 0`, the recharge identity gives `b_k = 2 + Σ (j_i+1) − (k−1)`. The conjecture `b_k ≥ 1` for all k is equivalent to `Σ_{i<k} (j_i + 1) ≥ k − 2`.
 
+**The decisive observation (Directive 7): the step law also holds on random
+non-prime arrays** (3,521 rows, 610 events, zero failures). The event mechanism
+— drain law, edge-flip, and the local `(2,4)` criterion — is therefore a
+combinatorial fact about the operator `|a−b|`, not about primes. Primes enter
+only through event density. A lower bound on the event rate may be provable
+for the **general Gilbreath-like class with no prime input at all**, and that
+is the priority route.
+
 ## What we know
 
 - **Consumption is exact, not just bounded.** The step law says `b_{k+1} = b_k − 1` at every non-event row. No "at most" — it is exactly one per row. The Odlyzko block lemma (constant 1) is the same fact from a different angle.
