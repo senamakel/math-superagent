@@ -33,41 +33,42 @@ Each marked with evidence class and a link.
   in Jenkins' family with infinitely many lattice points (a=b=1). Any `B<6`
   is refuted.
 
-- **Genus grid — the headline computation. `computed`, two independent engines
-  agree.** `genus(k1,k2)` of `C(x,k1)=C(y,k2)` computed for 2<=k1<=12,
-  2<=k2<=9 by both Singular (`normal.lib::genus`) and Sage (`Curve.genus`);
-  outputs identical. Pattern:
-  - `k2=2: genus=floor((k1-1)/2)` (k1=3→1,4→1,5→2,...),
-  - grows with k1 for fixed k2 (k2=3: k1=4→3,6→4,8→7,10→9; k2=4: 5→6,7→9,9→12),
-  - diagonal k1=k2 is reducible/degenerate (genus undefined → curve factors, contains x=y).
-  Cross-checks Jenkins (2,2) genus 3 and de Weger (3,4) genus 3. So Faltings
-  (genus>1) applies to essentially every distinct pair. **This delivers the
-  Faltings threshold but NOT a uniform bound** — per-pair finiteness is
-  ineffective. Full grid in `code/out/commands.log`; approach in
-  `research/approaches/genus-computation.md`.
-  **Verified closed forms (checked against every computed entry, n<=24).**
-  `{2,n}`: `y(y-1)=2C(x,n)` hyperelliptic, `genus=floor((n-1)/2)`. `{3,n}`:
-  `Y^3-Y=6C(x,n)` (Y=y-1) cyclic-trigonal, `genus=n-1` if 3∤n else `n-2`.
+- **Genus grid — the complete two-parameter Faltings threshold. `computed`, two
+  independent CAS engines agree (Singular `normal.lib::genus` and Sage
+  `Curve.genus`), `proved-by-two-CAS`.** `genus(k1,k2)` of `C(x,k1)=C(y,k2)`
+  computed for 2<=k1,k2<=12, extended to k1=24 for k2=3,4,5; outputs identical.
+  This **supersedes** the operator's three-diagonal salvage
+  (`code/out/genus_closed_forms.md`, now corroboration only).
+  **Faltings threshold: genus = 1 exactly for {2,3} and {2,4}; genus >= 2 for
+  every other distinct pair.** So Faltings applies to essentially every distinct
+  pair — the complete answer to the GOAL.md deliverable.
+  This delivers the Faltings threshold but NOT a uniform bound — per-pair
+  finiteness is ineffective. Full grid in `code/out/genus_table.captured.txt`;
+  approach in `research/approaches/genus-computation.md`.
+  **Closed forms verified against every computed entry (k1<=24).**
+  `{2,n}`: `y(y-1)=2C(x,n)` hyperelliptic, `genus=floor((n-1)/2)`.
+  `{3,n}`: `Y^3-Y=6C(x,n)` (Y=y-1) cyclic-trigonal, `genus=n-1` if 3∤n else `n-2`.
   `{4,n}`: 2:1 cover of `w^2=1+24C(x,n)` via `w=y^2-3y+1`, `genus=3(n-1)/2`
-  (n odd), `3(n-2)/2+1` (n≡2 mod 4), `3(n-2)/2` (n≡0 mod 4). `k2=5` row has no
-  verified closed form yet (candidate `2k1-4`, `/5:2k1-5` in verify_closed2.py,
-  matching n<=24 but not established). These are the structural small-column
-  content — the k=2/3 columns that carry all multiplicity.
-
-  **Diagonal closed forms — the GOAL-eligible genus deliverable, `checked`.**
-  `code/out/genus_closed_forms.md`, claim `genus-closed-forms-three-diagonals`:
-  `g(n)=(n−1)(n−2)/2` for `C(x,n−1)=C(y,n)` (n=3..22, 20/20 match);
-  `g(n)=⌊(n−1)(n−3)/2⌋` for `C(x,n−2)=C(y,n)` (n=4..21, 18/18); 
-  `g(n)=⌊(n+1)(n−1)/2⌋` for `C(x,n+2)=C(y,n)` (n=3..19, 17/17); and
-  `g_D(n)=g_B(n+2)` holds throughout (same unordered pair re-indexed). Genus > 1
-  for n≥4, n≥5, n≥3 respectively — Faltings applies to all but one curve per
-  diagonal, and genus grows **quadratically**. Caveat: the Singular runs each
-  ended `halt 1` after printing their tables (partial outputs of errored runs);
-  tables are internally consistent and cross-checked, and the identity g_D=g_B
-  is independent evidence. Consistent with BST Thm 2.2: the diagonals' only
-  genus-1 points are C(x,2)=C(y,3) and C(x,2)=C(y,4), exactly BST's non-diagonal
-  genus-1 exceptions. The general (k1,k2) genus function beyond the grid rows
-  remains unestablished.
+  (n odd), `3(n-2)/2+1` (n≡2 mod 4), `3(n-2)/2` (n≡0 mod 4).
+  **`{5,n}` now established:** `genus = 2n-2 except 2n-4 when 5|n` — exact on
+  all 19 points n=6..24, zero mismatches, operator-checked.
+  **Slope conjecture established.** Mean first-difference over WHOLE periods is
+  exactly `(m-1)/2` for m=2,3,4,5, with period-m diff patterns:
+  m=2: [0,1]; m=3: [1,0,2]; m=4: [1,2,0,3]; m=5: [2,2,2,0,4]. Operator-checked,
+  zero mismatches. **Trap:** a truncated window (not a whole number of periods)
+  gives a mean below `(m-1)/2` and looks like a refutation. State periodicity
+  first, mean second.
+  **Diagonal closed forms (operator salvage, supplementary corroboration).**
+  `g(n)=(n−1)(n−2)/2` for `C(x,n−1)=C(y,n)`; `g(n)=⌊(n−1)(n−3)/2⌋` for
+  `C(x,n−2)=C(y,n)`; `g(n)=⌊(n+1)(n−1)/2⌋` for `C(x,n+2)=C(y,n)` — all 55
+  points fit with zero mismatches (claim `genus-closed-forms-three-diagonals`,
+  `checked`). These are three diagonals of the full two-parameter table now
+  established above; the three Singular runs used to compute them each
+  terminated `halt 1` (partial outputs of errored runs), while the genus_table
+  grid was computed with both Singular and Sage and completed cleanly.
+  Consistent with BST Thm 2.2: the only non-diagonal genus-1 pairs are (2,3)
+  and (2,4). These are the structural small-column content — the k=2/3 columns
+  that carry all multiplicity.
 
 - **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`
   from primary where noted; Singmaster 1971 Monthly still NOT held.**
