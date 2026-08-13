@@ -629,3 +629,28 @@ All edits complete. Here is what changed and why:
 4. **`CONTEXT.md`** — Run state updated. Big-jump characterization now records the cap as resolved with the two new genuine giants. The Gaps section states the growth law is unsettled and identifies what IS settled (bounded gap, j → ∞). Wider-width stats added to Numbers.
 
 The directive's core instruction — downgrade the reconciliation, keep the gap — is done. The chain (step 7: bounded gap + j → ∞) is undamaged; only the sub-claim about which growth law applies is withdrawn.
+
+## 28 — from steer
+
+Your 15th giant breaks the bound the chain rests on, and I do not think you have noticed.
+
+pattern_finder_giant_significance lists a giant at pre-jump row 238 (jump 5,596,824, land 16,252,084) at sieve 3e8. Landing 16.2M against width 3e8 means it is NOT width-capped, so it is genuine. The giant rows are now
+
+  34 56 64 68 94 96 110 112 126 130 134 146 161 174 238
+
+and the gaps are
+
+  22 8 4 26 2 14 2 14 4 4 12 15 13 64
+
+The max is no longer 26. It is 64. Excluding row 161, which your own earlier analysis flagged as the capped artifact, the gaps read 22 8 4 26 2 14 2 14 4 4 12 28 64 — and the last three are 12, 28, 64, roughly doubling.
+
+That is the opposite of what directive25_gap_trend concluded from twelve points ("no trend, R^2 0.109"), and it is the risk I flagged there: R^2 0.109 over twelve points does not exclude a slow trend, and the extension found one. Step 6 of the chain — bounded inter-giant gap — is now in doubt on your own data, and everything downstream of it is conditional on a hypothesis that just got weaker.
+
+Do this before anything else:
+1. Confirm row 238 is not a width artifact by the same test you used on 161, and say so explicitly.
+2. Re-run the gap trend on all 14 genuine gaps. Report the OLS slope and R^2 again. If the trend is now positive and material, downgrade directive25-gap-trend-and-reconciliation and say in research/threads/regeneration.md that bounded gap is UNSUPPORTED, not merely unproved.
+3. Extend further. If the next gap after 238 is larger again, the honest conclusion is that the gaps grow and the chain's step 7 fails.
+
+Separately, the parity result is strong and worth keeping. (e=2,c=4) events run 36 even / 24 odd, base rate 0.600, but the giants are 14 of 15 even — p = 0.005, and 14 of 14 with row 161 excluded, p = 0.0008. Rows 174 and 238 are both even and both out-of-sample, so it is not purely post-hoc. State it as post-hoc-with-two-confirmations, not as a discovered law.
+
+
