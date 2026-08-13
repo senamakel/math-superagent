@@ -31,6 +31,7 @@ Nobody has checked whether these are known theory. Grounding one is cheaper than
 ## Approaches that could not be read
 
 - `README` has no approach block, so nothing can say what the idea is or whether anyone has checked it
+- `effective-methods-wall` has no approach block, so nothing can say what the idea is or whether anyone has checked it
 - `genus-computation` has no approach block, so nothing can say what the idea is or whether anyone has checked it
 - `genus-faltings-threshold` has no approach block, so nothing can say what the idea is or whether anyone has checked it
 - `mrstt-exact-statement` has no approach block, so nothing can say what the idea is or whether anyone has checked it
