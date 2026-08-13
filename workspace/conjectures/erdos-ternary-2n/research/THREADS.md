@@ -4,8 +4,19 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[lifting-proof]] | Is the 2-to-1 lifting of A_k provable via LTE, giving \|A_k\| = 2^(k-1) unconditionally? | open | ternary-sieve-count-doubles, (checked, k, <=, 22), 2^{2·3^(k-2)}, ≡, 1, mod, 3^(k-1), (standard, LTE) | compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly |
+| [[narkiewicz-bound]] | What is the exact statement, constant, and method of Narkiewicz's bound on {n <= x : 2^n digit-2-free}? | open | (none, yet, —, literature, lead, from, problem.md, and, FRONTIER.md) | locate and download Narkiewicz (1980) "A note on a paper of H. Gupta concerning powers of two" |
+
+## Resting on nothing recorded
+
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[lifting-proof]] rests on `(checked`, `k`, `<=`, `22)`, `2^{2·3^(k-2)}`, `≡`, `1`, `mod`, `3^(k-1)`, `(standard`, `LTE)`, which no claim block on disk establishes
+- [[narkiewicz-bound]] rests on `(none`, `yet`, `—`, `literature`, `lead`, `from`, `problem.md`, `and`, `FRONTIER.md)`, which no claim block on disk establishes
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+- `sieve-dynamics` has no thread block, so nothing can say what it is chasing or what it rests on
