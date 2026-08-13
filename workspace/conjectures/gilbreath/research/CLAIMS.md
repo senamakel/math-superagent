@@ -59,15 +59,15 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `ross-2026-decay-constants` | (Ross, Zenodo 10.5281/zenodo.21326026, July 2026) In the CHT continuous Gilbert model (top row i.i.d. standard exponentials, c_i = E a(i,j)), exact sign-cone computations give c_4 = 778959731701/1447295850000 =… | yes | asserted | `research/notes/library-state.md` |
 | `rule90-identification-real-absorption-refuted` | The {0,2} interior of a Gilbreath row evolves under the halved operator as XOR (= Wolfram Rule 90 = Pascal/Sierpinski mod 2) — this is proved here (block-lemma apex) and confirmed by CHT 2026 §1. But a uniform… | yes | asserted | `research/approaches/rule90-absorbing-boundary.md` |
 | `rule90-interior-xor` | Within any {0,2} block of the Gilbreath triangle, halved entries evolve under XOR (= Rule 90 = Pascal mod 2). The d-step evolution from initial halved block h is (A_{K+d}(p+1)/2) = XOR_{j=0}^{d} [binom(d,j) mod 2] ·… | yes | proved | `research/notes/rule90-interior.md` |
+| `runcount-lemma-refuted` | The lemma r(T(x)) <= r(x) — the number of maximal constant runs is non-increasing under the absolute-difference map T(x)_i = \|x_i − x_{i+1}\| — is FALSE, and so is the turning-point analogue t(T(x)) <= t(x). Hand… | yes | asserted | `research/notes/library-state.md` |
 | `second-entry-4-kills` | If A_k(1) = 4 (or any even value >= 4) for some k>=1, then A_{k+1}(0) = \|1 - A_k(1)\| >= 3 and Gilbreath's conjecture fails at that row. | yes | proved | `research/notes/reduction.md` |
 | `step-law-and-recharge-identity` | Let b_k be the leading {0,2} block length of Gilbreath row k, and at a row with b_k >= 1 let (x,y) be the intruder pair row[b_k], row[b_k+1]. Then b_{k+1} >= b_k when (x,y) = (2,4) and b_{k+1} = b_k - 1 otherwise (step… | yes | checked | `code/out/step_law_and_recharge_verified.md` |
 | `tao-2sep-exact-geometric` | For a geometric X with P(X=k)=pq^k, the maximal probability over 2-separated sets is Λ_2(X)=1/(2−p), uniquely attained at the even integers 2ℤ; with cutoff at D the law is Λ_2(X_D)=1/(2−p)(1+(−1)^D p q^{D+1}/2).… | **unchecked** | asserted | `research/summaries/tao-blog-2026-gilbreath-cramer-model.md` |
 | `tao-cramer-blog-frame` | GC is the absolute-difference (nonlinear 1+1 wave-equation) dynamics on the primes; its only generic obstructions to decay are long zero-blocks and very long shallow {0,d}-blocks; the 2-separated-avoidance iterate… | yes | asserted | `research/summaries/tao-blog-2026-gilbreath-cramer-model.md` |
 | `torelli-prime-gap-bound` | (Torelli 2006, Thm 2) For all n >= 1, p_{n+1} <= p_n + n — the n-th prime gap never exceeds the prime index. Equivalently every prefix of the primoids a_n = (p_{n+2} − 1)/2 is a sub-permutation: a_n <= a_{n−1} +… | yes | asserted | `research/notes/library-state.md` |
 | `two-separation-hypothesis` | The operative general-class hypothesis is not "gaps grow slowly" but that gaps do not concentrate in an arithmetically rigid (2-separated) set — a set with no two consecutive integers (e.g. evens, multiples of 3). If… | yes | asserted | `research/notes/library-state.md` |
-| `valid-extension-backward-nonlocal-refuted` | The valid-extension set of a finite Gilbreath sequence is not determined by any bounded window of recent rows: Alkan et al. 2023 give the criterion min K(s_1..s_m) <= s_{m+1} <= max K(s_1..s_m) for all m, with max K_S =… | yes | asserted | `research/approaches/backward-extension-automaton.md` |
 
-_3 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_4 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -126,6 +126,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `regeneration-lemma-edge-2-intruder-4-established` (code/out/check_regenerate_lemma.notes.md) — asserted by the source, not proved there and not checked here
 - `ross-2026-decay-constants` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `rule90-identification-real-absorption-refuted` (research/approaches/rule90-absorbing-boundary.md) — asserted by the source, not proved there and not checked here
+- `runcount-lemma-refuted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `tao-cramer-blog-frame` (research/summaries/tao-blog-2026-gilbreath-cramer-model.md) — asserted by the source, not proved there and not checked here
 - `torelli-prime-gap-bound` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `two-separation-hypothesis` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here

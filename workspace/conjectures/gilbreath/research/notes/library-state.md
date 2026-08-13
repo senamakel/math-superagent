@@ -4,6 +4,18 @@ What the reference library establishes, as of this build. Every claim below is
 backed by a downloaded source in `research/sources/`; each carries its
 hypotheses and whether they hold here.
 
+## Refuted this cycle: the run-count / turning-point potential lemma
+
+```claim
+id: runcount-lemma-refuted
+statement: The lemma r(T(x)) <= r(x) — the number of maximal constant runs is non-increasing under the absolute-difference map T(x)_i = |x_i − x_{i+1}| — is FALSE, and so is the turning-point analogue t(T(x)) <= t(x). Hand counterexample x = (5,5,0,0): r(x) = 2 (runs [5,5], [0,0]) but T(x) = (0,5,0) has r = 3; t(5,5,0,0) = 0 while t(0,5,0) = 1. The counterexample (a,a,c,c) is exactly Chamberland's rigid borderline class from the Ducci max-factoring proof (Ducci Lemma 3.1), i.e. the equality case where the factored-max potential does NOT decrease.
+hypotheses: T is the non-cyclic absolute-difference map on finite strings (the Gilbreath row operator); r, t as defined.
+holds-here: yes — the counterexample is a valid 2-then-odd-shaped tail string; the lemma as stated fails on ordinary rows, so no invariant can be built on raw r or t monotonicity.
+status: refuted (elementary hand proof, verified by inspection: |5−5|=0, |5−0|=5, |0−0|=0; runs 2→3, turning points 0→1; small verifier at code/out/check_runcount_lemma.py)
+bearing: the total-variation-oscillation-potential approach is refuted as stated; a corrected potential must handle the (a,a,c,c)-type equality cases explicitly (e.g. weighted or max-factored run count), which is where the Ducci borderline classification (ducci-max-factoring-potential-template) becomes the right tool. The Schoenberg/Pólya-frequency/total-positivity variation-diminishing theory is LINEAR-operator theory and does not transfer to the nonlinear absolute-difference map.
+anchor: research/approaches/total-variation-oscillation-potential.md; code/out/check_runcount_lemma.py
+```
+
 ## The canonical tier (statement, names, history)
 
 ```claim
@@ -252,6 +264,7 @@ answers: is-there-a-proved-prime-gap-bound
 - Methods that fail/limits: Eppstein anti-Gilbreath (gap bounds alone insufficient); CHT Remark 4.5 (2^{n+1} growth breaks a.s. result); Chase 2024 exotic {0,3}-type examples (randomness necessary).
 - Adjacent/computational: OEIS A000232/A036262/A100820/A397880/A395556, Odlyzko's G(N) table, Eppstein practical numbers (verified 212,000 rows).
 - Counterexample constructions: Eppstein anti-Gilbreath; CHT §1.1 zero-block and {0,d}-block examples, Sierpinski-triangle {0,3} example.
+- Ducci-sequence theory (NEW this cycle, four primary papers): Calkin–Stevens–Thomas 2005 (cyclic cycle-lengths via minimal polynomial (1+λ)^n+1 over Z2; Table 1 n≤40), Chamberland 2003 (Ciamberlini–Marengoni zero-iff-2^m; the factored-max + rigidity-classification proof template; Webb's no-uniform-bound), Glaser–Schöffl 1995 (basic Ducci sequence = Pascal mod 2; all-1s row at 2^r−1; 2^{s2(k)} ones), Avart 2011 (nilpotent over Z2 iff concatenation of power-of-2-length copies). Governing finding: ALL classical Ducci theorems are CYCLIC (wraparound |xn−x1|) and do not transfer their zero-convergence/cycle conclusions to the half-infinite Gilbreath triangle; the mod-2/Pascal local law (rule90-interior-xor) and the max-factoring template DO transfer. Claims: ducci-classical-nilpotence-iff-power-of-2, ducci-pascal-mod2-rule90, ducci-max-factoring-potential-template, ducci-avart-nilpotent-concatenation.
 
 ## New holdings this cycle (librarian, this build) — the Ducci-sequence literature
 

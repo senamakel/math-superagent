@@ -1,9 +1,8 @@
-# What this folder is for
+# Index — code/effectivegenus
 
-`rep_pairs.py` — oracle check attributing the correct effective integral-point
-engine to the two representative binomial curves used in the
-`research/approaches/effective-methods-wall.md` deliverable: `C(x,2)=C(y,3)`
-(genus 1 elliptic -> David elliptic logarithms) and `C(x,2)=C(y,5)` (genus 2
-hyperelliptic -> Bugeaud–Mignotte–Siksek–Stoll–Tengely hyperelliptic method).
-It completes the square `(2x-1)^2 = 1 + 8*C(x,2)` and reads the genus off the
-degree/parity of the resulting polynomial in `y`.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+
+| File | Purpose |
+| --- | --- |
+| `NOTES.md` | _(undescribed)_ |
+| `rep_pairs.py` | _(undescribed)_ |
