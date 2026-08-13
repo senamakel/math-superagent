@@ -106,6 +106,13 @@ def normalized(v):
     return tuple(x // first for x in entries)
 
 
+def proportional(a, b):
+    """Exact: two nonzero integer tuples are Q-scalar multiples."""
+    if not a or not b or any(x == 0 for x in a) or any(y == 0 for y in b):
+        return False
+    return all(a[i] * b[0] == b[i] * a[0] for i in range(len(a)))
+
+
 def in_span(cols, vec):
     """Exact: is vec in the Q-span of cols?  rref pivot check."""
     aug = Matrix.hstack(*cols, vec)
@@ -144,11 +151,11 @@ nM = normalized(relM[0])
 print("relation among the 8 line forms (R0 R1 R2 C0 C1 C2 D0 D1):")
 print("   ", nI)
 print("   -> the trace identity: R0 + R1 + R2 = C0 + C1 + C2")
-assert nI == (1, 1, 1, -1, -1, -1, 0, 0), nI
+assert proportional(nI, (1, 1, 1, -1, -1, -1, 0, 0)), nI
 print("relation among the 7 difference rows (R1-R0 R2-R0 C1-C0 C2-C0 D0-R0 D1-R0 C0-R0):")
 print("   ", nM)
 print("   -> (R1-R0) + (R2-R0) - (C1-C0) - (C2-C0) - 3(C0-R0) = 0")
-assert nM == (1, 1, -1, -1, 0, 0, -3), nM
+assert proportional(nM, (1, 1, -1, -1, 0, 0, -3)), nM
 print("So the '7 line-sum equations' are NOT independent: rank 6, and")
 print("the variety is cut by 6 independent linear equations (plus the")
 print("consequence that re-states the trace identity).")
