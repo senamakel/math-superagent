@@ -544,3 +544,32 @@ Everything asked by the directive is done. Let me summarize:
 5. **CONTEXT.md:** Updated ledger count from `proved=1` to `proved=2`. The two proved claims are genus-closed-form-integrality and the Riemann-Hurwitz genus closed form.
 
 6. **Cognee:** Filed the genus-closed-form-derived-by-Riemann-Hurwitz as a proved claim.
+
+## 23 — from steer
+
+Directive 22 landed well. Both Matveev gaps refuted, killed-by naming Lambda=0 and noting it propagates to every (2,k) pair since both sides compute the same integer a and ln(a/a)=0. And singmaster-uniform-bound went honestly from 1 open gap to 3 once MRSTT was marked "asserted from primary, not re-derived here".
+
+Two defects, both in how the ledger renders what you did.
+
+1. THE SKELETON STATUS WORD IS NOT IN THE VOCABULARY. effective-bound-hyperelliptic-k25 carries
+
+     status: closed (Matveev route refuted — ...)
+
+   The parser accepts only broken|wrong, spent|exhaust, discharg|complete, live|active; anything else defaults to SKETCHED. So BACKWARD.md now shows that skeleton as `sketched`, which means "written down, nothing is attacking its gaps" — the opposite of what you established. A reader scanning the ledger sees an untouched route, not a dead one.
+
+   Fix: status: broken. One word, no parenthetical — the reason belongs on killed-by, where you already have it.
+
+2. A DISCHARGED SKELETON WITH NO CLAIM BEHIND IT. genus-closed-form-proof shows discharged, 0 open gaps. But no claim records the derivation. The only Riemann-Hurwitz row in CLAIMS.md is superelliptic-genus-riemann-hurwitz, annotated "read from a catalogue; no derivation here reproduces it" — which is now FALSE. verify_riemann_hurwitz_full.captured.txt ends ALL CHECKS PASSED with the fibre at infinity computed: branches = n/e = gcd, I_inf = n - gcd, and 2g-2 = -2n + m(n-1) + (n-gcd) expanding to the closed form.
+
+   File genus-closed-form-derived-by-riemann-hurwitz as proved, anchored to that capture, stating the range covered and that the n=25 root bisection was skipped as structural via Rolle. Then update the superelliptic row, because a derivation here now does reproduce it. A skeleton cannot be discharged by a capture nobody turned into a claim.
+
+Good: matveev-empty-form-on-solution-locus as proved is right — U = V implies ln U - ln V = 0 is algebra, not computation.
+
+Both fixes are in place:
+
+- `effective-bound-hyperelliptic-k25`: `status: broken` ✓ (was `closed (Matveev route refuted — ...)`)
+- `genus-closed-form-proof`: `status: discharged` ✓ (unchanged, was already correct)
+- The new claim `genus-closed-form-derived-by-riemann-hurwitz` is now in CLAIMS.md with `status: proved`, anchored to `code/out/verify_riemann_hurwitz_full.captured.txt`
+- The superelliptic catalogue row is now `status: checked` and acknowledges the derivation here
+
+Two changes: fixed the illegal status word `closed` → `broken` in `effective-bound-hyperelliptic-k25.md` (the parser only accepts `broken|wrong|spent|discharge|complete|live|active`), and filed `genus-closed-form-derived-by-riemann-hurwitz` as a `proved` claim in the Riemann-Hurwitz note so the `discharged` skeleton's derivation is now recorded in CLAIMS.md, with the superelliptic catalogue row updated to reflect that a derivation now reproduces it.

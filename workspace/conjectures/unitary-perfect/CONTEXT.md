@@ -57,6 +57,9 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   `r ≡ 1 (mod 4p)`, with the single exception `r = 5 | Φ_20(2)` at p = 5
   (LTE: `v_5(2^{2p}+1) = 1 + v_5(p)`); **(F2)** the one-way generator
   equivalence `(2/r)_4 = +1 ⟺ r ≡ 1 (mod 16)`, i.e. `v2(r−1) ≥ 4 ⟹ r ∉ P_3`.
+  **The converse is FALSE** (sourced, paper Lemma 20): 343081 has
+  `v2(343080) = 3` yet is non-3-Higgs via Pratt chain
+  `343081 ≻ 953 ≻ 17` — the mod-16 test is a one-way obstruction only.
   Exactly **12 heads** (`r ≡ 1 mod 16`): p=7:113; 11:2113; 19:525313;
   29:536903681; 37:593,231769777; 43:500177; 47:3761,140737471578113;
   53:15358129,586477649; 59:157649 — independently certified by
@@ -342,7 +345,9 @@ Durable Cognee memory from earlier runs; consistent with Established here
    whether the closed-form quartic evaluation `(2/(2^p+i))_4` as a function
    of p mod 16 constrains which r | `Φ_{4p}(2)` can be 3-Higgs beyond the
    per-divisor mod-16 test — if not, say so and close the absorbed line
-   definitively.
+   definitively. **Still open: not computed.** The two planned runs
+   (`char_mod16_sums`, `q_supplement`) are 0-byte captures — no character-sum
+   tables or supplement evaluation exist on disk; do not report either as done.
 5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
    2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
    no OCR; Guy UPNT §B3 paywalled).

@@ -8,8 +8,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | --- | --- | --- | --- | --- |
 | `aurifeuillean-existence` | Φ_d(a) has an Aurifeuillean factorization iff, with a* the squarefree part of a (a*\|d and one of:) a*≡1 mod 4 & d odd; a*≡3 mod 4 & v2(d)=1; or a* even & v2(d)=2. For Φ_{4p}(2) with a=2: a*=2 even, v2(4p)=2, so the… | yes | asserted | `research/summaries/allombert-belabas-aurifeuillian-2008.md` |
 | `aurifeuillean-split` | For odd prime p, 2^(2p)+1 = L_p · M_p with L_p = 2^p - 2^((p+1)/2) + 1, M_p = 2^p + 2^((p+1)/2) + 1; both are integer-coefficient quartics in a power of 2, each ≈ half the bit length. | yes | checked | `research/notes/heven-and-3-higgs-structure.md` |
+| `bgh2022-explicit-stewart-prime-factor` | For gamma a rational != ±1 with n >= exp(10^6), some prime p \| gamma^n - 1 has p >= n exp(0.0005 log n / log log n); for gamma quadratic norm ±1 with n >= exp exp(max{10^9, 3\|D_K\|}), some prime below gamma^n - 1 has p… | yes | asserted | `research/summaries/bilu-gun-hong-uniform-explicit-stewart.md` |
 | `bhv-primitive-divisor-theorem` | For Lucas/Lehmer sequences, u_n has a primitive prime divisor for all sufficiently large n (all n > some bound; n = 30 and a catalogue of small exceptions). Applied to 2^n + 1, every cyclotomic value Phi_n(2) has a… | yes | asserted | `research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md` |
 | `budget-equality-case-impossible` | Let n = 2^a * prod_i p_i^{e_i} be unitary perfect with p_i odd and distinct. In the equality case omega(odd part) = a + 1 of the 2-adic budget corollary - equivalently, every odd unitary component is 1 mod 4 - the odd… | yes | checked | `research/notes/equality-case-eliminated.md` |
+| `burris-yeats-higgs-prime-origin` | Burris & Yeats define the Higgs prime sequences Sigma_a (p1 = 2, p_{i+1} = least prime > p_i with (p_i+1 - 1) \| (p1...p_i)^a) as the classification invariant of finite quotients of the exponentiation algebra; Sigma_1 =… | yes | asserted | `research/summaries/burris-yeats-saga-high-school-identities.md` |
 | `cohen1990-infinitary-divisor-classified` | k-ary/infinitary divisor structure on prime powers is governed by binary-expansion disjointness; the only infinitary perfect numbers not divisible by 8 are 6, 60, 90 (Theorem 16). | yes | asserted | `research/summaries/cohen-1990-infinitary-divisors.md` |
 | `cohen1990-infinitary-perfect-classified` | The infinitary perfect numbers not divisible by 8 are exactly 6, 60 and 90 (Theorem 16). Towers of k-ary divisors: d is k-ary if its greatest common (k-1)-ary divisor with n/d is 1; infinitary is the k -> infinity… | yes | asserted | `research/notes/adjacent-divisor-classes-classified.md` |
 | `cunningham-2n-minus-1-lookup` | Cunningham Main Tables (Jan 2026) hold factorizations of 2^n - 1, n odd, n < 1500 in the held excerpt; the 2^n + 1 tables and Appendix C are not in the library, and no H_even candidate (2^m + 1, m even) or open H_even… | **unchecked** | catalogued | `research/summaries/cunningham-main-tables-jan2026.md` |
@@ -45,6 +47,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `heven-verified-members` | H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}; no verified element of H_even in (122,1200]. | yes | asserted | `research/notes/paper-extraction.md` |
 | `hong-stewart-nonprimitive-bound` | For degree-2 algebraic γ with Nγ = ±1 and n >= exp exp(...), the growth of primes dividing γ^n - 1 is governed by an explicit Stewart-type lower bound; the non-primitive part of 2^(2p)+1 is O(log(4p)) so the primitive… | yes | catalogued | `research/summaries/hong-2022-stewart-revisited.md` |
 | `leangenius-shell-only` | The LeanGenius page is a JS shell; the Lean formal statement and AlphaProof link are at research/summaries/erdos-1052-formal-lean-statement.md | **unchecked** | catalogued | `research/summaries/leangenius-erdos-1052-formal.md` |
+| `ligh-wall1987-nonunitary-perfect-construction` | If 2^p - 1 is prime then 2^p(2^p - 1) is non-unitary perfect (sum of proper non-unitary divisors equals the number); the authors conjecture every non-unitary perfect number is 4 times an even perfect number, verified… | yes | asserted | `research/summaries/ligh-wall-1987-functions-nonunitary-divisors.md` |
 | `mardi-frei1978-bibliographic` | MaRDI item Q1247995 confirms Frei 1978, Elemente der Mathematik 33 (1978) 95-96 as a publication on the fifth unitary perfect number; the held page carries no mathematics, so the OEIS-recorded Frei theorem (3-dividing… | **unchecked** | catalogued | `research/summaries/frei-1978-unitary-perfect-mardi-bibliographic.md` |
 | `oeis-a002827-five-terms-and-higgs-comment` | OEIS A002827 lists exactly the five UPNs 6, 60, 90, 87360, 146361946186458562560000 (90 = 2*3^2*5); records that the prime factors of a UPN are the Higgs primes (A057447) (Muljadi 2005); records Frei's theorem (1978)… | yes | catalogued | `research/summaries/oeis-a002827-internal-format.md` |
 | `qr-2-quartic-criterion` | For a rational prime p ≡ 1 (mod 8), 2 is a quartic residue mod p iff p = x^2 + 64y^2; and for p ≡ 7 (mod 8), 2 is always a quartic residue mod p. | yes | asserted | `research/summaries/mathworld-biquadratic-reciprocity.md` |
@@ -63,8 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `wall1983-unitary-harmonic-classified` | There are exactly 23 unitary harmonic numbers with omega(n) < 4 and exactly 43 unitary harmonic numbers n < 10^6 (Theorems 1, 2). Wall conjectures infinitely many unitary harmonic numbers but only finitely many with any… | yes | asserted | `research/summaries/wall-1983-unitary-harmonic-numbers.md` |
 | `wall1987-largest-odd-component` | Except for the five known UPNs, a unitary perfect number has an odd component larger than 2^15 (smallest candidate 32771); and among primes p < 3*10^9 only 1093 and 3511 satisfy p^2 \| 1 + 2^A for their entry point A. | yes | asserted | `research/summaries/wall-1987-largest-odd-component.md` |
 | `wall1988-nine-odd-components` | Any unitary perfect number other than the five known ones has at least nine odd prime-power components, omega(odd) >= 9. | yes | asserted | `research/summaries/wall-1988-nine-odd-components.md` |
-| `wikipedia-unitary-perfect` | 6 is the only number that is both a perfect number and a unitary perfect number. | yes | asserted | `research/summaries/wikipedia-unitary-perfect-number.md` |
-| `williams1976-biquadratic-supplement-primary` | In Z[i], a Gaussian integer a+bi is primary iff a+b == 1 mod 4 and b == 0 mod 2. The main biquadratic law is (alpha/beta)_4 = (-1)^{bd/4} (beta/alpha)_4 for primary alpha=a+bi, beta=c+di. The supplemental law: (1+i /… | yes | asserted | `research/summaries/williams-1976-supplement-biquadratic-reciprocity.md` |
+
+_3 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -189,7 +192,9 @@ Resolve these before building on either side.
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `aurifeuillean-existence` (research/summaries/allombert-belabas-aurifeuillian-2008.md) — asserted by the source, not proved there and not checked here
+- `bgh2022-explicit-stewart-prime-factor` (research/summaries/bilu-gun-hong-uniform-explicit-stewart.md) — asserted by the source, not proved there and not checked here
 - `bhv-primitive-divisor-theorem` (research/summaries/bilu-hanrot-voutier-primitive-divisors-2001.md) — asserted by the source, not proved there and not checked here
+- `burris-yeats-higgs-prime-origin` (research/summaries/burris-yeats-saga-high-school-identities.md) — asserted by the source, not proved there and not checked here
 - `cohen1990-infinitary-divisor-classified` (research/summaries/cohen-1990-infinitary-divisors.md) — asserted by the source, not proved there and not checked here
 - `cohen1990-infinitary-perfect-classified` (research/notes/adjacent-divisor-classes-classified.md) — asserted by the source, not proved there and not checked here
 - `emath-unitary-divisor-defs` (research/summaries/encyclopedia-of-math-unitary-divisor.md) — asserted by the source, not proved there and not checked here
@@ -207,6 +212,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `heven-thinness-not-finiteness` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/heven-and-3-higgs-structure.md) — asserted by the source, not proved there and not checked here
 - `heven-verified-members` (research/notes/paper-extraction.md) — asserted by the source, not proved there and not checked here
+- `ligh-wall1987-nonunitary-perfect-construction` (research/summaries/ligh-wall-1987-functions-nonunitary-divisors.md) — asserted by the source, not proved there and not checked here
 - `qr-2-quartic-criterion` (research/summaries/mathworld-biquadratic-reciprocity.md) — asserted by the source, not proved there and not checked here
 - `qr-char-def-and-primary` (research/summaries/reu-biquadratic-reciprocity-gaussian-integers.md) — asserted by the source, not proved there and not checked here
 - `qr-main-law` (research/summaries/dummit-quartic-reciprocity-lecture.md) — asserted by the source, not proved there and not checked here
@@ -220,6 +226,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) — asserted by the source, not proved there and not checked here
 - `wikipedia-unitary-perfect` (research/summaries/wikipedia-unitary-perfect-number.md) — asserted by the source, not proved there and not checked here
 - `williams1976-biquadratic-supplement-primary` (research/summaries/williams-1976-supplement-biquadratic-reciprocity.md) — asserted by the source, not proved there and not checked here
+- `wu2020-friable-index-shifted-primes` (research/summaries/wu-elliott-halberstam-shifted-primes.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
 

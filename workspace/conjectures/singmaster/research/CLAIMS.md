@@ -14,6 +14,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `bazso-stirling-singmaster-analogue` | Bazso-Mezo-Pinter-Tengely 2023 (arXiv:2311.06080): for Stirling numbers of both kinds, Mi(a) <= 2 + 2 log a / W((1/2)log a) (a>=2; W = Lambert W), hence O(log a/(log log a - log log log a)). For a <= 100000, M2(a)<=2… | **unchecked** | asserted | `research/summaries/singmaster-type-stirling-2023.md` |
 | `bbw-verification-bound` | Blokhuis-Brouwer-de Weger 2017 (INTEGERS 17 #A64, Thm 1): no binomial collisions beyond the known list (3003 + six sporadic + Lind/Singmaster/Tovey infinite family + trivial relations) for (k,l) in a list, for (m,l) in… | yes | asserted | `research/summaries/blokhuis-brouwer-deweger-collisions.md` |
 | `best-unconditional-bound` | Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical: Singmaster 1971 O(log a) (primary NOT held; attested by AEH 1974, MRSTT, Wikipedia);… | yes | checked | `research/notes/established-review.md` |
+| `bflp-2013-combinatorial-separated-variables` | Bilu-Fuchs-Luca-Pinter 2013 (Publ. Math. Debrecen 82(1) 219-254): equating classical counting functions (perfect powers, binomial coefficients, Stirling numbers) gives Diophantine equations with (a) finiteness for fixed… | yes | asserted | `research/summaries/bilu-fuchs-luca-pinter-2013-combinatorial-diophantine.md` |
 | `bilu-tichy-classification-primary` | Bilu-Tichy 2000 (Acta Arith. 95, 261-288, Thm 1.1/10.5): f(x)=g(y) (f,g in Q[x]) has infinitely many rational solutions with bounded denominator iff f = phi∘f1∘lambda, g = phi∘g1∘mu with linear lambda,mu and (f1,g1) one… | yes | asserted | `research/summaries/bilu-tichy-2000-fxgy.md` |
 | `bilu-tichy-method-ineffective-uniformity-wall` | The Bilu-Tichy/Baker route to C(x,k1)=C(y,k2) gives: (a) an INEFFECTIVE finiteness theorem for non-standard pairs (HPT 2022 Thm 2.3), and (b) at best an effective per-pair bound that grows with the degree/height of the… | yes | asserted | `research/notes/bilu-tichy-grounding.md` |
 | `bmsst-hyperelliptic-effective-method` | Bugeaud-Mignotte-Siksek-Stoll-Tengely 2008 (Algebra & Number Theory 2:8, 859-885; arXiv:0801.4459): for a hyperelliptic curve C: Y^2 = a_n X^n + ... + a_0 with n >= 5 and squarefree/irreducible RHS, a COMPLETELY… | yes | asserted | `research/summaries/bugeaud-hyperelliptic-2008.md` |
@@ -34,6 +35,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `falling-factorial-binom-bridge` | C(x,k) = (x)_k/k! = x(x-1)...(x-k+1)/k!, so C(x,k1)=C(y,k2) is equivalent to the equal-products equation x(x-1)...(x-k1+1)·k2! = y(y-1)...(y-k2+1)·k1!. C(x,k) is a degree-k polynomial in x with integer coeffs. | yes | asserted | `research/summaries/falling-factorial.md` |
 | `fibonacci-n6-family` | For each j>=1, n=F_{2j+2}F_{2j+3}-1, m=F_{2j}F_{2j+3}-1 give C(n+1,m+1)=C(n,m+2); the common value occurs at least 6 times (2 interior + 2 mirrors + trivial pair). j=1 gives C(15,5)=C(14,6)=3003, N(3003)=8. | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
 | `fuchs-heintze-power-sums-bt-criterion` | Fuchs-Heintze 2021 (Monatsh. Math. 196, 59-65, Thm 1): for polynomial power sums G_n, H_m of the required shape (dominant root, at most one constant root, nonconstant part not a perfect power of a linear polynomial)… | no | asserted | `research/summaries/separated-variables-survey-pmc.md` |
+| `genus-closed-form-derived-by-riemann-hurwitz` | For distinct m,n >= 2, the geometric genus of the normalization of the projective closure of C(x,m) = C(y,n) is g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n))/2 = ((m-1)n - (m-2) - gcd(n,m))/2. | yes | proved | `research/notes/genus-closed-form-derived-by-riemann-hurwitz.md` |
 | `genus-closed-form-integrality` | For all integers m, n >= 1 the quantity N(m,n) = (m-1)(n-1) + 1 - gcd(m,n) is even, equivalently (m-1)n - (m-2) - gcd(n,m) is even, so the genus closed form g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2 is always an integer.… | yes | proved | `research/notes/genus-integrality-proved.md` |
 | `genus-closed-form-out-of-sample-verified` | The genus closed form g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2 for the projective closure of C(x,m) = C(y,n) (m != n, m,n >= 2) was predicted first from the formula and then recomputed independently in Singular for 17… | yes | checked | `code/out/genus_out_of_sample_verified.md` |
 | `genus-closed-forms-three-diagonals` | For the curves C(x,k1) = C(y,k2) the genus along three diagonals is, in closed form, g(n) = (n-1)(n-2)/2 for C(x,n-1)=C(y,n), g(n) = floor((n-1)(n-3)/2) for C(x,n-2)=C(y,n), and g(n) = floor((n+1)(n-1)/2) for… | yes | checked | `code/out/genus_closed_forms.md` |
@@ -45,6 +47,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `hpt-bilu-tichy-exceptional-classification` | For binomial/arithmetic-progression-product polynomials f_{A,c,d} (roots an arithmetic progression, at most r terms missing, n>2r^{3/2}+5r+8), Hajdu-Papp-Tijdeman 2022 Thm 2.3: f_{A,c,d}(x)=P(y) (deg P≥2) has finitely… | yes | asserted | `research/notes/bilu-tichy-grounding.md` |
 | `hptv-exception-pairs-infinite` | HPTV 2014: among all triples (k,m,n) with k>=3, m>=3, n>=3, the equation f_{k,m}(x) = f_{2,n}(y) has infinitely many solutions only for (m,n,k) = (5,4,3) and (6,4,4); all other triples satisfying the even-k condition… | yes | asserted | `research/summaries/hajdu-pinter-tengely-varga-equal-figurate-2014.md` |
 | `hptv-figurate-effective-finiteness` | Hajdu-Pinter-Tengely-Varga 2014 (JNT 137, 130-141; author PDF held): the equal-values equation f_{k,m}(x) = f_{2,n}(y) for figurate numbers f_{k,m}(X)=X(X+1)...(X+k-2)((m-2)X+k+2-m)/k! has EFFECTIVELY finitely many… | yes | asserted | `research/summaries/hajdu-pinter-tengely-varga-equal-figurate-2014.md` |
+| `ht23-simple-rational-roots-classification` | Hajdu-Tijdeman 2023 (JLMS; arXiv:2204.12345) Thm 1.1: if f in Q[x] has only simple rational roots and f(x)=g(y) has infinitely many rational solutions with bounded denominator, then deg(f)=ms, deg(g)=ns with m in… | yes | asserted | `research/summaries/hajdu-tijdeman-2023-simple-rational-roots.md` |
 | `infinite-family-6` | The equation C(n+1,k+1)=C(n,k+2) has infinitely many solutions given by n=F_{2i+2}F_{2i+3}-1, k=F_{2i}F_{2i+3}-1 (i=1,2,...), producing infinitely many a with N(a)>=6 (both-halves convention). First members: 3003 (i=1)… | yes | checked | `research/notes/established-review.md` |
 | `jenkins-ab-finite` | Jenkins (arXiv:1411.4111): for a != b the curve C(x,y)=C(x-a,y+b) has finitely many natural solutions, proved via the limiting ratio c (root of c^{a+b}-(c+1)^a=0) being non-quadratic (Lemma: x^n-(x+1)^r has no quadratic… | yes | asserted | `research/summaries/jenkins-fulltext.md` |
 | `kane-2004-first-improvement` | Kane 2004 (Integers 4 #A07, primary held): N(t) = O(log t · log log log t / (log log t)^2) for t>1, where N(t) counts representations t = C(n,m) (both mirrors, via N(t) <= 2 * #{2m<=n}). Proof: A/B/C decomposition; A(t)… | yes | asserted | `research/summaries/kane-2004-new-bounds.md` |
@@ -63,11 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `matveev-empty-form-on-solution-locus` | Let U = 3x(x-1), V = y(y-1)(y-2). At every integer solution of U = V (i.e. of C(x,2) = C(y,3)) the prime-factor log-ratio form Lambda = sum_j (v_{p_j}(U) - v_{p_j}(V)) ln p_j is IDENTICALLY ZERO, so it cannot be bounded… | yes | proved | `code/out/matveev_23_obstruction.md` |
 | `minkowski-identity-equal-blocks` | BST 1999 p. 11 (Minkowski 1968): for every positive integer m, 2·6·10···(4m-2) = (m+1)(m+2)···(2m). As an infinite family of equal products of pairs of blocks; Saradha-Shorey-Tijdeman (Theorem A quoted in BST) show this… | yes | asserted | `research/summaries/beukers-shorey-tijdeman-1999-equal-products.md` |
 | `mrstt-exact-statement` | MRSTT Theorem 1.3 (arXiv:2106.03335, QJM 2022): For 0<ε<1 and t sufficiently large (effective threshold), C(n,m)=t has at most 2 solutions in exp((log n)^{2/3+ε}) ≤ m ≤ n/2 (at most 4 in the full symmetric interior… | yes | asserted | `research/approaches/mrstt-exact-statement.md` |
-| `mrstt-interior-boundary` | MRSTT (QJM 73 (2022) 1137-1177, arXiv:2106.03335) prove at most 2 solutions to C(n,m)=t in the left-half interior exp(log^{2/3+eps} n)<=m<=n/2 (at most 4 in the full interior exp(log^{2/3+eps} n)<=m<=n-exp(log^{2/3+eps}… | yes | asserted | `research/notes/established-review.md` |
-| `mrstt-interior-excludes-all-known-witnesses` | For every admissible epsilon in (0,1), all fifteen nontrivial pairs (n,m) recorded in code/out/witnesses.json lie strictly below the MRSTT Theorem 1.3 interior cut exp((log n)^(2/3+epsilon)), hence outside the range in… | yes | checked | `code/out/mrstt_leaves_witnesses_open.md` |
-| `mrstt-interior-nothree` | MRSTT (arXiv:2106.03335, Remark 1.11) prove there cannot be exactly three solutions to C(n,m)=t in the interior exp(log^{2/3+eps} n) <= m <= n - exp(log^{2/3+eps} n); interior multiplicities are 0,1,2,4 (never 3).… | yes | asserted | `research/summaries/mrstt-fulltext.md` |
 
-_35 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_38 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -102,6 +102,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `aeh-average-normal-order-2` (research/summaries/abbott-erdos-hanson-1974.md) — asserted by the source, not proved there and not checked here
 - `avanesov-1967-cx3-cy2-complete` (research/summaries/avanesov-figurate-numbers-1967.md) — asserted by the source, not proved there and not checked here
 - `bbw-verification-bound` (research/summaries/blokhuis-brouwer-deweger-collisions.md) — asserted by the source, not proved there and not checked here
+- `bflp-2013-combinatorial-separated-variables` (research/summaries/bilu-fuchs-luca-pinter-2013-combinatorial-diophantine.md) — asserted by the source, not proved there and not checked here
 - `bilu-tichy-classification-primary` (research/summaries/bilu-tichy-2000-fxgy.md) — asserted by the source, not proved there and not checked here
 - `bilu-tichy-method-ineffective-uniformity-wall` (research/notes/bilu-tichy-grounding.md) — asserted by the source, not proved there and not checked here
 - `bmsst-hyperelliptic-effective-method` (research/summaries/bugeaud-hyperelliptic-2008.md) — asserted by the source, not proved there and not checked here
@@ -122,6 +123,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `hpt-bilu-tichy-exceptional-classification` (research/notes/bilu-tichy-grounding.md) — asserted by the source, not proved there and not checked here
 - `hptv-exception-pairs-infinite` (research/summaries/hajdu-pinter-tengely-varga-equal-figurate-2014.md) — asserted by the source, not proved there and not checked here
 - `hptv-figurate-effective-finiteness` (research/summaries/hajdu-pinter-tengely-varga-equal-figurate-2014.md) — asserted by the source, not proved there and not checked here
+- `ht23-simple-rational-roots-classification` (research/summaries/hajdu-tijdeman-2023-simple-rational-roots.md) — asserted by the source, not proved there and not checked here
 - `jenkins-ab-finite` (research/summaries/jenkins-fulltext.md) — asserted by the source, not proved there and not checked here
 - `kane-2004-first-improvement` (research/summaries/kane-2004-new-bounds.md) — asserted by the source, not proved there and not checked here
 - `kane-method-ceiling` (research/summaries/kane-combinations2.md) — asserted by the source, not proved there and not checked here
@@ -155,12 +157,6 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `vieta-jumping-quadratic-only` (research/approaches/vieta-jumping-pell-classification.md) — asserted by the source, not proved there and not checked here
 - `wikipedia-singmaster-entry-corroboration` (research/summaries/wikipedia-3003-number.md) — asserted by the source, not proved there and not checked here
 - `yamada-boundary-necessary-condition` (research/summaries/binom-collisions-necessary-conditions-2020.md) — asserted by the source, not proved there and not checked here
-
-## Taken from a catalogue
-
-These are lookups, not derivations. A catalogue is good evidence that a result is right and no evidence at all about why, so one of these may confirm a final answer and may never be the reason for it. Reproduce the terms with a program that does not read the catalogue, then say so; until then, report the result as looked up.
-
-- `superelliptic-genus-riemann-hurwitz` (research/summaries/wikipedia-superelliptic-curve.md) — read from a catalogue; no derivation here reproduces it
 
 ## Blocks that could not be read
 

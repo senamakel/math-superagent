@@ -1,6 +1,6 @@
 # Biquadratic reciprocity — MathWorld
 
-Source: https://mathworld.wolfram.com/BiquadraticReciprocityTheorem.html. Full text at `[[mathworld-biquadratic-reciprocity.full]]`. Compact supplement; the operative formulas are in the Wikipedia digest.
+Source: https://mathworld.wolfram.com/BiquadraticReciprocityTheorem.html. NOTE (librarian 2026): no separate `research/sources/mathworld-biquadratic-reciprocity.full.md` exists; the download manager keys this URL to this summary file and refuses a second fetch, so THIS summary is the library's held record for the page. All content below was read from the live page at the URL above. The operative formulas are also in the Wikipedia digest (held) and Williams 1976 (primary, held).
 
 ## Statements
 

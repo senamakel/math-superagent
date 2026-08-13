@@ -109,7 +109,8 @@ def main():
 
     # (n,k) pairs already known: two from the family + trivial (a,1).
     known = {(n + 1, k + 1), (n, k + 2), (a, 1)}
-    known_plus_mirrors = set(known) | {(u, v - u) for (u, v) in list(known)}
+    # Scanner hits are (k, n) meaning C(n,k)=a; map known reps by column.
+    known_by_col = {kk: nn for (nn, kk) in known}
 
     kmax = a.bit_length()  # C(2k,k) >= 2^k forces k <= floor(log2 a)
     print("i=%d  n=%d  k=%d  a digits=%d  kmax=floor(log2 a)=%d" %
@@ -146,19 +147,18 @@ def main():
 
     print("columns scanned: %d" % cols_all, flush=True)
     print("raw hits (k,n) with C(n,k)=a: %s" % sorted(hits_all), flush=True)
-    extra = [h for h in hits_all if h not in known and
-             (h[0], h[1] - h[0]) not in known and
-             (h[1] - h[0], h[0]) not in known and
-             (h[0], h[1]) not in known_plus_mirrors]
+    extra = [h for h in hits_all if h[0] not in known_by_col]
     if extra:
         print("FALSIFIED: N(a_%d) >= 8 (extra reps %s beyond family+trivial)"
               % (i, extra), flush=True)
     else:
-        # canonical rep count: each (n,k) with 2k<n counts 2 (mirror pair);
-        # the two family pairs are distinct columns k+1<k+2, so N = 2+2+2.
-        print("CONFIRMED argument: exact scan of every k-column with "
-              "C(2k,k)<=a found NO extra rep; N(a_%d) = 4+2 = 6" % i,
-              flush=True)
+        # Canonical reps: the two family pairs are distinct columns k+1<k+2,
+        # so each contributes both mirrors; plus the trivial pair (a,1) and
+        # its mirror (a,a-1).  N(a) = 2 + 2 + 2 = 6 under the both-mirrors
+        # + trivial-pair convention.
+        print("CONFIRMED: exact scan of every k-column with C(2k,k)<=a found "
+              "NO extra rep; N(a_%d) = 6 (the two family mirrors + the "
+              "trivial pair)" % i, flush=True)
     print("elapsed %.1fs" % (time.time() - t0), flush=True)
 
 

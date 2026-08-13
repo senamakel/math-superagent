@@ -8,7 +8,7 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
-| [[effective-bound-hyperelliptic-k25]] | An explicit effective bound with a computed constant on the integral solutions of C(x,2)=C(y,k) for a fixed hyperelliptic pair, stated with its k-dependence… | The pair {2,k} has genus floor((k-1)/2) (superelliptic-genus-formula), so the curve is hyperelliptic with RHS C(y,k) of degree k. For k=5 the genus is 2, where… | sketched | 0 |
+| [[effective-bound-hyperelliptic-k25]] | An explicit effective bound with a computed constant on the integral solutions of C(x,2)=C(y,k) for a fixed hyperelliptic pair, stated with its k-dependence… | The pair {2,k} has genus floor((k-1)/2) (superelliptic-genus-formula), so the curve is hyperelliptic with RHS C(y,k) of degree k. For k=5 the genus is 2, where… | broken | 0 |
 | [[genus-closed-form-proof]] | Prove (not merely check) that for distinct m,n >= 2 the geometric genus of the projective closure of C(x,m)=C(y,n) equals g(m,n) = ((m-1)n - (m-2) -… | View the curve in P^1 x P^1, where C(x,m)=C(y,n) has bidegree (m,n) and arithmetic genus p_a = (m-1)(n-1) (G-bidegree-pa). The geometric genus is p_a - delta,… | **discharged** | 0 |
 | [[singmaster-uniform-bound]] | N(a) is bounded by an absolute constant B, for every a > 1, under the both-mirrors-plus-trivial convention (N(3003)=8). | **This is a conditional reduction.** It assumes MRSTT interior theorem (asserted from primary, not re-derived here) and MRSTT threshold effectiveness (asserted… | live | 3 |
 
@@ -32,6 +32,12 @@ Do not state these again. Each one is a lemma this run has, and the claim beside
 
 - [[genus-closed-form-proof]] `G-delta-invariant` — The total delta invariant of the singularities of C(x,m)-C(y,n)=0 on P^1 x P^1 (distinct m,n >= 2) is delta(m,n) = ((m-1)(n-1) - 1 + gcd(m,n))/2. Equivalently g = p_a/2 = (m-1)(n-1)/2 whenever gcd(m,n)=1. (closed by The Riemann-Hurwitz derivation (genus-closed-form-proof skeleton, now complete) gives the genus directly without needing the delta invariant.  The delta is a corollary of the genus formula plus p_a = (m-1)(n-1), not a prerequisite.  The Riemann-Hurwitz route (degree + finite ramification + infinity fibre) bypasses the singularity-resolution approach entirely.)
 - [[genus-closed-form-proof]] `G-bidegree-pa` — The projective closure of C(x,m)=C(y,n) in P^1 x P^1 has bidegree (m,n) and arithmetic genus p_a = (m-1)(n-1), with the diagonal m=n reducible and therefore excluded. (closed by genus-symmetric-form-and-delta-prediction (records the bidegree-(m,n) and p_a = (m-1)(n-1) identification; elementary for the degree-m and degree-n binomial polynomials))
+
+## Reductions that broke, and why
+
+A decomposition that does not recombine into the goal is the failure this file exists to make visible. The reason is the useful half; one left blank makes the row worthless.
+
+- [[effective-bound-hyperelliptic-k25]] (broken): The linear form Lambda = ln(3x(x-1)) - ln(y(y-1)(y-2)) is identically zero at every solution of C(x,2)=C(y,3) (equal integers have equal prime factorizations), so Matveev Thm 2.2 (Lambda != 0 hypothesis) does not apply.  The same Lambda=0 problem propagates to every (2,k) pair because both sides compute the same integer a and ln(a/a)=0.  See claim matveev-empty-form-on-solution-locus (proved, capture code/out/matveev_23_obstruction.md).  Surviving: the correct effective tool per (2,k) pair is elliptic-logarithm via SDW 1999 Thm B23 — effective, per-pair, NOT uniform in k.
 
 ## Resting on nothing recorded
 

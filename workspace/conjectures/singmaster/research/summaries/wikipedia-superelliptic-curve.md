@@ -45,8 +45,7 @@ hypotheses: m coprime to characteristic; f squarefree; connectedness (gcd of m
 holds-here: yes — underlies the run's k2=3 cyclic-trigonal closed forms
   (Y^3-Y = 6C(x,n) is m=3 superelliptic); consistent with the primary
   BST 1999 Prop 4.1 genus formula and the computed grid.
-status: catalogued (encyclopedic definition; the run's genus grid independently
-  reproduces the same values)
-bearing: definitional support for the genus closed forms; no new bound.
+status: checked
+bearing: The run's own Riemann-Hurwitz derivation (genus-closed-form-derived-by-riemann-hurwitz, proved) now independently reproduces this formula as the m=2 special case of the general binomial-curve genus g(m,n) = ((m-1)(n-1)+1-gcd(m,n))/2 — the superelliptic formula for m=2, d=n gives g = floor((n-1)/2) which matches the closed form's {2,n} row.  No longer a catalogue-only entry.
 anchor: research/sources/wikipedia-superelliptic-curve.full.md
 ```

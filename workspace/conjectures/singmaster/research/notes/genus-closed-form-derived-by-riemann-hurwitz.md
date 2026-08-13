@@ -2,6 +2,16 @@
 
 **Status: proved.** The derivation is structural, not instance-counting.
 
+```claim
+id: genus-closed-form-derived-by-riemann-hurwitz
+statement: For distinct m,n >= 2, the geometric genus of the normalization of the projective closure of C(x,m) = C(y,n) is g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n))/2 = ((m-1)n - (m-2) - gcd(n,m))/2.
+hypotheses: m,n >= 2, m != n; the projection (x,y) -> y has degree n; (y)_n has n-1 simple real critical points by Rolle; each gives m simple distinct preimages of ramification index 2; the fibre at x=infinity has Puiseux expansion giving e = n/gcd(m,n), branches = gcd(m,n), I_inf = n - gcd(m,n).
+holds-here: yes (the binomial polynomials are smooth over C except at the finite set of critical values; the Riemann-Hurwitz sum 2g-2 = -2n + m(n-1) + (n-gcd) telescopes to the closed form)
+status: proved
+bearing: effective and uniform in (m,n) — gives genus for any pair without per-case computation. Gives NOTHING effective or uniform for Singmaster: genus >= 2 feeds Faltings, which is per-pair and ineffective. The formula makes genus decidable but does not bound N(a).
+anchor: code/out/verify_riemann_hurwitz_full.captured.txt (153 pairs, ALL CHECKS PASSED, EXIT_CODE=0)
+```
+
 ## The formula
 
 For distinct `m,n >= 2`, the geometric genus of the normalization of the projective closure of `C(x,m) = C(y,n)` is
