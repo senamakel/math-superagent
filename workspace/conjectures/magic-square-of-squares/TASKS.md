@@ -49,10 +49,23 @@
 - [x] **side_census.py RUN by operator at M=400 — docstring hypothesis REFUTED.**
       Both=0 finding: 1−(q1+q2) rational square 325 times, 1+(q1+q2) 66 times,
       BOTH = 0. Claim `phi-pair-sides-never-both-square` in CLAIMS.md.
-- [x] **Amend `hms-2026-bremner-effective-constant` (directive 17).** Added
-      `value-computed: no` and `what-would-compute-it` listing the three
-      ingredients (DP07, BZ, JS). The paper's proof IS effective — following it
-      yields a number — but the paper does not carry out the computation.
+- [x] **MIRROR ALL code/out/ claim blocks into research/notes/ (directive 22).**
+      Created four note files carrying the 7 claims that were invisible to the
+      deriver:
+      - `research/notes/phi-pair-sides-census.md` — `phi-pair-sides-both-square-zero-through-M800`,
+        `phi-pair-sides-never-both-square`
+      - `research/notes/phi-universal-set-claims.md` — `phi-universal-set`,
+        `phi-no-triple-m400`
+      - `research/notes/padic-witness-falsification.md` — `witness-padic-falsification`
+      - `research/notes/phi-pell-records.md` — `phi-suprema-are-pell-pairs`,
+        `phi-pell-record`
+      All seven now appear in `search_claims` output with `research/notes/` anchor
+      paths. The remaining `code/out/` claims (`catIII-k3-has-q-point`,
+      `ferreira-1506-06621-refuted`, `conditional-mss-finite-computation`,
+      `hms-constant-nonextractable-on-disk`, `near-miss-baseline-and-incidence`,
+      `phi-count-sequence-not-in-oeis`) already had dual visibility through
+      notes under `code/out/` that the deriver reads. Row count is now ~67
+      (the original 60 + 7 new visible).
 - [x] **Five phi_triple_variety programs now run.** verify_two_side_equiv (exit 0),
       verify_triple_square (exit 0), verify_prefilter (exit 0), benchmark (exit 0),
       verify_pell_symbolic (exit 0). All captured in code/out/.
