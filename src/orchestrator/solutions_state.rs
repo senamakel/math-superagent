@@ -130,6 +130,14 @@ pub(super) async fn run(
         teams,
     };
     let attempt_mailboxes = mailboxes;
+    // Opened here rather than waiting for a cycle to complete, and beside the
+    // first attempt rather than before it. "What would be enough to prove
+    // this" is answerable from the problem statement alone, so it needs
+    // nothing the loop has yet to produce, and it is worth most before the run
+    // has committed to a direction. Waiting cost a live run its whole first
+    // attempt: the arm is detached, so the graph starts immediately either
+    // way, and the skeleton lands in the same mailbox the next attempt drains.
+    let initial_reduction = beside.reduction.clone();
 
     let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
         .add_node("attempt", move |state: SolutionState, _ctx: NodeContext| {
