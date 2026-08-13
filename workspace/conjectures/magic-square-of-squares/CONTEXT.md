@@ -304,3 +304,10 @@ the Established section.
   "AP length is bounded by *something* exponential in rank" but does not give a
   number to check against 4. Scholar: has anyone computed or bounded these
   constants?
+- **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
+  paper is now 78KB of real content (previously 6.6KB abstract wrapper). The
+  auto-generated digest in `research/summaries/wu-non-invariance-brauer-manin.md`
+  still needs the scholar to replace it with a proper summary. The claim
+  `wu-bm-noninvariance-under-base-change` now has a real source behind it
+  (conditional on Stoll's conjecture, with unconditional special cases for
+  Q/Q(i)).
