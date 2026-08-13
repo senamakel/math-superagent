@@ -21,25 +21,24 @@
   needs a ≥ 29 for a sixth UPN. Combined with Wall 1988, the sharpest form
   this workspace holds. Ledger conversion done (directive 14).
 
-- [ ] **DIRECTIVE 14 (priority 1):** Answer whether the biquadratic character
-  of 2 modulo a primitive divisor r of Φ_{4p}(2) constrains which r can be
-  3-Higgs, beyond the already-known one-way implication r ≡ 1 (mod 16) ⟹
-  v2(r−1) ≥ 4 ⟹ r not 3-Higgs. Known from `heven_gauss.py` through p=61:
-  (2/r)_4 = +1 iff r ≡ 1 mod 16 (F2 verified), and the per-factor product
-  of (2/π)_4 over Gaussian primes π | (2^p+i) equals the quartic character
-  (2/(2^p+i))_4. The question: does evaluating (2/(2^p+i))_4 by quartic
-  reciprocity on the Gaussian integer 2^p+i yield any new restriction on
-  the set of r that *can* occur — e.g. forces some residue class of p to
-  always carry a head (r ≡ 1 mod 16), or forces the count of heads to be
-  at least one? If the biquadratic theory recovers only the mod-16 condition
-  r-by-r with no global constraint on the divisor set, then it does not
-  advance the thread and the `biquadratic-character-divisors` approach
-  should be marked `closed-no-constraint` rather than left open. The
-  deliverable is either (a) a new structural constraint on which r can be
-  3-Higgs derived from the product identity, or (b) a clear statement that
-  biquadratic reciprocity gives nothing beyond the per-divisor mod-16 test
-  and the approach is closed. Use `code/heven_gauss.py` and the Williams
-  1976 supplement as starting points.
+- [x] **DIRECTIVE 14 (priority 1): DONE — CLOSED-no-constraint.** Computed
+  `(2/(2^p+i))_4` for all odd primes p ≤ 61 two independent exact ways
+  (`code/directive14_quartic_closed_form.py` → `code/out/directive14_quartic_closed_form.captured.txt`,
+  EXIT_CODE=0, all matches OK):
+  (A) direct product over the Gaussian factorization `prod (2/π)_4^e`;
+  (B) supplementary-law closed form on the primary associate
+  `α = -i(2^p+i) = 1 − 2^p i`, `[2/α]_4 = i^{(2a−b−2−b²)/2}` with a=1,
+  b=−2^p ⇒ exponent `2^{p−1}(1−2^p) ≡ 0 (mod 4)`. **Result: identically +1
+  for every odd prime p**, hence (a) closed form is the constant 1, (b) NO
+  residue class of p mod 16 forces a head — the product is vacuous, and even
+  a non-1 value would only pin the count of the four character classes mod
+  4, never force a single r to have `(2/r)_4=+1`; (c) the global quartic
+  character of 2 carries NO constraint on which r | Φ_{4p}(2) can be 3-Higgs
+  beyond the one-way per-divisor mod-16 test. The 12 heads that kill
+  `2p∉H_even` occur at primes p where the product is still +1, confirming
+  the product is not a head detector. Approach
+  `biquadratic-character-divisors` is definitively closed (matches
+  CONTEXT's earlier REFUTED/absorbed ledger).
 
 - [x] **Executed (2026-08, this run):** Gaussian factorization of `2^p + i`
   and quartic-character table for every odd prime `p ≤ 61` —

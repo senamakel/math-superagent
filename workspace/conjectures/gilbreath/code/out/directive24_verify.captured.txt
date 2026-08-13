@@ -1,0 +1,7 @@
+k* = 162; flooring(161) = 176182; all rows 162..1000 have flooring == 0 (verified over 839 rows)
+13 giant landing floors match the characterization table exactly
+43 b-increasing steps; the 13 with jump > 1000 are exactly [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161]
+GENUINE 12: geom slope=+0.519764 intercept=8.591921 R2=0.943852 doubling=1.6816; lin slope=+84100.82 intercept=-184084.0 R2=0.783043
+ALL 13   : geom slope=+0.494241 intercept=8.685508 R2=0.942088 doubling=1.6393; lin slope=+98781.64 intercept=-237913.7 R2=0.807242
+captured-file parse of R2 values: 0.943852, 0.783043
+VERIFIED: numpy fit reproduces reported slope/R2/doubling (and 13/13 landing floors, k* = 162, zero flooring on 162..1000).

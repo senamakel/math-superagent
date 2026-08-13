@@ -1,0 +1,97 @@
+RANGE-CONVENTION-CHECK: row mapping and anchor floors match CONTEXT.md
+W = 1270607  D = 1000
+
+(a) WIDTH-DEGRADATION CAVEAT  (J_min = 1000)
+k* = 162   (first row r with flooring(r) = (W-r-1) - b[r-1] < 1000)
+    flooring(162) = 0;  flooring before it: flooring(161) = 176182
+    note: all rows r >= 162 have flooring = 0 exactly (block glued to the finite right edge, one-column-per-row retraction)
+    rows with flooring < 1000: 162..1000 (839 rows)
+
+flooring across the 13 giant event rows (1-based row i, event row and landing row i+1):
+  i  |   b_i       | b_{i+1}     | event-row  | landing-row | genuine?
+ 34 |        865 |       2179 |     1269707 |     1268392 | yes
+ 56 |       4203 |       5942 |     1266347 |     1264607 | yes
+ 64 |       5939 |      23265 |     1264603 |     1247276 | yes
+ 68 |      23262 |      31499 |     1247276 |     1239038 | yes
+ 94 |      31532 |      92620 |     1238980 |     1177891 | yes
+ 96 |      92619 |     103973 |     1177891 |     1166536 | yes
+110 |     103960 |     141706 |     1166536 |     1128789 | yes
+112 |     141706 |     271629 |     1128788 |      998864 | yes
+126 |     271620 |     325090 |      998860 |      945389 | yes
+130 |     325096 |     515906 |      945380 |      754569 | yes
+134 |     515907 |     733564 |      754565 |      536907 | yes
+146 |     733575 |    1094273 |      536885 |      176186 | yes
+161 |    1094263 |    1270444 |      176182 |           0 | no (capped)
+  (landing-row floors above match the characterization table exactly for all 13)
+  => minimum event-row flooring among the giants = 176182 (row 161) — all far above 1000
+
+first row past each giant where flooring < 1000:
+  event row i= 34: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i= 56: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i= 64: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i= 68: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i= 94: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i= 96: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i=110: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i=112: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i=126: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i=130: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i=134: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i=146: first row past it with flooring < 1000: row 162   [row 162 = k* (not this giant; degradation is global)]
+  event row i=161: first row past it with flooring < 1000: row 162   [landing row immediately below threshold (capped event)]
+
+(b) GEOMETRIC GROWTH TEST
+step-law events (1-based rows i with b[i] > b[i-1] in the b array): 43 total
+    [1, 2, 4, 8, 9, 10, 12, 14, 15, 19, 22, 23, 26, 34, 38, 50, 51, 56, 57, 64, 68, 72, 76, 80, 86, 91, 94, 96, 110, 112, 125, 126, 128, 130, 131, 132, 134, 136, 138, 143, 146, 159, 161]
+    the 13 giants (j > 1000) are [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161]; 12 genuine, i=161 capped.
+
+  --- GENUINE 12 (drop capped i=161): n = 12  (event rows 34..146, post-jump blocks b[i] = 2179..1094273) ---
+  per-step ratios b_next/b_prev (consecutive post-jump blocks):
+    i= 34: b=     2179  (first)
+    i= 56: b=     5942  ratio=2.7269 (5942/2179)
+    i= 64: b=    23265  ratio=3.9153 (23265/5942)
+    i= 68: b=    31499  ratio=1.3539 (31499/23265)
+    i= 94: b=    92620  ratio=2.9404 (92620/31499)
+    i= 96: b=   103973  ratio=1.1226 (103973/92620)
+    i=110: b=   141706  ratio=1.3629 (141706/103973)
+    i=112: b=   271629  ratio=1.9168 (271629/141706)
+    i=126: b=   325090  ratio=1.1968 (325090/271629)
+    i=130: b=   515906  ratio=1.5870 (257953/162545)
+    i=134: b=   733564  ratio=1.4219 (366782/257953)
+    i=146: b=  1094273  ratio=1.4917 (1094273/733564)
+  GEOMETRIC (log b vs index): slope = +0.519764 (= log growth per event), intercept = 8.591921
+    R^2 = 0.943852; fitted log b: 8.5919 9.1117 9.6314 10.1512 10.6710 11.1907 11.7105 12.2303 12.7500 13.2698 13.7896 14.3093
+    residuals (log): -0.9053 -0.4219 +0.4233 +0.2065 +0.7653 +0.3611 +0.1510 +0.2819 -0.0582 -0.1161 -0.2839 -0.4037
+    doubling factor = 2^(slope/ln2) = 1.6816 per event  (x1.68/event)
+  LINEAR (b vs index): slope = +84100.82, intercept = -184084.0
+    R^2 = 0.783043; fitted b: -184084 -99983 -15882 68218 152319 236420 320521 404622 488723 572823 656924 741025
+    residuals (b): +186263.0 +105925.2 +39147.4 -36719.5 -59699.3 -132447.1 -178814.9 -132992.7 -163632.5 -56917.4 +76639.8 +353248.0
+  VERDICT: R^2_geom = 0.943852 vs R^2_lin = 0.783043 -> GEOMETRIC wins by 0.160809
+
+  --- ALL 13 (incl. capped i=161) — robustness check: n = 13  (event rows 34..161, post-jump blocks b[i] = 2179..1270444) ---
+  per-step ratios b_next/b_prev (consecutive post-jump blocks):
+    i= 34: b=     2179  (first)
+    i= 56: b=     5942  ratio=2.7269 (5942/2179)
+    i= 64: b=    23265  ratio=3.9153 (23265/5942)
+    i= 68: b=    31499  ratio=1.3539 (31499/23265)
+    i= 94: b=    92620  ratio=2.9404 (92620/31499)
+    i= 96: b=   103973  ratio=1.1226 (103973/92620)
+    i=110: b=   141706  ratio=1.3629 (141706/103973)
+    i=112: b=   271629  ratio=1.9168 (271629/141706)
+    i=126: b=   325090  ratio=1.1968 (325090/271629)
+    i=130: b=   515906  ratio=1.5870 (257953/162545)
+    i=134: b=   733564  ratio=1.4219 (366782/257953)
+    i=146: b=  1094273  ratio=1.4917 (1094273/733564)
+    i=161: b=  1270444  ratio=1.1610 (74732/64369)
+  GEOMETRIC (log b vs index): slope = +0.494241 (= log growth per event), intercept = 8.685508
+    R^2 = 0.942088; fitted log b: 8.6855 9.1797 9.6740 10.1682 10.6625 11.1567 11.6510 12.1452 12.6394 13.1337 13.6279 14.1222 14.6164
+    residuals (log): -0.9989 -0.4899 +0.3807 +0.1895 +0.7738 +0.3952 +0.2106 +0.3670 +0.0524 +0.0200 -0.1222 -0.2166 -0.5615
+    doubling factor = 2^(slope/ln2) = 1.6393 per event  (x1.64/event)
+  LINEAR (b vs index): slope = +98781.64, intercept = -237913.7
+    R^2 = 0.807242; fitted b: -237914 -139132 -40350 58431 157213 255995 354776 453558 552339 651121 749903 848684 947466
+    residuals (b): +240092.7 +145074.0 +63615.4 -26932.2 -64592.9 -152021.5 -213070.2 -181928.8 -227249.4 -135215.1 -16338.7 +245588.7 +322978.0
+  VERDICT: R^2_geom = 0.942088 vs R^2_lin = 0.807242 -> GEOMETRIC wins by 0.134846
+
+SUMMARY: genuine-12 geometric slope = +0.519764, doubling factor = 1.6816/event; R^2_geom=0.943852 vs R^2_lin=0.783043
+         all-13  geometric slope = +0.494241, doubling factor = 1.6393/event; R^2_geom=0.942088 vs R^2_lin=0.807242
+DONE

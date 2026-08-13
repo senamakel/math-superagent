@@ -145,10 +145,18 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 - **(sourced) Williams 1976 primary text held** (`research/summaries/williams-1976-supplement-biquadratic-reciprocity.md`,
   claim `williams1976-biquadratic-supplement-primary`): π = a+bi primary iff
   `a+b ≡ 1 mod 4`, `b ≡ 0 mod 2`; main law `(α/β)_4 = (−1)^{bd/4}(β/α)_4`;
-  supplements `[1+i/π]_4 = i^{(a−b−1−b²)/4}`, `[i/π]_4 = i^{(a−1)/2}` —
-  proves the 1+i row that `qr-supplementary-2` (Wikipedia) only asserted.
-  This is the primary anchor for the first-moment evaluation in the adopted
-  second-moment approach.
+  supplements `[1+i/π]_4 = i^{(a−b−1−b²)/4}`, `[i/π]_4 = i^{(a−1)/2}`,
+  and the derived `[2/π]_4 = i^{−b/2}` — proves the 1+i row that
+  `qr-supplementary-2` (Wikipedia) only asserted.
+  **Numerically verified against the definitional quartic character**
+  (computed/checked): `code/verify_biquadratic_supplement.py` →
+  `code/out/q_supplement.captured.txt` (43 bytes, EXIT_CODE=0) — the closed
+  forms for i, 1+i, −1, 2 agree with the definitional evaluation
+  `α^((Nπ−1)/4) mod π` on **all 501 primary Gaussian primes** with 1 ≤ a < 400.
+  This is a check of the start of the Williams source, not of the whole paper.
+  Primary anchor for the first-moment evaluation in the adopted second-moment
+  approach; terminal input for the directive-14 closure (that evaluation is a
+  class function of r mod 16 with no odd-prime information).
 - **(sourced, unverified) Frei 1978 via OEIS A002827 comment only:** a UPN not
   divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 odd components,
   `n > 10^440`. Primary text not in the library. Load-bearing for the
@@ -218,23 +226,32 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   candidates are determined by the factorization of `2^{2p}+1`; do not re-run
   sequence mining on the 10 verified terms.
 - **Approach ledger moved: `biquadratic-character-divisors` is REFUTED
-  (absorbed); `second-moment-character-mod16` is ADOPTED.** The biquadratic
-  route's deliverable (existence of one head `r ≡ 1 mod 16`, the (H1) form
-  of Thm 30) is strictly weaker than Conjecture 29's proportional bound, and
-  its product identity `Π_{π^e || 2^p+i} (2/π)_4^e = (2/(2^p+i))_4`
-  determines the character sum only mod 4 — orthogonality needs the **sum**.
-  What survives inside the adopted approach: the verified one-way generator
-  equivalence `(2/r)_4 = 1 ⟺ r ≡ 1 mod 16` (all 71 primitive divisors through
-  p = 61, two independent ways) as the first-moment evaluation. The adopted
-  approach targets `#{r ≡ 1 mod 16} ≥ c·ω(Φ_{4p}(2))` via Dirichlet
-  orthogonality on (Z/16Z)* + a second-moment (variance) bound; its falsifier
-  is systematic bias into `r ≡ 9 mod 16`. **TASKS.md "Active approaches" is
-  STALE** — it still calls biquadratic-character-divisors adopted; the
-  approach file and APPROACHES.md both say refuted. Directive-14 question
-  (does the closed-form evaluation `(2/(2^p+i))_4` from p mod 16 constrain
-  which r can be 3-Higgs beyond the per-divisor mod-16 test?) is still open;
-  the credible resolution is closure — "nothing beyond", ending the line for
-  good. `research/approaches/biquadratic-character-divisors.md`,
+  (absorbed); `second-moment-character-mod16` is ADOPTED.** (Why: the
+  biquadratic route's deliverable — existence of one head, the (H1) form of
+  Thm 30 — is strictly weaker than Conjecture 29's proportional bound, and
+  its product identity determines a character sum only mod 4; orthogonality
+  needs the sum. What survives inside the adopted approach: the verified
+  one-way equivalence `(2/r)_4 = 1 ⟺ r ≡ 1 mod 16` as the first-moment
+  evaluation. The adopted approach targets `#{r ≡ 1 mod 16} ≥ c·ω` via
+  Dirichlet orthogonality on (Z/16Z)* + a second-moment bound; its falsifier
+  is systematic bias into `r ≡ 9 mod 16`.) **TASKS.md
+  "Active approaches" is STALE** — it still calls biquadratic-character-divisors adopted; the
+  approach file and APPROACHES.md both say refuted. **DIRECTIVE 14 is CLOSED
+  at the argument level (unconditional):** heads are exactly the
+  character-+1 class (`(2/r)_4 = +1 ⟺ r ≡ 1 mod 16`, F2), so every product
+  identity over these characters is invariant under adding/removing heads —
+  the head count never occurs in any product identity, hence no product
+  identity can force a head for any residue class of p (deliverable (a) is
+  impossible by argument, not merely unproved). The product identity's
+  entire content is the congruence `C5−C13+2·C9 ≡ 0 (mod 4)` among the
+  NON-head classes {5,9,13}, all with v2(r−1) ≤ 3 whose 3-Higgs status is
+  decided by odd primes of r−1 — invisible to quartic characters of 2; the
+  composite evaluation candidate is the constant `(2/(2^p+i))_4 = +1` in p.
+  Numerical confirmations R2–R4 are staged in `code/closure_biquadratic.py`
+  **and are NOT yet captured — do not report them as computed.** The adopted
+  second-moment approach is untouched: its first moment S_χ is a SUM with
+  weight +1 on heads; only the product is head-blind.
+  `research/approaches/biquadratic-character-divisors.md`,
   `research/approaches/second-moment-character-mod16.md`.
 
 ## Numbers
@@ -341,13 +358,14 @@ Durable Cognee memory from earlier runs; consistent with Established here
    `Φ_{4p}(2)` — the paper's named analytic target (thread
    `divisor-level-phi4p`); (b) lower bound on `a` beyond 11, or impossibility
    of a residue class of `a`; (c) is `3 | n` forced for a sixth? (all five
-   have it; open in both directions). Live sub-task (directive 14): state
-   whether the closed-form quartic evaluation `(2/(2^p+i))_4` as a function
-   of p mod 16 constrains which r | `Φ_{4p}(2)` can be 3-Higgs beyond the
-   per-divisor mod-16 test — if not, say so and close the absorbed line
-   definitively. **Still open: not computed.** The two planned runs
-   (`char_mod16_sums`, `q_supplement`) are 0-byte captures — no character-sum
-   tables or supplement evaluation exist on disk; do not report either as done.
+   have it; open in both directions). Directive-14 is CLOSED by argument
+   (head-blindness of product identities — see Ruled out), with the sole
+   remaining piece the uncaptured numerical confirmation in
+   `code/closure_biquadratic.py`. **`char_mod16_sums` remains 0-byte — the
+   adopted second-moment approach's first measurement is still not on disk;
+   do not report character-sum tables as done.** `q_supplement` is DONE
+   (PASS, 43 bytes) — this gap's earlier "two planned runs 0-byte" statement
+   is resolved for q_supplement only.
 5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
    2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
    no OCR; Guy UPNT §B3 paywalled).

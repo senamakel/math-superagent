@@ -1,0 +1,69 @@
+Directive 14: (2/(2^p+i))_4 closed form, exact computation.
+primes p checked: [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61] (p <= 61)
+
+p     p%16   direct (prod (2/pi)_4^e)     supplementary [2/alpha]_4  match
+3     3      +1                           +1                         OK
+5     5      +1                           +1                         OK
+7     7      +1                           +1                         OK
+11    11     +1                           +1                         OK
+13    13     +1                           +1                         OK
+17    1      +1                           +1                         OK
+19    3      +1                           +1                         OK
+23    7      +1                           +1                         OK
+29    13     +1                           +1                         OK
+31    15     +1                           +1                         OK
+37    5      +1                           +1                         OK
+41    9      +1                           +1                         OK
+43    11     +1                           +1                         OK
+47    15     +1                           +1                         OK
+53    5      +1                           +1                         OK
+59    11     +1                           +1                         OK
+61    13     +1                           +1                         OK
+
+Closed form by p mod 16: all values tabulated above; every row is +1.
+Identically (2/(2^p+i))_4 = +1 = i^0 = 1  for all odd primes p>=3.
+
+Per-residue-class summary (p mod 16 -> distinct (k_dir, k_sup)):
+  p%16=1: [dir=+1 sup=+1]
+  p%16=3: [dir=+1 sup=+1]
+  p%16=5: [dir=+1 sup=+1]
+  p%16=7: [dir=+1 sup=+1]
+  p%16=9: [dir=+1 sup=+1]
+  p%16=11: [dir=+1 sup=+1]
+  p%16=13: [dir=+1 sup=+1]
+  p%16=15: [dir=+1 sup=+1]
+
+Head check: for each p, any divisor r ≡ 1 (mod 16) present?
+  p=17  (2/(2^p+i))_4=+1  heads=none  
+  p=3  (2/(2^p+i))_4=+1  heads=none  
+  p=19  (2/(2^p+i))_4=+1  heads=[525313]  (product=1 yet head present!)
+  p=5  (2/(2^p+i))_4=+1  heads=none  
+  p=37  (2/(2^p+i))_4=+1  heads=[593, 231769777]  (product=1 yet head present!)
+  p=53  (2/(2^p+i))_4=+1  heads=[15358129, 586477649]  (product=1 yet head present!)
+  p=7  (2/(2^p+i))_4=+1  heads=[113]  (product=1 yet head present!)
+  p=23  (2/(2^p+i))_4=+1  heads=none  
+  p=41  (2/(2^p+i))_4=+1  heads=none  
+  p=11  (2/(2^p+i))_4=+1  heads=[2113]  (product=1 yet head present!)
+  p=43  (2/(2^p+i))_4=+1  heads=[500177]  (product=1 yet head present!)
+  p=59  (2/(2^p+i))_4=+1  heads=[157649]  (product=1 yet head present!)
+  p=13  (2/(2^p+i))_4=+1  heads=none  
+  p=29  (2/(2^p+i))_4=+1  heads=[536903681]  (product=1 yet head present!)
+  p=61  (2/(2^p+i))_4=+1  heads=none  
+  p=31  (2/(2^p+i))_4=+1  heads=none  
+  p=47  (2/(2^p+i))_4=+1  heads=[3761, 140737471578113]  (product=1 yet head present!)
+primes with >=1 head: 9 / 17
+
+Total Gaussian divisor rows enumerated: 71 (all exact factors).
+All supplementary == direct matches: True
+
+========================================================================
+VERDICT
+(a) closed form: (2/(2^p+i))_4 = 1 identically (p any odd prime).
+(b) no residue class of p forces a head r≡1 mod 16: the product
+    is identically 1, and even a non-1 product value would only
+    pin the total count of the four character classes mod 4,
+    never force one specific divisor to be (2/r)_4=+1.
+(c) the global quartic character of 2 carries NO information about
+    which r | Phi_{4p}(2) can be 3-Higgs beyond the one-way
+    per-divisor mod-16 test already established.
+    => DIRECTIVE-14 LINE CLOSED-no-constraint.
