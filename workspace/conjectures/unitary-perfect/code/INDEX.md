@@ -11,6 +11,11 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `equality_case_verify.py` | Independent exact-Fraction re-verification of equality-case bound. Already had fix for admissible_sizes (sort-then-slice with BOUND=800 + safety assertion); docstring updated to remove old bug-narrative. Verifies 4 points: a=1 / 4/3, a=8 / 257 forced, 3 vs 9 admissibility, exclusion 2≤a≤28 with M(29)>T(29). Post-fix capture at code/out/equality_case_verify.captured.txt is correct. |
 | `heven_classify.py` | Phase A worked examples + Phase B classification of H_even cap [2,1200]: reproduces every worked example of the spec/paper for the 3-Higgs machinery, then combines heven_sieve.py's witness tables with full factorization of survivors to compute H_even cap [2,1200] and compare with the ten candidates of arXiv:2605.20475 Theorem 8. |
 | `heven_complete_verify.py` | _(undescribed)_ |
+| `heven_heads_verify.py` | Independent certification of the 12 heads found by code/heven_gauss.py: for each (p, r) verifies r prime (isprime), r | 2^{2p}+1 (pow(2,2p,r)==r-1), r == 1 mod 16, and (r-1) % (4p) == 0 — from first principles, no factorization of 2^{2p}+1. Output code/out/heven_heads_verify.captured.txt: ALL HEADS CERTIFIED 12/12. This is the second, independent route to the same values required by the evidence rules. |
+| `heven_patterns.py` | _(undescribed)_ |
+| `heven_sieve.py` | Phase B2: threaded witness sieve for H_even ∩ [2,1200]. Scans odd primes by gmpy2.next_prime over disjoint worker ranges to bound (1e8 or 1e9), skips primes with pow(2,2400,r)!=1, computes ord_r(2) for passers, archives (r,ord) to ord_sieve_table.tsv and every (r,m,ord) with r |
+| `structural_search_CLOSED.py` | _(undescribed)_ |
+n_heads_verify.py (independent pow/isprime certification of all 12 heads). |
 | `heven_patterns.py` | _(undescribed)_ |
 | `heven_sieve.py` | Phase B2: threaded witness sieve for H_even ∩ [2,1200]. Scans odd primes by gmpy2.next_prime over disjoint worker ranges to bound (1e8 or 1e9), skips primes with pow(2,2400,r)!=1, computes ord_r(2) for passers, archives (r,ord) to ord_sieve_table.tsv and every (r,m,ord) with r |
 | `structural_search_CLOSED.py` | _(undescribed)_ |
