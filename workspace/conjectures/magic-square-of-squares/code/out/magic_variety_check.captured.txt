@@ -106,3 +106,5 @@ ALL CHECKS PASSED — linear magic variety is P^2 ⊂ P^8, rank 7
 (incidence) / rank 6 (differences), kernel dim 3, generators
 (C, U, V) = (constant, u, v) grids, no-line claim refuted for X.
 ==========================================================================
+
+EXIT_CODE=0 (python exit status, captured with redirection)

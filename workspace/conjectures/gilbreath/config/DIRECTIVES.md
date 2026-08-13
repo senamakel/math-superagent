@@ -90,3 +90,21 @@ Two changes to `TASKS.md`, one to `CONTEXT.md`, one to the regeneration thread:
 - **`research/threads/regeneration.md` rewritten.** The question changed from the open-ended "is there a k with block length 0?" to "can we bound the (2,4)-event rate from below, and does that bound suffice?" The rests-on block now names the step law, recharge identity, and drain law as the foundation. The body describes two routes (combinatorial via Rule 90 + drain law, analytic via prime-gap hypotheses) and asks for the inter-event gap distribution as the first measurement. `THREADS.md` re-derived automatically.
 
 No new downloads, no re-derivation of the step law, no erosion verification — the directive says those are done. What remains is the event-rate lower bound, which is exactly what the task list now asks for.
+
+## 7 — from steer
+
+You absorbed the step law - step-law-and-recharge-identity is in the ledger as checked. Good. Now build on it rather than around it.
+
+Two new proved claims of yours are genuine negative results and you should treat them as the model for what to produce here. no-well-defined-mod3-reduction: |a-b| mod 3 is not a function of (a mod 3, b mod 3), so no finite-state machine over F_3 exists for the halved triangle. That kills the mod-3 automaton route outright, which is worth more than another partial verification. mod6-gap-structure-real-but-not-percolating: the gap structure is real but does not percolate. Both are honest and both close a direction. Keep doing exactly that.
+
+Now the one question that matters. Erosion is settled: the block loses exactly one position per row. Regeneration is not, and by the recharge identity b_k = b_1 + sum(j_i + 1) - (k-1) the conjecture is exactly whether (2,4)-events keep arriving fast enough. Everything you have says they do - 42 events supplying 216812 of recharge against 798 of consumption to depth 800, minimum block length 2, and no b=1 to b=0 transition ever - and nothing you have proves it.
+
+So spend this run on the event rate and nothing else. Concretely: what is the density of k at which the intruder pair is exactly (2,4)? Your own data has 42 events in 800 rows and 60 in 999. Is that rate bounded below, and by what? Because your step law also holds on RANDOM non-prime arrays (3521 rows, 610 events, zero failures), the event mechanism is combinatorial, not arithmetic - so a lower bound may be provable for the general Gilbreath-like class without any prime input at all. That is the most promising route open to you and it is the one the general-class framing in problem.md points at.
+
+Ledger: asserted 36 to 38 while checked moved 3 to 5 and proved 17 to 15, which reads as two deliberate demotions - say so in the notes if it was. downloads 74 to 92 earlier and frontier is 484 with 414 unworked. Stop downloading.
+
+**DIRECTIVES.md — what changed and why**
+
+TASKS.md, CONTEXT.md, and `research/threads/regeneration.md` were updated. The directive's core move is the random-array observation: the step law holds on non-prime starts, so the `(2,4)`-event mechanism is combinatorial, not arithmetic. That elevates the combinatorial Route A from "one of two equal routes" to the priority — a lower bound on the event rate in the general Gilbreath-like class, without any prime input, is the most promising theorem-shaped target. Route B (analytic/gap-bound) is demoted to secondary and must now state how it beats Eppstein rather than being pursued in parallel. 
+
+The Rule 90 depth-d=2^j timing prediction was already REFUTED in the thread file but THREADS.md auto-derivation stayed at "open" and TASKS.md still listed it as an active sub-task; I marked it done/refuted in TASKS.md and noted it in CONTEXT.md. The CHT Theorem 1.6 hypothesis check was also marked done in CONTEXT.md (it previously read "DO THIS NOW" — stale). The directive's ledger-demotion question (asserted 36→38, proved 17→15) and the missing standalone claim for the random-array step law are now tracked as supporting items in TASKS.md rather than left unanswered. No downloads were requested.
