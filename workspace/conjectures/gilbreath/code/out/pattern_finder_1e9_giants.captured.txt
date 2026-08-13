@@ -397,3 +397,60 @@ row 394: b=50847139 floor=0 intruder=None
 row 395: b=50847138 floor=0 intruder=None
 row 396: b=50847137 floor=0 intruder=None
 row 397: b=50847136 floor=0 intruder=None
+row 398: b=50847135 floor=0 intruder=None
+row 399: b=50847134 floor=0 intruder=None
+row 400: b=50847133 floor=0 intruder=None  [185s]
+rows done in 185.4s
+
+--- oracle cross-checks ---
+rows 1..247 vs 6e8 record: mismatches = [] (must be [])
+row 248 vs 6e8: 6e8=31324454 (capped), 1e9=50847285
+rows 1..161 vs 2e7 depth-1000 record: mismatches = [] (must be [])
+
+--- summary ---
+events (any regen): 52   giants (j>1000): 16   genuine (floor > 0): 15
+k* (first no-intruder row): 248   first row with flooring < 1000: None
+W = 50847534; note floor uses W - row1 - 1 - b (0-based i0 = row1 - 1)
+
+--- full giant table ---
+  i row0 row1        jump       b_pre      b_land       floor  gen  gap_i  gap/(j_i+1) gap/(j_prev+1)
+  0   34   35        1314         865        2179    50845319    Y      -          -              -
+  1   56   57        1739        4203        5942    50841534    Y     22 1.2644e-02 1.6730e-02
+  2   64   65       17326        5939       23265    50824203    Y      8 4.6171e-04 4.5977e-03
+  3   68   69        8237       23262       31499    50815965    Y      4 4.8555e-04 2.3085e-04
+  4   94   95       61088       31532       92620    50754818    Y     26 4.2561e-04 3.1561e-03
+  5   96   97       11354       92619      103973    50743463    Y      2 1.7613e-04 3.2739e-05
+  6  110  111       37746      103960      141706    50705716    Y     14 3.7089e-04 1.2329e-03
+  7  112  113      129923      141706      271629    50575791    Y      2 1.5394e-05 5.2984e-05
+  8  126  127       53470      271620      325090    50522316    Y     14 2.6182e-04 1.0776e-04
+  9  130  131      190810      325096      515906    50331496    Y      4 2.0963e-05 7.4807e-05
+ 10  134  135      217657      515907      733564    50113834    Y      4 1.8377e-05 2.0963e-05
+ 11  146  147      360698      733575     1094273    49753113    Y     12 3.3269e-05 5.5132e-05
+ 12  161  162     4323712     1094263     5417975    45429396    Y     15 3.4692e-06 4.1586e-05
+ 13  174  175     5237310     5417976    10655286    40192072    Y     13 2.4822e-06 3.0067e-06
+ 14  238  239    12508030    10655260    23163290    27684004    Y     64 5.1167e-06 1.2220e-05
+ 15  247  248    27684003    23163282    50847285           0    N      9 3.2510e-07 7.1954e-07
+
+--- settlements ---
+16th giant (i=15): row0=247 row1=248 jump=27684003 b_land=50847285 floor=0 genuine=False
+gap from previous giant (row1 239 -> 248): 9  -> NOISE (<= 64)
+max gap over all giants: 64 at gap index 13 (pre-jump rows1 175 -> 239)
+max ratio gap_i/(j_i+1): 1.2644e-02
+min ratio gap_i/(j_i+1): 3.2510e-07
+ratio > 0.1 rows: []
+
+--- parity of 0-based pre-jump rows ---
+0-based rows: [34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174, 238, 247]
+odd 0-based among 16 giants (j > 1000): [161, 247]
+other than 161/capped: [247]
+p(<=1 odd 0-based row | 16 giants, uniform parity H0) = (C(16,1)+C(16,0))/2^16 = 17/65536 = 0.0002594
+
+--- fits on landing blocks, genuine giants only (15 points of 16) ---
+numpy log2 OLS: slope=0.070645 intercept=9.6148 r2=0.946065  (doubling every 14.16 rows)
+exact Fraction OLS: slope=0.070645 intercept=9.6148 r2=0.946065
+agreement numpy vs exact: |slope diff| = 2.78e-17 (must be ~0)
+per-giant log2 b_land increments: ['1.447', '1.969', '0.437', '1.556', '0.167', '0.447', '0.939', '0.259', '0.666', '0.508', '0.577', '2.308', '0.976', '1.120']
+relative growth factors b_land[i+1]/b_land[i]: ['2.727', '3.915', '1.354', '2.940', '1.123', '1.363', '1.917', '1.197', '1.587', '1.422', '1.492', '4.951', '1.967', '2.174', '2.195']
+linear b vs row0 OLS: slope=97907.966 intercept=-8636267.144 r2=0.650593
+wrote code/out/pattern_finder_outputs/giants_1e9.json
+total wall 185.4s
