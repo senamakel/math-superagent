@@ -98,25 +98,22 @@ disk), or asserted-by-source.
   rows — so a degree-1 family for an open class must be a sub-progression
   family (next bullet), not an in-class one. (`code/out/extended_minimal_x.json`,
   `code/out/extended_verify.captured.txt`.)
-- **Sub-class identity families for r=1: a batch exists, but the capture is
-  NOT yet trustworthy** (construction + poly-positivity only; attribution
-  bug found). `code/search_subprogression.py` runs Salez's seven converse
+- **Sub-class identity families for r=1: shapes, and the header trap**
+  (checked). `code/search_subprogression.py` runs Salez's seven converse
   equations (Prop 3) over n = 840M·k + b with b ≡ 1 mod 840, gcd(b,M)=1,
   b a QNR mod 840M — the only b Schinzel-legal for a polynomial family (b is
   a QR mod 840, so M must supply a prime q ∤ 840 with b a QNR mod q).
-  Capture `code/out/subprogression.captured.txt` prints poly-positive x,y,z
-  for M ∈ {11,13,17,19,22,23,26,29,31} (visual extent; the run hit the 540s
-  timeout BEFORE printing its summary — no count, no residue breakdown; the
-  extended capture is empty). Hand-verified here (exact arithmetic): for
-  p=9240k+4201, A=(p+1)/11 solves via (3p, 3Ap, 3A); A=(p+23)/88 solves via
-  (22Ap, Ap, 22A); for p=9240k+5881, A=(3p+1)/11 solves via (3p, 3Ap, A).
-  **Trap:** the script's `verify_and_emit` never runs `is_identity`, and the
-  printed (a,b) header is unreliable — the (22Ap, Ap, 22A) triple valid for
-  n ≡ 4201 mod 9240 reappears under b=5881, where it fails (1/z > 4/n at
-  k=0). Do not cite any family from this capture by its header; re-run each
-  through `is_identity` at its claimed (a,b) first. Shapes are instances of
-  the seven known linear forms (Salez: no new degree-1 shape exists), so the
-  open question is the covering assembly, not the shape.
+  Hand-verified here (exact arithmetic): for p=9240k+4201, A=(p+1)/11 solves
+  via (3p, 3Ap, 3A); A=(p+23)/88 solves via (22Ap, Ap, 22A); for
+  p=9240k+5881, A=(3p+1)/11 solves via (3p, 3Ap, A). **Trap (resolved):** the
+  generator's `verify_and_emit` never runs `is_identity`, and the printed
+  (a,b) header is unreliable — a triple valid for n ≡ 4201 mod 9240 reappears
+  under b=5881 where it fails. Every family has since been re-checked **at its
+  claimed (a,b)** through `is_identity` (`verify_current_coverage.py`:
+  838 blocks / 123 (a,b), identity failures 0), so cite families only by the
+  re-verified (a,b), never the raw printed header. Shapes are instances of the
+  seven known linear forms (Salez: no new degree-1 shape exists), so the open
+  question is the covering assembly, not the shape.
 - **Verification bounds** (sourced): 10¹⁴ Swett 1999; 10¹⁷ Salez 2014; 10¹⁸
   Mihnea–Dumitru 2025 (arXiv:2509.00128, S₂₉ filter). None reproduced here.
 - **Bradford two-variable reduction** (sourced): for prime p the conjecture is
