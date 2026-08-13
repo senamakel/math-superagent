@@ -80,20 +80,7 @@ holds-here: yes
 status: catalogued (matches the OEIS b-file terms for k=1..16); our own profile computed to depth 600 in witnesses.json
 bearing: independently confirms the run's row data against the published catalogue; lets claims about block length be phrased in a catalogue-backed quantity.
 anchor: code/out/witnesses.json + oeis-A000232
-contradicts: (none)
 answers: are-our-block-lengths-reliable
-```
-
-```claim
-id: odlyzko-block-lemma-asserted
-statement: A {0,2} block of length n at the start of a row protects approximately n/2 subsequent rows' first entries, which then all begin with 1; the block degrades at ~the rate it shortens.
-hypotheses: row begins 1 followed by n entries in {0,2}; structural self-propagation of the absolute-difference operator. NOT yet re-derived or made exact (constant in n/2 unknown).
-holds-here: unchecked
-status: asserted (attributed to Odlyzko 1993 in problem.md/FRONTIER, not sourced in this run's library)
-bearing: frames the central obstruction (consumption vs regeneration) but cannot yet be relied on; exact statement and constant are an open request.
-anchor: problem.md + research/notes/reduction.md
-contradicts: (none)
-answers: consumption-rate-of-02-block
 ```
 
 ## Sources in the library

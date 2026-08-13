@@ -1,0 +1,13 @@
+sieve: 1270607 primes below 20000000 in 0.1s
+rows to depth 1000 in 3.8s; first_bad=None
+oracle agree on k=1..40 (block lengths and second entries): True
+min b = 2 at k=1; max b = 1270444 at k=162
+block diffs: min=-1 max=360698
+regeneration rows (diff >= 0): 60 of 999; max jump 360698 at k=146
+longest pure-erosion run (consecutive b(k+1)=b(k)-1): 838
+s: 520 zeros and 480 twos over k=1..1000
+longest runs in s: [(2, 11), (0, 8), (0, 7), (2, 7), (2, 7)]
+intruder (value just past the block): min 4, max 14, share==4: 0.596
+intruder counts mod 4: [(0, 120), (2, 41)]
+first 40 intruders: [4, 4, 4, 4, 8, 8, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 4, 4, 6, 6, 4, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 10, 8]
+wrote code/out/blocks_depth1000.json

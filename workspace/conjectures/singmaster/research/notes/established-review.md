@@ -101,3 +101,12 @@ anchor: research/notes/established-review.md
 - For the `a=b` case excluding (1,1): the limiting ratio is the golden-ratio-like quadratic; the author could not rule out infinite lattice points — open. (This is exactly the Singmaster family.)
 - Gives the framing: multiplicity of 6 = common integral intersection of two curves; multiplicity 8 = three curves meeting; general effective Siegel or effective Schmidt subspace theorem would give effective heights.
 - **Faltings/Siegel give finiteness for each pair (already known) with NO computable count — the uniform-in-(k1,k2) obstruction is precisely what GOAL.md warns about.**
+
+## Contradictions / discrepancies recorded
+
+- **Kane bound exponent**: Fermat's Library's annotation of Singmaster 1971 quotes the best bound as `O((log t)(log_3 t)/(log_2 t)^2)` (exponent 2). The authoritative sources — Wikipedia "Known bound", MRSTT arXiv:2106.03335 intro ("O(log t log_3 t/log_2^3 t)"), Jenkins arXiv:1411.4111 intro — all state exponent **3**. Exponent 3 is taken as correct here; the Fermat's annotation is a transcription slip.
+
+## Primary-source cross-check of the witness set (Singmaster 1971 full text)
+
+Singmaster's original monthly note, held at research/sources/singmaster-1971.full.md (facsimile via Fermat's Library), states in "Added in proof": *"M(8)=3003 and this is the only solution to N(a)>=8 with a<2^23. There are six solutions to N(a)=6 with a<2^23, namely 120, 210, 1540, 7140, 11628, 24310."* This independently confirms the run's witnesses.json record (3003→8; the six→6) by a primary source. (Original limit 2^23; extended to 2^48 in Singmaster FQ 1975, also held.)
+
