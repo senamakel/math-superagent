@@ -14,7 +14,29 @@ p ≡ 1, 121, 169, 289, 361, 529   (mod 840)
 
 These six are exactly the primitive perfect-square residues mod 840
 (`1^2, 11^2, 13^2, 17^2, 19^2, 23^2`). The run's target is `p ≡ 1 (mod 840)`,
-i.e. `p = 840k+1` prime.
+i.e. `p = 840k+1` prime. Six further structural views of the same set, all
+sourced in the library:
+- **Quadratic form**: the primes in the six classes are exactly the primes
+  `x² + 840y²` (OEIS A139665, sourced).
+- **E(4) form**: ESC would follow if every nonsquare n were `4M − d` with
+  `(ab)|M, d|(a+b)`; E(4) contains no squares, only exceptions < 2·10⁹ are
+  288, 336, 4545 (Dubickas–Novikas 2012 + OEIS A287116, sourced).
+- **Completeness for Type II**: prime p has a Type-II solution **iff**
+  `p = qr − 4s₁s₂` with q ≡ 3 (mod 4), s₁,s₂ | (q+1)/4 (Chamberland, Integers
+  26 (2026) #A42, sourced; same characterisation as Schuh 2025 Thm 2B).
+  Example: open-class prime 1009 = 23·47 − 4·3·6 is the smallest needing
+  s₁,s₂ ≥ 3 and has an explicit Type-II solution — the open classes are NOT
+  Type-II-free.
+- **Two congruence families complete** (Bloom–Elsholtz survey Thm 1, proof
+  in full text): ESC ⇔ every prime p lies in `p ≡ −a/c (mod 4acd−1)` or
+  `p ≡ −(4c²d+1)/k (mod 4cd)`, k | 4c²d+1. Any prime solution is of one of
+  two 4-parameter families.
+- **Type-I side lacks completeness**: Schuh 2025 — the Type-I families are
+  only *sufficient* (a must be composite); no known complete Type-I
+  parametrisation.
+- **Schinzel's polynomial obstruction** below: no single Z[k] polynomial
+  identity covers any open class, so all of the above are used only as
+  *per-prime* or *sub-progression* mechanisms, never as one identity.
 
 A minimal counterexample p must have **no** Type-I and **no** Type-II solution
 and no neither-type solution. The literature guarantees:

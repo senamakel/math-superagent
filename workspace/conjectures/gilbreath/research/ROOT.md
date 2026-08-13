@@ -84,8 +84,10 @@ Comp. 61(203) 373–380, intro (full LaTeX at
 `sources/odlyzko-1993-iterated-differences-latex-source.full.md`); independently
 stated in Killgrove–Ralston 1959, Math. Comp. 13:121–122 (full PDF at
 `sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md`).
-Sourced, not yet re-derived here — see `notes/library-state.md` claim
-`gc-block-lemma-odlyzko`.
+Sourced, and **re-derived by this run** with the constant made explicit (one row
+protected per `{0,2}` block entry, not `n/2`) — see `notes/block_lemma.md`,
+verified exhaustively on adversarial block patterns and against the real prime
+rows.
 
 ```claim
 id: block-profile-equals-a000232-minus-1
@@ -107,11 +109,13 @@ answers: are-our-block-lengths-reliable
   Odlyzko `10^13`, Killgrove–Ralston 1959 `k<63419`. **Digested.**
 - `odlyzko-publications-page`: bibliography only; confirms the Odlyzko 1993
   paper exists (pp. 373–380) but contains no statements. **No help for content.**
-- **Pending:** the Odlyzko 1993 block lemma itself, and any *proved* theorem on
-  a nontrivial Gilbreath-like class (e.g. bounded-gap odds). Neither is yet in
-  the library.
+- **Pending:** any *proved* theorem on a nontrivial Gilbreath-like class (e.g.
+  bounded-gap odds). Not yet in the library. (Chase 2024 and CHT 2026 are the
+  random/Cramér analogues, both landed; the *deterministic* bounded-gap class is
+  what Croft conjectured and Eppstein refuted — see claim
+  `anti-gilbreath-construction` in `notes/library-state.md`.)
 
-Dependencies that have **not** landed: the Odlyzko 1993 full text (block lemma
-with constant), and any source proving a nontrivial restricted class. The three
-restricted classes above are stated from this run's own elementary proof, not
-from a landed source.
+The Odlyzko 1993 full text (block lemma with constant) is **landed** and has
+been re-derived here; a source proving a nontrivial restricted class remains
+the one open dependency. The three restricted classes above are stated from this
+run's own elementary proof, corroborated by the landed block-lemma sources.
