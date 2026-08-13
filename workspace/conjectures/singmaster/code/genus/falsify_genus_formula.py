@@ -1,6 +1,10 @@
 """Out-of-sample falsification test for the unified genus formula
 
-    g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2          (2 <= m < n)
+    g(m,n) = ((m-1)(n-1) + 1 - gcd(m,n))/2          (2 <= m < n)
+
+(the symmetric form; algebraically identical to ((m-1)n - (m-2) -
+gcd(n,m))/2, and symmetric in m and n. Each candidate is stored with
+m < n, so the two forms agree on every row.)
 
 The formula is `checked` against 116 previously computed points (TABLE grid
 k1<=12, k2.3/4/5 rows to k1=24, extensions m=6..10 to n=19, three diagonal
@@ -28,6 +32,7 @@ resolution computation on a degree <= 30 plane curve; seconds per call.
 """
 import subprocess
 import sys
+import re
 from math import gcd
 from genus.genus_table import TABLE
 
@@ -41,7 +46,17 @@ CANDIDATES = [
 ]
 
 def gform(m, n):
-    return ((m - 1) * n - (m - 2) - gcd(n, m)) // 2
+    """Genus of the projective closure of C(x,m) = C(y,n), m != n."""
+    return ((m - 1) * (n - 1) + 1 - gcd(m, n)) // 2
+
+
+# Singular emits PAIR lines on ONE line:  PAIR {m,n} genus= <value>.
+# In some versions the value is followed (not preceded) by the
+# "// ** redefining ..." warnings because they are printed AFTER the
+# value on the same stream; split()-and-take-last then captured the
+# warning, and int() threw, so the row was silently dropped. Match one
+# whole line instead and never touch anything around it.
+PAIR_RE = re.compile(r"^PAIR \{(\d+),(\d+)\} genus=\s*(\d+)\s*$")
 
 # ------------------------------------------------- covered-pair bookkeeping
 covered = set()
@@ -99,14 +114,10 @@ if proc.returncode != 0:
 # ---------------------------------------------------------------- compare
 results = {}
 for line in proc.stdout.splitlines():
-    line = line.strip()
-    if line.startswith("PAIR"):
-        # Singular prints on ONE line:  PAIR {m,n} genus= <value>
-        key = tuple(int(x) for x in line.split("{")[1].split("}")[0].split(","))
-        try:
-            val = int(line.rsplit("=", 1)[1].strip())
-        except (ValueError, IndexError):
-            continue
+    m = PAIR_RE.match(line)
+    if m is not None:
+        key = tuple(sorted((int(m.group(1)), int(m.group(2)))))
+        val = int(m.group(3))
         results[tuple(sorted(key))] = val
 
 print("\n--- Comparison ---")
