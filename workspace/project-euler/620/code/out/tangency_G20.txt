@@ -235,3 +235,54 @@ coarse grid: 1048577 points, spacing ~5.641e-07
       d = 0.4015114257177708756429979
       d = 0.5972152442695615182088886
   g = 9   (distinct refined valid d over all 9 combos; elapsed 9.15 s)
+==============================================================================
+g(18,5,5,8)
+R=2.86478898 r=0.79577472 rp=0.79577472 rq=1.27323954
+d_min=0.477464829276  d_max=1.069014260195  (width 0.591549430919)
+coarse grid: 1048577 points, spacing ~5.641e-07
+  combos pp x qq = [UU,LL,UL] x [UU,LL,UL]:
+     pp=UU qq=UU : 8
+     pp=UU qq=LL : 0
+     pp=UU qq=UL : 0
+     pp=LL qq=UU : 0
+     pp=LL qq=LL : 8
+     pp=LL qq=UL : 0
+     pp=UL qq=UU : 0
+     pp=UL qq=LL : 0
+     pp=UL qq=UL : 0
+  distinct refined valid d (8):
+      d = 0.4785998902252839304338750
+      d = 0.4878471665474064522527442
+      d = 0.5072777215842280140734033
+      d = 0.5390109424316977815294649
+      d = 0.5869777868767844797304178
+      d = 0.6583274489517279004502370
+      d = 0.7667587190975626576516788
+      d = 0.9416160947956787596879735
+  g = 8   (distinct refined valid d over all 9 combos; elapsed 7.86 s)
+==============================================================================
+g(18,5,6,7)
+R=2.86478898 r=0.79577472 rp=0.95492966 rq=1.11408460
+d_min=0.159154943092  d_max=1.069014260195  (width 0.909859317103)
+coarse grid: 1048577 points, spacing ~8.677e-07
+  combos pp x qq = [UU,LL,UL] x [UU,LL,UL]:
+     pp=UU qq=UU : 9
+     pp=UU qq=LL : 0
+     pp=UU qq=UL : 0
+     pp=LL qq=UU : 0
+     pp=LL qq=LL : 9
+     pp=LL qq=UL : 0
+     pp=UL qq=UU : 0
+     pp=UL qq=LL : 0
+     pp=UL qq=UL : 0
+  distinct refined valid d (9):
+      d = 0.1625615754737707030486149
+      d = 0.1689277152177936502930322
+      d = 0.1792973092133359203081966
+      d = 0.1949032846283095254946716
+      d = 0.2179512852754043605862933
+      d = 0.2525533260768700327680847
+      d = 0.3071010522752276594715681
+      d = 0.4015114257177857526315279
+      d = 0.5972152442695477514433833
+  g = 9   (distinct refined valid d over all 9 combos; elapsed 8.83 s)
