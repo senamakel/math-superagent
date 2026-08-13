@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://multimagie.com/English/SquaresOfSquares.htm | Magic squares of squares | Boyer. Some notes on the magic squares of squares problem. The Mathematical Intelligencer 27 (2005), 2, 52-64. [Bb] Christian Boyer. [Magic squares of squares][15], "Multimagic Squares" website. [Bc]… |
 | 1 | https://doi.org/10.1007%2FBF02985794 | 10.1007/BF02985794 | November 2008). "Some Notes on the Magic Squares of Squares Problem". *The Mathematical Intelligencer*. **27**(2): 52– 64. [doi][42]: [10.1007/BF02985794][73]. 19. ↑ Boyer, Christian. ["Bimagic… |
 
-_210 further candidates not shown; they are cited once each._
+_270 further candidates not shown; they are cited once each._

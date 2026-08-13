@@ -30,7 +30,33 @@
       code.** The error is substituting a solved root back into the equation it
       solved, manufacturing a vacuous identity that reads like a constraint.
       Check `phi_canonical_check.py`, `phi_identity_verify.py`, and any descent
-      or p-adic code for this anti-pattern. Add to CONTEXT.md Ruled Out:
+      or p-adic code for this anti-pattern. Add to CONTEXT.md Ruled Out.
+- [x] **DIRECTIVE 8: Re-download Hulse et al. and Wolird from arXiv PDF endpoints.**
+      Hulse–Kuan–Lowry-Duda–Walker "Arithmetic Progressions of Squares and
+      Multiple Dirichlet Series" was a 19KB Springer paywall page — fetched
+      arXiv:2007.14324 (68KB, real paper with theorems). Wolird "A New
+      Transformation of the Magic Square of Squares" was a 5.8KB arXiv abstract
+      page (the fourth time a wrapper was fetched) — re-fetched from
+      arxiv.org/pdf/2310.12164 (11KB, real paper). Both now on disk.
+- [x] **DIRECTIVE 8: Record the witness_padic_falsification result with exact bounds.**
+      The p-adic claims `phi-padic-no-obstruction` (p ∈ {2,3,5,7,11,13}, p^a ≤ 2000)
+      and `phi-padic-consistent-with-witnesses` are already `status: checked` in
+      CLAIMS.md with the exact primes and prime-power bounds stated — not the
+      stronger unbounded claim. `phi-padic-residue-closure` had `status: asserted`
+      despite its programs having run; upgraded to `status: checked`. The "mod 3
+      and mod 5 collapse to {0}" fact is explicit in the dead-end note
+      `research/approaches/padic-modular-obstruction-dead-end.md`. No drift.
+- [ ] **DIRECTIVE 8: Scholar must now digest the two re-downloaded papers.**
+      Hulse et al. counts primitive three-term APs of squares via a double
+      Dirichlet series with meromorphic continuation to C² — bears on the
+      uniformity-bremner-ap-bound thread because it gives asymptotic counts for
+      the building blocks (3-square APs) that a full MSS would chain together.
+      Wolird shows arithmetic triplets of Gaussian squares are in 3-to-1
+      correspondence with Pythagorean triples and that an MSS solution would
+      generate non-trivial near-misses in the Gaussian integers — bears on the
+      extension-field-mss-exist line and the Gaussian-integer reformulation.
+      Have scholar claim-block both, then file a research request if either
+      opens a new line of attack.
 - [x] **STEP 1: Verify the parallel library.** `timeout 120 python3 code/lib/parallel.py`
       printed `self-check PASS: 2000 values, 26 workers`. Done.
 - [x] **STEP 2: Parallelise `phi_padic_closure_all.py`.** Converted to
