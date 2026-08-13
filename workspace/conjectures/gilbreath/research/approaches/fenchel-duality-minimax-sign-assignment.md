@@ -95,37 +95,114 @@ Why this is genuinely different:
   NOT in the reachable set S_k, which would be a genuinely new structural
   fact).
 
-Named mathematics: Fenchel–Rockafellar duality, convex conjugate, support
+named mathematics: Fenchel–Rockafellar duality, convex conjugate, support
 function, minimax theorem (von Neumann), polytope face structure, linear
 programming duality (this is finite-dimensional LP duality really — Fenchel
 is the general setting), combinatorial game theory (the sign assignment is
 the adversary's strategy).
 
-Speculative: the reachable sign set S_k may have a simple recursive
-description (each σ_i at level i depends on whether a_{i−1} ≥ b_{i−1}
-in the unsigned triangle). If S_k has a product structure or is a matroid
-polytope, the dual certificate may be constructible by induction on k.
+status: refuted
+killed-by: >
+  Refuted on three grounds, the first two decisively.
 
-status: proposed
+  (1) The core identity A_k(1) = max_{s∈S_k} |Σ ε_{k,j}(s)·g_j| is false as
+  written, and the correction that would make it true destroys the polytope
+  claim. The nested maximisation |max|...|max Σ| resolves to
+  max_{s∈S_k} Σ ε(s)·g only when the min branch never activates — but the
+  min branch is the whole content of the operator. When it does activate,
+  the correct expansion is |a−b| = max_{σ∈{±1}} σ(a−b), and at the NEXT
+  level the σ's interact through the intermediate absolute values, so the
+  reachable set S_k is not a static set of 2^{k−1} sign vectors: membership
+  in S_k depends on the gap values themselves (which histories are reachable
+  is decided by the comparison a_i ≥ b_i at each level, i.e. by the gaps).
+  This is the same obstruction the run already recorded: the identity
+  A_k(i) = |Δ_k(i)| fails at (k=3,i=2) inside the block
+  (fwd-diff-identity-refuted), and the sign histories that the approach's
+  S_k would need are exactly the min-branch choices it cannot make
+  independent of the input.
 
-first-step: For k = 2,3,4,5, enumerate the full set of reachable sign
-histories S_k from the actual prime triangle (depth 5, using exact integers
-from the oracle). For each history s ∈ S_k, compute the vector
-v_s = (ε_{k,0}(s), ..., ε_{k,k}(s)) of accumulated signs. Plot these vectors
-in ℝ^{k+1} and examine their convex hull. Compute its support function in the
-direction of the gap vector g = (g_1,...,g_{k+1}) and verify that
-max_{v ∈ conv(S_k)} |⟨g, v⟩| = A_k(1)/2 ∈ {0,1} — i.e., the convex hull
-already certifies the bound (since the max over the finite set equals the max
-over its convex hull). Then, more importantly: compute the DUAL polytope
-describing the set of gap vectors g for which the max is ≤ 1. This is the set
-of g ∈ ℝ^{k+1} such that max_v |⟨g, v⟩| ≤ 1, which is a polyhedral cone
-(intersection of halfspaces). Its facet-defining inequalities encode the exact
-condition on prime gaps that forces A_k(1) ∈ {0,2}. If all even integer
-vectors in this cone have entries in 2ℕ (they do, by construction), we have
-a reformulation: the conjecture holds at depth k iff the prime gap vector
-lies in this cone. Check whether the actual first 100 gap vectors lie in their
-respective cones (they should, since the conjecture is verified). Then ask:
-what is the FACIAL STRUCTURE of this cone as k grows? Does it stabilise?
-Does it contain all "sufficiently irregular" gap vectors? This last question
-is the dual of the "inter-giant gap boundedness" question.
+  (2) The universal claim — "the polytope's structure forces the dual
+  minimum ≤ 2 for ANY even-gap input" — is FALSE as a class statement. The
+  Colonna delete-5 example (claim colonna-deletion-left-edge-failure, held)
+  is a 2-then-odds sequence with all gaps after the first even
+  (2,3,7,11,13,17,19,23,...) whose triangle has A_1(1) = 4 (second entry
+  4), i.e. the maximisation over its sign histories yields 4, not ≤ 2.
+  Any dual certificate claiming the max ≤ 2 for every even-gap input is
+  contradicted by a concrete even-gap input in the class. (Hand-checkable
+  from the claim's own rows: gaps 1,4,4,2,4,2,4,4,... give
+  A_1 = (1,4,4,2,4,2,4,...), so A_1(1)=4.) The polytope statement would
+  have to be restricted to a proper subclass — but which subclass, and why
+  the primes lie in it, is precisely the conjecture. The candidate itself
+  flags this ("the polytope theorem would have to show his construction's
+  sign histories are NOT in the reachable set S_k") — that is exactly the
+  unproved regeneration content.
+
+  (3) The reachable-sign-set geometry is not in the literature in a usable
+  form. The closest bodies — the absolute value equation (AVE) literature
+  (Mangasarian 2007; Hladík et al. 2024) and absolute-value LP duality
+  (Hladík–Hartman 2023) — establish that AVE solution sets are unions of at
+  most 2^n convex polyhedra (one per orthant) and that solving them is
+  NP-hard. They give the orthant/sign-pattern decomposition the approach
+  postulates, but they do NOT give a facial-structure theorem forcing the
+  max ≤ 2 for even-gap inputs, and the NP-hardness results are evidence
+  against any such cheap universal certificate. No source applies
+  Fenchel–Rockafellar duality to the iterated absolute-difference operator.
+precedent: >
+  - https://doi.org/10.48550/arxiv.2404.06319 (Hladík et al. 2024: AVE
+    orthant decomposition — the reachable-sign-set geometry is a union of
+    ≤ 2^n convex polyhedra, one per sign pattern)
+  - http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.416.1189
+    (Mangasarian 2007: absolute value equations are NP-hard; sign-pattern /
+    orthant solution structure)
+  - https://doi.org/10.48550/arxiv.2307.03510 (Hladík–Hartman 2023:
+    absolute-value LP duality — the named duality exists but is for AVE/LP,
+    not for iterated nested absolute values)
+  - https://doi.org/10.1090/s0025-5718-1993-1182247-7 (Odlyzko 1993 — the
+    mod-4 linearization is the only known exact congruence handle)
+  - claims: colonna-deletion-left-edge-failure, fwd-diff-identity-refuted
+holding-claims: colonna-deletion-left-edge-failure, fwd-diff-identity-refuted
+falsifies: >
+  That A_k(1) = max over a static sign set of a linear functional (false:
+  reachable sign histories depend on the gap values through the min branch),
+  or that the dual polytope forces max ≤ 2 for every even-gap input (false:
+  the Colonna delete-5 sequence is an even-gap 2-then-odds input with
+  A_1(1)=4).
+buy: >
+  A reformulation with genuine expressive power (nested absolute values as a
+  minimax) and a real literature (AVE orthant geometry, absolute-value LP
+  duality) — but no theorem in that literature bounds nested-absolute
+  iterates on even-gap inputs, the universal class claim is false, and the
+  subclass restriction that would save it is the conjecture itself. Refuted
+  as stated; the AVE orthant-decomposition picture is worth keeping as a
+  language, not as a proof engine.
+
+first-step (superseded): >
+  The proposed first step — enumerating reachable sign histories S_k for
+  k=2..5 and checking max_v |⟨g,v⟩| = A_k(1)/2 — would verify the identity
+  on small rows, but the identity is already known false at (k=3,i=2)
+  (fwd-diff-identity-refuted), so the enumeration would confirm the
+  refutation, not build a certificate.
+```
+
+```claim
+id: fenchel-duality-sign-assignment-refuted
+statement: The Fenchel–Rockafellar / minimax sign-history route to Gilbreath
+  fails: (i) the representation A_k(1) = max over a static sign set of a
+  linear functional is false because reachable sign histories depend on the
+  gap values through the min branch (the identity A_k=|Δ_k| it needs fails
+  at (k=3,i=2), claim fwd-diff-identity-refuted); (ii) the universal dual-
+  certificate claim is false — the Colonna delete-5 sequence is a 2-then-odds
+  input with all gaps after the first even and A_1(1)=4 (claim
+  colonna-deletion-left-edge-failure); (iii) the AVE literature (Mangasarian
+  2007, Hladík 2024) gives the orthant geometry but no bound for nested
+  absolute iterates, and AVE solvability is NP-hard.
+hypotheses: any 2-then-odds even-gap input; the sign-history polytope of
+  depth-k descents.
+holds-here: yes
+status: refuted (the universal class claim is falsified by a concrete held
+  example; the identity is falsified by a stored machine-checked claim)
+bearing: closes the convex-duality line as a universal-class proof; the AVE
+  orthant language survives only as vocabulary. A subclass restriction that
+  excludes the Colonna example is the conjecture itself.
+anchor: research/approaches/fenchel-duality-minimax-sign-assignment.md
 ```
