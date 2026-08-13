@@ -46,3 +46,13 @@ row 44: b=2765 floor=50844724 intruder=6
 row 45: b=2764 floor=50844724 intruder=6
 row 46: b=2763 floor=50844724 intruder=4
 row 47: b=2762 floor=50844724 intruder=4
+row 48: b=2762 floor=50844723 intruder=4
+row 49: b=2762 floor=50844722 intruder=4
+row 50: b=2762 floor=50844721 intruder=4  [35s]
+row 51: b=3365 floor=50844117 intruder=4
+row 52: b=4207 floor=50843274 intruder=4
+row 53: b=4206 floor=50843274 intruder=4
+row 54: b=4205 floor=50843274 intruder=4
+row 55: b=4204 floor=50843274 intruder=4
+row 56: b=4203 floor=50843274 intruder=4
+row 57: b=5942 floor=50841534 intruder=4
