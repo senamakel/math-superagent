@@ -1,6 +1,6 @@
 # Roles, adapters, and what each one can reach
 
-The fifteen roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+The nineteen roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
@@ -51,7 +51,7 @@ Algebras of Maximal Class II* as `pitman_ballot_theorem.md`.
 
 ## Expected problem-solving behavior
 
-The runtime has fifteen roles plus an explicit solution loop.
+The runtime has nineteen roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -142,6 +142,28 @@ The runtime has fifteen roles plus an explicit solution loop.
   roles on the stronger reasoning model — see `REASONING_ROLES` and
   [`docs/runtime.md`](runtime.md) — because its whole output is a judgement
   nothing mechanical can check.
+- The reducer works backward from the goal, and is the inventor's opposite
+  number rather than its variant. The inventor asks what *else* could get us
+  there and answers with a route; the reducer asks what would be *enough* and
+  answers with lemmas. It writes a proof skeleton to
+  `research/backward/<slug>.md` — the goal, the inference combining the lemmas,
+  and one `gap` block per lemma nobody has proved — and `research/BACKWARD.md`
+  is derived from those files. Every open gap carries a first move a
+  tool_builder could run today, which is what makes it a task rather than a
+  wish; a lemma with no first move belongs in `request_research`. It exists
+  because a run can report genuine progress on every attempt, verify more and
+  more data, and spend its whole budget having never written down what a proof
+  would consist of. Its tool set is the narrowest of any role that writes: the
+  document tools and the memory tools. No search (a role that can search turns
+  "what would suffice" into a literature survey), nothing that computes (a gap
+  is discharged by a proof or a claim, never by a program this role wrote), no
+  delegation bench (a skeleton is checked by the forward loop attacking its
+  gaps), and no scratch (a gap opened on unsettled arithmetic is a task nothing
+  can close). It is also denied `research/APPROACHES.md`, in its prompt context
+  and in its dossier, because a role holding the method ledger drifts into
+  proposing methods. Like the inventor it is on the stronger reasoning model:
+  whether a set of lemmas actually implies the goal is the definition of a
+  judgement no tool can check.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
