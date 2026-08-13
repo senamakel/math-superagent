@@ -76,10 +76,18 @@
       - conclusion: approach sound on definitions, blocked by constant size,
         NOT refuted; the conditional reduction to a finite computation
         (Theorem 1.2, uniform rank boundedness) is the best structural result.
+      **The claim block MUST carry `answers: exact-reduction-magic-507c`.** That
+      field — not prose saying "RESOLVED" in REQUESTS.md — is the only thing
+      that closes the request in the ledger. The run wrote "RESOLVED" in
+      REQUESTS.md prose five times while no claim block on disk carries the
+      `answers:` field, which is exactly why the operator still sees
+      "Still open" after five consecutive checks. Without that field the
+      request stays open no matter what the prose says.
       If GFP does NOT apply, declare `uniform-height-bound-elliptic-ap`
       REFUTED IN ITS CURRENT FORM and state whether restating on the Kummer
-      surface K = E/{±1} recovers it. Either answer is a genuine partial
-      result. **Nothing else is worth more right now.**
+      surface K = E/{±1} recovers it — and file the same claim block with
+      `answers: exact-reduction-magic-507c`. Either answer is a genuine
+      partial result. **Nothing else is worth more right now.**
 
 - [ ] **PARK THE THREE NEW APPROACHES** opened in violation of directive 10
       ("do not open a fifth approach before answering the blocking question"):
