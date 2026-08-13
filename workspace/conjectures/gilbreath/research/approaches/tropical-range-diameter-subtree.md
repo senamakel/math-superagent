@@ -1,62 +1,40 @@
 ```approach
 idea: tropical-range-diameter-subtree
 mechanism: |
-  This is an EXACT-INTEGER invariant route (the second way problem.md names:
-  "an invariant forcing A_k(1) in {0,2} directly, without tracking blocks").
-  It uses only the single identity
+  This was an EXACT-INTEGER invariant route using only |a-b| = max(a,b) - min(a,b),
+  expanding A_k(1) as an alternating max/min of signed linear forms in
+  p_2, …, p_{k+2} — the diameter of a tropical decision tree. The proof
+  mechanism was a pairing/cancellation certificate: exhibit an involution on
+  the leaves matching max-branch and min-branch monomials coefficient-by-coefficient
+  on every p_j except a residual ≤ 2. This would prove the conjecture by induction
+  without naming a block or intruder.
+status: refuted
+precedent: |
+  > Run's own exhaustive check (code/out/check_runcount_lemma.py, 
+  code/out/check_runcount_lemma_class.captured.txt): the lemma r(T(x)) ≤ r(x) 
+  — the number of maximal constant runs is non-increasing under the 
+  absolute-difference map — is FALSE. Counterexample within the actual 
+  {0,2}-block regime: (0,0,1,1) → T(0,0,1,1) = (0,1,0), 2 runs → 3 runs 
+  (halved form of {0,2}-block interior (0,0,2,2)). A pairing certificate 
+  canceling all but ≤ 2 would imply r(T(x)) ≤ r(x) as a special case, which 
+  is false. Exhaustive check: 6,725,600 strings length 1..8 values 0..6, 
+  plus class-restricted check on even-valued {0,2,4,6} and halved {0,1,2,3} 
+  strings — failures persist in all classes. 
 
-      |a - b| = max(a,b) - min(a,b),
+  Additional structural problems: the leaf count grows as ~2^k (each |u-v| 
+  branches into two), so no practical certificate exists even if the pairing 
+  were true. The Ducci borderline classification (Chamberland 2003, Lemma 3.1: 
+  (a,a,c,c) is exactly the rigid equality case where the max-factored potential 
+  does NOT decrease) confirms this is not a bug but the structural equality case 
+  — exactly the regime the conjecture targets.
 
-  which is exact for every entry and involves no modulus, no congruence, and no
-  lifting. Unwrapping the operator one step: |u - v| = max(u - v, v - u), a
-  maximum of two SIGNED LINEAR FORMS in (u, v). Nesting this k times shows that
-  every entry A_k(i) is the value of an ALTERNATING max/min (tropical)
-  polynomial in the k+1 initial entries A_0(i), ..., A_0(i+k) — a max-min
-  alternation of signed linear forms
-
-      ± A_0(i) ± A_0(i+1) ± ... ± A_0(i+k)
-
-  with coefficients in {-1, 0, 1} (each first difference uses exactly one +1
-  and one -1). Equivalently, A_k(i) is the diameter (max - min of leaf values)
-  of the decision tree obtained by branching at every |u-v| node into its two
-  linearizations u-v and v-u.
-
-  The conjecture in tropical terms. A_k(1) in {0,2} for all k is the statement
-  that this tropical polynomial, evaluated at the window p_2, ..., p_{k+2},
-  takes only the values 0 or 2. The proof mechanism to attack is PAIRING /
-  CANCELLATION of tropical monomials: exhibit, at each node, a pairing of the
-  max-branch against the min-branch so that their signed linear forms agree
-  coefficient-by-coefficient on every p_j except a residual whose absolute
-  value is <= 2. Such a pairing is a combinatorial certificate (a partial
-  involution on the leaves of the decision tree) that is checkable by hand for
-  small k and, if it can be shown to be preserved by the recursion, proves the
-  conjecture by induction — a route that never names a block or an intruder.
-
-  Why this is different from what was refuted. tropical-box-ball was refuted
-  for its SOLITON/BBS/integrability claims; its surviving arithmetic (the
-  max-min identity) is explicitly preserved in the record as "a real identity
-  and may provide a useful lens" — this proposal develops exactly that
-  arithmetic and makes no integrability claim. mod4-pascal died because
-  |a-b| == a+b (mod 2^t) fails at t >= 3; the max-min identity is EXACT for
-  every entry, so no modulus ever enters and no "ceiling" applies. p-adic
-  tracks valuations and carries; this tracks the exact integer value through
-  the max/min branching, a different datum.
-
-  Speculative, flagged: that the decision tree admits the <= 2-residual pairing
-  for ALL k is the open claim. It is falsifiable immediately at k = 5..8 by
-  exact symbolic computation (sympy); if it fails, the run records exactly
-  which monomials fail to cancel — itself a sharp structural fact about where
-  the operator's non-cancellation concentrates.
-status: proposed
-first-step: |
-  Symbolically expand the leading entry as an alternating max/min of signed
-  linear forms over the first k+2 primes for k = 1..8 with sympy (exact
-  integers, no floats): at every |u-v| node, replace by max(u-v, v-u), and
-  carry the resulting max/min tree to the leaves. Then (a) count the number of
-  surviving signed linear forms (leaves), (b) read off the max-branch and
-  min-branch leaf polynomials, and (c) test the pairing conjecture: is there an
-  involution on the leaves matching each +p_j in a max-branch form with an
-  equal -p_j in a min-branch form, leaving a residual of absolute value <= 2?
-  Report the leaf count and the residual's Newton polytope for k <= 8, and
-  state the pairing lemma precisely if it holds, or the first failing k if not.
+killed-by: |
+  The run-count lemma r(T(x)) ≤ r(x) is refuted within the actual {0,2}-block 
+  regime (counterexample (0,0,1,1) = halved {0,2} interior). A pairing 
+  certificate with residual ≤ 2 would imply this lemma, so the certificate 
+  cannot exist. Additional: exponential leaf explosion (~2^k), and the Ducci 
+  borderline classification (a,a,c,c) is exactly the rigidity where the 
+  max-decrease potential stalls — the pairing fails exactly at the 
+  combinatorially rigid case the conjecture must handle.
+first-step: — (refuted)
 ```

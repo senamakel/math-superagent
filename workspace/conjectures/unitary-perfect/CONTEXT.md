@@ -99,7 +99,21 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 odd components,
   `n > 10^440`. Primary text not in the library. Load-bearing for the
   "is 3 | n forced?" question.
-- **(sourced, library artifact) Lean formalisation of the problem exists**:
+- **(directive-8) Literature fetching is suspended for this cycle.** Downloads
+  went 62 → 67 (Guy §B3, Handbook of Number Theory perfect-numbers chapter,
+  Goto 2007) — all catalogue entries about a problem already stated correctly
+  in `problem.md`. The library phase is closed; any new source fetch must be
+  justified against a stated gap that actually blocks a computation, not a
+  survey interest.
+- **(directive-8) The single blocking item is equality-case reproduction.**
+  Claim `budget-equality-case-impossible` was inherited from operator
+  computation (`code/out/equality_case_elimination.captured.txt`), not
+  reproduced by this run. Directives 4, 7, and 8 all asked for:
+  `timeout 540 python3 code/equality_case.py 2>&1 | tee code/out/equality_case_reproduced.captured.txt`
+  followed by Fraction-arithmetic confirmation of four facts (a=1 max = 4/3
+  exactly with {5,9}; 257 prime at a=8; 9 and 49 admissible, 3 and 7 not;
+  exclusion 2 ≤ a ≤ 28, stops at 29). The capture does not yet exist in
+  `code/out/`. This is the one item that moves `checked` off 4.
   `research/summaries/erdos-1052-formal-lean-statement.md`
   (google-deepmind/formal-conjectures `ErdosProblems/1052.lean`) defines
   `IsUnitaryPerfect`, asserts all five known are UPN, and marks "all UPNs are

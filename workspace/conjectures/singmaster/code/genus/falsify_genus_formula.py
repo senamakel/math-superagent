@@ -98,20 +98,16 @@ if proc.returncode != 0:
 
 # ---------------------------------------------------------------- compare
 results = {}
-cur = None
 for line in proc.stdout.splitlines():
     line = line.strip()
     if line.startswith("PAIR"):
-        cur = tuple(int(x) for x in line.split("{")[1].split("}")[0].split(","))
-    elif line and cur is not None:
-        # genus() printed the value as the last token of the response line
-        toks = line.replace("//", " ").split()
+        # Singular prints on ONE line:  PAIR {m,n} genus= <value>
+        key = tuple(int(x) for x in line.split("{")[1].split("}")[0].split(","))
         try:
-            val = int(toks[-1])
-        except ValueError:
+            val = int(line.rsplit("=", 1)[1].strip())
+        except (ValueError, IndexError):
             continue
-        results[cur] = val
-        cur = None
+        results[tuple(sorted(key))] = val
 
 print("\n--- Comparison ---")
 mism = []

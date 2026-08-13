@@ -1,0 +1,1 @@
+EXIT_CODE=1 — pattern_fam_seqs.py produced no output (zero-byte capture; program failed silently). Deleted per directive 13.

@@ -7,6 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `README.md` | _(undescribed)_ |
 | `brute.captured.txt` | Brute-force oracle on the 7 witnesses: direct enumeration gives identical counts and occurrence sets (3003->8, rest->6), second independent route. |
 | `brute_oracle.md` | _(undescribed)_ |
+| `check_mason_stothers_bound.py` | _(undescribed)_ |
 | `check_witnesses_vs_mrstt.captured.txt` | Full output of code/check_witnesses_vs_mrstt.py, EXIT_CODE=0: all 15 nontrivial witness occurrences classified BOUNDARY (MRSTT-OPEN) under the n-form threshold exp((log n)^(2/3+0.1)) — 0 of 15 interior; a-form bound B(a)=(log a)/(log_2 a)^1.4 reported with the asymptotic caveat; strengthening: 0 of 44 pairs (mirrors and trivial included) in the symmetric interior. |
 | `commands.log` | _(undescribed)_ |
 | `count_multiplicity.captured.txt` | Oracle run: 3003 verified 8 times; a<=10^7 scan reports exactly 7 values with N>=6 (3003:8; 120,210,1540,7140,11628,24310:6); every value cross-checked against the inversion multiplicity. |
@@ -22,6 +23,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `family_seq_raw.txt` | _(undescribed)_ |
 | `family_sequences.captured.txt` | _(undescribed)_ |
 | `genus_closed_forms.md` | _(undescribed)_ |
+| `genus_falsify.captured.txt` | _(undescribed)_ |
+| `genus_integrality_proved.captured.txt` | Operator-computed integrality verification — 1,121,253 pairs, four parity classes, all integral. Needs this run's independent verification before claiming established. |
 | `genus_single_closed_form.md` | _(undescribed)_ |
 | `genus_spotcheck_new_pairs.captured.txt` | _(undescribed)_ |
 | `genus_symmetric_form.captured.txt` | _(undescribed)_ |
@@ -43,6 +46,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `test_slope_across_rows.captured.txt` | _(undescribed)_ |
 | `test_slope_hypothesis.captured.txt` | _(undescribed)_ |
 | `verify_family.captured.txt` | Equal-pair finder n<=1000: reproduces all 7 witnesses; Pell family C(n+1,k+1)=C(n,k+2) members j=1..4 (the infinite N>=6 family, Singmaster 1975). |
+| `verify_genus_formula.captured.txt` | _(undescribed)_ |
 | `verify_k2_5_row.captured.txt` | _(undescribed)_ |
 | `verify_lane_clark_bound.captured.txt` | _(undescribed)_ |
 | `verify_lane_clark_bound.newcaptured.txt` | Fresh operator re-run of code/lane_clark/verify_lane_clark_bound.py, EXIT_CODE=0: every witness in witnesses.json satisfies N(a) < 2log2(a)+2 (3003: N=8 < 25.104) and brute force over 2<=a<=60 passes. This capture is the sole evidence for claim lane-clark-normal-array-bound = checked; the earlier .captured.txt was deliberately not adopted. |

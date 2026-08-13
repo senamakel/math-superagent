@@ -217,3 +217,49 @@ Now let me write the reply. The only file that needed changing is TASKS.md — t
 Changed `TASKS.md` only: replaced the equality-case task ("write a fresh program") with the directive's exact instruction — run the existing `code/equality_case.py`, capture to `code/out/equality_case_reproduced.captured.txt`, and confirm the four arithmetic facts by reading the output. The directive says to reproduce, not rewrite, so the "write a fresh program" instruction was the wrong one. The task is now the first and immediate item ahead of the `H_even` sieve, and the "What this run is doing" summary now names it as the single next action.
 
 The `a-ge-8-bound` thread already had `next: independent verification (see TASKS.md item 1)`, so its status is unchanged. The three proposed approaches under `research/approaches/` remain proposed — none becomes active until the equality case is confirmed checked, per the directive's point about drift (asserted grew 8→18 while checked stayed at 4).
+
+## 8 — from steer
+
+Stop fetching for one cycle. Downloads went 149→235 candidates this cycle, 191 unworked, claims at 33, checked at 4, proved at 1. Approaches went 4→7. Downloads 62→67 — Guy §B3, Handbook of Number Theory, Goto 2007, all catalogue entries about a problem stated correctly in `problem.md`. Acquiring survey literature the run does not need and converting none of it.
+
+The one outstanding thing: independent reproduction of the equality-case elimination. Directive 4 and directive 7 both asked for it and it has not happened. Run:
+```
+timeout 540 python3 code/equality_case.py 2>&1 | tee code/out/equality_case_reproduced.captured.txt; echo EXIT_CODE=$?
+```
+Then confirm four facts by the run's own Fraction arithmetic: a=1 max = 4/3 exactly with {5,9}; 257 prime forced at a=8; 9 and 49 admissible, 3 and 7 not; exclusion 2≤a≤28 stops at 29. The a=1 equality is the one that matters — it shows the estimate is not lossy at the bottom.
+
+Reminder: the [74:08] "progress no" came from a judge that timed out, not from an assessment. Do not diversify away from H_even.
+
+**What changed:**
+
+- **TASKS.md rewritten.** The equality-case reproduction is now the single immediate item with the exact command and the four confirmation checks stated. The `H_even ∩ [2,1200]` verification and all other tasks are listed under "Next (blocked on the equality-case reproduction)." A "Do not do" section records the stop-fetching order and the prohibition on new approaches.
+
+- **CONTEXT.md amended.** Two new entries under Established: (1) literature fetching is suspended for this cycle — new sources must be justified against a stated computation-blocking gap; (2) the single blocking item is equality-case reproduction, with the command and four confirmation points, and the note that the capture does not yet exist in `code/out/`.
+
+- **No thread or approach changes.** The `a-ge-8-bound` thread already says `next: independent verification`. The directive did not open or close any approach. All six approaches remain proposed — the TASKS.md "Do not do" section records that grounding existing proposals takes priority over adding more.
+
+## 8 — from steer
+
+Your frontier went 149 -> 235 candidates this cycle, 191 unworked, while claims stayed at 33, checked at 4 and proved at 1. Approaches went 4 -> 7. Downloads 62 -> 67, and the new material is Guy Unsolved Problems B3, the Handbook of Number Theory perfect-numbers chapter, and Goto 2007 - all catalogue entries about a problem you already have stated correctly in problem.md. You are acquiring survey literature you do not need and converting none of it.
+
+Stop fetching for one cycle. There is one thing outstanding and it is the only item that moves checked off 4.
+
+Directive 4 and directive 7 both asked for independent reproduction of the equality-case elimination. It has not happened - code/out holds only my equality_case_elimination.captured.txt and no reproduction. Run:
+
+  timeout 540 python3 code/equality_case.py 2>&1 | tee code/out/equality_case_reproduced.captured.txt; echo EXIT_CODE=$?
+
+then confirm four things in your OWN Fraction arithmetic:
+  1. at a=1 the maximum product equals 4/3 EXACTLY and the extremal multiset {5,9} is the odd part of 90;
+  2. 2^8+1 = 257 is prime, so 257 is forced as a component when a=8;
+  3. 9 = 3^2 and 49 = 7^2 are admissible, 3 and 7 are not;
+  4. the exclusion runs 2 <= a <= 28 and stops at 29.
+
+Check the capture is non-empty before moving on.
+
+Point 1 is the one that matters. If the a=1 maximum equals 4/3 exactly and is realised by the odd part of an actual unitary perfect number, the estimate is not lossy at the bottom, and budget-equality-case-impossible becomes checked on your own arithmetic rather than inherited from mine. If it does not, the result is wrong and I want to know.
+
+Reminder from directive 7: the [74:08] "progress no" came from a judge that TIMED OUT, not from an assessment. Do not diversify away from H_even because of it.
+
+**Reply:**
+
+Rewrote `TASKS.md` so the equality-case reproduction is the single immediate item with the exact command from the directive, and every other task sits behind it under "Next (blocked on the equality-case reproduction)." Added a "Do not do" section recording the stop-fetching order, the prohibition on new approaches, and the no-diversify-from-H_even reminder. Amended `CONTEXT.md` with two entries under Established: literature fetching is suspended, and the equality-case reproduction is the single blocking item (command, four confirmation points, and the note that the capture does not yet exist in `code/out/`). No thread or approach changes — the directive did not open or close any, and the `a-ge-8-bound` thread already pointed at independent verification as its next step.

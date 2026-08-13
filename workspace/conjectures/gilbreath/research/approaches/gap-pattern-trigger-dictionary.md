@@ -55,7 +55,16 @@ mechanism: |
   pattern fires. If no pattern of length <= 8 fires, the record gains the sharp
   fact "no (2,4)-event is determined by fewer than 8 starting gaps" — itself a
   real structural statement about how non-local regeneration actually is.
-status: proposed
+status: refuted → superseded by safe-harbor-startup
+killed-by: |
+  The re-scope was forced by two findings from the sweep data (1154 sequences):
+  (1) the finite-alphabet dictionary in raw gap space is vacuous for the primes
+  (prime gaps are unbounded; bounded-support families with wide support die
+  100% even with first-gap=2), and (2) ALL deaths occur in the first 10 rows —
+  the problem is a startup-transient classification, not an infinite-rate
+  problem. The forward-local-sufficiency idea was correct, but the target is
+  block-boundary suffix patterns during startup rather than raw gap patterns
+  at all depths. Evolved into `safe-harbor-startup`.
 first-step: |
   Symbolic window search (sympy, exact integers; depth t and width t+2, so cost
   is O(t^2) per pattern — independent of the prime bound). For each halved-gap

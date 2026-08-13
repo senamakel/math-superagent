@@ -52,9 +52,20 @@ Each marked with evidence class and a link.
   in Jenkins' family with infinitely many lattice points (a=b=1). Any `B<6`
   is refuted.
 
-- **Genus of `C(x,m)=C(y,n)` — one closed form, the complete Faltings
-  threshold. `checked` against all 111 Singular-computed values (zero
-  mismatches), NOT proved (becomes a derivation via Riemann–Hurwitz/Plücker).**
+- **Genus closed-form integrality — proved (operator), not yet independently verified by this run. `operator-computed`.** 
+  The expression `N(m,n) = (m-1)(n-1) + 1 - gcd(m,n)` is even for all `m,n >= 1`
+  (four-case parity argument: gcd is even exactly when both are even, which is
+  exactly when `(m-1)(n-1)+1` is even; the other three cases both terms are odd).
+  So `g(m,n) = ((m-1)n - (m-2) - gcd(n,m))/2` is always an integer.
+  Verified over 1,121,253 pairs, `2 <= m < n < 1500`, zero exceptions.
+  **Effective and uniform in m and n, inheriting nothing from Faltings or Siegel,
+  and it bounds nothing** — a lemma about the arithmetic expression, not about
+  Singmaster's conjecture. The ten predictions matching the symmetric form are
+  internal consistency (algebraically equal expressions), NOT independent genus
+  confirmation — do not mark them verified until Singular confirms them. This
+  result needs independent verification by this run (item 4 in TASKS.md) before
+  it can be claimed as established. Proof at `research/notes/genus-integrality-proved.md`;
+  capture at `code/out/genus_integrality_proved.captured.txt`.
   For distinct `m,n>=2` the geometric genus of the projective closure is
   `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2` (symmetric in m,n; numerator always even).
   Reduces by substitution to the per-column forms ({2,n}→`floor((n-1)/2)`
@@ -376,6 +387,8 @@ Pintér–Tengely 2023) and the OEIS row-count convention `a059233-rowcount-half
   says both: every witness has t ≤ 24310 (fails "t sufficiently large") AND lies
   below the interior cut (small m). The region comparison is presented as
   shape-of-the-boundary, not as a claim about large-t behavior.
+- **Genus integrality is proved (operator), NOT independently verified by this run.** The four-case parity argument is recorded. This run must verify it independently (second engine or wider bounds) before claiming it as established. Until then the claim is `operator-computed`, not `proved` by this run. See TASKS.md item 4.
+- **RESOLVED: Two zero-byte captures fixed.** `genus_falsify.captured.txt` and `pattern_fam_seqs.captured.txt` now carry one-line explanations (EXIT_CODE=1, program failed silently). Per directive 13.
 - **LEDGER DISCIPLINE: 44 asserted, 8 checked, 2 proved.**
 - **PROCESS (resolved): the five formerly-uncaptured programs now have captures.**
   `test_slope_across_rows.py` (EXIT_CODE=0), `test_slope_hypothesis.py` (0),
