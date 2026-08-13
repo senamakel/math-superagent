@@ -101,7 +101,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `jump_smooth_run_wider.captured.txt` | _(undescribed)_ |
 | `lean_gilbreath_reduction.captured.txt` | `lean` compile of the machine-checked reduction of Gilbreath's conjecture to the {0,2} second-entry claim (EXIT=0), with `#print axioms` for every declaration = [propext, Classical.choice, Quot.sound], grep-verified zero sorryAx. |
 | `lean_gilbreath_reduction.notes.md` | Note for the above: what was run, the exact axiom ledgers, and the boundary (prime instantiation is computation-checked, not Lean-proved); carries claim block `lean-reduction-machine-checked`. |
-| `lean_reduction.captured.txt` | **BROKEN — zero bytes** (identical to a command that never ran). Pending re-emit with `#print axioms` per Directive 31. The claim `gilbreath-second-entry-equivalence` is anchored to `lean_gilbreath_reduction.captured.txt` (1028B, non-empty), not to this file. |
+| `lean_reduction.captured.txt` | Directive 31 audit re-emission: `timeout 540 lean code/lean/gilbreath_reduction.lean` EXIT_CODE=0 (Lean 4.34.0-rc1, sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767 echoed into the capture); #print axioms for dist_odd_even, dist_dist_even, dist_one_eq_one, shape_theorem, gilbreath_reduction, reduction, reduction_lemma, shape_rows all exactly [propext, Classical.choice, Quot.sound], zero sorryAx, file now 1360 B. Backup at code/lean/gilbreath_reduction.lean.bak. |
 | `lean_shape.captured.txt` | `lean` compile of the repaired self-contained shape-preservation file (EXIT=0), axioms = standard base set. |
 | `lemma54_iff_check.captured.txt` | _(undescribed)_ |
 | `nu2_granville_check.captured.txt` | _(undescribed)_ |

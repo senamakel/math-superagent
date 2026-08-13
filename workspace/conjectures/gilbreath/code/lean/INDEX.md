@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `gilbreath_reduction.lean` | Machine-checked Lean 4 reduction of Gilbreath's conjecture to the {0,2} second-entry claim: defines Step (absolute-difference operator), proves (odd, even, even, ...) shape preservation, |
+| `gilbreath_reduction.lean.bak` | Backup of gilbreath_reduction.lean made 2026-08-13 before the Directive 31 re-emission compile (sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767, byte-identical to the current file). Audit trail for the re-emission; the current gilbreath_reduction.lean is the authoritative copy. |
 | `probe2.lean` | _(undescribed)_ |
 | `probe3.lean` | _(undescribed)_ |
 | `probe4.lean` | _(undescribed)_ |
@@ -23,4 +24,3 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `t8.lean` | _(undescribed)_ |
 | `t9.lean` | Scratch Lean proofs of dist_dist_even and dist_odd_even with fully explicit witnesses from the bare definitions (Even a = ∃r, a = r+r; Odd a = ∃k, a = 2k+1). No sorry. Superseded by self-contained shape.lean/gilbreath_reduction.lean. |
 | `test_import.lean` | Lean environment probe: Mathlib.Data.Nat.Parity import + Nat.even_or_odd availability check. |
- import + Nat.even_or_odd availability check. |
