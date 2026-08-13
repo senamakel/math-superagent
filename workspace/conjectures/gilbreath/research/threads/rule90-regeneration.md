@@ -4,8 +4,11 @@
 question: Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2}
           interior force block-length regeneration at specific depths, and do
           those depths match the computed minima record?
-status: open — the Rule 90 identification is proved (block-lemma apex); the
-        depth prediction it implies is sharp and falsifiable
+status: REFUTED (pattern_finder, depth-1000 record) — the Rule 90 interior
+        identification is proved (block-lemma apex) and stands; the
+        regeneration-timing corollary (large jumps at depth 2^j) is refuted in
+        every concrete form below. See "Refutation of the depth prediction"
+        at the foot of this thread.
 rests-on: |
   - Block lemma (proved): the {0,2} interior evolves under the halved operator
     as XOR = Rule 90 = Pascal mod 2. The apex A_{k+n-1}(1) = 2 · XOR_j

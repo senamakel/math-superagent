@@ -292,6 +292,11 @@ yields an already-covered sub-progression of an open class. Ventas
 - Naive d=7 criterion vs corrected (mod-7) criterion (settled by 2705 rows).
 - Subgroup-only characterization vs exact divisor-residue criterion (settled:
   56 counterexamples).
+- `verify_current_coverage.py` "123 identity failures" vs `verify_subprogression_coverage.py`
+  / `reverify_extended_families.py` clean: the 123-failure run was a **parser
+  bug** in the verifier (it truncated `y=28*(3920*k…` at the first `*(`),
+  not a family failure — after the parser fix, 0 identity failures. Do not
+  re-raise the "123 failures" alarm (`code/out/commands.log`).
 
 ## Gaps
 
@@ -311,11 +316,16 @@ yields an already-covered sub-progression of an open class. Ventas
   only n≡1 mod 840 no single polynomial identity covers
   (`square_obstruction.py`); all non-square members are Schinzel-legal for
   some prime.
-- **Bulk promote asserted → checked** (operator directive 4). 838/1451 done:
-  every `subprogression.captured.txt` block re-checked as an exact identity at
-  its claimed (a,b) (`verify_current_coverage.py`, failures 0). The 603
-  extended-capture blocks await bulk `is_identity` — blocked until the
-  verifier disagreement (see Contradictions) is chased.
+- **Bulk promote asserted → checked** (operator directive 4). Resolved for all
+  838 blocks: the earlier `verify_current_coverage.py` "123 identity failures
+  / '(' never closed" were a **parsing bug in the verifier, not false
+  families** — after the parser fix it parses 838 FOUND blocks / 123 distinct
+  (a,b) with **identity failures 0** (`verify_current_coverage.py` tail;
+  `reverify_extended_families.py`: symbolic-identity failures 0;
+  `numeric_recheck_sample.py`: 603 families, 0 exact-equality failures at
+  sampled k). Every `subprogression.captured.txt` block is identity-checked at
+  its claimed (a,b). The `M=37` resid count is 10 (CONTEXT's earlier "9" was
+  from a truncated capture).
 - **Failing command** (operator directive 4). Retry count 6, run-failed 5 in
   `code/out/commands.log`. Read and fix before writing new programs.
 - **prime-reduction still sourced, not checked** (directive 1 priority, still

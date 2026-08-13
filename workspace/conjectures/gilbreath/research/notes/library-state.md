@@ -252,3 +252,52 @@ answers: is-there-a-proved-prime-gap-bound
 - Methods that fail/limits: Eppstein anti-Gilbreath (gap bounds alone insufficient); CHT Remark 4.5 (2^{n+1} growth breaks a.s. result); Chase 2024 exotic {0,3}-type examples (randomness necessary).
 - Adjacent/computational: OEIS A000232/A036262/A100820/A397880/A395556, Odlyzko's G(N) table, Eppstein practical numbers (verified 212,000 rows).
 - Counterexample constructions: Eppstein anti-Gilbreath; CHT §1.1 zero-block and {0,d}-block examples, Sierpinski-triangle {0,3} example.
+
+## New holdings this cycle (librarian, this build) — the Ducci-sequence literature
+
+The two proposed approaches `ducci-potential-max-decrease` and
+`p-adic-valuation-carry-dynamics` were grounded in their primary literature
+this cycle: four peer-reviewed Ducci-sequence papers landed
+(`research/sources/{calkin-stevens-thomas,chamberland,glaser-schoffl,avart}*`).
+The finding that governs both approaches is the cyclic/non-cyclic boundary
+below.
+
+```claim
+id: ducci-classical-nilpotence-iff-power-of-2
+statement: (Ciamberlini–Marengoni 1937, quoted and reproved in Chamberland 2003 Thm 1.1, Calkin–Stevens–Thomas 2005, Glaser–Schöffl 1995) For the CYCLIC Ducci map D(x1,..,xn) = (|x1−x2|, ..., |xn−x1|) on integer n-tuples, every start iterates to the zero-tuple in finitely many steps iff n is a power of 2. For n ≠ 2^m every start converges to a (nonzero) cycle; the period structure is governed by the minimal polynomial (1+λ)^n + 1 over Z2 (Calkin–Stevens–Thomas Thm 2.1/Cor 2.2, Table 1: cycle lengths for n ≤ 40).
+hypotheses: cyclic tuples (wraparound |xn−x1|); integer entries; finite length n.
+holds-here: NO — the Gilbreath triangle is the half-infinite NON-cyclic iteration (no wraparound, each row one entry shorter). The mod-2/Pascal local law transfers (see ducci-pascal-mod2-rule90), but the nilpotence/cycle-length conclusions are cyclic-object theorems and must NOT be imported. Eppstein 2011 is the standing proof that the half-infinite object behaves differently (right edge escapes).
+status: sourced (four primary peer-reviewed papers, all held)
+bearing: kills any argument that "Ducci ⇒ the {0,2} regime converges to zero" in the Gilbreath triangle; the power-of-2 phenomenon is a cyclic fact. The run's Rule-90 interior is the transferred part; the half-infinite regeneration is not covered.
+anchor: research/sources/chamberland-unbounded-ducci-sequences.full.md (Thm 1.1); research/sources/calkin-stevens-thomas-ducci-cycles-characterization.full.md (Thm 2.1, Cor 2.2, Table 1)
+```
+
+```claim
+id: ducci-pascal-mod2-rule90
+statement: (Glaser–Schöffl 1995, Thm 1; Avart 2011; Calkin–Stevens–Thomas 2005 §2) The cyclic Ducci map over Z2 is linear, D = (I + shift), D^n(x) = Σ_i C(n,i)·shift^i(x) (Pascal's triangle mod 2 = Rule 90). The n rows of the mod-2 Pascal triangle (padded to n-tuples) are the first n iterates of the basic Ducci sequence from (0,...,0,1). Binomial-parity facts: row 2^r − 1 is all 1s; row 2^r has all-interior 0s; row k has 2^{s2(k)} ones (Glaisher).
+hypotheses: cyclic tuples over Z2; |a−b| ≡ a+b (mod 2).
+holds-here: YES — this is exactly the run's proved rule90-interior-xor (halved {0,2} entries evolve by XOR = Pascal mod 2), now anchored in four primary Ducci sources rather than Wikipedia/CHT remark alone. The kernel facts (binom(2^r,m) ≡ 0 mod 2; all-1s row at 2^r − 1) are what the rule90-regeneration thread uses to predict all-2 stretches at depths 2^j−1.
+status: sourced (peer-reviewed primary); the local transfer to the half-infinite {0,2} interior is the run's own proved statement rule90-interior-xor
+bearing: strengthens the Rule-90 microscope; confirms the digit-sum statistic 2^{s2(k)} (Glaisher) that Ross 2026 finds modulating the continuous decay constants.
+anchor: research/sources/glaser-schoffl-ducci-sequences-pascal-triangle.full.md (Thm 1, properties (5)-(7)); research/sources/avart-converging-ducci-sequences-z2.full.md (Prop 2.1 identity); research/sources/calkin-stevens-thomas-ducci-cycles-characterization.full.md (§2)
+```
+
+```claim
+id: ducci-max-factoring-potential-template
+statement: (Chamberland 2003, Thm 3.2 proof) The standard Ducci convergence engine is the pair: (i) the maximum of a string at most doubles in two iterations and a power of two can be factored out, after which the factored maximum strictly decreases in every non-borderline case; (ii) the borderline cases where the maximum does not decrease are exactly rigid strings (0,b,d,d), (0,0,c,d), (a,0,c,2a), (a,a,c,c), (a,b,a,b), which then iterate to zero directly. Also (Webb, quoted): in the convergent power-of-2 case there is NO uniform bound on iteration count (Tribonacci construction: 4-strings can take arbitrarily long to reach zero).
+hypotheses: cyclic strings; the (−1,2,−1) weighting in the paper's proof, but the max-factoring template is the standard (1,−1) technique.
+holds-here: the TEMPLATE transfers to any absolute-difference iteration (it is pointwise: |a−b| ≤ max(a,b) with equality only against 0); the rigidity classification is finite-configuration and could be re-derived for the run's windows; the no-uniform-bound fact is the cyclic analogue of the run's "no uniform regeneration time" stance.
+status: sourced (peer-reviewed primary); the template's transfer to half-infinite windows is this run's deduction, not in the paper
+bearing: gives the ducci-potential-max-decrease approach its exact precedent (the factored-max + rigidity-equality-case proof shape) and its caution (bounded absorption time is false; only a potential/monotone argument can work).
+anchor: research/sources/chamberland-unbounded-ducci-sequences.full.md (Thm 3.2, Lemma 3.1, Webb quote)
+```
+
+```claim
+id: ducci-avart-nilpotent-concatenation
+statement: (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector of length a power of 2. Proof: T^{2^ℓ}(x) = x + shift^{2^ℓ}(x), so nilpotence forces 2^ℓ-periodicity, which with gcd(k, 2^ℓ mod k) divising 2^ℓ forces the concatenation form. Necessary condition for integer vectors: nilpotence implies the mod-2 reduction is a concatenation of power-of-2-length copies.
+hypotheses: cyclic vectors over Z2.
+holds-here: NO (cyclic theorem; half-infinite Gilbreath rows are not cyclic vectors). The mod-2 identity T^n = Σ C(n,i) shift^i is the shared local law with the run's rule90-interior-xor; the concatenation characterization is a cyclic convergence fact.
+status: sourced (peer-reviewed primary)
+bearing: another precise statement of where the cyclic theory ends and the half-infinite Gilbreath object begins; the mod-2 identity gives an independent check of the run's Rule-90 apex computation for cyclic truncations.
+anchor: research/sources/avart-converging-ducci-sequences-z2.full.md (Thm 4.1, Prop 2.1)
+```
