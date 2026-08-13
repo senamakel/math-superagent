@@ -6,7 +6,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 5 | http://math.uindy.edu/swett/esc.htm | http://math.uindy.edu/swett/esc.htm | [5] Swett Allan (1999), The Erdős-Straus conjecture, Current Research on ESC, rev.10/28/99. http://math.uindy.edu/swett/esc.htm [6] Yamamoto Koichi (1965), On the diophantine equation 4/n = 1/x + 1/y… |
+| 6 | http://math.uindy.edu/swett/esc.htm | http://math.uindy.edu/swett/esc.htm | [5] Swett Allan (1999), The Erdős-Straus conjecture, Current Research on ESC, rev.10/28/99. http://math.uindy.edu/swett/esc.htm [6] Yamamoto Koichi (1965), On the diophantine equation 4/n = 1/x + 1/y… |
 | 3 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A073101 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A073101 - OEIS] [3] A073101 Number of integer solutions (x,y,z) to 4/n = 1/x + 1/y +… |
 | 3 | https://github.com/teorth/erdosproblems/blob/main/README.md#table | Erdős problem database | (On a Diophantine equation), Mat. Lapok, 1:192-210, 1050. Math. Rev. 13:208b. Erdős problems database contributors, [Erdős problem database][26], see no. 242. Ron Knott, [Egyptian Fractions][27] Eric… |
 | 3 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][56] [Format][57] [Style Sheet][58] [Transforms][59] [Superseeker][60] [Recents][61] [The OEIS Community][62] Maintained by [The OEIS Foundation Inc.][63] Last modified August 13 01:39… |
@@ -20,6 +20,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Xu,+X | Xiaoping Xu | [Submitted on 22 May 2026] # Title: Congruence Classes of Supporting the Erdös-Straus Conjecture I: Tame Solutions Authors: [Xiaoping Xu][2] View a PDF of the paper titled Congruence Classes of… |
 | 1 | http://www.amazon.com/exec/obidos/ASIN/0786863625/ref=nosim/ericstreasuretro | The Man Who Loved Only Numbers: The Story of Paul Erdős and the Search for Mathematical… | Fractions." &sect;D11 in *[Unsolved Problems in Number Theory, 2nd ed.][46]*New York: Springer-Verlag, pp. 158-166, 1994. Hoffman, P. *[The Man Who Loved Only Numbers: The Story of Paul Erdős and the… |
 | 1 | https://arxiv.org/abs/1001.1100v1 | arXiv:1001.1100v1 | 9 pages, no figures \| Subjects: \| Number Theory (math.NT) \| MSC classes: \| 11D68 \| Cite as: \| [arXiv:1001.1100][6] [math.NT] \| \| (or [arXiv:1001.1100v1][7] [math.NT] for this version) \| \|… |
+| 1 | https://arxiv.org/abs/1107.1010v3 | — | 391–397. [12] C. Elsholtz and T. Tao, Counting the number of solutions to the Erd˝os-Straus equation on unit fractions, preprint at arXiv:1107.1010v3, 2011. [13] L. Flatto, J.C. Lagarias, A.D.… |
 | 1 | https://arxiv.org/abs/1107.1010v6 | arXiv:1107.1010v6 | \| Number Theory (math.NT) \| MSC classes: \| 11D68, 11N37 secondary: 11D71, 11N56 \| Cite as: \| [arXiv:1107.1010][7] [math.NT] \| \| (or [arXiv:1107.1010v6][8] [math.NT] for this version) \| \|… |
 | 1 | https://arxiv.org/abs/1908.02526v2 | arXiv:1908.02526v2 | (math.AG) \| MSC classes: \| 14G05 (primary), 11D68, 11D25, 14F22 (secondary) \| Cite as: \| [arXiv:1908.02526][7] [math.NT] \| \| (or [arXiv:1908.02526v2][8] [math.NT] for this version) \| \|… |
 | 1 | https://arxiv.org/abs/2502.20935v2 | — | also investigated this conjecture and posed a similar question: Is a similar decomposition possible if 4 is replaced by 5? He 1arXiv:2502.20935v2 [math.NT] 16 Feb 2026 conjectured that for every… |
@@ -45,6 +46,5 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://arxiv.org/search/math?searchtype=author&amp;query=Mihnea,+S | Spiridon Mihnea | [Submitted on 29 Aug 2025] # Title: Further verification and empirical evidence for the Erdős-Straus conjecture Authors: [Spiridon Mihnea][2], [Dumitru C. Bogdan][3] View a PDF of the paper titled… |
 | 1 | https://github.com/b-mehta/unit-fractions | — | been formally computer-veriﬁed, using the Lean proof assisant, by Bloom and Mehta. The formal version of the proof can be accessed at https://github.com/b-mehta/unit-fractions. If r ̸∈ [−N/8, N/8]… |
 | 1 | https://github.com/teorth/erdosproblems | the database | (\log n)^{\log 6+o(1)}.\] [View the LaTeX source][17] This page was last edited 07 May 2026. [View history][18] External data from [the database][19] - you can help update this Formalised statement?… |
-| 1 | https://oeis.org/A075248 | A075248 | you can help update this Formalised statement? [Yes][20] Related OEIS sequences: [A073101][21] [A075245][22] [A075246][23] [A075247][24] [A075248][25] [A287116][26] [18 comments on this problem][27]… |
 
-_185 further candidates not shown; they are cited once each._
+_188 further candidates not shown; they are cited once each._

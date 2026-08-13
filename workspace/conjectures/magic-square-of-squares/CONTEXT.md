@@ -140,15 +140,20 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   `m,n ≤ 200`). Status: verified-numerically on a finite range, conjectural as
   a theorem — **not a proof of non-existence**. Any claim beyond the range is
   `conjectured` until attacked.
-- **Hypothesis under test — asserted, NOT yet run (directive 14):** `1+(q1+q2)`
-  is **never** a rational square for `q1>q2` in Φ with `q1+q2<1`, while
-  `1−(q1+q2)` frequently is (`side_census.py`). A Φ-triple needs `1+(q1+q2)`
-  to be a square, so if this holds there is no Φ-triple and no MSS. Being
-  tested by `code/phi_triple_variety/{side_census,no_triple_fast,ratio_search,
-  prefilter_census,verify_prefilter,verify_triple_square,verify_two_side_equiv}.py`;
-  **no captured output on disk yet.** Status: asserted/conjectured — not a
-  result until the programs run and the counts are read; even then it is
-  verified-numerically over the covered range, not a theorem.
+- **Hypothesis under test — REFUTED and REPLACED (directive 15):** The
+  `side_census.py` docstring claim "1+(q1+q2) is NEVER a rational square" is
+  **false**: at M=400 it is square 66 times (three witnesses re-verified in
+  exact Fraction arithmetic with in_phi). **What survived:** over all
+  156,988,030 pairs, 1−(q1+q2) is a rational square 325 times, 1+(q1+q2) is
+  66 times, and **BOTH = 0** — no pair has both 1−s and 1+s rational squares.
+  This is the sharper finding to work on: are the two conditions provably
+  incompatible for q1,q2 ∈ Φ? If yes, that is an impossibility lemma on
+  *pairs* (concordant-forms shape: 1±s both squares), cheaper than anything
+  on triples. Claim `phi-pair-sides-never-both-square` in CLAIMS.md, status:
+  checked for M=400. New thread:
+  `research/threads/pair-sum-both-squares-incompatibility.md`. Push to M=800
+  next (TASKS.md blocking). The refuted docstring hypothesis must not be
+  used as a prefilter justification anywhere.
 - **The Faltings-fibre attack on the Φ-triple is dead — confirmed by execution**
   (`phi_fibre_genus_run.py`, `phi_fibre_genus_check.py`, both captured in
   `code/out/`). f is homogeneous degree 0, so f(m,n) depends only on the ratio
