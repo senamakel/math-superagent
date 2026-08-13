@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `keen-2026-gilbreath-proof-not-load-bearing` | Keen's "Gilbreath's Conjecture" (Zenodo 10.5281/zenodo.19216603, 2026) is a claim-heavy non-peer-reviewed preprint whose abstract is redacted pending IP review and whose files are restricted; it promises a proof of… | **unchecked** | asserted | `research/summaries/keen-2026-gilbreath-proof-zenodo.md` |
 | `killgrove-ralston-block-protection` | If row i starts 1 and has M entries after the leading 1 (their "0 ≤ j ≤ M" includes P_{i,0}) all 0 or 2, then the next M−1 rows start with 1 (their span P_{i,0}..P_{i+M−1,0}); protection is one row per {0,2} entry,… | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
 
-_64 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_65 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
