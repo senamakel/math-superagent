@@ -155,6 +155,7 @@ holds-here: yes
 status: proved (elementary diagonal-subtriangle argument); verified exhaustively over all 2^n block patterns with adversarial even completions for n=1..11 (122820 pairs, zero violations); sharpness confirmed for n=1..8; real prime rows to depth 600 show zero violations and regenerate far past the guarantee. Consistent with Odlyzko 1993 §2 p.374 (linear N=n+1 constant).
 bearing: fixes the exact consumption rate (1 row per row, not n/2); the open content of Gilbreath's conjecture is entirely the regeneration half, now precisely delimited: position 1 of row k+n needs A_k(n+1), outside the block, whose reduction toward {0,2} is not forced by the lemma.
 anchor: research/notes/block_lemma.md
-contradicts: the run's earlier loose '≈ n/2 rows' ledger (reduction.md repeats it) — the primary source and this re-derivation give n+1.
+contradicts: odlyzko-block-lemma-asserted
+bearing-note: the primary source and this re-derivation give n+1 rows of protection; the loose '≈ n/2 rows' lead in reduction.md is refuted (see the claim block's status).
 answers: exact-block-lemma-constant
 ```

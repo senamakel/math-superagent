@@ -73,26 +73,7 @@ _31 further claims not shown. A library with this many distinct claims is asking
 
 Resolve these before building on either side.
 
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `run's` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `earlier` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `loose` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `'≈` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `n/2` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `rows'` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `ledger` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `(reduction.md` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `repeats` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `it)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `—` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `the` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `primary` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `source` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `and` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `this` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `re-derivation` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `give` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
-- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `n+1.` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `odlyzko-block-lemma-asserted`
 
 ## Load-bearing but unverified
 

@@ -103,3 +103,30 @@ first-step: none — the direct identity is vacuously covered by Mason-Stothers
   integral solutions) is already classified, ineffectively, by Bilu-Tichy/HPT
   and BST 1999. Do not re-propose Mason-Stothers for this problem.
 ```
+
+```claim
+id: mason-stothers-vacuous-binomial
+statement: Mason-Stothers (polynomial abc: for pairwise coprime A,B,C in C[t]
+  with A+B+C=0, max deg <= N0(ABC)-1) has NO content for the binomial
+  difference: with A=C(T,k1)·k2!, B=-C(T,k2)·k1!, R=A+B, divided by
+  gcd = (T)_{min(k1,k2)}, one gets deg A' = |k1-k2|, deg B' = 0 (nonzero
+  constant), deg R' = |k1-k2| with R' coprime to A', so
+  N0(A'B'R') >= |k1-k2|+1 = maxdeg+1 and the inequality holds identically
+  (equality exactly for adjacent pairs). The parametrized version
+  C(phi(T)+a,k1)=C(phi(T)+b,k2) is a two-term equality, which Mason-Stothers
+  does not constrain. Effective abc/Siegel/Schmidt analogues over function
+  fields (Mason 1984, Zannier 1993, Wang 2004, Mueller 2000) concern S-integral
+  points over function fields and do not transfer to the number-field integral
+  points of C(x,k1)=C(y,k2), whose classification (Bilu-Tichy 2000, HPT 2022)
+  is ineffective per-pair. Checked symbolically for 2<=k2<k1<=8: slack zero
+  identically (code/out/check_mason_stothers_bound.py).
+hypotheses: distinct k1,k2 >= 2; characteristic zero.
+holds-here: yes
+status: checked (symbolic verification on 21 pairs; the algebraic identity is
+  uniform in k1,k2 — deg A' = |k1-k2| by Gauss's lemma/Ritt cancellation of the
+  common falling factorial)
+bearing: permanently retires the Mason-Stothers candidate with the obstruction
+  named (vacuous direct identity; no number-field transfer of function-field
+  effectivity), so it is not re-proposed.
+anchor: research/approaches/mason-stothers-abc.md
+```
