@@ -1,0 +1,44 @@
+sieve 300000000; expected primes 16252325; depth 240
+primes: 16252325  (expect 16252325)
+
+(2,4)-events to depth 240: 74
+jump==closure-run : ALL PASS
+jump==chain-1     : ALL PASS
+stall iff Ak[b+2]==0: ALL PASS
+
+giants (jump>=1000), exact:
+  row  34: b_k=      865  jump=     1314  closure=     1314  chain-1=     1314  match=True  A[b+2]=4  past-chain(halved)=4
+  row  56: b_k=     4203  jump=     1739  closure=     1739  chain-1=     1739  match=True  A[b+2]=4  past-chain(halved)=6
+  row  64: b_k=     5939  jump=    17326  closure=    17326  chain-1=    17326  match=True  A[b+2]=2  past-chain(halved)=8
+  row  68: b_k=    23262  jump=     8237  closure=     8237  chain-1=     8237  match=True  A[b+2]=4  past-chain(halved)=8
+  row  94: b_k=    31532  jump=    61088  closure=    61088  chain-1=    61088  match=True  A[b+2]=4  past-chain(halved)=0
+  row  96: b_k=    92619  jump=    11354  closure=    11354  chain-1=    11354  match=True  A[b+2]=2  past-chain(halved)=16
+  row 110: b_k=   103960  jump=    37746  closure=    37746  chain-1=    37746  match=True  A[b+2]=2  past-chain(halved)=6
+  row 112: b_k=   141706  jump=   129923  closure=   129923  chain-1=   129923  match=True  A[b+2]=4  past-chain(halved)=16
+  row 126: b_k=   271620  jump=    53470  closure=    53470  chain-1=    53470  match=True  A[b+2]=2  past-chain(halved)=6
+  row 130: b_k=   325096  jump=   190810  closure=   190810  chain-1=   190810  match=True  A[b+2]=2  past-chain(halved)=4
+  row 134: b_k=   515907  jump=   217657  closure=   217657  chain-1=   217657  match=True  A[b+2]=4  past-chain(halved)=4
+  row 146: b_k=   733575  jump=   360698  closure=   360698  chain-1=   360698  match=True  A[b+2]=2  past-chain(halved)=12
+  row 161: b_k=  1094263  jump=  4323712  closure=  4323712  chain-1=  4323712  match=True  A[b+2]=2  past-chain(halved)=6
+  row 174: b_k=  5417976  jump=  5237310  closure=  5237310  chain-1=  5237310  match=True  A[b+2]=2  past-chain(halved)=56
+  row 238: b_k= 10655260  jump=  5596825  closure=  5596825  chain-1=  5596825  match=True  A[b+2]=2  past-chain(halved)=None
+
+events at rows >= 155:
+  row 159: b_k=  1094261  jump=        2  closure=        2  chain-1=        2  match=True  A[b+2]=2  past-chain(halved)=0
+  row 160: b_k=  1094263  jump=        0  closure=        0  chain-1=        0  match=True  A[b+2]=0  past-chain(halved)=0
+  row 161: b_k=  1094263  jump=  4323712  closure=  4323712  chain-1=  4323712  match=True  A[b+2]=2  past-chain(halved)=6
+  row 162: b_k=  5417975  jump=        1  closure=        1  chain-1=        1  match=True  A[b+2]=4  past-chain(halved)=0
+  row 164: b_k=  5417975  jump=        5  closure=        5  chain-1=        5  match=True  A[b+2]=2  past-chain(halved)=14
+  row 167: b_k=  5417978  jump=        0  closure=        0  chain-1=        0  match=True  A[b+2]=0  past-chain(halved)=0
+  row 168: b_k=  5417978  jump=        2  closure=        2  chain-1=        2  match=True  A[b+2]=6  past-chain(halved)=14
+  row 173: b_k=  5417976  jump=        0  closure=        0  chain-1=        0  match=True  A[b+2]=0  past-chain(halved)=0
+  row 174: b_k=  5417976  jump=  5237310  closure=  5237310  chain-1=  5237310  match=True  A[b+2]=2  past-chain(halved)=56
+  row 223: b_k= 10655238  jump=        0  closure=        0  chain-1=        0  match=True  A[b+2]=0  past-chain(halved)=0
+  row 224: b_k= 10655238  jump=        6  closure=        6  chain-1=        6  match=True  A[b+2]=6  past-chain(halved)=2
+  row 225: b_k= 10655244  jump=        0  closure=        0  chain-1=        0  match=True  A[b+2]=0  past-chain(halved)=0
+  row 226: b_k= 10655244  jump=       22  closure=       22  chain-1=       22  match=True  A[b+2]=2  past-chain(halved)=10
+  row 235: b_k= 10655258  jump=        2  closure=        2  chain-1=        2  match=True  A[b+2]=2  past-chain(halved)=0
+  row 236: b_k= 10655260  jump=        0  closure=        0  chain-1=        0  match=True  A[b+2]=0  past-chain(halved)=0
+  row 237: b_k= 10655260  jump=        0  closure=        0  chain-1=        0  match=True  A[b+2]=0  past-chain(halved)=0
+  row 238: b_k= 10655260  jump=  5596825  closure=  5596825  chain-1=  5596825  match=True  A[b+2]=2  past-chain(halved)=None
+elapsed 99.8s

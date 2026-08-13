@@ -1,5 +1,15 @@
 # Pattern-finder findings: the 3e8 wider-width giant record (depth 300)
 
+**UPDATED 2026-08-14 (Directive 30):** The 3e8 run capped row 238 (flooring 1).
+The 6e8 run (`code/out/pattern_finder_6e8_giants.captured.txt`, 31.3M primes,
+96.2s, depth 400) resolves it: row 238 lands at b=23,163,290 with flooring
+8,161,173 — **GENUINE**. The 15 genuine giants (0-based) are
+`[34,56,64,68,94,96,110,112,126,130,134,146,161,174,238]`, gaps
+`[22,8,4,26,2,14,2,14,4,4,12,15,13,64]`, max=64. Row 248 is the 6e8 cap
+(flooring 0). Claim `wider-width-giant-record-3e8` (max=26 over 14 live)
+is superseded. The ratio bound gap_i ≤ j_i+1 (Directive 30) supersedes
+"gap bounded." See `research/threads/regeneration.md` for the current chain.
+
 Extracted and verified this session. Inputs: `code/out/wider_width_b_clean.json`
 (16,252,325 primes, sieve 3e8, first 300 rows, exact integers, step-law
 verified 0 failures by the producing run); cross-checked against
