@@ -8,6 +8,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | --- | --- | --- | --- | --- |
 | [[lifting-proof]] | Is the 2-to-1 lifting of A_k provable via LTE, giving \|A_k\| = 2^(k-1) unconditionally? | open | ternary-sieve-count-doubles, (checked, k, <=, 22), 2^{2·3^(k-2)}, ≡, 1, mod, 3^(k-1), (standard, LTE) | compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly |
 | [[narkiewicz-bound]] | What is the exact statement, constant, and method of Narkiewicz's bound on {n <= x : 2^n digit-2-free}? | open | EP-406, (bound, N(x), <=, 1.62, x^(log_3, 2), asserted-by-source), LAG-2, (proved, Lagarias) | locate and download Narkiewicz (1980) "A note on a paper of H. Gupta concerning powers of two"; verify the constant and method against EP-406 and LAG-2 |
+| [[sieve-dynamics]] | Can the survival tree of A_k be shown to have only three infinite paths ({0,2,8}), and is the 2-to-1 split exact (no collisions) at every level? | open | SAYE-2, LAG-2, DH-1, SAYE-3, ternary-sieve-count-doubles | verify the split rule constant (LTE/SAYE-2) explicitly, compute C_k = 2\|A_k\| - \|A_{k+1}\| for small k, track the last-digit epsilon of each survivor class |
 
 ## Resting on nothing recorded
 
@@ -19,4 +20,3 @@ Either the belief was never written down as a claim — in which case nobody dow
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
-- `sieve-dynamics` has no thread block, so nothing can say what it is chasing or what it rests on

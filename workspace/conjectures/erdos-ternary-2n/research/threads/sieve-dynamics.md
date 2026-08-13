@@ -1,3 +1,11 @@
+```thread
+question: Can the survival tree of A_k be shown to have only three infinite paths ({0,2,8}), and is the 2-to-1 split exact (no collisions) at every level?
+status: live
+rests-on: SAYE-2, LAG-2, DH-1, SAYE-3, ternary-sieve-count-doubles
+blocked-by: SAYE-2 (split rule) not yet independently verified in this workspace; collision count C_k not yet computed
+next: verify the split rule constant (LTE/SAYE-2) explicitly, compute C_k = 2|A_k| - |A_{k+1}| for small k, track the last-digit epsilon of each survivor class
+```
+
 # Thread: the sieve dynamics of A_k
 
 **status:** open — this is the central line.
