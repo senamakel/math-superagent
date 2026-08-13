@@ -54,6 +54,23 @@ anchor: research/summaries/kamel-sadek-consecutive-squares-elliptic-2016-body.md
    AND enforce the full 8-line magic sum with distinct entries? Most "non-
    existence" preprints on this problem fail on one of the two.)
 
+3. **DP07 explicit-constant lane — re-confirmed blocked, alternate route examined and judged marginal.**
+   The only open request (`dp07-explicit-constant-for-e3-ap`) needs David–Philippon
+   IMRP 2007 Thm 1.13's explicit constant for subvarieties of E^n. This cycle
+   confirmed: (a) Numdam carries only DP99 "Minorations ... des tores"
+   (`ASNSP_1999_4_28_3_489_0`), NOT the IMRP 2007 abelian-varieties II paper —
+   so no Numdam/Cambridge open route exists for DP07; (b) a candidate alternate
+   route, Kumar–Sahoo (Int. J. Number Theory 2024, arXiv:2311.11266,
+   "Lehmer-type bounds and counting rational points of bounded heights on
+   Abelian varieties"), makes its constant explicit for elliptic curves and
+   products of elliptic curves — but it is a *counting-points / Lehmer* bound,
+   not an AP-length bound, so it does not supply the C needed for `C^(r+1) < 3`;
+   WorldScientific version is 403-paywalled (arXiv preprint has the same
+   content). **Verdict: the DP07 constant is genuinely unobtainable through any
+   open route this cycle; the Kumar–Sahoo lane does not substitute.** The thread
+   step 0 must be a library/institutional scan of IMRP 2007 — no further open-web
+   fetch should attempt it.
+
 ## Net state
 
 - The `uniformity-bremner-ap-bound` thread's "risks" row is now backed by a
