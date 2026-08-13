@@ -336,6 +336,61 @@ async fn delegate(subagents: &AsyncSubagentManager, agent: &str, prompt: String)
     }
 }
 
+/// Runs the attempt's `goals` delegation, and spends what is left of the
+/// attempt on execution when that delegation returns nothing.
+///
+/// The attempt used to be exactly one `goals` delegation, so a timeout inside
+/// that single agent discarded the whole attempt. Five consecutive attempts
+/// across two live runs ended `[goals failed: run timed out]` having produced no
+/// artifact at all, and both runs' own reflections had already identified the
+/// cause before the next attempt hit it again — a lesson written into the
+/// briefing is not a control, which is the failure this repository keeps
+/// recording.
+///
+/// A failed delegation is not evidence that nothing could be done; it is
+/// evidence that one agent stopped answering. So the loop falls back to the one
+/// role that can execute, and reports both halves rather than only the failure.
+/// When the provider is refusing every call the fallback fails too, and the
+/// report then says so accurately instead of hiding it.
+async fn attempt_with_salvage(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    prompt: String,
+    problem: &str,
+) -> String {
+    let error = match subagents.run_to_completion("goals", prompt).await {
+        Ok(report) => return report,
+        Err(error) => error,
+    };
+    if let Some(tracer) = tracer {
+        tracer.note(&format!(
+            "solution loop: goals failed ({error}); salvaging the attempt with a direct execution"
+        ));
+    }
+    let salvage = delegate(subagents, "tool_builder", salvage_prompt(problem)).await;
+    format!("[goals failed: {error}]\n\nSalvaged by direct execution:\n{salvage}")
+}
+
+/// The task the loop hands its salvage run when `goals` returns nothing.
+///
+/// It asks for the smallest executed thing rather than the next step of the
+/// plan, because the plan was what failed to arrive. One program run and
+/// reported is what separates an attempt that advanced the run from one that
+/// only spent it.
+fn salvage_prompt(problem: &str) -> String {
+    format!(
+        "The agent that plans this attempt did not return, so this attempt has produced nothing \
+         yet. Produce one executed result now.\n\nProblem:\n{problem}\n\n\
+         Read `GOAL.md` and `TASKS.md` in the workspace and pick the single smallest unfinished \
+         item that can be settled by running a program. Prefer one that is already written and \
+         has never been run — a program in the workspace with no captured output beside it is the \
+         best candidate there is, because writing it has already been paid for.\n\n\
+         Write the output to `code/out/<name>.captured.txt` and say what it settles. Do not plan, \
+         do not restate the problem, and do not start anything you cannot finish in this run. If \
+         nothing can be executed, say precisely what blocks it in one line."
+    )
+}
+
 /// Carries out one attempt at the problem, briefed with every lesson so far.
 async fn attempt_step(
     subagents: &AsyncSubagentManager,
