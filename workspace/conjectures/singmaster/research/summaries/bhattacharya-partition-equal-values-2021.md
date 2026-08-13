@@ -1,66 +1,60 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/bhattacharya-partition-equal-values-2021.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# A. Bhattacharya, "Equal values of certain partition functions via Diophantine equations" (Research in Number Theory 7 (2021) #67)
 
-<!-- source: https://link.springer.com/article/10.1007/s40993-021-00293-7 | converted from HTML -->
+Source: https://link.springer.com/article/10.1007/s40993-021-00293-7 (open access)
+Full text: `research/sources/bhattacharya-partition-equal-values-2021.full.md`
 
-## What is in it
+## What it is
 
-- Equal values of certain partition functions via Diophantine equations
-  - Abstract
-    - Similar content being viewed by others
-    - [Positive integer solutions of some Diophantine equations in terms of integer…
-    - [Three simple reduction formulas for the denumerant functions][9]
-    - [The Prouhet–Tarry–Escott problem, indecomposability of polynomials and Diophantine…
-    - Explore related subjects
-  - 1 Introduction
-  - 2 The case of \(A=\{a_{1},a_{2}\}\)
-    - Theorem 2.1
-    - Proof
-  - 3 The equation \(P_{3}(x)=P_{n}(y)\) for \(n=4, 5\)
-    - Theorem 3.1
-    - Proof
-      - Table. Values of (*i*, *j*) such that the corresponding equations of types (I), (II) have…
-    - Theorem 3.2
-- …
+Open-access 2021 study of when partition functions P_A(n) (partitions of n with
+parts in a finite set A) take equal values, P_A(x) = P_B(y). This is the
+partition-function analogue of equal-values problems (and the paper's starting
+point is a question of Benne de Weger about the equal-binomial-coefficients
+literature). It appeared as a frontier target of this run's own library (the
+earlier HPTV/Prouhet-Tarry-Escott thread cited the partition/Figurate family
+papers). Filed for breadth of the equal-values subject.
 
+## Results (from the abstract/entry)
 
-## What it claims
+- **Thm 2.1**: for A = {a1,a2} with gcd(a1,a2)=1 and any f ∈ Z[x] of positive
+  degree and positive leading coefficient, P_A(x) = f(y) has infinitely many
+  positive integer solutions.
+- **Thm 3.1/3.2**: P_3(x) = P_4(y) has infinitely many solutions; P_3(x) =
+  P_5(y) has only finitely many, fully characterized.
+- **Thms 4.3-4.5**: for A = {1,2,a}, a≥3, y² = P_A(x) and P_A(x) = P_B(y)
+  (B={1,2,b}, a≠b, mild conditions) have infinitely many positive solutions.
 
-Let \(A\subset \mathbb {N}_{+}\) and by \(P_{A}(n)\) denotes the number of partitions of an integer *n*into parts from the set *A*. The aim of this paper is to prove several result concerning the existence of integer solutions of Diophantine equations of the form \(P_{A}(x)=P_{B}(y)\), where *A*, *B*are certain finite sets.
+Method: explicit parametric families (partition functions are quasipolynomials
+for finite A) reducing to curve/Diophantine analysis.
 
-## Statements it makes
+## Relevance
 
-### Theorem 2.1
+- It is the *opposite* direction from Singmaster: here equal values are made to
+  occur *infinitely often* by construction, whereas Singmaster asks whether the
+  binomial triangle has bounded multiplicity. The structural contrast — which
+  combinatorial families admit infinite equal-value families and which do not —
+  is exactly the (5,4,3)/(6,4,4)-exceptions structure in HPTV 2014 and the
+  Bilu-Tichy exceptional pairs.
+- Provides the modern survey-frame reference for "equal values of X via
+  Diophantine equations" that the run's library cites.
 
-### Theorem 3.1
+## Claims
 
-### Theorem 3.2
-
-### Conjecture 3.3
-
-### Theorem 4.1
-
-### Corollary 4.2
-
-### Theorem 4.3
-
-### Theorem 4.4
-
-### Theorem 4.5
-
-### Conjecture 4.6
-
-### Theorem 5.1
-
-### Conjecture 5.2
-
-### Lemma 6.2
-
-### Theorem 6.3
-
-### Proposition 6.5
-
-### Proposition 6.6
-
-### Conjecture 6.7
-
-*[digest of a 81798 character source; every section, statement, and proof in full at `research/sources/bhattacharya-partition-equal-values-2021.full.md`]*
+```claim
+id: partition-equal-values-infinite-families
+statement: Bhattacharya 2021 (Research in Number Theory 7 #67, open access):
+  for A={a1,a2} with gcd(a1,a2)=1 and any f in Z[x] positive degree/leading
+  coefficient, P_A(x)=f(y) has infinitely many positive integer solutions;
+  P_3(x)=P_4(y) has infinitely many, P_3(x)=P_5(y) finitely many (all found);
+  and for A={1,2,a}, y^2=P_A(x) and P_A(x)=P_B(y) have infinitely many
+  positive solutions under mild conditions.
+hypotheses: A finite; partition functions P_A quasipolynomial; conditions as
+  stated.
+holds-here: context only — partition functions, not binomial coefficients; the
+  infinite-equal-values phenomenon is the structural contrast to Singmaster's
+  bounded-multiplicity question.
+status: asserted
+bearing: breadth of the equal-values subject; illustrates which combinatorial
+  families admit infinite equal-value families (contrast with the binomial
+  triangle's known infinite families being few and classified).
+anchor: research/sources/bhattacharya-partition-equal-values-2021.full.md
+```

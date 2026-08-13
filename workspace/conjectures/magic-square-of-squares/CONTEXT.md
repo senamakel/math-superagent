@@ -47,15 +47,18 @@ differences `u-v,u+v,u,v` up to sign. `code/out/oracle_output.txt`,
   example is known**; eight is an open sub-question (Bremner II 2001).
 
 **Bremner's rank conjecture is proved — sourced, two independent routes**
-(Garcia-Fritz–Pasten, arXiv:2604.04850v2, May 2026, 21KB; Theorem 1.8,
+(Garcia-Fritz–Pasten, arXiv:2604.04850v2, May 2026; Theorem 1.8,
 **ineffective** constant C) and (Harrison–Mudgal–Schmidt, arXiv:2603.06483, Mar
 2026, 132KB HTML full text on disk; Theorem 1.1, **effectively computable**
 constant C). Both prove: all APs in x- or y-coordinates of a rank-r E/Q have
-length ≤ C^(1+r). GFP via Nevanlinna + uniform Mordell–Lang; HMS via additive
-combinatorics (PFR of Gowers–Green–Manners–Tao) + David–Philippon. HMS also
-bounds geometric progressions and consecutive squares, and extends to
-generalised APs of arbitrary rank k (Corollary 2.2: |P| ≤ D^(1+r) for proper
-GAPs in C(Γ)).
+length ≤ C^(1+r). GFP via Nevanlinna + uniform Mordell–Lang. HMS's Theorem 1.1
+proof (§7) composes exactly three constants — David–Philippon uniform
+Mordell–Lang, Bombieri–Zannier subgroup-count, Jones–Schmidt sub-Pfaffian
+complexity — **weak-PFR (140/110) is NOT in that chain** (it feeds only the
+sum-product Theorems 1.3/2.3; claim `hms-constant-nonextractable-on-disk`,
+checked). HMS also bounds geometric progressions and consecutive squares, and
+extends to generalised APs of arbitrary rank k (Corollary 2.2: |P| ≤ D^(1+r)
+for proper GAPs in C(Γ)).
 
 **Bearing on the MSS**: the Robertson reduction says an MSS exists iff there
 is `e` with three points of `2E(Q)` on `E: y² = x(x²−c²)` with x-coordinates
@@ -63,33 +66,35 @@ in AP (length 3). GFP/HMS bound AP length by `C^(r+1)` for *any* points in
 E(Q). **The doubled-point question is settled** from §1.1 of both papers: AP
 is x(P_i) for P_i ∈ E(Q); 2Q_i ∈ E(Q), so doubled points are covered — no
 mismatch. **GFP's C is ineffective** (Rémond→UMordell–Lang); **HMS's C is
-effectively computable** but built from David–Philippon + PFR and almost
-certainly >> 3, so C^(r+1) < 3 fails for any plausible rank. The theorem
-reframes the problem as bounding rank(E_c) but does not close it. Theorem 1.2
-(conditional): if ranks of elliptic curves over Q are uniformly bounded, then
-AP lengths are uniformly bounded — this would reduce MSS to a finite
-computation (though likely beyond reach). The conditional reduction is the
-best structural result from this line.
+effectively computable in principle but no value for it, nor for any of its
+three ingredients, exists on disk** (`hms-constant-nonextractable-on-disk`,
+checked), so C^(r+1) < 3 is unevaluable either way. The theorem reframes the
+problem as bounding rank(E_c) and does not close it. **The conditional
+reduction** — if ranks of E/Q are uniformly bounded, AP lengths are uniformly
+bounded and MSS existence becomes a finite (height-bounded) decision, far out
+of reach — is claim `conditional-mss-finite-computation` (status: conditional;
+`code/out/conditional_reduction_claim.md`). Best structural result from this line.
 
-**Hulse–Kuan–Lowry-Duda–Walker (2024) — sourced, just re-downloaded** (arXiv:2007.14324,
+**Hulse–Kuan–Lowry-Duda–Walker (2024) — sourced, re-downloaded** (arXiv:2007.14324,
 68KB, real paper, was a 19KB Springer paywall). Counts primitive three-term
 APs of squares {a²,b²,c²} via a double Dirichlet series D(s,w) with
 meromorphic continuation to C²; Tauberian estimates give asymptotic
 #APs(middle ≤ X) ~ (√2/π²)log(1+√2)·X^{1/2}. **Bearing**: the building
 blocks of the MSS are 3-square APs through the centre; Hulse gives analytic
 control of their count. Consistent with but independent of the run's
-algebraic |S(e)| formula. Not yet claim-blocked; scholar must digest.
+algebraic |S(e)| formula. Claim-blocked (`aps-of-squares-count-asymptotics`,
+proved).
 
 **Wolird (2023) — sourced, digested, holds-here: no** (arXiv:2310.12164, 11KB,
-real paper, was a 5.8KB arXiv abstract wrapper; `research/summaries/wolird-gaussian-transformation-magic-square-2023.md`,
-claim `wolird-gaussian-sibling-3-to-1`, status: asserted). Shows arithmetic
-triplets of Gaussian squares are in 3-to-1 correspondence with Gaussian
-Pythagorean triples (α²+β²+γ²=0); an MSS solution over Q would generate
-non-trivial near-misses in Z[i] ("backwards result"). **Bearing**: dead end
-for the proof goal — the author disclaims any bearing on existence; it is a
-Z[i] observational correspondence, distinct from Cain's quartic reformulation.
+real paper, was a 5.8KB arXiv abstract wrapper; claim `wolird-gaussian-sibling-3-to-1`,
+status: asserted). Shows arithmetic triplets of Gaussian squares are in 3-to-1
+correspondence with Gaussian Pythagorean triples (α²+β²+γ²=0); an MSS solution
+over Q would generate non-trivial near-misses in Z[i] ("backwards result").
+**Bearing**: dead end for the proof goal — the author disclaims any bearing on
+existence; a Z[i] observational correspondence, distinct from Cain's quartic
+reformulation.
 
-**p-adic/modular obstruction to Φ no-triple — checked and bounded** (DIRECTIVE 8).
+**p-adic/modular obstruction to Φ no-triple — checked and bounded**.
 `code/witness_padic_falsification.py` verified both near-miss witnesses
 against the proved p-adic facts: every positive fully-realised Φ-element from
 Bremner (5544/7225, 336/625) and Sallows (3360/12769) satisfies v2≥3, v3≥1,
@@ -133,7 +138,9 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
 - **Anchor**: Bremner `e=425`: `q_v = 5544/7225 ∈ Φ` via `(9,2)` [85 | 425],
   `q_{u+v} = 336/625 ∈ Φ` via `(4,3)` [25 | 425]; the two unsatisfied
   differences are **not** in Φ; and `q_v + q_{u+v} = 1.305 > 1` — the near-miss
-  dies at the rational level on the additive/clip condition.
+  dies at the rational level on the additive/clip condition. The equivalence
+  predicates `two_side` and `triple_square` are now verified EXACTLY equivalent
+  to Φ-membership (N=300; see Numbers).
 - **Conjectured (NOT proved)**: no additive triple `q1+q2 ∈ Φ` exists at all,
   hence no MSS over Q. Checked **exactly** for all pairs with `m,n ≤ 400`
   (156,988,030 unbounded membership tests, zero triples; also none through
@@ -155,9 +162,12 @@ verified vs brute force). Define `S(e) = {d>0 : e²±d both squares}`; then
   q1+q2 < 1} and ask whether Φ-membership forces a local obstruction. Any
   obstruction found must be checked against the 66 plus-witnesses and 325
   minus-witnesses in `code/out/side_census.captured.txt` or it is asserted.
-  Push to M=800 next. Claim `phi-pair-sides-never-both-square` in CLAIMS.md,
-  status: checked for M=400. Thread:
-  `research/threads/pair-sum-both-squares-incompatibility.md`.
+  **M=800 run: budget stopped at i=22988/129870 (17.7% of the index)** —
+  both=0 again in the covered prefix, 11 plus-square / 6 minus-square
+  witnesses there (`code/out/side_census_M800.captured.txt`); consistent but
+  partial, and must carry that fraction. Claim
+  `phi-pair-sides-never-both-square` in CLAIMS.md, status: checked for M=400
+  only. Thread: `research/threads/pair-sum-both-squares-incompatibility.md`.
 - **The Faltings-fibre attack on the Φ-triple is dead — confirmed by execution**
   (`phi_fibre_genus_run.py`, `phi_fibre_genus_check.py`, both captured in
   `code/out/`). f is homogeneous degree 0, so f(m,n) depends only on the ratio
@@ -199,28 +209,28 @@ four AP-differences**; scarcity of differences is not the obstruction, the
 additive relation among `u,v,u+v,u−v` is.
 
 **Elliptic reformulation — sourced, and its `c` disambiguated from the centre** 
-(Bremner 1999; attributed to Robertson; grounded exactly this cycle in the
-thread `curve-form-and-rank`): a MSS of squares ⇔ there is an AP of
+(Bremner 1999; attributed to Robertson): a MSS of squares ⇔ there is an AP of
 x-coordinates of three points `2E(Q)` on `E: y² = x(x²−c²)`; a point is in
 `2E(Q)` iff `X, X±c` are all rational squares. **Here `c` is the AP common
 difference (one of `u,v,u+v,u−v`), NOT the centre `e²`** — do not conflate the
-two namespaces. For Bremner's witness the anti-diagonal `{205²,425²,565²}` gives
-`c = 138600`, and `E: y² = x³−138600²x` has rank 2, torsion order 4; exactly 2 of
-the 3 doubled points are realised (`x(565²)` fails: `X−c` square but `X+c` not),
-matching the 7-square near-miss. A full MSS needs a length-3 AP, i.e. all three
-doubled points realised. Bremner searched points of `E(Q)` in AP and found
-essentially none; very restrictive when `rank E(Q)` is small.
+two namespaces (claim `robertson-elliptic-reduction`, proved). For Bremner's
+witness the anti-diagonal `{205²,425²,565²}` gives `c = 138600`, and
+`E: y² = x³−138600²x` has rank 2, torsion order 4; exactly 2 of the 3 doubled
+points are realised (`x(565²)` fails: `X−c` square but `X+c` not), matching the
+7-square near-miss. A full MSS needs a length-3 AP, i.e. all three doubled
+points realised (one doubled point short — `code/out/robertson_reduction_check.txt`).
+Bremner searched points of `E(Q)` in AP and found essentially none; very
+restrictive when `rank E(Q)` is small.
 
 **Existence for n×n, n ≥ 4 — sourced but does not touch 3×3** (Rome–Yamagishi
-2024, arXiv:2406.09364, `research/summaries/rome-yamagishi-magic-squares-of-powers-2024.md`):
-Theorem 1.2 proves an n×n magic square of squares exists for every n ≥ 4 (circle
-method), settling Várilly-Alvarado's conjecture; Theorem 1.3 extends to d-th
-powers. The n = 3 case is **excluded** — the circle method's column-independence
-threshold is not met there. So the obstruction is genuinely 3×3-specific;
-higher-n existence is settled and gives no structural handle on n = 3.
-A supporting hint (not a proof): Bremner/BTVA22 note the 3×3 surface cut by 6
-quadrics in P⁸ contains only finitely many genus-0/1 curves, and (per Lang) only
-finitely many rational points outside them.
+2024, arXiv:2406.09364): Theorem 1.2 proves an n×n magic square of squares
+exists for every n ≥ 4 (circle method), settling Várilly-Alvarado's conjecture;
+Theorem 1.3 extends to d-th powers. The n = 3 case is **excluded** — the circle
+method's column-independence threshold is not met there. The obstruction is
+genuinely 3×3-specific; higher-n existence is settled and gives no structural
+handle on n = 3. A supporting hint (not a proof): Bremner/BTVA22 note the 3×3
+surface cut by 6 quadrics in P⁸ contains only finitely many genus-0/1 curves,
+and (per Lang) only finitely many rational points outside them.
 
 **Magic squares of squares exist over extension fields — sourced, and this is the
 hinge.** Bremner 1999 constructs genuine MSS over algebraic number fields: a
@@ -250,25 +260,26 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
 **Approach statuses** (`research/APPROACHES.md`):
 - **resolve-magic-surface-birational** — the **adopted** line: determine κ of the
   resolved 3×3 MSS variety X̃ (X⊂P⁸ is a surface with 256 singular points and no
-  lines — `magic-variety-is-surface-no-lines`, currently asserted; the direct
-  dimension/no-lines check is first in TASKS.md blocking).
+  lines — `magic-variety-is-surface-no-lines`, currently **asserted**; the direct
+  dimension/no-lines check is first in TASKS.md blocking and has NOT been run).
 - **uniform-height-bound-elliptic-ap** — folded into that as the effectiveness
-  partner for the κ=2 case: GFP (ineffective) + HMS (effective but >> 3);
-  doubled-point question settled; blocked by constant size, not definitions.
-  Conditional reduction (uniform rank boundedness ⇒ AP lengths bounded) is claim
-  `uniform-rank-ap-bounded` (proved). **Blocking: bound the HMS constant C.**
+  partner for the κ=2 case: GFP (ineffective) + HMS (effective-in-principle);
+  doubled-point question settled; the C-bound blocking task is closed
+  **negatively** (`hms-constant-nonextractable-on-disk`, checked — no value
+  reachable on disk; DP07 primary text paywalled). Conditional reduction is
+  claim `conditional-mss-finite-computation` (status: conditional, not proved).
 - **PARKED behind the blocking section** (directives 10/11/13): `hecke-character-product-l`,
   `kodaira-dimension-general-type`, `modular-jacobian-torsion-x0-32`. No work until
-  the magic-variety check or the C-bound is done.
+  the magic-variety check is done (the C-bound is closed negatively).
 - **root-number-parity-four-curves** — **refuted**.
 - **Brauer–Manin on the K3** — **refuted** (S(Q) nonempty).
 - **freys-curve-four-q-isogenies**, **integral-brauer-manin-nine-square**,
   **richardson-orbits-weyl-group** — all **refuted** at literature-check stage.
 - All others: **refuted** with reasons in APPROACHES.md.
-- **Search halted (directive 17, re-confirmed):** exa_search is at 122 (was 99
-  two directives ago). Frontier is 442 with 365 unworked. Twenty-three searches
-  changed nothing. **No further downloads or source gathering.** Extracting
-  claims from already-fetched sources is now the only priority.
+- **Search halted (directive 17, re-confirmed):** exa_search is at 122. Frontier
+  is 442 with 365 unworked. Twenty-three searches changed nothing. **No further
+  downloads or source gathering.** Extracting claims from already-fetched
+  sources is now the only priority.
 
 ## Ruled out
 
@@ -286,7 +297,7 @@ example is (centre 145) `265 1² 13² / 7² 145 241 / 11² 17² 5²`.
   trivial residue {0}. Verified on both near-miss witnesses. No pure p-adic
   sieve over these primes can prove the no-triple conjecture; a proof must
   use rationalness/integrality beyond congruences.
-  `phi-padic-no-obstruction`, `phi-padic-consistent-with-witnesses`,
+  Claims `phi-padic-no-obstruction`, `phi-padic-consistent-with-witnesses`,
   `phi-padic-residue-closure`, all `status: checked` in CLAIMS.md.
   Bounded claim: primes {2,3,5,7,11,13}, p^a ≤ 2000 — not an unbounded
   statement.
@@ -320,42 +331,53 @@ exhaustive exact scans. No 3×3 magic grid with entries `1..100` has six or more
 `c=e², e≤80, |u|,|v|≤120` (4,052,328 grids). The `{6:964, 7:4, 9:92}`
 distribution is of *total* square entries over all-positive grids, repeats
 allowed; the `7:4` are repeated-entry near-misses, **not** four distinct
-7-square grids (resolved Contradiction below); the 9-square grids are trivial
-repeats (all-`k²` and the `{1,25,49}` family).
+7-square grids; the 9-square grids are trivial repeats (all-`k²` and the
+`{1,25,49}` family).
 
 **Φ no-triple range** (exact, unbounded membership; `phi_exact_search.py`,
 `phi_extend.py`): `|Φ(M)|` = 22, 86, 331, 737, 1314, 2040, 2930, 4582 for
-M = 10..150; 8156 (M=200); 32495 (M=400). No additive triple for any pair from
-`m,n ≤ 400` (156,988,030 tests). A triple would have lifted to a 7-square magic
-grid — none found. Necessary-condition check, not a proof. Extended exact
-`|Φ(M)|` (closed form, `phi_canonical_check.py`): |Φ(500)|=50765, |Φ(1000)|=202861,
-|Φ(2000)|=811155, |Φ(3000)|=1824231; record max f values follow
-`f(P_k,P_{k−1}) = 1 − 1/P_{2k−1}²` with odd Pell hypotenuses 5,29,169,985,…
-(i.e. maxima occur on Pell pairs; m=2→24/25, m=5→840/841, m=12→28560/28561, …).
-Identity now also verified **symbolically** (`code/out/verify_pell_symbolic.captured.txt`,
-exit 0: sympy norm-factorisation `(a²+b²)²−4ab(b²−a²)=(a²+2ab−b²)²`, exact k=2..39,
-argmax probe to M≤1920); a Pell pair is always **among** the maximisers — the
-argmax is NOT unique (ties at M≤60, M≤960; claim `phi-suprema-are-pell-pairs`,
-corrected from the misnamed uniqueness version).
+M = 10..150; 8156 (M=200); 32495 (M=400); 129870 (M=800); 456137 (M=1500).
+No additive triple for any pair from `m,n ≤ 400` (156,988,030 tests). A triple
+would have lifted to a 7-square magic grid — none found. Necessary-condition
+check, not a proof. Extended exact `|Φ(M)|` (closed form,
+`phi_canonical_check.py`): |Φ(500)|=50765, |Φ(1000)|=202861, |Φ(2000)|=811155,
+|Φ(3000)|=1824231; record max f values follow `f(P_k,P_{k−1}) = 1 − 1/P_{2k−1}²`
+with odd Pell hypotenuses 5,29,169,985,… (m=2→24/25, m=5→840/841,
+m=12→28560/28561, …). Identity verified **symbolically**
+(`verify_pell_symbolic.captured.txt`, exit 0: sympy norm-factorisation
+`(a²+b²)²−4ab(b²−a²)=(a²+2ab−b²)²`, exact k=2..39); a Pell pair is always
+**among** the maximisers — argmax is NOT unique (ties at M≤60, M≤960; claim
+`phi-suprema-are-pell-pairs`, checked).
 
-**The literature's actual computational bound — sourced** (Morgenstern 2013,
-`research/summaries/morgenstern-extended-searches-2013.md`): 3809 instances of
-**three** APs of squares with equal `d` (all odd entries) from complete
-enumeration to `d ≤ 2.4×10¹⁹`; only **5** of three *primitive* APs, none beyond
-`d ≈ 3.31×10¹⁵`; surviving cases reduce to one `d = 71831760` (two grids) plus
-two huge `d`. A true MSS needs **four** APs through the centre with differences
-`u,v,u+v,u−v`. Bound on where arguments must look (10¹⁹–10²²).
+**The literature's actual computational bound — sourced** (Morgenstern 2013):
+3809 instances of **three** APs of squares with equal `d` (all odd entries) from
+complete enumeration to `d ≤ 2.4×10¹⁹`; only **5** of three *primitive* APs,
+none beyond `d ≈ 3.31×10¹⁵`; surviving cases reduce to one `d = 71831760` (two
+grids) plus two huge `d`. A true MSS needs **four** APs through the centre with
+differences `u,v,u+v,u−v`. Bound on where arguments must look (10¹⁹–10²²).
 
-**Two partial sweeps carry their fraction of index covered (directive 16):**
+**Three partial sweeps carry their fraction of index covered:**
 `no_triple_fast_M700`: complete-through-i=40143/99407 (40.4%), prefilter
 survivors 0, exact 0. `prefilter_census_M1000`: i=38006/202861 (18.7%),
-survivors 0. "Survivors 0" over 19% of the index is not "no survivors at
-M=1000" — any claim from either must carry the fraction, or it is asserted
-not checked.
+survivors 0. `side_census_M800`: i=22988/129870 (17.7%), both=0 in the
+covered prefix (11 plus-square, 6 minus-square witnesses there). "Survivors 0"
+over a prefix is not "no survivors at M" — any claim must carry its fraction,
+or it is asserted not checked.
 
 **Witness set values** (exact): Sallows failing diagonal 38307; Bremner magic
 constant 541875, centre 425², non-squares {360721, 222121}, realised AP diffs
 `v=138600`, `u+v=97104` with Pythagorean pairs `(385,180)`, `(408,119)`.
+Bremner grid params (c,u,v) = (180625, −41496, 138600), centre 425².
+
+**TASKS.md blocking programs all run, exit 0** (code/out/commands.log now on
+disk): `verify_two_side_equiv` and `verify_triple_square` (N=300, exact): the
+`two_side` and `triple_square` predicates are EXACTLY equivalent to
+Φ-membership — 0 members failing, 0 non-members passing, 0 fraction
+mismatches; `verify_prefilter` (M=80): both=0 over 252,818 pairs, no
+survivors; `benchmark`: |Φ(800)|=129870, |Φ(1500)|=456137 in 0.69s,
+`in_phi` ~229k/s; `verify_pell_symbolic`: exact, 4 checks PASS. **`ratio_search`
+(M=700): inconclusive — only the startup line was captured, no result within
+budget; do not cite an outcome.**
 
 ## Recalled
 
@@ -363,10 +385,11 @@ Durable memory holds the **Φ no-triple to m,n ≤ 400** (tool-builder run,
 `phi_extend.py`, exact, zero triples) — consistent with this run's code, and it
 is the verified-numerical basis for the conjecture above. Memory also holds
 Bremner 1999 extension-field material (degree-4 and degree-27 examples),
-consistent with this run's source reading. The earlier recalled "4 **distinct**
-7-square non-magic grids in the near-miss box" is **resolved against** by the
-computed oracle (see Contradictions). No other prior-run finding disagrees with
-the Established section.
+consistent with this run's source reading, and the conditional-mss-finite-computation
+reduction (consistent with the claim in CLAIMS.md). The earlier recalled "4
+**distinct** 7-square non-magic grids in the near-miss box" is **resolved
+against** by the computed oracle (see Contradictions). No other prior-run
+finding disagrees with the Established section.
 
 ## Contradictions
 
@@ -376,10 +399,10 @@ the Established section.
   grids); the `{7:4}` count is over all-positive grids with repeats allowed.
   Claim block and raw output are the authority (a scratch prose note claiming 4
   distinct 7-square grids is wrong, as durable memory itself flags).
-- **Approaches status vs. CONTEXT.md's stale "all three proposed"**: resolved in
-  favour of `research/APPROACHES.md` — Brauer–Manin adopted, S-unit and 2-Selmer
-  refuted with reasons; this file now says the same.
-- **Proved-count drift (20→17, directive 17): resolved as deliberate re-classification, not lost claims.** Three claims (`bremner-conjecture-proved`, `n-by-n-mss-exist-for-n-ge-4`, `dgh-uniform-mordell-lang-curves`) have `holds-here: no` — they are true theorems proved by their authors, but do not apply to THIS problem. The `search_claims` re-derivation correctly moved them from `proved` to `asserted` (source-established but not applicable here). This is a tightening of the holds-here/proved intersection, not a bug. Recorded in TASKS.md.
+- **Approaches status vs. stale prose**: `research/APPROACHES.md` is the
+  authority — Brauer–Manin refuted (S(Q) nonempty), S-unit and 2-Selmer refuted
+  with reasons; this file now says the same.
+- **Proved-count drift (20→17, directive 17): resolved as deliberate re-classification, not lost claims.** Three claims (`bremner-conjecture-proved`, `n-by-n-mss-exist-for-n-ge-4`, `dgh-uniform-mordell-lang-curves`) have `holds-here: no` — true theorems proved by their authors, but not applicable to THIS problem. The `search_claims` re-derivation correctly moved them from `proved` to `asserted`. Not a bug; a tightening of the holds-here/proved intersection.
 - `problem.md` frames non-existence as primary while several experts treat
   existence as open both ways; keep one thread on existence.
 
@@ -390,35 +413,31 @@ the Established section.
   checked): no value for HMS's C or any of its three ingredients (DP07, BZ, JS)
   exists on disk; the binding obstruction is DP07 (paywalled, not obtainable
   this cycle). Surviving lane to a number: DP07 Thm 1.13
-  (`dp07-explicit-constant-for-e3-ap`).
+  (`dp07-explicit-constant-for-e3-ap`, open).
 - **`dp07-explicit-constant-for-e3-ap`** (open): the explicit constant from
   David–Philippon 2007 Théorème 1.13, specialised to subvarieties of E³. This
   is the next lane for the effective-C approach — if DP07's constant is small
   enough, C^(1+r) < 3 could become decidable.
-- **Conditional reduction to a finite computation** — the run's best structural
-  output, not yet written as a claim block. See TASKS.md blocking section.
+- **Conditional reduction to a finite computation** — written: claim
+  `conditional-mss-finite-computation`, status conditional (unproved
+  rank-uniform-boundedness premise), `code/out/conditional_reduction_claim.md`.
+- **`magic-variety-is-surface-no-lines` still asserted** — the direct
+  computation (X⊂P⁸ cut by 7 homogeneous line-sum equations: dim=2, 256
+  singular points, no lines) is TASKS.md's first blocking item and has NOT been
+  run; the claim may move to `checked` only after that output exists. The
+  adopted `resolve-magic-surface-birational` line waits on it.
 - **Rank of the Robertson curve** `E_c: y² = x(x²−c²)` for candidate AP-difference c
   (c ∈ {u,v,u+v,u−v} — not the centre e²): for Bremner's witness c=138600,
   rank(E_c)=2, torsion order 4. A putative MSS needs a length-3 AP of doubled
   points (all three realised); can we bound rank(E_c) for such c?
 - **Φ-triple beyond m,n ≤ 400** — absence is verified-numerical, not a proof;
   natural falsifier is a Φ-triple found beyond the range.
-- **Exact reduction unanchored end-to-end**: the curve/K3 correspondence
-  "rational point ⇒ distinct positive integer square solution" is not a claim block.
-- **The eight-square sub-question**: no example known, no proof. Bremner's
-  7-square witness has exactly two half-realised endpoints; going 7 → 8 means
-  realising one more.
-- **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
-  paper is now 78KB; the auto-generated summary still needs proper scholar
-  digestion.enerated summary still needs proper scholar
-  digestion.; can we bound rank(E_c) for such c?
-- **Φ-triple beyond m,n ≤ 400** — absence is verified-numerical, not a proof;
-  natural falsifier is a Φ-triple found beyond the range.
-- **Exact reduction unanchored end-to-end**: the curve/K3 correspondence
-  "rational point ⇒ distinct positive integer square solution" is not a claim block.
 - **The eight-square sub-question**: no example known, no proof. Bremner's
   7-square witness has exactly two half-realised endpoints; going 7 → 8 means
   realising one more.
 - **Wu 2103.01784 re-downloaded — source is real, digest is not.** The full
   paper is now 78KB; the auto-generated summary still needs proper scholar
   digestion.
+- **`ratio_search` (M=700) inconclusive** — captured only the startup line
+  within budget; a rerun with a larger budget, or a statement that it is not
+  worth one, is still owed if that line is cited anywhere.
