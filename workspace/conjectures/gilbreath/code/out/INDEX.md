@@ -22,7 +22,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check-block-protection.py` | Boundary protection lemma verifier. |
 | `check_A089582_crosscheck.py` | Cross-checks the run's own second-entry sequence A_k(1) against the OEIS catalogue A089582 (105 terms). Verifies the oracle generator against an independent catalogue source. |
 | `check_edge_zero_run.py` | _(undescribed)_ |
+| `check_fwd_diff_identity.captured.txt` | _(undescribed)_ |
 | `check_fwd_diff_identity.py` | _(undescribed)_ |
+| `check_fwd_diff_identity_sampled.captured.txt` | _(undescribed)_ |
 | `check_reduction.captured.txt` | Output of `check_reduction.py`: reduction facts hold for k=1..599. |
 | `check_reduction.py` | Per-row check of the reduction facts. |
 | `check_regenerate_lemma.captured.txt` | Output of `regeneration/check_regenerate_lemma.py` (sieve 20M, depth 1000): the regeneration criterion `A_{k+1}[b_k] ∈ {0,2} ⟺ (e_k==2 and c_k==4)` and `b_{k+1}≥b_k ⟺ (e_k==2 and c_k==4)` holds with ZERO failures over all 998 transitions; 60 regeneration events. Supersedes/corrects the earlier refutation note (which had an off-by-one in the edge index). |
@@ -30,10 +32,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_runcount_lemma.captured.txt` | _(undescribed)_ |
 | `check_runcount_lemma.py` | _(undescribed)_ |
 | `check_runcount_lemma_class.captured.txt` | _(undescribed)_ |
-| `directive24_compute.captured.txt` | Output of `directive24/compute_width_degradation_and_growth.py`: (a) flooring(r)=(W−r−1)−b[r−1], k*=162 = first row with flooring<1000 (flooring drops 176,182→0 exactly, all rows 162..1000 have flooring=0); flooring at the 13 giant event rows (all genuine gaps, i=161 capped); (b) geometric-vs-linear fit of the 12 genuine (and all-13) post-jump blocks: GEOMETRIC wins, slope +0.519764, R²=0.943852 vs linear 0.783043, doubling factor 1.6816/event; per-step ratios; exact Fraction fits. |
-| `directive24_verify.captured.txt` | Independent numpy verification of the directive24 compute: k*=162, flooring(r)=0 on all 839 rows 162..1000, 13/13 giant landing floors match the characterization table, 43 b-increasing steps with exactly the 13 giants having jump>1000, both fits reproduced to 6 decimals. |
-| `directive24_width_degradation.md` | Markdown finding (a): width-degradation caveat. k*=162; all measurements at rows ≥162 are LOWER BOUNDS (block glued to finite right edge from row 162); the 12 genuine giants all have event-row flooring ≥ 536,885 — none width-limited; first row past each giant with flooring<1000 is row 162 for all 13; table of 13 event rows with exact b_i, b_{i+1}, floors. |
-| `directive24_geometric_growth.md` | Markdown finding (b): geometric growth test. Geometric fit (log b vs event index) beats linear fit on both the 12 genuine giants (R² 0.9439 vs 0.7830; slope +0.519764; ×1.6816/event, doubling every ≈1.33 events) and all 13 (R² 0.9421 vs 0.8072); per-step ratios, residuals, caveats (12-point sample, description not proof). |
 | `cht_hyp_check.captured.txt` | _(undescribed)_ |
 | `cht_hyp_check.notes.md` | _(undescribed)_ |
 | `cht_hypotheses.captured.txt` | _(undescribed)_ |
@@ -43,9 +41,16 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `conditional_rate_experiment.notes.md` | _(undescribed)_ |
 | `conditional_rate_records.jsonl` | _(undescribed)_ |
 | `conditional_rate_smoke.txt` | Smoke run at D=40/W=20000 that exposed the oracle prefix-width mismatch (task short lists vs problem.md 12-entry rows); superseded by the corrected full run (conditional_rate_experiment.captured.txt). Kept for the fix record. |
+| `directive24_compute.captured.txt` | Output of `directive24/compute_width_degradation_and_growth.py`: (a) flooring(r)=(W−r−1)−b[r−1], k*=162 = first row with flooring<1000 (flooring drops 176,182→0 exactly, all rows 162..1000 have flooring=0); flooring at the 13 giant event rows (all genuine gaps, i=161 capped); (b) geometric-vs-linear fit of the 12 genuine (and all-13) post-jump blocks: GEOMETRIC wins, slope +0.519764, R²=0.943852 vs linear 0.783043, doubling factor 1.6816/event; per-step ratios; exact Fraction fits. |
+| `directive24_geometric_growth.md` | Markdown finding (b): geometric growth test. Geometric fit (log b vs event index) beats linear fit on both the 12 genuine giants (R² 0.9439 vs 0.7830; slope +0.519764; ×1.6816/event, doubling every ≈1.33 events) and all 13 (R² 0.9421 vs 0.8072); per-step ratios, residuals, caveats (12-point sample, description not proof). |
+| `directive24_verify.captured.txt` | Independent numpy verification of the directive24 compute: k*=162, flooring(r)=0 on all 839 rows 162..1000, 13/13 giant landing floors match the characterization table, 43 b-increasing steps with exactly the 13 giants having jump>1000, both fits reproduced to 6 decimals. |
+| `directive24_width_degradation.md` | Markdown finding (a): width-degradation caveat. k*=162; all measurements at rows ≥162 are LOWER BOUNDS (block glued to finite right edge from row 162); the 12 genuine giants all have event-row flooring ≥ 536,885 — none width-limited; first row past each giant with flooring<1000 is row 162 for all 13; table of 13 event rows with exact b_i, b_{i+1}, floors. |
+| `edge_sliding_independent.captured.txt` | _(undescribed)_ |
+| `edge_sliding_timing.captured.txt` | _(undescribed)_ |
 | `erosion_dynamics.captured.txt` | Output of `pattern/erosion_dynamics.py`: erosion-step predictions 101/101 and the regen trigger (x,y)=(2,4) verified 60/60. |
 | `erosion_run_ends.captured.txt` | _(undescribed)_ |
 | `erosion_run_predictor.captured.txt` | _(undescribed)_ |
+| `event_gap_analysis.captured.txt` | _(undescribed)_ |
 | `event_rate_smoke.captured.txt` | _(undescribed)_ |
 | `event_rate_stats.jsonl` | _(undescribed)_ |
 | `event_rate_sweep.captured.txt` | _(undescribed)_ |
@@ -69,6 +74,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
 | `pattern_finder_boundary.captured.txt` | _(undescribed)_ |
+| `pattern_finder_cycle_floor.captured.txt` | _(undescribed)_ |
 | `regen_c4_check.captured.txt` | Earlier regeneration-trigger check (superseded by erosion_dynamics and regeneration_* outputs). |
 | `regen_mechanism.captured.txt` | Earlier regeneration-mechanism probe (superseded). |
 | `regeneration_analysis.captured.txt` | Output of `pattern/regeneration_analysis.py`: the 60-event table, rate buckets, histograms, runs test, minima. |
