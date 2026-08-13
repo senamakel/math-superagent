@@ -97,13 +97,30 @@
       by rank/doubling computation on the witness (see report). Corrected: the
       Robertson curve's c is the anti-diagonal AP difference (c=138600 for the
       witness), NOT the centre e².
-- [ ] **BLOCKER 2: Scholar to digest the re-downloaded Wu paper.** The file
-      `research/sources/wu-non-invariance-brauer-manin.full.md` is now 78KB of
-      real content.  Read it, replace the auto-generated digest in
-      `research/summaries/wu-non-invariance-brauer-manin.md`, and either (a)
-      confirm the claim `wu-bm-noninvariance-under-base-change` with the exact
-      theorem statement and its conditional hypothesis (Stoll's conjecture),
-      or (b) drop the claim and mark it as `status: dropped` with the reason.
+- [x] **BLOCKER 2: Scholar to digest the re-downloaded Wu paper.** DONE this
+      run (research). The full.md is the complete real paper (78.9KB, 2103.01784v3);
+      claim `wu-bm-noninvariance-under-base-change` corrected: (1) Theorem 4.1.7's
+      surface satisfies weak approximation off the ARCHIMEDEAN places oo_K (was
+      'finite places' — inverted), and fails it off every finite subset T of
+      Omega_L; (2) Theorem 4.2.9 is a second distinct family re the Hasse
+      principle (BM-explained vs not under base change); (3) hypothesis is
+      Conjecture 3.0.1 (Stoll) over K, unconditional for K=Q,L=Q(i). Holds-here:
+      no (generic pencils, not Bremner's S). Summary note and CLAIMS.md updated.
+- [x] **k3_surface_checks.py exact rewrite (judge-mandated).** DONE this run
+      (tool_builder). Now exact integer/sympy arithmetic; regression-tests the
+      known integral point P=(345,196,-304,255,-396,-25); both routes (rewritten
+      + k3_surface_check2.py) agree on the identical 64-point set over box 700.
+      AMS: S(Q) is NONEMPTY — no Brauer-Manin obstruction can prove S(Q)=∅, so
+      `brauer-manin-k3-surface` is closed outright. Capture
+      `code/out/k3_surface_checks_exact.captured.txt`, EXIT_CODE=0.
+- [x] **Run the seven never-executed phi p-adic/modular programs.** DONE this
+      run (tool_builder). All captured under timeout 540 + tee, EXIT_CODE=0, no
+      timeouts; parallelised phi_padic_closure_all (self-check PASS, Phi(200)=8156
+      matches serial). No obstruction: achievable residue set of Phi additively
+      closed at every prime-power tested (p=2,3,5,7,11,13,17,19,23,29,31, mod up
+      to 2000); v2(q)>=3, v3(q)>=1; mod 3/5 collapse to {0}. Falsified against
+      both witnesses via exact verifier — none forbids a near-miss. Frontier
+      closed as a proof route.
 - [ ] scholar: process the Garcia-Fritz-Pasten and Rome-Yamagishi papers into
       claim blocks. Garcia-Fritz-Pasten 2026 (arXiv:2604.04850) establishes
       Bremner's rank conjecture unconditionally (Theorem 1.8: AP length ≤
