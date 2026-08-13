@@ -9,7 +9,7 @@ conjecture at any finite precision. **Stop sieving**: `sieve_structure.py`
 enumerating `A_k` explicitly is data no longer needed, and `|A_k|` is now a
 theorem rather than a table.
 
-## 1. Formalise the lifting theorem in Lean 4 — DONE (proved, needs machine check)
+## 1. Formalise the lifting theorem in Lean 4 (theorem is proved on paper; this makes it machine-checked)
 
 The three lemmas are about orders in `(Z/3^k)^×` and an affine bijection of
 `Z/3`. This is well within Mathlib's reach and a machine-checked version is a

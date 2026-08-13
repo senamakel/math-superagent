@@ -1,0 +1,12 @@
+LIB "normal.lib";
+ring r=0,(x,y),dp;
+poly f1 = x^3 + y^3 - 1;
+ideal I1 = f1;
+"genus cubic:", genus(I1);
+poly f4 = x^4 + y^4 - 1;
+ideal I4 = f4;
+"genus quartic:", genus(I4);
+poly C3 = x*(x-1)*(x-2)/6;
+poly f23 = y*(y-1) - 2*C3;
+ideal I23 = f23;
+"genus k1=3,k2=2:", genus(I23);
