@@ -92,11 +92,11 @@ def main():
         print(f"  n={n}: min self-preservation {mn} (expected {n+1}), "
               f"max {mx}, #distinct {len(depths)} -> {dict(sorted(depths.items()))}")
 
-    print("\nInterpretation: the minimum is always n+1 (sharp); patterns with a "
-          "larger self-preservation depth are places the {0,2} regime REGENERATES "
-          "for free, which is exactly the mechanism the run's regeneration-rate "
-          "question is about.")
-
+    print("\nInterpretation: the MINIMUM is always n+1 (sharp, confirmed). The maximum"
+          " and the spread depend on the tail chosen here (an all-4 even tail that the"
+          " operator itself reduces toward {0,2}): they are NOT block-determined. They"
+          " illustrate the regeneration mechanism rather than measure it — the extra"
+          " rows past k+n come from the boundary, which the lemma does not control.")
 
 if __name__ == "__main__":
     main()
