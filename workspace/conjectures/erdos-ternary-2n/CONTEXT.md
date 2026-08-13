@@ -67,8 +67,9 @@ existing method stalls.
 - `|A_k| = 2^(k-1)` **exactly** for `k = 1..26` (lifting, checked against full
   sieve for k ≤ 8; `code/out/sieve_lift.captured.txt`, `sieve_structure`). The
   count is a theorem, not a trend.
-- Surviving classes at k=8 listed explicitly in `code/out/sieve_structure.captured.txt`.
+- Surviving classes at k=8 (and full lists k=1..8) in `code/out/sieve_structure.captured.txt`; the witnesses 0,2,8 stay in `A_k` at every level.
 - Verification bound `n ≤ 2·3^45 ≈ 5.9×10^21` (Saye, asserted).
+- **Compute cost fact:** sieving by materialising `A_k` as a set cost `k=26` → 333s and 2.1 GiB. **Do not re-sieve that way** — use the 2-to-1 lifting (or Saye's Θ(2^K) recursion) instead; the lifting/machine check up to k=26 is already done. (`research/threads/lifting-proof.md`)
 
 ## Recalled (durable memory from earlier runs — corroborates, not this run's own)
 
