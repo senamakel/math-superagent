@@ -61,23 +61,14 @@ rows. So the statement is true numerically, but Granville's proof is incomplete 
 it skips the case that is universal. The lemma must be re-derived with the δ=0 case
 handled, before anything cites it.
 
-```claim
-id: lemma54-discarded-delta0-case-is-universal
-statement: Granville's Lemma 5.4 proof discards the case that some delta_{k-1}(q_n) = 0 occurs inside the {0,2} gray block. On the real prime rows (n = 20..2500, sieve 2e6) this discarded case occurs in 100% (2480/2480) of rows, yet the Lemma 5.4 statement still holds everywhere: the iff (v_n <= 2*nu_2+2  <=>  success) has 0 violations and the weakened sufficiency (g*_n <= 2*nu_2+2  =>  success) has 0 violations across all rows. So the lemma's statement is numerically true on the primes but its proof is incomplete — it waves through the very case that is universal — and must be re-derived with the delta=0 case handled explicitly before being cited.
-hypotheses: primes below 2e6; delta_k(q_n)=A_k[n-k]; 0-2 cycle = maximal {0,2} suffix of the diagonal body; success = delta_n(q_n)=1 (leading entry of the row is 1); exact integer arithmetic
-holds-here: yes
-status: checked
-bearing: the run must NOT cite Granville 2026 Lemma 5.4 as proved; the statement survives (numerically) as a budget-inequality analogue, and the delta=0 case is a concrete correction to make. Also flags the paper as a direction worth keeping despite its non-peer-reviewed provenance.
-anchor: code/out/lemma54_iff_check.captured.txt, research/notes/granville-2607-04166-actually-read.md
-```
-
 ## Bottom line
 
 **Do not cite the paper as a proof** (Theorem 5.5 is conditional on Granville's own
 unproved Conjecture 5.1, and Lemma 5.4's proof is incomplete — it discards a
-universal case). **Do keep the reduction.** Lemma 5.4 restates the run's recharge
-budget inequality with the *prime gap* on the demand side, and Theorem 5.5 turns the
-whole problem into a density bound on `nu_2` (2s in a diagonal), which empirically
-holds with huge margin (`nu_2 ~ n/2` vs the needed `n^0.525`). The `g*_n` demand side
-is unconditional via Baker–Harman–Pintz. This is a genuine reduction worth recording,
-not a crank to discard.
+universal case; see the separate note `research/notes/lemma54-discarded-case-is-universal.md`
+and its claim `lemma54-discarded-case-universal`). **Do keep the reduction.** Lemma 5.4
+restates the run's recharge budget inequality with the *prime gap* on the demand side,
+and Theorem 5.5 turns the whole problem into a density bound on `nu_2` (2s in a
+diagonal), which empirically holds with huge margin (`nu_2 ~ n/2` vs the needed
+`n^0.525`). The `g*_n` demand side is unconditional via Baker–Harman–Pintz. This is a
+genuine reduction worth recording, not a crank to discard.
