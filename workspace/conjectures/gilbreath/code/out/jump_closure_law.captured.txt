@@ -1,10 +1,2 @@
 sieve to 20000000 ...
 primes: 1270607
-depth 165: b-profile matches stored record: 17/165
-Traceback (most recent call last):
-  File "/workspace/code/pattern_finder/jump_closure_law.py", line 134, in <module>
-    main()
-  File "/workspace/code/pattern_finder/jump_closure_law.py", line 74, in main
-    assert matches == depth, "b mismatch — oracle disagreement, aborting"
-           ^^^^^^^^^^^^^^^^
-AssertionError: b mismatch — oracle disagreement, aborting

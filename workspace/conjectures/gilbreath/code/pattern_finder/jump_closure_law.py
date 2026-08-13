@@ -69,7 +69,7 @@ def main():
             # also compute next for the record? not needed
             pass
     # compare stored block profile
-    matches = sum(1 for k in range(depth) if b_rec[k] == sb[k + 1])
+    matches = sum(1 for k in range(depth) if b_rec[k] == sb[k])
     print(f"depth {depth}: b-profile matches stored record: {matches}/{depth}")
     assert matches == depth, "b mismatch — oracle disagreement, aborting"
 

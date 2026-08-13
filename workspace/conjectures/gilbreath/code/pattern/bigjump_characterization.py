@@ -61,7 +61,8 @@ def main():
     assert data["num_primes"] == W, "prime count mismatch"
     b, s, intr = data["b"], data["s"], data["intruder"]
     D = data["D"]
-    assert len(b) == D + 1 and len(s) == D + 1 and len(intr) == D + 1, "array lengths"
+    # arrays hold rows A_1..A_D (array index r-1 == row r), so length == D
+    assert len(b) == D and len(s) == D and len(intr) == D, "array lengths"
     print(f"sieve limit = {data['sieve_limit']:,},  W = {W:,} primes,  "
           f"D = {D} rows (A_0..A_{D})")
     print(f"JSON: b[0] = b_1 = {b[0]:,},  max b = {data.get('max_block'):,},  "
