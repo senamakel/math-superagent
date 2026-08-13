@@ -17,7 +17,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `famD.sing` | _(undescribed)_ |
 | `full_grid.sing` | Full grid 2<=k1,k2<=12 (Singular). Output matches Sage. |
 | `genus_table.py` | **Library**: verified genus table + closed forms for the {2,n},{3,n},{4,n} families; the deliverable's source of exact genus values. |
-| `repro_integrality.py` | _(undescribed)_ |
+| `repro_integrality.py` | Independent machine re-check of the genus-closed-form integrality lemma over the full range 1 <= m, n <= 799 with a per-parity-class breakdown, exact integer arithmetic (N(m,n) = (m-1)(n-1)+1-gcd(m,n) even, so g = N/2 always integral), plus agreement of the two algebraic forms on 1..399. Verified: EXIT_CODE=0, 638401 pairs, ZERO odd values in any of the four parity classes, both forms agree 159201/159201; capture code/out/integrality_reproduced.captured.txt closes TASKS.md item 4. |
 | `sage_check_k2_6.py` | _(undescribed)_ |
 | `small_column_genus_forms.md` | _(undescribed)_ |
 | `spotcheck_new_pairs.sing` | Job-2 spot check of the closed genus formula g(m,n)=((m-1)(n-1)+1-gcd(m,n))/2 at three pairs absent from genus_table.py TABLE and all captures: (11,17), (11,20), (12,20). Same incantation as full_grid.sing (ring r=0,(x,y),dp; poly CB; degree-max(m,n) curve; normal.lib genus). All three PASS with Singular genus 80/95/103, cross-verified by an independent Python computation of the formula. |
