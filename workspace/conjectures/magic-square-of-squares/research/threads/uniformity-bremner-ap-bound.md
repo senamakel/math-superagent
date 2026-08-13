@@ -3,10 +3,10 @@
 ```thread
 question: Does the Garcia-Fritz–Pasten theorem (Theorem 1.8: AP length ≤ C^(r+1) on
   elliptic curves) combine with the Robertson reduction to give a finiteness
-  result for the 3×3 MSS?  Specifically: a full MSS requires an AP of length 4
+  result for the 3×3 MSS?  Specifically: a full MSS requires an AP of length 3
   on the Robertson curve E_e: y² = x(x²−e⁴).  If rank(E_e) can be bounded from
-  above by something provably small, then length-4 APs may be ruled out by the
-  C^(r+1) bound.
+  above by something provably small, then length-3 APs may be ruled out by the
+  C^(r+1) bound if C can be made effective and small enough.
 
 status: open
 
@@ -16,21 +16,28 @@ rests_on:
   - height-uniform-mordell (Dimitrov–Gao–Habegger 2020)
   - uniform-mordell-lang (Gao–Ge–Kühne 2021)
 
+resolved-questions:
+  - doubled-point-x2P: RESOLVED 2026-08-13 (director, from the paper on disk).
+    GFP §1.1 defines an AP as "a sequence of points P₁,…,P_M in E(Q) whose
+    x-coordinates… form a non-trivial arithmetic progression in Q." The Robertson
+    reduction requires an AP of x(2Qᵢ) with Qᵢ ∈ E(Q). Since 2Qᵢ ∈ E(Q), set
+    Pᵢ = 2Qᵢ — the GFP theorem bounds every AP in E(Q) including those from
+    doubled points. No mismatch. The approach is sound on definitions.
+
 immediate-steps:
   1. Determine the exact form of the Robertson curve for an MSS centre e.
-     The reduction: an AP x₁, x₂, x₃, x₄ on E_e: y² = x(x²−e⁴) with
-     xᵢ, xᵢ±e² all squares.  This is not quite "points in AP" in the usual
-     sense — verify the exact statement.
+     The reduction: three points of 2E(Q) on E: y² = x(x²−c²) with
+     x-coordinates in AP.  (X,Y) ∈ 2E(Q) iff {X, X±c} are all rational squares.
   2. What is known about rank(E_e) when e = lcm(mᵢ²+nᵢ²) for a putative
      Φ-quadruple?  The K3 surface in Bremner II gives NS rank 12; does this
      bound the rank of the specialised elliptic curve?
   3. The constant C in Theorem 1.8 is NOT explicit in the Garcia-Fritz–Pasten
-     paper — it comes from Rémond's quantitative Mordell–Lang bounds.  The
-     Dimitrov–Gao–Habegger constant c(g,d) for genus 2, d=1 is also not
-     explicit.  So the bound is ineffective for computation.  Still, if
-     r ≤ some small number (say ≤ 3) and C is moderate, the bound C^(r+1)
-     might still allow length 4 — need to know whether C could be as small as
-     ~2 or ~3, or whether it's astronomically large.
+     paper — it comes from Rémond's quantitative Mordell–Lang bounds as made
+     height-uniform by Gao–Ge–Kühne. The Dimitrov–Gao–Habegger constant c(g,d)
+     for genus 2, d=1 is also not explicit. So the bound is ineffective for
+     computation. Even if C were explicit, it's almost certainly >> 3, so
+     C^(r+1) would permit length-3 APs for any plausible r.  The theorem
+     reframes the problem as bounding rank(E_e) but does not close it.
   4. Alternative: Theorem 1.2 gives a conditional result: *if* ranks of
      elliptic curves over Q are uniformly bounded, *then* so are AP lengths.
      The uniform rank boundedness conjecture is widely believed (Park–Poonen–
@@ -40,17 +47,17 @@ immediate-steps:
      3×3 MSS conjecture is decidable by finite computation."
 
 risks:
-  - The constant C may be so large that C^(r+1) > 4 for any plausible r,
-    giving no contradiction.
-  - The Robertson reduction may require points in 2E(Q) (x-coordinates of 2P),
-    not arbitrary rational points, and the Garcia-Fritz–Pasten theorem is
-    about *all* rational points — but that only helps, since 2E(Q) ⊆ E(Q).
-  - "AP" in the Garcia-Fritz–Pasten sense means x-coordinates of distinct
-    rational points form an AP.  The Robertson reduction requires specific
-    x-coordinates — need to match the definitions precisely.
+  - The constant C is ineffective — no numerical contradiction can be extracted
+    from Theorem 1.8 alone.  C^(r+1) is almost certainly >> 3 for any plausible
+    rank.
+  - The MSS requires an AP of length 3, which is the minimal non-trivial length;
+    even a moderate C gives C^(r+1) ≥ C² ≥ 4 for r ≥ 1, so length-3 is never
+    excluded.
+  - The conditional reduction to a finite computation (Theorem 1.2) is genuine
+    but the computation is likely beyond reach.
 
-next: spawn scholar to claim-block the Garcia-Fritz–Pasten paper, then symbolic_math
-  to write the Robertson curve and the AP condition as exact polynomial equations,
-  then research to find the smallest known rank of E_e for small e with many
-  representations as sum of two squares.
+next: scholar to claim-block the GFP paper with exact theorem statements;
+  symbolic_math to write the Robertson curve and AP condition as exact
+  polynomial equations; research to find rank(E_e) for small e with many
+  sum-of-two-squares representations.
 ```
