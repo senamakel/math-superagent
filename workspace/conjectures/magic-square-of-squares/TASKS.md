@@ -63,10 +63,14 @@
       The doubled-point question is settled: GFP §1.1 defines AP as x(Pᵢ)
       for Pᵢ ∈ E(Q), and 2Qᵢ ∈ E(Q), so no mismatch. Risk: C is ineffective,
       so C^(r+1) is not computable and almost certainly >> 3.
-- [ ] Run the remaining phi programs (NOT the Faltings fibre route — that
+- [x] Run the remaining phi programs (NOT the Faltings fibre route — that
       is settled and closed, genus 0 on all fibres). `code/phi_canonical_check.py`
       and `code/phi_identity_verify.py` verify the sin(4 arctan) form and Φ
-      algebraic identities; run them and capture output.
+      algebraic identities; captures at `code/out/phi_canonical_check.py.captured.txt`
+      and `code/out/phi_identity_verify.py.captured.txt`. Both exit 0, all
+      structural claims survive (one cosmetic bug in verify_phi_doubling, one
+      range-truncation artifact in phi_canonical_check, one genuinely false
+      bound in phi_identity [5b] — all reported in `code/out/phi_program_runs.txt`).
 - [ ] research: establish Bremner reduction, real computational bound,
       restricted classes, near-miss provenance; write research/ROOT.md.
 - [ ] Establish ~1 structural impossibility lemma (extra-hypothesis partial

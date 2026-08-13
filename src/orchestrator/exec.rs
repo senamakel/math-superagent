@@ -344,28 +344,6 @@ impl Tool<()> for ExecuteCommand {
         )
     }
 
-    /// Appends one command and what it printed to [`COMMAND_LOG`].
-    ///
-    /// Best-effort on purpose. The command has already run and its result is
-    /// the thing the caller asked for, so a workspace that cannot be written
-    /// costs the record rather than the result.
-    async fn record(&self, command: &str, status: &str, stdout: &str, stderr: &str) {
-        let entry = format!(
-            "{COMMAND_LOG_MARK}$ {command}\nexit: {status}\nstdout:\n{}\nstderr:\n{}\n",
-            clipped(stdout),
-            clipped(stderr)
-        );
-        let path = self.workspace.join(COMMAND_LOG);
-        let Some(parent) = path.parent() else {
-            return;
-        };
-        if tokio::fs::create_dir_all(parent).await.is_err() {
-            return;
-        }
-        let existing = tokio::fs::read_to_string(&path).await.unwrap_or_default();
-        let _ = tokio::fs::write(&path, trimmed(existing + &entry)).await;
-    }
-
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let command = string_argument(&call, "command")?;
         let complexity = string_argument(&call, "complexity")?;

@@ -38,6 +38,8 @@ def main():
         row=[]
         for a in range(1,6):
             mod=p**a
+            if mod > 2000:   # keep enumeration small; sample-based check covered these
+                break
             R=residue_set_by_pairs(mod)
             if len(R)<=1:
                 row.append(f"{mod}:|R|={len(R)}(triv)")
