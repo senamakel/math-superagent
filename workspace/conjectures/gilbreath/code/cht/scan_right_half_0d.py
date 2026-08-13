@@ -59,14 +59,13 @@ ORACLES = {
 
 def longest_run(mask):
     """Length of the longest run of True in a boolean numpy array."""
-    if mask.size == 0:
-        return 0
-    if not mask.any():
+    if mask.size == 0 or not mask.any():
         return 0
     m = mask.view(np.int8)
     d = np.concatenate(([0], m, [0]))
-    sd = np.flatnonzero(d == 1)
-    ed = np.flatnonzero(d == -1)
+    dd = np.diff(d)
+    sd = np.flatnonzero(dd == 1)
+    ed = np.flatnonzero(dd == -1)
     return int((ed - sd).max())
 
 
