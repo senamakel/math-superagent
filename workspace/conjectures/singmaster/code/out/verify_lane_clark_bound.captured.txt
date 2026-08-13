@@ -1,0 +1,15 @@
+=== Check 1: Lane Clark binomial bound vs witnesses.json ===
+  a=     120  N(a)=6   2log2(a)+2=   15.814  [OK]
+  a=     210  N(a)=6   2log2(a)+2=   17.428  [OK]
+  a=    1540  N(a)=6   2log2(a)+2=   23.177  [OK]
+  a=    3003  N(a)=8   2log2(a)+2=   25.104  [OK]
+  a=    7140  N(a)=6   2log2(a)+2=   27.603  [OK]
+  a=   11628  N(a)=6   2log2(a)+2=   29.011  [OK]
+  a=   24310  N(a)=6   2log2(a)+2=   31.139  [OK]
+  overall: PASS
+
+=== Check 2: re-derive bound (brute force over 2<=a<=60) ===
+  brute-force check: PASS
+
+RESULT: all checks pass
+EXIT_CODE=0
