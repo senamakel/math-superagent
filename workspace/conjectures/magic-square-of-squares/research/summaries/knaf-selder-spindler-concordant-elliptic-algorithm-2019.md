@@ -62,3 +62,13 @@ side* of the MSS problem, not an obstruction.
 (Bremner's K3 already encodes all that data). Useful as the citation that **single-AP
 concordant-form solutions are computable and large**, framing the four-AP
 simultaneity as the crux. Does not resolve the additive-relation obstruction.
+
+```claim
+id: concordant-single-ap-solutions-computable-large
+statement: For the congruent-number curves E_{M,N}: y²=x(x+M)(x+N) (M=pk>0, N=−qk<0, (p,q)=1, k squarefree), an explicit quadratic-complexity 2-descent + quadric-parametrization algorithm finds smallest concordant-form solutions (equivalently smallest 3-term APs of rational squares of a given step) whose coordinates can reach 70–80 digits quickly; no termination/height bound is known.
+hypotheses: E has full 2-torsion; the strong algorithm additionally needs a separated-variables solution with one coordinate zero (fails, e.g., for primes k≡23 mod 24).
+holds-here: yes — frames why four simultaneous APs is hard: each individual AP is satisfiable by computable but astronomically large coordinates; only the shared-middle/additive-link constraint is the obstruction.
+evidence: source computation (Knaf–Selder–Spindler Table 1: primes k≡5 mod 8 up to 613, up to 79-digit coordinates; Table 2: rank-2 2π/3-congruent 2ℓ examples with three independent solutions).
+bearing: precedent against re-deriving the 2-descent machinery (subsumed by Bremner II K3 data per simultaneous-congruent-numbers-2selmer refutation); no new obstruction.
+anchor: research/summaries/knaf-selder-spindler-concordant-elliptic-algorithm-2019.md
+```

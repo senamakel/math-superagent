@@ -81,3 +81,13 @@ four-AP* question that `problem.md` names as one to settle early.
   curve E(−d,d)` — *this is the standard identification, matches `phi-universal-set`
   (checked by this run, exact).* This source is the citation for the concordant-forms
   direction, not the MSS obstruction.
+
+```claim
+id: concordant-forms-iff-ell-torsion-order-2
+statement: Euler's concordant forms X²+mY², X²+nY² (m<0<n, m=−pk, n=qk, (p,q) coprime, k squarefree) are concordant — there is a 3-term AP of rational squares of step k whose ends are pk and qk from the middle — if and only if the elliptic curve E(m,n): y²=x(x+m)(x+n) has a rational point of order greater than 2 (finite or infinite).
+hypotheses: m≠n nonzero; m<0<n; p,q coprime; k squarefree; nontriviality = Y≠0.
+holds-here: yes — each MSS centre-AP (middle e², ends e²±d) is a concordant-form instance with p=q=1, k=d, on the congruent-number curve E(−d,d): y²=x³−d²x. So every satisfied AP-difference d in the run's S(e) set is equivalent to a rational point of order >2 on E(−d,d).
+evidence: proved (Selder–Spindler Thm 2.2).
+bearing: anchors the run's phi-universal-set / four-AP dictionary to a complete published torsion classification; the order-4 case (Thm 4.7: AP contains 0 ⟺ isosceles ⟺ 4-torsion) gives a concrete torsion meaning to Bremner's witness having exactly two fully-realised differences. Provides no obstruction for the additive relation u,v,u+v,u−v, which is the actual crux.
+anchor: research/summaries/selder-spindler-theta-congruent-concordant-2014.md
+```

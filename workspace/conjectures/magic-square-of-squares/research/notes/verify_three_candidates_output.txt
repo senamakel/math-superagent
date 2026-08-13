@@ -1,0 +1,81 @@
+# Structural checks on the three candidate approaches (analytic, exact)
+
+Derived by elementary algebra (sympy-verifiable identities), not by numerical search.
+Each is a closed-form algebraic fact, so no oracle is involved. Where a claim in a
+candidate is a *number* it is checked below against a standard reference instead.
+
+## Candidate 3 — Richardson orbits / PVS
+
+- The two-sided action (SL3 × SL3) on M3 (matrices), (A,B)·M = A·M·B⁻¹, has
+  det(A·M·B⁻¹) = det(M) · det(A) · det(B)⁻¹ = det(M) for SL3. So det is a *relative
+  invariant* whose zero locus {det M = 0} is exactly the complement of the open dense
+  orbit {invertible matrices}. Hence **(SL3 × SL3, M3) IS a prehomogeneous vector
+  space** — the PVS premise of the candidate is correct (Sato–Shintani / Sato–Kimura
+  classification; the "regular representation" type).
+- The magic subspace: matrices commuting with J₃ = all-ones. J₃ has eigenvalues
+  (3, 0, 0), i.e. is **semisimple**. Its centraliser has dimension 3 (spanned by
+   I, J₃, and the cyclic-permutation matrix — equivalently the parametrisation
+  (c,u,v)); commuting with a semisimple element gives a **reductive** centraliser,
+  **not** a nilpotent/Richardson orbit. Richardson orbits parametrise nilpotent
+  conjugacy classes; the magic subspace is a linear subspace, not an SL₃-orbit at all.
+  So the "regular nilpotent orbit closure" and "Richardson orbit" claims fail.
+- The nine-square condition is not an expression of PVS relative invariants: the
+  relative invariants of this PVS are det (and powers), whereas "each of nine entries
+  is a square" is a coordinate condition with no PVS interpretation.
+- The subsequent chain (period map of an isomonodromic deformation → ball quotient →
+  André–Oort finiteness of rational points → Bring curve / Q(√5)) is ungrounded in any
+  source and would, if it worked, prove far too much: it cannot separate Q from the
+  proper extension fields Q(√3,√133)/Q over which MSS provably exist
+  (this run's `extension-field-mss-exist`). A form of Andre–Oort for curves in Hilbert
+  modular varieties is real (Yafaev; Binyamini–Masser effective version) but has
+  nothing to do with the MSS.
+
+## Candidate 2 — four 4-isogenies on the CM curve
+
+- E_n: y² = x³ − n²x has exactly three rational 2-torsion points (0,0), (±n,0)
+  (LMFDB congruent-number-curve knowl). It lies in a **four-curve isogeny class
+  connected by 2-isogenies** (the mates [0,0,0,4n²,0] and [0,±12n,0,n²,0]). There is
+  no distinguished 4-isogeny structure on E_n tied to a point of 2E(Q).
+- "P ∈ 2E(Q)" means P is a **double** of some Q-point — equivalently {X, X±c} are
+  rational squares; it is *not* a 4-isogeny kernel. A 4-isogeny E→E′ exists as a
+  curve-level fact independent of which point of 2E(Q) is selected (it is the
+  composite of two 2-isogenies). The candidate conflates "P is a double" with "there
+  is a 4-isogeny whose kernel contains a specified point".
+- The Robertson/Bremner reduction (Bremner, *On squares of squares*, Acta Arith. 88
+  (1999) 289–297; Robertson 1996) states: an MSS ⇔ **three** points of 2E(Q) on the
+  single curve E: y² = x(x²−c²) whose x-coordinates are in arithmetic progression.
+  It is THREE points on ONE curve, not four linked isogenies — the four differences
+  u,v,u+v,u−v do not become four independent isogeny choices. So the moduli curve on
+  X₀(4)⁴ the candidate proposes does not correspond to the actual MSS structure.
+
+## Candidate 1 — integral Brauer–Manin on the nine-square affine scheme
+
+- The integral BM machinery is real and potent: Colliot-Thélène–Xu (Compositio Math.
+  145 (2009) 309–363) for integral points on homogeneous spaces and representations by
+  integral quadratic forms; Harpaz–Skorobogatov on Brauer groups of affine varieties;
+  Browning–Matthiesen (Ann. ENS 50 (2017)) and Schindler–Skorobogatov that BM is the
+  *only* obstruction for normic hypersurfaces N_{K/k}(z) = P(t) on smooth projective
+  models; unramified Brauer group of norm-one tori (Harpaz).
+- However the nine-square variety V/Z is none of these objects: V is a **singular**
+  2-dim affine scheme (the magic variety X ⊂ P⁸ is a surface with 256 singular points;
+  adjoining 9 'entry = square' norm conditions keeps it singular and non-proper).
+  The integral BM theorems with computable Brauer groups all assume smooth/
+  geometric/homogeneous/normic structure. No literature computes Br(V)/Br(Q) — or an
+  integral BM obstruction — for the MSS variety.
+- The decisive premise is unproved: that an integral adelic point exists over
+  Z[√3,√133] but the BM pairing kills all Z-integral points. Merely asserting "the
+  denominator structure differs" is the whole content, not a consequence of machinery;
+  and how the BM pairing distinguishes Z-points from points over the ring of integers
+  of a quadratic field is precisely what would need establishing.
+
+## Bottom line
+
+All three candidates rest on a true global premise (a real technique, a real curve
+family, a real PVS) but the *specific* identification with the MSS fails on exact
+structure:
+- PVS: the group action is a PVS, but the magic/squares condition is not a PVS
+  invariant and the orbit claim is wrong (semisimple vs nilpotent).
+- 4-isogeny: the curve has 2-isogenies and 2E(Q)-doubling, not 4 linked 4-isogenies;
+  Bremner's reduction is three points on one curve.
+- integral BM: the variety lies outside every class where Br is computable, and the
+  separating premise is unproved.
