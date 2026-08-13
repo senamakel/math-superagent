@@ -1,0 +1,26 @@
+exact jump row 161->162: 4323712  (was capped >=176181 at depth 1000)
+exact jump row 174->175: 5237310  (new giant, beyond old record)
+jump row 239->240 (capped at width 3e8, landing flooring 0): -1
+
+longest pure-erosion runs (live regime rows 1..238): top 5 [(48, 175, 222), (13, 97, 109), (12, 147, 158), (12, 113, 124), (8, 227, 234)]
+(depth-1000 live regime max was 13; wider record max = 48)
+
+log-log jump vs b: 12 depth-1000 giants: alpha=0.7853 R2=0.8064
+log-log jump vs b: 14 wider giants:     alpha=0.9516 R2=0.8402
+ratio jump/b_k, 14 giants: [1.519, 0.414, 2.917, 0.354, 1.937, 0.123, 0.363, 0.917, 0.197, 0.587, 0.422, 0.492, 3.951, 0.967]
+
+directive25 sublinear model rho = 1 + 802.6*b^-0.612:
+  b=      2179 pred   8.269 actual   2.727 MISS
+  b=      5942 pred   4.934 actual   3.915 MISS
+  b=     23265 pred   2.706 actual   1.354 MISS
+  b=     31499 pred   2.418 actual   2.940 MISS
+  b=     92620 pred   1.733 actual   1.123 MISS
+  b=    103973 pred   1.683 actual   1.363 MISS
+  b=    141706 pred   1.565 actual   1.917 MISS
+  b=    271629 pred   1.379 actual   1.197 MISS
+  b=    325090 pred   1.340 actual   1.587 MISS
+  b=    515906 pred   1.256 actual   1.422 MISS
+  b=    733564 pred   1.206 actual   1.492 MISS
+  b=   1094273 pred   1.162 actual   4.951 MISS
+  b=   5417975 pred   1.061 actual   1.967 MISS
+  (all 13 predictions MISS -- the 4.951 ratio at b=1094273 refutes the decline-to-1 model)
