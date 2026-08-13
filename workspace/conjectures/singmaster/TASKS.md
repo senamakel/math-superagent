@@ -61,6 +61,8 @@ on each Rolle-guaranteed interval, not mpmath polyroots). The directive's
 
 ## Completed / no further action
 
+- [x] **4. Reproduce integrality independently — DONE.** `code/genus/repro_integrality.py`, EXIT_CODE=0: 638401 pairs over 1<=m,n<=799, ZERO odd values of N=(m-1)(n-1)+1-gcd(m,n) in all four parity classes; both algebraic forms agree on 1..399. Capture `code/out/integrality_reproduced.captured.txt` (replaces 2-byte placeholder); independently re-verifies claim genus-closed-form-integrality (proved) and the operator's 1,121,253-pair check.
+- [x] **verify_superelliptic_formula.py EXECUTED — DONE.** EXIT_CODE=0, ALL literature cross-checks PASS for {2,n} and {3,n} against the Sutherland 2020 superelliptic genus formula; {4,n} correctly reported as non-superelliptic. Capture `code/out/verify_superelliptic_formula.captured.txt`; closes the "NOT yet executed" row in code/genus/INDEX.md.
 - [x] verify_riemann_hurwitz.py already runs and passes (bisection fix applied;
       capture at code/out/verify_riemann_hurwitz.captured.txt, EXIT_CODE=0)
 - [x] Mason-Stothers refuted (capture, claim, approach all closed)
