@@ -205,7 +205,13 @@ away.
   genuinely insufficient. A general-class theorem needs an extra
   randomness/non-concentration hypothesis (CHT's 2-separated-set condition) or
   must be restricted to the actual primes. Any approach claiming the bounded-gap
-  class must first state how it beats Eppstein's construction.
+  class must first state how it beats Eppstein's construction. Sharpener now
+  held (asserted-by-source, `colonna-deletion-left-edge-failure`): Colonna's
+  record-page footnote deletes 5 (or 7) from the primes, giving a
+  2-then-odds sequence with gaps ≤ 4 (≤ 6) whose second entry is 4 — a
+  concrete left-edge failure at row 2 within a bounded-gap class. So the
+  plain "gaps ≤ g" class is dead for every g ≥ 4, not only by Eppstein's
+  asymptotic construction; only g ≤ 3 remains un-refuted.
 - **Proth's "failed proof" is a retracted myth — there is no proof to locate
   an error in.** GOAL.md's item "locate the error in Proth 1878" rests on a
   claim its originator H.C. Williams retracted (email 2020, quoted in Chase
@@ -250,6 +256,21 @@ away.
   machine-checked. The total-variation-oscillation-potential approach's raw
   r/t potentials are dead; only a corrected weighted/max-factored potential
   (Chamberland's Ducci template) survives, untested.
+- **Block-apex pattern-class forcing — REFUTED.** The idea that a mixed
+  {0,2} block forces intruder reduction (or that constant blocks are the
+  pathology) is false as a mechanism: CHT Lemma 3.7(iii) proves a
+  {0,d}-valued block persists in ALL descendants regardless of pattern, and
+  the depth-1000 record shows regeneration fires on the boundary pair
+  (edge, intruder)=(2,4) and nothing else (60/60 regens at y=4, 0/65 at
+  y≥6; whole-block pattern class never enters). Do not re-propose. Anchor:
+  `research/approaches/block-apex-parity-forcing.md`.
+- **Prime-gap mod-6 structure — REFUTED as a constraint machine.** The
+  operator has NO reduction mod 3: |a−b| mod 3 is not a function of the
+  residues (minimal witness (0,1)/(3,1)), so no F_3 finite-state evolution
+  of the halved triangle exists; and "H_k(1) mod 3 ∈ {0,1}" is the
+  conjecture restated, not an independent constraint. The real mod-6 gap
+  statistics never percolate to the iterated left edge in any source. Do
+  not re-propose. Anchor: `research/approaches/prime-gap-mod6-structure.md`.
 - **Mod-4 linearization cannot be lifted — mod 4 is the ceiling.** The lift
   `|a−b| ≡ a+b (mod 2^t)` holds over even entries iff `2·min(a,b) ≡ 0
   (mod 2^t)`, i.e. the smaller entry divisible by `2^{t−1}`. It holds at t=2
@@ -385,14 +406,7 @@ recalled claim is relied on whose hypotheses fail here.
   `Gilbreath.lean` — `gilbreath_conjecture (k : ℕ+) : d k 0 = 1 := by sorry`,
   no proof formalisation exists publicly; the run's own work (on mathlib4's
   `Nat.dist`) is still to be written. Claim `deepmind-formal-conjectures-gilbreath-lean`.
-- **Library search halted by directive.** FRONTIER.md restored 2026-08-13 from commit db36fc23 (42 rows) after the Gatti-2020 wrapper-page download replaced it with 15 social-media share buttons; **a second collapse happened this cycle (Colonna 2026-08 + DeepMind re-downloads) and was restored from this session's read — the documented URL filter did not run on those rewrite writes, so re-check the candidate count after any multi-page download** (`research/notes/frontier-collapse-alarm.md`). Gatti 2020 classified not-load-bearing. Collapse >30% in candidate count is a failure signal. No more downloads until a specific gap is stated that a source could close.
-- **Memory cap observed.** The container touched 6.46 GiB of 8 GiB during the
-  26-worker null run before falling to 2.6 GiB. Bound worker counts on anything
-  that materialises the depth-1000 triangle per worker; single-row streaming
-  (one row at a time, O(width) memory) is safe. An OOM kill writes nothing to
-  the console.
-- **CHT Theorem 1.6 hypothesis check — DONE, holds-here = no.** Computed on
-  sieve 2e7 (1,270,607 primes): max normalized gap a_n = 89 → M = 7, longest
+- **Library search halted by directive.** FRONTIER.md restored 2026-08-13 from commit db36fc23 (42 rows) after the Gatti-2020 wrapper-page download replaced it with 15 social-media share buttons; **a second collapse happened this cycle (Colonna 2026-08 + DeepMind re-downloads) and was restored from this session's read — the documented URL filter did not run on those rewrite writes, so re-check the candidate count after any multi-pa: max normalized gap a_n = 89 → M = 7, longest
   0-run L = 2, so R_0 = 100·L·8^M = 419,430,400 ≈ 4.2e8 ≫ 1000. The
   no-{0,d}-block hypothesis is not satisfiable at any reachable depth, so the
   CHT inverse theorem does not bite here. `code/out/cht_hyp_check.captured.txt`, claim `cht-inverse-theorem-hyp-check`. Do NOT re-run the check or re-flag the claim unchecked — the determination is final.
