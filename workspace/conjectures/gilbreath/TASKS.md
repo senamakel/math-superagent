@@ -1,8 +1,58 @@
 # Tasks
 
-## Directive 17 (steer): Lean formalisation verified complete. Record as gilbreath-second-entry-equivalence, an IFF reformulation not a reduction. Axiom footprint [propext, Classical.choice, Quot.sound]. Directive 16 (conditional-rate experiment) remains the blocking task.
+## Directive 18 (steer): build-check probe
 
-## Directive 16 (steer): Route A is NOT refuted. Sweep deaths are g_0 startup, not rate. Run conditional-rate experiment.
+Build a focused probe program that measures one specific structural quantity
+on the prime rows (depth 1000, `blocks_depth1000.json`). A probe is small,
+fast, and answers one question definitively — it is not a sweep and not a
+search.
+
+### Immediate (in order)
+
+- [ ] **1. Build and check a probe on the prime rows.** The step law makes
+  regeneration a local event at `(edge, intruder) = (2,4)`, so the open
+  question is: how often is `edge = 2`? The block's last entry (column b_k)
+  is the necessary half of the regeneration trigger. Measure:
+  - The sequence of edge values e_k = A_k[b_k] for k = 1..161 (live regime
+    where the intruder exists). Count how many are 0 vs 2.
+  - The distribution of run-lengths of consecutive edge=2 and edge=0.
+  - Whether edge=2 has a detectable period or pattern (autocorrelation,
+    spacing distribution).
+  - The fraction of rows with edge=2 (this is the upper bound on the
+    event rate, since every (2,4)-event requires edge=2).
+
+  Write a small program that reads `blocks_depth1000.json`, extracts the
+  edge sequence for live rows, computes the statistics above, and captures
+  to `code/out/probe_edge_sequence.captured.txt`. This is independent of the
+  conditional-rate experiment and can run in parallel with it.
+
+  **Why this probe:** the recharge identity `b_k = 2 + Σ(j_i+1) − (k−1)`
+  reduces the conjecture to the (2,4)-event rate. If edge=2 occurs with a
+  structural frequency (not random), that frequency bounds the event rate
+  from below — because intruder=4 is absorbing (drain law) and edge=2 is the
+  only missing piece. If edge=2 appears to be random/unpatterned, that is
+  also a finding: it tells us the rate question is genuinely probabilistic
+  rather than structural.
+
+- [ ] **2. Conditional-rate experiment: isolate the asymptotic event rate from the g_0 startup.** Use the existing sweep data (26 families × seeds, 1154 sequences, 302 survivors). Restrict to sequences that survived past row 10 (b_k ≥ 1 at k=11). On those only, measure:
+  - events per row (event density) by family
+  - whether the per-family densities are distinguishable (family-dependent → real evidence about the rate; family-independent → combinatorial mechanism, Route A is right)
+  - inter-event gap distribution conditional on k>10
+  - comparison to the prime rows' event density (60 events / 161 live rows = 0.373)
+
+  The sweep data already has per-sequence event counts and row counts. Write a
+  small program that reads the sweep JSON, filters to k>10 survivors, computes
+  conditional densities per family, and reports whether the densities cluster
+  (same across families) or separate. Capture to
+  `code/out/conditional_rate_experiment.captured.txt`.
+
+  **This is the blocking task for the Route A/B question.** It answers whether the event rate is
+  combinatorial (Route A) or input-dependent (Route B). Either answer is
+  progress — a third approach is not.
+
+### Directive 17 (steer): Lean formalisation verified complete. Record as gilbreath-second-entry-equivalence, an IFF reformulation not a reduction. Axiom footprint [propext, Classical.choice, Quot.sound].
+
+### Directive 16 (steer): Route A is NOT refuted. Sweep deaths are g_0 startup, not rate. Run conditional-rate experiment (now item 2 above).
 
 Directive 12 said the sweep refutes Route A as a purely combinatorial lemma
 because a combinatorial rate bound would contradict families dying 100%. That

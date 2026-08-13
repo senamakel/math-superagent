@@ -78,6 +78,15 @@ pub(super) struct Mailboxes {
     pub(super) patterns: Mailbox,
     /// What a person asked for, drained by the attempt alone.
     pub(super) directives: Mailbox,
+    /// The lemmas that would suffice to prove the goal, drained by the attempt
+    /// alone.
+    ///
+    /// The third one this struct's own doc anticipated. It carries open gaps
+    /// rather than prose, and it is separate from `patterns` for the reason
+    /// `directives` is: a target and a piece of gathered material are different
+    /// kinds of thing, and one mailbox cannot render both under the right
+    /// heading.
+    pub(super) skeletons: Mailbox,
 }
 
 /// Builds and runs the solution loop over the registered specialists.
@@ -98,6 +107,7 @@ pub(super) async fn run(
     let Mailboxes {
         patterns,
         directives,
+        skeletons,
     } = mailboxes;
     let attempt_agents = subagents.clone();
     let attempt_tracer = tracer.clone();
@@ -115,7 +125,12 @@ pub(super) async fn run(
     let attempt_mailbox = patterns.clone();
     let pattern_mailbox = patterns;
     let attempt_directives = directives;
+    let attempt_skeletons = skeletons.clone();
+    let reflect_skeletons = skeletons;
     let reflect_teams = teams;
+    // One gate for the whole run, so a reduction that outlives the cycle that
+    // opened it cannot be joined by a second one writing the same file.
+    let reduction_gate = ReductionGate::default();
 
     let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
         .add_node("attempt", move |state: SolutionState, _ctx: NodeContext| {
