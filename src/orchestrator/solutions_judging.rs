@@ -138,12 +138,22 @@ const MAX_COUNTED: usize = 500;
 /// itself. Captured output is what a program *produced*, which separates a run
 /// writing programs from a run running them; the claim split separates what the
 /// run established from what it read somewhere; approaches say whether the
-/// inventor's proposals survived to disk.
+/// inventor's proposals survived to disk; and the gap counts say whether the
+/// run has written down what a proof would consist of and how much of it it now
+/// has — the one measure here that separates an investigation closing in on a
+/// theorem from one accumulating verified data beside it.
 fn evidence_briefing(workspace: &Path) -> String {
     let captured = captured_outputs(workspace);
     let ledger = super::claims::collect(workspace);
     let approaches = count_entries(&workspace.join("research/approaches"));
     let threads = count_entries(&workspace.join("research/threads"));
+    // Counted from the parsed skeletons rather than from the directory, because
+    // the number that matters is not how many files exist but how many lemmas
+    // are still owed — and how many the run has already closed, which is the
+    // only measure here that can go up without anything new being computed.
+    let skeletons = super::backward::collect(workspace);
+    let gaps_open = skeletons.open_gaps().len();
+    let gaps_discharged = skeletons.discharged_ids().len();
 
     format!(
         "\nWhat the attempt left on disk, counted rather than reported — the report above is \
@@ -154,6 +164,7 @@ fn evidence_briefing(workspace: &Path) -> String {
          catalogue\n\
          - approaches proposed: {approaches}\n\
          - threads open: {threads}\n\
+         - gaps in the proof skeletons: {gaps_open} open, {gaps_discharged} discharged\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
          nothing and left work here is not — score what is here.{}{}{}",
         captured.len(),

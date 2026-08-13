@@ -61,6 +61,24 @@ const COMPUTATIONAL_THRESHOLD: usize = 2;
 /// finding. Twice is the run having tried.
 const UNVERIFIED_THRESHOLD: usize = 2;
 
+/// Completed cycles between one decomposition of the goal and the next.
+///
+/// Three rather than the two every other threshold here uses, and the
+/// difference is deliberate. The twos are all answering the same question — is
+/// this a pattern or a one-off, where once is what an attempt looks like and
+/// twice is evidence. This is not that question. It is a refresh interval on a
+/// document whose inputs move slowly: a skeleton is worth rewriting only once
+/// the run has established something that could discharge one of its gaps, and
+/// that takes a full attempt/judge/reflect cycle plus whatever the standing
+/// teams delivered beside it. Against [`MAX_ATTEMPTS`] it buys two or three
+/// skeletons in a run.
+///
+/// Because the arm is detached, this bounds what the ledger *costs* rather than
+/// how long the loop waits — nothing waits. What it does not bound is waste on
+/// a tick where nothing has changed; the research-tree fingerprint does that,
+/// and the in-flight gate bounds collision. Three failures, three bounds.
+const REDUCTION_INTERVAL: usize = 3;
+
 /// Restarts the judge may force in one run.
 ///
 /// A restart throws away the direction an attempt was taking and spends a
@@ -105,6 +123,13 @@ pub(super) struct SolutionState {
     /// Consecutive attempts that reached a specific final answer supported by
     /// exactly one route, with no second route available to build.
     unverified: usize,
+    /// Completed cycles since the goal was last decomposed into lemmas.
+    ///
+    /// Unlike every other counter here, nothing in [`route`] reads it. It paces
+    /// an arm that runs beside the loop rather than inside it, which is the
+    /// whole reason a proof skeleton can be produced without any attempt
+    /// waiting for one.
+    since_reduction: usize,
 }
 
 impl SolutionState {
