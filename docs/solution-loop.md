@@ -359,9 +359,17 @@ one of its gaps, which takes a full cycle plus whatever the standing teams
 delivered beside it. Against `MAX_ATTEMPTS = 8` it buys two or three skeletons.
 Because the arm is detached the interval bounds spend rather than latency, so it
 is set on what the ledger costs rather than on how long the loop can afford to
-wait. `since_reduction` starts *at* the threshold, so the first completed cycle
-opens a reduction — `open_invention`'s recorded evidence one role wider, since a
-gate needing several completed cycles is a gate a long run never reaches.
+wait. `since_reduction` starts *at* the threshold, and `run` opens a reduction
+from that state before the graph starts, so the first skeleton is written beside
+the first attempt rather than after it. Waiting for a completed cycle was the
+same mistake `open_invention` recorded one role wider: on a conjecture run an
+attempt/judge/reflect pass is the better part of an hour, and every role spent it
+working without a statement of what would be enough. Nothing justified the wait —
+the reducer works backward from the problem statement, so its input is present
+before the run starts, and the arm is detached, so opening it early delays the
+graph by nothing. It goes through the same gate as every later reduction, so the
+first completed cycle cannot open a second on top of it, and a resumed workspace
+is decomposed from what is already on disk rather than from the statement alone.
 
 A workspace fingerprint bounds *waste*. The reducer's inputs are what the run has
 established, so a tick over a tree that has not moved would rewrite the same
