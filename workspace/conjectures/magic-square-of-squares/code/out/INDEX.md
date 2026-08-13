@@ -18,6 +18,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `oracle_output.txt` | _(undescribed)_ |
 | `pattern_seq_output.txt` | _(undescribed)_ |
 | `phi_claim_blocks.md` | Claim blocks for the Φ/ |
+| `phi_program_runs.txt` | Capture of fresh execution of the four never-run phi programs (phi_fibre_genus_run.py, verify_phi_doubling.py, phi_canonical_check.py, phi_identity_verify.py): commands, exit codes, full stdout, and per-program key conclusions. Fibre genus confirmed 0 (Faltings attack dead); two benign display artifacts; one program bug (phi_canonical_check orbit oracle, result independently confirmed); one genuinely false bound (phi_identity [5b]). |
 | `reconciliation_2026-08-12.txt` | _(undescribed)_ |
 | `run_k3_checks.sh` | _(undescribed)_ |
 | `scholar_verify.py` | Scholar verification of the witness grids and source-reported numeric claims by exact integer arithmetic, so notes carry only program-checked numbers. |
