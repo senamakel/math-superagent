@@ -35,6 +35,16 @@ with recalled memory). The 7-square witnesses fail the additive condition at
 the rational level: Bremner's realised ratios `q_v = 5544/7225` and
 `q_{u+v} = 336/625` are both in Φ but `q_v + q_{u+v} = 1.305 > 1`.
 
+**New (directive 14):** `side_census.py` hypothesises a stronger structural
+claim: `1+(q1+q2)` is **never** a rational square for `q1>q2` in Φ with
+`q1+q2<1`, while `1−(q1+q2)` frequently is. A Φ-triple needs both `1−(q1+q2)`
+and `1+(q1+q2)` to be rational squares (equivalent to `(B±(A1+A2))` both
+squares), so if this hypothesis survives it would prove no MSS — a real
+result. **Seven programs in `code/phi_triple_variety/` test this on different
+ranges and via independent verifications; none have been run yet.**
+Captured output expected at `code/out/{side_census,no_triple_fast,ratio_search,
+prefilter_census,verify_prefilter,verify_triple_square,verify_two_side_equiv}.captured.txt`.
+
 **Blocked by.** A proof of the no-triple conjecture beyond `m,n ≤ 400`.
 The natural falsifier is a specific Φ-triple found past the range — that
 would *construct* a 7-square magic grid (not merely refute a claim).
