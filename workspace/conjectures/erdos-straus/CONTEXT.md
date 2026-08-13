@@ -160,12 +160,6 @@ disk), or asserted-by-source.
   no new family is needed there, and 6 residues are unobtainable for ever.
   This ends the saturation question for modulus 11: it cannot be saturated as
   posed (6 QR-blocked), and the other 2 are already covered elsewhere.
-  **Schinzel narrowing (directive 7):** of the 8 "missing" residues at M=11,
-  only 2 are actually reachable — s∈{3,4}. The other six are Schinzel-forbidden:
-  s∈{0,1,2,6,9} give b a QR mod 11 (no ℤ[k]-polynomial identity possible),
-  and s=8 gives b divisible by 11 (not primitive). Same analysis at M=23:
-  11 QNR-allowed residues, 9 realised, gap={3,8}. The saturation question at
-  each modulus reduces to the QNR-allowed-but-unrealised residues only.
 - **Subprogression families** (checked, operator directive 4): 1451 parametric
   identity families for n ≡ 1 (mod 840), each n = a·k + b with b ≡ 1 (mod 840)
   and a = 840m for m ∈ {11,13,17,19,22,23,26,29,31,33,34,37,38,39,41,43}.
@@ -175,14 +169,11 @@ disk), or asserted-by-source.
   families. The other five open classes are untouched. The per-prime avoided
   fractions are 14/23, 23/29, 24/31, 27/37, 35/41, 40/43 — the newest primes
   are the weakest. **The uncovered density factors over independent prime groups
-  as a product of (p−c_p)/p, every factor strictly positive, so it is strictly
-  positive for any finite set of families and can reach zero only if some modulus
-  m has all m residues realised. 23 is the smallest prime with room (9/23,
-  missing 14), but M=11 is the cheapest modulus to test overall, and it has
-  only 3/11 residues covered (missing 0,1,2,3,4,6,8,9). The saturation question
-  for modulus 11 is now the priority question: can the Salez seven-equation
-  generator realise those 8 missing residues mod 11, or is there an obstruction?
-  (Directive 5 — M=11 is the cheapest test.)**
+  as a product of (p−c_p)/p, so it is strictly positive at every finite stage
+  and reaches zero only if some modulus m realised all m residues. The sharp
+  question is the Schinzel ceiling: QR-blocked residues are unobtainable for
+  ever, so each modulus' realizable budget is (q+1)/2 of its q classes (see
+  ANSWERED bullet), not q.**
 
 ## Ruled out
 
