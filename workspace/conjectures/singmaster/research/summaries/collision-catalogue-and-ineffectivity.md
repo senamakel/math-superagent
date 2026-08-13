@@ -60,13 +60,17 @@ without loss of generality to the boundary region
 Beukers–Shorey–Tijdeman (per-pair finiteness) applies but is ineffective, and
 where de Weger's conjecture predicts at most one solution for large t.
 
-## Gap recorded
+## Gap recorded — RESOLVED
 
-The BST paper itself ([4], 1999) is in a paywalled de Gruyter proceedings volume
-and was not freely downloadable. The run holds its exact statement *as quoted by
-MRSTT's full text* (fixed-pair finiteness via Siegel, ineffective), but not the
-paper's own text. This is an acceptable secondary-anchor (the obstruction is
-independently re-derivable from Siegel plus MRSTT's quote), but if a primary copy
-becomes available (e.g. via an author page or an open archive), secure it.
+The BST paper itself ([4], 1999, de Gruyter Zakopane proceedings) has now been
+obtained in readable form: the de Gruyter volume-1 preview (pp. 11–26) at
+`research/sources/number-theory-in-progress-vol1-preview.full.md`, digested in
+`research/summaries/beukers-shorey-tijdeman-1999-equal-products.md` (claim
+`bst-fixed-kl-ineffective-primary`). The author-hosted `best1.ps` is raw
+PostScript and not human-readable (see `research/summaries/tijdeman-preprints-page.md`).
+The obstruction quote is now primary-sourced: BST 1999 p. 12–13: "For the
+remaining case gcd(m,n)=1 no general effective method is available... we have to
+resort to Siegel's famous result..., which is, unfortunately, ineffective...
+Both results are ineffective."
 
 Evidence class: sourced (MRSTT full text read and quoted).
