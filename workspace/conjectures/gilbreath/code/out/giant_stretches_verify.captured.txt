@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/workspace/code/directive24/verify_giant_stretches.py", line 162, in <module>
+    main()
+  File "/workspace/code/directive24/verify_giant_stretches.py", line 112, in main
+    bits_runs = rle_of([r[k + 1][i] // 2 for i in range(bcur, bnxt + 1)])
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/directive24/verify_giant_stretches.py", line 112, in <listcomp>
+    bits_runs = rle_of([r[k + 1][i] // 2 for i in range(bcur, bnxt + 1)])
+                        ~~~~~~~~^^^
+TypeError: 'float' object is not subscriptable
