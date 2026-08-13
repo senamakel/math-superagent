@@ -11,6 +11,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `c.txt` | Intruder c_k = first value past the block, k=1..161; identical to intruder.txt. |
 | `diffs.txt` | b_{k+1} − b_k for k=1..160 (genuine transitions). |
 | `e_bits.txt` | Halved block edge (e_k/2), k=1..161, from boundary_state.py. |
+| `giants_1e9.json` | Durable artifact of the sieve-1e9 settlement run (giants_1e9.py, depth 400, W=50,847,534): giant rows (0/1-based), jumps, pre-jump/landing blocks, landing floors, genuineness flags, inter-giant gaps, max gap, last-giant gap, ratios gap/(j_i+1), odd 0-based rows, the full b array, per-row floor list, and geometric/linear fit coefficients (numpy + exact Fraction, agreeing to 3e-17) over the 15 genuine landing blocks. Row 248 is the capped 16th giant (floor=0, b=50,847,285=W−248−1). Independently re-verified by verify_1e9_independent.py (zero mismatches). |
 | `giants_6e8.json` | _(undescribed)_ |
 | `i_bits.txt` | Halved next-to-edge entry (i_k/2), k=1..161, from boundary_state.py. |
 | `intruder.txt` | First value past the block, k=1..161; None → empty line. |
@@ -23,8 +24,5 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `s_runs0.txt` | Run lengths of consecutive s=0 values (k=1..1000). |
 | `s_runs2.txt` | Run lengths of consecutive s=2 values (k=1..1000). |
 | `t_bits.txt` | Halved A_k(2)/2, k=1..161, from boundary_state.py. |
-| `w_bits.txt` | Halved third-from-edge block entry (w_k/2), k=1..161, from boundary_state.py. |
-| `wider_giants.json` | Giant-jump data at a wider sieve (from the wider_giants_*.py family): W, depth, kstar, giant rows, inter-giant gaps, landing blocks, giant jumps, pre-jump blocks, landing floorings, and gap/(j+1) ratios — the wider-sieve confirmation of the genuine-giants characterization. |
-ate.py. |
 | `w_bits.txt` | Halved third-from-edge block entry (w_k/2), k=1..161, from boundary_state.py. |
 | `wider_giants.json` | _(undescribed)_ |

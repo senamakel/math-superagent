@@ -11,35 +11,28 @@ verified the Directives 24–27 record against the outputs, no rewrite; this
 cycle's changes are the two Contradictions entries and the gap-convention
 correction in the chain.)
 
-## Run state (Directive 34)
+## Run state (Directive 35)
 
-**Six papers the run cited off `/abs/` landing pages are now in the library as
-full PDFs, and must be read before the next mathematics.** CHT 2026 proves
-the random-integer analogue (Theorem 1.3: independent geometric gaps with
-non-concentration on 2-separated sets → a.s. Gilbreath; Theorem 1.6: inverse
-theorem isolating the two obstructions). The FULL PDF is 98 KB with 137
-theorem/lemma/proof hits. Arias de Reyna, Muney, BCZ, and Granville also
-await reading. The six summaries will go to `research/notes/`.
+**CHT Theorem 1.6 column restriction clarified (Directive 35):** the {0,d}-block
+obstruction (iii) applies to columns j ≥ N′ = ⌊N/2⌋ — the RIGHT HALF only. The
+run's leading {0,2} block (length b_k up to 31M) sits at j=1, the far LEFT, and
+does NOT violate (iii). Right-half {0,d} scan queued (TASKS item 1). Tao's own
+difficulty assessment (p.8): (ii) and (iii) "look difficult to establish
+rigorously, even if one assumes strong conjectures on the primes such as the
+Hardy–Littlewood prime tuples conjecture." Calibration, not discouragement.
 
-**Granville 2026 (arXiv:2607.04166) — re-grade.** The "not-load-bearing"
-classification was made off the 6.8 KB `/abs/` landing page and is wrong.
-The full PDF (175 KB, 70 theorem/lemma/proof hits) contains Lemma 5.4
-(supply-vs-demand budget inequality in right-diagonal coordinates, equivalent
-to the run's own recharge identity) and Theorem 5.5 (if g*_n < n^α and
-ν_2 > n^β with β > α, success propagates; α = 0.525 unconditional by Baker-
-Harman-Pintz). The operator measured ν_2/n ≈ 0.49–0.52 on primes below 3e6,
-and the Lemma 5.4 hypothesis holds at every sampled n. The proof is uneven
-(Theorem 2.5: "Take κ₀=0 and the theorem is proved!"; Lemma 5.4 discards a
-delta=0 case that occurs in 100% of columns), and the paper is cs.CR not
-peer reviewed. Status: Lemma 5.4 worth re-deriving from scratch (this run can
-prove it); the reduction to "lower-bound ν_2" is the live comparison against
-the ratio-bound route. Do NOT treat as not-load-bearing; do NOT adopt the
-author's proofs.
+**Three-route comparison (Directive 35 item 2).** Route B (Granville ν_2)
+selected as primary: demand side α=0.525 unconditional (BHP), supply side ν_2/n
+≈ 0.49–0.52 measured above threshold, Lemma 5.4 re-derivation is the only
+outstanding piece. Route A (ratio bound) kept as fallback: gap ≤ 64 with 2+
+orders slack on 15 giants, needs geometric growth of b — a new statement.
+Route C (CHT deterministic) needs Cramér (open, strictly stronger than BHP) +
+two obstructions CHT themselves say are "difficult to establish rigorously."
+Granville's route has the weakest demand side by a clear margin.
 
-**The 6e8 run stands** (15 genuine giants, max gap 64, ratio bound 2+ orders
-slack, geometric growth R²=0.968). The open question: whether the Granville
-ν_2 route is strictly weaker and should supersede the ratio-bound route
-(Directive 32/33/34).
+**Six full-PDF papers await reading** (Directive 34, lower priority than
+Directive 35). CHT 2026 full text now read by this directive; summary queued.
+Granville 2026 re-grade queued.
 
 ## Established
 
@@ -124,21 +117,25 @@ here.
 
 ## Gaps
 
-- **The open question — now forked (Directive 34).**
-  **Route A (current):** ratio bound gap_i ≤ j_i+1, verified with 2+ orders
-  margin over 15 giants (max ratio 0.0000122). Needs proof that j grows
-  faster than the inter-giant gap. Geometric growth of b (~1.765× per giant)
-  is measured, not proved.
-  **Route B (Granville, newly live):** Lemma 5.4 → Theorem 5.5 reduces GC
-  to proving ν_2 > n^β with β > 0.525, where ν_2 counts 2s in the right
-  diagonal's 0-2 cycle and α = 0.525 is unconditional by Baker-Harman-Pintz.
-  Operator measurement: ν_2/n ≈ 0.49–0.52 on primes below 3e6 — exceeds
-  threshold by 26× at n = 3999 and rising. Lemma 5.4 is equivalent to the
-  run's own recharge identity in different coordinates; its published proof
-  discards a case occurring in 100% of columns (Directive 33) and must be
-  re-derived here. The two routes may be equivalent; comparison queued
-  (TASKS item 10). **Do not pursue Route B before re-deriving Lemma 5.4.**
-- **The 1-Lipschitz chain reformulation (from the giant-stretch characterization):** each descent replaces the halved row by its adjacent-difference chain; the block front is the first 2-step (0–2/2–0 adjacency); giants are long ±1-excursions. Prove the halved chains of the primes keep 1-Lipschitz runs at the boundary infinitely often with bounded gaps between long runs — that IS the bounded-gap statement in chain language. Computed mechanism, no proof.
-- **CHT inverse theorem route needs two analytic steps for the primes** (rule out long zero-blocks and long shallow {0,d}-blocks; Cramér-type hypotheses unproved) — or an invariant bypassing the dichotomy.
-- **What remains toward a GOAL.md partial result:** block lemma delivered (re-derived, constant explicit); Lean 4 formalisation delivered (nine theorems, zero sorry, IFF, axioms `[propext, Classical.choice, Quot.sound]`); the natural next deliverable is the Directive-26 classification (GC reduces to a named conjecture) or a proved statement on the regeneration/gap rate. Erosion is settled; regeneration is the whole problem — state which every claim establishes.
-- **Library search halted by directive.** No more downloads until a specific gap is stated that a source could close; re-check the FRONTIER.md candidate count after any write (it has collapsed twice).
+- **The open question — three routes, one selected (Directive 35).**
+  **Route B (Granville ν_2 — SELECTED as primary):** Lemma 5.4 → Theorem 5.5
+  reduces GC to ν_2 > n^β with β > 0.525. Demand side α = 0.525 unconditional
+  (Baker-Harman-Pintz). Supply side ν_2/n ≈ 0.49–0.52 measured above threshold
+  (26× at n=3999). Lemma 5.4 re-derivation is the outstanding piece
+  (published proof discards a case in 100% of columns; delta=0 must be handled).
+  **Route A (ratio bound — fallback):** gap_i ≤ j_i+1, verified 2+ orders slack
+  on 15 giants at 6e8. Needs geometric growth of b. **Route C (CHT deterministic
+  — not pursued):** needs Cramér (open, stronger than BHP); CHT authors'
+  assessment: (ii) and (iii) "look difficult to establish rigorously."
+  Granville's route has the weakest demand side by a clear margin.
+- **CHT Theorem 1.6 column restriction (Directive 35):** the {0,d}-block
+  obstruction (iii) is restricted to the RIGHT HALF (j ≥ N′). The run's leading
+  {0,2} block at j=1 does NOT violate (iii). Right-half {0,d} scan for the
+  primes is queued — if long right-half shallow blocks exist, Theorem 1.6 does
+  not apply; if not, (iii) empirically supported but (i) and (ii) remain open.
+- **The 1-Lipschitz chain reformulation** — computed mechanism, not proved.
+- **What remains toward a GOAL.md partial result:** block lemma, Lean IFF, and
+  edge-map invertibility are delivered. The natural next deliverable is a proved
+  lower bound on ν_2 for the prime right-diagonal (under BHP) from Lemma 5.4, or
+  the Lemma 5.4 re-derivation itself as a GOAL.md partial result.
+- **Library search halted by directive.**

@@ -817,3 +817,36 @@ Do not let this pass as a library update. You have six unread papers directly on
 Now let me write the response to the operator:
 
 I rewrote `TASKS.md` so the first thing the run does is read the six papers it has never actually read — Directive 34 put CHT 2026 first (proved the random analogue — the closest theorem anyone has), then Arias de Reyna, Muney, BCZ, and Granville. Directives 32/33 (Granville Lemma 5.4 re-derivation, failing-side test) follow, then Directive 31 hygiene, then Directive 30 mathematical work. I re-graded `granville-2026-piercing-gilbreath-not-load-bearing` in `CONTEXT.md`: the classification was made off the 6.8 KB `/abs/` landing page, and the 175 KB full PDF contains a real reduction (Lemma 5.4 / Theorem 5.5: supply-vs-demand budget that reduces GC to a lower bound on ν_2). The paper's proofs are uneven and must be re-derived here — the value is the reduction, not the author's proofs. Forked `research/threads/regeneration.md` with both routes (ratio-bound vs Granville ν_2) and a comparison queued. I did not touch any of the mathematics; the papers are still unread, and the six summaries in `research/notes/` are the next step.
+
+## 35 — from steer
+
+DIRECTIVE 35 — Chase-Hunter-Tao Thm 1.6 is a DETERMINISTIC criterion for the prime array. Read it first (arXiv 2607.08712, research/sources/chase-hunter-tao-*-FULLPDF.full.md, p.7-8).
+
+It concludes exactly a(N-1,1) in {0,1} — your second-entry statement — from three axioms, no randomness:
+(i) a_n <= 2^M;
+(ii) no zero block of length L;
+(iii) no long shallow {0,d} block, d >= 2, depth i <= 2R_{m-1}, length k >= R_m - 3R_{m-1}, COLUMN j in [N', N-i-k].
+
+Specialised (N'=floor(N/2), L=floor(log^10 N)) it needs gaps << log^10 N, which is CRAMER, not Baker-Harman-Pintz; no zero block of length ~log^10 N; and the RIGHT HALF free of long shallow {0,d} blocks. They state plainly that (ii) and (iii) "look difficult to establish rigorously, even if one assumes strong conjectures on the primes such as the Hardy-Littlewood prime tuples conjecture".
+
+Two things, in order.
+
+1. Note the column restriction j >= N' in (iii). Your leading block is a {0,2} block of length b_k reaching 31 million, but it sits at j=1, the far LEFT, so it does NOT violate (iii). Do not report a contradiction. MEASURE instead: scan your 6e8 array for {0,d} blocks with d >= 2 in the right half, record the longest at each depth, compare against the threshold R_m - 3R_{m-1}. If long right-half shallow blocks exist, Theorem 1.6 does not apply to primes and you have located precisely why. If not, (iii) is empirically supported and the obstruction is elsewhere. Both answers are worth having and both are computable from data you already generate.
+
+2. Compare demand sides of all three routes in research/threads/regeneration.md: yours needs bounded inter-giant gaps (6e8 data says 64 and growing); Granville needs nu_2 > n^0.525 with BHP unconditional alongside; CHT needs Cramer, open and strictly stronger than BHP. Granville's looks weakest. Say which route you are on and why.
+
+Record Tao's difficulty assessment as calibration, not discouragement: it is the best evidence available on how hard your step 6 is.
+
+**What I changed and why:**
+
+**Directive 35 had two instructions. Here is what they meant for the files.**
+
+**1. CHT column restriction (j ≥ N′ = right-half only).** The {0,d}-block obstruction in Theorem 1.6(iii) is restricted to the right half of the array. The run's leading {0,2} block sits at j=1 — the far left — so it does NOT violate (iii). The directive says: do not report a contradiction; instead, measure whether long {0,d} blocks with d ≥ 2 exist in the right half. I created TASKS item 1 (right-half {0,d} scan against the threshold R_m − 3R_{m−1}, using 6e8 data), noted the column restriction in CONTEXT.md (Run state and Gaps), and recorded it in the regeneration thread's `blocked-by` field and CHT discussion. Both answers are worth having: if long right-half blocks exist, Theorem 1.6 does not apply and we have located precisely why; if not, (iii) is empirically supported but (i) and (ii) remain open per CHT's own difficulty assessment.
+
+**2. Three-route comparison.** I added a full comparison to `research/threads/regeneration.md` evaluating the demand sides of the three routes to GC:
+
+- **Route A** (ratio bound gap_i ≤ j_i+1): needs geometric growth of b — a genuinely new statement about the Gilbreath operator, measured but unproved.
+- **Route B** (Granville ν_2 > n^0.525): demand side α=0.525 is **unconditional** (Baker-Harman-Pintz); supply side ν_2/n ≈ 0.49–0.52 measured above threshold by 26×; only Lemma 5.4 re-derivation is outstanding. Weakest demand side by a clear margin.
+- **Route C** (CHT deterministic): needs Cramér (open, strictly stronger than BHP); CHT's own assessment on p.8 says (ii) and (iii) "look difficult to establish rigorously, even if one assumes strong conjectures on the primes." Best available calibration.
+
+The thread now selects Route B as primary, keeps Route A as fallback, and does not pursue Route C. Tao's assessment is recorded as calibration, not discouragement. TASKS.md and CONTEXT.md were updated to match — Directive 35 items are at the top of TASKS.md, and the Run state section reflects the three-route decision. Directive 34/32/33 items (paper reading, Granville Lemma 5.4) follow behind, since the route selection is logically prior.

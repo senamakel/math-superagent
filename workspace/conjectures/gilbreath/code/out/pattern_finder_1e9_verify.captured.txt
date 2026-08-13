@@ -1,0 +1,22 @@
+re-derived: 16 giants, W = 50847534
+JSON giant table re-derived identically (rows/jumps/landings/floors/gaps): OK
+rows 1..247 vs 6e8: mismatches = []
+row 248: 6e8 = 31324454 (capped), 1e9 = 50847285 (extends 19,522,831 columns past the 6e8 edge)
+
+16th giant: row0=247 row1=248 jump=27,684,003 b_land=50,847,285 floor=0 -> CAPPED (floor=0)
+16th giant gap: 9 (prev row1 239 -> 248) -> NOISE <= 64
+max gap: 64 at 13 (rows1 175 -> 239)
+ratios gap/(j+1): max 1.2644e-02 min 3.2510e-07 (all < 0.1: True)
+
+parity: 16 giants, odd 0-based rows: [161, 247]
+(C(n,1)+C(n,0))/2^n = (16+1)/65536 = 17/65536 = 0.0002594
+observed-tail P(<=2 odd) = 137/65536 = 0.00209
+
+geometric fit over 15 genuine landings: log2 slope = 0.070645 (doubling every 14.16 rows), r2 = 0.946065
+linear fit r2 = 0.650593  -> geometric wins: YES
+agreement with program's slope: 0.00e+00
+
+row 248 block length n = 50,847,285 = W - 248 - 1 (all {0,2})
+block lemma (n+1 rows of protection): leading 1 guaranteed for rows 248..50847533 = 248..50,847,533
+=> A_k(0) = 1 verified/protected for all rows 1..50,847,533
+checks complete

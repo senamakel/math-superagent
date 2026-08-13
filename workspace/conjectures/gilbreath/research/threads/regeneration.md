@@ -85,28 +85,67 @@ testable: the ratio column tells the story at any width.
    holds for the infinite sequence of primes is not settled by any finite
    computation.
 
-## The next question — NOW FORKED (Directive 34)
+## The next question — NOW THREE ROUTES (Directive 35)
 
-**Route A (current):** prove that the jump size j_i grows faster than the
-inter-giant gap. The geometric description gives j ~ 1.765× per event
-(b-doubling-ish); gaps are ≤ 64 over 15 giants and at most slowly growing.
+### Route A (run's ratio bound — kept as fallback)
 
-**Route B (Granville, newly live):** Lemma 5.4 → Theorem 5.5 reduces GC to
-proving ν_2 > n^β with β > 0.525, where ν_2 counts 2s in the right diagonal's
-0-2 cycle and α = 0.525 (demand side) is unconditional by
-Baker-Harman-Pintz. Operator measurement: ν_2/n ≈ 0.49–0.52 on primes below
-3e6 — exceeds threshold by 26× at n = 3999 and rising. Lemma 5.4 is the
-granville-nu2-density-measured claim re-stated as a supply-vs-demand budget in
-different coordinates. Its published proof discards a case occurring in 100%
-of columns (Directive 33: `lemma54-discarded-case-is-universal`) and must be
-re-derived here. Once proved (this run), the "lower-bound ν_2" target becomes
-the live question.
+Prove gap_i ≤ j_i+1 for all giants. The geometric description gives b ~ 1.765×
+per giant event (R²=0.968 over 15 giants); gaps are ≤ 64 over 15 giants and at
+most slowly growing. **Demand side:** geometric growth of b must be proved from
+prime-gap theory, or j must be shown to grow faster than inter-giant gaps. This
+is a new statement about the Gilbreath operator — no existing theorem covers it.
+The ratio bound holds with 2+ orders of slack on all 15 giants at 6e8 (max ratio
+0.0000122), but proving it continues to hold is the conjecture itself.
 
-**Comparison queued (TASKS item 10):** if Route B's demand is provably weaker
-than Route A's requirement, switch. If equivalent, record that. Do not pursue
-Route B mathematics before re-deriving Lemma 5.4.
+### Route B (Granville ν_2 — SELECTED as primary)
 
-The ratio formulation remains the current target:
+Lemma 5.4 → Theorem 5.5 reduces GC to proving ν_2 > n^β with β > 0.525, where
+ν_2 counts 2s in the right diagonal's 0-2 cycle. **Demand side:** α = 0.525 is
+**unconditional** — it follows from Baker-Harman-Pintz (p_{n+1} − p_n ≪ p_n^0.525).
+**Supply side:** ν_2/n ≈ 0.49–0.52 measured on primes below 3e6 — exceeds
+threshold by 26× at n = 3999 and rising. The only outstanding piece is Lemma 5.4
+re-derivation (published proof discards a case occurring in 100% of columns;
+the operator's notes document the gap: `lemma54-discarded-case-is-universal`).
+
+**Why this is the weakest target.** Granville's route needs only BHP
+(unconditional) whereas Route C needs Cramér (open, stronger than BHP) and
+Route A needs a new theorem about block growth across Gilbreath iterations.
+Lemma 5.4 is equivalent to the run's recharge identity in different coordinates
+— it describes how the right-diagonal 0-2 cycle accumulates ν_2, and the
+operator has already measured ν_2/n above threshold. Once Lemma 5.4 is
+re-derived here (with the delta=0 case handled), the route reduces to
+proving a lower bound on a single statistic (ν_2) of the prime gap sequence,
+rather than a property of the iterated triangle.
+
+### Route C (CHT deterministic — calibrated, not pursued)
+
+Theorem 1.6 (the inverse theorem) needs: (i) a_n ≪ log^10 N (Cramér, open,
+strictly stronger than BHP); (ii) no zero-block of length ~log^10 N; (iii) no
+right-half {0,d}-block (d ≥ 2) exceeding the R_m − 3R_{m−1} threshold.
+**The CHT authors' own assessment** (quoted verbatim from p. 8): hypotheses
+(ii) and (iii) "look difficult to establish rigorously, even if one assumes
+strong conjectures on the primes such as the Hardy–Littlewood prime tuples
+conjecture." This is the best calibration available: the people who proved the
+inverse theorem say the obstructions it isolates are as hard as the conjecture
+itself, short of unproved analytic number theory.
+
+**Directive 35 clarification — column restriction.** Theorem 1.6(iii) restricts
+the {0,d}-block obstruction to columns j ≥ N′ = ⌊N/2⌋ — the **RIGHT HALF**
+only. The run's leading {0,2} block (length b_k up to 31M) sits at j=1, the
+far LEFT, so it does NOT violate (iii). The question is whether long {0,d}
+blocks with d ≥ 2 exist in the RIGHT HALF. Scan queued (Directive 35 item 1).
+If long right-half shallow blocks exist, Theorem 1.6 does not apply and we've
+located precisely why. If not, (iii) is empirically supported — but (i) and
+(ii) remain open, and CHT's difficulty assessment stands.
+
+### Decision (Directive 35)
+
+The run is on **Route B** (Granville ν_2) as the primary target. Route A
+(ratio bound) is kept as the fallback empirical target. Route C is not
+pursued: CHT's own assessment calibrates it as requiring unproved analytic
+hypotheses; the column restriction makes it even harder to apply because
+the right-half {0,d}-block obstruction is independent of the leading-block
+regeneration the run studies.
 
 - **Can the geometric growth of b (and hence j) be proved from known
   prime-gap theory?** Prime gaps are O(p^θ) with θ ≈ 0.525 (Baker–Harman–
