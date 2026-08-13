@@ -6,6 +6,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `bello-fab-completeness` | The divisor-based parametrisation fab(n,a,b) recovers exactly the decompositions of 1/n with all three denominators divisible by 4 (the m=4/Erdős–Straus case after scaling); all primes p ≡ 1 mod 4 with p < 10^14 are… | yes | asserted | `research/summaries/bello-benito-fernandez-divisor-parametrization.md` |
 | `bradford-2026-covering-open` | Bradford (arXiv:2602.11774) claims an elementary proof of the Erdős–Straus conjecture via two lemmas producing explicit solutions for primes in residue classes modulo M(k,ℓ), but the concluding covering-system claim is… | yes | asserted | `research/summaries/bradford-solution-straus-erdos.md` |
 | `bradford-divisor-counting-open-classes` | For the 66,737 primes p ≡ r (mod 840) with r in {1,121,169,289,361,529} and p ≤ 3.5×10^7, every p has a solution, and f(p) grows with p; Type-1 solutions are about 2.2 times more numerous than Type-2. | yes | asserted | `research/summaries/mihnea-dumitru-verification-1e18.md` |
 | `bradford-two-variable-reduction` | For prime p, the Erdős–Straus equation 4/p = 1/x+1/y+1/z has a solution iff there is x with ⌈p/4⌉ ≤ x ≤ ⌈p/2⌉ and d \| x² with (Type I) d ≡ −px mod (4x−p), or (Type II) d ≤ x and d ≡ −x mod (4x−p); the map from (x,d) to… | yes | asserted | `research/summaries/bradford-elemental-patterns.md` |
@@ -25,11 +26,13 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `type-definition` | For odd prime p, every solution to 4/p=1/x+1/y+1/z is Type I (p divides exactly one of x,y,z) or Type II (p divides exactly two), and f(p)=3 f_I(p)+3 f_II(p). | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
 | `vanishing-type12-odd-squares` | For any odd perfect square n, f_I(n)=f_II(n)=0: there is no Type-I and no Type-II solution to 4/n=1/x+1/y+1/z. | yes | asserted | `research/summaries/elsholtz-tao-counting.md` |
 | `verification-1e18` | The Erdős–Straus conjecture holds for all n up to 10^18 (Mihnea–Dumitru 2025, extending Salez's modular-filter method with the S_29 filter). | yes | asserted | `research/summaries/mihnea-dumitru-verification-1e18.md` |
+| `xu-tame-wild-dichotomy` | For primes n = 24m+1, a solution is tame when n2,n3 divide (6m+k)(24m+1) with n1=6m+k; only nine wild primes (no tame solution) exist among the 7185 primes with m ≤ 30000, and congruence-class families cover all 586… | yes | asserted | `research/summaries/xu-tame-solutions-24m1.md` |
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `bello-fab-completeness` (research/summaries/bello-benito-fernandez-divisor-parametrization.md) — asserted by the source, not proved there and not checked here
 - `bradford-2026-covering-open` (research/summaries/bradford-solution-straus-erdos.md) — asserted by the source, not proved there and not checked here
 - `bradford-divisor-counting-open-classes` (research/summaries/mihnea-dumitru-verification-1e18.md) — asserted by the source, not proved there and not checked here
 - `bradford-two-variable-reduction` (research/summaries/bradford-elemental-patterns.md) — asserted by the source, not proved there and not checked here
@@ -45,3 +48,4 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `type-definition` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
 - `vanishing-type12-odd-squares` (research/summaries/elsholtz-tao-counting.md) — asserted by the source, not proved there and not checked here
 - `verification-1e18` (research/summaries/mihnea-dumitru-verification-1e18.md) — asserted by the source, not proved there and not checked here
+- `xu-tame-wild-dichotomy` (research/summaries/xu-tame-solutions-24m1.md) — asserted by the source, not proved there and not checked here
