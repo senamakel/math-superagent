@@ -1,84 +1,135 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/evertse-gyory-shorey-tijdeman-equal-values-binary-forms.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Evertse–Győry–Shorey–Tijdeman 1987 — "Equal values of binary forms at integral points" (PRIMARY, now held in full)
 
-<!-- source: https://ir.cwi.nl/pub/1712/1712D.pdf | converted from PDF -->
+Source: Jan-Hendrik Evertse, Kálmán Győry, T.N. Shorey, R. Tijdeman, "Equal
+values of binary forms at integral points", Acta Arithmetica 48 (1987)
+379–396.
+Full text held (previously a dead landing-page download):
+`research/sources/evertse-gyory-shorey-tijdeman-equal-values-binary-forms.full.md`
+(author-repository PDF via CWI ir.cwi.nl/pub/1712/1712D.pdf). Authors:
+Evertse (Amsterdam/CWI), Győry (Debrecen), Shorey (Tata Bombay), Tijdeman
+(Leiden). Received 30.12.1985.
 
-## What it claims
+## What the paper establishes
 
-1.  Equations  in  rational  integers.  Let  F(X,  Y)  be  an  irreducible  binary
-form  of degree  n  ;;:::  3  with coefficients  in  Z  (the  ring  of rational integers)  and
-m  a  non-zero  rational  integer.  In  1968,  Baker  [1]  gave  an  explicit  upper
-bound  for  all  the  solutions  of  the  Thue  equation
+The subject is **equal values of binary forms**: equations `F(x,y) = G(x,y)`
+(and the more general `z·F(x,y) = G(x,y)·p₁^{k₁}···p_r^{k_r}` Thue–Mahler-type
+shape) where `F`, `G` are homogeneous polynomials in two variables with
+integer (or algebraic-integer) coefficients. Key structural quantity: `w(F)`,
+the maximal number of **pairwise non-proportional linear factors** of `F` over
+`C` (so `w(F) = 3` means at least three genuinely different directions).
 
-(1)  F(x, y) = m  in  x,  yEZ
+The theorems, in increasing generality, all assume some `w(...) ≥ 3` and give
+**effectively computable** constants:
 
-which  depends  only  on  m,  n  and  the  height  H (F)  of  F  (i.e.  the  maximal
-absolute  value  of  the  coefficients  of F).  Here  the  irreducibility  of F  can  be
-replaced  by  the  weaker  assumption  that  OJ (F) ;;:::  3  where  ro (F)  denotes  the
-maximal  number  of  pairwise  non-proportional  linear  factors  of  F  in  its
-factorisation  over  C  (see  e.g.  [10]  or  [20]).
-After  Baker  had  proved  the  effective  version  of  Thue's  theorem  on
-equation  (1),  Coates  [3],  [4]  showed  that  the  dependence  on  m  can  be
-replaced  by dependence on the distinct  prime divisors  of m.  He proved that if
-FeZ[X,  Y]  is  an  irreducible  binary  form  of degree  n ~ 3  and  if p 1 ,  ••• ,  Ps
-are  distinct  prime…
+- **Theorem 1 / Corollary 2–4.** If `F, G` are relatively prime binary forms
+  with `F/G` not a constant multiple of a power of a linear or an indefinite
+  quadratic form, then the solutions of `F(x,y)=G(x,y)`, `(x,y)=1` satisfy
+  `max(|x|,|y|)` bounded by an effectively computable number depending only on
+  the degrees and heights of `F` and `G`. (Effective magnitude bound on the
+  equal-value solutions.) Corollary 3 recovers the Shorey–Tijdeman result for
+  `deg F > deg G`.
 
-## Statements it makes
+- **Theorem 2 (eq. (6)).** Under `w(F₁···F_r G₁···G_s) ≥ 3`, every solution of
+  `F(x,y)=G(x,y)` (F∈𝓕, G∈𝓖, multiplicative powers of a fixed finite list of
+  base forms), `(x,y)=1`, satisfies
+  `max(|x|,|y|) < exp{ (r+s) n⁴ ( C₄(t+1)log P)^{1+1} P^{r/5} log H }`
+  (OCR-fractured but the shape is clear: an explicit exp-of-polynomial bound in
+  the degrees `n`, the number `r+s` of base forms, the set `t`/largest norm `P`
+  of the primes, and the height `H`). `C₄`, `C₅` effectively computable, `C₄`
+  depending on the splitting field `L` (degree `l`, regulator `R_L`, class
+  number `h_L`), `C₅` on `l` alone.
 
-THEOREM  1.  Let P, GeZ[X, Y]  be relatively prime binary forms. Let  x
-and y  be rational integers with (x, y)  =  1  and G (x,  y)  i=  0.  rf w (PG)  ~ 3,  then
+- **Theorem 3.** The **number** of pairs `(x,y)∈Z²` solving `F(x,y)=G(x,y)`
+  for some `F∈𝓕`, `G∈𝓖` is at most ~`2·r^{3(2r+3)}` (exponent OCR-garbled;
+  the paper stresses the bound is **independent of `r`, `s`, `P`, `H` and `L`**
+  — i.e. an absolute constant once the base-form list is fixed). This is the
+  Subspace-Theorem-shaped *count* bound: the number of equal-value solutions is
+  bounded by a constant, while Theorem 2 bounds each solution's size.
+  Proof route (Section 2): reduce (10) to a Thue–Mahler equation, then apply
+  Evertse 1984 (S-unit / Thue–Mahler count via the Thue–Siegel method) and
+  Győry 1981 (Baker's linear-forms-in-logarithms method). Both are cited as
+  the two engines.
 
-COROLLARY  1.  Let F,  GE Z [X,  Y]  be relatively prime binary forms such
-that  w(F) ~ 3.  Let  {p1 ,  ... ,  p1 )  be  d  set  of  prime  numbers.  Let
-x, y, z, k 1 ,  ... ,  k1  be rational  integers with
+- **Theorem 4–6.** The relative (number-field) generalization with the
+  denominator `(x,y)^{deg}` normalizing powers, `N(⟨x,y⟩) ≥ N₀`, and a count
+  of points on `P¹(K)`. Theorem 6 generalizes the count bound to `O_K`.
 
-COROLLARY  2.  Let  F,  GE Z [X,  Y]  be  relatively  prime  non-zero  binarv
-j(1rms.  Suppose  that  F  is  not  a  constant  multiple  of a  power  of a  linear  or  a~
-indefinite  quadratic  form.  If x, y  are  rational  integers  such  that
+## Bearing for this run — what it does and does NOT establish
 
-COROLLARY  3.  Let  F,GEZ[X, Y]  be  binaryjbrms  which  satisfy  the
-conditions  of Corollary  2  and  also  deg F  >deg G.  Then  all  pairs  of rational
-integers  x, y  with
- F(x, y)IG(x,  y),  G(x,  y)  =P  0,
+**Relevance:** this is the *closest published application of the Subspace /
+S-unit method to a bound on factorial-type equal-value equations* — the anchor
+the run's `sunit-subspace-inapplicable` approach cites for "per-form
+Subspace-Theorem constants". That citation is now **primary-backed**: EGST
+really does give (Thm 3) an absolute-parameter-independent count bound and
+(Thm 1–2) effective size bounds for `F(x,y)=G(x,y)` when `w(FG)≥3` and the
+degenerate `F/G = const·(linear or indefinite quadratic)^power` case is excluded.
 
-Corollary 3  implies the result of Shorey and Tijdeman on equation (4).
+**The genuine gap — do NOT overstate applicability:** the theorems are stated
+for **binary forms in two variables**, i.e. `F(x,y)` homogeneous. The run's
+equation is `C(x,k₁) = C(y,k₂)`, a *separated-variable* equation between two
+**univariate** polynomials `P_{k}(X) = X(X-1)···(X-k+1)/k!`. It is **not**
+literally of the binary-form shape `F(x,y)=G(x,y)`. To apply EGST one must
+homogenize: `P_k(X,Z) = X(X-Z)···(X-(k-1)Z)/k!` is a degree-`k` binary form in
+two variables `(X,Z)` **with `w(P_k) ≥ 3` for `k ≥ 3`** (the linear factors
+`X - jZ`, `j=0..k-1`, pairwise non-proportional). But the equal-value equation
+then reads `P_{k₁}(X,Z) = P_{k₂}(Y,Z)` — a relation among **three** variables
+`(X,Y,Z)`, which is not the two-variable `F(x,y)=G(x,y)` form EGST's theorems
+count. The separated-variable (univariate) case is governed instead by
+Bilu–Tichy 2000 and the Beukers–Shorey–Tijdeman 1999 equal-products
+classification (both already held). So **EGST does not by itself yield even a
+per-pair bound on `N(a)`**; it is corroborating method-level support for the
+Subspace approach's per-form constants, not a transferable theorem for the
+binomial family. The run should keep `bilu-tichy-classification` /
+`bst-fixed-kl-effective` as the governing machinery, and treat EGST as the
+binary-form template whose `w ≥ 3` nondegeneracy condition and
+absolute-count-bound structure it would like — but which fails to apply because
+the homogenized binomial equation is three-variable.
 
-COROLLARY  4.  Let  F,  GEZ[X,  Y]  be  distinct  non-zero  binary  forms.
-Suppose  that  F/G  is  not  a  constant  multiple  of a  (positive  or  negative)  power  of
-a  linear  or  an  indefinite  quadratic  form.  If x, y  are  rational  integers  such  that
+**Ineffective-vs-effective:** EGST's bounds are **effective** (computable
+constants), paralleling BST 1999's Thm 1.1 finiteness — but, like BST, the
+constants depend on the degrees/heights (growing with `k₁,k₂`), so no
+**uniform-in-k** constant emerges. It reinforces `effective-methods-wall`: even
+the best effective equal-value machinery gives per-curve constants, not a
+Singmaster `B`.
 
-Theorem 2  gives an upper bound for  the magnitude of the solutions of
+## Status
 
-THEOREM  2.  Let  n  be the degree of F 1  ••• F,G 1 ••. G8 •  Suppose
+`egst-1987-landing-only` (previously marked "no usable statement") is now
+**superseded**: the primary is held and readable. New claim file below replaces
+it. The `sunit-subspace-inapplicable` citation of EGST for per-form constants
+is now sourced, and its applicability limits (three-variable gap) are stated
+exactly.
 
-COROLLARY  5.  Let  Fi(X,  Y), .. ., F,(X,  Y)EZ[X,  Y]  be  binary  forms
-such  that  F 1 ,  .• .,  F,,  P/Q  are  multiplicatively independent  in  Q(X, Y)  for  all
-relatively  prime  binary  forms  P,Q  in  Z[X, Y]  with  w(PQ)E'.1,2]. Then
-there  exists  an  effectively computable  number  C6  depending  only on  F 1 ,  •• .,  F,
-such  that  F 1 (x,  y),  .. .,  F,(x,  y)  are  multiplicatively  independent  in  Q for  all
-rational  integers  x, y  with  (x, y)  =  1  and  max (lxl,  IYD  > C6 .
-For binary forms FEZ [X,  Y]  with  w(F)  ~ 3,  Evertse [6]  and Evertse
-and  Gyory  [7]  derived  the  upper  bounds  2 x r 3<2s+ 3)  and  4 x 71<2s+ 3\
-respectively, for  the number of…
+```claim
+id: egst-1987-equal-values-binary-forms-primary
+statement: Evertse-Gyory-Shorey-Tijdeman 1987 (Acta Arith. 48, 379-396) proves,
+  for F,G relatively prime integer binary forms with F/G not a constant multiple
+  of a power of a linear or indefinite quadratic form and w(FG)>=3: (Thm1/Cor4)
+  solutions of F(x,y)=G(x,y), (x,y)=1, satisfy max(|x|,|y|) < C(F,G) effectively
+  computable from degrees+heights; (Thm2) an explicit exp bound; (Thm3) the NUMBER
+  of solutions is bounded by an absolute constant independent of r,s,P,H,L once
+  the base forms are fixed. Method: reduce to Thue-Mahler, then S-unit count
+  (Evertse 1984, Thue-Siegel) + Baker linear forms (Gyory 1981).
+hypotheses: F,G are BINARY FORMS in two variables (x,y); w(FG)>=3; F/G not a
+  degenerate power of a linear/indefinite-quadratic form; (x,y)=1.
+holds-here: PARTIAL/NO — the run's equation C(x,k1)=C(y,k2) is separated-variable
+  (two UNIVARIATE polynomials), not a binary-form equality; the homogenization
+  P_k(X,Z) is degree-k with w>=3 for k>=3 but the equal-value equation is then
+  three-variable, outside EGST's two-variable form.
+status: checked (primary held, readable in full)
+bearing: CORROBORATES sunit-subspace per-form constants at primary level; does
+  NOT transfer to N(a) because the binomial family is not a binary-form equality
+  in two variables — the separated-variable case is governed by Bilu-Tichy/BST,
+  already held. Consistent with effective-methods-wall (constants grow with
+  deg/height, no uniformity).
+anchor: research/sources/evertse-gyory-shorey-tijdeman-equal-values-binary-forms.full.md
+```
 
-THEOREM  3.  Ler  .F,'t/,  F 1 ,  .. .,  F,,  G1 ,  .. .,  G,  and  t  be  as  above.  Let n  be
-rlu.>  deyree  of'  F 1 ... F,G1  •.• G,.  Suppose  (!)(F 1  ... F,G 1 ... GJ ~ 3.  Then  the
-number  of pairs  x, yEZ for  which  (5)  holds  for  some  FeF,  GE~ is  at  most
-2 x  r3(2r + 3)_
+## Note on the artefacts in the text
 
-THEOREM  4.  Suppose  that  x, yE  (l_K  are  not  both  ::ero  and  satisj}•
-
-Theorem 2 follows  at  once from  Theorem 4  by  taking  K  =  Q,  u =  0,  N 0  =  1.
-The  condition  N(('<,  y)) ~ N 0  is  necessary,  since  if x, YE  (r'K  satisfy  (10)  then
-so  do  ax, ay for  each  a E  (i_K  with  a ¥  0.  We  remark  that  from  Theorem  4  we
-can  deduce  a  new  version  of  Gyory's  theorem  on  (7)  in  [9]  with  another
-bound.
-From  Theorem  4  we  shall  deduce  the  following  generalisation  of  The-
-orem  1.
-THEOREM  5.  Let  FE .'7,  GE Cfi.  Let  x, y  be  elements  of…
-
-T…
-
-
-*[further statements in the full text]*
-
-*[digest of a 42198 character source; every section, statement, and proof in full at `research/sources/evertse-gyory-shorey-tijdeman-equal-values-binary-forms.full.md`]*
+The OCR of the CWI PDF is fractured (e.g. "OJ" for `ω`, garbled superscripts in
+Thm 2–3). The quantitative shape of Thm 2 (exp of a polynomial in r+s, n⁴,
+(t+1)log P, P^{r/5}, log H) and the "independent of r,s,P,H,L" remark for Thm 3
+are clear even where the exact exponents are not fully legible. Any later agent
+quoting a precise Thm 2/3 constant must re-read the full text rather than trust
+this summary's OCR-affected digits.
