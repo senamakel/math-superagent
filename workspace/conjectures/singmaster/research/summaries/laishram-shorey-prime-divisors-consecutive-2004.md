@@ -5,7 +5,7 @@ consecutive terms of an arithmetic progression" or a Laishram–Shorey paper on
 prime divisors of consecutive integers (the file name says
 `prime-divisors-consecutive-2004`).
 
-## What is actually held — a DIFFERENT paper
+## What is actually held — a DIFFERENT paper (corrupt fetch), now corrected
 
 The full-text capture `research/sources/laishram-shorey-prime-divisors-consecutive-2004.full.md`
 is **not** a Laishram–Shorey paper. It is the raw IMPAN HTML landing page for
@@ -17,6 +17,17 @@ is **not** a Laishram–Shorey paper. It is the raw IMPAN HTML landing page for
 resolved to the wrong IMPAN page (a "10.4064" DOI mis-resolution or a
 stale/corrupt fetch). Nothing in the file concerns binomial coefficients,
 prime divisors, or Diophantine equations.
+
+**RESOLVED (librarian cycle):** the intended source — Laishram–Shorey,
+"Number of prime divisors in a product of consecutive integers", Acta Arith.
+113 (2004) 327–341 — is now represented in the library through the author's
+TIFR PhD thesis, which reproduces its theorems verbatim:
+`research/sources/laishram-phd-thesis-sylvester.full.md`,
+summary `research/summaries/laishram-phd-thesis-sylvester.md`, claim
+`laishram-shorey-sylvester-refinements-thesis`. The 2004 paper itself could
+not be fetched directly (IMPAN DOI proxy 502, author PDF 404, DML-PL 503);
+the thesis is the primary-content substitute. The corrupt topology-PDF file
+below is kept only as the tombstone preventing re-citation.
 
 ## Bearing for this run — does not help, and the source name must not be trusted
 

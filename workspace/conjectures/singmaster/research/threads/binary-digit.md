@@ -68,4 +68,7 @@ literature; the thread's premise survives. The matrix theorem supplies a precise
 computable refinement of the sparsity intuition the mechanism relies on.
 Implication for the first step: the n<=2^18 odd-triangle scan is not reproducing
 known work but probing genuinely open territory, and its maximum-multiplicity
-finding (whether any odd value reaches 9) is a new datum.
+finding (whether any odd value reaches 9) is a new datum. (Lane 2023
+arXiv:2309.12942, held, adds only the residue-distribution benchmark: for p=2
+the "even distribution" is vacuous, so nothing beyond the total count; the
+value-multiplicity gap survives unchanged.)

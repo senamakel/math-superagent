@@ -1,0 +1,36 @@
+==== Fact 2: n_i == F(2i)F(2i+1)-1 (A089508) ====
+False
+==== Fact 3: order-3 LRR n_i=8n_{i-1}-8n_{i-2}+n_{i-3} ====
+n: True
+k: True
+==== Fact 4: n diffs == F(4i+7) (A033891/A172968) ====
+i=1 diff=89 F(4i+7)=89 match=True
+i=2 diff=610 F(4i+7)=610 match=True
+i=3 diff=4181 F(4i+7)=4181 match=True
+i=4 diff=28657 F(4i+7)=28657 match=True
+i=5 diff=196418 F(4i+7)=196418 match=True
+i=6 diff=1346269 F(4i+7)=1346269 match=True
+i=7 diff=9227465 F(4i+7)=9227465 match=True
+i=8 diff=63245986 F(4i+7)=63245986 match=True
+i=9 diff=433494437 F(4i+7)=433494437 match=True
+i=10 diff=2971215073 F(4i+7)=2971215073 match=True
+i=11 diff=20365011074 F(4i+7)=20365011074 match=True
+==== Fact 5: ratio n_{i+1}/n_i ====
+i=1: 7.357143
+i=2: 6.922330
+i=3: 6.863955
+i=4: 6.855537
+i=5: 6.854311
+i=6: 6.854133
+i=7: 6.854106
+i=8: 6.854103
+i=9: 6.854102
+i=10: 6.854102
+i=11: 6.854102
+phi^4 = 6.854101966249686
+==== Fact 1 sanity: identity C(n+1,k+1)=C(n,k+2) i=1..5 ====
+i=1 True
+i=2 True
+i=3 True
+i=4 True
+i=5 True

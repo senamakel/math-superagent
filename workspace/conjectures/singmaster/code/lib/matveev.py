@@ -41,21 +41,27 @@ __all__ = [
 
 
 def binomial_reduction_identity():
-    """Return (ok, lhs, rhs) for the direct algebra check
+    """Return (ok, cx2, cy3, lhs, rhs) for the direct algebra check
 
         C(x,2) = C(y,3)  <=>  3 x (x-1) = y (y-1) (y-2),
 
-    verified symbolically via sympy:  6(C(x,2) - C(y,3)) is exactly
-    3x(x-1) - y(y-1)(y-2) as a polynomial identity, so the two equations are
-    equivalent (multiplying by the nonzero constant 6).
+    with cx2 = expand_func(C(x,2)) = x(x-1)/2 and cy3 = expand_func(C(y,3)) =
+    y(y-1)(y-2)/6 evaluated exactly by sympy.  ok is True iff all three
+    polynomial identities hold:
+        6*cx2 == 3x(x-1),  6*cy3 == y(y-1)(y-2),  6*cx2 - 6*cy3 == 3x(x-1) - y(y-1)(y-2),
+    so C(x,2) = C(y,3) iff 3x(x-1) = y(y-1)(y-2) (multiply by the nonzero 6).
     """
-    from sympy import symbols, binomial, expand
+    from sympy import symbols, binomial, expand, expand_func
 
     x, y = symbols("x y")
-    lhs = expand(6 * (binomial(x, 2) - binomial(y, 3)))   # 6C(x,2) - 6C(y,3)
+    cx2 = expand_func(binomial(x, 2))                     # x(x-1)/2
+    cy3 = expand_func(binomial(y, 3))                     # y(y-1)(y-2)/6
+    lhs = expand(6 * (cx2 - cy3))                          # 6C(x,2) - 6C(y,3)
     rhs = expand(3 * x * (x - 1) - y * (y - 1) * (y - 2))
-    ok = (lhs == rhs) and (expand(3 * x * (x - 1)) != 0)
-    return ok, lhs, rhs
+    ok = (expand(6 * cx2) == expand(3 * x * (x - 1))
+          and expand(6 * cy3) == expand(y * (y - 1) * (y - 2))
+          and lhs == rhs)
+    return ok, cx2, cy3, lhs, rhs
 
 
 def two_sided_products(x, y):
@@ -98,17 +104,29 @@ def kummer_subset_verification(primes):
 
         [Q(sqrt(p_1), ..., sqrt(p_n)) : Q] = 2^n
 
-    Criterion used (standard field theory): the 2^n subset products
-    prod_{j in S} p_j are distinct modulo Q*^2, equivalently every nonempty
-    subset product is not a perfect square.  Both are checked exactly
-    (math.isqrt and sympy.factorint).  Returns (ok: bool, detail: str).
+    Criterion used (standard field theory): every nonempty subset product
+    prod_{j in S} p_j has a squarefree part > 1, i.e. is not a perfect square,
+    and the 2^n subset products are distinct modulo Q*^2.  For *distinct*
+    primes this is polynomial, not enumeration: by unique factorization every
+    nonempty subset product has each p_j-exponent equal to 0 or 1, so it is a
+    square iff all exponents are even, which can happen only for the empty
+    subset.  Consequently sqrt of any nonempty subset product lies outside Q,
+    the squareclasses of the 2^n subsets are pairwise distinct (S != S' gives
+    a different squarefree part), and Galois theory (Kummer) yields the tower
+    degree 2^n.  The check therefore reduces to: the primes are pairwise
+    distinct and all exceed 1 -- both verified exactly here.  The non-square
+    property itself is also spot-checked for every nonempty subset when n is
+    small (n <= 8), as a naive-oracle demonstration of the same conclusion.
+    Returns (ok: bool, detail: str).
     """
-    from sympy import factorint
-
     n = len(primes)
     if len(set(primes)) != n:
         return False, f"primes not distinct: {primes}"
-    parts = []
+    if any(p <= 1 for p in primes):
+        return False, f"alpha_j must be integers > 1, got {primes}"
+    # Oracle spot-check: every nonempty subset product is not a square.
+    # This is 2^n - 1 checks and is run only for the tiny n here (n <= 8).
+    oracle_checked = 0
     for mask in range(1, 1 << n):
         prod = 1
         for j in range(n):
@@ -117,18 +135,12 @@ def kummer_subset_verification(primes):
         r = math.isqrt(prod)
         if r * r == prod:
             return False, f"subset mask {mask:b} product {prod} IS a perfect square"
-        # squarefree part (for distinct primes this is prod itself, computed
-        # anyway as the honest modulo-squares representative)
-        sf = 1
-        for p, e in factorint(prod).items():
-            sf *= p ** (e % 2)
-        parts.append(sf)
-    if len(set(parts)) != len(parts):
-        return False, "two subset products have the same squarefree part (linearly dependent mod squares)"
+        oracle_checked += 1
     return (
         True,
-        f"verified: all {2**n - 1} nonempty subset products are non-squares, "
-        f"{2**n} subset classes distinct mod Q*^2  =>  "
+        f"primes pairwise distinct; oracle spot-check confirms all {oracle_checked} "
+        f"nonempty subset products are non-squares (unique factorization makes this "
+        f"a theorem for distinct primes, not just a check); "
         f"[Q(sqrt({', '.join(map(str, primes))})):Q] = 2^{n} = {2**n}",
     )
 

@@ -1,0 +1,204 @@
+==============================================================================
+Matveev 2000 Thm 2.2 / 2.3(ii) explicit constants, (2,3) curve
+C(x,2)=C(y,3)  <=>  3x(x-1) = y(y-1)(y-2)  (K=Q real: D=1, rho=1, C3=n)
+==============================================================================
+
+[1] Direct algebra: 6*(C(x,2)-C(y,3)) expanded == 3x(x-1)-y(y-1)(y-2)?
+    C(x,2) = x*(x - 1)/2
+    C(y,3) = y*(y - 2)*(y - 1)/6
+    6C(x,2)-6C(y,3) = 3*x**2 - 3*x - y**3 + 3*y**2 - 2*y
+    3x(x-1)-y(y-1)(y-2) = 3*x**2 - 3*x - y**3 + 3*y**2 - 2*y
+    6*C(x,2) == 3x(x-1): True,  6*C(y,3) == y(y-1)(y-2): True
+    identity holds: True   (multiplying by 6, C(x,2)=C(y,3) iff 3x(x-1)=y(y-1)(y-2))
+
+[2] Concrete solutions: P = 3x(x-1), Q = y(y-1)(y-2), a = C(x,2) = C(y,3)
+    C(16,2)=C(10,3)=120:  P=Q=720;  factors={2: 4, 3: 2, 5: 1}
+       linear form over union of primes: n_nonzero=0, bs=[], Lambda = 0 (==0 exactly because P==Q and both sides have identical factorizations)
+       exact check Lambda==0: True
+    C(56,2)=C(22,3)=1540:  P=Q=9240;  factors={2: 3, 3: 1, 5: 1, 7: 1, 11: 1}
+       linear form over union of primes: n_nonzero=0, bs=[], Lambda = 0 (==0 exactly because P==Q and both sides have identical factorizations)
+       exact check Lambda==0: True
+    C(120,2)=C(36,3)=7140:  P=Q=42840;  factors={2: 3, 3: 2, 5: 1, 7: 1, 17: 1}
+       linear form over union of primes: n_nonzero=0, bs=[], Lambda = 0 (==0 exactly because P==Q and both sides have identical factorizations)
+       exact check Lambda==0: True
+
+[3] Kummer condition (1.5) for the primes of the three solutions,
+    K=Q, alpha_j = distinct primes:
+    primes = [2, 3, 5, 7, 11, 17]
+    primes pairwise distinct; oracle spot-check confirms all 63 nonempty subset products are non-squares (unique factorization makes this a theorem for distinct primes, not just a check); [Q(sqrt(2, 3, 5, 7, 11, 17)):Q] = 2^6 = 64
+    ok = True
+
+[4] Nonzero delta forms: Lambda = ln(P_a) - ln(Q_b) for pairs of DIFFERENT
+    solutions (a != b).  These have Lambda != 0, so Thm 2.2 genuinely applies.
+    a1=120 (x=16), a2=1540 (y=22):  P1=720, Q2=9240
+       Lambda = (1)ln 2 + (1)ln 3 + (-1)ln 7 + (-1)ln 11  = ln(720/9240) = ln(0.07792207792207792)  approx -2.5520459526
+       cross-check ln(P1)-ln(Q2) = -2.5520459526, agree=True
+       Kummer condition on these 4 primes: primes pairwise distinct; oracle spot-check confirms all 15 nonempty subset products are non-squares (unique factorization makes this a theorem for distinct primes, not just a check); [Q(sqrt(2, 3, 7, 11)):Q] = 2^4 = 16, ok=True
+    a1=120 (x=16), a2=7140 (y=36):  P1=720, Q2=42840
+       Lambda = (1)ln 2 + (-1)ln 7 + (-1)ln 17  = ln(720/42840) = ln(0.01680672268907563)  approx -4.0859763126
+       cross-check ln(P1)-ln(Q2) = -4.0859763126, agree=True
+       Kummer condition on these 3 primes: primes pairwise distinct; oracle spot-check confirms all 7 nonempty subset products are non-squares (unique factorization makes this a theorem for distinct primes, not just a check); [Q(sqrt(2, 7, 17)):Q] = 2^3 = 8, ok=True
+    a1=1540 (x=56), a2=7140 (y=36):  P1=9240, Q2=42840
+       Lambda = (-1)ln 3 + (1)ln 11 + (-1)ln 17  = ln(9240/42840) = ln(0.2156862745098039)  approx -1.5339303599
+       cross-check ln(P1)-ln(Q2) = -1.5339303599, agree=True
+       Kummer condition on these 3 primes: primes pairwise distinct; oracle spot-check confirms all 7 nonempty subset products are non-squares (unique factorization makes this a theorem for distinct primes, not just a check); [Q(sqrt(3, 11, 17)):Q] = 2^3 = 8, ok=True
+    a1=7140 (x=120), a2=120 (y=10):  P1=42840, Q2=720
+       Lambda = (-1)ln 2 + (1)ln 7 + (1)ln 17  = ln(42840/720) = ln(59.5)  approx 4.0859763126
+       cross-check ln(P1)-ln(Q2) = 4.0859763126, agree=True
+       Kummer condition on these 3 primes: primes pairwise distinct; oracle spot-check confirms all 7 nonempty subset products are non-squares (unique factorization makes this a theorem for distinct primes, not just a check); [Q(sqrt(2, 7, 17)):Q] = 2^3 = 8, ok=True
+
+[5] Matveev Thm 2.2 constants for the nonzero delta forms
+    (theta = 1: Thm 2.2;  theta = 1/(2-2/(n e^{n+1})): Thm 2.3(ii), K=Q, A_j=ln alpha_j)
+
+    --- delta form ln(P(16,2)) - ln(Q(22,3)) = ln(120/1540), n = 4, primes [2, 3, 7, 11], bs [1, 1, -1, -1]
+    Thm2.2 theta=1 = 1.0:  C1=2.386300e+01  C2=3.361400e+06  C3=4.000000  D=1.0  rho=1.0
+       A_j (ln p_j) = ['0.693147', '1.098612', '1.945910', '2.397895'],  Omega=prod A_j = 3.553227e+00
+       omega (2.5) = 3.405429e+07
+       C0' = ln(C2*D*omega/(C1*A_n)) (2.15) = 28.324414
+       B = max|b_j|A_j/A_n (2.14) = 1.000000
+       (2.16) ln|Lambda| > -9.837520e+18   i.e.  |Lambda| > 10^(-4.272381e+18)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -1.026447e+12  (uses Omega=prod A_j instead of omega; omega 3.4e+07 is the theorem's (2.5) quantity)
+       actual |Lambda| = 2.5520459526 (known: the bound is satisfied a fortiori)
+       hypotheses (2.9)-(2.11) with C0=1.23*C0', W0=ln(2eB): ALL PASS
+    Thm2.3(ii) theta = 0.5008436645165851:  C1=2.386300e+01  C2=3.361400e+06  C3=4.000000  D=1.0  rho=1.0
+       A_j (ln p_j) = ['0.693147', '1.098612', '1.945910', '2.397895'],  Omega=prod A_j = 3.553227e+00
+       omega (2.5) = 7.896214e+05
+       C0' = ln(C2*D*omega/(C1*A_n)) (2.15) = 24.560256
+       B = max|b_j|A_j/A_n (2.14) = 1.000000
+       (2.16) ln|Lambda| > -1.977902e+17   i.e.  |Lambda| > 10^(-8.589917e+16)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -8.900382e+11  (uses Omega=prod A_j instead of omega; omega 7.9e+05 is the theorem's (2.5) quantity)
+       actual |Lambda| = 2.5520459526 (known: the bound is satisfied a fortiori)
+       hypotheses (2.9)-(2.11) with C0=1.23*C0', W0=ln(2eB): ALL PASS
+
+    --- delta form ln(P(16,2)) - ln(Q(36,3)) = ln(120/7140), n = 3, primes [2, 7, 17], bs [1, -1, -1]
+    Thm2.2 theta=1 = 1.0:  C1=1.631804e+01  C2=2.423517e+05  C3=3.000000  D=1.0  rho=1.0
+       A_j (ln p_j) = ['0.693147', '1.945910', '2.833213'],  Omega=prod A_j = 3.821444e+00
+       omega (2.5) = 3.680795e+05
+       C0' = ln(C2*D*omega/(C1*A_n)) (2.15) = 21.380517
+       B = max|b_j|A_j/A_n (2.14) = 1.000000
+       (2.16) ln|Lambda| > -2.893402e+15   i.e.  |Lambda| > 10^(-1.256588e+15)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -3.003963e+10  (uses Omega=prod A_j instead of omega; omega 3.7e+05 is the theorem's (2.5) quantity)
+       actual |Lambda| = 4.0859763126 (known: the bound is satisfied a fortiori)
+       hypotheses (2.9)-(2.11) with C0=1.23*C0', W0=ln(2eB): ALL PASS
+    Thm2.3(ii) theta = 0.5030713577747559:  C1=1.631804e+01  C2=2.423517e+05  C3=3.000000  D=1.0  rho=1.0
+       A_j (ln p_j) = ['0.693147', '1.945910', '2.833213'],  Omega=prod A_j = 3.821444e+00
+       omega (2.5) = 1.734617e+04
+       C0' = ln(C2*D*omega/(C1*A_n)) (2.15) = 18.325590
+       B = max|b_j|A_j/A_n (2.14) = 1.000000
+       (2.16) ln|Lambda| > -1.168720e+14   i.e.  |Lambda| > 10^(-5.075687e+13)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -2.574746e+10  (uses Omega=prod A_j instead of omega; omega 1.7e+04 is the theorem's (2.5) quantity)
+       actual |Lambda| = 4.0859763126 (known: the bound is satisfied a fortiori)
+       hypotheses (2.9)-(2.11) with C0=1.23*C0', W0=ln(2eB): ALL PASS
+
+    --- delta form ln(P(56,2)) - ln(Q(36,3)) = ln(1540/7140), n = 3, primes [3, 11, 17], bs [-1, 1, -1]
+    Thm2.2 theta=1 = 1.0:  C1=1.631804e+01  C2=2.423517e+05  C3=3.000000  D=1.0  rho=1.0
+       A_j (ln p_j) = ['1.098612', '2.397895', '2.833213'],  Omega=prod A_j = 7.463696e+00
+       omega (2.5) = 7.188994e+05
+       C0' = ln(C2*D*omega/(C1*A_n)) (2.15) = 22.049939
+       B = max|b_j|A_j/A_n (2.14) = 1.000000
+       (2.16) ln|Lambda| > -5.828065e+15   i.e.  |Lambda| > 10^(-2.531096e+15)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -6.050764e+10  (uses Omega=prod A_j instead of omega; omega 7.2e+05 is the theorem's (2.5) quantity)
+       actual |Lambda| = 1.5339303599 (known: the bound is satisfied a fortiori)
+       hypotheses (2.9)-(2.11) with C0=1.23*C0', W0=ln(2eB): ALL PASS
+    Thm2.3(ii) theta = 0.5030713577747559:  C1=1.631804e+01  C2=2.423517e+05  C3=3.000000  D=1.0  rho=1.0
+       A_j (ln p_j) = ['1.098612', '2.397895', '2.833213'],  Omega=prod A_j = 7.463696e+00
+       omega (2.5) = 3.387897e+04
+       C0' = ln(C2*D*omega/(C1*A_n)) (2.15) = 18.995012
+       B = max|b_j|A_j/A_n (2.14) = 1.000000
+       (2.16) ln|Lambda| > -2.366021e+14   i.e.  |Lambda| > 10^(-1.027550e+14)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -5.212456e+10  (uses Omega=prod A_j instead of omega; omega 3.4e+04 is the theorem's (2.5) quantity)
+       actual |Lambda| = 1.5339303599 (known: the bound is satisfied a fortiori)
+       hypotheses (2.9)-(2.11) with C0=1.23*C0', W0=ln(2eB): ALL PASS
+
+    --- delta form ln(P(120,2)) - ln(Q(10,3)) = ln(7140/120), n = 3, primes [2, 7, 17], bs [-1, 1, 1]
+    Thm2.2 theta=1 = 1.0:  C1=1.631804e+01  C2=2.423517e+05  C3=3.000000  D=1.0  rho=1.0
+       A_j (ln p_j) = ['0.693147', '1.945910', '2.833213'],  Omega=prod A_j = 3.821444e+00
+       omega (2.5) = 3.680795e+05
+       C0' = ln(C2*D*omega/(C1*A_n)) (2.15) = 21.380517
+       B = max|b_j|A_j/A_n (2.14) = 1.000000
+       (2.16) ln|Lambda| > -2.893402e+15   i.e.  |Lambda| > 10^(-1.256588e+15)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -3.003963e+10  (uses Omega=prod A_j instead of omega; omega 3.7e+05 is the theorem's (2.5) quantity)
+       actual |Lambda| = 4.0859763126 (known: the bound is satisfied a fortiori)
+       hypotheses (2.9)-(2.11) with C0=1.23*C0', W0=ln(2eB): ALL PASS
+    Thm2.3(ii) theta = 0.5030713577747559:  C1=1.631804e+01  C2=2.423517e+05  C3=3.000000  D=1.0  rho=1.0
+       A_j (ln p_j) = ['0.693147', '1.945910', '2.833213'],  Omega=prod A_j = 3.821444e+00
+       omega (2.5) = 1.734617e+04
+       C0' = ln(C2*D*omega/(C1*A_n)) (2.15) = 18.325590
+       B = max|b_j|A_j/A_n (2.14) = 1.000000
+       (2.16) ln|Lambda| > -1.168720e+14   i.e.  |Lambda| > 10^(-5.075687e+13)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -2.574746e+10  (uses Omega=prod A_j instead of omega; omega 1.7e+04 is the theorem's (2.5) quantity)
+       actual |Lambda| = 4.0859763126 (known: the bound is satisfied a fortiori)
+       hypotheses (2.9)-(2.11) with C0=1.23*C0', W0=ln(2eB): ALL PASS
+
+[6] Generic routine: given n = number of distinct primes of a, compute the full
+    constant set.  Representative nonzero coefficient vector b_j = 1 for all j
+    (Lambda = sum ln p_j = ln a != 0; the true Lambda of an exact solution is
+    identically zero and Thm 2.2 does not apply to it -- see [2]).
+
+    a = 120:  n = 3 distinct primes [2, 3, 5]
+       C1=1.631804e+01  C2=2.423517e+05  C3=3.000000  D=1.0  rho=1.0
+       A_j = ['0.693147', '1.098612', '1.609438'],  Omega = 1.225587e+00,  omega = 1.180479e+05
+       C0' = 20.808835   (needs >= 2n = 6 for the theorem's use; see §13)
+       B = 1.000000
+       (2.16) ln|Lambda| > -9.031397e+14  i.e. |Lambda| > 10^(-3.922286e+14)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -9.376501e+09
+       actual |Lambda| = ln a = 4.7874917428e+00
+       hypotheses (2.9)-(2.11): ALL PASS
+       Thm 2.3(ii) theta=1/(2-2/(n e^(n+1))): C0'=17.753908, omega=5.563144e+03, ln|Lambda| > -3.631309e+13 (10^(-1.577057e+13))
+
+    a = 1540:  n = 4 distinct primes [2, 5, 7, 11]
+       C1=2.386300e+01  C2=3.361400e+06  C3=4.000000  D=1.0  rho=1.0
+       A_j = ['0.693147', '1.609438', '1.945910', '2.397895'],  Omega = 5.205383e+00,  omega = 4.988864e+07
+       C0' = 28.706251   (needs >= 2n = 8 for the theorem's use; see §13)
+       B = 1.000000
+       (2.16) ln|Lambda| > -1.460599e+19  i.e. |Lambda| > 10^(-6.343300e+18)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -1.523990e+12
+       actual |Lambda| = ln a = 7.3395376954e+00
+       hypotheses (2.9)-(2.11): ALL PASS
+       Thm 2.3(ii) theta=1/(2-2/(n e^(n+1))): C0'=24.942094, omega=1.156774e+06, ln|Lambda| > -2.942622e+17 (10^(-1.277964e+17))
+
+    a = 7140:  n = 5 distinct primes [2, 3, 5, 7, 17]
+       C1=3.279443e+01  C2=4.086863e+07  C3=5.000000  D=1.0  rho=1.0
+       A_j = ['0.693147', '1.098612', '1.609438', '1.945910', '2.833213'],  Omega = 6.756880e+00,  omega = 9.469026e+09
+       C0' = 35.965495   (needs >= 2n = 10 for the theorem's use; see §13)
+       B = 1.000000
+       (2.16) ln|Lambda| > -8.445865e+22  i.e. |Lambda| > 10^(-3.667992e+22)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -6.026776e+13
+       actual |Lambda| = ln a = 8.8734680553e+00
+       hypotheses (2.9)-(2.11): ALL PASS
+       Thm 2.3(ii) theta=1/(2-2/(n e^(n+1))): C0'=31.502735, omega=1.091825e+08, ln|Lambda| > -8.530099e+20 (10^(-3.704575e+20))
+
+    a = 3003:  n = 4 distinct primes [3, 7, 11, 13]
+       C1=2.386300e+01  C2=3.361400e+06  C3=4.000000  D=1.0  rho=1.0
+       A_j = ['1.098612', '1.945910', '2.397895', '2.564949'],  Omega = 1.314850e+01,  omega = 1.260159e+08
+       C0' = 29.565518   (needs >= 2n = 8 for the theorem's use; see §13)
+       B = 1.000000
+       (2.16) ln|Lambda| > -3.799825e+19  i.e. |Lambda| > 10^(-1.650243e+19)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -3.964739e+12
+       actual |Lambda| = ln a = 8.0073670680e+00
+       hypotheses (2.9)-(2.11): ALL PASS
+       Thm 2.3(ii) theta=1/(2-2/(n e^(n+1))): C0'=25.801361, omega=2.921946e+06, ln|Lambda| > -7.688962e+17 (10^(-3.339274e+17))
+
+    a = 24310:  n = 5 distinct primes [2, 5, 11, 13, 17]
+       C1=3.279443e+01  C2=4.086863e+07  C3=5.000000  D=1.0  rho=1.0
+       A_j = ['0.693147', '1.609438', '2.397895', '2.564949', '2.833213'],  Omega = 1.943963e+01,  omega = 2.724251e+10
+       C0' = 37.022248   (needs >= 2n = 10 for the theorem's use; see §13)
+       B = 1.000000
+       (2.16) ln|Lambda| > -2.501282e+23  i.e. |Lambda| > 10^(-1.086293e+23)
+       [task line] -112*2^n*C2*C0'*D^2*Omega*ln(2eB) = -1.784857e+14
+       actual |Lambda| = ln a = 1.0098643067e+01
+       hypotheses (2.9)-(2.11): ALL PASS
+       Thm 2.3(ii) theta=1/(2-2/(n e^(n+1))): C0'=32.559487, omega=3.141194e+08, ln|Lambda| > -2.536443e+21 (10^(-1.101563e+21))
+
+==============================================================================
+STATUS: this is Matveev's Theorem 2.2 with K = Q.
+  D = D_K/kappa = 1 (Q subset R, kappa = 1);  rho = rank_R{ln p_j} = 1;
+  C3 = n/rho = n;  A_j = h(p_j) = ln p_j (positive integers, Thm 2.3(ii) applies).
+  The Kummer condition (1.5) is required by the theorem and is AUTOMATIC for
+  distinct primes: [Q(sqrt(p1),...,sqrt(pn)):Q] = 2^n because no nonempty
+  subset product is a perfect square (verified exactly above).
+  For exact solutions C(x,2)=C(y,3)=a the linear form Lambda = ln P - ln Q is
+  IDENTICALLY zero (n=0 nonzero terms): an equality of two factorizations is
+  not an object Thm 2.2 constrains.  The theorem applies to NEAR-misses
+  (unequal products), where it yields the printed explicit lower bounds.
+==============================================================================

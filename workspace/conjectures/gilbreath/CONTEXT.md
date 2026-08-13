@@ -9,7 +9,7 @@ Budget 10,000 tokens (this file ~8300, so ~1700 under). Length is a bill the
 whole run pays on every model call; link the file holding any detail compressed
 away.
 
-**Run state (Directive 19): Route A SUPPORTED by conditional-rate experiment. The (2,4) event rate is family-independent post-startup (pooled λ̂ = 0.585, Pearson X² p = 0.68 over 8 families, D=400, W=200000). The answer restores Route A — the mechanism is combinatorial. The gap: λ̂ is measured, not bounded below for all k. The next step is a lower bound on the rate, not another estimate. Do not cite the D=40 smoke numbers (predate sign fix, discarded per directive).**
+**Run state (Directive 19): Route A SUPPORTED by conditional-rate experiment. The (2,4) event rate is family-independent post-startup (pooled λ̂ = 0.585, Pearson X² p = 0.68 over 8 families, D=400, W=200000). The answer restores Route A — the mechanism is combinatorial. The gap: λ̂ is measured, not bounded below for all k. Directive 23 sharpens what rate: a mean is the wrong summary for the heavy-tailed jump distribution (the object is the GAP between consecutive large jumps; characterisation DONE — 12/13 giants j>1000 genuine, i=161 the width artifact with true jump ≥ 176,181; claim `bigjump-cap-characterization-1000`). Do not cite the D=40 smoke numbers (predate sign fix, discarded per directive).**
 
 ## Established
 
@@ -96,6 +96,19 @@ away.
   `research/notes/block_lemma.md` (apex),
   `research/approaches/rule90-absorbing-boundary.md` (the absorption dead end),
   thread `research/threads/rule90-regeneration.md` (CLOSED).
+- **Big-jump characterisation — DONE (Directive 23 item 1): the giants are
+  genuine.** Of the 13 (2,4)-events with j > 1000 at depth 1000 (sieve 2e7,
+  W=1,270,607), 12 are genuine (landing block ends strictly inside the finite
+  row, floors 176,186..1,268,392, no edge clustering) and only **i=161 is the
+  width artifact** (b_162 = 1,270,444 = W−162−1; true jump ≥ 176,181 — quote
+  it that way, never as an exact jump). Heavy tail (j>10^4) 9 genuine of 10,
+  including i=146 (j=360,698) and i=134 (j=217,657); genuine giants carry
+  86.1% of S_1000=1,270,603, the 13 giants 99.76%. **The heavy tail is
+  genuine prime-renewal structure — the gap-between-large-jumps object is
+  real.** This decides Directive 23's fork; rows k ≥ 162 are the
+  width-exhaustion artifact. Claim `bigjump-cap-characterization-1000`; anchors
+  `code/out/bigjump_characterization.captured.txt`,
+  `code/out/bigjump_characterization.notes.md`.
 - **Ducci literature (sourced, four primary papers) — cyclic boundary drawn.**
   All classical Ducci theorems are CYCLIC (wraparound |x_n−x_1|): nilpotence-
   iff-power-of-2, cycle structure, Webb's no-uniform-bound do NOT transfer to
@@ -196,7 +209,7 @@ away.
 
 ## Ruled out
 
-- **Gatti 2020 "prime-class proof" — REFUTED (invalid Theorem 4; source in library).** Gatti's *Gilbreath's Sequences...* (Preprints 202003.0145.v1, 2020) proves the global valid-extension formula (`k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`) and parity alternation, but its Theorem 4 (`min K ≤ p_n ≤ max K` for every prime, claimed toward a deterministic class theorem) is invalid: the right-inequality step assumes `p_n ≤ max K` and derives only a trivial `min K ≤ α` via Bertrand. Its Lemma 4 interval-completeness is false in general (Muney's length-5 hole; `dim K_S = 2^{n−1}` fails even at {2,3,5}: |K_S| = 5 — hand-verified, script queued). **So no published deterministic bounded-gap or prime-class theorem exists**, consistent with Eppstein: any general-class theorem must add non-concentration or restrict to primes. Do not build on Gatti's implication. Claims `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`, `research/notes/library-state.md`.
+- **Gatti 2020 "prime-class proof" — REFUTED (invalid Theorem 4; source in library).** Gatti's *Gilbreath's Sequences...* (Preprints 202003.0145.v1, 2020) proves the global valid-extension formula (`k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`) and parity alternation, but its Theorem 4 (`min K ≤ p_n ≤ max K` for every prime, claimed toward a deterministic class theorem) is invalid: the right-inequality step assumes `p_n ≤ max K` and derives only a trivial `min K ≤ α` via Bertrand. Its Lemma 4 interval-completeness is false in general (Muney's length-5 hole; `dim K_S = 2^{n−1}` fails even at {2,3,5}: |K_S| = 5 — machine-checked this run, two independent programs: direct nested-absolute eval, full-triangle left-edge semantics, and Gatti's Eq.2 formula all give {1,3,5,7,9}). **So no published deterministic bounded-gap or prime-class theorem exists**, consistent with Eppstein: any general-class theorem must add non-concentration or restrict to primes. Do not build on Gatti's implication. Claims `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`, `research/notes/library-state.md`.
 - **"Route A refuted by sweep" — WITHDRAWN (Directive 16).** The sweep deaths are g_0 startup (all within k≤10, 90% by k≤3); they do not bear on the asymptotic event rate. rand24 deaths at k=1 (iff g_0=4) vs survivors at trunc_k=2 (iff g_0=2). Route A is live; the conditional-rate experiment tests it.
 - **Bounded-support re-scope "gaps ⊆ {2,4,6}, first gap = 2" — REFUTED as vacuous (Directive 13).** The primes violate every finite gap-support condition; a theorem conditional on finite support says nothing about Gilbreath.
 - **"Regeneration iff lemma" — earlier REFUTED records are WITHDRAWN
@@ -384,10 +397,12 @@ away.
   previous event, so they are intrinsic to specific rows, not recovered from a
   long stall. Each giant jump ≈ the current block length (total recharge
   1,270,603 ≈ width of final row); jumps grow sublinearly with b
-  (log-log slope 0.388). Candidate next: correlate the 9 giant-jump rows
-  (i=64,94,110,112,126,130,134,146,161) with powers of 2 / Rule-90 all-2
-  regenerations — untested (the rule90 thread was closed on *minima*, these
-  are *maxima*). Anchors: `code/out/surplus_renewal_structure.md`,
+  (log-log slope 0.388). Fork decided: the giants are genuine (12/13; claim
+  `bigjump-cap-characterization-1000`, Established), and the Rule-90/power-of-2
+  correlate for these rows is refuted (rule90 form B2: big-jump rows
+  34,56,64,68,94,96,110,112,126,130,134,146,161 — 9/13 next-regen at a
+  power-of-2-ish offset vs null 0.81, no separation). Anchors:
+  `code/out/surplus_renewal_structure.md`,
   `code/out/surplus_renewal_table.captured.txt`.
 
 ## Recalled
@@ -424,16 +439,19 @@ recalled claim is relied on whose hypotheses fail here.
   enormous slack (b_1000 = 1.27M ≫ 1) — the surplus is carried by a handful
   of giant jumps, not by an average rate. The conjecture is tight only if the
   big jumps stop.
-  **Directive 23:** λ̂ = 0.585 is a MEAN, and a mean is the wrong summary
-  for a heavy-tailed jump distribution (dominated by the tail). A lower bound
-  on the mean rate controls the wrong quantity. The object to bound is the
-  GAP between consecutive large jumps — first characterise the big jumps
-  (j > 1000) and say whether they are genuine dynamics or width-reset
-  artifacts (i=161 lands at b≈1.27M = width−1). See
-  `code/out/surplus_renewal_table.captured.txt`. **Note the characterisation
-  is partly done (Numbers): the giants are not erosion-recovery events — the
-  open piece is whether the specific giant-jump rows correlate with
-  Rule-90/power-of-2 structure (maxima, untested).**
+  **Directive 23 — characterisation DONE, bound still open.** λ̂ = 0.585 is a
+  MEAN, and a mean is the wrong summary for a heavy-tailed jump distribution
+  (dominated by the tail). A lower bound on the mean rate controls the wrong
+  quantity. The object to bound is the GAP between consecutive large jumps;
+  the fork "genuine dynamics vs width artifact" is decided — 12/13 giants
+  are genuine, i=161 is capped (j ≥ 176,181), so the gap-between-large-jumps
+  object is real (`bigjump-cap-characterization-1000`, Established). The
+  giants are not erosion-recovery events (they arrive 1–13 rows after the
+  previous event: "energy stored during erosion" is dead) and do not sit on
+  Rule-90/power-of-2 structure (rule90 form B2: no separation). What is open:
+  a lower bound on the gap between successive large jumps — showing a jump
+  exceeding threshold J arrives at least once every T(J) rows — and whether
+  the tail persists at larger widths (later giants beyond the i=161 cap).
 - **CHT inverse theorem route needs two analytic steps for the primes**: rule
   out long zero-blocks and long shallow `{0,d}`-blocks (Cramér-type hypotheses
   unproved). A proof bypassing that dichotomy is the alternative.

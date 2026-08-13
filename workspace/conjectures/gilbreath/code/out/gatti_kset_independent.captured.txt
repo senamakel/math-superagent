@@ -1,0 +1,6 @@
+direct nested-abs: apex(|1-|2-|5-k|||)==1 for k in [1, 3, 5, 7, 9]: [1, 3, 5, 7, 9]
+direct nested-abs, k in [-200,200]: [1, 3, 5, 7, 9]  |K| = 5
+full-triangle-left-edge semantics:   [1, 3, 5, 7, 9]  |K| = 5
+anti-diagonal of S=(2,3,5): s^2_1=1, s^1_2=2 (expect 1 and 2)
+Eq.2 formula values: [1, 3, 5, 7, 9]  |K| = 5
+ALL THREE ROUTES AGREE and |K| = 5 != 2^(3-1) = 4: True

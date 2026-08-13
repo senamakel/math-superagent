@@ -47,8 +47,8 @@ Each marked with evidence class and a link.
   `singmaster-bounds-history`, and the uniformity argument of `effective-methods-wall`.
 
 - **Riemann–Hurwitz derivation of the genus closed form now executed over the full range. `checked` (EXIT_CODE=0), captures both held.**
-  `code/genus/verify_riemann_hurwitz.py` now runs the `2<=m<n<=20` grid (all six
-  distinct pairs have `{2,3},{2,4}` genus 1, rest >=2), ALL CHECKS PASSED,
+  `code/genus/verify_riemann_hurwitz.py` now runs the full `2<=m<n<=20` grid
+  (171 pairs; genus 1 only at `{2,3},{2,4}`, rest >=2), ALL CHECKS PASSED,
   capture `code/out/verify_riemann_hurwitz_full.captured.txt` (185 KiB; the
   smaller `verify_riemann_hurwitz.captured.txt` covers 2<=m<=9,m<n<=10 plus
   (3,25),(4,25),(6,9)). The four RH ingredients: (a) degree in y = n; (b) finite
@@ -372,8 +372,15 @@ Each marked with evidence class and a link.
 
 - `N(3003)=8` (both+trivial); N=6 set {120,210,1540,7140,11628,24310}.
 - Genus closed form `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2`; genus=1 exactly at
-  {2,3},{2,4}, >=2 elsewhere (checked 111 values).
-- Infinite family second member ~6.1e28; digit ratio → phi^4 ≈ 6.854.
+  {2,3},{2,4}, >=2 elsewhere (checked 111 values; RH grid verified over
+  2<=m<n<=20, 171 pairs).
+- Infinite family members (Singmaster 1975, `C(n+1,k+1)=C(n,k+2)`):
+  j=1 a=3003, N=8 exact; j=2 (29 digits), N=6 exact; j=3 (205 digits), N=6
+  exact — the latter two beyond the Blokhuis–Brouwer–de Weger 2017 `10^60`
+  verification bound; j=4..6 identity verified, N>=6 each. Capture
+  `code/out/verify_fibonacci_identity.captured.txt` (EXIT_CODE=0, fast
+  inversion cross-checked against `lib.binom_multiplicity` on all 10 check
+  values).
 - Family recurrences `n_i=7n_{i-1}-n_{i-2}+6`, `k_i=7k_{i-1}-k_{i-2}+9` checked i=3..8.
 
 ## Recalled
@@ -425,6 +432,23 @@ Pintér–Tengely 2023) and the OEIS row-count convention `a059233-rowcount-half
   infinite family) sits in k=2/3 columns — so small-column curves carry the
   multiplicity and a uniform bound must control them uniformly. The small-`k`
   effective results (Avanesov, de Weger, BMSST) are exactly the attackable part.
+- **DISCREPANCY: `research/notes/genus-closed-form-derived-by-riemann-hurwitz.md`
+  overclaims relative to its own capture.** The note says "Status: proved",
+  "153 pairs", and derives the claim from all four RH ingredients (a)–(d).
+  The capture `code/out/verify_riemann_hurwitz_full.captured.txt` verifies
+  171 pairs over `2<=m<n<=20`, with exact integer checks for (a) degree, (c)
+  RH identity and (inf) Puiseux fibre at infinity on every pair, but the
+  critical-point bisection AND the explicit smoothness check (scaled
+  critical-value sets disjoint — the ingredient that rules out shared critical
+  values) run only for n<=15 (91 of the 171 pairs); pairs with n>=16 take a
+  structural Rolle branch without the numerical smoothness check. So the
+  uniform claim "no shared critical values for all m,n" is verified on
+  91 pairs and asserted structurally for the rest — `checked`, not `proved`.
+  Treat the note's "proved" as an overstatement; the run's claim-level status
+  for the closed form remains `checked` (`genus-single-closed-form-all-pairs`),
+  and the missing piece before `proved` is the general argument that the
+  critical-value sets are disjoint (or the singularity delta-invariant
+  computation).
 - **Internal contradiction fixed (scholar, this pass):** `established-review.md`,
   `ROOT.md`, and `singmaster-literature-exact.md` each contained a residual
   "Singmaster 1971 primary held" claim left over from before the tombstone —

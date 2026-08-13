@@ -58,11 +58,11 @@ anchor: research/sources/gatti-2020-preprints-gilbreath-conditions.full.md
 ```claim
 id: gatti-2020-lemma4-interval-completeness-refuted
 statement: Gatti Lemma 4 / Theorem 3 assert K_S fills the whole parity class in ]min K, max K[. This interval-completeness is FALSE in general: Muney 2026 exhibits the first hole at length 5 for (2,3,5,9,15), and even the count dim K_S = 2^{n−1} fails for S={2,3,5}: |K_S| = 5, not 4 (solutions {1,3,5,7,9}).
-hypotheses: none beyond S ∈ G_n; checked on the S={2,3,5} example by hand: |1−|2−|5−k||| = 1 ⟺ k ∈ {1,3,5,7,9}.
+hypotheses: none beyond S ∈ G_n; the S={2,3,5} example is machine-checked this run by two independent programs: |1−|2−|5−k||| = 1 ⟺ k ∈ {1,3,5,7,9} by direct nested-absolute evaluation over k ∈ [−200,200], by full-triangle left-edge semantics (every row of the triangle of (2,3,5,k) starts with 1), and by Gatti's own Eq.2 signed-sum formula; all three routes agree, |K_S| = 5. (Note: interval completeness itself holds for this S — K_S fills the odd interval [1,9]; the dim prediction 2^{n−1} = 4 is what fails here. The interval-completeness failure in general is Muney's length-5 example (2,3,5,9,15), a separate sourced exhibit.)
 holds-here: yes — the false lemma is the claimed mechanism of Gatti's bound-sequence theory.
-status: refuted (by Muney 2026, held; and by direct example)
+status: refuted (by Muney 2026, held; and by direct example, machine-checked this run)
 bearing: no interval-completeness of valid-extension sets can be assumed anywhere downstream; the run's approaches already treat valid extension as global and hole-prone.
-anchor: research/summaries/gatti-2020-preprints-gilbreath-conditions.md
+anchor: research/summaries/gatti-2020-preprints-gilbreath-conditions.md; code/out/gatti_kset_check.captured.txt; code/out/gatti_kset_independent.captured.txt
 ```
 
 ```claim

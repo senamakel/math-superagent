@@ -1,0 +1,36 @@
+F1 ln120: n=3, theta=1.0
+           C1: paper=1.6318039462e+01  lib=1.6318039462e+01  relerr=0.00e+00
+           C2: paper=2.4235174760e+05  lib=2.4235174760e+05  relerr=0.00e+00
+           C3: paper=3.0000000000e+00  lib=3.0000000000e+00  relerr=0.00e+00
+        Omega: paper=1.2255869871e+00  lib=1.2255869871e+00  relerr=0.00e+00
+        omega: paper=1.1804790846e+05  lib=1.1804790846e+05  relerr=0.00e+00
+      C0prime: paper=2.0808835071e+01  lib=2.0808835071e+01  relerr=0.00e+00
+            B: paper=1.0000000000e+00  lib=1.0000000000e+00  relerr=0.00e+00
+     exponent: paper=-9.0313971806e+14  lib=-9.0313971806e+14  relerr=0.00e+00
+    MATCH: True
+F2 ln(720/9240): n=4, theta=1.0
+           C1: paper=2.3862997700e+01  lib=2.3862997700e+01  relerr=0.00e+00
+           C2: paper=3.3613995119e+06  lib=3.3613995119e+06  relerr=0.00e+00
+           C3: paper=4.0000000000e+00  lib=4.0000000000e+00  relerr=0.00e+00
+        Omega: paper=3.5532266300e+00  lib=3.5532266300e+00  relerr=0.00e+00
+        omega: paper=3.4054292422e+07  lib=3.4054292422e+07  relerr=0.00e+00
+      C0prime: paper=2.8324414183e+01  lib=2.8324414183e+01  relerr=0.00e+00
+            B: paper=1.0000000000e+00  lib=1.0000000000e+00  relerr=0.00e+00
+     exponent: paper=-9.8375204257e+18  lib=-9.8375204257e+18  relerr=0.00e+00
+    MATCH: True
+F2 Thm2.3(ii): n=4, theta=0.5008436645165851
+           C1: paper=2.3862997700e+01  lib=2.3862997700e+01  relerr=0.00e+00
+           C2: paper=3.3613995119e+06  lib=3.3613995119e+06  relerr=0.00e+00
+           C3: paper=4.0000000000e+00  lib=4.0000000000e+00  relerr=0.00e+00
+        Omega: paper=3.5532266300e+00  lib=3.5532266300e+00  relerr=0.00e+00
+        omega: paper=7.8962140872e+05  lib=7.8962140872e+05  relerr=0.00e+00
+      C0prime: paper=2.4560256418e+01  lib=2.4560256418e+01  relerr=0.00e+00
+            B: paper=1.0000000000e+00  lib=1.0000000000e+00  relerr=0.00e+00
+     exponent: paper=-1.9779015059e+17  lib=-1.9779015059e+17  relerr=0.00e+00
+    MATCH: True
+
+mpmath Lambda(2,3,-7,-11) = -2.5520459526256288483548189630276067567358008913363
+float value                = -2.552045952625628
+diff                       = 8.882e-16
+
+ALL MATCH: True

@@ -1,0 +1,9 @@
+==============================================================================
+Matveev 2000 route for C(x,2) = C(y,3): executed obstruction check
+Equation U = 3x(x-1) = y(y-1)(y-2) = V  (each side = 6*C(x,2))
+==============================================================================
+Traceback (most recent call last):
+  File "/workspace/code/matveev/check_matveev_23.py", line 69, in <module>
+    ok_id, lhs, rhs = binomial_reduction_identity()
+    ^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 3)

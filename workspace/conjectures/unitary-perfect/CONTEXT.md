@@ -34,22 +34,49 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   Wall 1975 p.116; this run's derivation is an independent complete proof, not
   a new result.
 - **(computed / checked, this run) Equality-case bound: `ω(odd) = a+1` is
-  impossible for `2 ≤ a ≤ 28`.** Verified from captured output
-  `code/out/equality_case_verify_FIXED.captured.txt` (directive 13, exact
-  filename, EXIT_CODE=0, 4/4 points PASS on fresh exact-Fraction arithmetic):
-  (1) a=1 max product = 4/3
-  exactly, {5,9} is the odd part of 90; (2) 2^8+1=257 is prime, forced when
-  a=8; (3) 9=3^2 and 49=7^2 are admissible, 3 and 7 are not; (4) exclusion
-  runs 2 ≤ a ≤ 28, with correct minimal admissible sizes. M(28)=1.997752859598546538
-  < T(28)=1.999999993; M(29)=2.004964963784822807 > T(29). Claim
-  `budget-equality-case-impossible` is `checked`, anchors updated with the
-  FIXED capture as primary. a=1 is realised by n=90.
+  impossible for `2 ≤ a ≤ 28`.** Primary anchor `code/out/equality_case_verify_FIXED.captured.txt`
+  (directives 4–14, exact Fraction arithmetic, 4/4 points PASS): (1) a=1 max
+  product = 4/3 exactly, {5,9} is the odd part of 90; (2) 2^8+1=257 is prime,
+  forced when a=8; (3) 9=3^2 and 49=7^2 are admissible, 3 and 7 are not;
+  (4) M(a) < T(a) exactly for all 2 ≤ a ≤ 28 with
+  M(28)=1.997752859598546538 < T(28)=1.999999993, and
+  M(29)=2.004964963784822807 > T(29) — **a=29 is NOT excluded, boundary is
+  28**. Consequence (directive 14): a sixth UPN in the equality case needs
+  `a ≥ 29`; with Wall 1988's ≥ 9 odd components, that is the sharpest form
+  the workspace holds. Claim `budget-equality-case-impossible` is `checked`
+  (first ledger conversion in twelve cycles). BUG-FIX (directive 11):
+  `admissible_sizes()` had a slice-then-sort bug (missed 37,41,53; wrongly
+  included 121,361,529); fixed to sort-then-slice over BOUND=800 + safety
+  assertion. Thread `a-ge-8-bound` closed. a=1 is realised by n=90.
   `research/notes/equality-case-eliminated.md`.
-  **BUG-FIX (directive 11):** `admissible_sizes()` had a slice-then-sort bug
-  (missed 37,41,53; wrongly included 121,361,529). Fixed to sort-then-slice
-  with BOUND=800 + safety assertion. Boundary at a=28 survives the fix;
-  a=29 was never recorded as excluded in any task or thread.
-  `code/equality_case.py` fixed with same pattern.
+- **(computed / checked, this run) Divisor-level Gaussian table for all odd
+  primes p ≤ 61**: full factorization of `2^{2p}+1` (max 37 digits, nothing
+  left unfactored), 71 primitive-divisor rows, all checks C1–C7 pass —
+  `code/heven_gauss.py` → `code/out/heven_gauss_61.captured.txt`. Verifies
+  **(F1)** every prime divisor `r | Φ_{4p}(2)` is primitive, `ord_r(2) = 4p`,
+  `r ≡ 1 (mod 4p)`, with the single exception `r = 5 | Φ_20(2)` at p = 5
+  (LTE: `v_5(2^{2p}+1) = 1 + v_5(p)`); **(F2)** the one-way generator
+  equivalence `(2/r)_4 = +1 ⟺ r ≡ 1 (mod 16)`, i.e. `v2(r−1) ≥ 4 ⟹ r ∉ P_3`.
+  Exactly **12 heads** (`r ≡ 1 mod 16`): p=7:113; 11:2113; 19:525313;
+  29:536903681; 37:593,231769777; 43:500177; 47:3761,140737471578113;
+  53:15358129,586477649; 59:157649 — independently certified by
+  `heven_heads_verify.py` (`ALL HEADS CERTIFIED 12/12`,
+  `code/out/heven_heads_verify.captured.txt`). Empirical (exact, not a
+  proof): for the 16 3-Higgs primes p ≤ 61, `2p ∈ H_even` (the seven Thm-8
+  members) iff `Φ_{4p}(2)` has no divisor `≡ 1 mod 16` — all seven members
+  have zero heads, all nine excluded p (7,11,19,29,37,43,47,53,59) carry a
+  head. Character distribution by (p mod 8, Aurifeuillean half) is in the
+  capture: **no residue class forces a head** (the per-class shortcut, M4,
+  is refuted).
+- **(computed / checked) Definitional equivalence of 3-Higgs is closed
+  independently of the classify harness.** `code/higgs/check_a057447.py`
+  first-executed → `code/out/higgs_a057447.captured.txt`: literal A057447
+  recursion (p 3-Higgs iff `p−1 | P³`, P = product of certified primes,
+  base 2) reproduces all 58 OEIS DATA terms; all five witnesses pass
+  `σ*(n) == 2n`; every witness prime divisor is 3-Higgs — ALL CHECKS
+  PASSED. `code/out/verify_257_literal.captured.txt` adds: literal rule vs
+  `lib.higgs.is_3_higgs` agree on all 168 primes ≤ 1000 (0 disagreements,
+  127 literal-Higgs); 257 non-Higgs confirmed.
 - **(sourced) Graham 1989:** UPNs with squarefree odd part are exactly
   `6, 60, 87360` — so any sixth example has a **repeated odd prime power**.
   The summary is corrected (scholar-pass): previous "Digest only" banner was a
@@ -88,6 +115,14 @@ Every claim marked with its evidence class; all anchors are in this workspace.
     (asserted): candidates 2446, 10294, 10958, 17398, 19066, 20282 closed by
     APR-CL-verified large prime divisors with non-3-Higgs Pratt witnesses;
     30882 via a further route. `research/notes/paper-extraction.md`.
+  - **Gap decomposition (live skeleton `research/backward/heven-finiteness-via-mod16.md`):**
+    four reduction steps are discharged (prime-case reduction, m ≡ 2 mod 4,
+    Higgs-cubefree structure, Thm-30 conditional); exactly two lemmas are open,
+    the paper's (H1) — every p with `ω(Φ_{4p}(2)) ≥ C·log p` has a divisor
+    `r ≡ 1 mod 16` — and (H2) — `ω(Φ_{4p}(2)) ≥ C·log p` for p ≥ p0.
+    Each of the paper's Conjectures 23 / 24 / 29 alone would close C6;
+    Conjecture 29 (proportional `#{r ≡ 1 mod 16} ≥ c·ω`) is the adopted
+    second-moment approach's target.
   - Analytic target (live thread `research/threads/divisor-level-phi4p.md`):
     divisor-level problem for `Φ_{4p}(2)`; Aurifeuillean split
     `2^{2p}+1 = L_p·M_p`, `L_p = 2^p − 2^((p+1)/2) + 1`,
@@ -101,33 +136,16 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   5·733·1709·3456749·368140581013·667055378149`, all Higgs). Independent of
   the paper; **but it only proves membership of the ten, not emptiness of
   (122, 1200]** — that still rests on the paper (see Gaps).
-- **(computed, source-backed) The 3-Higgs definition is verified against
-  OEIS A057447 and the witnesses.** `code/higgs/check_a057447.py` →
-  `code/out/higgs_a057447.captured.txt` (`ALL CHECKS PASSED`): the literal
-  A057447 recursion reproduces all 58 DATA terms (2,3,5,7,11,13,19,23,29,31,
-  37,41,43,47,53,59,61,67,71,73,79,83,89,101,107,109,127,131,139,149,…);
-  all five witnesses pass `σ*(n) = 2n`; the fifth term's EXAMPLE
-  factorization reproduces it; every prime divisor of each of the five is
-  3-Higgs. Closes the definitional-equivalence hole that the broken A2
-  self-test opened (see Numbers: A2 had the divisibility direction backwards).
-- **(computed) Divisor-level quartic-character table for p ≤ 61.**
-  `code/heven_gauss.py` → `code/out/heven_gauss_61.captured.txt`
-  (`EXIT_CODE=0`, C1–C7 pass, 71 divisor rows, nothing left unfactored).
-  Proved by exact computation for the range: (F1) every prime divisor
-  `r | Φ_{4p}(2)` is primitive, `ord_r(2) = 4p`, `r ≡ 1 (mod 4p)`, single
-  exception `r = 5 | Φ_20(2)` at p = 5 (LTE `v_5(2^{2p}+1)=1+v_5(p)`);
-  (F2) `(2/r)_4 = +1 ⟺ r ≡ 1 (mod 16)` for all 71 rows. 12 heads
-  (`r ≡ 1 mod 16`, necessarily non-3-Higgs) found, independently certified
-  by `code/heven_heads_verify.py` → `heven_heads_verify.captured.txt`
-  (`ALL HEADS CERTIFIED 12/12`). Empirical (not a proof): for the 16 3-Higgs
-  primes `p ≤ 61`, `2p ∈ H_even` (the seven Thm-8 members) iff `Φ_{4p}(2)`
-  has no prime divisor `≡ 1 mod 16` — the nine excluded 3-Higgs `p`
-  (7,11,19,29,37,43,47,53,59) each carry a head witnessing `2p ∉ H_even`.
-  Next step (TASKS.md): the closed-form evaluation of `(2/(2^p+i))_4` by
-  quartic reciprocity on the Gaussian integer, vs the per-factor product.
 - **(computed) 257 = 2^8+1 is non-3-Higgs** (`v2(256)=8 > 3`) in
   `code/out/heven_patterns.captured.txt`; the pattern script's hard-coded
   "want" table row `257:True` is a script bug, the computed False is correct.
+- **(sourced) Williams 1976 primary text held** (`research/summaries/williams-1976-supplement-biquadratic-reciprocity.md`,
+  claim `williams1976-biquadratic-supplement-primary`): π = a+bi primary iff
+  `a+b ≡ 1 mod 4`, `b ≡ 0 mod 2`; main law `(α/β)_4 = (−1)^{bd/4}(β/α)_4`;
+  supplements `[1+i/π]_4 = i^{(a−b−1−b²)/4}`, `[i/π]_4 = i^{(a−1)/2}` —
+  proves the 1+i row that `qr-supplementary-2` (Wikipedia) only asserted.
+  This is the primary anchor for the first-moment evaluation in the adopted
+  second-moment approach.
 - **(sourced, unverified) Frei 1978 via OEIS A002827 comment only:** a UPN not
   divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 odd components,
   `n > 10^440`. Primary text not in the library. Load-bearing for the
@@ -187,6 +205,25 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   ord 28). Current `code/heven_sieve.py` adds a complement sweep over orders
   `d ≤ 2400, v2(d) ≥ 2, d ∤ 2400`; the (29,14) class is recovered (m=14 in
   the 10^4 killed list).
+- **Approach ledger moved: `biquadratic-character-divisors` is REFUTED
+  (absorbed); `second-moment-character-mod16` is ADOPTED.** The biquadratic
+  route's deliverable (existence of one head `r ≡ 1 mod 16`, the (H1) form
+  of Thm 30) is strictly weaker than Conjecture 29's proportional bound, and
+  its product identity `Π_{π^e || 2^p+i} (2/π)_4^e = (2/(2^p+i))_4`
+  determines the character sum only mod 4 — orthogonality needs the **sum**.
+  What survives inside the adopted approach: the verified one-way generator
+  equivalence `(2/r)_4 = 1 ⟺ r ≡ 1 mod 16` (all 71 primitive divisors through
+  p = 61, two independent ways) as the first-moment evaluation. The adopted
+  approach targets `#{r ≡ 1 mod 16} ≥ c·ω(Φ_{4p}(2))` via Dirichlet
+  orthogonality on (Z/16Z)* + a second-moment (variance) bound; its falsifier
+  is systematic bias into `r ≡ 9 mod 16`. **TASKS.md "Active approaches" is
+  STALE** — it still calls biquadratic-character-divisors adopted; the
+  approach file and APPROACHES.md both say refuted. Directive-14 question
+  (does the closed-form evaluation `(2/(2^p+i))_4` from p mod 16 constrain
+  which r can be 3-Higgs beyond the per-divisor mod-16 test?) is still open;
+  the credible resolution is closure — "nothing beyond", ending the line for
+  good. `research/approaches/biquadratic-character-divisors.md`,
+  `research/approaches/second-moment-character-mod16.md`.
 
 ## Numbers
 
@@ -195,19 +232,20 @@ Every claim marked with its evidence class; all anchors are in this workspace.
 - Budget table `(a, ω(odd), Σv2, a+1)`: 6→(1,1,2,2); 60→(2,2,3,3); 90→(1,2,2,2,
   equality); 87360→(6,4,7,7); fifth→(18,11,19,19). Identity exact in all five;
   equality in `ω ≤ a+1` holds only for 90.
-- **Verify harness `code/heven_classify.py` Phase A is RED — current code
-  fails its own self-tests** (`code/out/classify_test_10000.captured.txt`):
-  (a) A2 prints "definitional mismatch" at every prime ≥ 3: `lib/higgs.py`
-  `_higgs_status_bulk` has the literal-OEIS check backwards — it tests
-  `product-of-q^{3e} | (p−1)` instead of `(p−1) | product-of-q^{3e}`; the
-  classify-side literal loop is trivially identical to the working form so it
-  cannot detect anything. The predicate itself is fine (17 non-Higgs, 31
-  Higgs printed correctly). (b) A3 crashes at line ~113:
-  `sympy.cyclotomic_poly(4*p).eval(2)` — the function returns an Expr with no
-  `.eval`; use `.subs(x, 2)` or the Möbius product formula
-  `Φ_n(2) = Π_{d|n}(2^d−1)^{μ(n/d)}`. Nothing built on classify's Phase A/B
-  output is certified until these are fixed; the ten-member verification above
-  does not depend on classify.
+- Gaussian table: 17 primes p ≤ 61, 71 divisor rows, 12 heads; the details are
+  in Established. Full per-p table `heven_gauss_61.captured.txt`.
+- **Verify harness `heven_classify.py`: the two Phase-A bugs are FIXED ON DISK
+  but the full rerun is UNCERTIFIED.** Code now has the literal rule
+  `(P**3) % (p−1) == 0` (correct direction) in both `lib/higgs.py::
+  _higgs_status_bulk` and `phase_a2`, and `phase_a3` computes `Φ_{4p}(2)` via
+  `cyclotomic_poly(4*p, x).subs(x, 2)` (the `.eval` crash is gone). The
+  standalone equivalents PASS (`verify_257_literal.captured.txt`,
+  `higgs_a057447.captured.txt` — see Established). But
+  `classify_test_10000_FIXED.captured.txt` is **0 bytes**: the full
+  `heven_classify.py` run has no PASS capture on disk, so nothing built on
+  classify's Phase A/B output is certified until it is rerun with
+  `timeout 540 … | tee`. B3/B4 additionally needs certified sieve tables
+  (Gap 2 below).
 - **Sieve**: `sieve_test_1000` (old filter) and `sieve_test_10000` (complement
   sweep: 1859 witness pairs, 401 killed, incl. m=14) are small-range tests
   only. **No completed full pass to 10^8 / 10^9** — `sieve_pass_1e8` and
@@ -218,10 +256,6 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   stated bound before trusting any B classification. The 1346-direct-pairs
   oracle equality quoted earlier was against the old buggy sieve — stale;
   re-run against the fixed sieve.
-- **Claim ledger warning:** the Contradictions table of `research/CLAIMS.md`
-  is corrupted (word-token garbage rows, from the derive script misreading the
-  free-text `contradicts:` fields in the wall-1975 and subbarao-1970 notes).
-  Read the notes themselves, not that table, until the parser is fixed.
 
 ## Recalled
 
@@ -250,9 +284,12 @@ Durable Cognee memory from earlier runs; consistent with Established here
   the held Wall 1975 primary text contains no such figure** — its bound is
   `N < W ≈ 1.46e23`. Orphan claim (note `wall-1975-bounds-and-102-claim.md`);
   compute policy unaffected.
-- **Verify harness vs expectation:** current `heven_classify` Phase A fails
-  its self-tests while earlier CONTEXT described the pipeline as passing;
-  nothing built on classify's Phase A/B output is certified until green.
+- **Verify harness vs expectation:** the `heven_classify` Phase-A bugs are
+  fixed on disk and the standalone equivalents PASS, but the full harness has
+  no PASS capture (`classify_test_10000_FIXED.captured.txt` is 0 bytes) —
+  nothing built on classify's Phase A/B output is certified until a nonzero
+  green capture exists. Earlier CONTEXT described the pipeline as RED on a
+  stale capture; the code is fixed, the rerun is missing.
 - **Counting bounds: 279 vs 272 — RESOLVED (scholar-pass 2026-08).** The
   arithmetic is *inside* Maciejewski's paper: Theorem 19's factor-cache
   verification alone yields `|H_even∩[2,50000]| ≤ 279` (198 undecided in
@@ -264,13 +301,6 @@ Durable Cognee memory from earlier runs; consistent with Established here
   killed by verified non-3-Higgs witness, 38 partial-cofactor unknowns) are
   the coarser per-interval enumeration level, consistent with the 10 verified
   + 262 undecided split.
-- **Active-approach disagreement (TASKS vs APPROACHES):** APPROACHES.md
-  derives `second-moment-character-mod16` as **adopted** and
-  `biquadratic-character-divisors` as **refuted/absorbed** ("What closed, and
-  why"); but TASKS.md "Active approaches" and Cognee memory still call
-  `biquadratic-character-divisors` the adopted approach. The disk index
-  (APPROACHES.md) is newer; treat second-moment as the live line and
-  biquadratic as closed-but-absorbed.
 - **CLAIMS.md Contradictions table is corrupted** — the derive script
   misreads free-text `contradicts:` fields and emits word-token garbage rows
   (`contradicts (none)`, `contradicts research/notes/lower-bound-on-a.md only
@@ -283,11 +313,12 @@ Durable Cognee memory from earlier runs; consistent with Established here
 
 ## Gaps
 
-1. **Verify harness Phase A is RED** — exact bugs in Numbers; fix (A2 literal
-   direction, A3 exact cyclotomic value) and rerun
-   `timeout 540 … | tee` before any Phase A/B claim from `heven_classify.py`
-   is trusted. Immediate blocker for the independent `H_even ∩ [2,1200]`
-   classification (TASKS.md item 2, spec `code/H_EVEN_VERIFY_SPEC.md`).
+1. **Full `heven_classify.py` harness rerun is uncertified** — code fixed on
+   disk (A2 literal direction, A3 `.subs(x, 2)`) with standalone equivalents
+   PASS (`verify_257_literal`, `higgs_a057447`), but
+   `classify_test_10000_FIXED.captured.txt` is 0 bytes; rerun and capture
+   (`timeout 540 … | tee`) before trusting any Phase A/B claim from
+   `heven_classify.py`. B3/B4 also still needs certified sieve tables.
 2. **Full sieve passes to 10^8 / 10^9 are not captured** — only small-range
    tests; run, capture with `timeout 540`, and restate the 1346-pairs oracle
    equality against the fixed sieve.
@@ -298,13 +329,11 @@ Durable Cognee memory from earlier runs; consistent with Established here
    `Φ_{4p}(2)` — the paper's named analytic target (thread
    `divisor-level-phi4p`); (b) lower bound on `a` beyond 11, or impossibility
    of a residue class of `a`; (c) is `3 | n` forced for a sixth? (all five
-   have it; open in both directions).
+   have it; open in both directions). Live sub-task (directive 14): state
+   whether the closed-form quartic evaluation `(2/(2^p+i))_4` as a function
+   of p mod 16 constrains which r | `Φ_{4p}(2)` can be 3-Higgs beyond the
+   per-divisor mod-16 test — if not, say so and close the absorbed line
+   definitively.
 5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
    2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
    no OCR; Guy UPNT §B3 paywalled).
-6. **Phase A RED (see Gap 1).** The substantive definitional-equivalence hole
-   A2 was meant to close is now CLOSED independently: `check_a057447.py`
-   reproduces the 3-Higgs recursion against OEIS A057447 for all 58 DATA terms
-   and confirms all five witnesses' prime divisors are 3-Higgs (see
-   Established). What remains RED is only the `heven_classify` harness's own
-   self-test capture.

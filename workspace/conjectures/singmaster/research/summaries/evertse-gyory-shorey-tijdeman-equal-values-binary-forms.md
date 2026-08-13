@@ -112,10 +112,11 @@ statement: Evertse-Gyory-Shorey-Tijdeman 1987 (Acta Arith. 48, 379-396) proves,
   (Evertse 1984, Thue-Siegel) + Baker linear forms (Gyory 1981).
 hypotheses: F,G are BINARY FORMS in two variables (x,y); w(FG)>=3; F/G not a
   degenerate power of a linear/indefinite-quadratic form; (x,y)=1.
-holds-here: PARTIAL/NO — the run's equation C(x,k1)=C(y,k2) is separated-variable
-  (two UNIVARIATE polynomials), not a binary-form equality; the homogenization
+holds-here: no — the run's equation C(x,k1)=C(y,k2) is separated-variable (two
+  UNIVARIATE polynomials), not a binary-form equality; the homogenization
   P_k(X,Z) is degree-k with w>=3 for k>=3 but the equal-value equation is then
-  three-variable, outside EGST's two-variable form.
+  three-variable, outside EGST's two-variable form; so EGST's hypotheses do not
+  hold for the binomial family.
 status: checked (primary held, readable in full)
 bearing: CORROBORATES sunit-subspace per-form constants at primary level; does
   NOT transfer to N(a) because the binomial family is not a binary-form equality

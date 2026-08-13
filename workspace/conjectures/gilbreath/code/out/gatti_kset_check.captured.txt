@@ -1,0 +1,8 @@
+S = [2, 3, 5]
+K_S by definition (k in [-40,40]): [1, 3, 5, 7, 9]  |K| = 5
+K_S by Eq.2 signed-sum:            [1, 3, 5, 7, 9]  |K| = 5
+sets equal: True
+Gatti dim prediction 2^(n-1) = 4; actual |K| = 5
+Lemma-4 interval-completeness prediction: [1, 3, 5, 7, 9]
+K_S == full odd interval: True
+holes in the odd interval: []
