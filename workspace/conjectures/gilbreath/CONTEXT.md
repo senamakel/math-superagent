@@ -11,12 +11,24 @@ verified the Directives 24–27 record against the outputs, no rewrite; this
 cycle's changes are the two Contradictions entries and the gap-convention
 correction in the chain.)
 
-## Run state (Directive 26/27)
+## Run state (Directive 28)
 
-**The conjecture is reduced to ONE open statement: the inter-giant gap is
-bounded.** The 7-step chain below is in `research/threads/regeneration.md`
-with cautions and data list; steps 1–5 are proved or established, step 6 is
-measurement only.
+**The 15th "giant" at row 238→239 is width-capped**, not genuine. Directive 28
+claimed it is genuine because landing 16.2M against "width 3e8," but 3e8 is the
+sieve bound, not the row width. Row width at row 239 is π(3e8) − 239 ≈ 16.25M,
+and b₂₃₉ = 16,252,084 fills the row (flooring=1, intruder=None, k*=239). The
+14 genuine giants remain rows 35,57,65,69,95,97,111,113,127,131,135,147,162,175
+with gaps [22,8,4,26,2,14,2,14,4,4,12,15,13], max=26, no trend (OLS slope −0.818,
+R²=0.109 — already on disk from Directive 25). Step 6 of the chain is NOT in doubt
+from this data. To test the bounded-gap claim on genuinely new data, extend the
+sieve beyond 3e8 so the live regime captures giants past row 238.
+
+**The chain remains (Directive 26/27, corrected):** the conjecture reduces to ONE
+open statement — the inter-giant gap is bounded (step 6, measurement only).
+Steps 1–5 proved/established, step 7 conditional. The parity result (14/15 giant
+pre-jump rows even, p≈0.0008 vs plain 1/2 null) is recorded in
+`research/notes/pattern_finder_wider_giants.md` as suggestive with a named
+falsifier.
 
 1. **GC ⇔ `A_k(1) ∈ {0,2}`** — Lean 4, sorry-free, axiom footprint
    `[propext, Classical.choice, Quot.sound]` (`gilbreath-second-entry-equivalence`).

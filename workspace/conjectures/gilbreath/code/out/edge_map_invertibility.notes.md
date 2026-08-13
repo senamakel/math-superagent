@@ -61,6 +61,18 @@ continues — the step law `b_{k+1} ≥ b_k ⟺ (edge,intruder)=(2,4)`).
   structural fear that a bad interior pattern could keep the edge at 0 for
   the whole possible lifetime of a `{0,2}` block.
 
+## Fenced claim
+
+```claim
+id: edge-interior-invertibility-sharpened
+statement: Over F2, the halved-edge map h -> e of a leading {0,2} block of halved length n under pure erosion (e_d = XOR_{j<=d} [C(d,j) mod 2] . h[(n-1-d)+j] for d = 0..n-1) is linear with a unitriangular matrix in reversed column order, hence invertible: e = 0 iff h = 0. Therefore every nonzero {0,2} block shows edge value 2 at least once during its n erosion reads; the longest consecutive run of edge-0 erosion rows is <= n-1 (sharp: exactly n-1, achieved only by the halved patterns [1,0,...,0] and [0,...,0,1], i.e. unhalved [2,0,...,0] and its mirror, count 2 at every n).
+hypotheses: erosion-only dynamics between reads (no (2,4)-regeneration event fires within the stretch); block interior {0,2}-valued (holds by closure); e_d = 0 means the edge reads 0, and boundary pair (0,4) gives |0-4| = 4 so no regeneration even with intruder 4.
+holds-here: yes
+status: proved (F2-linear unitriangular/invertibility argument; only needs C(d,0)=1 and Lucas parity facts) and machine-checked two ways: unitriangular structure verified for n = 3..1024 (zero violations), and over all 2^n - 1 nonzero blocks for n = 1..18 (262143 patterns) three independent routes agree (Pascal convolution, literal |a-b| erosion simulation, matrix product), worst zero-run exactly n-1 for every n = 2..18, achievers reproduced by back-substitution.
+bearing: regeneration timing, interior half. The step law needs (edge,intruder) = (2,4); this lemma says the block's own interior pattern cannot keep the edge at 0 for the block's whole erosion life (edge 2 appears at least once, worst case only at the final length-1 read). It does NOT prove regeneration recurs — intruder-4 timing is untouched; the lemma refutes the structural fear that a bad interior pattern could block regeneration forever. Upgrades the vacuous <= 2n statement of check_edge_zero_run.py (all-pattern bound trivial since the edge sequence has only n entries).
+anchor: code/out/edge_map_invertibility.notes.md
+```
+
 ## Machine checks (three independent routes, all exact)
 
 1. **R1 — Pascal convolution:** `e_d = XOR of C(d,j) mod 2 times h[n-1-d+j]`,
