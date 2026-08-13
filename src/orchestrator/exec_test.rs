@@ -3,7 +3,18 @@
 
 use std::time::{Duration, Instant};
 
-use super::{Capture, ExecuteCommand, MAX_COMMAND_OUTPUT_BYTES};
+use super::{
+    COMMAND_LOG, COMMAND_LOG_ENTRY_BYTES, COMMAND_LOG_MARK, COMMAND_LOG_MAX_BYTES, Capture,
+    ExecuteCommand, MAX_COMMAND_OUTPUT_BYTES, clipped, trimmed,
+};
+
+/// A workspace of this test's own, so one test's log is not another's.
+fn workspace_named(name: &str) -> std::path::PathBuf {
+    let path = std::env::temp_dir().join(format!("exec-test-{name}"));
+    let _ = std::fs::remove_dir_all(&path);
+    std::fs::create_dir_all(&path).expect("the test workspace is created");
+    path
+}
 
 fn captured(bytes: &[u8], chunk: usize) -> Capture {
     let mut capture = Capture::default();
