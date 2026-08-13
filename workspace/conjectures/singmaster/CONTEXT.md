@@ -144,10 +144,19 @@ Each marked with evidence class and a link.
   the deliverable: MRSTT gives an *effective* but unusable constant, a
   different object from a bound one can check.
 
-- **Small-(k1,k2) curves solved effectively. `sourced`.** (2,3) Avanesov;
-  (2,4) de Weger/Pintér (Gelfond–Baker); (3,4) de Weger genus-3 double cover of
-  `Y^2+Y=X^3-X`; (2,5) BMSST 2008 hyperelliptic. Finiteness for each fixed pair
-  via Beukers–Shorey–Tijdeman (Siegel) — **ineffective**. Kiss 1988:
+- **Small-(k1,k2) curves — which pairs are COMPLETELY solved effectively. `sourced`
+  (Stroeker–de Weger 1999, Math. Comp. 68:8, primary held).** `C(n,k)=C(m,l)`
+  is solved completely (all integral solutions listed) for exactly
+  `(2,3),(2,4),(2,6),(2,8),(3,4),(3,6),(4,6),(4,8)` — by reducing each to an
+  elliptic curve and applying David's explicit linear-form-in-elliptic-logarithms
+  bound + LLL (`sdw-elliptic-logarithms-eight-pairs`, `asserted`). This is a
+  sharpening of the older per-case list: (2,3) Avanesov; (2,4) de Weger/Pintér
+  (Gelfond–Baker); (3,4) de Weger genus-3 double cover of `Y^2+Y=X^3-X`;
+  (2,5) BMSST 2008 hyperelliptic. **Every other distinct pair has genus>1 and
+  only Faltings' ineffective finiteness** (consistent with the genus formula).
+  So the eight pairs are the full set the effective toolbox reaches, and the
+  unified method is `elliptic logarithms + David + LLL`, not a per-case trick;
+  the (3,6) solution was the first cubic=cubic. Kiss 1988:
   `C(x,2)=C(y,p)` finite for p prime.
 
 - **Verification bound.** `sourced` from secondary attestation + Singmaster FQ 1975
@@ -229,8 +238,8 @@ Each marked with evidence class and a link.
 ## Numbers
 
 - `N(3003)=8` (both+trivial); N=6 set {120,210,1540,7140,11628,24310}.
-- Genus grid (Singular == Sage): k2=2 → floor((k1-1)/2); k2=3 → 1,3,4,7,9
-  (k1=2..10 even); k2=4 → 1,3,6,7,9,12,13,15; k2=5 → 2,4,6,10,12,14,16,16,20,22; etc.
+- Genus closed form `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2`; genus=1 exactly at
+  {2,3},{2,4}, >=2 elsewhere (checked 111 values).
 - Infinite family second member ~6.1e28; digit ratio → phi^4 ≈ 6.854.
 - Family recurrences `n_i=7n_{i-1}-n_{i-2}+6`, `k_i=7k_{i-1}-k_{i-2}+9` checked i=3..8.
 

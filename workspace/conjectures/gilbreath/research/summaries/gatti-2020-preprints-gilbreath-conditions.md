@@ -26,8 +26,50 @@ Theorem 4 asserts the bound (15): `min K_{p1..p_{n-1}} ≤ p_n ≤ max K_{p1..p_
 
 ## Status
 
-- `gatti-2020-machinery-global` — the Eq.-2 anti-diagonal solution formula and parity alternation: **checked** (independently reproduces the run's Alkan/Muney-held global criterion; the `{2,3,5}` count check above is hand-verified, reproduce with brute.py if in doubt).
+- `gatti-2020-machinery-global` — the Eq.-2 anti-diagonal solution formula and parity alternation: **checked by hand arithmetic** (independently reproduces the run's Alkan/Muney-held global criterion).
+- **Hand check of the K-set count (no program run by this role).** For `S={2,3,5}`, the Gilbreath equation is `|1 − |2 − |5−k||| = 1`. Solving: `|2−|5−k|| ∈ {0,2}` ⟺ `k ∈ {3,7}` or `k ∈ {1,5,9}`, so `K_S = {1,3,5,7,9}` — five solutions, not Gatti's `2^{n−1} = 4`. Eq. 2's eight signed combinations `±1 ±2 +5 ±1` also collapse to exactly `{1,3,5,7,9}`. Verification script available for the coder: `code/research_mod_check/verify_gatti_kset.py` (checks definition-by-left-edge, formula, dim prediction, and Lemma-4 interval completeness on this example).
 - `gatti-2020-theorem4-invalid` — Theorem 4's proof fails at the right-inequality step: **located flaw, recorded as refuted** (the paper claims GC'’s core bound; the proof does not establish it).
 - `gatti-2020-lemma4-refuted` — interval-completeness of K_S: **refuted in general** by Muney 2026 (length-5 hole); the CROSS-CHECK that the primes' prefixes avoid holes remains open (that is the conjecture, in this language).
 - The 2023 MDPI "polynomial" claim (`gilbreath-polynomials-imply-gc`: GC follows from `p_n − 2^{n−1} ≤ P_{n-1}(1)`) is **still asserted-by-source, unverified**: the preprint on disk is a different (earlier) paper and does not contain the polynomial inequality; the MDPI PDF remains 403-unobtainable. Do not cite the preprint as evidence for the polynomial claim.
 - Bibliographic note: Gatti cites Proth's C.R. paper as "C.R. 86 (1887) 329–331" — another instance of the wrong Proth citation (the library's `proth-citation-correction` holds the correct record: C.R. 85 (1877) 329–331 are Pépin's pages).
+- The 2020 preprint does **not** contain the 2023-polynomial inequality `p_n − 2^{n−1} ≤ P_{n−1}(1)`; that claim remains asserted-by-source via the 403-blocked MDPI paper only.
+
+```claim
+id: gatti-2020-valid-extension-global-formula
+statement: For S ∈ G_n, appending k preserves Gilbreath-ness iff the nested-absolute Gilbreath equation holds, with solutions k = ±s^{n−1}_1 ± s^{n−2}_2 ± … ± s^1_{n−1} + s_n ± 1 — a signed sum over the WHOLE right anti-diagonal; max K_S = Σ_i s^{n−i}_i + s_n + 1, min K_S = 2s_n − max K_S.
+hypotheses: finite integer sequence S in G_n.
+holds-here: yes — same global criterion the run holds from Alkan 2023 / Muney 2026, now sourced independently in primary form (Gatti 2020 Eq. 2–3).
+status: checked (hand arithmetic; independent duplicate of the held global-valid-extension result)
+bearing: reinforces the refutation of any bounded-window backward-extension automaton; valid extension is a whole-prefix condition.
+anchor: research/sources/gatti-2020-preprints-gilbreath-conditions.full.md
+```
+
+```claim
+id: gatti-2020-theorem4-proof-invalid
+statement: Gatti's Theorem 4 (min K ≤ p_n ≤ max K for every prime, claimed to prove a core Gilbreath bound) has an invalid proof: the right-inequality step assumes p_n ≤ max K (subtracts 2p_{n−1} from both sides), then derives only "min K ≤ α for some α>0" via Bertrand — a trivially true statement that never establishes p_n ≤ max K. The left inequality min K ≤ p_n is sound (Corollary 2: k=s_n is always a valid extension).
+hypotheses: Bertrand's postulate + the min/max K machinery.
+holds-here: yes — the flawed step is in the prime-case proof, exactly the class whose GC status is open.
+status: refuted (located flaw: conclusion assumed in the induction step)
+bearing: Gatti 2020 does NOT prove GC nor any deterministic bounded-gap class result; nothing here overturns Eppstein's anti-Gilbreath refutation of the bounded-gap class.
+anchor: research/sources/gatti-2020-preprints-gilbreath-conditions.full.md
+```
+
+```claim
+id: gatti-2020-lemma4-interval-completeness-refuted
+statement: Gatti Lemma 4 / Theorem 3 assert K_S fills the whole parity class in ]min K, max K[. This interval-completeness is FALSE in general: Muney 2026 exhibits the first hole at length 5 for (2,3,5,9,15), and even the count dim K_S = 2^{n−1} fails for S={2,3,5}: |K_S| = 5, not 4 (solutions {1,3,5,7,9}).
+hypotheses: none beyond S ∈ G_n; checked on the S={2,3,5} example by hand: |1−|2−|5−k||| = 1 ⟺ k ∈ {1,3,5,7,9}.
+holds-here: yes — the false lemma is the claimed mechanism of Gatti's bound-sequence theory.
+status: refuted (by Muney 2026, held; and by direct example)
+bearing: no interval-completeness of valid-extension sets can be assumed anywhere downstream; the run's approaches already treat valid extension as global and hole-prone.
+anchor: research/summaries/gatti-2020-preprints-gilbreath-conditions.md
+```
+
+```claim
+id: gatti-2020-parity-alternation-independent
+statement: In any Gilbreath sequence, s_1 even ⟹ s_2..s_n all odd, s_1 odd ⟹ s_2..s_n all even (Gatti Lemmas 1–3, proved by induction on the extension equation) — an independent general-class statement of the parity alternation the run uses for the primes (shape (odd, even, even, …) preserved by the operator).
+hypotheses: finite Gilbreath sequence.
+holds-here: yes — general-class version of the run's parity-wave (a_1 = 2 even, all later primes odd).
+status: checked (simple induction, consistent with the run's proved shape preservation)
+bearing: the parity half of the reduction is general, not prime-specific; only the regeneration half is open.
+anchor: research/sources/gatti-2020-preprints-gilbreath-conditions.full.md
+```
