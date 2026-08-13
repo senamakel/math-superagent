@@ -143,3 +143,11 @@ been re-derived here. A deterministic class theorem would need a non-gap
 hypothesis (CHT two-separated non-concentration); the three restricted classes
 above are stated from this run's own elementary proof, corroborated by the
 landed block-lemma sources.
+
+## Probabilistic-model grounding (Banks–Ford–Tao 2023) — landed
+
+The random-analogue side of the run (Chase 2024, CHT 2026, Tao Cramér-model blog) ultimately rests on probabilistic models of prime gaps. The canonical peer-reviewed treatment is now in the library:
+
+- **Banks, Ford & Tao, "Large prime gaps and probabilistic models", Invent. math. 233 (2023) 1471–1518** (open access CC BY, doi 10.1007/s00222-023-01199-0). Full text at `research/sources/maier-pomerance-2023-large-prime-gaps-probabilistic-models.full.md` — NB the filename is a misnomer; the authors are Banks, Ford & Tao, and the header comment in the file records this. Summary with claim block `bft2023-cramer-model-canonical` in `research/summaries/banks-ford-tao-2023-large-prime-gaps-probabilistic-models.md`.
+- It states precisely Cramér's 1936 model (→ largest gap ~ log²x a.s.), Granville's corrected model (~ ξ log²x, ξ=2e^{-γ}=1.1229...), and a new random-sieve model satisfying uniform Hardy–Littlewood and RH. It documents the two failures of the plain Cramér model that make a random-model → primes transfer heuristic rather than rigorous: prime-k-tuple residue bias, and Maier's short-interval phenomenon.
+- Cramér's original 1936 paper remains unobtainable as text (scanned PDF over the conversion cap on all routes) but its content is fully grounded through this paper, Chase 2024, and CHT 2026. Repository records held in `research/summaries/cramer-1936-order-of-magnitude-prime-gaps.md` and `research/summaries/cramer-1937-prace-matematyczno-fizyczne-prime-gaps.md`.
