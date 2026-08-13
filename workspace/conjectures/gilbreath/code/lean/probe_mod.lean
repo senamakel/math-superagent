@@ -1,0 +1,1 @@
+def probe_const : ℕ := 42

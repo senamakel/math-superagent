@@ -203,7 +203,6 @@ answers: whether-pass-loop-a1f1
   this note is the paper's structural digest and does not re-derive them.
 - The paper settles the impostor branch only inside box ℬ at max a=10000; the
   UPN conjecture as a whole is untouched beyond that.
-le is untouched beyond that.
 
 ## Verified against the full text (scholar pass, 2026-08)
 

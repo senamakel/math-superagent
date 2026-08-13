@@ -1,5 +1,16 @@
 # Tasks
 
+## Completed (scholar pass 2026-08-14)
+
+- [x] Library audit + digest completion: Maciejewski arXiv:2605.20475 full
+  text verified verbatim (all named objects present in the document);
+  Graham 1989 and Wall 1975 digested properly; `problem.md`'s stale
+  "abstract only" status corrected; Wall 1975 confirmed as the source of the
+  "10^102" orphan (actual bound `N < W ≈ 1.46e23`); no-value sources flagged
+  (Hagis 1985 UHP, Villemin, Guy 2nd/3rd ed., Leangenius, cunningham).
+  Record: `research/notes/scholar-pass-library-audit.md`. Four durable
+  findings in Cognee. Do NOT re-audit.
+
 ## Next (exactly one thing, this cycle)
 
 - [ ] Run `timeout 540 python3 code/equality_case.py 2>&1 | tee code/out/equality_case_reproduced.captured.txt; echo EXIT_CODE=$?` and confirm:
