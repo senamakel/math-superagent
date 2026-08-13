@@ -1,0 +1,4 @@
+tested n: 2480  all successful: True ( 2480 )
+iff  v<=2*nu2+2 <=> success : violations = 0
+suff g*<=2*nu2+2 => success : violations = 0
+rows where the discarded delta=0 case actually occurs: 2480 (100.0%)
