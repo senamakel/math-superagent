@@ -4,4 +4,23 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `DH-1` | For x ∉ {0,2,8}, the ternary expansion of 2^x contains a digit 2 or at least 26 digits equal to 1. | yes | proved | `research/summaries/dimitrov-howe-ar5iv-full.md` |
+| `DH-2` | The nested-modulus method with determinate-power lifting solves 3^x = Σ 2^(a_i) (n ≤ 22 distinct) and 2^x = Σ 3^(a_i) (n ≤ 25 distinct) completely, and the computations terminate. | yes | proved | `research/summaries/dimitrov-howe-ar5iv-full.md` |
+| `LAG-1` | N_1(X) = #{n ≤ X : ternary of 2^n omits digit 2} satisfies N_1(X) ≤ 1.62 X^{α_0}, α_0 = log_3 2 ≈ 0.63092 (Narkiewicz 1980). | yes | asserted | `research/summaries/lagarias-ar5iv-full.md` |
+| `LAG-2` | For every nonzero λ ∈ ℤ_3, #{n ≤ X : (λ2^n)_3 omits digit 2} ≤ 2 X^{α_0} for X ≥ 2. | yes | proved | `research/summaries/lagarias-ar5iv-full.md` |
+| `LAG-3` | dim_H E^(1)(ℤ_3) = log_3 2; (1/2)log_3 2 ≤ dim_H E^(2)(ℤ_3) ≤ 1/2; (1/6)log_3 2 ≤ dim_H E^(3)(ℤ_3). Conjecture B: dim_H E(ℤ_3) = 0. | **unchecked** | proved | `research/summaries/lagarias-ar5iv-full.md` |
+| `LAG-4` | The real truncated method uses only the top ~log_3 X digits and the 3-adic method only the bottom ~log_3 X digits of (2^n)_3; neither exploits the middle digits, and combining them is open. | yes | asserted | `research/summaries/lagarias-ar5iv-full.md` |
+| `SAYE-1` | The number of n ≤ 2·3^45 with (2^n)_3 omitting the digit 2 is exactly the three known values n ∈ {0,2,8} within that range; equivalently no new exception exists for 16 ≤ n ≤ 5.9×10^21. | yes | asserted | `research/summaries/saye-ar5iv-full.md` |
+| `SAYE-2` | u_k = 2·3^(k-1) is both φ(3^k) and the order of 2 modulo 3^k; the map n → 2^n mod 3^k has period u_k, and classes split under the digit recursion given by d_{k+1}(2^(i u_k + j)) ≡ d_{k+1}(2^j) + i·d_1(2^j) (mod 3). | yes | proved | `research/summaries/saye-ar5iv-full.md` |
+| `SAYE-3` | The recursion that generates n with prescribed trailing ternary digits runs in Θ(2^K) time for depth K, versus Θ(3^K) for exhaustive testing; every n < 2^u_K is covered. | yes | proved | `research/summaries/saye-ar5iv-full.md` |
+| `ternary-sieve-count-doubles` | Let A_k be the set of residues r mod 2*3^(k-1) for which the low k ternary digits of 2^r mod 3^k all lie in {0,1}. Then \|A_k\| = 2^(k-1) for every k = 1..22, verified exactly by lifting. The density \|A_k\|/(2*3^(k-1)) =… | yes | checked | `code/out/sieve_cannot_close.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `LAG-1` (research/summaries/lagarias-ar5iv-full.md) — asserted by the source, not proved there and not checked here
+- `LAG-4` (research/summaries/lagarias-ar5iv-full.md) — asserted by the source, not proved there and not checked here
+- `SAYE-1` (research/summaries/saye-ar5iv-full.md) — asserted by the source, not proved there and not checked here
