@@ -88,48 +88,59 @@ anchor: research/summaries/bremner-on-squares-of-squares-1999.md
 
 ```claim
 id: robertson-elliptic-reduction
-statement: A 3×3 magic square of squares exists iff there exist P₀, P₁, P₂ ∈ E(Q) on
-  E: y² = x(x² − c²) with x-coordinates of the *doubled* points 2P₀, 2P₁, 2P₂
-  in arithmetic progression, i.e. with
-    a−b = x(2P₀),  a = x(2P₁),  a+b = x(2P₂)
-  and
-    x(2P₂) − x(2P₁) = x(2P₁) − x(2P₀)  (= b).
-  Use: a point (X, Y) ∈ E(Q) lies in 2E(Q) (i.e. X = x(2Q) for some Q ∈ E(Q))
-  iff {X, X+c, X−c} are all rational squares.  E has rational torsion = {2-torsion}
-  only; replacing Pᵢ by Pᵢ+T (T torsion) leaves the square unchanged.  The
-  corresponding grid (entries as rational squares) is eq. (4) of Bremner 1999 p. 291,
-  with centre a = x(2P₁) and magic constant 3a.
-hypotheses: centre a ∈ Q with a = e² for an integer MSS (the centre is a square,
-  e.g. a = 425² for the witness); c is the common difference of the anti-diagonal
-  AP {a−c, a, a+c}, NOT the centre (c = 138600 for the witness, unrelated to e =
-  425); distinct entries; centre a = x(2P₁)
+statement: A 3×3 magic square of squares over Q exists iff there exist P₀, P₁, P₂ ∈
+  E(Q) on E: y² = x(x² − c²) such that the x-coordinates of the doubled points
+  2P₀, 2P₁, 2P₂ form an arithmetic progression:
+    x(2P₀) = a − b,  x(2P₁) = a,  x(2P₂) = a + b,
+    with  x(2P₂) − x(2P₁) = x(2P₁) − x(2P₀) = b.
+  These three terms are exactly the main diagonal of the MSS (parametrisation (2)
+  of Bremner 1999 p. 290), so the AP has common difference b.  The membership rule:
+  a point (X, Y) ∈ E(Q) lies in 2E(Q) (i.e. X = x(2Q) for some Q ∈ E(Q)) iff
+  {X, X−c, X+c} are all rational squares.  The doubling x-coordinate is
+  x(2Q) = (ξ²+c²)²/(4η²) for Q = (ξ,η) (verified against the duplication formula).
+  Meaning of parameters: a = x(2P₁) is the centre entry of the MSS (so a = e² is a
+  square, e.g. a = 425² for Bremner's witness); c is the anti-diagonal half-difference
+  {a−c, a, a+c} — NOT the centre (c = 138600 for the witness, unrelated to e = 425);
+  b is the main-diagonal half-difference {a−b, a, a+b} (b = 41496 for the witness).
+  CONVERSE: given three such points in 2E(Q) with x-coords in AP, the grid (4) of
+  Bremner 1999 p. 291,
+    [ x(2P₀)    x(2P₂)+c  x(2P₁)−c ]
+    [ x(2P₂)−c  x(2P₁)    x(2P₀)+c ]
+    [ x(2P₁)+c  x(2P₀)−c  x(2P₂)   ],
+  is a magic square of rational squares (magic exactly when the AP condition holds),
+  hence an integer MSS after clearing denominators; distinctness requires the three
+  x-coords and the nine entries distinct.  E has rational torsion = {2-torsion} only;
+  replacing Pᵢ by Pᵢ+T (T torsion) leaves the grid unchanged.
+hypotheses: a, b, c ∈ Q, c ≠ 0 (E nonsingular); a = x(2P₁) a rational square (centre
+  of the MSS); P₀, P₁, P₂ ∈ E(Q); for the integer problem the cleared-denominator
+  entries are positive distinct integers
 holds-here: yes
 status: proved
-bearing: the run's single-curve reformulation; the standard starting point for any
-  descent or AP-length argument.  The Garcia-Fritz–Pastén (2026) Theorem 1.8 bound
-  — every AP of x-coordinates of points in E(Q) has length ≤ C^(r+1) — APPLIES
-  DIRECTLY to the MSS AP, because the three points 2P₀, 2P₁, 2P₂ ARE points of E(Q)
-  (Pᵢ ∈ E(Q) ⇒ 2Pᵢ ∈ E(Q)) and their x-coordinates a−b, a, a+b are in AP.  So the
-  crux is settled: the MSS AP is an AP of x(P) for points P = 2Pᵢ ∈ E(Q); it is NOT
-  merely an AP of doubled-point x-coordinates disjoint from the theorem's scope.
-  The theorem therefore bounds the MSS AP by C^(rankEe+1).  It yields a
-  non-existence contradiction ONLY IF C^(rankEe+1) < 3, i.e. rankEe(Q) + 1 < log_C 3;
-  since C is not explicit (and invariably large), and since the Bremner-witness
-  curve (rank 2) already sits inside the bound C^3 ≥ 3, no contradiction follows —
-  the uniform-height approach is NOT refuted on the crux, but it is ineffective as a
-  proof of non-existence without an explicit C (see uniform-height-bound-elliptic-ap).
-anchor: research/sources/bremner-on-squares-of-squares-1999.full.md pp. 290–291
+bearing: the run's single-curve reformulation and the standard start of every descent
+  or AP-length argument.  The Garcia-Fritz–Pastén (2026) Theorem 1.8 bound — every AP
+  of x-coordinates of points in E(Q) has length ≤ C^(r+1) — APPLIES DIRECTLY to the MSS
+  AP: the three points 2P₀, 2P₁, 2P₂ ARE points of E(Q) (Pᵢ ∈ E(Q) ⇒ 2Pᵢ ∈ E(Q)) and
+  their x-coords a−b, a, a+b are in AP, so the MSS AP is an AP of x(P) for P = 2Pᵢ ∈
+  E(Q) and is not outside the theorem's scope.  The theorem bounds the MSS AP by
+  C^(rankEe(Q)+1); it forces non-existence only if C^(rankEe(Q)+1) < 3, i.e.
+  rankEe(Q) + 1 < log_C 3.  Since C is ineffective in the paper, no contradiction
+  follows from the rank-2 Bremner-witness curve (which satisfies C³ ≥ 3): the
+  uniform-height approach is NOT refuted on this crux, but is ineffective without an
+  explicit C (see uniform-height-bound-elliptic-ap).  Also pins the 7-square→MSS gap
+  precisely: an MSS needs all three doubled x-coords in 2E, whereas the witness realises
+  only two.
+anchor: research/sources/bremner-on-squares-of-squares-1999.full.md pp. 290–291 (eqs. 2–4)
 answers: exact-reduction-magic-507c
-verified-by: statement traced through Bremner 1999 eqs. (2)–(4) and the surrounding
-  prose; the derivation is peer-reviewed (Acta Arithmetica).  Crux resolution:
-  Bremner 1999 p. 290 states a−b, a, a+b are the x-coordinates of "three points in
-  2E(Q)" — i.e. of the doubled points 2P₀, 2P₁, 2P₂ — and these are themselves
-  points of E(Q), so Garcia-Fritz–Pastén Theorem 1.8 (APs of x(P), P ∈ E(Q))
-  applies verbatim.  Independently computed on Bremner's witness: main diagonal
-  {373², 425², 565²}, anti-diagonal difference c = 138600, E: y²=x³−c²x has rank 2,
-  torsion order 4; x(373²)=139129 and x(425²)=180625 are in 2E(Q) (both {X,X±c}
-  all squares); x(565²)=319225 is NOT (X−c=425² square but X+c=457825 not) — exactly
-  2 of the 3 doubled points, matching a 7-square near-miss not an MSS.
+verified-by: statement traced through Bremner 1999 eqs. (2)–(4) and surrounding prose
+  (peer-reviewed, Acta Arithmetica 88); doubled-point formula x(2P)=(ξ²+c²)²/(4η²)
+  re-derived from the duplication formula.  Hand-checked on Bremner's 7-square witness
+  (exact integer arithmetic): centre a=425²=180625; MAIN diagonal {a−b,a,a+b} =
+  {139129,180625,222121}={373²,425²,∎} with b=41496 and third term 222121 NOT a square;
+  ANTI-diagonal {205²,425²,565²} fully square with c=138600.  In 2E(Q): X=a=180625
+  (X±c=205²,565²) yes; X=a−b=139129 (X±c=23²,527²) yes; X=a+b=222121 (X−c=289² but
+  X+c=360721 not square) NO.  So 2 of the 3 main-diagonal x-coords are in 2E — the
+  witness is a 7-square near-miss, one doubled point short of an MSS.  This is the
+  exact shape an impossibility lemma must not forbid.
 ```
 
 ```claim
