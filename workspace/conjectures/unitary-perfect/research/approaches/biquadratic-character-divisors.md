@@ -51,32 +51,22 @@ mechanism: For a primitive divisor r of Φ_{4p}(2), ord_r(2) = 4p. A
   head (the per-class shortcut is refuted). The product formula is the only
   viable exact route.
 
-status: adopted
-first-step: (1) [done] Verify the generator equivalence on every primitive
-  divisor for p ≤ 61: code/biquadratic_table.py + code/out/heven_gauss_61.captured.txt
-  confirms (2/r)_4 = 1 ⟺ r ≡ 1 (mod 16) on all 71 primitive divisors, two
-  independent ways (direct 4th-power test vs Cornacchia/quartic-reciprocity
-  computation), with the H_even p-slice {3,5,13,23,31,41,61} reproduced exactly.
-  (2) [the sharpened move] Exploit multiplicativity of the quartic character to
-  obtain a divisor-transference product identity that BYPASSES factorization:
-
-      Π_{π^e || 2^p+i} (2/π)_4^e  =  (2/(2^p+i))_4,
-
-  and evaluate the right side in closed form via Gauss's supplementary law of
-  quartic reciprocity applied to the (non-primary) Gaussian integer 2^p + i.
-  Since each left factor satisfies (2/π)_4 = 1 ⟺ N(π) ≡ 1 (mod 16), the
-  product identity is an exact, deterministic statement about how many divisors
-  of Φ_{4p}(2) are ≡ 1 (mod 16), computable from p alone without factoring
-  2^p + i. This is the divisor-transference theorem the paper says is missing,
-  in algebraic rather than analytic form. First concrete computation: express
-  (2/(2^p+i))_4 as a function of p mod 16 via the supplementary law, then
-  reconcile it against the per-factor product in the p ≤ 61 table as a check.
-  (3) [refuted shortcut, do not re-propose] The conjecture "for a fixed
-  c = p mod 8, one of L_p, M_p necessarily has a divisor ≡ 1 (mod 16)" is
-  FALSE: the computed table shows H_even members p = 3, 5, 13, 23, 31, 41, 61
-  (all four classes mod 8) have zero such divisors, while heads occur in all
-  four classes for non-members. A congruence-class theorem forcing a head does
-  not exist; only the product formula (step 2) is a viable exact route.
+status: refuted
+killed-by: The deliverable aimed for (existence of one prime divisor
+  r ≡ 1 mod 16, i.e. the (H1) form of Theorem 30) is strictly weaker than
+  Conjecture 29's proportional bound #{r ≡ 1 mod 16} ≥ c·ω(Φ_{4p}(2)), and does
+  not close Conjecture 6 (M1, recorded in divisor-level-target-extraction.md §7).
+  The approach's central object — the multiplicativity product identity
+  Π_{π^e || 2^p+i}(2/π)_4^e = (2/(2^p+i))_4 — is a genuine divisor-transference
+  theorem, but it computes a PRODUCT of unit quartic characters (one scalar in
+  {±1,±i}), whereas orthogonality needs the SUM S_χ = Σ_r (2/r)_4 over the
+  divisors: a product determines the sum only modulo 4. The one-way generator
+  equivalence (2/r)_4 = 1 ⟺ r ≡ 1 mod 16 (verified on all 71 primitive divisors
+  through p = 61, two independent ways) is retained and ABSORBED as the
+  first-moment sub-step of the adopted `second-moment-character-mod16` approach,
+  which is what turns it into the proportional statement. As a standalone line
+  of attack it is closed.
+first-step: —
 ```
 
 ## Corrections applied (from the literature check and computed evidence)
