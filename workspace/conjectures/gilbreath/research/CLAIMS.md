@@ -44,9 +44,11 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `eppstein-practical-rule90` | (heuristic/conjectural) the {0,2} interior of a Gilbreath triangle evolves as a Rule-90 cellular automaton (per-column, time left→right), which behaves as if random and wears down larger values; the practical-number… | yes | asserted | `research/summaries/eppstein-gilbreath-practical-numbers.md` |
 | `event-rate-sweep-regeneration-not-generic` | In the random 2-then-odds class, 852/1154 (73.8%) sequences reach b_k = 0 within their batch depth, all deaths within the first 10 rows and 89.7% within the first 3; sequences surviving row 10 survived the full batch… | no | asserted | `code/out/event_rate_sweep.notes.md` |
 | `event-rate-sweep-step-law-universal` | Over 1154 random 2-then-odds sequences (D up to 4000, W up to 2e6; gap families consecutive/{2,4}/skew{2,4,6}/skew{2,4,6,8,10}/uniform{2..2g}/geometric, with and without first gap forced to 2), the step law (b_{k+1} >=… | yes | asserted | `code/out/event_rate_sweep.notes.md` |
+| `fenchel-duality-sign-assignment-refuted` | The Fenchel–Rockafellar / minimax sign-history route to Gilbreath fails: (i) the representation A_k(1) = max over a static sign set of a linear functional is false because reachable sign histories depend on the gap… | yes | asserted | `research/approaches/fenchel-duality-minimax-sign-assignment.md` |
 | `first-gap-2-startup-sufficiency-supported` | For the 2-then-odds class with gap support {2,4} (consecutive and rand24), forcing gap[0] = 2 gives 0 sequences reaching b_k = 0 among 62 measured (48 sweep + 10 deep + 4 long) to depth up to 4000, versus 62% deaths at… | yes | asserted | `code/out/event_rate_sweep.notes.md` |
 | `fwd-diff-identity-refuted` | The identity A_k(i) = \|Δ_k(i)\| (iterated absolute difference equals the absolute value of the signed forward difference Δ_k(i) = Σ_{j=0}^k (−1)^j C(k,j) A_0(i+j)) is FALSE on the prime triangle: first violation at… | yes | checked | `code/out/check_fwd_diff_identity.notes.md` |
 | `gallagher-1976-poisson-short-interval-model` | Under the (unproved) Hardy–Littlewood prime r-tuple conjecture, the number of primes in (n, n+h] for h ~ λ log N is Poisson(λ)-distributed in n < N (Theorem 1); unconditionally the count has an exponential upper bound… | **unchecked** | proved | `research/summaries/gallagher-1976-primes-in-short-intervals.md` |
+| `gantmacher-krein-sign-regularity-refuted` | The Gantmacher–Krein / Schoenberg variation-diminishing route to Gilbreath fails at its load-bearing premise: the alternating Pascal matrix M_{k,j} = (−1)^{k−j} binom(k,j) is NOT sign-regular of order 2 (2×2 minors of… | yes | asserted | `research/approaches/gantmacher-krein-oscillatory-matrix-sign-regularity.md` |
 | `gap-bounds-cannot-force-block-growth` | No held prime-gap result bounds the leading {0,2} block length b_k or the (2,4)-event jump sum from below for a 2-then-odds exactly-even-gap sequence: Baker–Harman–Pintz (p_{n+1}−p_n ≪ p_n^{0.525}), Torelli (p_{n+1} ≤… | yes | checked | `research/notes/block-growth-literature.md` |
 | `gatti-2020-lemma4-interval-completeness-refuted` | Gatti Lemma 4 / Theorem 3 assert K_S fills the whole parity class in ]min K, max K[. This interval-completeness is FALSE in general: Muney 2026 exhibits the first hole at length 5 for (2,3,5,9,15), and even the count… | yes | asserted | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
 | `gatti-2020-not-load-bearing` | gatti-2020-preprints-gilbreath-conditions (doi 10.20944/preprints202003.0145.v1, 8 Mar 2020, 10pp, NOT PEER-REVIEWED, 0 views 0 downloads 0 comments) is a claimed "proof of conditions" for GC via a global… | **unchecked** | asserted | `research/notes/library-state.md` |
@@ -64,10 +66,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `granville-lucas-kummer-sierpinski` | (Granville, "Arithmetic properties of binomial coefficients", dynamic e-survey, chs. "Elementary Number Theory" + "Pascal's triangle via cellular automata") Kummer: the exponent of p in binom(n,m) equals the number of… | yes | asserted | `research/notes/library-state.md` |
 | `granville-nu2-density-measured` | For the right diagonal through q_n of the prime Gilbreath triangle, the count nu_2(q_n) of 2s in the maximal {0,2} tail satisfies nu_2/n in [0.42, 0.52] for n in {50,100,200,400,800,1600,3200,3999}, consistent with nu_2… | yes | checked | `research/notes/granville-2607-04166-actually-read.md` |
 | `guy-A10-canonical-statement` | Guy, Unsolved Problems in Number Theory 2nd ed. (1994) §A10, "Gilbreath's Conjecture": with d_n = p_{n+1} − p_n and d_n^k = \|d_{n+1}^{k−1} − d_n^{k−1}\|, Gilbreath claimed d_1^k = 1 for all k; verified for k < 63,419 and… | yes | catalogued | `research/summaries/crc-mirror-guy-A10-gilbreath.md` |
-| `keen-2026-gilbreath-proof-not-load-bearing` | Keen's "Gilbreath's Conjecture" (Zenodo 10.5281/zenodo.19216603, 2026) is a claim-heavy non-peer-reviewed preprint whose abstract is redacted pending IP review and whose files are restricted; it promises a proof of… | **unchecked** | asserted | `research/summaries/keen-2026-gilbreath-proof-zenodo.md` |
-| `killgrove-ralston-block-protection` | If row i starts 1 and has M entries after the leading 1 (their "0 ≤ j ≤ M" includes P_{i,0}) all 0 or 2, then the next M−1 rows start with 1 (their span P_{i,0}..P_{i+M−1,0}); protection is one row per {0,2} entry,… | yes | asserted | `research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md` |
 
-_65 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_68 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -92,7 +92,9 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `ducci-pascal-mod2-rule90` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `eppstein-practical-rule90` (research/summaries/eppstein-gilbreath-practical-numbers.md) — asserted by the source, not proved there and not checked here
 - `event-rate-sweep-step-law-universal` (code/out/event_rate_sweep.notes.md) — asserted by the source, not proved there and not checked here
+- `fenchel-duality-sign-assignment-refuted` (research/approaches/fenchel-duality-minimax-sign-assignment.md) — asserted by the source, not proved there and not checked here
 - `first-gap-2-startup-sufficiency-supported` (code/out/event_rate_sweep.notes.md) — asserted by the source, not proved there and not checked here
+- `gantmacher-krein-sign-regularity-refuted` (research/approaches/gantmacher-krein-oscillatory-matrix-sign-regularity.md) — asserted by the source, not proved there and not checked here
 - `gatti-2020-lemma4-interval-completeness-refuted` (research/summaries/gatti-2020-preprints-gilbreath-conditions.md) — asserted by the source, not proved there and not checked here
 - `gatti-2020-theorem4-proof-invalid` (research/summaries/gatti-2020-preprints-gilbreath-conditions.md) — asserted by the source, not proved there and not checked here
 - `gc-block-lemma-odlyzko` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
@@ -124,6 +126,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `valid-extension-backward-nonlocal-refuted` (research/approaches/backward-extension-automaton.md) — asserted by the source, not proved there and not checked here
 - `verification-bounds` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `verification-record-2026` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `zero-sum-flow-mincut-restatement-refuted` (research/approaches/zero-sum-flow-conservation-mincut.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue
 

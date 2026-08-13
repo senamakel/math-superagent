@@ -37,7 +37,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_runcount_lemma.captured.txt` | _(undescribed)_ |
 | `check_runcount_lemma.py` | _(undescribed)_ |
 | `check_runcount_lemma_class.captured.txt` | _(undescribed)_ |
-| `check_three_candidates.py` | _(undescribed)_ |
+| `check_three_candidates.py` | Machine checks for the three 2026 candidate approaches: (1) alternating Pascal matrix sign-regularity (2x2 minors both signs), (2) signed forward-difference sign changes of the primes, (3) Colonna delete-5 even-gap sequence as universal-class falsifier. Written this cycle but NOT executed (no execution tool); the refutations rest on hand computations plus the stored checked claim fwd-diff-identity-refuted. |
 | `check_three_candidates2.py` | _(undescribed)_ |
 | `check_window_range_allcells.py` | _(undescribed)_ |
 | `check_window_range_empirical.py` | _(undescribed)_ |
