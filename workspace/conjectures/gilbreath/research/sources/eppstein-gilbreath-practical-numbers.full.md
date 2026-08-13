@@ -1,0 +1,122 @@
+<!-- source: https://11011110.github.io/blog/2011/02/19/gilbreath-made-practical.html | converted from HTML -->
+
+Gilbreath made practical
+
+[&laquo; Conference deadline synchronization][1] [Anti-Gilbreath sequences &raquo;][2]
+
+Make a triangle of numbers in which the leftmost column is the sequence of prime numbers and each other number is the absolute value of the difference of the two numbers to its left:
+
+```
+  2
+  3 1
+  5 2 1
+  7 2 0 1
+ 11 4 2 2 1
+ 13 2 2 0 2 1
+ 17 4 2 0 0 2 1
+ 19 2 2 0 0 0 2 1
+ 23 4 2 0 0 0 0 2 1
+ 29 6 2 0 0 0 0 0 2 1
+ 31 2 4 2 2 2 2 2 2 0 1
+ 37 6 4 0 2 0 2 0 2 0 0 1
+ 41 4 2 2 2 0 0 2 2 0 0 0 1
+ 43 2 2 0 2 0 0 0 2 0 0 0 0 1
+ 47 4 2 0 0 2 2 2 2 0 0 0 0 0 1
+ 53 6 2 0 0 0 2 0 2 0 0 0 0 0 0 1
+ 59 6 0 2 2 2 2 0 0 2 2 2 2 2 2 2 1
+ 61 2 4 4 2 0 2 0 0 0 2 0 2 0 2 0 2 1
+ 67 6 4 0 4 2 2 0 0 0 0 2 2 0 0 2 2 0 1
+ 71 4 2 2 2 2 0 2 2 2 2 2 0 2 2 2 0 2 2 1
+ 73 2 2 0 2 0 2 2 0 2 0 2 0 0 2 0 2 2 0 2 1
+ 79 6 4 2 2 0 0 2 0 0 2 2 0 0 0 2 2 0 2 2 0 1
+ 83 4 2 2 0 2 2 2 0 0 0 2 0 0 0 0 2 0 0 2 0 0 1
+ 89 6 2 0 2 2 0 2 0 0 0 0 2 2 2 2 2 0 0 0 2 2 2 1
+ 97 8 2 0 0 2 0 0 2 2 2 2 2 0 2 0 2 0 0 0 0 2 0 2 1
+```
+
+Notice the pattern of 1's running down the right side? [Gilbreath's conjecture][3] states that it continues like that forever. It seems very likely to be true: the numbers in the second column on the left start out quite small (polylogarithmically small if [Cramér's conjecture][4] is to be believed), while the big region of 0's and 2's on the right behaves like the [Rule 90][5] one dimensional cellular automaton (with each automaton configuration being a column of the triangle and the automaton's time steps proceeding left to right). Rule 90 behaves in many ways as if it were random (despite being deterministic), and so each successive row of the triangle gets filled with a seemingly-random sequence of 0's and 2's, with the 2's in the sequence quickly wearing down any larger values in the next row.
+
+There are some other sequences of integers that behave a lot like the prime numbers, one of which is the [practical numbers][6], numbers \( q \) such that any fraction \( p/q \) less than one can be represented as an [Egyptian fraction][7] in which all denominators are divisors of \( q \). The practical numbers are highly composite, but they have similar density properties to the prime numbers. And like the prime numbers, the first one has a different parity from all the rest. What happens if we try making a triangle in the same way from them? We get:
+
+```
+  1
+  2 1
+  4 2 1
+  6 2 0 1
+  8 2 0 0 1
+ 12 4 2 2 2 1
+ 16 4 0 2 0 2 1
+ 18 2 2 2 0 0 2 1
+ 20 2 0 2 0 0 0 2 1
+ 24 4 2 2 0 0 0 0 2 1
+ 28 4 0 2 0 0 0 0 0 2 1
+ 30 2 2 2 0 0 0 0 0 0 2 1
+ 32 2 0 2 0 0 0 0 0 0 0 2 1
+ 36 4 2 2 0 0 0 0 0 0 0 0 2 1
+ 40 4 0 2 0 0 0 0 0 0 0 0 0 2 1
+ 42 2 2 2 0 0 0 0 0 0 0 0 0 0 2 1
+ 48 6 4 2 0 0 0 0 0 0 0 0 0 0 0 2 1
+ 54 6 0 4 2 2 2 2 2 2 2 2 2 2 2 2 0 1
+ 56 2 4 4 0 2 0 2 0 2 0 2 0 2 0 2 0 0 1
+ 60 4 2 2 2 2 0 0 2 2 0 0 2 2 0 0 2 2 2 1
+ 64 4 0 2 0 2 0 0 0 2 0 0 0 2 0 0 0 2 0 2 1
+ 66 2 2 2 0 0 2 2 2 2 0 0 0 0 2 2 2 2 0 0 2 1
+ 72 6 4 2 0 0 0 2 0 2 0 0 0 0 0 2 0 2 0 0 0 2 1
+ 78 6 0 4 2 2 2 2 0 0 2 2 2 2 2 2 0 0 2 2 2 2 0 1
+ 80 2 4 4 0 2 0 2 0 0 0 2 0 2 0 2 0 0 0 2 0 2 0 0 1
+```
+
+Again, we get 1's all down the right side. I conjecture that this pattern continues forever. As evidence, I tried computing the first 212000 rows of the triangle (up to the practical number 2314890) and they all ended with a 1. The same argument involving Rule 90 makes provides a heuristic explanation for why counterexamples should be increasingly rare in later rows of the triangle, so that if it's true this far out it seems almost certainly true in general.
+
+Here's my Python source code (using my [Eratosthenes][8] code for generating prime and practical numbers from [PADS][9]). It could be made a lot faster by using bit manipulation tricks to speed up the Rule 90 part of each row, but I think this should be sufficient as a proof-of-concept.
+
+```
+from Eratosthenes import *
+
+def triangle(seq):
+    row = []
+    for x in seq:
+        next = [x]
+        for x in row:
+            next.append(abs(next[-1] - x))
+        yield next
+        row = next
+
+def printrows():
+    nrows = 0
+    for row in triangle(PracticalNumbers()):
+        digits = 3
+        for i in range(len(row)):
+            format = "%%%dd" % digits
+            digits = 1
+            print format % row[i],
+        print
+        nrows += 1
+        if nrows > 24:
+            return
+
+def testgood():
+    num = 0
+    for row in triangle(PracticalNumbers()):
+        if row[-1] != 1:
+            print "Bad row!", row
+            return
+        num += 1
+        if num % 500 == 0:
+            print "first",num,"up to",row[0],"good"
+
+testgood()
+```
+
+
+## Links
+
+[1]: /blog/2011/02/15/conference-deadline-synchronization.html
+[2]: /blog/2011/02/20/anti-gilbreath-sequences.html
+[3]: http://en.wikipedia.org/wiki/Gilbreath's_conjecture
+[4]: http://en.wikipedia.org/wiki/Cramer's_conjecture
+[5]: http://en.wikipedia.org/wiki/Rule_90
+[6]: http://en.wikipedia.org/wiki/Practical_number
+[7]: http://en.wikipedia.org/wiki/Egyptian_fraction
+[8]: http://www.ics.uci.edu/~eppstein/PADS/Eratosthenes.py
+[9]: http://www.ics.uci.edu/~eppstein/PADS/

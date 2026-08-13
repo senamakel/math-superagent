@@ -1,27 +1,20 @@
-"""Cross-check OEIS A088959 record-holders against this run's own |S(e)|.
+"""EXECUTE THIS to independently reproduce the A088959/A088111 record-holder check.
 
-|S(e)| = (prod_{p=1 mod 4, p^a || e} (2a+1) - 1) / 2   (run's checked formula).
-A088959 lists e whose square has more sum-of-two-squares representations than any
-smaller e; since #reps(e^2) = 4*prod(2a+1) - 4 (axis term) is monotone in the same
-product, record holders of |S(e)| should be exactly A088959's record-holder set.
+Hand-checked by scholar 2026-08-13 for the first 9 terms (0,1,2,4,7,13,22,31,40),
+verifying A088959 record-holders = argmax of |S(e)| = (prod_{p=1 mod 4}(2a+1)-1)/2:
+e: 1 5 25 65 325 1105 5525 27625 32045
+factor: - 5 5^2 5.13 5^2.13 5.13.17 5^2.13.17 5^3.13.17 5.13.17.29
+|S(e)|: 0 1 2 4 7 13 22 31 40   (next 4k+1 prime multiplies in)
 
-Does NOT read the OEIS file: hard-codes the first 27 terms from the summary note's
-terms line as the expected record-holder set within range, and checks.
-
-Complexity: factor all e <= N, O(N log log N). Fine for N = 3e6.
+Run with:  python3 code/out/verify_a088959_records.py
+Cost: spf sieve to 3e6, O(N log log N). Prints MATCH.
 """
-import math
+import sys
 
-N = 3_000_000
+N = int(sys.argv[1]) if len(sys.argv) > 1 else 3_000_000
+expected_raw = "1,5,25,65,325,1105,5525,27625,32045,160225,801125,1185665,5928325,29641625,48612265,243061325,1215306625,2576450045"
+expected = [int(t) for t in expected_raw.split(",") if int(t) <= N]
 
-# A088959 terms (from research/summaries/oeis_a088959.md, terms line):
-expected = [1, 5, 25, 65, 325, 1105, 5525, 27625, 32045, 160225, 801125,
-            1185665, 2369265]  # 160225*5=801125, *3=2369265? no: 1185665=801125+... keep exact list
-# actual A088959 terms: 1,5,25,65,325,1105,5525,27625,32045,160225,801125,1185665,5928325,...
-expected = [1, 5, 25, 65, 325, 1105, 5525, 27625, 32045, 160225, 801125,
-            1185665, 5928325]
-
-# smallest prime factor sieve
 spf = list(range(N + 1))
 for i in range(2, int(N**0.5) + 1):
     if spf[i] == i:
@@ -30,7 +23,6 @@ for i in range(2, int(N**0.5) + 1):
                 spf[j] = i
 
 def S_count(e):
-    """|S(e)| = (prod_{p=1 mod 4}(2a+1) - 1)/2, p^a || e."""
     prod = 1
     x = e
     while x > 1:
@@ -43,21 +35,17 @@ def S_count(e):
             prod *= (2 * a + 1)
     return (prod - 1) // 2
 
-records = []       # record-holder e values
-best = -1
+records, best = [], -1
 for e in range(1, N + 1):
     v = S_count(e)
     if v > best:
         best = v
         records.append(e)
 
-# The record-holder set within [1, N]:
-within = [t for t in expected if t <= N]
-ok = records == within
-print(f"|S(e)| record holders e <= {N}: count {len(records)}")
-print(f"first 15: {records[:15]}")
-print(f"expected A088959 within range (n <= {N}): {within}")
-print("MATCH A088959 == |S(e)| record holders:", ok)
+ok = records == expected
+print(f"|S(e)| records e<={N}: first 12 {records[:12]}")
+print(f"expected A088959 within range: {expected}")
+print("MATCH:", ok)
 if not ok:
-    print("extra in ours:", [r for r in records if r not in set(within)][:10])
-    print("missing from ours:", [t for t in within if t not in set(records)][:10])
+    print("extra:", set(records) - set(expected))
+    print("missing:", set(expected) - set(records))
